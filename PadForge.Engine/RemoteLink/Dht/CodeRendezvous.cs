@@ -48,6 +48,9 @@ namespace PadForge.Engine.RemoteLink.Dht
         private static readonly byte[] RelaySeedInfo = Encoding.ASCII.GetBytes("PadForge/code-rdv/relay-seed/v1");
         private static readonly byte[] RelayHostInfo = Encoding.ASCII.GetBytes("PadForge/code-rdv/relay-host/v1");
         private static readonly byte[] RelayChanInfo = Encoding.ASCII.GetBytes("PadForge/code-rdv/relay-chan/v1");
+        private static readonly byte[] IdSeedInfo = Encoding.ASCII.GetBytes("PadForge/id-rdv/relay-seed/v1");
+        private static readonly byte[] IdHostInfo = Encoding.ASCII.GetBytes("PadForge/id-rdv/relay-host/v1");
+        private static readonly byte[] CapChanInfo = Encoding.ASCII.GetBytes("PadForge/id-rdv/relay-chan/v1");
 
         /// <summary>The relay rendezvous a code addresses, derived with NO
         /// distributed lookup (#294). This is the reliability fix: carrying the
@@ -72,6 +75,50 @@ namespace PadForge.Engine.RemoteLink.Dht
             /// per code (not per punch nonce) so the listening host can demux
             /// it before it knows who is calling.</summary>
             public uint Channel { get; init; }
+        }
+
+        /// <summary>
+        /// The STABLE relay rendezvous for a machine, derived from its
+        /// long-term identity public key rather than from a connection code.
+        ///
+        /// This is what makes RECONNECT work. A code embeds the public
+        /// endpoint and expires hourly, so relaunching mints a new one and the
+        /// code-derived relay identity moves with it: a peer holding the old
+        /// code dials an address nobody is listening on. An identity key never
+        /// changes, and a paired peer already holds it in its trust store, so
+        /// it can always compute where to reach us. Same model as iroh, where
+        /// the public key IS the address.
+        ///
+        /// Reachability is all this grants. The channel is derived separately
+        /// from the pair's shared capability, and trust is still proven by the
+        /// unchanged SAS + Ed25519 handshake, so knowing a public key lets
+        /// someone knock and nothing more.
+        /// </summary>
+        public static RelayRendezvous DeriveIdentityRelay(byte[] identityPublicKey)
+        {
+            if (identityPublicKey is not { Length: > 0 }) return null;
+            var seed = PeerCrypto.DeriveKey(identityPublicKey, salt: null, IdSeedInfo, 32);
+            var hostSel = PeerCrypto.DeriveKey(identityPublicKey, salt: null, IdHostInfo, 4);
+            uint hostIdx = BinaryPrimitives.ReadUInt32BigEndian(hostSel)
+                           % (uint)IrohRelayClient.DefaultRelays.Length;
+            return new RelayRendezvous
+            {
+                PrivateKey = seed,
+                PublicKey = PeerCrypto.DeriveEd25519PublicKey(seed),
+                Host = IrohRelayClient.DefaultRelays[hostIdx],
+                Channel = 0, // per-pair, see ChannelForCapability
+            };
+        }
+
+        /// <summary>The control channel a paired couple uses on an identity
+        /// relay, derived from the capability they agreed at pairing. Distinct
+        /// per pair, so one listening identity serves every peer without
+        /// their handshakes colliding.</summary>
+        public static uint ChannelForCapability(byte[] capability)
+        {
+            if (capability is not { Length: > 0 }) return 0;
+            var b = PeerCrypto.DeriveKey(capability, salt: null, CapChanInfo, 4);
+            return BinaryPrimitives.ReadUInt32BigEndian(b);
         }
 
         /// <summary>Derives the relay rendezvous both peers compute from the

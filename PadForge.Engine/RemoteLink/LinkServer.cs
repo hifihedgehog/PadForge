@@ -64,11 +64,13 @@ namespace PadForge.Engine.RemoteLink
         // connections with separate identities, and each live connection
         // remembers which one carries it.
         private IrohRelayClient _relayListen;   // host identity, from the code
+        private IrohRelayClient _relayIdentity; // STABLE identity, for reconnect
         private IrohRelayClient _relayDial;     // ephemeral, for outgoing calls
         private readonly SemaphoreSlim _relayListenGate = new(1, 1);
+        private readonly SemaphoreSlim _relayIdentityGate = new(1, 1);
         private readonly SemaphoreSlim _relayDialGate = new(1, 1);
         private readonly System.Collections.Concurrent.ConcurrentDictionary<uint, Action<byte[], byte[]>> _relayControlSinks = new();
-        private readonly System.Collections.Concurrent.ConcurrentDictionary<string, Action<byte[]>> _relayHelloWaiters = new();
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<string, Action<byte[], uint>> _relayHelloWaiters = new();
         /// <summary>First byte of a relay HELLO (peer key announcement). The
         /// 0xC0-0xC3 space belongs to control/punch; sealed frames start
         /// (type&lt;&lt;4)|epoch with type 1..7, so 0xC4 is unclaimed.</summary>
@@ -450,8 +452,10 @@ namespace PadForge.Engine.RemoteLink
             try { _tcp?.Stop(); } catch { }
             try { _udp?.Close(); } catch { }
             try { _relayListen?.Dispose(); } catch { }
+            try { _relayIdentity?.Dispose(); } catch { }
             try { _relayDial?.Dispose(); } catch { }
             _relayListen = null;
+            _relayIdentity = null;
             _relayDial = null;
             _cts?.Dispose();
             // Null like the failed-Start path: ConnectAsync reads _cts?.Token, and
@@ -953,7 +957,7 @@ namespace PadForge.Engine.RemoteLink
                 // Wait for a caller's HELLO addressed to our code identity.
                 var tcs = new TaskCompletionSource<byte[]>(TaskCreationOptions.RunContinuationsAsynchronously);
                 string waitKey = "code:" + rdv.Channel.ToString("X8");
-                _relayHelloWaiters[waitKey] = k => tcs.TrySetResult(k);
+                _relayHelloWaiters[waitKey] = (k, _) => tcs.TrySetResult(k);
                 byte[] callerKey;
                 try { callerKey = await tcs.Task.WaitAsync(ct).ConfigureAwait(false); }
                 catch (OperationCanceledException) { break; }
@@ -1097,6 +1101,174 @@ namespace PadForge.Engine.RemoteLink
             return a.Length.CompareTo(b.Length);
         }
 
+        /// <summary>Ensures the STABLE identity relay connection: authenticated
+        /// as the identity derived from this machine's own long-term public
+        /// key. Separate from the code listener, which moves whenever the code
+        /// is re-minted, and from the dial client.</summary>
+        public async Task<string> EnsureIdentityRelayAsync(string relayHost, byte[] identitySeed, CancellationToken ct)
+        {
+            if (identitySeed is not { Length: 32 }) return null;
+            await _relayIdentityGate.WaitAsync(ct).ConfigureAwait(false);
+            try
+            {
+                var wantKey = PeerCrypto.DeriveEd25519PublicKey(identitySeed);
+                var live = _relayIdentity;
+                if (live is { IsConnected: true } && live.PublicKey.AsSpan().SequenceEqual(wantKey))
+                    return live.RelayHost;
+                try { live?.Dispose(); } catch { }
+                _relayIdentity = null;
+                var client = new IrohRelayClient(identitySeed);
+                client.DatagramReceived += OnRelayDatagram;
+                var host = await client.ConnectAsync(relayHost, ct).ConfigureAwait(false);
+                if (host == null) { client.Dispose(); return null; }
+                _relayIdentity = client;
+                SdlDiagLog.WriteLine($"RELAY identity-connected: {host} as {Convert.ToHexString(client.PublicKey).Substring(0, 16)}");
+                return host;
+            }
+            catch { return null; }
+            finally { _relayIdentityGate.Release(); }
+        }
+
+        /// <summary>
+        /// Listens on this machine's STABLE identity relay so a PAIRED peer can
+        /// reconnect after either side restarts. Unlike the code listener this
+        /// address never changes, and unlike the DHT presence lane it needs no
+        /// lookup and no punch, so it works across ISPs and behind CGNAT.
+        /// Serves every paired peer at once: each pair talks on the channel
+        /// their shared capability derives.
+        /// </summary>
+        public async Task ListenOnIdentityRelayAsync(Dht.CodeRendezvous.RelayRendezvous rdv, CancellationToken ct)
+        {
+            if (rdv == null) return;
+            var host = await EnsureIdentityRelayAsync(rdv.Host, rdv.PrivateKey, ct).ConfigureAwait(false);
+            var relay = _relayIdentity;
+            if (host == null || relay == null) return;
+            SdlDiagLog.WriteLine($"RELAY identity listen: on {host} as {Convert.ToHexString(rdv.PublicKey)}");
+
+            while (!ct.IsCancellationRequested)
+            {
+                var tcs = new TaskCompletionSource<(byte[] key, uint chan)>(TaskCreationOptions.RunContinuationsAsynchronously);
+                _relayHelloWaiters["identity"] = (k, c) => tcs.TrySetResult((k, c));
+                (byte[] key, uint chan) call;
+                try { call = await tcs.Task.WaitAsync(ct).ConfigureAwait(false); }
+                catch (OperationCanceledException) { break; }
+                finally { _relayHelloWaiters.TryRemove("identity", out _); }
+
+                string callerHex = Convert.ToHexString(call.key);
+                if (!_relayInFlight.TryAdd(callerHex, 0)) continue;
+                SdlDiagLog.WriteLine($"RELAY identity listen: caller {callerHex.Substring(0, 16)} chan={call.chan:X8}");
+                _ = Task.Run(async () =>
+                {
+                    try
+                    {
+                        await AcceptRelayCallAsync(relay, rdv.PublicKey, call.key, call.chan, ct).ConfigureAwait(false);
+                    }
+                    catch (Exception ex) { SdlDiagLog.WriteLine($"RELAY identity listen: call failed {ex.GetType().Name} {ex.Message}"); }
+                    finally { _relayInFlight.TryRemove(callerHex, out _); }
+                }, ct);
+            }
+        }
+
+        /// <summary>Dials a PAIRED peer at its stable identity relay, on the
+        /// channel their shared capability derives. This is the reconnect path
+        /// that needs neither a DHT lookup nor a successful punch.</summary>
+        public async Task<bool> ConnectByIdentityRelayAsync(
+            byte[] peerIdentityPublicKey, byte[] capability,
+            IReadOnlyList<RemotePeerDeviceInfo> exposeLocal, TimeSpan? timeout = null, CancellationToken ct = default)
+        {
+            var rdv = Dht.CodeRendezvous.DeriveIdentityRelay(peerIdentityPublicKey);
+            if (rdv == null || capability == null) return false;
+            uint chan = Dht.CodeRendezvous.ChannelForCapability(capability);
+
+            var host = await EnsureDialRelayAsync(rdv.Host, ct).ConfigureAwait(false);
+            var relay = _relayDial;
+            if (host == null || relay == null) return false;
+
+            using var linked = CancellationTokenSource.CreateLinkedTokenSource(ct, _cts?.Token ?? CancellationToken.None);
+            linked.CancelAfter(timeout ?? TimeSpan.FromSeconds(30));
+            SdlDiagLog.WriteLine($"RELAY identity dial: {host} peer={Convert.ToHexString(rdv.PublicKey).Substring(0, 16)} chan={chan:X8}");
+
+            var hello = new byte[1 + 4];
+            hello[0] = TagRelayHello;
+            System.Buffers.Binary.BinaryPrimitives.WriteUInt32BigEndian(hello.AsSpan(1), chan);
+            var ackTcs = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+            _relayAckWaiters[chan] = () => ackTcs.TrySetResult(true);
+            try
+            {
+                using var helloCts = CancellationTokenSource.CreateLinkedTokenSource(linked.Token);
+                var hct = helloCts.Token;
+                _ = Task.Run(async () =>
+                {
+                    while (!hct.IsCancellationRequested)
+                    {
+                        await relay.SendAsync(rdv.PublicKey, hello, hct).ConfigureAwait(false);
+                        try { await Task.Delay(700, hct).ConfigureAwait(false); } catch { break; }
+                    }
+                });
+                try { await ackTcs.Task.WaitAsync(linked.Token).ConfigureAwait(false); }
+                catch (OperationCanceledException) { SdlDiagLog.WriteLine("RELAY identity dial: peer not listening"); return false; }
+                finally { helloCts.Cancel(); }
+
+                bool asInitiator = CompareKeys(relay.PublicKey, rdv.PublicKey) < 0;
+                var adapter = new RelayControlAdapter(relay, rdv.PublicKey);
+                string peerHex = Convert.ToHexString(rdv.PublicKey);
+                _relayControlSinks[chan] = (src, dg) =>
+                {
+                    if (Convert.ToHexString(src) == peerHex) adapter.OnDatagram?.Invoke(dg);
+                };
+                try
+                {
+                    var expose = exposeLocal ?? ExposeProvider?.Invoke() ?? Array.Empty<RemotePeerDeviceInfo>();
+                    var result = await PunchedConnection.ConnectRelayOnChannelAsync(
+                        adapter, chan, asInitiator,
+                        _identity, _trust, expose, _caps, _approve, _nowUtc(), linked.Token).ConfigureAwait(false);
+                    if (result == null) { SdlDiagLog.WriteLine("RELAY identity dial: handshake did not complete"); return false; }
+                    SdlDiagLog.WriteLine("RELAY identity dial: reconnected");
+                    Register(result, client: null, peerUdpEndpoint: null, exposeLocal: expose,
+                        relayPeerKey: rdv.PublicKey, relayClient: relay);
+                    return true;
+                }
+                finally { _relayControlSinks.TryRemove(chan, out _); }
+            }
+            catch (Exception ex)
+            {
+                SdlDiagLog.WriteLine($"RELAY identity dial: exception {ex.GetType().Name} {ex.Message}");
+                return false;
+            }
+            finally { _relayAckWaiters.TryRemove(chan, out _); }
+        }
+
+        /// <summary>Shared accept half for any listening relay identity.</summary>
+        private async Task AcceptRelayCallAsync(
+            IrohRelayClient relay, byte[] myKey, byte[] callerKey, uint chan, CancellationToken ct)
+        {
+            if (relay == null) return;
+            var ack = new byte[1 + 4];
+            ack[0] = TagRelayHelloAck;
+            System.Buffers.Binary.BinaryPrimitives.WriteUInt32BigEndian(ack.AsSpan(1), chan);
+            for (int i = 0; i < 3; i++)
+                await relay.SendAsync(callerKey, ack, ct).ConfigureAwait(false);
+
+            bool asInitiator = CompareKeys(myKey, callerKey) < 0;
+            var adapter = new RelayControlAdapter(relay, callerKey);
+            string callerHex = Convert.ToHexString(callerKey);
+            _relayListenSinks[callerHex] = dg => adapter.OnDatagram?.Invoke(dg);
+            try
+            {
+                using var timeout = CancellationTokenSource.CreateLinkedTokenSource(ct);
+                timeout.CancelAfter(TimeSpan.FromMinutes(3));
+                var expose = ExposeProvider?.Invoke() ?? Array.Empty<RemotePeerDeviceInfo>();
+                var result = await PunchedConnection.ConnectRelayOnChannelAsync(
+                    adapter, chan, asInitiator,
+                    _identity, _trust, expose, _caps, _approve, _nowUtc(), timeout.Token).ConfigureAwait(false);
+                if (result == null) { SdlDiagLog.WriteLine("RELAY accept: handshake did not complete"); return; }
+                SdlDiagLog.WriteLine("RELAY accept: handshake complete");
+                Register(result, client: null, peerUdpEndpoint: null, exposeLocal: expose,
+                    relayPeerKey: callerKey, relayClient: relay);
+            }
+            finally { _relayListenSinks.TryRemove(callerHex, out _); }
+        }
+
         /// <summary>Relay-lane connect (#294): the UNMODIFIED authenticated
         /// handshake over an iroh relay, for when no direct path can be
         /// punched. The side that read the caller's relay key from the
@@ -1127,7 +1299,7 @@ namespace PadForge.Engine.RemoteLink
                 {
                     // Wait for the peer's HELLO to learn its relay key.
                     var tcs = new TaskCompletionSource<byte[]>(TaskCreationOptions.RunContinuationsAsynchronously);
-                    _relayHelloWaiters[nonceHex] = k => tcs.TrySetResult(k);
+                    _relayHelloWaiters[nonceHex] = (k, _) => tcs.TrySetResult(k);
                     try { peerKey = await tcs.Task.WaitAsync(linked.Token).ConfigureAwait(false); }
                     catch (OperationCanceledException) { SdlDiagLog.WriteLine("RELAY connect: no HELLO within the window"); return false; }
                     finally { _relayHelloWaiters.TryRemove(nonceHex, out _); }
@@ -1202,15 +1374,19 @@ namespace PadForge.Engine.RemoteLink
                 {
                     // Nonce-addressed HELLO (the DHT-assisted lane).
                     string key = Convert.ToHexString(dg, 1, 16);
-                    if (_relayHelloWaiters.TryGetValue(key, out var waiter)) waiter(src);
+                    if (_relayHelloWaiters.TryGetValue(key, out var waiter)) waiter(src, 0);
                     return;
                 }
                 if (tag == TagRelayHello && dg.Length >= 5)
                 {
-                    // Channel-addressed HELLO (the code-derived lane): a caller
-                    // reaching our code identity.
+                    // Channel-addressed HELLO. Delivered to the waiter for the
+                    // channel when one exists (the code lane, one fixed
+                    // channel), else to the identity listener's wildcard
+                    // waiter, which serves every paired peer on its own
+                    // capability-derived channel.
                     uint chan = System.Buffers.Binary.BinaryPrimitives.ReadUInt32BigEndian(dg.AsSpan(1));
-                    if (_relayHelloWaiters.TryGetValue("code:" + chan.ToString("X8"), out var w)) w(src);
+                    if (_relayHelloWaiters.TryGetValue("code:" + chan.ToString("X8"), out var w)) { w(src, chan); return; }
+                    if (_relayHelloWaiters.TryGetValue("identity", out var iw)) iw(src, chan);
                     return;
                 }
                 if (tag == TagRelayHelloAck && dg.Length >= 5)

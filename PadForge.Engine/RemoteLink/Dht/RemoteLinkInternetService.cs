@@ -41,6 +41,9 @@ namespace PadForge.Engine.RemoteLink.Dht
         private readonly Func<NatProfile> _localNat;
         // (peerKey, endpoints, nonce, handshakeAsInitiator, ct) -> connected?
         private readonly Func<byte[], IReadOnlyList<IPEndPoint>, byte[], bool, CancellationToken, Task<bool>> _connectByPunch;
+        /// <summary>Dial a paired peer at its STABLE identity relay. Needs no
+        /// DHT lookup and no direct path, so it is tried first on reconnect.</summary>
+        private readonly Func<byte[], byte[], CancellationToken, Task<bool>> _connectByIdentityRelay;
         private readonly byte[] _selfFingerprint;
         private readonly Action<string> _log;
 
@@ -49,7 +52,8 @@ namespace PadForge.Engine.RemoteLink.Dht
             Func<IReadOnlyList<PresenceRecord.Candidate>> localCandidates,
             Func<byte[], IReadOnlyList<IPEndPoint>, byte[], bool, CancellationToken, Task<bool>> connectByPunch,
             Func<NatProfile> localNat = null,
-            Action<string> log = null)
+            Action<string> log = null,
+            Func<byte[], byte[], CancellationToken, Task<bool>> connectByIdentityRelay = null)
         {
             _presence = presence ?? throw new ArgumentNullException(nameof(presence));
             _selfPublicKey = selfPublicKey;
@@ -58,6 +62,7 @@ namespace PadForge.Engine.RemoteLink.Dht
             _localCandidates = localCandidates ?? (() => Array.Empty<PresenceRecord.Candidate>());
             _localNat = localNat ?? (() => null);
             _connectByPunch = connectByPunch;
+            _connectByIdentityRelay = connectByIdentityRelay;
             _log = log ?? (_ => { });
         }
 
@@ -86,7 +91,31 @@ namespace PadForge.Engine.RemoteLink.Dht
         /// shared capability, so both sides agree with no extra exchange.</summary>
         public async Task<bool> TryReconnectAsync(Peer peer, CancellationToken ct)
         {
-            if (peer.IsConnected || _connectByPunch == null) return false;
+            if (peer.IsConnected) return false;
+
+            // RELAY FIRST for reconnect. The punch path below needs BOTH a
+            // successful DHT presence lookup and a direct path to exist, and
+            // neither is dependable: two machines on different ISPs need not
+            // converge on the same DHT records, and behind CGNAT there is no
+            // direct path at all. The peer's stable identity relay needs
+            // neither, so a paired peer comes back after a restart on any
+            // network. Owner report 2026-08-12: close and relaunch never
+            // reconnected over the internet, only on a LAN.
+            if (_connectByIdentityRelay != null)
+            {
+                try
+                {
+                    if (await _connectByIdentityRelay(peer.PeerPublicKey, peer.Capability, ct).ConfigureAwait(false))
+                    {
+                        peer.IsConnected = true;
+                        _log($"reconnect ok via identity relay for {Short(peer.PeerPublicKey)}");
+                        return true;
+                    }
+                }
+                catch (Exception ex) { _log($"identity relay reconnect failed: {ex.Message}"); }
+            }
+
+            if (_connectByPunch == null) return false;
             var pres = await _presence.LookupAsync(peer.PeerPublicKey, peer.Capability, peer.PeerDirection, ct).ConfigureAwait(false);
             if (pres?.Candidates == null || pres.Candidates.Count == 0) return false;
 

@@ -242,6 +242,54 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void IdentityRelay_IsStableAcrossRestarts_UnlikeTheCodeRelay()
+        {
+            // OWNER REPORT 2026-08-12: closing and relaunching never
+            // reconnected a paired peer over the internet. The code-derived
+            // rendezvous cannot serve reconnect, because relaunching mints a
+            // new code (new endpoint, new expiry) and the derived identity
+            // moves with it. The identity-derived one never moves.
+            var key = new byte[32];
+            for (int i = 0; i < 32; i++) key[i] = (byte)(i * 7 + 1);
+
+            var first = CodeRendezvous.DeriveIdentityRelay(key);
+            var afterRestart = CodeRendezvous.DeriveIdentityRelay(key);
+            Assert.NotNull(first);
+            Assert.Equal(first.PublicKey, afterRestart.PublicKey);
+            Assert.Equal(first.Host, afterRestart.Host);
+            Assert.Equal(first.PublicKey, PeerCrypto.DeriveEd25519PublicKey(first.PrivateKey));
+            Assert.Contains(first.Host, IrohRelayClient.DefaultRelays);
+
+            // Two different codes for the SAME machine give two different
+            // rendezvous, which is precisely why the code lane cannot reconnect.
+            var codeA = CodeRendezvous.DeriveRelay("PF1-AAAA-1111-2222");
+            var codeB = CodeRendezvous.DeriveRelay("PF1-AAAA-3333-4444");
+            Assert.NotEqual(Convert.ToHexString(codeA.PublicKey), Convert.ToHexString(codeB.PublicKey));
+
+            // A different machine is a different address.
+            var other = new byte[32];
+            for (int i = 0; i < 32; i++) other[i] = (byte)(i * 11 + 3);
+            Assert.NotEqual(Convert.ToHexString(first.PublicKey),
+                            Convert.ToHexString(CodeRendezvous.DeriveIdentityRelay(other).PublicKey));
+        }
+
+        [Fact]
+        public void CapabilityChannel_IsPerPair_AndStable()
+        {
+            // One listening identity serves every paired peer, so each pair
+            // needs its own control channel or two peers reconnecting at once
+            // would collide on the same ARQ stream.
+            var capA = new byte[32]; var capB = new byte[32];
+            for (int i = 0; i < 32; i++) { capA[i] = (byte)i; capB[i] = (byte)(i + 100); }
+
+            Assert.Equal(CodeRendezvous.ChannelForCapability(capA),
+                         CodeRendezvous.ChannelForCapability(capA));
+            Assert.NotEqual(CodeRendezvous.ChannelForCapability(capA),
+                            CodeRendezvous.ChannelForCapability(capB));
+            Assert.Equal(0u, CodeRendezvous.ChannelForCapability(null));
+        }
+
+        [Fact]
         public void Blake3DeriveKey_MatchesOfficialVector()
         {
             // Official BLAKE3 test vector (BLAKE3-team/BLAKE3

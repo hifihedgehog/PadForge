@@ -1352,6 +1352,7 @@
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>重置为 25°</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>重置为 0°</value></data>
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>将倾角包络重置为默认值</value></data>
+  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>当多个输入源同时活动时，本行的合并方式。选中该行可在下方详情栏中修改。</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>鼠标速度 X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>鼠标速度 Y</value></data>
   <data name="Mapping_MouseScroll" xml:space="preserve"><value>鼠标滚动</value></data>

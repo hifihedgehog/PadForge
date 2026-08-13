@@ -2289,6 +2289,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_GyroTilt_Reset_Range => Get("Pad_GyroTilt_Reset_Range");
     public string Pad_GyroTilt_Reset_Deadzone => Get("Pad_GyroTilt_Reset_Deadzone");
     public string Pad_GyroTilt_Reset_All => Get("Pad_GyroTilt_Reset_All");
+    public string Pad_CombineChip_Tooltip => Get("Pad_CombineChip_Tooltip");
     public string Mapping_MouseSpeedX => Get("Mapping_MouseSpeedX");
     public string Mapping_MouseSpeedY => Get("Mapping_MouseSpeedY");
     public string Mapping_MouseScroll => Get("Mapping_MouseScroll");

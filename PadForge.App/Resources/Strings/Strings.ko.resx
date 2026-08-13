@@ -1352,6 +1352,7 @@
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>25°로 재설정</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>0°로 재설정</value></data>
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>경사 엔벨로프를 기본값으로 재설정</value></data>
+  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>이 행의 소스가 둘 이상 활성일 때 합성되는 방식입니다. 행을 선택하면 아래 세부 정보 패널에서 변경할 수 있습니다.</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>마우스 속도 X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>마우스 속도 Y</value></data>
   <data name="Mapping_MouseScroll" xml:space="preserve"><value>마우스 스크롤</value></data>

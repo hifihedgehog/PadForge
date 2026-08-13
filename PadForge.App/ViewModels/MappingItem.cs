@@ -620,6 +620,7 @@ namespace PadForge.ViewModels
         {
             OnPropertyChanged(nameof(SourceDisplayText));
             OnPropertyChanged(nameof(RecordButtonText));
+            OnPropertyChanged(nameof(CombineModeDisplayName));
             // The Kind pickers' option labels are localized. The list getter
             // is culture-aware (LCID-keyed cache), but nothing re-read it on
             // a live language switch, so the dropdowns kept the old language
@@ -1683,6 +1684,7 @@ namespace PadForge.ViewModels
             {
                 if (SetProperty(ref _combineMode, value ?? ""))
                 {
+                    OnPropertyChanged(nameof(CombineModeDisplayName));
                     OnPropertyChanged(nameof(IsCustomCombine));
                     OnPropertyChanged(nameof(ShouldShowCustomExpression));
                     OnPropertyChanged(nameof(IsStickTrimCombine));
@@ -1797,6 +1799,24 @@ namespace PadForge.ViewModels
             public string Value { get; set; } = "";
             public string Name { get; set; } = "";
             public string Description { get; set; } = "";
+        }
+
+        /// <summary>The current combine mode's layman label ("Strongest" /
+        /// "Combined"…) for the collapsed row's chip (#292 discoverability:
+        /// the chip used to show the raw engine token, "MAXABS" to a user
+        /// who never opened the detail strip). Falls back to the raw value
+        /// for a mode the option list doesn't carry.</summary>
+        public string CombineModeDisplayName
+        {
+            get
+            {
+                string m = _combineMode ?? "";
+                if (m.Length == 0) return "";
+                foreach (var o in AvailableCombineModes)
+                    if (string.Equals(o.Value, m, StringComparison.Ordinal))
+                        return o.Name;
+                return m;
+            }
         }
 
         // Cached once per culture so the WPF ComboBox binding doesn't

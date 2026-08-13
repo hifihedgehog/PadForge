@@ -1372,6 +1372,7 @@
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>Terugzetten naar 25°</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Terugzetten naar 0°</value></data>
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Hellingsenvelop terugzetten naar standaard</value></data>
+  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Hoe de bronnen van deze rij samenkomen wanneer er meer dan één actief is. Selecteer de rij om dit te wijzigen in het detailpaneel eronder.</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Muis snelheid X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Muis snelheid Y</value></data>
   <data name="Mapping_MouseScroll" xml:space="preserve"><value>Muis scrollen</value></data>

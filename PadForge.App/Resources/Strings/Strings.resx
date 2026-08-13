@@ -1680,6 +1680,7 @@
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>Reset to 25°</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Reset to 0°</value></data>
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Reset the tilt envelope to its defaults</value></data>
+  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>How this row's sources merge when more than one is active. Select the row to change it in the detail strip below.</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Mouse Speed X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Mouse Speed Y</value></data>
   <data name="Mapping_MouseScroll" xml:space="preserve"><value>Mouse Scroll</value></data>

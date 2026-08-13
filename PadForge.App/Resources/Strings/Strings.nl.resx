@@ -1361,6 +1361,17 @@
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Gevoeligheid</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Gevoeligheidsvermenigvuldiger van de gyroscoop per bron. 1,0 = standaard van de engine (500°/s → volledige uitslag). Waarden boven 1,0 zijn gevoeliger. Daaronder minder.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>Kantelgevoeligheid per bron. 1,0 = 90° kanteling voor volledige uitslag. Waarden boven 1,0 bereiken de volledige uitslag met minder kanteling.</value></data>
+  <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Gyro-helling X</value></data>
+  <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Gyro-helling Y</value></data>
+  <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Gyro-helling</value></data>
+  <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Envelop voor de invoeren Gyro-helling X / Y: houd de kanteling vast en de stick houdt zijn uitslag, zoals Steams Joystick-deflectiemodus. Volledige uitslag bij het hier ingestelde bereik; Gyro opnieuw centreren stelt de rustgreep opnieuw in. Gieren (plat draaien) is onzichtbaar voor de zwaartekracht en beweegt deze invoeren niet.</value></data>
+  <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Volledige uitslag bij</value></data>
+  <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>Graden kanteling vanaf de rustgreep die als volledige uitslag tellen. Kleiner = gevoeliger. 25° is de meest voorkomende waarde in Steam-configuraties.</value></data>
+  <data name="Pad_GyroTilt_Deadzone" xml:space="preserve"><value>Hellingsdode zone</value></data>
+  <data name="Pad_GyroTilt_Deadzone_Tooltip" xml:space="preserve"><value>Graden kanteling die rond de rustgreep worden genegeerd, afgetrokken vóór het schalen zodat er geen sprong aan de rand is.</value></data>
+  <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>Terugzetten naar 25°</value></data>
+  <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Terugzetten naar 0°</value></data>
+  <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Hellingsenvelop terugzetten naar standaard</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Muis snelheid X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Muis snelheid Y</value></data>
   <data name="Mapping_MouseScroll" xml:space="preserve"><value>Muis scrollen</value></data>

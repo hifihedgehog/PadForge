@@ -1669,6 +1669,17 @@
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Per-source gyro sensitivity multiplier. 1.0 = the engine's default (500°/s → full deflection). Values above 1.0 are more sensitive. Values below 1.0 are less sensitive.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>Per-source tilt sensitivity multiplier. 1.0 = 90° of tilt for full deflection. Values above 1.0 reach full deflection with less tilt.</value></data>
+  <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Gyro Tilt X</value></data>
+  <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Gyro Tilt Y</value></data>
+  <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Gyro Tilt</value></data>
+  <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Envelope for the Gyro Tilt X / Gyro Tilt Y inputs: hold a tilt and the stick holds its deflection, like Steam's Joystick Deflection mode. Full deflection at the range you set here; Gyro Recenter re-zeroes the resting grip. Yaw (turning the controller flat) is invisible to gravity and does not move these inputs.</value></data>
+  <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Full tilt at</value></data>
+  <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>Degrees of tilt from the resting grip that count as full stick deflection. Smaller = more sensitive. 25° is the most common value in Steam configs.</value></data>
+  <data name="Pad_GyroTilt_Deadzone" xml:space="preserve"><value>Tilt deadzone</value></data>
+  <data name="Pad_GyroTilt_Deadzone_Tooltip" xml:space="preserve"><value>Degrees of tilt ignored around the resting grip, subtracted before scaling so there is no jump at the edge.</value></data>
+  <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>Reset to 25°</value></data>
+  <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Reset to 0°</value></data>
+  <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Reset the tilt envelope to its defaults</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Mouse Speed X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Mouse Speed Y</value></data>
   <data name="Mapping_MouseScroll" xml:space="preserve"><value>Mouse Scroll</value></data>

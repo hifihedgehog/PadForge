@@ -2278,6 +2278,17 @@ public class Strings : INotifyPropertyChanged
     public string Mapping_GyroSensitivity => Get("Mapping_GyroSensitivity");
     public string Mapping_GyroSensitivity_Tooltip => Get("Mapping_GyroSensitivity_Tooltip");
     public string Mapping_LeanSensitivity_Tooltip => Get("Mapping_LeanSensitivity_Tooltip");
+    public string Mapping_GyroTiltX => Get("Mapping_GyroTiltX");
+    public string Mapping_GyroTiltY => Get("Mapping_GyroTiltY");
+    public string Pad_GyroTilt_Header => Get("Pad_GyroTilt_Header");
+    public string Pad_GyroTilt_Subtitle => Get("Pad_GyroTilt_Subtitle");
+    public string Pad_GyroTilt_Range => Get("Pad_GyroTilt_Range");
+    public string Pad_GyroTilt_Range_Tooltip => Get("Pad_GyroTilt_Range_Tooltip");
+    public string Pad_GyroTilt_Deadzone => Get("Pad_GyroTilt_Deadzone");
+    public string Pad_GyroTilt_Deadzone_Tooltip => Get("Pad_GyroTilt_Deadzone_Tooltip");
+    public string Pad_GyroTilt_Reset_Range => Get("Pad_GyroTilt_Reset_Range");
+    public string Pad_GyroTilt_Reset_Deadzone => Get("Pad_GyroTilt_Reset_Deadzone");
+    public string Pad_GyroTilt_Reset_All => Get("Pad_GyroTilt_Reset_All");
     public string Mapping_MouseSpeedX => Get("Mapping_MouseSpeedX");
     public string Mapping_MouseSpeedY => Get("Mapping_MouseSpeedY");
     public string Mapping_MouseScroll => Get("Mapping_MouseScroll");

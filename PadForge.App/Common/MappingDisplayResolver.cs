@@ -533,6 +533,8 @@ namespace PadForge.Common
                 if (axis.Equals("Horizontal", System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroHorizontal;
                 if (axis.Equals("Lean X",     System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroLeanX;
                 if (axis.Equals("Lean Y",     System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroLeanY;
+                if (axis.Equals("Tilt X",     System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroTiltX;
+                if (axis.Equals("Tilt Y",     System.StringComparison.OrdinalIgnoreCase)) return prefix + si.Mapping_GyroTiltY;
                 return null;
             }
 
@@ -808,6 +810,8 @@ namespace PadForge.Common
             // namespace offers it (the flick-stick rule).
             list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.GyroLeanXDescriptor, DisplayName = si.Mapping_GyroLeanX });
             list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.GyroLeanYDescriptor, DisplayName = si.Mapping_GyroLeanY });
+            list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.GyroTiltXDescriptor, DisplayName = si.Mapping_GyroTiltX });
+            list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.GyroTiltYDescriptor, DisplayName = si.Mapping_GyroTiltY });
 
             // Flick stick (#225): the translator emits these with the empty
             // guid, so the abstract namespace must offer them too.

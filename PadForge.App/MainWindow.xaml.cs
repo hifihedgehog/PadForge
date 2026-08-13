@@ -1363,6 +1363,8 @@ namespace PadForge
                         nameof(PadViewModel.GyroAcceleration) or nameof(PadViewModel.GyroOutputCurve) or
                         nameof(PadViewModel.GyroSensitivityUnits) or nameof(PadViewModel.GyroEasyAimStickThreshold) or
                         nameof(PadViewModel.GyroSpace) or
+                        // Gyro Tilt envelope card (#292), per-(device, slot).
+                        nameof(PadViewModel.GyroTiltRangeDeg) or nameof(PadViewModel.GyroTiltInnerDz) or
                         nameof(PadViewModel.GyroPlayerSpaceYawRelaxFactor) or
                         nameof(PadViewModel.GyroWorldSpaceSideReductionThreshold) or
                         nameof(PadViewModel.GyroTighteningThresholdDegPerSec) or

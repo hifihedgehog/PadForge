@@ -993,6 +993,7 @@ namespace PadForge.Services
                     // Motion Lean tuning rides every layer's rows (the descriptor is a
                     // normal input, not a Base-only steering mode).
                     ApplyMotionLeanParamsToRow(row, padVm, slot);
+                    ApplyGyroTiltParamsToRow(row, padVm, slot);
 
                     // Flick stick tuning (#225) rides every layer's rows the same
                     // way: the descriptor is a normal input and #225's headline is
@@ -1209,6 +1210,42 @@ namespace PadForge.Services
                 src.ParamMotionInnerDz = D("MotionSteerInner", 15);
                 src.ParamMotionOuterDz = D("MotionSteerOuter", 135);
                 src.ParamControllerOrientation = string.IsNullOrEmpty(orient) ? "Forward" : orient;
+            }
+        }
+
+        // Pushes the Gyro Tilt card's per-device envelope (#292) onto every
+        // "Gyro Tilt X/Y" source in a row. Same contract as
+        // ApplyMotionLeanParamsToRow: never changes Kind, Descriptor, or
+        // target; the SELECTED device reads the live UI (newer than its
+        // PadSetting), every other device reads its own stored PadSetting.
+        private static void ApplyGyroTiltParamsToRow(MappingRow row, PadViewModel padVm, int slot)
+        {
+            if (row?.Sources == null || padVm == null) return;
+            foreach (var src in row.Sources)
+            {
+                if (src == null
+                    || !Engine.Common.Mapping.SourceCoercion.IsGyroTiltDescriptor(src.Descriptor))
+                    continue;
+
+                Guid sel = padVm.SelectedMappedDevice?.InstanceGuid ?? Guid.Empty;
+                bool useUi = string.IsNullOrEmpty(src.DeviceGuid)
+                    || (sel != Guid.Empty && Guid.TryParse(src.DeviceGuid, out var dg) && dg == sel);
+                if (useUi)
+                {
+                    src.ParamTiltRangeDeg = padVm.GyroTiltRangeDeg;
+                    src.ParamTiltInnerDz = padVm.GyroTiltInnerDz;
+                    continue;
+                }
+
+                PadSetting ps = Guid.TryParse(src.DeviceGuid, out var g)
+                    ? SettingsManager.FindSettingByInstanceGuidAndSlot(g, slot)?.GetPadSetting()
+                    : null;
+                if (ps == null) continue; // keep the source's existing params
+                double D(string key, double dflt)
+                    => double.TryParse(ps.GetRawMapping(key), System.Globalization.NumberStyles.Float,
+                        System.Globalization.CultureInfo.InvariantCulture, out double v) ? v : dflt;
+                src.ParamTiltRangeDeg = D("GyroTiltRange", 25);
+                src.ParamTiltInnerDz = D("GyroTiltInner", 0);
             }
         }
 
@@ -2996,6 +3033,8 @@ namespace PadForge.Services
                 padVm.MotionSteerInnerDz = TryParseDouble(ps.GetRawMapping("MotionSteerInner"), 15);
                 padVm.MotionSteerOuterDz = TryParseDouble(ps.GetRawMapping("MotionSteerOuter"), 135);
                 padVm.SetMotionSteerOrient(ps.GetRawMapping("MotionSteerOrient"));
+                padVm.GyroTiltRangeDeg = TryParseDouble(ps.GetRawMapping("GyroTiltRange"), 25);
+                padVm.GyroTiltInnerDz = TryParseDouble(ps.GetRawMapping("GyroTiltInner"), 0);
 
                 // Load Flick Stick card tuning (#225), same per-(device, slot)
                 // extended-mapping bag; seeds from a Workshop import's flick
@@ -4566,6 +4605,8 @@ namespace PadForge.Services
                     ps.SetRawMapping("MotionSteerInner", padVm.MotionSteerInnerDz.ToString(ic));
                     ps.SetRawMapping("MotionSteerOuter", padVm.MotionSteerOuterDz.ToString(ic));
                     ps.SetRawMapping("MotionSteerOrient", padVm.MotionSteerOrient);
+                    ps.SetRawMapping("GyroTiltRange", padVm.GyroTiltRangeDeg.ToString(ic));
+                    ps.SetRawMapping("GyroTiltInner", padVm.GyroTiltInnerDz.ToString(ic));
 
                     // Write Flick Stick card tuning (#225), same bag.
                     SaveFlickStickCard(padVm, ps);

@@ -1341,6 +1341,17 @@
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>感度</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>ソースごとのジャイロ感度倍率。1.0 = エンジンの既定 (500°/s → フルディフレクション)。1.0 を超えると敏感になり、1.0 未満では鈍くなります。</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>ソースごとの傾き感度倍率。1.0 = 90°の傾きでフルストローク。1.0 を超える値はより少ない傾きでフルストロークに達します。</value></data>
+  <data name="Mapping_GyroTiltX" xml:space="preserve"><value>ジャイロ傾斜 X</value></data>
+  <data name="Mapping_GyroTiltY" xml:space="preserve"><value>ジャイロ傾斜 Y</value></data>
+  <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>ジャイロ傾斜</value></data>
+  <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>ジャイロ傾斜 X / Y 入力のエンベロープ：傾けたままにするとスティックはその偾を保持します（Steam のジョイスティック偾斜モード相当）。ここで設定した範囲でフルストロークになり、ジャイロ再センタリングで静止姿勢をリセットします。ヨー（平らな回転）は重力には見えないため、この入力は動きません。</value></data>
+  <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>フルストローク角度</value></data>
+  <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>静止姿勢から何度の傾きでフルストロークになるか。小さいほど敏感。25° は Steam 設定で最も一般的な値です。</value></data>
+  <data name="Pad_GyroTilt_Deadzone" xml:space="preserve"><value>傾斜デッドゾーン</value></data>
+  <data name="Pad_GyroTilt_Deadzone_Tooltip" xml:space="preserve"><value>静止姿勢周りで無視する傾きの角度。スケーリング前に減算されるため、しきい値での段差はありません。</value></data>
+  <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>25° にリセット</value></data>
+  <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>0° にリセット</value></data>
+  <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>傾斜エンベロープを既定値に戻す</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>マウス速度 X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>マウス速度 Y</value></data>
   <data name="Mapping_MouseScroll" xml:space="preserve"><value>マウススクロール</value></data>

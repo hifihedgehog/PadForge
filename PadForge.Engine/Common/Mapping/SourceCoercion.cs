@@ -1167,7 +1167,7 @@ namespace PadForge.Engine.Common.Mapping
             // different sensor).
             if (s.StartsWith("Motion ", StringComparison.Ordinal))
                 return SourceType.Motion;
-            if (IsGyroLeanDescriptor(s))
+            if (IsGravityTiltFamilyDescriptor(s))
                 return SourceType.GyroLean;
             // Aux rate family (#252) before the generic arm, same reason as
             // the lean pair: shared prefix, different sensor. It stays
@@ -1708,7 +1708,7 @@ namespace PadForge.Engine.Common.Mapping
         /// flip must exclude it by AXIS and not by exact spelling.</summary>
         public static bool IsGyroPitchAxisDescriptor(string descriptor)
             => IsGyroDescriptor(descriptor)
-            && !IsGyroLeanDescriptor(descriptor)
+            && !IsGravityTiltFamilyDescriptor(descriptor)
             && ParseGyroAxisIndex(descriptor) == 0
             && !IsHorizontalBlendDescriptor(descriptor);
 
@@ -2350,6 +2350,45 @@ namespace PadForge.Engine.Common.Mapping
                 || string.Equals(s, GyroLeanYDescriptor, StringComparison.OrdinalIgnoreCase);
         }
 
+        // ─── "Gyro Tilt X/Y" degree-ranged tilt pair (#292) ────────────────
+        //
+        // The same gravity read as the lean pair, with a configurable
+        // envelope: full deflection at ParamTiltRangeDeg degrees of tilt
+        // (default 25, the modal deflection_to_joystick_max across 2,344
+        // Steam Workshop configs, bracketed by HandheldCompanion's 30)
+        // instead of lean's fixed 90, and a subtract-style inner deadzone
+        // (DS4Windows Mapping.cs) so there is no step at the threshold.
+        // Steam's gyro_to_joystick_deflection with use_gravity, in
+        // PadForge terms. Shares the lean pair's neutral dict, so Gyro
+        // Recenter and profile-switch hygiene cover it with no new reset
+        // site, and it cannot drift: gravity is self-correcting. Yaw is
+        // invisible to gravity, which is why this ships as pitch/roll tilt
+        // and an integrated-attitude yaw mode stays a separate ticket.
+        public const string GyroTiltXDescriptor = "Gyro Tilt X";
+        public const string GyroTiltYDescriptor = "Gyro Tilt Y";
+
+        /// <summary>Engine default for <c>ParamTiltRangeDeg</c> when the
+        /// stored value is unset/out of range (see the #292 note above).</summary>
+        public const double GyroTiltDefaultRangeDeg = 25.0;
+
+        /// <summary>True for either degree-ranged tilt descriptor
+        /// (#292). Same precedence contract as the lean pair.</summary>
+        public static bool IsGyroTiltDescriptor(string descriptor)
+        {
+            if (string.IsNullOrEmpty(descriptor)) return false;
+            string s = descriptor.Trim();
+            return string.Equals(s, GyroTiltXDescriptor, StringComparison.OrdinalIgnoreCase)
+                || string.Equals(s, GyroTiltYDescriptor, StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>True for any gravity-tilt POSITION descriptor: the
+        /// lean pair or the tilt pair (#292). This is the predicate every
+        /// shared "sort before the 'Gyro ' rate arm" site uses; the two
+        /// narrow predicates stay for callers that need the family split
+        /// (sensitivity gating, the Workshop translator).</summary>
+        public static bool IsGravityTiltFamilyDescriptor(string descriptor)
+            => IsGyroLeanDescriptor(descriptor) || IsGyroTiltDescriptor(descriptor);
+
         /// <summary>Per-device captured resting grip for the lean pair
         /// (unit gravity-down vector). Shared by both axes so X and Y
         /// realign against the same neutral. Cleared by
@@ -2362,14 +2401,20 @@ namespace PadForge.Engine.Common.Mapping
         /// device re-open hygiene, the TickMotionLean Clear() twin).</summary>
         public static void ResetGyroLeanNeutral() => _gyroLeanNeutral.Clear();
 
-        /// <summary>The lean pair read: bipolar [-1..+1], 90 degrees of
-        /// tilt from the resting grip = full scale. Returns 0 until real
-        /// gravity arrives (provider sentinel magnitude is ~1, real
-        /// gravity ~9.8 m/s²). Per-source Sensitivity scales the angle
-        /// like the other derived families.</summary>
+        /// <summary>The gravity-tilt family read: bipolar [-1..+1]. The
+        /// lean pair saturates at 90 degrees of tilt from the resting grip
+        /// and scales by the per-source generic Sensitivity, like the other
+        /// derived families. The tilt pair (#292) instead runs the
+        /// configurable envelope: full scale at ParamTiltRangeDeg with a
+        /// subtract-style ParamTiltInnerDz, no sensitivity multiplier (the
+        /// range IS the gain, in degrees a user can reason about). Returns
+        /// 0 until real gravity arrives (provider sentinel magnitude is
+        /// ~1, real gravity ~9.8 m/s²).</summary>
         internal static float ReadGyroLean(MappingSource src, string canonical, string deviceGuid)
         {
-            bool isX = string.Equals(canonical.Trim(), GyroLeanXDescriptor, StringComparison.OrdinalIgnoreCase);
+            string c = canonical.Trim();
+            bool isX = string.Equals(c, GyroLeanXDescriptor, StringComparison.OrdinalIgnoreCase)
+                || string.Equals(c, GyroTiltXDescriptor, StringComparison.OrdinalIgnoreCase);
             var grav = GravityProvider?.Invoke(deviceGuid ?? "") ?? (0f, 0f, -1f);
             // Reaction force → gravity-down, the TickMotionLean convention.
             double gx = -grav.gx, gy = -grav.gy, gz = -grav.gz;
@@ -2391,6 +2436,17 @@ namespace PadForge.Engine.Common.Mapping
 
             double comp = isX ? gx : gz;
             double leanDeg = Math.Asin(Math.Clamp(comp / gLen, -1.0, 1.0)) * 180.0 / Math.PI;
+
+            if (IsGyroTiltDescriptor(c))
+            {
+                double range = src.ParamTiltRangeDeg;
+                if (range < 1.0 || range > 180.0) range = GyroTiltDefaultRangeDeg;
+                double dz = Math.Clamp(src.ParamTiltInnerDz, 0.0, range - 0.5);
+                double mag = (Math.Abs(leanDeg) - dz) / (range - dz);
+                mag = Math.Clamp(mag, 0.0, 1.0);
+                return (float)(leanDeg < 0 ? -mag : mag);
+            }
+
             float v = (float)(leanDeg / 90.0);
             float sens = PerSourceSensitivity(src);
             if (sens != 1f) v *= sens;
@@ -3117,7 +3173,7 @@ namespace PadForge.Engine.Common.Mapping
             // The gravity-lean pair (v26) mirrors Mouse Motion: HalfAxis
             // consumes Invert as the direction selector, and the non-half
             // any-direction test makes Invert irrelevant.
-            if (IsGyroLeanDescriptor(desc)) return raw;
+            if (IsGravityTiltFamilyDescriptor(desc)) return raw;
             // The touchpad ring (v26) consumes Invert as its inner/outer
             // selector, the stick ring's contract on the touch surface.
             if (TryParseTouchpadRing(desc, out _, out _, out _)) return raw;
@@ -3598,7 +3654,7 @@ namespace PadForge.Engine.Common.Mapping
             if (state == null || src == null) return (0f, 0f);
             var s = src.Descriptor;
             if (string.IsNullOrEmpty(s) || !s.StartsWith("Gyro ", StringComparison.Ordinal)) return (0f, 0f);
-            if (IsGyroLeanDescriptor(s)) return (0f, 0f);   // a POSITION read, not a rate
+            if (IsGravityTiltFamilyDescriptor(s)) return (0f, 0f);   // POSITION reads, not rates
 
             // Read WITHOUT the mouse-lane suppression, which exists to keep
             // the deflection combine from counting the same source twice.
@@ -3712,7 +3768,7 @@ namespace PadForge.Engine.Common.Mapping
             return s.StartsWith("Axis ", StringComparison.OrdinalIgnoreCase)
                 || s.StartsWith("Mouse Motion ", StringComparison.Ordinal)
                 || IsStickRingDescriptor(s)
-                || IsGyroLeanDescriptor(s);
+                || IsGravityTiltFamilyDescriptor(s);
         }
 
         /// <summary>Evaluates a source for a POV-direction target
@@ -3880,7 +3936,7 @@ namespace PadForge.Engine.Common.Mapping
             // the per-source DeadZone, HalfAxis + Invert as the direction
             // selector, Bidirectional restoring either-side), which is what
             // lets the stick-dpad wedge table lower onto it 1:1.
-            if (IsGyroLeanDescriptor(s))
+            if (IsGravityTiltFamilyDescriptor(s))
             {
                 float lv = ReadGyroLean(src, s, deviceGuid);
                 int ldz = EffectiveThresholdPercent(src, globalThresholdPercent);
@@ -4190,7 +4246,7 @@ namespace PadForge.Engine.Common.Mapping
             // picks the half, Bidirectional folds to magnitude), and the
             // full-axis read carries the per-source smoothing +
             // curve/range channel like the other analog lanes.
-            if (IsGyroLeanDescriptor(s))
+            if (IsGravityTiltFamilyDescriptor(s))
             {
                 float lv = ReadGyroLean(src, s, deviceGuid);
                 if (src.HalfAxis)
@@ -4449,7 +4505,7 @@ namespace PadForge.Engine.Common.Mapping
             // Gravity-lean pair (v26) as a trigger pull: HalfAxis selects
             // one tilt direction (Invert picks which), direction-blind
             // magnitude otherwise, the Mouse Motion unipolar shape.
-            if (IsGyroLeanDescriptor(s))
+            if (IsGravityTiltFamilyDescriptor(s))
             {
                 float lv = ReadGyroLean(src, s, deviceGuid);
                 if (src.HalfAxis && !src.Bidirectional)

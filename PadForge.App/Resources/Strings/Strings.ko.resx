@@ -1341,6 +1341,17 @@
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>감도</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>소스별 자이로 감도 배율. 1.0 = 엔진 기본값 (500°/s → 최대 편향). 1.0보다 크면 더 민감하고, 1.0보다 작으면 덜 민감합니다.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>소스별 기울기 감도 배율. 1.0 = 90° 기울기에서 최대 편향. 1.0보다 큰 값은 더 적은 기울기로 최대 편향에 도달합니다.</value></data>
+  <data name="Mapping_GyroTiltX" xml:space="preserve"><value>자이로 경사 X</value></data>
+  <data name="Mapping_GyroTiltY" xml:space="preserve"><value>자이로 경사 Y</value></data>
+  <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>자이로 경사</value></data>
+  <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>자이로 경사 X / Y 입력의 엔벨로프: 기울인 상태를 유지하면 스틱도 편향을 유지합니다(Steam의 조이스틱 편향 모드와 같음). 여기서 설정한 범위에서 최대 편향이 되며, 자이로 재정렬이 휴지 자세를 초기화합니다. 요(평평한 회전)는 중력에 보이지 않아 이 입력을 움직이지 않습니다.</value></data>
+  <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>최대 편향 각도</value></data>
+  <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>휴지 자세에서 몇 도의 기울기로 최대 편향이 되는지입니다. 작을수록 민감합니다. 25°는 Steam 설정에서 가장 흔한 값입니다.</value></data>
+  <data name="Pad_GyroTilt_Deadzone" xml:space="preserve"><value>경사 데드존</value></data>
+  <data name="Pad_GyroTilt_Deadzone_Tooltip" xml:space="preserve"><value>휴지 자세 주변에서 무시할 기울기 각도입니다. 스케일링 전에 빼서 경계에서 값이 튀지 않습니다.</value></data>
+  <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>25°로 재설정</value></data>
+  <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>0°로 재설정</value></data>
+  <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>경사 엔벨로프를 기본값으로 재설정</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>마우스 속도 X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>마우스 속도 Y</value></data>
   <data name="Mapping_MouseScroll" xml:space="preserve"><value>마우스 스크롤</value></data>

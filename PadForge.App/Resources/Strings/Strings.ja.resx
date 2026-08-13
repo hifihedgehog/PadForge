@@ -1353,6 +1353,9 @@
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>傾斜デッドゾーンをリセット</value></data>
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>ジャイロ傾斜の設定をすべてリセット</value></data>
   <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>複数のソースが同時に動作するときの合成方法。行を選択すると下の詳細パネルで変更できます。</value></data>
+  <data name="Pad_StickMomentum" xml:space="preserve"><value>モーメンタム</value></data>
+  <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>トラックボールモード：スティックをはじいて離すと、カーソルは滞空しながら減速して止まります。スティックを動かすと捕まえます。</value></data>
+  <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>はじいた後にカーソルがどこまで滑るか。最大値ではスティックを動かすまで進み続けます。</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>マウス速度 X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>マウス速度 Y</value></data>
   <data name="Mapping_MouseScroll" xml:space="preserve"><value>マウススクロール</value></data>

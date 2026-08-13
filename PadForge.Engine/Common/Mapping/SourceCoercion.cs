@@ -3286,13 +3286,17 @@ namespace PadForge.Engine.Common.Mapping
         private static readonly ConcurrentDictionary<
             (int Slot, string Device, int Pad, int Finger), TouchBall> _touchVelocity = new();
 
-        /// <summary>Drops every touch-momentum ball (#291 defect fix). The
-        /// table had no reset site at all: no clear on profile switch, no
-        /// per-slot eviction, unlike every comparable runtime table (gyro
-        /// aim rings, source-kind runtime). Wired into
+        /// <summary>Drops every momentum ball, touch and stick (#291). The
+        /// touch table had no reset site at all: no clear on profile
+        /// switch, no per-slot eviction, unlike every comparable runtime
+        /// table (gyro aim rings, source-kind runtime). Wired into
         /// ClearSourceKindRuntime, the same profile-switch / engine-stop
         /// hygiene the gravity-lean neutrals ride.</summary>
-        public static void ResetTouchMomentum() => _touchVelocity.Clear();
+        public static void ResetTouchMomentum()
+        {
+            _touchVelocity.Clear();
+            _stickCoast.Clear();
+        }
 
         /// <summary>Drops one slot's touch-momentum balls (#291): the
         /// structural-mapping-change twin, wired beside
@@ -3301,6 +3305,190 @@ namespace PadForge.Engine.Common.Mapping
         {
             foreach (var k in _touchVelocity.Keys)
                 if (k.Slot == slotIndex) _touchVelocity.TryRemove(k, out _);
+            foreach (var k in _stickCoast.Keys)
+                if (k.Slot == slotIndex) _stickCoast.TryRemove(k, out _);
+        }
+
+        /// <summary>The shared coast integrator (#291), extracted verbatim
+        /// from the touch ball so the stick trackball decays with the same
+        /// physics: constant deceleration applied along the velocity
+        /// vector, split between the axes in proportion to their share of
+        /// the speed, and capped at the remaining speed so friction stops
+        /// the ball rather than reversing it. Constant deceleration is what
+        /// both physical-ball references model (sc-controller, DS4Windows /
+        /// DS4MapperTest), and the min() cap is the single most important
+        /// line: it makes the zero crossing exact instead of asymptotic, so
+        /// a jitter spike stops the ball rather than reversing it.</summary>
+        internal static void DecayVelocity(ref float velX, ref float velY, float decel, float dtSeconds)
+        {
+            if (decel <= 0f) return;
+            float hyp = MathF.Sqrt(velX * velX + velY * velY);
+            float ax = hyp > 0f ? decel * (Math.Abs(velX) / hyp) : decel;
+            float ay = hyp > 0f ? decel * (Math.Abs(velY) / hyp) : decel;
+            float dvx = Math.Min(Math.Abs(velX), ax * dtSeconds);
+            float dvy = Math.Min(Math.Abs(velY), ay * dtSeconds);
+            velX -= MathF.CopySign(dvx, velX);
+            velY -= MathF.CopySign(dvy, velY);
+        }
+
+        // ─── Stick trackball (#291): a coast lane for the KBM mouse stick ──
+        //
+        // No reference project implements a stick trackball (sc-controller,
+        // DS4Windows and DS4MapperTest all coast the TOUCHPAD only), so this
+        // lane is a design rather than a port. What it inherits from the
+        // proven pieces: the coast physics are the touch ball's exactly
+        // (DecayVelocity above), the release velocity comes from recent
+        // HISTORY rather than the final sample (sc-controller's mean-ring
+        // insight, adapted: a stick's return to centre passes through small
+        // deflections by construction, so a mean would be diluted by the
+        // snap-back; the launch takes the PEAK deflection of the last
+        // 100 ms instead), and a minimum-launch gate keeps a slow guided
+        // return from flinging (DS4MapperTest's min-launch idea moved into
+        // deflection space: a deliberate return leaves no recent peak above
+        // the gate).
+        //
+        // Units: velocity is mouse counts per second. The launch is
+        // peak-deflection x StickCoastFullScaleCountsPerSec, which mirrors
+        // the KBM virtual controller's full-scale cursor rate, so the coast
+        // begins at exactly the speed the drag ended at, and the deflection
+        // fed in is post-deadzone / post-curve / post-speed-knob, so every
+        // upstream shaping carries into the fling.
+
+        private sealed class StickBall
+        {
+            public const int RingLen = 128;   // ~128 ms of 1 kHz polls
+            public readonly float[] Fx = new float[RingLen];
+            public readonly float[] Fy = new float[RingLen];
+            public readonly long[] Ticks = new long[RingLen];
+            public int RingNext, RingCount;
+            public float VelX, VelY;          // counts/s, KBM frame (+Y = up)
+            public bool WasEngaged;
+            public long LastAdvanceTicks;
+
+            public void Push(float fx, float fy, long ticks)
+            {
+                Fx[RingNext] = fx; Fy[RingNext] = fy; Ticks[RingNext] = ticks;
+                RingNext = (RingNext + 1) % RingLen;
+                if (RingCount < RingLen) RingCount++;
+            }
+
+            /// <summary>The strongest deflection sample within the recent
+            /// window, newest first. Vector magnitude decides; the sample's
+            /// own components carry the direction, so a diagonal fling
+            /// launches on the line the stick drew.</summary>
+            public (float X, float Y) PeakWithin(long nowTicks, long ticksPerSecond, float windowSeconds)
+            {
+                float bx = 0f, by = 0f, best = 0f;
+                for (int i = 0; i < RingCount; i++)
+                {
+                    int idx = (RingNext - 1 - i + RingLen * 2) % RingLen;
+                    if (ticksPerSecond > 0
+                        && (float)(nowTicks - Ticks[idx]) / ticksPerSecond > windowSeconds)
+                        break;
+                    float m = Fx[idx] * Fx[idx] + Fy[idx] * Fy[idx];
+                    if (m > best) { best = m; bx = Fx[idx]; by = Fy[idx]; }
+                }
+                return (bx, by);
+            }
+        }
+
+        private static readonly ConcurrentDictionary<(int Slot, string Device), StickBall> _stickCoast = new();
+
+        /// <summary>Mirrors the KBM virtual controller's
+        /// MouseFullScalePxPerSec (DS4Windows-scaled, 1200 px/s at full
+        /// deflection), so a fling launches at the exact speed the drag was
+        /// moving. If that constant ever changes, this one changes with it.</summary>
+        private const float StickCoastFullScaleCountsPerSec = 1200f;
+
+        /// <summary>Deceleration in counts per second squared at the lowest
+        /// glide (0.80). 4800 stops a full-speed 1200-counts/s fling in a
+        /// quarter second, the same stop-time ballpark the touch ball
+        /// produces on a firm fling, and the glide knob scales it to zero
+        /// at 1.00 exactly like the touch band.</summary>
+        private const float StickCoastFullDecel = 4800f;
+
+        /// <summary>How far back the launch looks for the fling's peak
+        /// deflection. A release snap takes 30 to 60 ms of polls to cross
+        /// centre; 100 ms comfortably contains the pre-release push without
+        /// reaching back into unrelated earlier motion.</summary>
+        private const float StickFlingWindowSeconds = 0.10f;
+
+        /// <summary>Peak deflection below which a release does not coast.
+        /// A slow guided return to centre arrives with only small
+        /// deflections left inside the window, so it lands under this gate
+        /// and the cursor stops where the user parked it; a real flick
+        /// carries its full push through the window and clears it.</summary>
+        private const float StickMinFlingDeflection = 0.25f;
+
+        /// <summary><para>One poll of the stick trackball for a (slot,
+        /// device) pass. Feed the post-deadzone deflection every poll;
+        /// returns the coast's mouse counts for this poll, zero while the
+        /// stick is engaged (the deflection lane owns the cursor then, and
+        /// touching the stick catches a rolling ball, every reference's
+        /// unconditional stop-on-contact).</para>
+        /// <para>The return value is a COUNTS delta, already time-scaled,
+        /// for its own exact-counts lane. It must never ride MouseDeltaX:
+        /// that field is a deflection the controller re-spends through the
+        /// deadzone, the curve stage and the speed knob, all of which the
+        /// launch already carries.</para></summary>
+        public static (float X, float Y) TickStickCoast(
+            int slotIndex, string deviceGuid, float fx, float fy,
+            float dtSeconds, long nowTicks, long ticksPerSecond,
+            bool enabled, float glide)
+        {
+            var key = (slotIndex, deviceGuid ?? "");
+            if (!enabled)
+            {
+                _stickCoast.TryRemove(key, out _);
+                return (0f, 0f);
+            }
+            if (dtSeconds <= 0f) return (0f, 0f);
+            var ball = _stickCoast.GetOrAdd(key, _ => new StickBall());
+            lock (ball)
+            {
+                // Stale ball: the pass stopped running (layer suppression,
+                // engine pause, device offline). Stop, never resume, the
+                // touch ball's #291 contract.
+                if (ticksPerSecond > 0 && ball.LastAdvanceTicks != 0
+                    && (float)(nowTicks - ball.LastAdvanceTicks) / ticksPerSecond > TouchStaleAdvanceSeconds)
+                {
+                    ball.RingCount = 0; ball.RingNext = 0;
+                    ball.VelX = ball.VelY = 0f;
+                    ball.WasEngaged = false;
+                }
+                ball.LastAdvanceTicks = nowTicks;
+
+                bool engaged = fx != 0f || fy != 0f;
+                if (engaged)
+                {
+                    ball.VelX = ball.VelY = 0f;
+                    ball.Push(fx, fy, nowTicks);
+                    ball.WasEngaged = true;
+                    return (0f, 0f);
+                }
+
+                if (ball.WasEngaged)
+                {
+                    // Release edge: launch on the recent peak, or not at all.
+                    ball.WasEngaged = false;
+                    var (pfx, pfy) = ball.PeakWithin(nowTicks, ticksPerSecond, StickFlingWindowSeconds);
+                    ball.RingCount = 0; ball.RingNext = 0;
+                    float mag = MathF.Sqrt(pfx * pfx + pfy * pfy);
+                    if (mag >= StickMinFlingDeflection)
+                    {
+                        ball.VelX = pfx * StickCoastFullScaleCountsPerSec;
+                        ball.VelY = pfy * StickCoastFullScaleCountsPerSec;
+                    }
+                }
+
+                if (ball.VelX == 0f && ball.VelY == 0f) return (0f, 0f);
+
+                float g = Math.Clamp(glide, 0.80f, 1.00f);
+                DecayVelocity(ref ball.VelX, ref ball.VelY,
+                    StickCoastFullDecel * ((1.00f - g) / 0.20f), dtSeconds);
+                if (ball.VelX == 0f && ball.VelY == 0f) return (0f, 0f);
+                return (ball.VelX * dtSeconds, ball.VelY * dtSeconds);
+            }
         }
 
         /// <summary>Set while a mouse target's deflection lane is combined, so
@@ -3549,18 +3737,7 @@ namespace PadForge.Engine.Common.Mapping
             // frictionless; 0.80 is the full rate.
             float glide = Math.Clamp(tp.MouseMomentumDecay, 0.80f, 1.00f);
             float decel = TouchFrictionAtMinGlide * ((1.00f - glide) / 0.20f);
-            if (decel > 0f)
-            {
-                float hyp = MathF.Sqrt(ball.VelX * ball.VelX + ball.VelY * ball.VelY);
-                float ax = hyp > 0f ? decel * (Math.Abs(ball.VelX) / hyp) : decel;
-                float ay = hyp > 0f ? decel * (Math.Abs(ball.VelY) / hyp) : decel;
-                // Capped at the remaining speed, so friction stops the ball
-                // rather than reversing it.
-                float dvx = Math.Min(Math.Abs(ball.VelX), ax * dtSeconds);
-                float dvy = Math.Min(Math.Abs(ball.VelY), ay * dtSeconds);
-                ball.VelX -= MathF.CopySign(dvx, ball.VelX);
-                ball.VelY -= MathF.CopySign(dvy, ball.VelY);
-            }
+            DecayVelocity(ref ball.VelX, ref ball.VelY, decel, dtSeconds);
 
             if (ball.VelX == 0f && ball.VelY == 0f) return;
             EmitBallCounts(ball, tp, dtSeconds, src);

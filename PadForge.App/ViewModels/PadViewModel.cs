@@ -4097,6 +4097,7 @@ namespace PadForge.ViewModels
             LeftAntiDeadZoneX = 0; LeftAntiDeadZoneY = 0;
             LeftLinear = 0;
             LeftStickSensitivity = 1.0;
+            KbmMouseMomentum = false; KbmMouseMomentumGlide = 0.90;
             LeftCenterOffsetX = 0; LeftCenterOffsetY = 0;
             LeftMaxRangeX = 100; LeftMaxRangeY = 100;
             // The Neg twins and the calibration boundary map are part of the
@@ -4140,6 +4141,12 @@ namespace PadForge.ViewModels
         public double LeftLinear { get => _leftLinear; set => SetProperty(ref _leftLinear, Math.Clamp(value, 0, 100)); }
         private double _leftStickSensitivity = 1.0;
         public double LeftStickSensitivity { get => _leftStickSensitivity; set => SetProperty(ref _leftStickSensitivity, Math.Clamp(value, 0.1, 5.0)); }
+
+        // ── Stick trackball (#291), KBM mouse stick only ──
+        private bool _kbmMouseMomentum;
+        public bool KbmMouseMomentum { get => _kbmMouseMomentum; set => SetProperty(ref _kbmMouseMomentum, value); }
+        private double _kbmMouseMomentumGlide = 0.90;
+        public double KbmMouseMomentumGlide { get => _kbmMouseMomentumGlide; set => SetProperty(ref _kbmMouseMomentumGlide, Math.Clamp(value, 0.80, 1.00)); }
 
         // ── Right Stick ──
         private int _rightDeadZoneShape = (int)DeadZoneShape.ScaledRadial;
@@ -4294,7 +4301,7 @@ namespace PadForge.ViewModels
             {
                 // KBM: stick 0 = Mouse X/Y, stick 1 = Scroll Wheel (Y-axis only)
                 var mouse = new StickConfigItem(0, Strings.Instance.Pad_MouseMovement, -1, -1)
-                    { IsPointerStick = true };
+                    { IsPointerStick = true, IsMouseStick = true };
                 SyncStickItemFromVm(mouse);
                 mouse.PropertyChanged += OnStickConfigPropertyChanged;
                 StickConfigs.Add(mouse);
@@ -4426,6 +4433,8 @@ namespace PadForge.ViewModels
                         item.AntiDeadZoneY = LeftAntiDeadZoneY;
                         item.Linear = LeftLinear;
                         item.Sensitivity = LeftStickSensitivity;
+                        item.MomentumEnabled = KbmMouseMomentum;
+                        item.MomentumGlide = KbmMouseMomentumGlide;
                         item.SensitivityCurveX = LeftSensitivityCurveX;
                         item.SensitivityCurveY = LeftSensitivityCurveY;
                         item.MaxRangeX = LeftMaxRangeX;
@@ -4565,6 +4574,9 @@ namespace PadForge.ViewModels
             nameof(StickConfigItem.SteeringModeIndex),
             nameof(StickConfigItem.WindRangeDeg), nameof(StickConfigItem.WindPower), nameof(StickConfigItem.WindUnwindRate),
             nameof(StickConfigItem.AngleInnerDz), nameof(StickConfigItem.AngleOuterDz),
+            // Stick trackball (#291): without these the Momentum edits
+            // mirror into the VM and never flag the document dirty.
+            nameof(StickConfigItem.MomentumEnabled), nameof(StickConfigItem.MomentumGlide),
         };
 
         private static readonly System.Collections.Generic.HashSet<string> TriggerConfigPropertyNames = new()
@@ -4595,6 +4607,8 @@ namespace PadForge.ViewModels
                         case nameof(StickConfigItem.AntiDeadZoneY): LeftAntiDeadZoneY = item.AntiDeadZoneY; break;
                         case nameof(StickConfigItem.Linear): LeftLinear = item.Linear; break;
                         case nameof(StickConfigItem.Sensitivity): LeftStickSensitivity = item.Sensitivity; break;
+                        case nameof(StickConfigItem.MomentumEnabled): KbmMouseMomentum = item.MomentumEnabled; break;
+                        case nameof(StickConfigItem.MomentumGlide): KbmMouseMomentumGlide = item.MomentumGlide; break;
                         case nameof(StickConfigItem.SensitivityCurveX): LeftSensitivityCurveX = item.SensitivityCurveX; break;
                         case nameof(StickConfigItem.SensitivityCurveY): LeftSensitivityCurveY = item.SensitivityCurveY; break;
                         case nameof(StickConfigItem.MaxRangeX): LeftMaxRangeX = item.MaxRangeX; break;

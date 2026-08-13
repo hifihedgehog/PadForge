@@ -117,13 +117,18 @@ namespace PadForge.Tests
             Counts(PadAt(0.540f), TicksAt(0.008f), src, slot);
             Counts(PadAt(0.560f), TicksAt(0.012f), src, slot);
 
-            // The settle: one tiny BACKWARD delta, then silence.
-            Counts(PadAt(0.559f), TicksAt(0.016f), src, slot);
+            // The settle: a run of tiny BACKWARD deltas as the fingertip
+            // relaxes. Enough of them to flush the drag samples out of the
+            // ten-sample ring, which is what a real settle does, leaving a
+            // jitter-scale backward mean.
+            for (int i = 1; i <= 12; i++)
+                Counts(PadAt(0.560f - i * 0.001f), TicksAt(0.012f + i * 0.004f), src, slot);
 
-            // Within ~6 ms (1.5 x 4 ms cadence) the stale spend is allowed;
-            // past it the cursor must be stopped, not creeping backward.
-            float late1 = Counts(PadAt(0.559f), TicksAt(0.026f), src, slot);
-            float late2 = Counts(PadAt(0.559f), TicksAt(0.030f), src, slot);
+            // Silence. The mean is now jitter-scale (and backward), so the
+            // speed-gated hold stops it after ~1.5 report gaps instead of
+            // spending it for the full 25 ms window.
+            float late1 = Counts(PadAt(0.548f), TicksAt(0.070f), src, slot);
+            float late2 = Counts(PadAt(0.548f), TicksAt(0.074f), src, slot);
             Assert.Equal(0f, late1);
             Assert.Equal(0f, late2);
         }
@@ -143,10 +148,12 @@ namespace PadForge.Tests
                 Counts(PadAt(0.50f), TicksAt(0.000f), src, slot);
                 Counts(PadAt(0.53f), TicksAt(0.004f), src, slot);
                 Counts(PadAt(0.56f), TicksAt(0.008f), src, slot);
-                // Quiet polls past the adaptive spend window but inside the
-                // history ceiling: the cursor stops moving...
-                Assert.Equal(0f, Counts(PadAt(0.56f), TicksAt(0.018f), src, slot));
-                // ...and the lift at 12 ms after the last report still
+                // A quiet poll inside the 25 ms window: real-speed motion
+                // keeps bridging, the shipped-for-months behaviour (the
+                // speed-gated hold only truncates jitter-scale spend).
+                Assert.True(Counts(PadAt(0.56f), TicksAt(0.018f), src, slot) > 0f,
+                    "the bridge stopped during real motion");
+                // And the lift at 12 ms after the last report still
                 // launches the fling.
                 float c1 = Counts(PadAt(0.56f, down: false), TicksAt(0.020f), src, slot);
                 Assert.True(c1 > 0f, "the lift gap swallowed the fling");

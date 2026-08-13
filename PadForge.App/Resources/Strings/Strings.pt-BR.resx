@@ -1356,6 +1356,18 @@
   <data name="Pad_StickMomentum" xml:space="preserve"><value>Impulso</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>Modo trackball: dê um peteleco no analógico e solte, e o cursor continua viajando até parar. Mover o analógico de novo o segura.</value></data>
   <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>Quão longe o cursor desliza após o impulso. No topo da faixa ele continua até você mover o analógico de novo.</value></data>
+  <data name="Pad_Touchpad_MomentumFlingGain" xml:space="preserve"><value>Reforço do peteleco</value></data>
+  <data name="Pad_Touchpad_MomentumFlingGain_Tooltip" xml:space="preserve"><value>Escala a velocidade de saída do peteleco sem mudar a velocidade de arrasto. 1.00 lança exatamente na velocidade do dedo.</value></data>
+  <data name="Pad_ResetTouchpadMomentumFlingGain" xml:space="preserve"><value>Redefinir reforço do peteleco</value></data>
+  <data name="Pad_Touchpad_MomentumMinLift" xml:space="preserve"><value>Limiar do peteleco</value></data>
+  <data name="Pad_Touchpad_MomentumMinLift_Tooltip" xml:space="preserve"><value>Quão rápido o dedo deve estar ao levantar para o cursor deslizar, em larguras do pad por segundo. Abaixo disso o cursor para na hora.</value></data>
+  <data name="Pad_ResetTouchpadMomentumMinLift" xml:space="preserve"><value>Redefinir limiar do peteleco</value></data>
+  <data name="Pad_Touchpad_MomentumMaxSpeed" xml:space="preserve"><value>Velocidade máxima do peteleco</value></data>
+  <data name="Pad_Touchpad_MomentumMaxSpeed_Tooltip" xml:space="preserve"><value>Limita a velocidade de saída do peteleco, em larguras do pad por segundo. 0 desliga o limite.</value></data>
+  <data name="Pad_ResetTouchpadMomentumMaxSpeed" xml:space="preserve"><value>Redefinir velocidade máxima</value></data>
+  <data name="Pad_Touchpad_MomentumStacking" xml:space="preserve"><value>Acumular petelecos</value></data>
+  <data name="Pad_Touchpad_MomentumStacking_Tooltip" xml:space="preserve"><value>Cada novo deslize soma ao impulso em andamento em vez de substituí-lo. Um toque ou soltar parado interrompe tudo. A velocidade é limitada pela velocidade máxima, ou por um teto interno se ela estiver desligada.</value></data>
+  <data name="Pad_ResetTouchpadMomentumStacking" xml:space="preserve"><value>Redefinir acumular petelecos</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Velocidade do Mouse X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Velocidade do Mouse Y</value></data>
   <data name="Mapping_MouseScroll" xml:space="preserve"><value>Rolagem do Mouse</value></data>

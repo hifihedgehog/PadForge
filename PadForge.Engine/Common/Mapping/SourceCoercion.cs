@@ -3247,6 +3247,11 @@ namespace PadForge.Engine.Common.Mapping
             public ulong FrameSeq;
             public float FrameCountsX, FrameCountsY;
 
+            /// <summary>Stacking mode's held speed (#291): a re-contact
+            /// with stacking on PAUSES the roll here instead of killing it,
+            /// and the next fling adds it back. Zero outside stacking.</summary>
+            public float CarryVelX, CarryVelY;
+
             /// <summary>Wall-clock stamp of the last advance (#291 defect
             /// fix). A ball that stops being advanced is a suppressed or
             /// orphaned one: a shift layer replaced the row, a macro
@@ -3552,6 +3557,14 @@ namespace PadForge.Engine.Common.Mapping
         /// scheduler hiccup cannot kill a live coast.</summary>
         private const float TouchStaleAdvanceSeconds = 0.1f;
 
+        /// <summary>Stacking mode's built-in launch ceiling in pad widths
+        /// per second, applied only when the user's Max Fling Speed is off
+        /// (#291). A quick flick measures around 25 pad widths per second
+        /// (a tenth of the pad crossed inside one 4 ms report), so the
+        /// ceiling sits above any single fling and exists purely so
+        /// stacked swipes cannot integrate without bound.</summary>
+        private const float TouchStackingSafetyCeiling = 60f;
+
         /// <summary><para>Touchpad motion as MOUSE COUNTS for one poll,
         /// bridged across the gap between device reports.</para>
         /// <para>The deflection lane recomputed its delta ONCE PER POLL from
@@ -3659,6 +3672,7 @@ namespace PadForge.Engine.Common.Mapping
             {
                 ball.ClearSamples();
                 ball.VelX = ball.VelY = 0f;
+                ball.CarryVelX = ball.CarryVelY = 0f;
                 if (down)
                 {
                     ball.LastRawX = pad.FingerX[fingerIdx];
@@ -3680,8 +3694,19 @@ namespace PadForge.Engine.Common.Mapping
                 {
                     // Down edge onto a coasting ball. Catching it stops it,
                     // and its stored position is from the last lift, so the
-                    // gap to where the finger landed is not motion.
+                    // gap to where the finger landed is not motion. With
+                    // stacking on (#291), the catch PAUSES the roll instead:
+                    // the held speed re-joins the next fling at release, and
+                    // a slow or still lift still zeroes everything, which is
+                    // what keeps tap-to-stop working in stacking mode too.
                     ball.ClearSamples();
+                    if (tp?.MouseMomentumStacking == true)
+                    {
+                        ball.CarryVelX += ball.VelX;
+                        ball.CarryVelY += ball.VelY;
+                    }
+                    else
+                        ball.CarryVelX = ball.CarryVelY = 0f;
                     ball.VelX = ball.VelY = 0f;
                     ball.LastRawX = rawX; ball.LastRawY = rawY;
                     ball.LastReportTicks = nowTicks;
@@ -3723,11 +3748,44 @@ namespace PadForge.Engine.Common.Mapping
                 ball.VelX = mean.X; ball.VelY = mean.Y;
                 ball.ClearSamples();
 
+                // The lift gate, exposed (#291): the field defaults to the
+                // old hardcoded sc-controller value, so an untouched
+                // profile flings exactly as before.
+                float gate = tp != null
+                    ? Math.Clamp(tp.MouseMomentumMinLift, 0f, 2f)
+                    : TouchMinLiftVelocity;
                 float lift = MathF.Sqrt(ball.VelX * ball.VelX + ball.VelY * ball.VelY);
-                if (tp?.MouseMomentum != true || lift < TouchMinLiftVelocity)
+                if (tp?.MouseMomentum != true || lift < gate)
                 {
+                    // A below-gate lift is a deliberate stop: it kills the
+                    // stacked carry too, in every mode.
                     ball.VelX = ball.VelY = 0f;
+                    ball.CarryVelX = ball.CarryVelY = 0f;
                     return;
+                }
+
+                // Fling gain scales the LAUNCH only (drag feel is the
+                // sensitivity sliders' job), then the stacked carry joins,
+                // then the ceiling caps the sum.
+                float gain = Math.Clamp(tp.MouseMomentumFlingGain, 0.1f, 5f);
+                ball.VelX = ball.VelX * gain + ball.CarryVelX;
+                ball.VelY = ball.VelY * gain + ball.CarryVelY;
+                ball.CarryVelX = ball.CarryVelY = 0f;
+
+                // Max fling speed (#291): the user's cap when set; stacking
+                // without a cap gets the built-in ceiling, because stacked
+                // swipes would otherwise integrate without bound.
+                float max = tp.MouseMomentumMaxSpeed > 0f
+                    ? Math.Min(tp.MouseMomentumMaxSpeed, 50f)
+                    : (tp.MouseMomentumStacking ? TouchStackingSafetyCeiling : 0f);
+                if (max > 0f)
+                {
+                    float speed = MathF.Sqrt(ball.VelX * ball.VelX + ball.VelY * ball.VelY);
+                    if (speed > max)
+                    {
+                        float k = max / speed;
+                        ball.VelX *= k; ball.VelY *= k;
+                    }
                 }
             }
 

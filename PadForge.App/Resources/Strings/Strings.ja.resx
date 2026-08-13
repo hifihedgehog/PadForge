@@ -1356,6 +1356,18 @@
   <data name="Pad_StickMomentum" xml:space="preserve"><value>モーメンタム</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>トラックボールモード：スティックをはじいて離すと、カーソルは滞空しながら減速して止まります。スティックを動かすと捕まえます。</value></data>
   <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>はじいた後にカーソルがどこまで滑るか。最大値ではスティックを動かすまで進み続けます。</value></data>
+  <data name="Pad_Touchpad_MomentumFlingGain" xml:space="preserve"><value>フリックブースト</value></data>
+  <data name="Pad_Touchpad_MomentumFlingGain_Tooltip" xml:space="preserve"><value>ドラッグ速度を変えずにフリックの初速だけをスケールします。1.00 で指の速度そのままに発射します。</value></data>
+  <data name="Pad_ResetTouchpadMomentumFlingGain" xml:space="preserve"><value>フリックブーストをリセット</value></data>
+  <data name="Pad_Touchpad_MomentumMinLift" xml:space="preserve"><value>フリックしきい値</value></data>
+  <data name="Pad_Touchpad_MomentumMinLift_Tooltip" xml:space="preserve"><value>指を離す瞬間にこの速さ（パッド幅／秒）以上で動いていればカーソルが滑走します。下回ると即停止します。</value></data>
+  <data name="Pad_ResetTouchpadMomentumMinLift" xml:space="preserve"><value>フリックしきい値をリセット</value></data>
+  <data name="Pad_Touchpad_MomentumMaxSpeed" xml:space="preserve"><value>最大フリック速度</value></data>
+  <data name="Pad_Touchpad_MomentumMaxSpeed_Tooltip" xml:space="preserve"><value>フリックの初速の上限（パッド幅／秒）。0 で上限なし。</value></data>
+  <data name="Pad_ResetTouchpadMomentumMaxSpeed" xml:space="preserve"><value>最大フリック速度をリセット</value></data>
+  <data name="Pad_Touchpad_MomentumStacking" xml:space="preserve"><value>フリックを重ねる</value></data>
+  <data name="Pad_Touchpad_MomentumStacking_Tooltip" xml:space="preserve"><value>新しいスワイプが現在の勢いに加算されます。タップや静止したままのリリースで全停止。速度は最大フリック速度、またはそれがオフの場合は内蔵の上限で制限されます。</value></data>
+  <data name="Pad_ResetTouchpadMomentumStacking" xml:space="preserve"><value>フリックを重ねるをリセット</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>マウス速度 X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>マウス速度 Y</value></data>
   <data name="Mapping_MouseScroll" xml:space="preserve"><value>マウススクロール</value></data>

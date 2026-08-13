@@ -1356,6 +1356,18 @@
   <data name="Pad_StickMomentum" xml:space="preserve"><value>모멘텀</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>트랙볼 모드: 스틱을 흙기고 놓으면 커서가 계속 이동하다가 서서히 멈춥니다. 스틱을 다시 움직이면 멈춥니다.</value></data>
   <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>틕긴 후 커서가 얼마나 미끄러지는지입니다. 최대치에서는 스틱을 다시 움직일 때까지 계속 이동합니다.</value></data>
+  <data name="Pad_Touchpad_MomentumFlingGain" xml:space="preserve"><value>틕기기 부스트</value></data>
+  <data name="Pad_Touchpad_MomentumFlingGain_Tooltip" xml:space="preserve"><value>드래그 속도는 그대로 둔 채 틕기기의 발사 속도만 조절합니다. 1.00은 손가락 속도 그대로 발사합니다.</value></data>
+  <data name="Pad_ResetTouchpadMomentumFlingGain" xml:space="preserve"><value>틕기기 부스트 재설정</value></data>
+  <data name="Pad_Touchpad_MomentumMinLift" xml:space="preserve"><value>틕기기 임계값</value></data>
+  <data name="Pad_Touchpad_MomentumMinLift_Tooltip" xml:space="preserve"><value>손가락을 뗄 때 이 속도(패드 폭/초) 이상이면 커서가 미끄러집니다. 미만이면 즉시 멈춥니다.</value></data>
+  <data name="Pad_ResetTouchpadMomentumMinLift" xml:space="preserve"><value>틕기기 임계값 재설정</value></data>
+  <data name="Pad_Touchpad_MomentumMaxSpeed" xml:space="preserve"><value>최대 틕기기 속도</value></data>
+  <data name="Pad_Touchpad_MomentumMaxSpeed_Tooltip" xml:space="preserve"><value>틕기기 발사 속도의 상한(패드 폭/초)입니다. 0은 상한 없음입니다.</value></data>
+  <data name="Pad_ResetTouchpadMomentumMaxSpeed" xml:space="preserve"><value>최대 틕기기 속도 재설정</value></data>
+  <data name="Pad_Touchpad_MomentumStacking" xml:space="preserve"><value>틕기기 누적</value></data>
+  <data name="Pad_Touchpad_MomentumStacking_Tooltip" xml:space="preserve"><value>새 스와이프가 굴러가는 모멘텀에 더해집니다. 탭하거나 멈춘 채 떼면 모두 멈춥니다. 속도는 최대 틕기기 속도 또는 내장 상한으로 제한됩니다.</value></data>
+  <data name="Pad_ResetTouchpadMomentumStacking" xml:space="preserve"><value>틕기기 누적 재설정</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>마우스 속도 X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>마우스 속도 Y</value></data>
   <data name="Mapping_MouseScroll" xml:space="preserve"><value>마우스 스크롤</value></data>

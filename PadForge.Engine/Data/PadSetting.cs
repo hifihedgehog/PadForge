@@ -1725,6 +1725,8 @@ namespace PadForge.Engine.Data
                     // devices differing only here collide and the second
                     // silently adopts the first's glide.
                     sb.Append(s.MouseMomentum).Append(',').Append(s.MouseMomentumDecay).Append(',');
+                    sb.Append(s.MouseMomentumMaxSpeed).Append(',').Append(s.MouseMomentumMinLift).Append(',');
+                    sb.Append(s.MouseMomentumFlingGain).Append(',').Append(s.MouseMomentumStacking).Append(',');
                     sb.Append(s.MouseJitterReduction).Append(',');
                     sb.Append(s.MouseAcceleration).Append(',');
                     sb.Append(s.PointerResponse).Append(',').Append(s.TrackpadThresholdMmPerSec).Append(',');

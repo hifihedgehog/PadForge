@@ -1376,6 +1376,18 @@
   <data name="Pad_StickMomentum" xml:space="preserve"><value>Momentum</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>Trackball-modus: geef de stick een zwiep en laat los, en de cursor blijft doorbewegen tot hij uitrolt. De stick opnieuw bewegen vangt hem op.</value></data>
   <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>Hoe ver de cursor doorglijdt na een zwiep. Aan de bovenkant van het bereik gaat hij door tot je de stick weer beweegt.</value></data>
+  <data name="Pad_Touchpad_MomentumFlingGain" xml:space="preserve"><value>Zwiepversterking</value></data>
+  <data name="Pad_Touchpad_MomentumFlingGain_Tooltip" xml:space="preserve"><value>Schaalt de lanceersnelheid van een zwiep zonder de sleepsnelheid te veranderen. 1,00 lanceert precies op vingersnelheid.</value></data>
+  <data name="Pad_ResetTouchpadMomentumFlingGain" xml:space="preserve"><value>Zwiepversterking herstellen</value></data>
+  <data name="Pad_Touchpad_MomentumMinLift" xml:space="preserve"><value>Zwiepdrempel</value></data>
+  <data name="Pad_Touchpad_MomentumMinLift_Tooltip" xml:space="preserve"><value>Hoe snel de vinger bij het loslaten moet bewegen om de cursor te laten glijden, in padbreedtes per seconde. Daaronder stopt de cursor meteen.</value></data>
+  <data name="Pad_ResetTouchpadMomentumMinLift" xml:space="preserve"><value>Zwiepdrempel herstellen</value></data>
+  <data name="Pad_Touchpad_MomentumMaxSpeed" xml:space="preserve"><value>Maximale zwiepsnelheid</value></data>
+  <data name="Pad_Touchpad_MomentumMaxSpeed_Tooltip" xml:space="preserve"><value>Begrenst de lanceersnelheid van een zwiep, in padbreedtes per seconde. 0 schakelt de limiet uit.</value></data>
+  <data name="Pad_ResetTouchpadMomentumMaxSpeed" xml:space="preserve"><value>Maximale zwiepsnelheid herstellen</value></data>
+  <data name="Pad_Touchpad_MomentumStacking" xml:space="preserve"><value>Zwiepen stapelen</value></data>
+  <data name="Pad_Touchpad_MomentumStacking_Tooltip" xml:space="preserve"><value>Elke nieuwe veeg telt op bij het rollende momentum in plaats van het te vervangen. Een tik of stil loslaten stopt alles. De snelheid wordt begrensd door de maximale zwiepsnelheid, of een ingebouwd plafond als die uit staat.</value></data>
+  <data name="Pad_ResetTouchpadMomentumStacking" xml:space="preserve"><value>Zwiepen stapelen herstellen</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Muis snelheid X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Muis snelheid Y</value></data>
   <data name="Mapping_MouseScroll" xml:space="preserve"><value>Muis scrollen</value></data>

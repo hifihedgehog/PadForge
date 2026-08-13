@@ -1356,6 +1356,18 @@
   <data name="Pad_StickMomentum" xml:space="preserve"><value>Schwung</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>Trackball-Modus: Stick schnippen und loslassen, und der Cursor gleitet weiter, bis er ausrollt. Erneutes Bewegen des Sticks fängt ihn ab.</value></data>
   <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>Wie weit der Cursor nach einem Schnippen gleitet. Am oberen Ende läuft er weiter, bis der Stick wieder bewegt wird.</value></data>
+  <data name="Pad_Touchpad_MomentumFlingGain" xml:space="preserve"><value>Schwungverstärkung</value></data>
+  <data name="Pad_Touchpad_MomentumFlingGain_Tooltip" xml:space="preserve"><value>Skaliert die Startgeschwindigkeit eines Schwungs, ohne die Ziehgeschwindigkeit zu ändern. 1,00 startet genau mit der Fingergeschwindigkeit.</value></data>
+  <data name="Pad_ResetTouchpadMomentumFlingGain" xml:space="preserve"><value>Schwungverstärkung zurücksetzen</value></data>
+  <data name="Pad_Touchpad_MomentumMinLift" xml:space="preserve"><value>Schwungschwelle</value></data>
+  <data name="Pad_Touchpad_MomentumMinLift_Tooltip" xml:space="preserve"><value>Wie schnell sich der Finger beim Abheben bewegen muss, damit der Cursor gleitet, in Pad-Breiten pro Sekunde. Darunter stoppt der Cursor sofort.</value></data>
+  <data name="Pad_ResetTouchpadMomentumMinLift" xml:space="preserve"><value>Schwungschwelle zurücksetzen</value></data>
+  <data name="Pad_Touchpad_MomentumMaxSpeed" xml:space="preserve"><value>Maximale Schwunggeschwindigkeit</value></data>
+  <data name="Pad_Touchpad_MomentumMaxSpeed_Tooltip" xml:space="preserve"><value>Begrenzt die Startgeschwindigkeit eines Schwungs, in Pad-Breiten pro Sekunde. 0 deaktiviert die Begrenzung.</value></data>
+  <data name="Pad_ResetTouchpadMomentumMaxSpeed" xml:space="preserve"><value>Maximale Schwunggeschwindigkeit zurücksetzen</value></data>
+  <data name="Pad_Touchpad_MomentumStacking" xml:space="preserve"><value>Schwünge stapeln</value></data>
+  <data name="Pad_Touchpad_MomentumStacking_Tooltip" xml:space="preserve"><value>Jeder neue Wisch addiert sich zum rollenden Schwung, statt ihn zu ersetzen. Ein Tippen oder stilles Abheben stoppt alles. Die Geschwindigkeit wird durch die maximale Schwunggeschwindigkeit begrenzt, oder eine eingebaute Obergrenze, wenn diese aus ist.</value></data>
+  <data name="Pad_ResetTouchpadMomentumStacking" xml:space="preserve"><value>Schwünge stapeln zurücksetzen</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Maus Geschwindigkeit X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Maus Geschwindigkeit Y</value></data>
   <data name="Mapping_MouseScroll" xml:space="preserve"><value>Maus Scrollen</value></data>

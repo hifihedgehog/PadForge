@@ -606,6 +606,35 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _minimizeToTray, value);
         }
 
+        private bool _batteryNotifyEnabled = true;
+
+        /// <summary>Low-battery notification master toggle (#293), default on.</summary>
+        public bool BatteryNotifyEnabled
+        {
+            get => _batteryNotifyEnabled;
+            set => SetProperty(ref _batteryNotifyEnabled, value);
+        }
+
+        private int _batteryNotifyThreshold = 15;
+
+        /// <summary>Percent at or below which the low-battery notification
+        /// fires (edge-triggered). Clamped 5-50, default 15.</summary>
+        public int BatteryNotifyThreshold
+        {
+            get => _batteryNotifyThreshold;
+            set => SetProperty(ref _batteryNotifyThreshold, System.Math.Clamp(value, 5, 50));
+        }
+
+        private bool _batteryNotifyVibrate;
+
+        /// <summary>Optionally buzz the device itself on the low-battery edge,
+        /// using the identify pulse train. Default off.</summary>
+        public bool BatteryNotifyVibrate
+        {
+            get => _batteryNotifyVibrate;
+            set => SetProperty(ref _batteryNotifyVibrate, value);
+        }
+
         private bool _startMinimized;
 
         /// <summary>Whether to start the application minimized.</summary>

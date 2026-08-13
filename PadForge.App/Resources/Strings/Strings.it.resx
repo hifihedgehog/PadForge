@@ -3096,4 +3096,12 @@ Puoi riprovare più tardi dalle Impostazioni.</value></data>
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>Questa rete non consente connessioni dirette (sembra un hotspot mobile o un NAT dell'operatore). Usa una VPN come Tailscale, oppure connettiti da una rete fissa domestica.</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>Impossibile trovare l'indirizzo pubblico di questo PC (la rete potrebbe bloccare il traffico necessario). Le connessioni dirette non funzionano qui. Usa una VPN, oppure Connetti tramite indirizzo sulla stessa rete.</value></data>
   <data name="Dashboard_WebScanToOpen" xml:space="preserve"><value>Inquadra con la fotocamera del telefono oppure apri questo indirizzo nel browser:</value></data>
+  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>Identifica: fai vibrare questo dispositivo</value></data>
+  <data name="Battery_LowTitle" xml:space="preserve"><value>Batteria del controller scarica</value></data>
+  <data name="Battery_LowText_Format" xml:space="preserve"><value>{0}: {1}% di batteria residua</value></data>
+  <data name="Settings_BatteryNotify" xml:space="preserve"><value>Avvisi batteria</value></data>
+  <data name="Settings_BatteryNotifyDesc" xml:space="preserve"><value>Ricevi una notifica quando la batteria di un controller si sta esaurendo, prima che si spenga durante il gioco.</value></data>
+  <data name="Settings_BatteryNotifyEnable" xml:space="preserve"><value>Notifica quando la batteria è scarica</value></data>
+  <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Notifica a partire da</value></data>
+  <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Fai vibrare anche il controller</value></data>
 </root>

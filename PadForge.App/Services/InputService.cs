@@ -4209,6 +4209,15 @@ namespace PadForge.Services
                 var (rowPct, rowCharging) = EffectiveBattery(ud);
                 row.BatteryPercent = rowPct;
                 row.BatteryCharging = rowCharging;
+
+                // Low-battery notification (#293). Edge-triggered, the
+                // Gamepad Battery Monitor rule in percent: fire only when the
+                // level TRANSITIONS to at-or-below the threshold while not
+                // charging; never at unknown (-1), never while charging (a
+                // wired pad reads as charging). Re-arm on charge, on a rise
+                // past threshold+5 (bounce margin), or on disconnect (which
+                // also covers battery swaps).
+                NotifyBatteryEdge(ud, row.DeviceName, rowPct, rowCharging);
             }
 
             foreach (var padVm in _mainVm.Pads)
@@ -4237,6 +4246,63 @@ namespace PadForge.Services
             // Card device lines are composed in RefreshDashboardSlots (#175),
             // which owns slot.DeviceName; per-device BatteryText above is the
             // only battery state this tick maintains.
+        }
+
+        // Per-device notifier state: last effective percent and whether the
+        // low edge already fired. Keyed by InstanceGuid; entries reset when
+        // the device goes offline so a reconnect is a fresh edge.
+        private readonly Dictionary<Guid, (int LastPct, bool Notified)> _batteryNotifyState = new();
+
+        /// <summary>The pure edge rule (#293), Gamepad Battery Monitor's
+        /// transition test in percent. Fire only when the level crosses to
+        /// at-or-below the threshold from above (or on first sight already
+        /// low, so an app start with a dying pad still warns once), never
+        /// while charging. Charging or a rise past threshold+5 re-arms.
+        /// Static and pure so the tests pin it without a device.</summary>
+        public static (bool Fire, bool Notified) BatteryEdgeDecision(
+            bool hadState, int lastPct, bool notified, int pct, bool charging, int threshold)
+        {
+            if (charging || pct > threshold + 5)
+                return (false, false); // re-arm
+            bool fire = pct <= threshold
+                && !charging
+                && !notified
+                && (!hadState || lastPct > threshold);
+            return (fire, notified || fire);
+        }
+
+        private void NotifyBatteryEdge(UserDevice ud, string name, int pct, bool charging)
+        {
+            try
+            {
+                var vm = _mainVm.Settings;
+                if (vm == null || !vm.BatteryNotifyEnabled) return;
+                if (ud == null || ud.InstanceGuid == Guid.Empty) return;
+
+                if (!ud.IsOnline)
+                {
+                    _batteryNotifyState.Remove(ud.InstanceGuid);
+                    return;
+                }
+                if (pct < 0) return; // unknown level carries no information
+
+                int threshold = vm.BatteryNotifyThreshold;
+                _batteryNotifyState.TryGetValue(ud.InstanceGuid, out var st);
+                bool hadState = _batteryNotifyState.ContainsKey(ud.InstanceGuid);
+
+                var (fire, newNotified) = BatteryEdgeDecision(
+                    hadState, st.LastPct, st.Notified, pct, charging, threshold);
+                _batteryNotifyState[ud.InstanceGuid] = (pct, newNotified);
+                if (!fire) return;
+
+                string title = Strings.Instance.Battery_LowTitle;
+                string text = string.Format(Strings.Instance.Battery_LowText_Format, name, pct);
+                (System.Windows.Application.Current?.MainWindow as MainWindow)?.ShowTrayBalloon(title, text);
+                _mainVm.StatusText = text;
+                if (vm.BatteryNotifyVibrate)
+                    IdentifyDevice(ud.InstanceGuid);
+            }
+            catch { /* the notifier must never break the battery walk */ }
         }
 
         /// <summary>
@@ -12321,6 +12387,81 @@ namespace PadForge.Services
                 _inputManager.TestRumbleTargetGuid[padIndex] = Guid.Empty;
             };
             clearTimer.Start();
+        }
+
+        // ─────────────────────────────────────────────
+        //  Identify buzz (#293)
+        // ─────────────────────────────────────────────
+
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, byte> _identifyInFlight = new();
+
+        /// <summary>Buzzes a physical device so the user can tell which row on
+        /// the Devices page it is (#293), Gamepad Battery Monitor's pattern:
+        /// short pulses ending in a long one. THE LANE SPLIT IS THE DESIGN:
+        /// a MAPPED device has a sole rumble writer, so the pulses ride the
+        /// SendTestRumble lane (slot vibration state + the per-device
+        /// TestRumbleTargetGuid filter), exactly like Test Rumble; a direct
+        /// SetRumble there would race the dispatcher and lose. An UNMAPPED
+        /// device has no owner, so the direct train is safe and is the only
+        /// lane that exists. Remote Link peers ride free either way, since
+        /// their SetRumble relays to the owning machine.</summary>
+        public void IdentifyDevice(Guid instanceGuid)
+        {
+            if (instanceGuid == Guid.Empty) return;
+            if (!_identifyInFlight.TryAdd(instanceGuid, 0)) return;
+            _ = System.Threading.Tasks.Task.Run(async () =>
+            {
+                try
+                {
+                    var ud = FindUserDevice(instanceGuid);
+                    if (ud?.Device == null || !ud.IsOnline) return;
+
+                    int pad = -1;
+                    try
+                    {
+                        foreach (var p in _mainVm.Pads)
+                        {
+                            if (p == null) continue;
+                            foreach (var d in p.MappedDevices)
+                                if (d != null && d.InstanceGuid == instanceGuid) { pad = p.PadIndex; break; }
+                            if (pad >= 0) break;
+                        }
+                    }
+                    catch { }
+
+                    if (pad >= 0)
+                    {
+                        // Sole-writer lane: three test pulses. Each sets the
+                        // slot's vibration state with the device filter and
+                        // self-clears after 500 ms, so 700 ms spacing reads as
+                        // a distinct triple without fighting the clear timer.
+                        for (int i = 0; i < 3; i++)
+                        {
+                            int padCopy = pad;
+                            _dispatcher.Invoke(() => SendTestRumble(padCopy, instanceGuid));
+                            await System.Threading.Tasks.Task.Delay(700).ConfigureAwait(false);
+                        }
+                    }
+                    else
+                    {
+                        // No owner: GBM's exact cadence, 200 on / 200 off
+                        // twice, then a 500 ms tail.
+                        var dev = ud.Device;
+                        for (int i = 0; i < 2; i++)
+                        {
+                            dev.SetRumble(65535, 65535);
+                            await System.Threading.Tasks.Task.Delay(200).ConfigureAwait(false);
+                            dev.StopRumble();
+                            await System.Threading.Tasks.Task.Delay(200).ConfigureAwait(false);
+                        }
+                        dev.SetRumble(65535, 65535);
+                        await System.Threading.Tasks.Task.Delay(500).ConfigureAwait(false);
+                        dev.StopRumble();
+                    }
+                }
+                catch { /* identify is best-effort */ }
+                finally { _identifyInFlight.TryRemove(instanceGuid, out _); }
+            });
         }
 
         // ─────────────────────────────────────────────

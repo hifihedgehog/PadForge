@@ -148,6 +148,15 @@ namespace PadForge.Views
             if (Pad2Dot4 != null) { Canvas.SetLeft(Pad2Dot4, vm.Pad2X4 * w - 7); Canvas.SetTop(Pad2Dot4, vm.Pad2Y4 * h - 7); }
         }
 
+        /// <summary>Identify buzz (#293): route through InputService, which
+        /// picks the sole-writer lane for mapped devices and the direct train
+        /// for unmapped ones.</summary>
+        private void IdentifyDevice_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.DataContext is ViewModels.DeviceRowViewModel device)
+                InputService?.IdentifyDevice(device.InstanceGuid);
+        }
+
         private void RemoveDevice_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn &&

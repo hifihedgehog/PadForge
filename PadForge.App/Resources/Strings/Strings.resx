@@ -271,6 +271,7 @@
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Enable web controller server</value></data>
   <data name="Dashboard_WebFooter" xml:space="preserve"><value>Connect from a phone or tablet browser to use as a gamepad.</value></data>
   <data name="Dashboard_WebScanToOpen" xml:space="preserve"><value>Scan with a phone camera, or open this address in its browser:</value></data>
+  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>Identify: vibrate this device</value></data>
   <data name="Dashboard_RemoteLink" xml:space="preserve"><value>Remote Link</value></data>
   <data name="Dashboard_RemoteLinkDescription" xml:space="preserve"><value>Share controllers with a paired PadForge on another PC over your network.</value></data>
   <data name="Dashboard_EnableRemoteLink" xml:space="preserve"><value>Enable Remote Link server</value></data>
@@ -3129,4 +3130,11 @@ You can retry later from Settings.</value></data>
   <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>Swap codes with the other person: paste theirs into your Connect box while they paste yours, then you both click Connect. That opens a direct path across the internet, no VPN needed. The code refreshes while Remote Link runs.</value></data>
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>This network can't make direct connections (it looks like a mobile hotspot or carrier-grade NAT). Use a VPN like Tailscale, or connect from home broadband.</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>Couldn't find this PC's public address (the network may block the needed traffic). Direct connections won't work here. Use a VPN, or Connect by Address on the same network.</value></data>
+  <data name="Battery_LowTitle" xml:space="preserve"><value>Controller battery low</value></data>
+  <data name="Battery_LowText_Format" xml:space="preserve"><value>{0}: {1}% battery remaining</value></data>
+  <data name="Settings_BatteryNotify" xml:space="preserve"><value>Battery Alerts</value></data>
+  <data name="Settings_BatteryNotifyDesc" xml:space="preserve"><value>Get notified when a controller's battery runs low, before it dies mid-game.</value></data>
+  <data name="Settings_BatteryNotifyEnable" xml:space="preserve"><value>Notify when battery runs low</value></data>
+  <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Notify at or below</value></data>
+  <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Also vibrate the controller</value></data>
 </root>

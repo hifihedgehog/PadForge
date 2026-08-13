@@ -548,10 +548,24 @@
         var ref = surface || ov;
         var gap = layout.baseHeight * 0.012;
 
-        var vw = Math.min(ref.w * 0.22, layout.baseWidth * 0.032);
-        var vh = ref.h * 0.85;
+        // Sizing follows the CONTROLLER's geometry, not arbitrary fractions
+        // (owner direction): the vertical pills run the full height of the
+        // pad they serve and sit flush against it, and where the layout's
+        // click element extends beyond the touch surface (DS4 / DualSense,
+        // whose click rect is drawn to match the controller's clickable
+        // surround), the bar fills that strip exactly so it looks native.
+        var vw = layout.baseWidth * 0.035;
+        var vh = ref.h;                       // full pad height
         var hw = Math.min(ref.w * 0.6, layout.baseWidth * 0.16);
         var hh = layout.baseHeight * 0.05;
+
+        // The native strip: the click element's own rect above the surface.
+        var strip = null;
+        if (surface && ov.y < surface.y - 2 && ov.w > 0) {
+            var stripH = surface.y - ov.y - gap;
+            if (stripH > layout.baseHeight * 0.02)
+                strip = { x: ov.x, y: ov.y, w: ov.w, h: stripH };
+        }
 
         function collides(cx, cy, cw, ch) {
             if (surface
@@ -573,14 +587,16 @@
                 && cx + cw <= layout.baseWidth && cy + ch <= layout.baseHeight;
         }
 
-        var left  = { x: ref.x - vw - gap,         y: ref.y + (ref.h - vh) / 2, w: vw, h: vh };
-        var right = { x: ref.x + ref.w + gap,      y: ref.y + (ref.h - vh) / 2, w: vw, h: vh };
+        // Flush against the pad: no gap on the shared edge.
+        var left  = { x: ref.x - vw,               y: ref.y,                    w: vw, h: vh };
+        var right = { x: ref.x + ref.w,            y: ref.y,                    w: vw, h: vh };
         var above = { x: ref.x + (ref.w - hw) / 2, y: ref.y - hh - gap,         w: hw, h: hh };
         var below = { x: ref.x + (ref.w - hw) / 2, y: ref.y + ref.h + gap,      w: hw, h: hh };
 
         var candidates;
         if (ov.target === "LeftTouchpadClick") candidates = [left, right, below, above];
         else if (ov.target === "RightTouchpadClick") candidates = [right, left, below, above];
+        else if (strip) candidates = [strip, above, below, left, right];
         else candidates = [above, below, left, right];
 
         var chosen = candidates[0];

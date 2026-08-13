@@ -102,6 +102,48 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void SettleJitter_CannotCreepTheCursorBackward()
+        {
+            // The owner-reported artifact (#291): a stopping fingertip
+            // emits a few tiny backward deltas as it relaxes, and the old
+            // fixed 25 ms velocity hold spent each one on the cursor long
+            // after the pad went quiet, a visible few-pixel reverse step.
+            // With the adaptive hold, a backward settle sample may only
+            // bridge ~1.5 report gaps before the cursor stops.
+            var src = XSource(); int slot = NewSlot();
+            // A steady forward drag at a 4 ms report cadence.
+            Counts(PadAt(0.500f), TicksAt(0.000f), src, slot);
+            Counts(PadAt(0.520f), TicksAt(0.004f), src, slot);
+            Counts(PadAt(0.540f), TicksAt(0.008f), src, slot);
+            Counts(PadAt(0.560f), TicksAt(0.012f), src, slot);
+
+            // The settle: one tiny BACKWARD delta, then silence.
+            Counts(PadAt(0.559f), TicksAt(0.016f), src, slot);
+
+            // Within ~6 ms (1.5 x 4 ms cadence) the stale spend is allowed;
+            // past it the cursor must be stopped, not creeping backward.
+            float late1 = Counts(PadAt(0.559f), TicksAt(0.026f), src, slot);
+            float late2 = Counts(PadAt(0.559f), TicksAt(0.030f), src, slot);
+            Assert.Equal(0f, late1);
+            Assert.Equal(0f, late2);
+        }
+
+        [Fact]
+        public void TheAdaptiveHold_StillBridgesTheReportGap()
+        {
+            // The stutter fix must survive: polls BETWEEN reports at the
+            // pad's own cadence keep emitting.
+            var src = XSource(); int slot = NewSlot();
+            Counts(PadAt(0.50f), TicksAt(0.000f), src, slot);
+            Counts(PadAt(0.52f), TicksAt(0.004f), src, slot);
+            Counts(PadAt(0.54f), TicksAt(0.008f), src, slot);
+            // Gap polls 1-3 ms after the last report, inside the 6 ms hold.
+            Assert.True(Counts(PadAt(0.54f), TicksAt(0.009f), src, slot) > 0f);
+            Assert.True(Counts(PadAt(0.54f), TicksAt(0.010f), src, slot) > 0f);
+            Assert.True(Counts(PadAt(0.54f), TicksAt(0.011f), src, slot) > 0f);
+        }
+
+        [Fact]
         public void AStillFingerStops_RatherThanCoasting()
         {
             // Velocity hold bridges a report gap; it must not become inertia.

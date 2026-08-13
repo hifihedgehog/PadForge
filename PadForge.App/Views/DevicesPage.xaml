@@ -462,17 +462,12 @@
 
                                 <StackPanel Grid.Column="2" Grid.RowSpan="2" VerticalAlignment="Top"
                                             Orientation="Horizontal">
-                                <!-- Delete button (upper-right). Hover-revealed
-                                     (#175 phase 2 item 1b): opacity, not
-                                     visibility, so it stays in the tab order.
-                                     Keyboard focus reveals it too. The click
-                                     routes through the shared ConfirmDialog in
-                                     code-behind before anything is deleted. -->
                                 <!-- Identify buzz (#293): vibrates the physical
                                      device so two identical pads can be told
                                      apart, like Identify on a monitor. Only
                                      shown when the device can rumble; hover-
-                                     revealed like its delete sibling. -->
+                                     revealed like its delete sibling, sitting
+                                     just left of the delete X on one row. -->
                                 <ui:Button ToolTip="{Binding Devices_IdentifyTooltip, Source={x:Static strings:Strings.Instance}}"
                                            Margin="0,0,4,0"
                                            Click="IdentifyDevice_Click">
@@ -497,6 +492,12 @@
                                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                 </ui:Button>
 
+                                <!-- Delete button (outer corner). Hover-revealed
+                                     (#175 phase 2 item 1b): opacity, not
+                                     visibility, so it stays in the tab order.
+                                     Keyboard focus reveals it too. The click
+                                     routes through the shared ConfirmDialog in
+                                     code-behind before anything is deleted. -->
                                 <ui:Button ToolTip="{Binding Devices_RemoveTooltip, Source={x:Static strings:Strings.Instance}}"
                                            Click="RemoveDevice_Click">
                                     <ui:Button.Style>

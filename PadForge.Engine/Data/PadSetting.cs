@@ -1971,6 +1971,19 @@ namespace PadForge.Engine.Data
             // Motion Steering keys above.
             if (k.StartsWith("FlickStick", StringComparison.Ordinal))
                 return true;
+            // Stick trackball tuning (#291): KbmMouseMomentum /
+            // KbmMouseMomentumGlide, the Sticks tab's Momentum rows on a
+            // KBM slot's mouse stick. Same class as the steering keys:
+            // without this, the descriptor rewrite wiped the toggle within
+            // seconds of enabling it (owner-reported: momentum died after
+            // 5-10 s and needed the checkbox re-toggled).
+            if (k.StartsWith("KbmMouseMomentum", StringComparison.Ordinal))
+                return true;
+            // Gyro Tilt envelope tuning (#292): GyroTiltRange /
+            // GyroTiltInner, the Gyro tab's tilt card. Found as the
+            // unlisted sibling while fixing the momentum keys above.
+            if (k.StartsWith("GyroTilt", StringComparison.Ordinal))
+                return true;
             if (k.StartsWith("RawStick", StringComparison.Ordinal))
                 return true;
             if (k.StartsWith("RawTrigger", StringComparison.Ordinal)

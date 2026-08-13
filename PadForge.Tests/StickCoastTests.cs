@@ -184,6 +184,66 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void ALongSession_FlingsKeepWorking()
+        {
+            // Owner-reported: momentum dies after 5-10 seconds of use and
+            // needs the checkbox toggled. If the engine reproduces it, the
+            // ball degrades; if not, the settings plumbing is the suspect.
+            int slot = NewSlot();
+            double t = 0;
+            float[] flings = new float[4];
+            for (int f = 0; f < 4; f++)
+            {
+                // ~3 s of realistic activity between flings: circling
+                // (continuously engaged), then idle at centre.
+                for (int i = 0; i < 1500; i++, t += 0.001)
+                {
+                    double a = i * 0.05;
+                    SourceCoercion.TickStickCoast(slot, "d",
+                        (float)(0.6 * Math.Cos(a)), (float)(0.6 * Math.Sin(a)),
+                        Dt, T(t), Freq, true, 0.90f);
+                }
+                for (int i = 0; i < 1500; i++, t += 0.001)
+                    TickX(slot, "d", 0f, t);
+
+                // The fling.
+                for (int i = 0; i < 50; i++, t += 0.001)
+                    TickX(slot, "d", 0.9f, t);
+                flings[f] = TickX(slot, "d", 0f, t); t += 0.001;
+                // Let the coast run out before the next round.
+                for (int i = 0; i < 1000; i++, t += 0.001)
+                    TickX(slot, "d", 0f, t);
+            }
+            for (int f = 0; f < 4; f++)
+                Assert.True(flings[f] > 0f, $"fling {f} died after {f * 4} seconds of session time");
+            Assert.Equal(flings[0], flings[3], 3);
+        }
+
+        [Fact]
+        public void TuningKeys_SurviveTheDescriptorRewrite()
+        {
+            // The owner-reported dying toggle (#291): ClearMappingDescriptors
+            // wipes the raw dict on every descriptor rewrite, preserving only
+            // whitelisted per-device TUNING keys. The momentum keys (and
+            // #292's gyro-tilt keys, the unlisted sibling) must be on that
+            // whitelist, or the setting evaporates seconds after being set.
+            var ps = new PadForge.Engine.Data.PadSetting();
+            ps.SetRawMapping("KbmMouseMomentum", "1");
+            ps.SetRawMapping("KbmMouseMomentumGlide", "0.95");
+            ps.SetRawMapping("GyroTiltRange", "30");
+            ps.SetRawMapping("GyroTiltInner", "5");
+            ps.SetRawMapping("RawBtn3", "Button 5");   // a routing descriptor
+
+            ps.ClearMappingDescriptors();
+
+            Assert.Equal("1", ps.GetRawMapping("KbmMouseMomentum"));
+            Assert.Equal("0.95", ps.GetRawMapping("KbmMouseMomentumGlide"));
+            Assert.Equal("30", ps.GetRawMapping("GyroTiltRange"));
+            Assert.Equal("5", ps.GetRawMapping("GyroTiltInner"));
+            Assert.Equal("", ps.GetRawMapping("RawBtn3"));
+        }
+
+        [Fact]
         public void DiagonalFling_KeepsItsLine()
         {
             int slot = NewSlot();

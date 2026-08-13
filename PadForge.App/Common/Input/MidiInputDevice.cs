@@ -76,7 +76,7 @@ namespace PadForge.Common.Input
             DevicePath = $"midi://{endpointId}";
             InstanceGuid = Md5Guid("pfmidi-in:" + endpointId);
             ProductGuid = Md5Guid("pfmidi-in-product:" + name);
-            SdlInstanceId = unchecked((uint)endpointId.GetHashCode());
+            SdlInstanceId = SyntheticInstanceId.From(endpointId);
 
             var state = new CustomInputState { Midi = new MidiInputState() };
             _state = state;

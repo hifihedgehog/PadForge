@@ -111,7 +111,7 @@ namespace PadForge.Common.Input
             // (ConsumerControlWrapper's identity pattern).
             InstanceGuid = Md5Guid("pfheadset:" + candidate.Path.ToLowerInvariant());
             ProductGuid = Md5Guid($"pfheadset-prod:{candidate.VendorId:X4}:{candidate.ProductId:X4}");
-            SdlInstanceId = unchecked((uint)DevicePath.GetHashCode());
+            SdlInstanceId = SyntheticInstanceId.From(DevicePath);
 
             _state = new CustomInputState();
             _lastSampleTicks = _nowTicks();

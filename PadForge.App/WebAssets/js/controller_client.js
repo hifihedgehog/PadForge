@@ -1140,6 +1140,4 @@
         img.style.transform = "translate(" + tx + "px, " + ty + "px)";
     }
 
-    // ─── Touchpad zone (DS4 controller page) ───
-
 })();

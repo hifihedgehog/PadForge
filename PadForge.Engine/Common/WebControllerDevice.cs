@@ -49,13 +49,12 @@ namespace PadForge.Engine
         private static readonly string[] ButtonNames =
             { "A", "B", "X", "Y", "Left Shoulder", "Right Shoulder", "Back", "Start", "Left Stick Button", "Right Stick Button", "Guide" };
 
-        // Thread-safe state: written by WebSocket thread, read by polling thread.
-        // _currentState is non-volatile; the lock-protected writes (UpdateAxis /
-        // UpdateButton mutate under _stateLock) and Volatile.Read on the get
-        // path provide the memory ordering. Marking the field volatile AND
-        // passing it to Volatile.Read by ref triggered CS0420 because the
-        // ref takes the field's address, dropping the volatile contract at
-        // the call site.
+        // Thread-safe state: written by the WebSocket thread, read by the
+        // polling thread. Strict copy-on-write: every mutator clones under
+        // _stateLock and publishes with Volatile.Write, and the read path takes
+        // one Volatile.Read. The field is deliberately NOT declared volatile,
+        // because passing a volatile field to Volatile.Read by ref is CS0420
+        // (the ref takes its address and drops the volatile contract there).
         private CustomInputState _currentState = new CustomInputState();
         private readonly object _stateLock = new object();
         private volatile bool _connected;
@@ -233,7 +232,7 @@ namespace PadForge.Engine
             DevicePath = $"web://{clientId}";
             InstanceGuid = BuildGuid(clientId);
             ProductGuid = BuildProductGuid(layoutKey);
-            SdlInstanceId = (uint)clientId.GetHashCode();
+            SdlInstanceId = SyntheticInstanceId.From(clientId);
             HasTouchpad = isTouchpad;
             _isTouchpadDevice = isTouchpad;
 

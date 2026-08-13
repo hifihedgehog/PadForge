@@ -42,8 +42,25 @@ namespace PadForge.Services
                 var thumbprint = FindOrCreateCertThumbprint();
                 if (thumbprint == null) return null;
 
-                // Rebind idempotently: delete any prior binding on this port
-                // (a stale cert or a different port config), then add ours.
+                // Never delete somebody else's binding. The old code deleted
+                // whatever was on the port unconditionally, so enabling the web
+                // controller on a port another program had already bound (IIS,
+                // a dev server, another service) silently destroyed that
+                // program's HTTPS. Ours is identified by the appid we set.
+                var existing = RunNetsh($"http show sslcert ipport=0.0.0.0:{port}");
+                bool occupied = existing.IndexOf("Certificate Hash", StringComparison.OrdinalIgnoreCase) >= 0
+                             || existing.IndexOf(":", StringComparison.Ordinal) >= 0
+                                && existing.IndexOf("0.0.0.0:" + port, StringComparison.Ordinal) >= 0;
+                bool ours = existing.IndexOf(AppId, StringComparison.OrdinalIgnoreCase) >= 0;
+                if (occupied && !ours)
+                {
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        $"WEBTLS port {port} already has an sslcert binding owned by another application; serving http");
+                    return null;
+                }
+
+                // Rebind idempotently: drop OUR prior binding on this port (a
+                // stale cert or a different port config), then add ours.
                 RunNetsh($"http delete sslcert ipport=0.0.0.0:{port}");
                 var add = RunNetsh(
                     $"http add sslcert ipport=0.0.0.0:{port} " +
@@ -65,11 +82,18 @@ namespace PadForge.Services
             }
         }
 
-        /// <summary>Removes the port binding (uninstall / disable). The cert is
-        /// left in the store, reused on the next enable.</summary>
+        /// <summary>Removes OUR port binding (disable / port change / uninstall).
+        /// The cert stays in the store, reused on the next enable. A binding
+        /// owned by another application is left alone.</summary>
         public static void RemoveBinding(int port)
         {
-            try { RunNetsh($"http delete sslcert ipport=0.0.0.0:{port}"); }
+            try
+            {
+                var existing = RunNetsh($"http show sslcert ipport=0.0.0.0:{port}");
+                if (existing.IndexOf(AppId, StringComparison.OrdinalIgnoreCase) < 0) return;
+                RunNetsh($"http delete sslcert ipport=0.0.0.0:{port}");
+                PadForge.Engine.SdlDiagLog.WriteLine($"WEBTLS released sslcert binding on port {port}");
+            }
             catch { }
         }
 
@@ -84,15 +108,29 @@ namespace PadForge.Services
             store.Open(OpenFlags.ReadWrite);
 
             string found = null;
-            var all = store.Certificates;
-            foreach (var existing in all)
+            var stale = new System.Collections.Generic.List<X509Certificate2>();
+            foreach (var existing in store.Certificates)
             {
-                if (found == null
-                    && existing.Subject == CertSubject
-                    && existing.NotAfter > DateTime.Now.AddDays(30))
+                if (existing.Subject != CertSubject) { existing.Dispose(); continue; }
+                if (found == null && existing.NotAfter > DateTime.Now.AddDays(30))
+                {
                     found = existing.Thumbprint;
-                existing.Dispose();
+                    existing.Dispose();
+                    continue;
+                }
+                // Ours, but expired or superseded. Kept forever by the old
+                // code, so the machine store accumulated a PadForge cert per
+                // renewal (and per duplicate) with nothing ever removing them.
+                stale.Add(existing);
             }
+            foreach (var old in stale)
+            {
+                try { store.Remove(old); }
+                catch { /* another process may hold it; harmless */ }
+                old.Dispose();
+            }
+            if (stale.Count > 0)
+                PadForge.Engine.SdlDiagLog.WriteLine($"WEBTLS removed {stale.Count} superseded certificate(s)");
             if (found != null) return found;
 
             // Generate a fresh self-signed RSA cert. SANs cover the wildcard

@@ -235,7 +235,7 @@
         else if (wd.kind === "stick") bindStick(el, wd);
         else if (wd.kind === "slider") bindSlider(el, wd);
         else if (wd.kind === "dpad") bindDpad(el, wd);
-        else if (wd.kind === "touch") bindTouch(el, wd);
+        else if (wd.kind === "touch") bindTouch(el);
     }
 
     function haptic() { if (navigator.vibrate) navigator.vibrate(20); }
@@ -381,7 +381,9 @@
         el.addEventListener("mouseleave", up);
     }
 
-    function bindTouch(el, wd) {
+    // The touch surface takes no widget code: a custom pad has exactly one
+    // touchpad surface and it drives finger 0/1 of the device's only pad.
+    function bindTouch(el) {
         // Fingers are tracked by IDENTIFIER, exactly as the stock client's
         // touchpad zone does. The old positional read walked e.touches, the
         // screen-global list: a finger held anywhere else took slot 0, so the

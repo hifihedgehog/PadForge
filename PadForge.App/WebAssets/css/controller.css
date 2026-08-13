@@ -97,22 +97,14 @@ body {
 /* Visible touchpad-click pill (#296): an obvious "click here" target above
    the touch surface, so the click is discoverable and distinct from a drag. */
 .touchpad-click-pill {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     border-radius: 999px;
-    border: 2px solid rgba(0, 200, 232, 0.85);
-    background: rgba(0, 200, 232, 0.14);
-    color: rgba(220, 245, 255, 0.9);
-    font: 600 min(3.2vw, 15px)/1 'Segoe UI', Tahoma, sans-serif;
-    letter-spacing: 0.02em;
-    white-space: nowrap;
-    box-shadow: 0 0 8px rgba(0, 200, 232, 0.25);
+    border: 2px solid rgba(0, 200, 232, 0.6);
+    background: rgba(0, 200, 232, 0.12);
+    box-shadow: 0 0 8px rgba(0, 200, 232, 0.2);
     transition: background 0.05s, transform 0.05s;
 }
 .touchpad-click-pill.pressed {
     background: rgba(0, 200, 232, 0.7);
-    color: #06202a;
     transform: scale(0.96);
 }
 

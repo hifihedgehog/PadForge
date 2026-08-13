@@ -3749,26 +3749,31 @@ namespace PadForge.Engine.Common.Mapping
                 }
                 else if (ticksPerSecond > 0)
                 {
-                    // Two windows with two different jobs (#291 regression
-                    // fix: the first cut of the backward-creep change used
-                    // ONE window for both and killed real flings).
-                    //
-                    // The SPEND stops at the adaptive window (~1.5 report
-                    // gaps): that is the backward-creep fix, because the
-                    // creep was stale settle velocity being spent on the
-                    // cursor long after the pad went quiet.
-                    //
-                    // The sample HISTORY survives until the full ceiling:
-                    // the launch reads it at lift, and a real fling's
-                    // finger decelerates as it leaves the glass, so the
-                    // lift report trails the last movement by 10-20 ms.
-                    // Wiping the ring at ~6 ms handed the launch an empty
-                    // ring and no fling at all, at any glide.
+                    // The backward-creep fix, third and final shape (#291,
+                    // owner field-tested each round). The objectionable
+                    // artifact was JITTER-SCALE velocity being spent long
+                    // after the pad went quiet: a settling fingertip's
+                    // last few tiny deltas held a small (often backward)
+                    // velocity on the cursor for the full window. Real
+                    // motion must keep the full 25 ms bridge: report
+                    // timing is bursty (Bluetooth bundles reports, so
+                    // legitimate gaps run 8-12 ms), and the two earlier
+                    // cuts that shortened the window for everything
+                    // first killed flings outright, then chopped the drag
+                    // tail. So the window is SPEED-gated: at or above the
+                    // lift-gate scale the spend bridges the full ceiling,
+                    // exactly the shipped-for-months behaviour, and only
+                    // jitter-scale velocity (which is what the creep is,
+                    // by definition: a few pixels over a whole window)
+                    // stops after ~1.5 report gaps.
                     float sinceReport = (float)(nowTicks - ball.LastReportTicks) / ticksPerSecond;
-                    float hold = ball.ReportIntervalEma > 0f
-                        ? Math.Clamp(ball.ReportIntervalEma * 1.5f,
-                            TouchVelocityHoldFloorSeconds, TouchVelocityHoldSeconds)
-                        : TouchVelocityHoldSeconds;
+                    float speed = MathF.Sqrt(ball.VelX * ball.VelX + ball.VelY * ball.VelY);
+                    float hold = speed >= TouchMinLiftVelocity
+                        ? TouchVelocityHoldSeconds
+                        : (ball.ReportIntervalEma > 0f
+                            ? Math.Clamp(ball.ReportIntervalEma * 1.5f,
+                                TouchVelocityHoldFloorSeconds, TouchVelocityHoldSeconds)
+                            : TouchVelocityHoldSeconds);
                     if (sinceReport > hold)
                     {
                         ball.VelX = ball.VelY = 0f;

@@ -201,7 +201,17 @@ namespace PadForge.Engine.RemoteLink
                 await ws.SendAsync(frame, WebSocketMessageType.Binary, true, timeout.Token).ConfigureAwait(false);
 
                 var r2 = await ws.ReceiveAsync(buf, timeout.Token).ConfigureAwait(false);
-                if (r2.Count < 1 || buf[0] != TagServerConfirmsAuth) { ws.Dispose(); return false; }
+                if (r2.Count < 1 || buf[0] != TagServerConfirmsAuth)
+                {
+                    // Name the two outcomes apart. A denial is a signature or
+                    // key problem and retrying other relays will fail the same
+                    // way; anything else is a protocol surprise worth seeing.
+                    SdlDiagLog.WriteLine(r2.Count >= 1 && buf[0] == TagServerDeniesAuth
+                        ? $"RELAY {host}: auth DENIED by the relay"
+                        : $"RELAY {host}: unexpected handshake reply tag {(r2.Count >= 1 ? buf[0] : -1)}");
+                    ws.Dispose();
+                    return false;
+                }
             }
 
             _ws = ws;
@@ -292,8 +302,18 @@ namespace PadForge.Engine.RemoteLink
                             finally { try { _sendGate.Release(); } catch { } }
                             break;
                         }
-                        // EndpointGone, Status, batches: nothing to do. The
-                        // ARQ above this lane already handles peer loss.
+                        case TagEndpointGone when len >= 33:
+                        {
+                            // The relay is telling us a peer we addressed is no
+                            // longer connected to it. The ARQ above this lane
+                            // recovers on its own, so this is diagnostic only:
+                            // without it, a peer that dropped off the relay was
+                            // indistinguishable from one that simply went quiet.
+                            SdlDiagLog.WriteLine(
+                                "RELAY peer gone: " + Convert.ToHexString(buf, 1, 16));
+                            break;
+                        }
+                        // Status frames and batches: nothing to do.
                     }
                 }
             }
@@ -322,6 +342,11 @@ namespace PadForge.Engine.RemoteLink
             Interlocked.Exchange(ref _disconnectFired, 1);
             try { _cts?.Cancel(); } catch { }
             try { _ws?.Dispose(); } catch { }
+            // Wait briefly for the receive loop to leave, and observe its
+            // outcome. It was started and never looked at again, so a fault
+            // inside it went unnoticed and a disposal could return while the
+            // loop was still touching the socket it just disposed.
+            try { _recvLoop?.Wait(TimeSpan.FromMilliseconds(500)); } catch { }
             _cts?.Dispose();
         }
     }

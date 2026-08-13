@@ -59,7 +59,7 @@ namespace PadForge.Common.Input
             DevicePath = $"nfc://{readerName}";
             InstanceGuid = Md5Guid("pfnfc:" + readerName);
             ProductGuid = Md5Guid("pfnfc-product:" + readerName);
-            SdlInstanceId = unchecked((uint)readerName.GetHashCode());
+            SdlInstanceId = SyntheticInstanceId.From(readerName);
             _state = new CustomInputState();
         }
 

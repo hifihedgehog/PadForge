@@ -184,7 +184,7 @@ namespace PadForge.Engine.RemoteLink
             DevicePath = $"peer://{Short(info.PeerFingerprintHex)}/{info.PeerLocalDeviceId}";
             InstanceGuid = Md5Guid($"pflink-dev:{info.PeerFingerprintHex}:{info.PeerLocalDeviceId}");
             ProductGuid = Md5Guid($"pflink-prod:{info.PeerFingerprintHex}:{info.VendorId:X4}:{info.ProductId:X4}:{info.InputDeviceType}");
-            SdlInstanceId = unchecked((uint)DevicePath.GetHashCode());
+            SdlInstanceId = SyntheticInstanceId.From(DevicePath);
 
             // The full raw button set is mappable, so support every index the
             // extras reach, not just the standardized 22.

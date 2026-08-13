@@ -98,13 +98,11 @@ namespace PadForge.Services
 
         private static int TotalCodewords(int version)
         {
+            // Counted, not derived. The closed-form module count is easy to get
+            // subtly wrong (an abandoned attempt at it lived here, ending in a
+            // term multiplied by zero), and drawing the function patterns and
+            // counting what they reserve is exact by construction.
             int size = version * 4 + 17;
-            int nAlign = version == 1 ? 0 : version / 7 + 2;
-            int funcModules = 192                                   // three finders + separators
-                + (version == 1 ? 0 : (nAlign * nAlign - 3) * 25)   // alignment patterns
-                - (version == 1 ? 0 : (nAlign - 2) * 2 * 5 * (version < 7 ? 0 : 1) * 0) // (adjust below via timing)
-                ;
-            // Rather than derive analytically (error-prone), count directly.
             var isFunction = new bool[size, size];
             var dummy = new bool[size, size];
             DrawFunctionPatterns(version, dummy, isFunction);

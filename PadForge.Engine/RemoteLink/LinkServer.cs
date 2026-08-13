@@ -263,7 +263,13 @@ namespace PadForge.Engine.RemoteLink
                     int tick = Interlocked.Increment(ref _keepaliveTicks);
                     if (ep == null)
                     {
-                        SdlDiagLog.WriteLine($"STUN keepalive tick {tick}: no response (mapping may lapse)");
+                        // Drop the cached address so the next tick re-resolves.
+                        // It was resolved once and kept forever, so a server
+                        // that went away (or a DNS answer that rotated) meant
+                        // the keepalive silently stopped holding the mapping
+                        // for the rest of the session.
+                        _stunKeepaliveServer = null;
+                        SdlDiagLog.WriteLine($"STUN keepalive tick {tick}: no response (re-resolving next tick)");
                         return;
                     }
                     var prev = PublicEndpoint;
@@ -306,9 +312,18 @@ namespace PadForge.Engine.RemoteLink
                     try { addrs = await Dns.GetHostAddressesAsync(host, AddressFamily.InterNetwork, ct).ConfigureAwait(false); }
                     catch { continue; }
                     if (addrs.Length == 0) continue;
-                    var server = new IPEndPoint(addrs[0], port);
 
-                    var ep = await OneStunProbeAsync(sock, server, ct).ConfigureAwait(false);
+                    // Try each resolved address until one answers. Taking only
+                    // addrs[0] let a single blackholed address disqualify the
+                    // whole server, and the NAT classification needs at least
+                    // two servers' observations to say anything at all.
+                    IPEndPoint ep = null;
+                    foreach (var a in addrs)
+                    {
+                        if (ct.IsCancellationRequested) break;
+                        ep = await OneStunProbeAsync(sock, new IPEndPoint(a, port), ct).ConfigureAwait(false);
+                        if (ep != null) break;
+                    }
                     if (ep == null) continue;
                     first ??= ep;
                     addr ??= ep.Address;

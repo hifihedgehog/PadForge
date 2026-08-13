@@ -90,13 +90,23 @@ namespace PadForge.Engine.RemoteLink
             uint cookie = BinaryPrimitives.ReadUInt32BigEndian(buf.Slice(4));
             if (cookie != MagicCookie) return null;
             // Transaction id must match the request we sent from this socket.
+            // Fixed-time: the id is what proves this response is ours, and a
+            // byte-at-a-time compare that returns on the first mismatch leaks
+            // how much of a guess was right to anyone who can time us.
             if (transactionId != null)
-                for (int i = 0; i < 12; i++)
-                    if (buf[8 + i] != transactionId[i]) return null;
+            {
+                if (transactionId.Length != 12) return null;
+                if (!CryptographicOperations.FixedTimeEquals(buf.Slice(8, 12), transactionId))
+                    return null;
+            }
 
             int len = BinaryPrimitives.ReadUInt16BigEndian(buf.Slice(2));
+            // A response that declares more body than it carries is malformed.
+            // Truncating to the buffer instead accepted the fragment and parsed
+            // whatever attributes happened to fit.
+            if (HeaderSize + len > buf.Length) return null;
             int pos = HeaderSize;
-            int end = Math.Min(buf.Length, HeaderSize + len);
+            int end = HeaderSize + len;
             // Scan ALL attributes and genuinely prefer XOR-MAPPED-ADDRESS:
             // attribute order is not guaranteed, and a legacy MAPPED-ADDRESS
             // appearing first can carry a NAT-ALG-rewritten or private value
@@ -114,16 +124,30 @@ namespace PadForge.Engine.RemoteLink
 
                 if (attrType == AttrXorMappedAddress && attrLen >= 8)
                 {
-                    // family = value[1]; only IPv4 (0x01) is handled here.
-                    if (buf[valPos + 1] == 0x01)
+                    byte family = buf[valPos + 1];
+                    ushort xorPort = BinaryPrimitives.ReadUInt16BigEndian(buf.Slice(valPos + 2));
+                    int port = xorPort ^ (ushort)(MagicCookie >> 16);
+                    if (family == 0x01)
                     {
-                        ushort xorPort = BinaryPrimitives.ReadUInt16BigEndian(buf.Slice(valPos + 2));
-                        int port = xorPort ^ (ushort)(MagicCookie >> 16);
                         uint xorAddr = BinaryPrimitives.ReadUInt32BigEndian(buf.Slice(valPos + 4));
                         uint addr = xorAddr ^ MagicCookie;
                         var ipBytes = new byte[4];
                         BinaryPrimitives.WriteUInt32BigEndian(ipBytes, addr);
                         return new IPEndPoint(new IPAddress(ipBytes), port);
+                    }
+                    // IPv6 (RFC 5389 15.2): the 128-bit address is XORed with
+                    // the magic cookie followed by the 96-bit transaction id.
+                    // Skipping it meant a v6 answer parsed as "no mapping at
+                    // all", and v6 is the lane with no NAT to punch through.
+                    if (family == 0x02 && attrLen >= 20 && transactionId is { Length: 12 })
+                    {
+                        var v6 = new byte[16];
+                        buf.Slice(valPos + 4, 16).CopyTo(v6);
+                        var cookieBytes = new byte[4];
+                        BinaryPrimitives.WriteUInt32BigEndian(cookieBytes, MagicCookie);
+                        for (int i = 0; i < 4; i++) v6[i] ^= cookieBytes[i];
+                        for (int i = 0; i < 12; i++) v6[4 + i] ^= transactionId[i];
+                        return new IPEndPoint(new IPAddress(v6), port);
                     }
                 }
                 else if (attrType == AttrMappedAddress && attrLen >= 8 && mappedFallback == null)
@@ -147,14 +171,22 @@ namespace PadForge.Engine.RemoteLink
         /// a resolved STUN server and awaits the mapped endpoint, retrying a
         /// couple of times with a short timeout. Returns null on no response.
         /// The socket is left bound and usable for the punch afterward.</summary>
+        /// <param name="onForeignDatagram">Receives any datagram that arrives on
+        /// the socket while this query is waiting and is NOT our STUN response.
+        /// Reading from a socket someone else also reads from CONSUMES the
+        /// datagram, so on a shared socket (LinkServer's, which is the whole
+        /// point of querying from the punch's own socket) a peer's probe that
+        /// lands mid-query is destroyed by this method. Pass a sink and
+        /// re-dispatch it, or pass null only when the socket is exclusively
+        /// this query's for the duration.</param>
         public static async Task<IPEndPoint> QueryAsync(
-            Socket socket, string host, int port, CancellationToken ct = default)
+            Socket socket, string host, int port, CancellationToken ct = default,
+            Action<IPEndPoint, byte[]> onForeignDatagram = null)
         {
             IPAddress[] addrs;
             try { addrs = await Dns.GetHostAddressesAsync(host, AddressFamily.InterNetwork, ct).ConfigureAwait(false); }
             catch { return null; }
             if (addrs.Length == 0) return null;
-            var server = new IPEndPoint(addrs[0], port);
 
             // ONE transaction id reused across retransmits, per RFC 5389 §7.2.1:
             // a fresh id per attempt rejects any response slower than one
@@ -163,35 +195,63 @@ namespace PadForge.Engine.RemoteLink
             var request = BuildBindingRequest(out var txId);
             var recvBuf = new byte[512];
 
-            for (int attempt = 0; attempt < 3 && !ct.IsCancellationRequested; attempt++)
+            // Every resolved address, not just the first. A STUN host commonly
+            // resolves to several, and one of them being blackholed made the
+            // whole server look dead when its siblings answered fine.
+            foreach (var addr in addrs)
             {
-                try
-                {
-                    await socket.SendToAsync(request, SocketFlags.None, server, ct).ConfigureAwait(false);
-                }
-                catch { return null; }
+                if (ct.IsCancellationRequested) break;
+                var server = new IPEndPoint(addr, port);
 
-                using var attemptCts = CancellationTokenSource.CreateLinkedTokenSource(ct);
-                attemptCts.CancelAfter(TimeSpan.FromMilliseconds(600));
-                try
+                for (int attempt = 0; attempt < 3 && !ct.IsCancellationRequested; attempt++)
                 {
-                    var any = new IPEndPoint(IPAddress.Any, 0);
-                    var r = await socket.ReceiveFromAsync(recvBuf, SocketFlags.None, any, attemptCts.Token)
-                                        .ConfigureAwait(false);
-                    // Only accept a datagram that actually came from this server
-                    // and parses as our matching response; anything else (a data
-                    // datagram racing in on the shared socket) is skipped.
-                    if (((IPEndPoint)r.RemoteEndPoint).Address.Equals(server.Address))
+                    try
                     {
-                        var ep = ParseBindingResponse(recvBuf.AsSpan(0, r.ReceivedBytes), txId);
-                        if (ep != null) return ep;
+                        await socket.SendToAsync(request, SocketFlags.None, server, ct).ConfigureAwait(false);
+                    }
+                    catch (SocketException) { break; }   // this address is unusable, try the next
+                    catch { return null; }
+
+                    using var attemptCts = CancellationTokenSource.CreateLinkedTokenSource(ct);
+                    attemptCts.CancelAfter(TimeSpan.FromMilliseconds(600));
+                    // Keep reading until the attempt's deadline. One foreign
+                    // datagram used to end the attempt outright, so a busy
+                    // socket burned all three retransmits on other people's
+                    // traffic and reported "no STUN server answered".
+                    while (!attemptCts.IsCancellationRequested)
+                    {
+                        try
+                        {
+                            var any = new IPEndPoint(IPAddress.Any, 0);
+                            var r = await socket.ReceiveFromAsync(recvBuf, SocketFlags.None, any, attemptCts.Token)
+                                                .ConfigureAwait(false);
+                            var from = (IPEndPoint)r.RemoteEndPoint;
+                            if (from.Address.Equals(server.Address))
+                            {
+                                var ep = ParseBindingResponse(recvBuf.AsSpan(0, r.ReceivedBytes), txId);
+                                if (ep != null) return ep;
+                            }
+                            else if (onForeignDatagram != null)
+                            {
+                                var copy = recvBuf.AsSpan(0, r.ReceivedBytes).ToArray();
+                                try { onForeignDatagram(from, copy); } catch { }
+                            }
+                        }
+                        catch (OperationCanceledException) when (!ct.IsCancellationRequested)
+                        {
+                            break; // attempt deadline, retransmit
+                        }
+                        catch (SocketException)
+                        {
+                            // A single failed receive (an ICMP port-unreachable
+                            // for a previous send, typically) is not the end of
+                            // the query. Aborting here reported no NAT mapping
+                            // at all and pushed the link onto the relay.
+                            continue;
+                        }
+                        catch { return null; }
                     }
                 }
-                catch (OperationCanceledException) when (!ct.IsCancellationRequested)
-                {
-                    // attempt timeout, retry
-                }
-                catch { return null; }
             }
             return null;
         }
@@ -202,19 +262,18 @@ namespace PadForge.Engine.RemoteLink
         /// Returns null only when NO server answered.</summary>
         public static async Task<StunResult> DiscoverAsync(
             Socket socket, CancellationToken ct = default,
-            (string Host, int Port)[] servers = null)
+            (string Host, int Port)[] servers = null,
+            Action<IPEndPoint, byte[]> onForeignDatagram = null)
         {
             servers ??= DefaultServers;
             IPEndPoint first = null;
-            int answered = 0;
             bool hardNat = false;
 
             foreach (var (host, port) in servers)
             {
                 if (ct.IsCancellationRequested) break;
-                var ep = await QueryAsync(socket, host, port, ct).ConfigureAwait(false);
+                var ep = await QueryAsync(socket, host, port, ct, onForeignDatagram).ConfigureAwait(false);
                 if (ep == null) continue;
-                answered++;
                 if (first == null) { first = ep; }
                 else
                 {

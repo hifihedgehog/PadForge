@@ -202,6 +202,18 @@ namespace PadForge.Services
             _clientPadIds.Clear();
             _typePadCounters.Clear();
 
+            // Give the http.sys certificate binding back. Nothing called
+            // RemoveBinding, so turning the web controller off (or moving it to
+            // another port, which stops and restarts) left the old port bound
+            // to our certificate for the life of the machine, including after
+            // uninstall. Off the UI thread: it spawns netsh.
+            if (_https)
+            {
+                int boundPort = _port;
+                _https = false;
+                Task.Run(() => { try { WebControllerTls.RemoveBinding(boundPort); } catch { } });
+            }
+
             StatusChanged?.Invoke(this, Strings.Instance.Common_Stopped);
         }
 

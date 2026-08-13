@@ -8575,6 +8575,19 @@ namespace PadForge.Services
             _linkServer.ExposeProvider = () => BuildExposedDevices();
             _linkServer.StatusChanged += st => _dispatcher.BeginInvoke(() =>
             {
+                // A first-contact grant, the pairwise rendezvous capability and
+                // the peer's machine name are all written into the trust store
+                // inside the handshake, and only DeviceConnected saved them. A
+                // peer that shares NO devices raises no such event, so its
+                // pairing lived in memory and was gone on the next launch: the
+                // user had to run the SAS prompt again every time. Saving on
+                // the connect status covers that case too.
+                if (st.Kind == PadForge.Engine.RemoteLink.LinkServer.LinkStatusKind.PeerConnected)
+                {
+                    try { _settingsService?.Save(); } catch { }
+                    _mainVm.Settings.RefreshTrustedPeers(
+                        _settingsService?.RemoteLink?.Trust?.Peers, _linkServer?.ConnectedFingerprints());
+                }
                 _mainVm.Dashboard.RemoteLinkStatus = FormatLinkStatus(st);
                 // Flame truth (#175 phase 2 item 2): a failed Start has
                 // already nulled the field by the time this dispatches, and

@@ -165,10 +165,17 @@ namespace PadForge.Engine.RemoteLink
                     // corrupt. The next Init fully rebuilds cipher state.
                     return false;
                 }
-            }
 
-            // Verify-then-window: a forged sequence can never advance replay state.
-            if (!_replay.CheckAndUpdate(seq)) return false; // duplicate or older than the window
+                // Verify-then-window: a forged sequence can never advance
+                // replay state. Under _openLock, because AntiReplayWindow is
+                // plain unsynchronized state and Open runs on two threads at
+                // once whenever a session carries both a UDP path and a relay
+                // path (every upgraded session does). Two threads through the
+                // unlocked check could each read the same bitmap and both
+                // accept the same sequence, which is the one thing the window
+                // exists to prevent.
+                if (!_replay.CheckAndUpdate(seq)) return false; // duplicate or older than the window
+            }
 
             type = msgType;
             timestampUs = ts;

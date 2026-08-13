@@ -451,6 +451,12 @@ namespace PadForge.Engine.RemoteLink
             foreach (var c in conns) DropConnection(c);
             try { _tcp?.Stop(); } catch { }
             try { _udp?.Close(); } catch { }
+            // Null both, like the failed-Start path does. Every send path reads
+            // the field and checks it for null, so a closed-but-non-null socket
+            // turned each of those into a caught ObjectDisposedException
+            // instead of the clean "not running" answer they test for.
+            _tcp = null;
+            _udp = null;
             try { _relayListen?.Dispose(); } catch { }
             try { _relayIdentity?.Dispose(); } catch { }
             try { _relayDial?.Dispose(); } catch { }
@@ -952,14 +958,30 @@ namespace PadForge.Engine.RemoteLink
             if (host == null || relay == null) return;
             SdlDiagLog.WriteLine($"RELAY listen: on {host} as {Convert.ToHexString(rdv.PublicKey)} chan={rdv.Channel:X8}");
 
+            // Return when the relay socket drops. The wait below is on a HELLO
+            // that only the relay can deliver, so a dropped connection left
+            // this loop parked forever and the host unreachable for the rest of
+            // the session: the caller's own reconnect wrapper only re-arms when
+            // this method RETURNS, and nothing else could make it.
+            var dropped = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+            Action onDropped = () => dropped.TrySetResult(true);
+            relay.Disconnected += onDropped;
+            try
+            {
             while (!ct.IsCancellationRequested)
             {
+                if (!relay.IsConnected) break;
                 // Wait for a caller's HELLO addressed to our code identity.
                 var tcs = new TaskCompletionSource<byte[]>(TaskCreationOptions.RunContinuationsAsynchronously);
                 string waitKey = "code:" + rdv.Channel.ToString("X8");
                 _relayHelloWaiters[waitKey] = (k, _) => tcs.TrySetResult(k);
                 byte[] callerKey;
-                try { callerKey = await tcs.Task.WaitAsync(ct).ConfigureAwait(false); }
+                try
+                {
+                    var winner = await Task.WhenAny(tcs.Task, dropped.Task).WaitAsync(ct).ConfigureAwait(false);
+                    if (winner != tcs.Task) break;
+                    callerKey = tcs.Task.Result;
+                }
                 catch (OperationCanceledException) { break; }
                 finally { _relayHelloWaiters.TryRemove(waitKey, out _); }
 
@@ -971,13 +993,19 @@ namespace PadForge.Engine.RemoteLink
                 string callerHex = Convert.ToHexString(callerKey);
                 if (!_relayInFlight.TryAdd(callerHex, 0)) continue; // retransmitted HELLO
                 SdlDiagLog.WriteLine($"RELAY listen: caller {callerHex.Substring(0, 16)}");
+                // No token on Task.Run: a cancelled token makes it never run
+                // the body, so the finally never removes the in-flight key and
+                // that caller could never be accepted again. The body honors
+                // the token itself.
                 _ = Task.Run(async () =>
                 {
                     try { await AcceptCodeRelayCallAsync(rdv, callerKey, ct).ConfigureAwait(false); }
                     catch (Exception ex) { SdlDiagLog.WriteLine($"RELAY listen: call failed {ex.GetType().Name} {ex.Message}"); }
                     finally { _relayInFlight.TryRemove(callerHex, out _); }
-                }, ct);
+                });
             }
+            }
+            finally { relay.Disconnected -= onDropped; }
         }
 
         private async Task AcceptCodeRelayCallAsync(
@@ -1145,12 +1173,27 @@ namespace PadForge.Engine.RemoteLink
             if (host == null || relay == null) return;
             SdlDiagLog.WriteLine($"RELAY identity listen: on {host} as {Convert.ToHexString(rdv.PublicKey)}");
 
+            // Same drop contract as the code listener: return so the caller's
+            // wrapper re-arms, instead of waiting forever on a HELLO that a
+            // dead relay can never deliver. This lane is the RECONNECT address,
+            // so wedging it costs a paired peer its way back in.
+            var dropped = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+            Action onDropped = () => dropped.TrySetResult(true);
+            relay.Disconnected += onDropped;
+            try
+            {
             while (!ct.IsCancellationRequested)
             {
+                if (!relay.IsConnected) break;
                 var tcs = new TaskCompletionSource<(byte[] key, uint chan)>(TaskCreationOptions.RunContinuationsAsynchronously);
                 _relayHelloWaiters["identity"] = (k, c) => tcs.TrySetResult((k, c));
                 (byte[] key, uint chan) call;
-                try { call = await tcs.Task.WaitAsync(ct).ConfigureAwait(false); }
+                try
+                {
+                    var winner = await Task.WhenAny(tcs.Task, dropped.Task).WaitAsync(ct).ConfigureAwait(false);
+                    if (winner != tcs.Task) break;
+                    call = tcs.Task.Result;
+                }
                 catch (OperationCanceledException) { break; }
                 finally { _relayHelloWaiters.TryRemove("identity", out _); }
 
@@ -1165,8 +1208,10 @@ namespace PadForge.Engine.RemoteLink
                     }
                     catch (Exception ex) { SdlDiagLog.WriteLine($"RELAY identity listen: call failed {ex.GetType().Name} {ex.Message}"); }
                     finally { _relayInFlight.TryRemove(callerHex, out _); }
-                }, ct);
+                });
             }
+            }
+            finally { relay.Disconnected -= onDropped; }
         }
 
         /// <summary>Dials a PAIRED peer at its stable identity relay, on the

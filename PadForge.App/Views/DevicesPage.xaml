@@ -465,9 +465,9 @@
                                      apart, like Identify on a monitor. Only
                                      shown when the device can rumble; hover-
                                      revealed like its delete sibling. -->
-                                <ui:Button Grid.Column="2" Grid.RowSpan="2"
+                                <ui:Button Grid.Column="1" Grid.RowSpan="2"
                                            ToolTip="{Binding Devices_IdentifyTooltip, Source={x:Static strings:Strings.Instance}}"
-                                           VerticalAlignment="Bottom"
+                                           VerticalAlignment="Top" Margin="0,0,4,0"
                                            Click="IdentifyDevice_Click">
                                     <ui:Button.Style>
                                         <Style TargetType="{x:Type ui:Button}" BasedOn="{StaticResource EmberIconButtonHot}">

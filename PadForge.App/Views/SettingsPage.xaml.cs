@@ -4,10 +4,19 @@ namespace PadForge.Views
 {
     public partial class SettingsPage : UserControl
     {
+        /// <summary>Static InputService reference wired by MainWindow at
+        /// startup, same shape as the other pages.</summary>
+        public static PadForge.Services.InputService InputService { get; set; }
+
         public SettingsPage()
         {
             InitializeComponent();
         }
+
+        // Battery Alerts test (#293): fire the notification pipeline with a
+        // synthetic low-battery event.
+        private void TestBatteryNotify_Click(object sender, System.Windows.RoutedEventArgs e)
+            => InputService?.TestBatteryNotification();
 
         // Re-run the Ember welcome tour (#175).
         private void ShowTour_Click(object sender, System.Windows.RoutedEventArgs e)

@@ -3082,4 +3082,5 @@ Você pode tentar novamente mais tarde em Configurações.</value></data>
   <data name="Settings_BatteryNotifyEnable" xml:space="preserve"><value>Avisar quando a bateria estiver fraca</value></data>
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Avisar em ou abaixo de</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Vibrar também o controle</value></data>
+  <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Testar notificação</value></data>
 </root>

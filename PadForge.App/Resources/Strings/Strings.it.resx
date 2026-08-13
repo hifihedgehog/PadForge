@@ -3104,4 +3104,5 @@ Puoi riprovare più tardi dalle Impostazioni.</value></data>
   <data name="Settings_BatteryNotifyEnable" xml:space="preserve"><value>Notifica quando la batteria è scarica</value></data>
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Notifica a partire da</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Fai vibrare anche il controller</value></data>
+  <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Prova notifica</value></data>
 </root>

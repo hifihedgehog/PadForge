@@ -3082,4 +3082,5 @@ Puedes volver a intentarlo más tarde desde Configuración.</value></data>
   <data name="Settings_BatteryNotifyEnable" xml:space="preserve"><value>Avisar cuando la batería esté baja</value></data>
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Avisar cuando esté en o por debajo de</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Vibrar también el mando</value></data>
+  <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Probar notificación</value></data>
 </root>

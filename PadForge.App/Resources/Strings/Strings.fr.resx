@@ -3082,4 +3082,5 @@ Vous pouvez réessayer plus tard depuis les Paramètres.</value></data>
   <data name="Settings_BatteryNotifyEnable" xml:space="preserve"><value>Avertir quand la batterie est faible</value></data>
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Avertir à partir de</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Faire aussi vibrer la manette</value></data>
+  <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Tester la notification</value></data>
 </root>

@@ -201,6 +201,9 @@
                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                               IsChecked="{Binding BatteryNotifyVibrate}"
                               IsEnabled="{Binding BatteryNotifyEnabled}"/>
+                    <Button Content="{Binding Settings_BatteryNotifyTest, Source={x:Static strings:Strings.Instance}}"
+                            Click="TestBatteryNotify_Click" Margin="0,12,0,0" HorizontalAlignment="Left"
+                            IsEnabled="{Binding BatteryNotifyEnabled}"/>
                 </StackPanel>
             </Border>
 

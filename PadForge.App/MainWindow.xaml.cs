@@ -370,6 +370,7 @@ namespace PadForge
             // through this static reference to reach the shared
             // GyroCalibratorService.
             Views.DevicesPage.InputService = _inputService;
+            Views.SettingsPage.InputService = _inputService;
             ProfilesPageView.InputService = _inputService;
             ProfilesPageView.OnShortcutsChanged = SaveProfileShortcuts;
             // Drop-zone import (#175): dropped .pfprofile files run the same

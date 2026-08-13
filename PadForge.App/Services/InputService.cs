@@ -4305,6 +4305,39 @@ namespace PadForge.Services
             catch { /* the notifier must never break the battery walk */ }
         }
 
+        /// <summary>Test button (#293): pushes a synthetic low-battery event
+        /// through the real delivery pipeline (tray balloon, status line,
+        /// identify buzz when enabled) so the feature is verifiable without
+        /// a drained pad. Uses the first online device's name and the
+        /// configured threshold as the level; the edge state is untouched,
+        /// so a real crossing still fires later.</summary>
+        public void TestBatteryNotification()
+        {
+            try
+            {
+                var vm = _mainVm.Settings;
+                int pct = vm?.BatteryNotifyThreshold ?? 15;
+                string name = null;
+                Guid buzz = Guid.Empty;
+                foreach (var row in _mainVm.Devices.Devices)
+                {
+                    var ud = FindUserDevice(row.InstanceGuid);
+                    if (ud == null || !ud.IsOnline) continue;
+                    name = row.DeviceName;
+                    buzz = ud.InstanceGuid;
+                    break;
+                }
+                name ??= "Controller";
+                string title = Strings.Instance.Battery_LowTitle;
+                string text = string.Format(Strings.Instance.Battery_LowText_Format, name, pct);
+                (System.Windows.Application.Current?.MainWindow as MainWindow)?.ShowTrayBalloon(title, text);
+                _mainVm.StatusText = text;
+                if (vm?.BatteryNotifyVibrate == true && buzz != Guid.Empty)
+                    IdentifyDevice(buzz);
+            }
+            catch { }
+        }
+
         /// <summary>
         /// Updates the raw input state display for the selected device
         /// on the Devices page using structured observable collections.

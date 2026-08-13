@@ -3082,4 +3082,5 @@
   <data name="Settings_BatteryNotifyEnable" xml:space="preserve"><value>バッテリー残量低下時に通知</value></data>
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>通知するしきい値</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>コントローラーを振動させる</value></data>
+  <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>通知をテスト</value></data>
 </root>

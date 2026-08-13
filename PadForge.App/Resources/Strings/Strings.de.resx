@@ -3082,4 +3082,5 @@ Du kannst es später in den Einstellungen erneut versuchen.</value></data>
   <data name="Settings_BatteryNotifyEnable" xml:space="preserve"><value>Benachrichtigen, wenn der Akku schwach ist</value></data>
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Benachrichtigen bei höchstens</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Zusätzlich den Controller vibrieren lassen</value></data>
+  <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Benachrichtigung testen</value></data>
 </root>

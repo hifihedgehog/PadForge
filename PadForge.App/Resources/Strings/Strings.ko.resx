@@ -3082,4 +3082,5 @@
   <data name="Settings_BatteryNotifyEnable" xml:space="preserve"><value>배터리 부족 시 알림</value></data>
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>알림 기준</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>컨트롤러 진동도 울리기</value></data>
+  <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>알림 테스트</value></data>
 </root>

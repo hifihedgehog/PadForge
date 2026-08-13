@@ -3137,4 +3137,5 @@ You can retry later from Settings.</value></data>
   <data name="Settings_BatteryNotifyEnable" xml:space="preserve"><value>Notify when battery runs low</value></data>
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Notify at or below</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Also vibrate the controller</value></data>
+  <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Test Notification</value></data>
 </root>

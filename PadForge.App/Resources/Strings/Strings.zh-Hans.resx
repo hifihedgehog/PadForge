@@ -3082,4 +3082,5 @@
   <data name="Settings_BatteryNotifyEnable" xml:space="preserve"><value>电量不足时通知</value></data>
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>通知阈值</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>同时让手柄振动</value></data>
+  <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>测试通知</value></data>
 </root>

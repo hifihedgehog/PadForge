@@ -9433,6 +9433,48 @@
                             </StackPanel>
                         </Border>
 
+                        <!-- ─── Gyro Tilt card (#292): settings for the "Gyro Tilt
+                             X/Y" INPUTS (degree-ranged gravity tilt, per assigned
+                             device). Like Motion Steering, this card never targets
+                             an axis; the inputs are picked on mapping rows. The
+                             per-source curve/anti-deadzone knobs on the row apply
+                             on top, and Gyro Recenter re-zeroes the resting grip. -->
+                        <Border Style="{StaticResource CardBorder}">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="&#xE99A;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_GyroTilt_Header, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                    <ui:Button Command="{Binding ResetGyroTiltAllCommand}" Style="{StaticResource ResetAllButton}"
+                                            Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                            ToolTip="{Binding Pad_GyroTilt_Reset_All, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <TextBlock Text="{Binding Pad_GyroTilt_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource CardDescription}"/>
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="{Binding Pad_GyroTilt_Range, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                                   ToolTip="{Binding Pad_GyroTilt_Range_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <Slider Value="{Binding GyroTiltRangeDeg, Mode=TwoWay}" Minimum="1" Maximum="90" Style="{StaticResource DzSlider}"
+                                                ToolTip="{Binding Pad_GyroTilt_Range_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBox Text="{Binding GyroTiltRangeDeg, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                        <TextBlock Text="&#176;" Style="{StaticResource DzPercent}"/>
+                                        <ui:Button Command="{Binding ResetGyroTiltRangeCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_GyroTilt_Reset_Range, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="{Binding Pad_GyroTilt_Deadzone, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                                   ToolTip="{Binding Pad_GyroTilt_Deadzone_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <Slider Value="{Binding GyroTiltInnerDz, Mode=TwoWay}" Minimum="0" Maximum="45" Style="{StaticResource DzSlider}"
+                                                ToolTip="{Binding Pad_GyroTilt_Deadzone_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <TextBox Text="{Binding GyroTiltInnerDz, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                        <TextBlock Text="&#176;" Style="{StaticResource DzPercent}"/>
+                                        <ui:Button Command="{Binding ResetGyroTiltInnerCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_GyroTilt_Reset_Deadzone, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
                         <!-- ─── Calibration card ─── -->
                         <Border Style="{StaticResource CardBorder}">
                             <StackPanel>

@@ -292,7 +292,7 @@ namespace PadForge.Engine.Common.Mapping
             // the stick sign frame (Lean X positive = tilt right = stick
             // right), not a right-hand-rule rate, so the rate correction
             // must not touch it.
-            if (SourceCoercion.IsGyroLeanDescriptor(desc)) return false;
+            if (SourceCoercion.IsGravityTiltFamilyDescriptor(desc)) return false;
             // Pitch is the one rate axis already in the stick frame, and the
             // aux family (#252) spells it "Gyro L Pitch", so the exclusion
             // matches the AXIS rather than the exact primary descriptor. A

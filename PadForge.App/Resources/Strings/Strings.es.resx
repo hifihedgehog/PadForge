@@ -1341,6 +1341,17 @@
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensibilidad</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Multiplicador de sensibilidad del giroscopio por fuente. 1,0 = predeterminado del motor (500°/s → desviación completa). Valores superiores a 1,0 son más sensibles. Valores inferiores son menos sensibles.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>Multiplicador de sensibilidad de inclinación por fuente. 1.0 = 90° de inclinación para deflexión completa. Valores mayores de 1.0 alcanzan la deflexión completa con menos inclinación.</value></data>
+  <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Inclinación ajustable de giroscopio X</value></data>
+  <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Inclinación ajustable de giroscopio Y</value></data>
+  <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Inclinación ajustable</value></data>
+  <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Envolvente para las entradas Inclinación ajustable X / Y: mantén la inclinación y el stick mantiene su deflexión, como el modo Deflexión de joystick de Steam. Deflexión completa en el rango que definas aquí; Recentrar giroscopio pone a cero el agarre de reposo. El giro en plano (yaw) es invisible para la gravedad y no mueve estas entradas.</value></data>
+  <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Inclinación completa a</value></data>
+  <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>Grados de inclinación desde el agarre de reposo que cuentan como deflexión completa. Menor = más sensible. 25° es el valor más común en configuraciones de Steam.</value></data>
+  <data name="Pad_GyroTilt_Deadzone" xml:space="preserve"><value>Zona muerta de inclinación</value></data>
+  <data name="Pad_GyroTilt_Deadzone_Tooltip" xml:space="preserve"><value>Grados de inclinación ignorados alrededor del agarre de reposo, restados antes de escalar para que no haya salto en el borde.</value></data>
+  <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>Restablecer a 25°</value></data>
+  <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Restablecer a 0°</value></data>
+  <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Restablecer la envolvente de inclinación</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Velocidad ratón X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Velocidad ratón Y</value></data>
   <data name="Mapping_MouseScroll" xml:space="preserve"><value>Desplazamiento ratón</value></data>

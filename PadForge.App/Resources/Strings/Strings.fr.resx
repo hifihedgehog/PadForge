@@ -1341,6 +1341,17 @@
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensibilité</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Multiplicateur de sensibilité du gyroscope par source. 1,0 = valeur par défaut du moteur (500°/s → pleine déviation). Au-dessus de 1,0 = plus sensible. En dessous = moins sensible.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>Multiplicateur de sensibilité d'inclinaison par source. 1,0 = 90° d'inclinaison pour une déflexion complète. Les valeurs supérieures à 1,0 atteignent la déflexion complète avec moins d'inclinaison.</value></data>
+  <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Inclinaison gyro réglable X</value></data>
+  <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Inclinaison gyro réglable Y</value></data>
+  <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Inclinaison réglable</value></data>
+  <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Enveloppe des entrées Inclinaison gyro réglable X / Y : maintenez l'inclinaison et le stick garde sa déflexion, comme le mode Déflexion du joystick de Steam. Déflexion complète à la plage définie ici ; Recentrer le gyroscope remet à zéro la prise de repos. Le lacet (rotation à plat) est invisible pour la gravité et ne bouge pas ces entrées.</value></data>
+  <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Inclinaison complète à</value></data>
+  <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>Degrés d'inclinaison depuis la prise de repos comptant comme déflexion complète. Plus petit = plus sensible. 25° est la valeur la plus courante dans les configurations Steam.</value></data>
+  <data name="Pad_GyroTilt_Deadzone" xml:space="preserve"><value>Zone morte d'inclinaison</value></data>
+  <data name="Pad_GyroTilt_Deadzone_Tooltip" xml:space="preserve"><value>Degrés d'inclinaison ignorés autour de la prise de repos, soustraits avant la mise à l'échelle pour éviter tout saut au bord.</value></data>
+  <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>Réinitialiser à 25°</value></data>
+  <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Réinitialiser à 0°</value></data>
+  <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Réinitialiser l'enveloppe d'inclinaison</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Vitesse souris X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Vitesse souris Y</value></data>
   <data name="Mapping_MouseScroll" xml:space="preserve"><value>Défilement souris</value></data>

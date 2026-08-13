@@ -1341,6 +1341,17 @@
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Empfindlichkeit</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Empfindlichkeitsfaktor pro Quelle für das Gyroskop. 1,0 = Engine-Standard (500°/s → volle Auslenkung). Werte über 1,0 sind empfindlicher, Werte unter 1,0 weniger empfindlich.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>Neigungsempfindlichkeit pro Quelle. 1,0 = 90° Neigung für vollen Ausschlag. Werte über 1,0 erreichen den vollen Ausschlag mit weniger Neigung.</value></data>
+  <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Gyro-Kippwinkel X</value></data>
+  <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Gyro-Kippwinkel Y</value></data>
+  <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Gyro-Kippwinkel</value></data>
+  <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Hüllkurve für die Eingaben Gyro-Kippwinkel X / Y: Neigung halten und der Stick hält seinen Ausschlag, wie Steams Joystick-Auslenkung. Voller Ausschlag beim hier eingestellten Bereich; Gyro neu zentrieren setzt die Ruhelage zurück. Gieren (flaches Drehen des Controllers) ist für die Schwerkraft unsichtbar und bewegt diese Eingaben nicht.</value></data>
+  <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Voller Ausschlag bei</value></data>
+  <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>Grad Neigung aus der Ruhelage für vollen Stick-Ausschlag. Kleiner = empfindlicher. 25° ist der häufigste Wert in Steam-Konfigurationen.</value></data>
+  <data name="Pad_GyroTilt_Deadzone" xml:space="preserve"><value>Neigungs-Totzone</value></data>
+  <data name="Pad_GyroTilt_Deadzone_Tooltip" xml:space="preserve"><value>Grad Neigung um die Ruhelage, die ignoriert werden; vor der Skalierung abgezogen, damit es keinen Sprung an der Kante gibt.</value></data>
+  <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>Auf 25° zurücksetzen</value></data>
+  <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Auf 0° zurücksetzen</value></data>
+  <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Kippwinkel-Hüllkurve auf Standard zurücksetzen</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Maus Geschwindigkeit X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Maus Geschwindigkeit Y</value></data>
   <data name="Mapping_MouseScroll" xml:space="preserve"><value>Maus Scrollen</value></data>

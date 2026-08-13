@@ -219,6 +219,14 @@ namespace PadForge.Engine.Data
         [XmlAttribute] public double ParamAngleInnerDz   { get; set; } = 0;
         [XmlAttribute] public double ParamAngleOuterDz   { get; set; } = 10;
 
+        // Gravity-tilt envelope ("Gyro Tilt X/Y", #292): degrees of tilt
+        // for full deflection (default via GyroTiltDefaultRangeDeg = 25,
+        // the modal Steam-corpus deflection max) and a subtract-style
+        // inner deadzone. Stamped from the Gyro tab's Tilt card per
+        // (slot, device), the Motion Steering push pattern. 0 = unset.
+        [XmlAttribute] public double ParamTiltRangeDeg   { get; set; } = 0;
+        [XmlAttribute] public double ParamTiltInnerDz    { get; set; } = 0;
+
         // Motion-Lean (Kind = "MotionLeanX"). JSM MOTION_DEADZONE_INNER / _OUTER
         // (degrees of tilt) and CONTROLLER_ORIENTATION (Forward/Left/Right/Backward).
         [XmlAttribute] public double ParamMotionInnerDz  { get; set; } = 15;

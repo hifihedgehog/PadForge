@@ -1341,6 +1341,17 @@
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>灵敏度</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>每个源的陀螺仪灵敏度倍数。1.0 = 引擎默认值（500°/s → 最大偏转）。大于 1.0 更灵敏。小于 1.0 不太灵敏。</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>每个输入源的倾斜灵敏度倍率。1.0 = 倾斜 90° 达到满偏转。大于 1.0 的值只需更小的倾斜即可达到满偏转。</value></data>
+  <data name="Mapping_GyroTiltX" xml:space="preserve"><value>陀螺仪倾角 X</value></data>
+  <data name="Mapping_GyroTiltY" xml:space="preserve"><value>陀螺仪倾角 Y</value></data>
+  <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>陀螺仪倾角</value></data>
+  <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>陀螺仪倾角 X / Y 输入的包络设置：保持倾斜，摇杆就保持偏转，类似 Steam 的摇杆偏转模式。在此设定的范围内达到满偏转；陀螺仪重新居中会重置静止握姿。偏航（平放旋转）对重力不可见，不会移动这些输入。</value></data>
+  <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>满偏转角度</value></data>
+  <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>从静止握姿倾斜多少度算作满偏转。越小越灵敏。25° 是 Steam 配置中最常见的值。</value></data>
+  <data name="Pad_GyroTilt_Deadzone" xml:space="preserve"><value>倾斜死区</value></data>
+  <data name="Pad_GyroTilt_Deadzone_Tooltip" xml:space="preserve"><value>在静止握姿周围忽略的倾斜度数，在缩放前减去，因此边缘处不会跳变。</value></data>
+  <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>重置为 25°</value></data>
+  <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>重置为 0°</value></data>
+  <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>将倾角包络重置为默认值</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>鼠标速度 X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>鼠标速度 Y</value></data>
   <data name="Mapping_MouseScroll" xml:space="preserve"><value>鼠标滚动</value></data>

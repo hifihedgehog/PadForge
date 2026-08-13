@@ -2600,6 +2600,27 @@ namespace PadForge.ViewModels
             MotionSteerInnerDz = 15; MotionSteerOuterDz = 135; MotionSteerOrientIndex = 0;
         });
 
+        // ── Gyro Tilt envelope (#292) ──
+        // Per-(slot, device) lens over the "Gyro Tilt X/Y" sources: the
+        // save pipeline stamps these onto every tilt source
+        // (ApplyGyroTiltParamsToRow, the Motion Steering push pattern) and
+        // persists them in the PadSetting extended-mapping bag
+        // ("GyroTilt*" keys). 25 is the modal Steam-corpus deflection max;
+        // the clamp ceiling 180 admits the corpus outliers (113) while the
+        // slider tops at 90.
+        private double _gyroTiltRangeDeg = 25;
+        public double GyroTiltRangeDeg { get => _gyroTiltRangeDeg; set => SetProperty(ref _gyroTiltRangeDeg, Math.Clamp(value, 1, 180)); }
+        private double _gyroTiltInnerDz;
+        public double GyroTiltInnerDz { get => _gyroTiltInnerDz; set => SetProperty(ref _gyroTiltInnerDz, Math.Clamp(value, 0, 89)); }
+
+        private RelayCommand _resetGyroTiltRangeCommand, _resetGyroTiltInnerCommand, _resetGyroTiltAllCommand;
+        public RelayCommand ResetGyroTiltRangeCommand => _resetGyroTiltRangeCommand ??= new RelayCommand(() => GyroTiltRangeDeg = 25);
+        public RelayCommand ResetGyroTiltInnerCommand => _resetGyroTiltInnerCommand ??= new RelayCommand(() => GyroTiltInnerDz = 0);
+        public RelayCommand ResetGyroTiltAllCommand => _resetGyroTiltAllCommand ??= new RelayCommand(() =>
+        {
+            GyroTiltRangeDeg = 25; GyroTiltInnerDz = 0;
+        });
+
         // ── Flick Stick tuning (#225, wave 4a) ──
         // Per-(slot, device) lens over the "Flick Stick ..." sources in this
         // slot's KBM mapping set: the save pipeline stamps these onto every

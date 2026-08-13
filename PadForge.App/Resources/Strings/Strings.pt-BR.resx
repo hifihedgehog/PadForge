@@ -1341,6 +1341,17 @@
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensibilidade</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Multiplicador de sensibilidade do giroscópio por fonte. 1,0 = padrão do motor (500°/s → deflexão total). Valores acima de 1,0 são mais sensíveis. Abaixo, menos sensíveis.</value></data>
   <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>Multiplicador de sensibilidade de inclinação por fonte. 1.0 = 90° de inclinação para deflexão total. Valores acima de 1.0 atingem a deflexão total com menos inclinação.</value></data>
+  <data name="Mapping_GyroTiltX" xml:space="preserve"><value>Inclinação ajustável do giroscópio X</value></data>
+  <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Inclinação ajustável do giroscópio Y</value></data>
+  <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Inclinação ajustável</value></data>
+  <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Envelope para as entradas Inclinação ajustável X / Y: mantenha a inclinação e o analógico mantém a deflexão, como o modo Deflexão do joystick da Steam. Deflexão total no alcance definido aqui; Recentralizar giroscópio zera a pegada de repouso. A guinada (girar na horizontal) é invisível para a gravidade e não move estas entradas.</value></data>
+  <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Inclinação total em</value></data>
+  <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>Graus de inclinação a partir da pegada de repouso que contam como deflexão total. Menor = mais sensível. 25° é o valor mais comum nas configurações da Steam.</value></data>
+  <data name="Pad_GyroTilt_Deadzone" xml:space="preserve"><value>Zona morta de inclinação</value></data>
+  <data name="Pad_GyroTilt_Deadzone_Tooltip" xml:space="preserve"><value>Graus de inclinação ignorados ao redor da pegada de repouso, subtraídos antes da escala para não haver salto na borda.</value></data>
+  <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>Redefinir para 25°</value></data>
+  <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Redefinir para 0°</value></data>
+  <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Redefinir o envelope de inclinação</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Velocidade do Mouse X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Velocidade do Mouse Y</value></data>
   <data name="Mapping_MouseScroll" xml:space="preserve"><value>Rolagem do Mouse</value></data>

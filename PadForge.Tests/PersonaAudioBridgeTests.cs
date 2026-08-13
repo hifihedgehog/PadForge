@@ -247,6 +247,110 @@ namespace PadForge.Tests
             }
         }
 
+        // ── Speaker AND haptics in one tick (discussion #300) ──
+        //
+        // Both reports carry the packet 0x11 audio SESSION header, and the
+        // device tracks ONE session. Running a counter per report id made that
+        // session's counter jump back and forth whenever both streams were
+        // live, and the pad stalled for about a second and then came back with
+        // only one of the two. A tick with both now sends one report carrying
+        // 0x11 + 0x12 + the audio lane packet, which is what @vlue-c proved on
+        // hardware and what the packet grammar was always built for.
+
+        private static byte[] NewCombined() => new byte[334];
+
+        private static byte[] Opus(byte fill)
+        {
+            var o = new byte[200];
+            for (int i = 0; i < o.Length; i++) o[i] = fill;
+            return o;
+        }
+
+        [Fact]
+        public void CombinedReport_ChainsSessionThenHapticsThenAudio()
+        {
+            var report = NewCombined();
+            AudioPassthroughService.BuildDs5BtCombinedReport(
+                report, 0, 0, micOpen: false,
+                Tick(_ => 0x4000, _ => 0x4000), Opus(0xAA), 200, lanePid: 0x13);
+
+            Assert.Equal(0x35, report[0]);            // one report, the speaker id
+            Assert.Equal(0x11 | 0x80, report[2]);     // packet 0x11, sized
+            Assert.Equal(7, report[3]);
+            Assert.Equal(0x12 | 0x80, report[11]);    // packet 0x12, sized
+            Assert.Equal(64, report[12]);             // 64 bytes of actuator s8
+
+            // The audio packet follows the actuator payload, at the offset the
+            // reference sketches a third chained packet on (data[77]).
+            int at = AudioPassthroughService.Ds5BtCombinedAudioPacketAt;
+            Assert.Equal(77, at);
+            Assert.Equal(0x13 | 0x80, report[at]);
+            Assert.Equal(200, report[at + 1]);
+            Assert.Equal(0xAA, report[at + 2]);
+            Assert.Equal(0xAA, report[at + 201]);
+        }
+
+        [Fact]
+        public void CombinedReport_CarriesBothPayloadsIntact()
+        {
+            var report = NewCombined();
+            AudioPassthroughService.BuildDs5BtCombinedReport(
+                report, 0, 0, false, Tick(_ => 0x4000, _ => -0x2000), Opus(0x5A), 200, 0x13);
+
+            // Actuator block: same decimation as the haptics-only report.
+            for (int o = 0; o < 32; o++)
+            {
+                Assert.Equal(unchecked((byte)(0x4000 >> 8)), report[13 + o * 2]);
+                Assert.Equal(unchecked((byte)Math.Clamp((-0x2000) >> 8, -128, 127)), report[14 + o * 2]);
+            }
+            // And the Opus frame is not clipped by the haptics sitting ahead.
+            int at = AudioPassthroughService.Ds5BtCombinedAudioPacketAt;
+            for (int i = 0; i < 200; i++) Assert.Equal(0x5A, report[at + 2 + i]);
+        }
+
+        [Fact]
+        public void CombinedReport_HonorsTheHeadsetLaneAndTheMicSession()
+        {
+            var headset = NewCombined();
+            AudioPassthroughService.BuildDs5BtCombinedReport(
+                headset, 3, 0x7C, micOpen: true, Tick(_ => 0, _ => 0), Opus(0), 200, lanePid: 0x16);
+
+            Assert.Equal(0x30, headset[1]);                    // seq in the high nibble
+            Assert.Equal(0xFF, headset[4]);                    // mic session open
+            Assert.Equal(0x7C, headset[10]);                   // shared packet counter
+            Assert.Equal(0x16 | 0x80,
+                headset[AudioPassthroughService.Ds5BtCombinedAudioPacketAt]);
+        }
+
+        [Fact]
+        public void CombinedReport_EndsInACrcOverEverythingBeforeIt()
+        {
+            var report = NewCombined();
+            AudioPassthroughService.BuildDs5BtCombinedReport(
+                report, 1, 2, false, Tick(_ => 0x1000, _ => 0x1000), Opus(0x33), 200, 0x13);
+
+            // Flipping any payload byte must change the trailing CRC.
+            var before = new byte[4];
+            Array.Copy(report, 330, before, 0, 4);
+            var again = NewCombined();
+            AudioPassthroughService.BuildDs5BtCombinedReport(
+                again, 1, 2, false, Tick(_ => 0x1000, _ => 0x1000), Opus(0x34), 200, 0x13);
+            Assert.False(before.AsSpan().SequenceEqual(again.AsSpan(330, 4)),
+                "the CRC does not cover the audio payload");
+        }
+
+        [Fact]
+        public void CombinedReport_ReportsSignalLikeTheHapticsOnlyPath()
+        {
+            var quiet = NewCombined();
+            Assert.False(AudioPassthroughService.BuildDs5BtCombinedReport(
+                quiet, 0, 0, false, Tick(_ => 0, _ => 0), Opus(0), 200, 0x13));
+
+            var loud = NewCombined();
+            Assert.True(AudioPassthroughService.BuildDs5BtCombinedReport(
+                loud, 0, 0, false, Tick(_ => 0x4000, _ => 0), Opus(0), 200, 0x13));
+        }
+
         // ── Consumer-side verdicts (shared shape with tools/PersonaVerify) ──
 
         [Theory]

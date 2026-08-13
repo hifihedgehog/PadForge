@@ -533,32 +533,27 @@
         img.style.clipPath = "inset(" + topClip + "% 0 0 0)";
     }
 
-    // A visible "click" pill above the touch surface. Its position is derived
-    // from the paired surface so it lands in the exposed strip above the pad
-    // (or straddling the pad's top edge when the click and touch rects fully
-    // coincide, as on the Steam Deck).
+    // A visible, TEXT-FREE click pill beside its touch surface. Placement is
+    // obvious from adjacency alone (owner direction 2026-08-12): a dual-pad
+    // layout gets a slim VERTICAL pill hugging the outboard edge of each pad
+    // (left pad's on its left, right pad's on its right), and a single-pad
+    // layout keeps a slim horizontal bar above the pad. The pill never
+    // overlaps the touch surface or any other control; if the preferred spot
+    // is occupied, the remaining sides are tried in order.
     function setupTouchpadClickPill(ov) {
         var surfaceTarget = ov.target.replace("Click", "");
         var surface = null;
-        for (var s = 0; s < layout.overlays.length; s++)
-            if (layout.overlays[s].target === surfaceTarget) { surface = layout.overlays[s]; break; }
+        for (var si = 0; si < layout.overlays.length; si++)
+            if (layout.overlays[si].target === surfaceTarget) { surface = layout.overlays[si]; break; }
         var ref = surface || ov;
-
-        // Pill placement is a small solver, because no single spot works
-        // everywhere: the strip above the DualSense pad is free, but above
-        // the Deck's trackpads sit the sticks, and INSIDE the pad is off
-        // limits too, since a game may need the full touch surface, including
-        // its top edge (owner report 2026-08-12). Candidates are tried in
-        // order (above, below, left, right of the surface) and the first one
-        // that is on-canvas and collides with NOTHING, the touch surface
-        // included, wins.
-        var pw = Math.min(ref.w * 0.6, layout.baseWidth * 0.16);
-        var ph = layout.baseHeight * 0.06;
         var gap = layout.baseHeight * 0.012;
 
+        var vw = Math.min(ref.w * 0.22, layout.baseWidth * 0.032);
+        var vh = ref.h * 0.85;
+        var hw = Math.min(ref.w * 0.6, layout.baseWidth * 0.16);
+        var hh = layout.baseHeight * 0.05;
+
         function collides(cx, cy, cw, ch) {
-            // The paired surface is a hard obstacle too: the pill must never
-            // eat any part of the touchable area.
             if (surface
                 && cx < surface.x + surface.w && cx + cw > surface.x
                 && cy < surface.y + surface.h && cy + ch > surface.y)
@@ -566,8 +561,6 @@
             for (var k = 0; k < layout.overlays.length; k++) {
                 var o = layout.overlays[k];
                 if (o === ov || o.target === surfaceTarget || o.target === ov.target) continue;
-                // Inflate by the 20% fat-finger padding button zones get, so
-                // the pill clears the TOUCH TARGETS, not just the art.
                 var padX = o.w * 0.2, padY = o.h * 0.2;
                 if (cx < o.x + o.w + padX && cx + cw > o.x - padX
                     && cy < o.y + o.h + padY && cy + ch > o.y - padY)
@@ -580,37 +573,34 @@
                 && cx + cw <= layout.baseWidth && cy + ch <= layout.baseHeight;
         }
 
-        var candidates = [
-            { x: ref.x + (ref.w - pw) / 2, y: ref.y - ph - gap },            // above
-            { x: ref.x + (ref.w - pw) / 2, y: ref.y + ref.h + gap },        // below
-            { x: ref.x - pw - gap,         y: ref.y + (ref.h - ph) / 2 },   // left
-            { x: ref.x + ref.w + gap,      y: ref.y + (ref.h - ph) / 2 },   // right
-        ];
-        var px = candidates[1].x, py = candidates[1].y; // default: below
+        var left  = { x: ref.x - vw - gap,         y: ref.y + (ref.h - vh) / 2, w: vw, h: vh };
+        var right = { x: ref.x + ref.w + gap,      y: ref.y + (ref.h - vh) / 2, w: vw, h: vh };
+        var above = { x: ref.x + (ref.w - hw) / 2, y: ref.y - hh - gap,         w: hw, h: hh };
+        var below = { x: ref.x + (ref.w - hw) / 2, y: ref.y + ref.h + gap,      w: hw, h: hh };
+
+        var candidates;
+        if (ov.target === "LeftTouchpadClick") candidates = [left, right, below, above];
+        else if (ov.target === "RightTouchpadClick") candidates = [right, left, below, above];
+        else candidates = [above, below, left, right];
+
+        var chosen = candidates[0];
         for (var c = 0; c < candidates.length; c++) {
-            if (onCanvas(candidates[c].x, candidates[c].y, pw, ph)
-                && !collides(candidates[c].x, candidates[c].y, pw, ph)) {
-                px = candidates[c].x; py = candidates[c].y;
+            if (onCanvas(candidates[c].x, candidates[c].y, candidates[c].w, candidates[c].h)
+                && !collides(candidates[c].x, candidates[c].y, candidates[c].w, candidates[c].h)) {
+                chosen = candidates[c];
                 break;
             }
         }
 
         var pill = document.createElement("div");
         pill.className = "touch-zone touchpad-click-pill";
-        pill.style.left = (px / layout.baseWidth * 100) + "%";
-        pill.style.top = (py / layout.baseHeight * 100) + "%";
-        pill.style.width = (pw / layout.baseWidth * 100) + "%";
-        pill.style.height = (ph / layout.baseHeight * 100) + "%";
-        pill.style.zIndex = "16"; // above the touch surface (15)
-        pill.textContent = clickPillLabel(ov.target);
+        pill.style.left = (chosen.x / layout.baseWidth * 100) + "%";
+        pill.style.top = (chosen.y / layout.baseHeight * 100) + "%";
+        pill.style.width = (chosen.w / layout.baseWidth * 100) + "%";
+        pill.style.height = (chosen.h / layout.baseHeight * 100) + "%";
+        pill.style.zIndex = "16";
         bindTouchpadClickZone(pill, ov);
         touchLayer.appendChild(pill);
-    }
-
-    function clickPillLabel(target) {
-        if (target === "LeftTouchpadClick") return "\u25C9 L Click";
-        if (target === "RightTouchpadClick") return "\u25C9 R Click";
-        return "\u25C9 Click";
     }
 
     function bindTouchpadClickZone(zone, ov) {

@@ -139,14 +139,18 @@ namespace PadForge.Common.Input
             public int Ds5Seq;
             public byte Ds5PktCounter;
 
-            /// <summary>Persona haptic stream (report 0x32) counters, SEPARATE
-            /// from the 0x35 speaker pair above by the same rule that created
-            /// that pair: the firmware tracks sequence per stream, and a shared
-            /// counter makes each stream see jumps of two and garble. The
-            /// references agree (dualsense-bt-haptics runs an independent
-            /// reportSeqCounter for its 0x32s beside outputSeq for 0x31).</summary>
-            public int Ds5HapticSeq;
-            public byte Ds5HapticPktCounter;
+            /// <summary>The haptic stream had its OWN counter pair here, on
+            /// the theory that the firmware tracks a sequence per report id.
+            /// It does not: both 0x32 and 0x35 carry the packet 0x11 audio
+            /// SESSION header, and the device tracks that one session, so two
+            /// counters feeding it made the session's counter jump back and
+            /// forth whenever both streams were live. That is discussion #300
+            /// (speaker and haptics could not start together). The precedent
+            /// cited for splitting them was dualsense-bt-haptics running a
+            /// counter for 0x32 beside one for 0x31, but 0x31 is the input
+            /// state report and carries no 0x11 header, so it was never the
+            /// analogous case. Both lanes now share Ds5Seq / Ds5PktCounter
+            /// above, and a tick that has both sends ONE combined report.</summary>
             /// <summary>Last tick the decimated haptic block held signal; the
             /// 0x32 stream idles after 2 s of silence like the speaker lane,
             /// instead of interleaving zero-payload reports forever.</summary>
@@ -2853,15 +2857,16 @@ namespace PadForge.Common.Input
 
                             s.Source.Read(pull, 0, inFrames * 2);
 
-                            // Authored haptics (HM#39): shipped ahead of the
+                            // Authored haptics (HM#39): taken ahead of the
                             // speaker idle gate, since a game can drive the
                             // actuators while the speaker mix is silent. A
                             // no-op when the slot has no composite persona
                             // or the ring lacks a whole tick.
+                            bool haveHaptics = false;
                             if (!s.IsDs4)
                             {
                                 ManageDs5MicOpen(s, hapticReport);
-                                SendDs5BtHapticFrame(s, hapticPcm, hapticReport);
+                                haveHaptics = TryTakeDs5HapticTick(s, hapticPcm, out _);
                             }
 
                             // Idle gate: after 2 s of silence stop sending so the
@@ -2869,7 +2874,14 @@ namespace PadForge.Common.Input
                             // the ring cursor live and the activity stamp fresh.
                             bool audible = Environment.TickCount64 - s.LastAudibleTicks <= 2000;
                             _personaLastAudible = audible;
-                            if (!audible) continue;
+
+                            if (!audible)
+                            {
+                                // No speaker this tick. Haptics, if any, go on
+                                // their own as report 0x32.
+                                if (haveHaptics) SendDs5BtHapticOnly(s, hapticPcm, hapticReport);
+                                continue;
+                            }
 
                             if (s.IsDs4)
                             {
@@ -2888,7 +2900,10 @@ namespace PadForge.Common.Input
                                 frame[o * 2] = (float)(pull[i0 * 2] * (1 - t) + pull[i1 * 2] * t);
                                 frame[o * 2 + 1] = (float)(pull[i0 * 2 + 1] * (1 - t) + pull[i1 * 2 + 1] * t);
                             }
-                            SendDs5BtFrame(s, frame, opus, report);
+                            // One report per tick for the one audio session:
+                            // when this tick also has actuator data, it rides
+                            // the SAME 0x35 as a chained 0x12 packet (#300).
+                            SendDs5BtFrame(s, frame, opus, report, haveHaptics ? hapticPcm : null);
                             _personaSpkSends++;
                         }
                         catch
@@ -3041,7 +3056,11 @@ namespace PadForge.Common.Input
         /// <summary>Encode one 10 ms frame from <paramref name="pull"/> and
         /// send it as a 0x35 report on the lane the device's output path
         /// selects (speaker, headset, or both).</summary>
-        private static void SendDs5BtFrame(Sink s, float[] pull, byte[] opus, byte[] report)
+        /// <param name="hapticPcm">This tick's actuator block when the game is
+        /// driving the speaker AND the haptics together, else null. Non-null
+        /// makes this one combined report instead of two (#300).</param>
+        private static void SendDs5BtFrame(Sink s, float[] pull, byte[] opus, byte[] report,
+                                           short[] hapticPcm = null)
         {
             int outPath = 0;
             try { outPath = DeviceAudioOutputPathProvider?.Invoke(s.DeviceGuid) ?? 0; }
@@ -3055,6 +3074,24 @@ namespace PadForge.Common.Input
             int n;
             try { n = s.Ds5OpusEncoder.Encode(pull.AsSpan(), Ds5OpusFrameSamples, opus.AsSpan(), Ds5OpusBytes); }
             catch { s.Ds5OpusEncoder = null; return; }
+
+            if (hapticPcm != null)
+            {
+                // Speaker + haptics in one tick: ONE report, one session
+                // header, one counter (#300). Two reports made the device's
+                // single audio session see a counter that jumped back and
+                // forth, and it stalled for about a second and then resumed
+                // only one of the two.
+                BuildDs5BtCombinedReport(report, s.Ds5Seq, s.Ds5PktCounter, s.Ds5MicOpen == 1,
+                                         hapticPcm, opus, n, Ds5BtAudioLanePid(outPath));
+                s.Ds5Seq = (s.Ds5Seq + 1) & 0x0F;
+                s.Ds5PktCounter++;
+                bool combinedFail = true;
+                if (!(s.Tx != null && s.Tx.TrySend(s.BtHandle, report, out combinedFail)) && combinedFail)
+                    s.TransportFailed = true;
+                _personaHapticSends++;
+                return;
+            }
 
             Array.Clear(report, 0, report.Length);
             report[0] = 0x35;
@@ -3147,8 +3184,26 @@ namespace PadForge.Common.Input
             report[10] = pktCounter;
             // packet 0x12: 64 bytes of s8 stereo 3 kHz actuator PCM,
             // decimated 16:1 from the 48 kHz tick by block mean.
-            report[11] = 0x12 | 0x80;
-            report[12] = 64;
+            bool signal = WriteDs5HapticPacket(report, 11, pcm);
+            uint c = Crc32(report, Ds5HapticBtReportSize - 4);
+            report[Ds5HapticBtReportSize - 4] = (byte)(c & 0xFF);
+            report[Ds5HapticBtReportSize - 3] = (byte)((c >> 8) & 0xFF);
+            report[Ds5HapticBtReportSize - 2] = (byte)((c >> 16) & 0xFF);
+            report[Ds5HapticBtReportSize - 1] = (byte)(c >> 24);
+            return signal;
+        }
+
+        /// <summary>Writes the packet 0x12 actuator block at
+        /// <paramref name="at"/> and returns whether it carries signal.
+        /// 48 kHz stereo s16 to 3 kHz stereo s8 by 16-sample block mean then
+        /// high byte, the references' resample-then-high-byte pipeline
+        /// (dualsense-bt-haptics Program.cs:198-208, DualSenseY-v2
+        /// audioPassthrough.cpp:392). Shared by the haptics-only report and
+        /// the combined report so one decimation serves both.</summary>
+        private static bool WriteDs5HapticPacket(byte[] report, int at, ReadOnlySpan<short> pcm)
+        {
+            report[at] = 0x12 | 0x80;
+            report[at + 1] = 64;
             bool signal = false;
             for (int o = 0; o < 32; o++)
             {
@@ -3157,15 +3212,62 @@ namespace PadForge.Common.Input
                 for (int k = 0; k < 16; k++) { accL += pcm[b + k * 2]; accR += pcm[b + k * 2 + 1]; }
                 byte l = unchecked((byte)Math.Clamp((accL / 16) >> 8, -128, 127));
                 byte r = unchecked((byte)Math.Clamp((accR / 16) >> 8, -128, 127));
-                report[13 + o * 2] = l;
-                report[14 + o * 2] = r;
+                report[at + 2 + o * 2] = l;
+                report[at + 3 + o * 2] = r;
                 if (l != 0 || r != 0) signal = true;
             }
-            uint c = Crc32(report, Ds5HapticBtReportSize - 4);
-            report[Ds5HapticBtReportSize - 4] = (byte)(c & 0xFF);
-            report[Ds5HapticBtReportSize - 3] = (byte)((c >> 8) & 0xFF);
-            report[Ds5HapticBtReportSize - 2] = (byte)((c >> 16) & 0xFF);
-            report[Ds5HapticBtReportSize - 1] = (byte)(c >> 24);
+            return signal;
+        }
+
+        /// <summary>Offset of the audio packet in a COMBINED report: the
+        /// 0x11 header (2 + 7) then the 0x12 actuator packet (2 + 64).</summary>
+        internal const int Ds5BtCombinedAudioPacketAt = 11 + 2 + 64;   // 77
+
+        /// <summary>Builds ONE report 0x35 carrying the 0x11 session header,
+        /// the 0x12 actuator packet AND the audio-lane packet, for a tick
+        /// where the game drives the speaker and the haptics together.
+        ///
+        /// <para>WHY this exists (discussion #300, reported by vlue-c and
+        /// reproduced with his PersonaVerify phases). Speaker-only worked and
+        /// haptics-only worked, but starting one while the other ran stalled
+        /// the pad for about a second and then resumed only ONE of them. The
+        /// cause is that both reports carry the packet 0x11 audio SESSION
+        /// header, and PadForge ran a separate rolling packet counter and
+        /// sequence nibble for each report id. The device tracks one session,
+        /// so it saw a counter that jumped back and forth, which is the same
+        /// sequence-discontinuity failure this file already documents one
+        /// level down (two 0x35 lanes sharing a counter garbled the audio).
+        /// The reference is explicit that the report id is not what
+        /// identifies the stream: dualsense-bt-haptics Program.cs:172 notes
+        /// that it depends on the PACKET id, not the report id, and that 0x32
+        /// and 0x35 are interchangeable carriers. Packets are a sized TLV
+        /// chain (DualSenseY-v2 audioPassthrough.cpp:343-400 models exactly
+        /// that and appends packets by offset), so one report can carry
+        /// both payloads. The same reference sketches a third chained packet
+        /// at byte 77, which is precisely where the audio packet lands
+        /// here.</para></summary>
+        internal static bool BuildDs5BtCombinedReport(
+            byte[] report, int seq, byte pktCounter, bool micOpen,
+            ReadOnlySpan<short> hapticPcm, ReadOnlySpan<byte> opus, int opusBytes, byte lanePid)
+        {
+            Array.Clear(report, 0, Ds5BtReportSize);
+            report[0] = 0x35;
+            report[1] = (byte)((seq & 0x0F) << 4);
+            report[2] = 0x11 | 0x80;
+            report[3] = 7;
+            report[4] = Ds5MicSessionByte(micOpen);
+            report[9] = 0xFF;
+            report[10] = pktCounter;
+            bool signal = WriteDs5HapticPacket(report, 11, hapticPcm);
+            int at = Ds5BtCombinedAudioPacketAt;
+            report[at] = (byte)(lanePid | 0x80);
+            report[at + 1] = (byte)Ds5OpusBytes;
+            opus.Slice(0, Math.Min(opusBytes, Ds5OpusBytes)).CopyTo(report.AsSpan(at + 2));
+            uint c = Crc32(report, Ds5BtReportSize - 4);
+            report[Ds5BtReportSize - 4] = (byte)(c & 0xFF);
+            report[Ds5BtReportSize - 3] = (byte)((c >> 8) & 0xFF);
+            report[Ds5BtReportSize - 2] = (byte)((c >> 16) & 0xFF);
+            report[Ds5BtReportSize - 1] = (byte)(c >> 24);
             return signal;
         }
 
@@ -3179,25 +3281,46 @@ namespace PadForge.Common.Input
              : (rms > 0.25 && crest < 6.0) ? "noise"
              : "audio";
 
-        private static void SendDs5BtHapticFrame(Sink s, short[] pcm, byte[] report)
+        /// <summary>Pulls this tick's actuator block, if there is a whole one,
+        /// and reports whether it should go on the wire. Split out of the send
+        /// so the tick can decide between a haptics-only 0x32 and a COMBINED
+        /// 0x35 before anything is built (#300): the two must never both go
+        /// out in one tick, because they feed one audio session.</summary>
+        private static bool TryTakeDs5HapticTick(Sink s, short[] pcm, out bool signal)
         {
-            if (!_personaHapticRings.TryGetValue(s.DeviceGuid, out var ring)) return;
-            if (ring.FramesAvailable < Ds5HapticFramesPerTick) return; // whole ticks only
+            signal = false;
+            if (!_personaHapticRings.TryGetValue(s.DeviceGuid, out var ring)) return false;
+            if (ring.FramesAvailable < Ds5HapticFramesPerTick) return false; // whole ticks only
             ring.ReadFrames(pcm, Ds5HapticFramesPerTick);
 
-            bool signal = BuildDs5BtHapticReport(report, s.Ds5HapticSeq, s.Ds5HapticPktCounter,
-                                                 s.Ds5MicOpen == 1, pcm);
+            // Signal detection mirrors the decimation the builders perform, so
+            // the silence gate agrees with what would actually be sent.
+            for (int o = 0; o < 32 && !signal; o++)
+            {
+                int accL = 0, accR = 0;
+                int b = o * 16 * 2;
+                for (int k = 0; k < 16; k++) { accL += pcm[b + k * 2]; accR += pcm[b + k * 2 + 1]; }
+                if (unchecked((byte)Math.Clamp((accL / 16) >> 8, -128, 127)) != 0
+                    || unchecked((byte)Math.Clamp((accR / 16) >> 8, -128, 127)) != 0)
+                    signal = true;
+            }
 
-            // Silence gate, mirror of the speaker lane's: keep a 2 s
-            // hangover so short gaps stay continuous, then stop sending
-            // entirely. The ring was already drained above, so silence
-            // costs no radio and never interleaves with the 0x35 stream.
+            // Silence gate, mirror of the speaker lane's: keep a 2 s hangover
+            // so short gaps stay continuous, then stop sending entirely. The
+            // ring was drained above either way, so silence costs no radio.
             long nowTicks = Environment.TickCount64;
             if (signal) s.Ds5HapticAudibleTicks = nowTicks;
-            else if (nowTicks - s.Ds5HapticAudibleTicks > 2000) return;
-            // The builder already stamped the CRC over the final bytes.
-            s.Ds5HapticSeq = (s.Ds5HapticSeq + 1) & 0x0F;
-            s.Ds5HapticPktCounter++;
+            else if (nowTicks - s.Ds5HapticAudibleTicks > 2000) return false;
+            return true;
+        }
+
+        /// <summary>Ships the actuator block on its own, for a tick with no
+        /// speaker audio. Rides the shared session counters.</summary>
+        private static void SendDs5BtHapticOnly(Sink s, short[] pcm, byte[] report)
+        {
+            BuildDs5BtHapticReport(report, s.Ds5Seq, s.Ds5PktCounter, s.Ds5MicOpen == 1, pcm);
+            s.Ds5Seq = (s.Ds5Seq + 1) & 0x0F;
+            s.Ds5PktCounter++;
 
             bool hardFail = false;
             bool sent = s.Tx != null && s.Tx.TrySend(s.BtHandle, report, out hardFail);
@@ -3274,7 +3397,7 @@ namespace PadForge.Common.Input
             report[3] = 7;
             report[4] = open ? (byte)0xFF : (byte)0xFE;
             report[9] = 0xFF;
-            report[10] = s.Ds5HapticPktCounter++;
+            report[10] = s.Ds5PktCounter++;
             report[11] = 0x12 | 0x80;
             report[12] = 64;                        // 64 zero haptic bytes follow
             uint crc = Crc32(report, Ds5HapticBtReportSize - 4);

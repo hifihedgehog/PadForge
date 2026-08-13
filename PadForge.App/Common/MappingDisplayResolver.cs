@@ -1685,6 +1685,21 @@ namespace PadForge.Common
                 list.Add(new InputChoice { Descriptor = "Gyro Horizontal", DisplayName = si.Mapping_GyroHorizontal });
             }
 
+            // Gravity-tilt pairs (#292): lean (fixed 90-degree envelope)
+            // and tilt (the adjustable Gyro Tilt card). Gated on HasAccel,
+            // not HasGyro, because they read the accelerometer's gravity
+            // direction: a bare Wii Remote has accel and no gyro and still
+            // tilts. Listed here beside the rate family so the "Gyro ..."
+            // names sort together in a device's own group; the (Any device)
+            // group carries them too, like the rest of the gyro family.
+            if (ud.HasAccel)
+            {
+                list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.GyroLeanXDescriptor, DisplayName = si.Mapping_GyroLeanX });
+                list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.GyroLeanYDescriptor, DisplayName = si.Mapping_GyroLeanY });
+                list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.GyroTiltXDescriptor, DisplayName = si.Mapping_GyroTiltX });
+                list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.GyroTiltYDescriptor, DisplayName = si.Mapping_GyroTiltY });
+            }
+
             // Aux gyro (#252): the LEFT half of a combined Joy-Con pair,
             // whose rates are a second physical sensor (the primary gyro
             // above is the right half). Gated on its own capability, so it

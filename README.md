@@ -94,6 +94,7 @@ PadForge is for sim racers running wheels in games that only understand Xbox con
 - **Left Joy-Con aux motion.** A paired Joy-Con exposes the left half's gyro and accelerometer as separate sources.
 - **Per-source Acceleration, Invert Output, and Fire on Release.** New per-row tuning, plus activators that fire when released.
 - **Trackpad pointer response.** A libinput-derived acceleration curve makes touchpad-as-mouse feel like a laptop trackpad.
+- **Trackball momentum.** Flick the touchpad or the mouse stick and the cursor coasts to a stop on real constant-friction physics (a port of the Steam Controller driver's own trackball), with glide, fling boost, threshold, speed cap, and a stacking mode that builds speed across swipes.
 - **Time-based cursor rates.** Keyboard + Mouse cursor and scroll speeds are real rates, independent of polling rate.
 - **Clear All clears everything.** The Mappings tab's Clear All resets sources, options, and tuning in one confirmed step.
 - Carrying forward from 3.5 and 3.6: Wii Bluetooth pairing, Remote Link across PCs, native wheel force feedback, MIDI in and out, and controller-speaker audio.

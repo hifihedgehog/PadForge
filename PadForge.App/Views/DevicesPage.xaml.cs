@@ -153,8 +153,10 @@ namespace PadForge.Views
         /// for unmapped ones.</summary>
         private void IdentifyDevice_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is Button btn && btn.DataContext is ViewModels.DeviceRowViewModel device)
-                InputService?.IdentifyDevice(device.InstanceGuid);
+            // The button lives in the details pane, so the target is the
+            // SELECTED device (the pane's whole context), not a row.
+            if (DataContext is ViewModels.DevicesViewModel vm && vm.SelectedDevice != null)
+                InputService?.IdentifyDevice(vm.SelectedDevice.InstanceGuid);
         }
 
         private void RemoveDevice_Click(object sender, RoutedEventArgs e)

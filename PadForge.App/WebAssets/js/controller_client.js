@@ -38,6 +38,9 @@
 
     // ── WebSocket ──
     var ws = null;
+    var resyncFns = [];        // reset per-socket duplicate-suppression caches on (re)connect
+    var releaseFns = [];       // force-neutral everything currently held (page hidden)
+    var reconnectPending = false;
 
     function send(obj) {
         if (ws && ws.readyState === WebSocket.OPEN) {
@@ -46,6 +49,9 @@
     }
 
     function connect() {
+        // One socket at a time: a reconnect timer racing another connect path
+        // must not stack a second loop.
+        if (ws && (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING)) return;
         var proto = location.protocol === "https:" ? "wss:" : "ws:";
         var hasTouchpad = layout && layout.overlays && layout.overlays.some(function(o) {
             // Only generic touch surfaces make this a touchpad device. A
@@ -59,6 +65,10 @@
 
         ws.onopen = function () {
             console.log("[PadForge] WebSocket connected");
+            // A reconnected server-side device starts neutral, so every
+            // duplicate-suppression cache from the old socket must be dropped
+            // or the first post-reconnect state is silently swallowed.
+            for (var ri = 0; ri < resyncFns.length; ri++) resyncFns[ri]();
             document.getElementById("controller-viewport").style.display = "";
             document.getElementById("disconnect-message").style.display = "none";
             setStatus("Connected");
@@ -88,7 +98,7 @@
             console.log("[PadForge] WebSocket closed, code=" + ev.code);
             document.getElementById("controller-viewport").style.display = "none";
             document.getElementById("disconnect-message").style.display = "block";
-            setTimeout(connect, 3000);
+            scheduleReconnect();
         };
 
         ws.onerror = function (ev) {
@@ -96,6 +106,30 @@
             ws.close();
         };
     }
+
+    function scheduleReconnect() {
+        // A backgrounded tab reconnects when it returns to the foreground
+        // instead of burning a socket attempt every 3 s while invisible.
+        if (document.hidden) { reconnectPending = true; return; }
+        setTimeout(connect, 3000);
+    }
+
+    function releaseAll() {
+        for (var i = 0; i < releaseFns.length; i++) releaseFns[i]();
+    }
+
+    document.addEventListener("visibilitychange", function () {
+        if (document.hidden) {
+            // The browser stops delivering touch events to a hidden page, but
+            // the server would keep the last state latched: let go of
+            // everything before going quiet.
+            releaseAll();
+            if (motionOn) send({ type: "motion", gx: 0, gy: 0, gz: 0, ax: 0, ay: 0, az: 0 });
+        } else if (reconnectPending) {
+            reconnectPending = false;
+            connect();
+        }
+    });
 
     var statusEl;
     function setStatus(text) {
@@ -167,6 +201,10 @@
         if (motionOn) {
             window.removeEventListener("devicemotion", onMotion);
             motionOn = false;
+            // Park the slot's motion state at rest: without this the last
+            // sample stays latched server-side and a mid-motion toggle leaves
+            // the gyro pipeline seeing a permanent rotation.
+            send({ type: "motion", gx: 0, gy: 0, gz: 0, ax: 0, ay: 0, az: 0 });
             motionBtn.style.color = "#9aa";
             motionBtn.style.borderColor = "#0f3460";
             return;
@@ -259,7 +297,8 @@
                 setStatus("Failed to load layout");
                 return;
             }
-            layout = JSON.parse(xhr.responseText);
+            try { layout = JSON.parse(xhr.responseText); }
+            catch (e) { setStatus("Failed to load layout"); return; }
             connect();
             buildController();
             setupTouchZones();
@@ -446,20 +485,26 @@
     function bindButtonZone(zone, ov) {
         var code = ov.inputCode;
         var target = ov.target;
+        var engaged = false;
 
         function down(e) {
             e.preventDefault();
+            engaged = true;
             var img = overlayImages[target];
             if (img) img.classList.add("active");
             send({ type: "input", kind: "button", code: code, value: 1 });
             haptic();
         }
         function up(e) {
-            e.preventDefault();
+            if (e && e.preventDefault) e.preventDefault();
+            // mouseleave fires on every pass-over: only a held button releases.
+            if (!engaged) return;
+            engaged = false;
             var img = overlayImages[target];
             if (img) img.classList.remove("active");
             send({ type: "input", kind: "button", code: code, value: 0 });
         }
+        releaseFns.push(function () { up(null); });
 
         zone.addEventListener("touchstart", down, { passive: false });
         zone.addEventListener("touchend", up, { passive: false });
@@ -481,6 +526,7 @@
         // are visible.
         var startY = null, engaged = false, lastSent = -1, lastTs = 0;
         var RANGE = 140; // css px of drag = the full analog range
+        resyncFns.push(function () { lastSent = -1; lastTs = 0; });
 
         function sendValue(frac) {
             var v = Math.max(0, Math.min(1, frac));
@@ -494,7 +540,14 @@
             send({ type: "input", kind: "axis", code: axisCode, value: raw });
         }
         function pointY(e) {
-            return e.touches && e.touches.length ? e.touches[0].clientY : e.clientY;
+            // changedTouches, NOT touches: e.touches is every contact on the
+            // SCREEN, so a finger held on a face button became touches[0] and
+            // the trigger read its drag position from the wrong finger (same
+            // defect the d-pad zone below documents and fixes).
+            var t = (e.changedTouches && e.changedTouches.length) ? e.changedTouches[0]
+                  : (e.touches && e.touches.length) ? e.touches[0]
+                  : e;
+            return t.clientY;
         }
         function down(e) {
             e.preventDefault();
@@ -509,12 +562,13 @@
             sendValue(1.0 - Math.max(0, pointY(e) - startY) / RANGE);
         }
         function up(e) {
-            e.preventDefault();
+            if (e && e.preventDefault) e.preventDefault();
             if (!engaged) return;
             engaged = false; startY = null; lastSent = -1;
             setTriggerFill(target, 0.0);
             send({ type: "input", kind: "axis", code: axisCode, value: 0 });
         }
+        releaseFns.push(function () { up(null); });
 
         zone.addEventListener("touchstart", down, { passive: false });
         zone.addEventListener("touchmove", move, { passive: false });
@@ -626,17 +680,22 @@
         // button-press, same shape as every other web-controller button —
         // no bespoke {type:"touchpad", click:bool} wire format anymore.
         var code = (ov && typeof ov.inputCode === "number") ? ov.inputCode : 16;
+        var engaged = false;
         function down(e) {
             e.preventDefault();
+            engaged = true;
             zone.classList.add("pressed");
             send({ type: "input", kind: "button", code: code, value: 1 });
             haptic();
         }
         function up(e) {
-            e.preventDefault();
+            if (e && e.preventDefault) e.preventDefault();
+            if (!engaged) return;
+            engaged = false;
             zone.classList.remove("pressed");
             send({ type: "input", kind: "button", code: code, value: 0 });
         }
+        releaseFns.push(function () { up(null); });
         zone.addEventListener("touchstart", down, { passive: false });
         zone.addEventListener("touchend", up, { passive: false });
         zone.addEventListener("touchcancel", up, { passive: false });
@@ -660,7 +719,11 @@
     }
 
     function surfacePoint(zone, e) {
-        var t = e.touches && e.touches.length ? e.touches[0] : e;
+        // changedTouches, NOT touches: the screen-global list hands the pad a
+        // finger resting on some other control (see the d-pad zone comment).
+        var t = (e.changedTouches && e.changedTouches.length) ? e.changedTouches[0]
+              : (e.touches && e.touches.length) ? e.touches[0]
+              : e;
         var r = zone.getBoundingClientRect();
         return {
             x: ((t.clientX - r.left) / r.width - 0.5) * 2,
@@ -687,9 +750,11 @@
         function move(e) { if (active) { e.preventDefault(); update(e); } }
         function up(e) {
             if (!active) return;
-            e.preventDefault(); active = false;
+            if (e && e.preventDefault) e.preventDefault();
+            active = false;
             send({ type: "input", kind: "pov", code: 0, value: -1 });
         }
+        releaseFns.push(function () { up(null); });
         zone.addEventListener("touchstart", down, { passive: false });
         zone.addEventListener("touchmove", move, { passive: false });
         zone.addEventListener("touchend", up, { passive: false });
@@ -720,10 +785,12 @@
         function move(e) { if (active) { e.preventDefault(); update(e); } }
         function up(e) {
             if (!active) return;
-            e.preventDefault(); active = false;
+            if (e && e.preventDefault) e.preventDefault();
+            active = false;
             send({ type: "input", kind: "axis", code: baseAxis, value: 32767 });
             send({ type: "input", kind: "axis", code: baseAxis + 1, value: 32767 });
         }
+        releaseFns.push(function () { up(null); });
         zone.addEventListener("touchstart", down, { passive: false });
         zone.addEventListener("touchmove", move, { passive: false });
         zone.addEventListener("touchend", up, { passive: false });
@@ -826,6 +893,16 @@
         }
         zone.addEventListener("touchend", onTouchEnd, { passive: false });
         zone.addEventListener("touchcancel", onTouchEnd, { passive: false });
+        releaseFns.push(function () {
+            if (finger0Id !== null) {
+                send({ type: "touchpad", finger: 0, x: 0, y: 0, down: false });
+                finger0Id = null; updateDot(dot0, null, false);
+            }
+            if (finger1Id !== null) {
+                send({ type: "touchpad", finger: 1, x: 0, y: 0, down: false });
+                finger1Id = null; updateDot(dot1, null, false);
+            }
+        });
     }
 
     // ── D-Pad: single zone with angle-based 8-way detection ──
@@ -851,6 +928,9 @@
         zone.style.zIndex = "13"; // Above stick zones (11), below buttons (14).
 
         var currentPov = -1;
+        // -2 forces the next computed value (even neutral) onto the fresh
+        // socket, whose server-side device knows nothing of this cache.
+        resyncFns.push(function () { currentPov = -2; });
 
         function updateDpad(e) {
             e.preventDefault();
@@ -898,7 +978,7 @@
         }
 
         function releaseDpad(e) {
-            e.preventDefault();
+            if (e && e.preventDefault) e.preventDefault();
             if (currentPov !== -1) {
                 currentPov = -1;
                 send({ type: "input", kind: "pov", code: 0, value: -1 });
@@ -908,6 +988,7 @@
             setOverlayActive("DPadLeft", false);
             setOverlayActive("DPadRight", false);
         }
+        releaseFns.push(function () { releaseDpad(null); });
 
         zone.addEventListener("touchstart", updateDpad, { passive: false });
         zone.addEventListener("touchmove", updateDpad, { passive: false });
@@ -977,6 +1058,17 @@
         var lastX = 32767, lastY = 32767;
         var touchStartTime = 0;
         var touchStartDist = 0;
+        // -1 is outside the axis range, so the first post-reconnect sample
+        // always goes out even when the stick sits at center.
+        resyncFns.push(function () { lastX = -1; lastY = -1; });
+        releaseFns.push(function () {
+            if (lastX !== 32767 || lastY !== 32767) {
+                send({ type: "input", kind: "axis", code: axisX, value: 32767 });
+                send({ type: "input", kind: "axis", code: axisY, value: 32767 });
+                lastX = 32767; lastY = 32767;
+            }
+            moveStickOverlay(ringTarget, 0, 0);
+        });
 
         var joystick = nipplejs.create({
             zone: zone,

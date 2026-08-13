@@ -1684,6 +1684,18 @@
   <data name="Pad_StickMomentum" xml:space="preserve"><value>Momentum</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>Trackball mode: flick the stick and release, and the cursor keeps travelling, coasting to a stop. Moving the stick again catches it.</value></data>
   <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>How far the cursor coasts after a flick. At the top of the range it keeps going until you move the stick again.</value></data>
+  <data name="Pad_Touchpad_MomentumFlingGain" xml:space="preserve"><value>Fling Boost</value></data>
+  <data name="Pad_Touchpad_MomentumFlingGain_Tooltip" xml:space="preserve"><value>Scales how fast a fling launches without changing drag speed. 1.00 launches at exactly the speed your finger was moving.</value></data>
+  <data name="Pad_ResetTouchpadMomentumFlingGain" xml:space="preserve"><value>Reset Fling Boost</value></data>
+  <data name="Pad_Touchpad_MomentumMinLift" xml:space="preserve"><value>Fling Threshold</value></data>
+  <data name="Pad_Touchpad_MomentumMinLift_Tooltip" xml:space="preserve"><value>How fast the finger must be moving at lift-off for the cursor to coast, in pad widths per second. Below it the cursor stops dead.</value></data>
+  <data name="Pad_ResetTouchpadMomentumMinLift" xml:space="preserve"><value>Reset Fling Threshold</value></data>
+  <data name="Pad_Touchpad_MomentumMaxSpeed" xml:space="preserve"><value>Max Fling Speed</value></data>
+  <data name="Pad_Touchpad_MomentumMaxSpeed_Tooltip" xml:space="preserve"><value>Caps how fast a fling can launch, in pad widths per second. 0 turns the cap off.</value></data>
+  <data name="Pad_ResetTouchpadMomentumMaxSpeed" xml:space="preserve"><value>Reset Max Fling Speed</value></data>
+  <data name="Pad_Touchpad_MomentumStacking" xml:space="preserve"><value>Stack Flings</value></data>
+  <data name="Pad_Touchpad_MomentumStacking_Tooltip" xml:space="preserve"><value>Each new swipe adds to the momentum already rolling instead of replacing it. A tap or a still lift stops everything. Speed is capped by Max Fling Speed, or a built-in ceiling when the cap is off.</value></data>
+  <data name="Pad_ResetTouchpadMomentumStacking" xml:space="preserve"><value>Reset Stack Flings</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Mouse Speed X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Mouse Speed Y</value></data>
   <data name="Mapping_MouseScroll" xml:space="preserve"><value>Mouse Scroll</value></data>

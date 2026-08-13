@@ -212,7 +212,9 @@ namespace PadForge.Tests
         private static PadForge.Engine.Touchpad.TouchpadGestureSettings _tp;
 
         private static void UseSettings(bool momentum = false, float decay = 0.90f,
-                                        bool jitter = true, float accel = 0f)
+                                        bool jitter = true, float accel = 0f,
+                                        float maxSpeed = 0f, float minLift = 0.286f,
+                                        float flingGain = 1.0f, bool stacking = false)
         {
             _tp = new PadForge.Engine.Touchpad.TouchpadGestureSettings
             {
@@ -220,6 +222,10 @@ namespace PadForge.Tests
                 MouseMomentumDecay = decay,
                 MouseJitterReduction = jitter,
                 MouseAcceleration = accel,
+                MouseMomentumMaxSpeed = maxSpeed,
+                MouseMomentumMinLift = minLift,
+                MouseMomentumFlingGain = flingGain,
+                MouseMomentumStacking = stacking,
             };
             SourceCoercion.TouchpadMouseSettingsProvider = (_, __, ___) => _tp;
         }
@@ -821,6 +827,174 @@ namespace PadForge.Tests
                 // And a touch stops it dead.
                 Counts(PadAt(0.30f), TicksAt(3.000f), src, slot);
                 Assert.Equal(0f, Counts(PadAt(0.30f), TicksAt(3.001f), src, slot));
+            }
+            finally { ClearSettings(); }
+        }
+
+        // ── the #291 knobs: gain, gate, ceiling, stacking ────────────────
+
+        /// <summary>One firm swipe then lift; returns the first coast poll.</summary>
+        private static float FirstCoast(int slot, MappingSource src)
+        {
+            Counts(PadAt(0.50f), TicksAt(0.000f), src, slot);
+            Counts(PadAt(0.60f), TicksAt(0.004f), src, slot);
+            return Counts(PadAt(0.60f, down: false), TicksAt(0.005f), src, slot);
+        }
+
+        [Fact]
+        public void FlingGain_ScalesTheCoast_NotTheDrag()
+        {
+            UseSettings(momentum: true, flingGain: 1.0f);
+            float plainDrag, plainCoast, boostDrag, boostCoast;
+            try
+            {
+                var src = XSource(); int slot = NewSlot();
+                Counts(PadAt(0.50f), TicksAt(0.000f), src, slot);
+                plainDrag = Counts(PadAt(0.60f), TicksAt(0.004f), src, slot);
+                plainCoast = Counts(PadAt(0.60f, down: false), TicksAt(0.005f), src, slot);
+            }
+            finally { ClearSettings(); }
+
+            UseSettings(momentum: true, flingGain: 2.0f);
+            try
+            {
+                var src = XSource(); int slot = NewSlot();
+                Counts(PadAt(0.50f), TicksAt(0.000f), src, slot);
+                boostDrag = Counts(PadAt(0.60f), TicksAt(0.004f), src, slot);
+                boostCoast = Counts(PadAt(0.60f, down: false), TicksAt(0.005f), src, slot);
+            }
+            finally { ClearSettings(); }
+
+            Assert.Equal(plainDrag, boostDrag, 4);
+            Assert.True(plainCoast > 0f, "no baseline coast");
+            Assert.True(Math.Abs(boostCoast / plainCoast - 2f) < 0.1f,
+                $"gain 2 did not double the launch: {plainCoast} vs {boostCoast}");
+        }
+
+        [Fact]
+        public void LiftGate_RaisedAboveTheFling_StopsDead()
+        {
+            // A gentle swipe: 0.003 pad in 4 ms = 0.75 pad-widths/s of lift
+            // velocity. Above the 0.286 default, below a 1.9 gate.
+            static float GentleFling(int slot, MappingSource src)
+            {
+                Counts(PadAt(0.500f), TicksAt(0.000f), src, slot);
+                Counts(PadAt(0.503f), TicksAt(0.004f), src, slot);
+                return Counts(PadAt(0.503f, down: false), TicksAt(0.005f), src, slot);
+            }
+
+            UseSettings(momentum: true);
+            try
+            {
+                Assert.True(GentleFling(NewSlot(), XSource()) > 0f,
+                    "positive control: the gentle fling did not coast at the default gate");
+            }
+            finally { ClearSettings(); }
+
+            UseSettings(momentum: true, minLift: 1.9f);
+            try
+            {
+                Assert.Equal(0f, GentleFling(NewSlot(), XSource()));
+            }
+            finally { ClearSettings(); }
+        }
+
+        [Fact]
+        public void LiftGate_AtZero_LetsATinyFlingCoast()
+        {
+            UseSettings(momentum: true, minLift: 0f);
+            try
+            {
+                var src = XSource(); int slot = NewSlot();
+                Counts(PadAt(0.500f), TicksAt(0.000f), src, slot);
+                Counts(PadAt(0.502f), TicksAt(0.004f), src, slot);
+                Assert.True(Counts(PadAt(0.502f, down: false), TicksAt(0.005f), src, slot) > 0f,
+                    "a zero gate still refused a slow fling");
+            }
+            finally { ClearSettings(); }
+        }
+
+        [Fact]
+        public void MaxFlingSpeed_CapsTheLaunch()
+        {
+            float unclamped, clamped;
+            UseSettings(momentum: true);
+            try { unclamped = FirstCoast(NewSlot(), XSource()); }
+            finally { ClearSettings(); }
+
+            UseSettings(momentum: true, maxSpeed: 1.0f);
+            try { clamped = FirstCoast(NewSlot(), XSource()); }
+            finally { ClearSettings(); }
+
+            Assert.True(unclamped > 0f, "no baseline coast");
+            Assert.True(clamped > 0f, "the cap killed the coast outright");
+            Assert.True(clamped < unclamped * 0.5f,
+                $"the cap did not bite: {unclamped} vs {clamped}");
+        }
+
+        [Fact]
+        public void Stacking_ASecondFling_AddsToTheFirst()
+        {
+            float single, stacked;
+            UseSettings(momentum: true, decay: 1.00f);
+            try { single = FirstCoast(NewSlot(), XSource()); }
+            finally { ClearSettings(); }
+
+            UseSettings(momentum: true, decay: 1.00f, stacking: true);
+            try
+            {
+                var src = XSource(); int slot = NewSlot();
+                Assert.True(FirstCoast(slot, src) > 0f, "no first fling");
+                Counts(PadAt(0.50f), TicksAt(0.010f), src, slot);
+                Counts(PadAt(0.60f), TicksAt(0.014f), src, slot);
+                stacked = Counts(PadAt(0.60f, down: false), TicksAt(0.015f), src, slot);
+            }
+            finally { ClearSettings(); }
+
+            Assert.True(stacked > single * 1.5f,
+                $"the second fling did not stack: single {single}, stacked {stacked}");
+        }
+
+        [Fact]
+        public void Stacking_AStillLift_StillStopsEverything()
+        {
+            UseSettings(momentum: true, decay: 1.00f, stacking: true);
+            try
+            {
+                var src = XSource(); int slot = NewSlot();
+                Assert.True(FirstCoast(slot, src) > 0f, "no coast to stop");
+                Counts(PadAt(0.30f), TicksAt(0.020f), src, slot);
+                Counts(PadAt(0.30f), TicksAt(0.060f), src, slot);
+                Assert.Equal(0f, Counts(PadAt(0.30f, down: false), TicksAt(0.061f), src, slot));
+                Assert.Equal(0f, Counts(PadAt(0.30f, down: false), TicksAt(0.062f), src, slot));
+            }
+            finally { ClearSettings(); }
+        }
+
+        [Fact]
+        public void Stacking_WithoutACap_CannotIntegrateWithoutBound()
+        {
+            UseSettings(momentum: true, decay: 1.00f, stacking: true);
+            try
+            {
+                var src = XSource(); int slot = NewSlot();
+                float last = FirstCoast(slot, src);
+                float prev;
+                float t = 0.010f;
+                int grewPastCeiling = 0;
+                for (int i = 0; i < 30; i++)
+                {
+                    prev = last;
+                    Counts(PadAt(0.50f), TicksAt(t), src, slot); t += 0.004f;
+                    Counts(PadAt(0.60f), TicksAt(t), src, slot); t += 0.001f;
+                    last = Counts(PadAt(0.60f, down: false), TicksAt(t), src, slot); t += 0.005f;
+                    if (last > prev * 1.01f) grewPastCeiling++;
+                }
+                // Thirty stacked flings: growth must have SATURATED, not
+                // continued to the last iteration.
+                Assert.True(grewPastCeiling < 25,
+                    $"stacking grew on {grewPastCeiling}/30 rounds; no ceiling in effect");
+                Assert.True(last > 0f, "the ceiling killed the coast entirely");
             }
             finally { ClearSettings(); }
         }

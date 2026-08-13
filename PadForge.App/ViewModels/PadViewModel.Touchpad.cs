@@ -451,6 +451,41 @@ namespace PadForge.ViewModels
             }
         }
 
+        private double _touchpadMomentumMaxSpeed;
+        /// <summary>Mirrors <see cref="TouchpadGestureSettings.MouseMomentumMaxSpeed"/>:
+        /// the fling launch ceiling in pad widths per second, 0 = off.</summary>
+        public double TouchpadMomentumMaxSpeed
+        {
+            get => _touchpadMomentumMaxSpeed;
+            set { if (SetProperty(ref _touchpadMomentumMaxSpeed, Math.Clamp(value, 0, 30))) PushIfNotLoading(); }
+        }
+
+        private double _touchpadMomentumMinLift = 0.286;
+        /// <summary>Mirrors <see cref="TouchpadGestureSettings.MouseMomentumMinLift"/>:
+        /// the lift-velocity gate, default at the old hardcoded value.</summary>
+        public double TouchpadMomentumMinLift
+        {
+            get => _touchpadMomentumMinLift;
+            set { if (SetProperty(ref _touchpadMomentumMinLift, Math.Clamp(value, 0, 2))) PushIfNotLoading(); }
+        }
+
+        private double _touchpadMomentumFlingGain = 1.0;
+        /// <summary>Mirrors <see cref="TouchpadGestureSettings.MouseMomentumFlingGain"/>:
+        /// launch-speed multiplier that leaves drag speed alone.</summary>
+        public double TouchpadMomentumFlingGain
+        {
+            get => _touchpadMomentumFlingGain;
+            set { if (SetProperty(ref _touchpadMomentumFlingGain, Math.Clamp(value, 0.1, 5.0))) PushIfNotLoading(); }
+        }
+
+        private bool _touchpadMomentumStacking;
+        /// <summary>Mirrors <see cref="TouchpadGestureSettings.MouseMomentumStacking"/>.</summary>
+        public bool TouchpadMomentumStacking
+        {
+            get => _touchpadMomentumStacking;
+            set { if (SetProperty(ref _touchpadMomentumStacking, value)) PushIfNotLoading(); }
+        }
+
         private string _touchpadPointerResponse = "Simple";
         /// <summary>Mirrors <see cref="TouchpadGestureSettings.PointerResponse"/>.
         /// Simple applies the Acceleration slider; Trackpad runs the ported
@@ -976,6 +1011,19 @@ namespace PadForge.ViewModels
         public RelayCommand ResetTouchpadMouseMomentumDecayCommand =>
             _resetTouchpadMouseMomentumDecayCommand ??= new RelayCommand(() => TouchpadMouseMomentumDecay = 0.90);
 
+        private RelayCommand _resetTouchpadMomentumMaxSpeedCommand;
+        public RelayCommand ResetTouchpadMomentumMaxSpeedCommand =>
+            _resetTouchpadMomentumMaxSpeedCommand ??= new RelayCommand(() => TouchpadMomentumMaxSpeed = 0);
+        private RelayCommand _resetTouchpadMomentumMinLiftCommand;
+        public RelayCommand ResetTouchpadMomentumMinLiftCommand =>
+            _resetTouchpadMomentumMinLiftCommand ??= new RelayCommand(() => TouchpadMomentumMinLift = 0.286);
+        private RelayCommand _resetTouchpadMomentumFlingGainCommand;
+        public RelayCommand ResetTouchpadMomentumFlingGainCommand =>
+            _resetTouchpadMomentumFlingGainCommand ??= new RelayCommand(() => TouchpadMomentumFlingGain = 1.0);
+        private RelayCommand _resetTouchpadMomentumStackingCommand;
+        public RelayCommand ResetTouchpadMomentumStackingCommand =>
+            _resetTouchpadMomentumStackingCommand ??= new RelayCommand(() => TouchpadMomentumStacking = false);
+
         private RelayCommand _resetTouchpadPointerResponseCommand;
         public RelayCommand ResetTouchpadPointerResponseCommand =>
             _resetTouchpadPointerResponseCommand ??= new RelayCommand(() => TouchpadPointerResponse = "Simple");
@@ -1008,6 +1056,10 @@ namespace PadForge.ViewModels
                 TouchpadMouseInvertY = false;
                 TouchpadMouseMomentum = false;
                 TouchpadMouseMomentumDecay = 0.90;
+                TouchpadMomentumMaxSpeed = 0;
+                TouchpadMomentumMinLift = 0.286;
+                TouchpadMomentumFlingGain = 1.0;
+                TouchpadMomentumStacking = false;
                 TouchpadMouseJitterReduction = true;
                 TouchpadMouseAcceleration = 0;
                 TouchpadPointerResponse = "Simple";
@@ -1195,6 +1247,10 @@ namespace PadForge.ViewModels
                 TouchpadMouseInvertY = s.MouseInvertY;
                 TouchpadMouseMomentum = s.MouseMomentum;
                 TouchpadMouseMomentumDecay = s.MouseMomentumDecay;
+                TouchpadMomentumMaxSpeed = s.MouseMomentumMaxSpeed;
+                TouchpadMomentumMinLift = s.MouseMomentumMinLift;
+                TouchpadMomentumFlingGain = s.MouseMomentumFlingGain;
+                TouchpadMomentumStacking = s.MouseMomentumStacking;
                 TouchpadMouseJitterReduction = s.MouseJitterReduction;
                 TouchpadMouseAcceleration = s.MouseAcceleration;
                 TouchpadPointerResponse = string.IsNullOrEmpty(s.PointerResponse) ? "Simple" : s.PointerResponse;
@@ -1419,6 +1475,10 @@ namespace PadForge.ViewModels
             s.MouseInvertY = TouchpadMouseInvertY;
             s.MouseMomentum = TouchpadMouseMomentum;
             s.MouseMomentumDecay = (float)TouchpadMouseMomentumDecay;
+            s.MouseMomentumMaxSpeed = (float)TouchpadMomentumMaxSpeed;
+            s.MouseMomentumMinLift = (float)TouchpadMomentumMinLift;
+            s.MouseMomentumFlingGain = (float)TouchpadMomentumFlingGain;
+            s.MouseMomentumStacking = TouchpadMomentumStacking;
             s.MouseJitterReduction = TouchpadMouseJitterReduction;
             s.MouseAcceleration = (float)TouchpadMouseAcceleration;
             s.PointerResponse = TouchpadPointerResponse;

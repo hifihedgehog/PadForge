@@ -1356,6 +1356,18 @@
   <data name="Pad_StickMomentum" xml:space="preserve"><value>Impulso</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>Modo trackball: sacude el stick y suéltalo, y el cursor sigue viajando hasta detenerse. Mover el stick de nuevo lo detiene.</value></data>
   <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>Cuánto se desliza el cursor tras el impulso. En el tope del rango sigue avanzando hasta que muevas el stick de nuevo.</value></data>
+  <data name="Pad_Touchpad_MomentumFlingGain" xml:space="preserve"><value>Impulso del lanzamiento</value></data>
+  <data name="Pad_Touchpad_MomentumFlingGain_Tooltip" xml:space="preserve"><value>Escala la velocidad de salida del lanzamiento sin cambiar la velocidad de arrastre. 1.00 lanza exactamente a la velocidad del dedo.</value></data>
+  <data name="Pad_ResetTouchpadMomentumFlingGain" xml:space="preserve"><value>Restablecer impulso del lanzamiento</value></data>
+  <data name="Pad_Touchpad_MomentumMinLift" xml:space="preserve"><value>Umbral de lanzamiento</value></data>
+  <data name="Pad_Touchpad_MomentumMinLift_Tooltip" xml:space="preserve"><value>Velocidad mínima del dedo al levantarlo para que el cursor se deslice, en anchos de panel por segundo. Por debajo, el cursor se detiene en seco.</value></data>
+  <data name="Pad_ResetTouchpadMomentumMinLift" xml:space="preserve"><value>Restablecer umbral de lanzamiento</value></data>
+  <data name="Pad_Touchpad_MomentumMaxSpeed" xml:space="preserve"><value>Velocidad máxima de lanzamiento</value></data>
+  <data name="Pad_Touchpad_MomentumMaxSpeed_Tooltip" xml:space="preserve"><value>Limita la velocidad de salida del lanzamiento, en anchos de panel por segundo. 0 desactiva el límite.</value></data>
+  <data name="Pad_ResetTouchpadMomentumMaxSpeed" xml:space="preserve"><value>Restablecer velocidad máxima de lanzamiento</value></data>
+  <data name="Pad_Touchpad_MomentumStacking" xml:space="preserve"><value>Acumular lanzamientos</value></data>
+  <data name="Pad_Touchpad_MomentumStacking_Tooltip" xml:space="preserve"><value>Cada nuevo deslizamiento se suma al impulso en curso en lugar de reemplazarlo. Un toque o levantar el dedo quieto lo detiene todo. La velocidad se limita con la velocidad máxima, o con un tope interno si está desactivada.</value></data>
+  <data name="Pad_ResetTouchpadMomentumStacking" xml:space="preserve"><value>Restablecer acumular lanzamientos</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Velocidad ratón X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Velocidad ratón Y</value></data>
   <data name="Mapping_MouseScroll" xml:space="preserve"><value>Desplazamiento ratón</value></data>

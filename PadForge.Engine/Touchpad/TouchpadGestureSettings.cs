@@ -245,6 +245,35 @@ namespace PadForge.Engine.Touchpad
         /// same wall-clock duration at any polling rate.</para></summary>
         [XmlAttribute] public float MouseMomentumDecay { get; set; } = 0.90f;
 
+        /// <summary>Ceiling on a fling's launch speed in pad widths per
+        /// second (#291). 0 (the default) is no cap. Stacking mode gets a
+        /// built-in safety ceiling when this is off, because stacked swipes
+        /// would otherwise integrate without bound.</summary>
+        [XmlAttribute] public float MouseMomentumMaxSpeed { get; set; }
+
+        /// <summary>The lift-velocity gate, exposed (#291): how fast the
+        /// finger must be moving at lift-off for the ball to roll, in pad
+        /// widths per second. The default is sc-controller's
+        /// MIN_LIFT_VELOCITY converted to pad widths (0.2 rad/s over the
+        /// 40-degree pad), which is what shipped hardcoded before this
+        /// knob existed, so an untouched profile behaves identically.</summary>
+        [XmlAttribute] public float MouseMomentumMinLift { get; set; } = 0.286f;
+
+        /// <summary>Scales a fling's LAUNCH speed without touching drag
+        /// speed (#291): the sensitivity sliders scale both together, so
+        /// this is the only way to make a flick travel further without
+        /// making dragging faster. 1.0 (the default) launches at exactly
+        /// the speed the finger was moving.</summary>
+        [XmlAttribute] public float MouseMomentumFlingGain { get; set; } = 1.0f;
+
+        /// <summary>Stacking mode (#291, off by default): re-contact PAUSES
+        /// the roll instead of killing it, and the next fling adds its
+        /// speed to what was held, so repeated swipes build momentum. A
+        /// slow or still lift still stops everything dead, which keeps
+        /// tap-to-stop working. No reference implements this; it is new
+        /// work gated behind the speed ceiling above.</summary>
+        [XmlAttribute] public bool MouseMomentumStacking { get; set; }
+
         /// <summary><para>Jitter reduction: bends motion below the threshold
         /// down a power curve instead of cutting it off, so resting-hand
         /// tremor is damped while fine movement stays continuous. Same shape
@@ -524,6 +553,10 @@ namespace PadForge.Engine.Touchpad
                 MouseInvertY = MouseInvertY,
                 MouseMomentum = MouseMomentum,
                 MouseMomentumDecay = MouseMomentumDecay,
+                MouseMomentumMaxSpeed = MouseMomentumMaxSpeed,
+                MouseMomentumMinLift = MouseMomentumMinLift,
+                MouseMomentumFlingGain = MouseMomentumFlingGain,
+                MouseMomentumStacking = MouseMomentumStacking,
                 MouseJitterReduction = MouseJitterReduction,
                 MouseAcceleration = MouseAcceleration,
                 PointerResponse = PointerResponse,
@@ -682,6 +715,10 @@ namespace PadForge.Engine.Touchpad
                 // comparison to an untouched sibling.
                 || s.MouseMomentum != d.MouseMomentum
                 || s.MouseMomentumDecay != d.MouseMomentumDecay
+                || s.MouseMomentumMaxSpeed != d.MouseMomentumMaxSpeed
+                || s.MouseMomentumMinLift != d.MouseMomentumMinLift
+                || s.MouseMomentumFlingGain != d.MouseMomentumFlingGain
+                || s.MouseMomentumStacking != d.MouseMomentumStacking
                 || s.MouseJitterReduction != d.MouseJitterReduction
                 || s.MouseAcceleration != d.MouseAcceleration
                 || !string.Equals(s.PointerResponse, d.PointerResponse, System.StringComparison.Ordinal)

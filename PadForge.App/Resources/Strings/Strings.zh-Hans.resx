@@ -1356,6 +1356,18 @@
   <data name="Pad_StickMomentum" xml:space="preserve"><value>动量</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>轨迹球模式：快速拨动摇杆后松开，光标会继续滑行并逐渐停下。再次移动摇杆即可接住它。</value></data>
   <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>拨动后光标滑行多远。调到最高时它会一直前进，直到你再次移动摇杆。</value></data>
+  <data name="Pad_Touchpad_MomentumFlingGain" xml:space="preserve"><value>甩动增益</value></data>
+  <data name="Pad_Touchpad_MomentumFlingGain_Tooltip" xml:space="preserve"><value>只缩放甩动的初速，不改变拖动速度。1.00 按手指实际速度发射。</value></data>
+  <data name="Pad_ResetTouchpadMomentumFlingGain" xml:space="preserve"><value>重置甩动增益</value></data>
+  <data name="Pad_Touchpad_MomentumMinLift" xml:space="preserve"><value>甩动阈值</value></data>
+  <data name="Pad_Touchpad_MomentumMinLift_Tooltip" xml:space="preserve"><value>手指抬起时需达到的速度（触控板宽／秒），达到才会滑行。低于阈值光标立即停下。</value></data>
+  <data name="Pad_ResetTouchpadMomentumMinLift" xml:space="preserve"><value>重置甩动阈值</value></data>
+  <data name="Pad_Touchpad_MomentumMaxSpeed" xml:space="preserve"><value>最大甩动速度</value></data>
+  <data name="Pad_Touchpad_MomentumMaxSpeed_Tooltip" xml:space="preserve"><value>甩动初速的上限（触控板宽／秒）。0 表示不限制。</value></data>
+  <data name="Pad_ResetTouchpadMomentumMaxSpeed" xml:space="preserve"><value>重置最大甩动速度</value></data>
+  <data name="Pad_Touchpad_MomentumStacking" xml:space="preserve"><value>叠加甩动</value></data>
+  <data name="Pad_Touchpad_MomentumStacking_Tooltip" xml:space="preserve"><value>每次新的滑动都叠加到当前动量上，而不是替换它。轻点或静止抬起即可全部停下。速度受最大甩动速度限制，若未设置则受内置上限限制。</value></data>
+  <data name="Pad_ResetTouchpadMomentumStacking" xml:space="preserve"><value>重置叠加甩动</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>鼠标速度 X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>鼠标速度 Y</value></data>
   <data name="Mapping_MouseScroll" xml:space="preserve"><value>鼠标滚动</value></data>

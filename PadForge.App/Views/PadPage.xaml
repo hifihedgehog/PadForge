@@ -10563,6 +10563,52 @@
                                     <ui:Button Command="{Binding ResetTouchpadMouseMomentumDecayCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetTouchpadMouseMomentumDecay, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
+                                            IsEnabled="{Binding TouchpadMouseMomentum}">
+                                    <TextBlock Text="{Binding Pad_Touchpad_MomentumFlingGain, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                               ToolTip="{Binding Pad_Touchpad_MomentumFlingGain_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Slider Value="{Binding TouchpadMomentumFlingGain, Mode=TwoWay}"
+                                            Style="{StaticResource DzSlider}" Minimum="0.1" Maximum="5" TickFrequency="0.1"
+                                            ToolTip="{Binding Pad_Touchpad_MomentumFlingGain_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBox Text="{Binding TouchpadMomentumFlingGain, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
+                                             Style="{StaticResource DzValueEdit}"/>
+                                    <ui:Button Command="{Binding ResetTouchpadMomentumFlingGainCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadMomentumFlingGain, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
+                                            IsEnabled="{Binding TouchpadMouseMomentum}">
+                                    <TextBlock Text="{Binding Pad_Touchpad_MomentumMinLift, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                               ToolTip="{Binding Pad_Touchpad_MomentumMinLift_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Slider Value="{Binding TouchpadMomentumMinLift, Mode=TwoWay}"
+                                            Style="{StaticResource DzSlider}" Minimum="0" Maximum="2" TickFrequency="0.01"
+                                            ToolTip="{Binding Pad_Touchpad_MomentumMinLift_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBox Text="{Binding TouchpadMomentumMinLift, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F2}"
+                                             Style="{StaticResource DzValueEdit}"/>
+                                    <ui:Button Command="{Binding ResetTouchpadMomentumMinLiftCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadMomentumMinLift, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
+                                            IsEnabled="{Binding TouchpadMouseMomentum}">
+                                    <TextBlock Text="{Binding Pad_Touchpad_MomentumMaxSpeed, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                               ToolTip="{Binding Pad_Touchpad_MomentumMaxSpeed_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Slider Value="{Binding TouchpadMomentumMaxSpeed, Mode=TwoWay}"
+                                            Style="{StaticResource DzSlider}" Minimum="0" Maximum="30" TickFrequency="1"
+                                            ToolTip="{Binding Pad_Touchpad_MomentumMaxSpeed_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBox Text="{Binding TouchpadMomentumMaxSpeed, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=F1}"
+                                             Style="{StaticResource DzValueEdit}"/>
+                                    <ui:Button Command="{Binding ResetTouchpadMomentumMaxSpeedCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadMomentumMaxSpeed, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6"
+                                            IsEnabled="{Binding TouchpadMouseMomentum}">
+                                    <CheckBox Content="{Binding Pad_Touchpad_MomentumStacking, Source={x:Static strings:Strings.Instance}}"
+                                              ToolTip="{Binding Pad_Touchpad_MomentumStacking_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                              IsChecked="{Binding TouchpadMomentumStacking, Mode=TwoWay}"
+                                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                              VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                    <ui:Button Command="{Binding ResetTouchpadMomentumStackingCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetTouchpadMomentumStacking, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
                             </StackPanel>
                         </Border>
 

@@ -1356,6 +1356,18 @@
   <data name="Pad_StickMomentum" xml:space="preserve"><value>Élan</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>Mode trackball : donnez une impulsion au stick et relâchez, le curseur continue sa course et ralentit jusqu'à l'arrêt. Bouger le stick le rattrape.</value></data>
   <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>Distance parcourue par le curseur après l'impulsion. Au maximum, il continue jusqu'à ce que vous bougiez le stick.</value></data>
+  <data name="Pad_Touchpad_MomentumFlingGain" xml:space="preserve"><value>Gain d'impulsion</value></data>
+  <data name="Pad_Touchpad_MomentumFlingGain_Tooltip" xml:space="preserve"><value>Ajuste la vitesse de lancement d'une impulsion sans changer la vitesse de glissement. 1,00 lance exactement à la vitesse du doigt.</value></data>
+  <data name="Pad_ResetTouchpadMomentumFlingGain" xml:space="preserve"><value>Réinitialiser le gain d'impulsion</value></data>
+  <data name="Pad_Touchpad_MomentumMinLift" xml:space="preserve"><value>Seuil d'impulsion</value></data>
+  <data name="Pad_Touchpad_MomentumMinLift_Tooltip" xml:space="preserve"><value>Vitesse minimale du doigt au décollage pour que le curseur glisse, en largeurs de pavé par seconde. En dessous, le curseur s'arrête net.</value></data>
+  <data name="Pad_ResetTouchpadMomentumMinLift" xml:space="preserve"><value>Réinitialiser le seuil d'impulsion</value></data>
+  <data name="Pad_Touchpad_MomentumMaxSpeed" xml:space="preserve"><value>Vitesse maximale d'impulsion</value></data>
+  <data name="Pad_Touchpad_MomentumMaxSpeed_Tooltip" xml:space="preserve"><value>Plafonne la vitesse de lancement d'une impulsion, en largeurs de pavé par seconde. 0 désactive le plafond.</value></data>
+  <data name="Pad_ResetTouchpadMomentumMaxSpeed" xml:space="preserve"><value>Réinitialiser la vitesse maximale</value></data>
+  <data name="Pad_Touchpad_MomentumStacking" xml:space="preserve"><value>Cumuler les impulsions</value></data>
+  <data name="Pad_Touchpad_MomentumStacking_Tooltip" xml:space="preserve"><value>Chaque nouveau balayage s'ajoute à l'élan en cours au lieu de le remplacer. Un appui ou un lâcher immobile arrête tout. La vitesse est plafonnée par la vitesse maximale, ou par un plafond interne si elle est désactivée.</value></data>
+  <data name="Pad_ResetTouchpadMomentumStacking" xml:space="preserve"><value>Réinitialiser le cumul des impulsions</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Vitesse souris X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Vitesse souris Y</value></data>
   <data name="Mapping_MouseScroll" xml:space="preserve"><value>Défilement souris</value></data>

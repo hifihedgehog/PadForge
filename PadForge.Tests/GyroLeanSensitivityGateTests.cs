@@ -12,6 +12,10 @@ namespace PadForge.Tests
     /// </summary>
     public class GyroLeanSensitivityGateTests
     {
+        private static MappingItem NewRow(string desc)
+            => new MappingItem("Stick X", "LeftThumbAxisX", MappingCategory.LeftStick)
+               { SourceDescriptor = desc };
+
         [Theory]
         [InlineData("Gyro Pitch")]
         [InlineData("Gyro Yaw")]
@@ -25,7 +29,7 @@ namespace PadForge.Tests
             Assert.True(extra.IsGyroSource);
             Assert.False(extra.IsGyroLeanSource);
 
-            var row = new MappingItem { SourceDescriptor = desc };
+            var row = NewRow(desc);
             Assert.True(row.IsGyroSource);
             Assert.False(row.IsGyroLeanSource);
         }
@@ -39,7 +43,7 @@ namespace PadForge.Tests
             Assert.False(extra.IsGyroSource);
             Assert.True(extra.IsGyroLeanSource);
 
-            var row = new MappingItem { SourceDescriptor = desc };
+            var row = NewRow(desc);
             Assert.False(row.IsGyroSource);
             Assert.True(row.IsGyroLeanSource);
         }
@@ -49,7 +53,7 @@ namespace PadForge.Tests
         {
             // The legacy row grammar stores Invert as a leading "I"; the
             // MappingItem predicates strip it before classifying.
-            var row = new MappingItem { SourceDescriptor = "IGyro Lean X" };
+            var row = NewRow("IGyro Lean X");
             Assert.False(row.IsGyroSource);
             Assert.True(row.IsGyroLeanSource);
         }

@@ -1668,6 +1668,7 @@
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Reset Passthrough Tuning</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Per-source gyro sensitivity multiplier. 1.0 = the engine's default (500°/s → full deflection). Values above 1.0 are more sensitive. Values below 1.0 are less sensitive.</value></data>
+  <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>Per-source tilt sensitivity multiplier. 1.0 = 90° of tilt for full deflection. Values above 1.0 reach full deflection with less tilt.</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Mouse Speed X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Mouse Speed Y</value></data>
   <data name="Mapping_MouseScroll" xml:space="preserve"><value>Mouse Scroll</value></data>

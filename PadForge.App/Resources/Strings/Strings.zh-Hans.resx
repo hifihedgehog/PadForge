@@ -1340,6 +1340,7 @@
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>重置透传调校</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>灵敏度</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>每个源的陀螺仪灵敏度倍数。1.0 = 引擎默认值（500°/s → 最大偏转）。大于 1.0 更灵敏。小于 1.0 不太灵敏。</value></data>
+  <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>每个输入源的倾斜灵敏度倍率。1.0 = 倾斜 90° 达到满偏转。大于 1.0 的值只需更小的倾斜即可达到满偏转。</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>鼠标速度 X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>鼠标速度 Y</value></data>
   <data name="Mapping_MouseScroll" xml:space="preserve"><value>鼠标滚动</value></data>

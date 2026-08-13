@@ -1340,6 +1340,7 @@
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Réinitialiser le réglage de transmission</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensibilité</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Multiplicateur de sensibilité du gyroscope par source. 1,0 = valeur par défaut du moteur (500°/s → pleine déviation). Au-dessus de 1,0 = plus sensible. En dessous = moins sensible.</value></data>
+  <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>Multiplicateur de sensibilité d'inclinaison par source. 1,0 = 90° d'inclinaison pour une déflexion complète. Les valeurs supérieures à 1,0 atteignent la déflexion complète avec moins d'inclinaison.</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Vitesse souris X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Vitesse souris Y</value></data>
   <data name="Mapping_MouseScroll" xml:space="preserve"><value>Défilement souris</value></data>

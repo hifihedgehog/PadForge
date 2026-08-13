@@ -459,6 +459,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsDeadZoneApplicable));
                     OnPropertyChanged(nameof(IsHalfAxisApplicable));
                     OnPropertyChanged(nameof(IsGyroSource));
+                    OnPropertyChanged(nameof(IsGyroLeanSource));
                     OnPropertyChanged(nameof(IsMouseCursorSource));
                     OnPropertyChanged(nameof(IsIrPointerSource));
                     OnPropertyChanged(nameof(IsMouseMotionSource));
@@ -1280,12 +1281,22 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _gyroSensitivity, Math.Clamp(value, 0.1, 10.0));
         }
 
-        /// <summary>True when the primary source descriptor is a gyro
+        /// <summary>True when the primary source descriptor is a gyro RATE
         /// axis ("Gyro Pitch" / "Gyro Yaw" / "Gyro Roll" / horizontal blend).
         /// Mirrors <see cref="MappingSourceItem.IsGyroSource"/> so the
-        /// primary's gyro-sensitivity slider can be gated identically.</summary>
+        /// primary's gyro-sensitivity slider can be gated identically. The
+        /// gravity-lean pair is sorted out first (#292), the engine's own
+        /// precedence: lean scales by the generic Sensitivity field, not
+        /// GyroSensitivity.</summary>
         public bool IsGyroSource => !string.IsNullOrEmpty(_sourceDescriptor)
-            && StripLegacyPrefix(_sourceDescriptor).StartsWith("Gyro ", StringComparison.Ordinal);
+            && StripLegacyPrefix(_sourceDescriptor).StartsWith("Gyro ", StringComparison.Ordinal)
+            && !PadForge.Engine.Common.Mapping.SourceCoercion.IsGyroLeanDescriptor(StripLegacyPrefix(_sourceDescriptor));
+
+        /// <summary>True for a gravity-lean primary ("Gyro Lean X/Y").
+        /// Mirrors <see cref="MappingSourceItem.IsGyroLeanSource"/>; gates
+        /// the dial bound to <see cref="Sensitivity"/> (#292).</summary>
+        public bool IsGyroLeanSource => !string.IsNullOrEmpty(_sourceDescriptor)
+            && PadForge.Engine.Common.Mapping.SourceCoercion.IsGyroLeanDescriptor(StripLegacyPrefix(_sourceDescriptor));
 
         /// <summary>True when the primary source carries the generic per-source
         /// Sensitivity knob (issue #9): a plain "Axis N" / "Slider N" read or an

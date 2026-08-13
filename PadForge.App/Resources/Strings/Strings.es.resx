@@ -1340,6 +1340,7 @@
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Restablecer ajuste de transferencia</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensibilidad</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Multiplicador de sensibilidad del giroscopio por fuente. 1,0 = predeterminado del motor (500°/s → desviación completa). Valores superiores a 1,0 son más sensibles. Valores inferiores son menos sensibles.</value></data>
+  <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>Multiplicador de sensibilidad de inclinación por fuente. 1.0 = 90° de inclinación para deflexión completa. Valores mayores de 1.0 alcanzan la deflexión completa con menos inclinación.</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Velocidad ratón X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Velocidad ratón Y</value></data>
   <data name="Mapping_MouseScroll" xml:space="preserve"><value>Desplazamiento ratón</value></data>

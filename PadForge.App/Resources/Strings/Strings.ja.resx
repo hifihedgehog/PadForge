@@ -1340,6 +1340,7 @@
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>パススルー調整をリセット</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>感度</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>ソースごとのジャイロ感度倍率。1.0 = エンジンの既定 (500°/s → フルディフレクション)。1.0 を超えると敏感になり、1.0 未満では鈍くなります。</value></data>
+  <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>ソースごとの傾き感度倍率。1.0 = 90°の傾きでフルストローク。1.0 を超える値はより少ない傾きでフルストロークに達します。</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>マウス速度 X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>マウス速度 Y</value></data>
   <data name="Mapping_MouseScroll" xml:space="preserve"><value>マウススクロール</value></data>

@@ -1360,6 +1360,7 @@
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Doorgifte-afstemming resetten</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Gevoeligheid</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Gevoeligheidsvermenigvuldiger van de gyroscoop per bron. 1,0 = standaard van de engine (500°/s → volledige uitslag). Waarden boven 1,0 zijn gevoeliger. Daaronder minder.</value></data>
+  <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>Kantelgevoeligheid per bron. 1,0 = 90° kanteling voor volledige uitslag. Waarden boven 1,0 bereiken de volledige uitslag met minder kanteling.</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Muis snelheid X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Muis snelheid Y</value></data>
   <data name="Mapping_MouseScroll" xml:space="preserve"><value>Muis scrollen</value></data>

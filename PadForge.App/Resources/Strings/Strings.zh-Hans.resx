@@ -3074,7 +3074,7 @@
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>此网络无法建立直接连接（看起来是移动热点或运营商级 NAT）。请使用 Tailscale 等 VPN，或改用家庭宽带连接。</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>找不到此电脑的公网地址（网络可能屏蔽了所需流量）。此处无法直接连接。请使用 VPN，或在同一网络内按地址连接。</value></data>
   <data name="Dashboard_WebScanToOpen" xml:space="preserve"><value>用手机相机扫描，或在浏览器中打开此地址：</value></data>
-  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>识别：让此设备振动</value></data>
+  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>振动（点击以识别此设备）</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>手柄电量不足</value></data>
   <data name="Battery_LowText_Format" xml:space="preserve"><value>{0}：剩余电量 {1}%</value></data>
   <data name="Settings_BatteryNotify" xml:space="preserve"><value>电量提醒</value></data>

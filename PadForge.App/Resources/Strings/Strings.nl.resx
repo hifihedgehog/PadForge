@@ -3094,7 +3094,7 @@ Je kunt het later opnieuw proberen via Instellingen.</value></data>
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>Dit netwerk kan geen directe verbindingen maken (het lijkt op een mobiele hotspot of carrier-grade NAT). Gebruik een VPN zoals Tailscale, of verbind vanaf thuisbreedband.</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>Kon het openbare adres van deze pc niet vinden (het netwerk blokkeert mogelijk het benodigde verkeer). Directe verbindingen werken hier niet. Gebruik een VPN, of Verbinden via adres op hetzelfde netwerk.</value></data>
   <data name="Dashboard_WebScanToOpen" xml:space="preserve"><value>Scan met de camera van je telefoon of open dit adres in de browser:</value></data>
-  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>Identificeren: dit apparaat laten trillen</value></data>
+  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>Trillen (klik om dit apparaat te identificeren)</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>Controllerbatterij bijna leeg</value></data>
   <data name="Battery_LowText_Format" xml:space="preserve"><value>{0}: {1}% batterij over</value></data>
   <data name="Settings_BatteryNotify" xml:space="preserve"><value>Batterijmeldingen</value></data>

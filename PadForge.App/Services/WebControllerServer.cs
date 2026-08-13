@@ -531,18 +531,37 @@ namespace PadForge.Services
                     try
                     {
                         var ext = new List<int>();
+                        // The pad's REAL surface, widget by widget. Without
+                        // this the picker offered a full gamepad for a pad
+                        // built from two buttons and a stick.
+                        var axes = new List<int>();
+                        var buttons = new List<int>();
+                        bool hasPov = false;
                         using var cdoc = JsonDocument.Parse(customLayoutJson);
                         foreach (var w in cdoc.RootElement.GetProperty("widgets").EnumerateArray())
                         {
                             string kind = w.GetProperty("kind").GetString();
+                            int code = w.TryGetProperty("code", out var cp0) ? cp0.GetInt32() : 0;
                             if (kind == "touch") device.HasTouchpad = true;
-                            if (kind == "button" && w.TryGetProperty("code", out var cp))
+                            else if (kind == "dpad") hasPov = true;
+                            else if (kind == "stick")
                             {
-                                int c = cp.GetInt32();
-                                if (c > 10 && c != 16 && c < 22 && !ext.Contains(c)) ext.Add(c);
+                                // A stick widget drives its base axis and the next.
+                                if (!axes.Contains(code)) axes.Add(code);
+                                if (!axes.Contains(code + 1)) axes.Add(code + 1);
+                            }
+                            else if (kind == "slider")
+                            {
+                                if (!axes.Contains(code)) axes.Add(code);
+                            }
+                            else if (kind == "button")
+                            {
+                                if (!buttons.Contains(code)) buttons.Add(code);
+                                if (code > 10 && code != 16 && code < 22 && !ext.Contains(code)) ext.Add(code);
                             }
                         }
                         if (ext.Count > 0) device.SetExtendedButtons(ext.ToArray());
+                        device.SetCustomSurface(axes.ToArray(), buttons.ToArray(), hasPov);
                     }
                     catch { }
                 }
@@ -784,6 +803,15 @@ namespace PadForge.Services
                     float ay = root.TryGetProperty("ay", out var ayp) ? (float)ayp.GetDouble() : 0f;
                     float az = root.TryGetProperty("az", out var azp) ? (float)azp.GetDouble() : 0f;
                     device.UpdateMotion(gx, gy, gz, ax, ay, az);
+                }
+                else if (type == "caps")
+                {
+                    // What this browser can actually do. Sent once right after
+                    // the socket opens. Only ever narrows a claim we would
+                    // otherwise make on the client's behalf.
+                    if (root.TryGetProperty("vibrate", out var vp)
+                        && vp.ValueKind is JsonValueKind.True or JsonValueKind.False)
+                        device.HasRumble = vp.GetBoolean();
                 }
                 else if (type == "touchpad")
                 {

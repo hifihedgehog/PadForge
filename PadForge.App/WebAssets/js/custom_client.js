@@ -60,6 +60,9 @@
         ws = new WebSocket(url);
         ws.onopen = function () {
             document.getElementById("disconnect-message").style.display = "none";
+            // Same capability report the stock client sends: no Vibration API
+            // means this pad must not advertise rumble.
+            send({ type: "caps", vibrate: !!navigator.vibrate });
             setStatus(layout.name + " connected");
         };
         ws.onmessage = function (ev) {
@@ -113,9 +116,15 @@
 
     // ── Rendering ──
     function render() {
-        // Every widget re-binds below, so the old widgets' release hooks are
-        // stale closures over removed elements: drop them or they accumulate
-        // one set per render for the life of the page.
+        // Let go of anything held BEFORE the elements carrying it are removed.
+        // Saving or leaving edit mode re-renders, and a finger down on a button
+        // at that moment lost its element and its release hook together, so the
+        // server held that button pressed with nothing left to release it.
+        for (var i = 0; i < releaseFns.length; i++) {
+            try { releaseFns[i](); } catch (e) { }
+        }
+        // The old hooks are now stale closures over removed elements: drop them
+        // or they accumulate one set per render for the life of the page.
         releaseFns = [];
         canvas.innerHTML = "";
         layout.widgets.forEach(function (wd) {

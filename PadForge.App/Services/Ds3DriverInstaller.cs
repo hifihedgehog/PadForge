@@ -663,6 +663,111 @@ namespace PadForge.Services
             catch { return false; }
         }
 
+        private const uint IOCTL_BTHPS3PSM_GET_PSM_PATCHING = 0x2A6C0C;
+        private const uint SPDRP_HARDWAREID = 0x01;
+
+        [DllImport("setupapi.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+        private static extern bool SetupDiGetDeviceRegistryProperty(
+            IntPtr set, ref SP_DEVINFO_DATA dev, uint prop, out uint regType,
+            byte[] buffer, uint size, out uint required);
+
+        /// <summary>REG_MULTI_SZ-safe string property read: the embedded nulls
+        /// between hardware ids become spaces so a substring match sees every
+        /// entry.</summary>
+        private static string GetDeviceStringProperty(IntPtr set, ref SP_DEVINFO_DATA dev, uint prop)
+        {
+            SetupDiGetDeviceRegistryProperty(set, ref dev, prop, out _, null, 0, out uint needed);
+            if (needed == 0 || needed > 8192) return null;
+            var buffer = new byte[needed];
+            if (!SetupDiGetDeviceRegistryProperty(set, ref dev, prop, out _, buffer, needed, out _)) return null;
+            return System.Text.Encoding.Unicode.GetString(buffer).Replace(' ', ' ').Trim();
+        }
+
+        /// <summary>Reads the LIVE armed state of every BthPS3PSM filter
+        /// instance via the GET ioctl (contract pinned by
+        /// BthPs3PsmIoctlTests: 408-byte struct, IsEnabled at offset 4).
+        /// Returns false when the control device is unreachable. The
+        /// post-ceremony watcher uses this to catch a filter that lost its
+        /// arming between the ceremony and the PS press, which the toggle
+        /// sweep's count alone cannot see.</summary>
+        internal static bool TryGetPsmPatchState(out int radios, out int armed)
+        {
+            radios = 0; armed = 0;
+            IntPtr h = CreateFile(PsmControlPath, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_RW,
+                IntPtr.Zero, OPEN_EXISTING, FILE_FLAG_NO_BUFFERING | FILE_FLAG_WRITE_THROUGH, IntPtr.Zero);
+            if (h == INVALID_HANDLE) return false;
+            try
+            {
+                for (int index = 0; index < 32; index++)
+                {
+                    byte[] buf = new byte[408]; // { ULONG DeviceIndex; ULONG IsEnabled; WCHAR[200] }
+                    BitConverter.GetBytes(index).CopyTo(buf, 0);
+                    if (!DeviceIoControl(h, IOCTL_BTHPS3PSM_GET_PSM_PATCHING, buf, buf.Length, buf, buf.Length, out _, IntPtr.Zero))
+                    {
+                        if (Marshal.GetLastWin32Error() == ERROR_NO_SUCH_DEVICE) break;
+                        continue;
+                    }
+                    radios++;
+                    if (BitConverter.ToUInt32(buf, 4) != 0) armed++;
+                }
+                return true;
+            }
+            catch { return false; }
+            finally { CloseHandle(h); }
+        }
+
+        /// <summary>True when an INBOX Bluetooth HID child for a DS3 is
+        /// present (BTHENUM hardware id carrying VID&amp;0002054C_PID&amp;0268).
+        /// Its appearance right after a PS press is the smoking gun for a
+        /// disarmed PSM filter: the pad's connection ARRIVED at the radio but
+        /// was not patched to BthPS3, so the inbox HID stack claimed it.</summary>
+        internal static bool TryProbeInboxDs3HidChild(out string foundId)
+        {
+            foundId = null;
+            try
+            {
+                Guid none = Guid.Empty;
+                IntPtr set = SetupDiGetClassDevsEnum(ref none, "BTHENUM", IntPtr.Zero,
+                    DIGCF_PRESENT | DIGCF_ALLCLASSES);
+                if (set == IntPtr.Zero || set == new IntPtr(-1)) return false;
+                try
+                {
+                    var dev = new SP_DEVINFO_DATA { cbSize = Marshal.SizeOf<SP_DEVINFO_DATA>() };
+                    for (int i = 0; SetupDiEnumDeviceInfo(set, i, ref dev); i++)
+                    {
+                        string hwid = GetDeviceStringProperty(set, ref dev, SPDRP_HARDWAREID);
+                        if (hwid != null
+                            && hwid.IndexOf("VID&0002054C", StringComparison.OrdinalIgnoreCase) >= 0
+                            && hwid.IndexOf("PID&0268", StringComparison.OrdinalIgnoreCase) >= 0)
+                        {
+                            foundId = hwid;
+                            return true;
+                        }
+                    }
+                }
+                finally { SetupDiDestroyDeviceInfoList(set); }
+                return true;
+            }
+            catch { return false; }
+        }
+
+        /// <summary>True when bthport has a device record for the pad's MAC
+        /// (BTHPORT\Parameters\Devices\&lt;mac&gt;). The record appearing
+        /// during the post-ceremony window proves the pad's page REACHED the
+        /// radio, splitting radio-level silence from profile-level denial.</summary>
+        internal static bool BthportDeviceRecordExists(string ds3Mac)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(ds3Mac)) return false;
+                string key = ds3Mac.Replace(":", "").Replace("-", "").ToLowerInvariant();
+                using var devices = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(
+                    @"SYSTEM\CurrentControlSet\Services\BTHPORT\Parameters\Devices\" + key);
+                return devices != null;
+            }
+            catch { return false; }
+        }
+
         internal static void LogBthPs3ChildState(Action<string> log)
         {
             try

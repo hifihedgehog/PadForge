@@ -1352,6 +1352,7 @@
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>Redefinir para 25°</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Redefinir para 0°</value></data>
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Redefinir o envelope de inclinação</value></data>
+  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Como as fontes desta linha se combinam quando mais de uma está ativa. Selecione a linha para alterar no painel de detalhes abaixo.</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Velocidade do Mouse X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Velocidade do Mouse Y</value></data>
   <data name="Mapping_MouseScroll" xml:space="preserve"><value>Rolagem do Mouse</value></data>

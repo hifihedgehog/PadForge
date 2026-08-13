@@ -1352,6 +1352,7 @@
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>Réinitialiser à 25°</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Réinitialiser à 0°</value></data>
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Réinitialiser l'enveloppe d'inclinaison</value></data>
+  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Comment les sources de cette ligne se combinent quand plusieurs sont actives. Sélectionnez la ligne pour le modifier dans le panneau de détails en dessous.</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Vitesse souris X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Vitesse souris Y</value></data>
   <data name="Mapping_MouseScroll" xml:space="preserve"><value>Défilement souris</value></data>

@@ -3989,7 +3989,9 @@
                                                             <Border CornerRadius="3" BorderThickness="1"
                                                                     Padding="5,1" Margin="8,0,0,0"
                                                                     VerticalAlignment="Center"
-                                                                    Background="#0D58B6E4">
+                                                                    Background="#0D58B6E4"
+                                                                    Cursor="Hand"
+                                                                    ToolTip="{Binding Pad_CombineChip_Tooltip, Source={x:Static strings:Strings.Instance}}">
                                                                 <Border.BorderBrush>
                                                                     <SolidColorBrush Color="#3D58B6E4"/>
                                                                 </Border.BorderBrush>
@@ -4005,7 +4007,7 @@
                                                                         </Style.Triggers>
                                                                     </Style>
                                                                 </Border.Style>
-                                                                <TextBlock Text="{Binding CombineMode, Converter={StaticResource UpperConverter}}"
+                                                                <TextBlock Text="{Binding CombineModeDisplayName, Converter={StaticResource UpperConverter}}"
                                                                            FontFamily="{StaticResource TelemetryFontFamily}"
                                                                            FontSize="9.5"
                                                                            Foreground="{DynamicResource ColdBrush}"/>

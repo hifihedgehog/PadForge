@@ -1372,6 +1372,7 @@
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>Ripristina a 25°</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Ripristina a 0°</value></data>
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Ripristina l'inviluppo di inclinazione</value></data>
+  <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Come si combinano le sorgenti di questa riga quando più di una è attiva. Seleziona la riga per cambiarlo nel pannello dei dettagli sottostante.</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Velocità mouse X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Velocità mouse Y</value></data>
   <data name="Mapping_MouseScroll" xml:space="preserve"><value>Scorrimento mouse</value></data>

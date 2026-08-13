@@ -39,21 +39,21 @@ namespace PadForge.Services
         {
             try
             {
-                var cert = FindOrCreateCert();
-                if (cert == null) return null;
+                var thumbprint = FindOrCreateCertThumbprint();
+                if (thumbprint == null) return null;
 
                 // Rebind idempotently: delete any prior binding on this port
                 // (a stale cert or a different port config), then add ours.
                 RunNetsh($"http delete sslcert ipport=0.0.0.0:{port}");
                 var add = RunNetsh(
                     $"http add sslcert ipport=0.0.0.0:{port} " +
-                    $"certhash={cert.Thumbprint} appid={AppId} certstorename=MY");
+                    $"certhash={thumbprint} appid={AppId} certstorename=MY");
 
                 // netsh prints a localized success line; the reliable signal is
                 // that a re-query now shows the binding.
                 var show = RunNetsh($"http show sslcert ipport=0.0.0.0:{port}");
-                if (show.IndexOf(cert.Thumbprint, StringComparison.OrdinalIgnoreCase) >= 0)
-                    return cert.Thumbprint;
+                if (show.IndexOf(thumbprint, StringComparison.OrdinalIgnoreCase) >= 0)
+                    return thumbprint;
 
                 PadForge.Engine.SdlDiagLog.WriteLine("WEBTLS bind not confirmed: " + Truncate(add));
                 return null;
@@ -73,16 +73,27 @@ namespace PadForge.Services
             catch { }
         }
 
-        private static X509Certificate2 FindOrCreateCert()
+        /// <summary>The thumbprint of the stored PadForge cert, generating one
+        /// on first use. Returns the THUMBPRINT rather than the certificate:
+        /// every X509Certificate2 here owns a native handle, and handing one
+        /// back left the caller (and every non-matching certificate walked in
+        /// the store) undisposed on each enable.</summary>
+        private static string FindOrCreateCertThumbprint()
         {
             using var store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
             store.Open(OpenFlags.ReadWrite);
 
-            foreach (var existing in store.Certificates)
+            string found = null;
+            var all = store.Certificates;
+            foreach (var existing in all)
             {
-                if (existing.Subject == CertSubject && existing.NotAfter > DateTime.Now.AddDays(30))
-                    return existing;
+                if (found == null
+                    && existing.Subject == CertSubject
+                    && existing.NotAfter > DateTime.Now.AddDays(30))
+                    found = existing.Thumbprint;
+                existing.Dispose();
             }
+            if (found != null) return found;
 
             // Generate a fresh self-signed RSA cert. SANs cover the wildcard
             // and loopback; the phone reaches us by raw LAN IP, and browsers
@@ -100,7 +111,7 @@ namespace PadForge.Services
             san.AddIpAddress(System.Net.IPAddress.Loopback);
             req.CertificateExtensions.Add(san.Build());
 
-            var cert = req.CreateSelfSigned(DateTimeOffset.Now.AddDays(-1), DateTimeOffset.Now.AddYears(10));
+            using var cert = req.CreateSelfSigned(DateTimeOffset.Now.AddDays(-1), DateTimeOffset.Now.AddYears(10));
             cert.FriendlyName = FriendlyName;
 
             // http.sys binds by the store copy, and the private key must be
@@ -108,11 +119,11 @@ namespace PadForge.Services
             // carries a machine-keyset private key.
             var pwd = Guid.NewGuid().ToString("N");
             var pfx = cert.Export(X509ContentType.Pfx, pwd);
-            var storable = X509CertificateLoader.LoadPkcs12(pfx, pwd,
+            using var storable = X509CertificateLoader.LoadPkcs12(pfx, pwd,
                 X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.Exportable);
             store.Add(storable);
             PadForge.Engine.SdlDiagLog.WriteLine("WEBTLS generated cert " + storable.Thumbprint);
-            return storable;
+            return storable.Thumbprint;
         }
 
         private static string RunNetsh(string arguments)

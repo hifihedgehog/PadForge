@@ -2095,9 +2095,16 @@ namespace PadForge.Common.Input
             // DevicesUpdated; the App layer marshals the UI refresh.
             try
             {
-                foreach (var ud in SettingsManager.UserDevices.Items)
-                    if (ud?.Device is WebControllerDevice web)
-                        ud.LoadFromWebDevice(web);
+                // Under SyncRoot: this runs on the WS receive thread while the
+                // polling thread adds and removes rows, and an unsynchronized
+                // walk threw into the blanket catch below, which silently
+                // skipped the re-sync the caps flip exists to perform.
+                lock (SettingsManager.UserDevices.SyncRoot)
+                {
+                    foreach (var ud in SettingsManager.UserDevices.Items)
+                        if (ud?.Device is WebControllerDevice web)
+                            ud.LoadFromWebDevice(web);
+                }
             }
             catch { }
             DevicesUpdated?.Invoke(this, EventArgs.Empty);

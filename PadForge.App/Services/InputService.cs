@@ -5319,6 +5319,11 @@ namespace PadForge.Services
             ps.LeftThumbSensitivity = padVm.LeftStickSensitivity.ToString(ic);
             ps.RightThumbSensitivity = padVm.RightStickSensitivity.ToString(ic);
 
+            // Stick trackball (#291): the KBM mouse stick's coast, in the
+            // extended-mapping bag like the steering keys.
+            ps.SetRawMapping("KbmMouseMomentum", padVm.KbmMouseMomentum ? "1" : "");
+            ps.SetRawMapping("KbmMouseMomentumGlide", padVm.KbmMouseMomentumGlide.ToString(ic));
+
             // Center offsets.
             ps.LeftThumbCenterOffsetX = padVm.LeftCenterOffsetX.ToString(ic);
             ps.LeftThumbCenterOffsetY = padVm.LeftCenterOffsetY.ToString(ic);
@@ -5725,6 +5730,8 @@ namespace PadForge.Services
             padVm.RightAntiDeadZoneY = TryParseDouble(ps.RightThumbAntiDeadZoneY, 0);
             padVm.LeftLinear = TryParseDouble(ps.LeftThumbLinear, 0);
             padVm.LeftStickSensitivity = TryParseDouble(ps.LeftThumbSensitivity, 1);
+            padVm.KbmMouseMomentum = ps.GetRawMapping("KbmMouseMomentum") == "1";
+            padVm.KbmMouseMomentumGlide = TryParseDouble(ps.GetRawMapping("KbmMouseMomentumGlide"), 0.90);
             padVm.RightLinear = TryParseDouble(ps.RightThumbLinear, 0);
 
             padVm.RightStickSensitivity = TryParseDouble(ps.RightThumbSensitivity, 1);

@@ -451,6 +451,39 @@ namespace PadForge.ViewModels
         /// shaping and a flat multiplier can only clip.</summary>
         public bool IsPointerStick { get; init; }
 
+        /// <summary>True only for the KBM slot's stick 0 (mouse movement).
+        /// Gates the Momentum rows: the scroll stick (index 1) is also a
+        /// pointer stick but a coasting scroll wheel is kinetic scrolling,
+        /// deliberately out of #291's scope.</summary>
+        public bool IsMouseStick { get; init; }
+
+        private bool _momentumEnabled;
+        /// <summary>Stick trackball (#291): flick the mouse stick and
+        /// release, and the cursor keeps travelling on the fling, coasting
+        /// to a stop on the same constant-deceleration physics the
+        /// touchpad's Momentum uses. Off by default.</summary>
+        public bool MomentumEnabled
+        {
+            get => _momentumEnabled;
+            set => SetProperty(ref _momentumEnabled, value);
+        }
+
+        private double _momentumGlide = 0.90;
+        /// <summary>The coast's friction band, identical to the touchpad's
+        /// Momentum Glide: 0.80 full friction, 1.00 frictionless (only
+        /// moving the stick stops the cursor), default at the midpoint.</summary>
+        public double MomentumGlide
+        {
+            get => _momentumGlide;
+            set => SetProperty(ref _momentumGlide, Math.Clamp(value, 0.80, 1.00));
+        }
+
+        private RelayCommand _resetMomentumCommand, _resetMomentumGlideCommand;
+        public RelayCommand ResetMomentumCommand =>
+            _resetMomentumCommand ??= new RelayCommand(() => MomentumEnabled = false);
+        public RelayCommand ResetMomentumGlideCommand =>
+            _resetMomentumGlideCommand ??= new RelayCommand(() => MomentumGlide = 0.90);
+
         public StickConfigItem(int index, string title, int axisXIndex = -1, int axisYIndex = -1,
             string iconLabel = "", bool supportsBoundaryCalibration = false)
         {

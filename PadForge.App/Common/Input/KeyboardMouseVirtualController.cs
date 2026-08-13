@@ -62,6 +62,12 @@ namespace PadForge.Common.Input
         private float _gyAccumulator;
         private float _txAccumulator;
         private float _tyAccumulator;
+        // Stick trackball coast (#291): its own remainder pair, same
+        // rationale as the gyro/touch pairs above. A fourth source on the
+        // same axis gets its own accumulator so lanes never trade
+        // fractional motion.
+        private float _sxAccumulator;
+        private float _syAccumulator;
 
         // Scroll speed at full axis deflection, in wheel notches per SECOND.
         //
@@ -159,6 +165,8 @@ namespace PadForge.Common.Input
             _gyAccumulator = 0f;
             _txAccumulator = 0f;
             _tyAccumulator = 0f;
+            _sxAccumulator = 0f;
+            _syAccumulator = 0f;
         }
 
         /// <summary>
@@ -296,6 +304,28 @@ namespace PadForge.Common.Input
                 _tyAccumulator -= tdy;
                 if (tdx != 0 || tdy != 0)
                     InputManager.AccumulateMouseMoveInput(tdx, tdy);
+            }
+
+            // --- Stick trackball coast (#291), exact counts ---
+            // Y negates into screen space exactly as the deflection lane's
+            // spend does (-MouseStickPixels above), because the coast is
+            // launched FROM that lane's deflections: KbmMouseY positive is
+            // up, screen Y positive is down.
+            if (raw.MouseStickCoastX != 0f || raw.MouseStickCoastY != 0f)
+            {
+                if (raw.MouseStickCoastX == 0f || (_sxAccumulator > 0f) != (raw.MouseStickCoastX > 0f))
+                    _sxAccumulator = 0f;
+                if (raw.MouseStickCoastY == 0f || (_syAccumulator > 0f) != (-raw.MouseStickCoastY > 0f))
+                    _syAccumulator = 0f;
+
+                _sxAccumulator += raw.MouseStickCoastX;
+                _syAccumulator += -raw.MouseStickCoastY;
+                int sdx = (int)_sxAccumulator;
+                int sdy = (int)_syAccumulator;
+                _sxAccumulator -= sdx;
+                _syAccumulator -= sdy;
+                if (sdx != 0 || sdy != 0)
+                    InputManager.AccumulateMouseMoveInput(sdx, sdy);
             }
 
             // --- Flick stick exact counts (#225) ---

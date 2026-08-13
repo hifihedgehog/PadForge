@@ -2962,6 +2962,27 @@ namespace PadForge.Common.Input
             ApplyKbmStickSpeed(ref raw.MouseDeltaX, ref raw.MouseDeltaY,
                 TryParseDoubleStatic(ps.LeftThumbSensitivity, 1));
 
+            // Stick trackball (#291): feed the post-deadzone, post-curve,
+            // post-speed deflection to the coast tracker every poll. On a
+            // release fling it returns exact count deltas that ride their
+            // own lane, never MouseDeltaX: a coast is a velocity already in
+            // counts, and routing it through the deflection field would
+            // re-apply the deadzone, the curve stage and the speed knob
+            // (the gyro lane's own argument for its counts channel).
+            {
+                bool coastOn = ps.GetRawMapping("KbmMouseMomentum") == "1";
+                float coastGlide = (float)TryParseDoubleStatic(ps.GetRawMapping("KbmMouseMomentumGlide"), 0.90);
+                var (ccx, ccy) = PadForge.Engine.Common.Mapping.SourceCoercion.TickStickCoast(
+                    slotIndex, thisDeviceGuid,
+                    raw.MouseDeltaX / 32767f, raw.MouseDeltaY / 32767f,
+                    (float)ComputeAndAdvanceDelta(slotIndex),
+                    System.Diagnostics.Stopwatch.GetTimestamp(),
+                    System.Diagnostics.Stopwatch.Frequency,
+                    coastOn, coastGlide);
+                raw.MouseStickCoastX = ccx;
+                raw.MouseStickCoastY = ccy;
+            }
+
             // ── Wii pointer modes (issue #203) ──
             // Placed AFTER the relative lane's deadzone so FPS Mouse's
             // synthesized velocity is not re-deadzoned by the Left Thumb

@@ -1353,6 +1353,9 @@
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Restablecer zona muerta de inclinación</value></data>
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Restablecer todos los ajustes de inclinación ajustable</value></data>
   <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Cómo se combinan las fuentes de esta fila cuando hay más de una activa. Selecciona la fila para cambiarlo en el panel de detalles inferior.</value></data>
+  <data name="Pad_StickMomentum" xml:space="preserve"><value>Impulso</value></data>
+  <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>Modo trackball: sacude el stick y suéltalo, y el cursor sigue viajando hasta detenerse. Mover el stick de nuevo lo detiene.</value></data>
+  <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>Cuánto se desliza el cursor tras el impulso. En el tope del rango sigue avanzando hasta que muevas el stick de nuevo.</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Velocidad ratón X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Velocidad ratón Y</value></data>
   <data name="Mapping_MouseScroll" xml:space="preserve"><value>Desplazamiento ratón</value></data>

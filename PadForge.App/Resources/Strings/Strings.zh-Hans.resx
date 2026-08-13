@@ -1353,6 +1353,9 @@
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>重置倾斜死区</value></data>
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>重置所有陀螺仪倾角设置</value></data>
   <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>当多个输入源同时活动时，本行的合并方式。选中该行可在下方详情栏中修改。</value></data>
+  <data name="Pad_StickMomentum" xml:space="preserve"><value>动量</value></data>
+  <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>轨迹球模式：快速拨动摇杆后松开，光标会继续滑行并逐渐停下。再次移动摇杆即可接住它。</value></data>
+  <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>拨动后光标滑行多远。调到最高时它会一直前进，直到你再次移动摇杆。</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>鼠标速度 X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>鼠标速度 Y</value></data>
   <data name="Mapping_MouseScroll" xml:space="preserve"><value>鼠标滚动</value></data>

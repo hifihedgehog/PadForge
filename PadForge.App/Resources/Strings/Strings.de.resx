@@ -1353,6 +1353,9 @@
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Neigungs-Totzone zurücksetzen</value></data>
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Alle Gyro-Kippwinkel-Einstellungen zurücksetzen</value></data>
   <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Wie die Quellen dieser Zeile zusammengeführt werden, wenn mehrere aktiv sind. Zeile auswählen, um es im Detailbereich darunter zu ändern.</value></data>
+  <data name="Pad_StickMomentum" xml:space="preserve"><value>Schwung</value></data>
+  <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>Trackball-Modus: Stick schnippen und loslassen, und der Cursor gleitet weiter, bis er ausrollt. Erneutes Bewegen des Sticks fängt ihn ab.</value></data>
+  <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>Wie weit der Cursor nach einem Schnippen gleitet. Am oberen Ende läuft er weiter, bis der Stick wieder bewegt wird.</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Maus Geschwindigkeit X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Maus Geschwindigkeit Y</value></data>
   <data name="Mapping_MouseScroll" xml:space="preserve"><value>Maus Scrollen</value></data>

@@ -268,6 +268,15 @@
         public float MouseTouchX;
         public float MouseTouchY;
 
+        /// <summary>Stick trackball coast in exact counts for this poll
+        /// (#291): the fling a released mouse stick keeps travelling on.
+        /// Same KBM sign convention as <see cref="MouseDeltaY"/> (positive
+        /// = up); the virtual controller negates Y into screen space
+        /// exactly as it does for the deflection lane the coast launched
+        /// from. See SourceCoercion.TickStickCoast.</summary>
+        public float MouseStickCoastX;
+        public float MouseStickCoastY;
+
         public bool GetKey(byte vk)
         {
             int word = vk / 64;
@@ -317,6 +326,7 @@
             MouseFlickX = 0;
             MouseGyroX = MouseGyroY = 0f;
             MouseTouchX = MouseTouchY = 0f;
+            MouseStickCoastX = MouseStickCoastY = 0f;
         }
 
         /// <summary>
@@ -345,6 +355,11 @@
                 MouseGyroY = a.MouseGyroY + b.MouseGyroY,
                 MouseTouchX = a.MouseTouchX + b.MouseTouchX,
                 MouseTouchY = a.MouseTouchY + b.MouseTouchY,
+                // Coasts sum like the other exact-counts lanes: each
+                // device pass ticks its own (slot, device) ball, so there
+                // are no duplicates to merge away.
+                MouseStickCoastX = a.MouseStickCoastX + b.MouseStickCoastX,
+                MouseStickCoastY = a.MouseStickCoastY + b.MouseStickCoastY,
                 ScrollDelta = Math.Abs(a.ScrollDelta) >= Math.Abs(b.ScrollDelta) ? a.ScrollDelta : b.ScrollDelta,
                 MouseButtons = (byte)(a.MouseButtons | b.MouseButtons),
                 PreDzMouseDeltaX = Math.Abs(a.PreDzMouseDeltaX) >= Math.Abs(b.PreDzMouseDeltaX) ? a.PreDzMouseDeltaX : b.PreDzMouseDeltaX,

@@ -1353,6 +1353,9 @@
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Réinitialiser la zone morte d'inclinaison</value></data>
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Réinitialiser tous les réglages d'inclinaison réglable</value></data>
   <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Comment les sources de cette ligne se combinent quand plusieurs sont actives. Sélectionnez la ligne pour le modifier dans le panneau de détails en dessous.</value></data>
+  <data name="Pad_StickMomentum" xml:space="preserve"><value>Élan</value></data>
+  <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>Mode trackball : donnez une impulsion au stick et relâchez, le curseur continue sa course et ralentit jusqu'à l'arrêt. Bouger le stick le rattrape.</value></data>
+  <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>Distance parcourue par le curseur après l'impulsion. Au maximum, il continue jusqu'à ce que vous bougiez le stick.</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Vitesse souris X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Vitesse souris Y</value></data>
   <data name="Mapping_MouseScroll" xml:space="preserve"><value>Défilement souris</value></data>

@@ -5983,6 +5983,41 @@
                                                 <TextBlock Text="&#215;" Style="{StaticResource DzPercent}"/>
                                                 <ui:Button Command="{Binding ResetStickSensitivityCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Common_Reset, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
+                                            <!-- Stick trackball (#291): mouse stick ONLY (the scroll
+                                                 stick would be kinetic scrolling, its own feature).
+                                                 Flick and release: the cursor coasts on the touchpad
+                                                 Momentum's constant-deceleration physics. -->
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8"
+                                                        Visibility="{Binding IsMouseStick, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <CheckBox Content="{Binding Pad_StickMomentum, Source={x:Static strings:Strings.Instance}}"
+                                                          ToolTip="{Binding Pad_StickMomentum_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                                          IsChecked="{Binding MomentumEnabled, Mode=TwoWay}"
+                                                          Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                          VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                                <ui:Button Command="{Binding ResetMomentumCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetTouchpadMouseMomentum, Source={x:Static strings:Strings.Instance}}"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8"
+                                                        IsEnabled="{Binding MomentumEnabled}">
+                                                <StackPanel.Style>
+                                                    <Style TargetType="StackPanel">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsMouseStick}" Value="True">
+                                                                <Setter Property="Visibility" Value="Visible"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </StackPanel.Style>
+                                                <TextBlock Text="{Binding Pad_Touchpad_MouseMomentumDecay, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                                           ToolTip="{Binding Pad_StickMomentumGlide_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Slider Value="{Binding MomentumGlide, Mode=TwoWay}"
+                                                        Minimum="0.80" Maximum="1.00" SmallChange="0.01" LargeChange="0.05"
+                                                        Style="{StaticResource DzSlider}"
+                                                        ToolTip="{Binding Pad_StickMomentumGlide_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                <TextBox Text="{Binding MomentumGlide, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0.00}}"
+                                                         Style="{StaticResource DzValueEdit}"/>
+                                                <ui:Button Command="{Binding ResetMomentumGlideCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetTouchpadMouseMomentumDecay, Source={x:Static strings:Strings.Instance}}"/>
+                                            </StackPanel>
                                             <Separator Margin="0,8,0,8"/>
                                             <!-- ─── Sensitivity curves ─── -->
                                             <TextBlock Text="{Binding Pad_SensitivityCurves, Source={x:Static strings:Strings.Instance}}"

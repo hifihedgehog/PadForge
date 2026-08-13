@@ -1373,6 +1373,9 @@
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Ripristina zona morta di inclinazione</value></data>
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Ripristina tutte le impostazioni di inclinazione regolabile</value></data>
   <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Come si combinano le sorgenti di questa riga quando più di una è attiva. Seleziona la riga per cambiarlo nel pannello dei dettagli sottostante.</value></data>
+  <data name="Pad_StickMomentum" xml:space="preserve"><value>Slancio</value></data>
+  <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>Modalità trackball: dai un colpo allo stick e rilascialo, e il cursore continua a viaggiare rallentando fino a fermarsi. Muovere di nuovo lo stick lo ferma.</value></data>
+  <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>Quanto scivola il cursore dopo il colpo. Al massimo continua finché non muovi di nuovo lo stick.</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Velocità mouse X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Velocità mouse Y</value></data>
   <data name="Mapping_MouseScroll" xml:space="preserve"><value>Scorrimento mouse</value></data>

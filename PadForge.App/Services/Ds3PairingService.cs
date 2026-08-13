@@ -444,7 +444,7 @@ namespace PadForge.Services
             // Ninety seconds of nothing: log THAT, which is itself the
             // verdict (the connection never reached BthPS3, so with sixpair
             // confirmed and the PSM filter armed, the radio is the suspect).
-            StartBthPs3ChildWatch();
+            StartBthPs3ChildWatch(r.Ds3Mac);
 
             r.Success = true;
             r.Error = "ok";
@@ -456,7 +456,7 @@ namespace PadForge.Services
         /// <summary>Watches for a BthPS3 bus child for 90 s after a pairing
         /// ceremony, DIAG-ring only. A re-pair restarts the window. Polls the
         /// silent probe every 3 s and logs transitions, never the polls.</summary>
-        private static void StartBthPs3ChildWatch()
+        private static void StartBthPs3ChildWatch(string ds3Mac)
         {
             var next = new System.Threading.CancellationTokenSource();
             var prev = System.Threading.Interlocked.Exchange(ref _childWatchCts, next);
@@ -466,6 +466,17 @@ namespace PadForge.Services
             _ = System.Threading.Tasks.Task.Run(async () =>
             {
                 var sw = System.Diagnostics.Stopwatch.StartNew();
+                // The funnel has four stations, and the old watcher saw only
+                // the last, so "nothing arrived" could not say WHERE it
+                // stopped (#285: BthPS3 worked on the same MediaTek radio
+                // under DsHidMini, so blaming the radio was premature). Each
+                // poll now reads the whole funnel and logs transitions:
+                //   1. filter armed?      (GET ioctl, live state)
+                //   2. radio saw the pad? (bthport device record for its MAC)
+                //   3. inbox HID stole it? (BTHENUM DS3 child = disarmed filter)
+                //   4. BthPS3 child?      (the success signal)
+                bool recordAtStart = Ds3DriverInstaller.BthportDeviceRecordExists(ds3Mac);
+                bool loggedRecord = false, loggedInbox = false, loggedDisarm = false;
                 try
                 {
                     while (sw.ElapsedMilliseconds < 90_000)
@@ -474,6 +485,44 @@ namespace PadForge.Services
                         catch (System.Threading.Tasks.TaskCanceledException) { return; }
                         if (token.IsCancellationRequested) return;
 
+                        // Station 1: the filter's LIVE armed state. If it lost
+                        // arming since the ceremony (radio re-enumeration under
+                        // AutoEnableFilter=0 is the known mechanism), say so
+                        // and re-arm on the spot.
+                        if (!loggedDisarm
+                            && Ds3DriverInstaller.TryGetPsmPatchState(out int radios, out int armed)
+                            && radios > 0 && armed == 0)
+                        {
+                            loggedDisarm = true;
+                            LogLine($"PSM filter DISARMED {sw.Elapsed.TotalSeconds:0}s after the ceremony "
+                                + $"({radios} radio(s), 0 armed). A connection arriving now would bypass "
+                                + "BthPS3 entirely. Re-arming.");
+                            Ds3DriverInstaller.SetPsmPatching(true, LogLine, 5000);
+                        }
+
+                        // Station 2: did the pad's page reach the radio at all?
+                        if (!loggedRecord && !recordAtStart
+                            && Ds3DriverInstaller.BthportDeviceRecordExists(ds3Mac))
+                        {
+                            loggedRecord = true;
+                            LogLine($"BTHPORT device record for the pad appeared {sw.Elapsed.TotalSeconds:0}s "
+                                + "after the ceremony: the radio ACCEPTED the pad's connection at the "
+                                + "HCI level. Whatever fails is past the radio.");
+                        }
+
+                        // Station 3: the inbox HID stack claiming the pad means
+                        // the connection arrived UNPATCHED.
+                        if (!loggedInbox
+                            && Ds3DriverInstaller.TryProbeInboxDs3HidChild(out string inboxId) && inboxId != null)
+                        {
+                            loggedInbox = true;
+                            LogLine($"INBOX Bluetooth HID child for the DS3 appeared {sw.Elapsed.TotalSeconds:0}s "
+                                + $"after the ceremony [{inboxId}]. The connection ARRIVED but the PSM "
+                                + "filter did not patch it, so the inbox stack claimed the pad. This is "
+                                + "a filter-arming failure, not a radio refusal.");
+                        }
+
+                        // Station 4: success.
                         if (!Ds3DriverInstaller.TryProbeBthPs3Children(out int children, out bool activeIface, out string detail))
                             continue; // probe hiccup; the next poll answers
 
@@ -485,13 +534,25 @@ namespace PadForge.Services
                             return;
                         }
                     }
-                    LogLine("No BthPS3 child within 90 s of the ceremony. The pad's "
-                        + "connection attempt never reached BthPS3. Sixpair was "
-                        + "confirmed and the PSM filter was armed, so the remaining "
-                        + "suspect is the radio itself: either it refuses the DS3's "
-                        + "legacy (pre-SSP) inbound connection or it drops under the "
-                        + "PSM filter. The radio's identity (Device Manager, "
-                        + "Bluetooth, the adapter name) is the next question.");
+
+                    // The 90-second verdict, now stated from evidence instead
+                    // of assumption.
+                    bool sawRecord = loggedRecord || (!recordAtStart && Ds3DriverInstaller.BthportDeviceRecordExists(ds3Mac));
+                    string verdict;
+                    if (loggedInbox)
+                        verdict = "VERDICT: the connection arrived but went to the inbox HID stack "
+                            + "(PSM filter not patching at connect time).";
+                    else if (sawRecord)
+                        verdict = "VERDICT: the radio accepted the pad's connection (BTHPORT record "
+                            + "updated) but no BthPS3 child followed. The failure is between bthport "
+                            + "and BthPS3: either the PSM patch missed the connection or BthPS3 "
+                            + "denied it during identification (remote-name read).";
+                    else
+                        verdict = "VERDICT: no trace of the pad reached this machine at any layer "
+                            + "(no BTHPORT record, no inbox child, no BthPS3 child). The radio never "
+                            + "accepted the pad's page. Radio-level: driver, legacy-connection "
+                            + "support, or the pad is paging a different address.";
+                    LogLine("No BthPS3 child within 90 s of the ceremony. " + verdict);
                 }
                 catch { /* watcher is best-effort by design */ }
             }, token);

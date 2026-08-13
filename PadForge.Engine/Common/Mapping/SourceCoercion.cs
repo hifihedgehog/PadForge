@@ -3247,6 +3247,18 @@ namespace PadForge.Engine.Common.Mapping
             public ulong FrameSeq;
             public float FrameCountsX, FrameCountsY;
 
+            /// <summary>Wall-clock stamp of the last advance (#291 defect
+            /// fix). A ball that stops being advanced is a suppressed or
+            /// orphaned one: a shift layer replaced the row, a macro
+            /// postpone ate the source, the device went offline. Freezing
+            /// the velocity across that gap meant re-engaging the layer or
+            /// reconnecting the device RESUMED a coast from before, and a
+            /// finger that stayed down through the gap measured the whole
+            /// gap as one giant delta. The advance path checks this stamp
+            /// and stops + re-seeds when the gap exceeds
+            /// <see cref="TouchStaleAdvanceSeconds"/>.</summary>
+            public long LastAdvanceTicks;
+
             public void PushSample(float vx, float vy)
             {
                 HistX[HistNext] = vx;
@@ -3273,6 +3285,23 @@ namespace PadForge.Engine.Common.Mapping
         // two axes have to decelerate as one vector rather than independently.
         private static readonly ConcurrentDictionary<
             (int Slot, string Device, int Pad, int Finger), TouchBall> _touchVelocity = new();
+
+        /// <summary>Drops every touch-momentum ball (#291 defect fix). The
+        /// table had no reset site at all: no clear on profile switch, no
+        /// per-slot eviction, unlike every comparable runtime table (gyro
+        /// aim rings, source-kind runtime). Wired into
+        /// ClearSourceKindRuntime, the same profile-switch / engine-stop
+        /// hygiene the gravity-lean neutrals ride.</summary>
+        public static void ResetTouchMomentum() => _touchVelocity.Clear();
+
+        /// <summary>Drops one slot's touch-momentum balls (#291): the
+        /// structural-mapping-change twin, wired beside
+        /// ResetSourceKindRuntimeForSlot.</summary>
+        public static void ResetTouchMomentumForSlot(int slotIndex)
+        {
+            foreach (var k in _touchVelocity.Keys)
+                if (k.Slot == slotIndex) _touchVelocity.TryRemove(k, out _);
+        }
 
         /// <summary>Set while a mouse target's deflection lane is combined, so
         /// touchpad delta sources contribute ZERO there and are counted once
@@ -3326,6 +3355,15 @@ namespace PadForge.Engine.Common.Mapping
         private const float TouchMinReportSeconds = 0.002f;
         private const float TouchMaxReportSeconds = 0.030f;
 
+        /// <summary>A ball not advanced for this long stops and re-seeds
+        /// rather than resuming (#291). The poll loop advances every ball it
+        /// reads about once per millisecond, so a real gap here means the
+        /// ball's row was suppressed, its source postponed, or its device
+        /// offline, and none of those may freeze a coast for later. Short
+        /// enough to catch any human-scale suppression, long enough that a
+        /// scheduler hiccup cannot kill a live coast.</summary>
+        private const float TouchStaleAdvanceSeconds = 0.1f;
+
         /// <summary><para>Touchpad motion as MOUSE COUNTS for one poll,
         /// bridged across the gap between device reports.</para>
         /// <para>The deflection lane recomputed its delta ONCE PER POLL from
@@ -3370,6 +3408,7 @@ namespace PadForge.Engine.Common.Mapping
                     LastRawX = pad.FingerX[fingerIdx],
                     LastRawY = pad.FingerY[fingerIdx],
                     LastReportTicks = nowTicks,
+                    LastAdvanceTicks = nowTicks,
                     WasDown = true,
                 };
                 _touchVelocity[key] = ball;
@@ -3419,6 +3458,30 @@ namespace PadForge.Engine.Common.Mapping
             ball.FrameCountsX = 0f;
             ball.FrameCountsY = 0f;
             bool down = pad.FingerDown[fingerIdx];
+
+            // Stale ball (#291 defect fix): the advance stopped for longer
+            // than any live poll gap, so the row was suppressed, the source
+            // postponed, or the device offline. A coast must STOP there, not
+            // freeze for later, and a finger that stayed down through the
+            // gap must not read the whole gap as one delta. Zero the
+            // velocity, drop the history, and re-seed the position so the
+            // resume is indistinguishable from a fresh contact.
+            if (ticksPerSecond > 0 && ball.LastAdvanceTicks != 0
+                && (float)(nowTicks - ball.LastAdvanceTicks) / ticksPerSecond > TouchStaleAdvanceSeconds)
+            {
+                ball.ClearSamples();
+                ball.VelX = ball.VelY = 0f;
+                if (down)
+                {
+                    ball.LastRawX = pad.FingerX[fingerIdx];
+                    ball.LastRawY = pad.FingerY[fingerIdx];
+                    ball.LastReportTicks = nowTicks;
+                }
+                ball.WasDown = down;
+                ball.LastAdvanceTicks = nowTicks;
+                return;
+            }
+            ball.LastAdvanceTicks = nowTicks;
 
             if (down)
             {

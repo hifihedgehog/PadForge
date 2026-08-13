@@ -32,6 +32,10 @@ namespace PadForge.Common.Input
             // the per-slot motion neutrals and follows the same profile
             // switch / engine-stop hygiene.
             SourceCoercion.ResetGyroLeanNeutral();
+            // The touch-momentum balls had NO reset site anywhere (#291):
+            // a coast could survive a profile switch and resume under the
+            // new profile. Same hygiene tier as the lean neutrals.
+            SourceCoercion.ResetTouchMomentum();
         }
 
         /// <summary>Drops one slot's steering and flick state. Called when a
@@ -45,6 +49,10 @@ namespace PadForge.Common.Input
         {
             if (slotIndex < 0 || slotIndex >= _slotSourceKindRuntime.Length) return;
             _slotSourceKindRuntime[slotIndex]?.ResetForSlot(slotIndex);
+            // A wholesale row replacement drops the slot's coast state too
+            // (#291), the same reasoning as the steering accumulators: a
+            // re-authored mapping must not inherit a mid-flight ball.
+            SourceCoercion.ResetTouchMomentumForSlot(slotIndex);
         }
 
         // ─────────────────────────────────────────────

@@ -438,8 +438,9 @@ namespace PadForge.ViewModels
 
         private double _touchpadMouseMomentumDecay = 0.90;
         /// <summary>Mirrors <see cref="TouchpadGestureSettings.MouseMomentumDecay"/>:
-        /// the fraction of speed kept per 10 ms of coast. Higher glides
-        /// longer. Clamped to the band the engine reads.</summary>
+        /// scales the constant coast deceleration, 0.80 = full friction,
+        /// 1.00 = frictionless. Higher glides longer. Clamped to the band
+        /// the engine reads.</summary>
         public double TouchpadMouseMomentumDecay
         {
             get => _touchpadMouseMomentumDecay;

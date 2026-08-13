@@ -825,6 +825,104 @@ namespace PadForge.Tests
             finally { ClearSettings(); }
         }
 
+        // ── the #291 defect fixes: no frozen coasts, real reset sites ────
+
+        [Fact]
+        public void ASuppressionGap_StopsTheCoast_InsteadOfResumingIt()
+        {
+            // The defect: a layer suppression, a macro postpone, or an
+            // offline device stopped the ball being ADVANCED, so the
+            // velocity froze and the coast resumed when the path came back.
+            // A gap longer than TouchStaleAdvanceSeconds now stops it.
+            UseSettings(momentum: true, decay: 0.95f);
+            try
+            {
+                var src = XSource(); int slot = NewSlot();
+                Counts(PadAt(0.50f), TicksAt(0.000f), src, slot);
+                Counts(PadAt(0.60f), TicksAt(0.004f), src, slot);
+                Assert.True(Counts(PadAt(0.60f, down: false), TicksAt(0.005f), src, slot) > 0f,
+                    "harness produced no coast to suppress");
+
+                // The row goes unread for 300 ms (suppressed), then returns.
+                float onResume = Counts(PadAt(0.60f, down: false), TicksAt(0.305f), src, slot);
+                Assert.Equal(0f, onResume);
+
+                // And it STAYS stopped rather than restarting a poll later.
+                Assert.Equal(0f, Counts(PadAt(0.60f, down: false), TicksAt(0.306f), src, slot));
+            }
+            finally { ClearSettings(); }
+        }
+
+        [Fact]
+        public void AFingerHeldThroughASuppressionGap_DoesNotFlingOnResume()
+        {
+            // The finger stays down while the row is suppressed and moves
+            // meanwhile. On resume the gap must re-seed, not be read as one
+            // giant delta.
+            UseSettings(momentum: true, decay: 0.90f);
+            try
+            {
+                var src = XSource(); int slot = NewSlot();
+                Counts(PadAt(0.20f), TicksAt(0.000f), src, slot);
+                Counts(PadAt(0.22f), TicksAt(0.004f), src, slot);
+
+                // 300 ms unread; the finger travelled to the far edge.
+                float onResume = Counts(PadAt(0.90f), TicksAt(0.305f), src, slot);
+                Assert.Equal(0f, onResume);
+
+                // Tracking resumes normally from the NEW position.
+                float after = Counts(PadAt(0.92f), TicksAt(0.309f), src, slot);
+                Assert.True(after > 0f, "tracking did not resume after the gap");
+                float smallDrag = after;
+                Assert.True(System.Math.Abs(smallDrag) < 500f,
+                    $"the gap was read as one delta: {smallDrag} counts");
+            }
+            finally { ClearSettings(); }
+        }
+
+        [Fact]
+        public void ResetTouchMomentum_KillsACoast()
+        {
+            // Profile-switch hygiene (#291): the table finally has a reset
+            // site, and it must actually stop a live coast.
+            UseSettings(momentum: true, decay: 0.95f);
+            try
+            {
+                var src = XSource(); int slot = NewSlot();
+                Counts(PadAt(0.50f), TicksAt(0.000f), src, slot);
+                Counts(PadAt(0.60f), TicksAt(0.004f), src, slot);
+                Assert.True(Counts(PadAt(0.60f, down: false), TicksAt(0.005f), src, slot) > 0f,
+                    "harness produced no coast to reset");
+
+                SourceCoercion.ResetTouchMomentum();
+                Assert.Equal(0f, Counts(PadAt(0.60f, down: false), TicksAt(0.006f), src, slot));
+            }
+            finally { ClearSettings(); }
+        }
+
+        [Fact]
+        public void ResetTouchMomentumForSlot_IsScopedToTheSlot()
+        {
+            UseSettings(momentum: true, decay: 0.95f);
+            try
+            {
+                var a = XSource(); int slotA = NewSlot();
+                var b = XSource(); int slotB = NewSlot();
+                Counts(PadAt(0.50f), TicksAt(0.000f), a, slotA);
+                Counts(PadAt(0.60f), TicksAt(0.004f), a, slotA);
+                Counts(PadAt(0.50f), TicksAt(0.000f), b, slotB);
+                Counts(PadAt(0.60f), TicksAt(0.004f), b, slotB);
+                Assert.True(Counts(PadAt(0.60f, down: false), TicksAt(0.005f), a, slotA) > 0f);
+                Assert.True(Counts(PadAt(0.60f, down: false), TicksAt(0.005f), b, slotB) > 0f);
+
+                SourceCoercion.ResetTouchMomentumForSlot(slotA);
+                Assert.Equal(0f, Counts(PadAt(0.60f, down: false), TicksAt(0.006f), a, slotA));
+                Assert.True(Counts(PadAt(0.60f, down: false), TicksAt(0.006f), b, slotB) > 0f,
+                    "the per-slot reset leaked into another slot");
+            }
+            finally { ClearSettings(); }
+        }
+
         [Fact]
         public void MomentumDecayIsClampedIntoTheBand()
         {

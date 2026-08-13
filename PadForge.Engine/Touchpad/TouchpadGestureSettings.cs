@@ -229,10 +229,14 @@ namespace PadForge.Engine.Touchpad
         /// </summary>
         [XmlAttribute] public bool MouseMomentum { get; set; }
 
-        /// <summary><para>How long the coast lasts: the fraction of speed
-        /// kept after each 10 ms of travel. The band is 0.80 to 1.00 and the
-        /// default 0.90 sits at its midpoint, which glides about twice as far
-        /// as the first cut did.</para>
+        /// <summary><para>How long the coast lasts. The knob scales a
+        /// constant DECELERATION: 0.80 is the full sc-controller friction
+        /// (about 22.4 pad widths per second squared), 1.00 is frictionless,
+        /// and the band maps linearly between them. The default 0.90 sits at
+        /// the midpoint, half friction. (An earlier cut described this as
+        /// "the fraction of speed kept per 10 ms"; that was the exponential
+        /// first draft, deliberately replaced because exponential decay
+        /// never actually reaches zero.)</para>
         /// <para>1.00 is FRICTIONLESS. The cursor keeps its speed until you
         /// touch the pad again, which is what a real trackball does when you
         /// spin it and let go, and touching down stops it. That is the only

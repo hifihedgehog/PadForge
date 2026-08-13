@@ -65,6 +65,11 @@
 
         ws.onopen = function () {
             console.log("[PadForge] WebSocket connected");
+            // Say what this browser can actually do, so the pad is not
+            // advertised with capabilities it cannot deliver. iOS Safari has
+            // no Vibration API at all, and a pad that claims rumble it never
+            // plays is a mapping the user sets and then wonders about.
+            send({ type: "caps", vibrate: !!vibrate });
             // A reconnected server-side device starts neutral, so every
             // duplicate-suppression cache from the old socket must be dropped
             // or the first post-reconnect state is silently swallowed.
@@ -182,6 +187,11 @@
     // rotation) and delivered in the SDL controller-frame convention the
     // whole gyro pipeline expects (X right, Y up, Z toward the player).
     var motionOn = false, motionBtn = null;
+    // rotationRate is degrees per second in EVERY current browser: the W3C
+    // spec mandates deg/s, Firefox and Safari always followed it, and Chrome
+    // switched from radians in Chrome 66 (2018, treated as a bug fix). So the
+    // conversion below is unconditional, and any "some browsers send radians"
+    // special case would be wrong on all of them.
     var D2R = Math.PI / 180;
 
     function setupMotionButton() {

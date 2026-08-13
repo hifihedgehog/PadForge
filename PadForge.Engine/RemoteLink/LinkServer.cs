@@ -597,11 +597,20 @@ namespace PadForge.Engine.RemoteLink
                 catch (OperationCanceledException) { won = null; }
                 if (won == null) return;
 
-                // Take the direct path. The relay client stays on the
-                // connection, so a direct path that later dies falls back.
-                System.Threading.Interlocked.Exchange(ref c.LastDirectTicks, System.Diagnostics.Stopwatch.GetTimestamp());
+                // Take the direct path PROVISIONALLY. A punch probe carries the
+                // shared nonce in the clear, so anyone who saw one can replay it
+                // from a spoofed source and win this punch; they cannot forge a
+                // sealed frame. Stamping direct-liveness from the probe (as this
+                // did) treated the punch itself as proof and handed a replayer
+                // the session's outbound path for a full six seconds. Liveness
+                // is now stamped only by TryDispatchSession, on a datagram that
+                // actually opened, and an upgrade that produces none is reverted
+                // in two seconds by MaintainPaths.
+                System.Threading.Interlocked.Exchange(ref c.LastDirectTicks, 0);
+                System.Threading.Interlocked.Exchange(ref c.UpgradeProvisionalTicks,
+                    System.Diagnostics.Stopwatch.GetTimestamp());
                 c.PeerUdpEndpoint = won;
-                SdlDiagLog.WriteLine($"PATH upgraded: relay -> direct {won} for peer {Short(c.PeerFingerprintHex)}");
+                SdlDiagLog.WriteLine($"PATH upgraded (provisional): relay -> direct {won} for peer {Short(c.PeerFingerprintHex)}");
             }
             finally { _punchSinks.TryRemove(key, out _); }
         }
@@ -625,8 +634,21 @@ namespace PadForge.Engine.RemoteLink
                 }
                 else
                 {
-                    // Upgraded: if the direct path has been silent, fall back.
+                    // Upgraded but not yet CONFIRMED: no sealed datagram has
+                    // arrived over the new path. Two seconds is generous for a
+                    // peer that just answered a punch on it, and a replayed
+                    // probe never produces one at all.
                     long last = System.Threading.Interlocked.Read(ref c.LastDirectTicks);
+                    long prov = System.Threading.Interlocked.Read(ref c.UpgradeProvisionalTicks);
+                    if (last == 0 && prov != 0 && now - prov > freq * 2)
+                    {
+                        c.PeerUdpEndpoint = null;
+                        System.Threading.Interlocked.Exchange(ref c.UpgradeProvisionalTicks, 0);
+                        System.Threading.Interlocked.Exchange(ref c.LastOfferTicks, 0);
+                        SdlDiagLog.WriteLine($"PATH upgrade unconfirmed (no sealed traffic), back to relay for peer {Short(c.PeerFingerprintHex)}");
+                        continue;
+                    }
+                    // Confirmed but since gone quiet: fall back.
                     if (last != 0 && now - last > freq * 6)
                     {
                         c.PeerUdpEndpoint = null;
@@ -913,6 +935,7 @@ namespace PadForge.Engine.RemoteLink
                     && live.PublicKey.AsSpan().SequenceEqual(wantKey)
                     && (relayHost == null || string.Equals(live.RelayHost, relayHost, StringComparison.OrdinalIgnoreCase)))
                     return live.RelayHost;
+                DropConnectionsOnRelay(live);
                 try { live?.Dispose(); } catch { }
                 _relayListen = null;
                 var client = new IrohRelayClient(identitySeed);
@@ -939,6 +962,7 @@ namespace PadForge.Engine.RemoteLink
                 if (live is { IsConnected: true }
                     && (relayHost == null || string.Equals(live.RelayHost, relayHost, StringComparison.OrdinalIgnoreCase)))
                     return live.RelayHost;
+                DropConnectionsOnRelay(live);
                 try { live?.Dispose(); } catch { }
                 _relayDial = null;
                 var client = new IrohRelayClient();
@@ -1158,6 +1182,7 @@ namespace PadForge.Engine.RemoteLink
                 var live = _relayIdentity;
                 if (live is { IsConnected: true } && live.PublicKey.AsSpan().SequenceEqual(wantKey))
                     return live.RelayHost;
+                DropConnectionsOnRelay(live);
                 try { live?.Dispose(); } catch { }
                 _relayIdentity = null;
                 var client = new IrohRelayClient(identitySeed);
@@ -1493,19 +1518,55 @@ namespace PadForge.Engine.RemoteLink
         private bool SendSealed(LinkPeerConnection c, byte[] dg)
         {
             var ep = c.PeerUdpEndpoint;
-            if (ep != null)
+            var sock = _udp;
+            if (ep != null && sock != null)
             {
-                _udp.SendTo(dg, ep);
-                return true;
+                try { sock.SendTo(dg, ep); return true; }
+                catch (ObjectDisposedException) { return false; }
+                catch (SocketException) { /* fall through to the relay lane */ }
             }
-            var relay = c.RelayClient ?? _relayDial ?? _relayListen;
             var key = c.RelayPeerKey;
-            if (relay != null && key != null)
+            if (key == null) return false;
+            // Prefer the client this session was established on, but only while
+            // it is actually up. A relay that dropped and was replaced left the
+            // session pinned to the dead client, quietly sending every frame
+            // into a closed socket, so the pad looked connected and did
+            // nothing. Any live client can carry the frame: the peer is
+            // addressed by key, not by connection.
+            var relay = c.RelayClient;
+            if (relay is not { IsConnected: true })
+                relay = FirstLiveRelay();
+            if (relay == null) return false;
+            _ = relay.SendAsync(key, dg, CancellationToken.None);
+            return true;
+        }
+
+        private IrohRelayClient FirstLiveRelay()
+        {
+            var candidates = new[] { _relayIdentity, _relayListen, _relayDial };
+            foreach (var r in candidates)
+                if (r is { IsConnected: true }) return r;
+            return null;
+        }
+
+        /// <summary>Drops every session riding a relay client that is about to
+        /// be disposed. The session's frames would otherwise keep going to a
+        /// closed socket with the device still showing online: the peer needs to
+        /// see the drop so its own reconnect can run.</summary>
+        private void DropConnectionsOnRelay(IrohRelayClient client)
+        {
+            if (client == null) return;
+            LinkPeerConnection[] doomed;
+            lock (_lock)
             {
-                _ = relay.SendAsync(key, dg, CancellationToken.None);
-                return true;
+                doomed = _connections.Where(c => ReferenceEquals(c.RelayClient, client)).ToArray();
+                foreach (var c in doomed) _connections.Remove(c);
             }
-            return false;
+            foreach (var c in doomed)
+            {
+                SdlDiagLog.WriteLine($"RELAY dropping session on a replaced relay client: {c.PeerFingerprintHex}");
+                DropConnection(c);
+            }
         }
 
         /// <summary>Fingerprints of peers with a live session right now (for UI state).</summary>
@@ -1683,10 +1744,47 @@ namespace PadForge.Engine.RemoteLink
         {
             // Dedup: a reconnecting peer replaces its prior connection instead of
             // stacking a second one (and leaking the old socket/devices).
+            //
+            // SIMULTANEOUS CONNECT. Both peers can complete a handshake with
+            // each other at the same moment: our dial lands while their dial
+            // (or the auto-responder answering their probe) lands on us. Two
+            // valid sessions then exist for one pair, and "newest wins" is not
+            // a decision both machines can agree on, since each sees its own
+            // arrival last. They can drop each other's keeper and flap. So a
+            // COLLISION (a duplicate that is only seconds old) is resolved by a
+            // rule both sides compute identically from the two fingerprints:
+            // keep the session where the lower fingerprint is the initiator.
+            // An old duplicate is an ordinary reconnect and the new one wins.
+            const long CollisionWindowSeconds = 10;
             LinkPeerConnection[] dupes;
             lock (_lock)
             {
                 dupes = _connections.Where(c => string.Equals(c.PeerFingerprintHex, result.PeerFingerprintHex, StringComparison.OrdinalIgnoreCase)).ToArray();
+
+                if (dupes.Length > 0 && _identity?.Fingerprint != null && result.PeerFingerprint != null)
+                {
+                    long now = System.Diagnostics.Stopwatch.GetTimestamp();
+                    bool anyFresh = dupes.Any(d =>
+                        (now - d.EstablishedTicks) < System.Diagnostics.Stopwatch.Frequency * CollisionWindowSeconds);
+                    if (anyFresh)
+                    {
+                        bool weAreLower = CompareKeys(_identity.Fingerprint, result.PeerFingerprint) < 0;
+                        // The canonical session is the one whose initiator is
+                        // the lower fingerprint. Both machines reach the same
+                        // verdict about the same pair of sessions.
+                        bool incomingIsCanonical = result.IsInitiator == weAreLower;
+                        if (!incomingIsCanonical)
+                        {
+                            SdlDiagLog.WriteLine(
+                                $"LINK simultaneous connect with {Short(result.PeerFingerprintHex)}: keeping the existing session");
+                            try { client?.Dispose(); } catch { }
+                            return;
+                        }
+                        SdlDiagLog.WriteLine(
+                            $"LINK simultaneous connect with {Short(result.PeerFingerprintHex)}: keeping the new session");
+                    }
+                }
+
                 foreach (var d in dupes) _connections.Remove(d);
             }
             foreach (var d in dupes) DropConnection(d);
@@ -1703,6 +1801,7 @@ namespace PadForge.Engine.RemoteLink
                 Tcp = client,
                 PeerFingerprintHex = result.PeerFingerprintHex,
                 LastActivityTicks = System.Diagnostics.Stopwatch.GetTimestamp(),
+                EstablishedTicks = System.Diagnostics.Stopwatch.GetTimestamp(),
             };
             // Key each device by the owner's STABLE slot (carried in the device list), so a
             // device hot-plugged after connect routes by a slot that never shifts (#138).
@@ -1813,8 +1912,14 @@ namespace PadForge.Engine.RemoteLink
                 // Learn the peer's UDP endpoint on first verified datagram (responder side).
                 if (from != null && c.PeerUdpEndpoint == null) c.PeerUdpEndpoint = from;
                 // Direct-path liveness, so an upgraded session that loses its
-                // direct route can fall back to the relay.
-                if (from != null) System.Threading.Interlocked.Exchange(ref c.LastDirectTicks, System.Diagnostics.Stopwatch.GetTimestamp());
+                // direct route can fall back to the relay. This is also what
+                // CONFIRMS a provisional upgrade: the datagram opened, so the
+                // endpoint on the far side holds the session key.
+                if (from != null)
+                {
+                    System.Threading.Interlocked.Exchange(ref c.LastDirectTicks, System.Diagnostics.Stopwatch.GetTimestamp());
+                    System.Threading.Interlocked.Exchange(ref c.UpgradeProvisionalTicks, 0);
+                }
 
                 if (type == LinkMessageType.Input)
                 {
@@ -2021,6 +2126,14 @@ namespace PadForge.Engine.RemoteLink
             /// derived from the session data key so BOTH peers compute it with
             /// no extra exchange.</summary>
             public byte[] PathNonce;
+            /// <summary>QPC at establishment. A duplicate session for the same
+            /// peer arriving within seconds of this is a simultaneous connect,
+            /// resolved by the fingerprint rule rather than by arrival order.</summary>
+            public long EstablishedTicks;
+            /// <summary>QPC when a punch won and the direct path was taken, but
+            /// no sealed datagram has confirmed it yet. Cleared once one
+            /// arrives; a path that never confirms is given back to the relay.</summary>
+            public long UpgradeProvisionalTicks;
             /// <summary>QPC of the last datagram that arrived over the DIRECT
             /// path. An upgraded session whose direct path goes quiet falls
             /// back to the relay instead of going dark.</summary>

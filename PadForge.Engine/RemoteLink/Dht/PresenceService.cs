@@ -47,7 +47,15 @@ namespace PadForge.Engine.RemoteLink.Dht
             public byte[] PublisherPrivateKey { get; init; }
             public byte[] Capability { get; init; }
             public byte Direction { get; init; }
-            public long Sequence { get; set; }
+            /// <summary>Seeded from wall-clock seconds, NOT from zero. BEP 44
+            /// storage nodes reject a put whose sequence is not higher than the
+            /// one they hold (equal is accepted only for a byte-identical
+            /// value), and this counter started at 0 on every launch. So after a
+            /// restart every publish was refused by the nodes still holding the
+            /// previous run's record, and the peer kept reading endpoints from
+            /// before the restart until the record expired. Unix seconds are
+            /// monotonic across restarts and need nothing stored.</summary>
+            public long Sequence { get; set; } = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
             public string LastCandidatesFingerprint { get; set; }
         }
 

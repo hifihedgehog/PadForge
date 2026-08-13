@@ -48,6 +48,12 @@ namespace PadForge.Engine.RemoteLink
         /// <summary>tag + sender prefix + nonce.</summary>
         public const int ProbeLen = 1 + PrefixLen + NonceLen;
 
+        /// <summary>Ceiling on probes per PunchAsync call. Roughly six full
+        /// sweeps of the largest spray list the port predictor builds, which is
+        /// far more than a working punch needs and far less than the unbounded
+        /// sweep this replaces.</summary>
+        public const int MaxProbeBudget = 20_000;
+
         private readonly IPunchTransport _transport;
         private readonly byte[] _nonce;
         private readonly TimeSpan _sprayInterval;
@@ -149,6 +155,15 @@ namespace PadForge.Engine.RemoteLink
             using var reg = ct.Register(() => winTcs.TrySetResult(null));
             var sprayer = Task.Run(async () =>
             {
+                // A budget, and a line in the log when it runs out. A CGNAT
+                // spray list is thousands of endpoints and the sweep repeats
+                // until the token expires, so an unlucky punch could put a
+                // six-figure count of datagrams on the wire; a carrier that
+                // rate-limits then drops exactly the probes that would have
+                // worked. Bounded, and never silently: a punch that gave up
+                // because it hit the ceiling must say so, or it reads as "the
+                // network simply did not answer".
+                int sent = 0;
                 try
                 {
                     while (!ct.IsCancellationRequested && !winTcs.Task.IsCompleted)
@@ -161,7 +176,14 @@ namespace PadForge.Engine.RemoteLink
                             // path was already settled, which is exactly the
                             // traffic a carrier NAT rate-limits.
                             if (ct.IsCancellationRequested || winTcs.Task.IsCompleted) break;
-                            try { await _transport.SendToAsync(ping, ep, ct).ConfigureAwait(false); }
+                            if (sent >= MaxProbeBudget)
+                            {
+                                SdlDiagLog.WriteLine(
+                                    $"PUNCH probe budget spent ({MaxProbeBudget} datagrams across {candidates.Count} candidates); giving up on this attempt");
+                                winTcs.TrySetResult(null);
+                                return;
+                            }
+                            try { await _transport.SendToAsync(ping, ep, ct).ConfigureAwait(false); sent++; }
                             catch { /* one bad candidate never aborts the spray */ }
                         }
                         try { await Task.Delay(_sprayInterval, ct).ConfigureAwait(false); }

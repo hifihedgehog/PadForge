@@ -174,7 +174,15 @@ namespace PadForge.Services
                 }
                 int code = 0;
                 if (w.TryGetProperty("code", out var cp) && cp.ValueKind == JsonValueKind.Number)
-                    code = Math.Clamp(cp.GetInt32(), 0, 127);
+                {
+                    // TryGetInt32, not GetInt32: a non-integral number throws,
+                    // and the throw escaped all the way out of Upsert, so ONE
+                    // odd widget failed the entire save with "Save failed" and
+                    // no way for the user to tell which control was at fault.
+                    if (!cp.TryGetInt32(out code))
+                        code = (int)Math.Clamp(cp.GetDouble(), 0, 127);
+                    code = Math.Clamp(code, 0, 127);
+                }
                 string label = w.TryGetProperty("label", out var lp) && lp.ValueKind == JsonValueKind.String
                     ? lp.GetString() : "";
                 if (label?.Length > 12) label = label.Substring(0, 12);

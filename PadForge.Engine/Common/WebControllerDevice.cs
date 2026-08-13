@@ -87,6 +87,13 @@ namespace PadForge.Engine
                 if (_isTouchpadDevice)
                     return _touchpadOnlyButtons;
                 var list = new System.Collections.Generic.List<int>(NumGamepadButtons + 8);
+                if (_hasCustomSurface)
+                {
+                    list.AddRange(_customButtons);
+                    if (HasTouchpad) list.Add(16);
+                    list.Sort();
+                    return list.ToArray();
+                }
                 for (int i = 0; i < NumGamepadButtons; i++) list.Add(i);
                 // Extended slots this layout's surface actually offers
                 // (paddles, Misc, per-layout extras), in canonical order.
@@ -121,8 +128,55 @@ namespace PadForge.Engine
             _extendedMax = _extendedButtons.Length > 0 ? _extendedButtons[_extendedButtons.Length - 1] : -1;
         }
         private static readonly int[] _touchpadOnlyButtons = { 16 };
+
+        // A BUILT pad's real surface: exactly the axes, buttons and hat its
+        // widgets provide. A stock layout mirrors real hardware and keeps the
+        // full standard shape, but a custom pad with one stick and two buttons
+        // was advertising six axes, eleven buttons and a D-pad, so the picker
+        // offered inputs that pad can never send and the Devices preview drew a
+        // controller that does not exist.
+        private int[] _customAxes;
+        private int[] _customButtons;
+        private bool _customHasPov;
+        private bool _hasCustomSurface;
+
+        /// <summary>Declares the exact surface a builder pad's widgets provide.
+        /// Axes are raw indices (0=LX .. 5=RT), buttons are slot numbers, and
+        /// the hat is present only when the pad has a D-pad widget.</summary>
+        public void SetCustomSurface(int[] axes, int[] buttons, bool hasPov)
+        {
+            var a = new System.Collections.Generic.SortedSet<int>();
+            if (axes != null)
+                foreach (int x in axes) if (x >= 0 && x < NumGamepadAxes) a.Add(x);
+            var b = new System.Collections.Generic.SortedSet<int>();
+            if (buttons != null)
+                foreach (int x in buttons) if (x >= 0 && x < CustomInputState.MaxButtons && x != 16) b.Add(x);
+            _customAxes = new int[a.Count]; a.CopyTo(_customAxes);
+            _customButtons = new int[b.Count]; b.CopyTo(_customButtons);
+            _customHasPov = hasPov;
+            _hasCustomSurface = true;
+        }
         public IntPtr GamepadHandle => IntPtr.Zero;
-        public bool HasRumble => true;
+
+        /// <summary>Whether this client can actually play a rumble. It used to
+        /// be hardcoded true, which is a lie on any browser without the
+        /// Vibration API: iOS Safari has never shipped navigator.vibrate, so
+        /// every iPhone pad advertised rumble it could not produce, and the
+        /// Devices page and every mapping surface repeated the claim. The
+        /// client reports what it has on connect; until it does, assume yes,
+        /// because that is the common case and a late no costs only a
+        /// capability re-sync.</summary>
+        public bool HasRumble
+        {
+            get => _hasRumble;
+            set
+            {
+                if (_hasRumble == value) return;
+                _hasRumble = value;
+                CapabilitiesChanged?.Invoke();
+            }
+        }
+        private bool _hasRumble = true;
         public bool HasRumbleTriggers => false;
         public bool HasHaptic => false;
         // Motion caps flip on the first motion message, the same pattern
@@ -401,6 +455,42 @@ namespace PadForge.Engine
             // BuildInputChoices's HasTouchpad block on their own.
             if (_isTouchpadDevice)
                 return Array.Empty<DeviceObjectItem>();
+
+            // A builder pad lists only what it actually carries.
+            if (_hasCustomSurface)
+            {
+                var custom = new DeviceObjectItem[
+                    _customAxes.Length + _customButtons.Length + (_customHasPov ? 1 : 0)];
+                int ci = 0;
+                foreach (int a in _customAxes)
+                    custom[ci++] = new DeviceObjectItem
+                    {
+                        InputIndex = a,
+                        ObjectTypeGuid = AxisGuids[a],
+                        Name = AxisNames[a],
+                        ObjectType = DeviceObjectTypeFlags.AbsoluteAxis,
+                        Offset = a * 4
+                    };
+                foreach (int b in _customButtons)
+                    custom[ci++] = new DeviceObjectItem
+                    {
+                        InputIndex = b,
+                        ObjectTypeGuid = ObjectGuid.Button,
+                        Name = b < NumGamepadButtons ? ButtonNames[b] : GamepadObjectNames.Button(b),
+                        ObjectType = DeviceObjectTypeFlags.PushButton,
+                        Offset = (NumGamepadAxes + b) * 4
+                    };
+                if (_customHasPov)
+                    custom[ci] = new DeviceObjectItem
+                    {
+                        InputIndex = 0,
+                        ObjectTypeGuid = ObjectGuid.PovController,
+                        Name = "D-Pad",
+                        ObjectType = DeviceObjectTypeFlags.PointOfViewController,
+                        Offset = (NumGamepadAxes + NumGamepadButtons) * 4
+                    };
+                return custom;
+            }
 
             // Gamepad-shaped surface (6 axes + 11 buttons + extended
             // layout buttons + 1 POV).

@@ -58,6 +58,41 @@ namespace PadForge.Tests
             Assert.True(row.IsGyroLeanSource);
         }
 
+        [Theory]
+        [InlineData("Gyro Tilt X")]
+        [InlineData("Gyro Tilt Y")]
+        public void TiltDescriptors_GateNoSensitivityDial_AndNoAccel(string desc)
+        {
+            // The tilt pair's gain is its range card: no sensitivity dial
+            // of either kind, and no Acceleration slider (the engine's
+            // tilt path never applies ParamAccel).
+            var extra = new MappingSourceItem { Descriptor = desc };
+            Assert.False(extra.IsGyroSource);
+            Assert.False(extra.IsGyroLeanSource);
+            Assert.False(extra.IsParamAccelApplicable);
+
+            var row = NewRow(desc);
+            Assert.False(row.IsGyroSource);
+            Assert.False(row.IsGyroLeanSource);
+            Assert.False(row.IsParamAccelApplicable);
+        }
+
+        [Fact]
+        public void LeanRows_AlsoHideTheDeadAccelSlider()
+        {
+            var extra = new MappingSourceItem { Descriptor = "Gyro Lean X" };
+            Assert.False(extra.IsParamAccelApplicable);
+        }
+
+        [Theory]
+        [InlineData("Gyro Pitch")]
+        [InlineData("Axis 2")]
+        public void RateAndAxisSources_KeepTheAccelSlider(string desc)
+        {
+            var extra = new MappingSourceItem { Descriptor = desc };
+            Assert.True(extra.IsParamAccelApplicable);
+        }
+
         [Fact]
         public void NonGyroDescriptors_GateNeitherDial()
         {

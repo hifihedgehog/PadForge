@@ -460,6 +460,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsHalfAxisApplicable));
                     OnPropertyChanged(nameof(IsGyroSource));
                     OnPropertyChanged(nameof(IsGyroLeanSource));
+                    OnPropertyChanged(nameof(IsParamAccelApplicable));
                     OnPropertyChanged(nameof(IsMouseCursorSource));
                     OnPropertyChanged(nameof(IsIrPointerSource));
                     OnPropertyChanged(nameof(IsMouseMotionSource));
@@ -1291,13 +1292,19 @@ namespace PadForge.ViewModels
         /// GyroSensitivity.</summary>
         public bool IsGyroSource => !string.IsNullOrEmpty(_sourceDescriptor)
             && StripLegacyPrefix(_sourceDescriptor).StartsWith("Gyro ", StringComparison.Ordinal)
-            && !PadForge.Engine.Common.Mapping.SourceCoercion.IsGyroLeanDescriptor(StripLegacyPrefix(_sourceDescriptor));
+            && !PadForge.Engine.Common.Mapping.SourceCoercion.IsGravityTiltFamilyDescriptor(StripLegacyPrefix(_sourceDescriptor));
 
         /// <summary>True for a gravity-lean primary ("Gyro Lean X/Y").
         /// Mirrors <see cref="MappingSourceItem.IsGyroLeanSource"/>; gates
         /// the dial bound to <see cref="Sensitivity"/> (#292).</summary>
         public bool IsGyroLeanSource => !string.IsNullOrEmpty(_sourceDescriptor)
             && PadForge.Engine.Common.Mapping.SourceCoercion.IsGyroLeanDescriptor(StripLegacyPrefix(_sourceDescriptor));
+
+        /// <summary>Mirrors <see cref="MappingSourceItem.IsParamAccelApplicable"/>:
+        /// the Acceleration slider hides on gravity-tilt primaries because
+        /// the engine's lean/tilt path never applies ParamAccel (#292).</summary>
+        public bool IsParamAccelApplicable => IsHalfAxisApplicable
+            && !PadForge.Engine.Common.Mapping.SourceCoercion.IsGravityTiltFamilyDescriptor(StripLegacyPrefix(_sourceDescriptor ?? ""));
 
         /// <summary>True when the primary source carries the generic per-source
         /// Sensitivity knob (issue #9): a plain "Axis N" / "Slider N" read or an

@@ -4886,12 +4886,11 @@
                                                         </StackPanel>
                                                         <!-- Per-source acceleration: rate-dependent gain the
                                                              engine applies at the shared bipolar/unipolar seam.
-                                                             Continuous sources only (the same family gate as
-                                                             Half), so buttons never see a knob that does
-                                                             nothing. Imports carry Steam's stick-hosted mouse
-                                                             acceleration here. -->
+                                                             Continuous sources only, MINUS the gravity-tilt
+                                                             pairs (#292): their engine path never applies
+                                                             ParamAccel, so the knob would be dead there. -->
                                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0"
-                                                                    Visibility="{Binding IsHalfAxisApplicable, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                    Visibility="{Binding IsParamAccelApplicable, Converter={StaticResource BoolToVisibilityConverter}}">
                                                             <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Mapping_Accel, Source={x:Static strings:Strings.Instance}}"
                                                                        VerticalAlignment="Center" Margin="0,0,4,0"
                                                                        ToolTip="{Binding Pad_Mapping_Accel_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
@@ -5697,10 +5696,10 @@
                                                 <ui:Button Command="{Binding ResetSensitivityCommand}" Style="{StaticResource ResetButton}"/>
                                             </StackPanel>
                                             <!-- Primary-source acceleration, the twin of the
-                                                 ExtraSources chip's control; same continuous-family
-                                                 gate. -->
+                                                 ExtraSources chip's control; same gate, which
+                                                 excludes the gravity-tilt pairs (#292). -->
                                             <StackPanel Orientation="Horizontal" Margin="0,4,0,0"
-                                                        Visibility="{Binding IsHalfAxisApplicable, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        Visibility="{Binding IsParamAccelApplicable, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="11.5"
                                                            Text="{Binding Pad_Mapping_Accel, Source={x:Static strings:Strings.Instance}}"
                                                            VerticalAlignment="Center" Margin="0,0,4,0"

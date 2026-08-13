@@ -299,6 +299,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsInvertOutputApplicable));
                     OnPropertyChanged(nameof(IsGyroSource));
                     OnPropertyChanged(nameof(IsGyroLeanSource));
+                    OnPropertyChanged(nameof(IsParamAccelApplicable));
                     OnPropertyChanged(nameof(IsMouseCursorSource));
                     OnPropertyChanged(nameof(IsIrPointerSource));
                     OnPropertyChanged(nameof(IsMouseMotionSource));
@@ -318,7 +319,7 @@ namespace PadForge.ViewModels
         /// GyroSensitivity, which ReadGyroLean never reads).</summary>
         public bool IsGyroSource => _descriptor != null
             && _descriptor.StartsWith("Gyro ", StringComparison.Ordinal)
-            && !PadForge.Engine.Common.Mapping.SourceCoercion.IsGyroLeanDescriptor(_descriptor);
+            && !PadForge.Engine.Common.Mapping.SourceCoercion.IsGravityTiltFamilyDescriptor(_descriptor);
 
         /// <summary>True for the gravity-lean pair ("Gyro Lean X/Y").
         /// Gates the lean row's Sensitivity dial, which binds
@@ -326,6 +327,15 @@ namespace PadForge.ViewModels
         /// (#292).</summary>
         public bool IsGyroLeanSource =>
             PadForge.Engine.Common.Mapping.SourceCoercion.IsGyroLeanDescriptor(_descriptor);
+
+        /// <summary>Gates the per-source Acceleration slider (#292). The
+        /// continuous-source family (IsHalfAxisApplicable) is the base, but
+        /// the gravity-tilt pairs are POSITION reads whose engine path
+        /// applies only the curve/range channel, never ParamAccel, so the
+        /// slider would be a dead control there. Gyro Tilt's gain is its
+        /// range card; Gyro Lean's is its Sensitivity dial.</summary>
+        public bool IsParamAccelApplicable => IsHalfAxisApplicable
+            && !PadForge.Engine.Common.Mapping.SourceCoercion.IsGravityTiltFamilyDescriptor(_descriptor);
 
         /// <summary>True when this source's descriptor is an absolute cursor axis
         /// ("Mouse Position X" / "Mouse Position Y", issue #107). Drives the

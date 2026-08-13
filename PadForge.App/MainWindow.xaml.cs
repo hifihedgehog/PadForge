@@ -83,6 +83,32 @@ namespace PadForge
         private MappingItem _kindRecordMapping;   // non-null while a kind record is in flight
         private KindRecStage _kindRecordStage;
         private System.Windows.Forms.NotifyIcon _notifyIcon;
+
+        /// <summary>Shows a tray balloon (#293 low-battery). TRAP handled: the
+        /// tray icon is Visible only while minimized to tray, and
+        /// ShowBalloonTip silently no-ops on an invisible icon, so the icon is
+        /// shown transiently and restored ~12 s later unless the window
+        /// minimized meanwhile.</summary>
+        public void ShowTrayBalloon(string title, string text)
+        {
+            if (_notifyIcon == null) return;
+            bool wasVisible = _notifyIcon.Visible;
+            _notifyIcon.Visible = true;
+            _notifyIcon.ShowBalloonTip(8000, title, text, System.Windows.Forms.ToolTipIcon.Warning);
+            if (!wasVisible)
+            {
+                var restore = new System.Windows.Threading.DispatcherTimer
+                { Interval = System.TimeSpan.FromSeconds(12) };
+                restore.Tick += (s, e) =>
+                {
+                    restore.Stop();
+                    // Keep the icon if the user minimized to tray meanwhile.
+                    if (_notifyIcon != null && WindowState != WindowState.Minimized)
+                        _notifyIcon.Visible = false;
+                };
+                restore.Start();
+            }
+        }
         private System.Windows.Threading.DispatcherTimer _driverStatusTimer;
 
         // Drag reorder state for sidebar controller cards.

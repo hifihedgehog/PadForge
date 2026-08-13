@@ -341,6 +341,14 @@ public class Strings : INotifyPropertyChanged
     public string Dashboard_EnableWeb => Get("Dashboard_EnableWeb");
     public string Dashboard_WebFooter => Get("Dashboard_WebFooter");
     public string Dashboard_WebScanToOpen => Get("Dashboard_WebScanToOpen");
+    public string Devices_IdentifyTooltip => Get("Devices_IdentifyTooltip");
+    public string Battery_LowTitle => Get("Battery_LowTitle");
+    public string Battery_LowText_Format => Get("Battery_LowText_Format");
+    public string Settings_BatteryNotify => Get("Settings_BatteryNotify");
+    public string Settings_BatteryNotifyDesc => Get("Settings_BatteryNotifyDesc");
+    public string Settings_BatteryNotifyEnable => Get("Settings_BatteryNotifyEnable");
+    public string Settings_BatteryNotifyThreshold => Get("Settings_BatteryNotifyThreshold");
+    public string Settings_BatteryNotifyVibrate => Get("Settings_BatteryNotifyVibrate");
     public string Dashboard_RemoteLink => Get("Dashboard_RemoteLink");
     public string Dashboard_RemoteLinkDescription => Get("Dashboard_RemoteLinkDescription");
     public string Dashboard_EnableRemoteLink => Get("Dashboard_EnableRemoteLink");

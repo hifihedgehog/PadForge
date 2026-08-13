@@ -3074,4 +3074,12 @@ Vous pouvez réessayer plus tard depuis les Paramètres.</value></data>
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>Ce réseau ne permet pas les connexions directes (cela ressemble à un point d'accès mobile ou à un NAT opérateur). Utilisez un VPN comme Tailscale, ou connectez-vous depuis une box internet.</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>Impossible de trouver l'adresse publique de ce PC (le réseau bloque peut-être le trafic nécessaire). Les connexions directes ne fonctionnent pas ici. Utilisez un VPN, ou Connexion par adresse sur le même réseau.</value></data>
   <data name="Dashboard_WebScanToOpen" xml:space="preserve"><value>Scannez avec l'appareil photo du téléphone ou ouvrez cette adresse dans son navigateur :</value></data>
+  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>Identifier : faire vibrer cet appareil</value></data>
+  <data name="Battery_LowTitle" xml:space="preserve"><value>Batterie de la manette faible</value></data>
+  <data name="Battery_LowText_Format" xml:space="preserve"><value>{0} : {1}% de batterie restante</value></data>
+  <data name="Settings_BatteryNotify" xml:space="preserve"><value>Alertes de batterie</value></data>
+  <data name="Settings_BatteryNotifyDesc" xml:space="preserve"><value>Soyez averti quand la batterie d'une manette faiblit, avant qu'elle ne s'éteigne en pleine partie.</value></data>
+  <data name="Settings_BatteryNotifyEnable" xml:space="preserve"><value>Avertir quand la batterie est faible</value></data>
+  <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Avertir à partir de</value></data>
+  <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Faire aussi vibrer la manette</value></data>
 </root>

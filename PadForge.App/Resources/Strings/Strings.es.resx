@@ -3074,4 +3074,12 @@ Puedes volver a intentarlo más tarde desde Configuración.</value></data>
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>Esta red no permite conexiones directas (parece un punto de acceso móvil o NAT de operador). Usa una VPN como Tailscale, o conéctate desde banda ancha doméstica.</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>No se encontró la dirección pública de este PC (la red puede bloquear el tráfico necesario). Aquí no funcionan las conexiones directas. Usa una VPN, o Conectar por dirección en la misma red.</value></data>
   <data name="Dashboard_WebScanToOpen" xml:space="preserve"><value>Escanea con la cámara del teléfono o abre esta dirección en su navegador:</value></data>
+  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>Identificar: hacer vibrar este dispositivo</value></data>
+  <data name="Battery_LowTitle" xml:space="preserve"><value>Batería del mando baja</value></data>
+  <data name="Battery_LowText_Format" xml:space="preserve"><value>{0}: queda {1}% de batería</value></data>
+  <data name="Settings_BatteryNotify" xml:space="preserve"><value>Alertas de batería</value></data>
+  <data name="Settings_BatteryNotifyDesc" xml:space="preserve"><value>Recibe un aviso cuando la batería de un mando se agote, antes de que muera en pleno juego.</value></data>
+  <data name="Settings_BatteryNotifyEnable" xml:space="preserve"><value>Avisar cuando la batería esté baja</value></data>
+  <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Avisar cuando esté en o por debajo de</value></data>
+  <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Vibrar también el mando</value></data>
 </root>

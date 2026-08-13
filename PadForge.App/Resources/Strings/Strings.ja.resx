@@ -3074,4 +3074,12 @@
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>このネットワークは直接接続に対応していません（モバイルホットスポットまたはキャリアグレードNATのようです）。Tailscaleなどの VPN を使うか、自宅の固定回線から接続してください。</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>このPCの公開アドレスが見つかりませんでした（必要な通信がブロックされている可能性があります）。ここでは直接接続はできません。VPN を使うか、同じネットワーク内でアドレス接続を使ってください。</value></data>
   <data name="Dashboard_WebScanToOpen" xml:space="preserve"><value>スマートフォンのカメラで読み取るか、ブラウザーでこのアドレスを開きます:</value></data>
+  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>識別: このデバイスを振動させる</value></data>
+  <data name="Battery_LowTitle" xml:space="preserve"><value>コントローラーのバッテリー残量低下</value></data>
+  <data name="Battery_LowText_Format" xml:space="preserve"><value>{0}: バッテリー残量 {1}%</value></data>
+  <data name="Settings_BatteryNotify" xml:space="preserve"><value>バッテリー通知</value></data>
+  <data name="Settings_BatteryNotifyDesc" xml:space="preserve"><value>コントローラーのバッテリーが少なくなったら、ゲーム中に切れる前に通知します。</value></data>
+  <data name="Settings_BatteryNotifyEnable" xml:space="preserve"><value>バッテリー残量低下時に通知</value></data>
+  <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>通知するしきい値</value></data>
+  <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>コントローラーを振動させる</value></data>
 </root>

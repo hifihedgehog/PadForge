@@ -3074,7 +3074,7 @@ Você pode tentar novamente mais tarde em Configurações.</value></data>
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>Esta rede não permite conexões diretas (parece um ponto de acesso móvel ou NAT de operadora). Use uma VPN como o Tailscale, ou conecte-se por banda larga doméstica.</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>Não foi possível encontrar o endereço público deste PC (a rede pode bloquear o tráfego necessário). Conexões diretas não funcionam aqui. Use uma VPN, ou Conectar por endereço na mesma rede.</value></data>
   <data name="Dashboard_WebScanToOpen" xml:space="preserve"><value>Escaneie com a câmera do telefone ou abra este endereço no navegador:</value></data>
-  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>Identificar: vibrar este dispositivo</value></data>
+  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>Vibração (clique para identificar este dispositivo)</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>Bateria do controle fraca</value></data>
   <data name="Battery_LowText_Format" xml:space="preserve"><value>{0}: {1}% de bateria restante</value></data>
   <data name="Settings_BatteryNotify" xml:space="preserve"><value>Alertas de bateria</value></data>

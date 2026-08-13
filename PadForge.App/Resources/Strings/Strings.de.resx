@@ -3074,7 +3074,7 @@ Du kannst es später in den Einstellungen erneut versuchen.</value></data>
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>Dieses Netzwerk erlaubt keine Direktverbindungen (vermutlich ein Mobil-Hotspot oder Carrier-Grade-NAT). Nutzen Sie ein VPN wie Tailscale oder verbinden Sie über einen Heim-Breitbandanschluss.</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>Die öffentliche Adresse dieses PCs wurde nicht gefunden (das Netzwerk blockiert möglicherweise den nötigen Datenverkehr). Direktverbindungen funktionieren hier nicht. Nutzen Sie ein VPN oder Verbindung per Adresse im selben Netzwerk.</value></data>
   <data name="Dashboard_WebScanToOpen" xml:space="preserve"><value>Mit der Handykamera scannen oder diese Adresse im Browser öffnen:</value></data>
-  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>Identifizieren: dieses Gerät vibrieren lassen</value></data>
+  <data name="Devices_IdentifyTooltip" xml:space="preserve"><value>Vibration (klicken, um dieses Gerät zu identifizieren)</value></data>
   <data name="Battery_LowTitle" xml:space="preserve"><value>Controller-Akku schwach</value></data>
   <data name="Battery_LowText_Format" xml:space="preserve"><value>{0}: {1}% Akku verbleibend</value></data>
   <data name="Settings_BatteryNotify" xml:space="preserve"><value>Akku-Benachrichtigungen</value></data>

@@ -3247,6 +3247,12 @@ namespace PadForge.Engine.Common.Mapping
             public ulong FrameSeq;
             public float FrameCountsX, FrameCountsY;
 
+            /// <summary>EMA of the measured inter-report interval, the
+            /// pad's own cadence (#291 backward-creep fix). Decides how
+            /// long the velocity hold below may bridge: only a little past
+            /// the next report's due time, instead of a fixed 25 ms.</summary>
+            public float ReportIntervalEma;
+
             /// <summary>Stacking mode's held speed (#291): a re-contact
             /// with stacking on PAUSES the roll here instead of killing it,
             /// and the next fling adds it back. Zero outside stacking.</summary>
@@ -3515,11 +3521,22 @@ namespace PadForge.Engine.Common.Mapping
         /// slider means what it says again.</para></summary>
         private const float TouchCountsPerPadWidth = TouchpadDeltaScale * 7.5f;
 
-        /// <summary>How long a velocity keeps driving the cursor after the
-        /// last position change before the finger counts as resting. Long
-        /// enough to bridge a report gap, short enough that a still finger
-        /// does not coast.</summary>
+        /// <summary>CEILING on how long a velocity keeps driving the
+        /// cursor after the last position change. The effective hold is
+        /// adaptive (#291 backward-creep fix): about 1.5x the pad's own
+        /// measured report cadence, floored at 4 ms, capped here. The old
+        /// fixed 25 ms bridged a 4 ms DualSense gap with 21 ms to spare,
+        /// and that spare was spent on the settle: a stopping fingertip
+        /// emits a few tiny backward deltas as it relaxes, and each one
+        /// held a backward velocity on the cursor for up to 25 ms, the
+        /// observed few-pixel reverse step at the end of a drag. Bridging
+        /// only until the next report is overdue keeps the stutter fix and
+        /// shrinks the stale spend about fourfold.</summary>
         private const float TouchVelocityHoldSeconds = 0.025f;
+
+        /// <summary>Floor on the adaptive hold, so a burst of back-to-back
+        /// reports cannot shrink the bridge below one real gap.</summary>
+        private const float TouchVelocityHoldFloorSeconds = 0.004f;
 
         /// <summary><para>Below this lift speed the ball does not roll at
         /// all. sc-controller calls it MIN_LIFT_VELOCITY and ships 0.2 rad/s
@@ -3720,6 +3737,9 @@ namespace PadForge.Engine.Common.Mapping
                         ? (float)(nowTicks - ball.LastReportTicks) / ticksPerSecond
                         : TouchMinReportSeconds;
                     interval = Math.Clamp(interval, TouchMinReportSeconds, TouchMaxReportSeconds);
+                    ball.ReportIntervalEma = ball.ReportIntervalEma <= 0f
+                        ? interval
+                        : 0.7f * ball.ReportIntervalEma + 0.3f * interval;
                     ball.PushSample((rawX - ball.LastRawX) / interval,
                                     (rawY - ball.LastRawY) / interval);
                     ball.LastRawX = rawX; ball.LastRawY = rawY;
@@ -3728,7 +3748,11 @@ namespace PadForge.Engine.Common.Mapping
                     ball.VelX = mean.X; ball.VelY = mean.Y;
                 }
                 else if (ticksPerSecond > 0
-                         && (float)(nowTicks - ball.LastReportTicks) / ticksPerSecond > TouchVelocityHoldSeconds)
+                         && (float)(nowTicks - ball.LastReportTicks) / ticksPerSecond
+                            > (ball.ReportIntervalEma > 0f
+                                ? Math.Clamp(ball.ReportIntervalEma * 1.5f,
+                                    TouchVelocityHoldFloorSeconds, TouchVelocityHoldSeconds)
+                                : TouchVelocityHoldSeconds))
                 {
                     // Resting, not between reports. Drop the history too, so
                     // a pause before lifting cannot fling stale samples.

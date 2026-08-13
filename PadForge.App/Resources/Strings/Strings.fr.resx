@@ -1349,9 +1349,9 @@
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>Degrés d'inclinaison depuis la prise de repos comptant comme déflexion complète. Plus petit = plus sensible. 25° est la valeur la plus courante dans les configurations Steam.</value></data>
   <data name="Pad_GyroTilt_Deadzone" xml:space="preserve"><value>Zone morte d'inclinaison</value></data>
   <data name="Pad_GyroTilt_Deadzone_Tooltip" xml:space="preserve"><value>Degrés d'inclinaison ignorés autour de la prise de repos, soustraits avant la mise à l'échelle pour éviter tout saut au bord.</value></data>
-  <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>Réinitialiser à 25°</value></data>
-  <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Réinitialiser à 0°</value></data>
-  <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Réinitialiser l'enveloppe d'inclinaison</value></data>
+  <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>Réinitialiser la plage d'inclinaison complète</value></data>
+  <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Réinitialiser la zone morte d'inclinaison</value></data>
+  <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Réinitialiser tous les réglages d'inclinaison réglable</value></data>
   <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Comment les sources de cette ligne se combinent quand plusieurs sont actives. Sélectionnez la ligne pour le modifier dans le panneau de détails en dessous.</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Vitesse souris X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Vitesse souris Y</value></data>

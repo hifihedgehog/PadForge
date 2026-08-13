@@ -1349,9 +1349,9 @@
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>从静止握姿倾斜多少度算作满偏转。越小越灵敏。25° 是 Steam 配置中最常见的值。</value></data>
   <data name="Pad_GyroTilt_Deadzone" xml:space="preserve"><value>倾斜死区</value></data>
   <data name="Pad_GyroTilt_Deadzone_Tooltip" xml:space="preserve"><value>在静止握姿周围忽略的倾斜度数，在缩放前减去，因此边缘处不会跳变。</value></data>
-  <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>重置为 25°</value></data>
-  <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>重置为 0°</value></data>
-  <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>将倾角包络重置为默认值</value></data>
+  <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>重置满偏转角度</value></data>
+  <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>重置倾斜死区</value></data>
+  <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>重置所有陀螺仪倾角设置</value></data>
   <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>当多个输入源同时活动时，本行的合并方式。选中该行可在下方详情栏中修改。</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>鼠标速度 X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>鼠标速度 Y</value></data>

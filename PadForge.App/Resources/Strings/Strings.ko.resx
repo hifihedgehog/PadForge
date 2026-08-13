@@ -1349,9 +1349,9 @@
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>휴지 자세에서 몇 도의 기울기로 최대 편향이 되는지입니다. 작을수록 민감합니다. 25°는 Steam 설정에서 가장 흔한 값입니다.</value></data>
   <data name="Pad_GyroTilt_Deadzone" xml:space="preserve"><value>경사 데드존</value></data>
   <data name="Pad_GyroTilt_Deadzone_Tooltip" xml:space="preserve"><value>휴지 자세 주변에서 무시할 기울기 각도입니다. 스케일링 전에 빼서 경계에서 값이 튀지 않습니다.</value></data>
-  <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>25°로 재설정</value></data>
-  <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>0°로 재설정</value></data>
-  <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>경사 엔벨로프를 기본값으로 재설정</value></data>
+  <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>최대 편향 각도 재설정</value></data>
+  <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>경사 데드존 재설정</value></data>
+  <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>자이로 경사 설정 모두 재설정</value></data>
   <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>이 행의 소스가 둘 이상 활성일 때 합성되는 방식입니다. 행을 선택하면 아래 세부 정보 패널에서 변경할 수 있습니다.</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>마우스 속도 X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>마우스 속도 Y</value></data>

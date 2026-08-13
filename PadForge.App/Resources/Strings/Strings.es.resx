@@ -1349,9 +1349,9 @@
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>Grados de inclinación desde el agarre de reposo que cuentan como deflexión completa. Menor = más sensible. 25° es el valor más común en configuraciones de Steam.</value></data>
   <data name="Pad_GyroTilt_Deadzone" xml:space="preserve"><value>Zona muerta de inclinación</value></data>
   <data name="Pad_GyroTilt_Deadzone_Tooltip" xml:space="preserve"><value>Grados de inclinación ignorados alrededor del agarre de reposo, restados antes de escalar para que no haya salto en el borde.</value></data>
-  <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>Restablecer a 25°</value></data>
-  <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Restablecer a 0°</value></data>
-  <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Restablecer la envolvente de inclinación</value></data>
+  <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>Restablecer rango de inclinación completa</value></data>
+  <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Restablecer zona muerta de inclinación</value></data>
+  <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Restablecer todos los ajustes de inclinación ajustable</value></data>
   <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Cómo se combinan las fuentes de esta fila cuando hay más de una activa. Selecciona la fila para cambiarlo en el panel de detalles inferior.</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Velocidad ratón X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Velocidad ratón Y</value></data>

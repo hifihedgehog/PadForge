@@ -1349,9 +1349,9 @@
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>Grad Neigung aus der Ruhelage für vollen Stick-Ausschlag. Kleiner = empfindlicher. 25° ist der häufigste Wert in Steam-Konfigurationen.</value></data>
   <data name="Pad_GyroTilt_Deadzone" xml:space="preserve"><value>Neigungs-Totzone</value></data>
   <data name="Pad_GyroTilt_Deadzone_Tooltip" xml:space="preserve"><value>Grad Neigung um die Ruhelage, die ignoriert werden; vor der Skalierung abgezogen, damit es keinen Sprung an der Kante gibt.</value></data>
-  <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>Auf 25° zurücksetzen</value></data>
-  <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Auf 0° zurücksetzen</value></data>
-  <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Kippwinkel-Hüllkurve auf Standard zurücksetzen</value></data>
+  <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>Kippwinkelbereich zurücksetzen</value></data>
+  <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Neigungs-Totzone zurücksetzen</value></data>
+  <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Alle Gyro-Kippwinkel-Einstellungen zurücksetzen</value></data>
   <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Wie die Quellen dieser Zeile zusammengeführt werden, wenn mehrere aktiv sind. Zeile auswählen, um es im Detailbereich darunter zu ändern.</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Maus Geschwindigkeit X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Maus Geschwindigkeit Y</value></data>

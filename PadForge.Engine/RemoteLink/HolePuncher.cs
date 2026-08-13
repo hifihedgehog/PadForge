@@ -155,6 +155,12 @@ namespace PadForge.Engine.RemoteLink
                     {
                         foreach (var ep in candidates)
                         {
+                            // The win can land mid-sweep, and a CGNAT spray list
+                            // runs to thousands of ports: without this the punch
+                            // kept firing at every remaining candidate after the
+                            // path was already settled, which is exactly the
+                            // traffic a carrier NAT rate-limits.
+                            if (ct.IsCancellationRequested || winTcs.Task.IsCompleted) break;
                             try { await _transport.SendToAsync(ping, ep, ct).ConfigureAwait(false); }
                             catch { /* one bad candidate never aborts the spray */ }
                         }

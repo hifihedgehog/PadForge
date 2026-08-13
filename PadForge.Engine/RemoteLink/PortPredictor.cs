@@ -53,12 +53,18 @@ namespace PadForge.Engine.RemoteLink
             int windowSteps = DefaultWindowSteps, int neighbourhood = DefaultNeighbourhood)
         {
             var result = new List<IPEndPoint>();
-            var seen = new HashSet<(long, int)>();
+            var seen = new HashSet<(string, int)>();
 
             void Add(IPAddress ip, int port)
             {
                 if (ip == null || port < 1 || port > 65535) return;
-                long ipKey = BitConverter.ToUInt32(ip.MapToIPv4().GetAddressBytes(), 0);
+                // The whole address, not its low 32 bits. MapToIPv4 on a real
+                // IPv6 address keeps only the last four bytes, so two distinct
+                // v6 candidates that happen to share that suffix collided and
+                // the second was silently dropped from the spray. The v6 lane
+                // is the no-NAT-to-punch path, so losing a candidate there
+                // costs the easiest win available.
+                string ipKey = ip.ToString();
                 if (!seen.Add((ipKey, port))) return;
                 result.Add(new IPEndPoint(ip, port));
             }

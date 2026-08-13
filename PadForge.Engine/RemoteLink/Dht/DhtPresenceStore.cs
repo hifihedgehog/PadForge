@@ -49,7 +49,15 @@ namespace PadForge.Engine.RemoteLink.Dht
         private int _txnCounter;
 
         // Pending RPCs keyed by transaction id (hex), completed by the router.
-        private readonly System.Collections.Concurrent.ConcurrentDictionary<string, TaskCompletionSource<Krpc.Response>> _pending = new();
+        // The endpoint travels with the waiter: a transaction id is two bytes,
+        // and a reply is only an answer to OUR question if it came back from
+        // the node we asked.
+        private sealed class PendingRpc
+        {
+            public IPEndPoint Node;
+            public TaskCompletionSource<Krpc.Response> Completion;
+        }
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<string, PendingRpc> _pending = new();
 
         public DhtPresenceStore(IKrpcTransport transport, IReadOnlyList<IPEndPoint> bootstrap, byte[] nodeId = null)
         {
@@ -87,14 +95,21 @@ namespace PadForge.Engine.RemoteLink.Dht
         {
             var resp = Krpc.ParseResponse(dg);
             if (resp?.Txn == null) return;
-            if (_pending.TryRemove(TxnKey(resp.Txn), out var tcs))
-                tcs.TrySetResult(resp);
+            string key = TxnKey(resp.Txn);
+            if (!_pending.TryGetValue(key, out var waiter)) return;
+            // Only the node we asked may answer. Transaction ids are two bytes
+            // and this socket takes datagrams from the whole internet, so
+            // without the source check any host that guessed (or observed) an
+            // id could answer a lookup with nodes of its choosing.
+            if (waiter.Node != null && !waiter.Node.Equals(from)) return;
+            if (_pending.TryRemove(key, out _))
+                waiter.Completion.TrySetResult(resp);
         }
 
         private async Task<Krpc.Response> RpcAsync(byte[] datagram, byte[] txn, IPEndPoint node, CancellationToken ct)
         {
             var tcs = new TaskCompletionSource<Krpc.Response>(TaskCreationOptions.RunContinuationsAsynchronously);
-            _pending[TxnKey(txn)] = tcs;
+            _pending[TxnKey(txn)] = new PendingRpc { Node = node, Completion = tcs };
             try
             {
                 await _transport.SendAsync(datagram, node, ct).ConfigureAwait(false);
@@ -103,7 +118,14 @@ namespace PadForge.Engine.RemoteLink.Dht
                 try { return await tcs.Task.WaitAsync(timer.Token).ConfigureAwait(false); }
                 catch (OperationCanceledException) { return null; } // node didn't answer in time
             }
-            catch { return null; }
+            catch (Exception ex)
+            {
+                // Was a bare "return null", which reads identically to a node
+                // that stayed silent: a transport fault looked like a quiet
+                // network and every lookup failure was indistinguishable.
+                SdlDiagLog.WriteLine($"DHT rpc to {node} failed: {ex.GetType().Name} {ex.Message}");
+                return null;
+            }
             finally { _pending.TryRemove(TxnKey(txn), out _); }
         }
 
@@ -356,7 +378,7 @@ namespace PadForge.Engine.RemoteLink.Dht
 
         public void Dispose()
         {
-            foreach (var kv in _pending) kv.Value.TrySetCanceled();
+            foreach (var kv in _pending) kv.Value.Completion.TrySetCanceled();
             _pending.Clear();
         }
     }

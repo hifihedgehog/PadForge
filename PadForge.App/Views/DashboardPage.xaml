@@ -1602,8 +1602,12 @@
                         <StackPanel Margin="12,0,0,0" VerticalAlignment="Center">
                             <TextBlock Text="{Binding Dashboard_WebScanToOpen, Source={x:Static strings:Strings.Instance}}"
                                        FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,4"/>
-                            <ui:TextBox Text="{Binding WebControllerUrl, Mode=OneWay}" IsReadOnly="True"
-                                        FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12" Width="260"/>
+                            <StackPanel Orientation="Horizontal">
+                                <ui:TextBox Text="{Binding WebControllerUrl, Mode=OneWay}" IsReadOnly="True"
+                                            FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12" Width="260"/>
+                                <ui:Button Command="{Binding CopyWebControllerUrlCommand}" Margin="8,0,0,0"
+                                           Content="{Binding Common_Copy, Source={x:Static strings:Strings.Instance}}"/>
+                            </StackPanel>
                         </StackPanel>
                     </StackPanel>
 

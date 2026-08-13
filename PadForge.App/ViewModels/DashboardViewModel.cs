@@ -374,6 +374,18 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _hasWebControllerQr, value);
         }
 
+        private RelayCommand _copyWebControllerUrlCommand;
+        /// <summary>Copies the web controller URL to the clipboard, the same
+        /// affordance the Remote Link code field has.</summary>
+        public RelayCommand CopyWebControllerUrlCommand =>
+            _copyWebControllerUrlCommand ??= new RelayCommand(() =>
+            {
+                if (!string.IsNullOrEmpty(_webControllerUrl))
+                {
+                    try { System.Windows.Clipboard.SetText(_webControllerUrl); } catch { }
+                }
+            });
+
         // ─────────────────────────────────────────────
         //  Remote Link (issue #138)
         // ─────────────────────────────────────────────

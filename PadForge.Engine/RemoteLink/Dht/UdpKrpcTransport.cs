@@ -51,7 +51,11 @@ namespace PadForge.Engine.RemoteLink.Dht
                 catch (SocketException) { continue; }
                 var dg = new byte[r.ReceivedBytes];
                 Array.Copy(buf, dg, r.ReceivedBytes);
-                OnDatagram?.Invoke((IPEndPoint)r.RemoteEndPoint, dg);
+                // Guarded: this loop is fire-and-forget, so a throw out of the
+                // handler killed the DHT's only reader with nothing to observe
+                // the failure, and every later lookup silently timed out.
+                try { OnDatagram?.Invoke((IPEndPoint)r.RemoteEndPoint, dg); }
+                catch (Exception ex) { SdlDiagLog.WriteLine("DHT datagram handler threw: " + ex.Message); }
             }
         }
 

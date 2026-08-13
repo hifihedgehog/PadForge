@@ -151,7 +151,12 @@ namespace PadForge.Engine.RemoteLink.Dht
             if (!int.TryParse(lenText, out int len) || len < 0)
                 throw new FormatException("Bencode: bad string length.");
             int start = colon + 1;
-            if (start + len > data.Length) throw new FormatException("Bencode: string past end.");
+            // Subtract, never add: this data comes off the open DHT, and
+            // "start + len" overflows to a negative for a length near int.MaxValue,
+            // which passes the bounds check and hands Array.Copy a length the
+            // buffer cannot satisfy.
+            if (start > data.Length || len > data.Length - start)
+                throw new FormatException("Bencode: string past end.");
             var bytes = new byte[len];
             Array.Copy(data, start, bytes, 0, len);
             pos = start + len;

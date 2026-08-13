@@ -156,15 +156,28 @@ namespace PadForge.Engine.RemoteLink.Dht
         /// tick.</summary>
         public async Task MaintainAsync(IEnumerable<Peer> peers, CancellationToken ct)
         {
-            foreach (var p in peers)
+            // Single-flight. A pass runs DHT lookups and punch sprays for every
+            // peer and can outlast its own cadence, and two callers drive it
+            // (the republish timer and the discovery tick): overlapping passes
+            // sprayed the same peer twice and raced each other's connection
+            // attempts. A pass already running is answer enough for the tick
+            // that arrives during it.
+            if (Interlocked.Exchange(ref _maintaining, 1) != 0) return;
+            try
             {
-                if (ct.IsCancellationRequested) break;
-                try { await PublishAsync(p, ct).ConfigureAwait(false); }
-                catch (Exception ex) { _log($"publish failed: {ex.Message}"); }
-                try { await TryReconnectAsync(p, ct).ConfigureAwait(false); }
-                catch (Exception ex) { _log($"reconnect failed: {ex.Message}"); }
+                foreach (var p in peers)
+                {
+                    if (ct.IsCancellationRequested) break;
+                    try { await PublishAsync(p, ct).ConfigureAwait(false); }
+                    catch (Exception ex) { _log($"publish failed: {ex.Message}"); }
+                    try { await TryReconnectAsync(p, ct).ConfigureAwait(false); }
+                    catch (Exception ex) { _log($"reconnect failed: {ex.Message}"); }
+                }
             }
+            finally { Interlocked.Exchange(ref _maintaining, 0); }
         }
+
+        private int _maintaining;
 
         private static int CompareBytes(byte[] a, byte[] b)
         {

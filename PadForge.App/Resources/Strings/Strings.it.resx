@@ -1360,6 +1360,7 @@
   <data name="Pad_ResetGyroApplyToPassthrough" xml:space="preserve"><value>Ripristina regolazione trasmissione</value></data>
   <data name="Mapping_GyroSensitivity" xml:space="preserve"><value>Sensibilità</value></data>
   <data name="Mapping_GyroSensitivity_Tooltip" xml:space="preserve"><value>Moltiplicatore di sensibilità del giroscopio per sorgente. 1,0 = predefinito del motore (500°/s → deflessione completa). Valori superiori a 1,0 sono più sensibili. Valori inferiori sono meno sensibili.</value></data>
+  <data name="Mapping_LeanSensitivity_Tooltip" xml:space="preserve"><value>Moltiplicatore di sensibilità dell'inclinazione per sorgente. 1.0 = 90° di inclinazione per la deflessione completa. Valori sopra 1.0 raggiungono la deflessione completa con meno inclinazione.</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Velocità mouse X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Velocità mouse Y</value></data>
   <data name="Mapping_MouseScroll" xml:space="preserve"><value>Scorrimento mouse</value></data>

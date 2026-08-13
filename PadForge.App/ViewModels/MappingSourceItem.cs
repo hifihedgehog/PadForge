@@ -298,6 +298,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsHalfAxisApplicable));
                     OnPropertyChanged(nameof(IsInvertOutputApplicable));
                     OnPropertyChanged(nameof(IsGyroSource));
+                    OnPropertyChanged(nameof(IsGyroLeanSource));
                     OnPropertyChanged(nameof(IsMouseCursorSource));
                     OnPropertyChanged(nameof(IsIrPointerSource));
                     OnPropertyChanged(nameof(IsMouseMotionSource));
@@ -306,12 +307,25 @@ namespace PadForge.ViewModels
             }
         }
 
-        /// <summary>True when this source's descriptor names a gyro axis
-        /// ("Gyro Pitch" / "Gyro Yaw" / "Gyro Roll"). Drives the per-row
-        /// gyro-sensitivity slider's visibility so it only renders when
-        /// it's actually meaningful.</summary>
+        /// <summary>True when this source's descriptor names a gyro RATE
+        /// axis ("Gyro Pitch" / "Gyro Yaw" / "Gyro Roll" and the L/R/blend
+        /// spellings). Drives the per-row gyro-sensitivity slider's
+        /// visibility so it only renders when it's actually meaningful.
+        /// The gravity-lean pair shares the "Gyro " prefix but reads the
+        /// accelerometer and scales by the GENERIC Sensitivity field, so it
+        /// is sorted out first, the same precedence every engine site uses
+        /// (#292: the unsorted predicate showed lean rows a dial bound to
+        /// GyroSensitivity, which ReadGyroLean never reads).</summary>
         public bool IsGyroSource => _descriptor != null
-            && _descriptor.StartsWith("Gyro ", StringComparison.Ordinal);
+            && _descriptor.StartsWith("Gyro ", StringComparison.Ordinal)
+            && !PadForge.Engine.Common.Mapping.SourceCoercion.IsGyroLeanDescriptor(_descriptor);
+
+        /// <summary>True for the gravity-lean pair ("Gyro Lean X/Y").
+        /// Gates the lean row's Sensitivity dial, which binds
+        /// <see cref="Sensitivity"/>, the field ReadGyroLean scales by
+        /// (#292).</summary>
+        public bool IsGyroLeanSource =>
+            PadForge.Engine.Common.Mapping.SourceCoercion.IsGyroLeanDescriptor(_descriptor);
 
         /// <summary>True when this source's descriptor is an absolute cursor axis
         /// ("Mouse Position X" / "Mouse Position Y", issue #107). Drives the

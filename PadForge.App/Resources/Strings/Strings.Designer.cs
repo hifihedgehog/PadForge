@@ -2277,6 +2277,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ResetGyroEngageStickDirection => Get("Pad_ResetGyroEngageStickDirection");
     public string Mapping_GyroSensitivity => Get("Mapping_GyroSensitivity");
     public string Mapping_GyroSensitivity_Tooltip => Get("Mapping_GyroSensitivity_Tooltip");
+    public string Mapping_LeanSensitivity_Tooltip => Get("Mapping_LeanSensitivity_Tooltip");
     public string Mapping_MouseSpeedX => Get("Mapping_MouseSpeedX");
     public string Mapping_MouseSpeedY => Get("Mapping_MouseSpeedY");
     public string Mapping_MouseScroll => Get("Mapping_MouseScroll");

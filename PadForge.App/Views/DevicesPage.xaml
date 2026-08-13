@@ -460,37 +460,21 @@
                                          the only assignment signal. -->
                                 </StackPanel>
 
-                                <StackPanel Grid.Column="2" Grid.RowSpan="2" VerticalAlignment="Top">
+                                <StackPanel Grid.Column="2" Grid.RowSpan="2" VerticalAlignment="Top"
+                                            Orientation="Horizontal">
                                 <!-- Delete button (upper-right). Hover-revealed
                                      (#175 phase 2 item 1b): opacity, not
                                      visibility, so it stays in the tab order.
                                      Keyboard focus reveals it too. The click
                                      routes through the shared ConfirmDialog in
                                      code-behind before anything is deleted. -->
-                                <ui:Button ToolTip="{Binding Devices_RemoveTooltip, Source={x:Static strings:Strings.Instance}}"
-                                           Click="RemoveDevice_Click">
-                                    <ui:Button.Style>
-                                        <Style TargetType="{x:Type ui:Button}" BasedOn="{StaticResource EmberIconButtonHot}">
-                                            <Setter Property="Opacity" Value="0"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
-                                                    <Setter Property="Opacity" Value="1"/>
-                                                </DataTrigger>
-                                                <Trigger Property="IsKeyboardFocused" Value="True">
-                                                    <Setter Property="Opacity" Value="1"/>
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </ui:Button.Style>
-                                    <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                                </ui:Button>
                                 <!-- Identify buzz (#293): vibrates the physical
                                      device so two identical pads can be told
                                      apart, like Identify on a monitor. Only
                                      shown when the device can rumble; hover-
                                      revealed like its delete sibling. -->
                                 <ui:Button ToolTip="{Binding Devices_IdentifyTooltip, Source={x:Static strings:Strings.Instance}}"
-                                           Margin="0,4,0,0"
+                                           Margin="0,0,4,0"
                                            Click="IdentifyDevice_Click">
                                     <ui:Button.Style>
                                         <Style TargetType="{x:Type ui:Button}" BasedOn="{StaticResource EmberIconButtonHot}">
@@ -511,6 +495,24 @@
                                     </ui:Button.Style>
                                     <TextBlock Text="&#xE877;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="13"
                                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                </ui:Button>
+
+                                <ui:Button ToolTip="{Binding Devices_RemoveTooltip, Source={x:Static strings:Strings.Instance}}"
+                                           Click="RemoveDevice_Click">
+                                    <ui:Button.Style>
+                                        <Style TargetType="{x:Type ui:Button}" BasedOn="{StaticResource EmberIconButtonHot}">
+                                            <Setter Property="Opacity" Value="0"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
+                                                    <Setter Property="Opacity" Value="1"/>
+                                                </DataTrigger>
+                                                <Trigger Property="IsKeyboardFocused" Value="True">
+                                                    <Setter Property="Opacity" Value="1"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ui:Button.Style>
+                                    <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                 </ui:Button>
                                 </StackPanel>
 

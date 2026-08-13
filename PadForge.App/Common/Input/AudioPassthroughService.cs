@@ -2875,6 +2875,10 @@ namespace PadForge.Common.Input
                             bool audible = Environment.TickCount64 - s.LastAudibleTicks <= 2000;
                             _personaLastAudible = audible;
 
+                            // Heartbeat BEFORE the gate, so a tick that sends
+                            // nothing still reports why (#300 field diagnosis).
+                            if (!s.IsDs4) Ds5BtHeartbeat(s, pull, inFrames, audible);
+
                             if (!audible)
                             {
                                 // No speaker this tick. Haptics, if any, go on
@@ -3087,8 +3091,9 @@ namespace PadForge.Common.Input
                 s.Ds5Seq = (s.Ds5Seq + 1) & 0x0F;
                 s.Ds5PktCounter++;
                 bool combinedFail = true;
-                if (!(s.Tx != null && s.Tx.TrySend(s.BtHandle, report, out combinedFail)) && combinedFail)
-                    s.TransportFailed = true;
+                bool combinedSent = s.Tx != null && s.Tx.TrySend(s.BtHandle, report, out combinedFail);
+                if (!combinedSent && combinedFail) s.TransportFailed = true;
+                Ds5BtNoteSend(s, combinedSent, combinedFail, combined: true, hapticOnly: false);
                 _personaHapticSends++;
                 return;
             }
@@ -3124,6 +3129,7 @@ namespace PadForge.Common.Input
 
             bool hardFail = true; // no pool == hard failure
             bool sent = s.Tx != null && s.Tx.TrySend(s.BtHandle, report, out hardFail);
+            Ds5BtNoteSend(s, sent, hardFail, combined: false, hapticOnly: false);
             if (!sent)
             {
                 if (hardFail)
@@ -3325,6 +3331,7 @@ namespace PadForge.Common.Input
             bool hardFail = false;
             bool sent = s.Tx != null && s.Tx.TrySend(s.BtHandle, report, out hardFail);
             if (!sent && hardFail) s.TransportFailed = true;
+            Ds5BtNoteSend(s, sent, hardFail, combined: false, hapticOnly: true);
             _personaHapticSends++;
             long hnow = Environment.TickCount64;
             if (hnow - _personaHapticLastLog >= 2000)
@@ -3336,6 +3343,87 @@ namespace PadForge.Common.Input
 
         private static long _personaHapticSends, _personaHapticLastLog, _personaSpkSends;
         private static volatile bool _personaLastAudible;
+
+        // ── DS5 BT audio heartbeat (discussion #300 field diagnosis) ──
+        //
+        // One line per second per sink, printed UNCONDITIONALLY while the
+        // stream thread is alive, so its absence means the thread stopped
+        // rather than "the audio went quiet". That positive control is the
+        // point: a silent lane and dead instrumentation look identical
+        // otherwise, which is how a "silent sink" gets mis-diagnosed.
+        //
+        // It separates the three causes a user cannot tell apart by ear:
+        //   capW == 0        Windows stopped handing us the render stream
+        //                    (another app took the endpoint exclusively, or
+        //                    the default endpoint moved). Nothing to send.
+        //   capW > 0, peak 0 we are being handed silence: the game is not
+        //                    rendering to this endpoint.
+        //   peak > 0, sent 0 we have audio and are not putting it on the
+        //                    wire: the idle gate, the pool, or the transport.
+        //   sent > 0         it left this machine, so anything still wrong is
+        //                    on the pad side of the link.
+        private sealed class BtHeartbeat
+        {
+            public long LastLog, LastCapWrite;
+            public int Sent, Saturated, Failed, Combined, HapticOnly, Ticks;
+            public float Peak;
+        }
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, BtHeartbeat>
+            _btHeartbeats = new();
+
+        private static void Ds5BtHeartbeat(Sink s, float[] pull, int frames, bool audible)
+        {
+            // Bench sessions only (PADFORGE_DIAG armed). The crash ring holds
+            // 400 lines, and a line per second per pad would evict the context
+            // a crash report actually needs.
+            if (!Engine.SdlDiagLog.IsMirroring) return;
+            var hb = _btHeartbeats.GetOrAdd(s.DeviceGuid, _ => new BtHeartbeat());
+            hb.Ticks++;
+            int n = Math.Min(frames * 2, pull.Length);
+            for (int i = 0; i < n; i++)
+            {
+                float a = pull[i] < 0 ? -pull[i] : pull[i];
+                if (a > hb.Peak) hb.Peak = a;
+            }
+
+            long now = Environment.TickCount64;
+            if (hb.LastLog == 0) { hb.LastLog = now; return; }
+            if (now - hb.LastLog < 1000) return;
+
+            long capW = 0;
+            var cap = s.Capture;
+            if (cap != null) { lock (cap.Ring) capW = cap.Write; }
+            long capDelta = hb.LastCapWrite == 0 ? 0 : capW - hb.LastCapWrite;
+            int hapAvail = _personaHapticRings.TryGetValue(s.DeviceGuid, out var hr) ? hr.FramesAvailable : -1;
+
+            Engine.SdlDiagLog.WriteLine(
+                "BTAUDIO guid=" + s.DeviceGuid.ToString("N").Substring(0, 8)
+                + " ticks=" + hb.Ticks
+                + " peak=" + hb.Peak.ToString("0.0000", System.Globalization.CultureInfo.InvariantCulture)
+                + " audible=" + (audible ? 1 : 0)
+                + " capW=" + capDelta
+                + " pass=" + (s.PassthroughOn ? 1 : 0)
+                + " lag=" + s.Source?.LoopbackLagFrames
+                + " hapAvail=" + hapAvail
+                + " sent=" + hb.Sent + " sat=" + hb.Saturated + " fail=" + hb.Failed
+                + " combined=" + hb.Combined + " hapOnly=" + hb.HapticOnly
+                + " txFailed=" + (s.TransportFailed ? 1 : 0));
+
+            hb.LastLog = now;
+            hb.LastCapWrite = capW;
+            hb.Sent = hb.Saturated = hb.Failed = hb.Combined = hb.HapticOnly = hb.Ticks = 0;
+            hb.Peak = 0f;
+        }
+
+        private static void Ds5BtNoteSend(Sink s, bool sent, bool hardFail, bool combined, bool hapticOnly)
+        {
+            if (!_btHeartbeats.TryGetValue(s.DeviceGuid, out var hb)) return;
+            if (sent) hb.Sent++;
+            else if (hardFail) hb.Failed++;
+            else hb.Saturated++;
+            if (combined) hb.Combined++;
+            if (hapticOnly) hb.HapticOnly++;
+        }
 
         /// <summary>BT mic session state machine, one pass per tick. Sends
         /// the mic OPEN toggle when this pad is the persona feed's BT mic

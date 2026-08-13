@@ -129,6 +129,38 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void AFling_SurvivesTheLiftGap_AndGlideOneStaysFrictionless()
+        {
+            // The owner-caught regression: a real lift trails the last
+            // movement report by 10-20 ms (the finger decelerates leaving
+            // the glass). The launch must still read the movement history
+            // across that gap, and at glide 1.00 the coast must hold its
+            // speed indefinitely.
+            UseSettings(momentum: true, decay: 1.00f);
+            try
+            {
+                var src = XSource(); int slot = NewSlot();
+                Counts(PadAt(0.50f), TicksAt(0.000f), src, slot);
+                Counts(PadAt(0.53f), TicksAt(0.004f), src, slot);
+                Counts(PadAt(0.56f), TicksAt(0.008f), src, slot);
+                // Quiet polls past the adaptive spend window but inside the
+                // history ceiling: the cursor stops moving...
+                Assert.Equal(0f, Counts(PadAt(0.56f), TicksAt(0.018f), src, slot));
+                // ...and the lift at 12 ms after the last report still
+                // launches the fling.
+                float c1 = Counts(PadAt(0.56f, down: false), TicksAt(0.020f), src, slot);
+                Assert.True(c1 > 0f, "the lift gap swallowed the fling");
+
+                // Frictionless: same counts a hundred polls later.
+                float last = c1;
+                for (int i = 0; i < 100; i++)
+                    last = Counts(PadAt(0.56f, down: false), TicksAt(0.021f + i * 0.001f), src, slot);
+                Assert.Equal(c1, last, 4);
+            }
+            finally { ClearSettings(); }
+        }
+
+        [Fact]
         public void TheAdaptiveHold_StillBridgesTheReportGap()
         {
             // The stutter fix must survive: polls BETWEEN reports at the

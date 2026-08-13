@@ -3747,17 +3747,37 @@ namespace PadForge.Engine.Common.Mapping
                     var mean = ball.MeanVelocity();
                     ball.VelX = mean.X; ball.VelY = mean.Y;
                 }
-                else if (ticksPerSecond > 0
-                         && (float)(nowTicks - ball.LastReportTicks) / ticksPerSecond
-                            > (ball.ReportIntervalEma > 0f
-                                ? Math.Clamp(ball.ReportIntervalEma * 1.5f,
-                                    TouchVelocityHoldFloorSeconds, TouchVelocityHoldSeconds)
-                                : TouchVelocityHoldSeconds))
+                else if (ticksPerSecond > 0)
                 {
-                    // Resting, not between reports. Drop the history too, so
-                    // a pause before lifting cannot fling stale samples.
-                    ball.ClearSamples();
-                    ball.VelX = ball.VelY = 0f;
+                    // Two windows with two different jobs (#291 regression
+                    // fix: the first cut of the backward-creep change used
+                    // ONE window for both and killed real flings).
+                    //
+                    // The SPEND stops at the adaptive window (~1.5 report
+                    // gaps): that is the backward-creep fix, because the
+                    // creep was stale settle velocity being spent on the
+                    // cursor long after the pad went quiet.
+                    //
+                    // The sample HISTORY survives until the full ceiling:
+                    // the launch reads it at lift, and a real fling's
+                    // finger decelerates as it leaves the glass, so the
+                    // lift report trails the last movement by 10-20 ms.
+                    // Wiping the ring at ~6 ms handed the launch an empty
+                    // ring and no fling at all, at any glide.
+                    float sinceReport = (float)(nowTicks - ball.LastReportTicks) / ticksPerSecond;
+                    float hold = ball.ReportIntervalEma > 0f
+                        ? Math.Clamp(ball.ReportIntervalEma * 1.5f,
+                            TouchVelocityHoldFloorSeconds, TouchVelocityHoldSeconds)
+                        : TouchVelocityHoldSeconds;
+                    if (sinceReport > hold)
+                    {
+                        ball.VelX = ball.VelY = 0f;
+                        // Past the ceiling the finger is genuinely resting:
+                        // drop the history too, so a pause before lifting
+                        // cannot fling stale samples.
+                        if (sinceReport > TouchVelocityHoldSeconds)
+                            ball.ClearSamples();
+                    }
                 }
 
                 EmitBallCounts(ball, tp, dtSeconds, src);

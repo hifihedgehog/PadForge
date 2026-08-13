@@ -41,6 +41,9 @@ namespace PadForge.Services
         private bool _disposed;
 
         private readonly ConcurrentDictionary<string, ClientSession> _clients = new();
+        /// <summary>Serializes session registration: the client cap and the
+        /// retire-the-previous-session step must decide together.</summary>
+        private readonly object _registrationLock = new object();
         private Dictionary<string, byte[]> _imageCache;
 
         /// <summary>Raised when server status changes (for UI display).</summary>
@@ -130,6 +133,11 @@ namespace PadForge.Services
             }
             catch (HttpListenerException ex)
             {
+                // Close before dropping the reference: a listener that bound
+                // its prefix and failed later still holds the http.sys
+                // registration, and nulling the field leaked it until process
+                // exit, so the retry hit "port in use" against ourselves.
+                try { _listener?.Close(); } catch { }
                 _listener = null;
                 var msg = ex.ErrorCode == 5
                     ? string.Format(Strings.Instance.Server_AccessDenied_Format, port)
@@ -139,6 +147,7 @@ namespace PadForge.Services
             }
             catch (Exception)
             {
+                try { _listener?.Close(); } catch { }
                 _listener = null;
                 StatusChanged?.Invoke(this, Strings.Instance.Server_FailedToStart);
                 return false;
@@ -220,6 +229,12 @@ namespace PadForge.Services
                 catch
                 {
                     if (!_running) break;
+                    // A dead listener throws immediately and forever, and the
+                    // bare continue burned a core spinning on it. Stop when the
+                    // listener is gone; pause briefly on a transient failure.
+                    var l = _listener;
+                    if (l == null || !l.IsListening) break;
+                    Thread.Sleep(50);
                     continue;
                 }
 
@@ -333,10 +348,21 @@ namespace PadForge.Services
                     }
                     case "POST":
                     {
-                        string body;
+                        // Cap the READ, not the read result. ReadToEnd first and
+                        // check the length after means a client on the LAN can
+                        // make the app allocate as much as it cares to send.
+                        const int MaxBody = 64 * 1024;
+                        if (ctx.Request.ContentLength64 > MaxBody) { ctx.Response.StatusCode = 413; break; }
+                        var buf = new char[MaxBody + 1];
+                        int got = 0;
                         using (var reader = new StreamReader(ctx.Request.InputStream, Encoding.UTF8))
-                            body = reader.ReadToEnd();
-                        if (body.Length > 64 * 1024) { ctx.Response.StatusCode = 413; break; }
+                        {
+                            int n;
+                            while (got < buf.Length && (n = reader.Read(buf, got, buf.Length - got)) > 0)
+                                got += n;
+                        }
+                        if (got > MaxBody) { ctx.Response.StatusCode = 413; break; }
+                        string body = new string(buf, 0, got);
                         var id = WebCustomLayoutStore.Upsert(body);
                         if (id == null) { ctx.Response.StatusCode = 400; break; }
                         var ok = Encoding.UTF8.GetBytes($"{{\"id\":\"{id}\"}}");
@@ -431,7 +457,12 @@ namespace PadForge.Services
                 var clientType = ctx.Request.QueryString["type"] ?? "xbox360";
                 var layoutParam = ctx.Request.QueryString["layout"] ?? "xbox360";
 
-                var wsCtx = await ctx.AcceptWebSocketAsync(null);
+                // Keepalive pings, so a phone that left the network (screen
+                // off, Wi-Fi dropped, walked out of range) is detected instead
+                // of parking a receive that never returns: without traffic the
+                // TCP connection has nothing to fail on, and the session held
+                // its device online and one of the MaxClients slots forever.
+                var wsCtx = await ctx.AcceptWebSocketAsync(null, TimeSpan.FromSeconds(30));
                 ws = wsCtx.WebSocket;
 
                 // Create device — reuse pad number for reconnecting clients.
@@ -542,7 +573,41 @@ namespace PadForge.Services
                     _ = SendJsonAsync(ws, new { type = "player", index = idx }, cts.Token, session.SendGate);
                 };
 
-                _clients[compositeKey] = session;
+                // Registration is one critical section: the MaxClients check
+                // above is a cheap pre-filter that races (several browsers can
+                // pass it before any of them registers), and a reconnect under
+                // an existing id has to retire the OLD session before the new
+                // device comes up. The old session's own teardown cannot do it:
+                // its removal is conditional on still being the registered
+                // session, so once the new one is in the dictionary the old
+                // loop's remove fails and its device stayed online forever as a
+                // phantom.
+                lock (_registrationLock)
+                {
+                    _clients.TryGetValue(compositeKey, out var prior);
+                    if (prior == null && _clients.Count >= MaxClients)
+                    {
+                        try { ws.Abort(); } catch { }
+                        try { ws.Dispose(); } catch { }
+                        cts.Dispose();
+                        return;
+                    }
+                    if (prior != null)
+                    {
+                        // Claim the teardown here so the old loop's conditional
+                        // remove cannot also fire it.
+                        ((ICollection<KeyValuePair<string, ClientSession>>)_clients)
+                            .Remove(new KeyValuePair<string, ClientSession>(compositeKey, prior));
+                        try { prior.CancellationSource.Cancel(); } catch { }
+                        try
+                        {
+                            prior.Device.SetConnected(false);
+                            DeviceDisconnected?.Invoke(prior.Device);
+                        }
+                        catch { /* best effort */ }
+                    }
+                    _clients[compositeKey] = session;
+                }
 
                 // Once the session is registered, everything runs under try/finally
                 // so a throw from an event handler (DeviceConnected/StatusChanged),
@@ -561,8 +626,15 @@ namespace PadForge.Services
                     // happened while it was away; replay the current state.
                     device.ResendIdentity();
 
-                    // Receive loop.
+                    // Receive loop. A text message can arrive in several frames,
+                    // and handing a fragment to the JSON parser dropped the
+                    // whole message: assemble until EndOfMessage, with a cap so
+                    // a client cannot grow the buffer without bound.
+                    const int MaxMessageBytes = 16 * 1024;
                     var buffer = new byte[1024];
+                    byte[] assembled = null;
+                    int assembledLen = 0;
+                    bool overflowed = false;
                     while (ws.State == WebSocketState.Open && _running && !cts.Token.IsCancellationRequested)
                     {
                         WebSocketReceiveResult result;
@@ -583,8 +655,37 @@ namespace PadForge.Services
                         if (result.MessageType == WebSocketMessageType.Close)
                             break;
 
-                        if (result.MessageType == WebSocketMessageType.Text)
+                        if (result.MessageType != WebSocketMessageType.Text)
+                            continue;
+
+                        if (result.EndOfMessage && assembledLen == 0 && !overflowed)
+                        {
+                            // The common case: one frame, one message.
                             ProcessMessage(device, buffer, result.Count);
+                            continue;
+                        }
+
+                        if (!overflowed)
+                        {
+                            if (assembledLen + result.Count > MaxMessageBytes)
+                            {
+                                overflowed = true;
+                            }
+                            else
+                            {
+                                if (assembled == null) assembled = new byte[MaxMessageBytes];
+                                Buffer.BlockCopy(buffer, 0, assembled, assembledLen, result.Count);
+                                assembledLen += result.Count;
+                            }
+                        }
+
+                        if (result.EndOfMessage)
+                        {
+                            if (!overflowed && assembledLen > 0)
+                                ProcessMessage(device, assembled, assembledLen);
+                            assembledLen = 0;
+                            overflowed = false;
+                        }
                     }
                 }
                 finally
@@ -604,7 +705,7 @@ namespace PadForge.Services
                     }
                     StatusChanged?.Invoke(this, _clients.Count > 0
                         ? string.Format(Strings.Instance.Server_RunningClients_Format, _clients.Count)
-                        : string.Format(Strings.Instance.Server_RunningOn_Format, $"http://{_localIp}:{_port}"));
+                        : string.Format(Strings.Instance.Server_RunningOn_Format, Url ?? $"http://{_localIp}:{_port}"));
 
                     try
                     {
@@ -930,6 +1031,10 @@ namespace PadForge.Services
             return _targetInputMap.TryGetValue(target, out input);
         }
 
+        /// <summary>A double as JSON: invariant, never the current culture.</summary>
+        private static string Num(double v) =>
+            v.ToString("R", System.Globalization.CultureInfo.InvariantCulture);
+
         /// <summary>"path/Stem.png" + "Carbon" -> "path/Stem_Carbon.png".</summary>
         private static string WithFinish(string path, string finish)
         {
@@ -963,11 +1068,18 @@ namespace PadForge.Services
                     if (_imageCache != null && _imageCache.ContainsKey(variant)) basePath = variant;
                 }
 
+                // Every number in this document goes out invariant. A
+                // StringBuilder.Append(double) formats in the CURRENT culture,
+                // and PadForge pins no culture, so on any comma-decimal Windows
+                // (de, fr, es, pt, ru, most of Europe and South America) every
+                // coordinate emitted "0,42" and the browser's JSON.parse threw
+                // on the whole layout: the web controller was a blank page for
+                // those users and worked perfectly for everyone testing it.
                 var sb = new StringBuilder(4096);
                 sb.Append("{\"baseWidth\":").Append(baseWidth)
                   .Append(",\"baseHeight\":").Append(baseHeight)
                   .Append(",\"basePath\":\"").Append(basePath).Append('"')
-                  .Append(",\"stickMaxTravel\":").Append(stickMaxTravel)
+                  .Append(",\"stickMaxTravel\":").Append(Num(stickMaxTravel))
                   .Append(",\"overlays\":[");
 
                 for (int i = 0; i < overlays.Length; i++)
@@ -995,10 +1107,10 @@ namespace PadForge.Services
                     sb.Append("{\"image\":\"").Append(ovPath).Append('"')
                       .Append(",\"target\":\"").Append(ov.TargetName).Append('"')
                       .Append(",\"type\":\"").Append(elementType).Append('"')
-                      .Append(",\"x\":").Append(ov.X)
-                      .Append(",\"y\":").Append(ov.Y)
-                      .Append(",\"w\":").Append(ov.Width)
-                      .Append(",\"h\":").Append(ov.Height);
+                      .Append(",\"x\":").Append(Num(ov.X))
+                      .Append(",\"y\":").Append(Num(ov.Y))
+                      .Append(",\"w\":").Append(Num(ov.Width))
+                      .Append(",\"h\":").Append(Num(ov.Height));
 
                     if (ResolveInput(def.TypeKey, ov.TargetName, out var input))
                     {

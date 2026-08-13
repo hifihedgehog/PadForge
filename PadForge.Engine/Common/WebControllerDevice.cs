@@ -132,7 +132,24 @@ namespace PadForge.Engine
         // acceleration, so both flip together.
         public bool HasGyro { get; set; }
         public bool HasAccel { get; set; }
-        public bool HasTouchpad { get; set; }
+
+        /// <summary>True once this client has a touch surface. Set at connect
+        /// from the layout, or mid-session on the first touch message from a
+        /// client whose surface the query string did not declare. That
+        /// mid-session flip needs the same re-sync the motion caps get: the
+        /// UserDevice snapshot was taken at connect, so without the notify the
+        /// touchpad sources never appeared in the picker for that session.</summary>
+        public bool HasTouchpad
+        {
+            get => _hasTouchpad;
+            set
+            {
+                if (_hasTouchpad == value) return;
+                _hasTouchpad = value;
+                if (value) CapabilitiesChanged?.Invoke();
+            }
+        }
+        private bool _hasTouchpad;
         public HapticEffectStrategy HapticStrategy => HapticEffectStrategy.None;
         public IntPtr HapticHandle => IntPtr.Zero;
         public uint HapticFeatures => 0;
@@ -238,11 +255,16 @@ namespace PadForge.Engine
         public void UpdateAxis(int code, int value)
         {
             if (code < 0 || code >= NumGamepadAxes) return;
+            // The value crosses the network from a page anyone on the LAN can
+            // edit: clamp to the declared range rather than letting an
+            // out-of-range number reach the mapping math.
+            if (value < 0) value = 0;
+            else if (value > 65535) value = 65535;
             lock (_stateLock)
             {
                 var s = _currentState.Clone();
                 s.Axis[code] = value;
-                _currentState = s;
+                Volatile.Write(ref _currentState, s);
             }
         }
 
@@ -256,7 +278,7 @@ namespace PadForge.Engine
             {
                 var s = _currentState.Clone();
                 s.Buttons[code] = pressed;
-                _currentState = s;
+                Volatile.Write(ref _currentState, s);
             }
         }
 
@@ -264,11 +286,15 @@ namespace PadForge.Engine
         /// <param name="value">Centidegrees (0=N, 9000=E, etc.) or -1 for centered.</param>
         public void UpdatePov(int value)
         {
+            // Centidegrees, or -1 centered. Anything else is centered rather
+            // than passed through: a hat angle outside 0-35999 lands in the
+            // POV-to-direction math as an unmapped quadrant.
+            if (value != -1 && (value < 0 || value >= 36000)) value = -1;
             lock (_stateLock)
             {
                 var s = _currentState.Clone();
                 s.Povs[0] = value;
-                _currentState = s;
+                Volatile.Write(ref _currentState, s);
             }
         }
 
@@ -298,7 +324,7 @@ namespace PadForge.Engine
                     if (down && !wasDown) pad.FingerContactId[finger] = _webContactIdNext++;
                     else if (!down && wasDown) pad.FingerContactId[finger] = -1;
                 }
-                _currentState = s;
+                Volatile.Write(ref _currentState, s);
             }
         }
 
@@ -319,9 +345,20 @@ namespace PadForge.Engine
                 if (s.Accel == null || s.Accel.Length < 3) s.Accel = new float[3];
                 s.Gyro[0] = gx; s.Gyro[1] = gy; s.Gyro[2] = gz;
                 s.Accel[0] = ax; s.Accel[1] = ay; s.Accel[2] = az;
-                _currentState = s;
+                Volatile.Write(ref _currentState, s);
             }
+            Volatile.Write(ref _lastMotionTicks, Environment.TickCount64);
         }
+
+        /// <summary>How long a motion sample keeps driving the pipeline. The
+        /// phone streams at ~60 Hz while Motion is on; nothing arriving for
+        /// this long means the stream stopped (screen locked, page hidden,
+        /// Wi-Fi dropped), and a LATCHED rate reads as a controller spinning
+        /// forever. Rates go to zero; the accelerometer keeps its last sample,
+        /// because gravity does not stop and zeroing it would tilt the lean
+        /// modes to a bogus free-fall orientation.</summary>
+        private const long MotionStaleMs = 500;
+        private long _lastMotionTicks;
 
         /// <summary>Flips the motion caps on the first sample and notifies once,
         /// so the UserDevice snapshot taken at connect gets re-synced.</summary>
@@ -343,9 +380,14 @@ namespace PadForge.Engine
 
         public CustomInputState GetCurrentState(bool forceRaw = false)
         {
-            var src = _currentState;
+            var src = Volatile.Read(ref _currentState);
             var dst = _statePool.Next();
             src.CopyInto(dst);
+            if (HasGyro && dst.Gyro != null && dst.Gyro.Length >= 3
+                && Environment.TickCount64 - Volatile.Read(ref _lastMotionTicks) > MotionStaleMs)
+            {
+                dst.Gyro[0] = 0f; dst.Gyro[1] = 0f; dst.Gyro[2] = 0f;
+            }
             return dst;
         }
 

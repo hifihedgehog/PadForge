@@ -8481,11 +8481,34 @@ namespace PadForge.Services
             if (port < 1024 || port > 65535)
                 port = 8080;
 
-            if (!_webServer.Start(port))
+            // Start off the UI thread. It runs netsh up to three times for the
+            // HTTPS binding plus the firewall rule, each with a five-second
+            // cap, and this method is reached straight from the checkbox's
+            // PropertyChanged handler: ticking the box could freeze the window
+            // for as long as those calls took. Nothing here needs the result
+            // synchronously.
+            var launching = _webServer;
+            System.Threading.Tasks.Task.Run(() =>
             {
-                _webServer.Dispose();
-                _webServer = null;
-            }
+                bool ok = false;
+                try { ok = launching.Start(port); }
+                catch { ok = false; }
+                _dispatcher.BeginInvoke(() =>
+                {
+                    // The user may have switched the toggle off, or changed the
+                    // port (which stops and restarts), while this was starting.
+                    bool wanted = _mainVm.Dashboard.EnableWebController
+                                  && ReferenceEquals(_webServer, launching);
+                    if (ok && wanted) return;
+                    launching.StatusChanged -= OnWebServerStatusChanged;
+                    try { launching.Dispose(); } catch { }
+                    if (ReferenceEquals(_webServer, launching))
+                    {
+                        _webServer = null;
+                        _mainVm.Dashboard.IsWebControllerRunning = false;
+                    }
+                });
+            });
         }
 
         private void OnWebServerStatusChanged(object sender, string status)

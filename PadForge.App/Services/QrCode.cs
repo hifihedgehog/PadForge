@@ -265,7 +265,17 @@ namespace PadForge.Services
         {
             if (version == 1) return Array.Empty<int>();
             int numAlign = version / 7 + 2;
-            int step = (version * 4 + 4) / (numAlign * 2 - 2) * 2;
+            // Nayuki QrCode.java getAlignmentPatternPositions:
+            //   step = (ver == 32) ? 26 : (ver*4 + numAlign*2 + 1) / (numAlign*2 - 2) * 2
+            // The numerator was (ver*4 + 4) here, which agrees with the
+            // reference only while numAlign <= 3, i.e. up to version 14. From
+            // version 15 it produced 20 where the spec wants 22, putting every
+            // alignment pattern in the wrong place and making the symbol
+            // undecodable. Reachable through the version 1-20 range Encode
+            // walks. (Version 32's special case is outside that range and is
+            // kept only to match the reference.)
+            int step = (version == 32) ? 26
+                : (version * 4 + numAlign * 2 + 1) / (numAlign * 2 - 2) * 2;
             var result = new int[numAlign];
             result[0] = 6;
             int size = version * 4 + 17;

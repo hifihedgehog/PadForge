@@ -195,7 +195,11 @@ namespace PadForge.Tests
             {
                 int start = Math.Max(0, site - 2200);
                 string around = xaml.Substring(start, Math.Min(2400, xaml.Length - start));
-                Assert.Contains("IsHalfAxisApplicable", around);
+                // #292: the gate narrowed from IsHalfAxisApplicable to
+                // IsParamAccelApplicable, which is the same continuous
+                // family minus the gravity-tilt pairs (their engine path
+                // never applies ParamAccel, so the knob would be dead).
+                Assert.Contains("IsParamAccelApplicable", around);
                 Assert.Contains("Binding ParamAccel,", around);
             }
         }

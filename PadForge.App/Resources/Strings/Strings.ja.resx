@@ -1349,9 +1349,9 @@
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>静止姿勢から何度の傾きでフルストロークになるか。小さいほど敏感。25° は Steam 設定で最も一般的な値です。</value></data>
   <data name="Pad_GyroTilt_Deadzone" xml:space="preserve"><value>傾斜デッドゾーン</value></data>
   <data name="Pad_GyroTilt_Deadzone_Tooltip" xml:space="preserve"><value>静止姿勢周りで無視する傾きの角度。スケーリング前に減算されるため、しきい値での段差はありません。</value></data>
-  <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>25° にリセット</value></data>
-  <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>0° にリセット</value></data>
-  <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>傾斜エンベロープを既定値に戻す</value></data>
+  <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>フルストローク角度をリセット</value></data>
+  <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>傾斜デッドゾーンをリセット</value></data>
+  <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>ジャイロ傾斜の設定をすべてリセット</value></data>
   <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>複数のソースが同時に動作するときの合成方法。行を選択すると下の詳細パネルで変更できます。</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>マウス速度 X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>マウス速度 Y</value></data>

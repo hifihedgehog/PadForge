@@ -1369,9 +1369,9 @@
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>Graden kanteling vanaf de rustgreep die als volledige uitslag tellen. Kleiner = gevoeliger. 25° is de meest voorkomende waarde in Steam-configuraties.</value></data>
   <data name="Pad_GyroTilt_Deadzone" xml:space="preserve"><value>Hellingsdode zone</value></data>
   <data name="Pad_GyroTilt_Deadzone_Tooltip" xml:space="preserve"><value>Graden kanteling die rond de rustgreep worden genegeerd, afgetrokken vóór het schalen zodat er geen sprong aan de rand is.</value></data>
-  <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>Terugzetten naar 25°</value></data>
-  <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Terugzetten naar 0°</value></data>
-  <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Hellingsenvelop terugzetten naar standaard</value></data>
+  <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>Volledig-uitslagbereik herstellen</value></data>
+  <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Hellingsdode zone herstellen</value></data>
+  <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Alle gyro-hellinginstellingen herstellen</value></data>
   <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Hoe de bronnen van deze rij samenkomen wanneer er meer dan één actief is. Selecteer de rij om dit te wijzigen in het detailpaneel eronder.</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Muis snelheid X</value></data>
   <data name="Mapping_MouseSpeedY" xml:space="preserve"><value>Muis snelheid Y</value></data>

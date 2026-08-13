@@ -800,24 +800,18 @@
                                 <StackPanel Visibility="{Binding SelectedDevice.HasCapabilityIcons, Converter={StaticResource BoolToVisibilityConverter}}">
                                     <Border Height="1" Background="{DynamicResource SteelLineSoftBrush}" Margin="0,6,0,6"/>
                                     <WrapPanel>
-                                        <!-- Identify buzz (#293): lives HERE, not on the
-                                             rows, so every row keeps the identical layout
-                                             and the slot badges align across the list
-                                             (owner direction 2026-08-12). A button beside
-                                             the capability chips: press to vibrate the
-                                             selected device. -->
-                                        <ui:Button Style="{StaticResource EmberIconButtonHot}" Margin="0,0,4,0"
-                                                   VerticalAlignment="Center"
-                                                   ToolTip="{Binding Devices_IdentifyTooltip, Source={x:Static strings:Strings.Instance}}"
-                                                   Visibility="{Binding SelectedDevice.HasRumble, Converter={StaticResource BoolToVisibilityConverter}}"
-                                                   Click="IdentifyDevice_Click">
-                                            <TextBlock Text="&#xE877;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="12"
-                                                       Foreground="{DynamicResource EmberBrush}"/>
-                                        </ui:Button>
+                                        <!-- Rumble chip = identify button (#293): the
+                                             capability badge doubles as the action, so
+                                             nothing extra sits in the chip row (owner
+                                             direction 2026-08-12). Clicking it vibrates
+                                             the selected device; the tooltip carries
+                                             both facts. -->
                                         <Border Background="{DynamicResource EmberTintBrush}" BorderBrush="#66FF6B2C" BorderThickness="1"
                                                 CornerRadius="4" Padding="6,3" Margin="0,0,4,0"
-                                                ToolTip="{Binding Devices_Rumble, Source={x:Static strings:Strings.Instance}}"
-                                                Visibility="{Binding SelectedDevice.HasRumble, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                Cursor="Hand"
+                                                ToolTip="{Binding Devices_IdentifyTooltip, Source={x:Static strings:Strings.Instance}}"
+                                                Visibility="{Binding SelectedDevice.HasRumble, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                MouseLeftButtonUp="IdentifyChip_Click">
                                             <TextBlock Text="&#xE877;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource EmberBrush}"/>
                                         </Border>
                                         <Border Background="{DynamicResource EmberTintBrush}" BorderBrush="#66FF6B2C" BorderThickness="1"

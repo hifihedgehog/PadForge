@@ -151,6 +151,11 @@ namespace PadForge.Views
         /// <summary>Identify buzz (#293): route through InputService, which
         /// picks the sole-writer lane for mapped devices and the direct train
         /// for unmapped ones.</summary>
+        /// <summary>The rumble capability chip's click (a Border, so a mouse
+        /// handler rather than a Button Click).</summary>
+        private void IdentifyChip_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
+            => IdentifyDevice_Click(sender, e);
+
         private void IdentifyDevice_Click(object sender, RoutedEventArgs e)
         {
             // The button lives in the details pane, so the target is the

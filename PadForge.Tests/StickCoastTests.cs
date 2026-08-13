@@ -137,6 +137,20 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void PerDeviceReset_IsScoped()
+        {
+            // The third reset site the issue named (#291), after the profile
+            // switch and the per-slot eviction: an unplugged pad's balls leave
+            // with it, and no other device's coast is disturbed.
+            int slot = NewSlot();
+            Assert.True(Fling(slot, "devA", 0.9f) > 0f);
+            Assert.True(Fling(slot, "devB", 0.9f) > 0f);
+            SourceCoercion.ResetTouchMomentumForDevice("devA");
+            Assert.Equal(0f, TickX(slot, "devA", 0f, 0.051));
+            Assert.True(TickX(slot, "devB", 0f, 0.051) > 0f, "the per-device reset leaked");
+        }
+
+        [Fact]
         public void PerSlotReset_IsScoped()
         {
             int a = NewSlot(), b = NewSlot();

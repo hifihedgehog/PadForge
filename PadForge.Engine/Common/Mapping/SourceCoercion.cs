@@ -3320,6 +3320,25 @@ namespace PadForge.Engine.Common.Mapping
                 if (k.Slot == slotIndex) _stickCoast.TryRemove(k, out _);
         }
 
+        /// <summary>Drops one DEVICE's momentum balls across every slot
+        /// (#291): the third reset site the issue named, beside the profile
+        /// switch and the per-slot eviction. Both tables key on the device
+        /// guid, so an unplugged pad's entries otherwise sat there until the
+        /// process ended. The stale velocity itself is already neutralised by
+        /// the report-gap guard on re-arrival, so this is about not retaining
+        /// per-device state for hardware that is gone, which is the same
+        /// hygiene every comparable runtime table keeps.</summary>
+        public static void ResetTouchMomentumForDevice(string deviceGuid)
+        {
+            if (string.IsNullOrEmpty(deviceGuid)) return;
+            foreach (var k in _touchVelocity.Keys)
+                if (string.Equals(k.Device, deviceGuid, StringComparison.OrdinalIgnoreCase))
+                    _touchVelocity.TryRemove(k, out _);
+            foreach (var k in _stickCoast.Keys)
+                if (string.Equals(k.Device, deviceGuid, StringComparison.OrdinalIgnoreCase))
+                    _stickCoast.TryRemove(k, out _);
+        }
+
         /// <summary>The shared coast integrator (#291), extracted verbatim
         /// from the touch ball so the stick trackball decays with the same
         /// physics: constant deceleration applied along the velocity

@@ -1051,6 +1051,15 @@ namespace PadForge.Common.Input
             if (ud == null) return;
             ud.ClearRuntimeState();
 
+            // The trackball's per-device state (#291). Both momentum tables key
+            // on the device guid, so an unplugged pad's balls stayed in them for
+            // the life of the process. This is the third of the three reset
+            // sites the issue named, after the profile switch and the per-slot
+            // eviction, and it rides the teardown every removal path already
+            // funnels through (unplug, MIDI endpoint loss, NFC reader loss).
+            PadForge.Engine.Common.Mapping.SourceCoercion.ResetTouchMomentumForDevice(
+                ud.InstanceGuid.ToString());
+
             var allSettings = SettingsManager.UserSettings;
             if (allSettings != null)
             {

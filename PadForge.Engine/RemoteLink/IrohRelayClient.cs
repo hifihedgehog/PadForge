@@ -74,11 +74,18 @@ namespace PadForge.Engine.RemoteLink
         private const byte TagPing = 9;
         private const byte TagPong = 10;
 
-        private readonly object _sendLock = new();
+        /// <summary>Held ACROSS the send, not just across its initiation. A
+        /// lock cannot span an await, so the old lock published the Task and
+        /// released immediately, which is exactly the overlap ClientWebSocket
+        /// forbids: two datagrams issued from different threads could both be
+        /// outstanding and the second throws, taking the relay lane down.</summary>
+        private readonly SemaphoreSlim _sendGate = new(1, 1);
         private ClientWebSocket _ws;
         private CancellationTokenSource _cts;
         private Task _recvLoop;
         private volatile bool _connected;
+        private volatile bool _disposed;
+        private int _disconnectFired;
 
         /// <summary>This client's relay identity (Ed25519 public key). Peers
         /// address datagrams to it.</summary>
@@ -154,6 +161,23 @@ namespace PadForge.Engine.RemoteLink
         private async Task<bool> ConnectOneAsync(string host, CancellationToken ct)
         {
             var ws = new ClientWebSocket();
+            try
+            {
+                return await ConnectOneCoreAsync(ws, host, ct).ConfigureAwait(false);
+            }
+            catch
+            {
+                // Any throw between construction and hand-off leaves the socket
+                // (and its connection) alive: ConnectAsync's per-host catch
+                // moves straight to the next relay, so a timeout on the first
+                // three hosts leaked three sockets per attempt.
+                try { ws.Dispose(); } catch { }
+                throw;
+            }
+        }
+
+        private async Task<bool> ConnectOneCoreAsync(ClientWebSocket ws, string host, CancellationToken ct)
+        {
             ws.Options.AddSubProtocol(SubProtocol);
             using (var timeout = CancellationTokenSource.CreateLinkedTokenSource(ct))
             {
@@ -198,13 +222,12 @@ namespace PadForge.Engine.RemoteLink
             destPublicKey.CopyTo(frame, 1);
             frame[33] = 0; // ECN
             payload.Span.CopyTo(frame.AsSpan(34));
+            // ClientWebSocket allows one outstanding send; serialize.
+            try { await _sendGate.WaitAsync(ct).ConfigureAwait(false); }
+            catch { return false; }
             try
             {
-                // ClientWebSocket allows one outstanding send; serialize.
-                Task send;
-                lock (_sendLock)
-                    send = ws.SendAsync(frame, WebSocketMessageType.Binary, true, ct);
-                await send.ConfigureAwait(false);
+                await ws.SendAsync(frame, WebSocketMessageType.Binary, true, ct).ConfigureAwait(false);
                 return true;
             }
             catch
@@ -212,6 +235,7 @@ namespace PadForge.Engine.RemoteLink
                 MarkDisconnected();
                 return false;
             }
+            finally { try { _sendGate.Release(); } catch { } }
         }
 
         private async Task RecvLoopAsync(CancellationToken ct)
@@ -231,6 +255,17 @@ namespace PadForge.Engine.RemoteLink
                         len += r.Count;
                     } while (!r.EndOfMessage && len < buf.Length);
                     if (r.MessageType == WebSocketMessageType.Close) break;
+                    if (!r.EndOfMessage)
+                    {
+                        // The message outgrew the buffer. Parsing the prefix
+                        // would be wrong AND the next read would resume inside
+                        // this message, so every following frame decoded as
+                        // garbage: drain to the end and drop the message.
+                        var sink = new byte[4096];
+                        while (!r.EndOfMessage && ws.State == WebSocketState.Open)
+                            r = await ws.ReceiveAsync(new ArraySegment<byte>(sink), ct).ConfigureAwait(false);
+                        continue;
+                    }
                     if (len < 1) continue;
 
                     switch (buf[0])
@@ -249,10 +284,12 @@ namespace PadForge.Engine.RemoteLink
                             var pong = new byte[9];
                             pong[0] = TagPong;
                             Array.Copy(buf, 1, pong, 1, 8);
-                            Task send;
-                            lock (_sendLock)
-                                send = ws.SendAsync(pong, WebSocketMessageType.Binary, true, ct);
-                            await send.ConfigureAwait(false);
+                            await _sendGate.WaitAsync(ct).ConfigureAwait(false);
+                            try
+                            {
+                                await ws.SendAsync(pong, WebSocketMessageType.Binary, true, ct).ConfigureAwait(false);
+                            }
+                            finally { try { _sendGate.Release(); } catch { } }
                             break;
                         }
                         // EndpointGone, Status, batches: nothing to do. The
@@ -264,16 +301,25 @@ namespace PadForge.Engine.RemoteLink
             MarkDisconnected();
         }
 
+        /// <summary>Raises <see cref="Disconnected"/> exactly once. The receive
+        /// loop and every failed send can reach it concurrently, and the old
+        /// check-then-set let two threads both pass the guard and fire it
+        /// twice, which re-armed the listener twice. A deliberate Dispose stays
+        /// silent: the drop is not news to whoever asked for it, and firing
+        /// there would re-arm the listener during shutdown.</summary>
         private void MarkDisconnected()
         {
-            if (!_connected) return;
             _connected = false;
+            if (_disposed) return;
+            if (Interlocked.Exchange(ref _disconnectFired, 1) != 0) return;
             Disconnected?.Invoke();
         }
 
         public void Dispose()
         {
+            _disposed = true;
             _connected = false;
+            Interlocked.Exchange(ref _disconnectFired, 1);
             try { _cts?.Cancel(); } catch { }
             try { _ws?.Dispose(); } catch { }
             _cts?.Dispose();

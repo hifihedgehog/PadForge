@@ -171,6 +171,39 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void PerDeviceReset_RelatchesTheGrip_CaseInsensitiveKey()
+        {
+            var old = SourceCoercion.GravityProvider;
+            string guid = System.Guid.NewGuid().ToString();
+            try
+            {
+                SourceCoercion.ResetGyroLeanNeutral();
+                var sample = UprightRest;
+                SourceCoercion.GravityProvider = _ => sample;
+                _ = ReadTilt(TiltX(guid), guid); // latch neutral upright
+
+                // Tilted 12.5: reads half scale against the upright grip.
+                sample = TiltedRight(12.5);
+                Assert.Equal(0.5f, ReadTilt(TiltX(guid), guid), 3);
+
+                // Gyro Recenter's per-device path, with a differently-cased
+                // guid string: the canonical key must still hit, and the
+                // next read re-latches the CURRENT pose as the new grip.
+                SourceCoercion.ResetGyroLeanNeutral(guid.ToUpperInvariant());
+                Assert.Equal(0f, ReadTilt(TiltX(guid), guid), 3);
+
+                // Further tilt now measures from the re-latched grip.
+                sample = TiltedRight(25);
+                Assert.Equal(0.5f, ReadTilt(TiltX(guid), guid), 3);
+            }
+            finally
+            {
+                SourceCoercion.GravityProvider = old;
+                SourceCoercion.ResetGyroLeanNeutral();
+            }
+        }
+
+        [Fact]
         public void TiltAndLean_ShareTheNeutral_GyroRecenterCoversBoth()
         {
             var old = SourceCoercion.GravityProvider;

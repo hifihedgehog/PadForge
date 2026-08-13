@@ -1620,6 +1620,14 @@ namespace PadForge.Services
                         _gravityStateAux.Remove(grGuids[i]);
                     }
                 }
+                // Gyro Lean / Gyro Tilt resting grip (#292): the issue and
+                // the docs promise Gyro Recenter re-zeroes it, and until now
+                // nothing did (only a profile switch cleared the dict). The
+                // dict is a ConcurrentDictionary keyed by device guid string;
+                // per-device removal leaves other slots' grips alone.
+                for (int i = 0; i < grGuids.Count; i++)
+                    PadForge.Engine.Common.Mapping.SourceCoercion.ResetGyroLeanNeutral(
+                        grGuids[i].ToString());
             };
 
             // Cursor-position source (#107): a 200 Hz sampler publishes the

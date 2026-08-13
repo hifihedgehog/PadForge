@@ -2401,6 +2401,23 @@ namespace PadForge.Engine.Common.Mapping
         /// device re-open hygiene, the TickMotionLean Clear() twin).</summary>
         public static void ResetGyroLeanNeutral() => _gyroLeanNeutral.Clear();
 
+        /// <summary>Drops ONE device's captured lean/tilt neutral (#292):
+        /// the Gyro Recenter macro's per-slot path, which must re-zero the
+        /// resting grip for the slot's devices without disturbing another
+        /// slot's captured grips. Keys are canonicalized (see
+        /// <see cref="LeanNeutralKey"/>), so the caller's guid format
+        /// cannot miss a latch made from a differently-cased profile
+        /// string.</summary>
+        public static void ResetGyroLeanNeutral(string deviceGuid)
+            => _gyroLeanNeutral.TryRemove(LeanNeutralKey(deviceGuid), out _);
+
+        /// <summary>Canonical dictionary key for a device guid string:
+        /// parseable guids collapse to lowercase "d" format, anything else
+        /// passes through. The latch, the lookup, and the per-device reset
+        /// all agree through this.</summary>
+        private static string LeanNeutralKey(string deviceGuid)
+            => Guid.TryParse(deviceGuid, out var g) ? g.ToString() : (deviceGuid ?? "");
+
         /// <summary>The gravity-tilt family read: bipolar [-1..+1]. The
         /// lean pair saturates at 90 degrees of tilt from the resting grip
         /// and scales by the per-source generic Sensitivity, like the other
@@ -2424,7 +2441,7 @@ namespace PadForge.Engine.Common.Mapping
             // produce a full-scale Y at rest.
             if (gLen < 4.0) return 0f;
 
-            string gid = deviceGuid ?? "";
+            string gid = LeanNeutralKey(deviceGuid);
             if (!_gyroLeanNeutral.ContainsKey(gid))
                 _gyroLeanNeutral[gid] = (gx / gLen, gy / gLen, gz / gLen);
             if (_gyroLeanNeutral.TryGetValue(gid, out var n))

@@ -1605,8 +1605,13 @@
                             <StackPanel Orientation="Horizontal">
                                 <ui:TextBox Text="{Binding WebControllerUrl, Mode=OneWay}" IsReadOnly="True"
                                             FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12" Width="260"/>
-                                <ui:Button Command="{Binding CopyWebControllerUrlCommand}" Margin="8,0,0,0"
-                                           Content="{Binding Common_Copy, Source={x:Static strings:Strings.Instance}}"/>
+                                <ui:Button Style="{StaticResource EmberIconButton}"
+                                           Command="{Binding CopyWebControllerUrlCommand}" Margin="6,0,0,0"
+                                           VerticalAlignment="Center"
+                                           ToolTip="{Binding Common_Copy, Source={x:Static strings:Strings.Instance}}">
+                                    <TextBlock Text="&#xE8C8;" FontFamily="Segoe MDL2 Assets" FontSize="13"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                </ui:Button>
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>

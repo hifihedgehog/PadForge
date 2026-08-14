@@ -658,7 +658,17 @@ namespace PadForge.Services
                     row.Sources.RemoveRange(writeIdx, row.Sources.Count - writeIdx);
             }
 
-            ms.Rows.RemoveAll(r => r?.Sources == null || r.Sources.Count == 0);
+            // A sourceless row is normally noise, but NOT when it carries an
+            // explicit NoInherit. On a shift layer that is the whole point of
+            // the row: "this target is blocked here, do not fall through to
+            // Base". The engine says so at the only place that reads it
+            // (Step3 MappingSetEval: `if (hasSources || r.NoInherit)`), so
+            // dropping it here deleted a user's declaration the moment the
+            // file was read back. Reported by vlue-c: the checkbox held until
+            // a restart or a settings reload, and only for targets with no
+            // source assigned, which is exactly this shape.
+            ms.Rows.RemoveAll(r => r == null
+                || ((r.Sources == null || r.Sources.Count == 0) && !r.NoInherit));
         }
 
         private static MappingSet BuildOneSlotFromLegacy(int slot)
@@ -1677,7 +1687,12 @@ namespace PadForge.Services
                             !string.IsNullOrEmpty(s?.DeviceGuid)
                             && string.Equals(s.DeviceGuid.ToLowerInvariant(), guidStr, StringComparison.Ordinal));
                     }
-                    ms.Rows.RemoveAll(r => r?.Sources == null || r.Sources.Count == 0);
+                    // Same NoInherit exemption as SanitizeMappingSet. A
+                    // layer's "do not inherit" declaration names no device,
+                    // so unassigning one must not erase it along with that
+                    // device's sources.
+                    ms.Rows.RemoveAll(r => r == null
+                        || ((r.Sources == null || r.Sources.Count == 0) && !r.NoInherit));
                 }
             }
         }

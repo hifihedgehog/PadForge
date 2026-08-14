@@ -132,7 +132,7 @@ namespace PadForge.Common.Input
         //             pad still moves, the writer is somewhere else entirely
         //             (UserEffectsDispatcher's own 30 Hz effect pass), which is
         //             a different bug from this lane.
-        private long _hbEnq, _hbDrop, _hbWr, _hbLastLog, _hbLastEnqTicks, _hbCoalesced;
+        private long _hbEnq, _hbDrop, _hbWr, _hbLastLog, _hbLastEnqTicks, _hbCoalesced, _hbDup;
         private double _hbWorstWriteMs;
 
         /// <summary>Floor on the gap between forwarded state packets, so the
@@ -158,12 +158,60 @@ namespace PadForge.Common.Input
         /// <para>Games inside the documented cadence are unaffected: at 60 Hz
         /// packets arrive ~16 ms apart, so every one is sent the moment it
         /// arrives and nothing is ever coalesced.</para></summary>
-        private const long MinWriteIntervalMs = 8;   // 125 Hz ceiling
+        /// <summary>Bluetooth floor. A DualSense BT link delivers on its
+        /// connection interval, so writing faster than this does not reach the
+        /// pad sooner, it queues below us. That queue is what produced the
+        /// original runaway delay, so this stays.</summary>
+        private const long MinWriteIntervalBtMs = 8;    // 125 Hz
+
+        /// <summary>USB floor. No connection interval to respect, and the
+        /// field trace measured writes at 0.0 to 0.3 ms, so a finer floor costs
+        /// almost nothing and preserves four times the detail. Reported by
+        /// Jobima1st (#300): with the delay gone, what remains is skipping,
+        /// which is this number.</summary>
+        private const long MinWriteIntervalUsbMs = 2;   // 500 Hz
+
         private long _lastWriteTicks;
+
+        /// <summary>Transport of the targets seen on the last dispatch. Written
+        /// by the worker inside DispatchOne, read by the worker when pacing the
+        /// next write, so no synchronisation is needed.</summary>
+        private bool _lastTargetsWereBt = true;
+
+        private long MinWriteIntervalMs => _lastTargetsWereBt
+            ? MinWriteIntervalBtMs : MinWriteIntervalUsbMs;
+
+        /// <summary>The payload most recently written, kept so an identical
+        /// one can be skipped entirely. Every payload on this lane is state, so
+        /// re-sending an unchanged one changes nothing on the pad and only
+        /// consumes the budget a real change needs. The measured title emits up
+        /// to 19,600 packets a second, and if most are repeats then skipping
+        /// them is free detail for the ones that are not.</summary>
+        private byte[] _lastSent;
+        private int _lastSentLength;
 
         /// <summary>Forwards one packet and records the write cost.</summary>
         private void WriteOne(in Ds5Effect effect)
         {
+            // An unchanged state payload is a write that cannot alter anything
+            // on the pad. Features are events and always go out.
+            if (!effect.IsFeature)
+            {
+                if (_lastSentLength == effect.Length
+                    && _lastSent != null
+                    && effect.Buffer.AsSpan(0, effect.Length)
+                        .SequenceEqual(_lastSent.AsSpan(0, _lastSentLength)))
+                {
+                    ArrayPool<byte>.Shared.Return(effect.Buffer);
+                    if (SdlDiagLog.IsMirroring) Interlocked.Increment(ref _hbDup);
+                    return;
+                }
+                if (_lastSent == null || _lastSent.Length < effect.Length)
+                    _lastSent = new byte[effect.Length];
+                effect.Buffer.AsSpan(0, effect.Length).CopyTo(_lastSent);
+                _lastSentLength = effect.Length;
+            }
+
             long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
             try
             {
@@ -207,6 +255,8 @@ namespace PadForge.Common.Input
                 + " drop=" + Interlocked.Exchange(ref _hbDrop, 0)
                 + " wr=" + Interlocked.Exchange(ref _hbWr, 0)
                 + " coal=" + Interlocked.Exchange(ref _hbCoalesced, 0)
+                + " dup=" + Interlocked.Exchange(ref _hbDup, 0)
+                + " bt=" + (_lastTargetsWereBt ? 1 : 0)
                 + " depth=" + depth
                 + " wmax=" + _hbWorstWriteMs.ToString("0.0", System.Globalization.CultureInfo.InvariantCulture)
                 + " sinceEnq=" + (lastEnq == 0 ? -1 : now - lastEnq));
@@ -378,6 +428,14 @@ namespace PadForge.Common.Input
             // optimization if profiling shows it matters.
             var targets = ResolveAssignedDualSenseHandles(_padIndex);
             if (targets == null || targets.Count == 0) return;
+
+            // Pace the NEXT write against the transport actually in use. A
+            // mixed set takes the Bluetooth floor, since the slowest link sets
+            // the rate the pad set can absorb.
+            bool anyBt = false;
+            for (int i = 0; i < targets.Count; i++)
+                if (targets[i].IsBt) { anyBt = true; break; }
+            _lastTargetsWereBt = anyBt;
 
             // Feature lane: Sony vendor test command (SetFeature 0x80 —
             // firmware sine generator, speaker/headphone routing,

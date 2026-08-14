@@ -4823,9 +4823,9 @@ namespace PadForge.Services
                 // RawAxis{N} / RawAxis{N}Neg
                 if (target.StartsWith("RawAxis", StringComparison.Ordinal))
                 {
-                    string rest = target.Substring("RawAxis".Length);
+                    var rest = target.AsSpan("RawAxis".Length);
                     if (rest.EndsWith("Neg", StringComparison.Ordinal))
-                        rest = rest.Substring(0, rest.Length - 3);
+                        rest = rest.Slice(0, rest.Length - 3);
                     if (int.TryParse(rest, out int axisIdx) && ext.Axes != null
                         && axisIdx >= 0 && axisIdx < ext.Axes.Length)
                         return ext.Axes[axisIdx];
@@ -4833,12 +4833,12 @@ namespace PadForge.Services
                 }
                 // RawBtn{N}
                 if (target.StartsWith("RawBtn", StringComparison.Ordinal)
-                    && int.TryParse(target.Substring("RawBtn".Length), out int btn))
+                    && int.TryParse(target.AsSpan("RawBtn".Length), out int btn))
                     return ext.IsButtonPressed(btn) ? 1 : 0;
                 // RawPov{N}Up/Down/Left/Right
                 if (target.StartsWith("RawPov", StringComparison.Ordinal))
                 {
-                    string rest = target.Substring("RawPov".Length);
+                    var rest = target.AsSpan("RawPov".Length);
                     int dirIdx = -1;
                     string dir = "";
                     foreach (var d in s_povDirections)
@@ -4846,7 +4846,7 @@ namespace PadForge.Services
                         if (rest.EndsWith(d, StringComparison.Ordinal))
                         { dir = d; dirIdx = rest.Length - d.Length; break; }
                     }
-                    if (dirIdx > 0 && int.TryParse(rest.Substring(0, dirIdx), out int povIdx)
+                    if (dirIdx > 0 && int.TryParse(rest.Slice(0, dirIdx), out int povIdx)
                         && ext.Povs != null && povIdx >= 0 && povIdx < ext.Povs.Length)
                     {
                         return PovInDirection(ext.Povs[povIdx], dir) ? 1 : 0;
@@ -4856,17 +4856,24 @@ namespace PadForge.Services
                 return null;
             }
 
+            // Span slices, never Substring, through every branch below.
+            // This resolver runs once per VISIBLE mapping row per UI tick, and
+            // a keyboard/mouse slot lists about a hundred rows (26 letters, 10
+            // digits, 12 function keys, and the rest), so a substring per row
+            // was thousands of throwaway strings a second for a screen that
+            // mostly shows zeros. Owner-observed as the KbM mapping tab
+            // feeling heavy (#303 follow-up).
             // KbM — keys, mouse buttons, mouse axes, scroll.
             if (outputType == VirtualControllerType.KeyboardMouse)
             {
                 var kbm = _inputManager.CombinedKbmRawStates[padIndex];
                 if (target.StartsWith("KbmKey", StringComparison.Ordinal)
-                    && byte.TryParse(target.Substring("KbmKey".Length),
+                    && byte.TryParse(target.AsSpan("KbmKey".Length),
                         System.Globalization.NumberStyles.HexNumber,
                         System.Globalization.CultureInfo.InvariantCulture, out byte vk))
                     return kbm.GetKey(vk) ? 1 : 0;
                 if (target.StartsWith("KbmMBtn", StringComparison.Ordinal)
-                    && int.TryParse(target.Substring("KbmMBtn".Length), out int mb))
+                    && int.TryParse(target.AsSpan("KbmMBtn".Length), out int mb))
                     return kbm.GetMouseButton(mb) ? 1 : 0;
                 return target switch
                 {
@@ -4884,16 +4891,16 @@ namespace PadForge.Services
                 var midi = _inputManager.CombinedMidiRawStates[padIndex];
                 if (target.StartsWith("MidiCC", StringComparison.Ordinal))
                 {
-                    string rest = target.Substring("MidiCC".Length);
+                    var rest = target.AsSpan("MidiCC".Length);
                     if (rest.EndsWith("Neg", StringComparison.Ordinal))
-                        rest = rest.Substring(0, rest.Length - 3);
+                        rest = rest.Slice(0, rest.Length - 3);
                     if (int.TryParse(rest, out int cc) && midi.CcValues != null
                         && cc >= 0 && cc < midi.CcValues.Length)
                         return midi.CcValues[cc];
                     return null;
                 }
                 if (target.StartsWith("MidiNote", StringComparison.Ordinal)
-                    && int.TryParse(target.Substring("MidiNote".Length), out int note)
+                    && int.TryParse(target.AsSpan("MidiNote".Length), out int note)
                     && midi.Notes != null && note >= 0 && note < midi.Notes.Length)
                     return midi.Notes[note] ? 1 : 0;
                 return null;

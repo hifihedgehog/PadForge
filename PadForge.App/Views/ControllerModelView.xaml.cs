@@ -620,7 +620,28 @@ namespace PadForge.Views
                         || ReferenceEquals(group, _currentModel.LeftThumb)
                         || ReferenceEquals(group, _currentModel.RightThumb)
                         || IsShoulderButtonGroup(group);
-                    if (!isStick && geo.Material is not DiffuseMaterial)
+                    // Drive a group when its CURRENT material is one WE set:
+                    // its registered default, or its registered highlight.
+                    //
+                    // This used to test `geo.Material is not DiffuseMaterial`,
+                    // which was a proxy for "nothing else is animating this
+                    // part" and silently excluded every part whose DEFAULT is
+                    // not a plain DiffuseMaterial. The DualSense mic-mute
+                    // button is exactly that: clear plastic over an LED, so
+                    // its default runs through AddGloss and is a
+                    // MaterialGroup. It hovered and it flashed while
+                    // recording, because both take other paths, and it never
+                    // lit on press (owner-reported). The stick and bumper
+                    // escape hatch above exists for the same reason, one
+                    // group at a time; this states the actual rule, so a
+                    // future glossy or textured button is covered without
+                    // being added to a list.
+                    bool ours =
+                        (_currentModel.DefaultMaterials.TryGetValue(group, out var curDef)
+                            && ReferenceEquals(geo.Material, curDef))
+                        || (_currentModel.HighlightMaterials.TryGetValue(group, out var curHl)
+                            && ReferenceEquals(geo.Material, curHl));
+                    if (!isStick && !ours)
                         continue;
                     if (group == _hoverGroup)
                         continue;

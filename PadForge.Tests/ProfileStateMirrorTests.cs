@@ -412,6 +412,69 @@ namespace PadForge.Tests
             Assert.Equal(2, Assert.Single(ms.Rows).Sources.Count);
         }
 
+        // ── A shift layer's "do not inherit" survives the round trip ──
+        //
+        // Reported by vlue-c (#307): the checkbox held while the app ran and
+        // came back unchecked after a restart or a settings reload, but only
+        // on targets with NO source assigned. That row is exactly what a
+        // block declaration looks like, and the sanitizer treated every
+        // sourceless row as noise.
+
+        [Fact]
+        public void SanitizeMappingSet_KeepsASourcelessNoInheritRow()
+        {
+            var ms = new MappingSet();
+            ms.Rows.Add(new MappingRow
+            {
+                Target = "ButtonA",
+                LayerMask = "Shift1",
+                NoInherit = true,
+            });
+
+            SettingsService.SanitizeMappingSet(ms, 0);
+
+            var kept = Assert.Single(ms.Rows);
+            Assert.True(kept.NoInherit);
+            Assert.Equal("Shift1", kept.LayerMask);
+        }
+
+        [Fact]
+        public void SanitizeMappingSet_StillDropsASourcelessTransparentRow()
+        {
+            // The control. A sourceless row with NoInherit=false carries no
+            // declaration at all, and the engine treats it as transparent, so
+            // it must still be pruned or every visited target would persist.
+            var ms = new MappingSet();
+            ms.Rows.Add(new MappingRow
+            {
+                Target = "ButtonB",
+                LayerMask = "Shift1",
+                NoInherit = false,
+            });
+
+            SettingsService.SanitizeMappingSet(ms, 0);
+
+            Assert.Empty(ms.Rows);
+        }
+
+        [Fact]
+        public void SanitizeMappingSet_KeepsNoInheritBesideRealRows()
+        {
+            var ms = new MappingSet();
+            var mapped = new MappingRow { Target = "ButtonX", LayerMask = "Shift1" };
+            mapped.Sources.Add(new MappingSource { Descriptor = "Button 2" });
+            ms.Rows.Add(mapped);
+            ms.Rows.Add(new MappingRow { Target = "ButtonY", LayerMask = "Shift1", NoInherit = true });
+            ms.Rows.Add(new MappingRow { Target = "ButtonB", LayerMask = "Shift1" });
+
+            SettingsService.SanitizeMappingSet(ms, 0);
+
+            Assert.Equal(2, ms.Rows.Count);
+            Assert.Contains(ms.Rows, r => r.Target == "ButtonX" && r.Sources.Count == 1);
+            Assert.Contains(ms.Rows, r => r.Target == "ButtonY" && r.NoInherit);
+            Assert.DoesNotContain(ms.Rows, r => r.Target == "ButtonB");
+        }
+
         // ── M10 sibling: null vs empty Macros ──
 
         [Fact]

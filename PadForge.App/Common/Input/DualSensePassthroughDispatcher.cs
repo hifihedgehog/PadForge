@@ -181,23 +181,49 @@ namespace PadForge.Common.Input
         private long MinWriteIntervalMs => _lastTargetsWereBt
             ? MinWriteIntervalBtMs : MinWriteIntervalUsbMs;
 
-        /// <summary>The payload most recently written, kept so an identical
-        /// one can be skipped entirely. Every payload on this lane is state, so
-        /// re-sending an unchanged one changes nothing on the pad and only
-        /// consumes the budget a real change needs. The measured title emits up
-        /// to 19,600 packets a second, and if most are repeats then skipping
-        /// them is free detail for the ones that are not.</summary>
+        /// <summary>The payload most recently written by THIS lane. Used only
+        /// to recognise a repeat, and a repeat is dropped only when a genuine
+        /// change is already waiting. See <see cref="Enqueue"/> for why it
+        /// must not be dropped otherwise.</summary>
         private byte[] _lastSent;
         private int _lastSentLength;
 
-        /// <summary>Whether a payload is byte for byte what the pad already
-        /// holds, and therefore cannot change anything by being sent. Pure, so
-        /// the rule is testable without a controller.</summary>
+        /// <summary>Whether a payload is byte for byte what this lane most
+        /// recently wrote. Pure, so the rule is testable without a controller.
+        ///
+        /// <para>Note what this does NOT say: it does not say the pad still
+        /// holds that payload. This lane is not the pad's only writer.
+        /// UserEffectsDispatcher's Sony pass writes the same report to the same
+        /// device at 30 Hz whenever it is authoring or mirroring a subsystem,
+        /// so between two of our writes the pad's state can be something else
+        /// entirely.</para></summary>
         internal static bool IsRepeatOfLastSent(
             ReadOnlySpan<byte> incoming, byte[] lastSent, int lastSentLength)
             => lastSent != null
                && lastSentLength == incoming.Length
                && incoming.SequenceEqual(lastSent.AsSpan(0, lastSentLength));
+
+        /// <summary>Whether an arriving payload should be dropped at the door.
+        ///
+        /// <para>Only when it repeats our last write AND a payload is already
+        /// waiting to go out. Two cases, one rule. If what waits is a genuine
+        /// change, a repeat must not be allowed to displace it, which is the
+        /// eviction that made a burst deliver nothing. If what waits is itself
+        /// a repeat, the two are byte-identical and keeping either is the same
+        /// thing, so the cheaper move is to drop the newcomer.</para>
+        ///
+        /// <para>When nothing is waiting, a repeat is KEPT and sent. It is not
+        /// redundant: it re-asserts the game's own payload over the 30 Hz pass
+        /// that writes the same report to the same pad. Suppressing repeats
+        /// outright left the game's state as the most recent write only at the
+        /// rate the game changed it, measured at 6 times a second inside a
+        /// burst against a competing writer running at 30, and the pad spent
+        /// most of its time holding the other one. That is the skipping
+        /// reported on USB (#300).</para></summary>
+        internal static bool ShouldDropAtDoor(
+            ReadOnlySpan<byte> incoming, byte[] lastSent, int lastSentLength, bool somethingPending)
+            => somethingPending
+               && IsRepeatOfLastSent(incoming, lastSent, lastSentLength);
 
         /// <summary>Forwards one packet and records the write cost.</summary>
         private void WriteOne(in Ds5Effect effect)
@@ -287,26 +313,36 @@ namespace PadForge.Common.Input
             bool hadSuperseded;
             lock (_latchLock)
             {
-                // Filter repeats HERE, at the door, not at the sampler.
+                // A repeat yields to a pending payload, and nothing more.
                 //
-                // This is the difference between working and not, measured
-                // (#300). A burst from the reporting title is about 16,000
-                // packets a second that are byte-identical to what the pad
-                // already holds, carrying the occasional real change. With the
-                // check on the sampling side, a real change landed in the slot
-                // and was overwritten by the spam microseconds later, long
-                // before the next sample looked at it. The trace showed the end
-                // state exactly: coalesced counted everything, duplicates
-                // counted precisely one per sample, and writes counted ZERO for
-                // seconds at a time, so the pad received nothing at all through
-                // the burst.
+                // Both halves of this rule were paid for in the field (#300).
                 //
-                // A packet that matches what the pad already has cannot change
-                // anything, so it is dropped at the door and never gets to
-                // displace a pending change. What survives is exactly the
-                // changes, and the write rate becomes the rate of real change
-                // instead of the rate the game happens to write at.
-                if (IsRepeatOfLastSent(buf.AsSpan(0, payload.Length), _lastSent, _lastSentLength))
+                // The burst from the reporting title is about 19,000 packets a
+                // second that repeat our last write, carrying roughly 90 real
+                // changes among them. Checking on the SAMPLING side lost every
+                // one of those changes: a change landed in the slot, the spam
+                // overwrote it microseconds later, and the sample two
+                // milliseconds on saw only a repeat and sent nothing. The trace
+                // showed it exactly, writes of ZERO for seconds together.
+                //
+                // Dropping repeats OUTRIGHT then broke the other half, because
+                // this lane is not the pad's only writer. UserEffectsDispatcher
+                // writes the same report to the same device at 30 Hz while it
+                // mirrors a subsystem the game is driving. A repeat of ours is
+                // therefore not redundant, it re-asserts the game's own payload
+                // over that pass. With repeats suppressed the game's state was
+                // the most recent write only as often as the game changed it,
+                // measured at 6 times a second inside a burst against a writer
+                // running at 30, and the pad spent most of its time holding the
+                // other one. That is the skipping reported on USB, worse than
+                // the Bluetooth session where the same lane wrote 118 times a
+                // second and won.
+                //
+                // So a repeat is dropped only while something is already
+                // waiting, which is the whole of what the first fix needed: a
+                // change cannot be displaced by spam, and an idle slot still
+                // takes repeats and keeps re-asserting at the pacing floor.
+                if (ShouldDropAtDoor(buf.AsSpan(0, payload.Length), _lastSent, _lastSentLength, _hasLatest))
                 {
                     ArrayPool<byte>.Shared.Return(buf);
                     if (SdlDiagLog.IsMirroring) Interlocked.Increment(ref _hbDup);

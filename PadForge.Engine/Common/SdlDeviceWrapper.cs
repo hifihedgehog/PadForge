@@ -1304,6 +1304,10 @@ namespace PadForge.Engine
                 state.Buttons[16] = primaryClick;
             }
 
+            // Every button position is settled by here, including the
+            // touchpad click, so the trace sees exactly what consumers will.
+            TraceButtonSurface(state);
+
             // --- Battery (refresh ~once per 5s; battery doesn't change at poll rate) ---
             long now = System.Environment.TickCount64;
             if (GameController != IntPtr.Zero && now - _lastBatteryReadTick > 5000)
@@ -2144,6 +2148,60 @@ namespace PadForge.Engine
         /// <summary>Open-time presence of extended positions 11-21 (from
         /// the SDL_GamepadHasButton probe); null before the probe runs.</summary>
         private bool[] _extButtonPresent;
+
+        // ── Button-surface trace (PADFORGE_DIAG only) ──
+        //
+        // Answers "why does this button do nothing" at the layer the answer
+        // lives on, instead of downstream where every cause looks the same.
+        // The surface line says which positions this pad is even allowed to
+        // report; the edge lines say which ones actually move, and give the
+        // RAW joystick bit beside the gamepad-position bit for the same press.
+        // Reading the pair:
+        //   gp=1 raw=1   the press arrived and was decoded. Anything still
+        //                wrong is downstream of this device.
+        //   gp=0 raw=1   the pad sent it and SDL's gamepad MAPPING drops it.
+        //   gp=0 raw=0   nothing arrived at all: the pad is not sending it on
+        //                this transport, or the report is being misparsed.
+        // A press of a button that works is the positive control: it must
+        // produce an edge line in the same window, or the trace itself is
+        // dead and proves nothing.
+        private bool[] _diagPrevButtons;
+        private bool _diagSurfaceLogged;
+
+        private void TraceButtonSurface(CustomInputState state)
+        {
+            if (!SdlDiagLog.IsMirroring) return;
+
+            if (!_diagSurfaceLogged)
+            {
+                _diagSurfaceLogged = true;
+                var sup = SupportedButtonIndices;
+                var ext = new System.Text.StringBuilder();
+                if (_extButtonPresent != null)
+                    for (int i = 11; i < _extButtonPresent.Length; i++)
+                        if (_extButtonPresent[i]) ext.Append(i).Append(' ');
+                SdlDiagLog.WriteLine(
+                    "BTNSURFACE " + (Name ?? "?")
+                    + " numButtons=" + NumButtons
+                    + " rawButtons=" + RawButtonCount
+                    + " hasTouchpad=" + HasTouchpad
+                    + " supported=[" + string.Join(",", sup ?? System.Array.Empty<int>()) + "]"
+                    + " extPresent=[" + ext.ToString().TrimEnd() + "]");
+            }
+
+            _diagPrevButtons ??= new bool[CustomInputState.MaxButtons];
+            for (int i = 0; i < CustomInputState.MaxButtons && i < state.Buttons.Length; i++)
+            {
+                if (state.Buttons[i] == _diagPrevButtons[i]) continue;
+                _diagPrevButtons[i] = state.Buttons[i];
+                bool raw = false;
+                try { if (Joystick != IntPtr.Zero && i < RawButtonCount) raw = SDL_GetJoystickButton(Joystick, i); }
+                catch { }
+                SdlDiagLog.WriteLine(
+                    "BTNEDGE pos=" + i + " gp=" + (state.Buttons[i] ? 1 : 0) + " raw=" + (raw ? 1 : 0)
+                    + " dev=" + (Name ?? "?"));
+            }
+        }
 
         /// <summary>The axis twin of <see cref="ComputeSupportedButtonIndices"/>.
         /// NumAxes is pinned to 6 for EVERY SDL-recognized gamepad, so it says

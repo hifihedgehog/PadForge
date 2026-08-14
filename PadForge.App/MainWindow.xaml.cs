@@ -2121,7 +2121,7 @@ namespace PadForge
                 // PadSetting raw-less. Multi-controller Nintendo
                 // switches lost their automaps exactly this way.
                 SettingsManager.ReAutoMapSlot(args.SlotIndex, args.Type,
-                    _viewModel.Pads[args.SlotIndex].ProfileId);
+                    ProfileIdForTypeChange(args.SlotIndex, args.Type));
                 SettingsService.RefreshMappingSetsFromLegacy();
                 _viewModel.Pads[args.SlotIndex].OutputType = args.Type;
                 _inputService.MoveSlotToGroupTail(args.SlotIndex);
@@ -4157,6 +4157,34 @@ namespace PadForge
             }
         }
 
+        /// <summary>The HIDMaestro profile id to auto-map AGAINST when a slot is
+        /// about to change output type.
+        ///
+        /// <para>The automap has profile-gated bindings: a physical mic button
+        /// (SDL misc1) only lands on the virtual pad's mic mute when the target
+        /// profile is a DualSense, and an Edge source's paddles and Fn pair only
+        /// bind on a virtual Edge. Those gates read the profile id passed here.
+        ///
+        /// Every call site used to pass the slot's CURRENT id, which on a type
+        /// change is the id of the type being LEFT. The OutputType setter
+        /// replaces it with the new category's default, but that runs after the
+        /// automap, so switching an Xbox slot to PlayStation auto-mapped every
+        /// button EXCEPT mute: the gate saw an Xbox profile and skipped it,
+        /// while assigning a pad to a slot that was already PlayStation mapped
+        /// mute correctly (owner-reported). So a type CHANGE resolves the id the
+        /// slot is about to have; re-picking the type a slot already has keeps
+        /// its current profile, which may be a deliberate non-default choice
+        /// such as dualsense-edge.</para></summary>
+        private string ProfileIdForTypeChange(int padIndex, VirtualControllerType newType)
+        {
+            var pad = _viewModel?.Pads != null && padIndex >= 0 && padIndex < _viewModel.Pads.Count
+                ? _viewModel.Pads[padIndex] : null;
+            if (pad == null) return PadForge.Common.Input.InputManager.GetDefaultProfileId(newType);
+            return pad.OutputType == newType
+                ? pad.ProfileId
+                : PadForge.Common.Input.InputManager.GetDefaultProfileId(newType);
+        }
+
         /// <summary>Handles sidebar Xbox type button click.</summary>
         private void OnSidebarTypeXbox(object sender, RoutedEventArgs e)
         {
@@ -4167,7 +4195,7 @@ namespace PadForge
                 // SlotTypeChangeRequested handler for the 2026-07-22
                 // automap-loss root cause this order prevents.
                 SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Xbox,
-                    _viewModel.Pads[padIndex].ProfileId);
+                    ProfileIdForTypeChange(padIndex, VirtualControllerType.Xbox));
                 SettingsService.RefreshMappingSetsFromLegacy();
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Xbox;
                 _inputService.MoveSlotToGroupTail(padIndex);
@@ -4191,7 +4219,7 @@ namespace PadForge
                 // SlotTypeChangeRequested handler for the 2026-07-22
                 // automap-loss root cause this order prevents.
                 SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.PlayStation,
-                    _viewModel.Pads[padIndex].ProfileId);
+                    ProfileIdForTypeChange(padIndex, VirtualControllerType.PlayStation));
                 SettingsService.RefreshMappingSetsFromLegacy();
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.PlayStation;
                 _inputService.MoveSlotToGroupTail(padIndex);
@@ -4211,7 +4239,7 @@ namespace PadForge
                 // SlotTypeChangeRequested handler for the 2026-07-22
                 // automap-loss root cause this order prevents.
                 SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Extended,
-                    _viewModel.Pads[padIndex].ProfileId);
+                    ProfileIdForTypeChange(padIndex, VirtualControllerType.Extended));
                 SettingsService.RefreshMappingSetsFromLegacy();
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Extended;
                 _inputService.MoveSlotToGroupTail(padIndex);
@@ -4231,7 +4259,7 @@ namespace PadForge
                 // SlotTypeChangeRequested handler for the 2026-07-22
                 // automap-loss root cause this order prevents.
                 SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Nintendo,
-                    _viewModel.Pads[padIndex].ProfileId);
+                    ProfileIdForTypeChange(padIndex, VirtualControllerType.Nintendo));
                 SettingsService.RefreshMappingSetsFromLegacy();
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Nintendo;
                 _inputService.MoveSlotToGroupTail(padIndex);
@@ -4251,7 +4279,7 @@ namespace PadForge
                 // SlotTypeChangeRequested handler for the 2026-07-22
                 // automap-loss root cause this order prevents.
                 SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.KeyboardMouse,
-                    _viewModel.Pads[padIndex].ProfileId);
+                    ProfileIdForTypeChange(padIndex, VirtualControllerType.KeyboardMouse));
                 SettingsService.RefreshMappingSetsFromLegacy();
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.KeyboardMouse;
                 _inputService.MoveSlotToGroupTail(padIndex);
@@ -4272,7 +4300,7 @@ namespace PadForge
                 // SlotTypeChangeRequested handler for the 2026-07-22
                 // automap-loss root cause this order prevents.
                 SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Midi,
-                    _viewModel.Pads[padIndex].ProfileId);
+                    ProfileIdForTypeChange(padIndex, VirtualControllerType.Midi));
                 SettingsService.RefreshMappingSetsFromLegacy();
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Midi;
                 _inputService.MoveSlotToGroupTail(padIndex);
@@ -4296,7 +4324,7 @@ namespace PadForge
                 // SlotTypeChangeRequested handler for the 2026-07-22
                 // automap-loss root cause this order prevents.
                 SettingsManager.ReAutoMapSlot(padIndex, VirtualControllerType.Vr,
-                    _viewModel.Pads[padIndex].ProfileId);
+                    ProfileIdForTypeChange(padIndex, VirtualControllerType.Vr));
                 SettingsService.RefreshMappingSetsFromLegacy();
                 _viewModel.Pads[padIndex].OutputType = VirtualControllerType.Vr;
                 _inputService.MoveSlotToGroupTail(padIndex);

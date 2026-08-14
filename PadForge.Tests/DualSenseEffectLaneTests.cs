@@ -57,15 +57,57 @@ namespace PadForge.Tests
             Assert.Equal(2, second);   // 3 was swallowed, never delivered
         }
 
-        // ── A repeat must be recognised at the DOOR, not at the sampler ──
+        // ── A repeat yields to a pending payload, and nothing more ──
         //
-        // Measured (#300): a burst is around 16,000 packets a second that are
-        // byte-identical to what the pad already holds, carrying the occasional
-        // real change. Filtering repeats on the sampling side let the spam
-        // overwrite a pending change microseconds after it landed, and the
-        // trace recorded the result exactly: writes of ZERO for seconds while
-        // duplicates counted one per sample. The predicate below is what runs
-        // at the door so a repeat never gets to displace anything.
+        // Measured (#300), both halves. A burst is around 19,000 packets a
+        // second repeating this lane's last write, carrying roughly 90 real
+        // changes among them.
+        //
+        // Filtering repeats at the SAMPLER lost every change: the spam
+        // overwrote a change microseconds after it landed and the next sample
+        // saw only a repeat. The trace read writes of ZERO for seconds.
+        //
+        // Dropping repeats OUTRIGHT broke the opposite way, because this lane
+        // is not the pad's only writer: UserEffectsDispatcher writes the same
+        // report to the same device at 30 Hz while mirroring a subsystem the
+        // game drives. A repeat re-asserts the game's payload over that pass,
+        // so suppressing repeats left the game winning only as often as it
+        // changed state, 6 times a second inside a burst against a writer
+        // running at 30.
+        //
+        // Hence the rule under test: drop a repeat only while something is
+        // already waiting.
+
+        [Fact]
+        public void ARepeatYieldsToAPendingPayload_SoASpamBurstCannotEvictAChange()
+        {
+            var lastSent = new byte[] { 0x02, 0x11, 0x22, 0x33 };
+            var repeat = new byte[] { 0x02, 0x11, 0x22, 0x33 };
+            Assert.True(DualSensePassthroughDispatcher.ShouldDropAtDoor(
+                repeat, lastSent, lastSent.Length, somethingPending: true));
+        }
+
+        [Fact]
+        public void ARepeatWithNothingWaiting_IsKept_BecauseItReassertsAgainstTheOtherWriter()
+        {
+            // The regression this pins. Dropping this packet is what let the
+            // 30 Hz pass hold the pad between the game's real changes.
+            var lastSent = new byte[] { 0x02, 0x11, 0x22, 0x33 };
+            var repeat = new byte[] { 0x02, 0x11, 0x22, 0x33 };
+            Assert.False(DualSensePassthroughDispatcher.ShouldDropAtDoor(
+                repeat, lastSent, lastSent.Length, somethingPending: false));
+        }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void AGenuineChange_IsNeverDroppedAtTheDoor(bool somethingPending)
+        {
+            var lastSent = new byte[] { 0x02, 0x11, 0x22, 0x33 };
+            var changed = new byte[] { 0x02, 0x11, 0x22, 0x34 };
+            Assert.False(DualSensePassthroughDispatcher.ShouldDropAtDoor(
+                changed, lastSent, lastSent.Length, somethingPending));
+        }
 
         [Fact]
         public void ARepeatOfWhatThePadHolds_IsRecognised()

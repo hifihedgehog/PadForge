@@ -1,4 +1,6 @@
+using System;
 using System.Threading.Channels;
+using PadForge.Common.Input;
 using Xunit;
 
 namespace PadForge.Tests
@@ -53,6 +55,55 @@ namespace PadForge.Tests
             Assert.False(ch.Reader.TryRead(out _));
             Assert.Equal(1, first);
             Assert.Equal(2, second);   // 3 was swallowed, never delivered
+        }
+
+        // ── A repeat must be recognised at the DOOR, not at the sampler ──
+        //
+        // Measured (#300): a burst is around 16,000 packets a second that are
+        // byte-identical to what the pad already holds, carrying the occasional
+        // real change. Filtering repeats on the sampling side let the spam
+        // overwrite a pending change microseconds after it landed, and the
+        // trace recorded the result exactly: writes of ZERO for seconds while
+        // duplicates counted one per sample. The predicate below is what runs
+        // at the door so a repeat never gets to displace anything.
+
+        [Fact]
+        public void ARepeatOfWhatThePadHolds_IsRecognised()
+        {
+            var lastSent = new byte[] { 0x02, 0x11, 0x22, 0x33 };
+            var incoming = new byte[] { 0x02, 0x11, 0x22, 0x33 };
+            Assert.True(DualSensePassthroughDispatcher.IsRepeatOfLastSent(
+                incoming, lastSent, lastSent.Length));
+        }
+
+        [Fact]
+        public void AGenuineChange_IsNotARepeat()
+        {
+            var lastSent = new byte[] { 0x02, 0x11, 0x22, 0x33 };
+            var changed = new byte[] { 0x02, 0x11, 0x22, 0x34 };
+            Assert.False(DualSensePassthroughDispatcher.IsRepeatOfLastSent(
+                changed, lastSent, lastSent.Length));
+        }
+
+        [Fact]
+        public void ADifferentLength_IsNeverARepeat()
+        {
+            // Edge and standard pads carry different payload lengths, and a
+            // shorter payload that happens to prefix-match is a different
+            // message, not the same one.
+            var lastSent = new byte[] { 0x02, 0x11, 0x22, 0x33 };
+            var shorter = new byte[] { 0x02, 0x11, 0x22 };
+            Assert.False(DualSensePassthroughDispatcher.IsRepeatOfLastSent(
+                shorter, lastSent, lastSent.Length));
+        }
+
+        [Fact]
+        public void BeforeAnythingHasBeenSent_NothingIsARepeat()
+        {
+            // The first payload of a session must always go out, or the pad
+            // keeps whatever state it powered on with.
+            Assert.False(DualSensePassthroughDispatcher.IsRepeatOfLastSent(
+                new byte[] { 1, 2, 3 }, null, 0));
         }
 
         [Fact]

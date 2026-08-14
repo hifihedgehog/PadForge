@@ -190,26 +190,30 @@ namespace PadForge.Common.Input
         private byte[] _lastSent;
         private int _lastSentLength;
 
+        /// <summary>Whether a payload is byte for byte what the pad already
+        /// holds, and therefore cannot change anything by being sent. Pure, so
+        /// the rule is testable without a controller.</summary>
+        internal static bool IsRepeatOfLastSent(
+            ReadOnlySpan<byte> incoming, byte[] lastSent, int lastSentLength)
+            => lastSent != null
+               && lastSentLength == incoming.Length
+               && incoming.SequenceEqual(lastSent.AsSpan(0, lastSentLength));
+
         /// <summary>Forwards one packet and records the write cost.</summary>
         private void WriteOne(in Ds5Effect effect)
         {
-            // An unchanged state payload is a write that cannot alter anything
-            // on the pad. Features are events and always go out.
+            // Record what the pad now holds, so the producer can recognise a
+            // repeat of it at the door. Under the latch lock, because the
+            // producer reads this on every packet.
             if (!effect.IsFeature)
             {
-                if (_lastSentLength == effect.Length
-                    && _lastSent != null
-                    && effect.Buffer.AsSpan(0, effect.Length)
-                        .SequenceEqual(_lastSent.AsSpan(0, _lastSentLength)))
+                lock (_latchLock)
                 {
-                    ArrayPool<byte>.Shared.Return(effect.Buffer);
-                    if (SdlDiagLog.IsMirroring) Interlocked.Increment(ref _hbDup);
-                    return;
+                    if (_lastSent == null || _lastSent.Length < effect.Length)
+                        _lastSent = new byte[effect.Length];
+                    effect.Buffer.AsSpan(0, effect.Length).CopyTo(_lastSent);
+                    _lastSentLength = effect.Length;
                 }
-                if (_lastSent == null || _lastSent.Length < effect.Length)
-                    _lastSent = new byte[effect.Length];
-                effect.Buffer.AsSpan(0, effect.Length).CopyTo(_lastSent);
-                _lastSentLength = effect.Length;
             }
 
             long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
@@ -283,6 +287,33 @@ namespace PadForge.Common.Input
             bool hadSuperseded;
             lock (_latchLock)
             {
+                // Filter repeats HERE, at the door, not at the sampler.
+                //
+                // This is the difference between working and not, measured
+                // (#300). A burst from the reporting title is about 16,000
+                // packets a second that are byte-identical to what the pad
+                // already holds, carrying the occasional real change. With the
+                // check on the sampling side, a real change landed in the slot
+                // and was overwritten by the spam microseconds later, long
+                // before the next sample looked at it. The trace showed the end
+                // state exactly: coalesced counted everything, duplicates
+                // counted precisely one per sample, and writes counted ZERO for
+                // seconds at a time, so the pad received nothing at all through
+                // the burst.
+                //
+                // A packet that matches what the pad already has cannot change
+                // anything, so it is dropped at the door and never gets to
+                // displace a pending change. What survives is exactly the
+                // changes, and the write rate becomes the rate of real change
+                // instead of the rate the game happens to write at.
+                if (IsRepeatOfLastSent(buf.AsSpan(0, payload.Length), _lastSent, _lastSentLength))
+                {
+                    ArrayPool<byte>.Shared.Return(buf);
+                    if (SdlDiagLog.IsMirroring) Interlocked.Increment(ref _hbDup);
+                    HeartbeatNoteEnqueue(accepted: true);
+                    return;
+                }
+
                 hadSuperseded = _hasLatest;
                 if (hadSuperseded) superseded = _latest;
                 _latest = effect;

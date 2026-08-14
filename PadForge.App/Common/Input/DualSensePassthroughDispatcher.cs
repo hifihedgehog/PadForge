@@ -114,8 +114,53 @@ namespace PadForge.Common.Input
         //             pad still moves, the writer is somewhere else entirely
         //             (UserEffectsDispatcher's own 30 Hz effect pass), which is
         //             a different bug from this lane.
-        private long _hbEnq, _hbDrop, _hbWr, _hbLastLog, _hbLastEnqTicks;
+        private long _hbEnq, _hbDrop, _hbWr, _hbLastLog, _hbLastEnqTicks, _hbCoalesced;
         private double _hbWorstWriteMs;
+
+        /// <summary>Floor on the gap between forwarded state packets, so the
+        /// pad's link sees a bounded rate no matter how fast the game writes.
+        ///
+        /// <para>Every payload on this lane is STATE, not an event: a trigger
+        /// program, a lightbar colour, rumble levels. Each one supersedes the
+        /// last, so sending the newest at a cap is indistinguishable at the
+        /// pad from sending all of them, and 8 ms is far finer than any of it
+        /// is perceived at.</para>
+        ///
+        /// <para>What it prevents: this dispatcher forwarded one packet per
+        /// packet the game wrote, and the design assumption written at the top
+        /// of this file is 30-60 Hz. A title that writes faster than the
+        /// physical link can carry does not back up in our channel, which
+        /// drains into SDL quickly. It backs up BELOW us in the OS Bluetooth
+        /// write path, which is deep enough to hold a minute and keeps
+        /// draining after the game exits. That is a growing delay no buffer of
+        /// ours can bound, reported on GTA V Enhanced (#300) while three other
+        /// titles showed nothing. Capping the outgoing rate removes the
+        /// mechanism instead of trying to size a queue against it.</para>
+        ///
+        /// <para>Games inside the documented cadence are unaffected: at 60 Hz
+        /// packets arrive ~16 ms apart, so every one is sent the moment it
+        /// arrives and nothing is ever coalesced.</para></summary>
+        private const long MinWriteIntervalMs = 8;   // 125 Hz ceiling
+        private long _lastWriteTicks;
+
+        /// <summary>Forwards one packet and records the write cost.</summary>
+        private void WriteOne(in Ds5Effect effect)
+        {
+            long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
+            try
+            {
+                DispatchOne(effect);
+            }
+            finally
+            {
+                ArrayPool<byte>.Shared.Return(effect.Buffer);
+            }
+            if (!SdlDiagLog.IsMirroring) return;
+            Interlocked.Increment(ref _hbWr);
+            double ms = (System.Diagnostics.Stopwatch.GetTimestamp() - t0)
+                        * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
+            if (ms > _hbWorstWriteMs) _hbWorstWriteMs = ms;
+        }
 
         private void HeartbeatNoteEnqueue(bool accepted)
         {
@@ -138,6 +183,7 @@ namespace PadForge.Common.Input
                 + " enq=" + Interlocked.Exchange(ref _hbEnq, 0)
                 + " drop=" + Interlocked.Exchange(ref _hbDrop, 0)
                 + " wr=" + Interlocked.Exchange(ref _hbWr, 0)
+                + " coal=" + Interlocked.Exchange(ref _hbCoalesced, 0)
                 + " depth=" + depth
                 + " wmax=" + _hbWorstWriteMs.ToString("0.0", System.Globalization.CultureInfo.InvariantCulture)
                 + " sinceEnq=" + (lastEnq == 0 ? -1 : now - lastEnq));
@@ -221,28 +267,69 @@ namespace PadForge.Common.Input
                     // heartbeat still beats while the game is writing nothing.
                     // Its silence then means the WORKER stopped, which is a
                     // different finding from the lane being idle.
-                    var ready = reader.WaitToReadAsync(ct).AsTask();
-                    var done = await Task.WhenAny(ready, Task.Delay(1000, ct)).ConfigureAwait(false);
-                    if (ready.IsCompletedSuccessfully && !ready.Result) break;
+                    // A cancelled wait, not an abandoned one. Racing
+                    // WaitToReadAsync against a Task.Delay leaves the loser
+                    // registered on the channel every pass, which is the same
+                    // slow accumulation this lane is being fixed for. The
+                    // linked source cancels the waiter instead.
+                    bool more;
+                    using (var waitCts = CancellationTokenSource.CreateLinkedTokenSource(ct))
+                    {
+                        waitCts.CancelAfter(1000);
+                        try { more = await reader.WaitToReadAsync(waitCts.Token).ConfigureAwait(false); }
+                        catch (OperationCanceledException)
+                        {
+                            if (ct.IsCancellationRequested) break;
+                            more = true;   // heartbeat tick, nothing queued
+                        }
+                    }
+                    if (!more) break;
 
+                    // Drain what is queued, then send the NEWEST state and
+                    // at most one per MinWriteIntervalMs. See the coalescing
+                    // note on that constant: these payloads are state, and
+                    // forwarding a game's cadence verbatim onto a link that
+                    // cannot carry it backs up below us where no buffer of
+                    // ours can bound it.
+                    Ds5Effect pending = default;
+                    bool havePending = false;
                     while (reader.TryRead(out var effect))
                     {
-                        long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
-                        try
+                        if (effect.IsFeature)
                         {
-                            DispatchOne(effect);
+                            // Vendor commands are EVENTS (audio test start /
+                            // stop, calibration actions). Order and count both
+                            // matter, so they are never coalesced and never
+                            // rate limited.
+                            WriteOne(effect);
+                            continue;
                         }
-                        finally
+                        if (havePending)
                         {
-                            ArrayPool<byte>.Shared.Return(effect.Buffer);
+                            // Superseded before it ever reached the pad.
+                            ArrayPool<byte>.Shared.Return(pending.Buffer);
+                            if (SdlDiagLog.IsMirroring) Interlocked.Increment(ref _hbCoalesced);
                         }
-                        if (SdlDiagLog.IsMirroring)
+                        pending = effect;
+                        havePending = true;
+                    }
+
+                    if (havePending)
+                    {
+                        long sinceMs = _lastWriteTicks == 0 ? long.MaxValue
+                            : (System.Diagnostics.Stopwatch.GetTimestamp() - _lastWriteTicks)
+                              * 1000 / System.Diagnostics.Stopwatch.Frequency;
+                        if (sinceMs < MinWriteIntervalMs)
                         {
-                            Interlocked.Increment(ref _hbWr);
-                            double ms = (System.Diagnostics.Stopwatch.GetTimestamp() - t0)
-                                        * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
-                            if (ms > _hbWorstWriteMs) _hbWorstWriteMs = ms;
+                            // Hold the newest for the remainder of the window.
+                            // Anything that arrives meanwhile supersedes it on
+                            // the next pass, so waiting coalesces harder rather
+                            // than queueing.
+                            try { await Task.Delay((int)(MinWriteIntervalMs - sinceMs), ct).ConfigureAwait(false); }
+                            catch (OperationCanceledException) { ArrayPool<byte>.Shared.Return(pending.Buffer); break; }
                         }
+                        WriteOne(pending);
+                        _lastWriteTicks = System.Diagnostics.Stopwatch.GetTimestamp();
                     }
                     HeartbeatTick();
                 }

@@ -43,11 +43,27 @@ namespace PadForge.Common
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        /// <summary>True while the main window is minimized. Not bindable
-        /// (no change event raised): consumed only by code-side rate gates
-        /// that distinguish "minimized, nothing renders" from "deactivated
-        /// but possibly visible beside the foreground app", where display
-        /// lanes throttle less aggressively.</summary>
+        /// <summary>True while the main window cannot render anything. Not
+        /// bindable (no change event raised): consumed only by code-side rate
+        /// gates that distinguish "nothing can render" from "deactivated but
+        /// possibly visible beside the foreground app", where display lanes
+        /// throttle less aggressively.
+        ///
+        /// <para>The name says minimized because that was the only case when
+        /// it was written. HIDDEN counts too, and missing that was a real
+        /// cost: minimize to tray calls Window.Hide() WITHOUT touching
+        /// WindowState, so StateChanged never fires, this stayed false, and
+        /// every gate reading it stayed open while the app was invisible in
+        /// the tray. Reported by HaraDaya (#303) as roughly 12% CPU while
+        /// minimized, which disappeared on switching away from a pad page,
+        /// because the pad page's 30 Hz mapping refresh is gated on this and
+        /// on the page being current.</para></summary>
         public bool IsWindowMinimized { get; set; }
+
+        /// <summary>The rule for <see cref="IsWindowMinimized"/>, kept pure so
+        /// it can be tested without a Window. A window that is minimized OR
+        /// hidden renders nothing, and both must stop the display lanes.</summary>
+        public static bool ComputeCannotRender(bool minimized, bool visible)
+            => minimized || !visible;
     }
 }

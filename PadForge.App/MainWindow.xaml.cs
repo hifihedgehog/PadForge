@@ -2365,15 +2365,14 @@ namespace PadForge
             // visible and focused.
             Activated += (_, _) => SetAmbientMotion(true);
             Deactivated += (_, _) => SetAmbientMotion(false);
-            StateChanged += (_, _) =>
-            {
-                bool minimized = WindowState == WindowState.Minimized;
-                // Code-side rate gates (dashboard publisher) throttle harder
-                // when nothing can render at all vs merely unfocused.
-                PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized = minimized;
-                if (minimized) SetAmbientMotion(false);
-                else if (IsActive) SetAmbientMotion(true);
-            };
+            // Both signals, because either one alone is a lie. StateChanged
+            // misses minimize to tray, which calls Hide() and never touches
+            // WindowState, and IsVisibleChanged misses an ordinary minimize,
+            // where the window stays visible by WPF's reckoning. Reported by
+            // HaraDaya (#303): the app sat at roughly 12% CPU while in the
+            // tray because every display gate reads the flag this sets.
+            StateChanged += (_, _) => UpdateWindowRenderability();
+            IsVisibleChanged += (_, _) => UpdateWindowRenderability();
 
             SetupNativeTooltip();
 
@@ -5813,6 +5812,20 @@ namespace PadForge
 
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         private static extern bool GetCursorPos(out System.Drawing.Point lpPoint);
+
+
+        /// <summary>Publishes whether the window can render anything, which is
+        /// what every display-lane rate gate actually wants to know. Minimized
+        /// and hidden both mean no, and minimize to tray produces the hidden
+        /// case without ever changing WindowState.</summary>
+        private void UpdateWindowRenderability()
+        {
+            bool cannotRender = PadForge.Common.AmbientMotionProbe.ComputeCannotRender(
+                WindowState == WindowState.Minimized, IsVisible);
+            PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized = cannotRender;
+            if (cannotRender) SetAmbientMotion(false);
+            else if (IsActive) SetAmbientMotion(true);
+        }
 
         private void SetupNativeTooltip()
         {

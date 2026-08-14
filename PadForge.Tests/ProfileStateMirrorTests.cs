@@ -412,6 +412,39 @@ namespace PadForge.Tests
             Assert.Equal(2, Assert.Single(ms.Rows).Sources.Count);
         }
 
+        // ── "Nothing can render" must include HIDDEN, not just minimized ──
+        //
+        // Reported by HaraDaya (#303): roughly 12% CPU while minimized, which
+        // vanished on leaving the pad page. Minimize to tray calls Hide() and
+        // never touches WindowState, so the flag every display gate reads
+        // stayed false and the 30 Hz refreshes kept running invisibly.
+
+        [Fact]
+        public void CannotRender_IsTrueWhenMinimized()
+        {
+            Assert.True(PadForge.Common.AmbientMotionProbe.ComputeCannotRender(
+                minimized: true, visible: true));
+        }
+
+        [Fact]
+        public void CannotRender_IsTrueWhenHiddenToTray()
+        {
+            // The reported case: Hide() leaves WindowState alone, so the only
+            // signal is visibility.
+            Assert.True(PadForge.Common.AmbientMotionProbe.ComputeCannotRender(
+                minimized: false, visible: false));
+        }
+
+        [Fact]
+        public void CannotRender_IsFalseWhenOrdinarilyOnScreen()
+        {
+            // The control. A visible, non-minimized window must keep every
+            // display lane running, including when it sits unfocused beside a
+            // game.
+            Assert.False(PadForge.Common.AmbientMotionProbe.ComputeCannotRender(
+                minimized: false, visible: true));
+        }
+
         // ── A shift layer's "do not inherit" survives the round trip ──
         //
         // Reported by vlue-c (#307): the checkbox held while the app ran and

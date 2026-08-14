@@ -82,11 +82,67 @@ namespace PadForge.Common.Input
             });
         }
 
-        /// <summary>Starts the background worker. Idempotent — second call is a no-op.</summary>
+        /// <summary>Starts the background worker. Idempotent: a second call
+        /// is a no-op.</summary>
         public void Start()
         {
             if (_worker != null) return;
             _worker = Task.Run(() => DispatchLoopAsync(_cts.Token));
+        }
+
+        // ── Effect-lane heartbeat (PADFORGE_DIAG only) ──
+        //
+        // The field reports this exists for: adaptive triggers keep acting
+        // after the game closes, and the lag grows over a session. Both are
+        // invisible from the outside, because a stuck trigger and a trigger
+        // being re-written every tick feel similar and neither says who is
+        // writing. One line per second answers it directly.
+        //
+        //   enq       packets the GAME produced this second. 0 means the game
+        //             stopped writing, which is the whole question after exit.
+        //   drop      enqueues refused because the channel was full. Sustained
+        //             drops mean the pad cannot keep up with the game.
+        //   wr        packets actually written to the physical pad.
+        //   depth     packets still queued right now. A depth that climbs and
+        //             stays high IS the growing delay, measured rather than
+        //             inferred.
+        //   wmax      worst single write in ms this second. A Bluetooth link
+        //             under audio load shows up here first.
+        //   sinceEnq  ms since the last game packet. The decisive field after
+        //             a game exits: if wr keeps counting while sinceEnq climbs,
+        //             the backlog is still draining; if BOTH are quiet and the
+        //             pad still moves, the writer is somewhere else entirely
+        //             (UserEffectsDispatcher's own 30 Hz effect pass), which is
+        //             a different bug from this lane.
+        private long _hbEnq, _hbDrop, _hbWr, _hbLastLog, _hbLastEnqTicks;
+        private double _hbWorstWriteMs;
+
+        private void HeartbeatNoteEnqueue(bool accepted)
+        {
+            if (!SdlDiagLog.IsMirroring) return;
+            if (accepted) { Interlocked.Increment(ref _hbEnq); Interlocked.Exchange(ref _hbLastEnqTicks, Environment.TickCount64); }
+            else Interlocked.Increment(ref _hbDrop);
+        }
+
+        private void HeartbeatTick()
+        {
+            if (!SdlDiagLog.IsMirroring) return;
+            long now = Environment.TickCount64;
+            if (_hbLastLog == 0) { _hbLastLog = now; return; }
+            if (now - _hbLastLog < 1000) return;
+
+            long lastEnq = Interlocked.Read(ref _hbLastEnqTicks);
+            int depth = _channel.Reader.CanCount ? _channel.Reader.Count : -1;
+            SdlDiagLog.WriteLine(
+                "DS5EFFECT slot=" + _padIndex
+                + " enq=" + Interlocked.Exchange(ref _hbEnq, 0)
+                + " drop=" + Interlocked.Exchange(ref _hbDrop, 0)
+                + " wr=" + Interlocked.Exchange(ref _hbWr, 0)
+                + " depth=" + depth
+                + " wmax=" + _hbWorstWriteMs.ToString("0.0", System.Globalization.CultureInfo.InvariantCulture)
+                + " sinceEnq=" + (lastEnq == 0 ? -1 : now - lastEnq));
+            _hbLastLog = now;
+            _hbWorstWriteMs = 0;
         }
 
         /// <summary>HM polling thread enqueues here. Returns immediately
@@ -109,7 +165,10 @@ namespace PadForge.Common.Input
                 // Channel full (DropWrite) or completed (Dispose race) —
                 // either way, return the rented buffer.
                 ArrayPool<byte>.Shared.Return(buf);
+                HeartbeatNoteEnqueue(accepted: false);
+                return;
             }
+            HeartbeatNoteEnqueue(accepted: true);
         }
 
         /// <summary>Enqueues a Sony vendor test command (SetFeature 0x80
@@ -129,7 +188,10 @@ namespace PadForge.Common.Input
             if (!_channel.Writer.TryWrite(effect))
             {
                 ArrayPool<byte>.Shared.Return(buf);
+                HeartbeatNoteEnqueue(accepted: false);
+                return;
             }
+            HeartbeatNoteEnqueue(accepted: true);
         }
 
         public void Dispose()
@@ -153,10 +215,19 @@ namespace PadForge.Common.Input
             var reader = _channel.Reader;
             try
             {
-                while (await reader.WaitToReadAsync(ct).ConfigureAwait(false))
+                while (true)
                 {
+                    // A one-second wait rather than an open-ended one, so the
+                    // heartbeat still beats while the game is writing nothing.
+                    // Its silence then means the WORKER stopped, which is a
+                    // different finding from the lane being idle.
+                    var ready = reader.WaitToReadAsync(ct).AsTask();
+                    var done = await Task.WhenAny(ready, Task.Delay(1000, ct)).ConfigureAwait(false);
+                    if (ready.IsCompletedSuccessfully && !ready.Result) break;
+
                     while (reader.TryRead(out var effect))
                     {
+                        long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
                         try
                         {
                             DispatchOne(effect);
@@ -165,7 +236,15 @@ namespace PadForge.Common.Input
                         {
                             ArrayPool<byte>.Shared.Return(effect.Buffer);
                         }
+                        if (SdlDiagLog.IsMirroring)
+                        {
+                            Interlocked.Increment(ref _hbWr);
+                            double ms = (System.Diagnostics.Stopwatch.GetTimestamp() - t0)
+                                        * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
+                            if (ms > _hbWorstWriteMs) _hbWorstWriteMs = ms;
+                        }
                     }
+                    HeartbeatTick();
                 }
             }
             catch (OperationCanceledException) { /* Dispose path */ }

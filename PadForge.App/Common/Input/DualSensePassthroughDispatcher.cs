@@ -49,23 +49,38 @@ namespace PadForge.Common.Input
         private const ushort PidEdge = 0x0DF2;
         private const int StandardPayloadSize = 47;
 
-        // Bounded channel keeps memory pressure predictable under runaway
-        // game cadence. 64 slots is generous for 30-60 Hz writes against
-        // an 8 ms HM ring and a typical sub-millisecond SDL write.
-        //
-        // FullMode = DropWrite (not DropOldest): with DropOldest the
-        // channel silently dequeues the oldest entry on overflow without
-        // surfacing it to the reader, which means the rented ArrayPool
-        // buffer attached to that entry was never returned — a per-overflow
-        // permanent leak. DropWrite makes TryWrite return false on
-        // overflow so the existing Enqueue catch returns the buffer
-        // immediately. The semantic difference for state-based writes
-        // (newest dropped instead of oldest) is irrelevant: under sustained
-        // pressure either policy drops some packets, and the next state
-        // write still arrives at the controller within milliseconds.
+        // Feature commands only. They are EVENTS (audio test start and stop,
+        // calibration actions) where order and count both matter, so they
+        // queue rather than coalesce, and the mode is Wait so a full channel
+        // makes TryWrite return FALSE and the producer can return its rented
+        // buffer. See the note on the state latch below for why the state
+        // lane no longer uses a channel at all.
         private const int ChannelCapacity = 64;
 
         private readonly Channel<Ds5Effect> _channel;
+
+        // ── The state latch ──
+        //
+        // Effect payloads are STATE: each one replaces the one before it, so
+        // exactly one is ever worth holding. This used to be a 64-deep bounded
+        // channel with FullMode.DropWrite, on the stated belief that TryWrite
+        // returns false when full so the producer could return its pooled
+        // buffer. It does not. Every Drop mode returns TRUE and discards the
+        // item silently, so every discarded packet leaked its ArrayPool rental.
+        //
+        // Measured, not theorised: a trace from a title driving this lane at
+        // 18,000 packets per second (#300) showed enq around 18,000 with
+        // coalesced plus written around 7,550, and drop=0 with the depth pinned
+        // at 64. The missing ~10,500 per second were leaking their buffers, at
+        // which point ArrayPool simply allocates more and the GC pays for it.
+        //
+        // A single slot removes the whole class: the producer swaps its payload
+        // in and immediately returns whatever it displaced, so nothing is ever
+        // silently dropped and nothing can leak, however fast the game writes.
+        private readonly object _latchLock = new();
+        private Ds5Effect _latest;
+        private bool _hasLatest;
+        private readonly SemaphoreSlim _signal = new(0, 1);
         private readonly CancellationTokenSource _cts = new();
         private Task _worker;
         private readonly int _padIndex;
@@ -76,7 +91,10 @@ namespace PadForge.Common.Input
             _padIndex = padIndex;
             _channel = Channel.CreateBounded<Ds5Effect>(new BoundedChannelOptions(ChannelCapacity)
             {
-                FullMode = BoundedChannelFullMode.DropWrite,
+                // Wait, so TryWrite reports a full channel instead of eating
+                // the item: the producer needs that answer to return its
+                // rented buffer.
+                FullMode = BoundedChannelFullMode.Wait,
                 SingleReader = true,
                 SingleWriter = false,
             });
@@ -177,7 +195,12 @@ namespace PadForge.Common.Input
             if (now - _hbLastLog < 1000) return;
 
             long lastEnq = Interlocked.Read(ref _hbLastEnqTicks);
-            int depth = _channel.Reader.CanCount ? _channel.Reader.Count : -1;
+            // Depth is 0 or 1 by construction now (one state slot), plus
+            // whatever vendor commands are queued. It stays in the line as the
+            // proof of that: a depth pinned at a queue length was the shape of
+            // the leak this replaced.
+            int depth = (_hasLatest ? 1 : 0)
+                + (_channel.Reader.CanCount ? _channel.Reader.Count : 0);
             SdlDiagLog.WriteLine(
                 "DS5EFFECT slot=" + _padIndex
                 + " enq=" + Interlocked.Exchange(ref _hbEnq, 0)
@@ -206,15 +229,28 @@ namespace PadForge.Common.Input
             payload.CopyTo(buf);
 
             var effect = new Ds5Effect(buf, payload.Length, reportId, IsFeature: false);
-            if (!_channel.Writer.TryWrite(effect))
+            Ds5Effect superseded = default;
+            bool hadSuperseded;
+            lock (_latchLock)
             {
-                // Channel full (DropWrite) or completed (Dispose race) —
-                // either way, return the rented buffer.
-                ArrayPool<byte>.Shared.Return(buf);
-                HeartbeatNoteEnqueue(accepted: false);
-                return;
+                hadSuperseded = _hasLatest;
+                if (hadSuperseded) superseded = _latest;
+                _latest = effect;
+                _hasLatest = true;
+            }
+            if (hadSuperseded)
+            {
+                // Returned HERE, the instant it is displaced. This is the step
+                // the channel could never perform, because a silently dropped
+                // item is never handed back to anyone.
+                ArrayPool<byte>.Shared.Return(superseded.Buffer);
+                if (SdlDiagLog.IsMirroring) Interlocked.Increment(ref _hbCoalesced);
             }
             HeartbeatNoteEnqueue(accepted: true);
+            if (_signal.CurrentCount == 0)
+            {
+                try { _signal.Release(); } catch (SemaphoreFullException) { }
+            }
         }
 
         /// <summary>Enqueues a Sony vendor test command (SetFeature 0x80
@@ -233,11 +269,16 @@ namespace PadForge.Common.Input
             var effect = new Ds5Effect(buf, payload.Length, reportId, IsFeature: true);
             if (!_channel.Writer.TryWrite(effect))
             {
+                // Full (Wait mode reports it) or completed on a Dispose race.
                 ArrayPool<byte>.Shared.Return(buf);
                 HeartbeatNoteEnqueue(accepted: false);
                 return;
             }
             HeartbeatNoteEnqueue(accepted: true);
+            if (_signal.CurrentCount == 0)
+            {
+                try { _signal.Release(); } catch (SemaphoreFullException) { }
+            }
         }
 
         public void Dispose()
@@ -247,13 +288,29 @@ namespace PadForge.Common.Input
 
             try { _channel.Writer.TryComplete(); } catch { }
             try { _cts.Cancel(); } catch { }
+            try { _signal.Release(); } catch { }
 
             // Worker drains and returns rented buffers; give it a brief
             // window to complete cleanly.  The OutputReceived subscription
             // must be unsubscribed BEFORE Dispose to stop new enqueues —
             // HMaestroVirtualController owns that ordering.
             try { _worker?.Wait(TimeSpan.FromMilliseconds(500)); } catch { }
+
+            // Hand every rental back. The worker may have exited before
+            // draining, and the latch holds at most one payload.
+            lock (_latchLock)
+            {
+                if (_hasLatest)
+                {
+                    ArrayPool<byte>.Shared.Return(_latest.Buffer);
+                    _hasLatest = false;
+                }
+            }
+            while (_channel.Reader.TryRead(out var leftover))
+                ArrayPool<byte>.Shared.Return(leftover.Buffer);
+
             try { _cts.Dispose(); } catch { }
+            try { _signal.Dispose(); } catch { }
         }
 
         private async Task DispatchLoopAsync(CancellationToken ct)
@@ -261,57 +318,31 @@ namespace PadForge.Common.Input
             var reader = _channel.Reader;
             try
             {
-                while (true)
+                while (!ct.IsCancellationRequested)
                 {
-                    // A one-second wait rather than an open-ended one, so the
-                    // heartbeat still beats while the game is writing nothing.
-                    // Its silence then means the WORKER stopped, which is a
-                    // different finding from the lane being idle.
-                    // A cancelled wait, not an abandoned one. Racing
-                    // WaitToReadAsync against a Task.Delay leaves the loser
-                    // registered on the channel every pass, which is the same
-                    // slow accumulation this lane is being fixed for. The
-                    // linked source cancels the waiter instead.
-                    bool more;
-                    using (var waitCts = CancellationTokenSource.CreateLinkedTokenSource(ct))
-                    {
-                        waitCts.CancelAfter(1000);
-                        try { more = await reader.WaitToReadAsync(waitCts.Token).ConfigureAwait(false); }
-                        catch (OperationCanceledException)
-                        {
-                            if (ct.IsCancellationRequested) break;
-                            more = true;   // heartbeat tick, nothing queued
-                        }
-                    }
-                    if (!more) break;
+                    // Wake on a producer signal, or once a second so the
+                    // heartbeat still beats while the game writes nothing. Its
+                    // silence then means the WORKER stopped, which is a
+                    // different finding from an idle lane.
+                    try { await _signal.WaitAsync(1000, ct).ConfigureAwait(false); }
+                    catch (OperationCanceledException) { break; }
 
-                    // Drain what is queued, then send the NEWEST state and
-                    // at most one per MinWriteIntervalMs. See the coalescing
-                    // note on that constant: these payloads are state, and
-                    // forwarding a game's cadence verbatim onto a link that
-                    // cannot carry it backs up below us where no buffer of
-                    // ours can bound it.
+                    // Vendor commands first, in order, never coalesced and
+                    // never rate limited.
+                    while (reader.TryRead(out var feature))
+                        WriteOne(feature);
+
+                    // Then the newest state, at most one per
+                    // MinWriteIntervalMs. Taking the latch clears it, so a
+                    // payload is written exactly once and anything that arrives
+                    // while we pace has already displaced its predecessor at
+                    // the producer.
                     Ds5Effect pending = default;
-                    bool havePending = false;
-                    while (reader.TryRead(out var effect))
+                    bool havePending;
+                    lock (_latchLock)
                     {
-                        if (effect.IsFeature)
-                        {
-                            // Vendor commands are EVENTS (audio test start /
-                            // stop, calibration actions). Order and count both
-                            // matter, so they are never coalesced and never
-                            // rate limited.
-                            WriteOne(effect);
-                            continue;
-                        }
-                        if (havePending)
-                        {
-                            // Superseded before it ever reached the pad.
-                            ArrayPool<byte>.Shared.Return(pending.Buffer);
-                            if (SdlDiagLog.IsMirroring) Interlocked.Increment(ref _hbCoalesced);
-                        }
-                        pending = effect;
-                        havePending = true;
+                        havePending = _hasLatest;
+                        if (havePending) { pending = _latest; _hasLatest = false; }
                     }
 
                     if (havePending)
@@ -321,10 +352,6 @@ namespace PadForge.Common.Input
                               * 1000 / System.Diagnostics.Stopwatch.Frequency;
                         if (sinceMs < MinWriteIntervalMs)
                         {
-                            // Hold the newest for the remainder of the window.
-                            // Anything that arrives meanwhile supersedes it on
-                            // the next pass, so waiting coalesces harder rather
-                            // than queueing.
                             try { await Task.Delay((int)(MinWriteIntervalMs - sinceMs), ct).ConfigureAwait(false); }
                             catch (OperationCanceledException) { ArrayPool<byte>.Shared.Return(pending.Buffer); break; }
                         }

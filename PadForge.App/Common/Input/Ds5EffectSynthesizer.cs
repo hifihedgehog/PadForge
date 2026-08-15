@@ -192,7 +192,20 @@ namespace PadForge.Common.Input
             int headphoneVolumePercent = 100,
             bool assertHeadphoneVolume = false,
             int audioOutputPath = 0,
-            bool assertAudioControl = false)
+            bool assertAudioControl = false,
+            /// <summary>False while the DS5 pass-through owns this pad's
+            /// lightbar. The game's own bytes are already being forwarded
+            /// verbatim, so mirroring them again here puts TWO writers on one
+            /// subsystem: the pass-through at up to 500 Hz carrying the live
+            /// value, and this pass at 30 Hz carrying a one-frame-stale copy.
+            /// The pad then alternates between them, which the reporter
+            /// described exactly (#300): "an overlap between two, one lagging
+            /// and the other not lagging, and the controller is flashing
+            /// between them." Suppressing the enable bit leaves the field
+            /// untouched so only the pass-through writes it. Same reasoning
+            /// already applied to rumble in UserEffectsDispatcher, which zeroes
+            /// its motor bytes for a pass-through target.</summary>
+            bool assertLightbarEnable = true)
         {
             ushort enableBits = 0;
 
@@ -326,14 +339,14 @@ namespace PadForge.Common.Input
                 // RGB verbatim and assert the lightbar enable bit so the
                 // firmware applies it. PadForge's animation pauses on this
                 // subsystem only — every other subsystem still updates.
-                enableBits |= EnableLightbar;
+                if (assertLightbarEnable) enableBits |= EnableLightbar;
                 ledR = overrides.LightbarRgb[0];
                 ledG = overrides.LightbarRgb[1];
                 ledB = overrides.LightbarRgb[2];
             }
             else if (lightbarConfigured)
             {
-                enableBits |= EnableLightbar;
+                if (assertLightbarEnable) enableBits |= EnableLightbar;
 
                 // Priority: macro override > input-reactive overlay > base
                 // mode. Macro override blends the configured macro RGB
@@ -396,7 +409,7 @@ namespace PadForge.Common.Input
                 // floor stands down for the session, preserving the
                 // long-standing semantic that a game's last write
                 // persists in firmware (the enable bit stays clear).
-                enableBits |= EnableLightbar;
+                if (assertLightbarEnable) enableBits |= EnableLightbar;
                 (ledR, ledG, ledB) = PlayerIdentityDefaults.ColorFor(playerNumber);
             }
             else if (overrides.LastLightbarRgb != null && overrides.LastLightbarRgb.Length >= 3)

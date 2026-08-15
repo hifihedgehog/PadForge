@@ -648,11 +648,11 @@
   <data name="Macro_Expression_Recipe_Single" xml:space="preserve"><value>Somente a</value></data>
   <data name="Macro_Expression_Recipe_Single_Tooltip" xml:space="preserve"><value>Dispara quando a variável a passa de 0 para 1.</value></data>
   <data name="Macro_Expression_Recipe_Both" xml:space="preserve"><value>a e b</value></data>
-  <data name="Macro_Expression_Recipe_Both_Tooltip" xml:space="preserve"><value>Dispara somente quando a AND b estiverem ativos. Acorde clássico.</value></data>
+  <data name="Macro_Expression_Recipe_Both_Tooltip" xml:space="preserve"><value>Dispara somente quando a e b estiverem ativos. Acorde clássico.</value></data>
   <data name="Macro_Expression_Recipe_Either" xml:space="preserve"><value>a ou b</value></data>
   <data name="Macro_Expression_Recipe_Either_Tooltip" xml:space="preserve"><value>Dispara quando a OR b estiver ativo.</value></data>
   <data name="Macro_Expression_Recipe_AButNotB" xml:space="preserve"><value>a mas não b</value></data>
-  <data name="Macro_Expression_Recipe_AButNotB_Tooltip" xml:space="preserve"><value>Dispara quando a estiver ativo e b NOT estiver ativo.</value></data>
+  <data name="Macro_Expression_Recipe_AButNotB_Tooltip" xml:space="preserve"><value>Dispara quando a estiver ativo e b não estiver ativo.</value></data>
   <data name="Macro_Expression_Recipe_AxisOverHalf" xml:space="preserve"><value>Eixo além de 50%</value></data>
   <data name="Macro_Expression_Recipe_AxisOverHalf_Tooltip" xml:space="preserve"><value>Dispara quando o eixo de analógico a estiver deslocado mais de 50% da posição de repouso.</value></data>
   <data name="Macro_Source" xml:space="preserve"><value>Origem</value></data>
@@ -2487,7 +2487,7 @@
   <data name="Pad_KeepAwake_Deflection_Label" xml:space="preserve"><value>Deflexão</value></data>
   <data name="Pad_KeepAwake_Deflection_Tooltip" xml:space="preserve"><value>Nível mantido como porcentagem do curso total do analógico. 25% mantém a maioria dos jogos engajados ficando abaixo da zona morta de movimento. Aumente se o jogo ainda alternar. Diminua se o personagem derivar.</value></data>
   <data name="Pad_KeepAwake_Motion" xml:space="preserve"><value>Adicionar movimento</value></data>
-  <data name="Pad_KeepAwake_Motion_Tooltip" xml:space="preserve"><value>Alguns jogos enviam vibração apenas enquanto o analógico está SE MOVENDO, não enquanto ele fica inclinado. Prey (2017) é um deles. Isto faz o nível mantido oscilar suavemente em vez de ficar parado, para que esses jogos continuem vibrando. Deixe desligado nos demais casos. Manter parado é mais discreto.</value></data>
+  <data name="Pad_KeepAwake_Motion_Tooltip" xml:space="preserve"><value>Alguns jogos enviam vibração apenas enquanto o analógico está se movendo, não enquanto ele fica inclinado. Isto faz o nível mantido oscilar suavemente em vez de ficar parado, para que esses jogos continuem vibrando. Deixe desligado nos demais casos. Manter parado é mais discreto.</value></data>
   <data name="Pad_KeepAwake_Reset_Axis" xml:space="preserve"><value>Redefinir Eixo mantido</value></data>
   <data name="Pad_KeepAwake_Reset_Deflection" xml:space="preserve"><value>Redefinir Desvio</value></data>
   <data name="Pad_KeepAwake_Reset_Motion" xml:space="preserve"><value>Redefinir Adicionar movimento</value></data>

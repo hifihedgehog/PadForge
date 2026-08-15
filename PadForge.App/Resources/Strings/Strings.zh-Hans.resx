@@ -648,11 +648,11 @@
   <data name="Macro_Expression_Recipe_Single" xml:space="preserve"><value>仅 a</value></data>
   <data name="Macro_Expression_Recipe_Single_Tooltip" xml:space="preserve"><value>当变量 a 从 0 变为 1 时触发。</value></data>
   <data name="Macro_Expression_Recipe_Both" xml:space="preserve"><value>a 和 b</value></data>
-  <data name="Macro_Expression_Recipe_Both_Tooltip" xml:space="preserve"><value>仅当 a AND b 同时激活时触发。经典组合键。</value></data>
+  <data name="Macro_Expression_Recipe_Both_Tooltip" xml:space="preserve"><value>仅当 a 与 b 同时激活时触发。经典组合键。</value></data>
   <data name="Macro_Expression_Recipe_Either" xml:space="preserve"><value>a 或 b</value></data>
   <data name="Macro_Expression_Recipe_Either_Tooltip" xml:space="preserve"><value>当 a OR b 任一激活时触发。</value></data>
   <data name="Macro_Expression_Recipe_AButNotB" xml:space="preserve"><value>a 但非 b</value></data>
-  <data name="Macro_Expression_Recipe_AButNotB_Tooltip" xml:space="preserve"><value>当 a 激活且 b NOT 激活时触发。</value></data>
+  <data name="Macro_Expression_Recipe_AButNotB_Tooltip" xml:space="preserve"><value>当 a 激活且 b 未激活时触发。</value></data>
   <data name="Macro_Expression_Recipe_AxisOverHalf" xml:space="preserve"><value>轴超过 50%</value></data>
   <data name="Macro_Expression_Recipe_AxisOverHalf_Tooltip" xml:space="preserve"><value>当摇杆轴 a 的偏移量超过静止位置的 50% 时触发。</value></data>
   <data name="Macro_Source" xml:space="preserve"><value>来源</value></data>
@@ -2487,7 +2487,7 @@
   <data name="Pad_KeepAwake_Deflection_Label" xml:space="preserve"><value>偏移量</value></data>
   <data name="Pad_KeepAwake_Deflection_Tooltip" xml:space="preserve"><value>保持量占摇杆全行程的百分比。25% 可让大多数游戏保持活跃，同时低于其移动死区。若游戏仍会切换请调高，若角色发生漂移请调低。</value></data>
   <data name="Pad_KeepAwake_Motion" xml:space="preserve"><value>加入摆动</value></data>
-  <data name="Pad_KeepAwake_Motion_Tooltip" xml:space="preserve"><value>有些游戏只在摇杆「正在移动」时发送震动，保持偏移不动则不会。Prey (2017) 就是其中之一。此选项会让保持的幅度轻微来回摆动而不是固定不动，让这类游戏持续震动。其他情况下保持关闭即可。固定保持更不易察觉。</value></data>
+  <data name="Pad_KeepAwake_Motion_Tooltip" xml:space="preserve"><value>有些游戏只在摇杆正在移动时发送震动，保持偏移不动则不会。此选项会让保持的幅度轻微来回摆动而不是固定不动，让这类游戏持续震动。其他情况下保持关闭即可。固定保持更不易察觉。</value></data>
   <data name="Pad_KeepAwake_Reset_Axis" xml:space="preserve"><value>重置保持的轴</value></data>
   <data name="Pad_KeepAwake_Reset_Deflection" xml:space="preserve"><value>重置偏移量</value></data>
   <data name="Pad_KeepAwake_Reset_Motion" xml:space="preserve"><value>重置加入摆动</value></data>

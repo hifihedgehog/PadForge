@@ -648,11 +648,11 @@
   <data name="Macro_Expression_Recipe_Single" xml:space="preserve"><value>a 단독</value></data>
   <data name="Macro_Expression_Recipe_Single_Tooltip" xml:space="preserve"><value>변수 a가 0에서 1로 바뀔 때 실행합니다.</value></data>
   <data name="Macro_Expression_Recipe_Both" xml:space="preserve"><value>a 그리고 b</value></data>
-  <data name="Macro_Expression_Recipe_Both_Tooltip" xml:space="preserve"><value>a AND b가 모두 활성 상태일 때만 실행합니다. 코드 조합의 기본 형태입니다.</value></data>
+  <data name="Macro_Expression_Recipe_Both_Tooltip" xml:space="preserve"><value>a와 b가 모두 활성 상태일 때만 실행합니다. 코드 조합의 기본 형태입니다.</value></data>
   <data name="Macro_Expression_Recipe_Either" xml:space="preserve"><value>a 또는 b</value></data>
   <data name="Macro_Expression_Recipe_Either_Tooltip" xml:space="preserve"><value>a OR b 중 하나라도 활성 상태일 때 실행합니다.</value></data>
   <data name="Macro_Expression_Recipe_AButNotB" xml:space="preserve"><value>a이지만 b는 아님</value></data>
-  <data name="Macro_Expression_Recipe_AButNotB_Tooltip" xml:space="preserve"><value>a가 활성 상태이고 b가 NOT 활성 상태일 때 실행합니다.</value></data>
+  <data name="Macro_Expression_Recipe_AButNotB_Tooltip" xml:space="preserve"><value>a가 활성 상태이고 b가 활성 상태가 아닐 때 실행합니다.</value></data>
   <data name="Macro_Expression_Recipe_AxisOverHalf" xml:space="preserve"><value>축 50% 초과</value></data>
   <data name="Macro_Expression_Recipe_AxisOverHalf_Tooltip" xml:space="preserve"><value>스틱 축 a가 중립 위치에서 50% 이상 움직였을 때 실행합니다.</value></data>
   <data name="Macro_Source" xml:space="preserve"><value>소스</value></data>
@@ -2487,7 +2487,7 @@
   <data name="Pad_KeepAwake_Deflection_Label" xml:space="preserve"><value>유지량</value></data>
   <data name="Pad_KeepAwake_Deflection_Tooltip" xml:space="preserve"><value>스틱 전체 이동량 대비 유지 수준(%)입니다. 25%는 대부분 게임의 이동 데드존 아래에 있으면서 활성 상태를 유지합니다. 게임이 계속 전환되면 올리고, 캐릭터가 흐르면 낮추세요.</value></data>
   <data name="Pad_KeepAwake_Motion" xml:space="preserve"><value>움직임 추가</value></data>
-  <data name="Pad_KeepAwake_Motion_Tooltip" xml:space="preserve"><value>일부 게임은 스틱이 '움직이는' 동안에만 진동을 보내며, 기울인 채로 유지할 때는 보내지 않습니다. Prey (2017)가 그런 경우입니다. 이 옵션은 유지 값을 고정하지 않고 완만하게 흔들어 그런 게임에서도 진동이 계속되게 합니다. 그 외에는 꺼 두세요. 고정해서 유지하는 쪽이 더 눈에 띄지 않습니다.</value></data>
+  <data name="Pad_KeepAwake_Motion_Tooltip" xml:space="preserve"><value>일부 게임은 스틱이 움직이는 동안에만 진동을 보내며, 기울인 채로 유지할 때는 보내지 않습니다. 이 옵션은 유지 값을 고정하지 않고 완만하게 흔들어 그런 게임에서도 진동이 계속되게 합니다. 그 외에는 꺼 두세요. 고정해서 유지하는 쪽이 더 눈에 띄지 않습니다.</value></data>
   <data name="Pad_KeepAwake_Reset_Axis" xml:space="preserve"><value>유지 축 초기화</value></data>
   <data name="Pad_KeepAwake_Reset_Deflection" xml:space="preserve"><value>기울기량 초기화</value></data>
   <data name="Pad_KeepAwake_Reset_Motion" xml:space="preserve"><value>움직임 추가 초기화</value></data>

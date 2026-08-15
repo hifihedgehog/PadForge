@@ -648,11 +648,11 @@
   <data name="Macro_Expression_Recipe_Single" xml:space="preserve"><value>a allein</value></data>
   <data name="Macro_Expression_Recipe_Single_Tooltip" xml:space="preserve"><value>Auslösen, wenn Variable a von 0 auf 1 wechselt.</value></data>
   <data name="Macro_Expression_Recipe_Both" xml:space="preserve"><value>a und b</value></data>
-  <data name="Macro_Expression_Recipe_Both_Tooltip" xml:space="preserve"><value>Nur auslösen, wenn sowohl a AND b aktiv sind. Klassische Tastenkombination.</value></data>
+  <data name="Macro_Expression_Recipe_Both_Tooltip" xml:space="preserve"><value>Nur auslösen, wenn sowohl a als auch b aktiv sind. Klassische Tastenkombination.</value></data>
   <data name="Macro_Expression_Recipe_Either" xml:space="preserve"><value>a oder b</value></data>
   <data name="Macro_Expression_Recipe_Either_Tooltip" xml:space="preserve"><value>Auslösen, wenn entweder a OR b aktiv ist.</value></data>
   <data name="Macro_Expression_Recipe_AButNotB" xml:space="preserve"><value>a aber nicht b</value></data>
-  <data name="Macro_Expression_Recipe_AButNotB_Tooltip" xml:space="preserve"><value>Auslösen, wenn a aktiv und b NOT aktiv ist.</value></data>
+  <data name="Macro_Expression_Recipe_AButNotB_Tooltip" xml:space="preserve"><value>Auslösen, wenn a aktiv und b nicht aktiv ist.</value></data>
   <data name="Macro_Expression_Recipe_AxisOverHalf" xml:space="preserve"><value>Achse über 50%</value></data>
   <data name="Macro_Expression_Recipe_AxisOverHalf_Tooltip" xml:space="preserve"><value>Auslösen, wenn Stick-Achse a mehr als 50% von der Ruheposition ausgelenkt ist.</value></data>
   <data name="Macro_Source" xml:space="preserve"><value>Quelle</value></data>
@@ -2487,7 +2487,7 @@
   <data name="Pad_KeepAwake_Deflection_Label" xml:space="preserve"><value>Auslenkung</value></data>
   <data name="Pad_KeepAwake_Deflection_Tooltip" xml:space="preserve"><value>Gehaltene Stärke in Prozent des vollen Stick-Wegs. 25 % hält die meisten Spiele aktiv und bleibt unter deren Bewegungs-Deadzone. Erhöhen, wenn das Spiel weiter umschaltet. Verringern, wenn die Figur driftet.</value></data>
   <data name="Pad_KeepAwake_Motion" xml:space="preserve"><value>Bewegung hinzufügen</value></data>
-  <data name="Pad_KeepAwake_Motion_Tooltip" xml:space="preserve"><value>Manche Spiele senden Vibration nur, während der Stick BEWEGT wird, nicht während er ausgelenkt gehalten wird. Prey (2017) ist so ein Fall. Dies lässt den gehaltenen Wert sanft pendeln, statt ihn festzuhalten, damit diese Spiele weiter vibrieren. Ansonsten ausgeschaltet lassen. Ein ruhiges Halten ist unauffälliger.</value></data>
+  <data name="Pad_KeepAwake_Motion_Tooltip" xml:space="preserve"><value>Manche Spiele senden Vibration nur, während der Stick bewegt wird, nicht während er ausgelenkt gehalten wird. Dies lässt den gehaltenen Wert sanft pendeln, statt ihn festzuhalten, damit diese Spiele weiter vibrieren. Ansonsten ausgeschaltet lassen. Ein ruhiges Halten ist unauffälliger.</value></data>
   <data name="Pad_KeepAwake_Reset_Axis" xml:space="preserve"><value>Gehaltene Achse zurücksetzen</value></data>
   <data name="Pad_KeepAwake_Reset_Deflection" xml:space="preserve"><value>Auslenkung zurücksetzen</value></data>
   <data name="Pad_KeepAwake_Reset_Motion" xml:space="preserve"><value>Bewegung hinzufügen zurücksetzen</value></data>

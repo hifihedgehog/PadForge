@@ -802,7 +802,7 @@
   <data name="Pad_KeepAwake_Deflection_Label" xml:space="preserve"><value>Deflection</value></data>
   <data name="Pad_KeepAwake_Deflection_Tooltip" xml:space="preserve"><value>Held level as a percent of full stick travel. 25% keeps most games engaged while sitting under their movement dead zone. Raise it if the game still switches away. Lower it if the character drifts.</value></data>
   <data name="Pad_KeepAwake_Motion" xml:space="preserve"><value>Add Motion</value></data>
-  <data name="Pad_KeepAwake_Motion_Tooltip" xml:space="preserve"><value>Some games send vibration only while the stick is MOVING, not while it is held over. Prey (2017) is one. This sweeps the held level gently instead of parking it, so those games keep vibrating. Leave it off otherwise. A steady hold is quieter.</value></data>
+  <data name="Pad_KeepAwake_Motion_Tooltip" xml:space="preserve"><value>Some games send vibration only while the stick is moving, not while it is held over. This sweeps the held level gently instead of parking it, so those games keep vibrating. Leave it off otherwise. A steady hold is quieter.</value></data>
   <data name="Pad_KeepAwake_Reset_Axis" xml:space="preserve"><value>Reset Held Axis</value></data>
   <data name="Pad_KeepAwake_Reset_Deflection" xml:space="preserve"><value>Reset Deflection</value></data>
   <data name="Pad_KeepAwake_Reset_Motion" xml:space="preserve"><value>Reset Add Motion</value></data>
@@ -1055,11 +1055,11 @@
   <data name="Macro_Expression_Recipe_Single" xml:space="preserve"><value>a alone</value></data>
   <data name="Macro_Expression_Recipe_Single_Tooltip" xml:space="preserve"><value>Fire when variable a goes from 0 to 1.</value></data>
   <data name="Macro_Expression_Recipe_Both" xml:space="preserve"><value>a and b</value></data>
-  <data name="Macro_Expression_Recipe_Both_Tooltip" xml:space="preserve"><value>Fire only when both a AND b are active. Classic chord.</value></data>
+  <data name="Macro_Expression_Recipe_Both_Tooltip" xml:space="preserve"><value>Fire only when both a and b are active. Classic chord.</value></data>
   <data name="Macro_Expression_Recipe_Either" xml:space="preserve"><value>a or b</value></data>
   <data name="Macro_Expression_Recipe_Either_Tooltip" xml:space="preserve"><value>Fire when either a OR b is active.</value></data>
   <data name="Macro_Expression_Recipe_AButNotB" xml:space="preserve"><value>a but not b</value></data>
-  <data name="Macro_Expression_Recipe_AButNotB_Tooltip" xml:space="preserve"><value>Fire when a is active and b is NOT active.</value></data>
+  <data name="Macro_Expression_Recipe_AButNotB_Tooltip" xml:space="preserve"><value>Fire when a is active and b is not.</value></data>
   <data name="Macro_Expression_Recipe_AxisOverHalf" xml:space="preserve"><value>Axis past 50%</value></data>
   <data name="Macro_Expression_Recipe_AxisOverHalf_Tooltip" xml:space="preserve"><value>Fire when stick axis a is deflected more than 50% from rest.</value></data>
   <data name="Macro_Source" xml:space="preserve"><value>Source</value></data>
@@ -2222,7 +2222,7 @@
   <data name="Pad_Shift_DeleteConfirmTitle" xml:space="preserve"><value>Delete shift layer</value></data>
   <data name="Pad_Shift_DeleteConfirm_Format" xml:space="preserve"><value>Delete the "{0}" layer and all of its mapping rows? This cannot be undone.</value></data>
   <data name="Pad_Shift_NoInherit" xml:space="preserve"><value>Do Not Inherit</value></data>
-  <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>When checked, this layer's target stays OFF instead of falling through to the Base row.</value></data>
+  <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>When checked, this layer's target stays off instead of falling through to the Base row.</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>Delay</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>How long the input must stay held before the layer reacts. For Hold mode this is a debounce. For Toggle, Latch, and Sticky it makes the switch a long press: the layer flips once when the hold crosses this time, and a shorter tap does nothing. 0 reacts instantly.</value></data>
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Second Chord Input</value></data>
@@ -2251,7 +2251,7 @@
   <data name="Pad_Shift_FireOnRelease" xml:space="preserve"><value>Fire on Release</value></data>
   <data name="Pad_Shift_FireOnRelease_Tooltip" xml:space="preserve"><value>Waits until the button is let go before this activator fires. If a hold delay is set, the press must last that long for the release to count.</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Also Fire Activator's Own Mapping</value></data>
-  <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>When checked, the activator button still drives any row that uses it as a source. One press both changes layer AND fires the button's own mapping. When unchecked (default), the activator press is consumed by the layer change only.</value></data>
+  <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>When checked, the activator button still drives any row that uses it as a source. One press both changes layer and fires the button's own mapping. When unchecked (default), the activator press is consumed by the layer change only.</value></data>
   <data name="Pad_Shift_InheritUnmapped_Tooltip" xml:space="preserve"><value>When checked, targets this layer doesn't explicitly map fall through to the Base layer. When unchecked (default), the layer replaces Base entirely and unmapped targets stay off.</value></data>
 
   <data name="Pad_Wheel_RotationRange" xml:space="preserve"><value>Rotation Range</value></data>

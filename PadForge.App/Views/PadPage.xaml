@@ -12911,9 +12911,15 @@
                                 <TextBlock Text="{Binding Pad_KeepAwake_Card_Desc, Source={x:Static strings:Strings.Instance}}"
                                            Style="{StaticResource CardDescription}"/>
 
-                                <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0"
-                                          IsChecked="{Binding KeepAwakeEnabled, Mode=TwoWay}"
-                                          Content="{Binding Pad_KeepAwake_Enable, Source={x:Static strings:Strings.Instance}}"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                              IsChecked="{Binding KeepAwakeEnabled, Mode=TwoWay}"
+                                              VerticalAlignment="Center"
+                                              Content="{Binding Pad_KeepAwake_Enable, Source={x:Static strings:Strings.Instance}}"/>
+                                    <ui:Button Command="{Binding ResetKeepAwakeEnabledCommand}" Style="{StaticResource ResetButton}"
+                                               VerticalAlignment="Center" Margin="8,0,0,0"
+                                               ToolTip="{Binding Pad_KeepAwake_Reset_Enable, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
 
                                 <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
                                     <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}"

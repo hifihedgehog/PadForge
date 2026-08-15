@@ -546,8 +546,8 @@
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Forwards per-trigger motor commands (Xbox Impulse Triggers) from the virtual controller to the assigned physical Xbox One, Elite, or Series controller. Game-driven trigger rumble passes through automatically. The controls below scale the magnitude per trigger.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Left Trigger</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Right Trigger</value></data>
-  <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Swap left and right trigger motors</value></data>
-  <data name="Pad_ImpulseTriggers_AtTranslate" xml:space="preserve"><value>Translate adaptive trigger vibrations</value></data>
+  <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Swap Left and Right Trigger Motors</value></data>
+  <data name="Pad_ImpulseTriggers_AtTranslate" xml:space="preserve"><value>Translate Adaptive Trigger Vibrations</value></data>
   <data name="Pad_ImpulseTriggers_AtTranslate_Tooltip" xml:space="preserve"><value>When a game drives this slot as a virtual DualSense, its vibration-style adaptive trigger effects play on this controller's impulse trigger motors. Resistance-style effects have no vibration equivalent and are ignored.</value></data>
   <data name="Pad_ImpulseTriggers_TestLeftTrigger" xml:space="preserve"><value>Test Left Trigger</value></data>
   <data name="Pad_ImpulseTriggers_TestRightTrigger" xml:space="preserve"><value>Test Right Trigger</value></data>
@@ -583,7 +583,7 @@
   <data name="Pad_ResetTriggerRouteScale" xml:space="preserve"><value>Reset Scale</value></data>
   <data name="Pad_ResetTriggerRouteActivatorMode" xml:space="preserve"><value>Reset Activator Mode</value></data>
   <data name="Pad_ConstantTriggerForce_Description" xml:space="preserve"><value>Apply a continuous force to each trigger motor until you toggle off. Game-driven trigger force from any source overrides while it's active and resumes when the game stops.</value></data>
-  <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Apply constant trigger force</value></data>
+  <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Apply Constant Trigger Force</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Left Trigger</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Right Trigger</value></data>
   <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Reset Constant Trigger Force</value></data>
@@ -591,7 +591,7 @@
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Reset Right Trigger</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Audio Bass Trigger Rumble</value></data>
   <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>Drive the trigger motors from system audio bass. Game-driven trigger force overrides while it's active.</value></data>
-  <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>Drive trigger motors from audio</value></data>
+  <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>Drive Trigger Motors from Audio</value></data>
   <data name="Pad_AudioTriggerRumble_Sensitivity" xml:space="preserve"><value>Sensitivity</value></data>
   <data name="Pad_AudioTriggerRumble_Cutoff" xml:space="preserve"><value>Bass Cutoff (Hz)</value></data>
   <data name="Pad_AudioTriggerRumble_LeftTrigger" xml:space="preserve"><value>Left Trigger</value></data>
@@ -709,7 +709,7 @@
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>Period</value></data>
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Brightness</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>Palette</value></data>
-  <data name="Pad_Lighting_ColorCycleSmooth" xml:space="preserve"><value>Blend smoothly between palette colors</value></data>
+  <data name="Pad_Lighting_ColorCycleSmooth" xml:space="preserve"><value>Blend Smoothly Between Palette Colors</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Add color</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Reset palette</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Replace the current palette with the four default colors (red, green, blue, yellow).</value></data>
@@ -759,7 +759,7 @@
   <data name="Pad_ExtendedResetDefaultsTooltip" xml:space="preserve"><value>Snap every override field back to the current profile's catalog values (Product String, VID, PID, stick/trigger/POV/button counts) and clear the OEM override flag.</value></data>
   <data name="Pad_ExtendedProductString" xml:space="preserve"><value>Product String</value></data>
   <data name="Pad_ExtendedProductStringTooltip" xml:space="preserve"><value>Overrides the iProduct string the OS reports to games and joy.cpl. Drives the Device Manager FriendlyName when no separate description is set.</value></data>
-  <data name="Pad_ExtendedOemOverride" xml:space="preserve"><value>OEM override</value></data>
+  <data name="Pad_ExtendedOemOverride" xml:space="preserve"><value>OEM Override</value></data>
   <data name="Pad_ExtendedOemOverrideTooltip" xml:space="preserve"><value>Claim the Windows DirectInput OEM-name table entry for this profile's VID:PID. joy.cpl and DirectInput UIs normally read that table before the HID iProduct string. Enable this so the Product String above wins. Off by default.</value></data>
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
@@ -796,12 +796,12 @@
   <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Simultaneous Opposite Cardinal Directions (SOCD)</value></data>
   <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>Keep Controller Awake</value></data>
   <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>Some games stop vibration and switch their button prompts the moment they see mouse or keyboard input. Holding a small stick deflection keeps the game treating this controller as the active device. Real input at or above the held level passes through unchanged. Keep the deflection below the game's own dead zone so nothing moves in-game.</value></data>
-  <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>Enable Keep Awake</value></data>
+  <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>Keep Awake</value></data>
   <data name="Pad_KeepAwake_Axis_Label" xml:space="preserve"><value>Held Axis</value></data>
   <data name="Pad_KeepAwake_Axis_Tooltip" xml:space="preserve"><value>Which output axis holds the deflection. Pick one the game reads as movement rather than camera, so a value under the game's dead zone stays invisible.</value></data>
   <data name="Pad_KeepAwake_Deflection_Label" xml:space="preserve"><value>Deflection</value></data>
   <data name="Pad_KeepAwake_Deflection_Tooltip" xml:space="preserve"><value>Held level as a percent of full stick travel. 25% keeps most games engaged while sitting under their movement dead zone. Raise it if the game still switches away. Lower it if the character drifts.</value></data>
-  <data name="Pad_KeepAwake_Motion" xml:space="preserve"><value>Add motion</value></data>
+  <data name="Pad_KeepAwake_Motion" xml:space="preserve"><value>Add Motion</value></data>
   <data name="Pad_KeepAwake_Motion_Tooltip" xml:space="preserve"><value>Some games send vibration only while the stick is MOVING, not while it is held over. Prey (2017) is one. This sweeps the held level gently instead of parking it, so those games keep vibrating. Leave it off otherwise. A steady hold is quieter.</value></data>
   <data name="Pad_KeepAwake_Reset_Axis" xml:space="preserve"><value>Reset Held Axis</value></data>
   <data name="Pad_KeepAwake_Reset_Deflection" xml:space="preserve"><value>Reset Deflection</value></data>
@@ -829,6 +829,7 @@
   <data name="Macro_Reset_RampStart" xml:space="preserve"><value>Reset Ramp Start</value></data>
   <data name="Macro_Reset_RampEnd" xml:space="preserve"><value>Reset Ramp End</value></data>
   <data name="Pad_Reset_AxisToButtonDeadZone" xml:space="preserve"><value>Reset Axis-to-Button Deadzone</value></data>
+  <data name="Pad_KeepAwake_Reset_Enable" xml:space="preserve"><value>Reset Keep Awake</value></data>
   <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>Reset Keep Controller Awake</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>Resolves paired buttons held at the same time on this slot&apos;s virtual controller output. When both buttons of a pair are down, the chosen rule decides which press the game sees.</value></data>
   <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>Reset Simultaneous Opposite Cardinal Directions</value></data>
@@ -1065,7 +1066,7 @@
   <data name="Macro_InputDevice" xml:space="preserve"><value>Assigned Devices</value></data>
   <data name="Macro_OutputController" xml:space="preserve"><value>Virtual Controller</value></data>
   <data name="Macro_Threshold" xml:space="preserve"><value>Threshold</value></data>
-  <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>Consume trigger buttons (hide from game)</value></data>
+  <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>Consume Trigger Buttons (Hide from Game)</value></data>
   <data name="Macro_ConsumeTrigger_Tooltip" xml:space="preserve"><value>Eats the trigger input so the game never sees it. Works for virtual controller buttons, raw device buttons, and touchpad or gyro style inputs. Axis-threshold, POV, and gesture triggers are not consumed.</value></data>
   <data name="Macro_Layer" xml:space="preserve"><value>Layer</value></data>
   <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>Which shift layer this macro belongs to. Any layer fires regardless of the engaged layer. Base and named layers fire only while that layer is engaged, exactly like a mapping row.</value></data>
@@ -1619,7 +1620,7 @@
   <data name="Settings_GyroInvertPitch_Tooltip" xml:space="preserve"><value>Flips the pitch axis. Applies after the gyro space projection, independently of any per-source invert flags on the mapping table.</value></data>
   <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>Compass</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>This controller carries a magnetometer. Anchoring the yaw to magnetic north removes slow horizontal drift from gyro aiming. Calibrate first: press Calibrate, rotate the controller through all orientations in a figure-8 for a few seconds, then press again.</value></data>
-  <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Anchor yaw to compass</value></data>
+  <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Anchor Yaw to Compass</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Adds a small corrective rate that pulls the horizontal aim toward the magnetic heading, so drift cannot accumulate. Requires a stored magnetometer calibration. Samples disturbed by nearby metal or magnets are rejected automatically.</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Reset to default (off)</value></data>
   <data name="Pad_Gyro_MagCalibrate" xml:space="preserve"><value>Calibrate Magnetometer</value></data>
@@ -1881,8 +1882,8 @@
   <data name="Pad_OverallGain" xml:space="preserve"><value>Overall Gain</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Left Motor</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Right Motor</value></data>
-  <data name="Pad_SwapMotors" xml:space="preserve"><value>Swap left and right motors</value></data>
-  <data name="Pad_TriggerRumbleFold" xml:space="preserve"><value>Fold trigger rumble into main motors</value></data>
+  <data name="Pad_SwapMotors" xml:space="preserve"><value>Swap Left and Right Motors</value></data>
+  <data name="Pad_TriggerRumbleFold" xml:space="preserve"><value>Fold Trigger Rumble into Main Motors</value></data>
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>This controller has no trigger motors, so games that use Xbox impulse triggers would go unfelt. Fold each trigger channel into the main motor on the same side instead.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Test Rumble</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Motor Activity</value></data>
@@ -1890,7 +1891,7 @@
   <!-- ═══ Pad — Constant Force ═══ -->
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Constant Force</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Apply a continuous force to this device until you toggle off. Game-driven force from any source overrides while it's active and resumes when the game stops.</value></data>
-  <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Apply constant force</value></data>
+  <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Apply Constant Force</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Drag inside the grid to set direction and strength.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
@@ -1980,8 +1981,8 @@
   <data name="Macro_SysVolumeHint" xml:space="preserve"><value>Continuously maps the selected axis (0–100%) to the Windows system volume, scaled to the volume limit. Use with "Always" trigger, or a button/axis trigger with "While Held" + "Until Release".</value></data>
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Controls the volume of a specific application in the Windows volume mixer, scaled to the volume limit. Enter the process name (visible in Task Manager). Use with "Always" trigger, or a button/axis trigger with "While Held" + "Until Release".</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>Continuously maps the selected axis to mouse movement (or scroll). Use with "Always" trigger, or a button/axis trigger with "While Held" + "Until Release". For stick-to-mouse, create two actions: one for X axis, one for Y axis.</value></data>
-  <data name="Macro_InvertAxis" xml:space="preserve"><value>Invert axis</value></data>
-  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Show volume OSD</value></data>
+  <data name="Macro_InvertAxis" xml:space="preserve"><value>Invert Axis</value></data>
+  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Show Volume OSD</value></data>
   <data name="Macro_AxisDirection" xml:space="preserve"><value>Direction</value></data>
   <data name="Macro_AxisDirection_Any" xml:space="preserve"><value>Any</value></data>
   <data name="Macro_AxisDirection_Positive" xml:space="preserve"><value>Positive</value></data>
@@ -2220,7 +2221,7 @@
   <data name="Pad_Shift_Delete" xml:space="preserve"><value>Delete layer</value></data>
   <data name="Pad_Shift_DeleteConfirmTitle" xml:space="preserve"><value>Delete shift layer</value></data>
   <data name="Pad_Shift_DeleteConfirm_Format" xml:space="preserve"><value>Delete the "{0}" layer and all of its mapping rows? This cannot be undone.</value></data>
-  <data name="Pad_Shift_NoInherit" xml:space="preserve"><value>Do not inherit</value></data>
+  <data name="Pad_Shift_NoInherit" xml:space="preserve"><value>Do Not Inherit</value></data>
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>When checked, this layer's target stays OFF instead of falling through to the Base row.</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>Delay</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>How long the input must stay held before the layer reacts. For Hold mode this is a debounce. For Toggle, Latch, and Sticky it makes the switch a long press: the layer flips once when the hold crosses this time, and a shorter tap does nothing. 0 reacts instantly.</value></data>
@@ -2333,7 +2334,7 @@
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Rumble Pulse on Lock</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Trigger Vibration on Lock</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Lightbar Pulse on Lock</value></data>
-  <data name="Pad_Steering_Lock_ATResistance" xml:space="preserve"><value>Trigger Resistance near Lock</value></data>
+  <data name="Pad_Steering_Lock_ATResistance" xml:space="preserve"><value>Trigger Resistance Near Lock</value></data>
   <data name="Pad_Steering_Lock_PulseMs" xml:space="preserve"><value>Pulse Length</value></data>
   <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>Lightbar Color</value></data>
   <data name="Pad_Steering_Reset_PulseMs" xml:space="preserve"><value>Reset Pulse Length</value></data>
@@ -2408,9 +2409,9 @@
   <data name="Macro_Sound_Browse" xml:space="preserve"><value>Browse…</value></data>
   <data name="Macro_Sound_Preview" xml:space="preserve"><value>Preview</value></data>
   <data name="Macro_Sound_Volume_Label" xml:space="preserve"><value>Volume</value></data>
-  <data name="Macro_Sound_Loop" xml:space="preserve"><value>Loop until stopped</value></data>
+  <data name="Macro_Sound_Loop" xml:space="preserve"><value>Loop Until Stopped</value></data>
   <data name="Macro_Sound_Loop_Tooltip" xml:space="preserve"><value>Repeat the sound until a Stop Sounds action runs, or for While Held / Until Released macros, until the trigger is released</value></data>
-  <data name="Pad_Audio_Mirror" xml:space="preserve"><value>Mirror system audio to the controller speaker</value></data>
+  <data name="Pad_Audio_Mirror" xml:space="preserve"><value>Mirror System Audio to the Controller Speaker</value></data>
   <data name="Pad_Audio_Engage_Label" xml:space="preserve"><value>Play mirrored audio</value></data>
   <data name="Pad_ResetMirrorEngageMode" xml:space="preserve"><value>Reset Engage Mode</value></data>
   <data name="Pad_ResetMirrorSource" xml:space="preserve"><value>Reset Mirror Source</value></data>
@@ -2429,7 +2430,7 @@
   <data name="Pad_Audio_ToneFilter_Cut" xml:space="preserve"><value>Cut them off</value></data>
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Fold them down an octave</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Tone limit</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Play DualSense haptics on this controller</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Play DualSense Haptics on This Controller</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>When a game drives this slot as a virtual DualSense with authored haptic audio, play that track on this controller's actuators as tones. Derived from the audio, so it approximates the designer's feel rather than reproducing it exactly.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Haptics Gain</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Reset to default (off)</value></data>
@@ -3033,7 +3034,7 @@
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Rumble to Audio</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Works with Xbox, DualShock 4 / DualSense, and Nintendo Switch Pro virtual controllers, plus Extended virtual controllers with force feedback, such as racing wheels. Only game feedback plays through the audio output. Macro and test rumble stay on the controller.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Reset Rumble to Audio</value></data>
-  <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Route rumble to an audio output</value></data>
+  <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Route Rumble to an Audio Output</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>Plays the game rumble and force feedback this virtual controller receives as low-frequency tones on the selected audio output. Turning it off keeps every setting.</value></data>
   <data name="Pad_RumbleAudio_ResetEnable" xml:space="preserve"><value>Reset Rumble Routing</value></data>
   <data name="Pad_RumbleAudio_OutputDevice" xml:space="preserve"><value>Output Device</value></data>

@@ -2481,7 +2481,7 @@
   <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Directions cardinales opposées simultanées (SOCD)</value></data>
   <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>Garder la manette active</value></data>
   <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>Certains jeux coupent la vibration et changent les icônes de touches dès qu'ils détectent la souris ou le clavier. Maintenir une petite déviation du stick fait que le jeu continue de traiter cette manette comme le périphérique actif. Les entrées réelles au niveau maintenu ou au-dessus passent inchangées. Gardez la déviation sous la zone morte du jeu pour que rien ne bouge.</value></data>
-  <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>Activer le maintien actif</value></data>
+  <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>Garder active</value></data>
   <data name="Pad_KeepAwake_Axis_Label" xml:space="preserve"><value>Axe maintenu</value></data>
   <data name="Pad_KeepAwake_Axis_Tooltip" xml:space="preserve"><value>L'axe de sortie qui maintient la déviation. Choisissez-en un que le jeu lit comme du déplacement plutôt que la caméra, pour qu'une valeur sous la zone morte reste invisible.</value></data>
   <data name="Pad_KeepAwake_Deflection_Label" xml:space="preserve"><value>Déviation</value></data>
@@ -2514,6 +2514,7 @@
   <data name="Macro_Reset_RampStart" xml:space="preserve"><value>Réinitialiser le début de la rampe</value></data>
   <data name="Macro_Reset_RampEnd" xml:space="preserve"><value>Réinitialiser la fin de la rampe</value></data>
   <data name="Pad_Reset_AxisToButtonDeadZone" xml:space="preserve"><value>Réinitialiser la zone morte axe vers bouton</value></data>
+  <data name="Pad_KeepAwake_Reset_Enable" xml:space="preserve"><value>Réinitialiser Garder active</value></data>
   <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>Réinitialiser Garder la manette active</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>Résout les paires de boutons maintenues en même temps sur la sortie de la manette virtuelle de cet emplacement. Quand les deux boutons d&apos;une paire sont enfoncés, la règle choisie décide quel appui le jeu voit.</value></data>
   <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>Réinitialiser les directions cardinales opposées simultanées</value></data>

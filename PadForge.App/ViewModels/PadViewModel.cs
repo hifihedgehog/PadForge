@@ -6090,6 +6090,10 @@ namespace PadForge.ViewModels
         public RelayCommand ResetKeepAwakeAxisCommand =>
             _resetKeepAwakeAxisCommand ??= new RelayCommand(() => KeepAwakeAxis = "LX");
 
+        private RelayCommand _resetKeepAwakeEnabledCommand;
+        public RelayCommand ResetKeepAwakeEnabledCommand =>
+            _resetKeepAwakeEnabledCommand ??= new RelayCommand(() => KeepAwakeEnabled = false);
+
         private RelayCommand _resetKeepAwakeMotionCommand;
         public RelayCommand ResetKeepAwakeMotionCommand =>
             _resetKeepAwakeMotionCommand ??= new RelayCommand(() => KeepAwakeMotion = false);

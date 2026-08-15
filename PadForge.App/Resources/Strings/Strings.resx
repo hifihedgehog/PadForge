@@ -674,8 +674,8 @@
   <data name="Pad_Lighting_AudioLightbar_LowColor" xml:space="preserve"><value>Quiet Color</value></data>
   <data name="Pad_Lighting_AudioLightbar_MidColor" xml:space="preserve"><value>Medium Color</value></data>
   <data name="Pad_Lighting_AudioLightbar_HighColor" xml:space="preserve"><value>Loud Color</value></data>
-  <data name="Pad_Lighting_AudioLightbar_LowToMid" xml:space="preserve"><value>Quiet → Medium At</value></data>
-  <data name="Pad_Lighting_AudioLightbar_MidToHigh" xml:space="preserve"><value>Medium → Loud At</value></data>
+  <data name="Pad_Lighting_AudioLightbar_LowToMid" xml:space="preserve"><value>Low-to-Mid Boundary</value></data>
+  <data name="Pad_Lighting_AudioLightbar_MidToHigh" xml:space="preserve"><value>Mid-to-High Boundary</value></data>
   <data name="Pad_Lighting_Mode" xml:space="preserve"><value>Mode</value></data>
   <data name="Pad_Lighting_Mode_Off" xml:space="preserve"><value>Off</value></data>
   <data name="Pad_Lighting_Mode_PlayerNumber" xml:space="preserve"><value>Player Number (Default)</value></data>
@@ -1702,7 +1702,7 @@
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Gyro Tilt Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Gyro Tilt</value></data>
   <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Envelope for the Gyro Tilt X / Gyro Tilt Y inputs: hold a tilt and the stick holds its deflection, like Steam's Joystick Deflection mode. Full deflection at the range you set here; Gyro Recenter re-zeroes the resting grip. Yaw (turning the controller flat) is invisible to gravity and does not move these inputs.</value></data>
-  <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Full tilt at</value></data>
+  <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Full Tilt Range</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>Degrees of tilt from the resting grip that count as full stick deflection. Smaller = more sensitive. 25° is the most common value in Steam configs.</value></data>
   <data name="Pad_GyroTilt_Deadzone" xml:space="preserve"><value>Tilt Deadzone</value></data>
   <data name="Pad_GyroTilt_Deadzone_Tooltip" xml:space="preserve"><value>Degrees of tilt ignored around the resting grip, subtracted before scaling so there is no jump at the edge.</value></data>

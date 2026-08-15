@@ -1345,7 +1345,7 @@
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Inclinación ajustable de giroscopio Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Inclinación ajustable</value></data>
   <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Envolvente para las entradas Inclinación ajustable X / Y: mantén la inclinación y el stick mantiene su deflexión, como el modo Deflexión de joystick de Steam. Deflexión completa en el rango que definas aquí; Recentrar giroscopio pone a cero el agarre de reposo. El giro en plano (yaw) es invisible para la gravedad y no mueve estas entradas.</value></data>
-  <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Inclinación completa a</value></data>
+  <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Rango de inclinación completa</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>Grados de inclinación desde el agarre de reposo que cuentan como deflexión completa. Menor = más sensible. 25° es el valor más común en configuraciones de Steam.</value></data>
   <data name="Pad_GyroTilt_Deadzone" xml:space="preserve"><value>Zona muerta de inclinación</value></data>
   <data name="Pad_GyroTilt_Deadzone_Tooltip" xml:space="preserve"><value>Grados de inclinación ignorados alrededor del agarre de reposo, restados antes de escalar para que no haya salto en el borde.</value></data>
@@ -1488,8 +1488,8 @@
   <data name="Pad_Lighting_AudioLightbar_LowColor" xml:space="preserve"><value>Color suave</value></data>
   <data name="Pad_Lighting_AudioLightbar_MidColor" xml:space="preserve"><value>Color medio</value></data>
   <data name="Pad_Lighting_AudioLightbar_HighColor" xml:space="preserve"><value>Color alto</value></data>
-  <data name="Pad_Lighting_AudioLightbar_LowToMid" xml:space="preserve"><value>Suave → Medio en</value></data>
-  <data name="Pad_Lighting_AudioLightbar_MidToHigh" xml:space="preserve"><value>Medio → Alto en</value></data>
+  <data name="Pad_Lighting_AudioLightbar_LowToMid" xml:space="preserve"><value>Límite de graves a medios</value></data>
+  <data name="Pad_Lighting_AudioLightbar_MidToHigh" xml:space="preserve"><value>Límite de medios a agudos</value></data>
   <data name="Pad_Lighting_Mode" xml:space="preserve"><value>Modo</value></data>
   <data name="Pad_Lighting_Mode_Off" xml:space="preserve"><value>Desactivado</value></data>
   <data name="Pad_Lighting_Mode_PlayerNumber" xml:space="preserve"><value>Número de jugador (predeterminado)</value></data>

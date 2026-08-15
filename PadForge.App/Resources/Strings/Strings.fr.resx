@@ -1345,7 +1345,7 @@
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Inclinaison gyro réglable Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Inclinaison réglable</value></data>
   <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Enveloppe des entrées Inclinaison gyro réglable X / Y : maintenez l'inclinaison et le stick garde sa déflexion, comme le mode Déflexion du joystick de Steam. Déflexion complète à la plage définie ici ; Recentrer le gyroscope remet à zéro la prise de repos. Le lacet (rotation à plat) est invisible pour la gravité et ne bouge pas ces entrées.</value></data>
-  <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Inclinaison complète à</value></data>
+  <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Plage d'inclinaison complète</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>Degrés d'inclinaison depuis la prise de repos comptant comme déflexion complète. Plus petit = plus sensible. 25° est la valeur la plus courante dans les configurations Steam.</value></data>
   <data name="Pad_GyroTilt_Deadzone" xml:space="preserve"><value>Zone morte d'inclinaison</value></data>
   <data name="Pad_GyroTilt_Deadzone_Tooltip" xml:space="preserve"><value>Degrés d'inclinaison ignorés autour de la prise de repos, soustraits avant la mise à l'échelle pour éviter tout saut au bord.</value></data>
@@ -1488,8 +1488,8 @@
   <data name="Pad_Lighting_AudioLightbar_LowColor" xml:space="preserve"><value>Couleur faible</value></data>
   <data name="Pad_Lighting_AudioLightbar_MidColor" xml:space="preserve"><value>Couleur moyenne</value></data>
   <data name="Pad_Lighting_AudioLightbar_HighColor" xml:space="preserve"><value>Couleur forte</value></data>
-  <data name="Pad_Lighting_AudioLightbar_LowToMid" xml:space="preserve"><value>Faible → Moyen à </value></data>
-  <data name="Pad_Lighting_AudioLightbar_MidToHigh" xml:space="preserve"><value>Moyen → Fort à </value></data>
+  <data name="Pad_Lighting_AudioLightbar_LowToMid" xml:space="preserve"><value>Limite graves vers médiums</value></data>
+  <data name="Pad_Lighting_AudioLightbar_MidToHigh" xml:space="preserve"><value>Limite médiums vers aigus</value></data>
   <data name="Pad_Lighting_Mode" xml:space="preserve"><value>Mode </value></data>
   <data name="Pad_Lighting_Mode_Off" xml:space="preserve"><value>Désactivé</value></data>
   <data name="Pad_Lighting_Mode_PlayerNumber" xml:space="preserve"><value>Numéro de joueur (par défaut)</value></data>

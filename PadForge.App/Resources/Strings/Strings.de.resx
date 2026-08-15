@@ -1345,7 +1345,7 @@
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Gyro-Kippwinkel Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Gyro-Kippwinkel</value></data>
   <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Hüllkurve für die Eingaben Gyro-Kippwinkel X / Y: Neigung halten und der Stick hält seinen Ausschlag, wie Steams Joystick-Auslenkung. Voller Ausschlag beim hier eingestellten Bereich; Gyro neu zentrieren setzt die Ruhelage zurück. Gieren (flaches Drehen des Controllers) ist für die Schwerkraft unsichtbar und bewegt diese Eingaben nicht.</value></data>
-  <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Voller Ausschlag bei</value></data>
+  <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Kippwinkelbereich</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>Grad Neigung aus der Ruhelage für vollen Stick-Ausschlag. Kleiner = empfindlicher. 25° ist der häufigste Wert in Steam-Konfigurationen.</value></data>
   <data name="Pad_GyroTilt_Deadzone" xml:space="preserve"><value>Neigungs-Totzone</value></data>
   <data name="Pad_GyroTilt_Deadzone_Tooltip" xml:space="preserve"><value>Grad Neigung um die Ruhelage, die ignoriert werden; vor der Skalierung abgezogen, damit es keinen Sprung an der Kante gibt.</value></data>
@@ -1488,8 +1488,8 @@
   <data name="Pad_Lighting_AudioLightbar_LowColor" xml:space="preserve"><value>Leise Farbe</value></data>
   <data name="Pad_Lighting_AudioLightbar_MidColor" xml:space="preserve"><value>Mittlere Farbe</value></data>
   <data name="Pad_Lighting_AudioLightbar_HighColor" xml:space="preserve"><value>Laute Farbe</value></data>
-  <data name="Pad_Lighting_AudioLightbar_LowToMid" xml:space="preserve"><value>Leise → Mittel bei</value></data>
-  <data name="Pad_Lighting_AudioLightbar_MidToHigh" xml:space="preserve"><value>Mittel → Laut bei</value></data>
+  <data name="Pad_Lighting_AudioLightbar_LowToMid" xml:space="preserve"><value>Grenze Tief zu Mittel</value></data>
+  <data name="Pad_Lighting_AudioLightbar_MidToHigh" xml:space="preserve"><value>Grenze Mittel zu Hoch</value></data>
   <data name="Pad_Lighting_Mode" xml:space="preserve"><value>Modus</value></data>
   <data name="Pad_Lighting_Mode_Off" xml:space="preserve"><value>Aus</value></data>
   <data name="Pad_Lighting_Mode_PlayerNumber" xml:space="preserve"><value>Spielernummer (Standard)</value></data>

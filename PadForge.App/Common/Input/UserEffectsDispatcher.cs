@@ -1761,13 +1761,37 @@ namespace PadForge.Common.Input
                     // so the override is null and this branch is skipped —
                     // the bytes flow through to the real DualSense via
                     // the dispatcher path, which is the only writer.
-                    bool gameDrivenRumble = devOverrides.RumbleRight.HasValue && devOverrides.RumbleLeft.HasValue;
-                    if (gameDrivenRumble && isDs5
-                        && DualSensePassthroughDispatcher.IsPassthroughTarget(_padIndex, ud.InstanceGuid))
-                    {
-                        rR = 0;
-                        rL = 0;
-                    }
+                    bool gameDrivenRumble = devOverrides.RumbleRight.HasValue && devOverrides.RumbleLeft.HasValue;
+                    if (gameDrivenRumble && isDs5
+                        && DualSensePassthroughDispatcher.IsPassthroughTarget(_padIndex, ud.InstanceGuid))
+                    {
+                        rR = 0;
+                        rL = 0;
+                    }
+
+                    // The lightbar has the same conflict and never got the
+                    // same treatment. While a game drives the bar on a
+                    // pass-through target, the pass-through is already
+                    // forwarding the game's own bytes at up to 500 Hz, and
+                    // this pass re-asserts a MIRRORED copy at 30 Hz. Two
+                    // writers, one live and one a frame behind, and the pad
+                    // visibly alternates between them.
+                    //
+                    // Measured (#300, r3213 USB trace): 135 lightbar writes
+                    // with the enable bit SET against 6 without, all carrying
+                    // the game's colour, while the effect lane wrote 439 times
+                    // a second. The reporter's description was exact: "an
+                    // overlap between two, one lagging and the other not
+                    // lagging, and the controller is flashing between them."
+                    //
+                    // Suppressing the ENABLE bit rather than the value is the
+                    // point. Clearing the colour alone would drop through to
+                    // PadForge's own configured mode and still fight, just
+                    // with a different colour.
+                    bool gameDrivenBar = devOverrides.LightbarRgb != null
+                        && devOverrides.LightbarRgb.Length >= 3;
+                    bool assertLightbar = !(gameDrivenBar && isDs5
+                        && DualSensePassthroughDispatcher.IsPassthroughTarget(_padIndex, ud.InstanceGuid));
 
                     // Resolve this device's per-device lighting config.
                     // Falls back to the slot's anchor config if missing
@@ -2027,7 +2051,7 @@ namespace PadForge.Common.Input
                                 assertRightTrig, assertLeftTrig, devOverrides, pctByte,
                                 devPlayerNumber, assertMicLed, assertAudioMute,
                                 assertPips, hpVol, assertHeadphone,
-                                pathVal, assertAudioCtl)
+                                pathVal, assertAudioCtl, assertLightbar)
                             : Ds4EffectSynthesizer.BuildFields(
                                 devCfg, devPeak, nowMs,
                                 _randomColor, devPulseColor, devPulseIntensity,

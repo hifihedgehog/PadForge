@@ -232,11 +232,11 @@
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Fornece dados de giroscópio e acelerômetro para Cemu, Dolphin, Yuzu, etc.</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Controle Web</value></data>
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>Sirva uma interface de gamepad para navegadores na sua rede local.</value></data>
-  <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Ativar servidor de controle web</value></data>
+  <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Ativar Servidor de Controle Web</value></data>
   <data name="Dashboard_WebFooter" xml:space="preserve"><value>Conecte de um celular ou tablet pelo navegador para usar como gamepad.</value></data>
   <data name="Dashboard_TouchpadOverlay" xml:space="preserve"><value>Sobreposição de Touchpad</value></data>
   <data name="Dashboard_TouchpadOverlayDescription" xml:space="preserve"><value>Superfície de toque na tela para emulação de touchpad compatível com PlayStation.</value></data>
-  <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Ativar sobreposição de touchpad</value></data>
+  <data name="Dashboard_EnableTouchpadOverlay" xml:space="preserve"><value>Ativar Sobreposição de Touchpad</value></data>
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Opacidade</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>Redefinir posição</value></data>
   <data name="TouchpadOverlay_DragTooltip" xml:space="preserve"><value>Clique com botão direito e segure para arrastar</value></data>
@@ -253,15 +253,15 @@
   <data name="Settings_ThemeDark" xml:space="preserve"><value>Escuro</value></data>
   <data name="Settings_InputEngine" xml:space="preserve"><value>Motor de Entrada</value></data>
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Configure o comportamento de polling e processamento em segundo plano.</value></data>
-  <data name="Settings_AutoStart" xml:space="preserve"><value>Iniciar motor automaticamente ao abrir</value></data>
-  <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Continuar polling quando a janela perder o foco</value></data>
+  <data name="Settings_AutoStart" xml:space="preserve"><value>Iniciar Motor Automaticamente ao Abrir</value></data>
+  <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Continuar Polling Quando a Janela Perder o Foco</value></data>
   <data name="Settings_PollingInterval" xml:space="preserve"><value>Intervalo de polling</value></data>
-  <data name="Settings_HideDevices" xml:space="preserve"><value>Ocultar dispositivos dos jogos</value></data>
+  <data name="Settings_HideDevices" xml:space="preserve"><value>Ocultar Dispositivos dos Jogos</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Chave principal para ocultação de dispositivos via HidHide e hooks de entrada de baixo nível. Quando desativada, nenhum dispositivo é ocultado independentemente das configurações individuais.</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Janela</value></data>
   <data name="Settings_WindowDesc" xml:space="preserve"><value>Comportamento de inicialização e minimização.</value></data>
-  <data name="Settings_MinimizeToTray" xml:space="preserve"><value>Minimizar para a bandeja do sistema</value></data>
-  <data name="Settings_StartMinimized" xml:space="preserve"><value>Iniciar minimizado</value></data>
+  <data name="Settings_MinimizeToTray" xml:space="preserve"><value>Minimizar para a Bandeja do Sistema</value></data>
+  <data name="Settings_StartMinimized" xml:space="preserve"><value>Iniciar Minimizado</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Iniciar com o Windows</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>Driver HidHide</value></data>
   <data name="Settings_HidHideDesc" xml:space="preserve"><value>Oculte dispositivos físicos dos jogos para evitar entrada duplicada.</value></data>
@@ -347,10 +347,10 @@
   <data name="Devices_ForceRaw" xml:space="preserve"><value>Forçar modo joystick bruto (ignorar remapeamento de gamepad)</value></data>
   <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>Ler índices HID brutos em vez do mapeamento de gamepad do SDL. Use quando o SDL identificar incorretamente o layout de botões/eixos</value></data>
   <data name="Devices_InputHiding" xml:space="preserve"><value>Ocultação de Entrada</value></data>
-  <data name="Devices_HideFromGames" xml:space="preserve"><value>Ocultar dos jogos (HidHide)</value></data>
+  <data name="Devices_HideFromGames" xml:space="preserve"><value>Ocultar dos Jogos (HidHide)</value></data>
   <data name="Devices_HideTooltip" xml:space="preserve"><value>Oculta completamente este dispositivo de outros aplicativos via o driver HidHide</value></data>
   <data name="Devices_HideTooltipInstall" xml:space="preserve"><value>Instale o driver HidHide para ativar esta opção</value></data>
-  <data name="Devices_ConsumeMapped" xml:space="preserve"><value>Consumir entradas mapeadas (hooks)</value></data>
+  <data name="Devices_ConsumeMapped" xml:space="preserve"><value>Consumir Entradas Mapeadas (Hooks)</value></data>
   <data name="Devices_ConsumeTooltip" xml:space="preserve"><value>Suprime apenas as teclas/botões específicos que estão mapeados, permitindo que entradas não mapeadas passem</value></data>
   <data name="Devices_RawInputState" xml:space="preserve"><value>Estado da Entrada Bruta</value></data>
   <data name="Devices_Axes" xml:space="preserve"><value>Eixos</value></data>
@@ -659,7 +659,7 @@
   <data name="Macro_InputDevice" xml:space="preserve"><value>Dispositivos Atribuídos</value></data>
   <data name="Macro_OutputController" xml:space="preserve"><value>Controle Virtual</value></data>
   <data name="Macro_Threshold" xml:space="preserve"><value>Limiar</value></data>
-  <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>Consumir botões de gatilho (ocultar do jogo)</value></data>
+  <data name="Macro_ConsumeTrigger" xml:space="preserve"><value>Consumir Botões de Gatilho (Ocultar do Jogo)</value></data>
   <data name="Macro_ConsumeTrigger_Tooltip" xml:space="preserve"><value>Consome a entrada do gatilho para que o jogo nunca a veja. Funciona com botões do controle virtual, botões físicos do dispositivo e entradas de touchpad ou giroscópio. Gatilhos por limiar de eixo, POV e gestos não são consumidos.</value></data>
   <data name="Macro_Layer" xml:space="preserve"><value>Camada</value></data>
   <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>A qual camada de shift esta macro pertence. “Qualquer camada” dispara independentemente da camada ativa. Base e camadas nomeadas disparam apenas enquanto essa camada está ativa, exatamente como uma linha de mapeamento.</value></data>
@@ -916,14 +916,14 @@
   <data name="Pad_OverallGain" xml:space="preserve"><value>Ganho Geral</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Motor Esquerdo</value></data>
   <data name="Pad_RightMotorLabel" xml:space="preserve"><value>Motor Direito</value></data>
-  <data name="Pad_SwapMotors" xml:space="preserve"><value>Trocar motores esquerdo e direito</value></data>
-  <data name="Pad_TriggerRumbleFold" xml:space="preserve"><value>Combinar a vibração dos gatilhos nos motores principais</value></data>
+  <data name="Pad_SwapMotors" xml:space="preserve"><value>Trocar Motores Esquerdo e Direito</value></data>
+  <data name="Pad_TriggerRumbleFold" xml:space="preserve"><value>Combinar a Vibração dos Gatilhos nos Motores Principais</value></data>
   <data name="Pad_TriggerRumbleFold_Tooltip" xml:space="preserve"><value>Este controle não tem motores nos gatilhos, então jogos que usam gatilhos de impulso do Xbox não seriam sentidos. Em vez disso, cada canal de gatilho é combinado com o motor principal do mesmo lado.</value></data>
   <data name="Pad_TestRumble" xml:space="preserve"><value>Testar Vibração</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Atividade do Motor</value></data>
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Força Constante</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Aplica uma força contínua a este dispositivo até você desativar. A força enviada por um jogo tem prioridade enquanto estiver ativa e retoma quando o jogo para.</value></data>
-  <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Aplicar força constante</value></data>
+  <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Aplicar Força Constante</value></data>
   <data name="Pad_ConstantForce_Position" xml:space="preserve"><value>Arraste dentro da grade para definir direção e intensidade.</value></data>
   <data name="Pad_ConstantForce_X" xml:space="preserve"><value>X</value></data>
   <data name="Pad_ConstantForce_Y" xml:space="preserve"><value>Y</value></data>
@@ -967,7 +967,7 @@
   <data name="Macro_Axis_Inverted" xml:space="preserve"><value>invertido</value></data>
   <data name="Macro_Axis_Half" xml:space="preserve"><value>meio eixo</value></data>
   <data name="Pad_Either" xml:space="preserve"><value>Qualquer Lado</value></data>
-  <data name="Pad_InvertOutput" xml:space="preserve"><value>Inverter saída</value></data>
+  <data name="Pad_InvertOutput" xml:space="preserve"><value>Inverter Saída</value></data>
   <data name="Pad_Mapping_Accel" xml:space="preserve"><value>Aceleração</value></data>
   <data name="Pad_Mapping_Accel_Tooltip" xml:space="preserve"><value>O movimento rápido desta entrada é amplificado, o lento passa inalterado. 0 mantém a resposta plana. Importações colocam aqui a aceleração do mouse do Steam em linhas com stick.</value></data>
   <data name="Pad_InvertOutput_Tooltip" xml:space="preserve"><value>Inverte o resultado desta entrada. Em uma fonte de meio eixo, a caixa Inverter escolhe qual metade do eixo é lida, então é este controle que vira a direção da saída.</value></data>
@@ -975,8 +975,8 @@
   <data name="Macro_SysVolumeHint" xml:space="preserve"><value>Mapeia continuamente o eixo selecionado (0–100%) para o volume do sistema Windows, escalonado ao limite de volume. Use com gatilho "Sempre", ou botão/eixo com "Enquanto Segurar" + "Até Soltar".</value></data>
   <data name="Macro_AppVolumeHint" xml:space="preserve"><value>Controla o volume de um aplicativo específico no mixer de volume do Windows, escalonado ao limite de volume. Insira o nome do processo (visível no Gerenciador de Tarefas). Use com gatilho "Sempre", ou botão/eixo com "Enquanto Segurar" + "Até Soltar".</value></data>
   <data name="Macro_MouseMoveHint" xml:space="preserve"><value>Mapeia continuamente o eixo selecionado para o movimento do mouse (ou rolagem). Use com gatilho "Sempre", ou botão/eixo com "Enquanto Segurar" + "Até Soltar". Para usar analógico como mouse, crie duas ações: uma para o eixo X e outra para o eixo Y.</value></data>
-  <data name="Macro_InvertAxis" xml:space="preserve"><value>Inverter eixo</value></data>
-  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Mostrar OSD de volume</value></data>
+  <data name="Macro_InvertAxis" xml:space="preserve"><value>Inverter Eixo</value></data>
+  <data name="Macro_ShowVolumeOsd" xml:space="preserve"><value>Mostrar OSD de Volume</value></data>
   <data name="Macro_AxisDirection" xml:space="preserve"><value>Direção</value></data>
   <data name="Macro_AxisDirection_Any" xml:space="preserve"><value>Qualquer</value></data>
   <data name="Macro_AxisDirection_Positive" xml:space="preserve"><value>Positivo</value></data>
@@ -1263,7 +1263,7 @@
   <data name="Settings_GyroInvertPitch_Tooltip" xml:space="preserve"><value>Inversão global do pitch. Aplicada após a projeção Player/World. Independente das flags Invert por fonte na tabela de mapeamentos.</value></data>
   <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>Bússola</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Este controle traz um magnetômetro. Ancorar a guinada ao norte magnético remove a deriva horizontal lenta da mira por giroscópio. Calibre primeiro: pressione Calibrar, gire o controle em forma de oito por todas as orientações por alguns segundos e pressione novamente.</value></data>
-  <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Ancorar a guinada à bússola</value></data>
+  <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Ancorar a Guinada à Bússola</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Adiciona uma pequena taxa corretiva que puxa a mira horizontal para o rumo magnético, impedindo o acúmulo de deriva. Requer uma calibração do magnetômetro salva. Amostras perturbadas por metal ou ímãs próximos são rejeitadas automaticamente.</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Redefinir para o padrão (desligado)</value></data>
   <data name="Pad_Gyro_MagCalibrate" xml:space="preserve"><value>Calibrar magnetômetro</value></data>
@@ -1365,7 +1365,7 @@
   <data name="Pad_Touchpad_MomentumMaxSpeed" xml:space="preserve"><value>Velocidade máxima do peteleco</value></data>
   <data name="Pad_Touchpad_MomentumMaxSpeed_Tooltip" xml:space="preserve"><value>Limita a velocidade de saída do peteleco, em larguras do pad por segundo. 0 desliga o limite.</value></data>
   <data name="Pad_ResetTouchpadMomentumMaxSpeed" xml:space="preserve"><value>Redefinir velocidade máxima</value></data>
-  <data name="Pad_Touchpad_MomentumStacking" xml:space="preserve"><value>Acumular petelecos</value></data>
+  <data name="Pad_Touchpad_MomentumStacking" xml:space="preserve"><value>Acumular Petelecos</value></data>
   <data name="Pad_Touchpad_MomentumStacking_Tooltip" xml:space="preserve"><value>Cada novo deslize soma ao impulso em andamento em vez de substituí-lo. Um toque ou soltar parado interrompe tudo. A velocidade é limitada pela velocidade máxima, ou por um teto interno se ela estiver desligada.</value></data>
   <data name="Pad_ResetTouchpadMomentumStacking" xml:space="preserve"><value>Redefinir acumular petelecos</value></data>
   <data name="Mapping_MouseSpeedX" xml:space="preserve"><value>Velocidade do Mouse X</value></data>
@@ -1513,7 +1513,7 @@
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Brilho</value></data>
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>Período</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>Paleta</value></data>
-  <data name="Pad_Lighting_ColorCycleSmooth" xml:space="preserve"><value>Mesclar suavemente entre as cores da paleta</value></data>
+  <data name="Pad_Lighting_ColorCycleSmooth" xml:space="preserve"><value>Mesclar Suavemente Entre as Cores da Paleta</value></data>
   <data name="Pad_Lighting_AddColor" xml:space="preserve"><value>Adicionar Cor</value></data>
   <data name="Pad_Lighting_ResetPalette" xml:space="preserve"><value>Redefinir Paleta</value></data>
   <data name="Pad_Lighting_ResetPaletteTooltip" xml:space="preserve"><value>Substitui a paleta atual pelas quatro cores padrão (vermelho, verde, azul, amarelo).</value></data>
@@ -1546,7 +1546,7 @@
   <data name="Pad_ResetAudioMidB" xml:space="preserve"><value>Redefinir Banda Média Azul</value></data>
   <data name="Pad_ResetAudioHighR" xml:space="preserve"><value>Redefinir Banda Alta Vermelho</value></data>
   <data name="Pad_ResetAudioHighG" xml:space="preserve"><value>Redefinir Banda Alta Verde</value></data>
-  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>Redefinir Banda Alta Azul</value></data>  <data name="Pad_Lighting_InputReactive" xml:space="preserve"><value>Reativo à Entrada</value></data>  <data name="Pad_Lighting_InputReactive_Off" xml:space="preserve"><value>Desativado</value></data>  <data name="Pad_Lighting_InputReactive_Random" xml:space="preserve"><value>Cor Aleatória por Pressão</value></data>  <data name="Pad_Lighting_InputReactive_Cycle" xml:space="preserve"><value>Percorrer Paleta</value></data>  <data name="Pad_Lighting_InputReactive_Fixed" xml:space="preserve"><value>Uma Cor por Pressionamento</value></data>  <data name="Pad_ResetInputReactive" xml:space="preserve"><value>Redefinir Reativo à Entrada</value></data>  <data name="Pad_Lighting_InputReactive_FixedColor" xml:space="preserve"><value>Cor do Flash por Pressão</value></data>  <data name="Settings_KeepCloaksBetweenLaunchesTooltip" xml:space="preserve"><value>Manter os ocultamentos do HidHide entre sessões do PadForge. Útil quando outro aplicativo (p. ex. Steam) procura controles enquanto o PadForge está fechado e você quer que ele continue vendo os físicos como ocultos. Desativado por padrão. Desligar o interruptor principal acima no meio da sessão reexibe os dispositivos imediatamente.</value></data>  <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Manter dispositivos ocultos entre execuções</value></data>  <data name="Pad_AT_LoadGameCubePreset_Tooltip" xml:space="preserve"><value>Define Intervalo e Força com valores que imitam a sensação física de clique de um gatilho real do GameCube (início ~56 %, fim ~63 %, força máxima). Ajuste os controles deslizantes depois se preferir outra sensação.</value></data>
+  <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>Redefinir Banda Alta Azul</value></data>  <data name="Pad_Lighting_InputReactive" xml:space="preserve"><value>Reativo à Entrada</value></data>  <data name="Pad_Lighting_InputReactive_Off" xml:space="preserve"><value>Desativado</value></data>  <data name="Pad_Lighting_InputReactive_Random" xml:space="preserve"><value>Cor Aleatória por Pressão</value></data>  <data name="Pad_Lighting_InputReactive_Cycle" xml:space="preserve"><value>Percorrer Paleta</value></data>  <data name="Pad_Lighting_InputReactive_Fixed" xml:space="preserve"><value>Uma Cor por Pressionamento</value></data>  <data name="Pad_ResetInputReactive" xml:space="preserve"><value>Redefinir Reativo à Entrada</value></data>  <data name="Pad_Lighting_InputReactive_FixedColor" xml:space="preserve"><value>Cor do Flash por Pressão</value></data>  <data name="Settings_KeepCloaksBetweenLaunchesTooltip" xml:space="preserve"><value>Manter os ocultamentos do HidHide entre sessões do PadForge. Útil quando outro aplicativo (p. ex. Steam) procura controles enquanto o PadForge está fechado e você quer que ele continue vendo os físicos como ocultos. Desativado por padrão. Desligar o interruptor principal acima no meio da sessão reexibe os dispositivos imediatamente.</value></data>  <data name="Settings_KeepCloaksBetweenLaunches" xml:space="preserve"><value>Manter Dispositivos Ocultos Entre Execuções</value></data>
 
 
 
@@ -1586,7 +1586,7 @@
   <data name="Pad_Shift_Delete" xml:space="preserve"><value>Excluir Camada</value></data>
   <data name="Pad_Shift_DeleteConfirmTitle" xml:space="preserve"><value>Excluir Camada Shift</value></data>
   <data name="Pad_Shift_DeleteConfirm_Format" xml:space="preserve"><value>Excluir a camada "{0}" e todas as suas linhas de mapeamento? Esta ação não pode ser desfeita.</value></data>
-  <data name="Pad_Shift_NoInherit" xml:space="preserve"><value>Não herdar</value></data>
+  <data name="Pad_Shift_NoInherit" xml:space="preserve"><value>Não Herdar</value></data>
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>Quando marcado, o alvo desta camada permanece DESLIGADO em vez de cair para a linha Base.</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>Atraso</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>Quanto tempo a entrada deve permanecer pressionada antes de a camada reagir. No modo Manter isso é um debounce. Em Alternar, Fixar e Adesivo, a troca vira um pressionamento longo: a camada muda uma vez quando o tempo pressionado cruza este valor, e um toque mais curto não faz nada. 0 reage na hora.</value></data>
@@ -1607,7 +1607,7 @@
   <data name="Pad_Shift_ModeSticky_Subtitle" xml:space="preserve"><value>Toque uma vez para ativar. A próxima pressão de botão mapeado dispara na camada, depois libera automaticamente.</value></data>
   <data name="Pad_Shift_ModePassive_Subtitle" xml:space="preserve"><value>Sem botão próprio. Adicione-a à fila de um controle de Ciclo e o ciclo a alcança.</value></data>
   <data name="Pad_Shift_InheritUnmapped" xml:space="preserve"><value>Herdar Alvos Não Mapeados da Base</value></data>
-  <data name="Pad_Shift_FireOnRelease" xml:space="preserve"><value>Disparar ao soltar</value></data>
+  <data name="Pad_Shift_FireOnRelease" xml:space="preserve"><value>Disparar ao Soltar</value></data>
   <data name="Pad_Shift_FireOnRelease_Tooltip" xml:space="preserve"><value>Espera o botão ser solto antes de este ativador disparar. Se houver um atraso de retenção, o pressionamento deve durar esse tempo para que o soltar conte.</value></data>
   <data name="Pad_Shift_PostponeMapping" xml:space="preserve"><value>Também Disparar o Mapeamento Próprio do Ativador</value></data>
   <data name="Pad_Shift_PostponeMapping_Tooltip" xml:space="preserve"><value>Quando marcado, o botão ativador continua a impulsionar qualquer linha que o use como fonte. Um toque muda a camada E dispara o mapeamento próprio do botão. Quando desmarcado (padrão), o toque é consumido apenas pela mudança de camada.</value></data>
@@ -1616,8 +1616,8 @@
   <data name="Pad_ImpulseTriggers_Subtitle" xml:space="preserve"><value>Encaminha comandos por motor de gatilho (gatilhos Impulse do Xbox) do controle virtual para o controle físico Xbox One, Elite ou Series atribuído. A vibração de gatilho gerada pelo jogo passa automaticamente. Os controles abaixo ajustam a intensidade por gatilho.</value></data>
   <data name="Pad_ImpulseTriggers_LeftTrigger" xml:space="preserve"><value>Gatilho Esquerdo</value></data>
   <data name="Pad_ImpulseTriggers_RightTrigger" xml:space="preserve"><value>Gatilho Direito</value></data>
-  <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Trocar motores dos gatilhos esquerdo e direito</value></data>
-  <data name="Pad_ImpulseTriggers_AtTranslate" xml:space="preserve"><value>Traduzir as vibrações dos gatilhos adaptáveis</value></data>
+  <data name="Pad_ImpulseTriggers_SwapTriggers" xml:space="preserve"><value>Trocar Motores dos Gatilhos Esquerdo e Direito</value></data>
+  <data name="Pad_ImpulseTriggers_AtTranslate" xml:space="preserve"><value>Traduzir as Vibrações dos Gatilhos Adaptáveis</value></data>
   <data name="Pad_ImpulseTriggers_AtTranslate_Tooltip" xml:space="preserve"><value>Quando um jogo controla este slot como um DualSense virtual, seus efeitos de gatilho adaptável do tipo vibração são reproduzidos nos motores de gatilho de impulso deste controle. Efeitos do tipo resistência não têm equivalente em vibração e são ignorados.</value></data>
   <data name="Pad_ImpulseTriggers_TestLeftTrigger" xml:space="preserve"><value>Testar Gatilho Esquerdo</value></data>
   <data name="Pad_ImpulseTriggers_TestRightTrigger" xml:space="preserve"><value>Testar Gatilho Direito</value></data>
@@ -1652,7 +1652,7 @@
   <data name="Pad_ResetTriggerRouteScale" xml:space="preserve"><value>Redefinir Escala</value></data>
   <data name="Pad_ResetTriggerRouteActivatorMode" xml:space="preserve"><value>Redefinir Modo de Ativação</value></data>
   <data name="Pad_ConstantTriggerForce_Description" xml:space="preserve"><value>Aplica uma força contínua a cada motor de gatilho até você desativar. A força de gatilho gerada por um jogo prevalece enquanto está ativa e é retomada quando o jogo para.</value></data>
-  <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Aplicar força constante nos gatilhos</value></data>
+  <data name="Pad_ConstantTriggerForce_Toggle" xml:space="preserve"><value>Aplicar Força Constante nos Gatilhos</value></data>
   <data name="Pad_ConstantTriggerForce_Left" xml:space="preserve"><value>Gatilho Esquerdo</value></data>
   <data name="Pad_ConstantTriggerForce_Right" xml:space="preserve"><value>Gatilho Direito</value></data>
   <data name="Pad_ResetConstantTriggerForce" xml:space="preserve"><value>Restaurar Força Constante nos Gatilhos</value></data>
@@ -1660,7 +1660,7 @@
   <data name="Pad_ResetConstantTriggerRight" xml:space="preserve"><value>Restaurar Gatilho Direito</value></data>
   <data name="Pad_AudioTriggerRumble_Header" xml:space="preserve"><value>Vibração de Gatilho por Graves de Áudio</value></data>
   <data name="Pad_AudioTriggerRumble_Description" xml:space="preserve"><value>Aciona os motores de gatilho a partir dos graves do áudio do sistema. A força de gatilho gerada por um jogo prevalece enquanto está ativa.</value></data>
-  <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>Acionar motores de gatilho a partir do áudio</value></data>
+  <data name="Pad_AudioTriggerRumble_Toggle" xml:space="preserve"><value>Acionar Motores de Gatilho a Partir do Áudio</value></data>
   <data name="Pad_AudioTriggerRumble_Sensitivity" xml:space="preserve"><value>Sensibilidade</value></data>
   <data name="Pad_AudioTriggerRumble_Cutoff" xml:space="preserve"><value>Corte de graves (Hz)</value></data>
   <data name="Pad_AudioTriggerRumble_LeftTrigger" xml:space="preserve"><value>Gatilho Esquerdo</value></data>
@@ -1749,7 +1749,7 @@
   <data name="Pad_Touchpad_SwipeTimeWindow" xml:space="preserve"><value>Janela de Tempo do Deslize</value></data>
   <data name="Pad_Touchpad_RadialZones" xml:space="preserve"><value>Zonas Radiais (Estilo Roda de Armas)</value></data>
   <data name="Pad_Touchpad_RadialZones_Tooltip" xml:space="preserve"><value>Deslize para fora a partir do ponto onde o dedo encostou em direção a um setor. A zona 0 está ancorada em cima e as zonas aumentam no sentido horário. Cada entrada do seletor mostra a direção entre parênteses como graus a partir do topo: (0°) é em cima, (90°) é à direita, (180°) é embaixo, (270°) é à esquerda. Apenas uma zona fica ativa por vez. Deslizar para outra libera a anterior, permitindo percorrer as zonas em um único movimento.</value></data>
-  <data name="Pad_Touchpad_TouchSpots" xml:space="preserve"><value>Zonas de toque (esquerda / direita / topo / multitoque)</value></data>
+  <data name="Pad_Touchpad_TouchSpots" xml:space="preserve"><value>Zonas de Toque (Esquerda / Direita / Topo / Multitoque)</value></data>
   <data name="Pad_Touchpad_TouchSpots_Tooltip" xml:space="preserve"><value>Botões mantidos conforme onde o touchpad é tocado. Um dedo cai em esquerda, direita ou topo (o quarto superior). Dois ou mais dedos mantêm multitoque. A divisão esquerda/direita fica a dois quintos da largura, como no DS4Windows, e apenas uma zona fica ativa por vez.</value></data>
   <data name="Pad_Touchpad_SectionGated_Hint" xml:space="preserve"><value>Inativo até ser ativado: ligue “Ativar Gestos Neste Touchpad” em Detecção de Gestos (e ajuste Reconhecer para incluir este catálogo). Só então eles aparecem nas listas de mapeamento e macros.</value></data>
   <data name="Pad_Touchpad_RadialZoneCount" xml:space="preserve"><value>Quantidade de Zonas</value></data>
@@ -1802,7 +1802,7 @@
   <data name="Pad_ResetTouchpadMouseSensitivityY" xml:space="preserve"><value>Restaurar Sensibilidade do Mouse Y</value></data>
   <data name="Pad_ResetTouchpadMouseInvertX" xml:space="preserve"><value>Restaurar Inverter Mouse X</value></data>
   <data name="Pad_ResetTouchpadMouseInvertY" xml:space="preserve"><value>Restaurar Inverter Mouse Y</value></data>
-  <data name="Pad_Touchpad_MouseJitterReduction" xml:space="preserve"><value>Redução de tremor</value></data>
+  <data name="Pad_Touchpad_MouseJitterReduction" xml:space="preserve"><value>Redução de Tremor</value></data>
   <data name="Pad_Touchpad_MouseAcceleration" xml:space="preserve"><value>Aceleração</value></data>
   <data name="Pad_Touchpad_PointerResponse" xml:space="preserve"><value>Resposta</value></data>
   <data name="Pad_Touchpad_PointerResponse_Tooltip" xml:space="preserve"><value>Como a velocidade do dedo se torna a velocidade do cursor. O Trackpad também move o cursor mais devagar que o dedo em baixa velocidade, e é isso que torna o posicionamento fino natural.</value></data>
@@ -1915,7 +1915,7 @@
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Pulso de Vibração no Batente</value></data>
   <data name="Pad_Steering_Lock_TriggerVib" xml:space="preserve"><value>Vibração do Gatilho no Batente</value></data>
   <data name="Pad_Steering_Lock_Lightbar" xml:space="preserve"><value>Pulso da Barra de Luz no Batente</value></data>
-  <data name="Pad_Steering_Lock_ATResistance" xml:space="preserve"><value>Resistência do gatilho perto do batente</value></data>
+  <data name="Pad_Steering_Lock_ATResistance" xml:space="preserve"><value>Resistência do Gatilho Perto do Batente</value></data>
   <data name="Pad_Steering_Lock_PulseMs" xml:space="preserve"><value>Duração do Pulso</value></data>
   <data name="Pad_Steering_Lock_LightbarColor" xml:space="preserve"><value>Cor da Barra de Luz</value></data>
   <data name="Pad_Steering_Reset_PulseMs" xml:space="preserve"><value>Redefinir Duração do Pulso</value></data>
@@ -1990,9 +1990,9 @@
   <data name="Macro_Sound_Browse" xml:space="preserve"><value>Procurar…</value></data>
   <data name="Macro_Sound_Preview" xml:space="preserve"><value>Prévia</value></data>
   <data name="Macro_Sound_Volume_Label" xml:space="preserve"><value>Volume</value></data>
-  <data name="Macro_Sound_Loop" xml:space="preserve"><value>Loop até parar</value></data>
+  <data name="Macro_Sound_Loop" xml:space="preserve"><value>Loop até Parar</value></data>
   <data name="Macro_Sound_Loop_Tooltip" xml:space="preserve"><value>Repete o som até uma ação "Parar sons" rodar, ou em macros de segurar/soltar, até o gatilho ser solto</value></data>
-  <data name="Pad_Audio_Mirror" xml:space="preserve"><value>Espelhar o áudio do sistema no alto-falante do controle</value></data>
+  <data name="Pad_Audio_Mirror" xml:space="preserve"><value>Espelhar o Áudio do Sistema no Alto-falante do Controle</value></data>
   <data name="Pad_Audio_Engage_Label" xml:space="preserve"><value>Reproduzir áudio espelhado</value></data>
   <data name="Pad_ResetMirrorEngageMode" xml:space="preserve"><value>Redefinir modo de ativação</value></data>
   <data name="Pad_ResetMirrorSource" xml:space="preserve"><value>Redefinir fonte do espelhamento</value></data>
@@ -2011,7 +2011,7 @@
   <data name="Pad_Audio_ToneFilter_Cut" xml:space="preserve"><value>Cortá-los</value></data>
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Dobrá-los uma oitava para baixo</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Limite de tom</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Reproduzir a háptica do DualSense neste controle</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Reproduzir a Háptica do DualSense Neste Controle</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Quando um jogo controla este slot como um DualSense virtual com áudio háptico de autor, essa trilha é reproduzida como tons nos atuadores deste controle. Derivado do áudio, então aproxima a sensação projetada em vez de reproduzi-la exatamente.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Ganho háptico</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Redefinir para o padrão (desligado)</value></data>
@@ -2139,12 +2139,8 @@
   <data name="RemoteLink_StatusConnecting" xml:space="preserve">
     <value>Conectando a {0}:{1}…</value>
   </data>
-  <data name="RemoteLink_AutoReconnect" xml:space="preserve">
-    <value>Reconectar automaticamente</value>
-  </data>
-  <data name="Dashboard_EnableRemoteLink" xml:space="preserve">
-    <value>Ativar servidor do Remote Link</value>
-  </data>
+  <data name="RemoteLink_AutoReconnect" xml:space="preserve"><value>Reconectar Automaticamente</value></data>
+  <data name="Dashboard_EnableRemoteLink" xml:space="preserve"><value>Ativar Servidor do Remote Link</value></data>
   <data name="Dashboard_RemoteLink" xml:space="preserve">
     <value>Remote Link</value>
   </data>
@@ -2172,9 +2168,7 @@
   <data name="RemoteLink_ConsentWarning" xml:space="preserve">
     <value>Um PC pareado pode enviar entrada de teclado, mouse e macros para este PC, a menos que você o limite a somente gamepad.</value>
   </data>
-  <data name="RemoteLink_GamepadOnly" xml:space="preserve">
-    <value>Limitar este PC a somente entrada de gamepad</value>
-  </data>
+  <data name="RemoteLink_GamepadOnly" xml:space="preserve"><value>Limitar Este PC a Somente Entrada de Gamepad</value></data>
   <data name="RemoteLink_Identity" xml:space="preserve">
     <value>Identidade</value>
   </data>
@@ -2481,12 +2475,12 @@
   <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Direções Cardeais Opostas Simultâneas (SOCD)</value></data>
   <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>Manter o controle ativo</value></data>
   <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>Alguns jogos param a vibração e trocam os ícones de botões assim que detectam mouse ou teclado. Manter uma pequena deflexão do analógico faz o jogo continuar tratando este controle como o dispositivo ativo. A entrada real no nível mantido ou acima passa sem alterações. Mantenha a deflexão abaixo da zona morta do jogo para que nada se mova.</value></data>
-  <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>Manter ativo</value></data>
+  <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>Manter Ativo</value></data>
   <data name="Pad_KeepAwake_Axis_Label" xml:space="preserve"><value>Eixo mantido</value></data>
   <data name="Pad_KeepAwake_Axis_Tooltip" xml:space="preserve"><value>Qual eixo de saída mantém a deflexão. Escolha um que o jogo leia como movimento em vez de câmera, para que um valor abaixo da zona morta fique invisível.</value></data>
   <data name="Pad_KeepAwake_Deflection_Label" xml:space="preserve"><value>Deflexão</value></data>
   <data name="Pad_KeepAwake_Deflection_Tooltip" xml:space="preserve"><value>Nível mantido como porcentagem do curso total do analógico. 25% mantém a maioria dos jogos engajados ficando abaixo da zona morta de movimento. Aumente se o jogo ainda alternar. Diminua se o personagem derivar.</value></data>
-  <data name="Pad_KeepAwake_Motion" xml:space="preserve"><value>Adicionar movimento</value></data>
+  <data name="Pad_KeepAwake_Motion" xml:space="preserve"><value>Adicionar Movimento</value></data>
   <data name="Pad_KeepAwake_Motion_Tooltip" xml:space="preserve"><value>Alguns jogos enviam vibração apenas enquanto o analógico está se movendo, não enquanto ele fica inclinado. Isto faz o nível mantido oscilar suavemente em vez de ficar parado, para que esses jogos continuem vibrando. Deixe desligado nos demais casos. Manter parado é mais discreto.</value></data>
   <data name="Pad_KeepAwake_Reset_Axis" xml:space="preserve"><value>Redefinir Eixo mantido</value></data>
   <data name="Pad_KeepAwake_Reset_Deflection" xml:space="preserve"><value>Redefinir Desvio</value></data>
@@ -2869,7 +2863,7 @@
   <data name="MacroAction_Type_ToggleWheel" xml:space="preserve"><value>Alternar rolagem da roda</value></data>
   <data name="MacroAction_ToggleWheel_Tooltip" xml:space="preserve"><value>Cada disparo trava ou destrava uma rolagem contínua. Enquanto travado, envia os cliques uma vez por intervalo até o próximo disparo ou até a macro ser desativada.</value></data>
   <data name="MacroAction_ToggleWheel_Format" xml:space="preserve"><value>Alternar roda ({0} cliques a cada {1} ms)</value></data>
-  <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Pulsar enquanto travado</value></data>
+  <data name="Macro_PulseWhileLatched" xml:space="preserve"><value>Pulsar Enquanto Travado</value></data>
   <data name="Macro_PulseWhileLatched_Tooltip" xml:space="preserve"><value>Enquanto travado, alterna a saída no ritmo do intervalo de repetição em vez de mantê-la fixa.</value></data>
   <data name="MacroAction_Type_AxisAdd" xml:space="preserve"><value>Adicionar ao Eixo (Relativo)</value></data>
   <data name="MacroAction_AxisAdd_Tooltip" xml:space="preserve"><value>Soma o valor com sinal ao que o mapeamento já escreveu no eixo, a cada quadro durante a duração. Valores negativos subtraem. Gatilhos somam na escala de acionamento (100% = acionamento completo).</value></data>
@@ -2961,8 +2955,8 @@
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Sobreposição de Menu</value></data>
   <data name="Dashboard_Overlays" xml:space="preserve"><value>Sobreposições</value></data>
   <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>Indicadores na tela que o PadForge mostra enquanto você joga. Desativar um nunca muda o comportamento, apenas se ele é anunciado.</value></data>
-  <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Aviso de camada Shift</value></data>
-  <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Sobreposição de troca de perfil</value></data>
+  <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Aviso de Camada Shift</value></data>
+  <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Sobreposição de Troca de Perfil</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Mostra o anel ou a grade na tela enquanto um menu radial ou de toque está ativo. Os menus ainda disparam com a sobreposição desligada.</value></data>
   <data name="Workshop_Tr_MenuEmitted" xml:space="preserve"><value>menu na tela criado ({0} células atribuídas)</value></data>
   <data name="Workshop_Tr_MenuEmpty" xml:space="preserve"><value>o menu não tem células atribuídas</value></data>
@@ -2976,7 +2970,7 @@
   <data name="Pad_RumbleAudio_Card_Header" xml:space="preserve"><value>Vibração para Áudio</value></data>
   <data name="Pad_RumbleAudio_Card_Desc" xml:space="preserve"><value>Funciona com controles virtuais Xbox, DualShock 4 / DualSense e Nintendo Switch Pro, além de controles virtuais Estendido com force feedback, como volantes de corrida. Só o feedback do jogo passa pela saída de áudio. A vibração de macro e de teste fica no controle.</value></data>
   <data name="Pad_RumbleAudio_ResetCard_Tooltip" xml:space="preserve"><value>Restaurar Vibração para Áudio</value></data>
-  <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Enviar a vibração para uma saída de áudio</value></data>
+  <data name="Pad_RumbleAudio_Enable" xml:space="preserve"><value>Enviar a Vibração para uma Saída de Áudio</value></data>
   <data name="Pad_RumbleAudio_Enable_Tooltip" xml:space="preserve"><value>Reproduz a vibração e o force feedback de jogo deste controle virtual como tons de baixa frequência na saída de áudio escolhida. Desativar mantém todas as configurações.</value></data>
   <data name="Pad_RumbleAudio_ResetEnable" xml:space="preserve"><value>Restaurar Encaminhamento de Vibração</value></data>
   <data name="Pad_RumbleAudio_OutputDevice" xml:space="preserve"><value>Dispositivo de Saída</value></data>
@@ -3113,7 +3107,7 @@ Você pode tentar novamente mais tarde em Configurações.</value></data>
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Padrão de roteamento de áudio por detecção de conector de SundayMoments, a referência de Seguir o conector de fone. Lido como documentação; AGPL-3.0.</value></data>
   <data name="DeviceType_HeadsetMotion" xml:space="preserve"><value>Rastreador do headset</value></data>
-  <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Frequência por pressão</value></data>
+  <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Frequência por Pressão</value></data>
   <data name="Macro_PressureScaledRate_Tooltip" xml:space="preserve"><value>A frequência de repetição acompanha a força com que a fonte analógica escolhida é pressionada. Um toque leve repete no intervalo lento, um aperto completo no intervalo acima, com transição contínua.</value></data>
   <data name="Macro_SlowInterval_Label" xml:space="preserve"><value>Intervalo lento</value></data>
   <data name="Macro_SlowInterval_Tooltip" xml:space="preserve"><value>Período de repetição no toque mais leve. O intervalo acima vale para o aperto completo.</value></data>
@@ -3136,8 +3130,8 @@ Você pode tentar novamente mais tarde em Configurações.</value></data>
   <data name="Battery_LowText_Format" xml:space="preserve"><value>{0}: {1}% de bateria restante</value></data>
   <data name="Settings_BatteryNotify" xml:space="preserve"><value>Alertas de bateria</value></data>
   <data name="Settings_BatteryNotifyDesc" xml:space="preserve"><value>Receba um aviso quando a bateria de um controle estiver acabando, antes que ele morra no meio do jogo.</value></data>
-  <data name="Settings_BatteryNotifyEnable" xml:space="preserve"><value>Avisar quando a bateria estiver fraca</value></data>
+  <data name="Settings_BatteryNotifyEnable" xml:space="preserve"><value>Avisar Quando a Bateria Estiver Fraca</value></data>
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Avisar em ou abaixo de</value></data>
-  <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Vibrar também o controle</value></data>
+  <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Vibrar Também o Controle</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Testar notificação</value></data>
 </root>

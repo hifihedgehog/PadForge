@@ -547,15 +547,16 @@ namespace PadForge.ViewModels
         // governs the transport carrying speaker audio, haptics AND
         // microphone capture together, so it is not a speaker-only knob.
         //
-        // 255 is what PadForge has always sent, so it is the default and an
-        // untouched install is byte-identical to before. Lower cuts latency
-        // across all three paths and costs tolerance for Bluetooth timing
-        // variation: an end-to-end acoustic round trip measured 405 ms at
-        // 255 against 278 ms at 64, repeatable to within 3 ms.
+        // 48 is the default, which is what the reference ships (DS5Dongle
+        // src/config.cpp:100). PadForge sent 255 until #314. vlue-c measured
+        // speaker delay across the range on two pads against both personas:
+        // ~223 ms at 255, 161 at 128, 110 at 64, 70 at 32, 54 at 16, with
+        // frequent dropouts at 16 and none above it. 48 is inside the 32-64
+        // band he found practical and is the reference's own default.
         //
         // 16 is the floor because the reference refuses anything lower
         // (DS5Dongle src/config.cpp:99, which clamps to [16,128]).
-        private int _ds5AudioBufferLength = 255;
+        private int _ds5AudioBufferLength = 48;
 
         public int Ds5AudioBufferLength
         {
@@ -1510,7 +1511,7 @@ namespace PadForge.ViewModels
         private RelayCommand _resetHeadphoneVolume;
 
         public RelayCommand ResetDs5AudioBufferLengthCommand =>
-            _resetDs5AudioBufferLength ??= new RelayCommand(() => Ds5AudioBufferLength = 255);
+            _resetDs5AudioBufferLength ??= new RelayCommand(() => Ds5AudioBufferLength = 48);
         private RelayCommand _resetDs5AudioBufferLength;
 
         public RelayCommand ResetAudioOutputPathCommand =>
@@ -1921,9 +1922,8 @@ namespace PadForge.ViewModels
         // load as full volume, the pre-feature effective behaviour.
         [XmlAttribute] public int HeadphoneVolume { get; set; } = 100;
 
-        /// <summary>#314. 255 is what PadForge has always sent, so an
-        /// untouched install round-trips byte-identical.</summary>
-        [XmlAttribute] public int Ds5AudioBufferLength { get; set; } = 255;
+        /// <summary>#314. 48, the reference implementation's own default.</summary>
+        [XmlAttribute] public int Ds5AudioBufferLength { get; set; } = 48;
         [XmlAttribute] public AudioOutputPath AudioOutputPath { get; set; } = AudioOutputPath.Automatic;
         [XmlAttribute] public MicLedMode MicLedMode { get; set; } = MicLedMode.Off;
         [XmlAttribute] public string MicLedFollowDeviceId { get; set; } = string.Empty;

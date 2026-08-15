@@ -2516,7 +2516,7 @@
   <data name="Pad_Reset_AxisToButtonDeadZone" xml:space="preserve"><value>軸からボタンへのデッドゾーンをリセット</value></data>
   <data name="Pad_KeepAwake_Reset_Enable" xml:space="preserve"><value>起こしたままにするをリセット</value></data>
   <data name="Pad_Audio_BufferLength" xml:space="preserve"><value>オーディオバッファ長</value></data>
-  <data name="Pad_Audio_BufferLength_Tooltip" xml:space="preserve"><value>上級者向け。このコントローラーがスピーカー音声、ハプティクス、マイク入力に共通で使う Bluetooth オーディオバッファを設定します。スピーカーだけの設定ではありません。値を小さくすると三つすべての遅延が減りますが、Bluetooth のタイミングのゆらぎに対する余裕も減るため、混雑した接続では音切れやカクつきが起こりやすくなります。255 はこれまでの既定値で、動作は変わりません。実測では往復が 255 で 405 ミリ秒、64 で 278 ミリ秒でした。次にコントローラーのオーディオセッションが開始したときに反映されるため、変更後は接続し直してください。</value></data>
+  <data name="Pad_Audio_BufferLength_Tooltip" xml:space="preserve"><value>上級者向け。このコントローラーがスピーカー音声、ハプティクス、マイク入力に共通で使う Bluetooth オーディオバッファを設定します。スピーカーだけの設定ではありません。値を小さくすると三つすべての遅延が減りますが、Bluetooth のタイミングのゆらぎに対する余裕も減るため、音切れが起こりやすくなります。既定値は 48 で、参照実装が採用している値と同じです。ある環境での実測では、スピーカーの遅延が 255 で約 223 ミリ秒、64 で 110 ミリ秒、32 で 70 ミリ秒、16 では頻繁に音切れが発生しました。32 から 64 程度が実用的な出発点ですが、適切な値はアダプターと周囲の環境によって変わります。変更してから数秒で反映されます。</value></data>
   <data name="Pad_Audio_Reset_BufferLength" xml:space="preserve"><value>オーディオバッファ長をリセット</value></data>
   <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>コントローラーを起こしたままにするをリセット</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>このスロットの仮想コントローラー出力で、同時に押されたボタンペアを解決します。ペアの両方が押されているとき、選んだルールがゲームに見せる入力を決めます。</value></data>

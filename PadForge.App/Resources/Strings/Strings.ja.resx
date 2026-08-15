@@ -1488,8 +1488,8 @@
   <data name="Pad_Lighting_AudioLightbar_LowColor" xml:space="preserve"><value>小音量カラー</value></data>
   <data name="Pad_Lighting_AudioLightbar_MidColor" xml:space="preserve"><value>中音量カラー</value></data>
   <data name="Pad_Lighting_AudioLightbar_HighColor" xml:space="preserve"><value>大音量カラー</value></data>
-  <data name="Pad_Lighting_AudioLightbar_LowToMid" xml:space="preserve"><value>小 → 中 切替</value></data>
-  <data name="Pad_Lighting_AudioLightbar_MidToHigh" xml:space="preserve"><value>中 → 大 切替</value></data>
+  <data name="Pad_Lighting_AudioLightbar_LowToMid" xml:space="preserve"><value>低音から中音への境界</value></data>
+  <data name="Pad_Lighting_AudioLightbar_MidToHigh" xml:space="preserve"><value>中音から高音への境界</value></data>
   <data name="Pad_Lighting_Mode" xml:space="preserve"><value>モード</value></data>
   <data name="Pad_Lighting_Mode_Off" xml:space="preserve"><value>オフ</value></data>
   <data name="Pad_Lighting_Mode_PlayerNumber" xml:space="preserve"><value>プレイヤー番号 (既定)</value></data>

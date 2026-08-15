@@ -1487,8 +1487,8 @@
   <data name="Pad_Lighting_AudioLightbar_LowColor" xml:space="preserve"><value>弱声颜色</value></data>
   <data name="Pad_Lighting_AudioLightbar_MidColor" xml:space="preserve"><value>中声颜色</value></data>
   <data name="Pad_Lighting_AudioLightbar_HighColor" xml:space="preserve"><value>强声颜色</value></data>
-  <data name="Pad_Lighting_AudioLightbar_LowToMid" xml:space="preserve"><value>弱 → 中 阈值</value></data>
-  <data name="Pad_Lighting_AudioLightbar_MidToHigh" xml:space="preserve"><value>中 → 强 阈值</value></data>
+  <data name="Pad_Lighting_AudioLightbar_LowToMid" xml:space="preserve"><value>低频到中频的分界</value></data>
+  <data name="Pad_Lighting_AudioLightbar_MidToHigh" xml:space="preserve"><value>中频到高频的分界</value></data>
   <data name="Pad_Lighting_Mode" xml:space="preserve"><value>模式</value></data>
   <data name="Pad_Lighting_Mode_Off" xml:space="preserve"><value>关闭</value></data>
   <data name="Pad_Lighting_Mode_PlayerNumber" xml:space="preserve"><value>玩家编号(默认)</value></data>

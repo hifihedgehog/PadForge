@@ -1365,7 +1365,7 @@
   <data name="Mapping_GyroTiltY" xml:space="preserve"><value>Gyro-helling Y</value></data>
   <data name="Pad_GyroTilt_Header" xml:space="preserve"><value>Gyro-helling</value></data>
   <data name="Pad_GyroTilt_Subtitle" xml:space="preserve"><value>Envelop voor de invoeren Gyro-helling X / Y: houd de kanteling vast en de stick houdt zijn uitslag, zoals Steams Joystick-deflectiemodus. Volledige uitslag bij het hier ingestelde bereik; Gyro opnieuw centreren stelt de rustgreep opnieuw in. Gieren (plat draaien) is onzichtbaar voor de zwaartekracht en beweegt deze invoeren niet.</value></data>
-  <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Volledige uitslag bij</value></data>
+  <data name="Pad_GyroTilt_Range" xml:space="preserve"><value>Volledig-uitslagbereik</value></data>
   <data name="Pad_GyroTilt_Range_Tooltip" xml:space="preserve"><value>Graden kanteling vanaf de rustgreep die als volledige uitslag tellen. Kleiner = gevoeliger. 25° is de meest voorkomende waarde in Steam-configuraties.</value></data>
   <data name="Pad_GyroTilt_Deadzone" xml:space="preserve"><value>Hellingsdode zone</value></data>
   <data name="Pad_GyroTilt_Deadzone_Tooltip" xml:space="preserve"><value>Graden kanteling die rond de rustgreep worden genegeerd, afgetrokken vóór het schalen zodat er geen sprong aan de rand is.</value></data>
@@ -1508,8 +1508,8 @@
   <data name="Pad_Lighting_AudioLightbar_LowColor" xml:space="preserve"><value>Zachte kleur</value></data>
   <data name="Pad_Lighting_AudioLightbar_MidColor" xml:space="preserve"><value>Middenkleur</value></data>
   <data name="Pad_Lighting_AudioLightbar_HighColor" xml:space="preserve"><value>Luide kleur</value></data>
-  <data name="Pad_Lighting_AudioLightbar_LowToMid" xml:space="preserve"><value>Zacht → Middel bij</value></data>
-  <data name="Pad_Lighting_AudioLightbar_MidToHigh" xml:space="preserve"><value>Middel → Luid bij</value></data>
+  <data name="Pad_Lighting_AudioLightbar_LowToMid" xml:space="preserve"><value>Grens laag naar midden</value></data>
+  <data name="Pad_Lighting_AudioLightbar_MidToHigh" xml:space="preserve"><value>Grens midden naar hoog</value></data>
   <data name="Pad_Lighting_Mode" xml:space="preserve"><value>Modus</value></data>
   <data name="Pad_Lighting_Mode_Off" xml:space="preserve"><value>Uit</value></data>
   <data name="Pad_Lighting_Mode_PlayerNumber" xml:space="preserve"><value>Spelersnummer (standaard)</value></data>

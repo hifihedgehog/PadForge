@@ -1488,8 +1488,8 @@
   <data name="Pad_Lighting_AudioLightbar_LowColor" xml:space="preserve"><value>저음량 색상</value></data>
   <data name="Pad_Lighting_AudioLightbar_MidColor" xml:space="preserve"><value>중음량 색상</value></data>
   <data name="Pad_Lighting_AudioLightbar_HighColor" xml:space="preserve"><value>고음량 색상</value></data>
-  <data name="Pad_Lighting_AudioLightbar_LowToMid" xml:space="preserve"><value>저 → 중 전환</value></data>
-  <data name="Pad_Lighting_AudioLightbar_MidToHigh" xml:space="preserve"><value>중 → 고 전환</value></data>
+  <data name="Pad_Lighting_AudioLightbar_LowToMid" xml:space="preserve"><value>저음에서 중음 경계</value></data>
+  <data name="Pad_Lighting_AudioLightbar_MidToHigh" xml:space="preserve"><value>중음에서 고음 경계</value></data>
   <data name="Pad_Lighting_Mode" xml:space="preserve"><value>모드</value></data>
   <data name="Pad_Lighting_Mode_Off" xml:space="preserve"><value>끔</value></data>
   <data name="Pad_Lighting_Mode_PlayerNumber" xml:space="preserve"><value>플레이어 번호 (기본값)</value></data>

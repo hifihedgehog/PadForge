@@ -7512,6 +7512,10 @@ namespace PadForge
         private static string FormatVcSlotName(int slotIndex, VirtualControllerType outputType)
         {
             int globalNum = SettingsManager.SlotOrders.GetGlobalSlotNumber(slotIndex);
+            // Same documented fallback the identity writers use. Without it a
+            // slot that is created and assigned but absent from every group's
+            // order list renders as "Virtual Controller 0".
+            if (globalNum <= 0) globalNum = slotIndex + 1;
             int inGroupNum = SettingsManager.SlotOrders.GetOrderFor(outputType).IndexOf(slotIndex) + 1;
             string typeName = ControllerTypeDisplayName(outputType);
             string vcWord = Strings.Instance.Main_VirtualController_Format.Replace("{0}", globalNum.ToString());

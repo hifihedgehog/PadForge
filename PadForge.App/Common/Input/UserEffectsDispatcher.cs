@@ -1471,6 +1471,15 @@ namespace PadForge.Common.Input
             // identity winner in the loop below, so two dispatchers
             // sharing one pad write the same number instead of fighting.
             int playerNumber = SettingsManager.SlotOrders.GetGlobalSlotNumber(_padIndex);
+            // GetGlobalSlotNumber returns 0 for a slot that exists and is
+            // assigned but sits in no group's ORDER list, and its own summary
+            // tells callers to fall back to padIndex + 1. This site did not,
+            // and the failure is invisible in the obvious place: the lightbar
+            // looks right either way, because PlayerIdentityDefaults.Wrap maps
+            // both 0 and 1 to colour index 0. Only the pips give it away, since
+            // they are gated on playerNumber > 0, so the pad shows player one's
+            // colour with no pips at all. Reported on hardware 2026-08-15.
+            if (playerNumber <= 0) playerNumber = _padIndex + 1;
 
             // For non-tick dispatches (slider drag, OnDevicesUpdated re-
             // apply, etc.), pull the current peak so the audio path

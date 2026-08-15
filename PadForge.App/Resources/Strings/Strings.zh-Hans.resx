@@ -2516,7 +2516,7 @@
   <data name="Pad_Reset_AxisToButtonDeadZone" xml:space="preserve"><value>重置轴转按钮死区</value></data>
   <data name="Pad_KeepAwake_Reset_Enable" xml:space="preserve"><value>重置保持活跃</value></data>
   <data name="Pad_Audio_BufferLength" xml:space="preserve"><value>音频缓冲长度</value></data>
-  <data name="Pad_Audio_BufferLength_Tooltip" xml:space="preserve"><value>高级设置。设置本手柄用于扬声器声音、触觉反馈与麦克风采集的蓝牙音频缓冲，并非仅影响扬声器。数值越小，这三者的延迟越低，但留给蓝牙时序波动的余量也越少，在拥挤的连接上更容易出现断音与卡顿。255 是一直以来的默认值，不会改变现有行为。实测往返时间在 255 时为 405 毫秒，在 64 时为 278 毫秒。更改后会在手柄下次开启音频会话时生效，因此请重新连接手柄。</value></data>
+  <data name="Pad_Audio_BufferLength_Tooltip" xml:space="preserve"><value>高级设置。设置本手柄用于扬声器声音、触觉反馈与麦克风采集的蓝牙音频缓冲，并非仅影响扬声器。数值越小，这三者的延迟越低，但留给蓝牙时序波动的余量也越少，更容易出现断音。默认值为 48，与参考实现所采用的一致。在某一环境下实测：扬声器延迟在 255 时约 223 毫秒，64 时为 110 毫秒，32 时为 70 毫秒，16 时则频繁断音。32 到 64 之间是较实用的起点，但合适的数值取决于你的适配器与所处环境。更改后几秒内生效。</value></data>
   <data name="Pad_Audio_Reset_BufferLength" xml:space="preserve"><value>重置音频缓冲长度</value></data>
   <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>重置保持手柄活跃</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>解决此插槽虚拟控制器输出上同时按住的按钮对。当一对按钮同时按下时，所选规则决定游戏看到哪个输入。</value></data>

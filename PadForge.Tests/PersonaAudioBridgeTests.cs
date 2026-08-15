@@ -64,7 +64,7 @@ namespace PadForge.Tests
             Assert.Equal(0x11 | 0x80, report[2]);   // packet 0x11, sized
             Assert.Equal(7, report[3]);             // its 7-byte payload
             Assert.Equal(0xFE, report[4]);          // mic command (closed here)
-            Assert.Equal(0xFF, report[9]);
+            Assert.Equal(AudioPassthroughService.Ds5AudioBufferLengthDefault, report[9]);
             Assert.Equal(0x12 | 0x80, report[11]);  // packet 0x12, sized
             Assert.Equal(64, report[12]);           // 64 bytes of s8 stereo
             Assert.Equal(142, AudioPassthroughService.Ds5HapticBtReportSize);
@@ -372,11 +372,30 @@ namespace PadForge.Tests
         // first test here pins.
 
         [Fact]
-        public void TheDefault_IsWhatPadForgeAlwaysSent()
+        public void TheDefault_IsTheReferenceImplementationsOwn()
         {
+            // 48, what DS5Dongle falls back to (src/config.cpp:100). PadForge
+            // sent 255 until #314, and vlue-c's measurements across two pads
+            // and both personas put speaker delay at ~223 ms there against
+            // 70 ms at 32, with dropouts only appearing at 16. 48 is inside
+            // the band he found practical AND the reference's own choice.
+            Assert.Equal(48, AudioPassthroughService.Ds5AudioBufferLengthDefault);
+
             var report = NewReport();
             AudioPassthroughService.BuildDs5BtHapticReport(
                 report, 0, 0, AudioPassthroughService.Ds5AudioBufferLengthDefault,
+                micOpen: false, Tick(_ => 0, _ => 0));
+            Assert.Equal(48, report[9]);
+        }
+
+        [Fact]
+        public void TheLegacyValueStillWorksWhenChosen()
+        {
+            // Anyone whose adapter cannot hold the new default raises the
+            // slider, and 255 has to keep behaving exactly as it always did.
+            var report = NewReport();
+            AudioPassthroughService.BuildDs5BtHapticReport(
+                report, 0, 0, AudioPassthroughService.Ds5AudioBufferLengthLegacy,
                 micOpen: false, Tick(_ => 0, _ => 0));
             Assert.Equal(0xFF, report[9]);
         }

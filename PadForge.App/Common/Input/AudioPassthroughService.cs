@@ -586,10 +586,24 @@ namespace PadForge.Common.Input
         /// cannot change what goes on the wire.</summary>
         internal static Func<Guid, int> DeviceAudioBufferLengthProvider;
 
-        /// <summary>What PadForge has always sent in the packet 0x11
-        /// header's buffer-length byte. The default, so an install that
-        /// never touches the setting is byte-identical to before.</summary>
-        internal const byte Ds5AudioBufferLengthDefault = 0xFF;
+        /// <summary>The shipped default, and the reference implementation's
+        /// own (DS5Dongle src/config.cpp:100 falls back to 48).
+        ///
+        /// <para>PadForge sent 255 until #314. vlue-c then measured speaker
+        /// delay across the range on a DualSense and a DualSense Edge against
+        /// both personas: about 223 ms at 255, 161 at 128, 110 at 64, 70 at 32
+        /// and 54 at 16, with frequent dropouts appearing at 16 and none
+        /// above it. 48 sits inside the 32-to-64 band he found practical AND
+        /// is what the reference ships to everyone, which is two independent
+        /// reasons rather than a number picked off his graph.</para>
+        ///
+        /// <para>Anyone whose adapter cannot hold it raises the slider. That
+        /// is the whole point of the setting existing.</para></summary>
+        internal const byte Ds5AudioBufferLengthDefault = 48;
+
+        /// <summary>What PadForge sent before #314. Kept named so a test can
+        /// pin that the old value still works when chosen explicitly.</summary>
+        internal const byte Ds5AudioBufferLengthLegacy = 0xFF;
 
         /// <summary>Floor from the reference implementation, which refuses
         /// anything lower (DS5Dongle src/config.cpp:99).</summary>

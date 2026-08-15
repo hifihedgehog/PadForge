@@ -2524,6 +2524,18 @@
   <data name="Menu_Reset_Deadzone" xml:space="preserve"><value>Reimposta Zona morta di attivazione</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Reimposta Geometria del menu</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Reimposta Cella</value></data>
+  <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Reimposta Sensibilità</value></data>
+  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>Reimposta Accelerazione</value></data>
+  <data name="Common_Reset_DeadZone" xml:space="preserve"><value>Reimposta Zona morta</value></data>
+  <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>Reimposta Tempo di pressione</value></data>
+  <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>Reimposta Finestra di pressione</value></data>
+  <data name="Macro_Reset_Interval" xml:space="preserve"><value>Reimposta Intervallo</value></data>
+  <data name="Macro_Reset_SlowInterval" xml:space="preserve"><value>Reimposta Intervallo lento</value></data>
+  <data name="Macro_Reset_InsetX" xml:space="preserve"><value>Reimposta Margine X</value></data>
+  <data name="Macro_Reset_InsetY" xml:space="preserve"><value>Reimposta Margine Y</value></data>
+  <data name="Macro_Reset_RampStart" xml:space="preserve"><value>Reimposta Inizio rampa</value></data>
+  <data name="Macro_Reset_RampEnd" xml:space="preserve"><value>Reimposta Fine rampa</value></data>
+  <data name="Pad_Reset_AxisToButtonDeadZone" xml:space="preserve"><value>Reimposta Zona morta da asse a pulsante</value></data>
   <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>Reimposta Mantieni il controller attivo</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>Risolve le coppie di pulsanti tenute premute insieme sull&apos;uscita del controller virtuale di questo slot. Quando entrambi i pulsanti di una coppia sono premuti, la regola scelta decide quale pressione vede il gioco.</value></data>
   <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>Reimposta direzioni cardinali opposte simultanee</value></data>

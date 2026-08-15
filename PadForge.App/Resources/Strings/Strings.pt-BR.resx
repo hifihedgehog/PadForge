@@ -2502,6 +2502,18 @@
   <data name="Menu_Reset_Deadzone" xml:space="preserve"><value>Redefinir Zona morta de ativação</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Redefinir Geometria do menu</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Redefinir Célula</value></data>
+  <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Redefinir Sensibilidade</value></data>
+  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>Redefinir Aceleração</value></data>
+  <data name="Common_Reset_DeadZone" xml:space="preserve"><value>Redefinir Zona morta</value></data>
+  <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>Redefinir Tempo de pressão</value></data>
+  <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>Redefinir Janela de pressão</value></data>
+  <data name="Macro_Reset_Interval" xml:space="preserve"><value>Redefinir Intervalo</value></data>
+  <data name="Macro_Reset_SlowInterval" xml:space="preserve"><value>Redefinir Intervalo lento</value></data>
+  <data name="Macro_Reset_InsetX" xml:space="preserve"><value>Redefinir Margem X</value></data>
+  <data name="Macro_Reset_InsetY" xml:space="preserve"><value>Redefinir Margem Y</value></data>
+  <data name="Macro_Reset_RampStart" xml:space="preserve"><value>Redefinir Início da rampa</value></data>
+  <data name="Macro_Reset_RampEnd" xml:space="preserve"><value>Redefinir Fim da rampa</value></data>
+  <data name="Pad_Reset_AxisToButtonDeadZone" xml:space="preserve"><value>Redefinir Zona morta de eixo para botão</value></data>
   <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>Redefinir Manter o controle ativo</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>Resolve pares de botões mantidos ao mesmo tempo na saída do controle virtual deste slot. Quando os dois botões de um par estão pressionados, a regra escolhida decide qual pressão o jogo vê.</value></data>
   <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>Redefinir Direções Cardeais Opostas Simultâneas</value></data>

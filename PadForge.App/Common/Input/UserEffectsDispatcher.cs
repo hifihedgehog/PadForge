@@ -705,6 +705,54 @@ namespace PadForge.Common.Input
             }
         }
 
+        /// <summary>How long every external subsystem must sit untouched
+        /// before the writer is treated as gone and the identity floor
+        /// re-arms. Same fifteen seconds the effect lane uses to release the
+        /// adaptive triggers, and the same number DualSenseY-v2 uses to
+        /// decide a driving app has stopped talking (source/udp.cpp:326).</summary>
+        private const long ExternalClaimLapseMs = 15_000;
+
+        /// <summary>Whether every external claim on this slot has gone quiet
+        /// long enough to be treated as abandoned. Pure, so the rule is
+        /// testable without a controller.</summary>
+        internal static bool ExternalClaimHasLapsed(long newestTick, long nowTicks)
+            => newestTick != 0 && nowTicks - newestTick >= ExternalClaimLapseMs;
+
+        /// <summary>Hands the lightbar and the player pips back when the
+        /// program that claimed them is gone.
+        ///
+        /// <para>PadForge stands down from both the moment anything else
+        /// writes them, so a game's colour is not fought over. That half was
+        /// right. The missing half is that the claim never lapsed: the record
+        /// backing <see cref="ExternalSubsystemState.LightbarEverExternal"/>
+        /// was only ever dropped when the slot's assigned devices changed, so
+        /// after a game exited the bar sat on whatever it last set for the
+        /// rest of the process. Reported by two users and reproduced here on
+        /// two machines, 2026-08-15: a trace shows the packets still going out
+        /// with ledBit=False, PadForge deliberately not claiming a bar nobody
+        /// owns any more.</para>
+        ///
+        /// <para>Gated on the NEWEST tick across every subsystem, not on the
+        /// lightbar's own. A game that sets the bar once at a loading screen
+        /// and then drives only rumble still counts as present, which is the
+        /// case #191 exists to protect. Only a slot where nothing external has
+        /// written anything for fifteen seconds is treated as abandoned.</para></summary>
+        private void ExpireLapsedExternalClaim(int padIndex)
+        {
+            long now = Environment.TickCount64;
+            lock (s_externalStateLock)
+            {
+                if (!s_externalState.TryGetValue(padIndex, out var st)) return;
+                long newest = Math.Max(
+                    Math.Max(Math.Max(st.RumbleTick, st.RightTrigTick),
+                             Math.Max(st.LeftTrigTick, st.MicLedTick)),
+                    Math.Max(Math.Max(st.LightbarTick, st.PlayerIndTick),
+                             Math.Max(st.LightbarSetupTick, st.LedBrightnessTick)));
+                if (!ExternalClaimHasLapsed(newest, now)) return;
+                s_externalState.Remove(padIndex);
+            }
+        }
+
         private static ExternalSubsystemOverrides GetActiveOverrides(int padIndex)
         {
             var ov = default(ExternalSubsystemOverrides);
@@ -1470,6 +1518,11 @@ namespace PadForge.Common.Input
             // number is only the FALLBACK: each device resolves its
             // identity winner in the loop below, so two dispatchers
             // sharing one pad write the same number instead of fighting.
+            // Before reading the overrides: if nothing external has written
+            // this slot for fifteen seconds, the claimant is gone and the
+            // identity floor takes the bar and the pips back.
+            ExpireLapsedExternalClaim(_padIndex);
+
             int playerNumber = SettingsManager.SlotOrders.GetGlobalSlotNumber(_padIndex);
             // GetGlobalSlotNumber returns 0 for a slot that exists and is
             // assigned but sits in no group's ORDER list, and its own summary

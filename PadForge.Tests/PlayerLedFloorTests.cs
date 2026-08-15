@@ -356,5 +356,60 @@ namespace PadForge.Tests
             SettingsService.ApplyDeviceSlotConfigData(cfg, d);
             Assert.Equal(LightbarMode.PlayerNumber, cfg.LightbarMode);
         }
+
+        // ── The claim has to lapse when the claimant leaves ──
+        //
+        // PadForge stands down from the lightbar and the pips the moment
+        // anything else writes them, so a game's colour is not fought over.
+        // That half was always right. The half that was missing: the claim
+        // never expired, so after a game exited the bar sat on whatever it
+        // last set for the rest of the process, and only restarting PadForge
+        // got it back. Two users reported it and it reproduced here on two
+        // machines (2026-08-15), visible in a trace as packets still going
+        // out with ledBit=False.
+        //
+        // Gated on the NEWEST tick across every subsystem, never the
+        // lightbar's own, so a game that sets the bar once at a loading
+        // screen and then drives only rumble still counts as present. That
+        // case is what #191 exists to protect.
+
+        [Fact]
+        public void AClaimJustMade_HasNotLapsed()
+        {
+            Assert.False(UserEffectsDispatcher.ExternalClaimHasLapsed(
+                newestTick: 100_000, nowTicks: 100_000));
+        }
+
+        [Fact]
+        public void AClaimStillBeingRefreshed_HoldsTheBar()
+        {
+            // One second of quiet is a game between rumbles, not a game gone.
+            Assert.False(UserEffectsDispatcher.ExternalClaimHasLapsed(
+                newestTick: 100_000, nowTicks: 101_000));
+        }
+
+        [Fact]
+        public void JustUnderFifteenSeconds_StillHolds()
+        {
+            Assert.False(UserEffectsDispatcher.ExternalClaimHasLapsed(
+                newestTick: 100_000, nowTicks: 100_000 + 14_999));
+        }
+
+        [Fact]
+        public void AtFifteenSeconds_TheFloorTakesItBack()
+        {
+            Assert.True(UserEffectsDispatcher.ExternalClaimHasLapsed(
+                newestTick: 100_000, nowTicks: 100_000 + 15_000));
+        }
+
+        [Fact]
+        public void ASlotNothingEverClaimed_NeverLapses()
+        {
+            // Nothing to hand back, and a zero tick means "never written"
+            // rather than "written at time zero". Treating it as lapsed would
+            // drop a record the floor is already authoring from.
+            Assert.False(UserEffectsDispatcher.ExternalClaimHasLapsed(
+                newestTick: 0, nowTicks: 9_000_000));
+        }
     }
 }

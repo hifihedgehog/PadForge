@@ -2375,6 +2375,7 @@ namespace PadForge
             IsVisibleChanged += (_, _) => UpdateWindowRenderability();
 
             SetupNativeTooltip();
+            SetupHidArrivalHook();
 
             // Driver detection and timer are initialized in the constructor so they
             // work even when starting minimized to tray (where OnLoaded never fires).
@@ -2507,7 +2508,17 @@ namespace PadForge
         private async void OnClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (_shutdownComplete)
-                return; // Second close call after async shutdown — let it through.
+                return; // Second close call after async shutdown. Let it through.
+
+            // Stop HID arrival notifications first. Shutdown tears down the
+            // virtual controllers, which is itself a burst of device removals
+            // and arrivals, and re-applying the cloak partway through that is
+            // pointless work against state that is being dismantled.
+            if (_hidNotify != IntPtr.Zero)
+            {
+                try { UnregisterDeviceNotification(_hidNotify); } catch { }
+                _hidNotify = IntPtr.Zero;
+            }
 
             // Cancel the close so the window stays visible during shutdown.
             e.Cancel = true;
@@ -5825,6 +5836,97 @@ namespace PadForge
             PadForge.Common.AmbientMotionProbe.Instance.IsWindowMinimized = cannotRender;
             if (cannotRender) SetAmbientMotion(false);
             else if (IsActive) SetAmbientMotion(true);
+        }
+
+        // ── HID arrival hook, so the cloak does not wait on SDL ──
+        //
+        // HidHide blocks by an EXACT device-instance-path string compare of
+        // whatever is being opened (HidHide Logic.c:634, no wildcards and no
+        // container resolution), and Bluetooth mints a NEW path on every
+        // reconnect. Fourteen dead PID_0CE6 paths had accumulated on the
+        // owner's machine, one live. So a path can never be blacklisted in
+        // advance, and the only thing that matters is how fast we react once
+        // it appears.
+        //
+        // Until now the cloak was applied from the SDL device-change handler,
+        // and SDL_UpdateJoysticks (the call that surfaces a new device) is
+        // deliberately throttled to 500 ms to cut stall convoying. That left a
+        // window on every reconnect in which Windows and any running game can
+        // enumerate the pad before it is hidden, which is the intermittent
+        // "sees it briefly through the cloak" reported 2026-08-15.
+        //
+        // Windows already tells us sooner. WM_DEVICECHANGE for the HID
+        // interface class arrives at PnP time, so the cloak is applied off
+        // that instead and no longer inherits SDL's cadence.
+        private IntPtr _hidNotify = IntPtr.Zero;
+        private const int WM_DEVICECHANGE = 0x0219;
+        private const int DBT_DEVICEARRIVAL = 0x8000;
+        private const int DBT_DEVTYP_DEVICEINTERFACE = 0x00000005;
+        private const int DEVICE_NOTIFY_WINDOW_HANDLE = 0x00000000;
+        private static readonly Guid GUID_DEVINTERFACE_HID =
+            new("4D1E55B2-F16F-11CF-88CB-001111000030");
+
+        [System.Runtime.InteropServices.StructLayout(
+            System.Runtime.InteropServices.LayoutKind.Sequential)]
+        private struct DEV_BROADCAST_DEVICEINTERFACE
+        {
+            public int dbcc_size;
+            public int dbcc_devicetype;
+            public int dbcc_reserved;
+            public Guid dbcc_classguid;
+            public short dbcc_name;
+        }
+
+        [System.Runtime.InteropServices.DllImport("user32.dll", CharSet = System.Runtime.InteropServices.CharSet.Auto)]
+        private static extern IntPtr RegisterDeviceNotification(
+            IntPtr recipient, IntPtr notificationFilter, int flags);
+
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern bool UnregisterDeviceNotification(IntPtr handle);
+
+        /// <summary>Subscribes to HID-class device arrival so the cloak is
+        /// applied at PnP time rather than on SDL's next enumeration.</summary>
+        private void SetupHidArrivalHook()
+        {
+            var source = System.Windows.PresentationSource.FromVisual(this)
+                as System.Windows.Interop.HwndSource;
+            if (source == null) return;
+
+            var filter = new DEV_BROADCAST_DEVICEINTERFACE
+            {
+                dbcc_devicetype = DBT_DEVTYP_DEVICEINTERFACE,
+                dbcc_classguid = GUID_DEVINTERFACE_HID,
+            };
+            filter.dbcc_size = System.Runtime.InteropServices.Marshal.SizeOf(filter);
+
+            IntPtr buffer = System.Runtime.InteropServices.Marshal.AllocHGlobal(filter.dbcc_size);
+            try
+            {
+                System.Runtime.InteropServices.Marshal.StructureToPtr(filter, buffer, false);
+                _hidNotify = RegisterDeviceNotification(
+                    source.Handle, buffer, DEVICE_NOTIFY_WINDOW_HANDLE);
+            }
+            finally
+            {
+                System.Runtime.InteropServices.Marshal.FreeHGlobal(buffer);
+            }
+
+            if (_hidNotify != IntPtr.Zero) source.AddHook(OnDeviceChangeMessage);
+        }
+
+        private IntPtr OnDeviceChangeMessage(
+            IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
+            // Arrival only. Removal cannot un-hide anything, and the blacklist
+            // keeps stale entries harmlessly: they name paths that no longer
+            // resolve. Re-applying is idempotent, SyncManagedDevices writes
+            // only the diff, so a burst of arrivals costs one registry write.
+            if (msg == WM_DEVICECHANGE && (int)wParam == DBT_DEVICEARRIVAL)
+            {
+                try { _inputService?.ApplyDeviceHiding(); }
+                catch { /* a notification must never take the window down */ }
+            }
+            return IntPtr.Zero;
         }
 
         private void SetupNativeTooltip()

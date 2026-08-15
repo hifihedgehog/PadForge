@@ -148,6 +148,75 @@ namespace PadForge.Tests
                 new byte[] { 1, 2, 3 }, null, 0));
         }
 
+        // ── Handing the pad back when the game goes away ──
+        //
+        // A physical DualSense holds its adaptive trigger program in firmware
+        // until something loads a different one, so a game that exits mid-effect
+        // leaves it there (#300, two reporters). Nothing announces a departure:
+        // ViGEmClient's notifications are output reports only and VIIPER has no
+        // equivalent, so every tool doing this job uses a staleness window.
+        // DualSenseY-v2, which drives a physical DualSense from a game's DSX
+        // instructions, uses fifteen seconds (source/udp.cpp:326). That number
+        // is adopted rather than invented, and it is deliberately an order of
+        // magnitude clear of the 1500 ms grace whose assertion cost the mic LED
+        // and the adaptive triggers on hardware on 2026-08-01.
+
+        [Fact]
+        public void AfterFifteenSecondsOfSilence_ThePadIsReleased()
+        {
+            Assert.True(DualSensePassthroughDispatcher.ShouldReleaseIdleSource(
+                driving: true, lastSourcePacketTicks: 1_000, nowTicks: 1_000 + 15_000));
+        }
+
+        [Fact]
+        public void AGameThatIsMerelyQuiet_KeepsItsTrigger()
+        {
+            // The case that must not regress. A game can set a trigger at level
+            // load and never rewrite it while the player keeps playing.
+            Assert.False(DualSensePassthroughDispatcher.ShouldReleaseIdleSource(
+                driving: true, lastSourcePacketTicks: 1_000, nowTicks: 1_000 + 14_999));
+        }
+
+        [Fact]
+        public void ALaneThatNeverDroveThePad_ReleasesNothing()
+        {
+            // Releasing here would take a trigger this lane never set, which
+            // could be the user's own configured one.
+            Assert.False(DualSensePassthroughDispatcher.ShouldReleaseIdleSource(
+                driving: false, lastSourcePacketTicks: 1_000, nowTicks: 1_000 + 60_000));
+        }
+
+        [Fact]
+        public void BeforeTheFirstPacket_ThereIsNoSilenceToMeasure()
+        {
+            Assert.False(DualSensePassthroughDispatcher.ShouldReleaseIdleSource(
+                driving: true, lastSourcePacketTicks: 0, nowTicks: 60_000));
+        }
+
+        [Fact]
+        public void TheReleaseFrame_ClaimsTheTriggersAndNothingElse()
+        {
+            // The load-bearing guard. PadForge authors the lightbar, the pips,
+            // the mic LED and the audio surface on its own Sony pass, and
+            // UserEffectsDispatcher is writing them at 30 Hz. A release frame
+            // that claimed any of those would fight it. Only valid_flag0 bits 2
+            // and 3 may be set, which is what dualsense-tester sets for a
+            // trigger update (OutputPanel.vue:230).
+            var buffer = new byte[64];               // oversized, as ArrayPool returns
+            for (int i = 0; i < buffer.Length; i++)
+                buffer[i] = 0xFF;                    // poison, to prove it clears
+
+            DualSensePassthroughDispatcher.BuildTriggerReleasePayload(buffer);
+
+            Assert.Equal(0x0C, buffer[0]);           // right + left trigger valid
+            Assert.Equal(0x00, buffer[1]);           // valid_flag1 claims nothing
+            Assert.Equal(0x00, buffer[10]);          // right trigger mode = off
+            Assert.Equal(0x00, buffer[21]);          // left trigger mode = off
+
+            for (int i = 1; i < 47; i++)
+                Assert.Equal(0x00, buffer[i]);       // everything else inert
+        }
+
         [Fact]
         public void WaitMode_ReportsAFullChannel_WhichIsWhatTheFeatureLaneNeeds()
         {

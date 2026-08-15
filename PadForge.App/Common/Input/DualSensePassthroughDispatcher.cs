@@ -270,6 +270,36 @@ namespace PadForge.Common.Input
             return buffer;
         }
 
+        /// <summary>valid_flag1 bit 2, the lightbar colour enable. SDL sets
+        /// exactly this bit to author the bar (SDL_hidapi_ps5.c:759,
+        /// "Enable LED color").</summary>
+        private const byte LightbarValidBit = 0x04;
+
+        /// <summary>Lightbar RGB offsets in the report-ID stripped payload,
+        /// from the SDL3 fork's DS5EffectsState_t (ucLedRed 44, ucLedGreen 45,
+        /// ucLedBlue 46) and dualsense-tester's field order.</summary>
+        private const int LedRedOffset = 44;
+
+        /// <summary>Adds the slot's identity colour to a release frame, so a
+        /// pad handed back on shutdown carries PadForge's own colour instead
+        /// of whatever the game left.
+        ///
+        /// <para>The idle reclaim in UserEffectsDispatcher needs fifteen
+        /// seconds of quiet to re-arm, and closing PadForge is the case where
+        /// those seconds never arrive. Measured in the field (#300): the trace
+        /// carries LIGHTBAR out ... ledBit=False rgb=48,255,255 right up to
+        /// the last line, the game's cyan, ten seconds after it exited and
+        /// with the app closing. Same gap the trigger had, one subsystem
+        /// over.</para></summary>
+        internal static byte[] AddIdentityLightbar(byte[] buffer, byte r, byte g, byte b)
+        {
+            buffer[1] |= LightbarValidBit;
+            buffer[LedRedOffset] = r;
+            buffer[LedRedOffset + 1] = g;
+            buffer[LedRedOffset + 2] = b;
+            return buffer;
+        }
+
         /// <summary>Transport of the targets seen on the last dispatch. Written
         /// by the worker inside DispatchOne, read by the worker when pacing the
         /// next write, so no synchronisation is needed.</summary>
@@ -526,9 +556,19 @@ namespace PadForge.Common.Input
                 {
                     byte[] release = ArrayPool<byte>.Shared.Rent(StandardPayloadSize);
                     BuildTriggerReleasePayload(release);
+
+                    // Take the bar back on the way out too. Resolved the same
+                    // way the identity writer resolves it, including the
+                    // documented padIndex + 1 fallback for a slot that is not
+                    // in any group's order list.
+                    int playerNumber = SettingsManager.SlotOrders.GetGlobalSlotNumber(_padIndex);
+                    if (playerNumber <= 0) playerNumber = _padIndex + 1;
+                    var (lr, lg, lb) = PlayerIdentityDefaults.ColorFor(playerNumber);
+                    AddIdentityLightbar(release, lr, lg, lb);
+
                     WriteOne(new Ds5Effect(release, StandardPayloadSize, ReportIdUsbState, IsFeature: false));
                     SdlDiagLog.WriteLine(
-                        "DS5EFFECT slot=" + _padIndex + " RELEASE triggers (shutdown)");
+                        "DS5EFFECT slot=" + _padIndex + " RELEASE triggers+lightbar (shutdown)");
                 }
                 catch { /* shutdown must not throw */ }
             }

@@ -156,13 +156,10 @@ namespace PadForge.Common.Input
         /// passes through byte-identical and the hold resumes at rest.
         /// Deflection 0 (unset) applies the default 25%; the axis string
         /// falls back to LX. Values are clamped to 1-90%.</summary>
-        internal static void ApplyKeepAwake(Engine.Data.MappingSet ms, ref Gamepad gp)
+        internal static void ApplyKeepAwake(Engine.Data.MappingSet ms, ref Gamepad gp, long nowMs = 0)
         {
             if (ms == null || !ms.KeepAwakeEnabled) return;
-            int pct = ms.KeepAwakeDeflection;
-            if (pct <= 0) pct = 25;
-            pct = Math.Clamp(pct, 1, 90);
-            short level = (short)(32767 * pct / 100);
+            short level = KeepAwakeLevel(ms.KeepAwakeDeflection, ms.KeepAwakeMotion, nowMs);
             switch (ms.KeepAwakeAxis)
             {
                 case "LY":
@@ -178,6 +175,54 @@ namespace PadForge.Common.Input
                     if (Math.Abs((int)gp.ThumbLX) < level) gp.ThumbLX = level;
                     break;
             }
+        }
+
+        /// <summary>One full sweep of the keep-awake motion, in ms. 500 gives
+        /// a 250 ms travel each way, so a title sampling at 60 Hz sees the
+        /// axis change by roughly a fifteenth of the sweep width every frame.
+        /// Unmistakably moving, and slow enough that it reads as a deliberate
+        /// stick push rather than noise.</summary>
+        internal const long KeepAwakeMotionPeriodMs = 500;
+
+        /// <summary>The deflection to hold this instant.
+        ///
+        /// <para>Constant at the configured percent unless motion is on.
+        /// @HaraDaya measured (discussion #263) that some titles gate
+        /// vibration on the stick MOVING rather than on where it sits, Prey
+        /// (2017) being the example: hold the stick still and the vibration
+        /// stops however far over it is held. No constant value satisfies
+        /// that, so the value has to travel.</para>
+        ///
+        /// <para>The sweep is CENTRED on the configured percent, a quarter of
+        /// it wide, so the user's number stays the average rather than
+        /// becoming the floor or the ceiling. Sweeping upward from it would
+        /// push the axis further than the user asked and risk crossing a
+        /// game's deadzone into real character movement, which is the exact
+        /// thing this feature exists to avoid. Sweeping downward from it
+        /// would dip under whatever threshold the game uses to call the
+        /// controller active.</para>
+        ///
+        /// <para>Pure over its inputs, clock included, so the sweep is
+        /// testable without a controller or a running poll loop.</para></summary>
+        internal static short KeepAwakeLevel(int pct, bool motion, long nowMs)
+        {
+            if (pct <= 0) pct = 25;
+            pct = Math.Clamp(pct, 1, 90);
+            int level = 32767 * pct / 100;
+            if (!motion) return (short)level;
+
+            // Triangle rather than a sine: the corners are inaudible at this
+            // rate, and it keeps the whole thing in integer arithmetic on a
+            // per-slot, per-tick path.
+            const long half = KeepAwakeMotionPeriodMs / 2;
+            long phase = ((nowMs % KeepAwakeMotionPeriodMs) + KeepAwakeMotionPeriodMs)
+                         % KeepAwakeMotionPeriodMs;                    // negative-safe
+            long travel = phase < half ? phase : KeepAwakeMotionPeriodMs - phase;
+
+            int band = level / 4;
+            int lo = level - band / 2;
+            int add = (int)(band * travel / half);
+            return (short)Math.Clamp(lo + add, 1, 32767);
         }
 
         /// <summary>Returns the slot's configured button-SOCD cleaner, or
@@ -1759,7 +1804,7 @@ namespace PadForge.Common.Input
                                 var kaMs = (kaSets != null && padIndex < kaSets.Length)
                                     ? kaSets[padIndex] : null;
                                 if (kaMs != null)
-                                    ApplyKeepAwake(kaMs, ref gpOut);
+                                    ApplyKeepAwake(kaMs, ref gpOut, Environment.TickCount64);
                             }
 
                             // Button SOCD (#240): clean the final combined

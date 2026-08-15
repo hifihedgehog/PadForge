@@ -20,6 +20,112 @@ namespace PadForge.Tests
         private static MappingSet Cfg(bool enabled = true, string axis = "", int pct = 0)
             => new() { KeepAwakeEnabled = enabled, KeepAwakeAxis = axis, KeepAwakeDeflection = pct };
 
+        // ── Motion (#263, @HaraDaya) ──
+        //
+        // Prey (2017), measured on hardware: "as long as there's movement on
+        // the stick, vibration is sent. If you hold it in one place it stops
+        // working." A constant hold cannot satisfy a game that gates on
+        // CHANGE rather than on magnitude, at any percentage. So the level
+        // sweeps, and these pin the shape of that sweep.
+
+        [Fact]
+        public void MotionOff_HoldsAConstant_SoTheClockCannotMatter()
+        {
+            short a = InputManager.KeepAwakeLevel(25, motion: false, nowMs: 0);
+            short b = InputManager.KeepAwakeLevel(25, motion: false, nowMs: 137);
+            short c = InputManager.KeepAwakeLevel(25, motion: false, nowMs: 9_999_999);
+            Assert.Equal(a, b);
+            Assert.Equal(a, c);
+            Assert.Equal((short)(32767 * 25 / 100), a);
+        }
+
+        [Fact]
+        public void MotionOn_ActuallyMoves()
+        {
+            // The whole point. Two instants a quarter period apart must differ,
+            // or a game gating on change sees nothing and this feature is
+            // decoration.
+            short lo = InputManager.KeepAwakeLevel(25, motion: true, nowMs: 0);
+            short hi = InputManager.KeepAwakeLevel(
+                25, motion: true, nowMs: InputManager.KeepAwakeMotionPeriodMs / 2);
+            Assert.NotEqual(lo, hi);
+            Assert.True(hi > lo);
+        }
+
+        [Fact]
+        public void TheSweepIsCentredOnTheConfiguredPercent()
+        {
+            // Sweeping UP from the user's number would push the stick further
+            // than they asked and risk crossing a game's dead zone into real
+            // character movement, which is the thing this feature exists to
+            // avoid. Sweeping DOWN would dip under the threshold the game uses
+            // to call the controller active. So the number they set is the
+            // average, sitting midway between the two extremes.
+            int level = 32767 * 25 / 100;
+            short lo = InputManager.KeepAwakeLevel(25, motion: true, nowMs: 0);
+            short hi = InputManager.KeepAwakeLevel(
+                25, motion: true, nowMs: InputManager.KeepAwakeMotionPeriodMs / 2);
+
+            Assert.True(lo < level, "bottom of the sweep sits below the set level");
+            Assert.True(hi > level, "top of the sweep sits above it");
+            Assert.InRange((lo + hi) / 2, level - 1, level + 1);
+        }
+
+        [Fact]
+        public void TheSweepStaysWithinAQuarterOfTheHeldLevel()
+        {
+            // Narrow on purpose. Wide enough that a game samples a clearly
+            // changing axis, tight enough that it never becomes input.
+            int level = 32767 * 25 / 100;
+            int min = int.MaxValue, max = int.MinValue;
+            for (long t = 0; t < InputManager.KeepAwakeMotionPeriodMs * 3; t++)
+            {
+                int v = InputManager.KeepAwakeLevel(25, motion: true, nowMs: t);
+                if (v < min) min = v;
+                if (v > max) max = v;
+            }
+            Assert.True(max - min <= level / 4 + 1, $"sweep width {max - min}");
+            Assert.True(min > 0, "never crosses zero, which would read as released");
+        }
+
+        [Fact]
+        public void TheSweepRepeats_AndSurvivesAClockThatWraps()
+        {
+            long period = InputManager.KeepAwakeMotionPeriodMs;
+            Assert.Equal(
+                InputManager.KeepAwakeLevel(30, motion: true, nowMs: 123),
+                InputManager.KeepAwakeLevel(30, motion: true, nowMs: 123 + period * 7));
+
+            // Environment.TickCount64 is monotonic in practice, but a negative
+            // input must not produce a negative index into the sweep.
+            short v = InputManager.KeepAwakeLevel(30, motion: true, nowMs: -137);
+            Assert.True(v > 0);
+        }
+
+        [Fact]
+        public void MotionRespectsTheClampsTheStaticHoldUses()
+        {
+            // 90% is the ceiling, and the top of a sweep there must still be a
+            // legal axis value rather than wrapping negative.
+            for (long t = 0; t < InputManager.KeepAwakeMotionPeriodMs; t += 7)
+            {
+                short v = InputManager.KeepAwakeLevel(90, motion: true, nowMs: t);
+                Assert.InRange(v, (short)1, short.MaxValue);
+            }
+        }
+
+        [Fact]
+        public void RealInputStillWins_WithMotionOn()
+        {
+            // The pass-through contract is unchanged: anything the player is
+            // actually doing sits above the sweep and goes out untouched.
+            var gp = new Gamepad { ThumbLX = 30000 };
+            var ms = Cfg(pct: 25);
+            ms.KeepAwakeMotion = true;
+            InputManager.ApplyKeepAwake(ms, ref gp, nowMs: 250);
+            Assert.Equal(30000, gp.ThumbLX);
+        }
+
         // ── Injection math ──
 
         [Fact]

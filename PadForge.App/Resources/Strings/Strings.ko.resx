@@ -2486,6 +2486,8 @@
   <data name="Pad_KeepAwake_Axis_Tooltip" xml:space="preserve"><value>어느 출력 축이 편향을 유지할지 선택합니다. 카메라가 아닌 이동으로 읽히는 축을 선택하면 데드존 미만 값이 보이지 않습니다.</value></data>
   <data name="Pad_KeepAwake_Deflection_Label" xml:space="preserve"><value>유지량</value></data>
   <data name="Pad_KeepAwake_Deflection_Tooltip" xml:space="preserve"><value>스틱 전체 이동량 대비 유지 수준(%)입니다. 25%는 대부분 게임의 이동 데드존 아래에 있으면서 활성 상태를 유지합니다. 게임이 계속 전환되면 올리고, 캐릭터가 흐르면 낮추세요.</value></data>
+  <data name="Pad_KeepAwake_Motion" xml:space="preserve"><value>움직임 추가</value></data>
+  <data name="Pad_KeepAwake_Motion_Tooltip" xml:space="preserve"><value>일부 게임은 스틱이 '움직이는' 동안에만 진동을 보내며, 기울인 채로 유지할 때는 보내지 않습니다. Prey (2017)가 그런 경우입니다. 이 옵션은 유지 값을 고정하지 않고 완만하게 흔들어 그런 게임에서도 진동이 계속되게 합니다. 그 외에는 꺼 두세요. 고정해서 유지하는 쪽이 더 눈에 띄지 않습니다.</value></data>
   <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>활성 유지를 끄고 기본 축과 유지량으로 되돌립니다</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>이 슬롯의 가상 컨트롤러 출력에서 동시에 눌린 버튼 쌍을 해결합니다. 쌍의 두 버튼이 모두 눌려 있으면 선택한 규칙이 게임에 보일 입력을 결정합니다.</value></data>
   <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>동시 반대 방향 입력 재설정</value></data>

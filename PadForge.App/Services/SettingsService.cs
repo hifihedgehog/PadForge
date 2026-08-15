@@ -1808,6 +1808,7 @@ namespace PadForge.Services
                 merged.KeepAwakeEnabled = current.KeepAwakeEnabled;
                 merged.KeepAwakeAxis = current.KeepAwakeAxis ?? "";
                 merged.KeepAwakeDeflection = current.KeepAwakeDeflection;
+                merged.KeepAwakeMotion = current.KeepAwakeMotion;
                 var consumedRebuilt = new HashSet<(string, string)>();
 
                 foreach (var er in current.Rows)

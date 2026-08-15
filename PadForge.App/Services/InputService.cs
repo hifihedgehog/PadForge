@@ -7040,6 +7040,7 @@ namespace PadForge.Services
             copy.KeepAwakeEnabled = src.KeepAwakeEnabled;
             copy.KeepAwakeAxis = src.KeepAwakeAxis ?? "";
             copy.KeepAwakeDeflection = src.KeepAwakeDeflection;
+            copy.KeepAwakeMotion = src.KeepAwakeMotion;
             // Menus (#9 B-17) travel with the set like the shift authoring:
             // without this leg a profile apply would silently drop every
             // imported / authored menu.
@@ -7338,6 +7339,7 @@ namespace PadForge.Services
                 KeepAwakeEnabled = SettingsManager.SlotMappingSets[padIndex]?.KeepAwakeEnabled ?? false,
                 KeepAwakeAxis = SettingsManager.SlotMappingSets[padIndex]?.KeepAwakeAxis ?? "",
                 KeepAwakeDeflection = SettingsManager.SlotMappingSets[padIndex]?.KeepAwakeDeflection ?? 0,
+                KeepAwakeMotion = SettingsManager.SlotMappingSets[padIndex]?.KeepAwakeMotion ?? false,
             };
             foreach (var r in rows)
             {
@@ -7515,6 +7517,7 @@ namespace PadForge.Services
             copy.KeepAwakeEnabled = src.KeepAwakeEnabled;
             copy.KeepAwakeAxis = src.KeepAwakeAxis ?? "";
             copy.KeepAwakeDeflection = src.KeepAwakeDeflection;
+            copy.KeepAwakeMotion = src.KeepAwakeMotion;
             // Menus (#9 B-17) travel with the set exactly like the shift
             // authoring above (the same leg CloneMappingSetDeep carries).
             // Without it, Copy From Slot dropped the source's menus and the
@@ -7614,7 +7617,7 @@ namespace PadForge.Services
             // survived a cold load but was never offered as a Copy From
             // donor.
             if (ms.KeepAwakeEnabled || !string.IsNullOrEmpty(ms.KeepAwakeAxis)
-                || ms.KeepAwakeDeflection != 0) return true;
+                || ms.KeepAwakeDeflection != 0 || ms.KeepAwakeMotion) return true;
             return false;
         }
 

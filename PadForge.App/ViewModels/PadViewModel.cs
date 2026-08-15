@@ -6011,6 +6011,22 @@ namespace PadForge.ViewModels
             }
         }
 
+        /// <summary>Sweeps the hold instead of parking it. For titles that
+        /// gate vibration on the stick MOVING rather than on where it sits
+        /// (@HaraDaya measured Prey (2017) doing exactly that, #263).</summary>
+        public bool KeepAwakeMotion
+        {
+            get => SlotMenuSet?.KeepAwakeMotion ?? false;
+            set
+            {
+                var set = SlotMenuSet;
+                if (set == null || set.KeepAwakeMotion == value) return;
+                set.KeepAwakeMotion = value;
+                OnPropertyChanged(nameof(KeepAwakeMotion));
+                ConfigItemDirtyCallback?.Invoke();
+            }
+        }
+
         /// <summary>Held axis, locale-stable: "" or "LX" (default), "LY",
         /// "RX", "RY".</summary>
         public string KeepAwakeAxis
@@ -6074,6 +6090,10 @@ namespace PadForge.ViewModels
         public RelayCommand ResetKeepAwakeAxisCommand =>
             _resetKeepAwakeAxisCommand ??= new RelayCommand(() => KeepAwakeAxis = "LX");
 
+        private RelayCommand _resetKeepAwakeMotionCommand;
+        public RelayCommand ResetKeepAwakeMotionCommand =>
+            _resetKeepAwakeMotionCommand ??= new RelayCommand(() => KeepAwakeMotion = false);
+
         private RelayCommand _resetKeepAwakeCardCommand;
         /// <summary>Card-level Reset All: disabled, axis and deflection
         /// back to the unset defaults.</summary>
@@ -6085,6 +6105,7 @@ namespace PadForge.ViewModels
                 set.KeepAwakeEnabled = false;
                 set.KeepAwakeAxis = "";
                 set.KeepAwakeDeflection = 0;
+                set.KeepAwakeMotion = false;
                 ReloadKeepAwake();
                 ConfigItemDirtyCallback?.Invoke();
             });
@@ -6095,6 +6116,7 @@ namespace PadForge.ViewModels
         {
             OnPropertyChanged(nameof(KeepAwakeCardVisible));
             OnPropertyChanged(nameof(KeepAwakeEnabled));
+            OnPropertyChanged(nameof(KeepAwakeMotion));
             OnPropertyChanged(nameof(KeepAwakeAxis));
             OnPropertyChanged(nameof(AvailableKeepAwakeAxes));
             OnPropertyChanged(nameof(KeepAwakeDeflection));

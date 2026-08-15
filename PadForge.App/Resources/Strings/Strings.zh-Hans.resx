@@ -2502,6 +2502,18 @@
   <data name="Menu_Reset_Deadzone" xml:space="preserve"><value>重置启用死区</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>重置菜单布局</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>重置单元格</value></data>
+  <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>重置灵敏度</value></data>
+  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>重置加速度</value></data>
+  <data name="Common_Reset_DeadZone" xml:space="preserve"><value>重置死区</value></data>
+  <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>重置按住时长</value></data>
+  <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>重置按键判定窗口</value></data>
+  <data name="Macro_Reset_Interval" xml:space="preserve"><value>重置间隔</value></data>
+  <data name="Macro_Reset_SlowInterval" xml:space="preserve"><value>重置慢速间隔</value></data>
+  <data name="Macro_Reset_InsetX" xml:space="preserve"><value>重置内边距 X</value></data>
+  <data name="Macro_Reset_InsetY" xml:space="preserve"><value>重置内边距 Y</value></data>
+  <data name="Macro_Reset_RampStart" xml:space="preserve"><value>重置渐变起点</value></data>
+  <data name="Macro_Reset_RampEnd" xml:space="preserve"><value>重置渐变终点</value></data>
+  <data name="Pad_Reset_AxisToButtonDeadZone" xml:space="preserve"><value>重置轴转按钮死区</value></data>
   <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>重置保持手柄活跃</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>解决此插槽虚拟控制器输出上同时按住的按钮对。当一对按钮同时按下时，所选规则决定游戏看到哪个输入。</value></data>
   <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>重置同时反向输入</value></data>

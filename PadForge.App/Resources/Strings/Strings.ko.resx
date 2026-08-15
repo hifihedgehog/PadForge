@@ -2502,6 +2502,18 @@
   <data name="Menu_Reset_Deadzone" xml:space="preserve"><value>작동 데드존 초기화</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>메뉴 배치 초기화</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>셀 초기화</value></data>
+  <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>감도 초기화</value></data>
+  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>가속 초기화</value></data>
+  <data name="Common_Reset_DeadZone" xml:space="preserve"><value>데드존 초기화</value></data>
+  <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>누름 시간 초기화</value></data>
+  <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>입력 인식 시간 초기화</value></data>
+  <data name="Macro_Reset_Interval" xml:space="preserve"><value>간격 초기화</value></data>
+  <data name="Macro_Reset_SlowInterval" xml:space="preserve"><value>느린 간격 초기화</value></data>
+  <data name="Macro_Reset_InsetX" xml:space="preserve"><value>안쪽 여백 X 초기화</value></data>
+  <data name="Macro_Reset_InsetY" xml:space="preserve"><value>안쪽 여백 Y 초기화</value></data>
+  <data name="Macro_Reset_RampStart" xml:space="preserve"><value>램프 시작 초기화</value></data>
+  <data name="Macro_Reset_RampEnd" xml:space="preserve"><value>램프 끝 초기화</value></data>
+  <data name="Pad_Reset_AxisToButtonDeadZone" xml:space="preserve"><value>축-버튼 데드존 초기화</value></data>
   <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>컨트롤러 깨어 있게 유지 초기화</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>이 슬롯의 가상 컨트롤러 출력에서 동시에 눌린 버튼 쌍을 해결합니다. 쌍의 두 버튼이 모두 눌려 있으면 선택한 규칙이 게임에 보일 입력을 결정합니다.</value></data>
   <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>동시 반대 방향 입력 재설정</value></data>

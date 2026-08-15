@@ -2502,6 +2502,18 @@
   <data name="Menu_Reset_Deadzone" xml:space="preserve"><value>Réinitialiser la zone morte d'activation</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Réinitialiser la géométrie du menu</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Réinitialiser la cellule</value></data>
+  <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Réinitialiser la sensibilité</value></data>
+  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>Réinitialiser l'accélération</value></data>
+  <data name="Common_Reset_DeadZone" xml:space="preserve"><value>Réinitialiser la zone morte</value></data>
+  <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>Réinitialiser le temps de maintien</value></data>
+  <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>Réinitialiser la fenêtre d'appui</value></data>
+  <data name="Macro_Reset_Interval" xml:space="preserve"><value>Réinitialiser l'intervalle</value></data>
+  <data name="Macro_Reset_SlowInterval" xml:space="preserve"><value>Réinitialiser l'intervalle lent</value></data>
+  <data name="Macro_Reset_InsetX" xml:space="preserve"><value>Réinitialiser le retrait X</value></data>
+  <data name="Macro_Reset_InsetY" xml:space="preserve"><value>Réinitialiser le retrait Y</value></data>
+  <data name="Macro_Reset_RampStart" xml:space="preserve"><value>Réinitialiser le début de la rampe</value></data>
+  <data name="Macro_Reset_RampEnd" xml:space="preserve"><value>Réinitialiser la fin de la rampe</value></data>
+  <data name="Pad_Reset_AxisToButtonDeadZone" xml:space="preserve"><value>Réinitialiser la zone morte axe vers bouton</value></data>
   <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>Réinitialiser Garder la manette active</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>Résout les paires de boutons maintenues en même temps sur la sortie de la manette virtuelle de cet emplacement. Quand les deux boutons d&apos;une paire sont enfoncés, la règle choisie décide quel appui le jeu voit.</value></data>
   <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>Réinitialiser les directions cardinales opposées simultanées</value></data>

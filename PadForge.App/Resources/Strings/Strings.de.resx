@@ -2502,6 +2502,18 @@
   <data name="Menu_Reset_Deadzone" xml:space="preserve"><value>Aktivierungs-Deadzone zurücksetzen</value></data>
   <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Menügeometrie zurücksetzen</value></data>
   <data name="Menu_Reset_Cell" xml:space="preserve"><value>Zelle zurücksetzen</value></data>
+  <data name="Common_Reset_Sensitivity" xml:space="preserve"><value>Empfindlichkeit zurücksetzen</value></data>
+  <data name="Common_Reset_Acceleration" xml:space="preserve"><value>Beschleunigung zurücksetzen</value></data>
+  <data name="Common_Reset_DeadZone" xml:space="preserve"><value>Deadzone zurücksetzen</value></data>
+  <data name="Macro_Reset_HoldTime" xml:space="preserve"><value>Haltezeit zurücksetzen</value></data>
+  <data name="Macro_Reset_PressWindow" xml:space="preserve"><value>Druckfenster zurücksetzen</value></data>
+  <data name="Macro_Reset_Interval" xml:space="preserve"><value>Intervall zurücksetzen</value></data>
+  <data name="Macro_Reset_SlowInterval" xml:space="preserve"><value>Langsames Intervall zurücksetzen</value></data>
+  <data name="Macro_Reset_InsetX" xml:space="preserve"><value>Einzug X zurücksetzen</value></data>
+  <data name="Macro_Reset_InsetY" xml:space="preserve"><value>Einzug Y zurücksetzen</value></data>
+  <data name="Macro_Reset_RampStart" xml:space="preserve"><value>Rampenstart zurücksetzen</value></data>
+  <data name="Macro_Reset_RampEnd" xml:space="preserve"><value>Rampenende zurücksetzen</value></data>
+  <data name="Pad_Reset_AxisToButtonDeadZone" xml:space="preserve"><value>Achse-zu-Taste-Deadzone zurücksetzen</value></data>
   <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>Controller wach halten zurücksetzen</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>Löst gleichzeitig gehaltene Tastenpaare auf der virtuellen Controller-Ausgabe dieses Slots auf. Sind beide Tasten eines Paars gedrückt, entscheidet die gewählte Regel, welchen Druck das Spiel sieht.</value></data>
   <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>Gleichzeitige entgegengesetzte Kardinalrichtungen zurücksetzen</value></data>

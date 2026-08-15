@@ -303,8 +303,20 @@ namespace PadForge.Common.Input
             Teardown();
         }
 
+        // A session that ends the instant it opens means the node is present but
+        // dead. On Bluetooth the BthPS3 PDO lingers after the pad leaves (see the
+        // note above the OpenUsb/OpenBluetooth call), so the open keeps succeeding
+        // while the read returns at once. With no floor that is a hot spin which
+        // attaches and tears down a virtual controller on every iteration: a
+        // reporter's log caught five full cycles inside 3 ms (#285, 2026-08-15).
+        // Back off when a session does not last, and reset as soon as one does.
+        private const int MinHealthySessionMs = 400;
+        private const int FlapBackoffFirstMs = 125;
+        private const int FlapBackoffMaxMs = 2000;
+
         private void MonitorLoop()
         {
+            int flapBackoffMs = 0;
             while (_running)
             {
                 // Unpair in progress: drop any live pad and don't re-grab it.
@@ -333,11 +345,26 @@ namespace PadForge.Common.Input
                 _writeThread.Start();
 
                 _log($"DS3({tag}): virtual joystick attached; streaming.");
+                long sessionStart = Environment.TickCount64;
                 if (_transport == Ds3Transport.Usb) UsbReadLoop();
                 else ReadLoop(_readPdo);   // blocks until the pad disconnects or Stop()
 
                 Teardown();
-                _log($"DS3({tag}): disconnected; watching for reconnect.");
+                long sessionMs = Environment.TickCount64 - sessionStart;
+                _log($"DS3({tag}): disconnected after {sessionMs} ms; watching for reconnect.");
+
+                // Stop() sets _running false and cancels the read; that exit is a
+                // short session by design and must not be slept on.
+                if (!_running) break;
+
+                if (sessionMs < MinHealthySessionMs)
+                {
+                    flapBackoffMs = flapBackoffMs == 0 ? FlapBackoffFirstMs
+                                  : flapBackoffMs >= FlapBackoffMaxMs / 2 ? FlapBackoffMaxMs
+                                  : flapBackoffMs * 2;
+                    Thread.Sleep(flapBackoffMs);
+                }
+                else flapBackoffMs = 0;
             }
         }
 

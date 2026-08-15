@@ -680,7 +680,7 @@ namespace PadForge.Services
             if (needed == 0 || needed > 8192) return null;
             var buffer = new byte[needed];
             if (!SetupDiGetDeviceRegistryProperty(set, ref dev, prop, out _, buffer, needed, out _)) return null;
-            return System.Text.Encoding.Unicode.GetString(buffer).Replace(' ', ' ').Trim();
+            return System.Text.Encoding.Unicode.GetString(buffer).Replace('\0', ' ').Trim();
         }
 
         /// <summary>Reads the LIVE armed state of every BthPS3PSM filter
@@ -815,8 +815,16 @@ namespace PadForge.Services
                     finally { SetupDiDestroyDeviceInfoList(set); }
                 }
 
+                // State only, no verdict. This probe is called as a BASELINE the
+                // instant the ceremony hands off, before the user has unplugged
+                // the pad or pressed PS, where zero children is the EXPECTED
+                // reading. The old text appended "(the pad's connection did not
+                // reach BthPS3)", which a reporter read as the failure verdict
+                // and quoted back as the diagnosis (#285, 2026-08-15). The
+                // causal claim belongs to the 90 s watcher, which has waited
+                // long enough to earn it.
                 log(children == 0
-                    ? "BthPS3 child: NONE present (the pad's connection did not reach BthPS3)."
+                    ? "BthPS3 child: NONE present."
                     : $"BthPS3 child: {children} present [{sb}], raw interface active={activeIface}.");
             }
             catch (Exception ex) { log("BthPS3 child probe failed: " + ex.Message); }

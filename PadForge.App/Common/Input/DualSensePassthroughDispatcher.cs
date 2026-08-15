@@ -505,6 +505,34 @@ namespace PadForge.Common.Input
         public void Dispose()
         {
             if (_disposed) return;
+
+            // Hand the triggers back BEFORE tearing anything down.
+            //
+            // The idle release needs fifteen seconds of silence to fire, and
+            // PadForge closing is the one case where those seconds never
+            // arrive. Jobima1st (#300) closes the app immediately after the
+            // game, and reported the pad still acting; the same test passed
+            // here only because the tester waited. Whatever the game left
+            // loaded then stays loaded forever, because the only thing that
+            // would have cleared it just exited.
+            //
+            // Written synchronously on the caller's thread, before _disposed
+            // is set and before the worker is cancelled, because after that
+            // there is nothing left to carry it.
+            if (_drivingState)
+            {
+                _drivingState = false;
+                try
+                {
+                    byte[] release = ArrayPool<byte>.Shared.Rent(StandardPayloadSize);
+                    BuildTriggerReleasePayload(release);
+                    WriteOne(new Ds5Effect(release, StandardPayloadSize, ReportIdUsbState, IsFeature: false));
+                    SdlDiagLog.WriteLine(
+                        "DS5EFFECT slot=" + _padIndex + " RELEASE triggers (shutdown)");
+                }
+                catch { /* shutdown must not throw */ }
+            }
+
             _disposed = true;
 
             try { _channel.Writer.TryComplete(); } catch { }

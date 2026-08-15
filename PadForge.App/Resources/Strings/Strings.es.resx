@@ -648,11 +648,11 @@
   <data name="Macro_Expression_Recipe_Single" xml:space="preserve"><value>a sola</value></data>
   <data name="Macro_Expression_Recipe_Single_Tooltip" xml:space="preserve"><value>Se activa cuando la variable a pasa de 0 a 1.</value></data>
   <data name="Macro_Expression_Recipe_Both" xml:space="preserve"><value>a y b</value></data>
-  <data name="Macro_Expression_Recipe_Both_Tooltip" xml:space="preserve"><value>Se activa solo cuando a AND b están activas. Acorde clásico.</value></data>
+  <data name="Macro_Expression_Recipe_Both_Tooltip" xml:space="preserve"><value>Se activa solo cuando a y b están activas. Acorde clásico.</value></data>
   <data name="Macro_Expression_Recipe_Either" xml:space="preserve"><value>a o b</value></data>
   <data name="Macro_Expression_Recipe_Either_Tooltip" xml:space="preserve"><value>Se activa cuando a OR b está activa.</value></data>
   <data name="Macro_Expression_Recipe_AButNotB" xml:space="preserve"><value>a pero no b</value></data>
-  <data name="Macro_Expression_Recipe_AButNotB_Tooltip" xml:space="preserve"><value>Se activa cuando a está activa y b NOT está activa.</value></data>
+  <data name="Macro_Expression_Recipe_AButNotB_Tooltip" xml:space="preserve"><value>Se activa cuando a está activa y b no está activa.</value></data>
   <data name="Macro_Expression_Recipe_AxisOverHalf" xml:space="preserve"><value>Eje por encima del 50%</value></data>
   <data name="Macro_Expression_Recipe_AxisOverHalf_Tooltip" xml:space="preserve"><value>Se activa cuando el eje del joystick a supera el 50% de desplazamiento desde el reposo.</value></data>
   <data name="Macro_Source" xml:space="preserve"><value>Origen</value></data>
@@ -2487,7 +2487,7 @@
   <data name="Pad_KeepAwake_Deflection_Label" xml:space="preserve"><value>Desviación</value></data>
   <data name="Pad_KeepAwake_Deflection_Tooltip" xml:space="preserve"><value>Nivel mantenido como porcentaje del recorrido total del stick. 25% mantiene activos la mayoría de los juegos sin superar su zona muerta de movimiento. Súbelo si el juego sigue cambiando. Bájalo si el personaje deriva.</value></data>
   <data name="Pad_KeepAwake_Motion" xml:space="preserve"><value>Añadir movimiento</value></data>
-  <data name="Pad_KeepAwake_Motion_Tooltip" xml:space="preserve"><value>Algunos juegos envían vibración solo mientras la palanca se MUEVE, no mientras se mantiene inclinada. Prey (2017) es uno de ellos. Esto hace oscilar suavemente el nivel mantenido en lugar de dejarlo fijo, para que esos juegos sigan vibrando. Déjalo desactivado en los demás casos. Mantenerlo fijo es más discreto.</value></data>
+  <data name="Pad_KeepAwake_Motion_Tooltip" xml:space="preserve"><value>Algunos juegos envían vibración solo mientras la palanca se mueve, no mientras se mantiene inclinada. Esto hace oscilar suavemente el nivel mantenido en lugar de dejarlo fijo, para que esos juegos sigan vibrando. Déjalo desactivado en los demás casos. Mantenerlo fijo es más discreto.</value></data>
   <data name="Pad_KeepAwake_Reset_Axis" xml:space="preserve"><value>Restablecer Eje mantenido</value></data>
   <data name="Pad_KeepAwake_Reset_Deflection" xml:space="preserve"><value>Restablecer Desviación</value></data>
   <data name="Pad_KeepAwake_Reset_Motion" xml:space="preserve"><value>Restablecer Añadir movimiento</value></data>

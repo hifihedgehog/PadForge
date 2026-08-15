@@ -648,11 +648,11 @@
   <data name="Macro_Expression_Recipe_Single" xml:space="preserve"><value>Alleen a</value></data>
   <data name="Macro_Expression_Recipe_Single_Tooltip" xml:space="preserve"><value>Activeer wanneer variabele a van 0 naar 1 gaat.</value></data>
   <data name="Macro_Expression_Recipe_Both" xml:space="preserve"><value>a en b</value></data>
-  <data name="Macro_Expression_Recipe_Both_Tooltip" xml:space="preserve"><value>Activeer alleen wanneer zowel a AND b actief zijn. Klassiek akkoord.</value></data>
+  <data name="Macro_Expression_Recipe_Both_Tooltip" xml:space="preserve"><value>Activeer alleen wanneer zowel a als b actief zijn. Klassiek akkoord.</value></data>
   <data name="Macro_Expression_Recipe_Either" xml:space="preserve"><value>a of b</value></data>
   <data name="Macro_Expression_Recipe_Either_Tooltip" xml:space="preserve"><value>Activeer wanneer a OR b actief is.</value></data>
   <data name="Macro_Expression_Recipe_AButNotB" xml:space="preserve"><value>a maar niet b</value></data>
-  <data name="Macro_Expression_Recipe_AButNotB_Tooltip" xml:space="preserve"><value>Activeer wanneer a actief is en b NOT actief is.</value></data>
+  <data name="Macro_Expression_Recipe_AButNotB_Tooltip" xml:space="preserve"><value>Activeer wanneer a actief is en b niet actief is.</value></data>
   <data name="Macro_Expression_Recipe_AxisOverHalf" xml:space="preserve"><value>As voorbij 50%</value></data>
   <data name="Macro_Expression_Recipe_AxisOverHalf_Tooltip" xml:space="preserve"><value>Activeer wanneer stickas a meer dan 50% van de ruststand is uitgeslagen.</value></data>
   <data name="Macro_Source" xml:space="preserve"><value>Bron</value></data>
@@ -2507,7 +2507,7 @@
   <data name="Pad_KeepAwake_Deflection_Label" xml:space="preserve"><value>Uitslag</value></data>
   <data name="Pad_KeepAwake_Deflection_Tooltip" xml:space="preserve"><value>Vastgehouden niveau als percentage van de volledige stickuitslag. 25% houdt de meeste games actief en blijft onder hun bewegingsdode zone. Verhoog als de game blijft wisselen. Verlaag als het personage drift.</value></data>
   <data name="Pad_KeepAwake_Motion" xml:space="preserve"><value>Beweging toevoegen</value></data>
-  <data name="Pad_KeepAwake_Motion_Tooltip" xml:space="preserve"><value>Sommige games sturen alleen trilling zolang de stick BEWEEGT, niet zolang die uitgeweken wordt gehouden. Prey (2017) is er een. Dit laat het vastgehouden niveau rustig heen en weer gaan in plaats van het stil te zetten, zodat die games blijven trillen. Laat het anders uit. Stil vasthouden valt minder op.</value></data>
+  <data name="Pad_KeepAwake_Motion_Tooltip" xml:space="preserve"><value>Sommige games sturen alleen trilling zolang de stick beweegt, niet zolang die uitgeweken wordt gehouden. Dit laat het vastgehouden niveau rustig heen en weer gaan in plaats van het stil te zetten, zodat die games blijven trillen. Laat het anders uit. Stil vasthouden valt minder op.</value></data>
   <data name="Pad_KeepAwake_Reset_Axis" xml:space="preserve"><value>Vastgehouden as herstellen</value></data>
   <data name="Pad_KeepAwake_Reset_Deflection" xml:space="preserve"><value>Uitslag herstellen</value></data>
   <data name="Pad_KeepAwake_Reset_Motion" xml:space="preserve"><value>Beweging toevoegen herstellen</value></data>

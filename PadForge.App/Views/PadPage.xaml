@@ -11472,6 +11472,25 @@
                                     <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                     <ui:Button Command="{Binding DeviceConfig.ResetHeadphoneVolumeCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetHeadphoneVolume, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
+                                <!-- Audio buffer length (#314, reported by vlue-c on
+                                     discussion #311). The packet 0x11 header byte governing
+                                     the Bluetooth transport that carries speaker audio,
+                                     haptics AND microphone capture, so it is not a speaker
+                                     knob. 255 is the shipped default and leaves behaviour
+                                     unchanged; 16 is the floor the reference enforces
+                                     (DS5Dongle src/config.cpp:99). Advanced and optional. -->
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="{Binding Pad_Audio_BufferLength, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                               ToolTip="{Binding Pad_Audio_BufferLength_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Slider Value="{Binding DeviceConfig.Ds5AudioBufferLength, Mode=TwoWay}"
+                                            Style="{StaticResource DzSlider}"
+                                            ToolTip="{Binding Pad_Audio_BufferLength_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                            Minimum="16" Maximum="255" TickFrequency="1"/>
+                                    <TextBox Text="{Binding DeviceConfig.Ds5AudioBufferLength, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                             Style="{StaticResource DzValueEdit}"/>
+                                    <ui:Button Command="{Binding DeviceConfig.ResetDs5AudioBufferLengthCommand}" Style="{StaticResource ResetButton}"
+                                               ToolTip="{Binding Pad_Audio_Reset_BufferLength, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
                                 <!-- Output path (byte 7 bits 4-5, OutputPathSelect). Enum
                                      values 1-4 map to firmware paths 0-3; Automatic writes
                                      nothing and keeps the #83 macro-speaker behaviour. An

@@ -1078,6 +1078,20 @@ namespace PadForge.Services
                 return 0;
             };
 
+            // #314: same walk as the output-path provider above, so the
+            // buffer length resolves from the same per-device config.
+            AudioPassthroughService.DeviceAudioBufferLengthProvider = deviceGuid =>
+            {
+                if (deviceGuid == Guid.Empty)
+                    return AudioPassthroughService.Ds5AudioBufferLengthDefault;
+                foreach (var padVm in _mainVm.Pads)
+                {
+                    var cfg = padVm.PeekDeviceConfig(deviceGuid);
+                    if (cfg != null) return cfg.Ds5AudioBufferLength;
+                }
+                return AudioPassthroughService.Ds5AudioBufferLengthDefault;
+            };
+
             AudioPassthroughService.SlotWantsMacroAudioProvider = slot =>
             {
                 var im = _inputManager;

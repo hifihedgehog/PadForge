@@ -2321,6 +2321,7 @@ namespace PadForge.Services
                 || c.RightTriggerMode != ViewModels.AdaptiveTriggerMode.Off
                 || c.MicLedMode != ViewModels.MicLedMode.Off
                 || c.HeadphoneVolume != 100
+                || c.Ds5AudioBufferLength != 255
                 || c.AudioOutputPath != ViewModels.AudioOutputPath.Automatic
                 || c.PlayerLedMode != (c.LightingRev >= 1
                     ? ViewModels.PlayerLedMode.PlayerNumber : ViewModels.PlayerLedMode.Off)
@@ -2353,6 +2354,7 @@ namespace PadForge.Services
                 || c.RightTriggerMode != ViewModels.AdaptiveTriggerMode.Off
                 || c.MicLedMode != ViewModels.MicLedMode.Off
                 || c.HeadphoneVolume != 100
+                || c.Ds5AudioBufferLength != 255
                 || c.AudioOutputPath != ViewModels.AudioOutputPath.Automatic
                 || c.PlayerLedMode != ViewModels.PlayerLedMode.PlayerNumber
                 || c.GuideLedMode != ViewModels.GuideLedMode.DeviceDefault
@@ -2704,6 +2706,7 @@ namespace PadForge.Services
                         cfg.MicLightOn = cfgData.MicLightOn;
                     cfg.MicLedFollowDeviceId = cfgData.MicLedFollowDeviceId ?? string.Empty;
                     cfg.HeadphoneVolume = cfgData.HeadphoneVolume;
+                    cfg.Ds5AudioBufferLength = cfgData.Ds5AudioBufferLength;
                     cfg.AudioOutputPath = cfgData.AudioOutputPath;
                     cfg.PlayerLedMode = cfgData.PlayerLedMode;
                     cfg.PlayerLedBrightness = cfgData.PlayerLedBrightness;
@@ -4208,6 +4211,7 @@ namespace PadForge.Services
                 AudioPersonaHapticsEnabled = cfg.AudioPersonaHapticsEnabled,
                 AudioPersonaHapticsGain = cfg.AudioPersonaHapticsGain,
                 HeadphoneVolume = cfg.HeadphoneVolume,
+                Ds5AudioBufferLength = cfg.Ds5AudioBufferLength,
                 AudioOutputPath = cfg.AudioOutputPath,
                 MicLedMode = cfg.MicLedMode,
                 MicLedFollowDeviceId = cfg.MicLedFollowDeviceId ?? string.Empty,

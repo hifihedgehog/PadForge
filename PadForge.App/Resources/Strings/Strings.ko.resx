@@ -2515,6 +2515,9 @@
   <data name="Macro_Reset_RampEnd" xml:space="preserve"><value>램프 끝 초기화</value></data>
   <data name="Pad_Reset_AxisToButtonDeadZone" xml:space="preserve"><value>축-버튼 데드존 초기화</value></data>
   <data name="Pad_KeepAwake_Reset_Enable" xml:space="preserve"><value>깨어 있게 유지 초기화</value></data>
+  <data name="Pad_Audio_BufferLength" xml:space="preserve"><value>오디오 버퍼 길이</value></data>
+  <data name="Pad_Audio_BufferLength_Tooltip" xml:space="preserve"><value>고급. 이 컨트롤러가 스피커 소리, 햅틱, 마이크 입력에 함께 사용하는 블루투스 오디오 버퍼를 설정합니다. 스피커만의 설정이 아닙니다. 값이 작을수록 세 가지 모두의 지연이 줄지만 블루투스 타이밍 변동에 대한 여유도 줄어, 혼잡한 연결에서는 끊김과 버벅임이 생기기 쉬워집니다. 255는 기존 기본값이며 동작이 달라지지 않습니다. 측정 결과 왕복 시간은 255에서 405밀리초, 64에서 278밀리초였습니다. 다음에 컨트롤러의 오디오 세션이 시작될 때 적용되므로 변경 후 다시 연결하세요.</value></data>
+  <data name="Pad_Audio_Reset_BufferLength" xml:space="preserve"><value>오디오 버퍼 길이 초기화</value></data>
   <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>컨트롤러 깨어 있게 유지 초기화</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>이 슬롯의 가상 컨트롤러 출력에서 동시에 눌린 버튼 쌍을 해결합니다. 쌍의 두 버튼이 모두 눌려 있으면 선택한 규칙이 게임에 보일 입력을 결정합니다.</value></data>
   <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>동시 반대 방향 입력 재설정</value></data>

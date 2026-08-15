@@ -580,6 +580,43 @@ namespace PadForge.Common.Input
         /// Wired by InputService; null / throw resolves 0.</summary>
         internal static Func<Guid, int> DeviceAudioOutputPathProvider;
 
+        /// <summary>Device's configured DualSense BT audio buffer length.
+        /// Wired by InputService. A null provider or a throw resolves to
+        /// <see cref="Ds5AudioBufferLengthDefault"/>, so a missing wire
+        /// cannot change what goes on the wire.</summary>
+        internal static Func<Guid, int> DeviceAudioBufferLengthProvider;
+
+        /// <summary>What PadForge has always sent in the packet 0x11
+        /// header's buffer-length byte. The default, so an install that
+        /// never touches the setting is byte-identical to before.</summary>
+        internal const byte Ds5AudioBufferLengthDefault = 0xFF;
+
+        /// <summary>Floor from the reference implementation, which refuses
+        /// anything lower (DS5Dongle src/config.cpp:99).</summary>
+        internal const byte Ds5AudioBufferLengthMin = 16;
+
+        /// <summary>Clamps a requested buffer length into the range the
+        /// reference accepts. Pure, so the rule is testable without a
+        /// controller. Anything unset or out of range resolves to the
+        /// default rather than to a corrupt header byte.</summary>
+        internal static byte ClampAudioBufferLength(int requested)
+            => requested < Ds5AudioBufferLengthMin || requested > 255
+               ? Ds5AudioBufferLengthDefault
+               : (byte)requested;
+
+        /// <summary>The buffer-length byte to put in this device's packet
+        /// 0x11 header.</summary>
+        private static byte ResolveAudioBufferLength(Guid deviceGuid)
+        {
+            try
+            {
+                int v = DeviceAudioBufferLengthProvider?.Invoke(deviceGuid)
+                        ?? Ds5AudioBufferLengthDefault;
+                return ClampAudioBufferLength(v);
+            }
+            catch { return Ds5AudioBufferLengthDefault; }
+        }
+
         // Last observed headphone-jack state per pad, written by the BT
         // raw reader from the input status byte (duaLib /*53.0*/
         // PluggedHeadphones). Absent = never observed (USB pads, or no
@@ -1673,7 +1710,8 @@ namespace PadForge.Common.Input
                     close[2] = 0x11 | 0x80;
                     close[3] = 7;
                     close[4] = 0xFE;   // close
-                    close[9] = 0xFF;
+                    close[9] = ResolveAudioBufferLength(
+                        feed?.Targets is { Length: > 0 } t ? t[0] : Guid.Empty);
                     close[11] = 0x12 | 0x80;
                     close[12] = 64;
                     uint crc = Crc32(close, Ds5HapticBtReportSize - 4);
@@ -3086,7 +3124,8 @@ namespace PadForge.Common.Input
                 // single audio session see a counter that jumped back and
                 // forth, and it stalled for about a second and then resumed
                 // only one of the two.
-                BuildDs5BtCombinedReport(report, s.Ds5Seq, s.Ds5PktCounter, s.Ds5MicOpen == 1,
+                BuildDs5BtCombinedReport(ResolveAudioBufferLength(s.DeviceGuid),
+                                         report, s.Ds5Seq, s.Ds5PktCounter, s.Ds5MicOpen == 1,
                                          hapticPcm, opus, n, Ds5BtAudioLanePid(outPath));
                 s.Ds5Seq = (s.Ds5Seq + 1) & 0x0F;
                 s.Ds5PktCounter++;
@@ -3114,7 +3153,7 @@ namespace PadForge.Common.Input
             report[2] = 0x11 | 0x80;
             report[3] = 7;
             report[4] = Ds5MicSessionByte(s.Ds5MicOpen == 1);
-            report[9] = 0xFF;
+            report[9] = ResolveAudioBufferLength(s.DeviceGuid);
             report[10] = s.Ds5PktCounter++;
             // Audio lane packet: 0x13 speaker / 0x16 headset, one Opus
             // frame filling the slot.
@@ -3176,6 +3215,7 @@ namespace PadForge.Common.Input
         /// decimation, and the CRC placement have each regressed once.
         /// Deterministic: no clock, no I/O, no shared state.</summary>
         internal static bool BuildDs5BtHapticReport(byte[] report, int seq, byte pktCounter,
+            byte audioBufferLength,
                                                     bool micOpen, ReadOnlySpan<short> pcm)
         {
             Array.Clear(report, 0, Ds5HapticBtReportSize);
@@ -3186,7 +3226,7 @@ namespace PadForge.Common.Input
             report[2] = 0x11 | 0x80;
             report[3] = 7;
             report[4] = Ds5MicSessionByte(micOpen);
-            report[9] = 0xFF;
+            report[9] = audioBufferLength;
             report[10] = pktCounter;
             // packet 0x12: 64 bytes of s8 stereo 3 kHz actuator PCM,
             // decimated 16:1 from the 48 kHz tick by block mean.
@@ -3253,6 +3293,7 @@ namespace PadForge.Common.Input
         /// at byte 77, which is precisely where the audio packet lands
         /// here.</para></summary>
         internal static bool BuildDs5BtCombinedReport(
+            byte audioBufferLength,
             byte[] report, int seq, byte pktCounter, bool micOpen,
             ReadOnlySpan<short> hapticPcm, ReadOnlySpan<byte> opus, int opusBytes, byte lanePid)
         {
@@ -3262,7 +3303,7 @@ namespace PadForge.Common.Input
             report[2] = 0x11 | 0x80;
             report[3] = 7;
             report[4] = Ds5MicSessionByte(micOpen);
-            report[9] = 0xFF;
+            report[9] = audioBufferLength;
             report[10] = pktCounter;
             bool signal = WriteDs5HapticPacket(report, 11, hapticPcm);
             int at = Ds5BtCombinedAudioPacketAt;
@@ -3324,7 +3365,9 @@ namespace PadForge.Common.Input
         /// speaker audio. Rides the shared session counters.</summary>
         private static void SendDs5BtHapticOnly(Sink s, short[] pcm, byte[] report)
         {
-            BuildDs5BtHapticReport(report, s.Ds5Seq, s.Ds5PktCounter, s.Ds5MicOpen == 1, pcm);
+            BuildDs5BtHapticReport(report, s.Ds5Seq, s.Ds5PktCounter,
+                                   ResolveAudioBufferLength(s.DeviceGuid),
+                                   s.Ds5MicOpen == 1, pcm);
             s.Ds5Seq = (s.Ds5Seq + 1) & 0x0F;
             s.Ds5PktCounter++;
 
@@ -3484,7 +3527,7 @@ namespace PadForge.Common.Input
             report[2] = 0x11 | 0x80;
             report[3] = 7;
             report[4] = open ? (byte)0xFF : (byte)0xFE;
-            report[9] = 0xFF;
+            report[9] = ResolveAudioBufferLength(s.DeviceGuid);
             report[10] = s.Ds5PktCounter++;
             report[11] = 0x12 | 0x80;
             report[12] = 64;                        // 64 zero haptic bytes follow

@@ -1351,7 +1351,7 @@
   <data name="Pad_GyroTilt_Deadzone_Tooltip" xml:space="preserve"><value>Graus de inclinação ignorados ao redor da pegada de repouso, subtraídos antes da escala para não haver salto na borda.</value></data>
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>Redefinir alcance de inclinação total</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Redefinir zona morta de inclinação</value></data>
-  <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Redefinir todas as configurações de inclinação ajustável</value></data>
+  <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Redefinir Inclinação do giroscópio</value></data>
   <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Como as fontes desta linha se combinam quando mais de uma está ativa. Selecione a linha para alterar no painel de detalhes abaixo.</value></data>
   <data name="Pad_StickMomentum" xml:space="preserve"><value>Impulso</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>Modo trackball: dê um peteleco no analógico e solte, e o cursor continua viajando até parar. Mover o analógico de novo o segura.</value></data>
@@ -1909,7 +1909,7 @@
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Redefinir Orientação do Controle</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Direção por Movimento</value></data>
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Configurações da entrada "Inclinação de movimento": incline o controle como um volante. Atribua "Inclinação de movimento" a um eixo do analógico na lista de entradas em Mapeamentos.</value></data>
-  <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Redefinir todas as configurações de Direção por Movimento</value></data>
+  <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Redefinir Direção por movimento</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Feedback de Batente do Volante</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Quando um analógico configurado como volante é girado até o esterçamento máximo, emite um sinal (vibração, gatilho ou barra de luz) para você sentir o limite. Tudo desativado por padrão.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Pulso de Vibração no Batente</value></data>
@@ -1969,7 +1969,7 @@
   <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>Padrão do sistema</value></data>
   <data name="Pad_Audio_SourceUnavailable" xml:space="preserve"><value>(dispositivo indisponível)</value></data>
   <data name="Pad_Audio_MasterVolume" xml:space="preserve"><value>Volume geral</value></data>
-  <data name="Pad_Audio_Reset_MasterVolume" xml:space="preserve"><value>Restaurar o volume geral para 100%</value></data>
+  <data name="Pad_Audio_Reset_MasterVolume" xml:space="preserve"><value>Redefinir Volume principal</value></data>
   <data name="Pad_Audio_Test" xml:space="preserve"><value>Testar</value></data>
   <data name="Pad_Audio_Test_Tooltip" xml:space="preserve"><value>Tocar um bipe curto no dispositivo selecionado</value></data>
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>Parar todos os sons</value></data>
@@ -2025,7 +2025,7 @@
   <data name="About_QDollarDesc" xml:space="preserve"><value>Comparador de modelos de formas para o touchpad (círculo / quadrado / triângulo / Z / marca de seleção e gestos gravados personalizados). Rederivação em C# da referência JavaScript de Magrofuoco, Vatavu, Anthony e Wobbrock. BSD 3-Clause.</value></data>
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
   <data name="About_GestureSignDesc" xml:space="preserve"><value>Pontuação por margem angular que roda ao lado do comparador de nuvem de pontos em formas de um dedo. Adaptado do PointPatternAnalyzer do GestureSign. BSD 3-Clause.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Restaurar todas as configurações de saída de som deste dispositivo</value></data>
+  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Redefinir Saída de som</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Suíte de testes do DualSense no navegador por Xuezhou Dai (daidr): referência para o framing CRC dos feature reports da Sony e os comandos de teste do firmware que o PadForge encaminha do controle virtual ao físico. MIT.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -2488,7 +2488,21 @@
   <data name="Pad_KeepAwake_Deflection_Tooltip" xml:space="preserve"><value>Nível mantido como porcentagem do curso total do analógico. 25% mantém a maioria dos jogos engajados ficando abaixo da zona morta de movimento. Aumente se o jogo ainda alternar. Diminua se o personagem derivar.</value></data>
   <data name="Pad_KeepAwake_Motion" xml:space="preserve"><value>Adicionar movimento</value></data>
   <data name="Pad_KeepAwake_Motion_Tooltip" xml:space="preserve"><value>Alguns jogos enviam vibração apenas enquanto o analógico está SE MOVENDO, não enquanto ele fica inclinado. Prey (2017) é um deles. Isto faz o nível mantido oscilar suavemente em vez de ficar parado, para que esses jogos continuem vibrando. Deixe desligado nos demais casos. Manter parado é mais discreto.</value></data>
-  <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>Desativar manter ativo e restaurar o eixo e a deflexão padrão</value></data>
+  <data name="Pad_KeepAwake_Reset_Axis" xml:space="preserve"><value>Redefinir Eixo mantido</value></data>
+  <data name="Pad_KeepAwake_Reset_Deflection" xml:space="preserve"><value>Redefinir Desvio</value></data>
+  <data name="Pad_KeepAwake_Reset_Motion" xml:space="preserve"><value>Redefinir Adicionar movimento</value></data>
+  <data name="Menu_Reset_Style" xml:space="preserve"><value>Redefinir Estilo</value></data>
+  <data name="Menu_Reset_HostInput" xml:space="preserve"><value>Redefinir Abre com</value></data>
+  <data name="Menu_Reset_CustomX" xml:space="preserve"><value>Redefinir X personalizado</value></data>
+  <data name="Menu_Reset_CustomY" xml:space="preserve"><value>Redefinir Y personalizado</value></data>
+  <data name="Menu_Reset_Click" xml:space="preserve"><value>Redefinir Clique</value></data>
+  <data name="Menu_Reset_HostHalf" xml:space="preserve"><value>Redefinir Metade do touchpad</value></data>
+  <data name="Menu_Reset_FireMode" xml:space="preserve"><value>Redefinir Modo de disparo</value></data>
+  <data name="Menu_Reset_Cells" xml:space="preserve"><value>Redefinir Células</value></data>
+  <data name="Menu_Reset_Deadzone" xml:space="preserve"><value>Redefinir Zona morta de ativação</value></data>
+  <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Redefinir Geometria do menu</value></data>
+  <data name="Menu_Reset_Cell" xml:space="preserve"><value>Redefinir Célula</value></data>
+  <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>Redefinir Manter o controle ativo</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>Resolve pares de botões mantidos ao mesmo tempo na saída do controle virtual deste slot. Quando os dois botões de um par estão pressionados, a regra escolhida decide qual pressão o jogo vê.</value></data>
   <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>Redefinir Direções Cardeais Opostas Simultâneas</value></data>
   <data name="Pad_Socd_Mode_Label" xml:space="preserve"><value>Modo</value></data>
@@ -2740,7 +2754,7 @@
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Anel do Analógico Direito</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
   <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Configurações das entradas de Flick Stick: aponte o analógico e a câmera gira para acompanhar, percorra a borda para ajustar fino. Mapeie "Flick Stick (Analógico Direito)" para Mouse X no menu de entrada em Mapeamentos, em qualquer camada.</value></data>
-  <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Restaurar Todas as Configurações do Flick Stick</value></data>
+  <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Redefinir Flick Stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Contagens por 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Contagens de mouse para uma volta completa de câmera de 360°. Depende da sensibilidade do mouse do jogo: aumente se um flick girar de menos, diminua se girar demais.</value></data>
   <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Redefinir para 14400</value></data>

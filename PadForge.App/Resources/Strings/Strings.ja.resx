@@ -1351,7 +1351,7 @@
   <data name="Pad_GyroTilt_Deadzone_Tooltip" xml:space="preserve"><value>静止姿勢周りで無視する傾きの角度。スケーリング前に減算されるため、しきい値での段差はありません。</value></data>
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>フルストローク角度をリセット</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>傾斜デッドゾーンをリセット</value></data>
-  <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>ジャイロ傾斜の設定をすべてリセット</value></data>
+  <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>ジャイロ傾斜をリセット</value></data>
   <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>複数のソースが同時に動作するときの合成方法。行を選択すると下の詳細パネルで変更できます。</value></data>
   <data name="Pad_StickMomentum" xml:space="preserve"><value>モーメンタム</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>トラックボールモード：スティックをはじいて離すと、カーソルは滞空しながら減速して止まります。スティックを動かすと捕まえます。</value></data>
@@ -1909,7 +1909,7 @@
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>コントローラーの向きをリセット</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>モーションステアリング</value></data>
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>「モーションリーン」入力の設定。コントローラーをハンドルのように傾けます。マッピングの入力ドロップダウンで「モーションリーン」をスティック軸に割り当ててください。</value></data>
-  <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>モーションステアリングの設定をすべてリセット</value></data>
+  <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>モーションステアリングをリセット</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>ステアリングロックフィードバック</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>ステアリングモードに設定したスティックをフルロックまで操作しきると、合図（振動、トリガー、ライトバー）を発生させて操舵限界を体感できます。すべて既定でオフです。</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>ロック時にランブルパルス</value></data>
@@ -1969,7 +1969,7 @@
   <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>システム既定</value></data>
   <data name="Pad_Audio_SourceUnavailable" xml:space="preserve"><value>（利用できないデバイス）</value></data>
   <data name="Pad_Audio_MasterVolume" xml:space="preserve"><value>マスター音量</value></data>
-  <data name="Pad_Audio_Reset_MasterVolume" xml:space="preserve"><value>マスター音量を100%にリセット</value></data>
+  <data name="Pad_Audio_Reset_MasterVolume" xml:space="preserve"><value>マスター音量をリセット</value></data>
   <data name="Pad_Audio_Test" xml:space="preserve"><value>テスト</value></data>
   <data name="Pad_Audio_Test_Tooltip" xml:space="preserve"><value>選択中のデバイスで短いビープ音を再生</value></data>
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>すべてのサウンドを停止</value></data>
@@ -2025,7 +2025,7 @@
   <data name="About_QDollarDesc" xml:space="preserve"><value>タッチパッドの形状テンプレートマッチャー（円 / 四角 / 三角 / Z / チェックマーク、およびカスタム記録ジェスチャー）。Magrofuoco、Vatavu、Anthony、WobbrockによるJavaScriptリファレンスのC#再実装。BSD 3-Clause。</value></data>
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
   <data name="About_GestureSignDesc" xml:space="preserve"><value>一本指の形状でポイントクラウドマッチャーと並行して動作する角度マージン方式のスコアリング。GestureSignのPointPatternAnalyzerより。BSD 3-Clause。</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>このデバイスのサウンド出力設定をすべてリセット</value></data>
+  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>サウンド出力をリセット</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai（daidr）によるブラウザー版DualSenseテストスイート。SonyフィーチャーレポートのCRCフレーミングと、PadForgeが仮想パッドから物理パッドへ転送するファームウェアテストコマンドのリファレンス。MIT。</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -2488,7 +2488,21 @@
   <data name="Pad_KeepAwake_Deflection_Tooltip" xml:space="preserve"><value>スティック全ストロークに対する保持量（%）。25% ならほとんどのゲームで移動デッドゾーン未満のままアクティブを維持できます。それでも切り替わる場合は上げ、キャラクターが動いてしまう場合は下げてください。</value></data>
   <data name="Pad_KeepAwake_Motion" xml:space="preserve"><value>動きを加える</value></data>
   <data name="Pad_KeepAwake_Motion_Tooltip" xml:space="preserve"><value>一部のゲームはスティックが「動いている」間だけ振動を送り、傾けたままでは送りません。Prey (2017) がその例です。この設定は保持レベルを固定せずに緩やかに揺らし、そうしたゲームでも振動が続くようにします。それ以外ではオフのままで構いません。固定して保持するほうが目立ちません。</value></data>
-  <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>アクティブ保持をオフにし、既定の軸と保持量に戻します</value></data>
+  <data name="Pad_KeepAwake_Reset_Axis" xml:space="preserve"><value>保持する軸をリセット</value></data>
+  <data name="Pad_KeepAwake_Reset_Deflection" xml:space="preserve"><value>傾き量をリセット</value></data>
+  <data name="Pad_KeepAwake_Reset_Motion" xml:space="preserve"><value>動きを加えるをリセット</value></data>
+  <data name="Menu_Reset_Style" xml:space="preserve"><value>スタイルをリセット</value></data>
+  <data name="Menu_Reset_HostInput" xml:space="preserve"><value>開くボタンをリセット</value></data>
+  <data name="Menu_Reset_CustomX" xml:space="preserve"><value>カスタム X をリセット</value></data>
+  <data name="Menu_Reset_CustomY" xml:space="preserve"><value>カスタム Y をリセット</value></data>
+  <data name="Menu_Reset_Click" xml:space="preserve"><value>クリックをリセット</value></data>
+  <data name="Menu_Reset_HostHalf" xml:space="preserve"><value>パッドの半分をリセット</value></data>
+  <data name="Menu_Reset_FireMode" xml:space="preserve"><value>発動モードをリセット</value></data>
+  <data name="Menu_Reset_Cells" xml:space="preserve"><value>セル数をリセット</value></data>
+  <data name="Menu_Reset_Deadzone" xml:space="preserve"><value>起動デッドゾーンをリセット</value></data>
+  <data name="Menu_Reset_Geometry" xml:space="preserve"><value>メニュー配置をリセット</value></data>
+  <data name="Menu_Reset_Cell" xml:space="preserve"><value>セルをリセット</value></data>
+  <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>コントローラーを起こしたままにするをリセット</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>このスロットの仮想コントローラー出力で、同時に押されたボタンペアを解決します。ペアの両方が押されているとき、選んだルールがゲームに見せる入力を決めます。</value></data>
   <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>同時反対方向入力をリセット</value></data>
   <data name="Pad_Socd_Mode_Label" xml:space="preserve"><value>モード</value></data>
@@ -2740,7 +2754,7 @@
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>右スティックリング</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
   <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Flick Stick 入力の設定です。スティックを倒すとカメラがその方向へ回転し、縁をなぞると微調整できます。マッピングの入力ドロップダウンで "Flick Stick (右スティック)" をマウス X に割り当ててください。どのレイヤーでも使えます。</value></data>
-  <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Flick Stick の設定をすべてリセット</value></data>
+  <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>フリックスティックをリセット</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>360° あたりのカウント</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>カメラを 360° 一回転させるのに必要なマウスカウントです。ゲームのマウス感度に依存します。フリックの回転が足りない場合は上げ、回りすぎる場合は下げてください。</value></data>
   <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>14400 にリセット</value></data>

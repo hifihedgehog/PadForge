@@ -1351,7 +1351,7 @@
   <data name="Pad_GyroTilt_Deadzone_Tooltip" xml:space="preserve"><value>在静止握姿周围忽略的倾斜度数，在缩放前减去，因此边缘处不会跳变。</value></data>
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>重置满偏转角度</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>重置倾斜死区</value></data>
-  <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>重置所有陀螺仪倾角设置</value></data>
+  <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>重置陀螺仪倾斜</value></data>
   <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>当多个输入源同时活动时，本行的合并方式。选中该行可在下方详情栏中修改。</value></data>
   <data name="Pad_StickMomentum" xml:space="preserve"><value>动量</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>轨迹球模式：快速拨动摇杆后松开，光标会继续滑行并逐渐停下。再次移动摇杆即可接住它。</value></data>
@@ -1908,7 +1908,7 @@
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>重置手柄朝向</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>体感转向</value></data>
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>像方向盘一样倾斜手柄来转向所选轴。实体摇杆不受影响。</value></data>
-  <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>重置所有体感转向设置</value></data>
+  <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>重置体感转向</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>转向极限反馈</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>当设为转向模式的摇杆转到极限时，发出提示（震动、扳机或灯条），让你感受到极限。默认全部关闭。</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>到达极限时震动脉冲</value></data>
@@ -2016,7 +2016,7 @@
   <data name="Pad_Audio_OpenMacro_Tooltip" xml:space="preserve"><value>在“宏”选项卡中打开此宏</value></data>
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>声音会自动路由到所选手柄。USB 下按硬件容器匹配手柄自身的音频端点。蓝牙下音频以 Sony HID 帧流式发送。</value></data>
   <data name="Pad_Audio_Output_Header" xml:space="preserve"><value>声音输出</value></data>
-  <data name="Pad_Audio_Reset_MasterVolume" xml:space="preserve"><value>将主音量重置为 100%</value></data>
+  <data name="Pad_Audio_Reset_MasterVolume" xml:space="preserve"><value>重置主音量</value></data>
   <data name="Pad_Audio_SoundMacroName_Format" xml:space="preserve"><value>声音宏 {0}</value></data>
   <data name="Pad_Audio_SourceUnavailable" xml:space="preserve"><value>（设备不可用）</value></data>
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>停止所有声音</value></data>
@@ -2025,7 +2025,7 @@
   <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>系统默认</value></data>
   <data name="Pad_Audio_Test" xml:space="preserve"><value>测试</value></data>
   <data name="Pad_Audio_Test_Tooltip" xml:space="preserve"><value>在所选输出设备上播放短促提示音</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>重置此设备的所有声音输出设置</value></data>
+  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>重置声音输出</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Xuezhou Dai（daidr）开发的浏览器版 DualSense 测试套件。Sony 功能报告 CRC 帧格式以及 PadForge 从虚拟手柄转发到实体手柄的固件测试命令的参考。MIT。</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -2488,7 +2488,21 @@
   <data name="Pad_KeepAwake_Deflection_Tooltip" xml:space="preserve"><value>保持量占摇杆全行程的百分比。25% 可让大多数游戏保持活跃，同时低于其移动死区。若游戏仍会切换请调高，若角色发生漂移请调低。</value></data>
   <data name="Pad_KeepAwake_Motion" xml:space="preserve"><value>加入摆动</value></data>
   <data name="Pad_KeepAwake_Motion_Tooltip" xml:space="preserve"><value>有些游戏只在摇杆「正在移动」时发送震动，保持偏移不动则不会。Prey (2017) 就是其中之一。此选项会让保持的幅度轻微来回摆动而不是固定不动，让这类游戏持续震动。其他情况下保持关闭即可。固定保持更不易察觉。</value></data>
-  <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>关闭保持活跃并恢复默认轴和偏移量</value></data>
+  <data name="Pad_KeepAwake_Reset_Axis" xml:space="preserve"><value>重置保持的轴</value></data>
+  <data name="Pad_KeepAwake_Reset_Deflection" xml:space="preserve"><value>重置偏移量</value></data>
+  <data name="Pad_KeepAwake_Reset_Motion" xml:space="preserve"><value>重置加入摆动</value></data>
+  <data name="Menu_Reset_Style" xml:space="preserve"><value>重置样式</value></data>
+  <data name="Menu_Reset_HostInput" xml:space="preserve"><value>重置打开方式</value></data>
+  <data name="Menu_Reset_CustomX" xml:space="preserve"><value>重置自定义 X</value></data>
+  <data name="Menu_Reset_CustomY" xml:space="preserve"><value>重置自定义 Y</value></data>
+  <data name="Menu_Reset_Click" xml:space="preserve"><value>重置点击</value></data>
+  <data name="Menu_Reset_HostHalf" xml:space="preserve"><value>重置触控板半区</value></data>
+  <data name="Menu_Reset_FireMode" xml:space="preserve"><value>重置触发模式</value></data>
+  <data name="Menu_Reset_Cells" xml:space="preserve"><value>重置单元格</value></data>
+  <data name="Menu_Reset_Deadzone" xml:space="preserve"><value>重置启用死区</value></data>
+  <data name="Menu_Reset_Geometry" xml:space="preserve"><value>重置菜单布局</value></data>
+  <data name="Menu_Reset_Cell" xml:space="preserve"><value>重置单元格</value></data>
+  <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>重置保持手柄活跃</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>解决此插槽虚拟控制器输出上同时按住的按钮对。当一对按钮同时按下时，所选规则决定游戏看到哪个输入。</value></data>
   <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>重置同时反向输入</value></data>
   <data name="Pad_Socd_Mode_Label" xml:space="preserve"><value>模式</value></data>
@@ -2740,7 +2754,7 @@
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>右摇杆环</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
   <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Flick Stick 输入的设置：推动摇杆，镜头随之转向；沿边缘滑动可微调转向。在映射的输入下拉框中将"Flick Stick（右摇杆）"映射到鼠标 X，任何层均可。</value></data>
-  <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>重置所有 Flick Stick 设置</value></data>
+  <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>重置快拨摇杆</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>每 360° 计数</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>镜头旋转整整 360° 所需的鼠标计数。取决于游戏的鼠标灵敏度：如果甩杆转向不足就调高，转向过度就调低。</value></data>
   <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>重置为 14400</value></data>

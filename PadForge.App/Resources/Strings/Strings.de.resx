@@ -1351,7 +1351,7 @@
   <data name="Pad_GyroTilt_Deadzone_Tooltip" xml:space="preserve"><value>Grad Neigung um die Ruhelage, die ignoriert werden; vor der Skalierung abgezogen, damit es keinen Sprung an der Kante gibt.</value></data>
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>Kippwinkelbereich zurücksetzen</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Neigungs-Totzone zurücksetzen</value></data>
-  <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Alle Gyro-Kippwinkel-Einstellungen zurücksetzen</value></data>
+  <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Gyro-Neigung zurücksetzen</value></data>
   <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Wie die Quellen dieser Zeile zusammengeführt werden, wenn mehrere aktiv sind. Zeile auswählen, um es im Detailbereich darunter zu ändern.</value></data>
   <data name="Pad_StickMomentum" xml:space="preserve"><value>Schwung</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>Trackball-Modus: Stick schnippen und loslassen, und der Cursor gleitet weiter, bis er ausrollt. Erneutes Bewegen des Sticks fängt ihn ab.</value></data>
@@ -1909,7 +1909,7 @@
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Controller-Ausrichtung zurücksetzen</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Bewegungslenkung</value></data>
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Einstellungen für die Eingabe "Bewegungsneigung": Controller wie ein Lenkrad kippen. "Bewegungsneigung" in den Zuordnungen einer Stick-Achse zuweisen.</value></data>
-  <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Alle Bewegungslenkung-Einstellungen zurücksetzen</value></data>
+  <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Bewegungslenkung zurücksetzen</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Lenkanschlag-Feedback</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Wenn ein auf Lenkung eingestellter Stick bis zum Vollanschlag gedreht wird, wird ein Signal (Vibration, Trigger oder Lightbar) ausgelöst, damit du den Anschlag spürst. Standardmäßig alles aus.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Vibrationspuls am Anschlag</value></data>
@@ -1969,7 +1969,7 @@
   <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>Systemstandard</value></data>
   <data name="Pad_Audio_SourceUnavailable" xml:space="preserve"><value>(nicht verfügbares Gerät)</value></data>
   <data name="Pad_Audio_MasterVolume" xml:space="preserve"><value>Gesamtlautstärke</value></data>
-  <data name="Pad_Audio_Reset_MasterVolume" xml:space="preserve"><value>Gesamtlautstärke auf 100% zurücksetzen</value></data>
+  <data name="Pad_Audio_Reset_MasterVolume" xml:space="preserve"><value>Gesamtlautstärke zurücksetzen</value></data>
   <data name="Pad_Audio_Test" xml:space="preserve"><value>Test</value></data>
   <data name="Pad_Audio_Test_Tooltip" xml:space="preserve"><value>Kurzen Piepton auf dem gewählten Gerät abspielen</value></data>
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>Alle Sounds stoppen</value></data>
@@ -2025,7 +2025,7 @@
   <data name="About_QDollarDesc" xml:space="preserve"><value>Formvorlagen-Matcher für das Touchpad (Kreis / Quadrat / Dreieck / Z / Häkchen und eigene aufgezeichnete Gesten). C#-Neuableitung der JavaScript-Referenz von Magrofuoco, Vatavu, Anthony und Wobbrock. BSD 3-Clause.</value></data>
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
   <data name="About_GestureSignDesc" xml:space="preserve"><value>Winkelmargen-Bewertung, die bei Einfinger-Formen neben dem Punktwolken-Matcher läuft. Übernommen aus GestureSigns PointPatternAnalyzer. BSD 3-Clause.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Alle Soundausgabe-Einstellungen dieses Geräts auf Standard zurücksetzen</value></data>
+  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Tonausgabe zurücksetzen</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Browser-Testsuite für den DualSense von Xuezhou Dai (daidr): Referenz für das Sony-Feature-Report-CRC-Framing und die Firmware-Testbefehle, die PadForge vom virtuellen zum physischen Pad weiterleitet. MIT.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -2488,7 +2488,21 @@
   <data name="Pad_KeepAwake_Deflection_Tooltip" xml:space="preserve"><value>Gehaltene Stärke in Prozent des vollen Stick-Wegs. 25 % hält die meisten Spiele aktiv und bleibt unter deren Bewegungs-Deadzone. Erhöhen, wenn das Spiel weiter umschaltet. Verringern, wenn die Figur driftet.</value></data>
   <data name="Pad_KeepAwake_Motion" xml:space="preserve"><value>Bewegung hinzufügen</value></data>
   <data name="Pad_KeepAwake_Motion_Tooltip" xml:space="preserve"><value>Manche Spiele senden Vibration nur, während der Stick BEWEGT wird, nicht während er ausgelenkt gehalten wird. Prey (2017) ist so ein Fall. Dies lässt den gehaltenen Wert sanft pendeln, statt ihn festzuhalten, damit diese Spiele weiter vibrieren. Ansonsten ausgeschaltet lassen. Ein ruhiges Halten ist unauffälliger.</value></data>
-  <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>Aktivhaltung ausschalten und Standard-Achse und -Auslenkung wiederherstellen</value></data>
+  <data name="Pad_KeepAwake_Reset_Axis" xml:space="preserve"><value>Gehaltene Achse zurücksetzen</value></data>
+  <data name="Pad_KeepAwake_Reset_Deflection" xml:space="preserve"><value>Auslenkung zurücksetzen</value></data>
+  <data name="Pad_KeepAwake_Reset_Motion" xml:space="preserve"><value>Bewegung hinzufügen zurücksetzen</value></data>
+  <data name="Menu_Reset_Style" xml:space="preserve"><value>Stil zurücksetzen</value></data>
+  <data name="Menu_Reset_HostInput" xml:space="preserve"><value>Öffnet mit zurücksetzen</value></data>
+  <data name="Menu_Reset_CustomX" xml:space="preserve"><value>Benutzerdefiniert X zurücksetzen</value></data>
+  <data name="Menu_Reset_CustomY" xml:space="preserve"><value>Benutzerdefiniert Y zurücksetzen</value></data>
+  <data name="Menu_Reset_Click" xml:space="preserve"><value>Klick zurücksetzen</value></data>
+  <data name="Menu_Reset_HostHalf" xml:space="preserve"><value>Pad-Hälfte zurücksetzen</value></data>
+  <data name="Menu_Reset_FireMode" xml:space="preserve"><value>Auslösemodus zurücksetzen</value></data>
+  <data name="Menu_Reset_Cells" xml:space="preserve"><value>Zellen zurücksetzen</value></data>
+  <data name="Menu_Reset_Deadzone" xml:space="preserve"><value>Aktivierungs-Deadzone zurücksetzen</value></data>
+  <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Menügeometrie zurücksetzen</value></data>
+  <data name="Menu_Reset_Cell" xml:space="preserve"><value>Zelle zurücksetzen</value></data>
+  <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>Controller wach halten zurücksetzen</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>Löst gleichzeitig gehaltene Tastenpaare auf der virtuellen Controller-Ausgabe dieses Slots auf. Sind beide Tasten eines Paars gedrückt, entscheidet die gewählte Regel, welchen Druck das Spiel sieht.</value></data>
   <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>Gleichzeitige entgegengesetzte Kardinalrichtungen zurücksetzen</value></data>
   <data name="Pad_Socd_Mode_Label" xml:space="preserve"><value>Modus</value></data>
@@ -2740,7 +2754,7 @@
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Rechter Stick Ring</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
   <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Einstellungen für die Flick-Stick-Eingaben: Stick in eine Richtung drücken und die Kamera dreht sich entsprechend, am Rand entlangfahren für Feindrehung. Ordne "Flick Stick (rechter Stick)" im Eingabe-Dropdown unter Zuordnungen Maus X zu, auf einer beliebigen Ebene.</value></data>
-  <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Alle Flick-Stick-Einstellungen zurücksetzen</value></data>
+  <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Flick Stick zurücksetzen</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Zählschritte pro 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Maus-Zählschritte für eine volle 360°-Kameradrehung. Hängt von der Maus-Empfindlichkeit des Spiels ab: erhöhen, wenn ein Flick zu wenig dreht, verringern, wenn er zu weit dreht.</value></data>
   <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Auf 14400 zurücksetzen</value></data>

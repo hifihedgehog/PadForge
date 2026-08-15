@@ -11983,7 +11983,7 @@
                                               ToolTip="{Binding Menu_Style_Tip, Source={x:Static strings:Strings.Instance}}"
                                               DisplayMemberPath="Label" SelectedValuePath="Value"
                                               SelectedValue="{Binding KindIndex, Mode=TwoWay}"/>
-                                    <ui:Button Command="{Binding ResetStyleCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0"/>
+                                    <ui:Button Command="{Binding ResetStyleCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0" ToolTip="{Binding Menu_Reset_Style, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                             </Grid>
 
@@ -12010,7 +12010,7 @@
                                         <TextBlock Text="{Binding HostRecordIcon}" FontFamily="Segoe MDL2 Assets"
                                                    Foreground="{DynamicResource EmberBrush}"/>
                                     </ui:Button>
-                                    <ui:Button Command="{Binding ResetHostCommand}" Style="{StaticResource ResetButton}"/>
+                                    <ui:Button Command="{Binding ResetHostCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Menu_Reset_HostInput, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                             </Grid>
                             <!-- Persistent caption: "Opens With" is the PHYSICAL side,
@@ -12085,7 +12085,7 @@
                                         <TextBlock Text="{Binding CustomXRecordIcon}" FontFamily="Segoe MDL2 Assets"
                                                    Foreground="{DynamicResource EmberBrush}"/>
                                     </ui:Button>
-                                    <ui:Button Command="{Binding ResetCustomXCommand}" Style="{StaticResource ResetButton}" VerticalAlignment="Top"/>
+                                    <ui:Button Command="{Binding ResetCustomXCommand}" Style="{StaticResource ResetButton}" VerticalAlignment="Top" ToolTip="{Binding Menu_Reset_CustomX, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                             </Grid>
                             <Grid Margin="0,0,0,8"
@@ -12141,7 +12141,7 @@
                                         <TextBlock Text="{Binding CustomYRecordIcon}" FontFamily="Segoe MDL2 Assets"
                                                    Foreground="{DynamicResource EmberBrush}"/>
                                     </ui:Button>
-                                    <ui:Button Command="{Binding ResetCustomYCommand}" Style="{StaticResource ResetButton}" VerticalAlignment="Top"/>
+                                    <ui:Button Command="{Binding ResetCustomYCommand}" Style="{StaticResource ResetButton}" VerticalAlignment="Top" ToolTip="{Binding Menu_Reset_CustomY, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                             </Grid>
 
@@ -12201,7 +12201,7 @@
                                         <TextBlock Text="{Binding ClickRecordIcon}" FontFamily="Segoe MDL2 Assets"
                                                    Foreground="{DynamicResource EmberBrush}"/>
                                     </ui:Button>
-                                    <ui:Button Command="{Binding ResetClickCommand}" Style="{StaticResource ResetButton}" VerticalAlignment="Top"/>
+                                    <ui:Button Command="{Binding ResetClickCommand}" Style="{StaticResource ResetButton}" VerticalAlignment="Top" ToolTip="{Binding Menu_Reset_Click, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                             </Grid>
 
@@ -12223,7 +12223,7 @@
                                               ToolTip="{Binding Menu_HostHalf_Tip, Source={x:Static strings:Strings.Instance}}"
                                               DisplayMemberPath="Label" SelectedValuePath="Value"
                                               SelectedValue="{Binding HostHalfIndex, Mode=TwoWay}"/>
-                                    <ui:Button Command="{Binding ResetHostHalfCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0"/>
+                                    <ui:Button Command="{Binding ResetHostHalfCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0" ToolTip="{Binding Menu_Reset_HostHalf, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                             </Grid>
 
@@ -12250,7 +12250,7 @@
                                             </Style>
                                         </ComboBox.ItemContainerStyle>
                                     </ComboBox>
-                                    <ui:Button Command="{Binding ResetFireCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0"/>
+                                    <ui:Button Command="{Binding ResetFireCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0" ToolTip="{Binding Menu_Reset_FireMode, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                             </Grid>
                             <!-- Persistent caption for the selected fire mode. A tooltip
@@ -12292,7 +12292,7 @@
                                               ToolTip="{Binding Menu_HasCenter_Tip, Source={x:Static strings:Strings.Instance}}"
                                               IsChecked="{Binding HasCenter}" Margin="12,0,0,0" VerticalAlignment="Center"
                                               Visibility="{Binding IsRadial, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                                    <ui:Button Command="{Binding ResetCellsCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0"/>
+                                    <ui:Button Command="{Binding ResetCellsCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0" ToolTip="{Binding Menu_Reset_Cells, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                             </Grid>
 
@@ -12312,7 +12312,7 @@
                                             Value="{Binding EngageDeadzonePercent, Mode=TwoWay}" VerticalAlignment="Center"/>
                                     <ui:NumberBox Width="200" Minimum="1" Maximum="95" SmallChange="1" Margin="8,0,0,0"
                                                   Value="{Binding EngageDeadzonePercent, Mode=TwoWay}"/>
-                                    <ui:Button Command="{Binding ResetDeadzoneCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0"/>
+                                    <ui:Button Command="{Binding ResetDeadzoneCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0" ToolTip="{Binding Menu_Reset_Deadzone, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                             </Grid>
 
@@ -12325,7 +12325,7 @@
                                         <TextBlock Text="{Binding Dashboard_MenuOverlay, Source={x:Static strings:Strings.Instance}}"
                                                    FontWeight="SemiBold" TextWrapping="Wrap"
                                                    Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
-                                        <ui:Button Command="{Binding ResetGeometryCommand}" Style="{StaticResource ResetButton}" Margin="12,0,0,0"/>
+                                        <ui:Button Command="{Binding ResetGeometryCommand}" Style="{StaticResource ResetButton}" Margin="12,0,0,0" ToolTip="{Binding Menu_Reset_Geometry, Source={x:Static strings:Strings.Instance}}"/>
                                     </StackPanel>
                                     <CheckBox Content="{Binding Menu_ShowLabels, Source={x:Static strings:Strings.Instance}}"
                                               ToolTip="{Binding Menu_ShowLabels_Tip, Source={x:Static strings:Strings.Instance}}"
@@ -12449,7 +12449,7 @@
                                                           DisplayMemberPath="Label" SelectedValuePath="Value"
                                                           SelectedValue="{Binding SelectedButtonFlag, Mode=TwoWay}"
                                                           Visibility="{Binding ShowButtonPicker, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                                                <ui:Button Command="{Binding ResetCellCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0"/>
+                                                <ui:Button Command="{Binding ResetCellCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0" ToolTip="{Binding Menu_Reset_Cell, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
                                         </Grid>
                                     </DataTemplate>
@@ -12922,7 +12922,7 @@
                                               Content="{Binding Pad_KeepAwake_Motion, Source={x:Static strings:Strings.Instance}}"
                                               ToolTip="{Binding Pad_KeepAwake_Motion_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <ui:Button Command="{Binding ResetKeepAwakeMotionCommand}" Style="{StaticResource ResetButton}"
-                                               VerticalAlignment="Center" Margin="8,0,0,0"/>
+                                               VerticalAlignment="Center" Margin="8,0,0,0" ToolTip="{Binding Pad_KeepAwake_Reset_Motion, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
                                 <!-- Held axis row -->
@@ -12936,7 +12936,7 @@
                                               MinWidth="170" VerticalAlignment="Center" Padding="4,2"
                                               ToolTip="{Binding Pad_KeepAwake_Axis_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <ui:Button Command="{Binding ResetKeepAwakeAxisCommand}" Style="{StaticResource ResetButton}"
-                                               VerticalAlignment="Center" Margin="8,0,0,0"/>
+                                               VerticalAlignment="Center" Margin="8,0,0,0" ToolTip="{Binding Pad_KeepAwake_Reset_Axis, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
                                 <!-- Deflection row -->
@@ -12950,7 +12950,7 @@
                                     <TextBox Text="{Binding KeepAwakeDeflection, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                              Style="{StaticResource DzValueEdit}"/>
                                     <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                                    <ui:Button Command="{Binding ResetKeepAwakeDeflectionCommand}" Style="{StaticResource ResetButton}"/>
+                                    <ui:Button Command="{Binding ResetKeepAwakeDeflectionCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_KeepAwake_Reset_Deflection, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                             </StackPanel>
                         </Border>

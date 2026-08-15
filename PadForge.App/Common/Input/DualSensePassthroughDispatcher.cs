@@ -170,12 +170,28 @@ namespace PadForge.Common.Input
         /// original runaway delay, so this stays.</summary>
         private const long MinWriteIntervalBtMs = 8;    // 125 Hz
 
-        /// <summary>USB floor. No connection interval to respect, and the
-        /// field trace measured writes at 0.0 to 0.3 ms, so a finer floor costs
-        /// almost nothing and preserves four times the detail. Reported by
-        /// Jobima1st (#300): with the delay gone, what remains is skipping,
-        /// which is this number.</summary>
-        private const long MinWriteIntervalUsbMs = 2;   // 500 Hz
+        /// <summary>USB floor. Same as Bluetooth, and the reasoning is the
+        /// same for both.
+        ///
+        /// <para>This was 2 ms, 500 Hz, on the grounds that the field trace
+        /// measured each write at 0.0 to 0.3 ms so a finer floor cost nothing.
+        /// That inference was wrong. wmax times the CALL, and a buffered write
+        /// returns the moment the driver accepts it, so it cannot see a queue
+        /// forming below us. Writing faster than the pad drains simply moves
+        /// the backlog somewhere this process cannot measure, which is exactly
+        /// the unbounded growing delay Jobima1st kept reporting on USB and
+        /// never on Bluetooth (#300). Every lane PadForge instruments read
+        /// clean while he watched it get worse: depth 1, wmax 0.1, poll 1000
+        /// Hz.</para>
+        ///
+        /// <para>The reference settles the rate. DualSenseY-v2 drives adaptive
+        /// triggers, haptics and the lightbar on a physical DualSense from a
+        /// 10 ms loop, 100 writes a second (source/application.cpp:239). It is
+        /// the same implementation the fifteen-second release window came
+        /// from. 8 ms is inside that, and it is the rate the same reporter
+        /// calls perfect on Bluetooth, so it is the one cadence in this whole
+        /// thread with a good result attached to it.</para></summary>
+        private const long MinWriteIntervalUsbMs = 8;   // 125 Hz
 
         private long _lastWriteTicks;
 

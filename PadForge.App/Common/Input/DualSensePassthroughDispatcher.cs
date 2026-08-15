@@ -49,6 +49,12 @@ namespace PadForge.Common.Input
         private const ushort PidEdge = 0x0DF2;
         private const int StandardPayloadSize = 47;
 
+        /// <summary>Report ID of the USB effect report. Carried on the
+        /// release frame for completeness only: the state lane reaches the pad
+        /// through SDL_SendGamepadEffect, which frames the report itself and
+        /// ignores this. The feature lane is where the ID is load bearing.</summary>
+        private const byte ReportIdUsbState = 0x02;
+
         // Feature commands only. They are EVENTS (audio test start and stop,
         // calibration actions) where order and count both matter, so they
         // queue rather than coalesce, and the mode is Wait so a full channel
@@ -172,6 +178,97 @@ namespace PadForge.Common.Input
         private const long MinWriteIntervalUsbMs = 2;   // 500 Hz
 
         private long _lastWriteTicks;
+
+        // ── Releasing the pad when the game goes away ──
+        //
+        // A physical DualSense holds its effect state in firmware. An adaptive
+        // trigger program stays loaded until something loads a different one,
+        // with no timeout in the hardware, so when a game exits mid-effect the
+        // trigger it left behind is still there. Two reporters hit this in #300
+        // (haptics and triggers "keep running" after closing the game, and the
+        // trigger click audible after exit).
+        //
+        // Nothing in the chain announces a departure. The virtual bus drivers
+        // do not carry it: ViGEmClient's only notifications are output reports
+        // (Client.h, EVT_VIGEM_X360_NOTIFICATION / EVT_VIGEM_DS4_NOTIFICATION),
+        // and VIIPER exposes nothing equivalent either. So every tool that
+        // forwards effect state to real hardware answers this the same way,
+        // with a staleness window.
+        //
+        // The proven reference is DualSenseY-v2, which takes trigger and haptic
+        // instructions from a game over the DSX protocol and writes them to a
+        // physical DualSense, i.e. exactly this job. Its rule is
+        // source/udp.cpp:326, UDP::IsActive():
+        //
+        //     steady_clock::now() - m_LastUpdate <= seconds(15)
+        //
+        // Fifteen seconds of silence and the driving app is treated as gone.
+        // That number is adopted here rather than invented.
+        //
+        // Why not shorter, which is the trap this walked into once already: a
+        // game can set a trigger program at level load and never rewrite it
+        // while the player keeps playing. Releasing on a short window takes the
+        // trigger away from a game that is still running. PadForge did assert
+        // over a 1500 ms grace once and it cost the mic LED and the adaptive
+        // triggers on hardware, 2026-08-01. Fifteen seconds is an order of
+        // magnitude clear of that, and this emits ONE frame instead of
+        // asserting continuously, so a game that comes back simply wins.
+        private const long SourceIdleReleaseMs = 15_000;
+
+        /// <summary>Tick of the last packet from the game, 0 before the first.
+        /// Written by producer threads, read by the worker.</summary>
+        private long _lastSourcePacketTicks;
+
+        /// <summary>Whether a game payload has been forwarded since the last
+        /// release. Without it an idle lane would re-release forever, and a
+        /// session where the game never wrote would release something it never
+        /// took. Worker-only.</summary>
+        private bool _drivingState;
+
+        /// <summary>valid_flag0 bits 2 and 3: the right and left adaptive
+        /// trigger blocks. Confirmed against dualsense-tester, whose trigger
+        /// update sets exactly these two
+        /// (src/router/DualSense/views/OutputPanel.vue:230).</summary>
+        private const byte TriggerEffectValidBits = 0x0C;
+
+        /// <summary>Offsets of the two trigger MODE bytes in the report-ID
+        /// stripped payload. Triple-confirmed: the SDL3 fork's
+        /// DS5EffectsState_t (rgucRightTriggerEffect at 10,
+        /// rgucLeftTriggerEffect at 21, SDL_hidapi_ps5.c:176) and
+        /// dualsense-tester's field order (adaptiveTriggerRightMode 10,
+        /// adaptiveTriggerLeftMode 21, outputStruct.ts).</summary>
+        private const int RightTriggerModeOffset = 10;
+        private const int LeftTriggerModeOffset = 21;
+
+        /// <summary>Whether the pad should be released, given how long the
+        /// game's stream has been silent. Pure, so the rule is testable without
+        /// a controller or a clock.</summary>
+        internal static bool ShouldReleaseIdleSource(
+            bool driving, long lastSourcePacketTicks, long nowTicks)
+            => driving
+               && lastSourcePacketTicks != 0
+               && nowTicks - lastSourcePacketTicks >= SourceIdleReleaseMs;
+
+        /// <summary>Builds the release frame: both adaptive triggers set to
+        /// mode 0 (off) with zeroed parameters, and NOTHING else claimed.
+        ///
+        /// <para>Only the trigger valid bits are set, so every other field in
+        /// the report is inert. That is deliberate and load bearing. The
+        /// lightbar, the player pips, the mic LED and the whole audio surface
+        /// are PadForge's own to author, and UserEffectsDispatcher is already
+        /// writing them on its Sony pass. A release frame that claimed those
+        /// too would fight it. Rumble is left alone for the same reason: it is
+        /// already released, because the external override expires after
+        /// ExternalSubsystemGraceMs and that pass then writes PadForge's own
+        /// zero.</para></summary>
+        internal static byte[] BuildTriggerReleasePayload(byte[] buffer)
+        {
+            Array.Clear(buffer, 0, StandardPayloadSize);
+            buffer[0] = TriggerEffectValidBits;
+            buffer[RightTriggerModeOffset] = 0;   // mode 0 = off
+            buffer[LeftTriggerModeOffset] = 0;
+            return buffer;
+        }
 
         /// <summary>Transport of the targets seen on the last dispatch. Written
         /// by the worker inside DispatchOne, read by the worker when pacing the
@@ -304,6 +401,11 @@ namespace PadForge.Common.Input
             if (_disposed) return;
             if (payload.IsEmpty) return;
 
+            // The game is alive. Stamped for EVERY packet including repeats,
+            // because a repeat still proves someone is writing, and stamped
+            // outside the diag gate because the release depends on it.
+            Volatile.Write(ref _lastSourcePacketTicks, Environment.TickCount64);
+
             // Rent at least payload.Length; ArrayPool may return a larger buffer.
             byte[] buf = ArrayPool<byte>.Shared.Rent(payload.Length);
             payload.CopyTo(buf);
@@ -379,6 +481,8 @@ namespace PadForge.Common.Input
         {
             if (_disposed) return;
             if (payload.IsEmpty) return;
+
+            Volatile.Write(ref _lastSourcePacketTicks, Environment.TickCount64);
 
             byte[] buf = ArrayPool<byte>.Shared.Rent(payload.Length);
             payload.CopyTo(buf);
@@ -474,7 +578,15 @@ namespace PadForge.Common.Input
                         }
                         WriteOne(pending);
                         _lastWriteTicks = System.Diagnostics.Stopwatch.GetTimestamp();
+
+                        // Set HERE rather than inside WriteOne, which the release
+                        // frame also goes through. Latching it there would re-arm
+                        // the release the instant it fired and repeat it every
+                        // second forever. Only a payload the GAME produced counts
+                        // as this lane driving the pad.
+                        _drivingState = true;
                     }
+                    ReleaseIfSourceIdle();
                     HeartbeatTick();
                 }
             }
@@ -485,6 +597,37 @@ namespace PadForge.Common.Input
                 // the worker. Per-packet errors are already swallowed in
                 // DispatchOne; this catches anything that escapes.
             }
+        }
+
+        /// <summary>Hands the adaptive triggers back once the game's stream has
+        /// been silent long enough to call it gone. Runs on the worker, which
+        /// wakes at least once a second even with nothing arriving, so an idle
+        /// lane still reaches this.</summary>
+        private void ReleaseIfSourceIdle()
+        {
+            if (_disposed) return;
+            if (!ShouldReleaseIdleSource(
+                    _drivingState,
+                    Volatile.Read(ref _lastSourcePacketTicks),
+                    Environment.TickCount64))
+                return;
+
+            // Cleared FIRST, so a target resolving to nothing (pad unplugged,
+            // slot unassigned) does not leave this retrying every second.
+            _drivingState = false;
+
+            byte[] buf = ArrayPool<byte>.Shared.Rent(StandardPayloadSize);
+            BuildTriggerReleasePayload(buf);
+
+            // Through WriteOne like any other payload, so _lastSent ends up
+            // describing the release frame and the pacing accounting stays
+            // whole. WriteOne returns the rental.
+            WriteOne(new Ds5Effect(buf, StandardPayloadSize, ReportIdUsbState, IsFeature: false));
+            _lastWriteTicks = System.Diagnostics.Stopwatch.GetTimestamp();
+
+            SdlDiagLog.WriteLine(
+                "DS5EFFECT slot=" + _padIndex + " RELEASE triggers (source idle "
+                + SourceIdleReleaseMs + "ms)");
         }
 
         private void DispatchOne(in Ds5Effect effect)

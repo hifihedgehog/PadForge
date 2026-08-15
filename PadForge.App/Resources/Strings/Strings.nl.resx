@@ -1371,7 +1371,7 @@
   <data name="Pad_GyroTilt_Deadzone_Tooltip" xml:space="preserve"><value>Graden kanteling die rond de rustgreep worden genegeerd, afgetrokken vóór het schalen zodat er geen sprong aan de rand is.</value></data>
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>Volledig-uitslagbereik herstellen</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Hellingsdode zone herstellen</value></data>
-  <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Alle gyro-hellinginstellingen herstellen</value></data>
+  <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Gyrokanteling herstellen</value></data>
   <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Hoe de bronnen van deze rij samenkomen wanneer er meer dan één actief is. Selecteer de rij om dit te wijzigen in het detailpaneel eronder.</value></data>
   <data name="Pad_StickMomentum" xml:space="preserve"><value>Momentum</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>Trackball-modus: geef de stick een zwiep en laat los, en de cursor blijft doorbewegen tot hij uitrolt. De stick opnieuw bewegen vangt hem op.</value></data>
@@ -1929,7 +1929,7 @@
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Controllerstand resetten</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Bewegingsbesturing</value></data>
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Instellingen voor de invoer "Bewegingshelling": kantel de controller als een stuur. Wijs "Bewegingshelling" toe aan een stick-as via de invoerlijst in Toewijzingen.</value></data>
-  <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Alle bewegingsbesturing-instellingen herstellen</value></data>
+  <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Bewegingsbesturing herstellen</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Feedback bij stuuraanslag</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Wanneer een stick die op een stuurmodus is ingesteld helemaal tot de volledige stuuraanslag wordt gedraaid, krijg je een signaal (rumble, trigger of lichtbalk) zodat je de limiet voelt. Alles staat standaard uit.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Trilpuls bij stuuraanslag</value></data>
@@ -1989,7 +1989,7 @@
   <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>Systeemstandaard</value></data>
   <data name="Pad_Audio_SourceUnavailable" xml:space="preserve"><value>(apparaat niet beschikbaar)</value></data>
   <data name="Pad_Audio_MasterVolume" xml:space="preserve"><value>Hoofdvolume</value></data>
-  <data name="Pad_Audio_Reset_MasterVolume" xml:space="preserve"><value>Hoofdvolume terug naar 100%</value></data>
+  <data name="Pad_Audio_Reset_MasterVolume" xml:space="preserve"><value>Hoofdvolume herstellen</value></data>
   <data name="Pad_Audio_Test" xml:space="preserve"><value>Test</value></data>
   <data name="Pad_Audio_Test_Tooltip" xml:space="preserve"><value>Korte pieptoon afspelen op het gekozen apparaat</value></data>
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>Alle geluiden stoppen</value></data>
@@ -2045,7 +2045,7 @@
   <data name="About_QDollarDesc" xml:space="preserve"><value>Vormsjabloon-matcher voor het touchpad (cirkel / vierkant / driehoek / Z / vinkje en zelf opgenomen gebaren). C#-herafleiding van de JavaScript-referentie van Magrofuoco, Vatavu, Anthony en Wobbrock. BSD 3-Clause.</value></data>
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
   <data name="About_GestureSignDesc" xml:space="preserve"><value>Hoekmarge-score die naast de puntenwolk-matcher draait op vormen met één vinger. Overgenomen uit GestureSigns PointPatternAnalyzer. BSD 3-Clause.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Alle geluidsuitvoerinstellingen van dit apparaat resetten</value></data>
+  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Geluidsuitvoer herstellen</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Browser-testsuite voor de DualSense door Xuezhou Dai (daidr): referentie voor de Sony feature-report-CRC-framing en de firmware-testopdrachten die PadForge van de virtuele naar de fysieke pad doorstuurt. MIT.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -2508,7 +2508,21 @@
   <data name="Pad_KeepAwake_Deflection_Tooltip" xml:space="preserve"><value>Vastgehouden niveau als percentage van de volledige stickuitslag. 25% houdt de meeste games actief en blijft onder hun bewegingsdode zone. Verhoog als de game blijft wisselen. Verlaag als het personage drift.</value></data>
   <data name="Pad_KeepAwake_Motion" xml:space="preserve"><value>Beweging toevoegen</value></data>
   <data name="Pad_KeepAwake_Motion_Tooltip" xml:space="preserve"><value>Sommige games sturen alleen trilling zolang de stick BEWEEGT, niet zolang die uitgeweken wordt gehouden. Prey (2017) is er een. Dit laat het vastgehouden niveau rustig heen en weer gaan in plaats van het stil te zetten, zodat die games blijven trillen. Laat het anders uit. Stil vasthouden valt minder op.</value></data>
-  <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>Actief houden uitschakelen en de standaardas en -uitslag herstellen</value></data>
+  <data name="Pad_KeepAwake_Reset_Axis" xml:space="preserve"><value>Vastgehouden as herstellen</value></data>
+  <data name="Pad_KeepAwake_Reset_Deflection" xml:space="preserve"><value>Uitslag herstellen</value></data>
+  <data name="Pad_KeepAwake_Reset_Motion" xml:space="preserve"><value>Beweging toevoegen herstellen</value></data>
+  <data name="Menu_Reset_Style" xml:space="preserve"><value>Stijl herstellen</value></data>
+  <data name="Menu_Reset_HostInput" xml:space="preserve"><value>Opent met herstellen</value></data>
+  <data name="Menu_Reset_CustomX" xml:space="preserve"><value>Aangepast X herstellen</value></data>
+  <data name="Menu_Reset_CustomY" xml:space="preserve"><value>Aangepast Y herstellen</value></data>
+  <data name="Menu_Reset_Click" xml:space="preserve"><value>Klik herstellen</value></data>
+  <data name="Menu_Reset_HostHalf" xml:space="preserve"><value>Padhelft herstellen</value></data>
+  <data name="Menu_Reset_FireMode" xml:space="preserve"><value>Activeringsmodus herstellen</value></data>
+  <data name="Menu_Reset_Cells" xml:space="preserve"><value>Cellen herstellen</value></data>
+  <data name="Menu_Reset_Deadzone" xml:space="preserve"><value>Activeringsdode zone herstellen</value></data>
+  <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Menugeometrie herstellen</value></data>
+  <data name="Menu_Reset_Cell" xml:space="preserve"><value>Cel herstellen</value></data>
+  <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>Controller wakker houden herstellen</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>Lost knoppenparen op die tegelijk worden vastgehouden op de virtuele-controlleruitvoer van dit slot. Wanneer beide knoppen van een paar zijn ingedrukt, bepaalt de gekozen regel welke druk het spel ziet.</value></data>
   <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>Gelijktijdige tegengestelde hoofdrichtingen herstellen</value></data>
   <data name="Pad_Socd_Mode_Label" xml:space="preserve"><value>Modus</value></data>
@@ -2760,7 +2774,7 @@
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Ring rechter stick</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
   <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Instellingen voor de Flick Stick-invoer: duw de stick in een richting en de camera draait mee, veeg langs de rand om fijn te draaien. Wijs "Flick Stick (rechter stick)" toe aan muis X via de invoerlijst in Toewijzingen, op elke laag.</value></data>
-  <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Alle Flick Stick-instellingen resetten</value></data>
+  <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Flick Stick herstellen</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Tellen per 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Muistellen voor één volledige cameradraai van 360°. Hangt af van de muisgevoeligheid van het spel: verhoog als een flick te weinig draait, verlaag als hij te ver draait.</value></data>
   <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Herstellen naar 14400</value></data>

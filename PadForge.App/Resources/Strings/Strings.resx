@@ -803,7 +803,21 @@
   <data name="Pad_KeepAwake_Deflection_Tooltip" xml:space="preserve"><value>Held level as a percent of full stick travel. 25% keeps most games engaged while sitting under their movement dead zone. Raise it if the game still switches away. Lower it if the character drifts.</value></data>
   <data name="Pad_KeepAwake_Motion" xml:space="preserve"><value>Add motion</value></data>
   <data name="Pad_KeepAwake_Motion_Tooltip" xml:space="preserve"><value>Some games send vibration only while the stick is MOVING, not while it is held over. Prey (2017) is one. This sweeps the held level gently instead of parking it, so those games keep vibrating. Leave it off otherwise. A steady hold is quieter.</value></data>
-  <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>Turn Keep Awake off and restore the default axis and deflection</value></data>
+  <data name="Pad_KeepAwake_Reset_Axis" xml:space="preserve"><value>Reset Held Axis</value></data>
+  <data name="Pad_KeepAwake_Reset_Deflection" xml:space="preserve"><value>Reset Deflection</value></data>
+  <data name="Pad_KeepAwake_Reset_Motion" xml:space="preserve"><value>Reset Add Motion</value></data>
+  <data name="Menu_Reset_Style" xml:space="preserve"><value>Reset Style</value></data>
+  <data name="Menu_Reset_HostInput" xml:space="preserve"><value>Reset Opens With</value></data>
+  <data name="Menu_Reset_CustomX" xml:space="preserve"><value>Reset Custom X</value></data>
+  <data name="Menu_Reset_CustomY" xml:space="preserve"><value>Reset Custom Y</value></data>
+  <data name="Menu_Reset_Click" xml:space="preserve"><value>Reset Click</value></data>
+  <data name="Menu_Reset_HostHalf" xml:space="preserve"><value>Reset Pad Half</value></data>
+  <data name="Menu_Reset_FireMode" xml:space="preserve"><value>Reset Fire Mode</value></data>
+  <data name="Menu_Reset_Cells" xml:space="preserve"><value>Reset Cells</value></data>
+  <data name="Menu_Reset_Deadzone" xml:space="preserve"><value>Reset Engage Deadzone</value></data>
+  <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Reset Menu Geometry</value></data>
+  <data name="Menu_Reset_Cell" xml:space="preserve"><value>Reset Cell</value></data>
+  <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>Reset Keep Controller Awake</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>Resolves paired buttons held at the same time on this slot&apos;s virtual controller output. When both buttons of a pair are down, the chosen rule decides which press the game sees.</value></data>
   <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>Reset Simultaneous Opposite Cardinal Directions</value></data>
   <data name="Pad_Socd_Mode_Label" xml:space="preserve"><value>Mode</value></data>
@@ -1681,7 +1695,7 @@
   <data name="Pad_GyroTilt_Deadzone_Tooltip" xml:space="preserve"><value>Degrees of tilt ignored around the resting grip, subtracted before scaling so there is no jump at the edge.</value></data>
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>Reset Full Tilt Range</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Reset Tilt Deadzone</value></data>
-  <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Reset all Gyro Tilt settings</value></data>
+  <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Reset Gyro Tilt</value></data>
   <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>How this row's sources merge when more than one is active. Select the row to change it in the detail strip below.</value></data>
   <data name="Pad_StickMomentum" xml:space="preserve"><value>Momentum</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>Trackball mode: flick the stick and release, and the cursor keeps travelling, coasting to a stop. Moving the stick again catches it.</value></data>
@@ -2260,7 +2274,7 @@
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Reset Controller Orientation</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Motion Steering</value></data>
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Settings for the Motion Lean input: tilt the controller like a wheel. Map "Motion Lean" to a stick axis from the input dropdown in Mappings.</value></data>
-  <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Reset all Motion Steering settings</value></data>
+  <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Reset Motion Steering</value></data>
   <data name="Mapping_FlickStickRight" xml:space="preserve"><value>Flick Stick (Right Stick)</value></data>
   <data name="Mapping_FlickStickLeft" xml:space="preserve"><value>Flick Stick (Left Stick)</value></data>
   <data name="Mapping_FlickStickTouchpad_Format" xml:space="preserve"><value>Flick Stick (Touchpad {0})</value></data>
@@ -2268,7 +2282,7 @@
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Right Stick Ring</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
   <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Settings for the Flick Stick inputs: point the stick and the camera turns to match, sweep the rim to fine-turn. Map "Flick Stick (Right Stick)" to Mouse X from the input dropdown in Mappings, on any layer.</value></data>
-  <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Reset all Flick Stick settings</value></data>
+  <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Reset Flick Stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Dots Per 360&#176;</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Mouse counts for one full 360&#176; camera turn. Depends on the game's mouse sensitivity: raise it if a flick under-rotates, lower it if it over-rotates.</value></data>
   <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Reset to 14400</value></data>
@@ -2361,7 +2375,7 @@
   <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>System default</value></data>
   <data name="Pad_Audio_SourceUnavailable" xml:space="preserve"><value>(unavailable device)</value></data>
   <data name="Pad_Audio_MasterVolume" xml:space="preserve"><value>Master volume</value></data>
-  <data name="Pad_Audio_Reset_MasterVolume" xml:space="preserve"><value>Reset master volume to 100%</value></data>
+  <data name="Pad_Audio_Reset_MasterVolume" xml:space="preserve"><value>Reset Master Volume</value></data>
   <data name="Pad_Audio_Test" xml:space="preserve"><value>Test</value></data>
   <data name="Pad_Audio_Test_Tooltip" xml:space="preserve"><value>Play a short beep on the selected output device</value></data>
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>Stop all sounds</value></data>
@@ -2413,7 +2427,7 @@
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Reset Tone Limit</value></data>
   <data name="Pad_Audio_Mirror_Tooltip" xml:space="preserve"><value>Copies whatever the system default output plays to this controller’s built-in speaker, in parallel. Works over USB and Bluetooth.</value></data>
   <data name="Pad_Audio_NoSpeaker" xml:space="preserve"><value>The selected device has no built-in speaker. Macro sounds for this pad play on the system default output.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Reset every Sound Output setting for this device to defaults</value></data>
+  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Reset Sound Output</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Browser DualSense test suite by Xuezhou Dai (daidr): reference for the Sony feature-report CRC framing and firmware test commands PadForge forwards from virtual to physical pads. MIT.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>

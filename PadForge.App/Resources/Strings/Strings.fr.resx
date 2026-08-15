@@ -1351,7 +1351,7 @@
   <data name="Pad_GyroTilt_Deadzone_Tooltip" xml:space="preserve"><value>Degrés d'inclinaison ignorés autour de la prise de repos, soustraits avant la mise à l'échelle pour éviter tout saut au bord.</value></data>
   <data name="Pad_GyroTilt_Reset_Range" xml:space="preserve"><value>Réinitialiser la plage d'inclinaison complète</value></data>
   <data name="Pad_GyroTilt_Reset_Deadzone" xml:space="preserve"><value>Réinitialiser la zone morte d'inclinaison</value></data>
-  <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Réinitialiser tous les réglages d'inclinaison réglable</value></data>
+  <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Réinitialiser l'inclinaison gyro</value></data>
   <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>Comment les sources de cette ligne se combinent quand plusieurs sont actives. Sélectionnez la ligne pour le modifier dans le panneau de détails en dessous.</value></data>
   <data name="Pad_StickMomentum" xml:space="preserve"><value>Élan</value></data>
   <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>Mode trackball : donnez une impulsion au stick et relâchez, le curseur continue sa course et ralentit jusqu'à l'arrêt. Bouger le stick le rattrape.</value></data>
@@ -1909,7 +1909,7 @@
   <data name="Pad_Steering_Reset_Orientation" xml:space="preserve"><value>Réinitialiser l'orientation de la manette</value></data>
   <data name="Pad_MotionSteer_Header" xml:space="preserve"><value>Direction par mouvement</value></data>
   <data name="Pad_MotionSteer_Subtitle" xml:space="preserve"><value>Réglages de l’entrée "Inclinaison de mouvement" : inclinez la manette comme un volant. Affectez "Inclinaison de mouvement" à un axe de stick depuis la liste des entrées dans Mappages.</value></data>
-  <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Réinitialiser tous les réglages de direction par mouvement</value></data>
+  <data name="Pad_MotionSteer_Reset_All" xml:space="preserve"><value>Réinitialiser la direction par mouvement</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Retour en butée de braquage</value></data>
   <data name="Pad_Steering_LockFeedback_Subtitle" xml:space="preserve"><value>Quand un stick configuré en mode direction est tourné à fond jusqu'en butée de braquage, déclenche un signal (vibration, gâchette ou barre lumineuse) pour vous faire sentir la limite. Tout est désactivé par défaut.</value></data>
   <data name="Pad_Steering_Lock_Rumble" xml:space="preserve"><value>Pulsation de vibration en butée</value></data>
@@ -1969,7 +1969,7 @@
   <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>Par défaut du système</value></data>
   <data name="Pad_Audio_SourceUnavailable" xml:space="preserve"><value>(périphérique indisponible)</value></data>
   <data name="Pad_Audio_MasterVolume" xml:space="preserve"><value>Volume général</value></data>
-  <data name="Pad_Audio_Reset_MasterVolume" xml:space="preserve"><value>Rétablir le volume général à 100%</value></data>
+  <data name="Pad_Audio_Reset_MasterVolume" xml:space="preserve"><value>Réinitialiser le volume général</value></data>
   <data name="Pad_Audio_Test" xml:space="preserve"><value>Tester</value></data>
   <data name="Pad_Audio_Test_Tooltip" xml:space="preserve"><value>Jouer un bip court sur le périphérique sélectionné</value></data>
   <data name="Pad_Audio_StopAll" xml:space="preserve"><value>Arrêter tous les sons</value></data>
@@ -2025,7 +2025,7 @@
   <data name="About_QDollarDesc" xml:space="preserve"><value>Comparateur de gabarits de formes pour le pavé tactile (cercle / carré / triangle / Z / coche et gestes enregistrés personnalisés). Redérivation en C# de la référence JavaScript de Magrofuoco, Vatavu, Anthony et Wobbrock. BSD 3-Clause.</value></data>
   <data name="About_GestureSign" xml:space="preserve"><value>GestureSign</value></data>
   <data name="About_GestureSignDesc" xml:space="preserve"><value>Notation par marge angulaire qui fonctionne aux côtés du comparateur de nuage de points sur les formes à un doigt. Adapté du PointPatternAnalyzer de GestureSign. BSD 3-Clause.</value></data>
-  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Réinitialiser tous les réglages de sortie audio de cet appareil</value></data>
+  <data name="Pad_Audio_Reset_All" xml:space="preserve"><value>Réinitialiser la sortie audio</value></data>
   <data name="About_DsTester" xml:space="preserve"><value>dualsense-tester</value></data>
   <data name="About_DsTesterDesc" xml:space="preserve"><value>Suite de tests DualSense dans le navigateur par Xuezhou Dai (daidr) : référence pour le framing CRC des rapports feature de Sony et les commandes de test du firmware que PadForge relaie de la manette virtuelle à la physique. MIT.</value></data>
   <data name="About_Ds4Audio" xml:space="preserve"><value>DS4AudioStreamer</value></data>
@@ -2488,7 +2488,21 @@
   <data name="Pad_KeepAwake_Deflection_Tooltip" xml:space="preserve"><value>Niveau maintenu en pourcentage de la course totale du stick. 25 % garde la plupart des jeux actifs tout en restant sous leur zone morte de déplacement. Augmentez si le jeu change encore. Diminuez si le personnage dérive.</value></data>
   <data name="Pad_KeepAwake_Motion" xml:space="preserve"><value>Ajouter du mouvement</value></data>
   <data name="Pad_KeepAwake_Motion_Tooltip" xml:space="preserve"><value>Certains jeux n'envoient de vibration que pendant que le stick BOUGE, pas quand il est maintenu incliné. Prey (2017) en fait partie. Cette option fait osciller doucement le niveau maintenu au lieu de le figer, pour que ces jeux continuent de vibrer. Laissez-la désactivée sinon. Un maintien fixe est plus discret.</value></data>
-  <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>Désactiver le maintien actif et restaurer l'axe et la déviation par défaut</value></data>
+  <data name="Pad_KeepAwake_Reset_Axis" xml:space="preserve"><value>Réinitialiser l'axe maintenu</value></data>
+  <data name="Pad_KeepAwake_Reset_Deflection" xml:space="preserve"><value>Réinitialiser la déviation</value></data>
+  <data name="Pad_KeepAwake_Reset_Motion" xml:space="preserve"><value>Réinitialiser Ajouter du mouvement</value></data>
+  <data name="Menu_Reset_Style" xml:space="preserve"><value>Réinitialiser le style</value></data>
+  <data name="Menu_Reset_HostInput" xml:space="preserve"><value>Réinitialiser Ouvre avec</value></data>
+  <data name="Menu_Reset_CustomX" xml:space="preserve"><value>Réinitialiser X personnalisé</value></data>
+  <data name="Menu_Reset_CustomY" xml:space="preserve"><value>Réinitialiser Y personnalisé</value></data>
+  <data name="Menu_Reset_Click" xml:space="preserve"><value>Réinitialiser le clic</value></data>
+  <data name="Menu_Reset_HostHalf" xml:space="preserve"><value>Réinitialiser la moitié du pavé</value></data>
+  <data name="Menu_Reset_FireMode" xml:space="preserve"><value>Réinitialiser le mode de déclenchement</value></data>
+  <data name="Menu_Reset_Cells" xml:space="preserve"><value>Réinitialiser les cellules</value></data>
+  <data name="Menu_Reset_Deadzone" xml:space="preserve"><value>Réinitialiser la zone morte d'activation</value></data>
+  <data name="Menu_Reset_Geometry" xml:space="preserve"><value>Réinitialiser la géométrie du menu</value></data>
+  <data name="Menu_Reset_Cell" xml:space="preserve"><value>Réinitialiser la cellule</value></data>
+  <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>Réinitialiser Garder la manette active</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>Résout les paires de boutons maintenues en même temps sur la sortie de la manette virtuelle de cet emplacement. Quand les deux boutons d&apos;une paire sont enfoncés, la règle choisie décide quel appui le jeu voit.</value></data>
   <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>Réinitialiser les directions cardinales opposées simultanées</value></data>
   <data name="Pad_Socd_Mode_Label" xml:space="preserve"><value>Mode</value></data>
@@ -2740,7 +2754,7 @@
   <data name="Mapping_RightStickRing" xml:space="preserve"><value>Anneau du stick droit</value></data>
   <data name="Pad_FlickStick_Header" xml:space="preserve"><value>Flick Stick</value></data>
   <data name="Pad_FlickStick_Subtitle" xml:space="preserve"><value>Réglages des entrées Flick Stick : pointez le stick et la caméra tourne pour correspondre, longez le bord pour affiner la rotation. Affectez « Flick Stick (stick droit) » à Souris X depuis la liste d'entrées dans Mappings, sur n'importe quelle couche.</value></data>
-  <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Réinitialiser tous les réglages du Flick Stick</value></data>
+  <data name="Pad_FlickStick_Reset_All" xml:space="preserve"><value>Réinitialiser le Flick Stick</value></data>
   <data name="Settings_FlickCountsPer360" xml:space="preserve"><value>Pas par 360°</value></data>
   <data name="Settings_FlickCountsPer360_Tooltip" xml:space="preserve"><value>Pas de souris pour un tour de caméra complet de 360°. Dépend de la sensibilité de la souris du jeu : augmentez si un flick tourne trop peu, diminuez s'il tourne trop.</value></data>
   <data name="Pad_ResetFlickCountsPer360" xml:space="preserve"><value>Réinitialiser à 14400</value></data>

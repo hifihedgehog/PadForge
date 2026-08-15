@@ -1125,6 +1125,7 @@ public class Strings : INotifyPropertyChanged
     public string Macro_Reset_RampStart => Get("Macro_Reset_RampStart");
     public string Macro_Reset_SlowInterval => Get("Macro_Reset_SlowInterval");
     public string Pad_Reset_AxisToButtonDeadZone => Get("Pad_Reset_AxisToButtonDeadZone");
+    public string Pad_KeepAwake_Reset_Enable => Get("Pad_KeepAwake_Reset_Enable");
     public string Pad_KeepAwake_ResetCard_Tooltip => Get("Pad_KeepAwake_ResetCard_Tooltip");
     public string Pad_Socd_Card_Desc => Get("Pad_Socd_Card_Desc");
     public string Pad_Socd_ResetCard_Tooltip => Get("Pad_Socd_ResetCard_Tooltip");

@@ -1586,7 +1586,7 @@
   <data name="Pad_Shift_Delete" xml:space="preserve"><value>Excluir Camada</value></data>
   <data name="Pad_Shift_DeleteConfirmTitle" xml:space="preserve"><value>Excluir Camada Shift</value></data>
   <data name="Pad_Shift_DeleteConfirm_Format" xml:space="preserve"><value>Excluir a camada "{0}" e todas as suas linhas de mapeamento? Esta ação não pode ser desfeita.</value></data>
-  <data name="Pad_Shift_NoInherit" xml:space="preserve"><value>Não Herdar</value></data>
+  <data name="Pad_Shift_NoInherit" xml:space="preserve"><value>Não herdar</value></data>
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>Quando marcado, o alvo desta camada permanece DESLIGADO em vez de cair para a linha Base.</value></data>
   <data name="Pad_Shift_Delay" xml:space="preserve"><value>Atraso</value></data>
   <data name="Pad_Shift_Delay_Tooltip" xml:space="preserve"><value>Quanto tempo a entrada deve permanecer pressionada antes de a camada reagir. No modo Manter isso é um debounce. Em Alternar, Fixar e Adesivo, a troca vira um pressionamento longo: a camada muda uma vez quando o tempo pressionado cruza este valor, e um toque mais curto não faz nada. 0 reage na hora.</value></data>
@@ -2481,7 +2481,7 @@
   <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Direções Cardeais Opostas Simultâneas (SOCD)</value></data>
   <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>Manter o controle ativo</value></data>
   <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>Alguns jogos param a vibração e trocam os ícones de botões assim que detectam mouse ou teclado. Manter uma pequena deflexão do analógico faz o jogo continuar tratando este controle como o dispositivo ativo. A entrada real no nível mantido ou acima passa sem alterações. Mantenha a deflexão abaixo da zona morta do jogo para que nada se mova.</value></data>
-  <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>Ativar manter ativo</value></data>
+  <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>Manter ativo</value></data>
   <data name="Pad_KeepAwake_Axis_Label" xml:space="preserve"><value>Eixo mantido</value></data>
   <data name="Pad_KeepAwake_Axis_Tooltip" xml:space="preserve"><value>Qual eixo de saída mantém a deflexão. Escolha um que o jogo leia como movimento em vez de câmera, para que um valor abaixo da zona morta fique invisível.</value></data>
   <data name="Pad_KeepAwake_Deflection_Label" xml:space="preserve"><value>Deflexão</value></data>
@@ -2514,6 +2514,7 @@
   <data name="Macro_Reset_RampStart" xml:space="preserve"><value>Redefinir Início da rampa</value></data>
   <data name="Macro_Reset_RampEnd" xml:space="preserve"><value>Redefinir Fim da rampa</value></data>
   <data name="Pad_Reset_AxisToButtonDeadZone" xml:space="preserve"><value>Redefinir Zona morta de eixo para botão</value></data>
+  <data name="Pad_KeepAwake_Reset_Enable" xml:space="preserve"><value>Redefinir Manter ativo</value></data>
   <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>Redefinir Manter o controle ativo</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>Resolve pares de botões mantidos ao mesmo tempo na saída do controle virtual deste slot. Quando os dois botões de um par estão pressionados, a regra escolhida decide qual pressão o jogo vê.</value></data>
   <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>Redefinir Direções Cardeais Opostas Simultâneas</value></data>

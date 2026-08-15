@@ -118,6 +118,20 @@ namespace PadForge.Engine.Data
         /// 0 = unset, treated as the default 25 at apply time.</summary>
         [XmlAttribute] public int KeepAwakeDeflection { get; set; } = 0;
 
+        /// <summary>Sweeps the held deflection instead of parking it at a
+        /// constant value.
+        ///
+        /// <para>Reported by @HaraDaya on discussion #263: some titles gate
+        /// vibration on the stick MOVING rather than on it being off centre.
+        /// Prey (2017) is the measured example, "as long as there's movement
+        /// on the stick, vibration is sent. If you hold it in one place it
+        /// stops working." A constant hold cannot satisfy that, however large
+        /// it is, so the value has to keep changing.</para>
+        ///
+        /// <para>Off by default. A constant hold is enough for every other
+        /// title reported and is the quieter of the two.</para></summary>
+        [XmlAttribute] public bool KeepAwakeMotion { get; set; } = false;
+
         /// <summary>
         /// True when this set carries anything worth persisting or loading:
         /// rows, shift activators (layers), menus, authoritative ownership,
@@ -150,7 +164,8 @@ namespace PadForge.Engine.Data
             // load like every structure before it.
             || KeepAwakeEnabled
             || !string.IsNullOrEmpty(KeepAwakeAxis)
-            || KeepAwakeDeflection != 0;
+            || KeepAwakeDeflection != 0
+            || KeepAwakeMotion;
 
         /// <summary>
         /// An authoritative set owns its slot's mappings completely: the

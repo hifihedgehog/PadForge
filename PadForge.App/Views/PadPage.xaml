@@ -12915,6 +12915,16 @@
                                           IsChecked="{Binding KeepAwakeEnabled, Mode=TwoWay}"
                                           Content="{Binding Pad_KeepAwake_Enable, Source={x:Static strings:Strings.Instance}}"/>
 
+                                <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                              IsChecked="{Binding KeepAwakeMotion, Mode=TwoWay}"
+                                              VerticalAlignment="Center"
+                                              Content="{Binding Pad_KeepAwake_Motion, Source={x:Static strings:Strings.Instance}}"
+                                              ToolTip="{Binding Pad_KeepAwake_Motion_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <ui:Button Command="{Binding ResetKeepAwakeMotionCommand}" Style="{StaticResource ResetButton}"
+                                               VerticalAlignment="Center" Margin="8,0,0,0"/>
+                                </StackPanel>
+
                                 <!-- Held axis row -->
                                 <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
                                     <TextBlock Text="{Binding Pad_KeepAwake_Axis_Label, Source={x:Static strings:Strings.Instance}}"

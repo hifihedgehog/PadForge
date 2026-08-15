@@ -2486,6 +2486,8 @@
   <data name="Pad_KeepAwake_Axis_Tooltip" xml:space="preserve"><value>由哪个输出轴保持偏移。选择游戏读取为移动而非视角的轴，这样低于死区的值就不会产生可见影响。</value></data>
   <data name="Pad_KeepAwake_Deflection_Label" xml:space="preserve"><value>偏移量</value></data>
   <data name="Pad_KeepAwake_Deflection_Tooltip" xml:space="preserve"><value>保持量占摇杆全行程的百分比。25% 可让大多数游戏保持活跃，同时低于其移动死区。若游戏仍会切换请调高，若角色发生漂移请调低。</value></data>
+  <data name="Pad_KeepAwake_Motion" xml:space="preserve"><value>加入摆动</value></data>
+  <data name="Pad_KeepAwake_Motion_Tooltip" xml:space="preserve"><value>有些游戏只在摇杆「正在移动」时发送震动，保持偏移不动则不会。Prey (2017) 就是其中之一。此选项会让保持的幅度轻微来回摆动而不是固定不动，让这类游戏持续震动。其他情况下保持关闭即可，固定保持更不易察觉。</value></data>
   <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>关闭保持活跃并恢复默认轴和偏移量</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>解决此插槽虚拟控制器输出上同时按住的按钮对。当一对按钮同时按下时，所选规则决定游戏看到哪个输入。</value></data>
   <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>重置同时反向输入</value></data>

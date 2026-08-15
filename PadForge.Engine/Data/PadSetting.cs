@@ -192,7 +192,6 @@ namespace PadForge.Engine.Data
         /// one for plain analog sources.</summary>
         [XmlElement] public string LeftThumbSensitivity { get; set; } = "1";
 
-
         /// <summary>Right stick linear response curve (0–100%).</summary>
         [XmlElement] public string RightThumbLinear { get; set; } = "0";
         /// <summary>Per-stick output sensitivity multiplier (1 = unchanged).
@@ -201,7 +200,6 @@ namespace PadForge.Engine.Data
         /// home of the sensitivity knob; the mapping grid does not carry
         /// one for plain analog sources.</summary>
         [XmlElement] public string RightThumbSensitivity { get; set; } = "1";
-
 
         /// <summary>Left stick X-axis sensitivity curve (-100 to 100). 0 = linear, +100 = exponential, -100 = logarithmic.</summary>
         [XmlElement] public string LeftThumbSensitivityCurveX { get; set; } = "0";
@@ -386,6 +384,7 @@ namespace PadForge.Engine.Data
         /// nothing. "0" = off, "1" = on.
         /// </summary>
         [XmlElement] public string AtVibrationToImpulseEnabled { get; set; } = "0";
+
 
         /// <summary>Enable constant-trigger-force override (Xbox One+).
         /// "0" = off (default), "1" = on. Mirrors
@@ -843,7 +842,6 @@ namespace PadForge.Engine.Data
         [XmlArray("MouseGestureSettings")]
         [XmlArrayItem("Settings")]
         public PadForge.Engine.Mouse.MouseGestureSettingsEntry[] MouseGestureSettings { get; set; }
-
 
         // ─────────────────────────────────────────────
         //  Extended custom mappings (dictionary-based)
@@ -2387,7 +2385,6 @@ namespace PadForge.Engine.Data
             {
                 dict["__MouseGestureSettings"] = JsonSerializer.Serialize(MouseGestureSettings);
             }
-
 
             // Opaque per-slot config snapshots (the per-(slot, device)
             // lighting / trigger / audio bag, custom layout for Extended,

@@ -830,6 +830,9 @@
   <data name="Macro_Reset_RampEnd" xml:space="preserve"><value>Reset Ramp End</value></data>
   <data name="Pad_Reset_AxisToButtonDeadZone" xml:space="preserve"><value>Reset Axis-to-Button Deadzone</value></data>
   <data name="Pad_KeepAwake_Reset_Enable" xml:space="preserve"><value>Reset Keep Awake</value></data>
+  <data name="Pad_Audio_BufferLength" xml:space="preserve"><value>Audio Buffer Length</value></data>
+  <data name="Pad_Audio_BufferLength_Tooltip" xml:space="preserve"><value>Advanced. Sets the Bluetooth audio buffer this controller uses for speaker sound, haptics and microphone capture together, not the speaker alone. Lower values cut the delay on all three and leave less room for Bluetooth timing to wobble, so dropouts and stuttering become more likely on a busy or crowded connection. 255 is the long-standing default and changes nothing. A measured test put the round trip at 405 ms on 255 and 278 ms on 64. Takes effect the next time the controller's audio session starts, so reconnect it after changing this.</value></data>
+  <data name="Pad_Audio_Reset_BufferLength" xml:space="preserve"><value>Reset Audio Buffer Length</value></data>
   <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>Reset Keep Controller Awake</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>Resolves paired buttons held at the same time on this slot&apos;s virtual controller output. When both buttons of a pair are down, the chosen rule decides which press the game sees.</value></data>
   <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>Reset Simultaneous Opposite Cardinal Directions</value></data>

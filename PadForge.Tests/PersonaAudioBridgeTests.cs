@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using PadForge.Common.Input;
 using Xunit;
 
@@ -45,8 +45,8 @@ namespace PadForge.Tests
             var shut = NewReport();
             var pcm = Tick(_ => 0, _ => 0);
 
-            AudioPassthroughService.BuildDs5BtHapticReport(open, 0, 0, micOpen: true, pcm);
-            AudioPassthroughService.BuildDs5BtHapticReport(shut, 0, 0, micOpen: false, pcm);
+            AudioPassthroughService.BuildDs5BtHapticReport(open, 0, 0, AudioPassthroughService.Ds5AudioBufferLengthDefault, micOpen: true, pcm);
+            AudioPassthroughService.BuildDs5BtHapticReport(shut, 0, 0, AudioPassthroughService.Ds5AudioBufferLengthDefault, micOpen: false, pcm);
 
             Assert.Equal(0xFF, open[4]);
             Assert.Equal(0xFE, shut[4]);
@@ -58,7 +58,7 @@ namespace PadForge.Tests
         public void HapticReport_MatchesTheSAxensePacketGrammar()
         {
             var report = NewReport();
-            AudioPassthroughService.BuildDs5BtHapticReport(report, 0, 0, false, Tick(_ => 0, _ => 0));
+            AudioPassthroughService.BuildDs5BtHapticReport(report, 0, 0, AudioPassthroughService.Ds5AudioBufferLengthDefault, false, Tick(_ => 0, _ => 0));
 
             Assert.Equal(0x32, report[0]);          // report id
             Assert.Equal(0x11 | 0x80, report[2]);   // packet 0x11, sized
@@ -83,12 +83,12 @@ namespace PadForge.Tests
             for (int seq = 0; seq < 16; seq++)
             {
                 var report = NewReport();
-                AudioPassthroughService.BuildDs5BtHapticReport(report, seq, 0, false, pcm);
+                AudioPassthroughService.BuildDs5BtHapticReport(report, seq, 0, AudioPassthroughService.Ds5AudioBufferLengthDefault, false, pcm);
                 Assert.Equal((byte)(seq << 4), report[1]);
             }
 
             var wrapped = NewReport();
-            AudioPassthroughService.BuildDs5BtHapticReport(wrapped, 16, 0, false, pcm);
+            AudioPassthroughService.BuildDs5BtHapticReport(wrapped, 16, 0, AudioPassthroughService.Ds5AudioBufferLengthDefault, false, pcm);
             Assert.Equal(0x00, wrapped[1]);     // 16 wraps to 0, never spills
         }
 
@@ -96,7 +96,7 @@ namespace PadForge.Tests
         public void HapticReport_PacketCounterIsCarriedVerbatim()
         {
             var report = NewReport();
-            AudioPassthroughService.BuildDs5BtHapticReport(report, 0, 0xAB, false, Tick(_ => 0, _ => 0));
+            AudioPassthroughService.BuildDs5BtHapticReport(report, 0, 0xAB, AudioPassthroughService.Ds5AudioBufferLengthDefault, false, Tick(_ => 0, _ => 0));
             Assert.Equal(0xAB, report[10]);
         }
 
@@ -108,7 +108,7 @@ namespace PadForge.Tests
             // Constant full-positive left, constant half-negative right.
             var pcm = Tick(_ => 0x4000, _ => -0x2000);
             var report = NewReport();
-            AudioPassthroughService.BuildDs5BtHapticReport(report, 0, 0, false, pcm);
+            AudioPassthroughService.BuildDs5BtHapticReport(report, 0, 0, AudioPassthroughService.Ds5AudioBufferLengthDefault, false, pcm);
 
             // mean == the constant, then >> 8 into signed 8-bit.
             byte expectL = unchecked((byte)(0x4000 >> 8));           // 0x40
@@ -125,7 +125,7 @@ namespace PadForge.Tests
         {
             var pcm = Tick(_ => short.MaxValue, _ => short.MinValue);
             var report = NewReport();
-            AudioPassthroughService.BuildDs5BtHapticReport(report, 0, 0, false, pcm);
+            AudioPassthroughService.BuildDs5BtHapticReport(report, 0, 0, AudioPassthroughService.Ds5AudioBufferLengthDefault, false, pcm);
             for (int o = 0; o < 32; o++)
             {
                 Assert.Equal(127, unchecked((sbyte)report[13 + o * 2]));
@@ -139,8 +139,7 @@ namespace PadForge.Tests
         public void SilenceGate_ReportsNoSignalForAnAllZeroTick()
         {
             var report = NewReport();
-            bool signal = AudioPassthroughService.BuildDs5BtHapticReport(
-                report, 0, 0, false, Tick(_ => 0, _ => 0));
+            bool signal = AudioPassthroughService.BuildDs5BtHapticReport(report, 0, 0, AudioPassthroughService.Ds5AudioBufferLengthDefault, false, Tick(_ => 0, _ => 0));
             Assert.False(signal);
         }
 
@@ -148,8 +147,7 @@ namespace PadForge.Tests
         public void SilenceGate_ReportsSignalWhenTheBlockMeanSurvivesDecimation()
         {
             var report = NewReport();
-            bool signal = AudioPassthroughService.BuildDs5BtHapticReport(
-                report, 0, 0, false, Tick(_ => 0x4000, _ => 0x4000));
+            bool signal = AudioPassthroughService.BuildDs5BtHapticReport(report, 0, 0, AudioPassthroughService.Ds5AudioBufferLengthDefault, false, Tick(_ => 0x4000, _ => 0x4000));
             Assert.True(signal);
         }
 
@@ -159,8 +157,7 @@ namespace PadForge.Tests
             // Values below the >> 8 threshold decimate to zero, so they must
             // not hold the 0x32 stream open and interleave with the speaker.
             var report = NewReport();
-            bool signal = AudioPassthroughService.BuildDs5BtHapticReport(
-                report, 0, 0, false, Tick(_ => 0x00FF, _ => 0x00FF));
+            bool signal = AudioPassthroughService.BuildDs5BtHapticReport(report, 0, 0, AudioPassthroughService.Ds5AudioBufferLengthDefault, false, Tick(_ => 0x00FF, _ => 0x00FF));
             Assert.False(signal);
         }
 
@@ -172,8 +169,8 @@ namespace PadForge.Tests
             int size = AudioPassthroughService.Ds5HapticBtReportSize;
             var quiet = NewReport();
             var loud = NewReport();
-            AudioPassthroughService.BuildDs5BtHapticReport(quiet, 0, 0, false, Tick(_ => 0, _ => 0));
-            AudioPassthroughService.BuildDs5BtHapticReport(loud, 0, 0, false, Tick(_ => 0x4000, _ => 0x4000));
+            AudioPassthroughService.BuildDs5BtHapticReport(quiet, 0, 0, AudioPassthroughService.Ds5AudioBufferLengthDefault, false, Tick(_ => 0, _ => 0));
+            AudioPassthroughService.BuildDs5BtHapticReport(loud, 0, 0, AudioPassthroughService.Ds5AudioBufferLengthDefault, false, Tick(_ => 0x4000, _ => 0x4000));
 
             var quietCrc = new[] { quiet[size - 4], quiet[size - 3], quiet[size - 2], quiet[size - 1] };
             var loudCrc = new[] { loud[size - 4], loud[size - 3], loud[size - 2], loud[size - 1] };
@@ -187,8 +184,8 @@ namespace PadForge.Tests
             var a = NewReport();
             var b = NewReport();
             var pcm = Tick(i => (short)(i * 37), i => (short)(-i * 11));
-            AudioPassthroughService.BuildDs5BtHapticReport(a, 5, 0x22, true, pcm);
-            AudioPassthroughService.BuildDs5BtHapticReport(b, 5, 0x22, true, pcm);
+            AudioPassthroughService.BuildDs5BtHapticReport(a, 5, 0x22, AudioPassthroughService.Ds5AudioBufferLengthDefault, true, pcm);
+            AudioPassthroughService.BuildDs5BtHapticReport(b, 5, 0x22, AudioPassthroughService.Ds5AudioBufferLengthDefault, true, pcm);
             Assert.Equal(a, b);
         }
 
@@ -270,8 +267,7 @@ namespace PadForge.Tests
         public void CombinedReport_ChainsSessionThenHapticsThenAudio()
         {
             var report = NewCombined();
-            AudioPassthroughService.BuildDs5BtCombinedReport(
-                report, 0, 0, micOpen: false,
+            AudioPassthroughService.BuildDs5BtCombinedReport(AudioPassthroughService.Ds5AudioBufferLengthDefault, report, 0, 0, micOpen: false,
                 Tick(_ => 0x4000, _ => 0x4000), Opus(0xAA), 200, lanePid: 0x13);
 
             Assert.Equal(0x35, report[0]);            // one report, the speaker id
@@ -294,8 +290,7 @@ namespace PadForge.Tests
         public void CombinedReport_CarriesBothPayloadsIntact()
         {
             var report = NewCombined();
-            AudioPassthroughService.BuildDs5BtCombinedReport(
-                report, 0, 0, false, Tick(_ => 0x4000, _ => -0x2000), Opus(0x5A), 200, 0x13);
+            AudioPassthroughService.BuildDs5BtCombinedReport(AudioPassthroughService.Ds5AudioBufferLengthDefault, report, 0, 0, false, Tick(_ => 0x4000, _ => -0x2000), Opus(0x5A), 200, 0x13);
 
             // Actuator block: same decimation as the haptics-only report.
             for (int o = 0; o < 32; o++)
@@ -312,8 +307,7 @@ namespace PadForge.Tests
         public void CombinedReport_HonorsTheHeadsetLaneAndTheMicSession()
         {
             var headset = NewCombined();
-            AudioPassthroughService.BuildDs5BtCombinedReport(
-                headset, 3, 0x7C, micOpen: true, Tick(_ => 0, _ => 0), Opus(0), 200, lanePid: 0x16);
+            AudioPassthroughService.BuildDs5BtCombinedReport(AudioPassthroughService.Ds5AudioBufferLengthDefault, headset, 3, 0x7C, micOpen: true, Tick(_ => 0, _ => 0), Opus(0), 200, lanePid: 0x16);
 
             Assert.Equal(0x30, headset[1]);                    // seq in the high nibble
             Assert.Equal(0xFF, headset[4]);                    // mic session open
@@ -326,15 +320,13 @@ namespace PadForge.Tests
         public void CombinedReport_EndsInACrcOverEverythingBeforeIt()
         {
             var report = NewCombined();
-            AudioPassthroughService.BuildDs5BtCombinedReport(
-                report, 1, 2, false, Tick(_ => 0x1000, _ => 0x1000), Opus(0x33), 200, 0x13);
+            AudioPassthroughService.BuildDs5BtCombinedReport(AudioPassthroughService.Ds5AudioBufferLengthDefault, report, 1, 2, false, Tick(_ => 0x1000, _ => 0x1000), Opus(0x33), 200, 0x13);
 
             // Flipping any payload byte must change the trailing CRC.
             var before = new byte[4];
             Array.Copy(report, 330, before, 0, 4);
             var again = NewCombined();
-            AudioPassthroughService.BuildDs5BtCombinedReport(
-                again, 1, 2, false, Tick(_ => 0x1000, _ => 0x1000), Opus(0x34), 200, 0x13);
+            AudioPassthroughService.BuildDs5BtCombinedReport(AudioPassthroughService.Ds5AudioBufferLengthDefault, again, 1, 2, false, Tick(_ => 0x1000, _ => 0x1000), Opus(0x34), 200, 0x13);
             Assert.False(before.AsSpan().SequenceEqual(again.AsSpan(330, 4)),
                 "the CRC does not cover the audio payload");
         }
@@ -343,12 +335,10 @@ namespace PadForge.Tests
         public void CombinedReport_ReportsSignalLikeTheHapticsOnlyPath()
         {
             var quiet = NewCombined();
-            Assert.False(AudioPassthroughService.BuildDs5BtCombinedReport(
-                quiet, 0, 0, false, Tick(_ => 0, _ => 0), Opus(0), 200, 0x13));
+            Assert.False(AudioPassthroughService.BuildDs5BtCombinedReport(AudioPassthroughService.Ds5AudioBufferLengthDefault, quiet, 0, 0, false, Tick(_ => 0, _ => 0), Opus(0), 200, 0x13));
 
             var loud = NewCombined();
-            Assert.True(AudioPassthroughService.BuildDs5BtCombinedReport(
-                loud, 0, 0, false, Tick(_ => 0x4000, _ => 0), Opus(0), 200, 0x13));
+            Assert.True(AudioPassthroughService.BuildDs5BtCombinedReport(AudioPassthroughService.Ds5AudioBufferLengthDefault, loud, 0, 0, false, Tick(_ => 0x4000, _ => 0), Opus(0), 200, 0x13));
         }
 
         // ── Consumer-side verdicts (shared shape with tools/PersonaVerify) ──
@@ -364,6 +354,75 @@ namespace PadForge.Tests
         public void ClassifyCapture_SeparatesSilenceNoiseAndAudio(double rms, double crest, string expected)
         {
             Assert.Equal(expected, AudioPassthroughService.ClassifyCapture(rms, crest));
+        }
+
+        // ── Audio buffer length (#314, reported by vlue-c on #311) ──
+        //
+        // The packet 0x11 header byte governing the Bluetooth transport that
+        // carries speaker audio, haptics AND microphone capture together.
+        // DS5Dongle names it at src/audio.cpp:133 and clamps it to [16,128]
+        // at src/config.cpp:99, falling back to 48 outside that. Its header
+        // is declared length 6 where PadForge declares 7, which shifts
+        // everything after it by one, so DS5Dongle's pkt[8] is PadForge's
+        // report[9]. The three bytes before it are volume guesses its own
+        // comment records as having no observable effect.
+        //
+        // 255 is what PadForge has always sent. An install that never
+        // touches the setting has to stay byte-identical, which is what the
+        // first test here pins.
+
+        [Fact]
+        public void TheDefault_IsWhatPadForgeAlwaysSent()
+        {
+            var report = NewReport();
+            AudioPassthroughService.BuildDs5BtHapticReport(
+                report, 0, 0, AudioPassthroughService.Ds5AudioBufferLengthDefault,
+                micOpen: false, Tick(_ => 0, _ => 0));
+            Assert.Equal(0xFF, report[9]);
+        }
+
+        [Fact]
+        public void AConfiguredLength_ReachesTheSessionHeader()
+        {
+            var report = NewReport();
+            AudioPassthroughService.BuildDs5BtHapticReport(
+                report, 0, 0, 64, micOpen: false, Tick(_ => 0, _ => 0));
+            Assert.Equal(64, report[9]);
+        }
+
+        [Fact]
+        public void TheCombinedReport_CarriesItToo()
+        {
+            // Speaker and haptics in one report share the one session, so
+            // they must agree on the buffer length or the session sees two.
+            var report = NewCombined();
+            AudioPassthroughService.BuildDs5BtCombinedReport(
+                32, report, 0, 0, micOpen: false,
+                Tick(_ => 0, _ => 0), Opus(0xAA), 200, lanePid: 0x13);
+            Assert.Equal(32, report[9]);
+        }
+
+        [Theory]
+        [InlineData(15)]    // below the reference's floor
+        [InlineData(0)]
+        [InlineData(-1)]
+        [InlineData(256)]   // beyond a byte
+        public void OutOfRangeFallsBackToTheDefault_RatherThanCorruptingTheHeader(int requested)
+        {
+            Assert.Equal(AudioPassthroughService.Ds5AudioBufferLengthDefault,
+                         AudioPassthroughService.ClampAudioBufferLength(requested));
+        }
+
+        [Theory]
+        [InlineData(16)]    // the reference's floor, accepted
+        [InlineData(32)]
+        [InlineData(64)]
+        [InlineData(128)]   // the reference's ceiling
+        [InlineData(255)]
+        public void InRangeValuesPassThroughUntouched(int requested)
+        {
+            Assert.Equal((byte)requested,
+                         AudioPassthroughService.ClampAudioBufferLength(requested));
         }
     }
 }

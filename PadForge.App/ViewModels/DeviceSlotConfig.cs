@@ -542,6 +542,33 @@ namespace PadForge.ViewModels
             }
         }
 
+        // DualSense Bluetooth audio buffer length (#314, reported by
+        // vlue-c on discussion #311). The packet 0x11 header byte that
+        // governs the transport carrying speaker audio, haptics AND
+        // microphone capture together, so it is not a speaker-only knob.
+        //
+        // 255 is what PadForge has always sent, so it is the default and an
+        // untouched install is byte-identical to before. Lower cuts latency
+        // across all three paths and costs tolerance for Bluetooth timing
+        // variation: an end-to-end acoustic round trip measured 405 ms at
+        // 255 against 278 ms at 64, repeatable to within 3 ms.
+        //
+        // 16 is the floor because the reference refuses anything lower
+        // (DS5Dongle src/config.cpp:99, which clamps to [16,128]).
+        private int _ds5AudioBufferLength = 255;
+
+        public int Ds5AudioBufferLength
+        {
+            get => _ds5AudioBufferLength;
+            set
+            {
+                int v = Math.Clamp(value, 16, 255);
+                if (_ds5AudioBufferLength == v) return;
+                _ds5AudioBufferLength = v;
+                OnPropertyChanged(nameof(Ds5AudioBufferLength));
+            }
+        }
+
         private MicLedMode _micLedMode;
         /// <summary>Mic mute LED state. The DS5 firmware exposes three
         /// modes at byte 8 (muteLedControl): Off, Solid, Pulse. There's
@@ -1482,6 +1509,10 @@ namespace PadForge.ViewModels
             _resetHeadphoneVolume ??= new RelayCommand(() => HeadphoneVolume = 100);
         private RelayCommand _resetHeadphoneVolume;
 
+        public RelayCommand ResetDs5AudioBufferLengthCommand =>
+            _resetDs5AudioBufferLength ??= new RelayCommand(() => Ds5AudioBufferLength = 255);
+        private RelayCommand _resetDs5AudioBufferLength;
+
         public RelayCommand ResetAudioOutputPathCommand =>
             _resetAudioOutputPath ??= new RelayCommand(() => AudioOutputPath = AudioOutputPath.Automatic);
         private RelayCommand _resetAudioOutputPath;
@@ -1889,6 +1920,10 @@ namespace PadForge.ViewModels
         // attribute on legacy XML keeps the initializer, so old configs
         // load as full volume, the pre-feature effective behaviour.
         [XmlAttribute] public int HeadphoneVolume { get; set; } = 100;
+
+        /// <summary>#314. 255 is what PadForge has always sent, so an
+        /// untouched install round-trips byte-identical.</summary>
+        [XmlAttribute] public int Ds5AudioBufferLength { get; set; } = 255;
         [XmlAttribute] public AudioOutputPath AudioOutputPath { get; set; } = AudioOutputPath.Automatic;
         [XmlAttribute] public MicLedMode MicLedMode { get; set; } = MicLedMode.Off;
         [XmlAttribute] public string MicLedFollowDeviceId { get; set; } = string.Empty;

@@ -1110,6 +1110,9 @@ public class Strings : INotifyPropertyChanged
     public string Menu_Reset_HostHalf => Get("Menu_Reset_HostHalf");
     public string Menu_Reset_HostInput => Get("Menu_Reset_HostInput");
     public string Menu_Reset_Style => Get("Menu_Reset_Style");
+    public string Pad_Audio_BufferLength => Get("Pad_Audio_BufferLength");
+    public string Pad_Audio_BufferLength_Tooltip => Get("Pad_Audio_BufferLength_Tooltip");
+    public string Pad_Audio_Reset_BufferLength => Get("Pad_Audio_Reset_BufferLength");
     public string Pad_KeepAwake_Reset_Axis => Get("Pad_KeepAwake_Reset_Axis");
     public string Pad_KeepAwake_Reset_Deflection => Get("Pad_KeepAwake_Reset_Deflection");
     public string Pad_KeepAwake_Reset_Motion => Get("Pad_KeepAwake_Reset_Motion");

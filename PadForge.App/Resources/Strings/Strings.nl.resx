@@ -2535,6 +2535,9 @@
   <data name="Macro_Reset_RampEnd" xml:space="preserve"><value>Rampeinde herstellen</value></data>
   <data name="Pad_Reset_AxisToButtonDeadZone" xml:space="preserve"><value>Dode zone as-naar-knop herstellen</value></data>
   <data name="Pad_KeepAwake_Reset_Enable" xml:space="preserve"><value>Wakker houden herstellen</value></data>
+  <data name="Pad_Audio_BufferLength" xml:space="preserve"><value>Audiobuffergrootte</value></data>
+  <data name="Pad_Audio_BufferLength_Tooltip" xml:space="preserve"><value>Geavanceerd. Stelt de Bluetooth-audiobuffer in die deze controller samen gebruikt voor luidsprekergeluid, haptiek en microfoonopname, niet alleen voor de luidspreker. Lagere waarden verkleinen de vertraging bij alle drie en laten minder ruimte voor schommelingen in de Bluetooth-timing, waardoor uitval en haperen waarschijnlijker worden op een drukke verbinding. 255 is de vanouds gebruikte standaard en verandert niets. Een meting gaf 405 ms retour bij 255 en 278 ms bij 64. Wordt actief zodra de audiosessie van de controller opnieuw begint, dus verbind hem opnieuw na het wijzigen.</value></data>
+  <data name="Pad_Audio_Reset_BufferLength" xml:space="preserve"><value>Audiobuffergrootte herstellen</value></data>
   <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>Controller wakker houden herstellen</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>Lost knoppenparen op die tegelijk worden vastgehouden op de virtuele-controlleruitvoer van dit slot. Wanneer beide knoppen van een paar zijn ingedrukt, bepaalt de gekozen regel welke druk het spel ziet.</value></data>
   <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>Gelijktijdige tegengestelde hoofdrichtingen herstellen</value></data>

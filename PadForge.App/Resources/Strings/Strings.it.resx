@@ -2537,6 +2537,9 @@
   <data name="Macro_Reset_RampEnd" xml:space="preserve"><value>Reimposta Fine rampa</value></data>
   <data name="Pad_Reset_AxisToButtonDeadZone" xml:space="preserve"><value>Reimposta Zona morta da asse a pulsante</value></data>
   <data name="Pad_KeepAwake_Reset_Enable" xml:space="preserve"><value>Reimposta Mantieni attivo</value></data>
+  <data name="Pad_Audio_BufferLength" xml:space="preserve"><value>Dimensione del buffer audio</value></data>
+  <data name="Pad_Audio_BufferLength_Tooltip" xml:space="preserve"><value>Avanzato. Imposta il buffer audio Bluetooth che questo controller usa insieme per l'audio dell'altoparlante, il feedback aptico e la cattura del microfono, non solo per l'altoparlante. Valori più bassi riducono il ritardo su tutti e tre e lasciano meno margine alle variazioni di temporizzazione del Bluetooth, quindi interruzioni e scatti diventano più probabili su una connessione carica. 255 è il valore predefinito di sempre e non cambia nulla. Una misurazione ha dato 405 ms di andata e ritorno a 255 e 278 ms a 64. Ha effetto al successivo avvio della sessione audio del controller, quindi riconnettilo dopo la modifica.</value></data>
+  <data name="Pad_Audio_Reset_BufferLength" xml:space="preserve"><value>Reimposta Dimensione del buffer audio</value></data>
   <data name="Pad_KeepAwake_ResetCard_Tooltip" xml:space="preserve"><value>Reimposta Mantieni il controller attivo</value></data>
   <data name="Pad_Socd_Card_Desc" xml:space="preserve"><value>Risolve le coppie di pulsanti tenute premute insieme sull&apos;uscita del controller virtuale di questo slot. Quando entrambi i pulsanti di una coppia sono premuti, la regola scelta decide quale pressione vede il gioco.</value></data>
   <data name="Pad_Socd_ResetCard_Tooltip" xml:space="preserve"><value>Reimposta direzioni cardinali opposte simultanee</value></data>

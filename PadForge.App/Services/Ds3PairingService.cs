@@ -435,6 +435,18 @@ namespace PadForge.Services
             // 2026-08-08, screenshot).
             Ds3DriverInstaller.LogBthPs3ChildState(LogLine);
 
+            // The binding probe, because the install gate cannot see this: a
+            // present service node with no driver bound means BthPS3's L2CAP
+            // server never registered and the radio will drop every page the
+            // pad sends. That state passed every earlier check for nine days
+            // (#285) and only a reinstall that rebound the node ended it.
+            int binding = Ds3DriverInstaller.ProbeBthPs3ServiceBinding(out string bindDetail);
+            LogLine(binding == 1
+                ? $"BthPS3 service binding: BOUND ({bindDetail})."
+                : $"BthPS3 service binding: NOT BOUND ({bindDetail}). Incoming connections "
+                  + "cannot reach BthPS3 in this state. Reinstalling the DS3 Bluetooth "
+                  + "support (or BthPS3 itself) rebinds it.");
+
             // The comparison probe the baseline above promises. Without it the
             // DIAG ring goes silent at the exact moment the answer lives: the
             // 2026-08-10 report (#285, r3102) shows a fully green ceremony,
@@ -528,9 +540,22 @@ namespace PadForge.Services
 
                         if (children > 0)
                         {
-                            LogLine(activeIface
-                                ? $"BthPS3 child appeared {sw.Elapsed.TotalSeconds:0}s after the ceremony, raw interface ACTIVE. The Bluetooth connection reached BthPS3 and the pad is readable."
-                                : $"BthPS3 child appeared {sw.Elapsed.TotalSeconds:0}s after the ceremony but the raw interface is NOT active [{detail}]. BthPS3 accepted the connection and PnP could not start the child (problem 28 is the no-matching-INF case).");
+                            // No raw interface has two readings, split by who owns
+                            // DS3s on this machine. With DsHidMini installed it
+                            // BINDS the child as its function driver, so the raw
+                            // interface never appears and that is the SUCCESS
+                            // state of the deferral policy, not a PnP failure
+                            // (#285: a fresh DsHidMini install reported problem=21
+                            // here mid-bind and the old text called it broken).
+                            string caught;
+                            if (activeIface)
+                                caught = $"BthPS3 child appeared {sw.Elapsed.TotalSeconds:0}s after the ceremony, raw interface ACTIVE. The Bluetooth connection reached BthPS3 and the pad is readable.";
+                            else if (Ds3DriverInstaller.IsDsHidMiniInstalled())
+                                caught = $"BthPS3 child appeared {sw.Elapsed.TotalSeconds:0}s after the ceremony and DsHidMini is installed, so DsHidMini owns the pad from here [{detail}]. "
+                                    + "The connection reached BthPS3. PadForge consumes the pad through DsHidMini only in its SXS (SixaxisCompatible) HID mode; a fresh DsHidMini install defaults to XInput mode.";
+                            else
+                                caught = $"BthPS3 child appeared {sw.Elapsed.TotalSeconds:0}s after the ceremony but the raw interface is NOT active [{detail}]. BthPS3 accepted the connection and PnP could not start the child (problem 28 is the no-matching-INF case).";
+                            LogLine(caught);
                             return;
                         }
                     }
@@ -561,14 +586,29 @@ namespace PadForge.Services
                             + "and BthPS3: either the PSM patch missed the connection or BthPS3 "
                             + "denied it during identification (remote-name read).";
                     else
+                    {
+                        // Before blaming the radio, re-check the one state that
+                        // mimics a deaf radio exactly: BthPS3 not bound to the
+                        // live service node, so its L2CAP server never registered
+                        // and every page was dropped ON this machine. That is the
+                        // state #285 sat in for nine days while the old verdict
+                        // pointed at the radio.
+                        int bind = Ds3DriverInstaller.ProbeBthPs3ServiceBinding(out string bindNow);
+                        string tail = bind == 1
+                            ? "BthPS3 IS bound to the live service node, so the drop is upstream "
+                              + "of it. Radio-level: driver, legacy-connection support, or the pad "
+                              + "is paging a different address."
+                            : $"AND BthPS3 is NOT bound to the live service node ({bindNow}). That "
+                              + "alone produces exactly this silence, so fix the binding before "
+                              + "suspecting the radio. Reinstalling the DS3 Bluetooth support "
+                              + "rebinds it.";
                         verdict = "VERDICT: nothing arrived. "
                             + (recordExistsNow
                                 ? "The BTHPORT record exists, but it was written by the pairing "
                                   + "ceremony and no incoming connection ever updated it"
                                 : "There is no BTHPORT record")
-                            + ", no inbox child, and no BthPS3 child. The radio never accepted the "
-                            + "pad's page. Radio-level: driver, legacy-connection support, or the "
-                            + "pad is paging a different address.";
+                            + ", no inbox child, and no BthPS3 child. " + tail;
+                    }
                     LogLine("No BthPS3 child within 90 s of the ceremony. " + verdict);
                 }
                 catch { /* watcher is best-effort by design */ }

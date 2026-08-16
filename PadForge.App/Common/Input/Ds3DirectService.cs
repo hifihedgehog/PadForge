@@ -927,6 +927,8 @@ namespace PadForge.Common.Input
                     _gyroData[1] = -(gz - 512) * GYRO_SCALE;
                     _gyroData[2] = 0.0f;
                     SDL.SDL_SendJoystickVirtualSensorData(j, SDL_SENSOR_GYRO, ts, _gyroData, 3);
+
+                    TraceGyro(gz);
                 }
             }
             finally { SDL.SDL_UnlockJoysticks(); }
@@ -940,6 +942,53 @@ namespace PadForge.Common.Input
 
         private readonly float[] _accelData = new float[3];
         private readonly float[] _gyroData = new float[3];
+
+        // Raw-word trace for the yaw gyro. The Devices tab shows a value that has
+        // already been through bias calibration and the source curve, so it cannot
+        // answer what the SENSOR did. This reports the undecorated 10-bit word.
+        //
+        // Open questions it exists to settle, none of which are answerable from the
+        // parse alone: the RESTING value (nominal 512, but a large per-unit offset
+        // is on record for this part), whether the clockwise and counter-clockwise
+        // excursions are symmetric about that rest, and whether either direction
+        // reaches a rail (0 or 1023) and clips.
+        //
+        // Quiet by construction: it reports only while the pad is actually moving,
+        // at most every 2 s, plus one line naming the resting baseline when a
+        // session's first sample arrives.
+        private int _gzMin = int.MaxValue, _gzMax = int.MinValue, _gzRest = -1;
+        private long _gzNextLogTicks;
+        private const int GzMoveThreshold = 8;      // counts; below this the pad is at rest
+        private const long GzLogIntervalMs = 2000;
+
+        private void TraceGyro(int gz)
+        {
+            if (_gzRest < 0)
+            {
+                _gzRest = gz;
+                _log($"DS3MOTION gyro raw resting baseline={gz} (nominal center is 512, delta={gz - 512})");
+                _gzNextLogTicks = Environment.TickCount64 + GzLogIntervalMs;
+                return;
+            }
+            if (gz < _gzMin) _gzMin = gz;
+            if (gz > _gzMax) _gzMax = gz;
+
+            long now = Environment.TickCount64;
+            if (now < _gzNextLogTicks) return;
+            _gzNextLogTicks = now + GzLogIntervalMs;
+
+            int span = _gzMax - _gzMin;
+            if (span < GzMoveThreshold) { _gzMin = int.MaxValue; _gzMax = int.MinValue; return; }
+
+            // Both excursions measured from the resting baseline, so an asymmetry
+            // between the two directions is readable straight off the line.
+            int below = _gzRest - _gzMin, above = _gzMax - _gzRest;
+            _log($"DS3MOTION gyro raw min={_gzMin} max={_gzMax} rest={_gzRest} "
+                 + $"span={span} belowRest={below} aboveRest={above}"
+                 + (_gzMin <= 0 ? " CLIPPED-LOW" : "") + (_gzMax >= 1023 ? " CLIPPED-HIGH" : "")
+                 + $" | yaw now={-(gz - 512) * GYRO_SCALE:F2} rad/s");
+            _gzMin = int.MaxValue; _gzMax = int.MinValue;
+        }
 
         /// <summary>0..255 stick byte to the full SDL axis range with 0x80 = exactly 0.
         /// SDL's own PS3 driver uses v*257-32768 (center = +128); keeping a true zero

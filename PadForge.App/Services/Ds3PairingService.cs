@@ -537,21 +537,38 @@ namespace PadForge.Services
 
                     // The 90-second verdict, now stated from evidence instead
                     // of assumption.
-                    bool sawRecord = loggedRecord || (!recordAtStart && Ds3DriverInstaller.BthportDeviceRecordExists(ds3Mac));
+                    // Existence and ARRIVAL are different facts and the verdict must
+                    // not conflate them. The ceremony writes the BTHPORT record
+                    // itself, before this watcher starts, so recordAtStart is
+                    // normally true and mere existence proves nothing about whether
+                    // the pad ever connected. Only a record that APPEARED during the
+                    // window is evidence of an accepted page.
+                    //
+                    // The gate below was already right about that. The wording was
+                    // not: it reported "no BTHPORT record" when the record plainly
+                    // existed, which is the same defect as the child probe that
+                    // stated a verdict it had not earned (Ds3DriverInstaller, fixed
+                    // in 4b65c4a9). Say what was measured.
+                    bool recordExistsNow = Ds3DriverInstaller.BthportDeviceRecordExists(ds3Mac);
+                    bool recordArrived = loggedRecord || (!recordAtStart && recordExistsNow);
                     string verdict;
                     if (loggedInbox)
                         verdict = "VERDICT: the connection arrived but went to the inbox HID stack "
                             + "(PSM filter not patching at connect time).";
-                    else if (sawRecord)
+                    else if (recordArrived)
                         verdict = "VERDICT: the radio accepted the pad's connection (BTHPORT record "
                             + "updated) but no BthPS3 child followed. The failure is between bthport "
                             + "and BthPS3: either the PSM patch missed the connection or BthPS3 "
                             + "denied it during identification (remote-name read).";
                     else
-                        verdict = "VERDICT: no trace of the pad reached this machine at any layer "
-                            + "(no BTHPORT record, no inbox child, no BthPS3 child). The radio never "
-                            + "accepted the pad's page. Radio-level: driver, legacy-connection "
-                            + "support, or the pad is paging a different address.";
+                        verdict = "VERDICT: nothing arrived. "
+                            + (recordExistsNow
+                                ? "The BTHPORT record exists, but it was written by the pairing "
+                                  + "ceremony and no incoming connection ever updated it"
+                                : "There is no BTHPORT record")
+                            + ", no inbox child, and no BthPS3 child. The radio never accepted the "
+                            + "pad's page. Radio-level: driver, legacy-connection support, or the "
+                            + "pad is paging a different address.";
                     LogLine("No BthPS3 child within 90 s of the ceremony. " + verdict);
                 }
                 catch { /* watcher is best-effort by design */ }

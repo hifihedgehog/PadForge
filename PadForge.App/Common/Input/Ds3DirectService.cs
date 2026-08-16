@@ -345,6 +345,7 @@ namespace PadForge.Common.Input
                 _writeThread.Start();
 
                 _log($"DS3({tag}): virtual joystick attached; streaming.");
+                ResetGyroTracking();
                 long sessionStart = Environment.TickCount64;
                 if (_transport == Ds3Transport.Usb) UsbReadLoop();
                 else ReadLoop(_readPdo);   // blocks until the pad disconnects or Stop()
@@ -923,8 +924,14 @@ namespace PadForge.Common.Input
                     _accelData[2] = -(ay - 512) * ACCEL_SCALE;
                     SDL.SDL_SendJoystickVirtualSensorData(j, SDL_SENSOR_ACCEL, ts, _accelData, 3);
 
+                    // Center on what the sensor actually rests at, not on the
+                    // nominal 512. Measured 727 on a genuine pad (and ~724 during
+                    // the #194 work, so it is systematic rather than per-unit),
+                    // which through the nominal center published -2.8 rad/s while
+                    // the controller sat still.
+                    ObserveGyroRest(gz);
                     _gyroData[0] = 0.0f;
-                    _gyroData[1] = -(gz - 512) * GYRO_SCALE;
+                    _gyroData[1] = -(gz - _gzCenter) * GYRO_SCALE;
                     _gyroData[2] = 0.0f;
                     SDL.SDL_SendJoystickVirtualSensorData(j, SDL_SENSOR_GYRO, ts, _gyroData, 3);
 
@@ -956,6 +963,62 @@ namespace PadForge.Common.Input
         // Quiet by construction: it reports only while the pad is actually moving,
         // at most every 2 s, plus one line naming the resting baseline when a
         // session's first sample arrives.
+        // The yaw word's true resting center, learned per session. The DS3's gyro
+        // does NOT rest at the nominal 512: a genuine pad measured 727, and the
+        // #194 hardware notes recorded ~724 on a different unit, so the offset is
+        // systematic. Publishing (gz - 512) therefore reported a constant ~-2.8
+        // rad/s at rest, which is roughly 157 deg/s of rotation that is not
+        // happening, and it drifted anything reading the sensor directly.
+        //
+        // Learned rather than hardcoded, because 727 is one sample of one part.
+        // Seeded from the first genuinely still window: GzRestWindowSamples
+        // consecutive readings spanning no more than GzRestSpanMax counts. Any
+        // wider span restarts the window, so a pad that is moving when it
+        // connects simply keeps the nominal center until it is next set down.
+        //
+        // NOTE the physical consequence this does not remove: resting at 727
+        // leaves only 296 counts of headroom to the 1023 rail and 727 to 0, so
+        // the two rotation directions clip at different rates. That asymmetry is
+        // the sensor's, and no centering fixes it.
+        private int _gzCenter = 512;
+        private bool _gzCentered;
+        private int _gzWinCount, _gzWinMin = int.MaxValue, _gzWinMax = int.MinValue;
+        private long _gzWinSum;
+        private const int GzRestWindowSamples = 60;   // ~0.6 s at the DS3's ~100 Hz
+        private const int GzRestSpanMax = 6;          // counts, tighter than GzMoveThreshold
+
+        private void ObserveGyroRest(int gz)
+        {
+            if (_gzCentered) return;
+            if (gz < _gzWinMin) _gzWinMin = gz;
+            if (gz > _gzWinMax) _gzWinMax = gz;
+            _gzWinSum += gz;
+            _gzWinCount++;
+
+            if (_gzWinMax - _gzWinMin > GzRestSpanMax)
+            {
+                _gzWinCount = 0; _gzWinSum = 0;
+                _gzWinMin = int.MaxValue; _gzWinMax = int.MinValue;
+                return;
+            }
+            if (_gzWinCount < GzRestWindowSamples) return;
+
+            _gzCenter = (int)(_gzWinSum / _gzWinCount);
+            _gzCentered = true;
+            _log($"DS3MOTION gyro center learned={_gzCenter} (nominal 512, delta={_gzCenter - 512}); "
+                 + $"headroom up={1023 - _gzCenter} down={_gzCenter}");
+        }
+
+        /// <summary>Re-learn the center on every new session: a different pad, or
+        /// the same pad after a warm-up, does not have to inherit the old one.</summary>
+        private void ResetGyroTracking()
+        {
+            _gzCenter = 512; _gzCentered = false;
+            _gzWinCount = 0; _gzWinSum = 0;
+            _gzWinMin = int.MaxValue; _gzWinMax = int.MinValue;
+            _gzMin = int.MaxValue; _gzMax = int.MinValue; _gzRest = -1;
+        }
+
         private int _gzMin = int.MaxValue, _gzMax = int.MinValue, _gzRest = -1;
         private long _gzNextLogTicks;
         private const int GzMoveThreshold = 8;      // counts; below this the pad is at rest

@@ -924,14 +924,20 @@ namespace PadForge.Common.Input
                     _accelData[2] = -(ay - 512) * ACCEL_SCALE;
                     SDL.SDL_SendJoystickVirtualSensorData(j, SDL_SENSOR_ACCEL, ts, _accelData, 3);
 
-                    // Center on what the sensor actually rests at, not on the
-                    // nominal 512. Measured 727 on a genuine pad (and ~724 during
-                    // the #194 work, so it is systematic rather than per-unit),
-                    // which through the nominal center published -2.8 rad/s while
-                    // the controller sat still.
+                    // Canonical center, deliberately. The DS3's single yaw gyro is
+                    // a poor part, and Linux's hid-sony declines to support it at
+                    // all on the grounds that "the sensor is inaccurate and the
+                    // behavior is very different between hardware revisions."
+                    // Resting values of 727 and ~724 have been measured here, but
+                    // with per-revision behavior there is no correct value to
+                    // learn toward, and a learned center silently bakes in
+                    // whatever a possibly-degraded part happened to read at
+                    // connect. 512 is the documented center. Removing a per-unit
+                    // offset is the user's gyro calibration, which is a deliberate
+                    // act against a known-still pad rather than a guess.
                     ObserveGyroRest(gz);
                     _gyroData[0] = 0.0f;
-                    _gyroData[1] = -(gz - _gzCenter) * GYRO_SCALE;
+                    _gyroData[1] = -(gz - 512) * GYRO_SCALE;
                     _gyroData[2] = 0.0f;
                     SDL.SDL_SendJoystickVirtualSensorData(j, SDL_SENSOR_GYRO, ts, _gyroData, 3);
 
@@ -963,59 +969,46 @@ namespace PadForge.Common.Input
         // Quiet by construction: it reports only while the pad is actually moving,
         // at most every 2 s, plus one line naming the resting baseline when a
         // session's first sample arrives.
-        // The yaw word's true resting center, learned per session. The DS3's gyro
-        // does NOT rest at the nominal 512: a genuine pad measured 727, and the
-        // #194 hardware notes recorded ~724 on a different unit, so the offset is
-        // systematic. Publishing (gz - 512) therefore reported a constant ~-2.8
-        // rad/s at rest, which is roughly 157 deg/s of rotation that is not
-        // happening, and it drifted anything reading the sensor directly.
+        // Measures where the yaw word actually rests and REPORTS it. It does
+        // not correct it, on purpose.
         //
-        // Learned rather than hardcoded, because 727 is one sample of one part.
-        // Seeded from the first genuinely still window: GzRestWindowSamples
-        // consecutive readings spanning no more than GzRestSpanMax counts. Any
-        // wider span restarts the window, so a pad that is moving when it
-        // connects simply keeps the nominal center until it is next set down.
+        // An earlier revision learned this value and published against it. That
+        // was wrong for this part. Linux's hid-sony refuses to expose the DS3
+        // gyro at all because "the sensor is inaccurate and the behavior is very
+        // different between hardware revisions", and with per-revision behavior
+        // there is no correct center to converge on. Worse, a learned center
+        // cannot tell a healthy offset from a failing sensor: it would quietly
+        // adopt whatever a dying part read at connect and call that zero. DS3
+        // gyros do fail, and users report axes stuck or barely moving.
         //
-        // NOTE the physical consequence this does not remove: resting at 727
-        // leaves only 296 counts of headroom to the 1023 rail and 727 to 0, so
-        // the two rotation directions clip at different rates. That asymmetry is
-        // the sensor's, and no centering fixes it.
-        private int _gzCenter = 512;
-        private bool _gzCentered;
-        private int _gzWinCount, _gzWinMin = int.MaxValue, _gzWinMax = int.MinValue;
-        private long _gzWinSum;
-        private const int GzRestWindowSamples = 60;   // ~0.6 s at the DS3's ~100 Hz
-        private const int GzRestSpanMax = 6;          // counts, tighter than GzMoveThreshold
+        // So the published value stays anchored to the documented 512 and the
+        // per-unit offset is the user's gyro calibration to remove, deliberately,
+        // against a pad they know is still. This line exists to tell them that
+        // is needed, and to leave evidence when the part is simply gone.
+        private const int GzOffsetAdviseCalibration = 40;   // counts, ~29 deg/s
+        private const int GzRailMargin = 24;                // counts from 0 or 1023
 
         private void ObserveGyroRest(int gz)
         {
-            if (_gzCentered) return;
-            if (gz < _gzWinMin) _gzWinMin = gz;
-            if (gz > _gzWinMax) _gzWinMax = gz;
-            _gzWinSum += gz;
-            _gzWinCount++;
-
-            if (_gzWinMax - _gzWinMin > GzRestSpanMax)
-            {
-                _gzWinCount = 0; _gzWinSum = 0;
-                _gzWinMin = int.MaxValue; _gzWinMax = int.MinValue;
-                return;
-            }
-            if (_gzWinCount < GzRestWindowSamples) return;
-
-            _gzCenter = (int)(_gzWinSum / _gzWinCount);
-            _gzCentered = true;
-            _log($"DS3MOTION gyro center learned={_gzCenter} (nominal 512, delta={_gzCenter - 512}); "
-                 + $"headroom up={1023 - _gzCenter} down={_gzCenter}");
+            if (_gzRest >= 0) return;   // baseline is captured once per session
+            int delta = gz - 512;
+            string note;
+            if (gz <= GzRailMargin || gz >= 1023 - GzRailMargin)
+                note = " AT-RAIL: resting against the end of its range, so one "
+                     + "direction cannot register. Calibration will not recover this.";
+            else if (delta > GzOffsetAdviseCalibration || delta < -GzOffsetAdviseCalibration)
+                note = $" OFFSET: reads ~{-delta * GYRO_SCALE:F2} rad/s while still. "
+                     + $"Gyro calibration removes it. Headroom is uneven: "
+                     + $"up={1023 - gz} down={gz}.";
+            else
+                note = " within normal range of the documented center.";
+            _log($"DS3MOTION gyro resting baseline={gz} (documented center 512, delta={delta}).{note}");
         }
 
-        /// <summary>Re-learn the center on every new session: a different pad, or
-        /// the same pad after a warm-up, does not have to inherit the old one.</summary>
+        /// <summary>Fresh measurement per session, since a different pad or the
+        /// same pad after warm-up should not inherit the previous reading.</summary>
         private void ResetGyroTracking()
         {
-            _gzCenter = 512; _gzCentered = false;
-            _gzWinCount = 0; _gzWinSum = 0;
-            _gzWinMin = int.MaxValue; _gzWinMax = int.MinValue;
             _gzMin = int.MaxValue; _gzMax = int.MinValue; _gzRest = -1;
         }
 
@@ -1028,8 +1021,9 @@ namespace PadForge.Common.Input
         {
             if (_gzRest < 0)
             {
+                // ObserveGyroRest already reported this sample. Just keep it as
+                // the reference the excursions below are measured against.
                 _gzRest = gz;
-                _log($"DS3MOTION gyro raw resting baseline={gz} (nominal center is 512, delta={gz - 512})");
                 _gzNextLogTicks = Environment.TickCount64 + GzLogIntervalMs;
                 return;
             }

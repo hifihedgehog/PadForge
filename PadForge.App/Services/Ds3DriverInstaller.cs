@@ -768,6 +768,49 @@ namespace PadForge.Services
             catch { return false; }
         }
 
+        /// <summary>Answers the question the install gate cannot: is BthPS3.sys
+        /// actually BOUND to the radio's live local-service PDO? The service key
+        /// existing (IsServiceInstalled) held true for nine days on a machine
+        /// where the present BTHENUM service node had NO driver bound, so the
+        /// L2CAP server never registered, the radio dropped every page, and the
+        /// 90 s watcher blamed the radio (#285). A reinstall that rebound the
+        /// node fixed it within one pairing. Probe the binding, not the key.
+        /// Returns: 1 bound, 0 present-but-unbound, -1 no present node.</summary>
+        internal static int ProbeBthPs3ServiceBinding(out string detail)
+        {
+            detail = "no BTHENUM service node present";
+            try
+            {
+                const string serviceClassId = "1CB831EA-79CD-4508-B0FC-85F7C85AE8E0";
+                Guid none = Guid.Empty;
+                IntPtr set = SetupDiGetClassDevsEnum(ref none, "BTHENUM", IntPtr.Zero,
+                    DIGCF_PRESENT | DIGCF_ALLCLASSES);
+                if (set == IntPtr.Zero || set == new IntPtr(-1)) return -1;
+                try
+                {
+                    int found = -1;
+                    var dev = new SP_DEVINFO_DATA { cbSize = Marshal.SizeOf<SP_DEVINFO_DATA>() };
+                    for (int i = 0; SetupDiEnumDeviceInfo(set, i, ref dev); i++)
+                    {
+                        string hwid = GetDeviceStringProperty(set, ref dev, SPDRP_HARDWAREID);
+                        if (hwid == null
+                            || hwid.IndexOf(serviceClassId, StringComparison.OrdinalIgnoreCase) < 0)
+                            continue;
+                        string svc = GetDeviceStringProperty(set, ref dev, SPDRP_SERVICE);
+                        bool bound = string.Equals(svc, "BthPS3", StringComparison.OrdinalIgnoreCase);
+                        detail = $"service node present, svc={(string.IsNullOrEmpty(svc) ? "<none>" : svc)}";
+                        if (bound) return 1;
+                        found = 0;   // keep scanning: a later instance may be the bound one
+                    }
+                    return found;
+                }
+                finally { SetupDiDestroyDeviceInfoList(set); }
+            }
+            catch (Exception ex) { detail = "probe failed: " + ex.Message; return -1; }
+        }
+
+        private const uint SPDRP_SERVICE = 0x04;
+
         internal static void LogBthPs3ChildState(Action<string> log)
         {
             try

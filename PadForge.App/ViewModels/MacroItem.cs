@@ -5343,6 +5343,7 @@ namespace PadForge.ViewModels
                     MacroActionType.MouseButtonRelease => string.Format(Strings.Instance.MacroAction_MouseRelease_Format, MacroMouseButtonDisplayName(_mouseButton)),
                     MacroActionType.MouseScroll => string.Format(Strings.Instance.MacroAction_Scroll_Format, axisLabel, _mouseSensitivity),
                     MacroActionType.ToggleTouchpadOverlay => Strings.Instance.MacroAction_ToggleTouchpadOverlay,
+                    MacroActionType.VoiceListenWhileHeld => Strings.Instance.MacroAction_Type_VoiceListenWhileHeld,
                     MacroActionType.LightbarColor => FormatLightbarColorSummary(),
                     MacroActionType.LightbarColorClear => Strings.Instance.MacroAction_LightbarColorClear,
                     MacroActionType.LightbarModeSet => string.Format(
@@ -6235,7 +6236,15 @@ namespace PadForge.ViewModels
 
         /// <summary>Lowers the slot's headphone jack hardware volume
         /// by 10%, clamped at 0.</summary>
-        HeadphoneVolumeDown = 53
+        HeadphoneVolumeDown = 53,
+
+        /// <summary>Voice macros (issue #315) push-to-talk: while the macro
+        /// is held, the voice recognizer's listen gate is open. Continuous
+        /// (runs every frame without advancing), parameterless, and safe by
+        /// construction: the gate is a decaying heartbeat, so a macro that
+        /// dies mid-hold closes it ~100 ms later instead of latching
+        /// listening on. At the tail; ordinal pinned.</summary>
+        VoiceListenWhileHeld = 54
     }
 
     /// <summary>One parsed part of a <see cref="MacroActionType.CycleTapList"/>

@@ -3143,4 +3143,26 @@ Du kannst es später in den Einstellungen erneut versuchen.</value></data>
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Benachrichtigen bei höchstens</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Zusätzlich den Controller vibrieren lassen</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Benachrichtigung testen</value></data>
+  <data name="Voice_AnyPhrase" xml:space="preserve"><value>Beliebiger Satz</value></data>
+  <data name="Voice_Title" xml:space="preserve"><value>Sprachmakros</value></data>
+  <data name="Voice_ManageButton" xml:space="preserve"><value>Sprachmakros verwalten</value></data>
+  <data name="Voice_EnableLabel" xml:space="preserve"><value>Sprachmakros aktivieren</value></data>
+  <data name="Voice_EnableTooltip" xml:space="preserve"><value>Schaltet das Zuhören ein. Solange aktiviert, ist jeder registrierte Satz eine Taste, die beim Aussprechen auslöst. Das Erkennergerät selbst erscheint immer, solange Windows eine Spracherkennung installiert hat.</value></data>
+  <data name="Voice_ModeLabel" xml:space="preserve"><value>Zuhören</value></data>
+  <data name="Voice_ModeTooltip" xml:space="preserve"><value>"Immer" hält das Mikrofon offen. "Push-to-Talk" hört nur zu, solange ein zugewiesenes Zuhören-Makro gehalten wird.</value></data>
+  <data name="Voice_ModeAlways" xml:space="preserve"><value>Immer</value></data>
+  <data name="Voice_ModePushToTalk" xml:space="preserve"><value>Push-to-Talk</value></data>
+  <data name="Voice_ConfidenceLabel" xml:space="preserve"><value>Mindestkonfidenz</value></data>
+  <data name="Voice_ConfidenceTooltip" xml:space="preserve"><value>Wie sicher der Erkenner sein muss, bevor ein Satz auslöst. Erhöhen, wenn beiläufige Sprache Makros auslöst, verringern, wenn Ihre Sätze überhört werden.</value></data>
+  <data name="Voice_ListeningIdle" xml:space="preserve"><value>Warten auf Sprache. Erkennungen erscheinen hier mit ihrer Konfidenz.</value></data>
+  <data name="Voice_HeardFired_Format" xml:space="preserve"><value>"{0}" erkannt ({1:F2}). Ausgelöst.</value></data>
+  <data name="Voice_HeardIgnored_Format" xml:space="preserve"><value>"{0}" erkannt ({1:F2}). Unter der Mindestkonfidenz oder die Sprechtaste ist nicht gedrückt.</value></data>
+  <data name="Voice_PhraseLabel" xml:space="preserve"><value>Satz</value></data>
+  <data name="Voice_NameLabel" xml:space="preserve"><value>Name</value></data>
+  <data name="Voice_RegisterButton" xml:space="preserve"><value>Registrieren</value></data>
+  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>Registrierte Sätze</value></data>
+  <data name="Voice_Registered_Format" xml:space="preserve"><value>"{0}" registriert. Aussprechen löst die Taste aus, Makros binden Sie auf der Pad-Seite.</value></data>
+  <data name="MacroAction_Type_VoiceListenWhileHeld" xml:space="preserve"><value>Sprach-Zuhören (gehalten)</value></data>
+  <data name="MacroAction_VoiceListenWhileHeld_Tooltip" xml:space="preserve"><value>Push-to-Talk für Sprachmakros: Solange dieses Makro gehalten wird, hört der Erkenner zu. Stellen Sie das Zuhören unter "Sprachmakros verwalten" auf Push-to-Talk.</value></data>
+  <data name="DeviceType_Microphone" xml:space="preserve"><value>Mikrofon</value></data>
 </root>

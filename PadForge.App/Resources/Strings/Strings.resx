@@ -3192,4 +3192,26 @@ You can retry later from Settings.</value></data>
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Notify at or Below</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Also Vibrate the Controller</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Test Notification</value></data>
+  <data name="Voice_AnyPhrase" xml:space="preserve"><value>Any Phrase</value></data>
+  <data name="Voice_Title" xml:space="preserve"><value>Voice Macros</value></data>
+  <data name="Voice_ManageButton" xml:space="preserve"><value>Manage Voice Macros</value></data>
+  <data name="Voice_EnableLabel" xml:space="preserve"><value>Enable Voice Macros</value></data>
+  <data name="Voice_EnableTooltip" xml:space="preserve"><value>Turns listening on. While enabled, each registered phrase is a button that fires when you say it. The recognizer device itself always appears while Windows has a speech recognizer installed.</value></data>
+  <data name="Voice_ModeLabel" xml:space="preserve"><value>Listening</value></data>
+  <data name="Voice_ModeTooltip" xml:space="preserve"><value>Always keeps the microphone open. Push to Talk listens only while a bound Voice Listen macro is held.</value></data>
+  <data name="Voice_ModeAlways" xml:space="preserve"><value>Always</value></data>
+  <data name="Voice_ModePushToTalk" xml:space="preserve"><value>Push to Talk</value></data>
+  <data name="Voice_ConfidenceLabel" xml:space="preserve"><value>Minimum Confidence</value></data>
+  <data name="Voice_ConfidenceTooltip" xml:space="preserve"><value>How sure the recognizer must be before a phrase fires. Raise it if random speech triggers macros, lower it if your phrases are missed.</value></data>
+  <data name="Voice_ListeningIdle" xml:space="preserve"><value>Waiting for speech. Recognitions appear here with their confidence.</value></data>
+  <data name="Voice_HeardFired_Format" xml:space="preserve"><value>Heard "{0}" ({1:F2}). Fired.</value></data>
+  <data name="Voice_HeardIgnored_Format" xml:space="preserve"><value>Heard "{0}" ({1:F2}). Below the confidence floor or the talk key is up.</value></data>
+  <data name="Voice_PhraseLabel" xml:space="preserve"><value>Phrase</value></data>
+  <data name="Voice_NameLabel" xml:space="preserve"><value>Name</value></data>
+  <data name="Voice_RegisterButton" xml:space="preserve"><value>Register</value></data>
+  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>Registered Phrases</value></data>
+  <data name="Voice_Registered_Format" xml:space="preserve"><value>Registered "{0}". Say it to fire its button, and bind macros to it on the Pad page.</value></data>
+  <data name="MacroAction_Type_VoiceListenWhileHeld" xml:space="preserve"><value>Voice Listen (While Held)</value></data>
+  <data name="MacroAction_VoiceListenWhileHeld_Tooltip" xml:space="preserve"><value>Push to talk for Voice Macros: while this macro is held, the recognizer listens. Set Listening to Push to Talk in Manage Voice Macros.</value></data>
+  <data name="DeviceType_Microphone" xml:space="preserve"><value>Microphone</value></data>
 </root>

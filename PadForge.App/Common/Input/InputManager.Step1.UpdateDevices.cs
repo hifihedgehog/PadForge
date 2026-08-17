@@ -411,6 +411,9 @@ namespace PadForge.Common.Input
             // --- Phase 1f: NFC PC/SC readers (issue #150) ---
             changed |= UpdateNfcReaderDevices();
 
+            // --- Phase 1f2: standalone microphones as input devices (issue #317) ---
+            changed |= UpdateMicrophoneDevices();
+
             // --- Phase 1g: Sony headset head trackers (issue #188) ---
             changed |= UpdateHeadsetMotionDevices();
 
@@ -1545,6 +1548,129 @@ namespace PadForge.Common.Input
         /// Tears down every open NFC reader device and the shared monitor
         /// service. Called on app shutdown alongside ShutdownMidiInputs.
         /// </summary>
+        // ── Standalone microphones (issue #317) ──
+        private readonly object _micDevicesLock = new object();
+        private readonly Dictionary<string, MicrophoneInputDevice> _openedMicDevices =
+            new Dictionary<string, MicrophoneInputDevice>(StringComparer.Ordinal);
+        private long _micNextSweepTicks;
+        private volatile bool _micInputsSuppressed;
+        private const int _micSweepIntervalMs = 4000;
+
+        /// <summary>
+        /// Phase 1f2: every active Windows capture endpoint is an input
+        /// device (issue #317). A microphone is real hardware, so it earns a
+        /// device row the way MIDI ports and PC/SC readers do, and its
+        /// buttons are the registered voice phrases. This includes a WIRED
+        /// DualSense's endpoint: phrases live wherever the microphone
+        /// surfaces, and wired, it surfaces here. The recognition service is
+        /// started lazily alongside, since Bluetooth pads need it even when
+        /// no endpoint rows exist.
+        /// </summary>
+        private bool UpdateMicrophoneDevices()
+        {
+            if (_micInputsSuppressed)
+                return false;
+
+            long now = Environment.TickCount64;
+            if (now < _micNextSweepTicks)
+                return false;
+            _micNextSweepTicks = now + _micSweepIntervalMs;
+
+            // The recognizer service rides this sweep's cadence: absent when
+            // no speech recognizer is installed, harmless to re-call.
+            PadForge.Services.VoiceMacroService.Start();
+
+            var current = new Dictionary<string, string>(StringComparer.Ordinal);
+            try
+            {
+                using var en = new NAudio.CoreAudioApi.MMDeviceEnumerator();
+                foreach (var dev in en.EnumerateAudioEndPoints(
+                    NAudio.CoreAudioApi.DataFlow.Capture, NAudio.CoreAudioApi.DeviceState.Active))
+                {
+                    try { current[dev.ID] = dev.FriendlyName; } catch { }
+                }
+            }
+            catch
+            {
+                return false; // audio stack unavailable this instant; next sweep retries
+            }
+
+            bool changed = false;
+            lock (_micDevicesLock)
+            {
+                foreach (var kv in current)
+                {
+                    if (_openedMicDevices.TryGetValue(kv.Key, out var existing))
+                    {
+                        if (FindOnlineDeviceByInstanceGuid(existing.InstanceGuid) != null)
+                            continue;
+                        // Recreate if the user removed it from the Devices page.
+                        existing.Dispose();
+                        _openedMicDevices.Remove(kv.Key);
+                    }
+                    try
+                    {
+                        var dev = new MicrophoneInputDevice(kv.Key, kv.Value);
+                        if (!dev.Open()) { dev.Dispose(); continue; }
+                        UserDevice ud = FindOrCreateUserDevice(dev.InstanceGuid, dev.ProductGuid);
+                        ud.LoadFromExternalDevice(dev);
+                        ud.IsOnline = true;
+                        _openedMicDevices[kv.Key] = dev;
+                        changed = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        RaiseError($"Error opening microphone '{kv.Value}'", ex);
+                    }
+                }
+
+                List<string> gone = null;
+                foreach (var kv in _openedMicDevices)
+                    if (!current.ContainsKey(kv.Key))
+                        (gone ??= new List<string>()).Add(kv.Key);
+                if (gone != null)
+                {
+                    foreach (var id in gone)
+                    {
+                        var dev = _openedMicDevices[id];
+                        var ud = FindOnlineDeviceByInstanceGuid(dev.InstanceGuid);
+                        if (ud != null)
+                        {
+                            ud.IsOnline = false;
+                            ud.Device = null;
+                            NeutralizeMappedOutputsFor(ud);
+                        }
+                        dev.Dispose();
+                        _openedMicDevices.Remove(id);
+                        changed = true;
+                    }
+                }
+            }
+            return changed;
+        }
+
+        /// <summary>Called on app shutdown alongside ShutdownNfcReaders.</summary>
+        public void ShutdownMicrophoneDevices()
+        {
+            _micInputsSuppressed = true;
+            lock (_micDevicesLock)
+            {
+                foreach (var kv in _openedMicDevices)
+                {
+                    var ud = FindOnlineDeviceByInstanceGuid(kv.Value.InstanceGuid);
+                    if (ud != null)
+                    {
+                        ud.IsOnline = false;
+                        ud.Device = null;
+                        NeutralizeMappedOutputsFor(ud);
+                    }
+                    kv.Value.Dispose();
+                }
+                _openedMicDevices.Clear();
+            }
+            try { PadForge.Services.VoiceMacroService.Shutdown(); } catch { }
+        }
+
         public void ShutdownNfcReaders()
         {
             _nfcInputsSuppressed = true;

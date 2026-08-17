@@ -1822,7 +1822,8 @@ namespace PadForge.Common.Input
                 int outCh = Math.Max(1, mic.Channels);
                 if (!mic.IsStreaming
                     && !_micGuardDisabled
-                    && !MicSubmitFits(mic.BufferedBytes, BtMicFrameSamples * outCh * 2))
+                    && !MicSubmitFits(mic.BufferedBytes, BtMicFrameSamples * outCh * 2)
+                    && !PadForge.Services.VoiceMacroService.PadMicWanted(feed.BtMicPadGuid))
                 {
                     // Count the frame anyway. It arrived, we simply chose
                     // not to decode it, and rxFrames is how a reader tells
@@ -1857,6 +1858,12 @@ namespace PadForge.Common.Input
                 catch { continue; }
                 if (n <= 0) continue;
                 feed.BtMicRxFrames++;
+                // Voice macros (issue #317): the pad's phrases ride the pad,
+                // and this tee is how its Bluetooth microphone reaches that
+                // pad's own recognition session. Pre-gain, because MicGain
+                // shapes what Windows hears, not what recognition should.
+                if (PadForge.Services.VoiceMacroService.PadMicWanted(feed.BtMicPadGuid))
+                    PadForge.Services.VoiceMacroService.SubmitPadMic48k(feed.BtMicPadGuid, pcm.AsSpan(0, n * BtMicChannels), BtMicChannels);
                 int samples = n * BtMicChannels;
                 int peak = 0; long sumSq = 0;
                 for (int i = 0; i < samples; i++) { int a = pcm[i]; if (a < 0) a = -a; if (a > peak) peak = a; sumSq += (long)pcm[i] * pcm[i]; }
@@ -2096,6 +2103,17 @@ namespace PadForge.Common.Input
             foreach (var kv in _personaFeeds)
                 if (kv.Value.BtMicPadGuid == padGuid) return kv.Value;
             return null;
+        }
+
+        /// <summary>True while a pad's Bluetooth mic decode lane is up
+        /// (issue #317). A pad recognition session exists only while its
+        /// embedded microphone is actually reachable through this lane.</summary>
+        internal static bool IsBtMicLaneActive(Guid padGuid)
+        {
+            if (padGuid == Guid.Empty) return false;
+            foreach (var kv in _personaFeeds)
+                if (kv.Value.BtMicPadGuid == padGuid) return true;
+            return false;
         }
 
         private static void StartPersonaMic(PersonaFeed feed, Guid padGuid, string hidPath)

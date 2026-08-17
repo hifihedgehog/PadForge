@@ -3143,4 +3143,26 @@
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>알림 기준</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>컨트롤러 진동도 울리기</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>알림 테스트</value></data>
+  <data name="Voice_AnyPhrase" xml:space="preserve"><value>모든 문구</value></data>
+  <data name="Voice_Title" xml:space="preserve"><value>음성 매크로</value></data>
+  <data name="Voice_ManageButton" xml:space="preserve"><value>음성 매크로 관리</value></data>
+  <data name="Voice_EnableLabel" xml:space="preserve"><value>음성 매크로 사용</value></data>
+  <data name="Voice_EnableTooltip" xml:space="preserve"><value>듣기를 켭니다. 켜져 있는 동안 등록된 각 문구는 말하면 작동하는 버튼입니다. Windows에 음성 인식기가 설치되어 있는 한 인식기 장치 자체는 항상 표시됩니다.</value></data>
+  <data name="Voice_ModeLabel" xml:space="preserve"><value>듣기</value></data>
+  <data name="Voice_ModeTooltip" xml:space="preserve"><value>"항상"은 마이크를 계속 엽니다. "눌러서 말하기"는 지정된 듣기 매크로를 누르는 동안에만 듣습니다.</value></data>
+  <data name="Voice_ModeAlways" xml:space="preserve"><value>항상</value></data>
+  <data name="Voice_ModePushToTalk" xml:space="preserve"><value>눌러서 말하기</value></data>
+  <data name="Voice_ConfidenceLabel" xml:space="preserve"><value>최소 신뢰도</value></data>
+  <data name="Voice_ConfidenceTooltip" xml:space="preserve"><value>문구가 작동하기 전에 인식기가 얼마나 확신해야 하는지입니다. 일상 대화가 매크로를 작동시키면 높이고, 문구를 놓치면 낮추세요.</value></data>
+  <data name="Voice_ListeningIdle" xml:space="preserve"><value>음성을 기다리는 중입니다. 인식 결과가 신뢰도와 함께 여기에 표시됩니다.</value></data>
+  <data name="Voice_HeardFired_Format" xml:space="preserve"><value>"{0}" 인식({1:F2}). 작동했습니다.</value></data>
+  <data name="Voice_HeardIgnored_Format" xml:space="preserve"><value>"{0}" 인식({1:F2}). 최소 신뢰도 미만이거나 말하기 키가 눌려 있지 않습니다.</value></data>
+  <data name="Voice_PhraseLabel" xml:space="preserve"><value>문구</value></data>
+  <data name="Voice_NameLabel" xml:space="preserve"><value>이름</value></data>
+  <data name="Voice_RegisterButton" xml:space="preserve"><value>등록</value></data>
+  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>등록된 문구</value></data>
+  <data name="Voice_Registered_Format" xml:space="preserve"><value>"{0}"을(를) 등록했습니다. 말하면 버튼이 작동하며, 패드 페이지에서 매크로를 연결하세요.</value></data>
+  <data name="MacroAction_Type_VoiceListenWhileHeld" xml:space="preserve"><value>음성 듣기(누르는 동안)</value></data>
+  <data name="MacroAction_VoiceListenWhileHeld_Tooltip" xml:space="preserve"><value>음성 매크로의 눌러서 말하기: 이 매크로를 누르는 동안 인식기가 듣습니다. 음성 매크로 관리에서 듣기를 "눌러서 말하기"로 설정하세요.</value></data>
+  <data name="DeviceType_Microphone" xml:space="preserve"><value>마이크</value></data>
 </root>

@@ -784,8 +784,21 @@ namespace PadForge.Engine
             if (HasNfcReader && state != null)
                 ReadNfcTag(state);
 
+            // Voice phrases (issue #317): a microphone-bearing pad carries its
+            // registered phrases as extra named buttons on ITSELF, the same way
+            // the NFC read above rides the real device. The app layer wires the
+            // augment when voice macros exist; until then a read pays one null
+            // check.
+            if (state != null)
+                ExternalVoiceAugment?.Invoke(InstanceGuid, state);
+
             return state;
         }
+
+        /// <summary>App-layer hook that stamps pulsing voice-phrase buttons
+        /// into a mic-bearing pad's state (issue #317). Static so the engine
+        /// carries no reference to the app's recognition service.</summary>
+        public static Action<Guid, CustomInputState> ExternalVoiceAugment;
 
         // ─── NFC tag reader (issue #241, SDL#15) ───
         // The Engine wrapper cannot see the App-side NfcTagRegistry, so the

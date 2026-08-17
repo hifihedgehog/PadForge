@@ -3143,4 +3143,26 @@ Vous pouvez réessayer plus tard depuis les Paramètres.</value></data>
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Avertir à partir de</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Faire aussi vibrer la manette</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Tester la notification</value></data>
+  <data name="Voice_AnyPhrase" xml:space="preserve"><value>Toute phrase</value></data>
+  <data name="Voice_Title" xml:space="preserve"><value>Macros vocales</value></data>
+  <data name="Voice_ManageButton" xml:space="preserve"><value>Gérer les macros vocales</value></data>
+  <data name="Voice_EnableLabel" xml:space="preserve"><value>Activer les macros vocales</value></data>
+  <data name="Voice_EnableTooltip" xml:space="preserve"><value>Active l'écoute. Tant que c'est activé, chaque phrase enregistrée est un bouton qui se déclenche quand vous la prononcez. Le périphérique de reconnaissance apparaît toujours tant que Windows dispose d'une reconnaissance vocale installée.</value></data>
+  <data name="Voice_ModeLabel" xml:space="preserve"><value>Écoute</value></data>
+  <data name="Voice_ModeTooltip" xml:space="preserve"><value>« Toujours » garde le micro ouvert. « Appuyer pour parler » n'écoute que pendant qu'une macro d'écoute assignée est maintenue.</value></data>
+  <data name="Voice_ModeAlways" xml:space="preserve"><value>Toujours</value></data>
+  <data name="Voice_ModePushToTalk" xml:space="preserve"><value>Appuyer pour parler</value></data>
+  <data name="Voice_ConfidenceLabel" xml:space="preserve"><value>Confiance minimale</value></data>
+  <data name="Voice_ConfidenceTooltip" xml:space="preserve"><value>Le degré de certitude requis avant qu'une phrase se déclenche. Augmentez-le si des paroles anodines déclenchent des macros, baissez-le si vos phrases sont manquées.</value></data>
+  <data name="Voice_ListeningIdle" xml:space="preserve"><value>En attente de parole. Les reconnaissances s'affichent ici avec leur confiance.</value></data>
+  <data name="Voice_HeardFired_Format" xml:space="preserve"><value>« {0} » entendu ({1:F2}). Déclenché.</value></data>
+  <data name="Voice_HeardIgnored_Format" xml:space="preserve"><value>« {0} » entendu ({1:F2}). Sous la confiance minimale ou la touche parler est relâchée.</value></data>
+  <data name="Voice_PhraseLabel" xml:space="preserve"><value>Phrase</value></data>
+  <data name="Voice_NameLabel" xml:space="preserve"><value>Nom</value></data>
+  <data name="Voice_RegisterButton" xml:space="preserve"><value>Enregistrer</value></data>
+  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>Phrases enregistrées</value></data>
+  <data name="Voice_Registered_Format" xml:space="preserve"><value>« {0} » enregistré. Prononcez-la pour déclencher son bouton et liez des macros sur la page manette.</value></data>
+  <data name="MacroAction_Type_VoiceListenWhileHeld" xml:space="preserve"><value>Écoute vocale (maintenu)</value></data>
+  <data name="MacroAction_VoiceListenWhileHeld_Tooltip" xml:space="preserve"><value>Appuyer pour parler des macros vocales : tant que cette macro est maintenue, la reconnaissance écoute. Réglez l'écoute sur « Appuyer pour parler » dans Gérer les macros vocales.</value></data>
+  <data name="DeviceType_Microphone" xml:space="preserve"><value>Micro</value></data>
 </root>

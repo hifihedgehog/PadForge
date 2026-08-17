@@ -27,6 +27,7 @@ namespace PadForge.Common
             InputDeviceType.Nfc => "\uE9A1",             // TapAndSend
             InputDeviceType.ConsumerControl => "\uEA69", // Media (media-key strips)
             InputDeviceType.HeadsetMotion => "\uE7F6",   // Headphone (verified in live segmdl2.ttf)
+            InputDeviceType.Microphone => "",     // Microphone
             _ => "\uE7FC"                                // Game
         };
     }

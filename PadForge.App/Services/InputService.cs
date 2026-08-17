@@ -729,6 +729,10 @@ namespace PadForge.Services
             // as a bindable row, and persist the registry. Subscribed here (after
             // settings load), so the load-time LoadRegistry fan-out is not handled.
             PadForge.Common.Input.NfcTagRegistry.RegistryChanged += OnNfcTagRegistryChanged;
+            PadForge.Common.Input.VoicePhraseRegistry.RegistryChanged += OnVoicePhraseRegistryChanged;
+            // Voice phrases on mic-bearing pads (issue #317): the engine
+            // stamps pulses into the pad's state through this hook.
+            PadForge.Engine.SdlDeviceWrapper.ExternalVoiceAugment = PadForge.Common.Input.VoicePulse.Apply;
 
             // Subscribe to engine events (raised on background thread).
             _inputManager.DevicesUpdated += OnDevicesUpdated;
@@ -2278,6 +2282,7 @@ namespace PadForge.Services
             // engine-toggle button wraps this whole method in Task.Run
             // for that reason.
             try { PadForge.Common.Input.NfcTagRegistry.RegistryChanged -= OnNfcTagRegistryChanged; } catch { }
+            try { PadForge.Common.Input.VoicePhraseRegistry.RegistryChanged -= OnVoicePhraseRegistryChanged; } catch { }
             if (_inputManager != null)
             {
                 _inputManager.DevicesUpdated -= OnDevicesUpdated;
@@ -7894,6 +7899,78 @@ namespace PadForge.Services
             }));
         }
 
+        /// <summary>Named phrase entries for a device that carries voice
+        /// phrases (issue #317). For a standalone microphone the entries ARE
+        /// its objects (the device builds them itself); for a Bluetooth
+        /// DualSense they are appended to the pad's own inputs at the
+        /// reserved voice range, so the picker lists "Any Phrase" and each
+        /// phrase by name beside the pad's real controls.</summary>
+        private static void AppendVoiceObjectsToPad(PadForge.Engine.Data.UserDevice ud)
+        {
+            var wrapper = ud.Device as PadForge.Engine.SdlDeviceWrapper;
+            if (wrapper == null) return;
+            var baseObjects = wrapper.GetDeviceObjects();
+            var phrases = PadForge.Common.Input.VoicePhraseRegistry.Phrases;
+            var items = new PadForge.Engine.DeviceObjectItem[baseObjects.Length + 1 + phrases.Count];
+            Array.Copy(baseObjects, items, baseObjects.Length);
+            items[baseObjects.Length] = new PadForge.Engine.DeviceObjectItem
+            {
+                Name = Strings.Instance.Voice_AnyPhrase,
+                ObjectType = PadForge.Engine.DeviceObjectTypeFlags.PushButton,
+                ObjectTypeGuid = PadForge.Engine.ObjectGuid.Button,
+                InputIndex = PadForge.Common.Input.VoicePulse.ButtonBase,
+            };
+            for (int i = 0; i < phrases.Count; i++)
+                items[baseObjects.Length + 1 + i] = new PadForge.Engine.DeviceObjectItem
+                {
+                    Name = phrases[i].Name,
+                    ObjectType = PadForge.Engine.DeviceObjectTypeFlags.PushButton,
+                    ObjectTypeGuid = PadForge.Engine.ObjectGuid.Button,
+                    InputIndex = PadForge.Common.Input.VoicePulse.ButtonBase + phrases[i].Button,
+                };
+            ud.DeviceObjects = items;
+        }
+
+        /// <summary>Re-derives the phrase entries on every device that
+        /// carries them: standalone microphone rows and Bluetooth DualSense
+        /// pads. Called on device arrival and registry change.</summary>
+        private void RefreshVoiceObjects()
+        {
+            try
+            {
+                lock (SettingsManager.UserDevices.SyncRoot)
+                {
+                    foreach (var ud in SettingsManager.UserDevices.Items)
+                    {
+                        if (ud == null || ud.Device == null) continue;
+                        if (ud.CapType == PadForge.Engine.InputDeviceType.Microphone)
+                            ud.DeviceObjects = ud.Device.GetDeviceObjects();
+                        else if (PadForge.Services.VoiceMacroService.IsPadWithEmbeddedMic(ud))
+                            AppendVoiceObjectsToPad(ud);
+                    }
+                }
+            }
+            catch { /* refresh is best-effort */ }
+        }
+
+        /// <summary>Voice-phrase registry counterpart of the NFC handler
+        /// above, same rules: re-derive objects under the UserDevices lock,
+        /// refresh pickers outside it, persist.</summary>
+        private void OnVoicePhraseRegistryChanged(object sender, EventArgs e)
+        {
+            _dispatcher.BeginInvoke(new Action(() =>
+            {
+                RefreshVoiceObjects();
+                try
+                {
+                    foreach (var padVm in _mainVm.Pads)
+                        if (padVm != null) RefreshAvailableInputsForSlot(padVm);
+                }
+                catch { /* picker refresh is cosmetic */ }
+                try { _settingsService?.Save(); } catch { /* persisted on next save regardless */ }
+            }));
+        }
+
         /// <summary>
         /// Called on the background thread when the device list changes.
         /// Marshals to the UI thread to sync DevicesViewModel.
@@ -7903,6 +7980,7 @@ namespace PadForge.Services
             _dispatcher.BeginInvoke(new Action(() =>
             {
                 SyncDevicesList();
+                RefreshVoiceObjects();
                 UpdatePadDeviceInfo();
 
                 // Re-apply device hiding so newly-connected devices get blacklisted
@@ -11120,6 +11198,7 @@ namespace PadForge.Services
                 InputDeviceType.Touchpad => "Touchpad",
                 InputDeviceType.Midi => "Midi",
                 InputDeviceType.Nfc => "Nfc",
+                InputDeviceType.Microphone => "Microphone",
                 InputDeviceType.ConsumerControl => "ConsumerControl",
                 InputDeviceType.HeadsetMotion => "HeadsetMotion",
                 _ => "Device"

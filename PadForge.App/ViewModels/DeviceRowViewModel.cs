@@ -103,6 +103,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(HasVidPid));
                     OnPropertyChanged(nameof(ShowRegisterNfcTag));
                     OnPropertyChanged(nameof(HasNfcCapabilityChip));
+                    OnPropertyChanged(nameof(ShowManageVoicePhrases));
                     OnPropertyChanged(nameof(CapabilitiesSummary));
                     // Transport depends on VID/PID for the fork BLE Switch 2
                     // case (empty DevicePath never fires its own notify).
@@ -125,6 +126,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(HasVidPid));
                     OnPropertyChanged(nameof(ShowRegisterNfcTag));
                     OnPropertyChanged(nameof(HasNfcCapabilityChip));
+                    OnPropertyChanged(nameof(ShowManageVoicePhrases));
                     OnPropertyChanged(nameof(CapabilitiesSummary));
                     OnPropertyChanged(nameof(IsBluetoothLink));
                 }
@@ -233,6 +235,13 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(ShowTouchpadCapability));
                     OnPropertyChanged(nameof(HasCapabilityIcons));
                     OnPropertyChanged(nameof(ShowSubmitMapping));
+                    // Rows are constructed before the key is known, so a
+                    // derived property missing from this list evaluates once
+                    // against the empty key and its binding never updates.
+                    // The voice manage button shipped invisible exactly that
+                    // way (#315).
+                    OnPropertyChanged(nameof(ShowManageVoicePhrases));
+                    OnPropertyChanged(nameof(ShowRegisterNfcTag));
                 }
             }
         }
@@ -251,6 +260,7 @@ namespace PadForge.ViewModels
             "Touchpad" => Strings.Instance.DeviceType_Touchpad,
             "Midi" => Strings.Instance.DeviceType_Midi,
             "Nfc" => Strings.Instance.DeviceType_Nfc,
+            "Microphone" => Strings.Instance.DeviceType_Microphone,
             "ConsumerControl" => Strings.Instance.DeviceType_ConsumerControl,
             "HeadsetMotion" => Strings.Instance.DeviceType_HeadsetMotion,
             _ => Strings.Instance.DeviceType_Device
@@ -657,6 +667,16 @@ namespace PadForge.ViewModels
             // offering the dialog there was a dead button (#248 audit).
             // Register on the owner.
             && !(DevicePath != null && DevicePath.StartsWith("peer://", System.StringComparison.Ordinal));
+
+        /// <summary>Whether to show the "Manage Voice Macros" button
+        /// (issue #317): devices that carry voice phrases. Standalone
+        /// microphone rows always; a DualSense only over Bluetooth, where
+        /// its embedded mic is not a system device and the pad itself
+        /// carries the phrases (wired, its endpoint row does).</summary>
+        public bool ShowManageVoicePhrases
+            => DeviceTypeKey == "Microphone"
+               || (VendorId == 0x054C && (ProductId == 0x0CE6 || ProductId == 0x0DF2)
+                   && IsBluetoothLink);
 
         /// <summary>Whether to show the "NFC" capability chip in the summary:
         /// a controller that carries an NFC reader (Switch right Joy-Con

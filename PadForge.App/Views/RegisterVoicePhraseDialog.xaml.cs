@@ -91,16 +91,22 @@ namespace PadForge.Views
                 // recognition qualifies; the readout line above carries the
                 // confidence and whether it fired.
                 string norm = VoicePhraseRegistry.NormalizePhrase(text);
+                bool lit = false;
                 foreach (var row in _rows)
                 {
                     if (!string.Equals(row.Phrase, norm, StringComparison.Ordinal)) continue;
+                    lit = true;
                     var target = row;
                     target.IsActive = true;
                     var t = new System.Windows.Threading.DispatcherTimer
-                    { Interval = TimeSpan.FromMilliseconds(900) };
+                    { Interval = TimeSpan.FromMilliseconds(1400) };
                     t.Tick += (_, __) => { target.IsActive = false; t.Stop(); };
                     t.Start();
                 }
+                // The row-light path testifies: a heard phrase that lights no
+                // row names the mismatch instead of leaving it to argument.
+                PadForge.Engine.SdlDiagLog.WriteLine("VOICE dialog row "
+                    + (lit ? "LIT" : "NO MATCH") + " for \"" + norm + "\" (rows=" + _rows.Count + ")");
             }));
         }
 

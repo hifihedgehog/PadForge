@@ -1074,6 +1074,9 @@
                                         <DataTrigger Binding="{Binding IsNfcDevice}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsMicrophoneDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
                                         <DataTrigger Binding="{Binding IsConsumerDevice}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
@@ -1102,6 +1105,9 @@
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding IsNfcDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsMicrophoneDevice}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding IsConsumerDevice}" Value="True">
@@ -1161,6 +1167,9 @@
                                         <DataTrigger Binding="{Binding IsNfcDevice}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsMicrophoneDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
                                         <DataTrigger Binding="{Binding IsConsumerDevice}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
@@ -1185,6 +1194,9 @@
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding IsNfcDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsMicrophoneDevice}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding IsConsumerDevice}" Value="True">
@@ -1229,8 +1241,49 @@
                              "Any NFC Tag") lights up when its tag is tapped. -->
                         <StackPanel Visibility="{Binding IsNfcDevice, Converter={StaticResource BoolToVisibilityConverter}}"
                                     Margin="0,0,0,8">
+                            <Separator Margin="0,2,0,6"/>
                             <TextBlock Text="{Binding Nfc_Title, Source={x:Static strings:Strings.Instance}}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,3"/>
                             <ItemsControl ItemsSource="{Binding NfcTags}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border CornerRadius="4" Margin="0,1" Padding="8,5"
+                                                Style="{StaticResource RawCellBorderActive}">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="{Binding Name}" FontSize="12" VerticalAlignment="Center"
+                                                           TextTrimming="CharacterEllipsis">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsActive}" Value="True">
+                                                                    <Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                                <TextBlock Grid.Column="1" Text="{Binding Uid}" FontFamily="{StaticResource TelemetryFontFamily}"
+                                                           FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center"
+                                                           Margin="8,0,0,0"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+
+                        <!-- Voice Macros (issue #317): named phrase rows, the voice twin
+                             of the NFC Tags section. Shown for devices that carry the
+                             phrases: microphone rows and Bluetooth DualSense pads. Each
+                             row lights while its phrase button pulses. -->
+                        <StackPanel Visibility="{Binding ShowVoicePhrases, Converter={StaticResource BoolToVisibilityConverter}}"
+                                    Margin="0,0,0,8">
+                            <Separator Margin="0,2,0,6"/>
+                            <TextBlock Text="{Binding Voice_Title, Source={x:Static strings:Strings.Instance}}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,3"/>
+                            <ItemsControl ItemsSource="{Binding VoicePhrases}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <Border CornerRadius="4" Margin="0,1" Padding="8,5"

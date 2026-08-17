@@ -3949,9 +3949,14 @@ namespace PadForge.Services
                 bool isMidi = ud.CapType == InputDeviceType.Midi;
                 bool isNfc = ud.CapType == InputDeviceType.Nfc;
                 bool isHeadset = ud.CapType == InputDeviceType.HeadsetMotion;
+                bool isMic = ud.CapType == InputDeviceType.Microphone;
+                int voiceBase = isMic ? 0
+                    : PadForge.Services.VoiceMacroService.IsPadWithEmbeddedMic(ud)
+                        ? PadForge.Common.Input.VoicePulse.ButtonBase : -1;
                 int[] btnIndices = ResolveButtonIndices(ud);
                 devVm.RebuildRawStateCollections(axisCount, btnIndices, povCount, isKb, isMouse, isTouchpad, isMidi, isNfc,
-                    consumerButtons: BuildConsumerPreviewItems(ud), isHeadsetMotion: isHeadset);
+                    consumerButtons: BuildConsumerPreviewItems(ud), isHeadsetMotion: isHeadset,
+                    voiceButtonBase: voiceBase, isMicrophone: isMic);
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
                 devVm.HasAccelAuxData = ud.HasAccelAux;
@@ -4396,9 +4401,14 @@ namespace PadForge.Services
                 bool isMidi2 = ud.CapType == InputDeviceType.Midi;
                 bool isNfc2 = ud.CapType == InputDeviceType.Nfc;
                 bool isHeadset2 = ud.CapType == InputDeviceType.HeadsetMotion;
+                bool isMic2 = ud.CapType == InputDeviceType.Microphone;
+                int voiceBase2 = isMic2 ? 0
+                    : PadForge.Services.VoiceMacroService.IsPadWithEmbeddedMic(ud)
+                        ? PadForge.Common.Input.VoicePulse.ButtonBase : -1;
                 int[] btnIndices = ResolveButtonIndices(ud);
                 devVm.RebuildRawStateCollections(axisCount, btnIndices, povCount, isKb, isMouse, isTouchpad2, isMidi2, isNfc2,
-                    consumerButtons: BuildConsumerPreviewItems(ud), isHeadsetMotion: isHeadset2);
+                    consumerButtons: BuildConsumerPreviewItems(ud), isHeadsetMotion: isHeadset2,
+                    voiceButtonBase: voiceBase2, isMicrophone: isMic2);
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
                 devVm.HasAccelAuxData = ud.HasAccelAux;
@@ -4511,6 +4521,21 @@ namespace PadForge.Services
                     if (tag.Button >= 0 && tag.Button < btns.Length && btns[tag.Button])
                         tag.LastActiveTick = now;
                     tag.IsActive = tag.LastActiveTick != 0 && (now - tag.LastActiveTick) < NfcPreviewHoldMs;
+                }
+            }
+
+            // Voice Macros section (issue #317): the same latch-past-the-pulse
+            // treatment the NFC rows get, off the 175 ms phrase-button pulse.
+            if (devVm.ShowVoicePhrases)
+            {
+                long now = Environment.TickCount64;
+                var btns = state.Buttons;
+                for (int i = 0; i < devVm.VoicePhrases.Count; i++)
+                {
+                    var row = devVm.VoicePhrases[i];
+                    if (row.Button >= 0 && row.Button < btns.Length && btns[row.Button])
+                        row.LastActiveTick = now;
+                    row.IsActive = row.LastActiveTick != 0 && (now - row.LastActiveTick) < NfcPreviewHoldMs;
                 }
             }
 
@@ -7961,6 +7986,13 @@ namespace PadForge.Services
             _dispatcher.BeginInvoke(new Action(() =>
             {
                 RefreshVoiceObjects();
+                try
+                {
+                    var devVm = _mainVm.Devices;
+                    if (devVm != null && devVm.ShowVoicePhrases)
+                        devVm.RebuildVoicePhrases(devVm.VoiceButtonBase);
+                }
+                catch { }
                 try
                 {
                     foreach (var padVm in _mainVm.Pads)

@@ -357,13 +357,20 @@ namespace PadForge.Services
 
         private void TearDown(Session ses, string reason)
         {
+            // Order is life or death here, learned live: the engine's audio
+            // thread parks inside the pipe's blocking Read, so disposing the
+            // engine FIRST joins a thread that can never return and the
+            // whole reconciler hangs (seen at 20:06:57: one CLOSE line,
+            // then silence, no session ever built again). Producers stop,
+            // the pipe closes (its reader gets end-of-stream), and only
+            // then does the engine wind down.
             if (ses.OwnsBtMicLane)
                 try { AudioPassthroughService.StopVoiceBtMic(ses.PadGuid); } catch { }
             try { ses.Capture?.StopRecording(); } catch { }
             try { ses.Capture?.Dispose(); } catch { }
+            try { ses.Pcm?.Dispose(); } catch { }
             try { ses.Engine?.RecognizeAsyncCancel(); } catch { }
             try { ses.Engine?.Dispose(); } catch { }
-            try { ses.Pcm?.Dispose(); } catch { }
             Engine.SdlDiagLog.WriteLine($"VOICE [{ses.DisplayName}] session down ({reason})");
         }
 
@@ -396,7 +403,8 @@ namespace PadForge.Services
                     }
                     if (ses == null)
                     {
-                        Engine.SdlDiagLog.WriteLine("VOICE self-test: no live session to inject into");
+                        Engine.SdlDiagLog.WriteLine("VOICE self-test: no live session yet, re-arming");
+                        _selfTestDone = 0;
                         return;
                     }
                     ses.SelfTestUntil = Environment.TickCount64 + 10000;

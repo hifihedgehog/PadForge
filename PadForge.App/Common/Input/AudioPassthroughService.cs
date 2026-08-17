@@ -3606,6 +3606,13 @@ namespace PadForge.Common.Input
             public Guid Pad;
             public string Path;
             public volatile bool Stop;
+            /// <summary>Set when the pad's mic session was HANDED OFF to the
+            /// persona lane rather than ended: the exit path must then leave
+            /// the session open, because one session per pad exists and the
+            /// last command wins. A field capture showed this lane's
+            /// exit-close killing the persona's session 1.4 s after it
+            /// opened, silencing the endpoint for the whole launch.</summary>
+            public volatile bool SkipClose;
             public IntPtr Handle;
             public System.Threading.Thread Thread;
             public byte Counter;
@@ -3637,6 +3644,10 @@ namespace PadForge.Common.Input
         internal static void StopVoiceBtMic(Guid padGuid)
         {
             if (!_voiceMicLanes.TryRemove(padGuid, out var lane)) return;
+            // If the persona's mic lane now owns this pad's session, the
+            // exit must not close it: ownership transferred, the session
+            // lives on under the new owner.
+            lane.SkipClose = IsBtMicLaneActive(padGuid);
             lane.Stop = true;
             var h = lane.Handle;
             if (h != IntPtr.Zero) NativeMethods.CancelIoEx(h, IntPtr.Zero);
@@ -3658,6 +3669,7 @@ namespace PadForge.Common.Input
             var pcm = new short[BtMicFrameSamples * BtMicChannels];
             bool sessionOpen = false;
             long openSentTicks = 0;
+            long lastFrameTicks = 0;
             int openTries = 0;
             bool decoderStale = false;
             try
@@ -3690,6 +3702,19 @@ namespace PadForge.Common.Input
                         openTries++;
                         Engine.SdlDiagLog.WriteLine("VOICE bt-mic OPEN retry " + openTries);
                     }
+                    else if (wantOpen && sessionOpen && lane.RxFrames > 0
+                             && lastFrameTicks != 0 && now - lastFrameTicks > 3000)
+                    {
+                        // Frames flowed and then stopped while we still hold
+                        // the session: another writer closed it underneath
+                        // us (the mirror of the handoff hazard). Take it
+                        // back.
+                        FillDs5MicToggle(toggle, true, lane.Pad, lane.Counter++);
+                        NativeMethods.WriteFileSyncBestEffort(h, toggle, Ds5HapticBtReportSize);
+                        openSentTicks = now;
+                        lastFrameTicks = now;
+                        Engine.SdlDiagLog.WriteLine("VOICE bt-mic re-OPEN (frames stalled)");
+                    }
                     else if (!wantOpen && sessionOpen)
                     {
                         FillDs5MicToggle(toggle, false, lane.Pad, lane.Counter++);
@@ -3708,6 +3733,7 @@ namespace PadForge.Common.Input
                     if (report[0] != 0x31) continue;
                     if ((report[1] & 0x02) == 0) continue; // plain state report
                     lane.RxFrames++;
+                    lastFrameTicks = Environment.TickCount64;
                     if (!sessionOpen) continue; // draining a just-closed session
 
                     // Opus carries state across packets; after a gate-closed
@@ -3723,16 +3749,26 @@ namespace PadForge.Common.Input
             }
             finally
             {
-                // Close the session on the way out: mic-open is LATCHED on
-                // the pad across app restarts, and an orphaned session has
-                // wedged a pad until power-cycle before (2026-07-31).
-                try
+                // Close the session on the way out, UNLESS ownership moved
+                // to the persona lane: one session per pad, last command
+                // wins, and closing a handed-off session silences the new
+                // owner. An orphaned session is still the latch hazard
+                // (2026-07-31: a wedged pad until power-cycle), so the
+                // close stays for every true exit.
+                if (!lane.SkipClose)
                 {
-                    FillDs5MicToggle(toggle, false, lane.Pad, lane.Counter++);
-                    NativeMethods.WriteFileSyncBestEffort(h, toggle, Ds5HapticBtReportSize);
-                    Engine.SdlDiagLog.WriteLine("VOICE bt-mic CLOSE sent (stop)");
+                    try
+                    {
+                        FillDs5MicToggle(toggle, false, lane.Pad, lane.Counter++);
+                        NativeMethods.WriteFileSyncBestEffort(h, toggle, Ds5HapticBtReportSize);
+                        Engine.SdlDiagLog.WriteLine("VOICE bt-mic CLOSE sent (stop)");
+                    }
+                    catch { }
                 }
-                catch { }
+                else
+                {
+                    Engine.SdlDiagLog.WriteLine("VOICE bt-mic handed off to persona (no close)");
+                }
                 NativeMethods.CloseHandle(h);
                 _voiceMicLanes.TryRemove(lane.Pad, out _);
             }

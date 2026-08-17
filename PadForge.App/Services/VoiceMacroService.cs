@@ -307,7 +307,12 @@ namespace PadForge.Services
                 // only wins when it genuinely beats free speech.
                 try
                 {
-                    engine.LoadGrammar(new System.Speech.Recognition.DictationGrammar() { Name = "__sink" });
+                    // Priority above the phrases: a near-tie between "sounds
+                    // like the phrase" and "sounds like speech" resolves to
+                    // garbage, so only a clear phrase match survives. Field
+                    // case: "meow" splitting the difference with "hello".
+                    engine.LoadGrammar(new System.Speech.Recognition.DictationGrammar()
+                    { Name = "__sink", Priority = 127 });
                 }
                 catch { /* a recognizer without dictation keeps the closed grammar alone */ }
 
@@ -329,6 +334,22 @@ namespace PadForge.Services
                         PhraseHeard?.Invoke(ses.DisplayName, e.Result?.Text ?? string.Empty, 0f, false);
                         return;
                     }
+                    // The engine's runner-up hypotheses, logged so a
+                    // misrecognition shows its margins instead of just its
+                    // winner: how far garbage sat behind the phrase is the
+                    // number that places the confidence floor.
+                    try
+                    {
+                        var alts = e.Result?.Alternates;
+                        if (alts != null && alts.Count > 1)
+                        {
+                            var sb = new System.Text.StringBuilder();
+                            for (int i = 1; i < alts.Count && i < 4; i++)
+                                sb.Append(i > 1 ? " | " : "").Append('"').Append(alts[i].Text).Append("\" ").Append(alts[i].Confidence.ToString("F2"));
+                            Engine.SdlDiagLog.WriteLine($"VOICE [{ses.DisplayName}] alternates: {sb}");
+                        }
+                    }
+                    catch { }
                     OnRecognized(ses, e.Result?.Text, e.Result?.Confidence ?? 0f);
                 };
                 engine.RecognizeCompleted += (s, e) =>

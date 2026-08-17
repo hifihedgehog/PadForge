@@ -556,7 +556,7 @@ namespace PadForge.ViewModels
         //
         // 16 is the floor because the reference refuses anything lower
         // (DS5Dongle src/config.cpp:99, which clamps to [16,128]).
-        private int _ds5AudioBufferLength = 48;
+        private int _ds5AudioBufferLength = PadForge.Common.Input.AudioPassthroughService.Ds5AudioBufferLengthDefault;
 
         public int Ds5AudioBufferLength
         {
@@ -1511,7 +1511,7 @@ namespace PadForge.ViewModels
         private RelayCommand _resetHeadphoneVolume;
 
         public RelayCommand ResetDs5AudioBufferLengthCommand =>
-            _resetDs5AudioBufferLength ??= new RelayCommand(() => Ds5AudioBufferLength = 48);
+            _resetDs5AudioBufferLength ??= new RelayCommand(() => Ds5AudioBufferLength = PadForge.Common.Input.AudioPassthroughService.Ds5AudioBufferLengthDefault);
         private RelayCommand _resetDs5AudioBufferLength;
 
         public RelayCommand ResetAudioOutputPathCommand =>
@@ -1923,7 +1923,7 @@ namespace PadForge.ViewModels
         [XmlAttribute] public int HeadphoneVolume { get; set; } = 100;
 
         /// <summary>#314. 48, the reference implementation's own default.</summary>
-        [XmlAttribute] public int Ds5AudioBufferLength { get; set; } = 48;
+        [XmlAttribute] public int Ds5AudioBufferLength { get; set; } = PadForge.Common.Input.AudioPassthroughService.Ds5AudioBufferLengthDefault;
         [XmlAttribute] public AudioOutputPath AudioOutputPath { get; set; } = AudioOutputPath.Automatic;
         [XmlAttribute] public MicLedMode MicLedMode { get; set; } = MicLedMode.Off;
         [XmlAttribute] public string MicLedFollowDeviceId { get; set; } = string.Empty;

@@ -3262,9 +3262,10 @@ namespace PadForge.Common.Input
 
         /// <summary>Ship one tick of authored haptics as its own report
         /// 0x32 carrying packets 0x11 + 0x12, the exact shape SAxense and
-        /// dualsense-bt-haptics proved on hardware. Deliberately NOT
-        /// folded into the 0x35 speaker report: no reference emits 0x12
-        /// and 0x13 together, so that combination stays unused. 48 kHz
+        /// dualsense-bt-haptics proved on hardware. When the game drives
+        /// the speaker at the same time, the combined 0x35 report carries
+        /// both packets instead (#300: one session, one report per tick);
+        /// this shape ships when haptics run alone. 48 kHz
         /// stereo s16 → 3 kHz stereo s8 by 16-sample block mean then high
         /// byte, matching the references' resample-then-high-byte
         /// pipeline (dualsense-bt-haptics Program.cs:208, SAxense's
@@ -3294,7 +3295,9 @@ namespace PadForge.Common.Input
             report[0] = 0x32;
             report[1] = (byte)((seq & 0x0F) << 4);
             // packet 0x11: session header (SAxense default, no handshake).
-            // This stream carries its OWN counter, never the speaker's.
+            // The counter is the SHARED session counter (see Ds5PktCounter's
+            // field comment): the pad tracks one session across 0x32 and
+            // 0x35, and a private counter here was discussion #300's stall.
             report[2] = 0x11 | 0x80;
             report[3] = 7;
             report[4] = Ds5MicSessionByte(micOpen);

@@ -445,7 +445,8 @@ namespace PadForge.Views
         {
             var dlg = new RegisterNfcTagDialog { Owner = Window.GetWindow(this) };
             dlg.ShowDialog();
-        }
+        }
+
 
         // ── Voice macros (issue #315) ──
 

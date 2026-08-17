@@ -11479,8 +11479,8 @@
                                      discussion #311). The packet 0x11 header byte governing
                                      the Bluetooth transport that carries speaker audio,
                                      haptics AND microphone capture, so it is not a speaker
-                                     knob. 255 is the shipped default and leaves behaviour
-                                     unchanged; 16 is the floor the reference enforces
+                                     knob. 48 is the shipped default (c571aae9); 16 is the
+                                     floor the reference enforces
                                      (DS5Dongle src/config.cpp:99). Advanced and optional. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="{Binding Pad_Audio_BufferLength, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"

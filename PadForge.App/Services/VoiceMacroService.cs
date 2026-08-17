@@ -149,27 +149,35 @@ namespace PadForge.Services
                         ? ComputeDesiredSources()
                         : new List<(string Key, string Name, Guid Pad, string Endpoint)>();
 
+                    // Tear down sessions whose source vanished or whose
+                    // grammar is stale. Mutation under the lock, the work
+                    // outside it: Build can take real time (engine creation,
+                    // WASAPI open), and the tee, the listen gate, and
+                    // recognition dispatch all contend this lock.
+                    List<Session> retire = new();
                     lock (_sessionsLock)
                     {
-                        // Tear down sessions whose source vanished or whose
-                        // grammar is stale.
                         foreach (var key in _sessions.Keys.ToList())
                         {
                             var ses = _sessions[key];
                             bool still = desired.Any(d => d.Key == key);
                             if (!still || ses.Gen != gen)
                             {
-                                TearDown(ses, still ? "grammar rebuild" : "source gone");
+                                retire.Add(ses);
                                 _sessions.Remove(key);
                             }
                         }
-                        // Build sessions for new sources.
-                        foreach (var d in desired)
-                        {
-                            if (_sessions.ContainsKey(d.Key)) continue;
-                            var ses = Build(d.Key, d.Name, d.Pad, d.Endpoint, gen);
-                            if (ses != null) _sessions[d.Key] = ses;
-                        }
+                    }
+                    foreach (var ses in retire)
+                        TearDown(ses, "retired");
+                    foreach (var d in desired)
+                    {
+                        bool have;
+                        lock (_sessionsLock) have = _sessions.ContainsKey(d.Key);
+                        if (have) continue;
+                        var ses = Build(d.Key, d.Name, d.Pad, d.Endpoint, gen);
+                        if (ses == null) continue;
+                        lock (_sessionsLock) _sessions[d.Key] = ses;
                     }
                 }
                 catch (Exception ex)
@@ -264,7 +272,9 @@ namespace PadForge.Services
                 var phrases = VoicePhraseRegistry.Phrases;
                 if (phrases.Count == 0) return null;
 
+                Engine.SdlDiagLog.WriteLine($"VOICE [{name}] build: engine");
                 var engine = new System.Speech.Recognition.SpeechRecognitionEngine(info);
+                Engine.SdlDiagLog.WriteLine($"VOICE [{name}] build: grammar");
                 var gb = new System.Speech.Recognition.GrammarBuilder(
                     new System.Speech.Recognition.Choices(phrases.Select(p => p.Phrase).ToArray()))
                 { Culture = info.Culture };
@@ -298,6 +308,7 @@ namespace PadForge.Services
                 var fmt = new System.Speech.AudioFormat.SpeechAudioFormatInfo(
                     16000, System.Speech.AudioFormat.AudioBitsPerSample.Sixteen,
                     System.Speech.AudioFormat.AudioChannel.Mono);
+                Engine.SdlDiagLog.WriteLine($"VOICE [{name}] build: bind stream");
                 engine.SetInputToAudioStream(ses.Pcm, fmt);
 
                 if (isEndpoint)
@@ -330,6 +341,7 @@ namespace PadForge.Services
                     }
                 }
 
+                Engine.SdlDiagLog.WriteLine($"VOICE [{name}] build: start recognize");
                 engine.RecognizeAsync(System.Speech.Recognition.RecognizeMode.Multiple);
                 Engine.SdlDiagLog.WriteLine($"VOICE [{name}] listening ({info.Culture.Name}, {phrases.Count} phrases, "
                     + (isEndpoint ? "endpoint" : ses.OwnsBtMicLane ? "pad BT direct, own session" : "pad BT direct, persona tee") + ")");

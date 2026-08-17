@@ -643,13 +643,62 @@ namespace PadForge.Services
                     return;
                 }
 
+                // ── Voice phrase pulses (#317) ride Buttons[base+] on a
+                //     microphone-bearing pad. Record the canonical "Voice
+                //     Phrase N" descriptor so the picker shows the phrase
+                //     entry instead of raw "Button 200" (which no dropdown
+                //     item matches). A recognition stamps the Any slot AND
+                //     the phrase's own slot in the same tick, and the
+                //     generic sweep below would land on the Any slot first
+                //     (lowest index), so every phrase would record as "any".
+                //     So scan the whole range and keep the most specific
+                //     rising slot: the spoken phrase beats Any Voice Phrase. ──
+                if (ud.HasVoicePhrases)
+                {
+                    int vBase = PadForge.Engine.Common.Mapping.SourceCoercion.VoicePhraseButtonBase;
+                    int bestVoice = -1;
+                    for (int i = vBase; i < CustomInputState.MaxButtons; i++)
+                        if (current.Buttons[i] && !baseline.Buttons[i])
+                            bestVoice = i;
+                    if (bestVoice >= 0)
+                    {
+                        CompleteRecordingWithDescriptor(
+                            PadForge.Engine.Common.Mapping.SourceCoercion
+                                .VoicePhraseDescriptorForButton(bestVoice - vBase), dg);
+                        return;
+                    }
+                }
+
+                // ── Standalone microphone rows (#317): phrases are raw
+                //     named buttons here (0 = Any Phrase, N = the phrase),
+                //     the canonical lane-A form, and a recognition stamps
+                //     Any and the phrase together. The generic sweep would
+                //     record Any (index 0) every time; prefer the specific
+                //     phrase button. ──
+                if (ud.CapType == PadForge.Engine.InputDeviceType.Microphone)
+                {
+                    int bestMic = -1;
+                    for (int i = 0; i < CustomInputState.MaxButtons; i++)
+                        if (current.Buttons[i] && !baseline.Buttons[i])
+                            bestMic = i;
+                    if (bestMic >= 0)
+                    {
+                        CompleteRecording(MapType.Button, bestMic, null, axisPositive: false, winningDevice: dg);
+                        return;
+                    }
+                }
+
                 // ── Check buttons first (instant detection). Skip index 16
                 //     on touchpad devices: handled above as "Touchpad 0
                 //     Click" so the recorder never reports the touchpad as
-                //     raw "Button 16". ──
+                //     raw "Button 16". Skip the voice range on phrase-bearing
+                //     pads: handled above as "Voice Phrase N". ──
                 for (int i = 0; i < CustomInputState.MaxButtons; i++)
                 {
                     if (i == 16 && hasTouchpad) continue;
+                    if (ud.HasVoicePhrases
+                        && i >= PadForge.Engine.Common.Mapping.SourceCoercion.VoicePhraseButtonBase)
+                        break;
                     if (current.Buttons[i] && !baseline.Buttons[i])
                     {
                         CompleteRecording(MapType.Button, i, null, axisPositive: false, winningDevice: dg);

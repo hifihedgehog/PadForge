@@ -1387,7 +1387,8 @@ namespace PadForge
                         nameof(PadViewModel.IrSmoothingPercent) or
                         nameof(PadViewModel.PointerMode) or nameof(PadViewModel.PointerFpsSpeed) or
                         nameof(PadViewModel.Model3DAppearances) or
-                        nameof(PadViewModel.GyroInvertPitch) or nameof(PadViewModel.GyroInvertYawRoll) or
+                        nameof(PadViewModel.GyroInvertPitch) or nameof(PadViewModel.GyroInvertYaw) or
+                        nameof(PadViewModel.GyroInvertRoll) or
                         nameof(PadViewModel.GyroCompassYaw) or
                         nameof(PadViewModel.GyroApplyTuningToPassthrough) or
                         // Steering at-lock feedback (#94) — per-slot toggles + tunables.

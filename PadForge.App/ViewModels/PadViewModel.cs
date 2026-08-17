@@ -2866,11 +2866,18 @@ namespace PadForge.ViewModels
                 MagCalibrating = toggle(dev.InstanceGuid);
             });
 
-        private bool _gyroInvertYawRoll;
-        public bool GyroInvertYawRoll
+        private bool _gyroInvertYaw;
+        public bool GyroInvertYaw
         {
-            get => _gyroInvertYawRoll;
-            set => SetProperty(ref _gyroInvertYawRoll, value);
+            get => _gyroInvertYaw;
+            set => SetProperty(ref _gyroInvertYaw, value);
+        }
+
+        private bool _gyroInvertRoll;
+        public bool GyroInvertRoll
+        {
+            get => _gyroInvertRoll;
+            set => SetProperty(ref _gyroInvertRoll, value);
         }
 
         // Default false: a user expects a clean passthrough — the
@@ -2980,9 +2987,13 @@ namespace PadForge.ViewModels
         public RelayCommand ResetGyroCompassYawCommand =>
             _resetGyroCompassYawCommand ??= new RelayCommand(() => GyroCompassYaw = false);
 
-        private RelayCommand _resetGyroInvertYawRollCommand;
-        public RelayCommand ResetGyroInvertYawRollCommand =>
-            _resetGyroInvertYawRollCommand ??= new RelayCommand(() => GyroInvertYawRoll = false);
+        private RelayCommand _resetGyroInvertYawCommand;
+        public RelayCommand ResetGyroInvertYawCommand =>
+            _resetGyroInvertYawCommand ??= new RelayCommand(() => GyroInvertYaw = false);
+
+        private RelayCommand _resetGyroInvertRollCommand;
+        public RelayCommand ResetGyroInvertRollCommand =>
+            _resetGyroInvertRollCommand ??= new RelayCommand(() => GyroInvertRoll = false);
 
         private RelayCommand _resetGyroApplyToPassthroughCommand;
         public RelayCommand ResetGyroApplyToPassthroughCommand =>
@@ -3099,7 +3110,8 @@ namespace PadForge.ViewModels
                 GyroSensitivityV = 1.0;
                 GyroSensitivityUnits = "Multiplier";
                 GyroInvertPitch = false;
-                GyroInvertYawRoll = false;
+                GyroInvertYaw = false;
+                GyroInvertRoll = false;
                 GyroRealWorldCalibration = 0;
             });
 

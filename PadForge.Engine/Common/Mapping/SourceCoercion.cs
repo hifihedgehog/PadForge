@@ -265,9 +265,11 @@ namespace PadForge.Engine.Common.Mapping
             public string AimEngageDevice;
             public string AimEngageDescriptor;
 
-            // per-axis invert toggles
+            // per-axis invert toggles (#321: yaw and roll split; the
+            // Horizontal blend follows whichever component is dominant)
             public bool InvertPitch;
-            public bool InvertYawRoll;
+            public bool InvertYaw;
+            public bool InvertRoll;
 
             // When true, this whole tuning chain is applied to the
             // virtual controller's motion passthrough (Sony report
@@ -2865,6 +2867,11 @@ namespace PadForge.Engine.Common.Mapping
 
             // ─── Space projection ────────────────────────────────
             float yaw, pitch;
+            // Which component the Horizontal blend used THIS sample, so
+            // the invert tail can honor that component's flag (#321).
+            // Outside Local space the projection is a yaw-aim signal and
+            // this stays false.
+            bool horizRollDominant = false;
             string space = tuning.Space ?? "Local";
             if (space == "Player")
             {
@@ -2900,7 +2907,10 @@ namespace PadForge.Engine.Common.Mapping
                 // ShapePassthroughAxis and keeps SDL's native frame, which
                 // the motion-snapshot contract requires.
                 if (isHorizontal)
-                    yaw = Math.Abs(gYaw) >= Math.Abs(gRoll) ? gYaw : -gRoll;
+                {
+                    horizRollDominant = Math.Abs(gYaw) < Math.Abs(gRoll);
+                    yaw = horizRollDominant ? -gRoll : gYaw;
+                }
                 else if (isRollSource)
                     yaw = -gRoll;
                 else
@@ -2970,7 +2980,14 @@ namespace PadForge.Engine.Common.Mapping
             {
                 rate = ApplyDeadZone(yaw, tuning.DeadZoneRadPerSec)
                        * tuning.SensH * perSourceSens * rwc;
-                if (tuning.InvertYawRoll) rate = -rate;
+                // The flag follows the SOURCE (#321): a roll row inverts
+                // on the roll toggle, a yaw row on the yaw toggle, and
+                // the Horizontal blend on whichever component it used
+                // this sample.
+                bool invert = isRollSource || horizRollDominant
+                    ? tuning.InvertRoll
+                    : tuning.InvertYaw;
+                if (invert) rate = -rate;
             }
             return rate;
         }
@@ -3118,14 +3135,14 @@ namespace PadForge.Engine.Common.Mapping
             float rwc = tuning.RealWorldCalibration > 0f ? tuning.RealWorldCalibration : 1f;
 
             // Pitch uses vertical sensitivity; yaw and roll use
-            // horizontal. Invert pitch / yaw flags mirror the mapping
-            // path (the yaw flag also covers roll).
+            // horizontal. Invert flags mirror the mapping path, per
+            // axis (#321): yaw and roll each follow their own toggle.
             pitch = ShapePassthroughAxis(pPitch, tuning.DeadZoneRadPerSec,
                 tuning.SensV * rwc, tuning.InvertPitch, tuning.OutputCurve, tuning.Acceleration);
             yaw = ShapePassthroughAxis(pYaw, tuning.DeadZoneRadPerSec,
-                tuning.SensH * rwc, tuning.InvertYawRoll, tuning.OutputCurve, tuning.Acceleration);
+                tuning.SensH * rwc, tuning.InvertYaw, tuning.OutputCurve, tuning.Acceleration);
             roll = ShapePassthroughAxis(pRoll, tuning.DeadZoneRadPerSec,
-                tuning.SensH * rwc, tuning.InvertYawRoll, tuning.OutputCurve, tuning.Acceleration);
+                tuning.SensH * rwc, tuning.InvertRoll, tuning.OutputCurve, tuning.Acceleration);
         }
 
         /// <summary>Per-axis tail of the passthrough chain: deadzone,

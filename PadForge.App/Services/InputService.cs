@@ -13455,13 +13455,44 @@ namespace PadForge.Services
                             // button count).
                             int wrapperCount = ud.RawButtonCount > 0 ? ud.RawButtonCount : buttons.Length;
                             int count = Math.Min(buttons.Length, wrapperCount);
+                            // Standalone microphone rows (#317): a recognition
+                            // stamps the Any Phrase button (0) and the phrase's
+                            // own button in the same tick. Record the specific
+                            // phrase, not Any, when both are held.
+                            bool skipMicAny = false;
+                            if (ud.CapType == PadForge.Engine.InputDeviceType.Microphone)
+                                for (int i = 1; i < count && !skipMicAny; i++)
+                                    if (buttons[i]) skipMicAny = true;
                             for (int i = 0; i < count; i++)
                             {
+                                if (i == 0 && skipMicAny) continue;
                                 if (buttons[i])
                                     currentEntries.Add(new MacroItem.TriggerInputEntry
                                     {
                                         DeviceGuid = ud.InstanceGuid,
                                         RawButton = i
+                                    });
+                            }
+
+                            // Voice phrase pulses (#317) ride above
+                            // RawButtonCount on a microphone-bearing pad, so
+                            // the capped scan above never sees them. Scan the
+                            // voice range and record the canonical descriptor
+                            // entry, the same form the trigger dropdown adds.
+                            // The phrase's own slot beats the Any slot, which
+                            // is stamped on every recognition.
+                            if (ud.HasVoicePhrases)
+                            {
+                                int vBase = PadForge.Engine.Common.Mapping.SourceCoercion.VoicePhraseButtonBase;
+                                int bestVoice = -1;
+                                for (int i = vBase; i < buttons.Length; i++)
+                                    if (buttons[i]) bestVoice = i;
+                                if (bestVoice >= 0)
+                                    currentEntries.Add(new MacroItem.TriggerInputEntry
+                                    {
+                                        DeviceGuid = ud.InstanceGuid,
+                                        SourceDescriptor = PadForge.Engine.Common.Mapping.SourceCoercion
+                                            .VoicePhraseDescriptorForButton(bestVoice - vBase),
                                     });
                             }
                         }
@@ -13533,6 +13564,14 @@ namespace PadForge.Services
                             else if (!string.IsNullOrEmpty(entry.Pov))
                             {
                                 inputs.Add(MacroItem.FormatPovTrigger(entry.Pov));
+                            }
+                            else if (!string.IsNullOrEmpty(entry.SourceDescriptor))
+                            {
+                                // Descriptor entries the recorder can now
+                                // produce (#317 voice phrases): same friendly
+                                // resolve the trigger summary uses.
+                                inputs.Add(PadForge.Common.MappingDisplayResolver.ResolveDescriptorText(
+                                    entry.SourceDescriptor, null, padPrefixAlways: false) ?? entry.SourceDescriptor);
                             }
                             else if (entry.AxisTarget != MacroAxisTarget.None)
                             {

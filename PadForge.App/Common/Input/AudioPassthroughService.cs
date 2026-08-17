@@ -612,7 +612,10 @@ namespace PadForge.Common.Input
         /// <summary>Clamps a requested buffer length into the range the
         /// reference accepts. Pure, so the rule is testable without a
         /// controller. Anything unset or out of range resolves to the
-        /// default rather than to a corrupt header byte.</summary>
+        /// default rather than to a corrupt header byte: an out-of-range
+        /// value came from a corrupt or hand-edited source, and the
+        /// default is the trustworthy answer, not the nearest bound
+        /// (contract pinned by PersonaAudioBridgeTests).</summary>
         internal static byte ClampAudioBufferLength(int requested)
             => requested < Ds5AudioBufferLengthMin || requested > 255
                ? Ds5AudioBufferLengthDefault
@@ -1119,6 +1122,13 @@ namespace PadForge.Common.Input
             public IntPtr UsbJackHandle;
             public volatile bool BtMicStop;
             public IntPtr BtMicHandle;
+            // Written under HidLaneLock; the cross-feed helpers
+            // (IsBtMicLaneActive / TryGetSoleBtMicPad) read it lock-free
+            // from cold paths. A torn 16-byte read is theoretically
+            // possible and accepted: reads are ~1.5 s cadence against
+            // rare writes, and every consumer self-heals next cycle. The
+            // per-feed lock makes the boxed-immutable fix an invasive
+            // refactor disproportionate to the hazard (audit 2026-08-17).
             public Guid BtMicPadGuid;
             public long BtMicRxFrames;
 
@@ -1719,20 +1729,13 @@ namespace PadForge.Common.Input
             {
                 try
                 {
+                    // Through the single-source builder, resolved for the
+                    // MIC pad (Targets[0] could be a different device's
+                    // configured buffer length). The session's rolling
+                    // counter died with the sink this path outlives, so the
+                    // close carries 0, the value the session ends on.
                     var close = new byte[Ds5HapticBtReportSize];
-                    close[0] = 0x32;
-                    close[2] = 0x11 | 0x80;
-                    close[3] = 7;
-                    close[4] = 0xFE;   // close
-                    close[9] = ResolveAudioBufferLength(
-                        feed?.Targets is { Length: > 0 } t ? t[0] : Guid.Empty);
-                    close[11] = 0x12 | 0x80;
-                    close[12] = 64;
-                    uint crc = Crc32(close, Ds5HapticBtReportSize - 4);
-                    close[Ds5HapticBtReportSize - 4] = (byte)(crc & 0xFF);
-                    close[Ds5HapticBtReportSize - 3] = (byte)((crc >> 8) & 0xFF);
-                    close[Ds5HapticBtReportSize - 2] = (byte)((crc >> 16) & 0xFF);
-                    close[Ds5HapticBtReportSize - 1] = (byte)(crc >> 24);
+                    FillDs5MicToggle(close, false, feed.BtMicPadGuid, 0);
                     NativeMethods.WriteFileSyncBestEffort(h, close, Ds5HapticBtReportSize);
                     Engine.SdlDiagLog.WriteLine("PERSONA mic CLOSE sent (reader handle, stop path)");
                 }
@@ -3175,7 +3178,16 @@ namespace PadForge.Common.Input
             s.Ds5OpusEncoder ??= CreateDs5OpusEncoder();
             int n;
             try { n = s.Ds5OpusEncoder.Encode(pull.AsSpan(), Ds5OpusFrameSamples, opus.AsSpan(), Ds5OpusBytes); }
-            catch { s.Ds5OpusEncoder = null; return; }
+            catch
+            {
+                s.Ds5OpusEncoder = null;
+                // The caller already drained this tick's haptic ring for the
+                // combined report; dropping it here would eat the tick
+                // (pre-combined, the haptics shipped regardless of the
+                // speaker encoder).
+                if (hapticPcm != null) SendDs5BtHapticOnly(s, hapticPcm, report);
+                return;
+            }
 
             if (hapticPcm != null)
             {
@@ -3185,7 +3197,7 @@ namespace PadForge.Common.Input
                 // forth, and it stalled for about a second and then resumed
                 // only one of the two.
                 BuildDs5BtCombinedReport(ResolveAudioBufferLength(s.DeviceGuid),
-                                         report, s.Ds5Seq, s.Ds5PktCounter, s.Ds5MicOpen == 1,
+                                         report, s.Ds5Seq, s.Ds5PktCounter, MicOpenFor(s),
                                          hapticPcm, opus, n, Ds5BtAudioLanePid(outPath));
                 s.Ds5Seq = (s.Ds5Seq + 1) & 0x0F;
                 s.Ds5PktCounter++;
@@ -3212,7 +3224,7 @@ namespace PadForge.Common.Input
             // answer is that open is NOT latched.
             report[2] = 0x11 | 0x80;
             report[3] = 7;
-            report[4] = Ds5MicSessionByte(s.Ds5MicOpen == 1);
+            report[4] = Ds5MicSessionByte(MicOpenFor(s));
             report[9] = ResolveAudioBufferLength(s.DeviceGuid);
             report[10] = s.Ds5PktCounter++;
             // Audio lane packet: 0x13 speaker / 0x16 headset, one Opus
@@ -3427,7 +3439,7 @@ namespace PadForge.Common.Input
         {
             BuildDs5BtHapticReport(report, s.Ds5Seq, s.Ds5PktCounter,
                                    ResolveAudioBufferLength(s.DeviceGuid),
-                                   s.Ds5MicOpen == 1, pcm);
+                                   MicOpenFor(s), pcm);
             s.Ds5Seq = (s.Ds5Seq + 1) & 0x0F;
             s.Ds5PktCounter++;
 
@@ -3518,8 +3530,19 @@ namespace PadForge.Common.Input
             hb.Peak = 0f;
         }
 
+        /// <summary>Last successful audio send per pad, stamped so the
+        /// voice lane can tell a live persona stream is carrying the mic
+        /// session byte and stand down its own 0x32 toggles (one session,
+        /// one counter stream, the #300 rule).</summary>
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, long> _sinkAudioTicks = new();
+
+        internal static bool SinkAudioLiveFor(Guid padGuid)
+            => _sinkAudioTicks.TryGetValue(padGuid, out long t)
+               && Environment.TickCount64 - t < 500;
+
         private static void Ds5BtNoteSend(Sink s, bool sent, bool hardFail, bool combined, bool hapticOnly)
         {
+            if (sent) _sinkAudioTicks[s.DeviceGuid] = Environment.TickCount64;
             if (!_btHeartbeats.TryGetValue(s.DeviceGuid, out var hb)) return;
             if (sent) hb.Sent++;
             else if (hardFail) hb.Failed++;
@@ -3643,6 +3666,20 @@ namespace PadForge.Common.Input
         internal static bool IsVoiceBtMicActive(Guid padGuid)
             => _voiceMicLanes.ContainsKey(padGuid);
 
+        /// <summary>True when the voice lane wants this pad's mic session
+        /// open RIGHT NOW (lane registered and the listen gate open). The
+        /// audio reports' session byte consults this, so a persona sink
+        /// streaming to the pad carries the voice lane's session instead
+        /// of closing it 94 times a second.</summary>
+        internal static bool VoiceBtMicWantsOpen(Guid padGuid)
+            => _voiceMicLanes.ContainsKey(padGuid)
+               && PadForge.Services.VoiceMacroService.ListenGateOpen;
+
+        /// <summary>Sink-side mic byte: the persona's own session OR the
+        /// voice lane's want, one answer for every audio report.</summary>
+        private static bool MicOpenFor(Sink s)
+            => s.Ds5MicOpen == 1 || VoiceBtMicWantsOpen(s.DeviceGuid);
+
         internal static bool StartVoiceBtMic(Guid padGuid, string hidPath)
         {
             if (padGuid == Guid.Empty || string.IsNullOrEmpty(hidPath)) return false;
@@ -3677,7 +3714,7 @@ namespace PadForge.Common.Input
             if (h == IntPtr.Zero || h == new IntPtr(-1))
             {
                 Engine.SdlDiagLog.WriteLine("VOICE bt-mic open FAILED pad=" + lane.Pad.ToString("N").Substring(0, 8));
-                _voiceMicLanes.TryRemove(lane.Pad, out _);
+                _voiceMicLanes.TryRemove(new System.Collections.Generic.KeyValuePair<Guid, VoiceMicLane>(lane.Pad, lane));
                 return;
             }
             lane.Handle = h;
@@ -3699,7 +3736,30 @@ namespace PadForge.Common.Input
                     // after release, which is the battery half of PTT.
                     bool wantOpen = PadForge.Services.VoiceMacroService.ListenGateOpen;
                     long now = Environment.TickCount64;
-                    if (wantOpen && !sessionOpen)
+                    if (SinkAudioLiveFor(lane.Pad))
+                    {
+                        // A live persona audio stream stamps the session
+                        // byte at ~94 Hz and MicOpenFor answers for this
+                        // lane, so the stream itself opens and holds the
+                        // session. A second writer's 0x32 toggles on a
+                        // private counter would inject the exact
+                        // discontinuity the one-session rule (#300)
+                        // exists to prevent. Track the state, write
+                        // nothing.
+                        if (wantOpen && !sessionOpen)
+                        {
+                            sessionOpen = true;
+                            openSentTicks = now;
+                            openTries = 1;
+                            lane.RxFrames = 0;
+                        }
+                        else if (!wantOpen && sessionOpen)
+                        {
+                            sessionOpen = false;
+                            decoderStale = true;
+                        }
+                    }
+                    else if (wantOpen && !sessionOpen)
                     {
                         FillDs5MicToggle(toggle, true, lane.Pad, lane.Counter++);
                         NativeMethods.WriteFileSyncBestEffort(h, toggle, Ds5HapticBtReportSize);
@@ -3732,6 +3792,16 @@ namespace PadForge.Common.Input
                         openSentTicks = now;
                         lastFrameTicks = now;
                         Engine.SdlDiagLog.WriteLine("VOICE bt-mic re-OPEN (frames stalled)");
+                    }
+                    else if (wantOpen && sessionOpen && lane.RxFrames == 0
+                             && openTries >= 5 && now - openSentTicks >= 30_000)
+                    {
+                        // The burst exhausted with no ack. A dead mic until
+                        // session teardown has no exit; re-arm a fresh burst
+                        // every 30 s so a recovered pad comes back on its
+                        // own.
+                        sessionOpen = false;
+                        Engine.SdlDiagLog.WriteLine("VOICE bt-mic open burst re-armed");
                     }
                     else if (!wantOpen && sessionOpen)
                     {
@@ -3767,13 +3837,19 @@ namespace PadForge.Common.Input
             }
             finally
             {
-                // Close the session on the way out, UNLESS ownership moved
-                // to the persona lane: one session per pad, last command
-                // wins, and closing a handed-off session silences the new
-                // owner. An orphaned session is still the latch hazard
-                // (2026-07-31: a wedged pad until power-cycle), so the
-                // close stays for every true exit.
-                if (!lane.SkipClose)
+                // Close the session on the way out, UNLESS ownership moved:
+                // one session per pad, last command wins, and closing a
+                // handed-off session silences the new owner. Ownership is
+                // re-checked HERE, at exit time, not only at stop time
+                // (SkipClose): a persona lane or a successor voice lane
+                // that started between StopVoiceBtMic and this thread's
+                // exit owns the session now, and this lane's stop-time
+                // snapshot cannot know that. An orphaned session is still
+                // the latch hazard (2026-07-31: a wedged pad until
+                // power-cycle), so the close stays for every true exit.
+                bool successor = _voiceMicLanes.TryGetValue(lane.Pad, out var cur)
+                    && !ReferenceEquals(cur, lane);
+                if (!lane.SkipClose && !successor && !IsBtMicLaneActive(lane.Pad))
                 {
                     try
                     {
@@ -3785,10 +3861,15 @@ namespace PadForge.Common.Input
                 }
                 else
                 {
-                    Engine.SdlDiagLog.WriteLine("VOICE bt-mic handed off to persona (no close)");
+                    Engine.SdlDiagLog.WriteLine("VOICE bt-mic handed off (no close): "
+                        + (successor ? "successor voice lane" : "persona owns the session"));
                 }
                 NativeMethods.CloseHandle(h);
-                _voiceMicLanes.TryRemove(lane.Pad, out _);
+                // Compare-remove: after a stop-then-start cycle the map
+                // holds the SUCCESSOR's entry, and a blind remove here
+                // deleted it, leaving a live lane unregistered and
+                // unstoppable.
+                _voiceMicLanes.TryRemove(new System.Collections.Generic.KeyValuePair<Guid, VoiceMicLane>(lane.Pad, lane));
             }
         }
 

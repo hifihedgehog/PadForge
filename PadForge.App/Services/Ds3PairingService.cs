@@ -443,9 +443,17 @@ namespace PadForge.Services
             int binding = Ds3DriverInstaller.ProbeBthPs3ServiceBinding(out string bindDetail);
             LogLine(binding == 1
                 ? $"BthPS3 service binding: BOUND ({bindDetail})."
-                : $"BthPS3 service binding: NOT BOUND ({bindDetail}). Incoming connections "
+                : binding == 0
+                ? $"BthPS3 service binding: NOT BOUND ({bindDetail}). Incoming connections "
                   + "cannot reach BthPS3 in this state. Reinstalling the DS3 Bluetooth "
-                  + "support (or BthPS3 itself) rebinds it.");
+                  + "support (or BthPS3 itself) rebinds it."
+                // -1 is an UNMEASURED state, not an unbound one: the radio
+                // cycle just above re-enumerates BTHENUM, and a transiently
+                // absent node (or a failed probe) must not prescribe a
+                // reinstall it has not earned. The 90 s watch re-probes.
+                : $"BthPS3 service binding: UNKNOWN ({bindDetail}). The probe could not "
+                  + "see the service node just now; the 90 s watch re-checks before any "
+                  + "verdict leans on it.");
 
             // The comparison probe the baseline above promises. Without it the
             // DIAG ring goes silent at the exact moment the answer lives: the
@@ -551,7 +559,7 @@ namespace PadForge.Services
                             if (activeIface)
                                 caught = $"BthPS3 child appeared {sw.Elapsed.TotalSeconds:0}s after the ceremony, raw interface ACTIVE. The Bluetooth connection reached BthPS3 and the pad is readable.";
                             else if (Ds3DriverInstaller.IsDsHidMiniInstalled())
-                                caught = $"BthPS3 child appeared {sw.Elapsed.TotalSeconds:0}s after the ceremony and DsHidMini is installed, so DsHidMini owns the pad from here [{detail}]. "
+                                caught = $"BthPS3 child appeared {sw.Elapsed.TotalSeconds:0}s after the ceremony and the DsHidMini package is installed, so DsHidMini is expected to own the pad from here (the child state in the bracket is the ground truth) [{detail}]. "
                                     + "The connection reached BthPS3. PadForge consumes the pad through DsHidMini only in its SXS (SixaxisCompatible) HID mode; a fresh DsHidMini install defaults to XInput mode.";
                             else
                                 caught = $"BthPS3 child appeared {sw.Elapsed.TotalSeconds:0}s after the ceremony but the raw interface is NOT active [{detail}]. BthPS3 accepted the connection and PnP could not start the child (problem 28 is the no-matching-INF case).";
@@ -598,14 +606,22 @@ namespace PadForge.Services
                             ? "BthPS3 IS bound to the live service node, so the drop is upstream "
                               + "of it. Radio-level: driver, legacy-connection support, or the pad "
                               + "is paging a different address."
-                            : $"AND BthPS3 is NOT bound to the live service node ({bindNow}). That "
+                            : bind == 0
+                            ? $"AND BthPS3 is NOT bound to the live service node ({bindNow}). That "
                               + "alone produces exactly this silence, so fix the binding before "
                               + "suspecting the radio. Reinstalling the DS3 Bluetooth support "
-                              + "rebinds it.";
+                              + "rebinds it."
+                            // A probe that could not answer must not ship a
+                            // NOT-BOUND verdict; that unearned certainty is
+                            // the exact defect this arc fixed twice already.
+                            : $"and the binding probe could not answer ({bindNow}), so the binding "
+                              + "is UNMEASURED here: re-run pairing to re-probe before blaming "
+                              + "either the binding or the radio.";
                         verdict = "VERDICT: nothing arrived. "
                             + (recordExistsNow
-                                ? "The BTHPORT record exists, but it was written by the pairing "
-                                  + "ceremony and no incoming connection ever updated it"
+                                ? "The BTHPORT record exists (the ceremony writes it; this "
+                                  + "existence-only probe cannot see whether any incoming page "
+                                  + "touched it since)"
                                 : "There is no BTHPORT record")
                             + ", no inbox child, and no BthPS3 child. " + tail;
                     }

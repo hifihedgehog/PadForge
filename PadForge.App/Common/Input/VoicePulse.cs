@@ -26,9 +26,10 @@ namespace PadForge.Common.Input
     internal static class VoicePulse
     {
         /// <summary>First raw-button index used for voice phrases on a pad.
-        /// CustomInputState carries 256 buttons and no controller comes near
-        /// this from below.</summary>
-        public const int ButtonBase = 200;
+        /// Single-sourced from the Engine's descriptor grammar so the
+        /// "Voice Phrase N" read lands exactly where this stamp writes.</summary>
+        public const int ButtonBase =
+            PadForge.Engine.Common.Mapping.SourceCoercion.VoicePhraseButtonBase;
 
         private const int PulseMs = 175;
 

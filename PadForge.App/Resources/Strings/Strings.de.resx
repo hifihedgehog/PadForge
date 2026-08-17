@@ -3018,6 +3018,8 @@
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>Stoppt Testton oder Durchlauf.</value></data>
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>Beliebiger NFC-Tag</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>NFC-Tag: {0}</value></data>
+  <data name="Mapping_AnyVoicePhrase" xml:space="preserve"><value>Beliebige Sprachphrase</value></data>
+  <data name="Mapping_VoicePhraseNamed" xml:space="preserve"><value>Sprachphrase: {0}</value></data>
   <data name="Nfc_WaitingController" xml:space="preserve"><value>Tippe einen Tag auf deinen Switch-Controller…</value></data>
   <data name="Settings_GyroCalibrateFailed" xml:space="preserve"><value>Kalibrierung fehlgeschlagen. Controller ablegen und erneut versuchen.</value></data>
   <data name="Pad_Shift_DeleteConfirmBase_Format" xml:space="preserve"><value>Verbleibenden Layer-Eintrag "{0}" entfernen? Deine Base-Zuordnungen und Makros bleiben unberührt.</value></data>

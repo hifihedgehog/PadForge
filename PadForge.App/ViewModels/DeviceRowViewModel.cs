@@ -550,7 +550,12 @@ namespace PadForge.ViewModels
              || _devicePath.StartsWith("peer://", StringComparison.Ordinal)
              // PC/SC readers aren't HID devices either: the checkbox was a
              // silent no-op (fake VID/PID resolves no instance, audit M3).
-             || _devicePath.StartsWith("nfc://", StringComparison.Ordinal));
+             || _devicePath.StartsWith("nfc://", StringComparison.Ordinal)
+             // Microphone rows are WASAPI endpoints, not HID devices, the
+             // same non-applicability as PC/SC readers. Missing from this
+             // list, they rendered the Input Hiding section plus its
+             // separator, doubling the divider before Raw Input State.
+             || _devicePath.StartsWith("mic://", StringComparison.Ordinal));
 
         /// <summary>True when at least one input-hiding toggle would be shown,
         /// so the "Input Hiding" section can hide its heading along with its

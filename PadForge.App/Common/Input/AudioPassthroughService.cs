@@ -2108,6 +2108,24 @@ namespace PadForge.Common.Input
         /// <summary>True while a pad's Bluetooth mic decode lane is up
         /// (issue #317). A pad recognition session exists only while its
         /// embedded microphone is actually reachable through this lane.</summary>
+        /// <summary>The single pad whose Bluetooth mic currently feeds a
+        /// persona capture endpoint, when unambiguous (issue #317): an
+        /// endpoint recognition through the persona's headset mic also
+        /// lights the pad's own Voice Macros preview through this bridge.
+        /// With several persona mics live, attribution is ambiguous and
+        /// the bridge stays quiet.</summary>
+        internal static bool TryGetSoleBtMicPad(out Guid padGuid)
+        {
+            padGuid = Guid.Empty;
+            foreach (var kv in _personaFeeds)
+            {
+                if (kv.Value.BtMicPadGuid == Guid.Empty) continue;
+                if (padGuid != Guid.Empty) { padGuid = Guid.Empty; return false; }
+                padGuid = kv.Value.BtMicPadGuid;
+            }
+            return padGuid != Guid.Empty;
+        }
+
         internal static bool IsBtMicLaneActive(Guid padGuid)
         {
             if (padGuid == Guid.Empty) return false;

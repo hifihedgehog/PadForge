@@ -3950,8 +3950,13 @@ namespace PadForge.Services
                 bool isNfc = ud.CapType == InputDeviceType.Nfc;
                 bool isHeadset = ud.CapType == InputDeviceType.HeadsetMotion;
                 bool isMic = ud.CapType == InputDeviceType.Microphone;
+                // The section shows on EVERY DualSense, whichever transport
+                // or profile carries its microphone right now: the mic is
+                // physically the pad's, and recognitions through it stamp
+                // the pad's pulse range either directly (pad sessions) or
+                // via the endpoint-to-pad bridge.
                 int voiceBase = isMic ? 0
-                    : PadForge.Services.VoiceMacroService.IsPadWithEmbeddedMic(ud)
+                    : (ud.VendorId == 0x054C && (ud.ProdId == 0x0CE6 || ud.ProdId == 0x0DF2))
                         ? PadForge.Common.Input.VoicePulse.ButtonBase : -1;
                 int[] btnIndices = ResolveButtonIndices(ud);
                 devVm.RebuildRawStateCollections(axisCount, btnIndices, povCount, isKb, isMouse, isTouchpad, isMidi, isNfc,
@@ -4403,7 +4408,7 @@ namespace PadForge.Services
                 bool isHeadset2 = ud.CapType == InputDeviceType.HeadsetMotion;
                 bool isMic2 = ud.CapType == InputDeviceType.Microphone;
                 int voiceBase2 = isMic2 ? 0
-                    : PadForge.Services.VoiceMacroService.IsPadWithEmbeddedMic(ud)
+                    : (ud.VendorId == 0x054C && (ud.ProdId == 0x0CE6 || ud.ProdId == 0x0DF2))
                         ? PadForge.Common.Input.VoicePulse.ButtonBase : -1;
                 int[] btnIndices = ResolveButtonIndices(ud);
                 devVm.RebuildRawStateCollections(axisCount, btnIndices, povCount, isKb, isMouse, isTouchpad2, isMidi2, isNfc2,

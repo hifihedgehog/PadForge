@@ -6,7 +6,7 @@
         ExtendsContentIntoTitleBar="True"
         WindowBackdropType="Mica"
         Title="{Binding Voice_Title, Source={x:Static strings:Strings.Instance}}"
-        Height="620" Width="560"
+        Height="620" Width="640"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize">
 
@@ -89,7 +89,7 @@
 
             <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,0,0,12">
                 <TextBlock Text="{Binding Voice_PhraseLabel, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                <TextBox x:Name="PhraseBox" Width="200" VerticalAlignment="Center" Margin="0,0,8,0"
+                <TextBox x:Name="PhraseBox" Width="180" VerticalAlignment="Center" Margin="0,0,8,0"
                          KeyDown="PhraseBox_KeyDown"/>
                 <TextBlock Text="{Binding Voice_NameLabel, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,8,0"/>
                 <TextBox x:Name="NameBox" Width="130" VerticalAlignment="Center" Margin="0,0,8,0"

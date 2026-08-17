@@ -207,21 +207,44 @@ namespace PadForge.Services
                 }
             }
             catch { }
-            foreach (var (endpointId, _) in MicrophoneInputDevice.OpenEndpoints())
-                list.Add(("ep:" + endpointId, "mic", Guid.Empty, endpointId));
+            foreach (var (endpointId, name) in MicrophoneInputDevice.OpenEndpoints())
+                list.Add(("ep:" + endpointId, name, Guid.Empty, endpointId));
             return list;
         }
 
-        /// <summary>True when this pad's microphone is EMBEDDED, reachable
-        /// only through PadForge: a DualSense or DualSense Edge (PID gates
-        /// mirror SDL's controller list) on a Bluetooth HID path. The same
-        /// pad wired exposes a real endpoint instead and is deliberately
-        /// excluded here.</summary>
+        /// <summary>True when this pad's microphone is EMBEDDED and does
+        /// NOT currently surface as a Windows endpoint: a DualSense or
+        /// DualSense Edge (PID gates mirror SDL's controller list) over
+        /// Bluetooth (the canonical transport check; BT HID paths carry the
+        /// {00001124} service GUID, not "bthenum") whose container has no
+        /// active capture endpoint. Wired, the pad's own endpoint carries
+        /// the phrases; on the full persona profile the persona's headset
+        /// mic endpoint does. Phrases live wherever the microphone
+        /// surfaces, and only when it surfaces NOWHERE does the pad itself
+        /// carry them.</summary>
         internal static bool IsPadWithEmbeddedMic(PadForge.Engine.Data.UserDevice ud)
             => ud.VendorId == 0x054C
                && (ud.ProdId == 0x0CE6 || ud.ProdId == 0x0DF2)
-               && ud.DevicePath != null
-               && ud.DevicePath.IndexOf("bthenum", StringComparison.OrdinalIgnoreCase) >= 0;
+               && PadForge.Common.DeviceTransport.IsBluetooth(ud.DevicePath, ud.VendorId, ud.ProdId)
+               && !PadMicSurfacesAsEndpoint(ud);
+
+        /// <summary>Does any active capture endpoint share this pad's USB
+        /// container (the persona's headset mic, or the pad's own wired
+        /// audio)? If so, that endpoint row owns the phrases.</summary>
+        private static bool PadMicSurfacesAsEndpoint(PadForge.Engine.Data.UserDevice ud)
+        {
+            try
+            {
+                Guid container = AudioPassthroughService.DevicePathContainerId(ud.DevicePath);
+                if (container == Guid.Empty) return false;
+                using var en = new MMDeviceEnumerator();
+                foreach (var dev in en.EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active))
+                    if (AudioPassthroughService.EndpointContainerId(dev) == container)
+                        return true;
+                return false;
+            }
+            catch { return false; }
+        }
 
         private Session Build(string key, string name, Guid padGuid, string endpointId, int gen)
         {
@@ -251,6 +274,13 @@ namespace PadForge.Services
                     Engine.SdlDiagLog.WriteLine($"VOICE [{ses.DisplayName}] rejected (nearest \"{e.Result?.Text}\" conf={e.Result?.Confidence ?? 0f:F2})");
                     PhraseHeard?.Invoke(ses.DisplayName, e.Result?.Text ?? string.Empty, e.Result?.Confidence ?? 0f, false);
                 };
+
+                // The engine's own audio-state machine is the decisive
+                // diagnostic: Stopped means the stream never fed it,
+                // permanent Silence means audio arrives but carries nothing,
+                // Speech means the chain is alive end to end.
+                engine.AudioStateChanged += (s2, e2) =>
+                    Engine.SdlDiagLog.WriteLine($"VOICE [{ses.DisplayName}] audio state -> {e2.AudioState}");
 
                 var fmt = new System.Speech.AudioFormat.SpeechAudioFormatInfo(
                     16000, System.Speech.AudioFormat.AudioBitsPerSample.Sixteen,
@@ -385,10 +415,29 @@ namespace PadForge.Services
                     && wfx.SubFormat == new Guid("00000003-0000-0010-8000-00aa00389b71"));
             int inStride = inCh * (isFloat ? 4 : 2);
             double pos = 0, step = inRate / 16000.0;
+            long capCalls = 0, capBytesOut = 0, capNextLog = 0;
             cap.DataAvailable += (_, a) =>
             {
                 int frames = a.BytesRecorded / inStride;
                 if (frames <= 0) return;
+                // Liveness proof: one line on the first callback, then a
+                // 5 s heartbeat with the format and throughput, so a dead
+                // or silent capture names itself in the log.
+                capCalls++;
+                long nowT = Environment.TickCount64;
+                if (capNextLog == 0)
+                {
+                    capNextLog = nowT + 5000;
+                    Engine.SdlDiagLog.WriteLine("VOICE capture alive: " + dev.FriendlyName
+                        + " fmt=" + cap.WaveFormat.SampleRate + "Hz/" + inCh + "ch/"
+                        + (isFloat ? "f32" : "i16"));
+                }
+                else if (nowT >= capNextLog)
+                {
+                    capNextLog = nowT + 5000;
+                    Engine.SdlDiagLog.WriteLine("VOICE capture stats: " + dev.FriendlyName
+                        + " callbacks=" + capCalls + " bytesTo16k=" + capBytesOut);
+                }
                 if (ListeningMode != 0 && !ListenGateOpen) { pos = 0; return; }
                 float Mono(int f)
                 {
@@ -414,7 +463,7 @@ namespace PadForge.Services
                 }
                 pos -= frames;
                 if (pos < 0) pos = 0;
-                if (n > 0) sink.Write(outBuf[..n]);
+                if (n > 0) { capBytesOut += n; sink.Write(outBuf[..n]); }
             };
             cap.StartRecording();
             return cap;

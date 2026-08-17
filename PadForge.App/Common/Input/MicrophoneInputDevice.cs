@@ -152,10 +152,10 @@ namespace PadForge.Common.Input
 
         /// <summary>Endpoint IDs of every open microphone device, for the
         /// recognition service's session reconciliation.</summary>
-        public static List<(string EndpointId, Guid InstanceGuid)> OpenEndpoints()
+        public static List<(string EndpointId, string Name)> OpenEndpoints()
         {
-            var list = new List<(string, Guid)>();
-            foreach (var kv in _open) list.Add((kv.Key, kv.Value.InstanceGuid));
+            var list = new List<(string, string)>();
+            foreach (var kv in _open) list.Add((kv.Key, kv.Value.Name));
             return list;
         }
 

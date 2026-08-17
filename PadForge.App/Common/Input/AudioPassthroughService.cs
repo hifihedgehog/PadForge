@@ -2763,6 +2763,16 @@ namespace PadForge.Common.Input
             return match;
         }
 
+        /// <summary>Public face of the endpoint-to-container resolver for the
+        /// voice lane (issue #317), which must know whether a pad's mic
+        /// surfaces as an endpoint.</summary>
+        internal static Guid EndpointContainerId(MMDevice dev) => GetEndpointContainerId(dev);
+
+        /// <summary>Container of a HID device path, for the same voice-lane
+        /// question from the pad's side.</summary>
+        internal static Guid DevicePathContainerId(string devicePath)
+            => NativeMethods.GetContainerIdForDevicePath(devicePath);
+
         private static Guid GetEndpointContainerId(MMDevice dev)
         {
             // PKEY_Device_ContainerId = {8C7ED206-3F8A-4827-B3AB-AE9E1FAEFC6C}, 2

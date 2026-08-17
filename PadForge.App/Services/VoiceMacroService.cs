@@ -369,12 +369,25 @@ namespace PadForge.Services
             if (Interlocked.Exchange(ref _selfTestDone, 1) != 0) return;
             var phrase = VoicePhraseRegistry.Phrases.FirstOrDefault()?.Phrase;
             if (string.IsNullOrEmpty(phrase)) { _selfTestDone = 0; return; }
-            ses.SelfTestUntil = Environment.TickCount64 + 8000;
             new Thread(() =>
             {
                 try
                 {
-                    Thread.Sleep(800);
+                    Thread.Sleep(1500);
+                    // The startup reconcile shuffles sessions (a pad session
+                    // can retire when the persona lane arrives), so pick the
+                    // target NOW, from whatever is actually alive.
+                    lock (_sessionsLock)
+                    {
+                        ses = _sessions.Values.FirstOrDefault(x => x.Capture != null)
+                              ?? _sessions.Values.FirstOrDefault();
+                    }
+                    if (ses == null)
+                    {
+                        Engine.SdlDiagLog.WriteLine("VOICE self-test: no live session to inject into");
+                        return;
+                    }
+                    ses.SelfTestUntil = Environment.TickCount64 + 10000;
                     var wav = new MemoryStream();
                     using (var tts = new System.Speech.Synthesis.SpeechSynthesizer())
                     {
@@ -615,15 +628,22 @@ namespace PadForge.Services
                 base.Dispose(disposing);
             }
 
+            // SAPI probes the stream surface when the session starts, and
+            // ANY throw here kills the engine on the spot: the live log
+            // showed "recognize COMPLETED error=Specified method is not
+            // supported" within a millisecond of every start. So nothing
+            // throws. Seek and Position-set acknowledge without moving (the
+            // pipe is live audio, there is nowhere to seek), SetLength and
+            // the writer-side Write are ignored.
             public override bool CanRead => true;
-            public override bool CanSeek => false;
+            public override bool CanSeek => true;
             public override bool CanWrite => false;
             public override long Length => long.MaxValue;
-            public override long Position { get => _readPos; set => throw new NotSupportedException(); }
+            public override long Position { get => _readPos; set { } }
             public override void Flush() { }
-            public override long Seek(long o, SeekOrigin s) => throw new NotSupportedException();
-            public override void SetLength(long v) => throw new NotSupportedException();
-            public override void Write(byte[] b, int o, int c) => throw new NotSupportedException();
+            public override long Seek(long o, SeekOrigin s) => _readPos;
+            public override void SetLength(long v) { }
+            public override void Write(byte[] b, int o, int c) { }
         }
     }
 }

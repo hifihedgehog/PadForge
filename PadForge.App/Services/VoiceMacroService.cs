@@ -112,6 +112,8 @@ namespace PadForge.Services
             public string DisplayName;
             public Guid PadGuid;            // Guid.Empty for endpoint sessions
             public string EndpointId;       // null for pad tee sessions
+            public bool OwnsBtMicLane;      // pad session that opened the mic itself
+            public long SelfTestUntil;      // pulses suppressed while injecting
             public System.Speech.Recognition.SpeechRecognitionEngine Engine;
             public VoicePcmStream Pcm;
             public WasapiCapture Capture;   // null when the pad tee feeds it
@@ -202,7 +204,7 @@ namespace PadForge.Services
                     {
                         if (ud == null || !ud.IsOnline) continue;
                         if (IsPadWithEmbeddedMic(ud))
-                            list.Add(("pad:" + ud.InstanceGuid, ud.ResolvedName, ud.InstanceGuid, null));
+                            list.Add(("pad:" + ud.InstanceGuid, ud.ResolvedName, ud.InstanceGuid, ud.DevicePath));
                     }
                 }
             }
@@ -246,7 +248,7 @@ namespace PadForge.Services
             catch { return false; }
         }
 
-        private Session Build(string key, string name, Guid padGuid, string endpointId, int gen)
+        private Session Build(string key, string name, Guid padGuid, string endpointOrPath, int gen)
         {
             try
             {
@@ -262,10 +264,12 @@ namespace PadForge.Services
                 { Culture = info.Culture };
                 engine.LoadGrammar(new System.Speech.Recognition.Grammar(gb));
 
+                bool isEndpoint = padGuid == Guid.Empty;
                 var ses = new Session
                 {
                     Key = key, DisplayName = name, PadGuid = padGuid,
-                    EndpointId = endpointId, Engine = engine, Gen = gen,
+                    EndpointId = isEndpoint ? endpointOrPath : null,
+                    Engine = engine, Gen = gen,
                     Pcm = new VoicePcmStream(),
                 };
                 engine.SpeechRecognized += (s, e) => OnRecognized(ses, e.Result?.Text, e.Result?.Confidence ?? 0f);
@@ -287,9 +291,9 @@ namespace PadForge.Services
                     System.Speech.AudioFormat.AudioChannel.Mono);
                 engine.SetInputToAudioStream(ses.Pcm, fmt);
 
-                if (endpointId != null)
+                if (isEndpoint)
                 {
-                    ses.Capture = OpenEndpointCapture(endpointId, ses.Pcm);
+                    ses.Capture = OpenEndpointCapture(endpointOrPath, ses.Pcm);
                     if (ses.Capture == null)
                     {
                         Engine.SdlDiagLog.WriteLine("VOICE [" + name + "] endpoint unavailable");
@@ -299,21 +303,28 @@ namespace PadForge.Services
                 }
                 else
                 {
-                    // A pad session's only lane is the in-process tee, which
-                    // runs while the pad's Bluetooth mic decode is up (the
-                    // full profile). On non-full profiles nothing opens the
-                    // mic session yet, so the session waits and the
-                    // reconciler retries as the lane appears.
+                    // A pad session feeds from the in-process tee. On the
+                    // full profile the persona's mic decode supplies it. On
+                    // every other profile PadForge opens the pad's mic
+                    // session ITSELF: the voice-only lane sends the same
+                    // open/close reports and runs the same 0x31 HasMic
+                    // decode, so the pad's embedded mic works on all
+                    // profiles.
                     if (!AudioPassthroughService.IsBtMicLaneActive(padGuid))
                     {
-                        engine.Dispose(); ses.Pcm.Dispose();
-                        return null;
+                        if (!AudioPassthroughService.StartVoiceBtMic(padGuid, endpointOrPath))
+                        {
+                            engine.Dispose(); ses.Pcm.Dispose();
+                            return null;
+                        }
+                        ses.OwnsBtMicLane = true;
                     }
                 }
 
                 engine.RecognizeAsync(System.Speech.Recognition.RecognizeMode.Multiple);
                 Engine.SdlDiagLog.WriteLine($"VOICE [{name}] listening ({info.Culture.Name}, {phrases.Count} phrases, "
-                    + (endpointId != null ? "endpoint" : ses.Capture != null ? "pad USB mic" : "pad BT direct") + ")");
+                    + (isEndpoint ? "endpoint" : ses.OwnsBtMicLane ? "pad BT direct, own session" : "pad BT direct, persona tee") + ")");
+                MaybeRunSelfTest(ses);
                 return ses;
             }
             catch (Exception ex)
@@ -325,6 +336,8 @@ namespace PadForge.Services
 
         private void TearDown(Session ses, string reason)
         {
+            if (ses.OwnsBtMicLane)
+                try { AudioPassthroughService.StopVoiceBtMic(ses.PadGuid); } catch { }
             try { ses.Capture?.StopRecording(); } catch { }
             try { ses.Capture?.Dispose(); } catch { }
             try { ses.Engine?.RecognizeAsyncCancel(); } catch { }
@@ -333,11 +346,65 @@ namespace PadForge.Services
             Engine.SdlDiagLog.WriteLine($"VOICE [{ses.DisplayName}] session down ({reason})");
         }
 
+        // One in-process proof per launch, diagnostics builds only: the
+        // first session gets the first registered phrase synthesized to
+        // 16 kHz PCM and injected into its own stream. A "(self-test)"
+        // heard line then proves engine, grammar, and stream live in the
+        // shipped binary, so a silent microphone can never be mistaken for
+        // a broken recognition chain. Pulses are suppressed for the
+        // window, so the injection can never fire a binding.
+        private static int _selfTestDone;
+        private void MaybeRunSelfTest(Session ses)
+        {
+            if (!Engine.SdlDiagLog.IsMirroring) return;
+            if (Interlocked.Exchange(ref _selfTestDone, 1) != 0) return;
+            var phrase = VoicePhraseRegistry.Phrases.FirstOrDefault()?.Phrase;
+            if (string.IsNullOrEmpty(phrase)) { _selfTestDone = 0; return; }
+            ses.SelfTestUntil = Environment.TickCount64 + 8000;
+            new Thread(() =>
+            {
+                try
+                {
+                    Thread.Sleep(800);
+                    var wav = new MemoryStream();
+                    using (var tts = new System.Speech.Synthesis.SpeechSynthesizer())
+                    {
+                        tts.SetOutputToAudioStream(wav,
+                            new System.Speech.AudioFormat.SpeechAudioFormatInfo(
+                                16000, System.Speech.AudioFormat.AudioBitsPerSample.Sixteen,
+                                System.Speech.AudioFormat.AudioChannel.Mono));
+                        tts.Speak(phrase);
+                    }
+                    var bytes = wav.ToArray();
+                    Engine.SdlDiagLog.WriteLine($"VOICE self-test injecting \"{phrase}\" ({bytes.Length} bytes) into [{ses.DisplayName}]");
+                    // Paced like a live mic (32 bytes/ms at 16 kHz), plus a
+                    // half-second silence tail so end-of-utterance detection
+                    // has room to close.
+                    var sink = ses.Pcm;
+                    for (int off = 0; off < bytes.Length; off += 640)
+                    {
+                        if (_disposed) return;
+                        sink.Write(bytes.AsSpan(off, Math.Min(640, bytes.Length - off)));
+                        Thread.Sleep(18);
+                    }
+                    var silence = new byte[640];
+                    for (int t = 0; t < 30; t++) { sink.Write(silence); Thread.Sleep(18); }
+                }
+                catch (Exception ex)
+                {
+                    Engine.SdlDiagLog.WriteLine("VOICE self-test failed to inject: " + ex.Message);
+                }
+            })
+            { IsBackground = true, Name = "VoiceSelfTest" }.Start();
+        }
+
         private void OnRecognized(Session ses, string text, float conf)
         {
+            bool selfTest = Environment.TickCount64 < ses.SelfTestUntil;
             bool gate = ListenGateOpen;
-            bool fires = gate && conf >= MinConfidence;
-            Engine.SdlDiagLog.WriteLine($"VOICE [{ses.DisplayName}] heard \"{text}\" conf={conf:F2} gate={(gate ? 1 : 0)} fires={(fires ? 1 : 0)}");
+            bool fires = !selfTest && gate && conf >= MinConfidence;
+            Engine.SdlDiagLog.WriteLine($"VOICE [{ses.DisplayName}] heard \"{text}\" conf={conf:F2} gate={(gate ? 1 : 0)} fires={(fires ? 1 : 0)}"
+                + (selfTest ? " (self-test)" : ""));
             PhraseHeard?.Invoke(ses.DisplayName, text ?? string.Empty, conf, fires);
             if (!fires) return;
             int button = VoicePhraseRegistry.ButtonForPhrase(text);
@@ -484,6 +551,7 @@ namespace PadForge.Services
             private readonly object _sync = new();
             private readonly byte[] _ring = new byte[64 * 1024];
             private int _head, _count;
+            private long _readPos;
             private bool _closed;
 
             public override void Write(ReadOnlySpan<byte> data)
@@ -520,6 +588,7 @@ namespace PadForge.Services
                         _head = (_head + 1) % _ring.Length;
                     }
                     _count -= n;
+                    _readPos += n;
                     return n;
                 }
             }
@@ -534,7 +603,7 @@ namespace PadForge.Services
             public override bool CanSeek => false;
             public override bool CanWrite => false;
             public override long Length => long.MaxValue;
-            public override long Position { get => 0; set => throw new NotSupportedException(); }
+            public override long Position { get => _readPos; set => throw new NotSupportedException(); }
             public override void Flush() { }
             public override long Seek(long o, SeekOrigin s) => throw new NotSupportedException();
             public override void SetLength(long v) => throw new NotSupportedException();

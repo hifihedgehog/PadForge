@@ -17,6 +17,30 @@ namespace PadForge.Views
     /// </summary>
     public partial class RegisterVoicePhraseDialog : Wpf.Ui.Controls.FluentWindow
     {
+        /// <summary>Row item for the phrase list: the registry entry plus a
+        /// short-lived highlight so a recognized phrase lights its row with
+        /// no mapping required.</summary>
+        public sealed class PhraseRow : System.ComponentModel.INotifyPropertyChanged
+        {
+            public string Phrase { get; init; }
+            public string Name { get; init; }
+            private bool _isActive;
+            public bool IsActive
+            {
+                get => _isActive;
+                set
+                {
+                    if (_isActive == value) return;
+                    _isActive = value;
+                    PropertyChanged?.Invoke(this,
+                        new System.ComponentModel.PropertyChangedEventArgs(nameof(IsActive)));
+                }
+            }
+            public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        }
+
+        private readonly System.Collections.ObjectModel.ObservableCollection<PhraseRow> _rows = new();
+
         private Action<string, string, float, bool> _heardHandler;
         private VoiceMacroService _subscribedSvc;
         private bool _loading = true;
@@ -63,6 +87,20 @@ namespace PadForge.Views
                 HeardText.Text = "[" + sourceName + "] " + string.Format(
                     fired ? Strings.Instance.Voice_HeardFired_Format : Strings.Instance.Voice_HeardIgnored_Format,
                     text, confidence);
+                // Light the matching row, mapping or not. Any accepted
+                // recognition qualifies; the readout line above carries the
+                // confidence and whether it fired.
+                string norm = VoicePhraseRegistry.NormalizePhrase(text);
+                foreach (var row in _rows)
+                {
+                    if (!string.Equals(row.Phrase, norm, StringComparison.Ordinal)) continue;
+                    var target = row;
+                    target.IsActive = true;
+                    var t = new System.Windows.Threading.DispatcherTimer
+                    { Interval = TimeSpan.FromMilliseconds(900) };
+                    t.Tick += (_, __) => { target.IsActive = false; t.Stop(); };
+                    t.Start();
+                }
             }));
         }
 
@@ -115,6 +153,12 @@ namespace PadForge.Views
             Close();
         }
 
-        private void RefreshList() => PhraseListBox.ItemsSource = VoicePhraseRegistry.Phrases;
+        private void RefreshList()
+        {
+            _rows.Clear();
+            foreach (var p in VoicePhraseRegistry.Phrases)
+                _rows.Add(new PhraseRow { Phrase = p.Phrase, Name = p.Name });
+            PhraseListBox.ItemsSource = _rows;
+        }
     }
 }

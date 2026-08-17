@@ -552,6 +552,7 @@ namespace PadForge.Services
             int inStride = inCh * (isFloat ? 4 : 2);
             double pos = 0, step = inRate / 16000.0;
             long capCalls = 0, capBytesOut = 0, capNextLog = 0;
+            int capPeak = 0;
             cap.DataAvailable += (_, a) =>
             {
                 int frames = a.BytesRecorded / inStride;
@@ -572,7 +573,9 @@ namespace PadForge.Services
                 {
                     capNextLog = nowT + 5000;
                     Engine.SdlDiagLog.WriteLine("VOICE capture stats: " + dev.FriendlyName
-                        + " callbacks=" + capCalls + " bytesTo16k=" + capBytesOut);
+                        + " callbacks=" + capCalls + " bytesTo16k=" + capBytesOut
+                        + " peak16k=" + capPeak + "/32767");
+                    capPeak = 0;
                 }
                 if (ListeningMode != 0 && !ListenGateOpen) { pos = 0; return; }
                 // The self-test owns the pipe while it injects: mixing live
@@ -596,6 +599,8 @@ namespace PadForge.Services
                     float s0 = Mono(i0);
                     float v = s0 + (Mono(i0 + 1) - s0) * frac;
                     short q = (short)Math.Clamp((int)(v * 32767f), short.MinValue, short.MaxValue);
+                    int aq = q < 0 ? -q : q;
+                    if (aq > capPeak) capPeak = aq;
                     outBuf[n++] = (byte)(q & 0xFF);
                     outBuf[n++] = (byte)((q >> 8) & 0xFF);
                     pos += step;

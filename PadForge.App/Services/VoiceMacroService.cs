@@ -432,6 +432,19 @@ namespace PadForge.Services
                         tts.Speak(phrase);
                     }
                     var bytes = wav.ToArray();
+                    // Synthesis took time; the reconciler may have retired
+                    // the target meanwhile (a 25 ms race did exactly that
+                    // once). Only a session still in the table gets the
+                    // injection; otherwise the shot re-arms.
+                    lock (_sessionsLock)
+                    {
+                        if (!_sessions.Values.Contains(ses))
+                        {
+                            Engine.SdlDiagLog.WriteLine("VOICE self-test target retired mid-synthesis, re-arming");
+                            _selfTestDone = 0;
+                            return;
+                        }
+                    }
                     Engine.SdlDiagLog.WriteLine($"VOICE self-test injecting \"{phrase}\" ({bytes.Length} bytes) into [{ses.DisplayName}]");
                     // Paced like a live mic (32 bytes/ms at 16 kHz), plus a
                     // half-second silence tail so end-of-utterance detection

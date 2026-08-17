@@ -3151,7 +3151,7 @@
   <data name="Voice_Title" xml:space="preserve"><value>语音宏</value></data>
   <data name="Voice_ManageButton" xml:space="preserve"><value>管理语音宏</value></data>
   <data name="Voice_EnableLabel" xml:space="preserve"><value>启用语音宏</value></data>
-  <data name="Voice_EnableTooltip" xml:space="preserve"><value>开启收听。启用期间，每个已注册的短语都是说出即触发的按钮。只要 Windows 安装了语音识别器，识别器设备本身就会始终显示。</value></data>
+  <data name="Voice_EnableTooltip" xml:space="preserve"><value>开启监听。启用后，每个已注册的短语都是一个说出即触发的按钮。识别模型在首次使用时下载一次，离线工作。</value></data>
   <data name="Voice_ModeLabel" xml:space="preserve"><value>收听</value></data>
   <data name="Voice_ModeTooltip" xml:space="preserve"><value>"始终"保持麦克风打开。"按键说话"仅在按住绑定的语音收听宏时收听。</value></data>
   <data name="Voice_ModeAlways" xml:space="preserve"><value>始终</value></data>

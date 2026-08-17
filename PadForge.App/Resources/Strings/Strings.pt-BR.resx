@@ -3145,7 +3145,7 @@ Você pode tentar novamente mais tarde em Configurações.</value></data>
   <data name="Voice_Title" xml:space="preserve"><value>Macros de Voz</value></data>
   <data name="Voice_ManageButton" xml:space="preserve"><value>Gerenciar Macros de Voz</value></data>
   <data name="Voice_EnableLabel" xml:space="preserve"><value>Ativar Macros de Voz</value></data>
-  <data name="Voice_EnableTooltip" xml:space="preserve"><value>Liga a escuta. Enquanto ativado, cada frase registrada é um botão que dispara ao ser falada. O dispositivo reconhecedor em si sempre aparece enquanto o Windows tiver um reconhecedor de voz instalado.</value></data>
+  <data name="Voice_EnableTooltip" xml:space="preserve"><value>Ativa a escuta. Enquanto ativado, cada frase registrada é um botão que dispara quando você a diz. O modelo de reconhecimento é baixado uma vez no primeiro uso e funciona offline.</value></data>
   <data name="Voice_ModeLabel" xml:space="preserve"><value>Escuta</value></data>
   <data name="Voice_ModeTooltip" xml:space="preserve"><value>"Sempre" mantém o microfone aberto. "Apertar para Falar" escuta apenas enquanto um macro de escuta vinculado é mantido.</value></data>
   <data name="Voice_ModeAlways" xml:space="preserve"><value>Sempre</value></data>

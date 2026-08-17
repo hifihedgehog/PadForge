@@ -3151,7 +3151,7 @@ Vous pouvez réessayer plus tard depuis les Paramètres.</value></data>
   <data name="Voice_Title" xml:space="preserve"><value>Macros vocales</value></data>
   <data name="Voice_ManageButton" xml:space="preserve"><value>Gérer les macros vocales</value></data>
   <data name="Voice_EnableLabel" xml:space="preserve"><value>Activer les macros vocales</value></data>
-  <data name="Voice_EnableTooltip" xml:space="preserve"><value>Active l'écoute. Tant que c'est activé, chaque phrase enregistrée est un bouton qui se déclenche quand vous la prononcez. Le périphérique de reconnaissance apparaît toujours tant que Windows dispose d'une reconnaissance vocale installée.</value></data>
+  <data name="Voice_EnableTooltip" xml:space="preserve"><value>Active l’écoute. Tant que c’est activé, chaque phrase enregistrée est un bouton qui se déclenche quand vous la prononcez. Le modèle de reconnaissance se télécharge une fois à la première utilisation et fonctionne hors ligne.</value></data>
   <data name="Voice_ModeLabel" xml:space="preserve"><value>Écoute</value></data>
   <data name="Voice_ModeTooltip" xml:space="preserve"><value>« Toujours » garde le micro ouvert. « Appuyer pour parler » n'écoute que pendant qu'une macro d'écoute assignée est maintenue.</value></data>
   <data name="Voice_ModeAlways" xml:space="preserve"><value>Toujours</value></data>

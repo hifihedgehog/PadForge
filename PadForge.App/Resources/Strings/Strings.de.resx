@@ -3151,7 +3151,7 @@ Du kannst es später in den Einstellungen erneut versuchen.</value></data>
   <data name="Voice_Title" xml:space="preserve"><value>Sprachmakros</value></data>
   <data name="Voice_ManageButton" xml:space="preserve"><value>Sprachmakros verwalten</value></data>
   <data name="Voice_EnableLabel" xml:space="preserve"><value>Sprachmakros aktivieren</value></data>
-  <data name="Voice_EnableTooltip" xml:space="preserve"><value>Schaltet das Zuhören ein. Solange aktiviert, ist jeder registrierte Satz eine Taste, die beim Aussprechen auslöst. Das Erkennergerät selbst erscheint immer, solange Windows eine Spracherkennung installiert hat.</value></data>
+  <data name="Voice_EnableTooltip" xml:space="preserve"><value>Schaltet das Zuhören ein. Solange aktiviert, ist jede registrierte Phrase eine Taste, die beim Aussprechen auslöst. Das Erkennungsmodell wird einmalig beim ersten Gebrauch heruntergeladen und arbeitet offline.</value></data>
   <data name="Voice_ModeLabel" xml:space="preserve"><value>Zuhören</value></data>
   <data name="Voice_ModeTooltip" xml:space="preserve"><value>"Immer" hält das Mikrofon offen. "Push-to-Talk" hört nur zu, solange ein zugewiesenes Zuhören-Makro gehalten wird.</value></data>
   <data name="Voice_ModeAlways" xml:space="preserve"><value>Immer</value></data>

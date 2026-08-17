@@ -228,6 +228,12 @@ namespace PadForge.Services
             => ud.VendorId == 0x054C
                && (ud.ProdId == 0x0CE6 || ud.ProdId == 0x0DF2)
                && PadForge.Common.DeviceTransport.IsBluetooth(ud.DevicePath, ud.VendorId, ud.ProdId)
+               // On the full profile the persona decodes this pad's mic
+               // into a real capture endpoint (a DIFFERENT container, the
+               // HM virtual device's, so a container compare cannot see
+               // it). That endpoint row owns the phrases; the pad carries
+               // them only when its mic surfaces nowhere.
+               && !AudioPassthroughService.IsBtMicLaneActive(ud.InstanceGuid)
                && !PadMicSurfacesAsEndpoint(ud);
 
         /// <summary>Does any active capture endpoint share this pad's USB
@@ -273,6 +279,9 @@ namespace PadForge.Services
                     Pcm = new VoicePcmStream(),
                 };
                 engine.SpeechRecognized += (s, e) => OnRecognized(ses, e.Result?.Text, e.Result?.Confidence ?? 0f);
+                engine.RecognizeCompleted += (s, e) =>
+                    Engine.SdlDiagLog.WriteLine($"VOICE [{ses.DisplayName}] recognize COMPLETED"
+                        + (e.Cancelled ? " (cancelled)" : "") + (e.Error != null ? " error=" + e.Error.Message : ""));
                 engine.SpeechRecognitionRejected += (s, e) =>
                 {
                     Engine.SdlDiagLog.WriteLine($"VOICE [{ses.DisplayName}] rejected (nearest \"{e.Result?.Text}\" conf={e.Result?.Confidence ?? 0f:F2})");
@@ -577,11 +586,18 @@ namespace PadForge.Services
 
             public override int Read(byte[] buffer, int offset, int count)
             {
+                // SAPI treats a PARTIAL read as end-of-stream and completes
+                // the whole recognition session on the spot. Proven in the
+                // shipped binary by the self-test: 40 KB injected, zero
+                // events, because the very first partial return ended the
+                // engine silently. Block until the full request is
+                // available; only a closed pipe may return short.
                 lock (_sync)
                 {
-                    while (_count == 0 && !_closed) Monitor.Wait(_sync, 250);
-                    if (_count == 0) return 0;
+                    count = Math.Min(count, _ring.Length);
+                    while (_count < count && !_closed) Monitor.Wait(_sync, 250);
                     int n = Math.Min(count, _count);
+                    if (n == 0) return 0;
                     for (int i = 0; i < n; i++)
                     {
                         buffer[offset + i] = _ring[_head];

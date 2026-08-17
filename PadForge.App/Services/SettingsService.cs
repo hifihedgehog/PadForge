@@ -2343,7 +2343,7 @@ namespace PadForge.Services
                 || c.RightTriggerMode != ViewModels.AdaptiveTriggerMode.Off
                 || c.MicLedMode != ViewModels.MicLedMode.Off
                 || c.HeadphoneVolume != 100
-                || c.Ds5AudioBufferLength != 48
+                || c.Ds5AudioBufferLength != PadForge.Common.Input.AudioPassthroughService.Ds5AudioBufferLengthDefault
                 || c.AudioOutputPath != ViewModels.AudioOutputPath.Automatic
                 || c.PlayerLedMode != (c.LightingRev >= 1
                     ? ViewModels.PlayerLedMode.PlayerNumber : ViewModels.PlayerLedMode.Off)
@@ -2376,7 +2376,7 @@ namespace PadForge.Services
                 || c.RightTriggerMode != ViewModels.AdaptiveTriggerMode.Off
                 || c.MicLedMode != ViewModels.MicLedMode.Off
                 || c.HeadphoneVolume != 100
-                || c.Ds5AudioBufferLength != 48
+                || c.Ds5AudioBufferLength != PadForge.Common.Input.AudioPassthroughService.Ds5AudioBufferLengthDefault
                 || c.AudioOutputPath != ViewModels.AudioOutputPath.Automatic
                 || c.PlayerLedMode != ViewModels.PlayerLedMode.PlayerNumber
                 || c.GuideLedMode != ViewModels.GuideLedMode.DeviceDefault

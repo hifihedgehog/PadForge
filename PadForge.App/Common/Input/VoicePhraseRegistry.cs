@@ -5,11 +5,11 @@ using System.Linq;
 namespace PadForge.Common.Input
 {
     /// <summary>
-    /// Persisted registry of named voice phrases for issue #315 (voice macros).
+    /// Persisted registry of named voice phrases for issue #317 (voice macros).
     ///
     /// Each entry maps a spoken phrase to a user-chosen name and a STABLE
     /// 1-based raw-button index. A registered phrase is exposed by
-    /// <see cref="VoiceRecognizerDevice"/> as its own momentary button: button
+    /// <see cref="MicrophoneInputDevice"/> as its own momentary button: button
     /// 0 stays "Any Phrase", and each phrase keeps the button it was assigned
     /// at registration forever, so removing a middle phrase leaves a gap
     /// rather than renumbering the others (renumbering would silently repoint

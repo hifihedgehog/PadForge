@@ -164,8 +164,7 @@ namespace PadForge.Services
         {
             _onFinal = onFinal;
             _onGarbage = onGarbage;
-            string grammar = "[" + string.Join(",",
-                phrases.Select(p => "\"" + p.Replace("\\", "\\\\").Replace("\"", "\\\"") + "\"").Append("\"[unk]\"")) + "]";
+            string grammar = BuildGrammarJson(phrases);
             _rec = new Vosk.VoskRecognizer(model, 16000.0f, grammar);
             _rec.SetWords(true);
         }
@@ -207,7 +206,15 @@ namespace PadForge.Services
             }
         }
 
-        private static string ExtractJsonString(string json, string key)
+        /// <summary>The phrase-list grammar as Vosk's JSON array, phrases
+        /// JSON-escaped (a raw backslash or quote would corrupt the array
+        /// and kill every session build) plus the [unk] bucket. Internal
+        /// and pure so the escaping is testable without the native lib.</summary>
+        internal static string BuildGrammarJson(string[] phrases)
+            => "[" + string.Join(",",
+                phrases.Select(p => "\"" + p.Replace("\\", "\\\\").Replace("\"", "\\\"") + "\"").Append("\"[unk]\"")) + "]";
+
+        internal static string ExtractJsonString(string json, string key)
         {
             // The KEY is a quoted name followed by a colon. Taking the last
             // raw occurrence alone mis-hits when the recognized VALUE is the

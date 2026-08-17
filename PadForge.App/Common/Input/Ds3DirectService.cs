@@ -936,7 +936,7 @@ namespace PadForge.Common.Input
                     // with per-revision behavior there is no correct value to
                     // learn toward, and a learned center silently bakes in
                     // whatever a possibly-degraded part happened to read at
-                    // connect. 512 is the documented center. Removing a per-unit
+                    // connect. 512 is the 10-bit midpoint (no reference documents a gyro center; hid-sony centers only the accel, at 511, and declines the gyro). Removing a per-unit
                     // offset is the user's gyro calibration, which is a deliberate
                     // act against a known-still pad rather than a guess.
                     ObserveGyroRest(gz);
@@ -1005,7 +1005,7 @@ namespace PadForge.Common.Input
                      + $"Gyro calibration removes it. Headroom is uneven: "
                      + $"up={1023 - gz} down={gz}.";
             else
-                note = " within normal range of the documented center.";
+                note = " within normal range of the 10-bit midpoint.";
             _log($"DS3MOTION gyro resting baseline={gz} (documented center 512, delta={delta}).{note}");
         }
 

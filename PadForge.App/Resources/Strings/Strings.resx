@@ -3200,7 +3200,7 @@ You can retry later from Settings.</value></data>
   <data name="Voice_Title" xml:space="preserve"><value>Voice Macros</value></data>
   <data name="Voice_ManageButton" xml:space="preserve"><value>Manage Voice Macros</value></data>
   <data name="Voice_EnableLabel" xml:space="preserve"><value>Enable Voice Macros</value></data>
-  <data name="Voice_EnableTooltip" xml:space="preserve"><value>Turns listening on. While enabled, each registered phrase is a button that fires when you say it. The recognizer device itself always appears while Windows has a speech recognizer installed.</value></data>
+  <data name="Voice_EnableTooltip" xml:space="preserve"><value>Turns listening on. While enabled, each registered phrase is a button that fires when you say it. The recognition model downloads once on first use and works offline.</value></data>
   <data name="Voice_ModeLabel" xml:space="preserve"><value>Listening</value></data>
   <data name="Voice_ModeTooltip" xml:space="preserve"><value>Always keeps the microphone open. Push to Talk listens only while a bound Voice Listen macro is held.</value></data>
   <data name="Voice_ModeAlways" xml:space="preserve"><value>Always</value></data>

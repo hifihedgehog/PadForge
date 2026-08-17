@@ -3151,7 +3151,7 @@
   <data name="Voice_Title" xml:space="preserve"><value>음성 매크로</value></data>
   <data name="Voice_ManageButton" xml:space="preserve"><value>음성 매크로 관리</value></data>
   <data name="Voice_EnableLabel" xml:space="preserve"><value>음성 매크로 사용</value></data>
-  <data name="Voice_EnableTooltip" xml:space="preserve"><value>듣기를 켭니다. 켜져 있는 동안 등록된 각 문구는 말하면 작동하는 버튼입니다. Windows에 음성 인식기가 설치되어 있는 한 인식기 장치 자체는 항상 표시됩니다.</value></data>
+  <data name="Voice_EnableTooltip" xml:space="preserve"><value>듣기를 켭니다. 활성화된 동안 등록된 각 문구는 말할 때 발동하는 버튼이 됩니다. 인식 모델은 첫 사용 시 한 번만 다운로드되며 오프라인으로 작동합니다.</value></data>
   <data name="Voice_ModeLabel" xml:space="preserve"><value>듣기</value></data>
   <data name="Voice_ModeTooltip" xml:space="preserve"><value>"항상"은 마이크를 계속 엽니다. "눌러서 말하기"는 지정된 듣기 매크로를 누르는 동안에만 듣습니다.</value></data>
   <data name="Voice_ModeAlways" xml:space="preserve"><value>항상</value></data>

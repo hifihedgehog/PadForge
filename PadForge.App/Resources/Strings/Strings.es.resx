@@ -3151,7 +3151,7 @@ Puedes volver a intentarlo más tarde desde Configuración.</value></data>
   <data name="Voice_Title" xml:space="preserve"><value>Macros de voz</value></data>
   <data name="Voice_ManageButton" xml:space="preserve"><value>Administrar macros de voz</value></data>
   <data name="Voice_EnableLabel" xml:space="preserve"><value>Activar macros de voz</value></data>
-  <data name="Voice_EnableTooltip" xml:space="preserve"><value>Activa la escucha. Mientras está activado, cada frase registrada es un botón que se dispara al decirla. El dispositivo reconocedor siempre aparece mientras Windows tenga un reconocedor de voz instalado.</value></data>
+  <data name="Voice_EnableTooltip" xml:space="preserve"><value>Activa la escucha. Mientras esté activado, cada frase registrada es un botón que se activa al pronunciarla. El modelo de reconocimiento se descarga una vez en el primer uso y funciona sin conexión.</value></data>
   <data name="Voice_ModeLabel" xml:space="preserve"><value>Escucha</value></data>
   <data name="Voice_ModeTooltip" xml:space="preserve"><value>"Siempre" mantiene el micrófono abierto. "Pulsar para hablar" escucha solo mientras se mantiene un macro de escucha asignado.</value></data>
   <data name="Voice_ModeAlways" xml:space="preserve"><value>Siempre</value></data>

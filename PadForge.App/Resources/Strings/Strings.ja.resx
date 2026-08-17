@@ -3151,7 +3151,7 @@
   <data name="Voice_Title" xml:space="preserve"><value>音声マクロ</value></data>
   <data name="Voice_ManageButton" xml:space="preserve"><value>音声マクロを管理</value></data>
   <data name="Voice_EnableLabel" xml:space="preserve"><value>音声マクロを有効化</value></data>
-  <data name="Voice_EnableTooltip" xml:space="preserve"><value>聞き取りを有効にします。有効な間、登録した各フレーズは発話すると作動するボタンになります。Windows に音声認識がインストールされている限り、認識デバイス自体は常に表示されます。</value></data>
+  <data name="Voice_EnableTooltip" xml:space="preserve"><value>リスニングを有効にします。有効な間、登録された各フレーズは発声すると発火するボタンになります。認識モデルは初回使用時に一度だけダウンロードされ、オフラインで動作します。</value></data>
   <data name="Voice_ModeLabel" xml:space="preserve"><value>待ち受け</value></data>
   <data name="Voice_ModeTooltip" xml:space="preserve"><value>「常時」はマイクを開いたままにします。「プッシュトゥトーク」は、割り当てた聞き取りマクロを押している間だけ聞き取ります。</value></data>
   <data name="Voice_ModeAlways" xml:space="preserve"><value>常時</value></data>

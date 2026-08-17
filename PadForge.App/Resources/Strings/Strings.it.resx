@@ -3173,7 +3173,7 @@ Puoi riprovare più tardi dalle Impostazioni.</value></data>
   <data name="Voice_Title" xml:space="preserve"><value>Macro vocali</value></data>
   <data name="Voice_ManageButton" xml:space="preserve"><value>Gestisci macro vocali</value></data>
   <data name="Voice_EnableLabel" xml:space="preserve"><value>Attiva macro vocali</value></data>
-  <data name="Voice_EnableTooltip" xml:space="preserve"><value>Attiva l'ascolto. Finché è attivo, ogni frase registrata è un pulsante che si attiva pronunciandola. Il dispositivo di riconoscimento appare sempre finché Windows ha un riconoscimento vocale installato.</value></data>
+  <data name="Voice_EnableTooltip" xml:space="preserve"><value>Attiva l’ascolto. Finché è attivo, ogni frase registrata è un pulsante che si attiva quando la pronunci. Il modello di riconoscimento viene scaricato una volta al primo utilizzo e funziona offline.</value></data>
   <data name="Voice_ModeLabel" xml:space="preserve"><value>Ascolto</value></data>
   <data name="Voice_ModeTooltip" xml:space="preserve"><value>"Sempre" tiene il microfono aperto. "Premi per parlare" ascolta solo mentre una macro di ascolto assegnata è tenuta premuta.</value></data>
   <data name="Voice_ModeAlways" xml:space="preserve"><value>Sempre</value></data>

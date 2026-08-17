@@ -117,6 +117,11 @@ namespace PadForge.Services
             public string DisplayName;
             public Guid PadGuid;            // Guid.Empty for endpoint sessions
             public string EndpointId;       // null for pad tee sessions
+            public Guid BridgePadGuid;      // endpoint sessions: the pad sharing
+                                            // this endpoint's USB container (a
+                                            // wired DualSense), stamped so the
+                                            // pad's own Voice Phrase bindings
+                                            // fire too. Guid.Empty otherwise.
             public bool OwnsBtMicLane;      // pad session that opened the mic itself
             public long SelfTestUntil;      // pulses suppressed while injecting
             public System.Speech.Recognition.SpeechRecognitionEngine Engine;   // SAPI fallback only
@@ -292,6 +297,32 @@ namespace PadForge.Services
             return value;
         }
 
+        /// <summary>The assigned phrase-bearing pad sharing a capture
+        /// endpoint's USB container: a wired DualSense whose microphone
+        /// surfaces as this endpoint. Guid.Empty when none does (system
+        /// mics, and the persona's headset endpoint, whose container is
+        /// the HM virtual device's). Runs on the reconciler worker at
+        /// session build, never on the poll thread.</summary>
+        private static Guid ResolveEndpointPad(string endpointId)
+        {
+            try
+            {
+                Guid container = Guid.Empty;
+                using (var en = new MMDeviceEnumerator())
+                    foreach (var d in en.EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active))
+                        if (string.Equals(d.ID, endpointId, StringComparison.Ordinal))
+                        { container = AudioPassthroughService.EndpointContainerId(d); break; }
+                if (container == Guid.Empty) return Guid.Empty;
+                lock (SettingsManager.UserDevices.SyncRoot)
+                    foreach (var ud in SettingsManager.UserDevices.Items)
+                        if (ud != null && ud.HasVoicePhrases
+                            && AudioPassthroughService.DevicePathContainerId(ud.DevicePath) == container)
+                            return ud.InstanceGuid;
+            }
+            catch { }
+            return Guid.Empty;
+        }
+
         private Session Build(string key, string name, Guid padGuid, string endpointOrPath, int gen)
         {
             try
@@ -326,6 +357,7 @@ namespace PadForge.Services
                             vses.Sink.Dispose();
                             return null;
                         }
+                        vses.BridgePadGuid = ResolveEndpointPad(endpointOrPath);
                     }
                     else if (!AudioPassthroughService.IsBtMicLaneActive(padGuid))
                     {
@@ -440,6 +472,7 @@ namespace PadForge.Services
                         engine.Dispose(); ses.Pcm.Dispose();
                         return null;
                     }
+                    ses.BridgePadGuid = ResolveEndpointPad(endpointOrPath);
                 }
                 else
                 {
@@ -588,10 +621,14 @@ namespace PadForge.Services
             else
             {
                 MicrophoneInputDevice.StampPulse(ses.EndpointId, button);
-                // A recognition through the persona's headset endpoint came
-                // from a pad's own microphone: light that pad's Voice
-                // Macros preview too, when the pad is unambiguous.
-                if (AudioPassthroughService.TryGetSoleBtMicPad(out var padGuid))
+                // A recognition through an endpoint the pad itself exposes
+                // (a wired DualSense's mic, matched by USB container at
+                // build) stamps that pad, so its own Voice Phrase bindings
+                // fire. The persona's headset endpoint lives in a different
+                // container; there the sole-BT-pad bridge answers instead.
+                if (ses.BridgePadGuid != Guid.Empty)
+                    VoicePulse.Stamp(ses.BridgePadGuid, button);
+                else if (AudioPassthroughService.TryGetSoleBtMicPad(out var padGuid))
                     VoicePulse.Stamp(padGuid, button);
             }
         }

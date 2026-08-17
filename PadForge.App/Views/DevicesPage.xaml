@@ -1046,8 +1046,15 @@
                                            VerticalAlignment="Center" Margin="8,0,0,0" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                             </StackPanel>
 
-                            <Separator Margin="0,2,0,8"/>
                         </StackPanel>
+
+                        <!-- The divider before the Raw Input State header sits
+                             OUTSIDE the Power panel above, deliberately: that
+                             panel is gated on ShowIdleDisconnect, and a divider
+                             inside it vanished for every device without a Power
+                             section (NFC readers, microphones), leaving the
+                             assignment elements flush against the header. -->
+                        <Separator Margin="0,2,0,8"/>
 
                         <!-- ─── Raw Input State (Visual) ─── -->
                         <TextBlock Text="{Binding Devices_RawInputState, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"
@@ -1241,7 +1248,6 @@
                              "Any NFC Tag") lights up when its tag is tapped. -->
                         <StackPanel Visibility="{Binding IsNfcDevice, Converter={StaticResource BoolToVisibilityConverter}}"
                                     Margin="0,0,0,8">
-                            <Separator Margin="0,2,0,6"/>
                             <TextBlock Text="{Binding Nfc_Title, Source={x:Static strings:Strings.Instance}}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,3"/>
                             <ItemsControl ItemsSource="{Binding NfcTags}">
                                 <ItemsControl.ItemTemplate>
@@ -1281,7 +1287,6 @@
                              row lights while its phrase button pulses. -->
                         <StackPanel Visibility="{Binding ShowVoicePhrases, Converter={StaticResource BoolToVisibilityConverter}}"
                                     Margin="0,0,0,8">
-                            <Separator Margin="0,2,0,6"/>
                             <TextBlock Text="{Binding Voice_Title, Source={x:Static strings:Strings.Instance}}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,3"/>
                             <ItemsControl ItemsSource="{Binding VoicePhrases}">
                                 <ItemsControl.ItemTemplate>

@@ -3038,6 +3038,8 @@
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>Stopt de testtoon of de sweep.</value></data>
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>Elke NFC-tag</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>NFC-tag: {0}</value></data>
+  <data name="Mapping_AnyVoicePhrase" xml:space="preserve"><value>Elke spraakzin</value></data>
+  <data name="Mapping_VoicePhraseNamed" xml:space="preserve"><value>Spraakzin: {0}</value></data>
   <data name="Nfc_WaitingController" xml:space="preserve"><value>Tik een tag tegen je Switch-controller…</value></data>
   <data name="Settings_GyroCalibrateFailed" xml:space="preserve"><value>Kalibreren mislukt. Leg de controller neer en probeer het opnieuw.</value></data>
   <data name="Pad_Shift_DeleteConfirmBase_Format" xml:space="preserve"><value>Overgebleven laagvermelding "{0}" verwijderen? Je Base-toewijzingen en macro’s blijven onaangetast.</value></data>

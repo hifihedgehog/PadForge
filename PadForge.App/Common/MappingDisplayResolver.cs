@@ -105,6 +105,7 @@ namespace PadForge.Common
                     // token-2 path below would leave the raw descriptor on the
                     // chip (Codex #8).
                     || PadForge.Engine.Common.Mapping.SourceCoercion.IsNfcTagDescriptor(t)
+                    || PadForge.Engine.Common.Mapping.SourceCoercion.IsVoicePhraseDescriptor(t)
                     || PadForge.Engine.Common.Mapping.SourceCoercion.IsFlickStickDescriptor(t))
                 {
                     string fam = ResolveDescriptorText(t, null, padPrefixAlways: ud == null);
@@ -236,6 +237,7 @@ namespace PadForge.Common
                     // token-2 path below would leave the raw descriptor on the
                     // chip (Codex #8).
                     || PadForge.Engine.Common.Mapping.SourceCoercion.IsNfcTagDescriptor(t)
+                    || PadForge.Engine.Common.Mapping.SourceCoercion.IsVoicePhraseDescriptor(t)
                     || PadForge.Engine.Common.Mapping.SourceCoercion.IsFlickStickDescriptor(t))
                 {
                     string fam = ResolveDescriptorText(t, null, padPrefixAlways: ud == null);
@@ -574,6 +576,20 @@ namespace PadForge.Common
                     if (tag.Button == nfcButton)
                         return prefix + string.Format(si.Mapping_NfcTagNamed, tag.Name);
                 return prefix + string.Format(si.Mapping_NfcTagNamed, "#" + nfcButton);
+            }
+
+            // Voice phrase descriptors (#317): "Any Voice Phrase" and
+            // "Voice Phrase N". Same registry round-trip as NFC: the
+            // numbered form resolves back to the user's phrase name, and
+            // a removed button falls back to the generic label.
+            if (PadForge.Engine.Common.Mapping.SourceCoercion.TryGetVoicePhraseButton(s, out int vpButton))
+            {
+                var si = Strings.Instance;
+                if (vpButton == 0) return prefix + si.Mapping_AnyVoicePhrase;
+                foreach (var ph in PadForge.Common.Input.VoicePhraseRegistry.Phrases)
+                    if (ph.Button == vpButton)
+                        return prefix + string.Format(si.Mapping_VoicePhraseNamed, ph.Name);
+                return prefix + string.Format(si.Mapping_VoicePhraseNamed, "#" + vpButton);
             }
 
             // Bundled motion-passthrough descriptors → localized display names.
@@ -1812,6 +1828,26 @@ namespace PadForge.Common
                     {
                         Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.NfcTagDescriptorForButton(tag.Button),
                         DisplayName = string.Format(si.Mapping_NfcTagNamed, tag.Name),
+                    });
+            }
+
+            // Voice phrases (#317): pads with an embedded microphone (the
+            // DualSense family) hear phrases on their own surface, so the
+            // picker offers "Any Voice Phrase" plus each registered phrase
+            // exactly like the NFC tag family above. Standalone microphone
+            // devices skip this: their phrases are named raw buttons.
+            if (ud.HasVoicePhrases)
+            {
+                list.Add(new InputChoice
+                {
+                    Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.AnyVoicePhraseDescriptor,
+                    DisplayName = si.Mapping_AnyVoicePhrase,
+                });
+                foreach (var ph in PadForge.Common.Input.VoicePhraseRegistry.Phrases)
+                    list.Add(new InputChoice
+                    {
+                        Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.VoicePhraseDescriptorForButton(ph.Button),
+                        DisplayName = string.Format(si.Mapping_VoicePhraseNamed, ph.Name),
                     });
             }
 

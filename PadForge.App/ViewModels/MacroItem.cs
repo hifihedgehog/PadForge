@@ -1222,6 +1222,15 @@ namespace PadForge.ViewModels
                 return true;
             }
 
+            // Voice phrases (#317): same shape as NFC. A spoken phrase is a
+            // plain bool pulse the engine's descriptor read answers, so a
+            // say-to-macro trigger rides a descriptor entry.
+            if (PadForge.Engine.Common.Mapping.SourceCoercion.IsVoicePhraseDescriptor(d))
+            {
+                entry = new TriggerInputEntry { DeviceGuid = g, SourceDescriptor = d };
+                return true;
+            }
+
             // Mouse gestures (issue #200): every family member is a one-shot
             // bool in the recognizer's fired set, so the whole family rides
             // GestureDescriptor. Evaluated by CheckGestureTrigger's mouse

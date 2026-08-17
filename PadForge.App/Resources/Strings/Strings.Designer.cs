@@ -2373,6 +2373,8 @@ public class Strings : INotifyPropertyChanged
     public string Mapping_JoyConIrBrightness => Get("Mapping_JoyConIrBrightness");
     public string Mapping_AnyNfcTag => Get("Mapping_AnyNfcTag");
     public string Mapping_NfcTagNamed => Get("Mapping_NfcTagNamed");
+    public string Mapping_AnyVoicePhrase => Get("Mapping_AnyVoicePhrase");
+    public string Mapping_VoicePhraseNamed => Get("Mapping_VoicePhraseNamed");
     public string Mapping_MouseMotionX => Get("Mapping_MouseMotionX");
     public string Mapping_MouseMotionY => Get("Mapping_MouseMotionY");
     public string Mapping_IrPointerSensitivity => Get("Mapping_IrPointerSensitivity");

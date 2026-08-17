@@ -987,7 +987,8 @@ namespace PadForge.ViewModels
             if (cls == PadForge.Engine.Common.Mapping.SourceCoercion.SourceType.Button
                 || cls == PadForge.Engine.Common.Mapping.SourceCoercion.SourceType.PovDirection
                 || cls == PadForge.Engine.Common.Mapping.SourceCoercion.SourceType.TouchpadButton
-                || cls == PadForge.Engine.Common.Mapping.SourceCoercion.SourceType.NfcTag)
+                || cls == PadForge.Engine.Common.Mapping.SourceCoercion.SourceType.NfcTag
+                || cls == PadForge.Engine.Common.Mapping.SourceCoercion.SourceType.VoicePhrase)
                 IsInverted = true;
         }
 

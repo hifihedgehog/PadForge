@@ -164,6 +164,13 @@ namespace PadForge.Engine.Common.Mapping
                              // N = the tag whose NfcTagRegistry button is N.
                              // Leading 'A'/'N' keeps it clear of the I/H
                              // prefix grammar.
+            VoicePhrase,     // "Any Voice Phrase" / "Voice Phrase N"
+                             // (issue #317). Recognition pulses stamped by
+                             // the App's VoicePulse into the pad's raw
+                             // buttons at VoicePhraseButtonBase + N (0 =
+                             // any phrase, N = the phrase's stable
+                             // VoicePhraseRegistry button). Leading 'A'/'V'
+                             // keeps it clear of the I/H prefix grammar.
         }
 
         /// <summary>Sensitivity constant for gyro bipolar coercion.
@@ -1204,6 +1211,8 @@ namespace PadForge.Engine.Common.Mapping
                 return SourceType.CapSense;
             if (IsNfcTagDescriptor(s))
                 return SourceType.NfcTag;
+            if (IsVoicePhraseDescriptor(s))
+                return SourceType.VoicePhrase;
             if (IsMenuItemDescriptor(s))
                 return SourceType.MenuItem;
             if (IsRumbleDescriptor(s))
@@ -2631,6 +2640,7 @@ namespace PadForge.Engine.Common.Mapping
             if (state == null || string.IsNullOrEmpty(canonical)) return false;
             if (IsCapSenseDescriptor(canonical)) return ReadCapSenseBool(state, canonical);
             if (IsNfcTagDescriptor(canonical)) return ReadNfcTagBool(state, canonical);
+            if (IsVoicePhraseDescriptor(canonical)) return ReadVoicePhraseBool(state, canonical);
             // IR cover-as-button at the fixed 50 percent midpoint: the
             // param/gate surfaces carry no per-source threshold, and the
             // main rows keep their tunable read (#248 audit round 3).
@@ -2648,6 +2658,70 @@ namespace PadForge.Engine.Common.Mapping
             if (state?.NfcTag == null) return false;
             if (!TryGetNfcTagButton(canonical, out int button)) return false;
             return button >= 0 && button < state.NfcTag.Length && state.NfcTag[button];
+        }
+
+        // ─── Voice phrase family (issue #317) ──────────────────────────
+        //
+        // Recognition pulses on microphone-bearing pads. The App layer's
+        // VoicePulse stamps a 175 ms pulse into the pad's raw buttons at
+        // VoicePhraseButtonBase + N when its phrase is heard; "Any Voice
+        // Phrase" reads slot 0 (stamped on every recognition), "Voice
+        // Phrase N" reads the phrase whose stable VoicePhraseRegistry
+        // button is N. Numbered descriptor (not by name) keeps the binding
+        // stable when a phrase is renamed; the display layer resolves
+        // N -> name. Standalone microphone devices need none of this:
+        // like the PC/SC NFC reader path, they expose the phrases as
+        // named raw buttons directly.
+
+        /// <summary>First raw-button index voice-phrase pulses occupy on a
+        /// pad. CustomInputState carries 256 buttons and no physical or
+        /// extended surface comes near this from below.</summary>
+        public const int VoicePhraseButtonBase = 200;
+
+        public const string AnyVoicePhraseDescriptor = "Any Voice Phrase";
+        private const string VoicePhraseDescriptorPrefix = "Voice Phrase ";
+
+        /// <summary>True for "Any Voice Phrase" or a well-formed
+        /// "Voice Phrase N".</summary>
+        public static bool IsVoicePhraseDescriptor(string descriptor)
+            => TryGetVoicePhraseButton(descriptor, out _);
+
+        /// <summary>Resolves a voice descriptor to its registry button:
+        /// 0 for "Any Voice Phrase", N for "Voice Phrase N" (N in 1..55,
+        /// the span VoicePhraseButtonBase leaves inside the 256-button
+        /// state). False for anything else.</summary>
+        public static bool TryGetVoicePhraseButton(string descriptor, out int button)
+        {
+            button = -1;
+            if (string.IsNullOrEmpty(descriptor)) return false;
+            string s = descriptor.Trim();
+            if (string.Equals(s, AnyVoicePhraseDescriptor, StringComparison.OrdinalIgnoreCase))
+            {
+                button = 0;
+                return true;
+            }
+            if (s.StartsWith(VoicePhraseDescriptorPrefix, StringComparison.OrdinalIgnoreCase)
+                && int.TryParse(s.AsSpan(VoicePhraseDescriptorPrefix.Length), out int n)
+                && n >= 1 && n < CustomInputState.MaxButtons - VoicePhraseButtonBase)
+            {
+                button = n;
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>The per-phrase descriptor for a stable registry button.</summary>
+        public static string VoicePhraseDescriptorForButton(int button)
+            => button <= 0 ? AnyVoicePhraseDescriptor : VoicePhraseDescriptorPrefix + button;
+
+        /// <summary>The voice-phrase pulse read: the raw button VoicePulse
+        /// stamps, offset into the pad's button block.</summary>
+        private static bool ReadVoicePhraseBool(CustomInputState state, string canonical)
+        {
+            if (state?.Buttons == null) return false;
+            if (!TryGetVoicePhraseButton(canonical, out int button)) return false;
+            int idx = VoicePhraseButtonBase + button;
+            return idx < state.Buttons.Length && state.Buttons[idx];
         }
 
         // ─── Inbound rumble family (issue #236) ────────────────────────
@@ -4426,6 +4500,10 @@ namespace PadForge.Engine.Common.Mapping
             if (IsNfcTagDescriptor(s))
                 return ReadNfcTagBool(state, s);
 
+            // Voice phrase pulse (#317): a plain hardware bool, no threshold.
+            if (IsVoicePhraseDescriptor(s))
+                return ReadVoicePhraseBool(state, s);
+
             if (!TryParseTypeIndex(s, out var t, out int idx, out string povDir))
                 return false;
 
@@ -4717,6 +4795,10 @@ namespace PadForge.Engine.Common.Mapping
             if (IsNfcTagDescriptor(s))
                 return ReadNfcTagBool(state, s) ? 1f : 0f;
 
+            // Voice phrase pulse as an analog contribution (#317): 0/1.
+            if (IsVoicePhraseDescriptor(s))
+                return ReadVoicePhraseBool(state, s) ? 1f : 0f;
+
             if (!TryParseTypeIndex(s, out var t, out int idx, out string povDir))
                 return 0f;
 
@@ -4963,6 +5045,10 @@ namespace PadForge.Engine.Common.Mapping
             // NFC tag present as a trigger pull (#241): 0/1.
             if (IsNfcTagDescriptor(s))
                 return ReadNfcTagBool(state, s) ? 1f : 0f;
+
+            // Voice phrase pulse as a trigger pull (#317): 0/1.
+            if (IsVoicePhraseDescriptor(s))
+                return ReadVoicePhraseBool(state, s) ? 1f : 0f;
 
             // Capsense as a trigger pull (v26): 0/1 like a button.
             if (IsCapSenseDescriptor(s))

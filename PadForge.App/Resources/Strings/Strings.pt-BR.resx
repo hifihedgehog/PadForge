@@ -3012,6 +3012,8 @@
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>Para o tom de teste ou a varredura.</value></data>
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>Qualquer etiqueta NFC</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>Etiqueta NFC: {0}</value></data>
+  <data name="Mapping_AnyVoicePhrase" xml:space="preserve"><value>Qualquer frase de voz</value></data>
+  <data name="Mapping_VoicePhraseNamed" xml:space="preserve"><value>Frase de voz: {0}</value></data>
   <data name="Nfc_WaitingController" xml:space="preserve"><value>Encoste uma etiqueta no seu controle Switch…</value></data>
   <data name="Settings_GyroCalibrateFailed" xml:space="preserve"><value>Falha na calibração. Apoie o controle e tente novamente.</value></data>
   <data name="Pad_Shift_DeleteConfirmBase_Format" xml:space="preserve"><value>Remover a entrada de camada restante "{0}"? Seus mapeamentos e macros da Base não serão alterados.</value></data>

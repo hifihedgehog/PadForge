@@ -3018,6 +3018,8 @@
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>Arrête le son de test ou le balayage.</value></data>
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>N'importe quel tag NFC</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>Tag NFC : {0}</value></data>
+  <data name="Mapping_AnyVoicePhrase" xml:space="preserve"><value>N’importe quelle phrase vocale</value></data>
+  <data name="Mapping_VoicePhraseNamed" xml:space="preserve"><value>Phrase vocale : {0}</value></data>
   <data name="Nfc_WaitingController" xml:space="preserve"><value>Touchez un tag avec votre manette Switch…</value></data>
   <data name="Settings_GyroCalibrateFailed" xml:space="preserve"><value>Échec du calibrage. Posez la manette et réessayez.</value></data>
   <data name="Pad_Shift_DeleteConfirmBase_Format" xml:space="preserve"><value>Supprimer l’entrée de calque résiduelle « {0} » ? Vos mappages et macros de Base ne seront pas touchés.</value></data>

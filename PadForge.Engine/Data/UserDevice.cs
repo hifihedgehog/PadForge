@@ -215,6 +215,17 @@ namespace PadForge.Engine.Data
         public bool HasNfcReader => VendorId == 0x057E
             && (ProdId == 0x2007 || ProdId == 0x2008 || ProdId == 0x2009);
 
+        /// <summary>Voice phrases ride this pad's own surface (#317): the
+        /// DualSense / DualSense Edge carry an embedded microphone, so
+        /// recognitions stamp VoicePulse buttons on the pad and the picker
+        /// offers "Any Voice Phrase" / per-phrase sources here. Standalone
+        /// microphone devices are NOT gated by this: they expose phrases as
+        /// named raw buttons directly (the PC/SC-reader pattern). Computed,
+        /// not stored.</summary>
+        [XmlIgnore]
+        public bool HasVoicePhrases => VendorId == 0x054C
+            && (ProdId == 0x0CE6 || ProdId == 0x0DF2);
+
         // Wii IR pointer tuning (sensor-bar position/compensation, smoothing)
         // moved to PadSetting (issue #146 follow-up) so each (device, slot)
         // pair gets its own pointer feel, the same move the gyro tuning made

@@ -1988,6 +1988,9 @@
                                             <ComboBoxItem Content="{Binding MacroAction_Type_HeadphoneVolumeDown, Source={x:Static strings:Strings.Instance}}"
                                                           Tag="{x:Static vm:MacroActionType.HeadphoneVolumeDown}"
                                                           ToolTip="{Binding MacroAction_HeadphoneVolumeDown_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding MacroAction_Type_VoiceListenWhileHeld, Source={x:Static strings:Strings.Instance}}"
+                                                          Tag="{x:Static vm:MacroActionType.VoiceListenWhileHeld}"
+                                                          ToolTip="{Binding MacroAction_VoiceListenWhileHeld_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <ComboBoxItem Content="{Binding MacroAction_Type_AxisSetLatched, Source={x:Static strings:Strings.Instance}}"
                                                           Tag="{x:Static vm:MacroActionType.AxisSetLatched}"
                                                           ToolTip="{Binding MacroAction_AxisSetLatched_Tooltip, Source={x:Static strings:Strings.Instance}}"/>

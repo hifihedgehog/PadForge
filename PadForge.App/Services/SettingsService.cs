@@ -317,7 +317,15 @@ namespace PadForge.Services
                     {
                         int dropped = 0;
                         foreach (var ud in DedupeDevicesByGuid(data.Devices, ref dropped))
+                        {
+                            // A withdrawn pre-release briefly registered a
+                            // "Voice Macros" pseudo-device (voice://). Drop
+                            // its persisted row: features are not devices.
+                            if (ud?.DevicePath != null
+                                && ud.DevicePath.StartsWith("voice://", StringComparison.Ordinal))
+                            { dropped++; continue; }
                             SettingsManager.UserDevices.Items.Add(ud);
+                        }
                         if (dropped > 0)
                             PadForge.Engine.SdlDiagLog.WriteLine(
                                 $"CFG dropped {dropped} duplicate-guid ghost device record(s) at load");
@@ -1932,6 +1940,14 @@ namespace PadForge.Services
                 appSettings.SoundPackages?.Select(p => (p.Name, p.Path)));
             PadForge.Common.Input.NfcTagRegistry.LoadRegistry(
                 appSettings.NfcTags?.Select(t => (t.Uid, t.Name, t.Button)));
+            PadForge.Common.Input.VoicePhraseRegistry.LoadRegistry(
+                appSettings.VoicePhrases?.Select(v => (v.Phrase, v.Name, v.Button)));
+            PadForge.Services.VoiceMacroService.Enabled = appSettings.VoiceMacrosEnabled;
+            PadForge.Services.VoiceMacroService.MinConfidence =
+                float.IsFinite(appSettings.VoiceMinConfidence)
+                    ? Math.Clamp(appSettings.VoiceMinConfidence, 0f, 1f) : 0.80f;
+            PadForge.Services.VoiceMacroService.ListeningMode =
+                appSettings.VoiceListeningMode == 1 ? 1 : 0;
             // Headset trackers (#188): addresses that ever qualified, so
             // the sweep's HID-service re-request survives an app restart
             // while the sensor node is absent.
@@ -3935,6 +3951,9 @@ namespace PadForge.Services
             var nfcTags = PadForge.Common.Input.NfcTagRegistry.SaveRegistry()
                 .Select(t => new NfcTagData { Uid = t.Uid, Name = t.Name, Button = t.Button })
                 .ToArray();
+            var voicePhrases = PadForge.Common.Input.VoicePhraseRegistry.SaveRegistry()
+                .Select(v => new VoicePhraseData { Phrase = v.Phrase, Name = v.Name, Button = v.Button })
+                .ToArray();
             // Sync the ViewModel toggle to the static state.
             SettingsManager.EnableAutoProfileSwitching = vm.EnableAutoProfileSwitching;
 
@@ -4019,6 +4038,10 @@ namespace PadForge.Services
             {
                 SoundPackages = soundPackages,
                 NfcTags = nfcTags,
+                VoicePhrases = voicePhrases,
+                VoiceMacrosEnabled = PadForge.Services.VoiceMacroService.Enabled,
+                VoiceMinConfidence = PadForge.Services.VoiceMacroService.MinConfidence,
+                VoiceListeningMode = PadForge.Services.VoiceMacroService.ListeningMode,
                 HeadsetTrackerAddresses = PadForge.Common.Input.SonyHeadsetMotionRuntime.SavePersistedAddresses(),
                 // Remote Link (issue #138): persist the identity + trust list from
                 // the runtime holder (set on load / updated on pairing + revocation).
@@ -5306,6 +5329,21 @@ namespace PadForge.Services
         public int Button { get; set; }
     }
 
+    /// <summary>A registered voice phrase (issue #317): normalized text,
+    /// display name, and the stable raw-button index it occupies (so saved
+    /// bindings survive).</summary>
+    public class VoicePhraseData
+    {
+        [XmlAttribute]
+        public string Phrase { get; set; }
+
+        [XmlAttribute]
+        public string Name { get; set; }
+
+        [XmlAttribute]
+        public int Button { get; set; }
+    }
+
     /// <summary>
     /// Root element for the PadForge settings XML file.
     /// </summary>
@@ -5383,6 +5421,24 @@ namespace PadForge.Services
         [XmlArray("NfcTags")]
         [XmlArrayItem("Tag")]
         public NfcTagData[] NfcTags { get; set; }
+
+        /// <summary>Registered voice phrases (issue #317), exposed as
+        /// buttons on the devices that carry the microphones.</summary>
+        [XmlArray("VoicePhrases")]
+        [XmlArrayItem("Phrase")]
+        public VoicePhraseData[] VoicePhrases { get; set; }
+
+        /// <summary>Voice macros (issue #317) master switch.</summary>
+        [XmlElement]
+        public bool VoiceMacrosEnabled { get; set; }
+
+        /// <summary>Confidence floor a recognition must clear, 0..1.</summary>
+        [XmlElement]
+        public float VoiceMinConfidence { get; set; } = 0.80f;
+
+        /// <summary>0 = always listening, 1 = push-to-talk.</summary>
+        [XmlElement]
+        public int VoiceListeningMode { get; set; }
 
         /// <summary>Bluetooth addresses (12-hex, comma-joined) of headsets
         /// that ever qualified as Android Head Trackers (#188). Lets the

@@ -91,6 +91,11 @@ namespace PadForge.Engine
         // (issue #188): WH-1000XM5 family exposing the Android Head
         // Tracker sensor collection as a gyro/accel motion source.
         public const int HeadsetMotion = 30;
+        // Standalone microphone capture endpoints (issue #317): real
+        // hardware exposed as input devices whose buttons are registered
+        // voice phrases. Mic-bearing controllers carry their phrases on
+        // their own device instead.
+        public const int Microphone = 31;
     }
 
     // ─────────────────────────────────────────────────────────────────

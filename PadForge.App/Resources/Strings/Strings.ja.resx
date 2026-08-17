@@ -3143,4 +3143,26 @@
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>通知するしきい値</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>コントローラーを振動させる</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>通知をテスト</value></data>
+  <data name="Voice_AnyPhrase" xml:space="preserve"><value>すべてのフレーズ</value></data>
+  <data name="Voice_Title" xml:space="preserve"><value>音声マクロ</value></data>
+  <data name="Voice_ManageButton" xml:space="preserve"><value>音声マクロを管理</value></data>
+  <data name="Voice_EnableLabel" xml:space="preserve"><value>音声マクロを有効化</value></data>
+  <data name="Voice_EnableTooltip" xml:space="preserve"><value>聞き取りを有効にします。有効な間、登録した各フレーズは発話すると作動するボタンになります。Windows に音声認識がインストールされている限り、認識デバイス自体は常に表示されます。</value></data>
+  <data name="Voice_ModeLabel" xml:space="preserve"><value>待ち受け</value></data>
+  <data name="Voice_ModeTooltip" xml:space="preserve"><value>「常時」はマイクを開いたままにします。「プッシュトゥトーク」は、割り当てた聞き取りマクロを押している間だけ聞き取ります。</value></data>
+  <data name="Voice_ModeAlways" xml:space="preserve"><value>常時</value></data>
+  <data name="Voice_ModePushToTalk" xml:space="preserve"><value>プッシュトゥトーク</value></data>
+  <data name="Voice_ConfidenceLabel" xml:space="preserve"><value>最小信頼度</value></data>
+  <data name="Voice_ConfidenceTooltip" xml:space="preserve"><value>フレーズが作動するまでに認識エンジンへ求める確信度です。雑談でマクロが作動する場合は上げ、フレーズが拾われない場合は下げてください。</value></data>
+  <data name="Voice_ListeningIdle" xml:space="preserve"><value>音声を待っています。認識結果は信頼度とともにここに表示されます。</value></data>
+  <data name="Voice_HeardFired_Format" xml:space="preserve"><value>「{0}」を認識（{1:F2}）。作動しました。</value></data>
+  <data name="Voice_HeardIgnored_Format" xml:space="preserve"><value>「{0}」を認識（{1:F2}）。最小信頼度未満か、送話キーが押されていません。</value></data>
+  <data name="Voice_PhraseLabel" xml:space="preserve"><value>フレーズ</value></data>
+  <data name="Voice_NameLabel" xml:space="preserve"><value>名前</value></data>
+  <data name="Voice_RegisterButton" xml:space="preserve"><value>登録</value></data>
+  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>登録済みフレーズ</value></data>
+  <data name="Voice_Registered_Format" xml:space="preserve"><value>「{0}」を登録しました。発話するとボタンが作動します。マクロはパッドページで割り当ててください。</value></data>
+  <data name="MacroAction_Type_VoiceListenWhileHeld" xml:space="preserve"><value>音声聞き取り（押下中）</value></data>
+  <data name="MacroAction_VoiceListenWhileHeld_Tooltip" xml:space="preserve"><value>音声マクロのプッシュトゥトーク：このマクロを押している間、認識エンジンが聞き取ります。「音声マクロを管理」で待ち受けを「プッシュトゥトーク」に設定してください。</value></data>
+  <data name="DeviceType_Microphone" xml:space="preserve"><value>マイク</value></data>
 </root>

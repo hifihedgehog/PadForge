@@ -82,27 +82,30 @@ namespace PadForge.Tests
             // appended 41..42; v18 appended 43..46; #237 appended 47..48;
             // #251 appended 49..51).
             var values = Enum.GetValues<MacroActionType>();
-            // Headphone volume appended 52..53 (2026-08-01).
-            Assert.Equal(MacroActionType.HeadphoneVolumeDown, values[^1]);
-            Assert.Equal(MacroActionType.HeadphoneVolumeUp, values[^2]);
+            // Headphone volume appended 52..53 (2026-08-01); voice listen
+            // appended 54 (#315, 2026-08-16).
+            Assert.Equal(MacroActionType.VoiceListenWhileHeld, values[^1]);
+            Assert.Equal(54, (int)MacroActionType.VoiceListenWhileHeld);
+            Assert.Equal(MacroActionType.HeadphoneVolumeDown, values[^2]);
+            Assert.Equal(MacroActionType.HeadphoneVolumeUp, values[^3]);
             Assert.Equal(52, (int)MacroActionType.HeadphoneVolumeUp);
             Assert.Equal(53, (int)MacroActionType.HeadphoneVolumeDown);
-            Assert.Equal(MacroActionType.AxisScale, values[^3]);
-            Assert.Equal(MacroActionType.AxisLatchRelease, values[^4]);
-            Assert.Equal(MacroActionType.AxisSetLatched, values[^5]);
+            Assert.Equal(MacroActionType.AxisScale, values[^4]);
+            Assert.Equal(MacroActionType.AxisLatchRelease, values[^5]);
+            Assert.Equal(MacroActionType.AxisSetLatched, values[^6]);
             Assert.Equal(49, (int)MacroActionType.AxisSetLatched);
             Assert.Equal(50, (int)MacroActionType.AxisLatchRelease);
             Assert.Equal(51, (int)MacroActionType.AxisScale);
-            Assert.Equal(MacroActionType.ComboBreak, values[^6]);
-            Assert.Equal(MacroActionType.AxisAdd, values[^7]);
-            Assert.Equal(MacroActionType.ToggleWheel, values[^8]);
-            Assert.Equal(MacroActionType.RepeatVcAxisWhileHeld, values[^9]);
-            Assert.Equal(MacroActionType.ToggleVcAxis, values[^10]);
-            Assert.Equal(MacroActionType.ToggleMouseButton, values[^11]);
-            Assert.Equal(MacroActionType.CycleTapList, values[^12]);
-            Assert.Equal(MacroActionType.MouseNudge, values[^13]);
-            Assert.Equal(MacroActionType.MouseWheelTap, values[^14]);
-            Assert.Equal(MacroActionType.AxisHold, values[^15]);
+            Assert.Equal(MacroActionType.ComboBreak, values[^7]);
+            Assert.Equal(MacroActionType.AxisAdd, values[^8]);
+            Assert.Equal(MacroActionType.ToggleWheel, values[^9]);
+            Assert.Equal(MacroActionType.RepeatVcAxisWhileHeld, values[^10]);
+            Assert.Equal(MacroActionType.ToggleVcAxis, values[^11]);
+            Assert.Equal(MacroActionType.ToggleMouseButton, values[^12]);
+            Assert.Equal(MacroActionType.CycleTapList, values[^13]);
+            Assert.Equal(MacroActionType.MouseNudge, values[^14]);
+            Assert.Equal(MacroActionType.MouseWheelTap, values[^15]);
+            Assert.Equal(MacroActionType.AxisHold, values[^16]);
 
             Assert.Equal(35, (int)MacroActionType.RepeatVcButtonWhileHeld);
             Assert.Equal(36, (int)MacroActionType.ToggleVcButton);

@@ -1,0 +1,136 @@
+<ui:FluentWindow x:Class="PadForge.Views.RegisterVoicePhraseDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        xmlns:strings="clr-namespace:PadForge.Resources.Strings"
+        ExtendsContentIntoTitleBar="True"
+        WindowBackdropType="Mica"
+        Title="{Binding Voice_Title, Source={x:Static strings:Strings.Instance}}"
+        Height="620" Width="560"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Dialog head: same chrome as the NFC registration dialog. -->
+        <Border Padding="14"
+                BorderBrush="{DynamicResource SteelLineSoftBrush}"
+                BorderThickness="0,0,0,1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Rectangle Width="3" Height="14" RadiusX="1.5" RadiusY="1.5"
+                           Fill="{DynamicResource EmberBrush}"
+                           VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <TextBlock Grid.Column="1"
+                           Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
+                           FontFamily="{StaticResource DisplayFontFamily}"
+                           FontWeight="SemiBold" FontSize="15"
+                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                           VerticalAlignment="Center" Margin="0,0,8,0"
+                           TextTrimming="CharacterEllipsis"/>
+                <ui:Button Grid.Column="2" Style="{StaticResource EmberIconButton}"
+                           VerticalAlignment="Center" Click="CloseButton_Click"
+                           ToolTip="{Binding Common_Close, Source={x:Static strings:Strings.Instance}}">
+                    <TextBlock Text="&#xE8BB;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
+                </ui:Button>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1" Margin="16">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Master switch + listening mode. No source picker: phrases
+                 live on the devices that carry the microphones, and every
+                 reachable microphone listens. -->
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                <CheckBox x:Name="EnabledBox" Content="{Binding Voice_EnableLabel, Source={x:Static strings:Strings.Instance}}"
+                          ToolTip="{Binding Voice_EnableTooltip, Source={x:Static strings:Strings.Instance}}"
+                          Checked="Setting_Changed" Unchecked="Setting_Changed" Margin="0,0,16,0"/>
+                <TextBlock Text="{Binding Voice_ModeLabel, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <ComboBox x:Name="ModeBox" MinWidth="150" SelectionChanged="Setting_Changed"
+                          ToolTip="{Binding Voice_ModeTooltip, Source={x:Static strings:Strings.Instance}}">
+                    <ComboBoxItem Content="{Binding Voice_ModeAlways, Source={x:Static strings:Strings.Instance}}"/>
+                    <ComboBoxItem Content="{Binding Voice_ModePushToTalk, Source={x:Static strings:Strings.Instance}}"/>
+                </ComboBox>
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,10">
+                <TextBlock Text="{Binding Voice_ConfidenceLabel, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <Slider x:Name="ConfidenceSlider" Minimum="0.5" Maximum="0.99" Width="200"
+                        SmallChange="0.01" LargeChange="0.05" VerticalAlignment="Center"
+                        ValueChanged="Setting_Changed"
+                        ToolTip="{Binding Voice_ConfidenceTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                <TextBlock x:Name="ConfidenceText" VerticalAlignment="Center" Margin="8,0,0,0"
+                           FontFamily="{StaticResource TelemetryFontFamily}"/>
+            </StackPanel>
+
+            <!-- Live readout, naming which microphone heard it. -->
+            <TextBlock Grid.Row="2" x:Name="HeardText"
+                       Text="{Binding Voice_ListeningIdle, Source={x:Static strings:Strings.Instance}}"
+                       FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
+                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                       Margin="0,0,0,12" TextWrapping="Wrap"/>
+
+            <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,0,0,12">
+                <TextBlock Text="{Binding Voice_PhraseLabel, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <TextBox x:Name="PhraseBox" Width="200" VerticalAlignment="Center" Margin="0,0,8,0"
+                         KeyDown="PhraseBox_KeyDown"/>
+                <TextBlock Text="{Binding Voice_NameLabel, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <TextBox x:Name="NameBox" Width="130" VerticalAlignment="Center" Margin="0,0,8,0"
+                         KeyDown="PhraseBox_KeyDown"/>
+                <Button x:Name="RegisterBtn" Content="{Binding Voice_RegisterButton, Source={x:Static strings:Strings.Instance}}" Click="RegisterButton_Click"
+                        MinWidth="90"
+                        Style="{StaticResource EmberAccentButton}"/>
+            </StackPanel>
+
+            <TextBlock Grid.Row="4" Text="{Binding Voice_RegisteredHeader, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,4,0,4"/>
+
+            <ListBox Grid.Row="5" x:Name="PhraseListBox" MinHeight="100">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem" BasedOn="{StaticResource EmberSelectListItem}">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="Padding" Value="8,6"/>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+                                <TextBlock Text="{Binding Name}"/>
+                                <TextBlock Text="{Binding Phrase}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                            </StackPanel>
+                            <Button Grid.Column="1" Content="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}" Click="RemoveButton_Click"
+                                    Style="{StaticResource EmberDestructiveButton}"
+                                    Tag="{Binding Phrase}" MinWidth="72" VerticalAlignment="Center"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,18,0,0">
+                <Button Content="{Binding Common_Close, Source={x:Static strings:Strings.Instance}}" MinWidth="90" IsCancel="True" Click="CloseButton_Click"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</ui:FluentWindow>

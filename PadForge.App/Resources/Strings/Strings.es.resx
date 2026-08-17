@@ -3143,4 +3143,26 @@ Puedes volver a intentarlo más tarde desde Configuración.</value></data>
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Avisar cuando esté en o por debajo de</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Vibrar también el mando</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Probar notificación</value></data>
+  <data name="Voice_AnyPhrase" xml:space="preserve"><value>Cualquier frase</value></data>
+  <data name="Voice_Title" xml:space="preserve"><value>Macros de voz</value></data>
+  <data name="Voice_ManageButton" xml:space="preserve"><value>Administrar macros de voz</value></data>
+  <data name="Voice_EnableLabel" xml:space="preserve"><value>Activar macros de voz</value></data>
+  <data name="Voice_EnableTooltip" xml:space="preserve"><value>Activa la escucha. Mientras está activado, cada frase registrada es un botón que se dispara al decirla. El dispositivo reconocedor siempre aparece mientras Windows tenga un reconocedor de voz instalado.</value></data>
+  <data name="Voice_ModeLabel" xml:space="preserve"><value>Escucha</value></data>
+  <data name="Voice_ModeTooltip" xml:space="preserve"><value>"Siempre" mantiene el micrófono abierto. "Pulsar para hablar" escucha solo mientras se mantiene un macro de escucha asignado.</value></data>
+  <data name="Voice_ModeAlways" xml:space="preserve"><value>Siempre</value></data>
+  <data name="Voice_ModePushToTalk" xml:space="preserve"><value>Pulsar para hablar</value></data>
+  <data name="Voice_ConfidenceLabel" xml:space="preserve"><value>Confianza mínima</value></data>
+  <data name="Voice_ConfidenceTooltip" xml:space="preserve"><value>Cuán seguro debe estar el reconocedor antes de que una frase se active. Súbela si el habla casual activa macros, bájala si tus frases no se detectan.</value></data>
+  <data name="Voice_ListeningIdle" xml:space="preserve"><value>Esperando voz. Los reconocimientos aparecen aquí con su confianza.</value></data>
+  <data name="Voice_HeardFired_Format" xml:space="preserve"><value>Se oyó "{0}" ({1:F2}). Activado.</value></data>
+  <data name="Voice_HeardIgnored_Format" xml:space="preserve"><value>Se oyó "{0}" ({1:F2}). Por debajo de la confianza mínima o la tecla de hablar no está pulsada.</value></data>
+  <data name="Voice_PhraseLabel" xml:space="preserve"><value>Frase</value></data>
+  <data name="Voice_NameLabel" xml:space="preserve"><value>Nombre</value></data>
+  <data name="Voice_RegisterButton" xml:space="preserve"><value>Registrar</value></data>
+  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>Frases registradas</value></data>
+  <data name="Voice_Registered_Format" xml:space="preserve"><value>Se registró "{0}". Dila para activar su botón y asigna macros en la página del mando.</value></data>
+  <data name="MacroAction_Type_VoiceListenWhileHeld" xml:space="preserve"><value>Escucha de voz (mantenido)</value></data>
+  <data name="MacroAction_VoiceListenWhileHeld_Tooltip" xml:space="preserve"><value>Pulsar para hablar de las macros de voz: mientras se mantiene este macro, el reconocedor escucha. Configura la escucha en "Pulsar para hablar" en Administrar macros de voz.</value></data>
+  <data name="DeviceType_Microphone" xml:space="preserve"><value>Micrófono</value></data>
 </root>

@@ -851,6 +851,18 @@
                             </Button.Style>
                         </Button>
 
+                        <!-- Manage voice phrases + settings (issue #317): standalone
+                             microphone rows, and Bluetooth DualSense pads whose embedded
+                             mic carries the phrases on the pad itself. -->
+                        <Button Content="{Binding Voice_ManageButton, Source={x:Static strings:Strings.Instance}}" Margin="0,6,0,8"
+                                Padding="8,4" HorizontalAlignment="Left"
+                                Click="ManageVoicePhrases_Click"
+                                Visibility="{Binding SelectedDevice.ShowManageVoicePhrases, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"/>
+                            </Button.Style>
+                        </Button>
+
                         <Separator Margin="0,2,0,6"/>
 
                         <!-- Assign to slot -->

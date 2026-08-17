@@ -1978,7 +1978,8 @@ namespace PadForge.Common.Input
                  or MacroActionType.MouseMove or MacroActionType.MouseScroll
                  or MacroActionType.RepeatKeyWhileHeld
                  or MacroActionType.RepeatVcButtonWhileHeld
-                 or MacroActionType.RepeatVcAxisWhileHeld;
+                 or MacroActionType.RepeatVcAxisWhileHeld
+                 or MacroActionType.VoiceListenWhileHeld;
 
         /// <summary>True when every action in the macro is continuous, i.e.
         /// the run can never complete a sequence pass and only a release can
@@ -2136,6 +2137,12 @@ namespace PadForge.Common.Input
                 }
                 case MacroActionType.RepeatKeyWhileHeld:
                     ExecuteRepeatKeyWhileHeld(action);
+                    break;
+                case MacroActionType.VoiceListenWhileHeld:
+                    // Push-to-talk (issue #315): a heartbeat per frame while
+                    // held. Release needs no callback because the gate decays
+                    // ~100 ms after the last beat.
+                    PadForge.Services.VoiceMacroService.NoteListenHeld();
                     break;
                 case MacroActionType.RepeatVcButtonWhileHeld:
                     // Turbo for a VC button (issue #9 wave 1b): the ON half of
@@ -4496,6 +4503,11 @@ namespace PadForge.Common.Input
                 }
                 case MacroActionType.RepeatKeyWhileHeld:
                     ExecuteRepeatKeyWhileHeld(action);
+                    break;
+                case MacroActionType.VoiceListenWhileHeld:
+                    // Push-to-talk (issue #315), the twin of the slot-macro
+                    // dispatch above: same heartbeat, same decay contract.
+                    PadForge.Services.VoiceMacroService.NoteListenHeld();
                     break;
                 case MacroActionType.RepeatVcButtonWhileHeld:
                     // Extended twin of the Gamepad-path turbo (issue #9 wave

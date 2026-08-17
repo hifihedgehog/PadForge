@@ -3163,4 +3163,26 @@ Je kunt het later opnieuw proberen via Instellingen.</value></data>
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Melden bij of onder</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Ook de controller laten trillen</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Melding testen</value></data>
+  <data name="Voice_AnyPhrase" xml:space="preserve"><value>Elke zin</value></data>
+  <data name="Voice_Title" xml:space="preserve"><value>Spraakmacro's</value></data>
+  <data name="Voice_ManageButton" xml:space="preserve"><value>Spraakmacro's beheren</value></data>
+  <data name="Voice_EnableLabel" xml:space="preserve"><value>Spraakmacro's inschakelen</value></data>
+  <data name="Voice_EnableTooltip" xml:space="preserve"><value>Schakelt het luisteren in. Zolang dit aanstaat, is elke geregistreerde zin een knop die afgaat wanneer u die uitspreekt. Het herkennerapparaat zelf verschijnt altijd zolang Windows een spraakherkenner heeft geïnstalleerd.</value></data>
+  <data name="Voice_ModeLabel" xml:space="preserve"><value>Luisteren</value></data>
+  <data name="Voice_ModeTooltip" xml:space="preserve"><value>"Altijd" houdt de microfoon open. "Push-to-talk" luistert alleen zolang een toegewezen luistermacro wordt vastgehouden.</value></data>
+  <data name="Voice_ModeAlways" xml:space="preserve"><value>Altijd</value></data>
+  <data name="Voice_ModePushToTalk" xml:space="preserve"><value>Push-to-talk</value></data>
+  <data name="Voice_ConfidenceLabel" xml:space="preserve"><value>Minimale zekerheid</value></data>
+  <data name="Voice_ConfidenceTooltip" xml:space="preserve"><value>Hoe zeker de herkenner moet zijn voordat een zin afgaat. Verhoog dit als losse spraak macro's activeert, verlaag het als uw zinnen worden gemist.</value></data>
+  <data name="Voice_ListeningIdle" xml:space="preserve"><value>Wachten op spraak. Herkenningen verschijnen hier met hun zekerheid.</value></data>
+  <data name="Voice_HeardFired_Format" xml:space="preserve"><value>"{0}" gehoord ({1:F2}). Afgegaan.</value></data>
+  <data name="Voice_HeardIgnored_Format" xml:space="preserve"><value>"{0}" gehoord ({1:F2}). Onder de minimale zekerheid of de spreektoets is los.</value></data>
+  <data name="Voice_PhraseLabel" xml:space="preserve"><value>Zin</value></data>
+  <data name="Voice_NameLabel" xml:space="preserve"><value>Naam</value></data>
+  <data name="Voice_RegisterButton" xml:space="preserve"><value>Registreren</value></data>
+  <data name="Voice_RegisteredHeader" xml:space="preserve"><value>Geregistreerde zinnen</value></data>
+  <data name="Voice_Registered_Format" xml:space="preserve"><value>"{0}" geregistreerd. Spreek de zin uit om de knop af te laten gaan en koppel macro's op de padpagina.</value></data>
+  <data name="MacroAction_Type_VoiceListenWhileHeld" xml:space="preserve"><value>Spraak luisteren (vastgehouden)</value></data>
+  <data name="MacroAction_VoiceListenWhileHeld_Tooltip" xml:space="preserve"><value>Push-to-talk voor spraakmacro's: zolang deze macro wordt vastgehouden, luistert de herkenner. Zet Luisteren op Push-to-talk in Spraakmacro's beheren.</value></data>
+  <data name="DeviceType_Microphone" xml:space="preserve"><value>Microfoon</value></data>
 </root>

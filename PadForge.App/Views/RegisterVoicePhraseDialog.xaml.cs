@@ -1,0 +1,120 @@
+using System;
+using System.Windows;
+using System.Windows.Input;
+using PadForge.Common.Input;
+using PadForge.Resources.Strings;
+using PadForge.Services;
+
+namespace PadForge.Views
+{
+    /// <summary>
+    /// Voice macro management (issue #317): the settings band (enable,
+    /// listening mode, confidence floor), a live "heard" readout naming the
+    /// microphone that heard it, and the type-and-name phrase registration
+    /// flow with a Remove list. Modeled on <see cref="RegisterNfcTagDialog"/>.
+    /// There is no source picker: phrases live on the devices that carry the
+    /// microphones, and every reachable microphone runs its own session.
+    /// </summary>
+    public partial class RegisterVoicePhraseDialog : Wpf.Ui.Controls.FluentWindow
+    {
+        private Action<string, string, float, bool> _heardHandler;
+        private VoiceMacroService _subscribedSvc;
+        private bool _loading = true;
+
+        public RegisterVoicePhraseDialog()
+        {
+            InitializeComponent();
+            MouseLeftButtonDown += (_, __) => { try { DragMove(); } catch { } };
+
+            EnabledBox.IsChecked = VoiceMacroService.Enabled;
+            ModeBox.SelectedIndex = VoiceMacroService.ListeningMode == 1 ? 1 : 0;
+            ConfidenceSlider.Value = Math.Clamp(VoiceMacroService.MinConfidence, 0.5, 0.99);
+            ConfidenceText.Text = VoiceMacroService.MinConfidence.ToString("F2");
+            _loading = false;
+
+            RefreshList();
+
+            var svc = VoiceMacroService.Active;
+            if (svc != null)
+            {
+                _heardHandler = OnPhraseHeard;
+                svc.PhraseHeard += _heardHandler;
+                _subscribedSvc = svc;
+            }
+
+            Closed += (s, e) => Unsubscribe();
+        }
+
+        private void Unsubscribe()
+        {
+            if (_subscribedSvc != null && _heardHandler != null)
+            {
+                try { _subscribedSvc.PhraseHeard -= _heardHandler; } catch { }
+            }
+            _subscribedSvc = null;
+            _heardHandler = null;
+        }
+
+        private void OnPhraseHeard(string sourceName, string text, float confidence, bool fired)
+        {
+            // Engine thread; hop before touching controls.
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                HeardText.Text = "[" + sourceName + "] " + string.Format(
+                    fired ? Strings.Instance.Voice_HeardFired_Format : Strings.Instance.Voice_HeardIgnored_Format,
+                    text, confidence);
+            }));
+        }
+
+        private void Setting_Changed(object sender, RoutedEventArgs e)
+        {
+            if (_loading) return;
+            VoiceMacroService.Enabled = EnabledBox.IsChecked == true;
+            VoiceMacroService.ListeningMode = ModeBox.SelectedIndex == 1 ? 1 : 0;
+            VoiceMacroService.MinConfidence = (float)ConfidenceSlider.Value;
+            ConfidenceText.Text = VoiceMacroService.MinConfidence.ToString("F2");
+            // The registry-changed pipeline persists on phrase edits. A pure
+            // settings change rides the dirty queue like any other UI edit.
+            try { (Application.Current.MainWindow as MainWindow)?.SettingsService?.MarkDirty(); } catch { }
+        }
+
+        private void RegisterButton_Click(object sender, RoutedEventArgs e)
+        {
+            string phrase = PhraseBox.Text;
+            if (string.IsNullOrWhiteSpace(phrase)) return;
+            string name = VoicePhraseRegistry.Register(phrase, NameBox.Text);
+            if (name == null) return;
+            HeardText.Text = string.Format(Strings.Instance.Voice_Registered_Format, name);
+            PhraseBox.Text = string.Empty;
+            NameBox.Text = string.Empty;
+            PhraseBox.Focus();
+            RefreshList();
+        }
+
+        private void RemoveButton_Click(object sender, RoutedEventArgs e)
+        {
+            if ((sender as FrameworkElement)?.Tag is string phrase && !string.IsNullOrEmpty(phrase))
+            {
+                VoicePhraseRegistry.Remove(phrase);
+                RefreshList();
+            }
+        }
+
+        private void PhraseBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                RegisterButton_Click(sender, e);
+                e.Handled = true;
+            }
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            Unsubscribe();
+            Close();
+        }
+
+        private void RefreshList() => PhraseListBox.ItemsSource = VoicePhraseRegistry.Phrases;
+    }
+}

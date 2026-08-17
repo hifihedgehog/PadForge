@@ -1247,7 +1247,8 @@ namespace PadForge.Services
                     AimEngageDevice = ps.GyroAimEngageDeviceGuid ?? "",
                     AimEngageDescriptor = ps.GyroAimEngageButton ?? "",
                     InvertPitch = TryParseBoolPs(ps.GyroInvertPitch, false),
-                    InvertYawRoll = TryParseBoolPs(ps.GyroInvertYawRoll, false),
+                    InvertYaw = TryParseBoolPs(ps.GyroInvertYaw, false),
+                    InvertRoll = TryParseBoolPs(ps.GyroInvertRollEffective, false),
                     ApplyToPassthrough = TryParseBoolPs(ps.GyroApplyTuningToPassthrough, false),
                     CompassYaw = TryParseBoolPs(ps.GyroCompassYaw, false),
                 };
@@ -3847,7 +3848,8 @@ namespace PadForge.Services
                 AddToken(parts, "SPACE " + ps.GyroSpace);
             if (!string.IsNullOrEmpty(ps.GyroAimEngageButton)) AddToken(parts, "ENGAGE");
             if (PsFlagSet(ps.GyroInvertPitch)) AddToken(parts, "INV P");
-            if (PsFlagSet(ps.GyroInvertYawRoll)) AddToken(parts, "INV Y");
+            if (PsFlagSet(ps.GyroInvertYaw)) AddToken(parts, "INV Y");
+            if (PsFlagSet(ps.GyroInvertRollEffective)) AddToken(parts, "INV R");
             if (PsFlagSet(ps.GyroApplyTuningToPassthrough)) AddToken(parts, "PASSTHRU");
         }
 
@@ -5516,7 +5518,8 @@ namespace PadForge.Services
 
             ps.GyroInvertPitch = padVm.GyroInvertPitch ? "1" : "0";
             ps.GyroCompassYaw = padVm.GyroCompassYaw ? "1" : "0";
-            ps.GyroInvertYawRoll = padVm.GyroInvertYawRoll ? "1" : "0";
+            ps.GyroInvertYaw = padVm.GyroInvertYaw ? "1" : "0";
+            ps.GyroInvertRoll = padVm.GyroInvertRoll ? "1" : "0";
             ps.GyroApplyTuningToPassthrough = padVm.GyroApplyTuningToPassthrough ? "1" : "0";
 
             // Constant force (per-device override).
@@ -5925,7 +5928,8 @@ namespace PadForge.Services
             padVm.RightTriggerRouteActivatorMode = string.IsNullOrEmpty(ps.RightTriggerRouteActivatorMode) ? "Hold" : ps.RightTriggerRouteActivatorMode;
             padVm.GyroInvertPitch = ps.GyroInvertPitch == "1";
             padVm.GyroCompassYaw = ps.GyroCompassYaw == "1";
-            padVm.GyroInvertYawRoll = ps.GyroInvertYawRoll == "1";
+            padVm.GyroInvertYaw = ps.GyroInvertYaw == "1";
+            padVm.GyroInvertRoll = ps.GyroInvertRollEffective == "1";
             padVm.GyroApplyTuningToPassthrough = ps.GyroApplyTuningToPassthrough == "1";
 
             // Constant force.

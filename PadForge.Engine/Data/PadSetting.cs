@@ -751,8 +751,27 @@ namespace PadForge.Engine.Data
         [XmlElement] public string GyroInvertPitch { get; set; } = "0";
 
         /// <summary>Top-level invert toggle for the projected yaw axis
-        /// (includes Roll for Local space and Horizontal blend).</summary>
-        [XmlElement("GyroInvertYaw")] public string GyroInvertYawRoll { get; set; } = "0";
+        /// and, outside Local space, the whole projected horizontal lane.
+        /// The XML element name predates the yaw/roll split (#321), so
+        /// every profile saved under the combined toggle loads here
+        /// unchanged.</summary>
+        [XmlElement("GyroInvertYaw")] public string GyroInvertYaw { get; set; } = "0";
+
+        /// <summary>Invert toggle for the roll gyro source and the
+        /// roll-dominant half of the Horizontal blend (#321). The empty
+        /// string is a SENTINEL: "written before the split existed",
+        /// and it resolves to the yaw value so a profile saved with the
+        /// combined invert on comes out with both axes inverted, which
+        /// is what that profile meant. An authored "0" or "1" always
+        /// wins. Consumers read <see cref="GyroInvertRollEffective"/>,
+        /// never this field directly.</summary>
+        [XmlElement] public string GyroInvertRoll { get; set; } = "";
+
+        /// <summary>The single resolver for the roll invert: the
+        /// authored value, or the yaw value while the sentinel says the
+        /// profile predates the split.</summary>
+        [XmlIgnore] public string GyroInvertRollEffective
+            => string.IsNullOrEmpty(GyroInvertRoll) ? GyroInvertYaw : GyroInvertRoll;
 
         /// <summary>When "1" (default), the Gyro tab tuning chain is
         /// applied to this device's motion passthrough on this slot —
@@ -1566,7 +1585,8 @@ namespace PadForge.Engine.Data
             sb.Append(LeftTriggerRouteActivatorMode); sb.Append('|');
             sb.Append(RightTriggerRouteActivatorMode); sb.Append('|');
             sb.Append(GyroInvertPitch); sb.Append('|');
-            sb.Append(GyroInvertYawRoll); sb.Append('|');
+            sb.Append(GyroInvertYaw); sb.Append('|');
+            sb.Append(GyroInvertRoll); sb.Append('|');
             sb.Append(GyroApplyTuningToPassthrough); sb.Append('|');
 
             // Inversion overrides
@@ -2194,7 +2214,7 @@ namespace PadForge.Engine.Data
             nameof(GyroSmoothingWindowMs), nameof(GyroRealWorldCalibration),
             nameof(GyroAimEngageButton), nameof(GyroAimEngageDeviceGuid),
             nameof(GyroAimEngageMode),
-            nameof(GyroInvertPitch), nameof(GyroInvertYawRoll),
+            nameof(GyroInvertPitch), nameof(GyroInvertYaw), nameof(GyroInvertRoll),
             nameof(GyroApplyTuningToPassthrough),
             // Axis inversion
             nameof(LeftThumbAxisXInvert), nameof(LeftThumbAxisYInvert),

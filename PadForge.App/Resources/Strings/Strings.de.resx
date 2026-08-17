@@ -1258,7 +1258,6 @@
   <data name="Pad_ResetGyroSensitivityV" xml:space="preserve"><value>Vertikale Empfindlichkeit zurücksetzen</value></data>
   <data name="Pad_ResetGyroSensitivityUnits" xml:space="preserve"><value>Einheiten zurücksetzen</value></data>
   <data name="Pad_ResetGyroInvertPitch" xml:space="preserve"><value>Pitch-Invertierung zurücksetzen</value></data>
-  <data name="Pad_ResetGyroInvertYawRoll" xml:space="preserve"><value>Yaw / Roll-Invertierung zurücksetzen</value></data>
   <data name="Pad_ResetGyroRealWorldCalibration" xml:space="preserve"><value>Reale Kalibrierung zurücksetzen</value></data>
   <data name="Pad_ResetGyroDeadZone" xml:space="preserve"><value>Totzone zurücksetzen</value></data>
   <data name="Pad_ResetGyroTightening" xml:space="preserve"><value>Verdichtung zurücksetzen</value></data>
@@ -1298,6 +1297,12 @@
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = unveränderte Controller-Achsen. Player = Yaw wird auf die reale Vertikale (Schwerkraft) projiziert, Pitch bleibt lokal. Jibb Smarts empfohlener Standard für natürliches Gefühl bei jeder Neigung. World = Yaw und Pitch werden beide auf Weltachsen projiziert.</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Pitch (Y) invertieren</value></data>
   <data name="Settings_GyroInvertPitch_Tooltip" xml:space="preserve"><value>Globale Pitch-Inversion. Wird nach der Player/World-Projektion angewendet, unabhängig von den Invert-Flags pro Quelle in der Zuordnungstabelle.</value></data>
+  <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Yaw (X) invertieren</value></data>
+  <data name="Settings_GyroInvertYaw_Tooltip" xml:space="preserve"><value>Invertiert die Yaw-Achse sowie die Horizontal-Mischung, solange Yaw die dominante Bewegung ist.</value></data>
+  <data name="Settings_GyroInvertRoll" xml:space="preserve"><value>Roll (X) invertieren</value></data>
+  <data name="Settings_GyroInvertRoll_Tooltip" xml:space="preserve"><value>Invertiert die Roll-Achse sowie die Horizontal-Mischung, solange Roll die dominante Bewegung ist.</value></data>
+  <data name="Pad_ResetGyroInvertYaw" xml:space="preserve"><value>Yaw-Invertierung zurücksetzen</value></data>
+  <data name="Pad_ResetGyroInvertRoll" xml:space="preserve"><value>Roll-Invertierung zurücksetzen</value></data>
   <data name="Pad_Gyro_Compass_Header" xml:space="preserve"><value>Kompass</value></data>
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>Dieser Controller trägt ein Magnetometer. Die Verankerung der Gierachse am magnetischen Norden entfernt langsames horizontales Driften beim Gyro-Zielen. Zuerst kalibrieren: Kalibrieren drücken, den Controller einige Sekunden in einer Acht durch alle Lagen drehen, dann erneut drücken.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Gieren am Kompass verankern</value></data>
@@ -1305,8 +1310,6 @@
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Auf Standard zurücksetzen (aus)</value></data>
   <data name="Pad_Gyro_MagCalibrate" xml:space="preserve"><value>Magnetometer kalibrieren</value></data>
   <data name="Pad_Gyro_MagCalibrate_Stop" xml:space="preserve"><value>Kalibrierung abschließen</value></data>
-  <data name="Settings_GyroInvertYawRoll" xml:space="preserve"><value>Yaw / Roll (X) invertieren</value></data>
-  <data name="Settings_GyroInvertYawRoll_Tooltip" xml:space="preserve"><value>Globale Yaw-Inversion. Gilt auch für Roll- und Gyro-Horizontal-Quellen.</value></data>
   <data name="Settings_GyroRealWorldCalibration" xml:space="preserve"><value>Reale Kalibrierung</value></data>
   <data name="Settings_GyroRealWorldCalibration_Tooltip" xml:space="preserve"><value>Spielgrade pro Grad physischer Controller-Drehung. 0 = deaktiviert. 1 = 1:1 (Pad 90° drehen → Spielansicht 90°). Pro Spiel einmal kalibrieren: Pad 360° drehen und den Wert anpassen, bis die Spielansicht ebenfalls 360° dreht.</value></data>
   <data name="Settings_GyroTightening" xml:space="preserve"><value>Verdichtung</value></data>

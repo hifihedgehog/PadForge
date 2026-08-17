@@ -1554,6 +1554,8 @@ namespace PadForge.Common.Input
             new Dictionary<string, MicrophoneInputDevice>(StringComparer.Ordinal);
         private long _micNextSweepTicks;
         private volatile bool _micInputsSuppressed;
+        private volatile bool _micSweepRunning;
+        private volatile Dictionary<string, string> _micEndpointSnapshot;
         private const int _micSweepIntervalMs = 4000;
 
         /// <summary>
@@ -1572,28 +1574,41 @@ namespace PadForge.Common.Input
                 return false;
 
             long now = Environment.TickCount64;
-            if (now < _micNextSweepTicks)
-                return false;
-            _micNextSweepTicks = now + _micSweepIntervalMs;
-
-            // The recognizer service rides this sweep's cadence: absent when
-            // no speech recognizer is installed, harmless to re-call.
-            PadForge.Services.VoiceMacroService.Start();
-
-            var current = new Dictionary<string, string>(StringComparer.Ordinal);
-            try
+            // The COM endpoint enumeration is NOT allowed on this thread: it
+            // costs 5-20 ms and this is the 1000 Hz poll loop, so running it
+            // inline read as periodic ~920 Hz dips (owner report,
+            // 2026-08-16). A worker enumerates on the sweep cadence and
+            // publishes a snapshot; this phase only consumes it, the same
+            // split the headset sweep uses for its Bluetooth I/O.
+            if (!_micSweepRunning && now >= _micNextSweepTicks)
             {
-                using var en = new NAudio.CoreAudioApi.MMDeviceEnumerator();
-                foreach (var dev in en.EnumerateAudioEndPoints(
-                    NAudio.CoreAudioApi.DataFlow.Capture, NAudio.CoreAudioApi.DeviceState.Active))
+                _micSweepRunning = true;
+                _micNextSweepTicks = now + _micSweepIntervalMs;
+                System.Threading.Tasks.Task.Run(() =>
                 {
-                    try { current[dev.ID] = dev.FriendlyName; } catch { }
-                }
+                    try
+                    {
+                        // The recognizer service rides this cadence: absent
+                        // when no speech recognizer is installed, harmless
+                        // to re-call.
+                        PadForge.Services.VoiceMacroService.Start();
+                        var snap = new Dictionary<string, string>(StringComparer.Ordinal);
+                        using var en = new NAudio.CoreAudioApi.MMDeviceEnumerator();
+                        foreach (var dev in en.EnumerateAudioEndPoints(
+                            NAudio.CoreAudioApi.DataFlow.Capture, NAudio.CoreAudioApi.DeviceState.Active))
+                        {
+                            try { snap[dev.ID] = dev.FriendlyName; } catch { }
+                        }
+                        _micEndpointSnapshot = snap;
+                    }
+                    catch { /* audio stack unavailable; next sweep retries */ }
+                    finally { _micSweepRunning = false; }
+                });
             }
-            catch
-            {
-                return false; // audio stack unavailable this instant; next sweep retries
-            }
+
+            var current = _micEndpointSnapshot;
+            if (current == null)
+                return false; // no snapshot yet
 
             bool changed = false;
             lock (_micDevicesLock)

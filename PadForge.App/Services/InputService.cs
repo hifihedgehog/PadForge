@@ -12905,6 +12905,21 @@ namespace PadForge.Services
                     {
                         if (buttons[b])
                         {
+                            // Voice phrase pulses (#317) co-stamp the Any
+                            // slot and the phrase's own slot in the same
+                            // tick, so first-pressed-wins would always
+                            // record Any (the lower index). When the win IS
+                            // an Any slot, upgrade to the highest pressed
+                            // phrase slot. Variables speak raw buttons only
+                            // (no descriptor field), and the raw read is
+                            // live state either way.
+                            if ((ud.HasVoicePhrases
+                                    && b == PadForge.Engine.Common.Mapping.SourceCoercion.VoicePhraseButtonBase)
+                                || (ud.CapType == PadForge.Engine.InputDeviceType.Microphone && b == 0))
+                            {
+                                for (int j = buttons.Length - 1; j > b; j--)
+                                    if (buttons[j]) { b = j; break; }
+                            }
                             FinalizeExpressionVariableInputDevice(ud.InstanceGuid, rawButton: b, pov: null, axis: MacroAxisTarget.None);
                             return;
                         }

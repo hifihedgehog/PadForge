@@ -483,7 +483,15 @@ namespace PadForge.Services
             if (!fires) return;
             int button = VoicePhraseRegistry.ButtonForPhrase(text);
             if (ses.PadGuid != Guid.Empty) VoicePulse.Stamp(ses.PadGuid, button);
-            else MicrophoneInputDevice.StampPulse(ses.EndpointId, button);
+            else
+            {
+                MicrophoneInputDevice.StampPulse(ses.EndpointId, button);
+                // A recognition through the persona's headset endpoint came
+                // from a pad's own microphone: light that pad's Voice
+                // Macros preview too, when the pad is unambiguous.
+                if (AudioPassthroughService.TryGetSoleBtMicPad(out var padGuid))
+                    VoicePulse.Stamp(padGuid, button);
+            }
         }
 
         // ── The Bluetooth tee entry point. AudioPassthroughService calls

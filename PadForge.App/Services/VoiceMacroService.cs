@@ -119,8 +119,10 @@ namespace PadForge.Services
             public string EndpointId;       // null for pad tee sessions
             public bool OwnsBtMicLane;      // pad session that opened the mic itself
             public long SelfTestUntil;      // pulses suppressed while injecting
-            public System.Speech.Recognition.SpeechRecognitionEngine Engine;
-            public VoicePcmStream Pcm;
+            public System.Speech.Recognition.SpeechRecognitionEngine Engine;   // SAPI fallback only
+            public VoicePcmStream Pcm;                                          // SAPI fallback only
+            public IVoicePcmSink Sink;              // where producers write, either engine
+            public long MuteProducersUntilTicks;    // self-test owns the pipe below this
             public WasapiCapture Capture;   // null when the pad tee feeds it
             public int Gen;
         }
@@ -128,6 +130,7 @@ namespace PadForge.Services
         private readonly object _sessionsLock = new();
         private readonly Dictionary<string, Session> _sessions = new(StringComparer.Ordinal);
         private int _grammarGen;
+        private bool _lastVoskReady;
         private volatile bool _disposed;
         private Thread _worker;
 
@@ -149,6 +152,15 @@ namespace PadForge.Services
             {
                 try
                 {
+                    if (Enabled && VoicePhraseRegistry.Count > 0)
+                        VoskModelStore.EnsureStarted();
+                    bool voskReady = VoskModelStore.IsReady;
+                    if (voskReady != _lastVoskReady)
+                    {
+                        _lastVoskReady = voskReady;
+                        Interlocked.Increment(ref _grammarGen);
+                        Engine.SdlDiagLog.WriteLine("VOICE engine switch: " + (voskReady ? "vosk" : "sapi fallback"));
+                    }
                     int gen = _grammarGen;
                     var desired = Enabled && VoicePhraseRegistry.Count > 0
                         ? ComputeDesiredSources()
@@ -284,11 +296,55 @@ namespace PadForge.Services
         {
             try
             {
+                var phrases = VoicePhraseRegistry.Phrases;
+                if (phrases.Count == 0) return null;
+
+                bool isEndpointSrc = padGuid == Guid.Empty;
+                var voskModel = VoskModelStore.Model;
+                if (voskModel != null)
+                {
+                    var vses = new Session
+                    {
+                        Key = key, DisplayName = name, PadGuid = padGuid,
+                        EndpointId = isEndpointSrc ? endpointOrPath : null,
+                        Gen = gen,
+                    };
+                    vses.Sink = new VoskSession(voskModel,
+                        phrases.Select(x => x.Phrase).ToArray(),
+                        (text, conf) => OnRecognized(vses, text, conf),
+                        text =>
+                        {
+                            Engine.SdlDiagLog.WriteLine($"VOICE [{vses.DisplayName}] garbage \"{text}\" ([unk])");
+                            PhraseHeard?.Invoke(vses.DisplayName, text, 0f, false);
+                        });
+                    if (isEndpointSrc)
+                    {
+                        vses.Capture = OpenEndpointCapture(endpointOrPath, vses);
+                        if (vses.Capture == null)
+                        {
+                            Engine.SdlDiagLog.WriteLine("VOICE [" + name + "] endpoint unavailable");
+                            vses.Sink.Dispose();
+                            return null;
+                        }
+                    }
+                    else if (!AudioPassthroughService.IsBtMicLaneActive(padGuid))
+                    {
+                        if (!AudioPassthroughService.StartVoiceBtMic(padGuid, endpointOrPath))
+                        {
+                            vses.Sink.Dispose();
+                            return null;
+                        }
+                        vses.OwnsBtMicLane = true;
+                    }
+                    Engine.SdlDiagLog.WriteLine($"VOICE [{name}] listening (vosk, {phrases.Count} phrases, "
+                        + (isEndpointSrc ? "endpoint" : vses.OwnsBtMicLane ? "pad BT direct, own session" : "pad BT direct, persona tee") + ")");
+                    MaybeRunSelfTest(vses);
+                    return vses;
+                }
+
                 var installed = System.Speech.Recognition.SpeechRecognitionEngine.InstalledRecognizers();
                 if (installed.Count == 0) return null;
                 var info = installed[0];
-                var phrases = VoicePhraseRegistry.Phrases;
-                if (phrases.Count == 0) return null;
 
                 Engine.SdlDiagLog.WriteLine($"VOICE [{name}] build: engine");
                 var engine = new System.Speech.Recognition.SpeechRecognitionEngine(info);
@@ -324,6 +380,7 @@ namespace PadForge.Services
                     Engine = engine, Gen = gen,
                     Pcm = new VoicePcmStream(),
                 };
+                ses.Sink = ses.Pcm;
                 engine.SpeechRecognized += (s, e) =>
                 {
                     // Dictation-sink wins are garbage by definition: the
@@ -376,7 +433,7 @@ namespace PadForge.Services
 
                 if (isEndpoint)
                 {
-                    ses.Capture = OpenEndpointCapture(endpointOrPath, ses.Pcm);
+                    ses.Capture = OpenEndpointCapture(endpointOrPath, ses);
                     if (ses.Capture == null)
                     {
                         Engine.SdlDiagLog.WriteLine("VOICE [" + name + "] endpoint unavailable");
@@ -431,7 +488,7 @@ namespace PadForge.Services
                 try { AudioPassthroughService.StopVoiceBtMic(ses.PadGuid); } catch { }
             try { ses.Capture?.StopRecording(); } catch { }
             try { ses.Capture?.Dispose(); } catch { }
-            try { ses.Pcm?.Dispose(); } catch { }
+            try { ses.Sink?.Dispose(); } catch { }
             try { ses.Engine?.RecognizeAsyncCancel(); } catch { }
             try { ses.Engine?.Dispose(); } catch { }
             Engine.SdlDiagLog.WriteLine($"VOICE [{ses.DisplayName}] session down ({reason})");
@@ -471,7 +528,7 @@ namespace PadForge.Services
                         return;
                     }
                     ses.SelfTestUntil = Environment.TickCount64 + 10000;
-                    System.Threading.Volatile.Write(ref ses.Pcm.MuteProducersUntil, Environment.TickCount64 + 6000);
+                    System.Threading.Volatile.Write(ref ses.MuteProducersUntilTicks, Environment.TickCount64 + 6000);
                     var wav = new MemoryStream();
                     using (var tts = new System.Speech.Synthesis.SpeechSynthesizer())
                     {
@@ -499,7 +556,7 @@ namespace PadForge.Services
                     // Paced like a live mic (32 bytes/ms at 16 kHz), plus a
                     // half-second silence tail so end-of-utterance detection
                     // has room to close.
-                    var sink = ses.Pcm;
+                    var sink = ses.Sink;
                     for (int off = 0; off < bytes.Length; off += 640)
                     {
                         if (_disposed) return;
@@ -556,10 +613,10 @@ namespace PadForge.Services
         {
             var svc = Active;
             if (svc == null || channels <= 0) return;
-            VoicePcmStream sink = null;
+            IVoicePcmSink sink = null;
             lock (svc._sessionsLock)
                 if (svc._sessions.TryGetValue("pad:" + padGuid, out var ses) && ses.Capture == null)
-                    sink = ses.Pcm;
+                    sink = ses.Sink;
             if (sink == null) return;
 
             int frames = interleaved.Length / channels;
@@ -586,7 +643,7 @@ namespace PadForge.Services
         // ── WASAPI capture into a session's stream: any endpoint, any
         // format, resampled to 16 kHz mono. Format handling mirrors the
         // persona mic capture (float or int16, downmix by average).
-        private static WasapiCapture OpenEndpointCapture(string endpointId, VoicePcmStream sink)
+        private static WasapiCapture OpenEndpointCapture(string endpointId, Session ses)
         {
             try
             {
@@ -594,13 +651,14 @@ namespace PadForge.Services
                 MMDevice dev = null;
                 foreach (var d in en.EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active))
                     if (string.Equals(d.ID, endpointId, StringComparison.Ordinal)) { dev = d; break; }
-                return dev == null ? null : StartCapture(dev, sink);
+                return dev == null ? null : StartCapture(dev, ses);
             }
             catch { return null; }
         }
 
-        private static WasapiCapture StartCapture(MMDevice dev, VoicePcmStream sink)
+        private static WasapiCapture StartCapture(MMDevice dev, Session ses)
         {
+            var sink = ses.Sink;
             var cap = new WasapiCapture(dev);
             int inRate = cap.WaveFormat.SampleRate;
             int inCh = cap.WaveFormat.Channels;
@@ -638,7 +696,7 @@ namespace PadForge.Services
                 if (ListeningMode != 0 && !ListenGateOpen) { pos = 0; return; }
                 // The self-test owns the pipe while it injects: mixing live
                 // room audio into the synthesized phrase shreds both.
-                if (Environment.TickCount64 < System.Threading.Volatile.Read(ref sink.MuteProducersUntil)) return;
+                if (Environment.TickCount64 < System.Threading.Volatile.Read(ref ses.MuteProducersUntilTicks)) return;
                 float Mono(int f)
                 {
                     float sum = 0f;
@@ -681,12 +739,8 @@ namespace PadForge.Services
         /// <summary>Blocking, bounded PCM pipe between a producer and SAPI's
         /// reader thread. Read blocks on empty so the engine idles on
         /// silence; Dispose releases the reader with end-of-stream.</summary>
-        private sealed class VoicePcmStream : Stream
+        private sealed class VoicePcmStream : Stream, IVoicePcmSink
         {
-            /// <summary>While TickCount64 is below this, producer writes
-            /// from captures are dropped (the self-test owns the pipe).</summary>
-            public long MuteProducersUntil;
-
             private readonly object _sync = new();
             private readonly byte[] _ring = new byte[64 * 1024];
             private int _head, _count;

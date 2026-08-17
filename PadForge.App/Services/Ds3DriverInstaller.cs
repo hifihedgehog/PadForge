@@ -819,6 +819,65 @@ namespace PadForge.Services
 
         private const uint SPDRP_SERVICE = 0x04;
 
+        /// <summary>Removes BthPS3 bus children that cannot start because
+        /// their devnode kept a configuration from an uninstalled function
+        /// driver. The shape (#285, ScottVordem 2026-08-17): DsHidMini owned
+        /// the child, DsHidMini was uninstalled, and the devnode's stale
+        /// driver config now defeats the raw-PDO mode PadForge configures.
+        /// A devnode with a configured driver is never started raw, so the
+        /// child sits at CM problem 19 (registry configuration incomplete
+        /// or damaged) or 28 (drivers not installed) forever. Removing the
+        /// devnode is safe and self-healing: BthPS3 re-creates it fresh on
+        /// the pad's next page, and fresh means raw. Only called when
+        /// DsHidMini is absent, and only touches children that cannot
+        /// start; a healthy or driver-bound child is never removed.
+        /// Returns the number removed.</summary>
+        internal static int RemoveStaleBthPs3Children(Action<string> log)
+        {
+            int removed = 0;
+            try
+            {
+                if (IsDsHidMiniInstalled()) return 0;
+                Guid none = Guid.Empty;
+                IntPtr set = SetupDiGetClassDevsEnum(ref none, "BTHPS3BUS", IntPtr.Zero,
+                    DIGCF_PRESENT | DIGCF_ALLCLASSES);
+                if (set == IntPtr.Zero || set == new IntPtr(-1)) return 0;
+                try
+                {
+                    var dev = new SP_DEVINFO_DATA { cbSize = Marshal.SizeOf<SP_DEVINFO_DATA>() };
+                    for (int i = 0; SetupDiEnumDeviceInfo(set, i, ref dev); i++)
+                    {
+                        if (CM_Get_DevNode_Status(out _, out uint problem, dev.DevInst, 0) != 0)
+                            continue;
+                        if (problem != 19 && problem != 28) continue;
+                        var rp = new SP_REMOVEDEVICE_PARAMS
+                        {
+                            ClassInstallHeader = new SP_CLASSINSTALL_HEADER
+                            {
+                                cbSize = Marshal.SizeOf<SP_CLASSINSTALL_HEADER>(),
+                                InstallFunction = DIF_REMOVE,
+                            },
+                            Scope = DI_REMOVEDEVICE_GLOBAL,
+                            HwProfile = 0,
+                        };
+                        if (SetupDiSetClassInstallParams(set, ref dev, ref rp, Marshal.SizeOf<SP_REMOVEDEVICE_PARAMS>())
+                            && SetupDiCallClassInstaller(DIF_REMOVE, set, ref dev))
+                        {
+                            removed++;
+                            log?.Invoke($"DS3PAIR removed stale BthPS3 child (problem={problem}).");
+                        }
+                        else
+                        {
+                            log?.Invoke($"DS3PAIR stale BthPS3 child removal FAILED (problem={problem}, err={Marshal.GetLastWin32Error()}).");
+                        }
+                    }
+                }
+                finally { SetupDiDestroyDeviceInfoList(set); }
+            }
+            catch (Exception ex) { log?.Invoke("DS3PAIR stale-child removal error: " + ex.Message); }
+            return removed;
+        }
+
         internal static void LogBthPs3ChildState(Action<string> log)
         {
             try
@@ -917,6 +976,35 @@ namespace PadForge.Services
         private static extern bool SetupDiEnumDeviceInfo(IntPtr s, int i, ref SP_DEVINFO_DATA data);
         [DllImport("cfgmgr32.dll")]
         private static extern int CM_Get_DevNode_Status(out uint status, out uint problem, uint devInst, int flags);
+
+        // Devnode removal, per DsHidMini's own ControlApp wrapper
+        // (SetupApiWrapper.cs: DIF_REMOVE = 0x0005,
+        // DI_REMOVEDEVICE_GLOBAL = 0x0001, same struct shapes).
+        private const int DIF_REMOVE = 0x0005;
+        private const int DI_REMOVEDEVICE_GLOBAL = 0x0001;
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct SP_CLASSINSTALL_HEADER
+        {
+            public int cbSize;
+            public int InstallFunction;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct SP_REMOVEDEVICE_PARAMS
+        {
+            public SP_CLASSINSTALL_HEADER ClassInstallHeader;
+            public int Scope;
+            public int HwProfile;
+        }
+
+        [DllImport("setupapi.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        private static extern bool SetupDiSetClassInstallParams(IntPtr set,
+            ref SP_DEVINFO_DATA dev, ref SP_REMOVEDEVICE_PARAMS p, int size);
+
+        [DllImport("setupapi.dll", SetLastError = true)]
+        private static extern bool SetupDiCallClassInstaller(int installFunction,
+            IntPtr set, ref SP_DEVINFO_DATA dev);
         [DllImport("setupapi.dll", SetLastError = true)]
         private static extern bool SetupDiEnumDeviceInterfaces(IntPtr s, IntPtr d, ref Guid g, int i, ref SP_DEVICE_INTERFACE_DATA data);
         [DllImport("setupapi.dll")]

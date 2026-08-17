@@ -562,8 +562,20 @@ namespace PadForge.Services
                                 caught = $"BthPS3 child appeared {sw.Elapsed.TotalSeconds:0}s after the ceremony and the DsHidMini package is installed, so DsHidMini is expected to own the pad from here (the child state in the bracket is the ground truth) [{detail}]. "
                                     + "The connection reached BthPS3. PadForge consumes the pad through DsHidMini only in its SXS (SixaxisCompatible) HID mode; a fresh DsHidMini install defaults to XInput mode.";
                             else
-                                caught = $"BthPS3 child appeared {sw.Elapsed.TotalSeconds:0}s after the ceremony but the raw interface is NOT active [{detail}]. BthPS3 accepted the connection and PnP could not start the child (problem 28 is the no-matching-INF case).";
+                                caught = $"BthPS3 child appeared {sw.Elapsed.TotalSeconds:0}s after the ceremony but the raw interface is NOT active [{detail}]. BthPS3 accepted the connection and PnP could not start the child (19 = stale registry config, 28 = no matching INF).";
                             LogLine(caught);
+                            if (!activeIface)
+                            {
+                                // Self-heal the stale-devnode case (#285): after a
+                                // DsHidMini uninstall the child keeps the removed
+                                // driver's configuration and can never start raw.
+                                // Remove it; the pad's next page re-creates it
+                                // fresh, and fresh means raw.
+                                int removedStale = Ds3DriverInstaller.RemoveStaleBthPs3Children(LogLine);
+                                if (removedStale > 0)
+                                    LogLine("Stale BthPS3 child removed. Press the PS button again: the "
+                                        + "re-created child comes up raw and PadForge can open it.");
+                            }
                             return;
                         }
                     }

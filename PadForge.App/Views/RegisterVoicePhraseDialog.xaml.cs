@@ -90,6 +90,13 @@ namespace PadForge.Views
                 // Light the matching row, mapping or not. Any accepted
                 // recognition qualifies; the readout line above carries the
                 // confidence and whether it fired.
+                // Only a FIRING recognition lights the row: the engine maps
+                // every utterance to its nearest phrase (a rejected "meow"
+                // arrives as nearest-"hello"), so lighting on any event made
+                // the row claim matches the floor had already refused. The
+                // readout line above still shows every attempt with its
+                // confidence; the row means "this would have triggered."
+                if (!fired) return;
                 string norm = VoicePhraseRegistry.NormalizePhrase(text);
                 bool lit = false;
                 foreach (var row in _rows)

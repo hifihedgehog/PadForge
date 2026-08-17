@@ -386,6 +386,11 @@ namespace PadForge.Common.Input
             // would leave pass-through dead until the slot was torn down.
             if (IsDualSenseVirtual)
             {
+                // Migration hand-off: the successor takes over below in the
+                // same call, so the outgoing dispatcher must not write its
+                // shutdown release (old slot's identity color, zeroed
+                // triggers) onto a pad the game is still driving.
+                try { _ds5Dispatcher?.SkipShutdownRelease(); } catch { }
                 try { _ds5Dispatcher?.Dispose(); }
                 catch { /* best-effort teardown */ }
                 _ds5Dispatcher = null;

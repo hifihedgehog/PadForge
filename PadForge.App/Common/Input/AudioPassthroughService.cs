@@ -139,18 +139,18 @@ namespace PadForge.Common.Input
             public int Ds5Seq;
             public byte Ds5PktCounter;
 
-            /// <summary>The haptic stream had its OWN counter pair here, on
-            /// the theory that the firmware tracks a sequence per report id.
-            /// It does not: both 0x32 and 0x35 carry the packet 0x11 audio
-            /// SESSION header, and the device tracks that one session, so two
-            /// counters feeding it made the session's counter jump back and
-            /// forth whenever both streams were live. That is discussion #300
-            /// (speaker and haptics could not start together). The precedent
-            /// cited for splitting them was dualsense-bt-haptics running a
-            /// counter for 0x32 beside one for 0x31, but 0x31 is the input
-            /// state report and carries no 0x11 header, so it was never the
-            /// analogous case. Both lanes now share Ds5Seq / Ds5PktCounter
-            /// above, and a tick that has both sends ONE combined report.</summary>
+            // History: the haptic stream had its OWN counter pair here, on
+            // the theory that the firmware tracks a sequence per report id.
+            // It does not: both 0x32 and 0x35 carry the packet 0x11 audio
+            // SESSION header, and the device tracks that one session, so two
+            // counters feeding it made the session's counter jump back and
+            // forth whenever both streams were live. That is discussion #300
+            // (speaker and haptics could not start together). The precedent
+            // cited for splitting them was dualsense-bt-haptics running a
+            // counter for 0x32 beside one for 0x31, but 0x31 is the input
+            // state report and carries no 0x11 header, so it was never the
+            // analogous case. Both lanes now share Ds5Seq / Ds5PktCounter
+            // above, and a tick that has both sends ONE combined report.
             /// <summary>Last tick the decimated haptic block held signal; the
             /// 0x32 stream idles after 2 s of silence like the speaker lane,
             /// instead of interleaving zero-payload reports forever.</summary>
@@ -1122,14 +1122,26 @@ namespace PadForge.Common.Input
             public IntPtr UsbJackHandle;
             public volatile bool BtMicStop;
             public IntPtr BtMicHandle;
-            // Written under HidLaneLock; the cross-feed helpers
-            // (IsBtMicLaneActive / TryGetSoleBtMicPad) read it lock-free
-            // from cold paths. A torn 16-byte read is theoretically
-            // possible and accepted: reads are ~1.5 s cadence against
-            // rare writes, and every consumer self-heals next cycle. The
-            // per-feed lock makes the boxed-immutable fix an invasive
-            // refactor disproportionate to the hazard (audit 2026-08-17).
-            public Guid BtMicPadGuid;
+            /// <summary>The pad whose Bluetooth mic this feed decodes
+            /// (Guid.Empty when none). Held in an immutable box behind a
+            /// volatile reference: the cross-feed helpers
+            /// (IsBtMicLaneActive / TryGetSoleBtMicPad) read it without
+            /// the feed's lock, and a bare 16-byte Guid field could be
+            /// caught half-written there. Reference loads are atomic;
+            /// writes swap the whole box.</summary>
+            public Guid BtMicPadGuid
+            {
+                get => _btMicPad.Value;
+                set => _btMicPad = new GuidBox(value);
+            }
+            private volatile GuidBox _btMicPad = GuidBox.Empty;
+
+            private sealed class GuidBox
+            {
+                public static readonly GuidBox Empty = new(Guid.Empty);
+                public readonly Guid Value;
+                public GuidBox(Guid v) { Value = v; }
+            }
             public long BtMicRxFrames;
 
             // Per-lane reader GENERATION. The stop bools alone could not
@@ -2108,9 +2120,6 @@ namespace PadForge.Common.Input
             return null;
         }
 
-        /// <summary>True while a pad's Bluetooth mic decode lane is up
-        /// (issue #317). A pad recognition session exists only while its
-        /// embedded microphone is actually reachable through this lane.</summary>
         /// <summary>The single pad whose Bluetooth mic currently feeds a
         /// persona capture endpoint, when unambiguous (issue #317): an
         /// endpoint recognition through the persona's headset mic also
@@ -2129,6 +2138,9 @@ namespace PadForge.Common.Input
             return padGuid != Guid.Empty;
         }
 
+        /// <summary>True while a pad's Bluetooth mic decode lane is up
+        /// (issue #317). A pad recognition session exists only while its
+        /// embedded microphone is actually reachable through this lane.</summary>
         internal static bool IsBtMicLaneActive(Guid padGuid)
         {
             if (padGuid == Guid.Empty) return false;
@@ -2963,17 +2975,22 @@ namespace PadForge.Common.Input
                             // actuators while the speaker mix is silent. A
                             // no-op when the slot has no composite persona
                             // or the ring lacks a whole tick.
+                            // Computed before the mic manager: a tick that
+                            // ships an audio report (speaker or haptics)
+                            // carries the mic session byte in its own packet
+                            // 0x11 header, and the manager must know that to
+                            // hold the one-report-per-tick contract.
+                            bool audible = Environment.TickCount64 - s.LastAudibleTicks <= 2000;
                             bool haveHaptics = false;
                             if (!s.IsDs4)
                             {
-                                ManageDs5MicOpen(s, hapticReport);
                                 haveHaptics = TryTakeDs5HapticTick(s, hapticPcm, out _);
+                                ManageDs5MicOpen(s, hapticReport, carriedByStream: audible || haveHaptics);
                             }
 
                             // Idle gate: after 2 s of silence stop sending so the
                             // pad's radio and our CPU rest; the read above keeps
                             // the ring cursor live and the activity stamp fresh.
-                            bool audible = Environment.TickCount64 - s.LastAudibleTicks <= 2000;
                             _personaLastAudible = audible;
 
                             // Heartbeat BEFORE the gate, so a tick that sends
@@ -3260,18 +3277,6 @@ namespace PadForge.Common.Input
         private const int Ds5HapticFramesPerTick = 512;  // 48 kHz frames per 10.667 ms tick
         internal const int Ds5HapticBtReportSize = 142;   // report 0x32 wire size (Sony BT: 0x31=78, +64 per ID)
 
-        /// <summary>Ship one tick of authored haptics as its own report
-        /// 0x32 carrying packets 0x11 + 0x12, the exact shape SAxense and
-        /// dualsense-bt-haptics proved on hardware. When the game drives
-        /// the speaker at the same time, the combined 0x35 report carries
-        /// both packets instead (#300: one session, one report per tick);
-        /// this shape ships when haptics run alone. 48 kHz
-        /// stereo s16 → 3 kHz stereo s8 by 16-sample block mean then high
-        /// byte, matching the references' resample-then-high-byte
-        /// pipeline (dualsense-bt-haptics Program.cs:208, SAxense's
-        /// ffmpeg -ar 3000 -f s8). Shares the sink's rolling seq and
-        /// packet counter with the speaker report so the multiplexed
-        /// transport sees one monotonic sequence.</summary>
         /// <summary>Mic session command carried in every audio report's
         /// packet 0x11 header (payload byte 0). 0xFF opens, 0xFE closes.
         /// It MUST follow the live session: mic-open is NOT latched, so a
@@ -3564,11 +3569,15 @@ namespace PadForge.Common.Input
         /// steady-state 0xFE in the audio reports re-closes an opened mic
         /// is unknown; the dump's own working stream carries 0xFE, which
         /// suggests open is latched.</summary>
-        private static void ManageDs5MicOpen(Sink s, byte[] report)
+        private static void ManageDs5MicOpen(Sink s, byte[] report, bool carriedByStream)
         {
             var feed = FindFeedForBtMicPad(s.DeviceGuid);
             bool want = EnableBtMic && feed != null;
             long now = Environment.TickCount64;
+            // carriedByStream: this tick ships an audio report whose own
+            // packet 0x11 header carries the session byte, so a standalone
+            // toggle would make TWO reports in one tick, the cadence the
+            // firmware contract forbids. State flips ride the stream then.
             // Scrub: mic-open is LATCHED on the pad across app restarts,
             // and a latched mic corrupts SDL's input parsing (see
             // EnableBtMic). One unconditional CLOSE per sink lifetime
@@ -3576,22 +3585,27 @@ namespace PadForge.Common.Input
             // was never opened.
             if (!want && s.Ds5MicOpen == 0 && !s.Ds5MicCloseScrubbed)
             {
-                SendDs5BtMicToggle(s, report, open: false);
+                if (!carriedByStream) SendDs5BtMicToggle(s, report, open: false);
                 s.Ds5MicCloseScrubbed = true;
-                Engine.SdlDiagLog.WriteLine("PERSONA mic CLOSE scrub sent");
+                Engine.SdlDiagLog.WriteLine("PERSONA mic CLOSE scrub "
+                    + (carriedByStream ? "carried by stream" : "sent"));
                 return;
             }
             if (want && s.Ds5MicOpen == 0)
             {
-                SendDs5BtMicToggle(s, report, open: true);
+                if (!carriedByStream) SendDs5BtMicToggle(s, report, open: true);
                 s.Ds5MicOpen = 1;
                 s.Ds5MicOpenSentTicks = now;
                 s.Ds5MicOpenTries = 1;
-                Engine.SdlDiagLog.WriteLine("PERSONA mic OPEN sent");
+                Engine.SdlDiagLog.WriteLine("PERSONA mic OPEN "
+                    + (carriedByStream ? "carried by stream" : "sent"));
             }
-            else if (want && s.Ds5MicOpen == 1 && feed.BtMicRxFrames == 0
+            else if (want && s.Ds5MicOpen == 1 && feed.BtMicRxFrames == 0 && !carriedByStream
                      && now - s.Ds5MicOpenSentTicks >= 2000 && s.Ds5MicOpenTries < 5)
             {
+                // Toggle-only path: frames are the ack and a lost toggle
+                // needs a resend. While the stream carries the byte, every
+                // report IS the resend, so the branch stands down.
                 SendDs5BtMicToggle(s, report, open: true);
                 s.Ds5MicOpenSentTicks = now;
                 s.Ds5MicOpenTries++;
@@ -3599,9 +3613,10 @@ namespace PadForge.Common.Input
             }
             else if (!want && s.Ds5MicOpen == 1)
             {
-                SendDs5BtMicToggle(s, report, open: false);
+                if (!carriedByStream) SendDs5BtMicToggle(s, report, open: false);
                 s.Ds5MicOpen = 0;
-                Engine.SdlDiagLog.WriteLine("PERSONA mic CLOSE sent");
+                Engine.SdlDiagLog.WriteLine("PERSONA mic CLOSE "
+                    + (carriedByStream ? "carried by stream" : "sent"));
             }
         }
 
@@ -3834,6 +3849,11 @@ namespace PadForge.Common.Input
                     try { n = dec.Decode(report.AsSpan(3, BtMicPayloadBytes), pcm.AsSpan(), BtMicFrameSamples, false); }
                     catch { continue; }
                     if (n <= 0) continue;
+                    // During a hand-off the persona's decode tee already
+                    // feeds this pad's session, and two producers into one
+                    // recognizer garble both streams. The incoming owner
+                    // wins; this lane just drains until its stop lands.
+                    if (IsBtMicLaneActive(lane.Pad)) continue;
                     PadForge.Services.VoiceMacroService.SubmitPadMic48k(
                         lane.Pad, pcm.AsSpan(0, n * BtMicChannels), BtMicChannels);
                 }

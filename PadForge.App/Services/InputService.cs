@@ -7929,38 +7929,6 @@ namespace PadForge.Services
             }));
         }
 
-        /// <summary>Named phrase entries for a device that carries voice
-        /// phrases (issue #317). For a standalone microphone the entries ARE
-        /// its objects (the device builds them itself); for a Bluetooth
-        /// DualSense they are appended to the pad's own inputs at the
-        /// reserved voice range, so the picker lists "Any Phrase" and each
-        /// phrase by name beside the pad's real controls.</summary>
-        private static void AppendVoiceObjectsToPad(PadForge.Engine.Data.UserDevice ud)
-        {
-            var wrapper = ud.Device as PadForge.Engine.SdlDeviceWrapper;
-            if (wrapper == null) return;
-            var baseObjects = wrapper.GetDeviceObjects();
-            var phrases = PadForge.Common.Input.VoicePhraseRegistry.Phrases;
-            var items = new PadForge.Engine.DeviceObjectItem[baseObjects.Length + 1 + phrases.Count];
-            Array.Copy(baseObjects, items, baseObjects.Length);
-            items[baseObjects.Length] = new PadForge.Engine.DeviceObjectItem
-            {
-                Name = Strings.Instance.Voice_AnyPhrase,
-                ObjectType = PadForge.Engine.DeviceObjectTypeFlags.PushButton,
-                ObjectTypeGuid = PadForge.Engine.ObjectGuid.Button,
-                InputIndex = PadForge.Common.Input.VoicePulse.ButtonBase,
-            };
-            for (int i = 0; i < phrases.Count; i++)
-                items[baseObjects.Length + 1 + i] = new PadForge.Engine.DeviceObjectItem
-                {
-                    Name = phrases[i].Name,
-                    ObjectType = PadForge.Engine.DeviceObjectTypeFlags.PushButton,
-                    ObjectTypeGuid = PadForge.Engine.ObjectGuid.Button,
-                    InputIndex = PadForge.Common.Input.VoicePulse.ButtonBase + phrases[i].Button,
-                };
-            ud.DeviceObjects = items;
-        }
-
         /// <summary>Re-derives the phrase entries on every device that
         /// carries them: standalone microphone rows and Bluetooth DualSense
         /// pads. Called on device arrival and registry change.</summary>
@@ -7974,9 +7942,26 @@ namespace PadForge.Services
                     {
                         if (ud == null || ud.Device == null) continue;
                         if (ud.CapType == PadForge.Engine.InputDeviceType.Microphone)
+                        {
                             ud.DeviceObjects = ud.Device.GetDeviceObjects();
-                        else if (PadForge.Services.VoiceMacroService.IsPadWithEmbeddedMic(ud))
-                            AppendVoiceObjectsToPad(ud);
+                            // The button span grows with the registry; the
+                            // row's snapshot must follow or a phrase
+                            // registered after row creation is unmappable
+                            // until the device reopens.
+                            ud.RawButtonCount = ud.Device.RawButtonCount;
+                        }
+                        else if (PadForge.Services.VoiceMacroService.IsPadWithEmbeddedMic(ud)
+                                 && ud.Device is PadForge.Engine.SdlDeviceWrapper w)
+                        {
+                            // A pad's phrase sources are the "Voice Phrase"
+                            // descriptor family, offered by the picker
+                            // directly. Earlier builds ALSO appended
+                            // phrase-named raw buttons here, listing every
+                            // phrase twice; restoring the wrapper's own
+                            // objects strips any appended set a prior
+                            // session persisted.
+                            ud.DeviceObjects = w.GetDeviceObjects();
+                        }
                     }
                 }
             }
@@ -9569,7 +9554,11 @@ namespace PadForge.Services
                             // kill device sync (audit F1).
                             int devType = dev.GetInputDeviceType();
                             DeviceObjectItem[] objects = null;
-                            if (devType == InputDeviceType.ConsumerControl || devType == InputDeviceType.Nfc)
+                            // Microphone rows join the gate (#317): their
+                            // buttons are named from THIS machine's phrase
+                            // registry, underivable on the consumer.
+                            if (devType == InputDeviceType.ConsumerControl || devType == InputDeviceType.Nfc
+                                || devType == InputDeviceType.Microphone)
                                 try { objects = dev.GetDeviceObjects(); } catch { }
                             var info = new RemotePeerDeviceInfo
                             {

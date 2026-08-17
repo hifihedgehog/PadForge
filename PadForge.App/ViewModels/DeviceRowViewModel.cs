@@ -597,8 +597,10 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsBluetoothLink));
                     // ShowRegisterNfcTag's controller branch now gates on
                     // IsBluetoothLink, which is path-derived, so a link
-                    // change must refresh the button too.
+                    // change must refresh the button too. Same for the
+                    // Manage Voice Macros button's DualSense branch (#317).
                     OnPropertyChanged(nameof(ShowRegisterNfcTag));
+                    OnPropertyChanged(nameof(ShowManageVoicePhrases));
                     OnPropertyChanged(nameof(DossierConnectionPath));
                 }
             }
@@ -647,7 +649,7 @@ namespace PadForge.ViewModels
         public bool IsGamepad => DeviceTypeKey == "Gamepad";
 
         /// <summary>True if this device can have community mappings submitted (joysticks only, not gamepads/mice/keyboards).</summary>
-        public bool ShowSubmitMapping => DeviceTypeKey != "Gamepad" && DeviceTypeKey != "Mouse" && DeviceTypeKey != "Keyboard" && DeviceTypeKey != "Touchpad" && DeviceTypeKey != "Midi" && DeviceTypeKey != "Nfc" && DeviceTypeKey != "HeadsetMotion";
+        public bool ShowSubmitMapping => DeviceTypeKey != "Gamepad" && DeviceTypeKey != "Mouse" && DeviceTypeKey != "Keyboard" && DeviceTypeKey != "Touchpad" && DeviceTypeKey != "Midi" && DeviceTypeKey != "Nfc" && DeviceTypeKey != "HeadsetMotion" && DeviceTypeKey != "Microphone" && DeviceTypeKey != "ConsumerControl";
 
         /// <summary>True for an NFC reader (issue #150): shows the "Register/Manage
         /// NFC Tags" button, which opens the tap-to-name registration flow.
@@ -679,9 +681,15 @@ namespace PadForge.ViewModels
         /// its embedded mic is not a system device and the pad itself
         /// carries the phrases (wired, its endpoint row does).</summary>
         public bool ShowManageVoicePhrases
-            => DeviceTypeKey == "Microphone"
-               || (VendorId == 0x054C && (ProductId == 0x0CE6 || ProductId == 0x0DF2)
-                   && IsBluetoothLink);
+            => (DeviceTypeKey == "Microphone"
+                || (VendorId == 0x054C && (ProductId == 0x0CE6 || ProductId == 0x0DF2)
+                    && IsBluetoothLink))
+               // Same peer:// exclusion as ShowRegisterNfcTag (#248 lesson):
+               // recognition runs on the pad's OWNER; the dialog here would
+               // be a dead button. Today IsBluetoothLink happens to answer
+               // false for peer paths, but that is an accident of the
+               // transport probe, not a contract.
+               && !(DevicePath != null && DevicePath.StartsWith("peer://", System.StringComparison.Ordinal));
 
         /// <summary>Whether to show the "NFC" capability chip in the summary:
         /// a controller that carries an NFC reader (Switch right Joy-Con

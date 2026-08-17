@@ -1940,7 +1940,11 @@ namespace PadForge.Common
              ud.CapType != InputDeviceType.Nfc &&
              // Consumer Control buttons are named from the canonical usage
              // table ("Play/Pause", "Voice Command"), not "Button 0" (#168).
-             ud.CapType != InputDeviceType.ConsumerControl);
+             ud.CapType != InputDeviceType.ConsumerControl &&
+             // Microphone rows' entire surface is named phrases ("Any
+             // Phrase", the user's own names); numbered labels would hide
+             // every one of them (#317, the #150 shape again).
+             ud.CapType != InputDeviceType.Microphone);
 
         /// <summary>Surfaces touchpad gesture descriptors in the input
         /// picker, one block per touchpad surface the device exposes.

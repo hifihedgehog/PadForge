@@ -22,6 +22,9 @@ namespace PadForge.Views
         /// no mapping required.</summary>
         public sealed class PhraseRow : System.ComponentModel.INotifyPropertyChanged
         {
+            /// <summary>The row's flash timer, restarted per recognition so
+            /// overlapping hits extend the light instead of truncating it.</summary>
+            public System.Windows.Threading.DispatcherTimer FlashTimer;
             public string Phrase { get; init; }
             public string Name { get; init; }
             private bool _isActive;
@@ -67,6 +70,8 @@ namespace PadForge.Views
 
         private void Unsubscribe()
         {
+            foreach (var row in _rows)
+                try { row.FlashTimer?.Stop(); } catch { }
             if (_heardHandler != null)
             {
                 try { VoiceMacroService.PhraseHeard -= _heardHandler; } catch { }
@@ -100,10 +105,17 @@ namespace PadForge.Views
                     lit = true;
                     var target = row;
                     target.IsActive = true;
-                    var t = new System.Windows.Threading.DispatcherTimer
-                    { Interval = TimeSpan.FromMilliseconds(1400) };
-                    t.Tick += (_, __) => { target.IsActive = false; t.Stop(); };
-                    t.Start();
+                    // One timer PER ROW, restarted on each hit: a fresh
+                    // timer per recognition let the first one clear the
+                    // flag mid-way through a repeat's flash.
+                    if (target.FlashTimer == null)
+                    {
+                        target.FlashTimer = new System.Windows.Threading.DispatcherTimer
+                        { Interval = TimeSpan.FromMilliseconds(1400) };
+                        target.FlashTimer.Tick += (_, __) => { target.IsActive = false; target.FlashTimer.Stop(); };
+                    }
+                    target.FlashTimer.Stop();
+                    target.FlashTimer.Start();
                 }
                 // The row-light path testifies: a heard phrase that lights no
                 // row names the mismatch instead of leaving it to argument.

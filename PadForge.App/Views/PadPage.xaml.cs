@@ -3001,6 +3001,12 @@ namespace PadForge.Views
                     int player = SettingsManager.SlotOrders.GetIdentityPlayerNumber(selGuid);
                     if (player <= 0)
                         player = SettingsManager.SlotOrders.GetGlobalSlotNumber(vm.PadIndex);
+                    // Same documented fallback the physical writers carry
+                    // (UserEffectsDispatcher / the pass-through dispatcher):
+                    // a slot absent from every order list identifies as its
+                    // own index, and the preview must match the bar.
+                    if (player <= 0)
+                        player = vm.PadIndex + 1;
                     var (pr, pg, pb) = PlayerIdentityDefaults.ColorFor(player);
                     int peak = Math.Max(pr, Math.Max(pg, pb));
                     Color pc = peak > 0

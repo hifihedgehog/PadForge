@@ -315,7 +315,7 @@ namespace PadForge.Services
                     SettingsManager.UserDevices.Items.Clear();
                     if (data.Devices != null)
                     {
-                        int dropped = 0;
+                        int dropped = 0, voicePurged = 0;
                         foreach (var ud in DedupeDevicesByGuid(data.Devices, ref dropped))
                         {
                             // A withdrawn pre-release briefly registered a
@@ -323,12 +323,15 @@ namespace PadForge.Services
                             // its persisted row: features are not devices.
                             if (ud?.DevicePath != null
                                 && ud.DevicePath.StartsWith("voice://", StringComparison.Ordinal))
-                            { dropped++; continue; }
+                            { voicePurged++; continue; }
                             SettingsManager.UserDevices.Items.Add(ud);
                         }
                         if (dropped > 0)
                             PadForge.Engine.SdlDiagLog.WriteLine(
                                 $"CFG dropped {dropped} duplicate-guid ghost device record(s) at load");
+                        if (voicePurged > 0)
+                            PadForge.Engine.SdlDiagLog.WriteLine(
+                                $"CFG dropped {voicePurged} withdrawn voice:// pseudo-device record(s) at load");
                     }
                 }
 
@@ -1888,8 +1891,11 @@ namespace PadForge.Services
                     // Drop empty rows. They'll come back through the
                     // unconsumed-rebuilt pass below if the slot's
                     // current devices contribute anything for this
-                    // target.
-                    if (er.Sources == null || er.Sources.Count == 0) continue;
+                    // target. Same NoInherit exemption as the two prune
+                    // sites in SanitizeMappingSet / device-unassign: a
+                    // sourceless "do not inherit" layer row is the row's
+                    // whole point, not noise.
+                    if ((er.Sources == null || er.Sources.Count == 0) && !er.NoInherit) continue;
 
                     merged.Rows.Add(er);
                 }

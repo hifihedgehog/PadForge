@@ -69,16 +69,22 @@ namespace PadForge.Services
 
         private static readonly object _startLock = new();
 
+        /// <summary>Set by the input manager's shutdown BEFORE Shutdown()
+        /// runs, so a mic-sweep worker already past its own suppress check
+        /// cannot resurrect the service after it was torn down.</summary>
+        public static volatile bool SuppressStart;
+
         public static VoiceMacroService Start()
         {
             lock (_startLock)
             {
                 if (Active != null) return Active;
+                if (SuppressStart) return null;
                 if (!IsAvailable)
-                {
-                    Engine.SdlDiagLog.WriteLine("VOICE no installed speech recognizer; voice macros unavailable");
-                    return null;
-                }
+                    // No SAPI recognizer (N editions, some locales) is not
+                    // fatal: Vosk needs none of it. Sessions simply wait
+                    // for the model.
+                    Engine.SdlDiagLog.WriteLine("VOICE no installed SAPI recognizer; Vosk carries recognition once its model is ready");
                 try
                 {
                     var svc = new VoiceMacroService();
@@ -135,6 +141,11 @@ namespace PadForge.Services
         private readonly object _sessionsLock = new();
         private readonly Dictionary<string, Session> _sessions = new(StringComparer.Ordinal);
         private int _grammarGen;
+        private int _lastGenSeen = -1;
+        // Worker-thread only: unbuildable sources escalate their retry
+        // delay instead of paying a full engine construction every 1.5 s.
+        private readonly Dictionary<string, (long Until, int Fails)> _buildBackoff = new();
+        private long _nextBridgeRetry;
         private bool _lastVoskReady;
         private volatile bool _disposed;
         private Thread _worker;
@@ -167,6 +178,7 @@ namespace PadForge.Services
                         Engine.SdlDiagLog.WriteLine("VOICE engine switch: " + (voskReady ? "vosk" : "sapi fallback"));
                     }
                     int gen = _grammarGen;
+                    if (gen != _lastGenSeen) { _lastGenSeen = gen; _buildBackoff.Clear(); }
                     var desired = Enabled && VoicePhraseRegistry.Count > 0
                         ? ComputeDesiredSources()
                         : new List<(string Key, string Name, Guid Pad, string Endpoint)>();
@@ -196,9 +208,18 @@ namespace PadForge.Services
                     {
                         bool have;
                         lock (_sessionsLock) have = _sessions.ContainsKey(d.Key);
-                        if (have) continue;
+                        if (have) { _buildBackoff.Remove(d.Key); continue; }
+                        if (_buildBackoff.TryGetValue(d.Key, out var bo)
+                            && Environment.TickCount64 < bo.Until) continue;
                         var ses = Build(d.Key, d.Name, d.Pad, d.Endpoint, gen);
-                        if (ses == null) continue;
+                        if (ses == null)
+                        {
+                            int fails = bo.Fails + 1;
+                            long delay = Math.Min(30_000L, 1500L << Math.Min(fails, 4));
+                            _buildBackoff[d.Key] = (Environment.TickCount64 + delay, fails);
+                            continue;
+                        }
+                        _buildBackoff.Remove(d.Key);
                         lock (_sessionsLock) _sessions[d.Key] = ses;
                     }
                 }
@@ -207,6 +228,31 @@ namespace PadForge.Services
                     Engine.SdlDiagLog.WriteLine("VOICE reconcile error: " + ex.Message);
                     for (int i = 0; i < 20 && !_disposed; i++) Thread.Sleep(100);
                 }
+                // A wired pad that enumerated after its endpoint's session
+                // built gets bridged late rather than never.
+                try
+                {
+                    if (Environment.TickCount64 >= _nextBridgeRetry)
+                    {
+                        _nextBridgeRetry = Environment.TickCount64 + 10_000;
+                        List<Session> unbridged = null;
+                        lock (_sessionsLock)
+                            foreach (var s2 in _sessions.Values)
+                                if (s2.EndpointId != null && s2.BridgePadGuid == Guid.Empty)
+                                    (unbridged ??= new List<Session>()).Add(s2);
+                        if (unbridged != null)
+                            foreach (var s2 in unbridged)
+                            {
+                                var g = ResolveEndpointPad(s2.EndpointId);
+                                if (g != Guid.Empty)
+                                {
+                                    s2.BridgePadGuid = g;
+                                    Engine.SdlDiagLog.WriteLine($"VOICE [{s2.DisplayName}] endpoint bridged to pad {g}");
+                                }
+                            }
+                    }
+                }
+                catch { }
                 Thread.Sleep(1500);
             }
             lock (_sessionsLock)
@@ -240,7 +286,10 @@ namespace PadForge.Services
                     }
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Engine.SdlDiagLog.WriteLine("VOICE pad scan failed: " + ex.Message);
+            }
             return list;
         }
 
@@ -325,6 +374,11 @@ namespace PadForge.Services
 
         private Session Build(string key, string name, Guid padGuid, string endpointOrPath, int gen)
         {
+            // Tracked so the blanket catch can undo a partial build: an
+            // exception after resources attach must not leak an engine, a
+            // capture, or an opened BT mic lane no TearDown will ever see.
+            Session partial = null;
+            System.Speech.Recognition.SpeechRecognitionEngine partialEngine = null;
             try
             {
                 var phrases = VoicePhraseRegistry.Phrases;
@@ -340,6 +394,7 @@ namespace PadForge.Services
                         EndpointId = isEndpointSrc ? endpointOrPath : null,
                         Gen = gen,
                     };
+                    partial = vses;
                     vses.Sink = new VoskSession(voskModel,
                         phrases.Select(x => x.Phrase).ToArray(),
                         (text, conf) => OnRecognized(vses, text, conf),
@@ -380,6 +435,7 @@ namespace PadForge.Services
 
                 Engine.SdlDiagLog.WriteLine($"VOICE [{name}] build: engine");
                 var engine = new System.Speech.Recognition.SpeechRecognitionEngine(info);
+                partialEngine = engine;
                 Engine.SdlDiagLog.WriteLine($"VOICE [{name}] build: grammar");
                 var gb = new System.Speech.Recognition.GrammarBuilder(
                     new System.Speech.Recognition.Choices(phrases.Select(p => p.Phrase).ToArray()))
@@ -413,6 +469,8 @@ namespace PadForge.Services
                     Pcm = new VoicePcmStream(),
                 };
                 ses.Sink = ses.Pcm;
+                partial = ses;
+                partialEngine = null;   // ses.Engine owns it from here
                 engine.SpeechRecognized += (s, e) =>
                 {
                     // Dictation-sink wins are garbage by definition: the
@@ -504,6 +562,19 @@ namespace PadForge.Services
             catch (Exception ex)
             {
                 Engine.SdlDiagLog.WriteLine("VOICE [" + name + "] session build failed: " + ex.Message);
+                if (partial != null)
+                {
+                    if (partial.OwnsBtMicLane)
+                        try { AudioPassthroughService.StopVoiceBtMic(partial.PadGuid); } catch { }
+                    try { partial.Capture?.StopRecording(); } catch { }
+                    try { partial.Capture?.Dispose(); } catch { }
+                    try { partial.Sink?.Dispose(); } catch { }
+                    try { partial.Engine?.Dispose(); } catch { }
+                }
+                else if (partialEngine != null)
+                {
+                    try { partialEngine.Dispose(); } catch { }
+                }
                 return null;
             }
         }
@@ -560,7 +631,7 @@ namespace PadForge.Services
                         _selfTestDone = 0;
                         return;
                     }
-                    ses.SelfTestUntil = Environment.TickCount64 + 10000;
+                    System.Threading.Volatile.Write(ref ses.SelfTestUntil, Environment.TickCount64 + 10000);
                     System.Threading.Volatile.Write(ref ses.MuteProducersUntilTicks, Environment.TickCount64 + 6000);
                     var wav = new MemoryStream();
                     using (var tts = new System.Speech.Synthesis.SpeechSynthesizer())
@@ -609,7 +680,7 @@ namespace PadForge.Services
 
         private void OnRecognized(Session ses, string text, float conf)
         {
-            bool selfTest = Environment.TickCount64 < ses.SelfTestUntil;
+            bool selfTest = Environment.TickCount64 < System.Threading.Volatile.Read(ref ses.SelfTestUntil);
             bool gate = ListenGateOpen;
             bool fires = !selfTest && gate && conf >= MinConfidence;
             Engine.SdlDiagLog.WriteLine($"VOICE [{ses.DisplayName}] heard \"{text}\" conf={conf:F2} gate={(gate ? 1 : 0)} fires={(fires ? 1 : 0)}"
@@ -637,23 +708,34 @@ namespace PadForge.Services
         // this with each decoded 48 kHz block, keyed by pad, whenever a
         // pad session wants it. 48 to 16 kHz is an exact 3:1 average;
         // speech energy sits far below the fold.
+        // The tee runs per decoded 10 ms block on the BT reader thread:
+        // the session key is cached per pad so the hot path allocates
+        // nothing.
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, string> _padKeys = new();
+        private static string PadKey(Guid g) => _padKeys.GetOrAdd(g, k => "pad:" + k);
+
         public static bool PadMicWanted(Guid padGuid)
         {
             var svc = Active;
             if (svc == null || !Enabled) return false;
             if (ListeningMode != 0 && !ListenGateOpen) return false;
             lock (svc._sessionsLock)
-                return svc._sessions.TryGetValue("pad:" + padGuid, out var ses) && ses.Capture == null;
+                return svc._sessions.TryGetValue(PadKey(padGuid), out var ses) && ses.Capture == null;
         }
 
         public static void SubmitPadMic48k(Guid padGuid, ReadOnlySpan<short> interleaved, int channels)
         {
             var svc = Active;
             if (svc == null || channels <= 0) return;
-            IVoicePcmSink sink = null;
+            Session target = null;
             lock (svc._sessionsLock)
-                if (svc._sessions.TryGetValue("pad:" + padGuid, out var ses) && ses.Capture == null)
-                    sink = ses.Sink;
+                if (svc._sessions.TryGetValue(PadKey(padGuid), out var ses) && ses.Capture == null)
+                    target = ses;
+            if (target == null) return;
+            // The self-test owns the pipe while it injects, same gate the
+            // WASAPI producer honors: live tee audio would shred both.
+            if (Environment.TickCount64 < System.Threading.Volatile.Read(ref target.MuteProducersUntilTicks)) return;
+            IVoicePcmSink sink = target.Sink;
             if (sink == null) return;
 
             int frames = interleaved.Length / channels;
@@ -762,7 +844,8 @@ namespace PadForge.Services
                 if (pos < 0) pos = 0;
                 if (n > 0) { capBytesOut += n; sink.Write(outBuf[..n]); }
             };
-            cap.StartRecording();
+            try { cap.StartRecording(); }
+            catch { try { cap.Dispose(); } catch { } throw; }
             return cap;
         }
 

@@ -2229,6 +2229,8 @@
   <data name="PickSound_Title" xml:space="preserve"><value>Elegir un sonido</value></data>
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
   <data name="About_NAudioDesc" xml:space="preserve"><value>Captura WASAPI en bucle para el reflejo de audio del mando y la vibración de gatillos por graves. Por Mark Heath. MIT.</value></data>
+  <data name="About_Vosk" xml:space="preserve"><value>Vosk</value></data>
+  <data name="About_VoskDesc" xml:space="preserve"><value>Reconocedor de voz sin conexión que escucha las frases de las macros de voz. De Alpha Cephei. El modelo se descarga en el primer uso. Apache-2.0.</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
   <data name="About_BouncyCastleDesc" xml:space="preserve"><value>Criptografía para el emparejamiento y el transporte de Remote Link (X25519, Ed25519, ChaCha20-Poly1305). Licencia Bouncy Castle, de estilo MIT.</value></data>
   <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>Grabando "{0}": presione la entrada de la dirección Arriba...</value></data>

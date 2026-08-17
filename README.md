@@ -619,6 +619,7 @@ PadForge stands on these projects. Please consider supporting them directly.
 | [WPF UI](https://github.com/lepoco/wpfui) | Fluent 2 design system for WPF | MIT |
 | [CommunityToolkit.Mvvm](https://github.com/CommunityToolkit/dotnet) | MVVM data binding framework | MIT |
 | [NAudio.Wasapi](https://github.com/naudio/NAudio) | WASAPI loopback capture for audio-bass rumble | MIT |
+| [Vosk](https://alphacephei.com/vosk/) | Offline speech recognition for voice macro phrases, by Alpha Cephei. The model downloads on first use | Apache-2.0 |
 | [HidHide](https://github.com/nefarius/HidHide) | Per-device hiding driver to prevent double input | MIT |
 | [BthPS3](https://github.com/nefarius/BthPS3) | Bundled Bluetooth profile driver + PSM filter that lets a DualShock 3 connect. PadForge installs it in-app at pairing time and the radio stays shared | BSD 3-Clause |
 | [DsHidMini](https://github.com/nefarius/DsHidMini) | DualShock 3 protocol reference: sixpair feature reports, Bluetooth output-report template, enable ordering, battery map | BSD 3-Clause |
@@ -694,6 +695,7 @@ This project is licensed under **CC BY-NC-SA 4.0** (Creative Commons Attribution
 - **DS4AudioStreamer** is licensed under the MIT License. By nefarius. Reference for the DualShock 4 Bluetooth audio report framing. PadForge's SBC encoder is an original C# implementation from the public Bluetooth A2DP specification and contains no libsbc (GPL) code.
 - **ds4mac** documentation is licensed under the MIT License. By khallmark. Protocol reference for DualShock 4 audio.
 - **NAudio** is licensed under the MIT License. By Mark Heath and contributors. WASAPI loopback capture for the controller-audio mirror and the audio-bass trigger rumble.
+- **Vosk** is licensed under the Apache License 2.0. By Alpha Cephei Inc. Offline speech recognition for voice macros, shipped as the native libvosk library. The recognition model (Apache-2.0, Alpha Cephei) downloads to LocalAppData on first use.
 - **Bouncy Castle** (bc-csharp) provides the Remote Link pairing and transport cryptography (X25519, Ed25519, ChaCha20-Poly1305). Licensed under the Bouncy Castle Licence, an adaptation of the MIT License.
 - **libusb** is licensed under the LGPL-2.1-or-later. PadForge ships the unmodified `libusb-1.0.dll` beside the exe as a separately replaceable dynamic library. Source: [github.com/libusb/libusb](https://github.com/libusb/libusb). Full license text in [LICENSE](LICENSE).
 - **nipplejs** is licensed under the MIT License. Copyright (c) 2014 Yoann Moinet. The Web Controller's touch joystick.

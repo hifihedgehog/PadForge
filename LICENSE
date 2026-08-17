@@ -194,6 +194,14 @@ NAudio
   controller-audio Windows-output mirror and the audio-bass trigger rumble.
   Licensed under MIT License
 
+Vosk
+  https://alphacephei.com/vosk/ (https://github.com/alphacep/vosk-api)
+  By Alpha Cephei Inc. Offline speech recognition for voice macros:
+  hears the registered phrases and routes everything else to an unknown
+  bucket. Ships as the native libvosk library inside the executable; the
+  recognition model downloads to LocalAppData on first use.
+  Licensed under the Apache License 2.0 (full text below)
+
 Bouncy Castle (bc-csharp)
   https://github.com/bcgit/bc-csharp
   Cryptography for Remote Link pairing and transport: X25519 key agreement,
@@ -890,7 +898,7 @@ That's all there is to it!
 
 --------------------------------------------------------------------------------
 
-Apache License 2.0 (protobuf-net, redistributed in binary form)
+Apache License 2.0 (protobuf-net and Vosk, redistributed in binary form)
 ================================================================
 
                                  Apache License

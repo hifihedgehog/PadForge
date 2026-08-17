@@ -110,17 +110,6 @@
                 </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Border CornerRadius="4" Margin="-4,-2" Padding="4,2">
-                            <Border.Style>
-                                <Style TargetType="Border">
-                                    <Setter Property="Background" Value="Transparent"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsActive}" Value="True">
-                                            <Setter Property="Background" Value="{DynamicResource ColdBrush}"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Border.Style>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -146,7 +135,6 @@
                                     Style="{StaticResource EmberDestructiveButton}"
                                     Tag="{Binding Phrase}" MinWidth="72" VerticalAlignment="Center"/>
                         </Grid>
-                        </Border>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>

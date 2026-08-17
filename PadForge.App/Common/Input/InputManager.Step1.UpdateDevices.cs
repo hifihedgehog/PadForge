@@ -1063,6 +1063,10 @@ namespace PadForge.Common.Input
             PadForge.Engine.Common.Mapping.SourceCoercion.ResetTouchMomentumForDevice(
                 ud.InstanceGuid.ToString());
 
+            // Voice pulse arrays key on the pad guid the same way (#317):
+            // a removed device's pulses ride the same teardown funnel.
+            PadForge.Common.Input.VoicePulse.Forget(ud.InstanceGuid);
+
             var allSettings = SettingsManager.UserSettings;
             if (allSettings != null)
             {
@@ -1556,6 +1560,8 @@ namespace PadForge.Common.Input
         private volatile bool _micInputsSuppressed;
         private volatile bool _micSweepRunning;
         private volatile Dictionary<string, string> _micEndpointSnapshot;
+        private int _micSnapshotVersion;
+        private int _micConsumedVersion = -1;
         private const int _micSweepIntervalMs = 4000;
 
         /// <summary>
@@ -1600,12 +1606,21 @@ namespace PadForge.Common.Input
                             try { snap[dev.ID] = dev.FriendlyName; } catch { }
                         }
                         _micEndpointSnapshot = snap;
+                        System.Threading.Interlocked.Increment(ref _micSnapshotVersion);
                     }
                     catch { /* audio stack unavailable; next sweep retries */ }
                     finally { _micSweepRunning = false; }
                 });
             }
 
+            // Consume each snapshot ONCE. The reconcile below takes the
+            // mic lock and resolves every endpoint's row, which has no
+            // business running per poll on the 1000 Hz thread; row changes
+            // between sweeps simply wait for the next publish (4 s), the
+            // sweep's own cadence.
+            int ver = System.Threading.Volatile.Read(ref _micSnapshotVersion);
+            if (ver == _micConsumedVersion) return false;
+            _micConsumedVersion = ver;
             var current = _micEndpointSnapshot;
             if (current == null)
                 return false; // no snapshot yet
@@ -1668,6 +1683,7 @@ namespace PadForge.Common.Input
         public void ShutdownMicrophoneDevices()
         {
             _micInputsSuppressed = true;
+            PadForge.Services.VoiceMacroService.SuppressStart = true;
             lock (_micDevicesLock)
             {
                 foreach (var kv in _openedMicDevices)

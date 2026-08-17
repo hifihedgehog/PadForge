@@ -40,7 +40,14 @@ namespace PadForge.Common.Input
 
         // Buttons live in CustomInputState.Buttons[256], so 0 = Any and 1..255
         // are phrases. Registration beyond that is rejected, not overflowed.
-        private const int MaxButton = 255;
+        // Pads carry phrases at SourceCoercion.VoicePhraseButtonBase + N
+        // inside the 256-button state, so N caps at 55, and the registry
+        // caps there too: every registered phrase stays expressible on
+        // BOTH surfaces. A phrase that registers fine and silently cannot
+        // fire on a pad is a trap, not capacity.
+        private const int MaxButton =
+            PadForge.Engine.CustomInputState.MaxButtons
+            - PadForge.Engine.Common.Mapping.SourceCoercion.VoicePhraseButtonBase - 1;
 
         private static readonly object _lock = new();
         private static readonly List<PhraseEntry> _phrases = new();

@@ -5888,8 +5888,14 @@ namespace PadForge
         /// applied at PnP time rather than on SDL's next enumeration.</summary>
         private void SetupHidArrivalHook()
         {
-            var source = System.Windows.PresentationSource.FromVisual(this)
-                as System.Windows.Interop.HwndSource;
+            // Starting minimized to tray, the window has no HWND yet and
+            // PresentationSource.FromVisual answers null, which skipped the
+            // registration silently for the whole session: the cloak then
+            // fell back to SDL's 500 ms notice, the exact lag this hook
+            // exists to beat. Force the handle instead; a WPF window keeps
+            // its HWND across Hide/Show, so the registration holds.
+            var handle = new System.Windows.Interop.WindowInteropHelper(this).EnsureHandle();
+            var source = System.Windows.Interop.HwndSource.FromHwnd(handle);
             if (source == null) return;
 
             var filter = new DEV_BROADCAST_DEVICEINTERFACE

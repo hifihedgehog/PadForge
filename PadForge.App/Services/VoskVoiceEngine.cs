@@ -33,6 +33,11 @@ namespace PadForge.Services
         private static int _state; // 0 absent, 1 downloading, 2 ready, 3 failed
         private static readonly object _lock = new();
 
+        // One transient network blip at first launch must not pin the SAPI
+        // fallback for the whole process: a failed download re-arms after
+        // this delay and the next EnsureStarted retries.
+        private static long _retryAtTicks;
+
         public static bool IsReady => Volatile.Read(ref _state) == 2;
         public static bool IsDownloading => Volatile.Read(ref _state) == 1;
 
@@ -44,7 +49,13 @@ namespace PadForge.Services
         /// one-time background download. Safe to call every reconcile.</summary>
         public static void EnsureStarted()
         {
-            if (Volatile.Read(ref _state) != 0) return;
+            int st = Volatile.Read(ref _state);
+            if (st == 3 && Environment.TickCount64 >= Interlocked.Read(ref _retryAtTicks))
+            {
+                lock (_lock) if (_state == 3) _state = 0;
+                st = Volatile.Read(ref _state);
+            }
+            if (st != 0) return;
             lock (_lock)
             {
                 if (_state != 0) return;
@@ -57,7 +68,7 @@ namespace PadForge.Services
                     {
                         Vosk.Vosk.SetLogLevel(-1);
                         _model = new Vosk.Model(dir);
-                        _state = 2;
+                        Volatile.Write(ref _state, 2);
                         Engine.SdlDiagLog.WriteLine("VOICE vosk model loaded from cache");
                         return;
                     }
@@ -119,8 +130,10 @@ namespace PadForge.Services
             }
             catch (Exception ex)
             {
+                try { File.Delete(Path.Combine(Root, ModelName + ".zip.partial")); } catch { }
+                Interlocked.Exchange(ref _retryAtTicks, Environment.TickCount64 + 5 * 60_000);
                 Volatile.Write(ref _state, 3);
-                Engine.SdlDiagLog.WriteLine("VOICE vosk model download FAILED: " + ex.Message + " (SAPI fallback stays)");
+                Engine.SdlDiagLog.WriteLine("VOICE vosk model download FAILED: " + ex.Message + " (SAPI fallback stays; retry in 5 min)");
             }
         }
     }
@@ -152,7 +165,7 @@ namespace PadForge.Services
             _onFinal = onFinal;
             _onGarbage = onGarbage;
             string grammar = "[" + string.Join(",",
-                phrases.Select(p => "\"" + p.Replace("\"", "") + "\"").Append("\"[unk]\"")) + "]";
+                phrases.Select(p => "\"" + p.Replace("\\", "\\\\").Replace("\"", "\\\"") + "\"").Append("\"[unk]\"")) + "]";
             _rec = new Vosk.VoskRecognizer(model, 16000.0f, grammar);
             _rec.SetWords(true);
         }
@@ -185,19 +198,35 @@ namespace PadForge.Services
                 float conf = MinWordConf(json);
                 _onFinal(text, conf);
             }
-            catch { }
+            catch (Exception ex)
+            {
+                // The dispatch chain (pulse stamp, UI event) must not die
+                // silently: a throwing subscriber would otherwise eat
+                // recognitions with no trace.
+                Engine.SdlDiagLog.WriteLine("VOICE vosk dispatch error: " + ex.Message);
+            }
         }
 
         private static string ExtractJsonString(string json, string key)
         {
-            int i = json.LastIndexOf("\"" + key + "\"", StringComparison.Ordinal);
-            if (i < 0) return null;
-            i = json.IndexOf(':', i);
-            if (i < 0) return null;
-            i = json.IndexOf('"', i);
-            if (i < 0) return null;
-            int j = json.IndexOf('"', i + 1);
-            return j < 0 ? null : json.Substring(i + 1, j - i - 1);
+            // The KEY is a quoted name followed by a colon. Taking the last
+            // raw occurrence alone mis-hits when the recognized VALUE is the
+            // key's own spelling (the phrase "text" in {"text" : "text"}).
+            string needle = "\"" + key + "\"";
+            int at = -1;
+            for (int i = json.IndexOf(needle, StringComparison.Ordinal); i >= 0;
+                 i = json.IndexOf(needle, i + 1, StringComparison.Ordinal))
+            {
+                int k = i + needle.Length;
+                while (k < json.Length && char.IsWhiteSpace(json[k])) k++;
+                if (k < json.Length && json[k] == ':') at = i;
+            }
+            if (at < 0) return null;
+            int c = json.IndexOf(':', at + needle.Length);
+            int q = json.IndexOf('"', c + 1);
+            if (q < 0) return null;
+            int j = json.IndexOf('"', q + 1);
+            return j < 0 ? null : json.Substring(q + 1, j - q - 1);
         }
 
         private static float MinWordConf(string json)

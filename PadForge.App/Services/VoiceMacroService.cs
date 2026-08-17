@@ -185,7 +185,7 @@ namespace PadForge.Services
                     Engine.SdlDiagLog.WriteLine("VOICE reconcile error: " + ex.Message);
                     for (int i = 0; i < 20 && !_disposed; i++) Thread.Sleep(100);
                 }
-                Thread.Sleep(500);
+                Thread.Sleep(1500);
             }
             lock (_sessionsLock)
             {
@@ -204,6 +204,8 @@ namespace PadForge.Services
         private static List<(string Key, string Name, Guid Pad, string Endpoint)> ComputeDesiredSources()
         {
             var list = new List<(string, string, Guid, string)>();
+            foreach (var (endpointId, name) in MicrophoneInputDevice.OpenEndpoints())
+                list.Add(("ep:" + endpointId, name, Guid.Empty, endpointId));
             try
             {
                 lock (SettingsManager.UserDevices.SyncRoot)
@@ -217,8 +219,6 @@ namespace PadForge.Services
                 }
             }
             catch { }
-            foreach (var (endpointId, name) in MicrophoneInputDevice.OpenEndpoints())
-                list.Add(("ep:" + endpointId, name, Guid.Empty, endpointId));
             return list;
         }
 
@@ -247,19 +247,32 @@ namespace PadForge.Services
         /// <summary>Does any active capture endpoint share this pad's USB
         /// container (the persona's headset mic, or the pad's own wired
         /// audio)? If so, that endpoint row owns the phrases.</summary>
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, (long Until, bool Value)>
+            _surfaceCache = new();
+
         private static bool PadMicSurfacesAsEndpoint(PadForge.Engine.Data.UserDevice ud)
         {
+            // A COM endpoint enumeration per reconcile pass showed up as
+            // polling dips, so the answer is cached. Five seconds is fast
+            // enough for a plug event and invisible to the poll thread.
+            long now = Environment.TickCount64;
+            if (_surfaceCache.TryGetValue(ud.InstanceGuid, out var hit) && now < hit.Until)
+                return hit.Value;
+            bool value = false;
             try
             {
                 Guid container = AudioPassthroughService.DevicePathContainerId(ud.DevicePath);
-                if (container == Guid.Empty) return false;
-                using var en = new MMDeviceEnumerator();
-                foreach (var dev in en.EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active))
-                    if (AudioPassthroughService.EndpointContainerId(dev) == container)
-                        return true;
-                return false;
+                if (container != Guid.Empty)
+                {
+                    using var en = new MMDeviceEnumerator();
+                    foreach (var dev in en.EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active))
+                        if (AudioPassthroughService.EndpointContainerId(dev) == container)
+                        { value = true; break; }
+                }
             }
-            catch { return false; }
+            catch { }
+            _surfaceCache[ud.InstanceGuid] = (now + 5000, value);
+            return value;
         }
 
         private Session Build(string key, string name, Guid padGuid, string endpointOrPath, int gen)
@@ -408,6 +421,7 @@ namespace PadForge.Services
                         return;
                     }
                     ses.SelfTestUntil = Environment.TickCount64 + 10000;
+                    System.Threading.Volatile.Write(ref ses.Pcm.MuteProducersUntil, Environment.TickCount64 + 6000);
                     var wav = new MemoryStream();
                     using (var tts = new System.Speech.Synthesis.SpeechSynthesizer())
                     {
@@ -548,6 +562,9 @@ namespace PadForge.Services
                         + " callbacks=" + capCalls + " bytesTo16k=" + capBytesOut);
                 }
                 if (ListeningMode != 0 && !ListenGateOpen) { pos = 0; return; }
+                // The self-test owns the pipe while it injects: mixing live
+                // room audio into the synthesized phrase shreds both.
+                if (Environment.TickCount64 < System.Threading.Volatile.Read(ref sink.MuteProducersUntil)) return;
                 float Mono(int f)
                 {
                     float sum = 0f;
@@ -590,6 +607,10 @@ namespace PadForge.Services
         /// silence; Dispose releases the reader with end-of-stream.</summary>
         private sealed class VoicePcmStream : Stream
         {
+            /// <summary>While TickCount64 is below this, producer writes
+            /// from captures are dropped (the self-test owns the pipe).</summary>
+            public long MuteProducersUntil;
+
             private readonly object _sync = new();
             private readonly byte[] _ring = new byte[64 * 1024];
             private int _head, _count;

@@ -179,6 +179,15 @@ namespace PadForge
         {
             InitializeComponent();
 
+            // The fullscreen icon's foreground follows the title bar's
+            // button foreground. Bound HERE with an explicit Source:
+            // TrailingContent is re-parented into the TitleBar template's
+            // own namescope, so any XAML binding (FindAncestor or
+            // ElementName) evaluated before the tree connected and logged
+            // a BINDERR on every launch.
+            FullScreenIcon.SetBinding(System.Windows.Controls.TextBlock.ForegroundProperty,
+                new System.Windows.Data.Binding(nameof(AppTitleBar.ButtonsForeground)) { Source = AppTitleBar });
+
             // Steel ground tracks the theme from first paint (#175). The
             // XAML default is Visible, which is wrong when the app starts
             // in Light.

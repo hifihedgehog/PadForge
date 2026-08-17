@@ -193,18 +193,19 @@ namespace PadForge.Common.Input
             bool assertHeadphoneVolume = false,
             int audioOutputPath = 0,
             bool assertAudioControl = false,
-            /// <summary>False while the DS5 pass-through owns this pad's
-            /// lightbar. The game's own bytes are already being forwarded
-            /// verbatim, so mirroring them again here puts TWO writers on one
-            /// subsystem: the pass-through at up to 500 Hz carrying the live
-            /// value, and this pass at 30 Hz carrying a one-frame-stale copy.
-            /// The pad then alternates between them, which the reporter
-            /// described exactly (#300): "an overlap between two, one lagging
-            /// and the other not lagging, and the controller is flashing
-            /// between them." Suppressing the enable bit leaves the field
-            /// untouched so only the pass-through writes it. Same reasoning
-            /// already applied to rumble in UserEffectsDispatcher, which zeroes
-            /// its motor bytes for a pass-through target.</summary>
+            // assertLightbarEnable: false while the DS5 pass-through owns
+            // this pad's lightbar. The game's own bytes are already being
+            // forwarded verbatim, so mirroring them again here puts TWO
+            // writers on one subsystem: the pass-through at up to 500 Hz
+            // carrying the live value, and this pass at 30 Hz carrying a
+            // one-frame-stale copy. The pad then alternates between them,
+            // which the reporter described exactly (#300): "an overlap
+            // between two, one lagging and the other not lagging, and the
+            // controller is flashing between them." Suppressing the enable
+            // bit leaves the field untouched so only the pass-through
+            // writes it. Same reasoning already applied to rumble in
+            // UserEffectsDispatcher, which zeroes its motor bytes for a
+            // pass-through target.
             bool assertLightbarEnable = true)
         {
             ushort enableBits = 0;

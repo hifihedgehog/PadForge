@@ -156,29 +156,30 @@ namespace PadForge.Common.Input
         private long _hbEnq, _hbDrop, _hbWr, _hbLastLog, _hbLastEnqTicks, _hbCoalesced, _hbDup;
         private double _hbWorstWriteMs;
 
-        /// <summary>Floor on the gap between forwarded state packets, so the
-        /// pad's link sees a bounded rate no matter how fast the game writes.
-        ///
-        /// <para>Every payload on this lane is STATE, not an event: a trigger
-        /// program, a lightbar colour, rumble levels. Each one supersedes the
-        /// last, so sending the newest at a cap is indistinguishable at the
-        /// pad from sending all of them, and 8 ms is far finer than any of it
-        /// is perceived at.</para>
-        ///
-        /// <para>What it prevents: this dispatcher forwarded one packet per
-        /// packet the game wrote, and the design assumption written at the top
-        /// of this file is 30-60 Hz. A title that writes faster than the
-        /// physical link can carry does not back up in our channel, which
-        /// drains into SDL quickly. It backs up BELOW us in the OS Bluetooth
-        /// write path, which is deep enough to hold a minute and keeps
-        /// draining after the game exits. That is a growing delay no buffer of
-        /// ours can bound, reported on GTA V Enhanced (#300) while three other
-        /// titles showed nothing. Capping the outgoing rate removes the
-        /// mechanism instead of trying to size a queue against it.</para>
-        ///
-        /// <para>Games inside the documented cadence are unaffected: at 60 Hz
-        /// packets arrive ~16 ms apart, so every one is sent the moment it
-        /// arrives and nothing is ever coalesced.</para></summary>
+        // Floor on the gap between forwarded state packets, so the
+        // pad's link sees a bounded rate no matter how fast the game writes.
+        // (Family explainer for BOTH floors below.)
+        //
+        // Every payload on this lane is STATE, not an event: a trigger
+        // program, a lightbar colour, rumble levels. Each one supersedes the
+        // last, so sending the newest at a cap is indistinguishable at the
+        // pad from sending all of them, and 8 ms is far finer than any of it
+        // is perceived at.
+        //
+        // What it prevents: this dispatcher forwarded one packet per
+        // packet the game wrote, and the design assumption written at the top
+        // of this file is 30-60 Hz. A title that writes faster than the
+        // physical link can carry does not back up in our channel, which
+        // drains into SDL quickly. It backs up BELOW us in the OS Bluetooth
+        // write path, which is deep enough to hold a minute and keeps
+        // draining after the game exits. That is a growing delay no buffer of
+        // ours can bound, reported on GTA V Enhanced (#300) while three other
+        // titles showed nothing. Capping the outgoing rate removes the
+        // mechanism instead of trying to size a queue against it.
+        //
+        // Games inside the documented cadence are unaffected: at 60 Hz
+        // packets arrive ~16 ms apart, so every one is sent the moment it
+        // arrives and nothing is ever coalesced.
         /// <summary>Bluetooth floor. A DualSense BT link delivers on its
         /// connection interval, so writing faster than this does not reach the
         /// pad sooner, it queues below us. That queue is what produced the
@@ -577,6 +578,15 @@ namespace PadForge.Common.Input
             }
         }
 
+        /// <summary>Suppresses the shutdown trigger/lightbar release for a
+        /// dispose that hands the pad to a successor in the same call (the
+        /// pad-index migration): the game keeps driving through the
+        /// successor, and a release frame mid-stream zeroes the triggers
+        /// and stomps the bar with the OLD slot's color until the game's
+        /// next write.</summary>
+        internal void SkipShutdownRelease() => _skipShutdownRelease = true;
+        private volatile bool _skipShutdownRelease;
+
         public void Dispose()
         {
             if (_disposed) return;
@@ -602,7 +612,7 @@ namespace PadForge.Common.Input
             // waited. Whatever the game left loaded then stays loaded
             // forever, because the only thing that would have cleared it
             // just exited.
-            if (_drivingState)
+            if (_drivingState && !_skipShutdownRelease)
             {
                 _drivingState = false;
                 try

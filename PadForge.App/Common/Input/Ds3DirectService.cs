@@ -864,6 +864,7 @@ namespace PadForge.Common.Input
             // One lock acquisition for the whole frame: the per-call locks nest
             // (recursive), the frame publishes atomically, and contention with the
             // 1000 Hz polling thread costs one wait instead of 23.
+            string gyroRestLine = null, gyroTraceLine = null;
             SDL.SDL_LockJoysticks();
             try
             {
@@ -939,16 +940,21 @@ namespace PadForge.Common.Input
                     // connect. 512 is the 10-bit midpoint (no reference documents a gyro center; hid-sony centers only the accel, at 511, and declines the gyro). Removing a per-unit
                     // offset is the user's gyro calibration, which is a deliberate
                     // act against a known-still pad rather than a guess.
-                    ObserveGyroRest(gz);
+                    gyroRestLine = ObserveGyroRest(gz);
                     _gyroData[0] = 0.0f;
                     _gyroData[1] = -(gz - 512) * GYRO_SCALE;
                     _gyroData[2] = 0.0f;
                     SDL.SDL_SendJoystickVirtualSensorData(j, SDL_SENSOR_GYRO, ts, _gyroData, 3);
 
-                    TraceGyro(gz);
+                    gyroTraceLine = TraceGyro(gz);
                 }
             }
             finally { SDL.SDL_UnlockJoysticks(); }
+            // Emitted OUTSIDE the joystick lock: the log ring takes its own
+            // lock and can append to a file on bench runs, neither of which
+            // belongs inside a lock the 1000 Hz poll thread contends on.
+            if (gyroRestLine != null) _log(gyroRestLine);
+            if (gyroTraceLine != null) _log(gyroTraceLine);
         }
 
         private const int SDL_SENSOR_ACCEL = 1;
@@ -992,9 +998,9 @@ namespace PadForge.Common.Input
         private const int GzOffsetAdviseCalibration = 40;   // counts, ~29 deg/s
         private const int GzRailMargin = 24;                // counts from 0 or 1023
 
-        private void ObserveGyroRest(int gz)
+        private string ObserveGyroRest(int gz)
         {
-            if (_gzRest >= 0) return;   // baseline is captured once per session
+            if (_gzRest >= 0) return null;   // baseline is captured once per session
             int delta = gz - 512;
             string note;
             if (gz <= GzRailMargin || gz >= 1023 - GzRailMargin)
@@ -1006,7 +1012,7 @@ namespace PadForge.Common.Input
                      + $"up={1023 - gz} down={gz}.";
             else
                 note = " within normal range of the 10-bit midpoint.";
-            _log($"DS3MOTION gyro resting baseline={gz} (documented center 512, delta={delta}).{note}");
+            return $"DS3MOTION gyro resting baseline={gz} (nominal center 512, delta={delta}).{note}";
         }
 
         /// <summary>Fresh measurement per session, since a different pad or the
@@ -1021,7 +1027,7 @@ namespace PadForge.Common.Input
         private const int GzMoveThreshold = 8;      // counts; below this the pad is at rest
         private const long GzLogIntervalMs = 2000;
 
-        private void TraceGyro(int gz)
+        private string TraceGyro(int gz)
         {
             if (_gzRest < 0)
             {
@@ -1029,26 +1035,29 @@ namespace PadForge.Common.Input
                 // the reference the excursions below are measured against.
                 _gzRest = gz;
                 _gzNextLogTicks = Environment.TickCount64 + GzLogIntervalMs;
-                return;
+                return null;
             }
             if (gz < _gzMin) _gzMin = gz;
             if (gz > _gzMax) _gzMax = gz;
 
             long now = Environment.TickCount64;
-            if (now < _gzNextLogTicks) return;
+            if (now < _gzNextLogTicks) return null;
             _gzNextLogTicks = now + GzLogIntervalMs;
 
             int span = _gzMax - _gzMin;
-            if (span < GzMoveThreshold) { _gzMin = int.MaxValue; _gzMax = int.MinValue; return; }
+            if (span < GzMoveThreshold) { _gzMin = int.MaxValue; _gzMax = int.MinValue; return null; }
 
             // Both excursions measured from the resting baseline, so an asymmetry
             // between the two directions is readable straight off the line.
             int below = _gzRest - _gzMin, above = _gzMax - _gzRest;
-            _log($"DS3MOTION gyro raw min={_gzMin} max={_gzMax} rest={_gzRest} "
+            string line = $"DS3MOTION gyro raw min={_gzMin} max={_gzMax} rest={_gzRest} "
                  + $"span={span} belowRest={below} aboveRest={above}"
                  + (_gzMin <= 0 ? " CLIPPED-LOW" : "") + (_gzMax >= 1023 ? " CLIPPED-HIGH" : "")
-                 + $" | yaw now={-(gz - 512) * GYRO_SCALE:F2} rad/s");
+                 + $" | yaw now={-(gz - 512) * GYRO_SCALE:F2} rad/s";
+            // Fresh 2 s window: the excursion envelope resets after each
+            // report, or min/max would grow into a session-wide envelope.
             _gzMin = int.MaxValue; _gzMax = int.MinValue;
+            return line;
         }
 
         /// <summary>0..255 stick byte to the full SDL axis range with 0x80 = exactly 0.

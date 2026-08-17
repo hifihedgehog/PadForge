@@ -34,8 +34,13 @@ namespace PadForge.Services
         public static VoiceMacroService Active { get; private set; }
 
         /// <summary>Every recognition attempt on any session, for the manage
-        /// dialog's live readout: (source name, text, confidence, fired).</summary>
-        public event Action<string, string, float, bool> PhraseHeard;
+        /// dialog's live readout: (source name, text, confidence, fired).
+        /// STATIC, deliberately: the dialog can open before the service
+        /// starts or across a service restart, and an instance subscription
+        /// taken at the wrong moment went silently dead (field report: a
+        /// fired phrase with the dialog open produced no readout because
+        /// the dialog held a stale instance).</summary>
+        public static event Action<string, string, float, bool> PhraseHeard;
 
         // ── Settings (persisted via SettingsService) ──
         public static volatile bool Enabled;

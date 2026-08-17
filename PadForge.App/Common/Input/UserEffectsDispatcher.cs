@@ -1790,7 +1790,17 @@ namespace PadForge.Common.Input
                     // with a different colour.
                     bool gameDrivenBar = devOverrides.LightbarRgb != null
                         && devOverrides.LightbarRgb.Length >= 3;
-                    bool assertLightbar = !(gameDrivenBar && isDs5
+                    // The mirror override decays with the 1.5 s grace, but
+                    // the pass-through re-asserts the game's bytes for its
+                    // whole idle window (up to 15 s after the last packet).
+                    // Suppress for as long as the pass-through HOLDS the
+                    // bar, or a game rewriting it every few seconds
+                    // re-opens the two-writer flashing this fixed. The
+                    // pass-through's own release hands the identity bar
+                    // back, so nothing is lost while suppressed.
+                    bool assertLightbar = !((gameDrivenBar
+                            || DualSensePassthroughDispatcher.IsHoldingState(_padIndex))
+                        && isDs5
                         && DualSensePassthroughDispatcher.IsPassthroughTarget(_padIndex, ud.InstanceGuid));
 
                     // Resolve this device's per-device lighting config.

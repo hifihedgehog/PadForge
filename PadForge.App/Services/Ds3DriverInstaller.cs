@@ -785,7 +785,15 @@ namespace PadForge.Services
                 Guid none = Guid.Empty;
                 IntPtr set = SetupDiGetClassDevsEnum(ref none, "BTHENUM", IntPtr.Zero,
                     DIGCF_PRESENT | DIGCF_ALLCLASSES);
-                if (set == IntPtr.Zero || set == new IntPtr(-1)) return -1;
+                if (set == IntPtr.Zero || set == new IntPtr(-1))
+                {
+                    // Enumeration FAILED; without this the -1 shipped the
+                    // init text "no BTHENUM service node present", reporting
+                    // an API failure as node absence.
+                    detail = "probe failed: SetupDiGetClassDevs error "
+                        + System.Runtime.InteropServices.Marshal.GetLastWin32Error();
+                    return -1;
+                }
                 try
                 {
                     int found = -1;

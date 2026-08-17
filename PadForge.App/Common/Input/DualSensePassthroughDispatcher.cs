@@ -92,9 +92,24 @@ namespace PadForge.Common.Input
         private readonly int _padIndex;
         private volatile bool _disposed;
 
+        /// <summary>Live dispatcher per slot, so the identity writer can ask
+        /// whether the pass-through still holds game state on the pad
+        /// (IsHoldingState) without a reference to the instance.</summary>
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<int, DualSensePassthroughDispatcher> _bySlot = new();
+
+        /// <summary>True while this slot's pass-through has written game
+        /// state it has not yet released. The identity writer suppresses
+        /// its 30 Hz lightbar assert for this WHOLE window, not just the
+        /// mirror's 1.5 s grace: the pass-through re-asserts the game's
+        /// bytes for up to the idle window after the last packet, and two
+        /// writers on one bar is the #300 flashing.</summary>
+        public static bool IsHoldingState(int padIndex)
+            => _bySlot.TryGetValue(padIndex, out var d) && d._drivingState;
+
         public DualSensePassthroughDispatcher(int padIndex)
         {
             _padIndex = padIndex;
+            _bySlot[padIndex] = this;
             _channel = Channel.CreateBounded<Ds5Effect>(new BoundedChannelOptions(ChannelCapacity)
             {
                 // Wait, so TryWrite reports a full channel instead of eating
@@ -239,7 +254,7 @@ namespace PadForge.Common.Input
         /// release. Without it an idle lane would re-release forever, and a
         /// session where the game never wrote would release something it never
         /// took. Worker-only.</summary>
-        private bool _drivingState;
+        private volatile bool _drivingState;
 
         /// <summary>valid_flag0 bits 2 and 3: the right and left adaptive
         /// trigger blocks. Confirmed against dualsense-tester, whose trigger
@@ -511,10 +526,24 @@ namespace PadForge.Common.Input
                 ArrayPool<byte>.Shared.Return(superseded.Buffer);
                 if (SdlDiagLog.IsMirroring) Interlocked.Increment(ref _hbCoalesced);
             }
+            // A producer that passed the _disposed check and then latched
+            // while Dispose was draining would leak its one rental; drain
+            // it ourselves when the flag flipped mid-flight.
+            if (_disposed)
+            {
+                lock (_latchLock)
+                {
+                    if (_hasLatest)
+                    {
+                        ArrayPool<byte>.Shared.Return(_latest.Buffer);
+                        _hasLatest = false;
+                    }
+                }
+            }
             HeartbeatNoteEnqueue(accepted: true);
             if (_signal.CurrentCount == 0)
             {
-                try { _signal.Release(); } catch (SemaphoreFullException) { }
+                try { _signal.Release(); } catch (SemaphoreFullException) { } catch (ObjectDisposedException) { }
             }
         }
 
@@ -544,27 +573,35 @@ namespace PadForge.Common.Input
             HeartbeatNoteEnqueue(accepted: true);
             if (_signal.CurrentCount == 0)
             {
-                try { _signal.Release(); } catch (SemaphoreFullException) { }
+                try { _signal.Release(); } catch (SemaphoreFullException) { } catch (ObjectDisposedException) { }
             }
         }
 
         public void Dispose()
         {
             if (_disposed) return;
+            _disposed = true;
 
-            // Hand the triggers back BEFORE tearing anything down.
-            //
-            // The idle release needs fifteen seconds of silence to fire, and
-            // PadForge closing is the one case where those seconds never
-            // arrive. Jobima1st (#300) closes the app immediately after the
-            // game, and reported the pad still acting; the same test passed
-            // here only because the tester waited. Whatever the game left
-            // loaded then stays loaded forever, because the only thing that
-            // would have cleared it just exited.
-            //
-            // Written synchronously on the caller's thread, before _disposed
-            // is set and before the worker is cancelled, because after that
-            // there is nothing left to carry it.
+            // Stop the worker FIRST, then hand the triggers back. The
+            // release frame must be the LAST write on this lane: written
+            // while the worker still ran, an in-flight game payload (taken
+            // from the latch, pacing in Task.Delay) could land AFTER the
+            // release and re-load the trigger it had just handed back, with
+            // nothing left to release again. Stopping first also keeps the
+            // channel's SingleReader contract intact for the drain below.
+            try { _channel.Writer.TryComplete(); } catch { }
+            try { _cts.Cancel(); } catch { }
+            try { _signal.Release(); } catch (SemaphoreFullException) { } catch (ObjectDisposedException) { }
+            try { _worker?.Wait(TimeSpan.FromMilliseconds(500)); } catch { }
+
+            // The release itself. The idle release needs fifteen seconds of
+            // silence to fire, and PadForge closing is the one case where
+            // those seconds never arrive. Jobima1st (#300) closes the app
+            // immediately after the game, and reported the pad still
+            // acting; the same test passed here only because the tester
+            // waited. Whatever the game left loaded then stays loaded
+            // forever, because the only thing that would have cleared it
+            // just exited.
             if (_drivingState)
             {
                 _drivingState = false;
@@ -589,20 +626,11 @@ namespace PadForge.Common.Input
                 catch { /* shutdown must not throw */ }
             }
 
-            _disposed = true;
-
-            try { _channel.Writer.TryComplete(); } catch { }
-            try { _cts.Cancel(); } catch { }
-            try { _signal.Release(); } catch { }
-
-            // Worker drains and returns rented buffers; give it a brief
-            // window to complete cleanly.  The OutputReceived subscription
-            // must be unsubscribed BEFORE Dispose to stop new enqueues —
-            // HMaestroVirtualController owns that ordering.
-            try { _worker?.Wait(TimeSpan.FromMilliseconds(500)); } catch { }
-
-            // Hand every rental back. The worker may have exited before
-            // draining, and the latch holds at most one payload.
+            // Hand every rental back. The worker has stopped (or timed
+            // out), and the latch holds at most one payload. The
+            // OutputReceived subscription must be unsubscribed BEFORE
+            // Dispose to stop new enqueues; HMaestroVirtualController owns
+            // that ordering.
             lock (_latchLock)
             {
                 if (_hasLatest)
@@ -614,13 +642,25 @@ namespace PadForge.Common.Input
             while (_channel.Reader.TryRead(out var leftover))
                 ArrayPool<byte>.Shared.Return(leftover.Buffer);
 
+            _bySlot.TryRemove(new System.Collections.Generic.KeyValuePair<int, DualSensePassthroughDispatcher>(_padIndex, this));
             try { _cts.Dispose(); } catch { }
             try { _signal.Dispose(); } catch { }
         }
 
+        [System.Runtime.InteropServices.DllImport("winmm.dll")]
+        private static extern uint timeBeginPeriod(uint uPeriod);
+        [System.Runtime.InteropServices.DllImport("winmm.dll")]
+        private static extern uint timeEndPeriod(uint uPeriod);
+
         private async Task DispatchLoopAsync(CancellationToken ct)
         {
             var reader = _channel.Reader;
+            // The 1..8 ms Task.Delay pacing runs at the timer's resolution:
+            // without this, a session with no controller audio (the only
+            // other timeBeginPeriod caller) paces at ~15 ms and the "125 Hz"
+            // floor degrades to ~64 Hz, under the reference's 100 Hz.
+            bool timerArmed = false;
+            try { timerArmed = timeBeginPeriod(1) == 0; } catch { }
             try
             {
                 while (!ct.IsCancellationRequested)
@@ -675,11 +715,18 @@ namespace PadForge.Common.Input
                 }
             }
             catch (OperationCanceledException) { /* Dispose path */ }
-            catch
+            catch (Exception ex)
             {
                 // Last-resort guard so a transient SDL error doesn't kill
                 // the worker. Per-packet errors are already swallowed in
-                // DispatchOne; this catches anything that escapes.
+                // DispatchOne. A worker death here also silently kills the
+                // idle release and the heartbeat, so it must at least say
+                // so.
+                SdlDiagLog.WriteLine("DS5EFFECT slot=" + _padIndex + " worker DIED: " + ex.Message);
+            }
+            finally
+            {
+                if (timerArmed) { try { timeEndPeriod(1); } catch { } }
             }
         }
 

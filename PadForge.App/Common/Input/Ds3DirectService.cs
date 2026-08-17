@@ -363,7 +363,11 @@ namespace PadForge.Common.Input
                     flapBackoffMs = flapBackoffMs == 0 ? FlapBackoffFirstMs
                                   : flapBackoffMs >= FlapBackoffMaxMs / 2 ? FlapBackoffMaxMs
                                   : flapBackoffMs * 2;
-                    Thread.Sleep(flapBackoffMs);
+                    // Chunked so Stop() interrupts it: a monolithic 2 s
+                    // sleep outlives Stop's Join(1500) and leaves the dying
+                    // thread past the join window.
+                    for (int slept = 0; slept < flapBackoffMs && _running; slept += 100)
+                        Thread.Sleep(Math.Min(100, flapBackoffMs - slept));
                 }
                 else flapBackoffMs = 0;
             }

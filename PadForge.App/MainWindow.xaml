@@ -113,14 +113,13 @@
                                 </Setter>
                             </Style>
                         </Button.Style>
-                        <!-- ElementName, not FindAncestor: TrailingContent
-                             initializes before the TitleBar's template
-                             connects it into the visual tree, so an
-                             ancestor-walk binding logged a BINDERR on every
-                             launch. The name is registered before this child
-                             parses, so it resolves cleanly first try. -->
-                        <TextBlock x:Name="FullScreenIcon" Text="&#xE740;" FontFamily="Segoe MDL2 Assets" FontSize="10"
-                                   Foreground="{Binding ButtonsForeground, ElementName=AppTitleBar}"/>
+                        <!-- Foreground is bound in code-behind with an
+                             explicit Source. TrailingContent is re-parented
+                             into the TitleBar template's own namescope, so
+                             both FindAncestor and ElementName bindings
+                             evaluated before the tree connects and logged a
+                             BINDERR on every launch. -->
+                        <TextBlock x:Name="FullScreenIcon" Text="&#xE740;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
                     </Button>
                 </ui:TitleBar.TrailingContent>
             </ui:TitleBar>

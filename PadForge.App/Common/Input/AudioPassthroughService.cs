@@ -3563,14 +3563,25 @@ namespace PadForge.Common.Input
 
         private static void SendDs5BtMicToggle(Sink s, byte[] report, bool open)
         {
+            FillDs5MicToggle(report, open, s.DeviceGuid, s.Ds5PktCounter++);
+            if (s.Tx != null) s.Tx.TrySend(s.BtHandle, report, out _);
+        }
+
+        /// <summary>The mic open/close report, one wire shape for every
+        /// sender: the persona tick, the reader-handle stop path, and the
+        /// voice-only lane. Report 0x32 carrying packet 0x11 (byte 4 = 0xFF
+        /// open / 0xFE close) plus an empty 0x12 haptic packet, CRC32 at
+        /// the tail.</summary>
+        private static void FillDs5MicToggle(byte[] report, bool open, Guid deviceGuid, byte pktCounter)
+        {
             Array.Clear(report, 0, Ds5HapticBtReportSize);
             report[0] = 0x32;
             report[1] = 0x00;                       // per the dump, not a seq nibble
             report[2] = 0x11 | 0x80;
             report[3] = 7;
             report[4] = open ? (byte)0xFF : (byte)0xFE;
-            report[9] = ResolveAudioBufferLength(s.DeviceGuid);
-            report[10] = s.Ds5PktCounter++;
+            report[9] = ResolveAudioBufferLength(deviceGuid);
+            report[10] = pktCounter;
             report[11] = 0x12 | 0x80;
             report[12] = 64;                        // 64 zero haptic bytes follow
             uint crc = Crc32(report, Ds5HapticBtReportSize - 4);
@@ -3578,7 +3589,153 @@ namespace PadForge.Common.Input
             report[Ds5HapticBtReportSize - 3] = (byte)((crc >> 8) & 0xFF);
             report[Ds5HapticBtReportSize - 2] = (byte)((crc >> 16) & 0xFF);
             report[Ds5HapticBtReportSize - 1] = (byte)(crc >> 24);
-            if (s.Tx != null) s.Tx.TrySend(s.BtHandle, report, out _);
+        }
+
+        // ── Voice-only Bluetooth mic session (issue #317) ──
+        //
+        // A DualSense on a NON-full profile has no persona feed, so nothing
+        // opens its microphone session and its embedded mic surfaces
+        // nowhere. This lane is that session's owner: the same open/close
+        // wire shape, the same 0x31 HasMic reader and Opus decode as the
+        // persona lane, feeding ONLY the voice tee. Push-to-talk gates the
+        // SESSION itself, not just the decode, so idle listening costs no
+        // Bluetooth bandwidth and no battery.
+
+        private sealed class VoiceMicLane
+        {
+            public Guid Pad;
+            public string Path;
+            public volatile bool Stop;
+            public IntPtr Handle;
+            public System.Threading.Thread Thread;
+            public byte Counter;
+            public long RxFrames;
+        }
+
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, VoiceMicLane>
+            _voiceMicLanes = new();
+
+        internal static bool IsVoiceBtMicActive(Guid padGuid)
+            => _voiceMicLanes.ContainsKey(padGuid);
+
+        internal static bool StartVoiceBtMic(Guid padGuid, string hidPath)
+        {
+            if (padGuid == Guid.Empty || string.IsNullOrEmpty(hidPath)) return false;
+            var lane = new VoiceMicLane { Pad = padGuid, Path = hidPath };
+            if (!_voiceMicLanes.TryAdd(padGuid, lane)) return true; // already running
+            lane.Thread = new System.Threading.Thread(() => VoiceBtMicLoop(lane))
+            {
+                IsBackground = true,
+                Name = "VoiceBtMic",
+                Priority = System.Threading.ThreadPriority.AboveNormal,
+            };
+            lane.Thread.Start();
+            Engine.SdlDiagLog.WriteLine("VOICE bt-mic lane start pad=" + padGuid.ToString("N").Substring(0, 8));
+            return true;
+        }
+
+        internal static void StopVoiceBtMic(Guid padGuid)
+        {
+            if (!_voiceMicLanes.TryRemove(padGuid, out var lane)) return;
+            lane.Stop = true;
+            var h = lane.Handle;
+            if (h != IntPtr.Zero) NativeMethods.CancelIoEx(h, IntPtr.Zero);
+        }
+
+        private static void VoiceBtMicLoop(VoiceMicLane lane)
+        {
+            IntPtr h = NativeMethods.OpenHidSync(lane.Path);
+            if (h == IntPtr.Zero || h == new IntPtr(-1))
+            {
+                Engine.SdlDiagLog.WriteLine("VOICE bt-mic open FAILED pad=" + lane.Pad.ToString("N").Substring(0, 8));
+                _voiceMicLanes.TryRemove(lane.Pad, out _);
+                return;
+            }
+            lane.Handle = h;
+            var toggle = new byte[Ds5HapticBtReportSize];
+            var report = new byte[547]; // BT DS5 input caps length; 0x31 arrives in the first 78
+            var dec = OpusCodecFactory.CreateDecoder(Rate, BtMicChannels);
+            var pcm = new short[BtMicFrameSamples * BtMicChannels];
+            bool sessionOpen = false;
+            long openSentTicks = 0;
+            int openTries = 0;
+            bool decoderStale = false;
+            try
+            {
+                while (!lane.Stop)
+                {
+                    // The session follows the listen gate. Always-listening
+                    // keeps it open; push-to-talk opens on press and closes
+                    // after release, which is the battery half of PTT.
+                    bool wantOpen = PadForge.Services.VoiceMacroService.ListenGateOpen;
+                    long now = Environment.TickCount64;
+                    if (wantOpen && !sessionOpen)
+                    {
+                        FillDs5MicToggle(toggle, true, lane.Pad, lane.Counter++);
+                        NativeMethods.WriteFileSyncBestEffort(h, toggle, Ds5HapticBtReportSize);
+                        sessionOpen = true;
+                        openSentTicks = now;
+                        openTries = 1;
+                        lane.RxFrames = 0;
+                        Engine.SdlDiagLog.WriteLine("VOICE bt-mic OPEN sent pad=" + lane.Pad.ToString("N").Substring(0, 8));
+                    }
+                    else if (wantOpen && sessionOpen && lane.RxFrames == 0
+                             && now - openSentTicks >= 2000 && openTries < 5)
+                    {
+                        // The persona lane's proven retry: the pad drops an
+                        // open now and then, and frames are the only ack.
+                        FillDs5MicToggle(toggle, true, lane.Pad, lane.Counter++);
+                        NativeMethods.WriteFileSyncBestEffort(h, toggle, Ds5HapticBtReportSize);
+                        openSentTicks = now;
+                        openTries++;
+                        Engine.SdlDiagLog.WriteLine("VOICE bt-mic OPEN retry " + openTries);
+                    }
+                    else if (!wantOpen && sessionOpen)
+                    {
+                        FillDs5MicToggle(toggle, false, lane.Pad, lane.Counter++);
+                        NativeMethods.WriteFileSyncBestEffort(h, toggle, Ds5HapticBtReportSize);
+                        sessionOpen = false;
+                        decoderStale = true;
+                        Engine.SdlDiagLog.WriteLine("VOICE bt-mic CLOSE sent (gate)");
+                    }
+
+                    if (!NativeMethods.ReadFileSync(h, report, report.Length, out int got) || got < 78)
+                    {
+                        if (lane.Stop) break;
+                        System.Threading.Thread.Sleep(50);
+                        continue;
+                    }
+                    if (report[0] != 0x31) continue;
+                    if ((report[1] & 0x02) == 0) continue; // plain state report
+                    lane.RxFrames++;
+                    if (!sessionOpen) continue; // draining a just-closed session
+
+                    // Opus carries state across packets; after a gate-closed
+                    // stretch, start the decoder clean.
+                    if (decoderStale) { dec.ResetState(); decoderStale = false; }
+                    int n;
+                    try { n = dec.Decode(report.AsSpan(3, BtMicPayloadBytes), pcm.AsSpan(), BtMicFrameSamples, false); }
+                    catch { continue; }
+                    if (n <= 0) continue;
+                    PadForge.Services.VoiceMacroService.SubmitPadMic48k(
+                        lane.Pad, pcm.AsSpan(0, n * BtMicChannels), BtMicChannels);
+                }
+            }
+            finally
+            {
+                // Close the session on the way out: mic-open is LATCHED on
+                // the pad across app restarts, and an orphaned session has
+                // wedged a pad until power-cycle before (2026-07-31).
+                try
+                {
+                    FillDs5MicToggle(toggle, false, lane.Pad, lane.Counter++);
+                    NativeMethods.WriteFileSyncBestEffort(h, toggle, Ds5HapticBtReportSize);
+                    Engine.SdlDiagLog.WriteLine("VOICE bt-mic CLOSE sent (stop)");
+                }
+                catch { }
+                NativeMethods.CloseHandle(h);
+                _voiceMicLanes.TryRemove(lane.Pad, out _);
+            }
         }
 
         /// <summary>One DS4 tick: resample the tick's 48 kHz pull to 32 kHz

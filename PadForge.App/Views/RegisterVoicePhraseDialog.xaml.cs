@@ -42,7 +42,6 @@ namespace PadForge.Views
         private readonly System.Collections.ObjectModel.ObservableCollection<PhraseRow> _rows = new();
 
         private Action<string, string, float, bool> _heardHandler;
-        private VoiceMacroService _subscribedSvc;
         private bool _loading = true;
 
         public RegisterVoicePhraseDialog()
@@ -58,24 +57,20 @@ namespace PadForge.Views
 
             RefreshList();
 
-            var svc = VoiceMacroService.Active;
-            if (svc != null)
-            {
-                _heardHandler = OnPhraseHeard;
-                svc.PhraseHeard += _heardHandler;
-                _subscribedSvc = svc;
-            }
+            // Static event: no instance to race, no dead subscription when
+            // the dialog opens before the service or across its restart.
+            _heardHandler = OnPhraseHeard;
+            VoiceMacroService.PhraseHeard += _heardHandler;
 
             Closed += (s, e) => Unsubscribe();
         }
 
         private void Unsubscribe()
         {
-            if (_subscribedSvc != null && _heardHandler != null)
+            if (_heardHandler != null)
             {
-                try { _subscribedSvc.PhraseHeard -= _heardHandler; } catch { }
+                try { VoiceMacroService.PhraseHeard -= _heardHandler; } catch { }
             }
-            _subscribedSvc = null;
             _heardHandler = null;
         }
 

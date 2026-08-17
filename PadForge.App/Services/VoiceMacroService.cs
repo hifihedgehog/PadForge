@@ -296,7 +296,20 @@ namespace PadForge.Services
                 var gb = new System.Speech.Recognition.GrammarBuilder(
                     new System.Speech.Recognition.Choices(phrases.Select(p => p.Phrase).ToArray()))
                 { Culture = info.Culture };
-                engine.LoadGrammar(new System.Speech.Recognition.Grammar(gb));
+                var phraseGrammar = new System.Speech.Recognition.Grammar(gb) { Name = "phrases" };
+                engine.LoadGrammar(phraseGrammar);
+                // The dictation sink. With only the closed grammar loaded,
+                // the engine has nowhere to put non-matching speech, so
+                // everything funnels into the nearest phrase and confidence
+                // stops discriminating (field report: "meow" outscoring a
+                // real "hello" FOR "hello"). With free dictation loaded
+                // beside it, garbage goes to dictation, and a phrase result
+                // only wins when it genuinely beats free speech.
+                try
+                {
+                    engine.LoadGrammar(new System.Speech.Recognition.DictationGrammar() { Name = "__sink" });
+                }
+                catch { /* a recognizer without dictation keeps the closed grammar alone */ }
 
                 bool isEndpoint = padGuid == Guid.Empty;
                 var ses = new Session
@@ -306,7 +319,18 @@ namespace PadForge.Services
                     Engine = engine, Gen = gen,
                     Pcm = new VoicePcmStream(),
                 };
-                engine.SpeechRecognized += (s, e) => OnRecognized(ses, e.Result?.Text, e.Result?.Confidence ?? 0f);
+                engine.SpeechRecognized += (s, e) =>
+                {
+                    // Dictation-sink wins are garbage by definition: the
+                    // utterance resembled free speech more than any phrase.
+                    if (e.Result?.Grammar?.Name == "__sink")
+                    {
+                        Engine.SdlDiagLog.WriteLine($"VOICE [{ses.DisplayName}] garbage \"{e.Result?.Text}\" (dictation sink)");
+                        PhraseHeard?.Invoke(ses.DisplayName, e.Result?.Text ?? string.Empty, 0f, false);
+                        return;
+                    }
+                    OnRecognized(ses, e.Result?.Text, e.Result?.Confidence ?? 0f);
+                };
                 engine.RecognizeCompleted += (s, e) =>
                     Engine.SdlDiagLog.WriteLine($"VOICE [{ses.DisplayName}] recognize COMPLETED"
                         + (e.Cancelled ? " (cancelled)" : "") + (e.Error != null ? " error=" + e.Error.Message : ""));

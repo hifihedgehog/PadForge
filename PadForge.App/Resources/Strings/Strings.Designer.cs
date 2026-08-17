@@ -518,6 +518,8 @@ public class Strings : INotifyPropertyChanged
     public string About_Ds4AudioDesc => Get("About_Ds4AudioDesc");
     public string About_NAudio => Get("About_NAudio");
     public string About_NAudioDesc => Get("About_NAudioDesc");
+    public string About_Vosk => Get("About_Vosk");
+    public string About_VoskDesc => Get("About_VoskDesc");
     public string About_BouncyCastle => Get("About_BouncyCastle");
     public string About_BouncyCastleDesc => Get("About_BouncyCastleDesc");
     public string About_BthPS3 => Get("About_BthPS3");

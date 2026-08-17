@@ -2249,6 +2249,8 @@
   <data name="PickSound_Title" xml:space="preserve"><value>Een geluid kiezen</value></data>
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
   <data name="About_NAudioDesc" xml:space="preserve"><value>WASAPI-loopbackopname voor de controller-audiospiegeling en de audio-bas-triggerrumble. Door Mark Heath. MIT.</value></data>
+  <data name="About_Vosk" xml:space="preserve"><value>Vosk</value></data>
+  <data name="About_VoskDesc" xml:space="preserve"><value>Offline spraakherkenning die spraakmacrozinnen herkent. Door Alpha Cephei. Het model wordt bij het eerste gebruik gedownload. Apache-2.0.</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
   <data name="About_BouncyCastleDesc" xml:space="preserve"><value>Cryptografie voor het koppelen en het transport van Remote Link (X25519, Ed25519, ChaCha20-Poly1305). Bouncy Castle-licentie, een MIT-achtige licentie.</value></data>
   <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>Opname "{0}": druk op de invoer voor de richting Omhoog...</value></data>

@@ -243,6 +243,51 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _isNfcDevice, value);
         }
 
+        private bool _isMicrophoneDevice;
+        /// <summary>Whether the selected device is a standalone microphone
+        /// (issue #317): hides the numbered button grid, since every button
+        /// it has is a named phrase shown in the Voice Macros section.</summary>
+        public bool IsMicrophoneDevice
+        {
+            get => _isMicrophoneDevice;
+            set => SetProperty(ref _isMicrophoneDevice, value);
+        }
+
+        private bool _showVoicePhrases;
+        /// <summary>Whether the selected device carries voice phrases (a
+        /// microphone row, or a Bluetooth DualSense whose embedded mic is
+        /// not a system device): drives the Voice Macros section, the voice
+        /// twin of the NFC Tags section.</summary>
+        public bool ShowVoicePhrases
+        {
+            get => _showVoicePhrases;
+            set => SetProperty(ref _showVoicePhrases, value);
+        }
+
+        /// <summary>Named voice phrase rows for the selected device's live
+        /// preview (issue #317): "Any Phrase" plus each registered phrase,
+        /// lighting while its button pulses. Reuses the NFC row item.</summary>
+        public ObservableCollection<NfcTagDisplayItem> VoicePhrases { get; } = new();
+
+        /// <summary>The raw-button base the current device's phrase buttons
+        /// sit at (0 on a microphone row, the reserved pad range on a
+        /// DualSense), kept so a registry change can rebuild in place.</summary>
+        public int VoiceButtonBase { get; private set; } = -1;
+
+        /// <summary>Rebuilds the Voice Macros rows: "Any Phrase" first, then
+        /// each phrase at its stable index offset by the device's base.</summary>
+        public void RebuildVoicePhrases(int buttonBase)
+        {
+            VoiceButtonBase = buttonBase;
+            VoicePhrases.Clear();
+            if (buttonBase < 0) return;
+            VoicePhrases.Add(new NfcTagDisplayItem
+            { Name = Strings.Instance.Voice_AnyPhrase, Uid = string.Empty, Button = buttonBase });
+            foreach (var v in PadForge.Common.Input.VoicePhraseRegistry.Phrases)
+                VoicePhrases.Add(new NfcTagDisplayItem
+                { Name = v.Name, Uid = v.Phrase, Button = buttonBase + v.Button });
+        }
+
         private bool _isConsumerDevice;
         /// <summary>Whether the selected device is a Consumer Control
         /// collection (issue #168): drives the named button-chip preview in
@@ -444,11 +489,14 @@ namespace PadForge.ViewModels
         /// are stored verbatim and used by the InputService update loop
         /// to read the matching <c>state.Buttons[Index]</c>.
         /// </summary>
-        internal void RebuildRawStateCollections(int axisCount, IReadOnlyList<int> buttonIndices, int povCount, bool isKeyboard = false, bool isMouse = false, bool isTouchpad = false, bool isMidi = false, bool isNfc = false, IReadOnlyList<ConsumerButtonDisplayItem> consumerButtons = null, bool isHeadsetMotion = false)
+        internal void RebuildRawStateCollections(int axisCount, IReadOnlyList<int> buttonIndices, int povCount, bool isKeyboard = false, bool isMouse = false, bool isTouchpad = false, bool isMidi = false, bool isNfc = false, IReadOnlyList<ConsumerButtonDisplayItem> consumerButtons = null, bool isHeadsetMotion = false, int voiceButtonBase = -1, bool isMicrophone = false)
         {
             IsNfcDevice = isNfc;
             IsHeadsetMotionDevice = isHeadsetMotion;
             if (isNfc) RebuildNfcTags(); else NfcTags.Clear();
+            IsMicrophoneDevice = isMicrophone;
+            ShowVoicePhrases = voiceButtonBase >= 0;
+            RebuildVoicePhrases(voiceButtonBase);
 
             // Consumer Control (issue #168): named chips replace both the
             // numbered grid and the (empty) axes section, the same treatment
@@ -533,6 +581,9 @@ namespace PadForge.ViewModels
             IsMidiDevice = false;
             IsNfcDevice = false;
             NfcTags.Clear();
+            IsMicrophoneDevice = false;
+            ShowVoicePhrases = false;
+            VoicePhrases.Clear();
             IsConsumerDevice = false;
             IsHeadsetMotionDevice = false;
             ConsumerButtons.Clear();

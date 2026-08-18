@@ -181,6 +181,39 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void NavMac_AnchorsOnTheMarkerAcrossFramings()
+        {
+            byte[] mac = { 0x11, 0x22, 0x33, 0x44, 0x55, 0x66 };
+
+            // Raw control-transfer payload without an id echo: marker at 0
+            // (moveonpc Nav layout "ff ff 00 11 22 33 44 55 66").
+            var raw = new byte[17];
+            raw[0] = 0xFF; raw[1] = 0xFF; raw[2] = 0x00;
+            Array.Copy(mac, 0, raw, 3, 6);
+            Assert.Equal(mac, PadForge.Services.Ds3PairingService.ExtractNavMacFromF2(raw));
+
+            // Payload with the 0xF2 echo first (the DS3's proven WinUSB shape,
+            // MAC at 4): marker at 1.
+            var echoed = new byte[17];
+            echoed[0] = 0xF2; echoed[1] = 0xFF; echoed[2] = 0xFF; echoed[3] = 0x00;
+            Array.Copy(mac, 0, echoed, 4, 6);
+            Assert.Equal(mac, PadForge.Services.Ds3PairingService.ExtractNavMacFromF2(echoed));
+
+            // HidD buffer with id byte plus the echoed payload: marker at 2.
+            var hidd = new byte[18];
+            hidd[0] = 0xF2; hidd[1] = 0xF2; hidd[2] = 0xFF; hidd[3] = 0xFF; hidd[4] = 0x00;
+            Array.Copy(mac, 0, hidd, 5, 6);
+            Assert.Equal(mac, PadForge.Services.Ds3PairingService.ExtractNavMacFromF2(hidd));
+
+            // No marker, or a degenerate address: refused, never guessed.
+            Assert.Null(PadForge.Services.Ds3PairingService.ExtractNavMacFromF2(new byte[17]));
+            var zeroMac = new byte[17];
+            zeroMac[0] = 0xFF; zeroMac[1] = 0xFF; zeroMac[2] = 0x00;
+            Assert.Null(PadForge.Services.Ds3PairingService.ExtractNavMacFromF2(zeroMac));
+            Assert.Null(PadForge.Services.Ds3PairingService.ExtractNavMacFromF2(null));
+        }
+
+        [Fact]
         public void SphereColors_FollowThePlayerPaletteAndWrap()
         {
             Assert.Equal(PsMoveDirectService.DefaultSphereColor(1), PsMoveDirectService.DefaultSphereColor(5));

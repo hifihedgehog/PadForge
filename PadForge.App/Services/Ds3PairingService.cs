@@ -1012,22 +1012,22 @@ namespace PadForge.Services
                     _log($"Reading the Navigation controller address failed (err={Marshal.GetLastWin32Error()}).");
                     error = "sixpair-failed"; return false;
                 }
-                static bool Plausible(byte[] b, int off)
+                // The references disagree by one byte on where the MAC starts
+                // (sixad/sixpair.c reads payload offset 4, the moveonpc Nav page
+                // documents offset 3, and HidD framing can shift either by one),
+                // but ALL of them agree the MAC directly follows an FF FF 00
+                // marker. Anchor on the structure instead of an offset, log the
+                // raw bytes so the first hardware contact settles the layout,
+                // and fail loudly rather than record a shifted address.
+                _log($"Navigation 0xF2 raw: {Hex(f2[..12], ' ')}");
+                byte[] mac = ExtractNavMacFromF2(f2);
+                if (mac == null)
                 {
-                    bool allZero = true, allFf = true;
-                    for (int i = 0; i < 6; i++) { if (b[off + i] != 0x00) allZero = false; if (b[off + i] != 0xFF) allFf = false; }
-                    return !allZero && !allFf;
-                }
-                int macOff = Plausible(f2, 5) ? 5 : 4;
-                byte[] mac = new byte[6];
-                Array.Copy(f2, macOff, mac, 0, 6);
-                if (!Plausible(f2, macOff))
-                {
-                    _log("The Navigation controller returned no usable address.");
+                    _log("The Navigation controller's 0xF2 report carried no FF FF 00 address marker.");
                     error = "sixpair-failed"; return false;
                 }
                 macHex = Hex(mac, null).ToLowerInvariant();
-                _log($"Navigation address: {Hex(mac, ':')} (offset {macOff}).");
+                _log($"Navigation address: {Hex(mac, ':')}");
 
                 byte[] set = new byte[9];
                 set[0] = 0xF5;
@@ -1069,6 +1069,28 @@ namespace PadForge.Services
                 return true;
             }
             finally { CloseHandle(h); }
+        }
+
+        /// <summary>Finds the Navigation controller's MAC in its 0xF2 feature
+        /// report by the FF FF 00 marker that every reference shows directly
+        /// before the address (moveonpc "HID reports" Nav section; sixad
+        /// sixpair.c's msg layout; hid-sony.c:2046-2066 for the sixaxis
+        /// sibling). Scanning the first bytes absorbs the one-byte framing
+        /// differences between raw control transfers and HidD buffers. Returns
+        /// null when no marker is present or the address is degenerate. Pure.</summary>
+        internal static byte[] ExtractNavMacFromF2(byte[] f2)
+        {
+            if (f2 == null || f2.Length < 10) return null;
+            for (int o = 0; o + 9 <= f2.Length && o <= 5; o++)
+            {
+                if (f2[o] != 0xFF || f2[o + 1] != 0xFF || f2[o + 2] != 0x00) continue;
+                var mac = new byte[6];
+                Array.Copy(f2, o + 3, mac, 0, 6);
+                bool allZero = true, allFf = true;
+                foreach (byte b in mac) { if (b != 0x00) allZero = false; if (b != 0xFF) allFf = false; }
+                return (allZero || allFf) ? null : mac;
+            }
+            return null;
         }
 
         /// <summary>Reads the Move's calibration blob over USB (feature 0x10,

@@ -568,34 +568,28 @@ namespace PadForge.Common.Input
             return (mac, storedHost);
         }
 
-        /// <summary>Attaches the Move's virtual joystick for a moment and
-        /// detaches it again, so the pad exists as an (offline) row in the
-        /// Devices list the instant pairing succeeds, before its first
-        /// Bluetooth connection. Without this a paired-but-never-connected
-        /// Move had no row at all, so nothing to Remove (the 2026-08-18 bench
-        /// gap). Identity is safe: SDL folds vid/pid/name into the virtual
-        /// GUID, so this mint and the later live pad are the same device to
-        /// PadForge. Skipped when a live session already owns the identity.</summary>
+        /// <summary>Creates the Move's persisted Devices-list row directly
+        /// (#277). The earlier approach attached the virtual pad and hoped the
+        /// 1000 Hz device walk would ingest it before detach; that raced the
+        /// walk's startup and lost (bench log 2026-08-18: "mint DID NOT
+        /// SURVIVE ingestion"). Now the attach exists only to ask SDL for the
+        /// pad's stable virtual GUID (derived from bus/vid/pid/name, identical
+        /// for the future live pad), the UserDevice record is written straight
+        /// into the settings collection with the same identity derivation the
+        /// live pad takes (BuildInstanceGuid's sdlguid branch), and the save
+        /// hook persists it immediately. When the pad later connects over
+        /// Bluetooth, the walk finds this row by InstanceGuid and adopts it,
+        /// exactly as the DS3's row works from its live-on-USB ceremony.</summary>
         public static void MintIdentityRow(Action<string> log = null)
         {
             try
             {
-                var svc = _current;
-                if (svc != null && svc.IsConnected) return;   // a live row already exists
+                if (DeviceRowExists()) return;
 
                 var namePtr = Marshal.StringToHGlobalAnsi("PS Move Motion Controller");
-                var sensors = new SDL.SDL_VirtualJoystickSensorDesc[]
-                {
-                    new SDL.SDL_VirtualJoystickSensorDesc { type = SDL_SENSOR_ACCEL, rate = 170.0f },
-                    new SDL.SDL_VirtualJoystickSensorDesc { type = SDL_SENSOR_GYRO,  rate = 170.0f },
-                };
-                int sensorSize = Marshal.SizeOf<SDL.SDL_VirtualJoystickSensorDesc>();
-                IntPtr sensorsPtr = Marshal.AllocHGlobal(sensorSize * sensors.Length);
                 uint id = 0;
                 try
                 {
-                    for (int i = 0; i < sensors.Length; i++)
-                        Marshal.StructureToPtr(sensors[i], sensorsPtr + i * sensorSize, false);
                     var desc = new SDL.SDL_VirtualJoystickDesc
                     {
                         type = (ushort)SDL.SDL_JoystickType.SDL_JOYSTICK_TYPE_GAMEPAD,
@@ -603,9 +597,6 @@ namespace PadForge.Common.Input
                         product_id = MOVE_PID,
                         naxes = 6,
                         nbuttons = 15,
-                        nhats = 0,
-                        nsensors = (ushort)sensors.Length,
-                        sensors = sensorsPtr,
                         button_mask = 0x027F,
                         axis_mask = 0x3F,
                         name = namePtr,
@@ -613,23 +604,60 @@ namespace PadForge.Common.Input
                     desc.version = (uint)Marshal.SizeOf<SDL.SDL_VirtualJoystickDesc>();
                     id = SDL.SDL_AttachVirtualJoystick(ref desc);
                 }
+                finally { Marshal.FreeHGlobal(namePtr); }
+                if (id == 0)
+                {
+                    log?.Invoke("Move device-list entry: SDL attach failed (engine still starting?); the next dock retries.");
+                    return;
+                }
+
+                string sdlGuidHex;
+                IntPtr j = SDL.SDL_OpenJoystick(id);
+                try
+                {
+                    if (j == IntPtr.Zero)
+                    {
+                        log?.Invoke("Move device-list entry: joystick open failed; the next dock retries.");
+                        return;
+                    }
+                    sdlGuidHex = SDL.GetJoystickGUIDString(j);
+                }
                 finally
                 {
-                    Marshal.FreeHGlobal(sensorsPtr);
-                    Marshal.FreeHGlobal(namePtr);
+                    if (j != IntPtr.Zero) SDL.SDL_CloseJoystick(j);
+                    SDL.SDL_DetachVirtualJoystick(id);
                 }
-                if (id == 0) { log?.Invoke("Move identity mint: attach failed."); return; }
-                // Long enough for the 1000 Hz device walk to ingest the row;
-                // the detach then leaves it offline.
-                Thread.Sleep(2500);
-                SDL.SDL_DetachVirtualJoystick(id);
-                Thread.Sleep(500);   // let the walk process the removal into offline state
-                // Persist NOW: a row that lives only in memory is a row the
-                // next process never sees.
+                if (string.IsNullOrEmpty(sdlGuidHex))
+                {
+                    log?.Invoke("Move device-list entry: SDL returned no GUID; the next dock retries.");
+                    return;
+                }
+
+                Guid instanceGuid = Engine.SdlDeviceWrapper.BuildInstanceGuid(
+                    null, MOVE_VID, MOVE_PID, 0, null, sdlGuidHex);
+
+                var devices = SettingsManager.UserDevices;
+                if (devices == null) return;
+                lock (devices.SyncRoot)
+                {
+                    foreach (var d in devices.Items)
+                        if (d != null && d.InstanceGuid == instanceGuid) { return; }
+                    devices.Items.Add(new Engine.Data.UserDevice
+                    {
+                        InstanceGuid = instanceGuid,
+                        InstanceName = "PS Move Motion Controller",
+                        ProductName = "PS Move Motion Controller",
+                        ProductGuid = Engine.SdlDeviceWrapper.BuildProductGuid(MOVE_VID, MOVE_PID),
+                        SdlGuid = sdlGuidHex,
+                        VendorId = MOVE_VID,
+                        ProdId = MOVE_PID,
+                        IsOnline = false,
+                    });
+                }
                 try { PersistRequested?.Invoke(); } catch { }
                 log?.Invoke(DeviceRowExists()
-                    ? "Move registered in the device list (offline until it connects)."
-                    : "Move identity mint DID NOT SURVIVE ingestion: the row is already gone from the device list.");
+                    ? "Move added to the device list (offline until it connects)."
+                    : "Move device-list entry could not be created.");
             }
             catch (Exception ex) { log?.Invoke("Move identity mint failed: " + ex.Message); }
         }

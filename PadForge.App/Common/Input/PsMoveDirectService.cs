@@ -101,9 +101,15 @@ namespace PadForge.Common.Input
     /// </summary>
     public sealed class PsMoveDirectService
     {
-        // GUID_DEVINTERFACE_BTHPS3_MOTION {BCEC605D-233C-4BEF-9A10-F2B81B5297F6} (BthPS3.h:206-208).
-        private static readonly Guid MotionInterface =
-            new Guid(0xbcec605d, 0x233c, 0x4bef, 0x9a, 0x10, 0xf2, 0xb8, 0x1b, 0x52, 0x97, 0xf6);
+        // GUID_DEVINTERFACE_BTHPS3 {968E1849-73B1-4876-B80A-ED6DD171489B}: the
+        // ONLY interface BthPS3's raw PDOs register, for every category.
+        // Measured live 2026-08-18 with a connected Move: the per-category
+        // GUID_DEVINTERFACE_BTHPS3_MOTION registered nothing while the generic
+        // interface carried the PDO (path bthps3bus#{MOTION hardware id}&dev&
+        // vid_054c&pid_03d5#...), so the finder filters the generic interface
+        // by PID token exactly like the DS3 lane does.
+        private static readonly Guid BthPs3Interface =
+            new Guid(0x968e1849, 0x73b1, 0x4876, 0xb8, 0x0a, 0xed, 0x6d, 0xd1, 0x71, 0x48, 0x9b);
 
         // Raw-PDO IOCTLs (BthPS3.h:375-390; CTL_CODE with FILE_DEVICE_BUS_EXTENDER).
         private const uint IOCTL_HID_INTERRUPT_READ  = 0x2A680C;
@@ -1402,7 +1408,7 @@ namespace PadForge.Common.Input
 
         private string FindPdoPath()
         {
-            Guid g = MotionInterface;
+            Guid g = BthPs3Interface;
             IntPtr set = SetupDiGetClassDevs(ref g, IntPtr.Zero, IntPtr.Zero, DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
             if (set == INVALID_HANDLE) return null;
             var did = new SP_DEVICE_INTERFACE_DATA { cbSize = Marshal.SizeOf<SP_DEVICE_INTERFACE_DATA>() };
@@ -1420,7 +1426,8 @@ namespace PadForge.Common.Input
                         if (SetupDiGetDeviceInterfaceDetail(set, ref did, det, req, ref req, IntPtr.Zero))
                         {
                             string p = Marshal.PtrToStringUni(det + 4);
-                            if (p != null) return p;
+                            if (p != null && p.IndexOf("pid_03d5", StringComparison.OrdinalIgnoreCase) >= 0)
+                                return p;
                         }
                     }
                     finally { Marshal.FreeHGlobal(det); }

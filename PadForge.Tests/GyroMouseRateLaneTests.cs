@@ -115,7 +115,7 @@ namespace PadForge.Tests
             const float rate = 250f;                       // well under the ceiling
             float oldAxis = rate / 500f;                   // GyroScale normalization
             float oldCounts = oldAxis * 15.0f;             // KBM per-poll spend
-            float newCounts = CountsX(rate) - CountsX(0.0001f);  // minus the offset addend
+            float newCounts = CountsX(rate);   // the lane is offset-free since #324
             Assert.True(Math.Abs(newCounts - oldCounts) < 0.01f,
                 $"calibration drifted: old lane {oldCounts}, rate lane {newCounts}");
         }
@@ -123,22 +123,33 @@ namespace PadForge.Tests
         // ── the low-speed floor ───────────────────────────────────────────
 
         [Fact]
-        public void TheSmallestRotationStillMovesTheCursor()
+        public void TheSmallestRotationStillReachesTheCursor_ThroughAccumulation()
         {
-            // DS4Windows adds a constant offset (mouseOffset = 0.2) so slow
-            // gyro cannot vanish into the sub-count remainder. Without it a
-            // tiny rotation accumulates forever and never crosses 1.
+            // This test used to pin a 0.2-count offset on the grounds that
+            // sub-count motion "accumulates forever and never crosses 1".
+            // That premise WAS the KBM accumulator's reversal-check sign
+            // bug (#324): with the same-operand check, sub-count motion
+            // accumulates and crosses the integer threshold in finite
+            // time. Pinned here end to end: the lane's shaped counts, fed
+            // through the real accumulator step with the gyro lane's
+            // negation, reach the cursor.
             float tiny = CountsX(0.5f);
             Assert.True(tiny > 0f, "a slow rotation produced no motion at all");
-            Assert.True(tiny >= 0.1f,
-                $"a slow rotation produced {tiny} counts, too small to ever reach a pixel");
+            float acc = 0f;
+            int total = 0;
+            for (int i = 0; i < 5000 && total == 0; i++)
+                total += PadForge.Common.Input.KeyboardMouseVirtualController
+                    .StepExactCounts(ref acc, -tiny);
+            Assert.True(total != 0,
+                $"a slow rotation of {tiny} counts per poll never reached a pixel through accumulation");
         }
 
         [Fact]
         public void ZeroRotationProducesExactlyZero()
         {
-            // The offset must ride ON motion, never create it: a resting
-            // controller that emitted 0.2 counts a poll would drift.
+            // A resting controller must emit exactly zero: the old
+            // 0.2-count offset rode on any nonzero motion, which turned
+            // sensor noise into drift once accumulation worked (#324).
             Assert.Equal(0f, CountsX(0f));
             var (x, y) = SourceCoercion.ReadGyroMouseCounts(
                 new CustomInputState(), YawSource(), -1, "", NominalDt, true);

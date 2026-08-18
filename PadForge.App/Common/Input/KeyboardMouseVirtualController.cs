@@ -60,6 +60,28 @@ namespace PadForge.Common.Input
         // gyro's own carry.
         private float _gxAccumulator;
         private float _gyAccumulator;
+
+        /// <summary>One exact-counts step, shared by the gyro, touchpad,
+        /// and stick-coast lanes (#324). Takes the per-poll value ALREADY
+        /// in screen space, clears the fractional remainder when that
+        /// value genuinely reverses against it (DS4Windows
+        /// MouseCursor.cs:108, the same-operand check), accumulates, and
+        /// returns the whole-count part. The congruence is structural:
+        /// the check and the accumulation see the SAME operand, so the
+        /// bug this replaces cannot recur. The gyro lane shipped with the
+        /// check on the PRE-negation value while accumulating the negated
+        /// one, so steady motion read as a reversal every poll, the
+        /// remainder died, and all sub-count motion (slow gyro at
+        /// 1000 Hz) was suppressed (#319, vlue-c).</summary>
+        internal static int StepExactCounts(ref float accumulator, float screenValue)
+        {
+            if (screenValue == 0f || (accumulator > 0f) != (screenValue > 0f))
+                accumulator = 0f;
+            accumulator += screenValue;
+            int whole = (int)accumulator;
+            accumulator -= whole;
+            return whole;
+        }
         private float _txAccumulator;
         private float _tyAccumulator;
         // Stick trackball coast (#291): its own remainder pair, same
@@ -249,16 +271,6 @@ namespace PadForge.Common.Input
             // engine has just removed.
             if (raw.MouseGyroX != 0f || raw.MouseGyroY != 0f)
             {
-                // Drop the remainder when the direction reverses, so a flick
-                // back the other way does not first spend sub-count motion
-                // still pointing the old way. DS4Windows does exactly this
-                // (MouseCursor.cs: hRemainder / vRemainder sign check), and
-                // it is what keeps a reversal feeling immediate.
-                if (raw.MouseGyroX == 0f || (_gxAccumulator > 0f) != (raw.MouseGyroX > 0f))
-                    _gxAccumulator = 0f;
-                if (raw.MouseGyroY == 0f || (_gyAccumulator > 0f) != (raw.MouseGyroY > 0f))
-                    _gyAccumulator = 0f;
-
                 // BOTH axes negate into screen space. SDL's gyro frame is
                 // nose-relative: positive yaw is nose LEFT and positive pitch
                 // is nose UP (SDL_sensor.h, and the sign note on the gyro
@@ -267,13 +279,13 @@ namespace PadForge.Common.Input
                 // move the cursor left, so yaw negates exactly like pitch
                 // does; leaving X alone pointed the cursor the wrong way,
                 // which is a thing you feel immediately and a thing no
-                // amount of sensitivity tuning fixes.
-                _gxAccumulator += -raw.MouseGyroX;
-                _gyAccumulator += -raw.MouseGyroY;
-                int gdx = (int)_gxAccumulator;
-                int gdy = (int)_gyAccumulator;
-                _gxAccumulator -= gdx;
-                _gyAccumulator -= gdy;
+                // amount of sensitivity tuning fixes. The negation happens
+                // HERE, once, so the step's reversal check sees the same
+                // screen-space operand it accumulates (#324: checking the
+                // pre-negation value read steady motion as a reversal every
+                // poll and killed all sub-count movement).
+                int gdx = StepExactCounts(ref _gxAccumulator, -raw.MouseGyroX);
+                int gdy = StepExactCounts(ref _gyAccumulator, -raw.MouseGyroY);
                 if (gdx != 0 || gdy != 0)
                     InputManager.AccumulateMouseMoveInput(gdx, gdy);
             }
@@ -291,17 +303,8 @@ namespace PadForge.Common.Input
             // the same sign this arrives at with none.
             if (raw.MouseTouchX != 0f || raw.MouseTouchY != 0f)
             {
-                if (raw.MouseTouchX == 0f || (_txAccumulator > 0f) != (raw.MouseTouchX > 0f))
-                    _txAccumulator = 0f;
-                if (raw.MouseTouchY == 0f || (_tyAccumulator > 0f) != (raw.MouseTouchY > 0f))
-                    _tyAccumulator = 0f;
-
-                _txAccumulator += raw.MouseTouchX;
-                _tyAccumulator += raw.MouseTouchY;
-                int tdx = (int)_txAccumulator;
-                int tdy = (int)_tyAccumulator;
-                _txAccumulator -= tdx;
-                _tyAccumulator -= tdy;
+                int tdx = StepExactCounts(ref _txAccumulator, raw.MouseTouchX);
+                int tdy = StepExactCounts(ref _tyAccumulator, raw.MouseTouchY);
                 if (tdx != 0 || tdy != 0)
                     InputManager.AccumulateMouseMoveInput(tdx, tdy);
             }
@@ -313,17 +316,8 @@ namespace PadForge.Common.Input
             // up, screen Y positive is down.
             if (raw.MouseStickCoastX != 0f || raw.MouseStickCoastY != 0f)
             {
-                if (raw.MouseStickCoastX == 0f || (_sxAccumulator > 0f) != (raw.MouseStickCoastX > 0f))
-                    _sxAccumulator = 0f;
-                if (raw.MouseStickCoastY == 0f || (_syAccumulator > 0f) != (-raw.MouseStickCoastY > 0f))
-                    _syAccumulator = 0f;
-
-                _sxAccumulator += raw.MouseStickCoastX;
-                _syAccumulator += -raw.MouseStickCoastY;
-                int sdx = (int)_sxAccumulator;
-                int sdy = (int)_syAccumulator;
-                _sxAccumulator -= sdx;
-                _syAccumulator -= sdy;
+                int sdx = StepExactCounts(ref _sxAccumulator, raw.MouseStickCoastX);
+                int sdy = StepExactCounts(ref _syAccumulator, -raw.MouseStickCoastY);
                 if (sdx != 0 || sdy != 0)
                     InputManager.AccumulateMouseMoveInput(sdx, sdy);
             }

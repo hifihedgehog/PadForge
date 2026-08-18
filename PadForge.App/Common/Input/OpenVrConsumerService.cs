@@ -222,23 +222,38 @@ namespace PadForge.Common.Input
         /// Prop_AxisNType_Int32 values (k_eControllerAxis_*): the first
         /// trigger-typed axis is THE trigger, the second is the analog grip
         /// (the WMR/Index convention, and the analog grip is exactly what the
-        /// requester wanted over a digital bumper). Pure.</summary>
+        /// requester wanted over a digital bumper). Drivers on the modern
+        /// input system (IVRDriverInput) never set these properties, and
+        /// vrserver's legacy emulation does not synthesize them either
+        /// (bench-measured: state flows, all five types read 0). Their rAxis
+        /// layout is still fixed by the legacy-binding convention every
+        /// shipped binding follows (axis0=stick/pad position, axis1=trigger
+        /// pull, axis2=grip pull: legacy_bindings_pico_controller.json,
+        /// legacy_bindings_index_controller.json), so an all-None read falls
+        /// back to that convention. Pure.</summary>
         internal static VrAxisRole[] ClassifyAxes(int[] axisTypes)
         {
             var roles = new VrAxisRole[5];
-            bool triggerSeen = false;
+            bool any = false, triggerSeen = false;
             for (int i = 0; i < 5 && i < axisTypes.Length; i++)
             {
                 switch (axisTypes[i])
                 {
-                    case 2: roles[i] = VrAxisRole.Joystick; break;   // k_eControllerAxis_Joystick
-                    case 1: roles[i] = VrAxisRole.TrackPad; break;   // k_eControllerAxis_TrackPad
-                    case 3:                                          // k_eControllerAxis_Trigger
+                    case 2: roles[i] = VrAxisRole.Joystick; any = true; break;   // k_eControllerAxis_Joystick
+                    case 1: roles[i] = VrAxisRole.TrackPad; any = true; break;   // k_eControllerAxis_TrackPad
+                    case 3:                                                      // k_eControllerAxis_Trigger
                         roles[i] = triggerSeen ? VrAxisRole.Grip : VrAxisRole.Trigger;
                         triggerSeen = true;
+                        any = true;
                         break;
                     default: roles[i] = VrAxisRole.None; break;
                 }
+            }
+            if (!any)
+            {
+                roles[0] = VrAxisRole.Joystick;
+                roles[1] = VrAxisRole.Trigger;
+                roles[2] = VrAxisRole.Grip;
             }
             return roles;
         }
@@ -370,6 +385,13 @@ namespace PadForge.Common.Input
             public long PrevVelTick;
             public float[] AccelBuf = new float[3];
             public float[] GyroBuf = new float[3];
+            // Wire evidence (change-gated, capped): the legacy controller
+            // state actually observed, so a silent lane is distinguishable
+            // from a resting one without a debugger on the bench.
+            public bool EvHaveState;
+            public ulong EvPressed;
+            public short EvA0, EvA1, EvA3;
+            public int EvLines;
         }
 
         private readonly Consumed[] _consumed = new Consumed[OpenVR.k_unMaxTrackedDeviceCount];
@@ -650,6 +672,21 @@ namespace PadForge.Common.Input
             if (j == IntPtr.Zero) return;
 
             bool haveState = system.GetControllerState(slot.DeviceIndex, ref state, stateSize);
+
+            if (slot.EvLines < 40)
+            {
+                var a0 = GetAxis(ref state, slot.JoyAxis >= 0 ? slot.JoyAxis : 0);
+                var a1 = GetAxis(ref state, slot.TriggerAxis >= 0 ? slot.TriggerAxis : 1);
+                short e0 = (short)(a0.x * 100), e1 = (short)(a1.x * 100), e3 = (short)(a0.y * 100);
+                if (haveState != slot.EvHaveState || state.ulButtonPressed != slot.EvPressed
+                    || e0 != slot.EvA0 || e1 != slot.EvA1 || e3 != slot.EvA3)
+                {
+                    slot.EvHaveState = haveState; slot.EvPressed = state.ulButtonPressed;
+                    slot.EvA0 = e0; slot.EvA1 = e1; slot.EvA3 = e3; slot.EvLines++;
+                    _log($"VRCONSUME state {slot.Name}: have={haveState} pressed=0x{state.ulButtonPressed:X} "
+                        + $"joy=({e0},{e3})% trig={e1}% packet={state.unPacketNum}");
+                }
+            }
 
             SDL.SDL_LockJoysticks();
             try

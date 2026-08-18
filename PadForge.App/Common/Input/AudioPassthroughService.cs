@@ -158,6 +158,14 @@ namespace PadForge.Common.Input
             /// <summary>BT mic session state for the persona feed: 0 closed,
             /// 1 open-requested. The open/close toggle report rides this
             /// sink's 0x32 stream (BT thread only).</summary>
+            // Mirror underrun bookkeeping and the adaptive cushion
+            // (#325). BT tick thread only, like every counter here: the
+            // mirror read, the trim, and the heartbeat all run on it.
+            public int MirrorUnderruns;        // short-read events since last heartbeat
+            public int MirrorZeroFillFrames;   // zero-filled frames since last heartbeat
+            public int MirrorLagTarget = BtTargetLag;
+            public long MirrorCleanSinceTicks;
+
             public int Ds5MicOpen;
             public long Ds5MicOpenSentTicks;
             public int Ds5MicOpenTries;
@@ -524,14 +532,14 @@ namespace PadForge.Common.Input
                     // pacing, NOT by jumping here. A hard jump drops audio, so
                     // this only resyncs on a genuine stall (cursor invalid, or
                     // ran past the live edge, or fell a quarter-second behind).
-                    const int CatastropheLag = 12000; // 250 ms @ 48 kHz
-                    const int ResyncCushion = 960;     // 20 ms (== BtTargetLag)
+                    const int CatastropheLag = 12000; // 250 ms @ 48 kHz, above the 100 ms target ceiling
+                    int resyncCushion = _sink.MirrorLagTarget;   // land at the tuned depth (#325)
                     lock (cap.Ring)
                     {
                         long avail = cap.Write;
                         if (!ReferenceEquals(cap, _lastCap)) { _cursor = -1; _lastCap = cap; }
                         if (_cursor < 0 || _cursor > avail || avail - _cursor > CatastropheLag)
-                            _cursor = Math.Max(0, avail - ResyncCushion);
+                            _cursor = Math.Max(0, avail - resyncCushion);
                         int frames = count / 2;
                         int canRead = (int)Math.Min(frames, avail - _cursor);
                         for (int f = 0; f < canRead; f++)
@@ -542,6 +550,17 @@ namespace PadForge.Common.Input
                         }
                         _cursor += canRead;
                         LoopbackLagFrames = (int)(avail - _cursor);
+                        if (canRead < frames)
+                        {
+                            // The ring bottomed out: the shortfall stays
+                            // zero-filled, which is an audible gap (#325).
+                            // Count it and buy more cushion, so the next
+                            // burst of the same size lands in headroom
+                            // instead of silence.
+                            _sink.MirrorUnderruns++;
+                            _sink.MirrorZeroFillFrames += frames - canRead;
+                            _sink.MirrorLagTarget = EscalateLagTarget(_sink.MirrorLagTarget);
+                        }
                     }
                 }
                 else LoopbackLagFrames = -1;
@@ -2841,8 +2860,48 @@ namespace PadForge.Common.Input
         // Ring-cushion drift trim, shared by the BT lanes and the peer ship lane:
         // steer the loopback cursor to a steady cushion by consuming a few frames
         // more/fewer per tick (inaudible ±0.8 % rate trim), never by skipping ticks.
-        private const int BtTargetLag = 960;   // 20 ms ring cushion @ 48 kHz
+        private const int BtTargetLag = 960;   // 20 ms ring cushion FLOOR @ 48 kHz
         private const int LagDeadband = 240;   // ±5 ms before trimming
+        // The adaptive ceiling and steps (#325): a machine whose audio
+        // driver delivers loopback data in bursts collapses a fixed 20 ms
+        // cushion (a reporter's log: 3,272 down to 28 frames in a ~4 s
+        // sawtooth, and a bottomed ring zero-fills, which is the crack).
+        // Each underrun buys 10 ms more cushion up to 100 ms; clean
+        // seconds decay it slowly back, so steady machines keep the 20 ms
+        // latency and bursty ones self-tune until the cracking stops.
+        private const int BtLagTargetCeiling = 4800;   // 100 ms
+        private const int BtLagEscalateStep = 480;     // +10 ms per underrun
+        private const int BtLagDecayStepPerSecond = 48;    // -1 ms per clean second
+
+        /// <summary>Proportional drift trim (#325): the per-tick frame
+        /// adjustment toward the cushion target. Inside the deadband it
+        /// holds at zero; outside, it scales with the error and clamps at
+        /// ±12 frames (a momentary ~2.3% rate bend on a 512-frame tick),
+        /// so recovery from a burst takes ticks instead of the seconds the
+        /// old fixed ±4 needed. Pure, so the rule is test-locked.</summary>
+        internal static int ComputeLagTrim(int lag, int target, int deadband)
+        {
+            int err = lag - target;
+            if (err > -deadband && err < deadband) return 0;
+            int trim = err / 60;
+            return trim > 12 ? 12 : trim < -12 ? -12 : trim;
+        }
+
+        /// <summary>One underrun's escalation of the cushion target,
+        /// clamped at the ceiling. Pure.</summary>
+        internal static int EscalateLagTarget(int current)
+        {
+            int next = current + BtLagEscalateStep;
+            return next > BtLagTargetCeiling ? BtLagTargetCeiling : next;
+        }
+
+        /// <summary>One clean second's decay of the cushion target,
+        /// clamped at the floor. Pure.</summary>
+        internal static int DecayLagTarget(int current)
+        {
+            int next = current - BtLagDecayStepPerSecond;
+            return next < BtTargetLag ? BtTargetLag : next;
+        }
 
         // DualSense: one Opus frame per tick in a report 0x35, hard CBR so
         // every frame fills the 0x13 speaker-lane slot exactly.
@@ -2957,15 +3016,25 @@ namespace PadForge.Common.Input
                         {
                             // Mirror drift trim: the ring is steered to its target
                             // cushion by consuming a few samples more or fewer per
-                            // tick (±0.8 % momentary rate trim through the same
-                            // 16:15 compressor — inaudible), never by extra or
-                            // skipped reports.
+                            // tick through the same 16:15 compressor, never by
+                            // extra or skipped reports. Proportional since #325:
+                            // the old fixed ±4 corrected ~375 frames/s while a
+                            // bursty capture moved the cushion at 800-2,000, so
+                            // the trim saturated and the ring bottomed out. The
+                            // target itself adapts: underruns raise it (mirror
+                            // read), clean seconds decay it here.
                             int inFrames = BtPullFrames;
                             int lag = s.Source.LoopbackLagFrames;
                             if (lag >= 0)
                             {
-                                if (lag > BtTargetLag + LagDeadband) inFrames += 4;
-                                else if (lag < BtTargetLag - LagDeadband) inFrames -= 4;
+                                long nowTrim = Environment.TickCount64;
+                                if (s.MirrorCleanSinceTicks == 0) s.MirrorCleanSinceTicks = nowTrim;
+                                if (nowTrim - s.MirrorCleanSinceTicks >= 1000)
+                                {
+                                    s.MirrorCleanSinceTicks = nowTrim;
+                                    s.MirrorLagTarget = DecayLagTarget(s.MirrorLagTarget);
+                                }
+                                inFrames += ComputeLagTrim(lag, s.MirrorLagTarget, LagDeadband);
                             }
 
                             s.Source.Read(pull, 0, inFrames * 2);
@@ -3528,6 +3597,8 @@ namespace PadForge.Common.Input
                 + " pass=" + (s.PassthroughOn ? 1 : 0)
                 + " lag=" + s.Source?.LoopbackLagFrames
                 + " hapAvail=" + hapAvail
+                + " under=" + s.MirrorUnderruns + " zf=" + s.MirrorZeroFillFrames
+                + " tgt=" + s.MirrorLagTarget
                 + " sent=" + hb.Sent + " sat=" + hb.Saturated + " fail=" + hb.Failed
                 + " combined=" + hb.Combined + " hapOnly=" + hb.HapticOnly
                 + " txFailed=" + (s.TransportFailed ? 1 : 0));
@@ -3536,6 +3607,8 @@ namespace PadForge.Common.Input
             hb.LastCapWrite = capW;
             hb.Sent = hb.Saturated = hb.Failed = hb.Combined = hb.HapticOnly = hb.Ticks = 0;
             hb.Peak = 0f;
+            s.MirrorUnderruns = 0;
+            s.MirrorZeroFillFrames = 0;
         }
 
         /// <summary>Last successful audio send per pad, stamped so the

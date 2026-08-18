@@ -138,10 +138,26 @@ namespace PadForge.Common.Input
         private SDL.VJSetPlayerIndex _setPlayerCb;
         private SDL.VJSetSensorsEnabled _setSensorsCb;
 
+        // Which transport the current session streams over. USB input is real
+        // on the Move: psmove_poll reads input transport-agnostically
+        // (psmove.c:1401-1423) and hid-sony registers a full input device for
+        // MOTION_CONTROLLER_USB, so a docked Move plays, not just charges.
+        private enum MoveTransport { None, Bluetooth, Usb }
+        private volatile MoveTransport _transport = MoveTransport.None;
+        private string Tag => _transport == MoveTransport.Usb ? "MOVE(USB)" : "MOVE(BT)";
+
         // One read handle for the pended interrupt read, one write handle for the
         // writer thread (separate file objects do not serialize against each other).
         private IntPtr _readPdo = IntPtr.Zero;
         private IntPtr _writePdo = IntPtr.Zero;
+
+        // USB (inbox HID, the transport psmoveapi itself uses): the col01 data
+        // collection carries input/output, col02 answers the address reports
+        // (psmove.c's _WIN32 quirk). Report lengths come from the collection's
+        // HID caps: reads must use InputReportByteLength and writes must pad to
+        // OutputReportByteLength (the HID class contract).
+        private IntPtr _usbHandle = IntPtr.Zero;
+        private int _usbInLen, _usbOutLen;
         private volatile string _transportPath;
 
         private volatile bool _writerRun;
@@ -210,6 +226,7 @@ namespace PadForge.Common.Input
             lock (_outLock)
             {
                 if (_readPdo != IntPtr.Zero && _readPdo != INVALID_HANDLE) CancelIoEx(_readPdo, IntPtr.Zero);
+                if (_usbHandle != IntPtr.Zero && _usbHandle != INVALID_HANDLE) CancelIoEx(_usbHandle, IntPtr.Zero);
             }
         }
 
@@ -305,6 +322,7 @@ namespace PadForge.Common.Input
             lock (_outLock)
             {
                 if (_readPdo != IntPtr.Zero && _readPdo != INVALID_HANDLE) CancelIoEx(_readPdo, IntPtr.Zero);
+                if (_usbHandle != IntPtr.Zero && _usbHandle != INVALID_HANDLE) CancelIoEx(_usbHandle, IntPtr.Zero);
             }
             try { _readThread?.Join(1500); } catch { }
             Teardown();
@@ -324,13 +342,13 @@ namespace PadForge.Common.Input
             {
                 if (_suppressReconnect) { Teardown(); Thread.Sleep(250); continue; }
 
-                if (!OpenBluetooth()) { Thread.Sleep(500); continue; }
+                if (!OpenUsb() && !OpenBluetooth()) { Thread.Sleep(500); continue; }
 
                 lock (_outLock) { _everGotInput = false; _outDirty = true; }
 
                 if (_suppressReconnect) { Teardown(); Thread.Sleep(250); continue; }
 
-                _log("MOVE(BT): device opened, attaching virtual joystick...");
+                _log($"{Tag}: device opened, attaching virtual joystick...");
                 if (!AttachVirtual()) { Teardown(); Thread.Sleep(1000); continue; }
 
                 _writerRun = true;
@@ -338,14 +356,15 @@ namespace PadForge.Common.Input
                 _writeThread = new Thread(() => WriterLoop(writerGen)) { IsBackground = true, Name = "PsMoveDirectWrite" };
                 _writeThread.Start();
 
-                _log($"MOVE(BT): virtual joystick attached; streaming ({(_modelZcm2 ? "ZCM2" : "ZCM1")} frame size).");
-                LoadCalibrationForPath();
+                _log($"{Tag}: virtual joystick attached; streaming ({(_modelZcm2 ? "ZCM2" : "ZCM1")} frames).");
+                if (_transport == MoveTransport.Bluetooth) LoadCalibrationForPath();
                 long sessionStart = Environment.TickCount64;
-                ReadLoop(_readPdo);
+                if (_transport == MoveTransport.Usb) UsbReadLoop();
+                else ReadLoop(_readPdo);
 
                 Teardown();
                 long sessionMs = Environment.TickCount64 - sessionStart;
-                _log($"MOVE(BT): disconnected after {sessionMs} ms; watching for reconnect.");
+                _log($"{Tag}: disconnected after {sessionMs} ms; watching for reconnect.");
 
                 if (!_running) break;
 
@@ -373,7 +392,156 @@ namespace PadForge.Common.Input
 
             lock (_outLock) { _readPdo = rh; _writePdo = wh; }
             _transportPath = path;
+            _transport = MoveTransport.Bluetooth;
             return true;
+        }
+
+        /// <summary>Opens a docked Move's col01 data collection over inbox HID.
+        /// The model is known from the USB PID (0x0C5E = ZCM2,
+        /// psmove_private.h:56-58), so the stream detector is pre-seeded
+        /// deterministically. Also captures the pad's calibration blob when the
+        /// registry lacks it, and loads it for this session.</summary>
+        private bool OpenUsb()
+        {
+            var found = FindUsbHid();
+            if (found == null) return false;
+
+            IntPtr h = CreateFile(found.Value.DataPath, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_RW, IntPtr.Zero, OPEN_EXISTING, 0, IntPtr.Zero);
+            if (h == INVALID_HANDLE) return false;
+
+            int inLen = 0, outLen = 0;
+            if (HidD_GetPreparsedData(h, out IntPtr pp) && pp != IntPtr.Zero)
+            {
+                try
+                {
+                    if (HidP_GetCaps(pp, out HIDP_CAPS caps) >= 0)
+                    {
+                        inLen = caps.InputReportByteLength;
+                        outLen = caps.OutputReportByteLength;
+                    }
+                }
+                finally { HidD_FreePreparsedData(pp); }
+            }
+            if (inLen <= 1) { CloseHandle(h); return false; }
+
+            bool zcm2 = found.Value.Zcm2;
+            _modelZcm2 = zcm2;
+
+            lock (_outLock) { _usbHandle = h; _usbInLen = inLen; _usbOutLen = outLen; }
+            _transportPath = found.Value.DataPath;
+            _transport = MoveTransport.Usb;
+
+            TryUsbCalibration(h, found.Value.AddrPath, zcm2);
+            return true;
+        }
+
+        /// <summary>Reads the pad MAC (feature 0x04 on col02, little-endian at
+        /// bytes 1-6, psmove.c:953-957) and the calibration blob (feature 0x10
+        /// parts, psmove.c:973-1077) directly on this dock, so a Move paired by
+        /// an external tool still gets calibrated motion the first time it is
+        /// plugged in. Stored once per pad; the session uses it either way.</summary>
+        private void TryUsbCalibration(IntPtr dataHandle, string addrPath, bool zcm2)
+        {
+            try
+            {
+                string mac = null;
+                if (addrPath != null)
+                {
+                    IntPtr ah = CreateFile(addrPath, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_RW, IntPtr.Zero, OPEN_EXISTING, 0, IntPtr.Zero);
+                    if (ah != INVALID_HANDLE)
+                    {
+                        try
+                        {
+                            byte[] btg = new byte[16];
+                            btg[0] = 0x04;
+                            if (HidD_GetFeature(ah, btg, btg.Length))
+                            {
+                                var macBe = new byte[6];
+                                for (int i = 0; i < 6; i++) macBe[i] = btg[6 - i];
+                                mac = Convert.ToHexString(macBe).ToLowerInvariant();
+                            }
+                        }
+                        finally { CloseHandle(ah); }
+                    }
+                }
+
+                byte[] blob = (mac != null ? PsMoveCalibrationRegistry.Get(mac) : null);
+                if (blob == null)
+                {
+                    int parts = zcm2 ? 2 : 3;
+                    blob = new byte[zcm2 ? 96 : 143];
+                    var seen = new System.Collections.Generic.HashSet<int>();
+                    for (int attempt = 0; attempt < parts * 3 && seen.Count < parts; attempt++)
+                    {
+                        byte[] cal = new byte[49];
+                        cal[0] = 0x10;
+                        if (!HidD_GetFeature(dataHandle, cal, cal.Length)) { blob = null; break; }
+                        int destOffset, srcOffset;
+                        switch (cal[1])
+                        {
+                            case 0x00: destOffset = 0; srcOffset = 0; break;
+                            case 0x01 when !zcm2: destOffset = 49; srcOffset = 2; break;
+                            case 0x82 when !zcm2: destOffset = 2 * 49 - 2; srcOffset = 2; break;
+                            case 0x81 when zcm2: destOffset = 49; srcOffset = 2; break;
+                            default: continue;
+                        }
+                        Array.Copy(cal, srcOffset, blob, destOffset, 49 - srcOffset);
+                        seen.Add(cal[1]);
+                    }
+                    if (blob != null && seen.Count < parts) blob = null;
+                    if (blob != null && mac != null)
+                    {
+                        PsMoveCalibrationRegistry.Store(mac, blob);
+                        _log($"MOVE(USB): calibration captured and stored for {mac}.");
+                    }
+                }
+                _calibration = blob != null ? DecodeCalibrationBlob(blob, zcm2) : null;
+                if (_calibration == null)
+                    _log("MOVE(USB): no calibration available; motion stays muted this session.");
+            }
+            catch (Exception ex) { _log("MOVE(USB): calibration read failed: " + ex.Message); }
+        }
+
+        /// <summary>Finds a docked Move's HID collections: the col01 data path
+        /// and the col02 address path. Bluetooth HID instances are excluded
+        /// (this lane's BT transport is the BthPS3 PDO, and the family is
+        /// blacklisted from SDL's backends, not from the HID class).</summary>
+        private (string DataPath, string AddrPath, bool Zcm2)? FindUsbHid()
+        {
+            HidD_GetHidGuid(out Guid hidGuid);
+            string dataPath = null, addrPath = null; bool zcm2 = false; bool any = false;
+            IntPtr set = SetupDiGetClassDevs(ref hidGuid, IntPtr.Zero, IntPtr.Zero, DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
+            if (set == INVALID_HANDLE) return null;
+            var did = new SP_DEVICE_INTERFACE_DATA { cbSize = Marshal.SizeOf<SP_DEVICE_INTERFACE_DATA>() };
+            try
+            {
+                for (int i = 0; SetupDiEnumDeviceInterfaces(set, IntPtr.Zero, ref hidGuid, i, ref did); i++)
+                {
+                    if ((did.Flags & SPINT_ACTIVE) == 0) continue;
+                    int req = 0;
+                    SetupDiGetDeviceInterfaceDetail(set, ref did, IntPtr.Zero, 0, ref req, IntPtr.Zero);
+                    IntPtr det = Marshal.AllocHGlobal(req);
+                    try
+                    {
+                        Marshal.WriteInt32(det, IntPtr.Size == 8 ? 8 : 6);
+                        if (!SetupDiGetDeviceInterfaceDetail(set, ref did, det, req, ref req, IntPtr.Zero)) continue;
+                        string path = Marshal.PtrToStringUni(det + 4);
+                        if (path == null) continue;
+                        if (path.IndexOf("vid_054c", StringComparison.OrdinalIgnoreCase) < 0) continue;
+                        bool isZcm1 = path.IndexOf("pid_03d5", StringComparison.OrdinalIgnoreCase) >= 0;
+                        bool isZcm2 = path.IndexOf("pid_0c5e", StringComparison.OrdinalIgnoreCase) >= 0;
+                        if (!isZcm1 && !isZcm2) continue;
+                        if (path.IndexOf("bthenum", StringComparison.OrdinalIgnoreCase) >= 0) continue;
+                        any = true; zcm2 = isZcm2;
+                        if (path.IndexOf("col02", StringComparison.OrdinalIgnoreCase) >= 0) addrPath = path;
+                        else if (path.IndexOf("col01", StringComparison.OrdinalIgnoreCase) >= 0) dataPath = path;
+                        else dataPath ??= path;
+                    }
+                    finally { Marshal.FreeHGlobal(det); }
+                }
+            }
+            finally { SetupDiDestroyDeviceInfoList(set); }
+            return any && dataPath != null ? (dataPath, addrPath, zcm2) : null;
         }
 
         // ─── writer thread: LED/rumble on the interrupt channel, keepalive ──────
@@ -402,7 +570,7 @@ namespace PadForge.Common.Input
                 // does.
                 if (!_everGotInput && now - attachedAt >= 5000)
                 {
-                    _log("MOVE(BT): no input 5 s after attach - detaching for a clean re-open");
+                    _log($"{Tag}: no input 5 s after attach - detaching for a clean re-open");
                     _writerRun = false;
                     CancelCurrentRead();
                     Thread.Sleep(250);
@@ -440,6 +608,21 @@ namespace PadForge.Common.Input
             return o;
         }
 
+        /// <summary>The USB output report: id 0x06 (PSMove_Req_SetLEDs) with
+        /// [_zero, r, g, b, rumble2, rumble] and zero padding, the 9-byte
+        /// PSMove_Data_LEDs psmoveapi hid_writes (psmove.c:123-132), padded to
+        /// the collection's OutputReportByteLength. Pure, test-locked.</summary>
+        internal static byte[] BuildUsbOutputReport(byte r, byte g, byte b, byte rumble, int outLen)
+        {
+            var o = new byte[Math.Max(outLen, 9)];
+            o[0] = 0x06;
+            o[2] = r;
+            o[3] = g;
+            o[4] = b;
+            o[6] = rumble;
+            return o;
+        }
+
         private bool _outWriteFailLogged;
 
         private void WriteOutputReport()
@@ -448,19 +631,24 @@ namespace PadForge.Common.Input
             {
                 byte[] o;
                 IntPtr h;
+                MoveTransport tr = _transport;
                 lock (_outLock)
                 {
-                    o = BuildOutputFrame(_r, _g, _b, _rumble);
+                    o = tr == MoveTransport.Usb
+                        ? BuildUsbOutputReport(_r, _g, _b, _rumble, _usbOutLen)
+                        : BuildOutputFrame(_r, _g, _b, _rumble);
                     _outDirty = false;
-                    h = _writePdo;
+                    h = tr == MoveTransport.Usb ? _usbHandle : _writePdo;
                 }
                 if (h != IntPtr.Zero && h != INVALID_HANDLE)
                 {
-                    bool ok = DeviceIoControl(h, IOCTL_HID_INTERRUPT_WRITE, o, o.Length, null, 0, out _, IntPtr.Zero);
+                    bool ok = tr == MoveTransport.Usb
+                        ? WriteFile(h, o, o.Length, out _, IntPtr.Zero)
+                        : DeviceIoControl(h, IOCTL_HID_INTERRUPT_WRITE, o, o.Length, null, 0, out _, IntPtr.Zero);
                     if (!ok && !_outWriteFailLogged)
                     {
                         _outWriteFailLogged = true;
-                        _log($"MOVE(BT): output write FAILED err={Marshal.GetLastWin32Error()} (logged once per session)");
+                        _log($"{Tag}: output write FAILED err={Marshal.GetLastWin32Error()} (logged once per session)");
                     }
                 }
             }
@@ -480,7 +668,7 @@ namespace PadForge.Common.Input
                 if (!_everGotInput && Environment.TickCount64 >= rxNextSummary)
                 {
                     rxNextSummary = Environment.TickCount64 + 1000;
-                    _log($"MOVE(BT): rx pre-input summary other={rxOther} fails={rxFails}"
+                    _log($"{Tag}: rx pre-input summary other={rxOther} fails={rxFails}"
                         + (rxFails > 0 ? $" lastErr={rxLastErr}" : ""));
                 }
                 if (DeviceIoControl(h, IOCTL_HID_INTERRUPT_READ, null, 0, buf, buf.Length, out int rd, IntPtr.Zero))
@@ -522,6 +710,70 @@ namespace PadForge.Common.Input
                         lastProbe = now;
                         if (FindPdoPath() == null) break;
                     }
+                }
+            }
+        }
+
+        /// <summary>Normalizes a USB HID input report (report id 0x01 at byte 0,
+        /// hidapi/HidD framing) into the 0xA1-prefixed frame the shared parser
+        /// expects, so BT and USB decode through one code path (the DS3 lane's
+        /// normalization pattern). Returns false when the report is not an
+        /// input report or is too short for the model. Pure, test-locked.</summary>
+        internal static bool NormalizeUsbReport(byte[] raw, int got, byte[] dest, bool zcm2)
+        {
+            int need = (zcm2 ? Zcm2BtReportSize : Zcm1BtReportSize) - 1;   // raw report incl. id
+            if (got < need || raw[0] != 0x01) return false;
+            dest[0] = 0xA1;
+            Array.Copy(raw, 0, dest, 1, need);
+            return true;
+        }
+
+        private void UsbReadLoop()
+        {
+            bool zcm2 = _modelZcm2;
+            byte[] frame = new byte[zcm2 ? Zcm2BtReportSize : Zcm1BtReportSize];
+            int inLen; IntPtr h;
+            lock (_outLock) { inLen = _usbInLen; h = _usbHandle; }
+            byte[] raw = new byte[Math.Max(inLen, frame.Length - 1)];
+            int rxShort = 0, rxWrongId = 0, rxFails = 0, rxLastErr = 0, rxLastLen = 0;
+            long rxNextSummary = Environment.TickCount64 + 1000;
+            while (_running && _writerRun && _transport == MoveTransport.Usb)
+            {
+                // Until the first accepted frame, say once a second what the
+                // pipe is delivering: a wrong report length (caps mismatch), a
+                // different report id, and a failing read all looked identical
+                // in a silent log (the #285 lesson).
+                if (!_everGotInput && Environment.TickCount64 >= rxNextSummary)
+                {
+                    rxNextSummary = Environment.TickCount64 + 1000;
+                    _log($"MOVE(USB): rx pre-input summary short={rxShort} wrongId={rxWrongId} "
+                        + $"fails={rxFails} lastLen={rxLastLen} capsIn={inLen}"
+                        + (rxFails > 0 ? $" lastErr={rxLastErr}" : ""));
+                }
+                lock (_outLock) h = _usbHandle;
+                if (h == IntPtr.Zero || h == INVALID_HANDLE) break;
+
+                if (ReadFile(h, raw, raw.Length, out int got, IntPtr.Zero))
+                {
+                    rxLastLen = got;
+                    if (NormalizeUsbReport(raw, got, frame, zcm2))
+                    {
+                        _everGotInput = true;
+                        PushState(frame, frame.Length);
+                        UpdateBattery(frame[13]);   // 0xEE = charging on the wire (psmove.c:178)
+                    }
+                    else if (got > 0 && raw[0] != 0x01) rxWrongId++;
+                    else rxShort++;
+                }
+                else
+                {
+                    int err = Marshal.GetLastWin32Error();
+                    rxFails++; rxLastErr = err;
+                    if (err == ERROR_DEVICE_NOT_CONNECTED || err == ERROR_FILE_NOT_FOUND ||
+                        err == ERROR_INVALID_HANDLE || err == ERROR_OPERATION_ABORTED ||
+                        err == ERROR_GEN_FAILURE || err == ERROR_NO_SUCH_DEVICE)
+                        break;
+                    Thread.Sleep(2);
                 }
             }
         }
@@ -574,7 +826,7 @@ namespace PadForge.Common.Input
                 _instanceId = SDL.SDL_AttachVirtualJoystick(ref desc);
                 if (_instanceId == 0)
                 {
-                    _log("MOVE(BT): SDL_AttachVirtualJoystick failed.");
+                    _log($"{Tag}: SDL_AttachVirtualJoystick failed.");
                     return false;
                 }
                 _sdlJoystick = SDL.SDL_OpenJoystick(_instanceId);
@@ -611,8 +863,12 @@ namespace PadForge.Common.Input
                     if (_writePdo != IntPtr.Zero && _writePdo != INVALID_HANDLE) CloseHandle(_writePdo);
                     _readPdo = IntPtr.Zero;
                     _writePdo = IntPtr.Zero;
+                    if (_usbHandle != IntPtr.Zero && _usbHandle != INVALID_HANDLE) CloseHandle(_usbHandle);
+                    _usbHandle = IntPtr.Zero;
+                    _usbInLen = _usbOutLen = 0;
                 }
                 _transportPath = null;
+                _transport = MoveTransport.None;
                 _calibration = null;
                 _calibrationMissingLogged = false;
                 lock (_outLock) { _ledExplicit = false; _rumble = 0; }
@@ -1021,6 +1277,29 @@ namespace PadForge.Common.Input
         [DllImport("setupapi.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         private static extern bool SetupDiGetDeviceInterfaceDetail(IntPtr set, ref SP_DEVICE_INTERFACE_DATA data, IntPtr detail, int detailSize, ref int required, IntPtr devInfo);
         [DllImport("setupapi.dll")] private static extern bool SetupDiDestroyDeviceInfoList(IntPtr set);
+
+        private const int ERROR_GEN_FAILURE = 31, ERROR_NO_SUCH_DEVICE = 433;
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct HIDP_CAPS
+        {
+            public ushort Usage, UsagePage, InputReportByteLength, OutputReportByteLength, FeatureReportByteLength;
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 17)] public ushort[] Reserved;
+            public ushort NumberLinkCollectionNodes, NumberInputButtonCaps, NumberInputValueCaps, NumberInputDataIndices,
+                NumberOutputButtonCaps, NumberOutputValueCaps, NumberOutputDataIndices,
+                NumberFeatureButtonCaps, NumberFeatureValueCaps, NumberFeatureDataIndices;
+        }
+
+        [DllImport("hid.dll")] private static extern void HidD_GetHidGuid(out Guid guid);
+        [DllImport("hid.dll", SetLastError = true)] private static extern bool HidD_GetFeature(IntPtr h, byte[] buf, int len);
+        [DllImport("hid.dll")] private static extern bool HidD_GetPreparsedData(IntPtr h, out IntPtr preparsed);
+        [DllImport("hid.dll")] private static extern bool HidD_FreePreparsedData(IntPtr preparsed);
+        [DllImport("hid.dll")] private static extern int HidP_GetCaps(IntPtr preparsed, out HIDP_CAPS caps);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool ReadFile(IntPtr h, byte[] buf, int len, out int read, IntPtr ov);
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool WriteFile(IntPtr h, byte[] buf, int len, out int written, IntPtr ov);
 
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         private static extern IntPtr CreateFile(string name, uint access, uint share, IntPtr sa, uint disp, uint flags, IntPtr tmpl);

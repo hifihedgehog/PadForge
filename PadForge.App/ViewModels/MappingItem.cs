@@ -643,7 +643,38 @@ namespace PadForge.ViewModels
         /// + <see cref="InputChoice.DeviceLabel"/> so the picker can
         /// group by device via WPF's <c>GroupStyle</c>.
         /// </summary>
-        public ObservableCollection<InputChoice> AvailableInputs { get; } = new();
+        private ObservableCollection<InputChoice> _availableInputs = new();
+        public ObservableCollection<InputChoice> AvailableInputs => _availableInputs;
+
+        /// <summary>Points this row at the slot's ONE shared choice list
+        /// (#322). Every row used to hold a private copy of the whole
+        /// cross-device list, which made a keyboard-and-mouse tab switch
+        /// perform tens of thousands of collection inserts and build one
+        /// grouped view per row; the shared reference builds the list and
+        /// its grouped default view once per slot. Idempotent.</summary>
+        internal void UseSharedAvailableInputs(ObservableCollection<InputChoice> shared)
+        {
+            if (shared == null || ReferenceEquals(_availableInputs, shared)) return;
+            _availableInputs = shared;
+            _availableInputsView = null;
+            OnPropertyChanged(nameof(AvailableInputs));
+            OnPropertyChanged(nameof(AvailableInputsView));
+        }
+
+        /// <summary>Suppression bracket for the SHARED list rebuild
+        /// (#322). The recorded lesson on ReplaceAvailableInputsForTest
+        /// applies unchanged: while the list mutates, a live ComboBox
+        /// can write its own SelectedItem back through the TwoWay
+        /// binding and rebind the row to a concrete device, so every
+        /// row suppresses selection sync across the one mutation and
+        /// re-resolves from its own stored descriptor afterward.</summary>
+        internal void BeginSharedListRebuild() => _suppressSelectionSync = true;
+
+        internal void EndSharedListRebuild()
+        {
+            _suppressSelectionSync = false;
+            SyncSelectedInputFromDescriptor();
+        }
 
         private ICollectionView _availableInputsView;
         /// <summary>The grouped view of <see cref="AvailableInputs"/> the
@@ -658,10 +689,13 @@ namespace PadForge.ViewModels
                 if (_availableInputsView == null)
                 {
                     _availableInputsView = CollectionViewSource.GetDefaultView(AvailableInputs);
+                    // The default view is ONE object per collection, so on
+                    // the shared list (#322) every row lands on the same
+                    // view and the grouping is configured exactly once.
                     if (_availableInputsView != null
-                        && _availableInputsView.GroupDescriptions != null)
+                        && _availableInputsView.GroupDescriptions != null
+                        && _availableInputsView.GroupDescriptions.Count == 0)
                     {
-                        _availableInputsView.GroupDescriptions.Clear();
                         _availableInputsView.GroupDescriptions.Add(
                             new PropertyGroupDescription(nameof(InputChoice.DeviceLabel)));
                     }
@@ -732,22 +766,6 @@ namespace PadForge.ViewModels
         /// list mutations ran wide open. No test caught it because the
         /// provocation needs a real ComboBox: with no visual tree nothing
         /// ever writes back.</para></summary>
-        internal void ReplaceAvailableInputs(System.Collections.Generic.IEnumerable<InputChoice> choices)
-        {
-            _suppressSelectionSync = true;
-            try
-            {
-                AvailableInputs.Clear();
-                if (choices != null)
-                    foreach (var c in choices) AvailableInputs.Add(c);
-            }
-            finally { _suppressSelectionSync = false; }
-
-            // Resolve the selection from the row's OWN stored descriptor and
-            // GUID, which is the only authority for what this row points at.
-            SyncSelectedInputFromDescriptor();
-        }
-
         /// <summary>Test seam: runs <paramref name="duringRebuild"/> at the
         /// exact point a live ComboBox would write its SelectedItem back,
         /// so the suppression can be asserted without a visual tree.</summary>

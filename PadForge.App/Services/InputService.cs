@@ -6679,26 +6679,38 @@ namespace PadForge.Services
                 }
             }
 
+            // ONE shared list per slot (#322). Every row references
+            // SlotAvailableInputs instead of holding a private copy, so
+            // the fill below runs once instead of once per row (a
+            // keyboard-and-mouse device carries ~150 rows, and the old
+            // per-row copies were the 3-second tab switch). The recorded
+            // write-back lesson still governs: rows suppress selection
+            // sync across the one mutation, then re-resolve from their
+            // own stored descriptors.
             foreach (var mapping in padVm.Mappings)
             {
                 mapping.InputSelectedFromDropdown -= OnInputSelectedFromDropdown;
                 mapping.InputSelectedFromDropdown += OnInputSelectedFromDropdown;
-
-                // Clear + refill + re-sync as ONE suppressed operation. Doing
-                // the list mutations outside the suppression let a live
-                // ComboBox write its own SelectedItem back through the TwoWay
-                // binding and rebind the row to a concrete device.
-                mapping.ReplaceAvailableInputs(flat);
-                mapping.RefreshAllExtraSourceInputs();
+                mapping.UseSharedAvailableInputs(padVm.SlotAvailableInputs);
+                mapping.BeginSharedListRebuild();
             }
-
-            // — also refresh the slot-level cross-device picker
-            // list (used by the Gyro tab's Aim Engage button picker).
-            // Fire SelectedInput re-eval so the ComboBox resolves the
-            // saved descriptor against the freshly-populated list.
-            padVm.SlotAvailableInputs.Clear();
-            foreach (var c in flat)
-                padVm.SlotAvailableInputs.Add(c);
+            try
+            {
+                padVm.SlotAvailableInputs.Clear();
+                foreach (var c in flat)
+                    padVm.SlotAvailableInputs.Add(c);
+            }
+            finally
+            {
+                foreach (var mapping in padVm.Mappings)
+                {
+                    mapping.EndSharedListRebuild();
+                    mapping.RefreshAllExtraSourceInputs();
+                }
+            }
+            padVm.PickerDeviceFilterChanged -= OnPickerDeviceFilterChanged;
+            padVm.PickerDeviceFilterChanged += OnPickerDeviceFilterChanged;
+            padVm.RebuildPickerDeviceFilterEntries();
             padVm.OnGyroAimEngageSelectedInputRefresh();
             padVm.OnLeftTriggerRouteActivatorSelectedInputRefresh();
             padVm.OnRightTriggerRouteActivatorSelectedInputRefresh();
@@ -6713,6 +6725,13 @@ namespace PadForge.Services
             foreach (var c in flat)
                 if (MacroItem.TryBuildTriggerEntry(c, out _))
                     padVm.SlotMacroTriggerChoices.Add(c);
+        }
+
+        /// <summary>A hidden-device toggle is a persisted preference:
+        /// mark dirty so the autosave carries it (#322).</summary>
+        private void OnPickerDeviceFilterChanged(object sender, System.EventArgs e)
+        {
+            try { _settingsService?.MarkDirty(); } catch { }
         }
 
         // ─────────────────────────────────────────────

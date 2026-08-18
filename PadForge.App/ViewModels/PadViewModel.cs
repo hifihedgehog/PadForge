@@ -811,6 +811,189 @@ namespace PadForge.ViewModels
             }
         }
 
+        // ─── Mapping picker filter (#322, discussion #302) ───
+        //
+        // One search box and one device-visibility set, applied as the
+        // FILTER of the shared default view every picker on the slot
+        // binds. A view filter changes what a dropdown OFFERS, never
+        // what a row's binding holds, so saved selections are untouched.
+
+        /// <summary>The key a choice filters under: its device guid, or
+        /// "any" for the device-agnostic group (empty guid).</summary>
+        internal static string PickerFilterKey(InputChoice c)
+            => string.IsNullOrEmpty(c?.DeviceGuid) ? "any" : c.DeviceGuid;
+
+        /// <summary>The filter predicate, pure and test-locked: a choice
+        /// shows unless its device is hidden or the search text misses
+        /// its display name (case-insensitive substring).</summary>
+        internal static bool MatchesPickerFilter(
+            InputChoice c, string search, System.Collections.Generic.ISet<string> hiddenKeys)
+        {
+            if (c == null) return false;
+            if (hiddenKeys != null && hiddenKeys.Contains(PickerFilterKey(c))) return false;
+            if (!string.IsNullOrEmpty(search)
+                && (c.DisplayName == null
+                    || c.DisplayName.IndexOf(search, System.StringComparison.OrdinalIgnoreCase) < 0))
+                return false;
+            return true;
+        }
+
+        private string _mappingInputSearch = "";
+        /// <summary>Find-as-you-type over the picker list. Session state
+        /// by design, never persisted.</summary>
+        public string MappingInputSearch
+        {
+            get => _mappingInputSearch;
+            set
+            {
+                if (SetProperty(ref _mappingInputSearch, value ?? ""))
+                    ApplyMappingPickerFilter();
+            }
+        }
+
+        /// <summary>Hidden picker device keys (guids, plus "any" for the
+        /// device-agnostic group). Persisted per slot in the settings
+        /// root, not in profiles.</summary>
+        internal readonly System.Collections.Generic.HashSet<string> HiddenPickerDeviceKeys
+            = new(System.StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>The device-filter popup's rows: one per device group
+        /// currently in the picker.</summary>
+        public ObservableCollection<PickerDeviceFilterEntry> PickerDeviceFilterEntries { get; } = new();
+
+        /// <summary>True while any filter narrows the list, so the funnel
+        /// button can read as engaged.</summary>
+        public bool MappingPickerFilterActive
+            => HiddenPickerDeviceKeys.Count > 0 || _mappingInputSearch.Length > 0;
+
+        /// <summary>A grid row matches the search when its target label
+        /// or its selected source's display name carries the text. Rows
+        /// are OUTPUTS, so the device-visibility set does not hide them;
+        /// only typed text does.</summary>
+        internal static bool RowMatchesSearch(MappingItem m, string search)
+        {
+            if (m == null) return false;
+            if (string.IsNullOrEmpty(search)) return true;
+            if (m.TargetLabel != null
+                && m.TargetLabel.IndexOf(search, System.StringComparison.OrdinalIgnoreCase) >= 0)
+                return true;
+            var sel = m.SelectedInput;
+            return sel?.DisplayName != null
+                && sel.DisplayName.IndexOf(search, System.StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
+        internal void ApplyMappingPickerFilter()
+        {
+            // The dropdown side: what every picker OFFERS.
+            var view = SlotAvailableInputsView;
+            int shown = -1;
+            if (view != null)
+            {
+                if (HiddenPickerDeviceKeys.Count == 0 && string.IsNullOrEmpty(_mappingInputSearch))
+                    view.Filter = null;    // the zero-cost steady state
+                else
+                {
+                    string search = _mappingInputSearch;
+                    var hidden = HiddenPickerDeviceKeys;
+                    view.Filter = o => MatchesPickerFilter(o as InputChoice, search, hidden);
+                }
+            }
+
+            // The visible side: the TABLE ROWS live-filter as the user
+            // types, which is what a search box over a table means.
+            var rowView = CollectionViewSource.GetDefaultView(Mappings);
+            if (rowView != null)
+            {
+                if (string.IsNullOrEmpty(_mappingInputSearch))
+                    rowView.Filter = null;
+                else
+                {
+                    string search = _mappingInputSearch;
+                    rowView.Filter = o => RowMatchesSearch(o as MappingItem, search);
+                }
+                shown = 0;
+                foreach (var _ in rowView) shown++;
+            }
+
+            // Field-provable delivery (the first attempt shipped with no
+            // way to tell whether typing reached the filter at all).
+            PadForge.Engine.SdlDiagLog.WriteLine(
+                $"MAPFILTER slot={PadIndex} search=\"{_mappingInputSearch}\" hiddenDevices={HiddenPickerDeviceKeys.Count} rowsShown={(shown < 0 ? "n/a" : shown.ToString())}/{Mappings.Count}");
+
+            OnPropertyChanged(nameof(MappingPickerFilterActive));
+        }
+
+        /// <summary>Rebuilds the device-filter popup rows from the shared
+        /// list's current device groups. Called after every picker
+        /// repopulation, preserving each group's shown/hidden state.</summary>
+        public void RebuildPickerDeviceFilterEntries()
+        {
+            var seen = new System.Collections.Generic.HashSet<string>(System.StringComparer.OrdinalIgnoreCase);
+            PickerDeviceFilterEntries.Clear();
+            foreach (var c in SlotAvailableInputs)
+            {
+                string key = PickerFilterKey(c);
+                if (!seen.Add(key)) continue;
+                PickerDeviceFilterEntries.Add(new PickerDeviceFilterEntry(this)
+                {
+                    Key = key,
+                    Label = c.DeviceLabel,
+                    IsShownInternal = !HiddenPickerDeviceKeys.Contains(key),
+                });
+            }
+            ApplyMappingPickerFilter();
+        }
+
+        /// <summary>Restores the persisted hidden set (settings load).</summary>
+        public void SetHiddenPickerDeviceKeys(System.Collections.Generic.IEnumerable<string> keys)
+        {
+            HiddenPickerDeviceKeys.Clear();
+            if (keys != null)
+                foreach (var k in keys)
+                    if (!string.IsNullOrWhiteSpace(k)) HiddenPickerDeviceKeys.Add(k.Trim());
+            foreach (var e in PickerDeviceFilterEntries)
+                e.IsShownInternal = !HiddenPickerDeviceKeys.Contains(e.Key);
+            ApplyMappingPickerFilter();
+        }
+
+        /// <summary>The persisted form: the hidden keys, semicolon-joined.</summary>
+        public string GetHiddenPickerDeviceKeysJoined()
+            => string.Join(";", HiddenPickerDeviceKeys);
+
+        /// <summary>Raised when the hidden set changes so the settings
+        /// service can mark dirty and persist.</summary>
+        public event System.EventHandler PickerDeviceFilterChanged;
+
+        internal void OnPickerEntryToggled(PickerDeviceFilterEntry e)
+        {
+            if (e.IsShown) HiddenPickerDeviceKeys.Remove(e.Key);
+            else HiddenPickerDeviceKeys.Add(e.Key);
+            ApplyMappingPickerFilter();
+            PickerDeviceFilterChanged?.Invoke(this, System.EventArgs.Empty);
+        }
+
+        /// <summary>One row of the device-filter popup.</summary>
+        public sealed class PickerDeviceFilterEntry : ObservableObject
+        {
+            private readonly PadViewModel _owner;
+            public PickerDeviceFilterEntry(PadViewModel owner) { _owner = owner; }
+            public string Key { get; set; }
+            public string Label { get; set; }
+            private bool _isShown = true;
+            public bool IsShown
+            {
+                get => _isShown;
+                set { if (SetProperty(ref _isShown, value)) _owner.OnPickerEntryToggled(this); }
+            }
+            /// <summary>State write that must NOT re-toggle (rebuild and
+            /// restore paths).</summary>
+            internal bool IsShownInternal
+            {
+                get => _isShown;
+                set { _isShown = value; OnPropertyChanged(nameof(IsShown)); }
+            }
+        }
+
         /// <summary>Slot-level InputChoice list for the macro trigger
         /// dropdown (#177): the subset of <see cref="SlotAvailableInputs"/>
         /// that converts to a <c>MacroItem.TriggerInputEntry</c> (raw

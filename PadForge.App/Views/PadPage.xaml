@@ -3282,7 +3282,8 @@
 
             <!-- ─── TAB 2: Mappings (device-specific) ─── -->
             <TabItem>
-                <Grid Margin="8">
+                <Grid Margin="8" x:Name="MappingsTabRoot"
+                      PreviewKeyDown="MappingsTabRoot_PreviewKeyDown">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -3313,6 +3314,44 @@
                         <TextBlock Text="{Binding Pad_MappingHint, Source={x:Static strings:Strings.Instance}}"
                                    VerticalAlignment="Center" FontStyle="Italic"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        <!-- Picker filter (#322, discussion #302): one search
+                             box and one device-visibility popup filtering the
+                             slot's SHARED choice view, so every picker on the
+                             tab reflects them when opened. A view filter
+                             changes what a dropdown OFFERS, never what a
+                             row's binding holds. Ctrl+F focuses the box
+                             (code-behind on the tab root). -->
+                        <ui:TextBox x:Name="MappingFilterSearchBox" MinWidth="170" Margin="16,0,0,0"
+                                    VerticalAlignment="Center"
+                                    PlaceholderText="{Binding Mapping_FilterSearch_Placeholder, Source={x:Static strings:Strings.Instance}}"
+                                    Text="{Binding MappingInputSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <ToggleButton x:Name="MappingDeviceFilterToggle" Margin="4,0,0,0" Padding="8,4"
+                                      VerticalAlignment="Center"
+                                      ToolTip="{Binding Mapping_FilterDevices_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                            <ui:SymbolIcon Symbol="Filter24"/>
+                        </ToggleButton>
+                        <Popup IsOpen="{Binding IsChecked, ElementName=MappingDeviceFilterToggle}"
+                               PlacementTarget="{Binding ElementName=MappingDeviceFilterToggle}"
+                               Placement="Bottom" StaysOpen="False" AllowsTransparency="True">
+                            <Border Background="{DynamicResource SteelGroundBrush}"
+                                    BorderBrush="{DynamicResource SteelLineBrush}" BorderThickness="1"
+                                    CornerRadius="6" Padding="10" MinWidth="220">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Mapping_FilterDevices_Header, Source={x:Static strings:Strings.Instance}}"
+                                               FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11"
+                                               Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,6"/>
+                                    <ItemsControl ItemsSource="{Binding PickerDeviceFilterEntries}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <CheckBox Content="{Binding Label}" IsChecked="{Binding IsShown, Mode=TwoWay}"
+                                                          Margin="0,2"/>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </Border>
+                        </Popup>
+
                         <!-- Clear All rides at the far end in warning chrome
                              (#175 item 1d): it wipes every mapping row, so it
                              no longer leads the strip, and the Click path asks
@@ -3777,6 +3816,8 @@
                          and any empty space sits to the right of the grid. -->
                     <DataGrid Grid.Row="3"
                               x:Name="MappingDataGrid"
+                              EnableRowVirtualization="True"
+                              VirtualizingPanel.VirtualizationMode="Recycling"
                               HorizontalAlignment="Left"
                               MinRowHeight="40"
                               ItemsSource="{Binding Mappings}"
@@ -4701,7 +4742,15 @@
                                                                       ToolTip="{Binding Pad_Mapping_ExtraSourcePickerTooltip, Source={x:Static strings:Strings.Instance}}"
                                                                       BorderBrush="#4D58B6E4" Background="#0D58B6E4"
                                                                       PreviewKeyDown="MappingComboBox_PreviewKeyDown"
-                                                                      IsSynchronizedWithCurrentItem="False">
+                                                                      IsSynchronizedWithCurrentItem="False"
+                                                                      VirtualizingPanel.IsVirtualizing="True"
+                                                                      VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                                                                      VirtualizingPanel.VirtualizationMode="Recycling">
+                                                                <ComboBox.ItemsPanel>
+                                                                    <ItemsPanelTemplate>
+                                                                        <VirtualizingStackPanel/>
+                                                                    </ItemsPanelTemplate>
+                                                                </ComboBox.ItemsPanel>
                                                                 <ComboBox.GroupStyle>
                                                                     <GroupStyle>
                                                                         <GroupStyle.HeaderTemplate>
@@ -4759,7 +4808,15 @@
                                                                           MinWidth="240" Padding="4,2"
                                                                           ToolTip="{Binding Pad_Mapping_Modifier_PickerTooltip, Source={x:Static strings:Strings.Instance}}"
                                                                           PreviewKeyDown="MappingComboBox_PreviewKeyDown"
-                                                                          IsSynchronizedWithCurrentItem="False">
+                                                                          IsSynchronizedWithCurrentItem="False"
+                                                                          VirtualizingPanel.IsVirtualizing="True"
+                                                                          VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                                                                          VirtualizingPanel.VirtualizationMode="Recycling">
+                                                                    <ComboBox.ItemsPanel>
+                                                                        <ItemsPanelTemplate>
+                                                                            <VirtualizingStackPanel/>
+                                                                        </ItemsPanelTemplate>
+                                                                    </ComboBox.ItemsPanel>
                                                                     <ComboBox.GroupStyle>
                                                                         <GroupStyle>
                                                                             <GroupStyle.HeaderTemplate>
@@ -4993,7 +5050,15 @@
                                                                           MinWidth="180" Padding="4,2"
                                                                           ToolTip="{Binding Pad_Mapping_Up_PickerTooltip, Source={x:Static strings:Strings.Instance}}"
                                                                           PreviewKeyDown="MappingComboBox_PreviewKeyDown"
-                                                                          IsSynchronizedWithCurrentItem="False">
+                                                                          IsSynchronizedWithCurrentItem="False"
+                                                                          VirtualizingPanel.IsVirtualizing="True"
+                                                                          VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                                                                          VirtualizingPanel.VirtualizationMode="Recycling">
+                                                                    <ComboBox.ItemsPanel>
+                                                                        <ItemsPanelTemplate>
+                                                                            <VirtualizingStackPanel/>
+                                                                        </ItemsPanelTemplate>
+                                                                    </ComboBox.ItemsPanel>
                                                                     <ComboBox.GroupStyle>
                                                                         <GroupStyle>
                                                                             <GroupStyle.HeaderTemplate>
@@ -5044,7 +5109,15 @@
                                                                           MinWidth="180" Padding="4,2"
                                                                           ToolTip="{Binding Pad_Mapping_Down_PickerTooltip, Source={x:Static strings:Strings.Instance}}"
                                                                           PreviewKeyDown="MappingComboBox_PreviewKeyDown"
-                                                                          IsSynchronizedWithCurrentItem="False">
+                                                                          IsSynchronizedWithCurrentItem="False"
+                                                                          VirtualizingPanel.IsVirtualizing="True"
+                                                                          VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                                                                          VirtualizingPanel.VirtualizationMode="Recycling">
+                                                                    <ComboBox.ItemsPanel>
+                                                                        <ItemsPanelTemplate>
+                                                                            <VirtualizingStackPanel/>
+                                                                        </ItemsPanelTemplate>
+                                                                    </ComboBox.ItemsPanel>
                                                                     <ComboBox.GroupStyle>
                                                                         <GroupStyle>
                                                                             <GroupStyle.HeaderTemplate>
@@ -5127,7 +5200,15 @@
                                                                           MinWidth="180" Padding="4,2"
                                                                           ToolTip="{Binding Pad_Mapping_Up_PickerTooltip, Source={x:Static strings:Strings.Instance}}"
                                                                           PreviewKeyDown="MappingComboBox_PreviewKeyDown"
-                                                                          IsSynchronizedWithCurrentItem="False">
+                                                                          IsSynchronizedWithCurrentItem="False"
+                                                                          VirtualizingPanel.IsVirtualizing="True"
+                                                                          VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                                                                          VirtualizingPanel.VirtualizationMode="Recycling">
+                                                                    <ComboBox.ItemsPanel>
+                                                                        <ItemsPanelTemplate>
+                                                                            <VirtualizingStackPanel/>
+                                                                        </ItemsPanelTemplate>
+                                                                    </ComboBox.ItemsPanel>
                                                                     <ComboBox.GroupStyle>
                                                                         <GroupStyle>
                                                                             <GroupStyle.HeaderTemplate>
@@ -5178,7 +5259,15 @@
                                                                           MinWidth="180" Padding="4,2"
                                                                           ToolTip="{Binding Pad_Mapping_Down_PickerTooltip, Source={x:Static strings:Strings.Instance}}"
                                                                           PreviewKeyDown="MappingComboBox_PreviewKeyDown"
-                                                                          IsSynchronizedWithCurrentItem="False">
+                                                                          IsSynchronizedWithCurrentItem="False"
+                                                                          VirtualizingPanel.IsVirtualizing="True"
+                                                                          VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                                                                          VirtualizingPanel.VirtualizationMode="Recycling">
+                                                                    <ComboBox.ItemsPanel>
+                                                                        <ItemsPanelTemplate>
+                                                                            <VirtualizingStackPanel/>
+                                                                        </ItemsPanelTemplate>
+                                                                    </ComboBox.ItemsPanel>
                                                                     <ComboBox.GroupStyle>
                                                                         <GroupStyle>
                                                                             <GroupStyle.HeaderTemplate>

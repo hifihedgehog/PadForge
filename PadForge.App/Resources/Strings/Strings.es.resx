@@ -3021,6 +3021,9 @@
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>Detiene el tono de prueba o el barrido.</value></data>
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>Cualquier etiqueta NFC</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>Etiqueta NFC: {0}</value></data>
+  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>Filtrar entradas (Ctrl+F)</value></data>
+  <data name="Mapping_FilterDevices_Tooltip" xml:space="preserve"><value>Elegir qué entradas de dispositivos ofrecen los selectores</value></data>
+  <data name="Mapping_FilterDevices_Header" xml:space="preserve"><value>Visible en el selector</value></data>
   <data name="Mapping_AnyVoicePhrase" xml:space="preserve"><value>Cualquier frase de voz</value></data>
   <data name="Mapping_VoicePhraseNamed" xml:space="preserve"><value>Frase de voz: {0}</value></data>
   <data name="Nfc_WaitingController" xml:space="preserve"><value>Toca una etiqueta en tu mando Switch…</value></data>

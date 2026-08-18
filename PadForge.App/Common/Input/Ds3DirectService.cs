@@ -36,11 +36,11 @@ namespace PadForge.Common.Input
         private static readonly Guid BthPs3Interface =
             new Guid(0x968e1849, 0x73b1, 0x4876, 0xb8, 0x0a, 0xed, 0x6d, 0xd1, 0x71, 0x48, 0x9b);
 
-        // GUID_DEVINTERFACE_BTHPS3_NAVIGATION {3E53723A-440C-40AF-8895-EA439D75E7BE}
-        // (BthPS3.h:201-203): the Navigation controller's category-specific PDO
-        // interface, used by the navigation profile of this service (#277).
-        private static readonly Guid BthPs3NavigationInterface =
-            new Guid(0x3e53723a, 0x440c, 0x40af, 0x88, 0x95, 0xea, 0x43, 0x9d, 0x75, 0xe7, 0xbe);
+        // The navigation profile also finds its PDO on the GENERIC interface:
+        // BthPS3's raw PDOs register only GUID_DEVINTERFACE_BTHPS3, for every
+        // category (measured live 2026-08-18 with a connected Move; the
+        // per-category interface GUIDs registered nothing). The profiles are
+        // told apart by the PID token in the path.
 
         // IOCTLs on the raw PDO (BthPS3 common/include/BthPS3.h).
         private const uint IOCTL_HID_CONTROL_WRITE  = 0x2AA808;
@@ -1183,12 +1183,10 @@ namespace PadForge.Common.Input
 
         private string FindPdoPath()
         {
-            // Sixaxis: the proven generic raw-PDO interface, tightened to the
-            // sixaxis PID (a Move or Navigation PDO also carries VID 054C, and
-            // the old any-054c match would have grabbed it as a DS3, #277).
-            // Navigation: its category-specific interface (BthPS3.h:201), with
-            // the same PID belt over the braces.
-            Guid g = _nav ? BthPs3NavigationInterface : BthPs3Interface;
+            // The one generic raw-PDO interface, filtered by each profile's
+            // PID token (the old any-054c match would have grabbed a Move or
+            // Navigation PDO as a DS3, #277).
+            Guid g = BthPs3Interface;
             string pidToken = _nav ? "pid_042f" : "pid_0268";
             IntPtr set = SetupDiGetClassDevs(ref g, IntPtr.Zero, IntPtr.Zero, DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
             if (set == INVALID_HANDLE) return null;

@@ -1150,7 +1150,15 @@ namespace PadForge.Common.Input
                 SDL.SDL_SetJoystickVirtualButton(j, 4, (buttons & BtnSelect) != 0);
                 SDL.SDL_SetJoystickVirtualButton(j, 5, (buttons & BtnPs) != 0);
                 SDL.SDL_SetJoystickVirtualButton(j, 6, (buttons & BtnStart) != 0);
-                SDL.SDL_SetJoystickVirtualButton(j, 9, (buttons & BtnMove) != 0);
+                // The Move button rides the LeftShoulder BINDING, and SDL's
+                // virtual mapping assigns bindings to SEQUENTIAL joystick
+                // indices for the mask bits present, not to bit positions
+                // (VIRTUAL_JoystickGetGamepadMapping walks the mask with
+                // current_button++). Mask 0x027F has seven buttons below
+                // LEFT_SHOULDER, so the Move button is joystick button 7.
+                // Bench-proven 2026-08-18: the wire bit decoded correctly
+                // (MOVEBTN word=080000) while index 9 was bound to nothing.
+                SDL.SDL_SetJoystickVirtualButton(j, 7, (buttons & BtnMove) != 0);
 
                 // T trigger -> RT axis, SDL PS3-driver scaling (released = MIN).
                 SDL.SDL_SetJoystickVirtualAxis(j, 5, (short)(b[6] * 257 - 32768));

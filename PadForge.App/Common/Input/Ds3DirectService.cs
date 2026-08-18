@@ -944,8 +944,30 @@ namespace PadForge.Common.Input
             SDL.SDL_LockJoysticks();
             try
             {
+                if (_nav)
+                {
+                    // SPARSE-MASK INDEXING (#277, the Move-button lesson):
+                    // SDL's virtual mapping binds gamepad controls to
+                    // SEQUENTIAL joystick indices for the mask bits present
+                    // (VIRTUAL_JoystickGetGamepadMapping's current_button++),
+                    // not to bit positions. Nav mask 0x7AA3 therefore binds
+                    // south->0, east->1, guide->2, leftstick->3,
+                    // leftshoulder->4, dpad up/down/left/right->5/6/7/8.
+                    SDL.SDL_SetJoystickVirtualButton(j, 0, cross);
+                    SDL.SDL_SetJoystickVirtualButton(j, 1, cir);
+                    SDL.SDL_SetJoystickVirtualButton(j, 2, ps);
+                    SDL.SDL_SetJoystickVirtualButton(j, 3, l3);
+                    SDL.SDL_SetJoystickVirtualButton(j, 4, l1);
+                    SDL.SDL_SetJoystickVirtualButton(j, 5, up);
+                    SDL.SDL_SetJoystickVirtualButton(j, 6, down);
+                    SDL.SDL_SetJoystickVirtualButton(j, 7, left);
+                    SDL.SDL_SetJoystickVirtualButton(j, 8, right);
+                }
+                else
+                {
                 // SDL_GamepadButton order: 0 South 1 East 2 West 3 North 4 Back 5 Guide 6 Start
                 //   7 LStick 8 RStick 9 LShoulder 10 RShoulder 11 DpadUp 12 DpadDown 13 DpadLeft 14 DpadRight
+                // (The DS3 mask 0x7FFF is CONTIGUOUS, so sequential == bit position here.)
                 SDL.SDL_SetJoystickVirtualButton(j, 0, cross);
                 SDL.SDL_SetJoystickVirtualButton(j, 1, cir);
                 SDL.SDL_SetJoystickVirtualButton(j, 2, sq);
@@ -961,6 +983,7 @@ namespace PadForge.Common.Input
                 SDL.SDL_SetJoystickVirtualButton(j, 12, down);
                 SDL.SDL_SetJoystickVirtualButton(j, 13, left);
                 SDL.SDL_SetJoystickVirtualButton(j, 14, right);
+                }
 
                 SDL.SDL_SetJoystickVirtualAxis(j, 0, AxisFromByte(b[7]));      // LX
                 SDL.SDL_SetJoystickVirtualAxis(j, 1, AxisFromByte(b[8]));      // LY

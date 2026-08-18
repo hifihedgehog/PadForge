@@ -463,8 +463,12 @@ namespace PadForge.Views
                             bool isDualSense = ud.ProdId == 0x0CE6;
                             bool isDualSenseEdge = ud.ProdId == 0x0DF2;
                             bool isDs4 = ud.ProdId == 0x05C4 || ud.ProdId == 0x09CC || ud.ProdId == 0x0BA0;
+                            // PS Move (#277): the sphere is its lightbar, driven
+                            // through the same per-device lighting config by the
+                            // dispatcher's Move lane.
+                            bool isPsMove = ud.ProdId == 0x03D5;
                             hasAdaptiveTriggers = isDualSense || isDualSenseEdge;
-                            hasLightbar = isDualSense || isDualSenseEdge || isDs4;
+                            hasLightbar = isDualSense || isDualSenseEdge || isDs4 || isPsMove;
                             lightbarIsDs4 = isDs4;
                             // Speaker audio: DualSense family + DS4 (all have a speaker).
                             hasAudio = isDualSense || isDualSenseEdge || isDs4;

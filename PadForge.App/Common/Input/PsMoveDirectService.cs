@@ -624,10 +624,10 @@ namespace PadForge.Common.Input
                         type = (ushort)SDL.SDL_JoystickType.SDL_JOYSTICK_TYPE_GAMEPAD,
                         vendor_id = MOVE_VID,
                         product_id = MOVE_PID,
-                        naxes = 6,
-                        nbuttons = 15,
-                        button_mask = 0x027F,
-                        axis_mask = 0x3F,
+                        naxes = 1,
+                        nbuttons = 8,
+                        button_mask = 0x807F,
+                        axis_mask = 0x20,
                         name = namePtr,
                     };
                     desc.version = (uint)Marshal.SizeOf<SDL.SDL_VirtualJoystickDesc>();
@@ -874,7 +874,22 @@ namespace PadForge.Common.Input
                     if (rd >= buf.Length && buf[0] == 0xA1 && buf[1] == 0x01)
                     {
                         misaligned = 0;
-                        _everGotInput = true;
+                        if (!_everGotInput)
+                        {
+                            _everGotInput = true;
+                            // Lighting self-heal: the dispatcher writes on
+                            // pokes, so a pad attaching after the last poke
+                            // would sit on the idle floor until the next
+                            // config edit. Poke once when the session goes
+                            // live (delayed so the device walk has ingested
+                            // the pad into the slot's assignment set).
+                            var t = new Thread(() =>
+                            {
+                                Thread.Sleep(1500);
+                                try { UserEffectsDispatcher.ApplyOnceAll(); } catch { }
+                            }) { IsBackground = true, Name = "PsMoveLightPoke" };
+                            t.Start();
+                        }
                         PushState(buf, rd);
                         UpdateBattery(buf[13]);   // struct offset 12 (psmove.c:178) + 0xA1
                     }
@@ -1002,17 +1017,20 @@ namespace PadForge.Common.Input
                     type = (ushort)SDL.SDL_JoystickType.SDL_JOYSTICK_TYPE_GAMEPAD,
                     vendor_id = MOVE_VID,
                     product_id = MOVE_PID,
-                    // Standard 6-axis gamepad shape; the Move has no sticks, so
-                    // axes 0-3 rest at center and only RT (the T trigger) moves.
-                    naxes = 6,
-                    nbuttons = 15,
+                    // Canonical shape: the Move has no sticks, so no phantom
+                    // stick axes; its one trigger is the right trigger.
+                    naxes = 1,
+                    nbuttons = 8,
                     nhats = 0,
                     nsensors = (ushort)sensors.Length,
                     sensors = sensorsPtr,
-                    // South(Cross) East(Circle) West(Square) North(Triangle)
-                    // Back(Select) Guide(PS) Start + LeftShoulder(Move button).
-                    button_mask = 0x027F,
-                    axis_mask = 0x3F,
+                    // Sony label canon for the face cluster (Cross=South,
+                    // Circle=East, Square=West, Triangle=North), Select=Back,
+                    // PS=Guide, Start=Start, and the big Move button = MISC1,
+                    // SDL's slot for a prominent extra button (SDL_gamepad.h:
+                    // "Additional button (e.g. ... PS5 microphone button)").
+                    button_mask = 0x807F,
+                    axis_mask = 0x20,   // right trigger only
                     name = namePtr,
                     Rumble = Marshal.GetFunctionPointerForDelegate(_rumbleCb),
                     SetLED = Marshal.GetFunctionPointerForDelegate(_setLedCb),
@@ -1150,18 +1168,19 @@ namespace PadForge.Common.Input
                 SDL.SDL_SetJoystickVirtualButton(j, 4, (buttons & BtnSelect) != 0);
                 SDL.SDL_SetJoystickVirtualButton(j, 5, (buttons & BtnPs) != 0);
                 SDL.SDL_SetJoystickVirtualButton(j, 6, (buttons & BtnStart) != 0);
-                // The Move button rides the LeftShoulder BINDING, and SDL's
-                // virtual mapping assigns bindings to SEQUENTIAL joystick
-                // indices for the mask bits present, not to bit positions
-                // (VIRTUAL_JoystickGetGamepadMapping walks the mask with
-                // current_button++). Mask 0x027F has seven buttons below
-                // LEFT_SHOULDER, so the Move button is joystick button 7.
+                // The Move button rides the MISC1 binding, and SDL's virtual
+                // mapping assigns bindings to SEQUENTIAL joystick indices for
+                // the mask bits present, not bit positions
+                // (VIRTUAL_JoystickGetGamepadMapping's current_button++).
+                // Mask 0x807F has seven buttons before MISC1 -> index 7.
                 // Bench-proven 2026-08-18: the wire bit decoded correctly
-                // (MOVEBTN word=080000) while index 9 was bound to nothing.
+                // (MOVEBTN word=080000) while a bit-position index was bound
+                // to nothing.
                 SDL.SDL_SetJoystickVirtualButton(j, 7, (buttons & BtnMove) != 0);
 
-                // T trigger -> RT axis, SDL PS3-driver scaling (released = MIN).
-                SDL.SDL_SetJoystickVirtualAxis(j, 5, (short)(b[6] * 257 - 32768));
+                // T trigger -> right trigger, the mask's only axis -> index 0
+                // (released = MIN, SDL PS3-driver scaling).
+                SDL.SDL_SetJoystickVirtualAxis(j, 0, (short)(b[6] * 257 - 32768));
 
                 var cal = _calibration;
                 if (cal != null)

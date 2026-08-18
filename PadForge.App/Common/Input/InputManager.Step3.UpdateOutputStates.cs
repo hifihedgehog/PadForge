@@ -1813,17 +1813,49 @@ namespace PadForge.Common.Input
                     break;
             }
 
-            // ── Post-DZ per-axis pipeline: curve → anti-DZ → linear → output ──
-            axisX = ApplyPostDeadZone(remX, signX, antiDeadZoneX, linear, lutX);
-            axisY = ApplyPostDeadZone(remY, signY, antiDeadZoneY, linear, lutY);
+            // ── Post-DZ pipeline: curve → pair-radial anti-DZ → linear → output ──
+            // The curves apply per axis, then the anti-deadzone floors the
+            // PAIR: the shapes above already computed remX/remY together, and
+            // flooring each axis alone forbade the band (0, anti) per axis,
+            // which cut wedge-shaped gaps out of a slow circle at every
+            // cardinal (#330: the minor axis jumped from -anti to +anti as it
+            // crossed zero). The pair magnitude is taken post-curve so the
+            // floor stays exact at every curve, matching the scalar formula's
+            // ordering.
+            double remLutX = lutX != null
+                ? Common.CurveLut.Lookup(lutX, Math.Clamp(remX, 0, 1)) : remX;
+            double remLutY = lutY != null
+                ? Common.CurveLut.Lookup(lutY, Math.Clamp(remY, 0, 1)) : remY;
+            double pairMag = Math.Sqrt(remLutX * remLutX + remLutY * remLutY);
+            // The floor engages only OUTSIDE the configured deadzone ellipse
+            // (the same inside-test ComputeRadial uses). The radial shapes
+            // zero everything inside it anyway, but the Sloped shapes pass
+            // center values through by design (their per-axis deadzone
+            // shrinks with the companion, the cardinal-lock geometry), and
+            // flooring that pass-through amplified ~2% rest noise into a
+            // +/-anti swing whose sign flipped every tick. Inside the
+            // ellipse the values ride through unfloored.
+            bool floorEligible;
+            if (dzXn <= 0 && dzYn <= 0)
+                floorEligible = true;
+            else
+            {
+                const double dzEps = 1e-10;
+                double gx = nx / Math.Max(dzXn, dzEps);
+                double gy = ny / Math.Max(dzYn, dzEps);
+                floorEligible = (gx * gx + gy * gy) >= 1.0;
+            }
+            axisX = ApplyPostDeadZone(remLutX, signX, floorEligible ? antiDeadZoneX : 0, linear, pairMag);
+            axisY = ApplyPostDeadZone(remLutY, signY, floorEligible ? antiDeadZoneY : 0, linear, pairMag);
         }
 
         /// <summary>
-        /// Post-deadzone per-axis processing: sensitivity curve, anti-deadzone, linear.
-        /// Input remapped is [0,1], sign is ±1.
+        /// Post-deadzone processing: anti-deadzone floored over the pair
+        /// magnitude, then linear. Input remapped is [0,1] post-curve, sign is
+        /// ±1, pairMag is the post-curve magnitude of the (X, Y) pair.
         /// </summary>
         private static short ApplyPostDeadZone(double remapped, double sign,
-            double antiDeadZone, double linear, double[] lut)
+            double antiDeadZone, double linear, double pairMag)
         {
             // No deflection means no output, anti-deadzone or not. The
             // shaped paths hand back remapped == 0 for a stick inside its
@@ -1837,16 +1869,28 @@ namespace PadForge.Common.Input
             if (remapped <= 0)
                 return 0;
 
-            if (lut != null)
-                remapped = Common.CurveLut.Lookup(lut, Math.Clamp(remapped, 0, 1));
-
             double adzNorm = antiDeadZone / 100.0;
-            double output = adzNorm + remapped * (1.0 - adzNorm);
+            // Radial floor (#330): scale the axis so the VECTOR magnitude
+            // maps pairMag -> adz + pairMag*(1-adz), direction preserved.
+            // On-axis (pairMag == remapped) this is the scalar legacy
+            // formula, computed directly so single-axis output is
+            // bit-identical to the pre-#330 pipeline. At or past full
+            // deflection the floor has nothing to add.
+            double floored;
+            if (adzNorm <= 0)
+                floored = remapped;
+            else if (pairMag <= remapped)
+                floored = adzNorm + remapped * (1.0 - adzNorm);
+            else if (pairMag >= 1.0)
+                floored = remapped;
+            else
+                floored = remapped * ((adzNorm + pairMag * (1.0 - adzNorm)) / pairMag);
 
+            double output = floored;
             if (linear > 0)
             {
                 double linearFactor = linear / 100.0;
-                output = remapped * linearFactor + output * (1.0 - linearFactor);
+                output = remapped * linearFactor + floored * (1.0 - linearFactor);
             }
 
             double result = sign * output * 32767.0;
@@ -2010,7 +2054,13 @@ namespace PadForge.Common.Input
             double sign = Math.Sign(norm);
             double magnitude = Math.Abs(norm);
 
-            // Deadzone: values within the deadzone are zeroed.
+            // Deadzone: values within the deadzone are zeroed. The explicit
+            // zero-deflection guard closes the round-34 family's last hole
+            // (#330): with deadZone == 0 the strict < never fired, so a
+            // resting axis fell through and the anti-deadzone below emitted
+            // a phantom floor whose sign flipped with sensor noise.
+            if (magnitude <= 0)
+                return 0;
             double dzNorm = deadZone / 100.0;
             if (magnitude < dzNorm)
                 return 0;

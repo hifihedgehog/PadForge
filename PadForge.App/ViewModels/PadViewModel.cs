@@ -7442,10 +7442,14 @@ namespace PadForge.ViewModels
                     return (0.5, 0.5, 0.5, 0.5);
 
                 // Per-axis DZ gate + rescale (mirrors ApplySingleDeadZone).
+                // Axial keeps the scalar floor by contract (#330): pairMag is
+                // the axis's own post-curve value.
                 double remAx = xInDz ? 0 : Math.Min((magX - dzXn) / (mrXn - dzXn), 1.0);
                 double remAy = yInDz ? 0 : Math.Min((magY - dzYn) / (mrYn - dzYn), 1.0);
-                double oAx = PostDzForPreview(remAx, curveX, antiDeadZoneX, linear);
-                double oAy = PostDzForPreview(remAy, curveY, antiDeadZoneY, linear);
+                double remAxC = StickConfigItem.ApplyCurve(remAx, curveX);
+                double remAyC = StickConfigItem.ApplyCurve(remAy, curveY);
+                double oAx = PostDzForPreview(remAxC, antiDeadZoneX, linear, remAxC);
+                double oAy = PostDzForPreview(remAyC, antiDeadZoneY, linear, remAyC);
 
                 double outPosX = Math.Clamp(0.5 + signX * oAx * 0.5, 0.0, 1.0);
                 double outPosY = Math.Clamp(0.5 + signY * oAy * 0.5, 0.0, 1.0);
@@ -7485,9 +7489,26 @@ namespace PadForge.ViewModels
                     break;
             }
 
-            // Post-DZ per axis: curve → ADZ → linear (mirrors ApplyPostDeadZone)
-            double outX = PostDzForPreview(remX, curveX, antiDeadZoneX, linear);
-            double outY = PostDzForPreview(remY, curveY, antiDeadZoneY, linear);
+            // Post-DZ: curve per axis, then the pair-radial anti-deadzone
+            // floor (#330), mirroring the engine's ApplyPostDeadZone ordering,
+            // including its floor gate: no floor inside the deadzone ellipse
+            // (the Sloped shapes pass center values through by design and the
+            // floor must not amplify them).
+            double remCx = StickConfigItem.ApplyCurve(remX, curveX);
+            double remCy = StickConfigItem.ApplyCurve(remY, curveY);
+            double pairMag = Math.Sqrt(remCx * remCx + remCy * remCy);
+            bool floorEligible;
+            if (dzXn <= 0 && dzYn <= 0)
+                floorEligible = true;
+            else
+            {
+                const double dzEps = 1e-10;
+                double gx = sx / Math.Max(dzXn, dzEps);
+                double gy = sy / Math.Max(dzYn, dzEps);
+                floorEligible = (gx * gx + gy * gy) >= 1.0;
+            }
+            double outX = PostDzForPreview(remCx, floorEligible ? antiDeadZoneX : 0, linear, pairMag);
+            double outY = PostDzForPreview(remCy, floorEligible ? antiDeadZoneY : 0, linear, pairMag);
 
             double outputPosX = Math.Clamp(0.5 + signX * outX * 0.5, 0.0, 1.0);
             double outputPosY = Math.Clamp(0.5 + signY * outY * 0.5, 0.0, 1.0);
@@ -7606,16 +7627,30 @@ namespace PadForge.ViewModels
             return (outputPosX, outputPosX, outputPosY, outputPosY);
         }
 
-        private static double PostDzForPreview(double remapped, string curveString, double antiDeadZone, double linear)
+        /// <summary>Preview twin of the engine's ApplyPostDeadZone (#330):
+        /// input is the POST-CURVE remapped magnitude, and the anti-deadzone
+        /// floors the pair magnitude radially, direction preserved, so the
+        /// preview dot keeps matching what the game receives. pairMag equals
+        /// the axis's own value on the Axial path (scalar legacy formula).
+        /// The rest guard matches the engine: no deflection, no output.</summary>
+        private static double PostDzForPreview(double remapped, double antiDeadZone, double linear, double pairMag)
         {
-            if (remapped <= 0 && antiDeadZone <= 0) return 0;
-            remapped = StickConfigItem.ApplyCurve(remapped, curveString);
+            if (remapped <= 0) return 0;
             double adzNorm = antiDeadZone / 100.0;
-            double output = adzNorm + remapped * (1.0 - adzNorm);
+            double floored;
+            if (adzNorm <= 0)
+                floored = remapped;
+            else if (pairMag <= remapped)
+                floored = adzNorm + remapped * (1.0 - adzNorm);
+            else if (pairMag >= 1.0)
+                floored = remapped;
+            else
+                floored = remapped * ((adzNorm + pairMag * (1.0 - adzNorm)) / pairMag);
+            double output = floored;
             if (linear > 0)
             {
                 double lf = linear / 100.0;
-                output = remapped * lf + output * (1.0 - lf);
+                output = remapped * lf + floored * (1.0 - lf);
             }
             return output;
         }
@@ -7651,6 +7686,10 @@ namespace PadForge.ViewModels
             double mr = trig.MaxRange / 100.0;
             if (mr <= dz) mr = dz + 0.01;
 
+            // Zero-deflection guard mirrors the engine's ApplySingleDeadZone
+            // (#330): with a zero deadzone the strict < below never fired and
+            // a resting trigger previewed the anti-deadzone floor.
+            if (t <= 0) return 0;
             if (t < dz) return 0;
 
             double remapped = Math.Min((t - dz) / (mr - dz), 1.0);

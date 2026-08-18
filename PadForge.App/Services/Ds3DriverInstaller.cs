@@ -1317,12 +1317,23 @@ namespace PadForge.Services
             if (rc != 0) { log($"Opening the device record failed (rc={rc})."); return false; }
             try
             {
+                // Every value's return code is checked. These used to be
+                // fire-and-forget, and a Move record on the bench (2026-08-18,
+                // 48f07bed1049) ended up carrying bthport's own bookkeeping but
+                // none of our Name/VID/PID, invisible to the family unpair and
+                // the PSM policy, with nothing in any log to say why.
                 byte[] ascii = System.Text.Encoding.ASCII.GetBytes(remoteName);
                 byte[] name = new byte[ascii.Length + 1];
                 Array.Copy(ascii, name, ascii.Length);
-                RegSetValueEx(hk, "Name", 0, REG_BINARY, name, name.Length);
-                RegSetValueEx(hk, "VID", 0, REG_DWORD, BitConverter.GetBytes(0x054C), 4);
-                RegSetValueEx(hk, "PID", 0, REG_DWORD, BitConverter.GetBytes(pid), 4);
+                int rcName = RegSetValueEx(hk, "Name", 0, REG_BINARY, name, name.Length);
+                int rcVid = RegSetValueEx(hk, "VID", 0, REG_DWORD, BitConverter.GetBytes(0x054C), 4);
+                int rcPid = RegSetValueEx(hk, "PID", 0, REG_DWORD, BitConverter.GetBytes(pid), 4);
+                if (rcName != 0 || rcVid != 0 || rcPid != 0)
+                {
+                    log($"Writing the device record values failed (Name rc={rcName}, VID rc={rcVid}, PID rc={rcPid}).");
+                    return false;
+                }
+                log($"Device record written: Name=\"{remoteName}\", VID=054C, PID={pid:X4}.");
                 return true;
             }
             finally { RegCloseKey(hk); }

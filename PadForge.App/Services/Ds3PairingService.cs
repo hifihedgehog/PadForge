@@ -814,6 +814,55 @@ namespace PadForge.Services
         /// USB and is cached for Bluetooth sessions (psmove_calibration.c).</summary>
         public static Action<string, byte[]> CalibrationStore;
 
+        /// <summary>Pure auto-pair decision (#277): a docked Move auto-pairs,
+        /// exactly like plugging it into a PS3, when this host has no PadForge
+        /// record for it or the pad's stored host is not this radio. A pad
+        /// already paired both ways is left alone, so routine charging never
+        /// cycles the radio.</summary>
+        internal static bool ShouldAutoPairMove(bool recordExists, byte[] padStoredHost, byte[] radioMac)
+        {
+            if (!recordExists) return true;
+            if (padStoredHost == null || radioMac == null) return false;   // paired + unverifiable: leave alone
+            return !padStoredHost.AsSpan().SequenceEqual(radioMac);
+        }
+
+        private static int _autoPairInFlight;
+        private bool _lastCeremonyWasNav;
+
+        /// <summary>Dock-triggered auto-pair (#277). Decides via
+        /// <see cref="ShouldAutoPairMove"/> and runs the full ceremony when the
+        /// pad needs it. One at a time; re-entry while a ceremony runs is
+        /// dropped. Called from the App layer's DockObserved wiring.</summary>
+        public void AutoPairMoveIfNeeded(string macHex, byte[] padStoredHostBigEndian)
+        {
+            if (string.IsNullOrEmpty(macHex))
+            {
+                _log("Move dock: the pad's address could not be read, so auto-pair is skipped. "
+                    + "Use Devices > Pair Device to pair it manually.");
+                return;
+            }
+            if (System.Threading.Interlocked.CompareExchange(ref _autoPairInFlight, 1, 0) != 0) return;
+            try
+            {
+                bool recordExists = false;
+                foreach (string mac in EnumeratePairedFamilyRecords(MOVE_PID))
+                    if (string.Equals(mac, macHex, StringComparison.OrdinalIgnoreCase)) { recordExists = true; break; }
+                byte[] radio = ReadRadioMac();
+                if (!ShouldAutoPairMove(recordExists, padStoredHostBigEndian, radio))
+                {
+                    _log($"Move dock: {macHex} is already paired to this PC; charging only.");
+                    return;
+                }
+                _log($"Move dock: {macHex} is not paired to this PC - pairing now (this briefly restarts Bluetooth).");
+                var result = RunMovePairing();
+                _log(result.Success
+                    ? "Move dock: paired. Unplug the pad and press its PS button to connect."
+                    : $"Move dock: auto-pair did not complete ({result.Error}). Use Devices > Pair Device to retry.");
+            }
+            catch (Exception ex) { _log("Move dock auto-pair failed: " + ex.Message); }
+            finally { System.Threading.Interlocked.Exchange(ref _autoPairInFlight, 0); }
+        }
+
         /// <summary>Runs the full USB pairing ceremony for a PS Move or
         /// Navigation controller docked over USB. Mirrors <see cref="RunPairing"/>'s
         /// shape: sixpair analogue, remembered-device record, radio cycle, PSM
@@ -834,16 +883,29 @@ namespace PadForge.Services
             PadForge.Common.Input.PsMoveDirectService.SuppressAndRelease();
             PadForge.Common.Input.Ds3DirectService.SuppressAndRelease();
             System.Threading.Thread.Sleep(300);
+            bool nav = false;
             try
             {
-                return RunMovePairingCore(r, ct);
+                var result = RunMovePairingCore(r, ct);
+                nav = _lastCeremonyWasNav;
+                return result;
             }
             finally
             {
                 PadForge.Common.Input.PsMoveDirectService.AllowReconnect();
                 PadForge.Common.Input.Ds3DirectService.AllowReconnect();
                 ReconcilePsmPatchForCrashSafety("move-pair-end");
+                MintRowAfterMovePairing(r, nav);
             }
+        }
+
+        /// <summary>Success tail of the Move ceremony, outside the suppression
+        /// window: mint the Devices-list row so the freshly paired pad is
+        /// visible and removable before its first Bluetooth connection.</summary>
+        private void MintRowAfterMovePairing(PairResult r, bool isNav)
+        {
+            if (!r.Success || isNav) return;
+            PadForge.Common.Input.PsMoveDirectService.MintIdentityRow(_log);
         }
 
         private PairResult RunMovePairingCore(PairResult r, CancellationToken ct)
@@ -863,6 +925,7 @@ namespace PadForge.Services
                 return r;
             }
             bool isNav = dev.Value.Pid == NAV_PID;
+            _lastCeremonyWasNav = isNav;
             bool zcm2 = dev.Value.Pid == MOVE_ZCM2_USB_PID;
             _log($"{(isNav ? "Navigation controller" : zcm2 ? "PS Move (ZCM2)" : "PS Move (ZCM1)")} on USB: {dev.Value.DataPath}");
 

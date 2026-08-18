@@ -1712,6 +1712,35 @@ namespace PadForge.Common.Input
                     int devPlayerNumber = SettingsManager.SlotOrders.GetIdentityPlayerNumber(ud.InstanceGuid);
                     if (devPlayerNumber <= 0) devPlayerNumber = playerNumber;
 
+                    // PS Move sphere (#277): the sphere is the Move's lightbar.
+                    // Same per-device lighting config, same shared color core
+                    // as the DS4/DS5 paths (static / breathing / palette /
+                    // audio / battery / input-reactive all ride through),
+                    // delivered via the Move service's writer instead of a
+                    // HID effect packet. The service is the pad's sole writer.
+                    if (ud.VendorId == SonyVid && ud.ProdId == 0x03D5)
+                    {
+                        DeviceSlotConfig moveCfg = null;
+                        if (perDeviceCfgs != null
+                            && perDeviceCfgs.TryGetValue(ud.InstanceGuid, out var resolvedMove))
+                            moveCfg = resolvedMove;
+                        moveCfg ??= cfg;
+                        if (moveCfg != null && ud.Device is PadForge.Engine.SdlDeviceWrapper moveWrap)
+                        {
+                            float movePeak = Math.Clamp(
+                                rawAudioPeak * (float)moveCfg.AudioLightbarSensitivity, 0f, 1f);
+                            var moveState = _deviceStates.TryGetValue(ud.InstanceGuid, out var mds) ? mds : null;
+                            uint movePulse = moveState?.PulseColor ?? 0;
+                            float movePulseIntensity = ComputePulseIntensity(nowMs, moveCfg);
+                            var power = Common.Input.PsMoveDirectService.GetPowerInfo(moveWrap.SdlInstanceId);
+                            byte movePct = (byte)Math.Clamp(power?.Percent ?? 100, 0, 100);
+                            var sphere = Ds5EffectSynthesizer.ComputeLightbarColorPublic(
+                                moveCfg, movePeak, nowMs, _randomColor, movePulse, movePulseIntensity, movePct);
+                            Common.Input.PsMoveDirectService.TrySetLed(moveWrap.SdlInstanceId, sphere.r, sphere.g, sphere.b);
+                        }
+                        continue;
+                    }
+
                     // Per-device shadow of the external-mirror override struct.
                     // Each device may receive its own dispatcher-injected
                     // overrides (e.g. impulse-trigger → AT Vibration auto-route

@@ -273,6 +273,28 @@ namespace PadForge.Common.Input
             };
         }
 
+        /// <summary>Sphere color from the slot lighting dispatcher (#277): the
+        /// Move's lightbar analog, computed by the same per-device color core
+        /// the DS4/DS5 paths share and delivered through this service's writer
+        /// (its own sole writer). Claims the sphere away from the player-color
+        /// idle floor.</summary>
+        public static bool TrySetLed(uint sdlInstanceId, byte r, byte g, byte b)
+        {
+            var svc = _current;
+            if (svc == null || !svc.IsConnected || svc.InstanceId != sdlInstanceId) return false;
+            bool changed = false;
+            lock (svc._outLock)
+            {
+                svc._ledExplicit = true;
+                if (svc._r != r || svc._g != g || svc._b != b)
+                {
+                    svc._r = r; svc._g = g; svc._b = b; svc._outDirty = true; changed = true;
+                }
+            }
+            if (changed) svc._writeSignal.Set();
+            return true;
+        }
+
         public static bool TrySetPlayerNumber(uint sdlInstanceId, int oneBasedNumber)
         {
             var svc = _current;
@@ -295,6 +317,7 @@ namespace PadForge.Common.Input
             if (changed) _writeSignal.Set();
         }
 
+        private uint _lastButtonsWord;
         private byte _lastBattery = 0xFF;
 
         private void UpdateBattery(byte status)
@@ -1104,6 +1127,15 @@ namespace PadForge.Common.Input
             if (j == IntPtr.Zero) return;
 
             uint buttons = DecodeButtons(b[2], b[3], b[4], b[5]);
+            if (buttons != _lastButtonsWord)
+            {
+                _lastButtonsWord = buttons;
+                // Raw bytes on every change: the Move button's bit is decode-
+                // locked against psmove.h but was dead on the bench, and this
+                // line convicts the actual bit in one press (b1..b4 = report
+                // bytes 1-4).
+                _log($"MOVEBTN b1={b[2]:X2} b2={b[3]:X2} b3={b[4]:X2} b4={b[5]:X2} word={buttons:X6}");
+            }
             string magLine = null, calLine = null;
 
             SDL.SDL_LockJoysticks();

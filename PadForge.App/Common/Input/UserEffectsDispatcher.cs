@@ -1668,6 +1668,66 @@ namespace PadForge.Common.Input
                         Engine.SdlDiagLog.WriteLine("DISPATCH re-arm (device returned) guid="
                             + ud.InstanceGuid.ToString("N").Substring(0, 8));
                     }
+                    // PS Move sphere (#277): the sphere is the Move's lightbar.
+                    // Same per-device lighting config, same shared color core
+                    // as the DS4/DS5 paths (static / breathing / palette /
+                    // audio / battery / input-reactive all ride through),
+                    // delivered via the Move service's writer instead of a
+                    // HID effect packet. The service is the pad's sole writer.
+                    if (ud.VendorId == SonyVid && ud.ProdId == 0x03D5)
+                    {
+                        DeviceSlotConfig moveCfg = null;
+                        if (perDeviceCfgs != null
+                            && perDeviceCfgs.TryGetValue(ud.InstanceGuid, out var resolvedMove))
+                            moveCfg = resolvedMove;
+                        moveCfg ??= cfg;
+                        if (moveCfg != null && ud.Device is PadForge.Engine.SdlDeviceWrapper moveWrap)
+                        {
+                            if (moveCfg.LightbarMode == LightbarMode.PlayerNumber)
+                            {
+                                // PlayerNumber's color authority is the
+                                // service's identity floor (the shared core
+                                // returns black for this mode; DS4/DS5 apply
+                                // identity outside it too). Release any claim
+                                // so the floor resumes.
+                                bool released = Common.Input.PsMoveDirectService.ReleaseLedClaim(moveWrap.SdlInstanceId);
+                                int floorSig = unchecked((int)0x7F000000) | (released ? 1 : 0);
+                                if (floorSig != _lastMoveSphereSig)
+                                {
+                                    _lastMoveSphereSig = floorSig;
+                                    PadForge.Engine.SdlDiagLog.WriteLine(
+                                        $"MOVELIGHT slot={_padIndex} mode=PlayerNumber floor released={released}");
+                                }
+                            }
+                            else
+                            {
+                                float movePeak = Math.Clamp(
+                                    rawAudioPeak * (float)moveCfg.AudioLightbarSensitivity, 0f, 1f);
+                                var moveState = _deviceStates.TryGetValue(ud.InstanceGuid, out var mds) ? mds : null;
+                                uint movePulse = moveState?.PulseColor ?? 0;
+                                float movePulseIntensity = ComputePulseIntensity(nowMs, moveCfg);
+                                var power = Common.Input.PsMoveDirectService.GetPowerInfo(moveWrap.SdlInstanceId);
+                                byte movePct = (byte)Math.Clamp(power?.Percent ?? 100, 0, 100);
+                                var sphere = Ds5EffectSynthesizer.ComputeLightbarColorPublic(
+                                    moveCfg, movePeak, nowMs, _randomColor, movePulse, movePulseIntensity, movePct);
+                                bool sphereOk = Common.Input.PsMoveDirectService.TrySetLed(
+                                    moveWrap.SdlInstanceId, sphere.r, sphere.g, sphere.b);
+                                // Change-gated evidence line: mode, computed
+                                // color, and whether the write was accepted.
+                                int sphereSig = (sphere.r << 16) | (sphere.g << 8) | sphere.b
+                                    | ((int)moveCfg.LightbarMode << 24) | (sphereOk ? 1 << 30 : 0);
+                                if (sphereSig != _lastMoveSphereSig)
+                                {
+                                    _lastMoveSphereSig = sphereSig;
+                                    PadForge.Engine.SdlDiagLog.WriteLine(
+                                        $"MOVELIGHT slot={_padIndex} mode={moveCfg.LightbarMode} "
+                                        + $"rgb={sphere.r:X2}{sphere.g:X2}{sphere.b:X2} setOk={sphereOk}");
+                                }
+                            }
+                        }
+                        continue;
+                    }
+
                     if (!isPs) continue;
 
                     // Single-writer ownership (owner facts, 2026-07-20):
@@ -1714,46 +1774,6 @@ namespace PadForge.Common.Input
                     int devPlayerNumber = SettingsManager.SlotOrders.GetIdentityPlayerNumber(ud.InstanceGuid);
                     if (devPlayerNumber <= 0) devPlayerNumber = playerNumber;
 
-                    // PS Move sphere (#277): the sphere is the Move's lightbar.
-                    // Same per-device lighting config, same shared color core
-                    // as the DS4/DS5 paths (static / breathing / palette /
-                    // audio / battery / input-reactive all ride through),
-                    // delivered via the Move service's writer instead of a
-                    // HID effect packet. The service is the pad's sole writer.
-                    if (ud.VendorId == SonyVid && ud.ProdId == 0x03D5)
-                    {
-                        DeviceSlotConfig moveCfg = null;
-                        if (perDeviceCfgs != null
-                            && perDeviceCfgs.TryGetValue(ud.InstanceGuid, out var resolvedMove))
-                            moveCfg = resolvedMove;
-                        moveCfg ??= cfg;
-                        if (moveCfg != null && ud.Device is PadForge.Engine.SdlDeviceWrapper moveWrap)
-                        {
-                            float movePeak = Math.Clamp(
-                                rawAudioPeak * (float)moveCfg.AudioLightbarSensitivity, 0f, 1f);
-                            var moveState = _deviceStates.TryGetValue(ud.InstanceGuid, out var mds) ? mds : null;
-                            uint movePulse = moveState?.PulseColor ?? 0;
-                            float movePulseIntensity = ComputePulseIntensity(nowMs, moveCfg);
-                            var power = Common.Input.PsMoveDirectService.GetPowerInfo(moveWrap.SdlInstanceId);
-                            byte movePct = (byte)Math.Clamp(power?.Percent ?? 100, 0, 100);
-                            var sphere = Ds5EffectSynthesizer.ComputeLightbarColorPublic(
-                                moveCfg, movePeak, nowMs, _randomColor, movePulse, movePulseIntensity, movePct);
-                            bool sphereOk = Common.Input.PsMoveDirectService.TrySetLed(
-                                moveWrap.SdlInstanceId, sphere.r, sphere.g, sphere.b);
-                            // Change-gated evidence line: mode, computed color,
-                            // and whether the service accepted the write.
-                            int sphereSig = (sphere.r << 16) | (sphere.g << 8) | sphere.b
-                                | ((int)moveCfg.LightbarMode << 24) | (sphereOk ? 1 << 30 : 0);
-                            if (sphereSig != _lastMoveSphereSig)
-                            {
-                                _lastMoveSphereSig = sphereSig;
-                                PadForge.Engine.SdlDiagLog.WriteLine(
-                                    $"MOVELIGHT slot={_padIndex} mode={moveCfg.LightbarMode} "
-                                    + $"rgb={sphere.r:X2}{sphere.g:X2}{sphere.b:X2} setOk={sphereOk}");
-                            }
-                        }
-                        continue;
-                    }
 
                     // Per-device shadow of the external-mirror override struct.
                     // Each device may receive its own dispatcher-injected

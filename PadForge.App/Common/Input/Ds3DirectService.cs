@@ -310,6 +310,8 @@ namespace PadForge.Common.Input
         // attaches and tears down a virtual controller on every iteration: a
         // reporter's log caught five full cycles inside 3 ms (#285, 2026-08-15).
         // Back off when a session does not last, and reset as soon as one does.
+        private bool _outWriteFailLogged;
+
         private const int MinHealthySessionMs = 400;
         private const int FlapBackoffFirstMs = 125;
         private const int FlapBackoffMaxMs = 2000;
@@ -329,6 +331,7 @@ namespace PadForge.Common.Input
                 if (!OpenUsb() && !OpenBluetooth()) { Thread.Sleep(500); continue; }
 
                 lock (_outLock) { _everGotInput = false; _outDirty = true; }
+                _outWriteFailLogged = false;
 
                 // Re-check the unpair gate now that the handles are published: a
                 // SuppressAndRelease that fired between the loop-top check and the
@@ -569,7 +572,16 @@ namespace PadForge.Common.Input
                     byte[] en = { 0x53, 0xF4, 0x42, 0x03, 0x00, 0x00 };
                     IntPtr h; lock (_outLock) h = _writePdo;
                     if (h != IntPtr.Zero && h != INVALID_HANDLE)
-                        DeviceIoControl(h, IOCTL_HID_CONTROL_WRITE, en, en.Length, null, 0, out _, IntPtr.Zero);
+                    {
+                        bool ok = DeviceIoControl(h, IOCTL_HID_CONTROL_WRITE, en, en.Length, null, 0, out _, IntPtr.Zero);
+                        // Logged only while the pad has not streamed yet
+                        // (at most the five kicks), so a healthy session
+                        // costs one line and a silent one names the half
+                        // that failed: the write, or the pad's answer.
+                        if (!_everGotInput)
+                            _log("DS3(BT): enable write " + (ok ? "ok"
+                                : $"FAILED err={Marshal.GetLastWin32Error()}"));
+                    }
                 }
             }
         }
@@ -610,7 +622,12 @@ namespace PadForge.Common.Input
                 }
                 else if (h != IntPtr.Zero && h != INVALID_HANDLE)
                 {
-                    DeviceIoControl(h, IOCTL_HID_CONTROL_WRITE, o, o.Length, null, 0, out _, IntPtr.Zero);
+                    bool ok = DeviceIoControl(h, IOCTL_HID_CONTROL_WRITE, o, o.Length, null, 0, out _, IntPtr.Zero);
+                    if (!ok && !_outWriteFailLogged)
+                    {
+                        _outWriteFailLogged = true;
+                        _log($"DS3(BT): output write FAILED err={Marshal.GetLastWin32Error()} (logged once per session)");
+                    }
                 }
             }
         }
@@ -640,8 +657,20 @@ namespace PadForge.Common.Input
             // detach lowers it before cancelling, and a pad that streams only
             // non-input frames (0xFF wake reports) keeps this loop cycling
             // between reads where a bare CancelIoEx can miss.
+            int rxWake = 0, rxOther = 0, rxFails = 0, rxLastErr = 0;
+            long rxNextSummary = Environment.TickCount64 + 1000;
             while (_running && _writerRun)
             {
+                // Until the first real input frame, say once a second what
+                // the interrupt channel is actually delivering. A pad that
+                // opens and never streams (#285) was indistinguishable from
+                // a dead channel, a wake-frame loop, and a failing read.
+                if (!_everGotInput && Environment.TickCount64 >= rxNextSummary)
+                {
+                    rxNextSummary = Environment.TickCount64 + 1000;
+                    _log($"DS3(BT): rx pre-input summary wake={rxWake} other={rxOther} fails={rxFails}"
+                        + (rxFails > 0 ? $" lastErr={rxLastErr}" : ""));
+                }
                 if (DeviceIoControl(h, IOCTL_HID_INTERRUPT_READ, null, 0, buf, buf.Length, out int rd, IntPtr.Zero))
                 {
                     // Full 50-byte frames only (BthPS3 completes reads at exactly the
@@ -655,11 +684,15 @@ namespace PadForge.Common.Input
                         PushState(buf, rd);
                         UpdateBattery(buf[31]);   // raw[30] BatteryStatus
                     }
-                    // Non-input traffic on the interrupt channel: ignore, read again.
+                    // Non-input traffic on the interrupt channel: counted
+                    // for the pre-input summary, then read again.
+                    else if (rd >= 3 && buf[0] == 0xA1 && buf[2] == 0xFF) rxWake++;
+                    else rxOther++;
                 }
                 else
                 {
                     int err = Marshal.GetLastWin32Error();
+                    rxFails++; rxLastErr = err;
                     if (err == ERROR_DEVICE_NOT_CONNECTED || err == ERROR_FILE_NOT_FOUND ||
                         err == ERROR_INVALID_HANDLE || err == ERROR_OPERATION_ABORTED)
                         break;

@@ -487,6 +487,14 @@ namespace PadForge.Services
             // (#277): the PS3 pairs by cable plug-in and PadForge follows.
             // Background thread: the ceremony cycles the radio and takes
             // seconds; the monitor thread that raises this must not stall.
+            // The mint's persistence hook: an immediate save on the UI thread
+            // (SaveSettings walks UI-owned state).
+            PadForge.Common.Input.PsMoveDirectService.PersistRequested = () =>
+                _dispatcher.BeginInvoke(new Action(() =>
+                {
+                    try { _settingsService?.Save(); } catch { }
+                }));
+
             PadForge.Common.Input.PsMoveDirectService.DockObserved = (mac, storedHost) =>
                 System.Threading.Tasks.Task.Run(() =>
                 {

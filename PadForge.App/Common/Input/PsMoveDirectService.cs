@@ -410,6 +410,31 @@ namespace PadForge.Common.Input
         /// (2026-08-18: record 48f07bed1049 carried no PadForge identity).</summary>
         public static Action<string, byte[]> DockObserved;
 
+        /// <summary>Wired by the App layer to an immediate settings save. The
+        /// minted Devices row lives only in memory until a save lands, and the
+        /// deploy loop's taskkill /F means "save on exit" never runs on the
+        /// bench; the 2026-08-18 log showed a minted row (DEV +/-) that was
+        /// absent from the next PadForge.xml write.</summary>
+        public static Action PersistRequested;
+
+        /// <summary>True when the Devices list already carries the Move's row
+        /// (by the family VID/PID, online or offline).</summary>
+        public static bool DeviceRowExists()
+        {
+            try
+            {
+                var devices = SettingsManager.UserDevices;
+                if (devices == null) return false;
+                lock (devices.SyncRoot)
+                {
+                    foreach (var d in devices.Items)
+                        if (d != null && d.VendorId == MOVE_VID && d.ProdId == MOVE_PID) return true;
+                }
+            }
+            catch { }
+            return false;
+        }
+
         /// <summary>USB handling per model, per the moveonpc reference ("HID
         /// reports": input report 0x01 is BT-only on the ZCM1; the ZCM2 page
         /// carries no such restriction and psmoveapi polls it over USB):
@@ -594,11 +619,17 @@ namespace PadForge.Common.Input
                     Marshal.FreeHGlobal(namePtr);
                 }
                 if (id == 0) { log?.Invoke("Move identity mint: attach failed."); return; }
-                // Long enough for the 1000 Hz device walk to ingest and
-                // persist the row; the detach then leaves it offline.
+                // Long enough for the 1000 Hz device walk to ingest the row;
+                // the detach then leaves it offline.
                 Thread.Sleep(2500);
                 SDL.SDL_DetachVirtualJoystick(id);
-                log?.Invoke("Move registered in the device list (offline until it connects).");
+                Thread.Sleep(500);   // let the walk process the removal into offline state
+                // Persist NOW: a row that lives only in memory is a row the
+                // next process never sees.
+                try { PersistRequested?.Invoke(); } catch { }
+                log?.Invoke(DeviceRowExists()
+                    ? "Move registered in the device list (offline until it connects)."
+                    : "Move identity mint DID NOT SURVIVE ingestion: the row is already gone from the device list.");
             }
             catch (Exception ex) { log?.Invoke("Move identity mint failed: " + ex.Message); }
         }

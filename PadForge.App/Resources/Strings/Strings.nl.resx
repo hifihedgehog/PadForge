@@ -2430,6 +2430,10 @@
   <data name="Tour_Status_Body" xml:space="preserve"><value>Aantal apparaten, pollingsnelheid en de engine-vlam, altijd in beeld.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>Instrumentenbalk</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
+  <data name="About_OpenVRDesc" xml:space="preserve"><value>Valves OpenVR-client-API (BSD 3-Clause): VR-headsets en motion-controllers als invoerbronnen. De native runtime wordt geladen vanuit uw eigen SteamVR-installatie.</value></data>
+  <data name="Vr_Status_Running" xml:space="preserve"><value>Actief</value></data>
+  <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>Actief, stuurprogramma verbonden</value></data>
+  <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>Actief, controllers live</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
   <data name="MovePair_Instructions" xml:space="preserve"><value>Sluit de PS Move- of Navigation-controller aan met een USB-kabel en klik op Koppelen. PadForge schrijft deze pc in de controller, slaat de bewegingskalibratie van de Move op en registreert hem. Koppel daarna de controller los en druk op de PS-knop om via Bluetooth te verbinden.</value></data>
   <data name="MovePair_NoUsb" xml:space="preserve"><value>Geen PS Move- of Navigation-controller gevonden via USB. Sluit hem aan met een USB-kabel en probeer het opnieuw.</value></data>

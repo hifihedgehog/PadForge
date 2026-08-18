@@ -41,6 +41,40 @@ namespace PadForge.Common.Input
 
         public VirtualControllerType Type => VirtualControllerType.Vr;
         public bool IsConnected => _connected;
+
+        /// <summary>Live VR-slot instances, for the global driver-status
+        /// tiering (#287): the SDK's DriverConnected / ControllersLive were
+        /// exposed and unconsumed, so the UI could only ever say SteamVR was
+        /// installed. Registered on connect, removed on disconnect.</summary>
+        private static readonly System.Collections.Generic.HashSet<HMaestroVRController> s_live = new();
+        private static readonly object s_liveLock = new();
+
+        /// <summary>Aggregate status across live VR slots: whether any
+        /// slot's OpenVR driver is connected in SteamVR, and whether any
+        /// slot's virtual hands are live. Passive shared-memory reads.</summary>
+        public static (bool DriverConnected, bool ControllersLive) GlobalDriverStatus()
+        {
+            HMaestroVRController[] snapshot;
+            lock (s_liveLock)
+            {
+                if (s_live.Count == 0) return (false, false);
+                snapshot = new HMaestroVRController[s_live.Count];
+                s_live.CopyTo(snapshot);
+            }
+            bool drv = false, live = false;
+            foreach (var c in snapshot)
+            {
+                var vr = c._vr;
+                if (vr == null) continue;
+                try
+                {
+                    if (vr.DriverConnected) drv = true;
+                    if (vr.ControllersLive) live = true;
+                }
+                catch { /* passive probe */ }
+            }
+            return (drv, live);
+        }
         public int FeedbackPadIndex { get; set; }
 
         /// <summary>True when SteamVR itself is present. Without SteamVR the
@@ -98,12 +132,14 @@ namespace PadForge.Common.Input
             vr.HapticReceived += OnHapticReceived;
             _vr = vr;
             _connected = true;
+            lock (s_liveLock) s_live.Add(this);
         }
 
         public void Disconnect()
         {
             if (!_connected) return;
             _connected = false;
+            lock (s_liveLock) s_live.Remove(this);
 
             var vr = _vr;
             _vr = null;

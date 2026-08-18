@@ -2642,6 +2642,10 @@
   <data name="WiiPair_NoBluetooth" xml:space="preserve"><value>No Bluetooth radio found. Connect a Bluetooth adapter and try again.</value></data>
   <data name="WiiPair_Done" xml:space="preserve"><value>Done</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
+  <data name="About_OpenVRDesc" xml:space="preserve"><value>Valve’s OpenVR client API (BSD 3-Clause): VR headsets and motion controllers as input sources. The native runtime is loaded from your own SteamVR installation.</value></data>
+  <data name="Vr_Status_Running" xml:space="preserve"><value>Running</value></data>
+  <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>Running, driver connected</value></data>
+  <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>Running, controllers live</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
   <data name="MovePair_Instructions" xml:space="preserve"><value>Connect the PS Move or Navigation controller with a USB cable, then click Pair. PadForge writes this PC into the controller, saves the Move's motion calibration, and registers it. When it finishes, unplug the controller and press its PS button to connect over Bluetooth.</value></data>
   <data name="MovePair_NoUsb" xml:space="preserve"><value>No PS Move or Navigation controller found on USB. Connect it with a USB cable and try again.</value></data>

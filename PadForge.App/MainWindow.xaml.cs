@@ -8064,6 +8064,14 @@ namespace PadForge
             bool steamVr = PadForge.Common.Input.HMaestroVRController.IsAvailable();
             _viewModel.Dashboard.IsSteamVrInstalled = steamVr;
             _viewModel.Settings.IsSteamVrInstalled = steamVr;
+            // Status tiers past "installed" (#287): the background consumer
+            // knows whether SteamVR is running, and the VR slots' SDK pipes
+            // know whether the driver and the virtual hands are live.
+            _viewModel.Dashboard.IsSteamVrRunning =
+                PadForge.Common.Input.OpenVrConsumerService.ServerConnected;
+            var (vrDrv, vrLive) = PadForge.Common.Input.HMaestroVRController.GlobalDriverStatus();
+            _viewModel.Dashboard.IsVrDriverConnected = vrDrv;
+            _viewModel.Dashboard.AreVrControllersLive = vrLive;
             // Ownership (the Steam-free shape PadForge created) gates the
             // uninstall button; a Steam-client install never reads as owned.
             try { _viewModel.Settings.IsSteamVrOwned = DriverInstaller.GetOwnedSteamVrDir() != null; }

@@ -93,6 +93,15 @@ BthPS3 + BthPS3PSM
   demand for DualShock 3 Bluetooth support.
   Licensed under the BSD 3-Clause License (full text at the end of this file)
 
+OpenVR API
+  https://github.com/ValveSoftware/openvr
+  Copyright (c) 2015, Valve Corporation
+  C# client binding (openvr_api.cs) compiled into PadForge for consuming
+  VR headsets and motion controllers as input sources (#287). The native
+  openvr_api.dll is not distributed; it is loaded from the user's own
+  SteamVR installation.
+  Licensed under the BSD 3-Clause License (full text at the end of this file)
+
 DsHidMini
   https://github.com/nefarius/DsHidMini
   Copyright (c) 2020-2025, Benjamin Höglinger-Stelzer

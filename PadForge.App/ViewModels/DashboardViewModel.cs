@@ -238,9 +238,57 @@ namespace PadForge.ViewModels
             }
         }
 
+        private bool _isSteamVrRunning;
+
+        /// <summary>Whether the background VR consumer is connected to a
+        /// running SteamVR (#287).</summary>
+        public bool IsSteamVrRunning
+        {
+            get => _isSteamVrRunning;
+            set
+            {
+                if (SetProperty(ref _isSteamVrRunning, value))
+                    OnPropertyChanged(nameof(SteamVrStatusText));
+            }
+        }
+
+        private bool _isVrDriverConnected;
+
+        /// <summary>Whether any VR slot's OpenVR driver is connected in
+        /// SteamVR (the SDK's DriverConnected, consumed at last, #287).</summary>
+        public bool IsVrDriverConnected
+        {
+            get => _isVrDriverConnected;
+            set
+            {
+                if (SetProperty(ref _isVrDriverConnected, value))
+                    OnPropertyChanged(nameof(SteamVrStatusText));
+            }
+        }
+
+        private bool _areVrControllersLive;
+
+        /// <summary>Whether any VR slot's virtual hands are registered and
+        /// live in SteamVR (the SDK's ControllersLive, #287).</summary>
+        public bool AreVrControllersLive
+        {
+            get => _areVrControllersLive;
+            set
+            {
+                if (SetProperty(ref _areVrControllersLive, value))
+                    OnPropertyChanged(nameof(SteamVrStatusText));
+            }
+        }
+
         /// <summary>Display text for the SteamVR row in the driver-status
-        /// card.</summary>
-        public string SteamVrStatusText => IsSteamVrInstalled ? Strings.Instance.Common_Installed : Strings.Instance.Common_NotInstalled;
+        /// card. Tiered (#287): the deepest true state wins, so the row can
+        /// finally say more than "installed".</summary>
+        public string SteamVrStatusText =>
+            !IsSteamVrInstalled ? Strings.Instance.Common_NotInstalled
+            : AreVrControllersLive ? Strings.Instance.Vr_Status_ControllersLive
+            : IsVrDriverConnected ? Strings.Instance.Vr_Status_DriverConnected
+            : IsSteamVrRunning ? Strings.Instance.Vr_Status_Running
+            : Strings.Instance.Common_Installed;
 
         // ─────────────────────────────────────────────
         //  DSU Motion Server

@@ -868,6 +868,17 @@ namespace PadForge.Common.Input
                 }
                 catch (Exception ex) { Engine.SdlDiagLog.WriteLine("SpaceMouse service start failed: " + ex.Message); }
 
+                // Real VR hardware as input sources (#287): headset pose and
+                // tracked controllers through a background OpenVR client.
+                // Cheap when absent: a 5 s registry-file poll until SteamVR
+                // exists and runs; never launches SteamVR itself.
+                try
+                {
+                    _openVrConsumer = new OpenVrConsumerService(msg => Engine.SdlDiagLog.WriteLine("VR " + msg));
+                    _openVrConsumer.Start();
+                }
+                catch (Exception ex) { Engine.SdlDiagLog.WriteLine("VR consumer start failed: " + ex.Message); }
+
                 return true;
             }
             catch (DllNotFoundException ex)
@@ -903,6 +914,9 @@ namespace PadForge.Common.Input
             try { _spaceMouse?.Stop(); } catch { }
             _spaceMouse = null;
 
+            try { _openVrConsumer?.Stop(); } catch { }
+            _openVrConsumer = null;
+
             SDL_Quit();
             _sdlInitialized = false;
         }
@@ -918,6 +932,9 @@ namespace PadForge.Common.Input
 
         /// <summary>3Dconnexion SpaceMouse -> SDL virtual joystick bridge (#288).</summary>
         private SpaceMouseService _spaceMouse;
+
+        /// <summary>Real VR devices -> SDL virtual joystick bridge (#287).</summary>
+        private OpenVrConsumerService _openVrConsumer;
 
         private long _ds3PlayerNumberTick;
 

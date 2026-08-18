@@ -611,6 +611,7 @@ PadForge stands on these projects. Please consider supporting them directly.
 |---|---|---|
 | [x360ce](https://github.com/x360ce/x360ce) | Original codebase this fork started from | MIT |
 | [SDL3](https://github.com/libsdl-org/SDL) | Controller input: joystick, gamepad, and sensor enumeration | zlib |
+| [OpenVR](https://github.com/ValveSoftware/openvr) | VR headset pose and motion controllers as input sources (C# binding; the native runtime comes from your SteamVR) | BSD 3-Clause |
 | [HIDMaestro](https://github.com/hifihedgehog/HIDMaestro) | User-mode UMDF2 virtual HID controller engine with 225+ device profiles | MIT |
 | [OpenXInput](https://github.com/hifihedgehog/OpenXinput) | Drop-in `xinput1_4.dll` replacement that filters PadForge's own virtual controllers from its own XInput view | upstream trademark disclaimer |
 | [Handheld Companion](https://github.com/Valkirie/HandheldCompanion) | 3D controller OBJ meshes (Xbox 360, Xbox One, DualShock 4, DualSense) | CC BY-NC-SA 4.0 |

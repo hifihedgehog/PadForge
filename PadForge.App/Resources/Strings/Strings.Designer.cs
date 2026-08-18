@@ -697,6 +697,10 @@ public class Strings : INotifyPropertyChanged
     public string WiiPair_NoBluetooth => Get("WiiPair_NoBluetooth");
     public string WiiPair_Done => Get("WiiPair_Done");
     public string WiiPair_FamilyDs3 => Get("WiiPair_FamilyDs3");
+    public string About_OpenVRDesc => Get("About_OpenVRDesc");
+    public string Vr_Status_Running => Get("Vr_Status_Running");
+    public string Vr_Status_DriverConnected => Get("Vr_Status_DriverConnected");
+    public string Vr_Status_ControllersLive => Get("Vr_Status_ControllersLive");
     public string MovePair_Family => Get("MovePair_Family");
     public string MovePair_Instructions => Get("MovePair_Instructions");
     public string MovePair_NoUsb => Get("MovePair_NoUsb");

@@ -2410,6 +2410,10 @@
   <data name="Tour_Status_Body" xml:space="preserve"><value>Le nombre d'appareils, la fréquence d'interrogation et la flamme du moteur, toujours visibles.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>Barre d'instruments</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
+  <data name="About_OpenVRDesc" xml:space="preserve"><value>API client OpenVR de Valve (BSD 3-Clause) : casques et manettes de mouvement VR comme sources d’entrée. Le runtime natif est chargé depuis votre installation SteamVR.</value></data>
+  <data name="Vr_Status_Running" xml:space="preserve"><value>En cours d’exécution</value></data>
+  <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>En cours d’exécution, pilote connecté</value></data>
+  <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>En cours d’exécution, manettes actives</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
   <data name="MovePair_Instructions" xml:space="preserve"><value>Connectez la manette PS Move ou Navigation avec un câble USB, puis cliquez sur Appairer. PadForge inscrit ce PC dans la manette, enregistre l’étalonnage de mouvement du Move et l’enregistre. Une fois terminé, débranchez la manette et appuyez sur son bouton PS pour la connecter en Bluetooth.</value></data>
   <data name="MovePair_NoUsb" xml:space="preserve"><value>Aucune manette PS Move ou Navigation trouvée en USB. Connectez-la avec un câble USB et réessayez.</value></data>

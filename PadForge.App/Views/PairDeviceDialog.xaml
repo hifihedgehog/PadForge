@@ -75,6 +75,7 @@
                           SelectionChanged="Family_SelectionChanged">
                     <ComboBoxItem Content="{Binding WiiPair_FamilyWii, Source={x:Static strings:Strings.Instance}}"/>
                     <ComboBoxItem Content="{Binding WiiPair_FamilyDs3, Source={x:Static strings:Strings.Instance}}"/>
+                    <ComboBoxItem Content="{Binding MovePair_Family, Source={x:Static strings:Strings.Instance}}"/>
                 </ComboBox>
             </StackPanel>
 

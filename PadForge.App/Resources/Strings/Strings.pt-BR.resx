@@ -2404,6 +2404,9 @@
   <data name="Tour_Status_Body" xml:space="preserve"><value>Contagem de dispositivos, taxa de polling e a chama do motor, sempre à vista.</value></data>
   <data name="Tour_Status_Title" xml:space="preserve"><value>Linha de instrumentos</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
+  <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
+  <data name="MovePair_Instructions" xml:space="preserve"><value>Conecte o controle PS Move ou Navigation com um cabo USB e clique em Parear. O PadForge grava este PC no controle, salva a calibração de movimento do Move e o registra. Ao terminar, desconecte o controle e pressione o botão PS para conectar via Bluetooth.</value></data>
+  <data name="MovePair_NoUsb" xml:space="preserve"><value>Nenhum controle PS Move ou Navigation encontrado no USB. Conecte-o com um cabo USB e tente novamente.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Clonar Dispositivo 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Mapeia cada eixo, botão e chapéu do dispositivo selecionado diretamente para a saída virtual de mesmo número. Dimensiona o layout ao dispositivo e substitui as linhas deste dispositivo no slot por uma passagem direta 1:1.</value></data>
   <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>Clonar Dispositivo 1:1</value></data>

@@ -36,12 +36,32 @@ namespace PadForge.Common.Input
         private static readonly Guid BthPs3Interface =
             new Guid(0x968e1849, 0x73b1, 0x4876, 0xb8, 0x0a, 0xed, 0x6d, 0xd1, 0x71, 0x48, 0x9b);
 
+        // GUID_DEVINTERFACE_BTHPS3_NAVIGATION {3E53723A-440C-40AF-8895-EA439D75E7BE}
+        // (BthPS3.h:201-203): the Navigation controller's category-specific PDO
+        // interface, used by the navigation profile of this service (#277).
+        private static readonly Guid BthPs3NavigationInterface =
+            new Guid(0x3e53723a, 0x440c, 0x40af, 0x88, 0x95, 0xea, 0x43, 0x9d, 0x75, 0xe7, 0xbe);
+
         // IOCTLs on the raw PDO (BthPS3 common/include/BthPS3.h).
         private const uint IOCTL_HID_CONTROL_WRITE  = 0x2AA808;
         private const uint IOCTL_HID_INTERRUPT_READ = 0x2A680C;
 
         private const ushort DS3_VID = 0x054C;
         private const ushort DS3_PID = 0x0268;
+        private const ushort NAV_PID = 0x042F;   // BTHPS3_NAVIGATION_PID (BthPS3.h:48)
+
+        // Navigation-controller profile (#277). The Nav IS a half sixaxis over
+        // Bluetooth: hid-sony's NAVIGATION_CONTROLLER_BT branch calls the same
+        // sixaxis_set_operational_bt enable and sends the same sixaxis output
+        // report on the control endpoint (hid-sony.c:2189-2202), and its input
+        // report is the sixaxis 49-byte layout (hid-sony.c:1172). Everything in
+        // this service applies verbatim except: its own PDO interface + PID, no
+        // USB lane (the WinUSB INF binds only the DS3), no right-stick axes, no
+        // motion sensors, and a single status LED (hid-sony.c:1656-1661
+        // navigation_leds = LED1 only), so the player-number LED walk is skipped.
+        private readonly bool _nav;
+        private string Tag => _nav ? "NAV" : "DS3";
+        private ushort ProfilePid => _nav ? NAV_PID : DS3_PID;
 
         // BTHPS3_SIXAXIS_HID_INPUT_REPORT_SIZE (BthPS3.h:350). Must match exactly; see I/O model above.
         private const int DS3_BT_INPUT_REPORT_SIZE = 0x32;
@@ -149,7 +169,8 @@ namespace PadForge.Common.Input
         // under the other, which then re-grabbed the pad mid-ceremony.
         private static int _suppressDepth;
         private static bool _suppressReconnect => System.Threading.Volatile.Read(ref _suppressDepth) > 0;
-        private static volatile Ds3DirectService _current;
+        private static volatile Ds3DirectService _current;      // sixaxis profile
+        private static volatile Ds3DirectService _currentNav;   // navigation profile (#277)
 
         /// <summary>Detach any live DS3 now and block reconnect until the
         /// matching <see cref="AllowReconnect"/>. Nests: every call must be
@@ -159,6 +180,7 @@ namespace PadForge.Common.Input
         {
             System.Threading.Interlocked.Increment(ref _suppressDepth);
             _current?.CancelCurrentRead();
+            _currentNav?.CancelCurrentRead();
         }
 
         /// <summary>Test seam (InternalsVisibleTo PadForge.Tests): whether
@@ -196,7 +218,11 @@ namespace PadForge.Common.Input
             }
         }
 
-        public Ds3DirectService(Action<string> log = null) => _log = log ?? (_ => { });
+        public Ds3DirectService(Action<string> log = null, bool navigation = false)
+        {
+            _log = log ?? (_ => { });
+            _nav = navigation;
+        }
 
         public bool IsConnected => _sdlJoystick != IntPtr.Zero;
 
@@ -227,6 +253,9 @@ namespace PadForge.Common.Input
         public static string GetDevicePath(uint sdlInstanceId)
         {
             var svc = _current;
+            if (svc != null && svc.IsConnected && svc.InstanceId == sdlInstanceId)
+                return svc._transportPath;
+            svc = _currentNav;
             return (svc != null && svc.IsConnected && svc.InstanceId == sdlInstanceId)
                 ? svc._transportPath : null;
         }
@@ -237,9 +266,15 @@ namespace PadForge.Common.Input
         public static bool TrySetPlayerNumber(uint sdlInstanceId, int oneBasedNumber)
         {
             var svc = _current;
-            if (svc == null || !svc.IsConnected || svc.InstanceId != sdlInstanceId) return false;
-            svc.SetPlayerNumber(oneBasedNumber);
-            return true;
+            if (svc != null && svc.IsConnected && svc.InstanceId == sdlInstanceId)
+            {
+                svc.SetPlayerNumber(oneBasedNumber);
+                return true;
+            }
+            // The Navigation controller has one status LED (hid-sony.c:1656),
+            // so a matched Nav accepts the call and changes nothing.
+            svc = _currentNav;
+            return svc != null && svc.IsConnected && svc.InstanceId == sdlInstanceId;
         }
 
         private byte _lastBattery = 0xFF;
@@ -267,6 +302,7 @@ namespace PadForge.Common.Input
         /// keeps LED 1.</summary>
         public void SetPlayerNumber(int oneBasedNumber)
         {
+            if (_nav) return;   // single status LED (hid-sony.c:1656-1661); LED1 stays lit
             int zeroBased = oneBasedNumber <= 0 ? 0 : (oneBasedNumber - 1) % 4;
             byte mask = (byte)(0x01 << (1 + zeroBased));
             bool changed;
@@ -284,7 +320,7 @@ namespace PadForge.Common.Input
         {
             if (_running) return;
             _running = true;
-            _current = this;
+            if (_nav) _currentNav = this; else _current = this;
             _readThread = new Thread(MonitorLoop) { IsBackground = true, Name = "Ds3DirectRead" };
             _readThread.Start();
         }
@@ -293,6 +329,7 @@ namespace PadForge.Common.Input
         {
             _running = false;
             if (_current == this) _current = null;
+            if (_currentNav == this) _currentNav = null;
             _writeSignal.Set();
             lock (_outLock)
             {
@@ -339,7 +376,7 @@ namespace PadForge.Common.Input
                 if (_suppressReconnect) { Teardown(); Thread.Sleep(250); continue; }
 
                 string tag = _transport == Ds3Transport.Usb ? "USB" : "BT";
-                _log($"DS3({tag}): device opened, kicking + attaching virtual joystick...");
+                _log($"{Tag}({tag}): device opened, kicking + attaching virtual joystick...");
                 if (!AttachVirtual()) { Teardown(); Thread.Sleep(1000); continue; }
 
                 _writerRun = true;
@@ -347,7 +384,7 @@ namespace PadForge.Common.Input
                 _writeThread = new Thread(() => WriterLoop(writerGen)) { IsBackground = true, Name = "Ds3DirectWrite" };
                 _writeThread.Start();
 
-                _log($"DS3({tag}): virtual joystick attached; streaming.");
+                _log($"{Tag}({tag}): virtual joystick attached; streaming.");
                 ResetGyroTracking();
                 long sessionStart = Environment.TickCount64;
                 if (_transport == Ds3Transport.Usb) UsbReadLoop();
@@ -355,7 +392,7 @@ namespace PadForge.Common.Input
 
                 Teardown();
                 long sessionMs = Environment.TickCount64 - sessionStart;
-                _log($"DS3({tag}): disconnected after {sessionMs} ms; watching for reconnect.");
+                _log($"{Tag}({tag}): disconnected after {sessionMs} ms; watching for reconnect.");
 
                 // Stop() sets _running false and cancels the read; that exit is a
                 // short session by design and must not be slept on.
@@ -398,6 +435,7 @@ namespace PadForge.Common.Input
         /// user having gone through the pairing ceremony.</summary>
         private bool OpenUsb()
         {
+            if (_nav) return false;   // the WinUSB INF binds only the DS3 (#277)
             string path = FindWinUsbDs3();
             if (path == null)
             {
@@ -469,7 +507,7 @@ namespace PadForge.Common.Input
                 // Re-kick while silent (DsHidMini re-sends the enable after 1 s of no input).
                 if (!_everGotInput && kicks < 5 && now - lastKick >= 1000)
                 {
-                    _log($"DS3({(_transport == Ds3Transport.Usb ? "USB" : "BT")}): no input yet - re-kick #{kicks + 1}");
+                    _log($"{Tag}({(_transport == Ds3Transport.Usb ? "USB" : "BT")}): no input yet - re-kick #{kicks + 1}");
                     Kick(); kicks++; lastKick = now;
                     continue;
                 }
@@ -487,7 +525,7 @@ namespace PadForge.Common.Input
                 // a virtual joystick attached and no input behind it.
                 if (!_everGotInput && kicks >= 5 && now - lastKick >= 3000)
                 {
-                    _log($"DS3({(_transport == Ds3Transport.Usb ? "USB" : "BT")}): no input after {kicks} kicks - detaching for a clean re-open");
+                    _log($"{Tag}({(_transport == Ds3Transport.Usb ? "USB" : "BT")}): no input after {kicks} kicks - detaching for a clean re-open");
                     // Cancel the read, NOT the service. The read loop then
                     // returns, the monitor tears down and re-opens on its
                     // next pass, and the enable is retried on a fresh
@@ -579,7 +617,7 @@ namespace PadForge.Common.Input
                         // costs one line and a silent one names the half
                         // that failed: the write, or the pad's answer.
                         if (!_everGotInput)
-                            _log("DS3(BT): enable write " + (ok ? "ok"
+                            _log($"{Tag}(BT): enable write " + (ok ? "ok"
                                 : $"FAILED err={Marshal.GetLastWin32Error()}"));
                     }
                 }
@@ -626,7 +664,7 @@ namespace PadForge.Common.Input
                     if (!ok && !_outWriteFailLogged)
                     {
                         _outWriteFailLogged = true;
-                        _log($"DS3(BT): output write FAILED err={Marshal.GetLastWin32Error()} (logged once per session)");
+                        _log($"{Tag}(BT): output write FAILED err={Marshal.GetLastWin32Error()} (logged once per session)");
                     }
                 }
             }
@@ -668,7 +706,7 @@ namespace PadForge.Common.Input
                 if (!_everGotInput && Environment.TickCount64 >= rxNextSummary)
                 {
                     rxNextSummary = Environment.TickCount64 + 1000;
-                    _log($"DS3(BT): rx pre-input summary wake={rxWake} other={rxOther} fails={rxFails}"
+                    _log($"{Tag}(BT): rx pre-input summary wake={rxWake} other={rxOther} fails={rxFails}"
                         + (rxFails > 0 ? $" lastErr={rxLastErr}" : ""));
                 }
                 if (DeviceIoControl(h, IOCTL_HID_INTERRUPT_READ, null, 0, buf, buf.Length, out int rd, IntPtr.Zero))
@@ -775,7 +813,7 @@ namespace PadForge.Common.Input
             // has no path/serial). A per-transport name would give USB and Bluetooth
             // different identities, so a slot mapping made on one wouldn't survive a
             // switch to the other. One name = one identity for the physical pad.
-            var namePtr = Marshal.StringToHGlobalAnsi("DualShock 3");
+            var namePtr = Marshal.StringToHGlobalAnsi(_nav ? "PS Move Navigation Controller" : "DualShock 3");
             // Two sensors: accel + gyro at the DS3's ~100 Hz report rate. SDL deep-copies
             // this array during attach (SDL_virtualjoystick.c attach inner), so the
             // unmanaged copy only needs to live for the duration of the call.
@@ -795,7 +833,7 @@ namespace PadForge.Common.Input
                 {
                     type = (ushort)SDL.SDL_JoystickType.SDL_JOYSTICK_TYPE_GAMEPAD,
                     vendor_id = DS3_VID,
-                    product_id = DS3_PID,
+                    product_id = ProfilePid,
                     // 6 gamepad axes + the 10 button-pressure axes on 6-15, mirroring
                     // upstream SDL's PS3 driver (SDL_hidapi_ps3.c:486-516) so the #193
                     // HasExtraGenericAxes seam surfaces them as "Axis 6".."Axis 15"
@@ -803,10 +841,15 @@ namespace PadForge.Common.Input
                     naxes = 16,
                     nbuttons = 15,
                     nhats = 0,
-                    nsensors = (ushort)sensors.Length,
-                    sensors = sensorsPtr,
-                    button_mask = 0x7FFF, // bits 0-14 (SOUTH..DPAD_RIGHT)
-                    axis_mask = 0x3F,     // bits 0-5 (LX,LY,RX,RY,LT,RT)
+                    // The Navigation controller carries no motion sensors
+                    // (hid-sony registers sensors only for SIXAXIS_CONTROLLER,
+                    // hid-sony.c:2233/2254; its NAVIGATION branches do not).
+                    nsensors = _nav ? (ushort)0 : (ushort)sensors.Length,
+                    sensors = _nav ? IntPtr.Zero : sensorsPtr,
+                    // Nav surface per hid-sony navigation_mapping: Cross,
+                    // Circle, PS, L3, L1, dpad; left stick + L2 pressure only.
+                    button_mask = _nav ? 0x7AA3u : 0x7FFFu,
+                    axis_mask = _nav ? 0x13u : 0x3Fu,
                     name = namePtr,
                     Rumble = Marshal.GetFunctionPointerForDelegate(_rumbleCb),
                     SetLED = Marshal.GetFunctionPointerForDelegate(_setLedCb),
@@ -818,7 +861,7 @@ namespace PadForge.Common.Input
                 _instanceId = SDL.SDL_AttachVirtualJoystick(ref desc);
                 if (_instanceId == 0)
                 {
-                    _log($"DS3({(_transport == Ds3Transport.Usb ? "USB" : "BT")}): SDL_AttachVirtualJoystick failed.");
+                    _log($"{Tag}({(_transport == Ds3Transport.Usb ? "USB" : "BT")}): SDL_AttachVirtualJoystick failed.");
                     return false;
                 }
                 _sdlJoystick = SDL.SDL_OpenJoystick(_instanceId);
@@ -921,8 +964,14 @@ namespace PadForge.Common.Input
 
                 SDL.SDL_SetJoystickVirtualAxis(j, 0, AxisFromByte(b[7]));      // LX
                 SDL.SDL_SetJoystickVirtualAxis(j, 1, AxisFromByte(b[8]));      // LY
-                SDL.SDL_SetJoystickVirtualAxis(j, 2, AxisFromByte(b[9]));      // RX
-                SDL.SDL_SetJoystickVirtualAxis(j, 3, AxisFromByte(b[10]));     // RY
+                if (!_nav)
+                {
+                    // The Nav has no right stick and its report leaves those
+                    // bytes unpopulated; 0x00 would decode as full-corner
+                    // deflection, so the axes stay at rest instead.
+                    SDL.SDL_SetJoystickVirtualAxis(j, 2, AxisFromByte(b[9]));      // RX
+                    SDL.SDL_SetJoystickVirtualAxis(j, 3, AxisFromByte(b[10]));     // RY
+                }
                 SDL.SDL_SetJoystickVirtualAxis(j, 4, PressureAxis(b[19]));     // L2 pressure (raw[18])
                 SDL.SDL_SetJoystickVirtualAxis(j, 5, PressureAxis(b[20]));     // R2 pressure (raw[19])
 
@@ -948,7 +997,7 @@ namespace PadForge.Common.Input
                 // composed back through DsHidMini's transforms to raw byte order:
                 //   SDL accel = ( (ax-512), -(az-512), -(ay-512) ) / 113 * g
                 //   SDL gyro  = ( 0, -(gz-512) * (90/123) deg/s, 0 )   [genuine-anchored negation]
-                if (len >= DS3_BT_INPUT_REPORT_SIZE)
+                if (!_nav && len >= DS3_BT_INPUT_REPORT_SIZE)
                 {
                     int ax = (b[42] << 8) | b[43];
                     int ay = (b[44] << 8) | b[45];
@@ -1134,7 +1183,13 @@ namespace PadForge.Common.Input
 
         private string FindPdoPath()
         {
-            Guid g = BthPs3Interface;
+            // Sixaxis: the proven generic raw-PDO interface, tightened to the
+            // sixaxis PID (a Move or Navigation PDO also carries VID 054C, and
+            // the old any-054c match would have grabbed it as a DS3, #277).
+            // Navigation: its category-specific interface (BthPS3.h:201), with
+            // the same PID belt over the braces.
+            Guid g = _nav ? BthPs3NavigationInterface : BthPs3Interface;
+            string pidToken = _nav ? "pid_042f" : "pid_0268";
             IntPtr set = SetupDiGetClassDevs(ref g, IntPtr.Zero, IntPtr.Zero, DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
             if (set == INVALID_HANDLE) return null;
             var did = new SP_DEVICE_INTERFACE_DATA { cbSize = Marshal.SizeOf<SP_DEVICE_INTERFACE_DATA>() };
@@ -1151,8 +1206,8 @@ namespace PadForge.Common.Input
                         if (SetupDiGetDeviceInterfaceDetail(set, ref did, det, req, ref req, IntPtr.Zero))
                         {
                             string p = Marshal.PtrToStringUni(det + 4);
-                            // one DS3 for now; the PDO path carries VID_054C&PID_0268
-                            if (p != null && p.IndexOf("054c", StringComparison.OrdinalIgnoreCase) >= 0) return p;
+                            if (p != null && p.IndexOf("054c", StringComparison.OrdinalIgnoreCase) >= 0
+                                && p.IndexOf(pidToken, StringComparison.OrdinalIgnoreCase) >= 0) return p;
                         }
                     }
                     finally { Marshal.FreeHGlobal(det); }

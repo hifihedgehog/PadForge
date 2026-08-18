@@ -9894,6 +9894,12 @@ namespace PadForge.Services
                         {
                             PadForge.Common.Input.Ds3DirectService.TrySetPlayerNumber(source.SdlInstanceId, n);
                         }
+                        else if (source.VendorId == 0x054C && source.ProductId == 0x03D5)
+                        {
+                            // PS Move (#277): the sphere shows the player's
+                            // default color until an explicit LED write claims it.
+                            PadForge.Common.Input.PsMoveDirectService.TrySetPlayerNumber(source.SdlInstanceId, n);
+                        }
                         break;
                     }
 
@@ -10527,7 +10533,10 @@ namespace PadForge.Services
                         // in the SonyEffect body already, so they are excluded here.
                         bool nintendo = rpd.VendorId == 0x057E;
                         bool ds3 = rpd.VendorId == 0x054C && rpd.ProductId == 0x0268;
-                        if (nintendo || ds3)
+                        // PS Move (#277): the owner-side receive lane routes the
+                        // number into the sphere's default color.
+                        bool move = rpd.VendorId == 0x054C && rpd.ProductId == 0x03D5;
+                        if (nintendo || ds3 || move)
                             PadForge.Common.Input.RemoteLinkOutputRouter.ShipPlayerIndex(rpd.DevicePath, n);
                     }
                 }

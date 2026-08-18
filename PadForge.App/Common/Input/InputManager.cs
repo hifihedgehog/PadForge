@@ -813,14 +813,26 @@ namespace PadForge.Common.Input
                     _ds3Direct = new Ds3DirectService(msg => Engine.SdlDiagLog.WriteLine("DS3 " + msg));
                     _ds3Direct.Start();
 
-                    // Battery for the bridged DS3 (#167 lane): SDL has no power
-                    // channel for virtual joysticks, so the wrapper falls back to
-                    // this provider when SDL reports unknown.
-                    Engine.SdlDeviceWrapper.ExternalPowerInfoProvider = Ds3DirectService.GetPowerInfo;
+                    // PlayStation Move family over the same BthPS3 stack (#277):
+                    // the Navigation controller is a half sixaxis and rides the
+                    // DS3 service's navigation profile; the Move motion
+                    // controller gets its own protocol lane.
+                    _navDirect = new Ds3DirectService(msg => Engine.SdlDiagLog.WriteLine("NAV " + msg), navigation: true);
+                    _navDirect.Start();
+                    _psMoveDirect = new PsMoveDirectService(msg => Engine.SdlDiagLog.WriteLine("MOVE " + msg));
+                    _psMoveDirect.Start();
 
-                    // Real transport path for the bridged DS3 (Dossier path + BT/USB
-                    // classification): the virtual joystick has no SDL path of its own.
-                    Engine.SdlDeviceWrapper.ExternalDevicePathProvider = Ds3DirectService.GetDevicePath;
+                    // Battery for the bridged pads (#167 lane): SDL has no power
+                    // channel for virtual joysticks, so the wrapper falls back to
+                    // these providers when SDL reports unknown. The DS3 provider
+                    // covers both its profiles (shared instance-id map).
+                    Engine.SdlDeviceWrapper.ExternalPowerInfoProvider =
+                        id => Ds3DirectService.GetPowerInfo(id) ?? PsMoveDirectService.GetPowerInfo(id);
+
+                    // Real transport path for the bridged pads (Dossier path + BT/USB
+                    // classification): the virtual joysticks have no SDL path of their own.
+                    Engine.SdlDeviceWrapper.ExternalDevicePathProvider =
+                        id => Ds3DirectService.GetDevicePath(id) ?? PsMoveDirectService.GetDevicePath(id);
                 }
                 catch (Exception ex) { Engine.SdlDiagLog.WriteLine("DS3 service start failed: " + ex.Message); }
 
@@ -861,6 +873,12 @@ namespace PadForge.Common.Input
             try { _ds3Direct?.Stop(); } catch { }
             _ds3Direct = null;
 
+            try { _navDirect?.Stop(); } catch { }
+            _navDirect = null;
+
+            try { _psMoveDirect?.Stop(); } catch { }
+            _psMoveDirect = null;
+
             try { _spaceMouse?.Stop(); } catch { }
             _spaceMouse = null;
 
@@ -870,6 +888,12 @@ namespace PadForge.Common.Input
 
         /// <summary>Bluetooth DualShock 3 -> SDL virtual joystick bridge (BthPS3 raw PDO).</summary>
         private Ds3DirectService _ds3Direct;
+
+        /// <summary>PS Move Navigation controller bridge: the DS3 service's navigation profile (#277).</summary>
+        private Ds3DirectService _navDirect;
+
+        /// <summary>PS Move motion controller bridge (BthPS3 MOTION raw PDO, #277).</summary>
+        private PsMoveDirectService _psMoveDirect;
 
         /// <summary>3Dconnexion SpaceMouse -> SDL virtual joystick bridge (#288).</summary>
         private SpaceMouseService _spaceMouse;
@@ -916,6 +940,41 @@ namespace PadForge.Common.Input
             // Identity precedence: the shared fold over every slot the
             // pad feeds (smallest displayed number wins), same winner
             // every other identity writer computes.
+            svc.SetPlayerNumber(SettingsManager.SlotOrders.GetIdentityPlayerNumber(guid));
+        }
+
+        private long _movePlayerNumberTick;
+
+        /// <summary>The same idle floor for the bridged PS Move (#277): the
+        /// sphere shows the player's default color until an explicit LED write
+        /// claims it. Same 500 ms cadence and change-detected setter as the
+        /// DS3's walk.</summary>
+        private void UpdateMovePlayerNumber()
+        {
+            var svc = _psMoveDirect;
+            if (svc == null || !svc.IsConnected) return;
+
+            long now = Environment.TickCount64;
+            if (now - _movePlayerNumberTick < 500) return;
+            _movePlayerNumberTick = now;
+
+            var devices = SettingsManager.UserDevices;
+            if (devices == null) return;
+
+            uint id = svc.InstanceId;
+            Guid guid = Guid.Empty;
+            lock (devices.SyncRoot)
+            {
+                foreach (var ud in devices.Items)
+                {
+                    if (ud?.Device is Engine.SdlDeviceWrapper w && w.SdlInstanceId == id)
+                    {
+                        guid = ud.InstanceGuid;
+                        break;
+                    }
+                }
+            }
+            if (guid == Guid.Empty) { svc.SetPlayerNumber(0); return; }
             svc.SetPlayerNumber(SettingsManager.SlotOrders.GetIdentityPlayerNumber(guid));
         }
 
@@ -1488,6 +1547,7 @@ namespace PadForge.Common.Input
                         UpdateVirtualDevices();
                         RetrieveOutputStates();
                         UpdateDs3PlayerNumber();
+                        UpdateMovePlayerNumber();
                         // #236: publish the per-slot inbound-feedback packs
                         // for the rumble-to-audio renderer. Must follow
                         // UpdateVirtualDevices so a slot destroyed this

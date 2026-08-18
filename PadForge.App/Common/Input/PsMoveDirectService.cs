@@ -295,6 +295,20 @@ namespace PadForge.Common.Input
             return true;
         }
 
+        /// <summary>Returns the sphere to the player-color idle floor. The
+        /// lighting dispatcher calls this for PlayerNumber mode, whose color
+        /// authority is the identity floor (the shared color core returns
+        /// black for it; the DS4/DS5 paths apply identity elsewhere too).</summary>
+        public static bool ReleaseLedClaim(uint sdlInstanceId)
+        {
+            var svc = _current;
+            if (svc == null || !svc.IsConnected || svc.InstanceId != sdlInstanceId) return false;
+            lock (svc._outLock) { svc._ledExplicit = false; }
+            // The 500 ms player-number walk re-asserts the floor color on its
+            // next pass via SetPlayerNumber's change detection.
+            return true;
+        }
+
         public static bool TrySetPlayerNumber(uint sdlInstanceId, int oneBasedNumber)
         {
             var svc = _current;

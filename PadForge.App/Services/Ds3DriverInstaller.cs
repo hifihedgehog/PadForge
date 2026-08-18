@@ -1049,6 +1049,10 @@ namespace PadForge.Services
         /// can be in. Duplicates are impossible (a node has exactly one class) so the
         /// union needs no de-duplication.</summary>
         private static IEnumerable<string> FindDs3UsbNodes(bool presentOnly = true)
+            => FindSonyUsbNodes("PID_0268", presentOnly);
+
+        /// <summary>As above for any Sony PID (the Move family shares the lane, #277).</summary>
+        private static IEnumerable<string> FindSonyUsbNodes(string pidToken, bool presentOnly = true)
         {
             foreach (var cls in Ds3HostClasses)
             {
@@ -1056,13 +1060,29 @@ namespace PadForge.Services
                 try
                 {
                     if (!Devcon.FindInDeviceClassByHardwareId(
-                            cls, @"USB\VID_054C&PID_0268", out ids, presentOnly, false))
+                            cls, @"USB\VID_054C&" + pidToken, out ids, presentOnly, false))
                         continue;
                 }
                 catch { continue; }
                 if (ids == null) continue;
                 foreach (var id in ids) yield return id;
             }
+        }
+
+        /// <summary>Durable "a PS Move family device lives here" marker, the #265
+        /// devnode logic extended to the Move (ZCM1 0x03D5, ZCM2 0x0C5E) and the
+        /// Navigation controller (0x042F): their USB nodes persist as non-present
+        /// devnodes after the pairing plug-in, and the PSM-patch policy needs the
+        /// same protection for them that MachineHasDs3 gives the sixaxis (#277).</summary>
+        public static bool MachineHasMoveFamily()
+        {
+            try
+            {
+                return FindSonyUsbNodes("PID_03D5", presentOnly: false).Any()
+                    || FindSonyUsbNodes("PID_0C5E", presentOnly: false).Any()
+                    || FindSonyUsbNodes("PID_042F", presentOnly: false).Any();
+            }
+            catch { return false; }
         }
 
         /// <summary><para>True when this machine has EVER had a DualShock 3 docked.
@@ -1271,15 +1291,24 @@ namespace PadForge.Services
         /// SeTakeOwnership/SeRestore, both held by the elevated token.
         /// </summary>
         public static bool WriteRememberedDeviceRecord(byte[] radioMacBigEndian, string deviceMacHex, Action<string> log)
+            => WriteRememberedDeviceRecord(radioMacBigEndian, deviceMacHex, DS3_REMOTE_NAME, 0x0268, log);
+
+        /// <summary>Family-aware variant (#277): the stored Name is what BthPS3
+        /// matches the incoming connection against (its SupportedNames lists,
+        /// BthPS3.inf:111-115), so a Move must be remembered as "Motion
+        /// Controller" and a Navigation as "Navigation Controller" or the
+        /// profile driver routes it to the wrong category.</summary>
+        public static bool WriteRememberedDeviceRecord(byte[] radioMacBigEndian, string deviceMacHex,
+            string remoteName, int pid, Action<string> log)
         {
-            if (!WriteDeviceNameRecord(deviceMacHex, log)) return false;
+            if (!WriteDeviceNameRecord(deviceMacHex, remoteName, pid, log)) return false;
             if (!SetDeviceRecordOwnerToSystem(deviceMacHex, log)) return false;
             return WriteLinkKeyAnchor(radioMacBigEndian, deviceMacHex, log);
         }
 
         // Name/VID/PID via REG_OPTION_BACKUP_RESTORE, so a pre-existing SYSTEM-owned
         // record from an earlier pairing can still be overwritten by the elevated app.
-        private static bool WriteDeviceNameRecord(string deviceMacHex, Action<string> log)
+        private static bool WriteDeviceNameRecord(string deviceMacHex, string remoteName, int pid, Action<string> log)
         {
             EnablePrivilege("SeBackupPrivilege");
             EnablePrivilege("SeRestorePrivilege");
@@ -1288,12 +1317,12 @@ namespace PadForge.Services
             if (rc != 0) { log($"Opening the device record failed (rc={rc})."); return false; }
             try
             {
-                byte[] ascii = System.Text.Encoding.ASCII.GetBytes(DS3_REMOTE_NAME);
+                byte[] ascii = System.Text.Encoding.ASCII.GetBytes(remoteName);
                 byte[] name = new byte[ascii.Length + 1];
                 Array.Copy(ascii, name, ascii.Length);
                 RegSetValueEx(hk, "Name", 0, REG_BINARY, name, name.Length);
                 RegSetValueEx(hk, "VID", 0, REG_DWORD, BitConverter.GetBytes(0x054C), 4);
-                RegSetValueEx(hk, "PID", 0, REG_DWORD, BitConverter.GetBytes(0x0268), 4);
+                RegSetValueEx(hk, "PID", 0, REG_DWORD, BitConverter.GetBytes(pid), 4);
                 return true;
             }
             finally { RegCloseKey(hk); }

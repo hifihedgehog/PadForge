@@ -39,17 +39,21 @@ namespace PadForge.Views
             Closing += OnClosing;
         }
 
-        /// <summary>0 = Wii (inquiry scan), 1 = DualShock 3 (guided USB ceremony).</summary>
+        /// <summary>0 = Wii (inquiry scan), 1 = DualShock 3 (guided USB ceremony),
+        /// 2 = PS Move / Navigation (guided USB ceremony, #277).</summary>
         private bool IsDs3Family => FamilyCombo.SelectedIndex == 1;
+        private bool IsMoveFamily => FamilyCombo.SelectedIndex == 2;
 
         private void Family_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             if (InstructionsText == null) return; // fires once during InitializeComponent
             bool ds3 = IsDs3Family;
-            InstructionsText.Text = ds3 ? Strings.Instance.Ds3Pair_Instructions
+            bool move = IsMoveFamily;
+            InstructionsText.Text = move ? Strings.Instance.MovePair_Instructions
+                                  : ds3 ? Strings.Instance.Ds3Pair_Instructions
                                         : Strings.Instance.WiiPair_Instructions;
             // The "temporary pairing" and live found-list are Wii-only concepts.
-            TemporaryCheck.Visibility = ds3 ? Visibility.Collapsed : Visibility.Visible;
+            TemporaryCheck.Visibility = (ds3 || move) ? Visibility.Collapsed : Visibility.Visible;
             FoundPanel.Visibility = Visibility.Collapsed;
             SetStatus(string.Empty);
         }
@@ -58,6 +62,7 @@ namespace PadForge.Views
         {
             if (_scanning) return;
             if (IsDs3Family) { _ = PairDs3(); return; }
+            if (IsMoveFamily) { _ = PairDs3(moveFamily: true); return; }
             _ = PairWii();
         }
 
@@ -65,7 +70,7 @@ namespace PadForge.Views
         /// DualShock 3: run the USB pairing ceremony (sixpair + registry identity +
         /// radio cycle) on a background thread, streaming each step to the status line.
         /// </summary>
-        private async Task PairDs3()
+        private async Task PairDs3(bool moveFamily = false)
         {
             _scanning = true;
             _pairedAny = false;
@@ -84,7 +89,7 @@ namespace PadForge.Views
             string fault = null;
             try
             {
-                result = await Task.Run(() => svc.RunPairing(token));
+                result = await Task.Run(() => moveFamily ? svc.RunMovePairing(token) : svc.RunPairing(token));
             }
             catch (Exception ex)
             {
@@ -117,6 +122,7 @@ namespace PadForge.Views
                 // WinUSB bind, so the user never reaches the USB step.
                 string msg = fault ?? result?.Error switch
                 {
+                    "no-move-usb" => Strings.Instance.MovePair_NoUsb,
                     "no-ds3-usb" or "winusb-bind-failed" => Strings.Instance.Ds3Pair_NoUsb,
                     "install-failed" => Strings.Instance.Ds3Pair_InstallFailed,
                     "no-radio" => Strings.Instance.Ds3Pair_NoRadio,

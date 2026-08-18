@@ -36,6 +36,14 @@ namespace PadForge.Services
         public const ushort DS3_VID = 0x054C;
         public const ushort DS3_PID = 0x0268;
 
+        // PS Move family (#277). The BT PDO's category PIDs come from BthPS3.h
+        // (BTHPS3_MOTION_PID 0x03D5, BTHPS3_NAVIGATION_PID 0x042F); the ZCM2
+        // (PS4-era) Move enumerates on USB as 0x0C5E (psmove_private.h:58) but
+        // is remembered under the MOTION category like the ZCM1.
+        public const ushort MOVE_PID = 0x03D5;
+        public const ushort MOVE_ZCM2_USB_PID = 0x0C5E;
+        public const ushort NAV_PID = 0x042F;
+
         private readonly Action<string> _log;
         public Ds3PairingService(Action<string> log = null)
             => _log = msg => { LogLine(msg); log?.Invoke(msg); };
@@ -79,6 +87,45 @@ namespace PadForge.Services
             }
             catch { /* absent hive / access error => treat as none paired */ }
             return false;
+        }
+
+        /// <summary>True when any BthPS3-family device PadForge paired is on
+        /// record: DS3, PS Move, or Navigation (#277). The whole family
+        /// connects through BthPS3's patched PSMs, so the crash-safety policy
+        /// must keep patching armed for any of them.</summary>
+        public static bool AnyBthPs3FamilyPaired()
+        {
+            foreach (string mac in EnumeratePairedFamilyRecords(DS3_PID, MOVE_PID, NAV_PID))
+                return true;
+            return false;
+        }
+
+        /// <summary>BTHPORT device-record MACs whose VID is Sony and whose PID is
+        /// in the given set (the records PadForge's ceremonies write).</summary>
+        internal static System.Collections.Generic.IEnumerable<string> EnumeratePairedFamilyRecords(params int[] pids)
+        {
+            var macs = new System.Collections.Generic.List<string>();
+            try
+            {
+                using var root = Registry.LocalMachine.OpenSubKey(
+                    @"SYSTEM\CurrentControlSet\Services\BTHPORT\Parameters\Devices");
+                if (root != null)
+                {
+                    foreach (string mac in root.GetSubKeyNames())
+                    {
+                        try
+                        {
+                            using var sub = root.OpenSubKey(mac);
+                            if (sub?.GetValue("VID") is int vid && sub.GetValue("PID") is int pid
+                                && vid == DS3_VID && Array.IndexOf(pids, pid) >= 0)
+                                macs.Add(mac);
+                        }
+                        catch { /* skip records we can't read */ }
+                    }
+                }
+            }
+            catch { /* absent hive / access error => none */ }
+            return macs;
         }
 
         /// <summary>The pure PSM-patch policy (issue #199 crash safety +
@@ -139,8 +186,9 @@ namespace PadForge.Services
                 // AnyDs3Paired disarms patching on those machines and the pad
                 // silently stops connecting, so the durable devnode marker counts
                 // too.
-                bool paired = AnyDs3Paired();
-                bool hasNode = Ds3DriverInstaller.MachineHasDs3();
+                bool paired = AnyBthPs3FamilyPaired();
+                bool hasNode = Ds3DriverInstaller.MachineHasDs3()
+                            || Ds3DriverInstaller.MachineHasMoveFamily();
                 var (takeOwnership, wantPatching) = PsmPatchPolicy(dshm, paired, hasNode);
                 if (takeOwnership)
                     Ds3DriverInstaller.EnsurePadForgeOwnsPsmPatch();
@@ -747,6 +795,406 @@ namespace PadForge.Services
           finally { PadForge.Common.Input.Ds3DirectService.AllowReconnect(); }
         }
 
+        // ── PS Move / Navigation USB pairing ceremony (#277) ────────────────────
+        //
+        // The Move family pairs over plain inbox HID, the transport psmoveapi
+        // itself uses on Windows (hidapi -> HidD_*), so no WinUSB bind is
+        // needed. The Move's host-address reports are feature 0x04 (get) and
+        // 0x05 (set) with LITTLE-endian address bytes (psmove.c:944-963,
+        // 1104-1130); the Navigation speaks the DS3's own sixpair, feature
+        // 0xF2/0xF5 with big-endian bytes (sixad/sixpair.c:136 treats the Nav
+        // PID identically). On Windows the Move enumerates as three HID
+        // collections and only col02 answers the address reports
+        // (psmove.c psmove_connect_internal's _WIN32 quirk note).
+
+        /// <summary>Callback that persists a Move's USB calibration blob, keyed
+        /// by the pad MAC (lowercase hex, no separators). Wired by the App
+        /// layer into settings; the BT lane's CalibrationProvider reads it
+        /// back. psmoveapi's own architecture: the blob is only readable over
+        /// USB and is cached for Bluetooth sessions (psmove_calibration.c).</summary>
+        public static Action<string, byte[]> CalibrationStore;
+
+        /// <summary>Runs the full USB pairing ceremony for a PS Move or
+        /// Navigation controller docked over USB. Mirrors <see cref="RunPairing"/>'s
+        /// shape: sixpair analogue, remembered-device record, radio cycle, PSM
+        /// arm, child watch.</summary>
+        public PairResult RunMovePairing(CancellationToken ct = default)
+        {
+            var r = new PairResult();
+
+            if (!EnsureBthPs3Installed())
+            {
+                _log("BthPS3 driver install failed.");
+                r.Error = "install-failed";
+                return r;
+            }
+
+            // Release the runtime readers for the ceremony window; the finally
+            // re-arms them and reconciles PSM patching to the new reality.
+            PadForge.Common.Input.PsMoveDirectService.SuppressAndRelease();
+            PadForge.Common.Input.Ds3DirectService.SuppressAndRelease();
+            System.Threading.Thread.Sleep(300);
+            try
+            {
+                return RunMovePairingCore(r, ct);
+            }
+            finally
+            {
+                PadForge.Common.Input.PsMoveDirectService.AllowReconnect();
+                PadForge.Common.Input.Ds3DirectService.AllowReconnect();
+                ReconcilePsmPatchForCrashSafety("move-pair-end");
+            }
+        }
+
+        private PairResult RunMovePairingCore(PairResult r, CancellationToken ct)
+        {
+            byte[] radio = ReadRadioMac();
+            if (radio == null) { _log("No Bluetooth radio found."); r.Error = "no-radio"; return r; }
+            r.RadioMac = radio;
+            _log($"Bluetooth radio: {Hex(radio, ':')}");
+
+            if (ct.IsCancellationRequested) { r.Error = "cancelled"; return r; }
+
+            var dev = FindMoveFamilyHid();
+            if (dev == null)
+            {
+                _log("No PS Move or Navigation controller found on USB.");
+                r.Error = "no-move-usb";
+                return r;
+            }
+            bool isNav = dev.Value.Pid == NAV_PID;
+            bool zcm2 = dev.Value.Pid == MOVE_ZCM2_USB_PID;
+            _log($"{(isNav ? "Navigation controller" : zcm2 ? "PS Move (ZCM2)" : "PS Move (ZCM1)")} on USB: {dev.Value.DataPath}");
+
+            string macHex;
+            if (isNav)
+            {
+                if (!NavSixpair(dev.Value.DataPath, radio, out macHex, out string navErr))
+                { r.Error = navErr; return r; }
+            }
+            else
+            {
+                if (!MoveSixpair(dev.Value.AddrPath ?? dev.Value.DataPath, radio, out macHex, out string moveErr))
+                { r.Error = moveErr; return r; }
+
+                // Calibration capture rides the same dock (psmoveapi reads it
+                // over USB only). Failure is logged, never fatal: the pairing
+                // itself is complete, and the BT lane mutes motion with its
+                // own actionable log line until a later dock succeeds.
+                TryCaptureCalibration(dev.Value.DataPath, macHex, zcm2);
+            }
+            r.Ds3Mac = macHex;
+
+            if (ct.IsCancellationRequested) { r.Error = "cancelled"; return r; }
+
+            string remoteName = isNav ? "Navigation Controller" : "Motion Controller";
+            int recordPid = isNav ? NAV_PID : MOVE_PID;
+            lock (_radioGate)
+            {
+                if (!Ds3DriverInstaller.WriteRememberedDeviceRecord(radio, macHex, remoteName, recordPid, _log))
+                { _log("Registering the controller failed."); r.Error = "identity-inject-failed"; return r; }
+                _log("Controller registered with the Bluetooth stack.");
+                CycleRadio();
+            }
+
+            if (!Ds3DriverInstaller.WaitForPsmControlDevice(20000))
+            {
+                _log("The Bluetooth PSM filter did not return after the radio "
+                     + "cycle. Toggle Bluetooth off and on (or click Pair again); "
+                     + "the pairing itself is already written.");
+                ReconcilePsmPatchForCrashSafety("move-pair-filter-missing");
+                r.Error = "psm-filter-missing";
+                return r;
+            }
+            if (!ReconcilePsmPatchForCrashSafety("move-pair-armed"))
+            {
+                _log("The Bluetooth PSM filter came back but could not be "
+                     + "armed. Toggle Bluetooth off and on (or click Pair "
+                     + "again); the pairing itself is already written.");
+                r.Error = "psm-arm-failed";
+                return r;
+            }
+
+            _log($"Bluetooth radio cycled. Unplug the {(isNav ? "Navigation controller" : "PS Move")} and press its PS button.");
+
+            Ds3DriverInstaller.LogBthPs3ChildState(LogLine);
+            int binding = Ds3DriverInstaller.ProbeBthPs3ServiceBinding(out string bindDetail);
+            LogLine(binding == 1
+                ? $"BthPS3 service binding: BOUND ({bindDetail})."
+                : binding == 0
+                ? $"BthPS3 service binding: NOT BOUND ({bindDetail})."
+                : $"BthPS3 service binding: UNKNOWN ({bindDetail}).");
+            StartBthPs3ChildWatch(macHex);
+
+            r.Success = true;
+            r.Error = "ok";
+            return r;
+        }
+
+        /// <summary>The Move's sixpair analogue over the col02 HID collection:
+        /// feature 0x04 carries the controller address at bytes 1-6 and the
+        /// current host at 10-15, both LITTLE-endian (psmove.c:953-964); feature
+        /// 0x05 writes the new host at bytes 1-6, little-endian, in a 23-byte
+        /// report (psmove.c:64-69, 1104-1130). Read-before-write and read-back
+        /// mirror the DS3 ceremony's commit discipline.</summary>
+        private bool MoveSixpair(string path, byte[] radioBigEndian, out string macHex, out string error)
+        {
+            macHex = null; error = null;
+            IntPtr h = OpenHidPath(path);
+            if (h == INVALID_HANDLE) { _log($"Opening the Move failed (err={Marshal.GetLastWin32Error()})."); error = "no-move-usb"; return false; }
+            try
+            {
+                byte[] btg = new byte[16];
+                btg[0] = 0x04;
+                if (!HidD_GetFeature(h, btg, btg.Length))
+                {
+                    _log($"Reading the Move address failed (err={Marshal.GetLastWin32Error()}).");
+                    error = "sixpair-failed"; return false;
+                }
+                byte[] macBe = new byte[6];
+                for (int i = 0; i < 6; i++) macBe[i] = btg[6 - i];   // reverse LE -> big-endian
+                macHex = Hex(macBe, null).ToLowerInvariant();
+                _log($"Move address: {Hex(macBe, ':')}");
+                byte[] hostBefore = new byte[6];
+                for (int i = 0; i < 6; i++) hostBefore[i] = btg[15 - i];
+                _log($"Master before pairing: {Hex(hostBefore, ':')}");
+
+                byte[] bts = new byte[23];
+                bts[0] = 0x05;
+                for (int i = 0; i < 6; i++) bts[1 + i] = radioBigEndian[5 - i];   // little-endian on the wire
+                if (!HidD_SetFeature(h, bts, bts.Length))
+                {
+                    _log($"Writing the host address failed (err={Marshal.GetLastWin32Error()}).");
+                    error = "sixpair-failed"; return false;
+                }
+
+                byte[] back = new byte[16];
+                back[0] = 0x04;
+                if (HidD_GetFeature(h, back, back.Length))
+                {
+                    byte[] hostAfter = new byte[6];
+                    for (int i = 0; i < 6; i++) hostAfter[i] = back[15 - i];
+                    _log($"Master after pairing: {Hex(hostAfter, ':')}");
+                    if (!hostAfter.AsSpan().SequenceEqual(radioBigEndian))
+                    {
+                        _log($"WARNING: the Move did not store the radio address (wanted {Hex(radioBigEndian, ':')}).");
+                        error = "sixpair-not-committed"; return false;
+                    }
+                    _log("Host address written and confirmed.");
+                }
+                else
+                {
+                    _log("Host address written (the read-back failed; commit not confirmed).");
+                }
+                return true;
+            }
+            finally { CloseHandle(h); }
+        }
+
+        /// <summary>The Navigation controller's sixpair: identical to the DS3's
+        /// (sixad/sixpair.c:136 pairs the Nav PID through the same 0xF5 write),
+        /// but over inbox HID. HidD buffers carry the report id at byte 0 and
+        /// the payload from byte 1, one byte to the right of the raw control
+        /// transfer the WinUSB DS3 ceremony reads (MAC at raw 4-9, hid-sony.c
+        /// 2046-2066), so the MAC sits at 5-10 here; the raw offset is probed
+        /// as a fallback and the choice is logged.</summary>
+        private bool NavSixpair(string path, byte[] radioBigEndian, out string macHex, out string error)
+        {
+            macHex = null; error = null;
+            IntPtr h = OpenHidPath(path);
+            if (h == INVALID_HANDLE) { _log($"Opening the Navigation controller failed (err={Marshal.GetLastWin32Error()})."); error = "no-move-usb"; return false; }
+            try
+            {
+                byte[] f2 = new byte[18];
+                f2[0] = 0xF2;
+                if (!HidD_GetFeature(h, f2, f2.Length))
+                {
+                    _log($"Reading the Navigation controller address failed (err={Marshal.GetLastWin32Error()}).");
+                    error = "sixpair-failed"; return false;
+                }
+                static bool Plausible(byte[] b, int off)
+                {
+                    bool allZero = true, allFf = true;
+                    for (int i = 0; i < 6; i++) { if (b[off + i] != 0x00) allZero = false; if (b[off + i] != 0xFF) allFf = false; }
+                    return !allZero && !allFf;
+                }
+                int macOff = Plausible(f2, 5) ? 5 : 4;
+                byte[] mac = new byte[6];
+                Array.Copy(f2, macOff, mac, 0, 6);
+                if (!Plausible(f2, macOff))
+                {
+                    _log("The Navigation controller returned no usable address.");
+                    error = "sixpair-failed"; return false;
+                }
+                macHex = Hex(mac, null).ToLowerInvariant();
+                _log($"Navigation address: {Hex(mac, ':')} (offset {macOff}).");
+
+                byte[] set = new byte[9];
+                set[0] = 0xF5;
+                set[1] = 0x01;
+                Array.Copy(radioBigEndian, 0, set, 3, 6);
+                if (!HidD_SetFeature(h, set, set.Length))
+                {
+                    _log($"Sixpair write failed (err={Marshal.GetLastWin32Error()}).");
+                    error = "sixpair-failed"; return false;
+                }
+
+                byte[] back = new byte[9];
+                back[0] = 0xF5;
+                if (HidD_GetFeature(h, back, back.Length))
+                {
+                    // Master at payload bytes 2-7 (DS3 ceremony reads before[2..8]
+                    // on the raw transfer), so 3-8 with the HidD id byte.
+                    byte[] got = new byte[6];
+                    Array.Copy(back, 3, got, 0, 6);
+                    _log($"Master after sixpair: {Hex(got, ':')}");
+                    if (!got.AsSpan().SequenceEqual(radioBigEndian))
+                    {
+                        byte[] gotRaw = new byte[6];
+                        Array.Copy(back, 2, gotRaw, 0, 6);
+                        if (gotRaw.AsSpan().SequenceEqual(radioBigEndian))
+                            _log("Sixpair confirmed (raw-offset read-back).");
+                        else
+                        {
+                            _log($"WARNING: the controller did not store the radio address (wanted {Hex(radioBigEndian, ':')}).");
+                            error = "sixpair-not-committed"; return false;
+                        }
+                    }
+                    else _log("Sixpair written and confirmed.");
+                }
+                else
+                {
+                    _log("Sixpair written (this controller does not answer the 0xF5 read-back).");
+                }
+                return true;
+            }
+            finally { CloseHandle(h); }
+        }
+
+        /// <summary>Reads the Move's calibration blob over USB (feature 0x10,
+        /// 49-byte parts: three for ZCM1 stitched at block ids 0x00/0x01/0x82,
+        /// two for ZCM2 at 0x00/0x81, psmove.c:973-1077) and hands it to
+        /// <see cref="CalibrationStore"/>. Best-effort by design.</summary>
+        private void TryCaptureCalibration(string dataPath, string macHex, bool zcm2)
+        {
+            try
+            {
+                var sink = CalibrationStore;
+                if (sink == null) return;
+                IntPtr h = OpenHidPath(dataPath);
+                if (h == INVALID_HANDLE) { _log("Calibration read: open failed."); return; }
+                try
+                {
+                    int parts = zcm2 ? 2 : 3;
+                    int blobSize = zcm2 ? 96 : 143;   // 49*2-2 / 49*3-4 (psmove_private.h:87-93)
+                    byte[] blob = new byte[blobSize];
+                    var seen = new System.Collections.Generic.HashSet<int>();
+                    for (int attempt = 0; attempt < parts * 3 && seen.Count < parts; attempt++)
+                    {
+                        byte[] cal = new byte[49];
+                        cal[0] = 0x10;
+                        if (!HidD_GetFeature(h, cal, cal.Length)) { _log("Calibration read: feature 0x10 failed."); return; }
+                        int destOffset, srcOffset;
+                        switch (cal[1])
+                        {
+                            case 0x00: destOffset = 0; srcOffset = 0; break;
+                            case 0x01 when !zcm2: destOffset = 49; srcOffset = 2; break;
+                            case 0x82 when !zcm2: destOffset = 2 * 49 - 2; srcOffset = 2; break;
+                            case 0x81 when zcm2: destOffset = 49; srcOffset = 2; break;
+                            default: continue;
+                        }
+                        Array.Copy(cal, srcOffset, blob, destOffset, 49 - srcOffset);
+                        seen.Add(cal[1]);
+                    }
+                    if (seen.Count < parts) { _log($"Calibration read: only {seen.Count}/{parts} blocks answered."); return; }
+                    sink(macHex, blob);
+                    _log($"Calibration captured ({blob.Length} bytes) and stored for {macHex}.");
+                }
+                finally { CloseHandle(h); }
+            }
+            catch (Exception ex) { _log("Calibration read failed: " + ex.Message); }
+        }
+
+        /// <summary>Finds a docked Move-family controller on the inbox HID bus.
+        /// Returns the data path (col01 on multi-collection devices) plus the
+        /// col02 address path when present (the Windows quirk psmove.c
+        /// documents: only col02 answers the address feature reports).</summary>
+        private (string DataPath, string AddrPath, ushort Pid)? FindMoveFamilyHid()
+        {
+            HidD_GetHidGuid(out Guid hidGuid);
+            string dataPath = null, addrPath = null; ushort foundPid = 0;
+            IntPtr set = SetupDiGetClassDevs(ref hidGuid, IntPtr.Zero, IntPtr.Zero, DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
+            if (set == INVALID_HANDLE) return null;
+            var did = new SP_DEVICE_INTERFACE_DATA { cbSize = Marshal.SizeOf<SP_DEVICE_INTERFACE_DATA>() };
+            try
+            {
+                for (int i = 0; SetupDiEnumDeviceInterfaces(set, IntPtr.Zero, ref hidGuid, i, ref did); i++)
+                {
+                    int req = 0;
+                    SetupDiGetDeviceInterfaceDetail(set, ref did, IntPtr.Zero, 0, ref req, IntPtr.Zero);
+                    IntPtr det = Marshal.AllocHGlobal(req);
+                    try
+                    {
+                        Marshal.WriteInt32(det, IntPtr.Size == 8 ? 8 : 6);
+                        if (!SetupDiGetDeviceInterfaceDetail(set, ref did, det, req, ref req, IntPtr.Zero)) continue;
+                        string path = Marshal.PtrToStringUni(det + 4);
+                        if (path == null) continue;
+                        // Cheap pre-filter on the path before opening anything.
+                        if (path.IndexOf("vid_054c", StringComparison.OrdinalIgnoreCase) < 0) continue;
+                        ushort pid =
+                            path.IndexOf("pid_03d5", StringComparison.OrdinalIgnoreCase) >= 0 ? MOVE_PID :
+                            path.IndexOf("pid_0c5e", StringComparison.OrdinalIgnoreCase) >= 0 ? MOVE_ZCM2_USB_PID :
+                            path.IndexOf("pid_042f", StringComparison.OrdinalIgnoreCase) >= 0 ? NAV_PID : (ushort)0;
+                        if (pid == 0) continue;
+                        // Bluetooth HID instances of the same VID/PID must not be
+                        // grabbed; the ceremony wants the USB dock.
+                        if (path.IndexOf("bthenum", StringComparison.OrdinalIgnoreCase) >= 0) continue;
+                        if (foundPid != 0 && pid != foundPid) continue;
+                        foundPid = pid;
+                        if (path.IndexOf("col02", StringComparison.OrdinalIgnoreCase) >= 0) addrPath = path;
+                        else if (path.IndexOf("col01", StringComparison.OrdinalIgnoreCase) >= 0) dataPath = path;
+                        else dataPath ??= path;
+                    }
+                    finally { Marshal.FreeHGlobal(det); }
+                }
+            }
+            finally { SetupDiDestroyDeviceInfoList(set); }
+            return foundPid == 0 ? null : (dataPath ?? addrPath, addrPath, foundPid);
+        }
+
+        private static IntPtr OpenHidPath(string path)
+            => CreateFile(path, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_RW, IntPtr.Zero, OPEN_EXISTING, 0, IntPtr.Zero);
+
+        /// <summary>Clears the Bluetooth pairing for every Move-family record
+        /// PadForge wrote (Move + Navigation), the family sibling of
+        /// <see cref="UnpairAllDs3"/> with the same adopt-the-caller's-claim
+        /// suppression contract, but holding BOTH services' gates.</summary>
+        public int UnpairAllMoveFamily()
+        {
+            try
+            {
+                lock (_radioGate)
+                {
+                    byte[] radio = ReadRadioMac();
+                    var macs = new System.Collections.Generic.List<string>(
+                        EnumeratePairedFamilyRecords(MOVE_PID, NAV_PID));
+                    if (macs.Count == 0) return 0;
+                    if (radio != null)
+                        foreach (string mac in macs)
+                            Ds3DriverInstaller.DeleteRememberedDeviceRecord(radio, mac, _log);
+                    CycleRadio();
+                    _log($"Unpaired {macs.Count} PS Move family controller(s).");
+                    ReconcilePsmPatchForCrashSafety("move-unpair-all");
+                    return macs.Count;
+                }
+            }
+            finally
+            {
+                PadForge.Common.Input.PsMoveDirectService.AllowReconnect();
+                PadForge.Common.Input.Ds3DirectService.AllowReconnect();
+            }
+        }
+
         // ── local Bluetooth radio address (human/big-endian order per DsHidMini) ─
 
         /// <summary>The local radio's MAC in the byte order the DS3 expects (human /
@@ -918,6 +1366,10 @@ namespace PadForge.Services
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
         private struct WINUSB_SETUP_PACKET { public byte RequestType; public byte Request; public ushort Value; public ushort Index; public ushort Length; }
+        [DllImport("hid.dll")] private static extern void HidD_GetHidGuid(out Guid guid);
+        [DllImport("hid.dll", SetLastError = true)] private static extern bool HidD_GetFeature(IntPtr h, byte[] buf, int len);
+        [DllImport("hid.dll", SetLastError = true)] private static extern bool HidD_SetFeature(IntPtr h, byte[] buf, int len);
+
         [DllImport("winusb.dll", SetLastError = true)] private static extern bool WinUsb_Initialize(IntPtr dev, out IntPtr ifh);
         [DllImport("winusb.dll", SetLastError = true)] private static extern bool WinUsb_Free(IntPtr ifh);
         [DllImport("winusb.dll", SetLastError = true)]

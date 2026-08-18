@@ -187,10 +187,22 @@ namespace PadForge.Views
                     bool isDs3 =
                         device.VendorId == PadForge.Services.Ds3PairingService.DS3_VID &&
                         device.ProductId == PadForge.Services.Ds3PairingService.DS3_PID;
+                    // PS Move family (#277): the Move and Navigation controllers
+                    // live in the Bluetooth stack the same way the DS3 does, so
+                    // "forget" must clear their pairing too.
+                    bool isMoveFamily =
+                        device.VendorId == PadForge.Services.Ds3PairingService.DS3_VID &&
+                        (device.ProductId == PadForge.Services.Ds3PairingService.MOVE_PID ||
+                         device.ProductId == PadForge.Services.Ds3PairingService.NAV_PID);
 
-                    // Detach a live DS3 before pulling its row, so the still-connected
+                    // Detach a live pad before pulling its row, so the still-connected
                     // pad can't blip back into the list while its pairing is cleared.
                     if (isDs3) PadForge.Common.Input.Ds3DirectService.SuppressAndRelease();
+                    if (isMoveFamily)
+                    {
+                        PadForge.Common.Input.PsMoveDirectService.SuppressAndRelease();
+                        PadForge.Common.Input.Ds3DirectService.SuppressAndRelease();
+                    }
 
                     try
                     {
@@ -212,6 +224,13 @@ namespace PadForge.Views
                         {
                             System.Threading.Tasks.Task.Run(
                                 () => new PadForge.Services.Ds3PairingService().UnpairAllDs3());
+                        }
+                        else if (isMoveFamily)
+                        {
+                            // Adopts and releases BOTH suppress claims taken above
+                            // (UnpairAllMoveFamily's finally), mirroring the DS3 contract.
+                            System.Threading.Tasks.Task.Run(
+                                () => new PadForge.Services.Ds3PairingService().UnpairAllMoveFamily());
                         }
                     }
                 }

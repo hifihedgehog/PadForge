@@ -1948,6 +1948,11 @@ namespace PadForge.Services
                 appSettings.NfcTags?.Select(t => (t.Uid, t.Name, t.Button)));
             PadForge.Common.Input.VoicePhraseRegistry.LoadRegistry(
                 appSettings.VoicePhrases?.Select(v => (v.Phrase, v.Name, v.Button)));
+            // PS Move calibration blobs (#277): captured at pair time over USB,
+            // consumed by the Bluetooth lane for sensor scaling.
+            PadForge.Common.Input.PsMoveCalibrationRegistry.LoadRegistry(appSettings.PsMoveCalibrations);
+            PadForge.Services.Ds3PairingService.CalibrationStore =
+                PadForge.Common.Input.PsMoveCalibrationRegistry.Store;
             try
             {
                 var hidden = appSettings.MappingPickerHiddenDevices;
@@ -4069,6 +4074,7 @@ namespace PadForge.Services
                 SoundPackages = soundPackages,
                 NfcTags = nfcTags,
                 MappingPickerHiddenDevices = pickerHidden,
+                PsMoveCalibrations = PadForge.Common.Input.PsMoveCalibrationRegistry.SaveRegistry(),
                 VoicePhrases = voicePhrases,
                 VoiceMacrosEnabled = PadForge.Services.VoiceMacroService.Enabled,
                 VoiceMinConfidence = PadForge.Services.VoiceMacroService.MinConfidence,
@@ -5461,6 +5467,13 @@ namespace PadForge.Services
         [XmlArray("MappingPickerHiddenDevices")]
         [XmlArrayItem("Slot")]
         public string[] MappingPickerHiddenDevices { get; set; }
+
+        /// <summary>PS Move per-pad calibration blobs (#277): "mac=hex" entries
+        /// captured over USB at pair time, consumed by the Bluetooth lane for
+        /// sensor scaling (psmoveapi's cache-for-BT architecture).</summary>
+        [XmlArray("PsMoveCalibrations")]
+        [XmlArrayItem("Pad")]
+        public string[] PsMoveCalibrations { get; set; }
 
         /// <summary>Registered voice phrases (issue #317), exposed as
         /// buttons on the devices that carry the microphones.</summary>

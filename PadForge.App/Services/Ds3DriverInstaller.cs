@@ -1301,9 +1301,49 @@ namespace PadForge.Services
         public static bool WriteRememberedDeviceRecord(byte[] radioMacBigEndian, string deviceMacHex,
             string remoteName, int pid, Action<string> log)
         {
+            PurgeForeignDeviceRecord(radioMacBigEndian, deviceMacHex, log);
             if (!WriteDeviceNameRecord(deviceMacHex, remoteName, pid, log)) return false;
             if (!SetDeviceRecordOwnerToSystem(deviceMacHex, log)) return false;
             return WriteLinkKeyAnchor(radioMacBigEndian, deviceMacHex, log);
+        }
+
+        /// <summary>Deletes a pre-existing BTHPORT record for this address when
+        /// it is NOT one PadForge wrote (no VID value). bthport builds skeleton
+        /// records (FingerprintString, DynamicCachedServices) for devices it
+        /// has merely seen, and grafting our identity onto such a skeleton did
+        /// not survive the ceremony's radio cycle on the 2026-08-18 bench: the
+        /// reload pruned the whole record back to nothing while the proven DS3
+        /// ceremony always started clean. Write on a fresh key instead.</summary>
+        private static void PurgeForeignDeviceRecord(byte[] radioMacBigEndian, string deviceMacHex, Action<string> log)
+        {
+            try
+            {
+                using var sub = Registry.LocalMachine.OpenSubKey(BthPortDevicesKey + deviceMacHex);
+                if (sub == null) return;                     // no record: nothing to purge
+                if (sub.GetValue("VID") is int) return;      // ours (or a real pairing): keep
+                log?.Invoke("A foreign skeleton record exists for this address; clearing it before writing.");
+                DeleteRememberedDeviceRecord(radioMacBigEndian, deviceMacHex, log);
+            }
+            catch (Exception ex) { log?.Invoke("Skeleton record check failed: " + ex.Message); }
+        }
+
+        /// <summary>Post-cycle proof that the remembered-device record is still
+        /// on disk with PadForge's identity. The 2026-08-18 bench showed a
+        /// record that was written, confirmed, and then silently pruned by the
+        /// radio re-enumeration; every ceremony now measures instead of
+        /// assuming.</summary>
+        public static bool VerifyRememberedDeviceRecord(string deviceMacHex, Action<string> log)
+        {
+            try
+            {
+                using var sub = Registry.LocalMachine.OpenSubKey(BthPortDevicesKey + deviceMacHex);
+                bool ok = sub?.GetValue("VID") is int vid && vid == 0x054C && sub.GetValue("Name") != null;
+                log?.Invoke(ok
+                    ? "Device record verified after the radio cycle."
+                    : "Device record MISSING after the radio cycle: bthport pruned it. The pairing is incomplete.");
+                return ok;
+            }
+            catch (Exception ex) { log?.Invoke("Record verification failed: " + ex.Message); return false; }
         }
 
         // Name/VID/PID via REG_OPTION_BACKUP_RESTORE, so a pre-existing SYSTEM-owned

@@ -978,6 +978,14 @@ namespace PadForge.Services
                 return r;
             }
 
+            // Measure the record's survival: the 08-18 bench saw it written,
+            // confirmed, and then pruned by the cycle's re-enumeration.
+            if (!Ds3DriverInstaller.VerifyRememberedDeviceRecord(macHex, _log))
+            {
+                r.Error = "record-pruned";
+                return r;
+            }
+
             _log($"Bluetooth radio cycled. Unplug the {(isNav ? "Navigation controller" : "PS Move")} and press its PS button.");
 
             Ds3DriverInstaller.LogBthPs3ChildState(LogLine);

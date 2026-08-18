@@ -483,6 +483,21 @@ namespace PadForge.Services
             // Subscribe to Devices page selection changes for offline detail display.
             _mainVm.Devices.PropertyChanged += OnDevicesVmPropertyChanged;
 
+            // A docked PS Move auto-pairs when it is not paired to this PC
+            // (#277): the PS3 pairs by cable plug-in and PadForge follows.
+            // Background thread: the ceremony cycles the radio and takes
+            // seconds; the monitor thread that raises this must not stall.
+            PadForge.Common.Input.PsMoveDirectService.DockObserved = (mac, storedHost) =>
+                System.Threading.Tasks.Task.Run(() =>
+                {
+                    try
+                    {
+                        new Ds3PairingService(msg => PadForge.Engine.SdlDiagLog.WriteLine("MOVEPAIR " + msg))
+                            .AutoPairMoveIfNeeded(mac, storedHost);
+                    }
+                    catch { /* the dock hook must never break the monitor */ }
+                });
+
             // Remote Link peer-manager actions (issue #138).
             _mainVm.Settings.PeerRevokeRequested += OnPeerRevokeRequested;
             _mainVm.Settings.PeerRevokeAllRequested += OnPeerRevokeAllRequested;

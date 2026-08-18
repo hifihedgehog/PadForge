@@ -214,6 +214,31 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void AutoPair_FiresOnlyWhenTheDockActuallyNeedsIt()
+        {
+            byte[] radio = { 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF };
+            byte[] same = { 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF };
+            byte[] other = { 0x11, 0x22, 0x33, 0x44, 0x55, 0x66 };
+
+            // No PadForge record: pair, whatever the pad says (the PS3's own
+            // plug-in-pairs behavior).
+            Assert.True(PadForge.Services.Ds3PairingService.ShouldAutoPairMove(false, same, radio));
+            Assert.True(PadForge.Services.Ds3PairingService.ShouldAutoPairMove(false, null, radio));
+
+            // Recorded here and the pad targets this radio: charging only,
+            // never a routine radio cycle.
+            Assert.False(PadForge.Services.Ds3PairingService.ShouldAutoPairMove(true, same, radio));
+
+            // Recorded here but the pad was re-paired elsewhere: pair again.
+            Assert.True(PadForge.Services.Ds3PairingService.ShouldAutoPairMove(true, other, radio));
+
+            // Recorded here but the pad's stored host is unreadable: leave it
+            // alone rather than cycling the radio on a guess.
+            Assert.False(PadForge.Services.Ds3PairingService.ShouldAutoPairMove(true, null, radio));
+            Assert.False(PadForge.Services.Ds3PairingService.ShouldAutoPairMove(true, same, null));
+        }
+
+        [Fact]
         public void SphereColors_FollowThePlayerPaletteAndWrap()
         {
             Assert.Equal(PsMoveDirectService.DefaultSphereColor(1), PsMoveDirectService.DefaultSphereColor(5));

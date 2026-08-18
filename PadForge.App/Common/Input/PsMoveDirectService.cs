@@ -401,6 +401,15 @@ namespace PadForge.Common.Input
         // leaves so the next dock re-captures.
         private string _lastDockedPath;
 
+        /// <summary>Raised once per dock event with the pad's MAC (lowercase
+        /// hex, null when the col02 address read failed) and the host address
+        /// currently stored IN the pad (big-endian, null when unknown). The
+        /// App layer wires this to the auto-pair decision: Sony's own console
+        /// pairs a Move by cable plug-in, and requiring a dialog step instead
+        /// left a bench pad docked, calibrated, and paired to nothing
+        /// (2026-08-18: record 48f07bed1049 carried no PadForge identity).</summary>
+        public static Action<string, byte[]> DockObserved;
+
         /// <summary>USB handling per model, per the moveonpc reference ("HID
         /// reports": input report 0x01 is BT-only on the ZCM1; the ZCM2 page
         /// carries no such restriction and psmoveapi polls it over USB):
@@ -420,16 +429,17 @@ namespace PadForge.Common.Input
                 if (_lastDockedPath != found.Value.DataPath)
                 {
                     _lastDockedPath = found.Value.DataPath;
+                    string mac = null; byte[] storedHost = null;
                     IntPtr dh = CreateFile(found.Value.DataPath, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_RW, IntPtr.Zero, OPEN_EXISTING, 0, IntPtr.Zero);
                     if (dh != INVALID_HANDLE)
                     {
-                        try { TryUsbCalibration(dh, found.Value.AddrPath, zcm2: false); }
+                        try { (mac, storedHost) = TryUsbCalibration(dh, found.Value.AddrPath, zcm2: false); }
                         finally { CloseHandle(dh); }
                     }
                     _log("MOVE(USB): PS Move docked. This model streams input over Bluetooth only "
-                        + "(moveonpc: input report 0x01 is BT-only on the ZCM1); the dock charges the "
-                        + "pad and captures its motion calibration. Pair it from Devices > Pair Device, "
-                        + "then unplug and press its PS button.");
+                        + "(moveonpc: input report 0x01 is BT-only on the ZCM1); the dock charges "
+                        + "the pad and captures its motion calibration.");
+                    try { DockObserved?.Invoke(mac, storedHost); } catch { }
                 }
                 return false;
             }
@@ -462,16 +472,17 @@ namespace PadForge.Common.Input
             return true;
         }
 
-        /// <summary>Reads the pad MAC (feature 0x04 on col02, little-endian at
-        /// bytes 1-6, psmove.c:953-957) and the calibration blob (feature 0x10
-        /// parts, psmove.c:973-1077) directly on this dock, so a Move paired by
-        /// an external tool still gets calibrated motion the first time it is
-        /// plugged in. Stored once per pad; the session uses it either way.</summary>
-        private void TryUsbCalibration(IntPtr dataHandle, string addrPath, bool zcm2)
+        /// <summary>Reads the pad MAC and its stored host address (feature 0x04
+        /// on col02: controller little-endian at bytes 1-6, host at 10-15,
+        /// psmove.c:953-964) and the calibration blob (feature 0x10 parts,
+        /// psmove.c:973-1077) directly on this dock, so a Move paired by an
+        /// external tool still gets calibrated motion the first time it is
+        /// plugged in. Returns what it learned for the auto-pair decision.</summary>
+        private (string Mac, byte[] StoredHostBigEndian) TryUsbCalibration(IntPtr dataHandle, string addrPath, bool zcm2)
         {
+            string mac = null; byte[] storedHost = null;
             try
             {
-                string mac = null;
                 if (addrPath != null)
                 {
                     IntPtr ah = CreateFile(addrPath, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_RW, IntPtr.Zero, OPEN_EXISTING, 0, IntPtr.Zero);
@@ -486,6 +497,8 @@ namespace PadForge.Common.Input
                                 var macBe = new byte[6];
                                 for (int i = 0; i < 6; i++) macBe[i] = btg[6 - i];
                                 mac = Convert.ToHexString(macBe).ToLowerInvariant();
+                                storedHost = new byte[6];
+                                for (int i = 0; i < 6; i++) storedHost[i] = btg[15 - i];
                             }
                         }
                         finally { CloseHandle(ah); }
@@ -527,6 +540,67 @@ namespace PadForge.Common.Input
                     _log("MOVE(USB): no calibration available; motion stays muted this session.");
             }
             catch (Exception ex) { _log("MOVE(USB): calibration read failed: " + ex.Message); }
+            return (mac, storedHost);
+        }
+
+        /// <summary>Attaches the Move's virtual joystick for a moment and
+        /// detaches it again, so the pad exists as an (offline) row in the
+        /// Devices list the instant pairing succeeds, before its first
+        /// Bluetooth connection. Without this a paired-but-never-connected
+        /// Move had no row at all, so nothing to Remove (the 2026-08-18 bench
+        /// gap). Identity is safe: SDL folds vid/pid/name into the virtual
+        /// GUID, so this mint and the later live pad are the same device to
+        /// PadForge. Skipped when a live session already owns the identity.</summary>
+        public static void MintIdentityRow(Action<string> log = null)
+        {
+            try
+            {
+                var svc = _current;
+                if (svc != null && svc.IsConnected) return;   // a live row already exists
+
+                var namePtr = Marshal.StringToHGlobalAnsi("PS Move Motion Controller");
+                var sensors = new SDL.SDL_VirtualJoystickSensorDesc[]
+                {
+                    new SDL.SDL_VirtualJoystickSensorDesc { type = SDL_SENSOR_ACCEL, rate = 170.0f },
+                    new SDL.SDL_VirtualJoystickSensorDesc { type = SDL_SENSOR_GYRO,  rate = 170.0f },
+                };
+                int sensorSize = Marshal.SizeOf<SDL.SDL_VirtualJoystickSensorDesc>();
+                IntPtr sensorsPtr = Marshal.AllocHGlobal(sensorSize * sensors.Length);
+                uint id = 0;
+                try
+                {
+                    for (int i = 0; i < sensors.Length; i++)
+                        Marshal.StructureToPtr(sensors[i], sensorsPtr + i * sensorSize, false);
+                    var desc = new SDL.SDL_VirtualJoystickDesc
+                    {
+                        type = (ushort)SDL.SDL_JoystickType.SDL_JOYSTICK_TYPE_GAMEPAD,
+                        vendor_id = MOVE_VID,
+                        product_id = MOVE_PID,
+                        naxes = 6,
+                        nbuttons = 15,
+                        nhats = 0,
+                        nsensors = (ushort)sensors.Length,
+                        sensors = sensorsPtr,
+                        button_mask = 0x027F,
+                        axis_mask = 0x3F,
+                        name = namePtr,
+                    };
+                    desc.version = (uint)Marshal.SizeOf<SDL.SDL_VirtualJoystickDesc>();
+                    id = SDL.SDL_AttachVirtualJoystick(ref desc);
+                }
+                finally
+                {
+                    Marshal.FreeHGlobal(sensorsPtr);
+                    Marshal.FreeHGlobal(namePtr);
+                }
+                if (id == 0) { log?.Invoke("Move identity mint: attach failed."); return; }
+                // Long enough for the 1000 Hz device walk to ingest and
+                // persist the row; the detach then leaves it offline.
+                Thread.Sleep(2500);
+                SDL.SDL_DetachVirtualJoystick(id);
+                log?.Invoke("Move registered in the device list (offline until it connects).");
+            }
+            catch (Exception ex) { log?.Invoke("Move identity mint failed: " + ex.Message); }
         }
 
         /// <summary>Finds a docked Move's HID collections: the col01 data path

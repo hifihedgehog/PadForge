@@ -856,6 +856,19 @@ namespace PadForge.Services
                     // got saved is gone next session). Re-mint on sight.
                     if (!PadForge.Common.Input.PsMoveDirectService.DeviceRowExists())
                         PadForge.Common.Input.PsMoveDirectService.MintIdentityRow(_log);
+                    // A paired pad can still be refused by BthPS3's category
+                    // gate (IsMOTIONSupported ships 0). Heal it here too, with
+                    // the cycle the reload needs, so a pad paired before this
+                    // fix starts connecting without a re-pair.
+                    if (Ds3DriverInstaller.EnsureMoveFamilySupportEnabled(_log))
+                    {
+                        lock (_radioGate)
+                        {
+                            CycleRadio();
+                            ReconcilePsmPatchForCrashSafety("move-gate-heal");
+                        }
+                        _log("Bluetooth restarted to load Move support. Unplug the pad and press its PS button.");
+                    }
                     return;
                 }
                 _log($"Move dock: {macHex} is not paired to this PC - pairing now (this briefly restarts Bluetooth).");
@@ -959,6 +972,9 @@ namespace PadForge.Services
             int recordPid = isNav ? NAV_PID : MOVE_PID;
             lock (_radioGate)
             {
+                // BthPS3 refuses Motion connections while its category gate is
+                // closed (IsMOTIONSupported ships 0); the cycle below reloads it.
+                Ds3DriverInstaller.EnsureMoveFamilySupportEnabled(_log);
                 if (!Ds3DriverInstaller.WriteRememberedDeviceRecord(radio, macHex, remoteName, recordPid, _log))
                 { _log("Registering the controller failed."); r.Error = "identity-inject-failed"; return r; }
                 _log("Controller registered with the Bluetooth stack.");

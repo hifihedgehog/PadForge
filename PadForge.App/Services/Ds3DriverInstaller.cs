@@ -1327,6 +1327,34 @@ namespace PadForge.Services
             catch (Exception ex) { log?.Invoke("Skeleton record check failed: " + ex.Message); }
         }
 
+        /// <summary>BthPS3 ships with Move support DISABLED: IsMOTIONSupported
+        /// defaults to 0 (measured on the 2026-08-18 bench; the SIXAXIS gate
+        /// defaults to 1, which is why the DS3 never hit this). The driver
+        /// drops every Motion-controller connection at that gate: the pad's
+        /// page reached bthport (the BTHENUM device node appeared) and BthPS3
+        /// never saw it. Ensures the MOTION and NAVIGATION gates are open;
+        /// returns true when anything changed, in which case the caller's
+        /// radio cycle makes the driver reload it.</summary>
+        public static bool EnsureMoveFamilySupportEnabled(Action<string> log)
+        {
+            bool changed = false;
+            try
+            {
+                using var key = Registry.LocalMachine.OpenSubKey(
+                    @"SYSTEM\CurrentControlSet\Services\BthPS3\Parameters", writable: true);
+                if (key == null) return false;
+                foreach (string name in new[] { "IsMOTIONSupported", "IsNAVIGATIONSupported" })
+                {
+                    if (key.GetValue(name) is int v && v != 0) continue;
+                    key.SetValue(name, 1, RegistryValueKind.DWord);
+                    changed = true;
+                    log?.Invoke($"BthPS3 {name} was disabled; enabled it (takes effect at the next radio restart).");
+                }
+            }
+            catch (Exception ex) { log?.Invoke("BthPS3 Move-support gate check failed: " + ex.Message); }
+            return changed;
+        }
+
         /// <summary>Post-cycle proof that the remembered-device record is still
         /// on disk with PadForge's identity. The 2026-08-18 bench showed a
         /// record that was written, confirmed, and then silently pruned by the

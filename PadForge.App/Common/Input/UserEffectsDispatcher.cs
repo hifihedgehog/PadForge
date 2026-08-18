@@ -1503,6 +1503,8 @@ namespace PadForge.Common.Input
         // with no argument, so it was always -1 and the "caller supplied a
         // peak" branch below could never be taken. Keeping it implied an
         // override path that did not exist.
+        private int _lastMoveSphereSig = -1;
+
         private void DispatchSnapshot()
         {
             // Snapshot once (Dispose can null the field on the UI thread while a
@@ -1736,7 +1738,19 @@ namespace PadForge.Common.Input
                             byte movePct = (byte)Math.Clamp(power?.Percent ?? 100, 0, 100);
                             var sphere = Ds5EffectSynthesizer.ComputeLightbarColorPublic(
                                 moveCfg, movePeak, nowMs, _randomColor, movePulse, movePulseIntensity, movePct);
-                            Common.Input.PsMoveDirectService.TrySetLed(moveWrap.SdlInstanceId, sphere.r, sphere.g, sphere.b);
+                            bool sphereOk = Common.Input.PsMoveDirectService.TrySetLed(
+                                moveWrap.SdlInstanceId, sphere.r, sphere.g, sphere.b);
+                            // Change-gated evidence line: mode, computed color,
+                            // and whether the service accepted the write.
+                            int sphereSig = (sphere.r << 16) | (sphere.g << 8) | sphere.b
+                                | ((int)moveCfg.LightbarMode << 24) | (sphereOk ? 1 << 30 : 0);
+                            if (sphereSig != _lastMoveSphereSig)
+                            {
+                                _lastMoveSphereSig = sphereSig;
+                                PadForge.Engine.SdlDiagLog.WriteLine(
+                                    $"MOVELIGHT slot={_padIndex} mode={moveCfg.LightbarMode} "
+                                    + $"rgb={sphere.r:X2}{sphere.g:X2}{sphere.b:X2} setOk={sphereOk}");
+                            }
                         }
                         continue;
                     }

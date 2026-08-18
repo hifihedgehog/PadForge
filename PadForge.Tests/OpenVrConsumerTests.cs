@@ -154,6 +154,21 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void AxisClassification_PropLessDriverGetsTheLegacyConvention()
+        {
+            // Modern IVRDriverInput drivers never set Prop_AxisNType_Int32 and
+            // vrserver's legacy emulation does not synthesize them (measured
+            // on the bench against our own driver: rAxis flowed, every type
+            // read 0). The legacy-binding convention fixes the layout:
+            // axis0=stick position, axis1=trigger pull, axis2=grip pull.
+            var roles = OpenVrConsumerService.ClassifyAxes(new[] { 0, 0, 0, 0, 0 });
+            Assert.Equal(OpenVrConsumerService.VrAxisRole.Joystick, roles[0]);
+            Assert.Equal(OpenVrConsumerService.VrAxisRole.Trigger, roles[1]);
+            Assert.Equal(OpenVrConsumerService.VrAxisRole.Grip, roles[2]);
+            Assert.Equal(OpenVrConsumerService.VrAxisRole.None, roles[3]);
+        }
+
+        [Fact]
         public void ButtonBits_IncludingTheAxisClickRange()
         {
             // EVRButtonId: System=0, ApplicationMenu=1, Grip=2, A=7,

@@ -3021,6 +3021,9 @@
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>테스트 톤이나 스윕을 멈춥니다.</value></data>
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>모든 NFC 태그</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>NFC 태그: {0}</value></data>
+  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>입력 필터 (Ctrl+F)</value></data>
+  <data name="Mapping_FilterDevices_Tooltip" xml:space="preserve"><value>선택 목록에 표시할 장치 입력을 선택합니다</value></data>
+  <data name="Mapping_FilterDevices_Header" xml:space="preserve"><value>선택 목록에 표시</value></data>
   <data name="Mapping_AnyVoicePhrase" xml:space="preserve"><value>모든 음성 문구</value></data>
   <data name="Mapping_VoicePhraseNamed" xml:space="preserve"><value>음성 문구: {0}</value></data>
   <data name="Nfc_WaitingController" xml:space="preserve"><value>Switch 컨트롤러에 태그를 갖다 대세요…</value></data>

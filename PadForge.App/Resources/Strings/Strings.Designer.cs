@@ -2376,6 +2376,9 @@ public class Strings : INotifyPropertyChanged
     public string Mapping_JoyConIrBrightness => Get("Mapping_JoyConIrBrightness");
     public string Mapping_AnyNfcTag => Get("Mapping_AnyNfcTag");
     public string Mapping_NfcTagNamed => Get("Mapping_NfcTagNamed");
+    public string Mapping_FilterSearch_Placeholder => Get("Mapping_FilterSearch_Placeholder");
+    public string Mapping_FilterDevices_Tooltip => Get("Mapping_FilterDevices_Tooltip");
+    public string Mapping_FilterDevices_Header => Get("Mapping_FilterDevices_Header");
     public string Mapping_AnyVoicePhrase => Get("Mapping_AnyVoicePhrase");
     public string Mapping_VoicePhraseNamed => Get("Mapping_VoicePhraseNamed");
     public string Mapping_MouseMotionX => Get("Mapping_MouseMotionX");

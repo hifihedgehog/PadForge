@@ -3073,6 +3073,9 @@
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>Stops the test tone or sweep.</value></data>
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>Any NFC Tag</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>NFC Tag: {0}</value></data>
+  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>Filter inputs (Ctrl+F)</value></data>
+  <data name="Mapping_FilterDevices_Tooltip" xml:space="preserve"><value>Choose which devices’ inputs the pickers offer</value></data>
+  <data name="Mapping_FilterDevices_Header" xml:space="preserve"><value>Shown in the Picker</value></data>
   <data name="Mapping_AnyVoicePhrase" xml:space="preserve"><value>Any Voice Phrase</value></data>
   <data name="Mapping_VoicePhraseNamed" xml:space="preserve"><value>Voice Phrase: {0}</value></data>
   <data name="Nfc_WaitingController" xml:space="preserve"><value>Tap a tag on your Switch controller…</value></data>

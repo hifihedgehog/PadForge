@@ -3021,6 +3021,9 @@
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>停止测试音或扫描。</value></data>
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>任意NFC标签</value></data>
   <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>NFC标签：{0}</value></data>
+  <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>筛选输入（Ctrl+F）</value></data>
+  <data name="Mapping_FilterDevices_Tooltip" xml:space="preserve"><value>选择选取器中提供哪些设备的输入</value></data>
+  <data name="Mapping_FilterDevices_Header" xml:space="preserve"><value>在选取器中显示</value></data>
   <data name="Mapping_AnyVoicePhrase" xml:space="preserve"><value>任意语音短语</value></data>
   <data name="Mapping_VoicePhraseNamed" xml:space="preserve"><value>语音短语：{0}</value></data>
   <data name="Nfc_WaitingController" xml:space="preserve"><value>用 Switch 手柄轻触标签…</value></data>

@@ -1948,6 +1948,16 @@ namespace PadForge.Services
                 appSettings.NfcTags?.Select(t => (t.Uid, t.Name, t.Button)));
             PadForge.Common.Input.VoicePhraseRegistry.LoadRegistry(
                 appSettings.VoicePhrases?.Select(v => (v.Phrase, v.Name, v.Button)));
+            try
+            {
+                var hidden = appSettings.MappingPickerHiddenDevices;
+                var pads = _mainVm?.Pads;
+                if (hidden != null && pads != null)
+                    for (int i = 0; i < pads.Count && i < hidden.Length; i++)
+                        pads[i]?.SetHiddenPickerDeviceKeys(
+                            (hidden[i] ?? "").Split(';', StringSplitOptions.RemoveEmptyEntries));
+            }
+            catch { /* view preference; never blocks a load */ }
             PadForge.Services.VoiceMacroService.Enabled = appSettings.VoiceMacrosEnabled;
             PadForge.Services.VoiceMacroService.MinConfidence =
                 float.IsFinite(appSettings.VoiceMinConfidence)
@@ -4041,10 +4051,24 @@ namespace PadForge.Services
             bool isDefault = string.IsNullOrEmpty(SettingsManager.ActiveProfileId)
                           || defaultSnap == null;
 
+            string[] pickerHidden = null;
+            try
+            {
+                var pads = _mainVm?.Pads;
+                if (pads != null && pads.Count > 0)
+                {
+                    pickerHidden = new string[pads.Count];
+                    for (int i = 0; i < pads.Count; i++)
+                        pickerHidden[i] = pads[i]?.GetHiddenPickerDeviceKeysJoined() ?? "";
+                }
+            }
+            catch { /* view preference; never blocks a save */ }
+
             return new AppSettingsData
             {
                 SoundPackages = soundPackages,
                 NfcTags = nfcTags,
+                MappingPickerHiddenDevices = pickerHidden,
                 VoicePhrases = voicePhrases,
                 VoiceMacrosEnabled = PadForge.Services.VoiceMacroService.Enabled,
                 VoiceMinConfidence = PadForge.Services.VoiceMacroService.MinConfidence,
@@ -5429,6 +5453,14 @@ namespace PadForge.Services
         [XmlArray("NfcTags")]
         [XmlArrayItem("Tag")]
         public NfcTagData[] NfcTags { get; set; }
+
+        /// <summary>Per-slot hidden picker device keys (#322): index =
+        /// slot, value = semicolon-joined device guids plus the "any"
+        /// token for the device-agnostic group. A view preference, so it
+        /// lives here in the settings root and never in profiles.</summary>
+        [XmlArray("MappingPickerHiddenDevices")]
+        [XmlArrayItem("Slot")]
+        public string[] MappingPickerHiddenDevices { get; set; }
 
         /// <summary>Registered voice phrases (issue #317), exposed as
         /// buttons on the devices that carry the microphones.</summary>

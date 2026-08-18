@@ -2347,6 +2347,18 @@ namespace PadForge.Views
             }
         }
 
+        /// <summary>Ctrl+F focuses the picker search box while the
+        /// mappings tab is active (#322).</summary>
+        private void MappingsTabRoot_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.F
+                && (System.Windows.Input.Keyboard.Modifiers & System.Windows.Input.ModifierKeys.Control) != 0)
+            {
+                MappingFilterSearchBox.Focus();
+                e.Handled = true;
+            }
+        }
+
         private void ClearAllMappings_Click(object sender, RoutedEventArgs e)
         {
             if (DataContext is not PadViewModel vm) return;

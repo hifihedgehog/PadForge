@@ -940,7 +940,8 @@ namespace PadForge.Engine.Common.Mapping
         /// the shaped magnitude; a second sign operation here would recreate
         /// the multi-layer sign bug. Both params 0 (the serialized default)
         /// returns the input unchanged, as does exponent 1 with no outer.</summary>
-        private static float ApplyCurveRangeShaping(float v, MappingSource src)
+        private static float ApplyCurveRangeShaping(float v, MappingSource src,
+            CustomInputState state = null, int pairIdx = -1)
         {
             double outer = src.ParamRangeOuter;
             double exponent = src.ParamCurveExponent;
@@ -959,7 +960,39 @@ namespace PadForge.Engine.Common.Mapping
             if (hasCurve) mag = (float)Math.Pow(mag, exponent);
             // Anti-deadzone (v18): a floor added to the output response,
             // after the exponent so the floor is exact at every curve.
-            if (hasAnti) mag = (float)anti + (1f - (float)anti) * Math.Min(1f, mag);
+            if (hasAnti)
+            {
+                mag = Math.Min(1f, mag);
+                // Radial floor for a declared pair (#330): when the row
+                // stamps the Steam Circle geometry (shape 2) and the read
+                // is a full stick axis, floor the PAIR magnitude and scale
+                // this axis by the result, direction preserved. The
+                // companion runs through the same shape and curve so the
+                // magnitude matches what its own row emits (the translator
+                // stamps both rows of a pair identically). The scalar
+                // floor forbade the per-axis band (0, anti), which cut
+                // wedge gaps at the cardinals out of a slow circle.
+                // Shapes 0 and 1 stay scalar: rows there carry single-axis
+                // semantics (steering imports, starter profiles) where a
+                // companion axis holds unrelated data.
+                float pairMag = -1f;
+                if (state != null && src.ParamStickDeadZoneShape == 2)
+                {
+                    int companion = pairIdx switch { 0 => 1, 1 => 0, 3 => 4, 4 => 3, _ => -1 };
+                    if (companion >= 0 && companion < CustomInputState.MaxAxis)
+                    {
+                        float other = Math.Max(-1f, Math.Min(1f,
+                            (state.Axis[companion] - 32768) / 32767f));
+                        other = Math.Abs(ApplyStickDeadZoneShape(state, src, companion, other));
+                        if (hasCurve) other = (float)Math.Pow(other, exponent);
+                        pairMag = Math.Min(1f, (float)Math.Sqrt(mag * mag + other * other));
+                    }
+                }
+                if (pairMag > mag)
+                    mag = mag * (((float)anti + pairMag * (1f - (float)anti)) / pairMag);
+                else
+                    mag = (float)anti + (1f - (float)anti) * mag;
+            }
             return v < 0f ? -mag : mag;
         }
 
@@ -4825,6 +4858,10 @@ namespace PadForge.Engine.Common.Mapping
                 return 0f;
 
             float axisValue;
+            // Set to the axis index by the full-axis read below, so the
+            // curve/range tail can floor the anti-deadzone radially over the
+            // declared pair (#330). Stays -1 for every other source shape.
+            int pairIdx = -1;
             switch (t)
             {
                 case SourceType.Button:
@@ -4863,6 +4900,7 @@ namespace PadForge.Engine.Common.Mapping
                         // threshold contract.
                         if (src.ParamStickDeadZoneShape != 0)
                             axisValue = ApplyStickDeadZoneShape(state, src, idx, axisValue);
+                        pairIdx = idx;
                     }
                     break;
 
@@ -4903,7 +4941,7 @@ namespace PadForge.Engine.Common.Mapping
             // invisible. The specialized families above cannot double-apply
             // it, since they return before reaching this tail.
             axisValue = ApplyPerSourceAccel(src, axisValue);
-            return ApplyCurveRangeShaping(axisValue, src);
+            return ApplyCurveRangeShaping(axisValue, src, state, pairIdx);
         }
 
         private static float ReadAsUnipolar(CustomInputState state, MappingSource src, int slotIndex, string deviceGuid)

@@ -23,7 +23,13 @@ namespace PadForge.Tests
 
         private static (short X, short Y) Apply(short x, short y, string shape)
         {
-            var s = InputManager.ParseDeadZoneShape(shape);
+            // ParseDeadZoneShape parses persisted INT strings and maps
+            // anything else to ScaledRadial, so the original name-string
+            // theory here silently tested one shape seven times (#330).
+            // Enum.Parse makes the shape coverage real.
+            var s = string.IsNullOrEmpty(shape)
+                ? InputManager.ParseDeadZoneShape(shape)
+                : System.Enum.Parse<PadForge.Engine.Data.DeadZoneShape>(shape);
             InputManager.ApplyDeadZoneForTest(ref x, ref y, Dz, Dz, Adz, Adz, 0,
                 100, 100, 100, 100, null, null, s);
             return (x, y);
@@ -49,13 +55,31 @@ namespace PadForge.Tests
         {
             // The observable failure: one tick reads a few counts positive,
             // the next a few counts negative, and the output swung the full
-            // 2 x anti-deadzone. Both must be zero.
+            // 2 x anti-deadzone. The radial family zeroes everything inside
+            // the deadzone. The Sloped shapes pass center values through BY
+            // DESIGN (their per-axis deadzone shrinks with the companion,
+            // the cardinal-lock geometry), so for them the contract is no
+            // AMPLIFICATION: the anti-deadzone floor must not engage inside
+            // the deadzone ellipse (#330), leaving the noise at raw scale
+            // instead of swinging it to +/-anti.
             var (px, py) = Apply(600, -600, shape);      // ~1.8% deflection
             var (nx, ny) = Apply(-600, 600, shape);
-            Assert.Equal(0, px);
-            Assert.Equal(0, py);
-            Assert.Equal(0, nx);
-            Assert.Equal(0, ny);
+            bool slopedPassThrough = shape is "SlopedAxial" or "SlopedScaledAxial";
+            if (slopedPassThrough)
+            {
+                int noiseScale = 1500;                    // ~4.5%, raw noise magnitude
+                Assert.InRange(Math.Abs((int)px), 0, noiseScale);
+                Assert.InRange(Math.Abs((int)py), 0, noiseScale);
+                Assert.InRange(Math.Abs((int)nx), 0, noiseScale);
+                Assert.InRange(Math.Abs((int)ny), 0, noiseScale);
+            }
+            else
+            {
+                Assert.Equal(0, px);
+                Assert.Equal(0, py);
+                Assert.Equal(0, nx);
+                Assert.Equal(0, ny);
+            }
         }
 
         [Theory]

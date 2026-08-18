@@ -53,6 +53,23 @@ namespace PadForge.Common.Input
         ///   0x146b/0x0603: Nacon PS4 Compact (BB4469), XInput-mode PS4 pad.</summary>
         internal const string HidapiIgnoreDevices = "0x146b/0x0603";
 
+        /// <summary>Devices no SDL joystick backend may enumerate
+        /// (SDL_JOYSTICK_BLACKLIST_DEVICES format: comma-separated
+        /// 0xVVVV/0xPPPP, SDL_hints.h:1401-1404). The PS Move family (#277):
+        /// a docked Move exposes three HID collections (the col01-col03
+        /// Windows quirk psmoveapi documents) and no SDL driver claims the
+        /// PIDs, so each collection surfaced through the generic Windows
+        /// backends as its own dead joystick row. PadForge drives these pads
+        /// itself (PsMoveDirectService / the DS3 service's navigation
+        /// profile) and feeds SDL VIRTUAL joysticks, which are exempt: the
+        /// virtual backend never calls SDL_ShouldIgnoreJoystick
+        /// (SDL_joystick.c:3601's callers are the dinput/rawinput/WGI/
+        /// xinput/hidapi backends only).
+        ///   0x054c/0x03d5: PS Move (ZCM1), 0x054c/0x0c5e: PS Move (ZCM2),
+        ///   0x054c/0x042f: Navigation controller.</summary>
+        internal const string JoystickBlacklistDevices =
+            "0x054c/0x03d5,0x054c/0x0c5e,0x054c/0x042f";
+
         /// <summary>Raised on the polling thread when an HM VC has reached
         /// its inactivity timeout.  Listener (MainWindow) marshals to the
         /// UI thread and runs DeviceService.DeleteSlot + InputService.OnSlotDeleted with
@@ -680,6 +697,10 @@ namespace PadForge.Common.Input
                 // (60ed78a3ac + ae750868c8) are defense in depth beside
                 // this seatbelt; both stay.
                 SDL_SetHint(SDL_HINT_HIDAPI_IGNORE_DEVICES, HidapiIgnoreDevices);
+
+                // PS Move family junk-row suppression (#277); see the
+                // constant's doc for the mechanism and the virtual exemption.
+                SDL_SetHint(SDL_HINT_JOYSTICK_BLACKLIST_DEVICES, JoystickBlacklistDevices);
 
                 // Enable Switch 2 Pro Controller HIDAPI driver (requires libusb-1.0.dll).
                 SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_SWITCH2, "1");

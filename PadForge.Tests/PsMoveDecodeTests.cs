@@ -118,6 +118,69 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void UsbReport_NormalizesIntoTheSharedBtFrame()
+        {
+            // USB reads deliver [0x01, payload...] (hidapi/HidD framing); the
+            // normalizer prepends the 0xA1 the shared parser expects.
+            var raw = new byte[49];
+            raw[0] = 0x01;
+            raw[1] = 0x5A;   // buttons1
+            raw[48] = 0x77;  // last ZCM1 byte
+            var frame = new byte[PsMoveDirectService.Zcm1BtReportSize];
+            Assert.True(PsMoveDirectService.NormalizeUsbReport(raw, 49, frame, zcm2: false));
+            Assert.Equal(0xA1, frame[0]);
+            Assert.Equal(0x01, frame[1]);
+            Assert.Equal(0x5A, frame[2]);
+            Assert.Equal(0x77, frame[49]);
+
+            // Short reads and foreign report ids are refused.
+            Assert.False(PsMoveDirectService.NormalizeUsbReport(raw, 40, frame, zcm2: false));
+            raw[0] = 0x02;
+            Assert.False(PsMoveDirectService.NormalizeUsbReport(raw, 49, frame, zcm2: false));
+
+            // ZCM2 needs only its 44-byte report.
+            var raw2 = new byte[44];
+            raw2[0] = 0x01;
+            var frame2 = new byte[PsMoveDirectService.Zcm2BtReportSize];
+            Assert.True(PsMoveDirectService.NormalizeUsbReport(raw2, 44, frame2, zcm2: true));
+            Assert.Equal(0xA1, frame2[0]);
+        }
+
+        [Fact]
+        public void UsbOutputReport_IsThePsmoveLedsWrite()
+        {
+            // Report 0x06: [id, zero, r, g, b, rumble2, rumble, pad...]
+            // (PSMove_Data_LEDs, psmove.c:123-132), padded to the collection's
+            // OutputReportByteLength.
+            byte[] o = PsMoveDirectService.BuildUsbOutputReport(0x11, 0x22, 0x33, 0x44, outLen: 9);
+            Assert.Equal(9, o.Length);
+            Assert.Equal(0x06, o[0]);
+            Assert.Equal(0x00, o[1]);
+            Assert.Equal(0x11, o[2]);
+            Assert.Equal(0x22, o[3]);
+            Assert.Equal(0x33, o[4]);
+            Assert.Equal(0x00, o[5]);
+            Assert.Equal(0x44, o[6]);
+
+            // Caps-driven padding, and a floor at the report's own size when
+            // the caps read failed.
+            Assert.Equal(49, PsMoveDirectService.BuildUsbOutputReport(1, 2, 3, 4, 49).Length);
+            Assert.Equal(9, PsMoveDirectService.BuildUsbOutputReport(1, 2, 3, 4, 0).Length);
+        }
+
+        [Fact]
+        public void JoystickBlacklist_CoversTheWholeFamilyInSdlHintFormat()
+        {
+            // SDL_hints.h:1401-1404: comma-separated 0xVVVV/0xPPPP pairs.
+            string v = PadForge.Common.Input.InputManager.JoystickBlacklistDevices;
+            Assert.Contains("0x054c/0x03d5", v);   // Move ZCM1
+            Assert.Contains("0x054c/0x0c5e", v);   // Move ZCM2
+            Assert.Contains("0x054c/0x042f", v);   // Navigation
+            foreach (string pair in v.Split(','))
+                Assert.Matches("^0x[0-9a-f]{4}/0x[0-9a-f]{4}$", pair);
+        }
+
+        [Fact]
         public void SphereColors_FollowThePlayerPaletteAndWrap()
         {
             Assert.Equal(PsMoveDirectService.DefaultSphereColor(1), PsMoveDirectService.DefaultSphereColor(5));

@@ -1676,6 +1676,12 @@ namespace PadForge.Common.Input
                     // HID effect packet. The service is the pad's sole writer.
                     if (ud.VendorId == SonyVid && ud.ProdId == 0x03D5)
                     {
+                        // Single-writer ownership applies to the sphere too
+                        // (2026-08-18 audit): a Move assigned to two slots
+                        // must not have two dispatchers fighting its color.
+                        // Same lowest-live-slot rule as the DS4/DS5 path.
+                        if (owners.TryGetValue(ud.InstanceGuid, out int moveOwner) && moveOwner != _padIndex)
+                            continue;
                         DeviceSlotConfig moveCfg = null;
                         if (perDeviceCfgs != null
                             && perDeviceCfgs.TryGetValue(ud.InstanceGuid, out var resolvedMove))
@@ -1707,7 +1713,11 @@ namespace PadForge.Common.Input
                                 uint movePulse = moveState?.PulseColor ?? 0;
                                 float movePulseIntensity = ComputePulseIntensity(nowMs, moveCfg);
                                 var power = Common.Input.PsMoveDirectService.GetPowerInfo(moveWrap.SdlInstanceId);
-                                byte movePct = (byte)Math.Clamp(power?.Percent ?? 100, 0, 100);
+                                // Unknown / charging reports Percent = -1;
+                                // Battery mode must read that as full, not
+                                // empty (2026-08-18 audit).
+                                int rawPct = power?.Percent ?? 100;
+                                byte movePct = (byte)Math.Clamp(rawPct < 0 ? 100 : rawPct, 0, 100);
                                 var sphere = Ds5EffectSynthesizer.ComputeLightbarColorPublic(
                                     moveCfg, movePeak, nowMs, _randomColor, movePulse, movePulseIntensity, movePct);
                                 bool sphereOk = Common.Input.PsMoveDirectService.TrySetLed(

@@ -155,6 +155,15 @@ namespace PadForge.Common.Input
         private bool _outDirty;
         private volatile bool _everGotInput;
 
+        // Completed reads this session, any transport, input or not. The
+        // read-side pre-input summary sits behind a BLOCKING read, so on a
+        // fully silent channel it can never print: exactly the reporter's
+        // machine in #285, where the one diagnostic built for that state was
+        // structurally unable to speak ("I don't see the rx pre-input
+        // summary", 2026-08-18). The writer thread wakes every 50 ms and
+        // reports this counter instead.
+        private volatile int _rxCompletions;
+
         // ── unpair coordination ──────────────────────────────────────────────────
         // While true, the monitor loop tears down any live pad and does not re-grab
         // it. The App-layer unpair flow sets this (and cancels the current read)
@@ -369,6 +378,7 @@ namespace PadForge.Common.Input
 
                 lock (_outLock) { _everGotInput = false; _outDirty = true; }
                 _outWriteFailLogged = false;
+                _rxCompletions = 0;
 
                 // Re-check the unpair gate now that the handles are published: a
                 // SuppressAndRelease that fired between the loop-top check and the
@@ -496,6 +506,7 @@ namespace PadForge.Common.Input
             // ordering); the bare enable alone does not start it.
             Kick(); kicks = 1; lastKick = attachedAt; lastWrite = attachedAt;
 
+            long lastSilenceLog = attachedAt;
             while (_running && _writerRun && System.Threading.Volatile.Read(ref _writerGen) == gen)
             {
                 _writeSignal.WaitOne(50);
@@ -503,6 +514,19 @@ namespace PadForge.Common.Input
                     || System.Threading.Volatile.Read(ref _writerGen) != gen) break;
 
                 long now = Environment.TickCount64;
+
+                // Writer-side pre-input heartbeat (#285): cannot be starved by
+                // a blocked read. Zero completions with the enable writes
+                // landing = the interrupt channel is delivering NOTHING, which
+                // no read-side line can ever say.
+                if (!_everGotInput && now - lastSilenceLog >= 1000)
+                {
+                    lastSilenceLog = now;
+                    int rx = _rxCompletions;
+                    _log($"{Tag}({(_transport == Ds3Transport.Usb ? "USB" : "BT")}): no input yet, "
+                        + $"{(now - attachedAt) / 1000.0:F1} s since attach, completed reads={rx}"
+                        + (rx == 0 ? " (interrupt channel fully silent)" : ""));
+                }
 
                 // Re-kick while silent (DsHidMini re-sends the enable after 1 s of no input).
                 if (!_everGotInput && kicks < 5 && now - lastKick >= 1000)
@@ -711,6 +735,7 @@ namespace PadForge.Common.Input
                 }
                 if (DeviceIoControl(h, IOCTL_HID_INTERRUPT_READ, null, 0, buf, buf.Length, out int rd, IntPtr.Zero))
                 {
+                    _rxCompletions++;
                     // Full 50-byte frames only (BthPS3 completes reads at exactly the
                     // report size; a shorter completion would leave stale bytes from
                     // the previous frame in the reused buffer past rd). raw[1]=0xFF is
@@ -766,6 +791,7 @@ namespace PadForge.Common.Input
 
                 if (WinUsb_ReadPipe(ifh, _usbInPipe, raw, (uint)raw.Length, out uint got, IntPtr.Zero))
                 {
+                    _rxCompletions++;
                     // Standard DS3 report id 0x01. Shift raw[0..] to buf[1..] (buf[0]=0xA1),
                     // giving the same layout the BT parser expects: report id at buf[1],
                     // buttons at buf[3], sticks buf[7..10], pressures/motion at BT offsets.

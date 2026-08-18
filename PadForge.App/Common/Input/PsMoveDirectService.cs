@@ -345,6 +345,7 @@ namespace PadForge.Common.Input
                 if (!OpenUsb() && !OpenBluetooth()) { Thread.Sleep(500); continue; }
 
                 lock (_outLock) { _everGotInput = false; _outDirty = true; }
+                _outWriteFailLogged = false;
 
                 if (_suppressReconnect) { Teardown(); Thread.Sleep(250); continue; }
 
@@ -396,15 +397,42 @@ namespace PadForge.Common.Input
             return true;
         }
 
-        /// <summary>Opens a docked Move's col01 data collection over inbox HID.
-        /// The model is known from the USB PID (0x0C5E = ZCM2,
-        /// psmove_private.h:56-58), so the stream detector is pre-seeded
-        /// deterministically. Also captures the pad's calibration blob when the
-        /// registry lacks it, and loads it for this session.</summary>
+        // One dock-mode capture per plug-in: the path clears when the pad
+        // leaves so the next dock re-captures.
+        private string _lastDockedPath;
+
+        /// <summary>USB handling per model, per the moveonpc reference ("HID
+        /// reports": input report 0x01 is BT-only on the ZCM1; the ZCM2 page
+        /// carries no such restriction and psmoveapi polls it over USB):
+        /// a docked ZCM1 is a CHARGING/PAIRING DOCK, so no virtual joystick is
+        /// attached (the first build attached one that could never produce
+        /// input, the dead pad the 2026-08-18 bench caught). The dock still
+        /// captures the pad's calibration blob once per plug-in. A ZCM2
+        /// (USB PID 0x0C5E, psmove_private.h:58) opens a real input session.</summary>
         private bool OpenUsb()
         {
             var found = FindUsbHid();
-            if (found == null) return false;
+            if (found == null) { _lastDockedPath = null; return false; }
+
+            if (!found.Value.Zcm2)
+            {
+                // ZCM1 dock: capture once per plug-in, never attach.
+                if (_lastDockedPath != found.Value.DataPath)
+                {
+                    _lastDockedPath = found.Value.DataPath;
+                    IntPtr dh = CreateFile(found.Value.DataPath, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_RW, IntPtr.Zero, OPEN_EXISTING, 0, IntPtr.Zero);
+                    if (dh != INVALID_HANDLE)
+                    {
+                        try { TryUsbCalibration(dh, found.Value.AddrPath, zcm2: false); }
+                        finally { CloseHandle(dh); }
+                    }
+                    _log("MOVE(USB): PS Move docked. This model streams input over Bluetooth only "
+                        + "(moveonpc: input report 0x01 is BT-only on the ZCM1); the dock charges the "
+                        + "pad and captures its motion calibration. Pair it from Devices > Pair Device, "
+                        + "then unplug and press its PS button.");
+                }
+                return false;
+            }
 
             IntPtr h = CreateFile(found.Value.DataPath, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_RW, IntPtr.Zero, OPEN_EXISTING, 0, IntPtr.Zero);
             if (h == INVALID_HANDLE) return false;
@@ -424,14 +452,13 @@ namespace PadForge.Common.Input
             }
             if (inLen <= 1) { CloseHandle(h); return false; }
 
-            bool zcm2 = found.Value.Zcm2;
-            _modelZcm2 = zcm2;
+            _modelZcm2 = true;
 
             lock (_outLock) { _usbHandle = h; _usbInLen = inLen; _usbOutLen = outLen; }
             _transportPath = found.Value.DataPath;
             _transport = MoveTransport.Usb;
 
-            TryUsbCalibration(h, found.Value.AddrPath, zcm2);
+            TryUsbCalibration(h, found.Value.AddrPath, zcm2: true);
             return true;
         }
 
@@ -546,10 +573,13 @@ namespace PadForge.Common.Input
 
         // ─── writer thread: LED/rumble on the interrupt channel, keepalive ──────
 
+        private long _lastNoInputLog;
+
         private void WriterLoop(int gen)
         {
             long lastWrite = 0;
             long attachedAt = Environment.TickCount64;
+            _lastNoInputLog = attachedAt;
 
             // First output immediately: the sphere shows the default player color
             // as soon as the pad attaches (and proves the write path early).
@@ -568,6 +598,12 @@ namespace PadForge.Common.Input
                 // that never streams means the lingering-PDO case. Detach for a
                 // clean re-open the same way the DS3 lane's five-kick exhaustion
                 // does.
+                if (!_everGotInput && now - _lastNoInputLog >= 1000)
+                {
+                    _lastNoInputLog = now;
+                    _log($"{Tag}: no input yet, {(now - attachedAt) / 1000.0:F1} s since attach");
+                }
+
                 if (!_everGotInput && now - attachedAt >= 5000)
                 {
                     _log($"{Tag}: no input 5 s after attach - detaching for a clean re-open");

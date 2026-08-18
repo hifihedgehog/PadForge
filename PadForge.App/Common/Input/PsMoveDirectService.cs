@@ -640,7 +640,7 @@ namespace PadForge.Common.Input
                         product_id = MOVE_PID,
                         naxes = 1,
                         nbuttons = 8,
-                        button_mask = 0x807F,
+                        button_mask = 0x047F,
                         axis_mask = 0x20,
                         name = namePtr,
                     };
@@ -1040,10 +1040,14 @@ namespace PadForge.Common.Input
                     sensors = sensorsPtr,
                     // Sony label canon for the face cluster (Cross=South,
                     // Circle=East, Square=West, Triangle=North), Select=Back,
-                    // PS=Guide, Start=Start, and the big Move button = MISC1,
-                    // SDL's slot for a prominent extra button (SDL_gamepad.h:
-                    // "Additional button (e.g. ... PS5 microphone button)").
-                    button_mask = 0x807F,
+                    // PS=Guide, Start=Start. The big Move button = RIGHT
+                    // SHOULDER: it is a primary gameplay button (not a meta
+                    // button, so not MISC1), and it pairs with the T trigger
+                    // on the right-trigger slot so the pad's two primary
+                    // controls live on one conceptual (dominant) hand and
+                    // both auto-map live on XInput-class outputs (owner
+                    // decision 2026-08-18).
+                    button_mask = 0x047F,
                     axis_mask = 0x20,   // right trigger only
                     name = namePtr,
                     Rumble = Marshal.GetFunctionPointerForDelegate(_rumbleCb),
@@ -1182,14 +1186,15 @@ namespace PadForge.Common.Input
                 SDL.SDL_SetJoystickVirtualButton(j, 4, (buttons & BtnSelect) != 0);
                 SDL.SDL_SetJoystickVirtualButton(j, 5, (buttons & BtnPs) != 0);
                 SDL.SDL_SetJoystickVirtualButton(j, 6, (buttons & BtnStart) != 0);
-                // The Move button rides the MISC1 binding, and SDL's virtual
+                // The Move button rides the RIGHT SHOULDER binding (pairs
+                // with the T trigger on the right hand), and SDL's virtual
                 // mapping assigns bindings to SEQUENTIAL joystick indices for
                 // the mask bits present, not bit positions
                 // (VIRTUAL_JoystickGetGamepadMapping's current_button++).
-                // Mask 0x807F has seven buttons before MISC1 -> index 7.
-                // Bench-proven 2026-08-18: the wire bit decoded correctly
-                // (MOVEBTN word=080000) while a bit-position index was bound
-                // to nothing.
+                // Mask 0x047F has seven buttons before RIGHT_SHOULDER ->
+                // index 7. Bench-proven 2026-08-18: the wire bit decoded
+                // correctly (MOVEBTN word=080000) while a bit-position index
+                // was bound to nothing.
                 SDL.SDL_SetJoystickVirtualButton(j, 7, (buttons & BtnMove) != 0);
 
                 // T trigger -> right trigger, the mask's only axis -> index 0

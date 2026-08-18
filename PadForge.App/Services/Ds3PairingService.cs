@@ -851,6 +851,11 @@ namespace PadForge.Services
                 if (!ShouldAutoPairMove(recordExists, padStoredHostBigEndian, radio))
                 {
                     _log($"Move dock: {macHex} is already paired to this PC; charging only.");
+                    // The pairing exists but the Devices list may not show it
+                    // (the row is minted at pair time, and a row that never
+                    // got saved is gone next session). Re-mint on sight.
+                    if (!PadForge.Common.Input.PsMoveDirectService.DeviceRowExists())
+                        PadForge.Common.Input.PsMoveDirectService.MintIdentityRow(_log);
                     return;
                 }
                 _log($"Move dock: {macHex} is not paired to this PC - pairing now (this briefly restarts Bluetooth).");

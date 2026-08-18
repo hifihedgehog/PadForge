@@ -4081,12 +4081,6 @@ namespace PadForge.Engine.Common.Mapping
         /// the default cadence bit-identical and corrects every other one.</summary>
         private const float GyroNominalPollSeconds = 0.001f;
 
-        /// <summary>Constant nudge added to any non-zero gyro motion, so the
-        /// smallest rotation a user can make still moves the cursor instead
-        /// of dying in the sub-count remainder. DS4Windows calls this
-        /// mouseOffset and ships 0.2 counts (DS4Device.cs:175).</summary>
-        private const float GyroMouseOffsetCounts = 0.2f;
-
         /// <summary>Jitter compensation, DS4Windows' curve verbatim
         /// (MouseCursor.cs, jitterCompensation): below the threshold the
         /// magnitude is bent by pow(x/t, 1.408)*t, which suppresses hand
@@ -4151,8 +4145,19 @@ namespace PadForge.Engine.Common.Mapping
                                * (dtSeconds / GyroNominalPollSeconds);
                 if (counts == 0f) return (0f, 0f);
 
-                counts = ApplyGyroJitterCompensation(counts);
-                counts += MathF.Sign(counts) * GyroMouseOffsetCounts;
+                // The shaped counts pass through directly (#324). This lane
+                // used to add a hidden jitter curve plus a 0.2-count nudge
+                // per poll, invisible to every Gyro-tab setting. The nudge
+                // existed to stop small rotations "dying in the sub-count
+                // remainder", which was actually the KBM accumulator's
+                // reversal-check sign bug, and its per-poll dose at 1000 Hz
+                // was several times DS4Windows' per-report calibration, so
+                // once accumulation worked it turned a resting pad's sensor
+                // noise into real cursor drift (measured by the reporter at
+                // deadzones below 0.3). Tremor shaping belongs to the
+                // VISIBLE dual-threshold smoothing; the jitter curve stays
+                // only where it is a user setting (the touchpad pointer's
+                // MouseJitterReduction).
                 return forX ? (counts, 0f) : (0f, counts);
             }
         }

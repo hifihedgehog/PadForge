@@ -117,7 +117,14 @@
         function connect() {
             if (ws) { try { ws.close(); } catch(e) {} }
             var host = location.host;
-            ws = new WebSocket('ws://' + host + '/ws?type=touchpad&id=' + encodeURIComponent(clientId));
+            // Match the page's scheme. #296 phase 0 binds a self-signed cert and
+            // serves https:// whenever the binding succeeds, which is whenever
+            // PadForge is elevated, so a hardcoded ws:// here is a mixed-content
+            // request from an https:// page and every browser blocks it. The
+            // touchpad layout was the only client that did not derive this, so
+            // it was the only one that failed on the default lane.
+            var proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            ws = new WebSocket(proto + '//' + host + '/ws?type=touchpad&id=' + encodeURIComponent(clientId));
             // Timeout: if connection doesn't open within 3s, force-retry.
             var timer = setTimeout(function() {
                 if (ws.readyState !== 1) { try { ws.close(); } catch(e) {} connect(); }

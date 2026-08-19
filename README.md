@@ -53,10 +53,10 @@ PadForge is for sim racers running wheels in games that only understand Xbox con
 <details>
 <summary><b>New in 4.3.0:</b> a rebuilt web controller, voice macros, PlayStation Move, VR devices as sources, and Remote Link over the internet</summary>
 
-- **The web controller, rebuilt.** Ten controller layouts instead of two: Xbox 360, Xbox One, Xbox Series X|S, DualShock 4, DualSense, DualSense Edge, Switch Pro, Switch 2 Pro, Steam Deck, and Steam Controller, most with colour finishes you pick from the card. The DualSense layouts draw a live lightbar and player LEDs, triggers get analog sliders, and the Steam layouts carry both trackpads and the rear grips.
+- **The web controller, rebuilt.** Ten controller layouts instead of two: Xbox 360, Xbox One, Xbox Series X|S, DualShock 4, DualSense, DualSense Edge, Switch Pro, Switch 2 Pro, Steam Deck, and Steam Controller. The DualShock 4, DualSense, and Xbox Series cards carry color finishes you pick before opening them. Every layout draws the slot's LED color as a lightbar strip and its player number as pips, triggers get analog sliders, and the Steam layouts carry both trackpads and the rear buttons.
 - **Your phone's motion, as a source.** The page reads the handset's gyroscope and accelerometer and streams them to the slot. Browsers only hand out sensor data over a secure connection, so PadForge binds a self-signed certificate and serves over HTTPS, with a QR code on the Dashboard to get the phone there.
 - **Build your own pad.** A builder that starts from a blank surface and lets you drag sticks, buttons, triggers and touch areas to where your thumbs actually are, saved with your settings.
-- **Voice macros.** Registered phrases spoken into a microphone fire macros, recognised offline by Vosk with no account and no cloud. The model downloads once on first use.
+- **Voice macros.** Registered phrases spoken into a microphone fire macros, recognized offline by Vosk with no account and no cloud. The model downloads once on first use.
 - **PlayStation Move and Navigation controllers** over USB and Bluetooth, including the Move's sphere and motion.
 - **Real VR devices as input sources.** A headset's pose and its motion controllers become mapping sources, so what you are holding in VR can drive a flat game.
 - **3Dconnexion SpaceMouse.** The 6DoF puck reports as a mapping source, all six axes.
@@ -66,7 +66,7 @@ PadForge is for sim racers running wheels in games that only understand Xbox con
 - **Gyro Tilt.** A degree-ranged tilt mode alongside the existing rate mode, with Gyro Lean documented and its Sensitivity dial fixed, plus a Recenter action and independent yaw and roll inversion.
 - **Low-battery notifications**, plus an identify buzz that rumbles any device so you can tell which one it is.
 - **Mapping picker** gains find-as-you-type and device filtering, and the search filters the table.
-- **Moza wheels** recognised, and **DualSense effect passthrough** for games that drive the triggers themselves.
+- **Moza wheels** recognized, and **DualSense effect passthrough** for games that drive the triggers themselves.
 - **Anti-deadzone floors the stick pair** rather than each axis, which closes the gaps that showed at the cardinals.
 - **Mirror System Audio** no longer cracks over Bluetooth when the loopback ring runs dry under bursty capture.
 
@@ -246,7 +246,7 @@ The Bass Shakers tab routes the game rumble and force feedback a virtual control
 
 ### Adaptive triggers and lightbar that don't need the game's blessing.
 
-Seven adaptive trigger modes with a live preview that draws the resistance curve as you drag. Fifteen lightbar modes, six of them tied to your system audio (three Audio Pulse variants, three Audio Bands variants). The DualSense lights and triggers light up in games that have never heard of a DualSense.
+Seven adaptive trigger modes with a live preview that draws the resistance curve as you drag. Fourteen lightbar modes, six of them tied to your system audio (three Audio Pulse variants, three Audio Bands variants). The DualSense lights and triggers light up in games that have never heard of a DualSense.
 
 | ![Adaptive Triggers tab](screenshots/adaptive-triggers.jpg) | ![Lighting tab](screenshots/lighting.jpg) |
 |:---:|:---:|
@@ -285,7 +285,7 @@ The Wii Remote's IR camera drives an on-screen pointer, mapped to the mouse or a
 
 Sony headphones that carry a head tracker become a motion source, confirmed on the WH-1000XM5 family. The whole gyro pipeline takes it: gyro-to-stick, gyro-to-mouse, aim engage, calibration, and the DSU motion server. Discovery is by capability rather than a model list, so any headset exposing the same sensor collection is a candidate, whatever its name.
 
-Worth knowing because it explains the behaviour: on these headsets the raw gyro channel streams zeros while the rotation vector carries the real motion, so PadForge synthesises an ordinary gyro rate from consecutive rotation samples. It reports rotation, never position, so leaning closer to the screen changes nothing. Pair it with Aim Engage, because head tracking that is always live is disorienting in most games.
+Worth knowing because it explains the behavior: on these headsets the raw gyro channel streams zeros while the rotation vector carries the real motion, so PadForge synthesizes an ordinary gyro rate from consecutive rotation samples. It reports rotation, never position, so leaning closer to the screen changes nothing. Pair it with Aim Engage, because head tracking that is always live is disorienting in most games.
 
 ### Gyro into Cemu, Dolphin, Yuzu, and Ryujinx.
 
@@ -299,7 +299,7 @@ A Nintendo Switch 2 Joy-Con has an optical sensor on its face. Set it on a desk 
 
 ## Anywhere: open a browser. Press buttons.
 
-PadForge runs a tiny web server. Any device with a browser on your Wi-Fi can load it, pick a layout (Xbox 360, DualShock 4, or multi-touch touchpad), and play. Up to 16 phones at once, each a separate virtual pad. Touch buttons, dual analog sticks, an 8-way D-pad. Rumble feedback through the Vibration API. No app to install on the phone.
+PadForge runs a tiny web server. Any device with a browser on your Wi-Fi can load it, pick a layout, and play. Ten controller layouts (Xbox 360, Xbox One, Xbox Series X|S, DualShock 4, DualSense, DualSense Edge, Switch Pro, Switch 2 Pro, Steam Deck, Steam Controller), a multi-touch touchpad, and a builder that starts from a blank surface. Up to 16 phones at once, each a separate virtual pad. Touch buttons, dual analog sticks, an 8-way D-pad, analog trigger sliders. Rumble feedback through the Vibration API, and the slot's LED color and player number come back as a lightbar strip and pips. The server also binds a self-signed certificate and serves over HTTPS, which is what lets the browser hand over the handset's gyroscope and accelerometer. Scan the QR code on the Dashboard to get there. No app to install on the phone.
 
 No phone handy? Turn on **Touchpad Overlay** from the Dashboard. A transparent on-screen touch surface pins to any monitor and drives the DS4 or DualSense touchpad directly.
 
@@ -307,7 +307,7 @@ No phone handy? Turn on **Touchpad Overlay** from the Dashboard. A transparent o
 
 ### The controller is on the other PC. The game doesn't care.
 
-Remote Link shares devices across the PadForge PCs on your network. A controller, wheel, or HOTAS plugged into one PC shows up in another's PadForge as an ordinary mapping source, takes a slot, and drives a virtual controller the game reads as real hardware. Connect as many PCs as you like, and one shared controller can drive games on several of them at once. It runs both directions at once, and the feedback comes home: rumble, force feedback, adaptive triggers, lightbar, player LEDs, and the controller speaker all play on the physical device wherever it lives. Pair once by matching a six-digit code on both screens, then trusted PCs reconnect on their own the moment they see each other. A gamepad-only switch keeps a paired PC from ever reaching your keyboard, mouse, or macros. It finds PCs on your home network on its own, and reaches across the internet when the PCs share a VPN like ZeroTier.
+Remote Link shares devices across the PadForge PCs on your network. A controller, wheel, or HOTAS plugged into one PC shows up in another's PadForge as an ordinary mapping source, takes a slot, and drives a virtual controller the game reads as real hardware. Connect as many PCs as you like, and one shared controller can drive games on several of them at once. It runs both directions at once, and the feedback comes home: rumble, force feedback, adaptive triggers, lightbar, player LEDs, and the controller speaker all play on the physical device wherever it lives. Pair once by matching a six-digit code on both screens, then trusted PCs reconnect on their own the moment they see each other. A gamepad-only switch keeps a paired PC from ever reaching your keyboard, mouse, or macros. It finds PCs on your home network on its own, and reaches across the internet on an eight-character single-use code: one PC shows the code, the other types it, and the two meet through a relay. No VPN, no port forwarding.
 
 ![Remote Link](screenshots/remote-link.jpg)
 
@@ -404,7 +404,7 @@ Comparison reflects each tool's shipping release as of July 2026. Verified again
 | Native wheel FFB protocol (Logitech / Fanatec / Thrustmaster) | ✅ + rotation range, auto-center, RPM LEDs | ❌ | ❌ | ❌ | ❌ | ❌ |
 | DSU / Cemuhook motion server (Cemu, Dolphin, Yuzu, Ryujinx) | ✅ | ❌ | ❌ | ✅ port 26760 | ✅ | ❌ |
 | Phone as controller | ✅ in-browser, no app install, up to 16 phones at once, touchpad layout included | ❌ | ❌ | ⚠️ reWASD Mobile app (one phone, no touchpad layout) | ❌ | ❌ |
-| Share a controller with another PC's games over a network | ✅ Remote Link, both directions, feedback returns | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Share a controller with another PC's games over a network | ✅ Remote Link, LAN or internet by code, both directions, feedback returns | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Per-app profile switching | ✅ | ✅ since v4.17.12 (Nov 2020) | ❌ | ✅ Autodetect | ✅ | ✅ per-game by design |
 | Max simultaneous virtual controllers | 16 | 4 (hard-coded PAD1-4 in UI) | 4 (UI matches XInput slot indices) | 4 (Slot UI cap) | 4 (Output Slots UI cap) | 1 per physical pad |
 | 1000 Hz polling | ✅ | ⚠️ unverified | ⚠️ unverified | ✅ user-selectable 500 / 1000 Hz | ✅ on USB DS4 | ⚠️ unverified |
@@ -465,7 +465,7 @@ Seven trigger effect modes. Off, Feedback, Weapon, Vibration, Multi-Position Fee
 
 ### DualSense lightbar
 ![Lighting](screenshots/lighting.jpg)
-Fifteen lightbar modes including three Audio Pulse variants and three Audio Bands variants that react to system audio in real time. Three Input Reactive variants flash on button presses (Random Color, Cycle Through Palette, Base Color). Strobe is a square-wave flash at the period you set. Battery paints the bar by charge level (red at low, yellow at mid, green at full). Plus the indicator-LED card for player pattern, mute LED, and brightness.
+Fourteen lightbar modes including three Audio Pulse variants and three Audio Bands variants that react to system audio in real time. A separate Input Reactive overlay flashes on button presses in three variants (Random Color, Cycle Through Palette, Base Color). Strobe is a square-wave flash at the period you set. Battery paints the bar by charge level (red at low, yellow at mid, green at full). Plus the indicator-LED card for player pattern, mute LED, and brightness.
 
 ### Guide button LED
 ![Guide LED](screenshots/guide-led.jpg)
@@ -545,7 +545,7 @@ Sixaxis accelerometer and gyro through the gyro pipeline: gyro-to-mouse, gyro-to
 
 ### Web controller
 ![Web Controller](screenshots/web-controller.jpg)
-Connect a phone or tablet over Wi-Fi. Browser shows an Xbox 360 layout, a DualShock 4 layout, or a multi-touch touchpad layout with virtual sticks, D-pad, triggers, and rumble. Touch the sticks to push them. Tap to click.
+Connect a phone or tablet over Wi-Fi or scan the Dashboard QR code. Ten controller layouts, a multi-touch touchpad, and a blank-surface builder, with virtual sticks, D-pad, analog trigger sliders, and rumble. Touch the sticks to push them. Tap to click. Served over HTTPS so the browser will hand over the handset's motion sensors.
 
 ### Remote Link
 ![Remote Link](screenshots/remote-link.jpg)
@@ -657,8 +657,8 @@ PadForge stands on these projects. Please consider supporting them directly.
 | [dualsense-tester](https://github.com/daidr/dualsense-tester) | Browser DualSense test suite by Xuezhou Dai ([ds.daidr.me](https://ds.daidr.me/)): reference for the Sony feature-report CRC framing and firmware test commands PadForge forwards from virtual to physical pads | MIT |
 | [DS4AudioStreamer](https://github.com/nefarius/DS4AudioStreamer) | DualShock 4 Bluetooth audio reference by nefarius: report 0x14/0x17 framing, frame counter, and volume-enable layout for PadForge's DS4 speaker stream. PadForge's SBC encoder is an original C# implementation from the Bluetooth A2DP specification (no libsbc code) | MIT |
 | [ds4mac documentation](https://github.com/khallmark/ds4mac) | DualShock 4 audio protocol documentation: SBC parameters, packet layouts, and the finding that DS4 audio is Bluetooth-only | MIT |
-| [Bouncy Castle](https://github.com/bcgit/bc-csharp) | Remote Link pairing and transport cryptography: X25519, Ed25519, ChaCha20-Poly1305 | MIT-style |
-| [libusb](https://github.com/libusb/libusb) | USB access library the bundled SDL3 fork uses for the Switch 2 Pro wired driver. Ships unmodified as `libusb-1.0.dll` beside the exe | LGPL-2.1 |
+| [Bouncy Castle](https://github.com/bcgit/bc-csharp) | Remote Link pairing and transport cryptography: X25519, Ed25519, ChaCha20-Poly1305 | MIT |
+| [libusb](https://github.com/libusb/libusb) | USB access library the bundled SDL3 fork uses for the Switch 2 Pro wired driver. Ships unmodified as `libusb-1.0.dll` beside the exe | LGPL-2.1-or-later |
 | [nipplejs](https://github.com/yoannmoinet/nipplejs) | Touch joystick widget in the phone Web Controller, by Yoann Moinet | MIT |
 | [SDL_GameControllerDB](https://github.com/mdqinc/SDL_GameControllerDB) | Community gamepad mapping database that PadForge's bundled mapping file extends | zlib |
 | [Zacksly Icon Pack](https://zacksly.itch.io/) | Stick and trigger tab icon artwork PadForge's icon geometry derives from, by Zacksly | CC BY 3.0 |
@@ -669,7 +669,7 @@ PadForge stands on these projects. Please consider supporting them directly.
 | [SteamHapticsSinger](https://github.com/CrazyCritic89/SteamHapticsSinger) | Steam Controller 2026 and Steam Deck LFO-tone haptic report layout and gain tables | BSD 3-Clause |
 | [hitboxer](https://github.com/valignatev/hitboxer) | SOCD-cleaning semantics reference for the Keyboard & Mouse Snap Tap modes, by valignatev | MIT |
 | [libinput](https://gitlab.freedesktop.org/libinput/libinput) | Trackpad pointer acceleration curve: the touchpad accel profile from `src/filter-touchpad.c`, re-derived in C# for touchpad-to-mouse output | MIT |
-| [SteamKit2](https://github.com/SteamRE/SteamKit) | .NET Steam network client the Steam Workshop controller-config import uses. Connects over an anonymous session, no Steam account needed | LGPL-2.1 |
+| [SteamKit2](https://github.com/SteamRE/SteamKit) | .NET Steam network client the Steam Workshop controller-config import uses. Connects over an anonymous session, no Steam account needed | LGPL-2.1-only |
 | [protobuf-net](https://github.com/protobuf-net/protobuf-net) | Protocol Buffers serializer SteamKit2 uses for the Steam wire protocol, by Marc Gravell | Apache-2.0 |
 | [ZstdSharp](https://github.com/oleg-st/ZstdSharp) | Zstandard decompression SteamKit2 uses for Steam depot chunks. A C# port of the zstd compression library, by Oleg Stepanischev | MIT |
 | [Dolphin](https://github.com/dolphin-emu/dolphin) | Wii controller documentation: the Bluetooth pairing ceremony's Win32 call order and the Wii Remote speaker's Yamaha ADPCM constants. Documentation only, no GPL code ships | GPL-2.0 |

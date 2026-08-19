@@ -445,6 +445,24 @@ namespace PadForge.Common.Input
             bool padForgeWants, bool externalMirroring, bool prevPadForgeWanted)
             => (padForgeWants || externalMirroring || prevPadForgeWanted, padForgeWants);
 
+        /// <summary>Whether this dispatch asserts the lightbar enable bit for
+        /// <paramref name="deviceGuid"/>, or stands down and lets the
+        /// pass-through own the bar.
+        ///
+        /// <para>Extracted so the DECISION is testable, not just the two
+        /// predicates behind it. #334 was not a wrong predicate, it was the
+        /// wrong QUESTION at this call site: it asked whether the lane was
+        /// busy (<c>IsHoldingState</c>, true for any forwarded effect
+        /// payload) instead of whether the lane had the BAR. Tests over the
+        /// helpers alone stayed green through that swap, so the mutation
+        /// that reproduces the regression has to be able to reach this.</para></summary>
+        internal static bool ShouldAssertLightbar(
+            int padIndex, Guid deviceGuid, bool gameDrivenBar, bool isDs5)
+            => !((gameDrivenBar
+                    || DualSensePassthroughDispatcher.IsHoldingLightbar(padIndex))
+                && isDs5
+                && DualSensePassthroughDispatcher.IsPassthroughTarget(padIndex, deviceGuid));
+
         // Devices assigned to this slot on the previous dispatch. A
         // change here means the user re-assigned the slot, which is a
         // deliberate identity claim and has to re-arm state that is
@@ -1897,10 +1915,8 @@ namespace PadForge.Common.Input
                     // and the mic LED were unaffected because they gate
                     // through GateMirroredSubsystem, which is exactly why
                     // it presented as "only the lightbar is dead".
-                    bool assertLightbar = !((gameDrivenBar
-                            || DualSensePassthroughDispatcher.IsHoldingLightbar(_padIndex))
-                        && isDs5
-                        && DualSensePassthroughDispatcher.IsPassthroughTarget(_padIndex, ud.InstanceGuid));
+                    bool assertLightbar = ShouldAssertLightbar(
+                        _padIndex, ud.InstanceGuid, gameDrivenBar, isDs5);
 
                     // Resolve this device's per-device lighting config.
                     // Falls back to the slot's anchor config if missing

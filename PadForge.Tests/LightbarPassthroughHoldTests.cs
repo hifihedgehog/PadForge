@@ -1,5 +1,7 @@
 using System;
 using PadForge.Common.Input;
+using PadForge.Engine;
+using PadForge.Engine.Data;
 using Xunit;
 
 namespace PadForge.Tests
@@ -24,13 +26,22 @@ namespace PadForge.Tests
     /// over, and the #300 flashing fix still depends on that case holding
     /// for the full window.</para>
     /// </summary>
+    // Seeds SettingsManager's device/settings stores, so it rides the same
+    // collection as every other test that touches those statics and restores
+    // them in Dispose. A shared static mutated without both is the recorded
+    // cause of this suite's flakes.
+    [Collection("SettingsManagerStatics")]
     public class LightbarPassthroughHoldTests : IDisposable
     {
         private const int Slot = 6;
         private readonly DualSensePassthroughDispatcher _d;
+        private readonly DeviceCollection _savedDevices;
+        private readonly SettingsCollection _savedSettings;
 
         public LightbarPassthroughHoldTests()
         {
+            _savedDevices = SettingsManager.UserDevices;
+            _savedSettings = SettingsManager.UserSettings;
             _d = new DualSensePassthroughDispatcher(Slot);
             // The real path: the worker is what sets the lane's driving
             // state, and HoldingLightbar deliberately requires it. With no
@@ -39,7 +50,12 @@ namespace PadForge.Tests
             _d.Start();
         }
 
-        public void Dispose() => _d.Dispose();
+        public void Dispose()
+        {
+            _d.Dispose();
+            SettingsManager.UserDevices = _savedDevices;
+            SettingsManager.UserSettings = _savedSettings;
+        }
 
         /// <summary>Waits for the worker to have processed a payload. Bounded,
         /// so a wedged worker fails the test instead of hanging it.</summary>
@@ -129,6 +145,103 @@ namespace PadForge.Tests
         {
             Assert.False(DualSensePassthroughDispatcher.IsHoldingLightbar(Slot + 1));
             Assert.False(DualSensePassthroughDispatcher.IsHoldingState(Slot + 1));
+        }
+
+        // ── The DECISION, not just the predicates ──
+        //
+        // The helper tests above all stayed green when the call site was
+        // mutated back to IsHoldingState, because they never exercised the
+        // call site. #334 lives exactly there: the predicates were both
+        // fine, the question asked of them was wrong. These drive
+        // ShouldAssertLightbar with a real mapped online DualSense so the
+        // mutation that reproduces the regression turns them red.
+
+        private static readonly Guid PadGuid = new("6a1d4f10-3f5e-4a2b-9c7d-334334334334");
+
+        /// <summary>Seeds the stores IsPassthroughTarget reads: an online
+        /// standard DualSense mapped to this slot.</summary>
+        private static void SeedMappedDualSense()
+        {
+            SettingsManager.UserDevices = new DeviceCollection();
+            SettingsManager.UserSettings = new SettingsCollection();
+            lock (SettingsManager.UserDevices.SyncRoot)
+                SettingsManager.UserDevices.Items.Add(new UserDevice
+                {
+                    InstanceGuid = PadGuid,
+                    IsOnline = true,
+                    VendorId = 0x054C,
+                    ProdId = 0x0CE6,
+                });
+            lock (SettingsManager.UserSettings.SyncRoot)
+                SettingsManager.UserSettings.Items.Add(new UserSetting
+                {
+                    InstanceGuid = PadGuid,
+                    MapTo = Slot,
+                });
+        }
+
+        /// <summary>THE REGRESSION AT ITS CALL SITE. Effect traffic that never
+        /// touches the bar must leave PadForge asserting the lightbar, on a
+        /// pad that IS a pass-through target. Mutating the call site back to
+        /// IsHoldingState fails this.</summary>
+        [Fact]
+        public void Decision_NonBarTrafficOnAPassthroughTarget_StillAssertsTheLightbar()
+        {
+            SeedMappedDualSense();
+            _d.Enqueue(0x02, Payload(Vf1NoLightbar));
+            WaitForLaneDriving();
+
+            Assert.True(
+                DualSensePassthroughDispatcher.IsPassthroughTarget(Slot, PadGuid),
+                "fixture must make this pad a pass-through target, or the "
+                + "assertion below passes for the wrong reason");
+            Assert.True(
+                UserEffectsDispatcher.ShouldAssertLightbar(
+                    Slot, PadGuid, gameDrivenBar: false, isDs5: true),
+                "a host driving triggers or rumble and never the bar must not "
+                + "take the Lighting tab's lightbar away (#334)");
+        }
+
+        /// <summary>The #300 stand-down still happens when the game really is
+        /// driving the bar.</summary>
+        [Fact]
+        public void Decision_ABarWriteOnAPassthroughTarget_StandsDown()
+        {
+            SeedMappedDualSense();
+            _d.Enqueue(0x02, Payload(Vf1Lightbar, 0, 0, 255));
+            WaitForLaneDriving();
+
+            Assert.False(
+                UserEffectsDispatcher.ShouldAssertLightbar(
+                    Slot, PadGuid, gameDrivenBar: false, isDs5: true),
+                "a game driving the bar owns it for the hold window (#300)");
+        }
+
+        /// <summary>The mirrored 1.5 s grace still stands the writer down on
+        /// its own, independent of the lane's hold.</summary>
+        [Fact]
+        public void Decision_MirroredBarWrite_StandsDown()
+        {
+            SeedMappedDualSense();
+
+            Assert.False(
+                UserEffectsDispatcher.ShouldAssertLightbar(
+                    Slot, PadGuid, gameDrivenBar: true, isDs5: true),
+                "an in-grace external bar write still yields the subsystem");
+        }
+
+        /// <summary>A DS4 is never suppressed by this gate: the suppression is
+        /// scoped to the DS5 pass-through lane.</summary>
+        [Fact]
+        public void Decision_NonDs5_NeverSuppressed()
+        {
+            SeedMappedDualSense();
+            _d.Enqueue(0x02, Payload(Vf1Lightbar, 255, 255, 0));
+            WaitForLaneDriving();
+
+            Assert.True(
+                UserEffectsDispatcher.ShouldAssertLightbar(
+                    Slot, PadGuid, gameDrivenBar: true, isDs5: false));
         }
 
         /// <summary>A payload too short to carry validFlag1 must not be read

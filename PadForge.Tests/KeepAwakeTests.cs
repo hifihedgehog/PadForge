@@ -166,21 +166,20 @@ namespace PadForge.Tests
             Assert.Equal(axis == "RY" ? level : (short)0, gp.ThumbRY);
         }
 
-        /// <summary>The self-cancelling contract, tightened by @HaraDaya's
-        /// 2026-08-19 report: ANY real stick input past the rest margin
-        /// passes through byte-identical, in both directions, INCLUDING
-        /// values below the held level. The first cut swallowed sub-level
-        /// input and replaced it with the positive hold, so a small left
-        /// nudge became a full rightward push, the side-to-side jumping in
-        /// the report's capture.</summary>
+        /// <summary>The self-cancelling contract: real stick input past
+        /// the held level passes through byte-identical, in both
+        /// directions. The level is the rest margin (owner ruling,
+        /// 2026-08-19): anything under it is invisible to the game by the
+        /// feature's own tuning contract, so only input PAST it counts as
+        /// use.</summary>
         [Theory]
         [InlineData(20000)]
         [InlineData(-20000)]
         [InlineData(32767)]
         [InlineData(-32768)]
-        [InlineData(5000)]    // above rest, below the 25% level: was swallowed
-        [InlineData(-5000)]   // was sign-flipped into +8191
-        public void RealInputPastRest_PassesThroughUntouched(int real)
+        [InlineData(9000)]    // just past the 25% level (8191)
+        [InlineData(-9000)]
+        public void RealInputPastTheLevel_PassesThroughUntouched(int real)
         {
             var gp = new Gamepad { ThumbLX = (short)real };
             InputManager.ApplyKeepAwake(Cfg(pct: 25), ref gp);
@@ -191,7 +190,8 @@ namespace PadForge.Tests
         /// pushed straight up, so the held axis itself reads centered. The
         /// old per-axis gate injected the X hold anyway, bending forward
         /// movement sideways as an inverse deadzone. The hold must consider
-        /// the whole stick: any paired-axis deflection releases it.</summary>
+        /// the whole stick: paired-axis deflection past the level releases
+        /// it.</summary>
         [Theory]
         [InlineData(32767)]
         [InlineData(-32768)]
@@ -218,21 +218,45 @@ namespace PadForge.Tests
             Assert.Equal((short)(32767 * 25 / 100), gp2.ThumbRX);
         }
 
-        /// <summary>Inside the rest margin the hold engages, INCLUDING
-        /// against small drift on either axis of the pair: the axis reads a
-        /// stable positive level rather than flapping around rest.</summary>
+        /// <summary>The margin IS the deflection level, never a fixed
+        /// epsilon (owner ruling, 2026-08-19): a cheap or aging stick can
+        /// rest 5% off neutral with no deadzone configured (the owner's
+        /// own Xbox Series pad does), and a fixed 4% margin stopped the
+        /// hold from ever engaging on exactly the pads that need it. Drift
+        /// under the level, on either axis, still engages the hold.</summary>
         [Theory]
         [InlineData(0, 0)]
         [InlineData(500, 0)]
         [InlineData(-500, 0)]
-        [InlineData(0, 500)]
-        [InlineData(-500, -500)]
-        public void RestAndDriftWithinTheMargin_ReadTheHeldLevel(int lx, int ly)
+        [InlineData(1638, 0)]     // 5% resting drift: the owner real-world case
+        [InlineData(-1638, 1638)]
+        [InlineData(5000, 0)]     // 15%: heavy sag, still under the 25% level
+        [InlineData(0, 5000)]
+        [InlineData(8190, 0)]     // one count under the level boundary
+        public void DriftUnderTheLevel_StillEngagesTheHold(int lx, int ly)
         {
             var gp = new Gamepad { ThumbLX = (short)lx, ThumbLY = (short)ly };
             InputManager.ApplyKeepAwake(Cfg(pct: 25), ref gp);
             Assert.Equal((short)(32767 * 25 / 100), gp.ThumbLX);
             Assert.Equal((short)ly, gp.ThumbLY);
+        }
+
+        [Fact]
+        public void MotionSweep_DoesNotFlutterTheEngageBoundary()
+        {
+            // The injected value sweeps with Add Motion, but the GATE uses
+            // the steady base level. A drift value just under the base
+            // level must engage at every phase of the sweep, including the
+            // phases where the swept value dips below the drift.
+            var ms = Cfg(pct: 25);
+            ms.KeepAwakeMotion = true;
+            for (long t = 0; t < InputManager.KeepAwakeMotionPeriodMs; t += 50)
+            {
+                var gp = new Gamepad { ThumbLX = 8000 }; // under base 8191
+                InputManager.ApplyKeepAwake(ms, ref gp, nowMs: t);
+                short swept = InputManager.KeepAwakeLevel(25, motion: true, nowMs: t);
+                Assert.Equal(swept, gp.ThumbLX);
+            }
         }
 
         [Fact]

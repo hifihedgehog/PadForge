@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Recaptures the two Web Controller screenshots against a PROVEN-LIVE server.
 .DESCRIPTION
@@ -222,10 +222,10 @@ try {
 
     $shots = @(
         @{ Url = "${scheme}://localhost:${Port}/";                                 Name = 'web-landing';    Wait = 6000; W = 1900; H = 1300 },
-        @{ Url = "${scheme}://localhost:${Port}/controller.html?layout=xbox360";   Name = 'web-controller'; Wait = 7000 },
-        @{ Url = "${scheme}://localhost:${Port}/controller.html?layout=dualsense"; Name = 'web-dualsense';  Wait = 7000 },
-        @{ Url = "${scheme}://localhost:${Port}/controller.html?layout=steamdeck"; Name = 'web-steamdeck';  Wait = 7000 },
-        @{ Url = "${scheme}://localhost:${Port}/controller.html?layout=switch2pro";Name = 'web-switch2pro'; Wait = 7000 },
+        @{ Url = "${scheme}://localhost:${Port}/controller.html?layout=xbox360";   Name = 'web-controller'; Wait = 9500 },
+        @{ Url = "${scheme}://localhost:${Port}/controller.html?layout=dualsense"; Name = 'web-dualsense';  Wait = 9500 },
+        @{ Url = "${scheme}://localhost:${Port}/controller.html?layout=steamdeck"; Name = 'web-steamdeck';  Wait = 9500 },
+        @{ Url = "${scheme}://localhost:${Port}/controller.html?layout=switch2pro";Name = 'web-switch2pro'; Wait = 9500 },
         @{ Url = "${scheme}://localhost:${Port}/custom.html";                      Name = 'web-custom';     Wait = 7000 }
     )
     foreach ($s in $shots) {

@@ -11,9 +11,14 @@ namespace PadForge.Tests
     /// sensor's absolute 16-bit counters on joystick axes 6/7 (SDL#8); the
     /// wrapper derives per-poll wraparound deltas into
     /// CustomInputState.JoyCon2MouseDX/DY, which is the surface these tests
-    /// drive. Full scale is 16 counts per poll, matching SdlMouseWrapper's
-    /// MotionScale (2048 per count over the 0..65535 axis range) so the
-    /// sensor and a real mouse feel identical through the grid.
+    /// drive. Since #331 the reader integrates those deltas through a
+    /// 25 ms RelativeVelocityWindow: full scale is 16,000 counts per
+    /// SECOND, which a sustained 16 counts per 1 kHz poll reaches, matching
+    /// SdlMouseWrapper's windowed scale so the sensor and a real mouse
+    /// still feel identical through the grid. The Pump* helpers feed the
+    /// same per-poll counts for one full window (25 poll frames under a
+    /// fresh device key), which lands every old per-poll expectation
+    /// unchanged: 25 polls x counts / 0.025 s / 16,000 = counts / 16.
     /// </summary>
     [Collection("SettingsManagerStatics")]
     public class JoyCon2MouseSourceTests
@@ -31,6 +36,47 @@ namespace PadForge.Tests
             JoyCon2MouseDY = dy,
         };
 
+        // One full window of poll frames. The reader's per-device window
+        // adds counts once per BeginPollFrame; a fresh guid per pump keeps
+        // the static window dictionary from bleeding between tests.
+        private const int WindowPolls = 25;
+
+        private static float PumpBipolar(CustomInputState state, MappingSource src)
+        {
+            string guid = System.Guid.NewGuid().ToString();
+            float v = 0f;
+            for (int i = 0; i < WindowPolls; i++)
+            {
+                SourceCoercion.BeginPollFrame();
+                v = SourceCoercion.EvaluateForBipolarAxisTarget(state, src, evaluatedDeviceGuid: guid);
+            }
+            return v;
+        }
+
+        private static float PumpTrigger(CustomInputState state, MappingSource src)
+        {
+            string guid = System.Guid.NewGuid().ToString();
+            float v = 0f;
+            for (int i = 0; i < WindowPolls; i++)
+            {
+                SourceCoercion.BeginPollFrame();
+                v = SourceCoercion.EvaluateForTriggerTarget(state, src, evaluatedDeviceGuid: guid);
+            }
+            return v;
+        }
+
+        private static bool PumpButton(CustomInputState state, MappingSource src, int threshold)
+        {
+            string guid = System.Guid.NewGuid().ToString();
+            bool b = false;
+            for (int i = 0; i < WindowPolls; i++)
+            {
+                SourceCoercion.BeginPollFrame();
+                b = SourceCoercion.EvaluateForButtonTarget(state, src, threshold, evaluatedDeviceGuid: guid);
+            }
+            return b;
+        }
+
         [Theory]
         [InlineData(0f, 0f)]       // idle
         [InlineData(8f, 0.5f)]     // half deflection at 8 counts/poll
@@ -39,15 +85,15 @@ namespace PadForge.Tests
         [InlineData(64f, 1.0f)]    // clamped past full scale
         public void BipolarRead_ScalesCountsLikeARealMouse(float counts, float expected)
         {
-            float v = SourceCoercion.EvaluateForBipolarAxisTarget(State(dx: counts), Src("X"));
-            Assert.Equal(expected, v, precision: 5);
+            float v = PumpBipolar(State(dx: counts), Src("X"));
+            Assert.Equal(expected, v, precision: 3);
         }
 
         [Fact]
         public void YAxis_ReadsTheYDelta()
         {
-            float v = SourceCoercion.EvaluateForBipolarAxisTarget(State(dy: 8f), Src("Y"));
-            Assert.Equal(0.5f, v, precision: 5);
+            float v = PumpBipolar(State(dy: 8f), Src("Y"));
+            Assert.Equal(0.5f, v, precision: 3);
         }
 
         [Theory]
@@ -57,8 +103,7 @@ namespace PadForge.Tests
         [InlineData(-8f, true)]   // direction-blind by default
         public void MotionAsButton_FiresAboveThreshold(float counts, bool expected)
         {
-            bool pressed = SourceCoercion.EvaluateForButtonTarget(
-                State(dx: counts), Src("X"), globalThresholdPercent: 25);
+            bool pressed = PumpButton(State(dx: counts), Src("X"), threshold: 25);
             Assert.Equal(expected, pressed);
         }
 
@@ -76,8 +121,7 @@ namespace PadForge.Tests
             var src = Src("X", deadZone: 25);
             src.HalfAxis = true;
             src.Invert = !rightOnly;
-            bool pressed = SourceCoercion.EvaluateForButtonTarget(
-                State(dx: counts), src, globalThresholdPercent: 25);
+            bool pressed = PumpButton(State(dx: counts), src, threshold: 25);
             Assert.Equal(expected, pressed);
         }
 
@@ -91,9 +135,9 @@ namespace PadForge.Tests
             src.HalfAxis = true;
             src.Bidirectional = true;
             src.Invert = true; // must be irrelevant in this mode
-            Assert.True(SourceCoercion.EvaluateForButtonTarget(State(dx: 8f), src, 25));
-            Assert.True(SourceCoercion.EvaluateForButtonTarget(State(dx: -8f), src, 25));
-            Assert.False(SourceCoercion.EvaluateForButtonTarget(State(dx: 2f), src, 25));
+            Assert.True(PumpButton(State(dx: 8f), src, 25));
+            Assert.True(PumpButton(State(dx: -8f), src, 25));
+            Assert.False(PumpButton(State(dx: 2f), src, 25));
         }
 
         [Fact]
@@ -104,8 +148,8 @@ namespace PadForge.Tests
             var src = Src("Y");
             src.HalfAxis = true;
             src.Invert = true; // up (negative Y) pulls
-            Assert.Equal(0.5f, SourceCoercion.EvaluateForTriggerTarget(State(dy: -8f), src), precision: 5);
-            Assert.Equal(0f, SourceCoercion.EvaluateForTriggerTarget(State(dy: 8f), src), precision: 5);
+            Assert.Equal(0.5f, PumpTrigger(State(dy: -8f), src), precision: 3);
+            Assert.Equal(0f, PumpTrigger(State(dy: 8f), src), precision: 3);
         }
 
         [Fact]
@@ -117,16 +161,16 @@ namespace PadForge.Tests
             // flags must select the same physical motion whether the row
             // feeds a button, a trigger, or a stick target.
             var right = Src("X"); right.HalfAxis = true;
-            Assert.Equal(0.5f, SourceCoercion.EvaluateForBipolarAxisTarget(State(dx: 8f), right), precision: 5);
-            Assert.Equal(0f, SourceCoercion.EvaluateForBipolarAxisTarget(State(dx: -8f), right), precision: 5);
+            Assert.Equal(0.5f, PumpBipolar(State(dx: 8f), right), precision: 3);
+            Assert.Equal(0f, PumpBipolar(State(dx: -8f), right), precision: 3);
 
             var left = Src("X", invert: true); left.HalfAxis = true;
-            Assert.Equal(0.5f, SourceCoercion.EvaluateForBipolarAxisTarget(State(dx: -8f), left), precision: 5);
-            Assert.Equal(0f, SourceCoercion.EvaluateForBipolarAxisTarget(State(dx: 8f), left), precision: 5);
+            Assert.Equal(0.5f, PumpBipolar(State(dx: -8f), left), precision: 3);
+            Assert.Equal(0f, PumpBipolar(State(dx: 8f), left), precision: 3);
 
             var either = Src("X", invert: true); either.HalfAxis = true; either.Bidirectional = true;
-            Assert.Equal(0.5f, SourceCoercion.EvaluateForBipolarAxisTarget(State(dx: 8f), either), precision: 5);
-            Assert.Equal(0.5f, SourceCoercion.EvaluateForBipolarAxisTarget(State(dx: -8f), either), precision: 5);
+            Assert.Equal(0.5f, PumpBipolar(State(dx: 8f), either), precision: 3);
+            Assert.Equal(0.5f, PumpBipolar(State(dx: -8f), either), precision: 3);
         }
 
         [Fact]
@@ -134,8 +178,8 @@ namespace PadForge.Tests
         {
             // Non-HalfAxis rows keep the pre-#154-fix behavior: full signed
             // velocity with Invert as a plain sign flip.
-            Assert.Equal(-0.5f, SourceCoercion.EvaluateForBipolarAxisTarget(
-                State(dx: 8f), Src("X", invert: true)), precision: 5);
+            Assert.Equal(-0.5f, PumpBipolar(
+                State(dx: 8f), Src("X", invert: true)), precision: 3);
         }
 
         [Fact]
@@ -145,8 +189,8 @@ namespace PadForge.Tests
             // per-row DeadZone override, so the override must win. This is the
             // issue's "invisible weapon wheel" knob.
             var state = State(dx: 8f);
-            Assert.True(SourceCoercion.EvaluateForButtonTarget(state, Src("X"), 25));
-            Assert.False(SourceCoercion.EvaluateForButtonTarget(state, Src("X", deadZone: 60), 25));
+            Assert.True(PumpButton(state, Src("X"), 25));
+            Assert.False(PumpButton(state, Src("X", deadZone: 60), 25));
         }
 
         [Fact]
@@ -154,8 +198,8 @@ namespace PadForge.Tests
         {
             // Trigger read is direction-blind speed (same Math.Abs contract as
             // the IR Pointer trigger read): down-motion pulls as hard as up.
-            Assert.Equal(0.5f, SourceCoercion.EvaluateForTriggerTarget(State(dy: 8f), Src("Y")), precision: 5);
-            Assert.Equal(0.5f, SourceCoercion.EvaluateForTriggerTarget(State(dy: -8f), Src("Y")), precision: 5);
+            Assert.Equal(0.5f, PumpTrigger(State(dy: 8f), Src("Y")), precision: 3);
+            Assert.Equal(0.5f, PumpTrigger(State(dy: -8f), Src("Y")), precision: 3);
         }
 
         [Fact]
@@ -163,8 +207,8 @@ namespace PadForge.Tests
         {
             var src = Src("X");
             src.IrPointerSensitivity = 2.0;
-            float v = SourceCoercion.EvaluateForBipolarAxisTarget(State(dx: 4f), src);
-            Assert.Equal(0.5f, v, precision: 5); // 4/16 * 2.0
+            float v = PumpBipolar(State(dx: 4f), src);
+            Assert.Equal(0.5f, v, precision: 3); // 4/16 * 2.0
         }
 
         [Fact]

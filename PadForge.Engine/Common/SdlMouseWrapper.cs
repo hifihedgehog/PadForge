@@ -121,6 +121,17 @@ namespace PadForge.Engine
         // Pooled per-tick state (poll thread is the sole caller).
         private PooledInputStatePair _statePool;
 
+        // Sliding-window velocity for the relative axes (#331). The old code
+        // published the PER-POLL delta scaled by MotionScale, which made the
+        // axis a center/spike comb whenever the mouse's report rate was below
+        // the polling rate (7 of 8 polls read zero with a 125 Hz mouse at
+        // 1 kHz), and made the scale depend on the polling interval. The
+        // window preserves the old scale exactly for a 1 kHz mouse at the
+        // default 1 ms interval (counts/s x MotionScale/1000 == counts/poll x
+        // MotionScale) and preserves the deflection time-integral at every
+        // report rate, so net camera speed through a mapping is unchanged.
+        private readonly RelativeVelocityWindow _velocity = new RelativeVelocityWindow();
+
         public CustomInputState GetCurrentState(bool forceRaw = false)
         {
             var state = _statePool.Next();
@@ -129,16 +140,20 @@ namespace PadForge.Engine
             // trackpad's mouse collection, Step 1 redirects all mouse wrappers to
             // IntPtr.Zero (Windows' synthetic mouse output at hDevice=0).
             RawInputListener.ConsumeMouseDelta(_rawInputHandle, out int dx, out int dy);
-            state.Axis[0] = Math.Clamp(AxisCenter + (int)(dx * MotionScale), 0, 65535);
-            state.Axis[1] = Math.Clamp(AxisCenter + (int)(dy * MotionScale), 0, 65535);
+            int scroll = RawInputListener.ConsumeMouseScroll(_rawInputHandle);
+
+            _velocity.Add(System.Diagnostics.Stopwatch.GetTimestamp(), dx, dy, scroll);
+            _velocity.CountsPerSecond(out float vx, out float vy, out float vs);
+            state.Axis[0] = Math.Clamp(AxisCenter + (int)(vx * (MotionScale / 1000f)), 0, 65535);
+            state.Axis[1] = Math.Clamp(AxisCenter + (int)(vy * (MotionScale / 1000f)), 0, 65535);
             // Unclamped counts for the mouse-gesture recognizer (#200), from
-            // this same single consume: the clamped axes cap at ±16 counts per
-            // poll, flattening fast flicks to a 1:1 ratio.
+            // this same single consume. Deliberately the raw per-poll values,
+            // not the windowed velocity: gesture recognition wants the exact
+            // count stream.
             state.MouseRawDX = dx;
             state.MouseRawDY = dy;
 
-            int scroll = RawInputListener.ConsumeMouseScroll(_rawInputHandle);
-            state.Axis[2] = Math.Clamp(AxisCenter + (int)(scroll * ScrollScale), 0, 65535);
+            state.Axis[2] = Math.Clamp(AxisCenter + (int)(vs * (ScrollScale / 1000f)), 0, 65535);
 
             RawInputListener.GetMouseButtons(_rawInputHandle, _mouseButtonBuffer);
             // Merge buttons captured by the low-level mouse hook (same reason

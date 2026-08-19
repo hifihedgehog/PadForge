@@ -143,7 +143,7 @@ namespace PadForge.Engine
             int scroll = RawInputListener.ConsumeMouseScroll(_rawInputHandle);
 
             _velocity.Add(System.Diagnostics.Stopwatch.GetTimestamp(), dx, dy, scroll);
-            _velocity.CountsPerSecond(out float vx, out float vy, out float vs);
+            _velocity.CountsPerSecond(out float vx, out float vy, out _);
             state.Axis[0] = Math.Clamp(AxisCenter + (int)(vx * (MotionScale / 1000f)), 0, 65535);
             state.Axis[1] = Math.Clamp(AxisCenter + (int)(vy * (MotionScale / 1000f)), 0, 65535);
             // Unclamped counts for the mouse-gesture recognizer (#200), from
@@ -153,7 +153,15 @@ namespace PadForge.Engine
             state.MouseRawDX = dx;
             state.MouseRawDY = dy;
 
-            state.Axis[2] = Math.Clamp(AxisCenter + (int)(vs * (ScrollScale / 1000f)), 0, 65535);
+            // Scroll is an impulse lane, not a rate lane: a notch is a
+            // discrete ±120 event, so the boxcar AVERAGE that is right for
+            // motion collapses its peak by the window factor (one notch read
+            // 614 counts instead of 15,360, dead under any mapping threshold
+            // above 2%). The window SUM keeps the old per-poll peak exactly,
+            // holds it for the 25 ms window instead of one poll, and merges
+            // notches inside one window so faster scrolling reads stronger.
+            _velocity.WindowSums(out _, out _, out float scrollSum);
+            state.Axis[2] = Math.Clamp(AxisCenter + (int)(scrollSum * ScrollScale), 0, 65535);
 
             RawInputListener.GetMouseButtons(_rawInputHandle, _mouseButtonBuffer);
             // Merge buttons captured by the low-level mouse hook (same reason

@@ -403,5 +403,76 @@ namespace PadForge.Tests
                 + "window shut, so anything that pushes during the rebuild writes "
                 + "the outgoing profile's grid over the canon rebuild.");
         }
+
+        // ── Rule 1 covers BOTH grid-to-domain writers ──
+        //
+        // UpdatePadSettingsFromViewModels is the tuning twin of the mappings
+        // push: it writes the ViewModels' per-device tuning into the
+        // PadSettings, and since #331 it runs on the 250 ms tier-1 autosave
+        // tick as well as inside every save. Mid-swap the ViewModels still
+        // hold the OUTGOING profile's tuning while the PadSettings already
+        // belong to the incoming one, so the same self-guarding rule applies:
+        // the writer consults the stale flag itself, and every caller,
+        // present and future, inherits the guard.
+
+        /// <summary>A slot with a selected device and a PadSetting the
+        /// ViewModel disagrees with. The disagreement is the probe: whichever
+        /// side survives the push tells us who won.</summary>
+        private static (SettingsService ss, PadSetting ps, int vmGain) ArrangeTuningPush()
+        {
+            SettingsManager.UserDevices = new DeviceCollection();
+            SettingsManager.UserSettings = new SettingsCollection();
+            SettingsManager.SlotMappingSets = new MappingSet[InputManager.MaxPads];
+            Array.Clear(SettingsManager.SlotCreated, 0, SettingsManager.SlotCreated.Length);
+            SettingsManager.SlotCreated[0] = true;
+
+            var selected = Guid.NewGuid();
+            lock (SettingsManager.UserDevices.SyncRoot)
+                SettingsManager.UserDevices.Items.Add(
+                    new UserDevice { InstanceGuid = selected, IsOnline = true });
+            var ps = new PadSetting { ForceOverall = "77" };
+            var us = new UserSetting { InstanceGuid = selected, MapTo = 0 };
+            us.SetPadSetting(ps);
+            lock (SettingsManager.UserSettings.SyncRoot)
+                SettingsManager.UserSettings.Items.Add(us);
+
+            var vm = new MainViewModel();
+            var ss = new SettingsService(vm);
+            var pad = vm.Pads[0];
+            var mapped = new PadViewModel.MappedDeviceInfo { InstanceGuid = selected };
+            pad.MappedDevices.Add(mapped);
+            pad.SelectedMappedDevice = mapped;
+            pad.ForceOverallGain = 42; // the ViewModel disagrees with the PadSetting
+            return (ss, ps, 42);
+        }
+
+        /// <summary>THE GUARD, tuning side: while the swap window is open the
+        /// push must not write the (outgoing) ViewModel over the (incoming)
+        /// PadSetting.</summary>
+        [Fact]
+        public void TuningPushIsANoOp_WhileTheDomainSwapWindowIsOpen()
+        {
+            var (ss, ps, _) = ArrangeTuningPush();
+
+            InputService.VmMappingsStale = true;
+            try { ss.UpdatePadSettingsFromViewModels(); }
+            finally { InputService.VmMappingsStale = false; }
+
+            Assert.Equal("77", ps.ForceOverall);
+        }
+
+        /// <summary>Positive control: with the window shut the push is
+        /// authoritative and writes, or the guard test would be vacuously
+        /// true of a push that never does anything.</summary>
+        [Fact]
+        public void TuningPushStillWrites_OnceTheWindowIsShut()
+        {
+            var (ss, ps, vmGain) = ArrangeTuningPush();
+
+            Assert.False(InputService.VmMappingsStale);
+            ss.UpdatePadSettingsFromViewModels();
+
+            Assert.Equal(vmGain.ToString(), ps.ForceOverall);
+        }
     }
 }

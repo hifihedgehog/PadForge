@@ -122,6 +122,54 @@ namespace PadForge.Tests
             Assert.Equal(0f, x);
         }
 
+        /// <summary>Impulse contract (scroll notches ride WindowSums, not
+        /// CountsPerSecond): a single ±120 notch must read its FULL value
+        /// for the whole window, then drop to zero. The boxcar average
+        /// collapsed the notch's peak by the window factor (120 -> 614
+        /// counts through ScrollScale instead of 15,360), which put every
+        /// thresholded scroll mapping under its threshold. The caller Adds
+        /// every poll, so the gap never exceeds the window and the stall
+        /// prescale cannot shrink a notch that follows an idle stretch.</summary>
+        [Fact]
+        public void ScrollNotch_KeepsFullPeakForOneWindow_ThenDecays()
+        {
+            var w = new RelativeVelocityWindow();
+            long t = MsTicks * 1000;
+            // Long idle stretch first: the notch after it must NOT be
+            // stall-prescaled, because Add runs every poll.
+            for (int i = 0; i < 200; i++) { w.Add(t, 0f, 0f, 0f); t += MsTicks; }
+            w.Add(t, 0f, 0f, 120f); // one wheel notch
+            w.WindowSums(out _, out _, out float z);
+            Assert.Equal(120f, z);
+            // Full peak holds across the window...
+            for (int i = 0; i < RelativeVelocityWindow.WindowMs - 2; i++)
+            {
+                t += MsTicks;
+                w.Add(t, 0f, 0f, 0f);
+                w.WindowSums(out _, out _, out z);
+                Assert.Equal(120f, z);
+            }
+            // ...and evicts cleanly after it.
+            t += 3 * MsTicks;
+            w.Add(t, 0f, 0f, 0f);
+            w.WindowSums(out _, out _, out z);
+            Assert.Equal(0f, z);
+        }
+
+        /// <summary>Notches inside one window merge, so faster scrolling
+        /// reads stronger, matching the old same-poll additive behavior.</summary>
+        [Fact]
+        public void ScrollNotches_InsideOneWindow_Sum()
+        {
+            var w = new RelativeVelocityWindow();
+            long t = MsTicks * 1000;
+            w.Add(t, 0f, 0f, 120f);
+            t += 10 * MsTicks;
+            w.Add(t, 0f, 0f, 120f);
+            w.WindowSums(out _, out _, out float z);
+            Assert.Equal(240f, z);
+        }
+
         /// <summary>All three channels ride one ring: scroll shares the
         /// window with X/Y and resets with them.</summary>
         [Fact]

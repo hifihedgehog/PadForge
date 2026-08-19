@@ -130,6 +130,22 @@ namespace PadForge.Engine.Common
             z = _sumZ / s_windowSeconds;
         }
 
+        /// <summary>Raw sums over the window, computed after <see cref="Add"/>
+        /// for the same tick. For impulse lanes (scroll notches): a discrete
+        /// event is not a rate, so dividing it across the window collapses
+        /// its peak by the window factor (a 120-count notch averaged over
+        /// 25 ms reads 25x weaker than the same notch published per-poll,
+        /// which killed every thresholded scroll mapping). The sum keeps the
+        /// old per-poll peak exactly, holds it for the window so a slow
+        /// consumer cannot miss it, and merges notches that land within one
+        /// window, so faster scrolling still reads stronger.</summary>
+        public void WindowSums(out float x, out float y, out float z)
+        {
+            x = _sumX;
+            y = _sumY;
+            z = _sumZ;
+        }
+
         /// <summary>Drops all state (device re-open, stream restart).</summary>
         public void Reset()
         {

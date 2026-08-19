@@ -141,7 +141,11 @@ namespace PadForge.Tests
             var lut = PadForge.Common.CurveLut.GetOrBuild("0.000,0.400;1.000,1.000");
             Assert.True(PadForge.Common.CurveLut.Lookup(lut, 0) > 0.3,
                 "fixture check: the curve must start above zero");
-            short x = 0, y = 0;
+            // NOISE inside the deadzone, not exact zero: at exact zero the
+            // sign factor masks the defect (Math.Sign(0) == 0), which let a
+            // first draft of this test pass with the guard removed. The
+            // drift fires on the ~2% jitter a real stick rests at.
+            short x = 600, y = -600;
             InputManager.ApplyDeadZoneForTest(ref x, ref y, Dz, Dz, Adz, Adz, 0,
                 100, 100, 100, 100, lut, lut, shape);
             Assert.Equal(0, x);
@@ -185,8 +189,15 @@ namespace PadForge.Tests
         public void AntiDeadzoneOver100_IsClampedNotDivergent()
         {
             // The persisted field has no upper bound; past 100 the radial
-            // rescale diverged as the pair magnitude shrank. Clamped to 100
-            // the output saturates cleanly.
+            // rescale diverged as the pair magnitude shrank. Clamped, any
+            // value past 100 behaves exactly like 100. The probe is
+            // OFF-AXIS: on-axis the final short clamp saturates both and
+            // masks the divergence (its own mutation run proved that).
+            var at150 = Apply(3277, 16384, DeadZoneShape.ScaledRadial, adz: 150);
+            var at100 = Apply(3277, 16384, DeadZoneShape.ScaledRadial, adz: 100);
+            Assert.Equal(at100.X, at150.X);
+            Assert.Equal(at100.Y, at150.Y);
+            // And the saturating case stays saturated.
             var (x, _) = Apply(20000, 0, DeadZoneShape.ScaledRadial, adz: 150);
             Assert.Equal(32767, x);
         }

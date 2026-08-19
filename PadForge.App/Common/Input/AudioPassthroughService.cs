@@ -2873,18 +2873,35 @@ namespace PadForge.Common.Input
         private const int BtLagEscalateStep = 480;     // +10 ms per underrun
         private const int BtLagDecayStepPerSecond = 48;    // -1 ms per clean second
 
+        /// <summary>The trim clamp, and therefore the tick buffer headroom:
+        /// every buffer a tick reads into MUST hold BtPullFrames plus this
+        /// (the #325 regression). The 9983bffd change was exactly this coupling left
+        /// implicit: the clamp grew from 4 to 12 while the pull buffer kept
+        /// its +8 headroom, so a positive trim past +8 overran the buffer,
+        /// the tick's catch flagged the sink TransportFailed, and the 5 s
+        /// rebuild loop replayed the crash forever: a silent mirror and a
+        /// dead test tone instead of audio.</summary>
+        internal const int BtMaxTrimFrames = 12;
+
+        /// <summary>Floats one tick can read at the maximum positive trim:
+        /// the minimum length for the pull buffer. Test-locked against
+        /// ComputeLagTrim's clamp.</summary>
+        internal static int MaxTickReadFloats => (BtPullFrames + BtMaxTrimFrames) * 2;
+
         /// <summary>Proportional drift trim (#325): the per-tick frame
         /// adjustment toward the cushion target. Inside the deadband it
         /// holds at zero; outside, it scales with the error and clamps at
-        /// ±12 frames (a momentary ~2.3% rate bend on a 512-frame tick),
-        /// so recovery from a burst takes ticks instead of the seconds the
-        /// old fixed ±4 needed. Pure, so the rule is test-locked.</summary>
+        /// ±BtMaxTrimFrames (a momentary ~2.3% rate bend on a 512-frame
+        /// tick), so recovery from a burst takes ticks instead of the
+        /// seconds the old fixed ±4 needed. Pure, so the rule is
+        /// test-locked.</summary>
         internal static int ComputeLagTrim(int lag, int target, int deadband)
         {
             int err = lag - target;
             if (err > -deadband && err < deadband) return 0;
             int trim = err / 60;
-            return trim > 12 ? 12 : trim < -12 ? -12 : trim;
+            return trim > BtMaxTrimFrames ? BtMaxTrimFrames
+                 : trim < -BtMaxTrimFrames ? -BtMaxTrimFrames : trim;
         }
 
         /// <summary>One underrun's escalation of the cushion target,
@@ -2971,7 +2988,9 @@ namespace PadForge.Common.Input
                 // The DUALSHOCK 4 lane shares only the tick: its cadence is
                 // availability-driven with bursts allowed (see Ds4BtTick) —
                 // the DS5 one-report-per-tick rule is NOT a DS4 fact.
-                var pull = new float[(BtPullFrames + 8) * 2];
+                // Sized for the maximum positive trim (#325 regression): the tick reads
+                // BtPullFrames + ComputeLagTrim's clamp, never more.
+                var pull = new float[MaxTickReadFloats];
                 var frame = new float[Ds5OpusFrameSamples * 2];
                 var opus = new byte[Ds5OpusBytes + 16];
                 var report = new byte[Ds5BtReportSize];
@@ -3097,8 +3116,17 @@ namespace PadForge.Common.Input
                             SendDs5BtFrame(s, frame, opus, report, haveHaptics ? hapticPcm : null);
                             _personaSpkSends++;
                         }
-                        catch
+                        catch (Exception ex)
                         {
+                            // Name the fault (#325 regression): the 9983bffd buffer
+                            // overrun sat in this catch invisibly, so the
+                            // reporter's log showed a 5 s detach/rebuild
+                            // loop with no cause. Rare by definition (a
+                            // failed sink stops ticking), so the line
+                            // cannot flood.
+                            Engine.SdlDiagLog.WriteLine("BTAUDIO tick fault guid="
+                                + s.DeviceGuid.ToString("N").Substring(0, 8)
+                                + " " + ex.GetType().Name + ": " + ex.Message);
                             s.TransportFailed = true;
                         }
                     }
@@ -3168,7 +3196,7 @@ namespace PadForge.Common.Input
             s.Source.Read(pull, 0, inFrames * 2);          // macros + test tone + passthrough
 
             // float -> s16 LE into a per-sink carry, flushed in exact 1024 B blocks.
-            s.ShipBuf ??= new byte[(BtPullFrames + 8) * 2 * 2 + RemoteAudioBlockBytes];
+            s.ShipBuf ??= new byte[MaxTickReadFloats * 2 + RemoteAudioBlockBytes];
             int n = inFrames * 2;
             for (int i = 0; i < n; i++)
             {

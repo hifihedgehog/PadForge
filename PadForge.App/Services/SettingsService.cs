@@ -5615,8 +5615,8 @@ namespace PadForge.Services
         public bool StartMinimized { get; set; }
 
         /// <summary>Diagnostics logging (#303): persistent mirror of the
-        /// engine event ring to %LOCALAPPDATA%\PadForge\diagnostics.log,
-        /// for auto-started sessions where a launch flag cannot help.</summary>
+        /// engine event ring to diagnostics.log beside the exe, for
+        /// auto-started sessions where a launch flag cannot help.</summary>
         [XmlElement]
         public bool DiagnosticsLoggingEnabled { get; set; }
 

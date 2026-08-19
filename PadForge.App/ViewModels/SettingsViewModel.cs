@@ -667,7 +667,7 @@ namespace PadForge.ViewModels
         private bool _diagnosticsLoggingEnabled;
 
         /// <summary>Diagnostics logging (#303): mirrors the engine's
-        /// in-memory event ring to %LOCALAPPDATA%\PadForge\diagnostics.log
+        /// in-memory event ring to diagnostics.log beside the exe,
         /// continuously. Persisted, so it survives restarts and works for
         /// auto-started sessions where a launch flag cannot. Default off:
         /// a healthy install writes no log.</summary>

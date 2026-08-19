@@ -2006,6 +2006,11 @@ namespace PadForge.Services
             vm.BatteryNotifyThreshold = appSettings.BatteryNotifyThreshold;
             vm.BatteryNotifyVibrate = appSettings.BatteryNotifyVibrate;
             vm.StartMinimized = appSettings.StartMinimized;
+            vm.DiagnosticsLoggingEnabled = appSettings.DiagnosticsLoggingEnabled;
+            // Arm the mirror on cold start (#303): the toggle's
+            // PropertyChanged handler covers live changes, but an
+            // auto-started session needs the persisted state applied here.
+            Common.DiagnosticsLogControl.Apply(appSettings.DiagnosticsLoggingEnabled);
             vm.StartAtLogin = appSettings.StartAtLogin;
             vm.EnablePollingOnFocusLoss = appSettings.EnablePollingOnFocusLoss;
             vm.PollingRateMs = appSettings.PollingRateMs;
@@ -4092,6 +4097,7 @@ namespace PadForge.Services
                 BatteryNotifyThreshold = vm.BatteryNotifyThreshold,
                 BatteryNotifyVibrate = vm.BatteryNotifyVibrate,
                 StartMinimized = vm.StartMinimized,
+                DiagnosticsLoggingEnabled = vm.DiagnosticsLoggingEnabled,
                 StartAtLogin = vm.StartAtLogin,
                 EnablePollingOnFocusLoss = vm.EnablePollingOnFocusLoss,
                 PollingRateMs = vm.PollingRateMs,
@@ -5607,6 +5613,12 @@ namespace PadForge.Services
 
         [XmlElement]
         public bool StartMinimized { get; set; }
+
+        /// <summary>Diagnostics logging (#303): persistent mirror of the
+        /// engine event ring to %LOCALAPPDATA%\PadForge\diagnostics.log,
+        /// for auto-started sessions where a launch flag cannot help.</summary>
+        [XmlElement]
+        public bool DiagnosticsLoggingEnabled { get; set; }
 
         [XmlElement]
         public bool StartAtLogin { get; set; }

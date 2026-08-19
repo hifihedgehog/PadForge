@@ -562,10 +562,14 @@ namespace PadForge
                 if (e.PropertyName == nameof(SettingsViewModel.StartAtLogin))
                     Common.StartupHelper.SetStartupEnabled(_viewModel.Settings.StartAtLogin);
 
+                if (e.PropertyName == nameof(SettingsViewModel.DiagnosticsLoggingEnabled))
+                    Common.DiagnosticsLogControl.Apply(_viewModel.Settings.DiagnosticsLoggingEnabled);
+
                 if (e.PropertyName is nameof(SettingsViewModel.SelectedThemeIndex)
                      or nameof(SettingsViewModel.AutoStartEngine)
                      or nameof(SettingsViewModel.MinimizeToTray)
                      or nameof(SettingsViewModel.StartMinimized)
+                     or nameof(SettingsViewModel.DiagnosticsLoggingEnabled)
                      or nameof(SettingsViewModel.StartAtLogin)
                      or nameof(SettingsViewModel.EnablePollingOnFocusLoss)
                      or nameof(SettingsViewModel.PollingRateMs)

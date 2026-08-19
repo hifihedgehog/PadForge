@@ -285,7 +285,12 @@
   <data name="Settings_OpenFolder" xml:space="preserve"><value>Ouvrir le dossier</value></data>
   <data name="Settings_UnsavedChanges" xml:space="preserve"><value>Modifications non enregistrées</value></data>
   <data name="Settings_Diagnostics" xml:space="preserve"><value>Diagnostics</value></data>
-  <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>Informations sur les versions de l'application et du runtime.</value></data>
+  <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>Informations de version et journalisation des événements du moteur pour le dépannage.</value></data>
+  <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>Tenir un journal de diagnostic</value></data>
+  <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>Écrit en continu les événements du moteur dans diagnostics.log, dans le dossier indiqué ci-dessous. Reste activé après chaque redémarrage. À 8 Mo, le fichier bascule vers diagnostics.log.old.</value></data>
+  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Enregistrer un instantané</value></data>
+  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Enregistre les événements les plus récents du moteur dans un nouveau fichier. Fonctionne même si le journal de diagnostic est désactivé.</value></data>
+  <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Ouvrir le dossier des journaux</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Version de l'application</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>Runtime .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>Version SDL</value></data>

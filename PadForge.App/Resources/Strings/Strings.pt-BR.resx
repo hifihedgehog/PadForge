@@ -285,7 +285,12 @@
   <data name="Settings_OpenFolder" xml:space="preserve"><value>Abrir Pasta</value></data>
   <data name="Settings_UnsavedChanges" xml:space="preserve"><value>Alterações não salvas</value></data>
   <data name="Settings_Diagnostics" xml:space="preserve"><value>Diagnósticos</value></data>
-  <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>Informações de versão do aplicativo e runtime.</value></data>
+  <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>Informações de versão e registro de eventos do motor para diagnóstico.</value></data>
+  <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>Manter um registro de diagnóstico</value></data>
+  <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>Grava continuamente os eventos do motor em diagnostics.log, na pasta mostrada abaixo. Permanece ativado após cada reinicialização. Ao atingir 8 MB, o arquivo rotaciona para diagnostics.log.old.</value></data>
+  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Salvar instantâneo</value></data>
+  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Salva os eventos mais recentes do motor em um novo arquivo. Funciona mesmo com o registro de diagnóstico desativado.</value></data>
+  <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Abrir pasta de registros</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>Versão do Aplicativo</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>Runtime .NET</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>Versão do SDL</value></data>

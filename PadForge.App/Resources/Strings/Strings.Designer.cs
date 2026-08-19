@@ -463,6 +463,11 @@ public class Strings : INotifyPropertyChanged
     public string Settings_UnsavedChanges => Get("Settings_UnsavedChanges");
     public string Settings_Diagnostics => Get("Settings_Diagnostics");
     public string Settings_DiagnosticsDesc => Get("Settings_DiagnosticsDesc");
+    public string Settings_DiagnosticsLogging => Get("Settings_DiagnosticsLogging");
+    public string Settings_DiagnosticsLoggingTooltip => Get("Settings_DiagnosticsLoggingTooltip");
+    public string Settings_DiagnosticsSnapshot => Get("Settings_DiagnosticsSnapshot");
+    public string Settings_DiagnosticsSnapshotTooltip => Get("Settings_DiagnosticsSnapshotTooltip");
+    public string Settings_DiagnosticsOpenFolder => Get("Settings_DiagnosticsOpenFolder");
     public string Settings_AppVersion => Get("Settings_AppVersion");
     public string Settings_DotNetRuntime => Get("Settings_DotNetRuntime");
     public string Settings_SdlVersion => Get("Settings_SdlVersion");

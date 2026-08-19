@@ -285,7 +285,12 @@
   <data name="Settings_OpenFolder" xml:space="preserve"><value>Ordner öffnen</value></data>
   <data name="Settings_UnsavedChanges" xml:space="preserve"><value>Nicht gespeicherte Änderungen</value></data>
   <data name="Settings_Diagnostics" xml:space="preserve"><value>Diagnose</value></data>
-  <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>Anwendungs- und Laufzeitversionsinformationen.</value></data>
+  <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>Versionsinformationen sowie Protokollierung von Engine-Ereignissen zur Fehlersuche.</value></data>
+  <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>Diagnoseprotokoll führen</value></data>
+  <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>Schreibt Engine-Ereignisse fortlaufend in diagnostics.log im unten angezeigten Ordner. Bleibt über Neustarts hinweg aktiviert. Bei 8 MB wird die Datei zu diagnostics.log.old rotiert.</value></data>
+  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Momentaufnahme speichern</value></data>
+  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Speichert die letzten Engine-Ereignisse in einer neuen Datei. Funktioniert auch bei deaktiviertem Diagnoseprotokoll.</value></data>
+  <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Protokollordner öffnen</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>App-Version</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET-Laufzeit</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL-Version</value></data>

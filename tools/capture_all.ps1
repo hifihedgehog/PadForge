@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Captures ALL PadForge screenshots for wiki and README.
 .DESCRIPTION
@@ -2432,6 +2432,16 @@ if ($slots.Count -ge 1) {
     [Win32]::ClickAt([int]($wrMc.Left + 0.383 * $mw), [int]($wrMc.Top + 0.654 * $mh)); Start-Sleep -Milliseconds 900  # its RepeatKey action chip
     if ($script:MacrosPresent) { Cap "macro-repeat-key" } else { Write-Host "  skipped macro-repeat-key (no macros)" -ForegroundColor Yellow }
 
+    # Pressure-sensitive turbo (#290, 4.3.0). The Rate Curve row and the
+    # analog-source picker that feeds it sit below the Repeat block this
+    # editor already frames, so scroll the open editor rather than opening
+    # a different macro.
+    Write-Host "  Macro: pressure-sensitive turbo (#290)"
+    ScrollContent -Clicks -8
+    Start-Sleep -Milliseconds 400
+    if ($script:MacrosPresent) { Cap "macro-turbo" } else { Write-Host "  !! skipped macro-turbo (no macros)" -ForegroundColor Red }
+    ScrollContent -Clicks 8
+
 } else {
     Write-Host "  !! No controller slots found" -ForegroundColor Red
 }
@@ -2572,8 +2582,28 @@ if ($slotsHost) {
                 if ($theTab) {
                     Click-El $theTab -Label "$($gt.Name) Tab" -Delay 1000 | Out-Null
                     Cap $gt.File
+
+                    # 4.3.0 additions live below the fold on two of these tabs.
+                    # Gyro Tilt (#292) is an envelope card under the existing
+                    # gyro rows, and the touchpad Momentum knobs (#291) sit in
+                    # the mouse-output area. Both need a scroll, and both are
+                    # captured from the same tab visit rather than a second one.
+                    if ($gt.Name -eq "Gyro") {
+                        Write-Host "  Gyro: tilt envelope card (#292)"
+                        ScrollContent -Clicks -14
+                        Start-Sleep -Milliseconds 400
+                        Cap "pad-gyro-tilt"
+                        ScrollContent -Clicks 14
+                    }
+                    elseif ($gt.Name -eq "Touchpad") {
+                        Write-Host "  Touchpad: momentum knobs (#291)"
+                        ScrollContent -Clicks -10
+                        Start-Sleep -Milliseconds 400
+                        Cap "pad-touchpad-momentum"
+                        ScrollContent -Clicks 10
+                    }
                 } else {
-                    Write-Host "  !! $($gt.Name) tab not in UIA tree" -ForegroundColor Yellow
+                    Write-Host "  !! $($gt.Name) tab not in UIA tree -- SKIPPED $($gt.File)" -ForegroundColor Red
                 }
             }
 
@@ -2810,6 +2840,21 @@ if ((Get-Count $cards) -gt $kbmIdx) {
     Cap "pad-kbm-socd"
     ScrollContent -Clicks 12
 
+    # Stick trackball momentum (#291, 4.3.0). The row is Visibility-bound to
+    # IsMouseStick, so it exists ONLY on the KBM slot's mouse stick (stick 0)
+    # and never on a gamepad slot. An earlier version scrolled a PlayStation
+    # slot's Sticks tab looking for it and framed the Range section instead.
+    Write-Host "[$(Next)/$total] KBM stick momentum (trackball)"
+    if (Tab "Sticks") {
+        Start-Sleep -Milliseconds 700
+        ScrollContent -Clicks -10
+        Start-Sleep -Milliseconds 400
+        Cap "pad-sticks-momentum"
+        ScrollContent -Clicks 10
+    } else {
+        Write-Host "  !! Sticks tab not found on KBM slot -- SKIPPED pad-sticks-momentum" -ForegroundColor Red
+    }
+
     # Mouse gestures (#200): hold a mouse button, flick, an action fires. The
     # gesture card lives on the Mouse tab, which gates on the SELECTED device being
     # a mouse (IsMouse). Select the mouse assigned to this KBM slot first, else the
@@ -2896,9 +2941,17 @@ Nav "Settings"
 Start-Sleep -Milliseconds 500
 Cap "settings"
 
+# 18b. Battery Alerts (#293, 4.3.0). Card order on this page is Language,
+# Appearance, Input Engine, Window, Battery Alerts, HidHide, HIDMaestro,
+# MIDI Services, SteamVR, Community Configs, Settings File, Diagnostics,
+# so the alerts card sits just above the HidHide view the next shot frames.
+Write-Host "[$(Next)/$total] Settings - battery alerts"
+ScrollContent -Clicks -8
+Cap "settings-battery-alerts"
+
 # 19. Settings mid (HidHide whitelist area)
 Write-Host "[$(Next)/$total] Settings - HidHide / input engine"
-ScrollContent -Clicks -10
+ScrollContent -Clicks -2
 Cap "settings-hidhide"
 
 # 20. Settings bottom (drivers)
@@ -3250,6 +3303,41 @@ if (Select-DeviceByName36 "Consumer Control") { Cap "devices-consumer" }
 Write-Host "[3b] Power / idle disconnect + battery"
 Nav "Devices"; Start-Sleep -Milliseconds 600
 if (Select-DeviceByName36 "DualSense") { Cap "devices-power" }
+
+# Voice macros (#317, 4.3.0). ShowManageVoicePhrases is true for a
+# Microphone-type row, and for a DualSense over Bluetooth whose embedded
+# mic carries the phrases. Microphone rows come from live Windows audio
+# endpoints rather than the cached <Device> list, so there is no dummy to
+# inject: this finds one by its TYPE line, which is exactly the match
+# Select-DeviceByName36 already does for the consumer rows.
+# PlayStation Move (#277, 4.3.0). Enumerated on this machine as
+# "PS Move Motion Controller", so it needs no synthetic injection.
+Write-Host "[3b] PlayStation Move"
+Nav "Devices"; Start-Sleep -Milliseconds 600
+if (Select-DeviceByName36 "PS Move") {
+    Cap "devices-move"
+} else {
+    Write-Host "  !! no PS Move row -- SKIPPED devices-move" -ForegroundColor Red
+}
+
+Write-Host "[3b] Voice macros (microphone row)"
+Nav "Devices"; Start-Sleep -Milliseconds 600
+if (Select-DeviceByName36 "Microphone") {
+    Cap "devices-voice"
+    # The dialog behind "Manage Voice Macros" is where phrases are registered.
+    # Modal FluentWindows never appear in the UIA root child scan, so this
+    # clicks the button and captures whatever modal comes up, then closes it.
+    $voiceBtn = Find-UIA -Name "Manage Voice Macros" -CT ([System.Windows.Automation.ControlType]::Button)
+    if ($voiceBtn) {
+        Click-El $voiceBtn -Label "Manage Voice Macros" -Delay 1200 | Out-Null
+        Cap "voice-phrases"
+        Close-AnyModal | Out-Null
+    } else {
+        Write-Host "  !! 'Manage Voice Macros' button not found -- SKIPPED voice-phrases" -ForegroundColor Red
+    }
+} else {
+    Write-Host "  !! no Microphone device row -- SKIPPED devices-voice AND voice-phrases" -ForegroundColor Red
+}
 
 Write-Host "[3b] MIDI input device"
 Nav "Devices"; Start-Sleep -Milliseconds 600

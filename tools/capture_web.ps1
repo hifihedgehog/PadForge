@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Recaptures the two Web Controller screenshots against a PROVEN-LIVE server.
 .DESCRIPTION
@@ -221,7 +221,7 @@ try {
     Write-Host "  server scheme: $scheme" -ForegroundColor Cyan
 
     $shots = @(
-        @{ Url = "${scheme}://localhost:${Port}/";                                 Name = 'web-landing';    Wait = 6000; H = 1300 },
+        @{ Url = "${scheme}://localhost:${Port}/";                                 Name = 'web-landing';    Wait = 6000; W = 1900; H = 1300 },
         @{ Url = "${scheme}://localhost:${Port}/controller.html?layout=xbox360";   Name = 'web-controller'; Wait = 7000 },
         @{ Url = "${scheme}://localhost:${Port}/controller.html?layout=dualsense"; Name = 'web-dualsense';  Wait = 7000 },
         @{ Url = "${scheme}://localhost:${Port}/controller.html?layout=steamdeck"; Name = 'web-steamdeck';  Wait = 7000 },
@@ -230,7 +230,8 @@ try {
     )
     foreach ($s in $shots) {
         $h = if ($s.ContainsKey('H')) { $s.H } else { 720 }
-        $results[$s.Name] = Cap-Web $s.Url $s.Name $s.Wait 1280 $h
+        $w = if ($s.ContainsKey('W')) { $s.W } else { 1280 }
+        $results[$s.Name] = Cap-Web $s.Url $s.Name $s.Wait $w $h
     }
 }
 finally {

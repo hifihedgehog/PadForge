@@ -497,6 +497,33 @@ namespace PadForge.Common.Input
             /// rate-match its send cadence to the capture clock.</summary>
             public int LoopbackLagFrames = -1;
 
+            /// <summary>Set by the BT tick while the stream is inside the
+            /// idle gate's silence window (#325 wobble fix): a short read of
+            /// silence loses nothing audible, so it neither counts as an
+            /// underrun nor buys cushion latency. BT tick thread writes,
+            /// this thread's Read consumes, both on the same tick.</summary>
+            public bool SuppressUnderrunAccounting;
+
+            /// <summary>Silent recenter (#325 wobble fix): jump the cursor to
+            /// exactly the target cushion. Called by the BT tick only while
+            /// the stream is inaudible, where a cursor jump discards silence
+            /// and costs nothing a listener can hear. This is what keeps the
+            /// audible-phase trim at the inaudible clamp: playback starts
+            /// from a centered cushion instead of trimming its way there by
+            /// pitch bend.</summary>
+            public void RecenterLoopbackCursor(int targetLag)
+            {
+                var cap = _sink.Capture;
+                if (!_sink.PassthroughOn || cap == null) return;
+                lock (cap.Ring)
+                {
+                    if (!ReferenceEquals(cap, _lastCap)) { _lastCap = cap; }
+                    long avail = cap.Write;
+                    _cursor = Math.Max(0, avail - targetLag);
+                    LoopbackLagFrames = (int)(avail - _cursor);
+                }
+            }
+
             public SinkSource(Sink sink) { _sink = sink; }
 
             public WaveFormat WaveFormat { get; } = WaveFormat.CreateIeeeFloatWaveFormat(Rate, 2);
@@ -550,13 +577,19 @@ namespace PadForge.Common.Input
                         }
                         _cursor += canRead;
                         LoopbackLagFrames = (int)(avail - _cursor);
-                        if (canRead < frames)
+                        if (canRead < frames && !SuppressUnderrunAccounting)
                         {
                             // The ring bottomed out: the shortfall stays
                             // zero-filled, which is an audible gap (#325).
                             // Count it and buy more cushion, so the next
                             // burst of the same size lands in headroom
-                            // instead of silence.
+                            // instead of silence. Only while the stream is
+                            // audible: a short read during silence (the
+                            // WASAPI ring filling at capture start, or an
+                            // idle stretch) loses nothing a listener can
+                            // hear, and counting those bought latency whose
+                            // later decay re-engaged the trim mid-tone (the
+                            // #325 wobble).
                             _sink.MirrorUnderruns++;
                             _sink.MirrorZeroFillFrames += frames - canRead;
                             _sink.MirrorLagTarget = EscalateLagTarget(_sink.MirrorLagTarget);
@@ -2873,45 +2906,55 @@ namespace PadForge.Common.Input
         private const int BtLagEscalateStep = 480;     // +10 ms per underrun
         private const int BtLagDecayStepPerSecond = 48;    // -1 ms per clean second
 
-        /// <summary>The trim clamp, and therefore the tick buffer headroom:
-        /// every buffer a tick reads into MUST hold BtPullFrames plus this
-        /// (the #325 regression). The 9983bffd change was exactly this coupling left
-        /// implicit: the clamp grew from 4 to 12 while the pull buffer kept
-        /// its +8 headroom, so a positive trim past +8 overran the buffer,
-        /// the tick's catch flagged the sink TransportFailed, and the 5 s
-        /// rebuild loop replayed the crash forever: a silent mirror and a
-        /// dead test tone instead of audio.
-        ///
-        /// The value is 4, the level that shipped inaudibly for months: the
+        /// <summary>The audible-phase trim clamp: 1 frame per 512-frame tick
+        /// (0.2%, ~3.5 cents), under the pitch JND for steady tones. The
         /// trim varies the 16:15 compressor's input count, so it IS a pitch
-        /// bend, re-chosen every ~10.7 ms tick. 12 frames = a +/-2.3%
-        /// wobble, plainly audible on the test tone and on music (bench,
-        /// 2026-08-18); 4 frames = +/-0.8%. Burst absorption is not the
-        /// trim's job: the adaptive cushion TARGET (EscalateLagTarget, to
-        /// 100 ms) is what outruns a bursty capture, and the trim only
-        /// recenters the cushion slowly between bursts.</summary>
-        internal const int BtMaxTrimFrames = 4;
+        /// bend re-chosen every ~10.7 ms tick; 12 frames (2.3%) was a plain
+        /// warble and 4 (0.8%) a faint one whenever the adaptive target
+        /// walked the error across the deadband (bench, 2026-08-18). The
+        /// trim's only remaining job is nulling clock drift between the
+        /// capture device and the tick pacer (tens of ppm, a few frames a
+        /// second, far under this clamp's 93 frames/s): bursts are absorbed
+        /// by the adaptive TARGET, and cushion placement is corrected
+        /// exactly and freely while the stream is silent
+        /// (RecenterLoopbackCursor).</summary>
+        internal const int BtMaxTrimFrames = 1;
+
+        /// <summary>The peer ship lane's fixed trim (rate-matching only:
+        /// the peer re-renders at its own clock, so this is data pacing,
+        /// not pitch).</summary>
+        internal const int BtPeerTrimFrames = 4;
+
+        /// <summary>Tick buffer headroom in frames: every buffer a tick
+        /// reads into MUST hold BtPullFrames plus the largest trim any lane
+        /// applies (the #325 regression: the clamp grew past the buffer's
+        /// headroom, the read overran, the tick's catch flagged the sink
+        /// TransportFailed, and the 5 s rebuild loop replayed the crash as
+        /// a silent mirror and a dead test tone). Test-locked against both
+        /// trim constants.</summary>
+        internal const int BtBufferHeadroomFrames = 4;
 
         /// <summary>Floats one tick can read at the maximum positive trim:
-        /// the minimum length for the pull buffer. Test-locked against
-        /// ComputeLagTrim's clamp.</summary>
-        internal static int MaxTickReadFloats => (BtPullFrames + BtMaxTrimFrames) * 2;
+        /// the minimum length for the pull buffer.</summary>
+        internal static int MaxTickReadFloats => (BtPullFrames + BtBufferHeadroomFrames) * 2;
 
-        /// <summary>Drift trim (#325): the per-tick frame adjustment toward
-        /// the cushion target. Inside the deadband it holds at zero;
-        /// outside, it clamps at ±BtMaxTrimFrames (±0.8%, the inaudible
-        /// level). Cushion recentering is allowed to take seconds: the
-        /// adaptive target keeps the ring deep enough that a slow trim
-        /// never lets it bottom out. Pure, so the rule is
-        /// test-locked.</summary>
+        /// <summary>Audible-phase drift trim (#325): the per-tick frame
+        /// adjustment toward the cushion target. Inside the deadband it
+        /// holds at zero; outside it is ±BtMaxTrimFrames, the inaudible
+        /// clamp. Pure, so the rule is test-locked.</summary>
         internal static int ComputeLagTrim(int lag, int target, int deadband)
         {
             int err = lag - target;
             if (err > -deadband && err < deadband) return 0;
-            int trim = err / 60;
-            return trim > BtMaxTrimFrames ? BtMaxTrimFrames
-                 : trim < -BtMaxTrimFrames ? -BtMaxTrimFrames : trim;
+            return err > 0 ? BtMaxTrimFrames : -BtMaxTrimFrames;
         }
+
+        /// <summary>Whether a silent tick should recenter the loopback
+        /// cursor: only when the cushion sits outside the deadband, so a
+        /// steady silence leaves the cursor alone and a sound onset starts
+        /// from wherever the last recenter put it. Pure.</summary>
+        internal static bool ShouldRecenterInSilence(int lag, int target, int deadband)
+            => lag < target - deadband || lag > target + deadband;
 
         /// <summary>One underrun's escalation of the cushion target,
         /// clamped at the ceiling. Pure.</summary>
@@ -3042,28 +3085,56 @@ namespace PadForge.Common.Input
                         // One sink's bad tick now just flags it for rebuild.
                         try
                         {
-                            // Mirror drift trim: the ring is steered to its target
-                            // cushion by consuming a few samples more or fewer per
-                            // tick through the same 16:15 compressor, never by
-                            // extra or skipped reports. The trim stays at the
-                            // inaudible ±4 (it IS a pitch bend, and 12 was an
-                            // audible wobble on the test tone); the burst
-                            // resilience lives in the TARGET, which adapts:
-                            // underruns raise it (mirror read), clean seconds
-                            // decay it here, and a deep cushion outruns a
-                            // bursty capture that a fast trim only chased.
+                            // Mirror cushion steering (#325, wobble-fixed).
+                            // Consuming more or fewer frames per tick changes
+                            // the 16:15 compressor's input count, so any trim
+                            // IS a pitch bend. The rule: pitch-bending
+                            // correction may only happen when it cannot be
+                            // heard.
+                            //   Silent stream (the idle gate's own 2 s
+                            //   window, judged BEFORE this tick's pull):
+                            //   steering is free and exact, so the cursor
+                            //   recenters to the target outright, the target
+                            //   decays, and short reads neither count nor
+                            //   escalate.
+                            //   Audible stream: the trim clamps at ±1 frame
+                            //   (0.2%, ~3.5 cents, under the pitch JND for
+                            //   steady tones) and only ever nulls genuine
+                            //   clock drift, because bursts are the adaptive
+                            //   TARGET's job and playback starts from a
+                            //   pre-centered cushion.
+                            // The earlier clamps re-chose a bend every tick
+                            // (12 = ±2.3%, plainly audible; 4 = ±0.8%, a
+                            // faint wobble whenever escalation-then-decay
+                            // walked the error across the deadband), which is
+                            // why the fix is the audibility gate, not a
+                            // smaller number.
                             int inFrames = BtPullFrames;
                             int lag = s.Source.LoopbackLagFrames;
+                            bool wasAudible = Environment.TickCount64 - s.LastAudibleTicks <= 2000;
+                            s.Source.SuppressUnderrunAccounting = !wasAudible;
                             if (lag >= 0)
                             {
-                                long nowTrim = Environment.TickCount64;
-                                if (s.MirrorCleanSinceTicks == 0) s.MirrorCleanSinceTicks = nowTrim;
-                                if (nowTrim - s.MirrorCleanSinceTicks >= 1000)
+                                if (!wasAudible)
                                 {
-                                    s.MirrorCleanSinceTicks = nowTrim;
-                                    s.MirrorLagTarget = DecayLagTarget(s.MirrorLagTarget);
+                                    if (ShouldRecenterInSilence(lag, s.MirrorLagTarget, LagDeadband))
+                                        s.Source.RecenterLoopbackCursor(s.MirrorLagTarget);
+                                    long nowTrim = Environment.TickCount64;
+                                    if (s.MirrorCleanSinceTicks == 0) s.MirrorCleanSinceTicks = nowTrim;
+                                    if (nowTrim - s.MirrorCleanSinceTicks >= 1000)
+                                    {
+                                        s.MirrorCleanSinceTicks = nowTrim;
+                                        s.MirrorLagTarget = DecayLagTarget(s.MirrorLagTarget);
+                                    }
                                 }
-                                inFrames += ComputeLagTrim(lag, s.MirrorLagTarget, LagDeadband);
+                                else
+                                {
+                                    // Decay only ever counts silence: a
+                                    // mid-tone decay moved the target under
+                                    // the cushion and re-engaged the trim.
+                                    s.MirrorCleanSinceTicks = 0;
+                                    inFrames += ComputeLagTrim(lag, s.MirrorLagTarget, LagDeadband);
+                                }
                             }
 
                             s.Source.Read(pull, 0, inFrames * 2);
@@ -3199,8 +3270,8 @@ namespace PadForge.Common.Input
             int lag = s.Source.LoopbackLagFrames;          // -1 when passthrough is off
             if (lag >= 0)
             {
-                if (lag > BtTargetLag + LagDeadband) inFrames += 4;
-                else if (lag < BtTargetLag - LagDeadband) inFrames -= 4;
+                if (lag > BtTargetLag + LagDeadband) inFrames += BtPeerTrimFrames;
+                else if (lag < BtTargetLag - LagDeadband) inFrames -= BtPeerTrimFrames;
             }
 
             s.Source.Read(pull, 0, inFrames * 2);          // macros + test tone + passthrough

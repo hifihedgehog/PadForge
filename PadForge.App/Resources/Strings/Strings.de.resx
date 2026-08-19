@@ -2163,7 +2163,7 @@
     <value>Koppeln / Verbinden</value>
   </data>
   <data name="Dashboard_RemoteLinkDescription" xml:space="preserve">
-    <value>Teilen Sie Controller mit einem gekoppelten PadForge auf einem anderen PC in Ihrem Netzwerk.</value>
+    <value>Teile Controller mit einem gekoppelten PadForge auf einem anderen PC, im eigenen Netzwerk oder über das Internet.</value>
   </data>
   <data name="Dashboard_RemoteLinkFooter" xml:space="preserve">
     <value>Nach einer einmaligen Kopplung verbindet sich ein vertrauenswürdiger PC automatisch erneut. Ein gekoppelter PC kann die Gamepad-Ausgabe dieses PCs steuern und, sofern Sie es nicht einschränken, auch dessen Tastatur, Maus und Makros.</value>

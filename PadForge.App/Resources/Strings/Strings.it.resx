@@ -2185,7 +2185,7 @@
     <value>Abbina / Connetti</value>
   </data>
   <data name="Dashboard_RemoteLinkDescription" xml:space="preserve">
-    <value>Condividi i controller con un PadForge abbinato su un altro PC nella tua rete.</value>
+    <value>Condividi i controller con un PadForge accoppiato su un altro PC, sulla tua rete o via internet.</value>
   </data>
   <data name="Dashboard_RemoteLinkFooter" xml:space="preserve">
     <value>Dopo un abbinamento una tantum, un PC attendibile si riconnette automaticamente. Un PC abbinato può controllare l&apos;output del gamepad di questo PC e, se non lo limiti, anche tastiera, mouse e macro.</value>

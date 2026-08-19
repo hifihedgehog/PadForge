@@ -2183,7 +2183,7 @@
     <value>Koppelen / Verbinden</value>
   </data>
   <data name="Dashboard_RemoteLinkDescription" xml:space="preserve">
-    <value>Deel controllers met een gekoppelde PadForge op een andere pc via je netwerk.</value>
+    <value>Deel controllers met een gekoppelde PadForge op een andere pc, op je netwerk of via internet.</value>
   </data>
   <data name="Dashboard_RemoteLinkFooter" xml:space="preserve">
     <value>Na een eenmalige koppeling maakt een vertrouwde pc automatisch opnieuw verbinding. Een gekoppelde pc kan de gamepad-uitvoer van deze pc aansturen, en tenzij je dit beperkt, ook het toetsenbord, de muis en de macro&apos;s.</value>

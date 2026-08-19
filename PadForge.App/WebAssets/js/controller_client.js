@@ -136,9 +136,24 @@
         }
     });
 
-    var statusEl;
-    function setStatus(text) {
-        if (statusEl) statusEl.textContent = text;
+    // The status bar announces, then fades (owner report 2026-08-19): kept
+    // up permanently it overlaid the layout's topmost controls, and on
+    // layouts whose triggers ride the top edge the visible target shrank
+    // enough that blind taps from muscle memory missed. Transient statuses
+    // fade after a few seconds. Sticky ones (errors that need reading)
+    // stay until replaced. The bar was always pointer-events: none, so
+    // this changes what the eye sees, never hit-testing.
+    var statusEl, statusFadeTimer;
+    function setStatus(text, sticky) {
+        if (!statusEl) return;
+        statusEl.textContent = text;
+        statusEl.classList.remove("faded");
+        if (statusFadeTimer) { clearTimeout(statusFadeTimer); statusFadeTimer = null; }
+        if (!sticky) {
+            statusFadeTimer = setTimeout(function () {
+                statusEl.classList.add("faded");
+            }, 3000);
+        }
     }
 
     // ── Layout state ──
@@ -304,11 +319,11 @@
         xhr.open("GET", layoutUrl, true);
         xhr.onload = function () {
             if (xhr.status !== 200) {
-                setStatus("Failed to load layout");
+                setStatus("Failed to load layout", true);
                 return;
             }
             try { layout = JSON.parse(xhr.responseText); }
-            catch (e) { setStatus("Failed to load layout"); return; }
+            catch (e) { setStatus("Failed to load layout", true); return; }
             connect();
             buildController();
             setupTouchZones();
@@ -316,7 +331,7 @@
             onResize();
         };
         xhr.onerror = function () {
-            setStatus("Failed to load layout");
+            setStatus("Failed to load layout", true);
         };
         xhr.send();
     }

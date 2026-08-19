@@ -24,6 +24,16 @@ body {
     padding: 4px 0;
     z-index: 9999;
     pointer-events: none;
+    transition: opacity 0.5s;
+}
+
+/* The bar announces, then gets out of the way (owner report 2026-08-19):
+   left up permanently it sits over the layout's topmost controls, and on
+   layouts whose triggers ride the top edge it visually shrank the target
+   enough that blind taps from muscle memory missed. pointer-events was
+   already none, so the harm was what the eye aims at, not hit-testing. */
+#statusBar.faded {
+    opacity: 0;
 }
 
 #controller-viewport {

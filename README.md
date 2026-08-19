@@ -51,6 +51,28 @@ PadForge is for sim racers running wheels in games that only understand Xbox con
 </p>
 
 <details>
+<summary><b>New in 4.3.0:</b> a rebuilt web controller, voice macros, PlayStation Move, VR devices as sources, and Remote Link over the internet</summary>
+
+- **The web controller, rebuilt.** Ten controller layouts instead of two: Xbox 360, Xbox One, Xbox Series X|S, DualShock 4, DualSense, DualSense Edge, Switch Pro, Switch 2 Pro, Steam Deck, and Steam Controller, most with colour finishes you pick from the card. The DualSense layouts draw a live lightbar and player LEDs, triggers get analog sliders, and the Steam layouts carry both trackpads and the rear grips.
+- **Your phone's motion, as a source.** The page reads the handset's gyroscope and accelerometer and streams them to the slot. Browsers only hand out sensor data over a secure connection, so PadForge binds a self-signed certificate and serves over HTTPS, with a QR code on the Dashboard to get the phone there.
+- **Build your own pad.** A builder that starts from a blank surface and lets you drag sticks, buttons, triggers and touch areas to where your thumbs actually are, saved with your settings.
+- **Voice macros.** Registered phrases spoken into a microphone fire macros, recognised offline by Vosk with no account and no cloud. The model downloads once on first use.
+- **PlayStation Move and Navigation controllers** over USB and Bluetooth, including the Move's sphere and motion.
+- **Real VR devices as input sources.** A headset's pose and its motion controllers become mapping sources, so what you are holding in VR can drive a flat game.
+- **3Dconnexion SpaceMouse.** The 6DoF puck reports as a mapping source, all six axes.
+- **Remote Link over the internet.** Dial another PadForge PC by code with no VPN and no port forwarding.
+- **Pressure-sensitive turbo.** The repeat rate follows how hard the button or trigger is pressed.
+- **Trackball momentum** on sticks, plus clamp and gain knobs for the touchpad's existing momentum.
+- **Gyro Tilt.** A degree-ranged tilt mode alongside the existing rate mode, with Gyro Lean documented and its Sensitivity dial fixed, plus a Recenter action and independent yaw and roll inversion.
+- **Low-battery notifications**, plus an identify buzz that rumbles any device so you can tell which one it is.
+- **Mapping picker** gains find-as-you-type and device filtering, and the search filters the table.
+- **Moza wheels** recognised, and **DualSense effect passthrough** for games that drive the triggers themselves.
+- **Anti-deadzone floors the stick pair** rather than each axis, which closes the gaps that showed at the cardinals.
+- **Mirror System Audio** no longer cracks over Bluetooth when the loopback ring runs dry under bursty capture.
+
+</details>
+
+<details>
 <summary><b>New in 4.2.0:</b> VR controllers, headset head tracking, controller audio and microphone, and starter profiles</summary>
 
 - **Virtual VR controllers.** A VR slot presents a full SteamVR left and right hand pair, driven by any controller, keyboard, or motion source you map to it. One slot serves both hands, every stick, trigger, grip and button is a mapping target, and the game's haptics come back out through the device you are actually holding. PadForge installs the SteamVR runtime itself if you do not have it, with no Steam account and no Steam client, to a folder you choose.

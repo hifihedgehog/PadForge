@@ -164,7 +164,7 @@ namespace PadForge.Common.Input
             public int MirrorUnderruns;        // short-read events since last heartbeat
             public int MirrorZeroFillFrames;   // zero-filled frames since last heartbeat
             public int MirrorLagTarget = BtTargetLag;
-            public long MirrorCleanSinceTicks;
+            public long MirrorCleanSinceTicks;   // silent-second decay timer (Read's silent branch)
 
             public int Ds5MicOpen;
             public long Ds5MicOpenSentTicks;
@@ -497,12 +497,18 @@ namespace PadForge.Common.Input
             /// rate-match its send cadence to the capture clock.</summary>
             public int LoopbackLagFrames = -1;
 
-            /// <summary>Set by the BT tick while the stream is inside the
-            /// idle gate's silence window (#325 wobble fix): a short read of
-            /// silence loses nothing audible, so it neither counts as an
-            /// underrun nor buys cushion latency. BT tick thread writes,
-            /// this thread's Read consumes, both on the same tick.</summary>
-            public bool SuppressUnderrunAccounting;
+            /// <summary>Whether the stream was inside the idle gate's 2 s
+            /// silence window at the last Read. Computed at the point of use
+            /// (#325 audit): the previous design had the BT tick stamp a
+            /// suppression flag once per tick, which latched stale across a
+            /// BT-to-USB transport flip (the Sink and this SinkSource are
+            /// reused; the USB lane's Read runs on the WASAPI render thread
+            /// and never re-stamped it), permanently disabling the adaptive
+            /// cushion AND its diagnostics on that sink. Deriving it from
+            /// LastAudibleTicks here gives every lane the same gate for
+            /// free.</summary>
+            private bool StreamWasSilent()
+                => Environment.TickCount64 - _sink.LastAudibleTicks > 2000;
 
             /// <summary>Silent recenter (#325 wobble fix): jump the cursor to
             /// exactly the target cushion. Called by the BT tick only while
@@ -510,16 +516,35 @@ namespace PadForge.Common.Input
             /// and costs nothing a listener can hear. This is what keeps the
             /// audible-phase trim at the inaudible clamp: playback starts
             /// from a centered cushion instead of trimming its way there by
-            /// pitch bend.</summary>
+            /// pitch bend.
+            ///
+            /// The jump refuses to skip AUDIBLE content (#325 audit): the
+            /// audibility stamp is taken from what the cursor CONSUMED, a
+            /// cushion-depth behind the live edge, so the first frames of a
+            /// sound can already sit in the skip span while the stamp still
+            /// reads silence. The span is scanned before jumping; any real
+            /// sample vetoes the move and the audible path handles the
+            /// cushion instead.</summary>
             public void RecenterLoopbackCursor(int targetLag)
             {
                 var cap = _sink.Capture;
                 if (!_sink.PassthroughOn || cap == null) return;
                 lock (cap.Ring)
                 {
-                    if (!ReferenceEquals(cap, _lastCap)) { _lastCap = cap; }
+                    _lastCap = cap;
                     long avail = cap.Write;
-                    _cursor = Math.Max(0, avail - targetLag);
+                    long newCursor = Math.Max(0, avail - targetLag);
+                    if (_cursor >= 0 && newCursor > _cursor)
+                    {
+                        for (long f = _cursor; f < newCursor; f++)
+                        {
+                            long idx = (f % RingFrames) * 2;
+                            if (cap.Ring[idx] > 1e-4f || cap.Ring[idx] < -1e-4f
+                                || cap.Ring[idx + 1] > 1e-4f || cap.Ring[idx + 1] < -1e-4f)
+                                return;   // audible content in the span: no jump
+                        }
+                    }
+                    _cursor = newCursor;
                     LoopbackLagFrames = (int)(avail - _cursor);
                 }
             }
@@ -554,11 +579,13 @@ namespace PadForge.Common.Input
                 {
                     // Full scale: master volume lives in the firmware speaker
                     // volume byte (UserEffectsDispatcher), not the samples.
-                    // The cursor's distance behind the live edge is steered to
-                    // a small steady cushion by the BT thread's adaptive
-                    // pacing, NOT by jumping here. A hard jump drops audio, so
-                    // this only resyncs on a genuine stall (cursor invalid, or
-                    // ran past the live edge, or fell a quarter-second behind).
+                    // While AUDIBLE, the cursor is steered by the BT thread's
+                    // trim, never by jumping here (a hard jump drops audio):
+                    // this branch resyncs only on a genuine stall (cursor
+                    // invalid, ran past the live edge, or a quarter-second
+                    // behind). While SILENT, RecenterLoopbackCursor may jump
+                    // the cursor outright, after proving the skipped span
+                    // holds no audible content.
                     const int CatastropheLag = 12000; // 250 ms @ 48 kHz, above the 100 ms target ceiling
                     int resyncCushion = _sink.MirrorLagTarget;   // land at the tuned depth (#325)
                     lock (cap.Ring)
@@ -577,7 +604,8 @@ namespace PadForge.Common.Input
                         }
                         _cursor += canRead;
                         LoopbackLagFrames = (int)(avail - _cursor);
-                        if (canRead < frames && !SuppressUnderrunAccounting)
+                        bool silent = StreamWasSilent();
+                        if (canRead < frames && !silent)
                         {
                             // The ring bottomed out: the shortfall stays
                             // zero-filled, which is an audible gap (#325).
@@ -594,6 +622,26 @@ namespace PadForge.Common.Input
                             _sink.MirrorZeroFillFrames += frames - canRead;
                             _sink.MirrorLagTarget = EscalateLagTarget(_sink.MirrorLagTarget);
                         }
+                        else if (silent)
+                        {
+                            // Decay lives HERE, at the one point every lane
+                            // passes through (#325 audit): parking it in the
+                            // BT tick left USB and peer sinks with a one-way
+                            // ratchet to the 100 ms ceiling, since their
+                            // reads never ran the tick's silent branch. One
+                            // step per silent second; the learned headroom
+                            // deliberately persists across short pauses so a
+                            // bursty machine does not re-crack after every
+                            // gap.
+                            long nowDecay = Environment.TickCount64;
+                            if (_sink.MirrorCleanSinceTicks == 0) _sink.MirrorCleanSinceTicks = nowDecay;
+                            if (nowDecay - _sink.MirrorCleanSinceTicks >= 1000)
+                            {
+                                _sink.MirrorCleanSinceTicks = nowDecay;
+                                _sink.MirrorLagTarget = DecayLagTarget(_sink.MirrorLagTarget);
+                            }
+                        }
+                        else _sink.MirrorCleanSinceTicks = 0;
                     }
                 }
                 else LoopbackLagFrames = -1;
@@ -2890,21 +2938,27 @@ namespace PadForge.Common.Input
 
         // Shared tick: input frames consumed per ~10.667 ms (512 × 93.75 = 48 kHz).
         private const int BtPullFrames = 512;
-        // Ring-cushion drift trim, shared by the BT lanes and the peer ship lane:
-        // steer the loopback cursor to a steady cushion by consuming a few frames
-        // more/fewer per tick (inaudible ±0.8 % rate trim), never by skipping ticks.
+        // Ring-cushion steering, shared by the BT lanes and the peer ship lane:
+        // the loopback cursor is held at a steady cushion. While the stream is
+        // silent the cursor recenters outright (free and exact); while audible
+        // the BT lanes trim consumption by at most BtMaxTrimFrames per tick
+        // (a pitch bend, kept at the inaudible 0.2%), and the peer lane paces
+        // its shipped data by BtPeerTrimFrames.
         private const int BtTargetLag = 960;   // 20 ms ring cushion FLOOR @ 48 kHz
         private const int LagDeadband = 240;   // ±5 ms before trimming
         // The adaptive ceiling and steps (#325): a machine whose audio
         // driver delivers loopback data in bursts collapses a fixed 20 ms
         // cushion (a reporter's log: 3,272 down to 28 frames in a ~4 s
         // sawtooth, and a bottomed ring zero-fills, which is the crack).
-        // Each underrun buys 10 ms more cushion up to 100 ms; clean
-        // seconds decay it slowly back, so steady machines keep the 20 ms
-        // latency and bursty ones self-tune until the cracking stops.
+        // Each audible-phase underrun buys 10 ms more cushion up to
+        // 100 ms; SILENT seconds decay it slowly back (inside Read, so
+        // every lane decays). The learned headroom deliberately persists
+        // through continuous playback and short pauses: walking it back
+        // mid-tone would re-engage the trim, and shedding it at every gap
+        // would re-crack a bursty machine after each one.
         private const int BtLagTargetCeiling = 4800;   // 100 ms
         private const int BtLagEscalateStep = 480;     // +10 ms per underrun
-        private const int BtLagDecayStepPerSecond = 48;    // -1 ms per clean second
+        private const int BtLagDecayStepPerSecond = 48;    // -1 ms per SILENT second (decay runs in Read's silent branch)
 
         /// <summary>The audible-phase trim clamp: 1 frame per 512-frame tick
         /// (0.2%, ~3.5 cents), under the pitch JND for steady tones. The
@@ -2920,9 +2974,15 @@ namespace PadForge.Common.Input
         /// (RecenterLoopbackCursor).</summary>
         internal const int BtMaxTrimFrames = 1;
 
-        /// <summary>The peer ship lane's fixed trim (rate-matching only:
-        /// the peer re-renders at its own clock, so this is data pacing,
-        /// not pitch).</summary>
+        /// <summary>The peer ship lane's fixed trim. It changes how much
+        /// DATA ships per tick, which the owner's ring absorbs only within
+        /// its cushion: the owner applies no rate adaptation to remote-fed
+        /// audio (RemoteAudioRing copies, zero-fills, or hard-jumps), so a
+        /// SUSTAINED trim walks the owner's ring to a zero-fill or a
+        /// catastrophe jump. In steady state the trim toggles briefly to
+        /// null clock drift and the owner never notices; the lane predates
+        /// #325 and rate control on the owner side is recorded future
+        /// Remote Link work (2026-08-18 audit).</summary>
         internal const int BtPeerTrimFrames = 4;
 
         /// <summary>Tick buffer headroom in frames: every buffer a tick
@@ -2930,9 +2990,11 @@ namespace PadForge.Common.Input
         /// applies (the #325 regression: the clamp grew past the buffer's
         /// headroom, the read overran, the tick's catch flagged the sink
         /// TransportFailed, and the 5 s rebuild loop replayed the crash as
-        /// a silent mirror and a dead test tone). Test-locked against both
-        /// trim constants.</summary>
-        internal const int BtBufferHeadroomFrames = 4;
+        /// a silent mirror and a dead test tone). Derived from the trim
+        /// constants so the coupling cannot silently diverge again, and
+        /// test-locked besides.</summary>
+        internal const int BtBufferHeadroomFrames =
+            BtMaxTrimFrames > BtPeerTrimFrames ? BtMaxTrimFrames : BtPeerTrimFrames;
 
         /// <summary>Floats one tick can read at the maximum positive trim:
         /// the minimum length for the pull buffer.</summary>
@@ -3112,27 +3174,19 @@ namespace PadForge.Common.Input
                             int inFrames = BtPullFrames;
                             int lag = s.Source.LoopbackLagFrames;
                             bool wasAudible = Environment.TickCount64 - s.LastAudibleTicks <= 2000;
-                            s.Source.SuppressUnderrunAccounting = !wasAudible;
                             if (lag >= 0)
                             {
                                 if (!wasAudible)
                                 {
+                                    // Steering only; the underrun gate and
+                                    // the target decay live inside Read
+                                    // itself so every lane shares them
+                                    // (#325 audit).
                                     if (ShouldRecenterInSilence(lag, s.MirrorLagTarget, LagDeadband))
                                         s.Source.RecenterLoopbackCursor(s.MirrorLagTarget);
-                                    long nowTrim = Environment.TickCount64;
-                                    if (s.MirrorCleanSinceTicks == 0) s.MirrorCleanSinceTicks = nowTrim;
-                                    if (nowTrim - s.MirrorCleanSinceTicks >= 1000)
-                                    {
-                                        s.MirrorCleanSinceTicks = nowTrim;
-                                        s.MirrorLagTarget = DecayLagTarget(s.MirrorLagTarget);
-                                    }
                                 }
                                 else
                                 {
-                                    // Decay only ever counts silence: a
-                                    // mid-tone decay moved the target under
-                                    // the cushion and re-engaged the trim.
-                                    s.MirrorCleanSinceTicks = 0;
                                     inFrames += ComputeLagTrim(lag, s.MirrorLagTarget, LagDeadband);
                                 }
                             }
@@ -3270,8 +3324,13 @@ namespace PadForge.Common.Input
             int lag = s.Source.LoopbackLagFrames;          // -1 when passthrough is off
             if (lag >= 0)
             {
-                if (lag > BtTargetLag + LagDeadband) inFrames += BtPeerTrimFrames;
-                else if (lag < BtTargetLag - LagDeadband) inFrames -= BtPeerTrimFrames;
+                // Steer to the LIVE target (#325 audit): Read's stall resync
+                // lands the cursor at MirrorLagTarget, and steering to the
+                // fixed floor while the target sat escalated kept the trim
+                // engaged against a cushion the resync would immediately
+                // rebuild.
+                if (lag > s.MirrorLagTarget + LagDeadband) inFrames += BtPeerTrimFrames;
+                else if (lag < s.MirrorLagTarget - LagDeadband) inFrames -= BtPeerTrimFrames;
             }
 
             s.Source.Read(pull, 0, inFrames * 2);          // macros + test tone + passthrough

@@ -589,6 +589,27 @@
                         <TextBlock Grid.Row="2" Grid.Column="1"
                                    Text="{Binding SdlVersion}" FontSize="12" FontFamily="{StaticResource TelemetryFontFamily}" Margin="0,4,0,0"/>
                     </Grid>
+
+                    <!-- Diagnostics logging (#303): the flag-free way to get
+                         a trace. The toggle persists, so auto-started
+                         sessions log too; the snapshot works even with
+                         logging off, because the engine always keeps its
+                         recent events in memory. -->
+                    <CheckBox Content="{Binding Settings_DiagnosticsLogging, Source={x:Static strings:Strings.Instance}}"
+                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                              IsChecked="{Binding DiagnosticsLoggingEnabled}" Margin="0,14,0,4"
+                              ToolTip="{Binding Settings_DiagnosticsLoggingTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                    <TextBlock Text="{Binding DiagnosticsFolderPath}" FontSize="12"
+                               FontFamily="{StaticResource TelemetryFontFamily}"
+                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                               TextWrapping="Wrap" Margin="0,0,0,10"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="{Binding Settings_DiagnosticsSnapshot, Source={x:Static strings:Strings.Instance}}"
+                                Click="SaveDiagSnapshot_Click"
+                                ToolTip="{Binding Settings_DiagnosticsSnapshotTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                        <Button Content="{Binding Settings_DiagnosticsOpenFolder, Source={x:Static strings:Strings.Instance}}"
+                                Click="OpenDiagFolder_Click" Margin="8,0,0,0"/>
+                    </StackPanel>
                 </StackPanel>
             </Border>
 

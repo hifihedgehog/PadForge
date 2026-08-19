@@ -285,7 +285,12 @@
   <data name="Settings_OpenFolder" xml:space="preserve"><value>Map openen</value></data>
   <data name="Settings_UnsavedChanges" xml:space="preserve"><value>Niet-opgeslagen wijzigingen</value></data>
   <data name="Settings_Diagnostics" xml:space="preserve"><value>Diagnostiek</value></data>
-  <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>Applicatie- en runtime-versie-informatie.</value></data>
+  <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>Versie-informatie en registratie van engine-gebeurtenissen voor probleemoplossing.</value></data>
+  <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>Diagnoselogboek bijhouden</value></data>
+  <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>Schrijft engine-gebeurtenissen doorlopend naar diagnostics.log in de hieronder getoonde map. Blijft ingeschakeld na elke herstart. Bij 8 MB rolt het bestand door naar diagnostics.log.old.</value></data>
+  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Momentopname opslaan</value></data>
+  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Slaat de meest recente engine-gebeurtenissen op in een nieuw bestand. Werkt ook als het diagnoselogboek uitstaat.</value></data>
+  <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Logboekmap openen</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>App-versie</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET-runtime</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL-versie</value></data>

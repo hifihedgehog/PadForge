@@ -285,7 +285,12 @@
   <data name="Settings_OpenFolder" xml:space="preserve"><value>打开文件夹</value></data>
   <data name="Settings_UnsavedChanges" xml:space="preserve"><value>有未保存的更改</value></data>
   <data name="Settings_Diagnostics" xml:space="preserve"><value>诊断信息</value></data>
-  <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>应用程序和运行时版本信息。</value></data>
+  <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>版本信息，以及用于排查问题的引擎事件日志。</value></data>
+  <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>保留诊断日志</value></data>
+  <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>将引擎事件持续写入下方文件夹中的 diagnostics.log。重启后保持启用。文件达到 8 MB 时滚动为 diagnostics.log.old。</value></data>
+  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>保存快照</value></data>
+  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>将最近的引擎事件保存到新文件。即使诊断日志已关闭也可使用。</value></data>
+  <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>打开日志文件夹</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>应用版本</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET 运行时</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL 版本</value></data>

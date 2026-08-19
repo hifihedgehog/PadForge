@@ -345,7 +345,12 @@
   <data name="Settings_OpenFolder" xml:space="preserve"><value>Open Folder</value></data>
   <data name="Settings_UnsavedChanges" xml:space="preserve"><value>Unsaved Changes</value></data>
   <data name="Settings_Diagnostics" xml:space="preserve"><value>Diagnostics</value></data>
-  <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>Application and runtime version information.</value></data>
+  <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>Version information, plus engine event logging for troubleshooting.</value></data>
+  <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>Keep a Diagnostics Log</value></data>
+  <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>Continuously writes engine events to diagnostics.log in the folder shown below. Stays enabled across restarts. When the file reaches 8 MB it rolls over to diagnostics.log.old.</value></data>
+  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>Save Snapshot</value></data>
+  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>Saves the most recent engine events to a new file. Works even when the diagnostics log is off.</value></data>
+  <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>Open Log Folder</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>App Version</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET Runtime</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL Version</value></data>

@@ -18,6 +18,37 @@ namespace PadForge.Views
         private void TestBatteryNotify_Click(object sender, System.Windows.RoutedEventArgs e)
             => InputService?.TestBatteryNotification();
 
+        // Diagnostics (#303): dump the in-memory engine event ring to a
+        // timestamped file and reveal it in Explorer. Works whether or not
+        // continuous logging is on, so a user can capture the moments
+        // around a glitch after the fact.
+        private void SaveDiagSnapshot_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            try
+            {
+                string path = PadForge.Common.DiagnosticsLogControl.SaveSnapshot();
+                System.Diagnostics.Process.Start("explorer.exe", $"/select,\"{path}\"");
+            }
+            catch
+            {
+                // A full disk or a broken shell association must not take
+                // the settings page down.
+            }
+        }
+
+        private void OpenDiagFolder_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            try
+            {
+                System.IO.Directory.CreateDirectory(PadForge.Common.DiagnosticsLogControl.Folder);
+                System.Diagnostics.Process.Start("explorer.exe",
+                    PadForge.Common.DiagnosticsLogControl.Folder);
+            }
+            catch
+            {
+            }
+        }
+
         // Re-run the Ember welcome tour (#175).
         private void ShowTour_Click(object sender, System.Windows.RoutedEventArgs e)
         {

@@ -664,6 +664,23 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _startMinimized, value);
         }
 
+        private bool _diagnosticsLoggingEnabled;
+
+        /// <summary>Diagnostics logging (#303): mirrors the engine's
+        /// in-memory event ring to %LOCALAPPDATA%\PadForge\diagnostics.log
+        /// continuously. Persisted, so it survives restarts and works for
+        /// auto-started sessions where a launch flag cannot. Default off:
+        /// a healthy install writes no log.</summary>
+        public bool DiagnosticsLoggingEnabled
+        {
+            get => _diagnosticsLoggingEnabled;
+            set => SetProperty(ref _diagnosticsLoggingEnabled, value);
+        }
+
+        /// <summary>Where the diagnostics log and snapshots land, shown on
+        /// the Diagnostics card.</summary>
+        public string DiagnosticsFolderPath => Common.DiagnosticsLogControl.Folder;
+
         private bool _startAtLogin;
 
         /// <summary>Whether to automatically start PadForge when the user logs in.</summary>

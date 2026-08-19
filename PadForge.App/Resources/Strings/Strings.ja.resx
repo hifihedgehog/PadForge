@@ -285,7 +285,12 @@
   <data name="Settings_OpenFolder" xml:space="preserve"><value>フォルダーを開く</value></data>
   <data name="Settings_UnsavedChanges" xml:space="preserve"><value>未保存の変更があります</value></data>
   <data name="Settings_Diagnostics" xml:space="preserve"><value>診断情報</value></data>
-  <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>アプリケーションおよびランタイムのバージョン情報です。</value></data>
+  <data name="Settings_DiagnosticsDesc" xml:space="preserve"><value>バージョン情報と、トラブルシューティング用のエンジンイベントログ。</value></data>
+  <data name="Settings_DiagnosticsLogging" xml:space="preserve"><value>診断ログを記録する</value></data>
+  <data name="Settings_DiagnosticsLoggingTooltip" xml:space="preserve"><value>エンジンイベントを下記フォルダーの diagnostics.log に継続的に書き込みます。再起動後も有効のままです。8 MB に達すると diagnostics.log.old にローテーションします。</value></data>
+  <data name="Settings_DiagnosticsSnapshot" xml:space="preserve"><value>スナップショットを保存</value></data>
+  <data name="Settings_DiagnosticsSnapshotTooltip" xml:space="preserve"><value>直近のエンジンイベントを新しいファイルに保存します。診断ログが無効でも動作します。</value></data>
+  <data name="Settings_DiagnosticsOpenFolder" xml:space="preserve"><value>ログフォルダーを開く</value></data>
   <data name="Settings_AppVersion" xml:space="preserve"><value>アプリバージョン</value></data>
   <data name="Settings_DotNetRuntime" xml:space="preserve"><value>.NET ランタイム</value></data>
   <data name="Settings_SdlVersion" xml:space="preserve"><value>SDL バージョン</value></data>

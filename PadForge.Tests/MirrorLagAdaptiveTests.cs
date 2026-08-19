@@ -4,8 +4,8 @@ using Xunit;
 namespace PadForge.Tests
 {
     // Locks the adaptive mirror cushion (#325, discussion #320 by
-    // Jobima1st): the proportional trim's deadband, scaling, clamp, and
-    // sign, plus the escalation/decay ladder's floor, ceiling, and steps.
+    // Jobima1st): the audible-phase trim's deadband, clamp, and sign,
+    // plus the escalation/decay ladder's floor, ceiling, and steps.
     // The defect: a fixed 20 ms cushion with a fixed +/-4 trim collapsed
     // under bursty loopback delivery (a reporter's ring bottomed at 28
     // frames), and the zero-filled shortfall was the audible crack.
@@ -62,7 +62,7 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void Trim_ScalesWithTheErrorAndClamps()
+        public void Trim_ClampsAtTheInaudibleLevel()
         {
             // The audible-phase clamp is +/-1 (0.2%, ~3.5 cents, under the
             // pitch JND for steady tones): the trim IS a per-tick pitch
@@ -99,7 +99,7 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void Decay_StepsOneMsPerCleanSecond_AndStopsAtTheFloor()
+        public void Decay_StepsOneMsPerSilentSecond_AndStopsAtTheFloor()
         {
             int t = 1440;
             t = AudioPassthroughService.DecayLagTarget(t);

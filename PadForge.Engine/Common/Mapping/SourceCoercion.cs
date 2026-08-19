@@ -968,15 +968,24 @@ namespace PadForge.Engine.Common.Mapping
                 // is a full stick axis, floor the PAIR magnitude and scale
                 // this axis by the result, direction preserved. The
                 // companion runs through the same shape and curve so the
-                // magnitude matches what its own row emits (the translator
-                // stamps both rows of a pair identically). The scalar
+                // magnitude matches what its own row emits. The scalar
                 // floor forbade the per-axis band (0, anti), which cut
                 // wedge gaps at the cardinals out of a slow circle.
                 // Shapes 0 and 1 stay scalar: rows there carry single-axis
                 // semantics (steering imports, starter profiles) where a
                 // companion axis holds unrelated data.
-                float pairMag = -1f;
-                if (state != null && src.ParamStickDeadZoneShape == 2)
+                //
+                // The pair path also requires symmetric feel: the primary
+                // reached here through PerSourceSensitivity and
+                // ApplyPerSourceAccel, which the companion read below does
+                // not apply, and the translator stamps SensX/SensY per row.
+                // With non-unit sensitivity or accel the two halves of the
+                // magnitude would be scaled differently and the "direction
+                // preserved" contract breaks, so those rows keep the scalar
+                // floor (2026-08-18 audit).
+                double pairMag = -1.0;
+                bool symmetricFeel = PerSourceSensitivity(src) == 1f && src.ParamAccel <= 0.0;
+                if (state != null && symmetricFeel && src.ParamStickDeadZoneShape == 2)
                 {
                     int companion = pairIdx switch { 0 => 1, 1 => 0, 3 => 4, 4 => 3, _ => -1 };
                     if (companion >= 0 && companion < CustomInputState.MaxAxis)
@@ -985,11 +994,14 @@ namespace PadForge.Engine.Common.Mapping
                             (state.Axis[companion] - 32768) / 32767f));
                         other = Math.Abs(ApplyStickDeadZoneShape(state, src, companion, other));
                         if (hasCurve) other = (float)Math.Pow(other, exponent);
-                        pairMag = Math.Min(1f, (float)Math.Sqrt(mag * mag + other * other));
+                        // Double precision so sqrt(mag^2 + 0) cannot round a
+                        // hair above mag and flip the on-axis branch below
+                        // off the bit-identical scalar formula.
+                        pairMag = Math.Min(1.0, Math.Sqrt((double)mag * mag + (double)other * other));
                     }
                 }
                 if (pairMag > mag)
-                    mag = mag * (((float)anti + pairMag * (1f - (float)anti)) / pairMag);
+                    mag = (float)(mag * ((anti + pairMag * (1.0 - anti)) / pairMag));
                 else
                     mag = (float)anti + (1f - (float)anti) * mag;
             }

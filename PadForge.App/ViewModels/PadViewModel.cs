@@ -7443,11 +7443,14 @@ namespace PadForge.ViewModels
 
                 // Per-axis DZ gate + rescale (mirrors ApplySingleDeadZone).
                 // Axial keeps the scalar floor by contract (#330): pairMag is
-                // the axis's own post-curve value.
+                // the axis's own post-curve value. The curve applies only
+                // past the gate, mirroring the engine's order, so a curve
+                // starting above zero previews zero at rest exactly as the
+                // engine outputs zero.
                 double remAx = xInDz ? 0 : Math.Min((magX - dzXn) / (mrXn - dzXn), 1.0);
                 double remAy = yInDz ? 0 : Math.Min((magY - dzYn) / (mrYn - dzYn), 1.0);
-                double remAxC = StickConfigItem.ApplyCurve(remAx, curveX);
-                double remAyC = StickConfigItem.ApplyCurve(remAy, curveY);
+                double remAxC = remAx > 0 ? StickConfigItem.ApplyCurve(remAx, curveX) : 0;
+                double remAyC = remAy > 0 ? StickConfigItem.ApplyCurve(remAy, curveY) : 0;
                 double oAx = PostDzForPreview(remAxC, antiDeadZoneX, linear, remAxC);
                 double oAy = PostDzForPreview(remAyC, antiDeadZoneY, linear, remAyC);
 
@@ -7489,26 +7492,28 @@ namespace PadForge.ViewModels
                     break;
             }
 
-            // Post-DZ: curve per axis, then the pair-radial anti-deadzone
-            // floor (#330), mirroring the engine's ApplyPostDeadZone ordering,
-            // including its floor gate: no floor inside the deadzone ellipse
-            // (the Sloped shapes pass center values through by design and the
-            // floor must not amplify them).
-            double remCx = StickConfigItem.ApplyCurve(remX, curveX);
-            double remCy = StickConfigItem.ApplyCurve(remY, curveY);
+            // Post-DZ: curve per axis (only past the deadzone gate, so an
+            // authored curve starting above zero cannot re-open the rest
+            // drift), then the pair-radial anti-deadzone floor (#330),
+            // mirroring the engine's ApplyPostDeadZone ordering, including
+            // its floor RAMP: the floor scales with the raw pair's
+            // elliptical distance so the Sloped shapes' center pass-through
+            // is attenuated instead of snapped at the ellipse boundary.
+            double remCx = remX > 0 ? StickConfigItem.ApplyCurve(remX, curveX) : 0;
+            double remCy = remY > 0 ? StickConfigItem.ApplyCurve(remY, curveY) : 0;
             double pairMag = Math.Sqrt(remCx * remCx + remCy * remCy);
-            bool floorEligible;
+            double rampFactor;
             if (dzXn <= 0 && dzYn <= 0)
-                floorEligible = true;
+                rampFactor = 1.0;
             else
             {
                 const double dzEps = 1e-10;
                 double gx = sx / Math.Max(dzXn, dzEps);
                 double gy = sy / Math.Max(dzYn, dzEps);
-                floorEligible = (gx * gx + gy * gy) >= 1.0;
+                rampFactor = Math.Min(1.0, Math.Sqrt(gx * gx + gy * gy));
             }
-            double outX = PostDzForPreview(remCx, floorEligible ? antiDeadZoneX : 0, linear, pairMag);
-            double outY = PostDzForPreview(remCy, floorEligible ? antiDeadZoneY : 0, linear, pairMag);
+            double outX = PostDzForPreview(remCx, antiDeadZoneX * rampFactor, linear, pairMag);
+            double outY = PostDzForPreview(remCy, antiDeadZoneY * rampFactor, linear, pairMag);
 
             double outputPosX = Math.Clamp(0.5 + signX * outX * 0.5, 0.0, 1.0);
             double outputPosY = Math.Clamp(0.5 + signY * outY * 0.5, 0.0, 1.0);
@@ -7636,7 +7641,9 @@ namespace PadForge.ViewModels
         private static double PostDzForPreview(double remapped, double antiDeadZone, double linear, double pairMag)
         {
             if (remapped <= 0) return 0;
-            double adzNorm = antiDeadZone / 100.0;
+            // Clamped like the engine: the persisted field has no upper
+            // bound and a value past 100 would diverge the radial rescale.
+            double adzNorm = Math.Clamp(antiDeadZone / 100.0, 0.0, 1.0);
             double floored;
             if (adzNorm <= 0)
                 floored = remapped;

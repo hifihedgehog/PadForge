@@ -124,12 +124,71 @@ namespace PadForge.Tests
         [InlineData(DeadZoneShape.Axial)]
         public void ZeroDeadZone_RestingStick_StillReadsZero(DeadZoneShape shape)
         {
-            // The round-34 guard's last hole: with deadZone == 0 the strict
-            // "magnitude < dzNorm" in ApplySingleDeadZone never fired, so a
-            // resting Axial stick (and the trigger lane) emitted the floor.
             var (x, y) = Apply(0, 0, shape, dz: 0);
             Assert.Equal(0, x);
             Assert.Equal(0, y);
+        }
+
+        [Theory]
+        [InlineData(DeadZoneShape.ScaledRadial)]
+        [InlineData(DeadZoneShape.Axial)]
+        public void RestingStick_WithCurveStartingAboveZero_StillReadsZero(DeadZoneShape shape)
+        {
+            // The rest guard must test the PRE-curve remap: CurveLut keeps an
+            // authored point at x=0 with y > 0, and looking that curve up at
+            // rest re-opened the round-34 rest drift when the lookup ran
+            // before the guard (2026-08-18 audit).
+            var lut = PadForge.Common.CurveLut.GetOrBuild("0.000,0.400;1.000,1.000");
+            Assert.True(PadForge.Common.CurveLut.Lookup(lut, 0) > 0.3,
+                "fixture check: the curve must start above zero");
+            short x = 0, y = 0;
+            InputManager.ApplyDeadZoneForTest(ref x, ref y, Dz, Dz, Adz, Adz, 0,
+                100, 100, 100, 100, lut, lut, shape);
+            Assert.Equal(0, x);
+            Assert.Equal(0, y);
+        }
+
+        [Fact]
+        public void SlopedShape_HasNoSnapAcrossTheDeadzoneBoundary()
+        {
+            // The floor RAMPS with the raw pair's elliptical distance: a
+            // binary inside/outside gate produced a ~6,600-count output snap
+            // the moment a deliberate on-axis pull crossed the ellipse on the
+            // Sloped shapes, whose center pass-through is by design
+            // (2026-08-18 audit). Sweep the on-axis travel and bound the
+            // successive delta.
+            short prev = 0;
+            bool first = true;
+            int maxJump = 0;
+            for (int raw = 0; raw <= 32767; raw += 64)
+            {
+                var (x, _) = Apply((short)raw, 0, DeadZoneShape.SlopedScaledAxial);
+                if (!first) maxJump = System.Math.Max(maxJump, System.Math.Abs(x - prev));
+                prev = x; first = false;
+            }
+            Assert.True(maxJump < 600,
+                $"on-axis travel is discontinuous (max successive jump {maxJump})");
+        }
+
+        [Fact]
+        public void TriggerRest_WithZeroDeadzoneAndAnti_ReadsZero()
+        {
+            // The trigger lane's own dz=0 rest hole (#330 audit): a released
+            // trigger with anti-deadzone configured shipped a permanent
+            // phantom pull of adz% while the preview showed zero.
+            Assert.Equal(0, InputManager.ApplyTriggerDeadZone(0, 0, 25, 100));
+            // Positive control: a genuine pull still gets the floor.
+            Assert.True(InputManager.ApplyTriggerDeadZone(32768, 0, 25, 100) > 16000);
+        }
+
+        [Fact]
+        public void AntiDeadzoneOver100_IsClampedNotDivergent()
+        {
+            // The persisted field has no upper bound; past 100 the radial
+            // rescale diverged as the pair magnitude shrank. Clamped to 100
+            // the output saturates cleanly.
+            var (x, _) = Apply(20000, 0, DeadZoneShape.ScaledRadial, adz: 150);
+            Assert.Equal(32767, x);
         }
 
         // ── Per-source lane (SourceCoercion, Steam Circle rows) ─────────────
@@ -167,19 +226,31 @@ namespace PadForge.Tests
         [Fact]
         public void SteamCircleRow_OnAxis_KeepsTheScalarFloorValue()
         {
-            // Companion at rest: radial reduces to the legacy scalar formula.
-            var state = PairState(65535, 32768);
+            // Companion at rest: radial reduces to the legacy scalar formula,
+            // asserted against the HAND-COMPUTED value rather than a second
+            // call to the same function (the original assertion compared the
+            // function to itself and was vacuous, 2026-08-18 audit).
+            // Half deflection, inner 0.10: shaped = (0.5 - 0.1) / 0.9 = 0.4444,
+            // floored = 0.25 + 0.4444 * 0.75 = 0.5833.
+            var state = PairState(32768 + 16384, 32768);
             float major = SourceCoercion.EvaluateForBipolarAxisTarget(state, CircleSrc("Axis 0"));
-            var scalarOnly = new MappingSource
-            {
-                Descriptor = "Axis 0",
-                ParamStickDeadZoneShape = 2,
-                ParamStickDeadZoneInner = 0.10,
-                ParamAntiDeadzone = 0.25,
-            };
-            float again = SourceCoercion.EvaluateForBipolarAxisTarget(PairState(65535, 32768), scalarOnly);
-            Assert.Equal(again, major, 6);
-            Assert.True(major > 0.99f, $"full on-axis deflection should stay full (got {major})");
+            Assert.Equal(0.5833f, major, 3);
+        }
+
+        [Fact]
+        public void SteamCircleRow_AsymmetricSensitivity_KeepsTheScalarFloor()
+        {
+            // The radial pair path requires symmetric feel: the primary is
+            // scaled by PerSourceSensitivity before the floor while the
+            // companion read is not, so a row with non-unit sensitivity
+            // falls back to the scalar floor rather than computing a wrong
+            // pair magnitude (2026-08-18 audit).
+            var src = CircleSrc("Axis 1");
+            src.Sensitivity = 2.0;
+            var state = PairState(65535, 32768 + 1000);
+            float minor = SourceCoercion.EvaluateForBipolarAxisTarget(state, src);
+            Assert.True(System.Math.Abs(minor) > 0.20f,
+                $"non-unit sensitivity must keep the scalar floor (got {minor})");
         }
 
         [Fact]

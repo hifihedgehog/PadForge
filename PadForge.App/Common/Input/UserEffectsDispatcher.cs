@@ -1883,8 +1883,22 @@ namespace PadForge.Common.Input
                     // re-opens the two-writer flashing this fixed. The
                     // pass-through's own release hands the identity bar
                     // back, so nothing is lost while suppressed.
+                    //
+                    // "Holds the bar" has to mean the BAR. This asked
+                    // IsHoldingState, which is true whenever the lane has
+                    // forwarded ANY effect payload, and shipped as #334:
+                    // a host driving adaptive triggers or rumble and never
+                    // touching the lightbar still took it away from the
+                    // Lighting tab for the full 15 s idle window, so the
+                    // pad sat on its firmware default blue and no colour
+                    // setting did anything. IsPassthroughTarget only asks
+                    // that an online DualSense be mapped to the slot, so
+                    // there was nothing else narrowing it either. The pips
+                    // and the mic LED were unaffected because they gate
+                    // through GateMirroredSubsystem, which is exactly why
+                    // it presented as "only the lightbar is dead".
                     bool assertLightbar = !((gameDrivenBar
-                            || DualSensePassthroughDispatcher.IsHoldingState(_padIndex))
+                            || DualSensePassthroughDispatcher.IsHoldingLightbar(_padIndex))
                         && isDs5
                         && DualSensePassthroughDispatcher.IsPassthroughTarget(_padIndex, ud.InstanceGuid));
 

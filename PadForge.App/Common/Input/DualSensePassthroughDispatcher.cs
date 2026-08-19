@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Buffers;
 using System.Collections.Generic;
 using System.Threading;
@@ -105,6 +105,40 @@ namespace PadForge.Common.Input
         /// writers on one bar is the #300 flashing.</summary>
         public static bool IsHoldingState(int padIndex)
             => _bySlot.TryGetValue(padIndex, out var d) && d._drivingState;
+
+        /// <summary>True while this slot's pass-through is holding the
+        /// LIGHTBAR specifically: it has forwarded a payload that asserted
+        /// the lightbar enable bit, recently enough that the game still owns
+        /// the bar.
+        ///
+        /// <para>This exists because <see cref="IsHoldingState"/> is the
+        /// wrong question for the bar and answering it that way was a
+        /// shipped regression (#334). That flag latches on ANY forwarded
+        /// effect payload: adaptive triggers, rumble, audio, player LED.
+        /// A host that drives triggers and never touches the bar therefore
+        /// held it for the whole 15 s idle window, the identity writer
+        /// suppressed its own lightbar enable for exactly as long, and the
+        /// pad sat on its firmware default blue while the Lighting tab did
+        /// nothing. The pips and the mic LED kept working the whole time
+        /// because they gate through GateMirroredSubsystem instead, which
+        /// is what made it read as "only the lightbar is broken".</para>
+        ///
+        /// <para>The #300 flashing fix is unchanged: a game that really is
+        /// driving the bar still stamps this on every bar-asserting packet
+        /// and still owns the subsystem for the same window.</para></summary>
+        public static bool IsHoldingLightbar(int padIndex)
+            => _bySlot.TryGetValue(padIndex, out var d) && d.HoldingLightbar;
+
+        private bool HoldingLightbar
+        {
+            get
+            {
+                if (!_drivingState) return false;
+                long stamp = System.Threading.Volatile.Read(ref _lightbarDrivenTicks);
+                return stamp != 0
+                    && Environment.TickCount64 - stamp < SourceIdleReleaseMs;
+            }
+        }
 
         public DualSensePassthroughDispatcher(int padIndex)
         {
@@ -256,6 +290,13 @@ namespace PadForge.Common.Input
         /// session where the game never wrote would release something it never
         /// took. Worker-only.</summary>
         private volatile bool _drivingState;
+
+        /// <summary>TickCount64 of the last forwarded payload that asserted
+        /// the lightbar enable bit (validFlag1 bit 2). 0 = the lane has
+        /// never driven the bar. Read through <see cref="HoldingLightbar"/>;
+        /// see the note there for why "is the lane busy" is not a usable
+        /// answer for this subsystem.</summary>
+        private long _lightbarDrivenTicks;
 
         /// <summary>valid_flag0 bits 2 and 3: the right and left adaptive
         /// trigger blocks. Confirmed against dualsense-tester, whose trigger
@@ -468,6 +509,15 @@ namespace PadForge.Common.Input
             // outside the diag gate because the release depends on it.
             Volatile.Write(ref _lastSourcePacketTicks, Environment.TickCount64);
 
+            // Separately: is the game driving the BAR, or just talking? Only
+            // a payload asserting validFlag1 bit 2 hands the lightbar to the
+            // pass-through. payload[1] is validFlag1, the same decode
+            // UserEffectsDispatcher.NotifyExternalSubsystems uses to mirror
+            // the RGB at payload[44..46]. Without this distinction any effect
+            // traffic at all took the bar away from the Lighting tab (#334).
+            if (payload.Length > 1 && (payload[1] & 0x04) != 0)
+                Volatile.Write(ref _lightbarDrivenTicks, Environment.TickCount64);
+
             // Rent at least payload.Length; ArrayPool may return a larger buffer.
             byte[] buf = ArrayPool<byte>.Shared.Rent(payload.Length);
             payload.CopyTo(buf);
@@ -615,6 +665,7 @@ namespace PadForge.Common.Input
             if (_drivingState && !_skipShutdownRelease)
             {
                 _drivingState = false;
+                System.Threading.Volatile.Write(ref _lightbarDrivenTicks, 0);
                 try
                 {
                     byte[] release = ArrayPool<byte>.Shared.Rent(StandardPayloadSize);
@@ -756,6 +807,10 @@ namespace PadForge.Common.Input
             // Cleared FIRST, so a target resolving to nothing (pad unplugged,
             // slot unassigned) does not leave this retrying every second.
             _drivingState = false;
+            // The bar stamp stands down with the lane. Leaving it set would
+            // keep the identity writer suppressed past the release that just
+            // handed the bar back, which is the same window bug one level in.
+            System.Threading.Volatile.Write(ref _lightbarDrivenTicks, 0);
 
             byte[] buf = ArrayPool<byte>.Shared.Rent(StandardPayloadSize);
             BuildTriggerReleasePayload(buf);

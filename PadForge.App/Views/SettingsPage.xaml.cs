@@ -46,6 +46,8 @@ namespace PadForge.Views
             }
             catch
             {
+                // A broken shell association must not take the settings
+                // page down; the folder is also shown as text above.
             }
         }
 

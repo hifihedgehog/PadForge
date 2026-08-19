@@ -4,13 +4,16 @@ using System.Runtime.InteropServices;
 
 namespace PadForge.Engine
 {
-    /// <summary>In-memory diagnostics ring. PadForge writes no log file in
-    /// normal operation; the single sanctioned on-disk artifact is
-    /// crash.log. SDL's own log lines (DEBUG priority, e.g. driver state
-    /// machines), the poll-loop stall watchdogs, and subsystem diagnostics
-    /// accumulate in this bounded ring, and the crash handler appends the
-    /// ring's tail to crash.log so a crash still carries its recent
-    /// context. A healthy session leaves nothing on disk.</summary>
+    /// <summary>In-memory diagnostics ring. SDL's own log lines (DEBUG
+    /// priority, e.g. driver state machines), the poll-loop stall
+    /// watchdogs, and subsystem diagnostics accumulate in this bounded
+    /// ring, and the crash handler appends the ring's tail to crash.log
+    /// so a crash still carries its recent context. By default the ring
+    /// stays in memory and a healthy session leaves nothing on disk
+    /// beyond what the user asked for: the file mirror exists only when
+    /// armed, by the PADFORGE_DIAG bench variable or by the Diagnostics
+    /// setting (#303), and it writes diagnostics.log beside the exe like
+    /// everything else PadForge persists.</summary>
     public static class SdlDiagLog
     {
         private const int MaxLines = 400;

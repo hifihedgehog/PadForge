@@ -1694,6 +1694,19 @@ namespace PadForge.Common.Input
                         // Last resort: Thread.Sleep(1).
                         Thread.Sleep(1);
                     }
+                    else if (remaining <= 0)
+                    {
+                        // Overrun: the cycle's work exceeded the interval, so
+                        // no wait ran at all. On a CPU that cannot hold the
+                        // rate this loop otherwise free-runs at AboveNormal
+                        // priority with no scheduling gap, starving the UI
+                        // thread (#331: "every adjustment takes a minute").
+                        // SwitchToThread yields one quantum to ANY ready
+                        // thread on this processor, including lower-priority
+                        // ones, which Thread.Sleep(0) would not. On machines
+                        // that hold the rate this branch never runs.
+                        Thread.Yield();
+                    }
 
                     // Spin for the final sub-ms portion.
                     while (cycleTimer.ElapsedTicks < adjustedTarget)

@@ -5244,11 +5244,42 @@ namespace PadForge.Services
             MarkDirtyOnUiThread();
         }
 
+        /// <summary>TickCount64 of the most recent MarkDirty. The persist
+        /// tier waits for this to go quiet.</summary>
+        private long _lastDirtyTickMs;
+
+        /// <summary>Quiet time after the last change before the full
+        /// serialize-and-write runs. See MarkDirtyOnUiThread.</summary>
+        private const int PersistQuietMs = 2000;
+
         private void MarkDirtyOnUiThread()
         {
             _mainVm.Settings.HasUnsavedChanges = true;
+            _lastDirtyTickMs = Environment.TickCount64;
 
-            // Start or restart the autosave debounce timer.
+            // Two-tier autosave (#331). The engine reads PadSetting, and the
+            // only routine ViewModel-to-PadSetting push used to live inside
+            // Save(), so a tuning change reached the engine only after the
+            // full serialize-and-write completed. On capable hardware that
+            // chain runs in tens of milliseconds and reads as live; on a
+            // low-end CPU with slow storage it runs in seconds, ON THE UI
+            // THREAD, once per debounce gap, so every adjustment cost a
+            // freeze and the behavioral change waited behind it.
+            //
+            // Tier 1 (every 250 ms while dirty): push the ViewModels into
+            // the PadSettings and the slot MappingSets. Direct property
+            // writes, no serialization, no disk. The engine reflects an
+            // adjustment within ~250 ms regardless of hardware.
+            //
+            // Tier 2 (after 2 s of quiet): the full Save with checksums,
+            // profile snapshot, XML serialization and the disk write. One
+            // save per editing burst instead of one per adjustment.
+            //
+            // The timer deliberately STARTS but never RESTARTS here: a
+            // restart on every change would starve tier 1 for as long as
+            // the user keeps dragging, which is the exact debounce-starves-
+            // the-apply shape this replaces. Direct Save() callers
+            // (OnClosing, profile operations) are unchanged and synchronous.
             if (_autoSaveTimer == null)
             {
                 _autoSaveTimer = new DispatcherTimer
@@ -5257,17 +5288,33 @@ namespace PadForge.Services
                 };
                 _autoSaveTimer.Tick += (s, e) =>
                 {
+                    try
+                    {
+                        // Tier 1: engine-visible push.
+                        UpdatePadSettingsFromViewModels();
+                        PushUiExtraSourcesIntoSlotMappingSets();
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine(
+                            "Tier-1 settings push failed: " + ex.Message);
+                    }
+
+                    if (Environment.TickCount64 - _lastDirtyTickMs < PersistQuietMs)
+                        return; // keep ticking; the user is still editing
+
                     _autoSaveTimer.Stop();
                     if (IsDirty)
                     {
+                        // Tier 2: the full persist.
                         Save();
                         AutoSaved?.Invoke(this, EventArgs.Empty);
                     }
                 };
             }
 
-            _autoSaveTimer.Stop();
-            _autoSaveTimer.Start();
+            if (!_autoSaveTimer.IsEnabled)
+                _autoSaveTimer.Start();
         }
 
         // ─────────────────────────────────────────────

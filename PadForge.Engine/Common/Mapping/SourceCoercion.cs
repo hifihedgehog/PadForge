@@ -1903,31 +1903,58 @@ namespace PadForge.Engine.Common.Mapping
             return v;
         }
 
-        /// <summary>Per-poll sensor counts that map to full deflection for the
-        /// Joy-Con 2 mouse sources (issue #154). Chosen for parity with a real
-        /// mouse in PadForge: SdlMouseWrapper turns Raw Input deltas into axis
-        /// values at MotionScale 2048 per count over the 0..65535 range, i.e.
-        /// 16 counts in one poll = full scale. The sensor and a physical mouse
-        /// therefore feel identical through the same mapping grid.</summary>
-        private const float JoyCon2MouseCountsFullScale = 16f;
+        /// <summary>Sensor counts per SECOND that map to full deflection for
+        /// the Joy-Con 2 mouse sources (issue #154). Chosen for parity with a
+        /// real mouse in PadForge: SdlMouseWrapper maps 16,000 counts/s to
+        /// full scale (MotionScale 2048 per count-per-poll at the 1 ms
+        /// default, i.e. 16 counts in one poll = full scale). The sensor and
+        /// a physical mouse therefore feel identical through the same
+        /// mapping grid.</summary>
+        private const float JoyCon2MouseCountsPerSecFullScale = 16000f;
+
+        // Per-device sliding-window velocity for the Joy-Con 2 mouse (#331).
+        // The old per-poll form was a center/spike comb whenever the pad's
+        // report rate sat below the polling rate, and its scale depended on
+        // the polling interval. Keyed by deviceGuid, stepped once per poll
+        // frame (multiple mapping rows reading the same source in one poll
+        // must not add the same counts twice), polling thread only.
+        private sealed class Jc2MouseVelocityState
+        {
+            public readonly RelativeVelocityWindow Window = new RelativeVelocityWindow();
+            public ulong FrameSeq; // 0 = never seen (_pollFrameSeq starts at 1)
+            public float CpsX, CpsY;
+        }
+        private static readonly ConcurrentDictionary<string, Jc2MouseVelocityState>
+            _jc2MouseVelocity = new();
 
         /// <summary>Reads a Joy-Con 2 optical mouse motion source
         /// ("Mouse Motion X" / "Mouse Motion Y", issue #154) as a bipolar
-        /// [-1..+1] per-poll velocity. The per-source
+        /// [-1..+1] windowed velocity (#331). The per-source
         /// <see cref="MappingSource.IrPointerSensitivity"/> scales it like the
         /// IR pointer (default 1.0), so a row can be made faster or slower
         /// without touching the shared constant. Invert rides the public
         /// Evaluate* wrappers, matching the other engine families.</summary>
-        private static float ReadJoyCon2MouseMotion(CustomInputState state, MappingSource src)
+        private static float ReadJoyCon2MouseMotion(CustomInputState state, MappingSource src, string deviceGuid)
         {
             if (state == null || src?.Descriptor == null) return 0f;
             string s = src.Descriptor;
-            float counts;
-            if (s.EndsWith(" X", StringComparison.Ordinal)) counts = state.JoyCon2MouseDX;
-            else if (s.EndsWith(" Y", StringComparison.Ordinal)) counts = state.JoyCon2MouseDY;
+            bool wantX;
+            if (s.EndsWith(" X", StringComparison.Ordinal)) wantX = true;
+            else if (s.EndsWith(" Y", StringComparison.Ordinal)) wantX = false;
             else return 0f;
 
-            float v = counts / JoyCon2MouseCountsFullScale * (float)src.IrPointerSensitivity;
+            var vel = _jc2MouseVelocity.GetOrAdd(deviceGuid ?? string.Empty,
+                static _ => new Jc2MouseVelocityState());
+            if (vel.FrameSeq != _pollFrameSeq)
+            {
+                vel.FrameSeq = _pollFrameSeq;
+                vel.Window.Add(System.Diagnostics.Stopwatch.GetTimestamp(),
+                    state.JoyCon2MouseDX, state.JoyCon2MouseDY, 0f);
+                vel.Window.CountsPerSecond(out vel.CpsX, out vel.CpsY, out _);
+            }
+
+            float cps = wantX ? vel.CpsX : vel.CpsY;
+            float v = cps / JoyCon2MouseCountsPerSecFullScale * (float)src.IrPointerSensitivity;
             if (v < -1f) v = -1f;
             else if (v > 1f) v = 1f;
             return v;
@@ -4540,7 +4567,7 @@ namespace PadForge.Engine.Common.Mapping
                 // direction grammar for bipolar sources): HalfAxis = right /
                 // down, HalfAxis+Invert = left / up. Four rows give the full
                 // up/down/left/right wheel the issue asks for.
-                float v = ReadJoyCon2MouseMotion(state, src);
+                float v = ReadJoyCon2MouseMotion(state, src, deviceGuid);
                 int cdz = EffectiveThresholdPercent(src, globalThresholdPercent);
                 float th = Math.Max(cdz, 1) / 100f;
                 if (src.HalfAxis)
@@ -4829,7 +4856,7 @@ namespace PadForge.Engine.Common.Mapping
 
             if (s.StartsWith("Mouse Motion ", StringComparison.Ordinal))
             {
-                float mv = ReadJoyCon2MouseMotion(state, src);
+                float mv = ReadJoyCon2MouseMotion(state, src, deviceGuid);
                 if (src.HalfAxis)
                 {
                     // Mirror the generic Axis bipolar+HalfAxis contract
@@ -5093,7 +5120,7 @@ namespace PadForge.Engine.Common.Mapping
                 // which), so "up movement presses the trigger 0-100%" is a
                 // HalfAxis+Invert row on Mouse Motion Y, per the issue's
                 // driving use case.
-                float mv = ReadJoyCon2MouseMotion(state, src);
+                float mv = ReadJoyCon2MouseMotion(state, src, deviceGuid);
                 if (src.HalfAxis)
                 {
                     // Bidirectional mirrors around center, so BOTH

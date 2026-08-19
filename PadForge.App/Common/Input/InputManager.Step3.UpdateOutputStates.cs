@@ -1822,31 +1822,44 @@ namespace PadForge.Common.Input
             // crossed zero). The pair magnitude is taken post-curve so the
             // floor stays exact at every curve, matching the scalar formula's
             // ordering.
-            double remLutX = lutX != null
+            //
+            // The curve applies only PAST the deadzone gate (rem > 0): the
+            // round-34 rest guard tests the PRE-curve remap, because an
+            // authored curve may start above zero (CurveLut keeps a user
+            // point at x=0 with y > 0), and looking such a curve up at rest
+            // would re-open the rest drift the guard exists to stop.
+            double remLutX = remX > 0 && lutX != null
                 ? Common.CurveLut.Lookup(lutX, Math.Clamp(remX, 0, 1)) : remX;
-            double remLutY = lutY != null
+            double remLutY = remY > 0 && lutY != null
                 ? Common.CurveLut.Lookup(lutY, Math.Clamp(remY, 0, 1)) : remY;
             double pairMag = Math.Sqrt(remLutX * remLutX + remLutY * remLutY);
-            // The floor engages only OUTSIDE the configured deadzone ellipse
-            // (the same inside-test ComputeRadial uses). The radial shapes
-            // zero everything inside it anyway, but the Sloped shapes pass
-            // center values through by design (their per-axis deadzone
-            // shrinks with the companion, the cardinal-lock geometry), and
-            // flooring that pass-through amplified ~2% rest noise into a
-            // +/-anti swing whose sign flipped every tick. Inside the
-            // ellipse the values ride through unfloored.
-            bool floorEligible;
+            // The floor RAMPS in over the configured deadzone ellipse instead
+            // of switching at its boundary: rampFactor is the raw pair's
+            // elliptical distance (the same measure ComputeRadial's inside
+            // test uses), clamped at 1. Outside the ellipse the floor is
+            // bit-identical to the plain radial floor. Inside, it scales down
+            // linearly, which serves both shape families at once: the radial
+            // shapes zero everything inside anyway (the ramp is a no-op), and
+            // the Sloped shapes pass center values through by design, where a
+            // binary gate produced a 20%-of-range output SNAP the moment a
+            // deliberate pull crossed the ellipse, and no gate at all
+            // amplified ~2% rest noise into a +/-anti sign-flipping swing.
+            // The ramp keeps rest noise at noise scale and full deflection at
+            // the full floor, continuously. Axes with a zero deadzone ramp at
+            // full strength, the documented dz=0 semantics (any deflection is
+            // deliberate by configuration).
+            double rampFactor;
             if (dzXn <= 0 && dzYn <= 0)
-                floorEligible = true;
+                rampFactor = 1.0;
             else
             {
                 const double dzEps = 1e-10;
                 double gx = nx / Math.Max(dzXn, dzEps);
                 double gy = ny / Math.Max(dzYn, dzEps);
-                floorEligible = (gx * gx + gy * gy) >= 1.0;
+                rampFactor = Math.Min(1.0, Math.Sqrt(gx * gx + gy * gy));
             }
-            axisX = ApplyPostDeadZone(remLutX, signX, floorEligible ? antiDeadZoneX : 0, linear, pairMag);
-            axisY = ApplyPostDeadZone(remLutY, signY, floorEligible ? antiDeadZoneY : 0, linear, pairMag);
+            axisX = ApplyPostDeadZone(remLutX, signX, antiDeadZoneX * rampFactor, linear, pairMag);
+            axisY = ApplyPostDeadZone(remLutY, signY, antiDeadZoneY * rampFactor, linear, pairMag);
         }
 
         /// <summary>
@@ -1869,7 +1882,10 @@ namespace PadForge.Common.Input
             if (remapped <= 0)
                 return 0;
 
-            double adzNorm = antiDeadZone / 100.0;
+            // Clamped: the field is parsed from persisted text with no upper
+            // bound, and a value past 100 would make the radial branch's
+            // rescale diverge as pairMag shrinks.
+            double adzNorm = Math.Clamp(antiDeadZone / 100.0, 0.0, 1.0);
             // Radial floor (#330): scale the axis so the VECTOR magnitude
             // maps pairMag -> adz + pairMag*(1-adz), direction preserved.
             // On-axis (pairMag == remapped) this is the scalar legacy
@@ -2055,10 +2071,11 @@ namespace PadForge.Common.Input
             double magnitude = Math.Abs(norm);
 
             // Deadzone: values within the deadzone are zeroed. The explicit
-            // zero-deflection guard closes the round-34 family's last hole
-            // (#330): with deadZone == 0 the strict < never fired, so a
-            // resting axis fell through and the anti-deadzone below emitted
-            // a phantom floor whose sign flipped with sensor noise.
+            // zero-deflection guard is belt-and-suspenders here: at exact
+            // zero, Math.Sign(0) already zeroed the result at the tail, so
+            // this early-out documents the contract rather than changing it.
+            // The lane that genuinely had the dz=0 rest hole was the trigger
+            // pipeline (ApplyTriggerDeadZone), which has its own guard now.
             if (magnitude <= 0)
                 return 0;
             double dzNorm = deadZone / 100.0;
@@ -2100,7 +2117,9 @@ namespace PadForge.Common.Input
         /// Max range: caps the input so full physical press maps to this percentage ceiling.
         /// Anti-deadzone: remaps the output so small presses register past the game's deadzone.
         /// </summary>
-        private static ushort ApplyTriggerDeadZone(ushort value, double deadZone, double antiDeadZone, double maxRange, double[] lut = null)
+        // Internal for the trigger-rest lock (#330 audit): the dz=0 phantom
+        // pull lived here and the guard needs a direct test.
+        internal static ushort ApplyTriggerDeadZone(ushort value, double deadZone, double antiDeadZone, double maxRange, double[] lut = null)
         {
             if (deadZone <= 0 && antiDeadZone <= 0 && maxRange >= 100 && lut == null)
                 return value;
@@ -2108,7 +2127,14 @@ namespace PadForge.Common.Input
             // Normalize to 0.0–1.0.
             double norm = value / 65535.0;
 
-            // Dead zone: values below threshold are zeroed.
+            // Dead zone: values below threshold are zeroed. The explicit
+            // zero-deflection check closes the round-34 family's trigger
+            // hole (#330 audit): with deadZone == 0 (the shipped default)
+            // the strict < below never fired, so a fully released trigger
+            // fell through and the anti-deadzone shipped a permanent
+            // phantom pull of adz% while the preview showed zero.
+            if (norm <= 0)
+                return 0;
             double dzNorm = deadZone / 100.0;
             if (norm < dzNorm)
                 return 0;

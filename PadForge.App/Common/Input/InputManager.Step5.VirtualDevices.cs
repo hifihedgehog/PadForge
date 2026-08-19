@@ -148,14 +148,35 @@ namespace PadForge.Common.Input
         // per-tick refresh costs two string compares).
         private readonly SlotButtonSocd[] _slotButtonSocd = new SlotButtonSocd[MaxPads];
 
+        /// <summary>Rest threshold for the keep-awake hold, ~4% of full
+        /// travel. The stick counts as at rest only while BOTH its axes sit
+        /// under this. Post-deadzone output rests at exactly zero on any
+        /// configured stick, so the margin only matters for chains with no
+        /// input deadzone where raw drift leaks through, and drift past 4%
+        /// is itself real output that keeps the game awake, so releasing
+        /// the hold to it is still correct.</summary>
+        internal const int KeepAwakeRestEpsilon = 1311;
+
         /// <summary>Keep Controller Awake (#270): holds the configured idle
         /// deflection on one axis of the final combined gamepad output.
-        /// Pure over its inputs (internal for the unit tests): when
-        /// enabled, the chosen axis is raised to the held level ONLY while
-        /// its real magnitude sits below that level, so genuine input
-        /// passes through byte-identical and the hold resumes at rest.
-        /// Deflection 0 (unset) applies the default 25%; the axis string
-        /// falls back to LX. Values are clamped to 1-90%.</summary>
+        /// Pure over its inputs (internal for the unit tests).
+        ///
+        /// <para>The hold engages only while the WHOLE STICK that owns the
+        /// held axis is at rest, both axes under
+        /// <see cref="KeepAwakeRestEpsilon"/>. The first cut gated on the
+        /// held axis alone being under the held level, which @HaraDaya
+        /// caught on hardware (discussion #263, 2026-08-19): push the stick
+        /// straight up and the gate saw X at rest, so it kept injecting the
+        /// X hold, an inverse deadzone that bent straight-forward movement
+        /// sideways. Worse, real input on the held axis BELOW the level was
+        /// swallowed and replaced, so a small left nudge became a full
+        /// rightward hold, a sign flip, which is the side-to-side jumping
+        /// in the report's capture. While the player touches the stick at
+        /// all, the game is already seeing input, so the hold has nothing
+        /// to add and everything passes through byte-identical.</para>
+        ///
+        /// <para>Deflection 0 (unset) applies the default 25%; the axis
+        /// string falls back to LX. Values are clamped to 1-90%.</para></summary>
         internal static void ApplyKeepAwake(Engine.Data.MappingSet ms, ref Gamepad gp, long nowMs = 0)
         {
             if (ms == null || !ms.KeepAwakeEnabled) return;
@@ -163,19 +184,23 @@ namespace PadForge.Common.Input
             switch (ms.KeepAwakeAxis)
             {
                 case "LY":
-                    if (Math.Abs((int)gp.ThumbLY) < level) gp.ThumbLY = level;
+                    if (StickAtRest(gp.ThumbLX, gp.ThumbLY)) gp.ThumbLY = level;
                     break;
                 case "RX":
-                    if (Math.Abs((int)gp.ThumbRX) < level) gp.ThumbRX = level;
+                    if (StickAtRest(gp.ThumbRX, gp.ThumbRY)) gp.ThumbRX = level;
                     break;
                 case "RY":
-                    if (Math.Abs((int)gp.ThumbRY) < level) gp.ThumbRY = level;
+                    if (StickAtRest(gp.ThumbRX, gp.ThumbRY)) gp.ThumbRY = level;
                     break;
                 default: // "" and "LX"
-                    if (Math.Abs((int)gp.ThumbLX) < level) gp.ThumbLX = level;
+                    if (StickAtRest(gp.ThumbLX, gp.ThumbLY)) gp.ThumbLX = level;
                     break;
             }
         }
+
+        private static bool StickAtRest(short x, short y)
+            => Math.Abs((int)x) < KeepAwakeRestEpsilon
+            && Math.Abs((int)y) < KeepAwakeRestEpsilon;
 
         /// <summary>One full sweep of the keep-awake motion, in ms. 500 gives
         /// a 250 ms travel each way, so a title sampling at 60 Hz sees the

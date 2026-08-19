@@ -166,35 +166,73 @@ namespace PadForge.Tests
             Assert.Equal(axis == "RY" ? level : (short)0, gp.ThumbRY);
         }
 
-        /// <summary>The self-cancelling contract: real output at or above
-        /// the held level passes through byte-identical, in BOTH
-        /// directions. This is what separates the feature from the
-        /// reporter's anti-deadzone workaround, which reshaped every real
-        /// input.</summary>
+        /// <summary>The self-cancelling contract, tightened by @HaraDaya's
+        /// 2026-08-19 report: ANY real stick input past the rest margin
+        /// passes through byte-identical, in both directions, INCLUDING
+        /// values below the held level. The first cut swallowed sub-level
+        /// input and replaced it with the positive hold, so a small left
+        /// nudge became a full rightward push, the side-to-side jumping in
+        /// the report's capture.</summary>
         [Theory]
         [InlineData(20000)]
         [InlineData(-20000)]
         [InlineData(32767)]
         [InlineData(-32768)]
-        public void RealInputAtOrAboveTheLevel_PassesThroughUntouched(int real)
+        [InlineData(5000)]    // above rest, below the 25% level: was swallowed
+        [InlineData(-5000)]   // was sign-flipped into +8191
+        public void RealInputPastRest_PassesThroughUntouched(int real)
         {
             var gp = new Gamepad { ThumbLX = (short)real };
             InputManager.ApplyKeepAwake(Cfg(pct: 25), ref gp);
             Assert.Equal((short)real, gp.ThumbLX);
         }
 
-        /// <summary>Below the level the hold takes over, INCLUDING against
-        /// small negative drift: the axis reads a stable positive level
-        /// rather than flapping around rest.</summary>
+        /// <summary>THE reported bug (discussion #263, 2026-08-19): stick
+        /// pushed straight up, so the held axis itself reads centered. The
+        /// old per-axis gate injected the X hold anyway, bending forward
+        /// movement sideways as an inverse deadzone. The hold must consider
+        /// the whole stick: any paired-axis deflection releases it.</summary>
         [Theory]
-        [InlineData(0)]
-        [InlineData(500)]
-        [InlineData(-500)]
-        public void RestAndDriftBelowTheLevel_ReadTheHeldLevel(int real)
+        [InlineData(32767)]
+        [InlineData(-32768)]
+        [InlineData(9000)]
+        public void PairedAxisInUse_ReleasesTheHold(int ly)
         {
-            var gp = new Gamepad { ThumbLX = (short)real };
+            var gp = new Gamepad { ThumbLX = 0, ThumbLY = (short)ly };
+            InputManager.ApplyKeepAwake(Cfg(pct: 25), ref gp);
+            Assert.Equal(0, gp.ThumbLX);
+            Assert.Equal((short)ly, gp.ThumbLY);
+        }
+
+        [Fact]
+        public void RightStickHold_PairsWithTheRightStick()
+        {
+            // Axis RX held, right stick pushed up: hold releases. The left
+            // stick's state is irrelevant to a right-stick hold.
+            var gp = new Gamepad { ThumbRY = 30000, ThumbLX = 0 };
+            InputManager.ApplyKeepAwake(Cfg(axis: "RX", pct: 25), ref gp);
+            Assert.Equal(0, gp.ThumbRX);
+
+            var gp2 = new Gamepad { ThumbLY = 30000 };
+            InputManager.ApplyKeepAwake(Cfg(axis: "RX", pct: 25), ref gp2);
+            Assert.Equal((short)(32767 * 25 / 100), gp2.ThumbRX);
+        }
+
+        /// <summary>Inside the rest margin the hold engages, INCLUDING
+        /// against small drift on either axis of the pair: the axis reads a
+        /// stable positive level rather than flapping around rest.</summary>
+        [Theory]
+        [InlineData(0, 0)]
+        [InlineData(500, 0)]
+        [InlineData(-500, 0)]
+        [InlineData(0, 500)]
+        [InlineData(-500, -500)]
+        public void RestAndDriftWithinTheMargin_ReadTheHeldLevel(int lx, int ly)
+        {
+            var gp = new Gamepad { ThumbLX = (short)lx, ThumbLY = (short)ly };
             InputManager.ApplyKeepAwake(Cfg(pct: 25), ref gp);
             Assert.Equal((short)(32767 * 25 / 100), gp.ThumbLX);
+            Assert.Equal((short)ly, gp.ThumbLY);
         }
 
         [Fact]

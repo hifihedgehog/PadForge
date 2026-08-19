@@ -1,4 +1,4 @@
-# Runtime self-diagnostics harvest (code-audit lens 1o). Elevated.
+﻿# Runtime self-diagnostics harvest (code-audit lens 1o). Elevated.
 # Deploys the freshly published build, launches it with PADFORGE_DIAG
 # armed (the SdlDiagLog ring mirrors to a file), walks the pages via
 # UIA so lazily realized templates evaluate their bindings, opens the
@@ -45,6 +45,22 @@ for ($i = 1; $i -le 5; $i++) {
     catch { Note "copy attempt ${i}: $($_.Exception.Message)" }
 }
 Note "copied=$copied hash=$((Get-FileHash $dst -Algorithm SHA256).Hash.Substring(0,12))"
+
+# The owner runs with StartMinimized and MinimizeToTray on, so a launch
+# against their real settings goes straight to the notification area and
+# NEVER CREATES A WINDOW. Every UIA lookup then fails, the sweep prints
+# WINDOW NOT FOUND, walks nothing, and still finishes looking healthy.
+# That is how two runs reported success while proving nothing at all.
+# The settings file is already backed up and restored in the finally, so
+# force the two flags off in the working copy before launching. An
+# assignment is data: write it, do not try to click the window back.
+if (Test-Path $pfXml) {
+    $xml = Get-Content $pfXml -Raw
+    $xml = $xml -replace '<StartMinimized>true</StartMinimized>', '<StartMinimized>false</StartMinimized>'
+    $xml = $xml -replace '<MinimizeToTray>true</MinimizeToTray>', '<MinimizeToTray>false</MinimizeToTray>'
+    Set-Content -Path $pfXml -Value $xml -Encoding UTF8
+    Note 'forced StartMinimized=false and MinimizeToTray=false for this run'
+}
 
 # Launch with the mirror armed
 $env:PADFORGE_DIAG = $diag

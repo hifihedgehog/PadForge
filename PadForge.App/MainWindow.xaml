@@ -336,8 +336,31 @@
         <Grid x:Name="FirstRunOverlay"
               Grid.RowSpan="3"
               Visibility="Collapsed"
-              Panel.ZIndex="900">
-            <Border Background="#D9070A0E"/>
+              Panel.ZIndex="900"
+              SizeChanged="FirstRunOverlay_SizeChanged">
+            <!-- Click shield: transparent but hit-testable, so the tour
+                 swallows clicks window-wide INCLUDING inside the spotlight
+                 cutout below (the dimmer path does not hit-test there). -->
+            <Border Background="Transparent"/>
+            <!-- The dim is a path with the spotlight CUT OUT of it, so the
+                 highlighted area renders at full brightness instead of
+                 sitting under the scrim (Discord feedback 2026-08-19: the
+                 old full-window dim left the very thing being pointed at
+                 unreadable). The hole rect is positioned in code-behind
+                 beside the ring; while the welcome panel is up the hole is
+                 Empty and the dim covers everything, in both themes. -->
+            <Path Fill="#D9070A0E">
+                <Path.Data>
+                    <CombinedGeometry GeometryCombineMode="Exclude">
+                        <CombinedGeometry.Geometry1>
+                            <RectangleGeometry x:Name="TourDimFull"/>
+                        </CombinedGeometry.Geometry1>
+                        <CombinedGeometry.Geometry2>
+                            <RectangleGeometry x:Name="TourDimHole" RadiusX="8" RadiusY="8"/>
+                        </CombinedGeometry.Geometry2>
+                    </CombinedGeometry>
+                </Path.Data>
+            </Path>
 
             <Border x:Name="WelcomePanel"
                     Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"

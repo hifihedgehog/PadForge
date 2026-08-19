@@ -152,27 +152,41 @@ namespace PadForge
         /// <para>Walk includes both visual and logical tree: ComboBoxes
         /// dropped down via popup live in a separate visual tree, but
         /// their template parts inside the main window do live in the
-        /// visual tree. The logical-tree fallback covers cases where
-        /// VisualTreeHelper.GetParent returns null (Run, Hyperlink,
-        /// templated content roots).</para>
+        /// visual tree. TreeWalk.Parent routes ContentElements (Run,
+        /// Hyperlink) through the logical tree, because
+        /// VisualTreeHelper.GetParent THROWS on them rather than
+        /// returning null: clicking the slot type badge, whose label is
+        /// built from inline Runs, reported the Run as OriginalSource
+        /// and crashed this handler (discussion #333). The additional
+        /// logical-tree fallback covers templated content roots whose
+        /// visual parent is null.</para>
         /// </summary>
         private static void MainWindow_PreviewMouseDown_ClearFocus(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            var d = e.OriginalSource as System.Windows.DependencyObject;
+            if (ClickTargetPreservesFocus(e.OriginalSource as System.Windows.DependencyObject))
+                return;
+            System.Windows.Input.Keyboard.ClearFocus();
+        }
+
+        /// <summary>The walk itself, internal so a test can drive it with a
+        /// ContentElement seed (the #333 crash shape) without synthesizing
+        /// mouse events.</summary>
+        internal static bool ClickTargetPreservesFocus(System.Windows.DependencyObject d)
+        {
             while (d != null)
             {
                 if (d is System.Windows.Controls.ComboBox
                     || d is System.Windows.Controls.Primitives.TextBoxBase
                     || d is System.Windows.Controls.PasswordBox
                     || d is System.Windows.Controls.ListBox)
-                    return;
+                    return true;
 
-                var parent = System.Windows.Media.VisualTreeHelper.GetParent(d);
+                var parent = PadForge.Common.TreeWalk.Parent(d);
                 if (parent == null && d is System.Windows.FrameworkElement fe)
                     parent = System.Windows.LogicalTreeHelper.GetParent(fe);
                 d = parent;
             }
-            System.Windows.Input.Keyboard.ClearFocus();
+            return false;
         }
 
         public MainWindow()
@@ -335,7 +349,9 @@ namespace PadForge
                         }
                         break;
                     }
-                    elem = System.Windows.Media.VisualTreeHelper.GetParent(elem);
+                    // TreeWalk, not VisualTreeHelper: OriginalSource can be
+                    // an inline Run, and GetParent throws on those (#333).
+                    elem = PadForge.Common.TreeWalk.Parent(elem);
                 }
             };
 
@@ -5059,7 +5075,10 @@ namespace PadForge
                     while (parent != null)
                     {
                         if (parent == border) return;
-                        parent = System.Windows.Media.VisualTreeHelper.GetParent(parent);
+                        // TreeWalk, not VisualTreeHelper: this fires for any
+                        // click in the window while the popup is open, and
+                        // OriginalSource can be an inline Run (#333).
+                        parent = PadForge.Common.TreeWalk.Parent(parent);
                     }
                 }
                 popup.IsOpen = false;
@@ -5469,7 +5488,10 @@ namespace PadForge
                     while (parent != null)
                     {
                         if (parent == border) return;
-                        parent = System.Windows.Media.VisualTreeHelper.GetParent(parent);
+                        // TreeWalk, not VisualTreeHelper: this fires for any
+                        // click in the window while the popup is open, and
+                        // OriginalSource can be an inline Run (#333).
+                        parent = PadForge.Common.TreeWalk.Parent(parent);
                     }
                 }
                 popup.IsOpen = false;
@@ -7023,6 +7045,8 @@ namespace PadForge
             }
             WelcomePanel.Visibility = Visibility.Visible;
             TourCanvas.Visibility = Visibility.Collapsed;
+            // Welcome state dims everything: no cutout until a step runs.
+            TourDimHole.Rect = Rect.Empty;
             FirstRunOverlay.Visibility = Visibility.Visible;
         }
 
@@ -7095,6 +7119,12 @@ namespace PadForge
                 TourHighlight.Width = Math.Max(0, right - left);
                 TourHighlight.Height = Math.Max(0, bottom - top);
 
+                // Cut the spotlight out of the dim so the target renders at
+                // full brightness inside the ring (Discord feedback: the
+                // full-window scrim left the highlighted area unreadable).
+                TourDimHole.Rect = new Rect(left, top,
+                    Math.Max(0, right - left), Math.Max(0, bottom - top));
+
                 double tipX = origin.X + w + 14;
                 double tipY = origin.Y;
                 if (tipX + 332 > ow)
@@ -7113,11 +7143,29 @@ namespace PadForge
             }
         }
 
+        /// <summary>Keeps the dim sized to the window, and the cutout plus
+        /// ring glued to the current target across window resizes. Also the
+        /// path that gives the dim its initial size the first time the
+        /// overlay lays out.</summary>
+        private void FirstRunOverlay_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            TourDimFull.Rect = new Rect(0, 0,
+                FirstRunOverlay.ActualWidth, FirstRunOverlay.ActualHeight);
+            if (_tourStep >= 0 && TourCanvas.Visibility == Visibility.Visible)
+            {
+                var stops = BuildTourStops();
+                if (_tourStep < stops.Length)
+                    PositionTourStep(stops[_tourStep].Target);
+            }
+        }
+
         private void CompleteFirstRun()
         {
             FirstRunOverlay.Visibility = Visibility.Collapsed;
             WelcomePanel.Visibility = Visibility.Visible;
             TourCanvas.Visibility = Visibility.Collapsed;
+            // Welcome state dims everything: no cutout until a step runs.
+            TourDimHole.Rect = Rect.Empty;
             _tourStep = -1;
             // Persisted in PadForge.xml (the one-time-gate pattern
             // LegacyDriverCleanupOffered established): set at the mutation

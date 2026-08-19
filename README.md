@@ -28,6 +28,8 @@ PadForge is for sim racers running wheels in games that only understand Xbox con
 
 <p align="center"><b>16</b> virtual controllers at once · <b>225+</b> device profiles · <b>1000 Hz</b> polling · <b>$0</b> forever</p>
 
+<p align="center"><b><a href="https://discord.gg/qawTZHVhNH">Join the PadForge Discord</a></b> for setup help, profile sharing, and a direct line to the developer.</p>
+
 ![Dashboard](screenshots/dashboard.jpg)
 
 <p align="center">
@@ -622,6 +624,12 @@ To import a profile someone else captured:
 1. Click **Import from file…** in the same dialog and pick the `.json` they sent you.
 
 PadForge reads only the HID descriptor during capture. It does not record or forward your controller's input.
+
+---
+
+## Community
+
+The fastest way to get help is the [PadForge Discord](https://discord.gg/qawTZHVhNH): setup questions, profile sharing, feature ideas, and quick bug triage. Longer-form threads live in [GitHub Discussions](https://github.com/hifihedgehog/PadForge/discussions), and confirmed bugs go to [Issues](https://github.com/hifihedgehog/PadForge/issues).
 
 ---
 

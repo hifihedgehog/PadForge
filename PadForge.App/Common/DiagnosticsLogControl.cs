@@ -11,16 +11,15 @@ namespace PadForge.Common
     /// mirror at runtime and persists in PadForge.xml, so it survives
     /// restarts.
     ///
-    /// <para>Files live under %LOCALAPPDATA%\PadForge (the folder the
-    /// Workshop cache and voice models already use), never beside the exe:
-    /// the standing rule is that only PadForge.xml and crash.log may exist
-    /// there.</para>
+    /// <para>Files live beside the exe, like everything PadForge writes
+    /// (owner ruling 2026-08-19). The no-stray-files rule bans files the
+    /// app drops WITHOUT explicit user action; these exist only because
+    /// the user ticked the toggle or clicked the snapshot button, the same
+    /// standing as a SaveFileDialog export.</para>
     /// </summary>
     internal static class DiagnosticsLogControl
     {
-        internal static string Folder => Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "PadForge");
+        internal static string Folder => AppDomain.CurrentDomain.BaseDirectory;
 
         internal static string LogPath => Path.Combine(Folder, "diagnostics.log");
 
@@ -31,7 +30,6 @@ namespace PadForge.Common
         {
             try
             {
-                if (enabled) Directory.CreateDirectory(Folder);
                 Engine.SdlDiagLog.SetMirror(enabled ? LogPath : null);
             }
             catch
@@ -46,7 +44,6 @@ namespace PadForge.Common
         /// glitch after the fact without having had logging enabled.</summary>
         internal static string SaveSnapshot()
         {
-            Directory.CreateDirectory(Folder);
             string path = Path.Combine(Folder,
                 $"diag-snapshot-{DateTime.Now:yyyyMMdd-HHmmss}.log");
             File.WriteAllText(path, Engine.SdlDiagLog.Snapshot() + Environment.NewLine);

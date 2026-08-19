@@ -795,7 +795,7 @@
   <data name="Pad_Kbm_Socd_KeyB_Tooltip" xml:space="preserve"><value>Second key of the opposing pair.</value></data>
   <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>Simultaneous Opposite Cardinal Directions (SOCD)</value></data>
   <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>Keep Controller Awake</value></data>
-  <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>Some games stop vibration and switch their button prompts the moment they see mouse or keyboard input. Holding a small stick deflection keeps the game treating this controller as the active device. Real input at or above the held level passes through unchanged. Keep the deflection below the game's own dead zone so nothing moves in-game.</value></data>
+  <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>Some games stop vibration and switch their button prompts the moment they see mouse or keyboard input. Holding a small stick deflection keeps the game treating this controller as the active device. The hold engages only while the stick is fully at rest. Any real input on either axis of that stick releases it and passes through unchanged. Keep the deflection below the game's own dead zone so nothing moves in-game.</value></data>
   <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>Keep Awake</value></data>
   <data name="Pad_KeepAwake_Axis_Label" xml:space="preserve"><value>Held Axis</value></data>
   <data name="Pad_KeepAwake_Axis_Tooltip" xml:space="preserve"><value>Which output axis holds the deflection. Pick one the game reads as movement rather than camera, so a value under the game's dead zone stays invisible.</value></data>

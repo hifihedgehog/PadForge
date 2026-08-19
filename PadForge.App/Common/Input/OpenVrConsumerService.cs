@@ -67,10 +67,11 @@ namespace PadForge.Common.Input
         /// (the issue's "the UI can only say installed" gap).</summary>
         public static bool ServerConnected => _serverConnected;
         private static volatile bool _serverConnected;
-
-        /// <summary>Number of VR devices currently consumed as inputs.</summary>
-        public static int ConsumedDeviceCount => _consumedCount;
-        private static volatile int _consumedCount;
+        // The instance whose session set the flag: a timed-out Stop can
+        // leave an old thread unwinding while a successor's session is
+        // live, and the old finally must not clear the successor's state
+        // (2026-08-18 audit).
+        private static volatile OpenVrConsumerService _serverOwner;
 
         public OpenVrConsumerService(Action<string> log = null) => _log = log ?? (_ => { });
 
@@ -276,10 +277,15 @@ namespace PadForge.Common.Input
         public void Start()
         {
             if (_running) return;
-            _running = true;
+            // Everything that can throw happens BEFORE the running latch
+            // (2026-08-18 audit): the old order set _running first, so a
+            // resolver or thread-construction throw left the instance
+            // latched "running" with no thread, permanently unstartable.
             EnsureResolver();
-            _thread = new Thread(RunLoop) { IsBackground = true, Name = "OpenVrConsumer" };
-            _thread.Start();
+            var t = new Thread(RunLoop) { IsBackground = true, Name = "OpenVrConsumer" };
+            _thread = t;
+            _running = true;
+            t.Start();
         }
 
         public void Stop()
@@ -290,7 +296,21 @@ namespace PadForge.Common.Input
 
         private void RunLoop()
         {
-            bool loggedNoRuntime = false, loggedNoServer = false;
+            // Top-level guard (2026-08-18 audit): an unhandled exception on
+            // a managed background thread is process-fatal, and this loop
+            // calls into two native stacks.
+            try { RunLoopCore(); }
+            catch (Exception ex)
+            {
+                try { _log("VRCONSUME loop fault " + ex.GetType().Name + ": " + ex.Message); }
+                catch { }
+            }
+        }
+
+        private void RunLoopCore()
+        {
+            bool loggedNoRuntime = false, loggedDllLoadFail = false;
+            EVRInitError lastLoggedErr = EVRInitError.None;
             while (_running)
             {
                 if (DiscoverRuntimeDll() == null)
@@ -298,7 +318,7 @@ namespace PadForge.Common.Input
                     if (!loggedNoRuntime)
                     {
                         loggedNoRuntime = true;
-                        _log("VRCONSUME no SteamVR runtime found (openvrpaths registry absent or stale); watching.");
+                        _log("VRCONSUME no SteamVR runtime found (openvrpaths registry absent, stale, or unreadable); watching.");
                     }
                     SleepInterruptibly(5000);
                     continue;
@@ -308,44 +328,68 @@ namespace PadForge.Common.Input
                 EVRInitError err = EVRInitError.None;
                 CVRSystem system = null;
                 try { system = OpenVR.Init(ref err, EVRApplicationType.VRApplication_Background); }
-                catch (DllNotFoundException) { SleepInterruptibly(5000); continue; }
+                catch (DllNotFoundException)
+                {
+                    // The registry named a dll that exists but would not
+                    // load (architecture, missing VC runtime, AV block).
+                    // Without this line the state was fully silent
+                    // (2026-08-18 audit).
+                    if (!loggedDllLoadFail)
+                    {
+                        loggedDllLoadFail = true;
+                        _log("VRCONSUME openvr_api.dll present but failed to load; watching.");
+                    }
+                    SleepInterruptibly(5000);
+                    continue;
+                }
                 catch (Exception ex)
                 {
+                    // The binding can throw after the native init already
+                    // succeeded (SetSDKVersion dispatch); OpenVR.Init only
+                    // shuts down on error RETURNS, so release the token
+                    // here or each retry leaks a session.
+                    try { OpenVR.Shutdown(); } catch { }
                     _log("VRCONSUME init threw: " + ex.Message);
                     SleepInterruptibly(15000);
                     continue;
                 }
+                loggedDllLoadFail = false;
 
                 if (system == null || err != EVRInitError.None)
                 {
-                    if (err == EVRInitError.Init_NoServerForBackgroundApp)
+                    // Log each distinct error once, not once per 5 s retry
+                    // (the old else-branch reset the latch every pass).
+                    // NoServer and InitCanceledByUser are the quiet states:
+                    // the first is SteamVR simply not running (openvr.h:1695),
+                    // the second is the user telling the runtime no
+                    // (openvr.h: "the calling application should silently
+                    // exit"), so neither deserves a per-retry line.
+                    if (err != lastLoggedErr)
                     {
-                        // SteamVR is not running. The documented quiet state:
-                        // a Background app never launches it (openvr.h:1695).
-                        if (!loggedNoServer)
-                        {
-                            loggedNoServer = true;
+                        lastLoggedErr = err;
+                        if (err == EVRInitError.Init_NoServerForBackgroundApp)
                             _log("VRCONSUME SteamVR not running; a background consumer never launches it. Watching.");
-                        }
+                        else if (err == EVRInitError.Init_InitCanceledByUser)
+                            _log("VRCONSUME init canceled by the user; watching quietly.");
+                        else
+                            _log($"VRCONSUME init failed: {err}");
                     }
-                    else
-                    {
-                        _log($"VRCONSUME init failed: {err}");
-                        loggedNoServer = false;
-                    }
-                    try { OpenVR.Shutdown(); } catch { }
+                    // A failed OpenVR.Init already shut its own session down
+                    // (the binding calls ShutdownInternal on error returns),
+                    // so no second Shutdown here.
                     SleepInterruptibly(5000);
                     continue;
                 }
-                loggedNoServer = false;
+                lastLoggedErr = EVRInitError.None;
                 _log("VRCONSUME connected to SteamVR (background client).");
+                _serverOwner = this;
                 _serverConnected = true;
 
                 try { Session(system); }
                 catch (Exception ex) { _log("VRCONSUME session error: " + ex.Message); }
                 finally
                 {
-                    _serverConnected = false;
+                    if (ReferenceEquals(_serverOwner, this)) _serverConnected = false;
                     DetachAll();
                     try { OpenVR.Shutdown(); } catch { }
                     _log("VRCONSUME disconnected from SteamVR.");
@@ -392,6 +436,9 @@ namespace PadForge.Common.Input
             public ulong EvPressed;
             public short EvA0, EvA1, EvA3;
             public int EvLines;
+            // Whether the joystick was zeroed after a failed state read, so
+            // the neutralize runs once instead of every tick.
+            public bool Neutralized;
         }
 
         private readonly Consumed[] _consumed = new Consumed[OpenVR.k_unMaxTrackedDeviceCount];
@@ -408,12 +455,15 @@ namespace PadForge.Common.Input
             while (_running)
             {
                 // Drain events; a quitting SteamVR expects background apps to
-                // shut down promptly.
+                // shut down promptly, and to SAY so: AcknowledgeQuit_Exiting
+                // is the documented handshake (openvr.h), without which
+                // vrserver waits out its force-quit timeout on this process.
                 while (system.PollNextEvent(ref ev, evSize))
                 {
                     if ((EVREventType)ev.eventType == EVREventType.VREvent_Quit)
                     {
                         _log("VRCONSUME SteamVR is quitting.");
+                        try { system.AcknowledgeQuit_Exiting(); } catch { }
                         return;
                     }
                 }
@@ -424,12 +474,21 @@ namespace PadForge.Common.Input
                 long now = Environment.TickCount64;
                 for (uint i = 0; i < OpenVR.k_unMaxTrackedDeviceCount; i++)
                 {
+                    // The cheap managed pose flag first: GetTrackedDeviceClass
+                    // is a P/Invoke, and probing all 64 indices with it every
+                    // tick was ~5,800 native calls a second for slots that
+                    // are never populated (2026-08-18 audit).
+                    var slot = _consumed[i];
+                    if (!_poses[i].bDeviceIsConnected)
+                    {
+                        if (slot != null) Detach(i);
+                        _attachRetryAt[i] = 0;
+                        continue;
+                    }
+
                     var cls = system.GetTrackedDeviceClass(i);
                     bool wanted = cls == ETrackedDeviceClass.HMD || cls == ETrackedDeviceClass.Controller;
-                    bool connected = wanted && _poses[i].bDeviceIsConnected;
-
-                    var slot = _consumed[i];
-                    if (!connected)
+                    if (!wanted)
                     {
                         if (slot != null) Detach(i);
                         continue;
@@ -437,8 +496,24 @@ namespace PadForge.Common.Input
 
                     if (slot == null)
                     {
-                        slot = TryAttach(system, i, cls, consumeSelf);
+                        // Backoff (2026-08-18 audit): a self-filtered device
+                        // (the DEFAULT configuration when a VR slot emits
+                        // virtual hands) or a failed attach used to re-run
+                        // the whole property-read + attach path at 90 Hz,
+                        // allocating and P/Invoking forever.
+                        if (now < _attachRetryAt[i]) continue;
+                        slot = TryAttach(system, i, cls, consumeSelf, now);
                         if (slot == null) continue;   // filtered (self) or attach failed
+                    }
+                    else if (slot.IsHmd != (cls == ETrackedDeviceClass.HMD))
+                    {
+                        // A class flip on a live index (HMD <-> Controller)
+                        // means a different device: recycle like a role
+                        // change, or the old shape's push runs on the new
+                        // device's data.
+                        _log($"VRCONSUME device {i} class changed; recycling.");
+                        Detach(i);
+                        continue;
                     }
                     else if (!slot.IsHmd)
                     {
@@ -462,17 +537,34 @@ namespace PadForge.Common.Input
             }
         }
 
-        private Consumed TryAttach(CVRSystem system, uint idx, ETrackedDeviceClass cls, bool consumeSelf)
+        /// <summary>Per-index earliest next attach attempt (Environment
+        /// .TickCount64). long.MaxValue = self-filtered, cached until the
+        /// index disconnects. Session-thread only.</summary>
+        private readonly long[] _attachRetryAt = new long[OpenVR.k_unMaxTrackedDeviceCount];
+
+        private Consumed TryAttach(CVRSystem system, uint idx, ETrackedDeviceClass cls, bool consumeSelf, long now)
         {
             var perr = ETrackedPropertyError.TrackedProp_Success;
             var sb = new System.Text.StringBuilder(128);
             system.GetStringTrackedDeviceProperty(idx, ETrackedDeviceProperty.Prop_ManufacturerName_String, sb, 128, ref perr);
+            if (perr != ETrackedPropertyError.TrackedProp_Success
+                && perr != ETrackedPropertyError.TrackedProp_ValueNotProvidedByDevice)
+            {
+                // A transient property failure reads as an empty string,
+                // and empty is NOT "not self" (2026-08-18 audit): consuming
+                // our own virtual hand on a bad read is the loop the filter
+                // exists to prevent. Retry shortly instead of deciding.
+                _attachRetryAt[idx] = now + 1000;
+                return null;
+            }
             string manufacturer = sb.ToString();
             if (IsSelfEmitted(manufacturer, consumeSelf))
             {
-                // Logged once per index per session via the null slot staying
-                // null; keep it quiet (the check runs every tick).
-                if (_consumed[idx] == null && _selfFilteredLogged.Add(idx))
+                // Cached until the index disconnects: the verdict cannot
+                // change while the same device stays connected, and
+                // re-deriving it was a 90 Hz allocation + P/Invoke.
+                _attachRetryAt[idx] = long.MaxValue;
+                if (_selfFilteredLogged.Add(idx))
                     _log($"VRCONSUME device {idx} is PadForge's own virtual hand; not consumed.");
                 return null;
             }
@@ -509,9 +601,15 @@ namespace PadForge.Common.Input
                 }
             }
 
-            if (!AttachVirtual(slot, pid)) return null;
+            if (!AttachVirtual(slot, pid))
+            {
+                // Retry in 5 s rather than at 90 Hz: the failure path
+                // allocated, P/Invoked, and logged every tick before the
+                // backoff (2026-08-18 audit).
+                _attachRetryAt[idx] = now + 5000;
+                return null;
+            }
             _consumed[idx] = slot;
-            _consumedCount++;
             _log($"VRCONSUME + {name} (device {idx}, class {cls}, mfr \"{manufacturer}\""
                 + (isHmd ? "" : $", axes joy={slot.JoyAxis} pad={slot.PadAxis} trig={slot.TriggerAxis} grip={slot.GripAxis}")
                 + ")");
@@ -552,10 +650,15 @@ namespace PadForge.Common.Input
                 {
                     // Axes: LX=lean X (right +), LY=lean fwd/back (forward =
                     // stick-up = negative), RX=yaw (right +), RY=pitch (up +),
-                    // raw 4=vertical lean (up +), raw 5=roll (right +).
+                    // raw 6=vertical lean (up +), raw 7=roll (right +).
+                    // Raw values sit at indices 6+ because the generic-axis
+                    // surface (HasExtraGenericAxes) only exposes axes past
+                    // the standardized six; at 4/5 they existed on the
+                    // joystick but no PadForge surface could ever read them
+                    // (2026-08-18 audit).
                     // Button 0 (South) = pose valid ("worn"), usable as an
                     // activator.
-                    desc.naxes = 6;
+                    desc.naxes = 8;
                     desc.nbuttons = 1;
                     desc.axis_mask = 0x0F;      // LX LY RX RY -> sequential 0-3
                     desc.button_mask = 0x01;    // South -> 0
@@ -563,11 +666,13 @@ namespace PadForge.Common.Input
                 else
                 {
                     // Axes: joystick->LX/LY (seq 0/1), grip->LT (seq 2),
-                    // trigger->RT (seq 3), trackpad->raw 4/5.
+                    // trigger->RT (seq 3), trackpad->raw 6/7 (indices past
+                    // the standardized six so the generic-axis surface can
+                    // expose them; see the HMD note above).
                     // Buttons: South=A, Back=System, Start=AppMenu,
                     // LeftStick=stick click, LeftShoulder=grip click,
                     // RightShoulder=trackpad click; sequential 0-5.
-                    desc.naxes = 6;
+                    desc.naxes = 8;
                     desc.nbuttons = 6;
                     desc.axis_mask = 0x33;      // LX LY LT RT -> sequential 0-3
                     desc.button_mask = 0x06D1;  // S,Back,Start,LStick,LShldr,RShldr
@@ -601,7 +706,6 @@ namespace PadForge.Common.Input
             var slot = _consumed[idx];
             if (slot == null) return;
             _consumed[idx] = null;
-            if (_consumedCount > 0) _consumedCount--;
             if (slot.Joystick != IntPtr.Zero) SDL.SDL_CloseJoystick(slot.Joystick);
             if (slot.SdlId != 0) SDL.SDL_DetachVirtualJoystick(slot.SdlId);
             _log($"VRCONSUME - {slot.Name} (device {idx}).");
@@ -657,8 +761,8 @@ namespace PadForge.Common.Input
                     SDL.SDL_SetJoystickVirtualAxis(j, 1, AxisFromScaled(dz, LeanFullScaleMeters));         // fwd = -Z -> stick-up (negative)
                     SDL.SDL_SetJoystickVirtualAxis(j, 2, AxisFromScaled(relYaw, YawFullScaleDeg));         // yaw right +
                     SDL.SDL_SetJoystickVirtualAxis(j, 3, AxisFromScaled(-pitch, PitchFullScaleDeg));       // look up = RY negative (stick up)
-                    SDL.SDL_SetJoystickVirtualAxis(j, 4, AxisFromScaled(dy, LeanFullScaleMeters));         // rise +
-                    SDL.SDL_SetJoystickVirtualAxis(j, 5, AxisFromScaled(roll, RollFullScaleDeg));          // tilt right +
+                    SDL.SDL_SetJoystickVirtualAxis(j, 6, AxisFromScaled(dy, LeanFullScaleMeters));         // rise + (generic Axis 6)
+                    SDL.SDL_SetJoystickVirtualAxis(j, 7, AxisFromScaled(roll, RollFullScaleDeg));          // tilt right + (generic Axis 7)
                     PushSensors(slot, ref pose, now);
                 }
             }
@@ -671,6 +775,12 @@ namespace PadForge.Common.Input
             IntPtr j = slot.Joystick;
             if (j == IntPtr.Zero) return;
 
+            // Zeroed before every read (2026-08-18 audit): one state struct
+            // is shared across all controllers in a tick and the runtime
+            // does not clear it on failure, so without this the evidence
+            // line below printed the PREVIOUS controller's buttons under
+            // this controller's name whenever a read failed.
+            state = default;
             bool haveState = system.GetControllerState(slot.DeviceIndex, ref state, stateSize);
 
             if (slot.EvLines < 40)
@@ -719,8 +829,25 @@ namespace PadForge.Common.Input
                     var trig = GetAxis(ref state, slot.TriggerAxis);
                     SDL.SDL_SetJoystickVirtualAxis(j, 3, TriggerAxis01(trig.x));
                     var pad = GetAxis(ref state, slot.PadAxis);
-                    SDL.SDL_SetJoystickVirtualAxis(j, 4, (short)Math.Clamp(pad.x * 32767f, -32767f, 32767f));
-                    SDL.SDL_SetJoystickVirtualAxis(j, 5, (short)Math.Clamp(pad.y * 32767f, -32767f, 32767f));
+                    SDL.SDL_SetJoystickVirtualAxis(j, 6, (short)Math.Clamp(pad.x * 32767f, -32767f, 32767f));   // trackpad x (generic Axis 6)
+                    SDL.SDL_SetJoystickVirtualAxis(j, 7, (short)Math.Clamp(pad.y * 32767f, -32767f, 32767f));   // trackpad y (generic Axis 7)
+                    slot.Neutralized = false;
+                }
+                else if (!slot.Neutralized)
+                {
+                    // A failed state read used to LATCH the last written
+                    // values on the virtual joystick (2026-08-18 audit): a
+                    // controller that sleeps mid-hold kept its stick
+                    // deflected and its trigger pulled indefinitely.
+                    // Neutralize once; a recovered read resumes normally.
+                    slot.Neutralized = true;
+                    for (int b = 0; b < 6; b++) SDL.SDL_SetJoystickVirtualButton(j, b, false);
+                    SDL.SDL_SetJoystickVirtualAxis(j, 0, 0);
+                    SDL.SDL_SetJoystickVirtualAxis(j, 1, 0);
+                    SDL.SDL_SetJoystickVirtualAxis(j, 2, short.MinValue + 1);   // triggers rest at MIN
+                    SDL.SDL_SetJoystickVirtualAxis(j, 3, short.MinValue + 1);
+                    SDL.SDL_SetJoystickVirtualAxis(j, 6, 0);
+                    SDL.SDL_SetJoystickVirtualAxis(j, 7, 0);
                 }
 
                 if (pose.bPoseIsValid)

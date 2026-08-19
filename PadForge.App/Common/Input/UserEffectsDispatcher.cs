@@ -1504,6 +1504,7 @@ namespace PadForge.Common.Input
         // peak" branch below could never be taken. Keeping it implied an
         // override path that did not exist.
         private int _lastMoveSphereSig = -1;
+        private long _lastMoveSphereLogMs;
 
         private void DispatchSnapshot()
         {
@@ -1722,13 +1723,24 @@ namespace PadForge.Common.Input
                                     moveCfg, movePeak, nowMs, _randomColor, movePulse, movePulseIntensity, movePct);
                                 bool sphereOk = Common.Input.PsMoveDirectService.TrySetLed(
                                     moveWrap.SdlInstanceId, sphere.r, sphere.g, sphere.b);
-                                // Change-gated evidence line: mode, computed
-                                // color, and whether the write was accepted.
+                                // Evidence line, change-gated AND rate-limited
+                                // (2026-08-18 audit): an animated mode
+                                // (Rainbow, AudioVisualizer) changes the color
+                                // every dispatch, so a pure change gate logged
+                                // ~32 lines a second, 82k lines in one bench
+                                // session, drowning the 400-line crash ring
+                                // and the diag mirror. Mode or setOk changes
+                                // log immediately; a color-only change logs at
+                                // most once a second.
                                 int sphereSig = (sphere.r << 16) | (sphere.g << 8) | sphere.b
                                     | ((int)moveCfg.LightbarMode << 24) | (sphereOk ? 1 << 30 : 0);
-                                if (sphereSig != _lastMoveSphereSig)
+                                int sphereMode = sphereSig & unchecked((int)0xFF000000) | (sphereOk ? 1 << 30 : 0);
+                                int lastMode = _lastMoveSphereSig & unchecked((int)0xFF000000) | (_lastMoveSphereSig & (1 << 30));
+                                if (sphereSig != _lastMoveSphereSig
+                                    && (sphereMode != lastMode || nowMs - _lastMoveSphereLogMs >= 1000))
                                 {
                                     _lastMoveSphereSig = sphereSig;
+                                    _lastMoveSphereLogMs = nowMs;
                                     PadForge.Engine.SdlDiagLog.WriteLine(
                                         $"MOVELIGHT slot={_padIndex} mode={moveCfg.LightbarMode} "
                                         + $"rgb={sphere.r:X2}{sphere.g:X2}{sphere.b:X2} setOk={sphereOk}");
@@ -1834,14 +1846,14 @@ namespace PadForge.Common.Input
                     // so the override is null and this branch is skipped —
                     // the bytes flow through to the real DualSense via
                     // the dispatcher path, which is the only writer.
-                    bool gameDrivenRumble = devOverrides.RumbleRight.HasValue && devOverrides.RumbleLeft.HasValue;
-                    if (gameDrivenRumble && isDs5
-                        && DualSensePassthroughDispatcher.IsPassthroughTarget(_padIndex, ud.InstanceGuid))
-                    {
-                        rR = 0;
-                        rL = 0;
-                    }
-
+                    bool gameDrivenRumble = devOverrides.RumbleRight.HasValue && devOverrides.RumbleLeft.HasValue;
+                    if (gameDrivenRumble && isDs5
+                        && DualSensePassthroughDispatcher.IsPassthroughTarget(_padIndex, ud.InstanceGuid))
+                    {
+                        rR = 0;
+                        rL = 0;
+                    }
+
                     // The lightbar has the same conflict and never got the
                     // same treatment. While a game drives the bar on a
                     // pass-through target, the pass-through is already

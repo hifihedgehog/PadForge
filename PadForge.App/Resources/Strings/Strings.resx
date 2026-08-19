@@ -2642,6 +2642,7 @@
   <data name="WiiPair_NoBluetooth" xml:space="preserve"><value>No Bluetooth radio found. Connect a Bluetooth adapter and try again.</value></data>
   <data name="WiiPair_Done" xml:space="preserve"><value>Done</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
+  <data name="About_OpenVR" xml:space="preserve"><value>OpenVR API</value></data>
   <data name="About_OpenVRDesc" xml:space="preserve"><value>Valve’s OpenVR client API (BSD 3-Clause): VR headsets and motion controllers as input sources. The native runtime is loaded from your own SteamVR installation.</value></data>
   <data name="Vr_Status_Running" xml:space="preserve"><value>Running</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>Running, driver connected</value></data>

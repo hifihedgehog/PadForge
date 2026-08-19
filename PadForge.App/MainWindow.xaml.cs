@@ -8072,6 +8072,7 @@ namespace PadForge
             var (vrDrv, vrLive) = PadForge.Common.Input.HMaestroVRController.GlobalDriverStatus();
             _viewModel.Dashboard.IsVrDriverConnected = vrDrv;
             _viewModel.Dashboard.AreVrControllersLive = vrLive;
+            _viewModel.Settings.RefreshSteamVrStatus();
             // Ownership (the Steam-free shape PadForge created) gates the
             // uninstall button; a Steam-client install never reads as owned.
             try { _viewModel.Settings.IsSteamVrOwned = DriverInstaller.GetOwnedSteamVrDir() != null; }

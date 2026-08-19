@@ -306,9 +306,10 @@
                     <TextBlock Grid.Row="47" Grid.Column="1"
                                Text="{Binding About_Ds5BridgeDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
 
-                    <TextBlock Grid.Row="48" Text="OpenVR API" FontWeight="SemiBold" Margin="0,6,16,0"/>
+                    <TextBlock Grid.Row="48" Text="{Binding About_OpenVR, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0"/>
                     <TextBlock Grid.Row="48" Grid.Column="1"
-                               Text="{Binding About_OpenVRDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>                </Grid>
+                               Text="{Binding About_OpenVRDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+                </Grid>
             </Border>
 
             <!-- License -->

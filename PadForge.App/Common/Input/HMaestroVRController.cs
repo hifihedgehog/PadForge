@@ -51,27 +51,29 @@ namespace PadForge.Common.Input
 
         /// <summary>Aggregate status across live VR slots: whether any
         /// slot's OpenVR driver is connected in SteamVR, and whether any
-        /// slot's virtual hands are live. Passive shared-memory reads.</summary>
+        /// slot's virtual hands are live. The reads happen UNDER s_liveLock,
+        /// and Disconnect disposes under the same lock (2026-08-18 audit):
+        /// the SDK's status getters dereference mapped shared memory with no
+        /// disposed guard, so a read racing Dispose's UnmapViewOfFile is an
+        /// AccessViolation that no catch can survive. Mutual exclusion with
+        /// the dispose is the only safe shape from this side of the SDK. The
+        /// lock is held for a handful of pointer-sized reads.</summary>
         public static (bool DriverConnected, bool ControllersLive) GlobalDriverStatus()
         {
-            HMaestroVRController[] snapshot;
+            bool drv = false, live = false;
             lock (s_liveLock)
             {
-                if (s_live.Count == 0) return (false, false);
-                snapshot = new HMaestroVRController[s_live.Count];
-                s_live.CopyTo(snapshot);
-            }
-            bool drv = false, live = false;
-            foreach (var c in snapshot)
-            {
-                var vr = c._vr;
-                if (vr == null) continue;
-                try
+                foreach (var c in s_live)
                 {
-                    if (vr.DriverConnected) drv = true;
-                    if (vr.ControllersLive) live = true;
+                    var vr = c._vr;
+                    if (vr == null) continue;
+                    try
+                    {
+                        if (vr.DriverConnected) drv = true;
+                        if (vr.ControllersLive) live = true;
+                    }
+                    catch { /* passive probe */ }
                 }
-                catch { /* passive probe */ }
             }
             return (drv, live);
         }
@@ -139,14 +141,22 @@ namespace PadForge.Common.Input
         {
             if (!_connected) return;
             _connected = false;
-            lock (s_liveLock) s_live.Remove(this);
 
-            var vr = _vr;
-            _vr = null;
-            if (vr != null)
+            // Deregister, null, AND dispose under the status lock: a
+            // GlobalDriverStatus read between the null and the dispose (or
+            // between snapshot and read) would dereference shared memory
+            // mid-unmap, which is process-fatal (2026-08-18 audit).
+            HMVRController vr;
+            lock (s_liveLock)
             {
-                vr.HapticReceived -= OnHapticReceived;
-                try { vr.Dispose(); } catch { /* best effort */ }
+                s_live.Remove(this);
+                vr = _vr;
+                _vr = null;
+                if (vr != null)
+                {
+                    vr.HapticReceived -= OnHapticReceived;
+                    try { vr.Dispose(); } catch { /* best effort */ }
+                }
             }
 
             lock (_hapticLock)

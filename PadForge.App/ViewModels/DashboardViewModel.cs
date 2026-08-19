@@ -26,6 +26,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(PollingFrequencyText));
             OnPropertyChanged(nameof(HidHideStatusText));
             OnPropertyChanged(nameof(MidiServicesStatusText));
+            OnPropertyChanged(nameof(SteamVrStatusText));
             OnPropertyChanged(nameof(TouchpadOverlayStatus));
         }
 

@@ -106,6 +106,7 @@ namespace PadForge.ViewModels
             Title = Strings.Instance.Settings_Title;
             OnPropertyChanged(nameof(HidHideStatusText));
             OnPropertyChanged(nameof(MidiServicesStatusText));
+            OnPropertyChanged(nameof(SteamVrStatusText));
             // Both build their text from Strings.Instance, so they are exactly
             // as culture-dependent as the two above and were the pair this
             // handler missed. The Remote Link protection picker and its hint
@@ -500,8 +501,27 @@ namespace PadForge.ViewModels
             }
         }
 
-        /// <summary>SteamVR status display text.</summary>
-        public string SteamVrStatusText => _isSteamVrInstalled ? Strings.Instance.Common_Installed : Strings.Instance.Common_NotInstalled;
+        /// <summary>SteamVR status display text. Tiered like the
+        /// Dashboard's row (#287 audit): the two rows describe the same
+        /// subject and used to contradict each other once the consumer or a
+        /// VR slot was live. Reads the live statics; MainWindow's periodic
+        /// refresh raises the change notification.</summary>
+        public string SteamVrStatusText
+        {
+            get
+            {
+                if (!_isSteamVrInstalled) return Strings.Instance.Common_NotInstalled;
+                var (drv, live) = PadForge.Common.Input.HMaestroVRController.GlobalDriverStatus();
+                if (live) return Strings.Instance.Vr_Status_ControllersLive;
+                if (drv) return Strings.Instance.Vr_Status_DriverConnected;
+                if (PadForge.Common.Input.OpenVrConsumerService.ServerConnected) return Strings.Instance.Vr_Status_Running;
+                return Strings.Instance.Common_Installed;
+            }
+        }
+
+        /// <summary>Raises the SteamVR row's change notification; called by
+        /// MainWindow's status refresh beside the Dashboard tier push.</summary>
+        public void RefreshSteamVrStatus() => OnPropertyChanged(nameof(SteamVrStatusText));
 
         private string _steamVrInstallDir = PadForge.Common.DriverInstaller.SteamVrInstallDir;
 

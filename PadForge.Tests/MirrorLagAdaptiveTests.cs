@@ -13,6 +13,25 @@ namespace PadForge.Tests
     public class MirrorLagAdaptiveTests
     {
         [Fact]
+        public void TickBuffer_HoldsTheMaximumPositiveTrim()
+        {
+            // The #325 regression: the trim clamp grew from 4 to 12 while
+            // the pull buffer kept its +8-frame headroom, so a positive
+            // trim past +8 overran the buffer, the tick's catch flagged
+            // the sink TransportFailed, and the 5 s rebuild loop replayed
+            // the crash forever (silent mirror, dead test tone). The
+            // buffer is now sized from the same constant as the clamp;
+            // this pins the coupling so they can never diverge again.
+            int worstTrim = AudioPassthroughService.ComputeLagTrim(
+                int.MaxValue / 2, 0, 240);
+            Assert.Equal(AudioPassthroughService.BtMaxTrimFrames, worstTrim);
+            int worstReadFloats = (512 + worstTrim) * 2;   // BtPullFrames + trim
+            Assert.True(worstReadFloats <= AudioPassthroughService.MaxTickReadFloats,
+                $"a max-trim tick reads {worstReadFloats} floats into a "
+                + $"{AudioPassthroughService.MaxTickReadFloats}-float buffer");
+        }
+
+        [Fact]
         public void Trim_HoldsInsideTheDeadband()
         {
             Assert.Equal(0, AudioPassthroughService.ComputeLagTrim(960, 960, 240));

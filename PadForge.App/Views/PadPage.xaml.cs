@@ -4513,8 +4513,11 @@ namespace PadForge.Views
 
         private static MacroAction ActionFromVisual(DependencyObject d)
         {
+            // TreeWalk, not VisualTreeHelper: both callers seed this from
+            // OriginalSource / InputHitTest, which can report an inline Run,
+            // and GetParent throws on ContentElements (#333).
             while (d != null && d is not ListBoxItem)
-                d = System.Windows.Media.VisualTreeHelper.GetParent(d);
+                d = PadForge.Common.TreeWalk.Parent(d);
             return (d as ListBoxItem)?.DataContext as MacroAction;
         }
 

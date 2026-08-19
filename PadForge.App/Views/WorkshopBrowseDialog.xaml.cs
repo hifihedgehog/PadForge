@@ -294,8 +294,11 @@ namespace PadForge.Views
             // Only a click that landed on a tile opens it; scrollbar clicks
             // bubble through this preview handler too.
             var dep = e.OriginalSource as DependencyObject;
+            // TreeWalk, not VisualTreeHelper: a tile's formatted text can
+            // report an inline Run as OriginalSource, and GetParent throws
+            // on ContentElements (#333).
             while (dep != null && dep is not ListBoxItem && dep is not ListBox)
-                dep = VisualTreeHelper.GetParent(dep);
+                dep = PadForge.Common.TreeWalk.Parent(dep);
             if (dep is ListBoxItem { DataContext: WorkshopGameItem g })
                 _ = OpenGameAsync(g);
         }

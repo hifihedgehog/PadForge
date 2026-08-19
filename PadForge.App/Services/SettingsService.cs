@@ -4599,6 +4599,20 @@ namespace PadForge.Services
         // is what let two rounds ship a fix the next save undid.
         internal void UpdatePadSettingsFromViewModels()
         {
+            // Same self-guard as PushUiExtraSourcesIntoSlotMappingSets, for
+            // the same reason: mid-profile-swap the ViewModels still hold the
+            // OUTGOING profile's tuning while the PadSettings already belong
+            // to the incoming one, so a push landing inside that window
+            // writes stale values over the freshly installed profile. The
+            // window is a synchronous UI block today, but this writer now
+            // also runs on the 250 ms tier-1 tick (#331), and the recorded
+            // rule from the clobber this family already shipped is that the
+            // writer guards ITSELF so every present and future caller
+            // inherits it. Skipping here is always safe: the next tick, or
+            // the save's own call after the swap completes, pushes fresh
+            // values.
+            if (InputService.VmMappingsStale) return;
+
             lock (SettingsManager.UserSettings.SyncRoot)
             {
                 for (int i = 0; i < _mainVm.Pads.Count; i++)

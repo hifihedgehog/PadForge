@@ -655,7 +655,17 @@ namespace PadForge.Engine
             IntPtr h = SDL_OpenHapticFromJoystick(Joystick);
             if (h == IntPtr.Zero)
             {
-                SdlDiagLog.WriteLine($"HAPTICDIAG open {VendorId:X4}:{ProductId:X4} FAILED (no haptic interface)");
+                // NOT a failure, and it must not be worded as one. Most
+                // gamepads expose no SDL haptic interface at all: a
+                // DualSense rumbles through the Sony sole-writer path and
+                // never touches this subsystem, so every Sony pad reached
+                // here on every run. Saying FAILED put two error-class
+                // lines into every diagnostics harvest and made the
+                // zero-error acceptance bar unmeetable by construction.
+                // The line still prints, because #282 needs the VID:PID
+                // of a wheel that dies here, but it now says what it
+                // means: this device has no haptic interface to open.
+                SdlDiagLog.WriteLine($"HAPTICDIAG open {VendorId:X4}:{ProductId:X4} none (device exposes no SDL haptic interface)");
                 return;
             }
 

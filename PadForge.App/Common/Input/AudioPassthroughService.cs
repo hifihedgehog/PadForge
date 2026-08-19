@@ -2880,20 +2880,29 @@ namespace PadForge.Common.Input
         /// its +8 headroom, so a positive trim past +8 overran the buffer,
         /// the tick's catch flagged the sink TransportFailed, and the 5 s
         /// rebuild loop replayed the crash forever: a silent mirror and a
-        /// dead test tone instead of audio.</summary>
-        internal const int BtMaxTrimFrames = 12;
+        /// dead test tone instead of audio.
+        ///
+        /// The value is 4, the level that shipped inaudibly for months: the
+        /// trim varies the 16:15 compressor's input count, so it IS a pitch
+        /// bend, re-chosen every ~10.7 ms tick. 12 frames = a +/-2.3%
+        /// wobble, plainly audible on the test tone and on music (bench,
+        /// 2026-08-18); 4 frames = +/-0.8%. Burst absorption is not the
+        /// trim's job: the adaptive cushion TARGET (EscalateLagTarget, to
+        /// 100 ms) is what outruns a bursty capture, and the trim only
+        /// recenters the cushion slowly between bursts.</summary>
+        internal const int BtMaxTrimFrames = 4;
 
         /// <summary>Floats one tick can read at the maximum positive trim:
         /// the minimum length for the pull buffer. Test-locked against
         /// ComputeLagTrim's clamp.</summary>
         internal static int MaxTickReadFloats => (BtPullFrames + BtMaxTrimFrames) * 2;
 
-        /// <summary>Proportional drift trim (#325): the per-tick frame
-        /// adjustment toward the cushion target. Inside the deadband it
-        /// holds at zero; outside, it scales with the error and clamps at
-        /// ±BtMaxTrimFrames (a momentary ~2.3% rate bend on a 512-frame
-        /// tick), so recovery from a burst takes ticks instead of the
-        /// seconds the old fixed ±4 needed. Pure, so the rule is
+        /// <summary>Drift trim (#325): the per-tick frame adjustment toward
+        /// the cushion target. Inside the deadband it holds at zero;
+        /// outside, it clamps at ±BtMaxTrimFrames (±0.8%, the inaudible
+        /// level). Cushion recentering is allowed to take seconds: the
+        /// adaptive target keeps the ring deep enough that a slow trim
+        /// never lets it bottom out. Pure, so the rule is
         /// test-locked.</summary>
         internal static int ComputeLagTrim(int lag, int target, int deadband)
         {
@@ -3036,12 +3045,13 @@ namespace PadForge.Common.Input
                             // Mirror drift trim: the ring is steered to its target
                             // cushion by consuming a few samples more or fewer per
                             // tick through the same 16:15 compressor, never by
-                            // extra or skipped reports. Proportional since #325:
-                            // the old fixed ±4 corrected ~375 frames/s while a
-                            // bursty capture moved the cushion at 800-2,000, so
-                            // the trim saturated and the ring bottomed out. The
-                            // target itself adapts: underruns raise it (mirror
-                            // read), clean seconds decay it here.
+                            // extra or skipped reports. The trim stays at the
+                            // inaudible ±4 (it IS a pitch bend, and 12 was an
+                            // audible wobble on the test tone); the burst
+                            // resilience lives in the TARGET, which adapts:
+                            // underruns raise it (mirror read), clean seconds
+                            // decay it here, and a deep cushion outruns a
+                            // bursty capture that a fast trim only chased.
                             int inFrames = BtPullFrames;
                             int lag = s.Source.LoopbackLagFrames;
                             if (lag >= 0)

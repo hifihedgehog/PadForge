@@ -25,7 +25,7 @@ namespace PadForge.Tests
             int worstTrim = AudioPassthroughService.ComputeLagTrim(
                 int.MaxValue / 2, 0, 240);
             Assert.Equal(AudioPassthroughService.BtMaxTrimFrames, worstTrim);
-            int worstReadFloats = (512 + worstTrim) * 2;   // BtPullFrames + trim
+            int worstReadFloats = (512 + worstTrim) * 2;   // BtPullFrames + trim (clamp is 4 since the wobble fix)
             Assert.True(worstReadFloats <= AudioPassthroughService.MaxTickReadFloats,
                 $"a max-trim tick reads {worstReadFloats} floats into a "
                 + $"{AudioPassthroughService.MaxTickReadFloats}-float buffer");
@@ -42,12 +42,15 @@ namespace PadForge.Tests
         [Fact]
         public void Trim_ScalesWithTheErrorAndClamps()
         {
-            // A small breach trims gently, a large one hits the clamp:
-            // recovery from a real burst takes ticks, not seconds.
+            // The clamp is +/-4, the level that shipped inaudibly for
+            // months: the trim IS a per-tick pitch bend through the 16:15
+            // compressor, and the 9983bffd clamp of 12 (+/-2.3%) was an
+            // audible wobble on the test tone and on music. Bursts are the
+            // adaptive TARGET's job, not the trim's.
             Assert.Equal(4, AudioPassthroughService.ComputeLagTrim(960 + 240, 960, 240));
-            Assert.Equal(12, AudioPassthroughService.ComputeLagTrim(960 + 2000, 960, 240));
+            Assert.Equal(4, AudioPassthroughService.ComputeLagTrim(960 + 2000, 960, 240));
             Assert.Equal(-4, AudioPassthroughService.ComputeLagTrim(960 - 240, 960, 240));
-            Assert.Equal(-12, AudioPassthroughService.ComputeLagTrim(28, 960, 240));
+            Assert.Equal(-4, AudioPassthroughService.ComputeLagTrim(28, 960, 240));
         }
 
         [Fact]
@@ -56,7 +59,7 @@ namespace PadForge.Tests
             // An escalated target moves the whole band: the same lag that
             // reads high against the floor reads low against a raised
             // target, which is what pulls the cushion up after underruns.
-            Assert.Equal(12, AudioPassthroughService.ComputeLagTrim(2000, 960, 240));
+            Assert.Equal(4, AudioPassthroughService.ComputeLagTrim(2000, 960, 240));
             Assert.True(AudioPassthroughService.ComputeLagTrim(2000, 4800, 240) < 0);
         }
 

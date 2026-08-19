@@ -212,6 +212,16 @@ function Reset-PadForgeUia {
     Start-Sleep -Seconds 6
     $pr = Get-Process PadForge -EA SilentlyContinue | Select-Object -First 1
     if (-not $pr -or $pr.MainWindowHandle -eq 0) { Write-Host "  !! PadForge did not come back" -ForegroundColor Red; return $false }
+    # REBIND THE PROCESS TOO, not just the window. Every modal helper keys
+    # on $script:proc.Id: Close-AnyModal filters candidate windows by it,
+    # and Get-ForegroundDialogHwnd / Find-DialogHwndByEnum enumerate by it.
+    # Leaving it pointed at the process this restart just KILLED makes all
+    # three silently find nothing, because no live window carries a dead
+    # PID. That is how the Voice Macros modal survived every close attempt
+    # across two full runs, disabled the main window, and shipped as six
+    # later screenshots while the log read "hwnd not found by enum" and the
+    # leak counter read zero. All three restart helpers had it.
+    $script:proc = $pr
     $script:hwnd = $pr.MainWindowHandle
     $script:uiaWin = [System.Windows.Automation.AutomationElement]::FromHandle($script:hwnd)
     [Win32]::ForceFG($script:hwnd)
@@ -390,6 +400,16 @@ function Ensure-DeviceAssigned {
     if (-not $ok) { Write-Host "  !! PadForge did not come back up" -ForegroundColor Red; return $false }
     Start-Sleep -Seconds 6
     $pr = Get-Process PadForge -EA SilentlyContinue | Select-Object -First 1
+    # REBIND THE PROCESS TOO, not just the window. Every modal helper keys
+    # on $script:proc.Id: Close-AnyModal filters candidate windows by it,
+    # and Get-ForegroundDialogHwnd / Find-DialogHwndByEnum enumerate by it.
+    # Leaving it pointed at the process this restart just KILLED makes all
+    # three silently find nothing, because no live window carries a dead
+    # PID. That is how the Voice Macros modal survived every close attempt
+    # across two full runs, disabled the main window, and shipped as six
+    # later screenshots while the log read "hwnd not found by enum" and the
+    # leak counter read zero. All three restart helpers had it.
+    $script:proc = $pr
     $script:hwnd = $pr.MainWindowHandle
     $script:uiaWin = [System.Windows.Automation.AutomationElement]::FromHandle($script:hwnd)
     [Win32]::ForceFG($script:hwnd)
@@ -452,6 +472,16 @@ function Ensure-MacrosLoaded {
 
     Start-Sleep -Seconds 6
     $pr = Get-Process PadForge -EA SilentlyContinue | Select-Object -First 1
+    # REBIND THE PROCESS TOO, not just the window. Every modal helper keys
+    # on $script:proc.Id: Close-AnyModal filters candidate windows by it,
+    # and Get-ForegroundDialogHwnd / Find-DialogHwndByEnum enumerate by it.
+    # Leaving it pointed at the process this restart just KILLED makes all
+    # three silently find nothing, because no live window carries a dead
+    # PID. That is how the Voice Macros modal survived every close attempt
+    # across two full runs, disabled the main window, and shipped as six
+    # later screenshots while the log read "hwnd not found by enum" and the
+    # leak counter read zero. All three restart helpers had it.
+    $script:proc = $pr
     $script:hwnd = $pr.MainWindowHandle
     $script:uiaWin = [System.Windows.Automation.AutomationElement]::FromHandle($script:hwnd)
     [Win32]::ForceFG($script:hwnd)
@@ -460,8 +490,28 @@ function Ensure-MacrosLoaded {
     return $true
 }
 
+# Modal-leak counter, reported by the end-of-run coverage audit. A stuck
+# modal is the highest-blast-radius failure this harness has: it disables
+# the main window, so EVERY later Cap silently photographs the same frozen
+# dialog under the wrong name (2026-08-19: six shots shipped that way).
+$script:modalLeaks = 0
+
 function Cap {
-    param([string]$Name)
+    param([string]$Name, [switch]$AllowModal)
+    # Warn, loudly and by name, when a dialog is up for a shot that is not
+    # a dialog shot. Deliberately does NOT auto-dismiss: several steps
+    # legitimately photograph modals, and guessing wrong there would break
+    # working captures. The point is that a leak can never again be
+    # invisible in the log or the audit.
+    if (-not $AllowModal -and $script:hwnd) {
+        try {
+            $leak = Find-DialogHwndByEnum -Retries 1 -DelayMs 0
+            if ($leak -and [IntPtr]$leak -ne [IntPtr]::Zero) {
+                Write-Host "  !! MODAL LEAK: a dialog is open while capturing '$Name'" -ForegroundColor Red
+                $script:modalLeaks++
+            }
+        } catch {}
+    }
     [Win32]::ForceFG($script:hwnd)
     Start-Sleep -Milliseconds 300
     $r = New-Object Win32+RECT
@@ -713,7 +763,18 @@ function ScrollContent {
     $cx = [int](($sr.Left + $sr.Right) / 2 + 100)
     $cy = [int](($sr.Top + $sr.Bottom) / 2)
     [Win32]::ForceFG($script:hwnd)
-    [Win32]::ClickAt($cx, $cy)
+    # HOVER, never click. WPF routes the wheel to whatever the pointer is
+    # over, so the click bought nothing and cost correctness: the point is
+    # the window's centre, and once the VR slot made the Dashboard's card
+    # grid one row taller that centre landed on the ADD CONTROLLER card.
+    # The click opened the type-picker popup, the popup ate the wheel
+    # events, the page never scrolled, and remote-link.png / dsu-port-box
+    # .png shipped as the un-scrolled Dashboard with a popup floating over
+    # it (2026-08-19). ESC first so a popup from an earlier step cannot
+    # swallow this scroll either.
+    [System.Windows.Forms.SendKeys]::SendWait("{ESC}")
+    Start-Sleep -Milliseconds 200
+    [Win32]::MoveTo($cx, $cy)
     Start-Sleep -Milliseconds 300
     $step = if ($Clicks -lt 0) { -3 } else { 3 }
     $count = [math]::Abs([math]::Ceiling($Clicks / $step))
@@ -800,6 +861,40 @@ function Close-DialogHwnd {
     if (-not $Hwnd -or [IntPtr]$Hwnd -eq [IntPtr]::Zero) { return }
     [Win32]::PostMessage([IntPtr]$Hwnd, 0x0010, [IntPtr]::Zero, [IntPtr]::Zero) | Out-Null  # WM_CLOSE
     Start-Sleep -Milliseconds 800
+    # VERIFY, then escalate. A modal that survives WM_CLOSE keeps the main
+    # window disabled, and every later Cap then photographs that frozen
+    # dialog instead of the page it names. On 2026-08-19 the Voice Macros
+    # dialog did exactly that and shipped as midi-input, dsu-port-box,
+    # remote-link, devices-nfc, nfc-live-preview and
+    # settings-community-configs. Posting the message is not closing it.
+    for ($esc = 0; $esc -lt 3; $esc++) {
+        if (-not [Win32]::IsWindowVisible([IntPtr]$Hwnd)) { return }
+        Write-Host "  Close-DialogHwnd: still up after WM_CLOSE, escalating" -ForegroundColor Yellow
+        [Win32]::ForceFG([IntPtr]$Hwnd); Start-Sleep -Milliseconds 300
+        [System.Windows.Forms.SendKeys]::SendWait("{ESC}")
+        Start-Sleep -Milliseconds 600
+        if (-not [Win32]::IsWindowVisible([IntPtr]$Hwnd)) { return }
+        # Its own Close button, by UIA on the dialog's hwnd (these modals
+        # are reachable that way even though the ROOT scan never lists them).
+        try {
+            $dlgEl = [System.Windows.Automation.AutomationElement]::FromHandle([IntPtr]$Hwnd)
+            $btnC = New-Object System.Windows.Automation.PropertyCondition(
+                [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+                [System.Windows.Automation.ControlType]::Button)
+            foreach ($b in $dlgEl.FindAll($TD, $btnC)) {
+                if ($b.Current.Name -match '^(Close|Cancel|OK|Done|Dismiss)$') {
+                    Click-El $b -Label "dialog '$($b.Current.Name)'" -Delay 600 | Out-Null
+                    break
+                }
+            }
+        } catch {}
+        [Win32]::PostMessage([IntPtr]$Hwnd, 0x0010, [IntPtr]::Zero, [IntPtr]::Zero) | Out-Null
+        Start-Sleep -Milliseconds 700
+    }
+    if ([Win32]::IsWindowVisible([IntPtr]$Hwnd)) {
+        Write-Host "  !! DIALOG WOULD NOT CLOSE -- later shots will be corrupt" -ForegroundColor Red
+        $script:modalLeaks++
+    }
 }
 
 # Find a modal FluentWindow by Win32 EnumWindows: a visible PadForge-PID
@@ -1430,7 +1525,7 @@ function Add-SlotViaPopup {
     Click-El $addNav -Label "Add Controller" -Delay 600
     # Capture the popup on first open (shows all 5 type buttons)
     if (-not $script:popupCaptured) {
-        Cap "add-controller-popup"
+        Cap "add-controller-popup" -AllowModal
         $script:popupCaptured = $true
     }
     # Find and click the type button
@@ -1441,8 +1536,31 @@ function Add-SlotViaPopup {
         Start-Sleep -Milliseconds 300
         return $false
     }
+    # A DISABLED button is found, clicks, and does nothing. The VR button
+    # disables itself when SteamVR is absent, and on 2026-08-19 this
+    # function returned $true for that click, the caller printed
+    # "Created VR", and the ENTIRE screenshot set shipped with six slots
+    # in the always-visible left rail instead of seven. Report it here.
+    try {
+        if (-not $typeBtn.Current.IsEnabled) {
+            Write-Host "  !! Type button '$TypeBtnAid' is DISABLED (prerequisite missing)" -ForegroundColor Red
+            [System.Windows.Forms.SendKeys]::SendWait("{ESC}")
+            Start-Sleep -Milliseconds 300
+            return $false
+        }
+    } catch {}
+    $before = Get-Count @(Find-AllSlots)
     Click-El $typeBtn -Label $TypeLabel -Delay 1500
-    return $true
+    # VERIFY, never assume. The click is not the creation: poll until the
+    # slot list actually grows.
+    for ($w = 0; $w -lt 10; $w++) {
+        if ((Get-Count @(Find-AllSlots)) -gt $before) { return $true }
+        Start-Sleep -Milliseconds 400
+    }
+    Write-Host "  !! '$TypeLabel' click landed but NO NEW SLOT appeared (was $before)" -ForegroundColor Red
+    [System.Windows.Forms.SendKeys]::SendWait("{ESC}")
+    Start-Sleep -Milliseconds 300
+    return $false
 }
 
 if (-not $SkipToTail) {
@@ -1511,15 +1629,36 @@ $slotTypes = @(
     # VR (#49, 4.2.0) completes the set: every VirtualControllerType the
     # popup can create is represented here. The popup's button DISABLES
     # itself when SteamVR is absent (HMaestroVRController.IsAvailable), so
-    # this slot is created only on a machine that has the runtime, which is
-    # also the only machine where its preview would render anything real.
+    # the capture machine MUST carry the Steam-free SteamVR runtime. This
+    # is not optional and it is not a machine-specific nicety: the slot
+    # rail is visible in EVERY screenshot the harness takes, so a missing
+    # type makes the whole set wrong, not one image.
     @{ Aid = "AddVrBtn"; Label = "VR" }
 )
+$failedTypes = @()
 foreach ($st in $slotTypes) {
     Write-Host "  Creating $($st.Label) slot..."
     $ok = Add-SlotViaPopup -TypeBtnAid $st.Aid -TypeLabel $st.Label
     if ($ok) { Write-Host "  Created $($st.Label)" -ForegroundColor Green }
+    else { $failedTypes += $st.Label }
     Start-Sleep -Milliseconds 500
+}
+if ($failedTypes.Count -gt 0) {
+    # ABORT, loudly. Continuing produces a full set of screenshots that all
+    # carry a wrong slot rail, which is worse than no screenshots: the run
+    # LOOKS successful and every image ships a missing controller type.
+    # 2026-08-19 shipped exactly that with VR absent, twice.
+    Write-Host ""
+    Write-Host "!! SLOT TYPES FAILED TO CREATE: $($failedTypes -join ', ')" -ForegroundColor Red
+    Write-Host "!! The slot rail appears in EVERY screenshot, so the whole set" -ForegroundColor Red
+    Write-Host "!! would be wrong. Refusing to capture." -ForegroundColor Red
+    if ($failedTypes -contains "VR") {
+        Write-Host "!! VR needs the Steam-free SteamVR runtime:" -ForegroundColor Yellow
+        Write-Host "!!   C:\SteamVR\bin\win64\vrpathreg.exe present, and" -ForegroundColor Yellow
+        Write-Host "!!   HKLM\SOFTWARE\HIDMaestro\SteamVRPath naming that dir." -ForegroundColor Yellow
+        Write-Host "!!   Settings > SteamVR installs it (steamcmd, app 250820)." -ForegroundColor Yellow
+    }
+    throw "Slot type creation failed: $($failedTypes -join ', ')"
 }
 
 # Wait for type-group reorder to fully settle before querying slots
@@ -1883,7 +2022,21 @@ Nav "Profiles"; Cap "profiles"
 # unmatched); a matched/lit readout needs the profile's game running in front,
 # which the capture can't stage. Toggling back keeps auto-switch behaviour off
 # for the rest of the run (foreground is always PadForge -> always Default).
-$autoSw = Find-UIA -Name "Auto-switch profiles based on foreground application"
+# Matched CASE-INSENSITIVELY on a stable fragment, not on the full label.
+# UIA's NameProperty condition is case-sensitive, the checkbox has no
+# AutomationId, and the Title Case UI sweep re-cased this label to
+# "Auto-Switch Profiles Based on Foreground Application". The harness kept
+# the old sentence-case literal, so the lookup silently missed and
+# profiles-foreground-readout had been skipped on every run since.
+$autoSw = $null
+$cbCond = New-Object System.Windows.Automation.PropertyCondition(
+    [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+    [System.Windows.Automation.ControlType]::CheckBox)
+foreach ($cb in $script:uiaWin.FindAll($TD, $cbCond)) {
+    try {
+        if ($cb.Current.Name -match '(?i)auto-?switch.*foreground') { $autoSw = $cb; break }
+    } catch {}
+}
 if ($autoSw) {
     Click-El $autoSw -Label "Auto-switch checkbox" -Delay 800 | Out-Null
     Cap "profiles-foreground-readout"
@@ -2159,7 +2312,7 @@ if ($slots.Count -ge 1) {
     [Win32]::ForceFG($script:hwnd)
     Start-Sleep -Milliseconds 100
     [Win32]::ClickAt($comboX, $comboY); Start-Sleep -Milliseconds 800
-    if ($script:MacrosPresent) { Cap "macro-add-from-list" } else { Write-Host "  skipped macro-add-from-list (no macros)" -ForegroundColor Yellow }
+    if ($script:MacrosPresent) { Cap "macro-add-from-list" -AllowModal } else { Write-Host "  skipped macro-add-from-list (no macros)" -ForegroundColor Yellow }
     [System.Windows.Forms.SendKeys]::SendWait("{ESC}"); Start-Sleep -Milliseconds 300
 
     # 7. Mappings
@@ -2662,7 +2815,7 @@ if ($slotsHost) {
                 # so we never save a non-recorder frame as touchpad-gesture-recorder.png).
                 $recDlg = Get-ForegroundDialogHwnd
                 if ($recDlg -ne [IntPtr]::Zero) {
-                    Cap "touchpad-gesture-recorder"
+                    Cap "touchpad-gesture-recorder" -AllowModal
                     Close-DialogHwnd $recDlg
                 } else {
                     Write-Host "  !! recorder dialog did not open (no foreground modal)" -ForegroundColor Yellow
@@ -2780,7 +2933,7 @@ if ($cards.Count -gt $extendedIdx) {
     if (-not $cloneBtn) { $cloneBtn = Find-UIA -Name "Clone Device 1:1" }
     if ($cloneBtn) {
         Click-El $cloneBtn -Label "Clone Device 1:1" -Delay 1400 | Out-Null
-        Cap "pad-extended-clone-device"
+        Cap "pad-extended-clone-device" -AllowModal
         # The confirm is a SEPARATE top-level window, so the old $script:uiaWin
         # button scan never found its Cancel and ESC did not reach it. Run 1 froze
         # right after this because the modal stayed up and the KBM block's next
@@ -2900,9 +3053,12 @@ if ($cards.Count -gt $midiIdx) {
 
 # ---- 17b. VR slot (#49, 4.2.0) ----
 # Card index 6 by VirtualControllerGroups.InOrder (Xbox 0 .. MIDI 5, VR 6,
-# Add card at 7). The VR slot exists only when SteamVR is installed, since
-# the popup's Add button disables itself without it, so a missing card here
-# is a machine-state fact and not a harness failure.
+# Add card at 7). Slot creation now ABORTS the run when the VR type fails,
+# so reaching here without a VR card means the card list is short for some
+# OTHER reason and the index would land on the Add Controller card. That
+# is not a harmless miss: on 2026-08-19 it opened the type-picker popup
+# and shipped the Dashboard-with-popup as BOTH pad-vr-configbar.png and
+# pad-vr-mappings.png. Verify we are on a pad page before capturing.
 Write-Host ""
 Write-Host "--- VR Slot ---" -ForegroundColor Yellow
 Nav "Dashboard"; Start-Sleep -Milliseconds 1000
@@ -2910,24 +3066,39 @@ $slotsHost = Find-UIA -Aid "SlotsItemsControl"
 $cards = if ($slotsHost) { $slotsHost.FindAll($TC, [System.Windows.Automation.Condition]::TrueCondition) } else { @() }
 $vrIdx = 6
 if ($cards.Count -gt $vrIdx) {
-    Write-Host "[$(Next)/$total] VR config bar + preview"
+    Write-Host "[$(Next)/$total] VR preview + config bar + mappings"
     Click-El $cards[$vrIdx] -Label "VR Slot card" -Delay 1500 | Out-Null
     $padPage = Find-UIA -Aid "PadPageView"
-    if ($padPage) {
+    if (-not $padPage) {
+        # The click did not land on a slot. Capturing here would ship the
+        # Dashboard under three VR names.
+        Write-Host "  !! VR card click did not open a pad page -- SKIPPED all three VR shots" -ForegroundColor Red
+        $n++
+    } else {
         $rbCond = New-Object System.Windows.Automation.PropertyCondition(
             [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
             [System.Windows.Automation.ControlType]::RadioButton)
         $tabs = $padPage.FindAll($TC, $rbCond)
         if ($tabs.Count -gt 0) { Click-El $tabs[0] -Label "VR Controller Tab" -Delay 1200 }
+        # The Controller tab renders the hand-controller preview. It is the
+        # lead image of features/vr-controllers.md and NOTHING in this
+        # harness had ever captured it: the converter mapped
+        # pad-vr-preview -> vr-preview while no Cap ever wrote the source,
+        # so the docs page carried whatever hand-made file predated the
+        # script, and every coverage audit listed it STALE forever.
+        Cap "pad-vr-preview"
+        Cap "pad-vr-configbar"
+        # The Mappings tab shows the VR source family (both hands' sticks,
+        # triggers, grips and clicks) that the preview mirrors.
+        if (Tab "Mappings") {
+            Start-Sleep -Milliseconds 800
+            Cap "pad-vr-mappings"
+        } else {
+            Write-Host "  !! VR Mappings tab not found -- SKIPPED pad-vr-mappings" -ForegroundColor Red
+        }
     }
-    Cap "pad-vr-configbar"
-    # The Mappings tab shows the VR source family (both hands' sticks,
-    # triggers, grips and clicks) that the preview mirrors.
-    Tab "Mappings" | Out-Null
-    Start-Sleep -Milliseconds 800
-    Cap "pad-vr-mappings"
 } else {
-    Write-Host "  !! VR slot not found (SteamVR absent?)" -ForegroundColor Yellow
+    Write-Host "  !! VR slot card missing at index $vrIdx (cards=$($cards.Count))" -ForegroundColor Red
     $n++
 }
 
@@ -3300,6 +3471,16 @@ Nav "Devices"; Start-Sleep -Milliseconds 900
 Write-Host "[3b] Consumer Control device"
 if (Select-DeviceByName36 "Consumer Control") { Cap "devices-consumer" }
 
+# The UIA tree has degraded by this point in the run TWICE now
+# (2026-07-30 cost the KBM shots, 2026-08-19 cost every device-row
+# select from here to the end: devices-power, devices-move, the voice
+# pair, midi-input, and the whole NFC block all read "not found after
+# scroll" against rows plainly in the list). The KBM block already
+# takes the fresh-process cure at its own head; this tail cluster is
+# its sibling and gets the same one.
+Reset-PadForgeUia -ExePath $PadForgeExe | Out-Null
+Nav "Devices"; Start-Sleep -Milliseconds 800
+
 Write-Host "[3b] Power / idle disconnect + battery"
 Nav "Devices"; Start-Sleep -Milliseconds 600
 if (Select-DeviceByName36 "DualSense") { Cap "devices-power" }
@@ -3330,7 +3511,27 @@ if (Select-DeviceByName36 "Microphone") {
     $voiceBtn = Find-UIA -Name "Manage Voice Macros" -CT ([System.Windows.Automation.ControlType]::Button)
     if ($voiceBtn) {
         Click-El $voiceBtn -Label "Manage Voice Macros" -Delay 1200 | Out-Null
-        Cap "voice-phrases"
+        # The Voice Macros dialog (RegisterVoicePhraseDialog) is a wpf-ui
+        # FluentWindow shown via ShowDialog, the same family as Pair /
+        # NFC-register / the gesture recorder: Close-AnyModal CANNOT see it
+        # (RootElement's Window enumeration never surfaces these), so the
+        # 2026-08-19 run left it up, it disabled the main window, and every
+        # later Cap photographed this dialog frozen over the Devices page
+        # (midi-input, dsu-port-box, remote-link, devices-nfc,
+        # nfc-live-preview, settings-community-configs all shipped as the
+        # Voice Macros modal).
+        #
+        # Find it by ENUMERATION, not by foreground. Get-ForegroundDialogHwnd
+        # needs the modal to hold foreground at the exact call moment and
+        # returned Zero here, so the close was a no-op against Zero and the
+        # dialog stayed up through the whole rest of the run.
+        Cap "voice-phrases" -AllowModal
+        $voiceDlg = Find-DialogHwndByEnum
+        if ($voiceDlg -and [IntPtr]$voiceDlg -ne [IntPtr]::Zero) {
+            Close-DialogHwnd $voiceDlg
+        } else {
+            Write-Host "  !! Voice Macros dialog hwnd not found by enum" -ForegroundColor Red
+        }
         Close-AnyModal | Out-Null
     } else {
         Write-Host "  !! 'Manage Voice Macros' button not found -- SKIPPED voice-phrases" -ForegroundColor Red
@@ -3400,7 +3601,7 @@ if ($pairBtn) {
     # overwrote wii-pair.png with whatever was on screen, which is the Devices
     # page. The gesture-recorder block above already guards for exactly this
     # reason. Skipping keeps the previous good screenshot.
-    if ($pairDlg -ne [IntPtr]::Zero) { Cap "wii-pair" }
+    if ($pairDlg -ne [IntPtr]::Zero) { Cap "wii-pair" -AllowModal }
     else { Write-Host "  !! Pair dialog did not open; keeping the existing wii-pair.png" -ForegroundColor Yellow }
     # DualShock 3 family (v4, WiiPair_FamilyDs3): the Controller Family combo is a
     # 2-item ComboBox (Nintendo Wii = index 0, Sony DualShock 3 = index 1). Drive it by
@@ -3416,7 +3617,7 @@ if ($pairBtn) {
         [Win32]::ClickAt([int]($dr.Left + 0.50 * $drw), [int]($dr.Top + 0.32 * $drh)); Start-Sleep -Milliseconds 700
         [System.Windows.Forms.SendKeys]::SendWait("{DOWN}"); Start-Sleep -Milliseconds 400
         [System.Windows.Forms.SendKeys]::SendWait("{ENTER}"); Start-Sleep -Milliseconds 1000
-        Cap "ds3-pair"
+        Cap "ds3-pair" -AllowModal
     } else {
         Write-Host "  !! Pair dialog hwnd not found (foreground grab failed)" -ForegroundColor Yellow
     }
@@ -3448,7 +3649,7 @@ if (Select-DeviceByName36 "NFC") {
         $nfcDlg = Get-ForegroundDialogHwnd
         # Same guard as wii-pair and the gesture recorder: if the modal did not
         # open, this saved the Devices page as nfc-register.png.
-        if ($nfcDlg -ne [IntPtr]::Zero) { Cap "nfc-register" }
+        if ($nfcDlg -ne [IntPtr]::Zero) { Cap "nfc-register" -AllowModal }
         else { Write-Host "  !! NFC register dialog did not open; keeping the existing nfc-register.png" -ForegroundColor Yellow }
         Close-DialogHwnd $nfcDlg
         Close-AnyModal | Out-Null
@@ -3486,7 +3687,7 @@ if ($starterBtn) {
         $stUia = [System.Windows.Automation.AutomationElement]::FromHandle([IntPtr]$stDlg)
         Write-Host "  starter dialog hwnd=$stDlg '$($stUia.Current.Name)'" -ForegroundColor Green
         Start-Sleep -Milliseconds 900
-        Cap "profiles-starter-gallery"
+        Cap "profiles-starter-gallery" -AllowModal
         # Leave without saving: a starter save would add a profile to the
         # capture xml and change every later Profiles-page shot.
         $stBtnCond = New-Object System.Windows.Automation.PropertyCondition(
@@ -3550,7 +3751,7 @@ if ($browseBtn) {
 
         # 1) Cold forge (EnableCommunityConfigLookup seeded false in STEP 0).
         Start-Sleep -Milliseconds 700
-        Cap "workshop-cold"
+        Cap "workshop-cold" -AllowModal
 
         # 2) Opt in from inside the dialog (flips the capture-xml copy only).
         $enableBtn = $null
@@ -3582,7 +3783,7 @@ if ($browseBtn) {
                 [Win32]::SetForegroundWindow([IntPtr]$wsDlg) | Out-Null
                 Start-Sleep -Milliseconds 200
                 [System.Windows.Forms.SendKeys]::SendWait("{DOWN}"); Start-Sleep -Milliseconds 600
-                Cap "workshop-search"
+                Cap "workshop-search" -AllowModal
 
                 # 4) Open the game; wait for its config list.
                 [Win32]::SetForegroundWindow([IntPtr]$wsDlg) | Out-Null
@@ -3600,7 +3801,7 @@ if ($browseBtn) {
                 }
                 Write-Host "  ws config rows: $($cfgRows.Count)"
                 Start-Sleep -Milliseconds 2000   # avatars / vote bars settling
-                Cap "workshop-configs"
+                Cap "workshop-configs" -AllowModal
                 if ($cfgRows.Count -eq 0) {
                     Write-Host "  !! no workshop configs listed for the game (captured the state as-is; NOT substituting another game per owner directive)" -ForegroundColor Yellow
                 } else {
@@ -3615,7 +3816,7 @@ if ($browseBtn) {
                     }
                     if (-not $statEl) { Write-Host "  !! ws manifest stat blocks never appeared" -ForegroundColor Yellow }
                     Start-Sleep -Milliseconds 1200
-                    Cap "workshop-manifest"
+                    Cap "workshop-manifest" -AllowModal
 
                     # 6) Save and Apply -> dialog closes, profile lands in the
                     # capture xml's Profiles and is applied.
@@ -3628,7 +3829,7 @@ if ($browseBtn) {
                             Write-Host "  ws dialog closed after import" -ForegroundColor Green
                         }
                         Nav "Profiles"; Start-Sleep -Milliseconds 1500
-                        Cap "workshop-applied"
+                        Cap "workshop-applied" -AllowModal
                     } else {
                         Write-Host "  !! Save and Apply not clickable (legacy config?)" -ForegroundColor Yellow
                     }
@@ -3893,6 +4094,11 @@ if ($orphan.Count -gt 0) {
     Write-Host "     an orphan here has always meant a page is missing its picture" -ForegroundColor DarkGray
     foreach ($o in ($orphan | Sort-Object)) { Write-Host "     $o" -ForegroundColor Yellow }
 } else { Write-Host "  orphan images           : 0" -ForegroundColor Green }
+# A modal leak corrupts every shot after it, so it belongs in the audit
+# beside the stale/broken counts rather than buried in the transcript.
+if ($script:modalLeaks -gt 0) {
+    Write-Host ("  MODAL LEAKS             : {0}  <-- shots after the leak are CORRUPT" -f $script:modalLeaks) -ForegroundColor Red
+} else { Write-Host "  modal leaks             : 0" -ForegroundColor Green }
 Write-Host ""
 
 Write-Host "Screenshots in: $OutputDir"

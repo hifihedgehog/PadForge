@@ -2163,7 +2163,7 @@
     <value>페어링 / 연결</value>
   </data>
   <data name="Dashboard_RemoteLinkDescription" xml:space="preserve">
-    <value>네트워크를 통해 다른 PC의 페어링된 PadForge와 컨트롤러를 공유합니다.</value>
+    <value>페어링된 다른 PC의 PadForge와 컨트롤러를 공유합니다. 같은 네트워크는 물론 인터넷을 통해서도 가능합니다.</value>
   </data>
   <data name="Dashboard_RemoteLinkFooter" xml:space="preserve">
     <value>한 번 페어링하면 신뢰할 수 있는 PC는 자동으로 다시 연결됩니다. 페어링된 PC는 이 PC의 게임패드 출력을 제어할 수 있으며, 제한하지 않으면 키보드, 마우스, 매크로까지 제어합니다.</value>

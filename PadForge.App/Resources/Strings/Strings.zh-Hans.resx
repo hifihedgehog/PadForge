@@ -2163,7 +2163,7 @@
     <value>配对 / 连接</value>
   </data>
   <data name="Dashboard_RemoteLinkDescription" xml:space="preserve">
-    <value>通过网络与另一台电脑上已配对的 PadForge 共享控制器。</value>
+    <value>与另一台 PC 上已配对的 PadForge 共享控制器，可在本地网络或跨互联网使用。</value>
   </data>
   <data name="Dashboard_RemoteLinkFooter" xml:space="preserve">
     <value>完成一次配对后，受信任的电脑会自动重新连接。已配对的电脑可以控制此电脑的游戏手柄输出，除非加以限制，否则也能控制其键盘、鼠标和宏。</value>

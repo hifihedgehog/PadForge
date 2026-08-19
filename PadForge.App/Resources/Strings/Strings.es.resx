@@ -2163,7 +2163,7 @@
     <value>Emparejar / Conectar</value>
   </data>
   <data name="Dashboard_RemoteLinkDescription" xml:space="preserve">
-    <value>Comparta mandos con un PadForge emparejado en otro PC a través de su red.</value>
+    <value>Comparte mandos con un PadForge emparejado en otro PC, en tu red o a través de internet.</value>
   </data>
   <data name="Dashboard_RemoteLinkFooter" xml:space="preserve">
     <value>Tras un emparejamiento único, un PC de confianza se reconecta automáticamente. Un PC emparejado puede controlar la salida de gamepad de este equipo y, salvo que lo limite, también su teclado, ratón y macros.</value>

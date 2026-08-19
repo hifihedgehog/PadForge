@@ -2159,7 +2159,7 @@
     <value>Parear / Conectar</value>
   </data>
   <data name="Dashboard_RemoteLinkDescription" xml:space="preserve">
-    <value>Compartilhe controles com um PadForge pareado em outro PC pela sua rede.</value>
+    <value>Compartilhe controles com um PadForge pareado em outro PC, na sua rede ou pela internet.</value>
   </data>
   <data name="Dashboard_RemoteLinkFooter" xml:space="preserve">
     <value>Após um pareamento único, um PC confiável reconecta automaticamente. Um PC pareado pode controlar a saída de gamepad deste PC e, a menos que você o limite, também o teclado, o mouse e as macros.</value>

@@ -2163,7 +2163,7 @@
     <value>ペアリング / 接続</value>
   </data>
   <data name="Dashboard_RemoteLinkDescription" xml:space="preserve">
-    <value>ネットワーク経由で、別の PC のペアリング済み PadForge とコントローラーを共有します。</value>
+    <value>ペアリング済みの別の PC の PadForge とコントローラーを共有します。同じネットワークでもインターネット経由でも利用できます。</value>
   </data>
   <data name="Dashboard_RemoteLinkFooter" xml:space="preserve">
     <value>一度ペアリングすれば、信頼済みの PC は自動的に再接続します。ペアリング済みの PC はこの PC のゲームパッド出力を操作でき、制限しない限りキーボード・マウス・マクロも操作できます。</value>

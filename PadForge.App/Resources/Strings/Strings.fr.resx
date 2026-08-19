@@ -2163,7 +2163,7 @@
     <value>Appairer / Connecter</value>
   </data>
   <data name="Dashboard_RemoteLinkDescription" xml:space="preserve">
-    <value>Partagez des manettes avec un PadForge appairé sur un autre PC via votre réseau.</value>
+    <value>Partagez des manettes avec un PadForge appairé sur un autre PC, sur votre réseau ou via internet.</value>
   </data>
   <data name="Dashboard_RemoteLinkFooter" xml:space="preserve">
     <value>Après un appairage unique, un PC de confiance se reconnecte automatiquement. Un PC appairé peut commander la sortie manette de celui-ci et, sauf si vous le limitez, également son clavier, sa souris et ses macros.</value>

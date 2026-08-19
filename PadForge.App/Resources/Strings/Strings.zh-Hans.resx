@@ -2493,7 +2493,7 @@
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>移除此键对。</value></data>
   <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>同时反向输入 (SOCD)</value></data>
   <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>保持控制器活跃</value></data>
-  <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>有些游戏一旦检测到鼠标或键盘输入就会停止震动并切换按键提示。保持摇杆的轻微偏移可让游戏继续将此控制器视为活跃设备。仅当摇杆完全静止时才会施加保持。摇杆任一轴上的真实输入都会解除保持并原样通过。请将偏移量设为低于游戏自身的死区，以免游戏内产生移动。</value></data>
+  <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>有些游戏一旦检测到鼠标或键盘输入就会停止震动并切换按键提示。保持摇杆的轻微偏移可让游戏继续将此控制器视为活跃设备。仅当摇杆两轴都低于保持量时才会施加保持，因此有漂移的摇杆仍算作静止。任一轴上超过保持量的输入都会解除保持并原样通过。请将偏移量设为低于游戏自身的死区，以免游戏内产生移动。</value></data>
   <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>保持活跃</value></data>
   <data name="Pad_KeepAwake_Axis_Label" xml:space="preserve"><value>保持的轴</value></data>
   <data name="Pad_KeepAwake_Axis_Tooltip" xml:space="preserve"><value>由哪个输出轴保持偏移。选择游戏读取为移动而非视角的轴，这样低于死区的值就不会产生可见影响。</value></data>

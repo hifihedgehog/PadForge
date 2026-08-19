@@ -2493,7 +2493,7 @@
   <data name="Pad_Kbm_Socd_RemovePair_Tooltip" xml:space="preserve"><value>このキーペアを削除します。</value></data>
   <data name="Pad_Socd_Card_Header" xml:space="preserve"><value>同時反対方向入力 (SOCD)</value></data>
   <data name="Pad_KeepAwake_Card_Header" xml:space="preserve"><value>コントローラーをアクティブに保つ</value></data>
-  <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>一部のゲームはマウスやキーボードの入力を検出すると振動を止め、ボタン表示を切り替えます。スティックをわずかに倒した状態を保持すると、ゲームはこのコントローラーをアクティブなデバイスとして扱い続けます。保持はスティックが完全に静止している間だけ働きます。どちらかの軸に実際の入力があると保持は解除され、入力はそのまま通過します。ゲーム内で何も動かないよう、保持量はゲーム側のデッドゾーンより小さくしてください。</value></data>
+  <data name="Pad_KeepAwake_Card_Desc" xml:space="preserve"><value>一部のゲームはマウスやキーボードの入力を検出すると振動を止め、ボタン表示を切り替えます。スティックをわずかに倒した状態を保持すると、ゲームはこのコントローラーをアクティブなデバイスとして扱い続けます。保持はスティックの両軸が保持レベルを下回っている間だけ働き、ドリフトしたスティックも静止として扱われます。どちらかの軸でレベルを超える入力があると保持は解除され、入力はそのまま通過します。ゲーム内で何も動かないよう、保持量はゲーム側のデッドゾーンより小さくしてください。</value></data>
   <data name="Pad_KeepAwake_Enable" xml:space="preserve"><value>起こしたままにする</value></data>
   <data name="Pad_KeepAwake_Axis_Label" xml:space="preserve"><value>保持する軸</value></data>
   <data name="Pad_KeepAwake_Axis_Tooltip" xml:space="preserve"><value>どの出力軸で偏移を保持するか。カメラではなく移動として読まれる軸を選ぶと、デッドゾーン未満の値は見えないままになります。</value></data>

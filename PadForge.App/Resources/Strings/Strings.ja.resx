@@ -2238,7 +2238,7 @@
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
   <data name="About_NAudioDesc" xml:space="preserve"><value>コントローラー音声のミラーリングと低音トリガーランブルを支えるWASAPIループバックキャプチャ。Mark Heath作。MIT。</value></data>
   <data name="About_Vosk" xml:space="preserve"><value>Vosk</value></data>
-  <data name="About_VoskDesc" xml:space="preserve"><value>音声マクロのフレーズを認識するオフライン音声認識エンジン。Alpha Cephei 製。モデルは初回使用時にダウンロードされます。Apache-2.0。</value></data>
+  <data name="About_VoskDesc" xml:space="preserve"><value>音声マクロのフレーズを認識するオフライン音声認識器。Alpha Cephei 製。モデルは PadForge に同梱されています。Apache-2.0。</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
   <data name="About_BouncyCastleDesc" xml:space="preserve"><value>Remote Link のペアリングと通信を支える暗号処理（X25519、Ed25519、ChaCha20-Poly1305）。Bouncy Castle ライセンス（MIT 系）。</value></data>
   <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>記録中「{0}」: 「上」方向の入力を押してください...</value></data>
@@ -3174,7 +3174,7 @@
   <data name="Voice_Title" xml:space="preserve"><value>音声マクロ</value></data>
   <data name="Voice_ManageButton" xml:space="preserve"><value>音声マクロを管理</value></data>
   <data name="Voice_EnableLabel" xml:space="preserve"><value>音声マクロを有効化</value></data>
-  <data name="Voice_EnableTooltip" xml:space="preserve"><value>リスニングを有効にします。有効な間、登録された各フレーズは発声すると発火するボタンになります。認識モデルは初回使用時に一度だけダウンロードされ、オフラインで動作します。</value></data>
+  <data name="Voice_EnableTooltip" xml:space="preserve"><value>聴取をオンにします。有効な間、登録した各フレーズがボタンとして働き、発話すると発火します。認識モデルは PadForge に同梱されており、完全にオフラインで動作します。</value></data>
   <data name="Voice_ModeLabel" xml:space="preserve"><value>待ち受け</value></data>
   <data name="Voice_ModeTooltip" xml:space="preserve"><value>「常時」はマイクを開いたままにします。「プッシュトゥトーク」は、割り当てた聞き取りマクロを押している間だけ聞き取ります。</value></data>
   <data name="Voice_ModeAlways" xml:space="preserve"><value>常時</value></data>

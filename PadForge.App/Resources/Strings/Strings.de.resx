@@ -2238,7 +2238,7 @@
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
   <data name="About_NAudioDesc" xml:space="preserve"><value>WASAPI-Loopback-Aufnahme für die Controller-Audio-Spiegelung und das Audio-Bass-Trigger-Rumble. Von Mark Heath. MIT.</value></data>
   <data name="About_Vosk" xml:space="preserve"><value>Vosk</value></data>
-  <data name="About_VoskDesc" xml:space="preserve"><value>Offline-Spracherkennung, die Sprachmakro-Phrasen erkennt. Von Alpha Cephei. Das Modell wird bei der ersten Verwendung heruntergeladen. Apache-2.0.</value></data>
+  <data name="About_VoskDesc" xml:space="preserve"><value>Offline-Spracherkennung für Sprachmakro-Phrasen. Von Alpha Cephei. Das Modell ist in PadForge enthalten. Apache-2.0.</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
   <data name="About_BouncyCastleDesc" xml:space="preserve"><value>Kryptografie für die Remote-Link-Kopplung und -Übertragung (X25519, Ed25519, ChaCha20-Poly1305). Bouncy-Castle-Lizenz, eine MIT-ähnliche Lizenz.</value></data>
   <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>Aufnahme für „{0}": Drücken Sie die Auf-Eingabe...</value></data>
@@ -3174,7 +3174,7 @@ Du kannst es später in den Einstellungen erneut versuchen.</value></data>
   <data name="Voice_Title" xml:space="preserve"><value>Sprachmakros</value></data>
   <data name="Voice_ManageButton" xml:space="preserve"><value>Sprachmakros verwalten</value></data>
   <data name="Voice_EnableLabel" xml:space="preserve"><value>Sprachmakros aktivieren</value></data>
-  <data name="Voice_EnableTooltip" xml:space="preserve"><value>Schaltet das Zuhören ein. Solange aktiviert, ist jede registrierte Phrase eine Taste, die beim Aussprechen auslöst. Das Erkennungsmodell wird einmalig beim ersten Gebrauch heruntergeladen und arbeitet offline.</value></data>
+  <data name="Voice_EnableTooltip" xml:space="preserve"><value>Schaltet das Zuhören ein. Jede registrierte Phrase wirkt dann wie eine Taste, die beim Sprechen auslöst. Das Erkennungsmodell ist in PadForge enthalten und arbeitet vollständig offline.</value></data>
   <data name="Voice_ModeLabel" xml:space="preserve"><value>Zuhören</value></data>
   <data name="Voice_ModeTooltip" xml:space="preserve"><value>"Immer" hält das Mikrofon offen. "Push-to-Talk" hört nur zu, solange ein zugewiesenes Zuhören-Makro gehalten wird.</value></data>
   <data name="Voice_ModeAlways" xml:space="preserve"><value>Immer</value></data>

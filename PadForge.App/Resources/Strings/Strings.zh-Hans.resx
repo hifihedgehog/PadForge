@@ -2238,7 +2238,7 @@
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
   <data name="About_NAudioDesc" xml:space="preserve"><value>用于手柄音频镜像和低音扳机震动的 WASAPI 环回捕获。作者 Mark Heath。MIT。</value></data>
   <data name="About_Vosk" xml:space="preserve"><value>Vosk</value></data>
-  <data name="About_VoskDesc" xml:space="preserve"><value>识别语音宏短语的离线语音识别引擎。由 Alpha Cephei 开发。模型在首次使用时下载。Apache-2.0。</value></data>
+  <data name="About_VoskDesc" xml:space="preserve"><value>用于识别语音宏短语的离线语音识别器。由 Alpha Cephei 制作。模型已内置于 PadForge。Apache-2.0。</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
   <data name="About_BouncyCastleDesc" xml:space="preserve"><value>用于 Remote Link 配对和传输的加密（X25519、Ed25519、ChaCha20-Poly1305）。Bouncy Castle 许可证（MIT 类）。</value></data>
   <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>录制中"{0}"：请按下"向上"方向的输入...</value></data>
@@ -3174,7 +3174,7 @@
   <data name="Voice_Title" xml:space="preserve"><value>语音宏</value></data>
   <data name="Voice_ManageButton" xml:space="preserve"><value>管理语音宏</value></data>
   <data name="Voice_EnableLabel" xml:space="preserve"><value>启用语音宏</value></data>
-  <data name="Voice_EnableTooltip" xml:space="preserve"><value>开启监听。启用后，每个已注册的短语都是一个说出即触发的按钮。识别模型在首次使用时下载一次，离线工作。</value></data>
+  <data name="Voice_EnableTooltip" xml:space="preserve"><value>开启监听。启用后，每个已注册的短语都相当于一个按钮，说出时即触发。识别模型已内置于 PadForge，完全离线工作。</value></data>
   <data name="Voice_ModeLabel" xml:space="preserve"><value>收听</value></data>
   <data name="Voice_ModeTooltip" xml:space="preserve"><value>"始终"保持麦克风打开。"按键说话"仅在按住绑定的语音收听宏时收听。</value></data>
   <data name="Voice_ModeAlways" xml:space="preserve"><value>始终</value></data>

@@ -174,21 +174,6 @@
             location.reload();
         });
 
-        // Lightbar strip (#296): a slim glow across the top edge, driven by
-        // the slot's LED color. Hidden until the first led message arrives so
-        // layouts with no lightbar identity show nothing.
-        ledStrip = document.createElement("div");
-        ledStrip.style.cssText = "position:fixed;top:0;left:0;right:0;height:6px;z-index:40;" +
-            "display:none;transition:background 0.15s;pointer-events:none;" +
-            "box-shadow:0 0 14px 2px rgba(0,0,0,0)";
-        document.body.appendChild(ledStrip);
-
-        // Player pips: little dots by the status bar, Xbox-ring style.
-        pipsEl = document.createElement("div");
-        pipsEl.style.cssText = "position:fixed;top:10px;right:10px;z-index:40;display:none;" +
-            "gap:5px;pointer-events:none";
-        document.body.appendChild(pipsEl);
-
         setupMotionButton();
         fetchLayoutAndBuild();
     });
@@ -289,27 +274,94 @@
         }
     }
 
-    var ledStrip = null, pipsEl = null;
-    function setLedColor(r, g, b) {
-        if (!ledStrip) return;
-        var c = "rgb(" + r + "," + g + "," + b + ")";
-        ledStrip.style.display = "block";
-        ledStrip.style.background = c;
-        ledStrip.style.boxShadow = "0 0 14px 2px " + c;
-    }
-    function setPlayerPips(index) {
-        if (!pipsEl) return;
-        pipsEl.style.display = "flex";
-        var html = "";
-        for (var i = 1; i <= 4; i++) {
-            var on = i === index;
-            html += "<div style='width:8px;height:8px;border-radius:50%;" +
-                "background:" + (on ? "#7CFC00" : "#333") + ";" +
-                (on ? "box-shadow:0 0 6px #7CFC00;" : "") + "'></div>";
+    // Lighting lives ON THE CONTROLLER, on the controllers that have it.
+    //
+    // This used to be a six-pixel strip across the top of the PAGE plus four
+    // dots in the corner, drawn for every layout: an Xbox 360 and a Switch Pro
+    // both got a lightbar and player pips they have no hardware for. The
+    // server now sends geometry only for the pads that own the feature, using
+    // the Lighting tab's own rule (a bar for the DualSense family and the
+    // DualShock 4, indicator LEDs for the DualSense family alone) and the same
+    // mask art the tab's preview draws. A layout with no lighting sends none
+    // and nothing is created here, so nothing can appear.
+    var ledBars = [], pipEls = [], pipOnColor = "#7CFC00";
+
+    function buildLighting(layout, container) {
+        ledBars = []; pipEls = [];
+        var pct = function (v, base) { return (v / base * 100) + "%"; };
+
+        var bars = layout.lightbar || [];
+        for (var i = 0; i < bars.length; i++) {
+            var b = bars[i];
+            var el = document.createElement("div");
+            // The mask carries the bar's shape, so the element is a plain
+            // rectangle of colour that the mask cuts to the real outline.
+            var url = "url('/img/" + b.image + "')";
+            el.style.cssText =
+                "position:absolute;pointer-events:none;z-index:3;opacity:0;" +
+                "transition:background-color 0.15s,opacity 0.15s;" +
+                "left:" + pct(b.x, layout.baseWidth) + ";top:" + pct(b.y, layout.baseHeight) + ";" +
+                "width:" + pct(b.w, layout.baseWidth) + ";height:" + pct(b.h, layout.baseHeight) + ";" +
+                "-webkit-mask-image:" + url + ";mask-image:" + url + ";" +
+                "-webkit-mask-size:100% 100%;mask-size:100% 100%;" +
+                "-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat";
+            container.appendChild(el);
+            ledBars.push(el);
         }
-        if (index > 4) html = "<div style='color:#7CFC00;font:600 12px sans-serif'>P" + index + "</div>";
-        pipsEl.innerHTML = html;
-        pipsEl.style.gap = "5px";
+
+        var ind = layout.indicatorLeds;
+        if (ind) {
+            // Five LEDs in the DualSense's row, centred under the touchpad.
+            // Spacing is in base units so it scales with the art like
+            // everything else.
+            var count = 5, gap = 16, dot = 10;
+            var total = count * dot + (count - 1) * gap;
+            for (var k = 0; k < count; k++) {
+                var d = document.createElement("div");
+                d.style.cssText =
+                    "position:absolute;pointer-events:none;z-index:4;border-radius:50%;" +
+                    "transition:background-color 0.15s,box-shadow 0.15s;background:#2a2a2a;" +
+                    "left:" + pct(ind.cx - total / 2 + k * (dot + gap), layout.baseWidth) + ";" +
+                    "top:" + pct(ind.y, layout.baseHeight) + ";" +
+                    "width:" + pct(dot, layout.baseWidth) + ";height:" + pct(dot, layout.baseHeight);
+                container.appendChild(d);
+                pipEls.push(d);
+            }
+        }
+    }
+
+    function setLedColor(r, g, b) {
+        if (!ledBars.length) return;
+        var c = "rgb(" + r + "," + g + "," + b + ")";
+        var dark = (r + g + b) < 24;
+        for (var i = 0; i < ledBars.length; i++) {
+            ledBars[i].style.backgroundColor = c;
+            ledBars[i].style.opacity = dark ? "0" : "1";
+        }
+        pipOnColor = c;
+        refreshPips();
+    }
+
+    // The DualSense lights a SYMMETRIC pattern rather than one dot per
+    // player, which is what the pad itself does: one centre LED for player 1,
+    // the outer pair for player 2, and so on outward.
+    var PIP_PATTERNS = [
+        [0, 0, 1, 0, 0],
+        [0, 1, 0, 1, 0],
+        [1, 0, 1, 0, 1],
+        [1, 1, 0, 1, 1],
+        [1, 1, 1, 1, 1]
+    ];
+    var pipIndex = 0;
+    function setPlayerPips(index) { pipIndex = index | 0; refreshPips(); }
+    function refreshPips() {
+        if (!pipEls.length) return;
+        var pat = PIP_PATTERNS[Math.min(Math.max(pipIndex, 1), 5) - 1];
+        for (var i = 0; i < pipEls.length; i++) {
+            var on = pipIndex > 0 && pat[i];
+            pipEls[i].style.background = on ? pipOnColor : "#2a2a2a";
+            pipEls[i].style.boxShadow = on ? "0 0 6px " + pipOnColor : "none";
+        }
     }
 
     function fetchLayoutAndBuild() {
@@ -397,6 +449,10 @@
             container.appendChild(img);
             overlayImages[ov.target] = img;
         }
+
+        // Lighting goes on last so the bar and the indicator row sit above
+        // the pad art, the way they do on the hardware.
+        buildLighting(layout, container);
     }
 
     // ── Responsive scaling ──

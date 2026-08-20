@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -865,6 +865,54 @@ namespace PadForge.Services
         //  2D model image cache + layout API
         // ─────────────────────────────────────────────
 
+        /// <summary>
+        /// Where a layout's lightbar sits on its own art, and whether it
+        /// carries player indicator LEDs.
+        ///
+        /// <para>The rule is the Lighting tab's, not a new one: a lightbar
+        /// belongs to the DualSense family and the DualShock 4, and the
+        /// indicator LEDs to the DualSense family alone (PadPage's
+        /// hasLightbar / hasIndicatorLeds, "DS4 has neither"). Everything
+        /// else shows no lighting at all, which is why this table has no
+        /// entry for the Xbox, Switch or Steam layouts.</para>
+        ///
+        /// <para>Geometry is the same the Lighting tab's preview draws, in
+        /// the same base-coordinate space the overlays use, with the same
+        /// mask art. The Edge entry is the DualSense's shifted by 175,
+        /// which is the exact offset all 24 of its shared overlays carry:
+        /// its canvas is 350 wider and the pad sits centered in it.</para>
+        /// </summary>
+        private sealed class LightingDef
+        {
+            public (string Image, double X, double Y, double W, double H)[] Lightbar;
+            public bool IndicatorLeds;
+            public double PipCenterX, PipY;
+        }
+
+        private static readonly Dictionary<string, LightingDef> LightingDefs =
+            new(StringComparer.OrdinalIgnoreCase)
+        {
+            ["ds4"] = new LightingDef
+            {
+                Lightbar = new[]
+                {
+                    ("2DModels/DS4/DS4_Lightbar_Front.png", 510d, 228d, 446d, 5d),
+                    ("2DModels/DS4/DS4_Lightbar_Rear.png", 495d, 111d, 474d, 28d),
+                },
+                IndicatorLeds = false,
+            },
+            ["dualsense"] = new LightingDef
+            {
+                Lightbar = new[] { ("2DModels/DualSense/DualSense_Lightbar.png", 411d, 189d, 647d, 293d) },
+                IndicatorLeds = true, PipCenterX = 736.5, PipY = 505,
+            },
+            ["dualsenseedge"] = new LightingDef
+            {
+                Lightbar = new[] { ("2DModels/DUALSENSEEDGE/DualSense_Lightbar.png", 586d, 189d, 647d, 293d) },
+                IndicatorLeds = true, PipCenterX = 911.5, PipY = 505,
+            },
+        };
+
         private static Dictionary<string, byte[]> LoadImageCache()
         {
             var cache = new Dictionary<string, byte[]>(StringComparer.OrdinalIgnoreCase);
@@ -890,6 +938,11 @@ namespace PadForge.Services
                     if (!string.IsNullOrEmpty(ov.ImageFile))
                         Load($"2DModels/{folder}/{ov.ImageFile}");
             }
+
+            // Lightbar masks are not overlays, so LoadAll never sees them.
+            foreach (var lit in LightingDefs.Values)
+                foreach (var bar in lit.Lightbar)
+                    Load(bar.Image);
 
             foreach (var def in LayoutDefs)
             {
@@ -1167,7 +1220,32 @@ namespace PadForge.Services
                     if (i > 0) sb.Append(',');
                     sb.Append('"').Append(def.Finishes[i]).Append('"');
                 }
-                sb.Append("]}");
+                sb.Append(']');
+
+                // Lighting, for the layouts whose hardware actually has it.
+                // Absent for every other layout, which is what stops the
+                // client drawing a bar on a pad that owns none.
+                if (LightingDefs.TryGetValue(def.TypeKey, out var lit))
+                {
+                    sb.Append(",\"lightbar\":[");
+                    for (int i = 0; i < lit.Lightbar.Length; i++)
+                    {
+                        var bar = lit.Lightbar[i];
+                        if (i > 0) sb.Append(',');
+                        sb.Append("{\"image\":\"").Append(bar.Image).Append('"')
+                          .Append(",\"x\":").Append(Num(bar.X))
+                          .Append(",\"y\":").Append(Num(bar.Y))
+                          .Append(",\"w\":").Append(Num(bar.W))
+                          .Append(",\"h\":").Append(Num(bar.H)).Append('}');
+                    }
+                    sb.Append(']');
+                    if (lit.IndicatorLeds)
+                    {
+                        sb.Append(",\"indicatorLeds\":{\"cx\":").Append(Num(lit.PipCenterX))
+                          .Append(",\"y\":").Append(Num(lit.PipY)).Append('}');
+                    }
+                }
+                sb.Append('}');
 
                 var json = sb.ToString();
                 var bytes = Encoding.UTF8.GetBytes(json);

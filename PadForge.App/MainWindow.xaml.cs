@@ -464,15 +464,16 @@ namespace PadForge
                 _viewModel.RefreshNavControllerItems();
             });
 
-            // Wire driver uninstall guards — lambda queries the ViewModel's Pads for active slot types.
+            // Wire driver uninstall guards. Both read the PERSISTED slot
+            // topology (SlotCreated plus the per-type order lists), the same
+            // source the sidebar rail builds from, rather than walking the
+            // dashboard's pad view models for an OutputType. A guard that
+            // depends on view-model population can read "no MIDI slots" while
+            // the rail is showing one.
             _viewModel.Settings.HasAnyMidiSlots = () =>
-            {
-                for (int i = 0; i < InputManager.MaxPads; i++)
-                    if (SettingsManager.SlotCreated[i] &&
-                        _viewModel.Pads[i].OutputType == VirtualControllerType.Midi)
-                        return true;
-                return false;
-            };
+                SettingsManager.HasCreatedSlotOfType(VirtualControllerType.Midi);
+            _viewModel.Settings.HasAnyVrSlots = () =>
+                SettingsManager.HasCreatedSlotOfType(VirtualControllerType.Vr);
             _viewModel.Settings.HasAnyHidHideDevices = () =>
             {
                 var devices = SettingsManager.UserDevices;

@@ -110,6 +110,33 @@ namespace PadForge.Common.Input
             return count < MaxVrSlots;
         }
 
+        /// <summary>
+        /// True when at least one created slot is of <paramref name="type"/>.
+        ///
+        /// <para>The uninstall gates read this. A driver that a virtual
+        /// controller depends on must not be removable while that controller
+        /// exists: Windows MIDI Services under a MIDI slot, SteamVR under a VR
+        /// slot. Reads the persisted slot topology rather than engine state, so
+        /// the gate holds with the engine stopped, which is exactly when
+        /// someone is most likely to be tidying up drivers.</para>
+        /// </summary>
+        public static bool HasCreatedSlotOfType(Engine.VirtualControllerType type)
+        {
+            try
+            {
+                var created = SlotCreated;
+                if (created == null) return false;
+                lock (SlotOrders.OrderSync)
+                {
+                    foreach (int padIndex in SlotOrders.GetOrderFor(type))
+                        if (padIndex >= 0 && padIndex < created.Length && created[padIndex])
+                            return true;
+                }
+            }
+            catch { }
+            return false;
+        }
+
         /// <summary>Whether each slot has been explicitly created. Persisted to settings.</summary>
         public static bool[] SlotCreated { get; set; } = new bool[InputManager.MaxPads];
 
@@ -162,7 +189,7 @@ namespace PadForge.Common.Input
             /// walking GetOrderFor directly stay unsynchronized, as all
             /// mutations also happen on the UI thread. Leaf lock:
             /// nothing inside it acquires another lock.</summary>
-            private static readonly object OrderSync = new object();
+            internal static readonly object OrderSync = new object();
 
             /// <summary>Returns the 1-based global slot number for
             /// <paramref name="padIndex"/>, walking type-group order

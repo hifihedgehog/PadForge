@@ -2232,7 +2232,7 @@
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
   <data name="About_NAudioDesc" xml:space="preserve"><value>Captura WASAPI em loopback para o espelhamento de áudio do controle e a vibração dos gatilhos por graves. Por Mark Heath. MIT.</value></data>
   <data name="About_Vosk" xml:space="preserve"><value>Vosk</value></data>
-  <data name="About_VoskDesc" xml:space="preserve"><value>Reconhecedor de voz offline que ouve as frases das macros de voz. Por Alpha Cephei. O modelo é baixado no primeiro uso. Apache-2.0.</value></data>
+  <data name="About_VoskDesc" xml:space="preserve"><value>Reconhecimento de voz offline para as frases das macros de voz. Da Alpha Cephei. O modelo vem dentro do PadForge. Apache-2.0.</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
   <data name="About_BouncyCastleDesc" xml:space="preserve"><value>Criptografia para o emparelhamento e o transporte do Remote Link (X25519, Ed25519, ChaCha20-Poly1305). Licença Bouncy Castle, de estilo MIT.</value></data>
   <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>Gravando "{0}": pressione a entrada da direção Cima...</value></data>
@@ -3168,7 +3168,7 @@ Você pode tentar novamente mais tarde em Configurações.</value></data>
   <data name="Voice_Title" xml:space="preserve"><value>Macros de Voz</value></data>
   <data name="Voice_ManageButton" xml:space="preserve"><value>Gerenciar Macros de Voz</value></data>
   <data name="Voice_EnableLabel" xml:space="preserve"><value>Ativar Macros de Voz</value></data>
-  <data name="Voice_EnableTooltip" xml:space="preserve"><value>Ativa a escuta. Enquanto ativado, cada frase registrada é um botão que dispara quando você a diz. O modelo de reconhecimento é baixado uma vez no primeiro uso e funciona offline.</value></data>
+  <data name="Voice_EnableTooltip" xml:space="preserve"><value>Liga a escuta. Com ela ativa, cada frase registrada funciona como um botão que dispara ao ser dita. O modelo de reconhecimento vem dentro do PadForge e funciona totalmente offline.</value></data>
   <data name="Voice_ModeLabel" xml:space="preserve"><value>Escuta</value></data>
   <data name="Voice_ModeTooltip" xml:space="preserve"><value>"Sempre" mantém o microfone aberto. "Apertar para Falar" escuta apenas enquanto um macro de escuta vinculado é mantido.</value></data>
   <data name="Voice_ModeAlways" xml:space="preserve"><value>Sempre</value></data>

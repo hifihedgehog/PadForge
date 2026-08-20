@@ -476,6 +476,21 @@ namespace PadForge.Views
                             // are DualSense-family only. DS4 has neither.
                             hasIndicatorLeds = isDualSense || isDualSenseEdge;
                         }
+                        else if (ud.Device is PadForge.Engine.WebControllerDevice web)
+                        {
+                            // A phone drawing a DualShock 4 or a DualSense gets
+                            // the same Lighting tab the physical pad gets. The
+                            // colour already reaches it (ResolveWebLightbar
+                            // reads this very config), so without the tab the
+                            // config existed and could not be edited.
+                            //
+                            // Asked of the device rather than derived from a
+                            // vendor id, because the web device honestly
+                            // reports its own: see WebControllerDevice.HasLightbar.
+                            hasLightbar = web.HasLightbar;
+                            lightbarIsDs4 = web.LightbarIsDs4;
+                            hasIndicatorLeds = web.HasIndicatorLeds;
+                        }
                         else if (PadForge.Common.Input.WiiSpeakerService.DeviceHasSpeaker(ud))
                         {
                             // Wii Remote built-in speaker (#146): macro sounds

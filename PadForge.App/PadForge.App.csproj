@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -111,6 +111,11 @@
     <Resource Include="2DModels\**\*.png" />
     <!-- Web controller frontend assets (embedded, served by WebControllerServer) -->
     <EmbeddedResource Include="WebAssets\**\*" />
+    <!-- Offline voice recognition (#317). The model ships INSIDE the exe.
+         It used to download on first use, which made voice macros unusable
+         on a machine with no internet and wrote 68 MB into LocalAppData,
+         neither of which was ever asked for. ~39 MB compressed. -->
+    <EmbeddedResource Include="VoiceModels\*.zip" />
   </ItemGroup>
 
   <ItemGroup>

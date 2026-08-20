@@ -1687,6 +1687,46 @@ namespace PadForge.Common.Input
                         Engine.SdlDiagLog.WriteLine("DISPATCH re-arm (device returned) guid="
                             + ud.InstanceGuid.ToString("N").Substring(0, 8));
                     }
+                    // Web controller lightbar: a phone drawing a DualShock 4
+                    // or a DualSense renders the same bar the hardware has, so
+                    // it gets the same lighting engine rather than a still
+                    // colour. Same shape as the Move lane below it, and for
+                    // the same reason: a device whose bar is not written with
+                    // a HID effect packet still deserves the shared colour
+                    // core (static / breathing / palette / audio / battery /
+                    // input-reactive), delivered through its own writer.
+                    //
+                    // ApplyGuideLeds also sets this device's colour, but that
+                    // is a 30-second lane: fine for a static pick, unable to
+                    // animate. Its value is simply overwritten here on the
+                    // next dispatch, and PlayerNumber is left to it because
+                    // the identity floor is its job.
+                    if (ud.Device is PadForge.Engine.WebControllerDevice webPad && webPad.HasLightbar)
+                    {
+                        if (owners.TryGetValue(ud.InstanceGuid, out int webOwner) && webOwner != _padIndex)
+                            continue;
+                        DeviceSlotConfig webCfg = null;
+                        if (perDeviceCfgs != null
+                            && perDeviceCfgs.TryGetValue(ud.InstanceGuid, out var resolvedWeb))
+                            webCfg = resolvedWeb;
+                        webCfg ??= cfg;
+                        if (webCfg != null && webCfg.LightbarMode != LightbarMode.PlayerNumber)
+                        {
+                            float webPeak = Math.Clamp(
+                                rawAudioPeak * (float)webCfg.AudioLightbarSensitivity, 0f, 1f);
+                            var webState = _deviceStates.TryGetValue(ud.InstanceGuid, out var wds) ? wds : null;
+                            uint webPulse = webState?.PulseColor ?? 0;
+                            float webPulseIntensity = ComputePulseIntensity(nowMs, webCfg);
+                            // No battery to read from a browser, so Battery
+                            // mode holds its full-charge end rather than
+                            // pretending to a level it cannot know.
+                            var webColor = Ds5EffectSynthesizer.ComputeLightbarColorPublic(
+                                webCfg, webPeak, nowMs, _randomColor, webPulse, webPulseIntensity, 100);
+                            webPad.SetLed(webColor.r, webColor.g, webColor.b);
+                        }
+                        continue;
+                    }
+
                     // PS Move sphere (#277): the sphere is the Move's lightbar.
                     // Same per-device lighting config, same shared color core
                     // as the DS4/DS5 paths (static / breathing / palette /

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -15,19 +15,29 @@ namespace PadForge.Services
     /// non-phrase audio decodes as UNKNOWN instead of force-matching the
     /// nearest phrase.
     ///
-    /// The model (~40 MB, en-us small) lives under LocalAppData, never
-    /// beside the exe, downloaded on first use and cached across sessions.
-    /// Until it is ready, sessions fall back to SAPI so the feature keeps
-    /// working during the one-time download.
+    /// The model (en-us small) ships INSIDE the executable and is unpacked
+    /// to a cache directory on first use. It is never downloaded: a download
+    /// makes voice macros unusable on a machine with no internet, which is
+    /// not a supported outcome for a feature that advertises offline
+    /// recognition. Until the unpack finishes, sessions fall back to SAPI so
+    /// the feature keeps working through the one-time cost.
     /// </summary>
     internal static class VoskModelStore
     {
         private const string ModelName = "vosk-model-small-en-us-0.15";
-        private const string ModelUrl = "https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip";
+        private const string ModelResource = "PadForge.VoiceModels.vosk-model-small-en-us-0.15.zip";
 
+        /// <summary>Where the embedded model is unpacked.
+        ///
+        /// <para>Vosk loads a model from a DIRECTORY, so the bytes have to
+        /// reach the disk somewhere. Not beside the exe, where only
+        /// PadForge.xml, crash.log and the opt-in diagnostics log belong, and
+        /// 68 MB of model is emphatically not one of those. A cache under
+        /// TEMP is the same place the driver installers stage their payloads,
+        /// and it is re-creatable: delete it and the next launch unpacks it
+        /// again from the copy inside the exe.</para></summary>
         private static readonly string Root = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "PadForge", "voice-models");
+            Path.GetTempPath(), "PadForge", "voice-models");
 
         private static Vosk.Model _model;
         private static int _state; // 0 absent, 1 downloading, 2 ready, 3 failed
@@ -39,7 +49,10 @@ namespace PadForge.Services
         private static long _retryAtTicks;
 
         public static bool IsReady => Volatile.Read(ref _state) == 2;
-        public static bool IsDownloading => Volatile.Read(ref _state) == 1;
+        /// <summary>True while the embedded model is being unpacked. Kept
+        /// under the old name so callers reading "the model is not ready
+        /// yet, stay on SAPI" need no change; nothing is downloaded.</summary>
+        public static bool IsUnpacking => Volatile.Read(ref _state) == 1;
 
         /// <summary>The loaded model, or null. Vosk models are shareable
         /// across recognizers; recognizer instances are not.</summary>
@@ -79,61 +92,54 @@ namespace PadForge.Services
                     }
                 }
                 _state = 1;
-                new Thread(Download) { IsBackground = true, Name = "VoskModelDownload" }.Start();
+                new Thread(Unpack) { IsBackground = true, Name = "VoskModelUnpack" }.Start();
             }
         }
 
-        private static void Download()
+        private static void Unpack()
         {
             try
             {
-                Engine.SdlDiagLog.WriteLine("VOICE vosk model downloading (~40 MB, one time) to " + Root);
+                Engine.SdlDiagLog.WriteLine("VOICE vosk model unpacking (one time) to " + Root);
                 Directory.CreateDirectory(Root);
-                string zip = Path.Combine(Root, ModelName + ".zip.partial");
-                using (var http = new System.Net.Http.HttpClient())
+
+                var asm = System.Reflection.Assembly.GetExecutingAssembly();
+                using (var src = asm.GetManifestResourceStream(ModelResource))
                 {
-                    http.Timeout = TimeSpan.FromMinutes(10);
-                    using var resp = http.GetAsync(ModelUrl,
-                        System.Net.Http.HttpCompletionOption.ResponseHeadersRead).GetAwaiter().GetResult();
-                    resp.EnsureSuccessStatusCode();
-                    long total = resp.Content.Headers.ContentLength ?? -1;
-                    using var src = resp.Content.ReadAsStream();
-                    using var dst = File.Create(zip);
-                    var buf = new byte[81920];
-                    long done = 0, nextLog = 0;
-                    int n;
-                    while ((n = src.Read(buf, 0, buf.Length)) > 0)
+                    if (src == null)
+                        throw new FileNotFoundException("embedded model missing: " + ModelResource);
+
+                    string extractTo = Path.Combine(Root, ModelName + ".extract");
+                    try { Directory.Delete(extractTo, true); } catch { }
+                    using (var zip = new System.IO.Compression.ZipArchive(
+                        src, System.IO.Compression.ZipArchiveMode.Read))
                     {
-                        dst.Write(buf, 0, n);
-                        done += n;
-                        if (total > 0 && done >= nextLog)
-                        {
-                            Engine.SdlDiagLog.WriteLine($"VOICE vosk model download {done * 100 / total}%");
-                            nextLog = done + total / 5;
-                        }
+                        System.IO.Compression.ZipFileExtensions.ExtractToDirectory(zip, extractTo);
                     }
+                    // The archive carries a single top-level folder named like
+                    // the model, the same shape upstream's download had.
+                    string inner = Directory.GetDirectories(extractTo).FirstOrDefault() ?? extractTo;
+                    string final = Path.Combine(Root, ModelName);
+                    try { Directory.Delete(final, true); } catch { }
+                    Directory.Move(inner, final);
+                    try { Directory.Delete(extractTo, true); } catch { }
+
+                    Vosk.Vosk.SetLogLevel(-1);
+                    _model = new Vosk.Model(final);
                 }
-                string extractTo = Path.Combine(Root, ModelName + ".extract");
-                try { Directory.Delete(extractTo, true); } catch { }
-                System.IO.Compression.ZipFile.ExtractToDirectory(zip, extractTo);
-                // The zip carries a single top-level folder named like the model.
-                string inner = Directory.GetDirectories(extractTo).FirstOrDefault() ?? extractTo;
-                string final = Path.Combine(Root, ModelName);
-                try { Directory.Delete(final, true); } catch { }
-                Directory.Move(inner, final);
-                try { Directory.Delete(extractTo, true); } catch { }
-                try { File.Delete(zip); } catch { }
-                Vosk.Vosk.SetLogLevel(-1);
-                _model = new Vosk.Model(final);
                 Volatile.Write(ref _state, 2);
                 Engine.SdlDiagLog.WriteLine("VOICE vosk model READY; sessions will rebuild onto it");
             }
             catch (Exception ex)
             {
-                try { File.Delete(Path.Combine(Root, ModelName + ".zip.partial")); } catch { }
+                // A failed unpack is a disk problem (no space, a locked cache
+                // from another instance), not a network one, so the same
+                // re-arm applies: SAPI keeps the feature alive and the next
+                // EnsureStarted past the delay tries again.
                 Interlocked.Exchange(ref _retryAtTicks, Environment.TickCount64 + 5 * 60_000);
                 Volatile.Write(ref _state, 3);
-                Engine.SdlDiagLog.WriteLine("VOICE vosk model download FAILED: " + ex.Message + " (SAPI fallback stays; retry in 5 min)");
+                Engine.SdlDiagLog.WriteLine("VOICE vosk model unpack FAILED: " + ex.Message
+                    + " (SAPI fallback stays; retry in 5 min)");
             }
         }
     }

@@ -2238,7 +2238,7 @@
   <data name="About_NAudio" xml:space="preserve"><value>NAudio</value></data>
   <data name="About_NAudioDesc" xml:space="preserve"><value>Capture WASAPI en boucle pour la recopie audio de la manette et la vibration des gâchettes par les basses. Par Mark Heath. MIT.</value></data>
   <data name="About_Vosk" xml:space="preserve"><value>Vosk</value></data>
-  <data name="About_VoskDesc" xml:space="preserve"><value>Reconnaissance vocale hors ligne qui écoute les phrases des macros vocales. Par Alpha Cephei. Le modèle se télécharge à la première utilisation. Apache-2.0.</value></data>
+  <data name="About_VoskDesc" xml:space="preserve"><value>Reconnaissance vocale hors ligne pour les phrases de macros vocales. Par Alpha Cephei. Le modèle est inclus dans PadForge. Apache-2.0.</value></data>
   <data name="About_BouncyCastle" xml:space="preserve"><value>Bouncy Castle</value></data>
   <data name="About_BouncyCastleDesc" xml:space="preserve"><value>Cryptographie pour l'appairage et le transport de Remote Link (X25519, Ed25519, ChaCha20-Poly1305). Licence Bouncy Castle, de type MIT.</value></data>
   <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>Enregistrement « {0} » : appuyez sur l'entrée de la direction Haut...</value></data>
@@ -3174,7 +3174,7 @@ Vous pouvez réessayer plus tard depuis les Paramètres.</value></data>
   <data name="Voice_Title" xml:space="preserve"><value>Macros vocales</value></data>
   <data name="Voice_ManageButton" xml:space="preserve"><value>Gérer les macros vocales</value></data>
   <data name="Voice_EnableLabel" xml:space="preserve"><value>Activer les macros vocales</value></data>
-  <data name="Voice_EnableTooltip" xml:space="preserve"><value>Active l’écoute. Tant que c’est activé, chaque phrase enregistrée est un bouton qui se déclenche quand vous la prononcez. Le modèle de reconnaissance se télécharge une fois à la première utilisation et fonctionne hors ligne.</value></data>
+  <data name="Voice_EnableTooltip" xml:space="preserve"><value>Active l'écoute. Chaque phrase enregistrée devient alors un bouton qui se déclenche quand vous la prononcez. Le modèle de reconnaissance est inclus dans PadForge et fonctionne entièrement hors ligne.</value></data>
   <data name="Voice_ModeLabel" xml:space="preserve"><value>Écoute</value></data>
   <data name="Voice_ModeTooltip" xml:space="preserve"><value>« Toujours » garde le micro ouvert. « Appuyer pour parler » n'écoute que pendant qu'une macro d'écoute assignée est maintenue.</value></data>
   <data name="Voice_ModeAlways" xml:space="preserve"><value>Toujours</value></data>

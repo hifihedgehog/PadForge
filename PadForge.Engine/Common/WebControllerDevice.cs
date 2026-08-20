@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -289,6 +289,7 @@ namespace PadForge.Engine
             SdlInstanceId = SyntheticInstanceId.From(clientId);
             HasTouchpad = isTouchpad;
             _isTouchpadDevice = isTouchpad;
+            LayoutKey = layoutKey ?? "xbox360";
 
             // Center stick axes at midpoint, triggers at 0 (full off).
             var state = new CustomInputState();
@@ -301,6 +302,40 @@ namespace PadForge.Engine
         }
 
         private readonly bool _isTouchpadDevice;
+
+        /// <summary>The layout the browser is drawing, e.g. "dualsense".</summary>
+        public string LayoutKey { get; }
+
+        /// <summary>
+        /// Whether this client is drawing a pad that HAS a lightbar, and
+        /// whether that pad also carries the DualSense's indicator LEDs.
+        ///
+        /// <para>The device does not claim Sony's ids to earn these. It draws
+        /// a picture of a DualShock 4 and it is honest about that: a proxy
+        /// that reports somebody else's hardware id gets treated as that
+        /// hardware by every writer that keys on the id, which for a browser
+        /// on the far end of a socket is not survivable. The Lighting tab asks
+        /// these two questions directly instead.</para>
+        ///
+        /// <para>Same rule the tab applies to physical pads: a bar for the
+        /// DualSense family and the DualShock 4, indicator LEDs for the
+        /// DualSense family alone.</para>
+        /// </summary>
+        public bool HasLightbar =>
+            LayoutKey.Equals("ds4", StringComparison.OrdinalIgnoreCase)
+            || LayoutKey.Equals("dualsense", StringComparison.OrdinalIgnoreCase)
+            || LayoutKey.Equals("dualsenseedge", StringComparison.OrdinalIgnoreCase);
+
+        /// <summary>True when the drawn pad is a DualShock 4, whose bar the
+        /// Lighting tab previews with different art.</summary>
+        public bool LightbarIsDs4 =>
+            LayoutKey.Equals("ds4", StringComparison.OrdinalIgnoreCase);
+
+        /// <summary>Player row plus mic LED. DualSense family only, exactly
+        /// as on hardware: the DualShock 4 has neither.</summary>
+        public bool HasIndicatorLeds =>
+            LayoutKey.Equals("dualsense", StringComparison.OrdinalIgnoreCase)
+            || LayoutKey.Equals("dualsenseedge", StringComparison.OrdinalIgnoreCase);
 
         /// <summary>Updates an axis value. Called from WebSocket receive thread.</summary>
         /// <param name="code">Axis index (0=LX, 1=LY, 2=LT, 3=RX, 4=RY, 5=RT).</param>

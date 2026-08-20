@@ -4111,9 +4111,14 @@ namespace PadForge.Services
                     if (cfg.LightbarMode == ViewModels.LightbarMode.Off)
                         return (0, 0, 0);
                     if (cfg.LightbarMode != ViewModels.LightbarMode.PlayerNumber)
-                        // Static honors the picked color exactly; animated
-                        // modes show their base color on this surface (the
-                        // full animation engine stays with physical pads).
+                        // The base colour, which is the right answer for a
+                        // static pick and a reasonable seed for anything else.
+                        // Animated modes are no longer this lane's job:
+                        // UserEffectsDispatcher runs the same colour core for
+                        // this device that it runs for a physical pad, at
+                        // dispatch rate, and overwrites whatever this 30-second
+                        // lane last set. This still matters for the first paint
+                        // and while the engine is stopped.
                         return (cfg.LightbarRed, cfg.LightbarGreen, cfg.LightbarBlue);
                 }
             }
@@ -4149,9 +4154,9 @@ namespace PadForge.Services
                         // phone renders a lightbar and player pips. Player
                         // number is the slot's displayed number; the bar
                         // follows the device's Lighting config when one is
-                        // set (Static color honored, animated modes fall back
-                        // to their base color on this surface), else the Sony
-                        // player-color convention.
+                        // set, else the Sony player-color convention. Animated
+                        // modes are driven by UserEffectsDispatcher at dispatch
+                        // rate; this lane sets the resting colour.
                         {
                             var wud = FindUserDevice(dev.InstanceGuid);
                             if (wud?.Device is PadForge.Engine.WebControllerDevice web && wud.IsOnline)

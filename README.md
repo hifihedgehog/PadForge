@@ -133,12 +133,12 @@ Full documentation at [padforge.org/docs](https://padforge.org/docs/).
 
 1. Download `PadForge.exe` from the [latest release](https://github.com/hifihedgehog/PadForge/releases/latest).
 2. Run it. PadForge always runs elevated, so Windows shows the UAC prompt at startup. The first launch installs HIDMaestro inside that same elevated session.
-3. Click **Add Controller** on the Dashboard. Pick Xbox, PlayStation, Nintendo, Extended, MIDI, or Keyboard + Mouse.
+3. Click **Add Controller** on the Dashboard. Pick Xbox, PlayStation, Nintendo, Extended, Keyboard + Mouse, MIDI, or VR.
 4. On the new slot, drag a physical device onto it from the sidebar.
 5. Most controllers auto-map on assign. For the rest, click **Map All** to walk every button in one pass, or use the **Mappings** tab to bind one at a time.
 6. Launch your game. The game sees the virtual controller as real hardware.
 
-Most games "just work" after step 5. If a game sees both your physical and virtual controller at once, install HidHide from **Settings → Drivers** to hide the physical one.
+Most games "just work" after step 5. If a game sees both your physical and virtual controller at once, install HidHide from **Settings → HidHide** to hide the physical one.
 
 ---
 
@@ -398,7 +398,7 @@ Comparison reflects each tool's shipping release as of July 2026. Verified again
 | Audio-bass trigger rumble | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Audio-bass body rumble | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | DualSense Adaptive Triggers | ✅ 7 modes + GameCube preset | ❌ | ❌ | ✅ 11 presets | ⚠️ limited | ❌ |
-| DualSense lightbar | ✅ 15 modes inc. Strobe + Battery | ❌ | ❌ | ✅ 6 modes + Player LED + Mic LED | ⚠️ basic, no audio | ⚠️ unverified |
+| DualSense lightbar | ✅ 14 modes inc. Strobe + Battery | ❌ | ❌ | ✅ 6 modes + Player LED + Mic LED | ⚠️ basic, no audio | ⚠️ unverified |
 | Xbox Guide button LED brightness | ✅ Xbox One / Elite / Series + Steam Controller, fixed or battery-following | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Controller speaker audio (DualSense / DualShock 4) | ✅ mirror Windows audio + macro sounds, USB / BT | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Touchpad: joystick / D-pad / mouse + gesture engine | ✅ joystick (anchor-relative), wedge D-pad, per-axis mouse (sensitivity + invert), in-box gestures (4-way / 8-way swipes, taps, longpress, pinch, rotate, two- to five-finger), shape templates (Circle in either direction, Square, Triangle, Z, Checkmark), custom recorded shapes | ❌ | ❌ | ⚠️ touchpad-as-mouse / -as-stick + click, no gesture engine | ⚠️ touchpad-as-mouse + four-direction Touchpad Swipe bindings | ⚠️ joystick / D-pad / mouse / touch menu, no multi-finger or shape recognition |
@@ -657,7 +657,7 @@ PadForge stands on these projects. Please consider supporting them directly.
 | [Nefarius.Utilities.DeviceManagement](https://github.com/nefarius/Nefarius.Utilities.DeviceManagement) | Driver-store install, Bluetooth class filter registration, and USB port cycling for the in-app BthPS3 setup | MIT |
 | [Windows MIDI Services](https://github.com/microsoft/MIDI) | Virtual MIDI device SDK | MIT |
 | [$Q Recognizer](https://depts.washington.edu/acelab/proj/dollar/qdollar.html) | Touchpad shape-template matcher: re-derived C# port of the canonical JS reference by Magrofuoco / Vatavu / Anthony / Wobbrock | BSD 3-Clause |
-| [GestureSign](https://github.com/TransposonY/GestureSign) | Touchpad angular-margin matcher: scoring approach re-derived from GestureSign's PointPatternAnalyzer | BSD 3-Clause |
+| [GestureSign](https://github.com/TransposonY/GestureSign) | Touchpad angular-margin matcher: scoring approach re-derived from GestureSign's PointPatternAnalyzer. Documentation only, no GPL code ships | GPL-2.0 |
 | [Concentus](https://github.com/lostromb/concentus) | Pure C# Opus encoder for DualSense speaker audio over Bluetooth, by Logan Stromberg | BSD 3-Clause |
 | [SAxense](https://apps.sdore.me/SAxense) | DualSense Bluetooth audio research by [egormanga](https://github.com/egormanga/SAxense): the packet transport the controller speaker stream rides on | MPL-2.0 |
 | [dualsense-bt-haptics](https://github.com/awalol/dualsense-bt-haptics) | Bluetooth speaker recipe by awalol: Opus framing and packet layout (HeadsetPlayMusic) | MIT |
@@ -666,7 +666,7 @@ PadForge stands on these projects. Please consider supporting them directly.
 | [DS4AudioStreamer](https://github.com/nefarius/DS4AudioStreamer) | DualShock 4 Bluetooth audio reference by nefarius: report 0x14/0x17 framing, frame counter, and volume-enable layout for PadForge's DS4 speaker stream. PadForge's SBC encoder is an original C# implementation from the Bluetooth A2DP specification (no libsbc code) | MIT |
 | [ds4mac documentation](https://github.com/khallmark/ds4mac) | DualShock 4 audio protocol documentation: SBC parameters, packet layouts, and the finding that DS4 audio is Bluetooth-only | MIT |
 | [Bouncy Castle](https://github.com/bcgit/bc-csharp) | Remote Link pairing and transport cryptography: X25519, Ed25519, ChaCha20-Poly1305 | MIT |
-| [libusb](https://github.com/libusb/libusb) | USB access library the bundled SDL3 fork uses for the Switch 2 Pro wired driver. Ships unmodified as `libusb-1.0.dll` beside the exe | LGPL-2.1-or-later |
+| [libusb](https://github.com/libusb/libusb) | USB access library the bundled SDL3 fork uses for the Switch 2 Pro wired driver. Bundled unmodified as `libusb-1.0.dll` inside the single-file exe | LGPL-2.1-or-later |
 | [nipplejs](https://github.com/yoannmoinet/nipplejs) | Touch joystick widget in the phone Web Controller, by Yoann Moinet | MIT |
 | [SDL_GameControllerDB](https://github.com/mdqinc/SDL_GameControllerDB) | Community gamepad mapping database that PadForge's bundled mapping file extends | zlib |
 | [Zacksly Icon Pack](https://zacksly.itch.io/) | Stick and trigger tab icon artwork PadForge's icon geometry derives from, by Zacksly | CC BY 3.0 |
@@ -718,7 +718,7 @@ This project is licensed under **CC BY-NC-SA 4.0** (Creative Commons Attribution
 - **DualShock 3 Bluetooth research** also drew on [ScpToolkit](https://github.com/nefarius/ScpToolkit), [sixad](https://github.com/RetroPie/sixad), and [transbt](https://github.com/null-dev/transbt) (all GPL) as protocol documentation only. PadForge's pairing and reader code is original C# and contains no GPL code.
 - **OpenXInput** ships only an upstream Microsoft-trademark disclaimer (no OSS license grant). Redistributed as-is under the same terms.
 - **$Q Recognizer** is licensed under the BSD 3-Clause License. Copyright (c) 2018-2019, Nathan Magrofuoco, Jacob O. Wobbrock, Radu-Daniel Vatavu, and Lisa Anthony. The touchpad shape-matcher in PadForge.Engine.Touchpad.ShapeRecognizer is a C# re-derivation of the canonical JavaScript reference at depts.washington.edu/acelab/proj/dollar/qdollar.js.
-- **GestureSign's PointPatternAnalyzer** is licensed under the BSD 3-Clause License. Copyright (c) 2016, TransposonY. The angular-margin scoring in PadForge.Engine.Touchpad.AngularMarginRecognizer is a C# re-derivation of that approach.
+- **GestureSign's PointPatternAnalyzer** is licensed under the GPL-2.0. Copyright (c) 2016, TransposonY. The angular-margin scoring in PadForge.Engine.Touchpad.AngularMarginRecognizer is an original C# re-derivation of that approach and contains no GPL code.
 - **Concentus** is licensed under the BSD 3-Clause License (the Opus license). By Logan Stromberg, with copyrights held by Skype Limited, Xiph.Org Foundation, and other Opus contributors.
 - **DualSense Bluetooth speaker audio** builds on research by egormanga ([SAxense](https://apps.sdore.me/SAxense), MPL-2.0), awalol ([dualsense-bt-haptics](https://github.com/awalol/dualsense-bt-haptics), MIT), and [TechAntohere](https://github.com/TechAntohere). PadForge's implementation is original C#.
 - **DualSenseY-v2** by WujekFoliarz served as the behavioral reference for USB controller audio passthrough. It publishes no license. PadForge's implementation is original C#.
@@ -728,7 +728,7 @@ This project is licensed under **CC BY-NC-SA 4.0** (Creative Commons Attribution
 - **NAudio** is licensed under the MIT License. By Mark Heath and contributors. WASAPI loopback capture for the controller-audio mirror and the audio-bass trigger rumble.
 - **Vosk** is licensed under the Apache License 2.0. By Alpha Cephei Inc. Offline speech recognition for voice macros, shipped as the native libvosk library. The recognition model (Apache-2.0, Alpha Cephei) downloads to LocalAppData on first use.
 - **Bouncy Castle** (bc-csharp) provides the Remote Link pairing and transport cryptography (X25519, Ed25519, ChaCha20-Poly1305). Licensed under the Bouncy Castle Licence, an adaptation of the MIT License.
-- **libusb** is licensed under the LGPL-2.1-or-later. PadForge ships the unmodified `libusb-1.0.dll` beside the exe as a separately replaceable dynamic library. Source: [github.com/libusb/libusb](https://github.com/libusb/libusb). Full license text in [LICENSE](LICENSE).
+- **libusb** is licensed under the LGPL-2.1-or-later. PadForge bundles the unmodified `libusb-1.0.dll` inside the single-file executable; the self-extractor unpacks it at runtime, and replacing it means rebuilding from source. Source: [github.com/libusb/libusb](https://github.com/libusb/libusb). Full license text in [LICENSE](LICENSE).
 - **nipplejs** is licensed under the MIT License. Copyright (c) 2014 Yoann Moinet. The Web Controller's touch joystick.
 - **SDL_GameControllerDB** is licensed under the zlib License. PadForge's bundled `gamecontrollerdb_padforge.txt` extends it and keeps the source citation in its header.
 - **Zacksly Icon Pack** is licensed under CC BY 3.0. By Zacksly ([zacksly.itch.io](https://zacksly.itch.io/)). PadForge's stick and trigger tab icon geometry derives from it.

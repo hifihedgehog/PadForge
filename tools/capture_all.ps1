@@ -1765,15 +1765,15 @@ if ($failedTypes.Count -gt 0) {
         Write-Host "!!   HKLM\SOFTWARE\HIDMaestro\SteamVRPath naming that dir." -ForegroundColor Yellow
         Write-Host "!!   Settings > SteamVR installs it (steamcmd, app 250820)." -ForegroundColor Yellow
     }
-    if ($Only.Count -eq 0) {
-        throw "Slot type creation failed: $($failedTypes -join ', ')"
-    }
-    # A SCOPED run is a different bargain. The operator named the shots and
-    # can see the rail in each one, and refusing outright means a stale
-    # image stays shipped instead. Warn as loudly as the abort would have,
-    # then take the pictures that were asked for.
-    Write-Host "!! -Only run: continuing with a $(7 - $failedTypes.Count)-slot rail." -ForegroundColor Yellow
-    Write-Host "!! CHECK EVERY IMAGE against the rest of the set before committing." -ForegroundColor Yellow
+    # NO EXEMPTION, INCLUDING -Only. A short rail is a screenshot OMISSION,
+    # and an omission is never allowed to ship. An earlier version of this
+    # let a scoped run continue with a warning, on the theory that the
+    # operator had named the shots and could judge the rail themselves.
+    # That reasoning is wrong: the rail is in every image, so a scoped run
+    # produces images that silently disagree with the rest of the set, and
+    # "I checked" is not a property the next person inherits. Install the
+    # missing prerequisite and run again.
+    throw "Slot type creation failed: $($failedTypes -join ', ')"
 }
 
 # Wait for type-group reorder to fully settle before querying slots

@@ -28,8 +28,6 @@ PadForge is for sim racers running wheels in games that only understand Xbox con
 
 <p align="center"><b>16</b> virtual controllers at once · <b>225+</b> device profiles · <b>1000 Hz</b> polling · <b>$0</b> forever</p>
 
-<p align="center"><b><a href="https://discord.gg/qawTZHVhNH">Join the PadForge Discord</a></b> to get setup help and share profiles with other users.</p>
-
 ![Dashboard](screenshots/dashboard.jpg)
 
 <p align="center">

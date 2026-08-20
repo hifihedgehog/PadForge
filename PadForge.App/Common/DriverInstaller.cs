@@ -307,7 +307,7 @@ namespace PadForge.Common
                         // never emits and matched NOTHING. The
                         // legacy-driver detection that round shipped was
                         // dead on arrival. Real word boundaries this time.
-                        line, @"\boem\d+\.inf\b",
+                        line, OemInfPattern,
                         System.Text.RegularExpressions.RegexOptions.IgnoreCase);
                     if (oemHit.Success)
                     {
@@ -542,6 +542,13 @@ namespace PadForge.Common
         /// Searches the registry Uninstall keys for the Windows MIDI Services entry
         /// and returns its UninstallString value.
         /// </summary>
+        /// <summary>The pnputil "Published Name" value, oemNN.inf,
+        /// locale-independent. A named constant so a test can pin it: the
+        /// shipped version of this pattern carried literal backspace bytes
+        /// where the word boundaries belong and matched nothing at all,
+        /// invisibly, for two months.</summary>
+        internal const string OemInfPattern = @"\boem\d+\.inf\b";
+
         private static string FindMidiServicesUninstallString()
         {
             var views = new[] { RegistryView.Registry64, RegistryView.Registry32 };

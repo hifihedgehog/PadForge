@@ -143,36 +143,68 @@ namespace PadForge.Common.Input
         private static IntPtr _openvrModule = IntPtr.Zero;
         private static int _resolverRegistered;
 
+        /// <summary>Runtime root recorded in the path registry, or null.
+        /// Same discovery <see cref="DiscoverRuntimeDll"/> uses, stopping at
+        /// the install directory instead of descending to the dll.</summary>
+        private static string DiscoverRuntimeRoot()
+        {
+            try
+            {
+                string reg = Environment.GetEnvironmentVariable("VR_PATHREG_OVERRIDE");
+                if (string.IsNullOrEmpty(reg))
+                {
+                    string local = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                    reg = System.IO.Path.Combine(local, "openvr", "openvrpaths.vrpath");
+                }
+                if (!System.IO.File.Exists(reg)) return null;
+                string root = ParseRuntimePathFromVrPathJson(System.IO.File.ReadAllText(reg));
+                return string.IsNullOrWhiteSpace(root) ? null : root;
+            }
+            catch { return null; }
+        }
+
         /// <summary>
-        /// Keeps the OpenVR client's log out of the drive root.
+        /// Keeps SteamVR's log and config data inside the SteamVR folder.
         ///
         /// <para>openvr_api.dll writes "vrclient_{process}.txt" to the log
-        /// directory named in openvrpaths.vrpath, and the directory that file
-        /// names is conventionally the runtime path with "-logs" appended. A
-        /// runtime at C:\SteamVR therefore made PadForge create C:\SteamVR-logs,
-        /// a folder at the root of the system drive that nobody asked for and
-        /// that PadForge never reads back.</para>
+        /// directory named in openvrpaths.vrpath, and that entry is
+        /// conventionally the runtime path with "-logs" appended, a SIBLING
+        /// of the install rather than part of it. With SteamVR at its default
+        /// C:\SteamVR, loading the client therefore made PadForge create
+        /// C:\SteamVR-logs at the root of the system drive, with C:\SteamVR-config
+        /// alongside it. SteamVR's data belongs in the SteamVR folder the user
+        /// chose, so both are redirected under it.</para>
         ///
-        /// <para>VR_LOG_PATH overrides the registry for the CALLING PROCESS
-        /// only (vrpathregistry_public.cpp:406, name from
-        /// vrpathregistry_public.h:10), so pointing it at a PadForge-owned temp
-        /// folder contains the log without editing a file other VR apps share.
-        /// An explicit value already in the environment is left alone: someone
-        /// who set it meant it.</para>
+        /// <para>VR_LOG_PATH and VR_CONFIG_PATH override the registry for the
+        /// CALLING PROCESS only (vrpathregistry_public.cpp:406 and :384, names
+        /// from vrpathregistry_public.h:9-10), so this changes where PadForge's
+        /// own client writes without editing a file every VR app shares. A
+        /// value already in the environment is left alone: someone who set one
+        /// meant it. With no runtime installed there is nothing to be inside
+        /// of, so nothing is set.</para>
         /// </summary>
         private static void ContainVrClientLog()
         {
             try
             {
-                if (!string.IsNullOrWhiteSpace(
-                        Environment.GetEnvironmentVariable("VR_LOG_PATH")))
-                    return;
-                string dir = System.IO.Path.Combine(
-                    System.IO.Path.GetTempPath(), "PadForge_OpenVR");
-                System.IO.Directory.CreateDirectory(dir);
-                Environment.SetEnvironmentVariable("VR_LOG_PATH", dir);
+                string root = DiscoverRuntimeRoot();
+                if (string.IsNullOrWhiteSpace(root)) return;
+                Set("VR_LOG_PATH", System.IO.Path.Combine(root, "logs"));
+                Set("VR_CONFIG_PATH", System.IO.Path.Combine(root, "config"));
             }
             catch { }
+
+            static void Set(string name, string dir)
+            {
+                try
+                {
+                    if (!string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable(name)))
+                        return;
+                    System.IO.Directory.CreateDirectory(dir);
+                    Environment.SetEnvironmentVariable(name, dir);
+                }
+                catch { }
+            }
         }
 
         private static void EnsureResolver()

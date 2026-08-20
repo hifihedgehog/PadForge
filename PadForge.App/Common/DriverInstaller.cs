@@ -577,18 +577,8 @@ namespace PadForge.Common
         /// <summary>Default landing spot for the Steam-free SteamVR install
         /// when the user picks nothing else. HIDMaestro's
         /// discovery checks this conventional folder last, and the explicit
-        /// path hint below makes it authoritative regardless.
-        ///
-        /// <para>Under ProgramData, NOT at the drive root. OpenVR derives its
-        /// config and log directories from the runtime path by appending
-        /// "-config" and "-logs" as SIBLINGS of it (vrpathregistry_public.cpp),
-        /// so a runtime at C:\SteamVR silently scatters C:\SteamVR-config and
-        /// C:\SteamVR-logs across the root of the system drive. PadForge does
-        /// not put folders at a drive root. One container holds the runtime and
-        /// both derived siblings. The exe's own directory is not an option
-        /// either: nothing but PadForge.xml and crash.log belongs beside a
-        /// portable single-file build, least of all several GB of runtime.</para></summary>
-        public const string SteamVrInstallDir = @"C:\ProgramData\PadForge\SteamVR";
+        /// path hint below makes it authoritative regardless.</summary>
+        public const string SteamVrInstallDir = @"C:\SteamVR";
 
         /// <summary>Valve's own steamcmd bootstrap. Needs no Steam client
         /// and no account: SteamVR (app 250820) is anonymous-licensed, the

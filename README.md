@@ -65,6 +65,7 @@ PadForge is for sim racers running wheels in games that only understand Xbox con
 - **Trackball momentum** on sticks, plus clamp and gain knobs for the touchpad's existing momentum.
 - **Gyro Tilt.** A degree-ranged tilt mode alongside the existing rate mode, with Gyro Lean documented and its Sensitivity dial fixed, plus a Recenter action and independent yaw and roll inversion.
 - **Low-battery notifications**, plus an identify buzz that rumbles any device so you can tell which one it is.
+- **A Diagnostics section in Settings.** Versions to paste into a report, a log you can switch on without a launch flag, and a Save Snapshot button that writes out the last few minutes of engine events even when logging was off.
 - **Mapping picker** gains find-as-you-type and device filtering, and the search filters the table.
 - **Moza wheels** recognized, and **DualSense effect passthrough** for games that drive the triggers themselves.
 - **Anti-deadzone floors the stick pair** rather than each axis, which closes the gaps that showed at the cardinals.

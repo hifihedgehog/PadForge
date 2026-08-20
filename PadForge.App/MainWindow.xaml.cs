@@ -8103,7 +8103,12 @@ namespace PadForge
                 installed = DriverInstaller.IsMidiServicesInstalled();
                 _viewModel.Settings.IsMidiServicesInstalled = installed;
                 _viewModel.Dashboard.IsMidiServicesInstalled = installed;
-                _viewModel.Settings.MidiServicesVersion = installed ? "Windows MIDI Services" : string.Empty;
+                // The card is already titled "Windows MIDI Services" and the
+                // line above already says Installed, so printing the product
+                // name a third time said nothing. This is the version line,
+                // the same one HidHide and ViGEm fill.
+                _viewModel.Settings.MidiServicesVersion =
+                    installed ? (DriverInstaller.GetMidiServicesVersion() ?? string.Empty) : string.Empty;
             }
             catch
             {

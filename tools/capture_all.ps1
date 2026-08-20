@@ -24,7 +24,16 @@ param(
     # still in .bak) and jump straight to the STEP 3b tail on a FRESH app
     # process. Exists because the WPF UIA tree degrades over a marathon
     # run and late-run device FindAlls hang (2026-07-30, twice).
-    [switch]$SkipToTail
+    [switch]$SkipToTail,
+    # Capture ONLY these shots (by Cap name), e.g.
+    #   -SkipToTail -Only midi-input,devices-nfc
+    # Every other Cap becomes a no-op, so a handful of stale images can be
+    # refreshed without re-photographing 116 of them. Combine with
+    # -SkipToTail to skip the per-pad-page passes as well; tail mode now
+    # PREPARES the environment itself when no capture-configured settings
+    # file is lying around, so a targeted refresh is a single command from
+    # a clean machine.
+    [string[]]$Only = @()
 )
 
 Set-StrictMode -Version Latest
@@ -233,7 +242,7 @@ function Get-Count {
     # Set-StrictMode -Version Latest makes a .Count read on anything that is not
     # a collection a TERMINATING error, and UIA hands back such values routinely.
     # This exact trap has now killed three separate runs: at $r.IsEmpty, at
-    # $cds.Count, and at $cards.Count in the KBM block, where the "fix" for the
+    # (Get-Count $cds), and at (Get-Count $cards) in the KBM block, where the "fix" for the
     # second one was not applied to the third. Count through here, always.
     param($Value)
     if ($null -eq $Value) { return 0 }
@@ -496,8 +505,19 @@ function Ensure-MacrosLoaded {
 # dialog under the wrong name (2026-08-19: six shots shipped that way).
 $script:modalLeaks = 0
 
+# True when this shot was asked for. With no -Only, everything is wanted.
+function Want {
+    param([string]$Name)
+    if ($Only.Count -eq 0) { return $true }
+    return ($Only -contains $Name)
+}
+
 function Cap {
     param([string]$Name, [switch]$AllowModal)
+    if (-not (Want $Name)) {
+        Write-Host "  .. skipped $Name (not in -Only)" -ForegroundColor DarkGray
+        return
+    }
     # Warn, loudly and by name, when a dialog is up for a shot that is not
     # a dialog shot. Deliberately does NOT auto-dismiss: several steps
     # legitimately photograph modals, and guessing wrong there would break
@@ -550,6 +570,26 @@ function Select-El {
     }
 }
 
+# A UIA lookup that misses is not proof the element is absent. The
+# 2026-08-19 run enumerated 'Add Controller' in the nav diagnostic and then
+# got NULL from an exact-name search nine seconds later, with nothing having
+# clicked in between, and the run refused to capture because all seven slot
+# types "failed". An elevated probe against the same build found the item
+# immediately, so the miss was transient realization, not absence. Retry
+# before believing a null, wherever a null aborts the run.
+function Find-UIARetry {
+    param([string]$Name, [string]$Aid,
+          [System.Windows.Automation.ControlType]$CT,
+          [int]$Retries = 5, [int]$DelayMs = 600)
+    for ($i = 0; $i -lt $Retries; $i++) {
+        $el = if ($CT) { Find-UIA -Name $Name -Aid $Aid -CT $CT }
+              else     { Find-UIA -Name $Name -Aid $Aid }
+        if ($el) { return $el }
+        Start-Sleep -Milliseconds $DelayMs
+    }
+    return $null
+}
+
 function Nav {
     param([string]$Name)
     foreach ($ctName in @("ListItem", "TreeItem")) {
@@ -557,7 +597,7 @@ function Nav {
         $el = Find-UIA -Name $Name -CT $ct
         if ($el) { return (Select-El $el -Label $Name) }
     }
-    $el = Find-UIA -Name $Name
+    $el = Find-UIARetry -Name $Name
     if ($el) { return (Select-El $el -Label $Name) }
     Write-Host "  !! Nav '$Name' not found" -ForegroundColor Red
     return $false
@@ -943,17 +983,34 @@ Write-Host "  Toast notifications suppressed for the run"
 # ==============================================================================
 Write-Host ""
 Write-Host "=== STEP 0: Inject test data ===" -ForegroundColor Cyan
-
-if ($SkipToTail) {
-    if (-not (Test-Path "$PadForgeXml.bak")) {
-        Write-Host "  !! Tail mode needs the leftover $PadForgeXml.bak (owner settings). Aborting." -ForegroundColor Red
-        exit 1
-    }
-    Write-Host "  Tail mode: keeping the existing capture-configured xml; killing for a fresh process"
-    Get-Process PadForge -EA SilentlyContinue | Stop-Process -Force; Start-Sleep -Seconds 3
-    Get-Process PadForge -EA SilentlyContinue | Stop-Process -Force; Start-Sleep -Seconds 2
+# Accept the obvious spellings. Invoked through Start-Process -ArgumentList
+# (which is how every elevated run reaches this script) a comma-joined list
+# arrives as ONE token, and -File binding does not split it, so every name
+# silently failed to match and the run captured nothing while reporting
+# success. Split here and the operator can write it either way.
+$Only = @($Only | ForEach-Object { $_ -split ',' } |
+          ForEach-Object { $_.Trim() } | Where-Object { $_ })
+if ($Only.Count -gt 0) {
+    Write-Host ("  -Only parsed to {0} name(s): {1}" -f $Only.Count, ($Only -join " | ")) -ForegroundColor Cyan
 }
-if (-not $SkipToTail) {
+
+# Tail mode reuses a capture-configured settings file when an earlier run
+# left one behind. When it did NOT, tail mode used to abort and tell the
+# operator to run the whole harness, which is how refreshing six stale
+# images turned into re-photographing all 116. Setting the devices up is
+# STEP 0's job and STEP 0 is cheap, so run it and then jump to the tail.
+$script:doSetup = $true
+if ($SkipToTail) {
+    if (Test-Path "$PadForgeXml.bak") {
+        Write-Host "  Tail mode: reusing the staged xml from an earlier run; killing for a fresh process"
+        $script:doSetup = $false
+        Get-Process PadForge -EA SilentlyContinue | Stop-Process -Force; Start-Sleep -Seconds 3
+        Get-Process PadForge -EA SilentlyContinue | Stop-Process -Force; Start-Sleep -Seconds 2
+    } else {
+        Write-Host "  Tail mode: nothing staged, so STEP 0 runs first and the per-page passes are skipped" -ForegroundColor Cyan
+    }
+}
+if ($script:doSetup) {
 if (-not (Test-Path $OutputDir)) { New-Item -ItemType Directory -Path $OutputDir | Out-Null }
 
 # Kill PadForge if running (double-kill pattern — may auto-restart via startup entry)
@@ -1557,7 +1614,7 @@ $popupCaptured = $false
 function Add-SlotViaPopup {
     param([string]$TypeBtnAid, [string]$TypeLabel)
     # Click "Add Controller" in sidebar
-    $addNav = Find-UIA -Name "Add Controller"
+    $addNav = Find-UIARetry -Name "Add Controller"
     if (-not $addNav) { Write-Host "  !! Add Controller nav not found" -ForegroundColor Red; return $false }
     Click-El $addNav -Label "Add Controller" -Delay 600
     # Capture the popup on first open (shows all 5 type buttons)
@@ -1600,7 +1657,12 @@ function Add-SlotViaPopup {
     return $false
 }
 
-if (-not $SkipToTail) {
+# STAGING, not capture: tail mode needs the slots created and the
+# devices assigned, or it lands on an empty Dashboard. Gating this on
+# -not $SkipToTail meant a tail run injected the synthetic devices and
+# then created NO virtual controllers, so every card index was out of
+# range and nothing could be photographed.
+if ($script:doSetup) {
 # Delete all existing slots to ensure a clean start
 Write-Host "  Removing any existing slots..."
 for ($delPass = 0; $delPass -lt 16; $delPass++) {
@@ -1720,6 +1782,27 @@ Write-Host "--- Assign DualSense to Xbox + PlayStation slots ---" -ForegroundCol
 Nav "Devices"; Start-Sleep -Milliseconds 1500
 }
 
+# UIA's FindAll throws a transient "Unrecognized error" COM fault under load,
+# and an unguarded call is TERMINATING: it killed a targeted run outright
+# (2026-08-19) after the staging pass had already created the slots. Same
+# family as the Get-Count trap above, one layer out: the call itself rather
+# than what it returns. Retry, then hand back an empty result so the caller
+# degrades instead of the run dying.
+function Find-AllSafe {
+    param($Element, $Condition, [int]$Retries = 4, [int]$DelayMs = 400)
+    for ($i = 0; $i -lt $Retries; $i++) {
+        try { return $Element.FindAll($TD, $Condition) }
+        catch {
+            if ($i -eq $Retries - 1) {
+                Write-Host "  !! FindAll failed $Retries times: $($_.Exception.Message)" -ForegroundColor Yellow
+                return @()
+            }
+            Start-Sleep -Milliseconds $DelayMs
+        }
+    }
+    return @()
+}
+
 function Reset-DeviceTypeFilter {
     # The 4.1.0 Devices page carries type-filter chips (ALL / GAMEPAD /
     # KEYBOARD / ...) right under the header. A stray click leaves a family
@@ -1734,7 +1817,7 @@ function Reset-DeviceTypeFilter {
         [System.Windows.Automation.ControlType]::Text)
     $wrF = New-Object Win32+RECT
     [Win32]::GetWindowRect($script:hwnd, [ref]$wrF) | Out-Null
-    foreach ($el in $script:uiaWin.FindAll($TD, $txtC)) {
+    foreach ($el in (Find-AllSafe $script:uiaWin $txtC)) {
         try {
             if (($el.Current.Name -replace '\s', '') -ne 'ALL') { continue }
             $r = Get-Rect $el
@@ -1762,7 +1845,7 @@ function Get-DeviceListTop {
     $txtC = New-Object System.Windows.Automation.PropertyCondition(
         [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
         [System.Windows.Automation.ControlType]::Text)
-    foreach ($el in $script:uiaWin.FindAll($TD, $txtC)) {
+    foreach ($el in (Find-AllSafe $script:uiaWin $txtC)) {
         try {
             if (($el.Current.Name -replace '\s', '') -ne 'ALL') { continue }
             $r = Get-Rect $el
@@ -1944,7 +2027,21 @@ function Assign-DeviceToSlot {
     return $false
 }
 
-if (-not $SkipToTail) {
+# STAGING, not capture: tail mode needs the slots created and the
+# devices assigned, or it lands on an empty Dashboard. Gating this on
+# -not $SkipToTail meant a tail run injected the synthetic devices and
+# then created NO virtual controllers, so every card index was out of
+# range and nothing could be photographed.
+#
+# -Only skips this block. Slot-to-device assignment exists for the PAD pages,
+# and every one of those is UI-driven: scroll the card list, realize the detail
+# pane, hunt the toggle, click it twice. A request for three Devices-page and
+# Settings-page images was spending minutes mapping a racing wheel and a merged
+# mouse to slots that none of those images show. The devices themselves are
+# already in the list from STEP 0's XML injection, which is all a Devices-page
+# shot needs. A focused target that DOES need an assignment adds it beside its
+# own recipe in the focused pass.
+if ($script:doSetup -and $Only.Count -eq 0) {
 Assign-DeviceToSlot -DeviceNamePart "DualSense" -SlotNumberLabel "1" | Out-Null
 Assign-DeviceToSlot -DeviceNamePart "DualSense" -SlotNumberLabel "2" | Out-Null
 # Also put the Xbox Series X and the synthetic G29 wheel on the Xbox slot
@@ -2019,6 +2116,223 @@ Ensure-DeviceAssigned -DeviceNamePart "All Mice (Merged)" -PadIndex 4 -SlotType 
 Ensure-MacrosLoaded -XmlPath $PadForgeXml -ExePath $PadForgeExe | Out-Null
 
 # Web controller server is enabled via XML injection in Step 0. No UI click needed.
+}
+
+$li36 = New-Object System.Windows.Automation.PropertyCondition(
+    [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+    [System.Windows.Automation.ControlType]::ListItem)
+$btn36 = New-Object System.Windows.Automation.PropertyCondition(
+    [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+    [System.Windows.Automation.ControlType]::Button)
+
+# Scroll the content pane down until $Anchor is inside the window, then stop
+# with it comfortably in frame. Returns false rather than capturing a page
+# that does not contain what the shot is named after.
+function Scroll-ToAnchor {
+    param([string]$Anchor, [int]$MaxSteps = 30, [int]$ClicksPerStep = 4)
+    $wr = New-Object Win32+RECT
+    [Win32]::GetWindowRect($script:hwnd, [ref]$wr) | Out-Null
+    $top = $wr.Top + 80
+    $bot = $wr.Bottom - 80
+    for ($i = 0; $i -le $MaxSteps; $i++) {
+        $el = Find-UIA -Name $Anchor
+        if ($el) {
+            $r = Get-Rect $el
+            if ($null -ne $r -and $r.Y -ge $top -and ($r.Y + $r.Height) -le $bot) {
+                Write-Host "  anchor '$Anchor' in view after $i step(s)"
+                Start-Sleep -Milliseconds 500
+                return $true
+            }
+        }
+        ScrollContent -Clicks (-1 * $ClicksPerStep)
+        Start-Sleep -Milliseconds 250
+    }
+    return $false
+}
+
+# Defined here rather than beside the Devices block below it, because the
+# focused pass calls it and PowerShell resolves a function from what has
+# already executed, not from the whole file.
+
+function Select-DeviceByName36 {
+    param([string]$NamePart)
+    Reset-DeviceTypeFilter | Out-Null
+    $wr = New-Object Win32+RECT
+    [Win32]::GetWindowRect($script:hwnd, [ref]$wr) | Out-Null
+    $listX = [int]($wr.Left + 400)
+    $midY  = [int](($wr.Top + $wr.Bottom) / 2)
+    # Scroll the card list to the top first so a top-of-list target (e.g. the
+    # "All Consumer Controls (Merged)" row) is realized even if a prior capture
+    # left the list scrolled down. Then step down searching each realized page.
+    [Win32]::ForceFG($script:hwnd)
+    for ($u = 0; $u -lt 8; $u++) { [Win32]::ScrollAt($listX, $midY, 3); Start-Sleep -Milliseconds 60 }
+    Start-Sleep -Milliseconds 300
+    # Match the card's NAME first, then its child text. A device card shows the
+    # product name on line one and its TYPE on line two, and the consumer
+    # devices on this machine are named "USB Receiver" with CONSUMER CONTROL
+    # only on the type line. A name-only match therefore could never find them,
+    # which is why devices-consumer sat stale while two such devices were
+    # enumerated three rows apart.
+    $txtCond36 = New-Object System.Windows.Automation.PropertyCondition(
+        [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+        [System.Windows.Automation.ControlType]::Text)
+    # Only ever click a row that is actually ON SCREEN. A virtualized list hands
+    # back rects for rows far below the fold, and clicking one lands nowhere:
+    # the 19:27 run clicked "All Consumer Controls (Merged)" at y=2275 on a
+    # 1550-tall window, the selection never moved, and devices-consumer shipped
+    # showing whatever had been selected before. Same rule the assignment path
+    # already uses: in view, click. Out of view, scroll toward it and re-find.
+    $listTop36 = Get-DeviceListTop
+    $winBot36 = $wr.Bottom - 40
+    $inView36 = {
+        param($el)
+        $r = Get-Rect $el
+        if ($null -eq $r) { return $false }
+        return ($r.Y -ge $listTop36 -and ($r.Y + $r.Height) -le $winBot36)
+    }
+    # A row that matches by NAME but sits below the fold is not a miss, it is a
+    # scroll. The wheel-scroll below moves the page, not this virtualized card
+    # list: 16 steps of it left every row at the same y, so "NFC Reader" stayed
+    # parked at y=1477 against a 1499 cutoff and reported "not found after
+    # scroll" while sitting on screen the whole time. ScrollItemPattern is what
+    # the assignment path already uses for exactly this, so ask the list to
+    # bring the row up before deciding anything.
+    $scrollIntoView36 = {
+        param($el)
+        try {
+            $el.GetCurrentPattern([System.Windows.Automation.ScrollItemPattern]::Pattern).ScrollIntoView()
+            Start-Sleep -Milliseconds 400
+            return $true
+        } catch { return $false }
+    }
+    for ($try = 0; $try -lt 16; $try++) {
+        $items = $script:uiaWin.FindAll($TD, $li36)
+        foreach ($it in $items) {
+            if (($it.Current.Name -like "*$NamePart*") -and -not (& $inView36 $it)) {
+                & $scrollIntoView36 $it | Out-Null
+            }
+        }
+        $items = $script:uiaWin.FindAll($TD, $li36)
+        foreach ($it in $items) {
+            if (($it.Current.Name -like "*$NamePart*") -and (& $inView36 $it)) {
+                Click-El $it -Label "Device '$NamePart'" -Delay 900 | Out-Null
+                return $true
+            }
+        }
+        foreach ($it in $items) {
+            $hit = $false
+            foreach ($t in $it.FindAll($TD, $txtCond36)) {
+                if ($t.Current.Name -like "*$NamePart*") { $hit = $true; break }
+            }
+            if ($hit -and (& $inView36 $it)) {
+                Click-El $it -Label "Device '$NamePart' (matched on type line)" -Delay 900 | Out-Null
+                return $true
+            }
+        }
+        [Win32]::ForceFG($script:hwnd); [Win32]::ScrollAt($listX, $midY, -3); Start-Sleep -Milliseconds 350
+    }
+    Write-Host "  !! device '$NamePart' not found after scroll" -ForegroundColor Yellow
+    Write-Host "  Diagnostic: realized device rows at the end of the search:" -ForegroundColor Yellow
+    foreach ($it in $script:uiaWin.FindAll($TD, $li36)) {
+        $rr = Get-Rect $it
+        $yy = if ($null -eq $rr) { "no-rect" } else { "y=$($rr.Y)" }
+        Write-Host "    [$($it.Current.Name)] $yy"
+    }
+    return $false
+}
+
+# ==============================================================================
+# FOCUSED PASS: -Only goes STRAIGHT to its targets, then stops
+# ==============================================================================
+# -Only used to filter Cap and nothing else, so asking for six images still
+# walked all 39 blocks, opened every modal on the way, and inherited every
+# hazard in them. That is how the 2026-08-19 run left the Voice Macros
+# FluentWindow up and then photographed it, frozen, as six different
+# screenshots. Filtering the OUTPUT is not scoping the WORK.
+#
+# Each entry below carries the navigation its shot needs and nothing else, so
+# a targeted refresh cannot be corrupted by a page it never had to visit.
+# Adding a target here is the cost of admission for a name that needs to be
+# refreshable on its own.
+if ($Only.Count -gt 0) {
+    Write-Host ""
+    Write-Host "=== FOCUSED PASS ($($Only.Count) target(s)) ===" -ForegroundColor Cyan
+
+    # Devices page, one selected device, one or more shots off that selection.
+    $deviceTargets = @(
+        @{ Match = "NFC";           Shots = @("devices-nfc", "nfc-live-preview") },
+        @{ Match = "MIDI Keyboard"; Shots = @("midi-input", "midi-input-mode-devices-page") },
+        @{ Match = "Microphone";    Shots = @("devices-voice") },
+        @{ Match = "PS Move";       Shots = @("devices-move") },
+        @{ Match = "DualSense";     Shots = @("devices-dualsense") }
+    )
+    foreach ($t in $deviceTargets) {
+        $wanted = @($t.Shots | Where-Object { Want $_ })
+        if ($wanted.Count -eq 0) { continue }
+        Write-Host "[focused] Devices: $($t.Match)"
+        Nav "Devices"; Start-Sleep -Milliseconds 800
+        if (Select-DeviceByName36 $t.Match) {
+            foreach ($shot in $wanted) { Cap $shot }
+        } else {
+            Write-Host "  !! no '$($t.Match)' row -- SKIPPED $($wanted -join ', ')" -ForegroundColor Red
+        }
+    }
+
+    # Scrolled page sections. A fixed click count is a guess about page
+    # LENGTH, and the page keeps growing: -40 reached the Community Configs
+    # card when it was written and, once the Diagnostics section landed above
+    # it, photographed HidHide instead. Scroll in steps and stop when the
+    # anchor is actually on screen, so the shot cannot silently drift onto a
+    # neighbouring card.
+    $scrollTargets = @(
+        @{ Shot = "dsu-port-box";               Page = "Dashboard"; Anchor = "Enable DSU Motion Server (CemuHook Motion Provider Protocol)" },
+        @{ Shot = "remote-link";                Page = "Dashboard"; Anchor = "Remote Link" },
+        @{ Shot = "settings-community-configs"; Page = "Settings";  Anchor = "Community Configs"; After = -10 }
+    )
+    foreach ($t in $scrollTargets) {
+        if (-not (Want $t.Shot)) { continue }
+        Write-Host "[focused] $($t.Page) section: $($t.Shot)"
+        Nav $t.Page; Start-Sleep -Milliseconds 900
+        if (Scroll-ToAnchor -Anchor $t.Anchor) {
+            # An anchor in view proves the card STARTS on screen, not that it
+            # FITS: the Community Configs heading landed on the last visible
+            # line with its opt-in checkbox and buttons below the fold. Where a
+            # card is taller than its heading, keep scrolling past the anchor.
+            if ($t.ContainsKey("After")) {
+                ScrollContent -Clicks $t.After
+                Start-Sleep -Milliseconds 500
+            }
+            Cap $t.Shot
+        } else {
+            Write-Host "  !! anchor '$($t.Anchor)' never came into view -- SKIPPED $($t.Shot)" -ForegroundColor Red
+        }
+        ScrollContent -Clicks 80
+    }
+
+    # Unscrolled whole-page shots.
+    $pageTargets = @(
+        @{ Shot = "dashboard"; Page = "Dashboard" },
+        @{ Shot = "profiles";  Page = "Profiles" },
+        @{ Shot = "devices";   Page = "Devices" },
+        @{ Shot = "settings";  Page = "Settings" },
+        @{ Shot = "about";     Page = "About" }
+    )
+    foreach ($t in $pageTargets) {
+        if (-not (Want $t.Shot)) { continue }
+        Write-Host "[focused] page: $($t.Shot)"
+        Nav $t.Page; Start-Sleep -Milliseconds 800
+        Cap $t.Shot
+    }
+
+    $missed = @($Only | Where-Object { -not (Test-Path (Join-Path $script:OutputDir "$_.png")) })
+    if ($missed.Count -gt 0) {
+        Write-Host ""
+        Write-Host "!! -Only names with no focused recipe (or that failed): $($missed -join ', ')" -ForegroundColor Red
+        Write-Host "!! Add them to the focused pass rather than running the whole harness." -ForegroundColor Red
+    }
+    Write-Host ""
+    Write-Host "Focused pass done." -ForegroundColor Green
+    return
 }
 
 # ==============================================================================
@@ -2122,8 +2436,8 @@ Write-Host "--- Xbox Slot ---" -ForegroundColor Yellow
 Nav "Dashboard"; Start-Sleep -Milliseconds 1000
 $slotsHost = Find-UIA -Aid "SlotsItemsControl"
 $slots = if ($slotsHost) { @($slotsHost.FindAll($TC, [System.Windows.Automation.Condition]::TrueCondition)) } else { @() }
-Write-Host "  Found $($slots.Count) slot card(s)"
-if ($slots.Count -ge 1) {
+Write-Host "  Found $((Get-Count $slots)) slot card(s)"
+if ((Get-Count $slots) -ge 1) {
     Click-El $slots[0] -Label "Xbox Slot card" -Delay 2000 | Out-Null
 
     # 4. Controller 3D view
@@ -2134,7 +2448,7 @@ if ($slots.Count -ge 1) {
             [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
             [System.Windows.Automation.ControlType]::RadioButton)
         $tabs = $padPage.FindAll($TC, $rbCond)
-        if ($tabs.Count -gt 0) { Click-El $tabs[0] -Label "3D View Tab" -Delay 1000 }
+        if ((Get-Count $tabs) -gt 0) { Click-El $tabs[0] -Label "3D View Tab" -Delay 1000 }
     }
     Cap "pad-controller-3d"
 
@@ -2650,7 +2964,7 @@ Nav "Dashboard"; Start-Sleep -Milliseconds 1000
 $slotsHost = Find-UIA -Aid "SlotsItemsControl"
 if ($slotsHost) {
     $cards = $slotsHost.FindAll($TC, [System.Windows.Automation.Condition]::TrueCondition)
-    if ($cards.Count -ge 2) {
+    if ((Get-Count $cards) -ge 2) {
         Click-El $cards[1] -Label "PlayStation Slot card" -Delay 4000 | Out-Null
 
         # Land on the Controller tab first so the PadPage is fully realized
@@ -2676,10 +2990,10 @@ if ($slotsHost) {
                 }
             }
             $tabs = $padPage.FindAll($TC, $rbCond)
-            if ($tabs.Count -gt 0) { Click-El $tabs[0] -Label "PS Controller Tab" -Delay 1000 | Out-Null }
+            if ((Get-Count $tabs) -gt 0) { Click-El $tabs[0] -Label "PS Controller Tab" -Delay 1000 | Out-Null }
             $tabs = $padPage.FindAll($TC, $rbCond)
-            Write-Host "  PadPage tabs visible to UIA: $($tabs.Count) (AT visible: $atVisible)"
-            for ($ti = 0; $ti -lt $tabs.Count; $ti++) {
+            Write-Host "  PadPage tabs visible to UIA: $((Get-Count $tabs)) (AT visible: $atVisible)"
+            for ($ti = 0; $ti -lt (Get-Count $tabs); $ti++) {
                 Write-Host "    [$ti] Name='$($tabs[$ti].Current.Name)'"
             }
 
@@ -2868,7 +3182,7 @@ if ($slotsHost) {
             $n += 6   # PS block advances Next() six times (Gyro/Audio/Touchpad loop is three)
         }
     } else {
-        Write-Host "  !! Only $($cards.Count) slot cards on Dashboard" -ForegroundColor Yellow
+        Write-Host "  !! Only $((Get-Count $cards)) slot cards on Dashboard" -ForegroundColor Yellow
         $n += 6
     }
 } else {
@@ -2884,7 +3198,7 @@ Write-Host "--- Nintendo Slot ---" -ForegroundColor Yellow
 Nav "Dashboard"; Start-Sleep -Milliseconds 1000
 $slotsHost = Find-UIA -Aid "SlotsItemsControl"
 $cards = if ($slotsHost) { $slotsHost.FindAll($TC, [System.Windows.Automation.Condition]::TrueCondition) } else { @() }
-if ($cards.Count -gt 2) {
+if ((Get-Count $cards) -gt 2) {
     Write-Host "[$(Next)/$total] Nintendo config bar"
     Click-El $cards[2] -Label "Nintendo Slot card" -Delay 4000 | Out-Null
     $padPage = Find-UIA -Aid "PadPageView"
@@ -2893,7 +3207,7 @@ if ($cards.Count -gt 2) {
             [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
             [System.Windows.Automation.ControlType]::RadioButton)
         $tabs = $padPage.FindAll($TC, $rbCond)
-        if ($tabs.Count -gt 0) { Click-El $tabs[0] -Label "Nintendo Controller Tab" -Delay 2500 | Out-Null }
+        if ((Get-Count $tabs) -gt 0) { Click-El $tabs[0] -Label "Nintendo Controller Tab" -Delay 2500 | Out-Null }
         Cap "pad-nintendo-configbar"
     } else { Write-Host "  !! PadPageView not found for the Nintendo slot" -ForegroundColor Yellow }
 } else { Write-Host "  !! Nintendo slot card not found" -ForegroundColor Yellow }
@@ -2912,7 +3226,7 @@ $cards = if ($slotsHost) { $slotsHost.FindAll($TC, [System.Windows.Automation.Co
 # Nintendo 2, Extended 3, KBM 4, MIDI 5 after the type-group reorder, then
 # the Add card at 6.
 $extendedIdx = 3
-if ($cards.Count -gt $extendedIdx) {
+if ((Get-Count $cards) -gt $extendedIdx) {
     Write-Host "[$(Next)/$total] Extended config bar"
     Click-El $cards[$extendedIdx] -Label "Extended Slot card" -Delay 1500 | Out-Null
     $padPage = Find-UIA -Aid "PadPageView"
@@ -2921,7 +3235,7 @@ if ($cards.Count -gt $extendedIdx) {
             [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
             [System.Windows.Automation.ControlType]::RadioButton)
         $tabs = $padPage.FindAll($TC, $rbCond)
-        if ($tabs.Count -gt 0) { Click-El $tabs[0] -Label "Extended Controller Tab" -Delay 1000 }
+        if ((Get-Count $tabs) -gt 0) { Click-El $tabs[0] -Label "Extended Controller Tab" -Delay 1000 }
 
         # Switch profile to "Custom" to show the config bar with axis/button/POV dropdowns.
         $profileCombo = Find-UIA -Parent $padPage -Aid "HMaestroProfileCombo"
@@ -3071,7 +3385,7 @@ $slotsHost = Find-UIA -Aid "SlotsItemsControl"
 $cards = if ($slotsHost) { $slotsHost.FindAll($TC, [System.Windows.Automation.Condition]::TrueCondition) } else { @() }
 $midiIdx = 5  # Xbox 0, PlayStation 1, Nintendo 2, Extended 3, KBM 4, MIDI 5 (Add card at 6);
               # old Count-1 landed on the Add Controller card (opened the type picker).
-if ($cards.Count -gt $midiIdx) {
+if ((Get-Count $cards) -gt $midiIdx) {
     Write-Host "[$(Next)/$total] MIDI config bar"
     Click-El $cards[$midiIdx] -Label "MIDI Slot card" -Delay 1500 | Out-Null
     $padPage = Find-UIA -Aid "PadPageView"
@@ -3080,7 +3394,7 @@ if ($cards.Count -gt $midiIdx) {
             [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
             [System.Windows.Automation.ControlType]::RadioButton)
         $tabs = $padPage.FindAll($TC, $rbCond)
-        if ($tabs.Count -gt 0) { Click-El $tabs[0] -Label "MIDI Controller Tab" -Delay 1000 }
+        if ((Get-Count $tabs) -gt 0) { Click-El $tabs[0] -Label "MIDI Controller Tab" -Delay 1000 }
     }
     Cap "pad-midi-configbar"
 } else {
@@ -3102,7 +3416,7 @@ Nav "Dashboard"; Start-Sleep -Milliseconds 1000
 $slotsHost = Find-UIA -Aid "SlotsItemsControl"
 $cards = if ($slotsHost) { $slotsHost.FindAll($TC, [System.Windows.Automation.Condition]::TrueCondition) } else { @() }
 $vrIdx = 6
-if ($cards.Count -gt $vrIdx) {
+if ((Get-Count $cards) -gt $vrIdx) {
     Write-Host "[$(Next)/$total] VR preview + config bar + mappings"
     Click-El $cards[$vrIdx] -Label "VR Slot card" -Delay 1500 | Out-Null
     $padPage = Find-UIA -Aid "PadPageView"
@@ -3116,7 +3430,7 @@ if ($cards.Count -gt $vrIdx) {
             [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
             [System.Windows.Automation.ControlType]::RadioButton)
         $tabs = $padPage.FindAll($TC, $rbCond)
-        if ($tabs.Count -gt 0) { Click-El $tabs[0] -Label "VR Controller Tab" -Delay 1200 }
+        if ((Get-Count $tabs) -gt 0) { Click-El $tabs[0] -Label "VR Controller Tab" -Delay 1200 }
         # The Controller tab renders the hand-controller preview. It is the
         # lead image of features/vr-controllers.md and NOTHING in this
         # harness had ever captured it: the converter mapped
@@ -3135,7 +3449,7 @@ if ($cards.Count -gt $vrIdx) {
         }
     }
 } else {
-    Write-Host "  !! VR slot card missing at index $vrIdx (cards=$($cards.Count))" -ForegroundColor Red
+    Write-Host "  !! VR slot card missing at index $vrIdx (cards=$((Get-Count $cards)))" -ForegroundColor Red
     $n++
 }
 
@@ -3202,77 +3516,12 @@ Write-Host "=== STEP 3b: 3.6.0 new sections ===" -ForegroundColor Cyan
 
 Start-Sleep -Milliseconds 1100
 
-$li36 = New-Object System.Windows.Automation.PropertyCondition(
-    [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
-    [System.Windows.Automation.ControlType]::ListItem)
-$btn36 = New-Object System.Windows.Automation.PropertyCondition(
-    [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
-    [System.Windows.Automation.ControlType]::Button)
 
 # Robust device selection on the Devices page: the card list is vertically
 # virtualized, so a target lower than the ~12 realized rows must be scrolled
 # into view first. Scroll the card list (left half of the window) to the top,
 # then step down, searching the realized rows after each step. ScrollAt sign
 # follows ScrollContent: positive = up, negative = down.
-function Select-DeviceByName36 {
-    param([string]$NamePart)
-    Reset-DeviceTypeFilter | Out-Null
-    $wr = New-Object Win32+RECT
-    [Win32]::GetWindowRect($script:hwnd, [ref]$wr) | Out-Null
-    $listX = [int]($wr.Left + 400)
-    $midY  = [int](($wr.Top + $wr.Bottom) / 2)
-    # Scroll the card list to the top first so a top-of-list target (e.g. the
-    # "All Consumer Controls (Merged)" row) is realized even if a prior capture
-    # left the list scrolled down. Then step down searching each realized page.
-    [Win32]::ForceFG($script:hwnd)
-    for ($u = 0; $u -lt 8; $u++) { [Win32]::ScrollAt($listX, $midY, 3); Start-Sleep -Milliseconds 60 }
-    Start-Sleep -Milliseconds 300
-    # Match the card's NAME first, then its child text. A device card shows the
-    # product name on line one and its TYPE on line two, and the consumer
-    # devices on this machine are named "USB Receiver" with CONSUMER CONTROL
-    # only on the type line. A name-only match therefore could never find them,
-    # which is why devices-consumer sat stale while two such devices were
-    # enumerated three rows apart.
-    $txtCond36 = New-Object System.Windows.Automation.PropertyCondition(
-        [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
-        [System.Windows.Automation.ControlType]::Text)
-    # Only ever click a row that is actually ON SCREEN. A virtualized list hands
-    # back rects for rows far below the fold, and clicking one lands nowhere:
-    # the 19:27 run clicked "All Consumer Controls (Merged)" at y=2275 on a
-    # 1550-tall window, the selection never moved, and devices-consumer shipped
-    # showing whatever had been selected before. Same rule the assignment path
-    # already uses: in view, click. Out of view, scroll toward it and re-find.
-    $listTop36 = Get-DeviceListTop
-    $winBot36 = $wr.Bottom - 40
-    $inView36 = {
-        param($el)
-        $r = Get-Rect $el
-        if ($null -eq $r) { return $false }
-        return ($r.Y -ge $listTop36 -and ($r.Y + $r.Height) -le $winBot36)
-    }
-    for ($try = 0; $try -lt 16; $try++) {
-        $items = $script:uiaWin.FindAll($TD, $li36)
-        foreach ($it in $items) {
-            if (($it.Current.Name -like "*$NamePart*") -and (& $inView36 $it)) {
-                Click-El $it -Label "Device '$NamePart'" -Delay 900 | Out-Null
-                return $true
-            }
-        }
-        foreach ($it in $items) {
-            $hit = $false
-            foreach ($t in $it.FindAll($TD, $txtCond36)) {
-                if ($t.Current.Name -like "*$NamePart*") { $hit = $true; break }
-            }
-            if ($hit -and (& $inView36 $it)) {
-                Click-El $it -Label "Device '$NamePart' (matched on type line)" -Delay 900 | Out-Null
-                return $true
-            }
-        }
-        [Win32]::ForceFG($script:hwnd); [Win32]::ScrollAt($listX, $midY, -3); Start-Sleep -Milliseconds 350
-    }
-    Write-Host "  !! device '$NamePart' not found after scroll" -ForegroundColor Yellow
-    return $false
-}
 
 if ($SkipToTail) {
     # Tail mode: the middle pass is skipped. The xml already carries the
@@ -3329,7 +3578,7 @@ for ($ci = 0; $ci -lt $realSlots -and -not $ptrDone; $ci++) {
     # a non-Remote default selection can't hide the tab (no-op on other slots).
     Select-MappedDevice "Wii Remote" | Out-Null
     $tabsP = $padPageP.FindAll($TC, $rbCondP)
-    if ($tabsP.Count -gt 0) { Click-El $tabsP[0] -Label "Controller Tab (Pointer probe)" -Delay 800 | Out-Null }
+    if ((Get-Count $tabsP) -gt 0) { Click-El $tabsP[0] -Label "Controller Tab (Pointer probe)" -Delay 800 | Out-Null }
     $ptrVisible = $false
     for ($w = 0; $w -lt 6 -and -not $ptrVisible; $w++) {
         Start-Sleep -Milliseconds 800
@@ -3439,7 +3688,7 @@ foreach ($wp in $wiiPick) {
     Nav "Dashboard"; Start-Sleep -Milliseconds 900
     $shS = Find-UIA -Aid "SlotsItemsControl"
     $cdS = if ($shS) { @($shS.FindAll($TC, [System.Windows.Automation.Condition]::TrueCondition)) } else { @() }
-    if ($cdS.Count -ge 1) {
+    if ((Get-Count $cdS) -ge 1) {
         Click-El $cdS[0] -Label "Xbox card (picker $($wp.Dev))" -Delay 1500 | Out-Null
         Capture-SourcePicker -DeviceNamePart $wp.Dev -TypeAhead $wp.Type -ShotName $wp.Shot
     } else {
@@ -3461,7 +3710,7 @@ Start-Sleep -Milliseconds 800
 Nav "Dashboard"; Start-Sleep -Milliseconds 900
 $shD = Find-UIA -Aid "SlotsItemsControl"
 $cdD = if ($shD) { @($shD.FindAll($TC, [System.Windows.Automation.Condition]::TrueCondition)) } else { @() }
-if ($cdD.Count -ge 1) {
+if ((Get-Count $cdD) -ge 1) {
     Click-El $cdD[0] -Label "Xbox card (DS3)" -Delay 1500 | Out-Null
     Select-MappedDevice "PLAYSTATION(R)3" | Out-Null
     if (Tab "Gyro") { Start-Sleep -Milliseconds 700; Cap "pad-ds3-gyro" }

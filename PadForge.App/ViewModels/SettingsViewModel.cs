@@ -570,7 +570,7 @@ namespace PadForge.ViewModels
         public RelayCommand UninstallSteamVrCommand =>
             _uninstallSteamVrCommand ??= new RelayCommand(
                 () => UninstallSteamVrRequested?.Invoke(this, EventArgs.Empty),
-                () => _isSteamVrInstalled && _isSteamVrOwned);
+                () => _isSteamVrInstalled && _isSteamVrOwned && !HasAnyVrSlots());
 
         /// <summary>Raised when the user requests the Steam-free SteamVR install.</summary>
         public event EventHandler InstallSteamVrRequested;
@@ -589,6 +589,17 @@ namespace PadForge.ViewModels
         internal Func<bool> HasAnyMidiSlots { get; set; } = () => false;
 
         /// <summary>
+        /// Set by MainWindow to provide slot-type queries for uninstall guards.
+        /// Returns true if any created slot is a VR slot.
+        ///
+        /// <para>SteamVR had no such guard at all: HidHide refused to uninstall
+        /// under a hidden device and MIDI Services under a MIDI slot, but the
+        /// runtime every VR slot depends on could be removed with those slots
+        /// sitting right there in the rail.</para>
+        /// </summary>
+        internal Func<bool> HasAnyVrSlots { get; set; } = () => false;
+
+        /// <summary>
         /// Set by MainWindow to provide device-state queries for uninstall guards.
         /// Returns true if any device has HidHide enabled.
         /// </summary>
@@ -602,6 +613,7 @@ namespace PadForge.ViewModels
         {
             _uninstallHidHideCommand?.NotifyCanExecuteChanged();
             _uninstallMidiServicesCommand?.NotifyCanExecuteChanged();
+            _uninstallSteamVrCommand?.NotifyCanExecuteChanged();
         }
 
         // ─────────────────────────────────────────────

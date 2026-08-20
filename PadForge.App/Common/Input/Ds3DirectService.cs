@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using System.Threading;
 using SDL3;
@@ -1011,18 +1011,26 @@ namespace PadForge.Common.Input
                 SDL.SDL_SetJoystickVirtualButton(j, 14, right);
                 }
 
-                SDL.SDL_SetJoystickVirtualAxis(j, 0, AxisFromByte(b[7]));      // LX
-                SDL.SDL_SetJoystickVirtualAxis(j, 1, AxisFromByte(b[8]));      // LY
+                // Indices resolved from the descriptor's own mask, never
+                // hand-counted. See SeqAxis: a contiguous mask makes bit
+                // position and index identical, a sparse one does not.
+                uint amask = _nav ? 0x13u : 0x3Fu;
+                SDL.SDL_SetJoystickVirtualAxis(j, SeqAxis(amask, 0), AxisFromByte(b[7]));   // LX
+                SDL.SDL_SetJoystickVirtualAxis(j, SeqAxis(amask, 1), AxisFromByte(b[8]));   // LY
                 if (!_nav)
                 {
                     // The Nav has no right stick and its report leaves those
                     // bytes unpopulated; 0x00 would decode as full-corner
                     // deflection, so the axes stay at rest instead.
-                    SDL.SDL_SetJoystickVirtualAxis(j, 2, AxisFromByte(b[9]));      // RX
-                    SDL.SDL_SetJoystickVirtualAxis(j, 3, AxisFromByte(b[10]));     // RY
+                    SDL.SDL_SetJoystickVirtualAxis(j, SeqAxis(amask, 2), AxisFromByte(b[9]));   // RX
+                    SDL.SDL_SetJoystickVirtualAxis(j, SeqAxis(amask, 3), AxisFromByte(b[10]));  // RY
                 }
-                SDL.SDL_SetJoystickVirtualAxis(j, 4, PressureAxis(b[19]));     // L2 pressure (raw[18])
-                SDL.SDL_SetJoystickVirtualAxis(j, 5, PressureAxis(b[20]));     // R2 pressure (raw[19])
+                // The Nav's ONE analog trigger is L2 (its published surface,
+                // hid-sony navigation_mapping, and the mask all agree), and
+                // it has no R2 at all, so that write is skipped for it.
+                SDL.SDL_SetJoystickVirtualAxis(j, SeqAxis(amask, 4), PressureAxis(b[19]));  // L2 pressure (raw[18])
+                if (!_nav)
+                    SDL.SDL_SetJoystickVirtualAxis(j, SeqAxis(amask, 5), PressureAxis(b[20]));  // R2 pressure (raw[19])
 
                 // Button-pressure axes 6-15, same order and scale as upstream SDL's
                 // PS3 driver (SDL_hidapi_ps3.c button_axis_offsets, axis_index from 6;
@@ -1201,6 +1209,25 @@ namespace PadForge.Common.Input
         /// <summary>0..255 pressure to the full SDL axis range, exactly as SDL's PS3
         /// driver scales it (v*257 - 32768; released = -32768). The virtual backend
         /// rests trigger axes at SDL_JOYSTICK_AXIS_MIN, confirming the convention.</summary>
+        /// <summary>The virtual-joystick axis index SDL binds a gamepad axis
+        /// to, for a descriptor carrying <paramref name="axisMask"/>.
+        ///
+        /// <para>SDL's VIRTUAL_JoystickGetGamepadMapping walks the mask from
+        /// the low bit up and assigns <c>current_axis++</c> for each PRESENT
+        /// bit, so the index is a COUNT OF PRESENT LOWER BITS and never the
+        /// bit position. The two coincide only for a contiguous mask, which
+        /// is exactly why hand-written indices survive on the DS3 (0x3F) and
+        /// are wrong on the Navigation controller (0x13): LEFT_TRIGGER is
+        /// bit 4 there but only the third present axis, so it binds to
+        /// index 2.</para>
+        ///
+        /// <para>This is the axis half of the SPARSE-MASK INDEXING rule the
+        /// button block in Poll already documents. That block got it; this
+        /// one did not, and the Nav's only analog trigger was written to an
+        /// index nothing maps, so it read at rest forever (#277).</para></summary>
+        internal static int SeqAxis(uint axisMask, int sdlAxisBit) =>
+            System.Numerics.BitOperations.PopCount(axisMask & ((1u << sdlAxisBit) - 1));
+
         private static short PressureAxis(byte v) => (short)(v * 257 - 32768);
 
         // ─── SDL callbacks: store + signal ONLY (they run under SDL's joystick lock

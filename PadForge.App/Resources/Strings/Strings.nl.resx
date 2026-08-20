@@ -3158,6 +3158,10 @@ Je kunt het later opnieuw proberen via Instellingen.</value></data>
   <data name="About_DuaLibDesc" xml:space="preserve"><value>DualSense-uitvoerrapport-bytemap en Sony's scePad-semantiek door WujekFoliarz, basis van PadForges effect- en audioschrijvers. MIT.</value></data>
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Patroon voor audio-routering op aansluitdetectie door SundayMoments, de referentie achter Koptelefoonaansluiting volgen. Als documentatie gelezen; AGPL-3.0.</value></data>
+  <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>QR-encoder in bytemodus voor de webcontrollerkaart op het dashboard, geport van Nayuki's referentie-implementatie. MIT.</value></data>
+  <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
+  <data name="About_MouseArtDesc" xml:space="preserve"><value>Muisillustratie in de toetsenbord- en muisweergave, door Igor Budzhak. MIT.</value></data>
   <data name="DeviceType_HeadsetMotion" xml:space="preserve"><value>Headset-tracker</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Drukafhankelijke snelheid</value></data>
   <data name="Macro_PressureScaledRate_Tooltip" xml:space="preserve"><value>De herhaalsnelheid volgt hoe hard de gekozen analoge bron wordt ingedrukt. Licht indrukken herhaalt met het langzame interval, volledig indrukken met het interval hierboven, met een vloeiende overgang daartussen.</value></data>

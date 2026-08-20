@@ -1214,6 +1214,10 @@ public class Strings : INotifyPropertyChanged
     public string About_DuaLibDesc => Get("About_DuaLibDesc");
     public string About_Ds5Bridge => Get("About_Ds5Bridge");
     public string About_Ds5BridgeDesc => Get("About_Ds5BridgeDesc");
+    public string About_QrCodeGen => Get("About_QrCodeGen");
+    public string About_QrCodeGenDesc => Get("About_QrCodeGenDesc");
+    public string About_MouseArt => Get("About_MouseArt");
+    public string About_MouseArtDesc => Get("About_MouseArtDesc");
     public string MacroAction_Type_HeadphoneVolumeUp => Get("MacroAction_Type_HeadphoneVolumeUp");
     public string MacroAction_Type_HeadphoneVolumeDown => Get("MacroAction_Type_HeadphoneVolumeDown");
     public string MacroAction_HeadphoneVolumeUp_Tooltip => Get("MacroAction_HeadphoneVolumeUp_Tooltip");

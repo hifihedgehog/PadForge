@@ -668,6 +668,10 @@ PadForge stands on these projects. Please consider supporting them directly.
 | [Bouncy Castle](https://github.com/bcgit/bc-csharp) | Remote Link pairing and transport cryptography: X25519, Ed25519, ChaCha20-Poly1305 | MIT |
 | [libusb](https://github.com/libusb/libusb) | USB access library the bundled SDL3 fork uses for the Switch 2 Pro wired driver. Bundled unmodified as `libusb-1.0.dll` inside the single-file exe | LGPL-2.1-or-later |
 | [nipplejs](https://github.com/yoannmoinet/nipplejs) | Touch joystick widget in the phone Web Controller, by Yoann Moinet | MIT |
+| [QR-Code-generator](https://github.com/nayuki/QR-Code-generator) | Byte-mode QR encoder for the Dashboard's web controller card, ported from Nayuki's reference implementation | MIT |
+| [duaLib](https://github.com/WujekFoliarz/duaLib) | DualSense output-report byte map and Sony scePad semantics, by WujekFoliarz | MIT |
+| [DS5_Bridge](https://github.com/SundayMoments/DS5_Bridge) | Jack-detect audio routing pattern behind Follow Headphone Jack, by SundayMoments. Documentation only, no AGPL code ships | AGPL-3.0 |
+| [Zergatul.Obs.InputOverlay](https://github.com/Zergatul/Zergatul.Obs.InputOverlay) | Mouse artwork in the Keyboard + Mouse visualization, by Igor Budzhak | MIT |
 | [SDL_GameControllerDB](https://github.com/mdqinc/SDL_GameControllerDB) | Community gamepad mapping database that PadForge's bundled mapping file extends | zlib |
 | [Zacksly Icon Pack](https://zacksly.itch.io/) | Stick and trigger tab icon artwork PadForge's icon geometry derives from, by Zacksly | CC BY 3.0 |
 | [xbledctl](https://github.com/Leclowndu93150/xbledctl) | Xbox Guide button LED brightness: the `\\.\XboxGIP` interface research and LED packet layout PadForge's writer derives from | MIT |
@@ -730,6 +734,9 @@ This project is licensed under **CC BY-NC-SA 4.0** (Creative Commons Attribution
 - **Bouncy Castle** (bc-csharp) provides the Remote Link pairing and transport cryptography (X25519, Ed25519, ChaCha20-Poly1305). Licensed under the Bouncy Castle Licence, an adaptation of the MIT License.
 - **libusb** is licensed under the LGPL-2.1-or-later. PadForge bundles the unmodified `libusb-1.0.dll` inside the single-file executable; the self-extractor unpacks it at runtime, and replacing it means rebuilding from source. Source: [github.com/libusb/libusb](https://github.com/libusb/libusb). Full license text in [LICENSE](LICENSE).
 - **nipplejs** is licensed under the MIT License. Copyright (c) 2014 Yoann Moinet. The Web Controller's touch joystick.
+- **QR-Code-generator** is licensed under the MIT License. Copyright (c) Project Nayuki. The Dashboard web controller card's QR encoder is a C# port of its reference implementation.
+- **Mouse artwork** in the Keyboard + Mouse visualization is from Zergatul.Obs.InputOverlay, licensed under the MIT License. Copyright (c) 2021 Igor Budzhak.
+- **DS5_Bridge** is licensed under the GNU Affero General Public License v3.0. Copyright (c) SundayMoments. Its jack-detect routing pattern informed Follow Headphone Jack; PadForge ships no code from it.
 - **SDL_GameControllerDB** is licensed under the zlib License. PadForge's bundled `gamecontrollerdb_padforge.txt` extends it and keeps the source citation in its header.
 - **Zacksly Icon Pack** is licensed under CC BY 3.0. By Zacksly ([zacksly.itch.io](https://zacksly.itch.io/)). PadForge's stick and trigger tab icon geometry derives from it.
 - **xbledctl** is licensed under the MIT License. By Leclowndu93150. PadForge's Xbox Guide LED writer derives its `\\.\XboxGIP` packet layout and device-discovery sequence from it.

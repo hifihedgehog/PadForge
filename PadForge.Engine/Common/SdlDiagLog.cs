@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
@@ -16,7 +16,14 @@ namespace PadForge.Engine
     /// everything else PadForge persists.</summary>
     public static class SdlDiagLog
     {
-        private const int MaxLines = 400;
+        // 400 held about two minutes of a real session and the owner hit
+        // exactly that: they pressed Save Snapshot right after a UI bug and
+        // got nothing but microphone and mapping-filter heartbeat, because
+        // the event had already rolled out. A snapshot that cannot reach
+        // back past the thing you just saw is not a snapshot. 4000 lines is
+        // a few hundred KB of strings held once per process, which is
+        // nothing beside what the ring is for.
+        private const int MaxLines = 4000;
         private static readonly object _sync = new object();
         private static readonly Queue<string> _ring = new Queue<string>(MaxLines);
         // Rooted so the GC never collects the delegate SDL holds.

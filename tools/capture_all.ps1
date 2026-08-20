@@ -1177,7 +1177,44 @@ try {
         # the "Register / Manage NFC Tags" button (ShowRegisterNfcTag). The user's
         # cache has no NFC reader anymore, so the whole NFC block was skipped.
         Add-DeviceOnce (New-SyntheticDevice "22220000-2222-3333-4444-555566667777" "NFC Reader" 1839 8704 "HID\VID_072F&PID_2200\dummy" 28 0 0 0)
-        Write-Host "  Injected synthetic G29 wheel + MIDI Keyboard + 3 Wii-family + DS3 + Steam Controller + Xbox GIP + Wii Remote + NFC" -ForegroundColor Green
+
+        # ── THE RULE: a synthetic device is all a capture EVER needs ──
+        #
+        # Owner ruling 2026-08-19, and it applies to ANY device, not just
+        # these: the harness must never depend on real hardware being
+        # plugged in, powered on, or charged. Every gated surface is gated
+        # on IDENTITY (vendor/product id and capability flags), all of
+        # which a dummy row carries perfectly well.
+        #
+        # This block exists because the DualSense-gated tabs (Adaptive
+        # Triggers, Lighting, Gyro, Touchpad, Audio, plus devices-power)
+        # were reached by name-matching the owner's REAL pad. When that pad
+        # was flat, six shots silently went stale and a whole capture run
+        # was spent discovering it. There was never a reason for it: the
+        # gates read VendorId 0x054C with ProdId 0x0CE6 / 0x0DF2
+        # (UserDevice.HasVoicePhrases and its siblings), which is three
+        # numbers in an XML row.
+        #
+        # DualSense: gyro + accel + touchpad true so every conditional tab
+        # on the Pad page realizes.
+        $ds5 = New-WiiDevice "bbbb2222-3333-4444-5555-666677778888" "DualSense Wireless Controller" 1356 3302 "HID\VID_054C&PID_0CE6\dummy"
+        foreach ($f in @("HasGyro", "HasAccel", "HasTouchpad")) {
+            $n = $ds5.SelectSingleNode($f); if ($n) { $n.InnerText = "true" }
+        }
+        Add-DeviceOnce $ds5
+        # PS Move (#277): VID 0x054C PID 0x03D5, motion-only wand.
+        $move = New-WiiDevice "bbbb3333-3333-4444-5555-666677778888" "PS Move Motion Controller" 1356 981 "HID\VID_054C&PID_03D5\dummy"
+        foreach ($f in @("HasGyro", "HasAccel")) {
+            $n = $move.SelectSingleNode($f); if ($n) { $n.InnerText = "true" }
+        }
+        Add-DeviceOnce $move
+        # Microphone row for the voice-macro block (#317). CapType 31 =
+        # Microphone (InputTypes.cs:98). The old comment here claimed live
+        # Windows audio endpoints meant "there is no dummy to inject";
+        # the type is a number in the same row as every other one.
+        Add-DeviceOnce (New-SyntheticDevice "bbbb4444-3333-4444-5555-666677778888" "Microphone Array (Synthetic)" 19785 17232 "SWD\MMDEVAPI\dummy-mic" 31 0 1 0)
+
+        Write-Host "  Injected synthetic G29 wheel + MIDI Keyboard + 3 Wii-family + DS3 + Steam Controller + Xbox GIP + Wii Remote + NFC + DualSense + PS Move + Microphone" -ForegroundColor Green
     }
 } catch {
     Write-Host "  !! Failed to inject synthetic devices: $_" -ForegroundColor Yellow

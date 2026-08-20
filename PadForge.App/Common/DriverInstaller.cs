@@ -794,10 +794,27 @@ namespace PadForge.Common
                        && a.GetArrayLength() == 1
                        ? a[0].GetString() : null;
 
-                if (!ShouldContainDataPaths(dir, First(root, "runtime"),
-                        First(root, "config"), First(root, "log"),
-                        out string wantConfig, out string wantLog))
-                    return false;
+                bool rewrite = ShouldContainDataPaths(dir, First(root, "runtime"),
+                    First(root, "config"), First(root, "log"),
+                    out string wantConfig, out string wantLog);
+                // Nothing to point at is a real state, not a theoretical one.
+                // steamcmd finishes with "validate", which deletes anything in
+                // the install that is not in Valve's manifest, so the two
+                // directories created moments earlier by the install-time call
+                // are gone by the time the download settles while the registry
+                // entries, which live under LOCALAPPDATA, survive. Make them
+                // whenever this runs, including on the launch after, and not
+                // only on the launch that rewrites.
+                if (wantConfig != null)
+                {
+                    try
+                    {
+                        Directory.CreateDirectory(wantConfig);
+                        Directory.CreateDirectory(wantLog);
+                    }
+                    catch { }
+                }
+                if (!rewrite) return false;
 
                 // Copy every other key through untouched: external_drivers
                 // carries HIDMaestro's own driver registration, and dropping
@@ -816,8 +833,6 @@ namespace PadForge.Common
                     w.WriteStartArray("log"); w.WriteStringValue(wantLog); w.WriteEndArray();
                     w.WriteEndObject();
                 }
-                Directory.CreateDirectory(wantConfig);
-                Directory.CreateDirectory(wantLog);
                 File.WriteAllBytes(reg, buffer.ToArray());
                 return true;
             }

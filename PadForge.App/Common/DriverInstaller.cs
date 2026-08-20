@@ -726,6 +726,105 @@ namespace PadForge.Common
         }
 
         /// <summary>
+        /// The decision behind <see cref="ContainOwnedSteamVrDataPaths"/>,
+        /// separated from the registry and the file so the refusals can be
+        /// tested. Answers true only for an install PadForge owns whose data
+        /// paths are not already inside it.
+        ///
+        /// <para>The refusals are the point. A SteamVR that PadForge did not
+        /// install, and a registry pointing at somebody else's runtime, are
+        /// both none of PadForge's business, and rewriting either would move
+        /// a stranger's log directory out from under them.</para>
+        /// </summary>
+        internal static bool ShouldContainDataPaths(
+            string ownedDir, string runtimeInRegistry,
+            string configInRegistry, string logInRegistry,
+            out string wantConfig, out string wantLog)
+        {
+            wantConfig = wantLog = null;
+            // No ownership marker: PadForge never installed this one.
+            if (string.IsNullOrWhiteSpace(ownedDir)) return false;
+            // The registry names a DIFFERENT runtime, so its data paths
+            // belong to that runtime rather than to ours.
+            if (!SameDir(runtimeInRegistry, ownedDir)) return false;
+
+            wantConfig = Path.Combine(ownedDir, "config");
+            wantLog = Path.Combine(ownedDir, "logs");
+            return !(SameDir(configInRegistry, wantConfig) && SameDir(logInRegistry, wantLog));
+        }
+
+        /// <summary>
+        /// Points a PadForge-owned SteamVR's config and log directories INSIDE
+        /// the install, in the path registry every OpenVR process reads.
+        ///
+        /// <para>Valve's tooling writes openvrpaths.vrpath with config and log
+        /// as SIBLINGS of the runtime, named by appending "-config" and
+        /// "-logs". At the default install that puts two folders at the root
+        /// of the system drive, and the consumer's own VR_LOG_PATH override
+        /// moves only PadForge's copy: vrserver, vrmonitor and vrcompositor
+        /// read this same file and would recreate both the moment SteamVR
+        /// actually ran. Fixing the file fixes it for every process.</para>
+        ///
+        /// <para>Only for an install PadForge owns, which means one whose path
+        /// PadForge itself recorded (HIDMaestro writes that hint nowhere, it
+        /// only reads it) and which resolves to neither Steam's app entry nor
+        /// its library. A preexisting or Steam-client SteamVR is left exactly
+        /// as it is. Rewrites nothing when the paths are already inside, so
+        /// this is safe on every launch.</para>
+        /// </summary>
+        /// <returns>True when the file was rewritten.</returns>
+        public static bool ContainOwnedSteamVrDataPaths()
+        {
+            try
+            {
+                string dir = GetOwnedSteamVrDir();
+                if (string.IsNullOrWhiteSpace(dir)) return false;
+
+                string local = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                string reg = Path.Combine(local, "openvr", "openvrpaths.vrpath");
+                if (!File.Exists(reg)) return false;
+
+                using var doc = System.Text.Json.JsonDocument.Parse(File.ReadAllText(reg));
+                var root = doc.RootElement;
+                if (root.ValueKind != System.Text.Json.JsonValueKind.Object) return false;
+
+                static string First(System.Text.Json.JsonElement o, string name)
+                    => o.TryGetProperty(name, out var a)
+                       && a.ValueKind == System.Text.Json.JsonValueKind.Array
+                       && a.GetArrayLength() == 1
+                       ? a[0].GetString() : null;
+
+                if (!ShouldContainDataPaths(dir, First(root, "runtime"),
+                        First(root, "config"), First(root, "log"),
+                        out string wantConfig, out string wantLog))
+                    return false;
+
+                // Copy every other key through untouched: external_drivers
+                // carries HIDMaestro's own driver registration, and dropping
+                // it would unregister the VR slots.
+                var buffer = new System.IO.MemoryStream();
+                using (var w = new System.Text.Json.Utf8JsonWriter(buffer,
+                    new System.Text.Json.JsonWriterOptions { Indented = true }))
+                {
+                    w.WriteStartObject();
+                    foreach (var prop in root.EnumerateObject())
+                    {
+                        if (prop.NameEquals("config") || prop.NameEquals("log")) continue;
+                        prop.WriteTo(w);
+                    }
+                    w.WriteStartArray("config"); w.WriteStringValue(wantConfig); w.WriteEndArray();
+                    w.WriteStartArray("log"); w.WriteStringValue(wantLog); w.WriteEndArray();
+                    w.WriteEndObject();
+                }
+                Directory.CreateDirectory(wantConfig);
+                Directory.CreateDirectory(wantLog);
+                File.WriteAllBytes(reg, buffer.ToArray());
+                return true;
+            }
+            catch { return false; }
+        }
+
+        /// <summary>
         /// Removes the Steam-free SteamVR install PadForge owns: deletes the
         /// payload directory, clears the HIDMaestro path hint, and resets the
         /// availability cache so the VR slot gates drop immediately. Refuses
@@ -886,6 +985,9 @@ namespace PadForge.Common
                 // the hint makes discovery unconditional. Requires admin,
                 // which PadForge always has.
                 HIDMaestro.HMVR.SetSteamVRPathHint(targetDir);
+                // Valve's tooling has just written the registry with the
+                // root-level "-config"/"-logs" siblings. Move them inside.
+                ContainOwnedSteamVrDataPaths();
                 HMaestroVRController.ResetAvailability();
             }
             finally

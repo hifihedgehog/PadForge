@@ -8136,6 +8136,11 @@ namespace PadForge
         // baked at card build, so an install/uninstall must rebuild once.
         private bool? _lastSteamVrInstalledForNav;
 
+        /// <summary>One repair attempt per session is enough: the paths do
+        /// not drift while PadForge runs, and the install path only rewrites
+        /// them at install time, which does its own containment.</summary>
+        private bool _steamVrPathsChecked;
+
         private void RefreshMidiServicesStatus()
         {
             bool installed = false;
@@ -8163,6 +8168,21 @@ namespace PadForge
             bool steamVr = PadForge.Common.Input.HMaestroVRController.IsAvailable();
             _viewModel.Dashboard.IsSteamVrInstalled = steamVr;
             _viewModel.Settings.IsSteamVrInstalled = steamVr;
+            // Repair an install made before PadForge started containing these
+            // paths, so its config and log stop living beside the drive root.
+            // No-ops once they are inside, and never touches a Steam-client
+            // SteamVR, so it is free to ride this cadence.
+            if (steamVr && !_steamVrPathsChecked)
+            {
+                _steamVrPathsChecked = true;
+                try
+                {
+                    if (DriverInstaller.ContainOwnedSteamVrDataPaths())
+                        Engine.SdlDiagLog.WriteLine(
+                            "VR moved SteamVR's config and log inside the install folder");
+                }
+                catch { }
+            }
             // Status tiers past "installed" (#287): the background consumer
             // knows whether SteamVR is running, and the VR slots' SDK pipes
             // know whether the driver and the virtual hands are live.

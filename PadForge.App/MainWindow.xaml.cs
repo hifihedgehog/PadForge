@@ -737,9 +737,9 @@ namespace PadForge
                 // MIDI *input* enumeration (issue #128) loads the SDK runtime whenever
                 // services are installed — tear those connections down first.
                 _inputService?.ShutdownMidiInputs();
-                // Abandon the initializer rather than disposing it — Dispose() calls
-                // into the runtime, which crashes if the service is being removed.
-                Common.Input.MidiVirtualController.Shutdown(skipDispose: true);
+                // Release the SDK runtime and keep it released, so the
+                // uninstaller never has to close PadForge to reach its files.
+                Common.Input.MidiVirtualController.SuppressForUninstall();
                 await RunDriverOperationAsync(
                     Strings.Instance.Status_UninstallingMidi, DriverInstaller.UninstallMidiServices, RefreshMidiServicesStatus);
             };

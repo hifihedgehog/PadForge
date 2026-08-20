@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using PadForge.Engine;
 
 using Microsoft.Windows.Devices.Midi2;
@@ -549,6 +549,12 @@ namespace PadForge.Common.Input
         /// </summary>
         public static bool IsAvailable()
         {
+            // Latched down for an uninstall in flight. Without this the next
+            // device sweep re-probes (Shutdown clears the cached answer),
+            // recreates the initializer, and reloads the very dlls the
+            // uninstaller is trying to delete. #128's input enumeration runs
+            // that sweep on a timer, so the window is about a second wide.
+            if (_runtimeSuppressed) return false;
             if (_isAvailable.HasValue) return _isAvailable.Value;
 
             // Same bounded contract as Connect/Disconnect: the SDK probe
@@ -616,6 +622,9 @@ namespace PadForge.Common.Input
         public static void ResetAvailability()
         {
             _probeTimedOut = false;
+            // An install (or a manual refresh) is the event that makes the
+            // runtime worth loading again, so it is what lifts the latch.
+            _runtimeSuppressed = false;
             lock (_availLock)
             {
                 if (_initializer != null)
@@ -635,6 +644,30 @@ namespace PadForge.Common.Input
         /// Use before uninstalling MIDI Services — Dispose() calls into the
         /// runtime which triggers a native crash if the service is being removed.
         /// </param>
+        private static volatile bool _runtimeSuppressed;
+
+        /// <summary>
+        /// Releases the SDK runtime and keeps it released, for an uninstall.
+        ///
+        /// <para>Dispose is what calls ShutdownSdkRuntime and lets go of the
+        /// SDK's native dlls. Abandoning the initializer instead left them
+        /// loaded, the bundle's Restart Manager closed PadForge to reach its
+        /// own files, and the app vanished mid-click. Disposing is safe HERE
+        /// because the service still exists at this instant: the uninstaller
+        /// has not started yet.</para>
+        ///
+        /// <para>The latch is the other half. Shutdown alone clears the cached
+        /// availability answer, so the next enumeration sweep would re-probe
+        /// and load the runtime straight back in while the uninstaller was
+        /// working. Availability stays false until <see cref="ResetAvailability"/>
+        /// lifts it, which is what an install already calls.</para>
+        /// </summary>
+        public static void SuppressForUninstall()
+        {
+            _runtimeSuppressed = true;
+            Shutdown(skipDispose: false);
+        }
+
         public static void Shutdown(bool skipDispose = false)
         {
             if (_initializer != null)

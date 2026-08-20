@@ -1616,7 +1616,12 @@ function Add-SlotViaPopup {
     # Click "Add Controller" in sidebar
     $addNav = Find-UIARetry -Name "Add Controller"
     if (-not $addNav) { Write-Host "  !! Add Controller nav not found" -ForegroundColor Red; return $false }
-    Click-El $addNav -Label "Add Controller" -Delay 600
+    # Out-Null, and it is load-bearing. An uncaptured Click-El return joins
+    # this function's OUTPUT, so "return $false" comes back as a two-element
+    # array and `if ($ok)` reads TRUE. That is how a gated MIDI/VR button
+    # logged "NO NEW SLOT appeared" and "Created MIDI" one line apart, and
+    # how the abort guard written for exactly this case never fired.
+    Click-El $addNav -Label "Add Controller" -Delay 600 | Out-Null
     # Capture the popup on first open (shows all 5 type buttons)
     if (-not $script:popupCaptured) {
         Cap "add-controller-popup" -AllowModal
@@ -1644,7 +1649,7 @@ function Add-SlotViaPopup {
         }
     } catch {}
     $before = Get-Count @(Find-AllSlots)
-    Click-El $typeBtn -Label $TypeLabel -Delay 1500
+    Click-El $typeBtn -Label $TypeLabel -Delay 1500 | Out-Null
     # VERIFY, never assume. The click is not the creation: poll until the
     # slot list actually grows.
     for ($w = 0; $w -lt 10; $w++) {
@@ -1737,7 +1742,10 @@ $slotTypes = @(
 $failedTypes = @()
 foreach ($st in $slotTypes) {
     Write-Host "  Creating $($st.Label) slot..."
-    $ok = Add-SlotViaPopup -TypeBtnAid $st.Aid -TypeLabel $st.Label
+    # Take the LAST emitted value, never the whole stream: a helper that
+    # leaks one uncaptured return turns this boolean into an array, and an
+    # array is always truthy. Belt to the Out-Null braces inside.
+    $ok = @(Add-SlotViaPopup -TypeBtnAid $st.Aid -TypeLabel $st.Label)[-1] -eq $true
     if ($ok) { Write-Host "  Created $($st.Label)" -ForegroundColor Green }
     else { $failedTypes += $st.Label }
     Start-Sleep -Milliseconds 500
@@ -1757,7 +1765,15 @@ if ($failedTypes.Count -gt 0) {
         Write-Host "!!   HKLM\SOFTWARE\HIDMaestro\SteamVRPath naming that dir." -ForegroundColor Yellow
         Write-Host "!!   Settings > SteamVR installs it (steamcmd, app 250820)." -ForegroundColor Yellow
     }
-    throw "Slot type creation failed: $($failedTypes -join ', ')"
+    if ($Only.Count -eq 0) {
+        throw "Slot type creation failed: $($failedTypes -join ', ')"
+    }
+    # A SCOPED run is a different bargain. The operator named the shots and
+    # can see the rail in each one, and refusing outright means a stale
+    # image stays shipped instead. Warn as loudly as the abort would have,
+    # then take the pictures that were asked for.
+    Write-Host "!! -Only run: continuing with a $(7 - $failedTypes.Count)-slot rail." -ForegroundColor Yellow
+    Write-Host "!! CHECK EVERY IMAGE against the rest of the set before committing." -ForegroundColor Yellow
 }
 
 # Wait for type-group reorder to fully settle before querying slots
@@ -2287,7 +2303,14 @@ if ($Only.Count -gt 0) {
     $scrollTargets = @(
         @{ Shot = "dsu-port-box";               Page = "Dashboard"; Anchor = "Enable DSU Motion Server (CemuHook Motion Provider Protocol)" },
         @{ Shot = "remote-link";                Page = "Dashboard"; Anchor = "Remote Link" },
-        @{ Shot = "settings-community-configs"; Page = "Settings";  Anchor = "Community Configs"; After = -10 }
+        @{ Shot = "settings-community-configs"; Page = "Settings";  Anchor = "Community Configs"; After = -10 },
+        @{ Shot = "settings-battery-alerts";    Page = "Settings";  Anchor = "Battery Alerts";           After = -6 },
+        @{ Shot = "settings-drivers";           Page = "Settings";  Anchor = "HIDMaestro Driver";        After = -4 },
+        @{ Shot = "settings-driver-cards";      Page = "Settings";  Anchor = "Windows MIDI Services";    After = -4 },
+        @{ Shot = "driver-status-flames";       Page = "Settings";  Anchor = "Windows MIDI Services";    After = -7 },
+        @{ Shot = "settings-hidhide";           Page = "Settings";  Anchor = "Whitelisted Applications"; After = -6 },
+        @{ Shot = "settings-steamvr";           Page = "Settings";  Anchor = "SteamVR";                  After = -6 },
+        @{ Shot = "settings-diagnostics";       Page = "Settings";  Anchor = "Diagnostics";              After = -14 }
     )
     foreach ($t in $scrollTargets) {
         if (-not (Want $t.Shot)) { continue }

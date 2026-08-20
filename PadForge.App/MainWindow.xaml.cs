@@ -5955,6 +5955,47 @@ namespace PadForge
             }
 
             if (_hidNotify != IntPtr.Zero) source.AddHook(OnDeviceChangeMessage);
+            source.AddHook(OnQueryEndSession);
+        }
+
+        /// <summary>Set in WM_QUERYENDSESSION's lParam when the app is being
+        /// asked to close so an install or update can proceed, rather than
+        /// because Windows is shutting down.</summary>
+        private const int ENDSESSION_CLOSEAPP = 0x00000001;
+        private const int WM_QUERYENDSESSION = 0x0011;
+
+        /// <summary>
+        /// Refuses Restart Manager's request to close PadForge, and nothing
+        /// else.
+        ///
+        /// <para>An installer that finds its files held by a running process
+        /// asks Restart Manager to close that process, and RM asks GUI apps by
+        /// sending WM_QUERYENDSESSION with ENDSESSION_CLOSEAPP. Removing
+        /// Windows MIDI Services did exactly this: RM closed PadForge to reach
+        /// the SDK dlls, and the app vanished mid-click with no crash.log and
+        /// no managed fault, because it never crashed. The Application event
+        /// log recorded RM shutting it down at the moment of each uninstall.</para>
+        ///
+        /// <para>Releasing the dlls first is not a fix available here. The MIDI
+        /// SDK's runtime is WinRT-activated, and an activated WinRT dll stays
+        /// mapped for the life of the process no matter what the bootstrapper's
+        /// Dispose does. Refusing the request is the part PadForge controls,
+        /// and it makes the installer schedule the held files for removal
+        /// instead of taking the app down to get at them.</para>
+        ///
+        /// <para>ENDSESSION_CLOSEAPP is the whole guard. A real logoff, restart
+        /// or shutdown does not set it, falls straight through, and closes
+        /// PadForge normally. Refusing those would wedge the machine.</para>
+        /// </summary>
+        private IntPtr OnQueryEndSession(
+            IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
+            if (msg == WM_QUERYENDSESSION && ((long)lParam & ENDSESSION_CLOSEAPP) != 0)
+            {
+                handled = true;
+                return IntPtr.Zero;   // FALSE: this app declines to be closed.
+            }
+            return IntPtr.Zero;
         }
 
         private IntPtr OnDeviceChangeMessage(

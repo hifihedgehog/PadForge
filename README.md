@@ -53,10 +53,10 @@ PadForge is for sim racers running wheels in games that only understand Xbox con
 <details>
 <summary><b>New in 4.3.0:</b> a rebuilt web controller, voice macros, PlayStation Move, VR devices as sources, and Remote Link over the internet</summary>
 
-- **The web controller, rebuilt.** Ten controller layouts instead of two: Xbox 360, Xbox One, Xbox Series X|S, DualShock 4, DualSense, DualSense Edge, Switch Pro, Switch 2 Pro, Steam Deck, and Steam Controller. The DualShock 4, DualSense, and Xbox Series cards carry color finishes you pick before opening them. Every layout draws the slot's LED color as a lightbar strip and its player number as pips, triggers get analog sliders, and the Steam layouts carry both trackpads and the rear buttons.
+- **The web controller, rebuilt.** Ten controller layouts instead of two: Xbox 360, Xbox One, Xbox Series X|S, DualShock 4, DualSense, DualSense Edge, Switch Pro, Switch 2 Pro, Steam Deck, and Steam Controller. The DualShock 4, DualSense, and Xbox Series cards carry color finishes you pick before opening them. The DualShock 4 and DualSense layouts draw the slot's LED color on the pad's own lightbar, and the DualSense adds its player indicator row, both configurable from the Lighting tab like the physical pads. Triggers get analog sliders, and the Steam layouts carry both trackpads and the rear buttons.
 - **Your phone's motion, as a source.** The page reads the handset's gyroscope and accelerometer and streams them to the slot. Browsers only hand out sensor data over a secure connection, so PadForge binds a self-signed certificate and serves over HTTPS, with a QR code on the Dashboard to get the phone there.
 - **Build your own pad.** A builder that starts from a blank surface and lets you drag sticks, buttons, triggers and touch areas to where your thumbs actually are, saved with your settings.
-- **Voice macros.** Registered phrases spoken into a microphone fire macros, recognized offline by Vosk with no account and no cloud. The model downloads once on first use.
+- **Voice macros.** Registered phrases spoken into a microphone fire macros, recognized offline by Vosk with no account and no cloud. The model ships inside PadForge, so it works on a machine that has never been online.
 - **PlayStation Move and Navigation controllers** over USB and Bluetooth, including the Move's sphere and motion.
 - **Real VR devices as input sources.** A headset's pose and its motion controllers become mapping sources, so what you are holding in VR can drive a flat game.
 - **3Dconnexion SpaceMouse.** The 6DoF puck reports as a mapping source, all six axes.
@@ -300,7 +300,7 @@ A Nintendo Switch 2 Joy-Con has an optical sensor on its face. Set it on a desk 
 
 ## Anywhere: open a browser. Press buttons.
 
-PadForge runs a tiny web server. Any device with a browser on your Wi-Fi can load it, pick a layout, and play. Ten controller layouts (Xbox 360, Xbox One, Xbox Series X|S, DualShock 4, DualSense, DualSense Edge, Switch Pro, Switch 2 Pro, Steam Deck, Steam Controller), a multi-touch touchpad, and a builder that starts from a blank surface. Up to 16 phones at once, each a separate virtual pad. Touch buttons, dual analog sticks, an 8-way D-pad, analog trigger sliders. Rumble feedback through the Vibration API, and the slot's LED color and player number come back as a lightbar strip and pips. The server also binds a self-signed certificate and serves over HTTPS, which is what lets the browser hand over the handset's gyroscope and accelerometer. Scan the QR code on the Dashboard to get there. No app to install on the phone.
+PadForge runs a tiny web server. Any device with a browser on your Wi-Fi can load it, pick a layout, and play. Ten controller layouts (Xbox 360, Xbox One, Xbox Series X|S, DualShock 4, DualSense, DualSense Edge, Switch Pro, Switch 2 Pro, Steam Deck, Steam Controller), a multi-touch touchpad, and a builder that starts from a blank surface. Up to 16 phones at once, each a separate virtual pad. Touch buttons, dual analog sticks, an 8-way D-pad, analog trigger sliders. Rumble feedback through the Vibration API, and on the DualShock 4 and DualSense layouts the slot's LED color lights the pad's own lightbar, with the DualSense's player indicator row beneath it. The server also binds a self-signed certificate and serves over HTTPS, which is what lets the browser hand over the handset's gyroscope and accelerometer. Scan the QR code on the Dashboard to get there. No app to install on the phone.
 
 No phone handy? Turn on **Touchpad Overlay** from the Dashboard. A transparent on-screen touch surface pins to any monitor and drives the DS4 or DualSense touchpad directly.
 
@@ -649,7 +649,7 @@ PadForge stands on these projects. Please consider supporting them directly.
 | [WPF UI](https://github.com/lepoco/wpfui) | Fluent 2 design system for WPF | MIT |
 | [CommunityToolkit.Mvvm](https://github.com/CommunityToolkit/dotnet) | MVVM data binding framework | MIT |
 | [NAudio.Wasapi](https://github.com/naudio/NAudio) | WASAPI loopback capture for audio-bass rumble | MIT |
-| [Vosk](https://alphacephei.com/vosk/) | Offline speech recognition for voice macro phrases, by Alpha Cephei. The model downloads on first use | Apache-2.0 |
+| [Vosk](https://alphacephei.com/vosk/) | Offline speech recognition for voice macro phrases, by Alpha Cephei. The model ships inside the executable | Apache-2.0 |
 | [HidHide](https://github.com/nefarius/HidHide) | Per-device hiding driver to prevent double input | MIT |
 | [BthPS3](https://github.com/nefarius/BthPS3) | Bundled Bluetooth profile driver + PSM filter that lets a DualShock 3 connect. PadForge installs it in-app at pairing time and the radio stays shared | BSD 3-Clause |
 | [DsHidMini](https://github.com/nefarius/DsHidMini) | DualShock 3 protocol reference: sixpair feature reports, Bluetooth output-report template, enable ordering, battery map | BSD 3-Clause |

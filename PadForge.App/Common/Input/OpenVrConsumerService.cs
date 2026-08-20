@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using System.Threading;
 using SDL3;
@@ -143,9 +143,44 @@ namespace PadForge.Common.Input
         private static IntPtr _openvrModule = IntPtr.Zero;
         private static int _resolverRegistered;
 
+        /// <summary>
+        /// Keeps the OpenVR client's log out of the drive root.
+        ///
+        /// <para>openvr_api.dll writes "vrclient_{process}.txt" to the log
+        /// directory named in openvrpaths.vrpath, and the directory that file
+        /// names is conventionally the runtime path with "-logs" appended. A
+        /// runtime at C:\SteamVR therefore made PadForge create C:\SteamVR-logs,
+        /// a folder at the root of the system drive that nobody asked for and
+        /// that PadForge never reads back.</para>
+        ///
+        /// <para>VR_LOG_PATH overrides the registry for the CALLING PROCESS
+        /// only (vrpathregistry_public.cpp:406, name from
+        /// vrpathregistry_public.h:10), so pointing it at a PadForge-owned temp
+        /// folder contains the log without editing a file other VR apps share.
+        /// An explicit value already in the environment is left alone: someone
+        /// who set it meant it.</para>
+        /// </summary>
+        private static void ContainVrClientLog()
+        {
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(
+                        Environment.GetEnvironmentVariable("VR_LOG_PATH")))
+                    return;
+                string dir = System.IO.Path.Combine(
+                    System.IO.Path.GetTempPath(), "PadForge_OpenVR");
+                System.IO.Directory.CreateDirectory(dir);
+                Environment.SetEnvironmentVariable("VR_LOG_PATH", dir);
+            }
+            catch { }
+        }
+
         private static void EnsureResolver()
         {
             if (Interlocked.CompareExchange(ref _resolverRegistered, 1, 0) != 0) return;
+            // Before the dll can load, never after: the client reads VR_LOG_PATH
+            // as it initializes its own logging.
+            ContainVrClientLog();
             System.Runtime.InteropServices.NativeLibrary.SetDllImportResolver(
                 typeof(OpenVrConsumerService).Assembly,
                 (name, assembly, searchPath) =>

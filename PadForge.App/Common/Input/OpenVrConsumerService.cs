@@ -341,6 +341,41 @@ namespace PadForge.Common.Input
 
         // ─── lifecycle ──────────────────────────────────────────────────────────
 
+        /// <summary>The instance currently polling, for
+        /// <see cref="ReleaseRuntime"/>. The uninstall has to stop the loop
+        /// before it can free the dll, and it has no reference to the
+        /// InputManager that owns this.</summary>
+        private static volatile OpenVrConsumerService _live;
+
+        /// <summary>
+        /// Stops polling and unloads openvr_api.dll, so the SteamVR directory
+        /// can be deleted.
+        ///
+        /// <para>The resolver loads the runtime's dll into this process and
+        /// caches the handle for the lifetime of the process. Nothing ever
+        /// freed it, so Directory.Delete could not remove the one file
+        /// PadForge itself held open: an uninstall reported success and left
+        /// SteamVRin\win64\openvr_api.dll on disk, which most people would
+        /// never notice and could only clear by hand after closing PadForge.</para>
+        ///
+        /// <para>No suspend flag is needed afterwards. The handle is cleared,
+        /// so the next P/Invoke re-runs discovery, and with the runtime gone
+        /// discovery returns null and the resolver hands back Zero, which the
+        /// poll loop already treats as "no runtime, keep watching". A later
+        /// reinstall starts working again with no further state to reset.</para>
+        /// </summary>
+        internal static void ReleaseRuntime()
+        {
+            try { _live?.Stop(); } catch { }
+            try { OpenVR.Shutdown(); } catch { }
+            IntPtr h = _openvrModule;
+            _openvrModule = IntPtr.Zero;
+            if (h != IntPtr.Zero)
+            {
+                try { System.Runtime.InteropServices.NativeLibrary.Free(h); } catch { }
+            }
+        }
+
         public void Start()
         {
             if (_running) return;
@@ -352,6 +387,7 @@ namespace PadForge.Common.Input
             var t = new Thread(RunLoop) { IsBackground = true, Name = "OpenVrConsumer" };
             _thread = t;
             _running = true;
+            _live = this;
             t.Start();
         }
 
@@ -359,6 +395,9 @@ namespace PadForge.Common.Input
         {
             _running = false;
             try { _thread?.Join(2000); } catch { }
+            // Same successor rule the server-owner latch follows: a late Stop
+            // from a superseded instance must not unregister its replacement.
+            if (ReferenceEquals(_live, this)) _live = null;
         }
 
         private void RunLoop()

@@ -636,14 +636,6 @@ namespace PadForge.Common.Input
             }
         }
 
-        /// <summary>
-        /// Shuts down the MIDI Services SDK initializer. Call on app exit.
-        /// </summary>
-        /// <param name="skipDispose">
-        /// When true, abandons the initializer without calling Dispose().
-        /// Use before uninstalling MIDI Services — Dispose() calls into the
-        /// runtime which triggers a native crash if the service is being removed.
-        /// </param>
         private static volatile bool _runtimeSuppressed;
 
         /// <summary>
@@ -668,6 +660,18 @@ namespace PadForge.Common.Input
             Shutdown(skipDispose: false);
         }
 
+        /// <summary>
+        /// Shuts down the MIDI Services SDK initializer. Call on app exit.
+        /// </summary>
+        /// <param name="skipDispose">
+        /// When true, abandons the initializer without calling Dispose(),
+        /// for teardown while the service may ALREADY be mid-removal (app
+        /// exit racing an external uninstall): Dispose() calls into the
+        /// runtime and crashes if the service is going away under it. The
+        /// in-app uninstall does NOT use this: it goes through
+        /// SuppressForUninstall, which disposes while the service still
+        /// exists so the SDK's dlls are actually released.
+        /// </param>
         public static void Shutdown(bool skipDispose = false)
         {
             if (_initializer != null)

@@ -3190,6 +3190,10 @@ You can retry later from Settings.</value></data>
   <data name="About_DuaLibDesc" xml:space="preserve"><value>DualSense output-report byte map and Sony scePad semantics by WujekFoliarz, grounding PadForge's effect and audio writers. MIT.</value></data>
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Jack-detect audio routing pattern by SundayMoments, the reference behind Follow Headphone Jack. Read as documentation; AGPL-3.0.</value></data>
+  <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Byte-mode QR encoder for the Dashboard's web controller card, ported from Nayuki's reference implementation. MIT.</value></data>
+  <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
+  <data name="About_MouseArtDesc" xml:space="preserve"><value>Mouse artwork in the Keyboard + Mouse visualization, by Igor Budzhak. MIT.</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Pressure-Scaled Rate</value></data>
   <data name="Macro_PressureScaledRate_Tooltip" xml:space="preserve"><value>The repeat rate follows how hard the selected analog source is pressed. A light press repeats at the Slow Interval, a full press at the Interval above, and everything between blends smoothly.</value></data>
   <data name="Macro_SlowInterval_Label" xml:space="preserve"><value>Slow Interval</value></data>

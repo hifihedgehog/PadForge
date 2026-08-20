@@ -3138,6 +3138,10 @@ Du kannst es später in den Einstellungen erneut versuchen.</value></data>
   <data name="About_DuaLibDesc" xml:space="preserve"><value>DualSense-Ausgabereport-Bytebelegung und Sonys scePad-Semantik von WujekFoliarz, Grundlage der Effekt- und Audio-Writer von PadForge. MIT.</value></data>
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Muster für buchsengesteuertes Audio-Routing von SundayMoments, die Referenz hinter Kopfhörerbuchse folgen. Als Dokumentation gelesen; AGPL-3.0.</value></data>
+  <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>QR-Encoder im Byte-Modus für die Web-Controller-Karte im Dashboard, portiert von Nayukis Referenzimplementierung. MIT.</value></data>
+  <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
+  <data name="About_MouseArtDesc" xml:space="preserve"><value>Maus-Grafik in der Tastatur- und Maus-Visualisierung, von Igor Budzhak. MIT.</value></data>
   <data name="DeviceType_HeadsetMotion" xml:space="preserve"><value>Headset-Tracker</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Druckabhängige Rate</value></data>
   <data name="Macro_PressureScaledRate_Tooltip" xml:space="preserve"><value>Die Wiederholrate folgt der Stärke des Drucks auf die gewählte analoge Quelle. Leichter Druck wiederholt im langsamen Intervall, voller Druck im obigen Intervall, dazwischen stufenlos.</value></data>

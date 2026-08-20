@@ -116,6 +116,8 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <TextBlock Text="{Binding About_DotNet10, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold"/>
@@ -309,6 +311,13 @@
                     <TextBlock Grid.Row="48" Text="{Binding About_OpenVR, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0"/>
                     <TextBlock Grid.Row="48" Grid.Column="1"
                                Text="{Binding About_OpenVRDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Row="49" Text="{Binding About_QrCodeGen, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0"/>
+                    <TextBlock Grid.Row="49" Grid.Column="1"
+                               Text="{Binding About_QrCodeGenDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="50" Text="{Binding About_MouseArt, Source={x:Static strings:Strings.Instance}}" FontWeight="SemiBold" Margin="0,6,16,0"/>
+                    <TextBlock Grid.Row="50" Grid.Column="1"
+                               Text="{Binding About_MouseArtDesc, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
                 </Grid>
             </Border>
 

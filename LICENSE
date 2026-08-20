@@ -245,6 +245,20 @@ nipplejs
   widget, embedded as nipplejs.min.js.
   Licensed under the MIT License
 
+QR-Code-generator
+  https://github.com/nayuki/QR-Code-generator
+  Copyright (c) Project Nayuki. The byte-mode QR encoder behind the
+  Dashboard's web controller card is a C# port of this reference
+  implementation (PadForge.Services.QrCode).
+  Licensed under the MIT License
+
+Zergatul.Obs.InputOverlay
+  https://github.com/Zergatul/Zergatul.Obs.InputOverlay
+  Copyright (c) 2021 Igor Budzhak. The mouse artwork in the
+  Keyboard + Mouse visualization is rendered from this project's
+  mouse.svg (PadForge.App/Views/MouseArt.g.cs).
+  Licensed under the MIT License
+
 SDL_GameControllerDB
   https://github.com/mdqinc/SDL_GameControllerDB
   Community gamepad mapping database. PadForge's bundled

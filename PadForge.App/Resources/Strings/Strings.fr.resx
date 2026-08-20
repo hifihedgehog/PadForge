@@ -3138,6 +3138,10 @@ Vous pouvez réessayer plus tard depuis les Paramètres.</value></data>
   <data name="About_DuaLibDesc" xml:space="preserve"><value>Carte des octets du rapport de sortie DualSense et sémantique scePad de Sony par WujekFoliarz, socle des écrivains d'effets et d'audio de PadForge. MIT.</value></data>
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>Modèle de routage audio par détection de prise par SundayMoments, référence de Suivre la prise casque. Lu comme documentation ; AGPL-3.0.</value></data>
+  <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>Encodeur QR en mode octet pour la carte du contrôleur web du tableau de bord, porté de l'implémentation de référence de Nayuki. MIT.</value></data>
+  <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
+  <data name="About_MouseArtDesc" xml:space="preserve"><value>Illustration de la souris dans la visualisation clavier et souris, par Igor Budzhak. MIT.</value></data>
   <data name="DeviceType_HeadsetMotion" xml:space="preserve"><value>Suivi de casque</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>Cadence selon la pression</value></data>
   <data name="Macro_PressureScaledRate_Tooltip" xml:space="preserve"><value>La cadence de répétition suit la force d'appui sur la source analogique choisie. Un appui léger répète à l'intervalle lent, un appui complet à l'intervalle ci-dessus, avec une transition continue.</value></data>

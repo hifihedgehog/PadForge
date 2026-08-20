@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -204,6 +204,17 @@ namespace PadForge.Views
             SlotsItemsControl.PreviewMouseMove += OnDragMove;
             SlotsItemsControl.PreviewMouseLeftButtonUp += OnDragEnd;
             SlotsItemsControl.PreviewKeyDown += OnDragKeyDown;
+            // THE DRAG'S ONLY OTHER EXIT. BeginDrag hides the source card
+            // (Opacity 0) and takes mouse capture; EndDrag is what puts it
+            // back. Without this, EndDrag ran from exactly two places, a
+            // mouse-up and Escape, so ANY other way of losing capture left
+            // the card invisible for the rest of the session while the slot
+            // still existed everywhere else. That is the owner-reported
+            // vanishing card (2026-08-19): drop fast onto the Add Controller
+            // zone and something else takes capture first, so no mouse-up
+            // ever reaches OnDragEnd. It also explains why no navigation
+            // ever accompanied it, since OnDragEnd never ran at all.
+            SlotsItemsControl.LostMouseCapture += OnDragCaptureLost;
         }
 
         private void SlotCard_Loaded(object sender, RoutedEventArgs e)
@@ -262,6 +273,14 @@ namespace PadForge.Views
                 SlotCardClicked?.Invoke(this, padIndex);
             }
             _dragSourceCard = null;
+        }
+
+        /// <summary>Capture went away without a drop. Treat it as a cancel so
+        /// the hidden card is restored: a drag that cannot be completed must
+        /// still leave the dashboard showing every slot it has.</summary>
+        private void OnDragCaptureLost(object sender, MouseEventArgs e)
+        {
+            if (_isDragging) EndDrag(true);
         }
 
         private void OnDragKeyDown(object sender, KeyEventArgs e)
@@ -499,18 +518,15 @@ namespace PadForge.Views
             // The comment above says Mouse.Capture(null) can synchronously
             // re-enter OnDragEnd. It does not only null _dragSourceCard for
             // the code below it, it nulls the field this restore was GATED
-            // ON, so the outer call skipped its own restore and the card
-            // was left at Opacity 0 permanently. The slot still existed
-            // everywhere else, so the sidebar kept it and only the dashboard
-            // card vanished, and an Opacity-0 card still hit-tests, which is
-            // why the owner saw a "Delete virtual controller" tooltip
-            // floating over apparently empty space (2026-08-19). Reproduced
-            // by dropping a card on the Add Controller zone fast enough that
-            // a mouse-up was already pending at capture release, which is
-            // exactly when the re-entrant delivery happens.
+            // ON, so such a re-entry would skip the un-hide entirely.
             //
-            // Reading the fields into locals first makes the restore immune
-            // to whatever the re-entrant call does to them.
+            // HARDENING, NOT THE REPORTED BUG. This path cannot be the cause
+            // of the vanishing card: OnDragEnd marks the drop Handled, so a
+            // re-entry would also fire SlotCardClicked and navigate, and the
+            // owner confirms navigation never happens. The real exit that
+            // was missing is LostMouseCapture, wired in WireDragHandlers.
+            // Reading the fields into locals still costs nothing and closes
+            // the documented re-entrancy for the paths that do reach it.
             var hiddenRoot = _dragHiddenRoot;
             var sourceCard = _dragSourceCard;
             _dragHiddenRoot = null;

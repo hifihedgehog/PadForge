@@ -3138,6 +3138,10 @@
   <data name="About_DuaLibDesc" xml:space="preserve"><value>WujekFoliarzによるDualSense出力レポートのバイトマップとSony scePadセマンティクス。PadForgeのエフェクト・オーディオ処理の基礎。MIT。</value></data>
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>SundayMomentsによるジャック検出オーディオルーティングのパターン。ヘッドホン端子に追従の参照元。ドキュメントとして参照；AGPL-3.0。</value></data>
+  <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>ダッシュボードのウェブコントローラーカード用のバイトモード QR エンコーダー。Nayuki のリファレンス実装からの移植。MIT。</value></data>
+  <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
+  <data name="About_MouseArtDesc" xml:space="preserve"><value>キーボードとマウスのビジュアライゼーションのマウスアート。Igor Budzhak 作。MIT。</value></data>
   <data name="DeviceType_HeadsetMotion" xml:space="preserve"><value>ヘッドセットトラッカー</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>感圧レート</value></data>
   <data name="Macro_PressureScaledRate_Tooltip" xml:space="preserve"><value>選択したアナログソースの押し込みの強さに連射レートが追従します。軽く押すと低速インターバル、深く押すと上のインターバルで連射し、その間は連続的に変化します。</value></data>

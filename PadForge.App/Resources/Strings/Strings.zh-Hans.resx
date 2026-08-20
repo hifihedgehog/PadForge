@@ -3138,6 +3138,10 @@
   <data name="About_DuaLibDesc" xml:space="preserve"><value>WujekFoliarz 的 DualSense 输出报告字节表与 Sony scePad 语义，PadForge 效果与音频写入的基础。MIT。</value></data>
   <data name="About_Ds5Bridge" xml:space="preserve"><value>DS5_Bridge</value></data>
   <data name="About_Ds5BridgeDesc" xml:space="preserve"><value>SundayMoments 的接口检测音频路由模式，跟随耳机接口功能的参考。仅作文档阅读；AGPL-3.0。</value></data>
+  <data name="About_QrCodeGen" xml:space="preserve"><value>QR-Code-generator</value></data>
+  <data name="About_QrCodeGenDesc" xml:space="preserve"><value>仪表板网页控制器卡片的字节模式 QR 编码器，移植自 Nayuki 的参考实现。MIT。</value></data>
+  <data name="About_MouseArt" xml:space="preserve"><value>Zergatul.Obs.InputOverlay</value></data>
+  <data name="About_MouseArtDesc" xml:space="preserve"><value>键盘和鼠标可视化中的鼠标图形，由 Igor Budzhak 制作。MIT。</value></data>
   <data name="DeviceType_HeadsetMotion" xml:space="preserve"><value>耳机追踪器</value></data>
   <data name="Macro_PressureScaledRate" xml:space="preserve"><value>压感连发速率</value></data>
   <data name="Macro_PressureScaledRate_Tooltip" xml:space="preserve"><value>连发速率跟随所选模拟源的按压力度。轻按时以慢速间隔连发,全力按下时以上方间隔连发,两者之间平滑过渡。</value></data>

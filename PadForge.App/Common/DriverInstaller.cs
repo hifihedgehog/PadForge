@@ -516,7 +516,14 @@ namespace PadForge.Common
             var psi = new ProcessStartInfo
             {
                 FileName = exePath,
-                Arguments = $"{existingArgs} /quiet /norestart".Trim(),
+                // MSIRESTARTMANAGERCONTROL=Disable stops the packages asking
+                // Restart Manager to close processes holding their files, so
+                // files in use are scheduled for removal instead of PadForge
+                // being shut down to reach them. Best-effort: a Burn bundle
+                // only forwards properties its author declared, which is why
+                // the window itself also declines RM's request outright (see
+                // MainWindow.OnQueryEndSession).
+                Arguments = $"{existingArgs} /quiet /norestart MSIRESTARTMANAGERCONTROL=Disable REBOOT=ReallySuppress".Trim(),
                 UseShellExecute = false,
                 CreateNoWindow = true
             };

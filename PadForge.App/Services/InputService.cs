@@ -15601,6 +15601,15 @@ namespace PadForge.Services
 
             // Player-identity idle floor (#191): reorders renumber slots.
             ReseedPlayerIdentities();
+
+            // A driver's uninstall guard is a question about the slot
+            // topology, and this is the one funnel every topology change
+            // passes through: create, delete, reorder, and every one of the
+            // seven sidebar type buttons plus the dashboard's type change.
+            // Refreshing at the call sites instead had missed the type
+            // changes, so switching a live slot from MIDI to VR left MIDI
+            // Services locked and SteamVR removable, both backwards.
+            _mainVm.Settings.RefreshDriverGuards();
         }
 
         private void RefreshActiveProfileTopologyLabel()

@@ -570,6 +570,35 @@ namespace PadForge.Common
             return FindMidiServicesUninstallString() != null;
         }
 
+        /// <summary>The installed Windows MIDI Services version, or null.
+        /// Read from DisplayVersion on the same bundle entry the uninstall
+        /// string comes from, the way the HidHide and ViGEm cards read
+        /// theirs. The card's second line used to print the product name
+        /// again under a card already titled with it.</summary>
+        public static string GetMidiServicesVersion()
+        {
+            foreach (var view in new[] { RegistryView.Registry64, RegistryView.Registry32 })
+            {
+                try
+                {
+                    using var baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, view);
+                    using var uninstallKey = baseKey.OpenSubKey(
+                        @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall", false);
+                    if (uninstallKey == null) continue;
+                    foreach (var subName in uninstallKey.GetSubKeyNames())
+                    {
+                        using var sub = uninstallKey.OpenSubKey(subName, false);
+                        if (sub?.GetValue("DisplayName") as string is string name
+                            && name.Equals("Windows MIDI Services Runtime and Tools",
+                                           StringComparison.OrdinalIgnoreCase))
+                            return sub.GetValue("DisplayVersion") as string;
+                    }
+                }
+                catch { }
+            }
+            return null;
+        }
+
         // ─────────────────────────────────────────────
         //  SteamVR (Steam-free install, issue #49)
         // ─────────────────────────────────────────────

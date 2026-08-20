@@ -699,7 +699,36 @@ namespace PadForge.Common
                 throw new InvalidOperationException(
                     "The recorded SteamVR path is a drive root; refusing to delete it.");
 
-            Directory.Delete(dir, recursive: true);
+            // PadForge is holding one of the files it is about to delete.
+            // The consumer loads SteamVR's own openvr_api.dll into this
+            // process and cached the handle forever, so the recursive delete
+            // below skipped that single file, the uninstall still reported
+            // success, and openvr_api.dll stayed on disk under a directory the
+            // user believed was gone. Unload first, then delete.
+            Input.OpenVrConsumerService.ReleaseRuntime();
+
+            // Windows drops a freed module's file lock asynchronously, so the
+            // first delete after an unload can still lose the race. Retry
+            // briefly rather than leaving a half-removed install behind.
+            for (int attempt = 1; ; attempt++)
+            {
+                try
+                {
+                    Directory.Delete(dir, recursive: true);
+                    break;
+                }
+                catch (IOException) when (attempt < 10) { }
+                catch (UnauthorizedAccessException) when (attempt < 10) { }
+                System.Threading.Thread.Sleep(300);
+            }
+
+            // "Uninstalled" has to mean the directory is gone. Reporting
+            // success over a partial delete is what let a locked
+            // openvr_api.dll survive unnoticed in the first place.
+            if (Directory.Exists(dir))
+                throw new IOException(
+                    "SteamVR was not fully removed: " + dir + " still exists. "
+                    + "Close anything using SteamVR and try again.");
 
             using (var k = Registry.LocalMachine.OpenSubKey(HmRegKeyPath, writable: true))
                 k?.DeleteValue(SteamVrPathRegValue, throwOnMissingValue: false);

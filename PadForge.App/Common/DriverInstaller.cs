@@ -300,7 +300,14 @@ namespace PadForge.Common
                     // machine and legacy drivers went undetected rather than
                     // reported. The value, "oemNN.inf", is locale-independent.
                     var oemHit = System.Text.RegularExpressions.Regex.Match(
-                        line, @"oem\d+\.inf",
+                        // The word boundaries here were literal 0x08
+                        // BACKSPACE bytes: round 35's scripted edit wrote
+                        // the escape through a non-raw string, so the
+                        // pattern required backspace characters pnputil
+                        // never emits and matched NOTHING. The
+                        // legacy-driver detection that round shipped was
+                        // dead on arrival. Real word boundaries this time.
+                        line, @"\boem\d+\.inf\b",
                         System.Text.RegularExpressions.RegexOptions.IgnoreCase);
                     if (oemHit.Success)
                     {

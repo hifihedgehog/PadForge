@@ -61,6 +61,10 @@ namespace PadForge.Common.Input
         private readonly Action<string> _log;
         private Thread _thread;
         private volatile bool _running;
+        /// <summary>Whether the poll thread is live. Internal for the
+        /// release-latch test, which asserts Start refuses after
+        /// ReleaseRuntime.</summary>
+        internal bool IsRunning => _running;
 
         /// <summary>True while the background client is connected to a
         /// running SteamVR. Feeds the dashboard's SteamVR status tiering
@@ -210,9 +214,6 @@ namespace PadForge.Common.Input
         private static void EnsureResolver()
         {
             if (Interlocked.CompareExchange(ref _resolverRegistered, 1, 0) != 0) return;
-            // Before the dll can load, never after: the client reads VR_LOG_PATH
-            // as it initializes its own logging.
-            ContainVrClientLog();
             System.Runtime.InteropServices.NativeLibrary.SetDllImportResolver(
                 typeof(OpenVrConsumerService).Assembly,
                 (name, assembly, searchPath) =>
@@ -222,6 +223,13 @@ namespace PadForge.Common.Input
                     if (_openvrModule != IntPtr.Zero) return _openvrModule;
                     string dll = DiscoverRuntimeDll();
                     if (dll == null) return IntPtr.Zero;
+                    // At the moment of load, never merely at registration:
+                    // the client reads VR_LOG_PATH/VR_CONFIG_PATH as it
+                    // initializes. Registration happens at engine start, and
+                    // a SteamVR installed later in the session (the normal
+                    // Settings-card flow) would otherwise load with neither
+                    // set, putting C:\SteamVR-logs back at the drive root.
+                    ContainVrClientLog();
                     if (System.Runtime.InteropServices.NativeLibrary.TryLoad(dll, out IntPtr h))
                         _openvrModule = h;
                     return _openvrModule;
@@ -355,19 +363,34 @@ namespace PadForge.Common.Input
         /// caches the handle for the lifetime of the process. Nothing ever
         /// freed it, so Directory.Delete could not remove the one file
         /// PadForge itself held open: an uninstall reported success and left
-        /// SteamVRin\win64\openvr_api.dll on disk, which most people would
+        /// SteamVR bin\win64\openvr_api.dll on disk, which most people would
         /// never notice and could only clear by hand after closing PadForge.</para>
         ///
-        /// <para>No suspend flag is needed afterwards. The handle is cleared,
-        /// so the next P/Invoke re-runs discovery, and with the runtime gone
-        /// discovery returns null and the resolver hands back Zero, which the
-        /// poll loop already treats as "no runtime, keep watching". A later
-        /// reinstall starts working again with no further state to reset.</para>
+        /// <para>A release latch IS needed afterwards, and an earlier version
+        /// of this comment claimed otherwise. P/Invoke stubs bind to the
+        /// resolved address on first use and are never re-resolved, so after
+        /// the Free every OpenVR entry point this process already called
+        /// points into an unloaded module. A reinstall plus an engine restart
+        /// would march a fresh consumer straight into OpenVR.Init through
+        /// that dangling stub: a native access violation, uncatchable. Start
+        /// therefore refuses for the rest of the process, and VR device
+        /// consumption resumes on the next PadForge launch. The VR virtual
+        /// controllers are unaffected either way: HIDMaestro's OpenVR driver
+        /// loads in vrserver's process, not this one.</para>
         /// </summary>
         internal static void ReleaseRuntime()
         {
+            _runtimeReleased = true;
             try { _live?.Stop(); } catch { }
-            try { OpenVR.Shutdown(); } catch { }
+            // Only shut down a session that could exist. Calling OpenVR.Shutdown
+            // with the module never loaded would RESOLVE it: the P/Invoke would
+            // run discovery, load the dll this method exists to free, and bind
+            // a stub to it, manufacturing the exact dangling reference the
+            // latch guards against, on machines where VR was never used.
+            if (_openvrModule != IntPtr.Zero)
+            {
+                try { OpenVR.Shutdown(); } catch { }
+            }
             IntPtr h = _openvrModule;
             _openvrModule = IntPtr.Zero;
             if (h != IntPtr.Zero)
@@ -376,9 +399,22 @@ namespace PadForge.Common.Input
             }
         }
 
+        /// <summary>True once ReleaseRuntime has freed the OpenVR module.
+        /// Never cleared: the dangling-stub hazard above lasts until the
+        /// process ends. Internal for the tests.</summary>
+        internal static bool RuntimeReleased => _runtimeReleased;
+        private static volatile bool _runtimeReleased;
+
         public void Start()
         {
             if (_running) return;
+            if (_runtimeReleased)
+            {
+                // See ReleaseRuntime: the module was freed and this
+                // process's OpenVR stubs dangle. Polling again would AV.
+                _log("VRCONSUME runtime was released for an uninstall; VR device consumption resumes on the next PadForge launch.");
+                return;
+            }
             // Everything that can throw happens BEFORE the running latch
             // (2026-08-18 audit): the old order set _running first, so a
             // resolver or thread-construction throw left the instance

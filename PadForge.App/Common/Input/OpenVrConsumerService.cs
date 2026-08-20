@@ -371,6 +371,19 @@ namespace PadForge.Common.Input
                             _log("VRCONSUME SteamVR not running; a background consumer never launches it. Watching.");
                         else if (err == EVRInitError.Init_InitCanceledByUser)
                             _log("VRCONSUME init canceled by the user; watching quietly.");
+                        else if (err == EVRInitError.Init_HmdNotFound
+                              || err == EVRInitError.Init_HmdNotFoundPresenceFailed)
+                            // No headset attached. This is the ORDINARY state
+                            // for the many people who install SteamVR through
+                            // PadForge's own Settings card to get virtual VR
+                            // slots (#49) and own no HMD at all. Consuming real
+                            // VR devices (#287) is what needs one. Wording it
+                            // as a failure put an error-class line in every
+                            // diagnostics harvest on such a machine, which is
+                            // the same defect already fixed for a device with
+                            // no SDL haptic interface (b1e09abd): an expected
+                            // absence is not a failure.
+                            _log("VRCONSUME no headset attached; virtual VR slots are unaffected. Watching.");
                         else
                             _log($"VRCONSUME init failed: {err}");
                     }

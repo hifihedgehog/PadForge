@@ -492,14 +492,33 @@ namespace PadForge.Views
             // resumed outer call dereference the nulled card (user-reported
             // NullReferenceException at mouse-up, 2026-07-04).
             _isDragging = false;
+
+            // Take what has to be un-hidden BEFORE releasing capture, and
+            // restore it unconditionally afterwards.
+            //
+            // The comment above says Mouse.Capture(null) can synchronously
+            // re-enter OnDragEnd. It does not only null _dragSourceCard for
+            // the code below it, it nulls the field this restore was GATED
+            // ON, so the outer call skipped its own restore and the card
+            // was left at Opacity 0 permanently. The slot still existed
+            // everywhere else, so the sidebar kept it and only the dashboard
+            // card vanished, and an Opacity-0 card still hit-tests, which is
+            // why the owner saw a "Delete virtual controller" tooltip
+            // floating over apparently empty space (2026-08-19). Reproduced
+            // by dropping a card on the Add Controller zone fast enough that
+            // a mouse-up was already pending at capture release, which is
+            // exactly when the re-entrant delivery happens.
+            //
+            // Reading the fields into locals first makes the restore immune
+            // to whatever the re-entrant call does to them.
+            var hiddenRoot = _dragHiddenRoot;
+            var sourceCard = _dragSourceCard;
+            _dragHiddenRoot = null;
+
             Mouse.Capture(null);
 
-            if (_dragSourceCard != null)
-            {
-                if (_dragHiddenRoot != null) _dragHiddenRoot.Opacity = 1;
-                _dragSourceCard.Opacity = 1;
-            }
-            _dragHiddenRoot = null;
+            if (hiddenRoot != null) hiddenRoot.Opacity = 1;
+            if (sourceCard != null) sourceCard.Opacity = 1;
 
             ClearSwapHighlight();
 

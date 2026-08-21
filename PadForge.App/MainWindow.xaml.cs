@@ -6169,6 +6169,13 @@ namespace PadForge
         private long _lastFullScreenClickTick;
         private long _lastMaximizeClickTick;
 
+        /// <summary>Where the window was before full screen took it, so
+        /// leaving full screen puts it back rather than always dropping it
+        /// to a small window. Session-scoped: a full screen restored at
+        /// startup has no earlier state to return to and keeps the old
+        /// Normal behavior.</summary>
+        private WindowState _preFullScreenState = WindowState.Normal;
+
         private void FullScreenBtn_Click(object sender, RoutedEventArgs e)
         {
             long now = Environment.TickCount64;
@@ -6177,23 +6184,57 @@ namespace PadForge
 
             if (_isFullScreen)
             {
-                // Exit full screen.
+                // Exit full screen, back to wherever it came from.
                 _isFullScreen = false;
                 WindowStyle = WindowStyle.SingleBorderWindow;
-                WindowState = WindowState.Normal;
+                WindowState = _preFullScreenState;
                 FullScreenIcon.Text = "\uE740";
             }
             else
             {
                 // Enter full screen.
+                //
+                // The bounce through Normal is the whole fix (discussion
+                // #342). Assigning Maximized to a window that is ALREADY
+                // maximized is a no-op, so WPF never recomputes the frame
+                // under the new borderless style: the icon changed, the
+                // window did not, and the feature read as dead from a
+                // maximized window. Three presses got there, because press
+                // two exits to Normal and press three finally performs a
+                // real Normal to Maximized transition.
+                //
+                // Startup restore never hit this. OnLoaded's path runs with
+                // the window deliberately left Normal (the saved-state
+                // restore skips Maximized while MainWindowFullScreen is
+                // set), so its transition was always a real one.
+                _preFullScreenState = WindowState;
                 _isFullScreen = true;
+                var path = FullScreenEnterPath(WindowState);
                 WindowStyle = WindowStyle.None;
-                WindowState = WindowState.Maximized;
+                foreach (var st in path) WindowState = st;
                 FullScreenIcon.Text = "\uE73F";
             }
             _viewModel.Settings.MainWindowFullScreen = _isFullScreen;
             _settingsService.MarkDirty();
         }
+
+        /// <summary>The WindowState assignments, in order, that take a
+        /// window from <paramref name="current"/> into borderless full
+        /// screen.
+        ///
+        /// <para>From a maximized window it is TWO steps. Assigning
+        /// Maximized to an already-maximized window is a no-op, so WPF
+        /// never recomputes the frame under the new borderless style and
+        /// the window keeps its old geometry while the button's icon
+        /// flips. Bouncing through Normal makes the second assignment a
+        /// real transition (discussion #342).</para>
+        ///
+        /// <para>From any other state one assignment is already a real
+        /// transition, and the extra bounce would be a visible flash.</para></summary>
+        internal static WindowState[] FullScreenEnterPath(WindowState current)
+            => current == WindowState.Maximized
+                ? new[] { WindowState.Normal, WindowState.Maximized }
+                : new[] { WindowState.Maximized };
 
         private void TitleBar_MaximizeClicked(Wpf.Ui.Controls.TitleBar sender, RoutedEventArgs args)
         {

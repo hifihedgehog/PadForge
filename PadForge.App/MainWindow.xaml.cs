@@ -2432,9 +2432,15 @@ namespace PadForge
                 _viewModel.Settings.SdlVersion = Strings.Instance.Common_Unknown;
             }
 
-            // Select the first nav item.
-            if (NavView.MenuItems.Count > 0)
-                if (NavView.MenuItems[0] is NavigationViewItem first) first.IsActive = true;
+            // Select the first nav item. Through the helper, not a bare
+            // IsActive write: nothing else is active at startup so the
+            // clear is a no-op today, and leaving the bare-setter shape in
+            // the file is how it got copied to the two places that needed
+            // the clear and did not have it (discussion #340).
+            if (NavView.MenuItems.Count > 0
+                && NavView.MenuItems[0] is NavigationViewItem first
+                && first.Tag?.ToString() is string firstTag)
+                SetNavActiveByTag(firstTag);
         }
 
         private async void MaybeOfferLegacyDriverCleanup()
@@ -2863,22 +2869,19 @@ namespace PadForge
             // NavView_SelectionChanged processes it normally.
             if (!string.IsNullOrEmpty(selectedTag))
             {
-                NavigationViewItem match = null;
-                NavigationViewItem fallback = null;
-                foreach (var mi in NavView.MenuItems)
-                {
-                    if (mi is NavigationViewItem nvi)
-                    {
-                        if (nvi.Tag?.ToString() == selectedTag)
-                        {
-                            match = nvi;
-                            break;
-                        }
-                        if (nvi.Tag?.ToString() == "Dashboard")
-                            fallback = nvi;
-                    }
-                }
-                if ((match ?? fallback) is NavigationViewItem restoreItem) restoreItem.IsActive = true;
+                // Styling only: the rebuild restores which item looks
+                // selected and must not re-navigate. Falls back to the
+                // Dashboard when the previously selected tag is gone,
+                // which is what deleting the open slot does.
+                //
+                // The hand-rolled search this replaces scanned only
+                // MenuItems, so a rebuild while Settings or About was open
+                // found no match, lit the Dashboard fallback, and left the
+                // footer item lit too: the same double active bar as
+                // discussion #340, reachable from any slot create, delete
+                // or reorder.
+                if (!SetNavActiveByTag(selectedTag))
+                    SetNavActiveByTag("Dashboard");
             }
 
             // Refresh uninstall button guards (disabled when slots of that type exist).
@@ -5691,34 +5694,77 @@ namespace PadForge
         /// <summary>
         /// Selects a NavigationViewItem by its Tag string.
         /// </summary>
-        private void SelectNavItemByTag(string tag)
+        /// <returns>True when an item carried <paramref name="tag"/>. A caller
+        /// with a fallback asks for it on false rather than re-implementing
+        /// the search, which is how the rail ended up with hand-rolled copies
+        /// that set an item active without clearing the others.</returns>
+        private bool SelectNavItemByTag(string tag)
         {
-            // Clear all active states first.
-            foreach (var mi in NavView.MenuItems)
-                if (mi is NavigationViewItem other) other.IsActive = false;
-            foreach (var mi in NavView.FooterMenuItems)
-                if (mi is NavigationViewItem other) other.IsActive = false;
-
-            // Set active on the matching item.
-            foreach (var mi in NavView.MenuItems)
-            {
-                if (mi is NavigationViewItem nvi && nvi.Tag?.ToString() == tag)
-                {
-                    nvi.IsActive = true;
-                    break;
-                }
-            }
-            foreach (var mi in NavView.FooterMenuItems)
-            {
-                if (mi is NavigationViewItem nvi && nvi.Tag?.ToString() == tag)
-                {
-                    nvi.IsActive = true;
-                    break;
-                }
-            }
+            bool found = SetNavActiveByTag(tag);
 
             // Navigate content (WPF UI doesn't reliably fire SelectionChanged).
             NavigateToTag(tag);
+            return found;
+        }
+
+        /// <summary>The styling half of <see cref="SelectNavItemByTag"/>:
+        /// makes exactly one rail item wear the active bar, and navigates
+        /// nowhere. Split out for the rail rebuild, which restores the
+        /// previous item's styling without wanting a fresh navigation and
+        /// its page-swap side effects.</summary>
+        private bool SetNavActiveByTag(string tag)
+            => ApplyNavActive(NavView.MenuItems, NavView.FooterMenuItems, tag);
+
+        /// <summary>
+        /// Makes exactly one rail item across BOTH collections wear the
+        /// active bar.
+        ///
+        /// <para>Both collections is the whole point. Settings and About
+        /// live in FooterMenuItems, so a sweep over MenuItems alone clears
+        /// nothing in the footer and leaves a footer item lit beside the
+        /// newly activated one, which is the two-orange-bars report in
+        /// discussion #340.</para>
+        ///
+        /// <para>Static and collection-agnostic so the rule is testable
+        /// without standing up the window.</para>
+        /// </summary>
+        /// <returns>True when some item carried <paramref name="tag"/>.
+        /// False leaves NOTHING active, which is why the rail rebuild asks
+        /// again with its fallback rather than trusting one call.</returns>
+        internal static bool ApplyNavActive(
+            System.Collections.IEnumerable menuItems,
+            System.Collections.IEnumerable footerItems,
+            string tag)
+        {
+            foreach (var mi in menuItems)
+                if (mi is NavigationViewItem other) other.IsActive = false;
+            foreach (var mi in footerItems)
+                if (mi is NavigationViewItem other) other.IsActive = false;
+
+            // A null or empty tag matches NOTHING. Without this an item
+            // carrying no Tag compares equal to it (both sides null) and
+            // would light up, which is the opposite of "nothing is
+            // selected". The clear above still runs, so the rail ends
+            // honestly dark and a caller with a fallback asks again.
+            if (string.IsNullOrEmpty(tag)) return false;
+
+            foreach (var mi in menuItems)
+            {
+                if (mi is NavigationViewItem nvi && nvi.Tag?.ToString() == tag)
+                {
+                    nvi.IsActive = true;
+                    return true;
+                }
+            }
+            foreach (var mi in footerItems)
+            {
+                if (mi is NavigationViewItem nvi && nvi.Tag?.ToString() == tag)
+                {
+                    nvi.IsActive = true;
+                    return true;
+                }
+            }
+            return false;
         }
 
         /// <summary>
@@ -7078,17 +7124,13 @@ namespace PadForge
         /// <summary>Re-runs the welcome tour (Settings button).</summary>
         public void StartFirstRunTour()
         {
-            // Actually navigate. IsActive alone only restyles the nav item,
-            // which left the tour highlighting over the Settings page.
-            NavigateToTag("Dashboard");
-            foreach (var mi in NavView.MenuItems)
-            {
-                if (mi is NavigationViewItem nvi && nvi.Tag?.ToString() == "Dashboard")
-                {
-                    nvi.IsActive = true;
-                    break;
-                }
-            }
+            // Navigate AND restyle, through the one helper that clears the
+            // other items first. The hand-rolled loop this replaces set
+            // Dashboard active without clearing anything and scanned only
+            // MenuItems, so starting the tour from Settings (whose item
+            // lives in FooterMenuItems) left two rail items wearing the
+            // active bar at once (discussion #340).
+            SelectNavItemByTag("Dashboard");
             WelcomePanel.Visibility = Visibility.Visible;
             TourCanvas.Visibility = Visibility.Collapsed;
             // Welcome state dims everything: no cutout until a step runs.

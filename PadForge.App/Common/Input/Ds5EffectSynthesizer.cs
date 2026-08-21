@@ -78,6 +78,13 @@ namespace PadForge.Common.Input
         // save". Asserting this enable bit is therefore a pure unmute.
         private const ushort EnableAudioMuteControl = 0x0200;
         private const ushort EnableLightbar         = 0x0400;
+        /// <summary>validFlag1 bit 3: "Release the LEDs from Wireless
+        /// firmware control" (duaLib dataStructures.h:259). Over Bluetooth
+        /// the DualSense keeps running its own connect animation, default
+        /// blue, and IGNORES every lightbar write until a host asserts
+        /// this. Sent as part of the one-shot connect release only, the
+        /// way duaLib sends it at enumeration (duaLib.cpp:211).</summary>
+        private const ushort ResetLights            = 0x0800;
         private const ushort EnablePlayerIndicator  = 0x1000;
 
         // validFlag2 (byte 38) defines only three bits. duaLib
@@ -206,7 +213,20 @@ namespace PadForge.Common.Input
             // writes it. Same reasoning already applied to rumble in
             // UserEffectsDispatcher, which zeroes its motor bytes for a
             // pass-through target.
-            bool assertLightbarEnable = true)
+            bool assertLightbarEnable = true,
+            // btConnectRelease: the Bluetooth connect one-shot. A DS5 on BT
+            // holds its firmware default blue and ignores lightbar writes
+            // until the host releases the LEDs: ResetLights (validFlag1 bit
+            // 3) plus a flag2-gated FadeOut of the default animation. Both
+            // references send exactly this once per BT connect and never in
+            // the steady loop: duaLib at enumeration (duaLib.cpp:198-218,
+            // DUALSENSE && HID_API_BUS_BLUETOOTH), OpenRGB in its BT branch
+            // ("bypass default blue color when connected to bluetooth",
+            // SonyDualSenseController.cpp:68). PadForge used to get this
+            // accidentally from the standing FadeOut d4c011f5 removed, which
+            // is when reconnected pads started sitting on firmware blue
+            // until an app restart happened to re-open the device (#334).
+            bool btConnectRelease = false)
         {
             ushort enableBits = 0;
 
@@ -572,6 +592,7 @@ namespace PadForge.Common.Input
             // has no PadForge-side AT configured.
             if (assertRightTriggerEnable) enableBits |= EnableRightTrigger;
             if (assertLeftTriggerEnable)  enableBits |= EnableLeftTrigger;
+            if (btConnectRelease)         enableBits |= ResetLights;
 
             // validFlag2, composed per-bit rather than blanket 0xFF.
             //
@@ -592,7 +613,7 @@ namespace PadForge.Common.Input
             byte validFlag2 = EnableImprovedRumbleEmulation;
             if (lightbarAuthored || overrides.LedBrightness.HasValue)
                 validFlag2 |= AllowLightBrightnessChange;
-            if (overrides.LightbarSetup.HasValue)
+            if (overrides.LightbarSetup.HasValue || btConnectRelease)
                 validFlag2 |= AllowColorLightFadeAnimation;
 
             // BT DS5 spec adds "btTag" at byte 1 (USB spec ignores it).
@@ -611,7 +632,10 @@ namespace PadForge.Common.Input
                 { "headphoneVolume",  headphoneByte },
                 { "audioControlFlags", audioControlFlags },
                 { "validFlag2",       validFlag2 },
-                { "lightbarSetup",    overrides.LightbarSetup ?? (byte)0x00 },
+                // The connect one-shot fades the firmware's default blue
+                // out (FadeOut = 2); an external writer's own fade request
+                // still wins the byte when both land on the same tick.
+                { "lightbarSetup",    overrides.LightbarSetup ?? (btConnectRelease ? (byte)0x02 : (byte)0x00) },
                 { "ledBrightness",    ledBrightness },
                 { "playerIndicator",  playerIndicator },
                 { "lightbar",         new byte[] { ledR, ledG, ledB } },

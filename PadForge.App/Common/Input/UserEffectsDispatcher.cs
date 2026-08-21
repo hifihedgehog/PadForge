@@ -463,6 +463,22 @@ namespace PadForge.Common.Input
                 && isDs5
                 && DualSensePassthroughDispatcher.IsPassthroughTarget(padIndex, deviceGuid));
 
+        /// <summary>DS5-over-Bluetooth pads owed the connect one-shot that
+        /// releases the LEDs from firmware control (ResetLights + FadeOut of
+        /// the default blue). Armed when a Bluetooth DS5 is first seen online
+        /// and again whenever it returns from an outage, consumed only after
+        /// the write carrying it actually lands, the same
+        /// consume-on-delivery contract the speaker-path one-shot uses.
+        ///
+        /// <para>Without this a DS5 powered on over BT sits on its firmware
+        /// default blue and ignores every colour PadForge writes, whatever
+        /// the Lighting tab says, until an app restart happens to re-open
+        /// the device (#334, second report). The standing FadeOut that
+        /// d4c011f5 removed had been delivering this release by accident on
+        /// every tick since the Lighting tab shipped.</para></summary>
+        private readonly HashSet<Guid> _btBarReleasePending = new();
+        private readonly HashSet<Guid> _btBarReleaseSeen = new();
+
         // Devices assigned to this slot on the previous dispatch. A
         // change here means the user re-assigned the slot, which is a
         // deliberate identity claim and has to re-arm state that is
@@ -1640,7 +1656,7 @@ namespace PadForge.Common.Input
             // one-shot this payload is spending, or Guid.Empty. The one-shot is
             // only consumed after the write for this entry actually lands, so a
             // stale-skip or a failed write leaves it armed for the next tick.
-            var pending = new List<(string Path, HMProfile Profile, IReadOnlyDictionary<string, object> Fields, long Seq, Guid SpeakerCleared)>();
+            var pending = new List<(string Path, HMProfile Profile, IReadOnlyDictionary<string, object> Fields, long Seq, Guid SpeakerCleared, Guid BtBarReleased)>();
 
             lock (devices.SyncRoot)
             {
@@ -1684,8 +1700,23 @@ namespace PadForge.Common.Input
                         _audioMuteBurstLeft[ud.InstanceGuid] = AudioMuteBurstFrames;
                         _prevHeadphoneVolume.Remove(ud.InstanceGuid);
                         _prevAudioOutputPath.Remove(ud.InstanceGuid);
+                        // A BT re-pair also puts the LEDs back under firmware
+                        // control, so the connect release is owed again.
+                        if (isDs5 && PlayStationEffectWriter.IsBluetoothPath(ud.DevicePath))
+                            _btBarReleasePending.Add(ud.InstanceGuid);
                         Engine.SdlDiagLog.WriteLine("DISPATCH re-arm (device returned) guid="
                             + ud.InstanceGuid.ToString("N").Substring(0, 8));
+                    }
+                    // First online sighting this session: duaLib sends the
+                    // release at every enumeration, so a pad that connected
+                    // before PadForge started, or connects mid-session for
+                    // the first time, is owed one too.
+                    if (isDs5 && ud.IsOnline
+                        && !_btBarReleaseSeen.Contains(ud.InstanceGuid)
+                        && PlayStationEffectWriter.IsBluetoothPath(ud.DevicePath))
+                    {
+                        _btBarReleaseSeen.Add(ud.InstanceGuid);
+                        _btBarReleasePending.Add(ud.InstanceGuid);
                     }
                     // Web controller lightbar: a phone drawing a DualShock 4
                     // or a DualSense renders the same bar the hardware has, so
@@ -2208,6 +2239,11 @@ namespace PadForge.Common.Input
                         // it really wants to drive that device). Matches
                         // 3.1.0 behavior; does NOT compound into a steady-
                         // state motor kill.
+                        // The BT connect one-shot rides this device's next
+                        // built frame. Spent on delivery, not here: a frame
+                        // the stale-skip drops must leave it armed.
+                        bool btConnectRelease = isDs5
+                            && _btBarReleasePending.Contains(ud.InstanceGuid);
                         var fields = isDs5
                             ? Ds5EffectSynthesizer.BuildFields(
                                 devCfg, devPeak, nowMs,
@@ -2216,7 +2252,8 @@ namespace PadForge.Common.Input
                                 assertRightTrig, assertLeftTrig, devOverrides, pctByte,
                                 devPlayerNumber, assertMicLed, assertAudioMute,
                                 assertPips, hpVol, assertHeadphone,
-                                pathVal, assertAudioCtl, assertLightbar)
+                                pathVal, assertAudioCtl, assertLightbar,
+                                btConnectRelease)
                             : Ds4EffectSynthesizer.BuildFields(
                                 devCfg, devPeak, nowMs,
                                 _randomColor, devPulseColor, devPulseIntensity,
@@ -2315,7 +2352,8 @@ namespace PadForge.Common.Input
                         // capture that a newer one has already superseded.
                         pending.Add((path, profile, fields,
                             System.Threading.Interlocked.Increment(ref s_dispatchSeq),
-                            speakerCleared));
+                            speakerCleared,
+                            btConnectRelease ? ud.InstanceGuid : Guid.Empty));
                     }
                     catch
                     {
@@ -2355,6 +2393,11 @@ namespace PadForge.Common.Input
                         // stayed latched with nothing left to restore it.
                         if (w.SpeakerCleared != Guid.Empty)
                             AudioPassthroughService.TryConsumeSpeakerPathCleared(w.SpeakerCleared);
+                        // Same delivery contract for the BT LED release: the
+                        // bytes went out, so the one-shot is spent. A dropped
+                        // or failed frame leaves it armed for the next tick.
+                        if (w.BtBarReleased != Guid.Empty)
+                            _btBarReleasePending.Remove(w.BtBarReleased);
                     }
                     catch
                     {

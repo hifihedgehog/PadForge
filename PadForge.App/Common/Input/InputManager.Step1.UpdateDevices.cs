@@ -1010,10 +1010,24 @@ namespace PadForge.Common.Input
                 catch { /* best effort */ }
             }
 
-            // Clear native-wheel per-device state so a same-path replug re-applies the
-            // rotation range + auto-center disable (the wheel firmware power-cycles to its
-            // default centering spring on unplug) and the FFB state machines re-arm instead
-            // of refreshing/updating a slot the firmware reset to empty.
+            // THE RE-ARM REGISTRY. On a confirmed disconnect, every per-device
+            // write-gating cache is cleared here so a replug re-establishes
+            // device state instead of trusting a latch the firmware no longer
+            // remembers: the wheel firmware power-cycles to its default
+            // centering spring and forgets uploaded effects, so the rotation
+            // range, auto-center and FFB state machines must re-apply.
+            //
+            // A new per-device cache that gates writes has exactly two legal
+            // designs: enroll its reset HERE, or self-heal by asserting its
+            // state on every packet (Fanatec's writer is stateless and the
+            // DS4 encoder sends its full flag byte each frame, so neither
+            // needs an entry — those are deliberate N/As, not omissions).
+            // A per-process latch over per-connection firmware state is how
+            // a DualSense on Bluetooth sat on firmware-default blue from
+            // v4.2.0 until 4.3.1 (#334 second half): connect-time device
+            // init keyed to the process survives the reconnect that resets
+            // the device. "Works until a power-cycle, fixed by an app
+            // restart" is that defect's field signature.
             if (!string.IsNullOrEmpty(ud.DevicePath))
             {
                 _appliedWheelSettings.TryRemove(ud.DevicePath, out _);

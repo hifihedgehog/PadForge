@@ -1785,6 +1785,25 @@ namespace PadForge.Common.Input
                             var socdExt = ResolveSlotSocd(padIndex, extendedIndices: true);
                             if (socdExt != null)
                                 socdExt.ApplyExtended(CombinedRawHidStates[padIndex].Buttons);
+                            // Valve persona (#338): a slot whose HM profile is
+                            // the steam-deck-composite persona submits the
+                            // native Neptune frame instead of the field-encoded
+                            // raw surface, exactly the SubmitRawReport split
+                            // the Sony USB personas ride below. The lookup
+                            // misses for every profile shipping today; it
+                            // lights the release HM ships the profile (HM#56).
+                            var deckPacker = SteamDeckReportPacker.ForProfile(hmExt.ProfileId);
+                            if (deckPacker != null)
+                            {
+                                deckPacker(
+                                    CombinedRawHidStates[padIndex],
+                                    CombinedTouchpadStates[padIndex],
+                                    MotionSnapshots[padIndex],
+                                    unchecked((uint)_deckFrameCounter++),
+                                    _deckReportScratch);
+                                hmExt.SubmitRawReport(_deckReportScratch);
+                            }
+                            else
                             hmExt.SubmitRawHidState(
                                 CombinedRawHidStates[padIndex],
                                 layout.Sticks,

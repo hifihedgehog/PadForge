@@ -569,6 +569,12 @@ namespace PadForge.Common.Input
         /// advance every frame regardless of input state.</summary>
         private long _sonyFrameCounter;
 
+        /// <summary>Neptune frame counter + scratch for the Deck persona
+        /// (#338). unPacketNum must increment: SDL's struct comment licenses
+        /// consumers to skip processing while it is unchanged.</summary>
+        private long _deckFrameCounter;
+        private readonly byte[] _deckReportScratch = new byte[SteamDeckReportPacker.ReportSize];
+
         /// <summary>
         /// DSU motion server reference. When set, the polling thread broadcasts
         /// motion data to subscribed clients after snapshotting sensor data.

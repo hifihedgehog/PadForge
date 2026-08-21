@@ -1166,6 +1166,82 @@ namespace PadForge.Common.Input
                     return;
                 }
 
+                // Steam Deck persona haptics (#338). Steam drives a Deck's
+                // rumble with vendor feature commands on the controller
+                // interface, decoded byte-for-byte per HandheldCompanion's
+                // SteamDeckTarget.HandleOutput (proven against live Steam):
+                // 0xEB trigger rumble (u16 speeds at 5/7), 0xEA haptic
+                // (intensity at 4 plus signed gain at 5, x8), 0x8F the
+                // classic pulse train (period u16 at 5, count u16 at 7,
+                // gain at 9). The persona's reports are id-less, so the
+                // command byte is data[0] and pkt.ReportId is 0.
+                if (pkt.Source == HMOutputSource.HidFeature
+                    && string.Equals(_profile.Id, "steam-deck-composite", StringComparison.OrdinalIgnoreCase)
+                    && data.Length >= 1)
+                {
+                    switch (data[0])
+                    {
+                        case 0xEB when data.Length >= 9:
+                        {
+                            ushort left = (ushort)(data[5] | (data[6] << 8));
+                            ushort right = (ushort)(data[7] | (data[8] << 8));
+                            // HC scales /256 to a byte then back out; keep
+                            // the u16 precision and land it directly.
+                            vibrationStates[idx].LeftMotorSpeed = left;
+                            vibrationStates[idx].RightMotorSpeed = right;
+                            System.Threading.Volatile.Write(ref _inboundRumblePack,
+                                Engine.Common.LfeOutputState.Pack(left, right, 0, 0));
+                            return;
+                        }
+                        case 0xEA when data.Length >= 6:
+                        {
+                            int v = data[4] + unchecked((sbyte)data[5]) * 8;
+                            ushort mag = (ushort)(Math.Clamp(v, 0, 255) * 257);
+                            vibrationStates[idx].LeftMotorSpeed = mag;
+                            vibrationStates[idx].RightMotorSpeed = mag;
+                            System.Threading.Volatile.Write(ref _inboundRumblePack,
+                                Engine.Common.LfeOutputState.Pack(mag, mag, 0, 0));
+                            return;
+                        }
+                        case 0x8F when data.Length >= 10:
+                        {
+                            ushort period = (ushort)(data[5] | (data[6] << 8));
+                            ushort count = (ushort)(data[7] | (data[8] << 8));
+                            ushort mag = (ushort)(Math.Min(255, count * 16 + data[9]) * 257);
+                            vibrationStates[idx].LeftMotorSpeed = mag;
+                            vibrationStates[idx].RightMotorSpeed = mag;
+                            System.Threading.Volatile.Write(ref _inboundRumblePack,
+                                Engine.Common.LfeOutputState.Pack(mag, mag, 0, 0));
+                            // A pulse train is finite: stop when it ends, the
+                            // way HC does. The delayed zero yields to any
+                            // newer command by only clearing an unchanged
+                            // value (same last-write-wins the motors use).
+                            int durMs = Math.Max(1, (int)Math.Ceiling(period * (long)count / 1000.0));
+                            _ = System.Threading.Tasks.Task.Delay(durMs).ContinueWith(_ =>
+                            {
+                                try
+                                {
+                                    if (idx >= 0 && idx < vibrationStates.Length
+                                        && vibrationStates[idx].LeftMotorSpeed == mag
+                                        && vibrationStates[idx].RightMotorSpeed == mag)
+                                    {
+                                        vibrationStates[idx].LeftMotorSpeed = 0;
+                                        vibrationStates[idx].RightMotorSpeed = 0;
+                                        System.Threading.Volatile.Write(ref _inboundRumblePack,
+                                            Engine.Common.LfeOutputState.Pack(0, 0, 0, 0));
+                                    }
+                                }
+                                catch { }
+                            });
+                            return;
+                        }
+                    }
+                    // An unrecognized command (settings writes, mappings,
+                    // heartbeats) is Steam configuring the pad; nothing to
+                    // apply on the feedback side.
+                    return;
+                }
+
                 // Xbox Series BT browser-Gamepad / Game Controller Tester
                 // / Game Pass app short HID rumble:
                 // [trigL, trigR, motorL, motorR, dur, delay, loop].

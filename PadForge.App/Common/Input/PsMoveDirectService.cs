@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using System.Threading;
 using SDL3;
@@ -629,7 +629,7 @@ namespace PadForge.Common.Input
             {
                 if (DeviceRowExists()) return;
 
-                var namePtr = Marshal.StringToHGlobalAnsi("PS Move Motion Controller");
+                var namePtr = Marshal.StringToHGlobalAnsi("PlayStation Move Motion Controller");
                 uint id = 0;
                 try
                 {
@@ -688,8 +688,8 @@ namespace PadForge.Common.Input
                     devices.Items.Add(new Engine.Data.UserDevice
                     {
                         InstanceGuid = instanceGuid,
-                        InstanceName = "PS Move Motion Controller",
-                        ProductName = "PS Move Motion Controller",
+                        InstanceName = "PlayStation Move Motion Controller",
+                        ProductName = "PlayStation Move Motion Controller",
                         ProductGuid = Engine.SdlDeviceWrapper.BuildProductGuid(MOVE_VID, MOVE_PID),
                         SdlGuid = sdlGuidHex,
                         VendorId = MOVE_VID,
@@ -1011,7 +1011,7 @@ namespace PadForge.Common.Input
         {
             _rumbleCb = OnRumble; _setLedCb = OnSetLed; _setPlayerCb = OnSetPlayerIndex; _setSensorsCb = OnSetSensors;
 
-            var namePtr = Marshal.StringToHGlobalAnsi("PS Move Motion Controller");
+            var namePtr = Marshal.StringToHGlobalAnsi("PlayStation Move Motion Controller");
             // ZCM1 reports arrive at ~85 Hz with two sensor frames each, so the
             // effective sensor rate is ~170 Hz; SDL deep-copies this array.
             var sensors = new SDL.SDL_VirtualJoystickSensorDesc[]

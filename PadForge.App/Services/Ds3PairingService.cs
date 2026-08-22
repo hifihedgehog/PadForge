@@ -1039,7 +1039,7 @@ namespace PadForge.Services
             bool zcm2 = dev != null && dev.Value.Pid == MOVE_ZCM2_USB_PID;
             _log(isNav
                 ? $"Navigation controller on USB{(dev == null ? " (WinUSB)" : ": " + dev.Value.DataPath)}"
-                : $"{(zcm2 ? "PS Move (ZCM2)" : "PS Move (ZCM1)")} on USB: {dev.Value.DataPath}");
+                : $"{(zcm2 ? "PlayStation Move (ZCM2)" : "PlayStation Move (ZCM1)")} on USB: {dev.Value.DataPath}");
 
             string macHex;
             if (isNav)
@@ -1124,7 +1124,7 @@ namespace PadForge.Services
                 return r;
             }
 
-            _log($"Bluetooth radio cycled. Unplug the {(isNav ? "Navigation controller" : "PS Move")} and press its PS button.");
+            _log($"Bluetooth radio cycled. Unplug the {(isNav ? "Navigation controller" : "PlayStation Move")} and press its PS button.");
 
             Ds3DriverInstaller.LogBthPs3ChildState(LogLine);
             int binding = Ds3DriverInstaller.ProbeBthPs3ServiceBinding(out string bindDetail);

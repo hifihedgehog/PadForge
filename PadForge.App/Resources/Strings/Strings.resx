@@ -2653,8 +2653,8 @@
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>Running, driver connected</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>Running, controllers live</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
-  <data name="MovePair_Instructions" xml:space="preserve"><value>Connect the PS Move or Navigation controller with a USB cable, then click Pair. PadForge writes this PC into the controller, saves the Move's motion calibration, and registers it. When it finishes, unplug the controller and press its PS button to connect over Bluetooth.</value></data>
-  <data name="MovePair_NoUsb" xml:space="preserve"><value>No PS Move or Navigation controller found on USB. Connect it with a USB cable and try again.</value></data>
+  <data name="MovePair_Instructions" xml:space="preserve"><value>Connect the PlayStation Move or Navigation controller with a USB cable, then click Pair. PadForge writes this PC into the controller, saves the Move's motion calibration, and registers it. When it finishes, unplug the controller and press its PS button to connect over Bluetooth.</value></data>
+  <data name="MovePair_NoUsb" xml:space="preserve"><value>No PlayStation Move or Navigation controller found on USB. Connect it with a USB cable and try again.</value></data>
   <data name="Ds3Pair_Instructions" xml:space="preserve"><value>Connect the DualShock 3 with a USB cable, then click Pair. PadForge writes this PC into the controller and registers it. When it finishes, unplug the controller and press the PS button to connect over Bluetooth.</value></data>
   <data name="Ds3Pair_Working" xml:space="preserve"><value>Setting up the controller. Keep it connected by USB.</value></data>
   <data name="Ds3Pair_Success" xml:space="preserve"><value>Ready. Unplug the controller and press the PS button. It will appear in your device list.</value></data>

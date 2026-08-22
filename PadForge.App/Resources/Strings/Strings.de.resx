@@ -2421,8 +2421,8 @@
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>Wird ausgeführt, Treiber verbunden</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>Wird ausgeführt, Controller aktiv</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
-  <data name="MovePair_Instructions" xml:space="preserve"><value>Verbinden Sie den PS Move- oder Navigation-Controller mit einem USB-Kabel und klicken Sie dann auf Koppeln. PadForge schreibt diesen PC in den Controller, speichert die Bewegungskalibrierung des Move und registriert ihn. Trennen Sie danach den Controller und drücken Sie seine PS-Taste, um sich über Bluetooth zu verbinden.</value></data>
-  <data name="MovePair_NoUsb" xml:space="preserve"><value>Kein PS Move- oder Navigation-Controller am USB gefunden. Verbinden Sie ihn mit einem USB-Kabel und versuchen Sie es erneut.</value></data>
+  <data name="MovePair_Instructions" xml:space="preserve"><value>Verbinden Sie den PlayStation Move- oder Navigation-Controller mit einem USB-Kabel und klicken Sie dann auf Koppeln. PadForge schreibt diesen PC in den Controller, speichert die Bewegungskalibrierung des Move und registriert ihn. Trennen Sie danach den Controller und drücken Sie seine PS-Taste, um sich über Bluetooth zu verbinden.</value></data>
+  <data name="MovePair_NoUsb" xml:space="preserve"><value>Kein PlayStation Move- oder Navigation-Controller am USB gefunden. Verbinden Sie ihn mit einem USB-Kabel und versuchen Sie es erneut.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Gerät 1:1 klonen</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Bildet jede Achse, Taste und jeden POV-Schalter des ausgewählten Geräts direkt auf den gleichnummerierten virtuellen Ausgang ab. Passt das Layout an das Gerät an und ersetzt die Zeilen dieses Geräts im Slot durch eine 1:1-Durchleitung.</value></data>
   <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>Gerät 1:1 klonen</value></data>

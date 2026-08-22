@@ -894,7 +894,7 @@ namespace PadForge.Common.Input
             // has no path/serial). A per-transport name would give USB and Bluetooth
             // different identities, so a slot mapping made on one wouldn't survive a
             // switch to the other. One name = one identity for the physical pad.
-            var namePtr = Marshal.StringToHGlobalAnsi(_nav ? "PS Move Navigation Controller" : "DualShock 3");
+            var namePtr = Marshal.StringToHGlobalAnsi(_nav ? "PlayStation Move Navigation Controller" : "DualShock 3");
             // Two sensors: accel + gyro at the DS3's ~100 Hz report rate. SDL deep-copies
             // this array during attach (SDL_virtualjoystick.c attach inner), so the
             // unmanaged copy only needs to live for the duration of the call.

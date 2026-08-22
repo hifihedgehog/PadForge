@@ -506,6 +506,21 @@ namespace PadForge.Services
                     catch { /* the dock hook must never break the monitor */ }
                 });
 
+            // The Navigation controller docks the same way and had no hook at
+            // all, so plugging it in streamed input and wrote no Bluetooth
+            // record: it worked on the cable and did not exist to Windows
+            // Bluetooth. Same ceremony, same background-thread rule.
+            PadForge.Common.Input.Ds3DirectService.NavDockObserved = (mac, storedHost) =>
+                System.Threading.Tasks.Task.Run(() =>
+                {
+                    try
+                    {
+                        new Ds3PairingService(msg => PadForge.Engine.SdlDiagLog.WriteLine("NAVPAIR " + msg))
+                            .AutoPairNavIfNeeded(mac, storedHost);
+                    }
+                    catch { /* the dock hook must never break the monitor */ }
+                });
+
             // Remote Link peer-manager actions (issue #138).
             _mainVm.Settings.PeerRevokeRequested += OnPeerRevokeRequested;
             _mainVm.Settings.PeerRevokeAllRequested += OnPeerRevokeAllRequested;

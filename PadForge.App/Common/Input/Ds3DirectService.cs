@@ -245,6 +245,23 @@ namespace PadForge.Common.Input
             }
         }
 
+        /// <summary>Raised once per plug-in when a NAVIGATION controller is
+        /// seen on USB, carrying its own address and the host it currently
+        /// stores. The App layer runs the pairing ceremony from it.
+        ///
+        /// <para>This is the Move's DockObserved, for the Navigation pad. The
+        /// Move auto-pairs the moment it is docked, exactly as a PS3 pairs by
+        /// cable, and the Navigation controller had nothing equivalent: it
+        /// opened over USB, streamed, and never became a Bluetooth device, so
+        /// no entry was ever written for it (owner-reported). The DS3 reaches
+        /// the same ceremony through the Pair dialog; this gives the
+        /// Navigation pad the Move's automatic route as well.</para></summary>
+        public static Action<string, byte[]> NavDockObserved;
+
+        /// <summary>Set once per USB plug-in so the dock event fires on the
+        /// plug, not on every monitor pass.</summary>
+        private string _lastNavDockedPath;
+
         public Ds3DirectService(Action<string> log = null, bool navigation = false)
         {
             _log = log ?? (_ => { });
@@ -405,6 +422,17 @@ namespace PadForge.Common.Input
 
                 string tag = _transport == Ds3Transport.Usb ? "USB" : "BT";
                 _log($"{Tag}({tag}): device opened, kicking + attaching virtual joystick...");
+
+                // A Navigation controller on the cable is a dock, and a dock
+                // is what pairs a PlayStation pad. Fired once per plug-in,
+                // before the reader settles, so the ceremony's suppression
+                // finds a handle it can take.
+                if (_nav && _transport == Ds3Transport.Usb && NavDockObserved != null
+                    && _transportPath != null && _transportPath != _lastNavDockedPath)
+                {
+                    _lastNavDockedPath = _transportPath;
+                    RaiseNavDock();
+                }
                 if (!AttachVirtual()) { Teardown(); Thread.Sleep(1000); continue; }
 
                 _writerRun = true;
@@ -927,6 +955,66 @@ namespace PadForge.Common.Input
             }
         }
 
+        /// <summary>Reads the pad's own address (0xF2 bytes 4-9) and the host
+        /// it currently stores (0xF5 bytes 2-7) over the open WinUSB handle,
+        /// then raises <see cref="NavDockObserved"/>. Same two facts the Move
+        /// hands its own dock hook, and the same two the ceremony needs to
+        /// decide whether this pad is already paired to this PC.
+        ///
+        /// <para>Best-effort throughout: a pad that refuses either report
+        /// still streams, and the hook simply receives what was readable. It
+        /// never throws into the monitor loop.</para></summary>
+        private void RaiseNavDock()
+        {
+            string mac = null;
+            byte[] storedHost = null;
+            try
+            {
+                IntPtr ifh;
+                lock (_outLock) ifh = _usbIfh;
+                if (ifh != IntPtr.Zero)
+                {
+                    byte[] f2 = new byte[17];
+                    if (UsbGetFeature(ifh, 0xF2, f2))
+                    {
+                        var m = new byte[6];
+                        Array.Copy(f2, 4, m, 0, 6);
+                        var sb = new System.Text.StringBuilder(12);
+                        foreach (byte b in m) sb.Append(b.ToString("x2"));
+                        mac = sb.ToString();
+                    }
+                    byte[] f5 = new byte[8];
+                    if (UsbGetFeature(ifh, 0xF5, f5))
+                        storedHost = f5[2..8];
+                }
+            }
+            catch { }
+
+            _log(mac == null
+                ? "NAV(USB): Navigation controller docked; its address could not be read."
+                : $"NAV(USB): Navigation controller docked, address {mac}.");
+            try { NavDockObserved?.Invoke(mac, storedHost); } catch { }
+        }
+
+        /// <summary>GET_REPORT(FEATURE) over WinUSB, the transport these
+        /// reports live on. A control-IN may SHORT COMPLETE, so a partial
+        /// reply is a failure: a truncated 0xF2 would otherwise leave the
+        /// zero-filled buffer's address bytes untouched and hand the ceremony
+        /// 00:00:00:00:00:00, the exact defect the DS3 path records.</summary>
+        private static bool UsbGetFeature(IntPtr ifh, byte reportId, byte[] buf)
+        {
+            var s = new WINUSB_SETUP_PACKET
+            {
+                RequestType = 0xA1,
+                Request = 0x01,
+                Value = (ushort)((0x03 << 8) | reportId),
+                Index = 0,
+                Length = (ushort)buf.Length
+            };
+            return WinUsb_ControlTransfer(ifh, s, buf, (uint)buf.Length, out uint moved, IntPtr.Zero)
+                && moved == (uint)buf.Length;
+        }
+
         private void Teardown()
         {
             // Serialized + idempotent: Stop() and MonitorLoop can both arrive here
@@ -965,6 +1053,8 @@ namespace PadForge.Common.Input
                 }
                 _transportPath = null;
                 _transport = Ds3Transport.None;
+                // A re-plug is a new dock.
+                _lastNavDockedPath = null;
             }
         }
 

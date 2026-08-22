@@ -33,10 +33,48 @@ param(
     # PREPARES the environment itself when no capture-configured settings
     # file is lying around, so a targeted refresh is a single command from
     # a clean machine.
-    [string[]]$Only = @()
+    [string[]]$Only = @(),
+    # UI-settle scale. Every Start-Sleep -Milliseconds in this script is a
+    # guess at how long WPF needs to finish a transition, and the guesses were
+    # made one at a time and always upward: 225 call sites totalling 145
+    # seconds of dead wait, on top of an 800ms delay after EVERY click. A full
+    # run spent more time asleep than working.
+    #
+    # Scaling happens in ONE place (the Start-Sleep proxy below) rather than by
+    # editing 225 literals, so the ratios between waits are preserved and the
+    # whole harness can be tuned or reverted with one number. Process-lifecycle
+    # waits (-Seconds: app kill, restart, driver settle) are NOT scaled: those
+    # are waiting on real work, not on a repaint.
+    [double]$SettleScale = 0.45,
+    # Floor, so a scaled wait never collapses to nothing on a fast machine.
+    [int]$SettleFloorMs = 150
 )
 
 Set-StrictMode -Version Latest
+
+# Proxy that shadows the cmdlet for the whole script. -Milliseconds waits are
+# UI settle time and get scaled; -Seconds waits are process lifecycle and pass
+# through untouched.
+$script:SettleScaleValue = $SettleScale
+$script:SettleFloorValue = $SettleFloorMs
+function Start-Sleep {
+    [CmdletBinding()]
+    param(
+        [Parameter(Position = 0)][int]$Seconds,
+        [int]$Milliseconds
+    )
+    if ($PSBoundParameters.ContainsKey('Milliseconds')) {
+        $scaled = [int]($Milliseconds * $script:SettleScaleValue)
+        if ($Milliseconds -gt 0 -and $scaled -lt $script:SettleFloorValue) {
+            $scaled = [math]::Min($Milliseconds, $script:SettleFloorValue)
+        }
+        if ($scaled -gt 0) { Microsoft.PowerShell.Utility\Start-Sleep -Milliseconds $scaled }
+        return
+    }
+    if ($PSBoundParameters.ContainsKey('Seconds') -and $Seconds -gt 0) {
+        Microsoft.PowerShell.Utility\Start-Sleep -Seconds $Seconds
+    }
+}
 $ErrorActionPreference = "Stop"
 
 # NOT beside the exe. The standing bar is that only PadForge.xml and crash.log
@@ -273,7 +311,11 @@ function Get-Rect {
 function Click-El {
     param(
         [System.Windows.Automation.AutomationElement]$El,
-        [int]$Delay = 800,
+        # Was 800. A click needs long enough for the target to react, not
+        # long enough to be sure, and several hundred clicks a run made this
+        # the single largest line item in the harness's wall clock. Callers
+        # that genuinely need longer already pass -Delay explicitly.
+        [int]$Delay = 400,
         [string]$Label
     )
     if (-not $El) { Write-Host "  !! NOT FOUND: $Label" -ForegroundColor Red; return $false }
@@ -553,7 +595,11 @@ function Cap {
 function Select-El {
     param(
         [System.Windows.Automation.AutomationElement]$El,
-        [int]$Delay = 800,
+        # Was 800. A click needs long enough for the target to react, not
+        # long enough to be sure, and several hundred clicks a run made this
+        # the single largest line item in the harness's wall clock. Callers
+        # that genuinely need longer already pass -Delay explicitly.
+        [int]$Delay = 400,
         [string]$Label
     )
     if (-not $El) { Write-Host "  !! NOT FOUND: $Label" -ForegroundColor Red; return $false }
@@ -1157,17 +1203,37 @@ try {
         $preExistingIds = New-Object System.Collections.Generic.HashSet[string]
         foreach ($d in $devicesNode.SelectNodes("Device")) {
             $v = $d.SelectSingleNode("VendorId"); $p = $d.SelectSingleNode("ProdId")
-            if ($null -ne $v -and $null -ne $p) { [void]$preExistingIds.Add("$($v.InnerText):$($p.InnerText)") }
+            $nm = $d.SelectSingleNode("ProductName")
+            if ($null -ne $v -and $null -ne $p -and $null -ne $nm) {
+                [void]$preExistingIds.Add("$($v.InnerText):$($p.InnerText):$($nm.InnerText)")
+            }
         }
-        function Test-DeviceIdentityExists($vid, $pid) {
-            return $preExistingIds.Contains("${vid}:${pid}")
+        # NAME is part of the key, not decoration. VID:PID alone is too blunt in
+        # both directions. The owner owns a real G29, MIDI keyboard, NFC reader
+        # and Joy-Cons, so an identity-only check skipped those synthetics and
+        # took pad-wheel, midi-input, nfc-register, joycon-ir-source and the
+        # source-picker shots down with them: the real rows carry Windows'
+        # names, and the synthetics' EXACT names are what trip the offline
+        # identity gates (IsBalanceBoard, HasJoyConIr, HasJoyCon2Mouse compute
+        # from VendorId + ProductName). Matching on the name too skips only a
+        # synthetic that would render as a visually identical second row, which
+        # is the duplicate this check exists to stop.
+        # NOT $pid: that is a PowerShell automatic read-only variable (the
+        # current process id), and binding it as a parameter throws
+        # "Cannot overwrite variable pid because it is read-only or constant"
+        # INSIDE the injection try-block, which swallowed the whole synthetic
+        # device set and took eighteen shots stale with it in one run.
+        function Test-DeviceIdentityExists($vid, $prodId, $name) {
+            return $preExistingIds.Contains("${vid}:${prodId}:${name}")
         }
         function Add-DeviceOnce($node) {
             $g = $node.SelectSingleNode("InstanceGuid").InnerText
             if (Test-DeviceExists $g) { Write-Host "  (dummy $g already present, skipped)"; return }
             $vn = $node.SelectSingleNode("VendorId"); $pn = $node.SelectSingleNode("ProdId")
-            if ($null -ne $vn -and $null -ne $pn -and (Test-DeviceIdentityExists $vn.InnerText $pn.InnerText)) {
-                Write-Host ("  (real {0}:{1} already enumerated, synthetic skipped)" -f $vn.InnerText, $pn.InnerText)
+            $nn = $node.SelectSingleNode("ProductName")
+            if ($null -ne $vn -and $null -ne $pn -and $null -ne $nn -and
+                (Test-DeviceIdentityExists $vn.InnerText $pn.InnerText $nn.InnerText)) {
+                Write-Host ("  (real '{0}' already enumerated, synthetic skipped)" -f $nn.InnerText)
                 return
             }
             $devicesNode.AppendChild($node) | Out-Null

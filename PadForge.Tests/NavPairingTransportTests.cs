@@ -81,7 +81,7 @@ namespace PadForge.Tests
         {
             string src = File.ReadAllText(Path.Combine(RepoRoot(),
                 "PadForge.App", "Services", "Ds3PairingService.cs"));
-            int at = src.IndexOf("bool isNav = dev.Value.Pid == NAV_PID;", System.StringComparison.Ordinal);
+            int at = src.IndexOf("bool isNav = dev == null || dev.Value.Pid == NAV_PID;", System.StringComparison.Ordinal);
             Assert.True(at > 0);
             int moveAt = src.IndexOf("MoveSixpair(dev.Value.AddrPath", at, System.StringComparison.Ordinal);
             Assert.True(moveAt > at);
@@ -130,6 +130,61 @@ namespace PadForge.Tests
             string src = File.ReadAllText(Path.Combine(RepoRoot(),
                 "PadForge.App", "Common", "Input", "Ds3DirectService.cs"));
             Assert.DoesNotContain("the WinUSB INF binds only the DS3",
+                src, System.StringComparison.Ordinal);
+        }
+
+        /// <summary>The DS3 and the Navigation controller share one WinUSB
+        /// interface GUID, so NOTHING may look a pad up by that GUID alone.
+        /// Unfiltered, a ceremony for one pad can open the other and write
+        /// this PC's radio address into the wrong controller, and a bind for
+        /// one can report finished because the other's interface is live.
+        ///
+        /// <para>This is the sweep, not a spot check: every lookup in both
+        /// files is listed here, and a new unfiltered one fails.</para></summary>
+        [Fact]
+        public void NoLookupResolvesAPadByTheSharedGuidAlone()
+        {
+            string pair = File.ReadAllText(Path.Combine(RepoRoot(),
+                "PadForge.App", "Services", "Ds3PairingService.cs"));
+            string inst = File.ReadAllText(Path.Combine(RepoRoot(),
+                "PadForge.App", "Services", "Ds3DriverInstaller.cs"));
+            string direct = File.ReadAllText(Path.Combine(RepoRoot(),
+                "PadForge.App", "Common", "Input", "Ds3DirectService.cs"));
+
+            // Every finder takes a PID token.
+            Assert.Contains("FindInterfacePath(Guid ifGuid, string pidPathToken)",
+                pair, System.StringComparison.Ordinal);
+            Assert.Contains("FindInterfacePath(Guid ifGuid, string pidToken)",
+                direct, System.StringComparison.Ordinal);
+            Assert.Contains("HasActiveWinUsbInterface(string pidPathToken)",
+                inst, System.StringComparison.Ordinal);
+
+            // Every finder APPLIES it.
+            foreach (string src in new[] { pair, direct, inst })
+                Assert.Contains("StringComparison.OrdinalIgnoreCase) >= 0",
+                    src, System.StringComparison.Ordinal);
+
+            // And the pairing ceremony asks for the pad it is pairing.
+            Assert.Contains(@"FindWinUsbPad(""pid_042f"")", pair, System.StringComparison.Ordinal);
+            Assert.Contains(@"FindWinUsbPad(""pid_0268"")", pair, System.StringComparison.Ordinal);
+        }
+
+        /// <summary>The Navigation controller is found by its USB node, not
+        /// by a HID interface. Binding it to WinUSB removes its HID node, so
+        /// a HID search finds it once and never again: every retry after the
+        /// first reported "No PS Move or Navigation controller found on USB"
+        /// for a pad that was plugged in.</summary>
+        [Fact]
+        public void NavigationDiscovery_DoesNotDependOnHid()
+        {
+            string src = File.ReadAllText(Path.Combine(RepoRoot(),
+                "PadForge.App", "Services", "Ds3PairingService.cs"));
+            Assert.Contains("IsSonyPadOnUsb(Ds3DriverInstaller.NavPidToken)",
+                src, System.StringComparison.Ordinal);
+            // The HID hit alone can no longer decide there is nothing here.
+            Assert.Contains("if (dev == null && !navOnUsb)", src, System.StringComparison.Ordinal);
+            // A docked Move still pairs as a Move.
+            Assert.Contains("bool isNav = dev == null || dev.Value.Pid == NAV_PID;",
                 src, System.StringComparison.Ordinal);
         }
 

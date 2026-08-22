@@ -935,17 +935,31 @@ namespace PadForge.Services
 
             if (ct.IsCancellationRequested) { r.Error = "cancelled"; return r; }
 
+            // The Move is found through HID because its ceremony runs there.
+            // The Navigation controller cannot be: binding it to WinUSB for
+            // its own ceremony REMOVES its HID interface, so a HID search
+            // finds it the first time and never again, and every retry
+            // reported "No PS Move or Navigation controller found on USB"
+            // for a pad sitting on the cable. Its USB node is present on
+            // either driver, so that is what decides.
             var dev = FindMoveFamilyHid();
-            if (dev == null)
+            bool navOnUsb = Ds3DriverInstaller.IsSonyPadOnUsb(Ds3DriverInstaller.NavPidToken);
+            if (dev == null && !navOnUsb)
             {
                 _log("No PS Move or Navigation controller found on USB.");
                 r.Error = "no-move-usb";
                 return r;
             }
-            bool isNav = dev.Value.Pid == NAV_PID;
+
+            // A Navigation controller wins over a HID hit only when the HID
+            // hit IS the Navigation controller or there is none at all: a
+            // docked Move must still pair as a Move.
+            bool isNav = dev == null || dev.Value.Pid == NAV_PID;
             _lastCeremonyWasNav = isNav;
-            bool zcm2 = dev.Value.Pid == MOVE_ZCM2_USB_PID;
-            _log($"{(isNav ? "Navigation controller" : zcm2 ? "PS Move (ZCM2)" : "PS Move (ZCM1)")} on USB: {dev.Value.DataPath}");
+            bool zcm2 = dev != null && dev.Value.Pid == MOVE_ZCM2_USB_PID;
+            _log(isNav
+                ? $"Navigation controller on USB{(dev == null ? " (WinUSB)" : ": " + dev.Value.DataPath)}"
+                : $"{(zcm2 ? "PS Move (ZCM2)" : "PS Move (ZCM1)")} on USB: {dev.Value.DataPath}");
 
             string macHex;
             if (isNav)
@@ -1132,7 +1146,7 @@ namespace PadForge.Services
         {
             macHex = null; error = null;
 
-            string path = FindWinUsbDs3();
+            string path = FindWinUsbPad("pid_042f");
             if (path == null)
             {
                 _log("The Navigation controller was not found on WinUSB.");
@@ -1410,7 +1424,17 @@ namespace PadForge.Services
         // Interface GUID from the shipped ds3_winusb.inf.
         private static readonly Guid DS3_WINUSB_IF = new Guid("B35924D6-3E16-4A9E-9782-5524A4B79BAC");
 
-        private static string FindWinUsbDs3() => FindInterfacePath(DS3_WINUSB_IF);
+        /// <summary>The WinUSB interface of ONE pad.
+        ///
+        /// <para>The package covers the DS3 and the Navigation controller
+        /// and gives them the same interface GUID, so the GUID no longer
+        /// identifies a pad. Unfiltered, a ceremony for one could open the
+        /// other and write this PC's radio address into the wrong
+        /// controller.</para></summary>
+        private static string FindWinUsbPad(string pidPathToken)
+            => FindInterfacePath(DS3_WINUSB_IF, pidPathToken);
+
+        private static string FindWinUsbDs3() => FindWinUsbPad("pid_0268");
 
         /// <summary>Why the last GetFeature/SetFeature returned false. Both
         /// return false for TWO different reasons, and only one of them
@@ -1495,7 +1519,7 @@ namespace PadForge.Services
             return sb.ToString();
         }
 
-        private static string FindInterfacePath(Guid ifGuid)
+        private static string FindInterfacePath(Guid ifGuid, string pidPathToken)
         {
             IntPtr set = SetupDiGetClassDevs(ref ifGuid, IntPtr.Zero, IntPtr.Zero, DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
             if (set == INVALID_HANDLE) return null;
@@ -1518,7 +1542,12 @@ namespace PadForge.Services
                     {
                         Marshal.WriteInt32(det, IntPtr.Size == 8 ? 8 : 6);
                         if (SetupDiGetDeviceInterfaceDetail(set, ref did, det, req, ref req, IntPtr.Zero))
-                            return Marshal.PtrToStringUni(det + 4);
+                        {
+                            string p = Marshal.PtrToStringUni(det + 4);
+                            if (p != null && p.IndexOf(pidPathToken,
+                                    StringComparison.OrdinalIgnoreCase) >= 0)
+                                return p;
+                        }
                     }
                     finally { Marshal.FreeHGlobal(det); }
                 }

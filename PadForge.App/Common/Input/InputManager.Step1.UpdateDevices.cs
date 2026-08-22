@@ -651,6 +651,22 @@ namespace PadForge.Common.Input
         internal UserDevice FindOrCreateUserDevice(Guid instanceGuid, Guid productGuid = default,
             HashSet<uint> livePresentSdlIds = null, string serialNumber = null)
         {
+            // Reaching here means a device just ARRIVED: every caller sits
+            // behind a newly-opened guard, so this runs once per connection
+            // and never per poll. The caller re-stamps the row's capabilities
+            // immediately afterwards through LoadFrom*Device, and those are
+            // persisted state, so the settings owe a write.
+            //
+            // Flagging only ROW CREATION was not enough. A row that already
+            // exists still gets its axes, buttons, POVs and button positions
+            // rewritten on every connect, and a row minted by another lane
+            // carries none of them: PsMoveDirectService mints the PS Move's
+            // row from identity alone, so the Move showed "0 axes, 0 buttons,
+            // 0 POV(s)" whenever it was offline, forever, because the connect
+            // that filled them in memory never marked anything dirty
+            // (owner-reported).
+            _newDeviceRegistered = 1;
+
             var devices = SettingsManager.UserDevices;
             if (devices == null) return new UserDevice { InstanceGuid = instanceGuid };
 
@@ -911,24 +927,15 @@ namespace PadForge.Common.Input
                 // 3. No match: create a new device.
                 var ud = new UserDevice { InstanceGuid = instanceGuid };
                 devices.Items.Add(ud);
-                // The persisted device set just grew, so the settings have
-                // to reach disk. This is the ONLY place a row is created,
-                // for every device class, which is why the flag lives here
-                // rather than on DevicesUpdated: that event fires about
-                // every two seconds regardless of whether anything was
-                // added, and a dirty mark there rewrote the config on a
-                // loop. Set from the poll thread, consumed on the UI thread
-                // by InputService.OnDevicesUpdated.
-                _newDeviceRegistered = 1;
                 return ud;
             }
         }
 
-        /// <summary>Set when a UserDevice row is created, cleared when the
-        /// UI thread has marked the settings dirty for it. An int rather
-        /// than a bool so the exchange is atomic: the poll thread sets it
-        /// and the UI thread takes it, and a set that lands during a take
-        /// must not be lost.</summary>
+        /// <summary>Set when a device arrives and its row's capabilities are
+        /// re-stamped, cleared when the UI thread has marked the settings
+        /// dirty for it. An int rather than a bool so the exchange is
+        /// atomic: the poll thread sets it and the UI thread takes it, and a
+        /// set that lands during a take must not be lost.</summary>
         private static int _newDeviceRegistered;
 
         /// <summary>Takes the new-device flag, returning whether one was

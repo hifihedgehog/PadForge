@@ -954,7 +954,8 @@ namespace PadForge.Services
                 // does: its HID descriptor does not carry 0xF2 or 0xF5. The
                 // Move does not, because the reports its ceremony uses are in
                 // its descriptor, which is why only this branch binds.
-                if (!EnsureWinUsbBound(ct))
+                if (!Ds3DriverInstaller.EnsureWinUsbBound(_log, ct,
+                        Ds3DriverInstaller.NavPidToken, "Navigation controller"))
                 {
                     string why = Ds3DriverInstaller.LastWinUsbFailure;
                     if (why == "sign-failed" || why == "driver-untrusted")
@@ -964,7 +965,11 @@ namespace PadForge.Services
                         r.Error = "driver-untrusted"; return r;
                     }
                     _log("Could not bind the Navigation controller to WinUSB. Is it connected by USB cable?");
-                    r.Error = "winusb-bind-failed"; return r;
+                    // The Move-family code, not the DS3 one: the dialog maps
+                    // winusb-bind-failed to "No DualShock 3 found on USB",
+                    // which is the wrong pad to name when the user is holding
+                    // a Navigation controller.
+                    r.Error = "no-move-usb"; return r;
                 }
                 if (ct.IsCancellationRequested) { r.Error = "cancelled"; return r; }
 

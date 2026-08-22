@@ -443,6 +443,14 @@ namespace PadForge.Services
         /// <summary>Binds the docked DS3 to inbox WinUSB so its magic reports can be
         /// sent. No-op if the WinUSB interface is already present.</summary>
         public static bool EnsureWinUsbBound(Action<string> log, CancellationToken ct)
+            => EnsureWinUsbBound(log, ct, Ds3PidToken, "DS3");
+
+        /// <summary>As above for a named pad. The Navigation controller
+        /// (PID_042F) takes the same ceremony as the DualShock 3 because it
+        /// is a DS3 in a smaller shell: same 0xF2/0xF5 sixpair reports,
+        /// equally absent from its HID descriptor.</summary>
+        public static bool EnsureWinUsbBound(
+            Action<string> log, CancellationToken ct, string pidToken, string padLabel)
         {
             try
             {
@@ -459,12 +467,12 @@ namespace PadForge.Services
                 // Authenticode-only by design. Both together produced the
                 // reporter's state: pad on HidUsb forever, ceremony talking
                 // to a stale interface within 3 ms and failing err=31.
-                var nodes = ListDs3UsbNodes();
+                var nodes = ListSonyUsbNodes(pidToken);
                 foreach (var n in nodes)
-                    log($"DS3 USB node: {n.InstanceId} on {(n.Service.Length == 0 ? "(no driver)" : n.Service)}");
+                    log($"{padLabel} USB node: {n.InstanceId} on {(n.Service.Length == 0 ? "(no driver)" : n.Service)}");
                 if (nodes.Count == 0)
                 {
-                    log("No USB DS3 node is present.");
+                    log($"No USB {padLabel} node is present.");
                     _lastWinUsbFailure = null;
                     return false;
                 }
@@ -478,7 +486,7 @@ namespace PadForge.Services
                     && !n.Service.Equals("WINUSB", StringComparison.OrdinalIgnoreCase)).ToList();
                 if (foreign.Count > 0)
                 {
-                    log($"A DS3 is owned by another driver ({foreign[0].Service}); not rebinding it.");
+                    log($"A {padLabel} is owned by another driver ({foreign[0].Service}); not rebinding it.");
                     _lastWinUsbFailure = null;
                     return false;
                 }
@@ -519,26 +527,24 @@ namespace PadForge.Services
                 // strict-ranking machine it silently applies nothing. The
                 // targeted forced update is the DsHidMini/ScpToolkit
                 // pattern and is deterministic everywhere.
-                // Both PIDs the package covers. The Navigation controller is
-                // a DS3 in a smaller shell: it pairs through the same
-                // 0xF2/0xF5 reports, and its HID descriptor hides them the
-                // same way. Measured on hardware, its HID collection accepts
-                // feature report ids 0x01, 0x02, 0xEE and 0xEF and nothing
-                // else, so the sixpair reports are unreachable until it sits
-                // on WinUSB exactly as the DS3 does. Whichever pad is absent
-                // simply reports ERROR_NO_SUCH_DEVINST and is skipped.
-                foreach (string hwid in new[] { @"USB\VID_054C&PID_0268", @"USB\VID_054C&PID_042F" })
+                // ONLY the pad this call is about. The package covers the
+                // DualShock 3 and the Navigation controller, both of which
+                // hide their 0xF2/0xF5 sixpair reports from the HID
+                // descriptor and are unpairable until they sit on WinUSB.
+                // Binding both here would drag whichever one is merely
+                // plugged in off the inbox driver as a side effect of the
+                // other one's ceremony, which would break its ordinary HID
+                // input for no reason.
+                string hwid = @"USB\VID_054C&" + pidToken;
+                if (!UpdateDriverForPlugAndPlayDevices(IntPtr.Zero, hwid,
+                        infPath, INSTALLFLAG_FORCE | INSTALLFLAG_NONINTERACTIVE, out _))
                 {
-                    if (!UpdateDriverForPlugAndPlayDevices(IntPtr.Zero, hwid,
-                            infPath, INSTALLFLAG_FORCE | INSTALLFLAG_NONINTERACTIVE, out _))
-                    {
-                        int err = Marshal.GetLastWin32Error();
-                        // ERROR_NO_SUCH_DEVINST: that pad is not plugged in.
-                        // Anything else still gets the poll below, since the
-                        // non-forced install may have landed on lenient-
-                        // ranking machines.
-                        log($"Forced WinUSB bind for {hwid} returned err={err}.");
-                    }
+                    int err = Marshal.GetLastWin32Error();
+                    // ERROR_NO_SUCH_DEVINST: the pad vanished mid-ceremony.
+                    // Anything else still gets the poll below, since the
+                    // non-forced install may have landed on lenient-ranking
+                    // machines.
+                    log($"Forced WinUSB bind for {hwid} returned err={err}.");
                 }
 
                 // The bind takes a moment to re-enumerate the USB node. Done
@@ -547,7 +553,7 @@ namespace PadForge.Services
                 // somewhere.
                 for (int i = 0; i < 20 && !ct.IsCancellationRequested; i++)
                 {
-                    var now = ListDs3UsbNodes();
+                    var now = ListSonyUsbNodes(pidToken);
                     if (now.Count > 0
                         && now.All(n => n.Service.Equals("WINUSB", StringComparison.OrdinalIgnoreCase))
                         && HasActiveDs3WinUsbInterface())
@@ -569,9 +575,18 @@ namespace PadForge.Services
         /// <summary>Present USB DS3 nodes with their bound service, the
         /// ground truth EnsureWinUsbBound decides on.</summary>
         internal static List<(string InstanceId, string Service)> ListDs3UsbNodes()
+            => ListSonyUsbNodes(Ds3PidToken);
+
+        /// <summary>The USB nodes of one pad the WinUSB package covers.
+        /// The DualShock 3 and the Navigation controller both need it: their
+        /// sixpair reports are absent from the HID descriptor, so neither is
+        /// pairable on the inbox driver. Asking for the wrong pad is how the
+        /// Navigation ceremony reported "No USB DS3 node is present" with a
+        /// Navigation controller plugged in.</summary>
+        internal static List<(string InstanceId, string Service)> ListSonyUsbNodes(string pidToken)
         {
             var result = new List<(string, string)>();
-            foreach (var id in FindDs3UsbNodes())
+            foreach (var id in FindSonyUsbNodes(pidToken))
             {
                 try
                 {
@@ -1048,6 +1063,11 @@ namespace PadForge.Services
         /// SERVICE allowlist below is the gate, and it is unchanged: only an empty
         /// service or HidUsb is ever bound. Widening the search only lets the
         /// allowlist see a device it was always meant to judge.</para></summary>
+        /// <summary>The two pads the WinUSB package binds, as the PID token
+        /// the node search matches on.</summary>
+        internal const string Ds3PidToken = "PID_0268";
+        internal const string NavPidToken = "PID_042F";
+
         internal static readonly Guid[] Ds3HostClasses =
         {
             new Guid("745A17A0-74D3-11D0-B6FE-00A0C90F57DA"), // HIDCLASS: on inbox HidUsb

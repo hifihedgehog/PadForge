@@ -524,7 +524,7 @@ namespace PadForge.Common.Input
                         try { (mac, storedHost) = TryUsbCalibration(dh, found.Value.AddrPath, zcm2: false); }
                         finally { CloseHandle(dh); }
                     }
-                    _log("MOVE(USB): PS Move docked. This model streams input over Bluetooth only "
+                    _log("MOVE(USB): PlayStation Move docked. This model streams input over Bluetooth only "
                         + "(moveonpc: input report 0x01 is BT-only on the ZCM1); the dock charges "
                         + "the pad and captures its motion calibration.");
                     try { DockObserved?.Invoke(mac, storedHost); } catch { }

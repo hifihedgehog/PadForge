@@ -1177,7 +1177,7 @@ namespace PadForge.Services
             bool navOnUsb = Ds3DriverInstaller.IsSonyPadOnUsb(Ds3DriverInstaller.NavPidToken);
             if (dev == null && !navOnUsb)
             {
-                _log("No PS Move or Navigation controller found on USB.");
+                _log("No PlayStation Move or Navigation controller found on USB.");
                 r.Error = "no-move-usb";
                 return r;
             }
@@ -1611,7 +1611,7 @@ namespace PadForge.Services
                         foreach (string mac in macs)
                             Ds3DriverInstaller.DeleteRememberedDeviceRecord(radio, mac, _log);
                     CycleRadio();
-                    _log($"Unpaired {macs.Count} PS Move family controller(s).");
+                    _log($"Unpaired {macs.Count} PlayStation Move family controller(s).");
                     ReconcilePsmPatchForCrashSafety("move-unpair-all");
                     return macs.Count;
                 }

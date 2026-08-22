@@ -1259,8 +1259,8 @@ try {
             $n = $ds5.SelectSingleNode($f); if ($n) { $n.InnerText = "true" }
         }
         Add-DeviceOnce $ds5
-        # PS Move (#277): VID 0x054C PID 0x03D5, motion-only wand.
-        $move = New-WiiDevice "bbbb3333-3333-4444-5555-666677778888" "PS Move Motion Controller" 1356 981 "HID\VID_054C&PID_03D5\dummy"
+        # PlayStation Move (#277): VID 0x054C PID 0x03D5, motion-only wand.
+        $move = New-WiiDevice "bbbb3333-3333-4444-5555-666677778888" "PlayStation Move Motion Controller" 1356 981 "HID\VID_054C&PID_03D5\dummy"
         foreach ($f in @("HasGyro", "HasAccel")) {
             $n = $move.SelectSingleNode($f); if ($n) { $n.InnerText = "true" }
         }
@@ -1271,7 +1271,7 @@ try {
         # the type is a number in the same row as every other one.
         Add-DeviceOnce (New-SyntheticDevice "bbbb4444-3333-4444-5555-666677778888" "Microphone Array (Synthetic)" 19785 17232 "SWD\MMDEVAPI\dummy-mic" 31 0 1 0)
 
-        Write-Host "  Injected synthetic G29 wheel + MIDI Keyboard + 3 Wii-family + DS3 + Steam Controller + Xbox GIP + Wii Remote + NFC + DualSense + PS Move + Microphone" -ForegroundColor Green
+        Write-Host "  Injected synthetic G29 wheel + MIDI Keyboard + 3 Wii-family + DS3 + Steam Controller + Xbox GIP + Wii Remote + NFC + DualSense + PlayStation Move + Microphone" -ForegroundColor Green
     }
 } catch {
     Write-Host "  !! Failed to inject synthetic devices: $_" -ForegroundColor Yellow
@@ -2279,7 +2279,7 @@ if ($Only.Count -gt 0) {
         @{ Match = "NFC";           Shots = @("devices-nfc", "nfc-live-preview") },
         @{ Match = "MIDI Keyboard"; Shots = @("midi-input", "midi-input-mode-devices-page") },
         @{ Match = "Microphone";    Shots = @("devices-voice") },
-        @{ Match = "PS Move";       Shots = @("devices-move") },
+        @{ Match = "PlayStation Move"; Shots = @("devices-move") },
         @{ Match = "DualSense";     Shots = @("devices-dualsense") }
     )
     foreach ($t in $deviceTargets) {
@@ -3800,14 +3800,15 @@ if (Select-DeviceByName36 "DualSense") { Cap "devices-power" }
 # endpoints rather than the cached <Device> list, so there is no dummy to
 # inject: this finds one by its TYPE line, which is exactly the match
 # Select-DeviceByName36 already does for the consumer rows.
-# PlayStation Move (#277, 4.3.0). Enumerated on this machine as
-# "PS Move Motion Controller", so it needs no synthetic injection.
+# PlayStation Move (#277). The row is injected synthetically above, and
+# 4.3.1 renamed it: the short "PS Move" form no longer matches anything,
+# because "PlayStation Move" does not contain it as a substring.
 Write-Host "[3b] PlayStation Move"
 Nav "Devices"; Start-Sleep -Milliseconds 600
-if (Select-DeviceByName36 "PS Move") {
+if (Select-DeviceByName36 "PlayStation Move Motion") {
     Cap "devices-move"
 } else {
-    Write-Host "  !! no PS Move row -- SKIPPED devices-move" -ForegroundColor Red
+    Write-Host "  !! no PlayStation Move row -- SKIPPED devices-move" -ForegroundColor Red
 }
 
 Write-Host "[3b] Voice macros (microphone row)"

@@ -1164,12 +1164,20 @@ namespace PadForge.Services
         /// The log fires only when the verdict CHANGES, so a 500 ms poll loop
         /// cannot flood the ring.</summary>
         public static bool IsUsbDs3NeedingWinUsb(Action<string> log)
+            => IsUsbPadNeedingWinUsb(log, Ds3PidToken);
+
+        /// <summary>As above for a named pad. The package covers the
+        /// Navigation controller as well as the DS3, and each auto-bind must
+        /// judge its OWN pad: asking about the DS3 while a Navigation
+        /// controller is the thing plugged in answers no and the Navigation
+        /// pad never gets bound.</summary>
+        public static bool IsUsbPadNeedingWinUsb(Action<string> log, string pidToken)
         {
             try
             {
                 var seen = new List<string>();
                 bool needs = false;
-                foreach (var id in FindDs3UsbNodes())
+                foreach (var id in FindSonyUsbNodes(pidToken))
                 {
                     string svc;
                     try

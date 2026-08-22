@@ -56,12 +56,30 @@ namespace PadForge.Common.Input
         // report on the control endpoint (hid-sony.c:2189-2202), and its input
         // report is the sixaxis 49-byte layout (hid-sony.c:1172). Everything in
         // this service applies verbatim except: its own PDO interface + PID, no
-        // USB lane (the WinUSB INF binds only the DS3), no right-stick axes, no
-        // motion sensors, and a single status LED (hid-sony.c:1656-1661
-        // navigation_leds = LED1 only), so the player-number LED walk is skipped.
+        // right-stick axes, no motion sensors, and a single status LED
+        // (hid-sony.c:1656-1661 navigation_leds = LED1 only), so the
+        // player-number LED walk is skipped. It has a USB lane now: the
+        // WinUSB package took the Navigation controller on when the pairing
+        // ceremony had to move there (#277), since its 0xF2/0xF5 sixpair
+        // reports are as absent from its HID descriptor as the DS3's.
         private readonly bool _nav;
         private string Tag => _nav ? "NAV" : "DS3";
         private ushort ProfilePid => _nav ? NAV_PID : DS3_PID;
+
+        /// <summary>This instance's pad, as the substring an interface path
+        /// carries. Both device finders filter on it. The WinUSB package
+        /// covers the DS3 and the Navigation controller and gives them the
+        /// SAME interface GUID, so a GUID-only match hands whichever pad is
+        /// present to whichever instance asks first.</summary>
+        private string PidPathToken => _nav ? "pid_042f" : "pid_0268";
+
+        /// <summary>The same pad as a hardware-id token, which is what the
+        /// driver installer matches on. Kept separate from the path token
+        /// rather than case-converted at the call site, because the two are
+        /// matched against different things and only look alike.</summary>
+        private string PidHwToken => _nav
+            ? PadForge.Services.Ds3DriverInstaller.NavPidToken
+            : PadForge.Services.Ds3DriverInstaller.Ds3PidToken;
 
         // BTHPS3_SIXAXIS_HID_INPUT_REPORT_SIZE (BthPS3.h:350). Must match exactly; see I/O model above.
         private const int DS3_BT_INPUT_REPORT_SIZE = 0x32;
@@ -440,26 +458,35 @@ namespace PadForge.Common.Input
             return true;
         }
 
-        /// <summary>Open the WinUSB-bound DS3 if one is on USB. Binds WinUSB first if a
-        /// raw USB DS3 is present but unbound (throttled), so a plug-in works without the
-        /// user having gone through the pairing ceremony.</summary>
+        /// <summary>Open this instance's WinUSB-bound pad if it is on USB.
+        /// Binds WinUSB first if the pad is present but unbound (throttled),
+        /// so a plug-in works without the user having gone through the
+        /// pairing ceremony. Every step names THIS instance's pad: the
+        /// package covers the DS3 and the Navigation controller, and asking
+        /// about the wrong one either binds nothing or binds the other pad's
+        /// device.</summary>
         private bool OpenUsb()
         {
-            if (_nav) return false;   // the WinUSB INF binds only the DS3 (#277)
             string path = FindWinUsbDs3();
             if (path == null)
             {
-                // Not WinUSB-bound. Bind it only if a USB DS3 is plugged in AND still on
+                // Not WinUSB-bound. Bind it only if this pad is plugged in AND still on
                 // the inbox driver (no working function driver). If DsHidMini or anything
                 // else owns it, defer: don't fight over the device. Throttled so a repeated
                 // bind failure doesn't spin pnputil.
                 long now = Environment.TickCount64;
                 if (now - _lastUsbBindAttempt >= 15000
-                    && PadForge.Services.Ds3DriverInstaller.IsUsbDs3NeedingWinUsb(m => _log("DS3(USB): " + m)))
+                    && PadForge.Services.Ds3DriverInstaller.IsUsbPadNeedingWinUsb(
+                        m => _log($"{Tag}(USB): " + m), PidHwToken))
                 {
                     _lastUsbBindAttempt = now;
-                    _log("DS3(USB): unclaimed DS3 on USB, binding WinUSB...");
-                    try { PadForge.Services.Ds3DriverInstaller.EnsureWinUsbBound(_log, default); } catch { }
+                    _log($"{Tag}(USB): unclaimed pad on USB, binding WinUSB...");
+                    try
+                    {
+                        PadForge.Services.Ds3DriverInstaller.EnsureWinUsbBound(
+                            _log, default, PidHwToken, Tag);
+                    }
+                    catch { }
                     path = FindWinUsbDs3();
                 }
                 if (path == null) return false;
@@ -1294,11 +1321,23 @@ namespace PadForge.Common.Input
         // WinUSB interface GUID from the shipped ds3_winusb.inf (the USB DS3 binding).
         private static readonly Guid DS3_WINUSB_IF = new Guid("B35924D6-3E16-4A9E-9782-5524A4B79BAC");
 
-        private string FindWinUsbDs3() => FindInterfacePath(DS3_WINUSB_IF, requireVid054c: false);
+        /// <summary>This instance's pad on WinUSB.
+        ///
+        /// <para>The GUID alone is not enough any more. It used to be: the
+        /// package bound the DS3 and nothing else, so "an interface with our
+        /// GUID" meant "the DS3". Once the package covered the Navigation
+        /// controller too (#277, its sixpair reports are as absent from its
+        /// HID descriptor as the DS3's), the unfiltered match handed the
+        /// Navigation pad's interface to the DS3 instance, which opened it,
+        /// named it "DualShock 3" and stamped it PID 0x0268. FindPdoPath had
+        /// already been fixed for exactly this on the BthPS3 side; this is
+        /// its sibling.</para></summary>
+        private string FindWinUsbDs3() => FindInterfacePath(DS3_WINUSB_IF, PidPathToken);
 
-        // Generalized SetupDi interface-path lookup (the BthPS3 PDO variant filters on
-        // the 054c substring; the WinUSB interface GUID is DS3-specific already).
-        private string FindInterfacePath(Guid ifGuid, bool requireVid054c)
+        // Generalized SetupDi interface-path lookup. Both callers filter on a
+        // PID substring, because both of their interface GUIDs are shared by
+        // more than one Sony pad.
+        private string FindInterfacePath(Guid ifGuid, string pidToken)
         {
             IntPtr set = SetupDiGetClassDevs(ref ifGuid, IntPtr.Zero, IntPtr.Zero, DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
             if (set == INVALID_HANDLE) return null;
@@ -1322,7 +1361,9 @@ namespace PadForge.Common.Input
                         if (SetupDiGetDeviceInterfaceDetail(set, ref did, det, req, ref req, IntPtr.Zero))
                         {
                             string p = Marshal.PtrToStringUni(det + 4);
-                            if (p != null && (!requireVid054c || p.IndexOf("054c", StringComparison.OrdinalIgnoreCase) >= 0))
+                            if (p != null
+                                && p.IndexOf("054c", StringComparison.OrdinalIgnoreCase) >= 0
+                                && p.IndexOf(pidToken, StringComparison.OrdinalIgnoreCase) >= 0)
                                 return p;
                         }
                     }

@@ -412,6 +412,11 @@ namespace PadForge.Common.Input
                     // control, which the address gates.
                     try
                     {
+                        // Same order as the DS3 lane: the PDO's own published
+                        // address first, the pairing record only when the node
+                        // does not carry one.
+                        PadForge.Services.Ds3PairingService
+                            .StampLinkAddressFromDeviceNode(MOVE_VID, MOVE_PID, _transportPath);
                         PadForge.Services.Ds3PairingService
                             .StampLinkAddressFromPairingRecord(MOVE_VID, MOVE_PID);
                     }

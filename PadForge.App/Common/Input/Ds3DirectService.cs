@@ -443,6 +443,15 @@ namespace PadForge.Common.Input
                 {
                     try
                     {
+                        // BthPS3 publishes the pad's address on the PDO this
+                        // connection is riding, so it is exact per pad and
+                        // needs nothing to have happened first. The pairing
+                        // record is the fallback for a node that does not
+                        // carry it: a DualShock 3 paired outside PadForge has
+                        // no BTHENUM node and no BTHPORT record either, which
+                        // is what left it with no address at all.
+                        PadForge.Services.Ds3PairingService
+                            .StampLinkAddressFromDeviceNode(0x054C, ProfilePid, _transportPath);
                         PadForge.Services.Ds3PairingService
                             .StampLinkAddressFromPairingRecord(0x054C, ProfilePid);
                     }

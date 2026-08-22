@@ -972,6 +972,65 @@ namespace PadForge.Services
             catch { /* the stamp is a convenience; never break a ceremony */ }
         }
 
+        /// <summary>Reads a BthPS3 pad's Bluetooth address from its own
+        /// device node and records it on the matching row.
+        ///
+        /// <para>The best of the three sources and the one that needs
+        /// nothing to have happened first. BthPS3 publishes
+        /// DEVPKEY_Bluetooth_DeviceAddress on every PDO it creates, so the
+        /// address belongs to THAT pad's node: no dock, no pairing record,
+        /// and no ambiguity when two of the same model are connected,
+        /// because each has its own node.</para>
+        ///
+        /// <para>The DualShock 3 is why this exists. It reaches the host
+        /// through BthPS3 with no BTHENUM node and, when it was paired
+        /// outside PadForge, no BTHPORT record either (BthPS3 identifies by
+        /// remote name, so nothing in that ecosystem writes one), which left
+        /// both other sources blind to a pad sitting connected on the
+        /// desk.</para></summary>
+        internal static void StampLinkAddressFromDeviceNode(
+            ushort vid, ushort pid, string transportPath)
+        {
+            string instanceId = InstanceIdFromInterfacePath(transportPath);
+            if (instanceId == null) return;
+            try
+            {
+                var dev = Nefarius.Utilities.DeviceManagement.PnP.PnPDevice
+                    .GetDeviceByInstanceId(instanceId,
+                        Nefarius.Utilities.DeviceManagement.PnP.DeviceLocationFlags.Normal);
+                // {2BD67D8B-8BEB-48D5-87E0-6CDA3428040A},1 is
+                // DEVPKEY_Bluetooth_DeviceAddress, twelve hex digits with no
+                // separators ("00265C507543"), which is the exact shape
+                // TryDisconnect parses.
+                var key = Nefarius.Utilities.DeviceManagement.PnP.CustomDeviceProperty
+                    .CreateCustomDeviceProperty(
+                        new Guid("2BD67D8B-8BEB-48D5-87E0-6CDA3428040A"), 1, typeof(string));
+                string mac = dev.GetProperty<string>(key);
+                if (!string.IsNullOrWhiteSpace(mac))
+                    StampLinkAddress(vid, pid, mac.Trim().ToLowerInvariant());
+            }
+            catch { /* a convenience; never break a connect */ }
+        }
+
+        /// <summary>The devnode instance id behind an interface path.
+        /// <c>\?thps3bus#{guid}&amp;dev&amp;vid_054c&amp;pid_0268#a&amp;1&amp;bthps3_device_01#{iface}</c>
+        /// becomes <c>bthps3bus\{guid}&amp;dev&amp;vid_054c&amp;pid_0268&amp;1&amp;bthps3_device_01</c>:
+        /// drop the prefix and the trailing interface GUID, then the
+        /// remaining hashes are separators. Exact per pad, which is what
+        /// makes two of the same model unambiguous.</summary>
+        internal static string InstanceIdFromInterfacePath(string interfacePath)
+        {
+            if (string.IsNullOrEmpty(interfacePath)) return null;
+            string p = interfacePath;
+            if (p.StartsWith(@"\\?\", StringComparison.Ordinal)) p = p.Substring(4);
+            else if (p.StartsWith(@"\\.\", StringComparison.Ordinal)) p = p.Substring(4);
+            int lastHash = p.LastIndexOf('#');
+            if (lastHash > 0 && p.IndexOf('{', lastHash) == lastHash + 1)
+                p = p.Substring(0, lastHash);
+            if (p.IndexOf('#') < 0) return null;
+            return p.Replace('#', '\\');
+        }
+
         /// <summary>Recovers a BthPS3 pad's address from its pairing record
         /// when the pad is connected over Bluetooth and has never been
         /// docked on this build.

@@ -191,6 +191,7 @@ namespace PadForge.Common.Input
                     // matches slug "logitech-f710" but reads wrong).
                     _allProfiles = ctx.AllProfiles
                         .Where(p => p.IsDeployable)
+                        .Where(p => !IsWithheldProfile(p.Id))
                         .OrderBy(p => p.Name, StringComparer.OrdinalIgnoreCase)
                         .ToList();
 
@@ -260,6 +261,44 @@ namespace PadForge.Common.Input
                 _initialized = true;
             }
         }
+
+        /// <summary>
+        /// Profiles HIDMaestro ships that PadForge deliberately does not
+        /// offer yet. Same mechanism as the IsDeployable filter above and
+        /// for the same reason: a profile the user cannot be given a good
+        /// result from should not appear in any dropdown.
+        ///
+        /// <para>The three Valve composite personas (#338, milestone
+        /// v4.4.0) present as real Valve hardware to Steam, which is the
+        /// point of them, but PadForge has no controller art for any of
+        /// them. There is no 3D mesh for the Steam Deck, the 2015 Steam
+        /// Controller or the 2026 Steam Controller, and no 2D set for the
+        /// 2026 model at all. Selecting one today gives a working device
+        /// under a preview of something else entirely. They come back by
+        /// deleting an id from this set once the artwork ships.</para>
+        ///
+        /// <para>The plain "steam-controller" and "steam-deck" profiles
+        /// are NOT withheld. They predate this work, they have been
+        /// selectable for releases, and removing them would take away
+        /// something users already have.</para>
+        ///
+        /// <para>This hides a profile from the pickers. It does NOT break a
+        /// slot that already has one saved, because Step 5 asks
+        /// HMContext.GetProfile before it asks this catalog, and HIDMaestro's
+        /// own context is unfiltered. That asymmetry is deliberate: nobody
+        /// who selected one of these in 4.3.0 loses their controller, and
+        /// nobody new can pick one. Do not "fix" it by gating Step 5.</para>
+        /// </summary>
+        private static readonly HashSet<string> WithheldProfileIds =
+            new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+            {
+                "steam-deck-composite",
+                "steam-controller-composite",
+                "steam-controller-2",
+            };
+
+        internal static bool IsWithheldProfile(string profileId) =>
+            !string.IsNullOrEmpty(profileId) && WithheldProfileIds.Contains(profileId);
 
         private static bool IsXboxVendor(string vendor) =>
             !string.IsNullOrEmpty(vendor) &&

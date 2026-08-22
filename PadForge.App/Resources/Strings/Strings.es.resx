@@ -2421,8 +2421,8 @@
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>En ejecución, controlador conectado</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>En ejecución, mandos activos</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
-  <data name="MovePair_Instructions" xml:space="preserve"><value>Conecta el mando PS Move o Navigation con un cable USB y pulsa Emparejar. PadForge escribe este PC en el mando, guarda la calibración de movimiento del Move y lo registra. Al terminar, desconecta el mando y pulsa su botón PS para conectarlo por Bluetooth.</value></data>
-  <data name="MovePair_NoUsb" xml:space="preserve"><value>No se encontró ningún mando PS Move o Navigation por USB. Conéctalo con un cable USB e inténtalo de nuevo.</value></data>
+  <data name="MovePair_Instructions" xml:space="preserve"><value>Conecta el mando PlayStation Move o Navigation con un cable USB y pulsa Emparejar. PadForge escribe este PC en el mando, guarda la calibración de movimiento del Move y lo registra. Al terminar, desconecta el mando y pulsa su botón PS para conectarlo por Bluetooth.</value></data>
+  <data name="MovePair_NoUsb" xml:space="preserve"><value>No se encontró ningún mando PlayStation Move o Navigation por USB. Conéctalo con un cable USB e inténtalo de nuevo.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Clonar dispositivo 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Asigna directamente cada eje, botón y cruceta del dispositivo seleccionado a la salida virtual con el mismo número. Ajusta la distribución al tamaño del dispositivo y reemplaza las filas de este dispositivo en la ranura por un paso directo 1:1.</value></data>
   <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>Clonar dispositivo 1:1</value></data>

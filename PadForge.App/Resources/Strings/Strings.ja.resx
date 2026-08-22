@@ -2421,8 +2421,8 @@
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>実行中、ドライバー接続済み</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>実行中、コントローラー動作中</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / ナビゲーション</value></data>
-  <data name="MovePair_Instructions" xml:space="preserve"><value>PS Move またはナビゲーションコントローラーを USB ケーブルで接続し、ペアリングをクリックしてください。PadForge がこの PC をコントローラーに書き込み、Move のモーションキャリブレーションを保存して登録します。完了したらコントローラーを外し、PS ボタンを押して Bluetooth で接続してください。</value></data>
-  <data name="MovePair_NoUsb" xml:space="preserve"><value>USB で PS Move またはナビゲーションコントローラーが見つかりません。USB ケーブルで接続してからもう一度お試しください。</value></data>
+  <data name="MovePair_Instructions" xml:space="preserve"><value>PlayStation Move またはナビゲーションコントローラーを USB ケーブルで接続し、ペアリングをクリックしてください。PadForge がこの PC をコントローラーに書き込み、Move のモーションキャリブレーションを保存して登録します。完了したらコントローラーを外し、PS ボタンを押して Bluetooth で接続してください。</value></data>
+  <data name="MovePair_NoUsb" xml:space="preserve"><value>USB で PlayStation Move またはナビゲーションコントローラーが見つかりません。USB ケーブルで接続してからもう一度お試しください。</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>デバイスを1:1で複製</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>選択したデバイスのすべての軸、ボタン、ハットを、同じ番号の仮想出力へそのままマッピングします。レイアウトをデバイスに合わせて調整し、スロット上のこのデバイスの行を1:1パススルーで置き換えます。</value></data>
   <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>デバイスを1:1で複製</value></data>

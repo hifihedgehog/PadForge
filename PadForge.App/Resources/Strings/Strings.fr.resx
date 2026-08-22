@@ -2421,8 +2421,8 @@
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>En cours d’exécution, pilote connecté</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>En cours d’exécution, manettes actives</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
-  <data name="MovePair_Instructions" xml:space="preserve"><value>Connectez la manette PS Move ou Navigation avec un câble USB, puis cliquez sur Appairer. PadForge inscrit ce PC dans la manette, enregistre l’étalonnage de mouvement du Move et l’enregistre. Une fois terminé, débranchez la manette et appuyez sur son bouton PS pour la connecter en Bluetooth.</value></data>
-  <data name="MovePair_NoUsb" xml:space="preserve"><value>Aucune manette PS Move ou Navigation trouvée en USB. Connectez-la avec un câble USB et réessayez.</value></data>
+  <data name="MovePair_Instructions" xml:space="preserve"><value>Connectez la manette PlayStation Move ou Navigation avec un câble USB, puis cliquez sur Appairer. PadForge inscrit ce PC dans la manette, enregistre l’étalonnage de mouvement du Move et l’enregistre. Une fois terminé, débranchez la manette et appuyez sur son bouton PS pour la connecter en Bluetooth.</value></data>
+  <data name="MovePair_NoUsb" xml:space="preserve"><value>Aucune manette PlayStation Move ou Navigation trouvée en USB. Connectez-la avec un câble USB et réessayez.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Cloner l'appareil 1:1</value></data>
   <data name="Pad_ExtendedCloneDeviceTooltip" xml:space="preserve"><value>Mappe chaque axe, bouton et croix directionnelle de l'appareil sélectionné directement vers la sortie virtuelle du même numéro. Ajuste la disposition à l'appareil et remplace les lignes de cet appareil sur l'emplacement par une transmission directe 1:1.</value></data>
   <data name="Pad_ExtendedClone_Title" xml:space="preserve"><value>Cloner l'appareil 1:1</value></data>

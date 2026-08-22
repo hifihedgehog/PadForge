@@ -11294,7 +11294,7 @@ namespace PadForge.Services
             // minutes, shown for any disconnect-capable device (Bluetooth HID
             // path, or a wireless XInput-backend pad).
             row.IdleDisconnectMinutes = ud.IdleDisconnectSeconds / 60;
-            row.ShowIdleDisconnect = PadForge.Common.Input.BluetoothLinkHelper.IsDisconnectTarget(ud.DevicePath, ud.VendorId, ud.ProdId);
+            row.ShowIdleDisconnect = PadForge.Common.Input.BluetoothLinkHelper.IsDisconnectTarget(ud.DevicePath, ud.VendorId, ud.ProdId, ud.SerialNumber);
 
             // Battery indicator (#167): seed through the same effective-battery
             // path the 5 s tick uses (#187). Seeding raw SDL battery here blinked

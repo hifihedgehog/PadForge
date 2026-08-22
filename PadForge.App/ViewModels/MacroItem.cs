@@ -4331,7 +4331,7 @@ namespace PadForge.ViewModels
                     foreach (var ud in SettingsManager.UserDevices.Items)
                     {
                         if (ud == null || ud.InstanceGuid == Guid.Empty) continue;
-                        if (!PadForge.Common.Input.BluetoothLinkHelper.IsDisconnectTarget(ud.DevicePath, ud.VendorId, ud.ProdId)) continue;
+                        if (!PadForge.Common.Input.BluetoothLinkHelper.IsDisconnectTarget(ud.DevicePath, ud.VendorId, ud.ProdId, ud.SerialNumber)) continue;
                         options.Add(new MacroDisconnectDeviceOption
                         {
                             Guid = ud.InstanceGuid,

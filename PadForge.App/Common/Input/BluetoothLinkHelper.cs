@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace PadForge.Common.Input
@@ -272,12 +272,36 @@ namespace PadForge.Common.Input
         /// otherwise pass the gate on a machine that has no radio link to it
         /// and can only no-op.</summary>
         public static bool IsDisconnectTarget(string devicePath, ushort vendorId, ushort productId)
+            => IsDisconnectTarget(devicePath, vendorId, productId, null);
+
+        /// <summary>As above, with the device's known Bluetooth address.
+        ///
+        /// <para>The BthPS3 pads (DualShock 3, PS Move, Navigation) reach
+        /// their host through a PDO whose path carries none of the markers
+        /// the predicate looks for, and nothing else identifies them as
+        /// wireless, so they never offered idle disconnect at all. They are
+        /// admitted here ONLY when an address is known, because that address
+        /// is what TryDisconnect targets: without one the control would
+        /// appear and do nothing, which is worse than not offering it.</para></summary>
+        public static bool IsDisconnectTarget(
+            string devicePath, ushort vendorId, ushort productId, string serial)
         {
             if (devicePath != null && devicePath.StartsWith("peer://", StringComparison.Ordinal))
                 return false;
+            if (IsBthPs3Path(devicePath) && !string.IsNullOrEmpty(serial))
+                return true;
             return IsSwitch2(vendorId, productId) || IsJoyConPair(vendorId, productId)
                 || IsDisconnectTarget(devicePath);
         }
+
+        /// <summary>Whether this path is a BthPS3 PDO. Those pads sit behind
+        /// Nefarius' profile driver rather than the inbox Bluetooth HID
+        /// stack, so their path reads
+        /// <c>\?thps3bus#{...}&amp;dev&amp;vid_054c&amp;pid_0268#...</c> and matches
+        /// none of the inbox markers.</summary>
+        public static bool IsBthPs3Path(string devicePath)
+            => !string.IsNullOrEmpty(devicePath)
+               && devicePath.IndexOf("bthps3", StringComparison.OrdinalIgnoreCase) >= 0;
 
         /// <summary>The combined gen-1 Joy-Con pair (issue #184 sibling): SDL merges
         /// two Joy-Cons into one virtual device with the synthetic path

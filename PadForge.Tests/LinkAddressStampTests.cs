@@ -132,6 +132,52 @@ namespace PadForge.Tests
             Assert.Equal("", rows[1].SerialNumber);
         }
 
+        /// <summary>WHICH SOURCE MAY CORRECT. The device node belongs to the
+        /// connection being served, so it passes authoritative. The pairing
+        /// record and the dock read cannot tell which unit is on the air, so
+        /// they must not.
+        ///
+        /// <para>Asserted against the source text because the device-node read
+        /// needs a real PnP node and cannot run in-process. The behaviour
+        /// either side of that flag is covered by the tests above; this pins
+        /// the wiring that chooses it, which a mutation of the call site
+        /// otherwise slips past.</para></summary>
+        [Fact]
+        public void OnlyTheDeviceNodeSource_ClaimsAuthority()
+        {
+            string src = System.IO.File.ReadAllText(System.IO.Path.Combine(
+                RepoRoot(), "PadForge.App", "Services", "Ds3PairingService.cs"));
+
+            int node = src.IndexOf("StampLinkAddressFromDeviceNode(", StringComparison.Ordinal);
+            int record = src.IndexOf("StampLinkAddressFromPairingRecord(", StringComparison.Ordinal);
+            Assert.True(node > 0 && record > 0);
+
+            string nodeBody = Body(src, "internal static void StampLinkAddressFromDeviceNode");
+            string recordBody = Body(src, "internal static void StampLinkAddressFromPairingRecord");
+
+            Assert.Contains("authoritative: true", nodeBody, StringComparison.Ordinal);
+            Assert.DoesNotContain("authoritative", recordBody, StringComparison.Ordinal);
+        }
+
+        private static string Body(string src, string signature)
+        {
+            int at = src.IndexOf(signature, StringComparison.Ordinal);
+            Assert.True(at > 0, signature + " not found");
+            int next = src.IndexOf("\n        internal static", at + 1, StringComparison.Ordinal);
+            if (next < 0) next = src.IndexOf("\n        private static", at + 1, StringComparison.Ordinal);
+            return next > at ? src.Substring(at, next - at) : src.Substring(at);
+        }
+
+        private static string RepoRoot()
+        {
+            var dir = new System.IO.DirectoryInfo(AppContext.BaseDirectory);
+            while (dir != null && !System.IO.File.Exists(
+                System.IO.Path.Combine(dir.FullName, "PadForge.sln")))
+                dir = dir.Parent;
+            Assert.NotNull(dir);
+            return dir.FullName;
+        }
+
         /// <summary>A different model is never touched.</summary>
         [Fact]
         public void ADifferentModel_IsNotStamped()

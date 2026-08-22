@@ -8071,24 +8071,27 @@ namespace PadForge.Services
                 RefreshVoiceObjects();
                 UpdatePadDeviceInfo();
 
-                // A device the user has never seen before is persisted
-                // state, and nothing on the arrival path was writing it.
-                // The one MarkDirty near this lane sits at the end of
-                // DrainPendingDeviceGuidMigrations and runs only when an
-                // identity is re-keyed, so a pad that connected, was
-                // listed, and was unplugged again lived entirely in
-                // memory. The shutdown save is dirty-gated, so its row was
-                // gone by the next launch unless the user happened to
-                // change a setting while it was connected (owner-reported
-                // for a Switch 2 Pro).
+                // Persist only when the device registry ACTUALLY changed.
                 //
-                // The signal is a ROW BEING CREATED, not this event.
-                // DevicesUpdated fires roughly every two seconds whether or
-                // not anything was added (measured), so marking dirty here
-                // unconditionally rewrote the whole config on a two-second
-                // loop for as long as PadForge ran.
-                if (Common.Input.InputManager.ConsumeNewDeviceRegistered())
+                // A dirty mark on arrival looked right and was not: the
+                // consumer-control lane re-opens its devices about every ten
+                // seconds, and LoadCapabilities stamps DateUpdated every time,
+                // so PadForge rewrote the whole config on a five-second loop
+                // while the machine sat idle (owner-reported). Marking on row
+                // CREATION alone was the other extreme: a row minted by
+                // another lane, like the PS Move's, then filled its
+                // capabilities in memory on connect and never reached disk.
+                //
+                // The signature answers the real question, so neither
+                // re-entry nor a minted row can get it wrong. DateUpdated is
+                // deliberately absent from it: it is bookkeeping, it changes
+                // on every re-open, and nothing reads it back.
+                string sig = BuildDeviceRegistrySignature();
+                if (!string.Equals(sig, _deviceRegistrySignature, StringComparison.Ordinal))
+                {
+                    _deviceRegistrySignature = sig;
                     _settingsService?.MarkDirty();
+                }
 
                 // Re-apply device hiding so newly-connected devices get blacklisted
                 // and their instance IDs get cached for future sessions.
@@ -11063,6 +11066,50 @@ namespace PadForge.Services
         ///   (IsHidMaestroVirtualDevice) via device path inspection. This
         ///   is a defense-in-depth layer that catches any that leak through.
         /// </summary>
+        /// <summary>Last-seen shape of the persisted device registry. Null
+        /// until the first refresh, so the first one always persists.</summary>
+        private string _deviceRegistrySignature;
+
+        /// <summary>Everything about the device registry that reaches disk and
+        /// that a user would notice losing: identity, the capability counts
+        /// and positions the offline listing renders, and the Bluetooth
+        /// address the idle disconnect targets.
+        ///
+        /// <para>DateUpdated is excluded on purpose. It changes on every
+        /// re-open, nothing reads it back, and including it would rewrite the
+        /// config forever on an idle machine.</para></summary>
+        internal static string BuildDeviceRegistrySignature(
+            System.Collections.Generic.IEnumerable<UserDevice> devices)
+        {
+            if (devices == null) return string.Empty;
+            var sb = new System.Text.StringBuilder(512);
+            foreach (var d in devices)
+            {
+                if (d == null) continue;
+                sb.Append(d.InstanceGuid).Append('|')
+                  .Append(d.InstanceName).Append('|')
+                  .Append(d.DevicePath).Append('|')
+                  .Append(d.SerialNumber).Append('|')
+                  .Append(d.CapType).Append('|')
+                  .Append(d.CapAxeCount).Append('|')
+                  .Append(d.CapButtonCount).Append('|')
+                  .Append(d.CapPovCount).Append('|')
+                  .Append(d.RawButtonCount).Append('|');
+                var idx = d.CapButtonIndices;
+                if (idx != null) foreach (int i in idx) sb.Append(i).Append(',');
+                sb.Append(';');
+            }
+            return sb.ToString();
+        }
+
+        private string BuildDeviceRegistrySignature()
+        {
+            var devices = SettingsManager.UserDevices;
+            if (devices == null) return string.Empty;
+            lock (devices.SyncRoot)
+                return BuildDeviceRegistrySignature(devices.Items);
+        }
+
         private void SyncDevicesList()
         {
             var devVm = _mainVm.Devices;

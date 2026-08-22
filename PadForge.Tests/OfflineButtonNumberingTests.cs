@@ -60,6 +60,27 @@ namespace PadForge.Tests
             Assert.NotEqual(Enumerable.Range(0, 15).ToArray(), got);
         }
 
+        /// <summary>A pad that fills EVERY extended slot records a run with
+        /// no gaps, and that run must survive unchanged. Sparse means gated,
+        /// not gappy.
+        ///
+        /// <para>The 2026 Steam Controller is the case: SDL_gamepad.c gives
+        /// the Triton misc1, paddle1 through paddle4, touchpad and misc2,
+        /// which is every one of positions 11 to 17, so it lists 0 to 17 with
+        /// nothing missing. The 2015 pad gets only paddle1 and paddle2, so it
+        /// skips 11 and lists 0 to 10 plus 12 and 13. Both must come back
+        /// exactly as recorded.</para></summary>
+        [Theory]
+        // Steam Controller 2026 and Steam Deck: every extended slot filled.
+        [InlineData(new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 })]
+        // Steam Controller 2015: two paddles, no misc1.
+        [InlineData(new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13 })]
+        public void RecordedPositions_ComeBackExactly(int[] recorded)
+        {
+            var ud = Offline(recorded, capCount: recorded.Length);
+            Assert.Equal(recorded, InputService.ResolveButtonIndices(ud));
+        }
+
         /// <summary>A device PadForge has never seen online has no positions
         /// to report, so the dense range stays. Inventing a sparse list would
         /// be worse than a count-derived one.</summary>

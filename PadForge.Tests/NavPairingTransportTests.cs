@@ -87,7 +87,65 @@ namespace PadForge.Tests
             Assert.True(moveAt > at);
 
             string navBranch = src.Substring(at, moveAt - at);
-            Assert.Contains("EnsureWinUsbBound(ct)", navBranch, System.StringComparison.Ordinal);
+            Assert.Contains("EnsureWinUsbBound(_log, ct,", navBranch, System.StringComparison.Ordinal);
+            // And it binds the NAVIGATION pad, not the DS3.
+            Assert.Contains("NavPidToken", navBranch, System.StringComparison.Ordinal);
+        }
+
+        /// <summary>THE MOVE MUST NOT MOVE. Its ceremony is HID and stays
+        /// HID: its own reports ARE in its descriptor, it is hardware-proven
+        /// that way, and nothing about the Navigation fix touches it. The
+        /// package must not name a Move PID, or a Move plugged in during any
+        /// bind would be dragged off the inbox driver.</summary>
+        [Theory]
+        [InlineData("PID_03D5")]   // PS Move ZCM1
+        [InlineData("PID_0C5E")]   // PS Move ZCM2
+        public void TheWinUsbInf_NeverNamesAMovePid(string pid)
+        {
+            string inf = File.ReadAllText(Path.Combine(RepoRoot(),
+                "PadForge.App", "Resources", "BthPS3", "WinUSB", "ds3_winusb.inf"));
+            Assert.DoesNotContain(pid, inf, System.StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>The Move branch runs its HID sixpair and binds nothing.
+        /// A bind there would be the regression this pins against.</summary>
+        [Fact]
+        public void TheMoveBranch_BindsNothingAndKeepsItsHidCeremony()
+        {
+            string src = File.ReadAllText(Path.Combine(RepoRoot(),
+                "PadForge.App", "Services", "Ds3PairingService.cs"));
+            int at = src.IndexOf("MoveSixpair(dev.Value.AddrPath", System.StringComparison.Ordinal);
+            Assert.True(at > 0, "the Move branch is gone");
+            int end = src.IndexOf("r.Ds3Mac = macHex;", at, System.StringComparison.Ordinal);
+            Assert.True(end > at);
+
+            string moveBranch = src.Substring(at, end - at);
+            Assert.DoesNotContain("EnsureWinUsbBound", moveBranch, System.StringComparison.Ordinal);
+            Assert.Contains("TryCaptureCalibration", moveBranch, System.StringComparison.Ordinal);
+
+            // And the ceremony itself is still the HID one.
+            int ms = src.IndexOf("private bool MoveSixpair(", System.StringComparison.Ordinal);
+            int msEnd = src.IndexOf("\n        /// <summary>", ms, System.StringComparison.Ordinal);
+            string moveBody = src.Substring(ms, msEnd - ms);
+            Assert.Contains("HidD_GetFeature", moveBody, System.StringComparison.Ordinal);
+            Assert.Contains("HidD_SetFeature", moveBody, System.StringComparison.Ordinal);
+            Assert.DoesNotContain("WinUsb_Initialize", moveBody, System.StringComparison.Ordinal);
+        }
+
+        /// <summary>The bind touches ONE pad per call, the one it was asked
+        /// about. Binding every covered PID at once would take whichever pad
+        /// is merely plugged in off the inbox driver as a side effect of the
+        /// other one's ceremony.</summary>
+        [Fact]
+        public void TheForcedBind_TargetsOnlyTheRequestedPad()
+        {
+            string src = File.ReadAllText(Path.Combine(RepoRoot(),
+                "PadForge.App", "Services", "Ds3DriverInstaller.cs"));
+            Assert.Contains(@"string hwid = @""USB\VID_054C&"" + pidToken;",
+                src, System.StringComparison.Ordinal);
+            // The DS3's own callers keep the DS3 token, so the auto-bind
+            // monitor and the DS3 ceremony behave exactly as before.
+            Assert.Contains("=> EnsureWinUsbBound(log, ct, Ds3PidToken,", src, System.StringComparison.Ordinal);
         }
 
         /// <summary>The driver package covers both pads. Binding the DS3

@@ -210,15 +210,18 @@ namespace PadForge.Tests
             Assert.Contains("HasActiveDs3WinUsbInterface()", src, StringComparison.Ordinal);
             Assert.Contains("SPINT_ACTIVE", src, StringComparison.Ordinal);
 
-            // The bind is forced and targeted, not left to driver ranking.
-            // Both PIDs the package covers are named: the DS3, and the
-            // Navigation controller, which hides 0xF2 and 0xF5 from its HID
-            // descriptor exactly as the DS3 does and is unpairable until it
-            // sits on WinUSB too.
+            // The bind is forced and targeted, not left to driver ranking,
+            // and it targets ONE pad per call. The package covers the DS3
+            // and the Navigation controller, both of which hide their
+            // sixpair reports from the HID descriptor; binding both at
+            // once would drag whichever pad is merely plugged in off the
+            // inbox driver as a side effect of the other one's ceremony.
+            Assert.Contains(@"string hwid = @""USB\VID_054C&"" + pidToken;",
+                src, StringComparison.Ordinal);
             Assert.Contains("UpdateDriverForPlugAndPlayDevices(IntPtr.Zero, hwid,",
                 src, StringComparison.Ordinal);
-            Assert.Contains("@\"USB\\VID_054C&PID_0268\"", src, StringComparison.Ordinal);
-            Assert.Contains("@\"USB\\VID_054C&PID_042F\"", src, StringComparison.Ordinal);
+            Assert.Contains(@"Ds3PidToken = ""PID_0268""", src, StringComparison.Ordinal);
+            Assert.Contains(@"NavPidToken = ""PID_042F""", src, StringComparison.Ordinal);
             Assert.Contains("INSTALLFLAG_FORCE", src, StringComparison.Ordinal);
 
             // Coexistence survives the force: foreign function drivers

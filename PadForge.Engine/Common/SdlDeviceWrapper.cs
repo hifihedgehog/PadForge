@@ -375,7 +375,6 @@ namespace PadForge.Engine
             }
 
             SupportedButtonIndices = ComputeSupportedButtonIndices();
-            SupportedAxisIndices = ComputeSupportedAxisIndices();
 
             // SDL3 may return a raw VID/PID string (e.g., "0x16c0/0x05e1") for devices
             // not in its internal database. Fall back to the Windows HID product string.
@@ -557,6 +556,14 @@ namespace PadForge.Engine
             HasExtraGenericAxes = GameController != IntPtr.Zero
                 && RawAxisCount > 6
                 && !HasIrCamera && !HasJoyConIr && !HasJoyCon2Mouse;
+
+            // AFTER HasExtraGenericAxes, never before: the axis list's upper
+            // bound IS that flag, so computing it earlier silently truncated
+            // every pad to the standardized six. A DualShock 3 lost all ten of
+            // its button-pressure axes that way. Harmless while the list only
+            // shipped to Remote Link consumers, load-bearing the moment the
+            // preview, the mapping picker and CapAxeCount started reading it.
+            SupportedAxisIndices = ComputeSupportedAxisIndices();
 
             // Always try the haptic API for force feedback devices (joysticks,
             // wheels, etc.). Some report HasRumble=true via SDL properties but

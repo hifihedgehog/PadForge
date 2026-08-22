@@ -209,6 +209,64 @@ namespace PadForge.Tests
             Assert.DoesNotContain("for (int i = 6; i < top; i++) list.Add(i);", src);
         }
 
+        /// <summary>The axis list is computed AFTER the flag that bounds it.
+        ///
+        /// <para>This shipped backwards and cost a DualShock 3 all ten of its
+        /// button-pressure axes: ComputeSupportedAxisIndices reads
+        /// HasExtraGenericAxes to decide where the list stops, and it ran
+        /// while that flag was still false, so every pad truncated to the
+        /// standardized six. The bug was invisible for as long as the list
+        /// only shipped to Remote Link consumers, and surfaced the moment the
+        /// preview, the mapping picker and CapAxeCount started reading it.</para>
+        ///
+        /// <para>An ordering contract has no value seam to assert against, so
+        /// the order itself is what gets locked.</para></summary>
+        [Fact]
+        public void TheAxisList_IsComputedAfterTheFlagThatBoundsIt()
+        {
+            string src = Read("PadForge.Engine", "Common", "SdlDeviceWrapper.cs");
+            int flag = src.IndexOf("HasExtraGenericAxes = GameController != IntPtr.Zero", StringComparison.Ordinal);
+            int list = src.IndexOf("SupportedAxisIndices = ComputeSupportedAxisIndices();", StringComparison.Ordinal);
+            Assert.True(flag > 0, "the HasExtraGenericAxes assignment moved");
+            Assert.True(list > 0, "the SupportedAxisIndices assignment moved");
+            Assert.True(list > flag,
+                "SupportedAxisIndices must be computed after HasExtraGenericAxes: "
+                + "the flag is the list's upper bound, and computing it first truncates "
+                + "every pad to the standardized six axes.");
+        }
+
+        /// <summary>A DualShock 3 keeps every one of its ten pressure axes.
+        /// It is the pad the ordering bug broke, and unlike the Navigation it
+        /// has hardware behind all ten.</summary>
+        [Fact]
+        public void ADualShock3_KeepsAllTenPressureAxes()
+        {
+            var ds3 = new UserDevice
+            {
+                CapType = InputDeviceType.Gamepad,
+                VendorId = 0x054C,
+                ProdId = 0x0268,
+                CapAxeCount = 16,
+                CapAxisIndices = Enumerable.Range(0, 16).ToArray(),
+            };
+            var got = InputService.ResolveAxisIndices(ds3);
+            Assert.Equal(Enumerable.Range(0, 16).ToArray(), got);
+            foreach (int pressure in new[] { 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 })
+                Assert.Contains(pressure, got);
+        }
+
+        /// <summary>And the phantom gate leaves the DualShock 3 alone: only
+        /// the Navigation is named, so no other pad loses a slot.</summary>
+        [Fact]
+        public void ThePhantomGate_TouchesNothingButTheNavigation()
+        {
+            string body = WrapperBody("private bool IsRealExtraAxis(int index)");
+            int ret = body.IndexOf("return true;", StringComparison.Ordinal);
+            Assert.True(ret > 0, "the default-allow return moved");
+            Assert.Single(System.Text.RegularExpressions.Regex.Matches(
+                body.Substring(0, ret), "VendorId =="));
+        }
+
         /// <summary>The gate names the Navigation by VID:PID and drops exactly
         /// the three slots the hardware lacks. Square, Triangle and R1 have no
         /// byte behind them in moveonpc's report table.</summary>

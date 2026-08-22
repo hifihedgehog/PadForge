@@ -492,7 +492,7 @@ namespace PadForge.Services
                 }
 
                 if (nodes.All(n => n.Service.Equals("WINUSB", StringComparison.OrdinalIgnoreCase))
-                    && HasActiveDs3WinUsbInterface())
+                    && HasActiveWinUsbInterface(pidToken.ToLowerInvariant()))
                     return true;   // the live pad really is ours
 
                 string dir = ExtractDrivers();
@@ -556,7 +556,7 @@ namespace PadForge.Services
                     var now = ListSonyUsbNodes(pidToken);
                     if (now.Count > 0
                         && now.All(n => n.Service.Equals("WINUSB", StringComparison.OrdinalIgnoreCase))
-                        && HasActiveDs3WinUsbInterface())
+                        && HasActiveWinUsbInterface(pidToken.ToLowerInvariant()))
                     {
                         log("DS3 bound to WinUSB.");
                         return true;
@@ -603,6 +603,13 @@ namespace PadForge.Services
         /// serving it right now. Registration alone persists in the
         /// registry across driver changes and proves nothing (#285).</summary>
         internal static bool HasActiveDs3WinUsbInterface()
+            => HasActiveWinUsbInterface("pid_0268");
+
+        /// <summary>As above for one named pad. The DS3 and the Navigation
+        /// controller share the interface GUID, so an unfiltered check let
+        /// one pad's live interface report the OTHER pad's bind as
+        /// finished.</summary>
+        internal static bool HasActiveWinUsbInterface(string pidPathToken)
         {
             var guid = new Guid("B35924D6-3E16-4A9E-9782-5524A4B79BAC");
             IntPtr set = SetupDiGetClassDevs(ref guid, IntPtr.Zero, IntPtr.Zero,
@@ -613,8 +620,24 @@ namespace PadForge.Services
                 var did = new SP_DEVICE_INTERFACE_DATA
                 { cbSize = Marshal.SizeOf<SP_DEVICE_INTERFACE_DATA>() };
                 for (int i = 0; SetupDiEnumDeviceInterfaces(set, IntPtr.Zero, ref guid, i, ref did); i++)
-                    if ((did.Flags & SPINT_ACTIVE) != 0)
-                        return true;
+                {
+                    if ((did.Flags & SPINT_ACTIVE) == 0) continue;
+                    int req = 0;
+                    SetupDiGetDeviceInterfaceDetail(set, ref did, IntPtr.Zero, 0, ref req, IntPtr.Zero);
+                    IntPtr det = Marshal.AllocHGlobal(req);
+                    try
+                    {
+                        Marshal.WriteInt32(det, IntPtr.Size == 8 ? 8 : 6);
+                        if (SetupDiGetDeviceInterfaceDetail(set, ref did, det, req, ref req, IntPtr.Zero))
+                        {
+                            string p = Marshal.PtrToStringUni(det + 4);
+                            if (p != null && p.IndexOf(pidPathToken,
+                                    StringComparison.OrdinalIgnoreCase) >= 0)
+                                return true;
+                        }
+                    }
+                    finally { Marshal.FreeHGlobal(det); }
+                }
                 return false;
             }
             finally { SetupDiDestroyDeviceInfoList(set); }
@@ -1000,6 +1023,12 @@ namespace PadForge.Services
         private static extern IntPtr SetupDiGetClassDevsEnum(ref Guid g, string enumerator, IntPtr w, int f);
         [DllImport("setupapi.dll", SetLastError = true)]
         private static extern bool SetupDiEnumDeviceInfo(IntPtr s, int i, ref SP_DEVINFO_DATA data);
+        // The interface DETAIL is what carries the device path, and the path
+        // is the only thing that says WHICH pad an interface belongs to now
+        // that the DS3 and the Navigation controller share a GUID.
+        [DllImport("setupapi.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+        private static extern bool SetupDiGetDeviceInterfaceDetail(
+            IntPtr s, ref SP_DEVICE_INTERFACE_DATA d, IntPtr det, int ds, ref int req, IntPtr di);
         [DllImport("cfgmgr32.dll")]
         private static extern int CM_Get_DevNode_Status(out uint status, out uint problem, uint devInst, int flags);
 
@@ -1081,6 +1110,21 @@ namespace PadForge.Services
         /// union needs no de-duplication.</summary>
         private static IEnumerable<string> FindDs3UsbNodes(bool presentOnly = true)
             => FindSonyUsbNodes("PID_0268", presentOnly);
+
+        /// <summary>Whether a pad of this PID is plugged into USB right now,
+        /// on ANY driver.
+        ///
+        /// <para>The Navigation controller's discovery cannot go through HID.
+        /// Binding it to WinUSB for the pairing ceremony (#277) removes its
+        /// HID interface, so a HID-based search finds it the first time and
+        /// never again, and the ceremony reported "No PS Move or Navigation
+        /// controller found on USB" for a pad that was plugged in and
+        /// working. The USB node is there on either driver.</para></summary>
+        public static bool IsSonyPadOnUsb(string pidToken)
+        {
+            try { return FindSonyUsbNodes(pidToken).Any(); }
+            catch { return false; }
+        }
 
         /// <summary>As above for any Sony PID (the Move family shares the lane, #277).</summary>
         private static IEnumerable<string> FindSonyUsbNodes(string pidToken, bool presentOnly = true)

@@ -118,6 +118,23 @@ namespace PadForge.Engine.Data
         /// </summary>
         public int[] CapButtonIndices { get; set; }
 
+        /// <summary>The axis twin of <see cref="CapButtonIndices"/>: the axis
+        /// positions the device actually populates, recorded the last time it
+        /// was online so the offline listing shows the same set the live one
+        /// does.
+        ///
+        /// <para>Sparse for two reasons. The standardized block skips sticks
+        /// and triggers the pad does not have (SDL_GamepadHasAxis), and the
+        /// generic extras past it skip slots a shared report layout numbers
+        /// but no hardware drives. A Move Navigation has three of the first
+        /// six and seven of the ten extras.</para>
+        ///
+        /// <para>Null or empty on configs predating this field and on devices
+        /// PadForge has never seen online. Callers fall back to the dense
+        /// range in that case.</para>
+        /// </summary>
+        public int[] CapAxisIndices { get; set; }
+
         /// <summary>
         /// Total number of raw joystick buttons (before gamepad remapping).
         /// For gamepad devices this may exceed <see cref="CapButtonCount"/>
@@ -562,6 +579,12 @@ namespace PadForge.Engine.Data
                 ? (int[])supported.Clone()
                 : null;
 
+            // Same for the axes, and cloned for the same reason.
+            var supportedAxes = wrapper.SupportedAxisIndices;
+            CapAxisIndices = supportedAxes != null && supportedAxes.Length > 0
+                ? (int[])supportedAxes.Clone()
+                : null;
+
             // Extra generic axes (issue #193): a gamepad-opened device with raw
             // joystick axes beyond the standard six (e.g. a DualShock 3 in SDF mode,
             // 16 axes) exposes them as "Axis N" sources, so CapAxeCount reflects the
@@ -571,6 +594,14 @@ namespace PadForge.Engine.Data
             int effectiveAxisCount = wrapper.HasExtraGenericAxes
                 ? System.Math.Min(wrapper.RawAxisCount, CustomInputState.MaxAxis)
                 : wrapper.NumAxes;
+
+            // Prefer the gated count when the wrapper produced one, exactly as
+            // gatedButtons does above: a pad missing sticks, triggers or
+            // pressure slots must not have the row summary report axes the
+            // preview then declines to draw (discussion #344's complaint, on
+            // the axis side).
+            int gatedAxes = wrapper.SupportedAxisIndices?.Length ?? 0;
+            if (gatedAxes > 0) effectiveAxisCount = System.Math.Min(gatedAxes, CustomInputState.MaxAxis);
             LoadCapabilities(
                 effectiveAxisCount,
                 gatedButtons,

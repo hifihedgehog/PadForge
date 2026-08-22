@@ -1425,12 +1425,36 @@ namespace PadForge.Common
                               si.DevObj_RightStickX, si.DevObj_RightStickY, si.DevObj_RightTrigger }
                     : null;
 
-                for (int i = 0; i < ud.CapAxeCount; i++)
+                // The sparse slot list, for the same reason the buttons use
+                // one below: a pad whose report layout numbers axes it has no
+                // hardware for (a Move Navigation carries the DualShock 3's
+                // numbering without its right stick, R2, Square, Triangle or
+                // R1) must not offer those as mappable inputs.
+                //
+                // Live positions when connected, the recorded ones otherwise,
+                // so a slot keeps its number across the boundary. A device
+                // never seen online reaches the dense range below.
+                var sparseAxes = ud.Device?.SupportedAxisIndices;
+                if (sparseAxes == null || sparseAxes.Length == 0) sparseAxes = ud.CapAxisIndices;
+                if (sparseAxes != null && sparseAxes.Length > 0)
                 {
-                    string display = (gpAxisNames != null && i < gpAxisNames.Length)
-                        ? gpAxisNames[i]
-                        : string.Format(si.DevObj_AxisN, i);
-                    list.Add(new InputChoice { Descriptor = $"Axis {i}", DisplayName = display });
+                    foreach (int i in sparseAxes)
+                    {
+                        string display = (gpAxisNames != null && i < gpAxisNames.Length)
+                            ? gpAxisNames[i]
+                            : string.Format(si.DevObj_AxisN, i);
+                        list.Add(new InputChoice { Descriptor = $"Axis {i}", DisplayName = display });
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < ud.CapAxeCount; i++)
+                    {
+                        string display = (gpAxisNames != null && i < gpAxisNames.Length)
+                            ? gpAxisNames[i]
+                            : string.Format(si.DevObj_AxisN, i);
+                        list.Add(new InputChoice { Descriptor = $"Axis {i}", DisplayName = display });
+                    }
                 }
 
                 string[] gpBtnNames = isGamepad

@@ -489,7 +489,7 @@ namespace PadForge.ViewModels
         /// are stored verbatim and used by the InputService update loop
         /// to read the matching <c>state.Buttons[Index]</c>.
         /// </summary>
-        internal void RebuildRawStateCollections(int axisCount, IReadOnlyList<int> buttonIndices, int povCount, bool isKeyboard = false, bool isMouse = false, bool isTouchpad = false, bool isMidi = false, bool isNfc = false, IReadOnlyList<ConsumerButtonDisplayItem> consumerButtons = null, bool isHeadsetMotion = false, int voiceButtonBase = -1, bool isMicrophone = false)
+        internal void RebuildRawStateCollections(IReadOnlyList<int> axisIndices, IReadOnlyList<int> buttonIndices, int povCount, bool isKeyboard = false, bool isMouse = false, bool isTouchpad = false, bool isMidi = false, bool isNfc = false, IReadOnlyList<ConsumerButtonDisplayItem> consumerButtons = null, bool isHeadsetMotion = false, int voiceButtonBase = -1, bool isMicrophone = false)
         {
             IsNfcDevice = isNfc;
             IsHeadsetMotionDevice = isHeadsetMotion;
@@ -513,8 +513,16 @@ namespace PadForge.ViewModels
             RawAxes.Clear();
             if (!isMouse && !isMidi && !isConsumer)
             {
+                // Sparse, like the button list: Index is the real slot in
+                // state.Axis[] and the label shows that same number, so a pad
+                // with gaps reads "Axis 6, Axis 7, Axis 10" rather than
+                // renumbering its inputs.
+                int axisCount = axisIndices?.Count ?? 0;
                 for (int i = 0; i < axisCount; i++)
-                    RawAxes.Add(new AxisDisplayItem { Index = i, Name = string.Format(Strings.Instance.Devices_Axis_Format, i) });
+                {
+                    int slot = axisIndices[i];
+                    RawAxes.Add(new AxisDisplayItem { Index = slot, Name = string.Format(Strings.Instance.Devices_Axis_Format, slot) });
+                }
             }
 
             RawButtons.Clear();

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -293,9 +293,19 @@ namespace PadForge.Views
                     if (axes != null && _recordAxisBaselines != null
                         && _recordAxisBaselines.TryGetValue(ud.InstanceGuid, out var baseline))
                     {
-                        int axisCount = ud.CapAxeCount > 0 ? Math.Min(ud.CapAxeCount, axes.Length) : axes.Length;
-                        for (int i = 0; i < axisCount && i < baseline.Length; i++)
+                        // Scan the slots the pad actually populates. The count
+                        // alone stopped being a valid upper bound once the axis
+                        // list went sparse: a Move Navigation reports ten axes
+                        // whose highest slot is 15, so a dense 0..count-1 scan
+                        // would miss its L1 and every d-pad pressure axis.
+                        var axisSlots = ud.CapAxisIndices;
+                        int axisCount = axisSlots != null && axisSlots.Length > 0
+                            ? axisSlots.Length
+                            : (ud.CapAxeCount > 0 ? Math.Min(ud.CapAxeCount, axes.Length) : axes.Length);
+                        for (int n = 0; n < axisCount; n++)
                         {
+                            int i = axisSlots != null && axisSlots.Length > 0 ? axisSlots[n] : n;
+                            if (i >= axes.Length || i >= baseline.Length) continue;
                             float rawDelta = (axes[i] - baseline[i]) / 65535f;
                             float absDelta = Math.Abs(rawDelta);
                             if (absDelta >= AxisRecordDeltaThreshold)

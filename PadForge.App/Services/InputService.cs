@@ -12373,24 +12373,35 @@ namespace PadForge.Services
 
         /// <summary>
         /// Returns the button positions to surface in the Devices preview for
-        /// <paramref name="ud"/>. When the live <c>ISdlInputDevice</c> is
-        /// available, prefer its <c>SupportedButtonIndices</c> so SDL3 gamepads
-        /// only show the extended slots (Misc1, paddles, Touchpad, Misc2-6)
-        /// the device actually has. Falls back to a dense 0..count-1 list
-        /// (using RawButtonCount in raw passthrough mode, otherwise
-        /// CapButtonCount) when the device is offline or doesn't expose a
-        /// supported list.
+        /// <paramref name="ud"/>. SDL3 gamepads occupy a fixed 22-slot space
+        /// and fill only part of it, so the list is sparse: only the extended
+        /// slots (Misc1, paddles, Touchpad, Misc2-6) the device actually has.
+        ///
+        /// <para>The positions come from the live device when it is connected
+        /// and from <c>UserDevice.CapButtonIndices</c>, which recorded them
+        /// the last time it was, when it is not. Those agree, which is the
+        /// point: the same physical button used to be numbered one way while
+        /// connected and another way while not (discussion #344). Only a
+        /// device PadForge has never seen online falls back to a dense
+        /// 0..count-1 list, because there are no observed positions to
+        /// report.</para>
+        ///
+        /// <para>Raw passthrough mode keeps the dense raw range in both
+        /// states. It deliberately bypasses the gamepad-aware filter so every
+        /// native HID button is visible, and that is not a numbering
+        /// inconsistency but a different question being asked.</para>
         /// </summary>
-        private static int[] ResolveButtonIndices(UserDevice ud)
+        internal static int[] ResolveButtonIndices(UserDevice ud)
         {
             int max = CustomInputState.MaxButtons;
 
-            // Live SDL device: use its computed sparse list, capped at MaxButtons.
             // Raw passthrough mode bypasses the gamepad-aware filter and uses
             // the dense raw range so every native HID button is visible.
-            if (ud.Device != null && !ud.ForceRawJoystickMode)
+            if (!ud.ForceRawJoystickMode)
             {
-                int[] sparse = ud.Device.SupportedButtonIndices;
+                // Live positions when connected, recorded positions when not.
+                int[] sparse = ud.Device?.SupportedButtonIndices;
+                if (sparse == null || sparse.Length == 0) sparse = ud.CapButtonIndices;
                 if (sparse != null && sparse.Length > 0)
                 {
                     if (sparse[sparse.Length - 1] < max) return sparse;

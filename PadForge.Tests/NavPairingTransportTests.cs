@@ -92,6 +92,47 @@ namespace PadForge.Tests
             Assert.Contains("NavPidToken", navBranch, System.StringComparison.Ordinal);
         }
 
+        /// <summary>The DS3 and the Navigation controller share one WinUSB
+        /// interface GUID, so every lookup that used to mean "the DS3"
+        /// because nothing else carried that GUID now has to say which pad
+        /// it wants. Unfiltered, the DS3 instance opened the Navigation
+        /// pad's interface and listed it as a DualShock 3 on PID 0x0268.
+        /// FindPdoPath had already been fixed for this on the BthPS3 side
+        /// and its sibling had not.</summary>
+        [Fact]
+        public void EveryDeviceLookup_NamesThePadItWants()
+        {
+            string src = File.ReadAllText(Path.Combine(RepoRoot(),
+                "PadForge.App", "Common", "Input", "Ds3DirectService.cs"));
+
+            // The interface finder takes a PID token and applies it.
+            Assert.Contains("FindInterfacePath(DS3_WINUSB_IF, PidPathToken)",
+                src, System.StringComparison.Ordinal);
+            Assert.Contains("p.IndexOf(pidToken, StringComparison.OrdinalIgnoreCase) >= 0",
+                src, System.StringComparison.Ordinal);
+            // No caller can ask for "any pad with this GUID" any more.
+            Assert.DoesNotContain("requireVid054c", src, System.StringComparison.Ordinal);
+
+            // The auto-bind judges and binds THIS instance's pad.
+            Assert.Contains("IsUsbPadNeedingWinUsb(", src, System.StringComparison.Ordinal);
+            Assert.Contains("_log, default, PidHwToken, Tag);",
+                src, System.StringComparison.Ordinal);
+            Assert.Contains("_log, default, PidHwToken, Tag);",
+                src, System.StringComparison.Ordinal);
+        }
+
+        /// <summary>The Navigation controller may open over USB. It was
+        /// gated off with "the WinUSB INF binds only the DS3", which stopped
+        /// being true when the package took the Navigation pad on.</summary>
+        [Fact]
+        public void TheNavigationInstance_IsNotGatedOffUsb()
+        {
+            string src = File.ReadAllText(Path.Combine(RepoRoot(),
+                "PadForge.App", "Common", "Input", "Ds3DirectService.cs"));
+            Assert.DoesNotContain("the WinUSB INF binds only the DS3",
+                src, System.StringComparison.Ordinal);
+        }
+
         /// <summary>THE MOVE MUST NOT MOVE. Its ceremony is HID and stays
         /// HID: its own reports ARE in its descriptor, it is hardware-proven
         /// that way, and nothing about the Navigation fix touches it. The

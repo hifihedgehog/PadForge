@@ -121,6 +121,39 @@ namespace PadForge.Tests
                 src, System.StringComparison.Ordinal);
         }
 
+        /// <summary>Every WinUSB transfer in the direct service happens under
+        /// _ioLock, which is what Teardown takes before WinUsb_Free so a
+        /// transfer in flight cannot have its interface freed underneath it.
+        /// Stop() joins the read thread with a 1.5 s timeout and tears down
+        /// regardless, so an in-flight control transfer is exactly the case
+        /// the rule exists for.
+        ///
+        /// <para>Asserted against the source text because a lock-lifetime
+        /// contract has no in-process seam: proving it behaviourally needs a
+        /// real WinUSB handle and a racing teardown. This pins the discipline
+        /// against an edit that drops it, which is how the dock read shipped
+        /// without it.</para></summary>
+        [Fact]
+        public void TheDockRead_TransfersUnderTheIoLock()
+        {
+            string src = File.ReadAllText(Path.Combine(RepoRoot(),
+                "PadForge.App", "Common", "Input", "Ds3DirectService.cs"));
+
+            int at = src.IndexOf("private void RaiseNavDock()", System.StringComparison.Ordinal);
+            Assert.True(at > 0, "RaiseNavDock not found");
+            int end = src.IndexOf("' + BS + 'n        /// <summary>", at, System.StringComparison.Ordinal);
+            string body = end > at ? src.Substring(at, end - at) : src.Substring(at);
+
+            Assert.Contains("UsbGetFeature(ifh, 0xF2", body, System.StringComparison.Ordinal);
+            Assert.Contains("lock (_ioLock)", body, System.StringComparison.Ordinal);
+
+            // And the lock encloses the transfers rather than trailing them.
+            int lockAt = body.IndexOf("lock (_ioLock)", System.StringComparison.Ordinal);
+            int firstTransfer = body.IndexOf("UsbGetFeature(", System.StringComparison.Ordinal);
+            Assert.True(lockAt < firstTransfer,
+                "_ioLock must be taken before the first transfer");
+        }
+
         /// <summary>The Navigation controller may open over USB. It was
         /// gated off with "the WinUSB INF binds only the DS3", which stopped
         /// being true when the package took the Navigation pad on.</summary>

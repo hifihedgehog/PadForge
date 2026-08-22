@@ -580,10 +580,36 @@ namespace PadForge.Common.Input
             long lastWrite = 0, lastKick = 0;
             int kicks = 0;
 
-            // Immediate first kick: output report (LED) then the magic enable.
-            // The clone needs the output report FIRST (DsHidMini G_Ds3BthHidOutputReport
-            // ordering); the bare enable alone does not start it.
-            Kick(); kicks = 1; lastKick = attachedAt; lastWrite = attachedAt;
+            // The two transports start differently, and the difference is the
+            // whole reason a Navigation controller connected over Bluetooth
+            // and never sent a byte.
+            //
+            // USB sends the output report and the enable together, right
+            // away. That is ScpToolkit's order, it is what has always worked
+            // here, and #285's wedge fix is built on top of it.
+            //
+            // Bluetooth follows DsHidMini instead: output report first, the
+            // reader already running, and the magic packet ONCE a second
+            // later, only if nothing has arrived (DsBth.Timers.c, the
+            // StartupDelay handler sends the output report and calls
+            // StreamStart, then arms PostStartupTasks at
+            // WDF_REL_TIMEOUT_IN_SEC(1), whose handler sends the enable only
+            // while BatteryStatus is still None, i.e. no input yet). Both of
+            // its comments matter: the delay is "required for compatibility
+            // with some SIXAXIS models", and the packet "must not be issued
+            // on e.g. the Defender BTH or it disconnects". Sending it at
+            // attach and then four more times is what this lane did, and the
+            // pad answered by dropping the link outright (err=1167 on the
+            // write, measured 2026-08-22).
+            if (_transport == Ds3Transport.Usb)
+            {
+                Kick(); kicks = 1;
+            }
+            else
+            {
+                WriteOutputReport(); kicks = 0;
+            }
+            lastKick = attachedAt; lastWrite = attachedAt;
 
             long lastSilenceLog = attachedAt;
             while (_running && _writerRun && System.Threading.Volatile.Read(ref _writerGen) == gen)
@@ -607,10 +633,24 @@ namespace PadForge.Common.Input
                         + (rx == 0 ? " (interrupt channel fully silent)" : ""));
                 }
 
-                // Re-kick while silent (DsHidMini re-sends the enable after 1 s of no input).
-                if (!_everGotInput && kicks < 5 && now - lastKick >= 1000)
+                // Bluetooth: the delayed enable, sent ONCE and never repeated.
+                // This is DsHidMini's PostStartupTasks, gated the same way it
+                // gates: only while no input has arrived. Repeating it is what
+                // disconnects the models its comment warns about.
+                if (_transport != Ds3Transport.Usb
+                    && !_everGotInput && kicks == 0 && now - attachedAt >= 1000)
                 {
-                    _log($"{Tag}({(_transport == Ds3Transport.Usb ? "USB" : "BT")}): no input yet - re-kick #{kicks + 1}");
+                    _log($"{Tag}(BT): no input after 1 s - sending the delayed enable");
+                    SendEnable(); kicks = 1; lastKick = now;
+                    continue;
+                }
+
+                // USB keeps its re-kick: the enable is harmless there and the
+                // #285 wedge needs the retry.
+                if (_transport == Ds3Transport.Usb
+                    && !_everGotInput && kicks < 5 && now - lastKick >= 1000)
+                {
+                    _log($"{Tag}(USB): no input yet - re-kick #{kicks + 1}");
                     Kick(); kicks++; lastKick = now;
                     continue;
                 }
@@ -626,9 +666,21 @@ namespace PadForge.Common.Input
                 // the ceremony's cycle re-opens the device, the F4 enable
                 // lands on a pad still settling, and the lane wedges with
                 // a virtual joystick attached and no input behind it.
-                if (!_everGotInput && kicks >= 5 && now - lastKick >= 3000)
+                // The detach horizon. USB keeps #285's tight one. Bluetooth
+                // gets a far longer one, because the PDO appears as soon as
+                // the CONTROL channel connects (BthPS3 L2CAP.Connect.c calls
+                // BthPS3_PDO_Create on the first inbound connection whatever
+                // its PSM) while the INTERRUPT channel arrives as a separate,
+                // later connection. Tearing the transport down seven seconds
+                // in destroyed a link that was still assembling, and the
+                // rebuild restarted the same race, forever. DsHidMini never
+                // detaches on silence at all; this keeps a bound only so a
+                // genuinely dead session still recovers.
+                long silenceHorizon = _transport == Ds3Transport.Usb ? 3000 : 30000;
+                if (!_everGotInput && kicks >= 1 && now - lastKick >= silenceHorizon)
                 {
-                    _log($"{Tag}({(_transport == Ds3Transport.Usb ? "USB" : "BT")}): no input after {kicks} kicks - detaching for a clean re-open");
+                    _log($"{Tag}({(_transport == Ds3Transport.Usb ? "USB" : "BT")}): no input for "
+                        + $"{silenceHorizon / 1000} s after the enable - detaching for a clean re-open");
                     // Cancel the read, NOT the service. The read loop then
                     // returns, the monitor tears down and re-opens on its
                     // next pass, and the enable is retried on a fresh
@@ -690,6 +742,23 @@ namespace PadForge.Common.Input
         private void Kick()
         {
             WriteOutputReport();
+            SendEnable();
+        }
+
+        /// <summary>The magic packet that starts input reports.
+        ///
+        /// <para>Split out of <see cref="Kick"/> because the two transports
+        /// need it at different MOMENTS. USB sends it immediately, which is
+        /// what ScpToolkit does and what has always worked here. Bluetooth
+        /// must not: DsHidMini sends the output report, starts its input
+        /// stream, and only one second later sends this, once, and only if no
+        /// input has arrived (DsBth.Timers.c, StartupDelay then
+        /// PostStartupTasks at WDF_REL_TIMEOUT_IN_SEC(1)). Its comment gives
+        /// both halves of the reason: "Required for compatibility with some
+        /// SIXAXIS models" and "It must not be issued on e.g. the Defender
+        /// BTH or it disconnects".</para></summary>
+        private void SendEnable()
+        {
             lock (_ioLock)
             {
                 if (_transport == Ds3Transport.Usb)

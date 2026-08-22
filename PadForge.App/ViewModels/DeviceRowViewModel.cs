@@ -230,6 +230,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsGamepad));
                     OnPropertyChanged(nameof(ShowInputModeSection));
                     OnPropertyChanged(nameof(ShowInputModeOrHidingSection));
+                    OnPropertyChanged(nameof(ShowRawInputDivider));
                     OnPropertyChanged(nameof(IsMidiDevice));
                     OnPropertyChanged(nameof(IsHeadsetMotionDevice));
                     OnPropertyChanged(nameof(ShowTouchpadCapability));
@@ -445,7 +446,11 @@ namespace PadForge.ViewModels
         public bool ShowIdleDisconnect
         {
             get => _showIdleDisconnect;
-            set => SetProperty(ref _showIdleDisconnect, value);
+            set
+            {
+                if (SetProperty(ref _showIdleDisconnect, value))
+                    OnPropertyChanged(nameof(ShowRawInputDivider));
+            }
         }
 
         private int _batteryPercent = -1;
@@ -572,6 +577,25 @@ namespace PadForge.ViewModels
         /// sections so a virtual device doesn't leave a dangling divider.</summary>
         public bool ShowInputModeOrHidingSection => ShowInputModeSection || ShowInputHidingSection;
 
+        /// <summary>Whether the divider immediately above Raw Input State
+        /// should draw.
+        ///
+        /// <para>There are two dividers in that stretch and the Power section
+        /// sits between them, so exactly one of them has to survive whatever
+        /// the device has. The lower one used to be unconditional, which drew
+        /// a second rule flush under the first on every device that has an
+        /// Input Mode or Hiding section but no Power section: a Navigation
+        /// controller showed two bars under "Hide from Games" with nothing in
+        /// between (owner-reported).</para>
+        ///
+        /// <para>It cannot simply follow the Power section either. A device
+        /// with neither Power nor the sections above it (an NFC reader, a
+        /// microphone) would then have no divider at all and the Raw Input
+        /// State header would sit flush against the assignment controls,
+        /// which is the defect the unconditional divider was introduced to
+        /// fix. So: draw when Power drew, or when nothing above it did.</para></summary>
+        public bool ShowRawInputDivider => ShowIdleDisconnect || !ShowInputModeOrHidingSection;
+
         // ─────────────────────────────────────────────
         //  Device path
         // ─────────────────────────────────────────────
@@ -594,6 +618,7 @@ namespace PadForge.ViewModels
                     // with the other path-derived siblings.
                     OnPropertyChanged(nameof(ShowConsumeToggle));
                     OnPropertyChanged(nameof(ShowInputModeOrHidingSection));
+                    OnPropertyChanged(nameof(ShowRawInputDivider));
                     OnPropertyChanged(nameof(IsBluetoothLink));
                     // ShowRegisterNfcTag's controller branch now gates on
                     // IsBluetoothLink, which is path-derived, so a link

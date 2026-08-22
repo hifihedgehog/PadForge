@@ -1053,8 +1053,13 @@
                              panel is gated on ShowIdleDisconnect, and a divider
                              inside it vanished for every device without a Power
                              section (NFC readers, microphones), leaving the
-                             assignment elements flush against the header. -->
-                        <Separator Margin="0,2,0,8"/>
+                             assignment elements flush against the header.
+                             It is not unconditional either, or it drew flush
+                             under the divider above whenever a device had an
+                             Input Mode or Hiding section and no Power section.
+                             ShowRawInputDivider carries that whole rule. -->
+                        <Separator Margin="0,2,0,8"
+                                   Visibility="{Binding SelectedDevice.ShowRawInputDivider, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                         <!-- ─── Raw Input State (Visual) ─── -->
                         <TextBlock Text="{Binding Devices_RawInputState, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"

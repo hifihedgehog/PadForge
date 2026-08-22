@@ -1141,9 +1141,35 @@ try {
         function Test-DeviceExists($guid) {
             return ($null -ne $devicesNode.SelectSingleNode("Device[InstanceGuid='$guid']"))
         }
+        # A synthetic row stands in for hardware that is NOT already known. The
+        # owner's cached <Devices> list grows as they acquire real pads, and a
+        # GUID-only check cannot see that: a real PlayStation Move and a real
+        # DualSense both arrived during 4.3.x, so the injection added a second
+        # row for each and devices-move shipped photographing the SAME
+        # controller listed twice. Identity is VID+PID, so dedupe on that too.
+        # Snapshot the identities present BEFORE any injection. Testing against
+        # the live node instead would compare synthetics to each other, and two
+        # of them deliberately share an identity: the Wii Remote and the Wii
+        # Balance Board are both 057E:0306, distinguished only by ProductName
+        # because the picker's gates compute from VendorId + ProductName. The
+        # first version of this check dropped whichever of the pair came second
+        # and silently removed both Wii rows from the Devices list.
+        $preExistingIds = New-Object System.Collections.Generic.HashSet[string]
+        foreach ($d in $devicesNode.SelectNodes("Device")) {
+            $v = $d.SelectSingleNode("VendorId"); $p = $d.SelectSingleNode("ProdId")
+            if ($null -ne $v -and $null -ne $p) { [void]$preExistingIds.Add("$($v.InnerText):$($p.InnerText)") }
+        }
+        function Test-DeviceIdentityExists($vid, $pid) {
+            return $preExistingIds.Contains("${vid}:${pid}")
+        }
         function Add-DeviceOnce($node) {
             $g = $node.SelectSingleNode("InstanceGuid").InnerText
             if (Test-DeviceExists $g) { Write-Host "  (dummy $g already present, skipped)"; return }
+            $vn = $node.SelectSingleNode("VendorId"); $pn = $node.SelectSingleNode("ProdId")
+            if ($null -ne $vn -and $null -ne $pn -and (Test-DeviceIdentityExists $vn.InnerText $pn.InnerText)) {
+                Write-Host ("  (real {0}:{1} already enumerated, synthetic skipped)" -f $vn.InnerText, $pn.InnerText)
+                return
+            }
             $devicesNode.AppendChild($node) | Out-Null
         }
         function New-SyntheticDevice($guid, $name, $vid, $prodId, $path, $capType, $axes, $buttons, $povs) {
@@ -2175,8 +2201,21 @@ function Select-DeviceByName36 {
     Reset-DeviceTypeFilter | Out-Null
     $wr = New-Object Win32+RECT
     [Win32]::GetWindowRect($script:hwnd, [ref]$wr) | Out-Null
-    $listX = [int]($wr.Left + 400)
     $midY  = [int](($wr.Top + $wr.Bottom) / 2)
+    # Wheel at the card list's OWN center-x, read from any realized row, NOT at
+    # a fixed Left+400. Assign-DeviceToSlot fixed exactly this in 4.1.0 ("the
+    # old fixed Left+400 landed outside its scroll viewer, so every
+    # below-the-fold device went unreachable") and this twin kept the broken
+    # constant, so the wheel spun over the page instead of the list. On a
+    # 35-device machine the search never realized anything past the H rows and
+    # devices-move silently went stale: the run reported "not found after
+    # scroll" while printing a diagnostic full of rows from the top of a list
+    # it had never moved.
+    $listX = [int]($wr.Left + 400)
+    foreach ($it0 in $script:uiaWin.FindAll($TD, $li36)) {
+        $r0 = Get-Rect $it0
+        if ($null -ne $r0 -and $r0.Width -gt 0) { $listX = [int]($r0.X + $r0.Width / 2); break }
+    }
     # Scroll the card list to the top first so a top-of-list target (e.g. the
     # "All Consumer Controls (Merged)" row) is realized even if a prior capture
     # left the list scrolled down. Then step down searching each realized page.
@@ -2221,8 +2260,16 @@ function Select-DeviceByName36 {
             return $true
         } catch { return $false }
     }
-    for ($try = 0; $try -lt 16; $try++) {
+    # 24, matching the sibling. Sixteen pages of a 35-device list does not
+    # reach the bottom once the owner's own cached rows are merged in.
+    for ($try = 0; $try -lt 24; $try++) {
         $items = $script:uiaWin.FindAll($TD, $li36)
+        # Re-read the list's center-x each pass: the first pass may have run
+        # before any row was realized.
+        foreach ($it0 in $items) {
+            $r0 = Get-Rect $it0
+            if ($null -ne $r0 -and $r0.Width -gt 0) { $listX = [int]($r0.X + $r0.Width / 2); break }
+        }
         foreach ($it in $items) {
             if (($it.Current.Name -like "*$NamePart*") -and -not (& $inView36 $it)) {
                 & $scrollIntoView36 $it | Out-Null

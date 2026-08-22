@@ -848,6 +848,19 @@ namespace PadForge.Services
                 foreach (string mac in EnumeratePairedFamilyRecords(MOVE_PID))
                     if (string.Equals(mac, macHex, StringComparison.OrdinalIgnoreCase)) { recordExists = true; break; }
                 byte[] radio = ReadRadioMac();
+
+                // A device record ALONE is not a pairing. The link key is what
+                // makes the address remembered and authenticated, and without
+                // it Windows lists no Bluetooth device and the pad cannot
+                // connect. A ceremony that wrote the name and then failed
+                // leaves exactly that debris, and treating it as "already
+                // paired" refused the repair forever (owner-reported: a
+                // Navigation controller with a record and no Bluetooth entry).
+                if (recordExists && !Ds3DriverInstaller.HasLinkKeyAnchor(radio, macHex))
+                {
+                    _log($"Move dock: {macHex} has a device record but no pairing key; re-pairing.");
+                    recordExists = false;
+                }
                 if (!ShouldAutoPairMove(recordExists, padStoredHostBigEndian, radio))
                 {
                     _log($"Move dock: {macHex} is already paired to this PC; charging only.");
@@ -915,6 +928,73 @@ namespace PadForge.Services
                 ReconcilePsmPatchForCrashSafety("move-pair-end");
                 MintRowAfterMovePairing(r, nav);
             }
+        }
+
+        /// <summary>Dock-triggered auto-pair for the NAVIGATION controller,
+        /// the Move's <see cref="AutoPairMoveIfNeeded"/> for the other
+        /// Move-family pad.
+        ///
+        /// <para>Without this the Navigation controller never became a
+        /// Bluetooth device. It has no dock hook of its own, and unlike the
+        /// DualShock 3 nothing else drove it to the ceremony, so plugging it
+        /// in opened a USB stream and wrote no remembered-device record: the
+        /// pad worked on the cable and simply did not exist to Windows
+        /// Bluetooth (owner-reported). The decision, the record and the radio
+        /// cycle are all the Move's, reached through the same
+        /// RunMovePairing.</para></summary>
+        public void AutoPairNavIfNeeded(string macHex, byte[] padStoredHostBigEndian)
+        {
+            if (string.IsNullOrEmpty(macHex))
+            {
+                _log("Navigation dock: the pad's address could not be read, so auto-pair is skipped. "
+                    + "Use Devices > Pair Device to pair it manually.");
+                return;
+            }
+            if (System.Threading.Interlocked.CompareExchange(ref _autoPairInFlight, 1, 0) != 0) return;
+            try
+            {
+                bool recordExists = false;
+                foreach (string mac in EnumeratePairedFamilyRecords(NAV_PID))
+                    if (string.Equals(mac, macHex, StringComparison.OrdinalIgnoreCase)) { recordExists = true; break; }
+                byte[] radio = ReadRadioMac();
+
+                // A device record ALONE is not a pairing. The link key is what
+                // makes the address remembered and authenticated, and without
+                // it Windows lists no Bluetooth device and the pad cannot
+                // connect. A ceremony that wrote the name and then failed
+                // leaves exactly that debris, and treating it as "already
+                // paired" refused the repair forever (owner-reported: a
+                // Navigation controller with a record and no Bluetooth entry).
+                if (recordExists && !Ds3DriverInstaller.HasLinkKeyAnchor(radio, macHex))
+                {
+                    _log($"Navigation dock: {macHex} has a device record but no pairing key; re-pairing.");
+                    recordExists = false;
+                }
+                if (!ShouldAutoPairMove(recordExists, padStoredHostBigEndian, radio))
+                {
+                    _log($"Navigation dock: {macHex} is already paired to this PC; charging only.");
+                    // Same heal the Move gets: a pad paired before the category
+                    // gate was opened is remembered but refused on connect.
+                    if (Ds3DriverInstaller.EnsureMoveFamilySupportEnabled(_log))
+                    {
+                        lock (_radioGate)
+                        {
+                            CycleRadio();
+                            ReconcilePsmPatchForCrashSafety("nav-gate-heal");
+                        }
+                        _log("Bluetooth restarted to load Navigation support. "
+                             + "Unplug the pad and press its PS button.");
+                    }
+                    return;
+                }
+                _log($"Navigation dock: {macHex} is not paired to this PC - pairing now (this briefly restarts Bluetooth).");
+                var result = RunMovePairing();
+                _log(result.Success
+                    ? "Navigation dock: paired. Unplug the pad and press its PS button to connect."
+                    : $"Navigation dock: auto-pair did not complete ({result.Error}). Use Devices > Pair Device to retry.");
+            }
+            catch (Exception ex) { _log("Navigation dock auto-pair failed: " + ex.Message); }
+            finally { System.Threading.Interlocked.Exchange(ref _autoPairInFlight, 0); }
         }
 
         /// <summary>Success tail of the Move ceremony, outside the suppression

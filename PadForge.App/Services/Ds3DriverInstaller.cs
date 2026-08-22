@@ -1606,6 +1606,38 @@ namespace PadForge.Services
             finally { RegCloseKey(hk); }
         }
 
+        /// <summary>Whether this address has a link-key anchor under the given
+        /// radio, the half of a pairing that makes the device REMEMBERED and
+        /// authenticated rather than merely described.
+        ///
+        /// <para>A device record without it is not a pairing: Windows lists no
+        /// Bluetooth device and the pad cannot connect. It is also what a
+        /// ceremony leaves behind when it writes the name and then fails, and
+        /// the dock auto-pair used to treat that debris as "already paired"
+        /// and refuse to repair it, so the pad stayed unpairable until someone
+        /// deleted the record by hand (owner-reported for a Navigation
+        /// controller).</para></summary>
+        public static bool HasLinkKeyAnchor(byte[] radioMacBigEndian, string deviceMacHex)
+        {
+            if (radioMacBigEndian == null || string.IsNullOrEmpty(deviceMacHex)) return false;
+            // Through the SAME backup-privileged handle the writer uses. The
+            // Keys subtree is SYSTEM-owned, so an ordinary elevated
+            // Registry.OpenSubKey returns null and every pairing then looks
+            // keyless: the dock re-paired on every plug, and the re-pair
+            // collided with the reader that had already reopened the pad
+            // (err=5). Measured, not reasoned.
+            IntPtr hk = OpenKeysBackupRestore(radioMacBigEndian, null);
+            if (hk == IntPtr.Zero) return false;
+            try
+            {
+                int cb = 0;
+                int rc = RegQueryValueEx(hk, deviceMacHex, IntPtr.Zero, out _, null, ref cb);
+                return rc == 0 && cb > 0;
+            }
+            catch { return false; }
+            finally { RegCloseKey(hk); }
+        }
+
         /// <summary>Removes the link-key anchor for a clean unpair.</summary>
         public static void DeleteLinkKeyAnchor(byte[] radioMacBigEndian, string deviceMacHex, Action<string> log)
         {
@@ -2054,6 +2086,7 @@ namespace PadForge.Services
 
         [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)] private static extern int RegCreateKeyEx(UIntPtr hKey, string subKey, int reserved, string cls, int options, int sam, IntPtr sa, out IntPtr res, out int disp);
         [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)] private static extern int RegSetValueEx(IntPtr hKey, string name, int reserved, int type, byte[] data, int cb);
+        [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)] private static extern int RegQueryValueEx(IntPtr hKey, string name, IntPtr reserved, out int type, byte[] data, ref int cb);
         [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)] private static extern int RegDeleteValue(IntPtr hKey, string name);
         [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)] private static extern int RegDeleteKey(UIntPtr hKey, string subKey);
         [DllImport("advapi32.dll", SetLastError = true)] private static extern int RegCloseKey(IntPtr hKey);

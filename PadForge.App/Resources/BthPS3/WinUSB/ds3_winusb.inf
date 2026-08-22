@@ -1,5 +1,9 @@
 ; ds3_winusb.inf
 ; Bind the inbox WinUSB function driver (winusb.sys) to a DualShock 3 (VID_054C&PID_0268)
+; or a PlayStation Move Navigation Controller (VID_054C&PID_042F). The Navigation pad is a
+; DS3 in a smaller shell and pairs through the same 0xF2/0xF5 reports, which its HID
+; descriptor does not expose either: measured on hardware, its HID collection accepts
+; feature report ids 0x01, 0x02, 0xEE and 0xEF and nothing else.
 ; so a userland process can send the raw USB control transfers the HID stack blocks
 ; (0xF4 enable, 0xF2/0xF5 sixpair) and read the interrupt IN endpoint directly.
 ; This is the DsHidMini/ScpToolkit approach minus the third-party kernel driver:
@@ -20,7 +24,8 @@ PnpLockdown = 1
 %ProviderName% = Standard,NTamd64
 
 [Standard.NTamd64]
-%DeviceName% = USB_Install, USB\VID_054C&PID_0268
+%DeviceName%    = USB_Install, USB\VID_054C&PID_0268
+%NavDeviceName% = USB_Install, USB\VID_054C&PID_042F
 
 [USB_Install]
 Include = winusb.inf
@@ -38,4 +43,5 @@ HKR,,DeviceInterfaceGUIDs,0x10000,"{B35924D6-3E16-4A9E-9782-5524A4B79BAC}"
 
 [Strings]
 ProviderName = "PadForge"
-DeviceName   = "DualShock 3 (WinUSB)"
+DeviceName    = "DualShock 3 (WinUSB)"
+NavDeviceName = "PlayStation Move Navigation Controller (WinUSB)"

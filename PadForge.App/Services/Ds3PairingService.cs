@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using System.Threading;
 using Microsoft.Win32;
@@ -950,7 +950,25 @@ namespace PadForge.Services
             string macHex;
             if (isNav)
             {
-                if (!NavSixpair(dev.Value.DataPath, radio, out macHex, out string navErr))
+                // The Navigation pad needs WinUSB for the same reason the DS3
+                // does: its HID descriptor does not carry 0xF2 or 0xF5. The
+                // Move does not, because the reports its ceremony uses are in
+                // its descriptor, which is why only this branch binds.
+                if (!EnsureWinUsbBound(ct))
+                {
+                    string why = Ds3DriverInstaller.LastWinUsbFailure;
+                    if (why == "sign-failed" || why == "driver-untrusted")
+                    {
+                        _log("Windows will not install PadForge's USB driver for the Navigation controller. "
+                             + "The diagnostics log records which step failed.");
+                        r.Error = "driver-untrusted"; return r;
+                    }
+                    _log("Could not bind the Navigation controller to WinUSB. Is it connected by USB cable?");
+                    r.Error = "winusb-bind-failed"; return r;
+                }
+                if (ct.IsCancellationRequested) { r.Error = "cancelled"; return r; }
+
+                if (!NavSixpair(radio, out macHex, out string navErr))
                 { r.Error = navErr; return r; }
             }
             else
@@ -1083,84 +1101,129 @@ namespace PadForge.Services
             finally { CloseHandle(h); }
         }
 
-        /// <summary>The Navigation controller's sixpair: identical to the DS3's
-        /// (sixad/sixpair.c:136 pairs the Nav PID through the same 0xF5 write),
-        /// but over inbox HID. HidD buffers carry the report id at byte 0 and
-        /// the payload from byte 1, one byte to the right of the raw control
-        /// transfer the WinUSB DS3 ceremony reads (MAC at raw 4-9, hid-sony.c
-        /// 2046-2066), so the MAC sits at 5-10 here; the raw offset is probed
-        /// as a fallback and the choice is logged.</summary>
-        private bool NavSixpair(string path, byte[] radioBigEndian, out string macHex, out string error)
+        /// <summary>The Navigation controller's sixpair, over WinUSB.
+        ///
+        /// <para>An earlier version ran this over inbox HID, on the theory
+        /// that the Navigation pad is a Move-family device and the Move's
+        /// ceremony is a HID one. It cannot work, and this file's own header
+        /// says why: the 0xF2 and 0xF5 magic reports are absent from the HID
+        /// descriptor, so HidUsb refuses them. Measured on hardware, the
+        /// Navigation controller's HID collection accepts feature report ids
+        /// 0x01, 0x02, 0xEE and 0xEF and nothing else, with a
+        /// FeatureReportByteLength of 49, and HidD_GetFeature(0xF2) returns
+        /// ERROR_INVALID_PARAMETER at every buffer length including the
+        /// correct one.</para>
+        ///
+        /// <para>The Navigation pad is a DualShock 3 in a smaller shell, so
+        /// it takes the DS3 ceremony verbatim: WinUSB control transfers,
+        /// GET_REPORT(FEATURE 0xF2) for the pad's own address at bytes 4-9,
+        /// and SET_REPORT(FEATURE 0xF5) carrying the radio address at bytes
+        /// 2-7 behind the 0x01 0x00 prefix. No report-id byte sits in the
+        /// buffer here: the id rides in the setup packet's wValue, which is
+        /// what made the old HID framing argue with itself about whether the
+        /// address began at offset 3, 4 or 5.</para>
+        /// </summary>
+        private bool NavSixpair(byte[] radioBigEndian, out string macHex, out string error)
         {
             macHex = null; error = null;
-            IntPtr h = OpenHidPath(path);
-            if (h == INVALID_HANDLE) { _log($"Opening the Navigation controller failed (err={Marshal.GetLastWin32Error()})."); error = "no-move-usb"; return false; }
+
+            string path = FindWinUsbDs3();
+            if (path == null)
+            {
+                _log("The Navigation controller was not found on WinUSB.");
+                error = "no-move-usb"; return false;
+            }
+            _log($"Navigation WinUSB interface: {path}");
+
+            IntPtr dev = CreateFile(path, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_RW,
+                IntPtr.Zero, OPEN_EXISTING, FILE_FLAG_OVERLAPPED, IntPtr.Zero);
+            if (dev == INVALID_HANDLE)
+            {
+                _log($"Opening the Navigation controller failed (err={Marshal.GetLastWin32Error()}).");
+                error = "no-move-usb"; return false;
+            }
             try
             {
-                byte[] f2 = new byte[18];
-                f2[0] = 0xF2;
-                if (!HidD_GetFeature(h, f2, f2.Length))
+                if (!WinUsb_Initialize(dev, out IntPtr ifh))
                 {
-                    _log($"Reading the Navigation controller address failed (err={Marshal.GetLastWin32Error()}).");
-                    error = "sixpair-failed"; return false;
+                    _log($"WinUsb_Initialize failed (err={Marshal.GetLastWin32Error()}).");
+                    error = "no-move-usb"; return false;
                 }
-                // The references disagree by one byte on where the MAC starts
-                // (sixad/sixpair.c reads payload offset 4, the moveonpc Nav page
-                // documents offset 3, and HidD framing can shift either by one),
-                // but ALL of them agree the MAC directly follows an FF FF 00
-                // marker. Anchor on the structure instead of an offset, log the
-                // raw bytes so the first hardware contact settles the layout,
-                // and fail loudly rather than record a shifted address.
-                _log($"Navigation 0xF2 raw: {Hex(f2[..12], ' ')}");
-                byte[] mac = ExtractNavMacFromF2(f2);
-                if (mac == null)
+                try
                 {
-                    _log("The Navigation controller's 0xF2 report carried no FF FF 00 address marker.");
-                    error = "sixpair-failed"; return false;
-                }
-                macHex = Hex(mac, null).ToLowerInvariant();
-                _log($"Navigation address: {Hex(mac, ':')}");
-
-                byte[] set = new byte[9];
-                set[0] = 0xF5;
-                set[1] = 0x01;
-                Array.Copy(radioBigEndian, 0, set, 3, 6);
-                if (!HidD_SetFeature(h, set, set.Length))
-                {
-                    _log($"Sixpair write failed (err={Marshal.GetLastWin32Error()}).");
-                    error = "sixpair-failed"; return false;
-                }
-
-                byte[] back = new byte[9];
-                back[0] = 0xF5;
-                if (HidD_GetFeature(h, back, back.Length))
-                {
-                    // Master at payload bytes 2-7 (DS3 ceremony reads before[2..8]
-                    // on the raw transfer), so 3-8 with the HidD id byte.
-                    byte[] got = new byte[6];
-                    Array.Copy(back, 3, got, 0, 6);
-                    _log($"Master after sixpair: {Hex(got, ':')}");
-                    if (!got.AsSpan().SequenceEqual(radioBigEndian))
+                    byte[] f2 = new byte[17];
+                    if (!GetFeature(ifh, 0xF2, f2))
                     {
-                        byte[] gotRaw = new byte[6];
-                        Array.Copy(back, 2, gotRaw, 0, 6);
-                        if (gotRaw.AsSpan().SequenceEqual(radioBigEndian))
-                            _log("Sixpair confirmed (raw-offset read-back).");
-                        else
+                        // One retry, the same allowance the DS3 gets: the pad
+                        // can refuse the first class request while it is still
+                        // settling on the freshly bound driver.
+                        _log($"Reading the Navigation controller address failed ({LastTransferFault}).");
+                        System.Threading.Thread.Sleep(300);
+                        if (!GetFeature(ifh, 0xF2, f2))
+                        { error = "sixpair-failed"; return false; }
+                        _log("GET_REPORT 0xF2 succeeded on retry.");
+                    }
+                    byte[] mac = new byte[6];
+                    Array.Copy(f2, 4, mac, 0, 6);
+
+                    // Offset 4 is the DS3's, and the Navigation pad is a DS3.
+                    // The marker-anchored reader stays as a cross-check on
+                    // that assumption rather than as the primary: every
+                    // reference agrees the address follows an FF FF 00
+                    // marker, so a disagreement here means the reply is not
+                    // shaped like a DS3's and the log needs to say so on the
+                    // first hardware contact rather than after a wrong
+                    // address is written into the Bluetooth stack.
+                    _log($"Navigation 0xF2 raw: {Hex(f2[..12], ' ')}");
+                    byte[] anchored = ExtractNavMacFromF2(f2);
+                    if (anchored != null && !anchored.AsSpan().SequenceEqual(mac))
+                    {
+                        _log($"WARNING: the 0xF2 reply is not shaped like a DS3's. "
+                             + $"Offset 4 reads {Hex(mac, ':')}, the FF FF 00 marker reads {Hex(anchored, ':')}. "
+                             + "Using the marker.");
+                        mac = anchored;
+                    }
+
+                    macHex = Hex(mac, null).ToLowerInvariant();
+                    _log($"Navigation address: {Hex(mac, ':')}");
+
+                    byte[] before = new byte[8];
+                    if (GetFeature(ifh, 0xF5, before))
+                        _log($"Master before sixpair: {Hex(before[2..8], ':')}");
+
+                    byte[] set = new byte[8];
+                    set[0] = 0x01; set[1] = 0x00;
+                    Array.Copy(radioBigEndian, 0, set, 2, 6);
+                    if (!SetFeature(ifh, 0xF5, set))
+                    {
+                        _log($"Sixpair write failed ({LastTransferFault}).");
+                        error = "sixpair-failed"; return false;
+                    }
+
+                    // A returned-true control transfer is not proof the
+                    // firmware stored anything, which is why the DS3 reads
+                    // back and this does too.
+                    byte[] after = new byte[8];
+                    if (GetFeature(ifh, 0xF5, after))
+                    {
+                        byte[] got = after[2..8];
+                        _log($"Master after sixpair: {Hex(got, ':')}");
+                        if (!got.AsSpan().SequenceEqual(radioBigEndian))
                         {
-                            _log($"WARNING: the controller did not store the radio address (wanted {Hex(radioBigEndian, ':')}).");
+                            _log($"WARNING: the Navigation controller did not store the radio address (wanted {Hex(radioBigEndian, ':')}).");
                             error = "sixpair-not-committed"; return false;
                         }
+                        _log("Sixpair written and confirmed.");
                     }
-                    else _log("Sixpair written and confirmed.");
+                    else
+                    {
+                        _log("Sixpair written (the read-back failed; commit not confirmed).");
+                    }
+                    return true;
                 }
-                else
-                {
-                    _log("Sixpair written (this controller does not answer the 0xF5 read-back).");
-                }
-                return true;
+                finally { WinUsb_Free(ifh); }
             }
-            finally { CloseHandle(h); }
+            finally { CloseHandle(dev); }
         }
 
         /// <summary>Finds the Navigation controller's MAC in its 0xF2 feature

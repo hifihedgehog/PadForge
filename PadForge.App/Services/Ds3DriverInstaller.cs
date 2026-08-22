@@ -519,15 +519,26 @@ namespace PadForge.Services
                 // strict-ranking machine it silently applies nothing. The
                 // targeted forced update is the DsHidMini/ScpToolkit
                 // pattern and is deterministic everywhere.
-                if (!UpdateDriverForPlugAndPlayDevices(IntPtr.Zero, @"USB\VID_054C&PID_0268",
-                        infPath, INSTALLFLAG_FORCE | INSTALLFLAG_NONINTERACTIVE, out _))
+                // Both PIDs the package covers. The Navigation controller is
+                // a DS3 in a smaller shell: it pairs through the same
+                // 0xF2/0xF5 reports, and its HID descriptor hides them the
+                // same way. Measured on hardware, its HID collection accepts
+                // feature report ids 0x01, 0x02, 0xEE and 0xEF and nothing
+                // else, so the sixpair reports are unreachable until it sits
+                // on WinUSB exactly as the DS3 does. Whichever pad is absent
+                // simply reports ERROR_NO_SUCH_DEVINST and is skipped.
+                foreach (string hwid in new[] { @"USB\VID_054C&PID_0268", @"USB\VID_054C&PID_042F" })
                 {
-                    int err = Marshal.GetLastWin32Error();
-                    // ERROR_NO_SUCH_DEVINST: the pad vanished mid-ceremony.
-                    // Anything else still gets the poll below, since the
-                    // non-forced install may have landed on lenient-ranking
-                    // machines.
-                    log($"Forced WinUSB bind returned err={err}.");
+                    if (!UpdateDriverForPlugAndPlayDevices(IntPtr.Zero, hwid,
+                            infPath, INSTALLFLAG_FORCE | INSTALLFLAG_NONINTERACTIVE, out _))
+                    {
+                        int err = Marshal.GetLastWin32Error();
+                        // ERROR_NO_SUCH_DEVINST: that pad is not plugged in.
+                        // Anything else still gets the poll below, since the
+                        // non-forced install may have landed on lenient-
+                        // ranking machines.
+                        log($"Forced WinUSB bind for {hwid} returned err={err}.");
+                    }
                 }
 
                 // The bind takes a moment to re-enumerate the USB node. Done

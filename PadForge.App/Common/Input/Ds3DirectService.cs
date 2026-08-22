@@ -994,22 +994,32 @@ namespace PadForge.Common.Input
             byte[] storedHost = null;
             try
             {
-                IntPtr ifh;
-                lock (_outLock) ifh = _usbIfh;
-                if (ifh != IntPtr.Zero)
+                // Under _ioLock for the whole exchange, the same contract every
+                // other transfer in this file holds to: Teardown takes _ioLock
+                // before WinUsb_Free, so a transfer that starts inside it can
+                // never have its interface freed underneath it. Stop() joins the
+                // read thread with a 1.5 s timeout and tears down regardless, so
+                // a control transfer still in flight is exactly the case that
+                // needs it. Lock order is _ioLock outer, _outLock inner.
+                lock (_ioLock)
                 {
-                    byte[] f2 = new byte[17];
-                    if (UsbGetFeature(ifh, 0xF2, f2))
+                    IntPtr ifh;
+                    lock (_outLock) ifh = _usbIfh;
+                    if (ifh != IntPtr.Zero)
                     {
-                        var m = new byte[6];
-                        Array.Copy(f2, 4, m, 0, 6);
-                        var sb = new System.Text.StringBuilder(12);
-                        foreach (byte b in m) sb.Append(b.ToString("x2"));
-                        mac = sb.ToString();
+                        byte[] f2 = new byte[17];
+                        if (UsbGetFeature(ifh, 0xF2, f2))
+                        {
+                            var m = new byte[6];
+                            Array.Copy(f2, 4, m, 0, 6);
+                            var sb = new System.Text.StringBuilder(12);
+                            foreach (byte b in m) sb.Append(b.ToString("x2"));
+                            mac = sb.ToString();
+                        }
+                        byte[] f5 = new byte[8];
+                        if (UsbGetFeature(ifh, 0xF5, f5))
+                            storedHost = f5[2..8];
                     }
-                    byte[] f5 = new byte[8];
-                    if (UsbGetFeature(ifh, 0xF5, f5))
-                        storedHost = f5[2..8];
                 }
             }
             catch { }

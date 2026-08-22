@@ -948,7 +948,8 @@ namespace PadForge.Services
         /// of the same model cannot be told apart from here, and a wrong
         /// address would disconnect the wrong pad, so the ambiguous case is
         /// left alone: no worse than before, when no pad had one.</para></summary>
-        internal static void StampLinkAddress(ushort vid, ushort pid, string macHex)
+        internal static void StampLinkAddress(
+            ushort vid, ushort pid, string macHex, bool authoritative = false)
         {
             if (string.IsNullOrEmpty(macHex)) return;
             var devices = PadForge.Common.Input.SettingsManager.UserDevices;
@@ -961,7 +962,19 @@ namespace PadForge.Services
                     foreach (var d in devices.Items)
                     {
                         if (d == null || d.VendorId != vid || d.ProdId != pid) continue;
-                        if (!string.IsNullOrEmpty(d.SerialNumber)) return;   // already known
+
+                        // A row that already carries THIS address is done, and a
+                        // row carrying a different one is only correctable by an
+                        // authoritative caller. An earlier version returned here
+                        // on any non-empty serial, which aborted the whole stamp
+                        // the moment a stale sibling row for the same model came
+                        // first in the collection, so the live row was never
+                        // reached and the address never arrived.
+                        if (string.Equals(d.SerialNumber, macHex, StringComparison.OrdinalIgnoreCase))
+                            return;
+                        if (!string.IsNullOrEmpty(d.SerialNumber) && !authoritative)
+                            continue;
+
                         if (only != null) return;                            // ambiguous
                         only = d;
                     }
@@ -1007,7 +1020,13 @@ namespace PadForge.Services
                         new Guid("2BD67D8B-8BEB-48D5-87E0-6CDA3428040A"), 1, typeof(string));
                 string mac = dev.GetProperty<string>(key);
                 if (!string.IsNullOrWhiteSpace(mac))
-                    StampLinkAddress(vid, pid, mac.Trim().ToLowerInvariant());
+                    // Authoritative: this address came off the very node this
+                    // connection is riding, so it may correct a row that
+                    // adopted a different unit of the same model. Identity here
+                    // follows connection order by design (Step 1's drawer
+                    // case), so the stored address can legitimately belong to
+                    // the other unit and must be replaced rather than kept.
+                    StampLinkAddress(vid, pid, mac.Trim().ToLowerInvariant(), authoritative: true);
             }
             catch { /* a convenience; never break a connect */ }
         }

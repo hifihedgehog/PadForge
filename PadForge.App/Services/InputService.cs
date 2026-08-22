@@ -8056,6 +8056,25 @@ namespace PadForge.Services
                 RefreshVoiceObjects();
                 UpdatePadDeviceInfo();
 
+                // A device the user has never seen before is persisted
+                // state, and nothing on the arrival path was writing it.
+                // The one MarkDirty near this lane sits at the end of
+                // DrainPendingDeviceGuidMigrations and runs only when an
+                // identity is re-keyed, so a pad that connected, was
+                // listed, and was unplugged again lived entirely in
+                // memory. The shutdown save is dirty-gated, so its row was
+                // gone by the next launch unless the user happened to
+                // change a setting while it was connected (owner-reported
+                // for a Switch 2 Pro).
+                //
+                // The signal is a ROW BEING CREATED, not this event.
+                // DevicesUpdated fires roughly every two seconds whether or
+                // not anything was added (measured), so marking dirty here
+                // unconditionally rewrote the whole config on a two-second
+                // loop for as long as PadForge ran.
+                if (Common.Input.InputManager.ConsumeNewDeviceRegistered())
+                    _settingsService?.MarkDirty();
+
                 // Re-apply device hiding so newly-connected devices get blacklisted
                 // and their instance IDs get cached for future sessions.
                 ApplyDeviceHiding();

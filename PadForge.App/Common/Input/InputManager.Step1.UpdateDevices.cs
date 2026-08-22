@@ -911,9 +911,35 @@ namespace PadForge.Common.Input
                 // 3. No match: create a new device.
                 var ud = new UserDevice { InstanceGuid = instanceGuid };
                 devices.Items.Add(ud);
+                // The persisted device set just grew, so the settings have
+                // to reach disk. This is the ONLY place a row is created,
+                // for every device class, which is why the flag lives here
+                // rather than on DevicesUpdated: that event fires about
+                // every two seconds regardless of whether anything was
+                // added, and a dirty mark there rewrote the config on a
+                // loop. Set from the poll thread, consumed on the UI thread
+                // by InputService.OnDevicesUpdated.
+                _newDeviceRegistered = 1;
                 return ud;
             }
         }
+
+        /// <summary>Set when a UserDevice row is created, cleared when the
+        /// UI thread has marked the settings dirty for it. An int rather
+        /// than a bool so the exchange is atomic: the poll thread sets it
+        /// and the UI thread takes it, and a set that lands during a take
+        /// must not be lost.</summary>
+        private static int _newDeviceRegistered;
+
+        /// <summary>Takes the new-device flag, returning whether one was
+        /// pending. Call once per device-list refresh on the UI thread.</summary>
+        internal static bool ConsumeNewDeviceRegistered()
+            => System.Threading.Interlocked.Exchange(ref _newDeviceRegistered, 0) != 0;
+
+        /// <summary>Test seam (InternalsVisibleTo PadForge.Tests): stands in
+        /// for the row-creation line, which needs a live SDL device.</summary>
+        internal static void MarkNewDeviceRegisteredForTest()
+            => System.Threading.Interlocked.Exchange(ref _newDeviceRegistered, 1);
 
         /// <summary>Adoption re-keys queued by the poll thread for the UI
         /// thread to drain (round eight, R13). InputService's

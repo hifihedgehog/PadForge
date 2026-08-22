@@ -104,6 +104,55 @@ namespace PadForge.Tests
             Assert.NotEqual(before, Sig(a));
         }
 
+        /// <summary>Every persisted field the arrival path stamps counts.
+        /// The signature is a mirror of UserDevice's saved state, and a
+        /// field LoadFromDevice writes but the signature omits is a field
+        /// whose change never reaches disk. That is the same defect the
+        /// signature replaced, one field at a time.</summary>
+        [Theory]
+        [InlineData("SdlGuid")]
+        [InlineData("VendorId")]
+        [InlineData("ProdId")]
+        [InlineData("RawAxisCount")]
+        [InlineData("ActuatorCount")]
+        [InlineData("CapTouchpadCount")]
+        [InlineData("HasGyro")]
+        [InlineData("HasAccel")]
+        [InlineData("HasGyroAux")]
+        [InlineData("HasAccelAux")]
+        [InlineData("HasTouchpad")]
+        [InlineData("HasRumbleTriggers")]
+        [InlineData("HasExtraGenericAxes")]
+        [InlineData("CapTouchpadFingerCounts")]
+        [InlineData("DeviceObjects")]
+        public void EveryArrivalStampedField_CountsAsAChange(string field)
+        {
+            var a = Dev();
+            string before = Sig(a);
+
+            switch (field)
+            {
+                case "SdlGuid": a.SdlGuid = "deadbeef"; break;
+                case "VendorId": a.VendorId = 0x054C; break;
+                case "ProdId": a.ProdId = 0x0268; break;
+                case "RawAxisCount": a.RawAxisCount = 16; break;
+                case "ActuatorCount": a.ActuatorCount = 2; break;
+                case "CapTouchpadCount": a.CapTouchpadCount = 2; break;
+                case "HasGyro": a.HasGyro = true; break;
+                case "HasAccel": a.HasAccel = true; break;
+                case "HasGyroAux": a.HasGyroAux = true; break;
+                case "HasAccelAux": a.HasAccelAux = true; break;
+                case "HasTouchpad": a.HasTouchpad = true; break;
+                case "HasRumbleTriggers": a.HasRumbleTriggers = true; break;
+                case "HasExtraGenericAxes": a.HasExtraGenericAxes = true; break;
+                case "CapTouchpadFingerCounts": a.CapTouchpadFingerCounts = new[] { 2, 2 }; break;
+                case "DeviceObjects": a.DeviceObjects = new DeviceObjectItem[3]; break;
+                default: Assert.Fail("unhandled field " + field); break;
+            }
+
+            Assert.NotEqual(before, Sig(a));
+        }
+
         /// <summary>Nothing changed, nothing written. Stated directly,
         /// because this is the property the idle machine depends on.</summary>
         [Fact]

@@ -11077,7 +11077,12 @@ namespace PadForge.Services
         ///
         /// <para>DateUpdated is excluded on purpose. It changes on every
         /// re-open, nothing reads it back, and including it would rewrite the
-        /// config forever on an idle machine.</para></summary>
+        /// config forever on an idle machine. Everything else the arrival path
+        /// stamps is here: a field written by LoadFromDevice and absent from
+        /// this list is a field whose change never reaches disk, which is the
+        /// defect this signature exists to prevent. Device and
+        /// ForceFeedbackState are the only two it writes that are runtime-only
+        /// and therefore correctly absent.</para></summary>
         internal static string BuildDeviceRegistrySignature(
             System.Collections.Generic.IEnumerable<UserDevice> devices)
         {
@@ -11090,14 +11095,33 @@ namespace PadForge.Services
                   .Append(d.InstanceName).Append('|')
                   .Append(d.DevicePath).Append('|')
                   .Append(d.SerialNumber).Append('|')
+                  .Append(d.SdlGuid).Append('|')
+                  .Append(d.VendorId).Append('|')
+                  .Append(d.ProdId).Append('|')
                   .Append(d.CapType).Append('|')
                   .Append(d.CapAxeCount).Append('|')
                   .Append(d.CapButtonCount).Append('|')
                   .Append(d.CapPovCount).Append('|')
-                  .Append(d.RawButtonCount).Append('|');
+                  .Append(d.RawButtonCount).Append('|')
+                  .Append(d.RawAxisCount).Append('|')
+                  .Append(d.ActuatorCount).Append('|')
+                  .Append(d.CapTouchpadCount).Append('|')
+                  .Append(d.HasGyro).Append(d.HasAccel)
+                  .Append(d.HasGyroAux).Append(d.HasAccelAux)
+                  .Append(d.HasTouchpad).Append(d.HasRumbleTriggers)
+                  .Append(d.HasExtraGenericAxes).Append('|');
                 var idx = d.CapButtonIndices;
                 if (idx != null) foreach (int i in idx) sb.Append(i).Append(',');
-                sb.Append(';');
+                sb.Append('|');
+                var fingers = d.CapTouchpadFingerCounts;
+                if (fingers != null) foreach (int f in fingers) sb.Append(f).Append(',');
+                sb.Append('|');
+                // DeviceObjects is what the offline mapping picker enumerates,
+                // and it arrives on the same connect that fills the counts. Its
+                // LENGTH is enough: the set is rebuilt wholesale from the
+                // device, never edited in place, so a change in content that
+                // leaves the count identical cannot occur.
+                sb.Append(d.DeviceObjects?.Length ?? -1).Append(';');
             }
             return sb.ToString();
         }

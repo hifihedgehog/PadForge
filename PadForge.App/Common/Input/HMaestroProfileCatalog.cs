@@ -282,12 +282,17 @@ namespace PadForge.Common.Input
         /// selectable for releases, and removing them would take away
         /// something users already have.</para>
         ///
+        /// <para>No released build ever offered these. 4.3.0 shipped
+        /// HIDMaestro.Core 1.6.2.0, which does not contain them at all.
+        /// They reached v4-dev with the 1.7.0.0 bump (first carried by
+        /// dbad1717) and were selectable there, which is what this closes.</para>
+        ///
         /// <para>This hides a profile from the pickers. It does NOT break a
         /// slot that already has one saved, because Step 5 asks
         /// HMContext.GetProfile before it asks this catalog, and HIDMaestro's
-        /// own context is unfiltered. That asymmetry is deliberate: nobody
-        /// who selected one of these in 4.3.0 loses their controller, and
-        /// nobody new can pick one. Do not "fix" it by gating Step 5.</para>
+        /// own context is unfiltered. Only a development build could have
+        /// saved one, but the asymmetry costs nothing and keeps the gate
+        /// honest about what it is. Do not "fix" it by gating Step 5.</para>
         /// </summary>
         private static readonly HashSet<string> WithheldProfileIds =
             new HashSet<string>(StringComparer.OrdinalIgnoreCase)

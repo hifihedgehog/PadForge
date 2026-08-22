@@ -8,9 +8,12 @@ namespace PadForge.Tests
     /// The three Valve composite personas ship in HIDMaestro.Core but are
     /// not offered yet (#338, milestone v4.4.0).
     ///
-    /// <para>They were reachable in the Extended dropdown, verified against
-    /// the live catalog before this gate went in: all three resolved and
-    /// all three reported inExtended=true. The block is artwork, not code.
+    /// <para>No release ever offered them. 4.3.0 shipped HIDMaestro.Core
+    /// 1.6.2.0, which does not contain them. They reached v4-dev with the
+    /// 1.7.0.0 bump and were reachable in the Extended dropdown there,
+    /// verified against the live catalog before this gate went in: all
+    /// three resolved and all three reported inExtended=true.
+    /// The block is artwork, not code.
     /// PadForge has no 3D mesh for any Valve device and no 2D set for the
     /// 2026 Steam Controller, so selecting one produced a working device
     /// drawn as something else.</para>

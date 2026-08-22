@@ -97,6 +97,28 @@ namespace PadForge.Engine.Data
         public int CapButtonCount { get; set; }
 
         /// <summary>
+        /// The button SLOTS the device actually populates, as SDL positions
+        /// them. Sparse: an SDL3 gamepad occupies a fixed 22-slot space and a
+        /// given pad fills only some of it, so an 8BitDo Ultimate 2 reports
+        /// fifteen buttons at 0-10 and 12-15 rather than at 0-14.
+        ///
+        /// <para>Persisted for the same reason as
+        /// <see cref="CapTouchpadFingerCounts"/>: the Devices preview and the
+        /// mapping picker both showed these positions while the device was
+        /// connected and fell back to a dense 0..count-1 list while it was
+        /// not, so the same physical button wore two different numbers
+        /// depending on whether it happened to be on at launch (discussion
+        /// #344). The count was already made consistent across that boundary.
+        /// The positions were not, which is what this carries.</para>
+        ///
+        /// <para>Null or empty on configs predating this field and on devices
+        /// PadForge has never seen online. Callers fall back to the dense
+        /// range in that case, because a position nobody has observed cannot
+        /// be reported.</para>
+        /// </summary>
+        public int[] CapButtonIndices { get; set; }
+
+        /// <summary>
         /// Total number of raw joystick buttons (before gamepad remapping).
         /// For gamepad devices this may exceed <see cref="CapButtonCount"/>
         /// when the underlying HID descriptor reports more buttons than the
@@ -530,6 +552,15 @@ namespace PadForge.Engine.Data
             // return a dense 0..N-1).
             int gatedButtons = wrapper.SupportedButtonIndices?.Length ?? 0;
             if (gatedButtons <= 0) gatedButtons = wrapper.NumButtons;
+
+            // The positions behind that count, kept so the offline listing
+            // numbers buttons the way the live one does. Copied rather than
+            // aliased: the wrapper's array belongs to a connection, and this
+            // has to outlive it.
+            var supported = wrapper.SupportedButtonIndices;
+            CapButtonIndices = supported != null && supported.Length > 0
+                ? (int[])supported.Clone()
+                : null;
 
             // Extra generic axes (issue #193): a gamepad-opened device with raw
             // joystick axes beyond the standard six (e.g. a DualShock 3 in SDF mode,

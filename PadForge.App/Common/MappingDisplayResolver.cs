@@ -1441,14 +1441,19 @@ namespace PadForge.Common
                               si.DevObj_Guide }
                     : null;
 
-                // Prefer the live device's sparse SupportedButtonIndices so
-                // devices that populate only specific slots (e.g.,
-                // TouchpadOverlayDevice with just slot 16, or the touchpad-only
-                // WebControllerDevice) don't surface phantom raw "Button N"
-                // entries for every slot between 0 and the highest populated
-                // index. Falls back to the dense range when no live wrapper
-                // is available (offline device).
+                // The sparse slot list, so devices that populate only
+                // specific slots (e.g., TouchpadOverlayDevice with just slot
+                // 16, or the touchpad-only WebControllerDevice) don't surface
+                // phantom raw "Button N" entries for every slot between 0 and
+                // the highest populated index.
+                //
+                // Live positions when the device is connected, the positions
+                // UserDevice recorded when it last was otherwise. The picker
+                // used to renumber every button the moment a device went
+                // offline (discussion #344). Only a device never seen online
+                // reaches the dense range below.
                 var sparse = ud.Device?.SupportedButtonIndices;
+                if (sparse == null || sparse.Length == 0) sparse = ud.CapButtonIndices;
                 if (sparse != null && sparse.Length > 0)
                 {
                     foreach (int i in sparse)

@@ -20,7 +20,7 @@ namespace PadForge.Tests
     public class BthPs3IdleDisconnectTests
     {
         private const string Ds3Pdo =
-            @"\?\bthps3bus#{53f88889-1aaf-4353-a047-556b69ec6da6}&dev&vid_054c&pid_0268#a&12248277&1&bthps3_device_01#{968e1849-73b1-4876-b80a-ed6dd171489b}";
+            @"\\?\bthps3bus#{53f88889-1aaf-4353-a047-556b69ec6da6}&dev&vid_054c&pid_0268#a&12248277&1&bthps3_device_01#{968e1849-73b1-4876-b80a-ed6dd171489b}";
 
         /// <summary>THE GAP. With an address known, the pad is a disconnect
         /// target like any other wireless pad.</summary>
@@ -51,7 +51,7 @@ namespace PadForge.Tests
         public void AUsbPath_IsNeverATargetEvenWithAnAddress()
         {
             Assert.False(BluetoothLinkHelper.IsDisconnectTarget(
-                @"\?\usb#vid_054c&pid_042f#6&6e5fe31&0&1#{b35924d6-3e16-4a9e-9782-5524a4b79bac}",
+                @"\\?\usb#vid_054c&pid_042f#6&6e5fe31&0&1#{b35924d6-3e16-4a9e-9782-5524a4b79bac}",
                 0x054C, 0x042F, "0007040a1b7a"));
         }
 
@@ -80,12 +80,35 @@ namespace PadForge.Tests
                 "peer://desktop/bthps3bus", 0x054C, 0x0268, "0007040a1b7a"));
         }
 
+        /// <summary>The interface path a connection rides converts to the
+        /// devnode instance id that publishes the address. Exact per pad,
+        /// which is what makes two of the same model unambiguous where the
+        /// pairing record cannot be.</summary>
+        [Fact]
+        public void AnInterfacePath_ResolvesToItsDevnode()
+        {
+            Assert.Equal(
+                @"bthps3bus\{53f88889-1aaf-4353-a047-556b69ec6da6}&dev&vid_054c&pid_0268\a&12248277&1&bthps3_device_01",
+                PadForge.Services.Ds3PairingService.InstanceIdFromInterfacePath(Ds3Pdo));
+        }
+
+        /// <summary>Nonsense in, nothing out. The caller treats null as "no
+        /// address available" and moves on to the next source.</summary>
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("not-a-path")]
+        public void ANonPath_ResolvesToNothing(string path)
+        {
+            Assert.Null(PadForge.Services.Ds3PairingService.InstanceIdFromInterfacePath(path));
+        }
+
         /// <summary>The path test names the profile driver, not a pad. Any
         /// device behind BthPS3 is covered, which is what makes this one
         /// change serve the DualShock 3, the Move and the Navigation pad
         /// rather than three separate patches.</summary>
         [Theory]
-        [InlineData(@"\?\bthps3bus#{84957238-d867-421f-89c1-67847a3b55b5}&dev&vid_054c&pid_03d5#a&12248277&1&bthps3_device_02#{968e1849-73b1-4876-b80a-ed6dd171489b}", true)]
+        [InlineData(@"\\?\bthps3bus#{84957238-d867-421f-89c1-67847a3b55b5}&dev&vid_054c&pid_03d5#a&12248277&1&bthps3_device_02#{968e1849-73b1-4876-b80a-ed6dd171489b}", true)]
         [InlineData(@"\?\hid#vid_054c&pid_0ce6", false)]
         [InlineData("", false)]
         [InlineData(null, false)]

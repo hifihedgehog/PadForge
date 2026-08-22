@@ -3981,7 +3981,7 @@ namespace PadForge.Services
             if (selected.InstanceGuid != devVm.LastRawStateDeviceGuid)
             {
                 devVm.LastRawStateDeviceGuid = selected.InstanceGuid;
-                int axisCount = Math.Min(ud.CapAxeCount, CustomInputState.MaxAxis);
+                int[] axisIndices = ResolveAxisIndices(ud);
                 int povCount = Math.Min(ud.CapPovCount, CustomInputState.MaxPovs);
                 bool isKb = ud.CapType == InputDeviceType.Keyboard;
                 bool isMouse = ud.CapType == InputDeviceType.Mouse;
@@ -3999,7 +3999,7 @@ namespace PadForge.Services
                     : ud.HasVoicePhrases
                         ? PadForge.Common.Input.VoicePulse.ButtonBase : -1;
                 int[] btnIndices = ResolveButtonIndices(ud);
-                devVm.RebuildRawStateCollections(axisCount, btnIndices, povCount, isKb, isMouse, isTouchpad, isMidi, isNfc,
+                devVm.RebuildRawStateCollections(axisIndices, btnIndices, povCount, isKb, isMouse, isTouchpad, isMidi, isNfc,
                     consumerButtons: BuildConsumerPreviewItems(ud), isHeadsetMotion: isHeadset,
                     voiceButtonBase: voiceBase, isMicrophone: isMic);
                 devVm.HasGyroData = ud.HasGyro;
@@ -4443,7 +4443,7 @@ namespace PadForge.Services
             if (selected.InstanceGuid != devVm.LastRawStateDeviceGuid)
             {
                 devVm.LastRawStateDeviceGuid = selected.InstanceGuid;
-                int axisCount = Math.Min(ud.CapAxeCount, CustomInputState.MaxAxis);
+                int[] axisIndices = ResolveAxisIndices(ud);
                 int povCount = Math.Min(ud.CapPovCount, CustomInputState.MaxPovs);
                 bool isKb = ud.CapType == InputDeviceType.Keyboard;
                 bool isMouse = ud.CapType == InputDeviceType.Mouse;
@@ -4456,7 +4456,7 @@ namespace PadForge.Services
                     : ud.HasVoicePhrases
                         ? PadForge.Common.Input.VoicePulse.ButtonBase : -1;
                 int[] btnIndices = ResolveButtonIndices(ud);
-                devVm.RebuildRawStateCollections(axisCount, btnIndices, povCount, isKb, isMouse, isTouchpad2, isMidi2, isNfc2,
+                devVm.RebuildRawStateCollections(axisIndices, btnIndices, povCount, isKb, isMouse, isTouchpad2, isMidi2, isNfc2,
                     consumerButtons: BuildConsumerPreviewItems(ud), isHeadsetMotion: isHeadset2,
                     voiceButtonBase: voiceBase2, isMicrophone: isMic2);
                 devVm.HasGyroData = ud.HasGyro;
@@ -4486,12 +4486,17 @@ namespace PadForge.Services
                     devVm.MouseScrollIntensity = (state.Axis[2] - 32767.0) / 32767.0;
             }
 
-            // Update axis values in-place (no allocation).
+            // Update axis values in-place (no allocation). The list is
+            // sparse, so read the item's own slot rather than its position in
+            // the collection: for a pad missing a stick or a pressure slot
+            // those stopped agreeing.
             for (int i = 0; i < devVm.RawAxes.Count; i++)
             {
                 var item = devVm.RawAxes[i];
-                item.RawValue = state.Axis[i];
-                item.NormalizedValue = state.Axis[i] / 65535.0;
+                int slot = item.Index;
+                if ((uint)slot >= (uint)state.Axis.Length) continue;
+                item.RawValue = state.Axis[slot];
+                item.NormalizedValue = state.Axis[slot] / 65535.0;
             }
 
             // Update button states in-place.
@@ -11113,6 +11118,9 @@ namespace PadForge.Services
                 var idx = d.CapButtonIndices;
                 if (idx != null) foreach (int i in idx) sb.Append(i).Append(',');
                 sb.Append('|');
+                var aidx = d.CapAxisIndices;
+                if (aidx != null) foreach (int i in aidx) sb.Append(i).Append(',');
+                sb.Append('|');
                 var fingers = d.CapTouchpadFingerCounts;
                 if (fingers != null) foreach (int f in fingers) sb.Append(f).Append(',');
                 sb.Append('|');
@@ -11269,7 +11277,11 @@ namespace PadForge.Services
             row.ProductId = ud.ProdId;
             row.IsOnline = ud.IsOnline;
             row.IsEnabled = ud.IsEnabled;
-            row.AxisCount = ud.CapAxeCount;
+            // Same live-first preference as the button count below: a pad
+            // missing sticks, triggers or pressure slots must summarize the
+            // same either side of the online boundary.
+            int liveAxes = ud.Device?.SupportedAxisIndices?.Length ?? 0;
+            row.AxisCount = liveAxes > 0 ? liveAxes : ud.CapAxeCount;
             // Prefer the live device's gated count (Xbox 360 → 11, Elite with paddles → 15+)
             // so the Devices summary doesn't always read 21 on SDL3 gamepads.
             // Falls back to CapButtonCount when the device is offline.
@@ -12518,6 +12530,48 @@ namespace PadForge.Services
 
             int count = Math.Min(
                 ud.ForceRawJoystickMode && ud.RawButtonCount > 0 ? ud.RawButtonCount : ud.CapButtonCount,
+                max);
+            if (count <= 0) return Array.Empty<int>();
+            int[] dense = new int[count];
+            for (int i = 0; i < count; i++) dense[i] = i;
+            return dense;
+        }
+
+        /// <summary>
+        /// The axis twin of <see cref="ResolveButtonIndices"/>: the axis
+        /// positions to surface in the Devices preview for <paramref name="ud"/>.
+        ///
+        /// <para>Sparse for the same reason the button list is. The
+        /// standardized block skips sticks and triggers the pad does not have,
+        /// and the generic extras past it skip slots a shared report layout
+        /// numbers but no hardware drives. Positions come from the live device
+        /// when it is connected and from <c>UserDevice.CapAxisIndices</c> when
+        /// it is not, so the same axis carries the same number in both states.
+        /// A device PadForge has never seen online falls back to the dense
+        /// range, because unobserved positions cannot be reported.</para>
+        ///
+        /// <para>Raw passthrough keeps the dense range, matching the button
+        /// side: it deliberately bypasses the gamepad-aware filter.</para>
+        /// </summary>
+        internal static int[] ResolveAxisIndices(UserDevice ud)
+        {
+            int max = CustomInputState.MaxAxis;
+
+            if (!ud.ForceRawJoystickMode)
+            {
+                int[] sparse = ud.Device?.SupportedAxisIndices;
+                if (sparse == null || sparse.Length == 0) sparse = ud.CapAxisIndices;
+                if (sparse != null && sparse.Length > 0)
+                {
+                    if (sparse[sparse.Length - 1] < max) return sparse;
+                    var trimmed = new System.Collections.Generic.List<int>(sparse.Length);
+                    foreach (int idx in sparse) if (idx < max) trimmed.Add(idx);
+                    return trimmed.ToArray();
+                }
+            }
+
+            int count = Math.Min(
+                ud.ForceRawJoystickMode && ud.RawAxisCount > 0 ? ud.RawAxisCount : ud.CapAxeCount,
                 max);
             if (count <= 0) return Array.Empty<int>();
             int[] dense = new int[count];

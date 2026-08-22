@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace PadForge.Engine.Data
@@ -247,12 +247,31 @@ namespace PadForge.Engine.Data
             // only their live SupportedButtonIndices in the picker but enumerate
             // densely here; those are touchpad feeder devices with no Extended
             // passthrough use, so the dense fallback stands.
-            for (int i = 0; i < ud.CapAxeCount; i++)
+            // The axes take the recorded sparse list when there is one, because
+            // unlike the sparse-button devices named above these are ordinary
+            // pads whose Extended passthrough matters: a Move Navigation's real
+            // inputs sit at 0, 1, 2 and 6-15 with gaps, so a dense count-driven
+            // loop would both invent slots it lacks and miss the ones it has.
+            var axisSlots = ud.CapAxisIndices;
+            if (axisSlots != null && axisSlots.Length > 0)
             {
-                if (IsGamepadTriggerAxis(ud, i))
-                    triggerDescriptors.Add($"Axis {i}");
-                else
-                    axisDescriptors.Add($"Axis {i}");
+                foreach (int i in axisSlots)
+                {
+                    if (IsGamepadTriggerAxis(ud, i))
+                        triggerDescriptors.Add($"Axis {i}");
+                    else
+                        axisDescriptors.Add($"Axis {i}");
+                }
+            }
+            else
+            {
+                for (int i = 0; i < ud.CapAxeCount; i++)
+                {
+                    if (IsGamepadTriggerAxis(ud, i))
+                        triggerDescriptors.Add($"Axis {i}");
+                    else
+                        axisDescriptors.Add($"Axis {i}");
+                }
             }
             int btnCount = Math.Max(ud.CapButtonCount, ud.RawButtonCount);
             for (int i = 0; i < btnCount; i++)

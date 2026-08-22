@@ -1892,6 +1892,13 @@ namespace PadForge.Engine
                 int end = Math.Min(RawAxisCount, CustomInputState.MaxAxis);
                 for (int i = NumAxes; i < end; i++)
                 {
+                    // Skip slots the report layout numbers but no hardware
+                    // drives, the same gate ComputeSupportedAxisIndices
+                    // applies. DeviceObjects is the capability list
+                    // CreateDefaultPadSetting's HasAxis() trusts, so a phantom
+                    // here becomes a mapping target that reads dead forever.
+                    if (!IsRealExtraAxis(i)) continue;
+
                     var item = new DeviceObjectItem();
                     item.InputIndex = i;
                     item.ObjectTypeGuid = ObjectGuid.ZAxis; // any non-Slider axis GUID; only IsSlider is derived from it
@@ -1916,17 +1923,20 @@ namespace PadForge.Engine
             }
 
             // --- Buttons ---
-            // For SDL3-recognized gamepads, skip positions 11-21 the device
-            // doesn't physically have (asked via SDL_GamepadHasButton) so
-            // an Xbox 360 doesn't show "Misc 1" / "Right Paddle 1" in the
-            // dropdown. Positions 0-10 are always present on any recognized
-            // gamepad. Raw joystick devices (isGamepad=false) keep the flat
+            // For SDL3-recognized gamepads, skip every standardized position
+            // the device doesn't physically have (asked via
+            // SDL_GamepadHasButton) so an Xbox 360 doesn't show "Misc 1" /
+            // "Right Paddle 1" in the dropdown and a Move Navigation doesn't
+            // show Square, Triangle, R1, Select, Start or R3. Positions 0-10
+            // were once assumed universal; a partial pad declares a sparse
+            // gamepad mask and SDL answers for those exactly as it does for
+            // 11-21. Raw joystick devices (isGamepad=false) keep the flat
             // "Button N" enumeration unchanged.
             int finalCount = 0;
             for (int i = 0; i < btnCount; i++)
             {
                 bool include = true;
-                if (isGamepad && i >= 11 && i <= 21)
+                if (isGamepad && i <= 21)
                 {
                     int sdlButton = GamepadButtonForPosition(i);
                     include = sdlButton >= 0 && SDL_GamepadHasButton(GameController, sdlButton);
@@ -2245,12 +2255,42 @@ namespace PadForge.Engine
                 }
                 list.Add(i);
             }
-            // Extra generic axes past the standardized block are always real.
+            // Extra generic axes past the standardized block, minus any the
+            // pad carries in its report layout without the hardware behind
+            // them.
             int top = HasExtraGenericAxes
                 ? Math.Min(RawAxisCount, CustomInputState.MaxAxis)
                 : NumAxes;
-            for (int i = 6; i < top; i++) list.Add(i);
+            for (int i = 6; i < top; i++)
+                if (IsRealExtraAxis(i)) list.Add(i);
             return list.ToArray();
+        }
+
+        /// <summary>Whether a generic axis past the standardized block has
+        /// hardware behind it, or is only an artifact of a shared report
+        /// layout.
+        ///
+        /// <para>The extras exist because upstream SDL's PS3 driver posts the
+        /// DualShock 3's ten button-pressure values on axes 6-15, and
+        /// PadForge's own DS3 path mirrors that layout byte for byte. The
+        /// Move Navigation shares the DS3's report and so its numbering, but
+        /// has no Square, Triangle or R1 behind it: hid-sony calls it "a
+        /// partial DS3 [that] uses the same HID report and hence the same
+        /// keymap indices, however not all axes/buttons are physically
+        /// present" (hid-sony.c:373-377), and moveonpc's Navigation report
+        /// table lists no byte at those offsets at all, so they read zero
+        /// forever.</para>
+        ///
+        /// <para>The numbering deliberately stays fixed rather than closing
+        /// the gaps: "Axis 10" has to keep meaning L1 on both pads, or a
+        /// stored mapping would change meaning with the device it was made
+        /// on. Only the phantoms drop out of the list.</para></summary>
+        private bool IsRealExtraAxis(int index)
+        {
+            // PlayStation Move Navigation Controller.
+            if (VendorId == 0x054C && ProductId == 0x042F)
+                return index != 8 && index != 9 && index != 11;
+            return true;
         }
 
         private int[] ComputeSupportedButtonIndices()
@@ -2260,8 +2300,20 @@ namespace PadForge.Engine
 
             if (GameController != IntPtr.Zero)
             {
+                // The standard eleven are not universal. A partial pad
+                // declares a sparse gamepad mask and SDL answers for 0-10
+                // exactly as it does for the extended slots below. c905cde0
+                // left this block dense because every pad on the list then
+                // had all eleven; the Move Navigation (five of them), the
+                // PS Move (eight) and the VR controllers are the
+                // counterexamples.
                 for (int i = 0; i < 11 && i < max; i++)
+                {
+                    int stdButton = GamepadButtonForPosition(i);
+                    if (stdButton >= 0 && !SDL_GamepadHasButton(GameController, stdButton))
+                        continue;
                     list.Add(i);
+                }
 
                 _extButtonPresent = new bool[22];
                 for (int i = 11; i <= 21 && i < max; i++)

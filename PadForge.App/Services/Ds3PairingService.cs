@@ -344,6 +344,7 @@ namespace PadForge.Services
                     Array.Copy(f2, 4, ds3mac, 0, 6);
                     r.Ds3Mac = Hex(ds3mac, null).ToLowerInvariant();
                     _log($"DS3 address: {Hex(ds3mac, ':')}");
+                    StampLinkAddress(DS3_VID, DS3_PID, r.Ds3Mac);
 
                     // 4. Sixpair: write the radio MAC into the pad (SET_REPORT FEATURE 0xF5).
                     //    Both proven references read 0xF5 before writing it (ds3winusb
@@ -930,6 +931,78 @@ namespace PadForge.Services
             }
         }
 
+        /// <summary>Records a BthPS3 pad's own Bluetooth address on its
+        /// device row, which is what the idle disconnect targets.
+        ///
+        /// <para>SerialNumber is where every other Bluetooth pad already
+        /// keeps its address: SDL reports it and UserDevice stores it, and
+        /// TryDisconnect reads it straight back. These three pads are the
+        /// only ones without it, because they reach SDL as virtual joysticks
+        /// and SDL_VirtualJoystickDesc has no serial field to fill. The
+        /// address is therefore stamped from the one place it is read
+        /// first-hand: the pad's own 0xF2 (DualShock 3, Navigation) or 0x04
+        /// (Move) reply over the USB dock.</para>
+        ///
+        /// <para>Stamped only onto a row that has none, and only when
+        /// exactly one such row exists for that VID and PID. Two docked pads
+        /// of the same model cannot be told apart from here, and a wrong
+        /// address would disconnect the wrong pad, so the ambiguous case is
+        /// left alone: no worse than before, when no pad had one.</para></summary>
+        internal static void StampLinkAddress(ushort vid, ushort pid, string macHex)
+        {
+            if (string.IsNullOrEmpty(macHex)) return;
+            var devices = PadForge.Common.Input.SettingsManager.UserDevices;
+            if (devices == null) return;
+            try
+            {
+                Engine.Data.UserDevice only = null;
+                lock (devices.SyncRoot)
+                {
+                    foreach (var d in devices.Items)
+                    {
+                        if (d == null || d.VendorId != vid || d.ProdId != pid) continue;
+                        if (!string.IsNullOrEmpty(d.SerialNumber)) return;   // already known
+                        if (only != null) return;                            // ambiguous
+                        only = d;
+                    }
+                    if (only == null) return;
+                    only.SerialNumber = macHex;
+                }
+            }
+            catch { /* the stamp is a convenience; never break a ceremony */ }
+        }
+
+        /// <summary>Recovers a BthPS3 pad's address from its pairing record
+        /// when the pad is connected over Bluetooth and has never been
+        /// docked on this build.
+        ///
+        /// <para><see cref="StampLinkAddress"/> reads the address from the
+        /// pad itself, which only happens on the USB dock. A pad that was
+        /// paired long ago and is used wirelessly would otherwise never gain
+        /// an address, and so never offer idle disconnect, until someone
+        /// plugged it in for unrelated reasons.</para>
+        ///
+        /// <para>The pairing record is the same address PadForge wrote from
+        /// that pad's own dock, so it is first-hand data, one step removed.
+        /// Taken only when EXACTLY ONE record exists for that VID and PID,
+        /// the same bar the row-side stamp uses: with two of the same model
+        /// paired, the record set cannot say which one is on the air, and a
+        /// wrong address would disconnect the wrong pad.</para></summary>
+        internal static void StampLinkAddressFromPairingRecord(ushort vid, ushort pid)
+        {
+            try
+            {
+                string only = null;
+                foreach (string mac in EnumeratePairedFamilyRecords(pid))
+                {
+                    if (only != null) return;   // ambiguous: leave it alone
+                    only = mac;
+                }
+                if (only != null) StampLinkAddress(vid, pid, only.ToLowerInvariant());
+            }
+            catch { /* a convenience; never break a connect */ }
+        }
+
         /// <summary>Dock-triggered auto-pair for the NAVIGATION controller,
         /// the Move's <see cref="AutoPairMoveIfNeeded"/> for the other
         /// Move-family pad.
@@ -1082,6 +1155,7 @@ namespace PadForge.Services
                 TryCaptureCalibration(dev.Value.DataPath, macHex, zcm2);
             }
             r.Ds3Mac = macHex;
+            StampLinkAddress(DS3_VID, (ushort)(isNav ? NAV_PID : MOVE_PID), macHex);
 
             if (ct.IsCancellationRequested) { r.Error = "cancelled"; return r; }
 

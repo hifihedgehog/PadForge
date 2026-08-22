@@ -401,7 +401,22 @@ namespace PadForge.Common.Input
                 _writeThread.Start();
 
                 _log($"{Tag}: virtual joystick attached; streaming ({(_modelZcm2 ? "ZCM2" : "ZCM1")} frames).");
-                if (_transport == MoveTransport.Bluetooth) LoadCalibrationForPath();
+                if (_transport == MoveTransport.Bluetooth)
+                {
+                    LoadCalibrationForPath();
+                    // The address the idle disconnect targets. Over Bluetooth
+                    // the pad's own address is not readable here, so the row
+                    // takes it from the pairing record PadForge wrote from
+                    // this same pad's dock. Without it a Move paired before
+                    // this build and never re-docked would never offer the
+                    // control, which the address gates.
+                    try
+                    {
+                        PadForge.Services.Ds3PairingService
+                            .StampLinkAddressFromPairingRecord(MOVE_VID, MOVE_PID);
+                    }
+                    catch { }
+                }
                 long sessionStart = Environment.TickCount64;
                 if (_transport == MoveTransport.Usb) UsbReadLoop();
                 else ReadLoop(_readPdo);

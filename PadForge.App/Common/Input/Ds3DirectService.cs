@@ -433,6 +433,21 @@ namespace PadForge.Common.Input
                     _lastNavDockedPath = _transportPath;
                     RaiseNavDock();
                 }
+
+                // Over Bluetooth the pad's own address is not readable here,
+                // so the row takes it from the pairing record PadForge wrote
+                // from that same pad's dock. Without this a pad paired before
+                // this build and never re-docked would never offer the idle
+                // disconnect that the address gates.
+                if (_transport == Ds3Transport.Bluetooth)
+                {
+                    try
+                    {
+                        PadForge.Services.Ds3PairingService
+                            .StampLinkAddressFromPairingRecord(0x054C, ProfilePid);
+                    }
+                    catch { }
+                }
                 if (!AttachVirtual()) { Teardown(); Thread.Sleep(1000); continue; }
 
                 _writerRun = true;
@@ -993,6 +1008,12 @@ namespace PadForge.Common.Input
             _log(mac == null
                 ? "NAV(USB): Navigation controller docked; its address could not be read."
                 : $"NAV(USB): Navigation controller docked, address {mac}.");
+
+            // Also the idle disconnect's target. A pad that is already paired
+            // never reaches the ceremony again, so without this its row would
+            // stay address-less forever and never offer the control.
+            if (mac != null)
+                PadForge.Services.Ds3PairingService.StampLinkAddress(0x054C, NAV_PID, mac);
             try { NavDockObserved?.Invoke(mac, storedHost); } catch { }
         }
 

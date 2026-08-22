@@ -604,7 +604,19 @@ namespace PadForge.Engine.Data
             VendorId = wrapper.VendorId;
             ProdId = wrapper.ProductId;
             DevicePath = wrapper.DevicePath;
-            SerialNumber = wrapper.SerialNumber ?? string.Empty;
+            // An arrival that reports NO serial must not erase one already
+            // known. SDL hands most Bluetooth pads their MAC here, and that
+            // is what the idle-disconnect targets, so losing it because a
+            // particular connection was silent costs the row a capability it
+            // had. The BthPS3 pads (DualShock 3, PS Move, Navigation) are
+            // the case that forced this: their virtual joysticks report no
+            // serial at all, and SDL_VirtualJoystickDesc has no field to set
+            // one, so their address can only arrive from the USB dock and
+            // must then survive every later connect.
+            if (!string.IsNullOrEmpty(wrapper.SerialNumber))
+                SerialNumber = wrapper.SerialNumber;
+            else
+                SerialNumber ??= string.Empty;
             SdlGuid = wrapper.SdlGuid ?? string.Empty;
 
             // Populate device objects.

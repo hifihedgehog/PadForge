@@ -395,6 +395,8 @@
   <data name="About_Testimony" xml:space="preserve"><value>Testimony</value></data>
   <data name="About_TestimonyScripture" xml:space="preserve"><value>"And we talk of Christ, we rejoice in Christ, we preach of Christ, we prophesy of Christ, and we write according to our prophecies, that our children may know to what source they may look for a remission of their sins." — 2 Nephi 25:26</value></data>
   <data name="About_TestimonyDoxology" xml:space="preserve"><value>Glory, honor, and praise to the Lord Jesus Christ, the source of all truth, forever and ever.</value></data>
+  <data name="About_Bs2b" xml:space="preserve"><value>bs2b</value></data>
+  <data name="About_Bs2bDesc" xml:space="preserve"><value>Bauer stereophonic-to-binaural crossfeed for headphone output. MIT.</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
   <data name="About_ConcentusDesc" xml:space="preserve"><value>Pure C# Opus encoder that drives DualSense speaker audio over Bluetooth. By Logan Stromberg. BSD 3-Clause.</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>

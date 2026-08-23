@@ -1419,6 +1419,8 @@
   <data name="About_OpenXInputDesc" xml:space="preserve"><value>Reemplazo directo de XInput. Filtra los controles virtuales propios de PadForge de su propia vista. Aviso de marca comercial upstream, sin licencia de código abierto.</value></data>
   <data name="About_ZackslyIcons" xml:space="preserve"><value>Pack de iconos Zacksly</value></data>
   <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>Iconos de palancas y gatillos derivados de "Xbox Series Button Icons and Controls" de Zacksly (CC BY 3.0)</value></data>
+  <data name="About_Bs2b" xml:space="preserve"><value>bs2b</value></data>
+  <data name="About_Bs2bDesc" xml:space="preserve"><value>Crossfeed estereofónico a binaural de Bauer para la salida de auriculares. MIT.</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
   <data name="About_ConcentusDesc" xml:space="preserve"><value>Codificador Opus en C# puro que impulsa el audio del altavoz del DualSense por Bluetooth. Por Logan Stromberg. BSD 3-Clause.</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>

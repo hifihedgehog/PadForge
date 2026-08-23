@@ -1419,6 +1419,8 @@
   <data name="About_OpenXInputDesc" xml:space="preserve"><value>XInput のドロップイン置換版。PadForge 自身の仮想コントローラーを自身のビューから除外します。上流の商標に関する免責事項のみ、OSS ライセンスなし。</value></data>
   <data name="About_ZackslyIcons" xml:space="preserve"><value>Zackslyアイコンパック</value></data>
   <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>「Xbox Series Button Icons and Controls」(Zacksly、CC BY 3.0) を基にしたスティックおよびトリガーのアイコン</value></data>
+  <data name="About_Bs2b" xml:space="preserve"><value>bs2b</value></data>
+  <data name="About_Bs2bDesc" xml:space="preserve"><value>ヘッドホン出力向けの Bauer ステレオ・バイノーラル・クロスフィード。MIT。</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
   <data name="About_ConcentusDesc" xml:space="preserve"><value>Bluetooth経由のDualSenseスピーカー音声を支える純C#製Opusエンコーダー。Logan Stromberg作。BSD 3-Clause。</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>

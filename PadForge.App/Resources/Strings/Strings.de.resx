@@ -1419,6 +1419,8 @@
   <data name="About_OpenXInputDesc" xml:space="preserve"><value>Drop-in-XInput-Ersatz. Filtert die eigenen virtuellen Controller von PadForge aus dessen eigener Sicht heraus. Upstream-Markenrechtshinweis, keine OSS-Lizenz.</value></data>
   <data name="About_ZackslyIcons" xml:space="preserve"><value>Zacksly-Icon-Pack</value></data>
   <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>Stick- und Trigger-Symbole abgeleitet aus „Xbox Series Button Icons and Controls" von Zacksly (CC BY 3.0)</value></data>
+  <data name="About_Bs2b" xml:space="preserve"><value>bs2b</value></data>
+  <data name="About_Bs2bDesc" xml:space="preserve"><value>Bauer-Stereo-zu-Binaural-Crossfeed für die Kopfhörerausgabe. MIT.</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
   <data name="About_ConcentusDesc" xml:space="preserve"><value>Reiner C#-Opus-Encoder für DualSense-Lautsprecher-Audio über Bluetooth. Von Logan Stromberg. BSD 3-Clause.</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>

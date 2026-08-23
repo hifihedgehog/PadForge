@@ -11637,13 +11637,61 @@
                                         <ComboBox SelectedIndex="{Binding DeviceConfig.AudioCrossfeedLevel, Mode=TwoWay}"
                                                   Width="340" VerticalAlignment="Center"
                                                   ToolTip="{Binding Pad_Audio_Crossfeed_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                            <!-- The spec suffix is deliberately NOT localized:
+                                                 "Jan Meier" and "C. Moy" are people's names and
+                                                 the numbers are the cutoff and feed libbs2b
+                                                 actually stores for that level. An audiophile
+                                                 recognizes the pair on sight, and translating
+                                                 either would only obscure it. -->
                                             <ComboBoxItem Content="{Binding Pad_Audio_Crossfeed_Off, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding Pad_Audio_Crossfeed_Low, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding Pad_Audio_Crossfeed_Middle, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding Pad_Audio_Crossfeed_High, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding Pad_Audio_Crossfeed_LowEasy, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding Pad_Audio_Crossfeed_MiddleEasy, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding Pad_Audio_Crossfeed_HighEasy, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="{Binding Pad_Audio_Crossfeed_Low, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <TextBlock Text="  360 Hz &#183; 6.0 dB" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                                </StackPanel>
+                                            </ComboBoxItem>
+                                            <ComboBoxItem>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="{Binding Pad_Audio_Crossfeed_Middle, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <TextBlock Text="  500 Hz &#183; 4.5 dB" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                                </StackPanel>
+                                            </ComboBoxItem>
+                                            <ComboBoxItem>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="{Binding Pad_Audio_Crossfeed_High, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <TextBlock Text="  700 Hz &#183; 3.0 dB" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                                </StackPanel>
+                                            </ComboBoxItem>
+                                            <ComboBoxItem>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="{Binding Pad_Audio_Crossfeed_LowEasy, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <TextBlock Text="  360 Hz &#183; 8.4 dB" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                                </StackPanel>
+                                            </ComboBoxItem>
+                                            <ComboBoxItem>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="{Binding Pad_Audio_Crossfeed_MiddleEasy, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <TextBlock Text="  500 Hz &#183; 7.2 dB" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                                </StackPanel>
+                                            </ComboBoxItem>
+                                            <ComboBoxItem>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="{Binding Pad_Audio_Crossfeed_HighEasy, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <TextBlock Text="  C. Moy &#183; 700 Hz &#183; 6.0 dB" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                                </StackPanel>
+                                            </ComboBoxItem>
+                                            <ComboBoxItem>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="Jan Meier"/>
+                                                    <TextBlock Text="  650 Hz &#183; 9.5 dB" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                                </StackPanel>
+                                            </ComboBoxItem>
+                                            <ComboBoxItem>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="bs2b default"/>
+                                                    <TextBlock Text="  700 Hz &#183; 4.5 dB" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                                </StackPanel>
+                                            </ComboBoxItem>
                                         </ComboBox>
                                         <ui:Button Command="{Binding ResetCrossfeedCommand}" Style="{StaticResource ResetButton}"
                                                    ToolTip="{Binding Pad_Audio_Reset_Crossfeed, Source={x:Static strings:Strings.Instance}}"/>

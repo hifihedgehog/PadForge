@@ -64,20 +64,55 @@ namespace PadForge.Common.Input
         internal const int HighCrossfeed = 3;
         internal const int LowEasy = 4;
         internal const int MiddleEasy = 5;
-        internal const int HighEasy = 6;      // bs2b DefaultCLevel
+        internal const int HighEasy = 6;      // == BS2B_CMOY_CLEVEL
+        internal const int JanMeier = 7;
+        internal const int Bs2bDefault = 8;
+        internal const int MaxLevel = Bs2bDefault;
 
-        /// <summary>(Fc_lo, Fc_hi, G_lo, G_hi) per level, verbatim from
-        /// bs2b.cpp's init(). Indexed by the level constants above.</summary>
-        private static readonly (float FcLo, float FcHi, float GLo, float GHi)[] Levels =
+        /// <summary>Each level is a (cutoff Hz, feed dB) pair, which is what
+        /// libbs2b actually stores: its level constants pack the cutoff in the
+        /// low word and the feed in tenths of a dB in the high word.
+        ///
+        /// <para>Values 1 to 6 are libbs2b's six classic levels and keep their
+        /// numbering, so a saved config does not shift meaning. 7 and 8 are the
+        /// library's other two NAMED presets, which are not among the six:</para>
+        ///
+        /// <list type="bullet">
+        /// <item>BS2B_CMOY_CLEVEL is 700 Hz / 6.0 dB, which IS High easy, so
+        /// level 6 carries the C. Moy name rather than getting a duplicate.</item>
+        /// <item>BS2B_JMEIER_CLEVEL is 650 Hz / 9.5 dB, a lower crossover with
+        /// a much stronger feed than anything in the six. It had no
+        /// representation here at all before.</item>
+        /// <item>BS2B_DEFAULT_CLEVEL is 700 Hz / 4.5 dB, also not one of the
+        /// six.</item>
+        /// </list></summary>
+        private static readonly (float FcLo, float FeedDb)[] Levels =
         {
-            (0f, 0f, 0f, 0f),                                              // 0 unused
-            (360f,  501f, 0.398107170553497f, 0.205671765275719f),         // 1 low
-            (500f,  711f, 0.459726988530872f, 0.228208484414988f),         // 2 middle
-            (700f, 1021f, 0.530884444230988f, 0.250105790667544f),         // 3 high
-            (360f,  494f, 0.316227766016838f, 0.168236228897329f),         // 4 low easy
-            (500f,  689f, 0.354813389233575f, 0.187169483835901f),         // 5 middle easy
-            (700f,  975f, 0.398107170553497f, 0.205671765275719f),         // 6 high easy
+            (0f, 0f),        // 0 unused
+            (360f, 6.0f),    // 1 low
+            (500f, 4.5f),    // 2 middle
+            (700f, 3.0f),    // 3 high
+            (360f, 8.4f),    // 4 low easy
+            (500f, 7.2f),    // 5 middle easy
+            (700f, 6.0f),    // 6 high easy == C. Moy
+            (650f, 9.5f),    // 7 Jan Meier
+            (700f, 4.5f),    // 8 bs2b default
         };
+
+        /// <summary>libbs2b's own derivation, from bs2b.c init(). The six
+        /// hardcoded quads openal-soft ships are exactly what this produces,
+        /// verified to fifteen decimals on G_lo and G_hi for all six, so using
+        /// the formula rather than the table costs no fidelity and buys the
+        /// presets the table never held.</summary>
+        private static (double FcHi, double GLo, double GHi) Derive(double fcLo, double feedDb)
+        {
+            double gbLo = feedDb * -5.0 / 6.0 - 3.0;
+            double gbHi = feedDb / 6.0 - 3.0;
+            double gLo = Math.Pow(10, gbLo / 20.0);
+            double gHi = 1.0 - Math.Pow(10, gbHi / 20.0);
+            double fcHi = fcLo * Math.Pow(2.0, (gbLo - 20.0 * Math.Log10(gHi)) / 12.0);
+            return (fcHi, gLo, gHi);
+        }
 
         private int _level;
         private int _rate;
@@ -85,30 +120,32 @@ namespace PadForge.Common.Input
         // history[0] is the LEFT input's state, history[1] the RIGHT's.
         private float _lo0, _hi0, _lo1, _hi1;
 
-        public bool Active => _level >= LowCrossfeed && _level <= HighEasy;
+        public bool Active => _level >= LowCrossfeed && _level <= MaxLevel;
 
         /// <summary>Recomputes coefficients. Off the audio thread.</summary>
         public void SetParams(int level, int sampleRate)
         {
             if (sampleRate < 1) return;
-            if (level < LowCrossfeed || level > HighEasy) { _level = Off; return; }
+            if (level < LowCrossfeed || level > MaxLevel) { _level = Off; return; }
             if (level == _level && sampleRate == _rate) return;
 
             _level = level;
             _rate = sampleRate;
-            var (fcLo, fcHi, gLo, gHi) = Levels[level];
+            var (fcLoF, feedDb) = Levels[level];
+            var (fcHi, gLo, gHi) = Derive(fcLoF, feedDb);
 
-            // g = 1 / (1 - G_hi + G_lo), then one-pole coefficients from
-            // x = exp(-2*pi*Fc/srate). bs2b.cpp init().
-            float g = 1f / (1f - gHi + gLo);
+            // The g normalization is openal-soft's, not upstream's, and it is
+            // the reason the two filters sum to exactly unity at DC. The tests
+            // pin that, so it stays.
+            float g = (float)(1.0 / (1.0 - gHi + gLo));
 
-            float x = (float)Math.Exp(-2.0 * Math.PI * fcLo / sampleRate);
+            float x = (float)Math.Exp(-2.0 * Math.PI * fcLoF / sampleRate);
             _b1Lo = x;
-            _a0Lo = gLo * (1f - x) * g;
+            _a0Lo = (float)(gLo * (1.0 - x)) * g;
 
             x = (float)Math.Exp(-2.0 * Math.PI * fcHi / sampleRate);
             _b1Hi = x;
-            _a0Hi = (1f - gHi * (1f - x)) * g;
+            _a0Hi = (float)(1.0 - gHi * (1.0 - x)) * g;
             _a1Hi = -x * g;
 
             Reset();

@@ -7353,6 +7353,102 @@ namespace PadForge.Services
                 new System.Text.Json.JsonSerializerOptions { WriteIndented = false });
         }
 
+        /// <summary>The rest of a slot's own MappingSet state, for the
+        /// clipboard: rumble audio (#236), gamepad SOCD (#240) and Keep Awake
+        /// (#270).
+        ///
+        /// <para>Every other container copy already carried this family.
+        /// CloneMappingSetDeep carries it for profile snapshots and the
+        /// whole-slot Copy From carries it in process; only the clipboard did
+        /// not, so Copy / Paste dropped three cards while its tooltip claimed
+        /// to carry all settings.</para></summary>
+        public sealed class SlotSetExtrasSnapshot
+        {
+            public Engine.Data.RumbleAudioConfig RumbleAudio { get; set; }
+            public string SocdMode { get; set; } = "";
+            public string SocdPairs { get; set; } = "";
+            public bool KeepAwakeEnabled { get; set; }
+            public string KeepAwakeAxis { get; set; } = "";
+            public int KeepAwakeDeflection { get; set; }
+            public bool KeepAwakeMotion { get; set; }
+        }
+
+        public static string BuildSlotSetExtrasJson(int padIndex)
+        {
+            var sets = SettingsManager.SlotMappingSets;
+            if (sets == null || padIndex < 0 || padIndex >= sets.Length) return null;
+            var ms = sets[padIndex];
+            if (ms == null) return null;
+
+            bool any = ms.RumbleAudio != null
+                || !string.IsNullOrEmpty(ms.SocdMode)
+                || !string.IsNullOrEmpty(ms.SocdPairs)
+                || ms.KeepAwakeEnabled
+                || !string.IsNullOrEmpty(ms.KeepAwakeAxis)
+                || ms.KeepAwakeDeflection != 0
+                || ms.KeepAwakeMotion;
+            if (!any) return null;
+
+            var snap = new SlotSetExtrasSnapshot
+            {
+                RumbleAudio = ms.RumbleAudio?.Clone(),
+                SocdMode = ms.SocdMode ?? "",
+                SocdPairs = ms.SocdPairs ?? "",
+                KeepAwakeEnabled = ms.KeepAwakeEnabled,
+                KeepAwakeAxis = ms.KeepAwakeAxis ?? "",
+                KeepAwakeDeflection = ms.KeepAwakeDeflection,
+                KeepAwakeMotion = ms.KeepAwakeMotion,
+            };
+            return System.Text.Json.JsonSerializer.Serialize(snap,
+                new System.Text.Json.JsonSerializerOptions { WriteIndented = false });
+        }
+
+        /// <summary>Paste companion. Runs AFTER
+        /// <see cref="ApplySlotMappingSetFromRows"/>, which re-seeds the
+        /// DESTINATION's copies of these fields across the fresh-set swap, so
+        /// this overwrites that with the clipboard's. Same ordering and same
+        /// reason as the shift and menu snapshots beside it.
+        ///
+        /// <para><paramref name="sameLayout"/> gates SOCD ONLY. Its pair
+        /// grammar is slot-type dependent, target names on a gamepad slot
+        /// against Extended indices on an Extended one, so a cross-layout
+        /// paste would carry pairs that parse to nothing. Rumble audio and
+        /// Keep Awake name axes and an endpoint, neither of which changes
+        /// meaning with the output type, so both cross regardless.</para>
+        ///
+        /// <para>EndpointId travels verbatim. It is machine-local, and the
+        /// temptation is to blank it on a foreign machine, but blanking it
+        /// means "system default render endpoint", which is precisely the
+        /// route-bass-to-the-laptop-speakers outcome RumbleAudioConfig's
+        /// fail-closed contract exists to prevent. An unresolved endpoint
+        /// already fails closed with the selection preserved, so carrying it
+        /// is both safe and the only option that keeps the user's choice when
+        /// the config comes home.</para></summary>
+        public static void ApplySlotSetExtrasJson(int padIndex, string json, bool sameLayout)
+        {
+            if (string.IsNullOrEmpty(json)) return;
+            var sets = SettingsManager.SlotMappingSets;
+            if (sets == null || padIndex < 0 || padIndex >= sets.Length) return;
+            var ms = sets[padIndex];
+            if (ms == null) return;
+
+            SlotSetExtrasSnapshot snap;
+            try { snap = System.Text.Json.JsonSerializer.Deserialize<SlotSetExtrasSnapshot>(json); }
+            catch { return; }
+            if (snap == null) return;
+
+            ms.RumbleAudio = snap.RumbleAudio?.Clone();
+            if (sameLayout)
+            {
+                ms.SocdMode = snap.SocdMode ?? "";
+                ms.SocdPairs = snap.SocdPairs ?? "";
+            }
+            ms.KeepAwakeEnabled = snap.KeepAwakeEnabled;
+            ms.KeepAwakeAxis = snap.KeepAwakeAxis ?? "";
+            ms.KeepAwakeDeflection = snap.KeepAwakeDeflection;
+            ms.KeepAwakeMotion = snap.KeepAwakeMotion;
+        }
+
         /// <summary>Paste companion: restores a slot's menus from a clipboard
         /// snapshot. Runs AFTER <see cref="ApplySlotMappingSetFromRows"/> (which
         /// swaps in a fresh rows-only MappingSet), so it re-attaches the menus
@@ -7457,20 +7553,22 @@ namespace PadForge.Services
             // which returns to the normal automap merge. The Workshop stamps
             // stay behind with ownership too (they are only read while
             // Authoritative, so carrying them would be inert data).
-            // The DESTINATION's rumble-audio config (#236) survives a row
-            // paste: the clipboard carries rows, not the slot's shaker
-            // setup, and the fresh-set swap below would otherwise silently
-            // wipe it (the same trap ApplyMenusSnapshotJson re-attaches
-            // menus around).
+            // The DESTINATION's copies of the not-Rows family survive this
+            // swap: rumble audio (#236), SOCD (#240) and Keep Awake (#270).
+            // This function replaces the whole set with a rows-only one, so
+            // without re-seeding they would be wiped by a paste that never
+            // meant to touch them, the same trap ApplyMenusSnapshotJson
+            // re-attaches menus around.
+            //
+            // Re-seeding is the FLOOR, not the final word. A caller that has
+            // the source's values applies them right after, exactly as it does
+            // for shift authoring and menus: see ApplySlotSetExtrasJson. What
+            // survives here is what a caller carrying nothing leaves alone.
             var copy = new Engine.Data.MappingSet
             {
                 RumbleAudio = SettingsManager.SlotMappingSets[padIndex]?.RumbleAudio,
-                // The DESTINATION's SOCD authoring (#240) survives a row
-                // paste for the same reason its rumble-audio config does.
                 SocdMode = SettingsManager.SlotMappingSets[padIndex]?.SocdMode ?? "",
                 SocdPairs = SettingsManager.SlotMappingSets[padIndex]?.SocdPairs ?? "",
-                // Keep Awake (#270): destination's config survives a row
-                // paste for the same reason its SOCD authoring does.
                 KeepAwakeEnabled = SettingsManager.SlotMappingSets[padIndex]?.KeepAwakeEnabled ?? false,
                 KeepAwakeAxis = SettingsManager.SlotMappingSets[padIndex]?.KeepAwakeAxis ?? "",
                 KeepAwakeDeflection = SettingsManager.SlotMappingSets[padIndex]?.KeepAwakeDeflection ?? 0,
@@ -7639,8 +7737,11 @@ namespace PadForge.Services
             CopyShiftActivators(src, copy, retargetSlot: targetSlot);
             // Whole-slot copy carries the rumble-audio config (#236): the
             // EndpointId is machine-local but this copy stays on the same
-            // machine, so the selection remains valid. Row/layer-only paste
-            // deliberately does NOT carry it (destination keeps its own).
+            // machine, so the selection remains valid. The clipboard carries
+            // it too now (ApplySlotSetExtrasJson), where an endpoint that does
+            // not resolve on the pasting machine fails closed with the
+            // selection preserved rather than routing bass somewhere the user
+            // did not choose.
             copy.RumbleAudio = src.RumbleAudio?.Clone();
             // SOCD authoring (#240) copies whole-slot too. Note the pair
             // grammar is slot-type dependent (target names vs Extended

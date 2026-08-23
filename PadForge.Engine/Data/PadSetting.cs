@@ -2298,6 +2298,26 @@ namespace PadForge.Engine.Data
         [System.Text.Json.Serialization.JsonIgnore]
         public string SlotMenusJson { get; set; }
 
+        /// <summary>Opaque JSON payload for the rest of the slot's own
+        /// MappingSet state: the rumble-audio config (#236), the gamepad
+        /// SOCD authoring (#240) and Keep Awake (#270).
+        ///
+        /// <para>These are the "not Rows" family that every OTHER container
+        /// copy already carried. CloneMappingSetDeep carries them for profile
+        /// snapshots and the whole-slot Copy From carries them in process, but
+        /// the clipboard did not, so a Copy / Paste silently left them behind
+        /// while claiming to carry all settings. ApplySlotMappingSetFromRows
+        /// re-seeds the DESTINATION's values across the row swap, which is
+        /// correct on its own and was mistaken for a deliberate exclusion.
+        ///
+        /// <para>The KBM SOCD twin does NOT ride here. It lives on
+        /// KbmSlotConfig rather than the MappingSet and already crosses via
+        /// SlotKbmConfigJson, which is exactly why only the gamepad half was
+        /// missing.</para></summary>
+        [System.Xml.Serialization.XmlIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        public string SlotSetExtrasJson { get; set; }
+
         /// <summary>Opaque JSON payload carrying every device's PadSetting
         /// on the source slot. The outer PadSetting that wraps this field
         /// still carries the originally-selected device's tuning (legacy
@@ -2424,6 +2444,8 @@ namespace PadForge.Engine.Data
                 dict["__SlotShiftActivators"] = SlotShiftActivatorsJson;
             if (!string.IsNullOrEmpty(SlotMenusJson))
                 dict["__SlotMenus"] = SlotMenusJson;
+            if (!string.IsNullOrEmpty(SlotSetExtrasJson))
+                dict["__SlotSetExtras"] = SlotSetExtrasJson;
             if (!string.IsNullOrEmpty(SlotPerDeviceSettingsJson))
                 dict["__SlotPerDeviceSettings"] = SlotPerDeviceSettingsJson;
 
@@ -2564,6 +2586,8 @@ namespace PadForge.Engine.Data
                             ps.SlotShiftActivatorsJson = kvp.Value;
                         else if (kvp.Key == "__SlotMenus")
                             ps.SlotMenusJson = kvp.Value;
+                        else if (kvp.Key == "__SlotSetExtras")
+                            ps.SlotSetExtrasJson = kvp.Value;
                         else if (kvp.Key == "__SlotPerDeviceSettings")
                             ps.SlotPerDeviceSettingsJson = kvp.Value;
                         continue;

@@ -3179,6 +3179,38 @@ You can retry later from Settings.</value></data>
   <data name="MacroAction_Type_HeadphoneVolumeDown" xml:space="preserve"><value>Lower Headphone Volume</value></data>
   <data name="MacroAction_HeadphoneVolumeUp_Tooltip" xml:space="preserve"><value>Raises the controller's headset jack volume by 10%.</value></data>
   <data name="MacroAction_HeadphoneVolumeDown_Tooltip" xml:space="preserve"><value>Lowers the controller's headset jack volume by 10%.</value></data>
+  <data name="Pad_Audio_Crossfeed" xml:space="preserve"><value>Crossfeed</value></data>
+  <data name="Pad_Audio_Crossfeed_Tooltip" xml:space="preserve"><value>Mixes a little of each channel into the other, the way speakers reach both ears. Eases hard-panned game audio over headphones. Skipped on the speaker paths, which carry a mono mix.</value></data>
+  <data name="Pad_Audio_Crossfeed_Off" xml:space="preserve"><value>Off</value></data>
+  <data name="Pad_Audio_Crossfeed_Low" xml:space="preserve"><value>Low</value></data>
+  <data name="Pad_Audio_Crossfeed_Middle" xml:space="preserve"><value>Medium</value></data>
+  <data name="Pad_Audio_Crossfeed_High" xml:space="preserve"><value>High</value></data>
+  <data name="Pad_Audio_Crossfeed_LowEasy" xml:space="preserve"><value>Low (easy)</value></data>
+  <data name="Pad_Audio_Crossfeed_MiddleEasy" xml:space="preserve"><value>Medium (easy)</value></data>
+  <data name="Pad_Audio_Crossfeed_HighEasy" xml:space="preserve"><value>High (easy)</value></data>
+  <data name="Pad_Audio_Eq" xml:space="preserve"><value>Parametric EQ</value></data>
+  <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>Per-band filters over the controller audio. Applied before the audio is encoded, so the limiter below keeps a boosted band from clipping.</value></data>
+  <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>Preamp</value></data>
+  <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>Overall level before the bands. AutoEq profiles ship a negative preamp so their boosts do not clip, and importing one sets this for you.</value></data>
+  <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>On</value></data>
+  <data name="Pad_Audio_EqCol_Type" xml:space="preserve"><value>Type</value></data>
+  <data name="Pad_Audio_EqCol_Freq" xml:space="preserve"><value>Freq (Hz)</value></data>
+  <data name="Pad_Audio_EqCol_Gain" xml:space="preserve"><value>Gain (dB)</value></data>
+  <data name="Pad_Audio_EqCol_Q" xml:space="preserve"><value>Q</value></data>
+  <data name="Pad_Audio_EqAdd" xml:space="preserve"><value>Add band</value></data>
+  <data name="Pad_Audio_EqRemove" xml:space="preserve"><value>Remove band</value></data>
+  <data name="Pad_Audio_EqClear" xml:space="preserve"><value>Clear</value></data>
+  <data name="Pad_Audio_EqImport" xml:space="preserve"><value>Import from clipboard</value></data>
+  <data name="Pad_Audio_EqImport_Tooltip" xml:space="preserve"><value>Paste an AutoEq profile for your headphones, then click. Replaces the bands and sets the preamp. Nothing readable in the clipboard leaves the current EQ alone.</value></data>
+  <data name="Pad_Audio_Limiter" xml:space="preserve"><value>Limiter</value></data>
+  <data name="Pad_Audio_Limiter_Tooltip" xml:space="preserve"><value>Holds the signal under the ceiling. Worth leaving on whenever a band is boosted, because the audio is encoded after this and clipping the encoder sounds far worse than the boost sounds better.</value></data>
+  <data name="Pad_Audio_LimiterCeiling" xml:space="preserve"><value>Ceiling</value></data>
+  <data name="Pad_Audio_LimiterCeiling_Tooltip" xml:space="preserve"><value>Highest level the limiter allows through, as a percent of full scale.</value></data>
+  <data name="Pad_Audio_Reset_Crossfeed" xml:space="preserve"><value>Reset crossfeed</value></data>
+  <data name="Pad_Audio_Reset_Eq" xml:space="preserve"><value>Reset the equalizer</value></data>
+  <data name="Pad_Audio_Reset_EqPreamp" xml:space="preserve"><value>Reset preamp</value></data>
+  <data name="Pad_Audio_Reset_Limiter" xml:space="preserve"><value>Reset the limiter</value></data>
+  <data name="Pad_Audio_Reset_LimiterCeiling" xml:space="preserve"><value>Reset the ceiling</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>Output Path</value></data>
   <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Where the controller plays its audio. Default keeps the firmware's own routing and plays PadForge sounds on the speaker. Headphones + Speaker plays mono on the headset side, a firmware limit. Over Bluetooth this mode plays through the headphones only. Follow Headphone Jack switches to headphones when something is plugged into the controller and back to the speaker when unplugged; with no jack reading available it behaves like Default.</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>Default</value></data>

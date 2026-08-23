@@ -3147,6 +3147,38 @@ Je kunt het later opnieuw proberen via Instellingen.</value></data>
   <data name="MacroAction_Type_HeadphoneVolumeDown" xml:space="preserve"><value>Koptelefoonvolume verlagen</value></data>
   <data name="MacroAction_HeadphoneVolumeUp_Tooltip" xml:space="preserve"><value>Verhoogt het volume van de headsetaansluiting van de controller met 10%.</value></data>
   <data name="MacroAction_HeadphoneVolumeDown_Tooltip" xml:space="preserve"><value>Verlaagt het volume van de headsetaansluiting van de controller met 10%.</value></data>
+  <data name="Pad_Audio_Crossfeed" xml:space="preserve"><value>Crossfeed</value></data>
+  <data name="Pad_Audio_Crossfeed_Tooltip" xml:space="preserve"><value>Mengt wat van elk kanaal in het andere, zoals luidsprekers beide oren bereiken. Verzacht hard gepande game-audio op een hoofdtelefoon. Overgeslagen op de luidsprekerpaden, die een mono-mix voeren.</value></data>
+  <data name="Pad_Audio_Crossfeed_Off" xml:space="preserve"><value>Uit</value></data>
+  <data name="Pad_Audio_Crossfeed_Low" xml:space="preserve"><value>Laag</value></data>
+  <data name="Pad_Audio_Crossfeed_Middle" xml:space="preserve"><value>Gemiddeld</value></data>
+  <data name="Pad_Audio_Crossfeed_High" xml:space="preserve"><value>Hoog</value></data>
+  <data name="Pad_Audio_Crossfeed_LowEasy" xml:space="preserve"><value>Laag (zacht)</value></data>
+  <data name="Pad_Audio_Crossfeed_MiddleEasy" xml:space="preserve"><value>Gemiddeld (zacht)</value></data>
+  <data name="Pad_Audio_Crossfeed_HighEasy" xml:space="preserve"><value>Hoog (zacht)</value></data>
+  <data name="Pad_Audio_Eq" xml:space="preserve"><value>Parametrische EQ</value></data>
+  <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>Filters per band over de controlleraudio. Toegepast vóór het coderen, dus de limiter hieronder voorkomt dat een versterkte band vervormt.</value></data>
+  <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>Voorversterking</value></data>
+  <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>Algemeen niveau vóór de banden. AutoEq-profielen bevatten een negatieve voorversterking zodat hun versterkingen niet vervormen, en importeren stelt die voor u in.</value></data>
+  <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>Aan</value></data>
+  <data name="Pad_Audio_EqCol_Type" xml:space="preserve"><value>Type</value></data>
+  <data name="Pad_Audio_EqCol_Freq" xml:space="preserve"><value>Freq. (Hz)</value></data>
+  <data name="Pad_Audio_EqCol_Gain" xml:space="preserve"><value>Versterking (dB)</value></data>
+  <data name="Pad_Audio_EqCol_Q" xml:space="preserve"><value>Q</value></data>
+  <data name="Pad_Audio_EqAdd" xml:space="preserve"><value>Band toevoegen</value></data>
+  <data name="Pad_Audio_EqRemove" xml:space="preserve"><value>Band verwijderen</value></data>
+  <data name="Pad_Audio_EqClear" xml:space="preserve"><value>Wissen</value></data>
+  <data name="Pad_Audio_EqImport" xml:space="preserve"><value>Importeren uit klembord</value></data>
+  <data name="Pad_Audio_EqImport_Tooltip" xml:space="preserve"><value>Kopieer een AutoEq-profiel voor uw hoofdtelefoon en klik dan. Vervangt de banden en stelt de voorversterking in. Zonder leesbare inhoud blijft de huidige EQ ongemoeid.</value></data>
+  <data name="Pad_Audio_Limiter" xml:space="preserve"><value>Limiter</value></data>
+  <data name="Pad_Audio_Limiter_Tooltip" xml:space="preserve"><value>Houdt het signaal onder het plafond. Laat het aan zodra een band versterkt is, want de audio wordt hierna gecodeerd en het vervormen van de encoder klinkt veel slechter dan de versterking beter klinkt.</value></data>
+  <data name="Pad_Audio_LimiterCeiling" xml:space="preserve"><value>Plafond</value></data>
+  <data name="Pad_Audio_LimiterCeiling_Tooltip" xml:space="preserve"><value>Hoogste niveau dat de limiter doorlaat, als percentage van volle schaal.</value></data>
+  <data name="Pad_Audio_Reset_Crossfeed" xml:space="preserve"><value>Crossfeed herstellen</value></data>
+  <data name="Pad_Audio_Reset_Eq" xml:space="preserve"><value>Equalizer herstellen</value></data>
+  <data name="Pad_Audio_Reset_EqPreamp" xml:space="preserve"><value>Voorversterking herstellen</value></data>
+  <data name="Pad_Audio_Reset_Limiter" xml:space="preserve"><value>Limiter herstellen</value></data>
+  <data name="Pad_Audio_Reset_LimiterCeiling" xml:space="preserve"><value>Plafond herstellen</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>Uitvoerpad</value></data>
   <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Waar de controller zijn audio afspeelt. Standaard behoudt de routering van de firmware en speelt PadForge-geluiden via de luidspreker. Koptelefoon + Luidspreker speelt mono af aan de headsetkant, een firmwarelimiet. Via Bluetooth speelt deze modus alleen via de koptelefoon. Koptelefoonaansluiting volgen schakelt naar de koptelefoon zodra er iets wordt aangesloten en terug naar de luidspreker bij loskoppelen; zonder aansluitingsstatus gedraagt het zich als Standaard.</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>Standaard</value></data>

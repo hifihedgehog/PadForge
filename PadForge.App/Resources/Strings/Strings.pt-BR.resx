@@ -3121,6 +3121,38 @@ Você pode tentar novamente mais tarde em Configurações.</value></data>
   <data name="MacroAction_Type_HeadphoneVolumeDown" xml:space="preserve"><value>Diminuir volume dos fones</value></data>
   <data name="MacroAction_HeadphoneVolumeUp_Tooltip" xml:space="preserve"><value>Aumenta em 10% o volume do conector de fone do controle.</value></data>
   <data name="MacroAction_HeadphoneVolumeDown_Tooltip" xml:space="preserve"><value>Diminui em 10% o volume do conector de fone do controle.</value></data>
+  <data name="Pad_Audio_Crossfeed" xml:space="preserve"><value>Crossfeed</value></data>
+  <data name="Pad_Audio_Crossfeed_Tooltip" xml:space="preserve"><value>Mistura um pouco de cada canal no outro, como alto-falantes alcançam os dois ouvidos. Suaviza o áudio de jogo muito lateralizado em fones. Ignorado nos caminhos de alto-falante, que levam uma mixagem mono.</value></data>
+  <data name="Pad_Audio_Crossfeed_Off" xml:space="preserve"><value>Desativado</value></data>
+  <data name="Pad_Audio_Crossfeed_Low" xml:space="preserve"><value>Baixo</value></data>
+  <data name="Pad_Audio_Crossfeed_Middle" xml:space="preserve"><value>Médio</value></data>
+  <data name="Pad_Audio_Crossfeed_High" xml:space="preserve"><value>Alto</value></data>
+  <data name="Pad_Audio_Crossfeed_LowEasy" xml:space="preserve"><value>Baixo (suave)</value></data>
+  <data name="Pad_Audio_Crossfeed_MiddleEasy" xml:space="preserve"><value>Médio (suave)</value></data>
+  <data name="Pad_Audio_Crossfeed_HighEasy" xml:space="preserve"><value>Alto (suave)</value></data>
+  <data name="Pad_Audio_Eq" xml:space="preserve"><value>Equalizador paramétrico</value></data>
+  <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>Filtros por banda sobre o áudio do controle. Aplicado antes da codificação, então o limitador abaixo evita que uma banda realçada distorça.</value></data>
+  <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>Pré-amplificação</value></data>
+  <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>Nível geral antes das bandas. Perfis do AutoEq trazem uma pré-amplificação negativa para que seus realces não distorçam, e importar já define isso.</value></data>
+  <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>Ativo</value></data>
+  <data name="Pad_Audio_EqCol_Type" xml:space="preserve"><value>Tipo</value></data>
+  <data name="Pad_Audio_EqCol_Freq" xml:space="preserve"><value>Freq. (Hz)</value></data>
+  <data name="Pad_Audio_EqCol_Gain" xml:space="preserve"><value>Ganho (dB)</value></data>
+  <data name="Pad_Audio_EqCol_Q" xml:space="preserve"><value>Q</value></data>
+  <data name="Pad_Audio_EqAdd" xml:space="preserve"><value>Adicionar banda</value></data>
+  <data name="Pad_Audio_EqRemove" xml:space="preserve"><value>Remover banda</value></data>
+  <data name="Pad_Audio_EqClear" xml:space="preserve"><value>Limpar</value></data>
+  <data name="Pad_Audio_EqImport" xml:space="preserve"><value>Importar da área de transferência</value></data>
+  <data name="Pad_Audio_EqImport_Tooltip" xml:space="preserve"><value>Copie um perfil do AutoEq para seus fones e clique. Substitui as bandas e define a pré-amplificação. Sem conteúdo legível, o equalizador atual fica intacto.</value></data>
+  <data name="Pad_Audio_Limiter" xml:space="preserve"><value>Limitador</value></data>
+  <data name="Pad_Audio_Limiter_Tooltip" xml:space="preserve"><value>Mantém o sinal abaixo do teto. Vale deixar ligado sempre que houver realce, pois o áudio é codificado depois e distorcer o codificador soa bem pior do que o realce soa melhor.</value></data>
+  <data name="Pad_Audio_LimiterCeiling" xml:space="preserve"><value>Teto</value></data>
+  <data name="Pad_Audio_LimiterCeiling_Tooltip" xml:space="preserve"><value>Nível máximo que o limitador deixa passar, como porcentagem da escala cheia.</value></data>
+  <data name="Pad_Audio_Reset_Crossfeed" xml:space="preserve"><value>Redefinir crossfeed</value></data>
+  <data name="Pad_Audio_Reset_Eq" xml:space="preserve"><value>Redefinir o equalizador</value></data>
+  <data name="Pad_Audio_Reset_EqPreamp" xml:space="preserve"><value>Redefinir pré-amplificação</value></data>
+  <data name="Pad_Audio_Reset_Limiter" xml:space="preserve"><value>Redefinir o limitador</value></data>
+  <data name="Pad_Audio_Reset_LimiterCeiling" xml:space="preserve"><value>Redefinir o teto</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>Caminho de saída</value></data>
   <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Onde o controle reproduz o áudio. Padrão mantém o roteamento do firmware e reproduz os sons do PadForge no alto-falante. Fones + Alto-falante reproduz em mono no lado do fone, um limite do firmware. Por Bluetooth este modo reproduz apenas nos fones. Seguir o conector muda para os fones quando algo é conectado ao controle e volta ao alto-falante ao desconectar; sem leitura do conector, age como Padrão.</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>Padrão</value></data>

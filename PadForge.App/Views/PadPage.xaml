@@ -14,9 +14,18 @@
              d:DataContext="{d:DesignInstance vm:PadViewModel}"
              d:DesignHeight="700" d:DesignWidth="900"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-             xmlns:common="clr-namespace:PadForge.Common">
+             xmlns:common="clr-namespace:PadForge.Common"
+             xmlns:input="clr-namespace:PadForge.Common.Input">
 
     <UserControl.Resources>
+        <!-- EQ band types for the parametric EQ grid (#347). An enum the
+             combo column binds by value, so a band keeps its type across a
+             locale change rather than an index into a translated list. -->
+        <ObjectDataProvider x:Key="EqBandTypeValues" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="input:EqBandType"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
         <!-- #175 hover-glow: hue-matched glows for anything whose color
              changes on hover. Ember hover gets an ember glow, cold hover a
              cold glow, steel/brightness-only hover the faint neutral ember
@@ -11609,6 +11618,119 @@
                                     </ComboBox>
                                     <ui:Button Command="{Binding DeviceConfig.ResetAudioOutputPathCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetOutputPath, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
+
+                                <!-- Audio DSP chain (#347). Crossfeed, parametric EQ and
+                                     the limiter, applied to everything this sink plays
+                                     (mirror, macro sounds, persona) BEFORE the transport
+                                     encodes it. Sits directly under Output Path because
+                                     the resolved path is what decides whether crossfeed
+                                     runs at all: it needs a genuinely stereo route, and
+                                     the speaker paths carry a mono downmix. -->
+                                <Separator Margin="0,10,0,10"
+                                           Visibility="{Binding SelectedDeviceHasSpeaker, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                <StackPanel Visibility="{Binding SelectedDeviceHasSpeaker, Converter={StaticResource BoolToVisibilityConverter}}">
+
+                                    <!-- Crossfeed -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="{Binding Pad_Audio_Crossfeed, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                                   ToolTip="{Binding Pad_Audio_Crossfeed_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <ComboBox SelectedIndex="{Binding DeviceConfig.AudioCrossfeedLevel, Mode=TwoWay}"
+                                                  Width="340" VerticalAlignment="Center"
+                                                  ToolTip="{Binding Pad_Audio_Crossfeed_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                            <ComboBoxItem Content="{Binding Pad_Audio_Crossfeed_Off, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding Pad_Audio_Crossfeed_Low, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding Pad_Audio_Crossfeed_Middle, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding Pad_Audio_Crossfeed_High, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding Pad_Audio_Crossfeed_LowEasy, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding Pad_Audio_Crossfeed_MiddleEasy, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding Pad_Audio_Crossfeed_HighEasy, Source={x:Static strings:Strings.Instance}}"/>
+                                        </ComboBox>
+                                        <ui:Button Command="{Binding ResetCrossfeedCommand}" Style="{StaticResource ResetButton}"
+                                                   ToolTip="{Binding Pad_Audio_Reset_Crossfeed, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+
+                                    <!-- Parametric EQ -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                        <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                  Content="{Binding Pad_Audio_Eq, Source={x:Static strings:Strings.Instance}}"
+                                                  ToolTip="{Binding Pad_Audio_Eq_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                                  IsChecked="{Binding DeviceConfig.AudioEqEnabled, Mode=TwoWay}"/>
+                                        <ui:Button Command="{Binding ResetEqCommand}" Style="{StaticResource ResetButton}"
+                                                   ToolTip="{Binding Pad_Audio_Reset_Eq, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                    <StackPanel Visibility="{Binding DeviceConfig.AudioEqEnabled, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                            <TextBlock Text="{Binding Pad_Audio_EqPreamp, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                                       ToolTip="{Binding Pad_Audio_EqPreamp_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <Slider Value="{Binding DeviceConfig.AudioEqPreampDb, Mode=TwoWay}" Minimum="-30" Maximum="12"
+                                                    Style="{StaticResource DzSlider}"/>
+                                            <TextBox Text="{Binding DeviceConfig.AudioEqPreampDb, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=0.#}"
+                                                     Style="{StaticResource DzValueEdit}"/>
+                                            <TextBlock Text="dB" Style="{StaticResource DzPercent}"/>
+                                            <ui:Button Command="{Binding ResetEqPreampCommand}" Style="{StaticResource ResetButton}"
+                                                       ToolTip="{Binding Pad_Audio_Reset_EqPreamp, Source={x:Static strings:Strings.Instance}}"/>
+                                        </StackPanel>
+                                        <DataGrid ItemsSource="{Binding EqBands}" AutoGenerateColumns="False"
+                                                  CanUserAddRows="False" CanUserDeleteRows="False" HeadersVisibility="Column"
+                                                  MaxHeight="220" Margin="0,0,0,6" Background="Transparent" GridLinesVisibility="None">
+                                            <DataGrid.Columns>
+                                                <DataGridCheckBoxColumn Binding="{Binding Enabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                        Header="{Binding Pad_Audio_EqCol_On, Source={x:Static strings:Strings.Instance}}" Width="46"/>
+                                                <DataGridComboBoxColumn Header="{Binding Pad_Audio_EqCol_Type, Source={x:Static strings:Strings.Instance}}" Width="130"
+                                                                        SelectedValueBinding="{Binding Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                        ItemsSource="{Binding Source={StaticResource EqBandTypeValues}}"/>
+                                                <DataGridTextColumn Binding="{Binding FrequencyHz, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=0.##}"
+                                                                    Header="{Binding Pad_Audio_EqCol_Freq, Source={x:Static strings:Strings.Instance}}" Width="90"/>
+                                                <DataGridTextColumn Binding="{Binding GainDb, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=0.##}"
+                                                                    Header="{Binding Pad_Audio_EqCol_Gain, Source={x:Static strings:Strings.Instance}}" Width="80"/>
+                                                <DataGridTextColumn Binding="{Binding Q, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=0.###}"
+                                                                    Header="{Binding Pad_Audio_EqCol_Q, Source={x:Static strings:Strings.Instance}}" Width="70"/>
+                                                <DataGridTemplateColumn Width="40">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <ui:Button Content="&#xE711;" FontFamily="{DynamicResource SymbolThemeFontFamily}" Padding="4,0"
+                                                                       Command="{Binding DataContext.RemoveEqBandCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                                       CommandParameter="{Binding}"
+                                                                       ToolTip="{Binding Pad_Audio_EqRemove, Source={x:Static strings:Strings.Instance}}"/>
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Content="{Binding Pad_Audio_EqAdd, Source={x:Static strings:Strings.Instance}}"
+                                                    Command="{Binding AddEqBandCommand}" Padding="10,4" VerticalAlignment="Center"/>
+                                            <Button Content="{Binding Pad_Audio_EqImport, Source={x:Static strings:Strings.Instance}}"
+                                                    Command="{Binding ImportAutoEqCommand}" Padding="10,4" Margin="6,0,0,0" VerticalAlignment="Center"
+                                                    ToolTip="{Binding Pad_Audio_EqImport_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <Button Content="{Binding Pad_Audio_EqClear, Source={x:Static strings:Strings.Instance}}"
+                                                    Command="{Binding ClearEqBandsCommand}" Padding="10,4" Margin="6,0,0,0" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <!-- Limiter -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,8,0,4">
+                                        <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                  Content="{Binding Pad_Audio_Limiter, Source={x:Static strings:Strings.Instance}}"
+                                                  ToolTip="{Binding Pad_Audio_Limiter_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                                  IsChecked="{Binding DeviceConfig.AudioLimiterEnabled, Mode=TwoWay}"/>
+                                        <ui:Button Command="{Binding ResetLimiterCommand}" Style="{StaticResource ResetButton}"
+                                                   ToolTip="{Binding Pad_Audio_Reset_Limiter, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8"
+                                                Visibility="{Binding DeviceConfig.AudioLimiterEnabled, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock Text="{Binding Pad_Audio_LimiterCeiling, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                                   ToolTip="{Binding Pad_Audio_LimiterCeiling_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <Slider Value="{Binding DeviceConfig.AudioLimiterCeiling, Mode=TwoWay}" Minimum="5" Maximum="100"
+                                                Style="{StaticResource DzSlider}"/>
+                                        <TextBox Text="{Binding DeviceConfig.AudioLimiterCeiling, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                 Style="{StaticResource DzValueEdit}"/>
+                                        <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                        <ui:Button Command="{Binding ResetLimiterCeilingCommand}" Style="{StaticResource ResetButton}"
+                                                   ToolTip="{Binding Pad_Audio_Reset_LimiterCeiling, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                </StackPanel>
+
                                 <StackPanel Orientation="Horizontal">
                                     <Button Content="{Binding Pad_Audio_Test, Source={x:Static strings:Strings.Instance}}"
                                             Command="{Binding SoundTestCommand}" Padding="10,4" VerticalAlignment="Center"

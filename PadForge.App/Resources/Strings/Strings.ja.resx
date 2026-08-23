@@ -3127,6 +3127,38 @@
   <data name="MacroAction_Type_HeadphoneVolumeDown" xml:space="preserve"><value>ヘッドホン音量を下げる</value></data>
   <data name="MacroAction_HeadphoneVolumeUp_Tooltip" xml:space="preserve"><value>コントローラーのヘッドセット端子の音量を10%上げます。</value></data>
   <data name="MacroAction_HeadphoneVolumeDown_Tooltip" xml:space="preserve"><value>コントローラーのヘッドセット端子の音量を10%下げます。</value></data>
+  <data name="Pad_Audio_Crossfeed" xml:space="preserve"><value>クロスフィード</value></data>
+  <data name="Pad_Audio_Crossfeed_Tooltip" xml:space="preserve"><value>スピーカーが両耳に届くように、各チャンネルを少しずつ反対側に混ぜます。ヘッドホンで極端に左右に振られたゲーム音を和らげます。モノラルミックスを送るスピーカー経路では省略されます。</value></data>
+  <data name="Pad_Audio_Crossfeed_Off" xml:space="preserve"><value>オフ</value></data>
+  <data name="Pad_Audio_Crossfeed_Low" xml:space="preserve"><value>弱</value></data>
+  <data name="Pad_Audio_Crossfeed_Middle" xml:space="preserve"><value>中</value></data>
+  <data name="Pad_Audio_Crossfeed_High" xml:space="preserve"><value>強</value></data>
+  <data name="Pad_Audio_Crossfeed_LowEasy" xml:space="preserve"><value>弱（ソフト）</value></data>
+  <data name="Pad_Audio_Crossfeed_MiddleEasy" xml:space="preserve"><value>中（ソフト）</value></data>
+  <data name="Pad_Audio_Crossfeed_HighEasy" xml:space="preserve"><value>強（ソフト）</value></data>
+  <data name="Pad_Audio_Eq" xml:space="preserve"><value>パラメトリック EQ</value></data>
+  <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>コントローラー音声に対する帯域ごとのフィルターです。エンコード前に適用されるため、下のリミッターがブーストした帯域のクリップを防ぎます。</value></data>
+  <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>プリアンプ</value></data>
+  <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>各帯域の前段の全体レベルです。AutoEq プロファイルはブーストがクリップしないよう負のプリアンプを含んでおり、読み込み時に自動設定されます。</value></data>
+  <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>オン</value></data>
+  <data name="Pad_Audio_EqCol_Type" xml:space="preserve"><value>種類</value></data>
+  <data name="Pad_Audio_EqCol_Freq" xml:space="preserve"><value>周波数 (Hz)</value></data>
+  <data name="Pad_Audio_EqCol_Gain" xml:space="preserve"><value>ゲイン (dB)</value></data>
+  <data name="Pad_Audio_EqCol_Q" xml:space="preserve"><value>Q</value></data>
+  <data name="Pad_Audio_EqAdd" xml:space="preserve"><value>帯域を追加</value></data>
+  <data name="Pad_Audio_EqRemove" xml:space="preserve"><value>帯域を削除</value></data>
+  <data name="Pad_Audio_EqClear" xml:space="preserve"><value>消去</value></data>
+  <data name="Pad_Audio_EqImport" xml:space="preserve"><value>クリップボードから読み込む</value></data>
+  <data name="Pad_Audio_EqImport_Tooltip" xml:space="preserve"><value>お使いのヘッドホン用の AutoEq プロファイルをコピーしてからクリックします。帯域を置き換えてプリアンプを設定します。読み取れる内容がなければ現在の EQ はそのままです。</value></data>
+  <data name="Pad_Audio_Limiter" xml:space="preserve"><value>リミッター</value></data>
+  <data name="Pad_Audio_Limiter_Tooltip" xml:space="preserve"><value>信号を上限より下に保ちます。帯域をブーストしている間は有効のままが安全です。音声はこの後にエンコードされ、エンコーダーのクリップはブーストの効果よりはるかに悪く聞こえます。</value></data>
+  <data name="Pad_Audio_LimiterCeiling" xml:space="preserve"><value>上限</value></data>
+  <data name="Pad_Audio_LimiterCeiling_Tooltip" xml:space="preserve"><value>リミッターが通す最大レベルです。フルスケールに対する百分率で指定します。</value></data>
+  <data name="Pad_Audio_Reset_Crossfeed" xml:space="preserve"><value>クロスフィードをリセット</value></data>
+  <data name="Pad_Audio_Reset_Eq" xml:space="preserve"><value>イコライザーをリセット</value></data>
+  <data name="Pad_Audio_Reset_EqPreamp" xml:space="preserve"><value>プリアンプをリセット</value></data>
+  <data name="Pad_Audio_Reset_Limiter" xml:space="preserve"><value>リミッターをリセット</value></data>
+  <data name="Pad_Audio_Reset_LimiterCeiling" xml:space="preserve"><value>上限をリセット</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>出力パス</value></data>
   <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>コントローラーが音声をどこで再生するか。既定はファームウェアのルーティングを維持し、PadForgeのサウンドはスピーカーで再生します。ヘッドホン＋スピーカーはヘッドセット側がモノラルになります（ファームウェアの制限）。Bluetooth接続時、このモードはヘッドホンのみで再生されます。ヘッドホン端子に追従は、コントローラーに接続されるとヘッドホンに、外すとスピーカーに切り替わります。端子の状態を取得できない場合は既定と同じ動作になります。</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>既定</value></data>

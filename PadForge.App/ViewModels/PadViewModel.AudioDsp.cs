@@ -210,7 +210,17 @@ namespace PadForge.ViewModels
                 if (DeviceConfig == null) return;
                 string text;
                 try { text = System.Windows.Clipboard.ContainsText() ? System.Windows.Clipboard.GetText() : null; }
-                catch { return; }   // the clipboard can be locked by another process
+                catch (Exception ex)
+                {
+                    // The clipboard can be locked by another process. That used
+                    // to be a silent return, which is the exact shape the status
+                    // line exists to remove: the one button did nothing and said
+                    // nothing. Same string the file path uses for a read it
+                    // could not complete.
+                    SetEqImportStatus(string.Format(
+                        Strings.Instance.Pad_Audio_EqImport_ReadFailed_Format, ex.Message));
+                    return;
+                }
                 ApplyAutoEqText(text, Strings.Instance.Pad_Audio_EqImport_ClipboardLabel);
             });
 

@@ -722,25 +722,6 @@ namespace PadForge.Services
             existingPs.UpdateChecksum();
         }
 
-        /// <summary>
-        /// True when <paramref name="existingPs"/> carries a standard mapping
-        /// descriptor that points at a button / axis / POV index this device
-        /// doesn't physically expose. That means the PadSetting was authored for
-        /// a DIFFERENT device — a Copy From across device kinds, or a mapping
-        /// inherited from another device sharing the slot (e.g. a racing wheel's
-        /// raw <c>Button 24</c> / <c>IAxis 3</c> descriptors landing on a
-        /// DualSense, whose buttons stop at 21). On (re)assign such a PadSetting
-        /// must be re-auto-mapped fresh rather than preserved by the fill-empty
-        /// pass, which only touches empty fields and so leaves the foreign
-        /// descriptors in place (the "assigning my DualSense to a wheel's slot
-        /// only maps the Share button" report).
-        ///
-        /// <para>Only Gamepads have a canonical auto-map, so the check is gated
-        /// to them; wheels / joysticks keep their recorded mapping. Descriptors
-        /// the device's OWN fresh auto-map produces are whitelisted, so a clean
-        /// gamepad mapping is never flagged even when its auto-mapped indices sit
-        /// near the device's reported counts.</para>
-        /// </summary>
         /// <summary>The highest index+1 this device can legitimately carry on
         /// each input family, for the "is this descriptor past the device's
         /// inventory" test below.
@@ -769,6 +750,25 @@ namespace PadForge.Services
                     ud.CapPovCount);
         }
 
+        /// <summary>
+        /// True when <paramref name="existingPs"/> carries a standard mapping
+        /// descriptor that points at a button / axis / POV index this device
+        /// doesn't physically expose. That means the PadSetting was authored for
+        /// a DIFFERENT device — a Copy From across device kinds, or a mapping
+        /// inherited from another device sharing the slot (e.g. a racing wheel's
+        /// raw <c>Button 24</c> / <c>IAxis 3</c> descriptors landing on a
+        /// DualSense, whose buttons stop at 21). On (re)assign such a PadSetting
+        /// must be re-auto-mapped fresh rather than preserved by the fill-empty
+        /// pass, which only touches empty fields and so leaves the foreign
+        /// descriptors in place (the "assigning my DualSense to a wheel's slot
+        /// only maps the Share button" report).
+        ///
+        /// <para>Only Gamepads have a canonical auto-map, so the check is gated
+        /// to them; wheels / joysticks keep their recorded mapping. Descriptors
+        /// the device's OWN fresh auto-map produces are whitelisted, so a clean
+        /// gamepad mapping is never flagged even when its auto-mapped indices sit
+        /// near the device's reported counts.</para>
+        /// </summary>
         private static bool IsForeignPadSetting(PadSetting existingPs, UserDevice ud,
             Engine.VirtualControllerType outputType, string profileId = null)
         {

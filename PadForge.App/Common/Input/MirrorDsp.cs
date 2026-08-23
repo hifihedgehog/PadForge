@@ -245,6 +245,18 @@ namespace PadForge.Common.Input
 
         public static float MaxFrequencyHz(int sampleRate) => sampleRate * MaxFreqFraction;
 
+        /// <summary>The rate the chain runs at. Both Sony transports resample
+        /// to it, so a band's ceiling does not vary by device.
+        ///
+        /// <para>Here rather than repeated at each consumer: the editor's
+        /// clamp, the curve control's response and the engine's filters all
+        /// have to agree on it, and two of the three getting their own copy is
+        /// how the clamp drifted apart in the first place.</para></summary>
+        public const int MirrorSampleRate = 48000;
+
+        /// <summary>The ceiling at the rate the chain actually runs at.</summary>
+        public static float MaxFrequencyHz() => MaxFrequencyHz(MirrorSampleRate);
+
         public bool Enabled = true;
         public EqBandType Type = EqBandType.Peaking;
         public float FrequencyHz = 1000f;

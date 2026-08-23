@@ -3159,6 +3159,7 @@ Puedes volver a intentarlo más tarde desde Configuración.</value></data>
   <data name="Pad_Audio_Reset_EqPreamp" xml:space="preserve"><value>Restablecer preamplificación</value></data>
   <data name="Pad_Audio_Reset_Limiter" xml:space="preserve"><value>Restablecer el limitador</value></data>
   <data name="Pad_Audio_Reset_LimiterCeiling" xml:space="preserve"><value>Restablecer el techo</value></data>
+  <data name="Pad_Audio_EqCurve_Tooltip" xml:space="preserve"><value>Arrastre un punto para mover su frecuencia y ganancia. Gire la rueda sobre un punto para ensancharlo o estrecharlo.</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>Ruta de salida</value></data>
   <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Dónde reproduce el mando su audio. Predeterminado conserva el enrutamiento del firmware y reproduce los sonidos de PadForge por el altavoz. Auriculares + Altavoz reproduce en mono en los auriculares, un límite del firmware. Por Bluetooth este modo solo reproduce por los auriculares. Seguir el conector cambia a auriculares al conectar algo al mando y vuelve al altavoz al desconectar; sin lectura del conector actúa como Predeterminado.</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>Predeterminado</value></data>

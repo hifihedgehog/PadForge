@@ -532,6 +532,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Audio_Reset_EqPreamp => Get("Pad_Audio_Reset_EqPreamp");
     public string Pad_Audio_Reset_Limiter => Get("Pad_Audio_Reset_Limiter");
     public string Pad_Audio_Reset_LimiterCeiling => Get("Pad_Audio_Reset_LimiterCeiling");
+    public string Pad_Audio_EqCurve_Tooltip => Get("Pad_Audio_EqCurve_Tooltip");
     public string About_Bs2b => Get("About_Bs2b");
     public string About_Bs2bDesc => Get("About_Bs2bDesc");
     public string About_Concentus => Get("About_Concentus");

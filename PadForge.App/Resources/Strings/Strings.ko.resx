@@ -3159,6 +3159,7 @@
   <data name="Pad_Audio_Reset_EqPreamp" xml:space="preserve"><value>프리앰프 초기화</value></data>
   <data name="Pad_Audio_Reset_Limiter" xml:space="preserve"><value>리미터 초기화</value></data>
   <data name="Pad_Audio_Reset_LimiterCeiling" xml:space="preserve"><value>한계치 초기화</value></data>
+  <data name="Pad_Audio_EqCurve_Tooltip" xml:space="preserve"><value>점을 드래그하면 주파수와 게인이 바뀝니다. 점 위에서 휠을 굴리면 폭이 조절됩니다.</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>출력 경로</value></data>
   <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>컨트롤러가 오디오를 재생하는 위치입니다. 기본값은 펌웨어 라우팅을 유지하며 PadForge 사운드는 스피커로 재생합니다. 헤드폰+스피커는 헤드셋 쪽이 모노로 재생됩니다(펌웨어 제한). Bluetooth에서는 이 모드가 헤드폰으로만 재생됩니다. 헤드폰 단자 따라가기는 컨트롤러에 꽂으면 헤드폰으로, 뽑으면 스피커로 전환됩니다. 단자 상태를 읽을 수 없으면 기본값처럼 동작합니다.</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>기본값</value></data>

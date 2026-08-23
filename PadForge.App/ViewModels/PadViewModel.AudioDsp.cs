@@ -177,6 +177,11 @@ namespace PadForge.ViewModels
             _q = b.Q;
         }
 
+        /// <summary>Public twin of <see cref="ToBand"/> for the curve control,
+        /// which lives in another namespace and needs the band to compute the
+        /// response it draws.</summary>
+        public EqBand ToBandPublic() => ToBand();
+
         internal EqBand ToBand() => new EqBand
         {
             Enabled = _enabled,

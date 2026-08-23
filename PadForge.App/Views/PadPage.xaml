@@ -11670,33 +11670,61 @@
                                             <ui:Button Command="{Binding ResetEqPreampCommand}" Style="{StaticResource ResetButton}"
                                                        ToolTip="{Binding Pad_Audio_Reset_EqPreamp, Source={x:Static strings:Strings.Instance}}"/>
                                         </StackPanel>
-                                        <DataGrid ItemsSource="{Binding EqBands}" AutoGenerateColumns="False"
-                                                  CanUserAddRows="False" CanUserDeleteRows="False" HeadersVisibility="Column"
-                                                  MaxHeight="220" Margin="0,0,0,6" Background="Transparent" GridLinesVisibility="None">
-                                            <DataGrid.Columns>
-                                                <DataGridCheckBoxColumn Binding="{Binding Enabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                        Header="{Binding Pad_Audio_EqCol_On, Source={x:Static strings:Strings.Instance}}" Width="46"/>
-                                                <DataGridComboBoxColumn Header="{Binding Pad_Audio_EqCol_Type, Source={x:Static strings:Strings.Instance}}" Width="130"
-                                                                        SelectedValueBinding="{Binding Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                        ItemsSource="{Binding Source={StaticResource EqBandTypeValues}}"/>
-                                                <DataGridTextColumn Binding="{Binding FrequencyHz, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=0.##}"
-                                                                    Header="{Binding Pad_Audio_EqCol_Freq, Source={x:Static strings:Strings.Instance}}" Width="90"/>
-                                                <DataGridTextColumn Binding="{Binding GainDb, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=0.##}"
-                                                                    Header="{Binding Pad_Audio_EqCol_Gain, Source={x:Static strings:Strings.Instance}}" Width="80"/>
-                                                <DataGridTextColumn Binding="{Binding Q, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=0.###}"
-                                                                    Header="{Binding Pad_Audio_EqCol_Q, Source={x:Static strings:Strings.Instance}}" Width="70"/>
-                                                <DataGridTemplateColumn Width="40">
-                                                    <DataGridTemplateColumn.CellTemplate>
-                                                        <DataTemplate>
-                                                            <ui:Button Content="&#xE711;" FontFamily="{DynamicResource SymbolThemeFontFamily}" Padding="4,0"
-                                                                       Command="{Binding DataContext.RemoveEqBandCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                                                       CommandParameter="{Binding}"
-                                                                       ToolTip="{Binding Pad_Audio_EqRemove, Source={x:Static strings:Strings.Instance}}"/>
-                                                        </DataTemplate>
-                                                    </DataGridTemplateColumn.CellTemplate>
-                                                </DataGridTemplateColumn>
-                                            </DataGrid.Columns>
-                                        </DataGrid>
+                                        <!-- The curve. Drag a handle to move a band's
+                                             frequency and gain, wheel over it for Q. -->
+                                        <controls:EqCurveControl Bands="{Binding EqBands}" Height="190" Margin="0,0,0,8"
+                                                                 ToolTip="{Binding Pad_Audio_EqCurve_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <!-- Numeric rows under the curve. Always-live
+                                             controls rather than a DataGrid: a grid needs a
+                                             double click to enter edit mode, which reads as
+                                             "it will not let me edit anything". -->
+                                        <Grid Margin="0,0,0,2">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="42"/>
+                                                <ColumnDefinition Width="150"/>
+                                                <ColumnDefinition Width="96"/>
+                                                <ColumnDefinition Width="88"/>
+                                                <ColumnDefinition Width="78"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="{Binding Pad_Audio_EqCol_On, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontSize="11"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding Pad_Audio_EqCol_Type, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontSize="11"/>
+                                            <TextBlock Grid.Column="2" Text="{Binding Pad_Audio_EqCol_Freq, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontSize="11"/>
+                                            <TextBlock Grid.Column="3" Text="{Binding Pad_Audio_EqCol_Gain, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontSize="11"/>
+                                            <TextBlock Grid.Column="4" Text="{Binding Pad_Audio_EqCol_Q, Source={x:Static strings:Strings.Instance}}" Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontSize="11"/>
+                                        </Grid>
+                                        <ItemsControl ItemsSource="{Binding EqBands}" Margin="0,0,0,6">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid Margin="0,1,0,1">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="42"/>
+                                                            <ColumnDefinition Width="150"/>
+                                                            <ColumnDefinition Width="96"/>
+                                                            <ColumnDefinition Width="88"/>
+                                                            <ColumnDefinition Width="78"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <CheckBox Grid.Column="0" IsChecked="{Binding Enabled, Mode=TwoWay}" VerticalAlignment="Center"/>
+                                                        <ComboBox Grid.Column="1" Margin="0,0,6,0"
+                                                                  ItemsSource="{Binding Source={StaticResource EqBandTypeValues}}"
+                                                                  SelectedItem="{Binding Type, Mode=TwoWay}"/>
+                                                        <TextBox Grid.Column="2" Margin="0,0,6,0"
+                                                                 Text="{Binding FrequencyHz, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=0.##}"/>
+                                                        <TextBox Grid.Column="3" Margin="0,0,6,0"
+                                                                 Text="{Binding GainDb, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=0.##}"/>
+                                                        <TextBox Grid.Column="4" Margin="0,0,6,0"
+                                                                 Text="{Binding Q, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=0.###}"/>
+                                                        <ui:Button Grid.Column="5" HorizontalAlignment="Left" Padding="6,2"
+                                                                   Command="{Binding DataContext.RemoveEqBandCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                                   CommandParameter="{Binding}"
+                                                                   ToolTip="{Binding Pad_Audio_EqRemove, Source={x:Static strings:Strings.Instance}}">
+                                                            <ui:SymbolIcon Symbol="Delete24"/>
+                                                        </ui:Button>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
                                         <StackPanel Orientation="Horizontal">
                                             <Button Content="{Binding Pad_Audio_EqAdd, Source={x:Static strings:Strings.Instance}}"
                                                     Command="{Binding AddEqBandCommand}" Padding="10,4" VerticalAlignment="Center"/>

@@ -3153,6 +3153,7 @@ Você pode tentar novamente mais tarde em Configurações.</value></data>
   <data name="Pad_Audio_Reset_EqPreamp" xml:space="preserve"><value>Redefinir pré-amplificação</value></data>
   <data name="Pad_Audio_Reset_Limiter" xml:space="preserve"><value>Redefinir o limitador</value></data>
   <data name="Pad_Audio_Reset_LimiterCeiling" xml:space="preserve"><value>Redefinir o teto</value></data>
+  <data name="Pad_Audio_EqCurve_Tooltip" xml:space="preserve"><value>Arraste um ponto para mover sua frequência e ganho. Gire a roda sobre um ponto para alargá-lo ou estreitá-lo.</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>Caminho de saída</value></data>
   <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Onde o controle reproduz o áudio. Padrão mantém o roteamento do firmware e reproduz os sons do PadForge no alto-falante. Fones + Alto-falante reproduz em mono no lado do fone, um limite do firmware. Por Bluetooth este modo reproduz apenas nos fones. Seguir o conector muda para os fones quando algo é conectado ao controle e volta ao alto-falante ao desconectar; sem leitura do conector, age como Padrão.</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>Padrão</value></data>

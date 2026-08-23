@@ -1048,8 +1048,15 @@ namespace PadForge.Common.Input
         /// be seconds away on an idle slot).</summary>
         public static void NotifySoundRoutingChanged(int padIndex)
         {
-            if (_instances.TryGetValue(padIndex, out var inst) && inst != null)
-                inst.DispatchSnapshot();
+            if (!_instances.TryGetValue(padIndex, out var inst) || inst == null) return;
+            // Re-evaluate demand BEFORE the snapshot. A sink coming alive
+            // changes whether this slot needs the timer at all, and
+            // UpdateAnimTimer is otherwise only reached from config edits and
+            // the rumble poke, neither of which fires for a mirror toggle on
+            // an otherwise idle slot. Dispatching without it asserted the
+            // speaker path exactly once and then went quiet again.
+            inst.UpdateAnimTimer();
+            inst.DispatchSnapshot();
         }
 
         private void UpdateAnimTimer()
@@ -1118,6 +1125,22 @@ namespace PadForge.Common.Input
                 // would have no writer at all once Step 2 stopped
                 // calling SDL_RumbleJoystick for Sony pads.
                 if (_slotNeedsRumbleTimer)
+                    wantTimer = true;
+
+                // Mirror / macro audio poke. The firmware speaker path and
+                // its volume byte ride the SAME output report as the rumble
+                // bytes above, and are asserted per report rather than
+                // latched, so they need the writer alive for exactly the
+                // same reason. This term was missing: on a slot whose
+                // lightbar is static, whose pad is not rumbling, and whose
+                // virtual controller is not a PlayStation one, nothing ran
+                // the dispatcher at all, so the assert landed only when some
+                // unrelated feature happened to hold the timer open. The
+                // sink streamed Opus the whole time into a muted path.
+                //
+                // Kept last and behind the short-circuit so the common idle
+                // slot never pays for the lookup.
+                if (!wantTimer && AudioPassthroughService.SlotWantsSpeakerPath(_padIndex))
                     wantTimer = true;
             }
 

@@ -3127,6 +3127,38 @@ Vous pouvez réessayer plus tard depuis les Paramètres.</value></data>
   <data name="MacroAction_Type_HeadphoneVolumeDown" xml:space="preserve"><value>Réduire le volume du casque</value></data>
   <data name="MacroAction_HeadphoneVolumeUp_Tooltip" xml:space="preserve"><value>Augmente de 10 % le volume de la prise casque de la manette.</value></data>
   <data name="MacroAction_HeadphoneVolumeDown_Tooltip" xml:space="preserve"><value>Réduit de 10 % le volume de la prise casque de la manette.</value></data>
+  <data name="Pad_Audio_Crossfeed" xml:space="preserve"><value>Crossfeed</value></data>
+  <data name="Pad_Audio_Crossfeed_Tooltip" xml:space="preserve"><value>Mélange un peu de chaque canal dans l'autre, comme des enceintes atteignent les deux oreilles. Adoucit l'audio de jeu fortement latéralisé au casque. Ignoré sur les chemins haut-parleur, qui portent un mixage mono.</value></data>
+  <data name="Pad_Audio_Crossfeed_Off" xml:space="preserve"><value>Désactivé</value></data>
+  <data name="Pad_Audio_Crossfeed_Low" xml:space="preserve"><value>Faible</value></data>
+  <data name="Pad_Audio_Crossfeed_Middle" xml:space="preserve"><value>Moyen</value></data>
+  <data name="Pad_Audio_Crossfeed_High" xml:space="preserve"><value>Élevé</value></data>
+  <data name="Pad_Audio_Crossfeed_LowEasy" xml:space="preserve"><value>Faible (doux)</value></data>
+  <data name="Pad_Audio_Crossfeed_MiddleEasy" xml:space="preserve"><value>Moyen (doux)</value></data>
+  <data name="Pad_Audio_Crossfeed_HighEasy" xml:space="preserve"><value>Élevé (doux)</value></data>
+  <data name="Pad_Audio_Eq" xml:space="preserve"><value>Égaliseur paramétrique</value></data>
+  <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>Filtres par bande sur l'audio de la manette. Appliqué avant l'encodage, donc le limiteur ci-dessous empêche une bande accentuée de saturer.</value></data>
+  <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>Préampli</value></data>
+  <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>Niveau global avant les bandes. Les profils AutoEq fournissent un préampli négatif pour que leurs accentuations ne saturent pas, et l'import le règle pour vous.</value></data>
+  <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>Act.</value></data>
+  <data name="Pad_Audio_EqCol_Type" xml:space="preserve"><value>Type</value></data>
+  <data name="Pad_Audio_EqCol_Freq" xml:space="preserve"><value>Fréq. (Hz)</value></data>
+  <data name="Pad_Audio_EqCol_Gain" xml:space="preserve"><value>Gain (dB)</value></data>
+  <data name="Pad_Audio_EqCol_Q" xml:space="preserve"><value>Q</value></data>
+  <data name="Pad_Audio_EqAdd" xml:space="preserve"><value>Ajouter une bande</value></data>
+  <data name="Pad_Audio_EqRemove" xml:space="preserve"><value>Supprimer la bande</value></data>
+  <data name="Pad_Audio_EqClear" xml:space="preserve"><value>Effacer</value></data>
+  <data name="Pad_Audio_EqImport" xml:space="preserve"><value>Importer du presse-papiers</value></data>
+  <data name="Pad_Audio_EqImport_Tooltip" xml:space="preserve"><value>Copiez un profil AutoEq pour votre casque, puis cliquez. Remplace les bandes et règle le préampli. Sans contenu lisible, l'égaliseur actuel reste intact.</value></data>
+  <data name="Pad_Audio_Limiter" xml:space="preserve"><value>Limiteur</value></data>
+  <data name="Pad_Audio_Limiter_Tooltip" xml:space="preserve"><value>Maintient le signal sous le plafond. À laisser actif dès qu'une bande est accentuée, car l'audio est encodé ensuite et saturer l'encodeur sonne bien pire que l'accentuation ne sonne mieux.</value></data>
+  <data name="Pad_Audio_LimiterCeiling" xml:space="preserve"><value>Plafond</value></data>
+  <data name="Pad_Audio_LimiterCeiling_Tooltip" xml:space="preserve"><value>Niveau maximal laissé passer par le limiteur, en pourcentage de la pleine échelle.</value></data>
+  <data name="Pad_Audio_Reset_Crossfeed" xml:space="preserve"><value>Réinitialiser le crossfeed</value></data>
+  <data name="Pad_Audio_Reset_Eq" xml:space="preserve"><value>Réinitialiser l'égaliseur</value></data>
+  <data name="Pad_Audio_Reset_EqPreamp" xml:space="preserve"><value>Réinitialiser le préampli</value></data>
+  <data name="Pad_Audio_Reset_Limiter" xml:space="preserve"><value>Réinitialiser le limiteur</value></data>
+  <data name="Pad_Audio_Reset_LimiterCeiling" xml:space="preserve"><value>Réinitialiser le plafond</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>Chemin de sortie</value></data>
   <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Où la manette joue son audio. Par défaut conserve le routage du firmware et joue les sons PadForge sur le haut-parleur. Casque + Haut-parleur joue en mono côté casque, une limite du firmware. En Bluetooth, ce mode ne joue que dans le casque. Suivre la prise casque bascule vers le casque quand un appareil est branché sur la manette et revient au haut-parleur au débranchement ; sans lecture de la prise, agit comme Par défaut.</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>Par défaut</value></data>

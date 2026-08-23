@@ -1049,6 +1049,12 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(SelectedDeviceHasNoSpeaker));
                     OnPropertyChanged(nameof(SelectedDeviceHasHapticTones));
                     OnPropertyChanged(nameof(SelectedDeviceHasTouchpadPulse));
+                    // The EQ bands are per device and live on DeviceConfig as
+                    // one encoded attribute, so the grid rows are rebuilt on
+                    // every device switch (#347). Without this the grid would
+                    // keep showing the previous pad's EQ and, worse, the next
+                    // row edit would write it onto this one.
+                    RefreshEqBands();
                     // Pointer-tab tunables (IrSensorBarPos etc.) are per
                     // (device, slot) on PadSetting; the device-switch reload
                     // repopulates them through the same PadSetting load path

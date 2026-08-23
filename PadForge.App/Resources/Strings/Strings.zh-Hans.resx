@@ -3127,6 +3127,38 @@
   <data name="MacroAction_Type_HeadphoneVolumeDown" xml:space="preserve"><value>调低耳机音量</value></data>
   <data name="MacroAction_HeadphoneVolumeUp_Tooltip" xml:space="preserve"><value>将手柄耳机接口的音量提高 10%。</value></data>
   <data name="MacroAction_HeadphoneVolumeDown_Tooltip" xml:space="preserve"><value>将手柄耳机接口的音量降低 10%。</value></data>
+  <data name="Pad_Audio_Crossfeed" xml:space="preserve"><value>串扰</value></data>
+  <data name="Pad_Audio_Crossfeed_Tooltip" xml:space="preserve"><value>将每个声道的一部分混入另一个声道，如同扬声器同时到达双耳。缓解耳机上过度分离的游戏音频。承载单声道混音的扬声器路径会跳过。</value></data>
+  <data name="Pad_Audio_Crossfeed_Off" xml:space="preserve"><value>关闭</value></data>
+  <data name="Pad_Audio_Crossfeed_Low" xml:space="preserve"><value>低</value></data>
+  <data name="Pad_Audio_Crossfeed_Middle" xml:space="preserve"><value>中</value></data>
+  <data name="Pad_Audio_Crossfeed_High" xml:space="preserve"><value>高</value></data>
+  <data name="Pad_Audio_Crossfeed_LowEasy" xml:space="preserve"><value>低（柔和）</value></data>
+  <data name="Pad_Audio_Crossfeed_MiddleEasy" xml:space="preserve"><value>中（柔和）</value></data>
+  <data name="Pad_Audio_Crossfeed_HighEasy" xml:space="preserve"><value>高（柔和）</value></data>
+  <data name="Pad_Audio_Eq" xml:space="preserve"><value>参数均衡器</value></data>
+  <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>作用于手柄音频的分频段滤波器。在编码前应用，因此下方的限制器可防止提升的频段削波。</value></data>
+  <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>前置增益</value></data>
+  <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>各频段之前的总体电平。AutoEq 配置文件自带负的前置增益以防提升导致削波，导入时会自动设置。</value></data>
+  <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>启用</value></data>
+  <data name="Pad_Audio_EqCol_Type" xml:space="preserve"><value>类型</value></data>
+  <data name="Pad_Audio_EqCol_Freq" xml:space="preserve"><value>频率 (Hz)</value></data>
+  <data name="Pad_Audio_EqCol_Gain" xml:space="preserve"><value>增益 (dB)</value></data>
+  <data name="Pad_Audio_EqCol_Q" xml:space="preserve"><value>Q 值</value></data>
+  <data name="Pad_Audio_EqAdd" xml:space="preserve"><value>添加频段</value></data>
+  <data name="Pad_Audio_EqRemove" xml:space="preserve"><value>移除频段</value></data>
+  <data name="Pad_Audio_EqClear" xml:space="preserve"><value>清空</value></data>
+  <data name="Pad_Audio_EqImport" xml:space="preserve"><value>从剪贴板导入</value></data>
+  <data name="Pad_Audio_EqImport_Tooltip" xml:space="preserve"><value>复制适用于您耳机的 AutoEq 配置文件后点击。将替换频段并设置前置增益。剪贴板中没有可读内容时，当前均衡器保持不变。</value></data>
+  <data name="Pad_Audio_Limiter" xml:space="preserve"><value>限制器</value></data>
+  <data name="Pad_Audio_Limiter_Tooltip" xml:space="preserve"><value>将信号保持在上限之下。只要有频段被提升就建议保持开启，因为音频在此之后才编码，编码器削波的听感远比提升带来的改善更糟。</value></data>
+  <data name="Pad_Audio_LimiterCeiling" xml:space="preserve"><value>上限</value></data>
+  <data name="Pad_Audio_LimiterCeiling_Tooltip" xml:space="preserve"><value>限制器允许通过的最高电平，以满量程的百分比表示。</value></data>
+  <data name="Pad_Audio_Reset_Crossfeed" xml:space="preserve"><value>重置串扰</value></data>
+  <data name="Pad_Audio_Reset_Eq" xml:space="preserve"><value>重置均衡器</value></data>
+  <data name="Pad_Audio_Reset_EqPreamp" xml:space="preserve"><value>重置前置增益</value></data>
+  <data name="Pad_Audio_Reset_Limiter" xml:space="preserve"><value>重置限制器</value></data>
+  <data name="Pad_Audio_Reset_LimiterCeiling" xml:space="preserve"><value>重置上限</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>输出路径</value></data>
   <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>手柄音频的播放位置。默认保持固件自身的路由，并将 PadForge 声音在扬声器播放。耳机+扬声器时耳机侧为单声道（固件限制）。蓝牙连接时，此模式仅通过耳机播放。跟随耳机接口：插入耳机时切换到耳机，拔出时切回扬声器；无法读取接口状态时与默认相同。</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>默认</value></data>

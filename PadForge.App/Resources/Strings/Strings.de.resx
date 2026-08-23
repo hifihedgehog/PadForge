@@ -3127,6 +3127,38 @@ Du kannst es später in den Einstellungen erneut versuchen.</value></data>
   <data name="MacroAction_Type_HeadphoneVolumeDown" xml:space="preserve"><value>Kopfhörerlautstärke verringern</value></data>
   <data name="MacroAction_HeadphoneVolumeUp_Tooltip" xml:space="preserve"><value>Erhöht die Lautstärke der Headset-Buchse des Controllers um 10 %.</value></data>
   <data name="MacroAction_HeadphoneVolumeDown_Tooltip" xml:space="preserve"><value>Verringert die Lautstärke der Headset-Buchse des Controllers um 10 %.</value></data>
+  <data name="Pad_Audio_Crossfeed" xml:space="preserve"><value>Crossfeed</value></data>
+  <data name="Pad_Audio_Crossfeed_Tooltip" xml:space="preserve"><value>Mischt etwas von jedem Kanal in den anderen, so wie Lautsprecher beide Ohren erreichen. Entspannt hart gepanntes Spielaudio über Kopfhörer. Bei den Lautsprecherpfaden übersprungen, die ein Mono-Signal führen.</value></data>
+  <data name="Pad_Audio_Crossfeed_Off" xml:space="preserve"><value>Aus</value></data>
+  <data name="Pad_Audio_Crossfeed_Low" xml:space="preserve"><value>Niedrig</value></data>
+  <data name="Pad_Audio_Crossfeed_Middle" xml:space="preserve"><value>Mittel</value></data>
+  <data name="Pad_Audio_Crossfeed_High" xml:space="preserve"><value>Hoch</value></data>
+  <data name="Pad_Audio_Crossfeed_LowEasy" xml:space="preserve"><value>Niedrig (sanft)</value></data>
+  <data name="Pad_Audio_Crossfeed_MiddleEasy" xml:space="preserve"><value>Mittel (sanft)</value></data>
+  <data name="Pad_Audio_Crossfeed_HighEasy" xml:space="preserve"><value>Hoch (sanft)</value></data>
+  <data name="Pad_Audio_Eq" xml:space="preserve"><value>Parametrischer EQ</value></data>
+  <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>Filter pro Band über dem Controller-Audio. Wird vor der Kodierung angewendet, daher verhindert der Limiter unten, dass ein angehobenes Band übersteuert.</value></data>
+  <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>Vorverstärkung</value></data>
+  <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>Gesamtpegel vor den Bändern. AutoEq-Profile liefern eine negative Vorverstärkung, damit ihre Anhebungen nicht übersteuern; ein Import setzt sie automatisch.</value></data>
+  <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>Ein</value></data>
+  <data name="Pad_Audio_EqCol_Type" xml:space="preserve"><value>Typ</value></data>
+  <data name="Pad_Audio_EqCol_Freq" xml:space="preserve"><value>Freq. (Hz)</value></data>
+  <data name="Pad_Audio_EqCol_Gain" xml:space="preserve"><value>Pegel (dB)</value></data>
+  <data name="Pad_Audio_EqCol_Q" xml:space="preserve"><value>Güte</value></data>
+  <data name="Pad_Audio_EqAdd" xml:space="preserve"><value>Band hinzufügen</value></data>
+  <data name="Pad_Audio_EqRemove" xml:space="preserve"><value>Band entfernen</value></data>
+  <data name="Pad_Audio_EqClear" xml:space="preserve"><value>Leeren</value></data>
+  <data name="Pad_Audio_EqImport" xml:space="preserve"><value>Aus Zwischenablage importieren</value></data>
+  <data name="Pad_Audio_EqImport_Tooltip" xml:space="preserve"><value>Kopieren Sie ein AutoEq-Profil für Ihren Kopfhörer und klicken Sie hier. Ersetzt die Bänder und setzt die Vorverstärkung. Ohne lesbaren Inhalt bleibt der aktuelle EQ unverändert.</value></data>
+  <data name="Pad_Audio_Limiter" xml:space="preserve"><value>Limiter</value></data>
+  <data name="Pad_Audio_Limiter_Tooltip" xml:space="preserve"><value>Hält das Signal unter der Grenze. Sollte bei jeder Anhebung aktiv bleiben, denn das Audio wird danach kodiert, und Übersteuerung des Encoders klingt weit schlechter als die Anhebung besser.</value></data>
+  <data name="Pad_Audio_LimiterCeiling" xml:space="preserve"><value>Grenze</value></data>
+  <data name="Pad_Audio_LimiterCeiling_Tooltip" xml:space="preserve"><value>Höchster Pegel, den der Limiter durchlässt, in Prozent der Vollaussteuerung.</value></data>
+  <data name="Pad_Audio_Reset_Crossfeed" xml:space="preserve"><value>Crossfeed zurücksetzen</value></data>
+  <data name="Pad_Audio_Reset_Eq" xml:space="preserve"><value>Equalizer zurücksetzen</value></data>
+  <data name="Pad_Audio_Reset_EqPreamp" xml:space="preserve"><value>Vorverstärkung zurücksetzen</value></data>
+  <data name="Pad_Audio_Reset_Limiter" xml:space="preserve"><value>Limiter zurücksetzen</value></data>
+  <data name="Pad_Audio_Reset_LimiterCeiling" xml:space="preserve"><value>Grenze zurücksetzen</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>Ausgabepfad</value></data>
   <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Wo der Controller seinen Ton ausgibt. Standard behält das Routing der Firmware bei und gibt PadForge-Sounds über den Lautsprecher aus. Kopfhörer + Lautsprecher gibt auf der Headset-Seite mono aus, eine Firmware-Grenze. Über Bluetooth spielt dieser Modus nur über die Kopfhörer. Kopfhörerbuchse folgen wechselt zu Kopfhörern, sobald etwas eingesteckt wird, und zurück zum Lautsprecher beim Abziehen; ohne Buchsen-Status verhält es sich wie Standard.</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>Standard</value></data>

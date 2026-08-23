@@ -3127,6 +3127,38 @@ Puedes volver a intentarlo más tarde desde Configuración.</value></data>
   <data name="MacroAction_Type_HeadphoneVolumeDown" xml:space="preserve"><value>Bajar volumen de auriculares</value></data>
   <data name="MacroAction_HeadphoneVolumeUp_Tooltip" xml:space="preserve"><value>Sube un 10 % el volumen del conector de auriculares del mando.</value></data>
   <data name="MacroAction_HeadphoneVolumeDown_Tooltip" xml:space="preserve"><value>Baja un 10 % el volumen del conector de auriculares del mando.</value></data>
+  <data name="Pad_Audio_Crossfeed" xml:space="preserve"><value>Crossfeed</value></data>
+  <data name="Pad_Audio_Crossfeed_Tooltip" xml:space="preserve"><value>Mezcla algo de cada canal en el otro, como los altavoces llegan a ambos oídos. Suaviza el audio de juego muy lateralizado en auriculares. Se omite en las rutas de altavoz, que llevan una mezcla mono.</value></data>
+  <data name="Pad_Audio_Crossfeed_Off" xml:space="preserve"><value>Desactivado</value></data>
+  <data name="Pad_Audio_Crossfeed_Low" xml:space="preserve"><value>Bajo</value></data>
+  <data name="Pad_Audio_Crossfeed_Middle" xml:space="preserve"><value>Medio</value></data>
+  <data name="Pad_Audio_Crossfeed_High" xml:space="preserve"><value>Alto</value></data>
+  <data name="Pad_Audio_Crossfeed_LowEasy" xml:space="preserve"><value>Bajo (suave)</value></data>
+  <data name="Pad_Audio_Crossfeed_MiddleEasy" xml:space="preserve"><value>Medio (suave)</value></data>
+  <data name="Pad_Audio_Crossfeed_HighEasy" xml:space="preserve"><value>Alto (suave)</value></data>
+  <data name="Pad_Audio_Eq" xml:space="preserve"><value>Ecualizador paramétrico</value></data>
+  <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>Filtros por banda sobre el audio del mando. Se aplica antes de codificar, por lo que el limitador de abajo evita que una banda realzada sature.</value></data>
+  <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>Preamplificación</value></data>
+  <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>Nivel general antes de las bandas. Los perfiles de AutoEq incluyen una preamplificación negativa para que sus realces no saturen, y al importar se aplica sola.</value></data>
+  <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>Act.</value></data>
+  <data name="Pad_Audio_EqCol_Type" xml:space="preserve"><value>Tipo</value></data>
+  <data name="Pad_Audio_EqCol_Freq" xml:space="preserve"><value>Frec. (Hz)</value></data>
+  <data name="Pad_Audio_EqCol_Gain" xml:space="preserve"><value>Ganancia (dB)</value></data>
+  <data name="Pad_Audio_EqCol_Q" xml:space="preserve"><value>Q</value></data>
+  <data name="Pad_Audio_EqAdd" xml:space="preserve"><value>Añadir banda</value></data>
+  <data name="Pad_Audio_EqRemove" xml:space="preserve"><value>Quitar banda</value></data>
+  <data name="Pad_Audio_EqClear" xml:space="preserve"><value>Vaciar</value></data>
+  <data name="Pad_Audio_EqImport" xml:space="preserve"><value>Importar del portapapeles</value></data>
+  <data name="Pad_Audio_EqImport_Tooltip" xml:space="preserve"><value>Copie un perfil de AutoEq para sus auriculares y pulse aquí. Sustituye las bandas y ajusta la preamplificación. Si no hay nada legible, el ecualizador actual no cambia.</value></data>
+  <data name="Pad_Audio_Limiter" xml:space="preserve"><value>Limitador</value></data>
+  <data name="Pad_Audio_Limiter_Tooltip" xml:space="preserve"><value>Mantiene la señal bajo el techo. Conviene dejarlo activo si hay realce, porque el audio se codifica después y saturar el codificador suena mucho peor de lo que mejora el realce.</value></data>
+  <data name="Pad_Audio_LimiterCeiling" xml:space="preserve"><value>Techo</value></data>
+  <data name="Pad_Audio_LimiterCeiling_Tooltip" xml:space="preserve"><value>Nivel máximo que el limitador deja pasar, como porcentaje de la escala completa.</value></data>
+  <data name="Pad_Audio_Reset_Crossfeed" xml:space="preserve"><value>Restablecer crossfeed</value></data>
+  <data name="Pad_Audio_Reset_Eq" xml:space="preserve"><value>Restablecer el ecualizador</value></data>
+  <data name="Pad_Audio_Reset_EqPreamp" xml:space="preserve"><value>Restablecer preamplificación</value></data>
+  <data name="Pad_Audio_Reset_Limiter" xml:space="preserve"><value>Restablecer el limitador</value></data>
+  <data name="Pad_Audio_Reset_LimiterCeiling" xml:space="preserve"><value>Restablecer el techo</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>Ruta de salida</value></data>
   <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Dónde reproduce el mando su audio. Predeterminado conserva el enrutamiento del firmware y reproduce los sonidos de PadForge por el altavoz. Auriculares + Altavoz reproduce en mono en los auriculares, un límite del firmware. Por Bluetooth este modo solo reproduce por los auriculares. Seguir el conector cambia a auriculares al conectar algo al mando y vuelve al altavoz al desconectar; sin lectura del conector actúa como Predeterminado.</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>Predeterminado</value></data>

@@ -3127,6 +3127,38 @@
   <data name="MacroAction_Type_HeadphoneVolumeDown" xml:space="preserve"><value>헤드폰 볼륨 낮추기</value></data>
   <data name="MacroAction_HeadphoneVolumeUp_Tooltip" xml:space="preserve"><value>컨트롤러 헤드셋 단자의 볼륨을 10% 높입니다.</value></data>
   <data name="MacroAction_HeadphoneVolumeDown_Tooltip" xml:space="preserve"><value>컨트롤러 헤드셋 단자의 볼륨을 10% 낮추니다.</value></data>
+  <data name="Pad_Audio_Crossfeed" xml:space="preserve"><value>크로스피드</value></data>
+  <data name="Pad_Audio_Crossfeed_Tooltip" xml:space="preserve"><value>스피커가 양쪽 귀에 도달하듯 각 채널을 반대쪽에 조금씩 섞습니다. 헤드폰에서 극단적으로 치우친 게임 사운드를 완화합니다. 모노 믹스를 보내는 스피커 경로에서는 건너뜁니다.</value></data>
+  <data name="Pad_Audio_Crossfeed_Off" xml:space="preserve"><value>끄기</value></data>
+  <data name="Pad_Audio_Crossfeed_Low" xml:space="preserve"><value>약하게</value></data>
+  <data name="Pad_Audio_Crossfeed_Middle" xml:space="preserve"><value>보통</value></data>
+  <data name="Pad_Audio_Crossfeed_High" xml:space="preserve"><value>강하게</value></data>
+  <data name="Pad_Audio_Crossfeed_LowEasy" xml:space="preserve"><value>약하게(부드럽게)</value></data>
+  <data name="Pad_Audio_Crossfeed_MiddleEasy" xml:space="preserve"><value>보통(부드럽게)</value></data>
+  <data name="Pad_Audio_Crossfeed_HighEasy" xml:space="preserve"><value>강하게(부드럽게)</value></data>
+  <data name="Pad_Audio_Eq" xml:space="preserve"><value>파라메트릭 EQ</value></data>
+  <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>컨트롤러 오디오에 적용되는 대역별 필터입니다. 인코딩 전에 적용되므로 아래 리미터가 부스트된 대역의 클리핑을 막습니다.</value></data>
+  <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>프리앰프</value></data>
+  <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>대역 이전의 전체 레벨입니다. AutoEq 프로필은 부스트가 클리핑되지 않도록 음수 프리앰프를 포함하며, 가져오기 시 자동으로 설정됩니다.</value></data>
+  <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>켜기</value></data>
+  <data name="Pad_Audio_EqCol_Type" xml:space="preserve"><value>종류</value></data>
+  <data name="Pad_Audio_EqCol_Freq" xml:space="preserve"><value>주파수(Hz)</value></data>
+  <data name="Pad_Audio_EqCol_Gain" xml:space="preserve"><value>게인(dB)</value></data>
+  <data name="Pad_Audio_EqCol_Q" xml:space="preserve"><value>Q</value></data>
+  <data name="Pad_Audio_EqAdd" xml:space="preserve"><value>대역 추가</value></data>
+  <data name="Pad_Audio_EqRemove" xml:space="preserve"><value>대역 제거</value></data>
+  <data name="Pad_Audio_EqClear" xml:space="preserve"><value>지우기</value></data>
+  <data name="Pad_Audio_EqImport" xml:space="preserve"><value>클립보드에서 가져오기</value></data>
+  <data name="Pad_Audio_EqImport_Tooltip" xml:space="preserve"><value>사용 중인 헤드폰의 AutoEq 프로필을 복사한 뒤 클릭하세요. 대역을 교체하고 프리앰프를 설정합니다. 읽을 수 있는 내용이 없으면 현재 EQ는 그대로 둡니다.</value></data>
+  <data name="Pad_Audio_Limiter" xml:space="preserve"><value>리미터</value></data>
+  <data name="Pad_Audio_Limiter_Tooltip" xml:space="preserve"><value>신호를 한계치 아래로 유지합니다. 대역을 부스트했다면 켜 두는 편이 좋습니다. 오디오는 이후에 인코딩되며, 인코더 클리핑은 부스트의 이점보다 훨씬 나쁘게 들립니다.</value></data>
+  <data name="Pad_Audio_LimiterCeiling" xml:space="preserve"><value>한계치</value></data>
+  <data name="Pad_Audio_LimiterCeiling_Tooltip" xml:space="preserve"><value>리미터가 통과시키는 최대 레벨이며, 풀 스케일에 대한 백분율입니다.</value></data>
+  <data name="Pad_Audio_Reset_Crossfeed" xml:space="preserve"><value>크로스피드 초기화</value></data>
+  <data name="Pad_Audio_Reset_Eq" xml:space="preserve"><value>이퀄라이저 초기화</value></data>
+  <data name="Pad_Audio_Reset_EqPreamp" xml:space="preserve"><value>프리앰프 초기화</value></data>
+  <data name="Pad_Audio_Reset_Limiter" xml:space="preserve"><value>리미터 초기화</value></data>
+  <data name="Pad_Audio_Reset_LimiterCeiling" xml:space="preserve"><value>한계치 초기화</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>출력 경로</value></data>
   <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>컨트롤러가 오디오를 재생하는 위치입니다. 기본값은 펌웨어 라우팅을 유지하며 PadForge 사운드는 스피커로 재생합니다. 헤드폰+스피커는 헤드셋 쪽이 모노로 재생됩니다(펌웨어 제한). Bluetooth에서는 이 모드가 헤드폰으로만 재생됩니다. 헤드폰 단자 따라가기는 컨트롤러에 꽂으면 헤드폰으로, 뽑으면 스피커로 전환됩니다. 단자 상태를 읽을 수 없으면 기본값처럼 동작합니다.</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>기본값</value></data>

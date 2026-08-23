@@ -154,7 +154,7 @@ namespace PadForge.Common.Input
 
     /// <summary>One parametric EQ band. Types match what AutoEq emits and what
     /// <see cref="BiQuadFilter"/> provides.</summary>
-    internal enum EqBandType
+    public enum EqBandType
     {
         Peaking = 0,
         LowShelf = 1,
@@ -164,7 +164,7 @@ namespace PadForge.Common.Input
         Notch = 5,
     }
 
-    internal sealed class EqBand
+    public sealed class EqBand
     {
         public bool Enabled = true;
         public EqBandType Type = EqBandType.Peaking;

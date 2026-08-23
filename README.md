@@ -51,6 +51,33 @@ PadForge is for sim racers running wheels in games that only understand Xbox con
 </p>
 
 <details>
+<summary><b>New in 4.3.2:</b> crossfeed, a graphic EQ, and a limiter for the DualSense headset jack, and Copy / Paste that really carries the whole slot</summary>
+
+- **A processing chain for the DualSense headset jack.** Under Output Path on the Audio tab, three stages run on everything the slot plays before the pad encodes it. **Crossfeed** mixes a little of each channel into the other the way a room does, with bs2b's six classic presets, Jan Meier, the bs2b default, and a Custom level with its own cutoff and feed sliders. A **graphic parametric EQ**: a log-frequency curve with one draggable handle per band, drag for frequency and gain, wheel for width, with typed rows underneath and six band types. A **limiter**, on by default, so a boosted band never clips the pad's encoder.
+- **AutoEq import.** Download the Custom Parametric Eq for your headphones from autoeq.app and click Import from file. The bands, the preamp, and the enable all land, and a status line says what it did. The clipboard import stays for profiles that arrive as text.
+- **Follow Headphone Jack works without a virtual DualSense.** The jack was only ever read by the virtual-pad lane, so with none on the slot it never switched and Mirror System Audio played into a muted path. PadForge reads the jack from the pad itself now, USB or Bluetooth.
+- **Slot Copy and Paste carry everything.** The Bass Shakers, SOCD, and Keep Awake settings and the slot's macros ride the clipboard along with the mappings, shift layers, menus, and per-device tuning they already did. Paste replaces the target's macros rather than adding to them.
+- **The band-type picker is localized**, and the EQ editor's frequency ceiling matches the engine's.
+- **The DualShock 3 shows its pressure axes** without Raw Joystick Mode again, after the 4.3.1 sparse-axis change computed the list too early.
+- **Fixes from the audits:** a Move Navigation hand-mapped "Axis 15" no longer reads as foreign and strips the slot, the EQ grid rebuilds on every device-config swap rather than only on a device switch, an engine restart no longer leaves the firmware speaker path unasserted, a failed headphone-jack open no longer respawns a reader every five seconds, and the Mappings-tab paste stops the slot's macro sounds before replacing its macros.
+
+</details>
+
+<details>
+<summary><b>New in 4.3.1:</b> the Navigation controller over Bluetooth, idle disconnect for the DualShock 3 family, and only the inputs a pad actually has</summary>
+
+- **The PlayStation Move Navigation controller works over Bluetooth.** It pairs over WinUSB, takes its address from its own device node, pairs itself on the dock like the Move, and follows DsHidMini's connect-time order exactly: output report first, then the input stream, then one enable packet and never a repeat.
+- **Idle Disconnect for the DualShock 3, PlayStation Move, and Navigation controller**, off by default, set in minutes on the device's Power section.
+- **Only the inputs a pad actually has.** A Navigation controller listed every DualShock 3 button and axis it shares a report layout with. PadForge asks the pad which standardized buttons and axes it declares and shows only those, numbering preserved. The PlayStation Move and the VR controllers had the same defect and the same fix.
+- **Button numbering stays SDL's positional numbering while a device is offline**, so a button keeps one number either side of the boundary (discussion #344).
+- **A Switch 2 Pro Controller entry survives a restart**, and PadForge stops rewriting its settings file while idle.
+- **Full Screen works from a maximized window** (discussion #342), and the sidebar keeps one active bar (discussion #340).
+- **The DualSense sends its connect-time LED release over Bluetooth**, so the lightbar comes up under PadForge's control on a fresh connection.
+- **The offline voice model ships inside the executable**, repacked with spec-correct separators.
+
+</details>
+
+<details>
 <summary><b>New in 4.3.0:</b> a rebuilt web controller, voice macros, PlayStation Move, VR devices as sources, and Remote Link over the internet</summary>
 
 - **The web controller, rebuilt.** Ten controller layouts instead of two: Xbox 360, Xbox One, Xbox Series X|S, DualShock 4, DualSense, DualSense Edge, Switch Pro, Switch 2 Pro, Steam Deck, and Steam Controller. The DualShock 4, DualSense, and Xbox Series cards carry color finishes you pick before opening them. The DualShock 4 and DualSense layouts draw the slot's LED color on the pad's own lightbar, and the DualSense adds its player indicator row, both configurable from the Lighting tab like the physical pads. Triggers get analog sliders, and the Steam layouts carry both trackpads and the rear buttons.
@@ -261,6 +288,10 @@ PadForge sets the Guide button LED brightness on an Xbox One, Elite, or Series p
 ### Sound from the speaker in your hands.
 
 The DualSense and DualShock 4 have a speaker built into the pad, and PadForge can drive it. Mirror a Windows audio output to the pad, or send a slot's macro sounds straight to it. The DualSense plays over USB or Bluetooth. The DualShock 4 plays over Bluetooth. Each speaker-capable pad gets its own per-slot Audio tab, with a source picker and a master volume. Controllers with haptic actuators instead of a speaker (Joy-Con, Switch Pro, the Steam Controller, the Steam Deck, and the Steam Controller 2026) play the same macro sounds as a vibrating tone, so beeps and short cues come through the grip. On a combined Joy-Con pair the tone follows the motor the game drives, left motor through the left coil and right through the right. A Wii Remote plays them through its own speaker.
+
+The DualSense headset jack gets a processing chain of its own: bs2b crossfeed with the classic presets, Jan Meier, and a custom cutoff and feed, a graphic parametric EQ you drag into shape or load from an AutoEq profile for your exact headphones, and a limiter so a boosted band never clips the pad's encoder. Follow Headphone Jack switches the pad's output the moment you plug in, with or without a virtual DualSense on the slot.
+
+![Audio tab with crossfeed, the graphic EQ, and the limiter](screenshots/audio-dsp.jpg)
 
 ![Audio tab](screenshots/audio.jpg)
 

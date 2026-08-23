@@ -468,6 +468,111 @@ function Ensure-DeviceAssigned {
     return $true
 }
 
+# The 4.3.2 audio DSP chain (#347) renders on the DualSense's Audio tab below
+# Output Path, and the EQ rows and curve render only while the EQ is ON with
+# bands authored. A scroll-down shot of the stock tab would show an empty
+# curve and no rows, which is the "captured whatever was on screen" failure
+# this harness is built to refuse. Per-device settings are one <Config>
+# attribute row keyed by SlotIndex + DeviceGuid, so write the EQ the way the
+# assignments are written: with the app closed, then restart. The synthetic
+# DualSense carries a fixed guid. Jan Meier crossfeed (level 7) plus a
+# four-band correction in AutoEq's own shape, and the limiter at its default.
+function Seed-AudioDsp {
+    param([string]$DeviceGuid, [string]$DeviceNamePart, [int]$PadIndex, [string]$XmlPath, [string]$ExePath)
+    Get-Process PadForge -EA SilentlyContinue | Stop-Process -Force
+    Start-Sleep -Seconds 3
+    try {
+        [xml]$ax = Get-Content $XmlPath
+        $root = $ax.PadForgeSettings
+        # Resolve the guid from the device list by NAME when asked. The
+        # synthetic DualSense carries a fixed guid, but on a machine where the
+        # owner's real pad is already cached the injector skips the synthetic
+        # one ("already enumerated, synthetic skipped") and the slot holds the
+        # REAL pad's guid instead. A seed keyed to the synthetic guid then
+        # lands on a device that is not on the slot and the shot shows the
+        # chain switched off, which is what the first three attempts did.
+        if ($DeviceNamePart) {
+            $devsNode = $root.SelectSingleNode("Devices")
+            if ($devsNode) {
+                foreach ($d in $devsNode.ChildNodes) {
+                    $nameNode = $d.SelectSingleNode("InstanceName")
+                    if ($nameNode -and $nameNode.InnerText -like "*$DeviceNamePart*") {
+                        $DeviceGuid = $d.SelectSingleNode("InstanceGuid").InnerText
+                        Write-Host "  DSP seed: resolved '$DeviceNamePart' to $($DeviceGuid.Substring(0,8))" -ForegroundColor DarkGray
+                        break
+                    }
+                }
+            }
+        }
+        # The regenerated capture file has no <DeviceSlotConfigs> at all until
+        # some per-device card is touched (the first full run bailed here with
+        # "no <DeviceSlotConfigs> node" and photographed an empty chain). Create
+        # the container and the row. Every attribute the serializer reads has
+        # a default, so a row carrying only the keys and the DSP attributes
+        # loads as a stock config plus the EQ.
+        # DeviceSlotConfigs is a child of <AppSettings>, not of the root.
+        # The serializer's AppSettingsData owns the bag ([XmlArray
+        # "DeviceSlotConfigs"] on AppSettingsData, reached through
+        # PadForgeSettings/AppSettings). Writing it at the root created a
+        # node the loader never reads, so the seed landed in the file and
+        # the app came up with the chain off, twice, while the log reported
+        # success. The 1u rule in reverse: the artifact LOOKED right.
+        $appNode = $root.SelectSingleNode("AppSettings")
+        if (-not $appNode) { Write-Host "  !! no <AppSettings> node" -ForegroundColor Red; Start-Process $ExePath; Start-Sleep 8; return $false }
+        $cfgs = $appNode.SelectSingleNode("DeviceSlotConfigs")
+        if (-not $cfgs) {
+            $cfgs = $ax.CreateElement("DeviceSlotConfigs")
+            $appNode.AppendChild($cfgs) | Out-Null
+            Write-Host "  created <AppSettings>/<DeviceSlotConfigs>" -ForegroundColor DarkGray
+        }
+        $row = $null
+        foreach ($c in $cfgs.ChildNodes) {
+            if ($c.GetAttribute("DeviceGuid") -eq $DeviceGuid -and $c.GetAttribute("SlotIndex") -eq "$PadIndex") { $row = $c; break }
+        }
+        if (-not $row) {
+            $tpl = $cfgs.FirstChild
+            if ($tpl) {
+                # Clone an existing row so every attribute is present.
+                $row = $tpl.CloneNode($true)
+            } else {
+                $row = $ax.CreateElement("Config")
+            }
+            $row.SetAttribute("SlotIndex", "$PadIndex")
+            $row.SetAttribute("DeviceGuid", $DeviceGuid)
+            $cfgs.AppendChild($row) | Out-Null
+        }
+        $row.SetAttribute("AudioCrossfeedLevel", "7")
+        $row.SetAttribute("AudioEqEnabled", "true")
+        $row.SetAttribute("AudioEqPreampDb", "-4.5")
+        $row.SetAttribute("AudioEqBands", "LSC:105:5.5:0.7:1|PK:1050:-3.5:1.2:1|PK:3200:2.5:2:1|HSC:8000:-2:0.7:1")
+        $row.SetAttribute("AudioLimiterEnabled", "true")
+        $ax.Save($XmlPath)
+        Write-Host "  seeded audio DSP (crossfeed + 4-band EQ) on pad $PadIndex / $($DeviceGuid.Substring(0,8))" -ForegroundColor Green
+    } catch {
+        Write-Host "  !! audio DSP seed failed: $($_.Exception.Message)" -ForegroundColor Red
+        Start-Process $ExePath; Start-Sleep 8
+        return $false
+    }
+    Start-Process $ExePath
+    $ok = $false
+    for ($i = 0; $i -lt 25; $i++) {
+        Start-Sleep -Seconds 1
+        $pr = Get-Process PadForge -EA SilentlyContinue | Select-Object -First 1
+        if ($pr -and $pr.MainWindowHandle -ne 0) { $ok = $true; break }
+    }
+    if (-not $ok) { Write-Host "  !! PadForge did not come back up" -ForegroundColor Red; return $false }
+    Start-Sleep -Seconds 6
+    $pr = Get-Process PadForge -EA SilentlyContinue | Select-Object -First 1
+    # Rebind process + window + UIA root, exactly as Ensure-DeviceAssigned
+    # does and for the same reason: every modal helper keys on $script:proc.Id.
+    $script:proc = $pr
+    $script:hwnd = $pr.MainWindowHandle
+    $script:uiaWin = [System.Windows.Automation.AutomationElement]::FromHandle($script:hwnd)
+    [Win32]::ForceFG($script:hwnd)
+    Start-Sleep -Milliseconds 800
+    return $true
+}
+
 function Ensure-MacrosLoaded {
     # "Injected the macros" is not the same as "the app is showing macros", and
     # on 2026-08-09 the gap between those two shipped five blank screenshots.
@@ -2213,6 +2318,10 @@ Ensure-DeviceAssigned -DeviceNamePart "Xbox Series X GIP" -PadIndex 0 -SlotType 
 Ensure-DeviceAssigned -DeviceNamePart "All Mice (Merged)" -PadIndex 4 -SlotType 4 `
     -XmlPath $PadForgeXml -ExePath $PadForgeExe | Out-Null
 
+# PlayStation is pad index 1 in creation order (Xbox 0, PlayStation 1).
+Seed-AudioDsp -DeviceGuid "bbbb2222-3333-4444-5555-666677778888" -DeviceNamePart "DualSense Wireless Controller" -PadIndex 1 `
+    -XmlPath $PadForgeXml -ExePath $PadForgeExe | Out-Null
+
 # Macros, written AFTER the slots exist. STEP 0 clears SlotCreated to all-false
 # and saves, and LoadMacros skips any macro whose slot is not created, so five
 # macros injected in STEP 0 are discarded the moment the app reads that file.
@@ -2458,6 +2567,76 @@ if ($Only.Count -gt 0) {
         Write-Host "[focused] page: $($t.Shot)"
         Nav $t.Page; Start-Sleep -Milliseconds 800
         Cap $t.Shot
+    }
+
+    # Pad-page tab shots on the PlayStation slot. These need an assignment
+    # (the Audio tab only appears when the slot's selected device has a
+    # speaker) and, for the DSP shot, the EQ seeded ON so the curve and rows
+    # render. Both are data, so both are written by XML and the app restarted,
+    # the same way Ensure-DeviceAssigned and Seed-AudioDsp do it for the full
+    # run. The full run's Seed-AudioDsp call sits inside the setup block that
+    # -Only deliberately skips, which is why the first targeted run reported
+    # "no focused recipe" for this name.
+    $psTabTargets = @(
+        @{ Shot = "pad-audio";     Tab = "Audio"; Scroll = 0 },
+        @{ Shot = "pad-audio-dsp"; Tab = "Audio"; Scroll = -16 }
+    )
+    $psWanted = @($psTabTargets | Where-Object { Want $_.Shot })
+    if ($psWanted.Count -gt 0) {
+        Write-Host "[focused] PlayStation slot: $(($psWanted | ForEach-Object { $_.Shot }) -join ', ')"
+        # PlayStation is pad index 1 in creation order (Xbox 0, PlayStation 1).
+        Ensure-DeviceAssigned -DeviceNamePart "DualSense" -PadIndex 1 -SlotType 1 `
+            -XmlPath $PadForgeXml -ExePath $PadForgeExe | Out-Null
+        Seed-AudioDsp -DeviceGuid "bbbb2222-3333-4444-5555-666677778888" -DeviceNamePart "DualSense Wireless Controller" -PadIndex 1 `
+            -XmlPath $PadForgeXml -ExePath $PadForgeExe | Out-Null
+
+        # Two restarts just happened. Re-attach the UIA root and give the
+        # dashboard cards time to realize, or the first child match under
+        # SlotsItemsControl is a 27x27 badge rather than the card (that is
+        # exactly what the first focused run clicked, and the pad page it
+        # opened had no Audio tab because it was not the PlayStation slot).
+        Start-Sleep -Milliseconds 2500
+        $script:uiaWin = [System.Windows.Automation.AutomationElement]::FromHandle([IntPtr]$script:hwnd)
+        Nav "Dashboard"; Start-Sleep -Milliseconds 1500
+        $slotsHost = Find-UIA -Aid "SlotsItemsControl"
+        $cards = if ($slotsHost) { @($slotsHost.FindAll($TC, [System.Windows.Automation.Condition]::TrueCondition)) } else { @() }
+        Write-Host "  Found $((Get-Count $cards)) slot card(s)"
+        if ((Get-Count $cards) -ge 2) {
+            Click-El $cards[1] -Label "PlayStation Slot card" -Delay 4000 | Out-Null
+            # The device-gated tabs flip visible only after the slot's config
+            # binds and capability gating propagates, up to ~10 s on a cold
+            # bring-up. Poll for the Audio tab the way the full run polls for
+            # Adaptive Triggers, instead of asking once and giving up.
+            $padPage = $null; $audioTab = $null
+            $rbCond = New-Object System.Windows.Automation.PropertyCondition(
+                [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+                [System.Windows.Automation.ControlType]::RadioButton)
+            for ($w = 0; $w -lt 12 -and -not $audioTab; $w++) {
+                Start-Sleep -Milliseconds 1000
+                $padPage = Find-UIA -Aid "PadPageView"
+                if ($padPage) {
+                    $tabs = $padPage.FindAll($TC, $rbCond)
+                    $audioTab = $tabs | Where-Object { $_.Current.Name -eq "Audio" } | Select-Object -First 1
+                }
+            }
+            if (-not $audioTab) {
+                $names = if ($padPage) { ($padPage.FindAll($TC, $rbCond) | ForEach-Object { $_.Current.Name }) -join ', ' } else { '(no PadPageView)' }
+                Write-Host "  !! Audio tab never appeared. Tabs seen: $names" -ForegroundColor Red
+            }
+            foreach ($t in $psWanted) {
+                if ($audioTab) {
+                    Click-El $audioTab -Label "Tab:Audio" -Delay 1000 | Out-Null
+                    Start-Sleep -Milliseconds 900
+                    if ($t.Scroll -ne 0) { ScrollContent -Clicks $t.Scroll; Start-Sleep -Milliseconds 500 }
+                    Cap $t.Shot
+                    if ($t.Scroll -ne 0) { ScrollContent -Clicks (-$t.Scroll) }
+                } else {
+                    Write-Host "  !! SKIPPED $($t.Shot)" -ForegroundColor Red
+                }
+            }
+        } else {
+            Write-Host "  !! fewer than 2 slot cards -- SKIPPED $(($psWanted | ForEach-Object { $_.Shot }) -join ', ')" -ForegroundColor Red
+        }
     }
 
     $missed = @($Only | Where-Object { -not (Test-Path (Join-Path $script:OutputDir "$_.png")) })
@@ -3241,6 +3420,17 @@ if ($slotsHost) {
                         Start-Sleep -Milliseconds 400
                         Cap "pad-touchpad-momentum"
                         ScrollContent -Clicks 10
+                    }
+                    elseif ($gt.Name -eq "Audio") {
+                        # 4.3.2: the DSP chain (#347) sits under Output Path,
+                        # crossfeed picker then the graphic EQ curve and rows
+                        # then the limiter. Seed-AudioDsp wrote the EQ on so
+                        # the curve and rows render rather than an empty box.
+                        Write-Host "  Audio: DSP chain, crossfeed + graphic EQ + limiter (#347)"
+                        ScrollContent -Clicks -16
+                        Start-Sleep -Milliseconds 500
+                        Cap "pad-audio-dsp"
+                        ScrollContent -Clicks 16
                     }
                 } else {
                     Write-Host "  !! $($gt.Name) tab not in UIA tree -- SKIPPED $($gt.File)" -ForegroundColor Red

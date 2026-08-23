@@ -2310,9 +2310,18 @@ namespace PadForge.Common.Input
 
         /// <summary>Settles one trigger's route activator. Returns the engaged
         /// state and outputs the raw button-down for next-tick edge detection.
-        /// Hold tracks the button (empty descriptor = always on); Toggle flips
-        /// on rising edge; AlwaysOn ignores the descriptor.</summary>
-        private static bool SettleRouteActivator(int slot, string descriptor, string deviceGuid,
+        /// Hold tracks the button (empty descriptor = always on), Toggle flips
+        /// on rising edge, ReleaseToEngage is Hold inverted (engaged while the
+        /// button is NOT held, the gyro engage's own rule at the
+        /// UpdateGyroEngageStates settle), and AlwaysOn ignores the
+        /// descriptor.
+        ///
+        /// <para>ReleaseToEngage was in the picker and not in this switch, so
+        /// it fell through to Hold and the option was inert (4.3.2 docs sweep,
+        /// the 1s shape: a control offered where its guard never fires). The
+        /// empty-descriptor rule stays "always on" for it too, because a
+        /// button that does not exist is never held.</para></summary>
+        internal static bool SettleRouteActivator(int slot, string descriptor, string deviceGuid,
             string mode, bool[] prevDown, bool curEngaged, out bool buttonDown)
         {
             buttonDown = !string.IsNullOrEmpty(descriptor)
@@ -2321,6 +2330,8 @@ namespace PadForge.Common.Input
             if (mode == "AlwaysOn") return true;
             if (mode == "Toggle")
                 return (buttonDown && !prevDown[slot]) ? !curEngaged : curEngaged;
+            if (mode == "ReleaseToEngage")
+                return string.IsNullOrEmpty(descriptor) || !buttonDown;
             return string.IsNullOrEmpty(descriptor) || buttonDown; // Hold: empty = always on
         }
 

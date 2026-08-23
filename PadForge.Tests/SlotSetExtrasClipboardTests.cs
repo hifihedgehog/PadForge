@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using PadForge.Common.Input;
 using PadForge.Engine;
 using PadForge.Engine.Data;
@@ -260,6 +261,36 @@ namespace PadForge.Tests
             Reseed(Blank());
             InputService.ApplySlotSetExtrasJson(Slot, back.SlotSetExtrasJson, sameLayout: true);
             Assert.True(SettingsManager.SlotMappingSets[Slot].KeepAwakeEnabled);
+        }
+
+        // ── the renderer hears about the new config ─────────────────────
+
+        /// <summary>Source-text lock, because RumbleAudioService is a static
+        /// WASAPI service with no in-process seam. ReloadRumbleAudio is a view
+        /// refresh; the RENDERER snapshots sets[slot].RumbleAudio by reference
+        /// on its own cadence, and every other path that swaps that reference
+        /// (the card's edits, the profile apply) kicks a reconcile. Without
+        /// this the paste rendered the destination's old endpoint, gain and
+        /// voices for up to five seconds after the new ones were installed.
+        /// The kick must sit in the paste tail AFTER the apply and the card
+        /// reload, not before, or it reconciles the old reference.</summary>
+        [Fact]
+        public void Paste_KicksTheShakerRendererAfterInstallingTheConfig()
+        {
+            string src = File.ReadAllText(AuditDelta20260823Tests.FindRepoFile(
+                Path.Combine("PadForge.App", "MainWindow.xaml.cs")));
+            int paste = src.IndexOf("private void OnPasteSettings", StringComparison.Ordinal);
+            Assert.True(paste > 0, "OnPasteSettings not found; this lock needs re-anchoring");
+            int pasteEnd = src.IndexOf("private void OnCopyFrom", paste, StringComparison.Ordinal);
+            string body = src.Substring(paste, pasteEnd - paste);
+
+            int apply = body.IndexOf("ApplySlotSetExtrasJson(padVm.PadIndex", StringComparison.Ordinal);
+            int reload = body.IndexOf("padVm.ReloadRumbleAudio()", StringComparison.Ordinal);
+            int kick = body.IndexOf("RumbleAudioService.RequestReconcile()", StringComparison.Ordinal);
+            Assert.True(apply > 0, "positive control: the extras apply is in the paste");
+            Assert.True(kick > 0, "the paste must kick the shaker renderer");
+            Assert.True(kick > apply, "the kick must follow the apply, or it reconciles the old reference");
+            Assert.True(kick > reload, "the kick follows the card reload, the same tail the others sit in");
         }
 
         // ── malformed input is inert ────────────────────────────────────────

@@ -7763,6 +7763,20 @@ namespace PadForge
                 // because nothing used to change those fields on a paste.
                 padVm.ReloadKeepAwake();
 
+                // The shaker RENDERER has to hear about the new config too,
+                // not only the card. ReloadRumbleAudio is a view refresh, and
+                // ReconcileCore snapshots sets[slot].RumbleAudio by reference
+                // on its own cadence: the 5 s timer, the card's debounced
+                // edits, and the profile apply, which kicks this for the same
+                // reason ("a shifted voice rendered the pack now living at its
+                // OLD index ... until the next timer pass"). The paste is a
+                // third reference swap and without this kick it rendered the
+                // destination's old endpoint, gain and voices for up to five
+                // seconds after the new ones were installed. Async, WASAPI
+                // work must not run here.
+                if (!string.IsNullOrEmpty(ps.SlotSetExtrasJson))
+                    PadForge.Common.Input.RumbleAudioService.RequestReconcile();
+
                 _settingsService.MarkDirty();
                 _viewModel.StatusText = Strings.Instance.Status_SettingsPasted;
             }
@@ -7912,6 +7926,14 @@ namespace PadForge
             var env = SettingsService.TryParseMacroClipboard(json);
             if (env == null) return;
 
+            // Macro sounds are keyed to the MacroItem objects being replaced,
+            // so a looping sound would have no owner left to stop it. Both
+            // other whole-slot clear sites stop first for exactly this reason
+            // (LoadMacros with StopAll for every pad, the slot delete with
+            // StopSlot for its own). This one is slot-scoped, so StopSlot:
+            // StopAll would silence every OTHER slot's running macros for a
+            // paste that only touches this one.
+            PadForge.Common.Input.SoundMacroService.StopSlot(padVm.PadIndex);
             padVm.Macros.Clear();
             foreach (var md in env.Macros)
             {

@@ -368,6 +368,24 @@ namespace PadForge.Tests
                 => PadForge.Resources.Strings.Strings.Instance.Pad_Audio_EqImport_Empty;
         }
 
+        /// <summary>A locked clipboard must report, not return. The status
+        /// line exists so an import that does nothing says why, and this was
+        /// the one branch of the clipboard import left silent. Source-text
+        /// lock because the clipboard cannot be locked from a test.</summary>
+        [Fact]
+        public void AutoEqImport_ALockedClipboard_ReportsRatherThanReturningSilently()
+        {
+            string src = File.ReadAllText(FindRepoFile(Path.Combine(
+                "PadForge.App", "ViewModels", "PadViewModel.AudioDsp.cs")));
+            int i = src.IndexOf("public RelayCommand ImportAutoEqCommand", StringComparison.Ordinal);
+            Assert.True(i > 0, "ImportAutoEqCommand not found; this lock needs re-anchoring");
+            int end = src.IndexOf("ApplyAutoEqText(text, Strings.Instance.Pad_Audio_EqImport_ClipboardLabel)", i, StringComparison.Ordinal);
+            Assert.True(end > i, "positive control: the clipboard command body was found");
+            string body = src.Substring(i, end - i);
+            Assert.Contains("Pad_Audio_EqImport_ReadFailed_Format", body);
+            Assert.DoesNotContain("catch { return; }", body);
+        }
+
         // ── Shutdown drains its own static state ────────────────────────────
 
         /// <summary>A source-text lock, because both live in private statics

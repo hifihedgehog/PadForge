@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using PadForge.Common.Input;
 using PadForge.Engine;
 using PadForge.Engine.Data;
@@ -221,6 +222,39 @@ namespace PadForge.Tests
 
             MainWindow.ApplySlotMacrosFromClipboard(dst, Envelope(src));
             Assert.Equal("Base", dst.Macros[0].LayerMask);
+        }
+
+        // ── sound ownership survives the replace ─────────────────────────
+
+        /// <summary>Source-text lock, because SoundMacroService is a static
+        /// audio service with no in-process seam. The contract: the paste
+        /// stops THIS slot's macro sounds before it drops the MacroItems that
+        /// own them, exactly as the two other whole-slot clear sites do, or a
+        /// looping sound is left with no owner able to stop it. StopSlot and
+        /// not StopAll, because a paste touches one slot and must not silence
+        /// every other slot's running macros.</summary>
+        [Fact]
+        public void Paste_StopsTheSlotsMacroSoundsBeforeClearing()
+        {
+            string body = ApplyBody();
+            int stop = body.IndexOf("SoundMacroService.StopSlot(padVm.PadIndex)", StringComparison.Ordinal);
+            int clear = body.IndexOf("padVm.Macros.Clear()", StringComparison.Ordinal);
+            Assert.True(stop > 0, "the paste must stop the slot's macro sounds");
+            Assert.True(clear > 0, "positive control: the body read is really the paste");
+            Assert.True(stop < clear, "the stop must come BEFORE the clear, while the owners still exist");
+            Assert.DoesNotContain("SoundMacroService.StopAll", body);
+        }
+
+        private static string ApplyBody()
+        {
+            string src = File.ReadAllText(AuditDelta20260823Tests.FindRepoFile(
+                Path.Combine("PadForge.App", "MainWindow.xaml.cs")));
+            int i = src.IndexOf("internal static void ApplySlotMacrosFromClipboard", StringComparison.Ordinal);
+            Assert.True(i > 0, "ApplySlotMacrosFromClipboard not found; this lock needs re-anchoring");
+            // The method ends at the first closing brace back at its own indent.
+            int end = src.IndexOf("\n        }", i, StringComparison.Ordinal);
+            Assert.True(end > i, "could not find the end of ApplySlotMacrosFromClipboard");
+            return src.Substring(i, end - i);
         }
 
         // ── the payload crosses the clipboard envelope ──────────────────────

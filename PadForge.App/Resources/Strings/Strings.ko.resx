@@ -3163,6 +3163,14 @@
   <data name="Pad_Audio_EqClear" xml:space="preserve"><value>지우기</value></data>
   <data name="Pad_Audio_EqImport" xml:space="preserve"><value>클립보드에서 가져오기</value></data>
   <data name="Pad_Audio_EqImport_Tooltip" xml:space="preserve"><value>사용 중인 헤드폰의 AutoEq 프로필을 복사한 뒤 클릭하세요. 대역을 교체하고 프리앰프를 설정합니다. 읽을 수 있는 내용이 없으면 현재 EQ는 그대로 둡니다.</value></data>
+  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>파일에서 가져오기</value></data>
+  <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>AutoEq가 내려받은 .txt를 선택합니다. autoeq.app은 복사할 수 있는 텍스트가 아니라 파일을 제공하므로 보통 이쪽을 사용합니다.</value></data>
+  <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>헤드폰에 맞춘 보정을 적용하려면 autoeq.app을 열어 모델을 고르고 Custom Parametric Eq를 내려받은 다음 파일에서 가져오기를 실행합니다. Graphic Eq 내려받기에는 필터 줄이 없어 가져올 수 없습니다.</value></data>
+  <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>{2}에서 밴드 {0}개와 프리앰프 {1:0.#} dB를 가져왔습니다.</value></data>
+  <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>해당 프로필에 필터 줄이 없습니다. AutoEq의 Graphic Eq 형식은 여기서 읽을 수 없습니다. 대신 Custom Parametric Eq를 내려받으세요. 현재 EQ는 변경되지 않았습니다.</value></data>
+  <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>가져올 것이 없습니다. 현재 EQ는 변경되지 않았습니다.</value></data>
+  <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>파일을 읽을 수 없습니다: {0}</value></data>
+  <data name="Pad_Audio_EqImport_ClipboardLabel" xml:space="preserve"><value>클립보드</value></data>
   <data name="Pad_Audio_Limiter" xml:space="preserve"><value>리미터</value></data>
   <data name="Pad_Audio_Limiter_Tooltip" xml:space="preserve"><value>신호를 한계치 아래로 유지합니다. 대역을 부스트했다면 켜 두는 편이 좋습니다. 오디오는 이후에 인코딩되며, 인코더 클리핑은 부스트의 이점보다 훨씬 나쁘게 들립니다.</value></data>
   <data name="Pad_Audio_LimiterCeiling" xml:space="preserve"><value>한계치</value></data>

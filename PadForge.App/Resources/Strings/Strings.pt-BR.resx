@@ -3157,6 +3157,14 @@ Você pode tentar novamente mais tarde em Configurações.</value></data>
   <data name="Pad_Audio_EqClear" xml:space="preserve"><value>Limpar</value></data>
   <data name="Pad_Audio_EqImport" xml:space="preserve"><value>Importar da área de transferência</value></data>
   <data name="Pad_Audio_EqImport_Tooltip" xml:space="preserve"><value>Copie um perfil do AutoEq para seus fones e clique. Substitui as bandas e define a pré-amplificação. Sem conteúdo legível, o equalizador atual fica intacto.</value></data>
+  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>Importar de arquivo</value></data>
+  <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Escolha o .txt que o AutoEq baixou. Esta é a opção certa: o autoeq.app entrega um arquivo em vez de texto que dê para copiar.</value></data>
+  <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>Para uma correção ajustada aos seus fones: abra o autoeq.app, escolha seu modelo, baixe Custom Parametric Eq e use Importar de arquivo. O download Graphic Eq não tem linhas de filtro e não pode ser importado.</value></data>
+  <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>Importadas {0} bandas com {1:0.#} dB de pré-amplificação de {2}.</value></data>
+  <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>Esse perfil não tem linhas de filtro. A exportação Graphic Eq do AutoEq não pode ser lida aqui. Baixe Custom Parametric Eq no lugar. O equalizador atual não mudou.</value></data>
+  <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>Nada a importar. O equalizador atual não mudou.</value></data>
+  <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>Não foi possível ler esse arquivo: {0}</value></data>
+  <data name="Pad_Audio_EqImport_ClipboardLabel" xml:space="preserve"><value>a área de transferência</value></data>
   <data name="Pad_Audio_Limiter" xml:space="preserve"><value>Limitador</value></data>
   <data name="Pad_Audio_Limiter_Tooltip" xml:space="preserve"><value>Mantém o sinal abaixo do teto. Vale deixar ligado sempre que houver realce, pois o áudio é codificado depois e distorcer o codificador soa bem pior do que o realce soa melhor.</value></data>
   <data name="Pad_Audio_LimiterCeiling" xml:space="preserve"><value>Teto</value></data>

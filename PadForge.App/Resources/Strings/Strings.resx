@@ -3215,6 +3215,14 @@ You can retry later from Settings.</value></data>
   <data name="Pad_Audio_EqClear" xml:space="preserve"><value>Clear</value></data>
   <data name="Pad_Audio_EqImport" xml:space="preserve"><value>Import from clipboard</value></data>
   <data name="Pad_Audio_EqImport_Tooltip" xml:space="preserve"><value>Paste an AutoEq profile for your headphones, then click. Replaces the bands and sets the preamp. Nothing readable in the clipboard leaves the current EQ alone.</value></data>
+  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>Import from file</value></data>
+  <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Pick the .txt AutoEq downloaded. This is the one to use: autoeq.app hands you a file rather than text you can copy.</value></data>
+  <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>For a correction matched to your headphones: open autoeq.app, choose your model, pick Custom Parametric Eq and download it, then Import from file. The Graphic Eq download has no filter lines and will not import.</value></data>
+  <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>Imported {0} bands with a {1:0.#} dB preamp from {2}.</value></data>
+  <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>No filter lines in that profile. AutoEq's Graphic Eq export cannot be read here. Download the Custom Parametric Eq one instead. The current EQ is unchanged.</value></data>
+  <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>Nothing to import. The current EQ is unchanged.</value></data>
+  <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>Could not read that file: {0}</value></data>
+  <data name="Pad_Audio_EqImport_ClipboardLabel" xml:space="preserve"><value>the clipboard</value></data>
   <data name="Pad_Audio_Limiter" xml:space="preserve"><value>Limiter</value></data>
   <data name="Pad_Audio_Limiter_Tooltip" xml:space="preserve"><value>Holds the signal under the ceiling. Worth leaving on whenever a band is boosted, because the audio is encoded after this and clipping the encoder sounds far worse than the boost sounds better.</value></data>
   <data name="Pad_Audio_LimiterCeiling" xml:space="preserve"><value>Ceiling</value></data>

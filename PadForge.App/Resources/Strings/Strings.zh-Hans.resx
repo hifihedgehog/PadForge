@@ -3163,6 +3163,14 @@
   <data name="Pad_Audio_EqClear" xml:space="preserve"><value>清空</value></data>
   <data name="Pad_Audio_EqImport" xml:space="preserve"><value>从剪贴板导入</value></data>
   <data name="Pad_Audio_EqImport_Tooltip" xml:space="preserve"><value>复制适用于您耳机的 AutoEq 配置文件后点击。将替换频段并设置前置增益。剪贴板中没有可读内容时，当前均衡器保持不变。</value></data>
+  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>从文件导入</value></data>
+  <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>选择 AutoEq 下载的 .txt。通常用这一项：autoeq.app 提供的是文件，而不是可复制的文本。</value></data>
+  <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>要获得与你的耳机匹配的校正：打开 autoeq.app，选择型号，下载 Custom Parametric Eq，然后使用“从文件导入”。Graphic Eq 下载没有滤波器行，无法导入。</value></data>
+  <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>已从 {2} 导入 {0} 条频段，前置增益 {1:0.#} dB。</value></data>
+  <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>该配置文件中没有滤波器行。此处无法读取 AutoEq 的 Graphic Eq 格式，请改为下载 Custom Parametric Eq。当前 EQ 未更改。</value></data>
+  <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>没有可导入的内容。当前 EQ 未更改。</value></data>
+  <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>无法读取该文件：{0}</value></data>
+  <data name="Pad_Audio_EqImport_ClipboardLabel" xml:space="preserve"><value>剪贴板</value></data>
   <data name="Pad_Audio_Limiter" xml:space="preserve"><value>限制器</value></data>
   <data name="Pad_Audio_Limiter_Tooltip" xml:space="preserve"><value>将信号保持在上限之下。只要有频段被提升就建议保持开启，因为音频在此之后才编码，编码器削波的听感远比提升带来的改善更糟。</value></data>
   <data name="Pad_Audio_LimiterCeiling" xml:space="preserve"><value>上限</value></data>

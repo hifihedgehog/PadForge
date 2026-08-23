@@ -3163,6 +3163,14 @@ Puedes volver a intentarlo más tarde desde Configuración.</value></data>
   <data name="Pad_Audio_EqClear" xml:space="preserve"><value>Vaciar</value></data>
   <data name="Pad_Audio_EqImport" xml:space="preserve"><value>Importar del portapapeles</value></data>
   <data name="Pad_Audio_EqImport_Tooltip" xml:space="preserve"><value>Copie un perfil de AutoEq para sus auriculares y pulse aquí. Sustituye las bandas y ajusta la preamplificación. Si no hay nada legible, el ecualizador actual no cambia.</value></data>
+  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>Importar desde archivo</value></data>
+  <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Elija el .txt que descargó AutoEq. Esta es la opción correcta: autoeq.app entrega un archivo en lugar de texto que se pueda copiar.</value></data>
+  <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>Para una corrección ajustada a sus auriculares: abra autoeq.app, elija su modelo, descargue Custom Parametric Eq y luego use Importar desde archivo. La descarga Graphic Eq no tiene líneas de filtro y no se puede importar.</value></data>
+  <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>Se importaron {0} bandas con {1:0.#} dB de preamplificación desde {2}.</value></data>
+  <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>Ese perfil no tiene líneas de filtro. La exportación Graphic Eq de AutoEq no se puede leer aquí. Descargue Custom Parametric Eq en su lugar. El ecualizador actual no ha cambiado.</value></data>
+  <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>No hay nada que importar. El ecualizador actual no ha cambiado.</value></data>
+  <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>No se pudo leer ese archivo: {0}</value></data>
+  <data name="Pad_Audio_EqImport_ClipboardLabel" xml:space="preserve"><value>el portapapeles</value></data>
   <data name="Pad_Audio_Limiter" xml:space="preserve"><value>Limitador</value></data>
   <data name="Pad_Audio_Limiter_Tooltip" xml:space="preserve"><value>Mantiene la señal bajo el techo. Conviene dejarlo activo si hay realce, porque el audio se codifica después y saturar el codificador suena mucho peor de lo que mejora el realce.</value></data>
   <data name="Pad_Audio_LimiterCeiling" xml:space="preserve"><value>Techo</value></data>

@@ -253,6 +253,121 @@ namespace PadForge.Tests
             Assert.DoesNotContain("LSC", incoming.AudioEqBands);
         }
 
+        // ── AutoEq import: both sources, and it says what it did ───────
+
+        private const string RealProfile = """
+            Preamp: -6.8 dB
+            Filter 1: ON PK Fc 21 Hz Gain 4.7 dB Q 0.66
+            Filter 2: ON PK Fc 105 Hz Gain -3.5 dB Q 0.70
+            Filter 3: ON LSC Fc 105 Hz Gain 5.5 dB Q 0.70
+            """;
+
+        /// <summary>The shape autoeq.app's Custom Parametric Eq download
+        /// carries. Its own parse is what both import buttons run.</summary>
+        [Fact]
+        public void AutoEq_ParsesTheParametricDownload()
+        {
+            var (bands, preamp) = AutoEqProfile.Parse(RealProfile);
+            Assert.Equal(3, bands.Count);
+            Assert.Equal(-6.8f, preamp, 3);
+            Assert.Equal(EqBandType.Peaking, bands[0].Type);
+            Assert.Equal(21f, bands[0].FrequencyHz, 3);
+            Assert.Equal(4.7f, bands[0].GainDb, 3);
+            Assert.Equal(0.66f, bands[0].Q, 3);
+            Assert.Equal(EqBandType.LowShelf, bands[2].Type);
+            Assert.All(bands, b => Assert.True(b.Enabled));
+        }
+
+        /// <summary>AutoEq's OTHER download. One line, no filter lines, and it
+        /// is the one a reasonable person grabs first, so the import has to
+        /// recognise that it found nothing rather than sit silent.</summary>
+        [Fact]
+        public void AutoEq_GraphicEqExport_ParsesToNothing()
+        {
+            var (bands, preamp) = AutoEqProfile.Parse(
+                "GraphicEQ: 20 -1.2; 21 -1.3; 22 -1.4; 23 -1.5; 24 -1.6");
+            Assert.Empty(bands);
+            Assert.Equal(0f, preamp);
+        }
+
+        /// <summary>A file import applies the bands, the preamp and the
+        /// enable, and reports what it did naming the file.</summary>
+        [Fact]
+        public void AutoEqImport_FromAFile_AppliesAndReports()
+        {
+            var vm = new PadForge.ViewModels.PadViewModel(0);
+            vm.DeviceConfig = new PadForge.ViewModels.DeviceSlotConfig();
+
+            string path = Path.Combine(Path.GetTempPath(),
+                "PadForgeTest_" + Guid.NewGuid().ToString("N") + " ParametricEQ.txt");
+            File.WriteAllText(path, RealProfile);
+            try { vm.ImportAutoEqTextForTest(File.ReadAllText(path), Path.GetFileName(path)); }
+            finally { File.Delete(path); }
+
+            Assert.Equal(3, vm.EqBands.Count);
+            Assert.Equal(-6.8, vm.DeviceConfig.AudioEqPreampDb, 3);
+            Assert.True(vm.DeviceConfig.AudioEqEnabled);
+            Assert.True(vm.HasEqImportStatus);
+            Assert.Contains("3", vm.EqImportStatus);
+            Assert.Contains("ParametricEQ.txt", vm.EqImportStatus);
+        }
+
+        /// <summary>The Graphic Eq case end to end: the tuned EQ survives
+        /// untouched AND the user is told why nothing happened. The silent
+        /// no-op is what made the button read as broken.</summary>
+        [Fact]
+        public void AutoEqImport_WithNoFilterLines_KeepsTheEqAndSaysSo()
+        {
+            var vm = new PadForge.ViewModels.PadViewModel(0);
+            vm.DeviceConfig = new PadForge.ViewModels.DeviceSlotConfig();
+            vm.ImportAutoEqTextForTest(RealProfile, "ParametricEQ.txt");
+            Assert.Equal(3, vm.EqBands.Count);   // positive control: a real EQ is loaded
+            string tuned = vm.DeviceConfig.AudioEqBands;
+
+            vm.ImportAutoEqTextForTest("GraphicEQ: 20 -1.2; 21 -1.3", "GraphicEQ.txt");
+
+            Assert.Equal(3, vm.EqBands.Count);
+            Assert.Equal(tuned, vm.DeviceConfig.AudioEqBands);
+            Assert.Equal(Strings.Pad_Audio_EqImport_NoFilters_Value, vm.EqImportStatus);
+        }
+
+        /// <summary>The status describes the config that was bound when the
+        /// import ran, so a device switch has to clear it. Otherwise this
+        /// pad's card reports what the previous pad imported.</summary>
+        [Fact]
+        public void AutoEqImport_Status_DoesNotSurviveADeviceSwitch()
+        {
+            var vm = new PadForge.ViewModels.PadViewModel(0);
+            vm.DeviceConfig = new PadForge.ViewModels.DeviceSlotConfig();
+            vm.ImportAutoEqTextForTest(RealProfile, "ParametricEQ.txt");
+            Assert.True(vm.HasEqImportStatus);   // positive control
+
+            vm.DeviceConfig = new PadForge.ViewModels.DeviceSlotConfig();
+
+            Assert.False(vm.HasEqImportStatus);
+            Assert.Equal(string.Empty, vm.EqImportStatus);
+        }
+
+        /// <summary>An empty clipboard is its own message, not the
+        /// wrong-format one.</summary>
+        [Fact]
+        public void AutoEqImport_WithNothingAtAll_SaysNothingToImport()
+        {
+            var vm = new PadForge.ViewModels.PadViewModel(0);
+            vm.DeviceConfig = new PadForge.ViewModels.DeviceSlotConfig();
+            vm.ImportAutoEqTextForTest("   ", "the clipboard");
+            Assert.Empty(vm.EqBands);
+            Assert.Equal(Strings.Pad_Audio_EqImport_Empty_Value, vm.EqImportStatus);
+        }
+
+        private static class Strings
+        {
+            public static string Pad_Audio_EqImport_NoFilters_Value
+                => PadForge.Resources.Strings.Strings.Instance.Pad_Audio_EqImport_NoFilters;
+            public static string Pad_Audio_EqImport_Empty_Value
+                => PadForge.Resources.Strings.Strings.Instance.Pad_Audio_EqImport_Empty;
+        }
+
         // ── Shutdown drains its own static state ────────────────────────────
 
         /// <summary>A source-text lock, because both live in private statics

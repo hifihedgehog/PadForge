@@ -357,6 +357,67 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _audioToneLimitHz, value);
         }
 
+        // ── Controller-audio DSP chain (#347) ───────────────────────────────
+        // Crossfeed, parametric EQ and the limiter that keeps a gain-positive
+        // EQ from clipping the Opus encoder downstream. Per (slot, device)
+        // like every other member of this bag, and never gated on OutputType.
+
+        private int _audioCrossfeedLevel;
+        /// <summary>bs2b crossfeed level: 0 off, 1-3 crossfeed, 4-6 easy
+        /// crossfeed. Skipped outright on the speaker paths, which route a
+        /// mono downmix nothing can be widened into.</summary>
+        public int AudioCrossfeedLevel
+        {
+            get => _audioCrossfeedLevel;
+            set => SetProperty(ref _audioCrossfeedLevel, Math.Clamp(value, 0, 6));
+        }
+
+        private bool _audioEqEnabled;
+        /// <summary>Master switch for the parametric EQ. Separate from an
+        /// empty band list so a user can mute a tuned EQ without losing it.</summary>
+        public bool AudioEqEnabled
+        {
+            get => _audioEqEnabled;
+            set => SetProperty(ref _audioEqEnabled, value);
+        }
+
+        private string _audioEqBands = string.Empty;
+        /// <summary>The band list, encoded by EqBandCodec. One attribute so
+        /// the EQ round trips with the rest of this bag.</summary>
+        public string AudioEqBands
+        {
+            get => _audioEqBands;
+            set => SetProperty(ref _audioEqBands, value ?? string.Empty);
+        }
+
+        private double _audioEqPreampDb;
+        /// <summary>Preamp in dB, applied before the EQ. AutoEq profiles ship
+        /// a negative preamp precisely so their boosts do not clip, so an
+        /// import that dropped it would be worse than no import.</summary>
+        public double AudioEqPreampDb
+        {
+            get => _audioEqPreampDb;
+            set => SetProperty(ref _audioEqPreampDb, Math.Clamp(value, -30d, 12d));
+        }
+
+        private bool _audioLimiterEnabled = true;
+        /// <summary>On by default. This chain sits upstream of the Opus
+        /// encoder, so a positive EQ band without a limiter clips the encoder,
+        /// and Opus clipping sounds far worse than the EQ sounds better.</summary>
+        public bool AudioLimiterEnabled
+        {
+            get => _audioLimiterEnabled;
+            set => SetProperty(ref _audioLimiterEnabled, value);
+        }
+
+        private int _audioLimiterCeiling = 98;
+        /// <summary>Ceiling as a percent of full scale.</summary>
+        public int AudioLimiterCeiling
+        {
+            get => _audioLimiterCeiling;
+            set => SetProperty(ref _audioLimiterCeiling, Math.Clamp(value, 5, 100));
+        }
+
         private bool _audioPersonaHapticsEnabled;
         /// <summary>#271 item 1: render the virtual DualSense's authored
         /// haptic audio (persona UAC channels 3/4) on this device's
@@ -1913,6 +1974,16 @@ namespace PadForge.ViewModels
         // High-tone filter (#202). Defaults match the VM: Off / 800 Hz.
         [XmlAttribute] public string AudioToneFilterMode { get; set; } = "Off";
         [XmlAttribute] public int AudioToneLimitHz { get; set; } = 800;
+        // Audio DSP chain (#347). Defaults match the VM: no crossfeed, no EQ,
+        // limiter on at 98 percent. A legacy config missing every attribute
+        // therefore loads as the pre-feature behaviour except that the
+        // limiter is armed, which only ever removes clipping.
+        [XmlAttribute] public int AudioCrossfeedLevel { get; set; }
+        [XmlAttribute] public bool AudioEqEnabled { get; set; }
+        [XmlAttribute] public string AudioEqBands { get; set; } = string.Empty;
+        [XmlAttribute] public double AudioEqPreampDb { get; set; }
+        [XmlAttribute] public bool AudioLimiterEnabled { get; set; } = true;
+        [XmlAttribute] public int AudioLimiterCeiling { get; set; } = 98;
         // Persona haptics on the actuators (#271 item 1). Defaults match
         // the VM: off / 100%.
         [XmlAttribute] public bool AudioPersonaHapticsEnabled { get; set; }

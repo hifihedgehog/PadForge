@@ -1865,6 +1865,20 @@ namespace PadForge.Services
                     .ToList();
             };
 
+            // Issue #347: the audio DSP chain's per-device settings, from the
+            // same per-device configs the passthrough provider above reads.
+            // Returns null when the slot or device has no config, which the
+            // service treats as "chain off" rather than as defaults.
+            PadForge.Common.Input.AudioPassthroughService.DspConfigProvider = (slotIndex, deviceGuid) =>
+            {
+                if (slotIndex < 0 || slotIndex >= _mainVm.Pads.Count) return null;
+                if (!_mainVm.Pads[slotIndex].PerDeviceSlotConfigs.TryGetValue(deviceGuid, out var c) || c == null)
+                    return null;
+                return (c.AudioCrossfeedLevel, c.AudioEqEnabled, c.AudioEqBands ?? string.Empty,
+                        c.AudioEqPreampDb, c.AudioLimiterEnabled, c.AudioLimiterCeiling,
+                        (int)c.AudioOutputPath);
+            };
+
             // Issue #185: haptic-mirror engage configs, same per-device configs
             // as the passthrough provider above. Returns EVERY passthrough-
             // enabled config with its DEVICE GUID and mode (Always included):

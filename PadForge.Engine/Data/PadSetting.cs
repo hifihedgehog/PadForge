@@ -2318,6 +2318,22 @@ namespace PadForge.Engine.Data
         [System.Text.Json.Serialization.JsonIgnore]
         public string SlotSetExtrasJson { get; set; }
 
+        /// <summary>Opaque JSON payload carrying the slot's macros, as the
+        /// same envelope the Macros tab's own clipboard already uses
+        /// (#112), so a slot Copy / Paste and a macro Copy / Paste agree on
+        /// the wire shape and the re-scoping rules.
+        ///
+        /// <para>Macros were left out of slot Copy on purpose when the Macros
+        /// tab sat visibly apart and "Copy" on the Mappings tab read as
+        /// "not macros" on its own. That stopped being self-explanatory: the
+        /// tooltip says all settings, every OTHER whole-slot transfer (profile
+        /// apply, the Macros tab's Copy From) already carries them, and the
+        /// one exception the interface did not name became the confusing
+        /// part.</para></summary>
+        [System.Xml.Serialization.XmlIgnore]
+        [System.Text.Json.Serialization.JsonIgnore]
+        public string SlotMacrosJson { get; set; }
+
         /// <summary>Opaque JSON payload carrying every device's PadSetting
         /// on the source slot. The outer PadSetting that wraps this field
         /// still carries the originally-selected device's tuning (legacy
@@ -2446,6 +2462,8 @@ namespace PadForge.Engine.Data
                 dict["__SlotMenus"] = SlotMenusJson;
             if (!string.IsNullOrEmpty(SlotSetExtrasJson))
                 dict["__SlotSetExtras"] = SlotSetExtrasJson;
+            if (!string.IsNullOrEmpty(SlotMacrosJson))
+                dict["__SlotMacros"] = SlotMacrosJson;
             if (!string.IsNullOrEmpty(SlotPerDeviceSettingsJson))
                 dict["__SlotPerDeviceSettings"] = SlotPerDeviceSettingsJson;
 
@@ -2588,6 +2606,8 @@ namespace PadForge.Engine.Data
                             ps.SlotMenusJson = kvp.Value;
                         else if (kvp.Key == "__SlotSetExtras")
                             ps.SlotSetExtrasJson = kvp.Value;
+                        else if (kvp.Key == "__SlotMacros")
+                            ps.SlotMacrosJson = kvp.Value;
                         else if (kvp.Key == "__SlotPerDeviceSettings")
                             ps.SlotPerDeviceSettingsJson = kvp.Value;
                         continue;

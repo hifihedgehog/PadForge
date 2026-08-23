@@ -11820,12 +11820,33 @@
                                         <StackPanel Orientation="Horizontal">
                                             <Button Content="{Binding Pad_Audio_EqAdd, Source={x:Static strings:Strings.Instance}}"
                                                     Command="{Binding AddEqBandCommand}" Padding="10,4" VerticalAlignment="Center"/>
+                                            <!-- File first, because it is the gesture autoeq.app
+                                                 actually produces: its parametric export is a
+                                                 download, not copyable text. The clipboard button
+                                                 stays for profiles that do arrive as text. -->
+                                            <Button Content="{Binding Pad_Audio_EqImportFile, Source={x:Static strings:Strings.Instance}}"
+                                                    Command="{Binding ImportAutoEqFileCommand}" Padding="10,4" Margin="6,0,0,0" VerticalAlignment="Center"
+                                                    ToolTip="{Binding Pad_Audio_EqImportFile_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <Button Content="{Binding Pad_Audio_EqImport, Source={x:Static strings:Strings.Instance}}"
                                                     Command="{Binding ImportAutoEqCommand}" Padding="10,4" Margin="6,0,0,0" VerticalAlignment="Center"
                                                     ToolTip="{Binding Pad_Audio_EqImport_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <Button Content="{Binding Pad_Audio_EqClear, Source={x:Static strings:Strings.Instance}}"
                                                     Command="{Binding ClearEqBandsCommand}" Padding="10,4" Margin="6,0,0,0" VerticalAlignment="Center"/>
                                         </StackPanel>
+                                        <!-- What the last import did. An import that finds nothing
+                                             declines to touch a tuned EQ, which is right, and has
+                                             to say so, which it did not: AutoEq publishes three
+                                             formats and only two carry filter lines, so a silent
+                                             no-op reads as a broken button. -->
+                                        <TextBlock Text="{Binding EqImportStatus}" TextWrapping="Wrap" Margin="0,6,0,0"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="11"
+                                                   Visibility="{Binding HasEqImportStatus, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                        <!-- The steps, in the page, because the source of these
+                                             profiles is a web app whose export is not named the
+                                             way this feature is. -->
+                                        <TextBlock Text="{Binding Pad_Audio_EqHowTo, Source={x:Static strings:Strings.Instance}}"
+                                                   TextWrapping="Wrap" Margin="0,6,0,0" MaxWidth="620" HorizontalAlignment="Left"
+                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontSize="11"/>
                                     </StackPanel>
 
                                     <!-- Limiter -->

@@ -3185,6 +3185,14 @@ Puoi riprovare più tardi dalle Impostazioni.</value></data>
   <data name="Pad_Audio_EqClear" xml:space="preserve"><value>Svuota</value></data>
   <data name="Pad_Audio_EqImport" xml:space="preserve"><value>Importa dagli appunti</value></data>
   <data name="Pad_Audio_EqImport_Tooltip" xml:space="preserve"><value>Copiate un profilo AutoEq per le vostre cuffie, poi fate clic. Sostituisce le bande e imposta la preamplificazione. Senza contenuto leggibile l'equalizzatore attuale resta invariato.</value></data>
+  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>Importa da file</value></data>
+  <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Scegliere il .txt scaricato da AutoEq. È questa l'opzione giusta: autoeq.app fornisce un file invece di testo copiabile.</value></data>
+  <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>Per una correzione adatta alle proprie cuffie: aprire autoeq.app, scegliere il modello, scaricare Custom Parametric Eq e poi usare Importa da file. Il download Graphic Eq non ha righe di filtro e non si può importare.</value></data>
+  <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>Importate {0} bande con {1:0.#} dB di preamplificazione da {2}.</value></data>
+  <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>Nessuna riga di filtro in quel profilo. L'esportazione Graphic Eq di AutoEq non è leggibile qui. Scaricare invece Custom Parametric Eq. L'equalizzatore attuale resta invariato.</value></data>
+  <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>Niente da importare. L'equalizzatore attuale resta invariato.</value></data>
+  <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>Impossibile leggere il file: {0}</value></data>
+  <data name="Pad_Audio_EqImport_ClipboardLabel" xml:space="preserve"><value>gli appunti</value></data>
   <data name="Pad_Audio_Limiter" xml:space="preserve"><value>Limiter</value></data>
   <data name="Pad_Audio_Limiter_Tooltip" xml:space="preserve"><value>Mantiene il segnale sotto il tetto. Conviene lasciarlo attivo con qualsiasi esaltazione, perché l'audio viene codificato dopo e il clipping del codificatore suona molto peggio di quanto l'esaltazione suoni meglio.</value></data>
   <data name="Pad_Audio_LimiterCeiling" xml:space="preserve"><value>Tetto</value></data>

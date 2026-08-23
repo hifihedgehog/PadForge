@@ -3163,6 +3163,14 @@
   <data name="Pad_Audio_EqClear" xml:space="preserve"><value>消去</value></data>
   <data name="Pad_Audio_EqImport" xml:space="preserve"><value>クリップボードから読み込む</value></data>
   <data name="Pad_Audio_EqImport_Tooltip" xml:space="preserve"><value>お使いのヘッドホン用の AutoEq プロファイルをコピーしてからクリックします。帯域を置き換えてプリアンプを設定します。読み取れる内容がなければ現在の EQ はそのままです。</value></data>
+  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>ファイルから読み込む</value></data>
+  <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>AutoEq がダウンロードした .txt を選びます。autoeq.app はコピーできるテキストではなくファイルを渡すため、通常はこちらを使います。</value></data>
+  <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>お使いのヘッドホンに合わせた補正を行うには、autoeq.app を開いて機種を選び、Custom Parametric Eq をダウンロードしてから「ファイルから読み込む」を実行します。Graphic Eq のダウンロードにはフィルター行がないため読み込めません。</value></data>
+  <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>{2} から {0} 個のバンドとプリアンプ {1:0.#} dB を読み込みました。</value></data>
+  <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>そのプロファイルにフィルター行がありません。AutoEq の Graphic Eq 形式はここでは読み込めません。代わりに Custom Parametric Eq をダウンロードしてください。現在の EQ は変更されていません。</value></data>
+  <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>読み込むものがありません。現在の EQ は変更されていません。</value></data>
+  <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>そのファイルを読み込めませんでした: {0}</value></data>
+  <data name="Pad_Audio_EqImport_ClipboardLabel" xml:space="preserve"><value>クリップボード</value></data>
   <data name="Pad_Audio_Limiter" xml:space="preserve"><value>リミッター</value></data>
   <data name="Pad_Audio_Limiter_Tooltip" xml:space="preserve"><value>信号を上限より下に保ちます。帯域をブーストしている間は有効のままが安全です。音声はこの後にエンコードされ、エンコーダーのクリップはブーストの効果よりはるかに悪く聞こえます。</value></data>
   <data name="Pad_Audio_LimiterCeiling" xml:space="preserve"><value>上限</value></data>

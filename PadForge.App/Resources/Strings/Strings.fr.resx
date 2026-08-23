@@ -3163,6 +3163,14 @@ Vous pouvez réessayer plus tard depuis les Paramètres.</value></data>
   <data name="Pad_Audio_EqClear" xml:space="preserve"><value>Effacer</value></data>
   <data name="Pad_Audio_EqImport" xml:space="preserve"><value>Importer du presse-papiers</value></data>
   <data name="Pad_Audio_EqImport_Tooltip" xml:space="preserve"><value>Copiez un profil AutoEq pour votre casque, puis cliquez. Remplace les bandes et règle le préampli. Sans contenu lisible, l'égaliseur actuel reste intact.</value></data>
+  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>Importer depuis un fichier</value></data>
+  <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Choisissez le .txt téléchargé par AutoEq. C'est la bonne option : autoeq.app fournit un fichier plutôt qu'un texte à copier.</value></data>
+  <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>Pour une correction adaptée à votre casque : ouvrez autoeq.app, choisissez votre modèle, téléchargez Custom Parametric Eq puis utilisez Importer depuis un fichier. Le téléchargement Graphic Eq ne contient aucune ligne de filtre et ne peut pas être importé.</value></data>
+  <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>{0} bandes importées avec un préampli de {1:0.#} dB depuis {2}.</value></data>
+  <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>Aucune ligne de filtre dans ce profil. L'export Graphic Eq d'AutoEq ne peut pas être lu ici. Téléchargez plutôt Custom Parametric Eq. L'égaliseur actuel est inchangé.</value></data>
+  <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>Rien à importer. L'égaliseur actuel est inchangé.</value></data>
+  <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>Impossible de lire ce fichier : {0}</value></data>
+  <data name="Pad_Audio_EqImport_ClipboardLabel" xml:space="preserve"><value>le presse-papiers</value></data>
   <data name="Pad_Audio_Limiter" xml:space="preserve"><value>Limiteur</value></data>
   <data name="Pad_Audio_Limiter_Tooltip" xml:space="preserve"><value>Maintient le signal sous le plafond. À laisser actif dès qu'une bande est accentuée, car l'audio est encodé ensuite et saturer l'encodeur sonne bien pire que l'accentuation ne sonne mieux.</value></data>
   <data name="Pad_Audio_LimiterCeiling" xml:space="preserve"><value>Plafond</value></data>

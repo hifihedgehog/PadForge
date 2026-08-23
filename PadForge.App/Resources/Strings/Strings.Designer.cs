@@ -522,7 +522,15 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Audio_EqCol_On => Get("Pad_Audio_EqCol_On");
     public string Pad_Audio_EqCol_Q => Get("Pad_Audio_EqCol_Q");
     public string Pad_Audio_EqCol_Type => Get("Pad_Audio_EqCol_Type");
+    public string Pad_Audio_EqHowTo => Get("Pad_Audio_EqHowTo");
     public string Pad_Audio_EqImport => Get("Pad_Audio_EqImport");
+    public string Pad_Audio_EqImportFile => Get("Pad_Audio_EqImportFile");
+    public string Pad_Audio_EqImportFile_Tooltip => Get("Pad_Audio_EqImportFile_Tooltip");
+    public string Pad_Audio_EqImport_ClipboardLabel => Get("Pad_Audio_EqImport_ClipboardLabel");
+    public string Pad_Audio_EqImport_Empty => Get("Pad_Audio_EqImport_Empty");
+    public string Pad_Audio_EqImport_NoFilters => Get("Pad_Audio_EqImport_NoFilters");
+    public string Pad_Audio_EqImport_Ok_Format => Get("Pad_Audio_EqImport_Ok_Format");
+    public string Pad_Audio_EqImport_ReadFailed_Format => Get("Pad_Audio_EqImport_ReadFailed_Format");
     public string Pad_Audio_EqImport_Tooltip => Get("Pad_Audio_EqImport_Tooltip");
     public string Pad_Audio_EqPreamp => Get("Pad_Audio_EqPreamp");
     public string Pad_Audio_EqPreamp_Tooltip => Get("Pad_Audio_EqPreamp_Tooltip");

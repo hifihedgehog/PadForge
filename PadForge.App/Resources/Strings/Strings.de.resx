@@ -3163,6 +3163,14 @@ Du kannst es später in den Einstellungen erneut versuchen.</value></data>
   <data name="Pad_Audio_EqClear" xml:space="preserve"><value>Leeren</value></data>
   <data name="Pad_Audio_EqImport" xml:space="preserve"><value>Aus Zwischenablage importieren</value></data>
   <data name="Pad_Audio_EqImport_Tooltip" xml:space="preserve"><value>Kopieren Sie ein AutoEq-Profil für Ihren Kopfhörer und klicken Sie hier. Ersetzt die Bänder und setzt die Vorverstärkung. Ohne lesbaren Inhalt bleibt der aktuelle EQ unverändert.</value></data>
+  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>Aus Datei importieren</value></data>
+  <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Die von AutoEq heruntergeladene .txt auswählen. Diese Variante ist die richtige: autoeq.app liefert eine Datei statt kopierbaren Text.</value></data>
+  <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>Für eine auf Ihre Kopfhörer abgestimmte Korrektur: autoeq.app öffnen, Modell wählen, Custom Parametric Eq herunterladen und dann Aus Datei importieren. Der Download Graphic Eq enthält keine Filterzeilen und lässt sich nicht importieren.</value></data>
+  <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>{0} Bänder mit {1:0.#} dB Vorverstärkung aus {2} importiert.</value></data>
+  <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>Keine Filterzeilen in diesem Profil. Der Graphic-Eq-Export von AutoEq kann hier nicht gelesen werden. Laden Sie stattdessen Custom Parametric Eq herunter. Der aktuelle EQ bleibt unverändert.</value></data>
+  <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>Nichts zu importieren. Der aktuelle EQ bleibt unverändert.</value></data>
+  <data name="Pad_Audio_EqImport_ReadFailed_Format" xml:space="preserve"><value>Datei konnte nicht gelesen werden: {0}</value></data>
+  <data name="Pad_Audio_EqImport_ClipboardLabel" xml:space="preserve"><value>der Zwischenablage</value></data>
   <data name="Pad_Audio_Limiter" xml:space="preserve"><value>Limiter</value></data>
   <data name="Pad_Audio_Limiter_Tooltip" xml:space="preserve"><value>Hält das Signal unter der Grenze. Sollte bei jeder Anhebung aktiv bleiben, denn das Audio wird danach kodiert, und Übersteuerung des Encoders klingt weit schlechter als die Anhebung besser.</value></data>
   <data name="Pad_Audio_LimiterCeiling" xml:space="preserve"><value>Grenze</value></data>

@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PadForge.Common.Input;
+using PadForge.Resources.Strings;
 
 namespace PadForge.ViewModels
 {
@@ -28,6 +29,11 @@ namespace PadForge.ViewModels
         /// Called on every device switch, because the bands are per device.</summary>
         public void RefreshEqBands()
         {
+            // The import status describes the config that was bound when the
+            // import ran, so it goes with the rows. Leaving it would have this
+            // pad's card reporting what the previous pad imported, which is
+            // the same stale-state shape the rebuild itself exists to prevent.
+            SetEqImportStatus(string.Empty);
             _suppressEqPush = true;
             try
             {
@@ -81,49 +87,131 @@ namespace PadForge.ViewModels
                 PushEqBands();
             });
 
-        /// <summary>Imports an AutoEq profile from the clipboard.
+        private string _eqImportStatus = string.Empty;
+        /// <summary>What the last import did, shown under the buttons.
         ///
-        /// <para>The clipboard rather than a file picker or a paste dialog on
-        /// purpose. AutoEq is read on a web page and its profile is copied, so
-        /// copy-then-import is the gesture people already perform. It also
-        /// means no new window and no dialog chrome to translate ten times.</para>
+        /// <para>An import that finds nothing must SAY so. Declining to touch a
+        /// tuned EQ is the right behaviour and staying silent about it is not:
+        /// AutoEq publishes three formats and only two of them carry Filter
+        /// lines, so the likeliest reason an import does nothing is that the
+        /// user grabbed the Graphic EQ one, and a silent no-op reads as a
+        /// broken button.</para></summary>
+        public string EqImportStatus
+        {
+            get => _eqImportStatus;
+            private set => SetProperty(ref _eqImportStatus, value ?? string.Empty);
+        }
+
+        public bool HasEqImportStatus => !string.IsNullOrEmpty(_eqImportStatus);
+
+        private void SetEqImportStatus(string s)
+        {
+            EqImportStatus = s;
+            OnPropertyChanged(nameof(HasEqImportStatus));
+        }
+
+        /// <summary>Applies a parsed AutoEq profile. The single body behind
+        /// BOTH import commands, so the file path and the clipboard path
+        /// cannot drift.
         ///
         /// <para>It REPLACES the bands rather than appending. A profile is a
         /// complete correction for one set of headphones, and merging two of
         /// them produces something neither author intended.</para>
         ///
-        /// <para>Nothing parseable leaves the current EQ untouched. Pasting the
-        /// wrong thing should be a no-op, not a way to lose a tuned EQ.</para></summary>
+        /// <para>Nothing parseable leaves the current EQ untouched. Importing
+        /// the wrong thing must not be a way to lose a tuned EQ.</para></summary>
+        private void ApplyAutoEqText(string text, string sourceLabel)
+        {
+            var cfg = DeviceConfig;
+            if (cfg == null) return;
+
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                SetEqImportStatus(Strings.Instance.Pad_Audio_EqImport_Empty);
+                return;
+            }
+
+            var (bands, preamp) = AutoEqProfile.Parse(text);
+            if (bands.Count == 0)
+            {
+                SetEqImportStatus(Strings.Instance.Pad_Audio_EqImport_NoFilters);
+                return;
+            }
+
+            _suppressEqPush = true;
+            try
+            {
+                foreach (var r in _eqBands) r.Owner = null;
+                _eqBands.Clear();
+                foreach (var b in bands) _eqBands.Add(new EqBandVm(b) { Owner = this });
+            }
+            finally { _suppressEqPush = false; }
+
+            PushEqBands();
+            // AutoEq ships its preamp precisely so the profile's boosts do not
+            // clip, so importing the bands without it would be worse than not
+            // importing at all.
+            cfg.AudioEqPreampDb = preamp;
+            cfg.AudioEqEnabled = true;
+            SetEqImportStatus(string.Format(Strings.Instance.Pad_Audio_EqImport_Ok_Format,
+                                            bands.Count, preamp, sourceLabel));
+        }
+
+        /// <summary>Test seam (InternalsVisibleTo PadForge.Tests). Both import
+        /// commands end in a file dialog or the clipboard, neither of which a
+        /// test can drive, so the body they share is reachable directly.</summary>
+        internal void ImportAutoEqTextForTest(string text, string sourceLabel)
+            => ApplyAutoEqText(text, sourceLabel);
+
+        /// <summary>Imports the .txt file AutoEq downloads.
+        ///
+        /// <para>This is the gesture the site actually produces. autoeq.app's
+        /// parametric export is a DOWNLOAD, not a copyable block, so an import
+        /// that only read the clipboard asked for something the source never
+        /// offers. The clipboard command below stays for the profiles that do
+        /// arrive as text (the AutoEq repo, a forum post), but this is the one
+        /// to reach for first.</para></summary>
+        private RelayCommand _importAutoEqFileCommand;
+        public RelayCommand ImportAutoEqFileCommand =>
+            _importAutoEqFileCommand ??= new RelayCommand(() =>
+            {
+                if (DeviceConfig == null) return;
+                var dlg = new Microsoft.Win32.OpenFileDialog
+                {
+                    Title = Strings.Instance.Pad_Audio_EqImportFile,
+                    // ParametricEQ.txt is what autoeq.app hands you, and
+                    // FixedBandEQ.txt parses through the same Filter lines.
+                    // GraphicEQ.txt does not, and is deliberately still
+                    // selectable: picking it and being told why beats not
+                    // seeing the file and assuming the dialog is broken.
+                    Filter = "AutoEq profile (*.txt)|*.txt|All files|*.*",
+                    CheckFileExists = true,
+                };
+                try { if (dlg.ShowDialog() != true) return; }
+                catch { return; }
+
+                string text;
+                try { text = System.IO.File.ReadAllText(dlg.FileName); }
+                catch (Exception ex)
+                {
+                    SetEqImportStatus(string.Format(
+                        Strings.Instance.Pad_Audio_EqImport_ReadFailed_Format, ex.Message));
+                    return;
+                }
+                ApplyAutoEqText(text, System.IO.Path.GetFileName(dlg.FileName));
+            });
+
+        /// <summary>Imports an AutoEq profile from the clipboard, for the
+        /// profiles that arrive as text rather than as a download.</summary>
         private RelayCommand _importAutoEqCommand;
         public RelayCommand ImportAutoEqCommand =>
             _importAutoEqCommand ??= new RelayCommand(() =>
             {
-                var cfg = DeviceConfig;
-                if (cfg == null) return;
-
+                if (DeviceConfig == null) return;
                 string text;
                 try { text = System.Windows.Clipboard.ContainsText() ? System.Windows.Clipboard.GetText() : null; }
                 catch { return; }   // the clipboard can be locked by another process
-                if (string.IsNullOrWhiteSpace(text)) return;
-
-                var (bands, preamp) = AutoEqProfile.Parse(text);
-                if (bands.Count == 0) return;
-
-                _suppressEqPush = true;
-                try
-                {
-                    foreach (var r in _eqBands) r.Owner = null;
-                    _eqBands.Clear();
-                    foreach (var b in bands) _eqBands.Add(new EqBandVm(b) { Owner = this });
-                }
-                finally { _suppressEqPush = false; }
-
-                PushEqBands();
-                // AutoEq ships its preamp precisely so the profile's boosts do
-                // not clip, so importing the bands without it would be worse
-                // than not importing at all.
-                cfg.AudioEqPreampDb = preamp;
-                cfg.AudioEqEnabled = true;
+                ApplyAutoEqText(text, Strings.Instance.Pad_Audio_EqImport_ClipboardLabel);
             });
 
         private RelayCommand _resetCrossfeedCommand;

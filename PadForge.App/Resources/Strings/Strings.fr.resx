@@ -3159,6 +3159,7 @@ Vous pouvez réessayer plus tard depuis les Paramètres.</value></data>
   <data name="Pad_Audio_Reset_EqPreamp" xml:space="preserve"><value>Réinitialiser le préampli</value></data>
   <data name="Pad_Audio_Reset_Limiter" xml:space="preserve"><value>Réinitialiser le limiteur</value></data>
   <data name="Pad_Audio_Reset_LimiterCeiling" xml:space="preserve"><value>Réinitialiser le plafond</value></data>
+  <data name="Pad_Audio_EqCurve_Tooltip" xml:space="preserve"><value>Faites glisser un point pour déplacer sa fréquence et son gain. Utilisez la molette sur un point pour l'élargir ou le resserrer.</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>Chemin de sortie</value></data>
   <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Où la manette joue son audio. Par défaut conserve le routage du firmware et joue les sons PadForge sur le haut-parleur. Casque + Haut-parleur joue en mono côté casque, une limite du firmware. En Bluetooth, ce mode ne joue que dans le casque. Suivre la prise casque bascule vers le casque quand un appareil est branché sur la manette et revient au haut-parleur au débranchement ; sans lecture de la prise, agit comme Par défaut.</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>Par défaut</value></data>

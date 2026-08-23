@@ -312,6 +312,95 @@ namespace PadForge.Common.Input
         }
     }
 
+    /// <summary>Magnitude response of a band list, for drawing the curve.
+    ///
+    /// <para>The RBJ cookbook coefficients are recomputed here rather than
+    /// read out of <see cref="BiQuadFilter"/>, whose coefficients are private.
+    /// Same formulas, so the drawn curve is the curve that gets applied, and
+    /// the display does not depend on NAudio internals staying private or
+    /// otherwise.</para></summary>
+    public static class EqResponse
+    {
+        /// <summary>Summed response of every enabled band at one frequency,
+        /// in dB. Pass and notch types contribute their real attenuation, so
+        /// the curve shows what those actually do rather than drawing them
+        /// flat.</summary>
+        public static double MagnitudeDb(IReadOnlyList<EqBand> bands, double freqHz, int sampleRate)
+        {
+            if (bands == null || bands.Count == 0) return 0;
+            double total = 1.0;
+            foreach (var b in bands)
+            {
+                if (b == null || !b.Enabled) continue;
+                total *= Magnitude(b, freqHz, sampleRate);
+            }
+            return 20.0 * Math.Log10(Math.Max(total, 1e-6));
+        }
+
+        /// <summary>Linear magnitude of one band at one frequency.</summary>
+        public static double Magnitude(EqBand b, double freqHz, int sampleRate)
+        {
+            double w0 = 2 * Math.PI * Math.Clamp(b.FrequencyHz, 10f, sampleRate * 0.45f) / sampleRate;
+            double q = Math.Clamp(b.Q, 0.05f, 20f);
+            double alpha = Math.Sin(w0) / (2 * q);
+            double cw = Math.Cos(w0);
+            double A = Math.Pow(10, Math.Clamp(b.GainDb, -30f, 30f) / 40.0);
+            double b0, b1, b2, a0, a1, a2;
+
+            switch (b.Type)
+            {
+                case EqBandType.LowShelf:
+                {
+                    double s = 2 * Math.Sqrt(A) * alpha;
+                    b0 = A * ((A + 1) - (A - 1) * cw + s);
+                    b1 = 2 * A * ((A - 1) - (A + 1) * cw);
+                    b2 = A * ((A + 1) - (A - 1) * cw - s);
+                    a0 = (A + 1) + (A - 1) * cw + s;
+                    a1 = -2 * ((A - 1) + (A + 1) * cw);
+                    a2 = (A + 1) + (A - 1) * cw - s;
+                    break;
+                }
+                case EqBandType.HighShelf:
+                {
+                    double s = 2 * Math.Sqrt(A) * alpha;
+                    b0 = A * ((A + 1) + (A - 1) * cw + s);
+                    b1 = -2 * A * ((A - 1) + (A + 1) * cw);
+                    b2 = A * ((A + 1) + (A - 1) * cw - s);
+                    a0 = (A + 1) - (A - 1) * cw + s;
+                    a1 = 2 * ((A - 1) - (A + 1) * cw);
+                    a2 = (A + 1) - (A - 1) * cw - s;
+                    break;
+                }
+                case EqBandType.LowPass:
+                    b0 = (1 - cw) / 2; b1 = 1 - cw; b2 = (1 - cw) / 2;
+                    a0 = 1 + alpha; a1 = -2 * cw; a2 = 1 - alpha;
+                    break;
+                case EqBandType.HighPass:
+                    b0 = (1 + cw) / 2; b1 = -(1 + cw); b2 = (1 + cw) / 2;
+                    a0 = 1 + alpha; a1 = -2 * cw; a2 = 1 - alpha;
+                    break;
+                case EqBandType.Notch:
+                    b0 = 1; b1 = -2 * cw; b2 = 1;
+                    a0 = 1 + alpha; a1 = -2 * cw; a2 = 1 - alpha;
+                    break;
+                default:    // Peaking
+                    b0 = 1 + alpha * A; b1 = -2 * cw; b2 = 1 - alpha * A;
+                    a0 = 1 + alpha / A; a1 = -2 * cw; a2 = 1 - alpha / A;
+                    break;
+            }
+
+            // |H(e^jw)| at the evaluation frequency.
+            double w = 2 * Math.PI * Math.Clamp(freqHz, 1.0, sampleRate * 0.5 - 1) / sampleRate;
+            double cos1 = Math.Cos(w), sin1 = Math.Sin(w);
+            double cos2 = Math.Cos(2 * w), sin2 = Math.Sin(2 * w);
+            double numR = b0 + b1 * cos1 + b2 * cos2, numI = -(b1 * sin1 + b2 * sin2);
+            double denR = a0 + a1 * cos1 + a2 * cos2, denI = -(a1 * sin1 + a2 * sin2);
+            double num = Math.Sqrt(numR * numR + numI * numI);
+            double den = Math.Sqrt(denR * denR + denI * denI);
+            return den < 1e-12 ? 1.0 : num / den;
+        }
+    }
+
     /// <summary>Compact text encoding for a band list, so the whole EQ round
     /// trips through one XML attribute alongside every other per-device audio
     /// setting rather than needing its own element shape.

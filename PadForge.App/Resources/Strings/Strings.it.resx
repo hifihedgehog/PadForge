@@ -3181,6 +3181,7 @@ Puoi riprovare più tardi dalle Impostazioni.</value></data>
   <data name="Pad_Audio_Reset_EqPreamp" xml:space="preserve"><value>Reimposta la preamplificazione</value></data>
   <data name="Pad_Audio_Reset_Limiter" xml:space="preserve"><value>Reimposta il limiter</value></data>
   <data name="Pad_Audio_Reset_LimiterCeiling" xml:space="preserve"><value>Reimposta il tetto</value></data>
+  <data name="Pad_Audio_EqCurve_Tooltip" xml:space="preserve"><value>Trascinate un punto per spostarne frequenza e guadagno. Usate la rotellina su un punto per allargarlo o restringerlo.</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>Percorso di uscita</value></data>
   <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Dove il controller riproduce l'audio. Predefinito mantiene il routing del firmware e riproduce i suoni di PadForge sull'altoparlante. Cuffie + Altoparlante riproduce in mono sul lato cuffie, un limite del firmware. Via Bluetooth questa modalità riproduce solo nelle cuffie. Segui il jack passa alle cuffie quando qualcosa è collegato al controller e torna all'altoparlante quando viene scollegato; senza lettura del jack si comporta come Predefinito.</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>Predefinito</value></data>

@@ -3159,6 +3159,7 @@
   <data name="Pad_Audio_Reset_EqPreamp" xml:space="preserve"><value>プリアンプをリセット</value></data>
   <data name="Pad_Audio_Reset_Limiter" xml:space="preserve"><value>リミッターをリセット</value></data>
   <data name="Pad_Audio_Reset_LimiterCeiling" xml:space="preserve"><value>上限をリセット</value></data>
+  <data name="Pad_Audio_EqCurve_Tooltip" xml:space="preserve"><value>ポイントをドラッグすると周波数とゲインが変わります。ポイント上でホイールを回すと幅が変わります。</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>出力パス</value></data>
   <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>コントローラーが音声をどこで再生するか。既定はファームウェアのルーティングを維持し、PadForgeのサウンドはスピーカーで再生します。ヘッドホン＋スピーカーはヘッドセット側がモノラルになります（ファームウェアの制限）。Bluetooth接続時、このモードはヘッドホンのみで再生されます。ヘッドホン端子に追従は、コントローラーに接続されるとヘッドホンに、外すとスピーカーに切り替わります。端子の状態を取得できない場合は既定と同じ動作になります。</value></data>
   <data name="Pad_Audio_OutputPath_Auto" xml:space="preserve"><value>既定</value></data>

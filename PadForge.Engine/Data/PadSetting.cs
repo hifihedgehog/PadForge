@@ -471,7 +471,7 @@ namespace PadForge.Engine.Data
         /// <summary>Device GUID the right-trigger route activator reads from.</summary>
         [XmlElement] public string RightTriggerRouteActivatorDeviceGuid { get; set; } = "";
 
-        /// <summary>Left-trigger route activator mode: Hold / Toggle / AlwaysOn.
+        /// <summary>Left-trigger route activator mode: Hold / Toggle / ReleaseToEngage / AlwaysOn.
         /// AlwaysOn (and an empty activator) ignore the descriptor.</summary>
         [XmlElement] public string LeftTriggerRouteActivatorMode { get; set; } = "Hold";
 

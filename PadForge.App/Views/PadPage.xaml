@@ -11585,8 +11585,14 @@
                                      haptics AND microphone capture, so it is not a speaker
                                      knob. 48 is the shipped default (c571aae9); 16 is the
                                      floor the reference enforces
-                                     (DS5Dongle src/config.cpp:99). Advanced and optional. -->
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                     (DS5Dongle src/config.cpp:99). Advanced and optional.
+                                     Gated like the jack rows: the byte goes into the DS5
+                                     Bluetooth packet 0x11 header and nowhere else, so on a
+                                     DualShock 4, a Wii Remote or a haptic-tone pad this
+                                     slider was a control that did nothing (4.3.2 docs
+                                     sweep). -->
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8"
+                                            Visibility="{Binding SelectedDeviceHasHeadphoneJack, Converter={StaticResource BoolToVisibilityConverter}}">
                                     <TextBlock Text="{Binding Pad_Audio_BufferLength, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
                                                ToolTip="{Binding Pad_Audio_BufferLength_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <Slider Value="{Binding DeviceConfig.Ds5AudioBufferLength, Mode=TwoWay}"
@@ -11626,9 +11632,14 @@
                                      the resolved path is what decides whether crossfeed
                                      runs at all: it needs a genuinely stereo route, and
                                      the speaker paths carry a mono downmix. -->
+                                <!-- Gated on the DSP chain's REAL reach, not on having a
+                                     speaker: the chain runs on AudioPassthroughService sinks,
+                                     which exist for the Sony pads only. The Wii speaker and
+                                     the haptic-tone lanes never see it, and showing these
+                                     cards there was three cards that did nothing. -->
                                 <Separator Margin="0,10,0,10"
-                                           Visibility="{Binding SelectedDeviceHasSpeaker, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                                <StackPanel Visibility="{Binding SelectedDeviceHasSpeaker, Converter={StaticResource BoolToVisibilityConverter}}">
+                                           Visibility="{Binding SelectedDeviceHasDspChain, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                <StackPanel Visibility="{Binding SelectedDeviceHasDspChain, Converter={StaticResource BoolToVisibilityConverter}}">
 
                                     <!-- Crossfeed -->
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">

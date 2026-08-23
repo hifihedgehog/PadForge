@@ -38,6 +38,7 @@ $map = @{
     "pad-lighting"           = "lighting"
     "pad-gyro"               = "gyro"
     "pad-audio"              = "audio"
+    "pad-audio-dsp"          = "audio-dsp"
     "pad-touchpad"           = "touchpad"
     "pad-impulse-triggers"   = "impulse-triggers"
     "pad-trigger-routing"    = "trigger-routing"

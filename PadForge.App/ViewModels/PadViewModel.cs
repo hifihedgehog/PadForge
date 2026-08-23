@@ -1057,6 +1057,7 @@ namespace PadForge.ViewModels
                     if (value != null) value.PropertyChanged += OnSelectedDevicePropertyChanged;
                     OnPropertyChanged(nameof(HasSelectedDevice));
                     OnPropertyChanged(nameof(SelectedDeviceHasSpeaker));
+                    OnPropertyChanged(nameof(SelectedDeviceHasDspChain));
                     OnPropertyChanged(nameof(SelectedDeviceHasHeadphoneJack));
                     OnPropertyChanged(nameof(SelectedDeviceHasNoSpeaker));
                     OnPropertyChanged(nameof(SelectedDeviceHasHapticTones));
@@ -5215,6 +5216,29 @@ namespace PadForge.ViewModels
 
         public bool SelectedDeviceHasNoSpeaker => !SelectedDeviceHasSpeaker;
 
+        /// <summary>The selected device is a Sony pad whose audio rides an
+        /// AudioPassthroughService sink, which is the only place the #347
+        /// DSP chain (crossfeed, EQ, limiter) runs. The Wii speaker and the
+        /// haptic-tone lanes have their own sinks and never see the chain, so
+        /// gating its cards on SelectedDeviceHasSpeaker showed three cards
+        /// on a Wii Remote or a Joy-Con that did nothing at all. Same shape
+        /// as SelectedDeviceHasSpeaker with the two non-Sony arms removed, and
+        /// the same Bluetooth-only rule for the DualShock 4.</summary>
+        public bool SelectedDeviceHasDspChain
+        {
+            get
+            {
+                var sel = SelectedMappedDevice;
+                if (sel == null || sel.InstanceGuid == Guid.Empty) return false;
+                var ud = PadForge.Common.Input.SettingsManager.FindDeviceByInstanceGuid(sel.InstanceGuid);
+                if (ud == null || ud.VendorId != 0x054C) return false;
+                if (ud.ProdId is 0x0CE6 or 0x0DF2 or 0x0BA0) return true;
+                if (ud.ProdId is 0x05C4 or 0x09CC)
+                    return (ud.DevicePath ?? "").IndexOf("{00001124", StringComparison.OrdinalIgnoreCase) >= 0;
+                return false;
+            }
+        }
+
         /// <summary>True when the SELECTED assigned device plays haptic TONES
         /// (Joy-Con, Switch Pro, Steam family) rather than real speaker audio.
         /// Gates the mirror engage row (#185): the engage gate exists because a
@@ -5668,10 +5692,21 @@ namespace PadForge.ViewModels
             _resetSoundMasterVolumeCommand ??= new RelayCommand(() => SoundMasterVolume = 100);
 
         private RelayCommand _resetSoundOutputAllCommand;
-        /// <summary>Resets the Sound Output card for the selected device:
-        /// mirror off, mirror source back to system default, master volume
-        /// to 100%, the #185 engage gate back to Always with its defaults,
-        /// and the #202 tone filter back to Off / 800 Hz.</summary>
+        /// <summary>Resets the Sound Output card for the selected device, the
+        /// WHOLE card: mirror off, mirror source back to system default, master
+        /// volume to 100%, the #185 engage gate back to Always with its
+        /// defaults, the #202 tone filter back to Off / 800 Hz, the #271
+        /// persona haptics off at 100%, the #314 Bluetooth audio buffer back
+        /// to its default, headphone volume and output path, and the whole
+        /// #347 DSP chain (crossfeed off with the custom knobs at bs2b's
+        /// defaults, EQ off with no bands and no preamp, limiter on at 98%).
+        ///
+        /// <para>A reset-all that skips rows it does not know about is the
+        /// defect the "Clear All resets the ENTIRE row surface" rule exists
+        /// to forbid. The 4.3.2 docs sweep caught this one skipping eight rows
+        /// across three features that had each landed after it was written.
+        /// The EQ rows are cleared through ClearEqBandsCommand so the grid and
+        /// the config agree.</para></summary>
         public RelayCommand ResetSoundOutputAllCommand =>
             _resetSoundOutputAllCommand ??= new RelayCommand(() =>
             {
@@ -5686,8 +5721,21 @@ namespace PadForge.ViewModels
                     DeviceConfig.AudioMirrorEngageReleaseMs = 500;
                     DeviceConfig.AudioToneFilterMode = "Off";
                     DeviceConfig.AudioToneLimitHz = 800;
+                    DeviceConfig.AudioPersonaHapticsEnabled = false;
+                    DeviceConfig.AudioPersonaHapticsGain = 100;
+                    DeviceConfig.Ds5AudioBufferLength = PadForge.Common.Input.AudioPassthroughService.Ds5AudioBufferLengthDefault;
                     DeviceConfig.HeadphoneVolume = 100;
                     DeviceConfig.AudioOutputPath = AudioOutputPath.Automatic;
+                    // The DSP chain (#347). Bands through the command that
+                    // owns the grid, then the scalars.
+                    ClearEqBandsCommand.Execute(null);
+                    DeviceConfig.AudioEqEnabled = false;
+                    DeviceConfig.AudioEqPreampDb = 0;
+                    DeviceConfig.AudioCrossfeedLevel = 0;
+                    DeviceConfig.AudioCrossfeedCutHz = 700;
+                    DeviceConfig.AudioCrossfeedFeedDb = 4.5d;
+                    DeviceConfig.AudioLimiterEnabled = true;
+                    DeviceConfig.AudioLimiterCeiling = 98;
                     OnPropertyChanged(nameof(MirrorEngageSelectedInput));
                 }
             });
@@ -6816,6 +6864,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(SoundMacros));
                     OnPropertyChanged(nameof(HasNoSoundMacros));
                     OnPropertyChanged(nameof(SelectedDeviceHasSpeaker));
+                    OnPropertyChanged(nameof(SelectedDeviceHasDspChain));
                     OnPropertyChanged(nameof(SelectedDeviceHasHeadphoneJack));
                     OnPropertyChanged(nameof(SelectedDeviceHasNoSpeaker));
                     OnPropertyChanged(nameof(SelectedDeviceHasHapticTones));

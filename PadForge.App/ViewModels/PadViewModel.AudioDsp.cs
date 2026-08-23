@@ -226,8 +226,22 @@ namespace PadForge.ViewModels
         public float FrequencyHz
         {
             get => _frequencyHz;
-            set { if (SetProperty(ref _frequencyHz, Math.Clamp(value, 10f, 24000f))) Push(); }
+            // The engine's own ceiling, not a rounder number near it. The old
+            // 24000 let the editor accept a band the DSP then silently pulled
+            // down to 21600, which is the exact thing this class's doc comment
+            // says it does not do.
+            set
+            {
+                if (SetProperty(ref _frequencyHz,
+                        Math.Clamp(value, 10f, EqBand.MaxFrequencyHz(MirrorRate))))
+                    Push();
+            }
         }
+
+        /// <summary>The rate the chain runs at, mirroring
+        /// AudioPassthroughService's own constant. Both Sony transports
+        /// resample to it, so a band's ceiling does not vary by device.</summary>
+        private const int MirrorRate = 48000;
 
         private float _gainDb;
         public float GainDb

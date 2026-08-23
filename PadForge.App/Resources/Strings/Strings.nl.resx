@@ -3169,6 +3169,12 @@ Je kunt het later opnieuw proberen via Instellingen.</value></data>
   <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>Algemeen niveau vóór de banden. AutoEq-profielen bevatten een negatieve voorversterking zodat hun versterkingen niet vervormen, en importeren stelt die voor u in.</value></data>
   <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>Aan</value></data>
   <data name="Pad_Audio_EqCol_Type" xml:space="preserve"><value>Type</value></data>
+  <data name="Pad_Audio_EqType_Peaking" xml:space="preserve"><value>Piek</value></data>
+  <data name="Pad_Audio_EqType_LowShelf" xml:space="preserve"><value>Low Shelf</value></data>
+  <data name="Pad_Audio_EqType_HighShelf" xml:space="preserve"><value>High Shelf</value></data>
+  <data name="Pad_Audio_EqType_HighPass" xml:space="preserve"><value>Hoogdoorlaat</value></data>
+  <data name="Pad_Audio_EqType_LowPass" xml:space="preserve"><value>Laagdoorlaat</value></data>
+  <data name="Pad_Audio_EqType_Notch" xml:space="preserve"><value>Notch</value></data>
   <data name="Pad_Audio_EqCol_Freq" xml:space="preserve"><value>Freq. (Hz)</value></data>
   <data name="Pad_Audio_EqCol_Gain" xml:space="preserve"><value>Versterking (dB)</value></data>
   <data name="Pad_Audio_EqCol_Q" xml:space="preserve"><value>Q</value></data>

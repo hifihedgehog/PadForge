@@ -3149,6 +3149,12 @@ Du kannst es später in den Einstellungen erneut versuchen.</value></data>
   <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>Gesamtpegel vor den Bändern. AutoEq-Profile liefern eine negative Vorverstärkung, damit ihre Anhebungen nicht übersteuern; ein Import setzt sie automatisch.</value></data>
   <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>Ein</value></data>
   <data name="Pad_Audio_EqCol_Type" xml:space="preserve"><value>Typ</value></data>
+  <data name="Pad_Audio_EqType_Peaking" xml:space="preserve"><value>Glocke</value></data>
+  <data name="Pad_Audio_EqType_LowShelf" xml:space="preserve"><value>Kuhschwanz Tief</value></data>
+  <data name="Pad_Audio_EqType_HighShelf" xml:space="preserve"><value>Kuhschwanz Hoch</value></data>
+  <data name="Pad_Audio_EqType_HighPass" xml:space="preserve"><value>Hochpass</value></data>
+  <data name="Pad_Audio_EqType_LowPass" xml:space="preserve"><value>Tiefpass</value></data>
+  <data name="Pad_Audio_EqType_Notch" xml:space="preserve"><value>Kerbfilter</value></data>
   <data name="Pad_Audio_EqCol_Freq" xml:space="preserve"><value>Freq. (Hz)</value></data>
   <data name="Pad_Audio_EqCol_Gain" xml:space="preserve"><value>Pegel (dB)</value></data>
   <data name="Pad_Audio_EqCol_Q" xml:space="preserve"><value>Güte</value></data>

@@ -3149,6 +3149,12 @@
   <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>各频段之前的总体电平。AutoEq 配置文件自带负的前置增益以防提升导致削波，导入时会自动设置。</value></data>
   <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>启用</value></data>
   <data name="Pad_Audio_EqCol_Type" xml:space="preserve"><value>类型</value></data>
+  <data name="Pad_Audio_EqType_Peaking" xml:space="preserve"><value>峰值</value></data>
+  <data name="Pad_Audio_EqType_LowShelf" xml:space="preserve"><value>低频架式</value></data>
+  <data name="Pad_Audio_EqType_HighShelf" xml:space="preserve"><value>高频架式</value></data>
+  <data name="Pad_Audio_EqType_HighPass" xml:space="preserve"><value>高通</value></data>
+  <data name="Pad_Audio_EqType_LowPass" xml:space="preserve"><value>低通</value></data>
+  <data name="Pad_Audio_EqType_Notch" xml:space="preserve"><value>陷波</value></data>
   <data name="Pad_Audio_EqCol_Freq" xml:space="preserve"><value>频率 (Hz)</value></data>
   <data name="Pad_Audio_EqCol_Gain" xml:space="preserve"><value>增益 (dB)</value></data>
   <data name="Pad_Audio_EqCol_Q" xml:space="preserve"><value>Q 值</value></data>

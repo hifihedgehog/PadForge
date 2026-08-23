@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Globalization;
-using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -47,6 +46,27 @@ namespace PadForge.Controls
             get => (ObservableCollection<EqBandVm>)GetValue(BandsProperty);
             set => SetValue(BandsProperty, value);
         }
+
+        // Frozen once. OnRender runs on every mouse-move during a drag, and
+        // the Atom x5-Z8350 perf floor is the reason these are not rebuilt
+        // there: ten brushes and pens a frame is pure garbage for a drawing
+        // that never changes colour.
+        private static readonly Brush Bg = Frozen(new SolidColorBrush(Color.FromArgb(0x30, 0x00, 0x00, 0x00)));
+        private static readonly Pen GridPen = Frozen(new Pen(Frozen(new SolidColorBrush(Color.FromArgb(0x38, 0xC8, 0xC8, 0xC8))), 1));
+        private static readonly Pen ZeroPen = Frozen(new Pen(Frozen(new SolidColorBrush(Color.FromArgb(0x70, 0xC8, 0xC8, 0xC8))), 1));
+        private static readonly Brush LabelBrush = Frozen(new SolidColorBrush(Color.FromArgb(0x90, 0xC8, 0xC8, 0xC8)));
+        private static readonly Pen CurvePen = Frozen(new Pen(Frozen(new SolidColorBrush(Color.FromRgb(0xF2, 0x65, 0x2A))), 2));
+        private static readonly Brush HandleFill = Frozen(new SolidColorBrush(Color.FromRgb(0xF2, 0x65, 0x2A)));
+        private static readonly Brush HandleHot = Frozen(new SolidColorBrush(Color.FromRgb(0xFF, 0x9D, 0x5D)));
+        private static readonly Pen HandleRing = Frozen(new Pen(Frozen(new SolidColorBrush(Colors.White)), 1.5));
+        private static readonly Typeface Face = new("Segoe UI");
+        private static readonly double[] GridHz = { 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000 };
+
+        private static T Frozen<T>(T f) where T : Freezable { f.Freeze(); return f; }
+
+        // Reused across renders for the same reason: one list per frame of a
+        // drag is one list too many.
+        private readonly List<EqBand> _scratch = new();
 
         private EqBandVm _drag;
         private EqBandVm _hover;
@@ -109,36 +129,30 @@ namespace PadForge.Controls
             double w = ActualWidth, h = ActualHeight;
             if (w <= 1 || h <= 1) return;
 
-            var bg = new SolidColorBrush(Color.FromArgb(0x30, 0x00, 0x00, 0x00));
-            bg.Freeze();
-            dc.DrawRectangle(bg, null, new Rect(0, 0, w, h));
+            dc.DrawRectangle(Bg, null, new Rect(0, 0, w, h));
 
-            var gridPen = new Pen(new SolidColorBrush(Color.FromArgb(0x38, 0xC8, 0xC8, 0xC8)), 1);
-            gridPen.Freeze();
-            var zeroPen = new Pen(new SolidColorBrush(Color.FromArgb(0x70, 0xC8, 0xC8, 0xC8)), 1);
-            zeroPen.Freeze();
-            var label = new SolidColorBrush(Color.FromArgb(0x90, 0xC8, 0xC8, 0xC8));
-            label.Freeze();
-
-            foreach (double hz in new[] { 20d, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000 })
+            foreach (double hz in GridHz)
             {
                 double x = Math.Round(XOf(hz)) + 0.5;
-                dc.DrawLine(gridPen, new Point(x, 0), new Point(x, h));
+                dc.DrawLine(GridPen, new Point(x, 0), new Point(x, h));
                 string t = hz >= 1000 ? (hz / 1000).ToString("0.#", CultureInfo.InvariantCulture) + "k"
                                       : hz.ToString("0", CultureInfo.InvariantCulture);
-                dc.DrawText(Text(t, label, 9), new Point(Math.Min(x + 3, w - 22), h - 13));
+                dc.DrawText(Text(t, LabelBrush, 9), new Point(Math.Min(x + 3, w - 22), h - 13));
             }
             for (double db = -MaxDb; db <= MaxDb; db += 12)
             {
                 double y = Math.Round(YOf(db)) + 0.5;
-                dc.DrawLine(Math.Abs(db) < 0.01 ? zeroPen : gridPen, new Point(0, y), new Point(w, y));
+                dc.DrawLine(Math.Abs(db) < 0.01 ? ZeroPen : GridPen, new Point(0, y), new Point(w, y));
                 if (Math.Abs(db) > 0.01)
-                    dc.DrawText(Text((db > 0 ? "+" : "") + db.ToString("0", CultureInfo.InvariantCulture), label, 9),
+                    dc.DrawText(Text((db > 0 ? "+" : "") + db.ToString("0", CultureInfo.InvariantCulture), LabelBrush, 9),
                                 new Point(3, y + 1));
             }
 
-            var bands = Bands?.Select(v => v.ToBandPublic()).ToList();
-            if (bands == null || bands.Count == 0) return;
+            var src = Bands;
+            if (src == null || src.Count == 0) return;
+            var bands = _scratch;
+            bands.Clear();
+            foreach (var v in src) bands.Add(v.ToBandPublic());
 
             // The response curve, one point per device pixel.
             var geo = new StreamGeometry();
@@ -156,19 +170,14 @@ namespace PadForge.Controls
                 }
             }
             geo.Freeze();
-            var curve = new Pen(new SolidColorBrush(Color.FromRgb(0xF2, 0x65, 0x2A)), 2);
-            curve.Freeze();
-            dc.DrawGeometry(null, curve, geo);
+            dc.DrawGeometry(null, CurvePen, geo);
 
             // One handle per band, hollow when disabled.
-            var fill = new SolidColorBrush(Color.FromRgb(0xF2, 0x65, 0x2A)); fill.Freeze();
-            var hot = new SolidColorBrush(Color.FromRgb(0xFF, 0x9D, 0x5D)); hot.Freeze();
-            var ring = new Pen(new SolidColorBrush(Colors.White), 1.5); ring.Freeze();
-            foreach (var vm in Bands)
+            foreach (var vm in src)
             {
                 var c = new Point(XOf(vm.FrequencyHz), YOf(GainForHandle(vm)));
                 bool isHot = ReferenceEquals(vm, _hover) || ReferenceEquals(vm, _drag);
-                dc.DrawEllipse(vm.Enabled ? (isHot ? hot : fill) : null, ring, c, HandleR, HandleR);
+                dc.DrawEllipse(vm.Enabled ? (isHot ? HandleHot : HandleFill) : null, HandleRing, c, HandleR, HandleR);
             }
         }
 
@@ -185,7 +194,7 @@ namespace PadForge.Controls
 
         private static FormattedText Text(string s, Brush b, double size) =>
             new(s, CultureInfo.InvariantCulture, FlowDirection.LeftToRight,
-                new Typeface("Segoe UI"), size, b, 1.25);
+                Face, size, b, 1.25);
 
         // ── interaction ─────────────────────────────────────────────────────
 

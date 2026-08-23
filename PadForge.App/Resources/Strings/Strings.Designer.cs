@@ -527,6 +527,12 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Audio_EqPreamp => Get("Pad_Audio_EqPreamp");
     public string Pad_Audio_EqPreamp_Tooltip => Get("Pad_Audio_EqPreamp_Tooltip");
     public string Pad_Audio_EqRemove => Get("Pad_Audio_EqRemove");
+    public string Pad_Audio_EqType_HighPass => Get("Pad_Audio_EqType_HighPass");
+    public string Pad_Audio_EqType_HighShelf => Get("Pad_Audio_EqType_HighShelf");
+    public string Pad_Audio_EqType_LowPass => Get("Pad_Audio_EqType_LowPass");
+    public string Pad_Audio_EqType_LowShelf => Get("Pad_Audio_EqType_LowShelf");
+    public string Pad_Audio_EqType_Notch => Get("Pad_Audio_EqType_Notch");
+    public string Pad_Audio_EqType_Peaking => Get("Pad_Audio_EqType_Peaking");
     public string Pad_Audio_Eq_Tooltip => Get("Pad_Audio_Eq_Tooltip");
     public string Pad_Audio_Limiter => Get("Pad_Audio_Limiter");
     public string Pad_Audio_LimiterCeiling => Get("Pad_Audio_LimiterCeiling");

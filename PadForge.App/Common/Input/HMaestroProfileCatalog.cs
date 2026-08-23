@@ -9,7 +9,7 @@ namespace PadForge.Common.Input
     /// Read-only catalog of HIDMaestro profiles, partitioned by the v3
     /// category dropdown (Xbox / PlayStation / Extended). Owns its own
     /// metadata-only HMContext: it calls LoadDefaultProfiles to enumerate
-    /// the 225 embedded profile JSONs but never instantiates HMController
+    /// the embedded profile JSONs (231 in the shipped SDK) but never instantiates HMController
     /// or installs the driver. The engine's separate HMContext in
     /// InputManager.Step5 owns the live device lifecycle.
     ///

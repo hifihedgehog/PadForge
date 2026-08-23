@@ -317,6 +317,11 @@ namespace PadForge.Common.Input
         // Speaker-path bookkeeping for the DS5 dispatcher.
         private static readonly HashSet<Guid> _speakerPathCleared = new();
 
+        /// <summary>Previous pass's per-slot "has a live sink" state, so the
+        /// reconcile can spot the RISING edge and nudge the effects dispatcher.
+        /// Worker-thread only, like the reconcile that owns it.</summary>
+        private static readonly bool[] _lastRouted = new bool[MaxPads];
+
         // ─────────────────────────────────────────────
         //  Loopback captures (one per mirror source, per-sink cursors)
         // ─────────────────────────────────────────────
@@ -769,6 +774,160 @@ namespace PadForge.Common.Input
             return 0;                       // unknown: Default
         }
 
+        // ── Headphone-jack observation, independent of the persona lane ─────
+        //
+        // The jack bit used to be read ONLY by two PersonaFeed-owned threads
+        // (the USB jack reader and the BT mic reader). A PersonaFeed exists
+        // only when the slot's virtual controller is a composite USB persona,
+        // which is to say only when there IS a virtual DualSense. Without one
+        // the bit was never observed, TryGetHeadphoneJack returned null,
+        // ResolveOutputPath fell through to Default, and the DualSense
+        // firmware default routes program audio to the headphones and keeps
+        // the internal speaker silent. Follow Headphone Jack therefore did
+        // nothing and Mirror System Audio was silent, with no error anywhere.
+        //
+        // The jack matters exactly when a sink exists, so the sink owns this
+        // watch now. The persona readers still run and still call
+        // NoteHeadphoneJack; a pad they already cover is skipped rather than
+        // given a second reader.
+        private sealed class JackWatch
+        {
+            public System.Threading.Thread Thread;
+            public volatile bool Stop;
+            public IntPtr Handle = IntPtr.Zero;
+            public string Path;
+            public bool IsBt;
+        }
+
+        private static readonly object _jackLock = new();
+        private static readonly Dictionary<Guid, JackWatch> _jackWatch = new();
+
+        /// <summary>True while a persona lane already reads this pad's status
+        /// byte, so the sink-owned watch stays out of its way.</summary>
+        private static bool PersonaCoversJack(Guid pad)
+        {
+            foreach (var f in _personaFeeds.Values)
+                if (f != null && (f.UsbJackPadGuid == pad || f.BtMicPadGuid == pad))
+                    return true;
+            return false;
+        }
+
+        private static void EnsureJackWatch(Guid pad, string hidPath, bool isBt)
+        {
+            if (pad == Guid.Empty || string.IsNullOrEmpty(hidPath)) return;
+            if (PersonaCoversJack(pad)) { StopJackWatch(pad); return; }
+            lock (_jackLock)
+            {
+                if (_jackWatch.TryGetValue(pad, out var cur))
+                {
+                    // Same pad on the same path and transport: nothing to do.
+                    // A transport flip (BT <-> USB re-pair) changes the report
+                    // framing AND the byte offset, so that one restarts.
+                    if (cur.IsBt == isBt && string.Equals(cur.Path, hidPath, StringComparison.OrdinalIgnoreCase))
+                        return;
+                    StopJackWatch_NoLock(pad);
+                }
+                var w = new JackWatch { Path = hidPath, IsBt = isBt };
+                var th = new System.Threading.Thread(() => JackWatchLoop(w, pad))
+                { IsBackground = true, Name = "PadForge.JackWatch" };
+                w.Thread = th;
+                _jackWatch[pad] = w;
+                th.Start();
+            }
+        }
+
+        private static void StopJackWatch(Guid pad)
+        {
+            lock (_jackLock) StopJackWatch_NoLock(pad);
+        }
+
+        private static void StopJackWatch_NoLock(Guid pad)
+        {
+            if (!_jackWatch.TryGetValue(pad, out var w)) return;
+            _jackWatch.Remove(pad);
+            w.Stop = true;
+            // Close the handle to break the blocking read. The loop owns no
+            // other exit: ReadFileSync parks until a report arrives, and an
+            // idle pad can be quiet for a long time.
+            var h = w.Handle;
+            w.Handle = IntPtr.Zero;
+            if (h != IntPtr.Zero && h != new IntPtr(-1)) NativeMethods.CloseHandle(h);
+        }
+
+        /// <summary>Reads the pad's input report and notes the
+        /// PluggedHeadphones bit. Read-only, so it cannot collide with the
+        /// effect writer's single-writer contract, the same argument the
+        /// persona reader makes for its own parallel handle.
+        ///
+        /// <para>USB is report 0x01 with the status at struct offset 53, raw
+        /// byte 54. Bluetooth is report 0x31 whose packet starts at data[2],
+        /// putting the same struct offset at raw byte 55. Both are duaLib
+        /// dataStructures.h /*53.0*/ PluggedHeadphones.</para></summary>
+        private static void JackWatchLoop(JackWatch w, Guid pad)
+        {
+            IntPtr h = NativeMethods.OpenHidSync(w.Path);
+            if (h == IntPtr.Zero || h == new IntPtr(-1))
+            {
+                Engine.SdlDiagLog.WriteLine("JACKWATCH open FAILED bt=" + w.IsBt);
+                lock (_jackLock) if (_jackWatch.TryGetValue(pad, out var cur) && ReferenceEquals(cur, w)) _jackWatch.Remove(pad);
+                return;
+            }
+            lock (_jackLock)
+            {
+                // Stopped while we were opening: close our own handle and go.
+                if (w.Stop) { NativeMethods.CloseHandle(h); return; }
+                w.Handle = h;
+            }
+            byte wantId = w.IsBt ? (byte)0x31 : (byte)0x01;
+            int need = w.IsBt ? 56 : 55;
+            int bitByte = w.IsBt ? 55 : 54;
+            var report = new byte[78];
+            bool haveLast = false, last = false;
+            try
+            {
+                while (!w.Stop)
+                {
+                    if (!NativeMethods.ReadFileSync(h, report, report.Length, out int got) || got < need)
+                    {
+                        if (w.Stop) break;
+                        System.Threading.Thread.Sleep(50);
+                        continue;
+                    }
+                    if (report[0] != wantId) continue;
+                    bool plugged = (report[bitByte] & 0x01) != 0;
+                    if (!haveLast || plugged != last)
+                    {
+                        haveLast = true; last = plugged;
+                        NoteHeadphoneJack(pad, plugged);
+                        // The resolver + the dispatcher's change gating turn
+                        // this into the route re-arm.
+                        UserEffectsDispatcher.NotifySoundRoutingChanged(SlotOfDevice(pad));
+                        Engine.SdlDiagLog.WriteLine("JACKWATCH plugged=" + plugged + " bt=" + w.IsBt);
+                    }
+                }
+            }
+            catch { }
+            finally
+            {
+                lock (_jackLock)
+                {
+                    if (_jackWatch.TryGetValue(pad, out var cur) && ReferenceEquals(cur, w))
+                        _jackWatch.Remove(pad);
+                    var own = w.Handle;
+                    w.Handle = IntPtr.Zero;
+                    if (own != IntPtr.Zero && own != new IntPtr(-1)) NativeMethods.CloseHandle(own);
+                }
+            }
+        }
+
+        /// <summary>Slot currently holding a sink for this device, or -1.
+        /// Used to aim the route re-arm at the right dispatcher.</summary>
+        private static int SlotOfDevice(Guid pad)
+        {
+            lock (_lock)
+                return _sinks.TryGetValue(pad, out var s) ? s.Slot : -1;
+        }
+
         /// <summary>Maps one stereo source frame onto the pad's UAC
         /// channels 0/1 for the configured output path.
         ///
@@ -979,6 +1138,34 @@ namespace PadForge.Common.Input
             lock (_lock)
                 return _sinks.TryGetValue(deviceGuid, out var s) && SinkAlive(s)
                     && !VendorAudioTestActive_NoLock(deviceGuid);
+        }
+
+        /// <summary>The slot-wide form of <see cref="WantsSpeakerPath"/>: does
+        /// ANY device on this slot currently want the firmware speaker path.
+        ///
+        /// <para>The effects dispatcher needs this to keep its timer alive.
+        /// The speaker-path assert rides the same output report as the rumble
+        /// bytes, so it needs a writer running for exactly the same reason,
+        /// and UpdateAnimTimer had no term for it. On a slot whose lightbar is
+        /// static and whose pad is not rumbling, nothing ran the dispatcher,
+        /// so the assert landed only if some unrelated feature happened to be
+        /// holding the timer open.</para>
+        ///
+        /// <para>Called from the polling thread at the dispatcher's own
+        /// cadence, never per audio frame. Takes only this service's lock and
+        /// calls nothing back, so it cannot invert with the dispatcher's
+        /// timer lock.</para></summary>
+        public static bool SlotWantsSpeakerPath(int padIndex)
+        {
+            if ((uint)padIndex >= MaxPads) return false;
+            lock (_lock)
+            {
+                foreach (var s in _sinks.Values)
+                    if (s.Slot == padIndex && !s.IsPeer && SinkAlive(s)
+                        && !VendorAudioTestActive_NoLock(s.DeviceGuid))
+                        return true;
+            }
+            return false;
         }
 
         /// <summary>Non-consuming read of the one-shot below. The dispatcher
@@ -2586,6 +2773,23 @@ namespace PadForge.Common.Input
             foreach (var s in toDispose) DisposeTransport(s);
             foreach (var s in toBuild) BuildTransportOnWorker(s);
 
+            // Phase 3b: headphone-jack watches follow the sink set. The jack
+            // only matters while a sink exists, and observing it no longer
+            // requires a persona lane, which is what tied Follow Headphone
+            // Jack to owning a virtual DualSense. DualSense only: the status
+            // byte is duaLib's DS5 shape, and no DS4 path follows the jack.
+            var jackWanted = new HashSet<Guid>();
+            foreach (var d in desired)
+            {
+                if (d.IsDs4 || d.IsPeer) continue;
+                jackWanted.Add(d.Guid);
+                EnsureJackWatch(d.Guid, d.Path, d.IsBt);
+            }
+            List<Guid> jackStale;
+            lock (_jackLock)
+                jackStale = _jackWatch.Keys.Where(g => !jackWanted.Contains(g)).ToList();
+            foreach (var g in jackStale) StopJackWatch(g);
+
             // Phase 4 — loopback captures (own brief locks).
             ReconcileCapturesOnWorker();
 
@@ -2616,6 +2820,21 @@ namespace PadForge.Common.Input
             }
             for (int slot = 0; slot < MaxPads; slot++)
                 SoundMacroService.SetSlotControllerRouted(slot, routed[slot]);
+
+            // A slot that just GAINED a live sink needs the same nudge the
+            // teardown and expired-test paths already send. This was the one
+            // sink transition of the four that did not notify, and it is the
+            // arm direction: the dispatcher writes on events, so with no event
+            // the firmware speaker path was never asserted and a perfectly
+            // healthy sink streamed Opus into a muted path. Silent, no error,
+            // and a restart "fixed" it only because startup ordering happened
+            // to put an ApplyOnce after the sink came up.
+            for (int slot = 0; slot < MaxPads; slot++)
+            {
+                if (routed[slot] && !_lastRouted[slot]) expiredTestSlots.Add(slot);
+                _lastRouted[slot] = routed[slot];
+            }
+
             foreach (int slot in expiredTestSlots.Distinct())
                 UserEffectsDispatcher.NotifySoundRoutingChanged(slot);
         }

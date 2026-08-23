@@ -3158,6 +3158,13 @@ Puoi riprovare più tardi dalle Impostazioni.</value></data>
   <data name="Pad_Audio_Crossfeed_LowEasy" xml:space="preserve"><value>Basso (leggero)</value></data>
   <data name="Pad_Audio_Crossfeed_MiddleEasy" xml:space="preserve"><value>Medio (leggero)</value></data>
   <data name="Pad_Audio_Crossfeed_HighEasy" xml:space="preserve"><value>Alto (leggero)</value></data>
+  <data name="Pad_Audio_Crossfeed_Custom" xml:space="preserve"><value>Personalizzato</value></data>
+  <data name="Pad_Audio_CrossfeedCut" xml:space="preserve"><value>Frequenza di taglio</value></data>
+  <data name="Pad_Audio_CrossfeedCut_Tooltip" xml:space="preserve"><value>Frequenza di incrocio. Sotto, i canali si avvicinano al mono, sopra restano separati, quindi un taglio più basso miscela meno.</value></data>
+  <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>Dose</value></data>
+  <data name="Pad_Audio_CrossfeedFeed_Tooltip" xml:space="preserve"><value>Quanto del canale opposto arriva sotto il taglio. Più dose restringe l'immagine e allarga la sensazione di sala.</value></data>
+  <data name="Pad_Audio_Reset_CrossfeedCut" xml:space="preserve"><value>Reimposta la frequenza di taglio</value></data>
+  <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>Reimposta la dose</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>Equalizzatore parametrico</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>Filtri per banda sull'audio del controller. Applicato prima della codifica, quindi il limiter sotto evita che una banda esaltata vada in clipping.</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>Preamplificazione</value></data>

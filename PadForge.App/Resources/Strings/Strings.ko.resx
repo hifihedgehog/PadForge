@@ -3136,6 +3136,13 @@
   <data name="Pad_Audio_Crossfeed_LowEasy" xml:space="preserve"><value>약하게(부드럽게)</value></data>
   <data name="Pad_Audio_Crossfeed_MiddleEasy" xml:space="preserve"><value>보통(부드럽게)</value></data>
   <data name="Pad_Audio_Crossfeed_HighEasy" xml:space="preserve"><value>강하게(부드럽게)</value></data>
+  <data name="Pad_Audio_Crossfeed_Custom" xml:space="preserve"><value>사용자 지정</value></data>
+  <data name="Pad_Audio_CrossfeedCut" xml:space="preserve"><value>차단 주파수</value></data>
+  <data name="Pad_Audio_CrossfeedCut_Tooltip" xml:space="preserve"><value>크로스오버 주파수입니다. 이보다 낮으면 좌우가 모노에 가까워지고 높으면 분리된 상태로 남습니다. 차단 주파수가 낮을수록 덜 섞입니다.</value></data>
+  <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>혼합량</value></data>
+  <data name="Pad_Audio_CrossfeedFeed_Tooltip" xml:space="preserve"><value>차단 주파수 아래에서 반대 채널이 얼마나 도달하는지입니다. 혼합량이 클수록 음상이 좀아지고 공간감은 넓어집니다.</value></data>
+  <data name="Pad_Audio_Reset_CrossfeedCut" xml:space="preserve"><value>차단 주파수 재설정</value></data>
+  <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>혼합량 재설정</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>파라메트릭 EQ</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>컨트롤러 오디오에 적용되는 대역별 필터입니다. 인코딩 전에 적용되므로 아래 리미터가 부스트된 대역의 클리핑을 막습니다.</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>프리앰프</value></data>

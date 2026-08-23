@@ -501,6 +501,11 @@ public class Strings : INotifyPropertyChanged
     public string About_GestureSignDesc => Get("About_GestureSignDesc");
     public string Pad_Audio_Reset_All => Get("Pad_Audio_Reset_All");
     public string Pad_Audio_Crossfeed => Get("Pad_Audio_Crossfeed");
+    public string Pad_Audio_CrossfeedCut => Get("Pad_Audio_CrossfeedCut");
+    public string Pad_Audio_CrossfeedCut_Tooltip => Get("Pad_Audio_CrossfeedCut_Tooltip");
+    public string Pad_Audio_CrossfeedFeed => Get("Pad_Audio_CrossfeedFeed");
+    public string Pad_Audio_CrossfeedFeed_Tooltip => Get("Pad_Audio_CrossfeedFeed_Tooltip");
+    public string Pad_Audio_Crossfeed_Custom => Get("Pad_Audio_Crossfeed_Custom");
     public string Pad_Audio_Crossfeed_High => Get("Pad_Audio_Crossfeed_High");
     public string Pad_Audio_Crossfeed_HighEasy => Get("Pad_Audio_Crossfeed_HighEasy");
     public string Pad_Audio_Crossfeed_Low => Get("Pad_Audio_Crossfeed_Low");
@@ -528,6 +533,8 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Audio_LimiterCeiling_Tooltip => Get("Pad_Audio_LimiterCeiling_Tooltip");
     public string Pad_Audio_Limiter_Tooltip => Get("Pad_Audio_Limiter_Tooltip");
     public string Pad_Audio_Reset_Crossfeed => Get("Pad_Audio_Reset_Crossfeed");
+    public string Pad_Audio_Reset_CrossfeedCut => Get("Pad_Audio_Reset_CrossfeedCut");
+    public string Pad_Audio_Reset_CrossfeedFeed => Get("Pad_Audio_Reset_CrossfeedFeed");
     public string Pad_Audio_Reset_Eq => Get("Pad_Audio_Reset_Eq");
     public string Pad_Audio_Reset_EqPreamp => Get("Pad_Audio_Reset_EqPreamp");
     public string Pad_Audio_Reset_Limiter => Get("Pad_Audio_Reset_Limiter");

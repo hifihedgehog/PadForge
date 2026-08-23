@@ -364,12 +364,45 @@ namespace PadForge.ViewModels
 
         private int _audioCrossfeedLevel;
         /// <summary>bs2b crossfeed level: 0 off, 1-3 crossfeed, 4-6 easy
-        /// crossfeed. Skipped outright on the speaker paths, which route a
-        /// mono downmix nothing can be widened into.</summary>
+        /// crossfeed, 7 Jan Meier, 8 the bs2b default, 9 custom. Skipped
+        /// outright on the speaker paths, which route a mono downmix nothing
+        /// can be widened into.</summary>
         public int AudioCrossfeedLevel
         {
             get => _audioCrossfeedLevel;
-            set => SetProperty(ref _audioCrossfeedLevel, Math.Clamp(value, 0, 8));
+            set
+            {
+                if (SetProperty(ref _audioCrossfeedLevel, Math.Clamp(value, 0, 9)))
+                    OnPropertyChanged(nameof(AudioCrossfeedIsCustom));
+            }
+        }
+
+        /// <summary>True while the custom level is picked, so the two knobs
+        /// below can show themselves. They are meaningless at every preset,
+        /// where the cutoff and feed come from the preset table.</summary>
+        public bool AudioCrossfeedIsCustom => _audioCrossfeedLevel == 9;
+
+        private int _audioCrossfeedCutHz = 700;
+        /// <summary>Custom crossover cutoff in Hz. Range and default are
+        /// libbs2b's own: BS2B_MINFCUT 300, BS2B_MAXFCUT 2000, and the
+        /// library's default level is 700 Hz. Below the cutoff the two
+        /// channels blend toward mono, above it they stay separated, so a
+        /// lower value crossfeeds less material.</summary>
+        public int AudioCrossfeedCutHz
+        {
+            get => _audioCrossfeedCutHz;
+            set => SetProperty(ref _audioCrossfeedCutHz, Math.Clamp(value, 300, 2000));
+        }
+
+        private double _audioCrossfeedFeedDb = 4.5d;
+        /// <summary>Custom feed level in dB, how much of the opposite channel
+        /// arrives below the cutoff. BS2B_MINFEED is 10 and BS2B_MAXFEED 150
+        /// in the library's tenths-of-a-dB units, so 1.0 to 15.0 here, with
+        /// the library's 4.5 dB default.</summary>
+        public double AudioCrossfeedFeedDb
+        {
+            get => _audioCrossfeedFeedDb;
+            set => SetProperty(ref _audioCrossfeedFeedDb, Math.Clamp(value, 1.0d, 15.0d));
         }
 
         private bool _audioEqEnabled;
@@ -1979,6 +2012,8 @@ namespace PadForge.ViewModels
         // therefore loads as the pre-feature behaviour except that the
         // limiter is armed, which only ever removes clipping.
         [XmlAttribute] public int AudioCrossfeedLevel { get; set; }
+        [XmlAttribute] public int AudioCrossfeedCutHz { get; set; } = 700;
+        [XmlAttribute] public double AudioCrossfeedFeedDb { get; set; } = 4.5d;
         [XmlAttribute] public bool AudioEqEnabled { get; set; }
         [XmlAttribute] public string AudioEqBands { get; set; } = string.Empty;
         [XmlAttribute] public double AudioEqPreampDb { get; set; }

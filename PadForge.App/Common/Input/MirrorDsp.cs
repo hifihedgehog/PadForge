@@ -67,7 +67,17 @@ namespace PadForge.Common.Input
         internal const int HighEasy = 6;      // == BS2B_CMOY_CLEVEL
         internal const int JanMeier = 7;
         internal const int Bs2bDefault = 8;
-        internal const int MaxLevel = Bs2bDefault;
+        internal const int Custom = 9;
+        internal const int MaxLevel = Custom;
+
+        /// <summary>libbs2b's own limits for the two knobs, from bs2b.h.
+        /// init() falls back to the default level when either is outside
+        /// these, so clamping here keeps a custom setting from silently
+        /// becoming something else.</summary>
+        internal const int MinCutHz = 300;
+        internal const int MaxCutHz = 2000;
+        internal const double MinFeedDb = 1.0;
+        internal const double MaxFeedDb = 15.0;
 
         /// <summary>Each level is a (cutoff Hz, feed dB) pair, which is what
         /// libbs2b actually stores: its level constants pack the cutoff in the
@@ -122,16 +132,37 @@ namespace PadForge.Common.Input
 
         public bool Active => _level >= LowCrossfeed && _level <= MaxLevel;
 
-        /// <summary>Recomputes coefficients. Off the audio thread.</summary>
-        public void SetParams(int level, int sampleRate)
+        private float _customCut, _customFeed;
+
+        /// <summary>Recomputes coefficients. Off the audio thread.
+        ///
+        /// <para><paramref name="customCutHz"/> and
+        /// <paramref name="customFeedDb"/> are used only at
+        /// <see cref="Custom"/>. That level is libbs2b's real API:
+        /// bs2b_set_level_fcut and bs2b_set_level_feed set the two halves of a
+        /// level independently, and the header marks the six classic presets
+        /// obsolete in their favour.</para></summary>
+        public void SetParams(int level, int sampleRate,
+                              float customCutHz = 700f, float customFeedDb = 4.5f)
         {
             if (sampleRate < 1) return;
             if (level < LowCrossfeed || level > MaxLevel) { _level = Off; return; }
-            if (level == _level && sampleRate == _rate) return;
+
+            float cut = (float)Math.Clamp(customCutHz, MinCutHz, MaxCutHz);
+            float feed = (float)Math.Clamp(customFeedDb, MinFeedDb, MaxFeedDb);
+
+            // A preset only needs rebuilding when the level or rate moves.
+            // Custom also has to notice its own two knobs changing.
+            if (level == _level && sampleRate == _rate
+                && (level != Custom || (cut == _customCut && feed == _customFeed)))
+                return;
 
             _level = level;
             _rate = sampleRate;
-            var (fcLoF, feedDb) = Levels[level];
+            _customCut = cut;
+            _customFeed = feed;
+
+            var (fcLoF, feedDb) = level == Custom ? (cut, feed) : Levels[level];
             var (fcHi, gLo, gHi) = Derive(fcLoF, feedDb);
 
             // The g normalization is openal-soft's, not upstream's, and it is
@@ -534,12 +565,13 @@ namespace PadForge.Common.Input
         /// refresh cadence, never per read.</summary>
         public void Configure(int crossfeedLevel, bool speakerPath,
                               IReadOnlyList<EqBand> bands, float preampDb,
-                              bool limiterOn, float ceiling, int sampleRate)
+                              bool limiterOn, float ceiling, int sampleRate,
+                              float customCutHz = 700f, float customFeedDb = 4.5f)
         {
             // Crossfeed is skipped outright on the speaker paths. It would be
             // harmless there (a mono downmix stays mono through it) but it
             // would still cost four filters a sample to accomplish nothing.
-            _cf.SetParams(speakerPath ? CrossfeedStage.Off : crossfeedLevel, sampleRate);
+            _cf.SetParams(speakerPath ? CrossfeedStage.Off : crossfeedLevel, sampleRate, customCutHz, customFeedDb);
             _eq.SetBands(bands, sampleRate);
             _lim.SetParams(limiterOn, ceiling, sampleRate);
             _preamp = preampDb == 0f ? 1f : (float)Math.Pow(10.0, Math.Clamp(preampDb, -30f, 12f) / 20.0);

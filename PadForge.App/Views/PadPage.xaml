@@ -11692,9 +11692,43 @@
                                                     <TextBlock Text="  700 Hz &#183; 4.5 dB" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                                                 </StackPanel>
                                             </ComboBoxItem>
+                                            <ComboBoxItem Content="{Binding Pad_Audio_Crossfeed_Custom, Source={x:Static strings:Strings.Instance}}"/>
                                         </ComboBox>
                                         <ui:Button Command="{Binding ResetCrossfeedCommand}" Style="{StaticResource ResetButton}"
                                                    ToolTip="{Binding Pad_Audio_Reset_Crossfeed, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+
+                                    <!-- The two knobs a level actually IS. libbs2b stores a
+                                         level as a cutoff plus a feed and exposes
+                                         bs2b_set_level_fcut and bs2b_set_level_feed to set
+                                         them independently, with the six classic presets
+                                         marked obsolete in their favour. Shown only at
+                                         Custom, because at every preset the pair comes from
+                                         the preset and editing it would be a lie. -->
+                                    <StackPanel Visibility="{Binding DeviceConfig.AudioCrossfeedIsCustom, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                            <TextBlock Text="{Binding Pad_Audio_CrossfeedCut, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                                       ToolTip="{Binding Pad_Audio_CrossfeedCut_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <Slider Value="{Binding DeviceConfig.AudioCrossfeedCutHz, Mode=TwoWay}" Minimum="300" Maximum="2000"
+                                                    Style="{StaticResource DzSlider}"/>
+                                            <TextBox Text="{Binding DeviceConfig.AudioCrossfeedCutHz, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                     Style="{StaticResource DzValueEdit}"/>
+                                            <TextBlock Text="Hz" Style="{StaticResource DzPercent}"/>
+                                            <ui:Button Command="{Binding ResetCrossfeedCutCommand}" Style="{StaticResource ResetButton}"
+                                                       ToolTip="{Binding Pad_Audio_Reset_CrossfeedCut, Source={x:Static strings:Strings.Instance}}"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                            <TextBlock Text="{Binding Pad_Audio_CrossfeedFeed, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
+                                                       ToolTip="{Binding Pad_Audio_CrossfeedFeed_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <Slider Value="{Binding DeviceConfig.AudioCrossfeedFeedDb, Mode=TwoWay}" Minimum="1" Maximum="15"
+                                                    TickFrequency="0.1" IsSnapToTickEnabled="True"
+                                                    Style="{StaticResource DzSlider}"/>
+                                            <TextBox Text="{Binding DeviceConfig.AudioCrossfeedFeedDb, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=0.0}"
+                                                     Style="{StaticResource DzValueEdit}"/>
+                                            <TextBlock Text="dB" Style="{StaticResource DzPercent}"/>
+                                            <ui:Button Command="{Binding ResetCrossfeedFeedCommand}" Style="{StaticResource ResetButton}"
+                                                       ToolTip="{Binding Pad_Audio_Reset_CrossfeedFeed, Source={x:Static strings:Strings.Instance}}"/>
+                                        </StackPanel>
                                     </StackPanel>
 
                                     <!-- Parametric EQ -->

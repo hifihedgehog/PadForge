@@ -2383,6 +2383,7 @@ namespace PadForge.Services
                 // #347: a tuned audio chain is deliberate configuration and
                 // must survive the same copy and keep-alive rules.
                 || c.AudioCrossfeedLevel != 0
+                || c.AudioCrossfeedCutHz != 700 || c.AudioCrossfeedFeedDb != 4.5d
                 || c.AudioEqEnabled || !string.IsNullOrEmpty(c.AudioEqBands)
                 || c.AudioEqPreampDb != 0
                 || !c.AudioLimiterEnabled || c.AudioLimiterCeiling != 98
@@ -2413,6 +2414,7 @@ namespace PadForge.Services
                 || !string.IsNullOrEmpty(c.AudioMirrorEngageButton)
                 || c.AudioToneFilterMode != "Off"
                 || c.AudioCrossfeedLevel != 0
+                || c.AudioCrossfeedCutHz != 700 || c.AudioCrossfeedFeedDb != 4.5d
                 || c.AudioEqEnabled || !string.IsNullOrEmpty(c.AudioEqBands)
                 || c.AudioEqPreampDb != 0
                 || !c.AudioLimiterEnabled || c.AudioLimiterCeiling != 98
@@ -2749,6 +2751,8 @@ namespace PadForge.Services
                     cfg.AudioToneFilterMode = cfgData.AudioToneFilterMode ?? "Off";
                     cfg.AudioToneLimitHz = cfgData.AudioToneLimitHz;
                     cfg.AudioCrossfeedLevel = cfgData.AudioCrossfeedLevel;
+                    cfg.AudioCrossfeedCutHz = cfgData.AudioCrossfeedCutHz;
+                    cfg.AudioCrossfeedFeedDb = cfgData.AudioCrossfeedFeedDb;
                     cfg.AudioEqEnabled = cfgData.AudioEqEnabled;
                     cfg.AudioEqBands = cfgData.AudioEqBands ?? string.Empty;
                     cfg.AudioEqPreampDb = cfgData.AudioEqPreampDb;
@@ -4291,6 +4295,8 @@ namespace PadForge.Services
                 AudioToneFilterMode = cfg.AudioToneFilterMode ?? "Off",
                 AudioToneLimitHz = cfg.AudioToneLimitHz,
                 AudioCrossfeedLevel = cfg.AudioCrossfeedLevel,
+                AudioCrossfeedCutHz = cfg.AudioCrossfeedCutHz,
+                AudioCrossfeedFeedDb = cfg.AudioCrossfeedFeedDb,
                 AudioEqEnabled = cfg.AudioEqEnabled,
                 AudioEqBands = cfg.AudioEqBands ?? string.Empty,
                 AudioEqPreampDb = cfg.AudioEqPreampDb,

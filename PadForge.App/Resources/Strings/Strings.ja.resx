@@ -3136,6 +3136,13 @@
   <data name="Pad_Audio_Crossfeed_LowEasy" xml:space="preserve"><value>弱（ソフト）</value></data>
   <data name="Pad_Audio_Crossfeed_MiddleEasy" xml:space="preserve"><value>中（ソフト）</value></data>
   <data name="Pad_Audio_Crossfeed_HighEasy" xml:space="preserve"><value>強（ソフト）</value></data>
+  <data name="Pad_Audio_Crossfeed_Custom" xml:space="preserve"><value>カスタム</value></data>
+  <data name="Pad_Audio_CrossfeedCut" xml:space="preserve"><value>カットオフ</value></data>
+  <data name="Pad_Audio_CrossfeedCut_Tooltip" xml:space="preserve"><value>クロスオーバー周波数。これより下では左右がモノラルに近づき、上では分離したままです。カットオフが低いほど混ぜる量が減ります。</value></data>
+  <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>混合量</value></data>
+  <data name="Pad_Audio_CrossfeedFeed_Tooltip" xml:space="preserve"><value>カットオフより下で反対チャンネルがどれだけ届くか。混合量を増やすと音像が狭まり、空間の広がりが増します。</value></data>
+  <data name="Pad_Audio_Reset_CrossfeedCut" xml:space="preserve"><value>カットオフをリセット</value></data>
+  <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>混合量をリセット</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>パラメトリック EQ</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>コントローラー音声に対する帯域ごとのフィルターです。エンコード前に適用されるため、下のリミッターがブーストした帯域のクリップを防ぎます。</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>プリアンプ</value></data>

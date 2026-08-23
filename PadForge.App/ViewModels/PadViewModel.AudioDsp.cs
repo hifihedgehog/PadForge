@@ -131,6 +131,21 @@ namespace PadForge.ViewModels
             _resetCrossfeedCommand ??= new RelayCommand(() =>
             { if (DeviceConfig != null) DeviceConfig.AudioCrossfeedLevel = 0; });
 
+        // The two custom knobs reset to libbs2b's own defaults (700 Hz and
+        // 4.5 dB, BS2B_DEFAULT_CLEVEL), not to zero. Zero is outside the
+        // library's accepted range, where its init() silently substitutes the
+        // default anyway, so a reset to zero would show a value the DSP does
+        // not use.
+        private RelayCommand _resetCrossfeedCutCommand;
+        public RelayCommand ResetCrossfeedCutCommand =>
+            _resetCrossfeedCutCommand ??= new RelayCommand(() =>
+            { if (DeviceConfig != null) DeviceConfig.AudioCrossfeedCutHz = 700; });
+
+        private RelayCommand _resetCrossfeedFeedCommand;
+        public RelayCommand ResetCrossfeedFeedCommand =>
+            _resetCrossfeedFeedCommand ??= new RelayCommand(() =>
+            { if (DeviceConfig != null) DeviceConfig.AudioCrossfeedFeedDb = 4.5d; });
+
         private RelayCommand _resetEqPreampCommand;
         public RelayCommand ResetEqPreampCommand =>
             _resetEqPreampCommand ??= new RelayCommand(() =>

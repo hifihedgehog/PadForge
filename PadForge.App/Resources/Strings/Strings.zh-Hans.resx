@@ -3136,6 +3136,13 @@
   <data name="Pad_Audio_Crossfeed_LowEasy" xml:space="preserve"><value>低（柔和）</value></data>
   <data name="Pad_Audio_Crossfeed_MiddleEasy" xml:space="preserve"><value>中（柔和）</value></data>
   <data name="Pad_Audio_Crossfeed_HighEasy" xml:space="preserve"><value>高（柔和）</value></data>
+  <data name="Pad_Audio_Crossfeed_Custom" xml:space="preserve"><value>自定义</value></data>
+  <data name="Pad_Audio_CrossfeedCut" xml:space="preserve"><value>截止频率</value></data>
+  <data name="Pad_Audio_CrossfeedCut_Tooltip" xml:space="preserve"><value>分频点。低于该频率时左右声道趋于单声道，高于时保持分离，因此截止频率越低混合越少。</value></data>
+  <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>混合量</value></data>
+  <data name="Pad_Audio_CrossfeedFeed_Tooltip" xml:space="preserve"><value>截止频率以下有多少对侧声道到达。混合量越大，声像越窄，空间感越宽。</value></data>
+  <data name="Pad_Audio_Reset_CrossfeedCut" xml:space="preserve"><value>重置截止频率</value></data>
+  <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>重置混合量</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>参数均衡器</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>作用于手柄音频的分频段滤波器。在编码前应用，因此下方的限制器可防止提升的频段削波。</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>前置增益</value></data>

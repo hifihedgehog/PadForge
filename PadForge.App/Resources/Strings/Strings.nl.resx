@@ -1439,6 +1439,8 @@
   <data name="About_OpenXInputDesc" xml:space="preserve"><value>Drop-in vervanging voor XInput. Filtert PadForge's eigen virtuele controllers uit zijn eigen weergave. Upstream-handelsmerkdisclaimer, geen OSS-licentie.</value></data>
   <data name="About_ZackslyIcons" xml:space="preserve"><value>Zacksly-iconenpakket</value></data>
   <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>Stick- en trigger-iconen afgeleid van "Xbox Series Button Icons and Controls" door Zacksly (CC BY 3.0)</value></data>
+  <data name="About_Bs2b" xml:space="preserve"><value>bs2b</value></data>
+  <data name="About_Bs2bDesc" xml:space="preserve"><value>Bauer stereofonische naar binaurale crossfeed voor hoofdtelefoonuitvoer. MIT.</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
   <data name="About_ConcentusDesc" xml:space="preserve"><value>Pure C# Opus-encoder die DualSense-speakeraudio via Bluetooth aandrijft. Door Logan Stromberg. BSD 3-Clause.</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>

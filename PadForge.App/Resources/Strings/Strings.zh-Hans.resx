@@ -1418,6 +1418,8 @@
   <data name="About_OpenXInputDesc" xml:space="preserve"><value>XInput 的 API 兼容替代实现。将 PadForge 自身创建的虚拟控制器从其自身视图中过滤掉。上游商标免责声明，无开源许可证。</value></data>
   <data name="About_ZackslyIcons" xml:space="preserve"><value>Zacksly 图标包</value></data>
   <data name="About_ZackslyIconsDesc" xml:space="preserve"><value>摇杆和扳机图标改编自 Zacksly 的"Xbox Series Button Icons and Controls"(CC BY 3.0)</value></data>
+  <data name="About_Bs2b" xml:space="preserve"><value>bs2b</value></data>
+  <data name="About_Bs2bDesc" xml:space="preserve"><value>用于耳机输出的 Bauer 立体声转双耳串扰。MIT。</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>
   <data name="About_ConcentusDesc" xml:space="preserve"><value>纯 C# 的 Opus 编码器，驱动 DualSense 扬声器通过蓝牙播放音频。作者 Logan Stromberg。BSD 3-Clause。</value></data>
   <data name="About_SAxense" xml:space="preserve"><value>SAxense</value></data>

@@ -132,6 +132,12 @@ OpenXInput
   Upstream ships only a Microsoft trademark disclaimer; no OSS license is
   granted. Redistributed as-is under the same terms as upstream.
 
+bs2b
+  https://github.com/kcat/openal-soft/blob/master/core/bs2b.cpp
+  Copyright (c) 2005 Boris Mikhaylov. MIT License. Bauer
+  stereophonic-to-binaural crossfeed. PadForge ports the filter to C# for
+  headphone output on the controller audio path.
+
 Concentus
   https://github.com/lostromb/concentus
   By Logan Stromberg, with copyrights held by Skype Limited, Xiph.Org

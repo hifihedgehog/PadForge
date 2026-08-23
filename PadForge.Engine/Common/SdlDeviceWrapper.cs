@@ -1939,7 +1939,6 @@ namespace PadForge.Engine
             // gamepad mask and SDL answers for those exactly as it does for
             // 11-21. Raw joystick devices (isGamepad=false) keep the flat
             // "Button N" enumeration unchanged.
-            int finalCount = 0;
             for (int i = 0; i < btnCount; i++)
             {
                 bool include = true;
@@ -1957,7 +1956,6 @@ namespace PadForge.Engine
                 item.ObjectType = DeviceObjectTypeFlags.PushButton;
                 item.Offset = (NumAxes + NumHats + i) * 4;
                 items[index++] = item;
-                finalCount++;
             }
 
             // Trim if we skipped any axis or button. The caller iterates Length

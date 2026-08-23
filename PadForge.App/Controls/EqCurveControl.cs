@@ -32,7 +32,10 @@ namespace PadForge.Controls
         private const double MinHz = 20.0;
         private const double MaxHz = 20000.0;
         private const double MaxDb = 24.0;
-        private const int Rate = 48000;
+        // The chain's own rate, so the drawn curve is computed at the rate the
+        // filters are compiled at. A local copy is how the editor's clamp
+        // drifted away from the engine's.
+        private const int Rate = EqBand.MirrorSampleRate;
         private const double HandleR = 6.0;
 
         public static readonly DependencyProperty BandsProperty =

@@ -232,16 +232,10 @@ namespace PadForge.ViewModels
             // says it does not do.
             set
             {
-                if (SetProperty(ref _frequencyHz,
-                        Math.Clamp(value, 10f, EqBand.MaxFrequencyHz(MirrorRate))))
+                if (SetProperty(ref _frequencyHz, Math.Clamp(value, 10f, EqBand.MaxFrequencyHz())))
                     Push();
             }
         }
-
-        /// <summary>The rate the chain runs at, mirroring
-        /// AudioPassthroughService's own constant. Both Sony transports
-        /// resample to it, so a band's ceiling does not vary by device.</summary>
-        private const int MirrorRate = 48000;
 
         private float _gainDb;
         public float GainDb

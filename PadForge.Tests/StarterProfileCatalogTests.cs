@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using PadForge.Common.Input;
@@ -641,16 +641,27 @@ namespace PadForge.Tests
         [Fact]
         public void EveryKeyboardMouseProfile_HasAQuietLayer()
         {
-            int checkedProfiles = 0;
+            // EVERY keyboard-and-mouse set in EVERY profile, not slot 0 of the
+            // profiles whose headline type is KBM. Emulation is an Xbox pad
+            // plus a KBM hotkey slot, and its KBM slot shipped with no Quiet
+            // layer for as long as this test looked at slot 0 only: Quiet
+            // toggled on, the pad fell silent, and Back plus a shoulder still
+            // typed F2 and F4 from the keyboard slot (4.3.2 docs sweep).
+            int checkedSets = 0;
             foreach (var (info, p) in Built())
             {
-                if (info.OutputType != VirtualControllerType.KeyboardMouse) continue;
-                checkedProfiles++;
-                var set = p.SlotMappingSets[0];
-                var quiet = set.ShiftActivators.SingleOrDefault(a => a.LayerMask == "Quiet");
-                Assert.True(quiet != null, $"starter '{info.Key}' has no quiet layer");
+                for (int i = 0; i < p.SlotMappingSets.Length; i++)
+                {
+                    var set = p.SlotMappingSets[i];
+                    if (set == null) continue;
+                    if (p.SlotControllerTypes == null || i >= p.SlotControllerTypes.Length) continue;
+                    if ((VirtualControllerType)p.SlotControllerTypes[i] != VirtualControllerType.KeyboardMouse) continue;
+                    checkedSets++;
+                    var quiet = set.ShiftActivators.SingleOrDefault(a => a.LayerMask == "Quiet");
+                    Assert.True(quiet != null, $"starter '{info.Key}' slot {i} (KBM) has no quiet layer");
+                }
             }
-            Assert.True(checkedProfiles >= 8, $"only {checkedProfiles} KBM profiles checked");
+            Assert.True(checkedSets >= 9, $"only {checkedSets} KBM sets checked");
         }
 
         /// <summary>Returns every virtual key a profile's macros press.</summary>

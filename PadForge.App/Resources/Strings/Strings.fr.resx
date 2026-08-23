@@ -3136,6 +3136,13 @@ Vous pouvez réessayer plus tard depuis les Paramètres.</value></data>
   <data name="Pad_Audio_Crossfeed_LowEasy" xml:space="preserve"><value>Faible (doux)</value></data>
   <data name="Pad_Audio_Crossfeed_MiddleEasy" xml:space="preserve"><value>Moyen (doux)</value></data>
   <data name="Pad_Audio_Crossfeed_HighEasy" xml:space="preserve"><value>Élevé (doux)</value></data>
+  <data name="Pad_Audio_Crossfeed_Custom" xml:space="preserve"><value>Personnalisé</value></data>
+  <data name="Pad_Audio_CrossfeedCut" xml:space="preserve"><value>Fréquence de coupure</value></data>
+  <data name="Pad_Audio_CrossfeedCut_Tooltip" xml:space="preserve"><value>Fréquence de croisement. En dessous, les canaux se rapprochent du mono, au-dessus ils restent séparés, donc une coupure plus basse mélange moins.</value></data>
+  <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>Dosage</value></data>
+  <data name="Pad_Audio_CrossfeedFeed_Tooltip" xml:space="preserve"><value>Quantité du canal opposé qui arrive sous la coupure. Plus de dosage resserre l'image et élargit la sensation de salle.</value></data>
+  <data name="Pad_Audio_Reset_CrossfeedCut" xml:space="preserve"><value>Réinitialiser la fréquence de coupure</value></data>
+  <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>Réinitialiser le dosage</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>Égaliseur paramétrique</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>Filtres par bande sur l'audio de la manette. Appliqué avant l'encodage, donc le limiteur ci-dessous empêche une bande accentuée de saturer.</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>Préampli</value></data>

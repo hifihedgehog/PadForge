@@ -212,5 +212,31 @@ namespace PadForge.Tests
             Assert.True(timer > 0, "demand is no longer re-evaluated on a routing change");
             Assert.True(dispatch > timer, "demand must be re-evaluated BEFORE the snapshot");
         }
-    }
+    
+        /// <summary>#347: the crossfeed route gate. Automatic and StereoHeadset
+        /// are the SAME firmware route, L_R_X (duaLib dataStructures.h line
+        /// 284), because Automatic writes nothing and the pad rests on path 0
+        /// (duaLib.cpp line 279, "so the audio path can reset back to 0 on
+        /// first write"). The first cut gated on StereoHeadset alone, which
+        /// left the DSP chain inaudible for every user who never touched
+        /// Output Path.</summary>
+        [Theory]
+        [InlineData(0, true)]    // Automatic: firmware rests on L_R_X
+        [InlineData(1, true)]    // StereoHeadset: writes L_R_X
+        [InlineData(2, false)]   // MonoHeadset: L_L_X
+        [InlineData(3, false)]   // HeadsetAndSpeaker: L_L_R, headset side mono
+        [InlineData(4, false)]   // SpeakerOnly: X_X_R
+        public void StereoHeadphoneRoute_CoversAutomaticAndStereo(int resolved, bool expected)
+            => Assert.Equal(expected, AudioPassthroughService.IsStereoHeadphoneRoute(resolved));
+
+        /// <summary>Follow Headphone Jack resolves before the gate sees it, so
+        /// both of its outcomes land on the right side: plugged resolves to
+        /// StereoHeadset and crossfeeds, unplugged resolves to SpeakerOnly and
+        /// does not.</summary>
+        [Theory]
+        [InlineData(1, true)]
+        [InlineData(4, false)]
+        public void StereoHeadphoneRoute_MatchesFollowJackOutcomes(int resolved, bool expected)
+            => Assert.Equal(expected, AudioPassthroughService.IsStereoHeadphoneRoute(resolved));
+}
 }

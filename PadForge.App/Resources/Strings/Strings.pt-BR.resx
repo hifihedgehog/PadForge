@@ -3130,6 +3130,13 @@ Você pode tentar novamente mais tarde em Configurações.</value></data>
   <data name="Pad_Audio_Crossfeed_LowEasy" xml:space="preserve"><value>Baixo (suave)</value></data>
   <data name="Pad_Audio_Crossfeed_MiddleEasy" xml:space="preserve"><value>Médio (suave)</value></data>
   <data name="Pad_Audio_Crossfeed_HighEasy" xml:space="preserve"><value>Alto (suave)</value></data>
+  <data name="Pad_Audio_Crossfeed_Custom" xml:space="preserve"><value>Personalizado</value></data>
+  <data name="Pad_Audio_CrossfeedCut" xml:space="preserve"><value>Frequência de corte</value></data>
+  <data name="Pad_Audio_CrossfeedCut_Tooltip" xml:space="preserve"><value>Frequência de cruzamento. Abaixo dela os canais se aproximam do mono e acima permanecem separados, então um corte mais baixo mistura menos.</value></data>
+  <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>Mistura</value></data>
+  <data name="Pad_Audio_CrossfeedFeed_Tooltip" xml:space="preserve"><value>Quanto do canal oposto chega abaixo do corte. Mais mistura estreita a imagem e amplia a sensação de sala.</value></data>
+  <data name="Pad_Audio_Reset_CrossfeedCut" xml:space="preserve"><value>Restaurar a frequência de corte</value></data>
+  <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>Restaurar a mistura</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>Equalizador paramétrico</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>Filtros por banda sobre o áudio do controle. Aplicado antes da codificação, então o limitador abaixo evita que uma banda realçada distorça.</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>Pré-amplificação</value></data>

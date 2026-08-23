@@ -58,6 +58,97 @@ namespace PadForge.Tests
             Assert.Equal(0.5f, buf[(n - 1) * 2 + 1], 4);
         }
 
+        /// <summary>Same coefficient check at the custom level, across the
+        /// corners and the middle of libbs2b's own accepted ranges
+        /// (BS2B_MINFCUT 300 to BS2B_MAXFCUT 2000, BS2B_MINFEED 1.0 dB to
+        /// BS2B_MAXFEED 15.0 dB). The presets exercise a handful of points on
+        /// the derivation. Custom exposes the whole surface, so the surface is
+        /// what has to hold unity.</summary>
+        [Theory]
+        [InlineData(300, 1.0)]
+        [InlineData(300, 15.0)]
+        [InlineData(2000, 1.0)]
+        [InlineData(2000, 15.0)]
+        [InlineData(700, 4.5)]
+        [InlineData(1100, 8.0)]
+        public void Crossfeed_Custom_DcGain_IsUnity(int cutHz, double feedDb)
+        {
+            var cf = new CrossfeedStage();
+            cf.SetParams(CrossfeedStage.Custom, Rate, cutHz, (float)feedDb);
+
+            const int n = 24000;
+            var buf = new float[n * 2];
+            for (int i = 0; i < n * 2; i++) buf[i] = 0.5f;
+            cf.Process(buf, n);
+
+            Assert.Equal(0.5f, buf[(n - 1) * 2], 4);
+            Assert.Equal(0.5f, buf[(n - 1) * 2 + 1], 4);
+        }
+
+        /// <summary>Custom at the library's own default pair is the
+        /// bs2b-default preset, sample for sample. That is the check that the
+        /// custom path shares the preset path's derivation rather than
+        /// carrying a second one that merely looks similar.</summary>
+        [Fact]
+        public void Crossfeed_Custom_AtDefaultPair_MatchesTheDefaultPreset()
+        {
+            var preset = new CrossfeedStage();
+            preset.SetParams(CrossfeedStage.Bs2bDefault, Rate);
+            var custom = new CrossfeedStage();
+            custom.SetParams(CrossfeedStage.Custom, Rate, 700f, 4.5f);
+
+            const int n = 512;
+            var a = new float[n * 2];
+            var b = new float[n * 2];
+            for (int i = 0; i < n; i++)
+            {
+                a[i * 2] = b[i * 2] = (float)Math.Sin(i * 0.07);
+                a[i * 2 + 1] = b[i * 2 + 1] = (float)Math.Sin(i * 0.011);
+            }
+            preset.Process(a, n);
+            custom.Process(b, n);
+
+            for (int i = 0; i < n * 2; i++) Assert.Equal(a[i], b[i], 6);
+        }
+
+        /// <summary>Out-of-range knobs clamp into libbs2b's accepted window
+        /// instead of falling through to whatever init() would substitute. A
+        /// value the UI shows and the DSP silently replaces is the failure
+        /// this guards.</summary>
+        [Fact]
+        public void Crossfeed_Custom_OutOfRangeParams_ClampToTheLibraryRange()
+        {
+            var low = new CrossfeedStage();
+            low.SetParams(CrossfeedStage.Custom, Rate, 10f, 0.01f);
+            var atMin = new CrossfeedStage();
+            atMin.SetParams(CrossfeedStage.Custom, Rate,
+                            CrossfeedStage.MinCutHz, (float)CrossfeedStage.MinFeedDb);
+
+            var high = new CrossfeedStage();
+            high.SetParams(CrossfeedStage.Custom, Rate, 96000f, 200f);
+            var atMax = new CrossfeedStage();
+            atMax.SetParams(CrossfeedStage.Custom, Rate,
+                            CrossfeedStage.MaxCutHz, (float)CrossfeedStage.MaxFeedDb);
+
+            AssertSameOutput(low, atMin);
+            AssertSameOutput(high, atMax);
+        }
+
+        private static void AssertSameOutput(CrossfeedStage x, CrossfeedStage y)
+        {
+            const int n = 256;
+            var a = new float[n * 2];
+            var b = new float[n * 2];
+            for (int i = 0; i < n; i++)
+            {
+                a[i * 2] = b[i * 2] = (float)Math.Sin(i * 0.05);
+                a[i * 2 + 1] = b[i * 2 + 1] = (float)Math.Cos(i * 0.03);
+            }
+            x.Process(a, n);
+            y.Process(b, n);
+            for (int i = 0; i < n * 2; i++) Assert.Equal(a[i], b[i], 6);
+        }
+
         /// <summary>A mono signal stays mono. The speaker paths route a mono
         /// downmix, so this is what makes the stage harmless there without a
         /// special case.</summary>

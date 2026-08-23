@@ -1876,7 +1876,8 @@ namespace PadForge.Services
                     return null;
                 return (c.AudioCrossfeedLevel, c.AudioEqEnabled, c.AudioEqBands ?? string.Empty,
                         c.AudioEqPreampDb, c.AudioLimiterEnabled, c.AudioLimiterCeiling,
-                        (int)c.AudioOutputPath);
+                        (int)c.AudioOutputPath,
+                        c.AudioCrossfeedCutHz, c.AudioCrossfeedFeedDb);
             };
 
             // Issue #185: haptic-mirror engage configs, same per-device configs

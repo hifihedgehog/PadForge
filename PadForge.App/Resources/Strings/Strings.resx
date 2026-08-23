@@ -3188,6 +3188,13 @@ You can retry later from Settings.</value></data>
   <data name="Pad_Audio_Crossfeed_LowEasy" xml:space="preserve"><value>Low (easy)</value></data>
   <data name="Pad_Audio_Crossfeed_MiddleEasy" xml:space="preserve"><value>Medium (easy)</value></data>
   <data name="Pad_Audio_Crossfeed_HighEasy" xml:space="preserve"><value>High (easy)</value></data>
+  <data name="Pad_Audio_Crossfeed_Custom" xml:space="preserve"><value>Custom</value></data>
+  <data name="Pad_Audio_CrossfeedCut" xml:space="preserve"><value>Cutoff</value></data>
+  <data name="Pad_Audio_CrossfeedCut_Tooltip" xml:space="preserve"><value>Crossover frequency. Below it the channels blend toward mono, above it they stay separated, so a lower cutoff crossfeeds less.</value></data>
+  <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>Feed</value></data>
+  <data name="Pad_Audio_CrossfeedFeed_Tooltip" xml:space="preserve"><value>How much of the opposite channel arrives below the cutoff. More feed narrows the image and widens the sense of a room.</value></data>
+  <data name="Pad_Audio_Reset_CrossfeedCut" xml:space="preserve"><value>Reset the cutoff</value></data>
+  <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>Reset the feed</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>Parametric EQ</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>Per-band filters over the controller audio. Applied before the audio is encoded, so the limiter below keeps a boosted band from clipping.</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>Preamp</value></data>

@@ -74,7 +74,8 @@ namespace PadForge.Common.Input
         /// chain can tell a stereo headphone route from a mono or speaker one.
         /// Read on the worker at reconcile cadence, never per audio frame.</summary>
         public static Func<int, Guid, (int Crossfeed, bool EqOn, string Bands, double PreampDb,
-                                       bool LimOn, int Ceiling, int OutputPath)?> DspConfigProvider { get; set; }
+                                       bool LimOn, int Ceiling, int OutputPath,
+                                       int CutHz, double FeedDb)?> DspConfigProvider { get; set; }
 
         // ─────────────────────────────────────────────
         //  Sink model
@@ -791,6 +792,33 @@ namespace PadForge.Common.Input
         /// coherently; the dispatcher's change gating then turns the
         /// transition into the one-shot route re-arm, exactly
         /// DS5_Bridge's bt_rearm_speaker_output_route.</summary>
+        /// <summary>True while a RESOLVED output path carries genuine stereo
+        /// to the cups, which is the only route crossfeed belongs on (#347).
+        ///
+        /// <para>TWO paths qualify, and missing the second one is what made
+        /// the whole DSP chain inaudible on a default configuration.
+        /// StereoHeadset writes firmware path 0, L_R_X in duaLib's
+        /// dataStructures.h line 284: left to the left cup, right to the
+        /// right, nothing to the speaker. Automatic writes NOTHING, which
+        /// leaves the pad on firmware path 0, the same route. duaLib states
+        /// that resting path in its own words at duaLib.cpp line 279, where it
+        /// seeds the last-state cache out of range "so the audio path can
+        /// reset back to 0 on first write". Nobody has to touch Output Path to
+        /// be listening in stereo, and almost nobody does.</para>
+        ///
+        /// <para>The rest really are mono at the cup: MonoHeadset is L_L_X,
+        /// HeadsetAndSpeaker is L_L_R with the headset side mono, SpeakerOnly
+        /// is X_X_R.</para>
+        ///
+        /// <para>Automatic carries one residual and the asymmetry settles it.
+        /// A #83 macro speaker block can move the firmware off path 0 while
+        /// the config still reads Automatic, so crossfeed can run over a mono
+        /// downmix. It is a proven no-op there, which the stays-mono test
+        /// pins, and costs four filters a sample. The other way round costs
+        /// the feature.</para></summary>
+        internal static bool IsStereoHeadphoneRoute(int resolvedPath)
+            => resolvedPath == 0 || resolvedPath == 1;
+
         internal static int ResolveOutputPath(int configured, Guid device)
         {
             if (configured != 5) return configured;
@@ -2833,18 +2861,17 @@ namespace PadForge.Common.Input
                     var cfg = dspProvider(slot, guid);
                     if (cfg == null) { sk.Dsp.Configure(0, true, null, 0, false, 1f, Rate); continue; }
                     var c = cfg.Value;
-                    // Crossfeed needs a genuine stereo route. Resolved path 1
-                    // is StereoHeadset; Automatic and SpeakerOnly carry a mono
-                    // downmix and the mono headset paths are mono by name, so
-                    // everything else is treated as "not stereo" and the stage
-                    // is skipped rather than made to prove itself a no-op.
+                    // Crossfeed belongs on a genuine stereo route only, and
+                    // IsStereoHeadphoneRoute is where that rule and its
+                    // duaLib citations live.
                     int resolved = ResolveOutputPath(c.OutputPath, guid);
-                    bool stereoHeadphones = resolved == 1;
+                    bool stereoHeadphones = IsStereoHeadphoneRoute(resolved);
                     sk.Dsp.Configure(
                         c.Crossfeed, !stereoHeadphones,
                         c.EqOn ? EqBandCodec.Decode(c.Bands) : null,
                         c.EqOn ? (float)c.PreampDb : 0f,
-                        c.LimOn, c.Ceiling / 100f, Rate);
+                        c.LimOn, c.Ceiling / 100f, Rate,
+                        c.CutHz, (float)c.FeedDb);
                 }
             }
 

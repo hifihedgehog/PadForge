@@ -3136,6 +3136,13 @@ Puedes volver a intentarlo más tarde desde Configuración.</value></data>
   <data name="Pad_Audio_Crossfeed_LowEasy" xml:space="preserve"><value>Bajo (suave)</value></data>
   <data name="Pad_Audio_Crossfeed_MiddleEasy" xml:space="preserve"><value>Medio (suave)</value></data>
   <data name="Pad_Audio_Crossfeed_HighEasy" xml:space="preserve"><value>Alto (suave)</value></data>
+  <data name="Pad_Audio_Crossfeed_Custom" xml:space="preserve"><value>Personalizado</value></data>
+  <data name="Pad_Audio_CrossfeedCut" xml:space="preserve"><value>Frecuencia de corte</value></data>
+  <data name="Pad_Audio_CrossfeedCut_Tooltip" xml:space="preserve"><value>Frecuencia de cruce. Por debajo los canales se acercan al mono y por encima siguen separados, así que un corte más bajo mezcla menos.</value></data>
+  <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>Mezcla</value></data>
+  <data name="Pad_Audio_CrossfeedFeed_Tooltip" xml:space="preserve"><value>Cuánto del canal opuesto llega por debajo del corte. Más mezcla estrecha la imagen y ensancha la sensación de sala.</value></data>
+  <data name="Pad_Audio_Reset_CrossfeedCut" xml:space="preserve"><value>Restablecer la frecuencia de corte</value></data>
+  <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>Restablecer la mezcla</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>Ecualizador paramétrico</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>Filtros por banda sobre el audio del mando. Se aplica antes de codificar, por lo que el limitador de abajo evita que una banda realzada sature.</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>Preamplificación</value></data>

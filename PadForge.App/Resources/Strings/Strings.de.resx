@@ -3136,6 +3136,13 @@ Du kannst es später in den Einstellungen erneut versuchen.</value></data>
   <data name="Pad_Audio_Crossfeed_LowEasy" xml:space="preserve"><value>Niedrig (sanft)</value></data>
   <data name="Pad_Audio_Crossfeed_MiddleEasy" xml:space="preserve"><value>Mittel (sanft)</value></data>
   <data name="Pad_Audio_Crossfeed_HighEasy" xml:space="preserve"><value>Hoch (sanft)</value></data>
+  <data name="Pad_Audio_Crossfeed_Custom" xml:space="preserve"><value>Benutzerdefiniert</value></data>
+  <data name="Pad_Audio_CrossfeedCut" xml:space="preserve"><value>Trennfrequenz</value></data>
+  <data name="Pad_Audio_CrossfeedCut_Tooltip" xml:space="preserve"><value>Übergangsfrequenz. Darunter verschmelzen die Kanäle in Richtung Mono, darüber bleiben sie getrennt, eine niedrigere Trennfrequenz überblendet also weniger.</value></data>
+  <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>Anteil</value></data>
+  <data name="Pad_Audio_CrossfeedFeed_Tooltip" xml:space="preserve"><value>Wie viel des Gegenkanals unterhalb der Trennfrequenz ankommt. Mehr Anteil verengt das Stereobild und lässt den Raum breiter wirken.</value></data>
+  <data name="Pad_Audio_Reset_CrossfeedCut" xml:space="preserve"><value>Trennfrequenz zurücksetzen</value></data>
+  <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>Anteil zurücksetzen</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>Parametrischer EQ</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>Filter pro Band über dem Controller-Audio. Wird vor der Kodierung angewendet, daher verhindert der Limiter unten, dass ein angehobenes Band übersteuert.</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>Vorverstärkung</value></data>

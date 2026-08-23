@@ -7548,6 +7548,25 @@ namespace PadForge
                 // exclusion until you look for the carry leg and find none.
                 ps.SlotSetExtrasJson = InputService.BuildSlotSetExtrasJson(padVm.PadIndex);
 
+                // And the slot's macros, through the same envelope the Macros
+                // tab's own clipboard uses (#112). They were left out when the
+                // Macros tab sat visibly apart and the omission explained
+                // itself. It no longer does: the tooltip says all settings and
+                // every other whole-slot transfer carries them.
+                //
+                // ALWAYS written, even when the slot has none, because Paste
+                // replaces. A source with zero macros must produce a
+                // destination with zero macros, the same way an empty rows
+                // list does. Writing the field only when non-empty would make
+                // "copy a clean slot over a busy one" keep the busy slot's
+                // macros, which is the append semantics this leg exists to
+                // avoid. Absence of the field still means "older clipboard,
+                // leave mine alone" on the paste side.
+                var macroData = new List<MacroData>(padVm.Macros.Count);
+                foreach (var m in padVm.Macros)
+                    macroData.Add(SettingsService.BuildMacroDataForMacro(m, padVm.PadIndex));
+                ps.SlotMacrosJson = SettingsService.SerializeMacrosToClipboard(macroData.ToArray());
+
                 // Bundle EVERY device's PadSetting on the source slot so
                 // per-device tuning (deadzones, sensitivity, FFB, Gyro,
                 // TouchpadSettings) round-trips for all devices, not just
@@ -7633,6 +7652,25 @@ namespace PadForge
                     InputService.ApplySlotSetExtrasJson(padVm.PadIndex, ps.SlotSetExtrasJson,
                         MappingTranslation.IsSameLayout(srcType, srcIsExtended, targetType, targetIsExtended));
                 }
+
+                // Macros. REPLACE, not append: every other surface this paste
+                // touches (rows, shift, menus, the config bags, the three
+                // cards above) replaces, and a paste that replaced everything
+                // except macros would double the list on every re-paste. The
+                // Macros tab's own Copy From appends, but that is an explicit
+                // "add these to mine"; slot Paste is "make this slot look like
+                // that one". A payload with no macros clears the destination's
+                // for the same reason an empty rows list does.
+                //
+                // Each macro goes through the same LoadMacroFromData and
+                // layer re-scope the single-macro paste and Copy From use
+                // (audit 2026-07-25 C8), so the trigger is translated to the
+                // destination's output type and a LayerMask the destination
+                // does not declare is dropped rather than left gating the
+                // macro on a foreign slot's layer. TriggerDeviceGuid travels
+                // verbatim, exactly as it does on those two paths: the runtime
+                // treats a device that is not on the slot as an inert trigger.
+                ApplySlotMacrosFromClipboard(padVm, ps.SlotMacrosJson);
 
                 _inputService.ApplyPadSettingToCurrentDeviceTranslated(
                     padVm.PadIndex, ps,
@@ -7761,7 +7799,7 @@ namespace PadForge
         /// it globally. Only a true orphan (no slot declares it) is
         /// stripped, and missing machinery fails OPEN, matching the gate:
         /// keeping a scope is never data loss, destroying one is.</summary>
-        private static bool DestinationDeclaresLayer(PadForge.ViewModels.PadViewModel padVm, string mask)
+        internal static bool DestinationDeclaresLayer(PadForge.ViewModels.PadViewModel padVm, string mask)
         {
             if (string.IsNullOrEmpty(mask)) return true;
             if (string.Equals(mask, "Base", StringComparison.Ordinal)) return true;
@@ -7857,6 +7895,35 @@ namespace PadForge
             VirtualControllerType.Vr            => Strings.Instance.ControllerType_VR,
             _ => t.ToString(),
         };
+
+        /// <summary>The slot Paste's macro leg. Internal so the tests can drive
+        /// it without the clipboard; the rules it applies are the ones the
+        /// single-macro paste and Copy From already apply, see the call site.
+        /// A null or unparseable payload is a no-op rather than a clear: the
+        /// clipboard came from a build that did not carry macros, and
+        /// wiping the destination's on that evidence would be destructive for
+        /// no reason. A PRESENT payload with zero macros is a different case
+        /// and clears, because Copy writes the field unconditionally so that
+        /// Paste can replace: copying a clean slot over a busy one must
+        /// produce a clean slot.</summary>
+        internal static void ApplySlotMacrosFromClipboard(PadViewModel padVm, string json)
+        {
+            if (padVm == null || string.IsNullOrEmpty(json)) return;
+            var env = SettingsService.TryParseMacroClipboard(json);
+            if (env == null) return;
+
+            padVm.Macros.Clear();
+            foreach (var md in env.Macros)
+            {
+                if (md == null) continue;
+                var macro = SettingsService.LoadMacroFromData(
+                    md, padVm.OutputType, padVm.ExtendedConfig?.ButtonCount, padVm.ProfileId);
+                macro.PadIndex = padVm.PadIndex;
+                if (!DestinationDeclaresLayer(padVm, macro.LayerMask)) macro.LayerMask = "";
+                padVm.Macros.Add(macro);
+            }
+            padVm.SelectedMacro = padVm.Macros.Count > 0 ? padVm.Macros[padVm.Macros.Count - 1] : null;
+        }
 
         private void OnCopyMacroFrom(PadViewModel padVm)
         {

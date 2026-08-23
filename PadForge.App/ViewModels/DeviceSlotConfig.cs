@@ -369,7 +369,7 @@ namespace PadForge.ViewModels
         public int AudioCrossfeedLevel
         {
             get => _audioCrossfeedLevel;
-            set => SetProperty(ref _audioCrossfeedLevel, Math.Clamp(value, 0, 6));
+            set => SetProperty(ref _audioCrossfeedLevel, Math.Clamp(value, 0, 8));
         }
 
         private bool _audioEqEnabled;

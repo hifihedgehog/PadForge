@@ -41,6 +41,8 @@ namespace PadForge.Tests
         [InlineData(CrossfeedStage.LowEasy)]
         [InlineData(CrossfeedStage.MiddleEasy)]
         [InlineData(CrossfeedStage.HighEasy)]
+        [InlineData(CrossfeedStage.JanMeier)]
+        [InlineData(CrossfeedStage.Bs2bDefault)]
         public void Crossfeed_DcGain_IsUnity(int level)
         {
             var cf = new CrossfeedStage();

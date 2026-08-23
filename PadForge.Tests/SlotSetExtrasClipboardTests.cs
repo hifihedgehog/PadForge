@@ -160,10 +160,19 @@ namespace PadForge.Tests
                          SettingsManager.SlotMappingSets[Slot].RumbleAudio.EndpointId);
         }
 
-        /// <summary>The applied config is a CLONE. Sharing the instance would
-        /// have two slots editing one shaker setup.</summary>
+        /// <summary>Source and destination end up with independent configs,
+        /// so two slots cannot end up editing one shaker setup.
+        ///
+        /// <para>What actually guarantees that is the JSON boundary: Build
+        /// returns a string and Apply takes one, so identity cannot survive
+        /// the trip by signature. A mutation run confirmed as much, since
+        /// removing either Clone() leaves this green. Both Clone() calls stay
+        /// as belt and braces for a future caller that hands a snapshot across
+        /// without the wire, and this test pins the property that matters to
+        /// the user rather than the mechanism that currently provides
+        /// it.</para></summary>
         [Fact]
-        public void Apply_ClonesRatherThanSharingTheConfig()
+        public void Apply_LeavesSourceAndDestinationIndependent()
         {
             var src = Authored();
             using var _s = Seed(src);

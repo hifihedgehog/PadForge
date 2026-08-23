@@ -1,4 +1,4 @@
-<Application x:Class="PadForge.App"
+﻿<Application x:Class="PadForge.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
@@ -1042,6 +1042,7 @@
 
             <!-- Global Converters -->
             <conv:DzShapeNameConverter x:Key="DzShapeNameConverter" />
+            <conv:EqBandTypeNameConverter x:Key="EqBandTypeNameConverter" />
             <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
             <conv:HexToBrushConverter x:Key="HexToBrushConverter" />
             <conv:NormToCanvasConverter x:Key="NormToCanvasConverter" />

@@ -234,6 +234,17 @@ namespace PadForge.Common.Input
 
     public sealed class EqBand
     {
+        /// <summary>The highest band frequency the DSP will honour, as a
+        /// fraction of the sample rate. A band at or above Nyquist is not a
+        /// filter, it is an exception waiting to happen inside the cookbook
+        /// math, so <see cref="ParametricEqStage"/> clamps here. Exposed so
+        /// the editor can clamp to the SAME place rather than to a rounder
+        /// number: its own doc claims the clamps match, and they did not.
+        /// </summary>
+        public const float MaxFreqFraction = 0.45f;
+
+        public static float MaxFrequencyHz(int sampleRate) => sampleRate * MaxFreqFraction;
+
         public bool Enabled = true;
         public EqBandType Type = EqBandType.Peaking;
         public float FrequencyHz = 1000f;
@@ -268,6 +279,10 @@ namespace PadForge.Common.Input
 
         public void SetBands(IReadOnlyList<EqBand> bands, int sampleRate)
         {
+            // Kept so Reset can rebuild from them. The list is cloned by the
+            // caller's decode and never mutated after, so holding it is safe.
+            _bands = bands;
+            _rate = sampleRate;
             if (bands == null || bands.Count == 0 || sampleRate < 1)
             {
                 _c = new Compiled();
@@ -280,7 +295,7 @@ namespace PadForge.Common.Input
                 if (b == null || !b.Enabled) continue;
                 // A band at or above Nyquist is not a filter, it is an
                 // exception waiting to happen inside the cookbook math.
-                float f = Math.Clamp(b.FrequencyHz, 10f, sampleRate * 0.45f);
+                float f = Math.Clamp(b.FrequencyHz, 10f, EqBand.MaxFrequencyHz(sampleRate));
                 float q = Math.Clamp(b.Q, 0.05f, 20f);
                 float gain = Math.Clamp(b.GainDb, -30f, 30f);
                 // Peaking and shelves are the only types that take gain; the
@@ -305,11 +320,17 @@ namespace PadForge.Common.Input
                 _ => BiQuadFilter.PeakingEQ(rate, f, q, gainDb),
             };
 
+        private IReadOnlyList<EqBand> _bands;
+        private int _rate;
+
         public void Reset()
         {
-            // BiQuadFilter has no history reset, so rebuilding is the reset.
-            var cur = _c;
-            _c = new Compiled { L = cur.L, R = cur.R };
+            // BiQuadFilter exposes no history reset and its state is private,
+            // so the only way to drop the history is to build new filters.
+            // Carrying the SAME instances into a new Compiled, which is what
+            // this did, carried their history with them and reset nothing at
+            // all while reading as though it had.
+            if (_bands != null) SetBands(_bands, _rate);
         }
 
         public void Process(Span<float> buf, int frames)
@@ -408,7 +429,7 @@ namespace PadForge.Common.Input
         /// <summary>Linear magnitude of one band at one frequency.</summary>
         public static double Magnitude(EqBand b, double freqHz, int sampleRate)
         {
-            double w0 = 2 * Math.PI * Math.Clamp(b.FrequencyHz, 10f, sampleRate * 0.45f) / sampleRate;
+            double w0 = 2 * Math.PI * Math.Clamp(b.FrequencyHz, 10f, EqBand.MaxFrequencyHz(sampleRate)) / sampleRate;
             double q = Math.Clamp(b.Q, 0.05f, 20f);
             double alpha = Math.Sin(w0) / (2 * q);
             double cw = Math.Cos(w0);

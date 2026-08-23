@@ -11788,9 +11788,19 @@
                                                             <ColumnDefinition Width="*"/>
                                                         </Grid.ColumnDefinitions>
                                                         <CheckBox Grid.Column="0" IsChecked="{Binding Enabled, Mode=TwoWay}" VerticalAlignment="Center"/>
+                                                        <!-- The picker binds the enum values, so it needs an
+                                                             ItemTemplate to show anything but ToString(): without
+                                                             one it rendered "LowShelf" and "HighPass" verbatim, in
+                                                             every locale. -->
                                                         <ComboBox Grid.Column="1" Margin="0,0,6,0"
                                                                   ItemsSource="{Binding Source={StaticResource EqBandTypeValues}}"
-                                                                  SelectedItem="{Binding Type, Mode=TwoWay}"/>
+                                                                  SelectedItem="{Binding Type, Mode=TwoWay}">
+                                                            <ComboBox.ItemTemplate>
+                                                                <DataTemplate>
+                                                                    <TextBlock Text="{Binding Converter={StaticResource EqBandTypeNameConverter}}"/>
+                                                                </DataTemplate>
+                                                            </ComboBox.ItemTemplate>
+                                                        </ComboBox>
                                                         <TextBox Grid.Column="2" Margin="0,0,6,0"
                                                                  Text="{Binding FrequencyHz, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=0.##}"/>
                                                         <TextBox Grid.Column="3" Margin="0,0,6,0"

@@ -3201,6 +3201,12 @@ You can retry later from Settings.</value></data>
   <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>Overall level before the bands. AutoEq profiles ship a negative preamp so their boosts do not clip, and importing one sets this for you.</value></data>
   <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>On</value></data>
   <data name="Pad_Audio_EqCol_Type" xml:space="preserve"><value>Type</value></data>
+  <data name="Pad_Audio_EqType_Peaking" xml:space="preserve"><value>Peak</value></data>
+  <data name="Pad_Audio_EqType_LowShelf" xml:space="preserve"><value>Low Shelf</value></data>
+  <data name="Pad_Audio_EqType_HighShelf" xml:space="preserve"><value>High Shelf</value></data>
+  <data name="Pad_Audio_EqType_HighPass" xml:space="preserve"><value>High Pass</value></data>
+  <data name="Pad_Audio_EqType_LowPass" xml:space="preserve"><value>Low Pass</value></data>
+  <data name="Pad_Audio_EqType_Notch" xml:space="preserve"><value>Notch</value></data>
   <data name="Pad_Audio_EqCol_Freq" xml:space="preserve"><value>Freq (Hz)</value></data>
   <data name="Pad_Audio_EqCol_Gain" xml:space="preserve"><value>Gain (dB)</value></data>
   <data name="Pad_Audio_EqCol_Q" xml:space="preserve"><value>Q</value></data>

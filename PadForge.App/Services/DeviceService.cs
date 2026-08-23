@@ -741,15 +741,41 @@ namespace PadForge.Services
         /// gamepad mapping is never flagged even when its auto-mapped indices sit
         /// near the device's reported counts.</para>
         /// </summary>
+        /// <summary>The highest index+1 this device can legitimately carry on
+        /// each input family, for the "is this descriptor past the device's
+        /// inventory" test below.
+        ///
+        /// <para>Both counts prefer the RAW figure, and the axis side has to.
+        /// CapAxeCount stopped being an upper bound the moment the axis list
+        /// went sparse: it now carries how MANY slots a pad populates, not how
+        /// high they go. A PlayStation Move Navigation records CapAxeCount 10
+        /// against a highest real slot of 15, so its L1 and d-pad pressure
+        /// axes read as out of inventory. That verdict does not merely warn.
+        /// It strips the device from every slot and replaces the user's
+        /// PadSetting with a fresh auto-map, and since the fresh map
+        /// whitelists what it produces, the rows destroyed were exactly the
+        /// hand-authored ones. CapButtonCount has the same sparse shape (a
+        /// DualSense records 13 with a highest index of 16) and was already
+        /// safe for this reason.</para>
+        ///
+        /// <para>Zero means unknown rather than empty, so the caller declines
+        /// to guess. A device PadForge has never seen online has no raw counts
+        /// and falls back to the cap ones.</para></summary>
+        internal static (int Buttons, int Axes, int Povs) InventoryBounds(UserDevice ud)
+        {
+            if (ud == null) return (0, 0, 0);
+            return (ud.RawButtonCount > 0 ? ud.RawButtonCount : ud.CapButtonCount,
+                    ud.RawAxisCount > 0 ? ud.RawAxisCount : ud.CapAxeCount,
+                    ud.CapPovCount);
+        }
+
         private static bool IsForeignPadSetting(PadSetting existingPs, UserDevice ud,
             Engine.VirtualControllerType outputType, string profileId = null)
         {
             if (existingPs == null || ud == null) return false;
             if (ud.CapType != InputDeviceType.Gamepad) return false;
 
-            int buttons = ud.RawButtonCount > 0 ? ud.RawButtonCount : ud.CapButtonCount;
-            int axes = ud.CapAxeCount;
-            int povs = ud.CapPovCount;
+            var (buttons, axes, povs) = InventoryBounds(ud);
             if (buttons <= 0 && axes <= 0 && povs <= 0) return false; // unknown inventory — don't guess
 
             var fresh = SettingsManager.CreateDefaultPadSetting(ud, outputType, profileId);

@@ -3149,6 +3149,12 @@
   <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>대역 이전의 전체 레벨입니다. AutoEq 프로필은 부스트가 클리핑되지 않도록 음수 프리앰프를 포함하며, 가져오기 시 자동으로 설정됩니다.</value></data>
   <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>켜기</value></data>
   <data name="Pad_Audio_EqCol_Type" xml:space="preserve"><value>종류</value></data>
+  <data name="Pad_Audio_EqType_Peaking" xml:space="preserve"><value>피크</value></data>
+  <data name="Pad_Audio_EqType_LowShelf" xml:space="preserve"><value>로우 쉐프</value></data>
+  <data name="Pad_Audio_EqType_HighShelf" xml:space="preserve"><value>하이 쉐프</value></data>
+  <data name="Pad_Audio_EqType_HighPass" xml:space="preserve"><value>하이패스</value></data>
+  <data name="Pad_Audio_EqType_LowPass" xml:space="preserve"><value>로우패스</value></data>
+  <data name="Pad_Audio_EqType_Notch" xml:space="preserve"><value>노치</value></data>
   <data name="Pad_Audio_EqCol_Freq" xml:space="preserve"><value>주파수(Hz)</value></data>
   <data name="Pad_Audio_EqCol_Gain" xml:space="preserve"><value>게인(dB)</value></data>
   <data name="Pad_Audio_EqCol_Q" xml:space="preserve"><value>Q</value></data>

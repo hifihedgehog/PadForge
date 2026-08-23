@@ -580,6 +580,18 @@ namespace PadForge.ViewModels
                 {
                     if (old != null) old.PropertyChanged -= OnActiveDeviceConfigPropertyChanged;
                     if (_deviceConfig != null) _deviceConfig.PropertyChanged += OnActiveDeviceConfigPropertyChanged;
+                    // The EQ grid is the other thing anchored to this object
+                    // (#347). It holds decoded rows from whichever config was
+                    // bound, and a row edit re-encodes ALL of them back into
+                    // whichever config is bound NOW, so a swap without a
+                    // rebuild does not merely display the outgoing device's
+                    // EQ, it writes it onto the incoming one on the next
+                    // keystroke. The refresh lives HERE rather than at the
+                    // callers for the same reason the subscription swap does:
+                    // the device switch is one of four replacement paths (slot
+                    // delete, uncreated-slot clear and the sentinel bind are
+                    // the others) and only that one used to rebuild.
+                    RefreshEqBands();
                 }
             }
         }

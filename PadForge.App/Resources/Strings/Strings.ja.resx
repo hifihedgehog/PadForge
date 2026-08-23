@@ -3149,6 +3149,12 @@
   <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>各帯域の前段の全体レベルです。AutoEq プロファイルはブーストがクリップしないよう負のプリアンプを含んでおり、読み込み時に自動設定されます。</value></data>
   <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>オン</value></data>
   <data name="Pad_Audio_EqCol_Type" xml:space="preserve"><value>種類</value></data>
+  <data name="Pad_Audio_EqType_Peaking" xml:space="preserve"><value>ピーク</value></data>
+  <data name="Pad_Audio_EqType_LowShelf" xml:space="preserve"><value>ローシェルフ</value></data>
+  <data name="Pad_Audio_EqType_HighShelf" xml:space="preserve"><value>ハイシェルフ</value></data>
+  <data name="Pad_Audio_EqType_HighPass" xml:space="preserve"><value>ハイパス</value></data>
+  <data name="Pad_Audio_EqType_LowPass" xml:space="preserve"><value>ローパス</value></data>
+  <data name="Pad_Audio_EqType_Notch" xml:space="preserve"><value>ノッチ</value></data>
   <data name="Pad_Audio_EqCol_Freq" xml:space="preserve"><value>周波数 (Hz)</value></data>
   <data name="Pad_Audio_EqCol_Gain" xml:space="preserve"><value>ゲイン (dB)</value></data>
   <data name="Pad_Audio_EqCol_Q" xml:space="preserve"><value>Q</value></data>

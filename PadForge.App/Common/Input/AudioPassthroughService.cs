@@ -851,6 +851,10 @@ namespace PadForge.Common.Input
             public IntPtr Handle = IntPtr.Zero;
             public string Path;
             public bool IsBt;
+            /// <summary>The open never succeeded, so no thread is running
+            /// behind this entry. It stays registered anyway, as the record
+            /// that this (path, transport) was tried.</summary>
+            public volatile bool OpenFailed;
         }
 
         private static readonly object _jackLock = new();
@@ -923,7 +927,16 @@ namespace PadForge.Common.Input
             if (h == IntPtr.Zero || h == new IntPtr(-1))
             {
                 Engine.SdlDiagLog.WriteLine("JACKWATCH open FAILED bt=" + w.IsBt);
-                lock (_jackLock) if (_jackWatch.TryGetValue(pad, out var cur) && ReferenceEquals(cur, w)) _jackWatch.Remove(pad);
+                // Stay in the registry and mark the entry dead. Removing it
+                // here made EnsureJackWatch see no entry on the next 5 s
+                // reconcile and start another thread that failed the same way,
+                // forever, one FAILED line each. The entry now stands as the
+                // record that this path and transport were tried, so a retry
+                // costs a genuine change (a re-pair, a transport flip) rather
+                // than the clock. Shutdown and the stale sweep still drain it.
+                lock (_jackLock)
+                    if (_jackWatch.TryGetValue(pad, out var cur) && ReferenceEquals(cur, w))
+                        cur.OpenFailed = true;
                 return;
             }
             lock (_jackLock)
@@ -2631,6 +2644,25 @@ namespace PadForge.Common.Input
             // a peer stream after the next start re-adds both entries.
             _remoteRings.Clear();
             _remoteAudioDemand.Clear();
+
+            // The routed edge detector dies with it too, and for a sharper
+            // reason. The worker exits WITHOUT a final reconcile (Shutdown
+            // drops _running and the loop re-checks it before running again),
+            // so nothing ever writes the falling edge. Left standing, every
+            // slot that held a sink comes back from a restart already reading
+            // routed, the rising edge never fires, and the firmware speaker
+            // path is never asserted: a healthy sink streaming Opus into a
+            // muted path, which is precisely the defect the edge was added to
+            // cure.
+            Array.Clear(_lastRouted, 0, _lastRouted.Length);
+
+            // Jack watches are sink-scoped, so a shutdown that keeps them
+            // keeps a parallel read handle open on every DualSense with no
+            // sink left to want it. Draining here also lets the next start
+            // re-open on whatever transport the pad came back on.
+            List<Guid> jacks;
+            lock (_jackLock) jacks = _jackWatch.Keys.ToList();
+            foreach (var g in jacks) StopJackWatch(g);
             _workSignal.Set();
             foreach (var s in drop) DisposeTransport(s);
             foreach (var c in caps) StopCaptureEntry(c);
@@ -2825,7 +2857,22 @@ namespace PadForge.Common.Input
 
             // Phase 3 — device I/O, unlocked.
             foreach (var s in toDispose) DisposeTransport(s);
-            foreach (var s in toBuild) BuildTransportOnWorker(s);
+            foreach (var s in toBuild)
+            {
+                // The stream discontinuity IMirrorStage.Reset exists for
+                // (#347). A rebuilt transport is a new stream on a sink that
+                // survived, so without this the filters ring the old
+                // transport's tail into the new one's first frames. Nothing
+                // called Reset at all before, which made the whole contract
+                // documentation rather than behaviour.
+                //
+                // HERE and not in DetachTransport_NoLock, which is where it
+                // reads more naturally: the EQ reset rebuilds its filter
+                // array, and this file's rule is that filter arrays are never
+                // built under _lock. Phase 3 is the unlocked half.
+                s.Dsp.Reset();
+                BuildTransportOnWorker(s);
+            }
 
             // Phase 3b: headphone-jack watches follow the sink set. The jack
             // only matters while a sink exists, and observing it no longer

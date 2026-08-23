@@ -3149,6 +3149,12 @@ Puedes volver a intentarlo más tarde desde Configuración.</value></data>
   <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>Nivel general antes de las bandas. Los perfiles de AutoEq incluyen una preamplificación negativa para que sus realces no saturen, y al importar se aplica sola.</value></data>
   <data name="Pad_Audio_EqCol_On" xml:space="preserve"><value>Act.</value></data>
   <data name="Pad_Audio_EqCol_Type" xml:space="preserve"><value>Tipo</value></data>
+  <data name="Pad_Audio_EqType_Peaking" xml:space="preserve"><value>Pico</value></data>
+  <data name="Pad_Audio_EqType_LowShelf" xml:space="preserve"><value>Shelf Grave</value></data>
+  <data name="Pad_Audio_EqType_HighShelf" xml:space="preserve"><value>Shelf Agudo</value></data>
+  <data name="Pad_Audio_EqType_HighPass" xml:space="preserve"><value>Paso Alto</value></data>
+  <data name="Pad_Audio_EqType_LowPass" xml:space="preserve"><value>Paso Bajo</value></data>
+  <data name="Pad_Audio_EqType_Notch" xml:space="preserve"><value>Notch</value></data>
   <data name="Pad_Audio_EqCol_Freq" xml:space="preserve"><value>Frec. (Hz)</value></data>
   <data name="Pad_Audio_EqCol_Gain" xml:space="preserve"><value>Ganancia (dB)</value></data>
   <data name="Pad_Audio_EqCol_Q" xml:space="preserve"><value>Q</value></data>

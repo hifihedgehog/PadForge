@@ -7538,6 +7538,16 @@ namespace PadForge
                 // them or Paste loses the Menus tab.
                 ps.SlotMenusJson = InputService.BuildMenusSnapshotJson(padVm.PadIndex);
 
+                // And the last of the MappingSet's not-Rows family: rumble
+                // audio (#236), gamepad SOCD (#240) and Keep Awake (#270).
+                // Every other container copy already carried these. The
+                // clipboard did not, so Copy / Paste dropped three cards while
+                // the tooltip claimed to carry all settings. The row-paste
+                // path re-seeds the DESTINATION's copies across the fresh-set
+                // swap, which is correct on its own and reads as a deliberate
+                // exclusion until you look for the carry leg and find none.
+                ps.SlotSetExtrasJson = InputService.BuildSlotSetExtrasJson(padVm.PadIndex);
+
                 // Bundle EVERY device's PadSetting on the source slot so
                 // per-device tuning (deadzones, sensitivity, FFB, Gyro,
                 // TouchpadSettings) round-trips for all devices, not just
@@ -7609,6 +7619,19 @@ namespace PadForge
                     && MappingTranslation.IsSameLayout(srcType, srcIsExtended, targetType, targetIsExtended))
                 {
                     InputService.ApplyMenusSnapshotJson(padVm.PadIndex, ps.SlotMenusJson);
+                }
+
+                // Rumble audio, gamepad SOCD and Keep Awake, same ordering as
+                // the two above and for the same reason. NOT gated on the
+                // layout out here: only SOCD's pair grammar is slot-type
+                // dependent, so the gate is passed IN and applied to that
+                // field alone. Blanket-gating this the way menus are would
+                // drop a bass-shaker setup on any cross-type paste for a
+                // reason that has nothing to do with bass shakers.
+                if (!string.IsNullOrEmpty(ps.SlotSetExtrasJson))
+                {
+                    InputService.ApplySlotSetExtrasJson(padVm.PadIndex, ps.SlotSetExtrasJson,
+                        MappingTranslation.IsSameLayout(srcType, srcIsExtended, targetType, targetIsExtended));
                 }
 
                 _inputService.ApplyPadSettingToCurrentDeviceTranslated(
@@ -7687,14 +7710,20 @@ namespace PadForge
                 // Refresh the Menus tab from the restored set so pasted menus
                 // show up immediately instead of staying invisible until relaunch.
                 padVm.ReloadMenus();
-                // Same for the Bass Shakers tab (#236). Note the data flow:
-                // the paste deliberately PRESERVES the destination's
-                // rumble-audio config (ApplySlotMappingSetFromRows), so the
-                // reload re-anchors the card onto the fresh set object that
-                // now carries the destination's own config.
+                // Same for the Bass Shakers tab (#236). The data flow used to
+                // be that the paste preserved the DESTINATION's config, so
+                // this reload only re-anchored the card onto the fresh set.
+                // It now carries the SOURCE's (ApplySlotSetExtrasJson), so the
+                // reload is what makes the pasted shaker setup visible without
+                // a relaunch, the same job it does for menus above.
                 padVm.ReloadRumbleAudio();
                 // And the SOCD card (#240), same lifetime.
                 padVm.ReloadSocd();
+                // Keep Awake (#270) reads MappingSet.KeepAwake* through
+                // getters on the live set, so it needs the same nudge the
+                // three cards above do. It was absent from this list only
+                // because nothing used to change those fields on a paste.
+                padVm.ReloadKeepAwake();
 
                 _settingsService.MarkDirty();
                 _viewModel.StatusText = Strings.Instance.Status_SettingsPasted;

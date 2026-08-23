@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using PadForge.Common.Input;
@@ -470,6 +470,15 @@ namespace PadForge.Services
                 set.Rows.Add(LayerRow("Hotkey", Key(vk), Src(button)));
 
             set.ShiftActivators.Add(HotkeyActivator());
+            // Quiet is per SET, and this profile has two. The Xbox half got
+            // its Quiet layer and this half did not, so with Quiet toggled on
+            // the pad stopped while Back plus a shoulder still typed F2/F4
+            // and the rest from the keyboard slot. The docs page promised
+            // every profile's Quiet silences everything, and the page was the
+            // contract (4.3.2 docs sweep). The test that guards this used to
+            // inspect slot 0 of KBM-typed profiles only, which is exactly how
+            // the second slot of a two-slot profile escaped it.
+            AddQuietLayer(set);
             return set;
         }
 

@@ -26,7 +26,7 @@ Free Windows app. No subscription. No paywall. No nag screens. Built on SDL3, [H
 
 PadForge is for sim racers running wheels in games that only understand Xbox controllers. For DualSense owners who want adaptive triggers and lightbar effects in Steam games that ignore them. For accessibility users mapping whatever hardware they can use. For anyone whose controller doesn't match what their game expects.
 
-<p align="center"><b>16</b> virtual controllers at once · <b>225+</b> device profiles · <b>1000 Hz</b> polling · <b>$0</b> forever</p>
+<p align="center"><b>16</b> virtual controllers at once · <b>231</b> device profiles · <b>1000 Hz</b> polling · <b>$0</b> forever</p>
 
 ![Dashboard](screenshots/dashboard.jpg)
 
@@ -47,7 +47,7 @@ PadForge is for sim racers running wheels in games that only understand Xbox con
     </picture>
   </a>
   <br>
-  <em>Powered by HIDMaestro. One driver, 225+ device profiles.</em>
+  <em>Powered by HIDMaestro. One driver, 231 device profiles.</em>
 </p>
 
 <details>
@@ -128,7 +128,7 @@ PadForge is for sim racers running wheels in games that only understand Xbox con
 - **Guide button LED brightness.** Dim the Xbox button on Xbox One, Elite, and Series pads over USB, and the 2015 Steam Controller's home LED, fixed or following the battery.
 - **Shift layers** gain a long-press activation delay and an inactivity auto-cancel.
 - **Text Block macro action** types text a character at a time.
-- **Clone Device** copies a device's controls onto an Extended slot in one click.
+- **Clone Device 1:1** copies a device's controls onto an Extended slot in one click.
 - **Raw Axis N sources** up to 24 axes.
 - **Nintendo virtual controller.** A virtual Switch Pro Controller through HIDMaestro, with gyro passthrough and HOME LED control.
 - **Bass Shakers.** Game rumble and force feedback route to any audio output as low-frequency tones, four voices with per-voice frequency and gain.
@@ -164,7 +164,7 @@ Full documentation at [padforge.org/docs](https://padforge.org/docs/).
 5. Most controllers auto-map on assign. For the rest, click **Map All** to walk every button in one pass, or use the **Mappings** tab to bind one at a time.
 6. Launch your game. The game sees the virtual controller as real hardware.
 
-Most games "just work" after step 5. If a game sees both your physical and virtual controller at once, install HidHide from **Settings → HidHide** to hide the physical one.
+Most games "just work" after step 5. If a game sees both your physical and virtual controller at once, install HidHide from **Settings → HidHide Driver** to hide the physical one.
 
 ---
 
@@ -184,7 +184,7 @@ Stick Trim is a combine mode on the mapping row. Hold a digital trigger to arm i
 
 ### Copy a controller onto a slot, one to one.
 
-Assign a device to an Extended slot and click Clone Device. Every button and axis lands on the matching virtual output, straight through, with no per-input mapping. It works even when the device is assigned but unplugged, so you can set the profile up before the controller is plugged in.
+Assign a device to an Extended slot and click Clone Device 1:1. Every button and axis lands on the matching virtual output, straight through, with no per-input mapping. It works even when the device is assigned but unplugged, so you can set the profile up before the controller is plugged in.
 
 ![Clone Device on an Extended slot](screenshots/extended.jpg)
 
@@ -244,7 +244,7 @@ Press two opposite keys together and SOCD cleaning decides what the Keyboard & M
 
 ### Turn the DualSense pad into a mouse, a stick, or a D-pad.
 
-A Touchpad tab on every slot whose source carries a touchpad surface (DualSense, DualSense Edge, DS4, Web Controller, on-screen Touchpad Overlay, Windows Precision Touchpad). Map a finger to mouse X/Y with per-axis sensitivity and invert, and pick a Pointer Response: Simple, or a Trackpad curve that moves the cursor the way a laptop touchpad does. Anchor a virtual analog stick where your finger lands. Drop a wedge-thresholded D-pad on top. The gesture stack covers 4-way and 8-way swipes, taps, longpress, pinch, rotate, two- to five-finger gestures, and shape templates (Square, Triangle, Z, Checkmark, and Circle in either direction). Pressure-sensitive pads expose per-finger pressure as mapping sources, and swipe haptics tick the pad as your finger travels. Every toggle saves per pad per slot.
+A Touchpad tab on every slot whose source carries a touchpad surface (DualSense, DualSense Edge, DS4, Steam Controller, Steam Deck, Steam Controller 2026, Web Controller, on-screen Touchpad Overlay, Windows Precision Touchpad). Map a finger to mouse X/Y with per-axis sensitivity and invert, and pick a Pointer Response: Simple, or a Trackpad curve that moves the cursor the way a laptop touchpad does. Anchor a virtual analog stick where your finger lands. Drop a wedge-thresholded D-pad on top. The gesture stack covers 4-way and 8-way swipes, taps, longpress, pinch, rotate, two- to five-finger gestures, and shape templates (Square, Triangle, Z, Checkmark, and Circle in either direction). Pressure-sensitive pads expose per-finger pressure as mapping sources, and swipe haptics tick the pad as your finger travels. Every toggle saves per pad per slot.
 
 ![Touchpad tab](screenshots/touchpad.jpg)
 
@@ -411,7 +411,7 @@ Comparison reflects each tool's shipping release as of July 2026. Verified again
 | DualShock 4 virtual output | ✅ | ❌ | ❌ | ✅ | ✅ | ❌ |
 | DualSense virtual output | ✅ | ❌ | ❌ | ❌ input only | ❌ | ❌ |
 | Switch Pro virtual output | ✅ via HIDMaestro | ❌ | ❌ | ✅ | ❌ | ❌ |
-| Flight stick / wheel / HOTAS virtual output (DirectInput) | ✅ 225+ HM profiles | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Flight stick / wheel / HOTAS virtual output (DirectInput) | ✅ 231 HM profiles | ❌ | ❌ | ❌ | ❌ | ❌ |
 | MIDI virtual output | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | MIDI input as a mapping source | ✅ notes / CC / pitch bend / encoders | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Keyboard + Mouse virtual output | ✅ | ❌ | ❌ | ✅ | ✅ | ✅ |
@@ -493,11 +493,11 @@ Native force feedback for Logitech, Fanatec, and Thrustmaster wheels: constant f
 
 ### DualSense Adaptive Triggers
 ![Adaptive Triggers](screenshots/adaptive-triggers.jpg)
-Seven trigger effect modes. Off, Feedback, Weapon, Vibration, Multi-Position Feedback, Slope Feedback, Multi-Position Vibration. A live preview draws the resistance and amplitude curve while you drag Range, Strength, and Frequency. One-click GameCube preset loads parameters that mimic the click of a real GameCube trigger.
+Seven trigger effect modes. Off, Feedback, Weapon, Vibration, Multiple-Position Feedback, Slope Feedback, Multiple-Position Vibration. A live preview draws the resistance and amplitude curve while you drag Range, Strength, and Frequency. One-click GameCube preset loads parameters that mimic the click of a real GameCube trigger.
 
 ### DualSense lightbar
 ![Lighting](screenshots/lighting.jpg)
-Fourteen lightbar modes including three Audio Pulse variants and three Audio Bands variants that react to system audio in real time. A separate Input Reactive overlay flashes on button presses in three variants (Random Color, Cycle Through Palette, Base Color). Strobe is a square-wave flash at the period you set. Battery paints the bar by charge level (red at low, yellow at mid, green at full). Plus the indicator-LED card for player pattern, mute LED, and brightness.
+Fourteen lightbar modes including three Audio Pulse variants and three Audio Bands variants that react to system audio in real time. A separate Input Reactive overlay flashes on button presses in three variants (Random Color per Press, Cycle Through Palette, Base Color per Press). Strobe is a square-wave flash at the period you set. Battery paints the bar by charge level (red at low, yellow at mid, green at full). Plus the indicator-LED card for player pattern, mute LED, and brightness.
 
 ### Guide button LED
 ![Guide LED](screenshots/guide-led.jpg)
@@ -509,7 +509,7 @@ Controller speaker output for the DualSense and DualShock 4. Pick a Windows audi
 
 ### Touchpad
 ![Touchpad](screenshots/touchpad.jpg)
-Per-slot touchpad tuning on any source with a touchpad surface (DualSense, DualSense Edge, DS4, Web Controller, on-screen Touchpad Overlay, Windows Precision Touchpad). Six cards: Stick / D-Pad Output (anchor-relative virtual stick + wedge D-pad), Mouse Output (per-axis sensitivity, invert, and a Simple or Trackpad pointer response with acceleration), Gesture Detection (master enable + cooldown), In-Box Gestures (swipes, taps, longpress, pinch, rotate, two- to five-finger, shape templates), Custom Gestures (recorded shape templates per profile), and Swipe Haptics (travel ticks with intensity).
+Per-slot touchpad tuning on any source with a touchpad surface (DualSense, DualSense Edge, DS4, Steam Controller, Steam Deck, Steam Controller 2026, Web Controller, on-screen Touchpad Overlay, Windows Precision Touchpad). Six cards: Stick / D-Pad Output (anchor-relative virtual stick + wedge D-pad), Mouse Output (per-axis sensitivity, invert, and a Simple or Trackpad pointer response with acceleration), Gesture Detection (master enable + cooldown), In-Box Gestures (swipes, taps, longpress, pinch, rotate, two- to five-finger, shape templates), Custom Gestures (recorded shape templates per profile), and Swipe Haptics (travel ticks with intensity).
 
 ### Wii pointer modes
 ![Wii pointer modes](screenshots/pointer.jpg)
@@ -541,7 +541,7 @@ Hold a mouse button and flick up, down, left, or right. Each direction, plus a c
 
 ### Extended virtual controller
 ![Extended](screenshots/extended.jpg)
-Flight sticks, racing wheels, HOTAS, third-party gamepads. 225+ HIDMaestro profiles plus a Custom mode that builds a HID descriptor from scratch. Up to 8 axes, 128 buttons, 4 POV hats. Configurable VID, PID, and product string.
+Flight sticks, racing wheels, HOTAS, third-party gamepads. 231 HIDMaestro profiles plus a Custom mode that builds a HID descriptor from scratch. Up to 8 axes, 128 buttons, 4 POV hats. Configurable VID, PID, and product string.
 
 ### PlayStation virtual controller
 ![PlayStation](screenshots/playstation.jpg)
@@ -585,7 +585,7 @@ Pair your PCs and share their controllers every way. A wheel on one drives a gam
 
 ### Settings
 ![Settings](screenshots/settings.jpg)
-Language (10 locales, live-switch with no restart). Theme (System / Light / Dark). Polling interval (1-16 ms). Auto-start at login, minimize to tray, master input-hiding toggle.
+Language (10 locales, live-switch with no restart). Theme (System Default / Light / Dark). Polling interval (1-16 ms). Auto-start at login, minimize to tray, master input-hiding toggle.
 
 </details>
 
@@ -637,8 +637,8 @@ PadForge's controller picker is the set of HIDMaestro profiles that ship with a 
 To capture and use a profile locally:
 
 1. Create or open any **Extended**-type slot.
-2. On the Controller page, click **Imported profiles…** on the Extended config bar.
-3. Under **Connected devices available to import**, pick your plugged-in device and click **Import**.
+2. On the Controller page, click **Imported Profiles…** on the Extended config bar.
+3. Under **Connected Devices Available to Import**, pick your plugged-in device and click **Import**.
 4. The new profile appears in the slot's dropdown with a "(User Generated)" suffix and stays available across every Extended slot from then on.
 
 Profiles live inside `PadForge.xml` and travel with your settings.
@@ -651,7 +651,7 @@ To share a captured profile upstream:
 
 To import a profile someone else captured:
 
-1. Click **Import from file…** in the same dialog and pick the `.json` they sent you.
+1. Click **Import from File…** in the same dialog and pick the `.json` they sent you.
 
 PadForge reads only the HID descriptor during capture. It does not record or forward your controller's input.
 
@@ -671,8 +671,8 @@ PadForge stands on these projects. Please consider supporting them directly.
 |---|---|---|
 | [x360ce](https://github.com/x360ce/x360ce) | Original codebase this fork started from | MIT |
 | [SDL3](https://github.com/libsdl-org/SDL) | Controller input: joystick, gamepad, and sensor enumeration | zlib |
-| [OpenVR](https://github.com/ValveSoftware/openvr) | VR headset pose and motion controllers as input sources (C# binding; the native runtime comes from your SteamVR) | BSD 3-Clause |
-| [HIDMaestro](https://github.com/hifihedgehog/HIDMaestro) | User-mode UMDF2 virtual HID controller engine with 225+ device profiles | MIT |
+| [OpenVR](https://github.com/ValveSoftware/openvr) | VR headset pose and motion controllers as input sources (C# binding only, the native runtime comes from your SteamVR) | BSD 3-Clause |
+| [HIDMaestro](https://github.com/hifihedgehog/HIDMaestro) | User-mode UMDF2 virtual HID controller engine with 231 device profiles | MIT |
 | [OpenXInput](https://github.com/hifihedgehog/OpenXinput) | Drop-in `xinput1_4.dll` replacement that filters PadForge's own virtual controllers from its own XInput view | upstream trademark disclaimer |
 | [Handheld Companion](https://github.com/Valkirie/HandheldCompanion) | 3D controller OBJ meshes (Xbox 360, Xbox One, DualShock 4, DualSense) | CC BY-NC-SA 4.0 |
 | [Gamepad-Asset-Pack](https://github.com/AL2009man/Gamepad-Asset-Pack) | 2D controller PNG schematics (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense) | MIT |
@@ -755,6 +755,8 @@ This project is licensed under **CC BY-NC-SA 4.0** (Creative Commons Attribution
 - **$Q Recognizer** is licensed under the BSD 3-Clause License. Copyright (c) 2018-2019, Nathan Magrofuoco, Jacob O. Wobbrock, Radu-Daniel Vatavu, and Lisa Anthony. The touchpad shape-matcher in PadForge.Engine.Touchpad.ShapeRecognizer is a C# re-derivation of the canonical JavaScript reference at depts.washington.edu/acelab/proj/dollar/qdollar.js.
 - **GestureSign's PointPatternAnalyzer** is licensed under the GPL-2.0. Copyright (c) 2016, TransposonY. The angular-margin scoring in PadForge.Engine.Touchpad.AngularMarginRecognizer is an original C# re-derivation of that approach and contains no GPL code.
 - **Concentus** is licensed under the BSD 3-Clause License (the Opus license). By Logan Stromberg, with copyrights held by Skype Limited, Xiph.Org Foundation, and other Opus contributors.
+- **OpenVR** is licensed under the BSD 3-Clause License. Copyright (c) 2015, Valve Corporation. PadForge compiles the C# client binding (openvr_api.cs) for reading VR headsets and motion controllers as input sources. The native openvr_api.dll is not distributed and loads from your own SteamVR install. Full license text in [LICENSE](LICENSE).
+- **duaLib** is licensed under the MIT License. By WujekFoliarz. DualSense output-report byte map and Sony scePad semantics reference. PadForge's implementation is original C#.
 - **bs2b** is licensed under the MIT License. By Boris Mikhaylov. PadForge ports its crossfeed filter to C# for headphone output on the controller audio path.
 - **DualSense Bluetooth speaker audio** builds on research by egormanga ([SAxense](https://apps.sdore.me/SAxense), MPL-2.0), awalol ([dualsense-bt-haptics](https://github.com/awalol/dualsense-bt-haptics), MIT), and [TechAntohere](https://github.com/TechAntohere). PadForge's implementation is original C#.
 - **DualSenseY-v2** by WujekFoliarz served as the behavioral reference for USB controller audio passthrough. It publishes no license. PadForge's implementation is original C#.
@@ -762,13 +764,13 @@ This project is licensed under **CC BY-NC-SA 4.0** (Creative Commons Attribution
 - **DS4AudioStreamer** is licensed under the MIT License. By nefarius. Reference for the DualShock 4 Bluetooth audio report framing. PadForge's SBC encoder is an original C# implementation from the public Bluetooth A2DP specification and contains no libsbc (GPL) code.
 - **ds4mac** documentation is licensed under the MIT License. By khallmark. Protocol reference for DualShock 4 audio.
 - **NAudio** is licensed under the MIT License. By Mark Heath and contributors. WASAPI loopback capture for the controller-audio mirror and the audio-bass trigger rumble.
-- **Vosk** is licensed under the Apache License 2.0. By Alpha Cephei Inc. Offline speech recognition for voice macros, shipped as the native libvosk library. The recognition model (Apache-2.0, Alpha Cephei) downloads to LocalAppData on first use.
+- **Vosk** is licensed under the Apache License 2.0. By Alpha Cephei Inc. Offline speech recognition for voice macros, shipped as the native libvosk library. The recognition model (Apache-2.0, Alpha Cephei) ships inside the executable and is unpacked to a cache under the TEMP folder on first use.
 - **Bouncy Castle** (bc-csharp) provides the Remote Link pairing and transport cryptography (X25519, Ed25519, ChaCha20-Poly1305). Licensed under the Bouncy Castle Licence, an adaptation of the MIT License.
-- **libusb** is licensed under the LGPL-2.1-or-later. PadForge bundles the unmodified `libusb-1.0.dll` inside the single-file executable; the self-extractor unpacks it at runtime, and replacing it means rebuilding from source. Source: [github.com/libusb/libusb](https://github.com/libusb/libusb). Full license text in [LICENSE](LICENSE).
+- **libusb** is licensed under the LGPL-2.1-or-later. PadForge bundles the unmodified `libusb-1.0.dll` inside the single-file executable. The self-extractor unpacks it at runtime, and replacing it means rebuilding from source. Source: [github.com/libusb/libusb](https://github.com/libusb/libusb). Full license text in [LICENSE](LICENSE).
 - **nipplejs** is licensed under the MIT License. Copyright (c) 2014 Yoann Moinet. The Web Controller's touch joystick.
 - **QR-Code-generator** is licensed under the MIT License. Copyright (c) Project Nayuki. The Dashboard web controller card's QR encoder is a C# port of its reference implementation.
 - **Mouse artwork** in the Keyboard + Mouse visualization is from Zergatul.Obs.InputOverlay, licensed under the MIT License. Copyright (c) 2021 Igor Budzhak.
-- **DS5_Bridge** is licensed under the GNU Affero General Public License v3.0. Copyright (c) SundayMoments. Its jack-detect routing pattern informed Follow Headphone Jack; PadForge ships no code from it.
+- **DS5_Bridge** is licensed under the GNU Affero General Public License v3.0. Copyright (c) SundayMoments. Its jack-detect routing pattern informed Follow Headphone Jack. PadForge ships no code from it.
 - **SDL_GameControllerDB** is licensed under the zlib License. PadForge's bundled `gamecontrollerdb_padforge.txt` extends it and keeps the source citation in its header.
 - **Zacksly Icon Pack** is licensed under CC BY 3.0. By Zacksly ([zacksly.itch.io](https://zacksly.itch.io/)). PadForge's stick and trigger tab icon geometry derives from it.
 - **xbledctl** is licensed under the MIT License. By Leclowndu93150. PadForge's Xbox Guide LED writer derives its `\\.\XboxGIP` packet layout and device-discovery sequence from it.

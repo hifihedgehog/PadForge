@@ -1,4 +1,4 @@
-// Single source of truth for AssemblyVersion + AssemblyFileVersion across
+﻿// Single source of truth for AssemblyVersion + AssemblyFileVersion across
 // the PadForge solution. Both PadForge.App and PadForge.Engine link this
 // file as a shared compile item via <Compile Include="..\SharedVersion.cs">,
 // so the two assemblies always ship at the same version number — no
@@ -11,5 +11,5 @@
 
 using System.Reflection;
 
-[assembly: AssemblyVersion("4.3.1.0")]
-[assembly: AssemblyFileVersion("4.3.1.0")]
+[assembly: AssemblyVersion("4.3.2.0")]
+[assembly: AssemblyFileVersion("4.3.2.0")]

@@ -2380,6 +2380,12 @@ namespace PadForge.Services
                 // #202: same keep-alive rule. A chosen tone filter is a
                 // deliberate, copy-worthy configuration.
                 || (c.AudioToneFilterMode != null && c.AudioToneFilterMode != "Off")
+                // #347: a tuned audio chain is deliberate configuration and
+                // must survive the same copy and keep-alive rules.
+                || c.AudioCrossfeedLevel != 0
+                || c.AudioEqEnabled || !string.IsNullOrEmpty(c.AudioEqBands)
+                || c.AudioEqPreampDb != 0
+                || !c.AudioLimiterEnabled || c.AudioLimiterCeiling != 98
                 || c.AudioPersonaHapticsEnabled || c.AudioPersonaHapticsGain != 100
                 // #239: enabled synthetic pressure is copy-worthy, and a
                 // changed touch level keeps the config alive while the
@@ -2406,6 +2412,10 @@ namespace PadForge.Services
                 || c.AudioMirrorEngageMode != "Always"
                 || !string.IsNullOrEmpty(c.AudioMirrorEngageButton)
                 || c.AudioToneFilterMode != "Off"
+                || c.AudioCrossfeedLevel != 0
+                || c.AudioEqEnabled || !string.IsNullOrEmpty(c.AudioEqBands)
+                || c.AudioEqPreampDb != 0
+                || !c.AudioLimiterEnabled || c.AudioLimiterCeiling != 98
                 || c.AudioPersonaHapticsEnabled || c.AudioPersonaHapticsGain != 100
                 || c.TouchpadSyntheticPressure
                 || c.TouchpadSyntheticTouchPercent != 50);
@@ -2738,6 +2748,12 @@ namespace PadForge.Services
                     cfg.AudioMirrorEngageReleaseMs = cfgData.AudioMirrorEngageReleaseMs;
                     cfg.AudioToneFilterMode = cfgData.AudioToneFilterMode ?? "Off";
                     cfg.AudioToneLimitHz = cfgData.AudioToneLimitHz;
+                    cfg.AudioCrossfeedLevel = cfgData.AudioCrossfeedLevel;
+                    cfg.AudioEqEnabled = cfgData.AudioEqEnabled;
+                    cfg.AudioEqBands = cfgData.AudioEqBands ?? string.Empty;
+                    cfg.AudioEqPreampDb = cfgData.AudioEqPreampDb;
+                    cfg.AudioLimiterEnabled = cfgData.AudioLimiterEnabled;
+                    cfg.AudioLimiterCeiling = cfgData.AudioLimiterCeiling;
                     cfg.AudioPersonaHapticsEnabled = cfgData.AudioPersonaHapticsEnabled;
                     cfg.AudioPersonaHapticsGain = cfgData.AudioPersonaHapticsGain;
                     // Migrate legacy MicLightOn to the new MicLedMode if
@@ -4274,6 +4290,12 @@ namespace PadForge.Services
                 AudioMirrorEngageReleaseMs = cfg.AudioMirrorEngageReleaseMs,
                 AudioToneFilterMode = cfg.AudioToneFilterMode ?? "Off",
                 AudioToneLimitHz = cfg.AudioToneLimitHz,
+                AudioCrossfeedLevel = cfg.AudioCrossfeedLevel,
+                AudioEqEnabled = cfg.AudioEqEnabled,
+                AudioEqBands = cfg.AudioEqBands ?? string.Empty,
+                AudioEqPreampDb = cfg.AudioEqPreampDb,
+                AudioLimiterEnabled = cfg.AudioLimiterEnabled,
+                AudioLimiterCeiling = cfg.AudioLimiterCeiling,
                 AudioPersonaHapticsEnabled = cfg.AudioPersonaHapticsEnabled,
                 AudioPersonaHapticsGain = cfg.AudioPersonaHapticsGain,
                 HeadphoneVolume = cfg.HeadphoneVolume,

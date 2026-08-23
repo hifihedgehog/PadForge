@@ -68,6 +68,14 @@ namespace PadForge.Common.Input
         /// for a slot. An empty source means the system default device.</summary>
         public static Func<int, IEnumerable<(Guid Device, bool PassthroughOn, string MirrorSource)>> PassthroughConfigProvider { get; set; }
 
+        /// <summary>Per (slot, device) settings for the audio DSP chain
+        /// (#347): crossfeed level, EQ enable, encoded band list, preamp,
+        /// limiter enable and ceiling, plus the configured output path so the
+        /// chain can tell a stereo headphone route from a mono or speaker one.
+        /// Read on the worker at reconcile cadence, never per audio frame.</summary>
+        public static Func<int, Guid, (int Crossfeed, bool EqOn, string Bands, double PreampDb,
+                                       bool LimOn, int Ceiling, int OutputPath)?> DspConfigProvider { get; set; }
+
         // ─────────────────────────────────────────────
         //  Sink model
         // ─────────────────────────────────────────────
@@ -84,6 +92,13 @@ namespace PadForge.Common.Input
             /// <summary>Endpoint ID this sink's mirror captures; "" = the
             /// system default device (re-resolved every worker pass).</summary>
             public string MirrorSourceId = "";
+
+            /// <summary>Per-device audio DSP (#347). Lives on the Sink for the
+            /// same reason the Opus encoder does: its filters carry
+            /// per-channel history, and two DualSense on one slot must not
+            /// share it. Reconfigured on the worker, read on the render or BT
+            /// thread, never rebuilt from the audio path.</summary>
+            public readonly MirrorChain Dsp = new();
 
             /// <summary>The resolved capture feeding this sink's mirror, or
             /// null (mirror off / source unavailable / own endpoint).</summary>
@@ -657,6 +672,17 @@ namespace PadForge.Common.Input
                 // the endpoint's UAC volume/mute, so this is a plain sum.
                 if (_personaSpeakerRings.TryGetValue(_sink.DeviceGuid, out var persona))
                     persona.ReadFloatAdd(buffer, offset, count);
+
+                // Controller-audio DSP (#347): crossfeed, parametric EQ and
+                // the limiter, applied to the summed mix and BEFORE the
+                // transport encodes it. Upstream of Opus on purpose, so the
+                // encoder allocates bits to the signal the user actually
+                // wants, and so the limiter can protect it from a
+                // gain-positive EQ. In place and frame-count preserving, so
+                // nothing here can disturb the BT lane's cushion arithmetic.
+                var dsp = _sink.Dsp;
+                if (dsp != null && dsp.Active)
+                    dsp.Process(buffer.AsSpan(offset, count), count / 2);
 
                 // Activity stamp for the BT idle gate: any non-silent sample
                 // keeps the stream sending; 2 s of silence pauses it.
@@ -2789,6 +2815,38 @@ namespace PadForge.Common.Input
             lock (_jackLock)
                 jackStale = _jackWatch.Keys.Where(g => !jackWanted.Contains(g)).ToList();
             foreach (var g in jackStale) StopJackWatch(g);
+
+            // Phase 3c: push the DSP settings into each sink's chain (#347).
+            // Sinks are resolved under the lock and configured OUTSIDE it,
+            // because Configure builds filter arrays and must not hold this
+            // service's lock while it allocates.
+            var dspProvider = DspConfigProvider;
+            if (dspProvider != null)
+            {
+                var pending = new List<(Sink S, Guid G, int Slot)>();
+                lock (_lock)
+                    foreach (var d in desired)
+                        if (_sinks.TryGetValue(d.Guid, out var sk)) pending.Add((sk, d.Guid, d.Slot));
+
+                foreach (var (sk, guid, slot) in pending)
+                {
+                    var cfg = dspProvider(slot, guid);
+                    if (cfg == null) { sk.Dsp.Configure(0, true, null, 0, false, 1f, Rate); continue; }
+                    var c = cfg.Value;
+                    // Crossfeed needs a genuine stereo route. Resolved path 1
+                    // is StereoHeadset; Automatic and SpeakerOnly carry a mono
+                    // downmix and the mono headset paths are mono by name, so
+                    // everything else is treated as "not stereo" and the stage
+                    // is skipped rather than made to prove itself a no-op.
+                    int resolved = ResolveOutputPath(c.OutputPath, guid);
+                    bool stereoHeadphones = resolved == 1;
+                    sk.Dsp.Configure(
+                        c.Crossfeed, !stereoHeadphones,
+                        c.EqOn ? EqBandCodec.Decode(c.Bands) : null,
+                        c.EqOn ? (float)c.PreampDb : 0f,
+                        c.LimOn, c.Ceiling / 100f, Rate);
+                }
+            }
 
             // Phase 4 — loopback captures (own brief locks).
             ReconcileCapturesOnWorker();

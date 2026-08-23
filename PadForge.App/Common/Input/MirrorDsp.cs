@@ -1,0 +1,527 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Text.RegularExpressions;
+using NAudio.Dsp;
+
+namespace PadForge.Common.Input
+{
+    /// <summary>One processing stage in the controller-audio chain (#347).
+    ///
+    /// <para>Three rules, and they are not style preferences. Every stage
+    /// processes IN PLACE, preserves the frame count exactly, and looks ahead
+    /// by nothing. The Bluetooth lane rate-matches its send cadence against an
+    /// adaptive 20 to 100 ms cushion, so a stage that buffers, resamples or
+    /// delays does not merely add latency, it fights that control loop. This
+    /// path's entire failure history is buffer and timing assumptions (#320
+    /// cracking, #325 the cushion, and 8024b879 where a clamp and the buffer
+    /// it filled had to share a constant).</para>
+    ///
+    /// <para>No allocation once running. Coefficients are rebuilt off the
+    /// audio thread and swapped in.</para></summary>
+    internal interface IMirrorStage
+    {
+        /// <summary>False while the stage would be a no-op, so the chain can
+        /// skip it without touching the buffer.</summary>
+        bool Active { get; }
+
+        /// <summary>Interleaved stereo, in place. <paramref name="frames"/> is
+        /// pairs, so the span holds twice that many floats.</summary>
+        void Process(Span<float> interleaved, int frames);
+
+        /// <summary>Drop filter history at a stream discontinuity (transport
+        /// flip, stall resync), so stale state cannot ring into new audio.</summary>
+        void Reset();
+    }
+
+    /// <summary>Bauer stereophonic-to-binaural crossfeed, ported from Boris
+    /// Mikhaylov's bs2b as vendored in openal-soft (core/bs2b.cpp, MIT).
+    ///
+    /// <para>Headphones present hard-panned material to one ear only, which
+    /// never happens with speakers and is what makes some game audio fatiguing
+    /// over the DualSense jack. Crossfeed mixes a lowpassed copy of each
+    /// channel into the other and boosts the direct path to compensate.</para>
+    ///
+    /// <para>It carries NO delay line. The inter-aural timing comes out of the
+    /// IIR phase response, so this stage adds exactly zero latency, which is
+    /// what lets it sit in this lane at all.</para>
+    ///
+    /// <para>Harmless on the speaker paths by construction rather than by a
+    /// special case. Those route a mono downmix, and with L equal to R the
+    /// two channels stay equal through the filters, so nothing is "widened"
+    /// into a driver that cannot represent it.</para>
+    ///
+    /// <para>The sum of the two filters is unity at DC, which is what bs2b's
+    /// <c>g = 1 / (1 - G_hi + G_lo)</c> normalization exists for: the lowpass
+    /// contributes <c>G_lo * g</c> and the highboost <c>(1 - G_hi) * g</c>,
+    /// and those add to exactly 1. That makes DC gain a precise check on the
+    /// whole coefficient derivation, and the tests use it as one.</para></summary>
+    internal sealed class CrossfeedStage : IMirrorStage
+    {
+        internal const int Off = 0;
+        internal const int LowCrossfeed = 1;
+        internal const int MiddleCrossfeed = 2;
+        internal const int HighCrossfeed = 3;
+        internal const int LowEasy = 4;
+        internal const int MiddleEasy = 5;
+        internal const int HighEasy = 6;      // bs2b DefaultCLevel
+
+        /// <summary>(Fc_lo, Fc_hi, G_lo, G_hi) per level, verbatim from
+        /// bs2b.cpp's init(). Indexed by the level constants above.</summary>
+        private static readonly (float FcLo, float FcHi, float GLo, float GHi)[] Levels =
+        {
+            (0f, 0f, 0f, 0f),                                              // 0 unused
+            (360f,  501f, 0.398107170553497f, 0.205671765275719f),         // 1 low
+            (500f,  711f, 0.459726988530872f, 0.228208484414988f),         // 2 middle
+            (700f, 1021f, 0.530884444230988f, 0.250105790667544f),         // 3 high
+            (360f,  494f, 0.316227766016838f, 0.168236228897329f),         // 4 low easy
+            (500f,  689f, 0.354813389233575f, 0.187169483835901f),         // 5 middle easy
+            (700f,  975f, 0.398107170553497f, 0.205671765275719f),         // 6 high easy
+        };
+
+        private int _level;
+        private int _rate;
+        private float _a0Lo, _b1Lo, _a0Hi, _a1Hi, _b1Hi;
+        // history[0] is the LEFT input's state, history[1] the RIGHT's.
+        private float _lo0, _hi0, _lo1, _hi1;
+
+        public bool Active => _level >= LowCrossfeed && _level <= HighEasy;
+
+        /// <summary>Recomputes coefficients. Off the audio thread.</summary>
+        public void SetParams(int level, int sampleRate)
+        {
+            if (sampleRate < 1) return;
+            if (level < LowCrossfeed || level > HighEasy) { _level = Off; return; }
+            if (level == _level && sampleRate == _rate) return;
+
+            _level = level;
+            _rate = sampleRate;
+            var (fcLo, fcHi, gLo, gHi) = Levels[level];
+
+            // g = 1 / (1 - G_hi + G_lo), then one-pole coefficients from
+            // x = exp(-2*pi*Fc/srate). bs2b.cpp init().
+            float g = 1f / (1f - gHi + gLo);
+
+            float x = (float)Math.Exp(-2.0 * Math.PI * fcLo / sampleRate);
+            _b1Lo = x;
+            _a0Lo = gLo * (1f - x) * g;
+
+            x = (float)Math.Exp(-2.0 * Math.PI * fcHi / sampleRate);
+            _b1Hi = x;
+            _a0Hi = (1f - gHi * (1f - x)) * g;
+            _a1Hi = -x * g;
+
+            Reset();
+        }
+
+        public void Reset() { _lo0 = _hi0 = _lo1 = _hi1 = 0f; }
+
+        public void Process(Span<float> buf, int frames)
+        {
+            if (!Active) return;
+            float a0lo = _a0Lo, b1lo = _b1Lo, a0hi = _a0Hi, a1hi = _a1Hi, b1hi = _b1Hi;
+            float lo0 = _lo0, hi0 = _hi0, lo1 = _lo1, hi1 = _hi1;
+
+            for (int i = 0, n = frames * 2; i < n; i += 2)
+            {
+                float xl = buf[i], xr = buf[i + 1];
+
+                // Left input: highboost stays on the left, lowpass crosses right.
+                float y0l = a0hi * xl + hi0;
+                hi0 = a1hi * xl + b1hi * y0l;
+                float y1l = a0lo * xl + lo0;
+                lo0 = b1lo * y1l;
+
+                // Right input: lowpass crosses left, highboost stays right.
+                float y0r = a0lo * xr + lo1;
+                lo1 = b1lo * y0r;
+                float y1r = a0hi * xr + hi1;
+                hi1 = a1hi * xr + b1hi * y1r;
+
+                buf[i] = y0l + y0r;
+                buf[i + 1] = y1l + y1r;
+            }
+
+            _lo0 = Flush(lo0); _hi0 = Flush(hi0);
+            _lo1 = Flush(lo1); _hi1 = Flush(hi1);
+        }
+
+        /// <summary>Denormals in a decaying IIR are a real penalty on the
+        /// Atom x5-Z8350 in the perf floor, so history is flushed to zero
+        /// rather than allowed to drift into the denormal range.</summary>
+        private static float Flush(float v) => Math.Abs(v) < 1e-20f ? 0f : v;
+    }
+
+    /// <summary>One parametric EQ band. Types match what AutoEq emits and what
+    /// <see cref="BiQuadFilter"/> provides.</summary>
+    internal enum EqBandType
+    {
+        Peaking = 0,
+        LowShelf = 1,
+        HighShelf = 2,
+        HighPass = 3,
+        LowPass = 4,
+        Notch = 5,
+    }
+
+    internal sealed class EqBand
+    {
+        public bool Enabled = true;
+        public EqBandType Type = EqBandType.Peaking;
+        public float FrequencyHz = 1000f;
+        public float GainDb;
+        public float Q = 0.707f;
+
+        public EqBand Clone() => new EqBand
+        {
+            Enabled = Enabled, Type = Type, FrequencyHz = FrequencyHz, GainDb = GainDb, Q = Q,
+        };
+    }
+
+    /// <summary>Parametric EQ over NAudio's RBJ-cookbook
+    /// <see cref="BiQuadFilter"/>, which already ships in NAudio.Core and is
+    /// already attributed. Two filter instances per band, one per channel,
+    /// because a biquad carries per-channel state.
+    ///
+    /// <para>Coefficients are built into a NEW array off the audio thread and
+    /// swapped by reference, so a band edit can never tear a filter mid-frame
+    /// or click from a half-applied coefficient set.</para></summary>
+    internal sealed class ParametricEqStage : IMirrorStage
+    {
+        private sealed class Compiled
+        {
+            public BiQuadFilter[] L = Array.Empty<BiQuadFilter>();
+            public BiQuadFilter[] R = Array.Empty<BiQuadFilter>();
+        }
+
+        private volatile Compiled _c = new Compiled();
+
+        public bool Active => _c.L.Length > 0;
+
+        public void SetBands(IReadOnlyList<EqBand> bands, int sampleRate)
+        {
+            if (bands == null || bands.Count == 0 || sampleRate < 1)
+            {
+                _c = new Compiled();
+                return;
+            }
+            var l = new List<BiQuadFilter>(bands.Count);
+            var r = new List<BiQuadFilter>(bands.Count);
+            foreach (var b in bands)
+            {
+                if (b == null || !b.Enabled) continue;
+                // A band at or above Nyquist is not a filter, it is an
+                // exception waiting to happen inside the cookbook math.
+                float f = Math.Clamp(b.FrequencyHz, 10f, sampleRate * 0.45f);
+                float q = Math.Clamp(b.Q, 0.05f, 20f);
+                float gain = Math.Clamp(b.GainDb, -30f, 30f);
+                // Peaking and shelves are the only types that take gain; the
+                // pass and notch types would silently ignore it.
+                if (b.Type is EqBandType.Peaking or EqBandType.LowShelf or EqBandType.HighShelf
+                    && Math.Abs(gain) < 0.01f)
+                    continue;   // a 0 dB peak is the identity, so do not pay for it
+                l.Add(Make(b.Type, sampleRate, f, q, gain));
+                r.Add(Make(b.Type, sampleRate, f, q, gain));
+            }
+            _c = new Compiled { L = l.ToArray(), R = r.ToArray() };
+        }
+
+        private static BiQuadFilter Make(EqBandType t, int rate, float f, float q, float gainDb)
+            => t switch
+            {
+                EqBandType.LowShelf => BiQuadFilter.LowShelf(rate, f, q, gainDb),
+                EqBandType.HighShelf => BiQuadFilter.HighShelf(rate, f, q, gainDb),
+                EqBandType.HighPass => BiQuadFilter.HighPassFilter(rate, f, q),
+                EqBandType.LowPass => BiQuadFilter.LowPassFilter(rate, f, q),
+                EqBandType.Notch => BiQuadFilter.NotchFilter(rate, f, q),
+                _ => BiQuadFilter.PeakingEQ(rate, f, q, gainDb),
+            };
+
+        public void Reset()
+        {
+            // BiQuadFilter has no history reset, so rebuilding is the reset.
+            var cur = _c;
+            _c = new Compiled { L = cur.L, R = cur.R };
+        }
+
+        public void Process(Span<float> buf, int frames)
+        {
+            var c = _c;
+            var fl = c.L; var fr = c.R;
+            if (fl.Length == 0) return;
+            for (int i = 0, n = frames * 2; i < n; i += 2)
+            {
+                float l = buf[i], r = buf[i + 1];
+                for (int b = 0; b < fl.Length; b++) l = fl[b].Transform(l);
+                for (int b = 0; b < fr.Length; b++) r = fr[b].Transform(r);
+                buf[i] = l;
+                buf[i + 1] = r;
+            }
+        }
+    }
+
+    /// <summary>Feed-forward peak limiter, no lookahead.
+    ///
+    /// <para>Structural rather than cosmetic. This chain sits UPSTREAM of the
+    /// Opus encoder on Bluetooth and the WASAPI render on USB, so any EQ band
+    /// with positive gain eats headroom the encoder then has to deal with, and
+    /// Opus clipping sounds far worse than the EQ sounds better.</para>
+    ///
+    /// <para>Without lookahead a fast transient can pass before the envelope
+    /// reacts, so the ceiling is additionally enforced by a hard clamp. That
+    /// clamp is the guarantee the tests pin: gain riding reduces how often it
+    /// is reached, it is not what makes the ceiling true.</para></summary>
+    internal sealed class LimiterStage : IMirrorStage
+    {
+        private float _ceiling = 0.98f;
+        private float _env;
+        private float _atk = 0.01f, _rel = 0.0005f;
+        private bool _on;
+
+        public bool Active => _on;
+
+        public void SetParams(bool enabled, float ceiling, int sampleRate,
+                              float attackMs = 1.0f, float releaseMs = 80f)
+        {
+            _on = enabled;
+            _ceiling = Math.Clamp(ceiling, 0.05f, 1f);
+            if (sampleRate < 1) return;
+            _atk = 1f - (float)Math.Exp(-1.0 / (Math.Max(0.05, attackMs) * 0.001 * sampleRate));
+            _rel = 1f - (float)Math.Exp(-1.0 / (Math.Max(1.0, releaseMs) * 0.001 * sampleRate));
+        }
+
+        public void Reset() { _env = 0f; }
+
+        public void Process(Span<float> buf, int frames)
+        {
+            if (!_on) return;
+            float ceil = _ceiling, env = _env, atk = _atk, rel = _rel;
+            for (int i = 0, n = frames * 2; i < n; i += 2)
+            {
+                float l = buf[i], r = buf[i + 1];
+                float peak = Math.Max(Math.Abs(l), Math.Abs(r));
+                // Attack fast toward a rising peak, release slowly.
+                env += (peak > env ? atk : rel) * (peak - env);
+                float gain = env > ceil ? ceil / env : 1f;
+                l *= gain; r *= gain;
+                // The ceiling is a guarantee, not an aspiration.
+                buf[i] = Math.Clamp(l, -ceil, ceil);
+                buf[i + 1] = Math.Clamp(r, -ceil, ceil);
+            }
+            _env = env < 1e-20f ? 0f : env;
+        }
+    }
+
+    /// <summary>Compact text encoding for a band list, so the whole EQ round
+    /// trips through one XML attribute alongside every other per-device audio
+    /// setting rather than needing its own element shape.
+    ///
+    /// <para><c>PK:1050:-3.5:1.20:1|LSC:105:5.5:0.70:1</c>, one band per pipe,
+    /// fields type, frequency, gain, Q, enabled. Invariant culture throughout,
+    /// because a decimal comma would collide with nothing here but would still
+    /// make a config unportable between machines.</para></summary>
+    internal static class EqBandCodec
+    {
+        private static readonly (EqBandType T, string Tok)[] Toks =
+        {
+            (EqBandType.Peaking, "PK"), (EqBandType.LowShelf, "LSC"), (EqBandType.HighShelf, "HSC"),
+            (EqBandType.HighPass, "HP"), (EqBandType.LowPass, "LP"), (EqBandType.Notch, "NO"),
+        };
+
+        public static string Encode(IReadOnlyList<EqBand> bands)
+        {
+            if (bands == null || bands.Count == 0) return string.Empty;
+            var sb = new System.Text.StringBuilder();
+            foreach (var b in bands)
+            {
+                if (b == null) continue;
+                if (sb.Length > 0) sb.Append('|');
+                sb.Append(Tok(b.Type)).Append(':')
+                  .Append(b.FrequencyHz.ToString("0.##", CultureInfo.InvariantCulture)).Append(':')
+                  .Append(b.GainDb.ToString("0.##", CultureInfo.InvariantCulture)).Append(':')
+                  .Append(b.Q.ToString("0.###", CultureInfo.InvariantCulture)).Append(':')
+                  .Append(b.Enabled ? '1' : '0');
+            }
+            return sb.ToString();
+        }
+
+        public static List<EqBand> Decode(string s)
+        {
+            var list = new List<EqBand>();
+            if (string.IsNullOrWhiteSpace(s)) return list;
+            foreach (var part in s.Split('|'))
+            {
+                var f = part.Split(':');
+                if (f.Length < 4) continue;
+                var t = Type(f[0]);
+                if (t == null) continue;
+                if (!float.TryParse(f[1], NumberStyles.Float, CultureInfo.InvariantCulture, out float fc)) continue;
+                float.TryParse(f[2], NumberStyles.Float, CultureInfo.InvariantCulture, out float g);
+                float.TryParse(f[3], NumberStyles.Float, CultureInfo.InvariantCulture, out float q);
+                list.Add(new EqBand
+                {
+                    Type = t.Value,
+                    FrequencyHz = fc,
+                    GainDb = g,
+                    Q = q <= 0f ? 0.707f : q,
+                    Enabled = f.Length < 5 || f[4] != "0",
+                });
+            }
+            return list;
+        }
+
+        private static string Tok(EqBandType t)
+        {
+            foreach (var (tt, tok) in Toks) if (tt == t) return tok;
+            return "PK";
+        }
+
+        private static EqBandType? Type(string tok)
+        {
+            foreach (var (tt, tk) in Toks)
+                if (string.Equals(tk, tok, StringComparison.OrdinalIgnoreCase)) return tt;
+            return null;
+        }
+    }
+
+    /// <summary>The per-sink chain: crossfeed, then EQ, then the limiter.
+    ///
+    /// <para>The order is fixed and it matters. Crossfeed is a stereo-field
+    /// operation and belongs on the signal before it is tone-shaped. The
+    /// limiter goes last because it exists to catch what the EQ added, and it
+    /// is the last thing between this chain and the Opus encoder.</para>
+    ///
+    /// <para>Owned by the Sink, configured off the audio thread from the
+    /// per-device config, and called from SinkSource.Read after the macro,
+    /// loopback and persona sources have been summed.</para></summary>
+    internal sealed class MirrorChain
+    {
+        private readonly CrossfeedStage _cf = new();
+        private readonly ParametricEqStage _eq = new();
+        private readonly LimiterStage _lim = new();
+        private volatile float _preamp = 1f;
+        private volatile bool _any;
+
+        public bool Active => _any;
+
+        /// <summary>Rebuilds every stage. Off the audio thread, at the config
+        /// refresh cadence, never per read.</summary>
+        public void Configure(int crossfeedLevel, bool speakerPath,
+                              IReadOnlyList<EqBand> bands, float preampDb,
+                              bool limiterOn, float ceiling, int sampleRate)
+        {
+            // Crossfeed is skipped outright on the speaker paths. It would be
+            // harmless there (a mono downmix stays mono through it) but it
+            // would still cost four filters a sample to accomplish nothing.
+            _cf.SetParams(speakerPath ? CrossfeedStage.Off : crossfeedLevel, sampleRate);
+            _eq.SetBands(bands, sampleRate);
+            _lim.SetParams(limiterOn, ceiling, sampleRate);
+            _preamp = preampDb == 0f ? 1f : (float)Math.Pow(10.0, Math.Clamp(preampDb, -30f, 12f) / 20.0);
+            _any = _cf.Active || _eq.Active || _lim.Active || _preamp != 1f;
+        }
+
+        public void Reset()
+        {
+            _cf.Reset(); _eq.Reset(); _lim.Reset();
+        }
+
+        public void Process(Span<float> buf, int frames)
+        {
+            if (!_any || frames <= 0) return;
+            float pre = _preamp;
+            if (pre != 1f)
+            {
+                for (int i = 0, n = frames * 2; i < n; i++) buf[i] *= pre;
+            }
+            _cf.Process(buf, frames);
+            _eq.Process(buf, frames);
+            _lim.Process(buf, frames);
+        }
+    }
+
+    /// <summary>Parses AutoEq's published parametric format into bands.
+    ///
+    /// <para>AutoEq ships settings for thousands of headphones as lines like
+    /// <c>Filter 1: ON PK Fc 105 Hz Gain -3.5 dB Q 0.70</c>, plus an optional
+    /// <c>Preamp: -6.0 dB</c>. The filter types map one to one onto the band
+    /// types here, which is the whole reason to support the format: it turns a
+    /// bank of sliders into something with an answer behind it.</para></summary>
+    internal static class AutoEqProfile
+    {
+        private static readonly Regex FilterLine = new(
+            @"^\s*Filter\s+\d+\s*:\s*(ON|OFF)\s+(\w+)\s+Fc\s+([-\d.]+)\s*Hz(?:\s+Gain\s+([-\d.]+)\s*dB)?(?:\s+Q\s+([-\d.]+))?",
+            RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        private static readonly Regex PreampLine = new(
+            @"^\s*Preamp\s*:\s*([-\d.]+)\s*dB", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        /// <summary>Returns the parsed bands and the preamp in dB. Unknown
+        /// filter types and malformed lines are skipped rather than throwing:
+        /// a pasted profile is user input, and one odd line should not lose
+        /// the other twenty.</summary>
+        public static (List<EqBand> Bands, float PreampDb) Parse(string text)
+        {
+            var bands = new List<EqBand>();
+            float preamp = 0f;
+            if (string.IsNullOrWhiteSpace(text)) return (bands, preamp);
+
+            foreach (var raw in text.Split('\n'))
+            {
+                var line = raw.Trim();
+                if (line.Length == 0) continue;
+
+                var pm = PreampLine.Match(line);
+                if (pm.Success
+                    && float.TryParse(pm.Groups[1].Value, NumberStyles.Float,
+                                      CultureInfo.InvariantCulture, out float pre))
+                {
+                    preamp = pre;
+                    continue;
+                }
+
+                var m = FilterLine.Match(line);
+                if (!m.Success) continue;
+
+                var type = MapType(m.Groups[2].Value);
+                if (type == null) continue;
+
+                if (!float.TryParse(m.Groups[3].Value, NumberStyles.Float,
+                                    CultureInfo.InvariantCulture, out float fc)) continue;
+
+                float gain = 0f;
+                if (m.Groups[4].Success)
+                    float.TryParse(m.Groups[4].Value, NumberStyles.Float,
+                                   CultureInfo.InvariantCulture, out gain);
+
+                float q = 0.707f;
+                if (m.Groups[5].Success)
+                    float.TryParse(m.Groups[5].Value, NumberStyles.Float,
+                                   CultureInfo.InvariantCulture, out q);
+
+                bands.Add(new EqBand
+                {
+                    Enabled = string.Equals(m.Groups[1].Value, "ON", StringComparison.OrdinalIgnoreCase),
+                    Type = type.Value,
+                    FrequencyHz = fc,
+                    GainDb = gain,
+                    Q = q <= 0f ? 0.707f : q,
+                });
+            }
+            return (bands, preamp);
+        }
+
+        /// <summary>AutoEq's type tokens. PK, LSC and HSC cover essentially
+        /// every published profile; the rest are accepted because the format
+        /// permits them.</summary>
+        private static EqBandType? MapType(string tok) => tok.ToUpperInvariant() switch
+        {
+            "PK" or "PEQ" or "MODAL" => EqBandType.Peaking,
+            "LSC" or "LS" or "LSQ" => EqBandType.LowShelf,
+            "HSC" or "HS" or "HSQ" => EqBandType.HighShelf,
+            "HPQ" or "HP" => EqBandType.HighPass,
+            "LPQ" or "LP" => EqBandType.LowPass,
+            "NO" or "NOTCH" => EqBandType.Notch,
+            _ => null,
+        };
+    }
+}

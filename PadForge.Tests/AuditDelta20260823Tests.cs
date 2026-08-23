@@ -285,6 +285,59 @@ namespace PadForge.Tests
             Assert.True(body.Length > 200, "the extracted body is too short to be Shutdown");
         }
 
+        /// <summary>The reset must be CALLED, and from the unlocked half.
+        ///
+        /// <para>Two source-text locks in one, because both halves of this
+        /// have no in-process seam. Nothing called MirrorChain.Reset at all,
+        /// which made IMirrorStage.Reset's contract documentation rather than
+        /// behaviour. And it belongs in phase 3 rather than in
+        /// DetachTransport_NoLock, where it reads more naturally, because the
+        /// EQ reset rebuilds a filter array and this file's own rule is that
+        /// filter arrays are never built under _lock.</para></summary>
+        [Fact]
+        public void TransportRebuild_ResetsTheDspChain_OutsideTheLock()
+        {
+            string src = File.ReadAllText(FindRepoFile(Path.Combine(
+                "PadForge.App", "Common", "Input", "AudioPassthroughService.cs")));
+
+            Assert.Contains("s.Dsp.Reset();", src);
+
+            // It sits in the unlocked phase-3 block, not in the _NoLock detach.
+            int phase3 = src.IndexOf("// Phase 3 — device I/O, unlocked.", StringComparison.Ordinal);
+            Assert.True(phase3 > 0, "phase 3 marker not found; this lock needs re-anchoring");
+            int reset = src.IndexOf("s.Dsp.Reset();", StringComparison.Ordinal);
+            Assert.True(reset > phase3, "the reset must come after the unlocked-phase marker");
+            Assert.True(reset - phase3 < 1200, "the reset drifted out of the phase-3 block");
+
+            int detach = src.IndexOf("private static Sink DetachTransport_NoLock", StringComparison.Ordinal);
+            Assert.True(detach > 0);
+            int detachEnd = src.IndexOf("return carrier;", detach, StringComparison.Ordinal);
+            Assert.DoesNotContain("Dsp.Reset", src.Substring(detach, detachEnd - detach));
+        }
+
+        /// <summary>A failed jack-watch open must not un-register itself.
+        ///
+        /// <para>Removing the entry made the next five-second reconcile see no
+        /// watch and start another thread that failed the same way, forever,
+        /// one FAILED line each. The entry stands as the record that this path
+        /// and transport were tried, so a retry costs a genuine change rather
+        /// than the clock.</para></summary>
+        [Fact]
+        public void JackWatch_AFailedOpen_MarksTheEntryRatherThanRemovingIt()
+        {
+            string src = File.ReadAllText(FindRepoFile(Path.Combine(
+                "PadForge.App", "Common", "Input", "AudioPassthroughService.cs")));
+            int i = src.IndexOf("JACKWATCH open FAILED", StringComparison.Ordinal);
+            Assert.True(i > 0, "the failed-open branch moved; this lock needs re-anchoring");
+            // The branch runs from the log line to the next statement after
+            // it, so the window cannot borrow evidence from elsewhere.
+            int end = src.IndexOf("byte wantId", i, StringComparison.Ordinal);
+            Assert.True(end > i, "could not bound the failed-open branch");
+            string branch = src.Substring(i, end - i);
+            Assert.Contains("OpenFailed = true", branch);
+            Assert.DoesNotContain("_jackWatch.Remove(pad)", branch);
+        }
+
         private static string ShutdownBody()
         {
             string path = FindRepoFile(Path.Combine(

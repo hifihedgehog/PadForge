@@ -3229,9 +3229,9 @@ Du kannst es später in den Einstellungen erneut versuchen.</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Zuweisungshinweise</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Wenn ein Gerät verbunden wird, während die Seite eines virtuellen Controllers geöffnet ist, kann PadForge anbieten, es dort zuzuweisen. Zugewiesen wird erst, wenn du auf „Zuweisen“ klickst. Tastaturen, Mäuse, Touchpads und Medientasten werden nie angeboten.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Neue Geräte dem geöffneten virtuellen Controller anbieten</value></data>
-  <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Nur Geräte, die PadForge noch nie gesehen hat. Ein Pad, das du letzte Woche angeschlossen hast, verbindet sich ohne Hinweis.</value></data>
+  <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Nur Geräte, die PadForge noch nie gesehen hat. Bereits bekannte Geräte verbinden sich ohne Hinweis.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Jedes verbundene Gerät anbieten, wenn der geöffnete virtuelle Controller keine Geräte hat</value></data>
-  <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Neu oder bereits bekannt. Sobald der virtuelle Controller ein Gerät hat, bleibt dieser Hinweis stumm.</value></data>
+  <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Neu oder bereits bekannt. Sobald dem virtuellen Controller ein Gerät zugewiesen ist, erscheint dieser Hinweis nicht mehr.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} wurde gerade verbunden. Diesem virtuellen Controller zuweisen?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Zuweisen</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Jetzt nicht</value></data>

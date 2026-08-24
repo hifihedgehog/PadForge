@@ -3229,9 +3229,9 @@ Vous pouvez réessayer plus tard depuis les Paramètres.</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Propositions d'affectation</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Quand un périphérique se connecte alors que la page d'une manette virtuelle est ouverte, PadForge peut proposer de l'y affecter. Rien n'est affecté tant que vous ne cliquez pas sur Affecter. Les claviers, souris, pavés tactiles et touches multimédia ne sont jamais proposés.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Proposer les nouveaux périphériques à la manette virtuelle ouverte</value></data>
-  <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Uniquement les périphériques que PadForge n'a jamais vus. Une manette branchée la semaine dernière se connecte sans rien dire.</value></data>
+  <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Uniquement les périphériques que PadForge n'a jamais vus. Ceux déjà connus se connectent sans proposition.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Proposer tout périphérique qui se connecte quand la manette virtuelle ouverte n'a aucun périphérique</value></data>
-  <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Nouveau ou déjà connu. Dès que la manette virtuelle a un périphérique, cette proposition reste muette.</value></data>
+  <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Nouveau ou déjà connu. Dès qu'un périphérique est affecté à la manette virtuelle, cette proposition n'apparaît plus.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} vient de se connecter. L'affecter à cette manette virtuelle ?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Affecter</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Pas maintenant</value></data>

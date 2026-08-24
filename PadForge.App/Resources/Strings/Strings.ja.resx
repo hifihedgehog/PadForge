@@ -3229,9 +3229,9 @@
   <data name="Settings_AssignOffer" xml:space="preserve"><value>割り当ての提案</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>仮想コントローラーのページを開いているときにデバイスが接続されると、PadForge はそこへの割り当てを提案できます。「割り当て」をクリックするまで何も割り当てられません。キーボード、マウス、タッチパッド、メディアキーは提案されません。</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>新しいデバイスを開いている仮想コントローラーに提案する</value></data>
-  <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>PadForge が初めて見るデバイスのみ。先週つないだパッドは何も表示せずに接続します。</value></data>
+  <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>PadForge が初めて見るデバイスのみ。既知のデバイスは提案なしで接続します。</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>開いている仮想コントローラーにデバイスがないときは接続したすべてのデバイスを提案する</value></data>
-  <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>新規でも既知でも対象です。仮想コントローラーにデバイスが入ると、この提案は表示されなくなります。</value></data>
+  <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>新規でも既知でも対象です。仮想コントローラーにデバイスが割り当てられると、この提案は表示されなくなります。</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} が接続されました。この仮想コントローラーに割り当てますか？</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>割り当て</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>今はしない</value></data>

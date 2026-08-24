@@ -3229,9 +3229,9 @@
   <data name="Settings_AssignOffer" xml:space="preserve"><value>分配提示</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>当虚拟控制器页面处于打开状态时有设备接入，PadForge 可以提示将其分配到该控制器。在你点击“分配”之前不会分配任何设备。键盘、鼠标、触摸板和媒体键不会被提示。</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>向已打开的虚拟控制器提示新设备</value></data>
-  <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>仅限 PadForge 从未见过的设备。上周接入过的手柄会静默连接。</value></data>
+  <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>仅限 PadForge 从未见过的设备。已知设备接入时不会提示。</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>已打开的虚拟控制器没有设备时提示任何接入的设备</value></data>
-  <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>无论新设备还是已知设备。虚拟控制器有了设备后，此提示不再出现。</value></data>
+  <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>无论新设备还是已知设备。虚拟控制器分配了设备后，此提示不再出现。</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} 刚刚接入。分配到此虚拟控制器？</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>分配</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>暂不</value></data>

@@ -2293,6 +2293,14 @@ namespace PadForge
                 {
                     RefreshAllControllerNavItems();
                 }
+                // Opening a virtual controller's page is itself a reason to
+                // re-check the assignment offer: a device already connected
+                // when you navigate to an empty slot should still be offered,
+                // and no device event fires on a mere navigation.
+                else if (e.PropertyName == nameof(MainViewModel.SelectedNavTag))
+                {
+                    _inputService?.ReEvaluateAssignOffersForNav();
+                }
             };
 
             // Populate sidebar and dashboard with saved slots regardless of engine state,

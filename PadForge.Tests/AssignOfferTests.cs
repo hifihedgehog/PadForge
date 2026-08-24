@@ -53,71 +53,47 @@ namespace PadForge.Tests
             Assert.False(InputService.AssignOfferDecision(true, true, false, true, true, true, false, false));
         }
 
-        // ── the edge walk ──────────────────────────────────────────────
+        // ── "new" is baseline membership, not a per-tick edge ──────────
 
+        /// <summary>The state-driven rule reads "new" from the baseline
+        /// registry set: a device present at Start is known, one absent is
+        /// new. This is what makes a removed-then-reconnected device offer
+        /// again (the owner's Switch 2 Pro case): it was gone at baseline, so
+        /// its guid is not in the set, so it reads as new when it returns,
+        /// and the offer is a standing condition rather than a missed edge.</summary>
         [Fact]
-        public void Walk_BaselineReportsNoEdges_ThenConnectIsNew()
+        public void Baseline_KnownIsNotNew_AbsentIsNew()
         {
-            var known = new System.Collections.Generic.HashSet<Guid>();
-            var online = new System.Collections.Generic.HashSet<Guid>();
-            var a = Guid.NewGuid(); var b = Guid.NewGuid(); var c = Guid.NewGuid();
+            var baseline = new System.Collections.Generic.HashSet<Guid>();
+            var carriedOver = Guid.NewGuid();
+            baseline.Add(carriedOver);              // in the saved registry at Start
+            var removedThenBack = Guid.NewGuid();   // user removed it before restart
 
-            // Startup enumeration: a online, b in the registry but offline.
-            var e0 = InputService.AssignOfferWalk(known, online,
-                new[] { (a, true), (b, false) }, baseline: true);
-            Assert.Empty(e0);
-            Assert.Contains(a, online);
-            Assert.DoesNotContain(b, online);
+            // A carried-over device: known, so the NewDevice prompt does not carry it,
+            // but the EmptySlot prompt still can.
+            Assert.False(InputService.AssignOfferDecision(
+                isNew: false, online: true, offerNew: true, offerEmpty: false,
+                slotHasDevices: false, eligible: true, alreadyOnSlot: false, dismissed: false));
+            Assert.True(InputService.AssignOfferDecision(
+                isNew: false, online: true, offerNew: false, offerEmpty: true,
+                slotHasDevices: false, eligible: true, alreadyOnSlot: false, dismissed: false));
 
-            // Nothing changed: no edges.
-            Assert.Empty(InputService.AssignOfferWalk(known, online, new[] { (a, true), (b, false) }, false));
-
-            // b (known from a previous session) connects: an edge, not new.
-            var e1 = InputService.AssignOfferWalk(known, online, new[] { (a, true), (b, true) }, false);
-            Assert.Single(e1);
-            Assert.Equal((b, false), e1[0]);
-
-            // c never seen before connects: an edge, new.
-            var e2 = InputService.AssignOfferWalk(known, online, new[] { (a, true), (b, true), (c, true) }, false);
-            Assert.Single(e2);
-            Assert.Equal((c, true), e2[0]);
-
-            // c disconnects and reconnects: an edge, no longer new.
-            InputService.AssignOfferWalk(known, online, new[] { (a, true), (b, true), (c, false) }, false);
-            var e3 = InputService.AssignOfferWalk(known, online, new[] { (a, true), (b, true), (c, true) }, false);
-            Assert.Single(e3);
-            Assert.Equal((c, false), e3[0]);
+            // The removed-then-reconnected device: absent from baseline, so new,
+            // so the NewDevice prompt carries it even on a slot that has devices.
+            bool isNew = !baseline.Contains(removedThenBack);
+            Assert.True(isNew);
+            Assert.True(InputService.AssignOfferDecision(
+                isNew, online: true, offerNew: true, offerEmpty: false,
+                slotHasDevices: true, eligible: true, alreadyOnSlot: false, dismissed: false));
         }
 
-        /// <summary>A row minted OFFLINE by another lane and filled on
-        /// connect (the PS Move's shape) is still new on the walk it comes
-        /// online, because "known" means seen online, not seen at all.</summary>
+        /// <summary>Offline devices never offer, whatever their newness.</summary>
         [Fact]
-        public void Walk_RowMintedOfflineIsStillNewWhenItConnects()
+        public void Offline_NeverOffers()
         {
-            var known = new System.Collections.Generic.HashSet<Guid>();
-            var online = new System.Collections.Generic.HashSet<Guid>();
-            var m = Guid.NewGuid();
-            InputService.AssignOfferWalk(known, online, Array.Empty<(Guid, bool)>(), baseline: true);
-
-            Assert.Empty(InputService.AssignOfferWalk(known, online, new[] { (m, false) }, false));
-            var e = InputService.AssignOfferWalk(known, online, new[] { (m, true) }, false);
-            Assert.Single(e);
-            Assert.Equal((m, true), e[0]);
-        }
-
-        /// <summary>An engine restart re-baselines: a device that was online
-        /// throughout is not an edge on the first walk after Start.</summary>
-        [Fact]
-        public void Walk_RebaselineAfterRestart_NoEdgeForStandingDevice()
-        {
-            var known = new System.Collections.Generic.HashSet<Guid>();
-            var online = new System.Collections.Generic.HashSet<Guid>();
-            var a = Guid.NewGuid();
-            InputService.AssignOfferWalk(known, online, new[] { (a, true) }, baseline: true);
-            online.Clear();   // what Start does
-            Assert.Empty(InputService.AssignOfferWalk(known, online, new[] { (a, true) }, baseline: true));
-            Assert.Empty(InputService.AssignOfferWalk(known, online, new[] { (a, true) }, false));
+            Assert.False(InputService.AssignOfferDecision(
+                isNew: true, online: false, offerNew: true, offerEmpty: true,
+                slotHasDevices: false, eligible: true, alreadyOnSlot: false, dismissed: false));
         }
 
         // ── eligibility ────────────────────────────────────────────────

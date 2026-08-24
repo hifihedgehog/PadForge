@@ -6,7 +6,6 @@ $dstDir = "C:\Users\sonic\OneDrive\Documents\GitHub\PadForge\screenshots"
 
 $map = @{
     'settings-steamvr'       = 'settings-steamvr'
-    'settings-assignment-prompts' = 'settings-assignment-prompts'
     'pad-vr-preview'         = 'vr-preview'
     'colorway-dualsense-spiderman2' = 'colorway-dualsense-spiderman2'
     'colorway-dualsense-ffxvi'      = 'colorway-dualsense-ffxvi'

@@ -3226,6 +3226,15 @@ Puedes volver a intentarlo más tarde desde Configuración.</value></data>
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Avisar cuando esté en o por debajo de</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Vibrar también el mando</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Probar notificación</value></data>
+  <data name="Settings_AssignOffer" xml:space="preserve"><value>Avisos de asignación</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Cuando un dispositivo se conecta mientras está abierta la página de un mando virtual, PadForge puede ofrecer asignarlo ahí. No se asigna nada hasta que pulses Asignar. Los teclados, ratones, paneles táctiles y teclas multimedia nunca se ofrecen.</value></data>
+  <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Ofrecer dispositivos nuevos al mando virtual abierto</value></data>
+  <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Solo dispositivos que PadForge nunca ha visto. Un mando que conectaste la semana pasada se conecta sin aviso.</value></data>
+  <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Ofrecer cualquier dispositivo que se conecte cuando el mando virtual abierto no tiene dispositivos</value></data>
+  <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Nuevo o ya conocido. En cuanto el mando virtual tiene un dispositivo, este aviso se queda en silencio.</value></data>
+  <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} se acaba de conectar. ¿Asignarlo a este mando virtual?</value></data>
+  <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Asignar</value></data>
+  <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Ahora no</value></data>
   <data name="Voice_AnyPhrase" xml:space="preserve"><value>Cualquier frase</value></data>
   <data name="Voice_Title" xml:space="preserve"><value>Macros de voz</value></data>
   <data name="Voice_ManageButton" xml:space="preserve"><value>Administrar macros de voz</value></data>

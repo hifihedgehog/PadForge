@@ -667,6 +667,28 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _batteryNotifyVibrate, value);
         }
 
+        private bool _assignOfferNewDevice = true;
+
+        /// <summary>Assignment Prompts: offer a device PadForge has never
+        /// seen before to the virtual controller whose page is open when it
+        /// connects. Default on.</summary>
+        public bool AssignOfferNewDevice
+        {
+            get => _assignOfferNewDevice;
+            set => SetProperty(ref _assignOfferNewDevice, value);
+        }
+
+        private bool _assignOfferEmptySlot = true;
+
+        /// <summary>Assignment Prompts: offer any connecting device, new or
+        /// already known, to the open virtual controller when that slot has
+        /// no devices assigned. Default on.</summary>
+        public bool AssignOfferEmptySlot
+        {
+            get => _assignOfferEmptySlot;
+            set => SetProperty(ref _assignOfferEmptySlot, value);
+        }
+
         private bool _startMinimized;
 
         /// <summary>Whether to start the application minimized.</summary>

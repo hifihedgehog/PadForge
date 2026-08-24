@@ -2005,6 +2005,8 @@ namespace PadForge.Services
             vm.BatteryNotifyEnabled = appSettings.BatteryNotifyEnabled;
             vm.BatteryNotifyThreshold = appSettings.BatteryNotifyThreshold;
             vm.BatteryNotifyVibrate = appSettings.BatteryNotifyVibrate;
+            vm.AssignOfferNewDevice = appSettings.AssignOfferNewDevice;
+            vm.AssignOfferEmptySlot = appSettings.AssignOfferEmptySlot;
             vm.StartMinimized = appSettings.StartMinimized;
             vm.DiagnosticsLoggingEnabled = appSettings.DiagnosticsLoggingEnabled;
             // Arm the mirror on cold start (#303): the toggle's
@@ -4116,6 +4118,8 @@ namespace PadForge.Services
                 BatteryNotifyEnabled = vm.BatteryNotifyEnabled,
                 BatteryNotifyThreshold = vm.BatteryNotifyThreshold,
                 BatteryNotifyVibrate = vm.BatteryNotifyVibrate,
+                AssignOfferNewDevice = vm.AssignOfferNewDevice,
+                AssignOfferEmptySlot = vm.AssignOfferEmptySlot,
                 StartMinimized = vm.StartMinimized,
                 DiagnosticsLoggingEnabled = vm.DiagnosticsLoggingEnabled,
                 StartAtLogin = vm.StartAtLogin,
@@ -5638,6 +5642,14 @@ namespace PadForge.Services
         [XmlElement] public bool BatteryNotifyEnabled { get; set; } = true;
         [XmlElement] public int BatteryNotifyThreshold { get; set; } = 15;
         [XmlElement] public bool BatteryNotifyVibrate { get; set; }
+
+        /// <summary>Assignment Prompts (discussion with Xaklse, 2026-08-23):
+        /// offer a connecting device to the virtual controller whose page is
+        /// open. NewDevice = only devices never seen before. EmptySlot = any
+        /// connecting device when the open slot has no devices assigned.
+        /// Both default on. Nothing is ever assigned without a click.</summary>
+        [XmlElement] public bool AssignOfferNewDevice { get; set; } = true;
+        [XmlElement] public bool AssignOfferEmptySlot { get; set; } = true;
 
         [XmlElement]
         public bool StartMinimized { get; set; }

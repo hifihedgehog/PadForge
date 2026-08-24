@@ -207,6 +207,31 @@
                 </StackPanel>
             </Border>
 
+            <!-- ═══ Assignment Prompts ═══
+                 Two opt-outs for the pad-page offer banner. Auto-assigning
+                 outright was ruled out (sim rigs and arcade setups have
+                 many devices and no obvious home for each), so the app
+                 only ever OFFERS, and each offer can be switched off. -->
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,20">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <TextBlock Text="&#xE7FC;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
+                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBlock Text="{Binding Settings_AssignOffer, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardTitle}"/>
+                    </StackPanel>
+                    <TextBlock Text="{Binding Settings_AssignOfferDesc, Source={x:Static strings:Strings.Instance}}"
+                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
+                    <CheckBox Content="{Binding Settings_AssignOfferNew, Source={x:Static strings:Strings.Instance}}"
+                              ToolTip="{Binding Settings_AssignOfferNew_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                              IsChecked="{Binding AssignOfferNewDevice}" Margin="0,0,0,8"/>
+                    <CheckBox Content="{Binding Settings_AssignOfferEmpty, Source={x:Static strings:Strings.Instance}}"
+                              ToolTip="{Binding Settings_AssignOfferEmpty_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                              IsChecked="{Binding AssignOfferEmptySlot}"/>
+                </StackPanel>
+            </Border>
+
             <!-- ═══ HidHide ═══ -->
             <Border Style="{StaticResource CardBorder}" Margin="0,0,0,20">
                 <StackPanel>

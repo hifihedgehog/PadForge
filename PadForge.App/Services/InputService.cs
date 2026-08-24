@@ -4438,63 +4438,85 @@ namespace PadForge.Services
                 lock (SettingsManager.UserDevices.SyncRoot)
                     snapshot = userDevices.ToArray();
 
-                var newThisWalk = new List<UserDevice>();
-                var onlineNow = new HashSet<Guid>();
+                var byGuid = new Dictionary<Guid, UserDevice>();
+                var pairs = new List<(Guid Guid, bool IsOnline)>(snapshot.Length);
                 foreach (var ud in snapshot)
                 {
                     if (ud == null || ud.InstanceGuid == Guid.Empty) continue;
-                    bool isNew = _assignOfferKnown.Add(ud.InstanceGuid);
-                    if (!ud.IsOnline) continue;
-                    onlineNow.Add(ud.InstanceGuid);
-                    bool cameOnline = !_assignOfferOnline.Contains(ud.InstanceGuid);
-                    if (cameOnline) newThisWalk.Add(ud);
-                    if (isNew) _assignOfferIsNew.Add(ud.InstanceGuid);
+                    byGuid[ud.InstanceGuid] = ud;
+                    pairs.Add((ud.InstanceGuid, ud.IsOnline));
                 }
-                _assignOfferOnline.Clear();
-                foreach (var g in onlineNow) _assignOfferOnline.Add(g);
 
-                if (_assignOfferBaselinePending)
-                {
-                    _assignOfferBaselinePending = false;
-                    _assignOfferIsNew.Clear();
-                    return;
-                }
+                bool baseline = _assignOfferBaselinePending;
+                _assignOfferBaselinePending = false;
+                var edges = AssignOfferWalk(_assignOfferKnown, _assignOfferOnline, pairs, baseline);
+                if (baseline) return;
 
                 // Retire standing offers that no longer apply, on every pad.
                 foreach (var pad in _mainVm.Pads)
                 {
                     if (!pad.HasAssignOffer) continue;
                     var g = pad.AssignOfferGuid;
-                    bool gone = !onlineNow.Contains(g);
+                    bool gone = !_assignOfferOnline.Contains(g);
                     bool landed = SettingsManager.GetAssignedSlots(g).Contains(pad.PadIndex);
                     if (gone || landed) pad.ClearAssignOffer();
                 }
 
                 var settings = _mainVm.Settings;
                 var open = _mainVm.SelectedPad;
-                if (settings == null || open == null || newThisWalk.Count == 0) { _assignOfferIsNew.Clear(); return; }
-                if (open.HasAssignOffer) { _assignOfferIsNew.Clear(); return; }
+                if (settings == null || open == null || edges.Count == 0) return;
+                if (open.HasAssignOffer) return;
 
                 bool slotHasDevices = open.MappedDevices.Count > 0;
-                foreach (var ud in newThisWalk)
+                foreach (var (guid, isNew) in edges)
                 {
-                    bool isNew = _assignOfferIsNew.Contains(ud.InstanceGuid);
-                    bool alreadyOnSlot = SettingsManager.GetAssignedSlots(ud.InstanceGuid).Contains(open.PadIndex);
-                    bool dismissed = _assignOfferDismissed.Contains((ud.InstanceGuid, open.PadIndex));
+                    if (!byGuid.TryGetValue(guid, out var ud)) continue;
+                    bool alreadyOnSlot = SettingsManager.GetAssignedSlots(guid).Contains(open.PadIndex);
+                    bool dismissed = _assignOfferDismissed.Contains((guid, open.PadIndex));
                     if (!AssignOfferDecision(isNew, cameOnline: true,
                             settings.AssignOfferNewDevice, settings.AssignOfferEmptySlot,
                             slotHasDevices, IsAssignOfferEligible(ud), alreadyOnSlot, dismissed))
                         continue;
-                    open.SetAssignOffer(ud.InstanceGuid, LocalizedDeviceName(ud) ?? ud.ResolvedName);
+                    open.SetAssignOffer(guid, LocalizedDeviceName(ud) ?? ud.ResolvedName);
                     break;
                 }
-                _assignOfferIsNew.Clear();
             }
             catch { /* an offer must never break the device walk */ }
         }
 
-        // Guids first seen in the current walk, consumed by the same walk.
-        private readonly HashSet<Guid> _assignOfferIsNew = new();
+        /// <summary>The edge detector, pure over its two state sets so the
+        /// tests can drive a sequence of walks. Returns every device that
+        /// came online in this walk, flagged new when this is the first walk
+        /// that has seen it ONLINE. A row minted offline by another lane and
+        /// filled on connect (the PS Move's shape) therefore still counts as
+        /// new on the walk it actually connects. The baseline walk (first
+        /// after Start) records every registry row as known and every online
+        /// row as online, and reports no edges: the startup enumeration and
+        /// an engine restart are not connections.</summary>
+        public static List<(Guid Guid, bool IsNew)> AssignOfferWalk(
+            HashSet<Guid> known, HashSet<Guid> online,
+            IReadOnlyList<(Guid Guid, bool IsOnline)> devices, bool baseline)
+        {
+            var edges = new List<(Guid, bool)>();
+            var onlineNow = new HashSet<Guid>();
+            foreach (var (guid, isOnline) in devices)
+            {
+                if (guid == Guid.Empty) continue;
+                if (baseline)
+                {
+                    known.Add(guid);
+                    if (isOnline) onlineNow.Add(guid);
+                    continue;
+                }
+                if (!isOnline) continue;
+                bool isNew = known.Add(guid);
+                onlineNow.Add(guid);
+                if (!online.Contains(guid)) edges.Add((guid, isNew));
+            }
+            online.Clear();
+            foreach (var g in onlineNow) online.Add(g);
+            return edges;
+        }
 
         private void OnAssignOfferDismissed(object sender, Guid guid)
         {

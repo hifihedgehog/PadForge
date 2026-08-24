@@ -53,6 +53,73 @@ namespace PadForge.Tests
             Assert.False(InputService.AssignOfferDecision(true, true, false, true, true, true, false, false));
         }
 
+        // ── the edge walk ──────────────────────────────────────────────
+
+        [Fact]
+        public void Walk_BaselineReportsNoEdges_ThenConnectIsNew()
+        {
+            var known = new System.Collections.Generic.HashSet<Guid>();
+            var online = new System.Collections.Generic.HashSet<Guid>();
+            var a = Guid.NewGuid(); var b = Guid.NewGuid(); var c = Guid.NewGuid();
+
+            // Startup enumeration: a online, b in the registry but offline.
+            var e0 = InputService.AssignOfferWalk(known, online,
+                new[] { (a, true), (b, false) }, baseline: true);
+            Assert.Empty(e0);
+            Assert.Contains(a, online);
+            Assert.DoesNotContain(b, online);
+
+            // Nothing changed: no edges.
+            Assert.Empty(InputService.AssignOfferWalk(known, online, new[] { (a, true), (b, false) }, false));
+
+            // b (known from a previous session) connects: an edge, not new.
+            var e1 = InputService.AssignOfferWalk(known, online, new[] { (a, true), (b, true) }, false);
+            Assert.Single(e1);
+            Assert.Equal((b, false), e1[0]);
+
+            // c never seen before connects: an edge, new.
+            var e2 = InputService.AssignOfferWalk(known, online, new[] { (a, true), (b, true), (c, true) }, false);
+            Assert.Single(e2);
+            Assert.Equal((c, true), e2[0]);
+
+            // c disconnects and reconnects: an edge, no longer new.
+            InputService.AssignOfferWalk(known, online, new[] { (a, true), (b, true), (c, false) }, false);
+            var e3 = InputService.AssignOfferWalk(known, online, new[] { (a, true), (b, true), (c, true) }, false);
+            Assert.Single(e3);
+            Assert.Equal((c, false), e3[0]);
+        }
+
+        /// <summary>A row minted OFFLINE by another lane and filled on
+        /// connect (the PS Move's shape) is still new on the walk it comes
+        /// online, because "known" means seen online, not seen at all.</summary>
+        [Fact]
+        public void Walk_RowMintedOfflineIsStillNewWhenItConnects()
+        {
+            var known = new System.Collections.Generic.HashSet<Guid>();
+            var online = new System.Collections.Generic.HashSet<Guid>();
+            var m = Guid.NewGuid();
+            InputService.AssignOfferWalk(known, online, Array.Empty<(Guid, bool)>(), baseline: true);
+
+            Assert.Empty(InputService.AssignOfferWalk(known, online, new[] { (m, false) }, false));
+            var e = InputService.AssignOfferWalk(known, online, new[] { (m, true) }, false);
+            Assert.Single(e);
+            Assert.Equal((m, true), e[0]);
+        }
+
+        /// <summary>An engine restart re-baselines: a device that was online
+        /// throughout is not an edge on the first walk after Start.</summary>
+        [Fact]
+        public void Walk_RebaselineAfterRestart_NoEdgeForStandingDevice()
+        {
+            var known = new System.Collections.Generic.HashSet<Guid>();
+            var online = new System.Collections.Generic.HashSet<Guid>();
+            var a = Guid.NewGuid();
+            InputService.AssignOfferWalk(known, online, new[] { (a, true) }, baseline: true);
+            online.Clear();   // what Start does
+            Assert.Empty(InputService.AssignOfferWalk(known, online, new[] { (a, true) }, baseline: true));
+            Assert.Empty(InputService.AssignOfferWalk(known, online, new[] { (a, true) }, false));
+        }
+
         // ── eligibility ────────────────────────────────────────────────
 
         [Theory]

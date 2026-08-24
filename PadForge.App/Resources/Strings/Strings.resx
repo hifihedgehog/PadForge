@@ -3278,9 +3278,9 @@ You can retry later from Settings.</value></data>
   <data name="Settings_AssignOffer" xml:space="preserve"><value>Assignment Prompts</value></data>
   <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>When a device connects while a virtual controller's page is open, PadForge can offer to assign it there. Nothing is assigned until you click Assign. Keyboards, mice, touchpads, and media keys are never offered.</value></data>
   <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Offer New Devices to the Open Virtual Controller</value></data>
-  <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Only devices PadForge has never seen before. A pad you plugged in last week connects quietly.</value></data>
+  <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Only devices PadForge has never seen before. Devices it already knows connect without a prompt.</value></data>
   <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Offer Any Connecting Device When the Open Virtual Controller Has No Devices</value></data>
-  <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>New or already known. Once the virtual controller has a device, this prompt stays quiet.</value></data>
+  <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>New or already known. Once the virtual controller has a device assigned, this prompt no longer appears.</value></data>
   <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} just connected. Assign it to this virtual controller?</value></data>
   <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Assign</value></data>
   <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Not Now</value></data>

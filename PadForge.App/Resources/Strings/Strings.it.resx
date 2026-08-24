@@ -3248,6 +3248,15 @@ Puoi riprovare più tardi dalle Impostazioni.</value></data>
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Notifica a partire da</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Fai vibrare anche il controller</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Prova notifica</value></data>
+  <data name="Settings_AssignOffer" xml:space="preserve"><value>Suggerimenti di assegnazione</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Quando un dispositivo si collega mentre è aperta la pagina di un controller virtuale, PadForge può proporre di assegnarlo lì. Nulla viene assegnato finché non fai clic su Assegna. Tastiere, mouse, touchpad e tasti multimediali non vengono mai proposti.</value></data>
+  <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Proponi i nuovi dispositivi al controller virtuale aperto</value></data>
+  <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Solo dispositivi che PadForge non ha mai visto. Un pad collegato la settimana scorsa si connette senza avvisi.</value></data>
+  <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Proponi qualsiasi dispositivo che si collega quando il controller virtuale aperto non ha dispositivi</value></data>
+  <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Nuovo o già noto. Appena il controller virtuale ha un dispositivo, questo suggerimento tace.</value></data>
+  <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} si è appena collegato. Assegnarlo a questo controller virtuale?</value></data>
+  <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Assegna</value></data>
+  <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Non ora</value></data>
   <data name="Voice_AnyPhrase" xml:space="preserve"><value>Qualsiasi frase</value></data>
   <data name="Voice_Title" xml:space="preserve"><value>Macro vocali</value></data>
   <data name="Voice_ManageButton" xml:space="preserve"><value>Gestisci macro vocali</value></data>

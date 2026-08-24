@@ -760,7 +760,13 @@ namespace PadForge.Services
                 // the per-device anchor across SelectedMappedDevice
                 // swaps, not just the initial config instance.
                 _mainVm.Pads[i].ActiveDeviceConfigPropertyChanged += OnDeviceConfigChanged;
+                _mainVm.Pads[i].AssignOfferDismissed += OnAssignOfferDismissed;
             }
+            // The first DevicesUpdated after a start is the enumeration, not
+            // a wave of connections. Re-armed on every Start so an engine
+            // restart re-baselines instead of offering every pad at once.
+            _assignOfferBaselinePending = true;
+            _assignOfferOnline.Clear();
 
             // NFC tag registry (issue #150): when a tag is registered/removed,
             // rebuild every pad's input picker so the named tag appears/disappears
@@ -2345,7 +2351,11 @@ namespace PadForge.Services
                 _inputManager.HmVcInactivityDestroyed -= OnHmVcInactivityDestroyed;
                 _inputManager.HmVcWentNonActive -= OnHmVcWentNonActive;
                 foreach (var pad in _mainVm.Pads)
+                {
                     pad.ActiveDeviceConfigPropertyChanged -= OnDeviceConfigChanged;
+                    pad.AssignOfferDismissed -= OnAssignOfferDismissed;
+                    pad.ClearAssignOffer();
+                }
                 _inputManager.Stop();
                 _inputManager.Dispose();
                 _inputManager = null;
@@ -4366,6 +4376,130 @@ namespace PadForge.Services
                 && !notified
                 && (!hadState || lastPct > threshold);
             return (fire, notified || fire);
+        }
+
+        // ─────────────────────────────────────────────
+        //  Assignment offers (Settings > Assignment Prompts)
+        // ─────────────────────────────────────────────
+
+        // Devices the offer logic has seen this session (registry membership
+        // at the last walk) and the ones that were online at the last walk.
+        // A guid absent from _assignOfferKnown is "new", a guid online now
+        // and absent from _assignOfferOnline "came online". Both seeded on
+        // the first walk after Start so the startup enumeration (and an
+        // engine restart, which re-enumerates everything) never reads as a
+        // wave of fresh connections.
+        private readonly HashSet<Guid> _assignOfferKnown = new();
+        private readonly HashSet<Guid> _assignOfferOnline = new();
+        private readonly HashSet<(Guid Device, int Slot)> _assignOfferDismissed = new();
+        private bool _assignOfferBaselinePending = true;
+
+        /// <summary>The pure offer rule. Static so the tests pin it without
+        /// a device. An offer is made only for a device that came online in
+        /// this walk, that is a game-input device (never a keyboard, mouse,
+        /// touchpad, or media-key collection), that is not already on the
+        /// slot, and that the user has not dismissed for this slot. Then
+        /// either prompt setting can carry it: NewDevice fires for a device
+        /// never seen before, EmptySlot fires for any device when the open
+        /// slot has nothing assigned.</summary>
+        public static bool AssignOfferDecision(
+            bool isNew, bool cameOnline, bool offerNew, bool offerEmpty,
+            bool slotHasDevices, bool eligible, bool alreadyOnSlot, bool dismissed)
+        {
+            if (!cameOnline || !eligible || alreadyOnSlot || dismissed) return false;
+            if (offerNew && isNew) return true;
+            if (offerEmpty && !slotHasDevices) return true;
+            return false;
+        }
+
+        /// <summary>Desktop peripherals reconnect on their own (USB
+        /// re-enumeration, a sleeping wireless mouse waking) and a PC always
+        /// has them, which is exactly the nag the settings exist to avoid.
+        /// Virtual and shadow rows are the Devices page's own exclusion.</summary>
+        internal static bool IsAssignOfferEligible(UserDevice ud)
+        {
+            if (ud == null || ud.InstanceGuid == Guid.Empty) return false;
+            if (ud.IsKeyboard || ud.IsMouse || ud.IsTouchpad || ud.IsConsumerControl) return false;
+            if (IsVirtualOrShadowDevice(ud)) return false;
+            return true;
+        }
+
+        /// <summary>Runs once per DevicesUpdated, after the pad rosters are
+        /// current. Maintains the seen/online sets, retires offers whose
+        /// device went away or landed on the slot by another route, and
+        /// raises at most one new offer on the pad page that is open.</summary>
+        private void EvaluateAssignOffers()
+        {
+            try
+            {
+                var userDevices = SettingsManager.UserDevices?.Items;
+                if (userDevices == null) return;
+                UserDevice[] snapshot;
+                lock (SettingsManager.UserDevices.SyncRoot)
+                    snapshot = userDevices.ToArray();
+
+                var newThisWalk = new List<UserDevice>();
+                var onlineNow = new HashSet<Guid>();
+                foreach (var ud in snapshot)
+                {
+                    if (ud == null || ud.InstanceGuid == Guid.Empty) continue;
+                    bool isNew = _assignOfferKnown.Add(ud.InstanceGuid);
+                    if (!ud.IsOnline) continue;
+                    onlineNow.Add(ud.InstanceGuid);
+                    bool cameOnline = !_assignOfferOnline.Contains(ud.InstanceGuid);
+                    if (cameOnline) newThisWalk.Add(ud);
+                    if (isNew) _assignOfferIsNew.Add(ud.InstanceGuid);
+                }
+                _assignOfferOnline.Clear();
+                foreach (var g in onlineNow) _assignOfferOnline.Add(g);
+
+                if (_assignOfferBaselinePending)
+                {
+                    _assignOfferBaselinePending = false;
+                    _assignOfferIsNew.Clear();
+                    return;
+                }
+
+                // Retire standing offers that no longer apply, on every pad.
+                foreach (var pad in _mainVm.Pads)
+                {
+                    if (!pad.HasAssignOffer) continue;
+                    var g = pad.AssignOfferGuid;
+                    bool gone = !onlineNow.Contains(g);
+                    bool landed = SettingsManager.GetAssignedSlots(g).Contains(pad.PadIndex);
+                    if (gone || landed) pad.ClearAssignOffer();
+                }
+
+                var settings = _mainVm.Settings;
+                var open = _mainVm.SelectedPad;
+                if (settings == null || open == null || newThisWalk.Count == 0) { _assignOfferIsNew.Clear(); return; }
+                if (open.HasAssignOffer) { _assignOfferIsNew.Clear(); return; }
+
+                bool slotHasDevices = open.MappedDevices.Count > 0;
+                foreach (var ud in newThisWalk)
+                {
+                    bool isNew = _assignOfferIsNew.Contains(ud.InstanceGuid);
+                    bool alreadyOnSlot = SettingsManager.GetAssignedSlots(ud.InstanceGuid).Contains(open.PadIndex);
+                    bool dismissed = _assignOfferDismissed.Contains((ud.InstanceGuid, open.PadIndex));
+                    if (!AssignOfferDecision(isNew, cameOnline: true,
+                            settings.AssignOfferNewDevice, settings.AssignOfferEmptySlot,
+                            slotHasDevices, IsAssignOfferEligible(ud), alreadyOnSlot, dismissed))
+                        continue;
+                    open.SetAssignOffer(ud.InstanceGuid, LocalizedDeviceName(ud) ?? ud.ResolvedName);
+                    break;
+                }
+                _assignOfferIsNew.Clear();
+            }
+            catch { /* an offer must never break the device walk */ }
+        }
+
+        // Guids first seen in the current walk, consumed by the same walk.
+        private readonly HashSet<Guid> _assignOfferIsNew = new();
+
+        private void OnAssignOfferDismissed(object sender, Guid guid)
+        {
+            if (sender is PadViewModel pvm && guid != Guid.Empty)
+                _assignOfferDismissed.Add((guid, pvm.PadIndex));
         }
 
         private void NotifyBatteryEdge(UserDevice ud, string name, int pct, bool charging)
@@ -8191,6 +8325,9 @@ namespace PadForge.Services
                 SyncDevicesList();
                 RefreshVoiceObjects();
                 UpdatePadDeviceInfo();
+                // After the rosters, so "slot has devices" and "already on
+                // the slot" read this walk's truth.
+                EvaluateAssignOffers();
 
                 // Persist only when the device registry ACTUALLY changed.
                 //

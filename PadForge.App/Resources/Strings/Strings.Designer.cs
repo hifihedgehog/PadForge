@@ -350,6 +350,15 @@ public class Strings : INotifyPropertyChanged
     public string Settings_BatteryNotifyThreshold => Get("Settings_BatteryNotifyThreshold");
     public string Settings_BatteryNotifyVibrate => Get("Settings_BatteryNotifyVibrate");
     public string Settings_BatteryNotifyTest => Get("Settings_BatteryNotifyTest");
+    public string Settings_AssignOffer => Get("Settings_AssignOffer");
+    public string Settings_AssignOfferDesc => Get("Settings_AssignOfferDesc");
+    public string Settings_AssignOfferNew => Get("Settings_AssignOfferNew");
+    public string Settings_AssignOfferNew_Tooltip => Get("Settings_AssignOfferNew_Tooltip");
+    public string Settings_AssignOfferEmpty => Get("Settings_AssignOfferEmpty");
+    public string Settings_AssignOfferEmpty_Tooltip => Get("Settings_AssignOfferEmpty_Tooltip");
+    public string Pad_AssignOffer_Format => Get("Pad_AssignOffer_Format");
+    public string Pad_AssignOffer_Assign => Get("Pad_AssignOffer_Assign");
+    public string Pad_AssignOffer_Dismiss => Get("Pad_AssignOffer_Dismiss");
     public string Dashboard_RemoteLink => Get("Dashboard_RemoteLink");
     public string Dashboard_RemoteLinkDescription => Get("Dashboard_RemoteLinkDescription");
     public string Dashboard_EnableRemoteLink => Get("Dashboard_EnableRemoteLink");

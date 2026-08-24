@@ -2527,6 +2527,7 @@ if ($Only.Count -gt 0) {
         @{ Shot = "remote-link";                Page = "Dashboard"; Anchor = "Remote Link" },
         @{ Shot = "settings-community-configs"; Page = "Settings";  Anchor = "Community Configs"; After = -10 },
         @{ Shot = "settings-battery-alerts";    Page = "Settings";  Anchor = "Battery Alerts";           After = -6 },
+        @{ Shot = "settings-assignment-prompts"; Page = "Settings"; Anchor = "Assignment Prompts";       After = -6 },
         @{ Shot = "settings-drivers";           Page = "Settings";  Anchor = "HIDMaestro Driver";        After = -4 },
         @{ Shot = "settings-driver-cards";      Page = "Settings";  Anchor = "Windows MIDI Services";    After = -4 },
         @{ Shot = "driver-status-flames";       Page = "Settings";  Anchor = "Windows MIDI Services";    After = -7 },
@@ -2663,7 +2664,7 @@ $n = 0
 #
 # 36, not the 34 Next calls written in the source: the one inside the Gyro /
 # Audio / Touchpad loop runs three times, so it contributes 3 rather than 1.
-$total = 39
+$total = 40
 
 function Next { $script:n++; return $script:n }
 
@@ -3797,9 +3798,16 @@ Write-Host "[$(Next)/$total] Settings - battery alerts"
 ScrollContent -Clicks -8
 Cap "settings-battery-alerts"
 
+# Assignment Prompts sits directly under Battery Alerts. Two clicks
+# frame it, and the HidHide shot below keeps its old absolute scroll
+# (battery minus two) by scrolling no further.
+Write-Host "[$(Next)/$total] Settings - assignment prompts"
+ScrollContent -Clicks -2
+Cap "settings-assignment-prompts"
+
 # 19. Settings mid (HidHide whitelist area)
 Write-Host "[$(Next)/$total] Settings - HidHide / input engine"
-ScrollContent -Clicks -2
+ScrollContent -Clicks 0
 Cap "settings-hidhide"
 
 # 20. Settings bottom (drivers)

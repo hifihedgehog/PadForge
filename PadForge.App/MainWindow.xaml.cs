@@ -884,6 +884,15 @@ namespace PadForge
             // Wire test rumble for each pad (both motors, or individual).
             foreach (var pad in _viewModel.Pads)
             {
+                // Assignment offer banner: Assign takes the same entry point
+                // as drag-and-drop, so auto-map, hiding defaults, Workshop
+                // tuning, and the roster refresh all run exactly as they do
+                // for a dropped device.
+                pad.AssignOfferAccepted += (s, guid) =>
+                {
+                    if (s is PadViewModel pvm)
+                        _deviceService.AssignDeviceToSlot(guid, pvm.PadIndex);
+                };
                 pad.TestRumbleRequested += (s, e) =>
                 {
                     if (s is PadViewModel pvm)

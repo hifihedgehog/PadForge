@@ -739,6 +739,44 @@
                 </WrapPanel>
             </Grid>
             </Border>
+
+            <!-- Assignment offer (Settings > Assignment Prompts). Shown
+                 when a device connected while this page was open and one
+                 of the two prompt settings applies. Ember band under the
+                 device tier: the offer is about the slot, and Assign is
+                 its primary affirmative. Not Now dismisses this device for
+                 this slot for the session. Nothing happens without a click. -->
+            <Border Margin="4,4,4,0" Padding="10,6" CornerRadius="4"
+                    Background="#1AFF6B2C" BorderThickness="1"
+                    Visibility="{Binding HasAssignOffer, Converter={StaticResource BoolToVisibilityConverter}}"
+                    AutomationProperties.AutomationId="AssignOfferBanner">
+                <Border.BorderBrush>
+                    <SolidColorBrush Color="#4DFF6B2C"/>
+                </Border.BorderBrush>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="&#xE7FC;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                               Foreground="{DynamicResource EmberBrush}"
+                               VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBlock Grid.Column="1" Text="{Binding AssignOfferText}"
+                               VerticalAlignment="Center" TextWrapping="Wrap"
+                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                    <ui:Button Grid.Column="2" MinWidth="90" Margin="12,0,8,0"
+                               Style="{StaticResource EmberPrimaryButton}"
+                               Command="{Binding AcceptAssignOfferCommand}"
+                               Content="{Binding Pad_AssignOffer_Assign, Source={x:Static strings:Strings.Instance}}"
+                               AutomationProperties.AutomationId="AssignOfferAccept"/>
+                    <ui:Button Grid.Column="3" MinWidth="90"
+                               Command="{Binding DismissAssignOfferCommand}"
+                               Content="{Binding Pad_AssignOffer_Dismiss, Source={x:Static strings:Strings.Instance}}"
+                               AutomationProperties.AutomationId="AssignOfferDismiss"/>
+                </Grid>
+            </Border>
         </StackPanel>
 
         <!-- ══════════════════════════════════════
@@ -4086,10 +4124,20 @@
                                                 <!-- Compact swap (#175 telemetry board): trivial
                                                      Direct rows hide the cell set and show the
                                                      one-line summary until clicked (expansion
-                                                     override) or selected. -->
+                                                     override) or selected.
+                                                     Discussion #348: the IsRowSelected condition
+                                                     is load-bearing. A selected Unassigned row
+                                                     BECOMES trivial the moment its first source
+                                                     lands, and nothing sets the override on that
+                                                     path, so without it the cells (Record, Clear,
+                                                     Invert, Half, Bidirectional) collapsed under
+                                                     the still-open details strip until the row
+                                                     was clicked again. Same shape as the fan-in
+                                                     trigger below. -->
                                                 <MultiDataTrigger>
                                                     <MultiDataTrigger.Conditions>
                                                         <Condition Binding="{Binding IsTrivialDirect}" Value="True"/>
+                                                        <Condition Binding="{Binding IsRowSelected}" Value="False"/>
                                                         <Condition Binding="{Binding IsExpandedOverride}" Value="False"/>
                                                     </MultiDataTrigger.Conditions>
                                                     <Setter TargetName="CellsHost" Property="Visibility" Value="Collapsed"/>

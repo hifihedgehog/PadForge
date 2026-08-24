@@ -795,6 +795,78 @@ namespace PadForge.ViewModels
         /// <summary>All physical devices currently mapped to this slot.</summary>
         public ObservableCollection<MappedDeviceInfo> MappedDevices { get; } = new();
 
+        // ═══════════════════════════════════════════════
+        //  Assignment offer (Settings > Assignment Prompts)
+        // ═══════════════════════════════════════════════
+
+        private Guid _assignOfferGuid;
+        private string _assignOfferText = string.Empty;
+
+        /// <summary>The device the pad page is currently offering to assign
+        /// to this slot, or Empty. Written by InputService when a device
+        /// connects while this slot's page is open and one of the two
+        /// Assignment Prompts settings applies. UI-only state, never
+        /// persisted. Cleared on accept, on Not Now, when the device goes
+        /// offline, and when it lands on the slot by any other route.</summary>
+        public Guid AssignOfferGuid => _assignOfferGuid;
+
+        /// <summary>The banner sentence, built by the writer so the device
+        /// name is the same localized name the Devices page shows.</summary>
+        public string AssignOfferText
+        {
+            get => _assignOfferText;
+            private set => SetProperty(ref _assignOfferText, value ?? string.Empty);
+        }
+
+        public bool HasAssignOffer => _assignOfferGuid != Guid.Empty;
+
+        /// <summary>Raised with the device guid when the user clicks Assign.
+        /// MainWindow routes it to DeviceService.AssignDeviceToSlot, the same
+        /// entry point drag-and-drop uses.</summary>
+        public event EventHandler<Guid> AssignOfferAccepted;
+
+        /// <summary>Raised with the device guid when the user clicks Not Now.
+        /// InputService records the (device, slot) pair so the same device is
+        /// not offered to this slot again this session.</summary>
+        public event EventHandler<Guid> AssignOfferDismissed;
+
+        public void SetAssignOffer(Guid instanceGuid, string deviceName)
+        {
+            if (instanceGuid == Guid.Empty) { ClearAssignOffer(); return; }
+            bool had = HasAssignOffer;
+            _assignOfferGuid = instanceGuid;
+            AssignOfferText = string.Format(Strings.Instance.Pad_AssignOffer_Format, deviceName ?? string.Empty);
+            OnPropertyChanged(nameof(AssignOfferGuid));
+            if (!had) OnPropertyChanged(nameof(HasAssignOffer));
+        }
+
+        public void ClearAssignOffer()
+        {
+            if (!HasAssignOffer) return;
+            _assignOfferGuid = Guid.Empty;
+            AssignOfferText = string.Empty;
+            OnPropertyChanged(nameof(AssignOfferGuid));
+            OnPropertyChanged(nameof(HasAssignOffer));
+        }
+
+        private RelayCommand _acceptAssignOfferCommand;
+        public RelayCommand AcceptAssignOfferCommand => _acceptAssignOfferCommand ??= new RelayCommand(() =>
+        {
+            var guid = _assignOfferGuid;
+            if (guid == Guid.Empty) return;
+            ClearAssignOffer();
+            AssignOfferAccepted?.Invoke(this, guid);
+        });
+
+        private RelayCommand _dismissAssignOfferCommand;
+        public RelayCommand DismissAssignOfferCommand => _dismissAssignOfferCommand ??= new RelayCommand(() =>
+        {
+            var guid = _assignOfferGuid;
+            if (guid == Guid.Empty) return;
+            ClearAssignOffer();
+            AssignOfferDismissed?.Invoke(this, guid);
+        });
+
         /// <summary>Slot-level cross-device InputChoice list. Mirrors the
         /// per-MappingItem AvailableInputs but exposed at the slot level
         /// so the Gyro tab's Aim Engage picker (and any future slot-wide

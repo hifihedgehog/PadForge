@@ -3220,6 +3220,15 @@ Você pode tentar novamente mais tarde em Configurações.</value></data>
   <data name="Settings_BatteryNotifyThreshold" xml:space="preserve"><value>Avisar em ou abaixo de</value></data>
   <data name="Settings_BatteryNotifyVibrate" xml:space="preserve"><value>Vibrar Também o Controle</value></data>
   <data name="Settings_BatteryNotifyTest" xml:space="preserve"><value>Testar notificação</value></data>
+  <data name="Settings_AssignOffer" xml:space="preserve"><value>Sugestões de atribuição</value></data>
+  <data name="Settings_AssignOfferDesc" xml:space="preserve"><value>Quando um dispositivo se conecta com a página de um controle virtual aberta, o PadForge pode oferecer atribuí-lo ali. Nada é atribuído até você clicar em Atribuir. Teclados, mouses, touchpads e teclas de mídia nunca são oferecidos.</value></data>
+  <data name="Settings_AssignOfferNew" xml:space="preserve"><value>Oferecer dispositivos novos ao controle virtual aberto</value></data>
+  <data name="Settings_AssignOfferNew_Tooltip" xml:space="preserve"><value>Só dispositivos que o PadForge nunca viu. Um controle conectado na semana passada se conecta em silêncio.</value></data>
+  <data name="Settings_AssignOfferEmpty" xml:space="preserve"><value>Oferecer qualquer dispositivo que se conectar quando o controle virtual aberto não tiver dispositivos</value></data>
+  <data name="Settings_AssignOfferEmpty_Tooltip" xml:space="preserve"><value>Novo ou já conhecido. Assim que o controle virtual tiver um dispositivo, esta sugestão fica em silêncio.</value></data>
+  <data name="Pad_AssignOffer_Format" xml:space="preserve"><value>{0} acabou de se conectar. Atribuir a este controle virtual?</value></data>
+  <data name="Pad_AssignOffer_Assign" xml:space="preserve"><value>Atribuir</value></data>
+  <data name="Pad_AssignOffer_Dismiss" xml:space="preserve"><value>Agora não</value></data>
   <data name="Voice_AnyPhrase" xml:space="preserve"><value>Qualquer Frase</value></data>
   <data name="Voice_Title" xml:space="preserve"><value>Macros de Voz</value></data>
   <data name="Voice_ManageButton" xml:space="preserve"><value>Gerenciar Macros de Voz</value></data>

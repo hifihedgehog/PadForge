@@ -4035,7 +4035,8 @@ namespace PadForge.Services
                     consumerButtons: BuildConsumerPreviewItems(ud), isHeadsetMotion: isHeadset,
                     voiceButtonBase: voiceBase, isMicrophone: isMic,
                     isHandheld: ud.CapType == InputDeviceType.HandheldButtons,
-                    isSystemMotion: ud.CapType == InputDeviceType.SystemMotion);
+                    isSystemMotion: ud.CapType == InputDeviceType.SystemMotion,
+                    isHeadTracker: ud.CapType == InputDeviceType.HeadTracker);
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
                 devVm.HasAccelAuxData = ud.HasAccelAux;
@@ -4617,6 +4618,23 @@ namespace PadForge.Services
         /// Updates the raw input state display for the selected device
         /// on the Devices page using structured observable collections.
         /// </summary>
+        /// <summary>The Head Tracker row's source line (issue #355).</summary>
+        private static string BuildHeadTrackerStatus(PadForge.Common.Input.HeadTrackerDevice ht)
+        {
+            var s = Strings.Instance;
+            switch (ht.Source)
+            {
+                case PadForge.Common.Input.HeadTrackerSource.Udp:
+                    return string.Format(s.HeadTracker_StatusUdp_Format, ht.UdpPeer);
+                case PadForge.Common.Input.HeadTrackerSource.FreeTrack:
+                    return s.HeadTracker_StatusFreeTrack;
+                default:
+                    return ht.UdpBindFailed
+                        ? string.Format(s.HeadTracker_StatusPortInUse_Format, ht.UdpPort)
+                        : string.Format(s.HeadTracker_StatusWaiting_Format, ht.UdpPort);
+            }
+        }
+
         private void UpdateDevicesRawState()
         {
             var devVm = _mainVm.Devices;
@@ -4653,7 +4671,8 @@ namespace PadForge.Services
                     consumerButtons: BuildConsumerPreviewItems(ud), isHeadsetMotion: isHeadset2,
                     voiceButtonBase: voiceBase2, isMicrophone: isMic2,
                     isHandheld: ud.CapType == InputDeviceType.HandheldButtons,
-                    isSystemMotion: ud.CapType == InputDeviceType.SystemMotion);
+                    isSystemMotion: ud.CapType == InputDeviceType.SystemMotion,
+                    isHeadTracker: ud.CapType == InputDeviceType.HeadTracker);
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
                 devVm.HasAccelAuxData = ud.HasAccelAux;
@@ -4802,6 +4821,22 @@ namespace PadForge.Services
                         row.LastActiveTick = now;
                     row.IsActive = row.LastActiveTick != 0 && (now - row.LastActiveTick) < NfcPreviewHoldMs;
                 }
+            }
+
+            // Head tracker source line (issue #355): which source is live,
+            // rebuilt only when the device says its status moved.
+            if (devVm.IsHeadTrackerDevice)
+            {
+                if (ud.Device is PadForge.Common.Input.HeadTrackerDevice ht)
+                {
+                    int version = ht.StatusVersion;
+                    if (devVm.HeadTrackerStatusVersion != version || string.IsNullOrEmpty(devVm.HeadTrackerStatus))
+                    {
+                        devVm.HeadTrackerStatusVersion = version;
+                        devVm.HeadTrackerStatus = BuildHeadTrackerStatus(ht);
+                    }
+                }
+                else devVm.HeadTrackerStatus = string.Empty;
             }
 
             // Update POV hat values in-place.
@@ -10023,7 +10058,8 @@ namespace PadForge.Services
                             // Handheld rows too (#343): every button is a name
                             // from THIS machine's learned set.
                             if (devType == InputDeviceType.ConsumerControl || devType == InputDeviceType.Nfc
-                                || devType == InputDeviceType.Microphone || devType == InputDeviceType.HandheldButtons)
+                                || devType == InputDeviceType.Microphone || devType == InputDeviceType.HandheldButtons
+                                || devType == InputDeviceType.HeadTracker)
                                 try { objects = dev.GetDeviceObjects(); } catch { }
                             var info = new RemotePeerDeviceInfo
                             {
@@ -11801,6 +11837,7 @@ namespace PadForge.Services
                 InputDeviceType.HeadsetMotion => "HeadsetMotion",
                 InputDeviceType.HandheldButtons => "HandheldButtons",
                 InputDeviceType.SystemMotion => "SystemMotion",
+                InputDeviceType.HeadTracker => "HeadTracker",
                 _ => "Device"
             };
             // Vendor daemon notice (#343): the sweep scans on its cadence;

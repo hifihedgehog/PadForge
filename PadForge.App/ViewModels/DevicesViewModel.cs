@@ -334,6 +334,28 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _isSystemMotionDevice, value);
         }
 
+        private bool _isHeadTrackerDevice;
+        /// <summary>Whether the selected device is the head tracker row
+        /// (issue #355): six named axes, no buttons, plus a source line.</summary>
+        public bool IsHeadTrackerDevice
+        {
+            get => _isHeadTrackerDevice;
+            set => SetProperty(ref _isHeadTrackerDevice, value);
+        }
+
+        private string _headTrackerStatus = string.Empty;
+        /// <summary>Which head-tracking source is live, for the details
+        /// pane (issue #355). Written by the preview loop.</summary>
+        public string HeadTrackerStatus
+        {
+            get => _headTrackerStatus;
+            set => SetProperty(ref _headTrackerStatus, value ?? string.Empty);
+        }
+
+        /// <summary>The device's StatusVersion the current
+        /// <see cref="HeadTrackerStatus"/> was built from, -1 for none.</summary>
+        internal int HeadTrackerStatusVersion { get; set; } = -1;
+
         /// <summary>Named learned-button rows for the handheld preview
         /// (issue #343), each lighting while its button is down. Reuses the
         /// NFC row item; Uid carries the delivery description.</summary>
@@ -528,13 +550,32 @@ namespace PadForge.ViewModels
         /// are stored verbatim and used by the InputService update loop
         /// to read the matching <c>state.Buttons[Index]</c>.
         /// </summary>
-        internal void RebuildRawStateCollections(IReadOnlyList<int> axisIndices, IReadOnlyList<int> buttonIndices, int povCount, bool isKeyboard = false, bool isMouse = false, bool isTouchpad = false, bool isMidi = false, bool isNfc = false, IReadOnlyList<ConsumerButtonDisplayItem> consumerButtons = null, bool isHeadsetMotion = false, int voiceButtonBase = -1, bool isMicrophone = false, bool isHandheld = false, bool isSystemMotion = false)
+        /// <summary>Localized name of a head tracker axis slot (#355), null
+        /// past the six.</summary>
+        internal static string HeadTrackerAxisName(int slot)
+        {
+            var s = Strings.Instance;
+            return slot switch
+            {
+                0 => s.HeadTracker_Yaw,
+                1 => s.HeadTracker_Pitch,
+                2 => s.HeadTracker_Roll,
+                3 => s.HeadTracker_X,
+                4 => s.HeadTracker_Y,
+                5 => s.HeadTracker_Z,
+                _ => null,
+            };
+        }
+
+        internal void RebuildRawStateCollections(IReadOnlyList<int> axisIndices, IReadOnlyList<int> buttonIndices, int povCount, bool isKeyboard = false, bool isMouse = false, bool isTouchpad = false, bool isMidi = false, bool isNfc = false, IReadOnlyList<ConsumerButtonDisplayItem> consumerButtons = null, bool isHeadsetMotion = false, int voiceButtonBase = -1, bool isMicrophone = false, bool isHandheld = false, bool isSystemMotion = false, bool isHeadTracker = false)
         {
             IsNfcDevice = isNfc;
             IsHeadsetMotionDevice = isHeadsetMotion;
             if (isNfc) RebuildNfcTags(); else NfcTags.Clear();
             IsHandheldDevice = isHandheld;
             IsSystemMotionDevice = isSystemMotion;
+            IsHeadTrackerDevice = isHeadTracker;
+            if (!isHeadTracker) { HeadTrackerStatus = string.Empty; HeadTrackerStatusVersion = -1; }
             if (isHandheld) RebuildHandheldButtons(); else HandheldButtons.Clear();
             IsMicrophoneDevice = isMicrophone;
             ShowVoicePhrases = voiceButtonBase >= 0;
@@ -563,7 +604,10 @@ namespace PadForge.ViewModels
                 for (int i = 0; i < axisCount; i++)
                 {
                     int slot = axisIndices[i];
-                    RawAxes.Add(new AxisDisplayItem { Index = slot, Name = string.Format(Strings.Instance.Devices_Axis_Format, slot) });
+                    // Head tracker axes carry their names (#355), like the
+                    // picker: Head Yaw reads better than Axis 0.
+                    string axisName = isHeadTracker ? HeadTrackerAxisName(slot) : null;
+                    RawAxes.Add(new AxisDisplayItem { Index = slot, Name = axisName ?? string.Format(Strings.Instance.Devices_Axis_Format, slot) });
                 }
             }
 
@@ -638,6 +682,9 @@ namespace PadForge.ViewModels
             IsHeadsetMotionDevice = false;
             IsHandheldDevice = false;
             IsSystemMotionDevice = false;
+            IsHeadTrackerDevice = false;
+            HeadTrackerStatus = string.Empty;
+            HeadTrackerStatusVersion = -1;
             HandheldButtons.Clear();
             ConsumerButtons.Clear();
             LiveMidi = null;

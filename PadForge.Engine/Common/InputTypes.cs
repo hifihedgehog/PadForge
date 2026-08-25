@@ -105,6 +105,10 @@ namespace PadForge.Engine
         // Windows sensor stack (issue #343), for handhelds whose IMU sits
         // in the tablet rather than in the controller halves.
         public const int SystemMotion = 33;
+        // A head pose from OpenTrack's UDP output or the FreeTrack 2.0
+        // shared memory (issue #355): six absolute axes, yaw, pitch, roll
+        // and the three translations, centered at rest.
+        public const int HeadTracker = 34;
     }
 
     // ─────────────────────────────────────────────────────────────────

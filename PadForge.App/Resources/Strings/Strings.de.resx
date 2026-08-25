@@ -2286,6 +2286,29 @@
   <data name="Nfc_ManageButton" xml:space="preserve"><value>NFC-Tags registrieren/verwalten</value></data>
   <data name="DeviceType_HandheldButtons" xml:space="preserve"><value>Handheld-Tasten</value></data>
   <data name="DeviceType_SystemMotion" xml:space="preserve"><value>Systembewegung</value></data>
+  <data name="DeviceType_HeadTracker" xml:space="preserve"><value>Head-Tracker</value></data>
+  <data name="HeadTracker_Yaw" xml:space="preserve"><value>Kopf-Gieren</value></data>
+  <data name="HeadTracker_Pitch" xml:space="preserve"><value>Kopf-Nicken</value></data>
+  <data name="HeadTracker_Roll" xml:space="preserve"><value>Kopf-Rollen</value></data>
+  <data name="HeadTracker_X" xml:space="preserve"><value>Kopf X</value></data>
+  <data name="HeadTracker_Y" xml:space="preserve"><value>Kopf Y</value></data>
+  <data name="HeadTracker_Z" xml:space="preserve"><value>Kopf Z</value></data>
+  <data name="Settings_HeadTracking" xml:space="preserve"><value>Head-Tracking</value></data>
+  <data name="Settings_HeadTrackingDesc" xml:space="preserve"><value>Liest eine Kopfpose aus der UDP-Ausgabe von OpenTrack oder aus dem FreeTrack 2.0 Shared Memory und stellt sie als sechs Achsen eines Head-Tracker-Geräts bereit: Gieren, Nicken, Rollen und die drei Verschiebungen. Weisen Sie das Gieren einer Stick-Achse zu, um sich umzusehen, während beide Daumen auf den Tasten bleiben.</value></data>
+  <data name="Settings_HeadTrackingEnable" xml:space="preserve"><value>Head-Tracking-Eingabe aktivieren</value></data>
+  <data name="Settings_HeadTrackingEnable_Tooltip" xml:space="preserve"><value>Fügt auf der Seite Geräte die Zeile Head-Tracker hinzu. Wählen Sie in OpenTrack die Ausgabe "UDP over network" und senden Sie an 127.0.0.1 auf dem unten stehenden Port, oder wählen Sie "freetrack 2.0 Enhanced".</value></data>
+  <data name="Settings_HeadTrackingFreeTrack" xml:space="preserve"><value>Auch FreeTrack 2.0 Shared Memory lesen</value></data>
+  <data name="Settings_HeadTrackingFreeTrack_Tooltip" xml:space="preserve"><value>Liest die FT_SharedMem-Zuordnung, die die Ausgabe "freetrack 2.0 Enhanced" von OpenTrack schreibt. Spiele, die FreeTrack lesen, funktionieren daneben weiter.</value></data>
+  <data name="Settings_HeadTrackingPort" xml:space="preserve"><value>UDP-Port</value></data>
+  <data name="Settings_HeadTrackingPort_Tooltip" xml:space="preserve"><value>Der Port, an den die Ausgabe "UDP over network" von OpenTrack sendet. Der Standardwert von OpenTrack ist 4242.</value></data>
+  <data name="Settings_HeadTrackingRotationRange" xml:space="preserve"><value>Drehbereich (Grad)</value></data>
+  <data name="Settings_HeadTrackingRotationRange_Tooltip" xml:space="preserve"><value>Kopfdrehung, bei der die Achsen Gieren, Nicken und Rollen den Vollausschlag erreichen.</value></data>
+  <data name="Settings_HeadTrackingTranslationRange" xml:space="preserve"><value>Verschiebungsbereich (cm)</value></data>
+  <data name="Settings_HeadTrackingTranslationRange_Tooltip" xml:space="preserve"><value>Kopfbewegung, bei der die Achsen X, Y und Z den Vollausschlag erreichen.</value></data>
+  <data name="HeadTracker_StatusWaiting_Format" xml:space="preserve"><value>Warte auf einen Tracker an UDP-Port {0}.</value></data>
+  <data name="HeadTracker_StatusUdp_Format" xml:space="preserve"><value>Empfang über UDP von {0}.</value></data>
+  <data name="HeadTracker_StatusFreeTrack" xml:space="preserve"><value>Empfang aus dem FreeTrack Shared Memory.</value></data>
+  <data name="HeadTracker_StatusPortInUse_Format" xml:space="preserve"><value>UDP-Port {0} wird von einem anderen Programm verwendet.</value></data>
   <data name="Handheld_ManageButton" xml:space="preserve"><value>Versteckte Tasten lernen / verwalten</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>Versteckte Tasten</value></data>
   <data name="Handheld_LearnHeader" xml:space="preserve"><value>Eine Taste lernen</value></data>

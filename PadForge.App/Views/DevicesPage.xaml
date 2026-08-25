@@ -879,6 +879,12 @@
                                    FontSize="11" Foreground="{DynamicResource EmberBrush}" Margin="0,0,0,8"
                                    Visibility="{Binding SelectedDevice.HasHandheldDaemonWarning, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
+                        <!-- Head tracker source line (#355): which source is live,
+                             or why nothing arrives. -->
+                        <TextBlock Text="{Binding HeadTrackerStatus}" TextWrapping="Wrap"
+                                   FontSize="11" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,8"
+                                   Visibility="{Binding IsHeadTrackerDevice, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
                         <Separator Margin="0,2,0,6"/>
 
                         <!-- Assign to slot -->
@@ -1222,6 +1228,9 @@
                                         <DataTrigger Binding="{Binding IsSystemMotionDevice}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsHeadTrackerDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </TextBlock.Style>
@@ -1255,6 +1264,9 @@
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding IsSystemMotionDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsHeadTrackerDevice}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                     </Style.Triggers>

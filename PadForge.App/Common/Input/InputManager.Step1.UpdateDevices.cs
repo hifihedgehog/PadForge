@@ -420,6 +420,9 @@ namespace PadForge.Common.Input
             // --- Phase 1h: handheld PC hidden buttons + system motion (issue #343) ---
             changed |= UpdateHandheldDevices();
 
+            // --- Phase 1i: head tracker, OpenTrack UDP + FreeTrack (issue #355) ---
+            changed |= UpdateHeadTrackerDevice();
+
             // --- Phase 2: Detect disconnected SDL devices (debounced) ---
             //
             // Signals that indicate the device might be gone:
@@ -1315,6 +1318,13 @@ namespace PadForge.Common.Input
         private volatile SystemMotionDevice _systemMotionPending;
         private volatile bool _systemMotionProbed;
         private volatile bool _systemMotionOpenFailed;
+
+        // Head tracker (Phase 1i, issue #355). The row opens without
+        // blocking I/O (a UDP bind, a file mapping), so the poll thread
+        // runs the whole lifecycle itself.
+        private volatile HeadTrackerDevice _headTrackerDevice;
+        private readonly object _headTrackerLock = new object();
+        private volatile bool _headTrackerInputsSuppressed;
 
         // Sony headset head trackers (Phase 1g, issue #188). Discovery,
         // qualification (Bluetooth feature-report reads) and the enable
@@ -2348,6 +2358,86 @@ namespace PadForge.Common.Input
         /// <summary>Called on app shutdown in the same window as the NFC,
         /// microphone and headset teardowns: after Stop(), before
         /// ShutdownSdl().</summary>
+        /// <summary>Phase 1i (issue #355). One row while the Settings toggle
+        /// is on, recreated when the user removes it (the NFC recreate
+        /// pattern) and reopened when the port or the FreeTrack toggle
+        /// changes. Off with nothing to retire: two volatile reads and out.</summary>
+        private bool UpdateHeadTrackerDevice()
+        {
+            if (_headTrackerInputsSuppressed)
+                return false;
+
+            bool enabled = HeadTrackingRuntime.Enabled;
+            if (!enabled && _headTrackerDevice == null)
+                return false;
+
+            bool changed = false;
+            lock (_headTrackerLock)
+            {
+                if (_headTrackerInputsSuppressed)
+                    return false;
+
+                var dev = _headTrackerDevice;
+                if (dev != null)
+                {
+                    bool removedByUser = FindOnlineDeviceByInstanceGuid(dev.InstanceGuid) == null;
+                    bool reconfigured = dev.ConfigVersion != HeadTrackingRuntime.Version;
+                    if (!enabled || removedByUser || reconfigured)
+                    {
+                        RetireHeadTrackerRow();
+                        changed = true;
+                    }
+                }
+
+                if (enabled && _headTrackerDevice == null)
+                {
+                    try
+                    {
+                        var created = new HeadTrackerDevice();
+                        if (created.Open())
+                        {
+                            UserDevice ud = FindOrCreateUserDevice(created.InstanceGuid, created.ProductGuid);
+                            ud.LoadFromExternalDevice(created);
+                            ud.IsOnline = true;
+                            _headTrackerDevice = created;
+                            changed = true;
+                        }
+                        else created.Dispose();
+                    }
+                    catch (Exception ex)
+                    {
+                        RaiseError("Error opening head tracker device", ex);
+                    }
+                }
+            }
+            return changed;
+        }
+
+        // Caller holds _headTrackerLock.
+        private void RetireHeadTrackerRow()
+        {
+            var dev = _headTrackerDevice;
+            if (dev == null) return;
+            var ud = FindOnlineDeviceByInstanceGuid(dev.InstanceGuid);
+            if (ud != null)
+            {
+                ud.IsOnline = false;
+                ud.Device = null;
+                NeutralizeMappedOutputsFor(ud);
+            }
+            dev.Dispose();
+            _headTrackerDevice = null;
+        }
+
+        public void ShutdownHeadTrackerInputs()
+        {
+            _headTrackerInputsSuppressed = true;
+            lock (_headTrackerLock)
+            {
+                RetireHeadTrackerRow();
+            }
+        }
+
         public void ShutdownHandheldInputs()
         {
             _handheldInputsSuppressed = true;

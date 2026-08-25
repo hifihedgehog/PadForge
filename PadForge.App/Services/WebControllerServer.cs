@@ -1285,19 +1285,24 @@ namespace PadForge.Services
 
         private const string FirewallRuleName = "PadForge Web Controller";
 
-        private static void EnsureFirewallRule(int port)
+        private static void EnsureFirewallRule(int port) => EnsureInboundFirewallRule(FirewallRuleName, "TCP", port);
+
+        /// <summary>Adds an inbound allow rule for one port unless a rule of
+        /// that name already names the port. Best effort, blocking (netsh
+        /// spawns): callers hop to the thread pool. Shared with the head
+        /// tracker's UDP listener (#355).</summary>
+        internal static void EnsureInboundFirewallRule(string ruleName, string protocol, int port)
         {
             try
             {
                 // Check if rule already exists.
-                var check = RunNetsh($"advfirewall firewall show rule name=\"{FirewallRuleName}\"");
+                var check = RunNetsh($"advfirewall firewall show rule name=\"{ruleName}\"");
                 if (check.Contains(port.ToString()))
                     return;
 
-                // Add inbound TCP rule for the web server port.
-                RunNetsh($"advfirewall firewall add rule name=\"{FirewallRuleName}\" dir=in action=allow protocol=TCP localport={port}");
+                RunNetsh($"advfirewall firewall add rule name=\"{ruleName}\" dir=in action=allow protocol={protocol} localport={port}");
             }
-            catch { /* best effort — app may not be elevated */ }
+            catch { /* best effort, the app may not be elevated */ }
         }
 
         private static string RunNetsh(string arguments)

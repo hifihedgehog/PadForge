@@ -245,6 +245,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(ShowRegisterNfcTag));
                     OnPropertyChanged(nameof(IsHandheldDevice));
                     OnPropertyChanged(nameof(IsSystemMotionDevice));
+                    OnPropertyChanged(nameof(IsHeadTrackerDevice));
                     OnPropertyChanged(nameof(ShowLearnHandheldButton));
                     OnPropertyChanged(nameof(HasHandheldDaemonWarning));
                     OnPropertyChanged(nameof(HandheldDaemonWarning));
@@ -271,6 +272,7 @@ namespace PadForge.ViewModels
             "HeadsetMotion" => Strings.Instance.DeviceType_HeadsetMotion,
             "HandheldButtons" => Strings.Instance.DeviceType_HandheldButtons,
             "SystemMotion" => Strings.Instance.DeviceType_SystemMotion,
+            "HeadTracker" => Strings.Instance.DeviceType_HeadTracker,
             _ => Strings.Instance.DeviceType_Device
         };
 
@@ -544,6 +546,9 @@ namespace PadForge.ViewModels
         /// <summary>True for the machine's own motion sensor row (issue #343).</summary>
         public bool IsSystemMotionDevice => DeviceTypeKey == "SystemMotion";
 
+        /// <summary>True for the head tracker row (issue #355).</summary>
+        public bool IsHeadTrackerDevice => DeviceTypeKey == "HeadTracker";
+
         /// <summary>Whether to show the Learn / Manage Hidden Buttons button
         /// (issue #343). Owner only: a peer row's buttons are learned on the
         /// machine that has them (the #248 lesson).</summary>
@@ -608,7 +613,8 @@ namespace PadForge.ViewModels
              // The handheld hidden-buttons row and the machine's sensor row
              // (#343) are synthetic too: nothing for HidHide to cloak.
              || _devicePath.StartsWith("handheld://", StringComparison.Ordinal)
-             || _devicePath.StartsWith("sensor://", StringComparison.Ordinal));
+             || _devicePath.StartsWith("sensor://", StringComparison.Ordinal)
+             || _devicePath.StartsWith("headtrack://", StringComparison.Ordinal));
 
         /// <summary>True when at least one input-hiding toggle would be shown,
         /// so the "Input Hiding" section can hide its heading along with its
@@ -723,7 +729,7 @@ namespace PadForge.ViewModels
         public bool IsGamepad => DeviceTypeKey == "Gamepad";
 
         /// <summary>True if this device can have community mappings submitted (joysticks only, not gamepads/mice/keyboards).</summary>
-        public bool ShowSubmitMapping => DeviceTypeKey != "Gamepad" && DeviceTypeKey != "Mouse" && DeviceTypeKey != "Keyboard" && DeviceTypeKey != "Touchpad" && DeviceTypeKey != "Midi" && DeviceTypeKey != "Nfc" && DeviceTypeKey != "HeadsetMotion" && DeviceTypeKey != "Microphone" && DeviceTypeKey != "ConsumerControl" && DeviceTypeKey != "HandheldButtons" && DeviceTypeKey != "SystemMotion";
+        public bool ShowSubmitMapping => DeviceTypeKey != "Gamepad" && DeviceTypeKey != "Mouse" && DeviceTypeKey != "Keyboard" && DeviceTypeKey != "Touchpad" && DeviceTypeKey != "Midi" && DeviceTypeKey != "Nfc" && DeviceTypeKey != "HeadsetMotion" && DeviceTypeKey != "Microphone" && DeviceTypeKey != "ConsumerControl" && DeviceTypeKey != "HandheldButtons" && DeviceTypeKey != "SystemMotion" && DeviceTypeKey != "HeadTracker";
 
         /// <summary>True for an NFC reader (issue #150): shows the "Register/Manage
         /// NFC Tags" button, which opens the tap-to-name registration flow.

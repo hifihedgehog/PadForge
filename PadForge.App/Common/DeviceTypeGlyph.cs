@@ -30,6 +30,7 @@ namespace PadForge.Common
             InputDeviceType.Microphone => "\uE720",     // Microphone
             InputDeviceType.HandheldButtons => "\uE7F8", // DeviceLaptopNoPic (the machine itself, #343)
             InputDeviceType.SystemMotion => "\uE7F8",    // same machine, its sensor row
+            InputDeviceType.HeadTracker => "\uE77B",     // Contact, a head (#355; verified in live segmdl2.ttf)
             _ => "\uE7FC"                                // Game
         };
     }

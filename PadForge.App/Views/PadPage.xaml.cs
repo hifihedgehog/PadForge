@@ -209,10 +209,24 @@ namespace PadForge.Views
 
         private bool IsExtended()
         {
-            // Extended always uses the schematic preview, sized to the
-            // active HIDMaestro profile.
-            return DataContext is PadViewModel vm
-                && vm.OutputType == Engine.VirtualControllerType.Extended;
+            // Extended uses the schematic preview, sized to the active
+            // HIDMaestro profile, EXCEPT where PadForge ships that
+            // controller's own body.
+            //
+            // The schematic exists because an Extended profile can be
+            // anything: a wheel, a flight stick, an arcade panel. Drawing a
+            // gamepad under those would be a lie, so the generic view wins
+            // by default. But Valve's pads live in this category and
+            // PadForge now ships art for every one of them, and a device
+            // we can draw correctly should be drawn. HasDedicatedArt is the
+            // exact question, since it distinguishes real art from the
+            // fallback body an unrecognized profile lands on.
+            if (DataContext is not PadViewModel vm
+                || vm.OutputType != Engine.VirtualControllerType.Extended)
+                return false;
+
+            return !PadForge.Common.Input.HMaestroProfileCatalog.HasDedicatedArt(
+                vm.ProfileId, vm.OutputType);
         }
 
         private bool IsMidi()
@@ -2462,6 +2476,13 @@ namespace PadForge.Views
                 // tabs stale until app relaunch or slot switch. Re-sync
                 // here so the tab strip follows profile changes too.
                 SyncTabVisibility();
+
+                // Which preview to draw depends on the PROFILE now, not
+                // only on the slot's output type: an Extended slot shows
+                // the controller's own body when PadForge ships one and
+                // the generic schematic when it does not. Without this the
+                // pane kept whatever the previous profile chose.
+                ApplyViewMode();
             }
         }
 

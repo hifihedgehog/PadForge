@@ -281,6 +281,10 @@ namespace PadForge.Tests
             foreach (string prop in new[]
             {
                 "AssignOfferNewDevice", "AssignOfferEmptySlot",
+                // The sibling set of the same defect: these three sit
+                // directly above the assign-offer pair in the Settings page
+                // and had the identical gap.
+                "BatteryNotifyEnabled", "BatteryNotifyThreshold", "BatteryNotifyVibrate",
                 "HeadTrackingEnabled", "HeadTrackingUdpPort", "HeadTrackingFreeTrack",
                 "HeadTrackingRotationRange", "HeadTrackingTranslationRange",
                 "HandheldButtonsEnabled",
@@ -308,9 +312,13 @@ namespace PadForge.Tests
             string runtime = RepoFile("PadForge.App", "Common", "Input", "WmiEventRuntime.cs");
             int at = runtime.IndexOf("public static void Sync(", StringComparison.Ordinal);
             Assert.True(at > 0);
-            string body = runtime.Substring(at, 2600);
+            string body = runtime.Substring(at, 3000);
             Assert.Contains("EnumerateEventClasses()", body);
             Assert.Contains("refusing to watch WMI class", body);
+            // A refused class never enters _watchers, so without a memory of
+            // the refusal the sweep re-asks and re-logs it every four
+            // seconds for the life of the process.
+            Assert.Contains("_refused.Add(cls)", body);
         }
 
         [Fact]

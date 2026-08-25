@@ -2289,7 +2289,7 @@
   <data name="Handheld_ManageButton" xml:space="preserve"><value>숨겨진 버튼 학습 / 관리</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>숨겨진 버튼</value></data>
   <data name="Handheld_LearnHeader" xml:space="preserve"><value>버튼 학습</value></data>
-  <data name="Handheld_Intro" xml:space="preserve"><value>요청 시 숨겨진 버튼을 한 번 누르세요. PadForge는 이 컴퓨터의 키보드, 마우스, 모든 제조사 보고서를 관찰하여 버튼이 바꾸는 것을 기록합니다.</value></data>
+  <data name="Handheld_Intro" xml:space="preserve"><value>요청 시 숨겨진 버튼을 한 번 누르세요. PadForge는 이 컴퓨터의 키보드, 마우스, 모든 제조사 보고서, 모든 시스템 이벤트를 관찰하여 버튼이 바꾸는 것을 기록합니다.</value></data>
   <data name="Handheld_MachineLabel" xml:space="preserve"><value>컴퓨터:</value></data>
   <data name="Handheld_StartButton" xml:space="preserve"><value>학습 시작</value></data>
   <data name="Handheld_PhaseIdle" xml:space="preserve"><value>손을 떼세요. 대기 상태를 읽는 중…</value></data>
@@ -2311,7 +2311,7 @@
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>버튼 {0}개를 내보냈습니다.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>버튼 {0}개를 가져왔습니다.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>휴대용 PC 버튼</value></data>
-  <data name="Settings_HandheldDesc" xml:space="preserve"><value>휴대용 게이밍 PC에는 운영 체제가 컨트롤러로 표시하지 않는 버튼이 있습니다. 후면 패들, 메뉴 키, 휠 등입니다. 켜면 한 번 눌러서 학습한 뒤 다른 버튼처럼 매핑할 수 있습니다. 컴퓨터 자체의 자이로스코프도 모션 장치로 추가됩니다.</value></data>
+  <data name="Settings_HandheldDesc" xml:space="preserve"><value>휴대용 게이밍 PC와 노트북에는 운영 체제가 컨트롤러로 표시하지 않는 버튼이 있습니다. 후면 패들, 메뉴 키, 휠, 제조사 핫키 등입니다. 켜면 한 번 눌러서 학습한 뒤 다른 버튼처럼 매핑할 수 있습니다. 컴퓨터 자체의 자이로스코프도 모션 장치로 추가됩니다.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>휴대용 PC 버튼 사용</value></data>
   <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>장치 페이지에 숨겨진 버튼 장치와 시스템 모션 장치를 추가합니다. 끄면 아무것도 실행되지 않습니다.</value></data>
   <data name="DeviceType_Nfc" xml:space="preserve"><value>NFC 리더기</value></data>

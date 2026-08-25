@@ -193,7 +193,13 @@ namespace PadForge.Views
             HandheldLearnSession.Candidate chosen = null;
             if (_candidates.Count == 1) chosen = _candidates[0];
             else if (_candidates.Count > 1) chosen = (CandidateBox.SelectedItem as CandidateRow)?.Candidate ?? _candidates[0];
-            if (chosen != null)
+            if (chosen != null && chosen.IsWmi)
+            {
+                entry.WmiClass = chosen.Collection;
+                entry.WmiProperty = chosen.WmiProperty;
+                entry.WmiValue = chosen.WmiValue ?? string.Empty;
+            }
+            else if (chosen != null)
             {
                 entry.Collection = chosen.Collection;
                 entry.ReportId = chosen.ReportId;
@@ -202,7 +208,7 @@ namespace PadForge.Views
                 entry.Value = chosen.Value;
                 entry.ValueKind = chosen.Kind;
             }
-            if (!entry.HasChord && !entry.HasReport) return;
+            if (!entry.HasAnyPath) return;
 
             HandheldButtonRegistry.StampMachine(MachineIdentity.Current.Key);
             var stored = HandheldButtonRegistry.Register(entry);

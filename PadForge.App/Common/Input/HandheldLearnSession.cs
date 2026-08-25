@@ -34,10 +34,41 @@ namespace PadForge.Common.Input
             public byte Mask;
             public byte Value;
             public VendorButtonKind Kind;
+            /// <summary>Set for a WMI event candidate: Collection carries the
+            /// event class, and these two the property and its value.</summary>
+            public bool IsWmi;
+            public string WmiProperty;
+            public string WmiValue;
 
-            public string Describe() => Kind == VendorButtonKind.Bit
-                ? $"{CollectionName}: report {ReportId:X2}, byte {ByteIndex}, bit 0x{Mask:X2}"
-                : $"{CollectionName}: report {ReportId:X2}, byte {ByteIndex} = 0x{Value:X2}";
+            public string Describe() => IsWmi
+                ? $"{Collection}: {WmiProperty} = {WmiValue}"
+                : Kind == VendorButtonKind.Bit
+                    ? $"{CollectionName}: report {ReportId:X2}, byte {ByteIndex}, bit 0x{Mask:X2}{(Value == 0 ? " clear" : "")}"
+                    : $"{CollectionName}: report {ReportId:X2}, byte {ByteIndex} = 0x{Value:X2}";
+        }
+
+        // WMI events per phase, in arrival order. Arrival order is the
+        // candidate order: on the Legion Pro 7 the utility event that names
+        // the key lands 3 ms before the lighting side event both keys share.
+        private readonly List<(string Cls, string Prop, string Val)>[] _wmiPhases =
+        {
+            new(), new(), new(),
+        };
+
+        /// <summary>WMI event callback (provider thread). Every data
+        /// property of the event lands in the current phase's list.</summary>
+        public void OnWmiEvent(WmiEventRuntime.Event ev)
+        {
+            if (ev == null || string.IsNullOrEmpty(ev.ClassName)) return;
+            var phase = _phase;
+            if (phase == Phase.Done) return;
+            lock (_lock)
+            {
+                var list = _wmiPhases[(int)phase];
+                if (list.Count >= MaxSamplesPerBucket) return;
+                foreach (var (name, value) in ev.Props)
+                    list.Add((ev.ClassName, name, value ?? string.Empty));
+            }
         }
 
         private readonly object _lock = new();
@@ -99,6 +130,27 @@ namespace PadForge.Common.Input
             var result = new List<Candidate>();
             lock (_lock)
             {
+                // WMI events first: a (class, property, value) that fired
+                // during the press and never while idle or on release is
+                // the key. One that also fires at rest (a periodic status
+                // event) is noise, the noise-mask rule for events.
+                var quiet = new HashSet<(string, string, string)>();
+                foreach (var t in _wmiPhases[(int)Phase.Idle]) quiet.Add(t);
+                foreach (var t in _wmiPhases[(int)Phase.Release]) quiet.Add(t);
+                var seen = new HashSet<(string, string, string)>();
+                foreach (var t in _wmiPhases[(int)Phase.Press])
+                {
+                    if (quiet.Contains(t) || !seen.Add(t)) continue;
+                    result.Add(new Candidate
+                    {
+                        Collection = t.Cls,
+                        CollectionName = t.Cls,
+                        IsWmi = true,
+                        WmiProperty = t.Prop,
+                        WmiValue = t.Val,
+                    });
+                }
+
                 var idleAll = _phases[(int)Phase.Idle];
                 var pressAll = _phases[(int)Phase.Press];
                 var releaseAll = _phases[(int)Phase.Release];

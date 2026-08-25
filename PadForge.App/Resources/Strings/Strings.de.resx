@@ -2289,7 +2289,7 @@
   <data name="Handheld_ManageButton" xml:space="preserve"><value>Versteckte Tasten lernen / verwalten</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>Versteckte Tasten</value></data>
   <data name="Handheld_LearnHeader" xml:space="preserve"><value>Eine Taste lernen</value></data>
-  <data name="Handheld_Intro" xml:space="preserve"><value>Drücken Sie die versteckte Taste einmal, wenn Sie dazu aufgefordert werden. PadForge beobachtet Tastatur, Maus und jeden Herstellerbericht dieses Geräts und zeichnet auf, was die Taste verändert.</value></data>
+  <data name="Handheld_Intro" xml:space="preserve"><value>Drücken Sie die versteckte Taste einmal, wenn Sie dazu aufgefordert werden. PadForge beobachtet Tastatur, Maus, jeden Herstellerbericht und jedes Systemereignis dieses Geräts und zeichnet auf, was die Taste verändert.</value></data>
   <data name="Handheld_MachineLabel" xml:space="preserve"><value>Gerät:</value></data>
   <data name="Handheld_StartButton" xml:space="preserve"><value>Lernen starten</value></data>
   <data name="Handheld_PhaseIdle" xml:space="preserve"><value>Nichts berühren. Ruhezustand wird gelesen…</value></data>
@@ -2311,7 +2311,7 @@
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>{0} Tasten exportiert.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>{0} Tasten importiert.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>Handheld-PC-Tasten</value></data>
-  <data name="Settings_HandheldDesc" xml:space="preserve"><value>Handheld-Gaming-PCs haben Tasten, die das Betriebssystem nie als Controller anzeigt: hintere Paddles, Menütasten, Räder. Einschalten, um sie einmal durch Drücken zu lernen und dann wie jede andere Taste zuzuweisen. Fügt außerdem das Gyroskop des Geräts als Bewegungsgerät hinzu.</value></data>
+  <data name="Settings_HandheldDesc" xml:space="preserve"><value>Handheld-Gaming-PCs und Notebooks haben Tasten, die das Betriebssystem nie als Controller anzeigt: hintere Paddles, Menütasten, Räder, Hersteller-Sondertasten. Einschalten, um sie einmal durch Drücken zu lernen und dann wie jede andere Taste zuzuweisen. Fügt außerdem das Gyroskop des Geräts als Bewegungsgerät hinzu.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Handheld-PC-Tasten aktivieren</value></data>
   <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>Fügt der Seite Geräte ein Gerät Versteckte Tasten und ein Gerät Systembewegung hinzu. Ausgeschaltet läuft nichts.</value></data>
   <data name="DeviceType_Nfc" xml:space="preserve"><value>NFC-Leser</value></data>

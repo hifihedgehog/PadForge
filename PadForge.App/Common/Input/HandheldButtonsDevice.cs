@@ -44,6 +44,11 @@ namespace PadForge.Common.Input
         private volatile Dictionary<string, VendorButtonDefinition[]> _reportDefs =
             new(StringComparer.OrdinalIgnoreCase);
 
+        // WMI definitions by event class: (button, property, value).
+        private volatile Dictionary<string, (int Button, string Prop, string Value)[]> _wmiDefs =
+            new(StringComparer.OrdinalIgnoreCase);
+        private Action<WmiEventRuntime.Event> _wmiHandler;
+
         private readonly object _readersLock = new();
         private readonly Dictionary<string, VendorHidReader> _readers = new(StringComparer.OrdinalIgnoreCase);
 
@@ -142,6 +147,8 @@ namespace PadForge.Common.Input
             HandheldChordRuntime.Engine.ButtonChanged += _buttonHandler;
             HandheldChordRuntime.Engine.CaptureCompleted += _captureHandler;
             HandheldButtonRegistry.RegistryChanged += _registryHandler;
+            _wmiHandler = OnWmiEvent;
+            WmiEventRuntime.EventReceived += _wmiHandler;
             ApplyRegistry();
             _attached = true;
             Active = this;
@@ -161,11 +168,14 @@ namespace PadForge.Common.Input
             if (_buttonHandler != null) HandheldChordRuntime.Engine.ButtonChanged -= _buttonHandler;
             if (_captureHandler != null) HandheldChordRuntime.Engine.CaptureCompleted -= _captureHandler;
             if (_registryHandler != null) HandheldButtonRegistry.RegistryChanged -= _registryHandler;
+            if (_wmiHandler != null) WmiEventRuntime.EventReceived -= _wmiHandler;
             _buttonHandler = null;
             _captureHandler = null;
             _registryHandler = null;
+            _wmiHandler = null;
             HandheldChordRuntime.Engine.SetChords(null);
             CloseAllReaders();
+            WmiEventRuntime.StopAll();
             HandheldButtonRegistry.NotifyActivity();
         }
 
@@ -188,6 +198,16 @@ namespace PadForge.Common.Input
             var frozen = new Dictionary<string, VendorButtonDefinition[]>(StringComparer.OrdinalIgnoreCase);
             foreach (var kv in defs) frozen[kv.Key] = kv.Value.ToArray();
             _reportDefs = frozen;
+            var wmi = new Dictionary<string, List<(int, string, string)>>(StringComparer.OrdinalIgnoreCase);
+            foreach (var e in entries)
+            {
+                if (!e.HasWmi) continue;
+                if (!wmi.TryGetValue(e.WmiClass, out var list)) wmi[e.WmiClass] = list = new List<(int, string, string)>();
+                list.Add((e.Button, e.WmiProperty, e.WmiValue ?? string.Empty));
+            }
+            var frozenWmi = new Dictionary<string, (int, string, string)[]>(StringComparer.OrdinalIgnoreCase);
+            foreach (var kv in wmi) frozenWmi[kv.Key] = kv.Value.ToArray();
+            _wmiDefs = frozenWmi;
             lock (_stateLock)
             {
                 for (int b = 0; b < defined.Length; b++)
@@ -273,9 +293,24 @@ namespace PadForge.Common.Input
             }
         }
 
+        /// <summary>Subscribes the WMI event classes the definitions name,
+        /// or every event class the machine exposes during a capture.
+        /// Blocking WMI work: worker thread only.</summary>
+        internal void SyncWmi()
+        {
+            if (_disposed) return;
+            var wanted = HandheldButtonRegistry.RequiredWmiClasses;
+            if (HandheldButtonRegistry.LearnCaptureActive)
+            {
+                var all = WmiEventRuntime.EnumerateEventClasses();
+                if (all != null) foreach (var c in all) wanted.Add(c);
+            }
+            WmiEventRuntime.Sync(wanted);
+        }
+
         /// <summary>Enumerates and syncs off the caller's thread right away,
         /// so a Learn dialog does not wait out the sweep cadence for the
-        /// vendor collections to open.</summary>
+        /// vendor collections and event classes to open.</summary>
         internal void SyncReadersNow()
         {
             System.Threading.Tasks.Task.Run(() =>
@@ -284,9 +319,36 @@ namespace PadForge.Common.Input
                 {
                     var present = VendorHidRuntime.Enumerate();
                     if (present != null) SyncReaders(present);
+                    SyncWmi();
                 }
                 catch { }
             });
+        }
+
+        private void OnWmiEvent(WmiEventRuntime.Event ev)
+        {
+            if (ev == null) return;
+            var learn = _learn;
+            learn?.OnWmiEvent(ev);
+
+            if (!_wmiDefs.TryGetValue(ev.ClassName, out var defs)) return;
+            long now = Environment.TickCount64;
+            lock (_stateLock)
+            {
+                foreach (var (button, prop, value) in defs)
+                {
+                    if (button < 0 || button >= _pulseUntil.Length) continue;
+                    foreach (var (name, val) in ev.Props)
+                    {
+                        if (!string.Equals(name, prop, StringComparison.OrdinalIgnoreCase)) continue;
+                        // An event is a press with no release: a pulse, the
+                        // NFC tap's shape.
+                        if (string.Equals(val ?? string.Empty, value, StringComparison.Ordinal))
+                            _pulseUntil[button] = now + PulseMs;
+                        break;
+                    }
+                }
+            }
         }
 
         private void CloseAllReaders()
@@ -393,6 +455,8 @@ namespace PadForge.Common.Input
         {
             _registryHandler = (s, e) => ApplyRegistry();
             HandheldButtonRegistry.RegistryChanged += _registryHandler;
+            _wmiHandler = OnWmiEvent;
+            WmiEventRuntime.EventReceived += _wmiHandler;
             ApplyRegistry();
             _attached = true;
         }

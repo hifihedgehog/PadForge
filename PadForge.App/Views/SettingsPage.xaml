@@ -215,7 +215,8 @@
             <Border Style="{StaticResource CardBorder}" Margin="0,0,0,20">
                 <StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                        <TextBlock Text="&#xE7FC;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
+                        <!-- Matches the banner this card governs (E8DE). -->
+                        <TextBlock Text="&#xE8DE;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
                                    VerticalAlignment="Center" Margin="0,0,8,0"/>
                         <TextBlock Text="{Binding Settings_AssignOffer, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardTitle}"/>
                     </StackPanel>

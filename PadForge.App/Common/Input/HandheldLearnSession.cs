@@ -122,6 +122,21 @@ namespace PadForge.Common.Input
             }
         }
 
+        /// <summary>Report samples and WMI events seen per phase, for the
+        /// nothing-found message and the diagnostics ring.</summary>
+        public (int IdleReports, int PressReports, int ReleaseReports, int IdleEvents, int PressEvents, int ReleaseEvents) Counts
+        {
+            get
+            {
+                lock (_lock)
+                {
+                    int Reports(Phase p) { int n = 0; foreach (var kv in _phases[(int)p]) n += kv.Value.Count; return n; }
+                    return (Reports(Phase.Idle), Reports(Phase.Press), Reports(Phase.Release),
+                        _wmiPhases[(int)Phase.Idle].Count, _wmiPhases[(int)Phase.Press].Count, _wmiPhases[(int)Phase.Release].Count);
+                }
+            }
+        }
+
         /// <summary>Runs the learner over every bucket that received a
         /// report during the press phase.</summary>
         public List<Candidate> Finish()
@@ -131,16 +146,24 @@ namespace PadForge.Common.Input
             lock (_lock)
             {
                 // WMI events first: a (class, property, value) that fired
-                // during the press and never while idle or on release is
-                // the key. One that also fires at rest (a periodic status
-                // event) is noise, the noise-mask rule for events.
-                var quiet = new HashSet<(string, string, string)>();
-                foreach (var t in _wmiPhases[(int)Phase.Idle]) quiet.Add(t);
-                foreach (var t in _wmiPhases[(int)Phase.Release]) quiet.Add(t);
+                // during the press is the key unless it also fires at
+                // rest. "At rest" must survive one early press: a user who
+                // taps the key a moment before the press phase puts one
+                // copy in the idle bucket, and treating that as noise
+                // cancelled the real press (bench, 2026-08-25). Noise is
+                // an event that repeats while idle, or shows up both while
+                // idle and after release, the shape of a periodic status.
+                var idleCount = new Dictionary<(string, string, string), int>();
+                var releaseCount = new Dictionary<(string, string, string), int>();
+                foreach (var t in _wmiPhases[(int)Phase.Idle]) idleCount[t] = idleCount.TryGetValue(t, out var n) ? n + 1 : 1;
+                foreach (var t in _wmiPhases[(int)Phase.Release]) releaseCount[t] = releaseCount.TryGetValue(t, out var n) ? n + 1 : 1;
                 var seen = new HashSet<(string, string, string)>();
                 foreach (var t in _wmiPhases[(int)Phase.Press])
                 {
-                    if (quiet.Contains(t) || !seen.Add(t)) continue;
+                    int idle = idleCount.TryGetValue(t, out var ic) ? ic : 0;
+                    int rel = releaseCount.TryGetValue(t, out var rc) ? rc : 0;
+                    bool noise = idle >= 2 || rel >= 2 || (idle >= 1 && rel >= 1);
+                    if (noise || !seen.Add(t)) continue;
                     result.Add(new Candidate
                     {
                         Collection = t.Cls,

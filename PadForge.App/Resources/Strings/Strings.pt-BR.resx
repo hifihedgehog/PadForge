@@ -2290,6 +2290,7 @@
   <data name="Handheld_PhasePress" xml:space="preserve"><value>Pressione e segure o botão oculto agora…</value></data>
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Solte…</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>Nenhuma mudança foi vista. Pressione o botão durante a janela indicada e tente de novo.</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Observados {0} relatórios do fabricante e {1} classes de evento. Durante o pressionamento: {2} relatórios, {3} eventos.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>Botão capturado. Digite um nome e clique em Registrar.</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>Origem:</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>Nome:</value></data>

@@ -2296,6 +2296,7 @@
   <data name="Handheld_PhasePress" xml:space="preserve"><value>Maintenez le bouton caché enfoncé maintenant…</value></data>
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Relâchez-le…</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>Aucun changement détecté. Appuyez sur le bouton pendant la fenêtre indiquée et réessayez.</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>{0} rapports constructeur et {1} classes d'événement surveillés. Pendant l'appui : {2} rapports, {3} événements.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>Bouton capturé. Saisissez un nom et cliquez sur Enregistrer.</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>Source :</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>Nom :</value></data>

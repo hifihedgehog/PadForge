@@ -331,8 +331,13 @@ namespace PadForge.Common.Input
             var learn = _learn;
             learn?.OnWmiEvent(ev);
 
-            if (!_wmiDefs.TryGetValue(ev.ClassName, out var defs)) return;
+            if (!_wmiDefs.TryGetValue(ev.ClassName, out var defs))
+            {
+                PadForge.Engine.SdlDiagLog.WriteLine($"Handheld: WMI event {ev.ClassName} matches no learned button");
+                return;
+            }
             long now = Environment.TickCount64;
+            int hit = -1;
             lock (_stateLock)
             {
                 foreach (var (button, prop, value) in defs)
@@ -344,11 +349,17 @@ namespace PadForge.Common.Input
                         // An event is a press with no release: a pulse, the
                         // NFC tap's shape.
                         if (string.Equals(val ?? string.Empty, value, StringComparison.Ordinal))
+                        {
                             _pulseUntil[button] = now + PulseMs;
+                            hit = button;
+                        }
                         break;
                     }
                 }
             }
+            PadForge.Engine.SdlDiagLog.WriteLine(hit >= 0
+                ? $"Handheld: WMI event {ev.ClassName} pulses button {hit} (span {_span}, attached {_attached})"
+                : $"Handheld: WMI event {ev.ClassName} matched no value on its {defs.Length} learned button(s)");
         }
 
         private void CloseAllReaders()

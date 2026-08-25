@@ -2318,6 +2318,7 @@
   <data name="Handheld_PhasePress" xml:space="preserve"><value>Tieni premuto il pulsante nascosto ora…</value></data>
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Rilascialo…</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>Nessuna modifica rilevata. Premi il pulsante durante la finestra indicata e riprova.</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Osservati {0} report del produttore e {1} classi di evento. Durante la pressione: {2} report, {3} eventi.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>Pulsante acquisito. Inserisci un nome e fai clic su Registra.</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>Origine:</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>Nome:</value></data>

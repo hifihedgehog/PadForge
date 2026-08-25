@@ -310,6 +310,20 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void TheFirewallHelperAsksRuleNamesPortRatherThanSearchingTheDump()
+        {
+            // Locking the helper's behaviour is not enough: the caller has to
+            // keep calling it. The defect was a substring test AT THE CALL
+            // SITE, and a correct function nobody consults fixes nothing.
+            string web = RepoFile("PadForge.App", "Services", "WebControllerServer.cs");
+            int at = web.IndexOf("internal static void EnsureInboundFirewallRule", StringComparison.Ordinal);
+            Assert.True(at > 0);
+            string body = web.Substring(at, 1600);
+            Assert.Contains("RuleNamesPort(check, port)", body);
+            Assert.DoesNotContain("check.Contains(port.ToString())", body);
+        }
+
+        [Fact]
         public void TurningTheHandheldFeatureOffStopsTheChordRuntime()
         {
             string step1 = RepoFile("PadForge.App", "Common", "Input", "InputManager.Step1.UpdateDevices.cs");

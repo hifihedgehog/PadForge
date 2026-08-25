@@ -1953,6 +1953,16 @@ namespace PadForge.Services
             PadForge.Common.Input.HandheldButtonRegistry.LoadRegistry(
                 appSettings.HandheldButtons?.Select(b => b.ToEntry()), appSettings.HandheldMachineKey);
             vm.HandheldButtonsEnabled = appSettings.HandheldButtonsEnabled;
+            // Head tracking (#355): sources and ranges first, then the
+            // toggle, so the row opens under the saved port.
+            vm.HeadTrackingUdpPort = appSettings.HeadTrackingUdpPort > 0
+                ? appSettings.HeadTrackingUdpPort : PadForge.Common.Input.HeadTrackingRuntime.DefaultUdpPort;
+            vm.HeadTrackingFreeTrack = appSettings.HeadTrackingFreeTrack;
+            vm.HeadTrackingRotationRange = appSettings.HeadTrackingRotationRange > 0
+                ? appSettings.HeadTrackingRotationRange : PadForge.Common.Input.HeadTrackingRuntime.DefaultRotationRangeDeg;
+            vm.HeadTrackingTranslationRange = appSettings.HeadTrackingTranslationRange > 0
+                ? appSettings.HeadTrackingTranslationRange : PadForge.Common.Input.HeadTrackingRuntime.DefaultTranslationRangeCm;
+            vm.HeadTrackingEnabled = appSettings.HeadTrackingEnabled;
             // PS Move calibration blobs (#277): captured at pair time over USB,
             // consumed by the Bluetooth lane for sensor scaling.
             PadForge.Common.Input.PsMoveCalibrationRegistry.LoadRegistry(appSettings.PsMoveCalibrations);
@@ -4113,6 +4123,11 @@ namespace PadForge.Services
                     .Select(HandheldButtonData.From).ToArray(),
                 HandheldMachineKey = PadForge.Common.Input.HandheldButtonRegistry.MachineKey,
                 HandheldButtonsEnabled = vm.HandheldButtonsEnabled,
+                HeadTrackingEnabled = vm.HeadTrackingEnabled,
+                HeadTrackingUdpPort = vm.HeadTrackingUdpPort,
+                HeadTrackingFreeTrack = vm.HeadTrackingFreeTrack,
+                HeadTrackingRotationRange = vm.HeadTrackingRotationRange,
+                HeadTrackingTranslationRange = vm.HeadTrackingTranslationRange,
                 VoiceMinConfidence = PadForge.Services.VoiceMacroService.MinConfidence,
                 VoiceListeningMode = PadForge.Services.VoiceMacroService.ListeningMode,
                 HeadsetTrackerAddresses = PadForge.Common.Input.SonyHeadsetMotionRuntime.SavePersistedAddresses(),
@@ -5672,6 +5687,27 @@ namespace PadForge.Services
         /// subscription unless the user turns it on.</summary>
         [XmlElement]
         public bool HandheldButtonsEnabled { get; set; }
+
+        /// <summary>Head tracking (issue #355) master switch. Off by default:
+        /// no device row, no UDP socket, no FreeTrack mapping.</summary>
+        [XmlElement]
+        public bool HeadTrackingEnabled { get; set; }
+
+        /// <summary>UDP port OpenTrack's "UDP over network" output sends to.</summary>
+        [XmlElement]
+        public int HeadTrackingUdpPort { get; set; } = 4242;
+
+        /// <summary>Whether the FreeTrack 2.0 shared memory is read as well.</summary>
+        [XmlElement]
+        public bool HeadTrackingFreeTrack { get; set; } = true;
+
+        /// <summary>Degrees of head rotation at full axis deflection.</summary>
+        [XmlElement]
+        public int HeadTrackingRotationRange { get; set; } = 90;
+
+        /// <summary>Centimeters of head travel at full axis deflection.</summary>
+        [XmlElement]
+        public int HeadTrackingTranslationRange { get; set; } = 30;
 
         /// <summary>Confidence floor a recognition must clear, 0..1.</summary>
         [XmlElement]

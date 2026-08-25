@@ -704,6 +704,76 @@ namespace PadForge.ViewModels
             }
         }
 
+        private bool _headTrackingEnabled;
+
+        /// <summary>Head tracking (issue #355): adds the Head Tracker row fed
+        /// by OpenTrack's UDP output and the FreeTrack 2.0 shared memory. Off
+        /// by default; the engine sweep reads the runtime flag this mirrors.</summary>
+        public bool HeadTrackingEnabled
+        {
+            get => _headTrackingEnabled;
+            set
+            {
+                if (SetProperty(ref _headTrackingEnabled, value))
+                    PadForge.Common.Input.HeadTrackingRuntime.Enabled = value;
+            }
+        }
+
+        private int _headTrackingUdpPort = PadForge.Common.Input.HeadTrackingRuntime.DefaultUdpPort;
+
+        /// <summary>UDP port OpenTrack's "UDP over network" output sends to.</summary>
+        public int HeadTrackingUdpPort
+        {
+            get => _headTrackingUdpPort;
+            set
+            {
+                int v = Math.Clamp(value, 1, 65535);
+                if (SetProperty(ref _headTrackingUdpPort, v))
+                    PadForge.Common.Input.HeadTrackingRuntime.UdpPort = v;
+            }
+        }
+
+        private bool _headTrackingFreeTrack = true;
+
+        /// <summary>Whether the FreeTrack 2.0 shared memory is read as well.</summary>
+        public bool HeadTrackingFreeTrack
+        {
+            get => _headTrackingFreeTrack;
+            set
+            {
+                if (SetProperty(ref _headTrackingFreeTrack, value))
+                    PadForge.Common.Input.HeadTrackingRuntime.FreeTrackEnabled = value;
+            }
+        }
+
+        private int _headTrackingRotationRange = PadForge.Common.Input.HeadTrackingRuntime.DefaultRotationRangeDeg;
+
+        /// <summary>Degrees of head rotation at full axis deflection.</summary>
+        public int HeadTrackingRotationRange
+        {
+            get => _headTrackingRotationRange;
+            set
+            {
+                int v = Math.Clamp(value, 1, 180);
+                if (SetProperty(ref _headTrackingRotationRange, v))
+                    PadForge.Common.Input.HeadTrackingRuntime.RotationRangeDeg = v;
+            }
+        }
+
+        private int _headTrackingTranslationRange = PadForge.Common.Input.HeadTrackingRuntime.DefaultTranslationRangeCm;
+
+        /// <summary>Centimeters of head travel at full axis deflection.</summary>
+        public int HeadTrackingTranslationRange
+        {
+            get => _headTrackingTranslationRange;
+            set
+            {
+                int v = Math.Clamp(value, 1, 500);
+                if (SetProperty(ref _headTrackingTranslationRange, v))
+                    PadForge.Common.Input.HeadTrackingRuntime.TranslationRangeCm = v;
+            }
+        }
+
         private bool _startMinimized;
 
         /// <summary>Whether to start the application minimized.</summary>

@@ -2286,6 +2286,29 @@
   <data name="Nfc_ManageButton" xml:space="preserve"><value>NFCタグの登録・管理</value></data>
   <data name="DeviceType_HandheldButtons" xml:space="preserve"><value>携帯機ボタン</value></data>
   <data name="DeviceType_SystemMotion" xml:space="preserve"><value>システム モーション</value></data>
+  <data name="DeviceType_HeadTracker" xml:space="preserve"><value>ヘッド トラッカー</value></data>
+  <data name="HeadTracker_Yaw" xml:space="preserve"><value>頭のヨー</value></data>
+  <data name="HeadTracker_Pitch" xml:space="preserve"><value>頭のピッチ</value></data>
+  <data name="HeadTracker_Roll" xml:space="preserve"><value>頭のロール</value></data>
+  <data name="HeadTracker_X" xml:space="preserve"><value>頭 X</value></data>
+  <data name="HeadTracker_Y" xml:space="preserve"><value>頭 Y</value></data>
+  <data name="HeadTracker_Z" xml:space="preserve"><value>頭 Z</value></data>
+  <data name="Settings_HeadTracking" xml:space="preserve"><value>ヘッド トラッキング</value></data>
+  <data name="Settings_HeadTrackingDesc" xml:space="preserve"><value>OpenTrack の UDP 出力または FreeTrack 2.0 の共有メモリから頭の姿勢を読み取り、ヘッド トラッカー デバイスの 6 軸（ヨー、ピッチ、ロール、3 方向の移動）として公開します。頭のヨーをスティック軸に割り当てると、両方の親指をボタンに置いたまま周囲を見回せます。</value></data>
+  <data name="Settings_HeadTrackingEnable" xml:space="preserve"><value>ヘッド トラッキング入力を有効にする</value></data>
+  <data name="Settings_HeadTrackingEnable_Tooltip" xml:space="preserve"><value>デバイス ページにヘッド トラッカーの行を追加します。OpenTrack で「UDP over network」出力を選び、下のポートで 127.0.0.1 に送信するか、「freetrack 2.0 Enhanced」を選んでください。</value></data>
+  <data name="Settings_HeadTrackingFreeTrack" xml:space="preserve"><value>FreeTrack 2.0 の共有メモリも読み取る</value></data>
+  <data name="Settings_HeadTrackingFreeTrack_Tooltip" xml:space="preserve"><value>OpenTrack の「freetrack 2.0 Enhanced」出力が書き込む FT_SharedMem マッピングを読み取ります。FreeTrack を読むゲームは併用できます。</value></data>
+  <data name="Settings_HeadTrackingPort" xml:space="preserve"><value>UDP ポート</value></data>
+  <data name="Settings_HeadTrackingPort_Tooltip" xml:space="preserve"><value>OpenTrack の「UDP over network」出力の送信先ポート。OpenTrack の既定値は 4242 です。</value></data>
+  <data name="Settings_HeadTrackingRotationRange" xml:space="preserve"><value>回転範囲（度）</value></data>
+  <data name="Settings_HeadTrackingRotationRange_Tooltip" xml:space="preserve"><value>ヨー、ピッチ、ロールの各軸が最大に振れる頭の回転量。</value></data>
+  <data name="Settings_HeadTrackingTranslationRange" xml:space="preserve"><value>移動範囲（cm）</value></data>
+  <data name="Settings_HeadTrackingTranslationRange_Tooltip" xml:space="preserve"><value>X、Y、Z の各軸が最大に振れる頭の移動量。</value></data>
+  <data name="HeadTracker_StatusWaiting_Format" xml:space="preserve"><value>UDP ポート {0} でトラッカーを待機しています。</value></data>
+  <data name="HeadTracker_StatusUdp_Format" xml:space="preserve"><value>{0} から UDP で受信中。</value></data>
+  <data name="HeadTracker_StatusFreeTrack" xml:space="preserve"><value>FreeTrack の共有メモリから受信中。</value></data>
+  <data name="HeadTracker_StatusPortInUse_Format" xml:space="preserve"><value>UDP ポート {0} は別のプログラムが使用しています。</value></data>
   <data name="Handheld_ManageButton" xml:space="preserve"><value>隠しボタンを学習 / 管理</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>隠しボタン</value></data>
   <data name="Handheld_LearnHeader" xml:space="preserve"><value>ボタンを学習</value></data>

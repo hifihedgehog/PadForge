@@ -1019,6 +1019,12 @@ namespace PadForge.Common
                 "X Rotation" => s.DevObj_XRotation,
                 "Y Rotation" => s.DevObj_YRotation,
                 "Z Rotation" => s.DevObj_ZRotation,
+                "Head Yaw" => s.HeadTracker_Yaw,
+                "Head Pitch" => s.HeadTracker_Pitch,
+                "Head Roll" => s.HeadTracker_Roll,
+                "Head X" => s.HeadTracker_X,
+                "Head Y" => s.HeadTracker_Y,
+                "Head Z" => s.HeadTracker_Z,
                 "POV" => s.DevObj_POV,
                 "Misc 1" => s.DevObj_Misc1,
                 "Right Paddle 1" => s.DevObj_RightPaddle1,
@@ -1976,7 +1982,10 @@ namespace PadForge.Common
              ud.CapType != InputDeviceType.Microphone &&
              // Handheld hidden buttons are named by the user at learn time
              // (#343, the #150 shape once more).
-             ud.CapType != InputDeviceType.HandheldButtons);
+             ud.CapType != InputDeviceType.HandheldButtons &&
+             // Head tracker axes are named (Head Yaw, Head Pitch, ...),
+             // not "Axis N" (#355).
+             ud.CapType != InputDeviceType.HeadTracker);
 
         /// <summary>Surfaces touchpad gesture descriptors in the input
         /// picker, one block per touchpad surface the device exposes.

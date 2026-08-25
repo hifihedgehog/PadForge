@@ -3133,6 +3133,7 @@ namespace PadForge.Common.Input
             // the device list the retire path walks.
             ShutdownHeadsetMotionInputs();
             ShutdownHandheldInputs();
+            ShutdownHeadTrackerInputs();
             ShutdownSdl();
             _disposed = true;
 

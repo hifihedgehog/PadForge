@@ -365,8 +365,27 @@ namespace PadForge.Common.Input
         /// </summary>
         public static (string Name2D, string Name3D) ResolveAssetFolders(
             string profileId, PadForge.Engine.VirtualControllerType slotType)
+            => ResolveAssetFolders(profileId, slotType, out _);
+
+        /// <summary>
+        /// As <see cref="ResolveAssetFolders(string, PadForge.Engine.VirtualControllerType)"/>,
+        /// but also reports whether the profile matched art of its OWN or
+        /// merely landed on the graceful fallback.
+        ///
+        /// <para>The distinction matters because the fallback is a real
+        /// controller. An unrecognized profile resolves to an Xbox 360 body
+        /// and draws perfectly well, so a caller cannot tell "this is the
+        /// device" from "this is the stand-in" by looking at the result.
+        /// The Pad page needs to: it draws a body when we have the right
+        /// one and a generic schematic when we do not, and a stand-in Xbox
+        /// pad under a flight stick is worse than the schematic.</para>
+        /// </summary>
+        public static (string Name2D, string Name3D) ResolveAssetFolders(
+            string profileId, PadForge.Engine.VirtualControllerType slotType,
+            out bool dedicated)
         {
             profileId ??= string.Empty;
+            dedicated = true;
 
             // PlayStation
             // Edge first: its profiles start with "dualsense" too, and they
@@ -434,11 +453,21 @@ namespace PadForge.Common.Input
 
             // Fallback per slot type — preserves existing behavior for
             // Custom / Extended / unrecognized profiles.
+            dedicated = false;
             return slotType switch
             {
                 PadForge.Engine.VirtualControllerType.PlayStation => ("DS4", "DS4"),
                 _ => ("XBOX360", "XBOX360"),
             };
+        }
+
+        /// <summary>True when this profile has controller art of its own,
+        /// rather than falling back to another device's body.</summary>
+        public static bool HasDedicatedArt(
+            string profileId, PadForge.Engine.VirtualControllerType slotType)
+        {
+            ResolveAssetFolders(profileId, slotType, out bool dedicated);
+            return dedicated;
         }
 
         /// <summary>

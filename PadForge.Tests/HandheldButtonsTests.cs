@@ -510,3 +510,61 @@ namespace PadForge.Tests
         }
     }
 }
+
+namespace PadForge.Tests
+{
+    /// <summary>The ACPI-WMI _WDG parser (issue #343 follow-up): the
+    /// firmware's own list of event GUIDs is the only thing that decides
+    /// which WMI event classes the learner may subscribe to.</summary>
+    public class AcpiWmiParserTests
+    {
+        private static byte[] Wdg(params (Guid Guid, byte Notify, byte Flags)[] entries)
+        {
+            var body = new System.Collections.Generic.List<byte>();
+            foreach (var (g, notify, flags) in entries)
+            {
+                body.AddRange(g.ToByteArray());
+                body.Add(notify); body.Add(0); body.Add(1); body.Add(flags);
+            }
+            // Name(_WDG, Buffer(size) { ... }) with a two-byte PkgLength
+            // and a WordConst buffer size.
+            var buf = new System.Collections.Generic.List<byte> { 0x08, (byte)'_', (byte)'W', (byte)'D', (byte)'G', 0x11 };
+            int inner = 3 + body.Count; // WordConst prefix + 2 bytes + data
+            int pkg = inner + 2;        // plus the two PkgLength bytes themselves
+            buf.Add((byte)(0x40 | (pkg & 0x0F)));
+            buf.Add((byte)(pkg >> 4));
+            buf.Add(0x0B); buf.Add((byte)(body.Count & 0xFF)); buf.Add((byte)(body.Count >> 8));
+            buf.AddRange(body);
+            var padded = new System.Collections.Generic.List<byte> { 0x10, 0x20, 0x30 }; // leading AML noise
+            padded.AddRange(buf);
+            padded.AddRange(new byte[] { 0x5B, 0x82, 0x00 });
+            return padded.ToArray();
+        }
+
+        [Fact]
+        public void ParsesEventAndDataEntries_FromASyntheticTable()
+        {
+            var utility = Guid.Parse("8fc0de0c-b4e4-43fd-b0f3-8871711c1294"); // LENOVO_UTILITY_EVENT on the bench
+            var lighting = Guid.Parse("1e3391a1-2c89-464d-95d9-3028b72e7a33"); // LENOVO_LIGHTING_EVENT
+            var data = Guid.NewGuid();
+            var aml = Wdg((utility, 0xD0, AcpiWmi.FlagEvent), (data, (byte)'A', 0x00), (lighting, 0xD1, (byte)(AcpiWmi.FlagEvent | AcpiWmi.FlagExpensive)));
+            var blocks = new System.Collections.Generic.List<AcpiWmi.Block>();
+            AcpiWmi.ParseWdg(aml, blocks);
+            Assert.Equal(3, blocks.Count);
+            Assert.Equal(utility, blocks[0].Guid);
+            Assert.True(blocks[0].IsEvent);
+            Assert.Equal(0xD0, blocks[0].NotifyId);
+            Assert.False(blocks[1].IsEvent);
+            Assert.True(blocks[2].IsEvent);
+        }
+
+        [Fact]
+        public void IgnoresAnUnderscoreWdgThatIsNotABuffer()
+        {
+            var aml = new byte[] { (byte)'_', (byte)'W', (byte)'D', (byte)'G', 0x0A, 0x05, 0x00 };
+            var blocks = new System.Collections.Generic.List<AcpiWmi.Block>();
+            AcpiWmi.ParseWdg(aml, blocks);
+            Assert.Empty(blocks);
+        }
+    }
+}

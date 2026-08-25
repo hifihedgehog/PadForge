@@ -29,7 +29,7 @@ namespace PadForge.Tests
             new HandheldButtonRegistry.Entry
             {
                 Name = name, Collection = "17EF:6182:FFA0:0001", ReportId = 1,
-                ByteIndex = byteIndex, Mask = mask, ValueKind = VendorButtonKind.Bit,
+                ByteIndex = byteIndex, Mask = mask, Value = mask, ValueKind = VendorButtonKind.Bit,
             };
 
         [Fact]
@@ -91,7 +91,7 @@ namespace PadForge.Tests
         {
             Reset();
             var both = Chord("Desktop", 0x5B, 0x44);
-            both.Collection = "17EF:6182:FFA0:0001"; both.ReportId = 1; both.ByteIndex = 21; both.Mask = 0x40;
+            both.Collection = "17EF:6182:FFA0:0001"; both.ReportId = 1; both.ByteIndex = 21; both.Mask = 0x40; both.Value = 0x40;
             HandheldButtonRegistry.Register(both);
             var ally = new HandheldButtonRegistry.Entry
             {
@@ -177,7 +177,7 @@ namespace PadForge.Tests
         public void BitButton_FollowsTheReport_WithAMinimumPress()
         {
             var y1 = new HandheldButtonRegistry.Entry
-            { Name = "Y1", Collection = Legion, ReportId = 1, ByteIndex = 20, Mask = 0x80, ValueKind = VendorButtonKind.Bit };
+            { Name = "Y1", Collection = Legion, ReportId = 1, ByteIndex = 20, Mask = 0x80, Value = 0x80, ValueKind = VendorButtonKind.Bit };
             using var dev = Fresh(y1);
 
             Assert.False(dev.GetCurrentState().Buttons[0]);
@@ -209,7 +209,7 @@ namespace PadForge.Tests
         public void OtherReportIds_AndOtherCollections_LeaveTheButtonAlone()
         {
             var y1 = new HandheldButtonRegistry.Entry
-            { Name = "Y1", Collection = Legion, ReportId = 1, ByteIndex = 20, Mask = 0x80, ValueKind = VendorButtonKind.Bit };
+            { Name = "Y1", Collection = Legion, ReportId = 1, ByteIndex = 20, Mask = 0x80, Value = 0x80, ValueKind = VendorButtonKind.Bit };
             using var dev = Fresh(y1);
             var other = LegionReport(0x80); other[0] = 0x04;
             dev.InjectReportForTest(Legion, other);
@@ -222,9 +222,9 @@ namespace PadForge.Tests
         public void TwoBitsInOneByte_AreTwoIndependentButtons()
         {
             var y1 = new HandheldButtonRegistry.Entry
-            { Name = "Y1", Collection = Legion, ReportId = 1, ByteIndex = 20, Mask = 0x80, ValueKind = VendorButtonKind.Bit };
+            { Name = "Y1", Collection = Legion, ReportId = 1, ByteIndex = 20, Mask = 0x80, Value = 0x80, ValueKind = VendorButtonKind.Bit };
             var y2 = new HandheldButtonRegistry.Entry
-            { Name = "Y2", Collection = Legion, ReportId = 1, ByteIndex = 20, Mask = 0x40, ValueKind = VendorButtonKind.Bit };
+            { Name = "Y2", Collection = Legion, ReportId = 1, ByteIndex = 20, Mask = 0x40, Value = 0x40, ValueKind = VendorButtonKind.Bit };
             using var dev = Fresh(y1, y2);
             dev.InjectReportForTest(Legion, LegionReport(0x40));
             var s = dev.GetCurrentState();
@@ -236,7 +236,7 @@ namespace PadForge.Tests
         public void RegistryChange_DropsAStaleButtonState_AndGrowsTheSpan()
         {
             var y1 = new HandheldButtonRegistry.Entry
-            { Name = "Y1", Collection = Legion, ReportId = 1, ByteIndex = 20, Mask = 0x80, ValueKind = VendorButtonKind.Bit };
+            { Name = "Y1", Collection = Legion, ReportId = 1, ByteIndex = 20, Mask = 0x80, Value = 0x80, ValueKind = VendorButtonKind.Bit };
             using var dev = Fresh(y1);
             dev.InjectReportForTest(Legion, LegionReport(0x80));
             Assert.True(dev.GetCurrentState().Buttons[0]);
@@ -304,7 +304,28 @@ namespace PadForge.Tests
             Assert.Equal(1, c.ReportId);
             Assert.Equal(20, c.ByteIndex);
             Assert.Equal(0x80, c.Mask);
+            Assert.Equal(0x80, c.Value); // pressed pattern: active-high
             Assert.Equal(VendorButtonKind.Bit, c.Kind);
+        }
+
+        [Fact]
+        public void ActiveLowBit_LearnsItsPressedPattern_AndEvaluatesPressedWhenClear()
+        {
+            var rng = new Random(11);
+            var s = new HandheldLearnSession();
+            s.SetPhase(HandheldLearnSession.Phase.Idle);
+            for (int i = 0; i < 20; i++) s.OnReport(Legion, "Legion", LegionFrame(rng, 0x80), 64);
+            s.SetPhase(HandheldLearnSession.Phase.Press);
+            for (int i = 0; i < 20; i++) s.OnReport(Legion, "Legion", LegionFrame(rng, 0x00), 64);
+            s.SetPhase(HandheldLearnSession.Phase.Release);
+            for (int i = 0; i < 10; i++) s.OnReport(Legion, "Legion", LegionFrame(rng, 0x80), 64);
+
+            var c = Assert.Single(s.Finish());
+            Assert.Equal(0x80, c.Mask);
+            Assert.Equal(0, c.Value);
+            var def = new VendorButtonDefinition { ReportId = 1, ByteIndex = 20, Mask = c.Mask, Value = c.Value, Kind = c.Kind };
+            Assert.True(def.Evaluate(LegionFrame(rng, 0x00)));
+            Assert.False(def.Evaluate(LegionFrame(rng, 0x80)));
         }
 
         [Fact]
@@ -395,17 +416,23 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void Silence_PastTheStaleWindow_ReadsOffline()
+        public void Silence_KeepsTheLastSample_NeverFlapsOffline()
         {
+            // A built-in sensor has no link to lose, and a driver under its
+            // report threshold goes quiet at rest: the row must not flap.
             long now = 0;
             var dev = new SystemMotionDevice(new MachineIdentity { Manufacturer = "T", ProductName = "T" }, () => now);
             dev.AttachForTest(false);
             Assert.NotNull(dev.GetCurrentState()); // before any sample: zero baseline
-            dev.InjectSample(new[] { 1.0, 0.0, 0.0 }, null);
-            now += System.Diagnostics.Stopwatch.Frequency * (SystemMotionDevice.StaleWindowMs + 500) / 1000;
-            Assert.Null(dev.GetCurrentState());
+            dev.InjectSample(new[] { 90.0, 0.0, 0.0 }, null);
+            now += System.Diagnostics.Stopwatch.Frequency * 60;
+            var s = dev.GetCurrentState();
+            Assert.NotNull(s);
+            Assert.Equal(Math.PI / 2, s.Gyro[0], 4);
             Assert.Equal(InputDeviceType.SystemMotion, dev.GetInputDeviceType());
             Assert.False(dev.HasAccel);
+            dev.Dispose();
+            Assert.Null(dev.GetCurrentState());
         }
     }
 

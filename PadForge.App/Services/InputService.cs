@@ -8773,7 +8773,12 @@ namespace PadForge.Services
                 if (_mainVm.Settings.EnableInputHiding)
                     ApplyDeviceHiding();
                 else
+                {
                     RemoveDeviceHiding();
+                    // Handheld chords (#343) outlive the master switch: put
+                    // the hooks back if a chord still needs them.
+                    ApplyInputHooks(new HashSet<int>(), new HashSet<int>());
+                }
             }
         }
 
@@ -11017,7 +11022,12 @@ namespace PadForge.Services
         public void ApplyDeviceHiding()
         {
             if (!_mainVm.Settings.EnableInputHiding)
+            {
+                // Input Hiding off: no HidHide, no consumption, but the
+                // handheld chords still decide the hooks (#343).
+                ApplyInputHooks(new HashSet<int>(), new HashSet<int>());
                 return;
+            }
 
             var userDevices = SettingsManager.UserDevices?.Items;
             if (userDevices == null) return;
@@ -11178,9 +11188,18 @@ namespace PadForge.Services
                 CollectSuppressedInputs(ud, suppressedKeys, suppressedMouse);
             }
 
-            // Handheld chords (#343) ride the same hooks: a learned chord or
-            // an armed Learn capture keeps them installed with nothing to
-            // suppress. With neither, the feature costs no hook at all.
+            ApplyInputHooks(suppressedKeys, suppressedMouse);
+        }
+
+        /// <summary>Installs or removes the low-level keyboard and mouse
+        /// hooks for the given suppression sets. Split out of
+        /// <see cref="ApplyDeviceHiding"/> because the handheld chords (#343)
+        /// need the hooks whether or not Input Hiding is on: that master
+        /// switch governs HidHide and consumption, and a learned chord or an
+        /// armed Learn capture keeps the hooks installed with nothing to
+        /// suppress. With neither, the feature costs no hook at all.</summary>
+        private void ApplyInputHooks(HashSet<int> suppressedKeys, HashSet<int> suppressedMouse)
+        {
             bool chordHooks = PadForge.Common.Input.HandheldChordRuntime.NeedsHooks;
 
             if (suppressedKeys.Count > 0 || suppressedMouse.Count > 0 || chordHooks)
@@ -11191,12 +11210,15 @@ namespace PadForge.Services
             }
             else
             {
-                // No inputs to suppress and no global hotkeys registered — stop hooks if running.
+                // Nothing to suppress and no chord needs a hook. Stop the
+                // hooks if they are running.
                 if (_hookManager != null)
                 {
                     _hookManager.Stop();
                     _hookManager.Dispose();
                     _hookManager = null;
+                    // The engine will see no more ups for keys it holds down.
+                    PadForge.Common.Input.HandheldChordRuntime.OnHooksDetached();
                 }
             }
         }
@@ -11320,6 +11342,7 @@ namespace PadForge.Services
                 _hookManager.Stop();
                 _hookManager.Dispose();
                 _hookManager = null;
+                PadForge.Common.Input.HandheldChordRuntime.OnHooksDetached();
             }
         }
 

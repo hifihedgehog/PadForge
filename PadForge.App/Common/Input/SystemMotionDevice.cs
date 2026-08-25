@@ -14,8 +14,9 @@ namespace PadForge.Common.Input
     /// (issue #343). Handheld PCs put the IMU in the tablet, not in the
     /// controller halves, so no gamepad SDL opens carries it. Same shape as
     /// <see cref="SonyHeadsetMotionDevice"/>: the sensor's own callback
-    /// publishes under a lock, the poll reads a pooled clone, and silence
-    /// past a stale window reads as offline.
+    /// publishes under a lock and the poll reads a pooled clone. Unlike the
+    /// headset there is no stale window: a built-in sensor has no link to
+    /// lose, and a driver under its report threshold goes quiet at rest.
     ///
     /// <para>Frame. Windows sensors: X toward the screen's right edge, Y
     /// toward its top edge, Z out of the screen (learn.microsoft.com,
@@ -209,8 +210,11 @@ namespace PadForge.Common.Input
             if (_disposed || !_attached) return null;
             lock (_stateLock)
             {
-                if (_everReceived && (_nowTicks() - _lastSampleTicks) > _staleTicks)
-                    return null;
+                // No stale-to-offline rule here, unlike the headset: there
+                // is no link to lose, and a sensor driver may hold its
+                // ReadingChanged while the reading sits under its report
+                // threshold (a handheld resting on a table), which must not
+                // flap the row offline. The last sample stands.
                 var dst = _statePool.Next();
                 _state.CopyInto(dst);
                 return dst;

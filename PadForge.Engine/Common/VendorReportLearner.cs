@@ -7,9 +7,12 @@ namespace PadForge.Engine.Common
     public enum VendorButtonKind
     {
         /// <summary>The bits under <see cref="VendorButtonDefinition.Mask"/> at
-        /// <see cref="VendorButtonDefinition.ByteIndex"/> flip while pressed
-        /// and flip back on release. The common shape (Legion Go byte 20,
-        /// GPD Win 5 bytes 7 to 9, Zotac wheels).</summary>
+        /// <see cref="VendorButtonDefinition.ByteIndex"/> read
+        /// <see cref="VendorButtonDefinition.Value"/> while pressed and flip
+        /// back on release. Active-high on every documented handheld
+        /// (Legion Go byte 20, GPD Win 5 bytes 7 to 9, Zotac wheels), but
+        /// the pressed pattern is stored, so an active-low bit learns as
+        /// itself instead of inverted.</summary>
         Bit = 0,
         /// <summary>The byte equals <see cref="VendorButtonDefinition.Value"/>
         /// while pressed (reports that carry a key code per event, the ROG
@@ -40,7 +43,7 @@ namespace PadForge.Engine.Common
             if (ByteIndex < 0 || ByteIndex >= report.Length) return false;
             if (ReportId != 0 && report[0] != ReportId) return false;
             byte b = report[ByteIndex];
-            return Kind == VendorButtonKind.Bit ? (b & Mask) == Mask && Mask != 0 : b == Value;
+            return Kind == VendorButtonKind.Bit ? Mask != 0 && (b & Mask) == (Value & Mask) : b == Value;
         }
     }
 
@@ -54,7 +57,7 @@ namespace PadForge.Engine.Common
         public VendorButtonCandidate(int byteIndex, byte mask, byte value, VendorButtonKind kind)
         { ByteIndex = byteIndex; Mask = mask; Value = value; Kind = kind; }
         public override string ToString() => Kind == VendorButtonKind.Bit
-            ? $"byte {ByteIndex} bit 0x{Mask:X2}"
+            ? $"byte {ByteIndex} bit 0x{Mask:X2}{(Value == 0 ? " clear" : "")}"
             : $"byte {ByteIndex} == 0x{Value:X2}";
     }
 
@@ -132,8 +135,11 @@ namespace PadForge.Engine.Common
                     }
                     candidate |= m;
                 }
+                // Value carries the PRESSED pattern under the mask, so a bit
+                // that clears on press (active-low) evaluates as pressed
+                // when clear.
                 if (candidate != 0)
-                    result.Add(new VendorButtonCandidate(i, candidate, 0, VendorButtonKind.Bit));
+                    result.Add(new VendorButtonCandidate(i, candidate, (byte)(press[0][i] & candidate), VendorButtonKind.Bit));
             }
             return result;
         }

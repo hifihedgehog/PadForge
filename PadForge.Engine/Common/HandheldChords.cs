@@ -34,6 +34,11 @@ namespace PadForge.Engine.Common
             code == 0x10 || code == 0x11 || code == 0x12 || code == 0x5B || code == 0x5C
             || (code >= 0xA0 && code <= 0xA5);
         public static bool IsWin(int code) => code == 0x5B || code == 0x5C;
+        public static bool IsAlt(int code) => code == 0x12 || code == 0xA4 || code == 0xA5;
+        /// <summary>Keys the shell acts on when tapped alone: Win opens
+        /// Start, Alt focuses the menu bar. A swallowed chord that contains
+        /// one needs the mask key so the release reads as a combination.</summary>
+        public static bool NeedsMask(int code) => IsWin(code) || IsAlt(code);
     }
 
     /// <summary>What the hook should do with the event it just handed in.</summary>
@@ -92,8 +97,11 @@ namespace PadForge.Engine.Common
         private volatile HandheldChordDefinition[] _chords = Array.Empty<HandheldChordDefinition>();
         private HashSet<int> _chordKeys = new();
 
-        // Physical down state as the hook sees it, by code.
+        // Physical down state as the hook sees it, by code, plus the order
+        // the keys went down in: a prefix is judged in the chord's learned
+        // order, so D alone is never held for a Win+D chord.
         private readonly HashSet<int> _down = new();
+        private readonly List<int> _downOrder = new();
         // Keys whose DOWN we swallowed and have not yet replayed or consumed.
         private readonly List<(int Code, long AtMs)> _held = new();
         // Keys whose DOWN we swallowed as part of a completed chord, so their UP
@@ -131,8 +139,11 @@ namespace PadForge.Engine.Common
 
         public IReadOnlyList<HandheldChordDefinition> Chords => _chords;
 
-        /// <summary>Replaces the chord set. Active chords whose definition
-        /// vanished release their button.</summary>
+        /// <summary>Replaces the chord set. An active chord survives when
+        /// the new set still defines the same keys on the same button (the
+        /// registry hands out fresh objects on every change); one whose
+        /// definition vanished or changed releases its button, with the
+        /// event, so the device row does not hold it down.</summary>
         public void SetChords(IEnumerable<HandheldChordDefinition> chords)
         {
             var arr = new List<HandheldChordDefinition>();
@@ -145,17 +156,56 @@ namespace PadForge.Engine.Common
                     arr.Add(c);
                     foreach (var k in c.Keys) keys.Add(k);
                 }
+            List<int> gone = null;
             lock (_lock)
             {
                 _chords = arr.ToArray();
                 _chordKeys = keys;
-                List<int> gone = null;
                 foreach (var kv in _active)
-                    if (Array.IndexOf(_chords, kv.Value) < 0)
-                        (gone ??= new List<int>()).Add(kv.Key);
+                {
+                    bool kept = false;
+                    foreach (var c in arr)
+                        if (c.Button == kv.Key && SameKeys(c.Keys, kv.Value.Keys)) { kept = true; break; }
+                    if (!kept) (gone ??= new List<int>()).Add(kv.Key);
+                }
                 if (gone != null)
                     foreach (var b in gone) Deactivate(b);
             }
+            if (gone != null)
+                foreach (var b in gone) ButtonChanged?.Invoke(b, false);
+        }
+
+        private static bool SameKeys(int[] a, int[] b)
+        {
+            if (a == null || b == null || a.Length != b.Length) return false;
+            for (int i = 0; i < a.Length; i++) if (a[i] != b[i]) return false;
+            return true;
+        }
+
+        /// <summary>Forgets every key the hooks reported and releases every
+        /// active chord (with events). Called when the hooks detach: an up
+        /// the engine never sees would otherwise leave a key "down" here,
+        /// and a held prefix would replay as a stale keystroke on the next
+        /// attach.</summary>
+        public void Reset()
+        {
+            List<int> gone = null;
+            lock (_lock)
+            {
+                _down.Clear();
+                _downOrder.Clear();
+                _held.Clear();
+                _consumed.Clear();
+                PendingReplays.Clear();
+                WinMaskRequested = false;
+                _capturing = false;
+                _captureOrder.Clear();
+                _captureDown.Clear();
+                foreach (var kv in _active) (gone ??= new List<int>()).Add(kv.Key);
+                if (gone != null) foreach (var b in gone) Deactivate(b);
+            }
+            if (gone != null)
+                foreach (var b in gone) ButtonChanged?.Invoke(b, false);
         }
 
         /// <summary>True when any chord is defined, so the hook host knows
@@ -349,6 +399,7 @@ namespace PadForge.Engine.Common
                 if (_down.Contains(code))
                     return _consumed.Contains(code) || IsHeld(code) ? ChordDecision.Swallow : ChordDecision.Pass;
                 _down.Add(code);
+                _downOrder.Add(code);
 
                 if (!_chordKeys.Contains(code))
                 {
@@ -378,7 +429,7 @@ namespace PadForge.Engine.Common
                     _buttonState[completed.Button] = true;
                     (changes ??= new List<(int, bool)>()).Add((completed.Button, true));
                     foreach (var k in completed.Keys)
-                        if (HandheldChordDefinition.IsWin(k)) { WinMaskRequested = true; break; }
+                        if (HandheldChordDefinition.NeedsMask(k)) { WinMaskRequested = true; break; }
                     return ChordDecision.Swallow;
                 }
 
@@ -401,6 +452,7 @@ namespace PadForge.Engine.Common
             else
             {
                 _down.Remove(code);
+                _downOrder.Remove(code);
 
                 // Release of an active chord's key drops the chord.
                 List<int> release = null;
@@ -447,18 +499,22 @@ namespace PadForge.Engine.Common
             return true;
         }
 
-        /// <summary>True when every chord key currently down (or held) is a
-        /// member of <paramref name="keys"/> and the chord is not yet complete.</summary>
+        /// <summary>True when the chord keys currently down, in the order
+        /// they went down, are a proper leading segment of
+        /// <paramref name="keys"/> (the learned order). Order matters: for
+        /// a Win+D chord, D alone is typing, not a prefix, so WASD never
+        /// pays the hold. Firmware always types its chord in one order,
+        /// the order the capture recorded.</summary>
         private bool IsPrefixOf(int[] keys)
         {
-            int members = 0;
-            foreach (var d in _down)
+            int n = 0;
+            foreach (var d in _downOrder)
             {
                 if (!_chordKeys.Contains(d)) continue;
-                if (Array.IndexOf(keys, d) < 0) return false;
-                members++;
+                if (n >= keys.Length || keys[n] != d) return false;
+                n++;
             }
-            return members > 0 && members < keys.Length;
+            return n > 0 && n < keys.Length;
         }
 
         private void ReplayHeld()

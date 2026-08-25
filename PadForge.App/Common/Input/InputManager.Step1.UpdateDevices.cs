@@ -2268,9 +2268,14 @@ namespace PadForge.Common.Input
                 if (present != null) dev.SyncReaders(present);
             }
 
-            if (!_systemMotionProbed && _systemMotionDevice == null && _systemMotionPending == null && !_systemMotionOpenFailed)
+            bool probe;
+            lock (_handheldLock)
             {
-                _systemMotionProbed = true;
+                probe = !_systemMotionProbed && _systemMotionDevice == null && _systemMotionPending == null && !_systemMotionOpenFailed;
+                if (probe) _systemMotionProbed = true;
+            }
+            if (probe)
+            {
                 if (SystemMotionDevice.IsAvailable())
                 {
                     var motion = new SystemMotionDevice(PadForge.Engine.Common.MachineIdentity.Current);
@@ -2278,7 +2283,14 @@ namespace PadForge.Common.Input
                     {
                         lock (_handheldLock)
                         {
-                            if (_handheldInputsSuppressed || !HandheldButtonRegistry.FeatureEnabled) { motion.Dispose(); return; }
+                            if (_handheldInputsSuppressed || !HandheldButtonRegistry.FeatureEnabled)
+                            {
+                                // The toggle went off mid-probe. Forget the
+                                // probe too, or a re-enable never retries.
+                                motion.Dispose();
+                                _systemMotionProbed = false;
+                                return;
+                            }
                             _systemMotionPending = motion;
                         }
                     }

@@ -646,6 +646,41 @@ namespace PadForge.ViewModels
             }
         }
 
+        /// <summary>Drops the per-device config of every device that is no
+        /// longer assigned to this slot. The dictionary is keyed by device
+        /// guid and nothing removed entries: unassigning a DualSense left
+        /// its crossfeed, limiter and EQ in here, and the next assignment
+        /// of the same pad found them through GetOrAdd and showed them as
+        /// if the user had set them again (owner report 2026-08-25). An
+        /// assigned device's config is per-assignment state and leaves
+        /// with the assignment. Offline is not unassigned: the caller
+        /// passes the slot's UserSetting guids, never its online set.
+        /// The anchor (empty guid) is reset only when it was bound to a
+        /// dropped config, so the tab never keeps editing an orphan.</summary>
+        public int PruneDeviceSlotConfigsToAssigned(IEnumerable<Guid> assignedGuids)
+        {
+            var keep = new HashSet<Guid>(assignedGuids ?? Array.Empty<Guid>());
+            int removed = 0;
+            foreach (var key in _perDeviceSlotConfigs.Keys)
+            {
+                if (key == Guid.Empty || keep.Contains(key)) continue;
+                if (RemoveDeviceConfig(key)) removed++;
+            }
+            return removed;
+        }
+
+        /// <summary>Removes one device's per-device config, rebinding the
+        /// tab to the empty sentinel when that config was the bound one.
+        /// Returns false when there was nothing to remove.</summary>
+        public bool RemoveDeviceConfig(Guid deviceGuid)
+        {
+            if (deviceGuid == Guid.Empty) return false;
+            if (!_perDeviceSlotConfigs.TryRemove(deviceGuid, out var dropped)) return false;
+            if (ReferenceEquals(_deviceConfig, dropped))
+                DeviceConfig = _emptyDeviceConfigSentinel;
+            return true;
+        }
+
         /// <summary>Switches the Lighting tab's bound config to the
         /// device with the given InstanceGuid, creating an entry if
         /// missing. Called by SelectedMappedDevice change.</summary>

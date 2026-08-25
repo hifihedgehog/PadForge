@@ -12594,6 +12594,12 @@ namespace PadForge.Services
                     padVm.MappedDeviceName = Strings.Instance.Mapping_NoDeviceMapped;
                     padVm.MappedDeviceGuid = Guid.Empty;
                     padVm.IsDeviceOnline = false;
+                    // No assignment left on the slot: no per-device config
+                    // may survive either. This is the same seam that seeds
+                    // the configs on the populated branch below, so every
+                    // unassign path (button, slot toggle, profile switch,
+                    // Workshop import) drops them here.
+                    padVm.PruneDeviceSlotConfigsToAssigned(System.Array.Empty<Guid>());
                     if (hadDeviceState || pickersEmpty)
                         PopulateAvailableInputs(padVm, null);
                 }
@@ -12645,6 +12651,11 @@ namespace PadForge.Services
                     // default lighting config (the user customizes each
                     // device's Lighting tab independently from there).
                     padVm.EnsureDeviceSlotConfigsForMappedDevices();
+                    // And the converse: a device that left this slot takes
+                    // its config with it. Keyed on the slot's UserSettings,
+                    // which is what deviceInfos was built from, so an
+                    // offline pad that is still assigned keeps its config.
+                    padVm.PruneDeviceSlotConfigsToAssigned(slotSettings.Select(us => us.InstanceGuid));
 
                     // SyncMappedDevices trims removed entries from the tail
                     // of the collection. If the selection object was one of

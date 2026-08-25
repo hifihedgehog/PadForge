@@ -332,6 +332,10 @@ namespace PadForge.Services
                 // no autosave race).
                 SettingsService.StripDeviceFromAllSlots(instanceGuid);
 
+                // This slot's config for the device leaves with the
+                // assignment. Other slots the device stays on keep theirs.
+                _mainVm.Pads[slotIndex].RemoveDeviceConfig(instanceGuid);
+
                 // If device has no more slot assignments, auto-disable hiding.
                 var remainingSlots = SettingsManager.GetAssignedSlots(instanceGuid);
                 if (remainingSlots == null || remainingSlots.Count == 0)
@@ -391,6 +395,8 @@ namespace PadForge.Services
         private void OnRemoveDevice(object sender, Guid instanceGuid)
         {
             SettingsManager.RemoveDevice(instanceGuid);
+            foreach (var pad in _mainVm.Pads)
+                pad.RemoveDeviceConfig(instanceGuid);
             _settingsService.MarkDirty();
             _mainVm.StatusText = Strings.Instance.Status_DeviceRemoved;
 
@@ -453,6 +459,13 @@ namespace PadForge.Services
             // race in to write VM state back to the MappingSet before
             // the strip happens.
             SettingsService.StripDeviceFromAllSlots(instanceGuid);
+
+            // The device's per-slot config (lighting, adaptive triggers,
+            // audio chain) is per-assignment state and goes with the
+            // assignment, for the same atomicity reason as the strip
+            // above. UpdatePadDeviceInfo prunes too, on its next pass.
+            foreach (var pad in _mainVm.Pads)
+                pad.RemoveDeviceConfig(instanceGuid);
 
             var row = _mainVm.Devices.FindByGuid(instanceGuid);
             if (row != null)

@@ -3132,6 +3132,7 @@ namespace PadForge.Common.Input
             // so the suppress latch holds, before ShutdownSdl() tears down
             // the device list the retire path walks.
             ShutdownHeadsetMotionInputs();
+            ShutdownHandheldInputs();
             ShutdownSdl();
             _disposed = true;
 

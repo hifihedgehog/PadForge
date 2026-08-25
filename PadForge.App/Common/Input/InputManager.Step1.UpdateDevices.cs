@@ -417,6 +417,9 @@ namespace PadForge.Common.Input
             // --- Phase 1g: Sony headset head trackers (issue #188) ---
             changed |= UpdateHeadsetMotionDevices();
 
+            // --- Phase 1h: handheld PC hidden buttons + system motion (issue #343) ---
+            changed |= UpdateHandheldDevices();
+
             // --- Phase 2: Detect disconnected SDL devices (debounced) ---
             //
             // Signals that indicate the device might be gone:
@@ -1296,6 +1299,23 @@ namespace PadForge.Common.Input
         private volatile bool _nfcInputsSuppressed;
         private const int _nfcStartRetryMs = 5000;
 
+        // Handheld PC hidden buttons and system motion (Phase 1h, issue
+        // #343). The button row itself opens without I/O; the vendor HID
+        // enumeration and opens, the sensor query, and the daemon scan are
+        // blocking, so a worker does them on the sweep cadence and the poll
+        // thread only registers and retires rows (the headset split).
+        private volatile HandheldButtonsDevice _handheldDevice;
+        private volatile SystemMotionDevice _systemMotionDevice;
+        private readonly object _handheldLock = new object();
+        private volatile bool _handheldSweepRunning;
+        private volatile bool _handheldInputsSuppressed;
+        private long _handheldNextSweepTicks;
+        private const int _handheldSweepIntervalMs = 4000;
+        // Worker's answer on the sensor stack: null until the first probe.
+        private volatile SystemMotionDevice _systemMotionPending;
+        private volatile bool _systemMotionProbed;
+        private volatile bool _systemMotionOpenFailed;
+
         // Sony headset head trackers (Phase 1g, issue #188). Discovery,
         // qualification (Bluetooth feature-report reads) and the enable
         // sequence are all blocking device I/O, so the worker does the
@@ -2120,6 +2140,211 @@ namespace PadForge.Common.Input
         /// Tears down every open headset tracker and suppresses Phase 1g.
         /// Called on app shutdown alongside ShutdownNfcReaders.
         /// </summary>
+        /// <summary>
+        /// Phase 1h: the handheld hidden-buttons row and the system motion
+        /// row (issue #343). Both exist only while the Settings toggle is
+        /// on. The button row registers at once (no I/O in Open); the
+        /// worker enumerates vendor collections and syncs the device's
+        /// readers, probes the sensor stack once and opens the motion row
+        /// off the poll thread, and refreshes the vendor daemon scan.
+        /// </summary>
+        private bool UpdateHandheldDevices()
+        {
+            if (_handheldInputsSuppressed)
+                return false;
+
+            bool enabled = HandheldButtonRegistry.FeatureEnabled;
+            // Off with nothing to retire: two volatile reads and out. The
+            // feature must cost a machine that never uses it nothing.
+            if (!enabled && _handheldDevice == null && _systemMotionDevice == null && _systemMotionPending == null)
+                return false;
+
+            bool changed = false;
+            lock (_handheldLock)
+            {
+                if (_handheldInputsSuppressed)
+                    return false;
+
+                if (!enabled)
+                {
+                    changed |= RetireHandheldRows();
+                    return changed;
+                }
+
+                // Button row: recreate if the user removed it from the
+                // Devices page (the NFC recreate pattern).
+                if (_handheldDevice != null && FindOnlineDeviceByInstanceGuid(_handheldDevice.InstanceGuid) == null)
+                {
+                    _handheldDevice.Dispose();
+                    _handheldDevice = null;
+                }
+                if (_handheldDevice == null)
+                {
+                    try
+                    {
+                        var dev = new HandheldButtonsDevice(PadForge.Engine.Common.MachineIdentity.Current);
+                        if (dev.Open())
+                        {
+                            UserDevice ud = FindOrCreateUserDevice(dev.InstanceGuid, dev.ProductGuid);
+                            ud.LoadFromExternalDevice(dev);
+                            ud.IsOnline = true;
+                            _handheldDevice = dev;
+                            changed = true;
+                        }
+                        else dev.Dispose();
+                    }
+                    catch (Exception ex)
+                    {
+                        RaiseError("Error opening handheld buttons device", ex);
+                    }
+                }
+
+                // Motion row: register what the worker opened.
+                var pending = _systemMotionPending;
+                if (pending != null)
+                {
+                    _systemMotionPending = null;
+                    try
+                    {
+                        UserDevice ud = FindOrCreateUserDevice(pending.InstanceGuid, pending.ProductGuid);
+                        ud.LoadFromExternalDevice(pending);
+                        ud.IsOnline = true;
+                        _systemMotionDevice = pending;
+                        changed = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        pending.Dispose();
+                        RaiseError("Error registering system motion device", ex);
+                    }
+                }
+                if (_systemMotionDevice != null)
+                {
+                    bool dead = !_systemMotionDevice.IsAttached;
+                    bool removedByUser = FindOnlineDeviceByInstanceGuid(_systemMotionDevice.InstanceGuid) == null;
+                    if (dead || removedByUser)
+                    {
+                        var ud = FindOnlineDeviceByInstanceGuid(_systemMotionDevice.InstanceGuid);
+                        if (ud != null)
+                        {
+                            ud.IsOnline = false;
+                            ud.Device = null;
+                            NeutralizeMappedOutputsFor(ud);
+                        }
+                        _systemMotionDevice.Dispose();
+                        _systemMotionDevice = null;
+                        _systemMotionProbed = false; // re-probe, the sensor may be back
+                        changed = true;
+                    }
+                }
+            }
+
+            long now = Environment.TickCount64;
+            if (!_handheldSweepRunning && now >= _handheldNextSweepTicks)
+            {
+                _handheldSweepRunning = true;
+                _handheldNextSweepTicks = now + _handheldSweepIntervalMs;
+                Task.Run(() =>
+                {
+                    try { HandheldSweep(); }
+                    catch { }
+                    finally { _handheldSweepRunning = false; }
+                });
+            }
+            return changed;
+        }
+
+        /// <summary>Worker half of Phase 1h. All blocking calls live here.</summary>
+        private void HandheldSweep()
+        {
+            if (_handheldInputsSuppressed || !HandheldButtonRegistry.FeatureEnabled) return;
+
+            HandheldDaemonWatch.Refresh();
+
+            var dev = _handheldDevice;
+            if (dev != null)
+            {
+                var present = VendorHidRuntime.Enumerate();
+                if (present != null) dev.SyncReaders(present);
+            }
+
+            if (!_systemMotionProbed && _systemMotionDevice == null && _systemMotionPending == null && !_systemMotionOpenFailed)
+            {
+                _systemMotionProbed = true;
+                if (SystemMotionDevice.IsAvailable())
+                {
+                    var motion = new SystemMotionDevice(PadForge.Engine.Common.MachineIdentity.Current);
+                    if (motion.Open())
+                    {
+                        lock (_handheldLock)
+                        {
+                            if (_handheldInputsSuppressed || !HandheldButtonRegistry.FeatureEnabled) { motion.Dispose(); return; }
+                            _systemMotionPending = motion;
+                        }
+                    }
+                    else
+                    {
+                        motion.Dispose();
+                        _systemMotionOpenFailed = true;
+                    }
+                }
+            }
+        }
+
+        // Caller holds _handheldLock.
+        private bool RetireHandheldRows()
+        {
+            bool changed = false;
+            if (_handheldDevice != null)
+            {
+                var ud = FindOnlineDeviceByInstanceGuid(_handheldDevice.InstanceGuid);
+                if (ud != null)
+                {
+                    ud.IsOnline = false;
+                    ud.Device = null;
+                    NeutralizeMappedOutputsFor(ud);
+                }
+                _handheldDevice.Dispose();
+                _handheldDevice = null;
+                changed = true;
+            }
+            var pending = _systemMotionPending;
+            if (pending != null)
+            {
+                _systemMotionPending = null;
+                pending.Dispose();
+            }
+            if (_systemMotionDevice != null)
+            {
+                var ud = FindOnlineDeviceByInstanceGuid(_systemMotionDevice.InstanceGuid);
+                if (ud != null)
+                {
+                    ud.IsOnline = false;
+                    ud.Device = null;
+                    NeutralizeMappedOutputsFor(ud);
+                }
+                _systemMotionDevice.Dispose();
+                _systemMotionDevice = null;
+                changed = true;
+            }
+            _systemMotionProbed = false;
+            _systemMotionOpenFailed = false;
+            return changed;
+        }
+
+        /// <summary>Called on app shutdown in the same window as the NFC,
+        /// microphone and headset teardowns: after Stop(), before
+        /// ShutdownSdl().</summary>
+        public void ShutdownHandheldInputs()
+        {
+            _handheldInputsSuppressed = true;
+            lock (_handheldLock)
+            {
+                RetireHandheldRows();
+            }
+            try { HandheldChordRuntime.Stop(); } catch { }
+        }
+
         public void ShutdownHeadsetMotionInputs()
         {
             _headsetInputsSuppressed = true;

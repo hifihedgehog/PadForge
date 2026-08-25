@@ -2284,6 +2284,36 @@
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>Etiqueta capturada. Escribe un nombre y haz clic en Registrar. Acerca otra etiqueta para reemplazarla.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>«{0}» registrada. Acerca otra etiqueta para añadir más.</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>Registrar o gestionar etiquetas NFC</value></data>
+  <data name="DeviceType_HandheldButtons" xml:space="preserve"><value>Botones de portátil</value></data>
+  <data name="DeviceType_SystemMotion" xml:space="preserve"><value>Movimiento del sistema</value></data>
+  <data name="Handheld_ManageButton" xml:space="preserve"><value>Aprender / gestionar botones ocultos</value></data>
+  <data name="Handheld_Title" xml:space="preserve"><value>Botones ocultos</value></data>
+  <data name="Handheld_LearnHeader" xml:space="preserve"><value>Aprender un botón</value></data>
+  <data name="Handheld_Intro" xml:space="preserve"><value>Pulsa el botón oculto una vez cuando se te pida. PadForge observa el teclado, el ratón y todos los informes del fabricante de este equipo, y registra lo que el botón cambia.</value></data>
+  <data name="Handheld_MachineLabel" xml:space="preserve"><value>Equipo:</value></data>
+  <data name="Handheld_StartButton" xml:space="preserve"><value>Empezar a aprender</value></data>
+  <data name="Handheld_PhaseIdle" xml:space="preserve"><value>No toques nada. Leyendo el estado en reposo…</value></data>
+  <data name="Handheld_PhasePress" xml:space="preserve"><value>Mantén pulsado el botón oculto ahora…</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Suéltalo…</value></data>
+  <data name="Handheld_NothingFound" xml:space="preserve"><value>No se detectó ningún cambio. Pulsa el botón durante la ventana indicada y vuelve a intentarlo.</value></data>
+  <data name="Handheld_Captured" xml:space="preserve"><value>Botón capturado. Escribe un nombre y haz clic en Registrar.</value></data>
+  <data name="Handheld_SourceLabel" xml:space="preserve"><value>Origen:</value></data>
+  <data name="Handheld_NameLabel" xml:space="preserve"><value>Nombre:</value></data>
+  <data name="Handheld_RegisterButton" xml:space="preserve"><value>Registrar</value></data>
+  <data name="Handheld_RegisteredHeader" xml:space="preserve"><value>Botones aprendidos</value></data>
+  <data name="Handheld_NoneLearned" xml:space="preserve"><value>Aún no se ha aprendido ningún botón.</value></data>
+  <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>"{0}" registrado. Vuelve a empezar para aprender otro.</value></data>
+  <data name="Handheld_ChordFormat" xml:space="preserve"><value>Teclas: {0}</value></data>
+  <data name="Handheld_NoDevice" xml:space="preserve"><value>Los botones ocultos están desactivados. Activa primero Botones de PC portátil en Ajustes.</value></data>
+  <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>{0} está en ejecución. Seguirá reaccionando a estos botones hasta que lo cierres.</value></data>
+  <data name="Handheld_Export" xml:space="preserve"><value>Exportar…</value></data>
+  <data name="Handheld_Import" xml:space="preserve"><value>Importar…</value></data>
+  <data name="Handheld_ExportedFormat" xml:space="preserve"><value>{0} botones exportados.</value></data>
+  <data name="Handheld_ImportedFormat" xml:space="preserve"><value>{0} botones importados.</value></data>
+  <data name="Settings_Handheld" xml:space="preserve"><value>Botones de PC portátil</value></data>
+  <data name="Settings_HandheldDesc" xml:space="preserve"><value>Los PC portátiles de juegos tienen botones que el sistema operativo nunca muestra como mando: paletas traseras, teclas de menú, ruedas. Actívalo para aprenderlos una vez pulsándolos y luego asignarlos como cualquier otro botón. También añade el giroscopio del propio equipo como dispositivo de movimiento.</value></data>
+  <data name="Settings_HandheldEnable" xml:space="preserve"><value>Activar botones de PC portátil</value></data>
+  <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>Añade un dispositivo Botones ocultos y un dispositivo Movimiento del sistema a la página Dispositivos. Desactivado, no se ejecuta nada.</value></data>
   <data name="DeviceType_Nfc" xml:space="preserve"><value>Lector NFC</value></data>
   <data name="DeviceType_ConsumerControl" xml:space="preserve"><value>Control multimedia</value></data>
   <data name="MacroAction_Type_DisconnectController" xml:space="preserve"><value>Desconectar mando</value></data>

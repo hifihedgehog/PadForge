@@ -45,6 +45,57 @@ namespace PadForge.Engine.Common
         [DllImport("kernel32.dll")]
         private static extern uint GetCurrentThreadId();
 
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern uint SendInput(uint nInputs, INPUT[] pInputs, int cbSize);
+
+        [DllImport("user32.dll")]
+        private static extern uint MapVirtualKeyW(uint uCode, uint uMapType);
+
+        private const uint INPUT_MOUSE = 0;
+        private const uint INPUT_KEYBOARD = 1;
+        private const uint KEYEVENTF_EXTENDEDKEY = 0x0001;
+        private const uint KEYEVENTF_KEYUP = 0x0002;
+        private const uint MAPVK_VK_TO_VSC = 0;
+        private const uint MOUSEEVENTF_LEFTDOWN = 0x0002;
+        private const uint MOUSEEVENTF_LEFTUP = 0x0004;
+        private const uint MOUSEEVENTF_RIGHTDOWN = 0x0008;
+        private const uint MOUSEEVENTF_RIGHTUP = 0x0010;
+        private const uint MOUSEEVENTF_MIDDLEDOWN = 0x0020;
+        private const uint MOUSEEVENTF_MIDDLEUP = 0x0040;
+        private const uint MOUSEEVENTF_XDOWN = 0x0080;
+        private const uint MOUSEEVENTF_XUP = 0x0100;
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct MOUSEINPUT
+        {
+            public int dx;
+            public int dy;
+            public uint mouseData;
+            public uint dwFlags;
+            public uint time;
+            public IntPtr dwExtraInfo;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct KEYBDINPUT
+        {
+            public ushort wVk;
+            public ushort wScan;
+            public uint dwFlags;
+            public uint time;
+            public IntPtr dwExtraInfo;
+        }
+
+        // INPUT is a tagged union; the mouse member is the largest, so the
+        // keyboard member is laid over the same explicit offsets.
+        [StructLayout(LayoutKind.Explicit)]
+        private struct INPUT
+        {
+            [FieldOffset(0)] public uint type;
+            [FieldOffset(8)] public MOUSEINPUT mi;
+            [FieldOffset(8)] public KEYBDINPUT ki;
+        }
+
         private const int WH_KEYBOARD_LL = 13;
         private const int WH_MOUSE_LL = 14;
         private const int HC_ACTION = 0;
@@ -146,6 +197,116 @@ namespace PadForge.Engine.Common
         private static volatile bool _hasHookedKeys;
         private static readonly bool[] _hookedMouseState = new bool[5]; // L, R, M, X1, X2
         private static volatile bool _hasHookedMouse;
+
+        // ─────────────────────────────────────────────
+        //  Handheld chords (issue #343)
+        // ─────────────────────────────────────────────
+
+        /// <summary>The chord engine both hooks feed, or null when no
+        /// handheld chord is defined and no capture is armed. Static so the
+        /// hook callbacks (which run on the hook thread against whichever
+        /// manager instance is live) always see the one engine.</summary>
+        private static volatile HandheldChordEngine _chordEngine;
+
+        public static HandheldChordEngine ChordEngine
+        {
+            get => _chordEngine;
+            set => _chordEngine = value;
+        }
+
+        /// <summary>Stamp carried in dwExtraInfo by every keystroke and
+        /// click this class injects on the engine's behalf. The hook lets a
+        /// stamped event through without feeding it back to the engine
+        /// (AutoHotkey's KEY_IGNORE technique), so a replayed prefix key
+        /// cannot be held a second time.</summary>
+        public static readonly IntPtr ReplayTag = new IntPtr(0x50464843); // "PFHC"
+
+        /// <summary>The engine queued a replay, a mask, or a timed hold.
+        /// Raised on the hook thread; the listener must do the SendInput on
+        /// its own thread, never inside the hook callback.</summary>
+        public static event Action ChordWorkPending;
+
+        /// <summary>Feeds one event to the chord engine. Returns true when
+        /// the hook must swallow it. Injected events carrying our own tag
+        /// pass straight through.</summary>
+        private static bool ChordSwallows(int code, bool isDown, IntPtr extraInfo)
+        {
+            var engine = _chordEngine;
+            if (engine == null) return false;
+            if (!engine.HasChords && !engine.IsCapturing) return false;
+            if (extraInfo == ReplayTag) return false;
+            var decision = engine.OnEvent(code, isDown, Environment.TickCount64);
+            if (engine.HasPendingWork)
+            {
+                try { ChordWorkPending?.Invoke(); } catch { }
+            }
+            return decision == ChordDecision.Swallow;
+        }
+
+        /// <summary>Injects one key or mouse-button event with the replay
+        /// tag. <paramref name="code"/> is a VK code, or
+        /// <see cref="HandheldChordDefinition.MouseCode"/> + button id.
+        /// Call from a worker thread, never from a hook callback.</summary>
+        public static void InjectReplay(int code, bool down)
+        {
+            var input = new INPUT[1];
+            if (HandheldChordDefinition.IsMouse(code))
+            {
+                int button = code - HandheldChordDefinition.MouseCode;
+                uint flags;
+                uint data = 0;
+                switch (button)
+                {
+                    case 0: flags = down ? MOUSEEVENTF_LEFTDOWN : MOUSEEVENTF_LEFTUP; break;
+                    case 1: flags = down ? MOUSEEVENTF_MIDDLEDOWN : MOUSEEVENTF_MIDDLEUP; break;
+                    case 2: flags = down ? MOUSEEVENTF_RIGHTDOWN : MOUSEEVENTF_RIGHTUP; break;
+                    case 3: flags = down ? MOUSEEVENTF_XDOWN : MOUSEEVENTF_XUP; data = 1; break;
+                    case 4: flags = down ? MOUSEEVENTF_XDOWN : MOUSEEVENTF_XUP; data = 2; break;
+                    default: return;
+                }
+                input[0].type = INPUT_MOUSE;
+                input[0].mi = new MOUSEINPUT { dwFlags = flags, mouseData = data, dwExtraInfo = ReplayTag };
+            }
+            else
+            {
+                if (code < 0 || code > 0xFF) return;
+                uint flags = down ? 0 : KEYEVENTF_KEYUP;
+                if (IsExtendedKey(code)) flags |= KEYEVENTF_EXTENDEDKEY;
+                input[0].type = INPUT_KEYBOARD;
+                input[0].ki = new KEYBDINPUT
+                {
+                    wVk = (ushort)code,
+                    wScan = code == 0xFF ? (ushort)0 : (ushort)MapVirtualKeyW((uint)code, MAPVK_VK_TO_VSC),
+                    dwFlags = flags,
+                    dwExtraInfo = ReplayTag,
+                };
+            }
+            SendInput(1, input, Marshal.SizeOf<INPUT>());
+        }
+
+        /// <summary>Taps the reserved VK 0xFF while a Win key is down, so the
+        /// shell sees "Win plus something" and does not open Start when the
+        /// swallowed chord's Win key releases.</summary>
+        public static void InjectWinMask()
+        {
+            InjectReplay(0xFF, true);
+            InjectReplay(0xFF, false);
+        }
+
+        // Keys whose scan code carries the E0 prefix. Without the extended
+        // flag SendInput types the numpad twin (Insert becomes Numpad 0).
+        private static bool IsExtendedKey(int vk) => vk switch
+        {
+            0xA3 or 0xA5 => true,           // RControl, RMenu
+            0x2D or 0x2E => true,           // Insert, Delete
+            0x24 or 0x23 => true,           // Home, End
+            0x21 or 0x22 => true,           // PageUp, PageDown
+            0x25 or 0x26 or 0x27 or 0x28 => true, // arrows
+            0x5B or 0x5C or 0x5D => true,   // LWin, RWin, Apps
+            0x90 or 0x6F => true,           // NumLock, Divide
+            0x2C => true,                   // Snapshot
+            _ => false
+        };
 
         // ─────────────────────────────────────────────
         //  Public API
@@ -415,6 +576,14 @@ namespace PadForge.Engine.Common
                         else ReleaseHotkeyArming(hotkeys, vk);
                     }
 
+                    // Handheld chords (#343) decide before consumption: a
+                    // swallowed chord key never reaches the shell, and a held
+                    // prefix key is replayed later with the tag above, at
+                    // which point it re-enters here and takes the normal
+                    // consumption path below.
+                    if (ChordSwallows(vk, isDown, kb.dwExtraInfo))
+                        return (IntPtr)1;
+
                     if (_suppressedVKeys.Contains(vk))
                     {
                         // Capture key state before suppressing — WH_KEYBOARD_LL
@@ -497,6 +666,12 @@ namespace PadForge.Engine.Common
             {
                 int msg = (int)wParam;
                 int buttonId = MouseMessageToButtonId(msg, lParam);
+                if (buttonId >= 0 && _chordEngine != null)
+                {
+                    var ms = Marshal.PtrToStructure<MSLLHOOKSTRUCT>(lParam);
+                    if (ChordSwallows(HandheldChordDefinition.MouseCode + buttonId, IsMouseDown(msg), ms.dwExtraInfo))
+                        return (IntPtr)1;
+                }
                 if (buttonId >= 0 && _suppressedMouseButtons.Contains(buttonId))
                 {
                     // Capture button state before suppressing (same reason as keyboard).

@@ -232,6 +232,26 @@
                 </StackPanel>
             </Border>
 
+            <!-- ═══ Handheld PC Buttons (issue #343) ═══
+                 Off by default. On, the Devices page gains the machine's
+                 Hidden Buttons row (learned by pressing) and its System
+                 Motion row. -->
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,20">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <TextBlock Text="&#xE7F8;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
+                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBlock Text="{Binding Settings_Handheld, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardTitle}"/>
+                    </StackPanel>
+                    <TextBlock Text="{Binding Settings_HandheldDesc, Source={x:Static strings:Strings.Instance}}"
+                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
+                    <CheckBox Content="{Binding Settings_HandheldEnable, Source={x:Static strings:Strings.Instance}}"
+                              ToolTip="{Binding Settings_HandheldEnable_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                              IsChecked="{Binding HandheldButtonsEnabled}"/>
+                </StackPanel>
+            </Border>
+
             <!-- ═══ HidHide ═══ -->
             <Border Style="{StaticResource CardBorder}" Margin="0,0,0,20">
                 <StackPanel>

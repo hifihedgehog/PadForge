@@ -361,6 +361,10 @@ Plug in an NFC reader (any PC/SC contactless reader, like an ACR122U) and a tag 
 
 ![NFC reader and registered tags on the Devices page](screenshots/devices.jpg)
 
+### The buttons your handheld hides.
+
+Handheld gaming PCs (Legion Go, ROG Ally, GPD Win, OneXPlayer, AYANEO, AYN, Zotac Zone, MSI Claw) carry rear paddles, menu keys, and wheels that never show up as part of a controller. The firmware types a key combination for each one, or sets a bit in a vendor HID report. Turn on Handheld PC Buttons in Settings, press each button once in Learn / Manage Hidden Buttons, and it becomes a named button on a Hidden Buttons device row: mappings, macros, shift layers, everything. Learned combinations are swallowed before the shell sees them, so Win+D stops minimizing your desktop. No per-model table ships in the app, so a handheld released tomorrow learns the same way. The machine's own gyroscope joins as a System Motion device for handhelds whose sensor sits in the tablet.
+
 ---
 
 ## Every device: local co-op without limits.

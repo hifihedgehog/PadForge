@@ -1025,6 +1025,10 @@ namespace PadForge.Services
                     BaseWidth = SteamControllerLayout.BaseWidth, BaseHeight = SteamControllerLayout.BaseHeight,
                     BasePath = SteamControllerLayout.BasePath, StickMaxTravel = SteamControllerLayout.StickMaxTravel,
                     Overlays = SteamControllerLayout.Overlays, Finishes = Array.Empty<string>() },
+            new() { TypeKey = "steamcontroller2", Folder = "STEAMCONTROLLER2", NameStem = "Steam Controller (2026)",
+                    BaseWidth = SteamController2Layout.BaseWidth, BaseHeight = SteamController2Layout.BaseHeight,
+                    BasePath = SteamController2Layout.BasePath, StickMaxTravel = SteamController2Layout.StickMaxTravel,
+                    Overlays = SteamController2Layout.Overlays, Finishes = Array.Empty<string>() },
         };
 
         /// <summary>Resolves a layout request key (query value, any case,

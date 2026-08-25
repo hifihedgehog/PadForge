@@ -146,19 +146,27 @@ namespace PadForge.Models3D
             int dot = modelName.IndexOf('.');
             ModelFamily = dot > 0 ? modelName.Substring(0, dot) : modelName;
 
-            // Load common geometry.
+            // Load common geometry. Only the body is mandatory. Every other
+            // part here is optional for the same reason the button table
+            // below is: a pad that does not have the control does not ship
+            // the mesh. The 2015 Steam Controller has one stick and no
+            // separate ring solid (the bezel is a hole in the case, not a
+            // part), so demanding all seven would have meant shipping empty
+            // meshes to satisfy the loader.
             MainBody = LoadModel("MainBody.obj");
-            LeftThumbRing = LoadModel("Joystick-Left-Ring.obj");
-            RightThumbRing = LoadModel("Joystick-Right-Ring.obj");
-            LeftMotor = LoadModel("MotorLeft.obj");
-            RightMotor = LoadModel("MotorRight.obj");
-            LeftShoulderTrigger = LoadModel("Shoulder-Left-Trigger.obj");
-            RightShoulderTrigger = LoadModel("Shoulder-Right-Trigger.obj");
+            LeftThumbRing = TryLoadModel("Joystick-Left-Ring.obj");
+            RightThumbRing = TryLoadModel("Joystick-Right-Ring.obj");
+            LeftMotor = TryLoadModel("MotorLeft.obj");
+            RightMotor = TryLoadModel("MotorRight.obj");
+            LeftShoulderTrigger = TryLoadModel("Shoulder-Left-Trigger.obj");
+            RightShoulderTrigger = TryLoadModel("Shoulder-Right-Trigger.obj");
 
-            // Stick rings — quadrant-based X/Y detection handled in ControllerModelView.
+            // Stick rings get quadrant-based X/Y detection in ControllerModelView.
             // Not in ClickMap; the view checks IsStickRing() and uses hit position.
-            ClickMap[LeftShoulderTrigger] = "LeftTrigger";
-            ClickMap[RightShoulderTrigger] = "RightTrigger";
+            if (LeftShoulderTrigger != null)
+                ClickMap[LeftShoulderTrigger] = "LeftTrigger";
+            if (RightShoulderTrigger != null)
+                ClickMap[RightShoulderTrigger] = "RightTrigger";
 
             // Load button meshes.
             foreach (var (filename, padSetting) in ButtonFileMap)
@@ -187,14 +195,13 @@ namespace PadForge.Models3D
             if (ButtonMap.TryGetValue("RightThumbButton", out var rtList) && RightThumbRing != null)
                 rtList.Add(RightThumbRing);
 
-            // Add non-button parts to scene.
+            // Add non-button parts to scene, skipping the ones this pad
+            // does not have.
             model3DGroup.Children.Add(MainBody);
-            model3DGroup.Children.Add(LeftThumbRing);
-            model3DGroup.Children.Add(RightThumbRing);
-            model3DGroup.Children.Add(LeftMotor);
-            model3DGroup.Children.Add(RightMotor);
-            model3DGroup.Children.Add(LeftShoulderTrigger);
-            model3DGroup.Children.Add(RightShoulderTrigger);
+            foreach (var part in new[] { LeftThumbRing, RightThumbRing, LeftMotor,
+                                         RightMotor, LeftShoulderTrigger, RightShoulderTrigger })
+                if (part != null)
+                    model3DGroup.Children.Add(part);
         }
 
         // ─────────────────────────────────────────────

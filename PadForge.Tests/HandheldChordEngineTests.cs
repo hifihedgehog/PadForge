@@ -392,6 +392,39 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void Tap_InsideThePressWindow_IsLearnedAsABit()
+        {
+            // Bench 2026-08-25: a tap-only key leaves pressed samples followed
+            // by released ones inside the press window; a hold is not required.
+            var idle = Report(64, (20, 0x00));
+            var noise = new byte[64];
+            var press = new List<byte[]> { Report(64, (20, 0x00)), Report(64, (20, 0x80)), Report(64, (20, 0x80)), Report(64, (20, 0x00)) };
+            var release = new List<byte[]> { Report(64, (20, 0x00)) };
+            var found = VendorReportLearner.Learn(idle, noise, press, release);
+            var c = Assert.Single(found);
+            Assert.Equal(20, c.ByteIndex);
+            Assert.Equal(0x80, c.Mask);
+            Assert.Equal(0x80, c.Value);
+            Assert.Equal(VendorButtonKind.Bit, c.Kind);
+        }
+
+        [Fact]
+        public void AllyTap_WithItsReleaseCodeInsideThePressWindow_LearnsThePressCode()
+        {
+            // Event-style firmware: 167 on press, 168 on release, both inside
+            // the press window when the user taps. The first differing value
+            // is the press code; the release code never masquerades as it.
+            var idle = Report(64);
+            var noise = new byte[64];
+            var press = new List<byte[]> { Report(64, (1, 167)), Report(64, (1, 168)) };
+            var found = VendorReportLearner.Learn(idle, noise, press, new List<byte[]>());
+            var c = Assert.Single(found);
+            Assert.Equal(1, c.ByteIndex);
+            Assert.Equal(VendorButtonKind.Value, c.Kind);
+            Assert.Equal(167, c.Value);
+        }
+
+        [Fact]
         public void BitThatDoesNotReturnOnRelease_IsNotAButton()
         {
             var idle0 = Report(16);

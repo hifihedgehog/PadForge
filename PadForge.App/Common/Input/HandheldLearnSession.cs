@@ -18,7 +18,7 @@ namespace PadForge.Common.Input
         public enum Phase { Idle = 0, Press = 1, Release = 2, Done = 3 }
 
         public const int IdleMs = 1000;
-        public const int PressMs = 2500;
+        public const int PressMs = 3000;
         public const int ReleaseMs = 1000;
 
         /// <summary>Samples kept per bucket per phase. Enough to build a

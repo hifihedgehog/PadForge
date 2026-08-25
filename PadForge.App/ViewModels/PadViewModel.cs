@@ -538,7 +538,14 @@ namespace PadForge.ViewModels
         {
             if (oldGuid == Guid.Empty || newGuid == Guid.Empty || oldGuid == newGuid) return;
             if (!_perDeviceSlotConfigs.TryRemove(oldGuid, out var cfg)) return;
-            _perDeviceSlotConfigs.TryAdd(newGuid, cfg);
+            if (_perDeviceSlotConfigs.TryAdd(newGuid, cfg)) return;
+            // Destination wins, so cfg is dropped. When the tab was bound to
+            // the instance being dropped it has to move to the winner, the
+            // same rebind RemoveDeviceConfig performs: without it the
+            // Lighting and Audio tabs keep editing an object nothing reads.
+            if (ReferenceEquals(_deviceConfig, cfg))
+                DeviceConfig = _perDeviceSlotConfigs.TryGetValue(newGuid, out var kept)
+                    ? kept : _emptyDeviceConfigSentinel;
         }
         private DeviceSlotConfig _deviceConfig = new();
         /// <summary>Throwaway config bound while this slot has no selected
@@ -1166,6 +1173,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(SelectedDeviceHasSpeaker));
                     OnPropertyChanged(nameof(SelectedDeviceHasDspChain));
                     OnPropertyChanged(nameof(SelectedDeviceHasHeadphoneJack));
+                    OnPropertyChanged(nameof(SelectedDeviceHasDs5AudioBuffer));
                     OnPropertyChanged(nameof(SelectedDeviceHasNoSpeaker));
                     OnPropertyChanged(nameof(SelectedDeviceHasHapticTones));
                     OnPropertyChanged(nameof(SelectedDeviceHasTouchpadPulse));
@@ -5295,6 +5303,26 @@ namespace PadForge.ViewModels
             }
         }
 
+        /// <summary>The selected device takes the DS5 audio buffer-length
+        /// byte. That byte exists only in the DualSense BLUETOOTH packet 0x11
+        /// header (every ResolveAudioBufferLength call site is a BT report
+        /// builder), so gating its slider on the headphone-jack rule showed a
+        /// control that does nothing on a USB DualSense: same PID, no packet
+        /// 0x11. The transport test is the one SelectedDeviceHasDspChain
+        /// already uses for the DualShock 4.</summary>
+        public bool SelectedDeviceHasDs5AudioBuffer
+        {
+            get
+            {
+                var sel = SelectedMappedDevice;
+                if (sel == null || sel.InstanceGuid == Guid.Empty) return false;
+                var ud = PadForge.Common.Input.SettingsManager.FindDeviceByInstanceGuid(sel.InstanceGuid);
+                if (ud == null || ud.VendorId != 0x054C) return false;
+                if ((ushort)ud.ProdId != 0x0CE6 && (ushort)ud.ProdId != 0x0DF2) return false;
+                return (ud.DevicePath ?? "").IndexOf("{00001124", StringComparison.OrdinalIgnoreCase) >= 0;
+            }
+        }
+
         public bool SelectedDeviceHasSpeaker
         {
             get
@@ -6973,6 +7001,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(SelectedDeviceHasSpeaker));
                     OnPropertyChanged(nameof(SelectedDeviceHasDspChain));
                     OnPropertyChanged(nameof(SelectedDeviceHasHeadphoneJack));
+                    OnPropertyChanged(nameof(SelectedDeviceHasDs5AudioBuffer));
                     OnPropertyChanged(nameof(SelectedDeviceHasNoSpeaker));
                     OnPropertyChanged(nameof(SelectedDeviceHasHapticTones));
                     OnPropertyChanged(nameof(MirrorEngageSelectedInput));

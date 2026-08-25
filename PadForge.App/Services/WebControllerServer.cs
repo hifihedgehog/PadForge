@@ -1296,13 +1296,48 @@ namespace PadForge.Services
             try
             {
                 // Check if rule already exists.
+                // Check whether a rule of this name already names this port.
+                // A substring test over the whole netsh dump was wrong in both
+                // directions once the port became user-editable: "42" is
+                // inside "4242", so moving to port 42 found a rule that was
+                // not there, and moving to 4242 missed the one that was and
+                // added a duplicate. Read the LocalPort line and compare.
                 var check = RunNetsh($"advfirewall firewall show rule name=\"{ruleName}\"");
-                if (check.Contains(port.ToString()))
+                if (RuleNamesPort(check, port))
                     return;
 
                 RunNetsh($"advfirewall firewall add rule name=\"{ruleName}\" dir=in action=allow protocol={protocol} localport={port}");
             }
             catch { /* best effort, the app may not be elevated */ }
+        }
+
+        /// <summary>True when a netsh rule dump lists this exact port. The
+        /// LocalPort line may carry a list ("80,443") or a range
+        /// ("5000-5010"), so each element is compared as a value.</summary>
+        internal static bool RuleNamesPort(string netshOutput, int port)
+        {
+            if (string.IsNullOrEmpty(netshOutput)) return false;
+            foreach (var raw in netshOutput.Split('\n'))
+            {
+                int colon = raw.IndexOf(':');
+                if (colon < 0) continue;
+                if (raw.Substring(0, colon).Trim() != "LocalPort") continue;
+                foreach (var part in raw.Substring(colon + 1).Split(','))
+                {
+                    string t = part.Trim();
+                    if (t.Length == 0) continue;
+                    int dash = t.IndexOf('-');
+                    if (dash > 0)
+                    {
+                        if (int.TryParse(t.Substring(0, dash).Trim(), out int lo)
+                            && int.TryParse(t.Substring(dash + 1).Trim(), out int hi)
+                            && port >= lo && port <= hi) return true;
+                        continue;
+                    }
+                    if (int.TryParse(t, out int one) && one == port) return true;
+                }
+            }
+            return false;
         }
 
         private static string RunNetsh(string arguments)

@@ -2178,6 +2178,12 @@ namespace PadForge.Common.Input
                 if (!enabled)
                 {
                     changed |= RetireHandheldRows();
+                    // Off means off (issue #353). Retiring the rows alone left
+                    // the chord worker thread parked and the hook manager
+                    // still holding the engine for the life of the process,
+                    // so the feature kept a thread and a hook-path branch on
+                    // a machine whose owner had turned it off.
+                    try { HandheldChordRuntime.Stop(); } catch { }
                     return changed;
                 }
 
@@ -2393,7 +2399,7 @@ namespace PadForge.Common.Input
                 {
                     try
                     {
-                        var created = new HeadTrackerDevice();
+                        var created = HeadTrackerDevice.FromCurrentSettings();
                         if (created.Open())
                         {
                             UserDevice ud = FindOrCreateUserDevice(created.InstanceGuid, created.ProductGuid);

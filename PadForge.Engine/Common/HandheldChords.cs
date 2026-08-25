@@ -23,12 +23,6 @@ namespace PadForge.Engine.Common
         /// <summary>STABLE raw-button index this chord occupies on the
         /// handheld device (NFC's rule: assigned once, never renumbered).</summary>
         public int Button { get; set; }
-        /// <summary>Raw Input device path of the keyboard that typed the
-        /// chord when it was learned. Informational (the low-level hook
-        /// cannot see the source device), shown in the UI so a user can tell
-        /// which embedded keyboard a chord came from.</summary>
-        public string SourceDevicePath { get; set; }
-
         public static bool IsMouse(int code) => code >= MouseCode;
         public static bool IsModifier(int code) =>
             code == 0x10 || code == 0x11 || code == 0x12 || code == 0x5B || code == 0x5C

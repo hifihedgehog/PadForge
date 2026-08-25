@@ -164,7 +164,7 @@ namespace PadForge.Common.Input
                     _state.Accel[2] = accel[2];
                 }
             }
-            long n = ++_samples;
+            long n = System.Threading.Interlocked.Increment(ref _samples);
             if ((n <= 64 && (n & (n - 1)) == 0) || (n & 4095) == 0)
                 PadForge.Engine.SdlDiagLog.WriteLine(
                     $"System motion: sample #{n} gyro=({_state.Gyro[0]:F3},{_state.Gyro[1]:F3},{_state.Gyro[2]:F3}) accel=({_state.Accel[0]:F2},{_state.Accel[1]:F2},{_state.Accel[2]:F2})");
@@ -214,6 +214,12 @@ namespace PadForge.Common.Input
         {
             try { if (_gyro != null) _gyro.ReadingChanged -= OnGyro; } catch { }
             try { if (_accel != null) _accel.ReadingChanged -= OnAccel; } catch { }
+            // Hand the interval back. Open asks for the sensor's fastest
+            // rate, and that request is a property of the shared sensor, not
+            // of this object: dropping the reference without clearing it
+            // leaves the driver running fast for nobody.
+            try { if (_gyro != null) _gyro.ReportInterval = 0; } catch { }
+            try { if (_accel != null) _accel.ReportInterval = 0; } catch { }
             _gyro = null;
             _accel = null;
         }

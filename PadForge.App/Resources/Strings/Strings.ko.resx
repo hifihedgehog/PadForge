@@ -2309,6 +2309,7 @@
   <data name="HeadTracker_StatusUdp_Format" xml:space="preserve"><value>{0}에서 UDP로 수신 중입니다.</value></data>
   <data name="HeadTracker_StatusFreeTrack" xml:space="preserve"><value>FreeTrack 공유 메모리에서 수신 중입니다.</value></data>
   <data name="HeadTracker_StatusPortInUse_Format" xml:space="preserve"><value>UDP 포트 {0}은(는) 다른 프로그램이 사용 중입니다.</value></data>
+  <data name="HeadTracker_StatusFreeTrackFailed_Format" xml:space="preserve"><value>UDP 포트 {0}에서 트래커를 기다리는 중입니다. FreeTrack 공유 메모리를 열 수 없습니다.</value></data>
   <data name="Handheld_ManageButton" xml:space="preserve"><value>숨겨진 버튼 학습 / 관리</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>숨겨진 버튼</value></data>
   <data name="Handheld_LearnHeader" xml:space="preserve"><value>버튼 학습</value></data>

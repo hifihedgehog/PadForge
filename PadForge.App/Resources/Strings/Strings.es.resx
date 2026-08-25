@@ -2309,6 +2309,7 @@
   <data name="HeadTracker_StatusUdp_Format" xml:space="preserve"><value>Recibiendo por UDP desde {0}.</value></data>
   <data name="HeadTracker_StatusFreeTrack" xml:space="preserve"><value>Recibiendo desde la memoria compartida de FreeTrack.</value></data>
   <data name="HeadTracker_StatusPortInUse_Format" xml:space="preserve"><value>El puerto UDP {0} está en uso por otro programa.</value></data>
+  <data name="HeadTracker_StatusFreeTrackFailed_Format" xml:space="preserve"><value>Esperando un rastreador en el puerto UDP {0}. No se pudo abrir la memoria compartida de FreeTrack.</value></data>
   <data name="Handheld_ManageButton" xml:space="preserve"><value>Aprender / gestionar botones ocultos</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>Botones ocultos</value></data>
   <data name="Handheld_LearnHeader" xml:space="preserve"><value>Aprender un botón</value></data>

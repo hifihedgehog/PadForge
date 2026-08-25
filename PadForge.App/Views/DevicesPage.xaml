@@ -880,10 +880,14 @@
                                    Visibility="{Binding SelectedDevice.HasHandheldDaemonWarning, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                         <!-- Head tracker source line (#355): which source is live,
-                             or why nothing arrives. -->
+                             or why nothing arrives. Bound to the TEXT, not to the
+                             row type: a peer's shared head-tracker row is a
+                             HeadTracker without a local device to ask, so the
+                             status is empty there and an empty line would still
+                             hold its margin open. -->
                         <TextBlock Text="{Binding HeadTrackerStatus}" TextWrapping="Wrap"
                                    FontSize="11" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,8"
-                                   Visibility="{Binding IsHeadTrackerDevice, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                   Visibility="{Binding HeadTrackerStatus, Converter={StaticResource StringToVisibility}}"/>
 
                         <Separator Margin="0,2,0,6"/>
 

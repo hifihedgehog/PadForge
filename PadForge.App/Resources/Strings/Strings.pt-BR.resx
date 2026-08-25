@@ -405,7 +405,7 @@
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Excluir</value></data>
   <data name="ManageProfiles_Close" xml:space="preserve"><value>Fechar</value></data>
   <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Exportar JSON de Perfil</value></data>
-  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Excluir perfil importado?</value></data>
+  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Excluir Perfil Importado?</value></data>
   <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>Excluir "{0}"? Qualquer slot usando este perfil voltará para a entrada sintética Custom.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>Exportado para {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>Exportação falhou: {0}</value></data>
@@ -515,7 +515,7 @@
   <data name="Pad_Combine_OR_Description" xml:space="preserve"><value>Acionar quando qualquer fonte estiver ativa. Bom para botões</value></data>
   <data name="Pad_Combine_AND_Name" xml:space="preserve"><value>Ambas</value></data>
   <data name="Pad_Combine_AND_Description" xml:space="preserve"><value>Acionar apenas quando todas as fontes estiverem ativas</value></data>
-  <data name="Pad_Combine_XOR_Name" xml:space="preserve"><value>Apenas uma</value></data>
+  <data name="Pad_Combine_XOR_Name" xml:space="preserve"><value>Apenas Uma</value></data>
   <data name="Pad_Combine_XOR_Description" xml:space="preserve"><value>Acionar apenas quando exatamente uma fonte estiver ativa</value></data>
   <data name="Pad_Combine_Custom_Name" xml:space="preserve"><value>Personalizado</value></data>
   <data name="Pad_Combine_Custom_Description" xml:space="preserve"><value>Crie o seu com o editor de fórmulas abaixo</value></data>
@@ -582,7 +582,7 @@
   <data name="Pad_Formula_Preset_WeightedBlend_Tooltip" xml:space="preserve"><value>70% de A + 30% de B</value></data>
   <data name="Pad_Formula_Preset_Difference_Name" xml:space="preserve"><value>Diferença</value></data>
   <data name="Pad_Formula_Preset_Difference_Tooltip" xml:space="preserve"><value>A menos B</value></data>
-  <data name="Pad_Formula_Preset_AUnlessIdle_Name" xml:space="preserve"><value>a a menos que ocioso</value></data>
+  <data name="Pad_Formula_Preset_AUnlessIdle_Name" xml:space="preserve"><value>a a Menos que Ocioso</value></data>
   <data name="Pad_Formula_Preset_AUnlessIdle_Tooltip" xml:space="preserve"><value>Usar A. Se A estiver em repouso, recuar para B</value></data>
   <data name="Pad_Formula_Preset_ThresholdGate_Name" xml:space="preserve"><value>Porta de Limiar</value></data>
   <data name="Pad_Formula_Preset_ThresholdGate_Tooltip" xml:space="preserve"><value>Acionar totalmente se A passar da metade, caso contrário zero. Transforma um eixo em um botão</value></data>
@@ -2303,6 +2303,7 @@
   <data name="HeadTracker_StatusUdp_Format" xml:space="preserve"><value>Recebendo por UDP de {0}.</value></data>
   <data name="HeadTracker_StatusFreeTrack" xml:space="preserve"><value>Recebendo da memória compartilhada do FreeTrack.</value></data>
   <data name="HeadTracker_StatusPortInUse_Format" xml:space="preserve"><value>A porta UDP {0} está em uso por outro programa.</value></data>
+  <data name="HeadTracker_StatusFreeTrackFailed_Format" xml:space="preserve"><value>Aguardando um rastreador na porta UDP {0}. Não foi possível abrir a memória compartilhada do FreeTrack.</value></data>
   <data name="Handheld_ManageButton" xml:space="preserve"><value>Aprender / Gerenciar Botões Ocultos</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>Botões Ocultos</value></data>
   <data name="Handheld_LearnHeader" xml:space="preserve"><value>Aprender um Botão</value></data>

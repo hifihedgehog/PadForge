@@ -2314,7 +2314,7 @@
   <data name="Handheld_StartButton" xml:space="preserve"><value>Leren starten</value></data>
   <data name="Handheld_PhaseIdle" xml:space="preserve"><value>Handen af. Ruststand wordt gelezen…</value></data>
   <data name="Handheld_PhasePress" xml:space="preserve"><value>Druk nu op de verborgen knop en laat dan los…</value></data>
-  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Laat los…</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Een ogenblik…</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>Geen verandering gezien. Druk op de knop tijdens het aangegeven venster en probeer opnieuw.</value></data>
   <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>{0} fabrikantrapporten en {1} gebeurtenisklassen bekeken. Tijdens het indrukken: {2} rapporten, {3} gebeurtenissen.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>Knop vastgelegd. Voer een naam in en klik op Registreren.</value></data>

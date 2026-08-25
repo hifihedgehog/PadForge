@@ -2331,6 +2331,7 @@
   <data name="HeadTracker_StatusUdp_Format" xml:space="preserve"><value>Ricezione via UDP da {0}.</value></data>
   <data name="HeadTracker_StatusFreeTrack" xml:space="preserve"><value>Ricezione dalla memoria condivisa FreeTrack.</value></data>
   <data name="HeadTracker_StatusPortInUse_Format" xml:space="preserve"><value>La porta UDP {0} è in uso da un altro programma.</value></data>
+  <data name="HeadTracker_StatusFreeTrackFailed_Format" xml:space="preserve"><value>In attesa di un tracker sulla porta UDP {0}. Non è stato possibile aprire la memoria condivisa FreeTrack.</value></data>
   <data name="Handheld_ManageButton" xml:space="preserve"><value>Apprendi / gestisci pulsanti nascosti</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>Pulsanti nascosti</value></data>
   <data name="Handheld_LearnHeader" xml:space="preserve"><value>Apprendi un pulsante</value></data>

@@ -71,6 +71,7 @@ namespace PadForge.Common.Input
         private Thread _thread;
         private volatile bool _running;
         private volatile bool _udpBindFailed;
+        private volatile bool _freeTrackFailed;
 
         private FreeTrackReader _freeTrack;
         private readonly byte[] _ftBuf = new byte[HeadPose.FreeTrackHeapBytes];
@@ -84,9 +85,15 @@ namespace PadForge.Common.Input
         /// was opened under. The sweep reopens the row when it moves.</summary>
         public int ConfigVersion { get; }
 
-        public HeadTrackerDevice()
-            : this(HeadTrackingRuntime.UdpPort, HeadTrackingRuntime.FreeTrackEnabled, HeadTrackingRuntime.Version, null)
+        /// <summary>Reads the live configuration. Version is read FIRST and
+        /// the settings after it, because the setters bump Version last: read
+        /// the other way round, a device could capture the NEW version with
+        /// the OLD port, and the sweep's reconfigured check would then never
+        /// fire again for that change.</summary>
+        public static HeadTrackerDevice FromCurrentSettings()
         {
+            int version = HeadTrackingRuntime.Version;
+            return new HeadTrackerDevice(HeadTrackingRuntime.UdpPort, HeadTrackingRuntime.FreeTrackEnabled, version, null);
         }
 
         internal HeadTrackerDevice(int port, bool freeTrack, int configVersion, Func<long> now)
@@ -157,6 +164,11 @@ namespace PadForge.Common.Input
         public bool UdpBindFailed => _udpBindFailed;
         public bool FreeTrackEnabled => _freeTrackEnabled;
 
+        /// <summary>FreeTrack was asked for and its mapping did not open.
+        /// Without this the status line reads the same as a mapping nobody
+        /// writes to, which is the one case a user cannot diagnose.</summary>
+        public bool FreeTrackFailed => _freeTrackEnabled && _freeTrackFailed;
+
         /// <summary>Bumps whenever <see cref="Source"/> or
         /// <see cref="UdpPeer"/> changes, so a preview loop can rebuild its
         /// status text only then.</summary>
@@ -221,7 +233,11 @@ namespace PadForge.Common.Input
                     _freeTrack = ft;
                     SdlDiagLog.WriteLine("Head tracker: FreeTrack shared memory open");
                 }
-                else ft.Dispose();
+                else
+                {
+                    ft.Dispose();
+                    _freeTrackFailed = true;
+                }
             }
 
             _attached = true;
@@ -301,7 +317,7 @@ namespace PadForge.Common.Input
                     _statusVersion++;
                 }
             }
-            long n = ++_samples;
+            long n = Interlocked.Increment(ref _samples);
             if ((n <= 64 && (n & (n - 1)) == 0) || (n & 4095) == 0)
                 SdlDiagLog.WriteLine(
                     $"Head tracker: pose #{n} via {source} yaw={pose[HeadPose.Yaw]:F1} pitch={pose[HeadPose.Pitch]:F1} roll={pose[HeadPose.Roll]:F1} x={pose[HeadPose.TX]:F1} y={pose[HeadPose.TY]:F1} z={pose[HeadPose.TZ]:F1}");
@@ -357,8 +373,13 @@ namespace PadForge.Common.Input
             _disposed = true;
             _attached = false;
             _running = false;
+            // Close first: that is what unblocks ReceiveFrom. Dispose runs on
+            // the POLL thread (the sweep retires the row), so the join is a
+            // courtesy with a short bound rather than a wait. Every exit path
+            // in the loop already swallows a disposed socket, so a thread
+            // that outlives this call ends on its next iteration anyway.
             try { _socket?.Close(); } catch { }
-            try { _thread?.Join(1000); } catch { }
+            try { _thread?.Join(50); } catch { }
             _thread = null;
             _socket = null;
             try { _freeTrack?.Dispose(); } catch { }
@@ -376,8 +397,11 @@ namespace PadForge.Common.Input
     /// The FreeTrack 2.0 client side (issue #355), the reference
     /// freetrackclient.c: <c>CreateFileMapping</c> on <c>FT_SharedMem</c> so
     /// launch order does not matter, a 16 ms wait on <c>FT_Mutext</c> per
-    /// read, then a copy of the heap. A missing mutex reads unlocked, as the
-    /// reference client does.
+    /// read, then a copy of the heap. When the mutex cannot be created this
+    /// reads unlocked, which the reference client does NOT do (its FTGetData
+    /// copies nothing at all in that case). A torn pose is a worse answer
+    /// than a stale one, but no answer at all is worse still for a source
+    /// whose only job is to report one.
     /// </summary>
     internal sealed class FreeTrackReader : IDisposable
     {

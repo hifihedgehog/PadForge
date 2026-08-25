@@ -4410,6 +4410,9 @@ namespace PadForge.Services
         // enumeration and an engine restart silent without a per-tick edge.
         private readonly HashSet<Guid> _assignOfferBaselineKnown = new();
         private readonly HashSet<(Guid Device, int Slot)> _assignOfferDismissed = new();
+        /// <summary>Last ASSIGNOFFER line written per (device, slot), so the
+        /// standing-condition walk logs a change rather than a heartbeat.</summary>
+        private readonly Dictionary<(Guid Device, int Slot), string> _assignOfferLogged = new();
         private bool _assignOfferBaselinePending = true;
 
         /// <summary>The pure offer rule. Static so the tests pin it without
@@ -4529,11 +4532,21 @@ namespace PadForge.Services
                 if (ud.IsOnline && eligible && !alreadyOnSlot && !dismissed)
                 {
                     // Only log the near-misses (online, eligible, unclaimed),
-                    // so a room full of already-assigned pads stays quiet.
-                    PadForge.Engine.SdlDiagLog.WriteLine(
+                    // so a room full of already-assigned pads stays quiet, and
+                    // only when the answer CHANGED: this walk runs on every
+                    // DevicesUpdated, so an idle unassigned pad wrote the same
+                    // line into the ring for as long as it sat there, which is
+                    // how a diagnostic buries the event someone is looking for.
+                    var logKey = (guid, open.PadIndex);
+                    string line =
                         $"ASSIGNOFFER slot={open.PadIndex} dev={ud.ResolvedName} " +
                         $"new={isNew} onSlot={alreadyOnSlot} slotHasDev={slotHasDevices} " +
-                        $"offerNew={settings.AssignOfferNewDevice} offerEmpty={settings.AssignOfferEmptySlot} => {offer}");
+                        $"offerNew={settings.AssignOfferNewDevice} offerEmpty={settings.AssignOfferEmptySlot} => {offer}";
+                    if (!_assignOfferLogged.TryGetValue(logKey, out var lastLine) || lastLine != line)
+                    {
+                        _assignOfferLogged[logKey] = line;
+                        PadForge.Engine.SdlDiagLog.WriteLine(line);
+                    }
                 }
                 if (!offer) continue;
                 open.SetAssignOffer(guid, LocalizedDeviceName(ud) ?? ud.ResolvedName);
@@ -4629,9 +4642,11 @@ namespace PadForge.Services
                 case PadForge.Common.Input.HeadTrackerSource.FreeTrack:
                     return s.HeadTracker_StatusFreeTrack;
                 default:
-                    return ht.UdpBindFailed
-                        ? string.Format(s.HeadTracker_StatusPortInUse_Format, ht.UdpPort)
-                        : string.Format(s.HeadTracker_StatusWaiting_Format, ht.UdpPort);
+                    if (ht.UdpBindFailed)
+                        return string.Format(s.HeadTracker_StatusPortInUse_Format, ht.UdpPort);
+                    if (ht.FreeTrackFailed)
+                        return string.Format(s.HeadTracker_StatusFreeTrackFailed_Format, ht.UdpPort);
+                    return string.Format(s.HeadTracker_StatusWaiting_Format, ht.UdpPort);
             }
         }
 

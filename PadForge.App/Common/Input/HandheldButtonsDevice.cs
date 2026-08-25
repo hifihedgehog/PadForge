@@ -51,6 +51,9 @@ namespace PadForge.Common.Input
 
         private readonly object _readersLock = new();
         private readonly Dictionary<string, VendorHidReader> _readers = new(StringComparer.OrdinalIgnoreCase);
+        /// <summary>Collections whose open already failed and logged. Guarded
+        /// by <see cref="_readersLock"/> with the reader map.</summary>
+        private readonly HashSet<string> _openFailed = new(StringComparer.OrdinalIgnoreCase);
 
         private volatile HandheldLearnSession _learn;
 
@@ -284,10 +287,16 @@ namespace PadForge.Common.Input
                     {
                         reader.ReportReceived -= OnReport;
                         reader.Dispose();
-                        PadForge.Engine.SdlDiagLog.WriteLine($"Handheld: could not open vendor collection {c.Key} ({c.Name})");
+                        // Once per collection, not once per four-second
+                        // sweep: a collection another program holds
+                        // exclusively never opens, and repeating the line
+                        // forever buries whatever else the ring is carrying.
+                        if (_openFailed.Add(key))
+                            PadForge.Engine.SdlDiagLog.WriteLine($"Handheld: could not open vendor collection {c.Key} ({c.Name})");
                         continue;
                     }
                     _readers[key] = reader;
+                    _openFailed.Remove(key);
                     PadForge.Engine.SdlDiagLog.WriteLine($"Handheld: reading vendor collection {c.Key} ({c.Name}), {c.InputReportLength}-byte reports");
                 }
             }

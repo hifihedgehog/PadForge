@@ -11634,13 +11634,13 @@
                                      knob. 48 is the shipped default (c571aae9); 16 is the
                                      floor the reference enforces
                                      (DS5Dongle src/config.cpp:99). Advanced and optional.
-                                     Gated like the jack rows: the byte goes into the DS5
-                                     Bluetooth packet 0x11 header and nowhere else, so on a
-                                     DualShock 4, a Wii Remote or a haptic-tone pad this
-                                     slider was a control that did nothing (4.3.2 docs
-                                     sweep). -->
+                                     The byte goes into the DS5 Bluetooth packet 0x11 header
+                                     and nowhere else, so the gate carries the TRANSPORT as
+                                     well as the model. Gating it on the jack rows alone
+                                     (4.3.2 docs sweep) still left the slider showing on a
+                                     USB DualSense, where nothing reads it. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8"
-                                            Visibility="{Binding SelectedDeviceHasHeadphoneJack, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            Visibility="{Binding SelectedDeviceHasDs5AudioBuffer, Converter={StaticResource BoolToVisibilityConverter}}">
                                     <TextBlock Text="{Binding Pad_Audio_BufferLength, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"
                                                ToolTip="{Binding Pad_Audio_BufferLength_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                     <Slider Value="{Binding DeviceConfig.Ds5AudioBufferLength, Mode=TwoWay}"

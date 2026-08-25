@@ -115,7 +115,18 @@ namespace PadForge.Common.Input
             }
         }
 
-        /// <summary>Subscribes the wanted classes and drops the rest. Worker only.</summary>
+        /// <summary>Subscribes the wanted classes and drops the rest. Worker only.
+        ///
+        /// <para>The firmware gate lives HERE, not at the caller. It used to
+        /// guard only the learn pass's enumeration, so a class named by a
+        /// stored definition (a hand-edited PadForge.xml, a button set
+        /// imported from another machine, an entry learned before the gate
+        /// existed) reached <c>Start</c> ungated. That is the exact path
+        /// whose blanket version bug-checked the bench machine with
+        /// MULTIPLE_IRP_COMPLETE_REQUESTS: a user-mode subscription to a
+        /// kernel driver's WMI class can crash the kernel. A guard that
+        /// covers one of an operation's callers is not a guard, so it now
+        /// covers the operation and a caller written later inherits it.</para></summary>
         public static void Sync(HashSet<string> wanted)
         {
             wanted ??= new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -134,6 +145,22 @@ namespace PadForge.Common.Input
                     }
                 foreach (var cls in wanted)
                     if (!_watchers.ContainsKey(cls)) start.Add(cls);
+            }
+            // Only pay the enumeration when something new is about to be
+            // subscribed: in the steady state every wanted class already has
+            // a watcher and this costs nothing.
+            if (start.Count > 0)
+            {
+                var allowed = EnumerateEventClasses();
+                var pass = new List<string>(start.Count);
+                foreach (var cls in start)
+                {
+                    if (allowed != null && allowed.Contains(cls, StringComparer.OrdinalIgnoreCase))
+                    { pass.Add(cls); continue; }
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        $"Handheld: refusing to watch WMI class {cls}, the firmware does not declare its GUID as an ACPI-WMI event");
+                }
+                start = pass;
             }
             if (stop != null)
             {
@@ -188,15 +215,20 @@ namespace PadForge.Common.Input
         private static void OnArrived(string cls, EventArrivedEventArgs e)
         {
             var ev = new Event { ClassName = cls };
-            try
+            // ManagementBaseObject wraps a COM object. Left to the finalizer
+            // it is one queued release per event, for the life of the row.
+            using (var incoming = e.NewEvent)
             {
-                foreach (PropertyData p in e.NewEvent.Properties)
+                try
                 {
-                    if (p == null || Bookkeeping.Contains(p.Name)) continue;
-                    ev.Props.Add((p.Name, Stringify(p.Value)));
+                    foreach (PropertyData p in incoming.Properties)
+                    {
+                        if (p == null || Bookkeeping.Contains(p.Name)) continue;
+                        ev.Props.Add((p.Name, Stringify(p.Value)));
+                    }
                 }
+                catch { }
             }
-            catch { }
             // Sparse: firmware keys arrive at human rate, so every event is
             // worth a line for a "learned but never fires" report.
             var parts = new List<string>(ev.Props.Count);

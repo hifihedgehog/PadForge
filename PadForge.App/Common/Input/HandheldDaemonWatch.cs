@@ -31,9 +31,20 @@ namespace PadForge.Common.Input
         /// empty when none.</summary>
         public static string Running => _running;
 
-        /// <summary>Re-scans the process list. Worker thread only.</summary>
+        private const int RescanIntervalMs = 30_000;
+        private static long _scannedTicks;
+
+        /// <summary>Re-scans the process list. Worker thread only.
+        ///
+        /// <para>Rate-limited: the answer feeds one line in the details pane
+        /// and a full process enumeration is not free, least of all on the
+        /// low-end handhelds this feature exists for. The sweep asks every
+        /// four seconds; this answers from cache in between.</para></summary>
         public static void Refresh()
         {
+            long now = Environment.TickCount64;
+            if (_scannedTicks != 0 && now - _scannedTicks < RescanIntervalMs) return;
+            _scannedTicks = now;
             try
             {
                 var found = new List<string>();

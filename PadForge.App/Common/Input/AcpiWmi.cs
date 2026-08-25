@@ -88,9 +88,11 @@ namespace PadForge.Common.Input
                 if (id == Sig("SSDT")) wanted.Add(id);
             }
             // GetSystemFirmwareTable returns the FIRST table with a given
-            // signature. SSDTs share one, so the enumerator's duplicates
-            // collapse; the mapper's _WDG almost always sits in the DSDT or
-            // the first SSDT carrying it, and both are read here.
+            // signature, and every SSDT shares the signature "SSDT", so the
+            // enumerator's duplicates collapse to one read. What is actually
+            // read is therefore the DSDT and the FIRST SSDT. A _WDG in a
+            // later SSDT is unreachable through this API, which fails CLOSED:
+            // the gate reports no event GUIDs and no WMI class is watched.
             var seen = new HashSet<uint>();
             foreach (uint id in wanted)
             {
@@ -119,8 +121,17 @@ namespace PadForge.Common.Input
                 int p = i + 4;
                 if (p >= aml.Length || aml[p] != 0x11) continue;
                 p++;
+                int pkgLenStart = p;
                 if (!ReadPkgLength(aml, ref p, out int pkgLen)) continue;
-                int pkgStart = p; // PkgLength counts from its own first byte
+                // PkgLength counts from its own first byte, so the package
+                // ends pkgLen bytes after where the length field began. The
+                // buffer's contents must lie inside it: without this bound a
+                // declared BufferSize larger than its package reads adjacent
+                // AML as guid_blocks, and this table is the only thing
+                // standing between a stored definition and a WMI class the
+                // firmware never declared.
+                long pkgEnd = (long)pkgLenStart + pkgLen;
+                if (pkgEnd > aml.Length) continue;
                 // BufferSize is an integer term: ZeroOp, OneOp, ByteConst,
                 // WordConst, DWordConst.
                 if (p >= aml.Length) continue;
@@ -134,7 +145,7 @@ namespace PadForge.Common.Input
                     case 0x0C: if (p + 4 >= aml.Length) continue; bufferSize = BitConverter.ToUInt32(aml, p + 1); p += 5; break;
                     default: continue;
                 }
-                if (bufferSize <= 0 || p + bufferSize > aml.Length) continue;
+                if (bufferSize <= 0 || p + bufferSize > aml.Length || p + bufferSize > pkgEnd) continue;
                 int entries = (int)(bufferSize / 20);
                 for (int e = 0; e < entries; e++)
                 {

@@ -582,6 +582,8 @@ namespace PadForge
                      or nameof(SettingsViewModel.HeadTrackingFreeTrack)
                      or nameof(SettingsViewModel.HeadTrackingRotationRange)
                      or nameof(SettingsViewModel.HeadTrackingTranslationRange)
+                     or nameof(SettingsViewModel.AssignOfferNewDevice)
+                     or nameof(SettingsViewModel.AssignOfferEmptySlot)
                      or nameof(SettingsViewModel.KeepHidHideCloaksBetweenLaunches)
                      or nameof(SettingsViewModel.Use2DControllerView)
                      or nameof(SettingsViewModel.EnableAutoProfileSwitching)

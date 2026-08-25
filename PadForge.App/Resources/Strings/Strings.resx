@@ -2703,6 +2703,7 @@
   <data name="HeadTracker_StatusUdp_Format" xml:space="preserve"><value>Receiving over UDP from {0}.</value></data>
   <data name="HeadTracker_StatusFreeTrack" xml:space="preserve"><value>Receiving from FreeTrack shared memory.</value></data>
   <data name="HeadTracker_StatusPortInUse_Format" xml:space="preserve"><value>UDP port {0} is in use by another program.</value></data>
+  <data name="HeadTracker_StatusFreeTrackFailed_Format" xml:space="preserve"><value>Waiting for a tracker on UDP port {0}. The FreeTrack shared memory could not be opened.</value></data>
   <data name="Handheld_ManageButton" xml:space="preserve"><value>Learn / Manage Hidden Buttons</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>Hidden Buttons</value></data>
   <data name="Handheld_LearnHeader" xml:space="preserve"><value>Learn a Button</value></data>

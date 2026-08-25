@@ -2294,7 +2294,7 @@
   <data name="Handheld_StartButton" xml:space="preserve"><value>학습 시작</value></data>
   <data name="Handheld_PhaseIdle" xml:space="preserve"><value>손을 떼세요. 대기 상태를 읽는 중…</value></data>
   <data name="Handheld_PhasePress" xml:space="preserve"><value>지금 숨겨진 버튼을 눌렀다가 놓으세요…</value></data>
-  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>손을 떼세요…</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>잠시만요…</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>변화가 감지되지 않았습니다. 표시된 시간 동안 버튼을 누르고 다시 시도하세요.</value></data>
   <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>제조사 보고서 {0}개와 이벤트 클래스 {1}개를 관찰했습니다. 누르는 동안: 보고서 {2}개, 이벤트 {3}개.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>버튼을 캡처했습니다. 이름을 입력하고 등록을 클릭하세요.</value></data>

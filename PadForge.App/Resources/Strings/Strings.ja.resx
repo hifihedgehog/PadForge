@@ -2294,7 +2294,7 @@
   <data name="Handheld_StartButton" xml:space="preserve"><value>学習を開始</value></data>
   <data name="Handheld_PhaseIdle" xml:space="preserve"><value>手を離してください。待機状態を読み取り中…</value></data>
   <data name="Handheld_PhasePress" xml:space="preserve"><value>今すぐ隠しボタンを押して、離してください…</value></data>
-  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>離してください…</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>しばらくお待ちください…</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>変化が検出されませんでした。表示された時間内にボタンを押して、もう一度お試しください。</value></data>
   <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>{0} 個のベンダー レポートと {1} 個のイベント クラスを監視しました。押下中: レポート {2} 件、イベント {3} 件。</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>ボタンを取得しました。名前を入力して「登録」をクリックしてください。</value></data>

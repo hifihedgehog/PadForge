@@ -3127,17 +3127,17 @@ Você pode tentar novamente mais tarde em Configurações.</value></data>
   <data name="Pad_Audio_Crossfeed_Low" xml:space="preserve"><value>Baixo</value></data>
   <data name="Pad_Audio_Crossfeed_Middle" xml:space="preserve"><value>Médio</value></data>
   <data name="Pad_Audio_Crossfeed_High" xml:space="preserve"><value>Alto</value></data>
-  <data name="Pad_Audio_Crossfeed_LowEasy" xml:space="preserve"><value>Baixo (suave)</value></data>
-  <data name="Pad_Audio_Crossfeed_MiddleEasy" xml:space="preserve"><value>Médio (suave)</value></data>
-  <data name="Pad_Audio_Crossfeed_HighEasy" xml:space="preserve"><value>Alto (suave)</value></data>
+  <data name="Pad_Audio_Crossfeed_LowEasy" xml:space="preserve"><value>Baixo (Suave)</value></data>
+  <data name="Pad_Audio_Crossfeed_MiddleEasy" xml:space="preserve"><value>Médio (Suave)</value></data>
+  <data name="Pad_Audio_Crossfeed_HighEasy" xml:space="preserve"><value>Alto (Suave)</value></data>
   <data name="Pad_Audio_Crossfeed_Custom" xml:space="preserve"><value>Personalizado</value></data>
-  <data name="Pad_Audio_CrossfeedCut" xml:space="preserve"><value>Frequência de corte</value></data>
+  <data name="Pad_Audio_CrossfeedCut" xml:space="preserve"><value>Frequência de Corte</value></data>
   <data name="Pad_Audio_CrossfeedCut_Tooltip" xml:space="preserve"><value>Frequência de cruzamento. Abaixo dela os canais se aproximam do mono e acima permanecem separados, então um corte mais baixo mistura menos.</value></data>
   <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>Mistura</value></data>
   <data name="Pad_Audio_CrossfeedFeed_Tooltip" xml:space="preserve"><value>Quanto do canal oposto chega abaixo do corte. Mais mistura estreita a imagem e amplia a sensação de sala.</value></data>
-  <data name="Pad_Audio_Reset_CrossfeedCut" xml:space="preserve"><value>Restaurar a frequência de corte</value></data>
-  <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>Restaurar a mistura</value></data>
-  <data name="Pad_Audio_Eq" xml:space="preserve"><value>Equalizador paramétrico</value></data>
+  <data name="Pad_Audio_Reset_CrossfeedCut" xml:space="preserve"><value>Redefinir Frequência de Corte</value></data>
+  <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>Redefinir Mistura</value></data>
+  <data name="Pad_Audio_Eq" xml:space="preserve"><value>Equalizador Paramétrico</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>Filtros por banda sobre o áudio do controle. Aplicado antes da codificação, então o limitador abaixo evita que uma banda realçada distorça.</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>Pré-amplificação</value></data>
   <data name="Pad_Audio_EqPreamp_Tooltip" xml:space="preserve"><value>Nível geral antes das bandas. Perfis do AutoEq trazem uma pré-amplificação negativa para que seus realces não distorçam, e importar já define isso.</value></data>
@@ -3152,14 +3152,14 @@ Você pode tentar novamente mais tarde em Configurações.</value></data>
   <data name="Pad_Audio_EqCol_Freq" xml:space="preserve"><value>Freq. (Hz)</value></data>
   <data name="Pad_Audio_EqCol_Gain" xml:space="preserve"><value>Ganho (dB)</value></data>
   <data name="Pad_Audio_EqCol_Q" xml:space="preserve"><value>Q</value></data>
-  <data name="Pad_Audio_EqAdd" xml:space="preserve"><value>Adicionar banda</value></data>
-  <data name="Pad_Audio_EqRemove" xml:space="preserve"><value>Remover banda</value></data>
+  <data name="Pad_Audio_EqAdd" xml:space="preserve"><value>Adicionar Banda</value></data>
+  <data name="Pad_Audio_EqRemove" xml:space="preserve"><value>Remover Banda</value></data>
   <data name="Pad_Audio_EqClear" xml:space="preserve"><value>Limpar</value></data>
-  <data name="Pad_Audio_EqImport" xml:space="preserve"><value>Importar da área de transferência</value></data>
+  <data name="Pad_Audio_EqImport" xml:space="preserve"><value>Importar da Área de Transferência</value></data>
   <data name="Pad_Audio_EqImport_Tooltip" xml:space="preserve"><value>Copie um perfil do AutoEq para seus fones e clique. Substitui as bandas e define a pré-amplificação. Sem conteúdo legível, o equalizador atual fica intacto.</value></data>
-  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>Importar de arquivo</value></data>
+  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>Importar de Arquivo</value></data>
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Escolha o .txt que o AutoEq baixou. Esta é a opção certa: o autoeq.app entrega um arquivo em vez de texto que dê para copiar.</value></data>
-  <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>Para uma correção ajustada aos seus fones: abra o autoeq.app, escolha seu modelo, baixe Custom Parametric Eq e use Importar de arquivo. O download Graphic Eq não tem linhas de filtro e não pode ser importado.</value></data>
+  <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>Para uma correção ajustada aos seus fones: abra o autoeq.app, escolha seu modelo, baixe Custom Parametric Eq e use Importar de Arquivo. O download Graphic Eq não tem linhas de filtro e não pode ser importado.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>Importadas {0} bandas com {1:0.#} dB de pré-amplificação de {2}.</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>Esse perfil não tem linhas de filtro. A exportação Graphic Eq do AutoEq não pode ser lida aqui. Baixe Custom Parametric Eq no lugar. O equalizador atual não mudou.</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>Nada a importar. O equalizador atual não mudou.</value></data>
@@ -3169,11 +3169,11 @@ Você pode tentar novamente mais tarde em Configurações.</value></data>
   <data name="Pad_Audio_Limiter_Tooltip" xml:space="preserve"><value>Mantém o sinal abaixo do teto. Vale deixar ligado sempre que houver realce, pois o áudio é codificado depois e distorcer o codificador soa bem pior do que o realce soa melhor.</value></data>
   <data name="Pad_Audio_LimiterCeiling" xml:space="preserve"><value>Teto</value></data>
   <data name="Pad_Audio_LimiterCeiling_Tooltip" xml:space="preserve"><value>Nível máximo que o limitador deixa passar, como porcentagem da escala cheia.</value></data>
-  <data name="Pad_Audio_Reset_Crossfeed" xml:space="preserve"><value>Redefinir crossfeed</value></data>
-  <data name="Pad_Audio_Reset_Eq" xml:space="preserve"><value>Redefinir o equalizador</value></data>
-  <data name="Pad_Audio_Reset_EqPreamp" xml:space="preserve"><value>Redefinir pré-amplificação</value></data>
-  <data name="Pad_Audio_Reset_Limiter" xml:space="preserve"><value>Redefinir o limitador</value></data>
-  <data name="Pad_Audio_Reset_LimiterCeiling" xml:space="preserve"><value>Redefinir o teto</value></data>
+  <data name="Pad_Audio_Reset_Crossfeed" xml:space="preserve"><value>Redefinir Crossfeed</value></data>
+  <data name="Pad_Audio_Reset_Eq" xml:space="preserve"><value>Redefinir Equalizador Paramétrico</value></data>
+  <data name="Pad_Audio_Reset_EqPreamp" xml:space="preserve"><value>Redefinir Pré-amplificação</value></data>
+  <data name="Pad_Audio_Reset_Limiter" xml:space="preserve"><value>Redefinir Limitador</value></data>
+  <data name="Pad_Audio_Reset_LimiterCeiling" xml:space="preserve"><value>Redefinir Teto</value></data>
   <data name="Pad_Audio_EqCurve_Tooltip" xml:space="preserve"><value>Arraste um ponto para mover sua frequência e ganho. Gire a roda sobre um ponto para alargá-lo ou estreitá-lo.</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>Caminho de saída</value></data>
   <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Onde o controle reproduz o áudio. Padrão mantém o roteamento do firmware e reproduz os sons do PadForge no alto-falante. Fones + Alto-falante reproduz em mono no lado do fone, um limite do firmware. Por Bluetooth este modo reproduz apenas nos fones. Seguir o conector muda para os fones quando algo é conectado ao controle e volta ao alto-falante ao desconectar; sem leitura do conector, age como Padrão.</value></data>

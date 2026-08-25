@@ -146,24 +146,23 @@ namespace PadForge.Common.Input
             lock (_lock)
             {
                 // WMI events first: a (class, property, value) that fired
-                // during the press is the key unless it also fires at
-                // rest. "At rest" must survive one early press: a user who
-                // taps the key a moment before the press phase puts one
-                // copy in the idle bucket, and treating that as noise
-                // cancelled the real press (bench, 2026-08-25). Noise is
-                // an event that repeats while idle, or shows up both while
-                // idle and after release, the shape of a periodic status.
+                // during the press OR the release is the key. Both windows
+                // count because a firmware key may report on key-up: the
+                // Legion Pro 7's Smart Connect key raises its event only
+                // when released, while Vantage raises on press (bench,
+                // 2026-08-25). Noise is an event that repeats while idle,
+                // the shape of a periodic status; one idle copy is an early
+                // press and does not spoil the pass. Press-window events
+                // are listed before release-window ones.
                 var idleCount = new Dictionary<(string, string, string), int>();
-                var releaseCount = new Dictionary<(string, string, string), int>();
                 foreach (var t in _wmiPhases[(int)Phase.Idle]) idleCount[t] = idleCount.TryGetValue(t, out var n) ? n + 1 : 1;
-                foreach (var t in _wmiPhases[(int)Phase.Release]) releaseCount[t] = releaseCount.TryGetValue(t, out var n) ? n + 1 : 1;
                 var seen = new HashSet<(string, string, string)>();
-                foreach (var t in _wmiPhases[(int)Phase.Press])
+                var pressed = new List<(string Cls, string Prop, string Val)>(_wmiPhases[(int)Phase.Press]);
+                pressed.AddRange(_wmiPhases[(int)Phase.Release]);
+                foreach (var t in pressed)
                 {
                     int idle = idleCount.TryGetValue(t, out var ic) ? ic : 0;
-                    int rel = releaseCount.TryGetValue(t, out var rc) ? rc : 0;
-                    bool noise = idle >= 2 || rel >= 2 || (idle >= 1 && rel >= 1);
-                    if (noise || !seen.Add(t)) continue;
+                    if (idle >= 2 || !seen.Add(t)) continue;
                     result.Add(new Candidate
                     {
                         Collection = t.Cls,

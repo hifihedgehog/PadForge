@@ -39,15 +39,25 @@ namespace PadForge.Common.Input
             public byte Mask { get; set; }
             public byte Value { get; set; }
             public VendorButtonKind ValueKind { get; set; }
+            /// <summary>WMI event delivery (a firmware key the vendor's
+            /// ACPI-WMI provider reports): the root\WMI event class, the
+            /// data property, and its value as invariant text. Null class
+            /// when the button has no WMI delivery.</summary>
+            public string WmiClass { get; set; }
+            public string WmiProperty { get; set; }
+            public string WmiValue { get; set; }
 
             public bool HasChord => Keys != null && Keys.Length > 0;
             public bool HasReport => !string.IsNullOrEmpty(Collection);
+            public bool HasWmi => !string.IsNullOrEmpty(WmiClass) && !string.IsNullOrEmpty(WmiProperty);
+            public bool HasAnyPath => HasChord || HasReport || HasWmi;
 
             public Entry Clone() => new Entry
             {
                 Name = Name, Button = Button, Keys = Keys == null ? null : (int[])Keys.Clone(),
                 Collection = Collection, ReportId = ReportId, ByteIndex = ByteIndex,
                 Mask = Mask, Value = Value, ValueKind = ValueKind,
+                WmiClass = WmiClass, WmiProperty = WmiProperty, WmiValue = WmiValue,
             };
 
             public HandheldChordDefinition ToChord() => new HandheldChordDefinition
@@ -152,6 +162,18 @@ namespace PadForge.Common.Input
             }
         }
 
+        /// <summary>WMI event classes a definition names. Subscribed
+        /// outside a capture; everything else only during one.</summary>
+        public static HashSet<string> RequiredWmiClasses
+        {
+            get
+            {
+                lock (_lock)
+                    return new HashSet<string>(_entries.Where(e => e.HasWmi).Select(e => e.WmiClass),
+                        StringComparer.OrdinalIgnoreCase);
+            }
+        }
+
         // Caller holds _lock.
         private static int LowestFreeButton()
         {
@@ -179,7 +201,7 @@ namespace PadForge.Common.Input
         /// no delivery path or the registry is full.</summary>
         public static Entry Register(Entry entry)
         {
-            if (entry == null || (!entry.HasChord && !entry.HasReport)) return null;
+            if (entry == null || !entry.HasAnyPath) return null;
             Entry stored;
             lock (_lock)
             {
@@ -234,7 +256,7 @@ namespace PadForge.Common.Input
                 if (entries != null)
                     foreach (var src in entries)
                     {
-                        if (src == null || (!src.HasChord && !src.HasReport)) continue;
+                        if (src == null || !src.HasAnyPath) continue;
                         var e = src.Clone();
                         if (e.Button < 0 || e.Button > MaxButton || _entries.Any(x => x.Button == e.Button))
                         {

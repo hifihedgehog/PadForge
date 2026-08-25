@@ -99,13 +99,20 @@ namespace PadForge.Tests
                 ByteIndex = 1, Value = 166, ValueKind = VendorButtonKind.Value,
             };
             HandheldButtonRegistry.Register(ally);
+            HandheldButtonRegistry.Register(new HandheldButtonRegistry.Entry
+            { Name = "Vantage", WmiClass = "LENOVO_UTILITY_EVENT", WmiProperty = "PressTypeDataVal", WmiValue = "72" });
 
             var dto = HandheldButtonRegistry.SaveRegistry().Select(HandheldButtonData.From).ToArray();
             Reset();
             HandheldButtonRegistry.LoadRegistry(dto.Select(d => d.ToEntry()), "X|Y");
 
             var e = HandheldButtonRegistry.Entries;
-            Assert.Equal(2, e.Count);
+            Assert.Equal(3, e.Count);
+            Assert.True(e[2].HasWmi);
+            Assert.False(e[2].HasChord);
+            Assert.False(e[2].HasReport);
+            Assert.Equal("72", e[2].WmiValue);
+            Assert.Contains("LENOVO_UTILITY_EVENT", HandheldButtonRegistry.RequiredWmiClasses);
             Assert.Equal(new[] { 0x5B, 0x44 }, e[0].Keys);
             Assert.True(e[0].HasReport);
             Assert.Equal(21, e[0].ByteIndex);
@@ -254,6 +261,25 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void WmiButton_PulsesOnItsEvent_IgnoresOtherValues()
+        {
+            // Legion Pro 7 (hardware-captured 2026-08-25): the Vantage key is
+            // LENOVO_UTILITY_EVENT PressTypeDataVal=72 and Smart Connect is
+            // 1, and nothing arrives on any HID collection or as a key.
+            var vantage = new HandheldButtonRegistry.Entry
+            { Name = "Vantage", WmiClass = "LENOVO_UTILITY_EVENT", WmiProperty = "PressTypeDataVal", WmiValue = "72" };
+            using var dev = Fresh(vantage);
+            WmiEventRuntime.RaiseForTest(new WmiEventRuntime.Event
+            { ClassName = "LENOVO_UTILITY_EVENT", Props = { ("PressTypeDataVal", "1") } });
+            Assert.False(dev.GetCurrentState().Buttons[0]);
+            WmiEventRuntime.RaiseForTest(new WmiEventRuntime.Event
+            { ClassName = "LENOVO_UTILITY_EVENT", Props = { ("PressTypeDataVal", "72") } });
+            Assert.True(dev.GetCurrentState().Buttons[0]);
+            Thread.Sleep(230);
+            Assert.False(dev.GetCurrentState().Buttons[0]);
+        }
+
+        [Fact]
         public void Identity_IsStableForTheMachineKey_AndSyntheticPath()
         {
             var id = new MachineIdentity { Manufacturer = "LENOVO", ProductName = "83E1", Family = "Legion Go" };
@@ -348,6 +374,42 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void WmiEvent_DuringThePress_IsACandidate_InArrivalOrder()
+        {
+            // The captured Legion Pro 7 sequence: the utility event that
+            // names the key, then the lighting side event both keys share.
+            var s = new HandheldLearnSession();
+            s.SetPhase(HandheldLearnSession.Phase.Idle);
+            s.SetPhase(HandheldLearnSession.Phase.Press);
+            s.OnWmiEvent(new WmiEventRuntime.Event { ClassName = "LENOVO_UTILITY_EVENT", Props = { ("PressTypeDataVal", "72") } });
+            s.OnWmiEvent(new WmiEventRuntime.Event { ClassName = "LENOVO_LIGHTING_EVENT", Props = { ("Key_ID", "3") } });
+            s.SetPhase(HandheldLearnSession.Phase.Release);
+
+            var found = s.Finish();
+            Assert.Equal(2, found.Count);
+            Assert.True(found[0].IsWmi);
+            Assert.Equal("LENOVO_UTILITY_EVENT", found[0].Collection);
+            Assert.Equal("PressTypeDataVal", found[0].WmiProperty);
+            Assert.Equal("72", found[0].WmiValue);
+            Assert.Equal("LENOVO_LIGHTING_EVENT", found[1].Collection);
+        }
+
+        [Fact]
+        public void WmiEvent_ThatAlsoFiresAtRest_IsNoise()
+        {
+            var s = new HandheldLearnSession();
+            s.SetPhase(HandheldLearnSession.Phase.Idle);
+            s.OnWmiEvent(new WmiEventRuntime.Event { ClassName = "LENOVO_AC_PD_EVENT", Props = { ("State", "1") } });
+            s.SetPhase(HandheldLearnSession.Phase.Press);
+            s.OnWmiEvent(new WmiEventRuntime.Event { ClassName = "LENOVO_AC_PD_EVENT", Props = { ("State", "1") } });
+            s.OnWmiEvent(new WmiEventRuntime.Event { ClassName = "LENOVO_UTILITY_EVENT", Props = { ("PressTypeDataVal", "1") } });
+            s.SetPhase(HandheldLearnSession.Phase.Release);
+            var c = Assert.Single(s.Finish());
+            Assert.Equal("LENOVO_UTILITY_EVENT", c.Collection);
+            Assert.Equal("1", c.WmiValue);
+        }
+
+        [Fact]
         public void NothingPressed_FindsNothing()
         {
             var rng = new Random(3);
@@ -420,12 +482,10 @@ namespace PadForge.Tests
         {
             // A built-in sensor has no link to lose, and a driver under its
             // report threshold goes quiet at rest: the row must not flap.
-            long now = 0;
-            var dev = new SystemMotionDevice(new MachineIdentity { Manufacturer = "T", ProductName = "T" }, () => now);
+            var dev = new SystemMotionDevice(new MachineIdentity { Manufacturer = "T", ProductName = "T" });
             dev.AttachForTest(false);
             Assert.NotNull(dev.GetCurrentState()); // before any sample: zero baseline
             dev.InjectSample(new[] { 90.0, 0.0, 0.0 }, null);
-            now += System.Diagnostics.Stopwatch.Frequency * 60;
             var s = dev.GetCurrentState();
             Assert.NotNull(s);
             Assert.Equal(Math.PI / 2, s.Gyro[0], 4);

@@ -2683,7 +2683,7 @@
   <data name="Handheld_ManageButton" xml:space="preserve"><value>Learn / Manage Hidden Buttons</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>Hidden Buttons</value></data>
   <data name="Handheld_LearnHeader" xml:space="preserve"><value>Learn a Button</value></data>
-  <data name="Handheld_Intro" xml:space="preserve"><value>Press the hidden button once when asked. PadForge watches the keyboard, the mouse, and every vendor report on this machine, and records whichever one the button changes.</value></data>
+  <data name="Handheld_Intro" xml:space="preserve"><value>Press the hidden button once when asked. PadForge watches the keyboard, the mouse, every vendor report, and every system event on this machine, and records whichever one the button changes.</value></data>
   <data name="Handheld_MachineLabel" xml:space="preserve"><value>Machine:</value></data>
   <data name="Handheld_StartButton" xml:space="preserve"><value>Start Learning</value></data>
   <data name="Handheld_PhaseIdle" xml:space="preserve"><value>Hands off. Reading the idle state…</value></data>
@@ -2705,7 +2705,7 @@
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>Exported {0} buttons.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>Imported {0} buttons.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>Handheld PC Buttons</value></data>
-  <data name="Settings_HandheldDesc" xml:space="preserve"><value>Handheld gaming PCs carry buttons the operating system never shows as a controller: rear paddles, menu keys, wheels. Turn this on to learn them once by pressing them, then map them like any other button. Also adds the machine's own gyroscope as a motion device.</value></data>
+  <data name="Settings_HandheldDesc" xml:space="preserve"><value>Handheld gaming PCs and laptops carry buttons the operating system never shows as a controller: rear paddles, menu keys, wheels, vendor hotkeys. Turn this on to learn them once by pressing them, then map them like any other button. Also adds the machine's own gyroscope as a motion device.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Enable Handheld PC Buttons</value></data>
   <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>Adds a Hidden Buttons device and a System Motion device to the Devices page. Off, nothing runs.</value></data>
   <data name="DevObj_ConsumerDynamic_Format" xml:space="preserve"><value>Consumer {0}</value></data>

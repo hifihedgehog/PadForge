@@ -2289,7 +2289,7 @@
   <data name="Handheld_ManageButton" xml:space="preserve"><value>Apprendre / gérer les boutons cachés</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>Boutons cachés</value></data>
   <data name="Handheld_LearnHeader" xml:space="preserve"><value>Apprendre un bouton</value></data>
-  <data name="Handheld_Intro" xml:space="preserve"><value>Appuyez une fois sur le bouton caché lorsque cela vous est demandé. PadForge surveille le clavier, la souris et chaque rapport constructeur de cette machine, et enregistre ce que le bouton modifie.</value></data>
+  <data name="Handheld_Intro" xml:space="preserve"><value>Appuyez une fois sur le bouton caché lorsque cela vous est demandé. PadForge surveille le clavier, la souris, chaque rapport constructeur et chaque événement système de cette machine, et enregistre ce que le bouton modifie.</value></data>
   <data name="Handheld_MachineLabel" xml:space="preserve"><value>Machine :</value></data>
   <data name="Handheld_StartButton" xml:space="preserve"><value>Commencer l'apprentissage</value></data>
   <data name="Handheld_PhaseIdle" xml:space="preserve"><value>Ne touchez à rien. Lecture de l'état au repos…</value></data>
@@ -2311,7 +2311,7 @@
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>{0} boutons exportés.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>{0} boutons importés.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>Boutons de PC portable</value></data>
-  <data name="Settings_HandheldDesc" xml:space="preserve"><value>Les PC portables de jeu ont des boutons que le système ne présente jamais comme une manette : palettes arrière, touches de menu, molettes. Activez cette option pour les apprendre une fois en les pressant, puis les assigner comme n'importe quel autre bouton. Ajoute aussi le gyroscope de la machine comme périphérique de mouvement.</value></data>
+  <data name="Settings_HandheldDesc" xml:space="preserve"><value>Les PC portables de jeu et les ordinateurs portables ont des boutons que le système ne présente jamais comme une manette : palettes arrière, touches de menu, molettes, touches spéciales du constructeur. Activez cette option pour les apprendre une fois en les pressant, puis les assigner comme n'importe quel autre bouton. Ajoute aussi le gyroscope de la machine comme périphérique de mouvement.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Activer les boutons de PC portable</value></data>
   <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>Ajoute un périphérique Boutons cachés et un périphérique Mouvement du système à la page Périphériques. Désactivé, rien ne s'exécute.</value></data>
   <data name="DeviceType_Nfc" xml:space="preserve"><value>Lecteur NFC</value></data>

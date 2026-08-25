@@ -31,16 +31,11 @@ namespace PadForge.Common.Input
     /// </summary>
     internal sealed class SystemMotionDevice : ISdlInputDevice
     {
-        internal const int StaleWindowMs = 5000;
         private const float DegToRad = (float)(Math.PI / 180.0);
         private const float StandardGravity = 9.80665f;
 
         private readonly object _stateLock = new();
         private readonly CustomInputState _state = new();
-        private readonly Func<long> _nowTicks;
-        private readonly long _staleTicks;
-        private long _lastSampleTicks;
-        private bool _everReceived;
         private volatile bool _attached;
         private volatile bool _disposed;
 
@@ -48,17 +43,14 @@ namespace PadForge.Common.Input
         private Accelerometer _accel;
         private long _samples;
 
-        public SystemMotionDevice(MachineIdentity machine, Func<long> nowTicksProvider = null)
+        public SystemMotionDevice(MachineIdentity machine)
         {
-            _nowTicks = nowTicksProvider ?? Stopwatch.GetTimestamp;
-            _staleTicks = Stopwatch.Frequency * StaleWindowMs / 1000;
             string key = machine?.Key ?? string.Empty;
             Name = (machine?.DisplayName ?? "This PC") + " Motion";
             DevicePath = "sensor://motion";
             InstanceGuid = Md5Guid("pfsysmotion:" + key);
             ProductGuid = Md5Guid("pfsysmotion-product");
             SdlInstanceId = SyntheticInstanceId.From(DevicePath);
-            _lastSampleTicks = _nowTicks();
         }
 
         /// <summary>True when the machine exposes a gyrometer. A WinRT
@@ -157,7 +149,6 @@ namespace PadForge.Common.Input
 
         private void Publish(float? gx, float? gy, float? gz, float[] accel)
         {
-            long now = _nowTicks();
             lock (_stateLock)
             {
                 if (gx.HasValue)
@@ -172,8 +163,6 @@ namespace PadForge.Common.Input
                     _state.Accel[1] = accel[1];
                     _state.Accel[2] = accel[2];
                 }
-                _lastSampleTicks = now;
-                _everReceived = true;
             }
             long n = ++_samples;
             if ((n <= 64 && (n & (n - 1)) == 0) || (n & 4095) == 0)

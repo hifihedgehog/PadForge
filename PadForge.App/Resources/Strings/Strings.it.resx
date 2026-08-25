@@ -2311,7 +2311,7 @@
   <data name="Handheld_ManageButton" xml:space="preserve"><value>Apprendi / gestisci pulsanti nascosti</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>Pulsanti nascosti</value></data>
   <data name="Handheld_LearnHeader" xml:space="preserve"><value>Apprendi un pulsante</value></data>
-  <data name="Handheld_Intro" xml:space="preserve"><value>Premi una volta il pulsante nascosto quando richiesto. PadForge osserva la tastiera, il mouse e ogni report del produttore su questa macchina e registra ciò che il pulsante modifica.</value></data>
+  <data name="Handheld_Intro" xml:space="preserve"><value>Premi una volta il pulsante nascosto quando richiesto. PadForge osserva la tastiera, il mouse, ogni report del produttore e ogni evento di sistema su questa macchina e registra ciò che il pulsante modifica.</value></data>
   <data name="Handheld_MachineLabel" xml:space="preserve"><value>Macchina:</value></data>
   <data name="Handheld_StartButton" xml:space="preserve"><value>Avvia apprendimento</value></data>
   <data name="Handheld_PhaseIdle" xml:space="preserve"><value>Non toccare. Lettura dello stato a riposo…</value></data>
@@ -2333,7 +2333,7 @@
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>{0} pulsanti esportati.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>{0} pulsanti importati.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>Pulsanti del PC portatile</value></data>
-  <data name="Settings_HandheldDesc" xml:space="preserve"><value>I PC portatili da gioco hanno pulsanti che il sistema operativo non mostra mai come controller: paddle posteriori, tasti menu, rotelle. Attiva per apprenderli una volta premendoli, poi mappali come qualsiasi altro pulsante. Aggiunge anche il giroscopio della macchina come dispositivo di movimento.</value></data>
+  <data name="Settings_HandheldDesc" xml:space="preserve"><value>I PC portatili da gioco e i notebook hanno pulsanti che il sistema operativo non mostra mai come controller: paddle posteriori, tasti menu, rotelle, tasti speciali del produttore. Attiva per apprenderli una volta premendoli, poi mappali come qualsiasi altro pulsante. Aggiunge anche il giroscopio della macchina come dispositivo di movimento.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Attiva pulsanti del PC portatile</value></data>
   <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>Aggiunge un dispositivo Pulsanti nascosti e un dispositivo Movimento del sistema alla pagina Dispositivi. Disattivato, non viene eseguito nulla.</value></data>
   <data name="DeviceType_Nfc" xml:space="preserve"><value>Lettore NFC</value></data>

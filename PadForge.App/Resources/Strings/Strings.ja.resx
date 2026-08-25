@@ -2289,7 +2289,7 @@
   <data name="Handheld_ManageButton" xml:space="preserve"><value>隠しボタンを学習 / 管理</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>隠しボタン</value></data>
   <data name="Handheld_LearnHeader" xml:space="preserve"><value>ボタンを学習</value></data>
-  <data name="Handheld_Intro" xml:space="preserve"><value>求められたら隠しボタンを一度押してください。PadForge はこのマシンのキーボード、マウス、すべてのベンダー レポートを監視し、ボタンが変化させたものを記録します。</value></data>
+  <data name="Handheld_Intro" xml:space="preserve"><value>求められたら隠しボタンを一度押してください。PadForge はこのマシンのキーボード、マウス、すべてのベンダー レポート、すべてのシステム イベントを監視し、ボタンが変化させたものを記録します。</value></data>
   <data name="Handheld_MachineLabel" xml:space="preserve"><value>マシン:</value></data>
   <data name="Handheld_StartButton" xml:space="preserve"><value>学習を開始</value></data>
   <data name="Handheld_PhaseIdle" xml:space="preserve"><value>手を離してください。待機状態を読み取り中…</value></data>
@@ -2311,7 +2311,7 @@
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>{0} 個のボタンをエクスポートしました。</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>{0} 個のボタンをインポートしました。</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>携帯型 PC ボタン</value></data>
-  <data name="Settings_HandheldDesc" xml:space="preserve"><value>携帯型ゲーミング PC には、OS がコントローラーとして表示しないボタンがあります。背面パドル、メニュー キー、ホイールなどです。オンにすると、押すだけで一度学習し、他のボタンと同じように割り当てられます。マシン自体のジャイロスコープもモーション デバイスとして追加されます。</value></data>
+  <data name="Settings_HandheldDesc" xml:space="preserve"><value>携帯型ゲーミング PC やノート PC には、OS がコントローラーとして表示しないボタンがあります。背面パドル、メニュー キー、ホイール、メーカー独自のホットキーなどです。オンにすると、押すだけで一度学習し、他のボタンと同じように割り当てられます。マシン自体のジャイロスコープもモーション デバイスとして追加されます。</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>携帯型 PC ボタンを有効にする</value></data>
   <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>デバイス ページに隠しボタン デバイスとシステム モーション デバイスを追加します。オフの場合は何も動作しません。</value></data>
   <data name="DeviceType_Nfc" xml:space="preserve"><value>NFCリーダー</value></data>

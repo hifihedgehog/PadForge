@@ -2283,7 +2283,7 @@
   <data name="Handheld_ManageButton" xml:space="preserve"><value>Aprender / Gerenciar Botões Ocultos</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>Botões Ocultos</value></data>
   <data name="Handheld_LearnHeader" xml:space="preserve"><value>Aprender um Botão</value></data>
-  <data name="Handheld_Intro" xml:space="preserve"><value>Pressione o botão oculto uma vez quando solicitado. O PadForge observa o teclado, o mouse e todos os relatórios do fabricante nesta máquina e registra o que o botão altera.</value></data>
+  <data name="Handheld_Intro" xml:space="preserve"><value>Pressione o botão oculto uma vez quando solicitado. O PadForge observa o teclado, o mouse, todos os relatórios do fabricante e todos os eventos do sistema nesta máquina e registra o que o botão altera.</value></data>
   <data name="Handheld_MachineLabel" xml:space="preserve"><value>Máquina:</value></data>
   <data name="Handheld_StartButton" xml:space="preserve"><value>Iniciar Aprendizado</value></data>
   <data name="Handheld_PhaseIdle" xml:space="preserve"><value>Não toque. Lendo o estado ocioso…</value></data>
@@ -2305,7 +2305,7 @@
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>{0} botões exportados.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>{0} botões importados.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>Botões de PC Portátil</value></data>
-  <data name="Settings_HandheldDesc" xml:space="preserve"><value>PCs portáteis de jogos têm botões que o sistema operacional nunca mostra como controle: paddles traseiros, teclas de menu, rodas. Ative para aprendê-los uma vez pressionando-os e depois mapeá-los como qualquer outro botão. Também adiciona o giroscópio da própria máquina como dispositivo de movimento.</value></data>
+  <data name="Settings_HandheldDesc" xml:space="preserve"><value>PCs portáteis de jogos e notebooks têm botões que o sistema operacional nunca mostra como controle: paddles traseiros, teclas de menu, rodas, teclas de atalho do fabricante. Ative para aprendê-los uma vez pressionando-os e depois mapeá-los como qualquer outro botão. Também adiciona o giroscópio da própria máquina como dispositivo de movimento.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Ativar Botões de PC Portátil</value></data>
   <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>Adiciona um dispositivo Botões Ocultos e um dispositivo Movimento do Sistema à página Dispositivos. Desligado, nada é executado.</value></data>
   <data name="DeviceType_Nfc" xml:space="preserve"><value>Leitor NFC</value></data>

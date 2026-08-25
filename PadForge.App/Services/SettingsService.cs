@@ -5491,6 +5491,9 @@ namespace PadForge.Services
         [XmlAttribute] public byte Mask { get; set; }
         [XmlAttribute] public byte Value { get; set; }
         [XmlAttribute] public int Kind { get; set; }
+        [XmlAttribute] public string WmiClass { get; set; }
+        [XmlAttribute] public string WmiProperty { get; set; }
+        [XmlAttribute] public string WmiValue { get; set; }
 
         public static HandheldButtonData From(PadForge.Common.Input.HandheldButtonRegistry.Entry e) => new HandheldButtonData
         {
@@ -5503,6 +5506,9 @@ namespace PadForge.Services
             Mask = e.Mask,
             Value = e.Value,
             Kind = (int)e.ValueKind,
+            WmiClass = e.HasWmi ? e.WmiClass : null,
+            WmiProperty = e.HasWmi ? e.WmiProperty : null,
+            WmiValue = e.HasWmi ? e.WmiValue : null,
         };
 
         public PadForge.Common.Input.HandheldButtonRegistry.Entry ToEntry()
@@ -5526,6 +5532,9 @@ namespace PadForge.Services
                 Mask = Mask,
                 Value = Value,
                 ValueKind = Kind == 1 ? PadForge.Engine.Common.VendorButtonKind.Value : PadForge.Engine.Common.VendorButtonKind.Bit,
+                WmiClass = string.IsNullOrWhiteSpace(WmiClass) ? null : WmiClass,
+                WmiProperty = string.IsNullOrWhiteSpace(WmiProperty) ? null : WmiProperty,
+                WmiValue = WmiValue ?? string.Empty,
             };
         }
     }

@@ -2266,6 +2266,7 @@ namespace PadForge.Common.Input
             {
                 var present = VendorHidRuntime.Enumerate();
                 if (present != null) dev.SyncReaders(present);
+                dev.SyncWmi();
             }
 
             bool probe;

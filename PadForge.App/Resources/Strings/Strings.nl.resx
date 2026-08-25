@@ -2309,7 +2309,7 @@
   <data name="Handheld_ManageButton" xml:space="preserve"><value>Verborgen knoppen leren / beheren</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>Verborgen knoppen</value></data>
   <data name="Handheld_LearnHeader" xml:space="preserve"><value>Een knop leren</value></data>
-  <data name="Handheld_Intro" xml:space="preserve"><value>Druk eenmaal op de verborgen knop wanneer daarom wordt gevraagd. PadForge bekijkt het toetsenbord, de muis en elk fabrikantrapport op deze machine en legt vast wat de knop verandert.</value></data>
+  <data name="Handheld_Intro" xml:space="preserve"><value>Druk eenmaal op de verborgen knop wanneer daarom wordt gevraagd. PadForge bekijkt het toetsenbord, de muis, elk fabrikantrapport en elke systeemgebeurtenis op deze machine en legt vast wat de knop verandert.</value></data>
   <data name="Handheld_MachineLabel" xml:space="preserve"><value>Machine:</value></data>
   <data name="Handheld_StartButton" xml:space="preserve"><value>Leren starten</value></data>
   <data name="Handheld_PhaseIdle" xml:space="preserve"><value>Handen af. Ruststand wordt gelezen…</value></data>
@@ -2331,7 +2331,7 @@
   <data name="Handheld_ExportedFormat" xml:space="preserve"><value>{0} knoppen geëxporteerd.</value></data>
   <data name="Handheld_ImportedFormat" xml:space="preserve"><value>{0} knoppen geïmporteerd.</value></data>
   <data name="Settings_Handheld" xml:space="preserve"><value>Handheld-pc-knoppen</value></data>
-  <data name="Settings_HandheldDesc" xml:space="preserve"><value>Handheld gaming-pc's hebben knoppen die het besturingssysteem nooit als controller toont: achterste paddles, menutoetsen, wieltjes. Schakel dit in om ze eenmalig te leren door erop te drukken en ze daarna als elke andere knop toe te wijzen. Voegt ook de eigen gyroscoop van de machine toe als bewegingsapparaat.</value></data>
+  <data name="Settings_HandheldDesc" xml:space="preserve"><value>Handheld gaming-pc's en laptops hebben knoppen die het besturingssysteem nooit als controller toont: achterste paddles, menutoetsen, wieltjes, sneltoetsen van de fabrikant. Schakel dit in om ze eenmalig te leren door erop te drukken en ze daarna als elke andere knop toe te wijzen. Voegt ook de eigen gyroscoop van de machine toe als bewegingsapparaat.</value></data>
   <data name="Settings_HandheldEnable" xml:space="preserve"><value>Handheld-pc-knoppen inschakelen</value></data>
   <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>Voegt een apparaat Verborgen knoppen en een apparaat Systeembeweging toe aan de pagina Apparaten. Uit, dan draait er niets.</value></data>
   <data name="DeviceType_Nfc" xml:space="preserve"><value>NFC-lezer</value></data>

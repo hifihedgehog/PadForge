@@ -70,6 +70,11 @@ namespace PadForge.Common.Input
                     ? $"[{e.ReportId:X2}] byte {e.ByteIndex} bit 0x{e.Mask:X2}"
                     : $"[{e.ReportId:X2}] byte {e.ByteIndex} = 0x{e.Value:X2}");
             }
+            if (e.HasWmi)
+            {
+                if (sb.Length > 0) sb.Append("  |  ");
+                sb.Append(e.WmiClass).Append(' ').Append(e.WmiProperty).Append(" = ").Append(e.WmiValue);
+            }
             return sb.ToString();
         }
     }

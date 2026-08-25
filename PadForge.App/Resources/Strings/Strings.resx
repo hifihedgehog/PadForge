@@ -281,7 +281,7 @@
   <data name="Dashboard_RemoteLinkPairButton" xml:space="preserve"><value>Pair</value></data>
   <data name="RemoteLink_Connect" xml:space="preserve"><value>Connect</value></data>
   <data name="RemoteLink_Connected" xml:space="preserve"><value>Connected</value></data>
-  <data name="RemoteLink_PairTitle" xml:space="preserve"><value>Pair with remote PC</value></data>
+  <data name="RemoteLink_PairTitle" xml:space="preserve"><value>Pair with Remote PC</value></data>
   <data name="RemoteLink_PairPrompt" xml:space="preserve"><value>Confirm this code matches on both screens, then Pair.</value></data>
   <data name="RemoteLink_Pair" xml:space="preserve"><value>Pair</value></data>
   <data name="RemoteLink_Reject" xml:space="preserve"><value>Reject</value></data>
@@ -745,7 +745,7 @@
   <data name="ManageProfiles_Delete" xml:space="preserve"><value>Delete</value></data>
   <data name="ManageProfiles_Close" xml:space="preserve"><value>Close</value></data>
   <data name="ManageProfiles_ExportTitle" xml:space="preserve"><value>Export Profile JSON</value></data>
-  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Delete imported profile?</value></data>
+  <data name="ManageProfiles_DeleteTitle" xml:space="preserve"><value>Delete Imported Profile?</value></data>
   <data name="ManageProfiles_DeleteConfirm_Format" xml:space="preserve"><value>Delete "{0}"? Any slot currently using this profile will fall back to the synthetic Custom entry.</value></data>
   <data name="ManageProfiles_StatusExported_Format" xml:space="preserve"><value>Exported to {0}</value></data>
   <data name="ManageProfiles_StatusExportFailed_Format" xml:space="preserve"><value>Export failed: {0}</value></data>
@@ -927,13 +927,13 @@
   <data name="Pad_Combine_OR_Description" xml:space="preserve"><value>Fire when any source is active. Good for buttons.</value></data>
   <data name="Pad_Combine_AND_Name" xml:space="preserve"><value>Both</value></data>
   <data name="Pad_Combine_AND_Description" xml:space="preserve"><value>Fire only when all sources are active</value></data>
-  <data name="Pad_Combine_XOR_Name" xml:space="preserve"><value>Only one</value></data>
+  <data name="Pad_Combine_XOR_Name" xml:space="preserve"><value>Only One</value></data>
   <data name="Pad_Combine_XOR_Description" xml:space="preserve"><value>Fire only when exactly one source is active</value></data>
   <data name="Pad_Combine_Custom_Name" xml:space="preserve"><value>Custom</value></data>
   <data name="Pad_Combine_Custom_Description" xml:space="preserve"><value>Build your own with the formula editor below</value></data>
   <data name="Pad_Formula_TextBox_Tooltip" xml:space="preserve"><value>Click chips below to build a formula, or drag chips into the box. a, b, c… stand for this row's sources in order.</value></data>
   <data name="Pad_Formula_Insert" xml:space="preserve"><value>Insert</value></data>
-  <data name="Pad_Formula_StarterRecipes" xml:space="preserve"><value>Starter recipes</value></data>
+  <data name="Pad_Formula_StarterRecipes" xml:space="preserve"><value>Starter Recipes</value></data>
   <data name="Pad_Formula_Status_Empty" xml:space="preserve"><value>✓ empty (evaluates to 0)</value></data>
   <data name="Pad_Formula_Status_ParseError" xml:space="preserve"><value>parse error</value></data>
   <data name="Pad_Formula_Status_Valid" xml:space="preserve"><value>✓ valid</value></data>
@@ -982,28 +982,28 @@
   <data name="Pad_Formula_Chip_Cos" xml:space="preserve"><value>Cosine of an angle in radians: cos(angle).</value></data>
   <data name="Pad_Formula_Chip_Tan" xml:space="preserve"><value>Tangent of an angle in radians: tan(angle).</value></data>
   <data name="Pad_Formula_Chip_Atan2" xml:space="preserve"><value>Angle of a pair in radians: atan2(y, x). Pairs with hypot for stick direction.</value></data>
-  <data name="Pad_Formula_Preset_HalfScale_Name" xml:space="preserve"><value>Half scale</value></data>
+  <data name="Pad_Formula_Preset_HalfScale_Name" xml:space="preserve"><value>Half Scale</value></data>
   <data name="Pad_Formula_Preset_HalfScale_Tooltip" xml:space="preserve"><value>A at half strength</value></data>
-  <data name="Pad_Formula_Preset_QuarterScale_Name" xml:space="preserve"><value>Quarter scale</value></data>
+  <data name="Pad_Formula_Preset_QuarterScale_Name" xml:space="preserve"><value>Quarter Scale</value></data>
   <data name="Pad_Formula_Preset_QuarterScale_Tooltip" xml:space="preserve"><value>A at quarter strength</value></data>
   <data name="Pad_Formula_Preset_ReverseA_Name" xml:space="preserve"><value>Reverse a</value></data>
   <data name="Pad_Formula_Preset_ReverseA_Tooltip" xml:space="preserve"><value>Flip A's sign</value></data>
   <data name="Pad_Formula_Preset_CapTo1_Name" xml:space="preserve"><value>Cap to ±1</value></data>
   <data name="Pad_Formula_Preset_CapTo1_Tooltip" xml:space="preserve"><value>Sum A + B but never exceed ±1</value></data>
-  <data name="Pad_Formula_Preset_WeightedBlend_Name" xml:space="preserve"><value>Weighted blend</value></data>
+  <data name="Pad_Formula_Preset_WeightedBlend_Name" xml:space="preserve"><value>Weighted Blend</value></data>
   <data name="Pad_Formula_Preset_WeightedBlend_Tooltip" xml:space="preserve"><value>70% of A + 30% of B</value></data>
   <data name="Pad_Formula_Preset_Difference_Name" xml:space="preserve"><value>Difference</value></data>
   <data name="Pad_Formula_Preset_Difference_Tooltip" xml:space="preserve"><value>A minus B</value></data>
-  <data name="Pad_Formula_Preset_AUnlessIdle_Name" xml:space="preserve"><value>a unless idle</value></data>
+  <data name="Pad_Formula_Preset_AUnlessIdle_Name" xml:space="preserve"><value>a Unless Idle</value></data>
   <data name="Pad_Formula_Preset_AUnlessIdle_Tooltip" xml:space="preserve"><value>Use A, but if A is at rest, fall back to B</value></data>
-  <data name="Pad_Formula_Preset_ThresholdGate_Name" xml:space="preserve"><value>Threshold gate</value></data>
+  <data name="Pad_Formula_Preset_ThresholdGate_Name" xml:space="preserve"><value>Threshold Gate</value></data>
   <data name="Pad_Formula_Preset_ThresholdGate_Tooltip" xml:space="preserve"><value>Fire fully if A is past halfway, otherwise zero. Turns an axis into a button.</value></data>
-  <data name="Pad_Formula_Preset_BothPressed_Name" xml:space="preserve"><value>Both pressed</value></data>
+  <data name="Pad_Formula_Preset_BothPressed_Name" xml:space="preserve"><value>Both Pressed</value></data>
   <data name="Pad_Formula_Preset_BothPressed_Tooltip" xml:space="preserve"><value>Fire only when A and B are both pushed</value></data>
-  <data name="Pad_Formula_Preset_StrongerWins_Name" xml:space="preserve"><value>Stronger wins</value></data>
+  <data name="Pad_Formula_Preset_StrongerWins_Name" xml:space="preserve"><value>Stronger Wins</value></data>
   <data name="Pad_Formula_Preset_StrongerWins_Tooltip" xml:space="preserve"><value>Whichever of A or B is pushed harder, with sign</value></data>
   <data name="Pad_Mapping_ExtraSourcePickerTooltip" xml:space="preserve"><value>Pick the source from any device assigned to this slot.</value></data>
-  <data name="Pad_Mapping_AddOppositeDir" xml:space="preserve"><value>+ opposite direction</value></data>
+  <data name="Pad_Mapping_AddOppositeDir" xml:space="preserve"><value>+ Opposite Direction</value></data>
   <data name="Pad_Mapping_AddOppositeDir_Tooltip" xml:space="preserve"><value>Only the positive (+) direction of this stick axis is mapped. Click to add an inverted second source for the negative (−) direction.</value></data>
   <data name="Pad_Formula_Var_PositionA" xml:space="preserve"><value>First source</value></data>
   <data name="Pad_Formula_Var_PositionB" xml:space="preserve"><value>Second source</value></data>
@@ -1080,7 +1080,7 @@
   <data name="Macro_ConsumeTrigger_Tooltip" xml:space="preserve"><value>Eats the trigger input so the game never sees it. Works for virtual controller buttons, raw device buttons, and touchpad or gyro style inputs. Axis-threshold, POV, and gesture triggers are not consumed.</value></data>
   <data name="Macro_Layer" xml:space="preserve"><value>Layer</value></data>
   <data name="Macro_Layer_Tooltip" xml:space="preserve"><value>Which shift layer this macro belongs to. Any layer fires regardless of the engaged layer. Base and named layers fire only while that layer is engaged, exactly like a mapping row.</value></data>
-  <data name="Macro_Layer_Any" xml:space="preserve"><value>Any layer</value></data>
+  <data name="Macro_Layer_Any" xml:space="preserve"><value>Any Layer</value></data>
   <data name="Macro_AlwaysDesc" xml:space="preserve"><value>Runs continuously while this virtual controller is active. No trigger button required.</value></data>
   <data name="Macro_ActionSequence" xml:space="preserve"><value>Action Sequence</value></data>
   <data name="Macro_AddAction" xml:space="preserve"><value>Add Action</value></data>
@@ -1227,7 +1227,7 @@
   <data name="Macro_MouseX_Label" xml:space="preserve"><value>Mouse X</value></data>
   <data name="Macro_MouseY_Label" xml:space="preserve"><value>Mouse Y</value></data>
   <data name="Macro_RepeatInterval_Label" xml:space="preserve"><value>Interval</value></data>
-  <data name="Macro_PickOnScreen" xml:space="preserve"><value>Pick on screen</value></data>
+  <data name="Macro_PickOnScreen" xml:space="preserve"><value>Pick on Screen</value></data>
   <data name="Macro_PickOnScreen_Countdown_Format" xml:space="preserve"><value>Capturing in {0}...</value></data>
   <data name="Macro_PickOnScreen_Tooltip" xml:space="preserve"><value>Click, then move the cursor onto the target. Its position is captured after a short countdown.</value></data>
   <data name="Macro_CursorClampMode_Label" xml:space="preserve"><value>Mode</value></data>
@@ -1490,11 +1490,11 @@
   <data name="Pad_Touchpad_TrackpadThreshold_Tooltip" xml:space="preserve"><value>Finger speed (mm/s) where the cursor starts speeding up. Lower accelerates sooner.</value></data>
   <data name="Pad_Touchpad_TrackpadPadWidth" xml:space="preserve"><value>Pad Width</value></data>
   <data name="Pad_Touchpad_TrackpadPadWidth_Tooltip" xml:space="preserve"><value>Physical width of this touchpad in mm. Decides whether slow movement can reach the fine-control range at all, so set it near the real size of the pad.</value></data>
-  <data name="Pad_ResetTouchpadPointerResponse" xml:space="preserve"><value>Reset response</value></data>
-  <data name="Pad_ResetTouchpadTrackpadThreshold" xml:space="preserve"><value>Reset speed threshold</value></data>
-  <data name="Pad_ResetTouchpadTrackpadPadWidth" xml:space="preserve"><value>Reset pad width</value></data>
+  <data name="Pad_ResetTouchpadPointerResponse" xml:space="preserve"><value>Reset Response</value></data>
+  <data name="Pad_ResetTouchpadTrackpadThreshold" xml:space="preserve"><value>Reset Speed Threshold</value></data>
+  <data name="Pad_ResetTouchpadTrackpadPadWidth" xml:space="preserve"><value>Reset Pad Width</value></data>
   <data name="Pad_Touchpad_MouseAcceleration_Tooltip" xml:space="preserve"><value>Fast drags cover more screen than slow ones over the same distance. 0 keeps the cursor speed flat.</value></data>
-  <data name="Pad_ResetTouchpadMouseAcceleration" xml:space="preserve"><value>Reset acceleration</value></data>
+  <data name="Pad_ResetTouchpadMouseAcceleration" xml:space="preserve"><value>Reset Acceleration</value></data>
   <data name="Pad_Touchpad_MouseJitterReduction_Tooltip" xml:space="preserve"><value>Damps resting-hand tremor without a dead zone, so tiny deliberate movements still register.</value></data>
   <data name="Pad_ResetTouchpadMouseJitterReduction" xml:space="preserve"><value>Reset Jitter Reduction</value></data>
   <data name="Pad_Touchpad_MouseMomentum" xml:space="preserve"><value>Momentum</value></data>
@@ -1638,7 +1638,7 @@
   <data name="Pad_Gyro_Compass_Description" xml:space="preserve"><value>This controller carries a magnetometer. Anchoring the yaw to magnetic north removes slow horizontal drift from gyro aiming. Calibrate first: press Calibrate, rotate the controller through all orientations in a figure-8 for a few seconds, then press again.</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Anchor Yaw to Compass</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Adds a small corrective rate that pulls the horizontal aim toward the magnetic heading, so drift cannot accumulate. Requires a stored magnetometer calibration. Samples disturbed by nearby metal or magnets are rejected automatically.</value></data>
-  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Reset to default (off)</value></data>
+  <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Reset to Default (Off)</value></data>
   <data name="Pad_Gyro_MagCalibrate" xml:space="preserve"><value>Calibrate Magnetometer</value></data>
   <data name="Pad_Gyro_MagCalibrate_Stop" xml:space="preserve"><value>Finish Calibration</value></data>
   <data name="Settings_GyroRealWorldCalibration" xml:space="preserve"><value>Real-World Calibration</value></data>
@@ -1679,9 +1679,9 @@
   <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>Aggressive</value></data>
   <data name="Pad_Gyro_Curve_Relaxed" xml:space="preserve"><value>Relaxed</value></data>
   <data name="Pad_Gyro_Curve_Wide" xml:space="preserve"><value>Wide</value></data>
-  <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Extra wide</value></data>
+  <data name="Pad_Gyro_Curve_ExtraWide" xml:space="preserve"><value>Extra Wide</value></data>
   <data name="Pad_Gyro_Units_Multiplier" xml:space="preserve"><value>Multiplier</value></data>
-  <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Degrees per screen turn</value></data>
+  <data name="Pad_Gyro_Units_DegPerScreenTurn" xml:space="preserve"><value>Degrees per Screen Turn</value></data>
   <data name="Pad_Gyro_ResetCalibration_All_Tooltip" xml:space="preserve"><value>Reset Calibration</value></data>
   <data name="Pad_Gyro_ResetSensitivity_All_Tooltip" xml:space="preserve"><value>Reset Sensitivity</value></data>
   <data name="Pad_Gyro_ResetResponse_All_Tooltip" xml:space="preserve"><value>Reset Response Shaping</value></data>
@@ -1835,7 +1835,7 @@
   <data name="Profiles_BuiltIn" xml:space="preserve"><value>Built-in</value></data>
   <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>Select a profile first.</value></data>
   <data name="Profiles_DefaultLockedHint" xml:space="preserve"><value>The built-in Default profile can't be edited or deleted.</value></data>
-  <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>Delete profile</value></data>
+  <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>Delete Profile</value></data>
   <data name="Profiles_DeleteConfirm_Format" xml:space="preserve"><value>Delete "{0}"? Its saved slot and mapping snapshot will be destroyed.</value></data>
 
   <!-- ═══ Profile Dialog ═══ -->
@@ -1852,7 +1852,7 @@
   <data name="CopyFrom_SelectDevice" xml:space="preserve"><value>Select a device to copy its settings from:</value></data>
 
   <!-- ═══ File Dialogs ═══ -->
-  <data name="FileDialog_SelectWhitelist" xml:space="preserve"><value>Select application to whitelist</value></data>
+  <data name="FileDialog_SelectWhitelist" xml:space="preserve"><value>Select Application to Whitelist</value></data>
   <data name="FileDialog_SelectGameExe" xml:space="preserve"><value>Select Game Executable</value></data>
   <data name="FileDialog_ExeFilter" xml:space="preserve"><value>Executables (*.exe)|*.exe|All Files (*.*)|*.*</value></data>
 
@@ -1914,13 +1914,13 @@
 
   <!-- ═══ Pad — Reset Tooltips ═══ -->
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>Reset Center Offset X</value></data>
-  <data name="Pad_Sticks_Boundary_Calibrate" xml:space="preserve"><value>Calibrate boundary</value></data>
-  <data name="Pad_Sticks_Boundary_Recalibrate" xml:space="preserve"><value>Recalibrate boundary</value></data>
+  <data name="Pad_Sticks_Boundary_Calibrate" xml:space="preserve"><value>Calibrate Boundary</value></data>
+  <data name="Pad_Sticks_Boundary_Recalibrate" xml:space="preserve"><value>Recalibrate Boundary</value></data>
   <data name="Pad_Sticks_Boundary_Sweeping" xml:space="preserve"><value>Sweep the rim... {0} left</value></data>
   <data name="Pad_Sticks_Boundary_SecondLap" xml:space="preserve"><value>Covered. One more lap to refine...</value></data>
   <data name="Pad_Sticks_Boundary_Circularity" xml:space="preserve"><value>Circularity {0:F0}%</value></data>
   <data name="Pad_Sticks_Boundary_Tooltip" xml:space="preserve"><value>Sweep the stick around its rim to map the reachable boundary, then reshape it to a full circle.</value></data>
-  <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Reset boundary calibration</value></data>
+  <data name="Pad_ResetStickBoundary" xml:space="preserve"><value>Reset Boundary Calibration</value></data>
   <data name="Pad_ResetCenterOffsetY" xml:space="preserve"><value>Reset Center Offset Y</value></data>
   <data name="Pad_ResetDeadZoneShape" xml:space="preserve"><value>Reset to Scaled Radial</value></data>
   <data name="Pad_ResetDeadZoneX" xml:space="preserve"><value>Reset Deadzone X</value></data>
@@ -2217,7 +2217,7 @@
   <data name="Pad_Shift_ModeToggle" xml:space="preserve"><value>Toggle</value></data>
   <data name="Pad_Shift_ModeCustom" xml:space="preserve"><value>Latch</value></data>
   <data name="Pad_Shift_ModeCycle" xml:space="preserve"><value>Cycle</value></data>
-  <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>Sticky (one-shot)</value></data>
+  <data name="Pad_Shift_ModeSticky" xml:space="preserve"><value>Sticky (One-Shot)</value></data>
   <data name="Pad_Shift_ModePassive" xml:space="preserve"><value>No Button</value></data>
   <data name="Pad_Shift_HintNameRequired" xml:space="preserve"><value>Layer name is required.</value></data>
   <data name="Pad_Shift_HintNameDuplicate" xml:space="preserve"><value>A layer with that name already exists on this slot.</value></data>
@@ -2232,7 +2232,7 @@
   <data name="Pad_Shift_Paste" xml:space="preserve"><value>Paste Rows into Layer</value></data>
   <data name="Pad_Shift_Clear" xml:space="preserve"><value>Clear Layer Rows</value></data>
   <data name="Pad_Shift_Delete" xml:space="preserve"><value>Delete Layer</value></data>
-  <data name="Pad_Shift_DeleteConfirmTitle" xml:space="preserve"><value>Delete shift layer</value></data>
+  <data name="Pad_Shift_DeleteConfirmTitle" xml:space="preserve"><value>Delete Shift Layer</value></data>
   <data name="Pad_Shift_DeleteConfirm_Format" xml:space="preserve"><value>Delete the "{0}" layer and all of its mapping rows? This cannot be undone.</value></data>
   <data name="Pad_Shift_NoInherit" xml:space="preserve"><value>Do Not Inherit</value></data>
   <data name="Pad_Shift_NoInherit_Tooltip" xml:space="preserve"><value>When checked, this layer's target stays off instead of falling through to the Base row.</value></data>
@@ -2339,7 +2339,7 @@
   <data name="Settings_FlickOnEngage" xml:space="preserve"><value>Allow Flick on Engage</value></data>
   <data name="Settings_FlickRotationOffset" xml:space="preserve"><value>Rotation Offset</value></data>
   <data name="Settings_FlickRotationOffset_Tooltip" xml:space="preserve"><value>Turns the whole flick map by this many degrees. Positive is clockwise. Snapping applies after the offset.</value></data>
-  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>Reset rotation offset</value></data>
+  <data name="Pad_ResetFlickRotationOffset" xml:space="preserve"><value>Reset Rotation Offset</value></data>
   <data name="Settings_FlickOnEngage_Tooltip" xml:space="preserve"><value>When the layer hosting Flick Stick engages with the stick already deflected, fire the flick immediately. Off keeps the camera still and tracks rotation from the current stick angle.</value></data>
   <data name="Pad_ResetFlickOnEngage" xml:space="preserve"><value>Reset to Off</value></data>
   <data name="Pad_Steering_LockFeedback" xml:space="preserve"><value>Steering Lock Feedback</value></data>
@@ -2362,7 +2362,7 @@
   <data name="Pad_Steering_Reset_Rumble" xml:space="preserve"><value>Reset Rumble Pulse on Lock</value></data>
   <data name="Pad_Steering_Reset_TriggerVib" xml:space="preserve"><value>Reset Trigger Vibration on Lock</value></data>
   <data name="Pad_Steering_Reset_Lightbar" xml:space="preserve"><value>Reset Lightbar Pulse on Lock</value></data>
-  <data name="Pad_Steering_Reset_ATResistance" xml:space="preserve"><value>Reset Trigger Resistance near Lock</value></data>
+  <data name="Pad_Steering_Reset_ATResistance" xml:space="preserve"><value>Reset Trigger Resistance Near Lock</value></data>
   <data name="Pad_Steering_Lock_PaletteEmpty" xml:space="preserve"><value>Add colors to step through, one per lock.</value></data>
   <data name="Pad_Steering_Reset_LightbarHold" xml:space="preserve"><value>Reset Lightbar Hold</value></data>
   <data name="Pad_Audio" xml:space="preserve"><value>Audio</value></data>
@@ -2398,8 +2398,8 @@
   <data name="Pad_Audio_Output_Desc" xml:space="preserve"><value>Sounds route to the selected controller automatically. Over USB the pad’s own audio endpoint is matched by hardware container. Over Bluetooth the audio is streamed in Sony HID frames.</value></data>
   <data name="Pad_Audio_MirrorSource_Label" xml:space="preserve"><value>Mirror Source</value></data>
   <data name="Pad_Audio_MirrorSource_Tooltip" xml:space="preserve"><value>Which playback device to mirror to the controller speaker. Games that send specific sounds to a separate playback device can target this one.</value></data>
-  <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>System default</value></data>
-  <data name="Pad_Audio_SourceUnavailable" xml:space="preserve"><value>(unavailable device)</value></data>
+  <data name="Pad_Audio_SystemDefault" xml:space="preserve"><value>System Default</value></data>
+  <data name="Pad_Audio_SourceUnavailable" xml:space="preserve"><value>(Unavailable Device)</value></data>
   <data name="Pad_Audio_MasterVolume" xml:space="preserve"><value>Master Volume</value></data>
   <data name="Pad_Audio_Reset_MasterVolume" xml:space="preserve"><value>Reset Master Volume</value></data>
   <data name="Pad_Audio_Test" xml:space="preserve"><value>Test</value></data>
@@ -2446,8 +2446,8 @@
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Play DualSense Haptics on This Controller</value></data>
   <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>When a game drives this slot as a virtual DualSense with authored haptic audio, play that track on this controller's actuators as tones. Derived from the audio, so it approximates the designer's feel rather than reproducing it exactly.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Haptics Gain</value></data>
-  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Reset to default (off)</value></data>
-  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Reset to default (100%)</value></data>
+  <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Reset to Default (Off)</value></data>
+  <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Reset to Default (100%)</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Tones above this frequency are cut or folded. The default 800 Hz keeps engine and impact rumble while catching high-pitched beeps.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Reset High Tones</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Reset Tone Limit</value></data>
@@ -2472,7 +2472,7 @@
   <data name="Pad_Audio_Packages_Create_Tooltip" xml:space="preserve"><value>Pick sound files and save them as a new .pfsounds package.</value></data>
   <data name="Pad_Audio_Packages_Remove_Tooltip" xml:space="preserve"><value>Remove the selected package from the list. The file is not deleted.</value></data>
   <data name="Pad_Audio_Packages_Empty" xml:space="preserve"><value>No sound packages added.</value></data>
-  <data name="Pad_Audio_Packages_PickSounds" xml:space="preserve"><value>Choose sound files for the package</value></data>
+  <data name="Pad_Audio_Packages_PickSounds" xml:space="preserve"><value>Choose Sound Files for the Package</value></data>
   <data name="DeviceType_Midi" xml:space="preserve"><value>MIDI Controller</value></data>
   <data name="Mapping_MidiNote_Format" xml:space="preserve"><value>Note {0} ({1})</value></data>
   <data name="Mapping_MidiCc_Format" xml:space="preserve"><value>CC {0}</value></data>
@@ -2494,7 +2494,7 @@
     <value>Reset</value>
   </data>
   <data name="RemoteLink_PasswordTitle" xml:space="preserve">
-    <value>Remote Link password</value>
+    <value>Remote Link Password</value>
   </data>
   <data name="Dashboard_TouchpadOverlayWindowTitle" xml:space="preserve">
     <value>PadForge Touchpad</value>
@@ -2506,13 +2506,13 @@
     <value>The passwords don't match.</value>
   </data>
   <data name="RemoteLink_IdentityModeSecure" xml:space="preserve">
-    <value>Secure — this PC only</value>
+    <value>Secure — This PC Only</value>
   </data>
   <data name="RemoteLink_IdentityModePortablePassword" xml:space="preserve">
-    <value>Portable — password protected</value>
+    <value>Portable — Password Protected</value>
   </data>
   <data name="RemoteLink_IdentityModePortableOpen" xml:space="preserve">
-    <value>Portable — no password</value>
+    <value>Portable — No Password</value>
   </data>
   <data name="RemoteLink_IdentityHintPortablePassword" xml:space="preserve">
     <value>Your identity travels on this drive and unlocks with your password on any PC. A lost drive is useless without it.</value>
@@ -2969,7 +2969,7 @@
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Toggle keys {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Gyro Recenter</value></data>
   <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Zeroes the pad's accumulated gyro aim references on press. Smoothing history clears, the Motion Lean neutral re-captures, and the gravity estimate re-seeds from the controller's current pose.</value></data>
-  <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Any device)</value></data>
+  <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Any Device)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Menus</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Menus turn a physical stick or touchpad into an on-screen ring or grid. Add a menu, pick what opens it, then label each cell and give it a binding.</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>Menu {0}</value></data>
@@ -3160,7 +3160,7 @@ You can retry later from Settings.</value></data>
   <data name="Starter_Racing_Description" xml:space="preserve"><value>Calmer steering and finer control near centre, on any pad.</value></data>
   <data name="Starter_SpaceSim_Name" xml:space="preserve"><value>Space Sim</value></data>
   <data name="Starter_SpaceSim_Description" xml:space="preserve"><value>Six degrees of freedom on two sticks, with a precision mode for docking.</value></data>
-  <data name="Starter_SpaceSim_PrecisionLayerName" xml:space="preserve"><value>Precision (fine control)</value></data>
+  <data name="Starter_SpaceSim_PrecisionLayerName" xml:space="preserve"><value>Precision (Fine Control)</value></data>
   <data name="Starter_GyroAim_Name" xml:space="preserve"><value>Gyro Aim</value></data>
   <data name="Starter_GyroAim_Description" xml:space="preserve"><value>Motion for fine aim, on the left trigger, with the stick still live.</value></data>
   <data name="Starter_Layer_CrossHotbarL" xml:space="preserve"><value>Cross Hotbar (Left)</value></data>
@@ -3171,7 +3171,7 @@ You can retry later from Settings.</value></data>
   <data name="Starter_Layer_Hotbar" xml:space="preserve"><value>Hotbar</value></data>
   <data name="Starter_Layer_Party" xml:space="preserve"><value>Party</value></data>
   <data name="Starter_Layer_Shortcuts" xml:space="preserve"><value>Shortcuts</value></data>
-  <data name="Starter_QuietLayerName" xml:space="preserve"><value>Quiet (nothing sends)</value></data>
+  <data name="Starter_QuietLayerName" xml:space="preserve"><value>Quiet (Nothing Sends)</value></data>
   <data name="Pad_Audio_HeadphoneVolume" xml:space="preserve"><value>Headphone Volume</value></data>
   <data name="Pad_Audio_HeadphoneVolume_Tooltip" xml:space="preserve"><value>Hardware volume of the controller's headset jack. Written to the pad, so it holds with no app in the loop.</value></data>
   <data name="Pad_ResetHeadphoneVolume" xml:space="preserve"><value>Reset Headphone Volume</value></data>
@@ -3267,7 +3267,7 @@ You can retry later from Settings.</value></data>
   <data name="Dashboard_RemoteLinkMyCode_Hint" xml:space="preserve"><value>Swap codes with the other person: paste theirs into your Connect box while they paste yours, then you both click Connect. That opens a direct path across the internet, no VPN needed. The code refreshes while Remote Link runs.</value></data>
   <data name="RemoteLink_NatSymmetric" xml:space="preserve"><value>This network can't make direct connections (it looks like a mobile hotspot or carrier-grade NAT). Use a VPN like Tailscale, or connect from home broadband.</value></data>
   <data name="RemoteLink_NatNoPublic" xml:space="preserve"><value>Couldn't find this PC's public address (the network may block the needed traffic). Direct connections won't work here. Use a VPN, or Connect by Address on the same network.</value></data>
-  <data name="Battery_LowTitle" xml:space="preserve"><value>Controller battery low</value></data>
+  <data name="Battery_LowTitle" xml:space="preserve"><value>Controller Battery Low</value></data>
   <data name="Battery_LowText_Format" xml:space="preserve"><value>{0}: {1}% battery remaining</value></data>
   <data name="Settings_BatteryNotify" xml:space="preserve"><value>Battery Alerts</value></data>
   <data name="Settings_BatteryNotifyDesc" xml:space="preserve"><value>Get notified when a controller's battery runs low, before it dies mid-game.</value></data>

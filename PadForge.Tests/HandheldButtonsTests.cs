@@ -463,6 +463,24 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void WmiEvent_OnReleaseOnly_IsACandidate()
+        {
+            // Legion Pro 7 Smart Connect (bench 2026-08-25): the firmware
+            // raises PressTypeDataVal=1 on key-up only, so a user who holds
+            // through the press window and releases on cue lands the event
+            // in the release window. It is the key.
+            var s = new HandheldLearnSession();
+            s.SetPhase(HandheldLearnSession.Phase.Idle);
+            s.SetPhase(HandheldLearnSession.Phase.Press);
+            s.SetPhase(HandheldLearnSession.Phase.Release);
+            s.OnWmiEvent(new WmiEventRuntime.Event { ClassName = "LENOVO_UTILITY_EVENT", Props = { ("PressTypeDataVal", "1") } });
+            s.OnWmiEvent(new WmiEventRuntime.Event { ClassName = "LENOVO_LIGHTING_EVENT", Props = { ("Key_ID", "3") } });
+            var found = s.Finish();
+            Assert.Equal(2, found.Count);
+            Assert.Equal("1", found[0].WmiValue);
+        }
+
+        [Fact]
         public void WmiEvent_RepeatingWhileIdle_IsNoise()
         {
             var s = new HandheldLearnSession();
@@ -480,14 +498,14 @@ namespace PadForge.Tests
         {
             var s = new HandheldLearnSession();
             s.SetPhase(HandheldLearnSession.Phase.Idle);
+            // A periodic status repeats while idle; one idle copy alone is
+            // an early press (see the test above).
+            s.OnWmiEvent(new WmiEventRuntime.Event { ClassName = "LENOVO_AC_PD_EVENT", Props = { ("State", "1") } });
             s.OnWmiEvent(new WmiEventRuntime.Event { ClassName = "LENOVO_AC_PD_EVENT", Props = { ("State", "1") } });
             s.SetPhase(HandheldLearnSession.Phase.Press);
             s.OnWmiEvent(new WmiEventRuntime.Event { ClassName = "LENOVO_AC_PD_EVENT", Props = { ("State", "1") } });
             s.OnWmiEvent(new WmiEventRuntime.Event { ClassName = "LENOVO_UTILITY_EVENT", Props = { ("PressTypeDataVal", "1") } });
             s.SetPhase(HandheldLearnSession.Phase.Release);
-            // A periodic status keeps firing after release too; one idle copy
-            // alone is treated as an early press (see the test above).
-            s.OnWmiEvent(new WmiEventRuntime.Event { ClassName = "LENOVO_AC_PD_EVENT", Props = { ("State", "1") } });
             var c = Assert.Single(s.Finish());
             Assert.Equal("LENOVO_UTILITY_EVENT", c.Collection);
             Assert.Equal("1", c.WmiValue);

@@ -100,16 +100,27 @@ namespace PadForge.Engine.Common
             return mask;
         }
 
-        /// <summary>Bit candidates: outside the noise mask, every press sample
-        /// has the bit at the opposite of the idle baseline and every release
-        /// sample has it back at baseline. One candidate per byte carrying
-        /// the combined mask of qualifying bits.</summary>
+        /// <summary>Consecutive flipped samples a press must show: 2.5% of
+        /// the window (about 75 ms of a 3 s window at any report rate),
+        /// never fewer than two when two exist. A single captured sample
+        /// (event-style firmware that reports once) is its own run.</summary>
+        public static int MinPressRun(int pressSamples) => Math.Max(Math.Min(2, pressSamples), pressSamples / 40);
+
+        /// <summary>Bit candidates: outside the noise mask, the bit reads the
+        /// opposite of the idle baseline in at least one press sample and is
+        /// back at baseline by the last sample seen (the last release sample,
+        /// or the last press sample when nothing arrived after release). A
+        /// hold and a tap both qualify: a tap inside the press window leaves
+        /// pressed samples followed by released ones, and the noise mask
+        /// already rules out anything that flips on its own. One candidate
+        /// per byte carrying the combined mask of qualifying bits.</summary>
         public static List<VendorButtonCandidate> FindBits(byte[] idle, byte[] noise,
             IReadOnlyList<byte[]> press, IReadOnlyList<byte[]> release)
         {
             var result = new List<VendorButtonCandidate>();
             if (idle == null || press == null || press.Count == 0) return result;
             int len = idle.Length;
+            byte[] last = release != null && release.Count > 0 ? release[release.Count - 1] : press[press.Count - 1];
             for (int i = 0; i < len; i++)
             {
                 byte volatileBits = noise != null && i < noise.Length ? noise[i] : (byte)0;
@@ -119,35 +130,39 @@ namespace PadForge.Engine.Common
                     byte m = (byte)(1 << bit);
                     if ((volatileBits & m) != 0) continue;
                     byte idleVal = (byte)(idle[i] & m);
-                    bool ok = true;
+                    // A press is a RUN of flipped samples, not one: a tap
+                    // holds the bit for tens of milliseconds, while a motion
+                    // byte at rest wiggles a bit for a sample and lets go.
+                    int run = 0, best = 0;
                     foreach (var p in press)
                     {
-                        if (i >= p.Length || (p[i] & m) == idleVal) { ok = false; break; }
+                        bool f = i < p.Length && (p[i] & m) != idleVal;
+                        run = f ? run + 1 : 0;
+                        if (run > best) best = run;
                     }
-                    if (!ok) continue;
-                    if (release != null && release.Count > 0)
-                    {
-                        foreach (var r in release)
-                        {
-                            if (i >= r.Length || (r[i] & m) != idleVal) { ok = false; break; }
-                        }
-                        if (!ok) continue;
-                    }
+                    if (best < MinPressRun(press.Count)) continue;
+                    // Back at rest by the end: a bit that stays flipped is a
+                    // mode or toggle, not a button.
+                    if (i >= last.Length || (last[i] & m) != idleVal) continue;
                     candidate |= m;
                 }
                 // Value carries the PRESSED pattern under the mask, so a bit
                 // that clears on press (active-low) evaluates as pressed
                 // when clear.
+                // The pressed pattern is idle inverted under the mask.
                 if (candidate != 0)
-                    result.Add(new VendorButtonCandidate(i, candidate, (byte)(press[0][i] & candidate), VendorButtonKind.Bit));
+                    result.Add(new VendorButtonCandidate(i, candidate, (byte)(~idle[i] & candidate), VendorButtonKind.Bit));
             }
             return result;
         }
 
-        /// <summary>Value candidates: a byte outside the noise mask that reads
-        /// one constant across every press sample, differs from idle, and no
-        /// release sample carries that constant. Bytes already explained by a
-        /// single flipped bit are left to <see cref="FindBits"/>.</summary>
+        /// <summary>Value candidates: a byte outside the noise mask whose
+        /// first press sample that differs from idle carries a value no
+        /// release sample carries. Later press samples may differ (a tap's
+        /// own release code lands inside the press window on event-style
+        /// firmware); a value still present after release is a mode byte,
+        /// not a button. Bytes already explained by a single flipped bit are
+        /// left to <see cref="FindBits"/>.</summary>
         public static List<VendorButtonCandidate> FindValues(byte[] idle, byte[] noise,
             IReadOnlyList<byte[]> press, IReadOnlyList<byte[]> release)
         {
@@ -157,13 +172,11 @@ namespace PadForge.Engine.Common
             for (int i = 0; i < len; i++)
             {
                 if (noise != null && i < noise.Length && noise[i] != 0) continue;
-                if (i >= press[0].Length) continue;
-                byte v = press[0][i];
-                if (v == idle[i]) continue;
-                bool constant = true;
+                byte v = idle[i];
+                bool found = false;
                 foreach (var p in press)
-                    if (i >= p.Length || p[i] != v) { constant = false; break; }
-                if (!constant) continue;
+                    if (i < p.Length && p[i] != idle[i]) { v = p[i]; found = true; break; }
+                if (!found) continue;
                 if (release != null)
                 {
                     bool seenOnRelease = false;
@@ -200,7 +213,10 @@ namespace PadForge.Engine.Common
                     var c = bits[i];
                     int m = c.Mask;
                     if ((m & (m - 1)) == 0) continue;
-                    bits[i] = new VendorButtonCandidate(c.ByteIndex, 0, press[0][c.ByteIndex], VendorButtonKind.Value);
+                    byte code = idle[c.ByteIndex];
+                    foreach (var p in press)
+                        if (c.ByteIndex < p.Length && p[c.ByteIndex] != idle[c.ByteIndex]) { code = p[c.ByteIndex]; break; }
+                    bits[i] = new VendorButtonCandidate(c.ByteIndex, 0, code, VendorButtonKind.Value);
                 }
                 return bits;
             }

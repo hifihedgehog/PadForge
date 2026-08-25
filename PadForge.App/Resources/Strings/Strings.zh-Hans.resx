@@ -2293,7 +2293,7 @@
   <data name="Handheld_MachineLabel" xml:space="preserve"><value>机器：</value></data>
   <data name="Handheld_StartButton" xml:space="preserve"><value>开始学习</value></data>
   <data name="Handheld_PhaseIdle" xml:space="preserve"><value>请勿触碰。正在读取空闲状态…</value></data>
-  <data name="Handheld_PhasePress" xml:space="preserve"><value>现在按住隐藏按键…</value></data>
+  <data name="Handheld_PhasePress" xml:space="preserve"><value>现在按下隐藏按键，然后松开…</value></data>
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>松开…</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>未检测到变化。请在提示的时间窗口内按下按键并重试。</value></data>
   <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>已监视 {0} 个厂商报告和 {1} 个事件类。按下期间：{2} 个报告，{3} 个事件。</value></data>

@@ -2293,7 +2293,7 @@
   <data name="Handheld_MachineLabel" xml:space="preserve"><value>Equipo:</value></data>
   <data name="Handheld_StartButton" xml:space="preserve"><value>Empezar a aprender</value></data>
   <data name="Handheld_PhaseIdle" xml:space="preserve"><value>No toques nada. Leyendo el estado en reposo…</value></data>
-  <data name="Handheld_PhasePress" xml:space="preserve"><value>Mantén pulsado el botón oculto ahora…</value></data>
+  <data name="Handheld_PhasePress" xml:space="preserve"><value>Pulsa el botón oculto ahora y luego suéltalo…</value></data>
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Suéltalo…</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>No se detectó ningún cambio. Pulsa el botón durante la ventana indicada y vuelve a intentarlo.</value></data>
   <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Se observaron {0} informes del fabricante y {1} clases de evento. Durante la pulsación: {2} informes, {3} eventos.</value></data>

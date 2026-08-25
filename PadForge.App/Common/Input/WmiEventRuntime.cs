@@ -58,6 +58,26 @@ namespace PadForge.Common.Input
         /// (0x44). Null when WMI itself is unavailable. Worker only.</summary>
         public static List<string> EnumerateEventClasses()
         {
+            lock (_lock)
+            {
+                if (_classCache != null && Environment.TickCount64 - _classCacheTicks < ClassCacheMs)
+                    return new List<string>(_classCache);
+            }
+            var fresh = EnumerateEventClassesUncached();
+            if (fresh != null)
+                lock (_lock) { _classCache = new List<string>(fresh); _classCacheTicks = Environment.TickCount64; }
+            return fresh;
+        }
+
+        // The deep WmiEvent enumeration is a WMI round trip; the sweep asks
+        // every few seconds during a capture, and the firmware table does
+        // not change between reboots.
+        private const int ClassCacheMs = 60_000;
+        private static List<string> _classCache;
+        private static long _classCacheTicks;
+
+        private static List<string> EnumerateEventClassesUncached()
+        {
             try
             {
                 var firmware = AcpiWmi.ReadEventGuids();
@@ -116,7 +136,10 @@ namespace PadForge.Common.Input
                     if (!_watchers.ContainsKey(cls)) start.Add(cls);
             }
             if (stop != null)
+            {
                 foreach (var w in stop) StopWatcher(w);
+                PadForge.Engine.SdlDiagLog.WriteLine($"Handheld: stopped watching {stop.Count} WMI event classes; still watching {string.Join(", ", Subscribed)}");
+            }
             foreach (var cls in start)
             {
                 ManagementEventWatcher w = null;
@@ -174,6 +197,11 @@ namespace PadForge.Common.Input
                 }
             }
             catch { }
+            // Sparse: firmware keys arrive at human rate, so every event is
+            // worth a line for a "learned but never fires" report.
+            var parts = new List<string>(ev.Props.Count);
+            foreach (var (n, v) in ev.Props) parts.Add(n + "=" + v);
+            PadForge.Engine.SdlDiagLog.WriteLine($"Handheld: WMI event {cls} {string.Join(" ", parts)}");
             try { EventReceived?.Invoke(ev); } catch { }
         }
 

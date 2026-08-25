@@ -2690,6 +2690,7 @@
   <data name="Handheld_PhasePress" xml:space="preserve"><value>Press and hold the hidden button now…</value></data>
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Release it…</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>No change was seen. Press the button during the highlighted window and try again.</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>Watched {0} vendor reports and {1} event classes. During the press: {2} reports, {3} events.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>Button captured. Enter a name and click Register.</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>Source:</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>Name:</value></data>

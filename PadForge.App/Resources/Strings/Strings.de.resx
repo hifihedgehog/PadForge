@@ -2296,6 +2296,7 @@
   <data name="Handheld_PhasePress" xml:space="preserve"><value>Halten Sie jetzt die versteckte Taste gedrückt…</value></data>
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Loslassen…</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>Keine Änderung erkannt. Drücken Sie die Taste im angezeigten Zeitfenster und versuchen Sie es erneut.</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>{0} Herstellerberichte und {1} Ereignisklassen beobachtet. Während des Drückens: {2} Berichte, {3} Ereignisse.</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>Taste erfasst. Geben Sie einen Namen ein und klicken Sie auf Registrieren.</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>Quelle:</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>Name:</value></data>

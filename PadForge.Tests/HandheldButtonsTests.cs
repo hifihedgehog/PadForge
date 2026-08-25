@@ -6,6 +6,7 @@ using Xunit;
 using PadForge.Common.Input;
 using PadForge.Engine;
 using PadForge.Engine.Common;
+using PadForge.Engine.Data;
 using PadForge.Services;
 
 namespace PadForge.Tests
@@ -17,7 +18,7 @@ namespace PadForge.Tests
     /// Shares the static registry with the device tests, so both classes
     /// sit in one collection and each test resets first.
     /// </summary>
-    [Collection("HandheldRegistry")]
+    [Collection("SettingsManagerStatics")]
     public class HandheldButtonRegistryTests
     {
         private static void Reset() => HandheldButtonRegistry.LoadRegistry(null, "");
@@ -160,7 +161,7 @@ namespace PadForge.Tests
     /// written every poll), a minimum press for bit buttons, and the hold
     /// window for code-style buttons that never send a release.
     /// </summary>
-    [Collection("HandheldRegistry")]
+    [Collection("SettingsManagerStatics")]
     public class HandheldButtonsDeviceTests
     {
         private const string Legion = "17EF:6182:FFA0:0001";
@@ -280,6 +281,56 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void PinnedWmiButton_FiresThroughStep3_FromAnotherDevicesPass()
+        {
+            // Bench 2026-08-25: the Vantage key recorded onto a virtual
+            // controller button but never pressed it. This drives the exact
+            // engine path: the row's source is pinned to the Hidden Buttons
+            // device, the pass belongs to another device on the slot, and
+            // the WMI event has just pulsed the learned button.
+            var savedDevices = SettingsManager.UserDevices;
+            var savedSettings = SettingsManager.UserSettings;
+            try
+            {
+                SettingsManager.UserDevices = new DeviceCollection();
+                SettingsManager.UserSettings = new SettingsCollection();
+                var vantage = new HandheldButtonRegistry.Entry
+                { Name = "Vantage", WmiClass = "LENOVO_UTILITY_EVENT", WmiProperty = "PressTypeDataVal", WmiValue = "72" };
+                using var dev = Fresh(vantage);
+                var ud = new UserDevice { CapType = InputDeviceType.HandheldButtons };
+                ud.LoadFromExternalDevice(dev);
+                ud.IsOnline = true;
+                lock (SettingsManager.UserDevices.SyncRoot) SettingsManager.UserDevices.Items.Add(ud);
+                lock (SettingsManager.UserSettings.SyncRoot)
+                    SettingsManager.UserSettings.Items.Add(new UserSetting { InstanceGuid = dev.InstanceGuid, MapTo = 0 });
+                Assert.Equal(1, ud.RawButtonCount);
+
+                var ms = new MappingSet();
+                var row = new MappingRow { Target = "ButtonX", LayerMask = "Base", CombineMode = "OR" };
+                row.Sources.Add(new MappingSource { Kind = "Direct", DeviceGuid = dev.InstanceGuid.ToString().ToLowerInvariant(), Descriptor = "Button 0" });
+                ms.Rows.Add(row);
+
+                // Before the press: the row owns the target and reads released.
+                ud.InputState = dev.GetCurrentState();
+                var otherState = new CustomInputState();
+                Assert.True(InputManager.TryEvaluateMappingSetButton(otherState, ms, "99999999-9999-9999-9999-999999999999", 0, "ButtonX", 50, out bool v0));
+                Assert.False(v0);
+
+                WmiEventRuntime.RaiseForTest(new WmiEventRuntime.Event
+                { ClassName = "LENOVO_UTILITY_EVENT", Props = { ("PressTypeDataVal", "72") } });
+                ud.InputState = dev.GetCurrentState();
+                Assert.True(ud.InputState.Buttons[0]);
+                Assert.True(InputManager.TryEvaluateMappingSetButton(otherState, ms, "99999999-9999-9999-9999-999999999999", 0, "ButtonX", 50, out bool v1));
+                Assert.True(v1, "the pinned Hidden Buttons source must fire the target");
+            }
+            finally
+            {
+                SettingsManager.UserDevices = savedDevices;
+                SettingsManager.UserSettings = savedSettings;
+            }
+        }
+
+        [Fact]
         public void Identity_IsStableForTheMachineKey_AndSyntheticPath()
         {
             var id = new MachineIdentity { Manufacturer = "LENOVO", ProductName = "83E1", Family = "Legion Go" };
@@ -395,6 +446,36 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void WmiEvent_PressedOnceEarly_StillLearns()
+        {
+            // The user taps a moment before the press phase, then again on
+            // cue: one idle copy must not cancel the press (bench 08-25).
+            var s = new HandheldLearnSession();
+            s.SetPhase(HandheldLearnSession.Phase.Idle);
+            s.OnWmiEvent(new WmiEventRuntime.Event { ClassName = "LENOVO_UTILITY_EVENT", Props = { ("PressTypeDataVal", "72") } });
+            s.SetPhase(HandheldLearnSession.Phase.Press);
+            s.OnWmiEvent(new WmiEventRuntime.Event { ClassName = "LENOVO_UTILITY_EVENT", Props = { ("PressTypeDataVal", "72") } });
+            s.SetPhase(HandheldLearnSession.Phase.Release);
+            var c = Assert.Single(s.Finish());
+            Assert.Equal("72", c.WmiValue);
+            var n = s.Counts;
+            Assert.Equal((0, 0, 0, 1, 1, 0), n);
+        }
+
+        [Fact]
+        public void WmiEvent_RepeatingWhileIdle_IsNoise()
+        {
+            var s = new HandheldLearnSession();
+            s.SetPhase(HandheldLearnSession.Phase.Idle);
+            s.OnWmiEvent(new WmiEventRuntime.Event { ClassName = "LENOVO_AC_PD_EVENT", Props = { ("State", "1") } });
+            s.OnWmiEvent(new WmiEventRuntime.Event { ClassName = "LENOVO_AC_PD_EVENT", Props = { ("State", "1") } });
+            s.SetPhase(HandheldLearnSession.Phase.Press);
+            s.OnWmiEvent(new WmiEventRuntime.Event { ClassName = "LENOVO_AC_PD_EVENT", Props = { ("State", "1") } });
+            s.SetPhase(HandheldLearnSession.Phase.Release);
+            Assert.Empty(s.Finish());
+        }
+
+        [Fact]
         public void WmiEvent_ThatAlsoFiresAtRest_IsNoise()
         {
             var s = new HandheldLearnSession();
@@ -404,6 +485,9 @@ namespace PadForge.Tests
             s.OnWmiEvent(new WmiEventRuntime.Event { ClassName = "LENOVO_AC_PD_EVENT", Props = { ("State", "1") } });
             s.OnWmiEvent(new WmiEventRuntime.Event { ClassName = "LENOVO_UTILITY_EVENT", Props = { ("PressTypeDataVal", "1") } });
             s.SetPhase(HandheldLearnSession.Phase.Release);
+            // A periodic status keeps firing after release too; one idle copy
+            // alone is treated as an early press (see the test above).
+            s.OnWmiEvent(new WmiEventRuntime.Event { ClassName = "LENOVO_AC_PD_EVENT", Props = { ("State", "1") } });
             var c = Assert.Single(s.Finish());
             Assert.Equal("LENOVO_UTILITY_EVENT", c.Collection);
             Assert.Equal("1", c.WmiValue);

@@ -2525,6 +2525,7 @@ public class Strings : INotifyPropertyChanged
     public string Handheld_PhasePress => Get("Handheld_PhasePress");
     public string Handheld_PhaseRelease => Get("Handheld_PhaseRelease");
     public string Handheld_NothingFound => Get("Handheld_NothingFound");
+    public string Handheld_NothingFoundDetail_Format => Get("Handheld_NothingFoundDetail_Format");
     public string Handheld_Captured => Get("Handheld_Captured");
     public string Handheld_SourceLabel => Get("Handheld_SourceLabel");
     public string Handheld_NameLabel => Get("Handheld_NameLabel");

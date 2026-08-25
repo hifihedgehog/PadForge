@@ -2296,6 +2296,7 @@
   <data name="Handheld_PhasePress" xml:space="preserve"><value>现在按住隐藏按键…</value></data>
   <data name="Handheld_PhaseRelease" xml:space="preserve"><value>松开…</value></data>
   <data name="Handheld_NothingFound" xml:space="preserve"><value>未检测到变化。请在提示的时间窗口内按下按键并重试。</value></data>
+  <data name="Handheld_NothingFoundDetail_Format" xml:space="preserve"><value>已监视 {0} 个厂商报告和 {1} 个事件类。按下期间：{2} 个报告，{3} 个事件。</value></data>
   <data name="Handheld_Captured" xml:space="preserve"><value>已捕获按键。输入名称并点击“注册”。</value></data>
   <data name="Handheld_SourceLabel" xml:space="preserve"><value>来源：</value></data>
   <data name="Handheld_NameLabel" xml:space="preserve"><value>名称：</value></data>

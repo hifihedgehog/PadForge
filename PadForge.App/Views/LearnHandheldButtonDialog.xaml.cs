@@ -160,10 +160,17 @@ namespace PadForge.Views
             _session = null;
             StartBtn.IsEnabled = true;
 
+            var c = session.Counts;
+            int collections = _dev?.OpenCollections.Length ?? 0;
+            int classes = WmiEventRuntime.Subscribed.Length;
+            PadForge.Engine.SdlDiagLog.WriteLine(
+                $"Handheld learn: watched {collections} collections, {classes} WMI classes; reports idle/press/release {c.IdleReports}/{c.PressReports}/{c.ReleaseReports}, events {c.IdleEvents}/{c.PressEvents}/{c.ReleaseEvents}, chord {(_chord == null ? "none" : HandheldKeyNames.Describe(_chord))}, candidates {_candidates.Count}");
+
             bool any = (_chord != null && _chord.Length > 0) || _candidates.Count > 0;
             if (!any)
             {
-                StatusText.Text = Strings.Instance.Handheld_NothingFound;
+                StatusText.Text = Strings.Instance.Handheld_NothingFound + " "
+                    + string.Format(Strings.Instance.Handheld_NothingFoundDetail_Format, collections, classes, c.PressReports, c.PressEvents);
                 return;
             }
 

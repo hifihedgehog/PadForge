@@ -3185,16 +3185,16 @@ You can retry later from Settings.</value></data>
   <data name="Pad_Audio_Crossfeed_Low" xml:space="preserve"><value>Low</value></data>
   <data name="Pad_Audio_Crossfeed_Middle" xml:space="preserve"><value>Medium</value></data>
   <data name="Pad_Audio_Crossfeed_High" xml:space="preserve"><value>High</value></data>
-  <data name="Pad_Audio_Crossfeed_LowEasy" xml:space="preserve"><value>Low (easy)</value></data>
-  <data name="Pad_Audio_Crossfeed_MiddleEasy" xml:space="preserve"><value>Medium (easy)</value></data>
-  <data name="Pad_Audio_Crossfeed_HighEasy" xml:space="preserve"><value>High (easy)</value></data>
+  <data name="Pad_Audio_Crossfeed_LowEasy" xml:space="preserve"><value>Low (Easy)</value></data>
+  <data name="Pad_Audio_Crossfeed_MiddleEasy" xml:space="preserve"><value>Medium (Easy)</value></data>
+  <data name="Pad_Audio_Crossfeed_HighEasy" xml:space="preserve"><value>High (Easy)</value></data>
   <data name="Pad_Audio_Crossfeed_Custom" xml:space="preserve"><value>Custom</value></data>
   <data name="Pad_Audio_CrossfeedCut" xml:space="preserve"><value>Cutoff</value></data>
   <data name="Pad_Audio_CrossfeedCut_Tooltip" xml:space="preserve"><value>Crossover frequency. Below it the channels blend toward mono, above it they stay separated, so a lower cutoff crossfeeds less.</value></data>
   <data name="Pad_Audio_CrossfeedFeed" xml:space="preserve"><value>Feed</value></data>
   <data name="Pad_Audio_CrossfeedFeed_Tooltip" xml:space="preserve"><value>How much of the opposite channel arrives below the cutoff. More feed narrows the image and widens the sense of a room.</value></data>
-  <data name="Pad_Audio_Reset_CrossfeedCut" xml:space="preserve"><value>Reset the cutoff</value></data>
-  <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>Reset the feed</value></data>
+  <data name="Pad_Audio_Reset_CrossfeedCut" xml:space="preserve"><value>Reset Cutoff</value></data>
+  <data name="Pad_Audio_Reset_CrossfeedFeed" xml:space="preserve"><value>Reset Feed</value></data>
   <data name="Pad_Audio_Eq" xml:space="preserve"><value>Parametric EQ</value></data>
   <data name="Pad_Audio_Eq_Tooltip" xml:space="preserve"><value>Per-band filters over the controller audio. Applied before the audio is encoded, so the limiter below keeps a boosted band from clipping.</value></data>
   <data name="Pad_Audio_EqPreamp" xml:space="preserve"><value>Preamp</value></data>
@@ -3210,14 +3210,14 @@ You can retry later from Settings.</value></data>
   <data name="Pad_Audio_EqCol_Freq" xml:space="preserve"><value>Freq (Hz)</value></data>
   <data name="Pad_Audio_EqCol_Gain" xml:space="preserve"><value>Gain (dB)</value></data>
   <data name="Pad_Audio_EqCol_Q" xml:space="preserve"><value>Q</value></data>
-  <data name="Pad_Audio_EqAdd" xml:space="preserve"><value>Add band</value></data>
-  <data name="Pad_Audio_EqRemove" xml:space="preserve"><value>Remove band</value></data>
+  <data name="Pad_Audio_EqAdd" xml:space="preserve"><value>Add Band</value></data>
+  <data name="Pad_Audio_EqRemove" xml:space="preserve"><value>Remove Band</value></data>
   <data name="Pad_Audio_EqClear" xml:space="preserve"><value>Clear</value></data>
-  <data name="Pad_Audio_EqImport" xml:space="preserve"><value>Import from clipboard</value></data>
+  <data name="Pad_Audio_EqImport" xml:space="preserve"><value>Import from Clipboard</value></data>
   <data name="Pad_Audio_EqImport_Tooltip" xml:space="preserve"><value>Paste an AutoEq profile for your headphones, then click. Replaces the bands and sets the preamp. Nothing readable in the clipboard leaves the current EQ alone.</value></data>
-  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>Import from file</value></data>
+  <data name="Pad_Audio_EqImportFile" xml:space="preserve"><value>Import from File</value></data>
   <data name="Pad_Audio_EqImportFile_Tooltip" xml:space="preserve"><value>Pick the .txt AutoEq downloaded. This is the one to use: autoeq.app hands you a file rather than text you can copy.</value></data>
-  <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>For a correction matched to your headphones: open autoeq.app, choose your model, pick Custom Parametric Eq and download it, then Import from file. The Graphic Eq download has no filter lines and will not import.</value></data>
+  <data name="Pad_Audio_EqHowTo" xml:space="preserve"><value>For a correction matched to your headphones: open autoeq.app, choose your model, pick Custom Parametric Eq and download it, then Import from File. The Graphic Eq download has no filter lines and will not import.</value></data>
   <data name="Pad_Audio_EqImport_Ok_Format" xml:space="preserve"><value>Imported {0} bands with a {1:0.#} dB preamp from {2}.</value></data>
   <data name="Pad_Audio_EqImport_NoFilters" xml:space="preserve"><value>No filter lines in that profile. AutoEq's Graphic Eq export cannot be read here. Download the Custom Parametric Eq one instead. The current EQ is unchanged.</value></data>
   <data name="Pad_Audio_EqImport_Empty" xml:space="preserve"><value>Nothing to import. The current EQ is unchanged.</value></data>
@@ -3227,11 +3227,11 @@ You can retry later from Settings.</value></data>
   <data name="Pad_Audio_Limiter_Tooltip" xml:space="preserve"><value>Holds the signal under the ceiling. Worth leaving on whenever a band is boosted, because the audio is encoded after this and clipping the encoder sounds far worse than the boost sounds better.</value></data>
   <data name="Pad_Audio_LimiterCeiling" xml:space="preserve"><value>Ceiling</value></data>
   <data name="Pad_Audio_LimiterCeiling_Tooltip" xml:space="preserve"><value>Highest level the limiter allows through, as a percent of full scale.</value></data>
-  <data name="Pad_Audio_Reset_Crossfeed" xml:space="preserve"><value>Reset crossfeed</value></data>
-  <data name="Pad_Audio_Reset_Eq" xml:space="preserve"><value>Reset the equalizer</value></data>
-  <data name="Pad_Audio_Reset_EqPreamp" xml:space="preserve"><value>Reset preamp</value></data>
-  <data name="Pad_Audio_Reset_Limiter" xml:space="preserve"><value>Reset the limiter</value></data>
-  <data name="Pad_Audio_Reset_LimiterCeiling" xml:space="preserve"><value>Reset the ceiling</value></data>
+  <data name="Pad_Audio_Reset_Crossfeed" xml:space="preserve"><value>Reset Crossfeed</value></data>
+  <data name="Pad_Audio_Reset_Eq" xml:space="preserve"><value>Reset Parametric EQ</value></data>
+  <data name="Pad_Audio_Reset_EqPreamp" xml:space="preserve"><value>Reset Preamp</value></data>
+  <data name="Pad_Audio_Reset_Limiter" xml:space="preserve"><value>Reset Limiter</value></data>
+  <data name="Pad_Audio_Reset_LimiterCeiling" xml:space="preserve"><value>Reset Ceiling</value></data>
   <data name="Pad_Audio_EqCurve_Tooltip" xml:space="preserve"><value>Drag a point to move its frequency and gain. Roll the wheel over a point to widen or narrow it.</value></data>
   <data name="Pad_Audio_OutputPath" xml:space="preserve"><value>Output Path</value></data>
   <data name="Pad_Audio_OutputPath_Tooltip" xml:space="preserve"><value>Where the controller plays its audio. Default keeps the firmware's own routing and plays PadForge sounds on the speaker. Headphones + Speaker plays mono on the headset side, a firmware limit. Over Bluetooth this mode plays through the headphones only. Follow Headphone Jack switches to headphones when something is plugged into the controller and back to the speaker when unplugged; with no jack reading available it behaves like Default.</value></data>

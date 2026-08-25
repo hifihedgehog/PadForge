@@ -760,7 +760,12 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="&#xE7FC;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                    <!-- E8DE, an arrow into a container: "put this device in
+                         this slot". E7FC shipped here first and is the app's
+                         CATCH-ALL controller character (DeviceTypeGlyph's
+                         fallback for every unrecognized row), so the prompt
+                         wore the same face as a device it could not name. -->
+                    <TextBlock Text="&#xE8DE;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                                Foreground="{DynamicResource EmberBrush}"
                                VerticalAlignment="Center" Margin="0,0,10,0"/>
                     <TextBlock Grid.Column="1" Text="{Binding AssignOfferText}"

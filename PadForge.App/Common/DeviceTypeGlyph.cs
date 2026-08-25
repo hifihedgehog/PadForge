@@ -28,6 +28,8 @@ namespace PadForge.Common
             InputDeviceType.ConsumerControl => "\uEA69", // Media (media-key strips)
             InputDeviceType.HeadsetMotion => "\uE7F6",   // Headphone (verified in live segmdl2.ttf)
             InputDeviceType.Microphone => "\uE720",     // Microphone
+            InputDeviceType.HandheldButtons => "\uE7F8", // DeviceLaptopNoPic (the machine itself, #343)
+            InputDeviceType.SystemMotion => "\uE7F8",    // same machine, its sensor row
             _ => "\uE7FC"                                // Game
         };
     }

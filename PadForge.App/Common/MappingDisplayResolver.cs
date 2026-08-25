@@ -1973,7 +1973,10 @@ namespace PadForge.Common
              // Microphone rows' entire surface is named phrases ("Any
              // Phrase", the user's own names); numbered labels would hide
              // every one of them (#317, the #150 shape again).
-             ud.CapType != InputDeviceType.Microphone);
+             ud.CapType != InputDeviceType.Microphone &&
+             // Handheld hidden buttons are named by the user at learn time
+             // (#343, the #150 shape once more).
+             ud.CapType != InputDeviceType.HandheldButtons);
 
         /// <summary>Surfaces touchpad gesture descriptors in the input
         /// picker, one block per touchpad surface the device exposes.

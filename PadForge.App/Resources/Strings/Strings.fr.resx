@@ -2284,6 +2284,36 @@
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>Étiquette capturée. Saisissez un nom et cliquez sur Enregistrer. Approchez une autre étiquette pour la remplacer.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>« {0} » enregistrée. Approchez une autre étiquette pour en ajouter.</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>Enregistrer ou gérer les étiquettes NFC</value></data>
+  <data name="DeviceType_HandheldButtons" xml:space="preserve"><value>Boutons de console portable</value></data>
+  <data name="DeviceType_SystemMotion" xml:space="preserve"><value>Mouvement du système</value></data>
+  <data name="Handheld_ManageButton" xml:space="preserve"><value>Apprendre / gérer les boutons cachés</value></data>
+  <data name="Handheld_Title" xml:space="preserve"><value>Boutons cachés</value></data>
+  <data name="Handheld_LearnHeader" xml:space="preserve"><value>Apprendre un bouton</value></data>
+  <data name="Handheld_Intro" xml:space="preserve"><value>Appuyez une fois sur le bouton caché lorsque cela vous est demandé. PadForge surveille le clavier, la souris et chaque rapport constructeur de cette machine, et enregistre ce que le bouton modifie.</value></data>
+  <data name="Handheld_MachineLabel" xml:space="preserve"><value>Machine :</value></data>
+  <data name="Handheld_StartButton" xml:space="preserve"><value>Commencer l'apprentissage</value></data>
+  <data name="Handheld_PhaseIdle" xml:space="preserve"><value>Ne touchez à rien. Lecture de l'état au repos…</value></data>
+  <data name="Handheld_PhasePress" xml:space="preserve"><value>Maintenez le bouton caché enfoncé maintenant…</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Relâchez-le…</value></data>
+  <data name="Handheld_NothingFound" xml:space="preserve"><value>Aucun changement détecté. Appuyez sur le bouton pendant la fenêtre indiquée et réessayez.</value></data>
+  <data name="Handheld_Captured" xml:space="preserve"><value>Bouton capturé. Saisissez un nom et cliquez sur Enregistrer.</value></data>
+  <data name="Handheld_SourceLabel" xml:space="preserve"><value>Source :</value></data>
+  <data name="Handheld_NameLabel" xml:space="preserve"><value>Nom :</value></data>
+  <data name="Handheld_RegisterButton" xml:space="preserve"><value>Enregistrer</value></data>
+  <data name="Handheld_RegisteredHeader" xml:space="preserve"><value>Boutons appris</value></data>
+  <data name="Handheld_NoneLearned" xml:space="preserve"><value>Aucun bouton appris pour le moment.</value></data>
+  <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>« {0} » enregistré. Recommencez pour en apprendre un autre.</value></data>
+  <data name="Handheld_ChordFormat" xml:space="preserve"><value>Touches : {0}</value></data>
+  <data name="Handheld_NoDevice" xml:space="preserve"><value>Les boutons cachés sont désactivés. Activez d'abord Boutons de PC portable dans les Paramètres.</value></data>
+  <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>{0} est en cours d'exécution. Il continue de réagir à ces boutons tant que vous ne l'arrêtez pas.</value></data>
+  <data name="Handheld_Export" xml:space="preserve"><value>Exporter…</value></data>
+  <data name="Handheld_Import" xml:space="preserve"><value>Importer…</value></data>
+  <data name="Handheld_ExportedFormat" xml:space="preserve"><value>{0} boutons exportés.</value></data>
+  <data name="Handheld_ImportedFormat" xml:space="preserve"><value>{0} boutons importés.</value></data>
+  <data name="Settings_Handheld" xml:space="preserve"><value>Boutons de PC portable</value></data>
+  <data name="Settings_HandheldDesc" xml:space="preserve"><value>Les PC portables de jeu ont des boutons que le système ne présente jamais comme une manette : palettes arrière, touches de menu, molettes. Activez cette option pour les apprendre une fois en les pressant, puis les assigner comme n'importe quel autre bouton. Ajoute aussi le gyroscope de la machine comme périphérique de mouvement.</value></data>
+  <data name="Settings_HandheldEnable" xml:space="preserve"><value>Activer les boutons de PC portable</value></data>
+  <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>Ajoute un périphérique Boutons cachés et un périphérique Mouvement du système à la page Périphériques. Désactivé, rien ne s'exécute.</value></data>
   <data name="DeviceType_Nfc" xml:space="preserve"><value>Lecteur NFC</value></data>
   <data name="DeviceType_ConsumerControl" xml:space="preserve"><value>Contrôle multimédia</value></data>
   <data name="MacroAction_Type_DisconnectController" xml:space="preserve"><value>Déconnecter la manette</value></data>

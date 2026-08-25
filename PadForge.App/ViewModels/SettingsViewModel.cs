@@ -689,6 +689,21 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _assignOfferEmptySlot, value);
         }
 
+        private bool _handheldButtonsEnabled;
+
+        /// <summary>Handheld PC Buttons (issue #343): adds the per-machine
+        /// Hidden Buttons row and the System Motion row. Off by default;
+        /// the engine sweep reads the registry flag this setter mirrors.</summary>
+        public bool HandheldButtonsEnabled
+        {
+            get => _handheldButtonsEnabled;
+            set
+            {
+                if (SetProperty(ref _handheldButtonsEnabled, value))
+                    PadForge.Common.Input.HandheldButtonRegistry.FeatureEnabled = value;
+            }
+        }
+
         private bool _startMinimized;
 
         /// <summary>Whether to start the application minimized.</summary>

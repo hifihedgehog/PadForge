@@ -1948,6 +1948,11 @@ namespace PadForge.Services
                 appSettings.NfcTags?.Select(t => (t.Uid, t.Name, t.Button)));
             PadForge.Common.Input.VoicePhraseRegistry.LoadRegistry(
                 appSettings.VoicePhrases?.Select(v => (v.Phrase, v.Name, v.Button)));
+            // Handheld hidden buttons (#343): definitions first, then the
+            // toggle, so the row that appears on enable already has them.
+            PadForge.Common.Input.HandheldButtonRegistry.LoadRegistry(
+                appSettings.HandheldButtons?.Select(b => b.ToEntry()), appSettings.HandheldMachineKey);
+            vm.HandheldButtonsEnabled = appSettings.HandheldButtonsEnabled;
             // PS Move calibration blobs (#277): captured at pair time over USB,
             // consumed by the Bluetooth lane for sensor scaling.
             PadForge.Common.Input.PsMoveCalibrationRegistry.LoadRegistry(appSettings.PsMoveCalibrations);
@@ -4104,6 +4109,10 @@ namespace PadForge.Services
                 PsMoveCalibrations = PadForge.Common.Input.PsMoveCalibrationRegistry.SaveRegistry(),
                 VoicePhrases = voicePhrases,
                 VoiceMacrosEnabled = PadForge.Services.VoiceMacroService.Enabled,
+                HandheldButtons = PadForge.Common.Input.HandheldButtonRegistry.SaveRegistry()
+                    .Select(HandheldButtonData.From).ToArray(),
+                HandheldMachineKey = PadForge.Common.Input.HandheldButtonRegistry.MachineKey,
+                HandheldButtonsEnabled = vm.HandheldButtonsEnabled,
                 VoiceMinConfidence = PadForge.Services.VoiceMacroService.MinConfidence,
                 VoiceListeningMode = PadForge.Services.VoiceMacroService.ListeningMode,
                 HeadsetTrackerAddresses = PadForge.Common.Input.SonyHeadsetMotionRuntime.SavePersistedAddresses(),
@@ -5466,6 +5475,61 @@ namespace PadForge.Services
         public int Button { get; set; }
     }
 
+    /// <summary>A learned handheld hidden button (issue #343): its name, its
+    /// stable raw-button index, and whichever delivery paths it has: a
+    /// keyboard chord (Keys, comma-joined codes) and/or a vendor report
+    /// field (Collection VID:PID:PAGE:USAGE, report id, byte, mask or
+    /// value, kind 0 = bit, 1 = value).</summary>
+    public class HandheldButtonData
+    {
+        [XmlAttribute] public string Name { get; set; }
+        [XmlAttribute] public int Button { get; set; } = -1;
+        [XmlAttribute] public string Keys { get; set; }
+        [XmlAttribute] public string Collection { get; set; }
+        [XmlAttribute] public byte ReportId { get; set; }
+        [XmlAttribute] public int ByteIndex { get; set; }
+        [XmlAttribute] public byte Mask { get; set; }
+        [XmlAttribute] public byte Value { get; set; }
+        [XmlAttribute] public int Kind { get; set; }
+
+        public static HandheldButtonData From(PadForge.Common.Input.HandheldButtonRegistry.Entry e) => new HandheldButtonData
+        {
+            Name = e.Name,
+            Button = e.Button,
+            Keys = e.HasChord ? string.Join(",", e.Keys) : null,
+            Collection = e.HasReport ? e.Collection : null,
+            ReportId = e.ReportId,
+            ByteIndex = e.ByteIndex,
+            Mask = e.Mask,
+            Value = e.Value,
+            Kind = (int)e.ValueKind,
+        };
+
+        public PadForge.Common.Input.HandheldButtonRegistry.Entry ToEntry()
+        {
+            int[] keys = null;
+            if (!string.IsNullOrWhiteSpace(Keys))
+            {
+                var list = new System.Collections.Generic.List<int>();
+                foreach (var tok in Keys.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+                    if (int.TryParse(tok, out int k)) list.Add(k);
+                if (list.Count > 0) keys = list.ToArray();
+            }
+            return new PadForge.Common.Input.HandheldButtonRegistry.Entry
+            {
+                Name = Name,
+                Button = Button,
+                Keys = keys,
+                Collection = string.IsNullOrWhiteSpace(Collection) ? null : Collection,
+                ReportId = ReportId,
+                ByteIndex = ByteIndex,
+                Mask = Mask,
+                Value = Value,
+                ValueKind = Kind == 1 ? PadForge.Engine.Common.VendorButtonKind.Value : PadForge.Engine.Common.VendorButtonKind.Bit,
+            };
+        }
+    }
+
     /// <summary>A registered voice phrase (issue #317): normalized text,
     /// display name, and the stable raw-button index it occupies (so saved
     /// bindings survive).</summary>
@@ -5583,6 +5647,22 @@ namespace PadForge.Services
         /// <summary>Voice macros (issue #317) master switch.</summary>
         [XmlElement]
         public bool VoiceMacrosEnabled { get; set; }
+
+        /// <summary>Learned handheld hidden buttons (issue #343), exposed
+        /// as named buttons on the per-machine Hidden Buttons row.</summary>
+        [XmlArray("HandheldButtons")]
+        [XmlArrayItem("Button")]
+        public HandheldButtonData[] HandheldButtons { get; set; }
+
+        /// <summary>DMI key of the machine the handheld buttons were learned on.</summary>
+        [XmlElement]
+        public string HandheldMachineKey { get; set; } = "";
+
+        /// <summary>Handheld PC Buttons (issue #343) master switch. Off by
+        /// default: no device rows, hooks, vendor handles, or sensor
+        /// subscription unless the user turns it on.</summary>
+        [XmlElement]
+        public bool HandheldButtonsEnabled { get; set; }
 
         /// <summary>Confidence floor a recognition must clear, 0..1.</summary>
         [XmlElement]

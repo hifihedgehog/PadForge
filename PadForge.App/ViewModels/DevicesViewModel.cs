@@ -314,6 +314,45 @@ namespace PadForge.ViewModels
         /// session-dynamic usages the device has reported.</summary>
         public ObservableCollection<ConsumerButtonDisplayItem> ConsumerButtons { get; } = new();
 
+        private bool _isHandheldDevice;
+        /// <summary>Whether the selected device is the handheld hidden
+        /// buttons row (issue #343): drives the named button list in place
+        /// of the numbered grid, the NFC treatment.</summary>
+        public bool IsHandheldDevice
+        {
+            get => _isHandheldDevice;
+            set => SetProperty(ref _isHandheldDevice, value);
+        }
+
+        private bool _isSystemMotionDevice;
+        /// <summary>Whether the selected device is the machine's own motion
+        /// sensor row (issue #343): motion only, so the raw Axes/Buttons
+        /// sections collapse like the headset tracker's.</summary>
+        public bool IsSystemMotionDevice
+        {
+            get => _isSystemMotionDevice;
+            set => SetProperty(ref _isSystemMotionDevice, value);
+        }
+
+        /// <summary>Named learned-button rows for the handheld preview
+        /// (issue #343), each lighting while its button is down. Reuses the
+        /// NFC row item; Uid carries the delivery description.</summary>
+        public ObservableCollection<NfcTagDisplayItem> HandheldButtons { get; } = new();
+
+        /// <summary>Rebuilds the handheld rows from the registry. Called on
+        /// selection and whenever the registry changes.</summary>
+        public void RebuildHandheldButtons()
+        {
+            HandheldButtons.Clear();
+            foreach (var e in PadForge.Common.Input.HandheldButtonRegistry.Entries)
+                HandheldButtons.Add(new NfcTagDisplayItem
+                {
+                    Name = e.Name,
+                    Uid = PadForge.Common.Input.HandheldKeyNames.DescribeEntry(e),
+                    Button = e.Button,
+                });
+        }
+
         /// <summary>Rebuilds the NFC tag preview rows from the registry: "Any NFC
         /// Tag" first, then each registered tag at its stable button index. Called on
         /// device selection and whenever the tag registry changes.</summary>
@@ -489,11 +528,14 @@ namespace PadForge.ViewModels
         /// are stored verbatim and used by the InputService update loop
         /// to read the matching <c>state.Buttons[Index]</c>.
         /// </summary>
-        internal void RebuildRawStateCollections(IReadOnlyList<int> axisIndices, IReadOnlyList<int> buttonIndices, int povCount, bool isKeyboard = false, bool isMouse = false, bool isTouchpad = false, bool isMidi = false, bool isNfc = false, IReadOnlyList<ConsumerButtonDisplayItem> consumerButtons = null, bool isHeadsetMotion = false, int voiceButtonBase = -1, bool isMicrophone = false)
+        internal void RebuildRawStateCollections(IReadOnlyList<int> axisIndices, IReadOnlyList<int> buttonIndices, int povCount, bool isKeyboard = false, bool isMouse = false, bool isTouchpad = false, bool isMidi = false, bool isNfc = false, IReadOnlyList<ConsumerButtonDisplayItem> consumerButtons = null, bool isHeadsetMotion = false, int voiceButtonBase = -1, bool isMicrophone = false, bool isHandheld = false, bool isSystemMotion = false)
         {
             IsNfcDevice = isNfc;
             IsHeadsetMotionDevice = isHeadsetMotion;
             if (isNfc) RebuildNfcTags(); else NfcTags.Clear();
+            IsHandheldDevice = isHandheld;
+            IsSystemMotionDevice = isSystemMotion;
+            if (isHandheld) RebuildHandheldButtons(); else HandheldButtons.Clear();
             IsMicrophoneDevice = isMicrophone;
             ShowVoicePhrases = voiceButtonBase >= 0;
             RebuildVoicePhrases(voiceButtonBase);
@@ -594,6 +636,9 @@ namespace PadForge.ViewModels
             VoicePhrases.Clear();
             IsConsumerDevice = false;
             IsHeadsetMotionDevice = false;
+            IsHandheldDevice = false;
+            IsSystemMotionDevice = false;
+            HandheldButtons.Clear();
             ConsumerButtons.Clear();
             LiveMidi = null;
             HasRawData = false;

@@ -863,6 +863,22 @@
                             </Button.Style>
                         </Button>
 
+                        <!-- Learn / manage handheld hidden buttons (issue #343):
+                             the per-machine Hidden Buttons row only. -->
+                        <Button Content="{Binding Handheld_ManageButton, Source={x:Static strings:Strings.Instance}}" Margin="0,6,0,8"
+                                Padding="8,4" HorizontalAlignment="Left"
+                                Click="LearnHandheldButton_Click"
+                                Visibility="{Binding SelectedDevice.ShowLearnHandheldButton, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"/>
+                            </Button.Style>
+                        </Button>
+                        <!-- Vendor daemon notice (#343): the vendor's own tool keeps
+                             reacting to these buttons until it is stopped. -->
+                        <TextBlock Text="{Binding SelectedDevice.HandheldDaemonWarning}" TextWrapping="Wrap"
+                                   FontSize="11" Foreground="{DynamicResource EmberBrush}" Margin="0,0,0,8"
+                                   Visibility="{Binding SelectedDevice.HasHandheldDaemonWarning, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
                         <Separator Margin="0,2,0,6"/>
 
                         <!-- Assign to slot -->
@@ -1095,6 +1111,12 @@
                                         <DataTrigger Binding="{Binding IsHeadsetMotionDevice}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsHandheldDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsSystemMotionDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </TextBlock.Style>
@@ -1126,6 +1148,12 @@
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding IsHeadsetMotionDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsHandheldDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsSystemMotionDevice}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -1188,6 +1216,12 @@
                                         <DataTrigger Binding="{Binding IsHeadsetMotionDevice}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsHandheldDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsSystemMotionDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </TextBlock.Style>
@@ -1215,6 +1249,12 @@
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding IsHeadsetMotionDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsHandheldDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsSystemMotionDevice}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -1671,6 +1711,56 @@
                                          Visibility="{Binding Pad2Down4, Converter={StaticResource BoolToVisibilityConverter}}"/>
                             </Canvas>
                         </Border>
+
+                        <!-- Handheld: learned hidden-button list (issue #343), the NFC
+                             tag list's shape. Each row lights while its button is down. -->
+                        <StackPanel Visibility="{Binding IsHandheldDevice, Converter={StaticResource BoolToVisibilityConverter}}"
+                                    Margin="0,0,0,8">
+                            <TextBlock Text="{Binding Handheld_Title, Source={x:Static strings:Strings.Instance}}" FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,3"/>
+                            <TextBlock Text="{Binding Handheld_NoneLearned, Source={x:Static strings:Strings.Instance}}" FontSize="11"
+                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}" TextWrapping="Wrap" Margin="0,0,0,4">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding HandheldButtons.Count}" Value="0">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                            <ItemsControl ItemsSource="{Binding HandheldButtons}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border CornerRadius="4" Margin="0,1" Padding="8,5"
+                                                Style="{StaticResource RawCellBorderActive}">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="{Binding Name}" FontSize="12" VerticalAlignment="Center"
+                                                           TextTrimming="CharacterEllipsis">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsActive}" Value="True">
+                                                                    <Setter Property="Foreground" Value="{DynamicResource ColdBrush}"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                                <TextBlock Grid.Column="1" Text="{Binding Uid}" FontFamily="{StaticResource TelemetryFontFamily}"
+                                                           FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Center"
+                                                           Margin="8,0,0,0" MaxWidth="220" TextTrimming="CharacterEllipsis"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
 
                         <!-- Voice Macros (issue #317): named phrase rows, the voice twin
                              of the NFC Tags section. Shown for devices that carry the

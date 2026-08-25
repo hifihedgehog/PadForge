@@ -2284,6 +2284,36 @@
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>태그를 캡처했습니다. 이름을 입력하고 등록을 클릭하세요. 다른 태그를 대면 교체됩니다.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>"{0}"을(를) 등록했습니다. 다른 태그를 대면 더 추가할 수 있습니다.</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>NFC 태그 등록/관리</value></data>
+  <data name="DeviceType_HandheldButtons" xml:space="preserve"><value>휴대용 PC 버튼</value></data>
+  <data name="DeviceType_SystemMotion" xml:space="preserve"><value>시스템 모션</value></data>
+  <data name="Handheld_ManageButton" xml:space="preserve"><value>숨겨진 버튼 학습 / 관리</value></data>
+  <data name="Handheld_Title" xml:space="preserve"><value>숨겨진 버튼</value></data>
+  <data name="Handheld_LearnHeader" xml:space="preserve"><value>버튼 학습</value></data>
+  <data name="Handheld_Intro" xml:space="preserve"><value>요청 시 숨겨진 버튼을 한 번 누르세요. PadForge는 이 컴퓨터의 키보드, 마우스, 모든 제조사 보고서를 관찰하여 버튼이 바꾸는 것을 기록합니다.</value></data>
+  <data name="Handheld_MachineLabel" xml:space="preserve"><value>컴퓨터:</value></data>
+  <data name="Handheld_StartButton" xml:space="preserve"><value>학습 시작</value></data>
+  <data name="Handheld_PhaseIdle" xml:space="preserve"><value>손을 떼세요. 대기 상태를 읽는 중…</value></data>
+  <data name="Handheld_PhasePress" xml:space="preserve"><value>지금 숨겨진 버튼을 길게 누르세요…</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>손을 떼세요…</value></data>
+  <data name="Handheld_NothingFound" xml:space="preserve"><value>변화가 감지되지 않았습니다. 표시된 시간 동안 버튼을 누르고 다시 시도하세요.</value></data>
+  <data name="Handheld_Captured" xml:space="preserve"><value>버튼을 캡처했습니다. 이름을 입력하고 등록을 클릭하세요.</value></data>
+  <data name="Handheld_SourceLabel" xml:space="preserve"><value>소스:</value></data>
+  <data name="Handheld_NameLabel" xml:space="preserve"><value>이름:</value></data>
+  <data name="Handheld_RegisterButton" xml:space="preserve"><value>등록</value></data>
+  <data name="Handheld_RegisteredHeader" xml:space="preserve"><value>학습된 버튼</value></data>
+  <data name="Handheld_NoneLearned" xml:space="preserve"><value>아직 학습된 버튼이 없습니다.</value></data>
+  <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>"{0}" 등록됨. 다른 버튼을 학습하려면 다시 시작하세요.</value></data>
+  <data name="Handheld_ChordFormat" xml:space="preserve"><value>키: {0}</value></data>
+  <data name="Handheld_NoDevice" xml:space="preserve"><value>숨겨진 버튼이 꺼져 있습니다. 먼저 설정에서 휴대용 PC 버튼을 켜세요.</value></data>
+  <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>{0}이(가) 실행 중입니다. 중지할 때까지 이 버튼에 계속 반응합니다.</value></data>
+  <data name="Handheld_Export" xml:space="preserve"><value>내보내기…</value></data>
+  <data name="Handheld_Import" xml:space="preserve"><value>가져오기…</value></data>
+  <data name="Handheld_ExportedFormat" xml:space="preserve"><value>버튼 {0}개를 내보냈습니다.</value></data>
+  <data name="Handheld_ImportedFormat" xml:space="preserve"><value>버튼 {0}개를 가져왔습니다.</value></data>
+  <data name="Settings_Handheld" xml:space="preserve"><value>휴대용 PC 버튼</value></data>
+  <data name="Settings_HandheldDesc" xml:space="preserve"><value>휴대용 게이밍 PC에는 운영 체제가 컨트롤러로 표시하지 않는 버튼이 있습니다. 후면 패들, 메뉴 키, 휠 등입니다. 켜면 한 번 눌러서 학습한 뒤 다른 버튼처럼 매핑할 수 있습니다. 컴퓨터 자체의 자이로스코프도 모션 장치로 추가됩니다.</value></data>
+  <data name="Settings_HandheldEnable" xml:space="preserve"><value>휴대용 PC 버튼 사용</value></data>
+  <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>장치 페이지에 숨겨진 버튼 장치와 시스템 모션 장치를 추가합니다. 끄면 아무것도 실행되지 않습니다.</value></data>
   <data name="DeviceType_Nfc" xml:space="preserve"><value>NFC 리더기</value></data>
   <data name="DeviceType_ConsumerControl" xml:space="preserve"><value>소비자 컨트롤</value></data>
   <data name="MacroAction_Type_DisconnectController" xml:space="preserve"><value>컨트롤러 연결 해제</value></data>

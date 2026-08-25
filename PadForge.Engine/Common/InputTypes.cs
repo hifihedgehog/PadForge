@@ -96,6 +96,15 @@ namespace PadForge.Engine
         // voice phrases. Mic-bearing controllers carry their phrases on
         // their own device instead.
         public const int Microphone = 31;
+        // Handheld PC hidden buttons (issue #343): one per-machine row
+        // whose buttons are learned on the machine, delivered by the
+        // firmware either as keyboard chords through the low-level hooks
+        // or as bits and codes in a vendor HID input report.
+        public const int HandheldButtons = 32;
+        // The machine's own gyroscope and accelerometer through the
+        // Windows sensor stack (issue #343), for handhelds whose IMU sits
+        // in the tablet rather than in the controller halves.
+        public const int SystemMotion = 33;
     }
 
     // ─────────────────────────────────────────────────────────────────

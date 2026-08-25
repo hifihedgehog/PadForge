@@ -467,6 +467,14 @@ namespace PadForge.Views
         }
 
 
+        // ── Handheld hidden buttons (issue #343) ──
+
+        private void LearnHandheldButton_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new LearnHandheldButtonDialog { Owner = Window.GetWindow(this) };
+            dlg.ShowDialog();
+        }
+
         // ── Voice macros (issue #315) ──
 
         private void ManageVoicePhrases_Click(object sender, RoutedEventArgs e)

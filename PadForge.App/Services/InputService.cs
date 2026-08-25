@@ -774,6 +774,11 @@ namespace PadForge.Services
             // settings load), so the load-time LoadRegistry fan-out is not handled.
             PadForge.Common.Input.NfcTagRegistry.RegistryChanged += OnNfcTagRegistryChanged;
             PadForge.Common.Input.VoicePhraseRegistry.RegistryChanged += OnVoicePhraseRegistryChanged;
+            // Handheld hidden buttons (#343): same fan-out as NFC, plus the
+            // hook keep-alive re-evaluation when a chord appears or a Learn
+            // dialog arms a capture.
+            PadForge.Common.Input.HandheldButtonRegistry.RegistryChanged += OnHandheldRegistryChanged;
+            PadForge.Common.Input.HandheldButtonRegistry.ActivityChanged += OnHandheldActivityChanged;
             // Voice phrases on mic-bearing pads (issue #317): the engine
             // stamps pulses into the pad's state through this hook.
             PadForge.Engine.SdlDeviceWrapper.ExternalVoiceAugment = PadForge.Common.Input.VoicePulse.Apply;
@@ -2343,6 +2348,8 @@ namespace PadForge.Services
             // for that reason.
             try { PadForge.Common.Input.NfcTagRegistry.RegistryChanged -= OnNfcTagRegistryChanged; } catch { }
             try { PadForge.Common.Input.VoicePhraseRegistry.RegistryChanged -= OnVoicePhraseRegistryChanged; } catch { }
+            try { PadForge.Common.Input.HandheldButtonRegistry.RegistryChanged -= OnHandheldRegistryChanged; } catch { }
+            try { PadForge.Common.Input.HandheldButtonRegistry.ActivityChanged -= OnHandheldActivityChanged; } catch { }
             if (_inputManager != null)
             {
                 _inputManager.DevicesUpdated -= OnDevicesUpdated;
@@ -4026,7 +4033,9 @@ namespace PadForge.Services
                 int[] btnIndices = ResolveButtonIndices(ud);
                 devVm.RebuildRawStateCollections(axisIndices, btnIndices, povCount, isKb, isMouse, isTouchpad, isMidi, isNfc,
                     consumerButtons: BuildConsumerPreviewItems(ud), isHeadsetMotion: isHeadset,
-                    voiceButtonBase: voiceBase, isMicrophone: isMic);
+                    voiceButtonBase: voiceBase, isMicrophone: isMic,
+                    isHandheld: ud.CapType == InputDeviceType.HandheldButtons,
+                    isSystemMotion: ud.CapType == InputDeviceType.SystemMotion);
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
                 devVm.HasAccelAuxData = ud.HasAccelAux;
@@ -4642,7 +4651,9 @@ namespace PadForge.Services
                 int[] btnIndices = ResolveButtonIndices(ud);
                 devVm.RebuildRawStateCollections(axisIndices, btnIndices, povCount, isKb, isMouse, isTouchpad2, isMidi2, isNfc2,
                     consumerButtons: BuildConsumerPreviewItems(ud), isHeadsetMotion: isHeadset2,
-                    voiceButtonBase: voiceBase2, isMicrophone: isMic2);
+                    voiceButtonBase: voiceBase2, isMicrophone: isMic2,
+                    isHandheld: ud.CapType == InputDeviceType.HandheldButtons,
+                    isSystemMotion: ud.CapType == InputDeviceType.SystemMotion);
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
                 devVm.HasAccelAuxData = ud.HasAccelAux;
@@ -4772,6 +4783,21 @@ namespace PadForge.Services
                 for (int i = 0; i < devVm.VoicePhrases.Count; i++)
                 {
                     var row = devVm.VoicePhrases[i];
+                    if (row.Button >= 0 && row.Button < btns.Length && btns[row.Button])
+                        row.LastActiveTick = now;
+                    row.IsActive = row.LastActiveTick != 0 && (now - row.LastActiveTick) < NfcPreviewHoldMs;
+                }
+            }
+
+            // Hidden Buttons section (issue #343): the same latch, off the
+            // handheld row's 175 ms minimum press.
+            if (devVm.IsHandheldDevice)
+            {
+                long now = Environment.TickCount64;
+                var btns = state.Buttons;
+                for (int i = 0; i < devVm.HandheldButtons.Count; i++)
+                {
+                    var row = devVm.HandheldButtons[i];
                     if (row.Button >= 0 && row.Button < btns.Length && btns[row.Button])
                         row.LastActiveTick = now;
                     row.IsActive = row.LastActiveTick != 0 && (now - row.LastActiveTick) < NfcPreviewHoldMs;
@@ -8285,6 +8311,57 @@ namespace PadForge.Services
             }));
         }
 
+        /// <summary>Handheld hidden buttons registry changed (#343): the NFC
+        /// fan-out (re-read the row's objects and button span, rebuild the
+        /// pickers, refresh the preview, persist) plus a hook re-evaluation,
+        /// since the first chord learned is what makes the hooks necessary
+        /// and the last one removed is what lets them go.</summary>
+        private void OnHandheldRegistryChanged(object sender, EventArgs e)
+        {
+            _dispatcher.BeginInvoke(new Action(() =>
+            {
+                try
+                {
+                    lock (SettingsManager.UserDevices.SyncRoot)
+                    {
+                        foreach (var ud in SettingsManager.UserDevices.Items)
+                            if (ud != null && ud.CapType == PadForge.Engine.InputDeviceType.HandheldButtons && ud.Device != null)
+                            {
+                                ud.DeviceObjects = ud.Device.GetDeviceObjects();
+                                // The span follows the registry (the voice
+                                // lesson): a button learned after row creation
+                                // must be mappable without a reopen.
+                                ud.RawButtonCount = ud.Device.RawButtonCount;
+                            }
+                    }
+                }
+                catch { /* refresh is best-effort */ }
+
+                try
+                {
+                    foreach (var padVm in _mainVm.Pads)
+                        if (padVm != null) RefreshAvailableInputsForSlot(padVm);
+                }
+                catch { /* picker refresh is cosmetic */ }
+                try { if (_mainVm.Devices?.IsHandheldDevice == true) _mainVm.Devices.RebuildHandheldButtons(); }
+                catch { }
+                try { ApplyDeviceHiding(); } catch { }
+                try { _settingsService?.Save(); } catch { /* persisted on next save regardless */ }
+            }));
+        }
+
+        /// <summary>A Learn dialog armed or disarmed a capture, or the
+        /// feature toggle flipped (#343): the hooks must exist for a capture
+        /// to see anything, so re-run the hook decision now rather than at
+        /// the next device change.</summary>
+        private void OnHandheldActivityChanged(object sender, EventArgs e)
+        {
+            _dispatcher.BeginInvoke(new Action(() =>
+            {
+                try { ApplyDeviceHiding(); } catch { }
+            }));
+        }
+
         /// <summary>Re-derives the phrase entries on every device that
         /// carries them: standalone microphone rows and Bluetooth DualSense
         /// pads. Called on device arrival and registry change.</summary>
@@ -9938,8 +10015,10 @@ namespace PadForge.Services
                             // Microphone rows join the gate (#317): their
                             // buttons are named from THIS machine's phrase
                             // registry, underivable on the consumer.
+                            // Handheld rows too (#343): every button is a name
+                            // from THIS machine's learned set.
                             if (devType == InputDeviceType.ConsumerControl || devType == InputDeviceType.Nfc
-                                || devType == InputDeviceType.Microphone)
+                                || devType == InputDeviceType.Microphone || devType == InputDeviceType.HandheldButtons)
                                 try { objects = dev.GetDeviceObjects(); } catch { }
                             var info = new RemotePeerDeviceInfo
                             {
@@ -11099,7 +11178,12 @@ namespace PadForge.Services
                 CollectSuppressedInputs(ud, suppressedKeys, suppressedMouse);
             }
 
-            if (suppressedKeys.Count > 0 || suppressedMouse.Count > 0)
+            // Handheld chords (#343) ride the same hooks: a learned chord or
+            // an armed Learn capture keeps them installed with nothing to
+            // suppress. With neither, the feature costs no hook at all.
+            bool chordHooks = PadForge.Common.Input.HandheldChordRuntime.NeedsHooks;
+
+            if (suppressedKeys.Count > 0 || suppressedMouse.Count > 0 || chordHooks)
             {
                 EnsureHookManager();
                 _hookManager.SetSuppressedKeys(suppressedKeys);
@@ -11692,8 +11776,14 @@ namespace PadForge.Services
                 InputDeviceType.Microphone => "Microphone",
                 InputDeviceType.ConsumerControl => "ConsumerControl",
                 InputDeviceType.HeadsetMotion => "HeadsetMotion",
+                InputDeviceType.HandheldButtons => "HandheldButtons",
+                InputDeviceType.SystemMotion => "SystemMotion",
                 _ => "Device"
             };
+            // Vendor daemon notice (#343): the sweep scans on its cadence;
+            // the row carries the latest answer for the details pane.
+            row.HandheldDaemonRunning = ud.CapType == InputDeviceType.HandheldButtons
+                ? PadForge.Common.Input.HandheldDaemonWatch.Running : string.Empty;
 
             // Resolve slot assignments (device can be assigned to multiple slots).
             row.SetAssignedSlots(SettingsManager.GetAssignedSlots(ud.InstanceGuid));

@@ -2306,6 +2306,36 @@
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>Tag acquisito. Inserisci un nome e fai clic su Registra. Avvicina un altro tag per sostituirlo.</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>«{0}» registrato. Avvicina un altro tag per aggiungerne altri.</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>Registra o gestisci i tag NFC</value></data>
+  <data name="DeviceType_HandheldButtons" xml:space="preserve"><value>Pulsanti del portatile</value></data>
+  <data name="DeviceType_SystemMotion" xml:space="preserve"><value>Movimento del sistema</value></data>
+  <data name="Handheld_ManageButton" xml:space="preserve"><value>Apprendi / gestisci pulsanti nascosti</value></data>
+  <data name="Handheld_Title" xml:space="preserve"><value>Pulsanti nascosti</value></data>
+  <data name="Handheld_LearnHeader" xml:space="preserve"><value>Apprendi un pulsante</value></data>
+  <data name="Handheld_Intro" xml:space="preserve"><value>Premi una volta il pulsante nascosto quando richiesto. PadForge osserva la tastiera, il mouse e ogni report del produttore su questa macchina e registra ciò che il pulsante modifica.</value></data>
+  <data name="Handheld_MachineLabel" xml:space="preserve"><value>Macchina:</value></data>
+  <data name="Handheld_StartButton" xml:space="preserve"><value>Avvia apprendimento</value></data>
+  <data name="Handheld_PhaseIdle" xml:space="preserve"><value>Non toccare. Lettura dello stato a riposo…</value></data>
+  <data name="Handheld_PhasePress" xml:space="preserve"><value>Tieni premuto il pulsante nascosto ora…</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>Rilascialo…</value></data>
+  <data name="Handheld_NothingFound" xml:space="preserve"><value>Nessuna modifica rilevata. Premi il pulsante durante la finestra indicata e riprova.</value></data>
+  <data name="Handheld_Captured" xml:space="preserve"><value>Pulsante acquisito. Inserisci un nome e fai clic su Registra.</value></data>
+  <data name="Handheld_SourceLabel" xml:space="preserve"><value>Origine:</value></data>
+  <data name="Handheld_NameLabel" xml:space="preserve"><value>Nome:</value></data>
+  <data name="Handheld_RegisterButton" xml:space="preserve"><value>Registra</value></data>
+  <data name="Handheld_RegisteredHeader" xml:space="preserve"><value>Pulsanti appresi</value></data>
+  <data name="Handheld_NoneLearned" xml:space="preserve"><value>Nessun pulsante ancora appreso.</value></data>
+  <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>"{0}" registrato. Ricomincia per apprenderne un altro.</value></data>
+  <data name="Handheld_ChordFormat" xml:space="preserve"><value>Tasti: {0}</value></data>
+  <data name="Handheld_NoDevice" xml:space="preserve"><value>I pulsanti nascosti sono disattivati. Attiva prima Pulsanti del PC portatile nelle Impostazioni.</value></data>
+  <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>{0} è in esecuzione. Continua a reagire a questi pulsanti finché non lo chiudi.</value></data>
+  <data name="Handheld_Export" xml:space="preserve"><value>Esporta…</value></data>
+  <data name="Handheld_Import" xml:space="preserve"><value>Importa…</value></data>
+  <data name="Handheld_ExportedFormat" xml:space="preserve"><value>{0} pulsanti esportati.</value></data>
+  <data name="Handheld_ImportedFormat" xml:space="preserve"><value>{0} pulsanti importati.</value></data>
+  <data name="Settings_Handheld" xml:space="preserve"><value>Pulsanti del PC portatile</value></data>
+  <data name="Settings_HandheldDesc" xml:space="preserve"><value>I PC portatili da gioco hanno pulsanti che il sistema operativo non mostra mai come controller: paddle posteriori, tasti menu, rotelle. Attiva per apprenderli una volta premendoli, poi mappali come qualsiasi altro pulsante. Aggiunge anche il giroscopio della macchina come dispositivo di movimento.</value></data>
+  <data name="Settings_HandheldEnable" xml:space="preserve"><value>Attiva pulsanti del PC portatile</value></data>
+  <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>Aggiunge un dispositivo Pulsanti nascosti e un dispositivo Movimento del sistema alla pagina Dispositivi. Disattivato, non viene eseguito nulla.</value></data>
   <data name="DeviceType_Nfc" xml:space="preserve"><value>Lettore NFC</value></data>
   <data name="DeviceType_ConsumerControl" xml:space="preserve"><value>Controllo multimediale</value></data>
   <data name="MacroAction_Type_DisconnectController" xml:space="preserve"><value>Disconnetti controller</value></data>

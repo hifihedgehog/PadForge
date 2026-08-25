@@ -2284,6 +2284,36 @@
   <data name="Nfc_TagCaptured" xml:space="preserve"><value>已捕获标签。输入名称并单击“注册”。靠近另一个标签即可替换。</value></data>
   <data name="Nfc_RegisteredFormat" xml:space="preserve"><value>已注册“{0}”。靠近另一个标签可添加更多。</value></data>
   <data name="Nfc_ManageButton" xml:space="preserve"><value>注册/管理 NFC 标签</value></data>
+  <data name="DeviceType_HandheldButtons" xml:space="preserve"><value>掌机按键</value></data>
+  <data name="DeviceType_SystemMotion" xml:space="preserve"><value>系统体感</value></data>
+  <data name="Handheld_ManageButton" xml:space="preserve"><value>学习 / 管理隐藏按键</value></data>
+  <data name="Handheld_Title" xml:space="preserve"><value>隐藏按键</value></data>
+  <data name="Handheld_LearnHeader" xml:space="preserve"><value>学习一个按键</value></data>
+  <data name="Handheld_Intro" xml:space="preserve"><value>在提示时按一次隐藏按键。PadForge 会监视这台机器的键盘、鼠标和所有厂商报告，并记录该按键改变的内容。</value></data>
+  <data name="Handheld_MachineLabel" xml:space="preserve"><value>机器：</value></data>
+  <data name="Handheld_StartButton" xml:space="preserve"><value>开始学习</value></data>
+  <data name="Handheld_PhaseIdle" xml:space="preserve"><value>请勿触碰。正在读取空闲状态…</value></data>
+  <data name="Handheld_PhasePress" xml:space="preserve"><value>现在按住隐藏按键…</value></data>
+  <data name="Handheld_PhaseRelease" xml:space="preserve"><value>松开…</value></data>
+  <data name="Handheld_NothingFound" xml:space="preserve"><value>未检测到变化。请在提示的时间窗口内按下按键并重试。</value></data>
+  <data name="Handheld_Captured" xml:space="preserve"><value>已捕获按键。输入名称并点击“注册”。</value></data>
+  <data name="Handheld_SourceLabel" xml:space="preserve"><value>来源：</value></data>
+  <data name="Handheld_NameLabel" xml:space="preserve"><value>名称：</value></data>
+  <data name="Handheld_RegisterButton" xml:space="preserve"><value>注册</value></data>
+  <data name="Handheld_RegisteredHeader" xml:space="preserve"><value>已学习的按键</value></data>
+  <data name="Handheld_NoneLearned" xml:space="preserve"><value>尚未学习任何按键。</value></data>
+  <data name="Handheld_RegisteredFormat" xml:space="preserve"><value>已注册“{0}”。再次开始以学习另一个。</value></data>
+  <data name="Handheld_ChordFormat" xml:space="preserve"><value>按键：{0}</value></data>
+  <data name="Handheld_NoDevice" xml:space="preserve"><value>隐藏按键已关闭。请先在设置中启用掌机按键。</value></data>
+  <data name="Handheld_DaemonWarning_Format" xml:space="preserve"><value>{0} 正在运行。在您停止它之前，它仍会响应这些按键。</value></data>
+  <data name="Handheld_Export" xml:space="preserve"><value>导出…</value></data>
+  <data name="Handheld_Import" xml:space="preserve"><value>导入…</value></data>
+  <data name="Handheld_ExportedFormat" xml:space="preserve"><value>已导出 {0} 个按键。</value></data>
+  <data name="Handheld_ImportedFormat" xml:space="preserve"><value>已导入 {0} 个按键。</value></data>
+  <data name="Settings_Handheld" xml:space="preserve"><value>掌机按键</value></data>
+  <data name="Settings_HandheldDesc" xml:space="preserve"><value>掌上游戏 PC 有一些操作系统从不作为控制器显示的按键：背部拨片、菜单键、滚轮。开启后，按一下即可学习它们，然后像其他按键一样映射。同时会把机器自身的陀螺仪添加为体感设备。</value></data>
+  <data name="Settings_HandheldEnable" xml:space="preserve"><value>启用掌机按键</value></data>
+  <data name="Settings_HandheldEnable_Tooltip" xml:space="preserve"><value>在设备页面添加“隐藏按键”设备和“系统体感”设备。关闭时不运行任何内容。</value></data>
   <data name="DeviceType_Nfc" xml:space="preserve"><value>NFC 读卡器</value></data>
   <data name="DeviceType_ConsumerControl" xml:space="preserve"><value>消费者控制</value></data>
   <data name="MacroAction_Type_DisconnectController" xml:space="preserve"><value>断开控制器</value></data>

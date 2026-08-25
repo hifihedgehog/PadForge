@@ -16,59 +16,49 @@ namespace PadForge.Tests
     /// Each test fails if its fix is removed, which is the only thing that
     /// makes the suite evidence rather than ceremony.
     /// </summary>
+    /// <summary>The firewall rule is written, not read back. Parsing netsh's
+    /// own dump to decide whether the rule exists cannot be done portably: the
+    /// labels come from the firewall's MUI resources and are translated on a
+    /// localized Windows, so a label match silently never fires and every call
+    /// adds another rule. Delete-then-add needs no parsing, is idempotent, and
+    /// sweeps up the per-port pile-up the old path built.</summary>
     public class AuditDelta20260825FirewallTests
     {
-        // A real netsh dump: the rule exists and names port 4242.
-        private const string Dump =
-            "\r\nRule Name:                            PadForge Head Tracking\r\n" +
-            "----------------------------------------------------------------------\r\n" +
-            "Enabled:                              Yes\r\n" +
-            "Direction:                            In\r\n" +
-            "Profiles:                             Domain,Private,Public\r\n" +
-            "LocalIP:                              Any\r\n" +
-            "RemoteIP:                             Any\r\n" +
-            "Protocol:                             UDP\r\n" +
-            "LocalPort:                            4242\r\n" +
-            "RemotePort:                           Any\r\n" +
-            "Action:                               Allow\r\n";
-
-        [Fact]
-        public void APortThatIsOnlyASubstringOfTheRulesPortDoesNotCount()
+        private static string RepoText(params string[] parts)
         {
-            // The bug: Contains("42") is true of "4242", so moving the head
-            // tracker to port 42 found a rule that was not there and the
-            // port stayed blocked.
-            Assert.False(PadForge.Services.WebControllerServer.RuleNamesPort(Dump, 42));
-            Assert.False(PadForge.Services.WebControllerServer.RuleNamesPort(Dump, 424));
-            Assert.False(PadForge.Services.WebControllerServer.RuleNamesPort(Dump, 2));
+            var dir = new DirectoryInfo(AppContext.BaseDirectory);
+            while (dir != null && !File.Exists(Path.Combine(dir.FullName, "PadForge.sln")))
+                dir = dir.Parent;
+            Assert.NotNull(dir);
+            return File.ReadAllText(Path.Combine(new[] { dir.FullName }.Concat(parts).ToArray()));
         }
 
         [Fact]
-        public void TheRulesOwnPortCounts()
+        public void TheRuleIsDeletedByNameBeforeItIsAdded()
         {
-            Assert.True(PadForge.Services.WebControllerServer.RuleNamesPort(Dump, 4242));
+            string web = RepoText("PadForge.App", "Services", "WebControllerServer.cs");
+            int at = web.IndexOf("internal static void EnsureInboundFirewallRule", StringComparison.Ordinal);
+            Assert.True(at > 0);
+            string body = web.Substring(at, 2200);
+            int del = body.IndexOf("firewall delete rule", StringComparison.Ordinal);
+            int add = body.IndexOf("firewall add rule", StringComparison.Ordinal);
+            Assert.True(del > 0, "the rule is never deleted, so per-port duplicates accumulate");
+            Assert.True(add > del, "the add must follow the delete");
         }
 
         [Fact]
-        public void ListsAndRangesAreReadAsValues()
+        public void TheRuleDumpIsNeverReadBack()
         {
-            string list = "LocalPort:                            80,443,8080\r\n";
-            Assert.True(PadForge.Services.WebControllerServer.RuleNamesPort(list, 443));
-            Assert.False(PadForge.Services.WebControllerServer.RuleNamesPort(list, 44));
-            string range = "LocalPort:                            5000-5010\r\n";
-            Assert.True(PadForge.Services.WebControllerServer.RuleNamesPort(range, 5005));
-            Assert.False(PadForge.Services.WebControllerServer.RuleNamesPort(range, 5011));
-        }
-
-        [Fact]
-        public void NoRuleAtAllIsNotAMatch()
-        {
-            Assert.False(PadForge.Services.WebControllerServer.RuleNamesPort("", 4242));
-            Assert.False(PadForge.Services.WebControllerServer.RuleNamesPort("No rules match the specified criteria.", 4242));
-            // A port that appears somewhere OTHER than the LocalPort line is
-            // not this rule's port. RemotePort deliberately does not count.
-            Assert.False(PadForge.Services.WebControllerServer.RuleNamesPort(
-                "Rule Name: 4242\r\nRemotePort: 4242\r\n", 4242));
+            // The real contract: nothing parses netsh output. Both earlier
+            // shapes did, and both were wrong. The substring test matched
+            // "42" inside "4242"; the LocalPort label match reads an
+            // English-only label and silently never fires elsewhere.
+            string web = RepoText("PadForge.App", "Services", "WebControllerServer.cs");
+            Assert.DoesNotContain("RuleNamesPort", web);
+            Assert.DoesNotContain("check.Contains(port.ToString())", web);
+            int at = web.IndexOf("internal static void EnsureInboundFirewallRule", StringComparison.Ordinal);
+            string body = web.Substring(at, 2200);
+            Assert.DoesNotContain("firewall show rule", body);
         }
     }
 
@@ -117,13 +107,27 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void ABufferSizeReachingPastItsOwnPackageIsRejected()
+        public void ABufferSizeReachingPastItsOwnPackageReadsOnlyWhatThePackageHolds()
         {
-            // One real entry, a declared size claiming four. Without the
-            // package bound the parser walks into the trailing AML and hands
-            // three invented GUIDs to the subscription gate.
+            // One real entry, a declared size claiming four. ACPI 19.6.10
+            // zero-fills a Buffer whose declared size exceeds its ByteList,
+            // so this shape is legal and its real block must survive. What
+            // must NOT happen is the parser walking into the trailing AML
+            // and handing three invented GUIDs to the subscription gate.
             var blocks = new List<AcpiWmi.Block>();
             AcpiWmi.ParseWdg(Table(declaredSize: 80, actualEntries: 1), blocks);
+            Assert.Single(blocks);
+            Assert.Equal(EventGuid, blocks[0].Guid);
+        }
+
+        [Fact]
+        public void TrailingAmlIsNeverReadAsAGuidBlock()
+        {
+            // The overrun case with NOTHING real in it: a declared size of
+            // four entries in a package that holds none. Dropping the bound
+            // turns the 0xAB padding into blocks.
+            var blocks = new List<AcpiWmi.Block>();
+            AcpiWmi.ParseWdg(Table(declaredSize: 80, actualEntries: 0), blocks);
             Assert.Empty(blocks);
         }
 
@@ -307,20 +311,6 @@ namespace PadForge.Tests
             string body = runtime.Substring(at, 2600);
             Assert.Contains("EnumerateEventClasses()", body);
             Assert.Contains("refusing to watch WMI class", body);
-        }
-
-        [Fact]
-        public void TheFirewallHelperAsksRuleNamesPortRatherThanSearchingTheDump()
-        {
-            // Locking the helper's behaviour is not enough: the caller has to
-            // keep calling it. The defect was a substring test AT THE CALL
-            // SITE, and a correct function nobody consults fixes nothing.
-            string web = RepoFile("PadForge.App", "Services", "WebControllerServer.cs");
-            int at = web.IndexOf("internal static void EnsureInboundFirewallRule", StringComparison.Ordinal);
-            Assert.True(at > 0);
-            string body = web.Substring(at, 1600);
-            Assert.Contains("RuleNamesPort(check, port)", body);
-            Assert.DoesNotContain("check.Contains(port.ToString())", body);
         }
 
         [Fact]

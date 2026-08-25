@@ -1295,49 +1295,25 @@ namespace PadForge.Services
         {
             try
             {
-                // Check if rule already exists.
-                // Check whether a rule of this name already names this port.
-                // A substring test over the whole netsh dump was wrong in both
-                // directions once the port became user-editable: "42" is
-                // inside "4242", so moving to port 42 found a rule that was
-                // not there, and moving to 4242 missed the one that was and
-                // added a duplicate. Read the LocalPort line and compare.
-                var check = RunNetsh($"advfirewall firewall show rule name=\"{ruleName}\"");
-                if (RuleNamesPort(check, port))
-                    return;
-
+                // Delete by name, then add. Reading netsh's own output to
+                // decide whether the rule already exists cannot be done
+                // portably: the dump is rendered from the firewall's MUI
+                // resources, so "LocalPort" is translated on a localized
+                // Windows and any label match silently never fires. The
+                // earlier substring test over the raw dump avoided the
+                // language problem and had a worse one, matching "42" inside
+                // "4242".
+                //
+                // Delete-then-add needs no parsing at all, is idempotent, and
+                // clears the pile-up the port-change path had been building:
+                // nothing ever removed the rule for a port the user moved
+                // away from, so the rules accumulated one per port under the
+                // same name. A delete with no matching rule is an error netsh
+                // reports and this swallows.
+                RunNetsh($"advfirewall firewall delete rule name=\"{ruleName}\"");
                 RunNetsh($"advfirewall firewall add rule name=\"{ruleName}\" dir=in action=allow protocol={protocol} localport={port}");
             }
             catch { /* best effort, the app may not be elevated */ }
-        }
-
-        /// <summary>True when a netsh rule dump lists this exact port. The
-        /// LocalPort line may carry a list ("80,443") or a range
-        /// ("5000-5010"), so each element is compared as a value.</summary>
-        internal static bool RuleNamesPort(string netshOutput, int port)
-        {
-            if (string.IsNullOrEmpty(netshOutput)) return false;
-            foreach (var raw in netshOutput.Split('\n'))
-            {
-                int colon = raw.IndexOf(':');
-                if (colon < 0) continue;
-                if (raw.Substring(0, colon).Trim() != "LocalPort") continue;
-                foreach (var part in raw.Substring(colon + 1).Split(','))
-                {
-                    string t = part.Trim();
-                    if (t.Length == 0) continue;
-                    int dash = t.IndexOf('-');
-                    if (dash > 0)
-                    {
-                        if (int.TryParse(t.Substring(0, dash).Trim(), out int lo)
-                            && int.TryParse(t.Substring(dash + 1).Trim(), out int hi)
-                            && port >= lo && port <= hi) return true;
-                        continue;
-                    }
-                    if (int.TryParse(t, out int one) && one == port) return true;
-                }
-            }
-            return false;
         }
 
         private static string RunNetsh(string arguments)

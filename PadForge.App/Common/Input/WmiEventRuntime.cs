@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Globalization;
 using System.Management;
 
@@ -38,6 +39,13 @@ namespace PadForge.Common.Input
         private static readonly object _lock = new();
         private static readonly Dictionary<string, ManagementEventWatcher> _watchers =
             new(StringComparer.OrdinalIgnoreCase);
+        /// <summary>Classes the firmware gate has already turned down. A
+        /// refused class never enters <see cref="_watchers"/>, so without
+        /// this the sweep re-asked every four seconds and re-logged the
+        /// refusal forever. Cleared with the watchers, so a re-enable
+        /// re-evaluates. Guarded by <see cref="_lock"/>.</summary>
+        private static readonly HashSet<string> _refused =
+            new(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>Fires on a WMI callback thread for every subscribed class.</summary>
         public static event Action<Event> EventReceived;
@@ -64,7 +72,12 @@ namespace PadForge.Common.Input
                     return new List<string>(_classCache);
             }
             var fresh = EnumerateEventClassesUncached();
-            if (fresh != null)
+            // Cache a real answer only. Null is "WMI unavailable" and empty is
+            // "the firmware read produced nothing", which a transient
+            // GetSystemFirmwareTable failure also produces: caching either one
+            // would hold the whole feature closed for the cache's lifetime on
+            // the strength of one bad read.
+            if (fresh != null && fresh.Count > 0)
                 lock (_lock) { _classCache = new List<string>(fresh); _classCacheTicks = Environment.TickCount64; }
             return fresh;
         }
@@ -144,7 +157,7 @@ namespace PadForge.Common.Input
                         _watchers.Remove(key);
                     }
                 foreach (var cls in wanted)
-                    if (!_watchers.ContainsKey(cls)) start.Add(cls);
+                    if (!_watchers.ContainsKey(cls) && !_refused.Contains(cls)) start.Add(cls);
             }
             // Only pay the enumeration when something new is about to be
             // subscribed: in the steady state every wanted class already has
@@ -157,6 +170,7 @@ namespace PadForge.Common.Input
                 {
                     if (allowed != null && allowed.Contains(cls, StringComparer.OrdinalIgnoreCase))
                     { pass.Add(cls); continue; }
+                    lock (_lock) _refused.Add(cls);
                     PadForge.Engine.SdlDiagLog.WriteLine(
                         $"Handheld: refusing to watch WMI class {cls}, the firmware does not declare its GUID as an ACPI-WMI event");
                 }
@@ -202,6 +216,10 @@ namespace PadForge.Common.Input
             {
                 stop = new List<ManagementEventWatcher>(_watchers.Values);
                 _watchers.Clear();
+                // A refusal is only as good as the firmware read behind it,
+                // and a re-enable re-reads. Holding refusals across a full
+                // stop would make one bad read permanent for the process.
+                _refused.Clear();
             }
             foreach (var w in stop) StopWatcher(w);
         }

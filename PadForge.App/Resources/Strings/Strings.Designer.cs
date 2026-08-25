@@ -2539,6 +2539,7 @@ public class Strings : INotifyPropertyChanged
     public string HeadTracker_StatusFreeTrack => Get("HeadTracker_StatusFreeTrack");
     public string HeadTracker_StatusPortInUse_Format => Get("HeadTracker_StatusPortInUse_Format");
     public string HeadTracker_StatusFreeTrackFailed_Format => Get("HeadTracker_StatusFreeTrackFailed_Format");
+    public string HeadTracker_StatusFreeTrackAlso => Get("HeadTracker_StatusFreeTrackAlso");
     public string Handheld_ManageButton => Get("Handheld_ManageButton");
     public string Handheld_Title => Get("Handheld_Title");
     public string Handheld_LearnHeader => Get("Handheld_LearnHeader");

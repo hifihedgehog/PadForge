@@ -31,20 +31,17 @@ namespace PadForge.Common.Input
         /// empty when none.</summary>
         public static string Running => _running;
 
-        private const int RescanIntervalMs = 30_000;
-        private static long _scannedTicks;
-
         /// <summary>Re-scans the process list. Worker thread only.
         ///
-        /// <para>Rate-limited: the answer feeds one line in the details pane
-        /// and a full process enumeration is not free, least of all on the
-        /// low-end handhelds this feature exists for. The sweep asks every
-        /// four seconds; this answers from cache in between.</para></summary>
+        /// <para>Runs on the sweep's own cadence, deliberately. An audit round
+        /// rate-limited this to 30 s on the assumption that enumerating every
+        /// process is expensive; measured, it is 3 ms across 335 processes, on
+        /// a worker thread. The notice it feeds says "this vendor tool is
+        /// still taking your buttons", which is exactly what a user re-reads
+        /// in the seconds after closing that tool, so a stale window costs
+        /// more than the scan does.</para></summary>
         public static void Refresh()
         {
-            long now = Environment.TickCount64;
-            if (_scannedTicks != 0 && now - _scannedTicks < RescanIntervalMs) return;
-            _scannedTicks = now;
             try
             {
                 var found = new List<string>();

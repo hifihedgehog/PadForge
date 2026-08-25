@@ -145,8 +145,16 @@ namespace PadForge.Common.Input
                     case 0x0C: if (p + 4 >= aml.Length) continue; bufferSize = BitConverter.ToUInt32(aml, p + 1); p += 5; break;
                     default: continue;
                 }
-                if (bufferSize <= 0 || p + bufferSize > aml.Length || p + bufferSize > pkgEnd) continue;
-                int entries = (int)(bufferSize / 20);
+                if (bufferSize <= 0 || p >= aml.Length) continue;
+                // A Buffer may declare more than its ByteList carries: the
+                // remainder is zero-filled (ACPI 19.6.10), so a legal _WDG
+                // can name a size past the end of its own package. Read what
+                // the package actually holds and let the rest be the zeroes
+                // the spec says they are, rather than discarding real blocks
+                // along with the overrun.
+                long usable = Math.Min(bufferSize, Math.Min(pkgEnd, aml.Length) - p);
+                if (usable < 20) continue;
+                int entries = (int)(usable / 20);
                 for (int e = 0; e < entries; e++)
                 {
                     int o = p + e * 20;
@@ -156,7 +164,7 @@ namespace PadForge.Common.Input
                     byte notify = aml[o + 16];
                     into.Add(new Block(new Guid(g), flags, notify, aml[o + 18]));
                 }
-                i = p + (int)bufferSize - 1;
+                i = p + (int)Math.Min(bufferSize, aml.Length - p) - 1;
             }
         }
 

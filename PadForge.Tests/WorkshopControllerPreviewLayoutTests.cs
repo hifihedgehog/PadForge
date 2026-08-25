@@ -31,6 +31,17 @@ namespace PadForge.Tests
         {
             { SteamDeckLayout.Overlays, "STEAMDECK" },
             { SteamControllerLayout.Overlays, "STEAMCONTROLLER" },
+            { SteamController2Layout.Overlays, "STEAMCONTROLLER2" },
+        };
+
+        /// <summary>Base canvas per folder, so the bounds check reads the
+        /// layout it was handed instead of choosing between two.</summary>
+        private static (int W, int H) BaseSize(string folder) => folder switch
+        {
+            "STEAMDECK" => (SteamDeckLayout.BaseWidth, SteamDeckLayout.BaseHeight),
+            "STEAMCONTROLLER" => (SteamControllerLayout.BaseWidth, SteamControllerLayout.BaseHeight),
+            "STEAMCONTROLLER2" => (SteamController2Layout.BaseWidth, SteamController2Layout.BaseHeight),
+            _ => (0, 0),
         };
 
         /// <summary>Every named sprite must exist on disk. A layout entry
@@ -56,8 +67,8 @@ namespace PadForge.Tests
         [MemberData(nameof(SteamLayouts))]
         public void EveryElementIsInsideTheBody(OverlayElement[] overlays, string folder)
         {
-            int w = folder == "STEAMDECK" ? SteamDeckLayout.BaseWidth : SteamControllerLayout.BaseWidth;
-            int h = folder == "STEAMDECK" ? SteamDeckLayout.BaseHeight : SteamControllerLayout.BaseHeight;
+            var (w, h) = BaseSize(folder);
+            Assert.True(w > 0 && h > 0, $"no base size registered for {folder}");
             var bad = overlays
                 .Where(o => o.X < -10 || o.Y < -10 || o.X + o.Width > w + 10 || o.Y + o.Height > h + 10)
                 .Select(o => o.TargetName)
@@ -178,7 +189,9 @@ namespace PadForge.Tests
         [InlineData("controller_neptune", "STEAMDECK")]
         [InlineData("controller_steamcontroller_gordon", "STEAMCONTROLLER")]
         [InlineData("controller_steamcontroller", "STEAMCONTROLLER")]
-        [InlineData("controller_triton", "STEAMCONTROLLER")]
+        // The 2026 pad now has its own body. It used to borrow the 2015
+        // one, which was a stick and a D-pad short of the real device.
+        [InlineData("controller_triton", "STEAMCONTROLLER2")]
         [InlineData("controller_ps5_edge", "DualSense")]
         [InlineData("controller_ps4", "DS4")]
         [InlineData("controller_switch_pro", "SWITCHPRO")]

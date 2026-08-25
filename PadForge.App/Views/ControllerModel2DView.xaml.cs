@@ -262,6 +262,21 @@ namespace PadForge.Views
                     basePath = Switch2ProLayout.BasePath; overlays = Switch2ProLayout.Overlays;
                     _stickMaxTravel = Switch2ProLayout.StickMaxTravel;
                     break;
+                case "STEAMDECK":
+                    baseW = SteamDeckLayout.BaseWidth; baseH = SteamDeckLayout.BaseHeight;
+                    basePath = SteamDeckLayout.BasePath; overlays = SteamDeckLayout.Overlays;
+                    _stickMaxTravel = SteamDeckLayout.StickMaxTravel;
+                    break;
+                case "STEAMCONTROLLER":
+                    baseW = SteamControllerLayout.BaseWidth; baseH = SteamControllerLayout.BaseHeight;
+                    basePath = SteamControllerLayout.BasePath; overlays = SteamControllerLayout.Overlays;
+                    _stickMaxTravel = SteamControllerLayout.StickMaxTravel;
+                    break;
+                case "STEAMCONTROLLER2":
+                    baseW = SteamController2Layout.BaseWidth; baseH = SteamController2Layout.BaseHeight;
+                    basePath = SteamController2Layout.BasePath; overlays = SteamController2Layout.Overlays;
+                    _stickMaxTravel = SteamController2Layout.StickMaxTravel;
+                    break;
                 default:
                     baseW = Xbox360Layout.BaseWidth; baseH = Xbox360Layout.BaseHeight;
                     basePath = Xbox360Layout.BasePath; overlays = Xbox360Layout.Overlays;

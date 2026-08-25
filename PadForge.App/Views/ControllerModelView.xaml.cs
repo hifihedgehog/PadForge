@@ -353,6 +353,9 @@ namespace PadForge.Views
                     "DualSenseEdge" => new ControllerModelDualSenseEdge(),
                     "Switch2Pro" => new ControllerModelSwitch2Pro(wantExtraControls),
                     "XboxSeries" => new ControllerModelXboxSeries(appearance ?? "Carbon", wantExtraControls),
+                    "SteamDeck" => new ControllerModelSteamDeck(),
+                    "SteamController" => new ControllerModelSteamController(),
+                    "SteamController2" => new ControllerModelSteamController2(),
                     _ => new ControllerModelXbox360()
                 };
                 _currentModelExtraControlsEnabled = wantExtraControls;

@@ -7,7 +7,7 @@ positions. Extracts bounding boxes and converts to pixel coordinates using the S
 export DPI. Outputs a C# source file.
 
 Usage:
-    pip install svgpathtools lxml opencv-python numpy
+    pip install svgpathtools lxml opencv-python numpy pymupdf
     python tools/overlay_positions.py
 """
 
@@ -2030,6 +2030,407 @@ def process_steamcontroller():
     return {"base_width": base_w, "base_height": base_h, "results": results}
 
 
+# Valve's own published CAD for the 2026 Steam Controller, cloned beside
+# this repo the same way the asset pack is. CC BY-NC-SA 4.0.
+SC2_CAD = os.path.join(os.path.dirname(PROJ_ROOT), "SteamControllerHardware")
+SC2_PDF = os.path.join(SC2_CAD, "steam_controller_reference_20260429.pdf")
+
+# The pack's press-state art, measured rather than guessed: a 4 px
+# full-alpha ring in this cyan with the interior washed at alpha 128.
+# Sampled from SC_Face_Button.png, SC_Guide_Button.png and
+# SC_LeftTrackpad_Click.png, which agree to within a pixel across a 3.5x
+# range of element sizes, so the ring is a constant width and not a
+# proportional one.
+SC2_ACTIVE_BGR = (0xF6, 0xD2, 0x24)
+SC2_RING_PX = 4
+SC2_WASH_ALPHA = 128
+
+# Body palette, sampled from the shipped 2015 SC_base.png so the two
+# Valve pads read as one family.
+SC2_BODY = (0x35, 0x2E, 0x23)      # BGR
+SC2_RECESS = (0x59, 0x51, 0x46)
+SC2_SURFACE = (0x6D, 0x65, 0x5D)
+SC2_DISC = (0x1E, 0x1E, 0x21)
+SC2_GLYPH = {"Y": (0x33, 0xDB, 0xEC), "X": (0xD0, 0x94, 0x40),
+             "B": (0x42, 0x42, 0xD0), "A": (0x4E, 0xDB, 0x3C)}
+
+SC2_SUPERSAMPLE = 4
+SC2_DPI = 468
+
+
+def _sc2_outline():
+    """Render the 2026 front elevation from Valve's reference drawing.
+
+    The drawing carries three stroke passes and only one of them is art.
+    The heavy black 1.44pt pass is the real edge geometry. The 0.36pt
+    grey pass is CAD surface topology, and the dashed 2.88pt pass is
+    dimension annotation. Filtering on colour, width and dash pattern
+    keeps the first and drops the other two, which is what turns an
+    engineering drawing into line art without any hand tracing.
+    """
+    import fitz
+    src = fitz.open(SC2_PDF)
+    sp = src[0]
+    # Measured extent of the black outline pass for the front view.
+    body = fitz.Rect(464.4, 511.8, 1364.4, 1139.7)
+    pad = 6.0
+    clip = fitz.Rect(body.x0 - pad, body.y0 - pad, body.x1 + pad, body.y1 + pad)
+
+    out = fitz.open()
+    page = out.new_page(width=clip.width, height=clip.height)
+    shift = fitz.Matrix(1, 0, 0, 1, -clip.x0, -clip.y0)
+
+    kept = 0
+    for dr in sp.get_drawings():
+        c = dr.get("color")
+        lw = dr.get("width") or 0
+        if c is None or max(c) > 0.15 or abs(lw - 1.44) > 0.2:
+            continue
+        if dr.get("dashes") not in (None, "", "[] 0"):
+            continue
+        r = dr["rect"]
+        if not (clip.x0 - 2 <= r.x0 and r.x1 <= clip.x1 + 2
+                and clip.y0 - 2 <= r.y0 and r.y1 <= clip.y1 + 2):
+            continue
+        if r.width > 900 or r.height > 900:
+            continue
+        sh = page.new_shape()
+        for it in dr["items"]:
+            op = it[0]
+            if op == "l":
+                sh.draw_line(it[1] * shift, it[2] * shift)
+            elif op == "c":
+                sh.draw_bezier(it[1] * shift, it[2] * shift, it[3] * shift, it[4] * shift)
+            elif op == "re":
+                sh.draw_rect(it[1] * shift)
+            elif op == "qu":
+                sh.draw_quad(it[1] * shift)
+        sh.finish(color=(0, 0, 0), width=1.44, closePath=False)
+        sh.commit()
+        kept += 1
+
+    pix = out[0].get_pixmap(dpi=SC2_DPI)
+    buf = np.frombuffer(pix.samples, np.uint8).reshape(pix.height, pix.width, pix.n)
+    gray = cv2.cvtColor(buf[:, :, :3], cv2.COLOR_RGB2GRAY)
+    print(f"  outline: kept {kept} black 1.44pt paths, raster {pix.width}x{pix.height}")
+    return gray
+
+
+def _sc2_regions(gray):
+    """Label the enclosed white areas of the outline and name each one by
+    its SHAPE and its position, never by a raw area threshold.
+
+    Every rule below is scale-free, so a re-render at a different DPI
+    lands on the same parts:
+
+    * the two largest enclosed regions are the trackpads,
+    * a stick reads as a CONCENTRIC PAIR, a thin ring around a filled
+      cap, which identifies both halves without measuring either,
+    * the D-pad is the largest region left once pads and sticks are out,
+    * a disc is round (aspect near one, box fill above a half) and the
+      five discs on the upper half are ABXY plus Steam, with Steam the
+      one nearest the body's centre line and the other four resolved by
+      their diamond positions,
+    * a pill is wide (aspect above 1.8); the one below the body's middle
+      is Quick Access and the upper two are Back and Start by side.
+    """
+    white = (gray > 128).astype(np.uint8)
+    n, lab, stats, cent = cv2.connectedComponentsWithStats(white, 8)
+    h, w = gray.shape
+
+    edge = set(lab[0, :]) | set(lab[-1, :]) | set(lab[:, 0]) | set(lab[:, -1])
+    inner = [i for i in range(1, n) if i not in edge]
+    body = max(inner, key=lambda i: stats[i][4])
+    bx, by, bw, bh, barea = stats[body]
+    mid_x, mid_y = bx + bw / 2.0, by + bh / 2.0
+
+    def box(i):
+        x, y, ww, hh, a = stats[i]
+        return x, y, ww, hh, a
+
+    parts = [i for i in inner if i != body and stats[i][4] > barea * 0.0015]
+    named, used = {}, set()
+
+    def take(name, i):
+        named[name] = i
+        used.add(i)
+
+    left = [i for i in parts if i not in used]
+    pads = sorted(sorted(left, key=lambda i: -stats[i][4])[:2], key=lambda i: cent[i][0])
+    take("LeftTouchpadClick", pads[0])
+    take("RightTouchpadClick", pads[1])
+
+    # Concentric pairs: same centre, one clearly larger box than the other.
+    pairs = []
+    rest = [i for i in parts if i not in used]
+    for a in rest:
+        for b in rest:
+            if a >= b:
+                continue
+            if abs(cent[a][0] - cent[b][0]) > 3 or abs(cent[a][1] - cent[b][1]) > 3:
+                continue
+            outer, inner_ = (a, b) if stats[a][2] > stats[b][2] else (b, a)
+            pairs.append((outer, inner_))
+    pairs.sort(key=lambda p: cent[p[0]][0])
+    for side, (ring, cap) in zip(["Left", "Right"], pairs[:2]):
+        take(side + "ThumbRing", ring)
+        take(side + "ThumbButton", cap)
+
+    rest = [i for i in parts if i not in used]
+    if rest:
+        take("DPad", max(rest, key=lambda i: stats[i][4]))
+
+    discs, pills = [], []
+    for i in [i for i in parts if i not in used]:
+        x, y, ww, hh, a = box(i)
+        aspect = ww / float(hh)
+        fill = a / float(ww * hh)
+        if 0.85 <= aspect <= 1.18 and fill > 0.5:
+            discs.append(i)
+        elif aspect >= 1.8:
+            pills.append(i)
+
+    upper = [i for i in discs if cent[i][1] < mid_y]
+    if upper:
+        guide = min(upper, key=lambda i: abs(cent[i][0] - mid_x))
+        take("ButtonGuide", guide)
+        letters = [i for i in upper if i != guide]
+        if len(letters) == 4:
+            take("ButtonY", min(letters, key=lambda i: cent[i][1]))
+            take("ButtonA", max(letters, key=lambda i: cent[i][1]))
+            mids = [i for i in letters if i not in used]
+            take("ButtonX", min(mids, key=lambda i: cent[i][0]))
+            take("ButtonB", max(mids, key=lambda i: cent[i][0]))
+
+    lower_pills = [i for i in pills if cent[i][1] > mid_y]
+    if lower_pills:
+        take("ButtonQuickAccess", max(lower_pills, key=lambda i: stats[i][4]))
+    top_pills = sorted([i for i in pills if i not in used], key=lambda i: cent[i][0])
+    if len(top_pills) >= 2:
+        take("ButtonBack", top_pills[0])
+        take("ButtonStart", top_pills[-1])
+
+    return lab, stats, cent, body, named, (bx, by, bw, bh)
+
+
+def _sc2_fill(gray, lab, stats, cent, body, named):
+    """Paint the flat base: the pack's hard outline, flat fills, no
+    gradients. Colours come from the classification, so nothing is
+    positioned by hand.
+
+    Two shapes need their own handling. The shoulder slivers are open
+    crescents in the CAD, because the bumper wraps over the top of the
+    shell and the drawing stops at the silhouette, so they label as
+    background; they are recovered as background inside the convex hull
+    of the ink, restricted to the top of the sheet so the notch between
+    the grips is not filled. The ABXY glyphs and the Steam logo are
+    stroked outlines rather than filled shapes, so their interiors are
+    painted after the discs, with the enclosed counters of A and B put
+    back to the disc colour.
+    """
+    h, w = gray.shape
+    ink = gray <= 128
+    out = np.zeros((h, w, 4), np.uint8)
+
+    def paint(mask, bgr):
+        out[mask] = (*bgr, 255)
+
+    ys, xs = np.nonzero(ink)
+    pts = np.column_stack([xs[::37], ys[::37]]).astype(np.int32)
+    hull = cv2.convexHull(pts)
+    bg = np.zeros((h, w), np.uint8)
+    edge = set(lab[0, :]) | set(lab[-1, :]) | set(lab[:, 0]) | set(lab[:, -1])
+    for i in edge:
+        if i:
+            bg |= (lab == i).astype(np.uint8)
+    hull_mask = np.zeros((h, w), np.uint8)
+    cv2.fillConvexPoly(hull_mask, hull, 1)
+    sliver = (bg & hull_mask).astype(np.uint8)
+    sliver[int(h * 0.25):, :] = 0
+    sn, slab, sstats, _ = cv2.connectedComponentsWithStats(sliver, 8)
+    keep = np.zeros((h, w), bool)
+    for i in range(1, sn):
+        if sstats[i][4] >= stats[body][4] * 0.0004:
+            keep |= (slab == i)
+    paint(keep, SC2_BODY)
+    paint(lab == body, SC2_BODY)
+
+    surface = {"LeftTouchpadClick", "RightTouchpadClick", "DPad",
+               "LeftThumbButton", "RightThumbButton"}
+    recess = {"LeftThumbRing", "RightThumbRing", "ButtonQuickAccess",
+              "ButtonBack", "ButtonStart"}
+    disc = {"ButtonA", "ButtonB", "ButtonX", "ButtonY", "ButtonGuide"}
+
+    claimed = set(named.values())
+    for i in range(1, stats.shape[0]):
+        if i == body or i in claimed or i in edge:
+            continue
+        paint(lab == i, SC2_RECESS)      # unclaimed detail: outlines, recesses
+
+    for name, i in named.items():
+        if name in surface:
+            paint(lab == i, SC2_SURFACE)
+        elif name in recess:
+            paint(lab == i, SC2_RECESS)
+        elif name in disc:
+            paint(lab == i, SC2_DISC)
+
+    # Glyph interiors, painted after their discs.
+    for name in disc:
+        if name not in named:
+            continue
+        d = named[name]
+        dx, dy, dw, dh, _ = stats[d]
+        kids = [i for i in range(1, stats.shape[0])
+                if i != d and i not in edge and stats[i][4] < stats[d][4]
+                and stats[i][0] >= dx and stats[i][0] + stats[i][2] <= dx + dw
+                and stats[i][1] >= dy and stats[i][1] + stats[i][3] <= dy + dh]
+        if not kids:
+            continue
+        if name == "ButtonGuide":
+            for k in kids:
+                paint(lab == k, (0xFF, 0xFF, 0xFF))
+            continue
+        colour = SC2_GLYPH[name[-1]]
+        kids.sort(key=lambda i: -stats[i][4])
+        outer = []
+        for k in kids:
+            x, y, ww, hh, _ = stats[k]
+            nested = any(x >= ox and y >= oy and x + ww <= ox + ow and y + hh <= oy + oh
+                         for ox, oy, ow, oh in outer)
+            paint(lab == k, SC2_DISC if nested else colour)
+            if not nested:
+                outer.append((x, y, ww, hh))
+
+    out[ink] = (0, 0, 0, 255)
+    return out
+
+
+def _sc2_press_art(mask):
+    """Turn one element's silhouette into the pack's press-state art: a
+    bright cyan ring at full alpha with the interior washed. Measured off
+    the 2015 pack rather than invented, and the same ring-plus-wash
+    reasoning the Steam Deck paddle tiles use, so a control that carries
+    a legend stays readable when it lights up."""
+    solid = mask.astype(np.uint8)
+    k = SC2_RING_PX * 2 * SC2_SUPERSAMPLE + 1
+    inner = cv2.erode(solid, np.ones((k, k), np.uint8))
+    art = np.zeros((*solid.shape, 4), np.uint8)
+    art[:, :, 0] = SC2_ACTIVE_BGR[0]
+    art[:, :, 1] = SC2_ACTIVE_BGR[1]
+    art[:, :, 2] = SC2_ACTIVE_BGR[2]
+    art[:, :, 3] = np.where(solid > 0,
+                            np.where(inner > 0, SC2_WASH_ALPHA, 255), 0)
+    return art
+
+
+def _sc2_dpad_quadrants(cross):
+    """Cut the D-pad cross into four arms by 45 degree sectors from its
+    centre, so each direction gets its own arrow-shaped press art. The
+    Deck flow splits a bbox in halves because it already has four
+    per-direction PNGs to fit; here the art has to be made, and cutting
+    the cross itself gives the arm rather than a rectangle over it."""
+    ys, xs = np.nonzero(cross)
+    cy, cx = ys.mean(), xs.mean()
+    dy, dx = ys - cy, xs - cx
+    out = {}
+    for name, sel in [
+        ("DPadUp",    (dy <= -np.abs(dx))),
+        ("DPadDown",  (dy >= np.abs(dx))),
+        ("DPadLeft",  (dx <= -np.abs(dy))),
+        ("DPadRight", (dx >= np.abs(dy))),
+    ]:
+        m = np.zeros(cross.shape, bool)
+        m[ys[sel], xs[sel]] = True
+        out[name] = m
+    return out
+
+
+def process_steamcontroller2():
+    """Build the 2026 Steam Controller layout from Valve's own CAD.
+
+    Every other profile here starts from a Gamepad-Asset-Pack SVG whose
+    labels sit on the controls. The 2026 pad has no pack art, and the
+    authoritative front elevation is the reference drawing Valve
+    published with the hardware, so this flow renders the drawing's
+    outline pass, fills it in the pack's flat style, and cuts each
+    control out of the labelled regions. That keeps the asset
+    reproducible from a cited source instead of hand-painted.
+
+    What a front elevation cannot show, it does not claim: the bumpers,
+    the triggers and the rear grip buttons have no entry here, the same
+    way the 2015 flow had to recover its grips from a separate template.
+    Those controls are mappable on the 3D model, which sees all sides.
+    """
+    print("Building Steam Controller 2026 art from Valve CAD...")
+    gray = _sc2_outline()
+    lab, stats, cent, body, named, body_box = _sc2_regions(gray)
+    print(f"  named {len(named)} regions: {', '.join(sorted(named))}")
+
+    base_full = _sc2_fill(gray, lab, stats, cent, body, named)
+    S = SC2_SUPERSAMPLE
+    fh, fw = base_full.shape[:2]
+    base_w, base_h = fw // S, fh // S
+
+    ov_dir = os.path.join(MODELS_DIR, "STEAMCONTROLLER2")
+    os.makedirs(ov_dir, exist_ok=True)
+    cv2.imwrite(os.path.join(ov_dir, "SC2_base.png"),
+                cv2.resize(base_full, (base_w, base_h), interpolation=cv2.INTER_AREA))
+
+    elements = dict(named)
+    masks = {k: (lab == v) for k, v in elements.items()}
+    if "DPad" in elements:
+        masks.pop("DPad")
+        masks.update(_sc2_dpad_quadrants(lab == elements["DPad"]))
+
+    results = []
+
+    def emit(name, mask, target, etype, also_zone=None):
+        ys, xs = np.nonzero(mask)
+        if not len(ys):
+            print(f"  MISS: {name}")
+            return
+        pad = SC2_RING_PX * S
+        y0, y1 = max(0, ys.min() - pad), min(fh, ys.max() + pad + 1)
+        x0, x1 = max(0, xs.min() - pad), min(fw, xs.max() + pad + 1)
+        art = _sc2_press_art(mask[y0:y1, x0:x1])
+        w = max(1, (x1 - x0) // S)
+        h = max(1, (y1 - y0) // S)
+        art = cv2.resize(art, (w, h), interpolation=cv2.INTER_AREA)
+        fn = f"SC2_{name}.png"
+        cv2.imwrite(os.path.join(ov_dir, fn), art)
+        x, y = x0 // S, y0 // S
+        results.append((fn, target, etype, x, y, w, h))
+        print(f"  {target:20s} ({name:18s}) -> ({x:4d}, {y:4d}) {w:4d}x{h:3d}")
+        if also_zone:
+            results.append(("", also_zone, "Touchpad", x, y, w, h))
+
+    for name, target, etype, zone in [
+        ("LeftTouchpadClick", "LeftTouchpadClick", "Button", "LeftTouchpad"),
+        ("RightTouchpadClick", "RightTouchpadClick", "Button", "RightTouchpad"),
+        ("DPadUp", "DPadUp", "Button", None),
+        ("DPadDown", "DPadDown", "Button", None),
+        ("DPadLeft", "DPadLeft", "Button", None),
+        ("DPadRight", "DPadRight", "Button", None),
+        ("ButtonA", "ButtonA", "Button", None),
+        ("ButtonB", "ButtonB", "Button", None),
+        ("ButtonX", "ButtonX", "Button", None),
+        ("ButtonY", "ButtonY", "Button", None),
+        ("ButtonBack", "ButtonBack", "Button", None),
+        ("ButtonStart", "ButtonStart", "Button", None),
+        ("ButtonGuide", "ButtonGuide", "Button", None),
+        ("ButtonQuickAccess", "ButtonQuickAccess", "Button", None),
+        ("LeftThumbRing", "LeftThumbRing", "StickRing", None),
+        ("RightThumbRing", "RightThumbRing", "StickRing", None),
+        ("LeftThumbButton", "LeftThumbButton", "StickClick", None),
+        ("RightThumbButton", "RightThumbButton", "StickClick", None),
+    ]:
+        if name in masks:
+            emit(name, masks[name], target, etype, zone)
+
+    return {"base_width": base_w, "base_height": base_h, "results": results}
+
+
 def generate_csharp(layouts, output_path):
     """Generate C# source file with overlay position data."""
     lines = [
@@ -2112,6 +2513,10 @@ def main():
     steamc_data = process_steamcontroller()
     print(f"\n  Total Steam Controller overlays: {len(steamc_data['results'])}")
 
+    print("\n=== Steam Controller 2026 ===")
+    steamc2_data = process_steamcontroller2()
+    print(f"\n  Total Steam Controller 2026 overlays: {len(steamc2_data['results'])}")
+
     # Inject TriggerBase entries (rest-state trigger image under each
     # active-press blue overlay). Done after all profile-specific
     # processing so the rest-state inherits the final trigger
@@ -2135,7 +2540,7 @@ def main():
     # stacking is unaffected (Z-indices are explicit in the view).
     for data in [xbox_data, ds4_data, dualsense_data, dsedge_data,
                  xbone_data, xbseries_data, swpro_data, swpro2_data,
-                 deck_data, steamc_data]:
+                 deck_data, steamc_data, steamc2_data]:
         rs = data["results"]
         trig = [r for r in rs if r[2] in ("Trigger", "TriggerBase")]
         rest = [r for r in rs if r[2] not in ("Trigger", "TriggerBase")]
@@ -2150,7 +2555,8 @@ def main():
                        ("Switch Pro", swpro_data),
                        ("Switch 2 Pro", swpro2_data),
                        ("Steam Deck", deck_data),
-                       ("Steam Controller", steamc_data)]:
+                       ("Steam Controller", steamc_data),
+                       ("Steam Controller 2026", steamc2_data)]:
         bw, bh = data["base_width"], data["base_height"]
         for fn, target, _, x, y, w, h in data["results"]:
             if x < -10 or y < -10 or x + w > bw + 10 or y + h > bh + 10:
@@ -2169,6 +2575,7 @@ def main():
         ("Switch2ProLayout",    swpro2_data,    "2DModels/SWITCH2PRO/NSwitchPro_base.png", 25),
         ("SteamDeckLayout",      deck_data,      "2DModels/STEAMDECK/SD_base.png",          22),
         ("SteamControllerLayout", steamc_data,   "2DModels/STEAMCONTROLLER/SC_base.png",    28),
+        ("SteamController2Layout", steamc2_data, "2DModels/STEAMCONTROLLER2/SC2_base.png",  25),
     ]
     generate_csharp(layouts, os.path.join(output_dir, "ControllerOverlayLayout.cs"))
     print("\nDone!")

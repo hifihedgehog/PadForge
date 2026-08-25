@@ -297,9 +297,9 @@ namespace PadForge.Common.Input
         private static readonly HashSet<string> WithheldProfileIds =
             new HashSet<string>(StringComparer.OrdinalIgnoreCase)
             {
-                "steam-deck-composite",
-                "steam-controller-composite",
-                "steam-controller-2",
+                // Empty. Every profile now ships the 2D and 3D art it
+                // needs. The three Valve entries that lived here were
+                // released once their meshes and overlays landed.
             };
 
         internal static bool IsWithheldProfile(string profileId) =>
@@ -417,6 +417,20 @@ namespace PadForge.Common.Input
                 return ("SWITCH2PRO", "Switch2Pro");
             if (profileId.StartsWith("switch-pro", StringComparison.OrdinalIgnoreCase))
                 return ("SWITCHPRO", "Switch2Pro");
+
+            // Valve. The two controller generations get separate 2D and 3D
+            // sets rather than sharing one, for the reason SWITCH2PRO was
+            // split off from SWITCHPRO: the 2026 pad has two sticks, two
+            // square trackpads, a real D-pad and four grip buttons, so its
+            // art drawn for a 2015 pad would show controls that do not
+            // exist. The composite profiles share with their plain
+            // siblings, the dualsense-composite arrangement.
+            if (profileId.StartsWith("steam-controller-2", StringComparison.OrdinalIgnoreCase))
+                return ("STEAMCONTROLLER2", "SteamController2");
+            if (profileId.StartsWith("steam-controller", StringComparison.OrdinalIgnoreCase))
+                return ("STEAMCONTROLLER", "SteamController");
+            if (profileId.StartsWith("steam-deck", StringComparison.OrdinalIgnoreCase))
+                return ("STEAMDECK", "SteamDeck");
 
             // Fallback per slot type — preserves existing behavior for
             // Custom / Extended / unrecognized profiles.

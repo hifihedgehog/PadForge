@@ -13,6 +13,7 @@ PadForge is a controller mapping utility (fork of [x360ce](https://github.com/x3
 
 3D controller models adapted from **[Handheld Companion](https://github.com/Valkirie/HandheldCompanion)** (CC BY-NC-SA 4.0).
 2D controller schematics from **[Gamepad-Asset-Pack](https://github.com/AL2009man/Gamepad-Asset-Pack)** by AL2009man (MIT).
+Steam Controller and Steam Deck hardware art derives from **Valve's own published CAD** (CC BY-NC-SA 4.0): the 2015 controller from its March 2016 separate-parts STL release, the 2026 controller from the solid model and reference drawing shipped with the hardware. `tools/steam_controller_2015_mesh.py` and `tools/steam_controller_2026_mesh.py` do the conversion, and `tools/overlay_positions.py` builds the 2026 two-dimensional art from the same drawing.
 
 ## Solution Structure
 

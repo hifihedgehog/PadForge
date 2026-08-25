@@ -257,12 +257,14 @@ namespace PadForge.Views
             if (Is("neptune"))
                 return (SteamDeckLayout.BaseWidth, SteamDeckLayout.BaseHeight,
                         SteamDeckLayout.BasePath, SteamDeckLayout.Overlays, "STEAMDECK");
-            // "gordon" is the 2015 pad; "triton" is the 2026 one, which we
-            // ship no body for. Its predecessor is the closest shape we
-            // have (trackpads either side of a face cluster) and reads far
-            // truer than falling through to an Xbox pad, but the 2026 unit
-            // adds a second stick this render does not show.
-            if (Is("steamcontroller") || Is("triton"))
+            // "gordon" is the 2015 pad, "triton" the 2026 one. They get
+            // separate bodies: the 2026 unit carries two sticks, a real
+            // D-pad and square trackpads, so the older render would show
+            // the wrong controls in the wrong places.
+            if (Is("triton"))
+                return (SteamController2Layout.BaseWidth, SteamController2Layout.BaseHeight,
+                        SteamController2Layout.BasePath, SteamController2Layout.Overlays, "STEAMCONTROLLER2");
+            if (Is("steamcontroller"))
                 return (SteamControllerLayout.BaseWidth, SteamControllerLayout.BaseHeight,
                         SteamControllerLayout.BasePath, SteamControllerLayout.Overlays, "STEAMCONTROLLER");
             if (Is("xbox360"))

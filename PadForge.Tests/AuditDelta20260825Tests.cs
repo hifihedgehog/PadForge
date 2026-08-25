@@ -329,9 +329,27 @@ namespace PadForge.Tests
             string step1 = RepoFile("PadForge.App", "Common", "Input", "InputManager.Step1.UpdateDevices.cs");
             int at = step1.IndexOf("private bool UpdateHandheldDevices()", StringComparison.Ordinal);
             Assert.True(at > 0);
-            int off = step1.IndexOf("changed |= RetireHandheldRows();", at, StringComparison.Ordinal);
-            Assert.True(off > 0);
-            Assert.Contains("HandheldChordRuntime.Stop()", step1.Substring(off, 800));
+            int end = step1.IndexOf("private void HandheldSweep()", at, StringComparison.Ordinal);
+            Assert.True(end > at);
+            string method = step1.Substring(at, end - at);
+
+            // The off branch retires the rows AND stops the chord runtime.
+            Assert.Contains("changed |= RetireHandheldRows();", method);
+            Assert.Contains("HandheldChordRuntime.Stop()", method);
+
+            // And the stop happens OUTSIDE _handheldLock, the way
+            // ShutdownHandheldInputs does it. This method runs on the poll
+            // thread and Stop joins a worker, so holding the lock across it
+            // would nest two locks and stall the thread holding the rate.
+            int stop = method.IndexOf("HandheldChordRuntime.Stop()", StringComparison.Ordinal);
+            int depth = 0, lockDepth = -1;
+            for (int i = 0; i < stop; i++)
+            {
+                if (method[i] == '{') depth++;
+                else if (method[i] == '}') { depth--; if (depth < lockDepth) lockDepth = -1; }
+                else if (lockDepth < 0 && method.AsSpan(i).StartsWith("lock (_handheldLock)")) lockDepth = depth + 1;
+            }
+            Assert.True(lockDepth < 0, "the chord stop runs while _handheldLock is held");
         }
     }
 

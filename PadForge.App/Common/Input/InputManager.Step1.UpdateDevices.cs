@@ -2170,6 +2170,7 @@ namespace PadForge.Common.Input
                 return false;
 
             bool changed = false;
+            bool stopChords = false;
             lock (_handheldLock)
             {
                 if (_handheldInputsSuppressed)
@@ -2183,9 +2184,26 @@ namespace PadForge.Common.Input
                     // still holding the engine for the life of the process,
                     // so the feature kept a thread and a hook-path branch on
                     // a machine whose owner had turned it off.
-                    try { HandheldChordRuntime.Stop(); } catch { }
-                    return changed;
+                    //
+                    // The stop itself happens OUTSIDE this lock, the way
+                    // ShutdownHandheldInputs already does it: Stop takes the
+                    // runtime's own lock, raises ButtonChanged through
+                    // SetChords(null), and joins its worker. This method runs
+                    // on the POLL thread, so holding _handheldLock across all
+                    // of that would nest two locks and put a join on the
+                    // thread that has to hold the rate.
+                    stopChords = true;
                 }
+            }
+            if (stopChords)
+            {
+                try { HandheldChordRuntime.Stop(); } catch { }
+                return changed;
+            }
+            lock (_handheldLock)
+            {
+                if (_handheldInputsSuppressed)
+                    return changed;
 
                 // Button row: recreate if the user removed it from the
                 // Devices page (the NFC recreate pattern).

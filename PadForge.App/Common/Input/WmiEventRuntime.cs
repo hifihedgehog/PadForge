@@ -48,14 +48,25 @@ namespace PadForge.Common.Input
             get { lock (_lock) { var a = new string[_watchers.Count]; _watchers.Keys.CopyTo(a, 0); return a; } }
         }
 
-        /// <summary>Every extrinsic event class the machine's WMI providers
-        /// expose (subclasses of WmiEvent, deep). Null when WMI itself is
-        /// unavailable. Worker only.</summary>
+        /// <summary>The event classes the FIRMWARE declares: subclasses of
+        /// WmiEvent whose guid qualifier is an event entry in the ACPI-WMI
+        /// <c>_WDG</c> table (<see cref="AcpiWmi"/>). Every other WMI event
+        /// class on the machine belongs to a kernel driver (audio, network,
+        /// storage miniports behind Microsoft class drivers) and is never
+        /// touched: subscribing to one of those sent an enable request that
+        /// a driver completed twice and bug-checked the bench machine
+        /// (0x44). Null when WMI itself is unavailable. Worker only.</summary>
         public static List<string> EnumerateEventClasses()
         {
             try
             {
+                var firmware = AcpiWmi.ReadEventGuids();
                 var result = new List<string>();
+                if (firmware.Count == 0)
+                {
+                    PadForge.Engine.SdlDiagLog.WriteLine("Handheld: firmware declares no ACPI-WMI event GUIDs; no WMI class is watched");
+                    return result;
+                }
                 using var root = new ManagementClass(new ManagementScope(Scope), new ManagementPath("WmiEvent"), null);
                 using var subs = root.GetSubclasses(new EnumerationOptions { EnumerateDeep = true });
                 foreach (ManagementObject sub in subs)
@@ -63,9 +74,19 @@ namespace PadForge.Common.Input
                     using (sub)
                     {
                         string name = sub.ClassPath?.ClassName;
-                        if (!string.IsNullOrEmpty(name)) result.Add(name);
+                        if (string.IsNullOrEmpty(name)) continue;
+                        Guid guid;
+                        try
+                        {
+                            var q = sub.Qualifiers["guid"];
+                            if (q == null || !Guid.TryParse(Stringify(q.Value), out guid)) continue;
+                        }
+                        catch { continue; }
+                        if (firmware.Contains(guid)) result.Add(name);
                     }
                 }
+                PadForge.Engine.SdlDiagLog.WriteLine(
+                    $"Handheld: firmware declares {firmware.Count} ACPI-WMI event GUIDs, {result.Count} event classes match");
                 return result;
             }
             catch

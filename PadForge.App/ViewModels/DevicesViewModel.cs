@@ -356,6 +356,15 @@ namespace PadForge.ViewModels
         /// <see cref="HeadTrackerStatus"/> was built from, -1 for none.</summary>
         internal int HeadTrackerStatusVersion { get; set; } = -1;
 
+        /// <summary>The device instance that version belongs to. A reopen
+        /// (a port change, a FreeTrack toggle) builds a NEW device whose
+        /// StatusVersion restarts at 0, which collided with the cached 0 and
+        /// left the pane showing the previous device's line: the old port in
+        /// a "waiting on port N" message, or a FreeTrack failure that had
+        /// since been fixed. Comparing the instance as well as the version
+        /// is what makes the cache honest across a swap.</summary>
+        internal object HeadTrackerStatusDevice { get; set; }
+
         /// <summary>Named learned-button rows for the handheld preview
         /// (issue #343), each lighting while its button is down. Reuses the
         /// NFC row item; Uid carries the delivery description.</summary>
@@ -575,7 +584,7 @@ namespace PadForge.ViewModels
             IsHandheldDevice = isHandheld;
             IsSystemMotionDevice = isSystemMotion;
             IsHeadTrackerDevice = isHeadTracker;
-            if (!isHeadTracker) { HeadTrackerStatus = string.Empty; HeadTrackerStatusVersion = -1; }
+            if (!isHeadTracker) { HeadTrackerStatus = string.Empty; HeadTrackerStatusVersion = -1; HeadTrackerStatusDevice = null; }
             if (isHandheld) RebuildHandheldButtons(); else HandheldButtons.Clear();
             IsMicrophoneDevice = isMicrophone;
             ShowVoicePhrases = voiceButtonBase >= 0;
@@ -685,6 +694,7 @@ namespace PadForge.ViewModels
             IsHeadTrackerDevice = false;
             HeadTrackerStatus = string.Empty;
             HeadTrackerStatusVersion = -1;
+            HeadTrackerStatusDevice = null;
             HandheldButtons.Clear();
             ConsumerButtons.Clear();
             LiveMidi = null;

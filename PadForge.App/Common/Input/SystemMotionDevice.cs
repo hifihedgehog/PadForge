@@ -217,9 +217,23 @@ namespace PadForge.Common.Input
             // Hand the interval back. Open asks for the sensor's fastest
             // rate, and that request is a property of the shared sensor, not
             // of this object: dropping the reference without clearing it
-            // leaves the driver running fast for nobody.
-            try { if (_gyro != null) _gyro.ReportInterval = 0; } catch { }
-            try { if (_accel != null) _accel.ReportInterval = 0; } catch { }
+            // leaves the driver running fast for nobody. Zero means "the
+            // driver's default", per the Gyrometer.ReportInterval docs, and
+            // the driver takes the minimum across callers, so this releases
+            // only OUR request.
+            //
+            // Off the caller's thread: Dispose reaches here from the poll
+            // thread when the sweep retires the row, and these are WinRT
+            // property writes into the sensor service, which this class
+            // reserves for the worker.
+            var gyro = _gyro;
+            var accel = _accel;
+            if (gyro != null || accel != null)
+                System.Threading.Tasks.Task.Run(() =>
+                {
+                    try { if (gyro != null) gyro.ReportInterval = 0; } catch { }
+                    try { if (accel != null) accel.ReportInterval = 0; } catch { }
+                });
             _gyro = null;
             _accel = null;
         }

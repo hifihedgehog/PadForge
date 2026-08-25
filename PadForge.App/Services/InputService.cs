@@ -4513,6 +4513,23 @@ namespace PadForge.Services
                 if (gone || landed) pad.ClearAssignOffer();
             }
 
+            // Forget the last logged line for anything that went away or got
+            // assigned. Without this the de-duplication swallowed the two
+            // transitions someone reading the log is actually chasing: a
+            // reconnect, and an unassign that recomposes a byte-identical
+            // line. Also keeps the map from carrying dead devices for the
+            // life of the process.
+            if (_assignOfferLogged.Count > 0)
+            {
+                List<(Guid Device, int Slot)> stale = null;
+                foreach (var key in _assignOfferLogged.Keys)
+                    if (!onlineNow.Contains(key.Device)
+                        || SettingsManager.GetAssignedSlots(key.Device).Contains(key.Slot))
+                        (stale ??= new List<(Guid, int)>()).Add(key);
+                if (stale != null)
+                    foreach (var key in stale) _assignOfferLogged.Remove(key);
+            }
+
             var settings = _mainVm.Settings;
             var open = _mainVm.SelectedPad;
             if (settings == null || open == null || open.HasAssignOffer) return;
@@ -4642,8 +4659,11 @@ namespace PadForge.Services
                 case PadForge.Common.Input.HeadTrackerSource.FreeTrack:
                     return s.HeadTracker_StatusFreeTrack;
                 default:
+                    // Both can fail at once, and hearing about only the port
+                    // sends the user looking in the wrong place.
                     if (ht.UdpBindFailed)
-                        return string.Format(s.HeadTracker_StatusPortInUse_Format, ht.UdpPort);
+                        return string.Format(s.HeadTracker_StatusPortInUse_Format, ht.UdpPort)
+                            + (ht.FreeTrackFailed ? " " + s.HeadTracker_StatusFreeTrackAlso : string.Empty);
                     if (ht.FreeTrackFailed)
                         return string.Format(s.HeadTracker_StatusFreeTrackFailed_Format, ht.UdpPort);
                     return string.Format(s.HeadTracker_StatusWaiting_Format, ht.UdpPort);
@@ -4845,13 +4865,23 @@ namespace PadForge.Services
                 if (ud.Device is PadForge.Common.Input.HeadTrackerDevice ht)
                 {
                     int version = ht.StatusVersion;
-                    if (devVm.HeadTrackerStatusVersion != version || string.IsNullOrEmpty(devVm.HeadTrackerStatus))
+                    // The INSTANCE is part of the cache key. A reopen restarts
+                    // StatusVersion at 0, so a version-only check kept the
+                    // retired device's line, port number and all.
+                    if (!ReferenceEquals(devVm.HeadTrackerStatusDevice, ht)
+                        || devVm.HeadTrackerStatusVersion != version
+                        || string.IsNullOrEmpty(devVm.HeadTrackerStatus))
                     {
+                        devVm.HeadTrackerStatusDevice = ht;
                         devVm.HeadTrackerStatusVersion = version;
                         devVm.HeadTrackerStatus = BuildHeadTrackerStatus(ht);
                     }
                 }
-                else devVm.HeadTrackerStatus = string.Empty;
+                else
+                {
+                    devVm.HeadTrackerStatus = string.Empty;
+                    devVm.HeadTrackerStatusDevice = null;
+                }
             }
 
             // Update POV hat values in-place.

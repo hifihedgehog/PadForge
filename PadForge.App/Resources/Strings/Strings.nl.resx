@@ -2330,6 +2330,7 @@
   <data name="HeadTracker_StatusFreeTrack" xml:space="preserve"><value>Ontvangt van het gedeelde geheugen van FreeTrack.</value></data>
   <data name="HeadTracker_StatusPortInUse_Format" xml:space="preserve"><value>UDP-poort {0} is in gebruik door een ander programma.</value></data>
   <data name="HeadTracker_StatusFreeTrackFailed_Format" xml:space="preserve"><value>Wacht op een tracker op UDP-poort {0}. Het gedeelde geheugen van FreeTrack kon niet worden geopend.</value></data>
+  <data name="HeadTracker_StatusFreeTrackAlso" xml:space="preserve"><value>Het gedeelde geheugen van FreeTrack kon ook niet worden geopend.</value></data>
   <data name="Handheld_ManageButton" xml:space="preserve"><value>Verborgen knoppen leren / beheren</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>Verborgen knoppen</value></data>
   <data name="Handheld_LearnHeader" xml:space="preserve"><value>Een knop leren</value></data>

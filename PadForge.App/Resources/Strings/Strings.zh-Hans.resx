@@ -2310,6 +2310,7 @@
   <data name="HeadTracker_StatusFreeTrack" xml:space="preserve"><value>正在从 FreeTrack 共享内存接收。</value></data>
   <data name="HeadTracker_StatusPortInUse_Format" xml:space="preserve"><value>UDP 端口 {0} 正被其他程序占用。</value></data>
   <data name="HeadTracker_StatusFreeTrackFailed_Format" xml:space="preserve"><value>正在 UDP 端口 {0} 等待追踪器。无法打开 FreeTrack 共享内存。</value></data>
+  <data name="HeadTracker_StatusFreeTrackAlso" xml:space="preserve"><value>FreeTrack 共享内存也无法打开。</value></data>
   <data name="Handheld_ManageButton" xml:space="preserve"><value>学习 / 管理隐藏按键</value></data>
   <data name="Handheld_Title" xml:space="preserve"><value>隐藏按键</value></data>
   <data name="Handheld_LearnHeader" xml:space="preserve"><value>学习一个按键</value></data>

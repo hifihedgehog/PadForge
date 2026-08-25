@@ -35,6 +35,12 @@ namespace PadForge.Common.Input
             HandheldButtonRegistry.FeatureEnabled
             && (Engine.HasChords || Engine.IsCapturing || HandheldButtonRegistry.LearnCaptureActive);
 
+        /// <summary>The hook host tore the hooks down (nothing left to
+        /// suppress). Ups the engine will never see would otherwise leave
+        /// keys down in it and held prefixes would replay stale on the next
+        /// install, the InputHookManager.Stop clearing rule.</summary>
+        public static void OnHooksDetached() => Engine.Reset();
+
         public static void Start()
         {
             lock (_lock)
@@ -58,8 +64,8 @@ namespace PadForge.Common.Input
                 _running = false;
                 InputHookManager.ChordWorkPending -= Wake;
                 InputHookManager.ChordEngine = null;
-                Engine.CancelCapture();
                 Engine.SetChords(null);
+                Engine.Reset();
                 worker = _worker;
                 _worker = null;
                 try { _wake?.Set(); } catch { }

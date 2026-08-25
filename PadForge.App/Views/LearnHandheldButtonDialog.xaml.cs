@@ -104,7 +104,15 @@ namespace PadForge.Views
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_dev == null) return;
+            // The feature can be switched off while this dialog is open,
+            // which retires the row; say so instead of running a pass that
+            // can only end in "nothing found".
+            if (_dev == null || !_dev.IsAttached)
+            {
+                StatusText.Text = Strings.Instance.Handheld_NoDevice;
+                StartBtn.IsEnabled = false;
+                return;
+            }
             _chord = null;
             _candidates = new List<HandheldLearnSession.Candidate>();
             CandidateBox.Visibility = Visibility.Collapsed;

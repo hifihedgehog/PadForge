@@ -232,6 +232,80 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void PrefixIsOrderAware_DAloneIsTypingForAWinDChord()
+        {
+            // WASD must never pay the hold: D is the LAST key of the learned
+            // order, so D alone is not a prefix. Win alone is (and passes,
+            // being a modifier).
+            var e = Engine(Chord("Home", 1, LWin, D));
+            Assert.Equal(ChordDecision.Pass, e.OnEvent(D, true, 0));
+            Assert.Empty(e.PendingReplays);
+            Assert.False(e.HasHeldKeys);
+            Assert.Equal(ChordDecision.Pass, e.OnEvent(D, false, 5));
+            // The firmware order still completes.
+            Assert.Equal(ChordDecision.Pass, e.OnEvent(LWin, true, 10));
+            Assert.Equal(ChordDecision.Swallow, e.OnEvent(D, true, 11));
+            Assert.True(e.IsButtonDown(1));
+        }
+
+        [Fact]
+        public void PrefixInTheWrongOrder_IsNotHeld()
+        {
+            // GPD-style [F11, L]: L first is typing, F11 first is the prefix.
+            var e = Engine(Chord("L4", 1, F11, L));
+            Assert.Equal(ChordDecision.Pass, e.OnEvent(L, true, 0));
+            Assert.False(e.HasHeldKeys);
+            e.OnEvent(L, false, 1);
+            Assert.Equal(ChordDecision.Swallow, e.OnEvent(F11, true, 2));
+            Assert.True(e.HasHeldKeys);
+        }
+
+        [Fact]
+        public void SetChords_KeepsAnActiveChordRedefinedIdentically_ReleasesARemovedOneWithTheEvent()
+        {
+            var e = Engine(Chord("a", 1, F23), Chord("b", 2, F17));
+            var changes = new List<(int, bool)>();
+            e.ButtonChanged += (b, s) => changes.Add((b, s));
+            e.OnEvent(F23, true, 0);
+            e.OnEvent(F17, true, 1);
+            changes.Clear();
+            // The registry hands out fresh objects on every change.
+            e.SetChords(new[] { Chord("a renamed", 1, F23) });
+            Assert.True(e.IsButtonDown(1));
+            Assert.False(e.IsButtonDown(2));
+            Assert.Equal(new[] { (2, false) }, changes);
+        }
+
+        [Fact]
+        public void Reset_ReleasesEverything_WithEvents_AndForgetsHeldPrefixes()
+        {
+            var e = Engine(Chord("a", 1, F23), Chord("l4", 2, F11, L));
+            var changes = new List<(int, bool)>();
+            e.ButtonChanged += (b, s) => changes.Add((b, s));
+            e.OnEvent(F23, true, 0);
+            e.OnEvent(F11, true, 1); // held prefix
+            changes.Clear();
+            e.Reset();
+            Assert.False(e.IsButtonDown(1));
+            Assert.Equal(new[] { (1, false) }, changes);
+            Assert.False(e.HasHeldKeys);
+            Assert.False(e.HasPendingWork);
+            // A fresh F23 press is a fresh press, not an auto-repeat.
+            Assert.Equal(ChordDecision.Swallow, e.OnEvent(F23, true, 2));
+            Assert.True(e.IsButtonDown(1));
+        }
+
+        [Fact]
+        public void AltChord_AsksForTheMaskToo()
+        {
+            var e = Engine(Chord("alt f13", 1, LMenu, 0x7C));
+            e.OnEvent(LMenu, true, 0);
+            Assert.Equal(ChordDecision.Swallow, e.OnEvent(0x7C, true, 1));
+            Assert.True(e.TakeWinMask());
+            Assert.False(e.TakeWinMask());
+        }
+
+        [Fact]
         public void SupersetChord_WinsOverItsSubset_WhenBothCompleteAtOnce()
         {
             var e = Engine(Chord("Home", 1, LWin, D), Chord("Alt Home", 2, LCtrl, LWin, D));
@@ -356,7 +430,7 @@ namespace PadForge.Tests
             var release = new List<byte[]> { Report(64) };
             var c = Assert.Single(VendorReportLearner.Learn(idle0, VendorReportLearner.NoiseMask(new List<byte[]> { idle0 }), press, release));
             Assert.Equal(VendorButtonKind.Bit, c.Kind);
-            var def = new VendorButtonDefinition { ByteIndex = 20, Mask = 0x80, Kind = VendorButtonKind.Bit };
+            var def = new VendorButtonDefinition { ByteIndex = 20, Mask = 0x80, Value = 0x80, Kind = VendorButtonKind.Bit };
             Assert.True(def.Evaluate(Report(64, (20, 0xC0))));
         }
 

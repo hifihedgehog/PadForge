@@ -226,22 +226,48 @@ namespace PadForge.Engine.Common
         /// its own thread, never inside the hook callback.</summary>
         public static event Action ChordWorkPending;
 
+        // Replays drained inside the hook callback. The hook thread is the
+        // only caller, so one list serves without a lock.
+        private static readonly List<(int Code, bool Down)> _hookReplays = new();
+
         /// <summary>Feeds one event to the chord engine. Returns true when
-        /// the hook must swallow it. Injected events carrying our own tag
-        /// pass straight through.</summary>
-        private static bool ChordSwallows(int code, bool isDown, IntPtr extraInfo)
+        /// the hook must swallow it. Our own tagged injections and other
+        /// software's injected events (LLKHF_INJECTED / LLMHF_INJECTED)
+        /// pass straight through: a firmware chord is physical, and a macro
+        /// tool's Win+D is that tool's business.</summary>
+        private static bool ChordSwallows(int code, bool isDown, IntPtr extraInfo, bool injected)
         {
             var engine = _chordEngine;
             if (engine == null) return false;
             if (!engine.HasChords && !engine.IsCapturing) return false;
-            if (extraInfo == ReplayTag) return false;
+            if (injected || extraInfo == ReplayTag) return false;
             var decision = engine.OnEvent(code, isDown, Environment.TickCount64);
+
+            // Event-driven injections happen HERE, before this callback
+            // returns, so a held prefix replays ahead of the foreign key
+            // that ended it (typing "do" reaches the OS as "do") and the
+            // mask key lands while the Win or Alt key is still physically
+            // down. The injected events re-enter this hook carrying the
+            // tag and skip the engine. Only the timed work (hold expiry,
+            // capture idle) is left to the worker.
+            try
+            {
+                if (engine.TakeWinMask()) InjectWinMask();
+                engine.DrainReplays(_hookReplays);
+                foreach (var (c, d) in _hookReplays) InjectReplay(c, d);
+            }
+            catch { }
+            finally { _hookReplays.Clear(); }
+
             if (engine.HasPendingWork)
             {
                 try { ChordWorkPending?.Invoke(); } catch { }
             }
             return decision == ChordDecision.Swallow;
         }
+
+        private const uint LLKHF_INJECTED = 0x10;
+        private const uint LLMHF_INJECTED = 0x01;
 
         /// <summary>Injects one key or mouse-button event with the replay
         /// tag. <paramref name="code"/> is a VK code, or
@@ -581,7 +607,7 @@ namespace PadForge.Engine.Common
                     // prefix key is replayed later with the tag above, at
                     // which point it re-enters here and takes the normal
                     // consumption path below.
-                    if (ChordSwallows(vk, isDown, kb.dwExtraInfo))
+                    if (ChordSwallows(vk, isDown, kb.dwExtraInfo, (kb.flags & LLKHF_INJECTED) != 0))
                         return (IntPtr)1;
 
                     if (_suppressedVKeys.Contains(vk))
@@ -669,7 +695,7 @@ namespace PadForge.Engine.Common
                 if (buttonId >= 0 && _chordEngine != null)
                 {
                     var ms = Marshal.PtrToStructure<MSLLHOOKSTRUCT>(lParam);
-                    if (ChordSwallows(HandheldChordDefinition.MouseCode + buttonId, IsMouseDown(msg), ms.dwExtraInfo))
+                    if (ChordSwallows(HandheldChordDefinition.MouseCode + buttonId, IsMouseDown(msg), ms.dwExtraInfo, (ms.flags & LLMHF_INJECTED) != 0))
                         return (IntPtr)1;
                 }
                 if (buttonId >= 0 && _suppressedMouseButtons.Contains(buttonId))

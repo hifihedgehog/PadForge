@@ -68,8 +68,10 @@ namespace PadForge.Common.Input
         }
 
         // Span the RANGE of stable registry buttons, not the count, so a
-        // removed middle entry leaves a gap instead of renumbering.
-        private static int ButtonSpan => 1 + HandheldButtonRegistry.MaxButtonInUse;
+        // removed middle entry leaves a gap instead of renumbering. Cached
+        // on registry change: the poll must not take the registry lock.
+        private volatile int _span;
+        private int ButtonSpan => _span;
 
         // ─── ISdlInputDevice identity / capabilities ───
         public uint SdlInstanceId { get; }
@@ -172,6 +174,7 @@ namespace PadForge.Common.Input
         private void ApplyRegistry()
         {
             var entries = HandheldButtonRegistry.Entries;
+            _span = 1 + HandheldButtonRegistry.MaxButtonInUse;
             HandheldChordRuntime.Engine.SetChords(HandheldButtonRegistry.Chords);
             var defs = new Dictionary<string, List<VendorButtonDefinition>>(StringComparer.OrdinalIgnoreCase);
             var defined = new bool[CustomInputState.MaxButtons];
@@ -340,6 +343,7 @@ namespace PadForge.Common.Input
 
         internal void BeginLearn(HandheldLearnSession session)
         {
+            if (_disposed) return;
             _learn = session;
             HandheldChordRuntime.Engine.BeginCapture(Environment.TickCount64);
         }

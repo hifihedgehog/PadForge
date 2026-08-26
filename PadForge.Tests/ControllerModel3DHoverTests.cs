@@ -211,6 +211,93 @@ namespace PadForge.Tests
                 $"cap {cap:F1} mm must sit inside collar {collar:F1} mm so the collar reads as a ring");
         }
 
+        private static IEnumerable<Point3D> Vertices(Model3DGroup group)
+        {
+            foreach (var child in group.Children)
+                if (child is GeometryModel3D g && g.Geometry is MeshGeometry3D mesh)
+                    foreach (Point3D p in mesh.Positions)
+                        yield return p;
+        }
+
+        /// <summary>THE PROPERTY for the stick button: its highlight covers
+        /// the stick from the case all the way up to the cap. Model space
+        /// puts the face along -Y, so the button's topmost geometry has to
+        /// reach the cap's underside.
+        ///
+        /// <para>The Steam Deck failed this. It splits its stick into three
+        /// solids where every other model ships two, and its middle one, the
+        /// capacitive barrel, was scenery. The button lit only the thin
+        /// collar at the case and the stick read as half dead.</para></summary>
+        [Theory]
+        [MemberData(nameof(Families))]
+        public void StickButtonReachesTheCap(string family, string appearance, bool extra)
+        {
+            using var m = ControllerModelBase.Create(family, appearance, extra);
+            void Check(string button, Model3DGroup ring)
+            {
+                if (ring == null || !m.ButtonMap.TryGetValue(button, out var groups)) return;
+                double capUnderside = ring.Bounds.Y + ring.Bounds.SizeY;
+                double buttonTop = groups.Min(g => g.Bounds.Y);
+                Assert.True(buttonTop <= capUnderside + 0.5,
+                    $"{family}: {button} stops {buttonTop - capUnderside:F2} mm short of the cap, "
+                    + "so the stem below it never lights");
+            }
+            Check("LeftThumbButton", m.LeftThumbRing);
+            Check("RightThumbButton", m.RightThumbRing);
+        }
+
+        /// <summary>And the other half of the same contract: the button's
+        /// geometry stops AT the cap and never reaches inside it. Valve
+        /// models the 2015 stick as a press fit, so the base carries a
+        /// spigot that runs up through the cap's shell wall, out at
+        /// r = 7.65 mm where the cap's inner wall sits at 5.75 and its outer
+        /// at 8.81. Left in, the button's accent had geometry inside the cap
+        /// to bleed through, and the cap is the one part of a stick that
+        /// must never light with its button.</summary>
+        [Fact]
+        public void SteamController2015_DoughnutStaysOutOfTheCap()
+        {
+            using var m = ControllerModelBase.Create("SteamController", null, false);
+            var cap = m.LeftThumbRing;
+            var basePart = m.ButtonMap["LeftThumbButton"][0];
+
+            double capUnderside = cap.Bounds.Y + cap.Bounds.SizeY;
+            double axisX = cap.Bounds.X + cap.Bounds.SizeX / 2.0;
+            double axisZ = cap.Bounds.Z + cap.Bounds.SizeZ / 2.0;
+            double capRadius = cap.Bounds.SizeX / 2.0;
+
+            int intruding = Vertices(basePart).Count(p =>
+                p.Y <= capUnderside - 0.05
+                && Math.Sqrt((p.X - axisX) * (p.X - axisX) + (p.Z - axisZ) * (p.Z - axisZ)) < capRadius - 0.8);
+            Assert.True(intruding == 0,
+                $"{intruding} base vertices sit inside the cap, where the button's accent can bleed onto it");
+
+            // And the doughnut itself survives: the base still reaches well
+            // outside the cap, which is what makes it read as a ring.
+            double baseRadius = basePart.Bounds.SizeX / 2.0;
+            Assert.True(baseRadius > capRadius + 2.0,
+                $"base radius {baseRadius:F2} mm leaves no ring outside a {capRadius:F2} mm cap");
+        }
+
+        /// <summary>The wing splits off the cover ON the plane, so the seam
+        /// is the straight line the plane makes. Assigning whole triangles
+        /// to a side by their centroid leaves it jagged by a triangle's
+        /// width, which was plainly visible on this cover.</summary>
+        [Fact]
+        public void SteamController2015_GripSeamIsStraight()
+        {
+            using var m = ControllerModelBase.Create("SteamController", null, false);
+            double leftSeam = m.ButtonMap["LeftGrip"][0].Bounds.X + m.ButtonMap["LeftGrip"][0].Bounds.SizeX;
+            double rightSeam = m.ButtonMap["RightGrip"][0].Bounds.X;
+            Assert.True(Math.Abs(leftSeam + 30.0) < 0.01,
+                $"the left wing's inboard edge is at {leftSeam:F3}, not on the cut plane at -30");
+            Assert.True(Math.Abs(rightSeam - 30.0) < 0.01,
+                $"the right wing's inboard edge is at {rightSeam:F3}, not on the cut plane at 30");
+
+            // Nothing crosses the plane either, which a centroid cut allows.
+            Assert.DoesNotContain(Vertices(m.ButtonMap["LeftGrip"][0]), p => p.X > -30.0 + 1e-6);
+        }
+
         /// <summary>The 2015 grip paddle is the FLARED WING of the rear
         /// cover, split off the one solid Valve models the cover as. An
         /// earlier round carved the paddle out of the bottom shell by facing

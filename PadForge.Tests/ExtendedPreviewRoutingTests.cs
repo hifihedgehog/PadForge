@@ -92,6 +92,18 @@ namespace PadForge.Tests
                             failures += $"{name}: built with no geometry\n";
                         if (m.ButtonMap.Count == 0)
                             failures += $"{name}: built with no mappable targets\n";
+
+                        // Every drawn part must carry a resting material.
+                        // HelixToolkit's ObjReader returns a YELLOW default
+                        // when an OBJ names no material, so a part missing
+                        // from DefaultMaterials is not a subtle shading
+                        // bug: it renders bright yellow, and it goes back
+                        // to yellow every time a press or hover restores
+                        // it. All three Valve models shipped that way.
+                        foreach (var child in m.model3DGroup.Children)
+                            if (child is System.Windows.Media.Media3D.Model3DGroup g
+                                && !m.DefaultMaterials.ContainsKey(g))
+                                failures += $"{name}: a part has no resting material\n";
                     }
                     catch (Exception e)
                     {

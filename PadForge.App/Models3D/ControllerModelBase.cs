@@ -390,6 +390,32 @@ namespace PadForge.Models3D
 
         /// <summary>Applies a material to every GeometryModel3D in the
         /// group (front and back faces).</summary>
+        /// <summary>Give a part its resting colour AND register it as that
+        /// part's default, which is what the preview restores to after a
+        /// press, a hover or a Map All flash.
+        ///
+        /// <para>Both halves are required. A model that only sets geometry
+        /// materials still renders in the loader's own default the moment
+        /// anything restores a group, and a model that sets neither renders
+        /// in it from the start: HelixToolkit's ObjReader hands back a
+        /// yellow default when the OBJ names no material, which is what
+        /// every Valve model did until this existed.</para></summary>
+        protected void Paint(Model3DGroup group, Material material)
+        {
+            if (group == null || material == null) return;
+            ApplyMaterial(group, material);
+            DefaultMaterials[group] = material;
+        }
+
+        /// <summary>Paint every part registered under a pad-setting name,
+        /// so a control made of several meshes stays one colour.</summary>
+        protected void PaintTarget(string padSettingName, Material material)
+        {
+            if (!ButtonMap.TryGetValue(padSettingName, out var list)) return;
+            foreach (var g in list)
+                Paint(g, material);
+        }
+
         protected static void ApplyMaterial(Model3DGroup group, Material material)
         {
             foreach (var child in group.Children)

@@ -115,8 +115,8 @@ namespace PadForge.Models3D
         /// <summary>The preview camera is fixed, so every model carries a
         /// constant scale that brings its authoring size to the framing the
         /// camera expects. The Xbox 360 mesh is the reference at 151.45 mm
-        /// across, and this pad's reconstructed skin measures 161.39 mm.</summary>
-        public override double ModelScale => 151.45 / 161.39;
+        /// across, and this pad's converted CAD measures 161.28 mm.</summary>
+        public override double ModelScale => 151.45 / 161.28;
 
     }
 }

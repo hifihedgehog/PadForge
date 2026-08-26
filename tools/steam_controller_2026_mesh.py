@@ -27,6 +27,7 @@ import io
 import sys
 import struct
 import cv2
+import fast_simplification as fs
 import scipy.ndimage as nd
 from scipy import sparse
 from scipy.sparse import csgraph
@@ -305,34 +306,42 @@ def cluster(tris, cell):
 
 
 def decimate(tris, budget):
-    pts = tris.reshape(-1, 3)
-    diag = float(np.linalg.norm(pts.max(0) - pts.min(0)))
-    if diag <= 0:
-        return cluster(tris, 1.0)
-    if len(tris) > 400_000:
-        v0, f0 = cluster(tris, diag / 900.0)
-        if len(f0):
-            tris = v0[f0]
-    fine, coarse = diag / 2000.0, diag / 4.0
-    v, f = cluster(tris, fine)
-    if len(f) <= budget:
-        return v, f
-    best = cluster(tris, coarse)
-    for _ in range(18):
-        mid = float(np.sqrt(fine * coarse))
-        v, f = cluster(tris, mid)
-        if len(f) <= budget:
-            best, coarse = (v, f), mid
-        else:
-            fine = mid
-        if coarse / fine < 1.02:
-            break
-    return best
+    """Weld into an indexed mesh, then collapse edges by quadric error.
+
+    NOT vertex clustering. Clustering snaps every vertex to a grid cell
+    and replaces it with the cell's mean, which MOVES the surface and
+    rounds off every sharp edge the moulding has. Rendered with the smooth
+    normals a viewport computes, the result is soft and waxy no matter how
+    many triangles it keeps.
+
+    Quadric decimation only ever collapses an existing edge, and it
+    chooses the collapse that changes the surface least, so flat regions
+    lose triangles first and the creases survive. Valve's 2026 release is
+    one clean manifold solid, which is exactly the input this wants.
+    """
+    verts, faces = weld(tris)
+    if len(faces) <= budget:
+        return verts, faces
+    pv, pf = fs.simplify(verts, faces.astype(np.int32),
+                         target_count=budget, agg=7.0)
+    return np.asarray(pv, np.float64), np.asarray(pf, np.int64)
 
 
-# Filled in by main() from the finished body, so every part shifts by the
-# same amount and the assembly stays rigid.
-Y_SHIFT = 0.0
+def weld(tris, tol=1e-3):
+    """Triangle soup to indexed mesh. An edge collapse needs shared
+    vertices, and an STL shares none: every triangle stores its own three
+    corners. The representative is a real input vertex, so nothing moves.
+    """
+    q = np.round(tris.reshape(-1, 3) / tol).astype(np.int64)
+    uniq, inv = np.unique(q, axis=0, return_inverse=True)
+    inv = np.asarray(inv).ravel()
+    first = np.zeros(len(uniq), np.int64)
+    first[inv[::-1]] = np.arange(len(inv))[::-1]
+    verts = tris.reshape(-1, 3)[first]
+    faces = inv.reshape(-1, 3)
+    ok = ((faces[:, 0] != faces[:, 1]) & (faces[:, 1] != faces[:, 2])
+          & (faces[:, 0] != faces[:, 2]))
+    return verts, faces[ok]
 
 
 def write_obj(path, verts, faces, name):

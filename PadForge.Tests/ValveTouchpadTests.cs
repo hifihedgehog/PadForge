@@ -127,8 +127,10 @@ namespace PadForge.Tests
         /// every wire button, both pads, all six axes, the hat onto the
         /// four D-pad buttons, and the IMU. SDL's Triton driver sends QAM at
         /// 11, the rear buttons RP1 LP1 RP2 LP2 at 12-15 (R4 L4 R5 L5), the
-        /// pad clicks as touchpad 0 / 1 (SDL_hidapi_steam_triton.c 48-54,
-        /// 584-585).</summary>
+        /// pads as touchpad 0 / 1, and the pad clicks as the gamepad buttons
+        /// its mapping advertises: touchpad:b17 (left) at position 16 and
+        /// misc2:b16 (right) at 17 (SDL_hidapi_steam_triton.c 48-54,
+        /// 584-585, SDL_gamepad.c 1269).</summary>
         [Fact]
         public void Automap_SteamController2026_RoutesEverythingOneToOne()
         {
@@ -142,8 +144,8 @@ namespace PadForge.Tests
             Assert.Equal("Button 13", Raw(ps, id, "Paddle2"));   // L4
             Assert.Equal("Button 14", Raw(ps, id, "Paddle3"));   // R5
             Assert.Equal("Button 15", Raw(ps, id, "Paddle4"));   // L5
-            Assert.Equal("Touchpad 0 Click", Raw(ps, id, "LeftTouchpadClick"));
-            Assert.Equal("Touchpad 1 Click", Raw(ps, id, "RightTouchpadClick"));
+            Assert.Equal("Button 16", Raw(ps, id, "LeftTouchpadClick"));
+            Assert.Equal("Button 17", Raw(ps, id, "RightTouchpadClick"));
             Assert.Equal("POV 0 Up", Raw(ps, id, "DPadUp"));
             Assert.Equal("POV 0 Right", Raw(ps, id, "DPadRight"));
 
@@ -165,8 +167,10 @@ namespace PadForge.Tests
         }
 
         /// <summary>A 2015 Steam Controller (SDL sends its grips as RP1 /
-        /// LP1 at 12 / 13: SDL_gamepad.c 1263) lands on the 2015 wire's
-        /// grips, and every slot on that wire is bound.</summary>
+        /// LP1 at 12 / 13: SDL_gamepad.c 1263, and advertises no touchpad
+        /// or misc2 button, so its clicks ride the wrapper's pressure
+        /// descriptors) lands on the 2015 wire's grips, and every slot on
+        /// that wire is bound.</summary>
         [Fact]
         public void Automap_SteamController2015_BindsGripsAndPads()
         {
@@ -191,6 +195,8 @@ namespace PadForge.Tests
             var ps = SettingsManager.CreateDefaultPadSetting(ValveSource(18), VirtualControllerType.Extended, id);
             Assert.Equal("Button 11", Raw(ps, id, "ButtonQuickAccess"));
             Assert.Equal("Button 15", Raw(ps, id, "Paddle4"));
+            Assert.Equal("Button 16", Raw(ps, id, "LeftTouchpadClick"));
+            Assert.Equal("Button 17", Raw(ps, id, "RightTouchpadClick"));
             Assert.Equal("POV 0 Down", ps.GetRawMapping("RawPov0Down"));
             for (int i = 0; i < NintendoPreviewMap.ButtonCount(id); i++)
                 Assert.False(string.IsNullOrEmpty(ps.GetRawMapping($"RawBtn{i}")), $"RawBtn{i} unbound");

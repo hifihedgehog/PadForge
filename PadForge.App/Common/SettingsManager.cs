@@ -845,22 +845,30 @@ namespace PadForge.Common.Input
                     // and the slot's touch surface splits the same way:
                     // finger 0 is the left pad, finger 1 the right. A one-
                     // pad source (a DualSense) lands on the left pad only.
-                    // The 2015 pad's click descriptors read the pad's
-                    // pressure, per the wrapper's pressure fallback.
+                    // The clicks are the gamepad buttons the pad advertises,
+                    // the picker's own convention (MappingDisplayResolver:
+                    // one "Touchpad 0 Click", and a second pad's click
+                    // surfaces as MISC2): SDL's Deck and 2026 mappings bind
+                    // touchpad:b17 = left click at position 16 and
+                    // misc2:b16 = right click at 17 (SDL_gamepad.c 1266 /
+                    // 1269 against _steamdeck.c 42-43, _steam_triton.c
+                    // 53-54). A pad that advertises neither (the 2015
+                    // controller, mapping paddle1/paddle2 only) clicks
+                    // through the wrapper's pressure descriptors instead.
                     int pads = ud.HasTouchpad ? Math.Max(1, ud.CapTouchpadCount) : 0;
                     if (pads >= 1)
                     {
                         ps.TouchpadX1 = "Touchpad 0 Finger 0 X";
                         ps.TouchpadY1 = "Touchpad 0 Finger 0 Y";
                         ps.TouchpadContact1 = "Touchpad 0 Finger 0 Down";
-                        MapValve("LeftTouchpadClick", "Touchpad 0 Click");
+                        MapValve("LeftTouchpadClick", HasSrc(16) ? "Button 16" : "Touchpad 0 Click");
                     }
                     if (pads >= 2)
                     {
                         ps.TouchpadX2 = "Touchpad 1 Finger 0 X";
                         ps.TouchpadY2 = "Touchpad 1 Finger 0 Y";
                         ps.TouchpadContact2 = "Touchpad 1 Finger 0 Down";
-                        MapValve("RightTouchpadClick", "Touchpad 1 Click");
+                        MapValve("RightTouchpadClick", HasSrc(17) ? "Button 17" : "Touchpad 1 Click");
                     }
 
                     // IMU: every Valve frame carries gyro and accel, which

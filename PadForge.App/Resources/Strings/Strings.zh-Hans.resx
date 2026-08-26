@@ -1042,6 +1042,12 @@
   <data name="Btn_RightGrip" xml:space="preserve"><value>右握把</value></data>
   <data name="Btn_LeftPadClick" xml:space="preserve"><value>左触控板按下</value></data>
   <data name="Btn_RightPadClick" xml:space="preserve"><value>右触控板按下</value></data>
+  <data name="Mapping_LeftPadX" xml:space="preserve"><value>左触控板 X</value></data>
+  <data name="Mapping_LeftPadY" xml:space="preserve"><value>左触控板 Y</value></data>
+  <data name="Mapping_LeftPadTouch" xml:space="preserve"><value>左触控板触摸</value></data>
+  <data name="Mapping_RightPadX" xml:space="preserve"><value>右触控板 X</value></data>
+  <data name="Mapping_RightPadY" xml:space="preserve"><value>右触控板 Y</value></data>
+  <data name="Mapping_RightPadTouch" xml:space="preserve"><value>右触控板触摸</value></data>
   <data name="Btn_C" xml:space="preserve"><value>C</value></data>
   <data name="Btn_MicMute" xml:space="preserve"><value>静音</value></data>
   <data name="Btn_LeftPaddle" xml:space="preserve"><value>左背键</value></data>

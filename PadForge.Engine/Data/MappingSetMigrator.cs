@@ -668,6 +668,17 @@ namespace PadForge.Engine.Data
             MappingSet ms,
             int slotType,
             IReadOnlyList<(string DeviceGuid, bool HasGyro, bool HasAccel)> devices)
+            => EnsureMotionRows(ms, slotType, motionCapableProfile: false, devices);
+
+        /// <summary>As above, with <paramref name="motionCapableProfile"/>
+        /// admitting a slot whose family is not motion-capable as a whole
+        /// but whose active profile is: an Extended slot on a Valve profile,
+        /// whose native frame carries gyro and accel.</summary>
+        public static void EnsureMotionRows(
+            MappingSet ms,
+            int slotType,
+            bool motionCapableProfile,
+            IReadOnlyList<(string DeviceGuid, bool HasGyro, bool HasAccel)> devices)
         {
             if (ms == null || devices == null || devices.Count == 0) return;
 
@@ -677,7 +688,7 @@ namespace PadForge.Engine.Data
             // real IMU surface in HIDMaestro v1.3.18, HM#33). Encoded as
             // int here so PadForge.Engine.Data doesn't need a
             // back-reference to PadForge.Engine for the enum type.
-            if (slotType != 1 && slotType != 5) return;
+            if (slotType != 1 && slotType != 5 && !motionCapableProfile) return;
 
             EnsureMotionRowForSensor(ms, MotionGyroTarget,  MotionGyroSourceDescriptor,
                 devices, dev => dev.HasGyro);

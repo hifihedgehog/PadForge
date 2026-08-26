@@ -1046,6 +1046,12 @@
   <data name="Btn_RightGrip" xml:space="preserve"><value>Impugnatura destra</value></data>
   <data name="Btn_LeftPadClick" xml:space="preserve"><value>Clic pad sinistro</value></data>
   <data name="Btn_RightPadClick" xml:space="preserve"><value>Clic pad destro</value></data>
+  <data name="Mapping_LeftPadX" xml:space="preserve"><value>Pad sinistro X</value></data>
+  <data name="Mapping_LeftPadY" xml:space="preserve"><value>Pad sinistro Y</value></data>
+  <data name="Mapping_LeftPadTouch" xml:space="preserve"><value>Tocco pad sinistro</value></data>
+  <data name="Mapping_RightPadX" xml:space="preserve"><value>Pad destro X</value></data>
+  <data name="Mapping_RightPadY" xml:space="preserve"><value>Pad destro Y</value></data>
+  <data name="Mapping_RightPadTouch" xml:space="preserve"><value>Tocco pad destro</value></data>
   <data name="Btn_C" xml:space="preserve"><value>C</value></data>
   <data name="Btn_MicMute" xml:space="preserve"><value>Muto</value></data>
   <data name="Btn_LeftPaddle" xml:space="preserve"><value>Tasto posteriore sinistro</value></data>

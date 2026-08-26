@@ -2680,6 +2680,12 @@ public class Strings : INotifyPropertyChanged
     public string Btn_RightGrip => Get("Btn_RightGrip");
     public string Btn_LeftPadClick => Get("Btn_LeftPadClick");
     public string Btn_RightPadClick => Get("Btn_RightPadClick");
+    public string Mapping_LeftPadX => Get("Mapping_LeftPadX");
+    public string Mapping_LeftPadY => Get("Mapping_LeftPadY");
+    public string Mapping_LeftPadTouch => Get("Mapping_LeftPadTouch");
+    public string Mapping_RightPadX => Get("Mapping_RightPadX");
+    public string Mapping_RightPadY => Get("Mapping_RightPadY");
+    public string Mapping_RightPadTouch => Get("Mapping_RightPadTouch");
     public string Btn_C => Get("Btn_C");
     public string Btn_MicMute => Get("Btn_MicMute");
     public string Btn_LeftPaddle => Get("Btn_LeftPaddle");

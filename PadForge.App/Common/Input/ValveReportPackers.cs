@@ -480,7 +480,7 @@ namespace PadForge.Common.Input
             WriteI16(dest, 16, NegateSat(ry));
 
             WriteI16(dest, 18, pads.lTouch ? NormToPad(tp.X0) : (short)0);
-            WriteI16(dest, 20, pads.lTouch ? NormToPad(tp.Y0) : (short)0);   // flipped on the wire: top-down as-is
+            WriteI16(dest, 20, pads.lTouch ? NormToPadY(tp.Y0) : (short)0);  // SDL decodes both pads as y = -wire/65536 + 0.5 (_steam_triton.c 252 / 264)
             WriteU16(dest, 22, pads.lClick ? ushort.MaxValue : (ushort)0);
             WriteI16(dest, 24, pads.rTouch ? NormToPad(tp.X1) : (short)0);
             WriteI16(dest, 26, pads.rTouch ? NormToPadY(tp.Y1) : (short)0);

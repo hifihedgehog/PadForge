@@ -189,6 +189,16 @@ namespace PadForge.Common.Input
         /// non-PlayStation virtual (where TouchpadOutputState is never computed).</summary>
         public bool[] SlotRawTouchpadClick { get; } = new bool[MaxPads];
 
+        /// <summary>True when the slot's virtual controller has a touch
+        /// surface Step 3 must produce and Step 4 must combine: every
+        /// PlayStation slot, and an Extended slot on a Valve profile, whose
+        /// native frame carries both trackpads.</summary>
+        internal bool SlotCarriesTouchpad(int slot)
+            => SlotControllerTypes[slot] == VirtualControllerType.PlayStation
+            || (SlotControllerTypes[slot] == VirtualControllerType.Extended
+                && SlotRawHidSurface[slot]
+                && Models2D.NintendoPreviewMap.IsValve(SlotProfileIds[slot]));
+
         /// <summary>Per-(slot, device, touchpad-pad-index) gesture
         /// recognizer state. Slot-keyed so two slots sharing one
         /// physical touchpad each keep their own context and settings —

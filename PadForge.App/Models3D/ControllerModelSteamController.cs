@@ -69,13 +69,54 @@ namespace PadForge.Models3D
             RightGripButton = LoadModel("RightGrip.obj");
             RegisterButton("RightGrip", RightGripButton);
             model3DGroup.Children.Add(RightGripButton);
+
+            PaintEverything();
         }
+
+        /// <summary>Resting colours, sampled from this pad's own shipped 2D
+        /// art rather than picked, so the two previews agree and both match
+        /// the hardware. The five that cover the device are its body at
+        /// #1E2A30, a slightly cooler shell at #24303C, the trackpad
+        /// surfaces at #5A606C, the recesses at #424E54 and the button
+        /// discs at #1E1E1E.
+        ///
+        /// <para>The face buttons are DARK, not lettered colours. On this
+        /// pad the ABXY caps are black plastic with coloured glyphs printed
+        /// on them, unlike the Xbox 360's coloured shells, and there are no
+        /// glyph meshes in Valve's CAD to carry the colour.</para></summary>
+        private void PaintEverything()
+        {
+            var body    = Mat("#1E2A30");
+            var shell   = Mat("#24303C");
+            var surface = Mat("#5A606C");
+            var recess  = Mat("#424E54");
+            var disc    = Mat("#1E1E1E");
+
+            Paint(MainBody, body);
+            Paint(LeftShoulderTrigger, shell);
+            Paint(RightShoulderTrigger, shell);
+            PaintTarget("LeftShoulder", shell);
+            PaintTarget("RightShoulder", shell);
+            PaintTarget("LeftGrip", body);
+            PaintTarget("RightGrip", body);
+            PaintTarget("LeftTouchpadClick", surface);
+            PaintTarget("RightTouchpadClick", surface);
+            PaintTarget("LeftThumbButton", recess);
+            PaintTarget("ButtonBack", recess);
+            PaintTarget("ButtonStart", recess);
+            PaintTarget("ButtonGuide", disc);
+            foreach (var t in new[] { "ButtonA", "ButtonB", "ButtonX", "ButtonY" })
+                PaintTarget(t, disc);
+        }
+
+        private static Material Mat(string hex) =>
+            new DiffuseMaterial(new SolidColorBrush((Color)ColorConverter.ConvertFromString(hex)));
 
         /// <summary>The preview camera is fixed, so every model carries a
         /// constant scale that brings its authoring size to the framing the
         /// camera expects. The Xbox 360 mesh is the reference at 151.45 mm
-        /// across, and Valve's CAD puts this pad at 160.54 mm.</summary>
-        public override double ModelScale => 151.45 / 160.54;
+        /// across, and this pad's reconstructed skin measures 161.39 mm.</summary>
+        public override double ModelScale => 151.45 / 161.39;
 
     }
 }

@@ -87,13 +87,62 @@ namespace PadForge.Models3D
 
             // Glyph riders sit on their buttons and share their highlight,
             // the same arrangement the other models use for label meshes.
-            AddRiderTo("ButtonA", "B1-Symbol.obj");
-            AddRiderTo("ButtonB", "B2-Symbol.obj");
-            AddRiderTo("ButtonX", "B3-Symbol.obj");
-            AddRiderTo("ButtonY", "B4-Symbol.obj");
-            AddRiderTo("ButtonBack", "BackIcon.obj");
-            AddRiderTo("ButtonStart", "StartIcon.obj");
+            // Valve prints the Deck's glyphs in white on a dark cap, and
+            // the letters carry no colour of their own.
+            var MaterialGlyph = new DiffuseMaterial(new SolidColorBrush(
+                (Color)ColorConverter.ConvertFromString("#C0C0C0")));
+            AddRiderTo("ButtonA", "B1-Symbol.obj", MaterialGlyph);
+            AddRiderTo("ButtonB", "B2-Symbol.obj", MaterialGlyph);
+            AddRiderTo("ButtonX", "B3-Symbol.obj", MaterialGlyph);
+            AddRiderTo("ButtonY", "B4-Symbol.obj", MaterialGlyph);
+            AddRiderTo("ButtonBack", "BackIcon.obj", MaterialGlyph);
+            AddRiderTo("ButtonStart", "StartIcon.obj", MaterialGlyph);
+
+            PaintEverything();
         }
+
+        /// <summary>Resting colours, sampled from the Deck's own shipped 2D
+        /// art so the two previews agree and both match the hardware: shell
+        /// #121218, buttons and panels #363636, stick and pad surfaces
+        /// #5A5A5A, recesses #242424.
+        ///
+        /// <para>Without this every mesh rendered in HelixToolkit's own
+        /// default, which is yellow. The cosmetic parts above were painted
+        /// from the start; the body and every mappable control were
+        /// not.</para></summary>
+        private void PaintEverything()
+        {
+            var shell   = Mat("#121218");
+            var panel   = Mat("#363636");
+            var surface = Mat("#5A5A5A");
+            var recess  = Mat("#242424");
+
+            Paint(MainBody, shell);
+            Paint(LeftThumbRing, recess);
+            Paint(RightThumbRing, recess);
+            Paint(LeftShoulderTrigger, panel);
+            Paint(RightShoulderTrigger, panel);
+            Paint(LeftMotor, recess);
+            Paint(RightMotor, recess);
+
+            PaintTarget("LeftShoulder", panel);
+            PaintTarget("RightShoulder", panel);
+            PaintTarget("LeftTouchpadClick", recess);
+            PaintTarget("RightTouchpadClick", recess);
+            PaintTarget("LeftThumbButton", surface);
+            PaintTarget("RightThumbButton", surface);
+            PaintTarget("ButtonQuickAccess", panel);
+            foreach (var t in new[] { "DPadUp", "DPadDown", "DPadLeft", "DPadRight" })
+                PaintTarget(t, panel);
+            foreach (var t in new[] { "ButtonA", "ButtonB", "ButtonX", "ButtonY",
+                                      "ButtonBack", "ButtonStart", "ButtonGuide" })
+                PaintTarget(t, panel);
+            foreach (var t in new[] { "Paddle1", "Paddle2", "Paddle3", "Paddle4" })
+                PaintTarget(t, recess);
+        }
+
+        private static Material Mat(string hex) =>
+            new DiffuseMaterial(new SolidColorBrush((Color)ColorConverter.ConvertFromString(hex)));
 
         /// <summary>The preview camera is fixed, so every model carries a
         /// constant scale that brings its authoring size to the framing the
@@ -105,19 +154,18 @@ namespace PadForge.Models3D
         {
             var group = TryLoadModel(filename);
             if (group == null) return;
-            foreach (var child in group.Children)
-                if (child is GeometryModel3D g)
-                {
-                    g.Material = material;
-                    g.BackMaterial = material;
-                }
+            // Paint registers the resting material as well as applying it.
+            // Setting only the geometry material leaves the part yellow
+            // again the moment anything restores it.
+            Paint(group, material);
             model3DGroup.Children.Add(group);
         }
 
-        private void AddRiderTo(string padSettingName, string filename)
+        private void AddRiderTo(string padSettingName, string filename, Material material)
         {
             var rider = TryLoadModel(filename);
             if (rider == null) return;
+            Paint(rider, material);
             model3DGroup.Children.Add(rider);
             if (ButtonMap.TryGetValue(padSettingName, out var list))
                 list.Add(rider);

@@ -84,7 +84,48 @@ namespace PadForge.Models3D
             L5 = LoadModel("L5.obj");
             RegisterButton("Paddle4", L5);
             model3DGroup.Children.Add(L5);
+
+            PaintEverything();
         }
+
+        /// <summary>Resting colours, sampled from this pad's own shipped 2D
+        /// art so the two previews agree: body #1E2A30, trackpad and stick
+        /// surfaces #5A606C, recesses #424E54, button discs #1E1E1E.
+        ///
+        /// <para>Face buttons stay dark for the same reason as the 2015
+        /// pad. Valve prints the glyph on a black cap, and the CAD carries
+        /// no glyph mesh to colour.</para></summary>
+        private void PaintEverything()
+        {
+            var body    = Mat("#1E2A30");
+            var shell   = Mat("#24303C");
+            var surface = Mat("#5A606C");
+            var recess  = Mat("#424E54");
+            var disc    = Mat("#1E1E1E");
+
+            Paint(MainBody, body);
+            Paint(LeftThumbRing, recess);
+            Paint(RightThumbRing, recess);
+            Paint(LeftShoulderTrigger, shell);
+            Paint(RightShoulderTrigger, shell);
+            PaintTarget("LeftShoulder", shell);
+            PaintTarget("RightShoulder", shell);
+            PaintTarget("LeftTouchpadClick", surface);
+            PaintTarget("RightTouchpadClick", surface);
+            PaintTarget("LeftThumbButton", surface);
+            PaintTarget("RightThumbButton", surface);
+            foreach (var t in new[] { "DPadUp", "DPadDown", "DPadLeft", "DPadRight" })
+                PaintTarget(t, surface);
+            foreach (var t in new[] { "ButtonA", "ButtonB", "ButtonX", "ButtonY", "ButtonGuide" })
+                PaintTarget(t, disc);
+            foreach (var t in new[] { "ButtonBack", "ButtonStart", "ButtonQuickAccess" })
+                PaintTarget(t, recess);
+            foreach (var t in new[] { "Paddle1", "Paddle2", "Paddle3", "Paddle4" })
+                PaintTarget(t, shell);
+        }
+
+        private static Material Mat(string hex) =>
+            new DiffuseMaterial(new SolidColorBrush((Color)ColorConverter.ConvertFromString(hex)));
 
         /// <summary>The preview camera is fixed, so every model carries a
         /// constant scale that brings its authoring size to the framing the

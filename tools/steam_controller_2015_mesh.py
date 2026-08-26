@@ -49,12 +49,13 @@ SRC = os.environ.get("SC2015_STL_DIR", r"C:/tmp/sc2015")
 DST = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                    "PadForge.App", "3DModels", "SteamController")
 
-WELD_MM_PER_MM = 1.0 / 900.0    # weld tolerance as a fraction of the part diagonal; 0.1 mm on the 160 mm case, the value that rendered clean
-WELD_MIN, WELD_MAX = 0.01, 0.1
+WELD_MM_PER_MM = 1.0 / 900.0    # weld tolerance as a fraction of the part diagonal
+SPLIT_IF_OVER = 2.5      # accept a plain-quadric result up to this many times budget
+WELD_MIN, WELD_MAX = 0.001, float(__import__("os").environ.get("SC_WELD_MAX","0.1"))
 CREASE_DEG = 40.0
 
 BUDGET = {
-    "MainBody.obj": 46000,
+    "MainBody.obj": int(__import__("os").environ.get("SC_BODY_BUDGET","46000")),
     "LeftPadTouch.obj": 4000, "RightPadTouch.obj": 4000,
     "LeftStickClick.obj": 3500,
     "LeftGrip.obj": 3000, "RightGrip.obj": 3000,
@@ -121,6 +122,45 @@ def split_nonmanifold(verts, faces):
     return newv, faces
 
 
+# Every part that sits in an aperture of the case, as (xmin, xmax, ymin,
+# ymax, zbot, ztop) in Valve's CAD space, read off the part meshes.
+# Together they say where the case has a hole with a cover over it.
+APERTURES = [
+    (-64.8, -22.4, -10.5, 31.3, 3.0, 20.5),   # left trackpad
+    (22.4, 64.8, -10.5, 31.3, 3.0, 20.5),     # right trackpad
+    (-30.5, -6.3, -26.3, -2.1, 8.0, 24.5),    # stick cap
+    (14.6, 23.3, -27.5, -18.3, 3.4, 14.4),    # A
+    (23.6, 32.3, -18.5, -9.3, 3.5, 14.0),     # B
+    (5.6, 14.3, -18.5, -9.3, 3.4, 15.5),      # X
+    (14.6, 23.3, -9.5, -0.3, 3.4, 16.4),      # Y
+    (7.3, 18.7, 7.8, 12.5, 3.6, 19.2),        # Start
+    (-18.7, -7.3, 7.8, 12.5, 3.6, 19.2),      # Select
+    (-6.2, 6.2, 4.8, 19.0, 3.6, 21.4),        # Steam
+]
+
+
+def cull_hidden(tris):
+    """Drop the body triangles a cover hides.
+
+    The frayed ring around each trackpad was the aperture WALL: the thin
+    vertical lip of the case's pad hole, which the decimator turns into
+    a field of needles because it is the highest-curvature feature in
+    the part. The pad cover sits on top of that lip, so nobody ever sees
+    it. Every aperture cover is a disc or a pill in plan, so the test is
+    the ellipse inscribed in the cover's bounding box, between the
+    cover's bottom and top. That cannot reach the front face, which
+    sits above every cover top.
+    """
+    cen = tris.mean(axis=1)
+    hide = np.zeros(len(tris), bool)
+    for x0, x1, y0, y1, z0, z1 in APERTURES:
+        cx, cy = (x0 + x1) / 2, (y0 + y1) / 2
+        rx, ry = (x1 - x0) / 2, (y1 - y0) / 2
+        inside = (((cen[:, 0] - cx) / rx) ** 2 + ((cen[:, 1] - cy) / ry) ** 2) <= 1.0
+        hide |= inside & (cen[:, 2] > z0 - 0.5) & (cen[:, 2] < z1 + 0.5)
+    return tris[~hide], int(hide.sum())
+
+
 def weld(tris, tol=WELD_MAX):
     q = np.round(tris.reshape(-1, 3) / tol).astype(np.int64)
     uniq, inv = np.unique(q, axis=0, return_inverse=True)
@@ -141,11 +181,22 @@ def decimate(tris, budget):
     v, f = weld(tris, tol)
     if len(f) <= budget or len(f) < 32:
         return v, f
-    # ONE split-and-decimate round. It lands about double the budget on
-    # the body and the stick cap, and that is accepted: a second round
-    # gets closer to the number and visibly worse, cratering the cap and
-    # putting facets back into the case. The single-round output rendered
-    # clean, and shape beats count.
+
+    # Plain quadric FIRST, and the split only if that stalls well above
+    # budget. The split is what shreds thin rims: the pad cover
+    # decimated with no split is a clean disc at 8.9k, and with the split
+    # its rim is a field of needles at any budget. Every part carries
+    # non-manifold edges, so the split cannot be skipped by part; it is
+    # skipped by NEED. The body needs it (no split stalls at 136k with
+    # 40k flipped edges); the covers, caps and grips do not.
+    pv, pf = fs.simplify(v, f.astype(np.int32), target_count=budget, agg=7.0)
+    if len(pf) <= budget * SPLIT_IF_OVER:
+        return np.asarray(pv, np.float64), np.asarray(pf, np.int64)
+
+    # ONE split-and-decimate round, never re-welded and never repeated:
+    # a second round cratered the stick cap and re-faceted the case.
+    # NOT preserve_border either: after the split a third of all edges
+    # are borders, and pinning them left the body at 844k, measured.
     v, f = split_nonmanifold(v, f)
     pv, pf = fs.simplify(v, f.astype(np.int32), target_count=budget, agg=7.0)
     return np.asarray(pv, np.float64), np.asarray(pf, np.int64)
@@ -272,8 +323,12 @@ def write_obj(path, verts, faces, name):
 
 def main():
     os.makedirs(DST, exist_ok=True)
-    parts = {"MainBody.obj": np.concatenate(
-        [read_stl(os.path.join(SRC, f)) for f in MERGE_BODY])}
+    # The four body shells are kept SEPARATE for decimation and only
+    # concatenated on write. Merged first, the decimator collapses edges
+    # across the seam where two overlapping shells meet and tears the
+    # flat faces of the case into facets. Each shell alone decimates as
+    # cleanly as the pads do.
+    parts = {"MainBody.obj": [read_stl(os.path.join(SRC, f)) for f in MERGE_BODY]}
     bump = read_stl(os.path.join(SRC, "BumperGPrime.rev01.01.stl"))
     cx = bump[:, :, 0].mean(axis=1)
     parts["L1.obj"] = bump[cx < 0]
@@ -282,18 +337,29 @@ def main():
         parts[dst] = read_stl(os.path.join(SRC, src))
     print(f"  {sum(len(t) for t in parts.values()):,} source triangles")
 
-    allx = np.concatenate([t[:, :, 0].ravel() for t in parts.values()])
+    allx = np.concatenate([t[:, :, 0].ravel() for sh in parts.values()
+                           for t in (sh if isinstance(sh, list) else [sh])])
     xmid = (allx.min() + allx.max()) / 2.0
 
     total_in = total_out = 0
     for name, tris in sorted(parts.items()):
-        kept = tris.copy()
-        kept[:, :, 0] -= xmid
-        v, f = decimate(kept, BUDGET.get(name, DEFAULT_BUDGET))
+        shells = tris if isinstance(tris, list) else [tris]
+        budget = BUDGET.get(name, DEFAULT_BUDGET)
+        sizes = np.array([len(t) for t in shells], float)
+        av, af, base, nin = [], [], 0, 0
+        for t, frac in zip(shells, sizes / sizes.sum()):
+            if name == "MainBody.obj":
+                t, dropped = cull_hidden(t)
+                print(f"    cull_hidden: dropped {dropped:,}")
+            t = t.copy()
+            t[:, :, 0] -= xmid
+            v, f = decimate(t, max(300, int(budget * frac)))
+            av.append(v); af.append(f + base); base += len(v); nin += len(t)
+        v = np.concatenate(av); f = np.concatenate(af)
         write_obj(os.path.join(DST, name), v, f, name)
-        total_in += len(kept)
+        total_in += nin
         total_out += len(f)
-        print(f"  {name:28s} {len(tris):9,} -> {len(f):6,} tris")
+        print(f"  {name:28s} {nin:9,} -> {len(f):6,} tris ({len(shells)} shell(s))")
     print(f"TOTAL {total_in:,} -> {total_out:,} triangles")
 
 

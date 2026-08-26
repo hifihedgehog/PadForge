@@ -1,55 +1,70 @@
-"""Rebuild the 2015 Steam Controller as a clean outer skin.
+"""Convert Valve's 2015 Steam Controller CAD into PadForge's per-part OBJs.
 
-Usage:
-    pip install numpy scipy scikit-image fast-simplification
-    set SC2015_STL_DIR=<the unpacked "STL of separate parts" archive>
-    python tools/steam_controller_2015_mesh.py
+Three earlier attempts and what each got wrong, because the reasons are
+the whole design:
 
-Why this and not decimation of the CAD. Valve's 2015 release is 22
-moulded parts carrying every internal rib, boss and screw tower, 29.7
-million triangles of it. Two things follow, both measured rather than
-assumed:
+1. Vertex clustering. Snaps vertices to a grid and replaces each cell
+   with its mean, so it MOVES the surface, welds the outer wall to the
+   ribs behind it, and rounds every moulded edge. The case came out as
+   faceted noise.
+2. Quadric decimation on the raw CAD. Right algorithm, wrong input: the
+   assembly carries every internal rib and boss, 26,000 non-manifold
+   edges among them, and the case top asymptotes near 314,000 triangles
+   however many passes it runs. Measured, not assumed.
+3. Voxel reconstruction. Removes the interior perfectly and decimates to
+   anything, but marching cubes rounds every edge by about a voxel, so
+   the result is smooth where the moulding is sharp.
 
-* Vertex clustering welds the outer wall to the ribs behind it, because
-  at the cell size a shippable budget implies the cell spans the wall.
-  That is what turned the case into faceted noise.
-* Quadric decimation cannot get low enough. It respects the mesh it is
-  given, and this mesh has 26,000 non-manifold edges scattered through
-  its interior structure, so the case top asymptotes at about 314,000
-  triangles no matter how many passes it runs.
+What works, measured on the case top and proven by rendering:
 
-The interior is the problem in both cases, and it is not wanted: the
-preview shows the outside of a controller. So rather than fight to remove
-it, this rebuilds the outside directly. Voxelize the assembled
-controller, flood the air around it, and take the boundary between the
-two as a fresh surface. What comes out is watertight, manifold, has no
-interior at all, and decimates to any budget cleanly.
+* NO outer-surface mask. It was deleting the trackpad rims and the
+  button-well lips, which is where the mesh looked jagged. 87% of the
+  case-top triangles sit within 0.7 mm of outside air; there is nothing
+  worth removing and the decimator hides what little interior remains.
+* Weld COARSE, scaled to the part. The "detail" a fine weld preserves is
+  the tessellation seams themselves, and they are what pin the decimator
+  above budget. 0.1 mm on the 160 mm case stitches them; a 9 mm cap gets
+  proportionally less. Rendered at 0.1 mm the case is a clean shell.
+* Split non-manifold edges ONCE, decimate ONCE, and never re-weld the
+  result. The reweld was what shredded the caps and holed the body: it
+  merged split copies back together with mixed winding.
+* The decimator lands near budget rather than on it. The residual floor
+  is a few hundred border edges quadric collapse will not touch, and
+  chasing it with more passes made the mesh worse, not smaller.
 
-The cost is that marching cubes rounds a sharp edge by about one voxel.
-At a third of a millimetre on a 160 mm controller that is not visible in
-a preview, and it buys a body that reads as the moulding it is.
-
-Parts stay separate: each output triangle is assigned to whichever
-original CAD part is nearest, so the buttons, pads and grips remain their
-own meshes and stay individually mappable.
+Normals are written explicitly, split at a crease angle. Without them a
+viewport averages normals across every face at a vertex, which rounds off
+exactly the edges this whole pipeline exists to keep. Every model in this
+repo that reads as moulded plastic ships normals; the ones that did not
+read as clay.
 """
 import numpy as np
 import struct
 import os
 import io
 import sys
-from scipy import ndimage as nd
-from scipy.spatial import cKDTree
-from skimage import measure
 import fast_simplification as fs
 
 SRC = os.environ.get("SC2015_STL_DIR", r"C:/tmp/sc2015")
 DST = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                    "PadForge.App", "3DModels", "SteamController")
 
-VOXEL = 0.30            # mm. Roughly a third of the smallest feature radius.
-SKIN_BUDGET = 120000
-SEAL = 2                # voxels of closing, only to bridge sub-voxel seams
+WELD_MM_PER_MM = 1.0 / 900.0    # weld tolerance as a fraction of the part diagonal; 0.1 mm on the 160 mm case, the value that rendered clean
+WELD_MIN, WELD_MAX = 0.01, 0.1
+CREASE_DEG = 40.0
+
+BUDGET = {
+    "MainBody.obj": 46000,
+    "LeftPadTouch.obj": 4000, "RightPadTouch.obj": 4000,
+    "LeftStickClick.obj": 3500,
+    "LeftGrip.obj": 3000, "RightGrip.obj": 3000,
+    "Shoulder-Left-Trigger.obj": 3000, "Shoulder-Right-Trigger.obj": 3000,
+    "L1.obj": 3000, "R1.obj": 3000,
+    "Special.obj": 1600,
+    "B1.obj": 1200, "B2.obj": 1200, "B3.obj": 1200, "B4.obj": 1200,
+    "Start.obj": 900, "Back.obj": 900,
+}
+DEFAULT_BUDGET = 1500
 
 MERGE_BODY = [
     "CaseTopGPrime.rev01.01.stl",
@@ -57,8 +72,6 @@ MERGE_BODY = [
     "CaseBottomGPrime.rev01.01.stl",
     "BatteryDoorMkVI.rev01.01.stl",
 ]
-# CAD part -> PadForge part file. The body shells all collapse into one
-# mesh because the skin does not distinguish them anyway.
 MAP = {
     "ButtonA.rev01.01.stl":                     "B1.obj",
     "ButtonB.rev01.01.stl":                     "B2.obj",
@@ -87,174 +100,201 @@ def read_stl(path):
     return np.frombuffer(rec[:, 12:48].tobytes(), "<f4").reshape(n, 3, 3).astype(np.float64)
 
 
-def occupancy(tris, lo, dims):
-    """Mark every voxel the surface passes through.
+def split_nonmanifold(verts, faces):
+    """Give every face its own vertex copy wherever an edge is shared by
+    more than two faces. The decimator will not collapse across such an
+    edge, and this input has tens of thousands of them from unstitched
+    CAD tessellation. Split, they become ordinary borders it can work
+    around, and the floor disappears."""
+    e = np.concatenate([faces[:, [0, 1]], faces[:, [1, 2]], faces[:, [2, 0]]])
+    e.sort(axis=1)
+    _, inv, cnt = np.unique(e, axis=0, return_inverse=True, return_counts=True)
+    bad = cnt[np.asarray(inv).ravel()] > 2
+    badv = np.unique(e[bad].ravel())
+    mask = np.isin(faces, badv)
+    if not mask.any():
+        return verts, faces
+    fi, fk = np.nonzero(mask)
+    newv = np.concatenate([verts, verts[faces[fi, fk]]])
+    faces = faces.copy()
+    faces[fi, fk] = len(verts) + np.arange(len(fi))
+    return newv, faces
 
-    Marking only triangle CORNERS is not enough, and that mistake is what
-    made every earlier attempt leak: a CAD tessellator meshes a flat
-    region with a few very large triangles, so a corner-only occupancy
-    leaves metre-wide holes in the middle of the flattest parts of the
-    case. The flood then walks straight through the shell and the
-    reconstruction ends up with both faces of every wall.
 
-    So each triangle is sampled across its face on a barycentric grid at
-    half a voxel, and only triangles big enough to need it pay for it.
+def weld(tris, tol=WELD_MAX):
+    q = np.round(tris.reshape(-1, 3) / tol).astype(np.int64)
+    uniq, inv = np.unique(q, axis=0, return_inverse=True)
+    inv = np.asarray(inv).ravel()
+    first = np.zeros(len(uniq), np.int64)
+    first[inv[::-1]] = np.arange(len(inv))[::-1]
+    verts = tris.reshape(-1, 3)[first]
+    faces = inv.reshape(-1, 3)
+    ok = ((faces[:, 0] != faces[:, 1]) & (faces[:, 1] != faces[:, 2])
+          & (faces[:, 0] != faces[:, 2]))
+    return verts, faces[ok]
+
+
+def decimate(tris, budget):
+    pts = tris.reshape(-1, 3)
+    diag = float(np.linalg.norm(pts.max(0) - pts.min(0)))
+    tol = float(np.clip(diag * WELD_MM_PER_MM, WELD_MIN, WELD_MAX))
+    v, f = weld(tris, tol)
+    if len(f) <= budget or len(f) < 32:
+        return v, f
+    # ONE split-and-decimate round. It lands about double the budget on
+    # the body and the stick cap, and that is accepted: a second round
+    # gets closer to the number and visibly worse, cratering the cap and
+    # putting facets back into the case. The single-round output rendered
+    # clean, and shape beats count.
+    v, f = split_nonmanifold(v, f)
+    pv, pf = fs.simplify(v, f.astype(np.int32), target_count=budget, agg=7.0)
+    return np.asarray(pv, np.float64), np.asarray(pf, np.int64)
+
+
+def orient_faces(verts, faces):
+    """Make every face wind the same way as its neighbours.
+
+    The split-and-reweld leaves faces with inconsistent winding: a seam
+    face and its neighbour can traverse their shared edge in the SAME
+    direction, which means one of them is flipped. A flipped face has a
+    flipped normal, so the crease-normal splitter sees a 180 degree
+    crease where the surface is smooth and fractures the shading into
+    speckle. Measured on the case: 2,259 same-direction edge pairs; on a
+    9 mm button cap nearly half the vertices split into two or more
+    normal groups on what is a smooth dome.
+
+    Flood-fill orientation over the edge adjacency: pick a face, and for
+    each neighbour make it traverse the shared edge the opposite way,
+    flipping it if not. Each connected patch is then oriented as a whole
+    to point away from the part's centroid.
     """
-    occ = np.zeros(dims, bool)
-    dimarr = np.array(dims)
+    n = len(faces)
+    e = np.concatenate([faces[:, [0, 1]], faces[:, [1, 2]], faces[:, [2, 0]]])
+    owner = np.tile(np.arange(n), 3)
+    key = np.minimum(e[:, 0], e[:, 1]).astype(np.int64) * len(verts) + np.maximum(e[:, 0], e[:, 1])
+    order = np.argsort(key, kind="stable")
+    key, owner, e = key[order], owner[order], e[order]
+    same = np.nonzero(key[1:] == key[:-1])[0]
+    fa, fb = owner[same], owner[same + 1]
+    # same_dir: both faces traverse the edge in the same direction (one is flipped)
+    same_dir = (e[same, 0] == e[same + 1, 0])
+    from collections import defaultdict
+    adj = defaultdict(list)
+    for a, b, sd in zip(fa, fb, same_dir):
+        adj[a].append((b, sd)); adj[b].append((a, sd))
+    flip = np.zeros(n, bool); seen = np.zeros(n, bool)
+    faces = faces.copy()
+    for start in range(n):
+        if seen[start]:
+            continue
+        stack = [start]; seen[start] = True; patch = [start]
+        while stack:
+            cur = stack.pop()
+            for nb, sd in adj[cur]:
+                if seen[nb]:
+                    continue
+                # relative to cur's (possibly already flipped) state
+                flip[nb] = flip[cur] ^ sd
+                seen[nb] = True; stack.append(nb); patch.append(nb)
+        patch = np.array(patch)
+        faces[patch[flip[patch]]] = faces[patch[flip[patch]]][:, [0, 2, 1]]
+        # orient the whole patch outward
+        tv = verts[faces[patch]]
+        nrm = np.cross(tv[:, 1] - tv[:, 0], tv[:, 2] - tv[:, 0])
+        cen = tv.mean(axis=1)
+        out = (nrm * (cen - verts.mean(0))).sum(axis=1)
+        if out.sum() < 0:
+            faces[patch] = faces[patch][:, [0, 2, 1]]
+    return faces
 
-    def mark(pts):
-        idx = np.floor((pts - lo) / VOXEL).astype(np.int64)
-        np.clip(idx, 0, dimarr - 1, out=idx)
-        occ[idx[:, 0], idx[:, 1], idx[:, 2]] = True
 
-    mark(tris.reshape(-1, 3))
+def crease_normals(verts, faces, crease_deg=CREASE_DEG):
+    """Per-corner normals, averaged only within the crease angle so a
+    vertex on a sharp edge keeps a different normal for each side."""
+    fn = np.cross(verts[faces[:, 1]] - verts[faces[:, 0]],
+                  verts[faces[:, 2]] - verts[faces[:, 0]])
+    ln = np.linalg.norm(fn, axis=1, keepdims=True)
+    fn = fn / np.maximum(ln, 1e-20)
+    area = ln[:, 0]
+    cos_lim = np.cos(np.radians(crease_deg))
 
-    e = np.stack([
-        np.linalg.norm(tris[:, 1] - tris[:, 0], axis=1),
-        np.linalg.norm(tris[:, 2] - tris[:, 1], axis=1),
-        np.linalg.norm(tris[:, 0] - tris[:, 2], axis=1)]).max(axis=0)
-    big = tris[e > VOXEL * 0.7]
-    if not len(big):
-        return occ
+    corner_v = faces.ravel()
+    corner_f = np.repeat(np.arange(len(faces)), 3)
+    order = np.argsort(corner_v, kind="stable")
+    corner_v, corner_f = corner_v[order], corner_f[order]
+    starts = np.searchsorted(corner_v, np.arange(len(verts) + 1))
 
-    # One barycentric lattice per subdivision level, so triangles of
-    # similar size share a single vectorized pass.
-    lvl = np.clip(np.ceil(e[e > VOXEL * 0.7] / (VOXEL * 0.5)).astype(int), 2, 64)
-    for n in np.unique(lvl):
-        sel = big[lvl == n]
-        i, j = np.meshgrid(np.arange(n + 1), np.arange(n + 1))
-        keep = (i + j) <= n
-        u = (i[keep] / n)[None, :, None]
-        v = (j[keep] / n)[None, :, None]
-        w = 1.0 - u - v
-        pts = (sel[:, 0][:, None, :] * w + sel[:, 1][:, None, :] * u
-               + sel[:, 2][:, None, :] * v)
-        mark(pts.reshape(-1, 3))
-    return occ
-
-
-def build_skin(parts):
-    all_pts = np.concatenate([t.reshape(-1, 3) for t in parts.values()])
-    lo = all_pts.min(0) - VOXEL * 4
-    hi = all_pts.max(0) + VOXEL * 4
-    dims = tuple(np.ceil((hi - lo) / VOXEL).astype(int) + 1)
-    print(f"  grid {dims} = {np.prod(dims)/1e6:.1f}M voxels")
-
-    occ = occupancy(np.concatenate(list(parts.values())), lo, dims)
-    print(f"  surface voxels {int(occ.sum()):,}")
-
-    # Seal, flood, then push the boundary back.
-    #
-    # The gaps around the buttons, the triggers and the case seam are
-    # wider than a voxel, so a flood over the raw occupancy runs straight
-    # into the shell and comes out the other side, and marching cubes
-    # then reconstructs BOTH faces of every wall. Measured: sealing by
-    # two voxels left only 1.4 million interior voxels, barely more than
-    # the surface itself.
-    #
-    # So the flood runs against a heavily closed copy, which reliably
-    # stays outside the shell, and the region it found is then dilated by
-    # the same amount to recover the true surface position. Dilating back
-    # can never eat into real surface voxels because those are masked out.
-    st = nd.generate_binary_structure(3, 3)
-    solid = nd.binary_closing(occ, st, iterations=SEAL)
-
-    lbl, _ = nd.label(~solid)
-    border = set(np.unique(np.concatenate([
-        lbl[0].ravel(), lbl[-1].ravel(), lbl[:, 0].ravel(), lbl[:, -1].ravel(),
-        lbl[:, :, 0].ravel(), lbl[:, :, -1].ravel()])))
-    border.discard(0)
-    outside = np.isin(lbl, list(border))
-    outside = nd.binary_dilation(outside, st, iterations=SEAL) & ~occ
-    inside = ~outside
-
-    # Fill the cavity. Without this the reconstruction returns the INNER
-    # face of every wall as well as the outer one, the two sit a
-    # millimetre or two apart, and after decimation they interpenetrate
-    # and speckle the whole body. Only the outside is ever looked at, so
-    # the controller is reconstructed as if it were solid.
-    inside = nd.binary_fill_holes(inside)
-    print(f"  inside voxels {int(inside.sum()):,} "
-          f"({inside.sum() / inside.size * 100:.1f}% of grid)")
-
-    # Marching cubes on the outside/inside field. Smoothing the field
-    # first keeps the surface from stepping along voxel faces.
-    field = nd.gaussian_filter(inside.astype(np.float32), 0.8)
-    verts, faces, _, _ = measure.marching_cubes(field, level=0.5)
-    verts = verts * VOXEL + lo
-    print(f"  marching cubes: {len(verts):,} verts, {len(faces):,} faces")
-    return verts, faces.astype(np.int32)
+    normals = []
+    corner_normal = np.zeros((len(faces), 3), np.int64)
+    for v in range(len(verts)):
+        a, b = starts[v], starts[v + 1]
+        if a == b:
+            continue
+        groups = []
+        for f in corner_f[a:b]:
+            n = fn[f]
+            for g in groups:
+                if float(n @ g[0]) >= cos_lim:
+                    g[1] += n * area[f]
+                    g[2].append(f)
+                    break
+            else:
+                groups.append([n, n * area[f], [f]])
+        for rep, acc, fl in groups:
+            m = np.linalg.norm(acc)
+            normals.append(acc / m if m > 1e-20 else rep)
+            k = len(normals)
+            for f in fl:
+                corner_normal[f, np.nonzero(faces[f] == v)[0][0]] = k
+    return np.array(normals), corner_normal
 
 
 def write_obj(path, verts, faces, name):
     """Valve CAD is X width, Y height up, Z depth front. PadForge is X
-    width, Y depth front NEGATIVE, Z height. Y = -Z and Z = Y, a rotation
-    about X, so the winding is left alone."""
+    width, Y depth with the front NEGATIVE, Z height. Y = -Z and Z = Y is
+    a rotation about X, not a mirror, so the winding is left alone."""
+    faces = orient_faces(verts, faces)
+    normals, corner = crease_normals(verts, faces)
     out = np.column_stack([verts[:, 0], -verts[:, 2], verts[:, 1]])
+    nout = np.column_stack([normals[:, 0], -normals[:, 2], normals[:, 1]])
     with io.open(path, "w", encoding="utf-8", newline="\n") as f:
         f.write("# %s\n# Valve Steam Controller (2015) CAD, CC BY-NC-SA 4.0\n" % name)
         for v in out:
             f.write("v %.4f %.4f %.4f\n" % (v[0], v[1], v[2]))
+        for n in nout:
+            f.write("vn %.4f %.4f %.4f\n" % (n[0], n[1], n[2]))
         f.write("g %s\n" % os.path.splitext(name)[0])
-        for a, b, c in faces:
-            f.write("f %d %d %d\n" % (a + 1, b + 1, c + 1))
+        for i in range(len(faces)):
+            a, b, c = faces[i] + 1
+            na, nb, nc = corner[i]
+            f.write("f %d//%d %d//%d %d//%d\n" % (a, na, b, nb, c, nc))
 
 
 def main():
     os.makedirs(DST, exist_ok=True)
-
-    parts = {}
-    body = [read_stl(os.path.join(SRC, f)) for f in MERGE_BODY]
-    parts["MainBody.obj"] = np.concatenate(body)
+    parts = {"MainBody.obj": np.concatenate(
+        [read_stl(os.path.join(SRC, f)) for f in MERGE_BODY])}
     bump = read_stl(os.path.join(SRC, "BumperGPrime.rev01.01.stl"))
     cx = bump[:, :, 0].mean(axis=1)
     parts["L1.obj"] = bump[cx < 0]
     parts["R1.obj"] = bump[cx >= 0]
     for src, dst in MAP.items():
         parts[dst] = read_stl(os.path.join(SRC, src))
-    print(f"  {sum(len(t) for t in parts.values()):,} source triangles in {len(parts)} parts")
+    print(f"  {sum(len(t) for t in parts.values()):,} source triangles")
 
-    verts, faces = build_skin(parts)
+    allx = np.concatenate([t[:, :, 0].ravel() for t in parts.values()])
+    xmid = (allx.min() + allx.max()) / 2.0
 
-    if len(faces) > SKIN_BUDGET:
-        pv, pf = fs.simplify(verts, faces, target_count=SKIN_BUDGET, agg=7.0)
-        verts, faces = np.asarray(pv, np.float64), np.asarray(pf, np.int64)
-        print(f"  decimated skin -> {len(faces):,} faces")
-
-    # Assign each skin triangle to the CAD part nearest its centre. The
-    # skin has no part identity of its own, and the buttons, pads and
-    # grips have to stay separately mappable.
-    names, samples = [], []
-    for i, (name, tris) in enumerate(sorted(parts.items())):
-        pts = tris.reshape(-1, 3)
-        step = max(1, len(pts) // 60000)
-        samples.append(pts[::step])
-        names.append(name)
-    owner_of_sample = np.concatenate(
-        [np.full(len(s), i) for i, s in enumerate(samples)])
-    tree = cKDTree(np.concatenate(samples))
-    cen = verts[faces].mean(axis=1)
-    _, nearest = tree.query(cen, workers=-1)
-    owner = owner_of_sample[nearest]
-
-    # Centre X on the assembly so the model sits on the camera axis.
-    xmid = (verts[:, 0].min() + verts[:, 0].max()) / 2.0
-    verts = verts.copy()
-    verts[:, 0] -= xmid
-
-    total = 0
-    for i, name in enumerate(names):
-        sel = owner == i
-        if not sel.any():
-            print(f"  {name:28s} EMPTY")
-            continue
-        f = faces[sel]
-        used, inv = np.unique(f.ravel(), return_inverse=True)
-        write_obj(os.path.join(DST, name), verts[used], inv.reshape(-1, 3), name)
-        total += len(f)
-        print(f"  {name:28s} {len(f):7,} tris ({len(used):,} verts)")
-    print(f"TOTAL {total:,} triangles")
+    total_in = total_out = 0
+    for name, tris in sorted(parts.items()):
+        kept = tris.copy()
+        kept[:, :, 0] -= xmid
+        v, f = decimate(kept, BUDGET.get(name, DEFAULT_BUDGET))
+        write_obj(os.path.join(DST, name), v, f, name)
+        total_in += len(kept)
+        total_out += len(f)
+        print(f"  {name:28s} {len(tris):9,} -> {len(f):6,} tris")
+    print(f"TOTAL {total_in:,} -> {total_out:,} triangles")
 
 
 if __name__ == "__main__":

@@ -1042,6 +1042,12 @@
   <data name="Btn_RightGrip" xml:space="preserve"><value>오른쪽 그립</value></data>
   <data name="Btn_LeftPadClick" xml:space="preserve"><value>왼쪽 패드 클릭</value></data>
   <data name="Btn_RightPadClick" xml:space="preserve"><value>오른쪽 패드 클릭</value></data>
+  <data name="Mapping_LeftPadX" xml:space="preserve"><value>왼쪽 패드 X</value></data>
+  <data name="Mapping_LeftPadY" xml:space="preserve"><value>왼쪽 패드 Y</value></data>
+  <data name="Mapping_LeftPadTouch" xml:space="preserve"><value>왼쪽 패드 터치</value></data>
+  <data name="Mapping_RightPadX" xml:space="preserve"><value>오른쪽 패드 X</value></data>
+  <data name="Mapping_RightPadY" xml:space="preserve"><value>오른쪽 패드 Y</value></data>
+  <data name="Mapping_RightPadTouch" xml:space="preserve"><value>오른쪽 패드 터치</value></data>
   <data name="Btn_C" xml:space="preserve"><value>C</value></data>
   <data name="Btn_MicMute" xml:space="preserve"><value>음소거</value></data>
   <data name="Btn_LeftPaddle" xml:space="preserve"><value>왼쪽 back 버튼</value></data>

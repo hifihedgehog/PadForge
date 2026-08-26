@@ -1042,6 +1042,12 @@
   <data name="Btn_RightGrip" xml:space="preserve"><value>右グリップ</value></data>
   <data name="Btn_LeftPadClick" xml:space="preserve"><value>左パッドクリック</value></data>
   <data name="Btn_RightPadClick" xml:space="preserve"><value>右パッドクリック</value></data>
+  <data name="Mapping_LeftPadX" xml:space="preserve"><value>左パッド X</value></data>
+  <data name="Mapping_LeftPadY" xml:space="preserve"><value>左パッド Y</value></data>
+  <data name="Mapping_LeftPadTouch" xml:space="preserve"><value>左パッドタッチ</value></data>
+  <data name="Mapping_RightPadX" xml:space="preserve"><value>右パッド X</value></data>
+  <data name="Mapping_RightPadY" xml:space="preserve"><value>右パッド Y</value></data>
+  <data name="Mapping_RightPadTouch" xml:space="preserve"><value>右パッドタッチ</value></data>
   <data name="Btn_C" xml:space="preserve"><value>C</value></data>
   <data name="Btn_MicMute" xml:space="preserve"><value>ミュート</value></data>
   <data name="Btn_LeftPaddle" xml:space="preserve"><value>左バックボタン</value></data>

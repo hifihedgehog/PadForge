@@ -54,6 +54,9 @@ namespace PadForge.Common.Input
                     bool isKbm = SlotControllerTypes[padIndex] == VirtualControllerType.KeyboardMouse;
                     bool isVr = SlotControllerTypes[padIndex] == VirtualControllerType.Vr;
                     bool isDs4 = SlotControllerTypes[padIndex] == VirtualControllerType.PlayStation;
+                    // Touch surface to combine: PlayStation, plus the Valve
+                    // frames on the raw surface (both trackpads ride it).
+                    bool isTouch = isDs4 || SlotCarriesTouchpad(padIndex);
 
                     if (slotCount == 0)
                     {
@@ -62,7 +65,7 @@ namespace PadForge.Common.Input
                         if (isMidi) CombinedMidiRawStates[padIndex].Clear();
                         if (isKbm) CombinedKbmRawStates[padIndex].Clear();
                         if (isVr) CombinedVrRawStates[padIndex].Clear();
-                        if (isDs4) CombinedTouchpadStates[padIndex] = default;
+                        if (isTouch) CombinedTouchpadStates[padIndex] = default;
                         continue;
                     }
 
@@ -101,7 +104,7 @@ namespace PadForge.Common.Input
                         // All value fields, so the struct assign copies (the
                         // KBM discipline). No alias hazard.
                         if (isVr) CombinedVrRawStates[padIndex] = _padIndexBuffer[0].VrRawOutputState;
-                        if (isDs4)
+                        if (isTouch)
                         {
                             CombinedTouchpadStates[padIndex] = _padIndexBuffer[0].TouchpadOutputState;
                             // Bake the touchpad-click into the combined Gamepad
@@ -113,7 +116,7 @@ namespace PadForge.Common.Input
                             // packer saw the click; the dispatcher's
                             // SlotButtonsProvider read missed it and the
                             // touchpad couldn't trigger InputReactive flashes.
-                            if (CombinedTouchpadStates[padIndex].Click)
+                            if (isDs4 && CombinedTouchpadStates[padIndex].Click)
                             {
                                 var gp = CombinedOutputStates[padIndex];
                                 gp.Buttons |= Gamepad.TOUCHPAD;
@@ -244,7 +247,7 @@ namespace PadForge.Common.Input
                     if (isVr) CombinedVrRawStates[padIndex] = combinedVr;
 
                     // Touchpad: first device with active finger wins (single-source).
-                    if (isDs4)
+                    if (isTouch)
                     {
                         var combinedTp = default(TouchpadState);
                         for (int si = 0; si < slotCount; si++)

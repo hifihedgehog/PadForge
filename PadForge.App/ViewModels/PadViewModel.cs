@@ -2710,6 +2710,18 @@ namespace PadForge.ViewModels
                 Mappings.Add(new MappingItem(Strings.Instance.Btn_RightStickX, $"RawAxis{rx}", MappingCategory.RightStick, $"RawAxis{rx}Neg"));
                 Mappings.Add(new MappingItem(Strings.Instance.Btn_RightStickY, $"RawAxis{ry}", MappingCategory.RightStick, $"RawAxis{ry}Neg"));
 
+                // Both trackpads. Every Valve frame carries one finger per
+                // pad (sLeftPad / sRightPad), so the slot's two-finger touch
+                // surface splits as finger 0 = left pad, finger 1 = right
+                // pad, the split ValveReportPackers.Pads makes. The clicks
+                // are the raw button rows above.
+                Mappings.Add(new MappingItem(Strings.Instance.Mapping_LeftPadX,      "TouchpadX1",       MappingCategory.Touchpad));
+                Mappings.Add(new MappingItem(Strings.Instance.Mapping_LeftPadY,      "TouchpadY1",       MappingCategory.Touchpad));
+                Mappings.Add(new MappingItem(Strings.Instance.Mapping_LeftPadTouch,  "TouchpadContact1", MappingCategory.Touchpad));
+                Mappings.Add(new MappingItem(Strings.Instance.Mapping_RightPadX,     "TouchpadX2",       MappingCategory.Touchpad));
+                Mappings.Add(new MappingItem(Strings.Instance.Mapping_RightPadY,     "TouchpadY2",       MappingCategory.Touchpad));
+                Mappings.Add(new MappingItem(Strings.Instance.Mapping_RightPadTouch, "TouchpadContact2", MappingCategory.Touchpad));
+
                 Mappings.Add(new MappingItem(Strings.Instance.Mapping_MotionGyro,  "MotionGyro",  MappingCategory.Motion));
                 Mappings.Add(new MappingItem(Strings.Instance.Mapping_MotionAccel, "MotionAccel", MappingCategory.Motion));
                 return;

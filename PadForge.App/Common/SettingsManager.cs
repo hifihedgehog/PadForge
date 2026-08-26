@@ -819,6 +819,55 @@ namespace PadForge.Common.Input
                     if (HasButton(8)) MapValve("LeftThumbButton", "Button 8");
                     if (HasButton(9)) MapValve("RightThumbButton", "Button 9");
                     if (HasButton(10)) MapValve("ButtonGuide", "Button 10");
+
+                    // Every source-side extra a Valve pad reports through
+                    // SDL, each gated on the pad exposing it: Quick Access
+                    // at misc1 (11), the rear buttons in SDL's RP1 LP1 RP2
+                    // LP2 order at 12-15 (R4 L4 R5 L5 on the Deck and 2026
+                    // wires, the two grips on the 2015 wire: SDL_gamepad.c
+                    // 1263 / 1266 / 1269). MapValve drops a role the target
+                    // wire has no slot for, so both spellings of 12 and 13
+                    // are offered and the table keeps the one that fits.
+                    bool HasSrc(int idx) => ud.DeviceObjects != null
+                        && ud.DeviceObjects.Any(o => o != null
+                            && (o.ObjectType & DeviceObjectTypeFlags.PushButton) != 0
+                            && o.InputIndex == idx);
+                    if (HasSrc(11)) MapValve("ButtonQuickAccess", "Button 11");
+                    if (HasSrc(12)) { MapValve("Paddle1", "Button 12"); MapValve("RightGrip", "Button 12"); }
+                    if (HasSrc(13)) { MapValve("Paddle2", "Button 13"); MapValve("LeftGrip", "Button 13"); }
+                    if (HasSrc(14)) MapValve("Paddle3", "Button 14");
+                    if (HasSrc(15)) MapValve("Paddle4", "Button 15");
+
+                    // Trackpads. All three Valve drivers register the left
+                    // pad as touchpad 0 and the right as touchpad 1, one
+                    // finger each (SDL_hidapi_steam.c 1668 / 1688,
+                    // _steamdeck.c 268 / 280, _steam_triton.c 254 / 266),
+                    // and the slot's touch surface splits the same way:
+                    // finger 0 is the left pad, finger 1 the right. A one-
+                    // pad source (a DualSense) lands on the left pad only.
+                    // The 2015 pad's click descriptors read the pad's
+                    // pressure, per the wrapper's pressure fallback.
+                    int pads = ud.HasTouchpad ? Math.Max(1, ud.CapTouchpadCount) : 0;
+                    if (pads >= 1)
+                    {
+                        ps.TouchpadX1 = "Touchpad 0 Finger 0 X";
+                        ps.TouchpadY1 = "Touchpad 0 Finger 0 Y";
+                        ps.TouchpadContact1 = "Touchpad 0 Finger 0 Down";
+                        MapValve("LeftTouchpadClick", "Touchpad 0 Click");
+                    }
+                    if (pads >= 2)
+                    {
+                        ps.TouchpadX2 = "Touchpad 1 Finger 0 X";
+                        ps.TouchpadY2 = "Touchpad 1 Finger 0 Y";
+                        ps.TouchpadContact2 = "Touchpad 1 Finger 0 Down";
+                        MapValve("RightTouchpadClick", "Touchpad 1 Click");
+                    }
+
+                    // IMU: every Valve frame carries gyro and accel, which
+                    // the packer fills from the slot's motion channel.
+                    if (ud.HasGyro)  ps.MotionGyro  = "Motion Gyro";
+                    if (ud.HasAccel) ps.MotionAccel = "Motion Accel";
+
                     if (HasHat())
                     {
                         foreach (var role in new[] { "DPadUp", "DPadDown", "DPadLeft", "DPadRight" })

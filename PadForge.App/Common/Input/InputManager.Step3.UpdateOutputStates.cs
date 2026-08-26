@@ -197,9 +197,14 @@ namespace PadForge.Common.Input
                             ud.InputState, ps, ms, deviceGuidStr, slot);
                     }
 
-                    // For PlayStation slots, produce touchpad state from input device.
-                    if (slot >= 0 && slot < MaxPads &&
-                        SlotControllerTypes[slot] == VirtualControllerType.PlayStation)
+                    // Touchpad state for every slot whose wire carries a
+                    // touch surface: PlayStation, and the Valve frames on
+                    // the raw surface (finger 0 rides the left pad, finger 1
+                    // the right, the split ValveReportPackers.Pads makes).
+                    // Gated on PlayStation alone this left every Valve
+                    // packer a zeroed touchpad, so no pad on a virtual Deck
+                    // or Steam Controller could ever be touched.
+                    if (slot >= 0 && slot < MaxPads && SlotCarriesTouchpad(slot))
                     {
                         us.TouchpadOutputState = MapInputToTouchpad(
                             ud.InputState, ps, us.TouchpadOutputState,

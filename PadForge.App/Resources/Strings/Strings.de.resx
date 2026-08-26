@@ -1042,6 +1042,12 @@
   <data name="Btn_RightGrip" xml:space="preserve"><value>Rechter Griff</value></data>
   <data name="Btn_LeftPadClick" xml:space="preserve"><value>Linkes Pad klicken</value></data>
   <data name="Btn_RightPadClick" xml:space="preserve"><value>Rechtes Pad klicken</value></data>
+  <data name="Mapping_LeftPadX" xml:space="preserve"><value>Linkes Pad X</value></data>
+  <data name="Mapping_LeftPadY" xml:space="preserve"><value>Linkes Pad Y</value></data>
+  <data name="Mapping_LeftPadTouch" xml:space="preserve"><value>Linkes Pad Berührung</value></data>
+  <data name="Mapping_RightPadX" xml:space="preserve"><value>Rechtes Pad X</value></data>
+  <data name="Mapping_RightPadY" xml:space="preserve"><value>Rechtes Pad Y</value></data>
+  <data name="Mapping_RightPadTouch" xml:space="preserve"><value>Rechtes Pad Berührung</value></data>
   <data name="Btn_C" xml:space="preserve"><value>C</value></data>
   <data name="Btn_MicMute" xml:space="preserve"><value>Stumm</value></data>
   <data name="Btn_LeftPaddle" xml:space="preserve"><value>Linke Rücktaste</value></data>

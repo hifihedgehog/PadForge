@@ -1042,6 +1042,12 @@
   <data name="Btn_RightGrip" xml:space="preserve"><value>Poignée droite</value></data>
   <data name="Btn_LeftPadClick" xml:space="preserve"><value>Clic du pavé gauche</value></data>
   <data name="Btn_RightPadClick" xml:space="preserve"><value>Clic du pavé droit</value></data>
+  <data name="Mapping_LeftPadX" xml:space="preserve"><value>Pavé gauche X</value></data>
+  <data name="Mapping_LeftPadY" xml:space="preserve"><value>Pavé gauche Y</value></data>
+  <data name="Mapping_LeftPadTouch" xml:space="preserve"><value>Toucher du pavé gauche</value></data>
+  <data name="Mapping_RightPadX" xml:space="preserve"><value>Pavé droit X</value></data>
+  <data name="Mapping_RightPadY" xml:space="preserve"><value>Pavé droit Y</value></data>
+  <data name="Mapping_RightPadTouch" xml:space="preserve"><value>Toucher du pavé droit</value></data>
   <data name="Btn_C" xml:space="preserve"><value>C</value></data>
   <data name="Btn_MicMute" xml:space="preserve"><value>Muet</value></data>
   <data name="Btn_LeftPaddle" xml:space="preserve"><value>Bouton arrière gauche</value></data>

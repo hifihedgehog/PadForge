@@ -1,9 +1,10 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using PadForge.Models2D;
 using PadForge.Models3D;
 using PadForge.Views;
 using Xunit;
@@ -98,22 +99,151 @@ namespace PadForge.Tests
             }
         }
 
-        /// <summary>A stick the user can click is a stick whose DIRECTION is
-        /// reachable too: through the ring solid, or through the cap the
-        /// ring-less path falls back to. The 2015 Steam Controller has no
-        /// ring (its bezel is a hole in the case), which left its only
-        /// stick with no axis target at all.</summary>
+        /// <summary>A stick the user can click is a stick whose DIRECTIONS
+        /// are reachable too, through a registered quadrant surface: the cap
+        /// solid, or the click mesh where a pad ships no separate cap.</summary>
         [Theory]
         [MemberData(nameof(Families))]
-        public void EveryStickHasADirectionTarget(string family, string appearance, bool extra)
+        public void EveryStickHasADirectionSurface(string family, string appearance, bool extra)
         {
             using var m = ControllerModelBase.Create(family, appearance, extra);
-            if (m.ButtonMap.ContainsKey("LeftThumbButton"))
-                Assert.True(m.LeftThumbRing != null || m.LeftThumb != null,
-                    $"{family}: the left stick clicks but has no head to take a direction from");
-            if (m.ButtonMap.ContainsKey("RightThumbButton"))
-                Assert.True(m.RightThumbRing != null || m.RightThumb != null,
-                    $"{family}: the right stick clicks but has no head to take a direction from");
+            void Check(string button, Model3DGroup ring, Model3DGroup cap, string[] want)
+            {
+                if (!m.ButtonMap.ContainsKey(button)) return;
+                var surface = ring ?? cap;
+                Assert.True(surface != null, $"{family}: {button} clicks but has no head to take a direction from");
+                Assert.True(m.QuadrantMap.TryGetValue(surface, out var got),
+                    $"{family}: the head for {button} carries no directions");
+                Assert.Equal(want, got);
+            }
+            Check("LeftThumbButton", m.LeftThumbRing, m.LeftThumb,
+                new[] { "LeftThumbAxisYNeg", "LeftThumbAxisY", "LeftThumbAxisXNeg", "LeftThumbAxisX" });
+            Check("RightThumbButton", m.RightThumbRing, m.RightThumb,
+                new[] { "RightThumbAxisYNeg", "RightThumbAxisY", "RightThumbAxisXNeg", "RightThumbAxisX" });
+        }
+
+        /// <summary>Every direction surface is one the user can see and that
+        /// can glow: real geometry, a resting material, a highlight. A group
+        /// with no resting material renders in the OBJ loader's yellow
+        /// default, which is how it announces itself.</summary>
+        [Theory]
+        [MemberData(nameof(Families))]
+        public void EveryQuadrantSurfaceIsPaintedAndCanGlow(string family, string appearance, bool extra)
+        {
+            using var m = ControllerModelBase.Create(family, appearance, extra);
+            Assert.NotEmpty(m.QuadrantMap);
+            foreach (var kv in m.QuadrantMap)
+            {
+                Assert.Equal(4, kv.Value.Length);
+                Assert.All(kv.Value, n => Assert.False(string.IsNullOrWhiteSpace(n)));
+                Assert.True(kv.Key.Children.OfType<GeometryModel3D>().Any(),
+                    $"{family}: a direction surface has no direct geometry, so the hit test can never match it");
+                Assert.True(m.DefaultMaterials.ContainsKey(kv.Key),
+                    $"{family}: a direction surface has no resting material and renders in the loader's default");
+                Assert.True(m.HighlightMaterials.ContainsKey(kv.Key),
+                    $"{family}: a direction surface has no highlight material");
+            }
+        }
+
+        /// <summary>The stick BUTTON glows its own click mesh, never the cap.
+        /// Owning both made pressing or hovering the click light the entire
+        /// stick, so the two controls a stick carries looked like one.</summary>
+        [Theory]
+        [MemberData(nameof(Families))]
+        public void StickButtonDoesNotOwnTheCap(string family, string appearance, bool extra)
+        {
+            using var m = ControllerModelBase.Create(family, appearance, extra);
+            if (m.LeftThumbRing != null && m.ButtonMap.TryGetValue("LeftThumbButton", out var l))
+                Assert.DoesNotContain(m.LeftThumbRing, l);
+            if (m.RightThumbRing != null && m.ButtonMap.TryGetValue("RightThumbButton", out var r))
+                Assert.DoesNotContain(m.RightThumbRing, r);
+        }
+
+        /// <summary>The 2015 Steam Controller's two pads are not two of a
+        /// kind. SDL drives the LEFT one as the D-pad and the RIGHT one as
+        /// the right thumbstick (SDL_hidapi_steam.c 1655 and 1673), and
+        /// Valve moulds a D-pad cross into the left cover, naming that solid
+        /// TrackPadCoverDirectional against the right one's Smooth. Each pad
+        /// keeps its click in the middle.</summary>
+        [Fact]
+        public void SteamController2015_LeftPadIsTheDPad_RightPadIsTheStick()
+        {
+            using var m = ControllerModelBase.Create("SteamController", null, false);
+            var left = m.ButtonMap["LeftTouchpadClick"][0];
+            var right = m.ButtonMap["RightTouchpadClick"][0];
+
+            Assert.Equal(new[] { "DPadUp", "DPadDown", "DPadLeft", "DPadRight" }, m.QuadrantMap[left]);
+            Assert.Equal(new[] { "RightThumbAxisYNeg", "RightThumbAxisY", "RightThumbAxisXNeg", "RightThumbAxisX" },
+                m.QuadrantMap[right]);
+            Assert.True(m.ClickMap.ContainsKey(left));
+            Assert.True(m.ClickMap.ContainsKey(right));
+        }
+
+        /// <summary>Every direction a Valve model offers resolves to a real
+        /// row on that profile's grid, so clicking one records something
+        /// instead of falling on the floor.</summary>
+        [Theory]
+        [InlineData("SteamController", "steam-controller")]
+        [InlineData("SteamController", "steam-controller-composite")]
+        [InlineData("SteamController2", "steam-controller-2")]
+        [InlineData("SteamDeck", "steam-deck-composite")]
+        public void QuadrantTargetsReachTheGrid(string family, string profileId)
+        {
+            using var m = ControllerModelBase.Create(family, null, false);
+            foreach (var names in m.QuadrantMap.Values)
+                foreach (var n in names)
+                    Assert.False(string.IsNullOrEmpty(NintendoPreviewMap.ToRaw(n, profileId)),
+                        $"{profileId}: {n} does not translate to any grid target");
+        }
+
+        /// <summary>The 2015 stick is a knurled cap on a wider base, two
+        /// solids in Valve's CAD (ThumbTopGrip and ThumbTopBase). Folding
+        /// both into the click mesh left the pad with no cap group, so its
+        /// stick had no direction surface and no visible collar.</summary>
+        [Fact]
+        public void SteamController2015_StickHasACapInsideItsCollar()
+        {
+            using var m = ControllerModelBase.Create("SteamController", null, false);
+            Assert.NotNull(m.LeftThumbRing);
+            double cap = m.LeftThumbRing.Bounds.SizeX;
+            double collar = m.ButtonMap["LeftThumbButton"][0].Bounds.SizeX;
+            Assert.True(cap < collar,
+                $"cap {cap:F1} mm must sit inside collar {collar:F1} mm so the collar reads as a ring");
+        }
+
+        /// <summary>The 2015 grip button is Valve's own BatteryLever solid, a
+        /// paddle in a slot at the top of each handle. An earlier round
+        /// carved it out of the bottom shell by facing and position instead,
+        /// which handed the WHOLE handle skin to the grip highlight.</summary>
+        [Fact]
+        public void SteamController2015_GripIsThePaddleNotTheHandle()
+        {
+            using var m = ControllerModelBase.Create("SteamController", null, false);
+            var grip = m.ButtonMap["LeftGrip"][0].Bounds;
+            var body = m.MainBody.Bounds;
+            Assert.True(grip.SizeZ < body.SizeZ * 0.5,
+                $"the grip runs {grip.SizeZ:F1} mm down a {body.SizeZ:F1} mm body: that is the handle, not the paddle");
+            Assert.True(grip.SizeY < body.SizeY * 0.5,
+                $"the grip is {grip.SizeY:F1} mm deep on a {body.SizeY:F1} mm body: that is the handle, not the paddle");
+        }
+
+        /// <summary>Which quadrant a point falls in: 0 up, 1 down, 2 left,
+        /// 3 right, in the model's X across / +Z up frame.</summary>
+        [Theory]
+        [InlineData(0.0, 5.0, 0)]
+        [InlineData(0.0, -5.0, 1)]
+        [InlineData(-5.0, 0.0, 2)]
+        [InlineData(5.0, 0.0, 3)]
+        [InlineData(4.0, 3.0, 3)]
+        [InlineData(-3.0, 4.0, 0)]
+        public void QuadrantSlot_SplitsTheFaceIntoFour(double dx, double dz, int want)
+        {
+            var method = typeof(ControllerModelView).GetMethod("QuadrantSlot",
+                BindingFlags.NonPublic | BindingFlags.Static);
+            Assert.NotNull(method);
+            var center = new Vector3D(10.0, 0.0, -20.0);
+            var hit = new Point3D(center.X + dx, 0, center.Z + dz);
+            Assert.Equal(want, (int)method.Invoke(null, new object[] { hit, center }));
         }
 
         /// <summary>Every Valve model in particular: the roles the owner

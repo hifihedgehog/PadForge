@@ -68,15 +68,26 @@ DST = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
 PARTS = {
     "CaseTopGPrime":               ("MainBody.obj", 1.0),
     "CaseFrontGPrime":             ("MainBody.obj", 1.0),
-    "CaseBottomGPrime":            ("BOTTOM", 1.0),         # grips carved below
+    "CaseBottomGPrime":            ("MainBody.obj", 1.0),
     "BatteryDoorMkVI":             ("MainBody.obj", 1.0),
     "BumperGPrime":                ("BUMPER", 1.0),        # split L/R below
     "TriggerCapLeftJAG":           ("Shoulder-Left-Trigger.obj", 1.0),
     "TriggerCapRightJAG":          ("Shoulder-Right-Trigger.obj", 1.0),
     "TrackPadCoverDirectional.01": ("LeftPadTouch.obj", 1.0),
     "TrackPadCoverSmooth.01":      ("RightPadTouch.obj", 1.0),
-    "ThumbTopGrip.01":             ("LeftStickClick.obj", 1.0),
+    # The stick is two solids and they are two DIFFERENT controls: the
+    # knurled cap top (18.6 mm) is the direction surface every other model
+    # calls its ring, and the base under it (26.4 mm) is the click. Folding
+    # both into the click mesh left this pad with no ring group, so its
+    # stick had no direction target and no visible collar at all.
+    "ThumbTopGrip.01":             ("Joystick-Left-Ring.obj", 1.0),
     "ThumbTopBase.01":             ("LeftStickClick.obj", 1.0),
+    # The grip paddles. Valve models each as a lever 40 x 45 x 32 mm
+    # spanning its handle: the part a squeeze presses, and the battery
+    # door it doubles as. An earlier round called these "internal
+    # actuators" and carved the paddle out of the bottom shell by facing
+    # and position instead, which handed the WHOLE 82 mm handle skin to
+    # the grip highlight.
     "BatteryLeverLeft":            ("LeftGrip.obj", 1.0),
     "BatteryLeverRight":           ("RightGrip.obj", 1.0),
     "ButtonA-Shot2":               ("B1.obj", 1.0),
@@ -261,22 +272,6 @@ def main():
             cx = v[f][:, :, 0].mean(axis=1)
             for side, sel in (("L1.obj", cx < 0), ("R1.obj", cx >= 0)):
                 meshes.setdefault(side, []).append((v, nrm, f[sel]))
-        elif target == "BOTTOM":
-            # The grip paddles. Valve's CAD has no grip solid: the
-            # BatteryLever parts are internal actuators inside the trigger
-            # wells, and the paddle a user presses is the rear-facing skin
-            # of each handle, moulded into the bottom shell with no seam.
-            # Cut it out by position and facing: outboard of the battery
-            # door, below the trigger region, normal pointing to the rear.
-            # That is also the region the pack's 2D grip sprite covers.
-            c = v[f].mean(axis=1)
-            fn = nrm[f].mean(axis=1)
-            rear = (fn[:, 2] < -0.25) & (c[:, 1] < 8.0)
-            left = rear & (c[:, 0] < -36.0)
-            right = rear & (c[:, 0] > 36.0)
-            meshes.setdefault("LeftGrip.obj", []).append((v, nrm, f[left]))
-            meshes.setdefault("RightGrip.obj", []).append((v, nrm, f[right]))
-            meshes.setdefault("MainBody.obj", []).append((v, nrm, f[~(left | right)]))
         else:
             meshes.setdefault(target, []).append((v, nrm, f))
 

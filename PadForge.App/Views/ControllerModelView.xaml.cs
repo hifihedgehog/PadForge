@@ -1009,7 +1009,7 @@ namespace PadForge.Views
                 if (hit.Model is not GeometryModel3D hitGeo)
                     continue;
 
-                if (IsStickRingHit(hitGeo, hit.Position, out string stickAxis))
+                if (TryResolveQuadrantHit(hitGeo, hit.Position, out string stickAxis))
                 {
                     ControllerElementRecordRequested?.Invoke(this, stickAxis);
                     e.Handled = true;
@@ -1289,8 +1289,8 @@ namespace PadForge.Views
                 if (hit.Model is not GeometryModel3D hitGeo)
                     continue;
 
-                // Check stick ring quadrant
-                if (IsStickRingHit(hitGeo, hit.Position, out string quadrant))
+                // Check quadrant surfaces (stick caps, the 2015 pads)
+                if (TryResolveQuadrantHit(hitGeo, hit.Position, out string quadrant))
                 {
                     // Same quadrant as before — nothing to do
                     if (quadrant == _hoverQuadrant) return;
@@ -1405,13 +1405,8 @@ namespace PadForge.Views
 
             if (_currentModel == null) return;
 
-            bool isNeg = target.EndsWith("Neg", StringComparison.Ordinal);
-            string baseTarget = isNeg ? target.Substring(0, target.Length - 3) : target;
-            bool isX = baseTarget.Contains("AxisX");
-            bool isLeft = baseTarget.StartsWith("Left", StringComparison.Ordinal);
-
-            var ring = isLeft ? _currentModel.LeftThumbRing : _currentModel.RightThumbRing;
-            if (ring == null) return;
+            if (!TryFindQuadrantSurface(target, out var ring, out bool isX, out bool isNeg))
+                return;
 
             // Anchor the quadrant wedge on the visible ring mesh's centroid,
             // not the deflection rotation pivot. Same reason as the click-
@@ -1468,60 +1463,67 @@ namespace PadForge.Views
         /// X or Y axis based on the click quadrant relative to the joystick center.
         /// Left/right quadrants → X axis, top/bottom quadrants → Y axis.
         /// </summary>
-        private bool IsStickRingHit(GeometryModel3D hitGeo, Point3D hitPos, out string axis)
+        /// <summary>Resolves a hit on a quadrant surface to the direction
+        /// target under the cursor. Anchored on the visible mesh's centroid,
+        /// never on JoystickRotationPointCenter*: the rotation pivot is where
+        /// the stick tilts FROM, not the middle of what the user sees, and on
+        /// the DualSense those are 2.9 mm apart, which skewed the up and down
+        /// quadrants by about 10 degrees.</summary>
+        private bool TryResolveQuadrantHit(GeometryModel3D hitGeo, Point3D hitPos, out string target)
         {
-            axis = null;
+            target = null;
+            if (_currentModel == null) return false;
 
-            // Transform hit position from world space back to model-local space
-            // so quadrant detection works correctly when the model is rotated.
+            // Model-local, so the quadrants stay put while the model turns.
             var localHitPos = TransformToLocal(hitPos);
 
-            // Check left stick ring — use the visible mesh's centroid for
-            // quadrant math, not JoystickRotationPointCenter*. The rotation
-            // pivot is the deflection axis (where the stick tilts from), not
-            // the geometric center of the ring; on DualSense the left stick
-            // mesh sits at X=-33.25 but the rotation pivot is at X=-30.34,
-            // a 2.9 mm offset that skews quadrant detection ~10° toward
-            // NNE/SSE on the user-perceived "up" / "down" hits.
-            if (_currentModel.LeftThumbRing?.Children.Contains(hitGeo) == true)
+            foreach (var kv in _currentModel.QuadrantMap)
             {
-                var center = MeshCentroid(_currentModel.LeftThumbRing);
-                axis = DetermineAxisFromQuadrant(localHitPos, center, "LeftThumbAxisX", "LeftThumbAxisY");
-                return true;
-            }
+                if (!kv.Key.Children.Contains(hitGeo)) continue;
 
-            // Check right stick ring
-            if (_currentModel.RightThumbRing?.Children.Contains(hitGeo) == true)
-            {
-                var center = MeshCentroid(_currentModel.RightThumbRing);
-                axis = DetermineAxisFromQuadrant(localHitPos, center, "RightThumbAxisX", "RightThumbAxisY");
-                return true;
-            }
+                // A surface that is also a click target keeps a click zone in
+                // the middle. One that is only quadrants (an ordinary stick
+                // cap) is directions edge to edge, as it has always been.
+                if (_currentModel.ClickMap.ContainsKey(kv.Key)
+                    && !IsOuterCapHit(kv.Key, localHitPos))
+                    return false;
 
-            // A pad with no separate ring solid still needs direction hover
-            // on its stick. The 2015 Steam Controller is the case: its bezel
-            // is a hole in the case rather than a part, so it has no ring
-            // group and its stick offered no axis target at all. The cap
-            // stands in for the ring, split by radius: the outer half of the
-            // head reads as a direction, the middle stays the click target
-            // the ClickMap resolves.
-            if (_currentModel.LeftThumbRing == null
-                && _currentModel.LeftThumb?.Children.Contains(hitGeo) == true
-                && IsOuterCapHit(_currentModel.LeftThumb, localHitPos))
-            {
-                axis = DetermineAxisFromQuadrant(localHitPos,
-                    MeshCentroid(_currentModel.LeftThumb), "LeftThumbAxisX", "LeftThumbAxisY");
-                return true;
+                var center = MeshCentroid(kv.Key);
+                target = kv.Value[QuadrantSlot(localHitPos, center)];
+                return !string.IsNullOrEmpty(target);
             }
-            if (_currentModel.RightThumbRing == null
-                && _currentModel.RightThumb?.Children.Contains(hitGeo) == true
-                && IsOuterCapHit(_currentModel.RightThumb, localHitPos))
-            {
-                axis = DetermineAxisFromQuadrant(localHitPos,
-                    MeshCentroid(_currentModel.RightThumb), "RightThumbAxisX", "RightThumbAxisY");
-                return true;
-            }
+            return false;
+        }
 
+        /// <summary>Which of the four quadrant slots a point falls in:
+        /// 0 up, 1 down, 2 left, 3 right.
+        /// Model coords: X = left/right, Z = up/down the face.</summary>
+        private static int QuadrantSlot(Point3D hitPos, Vector3D center)
+        {
+            double dx = hitPos.X - center.X;
+            double dz = hitPos.Z - center.Z;
+            if (Math.Abs(dx) > Math.Abs(dz)) return dx >= 0 ? 3 : 2;
+            return dz >= 0 ? 0 : 1;
+        }
+
+        /// <summary>The surface carrying a direction target, and the wedge
+        /// direction for it. Every overlay that draws on a direction (the
+        /// hover wedge, the recording ring, the arrow) and the flash resolver
+        /// ask this, so a pad that carries directions is served by the same
+        /// code the sticks are.</summary>
+        private bool TryFindQuadrantSurface(string target, out Model3DGroup surface, out bool isX, out bool isNeg)
+        {
+            surface = null; isX = false; isNeg = false;
+            if (_currentModel == null || string.IsNullOrEmpty(target)) return false;
+            foreach (var kv in _currentModel.QuadrantMap)
+            {
+                int slot = System.Array.IndexOf(kv.Value, target);
+                if (slot < 0) continue;
+                surface = kv.Key;
+                isX = slot >= 2;                    // 2 left, 3 right
+                isNeg = slot == 0 || slot == 2;     // up and left
+                return true;
+            }
             return false;
         }
 
@@ -1565,28 +1567,6 @@ namespace PadForge.Views
 
             inverse.Invert();
             return inverse.Transform(worldPoint);
-        }
-
-        /// <summary>
-        /// Determines X or Y axis and positive or negative direction based on hit position
-        /// relative to joystick center. Returns the PadSetting target name including "Neg" suffix
-        /// for negative-direction quadrants.
-        /// Model coords: X = left/right, Z = up/down.
-        /// Right (+X) → pos X, Left (-X) → neg X.
-        /// Y axis is inverted by NegateAxis in Step 3, so:
-        /// Down (-Z) → pos Y (becomes negative output = stick down),
-        /// Up (+Z) → neg Y (becomes positive output = stick up).
-        /// </summary>
-        private static string DetermineAxisFromQuadrant(
-            Point3D hitPos, Vector3D center, string xAxis, string yAxis)
-        {
-            double deltaX = hitPos.X - center.X;
-            double deltaZ = hitPos.Z - center.Z;
-            if (Math.Abs(deltaX) > Math.Abs(deltaZ))
-                return deltaX >= 0 ? xAxis : xAxis + "Neg";
-            else
-                // Y is inverted: up in model = neg descriptor (becomes + after NegateAxis = up in game)
-                return deltaZ >= 0 ? yAxis + "Neg" : yAxis;
         }
 
         /// <summary>
@@ -1670,27 +1650,14 @@ namespace PadForge.Views
                 if (string.IsNullOrEmpty(target)) return;
             }
 
-            // Check if this is a stick axis target (with or without Neg suffix)
-            bool isNeg = target.EndsWith("Neg", StringComparison.Ordinal);
-            string baseTarget = isNeg ? target.Substring(0, target.Length - 3) : target;
-
-            bool isLeftStick = baseTarget is "LeftThumbAxisX" or "LeftThumbAxisY";
-            bool isRightStick = baseTarget is "RightThumbAxisX" or "RightThumbAxisY";
-            if (!isLeftStick && !isRightStick)
+            // Anchored on the visible mesh so the arrow sits over the control
+            // the user sees, not on a deflection pivot that can be offset
+            // (the DualSense's is 2.9 mm right of its ring centre). Any
+            // surface that carries directions gets one, sticks and the 2015
+            // Steam Controller's two pads alike.
+            if (!TryFindQuadrantSurface(target, out var ring, out bool isX, out bool isNeg))
                 return;
-
-            bool isX = baseTarget.Contains("AxisX");
-
-            // Anchor on the visible ring mesh's centroid so the direction
-            // arrow sits over the stick the user sees, not the deflection
-            // pivot which can be offset (DualSense pivot is 2.9 mm right
-            // of the visible ring center).
-            var ring = isLeftStick ? _currentModel.LeftThumbRing : _currentModel.RightThumbRing;
-            Vector3D center = ring != null
-                ? MeshCentroid(ring)
-                : (isLeftStick
-                    ? _currentModel.JoystickRotationPointCenterLeftMillimeter
-                    : _currentModel.JoystickRotationPointCenterRightMillimeter);
+            Vector3D center = MeshCentroid(ring);
 
             // Place arrow at stick center, floating well in front of the model surface.
             // Rotation center Y is inside the body (~-6); use a large offset to ensure
@@ -1735,17 +1702,8 @@ namespace PadForge.Views
             if (_currentModel == null || string.IsNullOrEmpty(target))
                 return;
 
-            bool isNeg = target.EndsWith("Neg", StringComparison.Ordinal);
-            string baseTarget = isNeg ? target.Substring(0, target.Length - 3) : target;
-
-            bool isLeftStick = baseTarget is "LeftThumbAxisX" or "LeftThumbAxisY";
-            bool isRightStick = baseTarget is "RightThumbAxisX" or "RightThumbAxisY";
-            if (!isLeftStick && !isRightStick)
+            if (!TryFindQuadrantSurface(target, out var ring, out bool isX, out bool isNeg))
                 return;
-
-            bool isX = baseTarget.Contains("AxisX");
-            var ring = isLeftStick ? _currentModel.LeftThumbRing : _currentModel.RightThumbRing;
-            if (ring == null) return;
 
             // Visible-mesh centroid, same reason as ShowHoverQuadrant.
             var center = MeshCentroid(ring);
@@ -1976,15 +1934,10 @@ namespace PadForge.Views
             if (_currentModel == null || target == null)
                 return null;
 
-            // Stick axis targets (including *Neg variants) → flash the stick ring
-            string baseTarget = target.EndsWith("Neg", StringComparison.Ordinal)
-                ? target.Substring(0, target.Length - 3)
-                : target;
-
-            if (baseTarget is "LeftThumbAxisX" or "LeftThumbAxisY" && _currentModel.LeftThumbRing != null)
-                return new List<Model3DGroup> { _currentModel.LeftThumbRing };
-            if (baseTarget is "RightThumbAxisX" or "RightThumbAxisY" && _currentModel.RightThumbRing != null)
-                return new List<Model3DGroup> { _currentModel.RightThumbRing };
+            // Direction targets flash the surface that carries them: a
+            // stick's cap, or a pad whose quadrants are directions.
+            if (TryFindQuadrantSurface(target, out var quadrantSurface, out _, out _))
+                return new List<Model3DGroup> { quadrantSurface };
 
             // Button targets
             if (_currentModel.ButtonMap.TryGetValue(target, out var btnGroups))

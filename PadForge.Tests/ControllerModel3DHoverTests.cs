@@ -392,6 +392,69 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary>THE PROPERTY that keeps a hover wedge off its
+        /// neighbours: it never moves in X or Z, so it stays inside the
+        /// footprint of the surface it was cut from no matter how tightly
+        /// the controls are packed.
+        ///
+        /// <para>A control is a solid and most of it is buried: 52% of a
+        /// 2015 trackpad's triangles and 69% of its stick cap's are side
+        /// walls, inner shells and undersides. Lifting one of those along
+        /// its own normal drives it sideways, out through whatever sits
+        /// beside it. That pad sits in a recess with the case wall against
+        /// its rim and the stick base 2.04 mm away, and the wedge cut into
+        /// both.</para></summary>
+        [Theory]
+        [InlineData("SteamController", "LeftTouchpadClick")]
+        [InlineData("SteamController", "RightTouchpadClick")]
+        [InlineData("SteamController2", "LeftTouchpadClick")]
+        [InlineData("SteamDeck", "RightTouchpadClick")]
+        public void QuadrantWedge_StaysInsideItsOwnFootprint(string family, string role)
+        {
+            using var m = ControllerModelBase.Create(family, null, false);
+            var surface = m.ButtonMap[role][0];
+            var b = surface.Bounds;
+            var centre = new Vector3D(b.X + b.SizeX / 2, b.Y + b.SizeY / 2, b.Z + b.SizeZ / 2);
+
+            var method = typeof(ControllerModelView).GetMethod("BuildClippedQuadrantMesh",
+                BindingFlags.NonPublic | BindingFlags.Static);
+            Assert.NotNull(method);
+
+            foreach (var (isX, isNeg) in new[] { (false, true), (false, false), (true, true), (true, false) })
+            {
+                var mesh = (MeshGeometry3D)method.Invoke(null, new object[] { surface, centre, isX, isNeg });
+                Assert.NotEmpty(mesh.Positions);
+                foreach (Point3D p in mesh.Positions)
+                {
+                    Assert.True(p.X >= b.X - 0.001 && p.X <= b.X + b.SizeX + 0.001,
+                        $"{family} {role}: wedge reaches X={p.X:F2}, outside its surface [{b.X:F2},{b.X + b.SizeX:F2}]");
+                    Assert.True(p.Z >= b.Z - 0.001 && p.Z <= b.Z + b.SizeZ + 0.001,
+                        $"{family} {role}: wedge reaches Z={p.Z:F2}, outside its surface [{b.Z:F2},{b.Z + b.SizeZ:F2}]");
+                }
+            }
+        }
+
+        /// <summary>And it is cut from the surface's VISIBLE face, so a wedge
+        /// never draws over the buried half of a control.</summary>
+        [Fact]
+        public void QuadrantWedge_ComesOnlyFromTheVisibleFace()
+        {
+            using var m = ControllerModelBase.Create("SteamController", null, false);
+            var pad = m.ButtonMap["LeftTouchpadClick"][0];
+            var b = pad.Bounds;
+            var centre = new Vector3D(b.X + b.SizeX / 2, b.Y + b.SizeY / 2, b.Z + b.SizeZ / 2);
+
+            var method = typeof(ControllerModelView).GetMethod("BuildClippedQuadrantMesh",
+                BindingFlags.NonPublic | BindingFlags.Static);
+            var mesh = (MeshGeometry3D)method.Invoke(null, new object[] { pad, centre, false, true });
+
+            // The pad runs 17.6 mm deep, most of it skirt inside the case.
+            // Every wedge vertex belongs to the face on top of it.
+            double deepest = mesh.Positions.Max(p => p.Y);
+            Assert.True(deepest < b.Y + b.SizeY * 0.5,
+                $"wedge reaches {deepest:F2} mm into a pad spanning [{b.Y:F2},{b.Y + b.SizeY:F2}]: that is its buried skirt");
+        }
+
         /// <summary>Which quadrant a point falls in: 0 up, 1 down, 2 left,
         /// 3 right, in the model's X across / +Z up frame.</summary>
         [Theory]

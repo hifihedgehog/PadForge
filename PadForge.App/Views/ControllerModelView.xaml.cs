@@ -1770,45 +1770,91 @@ namespace PadForge.Views
             else if (!isX && isNeg)  { a1 = -1; b1 =  1; a2 =  1; b2 =  1; } // +Z
             else /* !isX && !isNeg */{ a1 =  1; b1 = -1; a2 = -1; b2 = -1; } // -Z
 
-            var quadrantMesh = new MeshGeometry3D();
-            foreach (var child in ring.Children)
+            // Built twice at most: the visible face alone, then, only if a
+            // surface turns out to expose none, the whole thing. See the
+            // note on facingOnly below.
+            var quadrantMesh = Build(true);
+            if (quadrantMesh.Positions.Count == 0)
+                quadrantMesh = Build(false);
+            return quadrantMesh;
+
+            MeshGeometry3D Build(bool facingOnly)
             {
-                if (child is not GeometryModel3D geo || geo.Geometry is not MeshGeometry3D srcMesh)
-                    continue;
-
-                var positions = srcMesh.Positions;
-                var indices = srcMesh.TriangleIndices;
-                for (int t = 0; t + 2 < indices.Count; t += 3)
+                var built = new MeshGeometry3D();
+                foreach (var child in ring.Children)
                 {
-                    var p0 = positions[indices[t]];
-                    var p1 = positions[indices[t + 1]];
-                    var p2 = positions[indices[t + 2]];
+                    if (child is not GeometryModel3D geo || geo.Geometry is not MeshGeometry3D srcMesh)
+                        continue;
 
-                    // Clip triangle against both quadrant boundary half-planes
-                    var poly = new List<Point3D> { p0, p1, p2 };
-                    poly = ClipPolygonByHalfPlane(poly, center, a1, b1);
-                    if (poly.Count < 3) continue;
-                    poly = ClipPolygonByHalfPlane(poly, center, a2, b2);
-                    if (poly.Count < 3) continue;
-
-                    // Lift the wedge clear of the surface it was cut from,
-                    // along that surface's OWN normal.
-                    var lift = FaceNormalOutOfPad(p0, p1, p2);
-
-                    // Triangulate clipped polygon as a fan and offset outward
-                    for (int i = 1; i < poly.Count - 1; i++)
+                    var positions = srcMesh.Positions;
+                    var srcNormals = srcMesh.Normals;
+                    bool haveNormals = srcNormals != null && srcNormals.Count == positions.Count;
+                    var indices = srcMesh.TriangleIndices;
+                    for (int t = 0; t + 2 < indices.Count; t += 3)
                     {
-                        int baseIdx = quadrantMesh.Positions.Count;
-                        quadrantMesh.Positions.Add(OffsetAlong(poly[0], lift));
-                        quadrantMesh.Positions.Add(OffsetAlong(poly[i], lift));
-                        quadrantMesh.Positions.Add(OffsetAlong(poly[i + 1], lift));
-                        quadrantMesh.TriangleIndices.Add(baseIdx);
-                        quadrantMesh.TriangleIndices.Add(baseIdx + 1);
-                        quadrantMesh.TriangleIndices.Add(baseIdx + 2);
+                        int i0 = indices[t], i1 = indices[t + 1], i2 = indices[t + 2];
+                        var p0 = positions[i0];
+                        var p1 = positions[i1];
+                        var p2 = positions[i2];
+
+                        // Where the wedge will be lifted to: the surface's own
+                        // outward direction, taken from the mesh's normals when
+                        // it carries them (these all do, written per B-rep node)
+                        // and from the winding otherwise.
+                        Vector3D lift;
+                        if (haveNormals)
+                        {
+                            lift = srcNormals[i0] + srcNormals[i1] + srcNormals[i2];
+                            if (lift.LengthSquared < 1e-12) lift = FaceNormalOutOfPad(p0, p1, p2);
+                            else lift.Normalize();
+                        }
+                        else lift = FaceNormalOutOfPad(p0, p1, p2);
+
+                        // ONLY the face the user is looking at gets a wedge,
+                        // and it rises STRAIGHT out of that face.
+                        //
+                        // A control is a solid, and most of it is not its front
+                        // face: 52% of a 2015 trackpad's triangles and 69% of
+                        // its stick cap's are side walls, inner shells and
+                        // undersides, all of them buried. Lifting one of those
+                        // along its own normal drives it SIDEWAYS, out through
+                        // whatever sits beside it. That pad sits in a recess
+                        // with the case wall against its rim and the stick base
+                        // 2.04 mm off, so the wedge cut into both.
+                        //
+                        // Straight out means the wedge never moves in X or Z at
+                        // all, so it cannot reach a neighbour however tight the
+                        // packing. A face steeply enough turned that this would
+                        // not clear it is not one you can see anyway, which the
+                        // same test excludes.
+                        if (facingOnly)
+                        {
+                            if (lift.Y > -0.4) continue;
+                            lift = new Vector3D(0, -1, 0);
+                        }
+
+                        // Clip triangle against both quadrant boundary half-planes
+                        var poly = new List<Point3D> { p0, p1, p2 };
+                        poly = ClipPolygonByHalfPlane(poly, center, a1, b1);
+                        if (poly.Count < 3) continue;
+                        poly = ClipPolygonByHalfPlane(poly, center, a2, b2);
+                        if (poly.Count < 3) continue;
+
+                        // Triangulate clipped polygon as a fan and offset outward
+                        for (int i = 1; i < poly.Count - 1; i++)
+                        {
+                            int baseIdx = built.Positions.Count;
+                            built.Positions.Add(OffsetAlong(poly[0], lift));
+                            built.Positions.Add(OffsetAlong(poly[i], lift));
+                            built.Positions.Add(OffsetAlong(poly[i + 1], lift));
+                            built.TriangleIndices.Add(baseIdx);
+                            built.TriangleIndices.Add(baseIdx + 1);
+                            built.TriangleIndices.Add(baseIdx + 2);
+                        }
                     }
                 }
+                return built;
             }
-            return quadrantMesh;
         }
 
         /// <summary>The triangle's own normal, turned to point OUT of the

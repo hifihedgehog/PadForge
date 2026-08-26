@@ -216,9 +216,18 @@ def crease_normals(verts, faces, crease_deg=CREASE_DEG):
 
 
 def write_obj(path, verts, faces, name):
-    """Valve CAD is X width, Y height up, Z depth front. PadForge is X
-    width, Y depth with the front NEGATIVE, Z height. Y = -Z and Z = Y is
-    a rotation about X, not a mirror, so the winding is left alone."""
+    """Valve's CAD is X width, Y height up, Z depth with the FRONT at
+    POSITIVE Z. Measured, not assumed: the pad covers, ABXY caps and the
+    stick cap all sit at Z +3 to +24.5, the battery door at Z -29 to +1.
+    PadForge is X width, Y depth with the front NEGATIVE, Z height. So
+    Y = -Z and Z = Y, a rotation about X, not a mirror, and the B-rep
+    winding is left alone.
+
+    A build once shipped with the sign the other way because an in-app
+    screenshot showed the back of the pad. That was the viewport's own
+    yaw, which persists across model swaps and which a mis-aimed Reset
+    View click never cleared. A picture is not evidence of handedness;
+    the Z sign of a known front part is."""
     normals, corner = crease_normals(verts, faces)
     out = np.column_stack([verts[:, 0], -verts[:, 2], verts[:, 1]])
     nout = np.column_stack([normals[:, 0], -normals[:, 2], normals[:, 1]])

@@ -38,9 +38,9 @@ namespace PadForge.Models3D
 
         public ControllerModelSteamDeck() : base("SteamDeck")
         {
-            var ColorBody   = (Color)ColorConverter.ConvertFromString("#707477");
-            var ColorAccent = (Color)ColorConverter.ConvertFromString("#7A7E82");
-            var ColorScreen = (Color)ColorConverter.ConvertFromString("#202226");
+            var ColorBody   = (Color)ColorConverter.ConvertFromString("#202224");
+            var ColorAccent = (Color)ColorConverter.ConvertFromString("#26272A");
+            var ColorScreen = (Color)ColorConverter.ConvertFromString("#0C0D10");
             var MaterialBody   = new DiffuseMaterial(new SolidColorBrush(ColorBody));
             var MaterialAccent = new DiffuseMaterial(new SolidColorBrush(ColorAccent));
             var MaterialScreen = new DiffuseMaterial(new SolidColorBrush(ColorScreen));
@@ -101,15 +101,15 @@ namespace PadForge.Models3D
             PaintEverything();
         }
 
-        /// <summary>Resting colours, on this tree's 3D convention rather than
-        /// sampled from 2D art. The app lights a model with one white
-        /// headlight at brightness 0.35 and an ember rim, and nothing else,
-        /// so a material shows at roughly a third of its hex. That is why the
-        /// Xbox 360 class writes black plastic as #707477, and every value
-        /// here is that value or a step off it, so this pad sits beside the
-        /// reference model as the same black plastic. The 2D art's #1E2A30,
-        /// used here once, rendered as a blue-grey under an orange rim at a
-        /// third of its brightness.
+        /// <summary>Resting colours, calibrated against the black controllers
+        /// this tree already ships. The viewport's rig is a #999999 sun, a
+        /// #666666 ambient, a #595959 headlight and the ember rim, so a
+        /// front-facing surface shows at about 1.3 times its hex. The three
+        /// approved dark textures (DS4 Jet Black, Switch 2 Pro, DualSense
+        /// Midnight) all have a body median near #202224, and the Switch 2
+        /// Pro class's accent constants give the scale above it. Two earlier
+        /// palettes were wrong for the same reason: one sampled 2D art, one
+        /// assumed the rig was a third as bright as it is.
         ///
         /// <para>Without this every mesh rendered in HelixToolkit's own
         /// default, which is yellow. The cosmetic parts above were painted
@@ -117,10 +117,10 @@ namespace PadForge.Models3D
         /// not.</para></summary>
         private void PaintEverything()
         {
-            var shell   = Mat("#707477");
-            var panel   = Mat("#7A7E82");
-            var surface = Mat("#8C9095");
-            var recess  = Mat("#5A5E62");
+            var shell   = Mat("#202224");
+            var panel   = Mat("#2E2F31");
+            var surface = Mat("#3A3B3D");
+            var recess  = Mat("#26272A");
 
             Paint(MainBody, shell);
             Paint(LeftThumbRing, recess);

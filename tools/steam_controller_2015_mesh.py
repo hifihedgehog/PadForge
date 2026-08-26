@@ -68,7 +68,7 @@ DST = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
 PARTS = {
     "CaseTopGPrime":               ("MainBody.obj", 1.0),
     "CaseFrontGPrime":             ("MainBody.obj", 1.0),
-    "CaseBottomGPrime":            ("MainBody.obj", 1.0),
+    "CaseBottomGPrime":            ("BOTTOM", 1.0),         # grips carved below
     "BatteryDoorMkVI":             ("MainBody.obj", 1.0),
     "BumperGPrime":                ("BUMPER", 1.0),        # split L/R below
     "TriggerCapLeftJAG":           ("Shoulder-Left-Trigger.obj", 1.0),
@@ -261,6 +261,22 @@ def main():
             cx = v[f][:, :, 0].mean(axis=1)
             for side, sel in (("L1.obj", cx < 0), ("R1.obj", cx >= 0)):
                 meshes.setdefault(side, []).append((v, nrm, f[sel]))
+        elif target == "BOTTOM":
+            # The grip paddles. Valve's CAD has no grip solid: the
+            # BatteryLever parts are internal actuators inside the trigger
+            # wells, and the paddle a user presses is the rear-facing skin
+            # of each handle, moulded into the bottom shell with no seam.
+            # Cut it out by position and facing: outboard of the battery
+            # door, below the trigger region, normal pointing to the rear.
+            # That is also the region the pack's 2D grip sprite covers.
+            c = v[f].mean(axis=1)
+            fn = nrm[f].mean(axis=1)
+            rear = (fn[:, 2] < -0.25) & (c[:, 1] < 8.0)
+            left = rear & (c[:, 0] < -36.0)
+            right = rear & (c[:, 0] > 36.0)
+            meshes.setdefault("LeftGrip.obj", []).append((v, nrm, f[left]))
+            meshes.setdefault("RightGrip.obj", []).append((v, nrm, f[right]))
+            meshes.setdefault("MainBody.obj", []).append((v, nrm, f[~(left | right)]))
         else:
             meshes.setdefault(target, []).append((v, nrm, f))
 

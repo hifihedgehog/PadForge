@@ -88,26 +88,26 @@ namespace PadForge.Models3D
             PaintEverything();
         }
 
-        /// <summary>Resting colours, on this tree's 3D convention rather than
-        /// sampled from 2D art. The app lights a model with one white
-        /// headlight at brightness 0.35 and an ember rim, and nothing else,
-        /// so a material shows at roughly a third of its hex. That is why the
-        /// Xbox 360 class writes black plastic as #707477, and every value
-        /// here is that value or a step off it, so this pad sits beside the
-        /// reference model as the same black plastic. The 2D art's #1E2A30,
-        /// used here once, rendered as a blue-grey under an orange rim at a
-        /// third of its brightness.
+        /// <summary>Resting colours, calibrated against the black controllers
+        /// this tree already ships. The viewport's rig is a #999999 sun, a
+        /// #666666 ambient, a #595959 headlight and the ember rim, so a
+        /// front-facing surface shows at about 1.3 times its hex. The three
+        /// approved dark textures (DS4 Jet Black, Switch 2 Pro, DualSense
+        /// Midnight) all have a body median near #202224, and the Switch 2
+        /// Pro class's accent constants give the scale above it. Two earlier
+        /// palettes were wrong for the same reason: one sampled 2D art, one
+        /// assumed the rig was a third as bright as it is.
         ///
         /// <para>Face buttons stay dark for the same reason as the 2015
         /// pad. Valve prints the glyph on a black cap, and the CAD carries
         /// no glyph mesh to colour.</para></summary>
         private void PaintEverything()
         {
-            var body    = Mat("#707477");
-            var shell   = Mat("#7A7E82");
-            var surface = Mat("#8C9095");
-            var recess  = Mat("#5A5E62");
-            var disc    = Mat("#4A4D50");
+            var body    = Mat("#202224");
+            var shell   = Mat("#26272A");
+            var surface = Mat("#3A3B3D");
+            var recess  = Mat("#2E2F31");
+            var disc    = Mat("#1A1B1D");
 
             Paint(MainBody, body);
             Paint(LeftThumbRing, recess);

@@ -215,6 +215,25 @@ def crease_normals(verts, faces, crease_deg=CREASE_DEG):
     return np.array(normals), corner
 
 
+def compact(verts, faces):
+    """Drop vertices no face references, renumbering the rest.
+
+    The bumper is one solid split on the centreline into L1 and R1 by
+    FACE, and each half was written with the whole solid's vertex array,
+    so every bumper file carried about 5,000 vertices nothing used. They
+    were harmless to the render and to the highlight (a face selects its
+    own vertices), and misleading to anyone measuring a file's extent
+    from its `v` lines, which is how a phantom "both shoulders light the
+    full width" defect got reported and then disproved.
+    """
+    used = np.unique(faces.ravel())
+    if len(used) == len(verts):
+        return verts, faces
+    remap = np.full(len(verts), -1, np.int64)
+    remap[used] = np.arange(len(used))
+    return verts[used], remap[faces]
+
+
 def write_obj(path, verts, faces, name):
     """Valve's CAD is X width, Y height up, Z depth with the FRONT at
     POSITIVE Z. Measured, not assumed: the pad covers, ABXY caps and the
@@ -281,6 +300,7 @@ def main():
         v = v.copy()
         v[:, 0] -= xmid
         v, f = weld(v, f)
+        v, f = compact(v, f)
         write_obj(os.path.join(DST, fname), v, f, fname)
         total += len(f)
         print(f"  {fname:26s} {len(f):7,} tris  ({len(v):,} verts)")

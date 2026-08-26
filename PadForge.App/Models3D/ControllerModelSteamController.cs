@@ -3,11 +3,12 @@
 // Copyright (c) CasperH2O, Lesueur Benjamin, trippyone
 // Licensed under CC BY-NC-SA 4.0
 //
-// Steam Controller (2015) mesh: Valve's own CAD, released March 2016 as
-// an archive of separate-part STLs, CC BY-NC-SA 4.0. Converted to this
-// repo's per-part OBJ contract by tools/steam_controller_2015_mesh.py.
-// Valve named every part, so the button mapping comes from the source
-// filenames rather than from guesswork.
+// Steam Controller (2015) mesh: Valve's own CAD, released March 2016,
+// CC BY-NC-SA 4.0. Meshed from the archive's STEP file, which is the exact
+// B-rep surface, by tools/steam_controller_2015_mesh.py. Valve named
+// every solid, so the button mapping comes from the source names rather
+// than from guesswork, and the two-shot button moulds come out as
+// separate cap and glyph solids.
 
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
@@ -106,10 +107,11 @@ namespace PadForge.Models3D
         /// surfaces at #5A606C, the recesses at #424E54 and the button
         /// discs at #1E1E1E.
         ///
-        /// <para>The face buttons are DARK, not lettered colours. On this
-        /// pad the ABXY caps are black plastic with coloured glyphs printed
-        /// on them, unlike the Xbox 360's coloured shells, and there are no
-        /// glyph meshes in Valve's CAD to carry the colour.</para></summary>
+        /// <para>The face CAPS are dark, not lettered colours. On this pad
+        /// the ABXY caps are black plastic with coloured glyphs printed on
+        /// them, unlike the Xbox 360's coloured shells. The colour lives on
+        /// the glyph riders added in the constructor, which Valve's STEP
+        /// carries as their own solids.</para></summary>
         private void PaintEverything()
         {
             var body    = Mat("#1E2A30");

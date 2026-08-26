@@ -82,8 +82,6 @@ namespace PadForge.Models3D
             AddCosmetic("VolumeDown.obj", MaterialAccent);
             AddCosmetic("SteamText.obj", MaterialAccent);
             AddCosmetic("OEM1.obj", MaterialAccent);
-            AddCosmetic("LeftStickTouch.obj", MaterialAccent);
-            AddCosmetic("RightStickTouch.obj", MaterialAccent);
 
             // Glyph riders sit on their buttons and share their highlight,
             // the same arrangement the other models use for label meshes.
@@ -97,6 +95,15 @@ namespace PadForge.Models3D
             AddRiderTo("ButtonY", "B4-Symbol.obj", MaterialGlyph);
             AddRiderTo("ButtonBack", "BackIcon.obj", MaterialGlyph);
             AddRiderTo("ButtonStart", "StartIcon.obj", MaterialGlyph);
+
+            // The stick BODY, the capacitive barrel between the cap and the
+            // collar. It is part of the stick button, not scenery: this pad
+            // splits its stick into three solids where every other model
+            // ships two, and with the body left cosmetic the button lit only
+            // the thin collar at the case and the stick looked half dead.
+            // PaintEverything gives it the click mesh's colour below.
+            AddRiderTo("LeftThumbButton", "LeftStickTouch.obj", MaterialAccent);
+            AddRiderTo("RightThumbButton", "RightStickTouch.obj", MaterialAccent);
 
             PaintEverything();
         }

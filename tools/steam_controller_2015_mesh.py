@@ -81,7 +81,7 @@ PARTS = {
     # both into the click mesh left this pad with no ring group, so its
     # stick had no direction target and no visible collar at all.
     "ThumbTopGrip.01":             ("Joystick-Left-Ring.obj", 1.0),
-    "ThumbTopBase.01":             ("LeftStickClick.obj", 1.0),
+    "ThumbTopBase.01":             ("STICKBASE", 1.0),      # spigot culled below
     # The lever behind each grip paddle. Mostly hidden inside the handle,
     # visible through a slot at the top, and part of the same control, so
     # it rides the grip group with the paddle face split off the cover.
@@ -251,6 +251,61 @@ def write_obj(path, verts, norms, faces, name):
             f.write("f %d//%d %d//%d %d//%d\n" % (a, a, b, b, c, c))
 
 
+def cut_at_x(v, nrm, faces, x0):
+    """Split a mesh at the plane x = x0 and return (left, right), each a
+    (verts, norms, faces) triple.
+
+    Triangles that straddle the plane are CUT on it, with position and
+    normal interpolated at the crossings, so the seam is the straight line
+    the plane makes. Assigning whole triangles to a side by their centroid
+    is what leaves a seam jagged by a triangle's width, which on this cover
+    was plainly visible.
+    """
+    out = {-1: ([], [], []), 1: ([], [], [])}   # side -> (verts, norms, faces)
+
+    def emit(side, poly):
+        vs, ns, fs = out[side]
+        base = len(vs)
+        for pos, nn in poly:
+            vs.append(pos)
+            ns.append(nn)
+        for i in range(1, len(poly) - 1):
+            fs.append((base, base + i, base + i + 1))
+
+    for tri in faces:
+        pts = [(v[i], nrm[i]) for i in tri]
+        d = [pt[0][0] - x0 for pt in pts]
+        if all(x <= 0 for x in d):
+            emit(-1, pts)
+            continue
+        if all(x >= 0 for x in d):
+            emit(1, pts)
+            continue
+        # Straddles: clip the triangle to each side of the plane.
+        for side in (-1, 1):
+            poly = []
+            for a in range(3):
+                b = (a + 1) % 3
+                da, db = d[a] * side, d[b] * side
+                if da >= 0:
+                    poly.append(pts[a])
+                if (da > 0 and db < 0) or (da < 0 and db > 0):
+                    tpar = da / (da - db)
+                    poly.append((pts[a][0] + (pts[b][0] - pts[a][0]) * tpar,
+                                 pts[a][1] + (pts[b][1] - pts[a][1]) * tpar))
+            if len(poly) >= 3:
+                emit(side, poly)
+
+    res = []
+    for side in (-1, 1):
+        vs, ns, fs = out[side]
+        if not fs:
+            res.append((np.zeros((0, 3)), np.zeros((0, 3)), np.zeros((0, 3), dtype=int)))
+            continue
+        res.append((np.array(vs), np.array(ns), np.array(fs, dtype=int)))
+    return res
+
+
 def main():
     os.makedirs(DST, exist_ok=True)
     t0 = time.time()
@@ -276,11 +331,32 @@ def main():
             # inboard of the crease and 11.2, 18.5 then 27.3 mm outboard.
             # Rendering the cut against the moulded crease line puts it on
             # top of it.
-            cx = v[f][:, :, 0].mean(axis=1)
-            meshes.setdefault("LeftGrip.obj", []).append((v, nrm, f[cx < -30.0]))
-            meshes.setdefault("RightGrip.obj", []).append((v, nrm, f[cx > 30.0]))
-            meshes.setdefault("MainBody.obj", []).append(
-                (v, nrm, f[(cx >= -30.0) & (cx <= 30.0)]))
+            left, rest = cut_at_x(v, nrm, f, -30.0)
+            mid, right = cut_at_x(rest[0], rest[1], rest[2], 30.0)
+            meshes.setdefault("LeftGrip.obj", []).append(left)
+            meshes.setdefault("RightGrip.obj", []).append(right)
+            meshes.setdefault("MainBody.obj", []).append(mid)
+        elif target == "STICKBASE":
+            # The base carries a spigot that reaches up INSIDE the cap and
+            # through its shell wall: at Z 21 to 22 the spigot is out at
+            # r = 7.65 mm while the cap's inner wall sits at r = 5.75 and
+            # its outer at 8.81, so the two solids interpenetrate. Valve
+            # models a press fit; a renderer draws it as a speckled fringe
+            # around the cap's rim where the spigot pokes through, and the
+            # accent would bleed onto the cap whenever the stick BUTTON lit
+            # up, which is the one thing the cap must never do.
+            #
+            # Everything of the base above Z 19.6, the cap's underside, and
+            # inside r = 8.0 is enclosed by the cap and cannot be seen. Drop
+            # it. The cap is a closed shell, so nothing opens up.
+            ax, ay = -18.40, -14.175          # the stick axis, from the two solids
+            tv = v[f]                                     # (tri, corner, xyz)
+            r = np.hypot(tv[:, :, 0] - ax, tv[:, :, 1] - ay)
+            # ANY corner inside the envelope drops the triangle. Testing the
+            # centroid instead leaves the straddling ring behind, 228 of them
+            # here, still reaching 2.3 mm up into the cap.
+            inside = (tv[:, :, 2] >= 19.6) & (r < 8.0)
+            meshes.setdefault("LeftStickClick.obj", []).append((v, nrm, f[~inside.any(axis=1)]))
         elif target == "BUMPER":
             # One solid spanning both sides; split on the centreline so
             # each shoulder is its own highlight target.

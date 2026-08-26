@@ -1759,7 +1759,7 @@ namespace PadForge.Views
         /// Uses Sutherland-Hodgman clipping for clean diagonal edges and
         /// geometric torus-outward offset to prevent z-fighting.
         /// </summary>
-        private MeshGeometry3D BuildClippedQuadrantMesh(
+        private static MeshGeometry3D BuildClippedQuadrantMesh(
             Model3DGroup ring, Vector3D center, bool isX, bool isNeg)
         {
             // Quadrant boundary half-planes: a*cx + b*cz >= 0
@@ -1769,22 +1769,6 @@ namespace PadForge.Views
             else if (isX && isNeg)   { a1 = -1; b1 = -1; a2 = -1; b2 =  1; } // -X
             else if (!isX && isNeg)  { a1 = -1; b1 =  1; a2 =  1; b2 =  1; } // +Z
             else /* !isX && !isNeg */{ a1 =  1; b1 = -1; a2 = -1; b2 = -1; } // -Z
-
-            // Compute torus major radius (average XZ distance from center to vertices)
-            double totalDist = 0;
-            int vertCount = 0;
-            foreach (var child in ring.Children)
-            {
-                if (child is not GeometryModel3D geo || geo.Geometry is not MeshGeometry3D m)
-                    continue;
-                foreach (Point3D p in m.Positions)
-                {
-                    double dx = p.X - center.X, dz = p.Z - center.Z;
-                    totalDist += Math.Sqrt(dx * dx + dz * dz);
-                    vertCount++;
-                }
-            }
-            double majorR = vertCount > 0 ? totalDist / vertCount : 10.0;
 
             var quadrantMesh = new MeshGeometry3D();
             foreach (var child in ring.Children)
@@ -1807,13 +1791,17 @@ namespace PadForge.Views
                     poly = ClipPolygonByHalfPlane(poly, center, a2, b2);
                     if (poly.Count < 3) continue;
 
+                    // Lift the wedge clear of the surface it was cut from,
+                    // along that surface's OWN normal.
+                    var lift = FaceNormalOutOfPad(p0, p1, p2);
+
                     // Triangulate clipped polygon as a fan and offset outward
                     for (int i = 1; i < poly.Count - 1; i++)
                     {
                         int baseIdx = quadrantMesh.Positions.Count;
-                        quadrantMesh.Positions.Add(OffsetTorusOutward(poly[0], center, majorR));
-                        quadrantMesh.Positions.Add(OffsetTorusOutward(poly[i], center, majorR));
-                        quadrantMesh.Positions.Add(OffsetTorusOutward(poly[i + 1], center, majorR));
+                        quadrantMesh.Positions.Add(OffsetAlong(poly[0], lift));
+                        quadrantMesh.Positions.Add(OffsetAlong(poly[i], lift));
+                        quadrantMesh.Positions.Add(OffsetAlong(poly[i + 1], lift));
                         quadrantMesh.TriangleIndices.Add(baseIdx);
                         quadrantMesh.TriangleIndices.Add(baseIdx + 1);
                         quadrantMesh.TriangleIndices.Add(baseIdx + 2);
@@ -1823,32 +1811,35 @@ namespace PadForge.Views
             return quadrantMesh;
         }
 
-        /// <summary>
-        /// Offsets a point outward from the torus surface by pushing it away
-        /// from the nearest point on the torus center circle (skeleton).
-        /// Works correctly for all surface orientations (top, bottom, inner, outer).
-        /// </summary>
-        private static Point3D OffsetTorusOutward(Point3D p, Vector3D center, double majorR)
+        /// <summary>The triangle's own normal, turned to point OUT of the
+        /// controller's face. Model space puts the face along -Y, so the
+        /// outward side is the one with the negative Y component. A wall
+        /// standing perpendicular to the face (a stick cap's flank) has no Y
+        /// component to speak of and keeps its radial direction, which lifts
+        /// it clear of that wall just as well.
+        ///
+        /// <para>This replaced a TORUS offset that pushed each point away
+        /// from the nearest point on a skeleton circle of average radius.
+        /// That fit a stick's cap and nothing else. On a trackpad, a flat
+        /// disc, the skeleton sits half way out and every offset came out
+        /// RADIAL: the wedge slid sideways across the pad instead of rising
+        /// off it, so the pad covered its own direction wedges and hovering
+        /// them showed nothing (owner report).</para></summary>
+        private static Vector3D FaceNormalOutOfPad(Point3D a, Point3D b, Point3D c)
+        {
+            var n = Vector3D.CrossProduct(b - a, c - a);
+            if (n.LengthSquared < 1e-12) return new Vector3D(0, -1, 0);
+            n.Normalize();
+            if (n.Y > 0) n = -n;
+            return n;
+        }
+
+        /// <summary>Moves a point clear of its surface. 0.8 mm reads at every
+        /// zoom the preview allows without the wedge appearing to float.</summary>
+        private static Point3D OffsetAlong(Point3D p, Vector3D n)
         {
             const double offset = 0.8;
-            double dx = p.X - center.X, dz = p.Z - center.Z;
-            double dist = Math.Sqrt(dx * dx + dz * dz);
-            if (dist < 0.001) return p;
-
-            // Nearest point on the center circle (in the XZ plane at center.Y)
-            double sx = center.X + majorR * dx / dist;
-            double sy = center.Y;
-            double sz = center.Z + majorR * dz / dist;
-
-            // Direction from skeleton point to surface point = tube outward normal
-            double ox = p.X - sx, oy = p.Y - sy, oz = p.Z - sz;
-            double odist = Math.Sqrt(ox * ox + oy * oy + oz * oz);
-            if (odist < 0.001) return p;
-
-            return new Point3D(
-                p.X + ox / odist * offset,
-                p.Y + oy / odist * offset,
-                p.Z + oz / odist * offset);
+            return new Point3D(p.X + n.X * offset, p.Y + n.Y * offset, p.Z + n.Z * offset);
         }
 
         /// <summary>

@@ -227,6 +227,79 @@ namespace PadForge.Tests
                 $"the grip is {grip.SizeY:F1} mm deep on a {body.SizeY:F1} mm body: that is the handle, not the paddle");
         }
 
+        /// <summary>A flat surface lying in the face plane, the shape of a
+        /// trackpad: two triangles at a constant Y.</summary>
+        private static Model3DGroup FlatPad(double y, double half)
+        {
+            var mesh = new MeshGeometry3D();
+            mesh.Positions.Add(new Point3D(-half, y, -half));
+            mesh.Positions.Add(new Point3D(half, y, -half));
+            mesh.Positions.Add(new Point3D(half, y, half));
+            mesh.Positions.Add(new Point3D(-half, y, half));
+            foreach (int i in new[] { 0, 1, 2, 0, 2, 3 })
+                mesh.TriangleIndices.Add(i);
+            var g = new Model3DGroup();
+            g.Children.Add(new GeometryModel3D(mesh, new DiffuseMaterial(Brushes.Gray)));
+            return g;
+        }
+
+        /// <summary>THE PROPERTY for the hover wedge: it comes out IN FRONT
+        /// of the surface it was cut from, whatever that surface is shaped
+        /// like. The offset used to push each point away from a torus
+        /// skeleton circle, which on a flat trackpad is a sideways shove:
+        /// the wedge slid across the pad instead of rising off it, so the pad
+        /// covered its own direction wedges.</summary>
+        [Theory]
+        [InlineData(false, true)]     // up
+        [InlineData(false, false)]    // down
+        [InlineData(true, true)]      // left
+        [InlineData(true, false)]     // right
+        public void QuadrantWedge_RisesOffAFlatPad(bool isX, bool isNeg)
+        {
+            const double padY = -5.0;
+            var pad = FlatPad(padY, 20.0);
+            var method = typeof(ControllerModelView).GetMethod("BuildClippedQuadrantMesh",
+                BindingFlags.NonPublic | BindingFlags.Static);
+            Assert.NotNull(method);
+
+            var mesh = (MeshGeometry3D)method.Invoke(null,
+                new object[] { pad, new Vector3D(0, padY, 0), isX, isNeg });
+
+            Assert.NotEmpty(mesh.Positions);
+            foreach (Point3D p in mesh.Positions)
+                Assert.True(p.Y < padY - 0.5,
+                    $"wedge vertex at Y={p.Y:F2} never rose off a pad sitting at Y={padY:F2}");
+        }
+
+        /// <summary>And it lands in the quadrant it was asked for.</summary>
+        [Theory]
+        [InlineData(false, true, "up")]
+        [InlineData(false, false, "down")]
+        [InlineData(true, true, "left")]
+        [InlineData(true, false, "right")]
+        public void QuadrantWedge_CoversOnlyItsOwnQuadrant(bool isX, bool isNeg, string which)
+        {
+            var pad = FlatPad(-5.0, 20.0);
+            var method = typeof(ControllerModelView).GetMethod("BuildClippedQuadrantMesh",
+                BindingFlags.NonPublic | BindingFlags.Static);
+            var mesh = (MeshGeometry3D)method.Invoke(null,
+                new object[] { pad, new Vector3D(0, -5.0, 0), isX, isNeg });
+
+            Assert.NotEmpty(mesh.Positions);
+            foreach (Point3D p in mesh.Positions)
+            {
+                // The clip is exact, so only rounding needs slack.
+                const double eps = 1e-6;
+                switch (which)
+                {
+                    case "up": Assert.True(p.Z >= Math.Abs(p.X) - eps, $"({p.X:F2},{p.Z:F2}) is not in the up wedge"); break;
+                    case "down": Assert.True(-p.Z >= Math.Abs(p.X) - eps, $"({p.X:F2},{p.Z:F2}) is not in the down wedge"); break;
+                    case "left": Assert.True(-p.X >= Math.Abs(p.Z) - eps, $"({p.X:F2},{p.Z:F2}) is not in the left wedge"); break;
+                    default: Assert.True(p.X >= Math.Abs(p.Z) - eps, $"({p.X:F2},{p.Z:F2}) is not in the right wedge"); break;
+                }
+            }
+        }
+
         /// <summary>Which quadrant a point falls in: 0 up, 1 down, 2 left,
         /// 3 right, in the model's X across / +Z up frame.</summary>
         [Theory]

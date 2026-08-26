@@ -71,6 +71,32 @@ namespace PadForge.Models3D
             model3DGroup.Children.Add(RightGripButton);
 
             PaintEverything();
+
+            // Glyph riders. Valve's CAD carries each button as a two-shot
+            // mould, the cap and the printed glyph as separate solids, so
+            // the letters come out as their own meshes. They ride on
+            // their cap's highlight and take the printed colours: the
+            // pack's SC art prints ABXY in green, red, blue and yellow on
+            // black caps, and the system glyphs in white.
+            var glyph = new DiffuseMaterial(new SolidColorBrush(
+                (Color)ColorConverter.ConvertFromString("#C8CCD0")));
+            AddRiderTo("ButtonA", "B1-Symbol.obj", Mat("#3CDB4E"));
+            AddRiderTo("ButtonB", "B2-Symbol.obj", Mat("#D04242"));
+            AddRiderTo("ButtonX", "B3-Symbol.obj", Mat("#4094D0"));
+            AddRiderTo("ButtonY", "B4-Symbol.obj", Mat("#ECDB33"));
+            AddRiderTo("ButtonStart", "StartIcon.obj", glyph);
+            AddRiderTo("ButtonBack", "BackIcon.obj", glyph);
+            AddRiderTo("ButtonGuide", "SpecialIcon.obj", glyph);
+        }
+
+        private void AddRiderTo(string padSettingName, string filename, Material material)
+        {
+            var rider = TryLoadModel(filename);
+            if (rider == null) return;
+            Paint(rider, material);
+            model3DGroup.Children.Add(rider);
+            if (ButtonMap.TryGetValue(padSettingName, out var list))
+                list.Add(rider);
         }
 
         /// <summary>Resting colours, sampled from this pad's own shipped 2D
@@ -115,8 +141,8 @@ namespace PadForge.Models3D
         /// <summary>The preview camera is fixed, so every model carries a
         /// constant scale that brings its authoring size to the framing the
         /// camera expects. The Xbox 360 mesh is the reference at 151.45 mm
-        /// across, and this pad's converted CAD measures 161.28 mm.</summary>
-        public override double ModelScale => 151.45 / 161.28;
+        /// across, and this pad's meshed STEP measures 161.17 mm.</summary>
+        public override double ModelScale => 151.45 / 161.17;
 
     }
 }

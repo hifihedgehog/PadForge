@@ -690,6 +690,15 @@ namespace PadForge.Views
                 "DPadRight" => _vm.DPadRight,
                 "LeftThumbButton" => _vm.LeftThumbButton,
                 "RightThumbButton" => _vm.RightThumbButton,
+                "ButtonQuickAccess" => _vm.ButtonQuickAccess,
+                "Paddle1" => _vm.Paddle1,
+                "Paddle2" => _vm.Paddle2,
+                "Paddle3" => _vm.Paddle3,
+                "Paddle4" => _vm.Paddle4,
+                "LeftGrip" => _vm.LeftGrip,
+                "RightGrip" => _vm.RightGrip,
+                "LeftTouchpadClick" => _vm.LeftTouchpadClick,
+                "RightTouchpadClick" => _vm.RightTouchpadClick,
                 _ => false
             };
         }

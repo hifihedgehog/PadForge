@@ -7,13 +7,19 @@ using Xunit;
 namespace PadForge.Tests
 {
     /// <summary>
-    /// #338: the Neptune input frame the steam-deck-composite persona will
-    /// submit. Every expectation is transcribed from the two references the
+    /// #338: the Neptune input frame the steam-deck-composite persona
+    /// submits. Every expectation is transcribed from the two references the
     /// packer cites: HandheldCompanion SteamDeckTarget.BuildReport (emitting
     /// side, proven against live Steam) and SDL's SteamDeckStatePacket_t +
     /// SDL_hidapi_steamdeck.c decode (consuming side). Where the two
     /// references disagree (gyro scale: HC 16 LSB/deg/s vs SDL 2000 deg/s
     /// full scale), the consuming side wins and the test pins that choice.
+    ///
+    /// <para>Raw indices here are the Deck family's wire table
+    /// (NintendoPreviewMap.PreviewByDeckBtn): A0 B1 X2 Y3 LB4 RB5 View6
+    /// Menu7 L3 8 R3 9 Steam10 QAM11, R4 L4 R5 L5 at 12..15, pad clicks 16
+    /// and 17. The packer resolves every slot through that table, so these
+    /// numbers are pinned in exactly one other place.</para>
     /// </summary>
     public class SteamDeckReportPackerTests
     {
@@ -24,8 +30,8 @@ namespace PadForge.Tests
             var raw = RawHidState.Create(8, 22, 1);
             raw.Povs[0] = -1;
             arrange?.Invoke(raw);
-            var dest = new byte[SteamDeckReportPacker.ReportSize];
-            SteamDeckReportPacker.ByProfileId["steam-deck-composite"](
+            var dest = new byte[ValveReportPackers.MaxReportSize];
+            ValveReportPackers.ForProfile("steam-deck-composite").Pack(
                 raw, tp, motion, packetNum, dest);
             return dest;
         }
@@ -33,20 +39,25 @@ namespace PadForge.Tests
         private static ushort U16(byte[] b, int off) => (ushort)(b[off] | (b[off + 1] << 8));
         private static short I16(byte[] b, int off) => (short)(b[off] | (b[off + 1] << 8));
 
-        /// <summary>The lookup is the activation gate: it must miss for
-        /// every profile id shipping today, so the lane stays inert until
-        /// HM#56 ships the persona.</summary>
+        /// <summary>The lookup is the activation gate. The four Valve persona
+        /// ids submit a native frame; every other profile rides the ordinary
+        /// raw-surface submit.</summary>
         [Theory]
-        [InlineData("steam-deck")]
-        [InlineData("steam-controller")]
-        [InlineData("dualsense-composite")]
-        [InlineData(null)]
-        public void ShippingProfiles_DoNotActivateTheLane(string id)
-            => Assert.Null(SteamDeckReportPacker.ForProfile(id));
-
-        [Fact]
-        public void PersonaProfile_Activates()
-            => Assert.NotNull(SteamDeckReportPacker.ForProfile("Steam-Deck-Composite"));
+        [InlineData("steam-deck-composite", true, 64)]
+        [InlineData("Steam-Deck-Composite", true, 64)]
+        [InlineData("steam-controller", true, 64)]
+        [InlineData("steam-controller-composite", true, 64)]
+        [InlineData("steam-controller-2", true, 54)]
+        [InlineData("steam-deck", false, 0)]
+        [InlineData("dualsense-composite", false, 0)]
+        [InlineData("padforge-custom", false, 0)]
+        [InlineData(null, false, 0)]
+        public void OnlyValvePersonasActivateTheLane(string id, bool active, int size)
+        {
+            var p = ValveReportPackers.ForProfile(id);
+            Assert.Equal(active, p != null);
+            if (active) Assert.Equal(size, p.Size);
+        }
 
         /// <summary>ValveInReport header: version 0x0001, type 0x09
         /// (ID_CONTROLLER_DECK_STATE), length 64.</summary>
@@ -75,7 +86,10 @@ namespace PadForge.Tests
         }
 
         /// <summary>Face and shoulder bits per STEAMDECK_LBUTTON: A 0x80,
-        /// B 0x20, X 0x40, Y 0x10, L 0x08, R 0x04 in byte 8.</summary>
+        /// B 0x20, X 0x40, Y 0x10, L 0x08, R 0x04 in byte 8. In byte 9,
+        /// View 0x10 and Menu 0x40 per SDL_hidapi_steamdeck.c lines 61-63;
+        /// this test once pinned them the other way round, transcribed
+        /// wrongly from the same file, until a spec-driven test caught it.</summary>
         [Theory]
         [InlineData(0, 8, 0x80)]   // A
         [InlineData(1, 8, 0x20)]   // B
@@ -83,9 +97,9 @@ namespace PadForge.Tests
         [InlineData(3, 8, 0x10)]   // Y
         [InlineData(4, 8, 0x08)]   // LB -> L
         [InlineData(5, 8, 0x04)]   // RB -> R
-        [InlineData(7, 9, 0x10)]   // Start -> Menu
+        [InlineData(7, 9, 0x40)]   // Start -> Menu
         [InlineData(10, 9, 0x20)]  // Guide -> Steam
-        [InlineData(6, 9, 0x40)]   // Back -> View
+        [InlineData(6, 9, 0x10)]   // Back -> View
         [InlineData(8, 10, 0x40)]  // LS -> L3
         [InlineData(11, 14, 0x04)] // QAM
         public void Buttons_LandOnTheirNeptuneBits(int rawIndex, int byteOff, byte bit)
@@ -167,20 +181,23 @@ namespace PadForge.Tests
             Assert.Equal(0, I16(b, 22));
         }
 
-        /// <summary>The single click slot clicks the touched pad, and the
+        /// <summary>The shared touch click clicks the touched pad, and the
         /// left one when neither is touched. Pressure mirrors the click at
-        /// full scale (HC's value).</summary>
+        /// full scale (HC's value). Each pad also has its own raw click slot
+        /// (16 left, 17 right), which clicks that pad regardless of touch.</summary>
         [Fact]
         public void PadClick_FollowsTheTouchedPad()
         {
-            var right = Pack(r => r.SetButton(16, true),
-                tp: new TouchpadState { Down1 = true, X1 = 0.5f, Y1 = 0.5f });
+            var right = Pack(tp: new TouchpadState { Down1 = true, X1 = 0.5f, Y1 = 0.5f, Click = true });
             Assert.Equal(0x04, right[10] & 0x06);          // right click only
             Assert.Equal(ushort.MaxValue, U16(right, 58)); // right pressure
 
-            var none = Pack(r => r.SetButton(16, true));
+            var none = Pack(tp: new TouchpadState { Click = true });
             Assert.Equal(0x02, none[10] & 0x06);           // left fallback
             Assert.Equal(ushort.MaxValue, U16(none, 56));
+
+            var slots = Pack(r => { r.SetButton(16, true); r.SetButton(17, true); });
+            Assert.Equal(0x06, slots[10] & 0x06);          // both, from their own slots
         }
 
         /// <summary>IMU frame and scale: the exact inverse of SDL's decode.

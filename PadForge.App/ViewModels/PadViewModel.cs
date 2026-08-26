@@ -371,6 +371,18 @@ namespace PadForge.ViewModels
             // GR, GL and C went missing from the Switch 2 Pro grid.
             if (MacroButtonNames.IsNintendoLetteredProfile(profile.Id))
                 buttons = MacroButtonNames.NintendoLetteredCountFor(profile.Id);
+            // Valve profiles declare next to nothing in their HID descriptor
+            // (the 2015 pad and the Deck persona 0 axes / 0 buttons, the
+            // 2026 pad 3 / 3), because the real shape of each device lives
+            // in its extended report. The canonical wire table is the
+            // authority for these, the same way it is for Nintendo.
+            if (MacroButtonNames.IsValveLetteredProfile(profile.Id))
+            {
+                _extendedConfig.ThumbstickCount = Models2D.NintendoPreviewMap.StickCount(profile.Id);
+                _extendedConfig.TriggerCount = Models2D.NintendoPreviewMap.TriggerCount(profile.Id);
+                _extendedConfig.PovCount = Models2D.NintendoPreviewMap.DPadIsHat(profile.Id) ? 1 : 0;
+                buttons = Models2D.NintendoPreviewMap.ButtonCount(profile.Id);
+            }
             _extendedConfig.ButtonCount = buttons;
         }
 
@@ -1336,6 +1348,25 @@ namespace PadForge.ViewModels
         private bool _rightPaddle;
         /// <summary>Switch 2 Pro GR, wire index 18.</summary>
         public bool RightPaddle { get => _rightPaddle; set => SetProperty(ref _rightPaddle, value); }
+
+        // Valve controls, written by the raw bridge from the family's wire
+        // table; they drive the 2D overlays and 3D mesh accents. Paddle
+        // handedness is the translator's: Paddle1 = R4, Paddle2 = L4,
+        // Paddle3 = R5, Paddle4 = L5. LeftGrip / RightGrip are the 2015
+        // pad's rear grips.
+        private bool _buttonQuickAccess;
+        public bool ButtonQuickAccess { get => _buttonQuickAccess; set => SetProperty(ref _buttonQuickAccess, value); }
+        private bool _paddle1, _paddle2, _paddle3, _paddle4;
+        public bool Paddle1 { get => _paddle1; set => SetProperty(ref _paddle1, value); }
+        public bool Paddle2 { get => _paddle2; set => SetProperty(ref _paddle2, value); }
+        public bool Paddle3 { get => _paddle3; set => SetProperty(ref _paddle3, value); }
+        public bool Paddle4 { get => _paddle4; set => SetProperty(ref _paddle4, value); }
+        private bool _leftGrip, _rightGrip;
+        public bool LeftGrip { get => _leftGrip; set => SetProperty(ref _leftGrip, value); }
+        public bool RightGrip { get => _rightGrip; set => SetProperty(ref _rightGrip, value); }
+        private bool _leftTouchpadClick, _rightTouchpadClick;
+        public bool LeftTouchpadClick { get => _leftTouchpadClick; set => SetProperty(ref _leftTouchpadClick, value); }
+        public bool RightTouchpadClick { get => _rightTouchpadClick; set => SetProperty(ref _rightTouchpadClick, value); }
 
         private bool _dpadUp;
         public bool DPadUp { get => _dpadUp; set => SetProperty(ref _dpadUp, value); }
@@ -2623,6 +2654,66 @@ namespace PadForge.ViewModels
             int triggerCount = cfg.TriggerCount;
 
             cfg.ComputeAxisLayout(out var stickAxisX, out var stickAxisY, out var triggerAxis);
+
+            if (_outputType == VirtualControllerType.Extended
+                && MacroButtonNames.IsValveLetteredProfile(ProfileId))
+            {
+                // Valve rows, arranged like the gamepad grids: face diamond,
+                // bumpers, View / Menu where Back / Start sit, Steam where
+                // Guide sits, Quick Access, stick clicks, the two pad
+                // clicks, the rear buttons, the D-pad (hat rows or button
+                // rows, whichever the wire carries), then the analog
+                // triggers and sticks. Every row names a ROLE; the wire
+                // index behind it comes from the canonical table.
+                void AddValve(string role)
+                {
+                    int i = Models2D.NintendoPreviewMap.IndexOf(ProfileId, role);
+                    if (i < 0) return;   // this pad has no such control
+                    Mappings.Add(new MappingItem(
+                        MacroButtonNames.RawButtonLabel(ProfileId, i + 1),
+                        $"RawBtn{i}", MappingCategory.Buttons));
+                }
+                foreach (var role in new[] {
+                    "ButtonA", "ButtonB", "ButtonX", "ButtonY",
+                    "LeftShoulder", "RightShoulder",
+                    "ButtonBack", "ButtonStart", "ButtonGuide", "ButtonQuickAccess",
+                    "LeftThumbButton", "RightThumbButton",
+                    "LeftTouchpadClick", "RightTouchpadClick",
+                    "Paddle1", "Paddle2", "Paddle3", "Paddle4",
+                    "LeftGrip", "RightGrip" })
+                    AddValve(role);
+
+                foreach (var (label, role, pov) in new[] {
+                    (Strings.Instance.Btn_DPadUp, "DPadUp", "RawPov0Up"),
+                    (Strings.Instance.Btn_DPadDown, "DPadDown", "RawPov0Down"),
+                    (Strings.Instance.Btn_DPadLeft, "DPadLeft", "RawPov0Left"),
+                    (Strings.Instance.Btn_DPadRight, "DPadRight", "RawPov0Right"),
+                })
+                {
+                    int i = Models2D.NintendoPreviewMap.IndexOf(ProfileId, role);
+                    Mappings.Add(new MappingItem(label, i >= 0 ? $"RawBtn{i}" : pov, MappingCategory.DPad));
+                }
+
+                int lt = Models2D.NintendoPreviewMap.AxisIndexOf(ProfileId, "LeftTrigger");
+                int rt = Models2D.NintendoPreviewMap.AxisIndexOf(ProfileId, "RightTrigger");
+                Mappings.Add(new MappingItem(Strings.Instance.Btn_LeftTrigger, $"RawAxis{lt}", MappingCategory.Triggers));
+                Mappings.Add(new MappingItem(Strings.Instance.Btn_RightTrigger, $"RawAxis{rt}", MappingCategory.Triggers));
+
+                int lx = Models2D.NintendoPreviewMap.AxisIndexOf(ProfileId, "LeftThumbAxisX");
+                int ly = Models2D.NintendoPreviewMap.AxisIndexOf(ProfileId, "LeftThumbAxisY");
+                int rx = Models2D.NintendoPreviewMap.AxisIndexOf(ProfileId, "RightThumbAxisX");
+                int ry = Models2D.NintendoPreviewMap.AxisIndexOf(ProfileId, "RightThumbAxisY");
+                Mappings.Add(new MappingItem(Strings.Instance.Btn_LeftStickX, $"RawAxis{lx}", MappingCategory.LeftStick, $"RawAxis{lx}Neg"));
+                Mappings.Add(new MappingItem(Strings.Instance.Btn_LeftStickY, $"RawAxis{ly}", MappingCategory.LeftStick, $"RawAxis{ly}Neg"));
+                // On the 2015 pad the "right stick" is the right trackpad
+                // ridden as a stick, which is how SDL and Steam treat it.
+                Mappings.Add(new MappingItem(Strings.Instance.Btn_RightStickX, $"RawAxis{rx}", MappingCategory.RightStick, $"RawAxis{rx}Neg"));
+                Mappings.Add(new MappingItem(Strings.Instance.Btn_RightStickY, $"RawAxis{ry}", MappingCategory.RightStick, $"RawAxis{ry}Neg"));
+
+                Mappings.Add(new MappingItem(Strings.Instance.Mapping_MotionGyro,  "MotionGyro",  MappingCategory.Motion));
+                Mappings.Add(new MappingItem(Strings.Instance.Mapping_MotionAccel, "MotionAccel", MappingCategory.Motion));
+                return;
+            }
 
             if (_outputType == VirtualControllerType.Nintendo)
             {
@@ -6573,7 +6664,7 @@ namespace PadForge.ViewModels
                     // engine parses "6:7"): Value is the index STRING so
                     // Serialize's name branch emits the raw pair intact,
                     // Display is the same lettering the mapping grid uses.
-                    var opts = new GyroLabeledOption[MacroButtonNames.NintendoLetteredCountFor(ProfileId)];
+                    var opts = new GyroLabeledOption[Models2D.NintendoPreviewMap.ButtonCount(ProfileId)];
                     for (int i = 0; i < opts.Length; i++)
                     {
                         int idx = i;
@@ -6670,9 +6761,9 @@ namespace PadForge.ViewModels
                             if (!int.TryParse(a, out int ia) || !int.TryParse(b, out int ib)
                                 || ia is < 0 or > 127 || ib is < 0 or > 127)
                             { _socdPreservedTokens.Add(token); continue; }
-                            if (_outputType == VirtualControllerType.Nintendo
-                                && ia < MacroButtonNames.NintendoLetteredCountFor(ProfileId)
-                                && ib < MacroButtonNames.NintendoLetteredCountFor(ProfileId))
+                            if (MacroButtonNames.IsLetteredProfile(ProfileId)
+                                && ia < Models2D.NintendoPreviewMap.ButtonCount(ProfileId)
+                                && ib < Models2D.NintendoPreviewMap.ButtonCount(ProfileId))
                             {
                                 // Lettered picker row over the same raw
                                 // grammar; indices past the lettered range
@@ -8026,7 +8117,9 @@ namespace PadForge.ViewModels
             // MacroButtonNames.NintendoExtendedLabel documents: face
             // B A Y X at 0-3, L R 4-5, ZL ZR 6-7, Minus Plus 8-9, stick
             // clicks 10-11, Home 12, Capture 13; hat 0; axes LX LY RX RY).
-            if (_outputType == VirtualControllerType.Nintendo)
+            if (_outputType == VirtualControllerType.Nintendo
+                || (_outputType == VirtualControllerType.Extended
+                    && MacroButtonNames.IsValveLetteredProfile(ProfileId)))
                 UpdateNintendoPreviewFromRaw(raw);
         }
 
@@ -8063,6 +8156,15 @@ namespace PadForge.ViewModels
                     case "ButtonC": ButtonC = down; break;
                     case "LeftPaddle": LeftPaddle = down; break;
                     case "RightPaddle": RightPaddle = down; break;
+                    case "ButtonQuickAccess": ButtonQuickAccess = down; break;
+                    case "Paddle1": Paddle1 = down; break;
+                    case "Paddle2": Paddle2 = down; break;
+                    case "Paddle3": Paddle3 = down; break;
+                    case "Paddle4": Paddle4 = down; break;
+                    case "LeftGrip": LeftGrip = down; break;
+                    case "RightGrip": RightGrip = down; break;
+                    case "LeftTouchpadClick": LeftTouchpadClick = down; break;
+                    case "RightTouchpadClick": RightTouchpadClick = down; break;
                     case "DPadUp": DPadUp = down; dpadOnButtons = true; break;
                     case "DPadDown": DPadDown = down; dpadOnButtons = true; break;
                     case "DPadLeft": DPadLeft = down; dpadOnButtons = true; break;
@@ -8091,10 +8193,21 @@ namespace PadForge.ViewModels
             // short.MinValue guard.
             short Ax(int i) => raw.Axes != null && i < raw.Axes.Length ? raw.Axes[i] : (short)0;
             static short FlipY(short v) => v == short.MinValue ? short.MaxValue : (short)-v;
-            RawThumbLX = Ax(0);
-            RawThumbLY = FlipY(Ax(1));
-            RawThumbRX = Ax(2);
-            RawThumbRY = FlipY(Ax(3));
+            // Axis slots come from the family's axis table: Nintendo packs
+            // LX LY RX RY at 0..3, Valve interleaves the analog triggers as
+            // LX LY LT RX RY RT.
+            int axLX = Models2D.NintendoPreviewMap.AxisIndexOf(ProfileId, "LeftThumbAxisX");
+            int axLY = Models2D.NintendoPreviewMap.AxisIndexOf(ProfileId, "LeftThumbAxisY");
+            int axRX = Models2D.NintendoPreviewMap.AxisIndexOf(ProfileId, "RightThumbAxisX");
+            int axRY = Models2D.NintendoPreviewMap.AxisIndexOf(ProfileId, "RightThumbAxisY");
+            int axLT = Models2D.NintendoPreviewMap.AxisIndexOf(ProfileId, "LeftTrigger");
+            int axRT = Models2D.NintendoPreviewMap.AxisIndexOf(ProfileId, "RightTrigger");
+            RawThumbLX = Ax(axLX);
+            RawThumbLY = FlipY(Ax(axLY));
+            RawThumbRX = Ax(axRX);
+            RawThumbRY = FlipY(Ax(axRY));
+            if (axLT >= 0) LeftTrigger = Math.Max(0, (int)Ax(axLT)) / 32767.0;
+            if (axRT >= 0) RightTrigger = Math.Max(0, (int)Ax(axRT)) / 32767.0;
 
             // Normalized stick + raw trigger displays: with the engine-state
             // stomp gone (see UpdateFromEngineState), this bridge is the sole

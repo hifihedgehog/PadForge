@@ -1792,16 +1792,16 @@ namespace PadForge.Common.Input
                             // the Sony USB personas ride below. The lookup
                             // misses for every profile shipping today; it
                             // lights the release HM ships the profile (HM#56).
-                            var deckPacker = SteamDeckReportPacker.ForProfile(hmExt.ProfileId);
-                            if (deckPacker != null)
+                            var valvePacker = ValveReportPackers.ForProfile(hmExt.ProfileId);
+                            if (valvePacker != null)
                             {
-                                deckPacker(
+                                valvePacker.Pack(
                                     CombinedRawHidStates[padIndex],
                                     CombinedTouchpadStates[padIndex],
                                     MotionSnapshots[padIndex],
                                     unchecked((uint)_deckFrameCounter++),
                                     _deckReportScratch);
-                                hmExt.SubmitRawReport(_deckReportScratch);
+                                hmExt.SubmitRawReport(new ReadOnlySpan<byte>(_deckReportScratch, 0, valvePacker.Size));
                             }
                             else
                             hmExt.SubmitRawHidState(

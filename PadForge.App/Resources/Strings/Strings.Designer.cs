@@ -2672,6 +2672,14 @@ public class Strings : INotifyPropertyChanged
     public string Btn_Capture => Get("Btn_Capture");
     public string Btn_GL => Get("Btn_GL");
     public string Btn_GR => Get("Btn_GR");
+    public string Btn_View => Get("Btn_View");
+    public string Btn_Menu => Get("Btn_Menu");
+    public string Btn_Steam => Get("Btn_Steam");
+    public string Btn_QuickAccess => Get("Btn_QuickAccess");
+    public string Btn_LeftGrip => Get("Btn_LeftGrip");
+    public string Btn_RightGrip => Get("Btn_RightGrip");
+    public string Btn_LeftPadClick => Get("Btn_LeftPadClick");
+    public string Btn_RightPadClick => Get("Btn_RightPadClick");
     public string Btn_C => Get("Btn_C");
     public string Btn_MicMute => Get("Btn_MicMute");
     public string Btn_LeftPaddle => Get("Btn_LeftPaddle");

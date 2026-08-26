@@ -776,7 +776,9 @@ namespace PadForge.Views
             // record handler's row lookup would miss every click. Translate
             // at the funnel; an element with no raw counterpart is ignored.
             if (DataContext is PadViewModel vm
-                && vm.OutputType == Engine.VirtualControllerType.Nintendo)
+                && (vm.OutputType == Engine.VirtualControllerType.Nintendo
+                    || (vm.OutputType == Engine.VirtualControllerType.Extended
+                        && MacroButtonNames.IsValveLetteredProfile(vm.ProfileId))))
             {
                 targetName = Models2D.NintendoPreviewMap.ToRaw(targetName, vm.ProfileId);
                 if (targetName == null) return;

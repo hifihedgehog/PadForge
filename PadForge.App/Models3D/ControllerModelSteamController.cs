@@ -79,12 +79,13 @@ namespace PadForge.Models3D
             // their cap's highlight and take the printed colours: the
             // pack's SC art prints ABXY in green, red, blue and yellow on
             // black caps, and the system glyphs in white.
-            var glyph = new DiffuseMaterial(new SolidColorBrush(
-                (Color)ColorConverter.ConvertFromString("#C8CCD0")));
-            AddRiderTo("ButtonA", "B1-Symbol.obj", Mat("#3CDB4E"));
-            AddRiderTo("ButtonB", "B2-Symbol.obj", Mat("#D04242"));
-            AddRiderTo("ButtonX", "B3-Symbol.obj", Mat("#4094D0"));
-            AddRiderTo("ButtonY", "B4-Symbol.obj", Mat("#ECDB33"));
+            // Glyph colours are the Xbox 360 class's own, already calibrated
+            // for this light rig.
+            var glyph = Mat("#D4D4D4");
+            AddRiderTo("ButtonA", "B1-Symbol.obj", Mat("#7cb63b"));
+            AddRiderTo("ButtonB", "B2-Symbol.obj", Mat("#ff5f4b"));
+            AddRiderTo("ButtonX", "B3-Symbol.obj", Mat("#6ac4f6"));
+            AddRiderTo("ButtonY", "B4-Symbol.obj", Mat("#faa51f"));
             AddRiderTo("ButtonStart", "StartIcon.obj", glyph);
             AddRiderTo("ButtonBack", "BackIcon.obj", glyph);
             AddRiderTo("ButtonGuide", "SpecialIcon.obj", glyph);
@@ -100,12 +101,15 @@ namespace PadForge.Models3D
                 list.Add(rider);
         }
 
-        /// <summary>Resting colours, sampled from this pad's own shipped 2D
-        /// art rather than picked, so the two previews agree and both match
-        /// the hardware. The five that cover the device are its body at
-        /// #1E2A30, a slightly cooler shell at #24303C, the trackpad
-        /// surfaces at #5A606C, the recesses at #424E54 and the button
-        /// discs at #1E1E1E.
+        /// <summary>Resting colours, on this tree's 3D convention rather than
+        /// sampled from 2D art. The app lights a model with one white
+        /// headlight at brightness 0.35 and an ember rim, and nothing else,
+        /// so a material shows at roughly a third of its hex. That is why the
+        /// Xbox 360 class writes black plastic as #707477, and every value
+        /// here is that value or a step off it, so this pad sits beside the
+        /// reference model as the same black plastic. The 2D art's #1E2A30,
+        /// used here once, rendered as a blue-grey under an orange rim at a
+        /// third of its brightness.
         ///
         /// <para>The face CAPS are dark, not lettered colours. On this pad
         /// the ABXY caps are black plastic with coloured glyphs printed on
@@ -114,11 +118,11 @@ namespace PadForge.Models3D
         /// carries as their own solids.</para></summary>
         private void PaintEverything()
         {
-            var body    = Mat("#1E2A30");
-            var shell   = Mat("#24303C");
-            var surface = Mat("#5A606C");
-            var recess  = Mat("#424E54");
-            var disc    = Mat("#1E1E1E");
+            var body    = Mat("#707477");
+            var shell   = Mat("#7A7E82");
+            var surface = Mat("#8C9095");
+            var recess  = Mat("#5A5E62");
+            var disc    = Mat("#4A4D50");
 
             Paint(MainBody, body);
             Paint(LeftShoulderTrigger, shell);

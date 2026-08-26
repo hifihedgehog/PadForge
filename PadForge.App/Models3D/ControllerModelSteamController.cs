@@ -26,9 +26,10 @@ namespace PadForge.Models3D
     /// carries no DPad entries either.</para>
     ///
     /// <para>The trackpads and the rear grip buttons are the controls the
-    /// standard table has no slot for. Valve ships each as its own solid
-    /// (the grips are the battery-door levers, which is what they
-    /// physically are on this pad), so each registers directly.</para>
+    /// standard table has no slot for. Each grip paddle is the FLARED WING
+    /// of the rear cover, which Valve models as one solid spanning both
+    /// handles, so the mesh tool splits the wings off it at the moulded
+    /// crease and hands each one the lever that sits behind it.</para>
     /// </summary>
     public class ControllerModelSteamController : ControllerModelBase
     {

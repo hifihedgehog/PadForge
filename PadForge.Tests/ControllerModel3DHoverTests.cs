@@ -211,20 +211,25 @@ namespace PadForge.Tests
                 $"cap {cap:F1} mm must sit inside collar {collar:F1} mm so the collar reads as a ring");
         }
 
-        /// <summary>The 2015 grip button is Valve's own BatteryLever solid, a
-        /// paddle in a slot at the top of each handle. An earlier round
-        /// carved it out of the bottom shell by facing and position instead,
-        /// which handed the WHOLE handle skin to the grip highlight.</summary>
+        /// <summary>The 2015 grip paddle is the FLARED WING of the rear
+        /// cover, split off the one solid Valve models the cover as. An
+        /// earlier round carved the paddle out of the bottom shell by facing
+        /// and position, which handed the whole handle skin to the grip
+        /// highlight and ran it right to the handle's tip.</summary>
         [Fact]
-        public void SteamController2015_GripIsThePaddleNotTheHandle()
+        public void SteamController2015_GripIsTheCoverWingNotTheHandle()
         {
             using var m = ControllerModelBase.Create("SteamController", null, false);
             var grip = m.ButtonMap["LeftGrip"][0].Bounds;
             var body = m.MainBody.Bounds;
+
+            // The paddle stops well short of the handle's tip. The carve
+            // that took the whole skin came within 0.1 mm of it.
+            double clearance = grip.Z - body.Z;
+            Assert.True(clearance > 15,
+                $"the grip reaches within {clearance:F1} mm of the handle tip: that is the handle, not the paddle");
             Assert.True(grip.SizeZ < body.SizeZ * 0.5,
                 $"the grip runs {grip.SizeZ:F1} mm down a {body.SizeZ:F1} mm body: that is the handle, not the paddle");
-            Assert.True(grip.SizeY < body.SizeY * 0.5,
-                $"the grip is {grip.SizeY:F1} mm deep on a {body.SizeY:F1} mm body: that is the handle, not the paddle");
         }
 
         /// <summary>A flat surface lying in the face plane, the shape of a

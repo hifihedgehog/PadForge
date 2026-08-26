@@ -69,7 +69,7 @@ PARTS = {
     "CaseTopGPrime":               ("MainBody.obj", 1.0),
     "CaseFrontGPrime":             ("MainBody.obj", 1.0),
     "CaseBottomGPrime":            ("MainBody.obj", 1.0),
-    "BatteryDoorMkVI":             ("MainBody.obj", 1.0),
+    "BatteryDoorMkVI":             ("COVER", 1.0),          # wings split off below
     "BumperGPrime":                ("BUMPER", 1.0),        # split L/R below
     "TriggerCapLeftJAG":           ("Shoulder-Left-Trigger.obj", 1.0),
     "TriggerCapRightJAG":          ("Shoulder-Right-Trigger.obj", 1.0),
@@ -82,12 +82,9 @@ PARTS = {
     # stick had no direction target and no visible collar at all.
     "ThumbTopGrip.01":             ("Joystick-Left-Ring.obj", 1.0),
     "ThumbTopBase.01":             ("LeftStickClick.obj", 1.0),
-    # The grip paddles. Valve models each as a lever 40 x 45 x 32 mm
-    # spanning its handle: the part a squeeze presses, and the battery
-    # door it doubles as. An earlier round called these "internal
-    # actuators" and carved the paddle out of the bottom shell by facing
-    # and position instead, which handed the WHOLE 82 mm handle skin to
-    # the grip highlight.
+    # The lever behind each grip paddle. Mostly hidden inside the handle,
+    # visible through a slot at the top, and part of the same control, so
+    # it rides the grip group with the paddle face split off the cover.
     "BatteryLeverLeft":            ("LeftGrip.obj", 1.0),
     "BatteryLeverRight":           ("RightGrip.obj", 1.0),
     "ButtonA-Shot2":               ("B1.obj", 1.0),
@@ -266,7 +263,25 @@ def main():
             continue
         target, min_size = PARTS[name]
         v, nrm, f = tessellate(shape, min_size)
-        if target == "BUMPER":
+        if target == "COVER":
+            # The rear cover is ONE solid shaped like a bat: a central
+            # battery-door panel carrying the Valve logo, with a WING
+            # flaring out over each handle. Those flares are the grip
+            # paddles (owner call), so they split off here the way the
+            # bumper solid splits into two shoulders.
+            #
+            # The crease between panel and wing sits at |x| = 30 mm. That
+            # is where the cover stops being flat and starts wrapping the
+            # handle: binned every 5 mm, its depth runs 8.2 mm just
+            # inboard of the crease and 11.2, 18.5 then 27.3 mm outboard.
+            # Rendering the cut against the moulded crease line puts it on
+            # top of it.
+            cx = v[f][:, :, 0].mean(axis=1)
+            meshes.setdefault("LeftGrip.obj", []).append((v, nrm, f[cx < -30.0]))
+            meshes.setdefault("RightGrip.obj", []).append((v, nrm, f[cx > 30.0]))
+            meshes.setdefault("MainBody.obj", []).append(
+                (v, nrm, f[(cx >= -30.0) & (cx <= 30.0)]))
+        elif target == "BUMPER":
             # One solid spanning both sides; split on the centreline so
             # each shoulder is its own highlight target.
             cx = v[f][:, :, 0].mean(axis=1)

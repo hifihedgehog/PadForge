@@ -63,6 +63,21 @@ namespace PadForge.Models3D
             RegisterButton("RightTouchpadClick", RightPad);
             model3DGroup.Children.Add(RightPad);
 
+            // This pad's trackpads are not two of a kind. SDL drives the
+            // LEFT one as the D-pad and the RIGHT one as the right
+            // thumbstick, in its own words: "the left pad is normally
+            // mapped to D-Pad" and "the right pad is normally mapped to
+            // right thumbstick" (SDL_hidapi_steam.c 1655 and 1673), with
+            // RIGHTX and RIGHTY reading sRightPadX/Y at 1650 and the hat
+            // reading the left pad's four quadrant bits at 1630. Valve
+            // even moulds a D-pad cross into the left cover and names the
+            // solid TrackPadCoverDirectional against the right one's
+            // TrackPadCoverSmooth. So each pad's quadrants are directions
+            // and its middle is the click.
+            RegisterQuadrants(LeftPad, "DPadUp", "DPadDown", "DPadLeft", "DPadRight");
+            RegisterQuadrants(RightPad,
+                "RightThumbAxisYNeg", "RightThumbAxisY", "RightThumbAxisXNeg", "RightThumbAxisX");
+
             LeftGripButton = LoadModel("LeftGrip.obj");
             RegisterButton("LeftGrip", LeftGripButton);
             model3DGroup.Children.Add(LeftGripButton);
@@ -139,6 +154,11 @@ namespace PadForge.Models3D
             PaintTarget("LeftTouchpadClick", surface);
             PaintTarget("RightTouchpadClick", surface);
             PaintTarget("LeftThumbButton", recess);
+            // The knurled cap is its own solid and its own control (the
+            // stick's directions), so it is painted here rather than riding
+            // the click mesh's PaintTarget. A shade below the collar under
+            // it, which is what makes the collar read as a ring.
+            Paint(LeftThumbRing, disc);
             PaintTarget("ButtonBack", recess);
             PaintTarget("ButtonStart", recess);
             PaintTarget("ButtonGuide", disc);

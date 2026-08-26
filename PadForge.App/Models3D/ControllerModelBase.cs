@@ -34,6 +34,26 @@ namespace PadForge.Models3D
         /// <summary>Model3DGroup → PadSetting name for hit-test click-to-record.</summary>
         public Dictionary<Model3DGroup, string> ClickMap = new();
 
+        /// <summary>Surfaces whose hover resolves BY QUADRANT rather than as
+        /// one target. The four names are up, down, left and right in model
+        /// space (X across the face, +Z toward its top edge).
+        ///
+        /// <para>A stick's cap is the usual case: its quadrants are the four
+        /// axis directions. The 2015 Steam Controller is the interesting one.
+        /// SDL maps its LEFT trackpad to the D-pad and its RIGHT trackpad to
+        /// the right thumbstick, and says so in the driver ("the left pad is
+        /// normally mapped to D-Pad", "the right pad is normally mapped to
+        /// right thumbstick", SDL_hidapi_steam.c 1655 and 1673, with RIGHTX
+        /// and RIGHTY reading sRightPadX/Y at 1650). Valve moulds a D-pad
+        /// cross into that left pad and names the solid
+        /// TrackPadCoverDirectional. So those two pads carry directions.</para>
+        ///
+        /// <para>A surface that is ALSO in <see cref="ClickMap"/> splits by
+        /// radius: the outer half reads as a direction, the middle stays the
+        /// click. A surface that is only here is directions edge to
+        /// edge.</para></summary>
+        public readonly Dictionary<Model3DGroup, string[]> QuadrantMap = new();
+
         // ─────────────────────────────────────────────
         //  Materials
         // ─────────────────────────────────────────────
@@ -184,16 +204,20 @@ namespace PadForge.Models3D
                     RightThumb = group;
             }
 
-            // The stick-button highlight covers the WHOLE stick: the ring
-            // (cap + knurl riders) joins the thumb-button group list so
-            // press/hover/flash glow it with the click mesh (owner ruling:
-            // the cap texture glows just like the rest of the stick). Not
-            // via RegisterButton: the ring stays a quadrant/axis click
-            // target, never a ButtonMap ClickMap entry.
-            if (ButtonMap.TryGetValue("LeftThumbButton", out var ltList) && LeftThumbRing != null)
-                ltList.Add(LeftThumbRing);
-            if (ButtonMap.TryGetValue("RightThumbButton", out var rtList) && RightThumbRing != null)
-                rtList.Add(RightThumbRing);
+            // Each stick's cap carries its four axis directions by quadrant.
+            // A pad with no separate cap solid falls back to its click mesh,
+            // which then splits by radius, so every stick has a direction
+            // target whatever its mesh split looks like.
+            //
+            // The cap is NOT part of the stick BUTTON's highlight. It used to
+            // be, which meant pressing or hovering the click lit the entire
+            // stick and the two controls a stick carries looked like one. The
+            // Steam Deck showed it plainly, its cap and its collar being
+            // separate solids, and that is where the owner called it.
+            RegisterQuadrants(LeftThumbRing ?? LeftThumb,
+                "LeftThumbAxisYNeg", "LeftThumbAxisY", "LeftThumbAxisXNeg", "LeftThumbAxisX");
+            RegisterQuadrants(RightThumbRing ?? RightThumb,
+                "RightThumbAxisYNeg", "RightThumbAxisY", "RightThumbAxisXNeg", "RightThumbAxisX");
 
             // Add non-button parts to scene, skipping the ones this pad
             // does not have.
@@ -207,6 +231,14 @@ namespace PadForge.Models3D
         // ─────────────────────────────────────────────
         //  Button registration
         // ─────────────────────────────────────────────
+
+        /// <summary>Registers a surface whose quadrants are four targets,
+        /// in up / down / left / right order. See <see cref="QuadrantMap"/>.</summary>
+        protected void RegisterQuadrants(Model3DGroup group, string up, string down, string left, string right)
+        {
+            if (group == null) return;
+            QuadrantMap[group] = new[] { up, down, left, right };
+        }
 
         protected void RegisterButton(string padSettingName, Model3DGroup group)
         {
@@ -541,6 +573,7 @@ namespace PadForge.Models3D
             if (disposing)
             {
                 ButtonMap?.Clear();
+                QuadrantMap?.Clear();
                 ClickMap?.Clear();
                 DefaultMaterials?.Clear();
                 HighlightMaterials?.Clear();

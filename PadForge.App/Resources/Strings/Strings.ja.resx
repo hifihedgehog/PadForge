@@ -1034,6 +1034,14 @@
   <data name="Btn_Capture" xml:space="preserve"><value>キャプチャー</value></data>
   <data name="Btn_GL" xml:space="preserve"><value>GL</value></data>
   <data name="Btn_GR" xml:space="preserve"><value>GR</value></data>
+  <data name="Btn_View" xml:space="preserve"><value>ビュー</value></data>
+  <data name="Btn_Menu" xml:space="preserve"><value>メニュー</value></data>
+  <data name="Btn_Steam" xml:space="preserve"><value>Steam</value></data>
+  <data name="Btn_QuickAccess" xml:space="preserve"><value>クイックアクセス</value></data>
+  <data name="Btn_LeftGrip" xml:space="preserve"><value>左グリップ</value></data>
+  <data name="Btn_RightGrip" xml:space="preserve"><value>右グリップ</value></data>
+  <data name="Btn_LeftPadClick" xml:space="preserve"><value>左パッドクリック</value></data>
+  <data name="Btn_RightPadClick" xml:space="preserve"><value>右パッドクリック</value></data>
   <data name="Btn_C" xml:space="preserve"><value>C</value></data>
   <data name="Btn_MicMute" xml:space="preserve"><value>ミュート</value></data>
   <data name="Btn_LeftPaddle" xml:space="preserve"><value>左バックボタン</value></data>

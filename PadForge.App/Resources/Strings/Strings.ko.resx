@@ -1034,6 +1034,14 @@
   <data name="Btn_Capture" xml:space="preserve"><value>캡처</value></data>
   <data name="Btn_GL" xml:space="preserve"><value>GL</value></data>
   <data name="Btn_GR" xml:space="preserve"><value>GR</value></data>
+  <data name="Btn_View" xml:space="preserve"><value>보기</value></data>
+  <data name="Btn_Menu" xml:space="preserve"><value>메뉴</value></data>
+  <data name="Btn_Steam" xml:space="preserve"><value>Steam</value></data>
+  <data name="Btn_QuickAccess" xml:space="preserve"><value>빠른 액세스</value></data>
+  <data name="Btn_LeftGrip" xml:space="preserve"><value>왼쪽 그립</value></data>
+  <data name="Btn_RightGrip" xml:space="preserve"><value>오른쪽 그립</value></data>
+  <data name="Btn_LeftPadClick" xml:space="preserve"><value>왼쪽 패드 클릭</value></data>
+  <data name="Btn_RightPadClick" xml:space="preserve"><value>오른쪽 패드 클릭</value></data>
   <data name="Btn_C" xml:space="preserve"><value>C</value></data>
   <data name="Btn_MicMute" xml:space="preserve"><value>음소거</value></data>
   <data name="Btn_LeftPaddle" xml:space="preserve"><value>왼쪽 back 버튼</value></data>

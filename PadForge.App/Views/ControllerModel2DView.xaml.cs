@@ -655,6 +655,15 @@ namespace PadForge.Views
             SetOverlayVisible("RightPaddle", _vm.RightPaddle);
             SetOverlayVisible("LeftThumbButton", _vm.LeftThumbButton);
             SetOverlayVisible("RightThumbButton", _vm.RightThumbButton);
+            SetOverlayVisible("ButtonQuickAccess", _vm.ButtonQuickAccess);
+            SetOverlayVisible("Paddle1", _vm.Paddle1);
+            SetOverlayVisible("Paddle2", _vm.Paddle2);
+            SetOverlayVisible("Paddle3", _vm.Paddle3);
+            SetOverlayVisible("Paddle4", _vm.Paddle4);
+            SetOverlayVisible("LeftGrip", _vm.LeftGrip);
+            SetOverlayVisible("RightGrip", _vm.RightGrip);
+            SetOverlayVisible("LeftTouchpadClick", _vm.LeftTouchpadClick);
+            SetOverlayVisible("RightTouchpadClick", _vm.RightTouchpadClick);
         }
 
         private void UpdateTriggers()

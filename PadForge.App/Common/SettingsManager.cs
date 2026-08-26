@@ -790,7 +790,48 @@ namespace PadForge.Common.Input
                     return ps;
                 }
 
-                if (outputType == Engine.VirtualControllerType.Nintendo)
+                if (outputType == Engine.VirtualControllerType.Extended
+                    && Models2D.NintendoPreviewMap.IsValve(profileId))
+                {
+                    // Valve automap. Same posture as the Nintendo block
+                    // below: every binding names a ROLE and the canonical
+                    // wire table resolves the raw index, so the three Valve
+                    // wires (Deck, 2015, 2026) share this one block. Source
+                    // indices are the SDL3 XInput-backend order the generic
+                    // gamepad automap below uses; the D-pad rides the hat on
+                    // the Deck and the 2015 pad and four buttons on the
+                    // 2026 pad, and the table decides which.
+                    void MapValve(string role, string source)
+                    {
+                        int i = Models2D.NintendoPreviewMap.IndexOf(profileId, role);
+                        if (i >= 0) ps.SetRawMapping($"RawBtn{i}", source);
+                    }
+                    for (int a = 0; a < 6; a++)
+                        if (HasAxis(a)) ps.SetRawMapping($"RawAxis{a}", $"Axis {a}");
+                    if (HasButton(0)) MapValve("ButtonA", "Button 0");
+                    if (HasButton(1)) MapValve("ButtonB", "Button 1");
+                    if (HasButton(2)) MapValve("ButtonX", "Button 2");
+                    if (HasButton(3)) MapValve("ButtonY", "Button 3");
+                    if (HasButton(4)) MapValve("LeftShoulder", "Button 4");
+                    if (HasButton(5)) MapValve("RightShoulder", "Button 5");
+                    if (HasButton(6)) MapValve("ButtonBack", "Button 6");
+                    if (HasButton(7)) MapValve("ButtonStart", "Button 7");
+                    if (HasButton(8)) MapValve("LeftThumbButton", "Button 8");
+                    if (HasButton(9)) MapValve("RightThumbButton", "Button 9");
+                    if (HasButton(10)) MapValve("ButtonGuide", "Button 10");
+                    if (HasHat())
+                    {
+                        foreach (var role in new[] { "DPadUp", "DPadDown", "DPadLeft", "DPadRight" })
+                        {
+                            string source = "POV 0 " + role.Substring(4);
+                            int i = Models2D.NintendoPreviewMap.IndexOf(profileId, role);
+                            if (i >= 0) ps.SetRawMapping($"RawBtn{i}", source);
+                            else ps.SetRawMapping("RawPov0" + role.Substring(4), source);
+                        }
+                    }
+                    ps.FlushRawMappings();
+                }
+                else if (outputType == Engine.VirtualControllerType.Nintendo)
                 {
                     // Nintendo (switch-pro) positional automap: the physical
                     // PLACEMENT of the source pad's controls lands on the

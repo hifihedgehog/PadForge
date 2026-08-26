@@ -7069,6 +7069,20 @@ namespace PadForge.ViewModels
             && (string.Equals(profileId, "switch-pro", StringComparison.OrdinalIgnoreCase)
                 || profileId.StartsWith("switch2-pro", StringComparison.OrdinalIgnoreCase));
 
+        /// <summary>Valve lettering gate: the Steam Deck, the 2015 Steam
+        /// Controller and the 2026 Steam Controller families, whose rows
+        /// carry the controls' own names (Steam, Quick Access, L4, Left
+        /// Grip, Left Pad Click) instead of "Button N". The wire order
+        /// lives in NintendoPreviewMap, which is the raw wire map for every
+        /// lettered family despite its name.</summary>
+        public static bool IsValveLetteredProfile(string profileId) =>
+            PadForge.Models2D.NintendoPreviewMap.IsValve(profileId);
+
+        /// <summary>Any profile whose raw grid is lettered rather than
+        /// numbered: the two Nintendo families or the three Valve ones.</summary>
+        public static bool IsLetteredProfile(string profileId) =>
+            IsNintendoLetteredProfile(profileId) || IsValveLetteredProfile(profileId);
+
         /// <summary>True for the Switch 2 Pro family specifically. Its wire
         /// order is NOT the original Pro Controller's: the D-pad rides four
         /// buttons instead of a hat, the left-hand controls sit above the
@@ -7136,6 +7150,55 @@ namespace PadForge.ViewModels
             _ => null,
         };
 
+        /// <summary>Label for a wire ROLE on a Valve pad. Names follow
+        /// Valve's own: View and Menu on the Deck and the 2026 pad, Back
+        /// and Start on the 2015 pad (SDL calls its bits MENU and ESCAPE),
+        /// Steam, Quick Access, the rear buttons by their printed L4 / L5 /
+        /// R4 / R5 on the Deck and 2026 pad and Left / Right Grip on the
+        /// 2015 pad, and the two pad clicks.</summary>
+        private static string ValveRoleLabel(string profileId, string role)
+        {
+            bool sc15 = PadForge.Models2D.NintendoPreviewMap.FamilyOf(profileId)
+                == PadForge.Models2D.NintendoPreviewMap.Family.SteamController;
+            return role switch
+            {
+                "ButtonA" => "A",
+                "ButtonB" => "B",
+                "ButtonX" => "X",
+                "ButtonY" => "Y",
+                "LeftShoulder" => Strings.Instance.Btn_L1,
+                "RightShoulder" => Strings.Instance.Btn_R1,
+                "ButtonBack" => sc15 ? Strings.Instance.Btn_Back : Strings.Instance.Btn_View,
+                "ButtonStart" => sc15 ? Strings.Instance.Btn_Start : Strings.Instance.Btn_Menu,
+                "ButtonGuide" => Strings.Instance.Btn_Steam,
+                "ButtonQuickAccess" => Strings.Instance.Btn_QuickAccess,
+                "LeftThumbButton" => sc15 ? Strings.Instance.Btn_L3 : Strings.Instance.Btn_L3,
+                "RightThumbButton" => Strings.Instance.Btn_R3,
+                "Paddle1" => "R4",
+                "Paddle2" => "L4",
+                "Paddle3" => "R5",
+                "Paddle4" => "L5",
+                "LeftGrip" => Strings.Instance.Btn_LeftGrip,
+                "RightGrip" => Strings.Instance.Btn_RightGrip,
+                "LeftTouchpadClick" => Strings.Instance.Btn_LeftPadClick,
+                "RightTouchpadClick" => Strings.Instance.Btn_RightPadClick,
+                "DPadUp" => Strings.Instance.Btn_DPadUp,
+                "DPadDown" => Strings.Instance.Btn_DPadDown,
+                "DPadLeft" => Strings.Instance.Btn_DPadLeft,
+                "DPadRight" => Strings.Instance.Btn_DPadRight,
+                _ => null,
+            };
+        }
+
+        /// <summary>Lettered label for a Valve profile's raw button index.
+        /// Index to role comes from the canonical wire table.</summary>
+        public static string ValveLetteredLabel(string profileId, int index)
+        {
+            var table = PadForge.Models2D.NintendoPreviewMap.ButtonTable(profileId);
+            if (index < 0 || index >= table.Length) return null;
+            return ValveRoleLabel(profileId, table[index]);
+        }
+
         /// <summary>Lettered label for whichever Nintendo profile is active.
         /// Index -> role comes from the canonical wire table, role -> words
         /// from NintendoRoleLabel. Neither step knows a wire order.</summary>
@@ -7153,6 +7216,8 @@ namespace PadForge.ViewModels
         /// picker, output-channel dropdown).</summary>
         public static string RawButtonLabel(string profileId, int number) =>
             (IsNintendoLetteredProfile(profileId) ? NintendoLetteredLabel(profileId, number - 1) : null)
+            ?? (IsValveLetteredProfile(profileId) ? ValveLetteredLabel(profileId, number - 1) : null)
+            ?? (IsValveLetteredProfile(profileId) ? ValveLetteredLabel(profileId, number - 1) : null)
             ?? string.Format(Strings.Instance.Extended_Button_Format, number);
 
         /// <summary>Compact-label twin of <see cref="RawButtonLabel"/>

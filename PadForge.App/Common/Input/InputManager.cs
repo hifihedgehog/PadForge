@@ -573,7 +573,7 @@ namespace PadForge.Common.Input
         /// (#338). unPacketNum must increment: SDL's struct comment licenses
         /// consumers to skip processing while it is unchanged.</summary>
         private long _deckFrameCounter;
-        private readonly byte[] _deckReportScratch = new byte[SteamDeckReportPacker.ReportSize];
+        private readonly byte[] _deckReportScratch = new byte[ValveReportPackers.MaxReportSize];
 
         /// <summary>
         /// DSU motion server reference. When set, the polling thread broadcasts

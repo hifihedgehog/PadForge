@@ -1038,6 +1038,14 @@
   <data name="Btn_Capture" xml:space="preserve"><value>Cattura</value></data>
   <data name="Btn_GL" xml:space="preserve"><value>GL</value></data>
   <data name="Btn_GR" xml:space="preserve"><value>GR</value></data>
+  <data name="Btn_View" xml:space="preserve"><value>Vista</value></data>
+  <data name="Btn_Menu" xml:space="preserve"><value>Menu</value></data>
+  <data name="Btn_Steam" xml:space="preserve"><value>Steam</value></data>
+  <data name="Btn_QuickAccess" xml:space="preserve"><value>Accesso rapido</value></data>
+  <data name="Btn_LeftGrip" xml:space="preserve"><value>Impugnatura sinistra</value></data>
+  <data name="Btn_RightGrip" xml:space="preserve"><value>Impugnatura destra</value></data>
+  <data name="Btn_LeftPadClick" xml:space="preserve"><value>Clic pad sinistro</value></data>
+  <data name="Btn_RightPadClick" xml:space="preserve"><value>Clic pad destro</value></data>
   <data name="Btn_C" xml:space="preserve"><value>C</value></data>
   <data name="Btn_MicMute" xml:space="preserve"><value>Muto</value></data>
   <data name="Btn_LeftPaddle" xml:space="preserve"><value>Tasto posteriore sinistro</value></data>

@@ -346,18 +346,7 @@ namespace PadForge.Views
                 // (no hover / click / highlight) for controls it does not
                 // have, while the owning profile wires them into the
                 // click-to-record + highlight maps.
-                _currentModel = needed switch
-                {
-                    "DS4" => new ControllerModelDS4(appearance ?? "JetBlack"),
-                    "DualSense" => new ControllerModelDualSense(appearance ?? "White"),
-                    "DualSenseEdge" => new ControllerModelDualSenseEdge(),
-                    "Switch2Pro" => new ControllerModelSwitch2Pro(wantExtraControls),
-                    "XboxSeries" => new ControllerModelXboxSeries(appearance ?? "Carbon", wantExtraControls),
-                    "SteamDeck" => new ControllerModelSteamDeck(),
-                    "SteamController" => new ControllerModelSteamController(),
-                    "SteamController2" => new ControllerModelSteamController2(),
-                    _ => new ControllerModelXbox360()
-                };
+                _currentModel = ControllerModelBase.Create(needed, appearance, wantExtraControls);
                 _currentModelExtraControlsEnabled = wantExtraControls;
                 _currentModelAppearance = appearance;
                 UpdateAppearancePicker(needed);
@@ -575,22 +564,57 @@ namespace PadForge.Views
         //  Button highlighting (adapted from HC HighLightButtons)
         // ─────────────────────────────────────────────
 
-        /// <summary>PadSetting property name → getter that reads the current bool from the VM.</summary>
-        private static readonly string[] ButtonProperties =
+        /// <summary>Every button role the preview drives, each with the
+        /// reader that pulls its current state off the view model.
+        ///
+        /// <para>ONE table, because two hand-kept lists drifted and the
+        /// drift shipped: the reader switch grew the Valve roles (Quick
+        /// Access, the four rear buttons, the grips, the two pad clicks)
+        /// while the array the press loop iterates did not, so those
+        /// controls were read by nothing and never lit on any Valve model.
+        /// Adding a role here now reaches both halves at once.</para></summary>
+        private static readonly (string Name, Func<PadViewModel, bool> Read)[] ButtonReaders =
         {
-            "ButtonA", "ButtonB", "ButtonX", "ButtonY",
-            "LeftShoulder", "RightShoulder",
-            "ButtonBack", "ButtonStart", "ButtonGuide",
-            "ButtonShare",
-            "ButtonMute",
-            "LeftFunction",
-            "RightFunction",
-            "ButtonC",
-            "LeftPaddle",
-            "RightPaddle",
-            "DPadUp", "DPadDown", "DPadLeft", "DPadRight",
-            "LeftThumbButton", "RightThumbButton"
+            ("ButtonA", vm => vm.ButtonA),
+            ("ButtonB", vm => vm.ButtonB),
+            ("ButtonX", vm => vm.ButtonX),
+            ("ButtonY", vm => vm.ButtonY),
+            ("LeftShoulder", vm => vm.LeftShoulder),
+            ("RightShoulder", vm => vm.RightShoulder),
+            ("ButtonBack", vm => vm.ButtonBack),
+            ("ButtonStart", vm => vm.ButtonStart),
+            ("ButtonGuide", vm => vm.ButtonGuide),
+            ("ButtonShare", vm => vm.ButtonShare),
+            ("ButtonMute", vm => vm.ButtonMute),
+            ("LeftFunction", vm => vm.LeftFunction),
+            ("RightFunction", vm => vm.RightFunction),
+            ("ButtonC", vm => vm.ButtonC),
+            ("LeftPaddle", vm => vm.LeftPaddle),
+            ("RightPaddle", vm => vm.RightPaddle),
+            ("DPadUp", vm => vm.DPadUp),
+            ("DPadDown", vm => vm.DPadDown),
+            ("DPadLeft", vm => vm.DPadLeft),
+            ("DPadRight", vm => vm.DPadRight),
+            ("LeftThumbButton", vm => vm.LeftThumbButton),
+            ("RightThumbButton", vm => vm.RightThumbButton),
+            ("ButtonQuickAccess", vm => vm.ButtonQuickAccess),
+            ("Paddle1", vm => vm.Paddle1),
+            ("Paddle2", vm => vm.Paddle2),
+            ("Paddle3", vm => vm.Paddle3),
+            ("Paddle4", vm => vm.Paddle4),
+            ("LeftGrip", vm => vm.LeftGrip),
+            ("RightGrip", vm => vm.RightGrip),
+            ("LeftTouchpadClick", vm => vm.LeftTouchpadClick),
+            ("RightTouchpadClick", vm => vm.RightTouchpadClick),
         };
+
+        /// <summary>The roles above, by name. Derived, never hand-listed.</summary>
+        private static readonly string[] ButtonProperties =
+            System.Linq.Enumerable.ToArray(
+                System.Linq.Enumerable.Select(ButtonReaders, r => r.Name));
+
+        private static readonly Dictionary<string, Func<PadViewModel, bool>> ButtonReaderByName =
+            System.Linq.Enumerable.ToDictionary(ButtonReaders, r => r.Name, r => r.Read, StringComparer.Ordinal);
 
         private void HighlightButtons()
         {
@@ -600,12 +624,12 @@ namespace PadForge.Views
             string hoverTarget = _hoverGroup != null
                 && _currentModel.ClickMap.TryGetValue(_hoverGroup, out var ht) ? ht : null;
 
-            foreach (var prop in ButtonProperties)
+            foreach (var (prop, read) in ButtonReaders)
             {
                 if (!_currentModel.ButtonMap.TryGetValue(prop, out var groups))
                     continue;
 
-                bool pressed = GetButtonState(prop);
+                bool pressed = _vm != null && read(_vm);
                 if (prop == hoverTarget)
                     continue;
 
@@ -664,44 +688,9 @@ namespace PadForge.Views
         }
 
         private bool GetButtonState(string prop)
-        {
-            if (_vm == null) return false;
-            return prop switch
-            {
-                "ButtonA" => _vm.ButtonA,
-                "ButtonB" => _vm.ButtonB,
-                "ButtonX" => _vm.ButtonX,
-                "ButtonY" => _vm.ButtonY,
-                "LeftShoulder" => _vm.LeftShoulder,
-                "RightShoulder" => _vm.RightShoulder,
-                "ButtonBack" => _vm.ButtonBack,
-                "ButtonStart" => _vm.ButtonStart,
-                "ButtonGuide" => _vm.ButtonGuide,
-                "ButtonShare" => _vm.ButtonShare,
-                "ButtonMute" => _vm.ButtonMute,
-                "LeftFunction" => _vm.LeftFunction,
-                "RightFunction" => _vm.RightFunction,
-                "ButtonC" => _vm.ButtonC,
-                "LeftPaddle" => _vm.LeftPaddle,
-                "RightPaddle" => _vm.RightPaddle,
-                "DPadUp" => _vm.DPadUp,
-                "DPadDown" => _vm.DPadDown,
-                "DPadLeft" => _vm.DPadLeft,
-                "DPadRight" => _vm.DPadRight,
-                "LeftThumbButton" => _vm.LeftThumbButton,
-                "RightThumbButton" => _vm.RightThumbButton,
-                "ButtonQuickAccess" => _vm.ButtonQuickAccess,
-                "Paddle1" => _vm.Paddle1,
-                "Paddle2" => _vm.Paddle2,
-                "Paddle3" => _vm.Paddle3,
-                "Paddle4" => _vm.Paddle4,
-                "LeftGrip" => _vm.LeftGrip,
-                "RightGrip" => _vm.RightGrip,
-                "LeftTouchpadClick" => _vm.LeftTouchpadClick,
-                "RightTouchpadClick" => _vm.RightTouchpadClick,
-                _ => false
-            };
-        }
+            => _vm != null
+            && ButtonReaderByName.TryGetValue(prop, out var read)
+            && read(_vm);
 
         // ─────────────────────────────────────────────
         //  Joystick tilt (adapted from HC UpdateJoystick)
@@ -1509,7 +1498,46 @@ namespace PadForge.Views
                 return true;
             }
 
+            // A pad with no separate ring solid still needs direction hover
+            // on its stick. The 2015 Steam Controller is the case: its bezel
+            // is a hole in the case rather than a part, so it has no ring
+            // group and its stick offered no axis target at all. The cap
+            // stands in for the ring, split by radius: the outer half of the
+            // head reads as a direction, the middle stays the click target
+            // the ClickMap resolves.
+            if (_currentModel.LeftThumbRing == null
+                && _currentModel.LeftThumb?.Children.Contains(hitGeo) == true
+                && IsOuterCapHit(_currentModel.LeftThumb, localHitPos))
+            {
+                axis = DetermineAxisFromQuadrant(localHitPos,
+                    MeshCentroid(_currentModel.LeftThumb), "LeftThumbAxisX", "LeftThumbAxisY");
+                return true;
+            }
+            if (_currentModel.RightThumbRing == null
+                && _currentModel.RightThumb?.Children.Contains(hitGeo) == true
+                && IsOuterCapHit(_currentModel.RightThumb, localHitPos))
+            {
+                axis = DetermineAxisFromQuadrant(localHitPos,
+                    MeshCentroid(_currentModel.RightThumb), "RightThumbAxisX", "RightThumbAxisY");
+                return true;
+            }
+
             return false;
+        }
+
+        /// <summary>True when a hit on a ring-less stick head lands on its
+        /// OUTER half, measured in the X/Z plane the quadrant math uses.
+        /// Half the head's radius leaves a comfortable click zone in the
+        /// middle while every edge reads as a direction.</summary>
+        private static bool IsOuterCapHit(Model3DGroup cap, Point3D localHitPos)
+        {
+            var b = cap.Bounds;
+            if (b.IsEmpty) return false;
+            double rx = b.SizeX / 2.0, rz = b.SizeZ / 2.0;
+            if (rx <= 0 || rz <= 0) return false;
+            double nx = (localHitPos.X - (b.X + rx)) / rx;
+            double nz = (localHitPos.Z - (b.Z + rz)) / rz;
+            return nx * nx + nz * nz > 0.25;
         }
 
         /// <summary>Bounding-box centroid of a Model3DGroup in its own local

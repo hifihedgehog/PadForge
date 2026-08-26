@@ -88,20 +88,26 @@ namespace PadForge.Models3D
             PaintEverything();
         }
 
-        /// <summary>Resting colours, sampled from this pad's own shipped 2D
-        /// art so the two previews agree: body #1E2A30, trackpad and stick
-        /// surfaces #5A606C, recesses #424E54, button discs #1E1E1E.
+        /// <summary>Resting colours, on this tree's 3D convention rather than
+        /// sampled from 2D art. The app lights a model with one white
+        /// headlight at brightness 0.35 and an ember rim, and nothing else,
+        /// so a material shows at roughly a third of its hex. That is why the
+        /// Xbox 360 class writes black plastic as #707477, and every value
+        /// here is that value or a step off it, so this pad sits beside the
+        /// reference model as the same black plastic. The 2D art's #1E2A30,
+        /// used here once, rendered as a blue-grey under an orange rim at a
+        /// third of its brightness.
         ///
         /// <para>Face buttons stay dark for the same reason as the 2015
         /// pad. Valve prints the glyph on a black cap, and the CAD carries
         /// no glyph mesh to colour.</para></summary>
         private void PaintEverything()
         {
-            var body    = Mat("#1E2A30");
-            var shell   = Mat("#24303C");
-            var surface = Mat("#5A606C");
-            var recess  = Mat("#424E54");
-            var disc    = Mat("#1E1E1E");
+            var body    = Mat("#707477");
+            var shell   = Mat("#7A7E82");
+            var surface = Mat("#8C9095");
+            var recess  = Mat("#5A5E62");
+            var disc    = Mat("#4A4D50");
 
             Paint(MainBody, body);
             Paint(LeftThumbRing, recess);

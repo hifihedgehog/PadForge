@@ -38,9 +38,9 @@ namespace PadForge.Models3D
 
         public ControllerModelSteamDeck() : base("SteamDeck")
         {
-            var ColorBody   = (Color)ColorConverter.ConvertFromString("#2B2B2E");
-            var ColorAccent = (Color)ColorConverter.ConvertFromString("#3C3D40");
-            var ColorScreen = (Color)ColorConverter.ConvertFromString("#101114");
+            var ColorBody   = (Color)ColorConverter.ConvertFromString("#707477");
+            var ColorAccent = (Color)ColorConverter.ConvertFromString("#7A7E82");
+            var ColorScreen = (Color)ColorConverter.ConvertFromString("#202226");
             var MaterialBody   = new DiffuseMaterial(new SolidColorBrush(ColorBody));
             var MaterialAccent = new DiffuseMaterial(new SolidColorBrush(ColorAccent));
             var MaterialScreen = new DiffuseMaterial(new SolidColorBrush(ColorScreen));
@@ -90,7 +90,7 @@ namespace PadForge.Models3D
             // Valve prints the Deck's glyphs in white on a dark cap, and
             // the letters carry no colour of their own.
             var MaterialGlyph = new DiffuseMaterial(new SolidColorBrush(
-                (Color)ColorConverter.ConvertFromString("#C0C0C0")));
+                (Color)ColorConverter.ConvertFromString("#D4D4D4")));
             AddRiderTo("ButtonA", "B1-Symbol.obj", MaterialGlyph);
             AddRiderTo("ButtonB", "B2-Symbol.obj", MaterialGlyph);
             AddRiderTo("ButtonX", "B3-Symbol.obj", MaterialGlyph);
@@ -101,10 +101,15 @@ namespace PadForge.Models3D
             PaintEverything();
         }
 
-        /// <summary>Resting colours, sampled from the Deck's own shipped 2D
-        /// art so the two previews agree and both match the hardware: shell
-        /// #121218, buttons and panels #363636, stick and pad surfaces
-        /// #5A5A5A, recesses #242424.
+        /// <summary>Resting colours, on this tree's 3D convention rather than
+        /// sampled from 2D art. The app lights a model with one white
+        /// headlight at brightness 0.35 and an ember rim, and nothing else,
+        /// so a material shows at roughly a third of its hex. That is why the
+        /// Xbox 360 class writes black plastic as #707477, and every value
+        /// here is that value or a step off it, so this pad sits beside the
+        /// reference model as the same black plastic. The 2D art's #1E2A30,
+        /// used here once, rendered as a blue-grey under an orange rim at a
+        /// third of its brightness.
         ///
         /// <para>Without this every mesh rendered in HelixToolkit's own
         /// default, which is yellow. The cosmetic parts above were painted
@@ -112,10 +117,10 @@ namespace PadForge.Models3D
         /// not.</para></summary>
         private void PaintEverything()
         {
-            var shell   = Mat("#121218");
-            var panel   = Mat("#363636");
-            var surface = Mat("#5A5A5A");
-            var recess  = Mat("#242424");
+            var shell   = Mat("#707477");
+            var panel   = Mat("#7A7E82");
+            var surface = Mat("#8C9095");
+            var recess  = Mat("#5A5E62");
 
             Paint(MainBody, shell);
             Paint(LeftThumbRing, recess);

@@ -35,6 +35,8 @@ from OCP.XCAFDoc import XCAFDoc_DocumentTool
 from OCP.TDF import TDF_LabelSequence, TDF_Label
 from OCP.TDataStd import TDataStd_Name
 from OCP.BRepMesh import BRepMesh_IncrementalMesh
+from OCP.IMeshTools import IMeshTools_Parameters
+from OCP.BRepLib import BRepLib_ToolTriangulatedShape
 from OCP.BRepBuilderAPI import BRepBuilderAPI_Copy
 from OCP.TopExp import TopExp_Explorer
 from OCP.TopAbs import TopAbs_FACE, TopAbs_REVERSED
@@ -49,51 +51,58 @@ STEP = os.environ.get(
 DST = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                    "PadForge.App", "3DModels", "SteamController")
 
-# STEP solid name -> (PadForge part file, deflection mm). Several solids
-# fold into one file: the four case shells are MainBody, the stick cap
-# is a knurled grip on a base, the Steam button is a plastic body with a
-# label solid. Deflection is per part so a 9 mm cap is meshed finer than
-# a 160 mm case; it is a chord-error tolerance and never moves a vertex
-# off the true surface, so a coarser value only means bigger facets,
-# never a rounded edge.
+# STEP solid name -> (PadForge part file, MinSize mm). Several solids fold
+# into one file: the four case shells are MainBody, the stick cap is a
+# knurled grip on a base, the Steam button is a plastic body with a label
+# solid.
+#
+# Density is set by LIN_DEFL and ANG_DEFL for every part; the per-part
+# number is the element-size FLOOR the mesher may not subdivide below.
+# That floor is what makes a fine angular bound affordable. Measured: at
+# 0.3 mm / 0.15 rad with no floor the case goes to 1.6 million triangles,
+# almost all of it on fillets and knurl ridges too small to see. With a
+# 1.0 mm floor the same settings give 108k, FEWER than the old coarse
+# mesh, while every large curve is bounded at 8.6 degrees per facet
+# instead of 34. Glyph solids get a smaller floor because their strokes
+# are about a millimetre wide.
 PARTS = {
     "CaseTopGPrime":               ("MainBody.obj", 1.0),
     "CaseFrontGPrime":             ("MainBody.obj", 1.0),
     "CaseBottomGPrime":            ("MainBody.obj", 1.0),
     "BatteryDoorMkVI":             ("MainBody.obj", 1.0),
-    "BumperGPrime":                ("BUMPER", 0.8),        # split L/R below
-    "TriggerCapLeftJAG":           ("Shoulder-Left-Trigger.obj", 0.6),
-    "TriggerCapRightJAG":          ("Shoulder-Right-Trigger.obj", 0.6),
-    "TrackPadCoverDirectional.01": ("LeftPadTouch.obj", 0.5),
-    "TrackPadCoverSmooth.01":      ("RightPadTouch.obj", 0.5),
-    "ThumbTopGrip.01":             ("LeftStickClick.obj", 0.5),
-    "ThumbTopBase.01":             ("LeftStickClick.obj", 0.5),
-    "BatteryLeverLeft":            ("LeftGrip.obj", 0.6),
-    "BatteryLeverRight":           ("RightGrip.obj", 0.6),
-    "ButtonA-Shot2":               ("B1.obj", 0.25),
-    "ButtonB-Shot21":              ("B2.obj", 0.25),
-    "ButtonX-Shot2":               ("B3.obj", 0.25),
-    "ButtonY-Shot2":               ("B4.obj", 0.25),
-    "ButtonStart-Shot2":           ("Start.obj", 0.25),
-    "ButtonSelect-Shot2":          ("Back.obj", 0.25),
-    "SteamButton_Plastic":         ("Special.obj", 0.25),
+    "BumperGPrime":                ("BUMPER", 1.0),        # split L/R below
+    "TriggerCapLeftJAG":           ("Shoulder-Left-Trigger.obj", 1.0),
+    "TriggerCapRightJAG":          ("Shoulder-Right-Trigger.obj", 1.0),
+    "TrackPadCoverDirectional.01": ("LeftPadTouch.obj", 1.0),
+    "TrackPadCoverSmooth.01":      ("RightPadTouch.obj", 1.0),
+    "ThumbTopGrip.01":             ("LeftStickClick.obj", 1.0),
+    "ThumbTopBase.01":             ("LeftStickClick.obj", 1.0),
+    "BatteryLeverLeft":            ("LeftGrip.obj", 1.0),
+    "BatteryLeverRight":           ("RightGrip.obj", 1.0),
+    "ButtonA-Shot2":               ("B1.obj", 1.0),
+    "ButtonB-Shot21":              ("B2.obj", 1.0),
+    "ButtonX-Shot2":               ("B3.obj", 1.0),
+    "ButtonY-Shot2":               ("B4.obj", 1.0),
+    "ButtonStart-Shot2":           ("Start.obj", 1.0),
+    "ButtonSelect-Shot2":          ("Back.obj", 1.0),
+    "SteamButton_Plastic":         ("Special.obj", 1.0),
     # Shot1 is the printed glyph on each cap, a separate solid in the
     # two-shot mould. Written as its own file so the model class can
     # give it the printed colour and ride it on the cap's highlight.
-    "ButtonA-Shot1":               ("B1-Symbol.obj", 0.2),
-    "ButtonB-Shot1":               ("B2-Symbol.obj", 0.2),
-    "ButtonX-Shot1":               ("B3-Symbol.obj", 0.2),
-    "ButtonY-Shot1":               ("B4-Symbol.obj", 0.2),
-    "ButtonStart-Shot1":           ("StartIcon.obj", 0.2),
-    "ButtonSelect-Shot1":          ("BackIcon.obj", 0.2),
-    "SteamButton_Label":           ("SpecialIcon.obj", 0.2),
+    "ButtonA-Shot1":               ("B1-Symbol.obj", 0.4),
+    "ButtonB-Shot1":               ("B2-Symbol.obj", 0.4),
+    "ButtonX-Shot1":               ("B3-Symbol.obj", 0.4),
+    "ButtonY-Shot1":               ("B4-Symbol.obj", 0.4),
+    "ButtonStart-Shot1":           ("StartIcon.obj", 0.4),
+    "ButtonSelect-Shot1":          ("BackIcon.obj", 0.4),
+    "SteamButton_Label":           ("SpecialIcon.obj", 0.4),
 }
 # Everything else in the assembly (PCB, membrane, snap domes, contacts,
 # USB socket, shield, pucks, slider, batteries) is inside the case and
 # is dropped.
 
-ANG_DEFL = 0.6      # rad, facet-to-facet angle bound
-CREASE_DEG = 40.0
+LIN_DEFL = 0.3      # mm, chord error
+ANG_DEFL = 0.15     # rad, facet-to-facet bound: 8.6 degrees
 
 
 def label_name(lbl):
@@ -131,12 +140,30 @@ def load_leaves(path):
     return leaves
 
 
-def tessellate(shape, lin_defl):
-    """Mesh a solid straight from its B-rep. Returns (verts, faces) with
-    outward winding, using each face's own orientation flag."""
+def tessellate(shape, min_size):
+    """Mesh a solid straight from its B-rep. Returns verts, per-node
+    SURFACE normals, and faces with outward winding.
+
+    Normals come from the B-rep surface at each node, never from the
+    triangles. Geometry-derived normals need a crease threshold, and on a
+    curved grip meshed at 34 degrees some facet pairs crossed it and some
+    did not, which is exactly the random hard edges a viewer saw on the
+    handles. A surface normal is exact: smooth where the surface is
+    smooth, different across a boundary only where two faces really meet
+    at an angle. Nodes are per B-rep face, so that boundary carries one
+    node per side with each side's own normal, and BRepMesh discretises
+    the shared edge identically on both, so no crack opens.
+    """
     s = BRepBuilderAPI_Copy(shape).Shape()
-    BRepMesh_IncrementalMesh(s, lin_defl, False, ANG_DEFL, True)
-    verts, faces = [], []
+    prm = IMeshTools_Parameters()
+    prm.Deflection = LIN_DEFL
+    prm.Angle = ANG_DEFL
+    prm.MinSize = min_size
+    prm.Relative = False
+    prm.InParallel = True
+    prm.AllowQualityDecrease = True
+    BRepMesh_IncrementalMesh(s, prm)
+    verts, norms, faces = [], [], []
     base = 0
     ex = TopExp_Explorer(s, TopAbs_FACE)
     while ex.More():
@@ -144,12 +171,16 @@ def tessellate(shape, lin_defl):
         loc = TopLoc_Location()
         tri = BRep_Tool.Triangulation_s(face, loc)
         if tri is not None:
+            BRepLib_ToolTriangulatedShape.ComputeNormals_s(face, tri)
             trsf = loc.Transformation()
+            rev = face.Orientation() == TopAbs_REVERSED
+            sign = -1.0 if rev else 1.0
             n = tri.NbNodes()
             for i in range(1, n + 1):
                 p = tri.Node(i).Transformed(trsf)
+                d = tri.Normal(i).Transformed(trsf)
                 verts.append((p.X(), p.Y(), p.Z()))
-            rev = face.Orientation() == TopAbs_REVERSED
+                norms.append((sign * d.X(), sign * d.Y(), sign * d.Z()))
             for i in range(1, tri.NbTriangles() + 1):
                 a, b, c = tri.Triangle(i).Get()
                 if rev:
@@ -157,7 +188,8 @@ def tessellate(shape, lin_defl):
                 faces.append((base + a - 1, base + b - 1, base + c - 1))
             base += n
         ex.Next()
-    return np.array(verts, np.float64), np.array(faces, np.int64)
+    return (np.array(verts, np.float64), np.array(norms, np.float64),
+            np.array(faces, np.int64))
 
 
 def weld(verts, faces, tol=1e-4):
@@ -174,82 +206,32 @@ def weld(verts, faces, tol=1e-4):
     return v, f[ok]
 
 
-def crease_normals(verts, faces, crease_deg=CREASE_DEG):
-    """Per-corner normals averaged only within the crease angle, so a
-    vertex on a moulded edge keeps a different normal for each side.
-    Without explicit normals a viewport averages across every face at a
-    vertex and rounds every edge; that was the 'clay' look."""
-    fn = np.cross(verts[faces[:, 1]] - verts[faces[:, 0]],
-                  verts[faces[:, 2]] - verts[faces[:, 0]])
-    ln = np.linalg.norm(fn, axis=1, keepdims=True)
-    fn = fn / np.maximum(ln, 1e-20)
-    area = ln[:, 0]
-    cos_lim = np.cos(np.radians(crease_deg))
-    cv = faces.ravel()
-    cf = np.repeat(np.arange(len(faces)), 3)
-    order = np.argsort(cv, kind="stable")
-    cv, cf = cv[order], cf[order]
-    starts = np.searchsorted(cv, np.arange(len(verts) + 1))
-    normals = []
-    corner = np.zeros((len(faces), 3), np.int64)
-    for v in range(len(verts)):
-        a, b = starts[v], starts[v + 1]
-        if a == b:
-            continue
-        groups = []
-        for f in cf[a:b]:
-            n = fn[f]
-            for g in groups:
-                if float(n @ g[0]) >= cos_lim:
-                    g[1] += n * area[f]
-                    g[2].append(f)
-                    break
-            else:
-                groups.append([n, n * area[f], [f]])
-        for rep, acc, fl in groups:
-            m = np.linalg.norm(acc)
-            normals.append(acc / m if m > 1e-20 else rep)
-            k = len(normals)
-            for f in fl:
-                corner[f, np.nonzero(faces[f] == v)[0][0]] = k
-    return np.array(normals), corner
-
-
-def compact(verts, faces):
-    """Drop vertices no face references, renumbering the rest.
-
-    The bumper is one solid split on the centreline into L1 and R1 by
-    FACE, and each half was written with the whole solid's vertex array,
-    so every bumper file carried about 5,000 vertices nothing used. They
-    were harmless to the render and to the highlight (a face selects its
-    own vertices), and misleading to anyone measuring a file's extent
-    from its `v` lines, which is how a phantom "both shoulders light the
-    full width" defect got reported and then disproved.
-    """
+def compact(verts, norms, faces):
+    """Drop vertices no face references, renumbering the rest. The bumper
+    halves are split by face from one solid's node array, so each carried
+    thousands of nodes the other half owned."""
     used = np.unique(faces.ravel())
     if len(used) == len(verts):
-        return verts, faces
+        return verts, norms, faces
     remap = np.full(len(verts), -1, np.int64)
     remap[used] = np.arange(len(used))
-    return verts[used], remap[faces]
+    return verts[used], norms[used], remap[faces]
 
 
-def write_obj(path, verts, faces, name):
+def write_obj(path, verts, norms, faces, name):
     """Valve's CAD is X width, Y height up, Z depth with the FRONT at
     POSITIVE Z. Measured, not assumed: the pad covers, ABXY caps and the
     stick cap all sit at Z +3 to +24.5, the battery door at Z -29 to +1.
     PadForge is X width, Y depth with the front NEGATIVE, Z height. So
     Y = -Z and Z = Y, a rotation about X, not a mirror, and the B-rep
-    winding is left alone.
+    winding is left alone. Normals take the same map.
 
     A build once shipped with the sign the other way because an in-app
     screenshot showed the back of the pad. That was the viewport's own
-    yaw, which persists across model swaps and which a mis-aimed Reset
-    View click never cleared. A picture is not evidence of handedness;
-    the Z sign of a known front part is."""
-    normals, corner = crease_normals(verts, faces)
+    yaw, which persists across model swaps. A picture is not evidence of
+    handedness; the Z sign of a known front part is."""
     out = np.column_stack([verts[:, 0], -verts[:, 2], verts[:, 1]])
-    nout = np.column_stack([normals[:, 0], -normals[:, 2], normals[:, 1]])
+    nout = np.column_stack([norms[:, 0], -norms[:, 2], norms[:, 1]])
     with io.open(path, "w", encoding="utf-8", newline="\n") as f:
         f.write("# %s\n# Valve Steam Controller (2015) CAD, CC BY-NC-SA 4.0\n" % name)
         for v in out:
@@ -257,10 +239,8 @@ def write_obj(path, verts, faces, name):
         for n in nout:
             f.write("vn %.4f %.4f %.4f\n" % (n[0], n[1], n[2]))
         f.write("g %s\n" % os.path.splitext(name)[0])
-        for i in range(len(faces)):
-            a, b, c = faces[i] + 1
-            na, nb, nc = corner[i]
-            f.write("f %d//%d %d//%d %d//%d\n" % (a, na, b, nb, c, nc))
+        for a, b, c in faces + 1:
+            f.write("f %d//%d %d//%d %d//%d\n" % (a, a, b, b, c, c))
 
 
 def main():
@@ -269,39 +249,42 @@ def main():
     leaves = load_leaves(STEP)
     print(f"  loaded {len(leaves)} solids in {time.time() - t0:.0f}s")
 
-    meshes = {}                     # file -> list of (verts, faces)
+    meshes = {}                     # file -> list of (verts, norms, faces)
     for name, shape in leaves:
         if name not in PARTS:
             continue
-        target, defl = PARTS[name]
-        v, f = tessellate(shape, defl)
+        target, min_size = PARTS[name]
+        v, nrm, f = tessellate(shape, min_size)
         if target == "BUMPER":
             # One solid spanning both sides; split on the centreline so
             # each shoulder is its own highlight target.
             cx = v[f][:, :, 0].mean(axis=1)
             for side, sel in (("L1.obj", cx < 0), ("R1.obj", cx >= 0)):
-                meshes.setdefault(side, []).append((v, f[sel]))
+                meshes.setdefault(side, []).append((v, nrm, f[sel]))
         else:
-            meshes.setdefault(target, []).append((v, f))
+            meshes.setdefault(target, []).append((v, nrm, f))
 
     # Centre X on the assembly so the model sits on the camera axis.
-    allx = np.concatenate([v[:, 0] for parts in meshes.values() for v, _ in parts])
+    allx = np.concatenate([v[:, 0] for parts in meshes.values() for v, _, _ in parts])
     xmid = (allx.min() + allx.max()) / 2.0
 
     total = 0
     for fname, parts in sorted(meshes.items()):
-        av, af, base = [], [], 0
-        for v, f in parts:
+        av, an, af, base = [], [], [], 0
+        for v, nrm, f in parts:
             av.append(v)
+            an.append(nrm)
             af.append(f + base)
             base += len(v)
         v = np.concatenate(av)
+        nrm = np.concatenate(an)
         f = np.concatenate(af)
         v = v.copy()
         v[:, 0] -= xmid
-        v, f = weld(v, f)
-        v, f = compact(v, f)
-        write_obj(os.path.join(DST, fname), v, f, fname)
+        # No weld: nodes are per B-rep face on purpose, each with its own
+        # surface normal, and merging them would average across creases.
+        v, nrm, f = compact(v, nrm, f)
+        write_obj(os.path.join(DST, fname), v, nrm, f, fname)
         total += len(f)
         print(f"  {fname:26s} {len(f):7,} tris  ({len(v):,} verts)")
     print(f"TOTAL {total:,} triangles in {time.time() - t0:.0f}s")

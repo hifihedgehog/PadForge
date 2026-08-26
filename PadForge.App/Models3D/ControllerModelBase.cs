@@ -223,11 +223,10 @@ namespace PadForge.Models3D
         //  Highlight generation
         // ─────────────────────────────────────────────
 
-        /// <summary>
-        /// Creates accent-colored highlight materials for all children.
-        /// Uses the app's accent brush from WPF UI theme resources.
-        /// </summary>
-        protected virtual void DrawAccentHighlights()
+        /// <summary>The accent material every glow in the preview is drawn
+        /// with: hover, press, and the Map All flash all look one up in
+        /// <see cref="HighlightMaterials"/>.</summary>
+        protected static Material CreateAccentHighlight()
         {
             // Must stay a SOLID brush: GradientHighlight lerps its Color.
             // AccentButtonBackground became an ember gradient in #175, so the
@@ -244,9 +243,83 @@ namespace PadForge.Models3D
                 accentBrush = new SolidColorBrush(Color.FromRgb(0xFF, 0x6B, 0x2C));
             }
 
-            var highlightMaterial = new DiffuseMaterial(accentBrush);
-            foreach (Model3DGroup group in model3DGroup.Children)
-                HighlightMaterials[group] = highlightMaterial;
+            return new DiffuseMaterial(accentBrush);
+        }
+
+        /// <summary>
+        /// Creates accent-colored highlight materials for all children.
+        /// Uses the app's accent brush from WPF UI theme resources.
+        /// </summary>
+        protected virtual void DrawAccentHighlights()
+        {
+            var highlightMaterial = CreateAccentHighlight();
+            // Type-checked rather than cast: a model that parks a bare
+            // GeometryModel3D in the scene would otherwise take down its
+            // own constructor here.
+            foreach (var child in model3DGroup.Children)
+                if (child is Model3DGroup group)
+                    HighlightMaterials[group] = highlightMaterial;
+        }
+
+        /// <summary>Gives every interactive group a highlight material if it
+        /// does not already have one, so nothing the user can hover, press
+        /// or flash is left with no glow to look up. Existing entries are
+        /// kept: a model that hand-tunes one (the DualSense's clear plastic)
+        /// keeps its own.
+        ///
+        /// <para>This is a BACKSTOP, and it exists because the per-model
+        /// call was forgettable and got forgotten. All three Valve models
+        /// shipped without calling <see cref="DrawAccentHighlights"/>, so
+        /// their HighlightMaterials were empty and not one button on the
+        /// Steam Deck, the 2015 Steam Controller or the 2026 Steam
+        /// Controller lit up on hover, on press, or while recording. The
+        /// only thing that still worked was the stick-direction wedge,
+        /// which draws its own overlay and looks nothing up.</para></summary>
+        public void EnsureHighlightMaterials()
+        {
+            Material accent = null;
+            Material Accent() => accent ??= CreateAccentHighlight();
+
+            void Fill(Model3DGroup group)
+            {
+                if (group == null || HighlightMaterials.ContainsKey(group)) return;
+                HighlightMaterials[group] = Accent();
+            }
+
+            foreach (var group in ClickMap.Keys)
+                Fill(group);
+            foreach (var list in ButtonMap.Values)
+                foreach (var group in list)
+                    Fill(group);
+            Fill(LeftThumbRing);
+            Fill(RightThumbRing);
+            foreach (var child in model3DGroup.Children)
+                if (child is Model3DGroup group)
+                    Fill(group);
+        }
+
+        /// <summary>The ONE construction path for a preview model, used by
+        /// the viewport and by the tests that pin the interaction contract,
+        /// so the two cannot drift. Ends in
+        /// <see cref="EnsureHighlightMaterials"/>: a model reaching the
+        /// viewport with no glow materials is the defect that path exists
+        /// to make unrepeatable.</summary>
+        public static ControllerModelBase Create(string family, string appearance, bool extraControls)
+        {
+            ControllerModelBase model = family switch
+            {
+                "DS4" => new ControllerModelDS4(appearance ?? "JetBlack"),
+                "DualSense" => new ControllerModelDualSense(appearance ?? "White"),
+                "DualSenseEdge" => new ControllerModelDualSenseEdge(),
+                "Switch2Pro" => new ControllerModelSwitch2Pro(extraControls),
+                "XboxSeries" => new ControllerModelXboxSeries(appearance ?? "Carbon", extraControls),
+                "SteamDeck" => new ControllerModelSteamDeck(),
+                "SteamController" => new ControllerModelSteamController(),
+                "SteamController2" => new ControllerModelSteamController2(),
+                _ => new ControllerModelXbox360(),
+            };
+            model.EnsureHighlightMaterials();
+            return model;
         }
 
         // ─────────────────────────────────────────────

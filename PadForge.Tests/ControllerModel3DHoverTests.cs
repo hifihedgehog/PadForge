@@ -434,6 +434,56 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary>The wedge stops before the surface rolls away under it.
+        /// A control's rim curves off, and a wedge lifted over that roll-off
+        /// floats free of it: past 0.9 of the 2015 stick cap's radius the
+        /// mean surface normal has tilted to -0.57, and a lip standing
+        /// 0.8 mm proud there reads as the highlight spilling off the stick
+        /// onto the doughnut whose inner edge is 0.4 mm away.</summary>
+        [Theory]
+        [InlineData("SteamController", "LeftTouchpadClick")]
+        [InlineData("SteamController", "RightTouchpadClick")]
+        [InlineData("SteamController2", "LeftTouchpadClick")]
+        public void QuadrantWedge_StopsShortOfTheRim(string family, string role)
+        {
+            using var m = ControllerModelBase.Create(family, null, false);
+            CheckInset(m.ButtonMap[role][0]);
+        }
+
+        [Theory]
+        [InlineData("SteamController")]
+        [InlineData("SteamController2")]
+        [InlineData("SteamDeck")]
+        [InlineData("Xbox360")]
+        public void StickCapWedge_StopsShortOfTheRim(string family)
+        {
+            using var m = ControllerModelBase.Create(family, null, false);
+            CheckInset(m.LeftThumbRing);
+        }
+
+        private static void CheckInset(Model3DGroup surface)
+        {
+            var b = surface.Bounds;
+            var centre = new Vector3D(b.X + b.SizeX / 2, b.Y + b.SizeY / 2, b.Z + b.SizeZ / 2);
+            double limit = 0.85 * Math.Max(b.SizeX, b.SizeZ) / 2.0;
+
+            var method = typeof(ControllerModelView).GetMethod("BuildClippedQuadrantMesh",
+                BindingFlags.NonPublic | BindingFlags.Static);
+            foreach (var (isX, isNeg) in new[] { (false, true), (false, false), (true, true), (true, false) })
+            {
+                var mesh = (MeshGeometry3D)method.Invoke(null, new object[] { surface, centre, isX, isNeg });
+                Assert.NotEmpty(mesh.Positions);
+                foreach (Point3D p in mesh.Positions)
+                {
+                    double r = Math.Sqrt((p.X - centre.X) * (p.X - centre.X) + (p.Z - centre.Z) * (p.Z - centre.Z));
+                    // The disc is clipped as a 24-gon, so its corners sit a
+                    // little past the inradius. 1% covers that exactly.
+                    Assert.True(r <= limit * 1.01,
+                        $"wedge reaches r={r:F2} on a surface whose wedge must stop at {limit:F2}");
+                }
+            }
+        }
+
         /// <summary>And it is cut from the surface's VISIBLE face, so a wedge
         /// never draws over the buried half of a control.</summary>
         [Fact]

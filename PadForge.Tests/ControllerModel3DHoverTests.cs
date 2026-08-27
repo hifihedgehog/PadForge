@@ -547,9 +547,48 @@ namespace PadForge.Tests
                     if (Math.Max(b.SizeX, b.SizeZ) > rb.SizeX * 1.6) continue;
                     double gx = b.X + b.SizeX / 2, gz = b.Z + b.SizeZ / 2;
                     if (Math.Abs(gx - cx) > onAxis || Math.Abs(gz - cz) > onAxis) continue;
+                    // Wholly behind the cap's rear face is inside the case:
+                    // furniture, not stick. -Y is out of the controller's
+                    // face, so a larger Y is deeper. The Steam Deck's well
+                    // floor is a 15.2 mm plug that sits there.
+                    if (b.Y > rb.Y + rb.SizeY) continue;
 
                     Assert.Fail($"{family}: a {b.SizeX:F1} mm part sits on {button}'s own axis but is "
                         + "not in the moving set, so it stays put while the stick tilts");
+                }
+            }
+            Check("LeftThumbButton", m.LeftThumbRing);
+            Check("RightThumbButton", m.RightThumbRing);
+        }
+
+        /// <summary>Nothing a stick button lights may be hidden behind the
+        /// cap, because a glow you cannot see is not a glow.
+        ///
+        /// <para>The Steam Deck shipped one: the standard part table binds
+        /// *StickClick.obj to the stick button, and on this pad alone that
+        /// mesh is a flat plug on the WELL FLOOR, 0.95 times the cap's width
+        /// and wholly behind it, where every other pad's is the base cone
+        /// under the cap at 1.35 to 1.63 times its width. Pressing the stick
+        /// lit a solid plate with the stick standing in the middle of it,
+        /// and the sliver that cleared the cap fell on opposite sides of the
+        /// two sticks, so one lit nothing like the other.</para></summary>
+        [Theory]
+        [MemberData(nameof(Families))]
+        public void AStickButtonLightsNothingHiddenBehindItsCap(string family, string appearance, bool extra)
+        {
+            using var m = ControllerModelBase.Create(family, appearance, extra);
+            void Check(string button, Model3DGroup ring)
+            {
+                if (ring == null || !m.ButtonMap.TryGetValue(button, out var groups)) return;
+                var rb = ring.Bounds;
+                double capRear = rb.Y + rb.SizeY;
+                foreach (var g in groups)
+                {
+                    var b = g.Bounds;
+                    if (b.IsEmpty) continue;
+                    Assert.True(b.Y <= capRear + 0.01,
+                        $"{family}: {button} lights a {b.SizeX:F1} mm part that starts {b.Y - capRear:F1} mm "
+                        + "behind the cap's rear face, so the cap hides all but a sliver of it");
                 }
             }
             Check("LeftThumbButton", m.LeftThumbRing);

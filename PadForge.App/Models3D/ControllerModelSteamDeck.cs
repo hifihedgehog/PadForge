@@ -50,11 +50,16 @@ namespace PadForge.Models3D
             // a zero max angle rotates nothing, and this model was the only
             // one in the tree that set neither.
             //
-            // Each stick pivot is its click mesh's own center in X and Z with
-            // its REAR edge in Y, the construction every other model here
-            // uses, read off the converted meshes.
-            JoystickRotationPointCenterLeftMillimeter  = new Vector3D(-102.83f, -3.58f, 34.50f);
-            JoystickRotationPointCenterRightMillimeter = new Vector3D( 102.83f, -3.58f, 34.50f);
+            // The stick pivots are HandheldCompanion's own, from the model
+            // written against this mesh set (ModelSteamDeck.cs). They sit
+            // 18.3 mm behind the cap face, which is where the family sits:
+            // 17.1 on the DualSense, 19.4 on the Switch 2 Pro, 19.8 on the
+            // Xbox Series, 22.1 on the Xbox 360. A pivot read off the rear
+            // edge of the mesh the base table calls the click gave 8.6 mm,
+            // half the family, and the cap swung like a hinged lid instead
+            // of a gimbal.
+            JoystickRotationPointCenterLeftMillimeter  = new Vector3D(-102.83f, 6.15f, 34.50f);
+            JoystickRotationPointCenterRightMillimeter = new Vector3D( 102.83f, 6.15f, 34.50f);
             JoystickMaxAngleDeg = 14.0f;
 
             // The trigger hinges at its FRONT-REAR edge, the corner nearest
@@ -106,15 +111,33 @@ namespace PadForge.Models3D
             AddCosmetic("VolumeUp.obj", MaterialAccent);
             AddCosmetic("VolumeDown.obj", MaterialAccent);
 
-            // The stick BODY, the capacitive barrel between the cap and the
-            // collar. It is part of the stick button, not scenery: this pad
-            // splits its stick into three solids where every other model
-            // ships two, and with the body left cosmetic the button lit only
-            // the thin collar at the case and the stick looked half dead.
-            // Added BEFORE the paint pass on purpose, so PaintTarget gives it
-            // the click mesh's own color.
-            AddRiderTo("LeftThumbButton", "LeftStickTouch.obj", MaterialAccent);
-            AddRiderTo("RightThumbButton", "RightStickTouch.obj", MaterialAccent);
+            // ── The stick, split the way its author split it ──
+            // Three solids, and their names do not mean what the standard
+            // part table assumes:
+            //
+            //   Joystick-Left-Ring  15.99 mm wide, outermost   the cap
+            //   LeftStickTouch      12.24 mm wide              the stem
+            //   LeftStickClick      15.22 x 2.62 mm            a flat plug
+            //                                                  on the WELL
+            //                                                  FLOOR, wholly
+            //                                                  behind the cap
+            //
+            // On every other pad here *StickClick is the base cone under the
+            // cap, 1.35 to 1.63 times its width, so lighting it draws a
+            // collar around the stick. The Deck's is 0.95 times its cap and
+            // lies at the bottom of the well, so the button lit a solid
+            // plate with the stick standing in the middle of it, and the
+            // sliver that cleared the cap fell on opposite sides of the two
+            // sticks, which is why one lit nothing like the other.
+            //
+            // HandheldCompanion carved these meshes and its own model does
+            // the same reassignment (ModelSteamDeck.cs, case
+            // ButtonFlags.LeftStickTouch sets LeftThumb), painting the plug
+            // in a separate plastic from the stick.
+            RetargetThumbToStem(ref LeftThumb, "LeftThumbButton",
+                "LeftStickTouch.obj", MaterialAccent);
+            RetargetThumbToStem(ref RightThumb, "RightThumbButton",
+                "RightStickTouch.obj", MaterialAccent);
 
             PaintEverything();
 
@@ -202,6 +225,34 @@ namespace PadForge.Models3D
             // again the moment anything restores it.
             Paint(group, material);
             model3DGroup.Children.Add(group);
+        }
+
+        /// <summary>Moves a stick's button from the plug on its well floor
+        /// to the stem under its cap, which is the part every other model
+        /// here registers.
+        ///
+        /// <para>The plug stays in the scene and keeps its own color, and
+        /// becomes furniture: it no longer lights, and it no longer tilts,
+        /// because a well floor does not move with the stick standing in
+        /// it.</para></summary>
+        private void RetargetThumbToStem(ref Model3DGroup thumb, string role,
+            string filename, Material plugMaterial)
+        {
+            var stem = TryLoadModel(filename);
+            if (stem == null) return;
+            model3DGroup.Children.Add(stem);
+
+            var plug = thumb;
+            if (plug != null)
+            {
+                if (ButtonMap.TryGetValue(role, out var list))
+                    list.Remove(plug);
+                ClickMap.Remove(plug);
+                Paint(plug, plugMaterial);
+            }
+
+            RegisterButton(role, stem);
+            thumb = stem;
         }
 
         private void AddRiderTo(string padSettingName, string filename, Material material)

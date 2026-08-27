@@ -7,7 +7,7 @@
 // CC BY-NC-SA 4.0. Meshed from the archive's STEP file, which is the exact
 // B-rep surface, by tools/steam_controller_2015_mesh.py. Valve named
 // every solid, so the button mapping comes from the source names rather
-// than from guesswork, and the two-shot button moulds come out as
+// than from guesswork, and the two-shot button molds come out as
 // separate cap and glyph solids.
 
 using System.Windows.Media;
@@ -31,7 +31,7 @@ namespace PadForge.Models3D
     /// <para>The trackpads and the rear grip buttons are the controls the
     /// standard table has no slot for. Each grip paddle is the FLARED WING
     /// of the rear cover, which Valve models as one solid spanning both
-    /// handles, so the mesh tool splits the wings off it at the moulded
+    /// handles, so the mesh tool splits the wings off it at the molded
     /// crease and hands each one the lever that sits behind it.</para>
     /// </summary>
     public class ControllerModelSteamController : ControllerModelBase
@@ -108,7 +108,7 @@ namespace PadForge.Models3D
             PaintEverything();
 
             // Glyph riders. Valve's CAD carries each button as a two-shot
-            // mould, the cap and the printed glyph as separate solids, so
+            // mold, the cap and the printed glyph as separate solids, so
             // the letters come out as their own meshes. They ride on
             // their cap's highlight and take the printed colors: the
             // pack's SC art prints ABXY in green, red, blue and yellow on
@@ -122,7 +122,7 @@ namespace PadForge.Models3D
             AddRiderTo("ButtonY", "B4-Symbol.obj", Mat("#faa51f"));
             AddRiderTo("ButtonStart", "StartIcon.obj", glyph);
             AddRiderTo("ButtonBack", "BackIcon.obj", glyph);
-            // SteamButton_Label is the in-mould label FILM, 12.2 mm square
+            // SteamButton_Label is the in-mold label FILM, 12.2 mm square
             // on a 12.3 mm cap: the whole button face, not a logo glyph.
             // Painted white it was a white disc. There is no logo geometry
             // to color, so the face is a dark button face, a step lighter

@@ -149,7 +149,7 @@ namespace PadForge.Views
         /// <summary>The combo that was on the shortcut before recording began.
         /// Starting a Learn clears TriggerEntries so the capture starts from
         /// empty, and without this the existing combo was simply destroyed:
-        /// cancelling or timing out left the shortcut with no trigger at all.</summary>
+        /// canceling or timing out left the shortcut with no trigger at all.</summary>
         private TriggerButtonEntry[] _preRecordEntries;
         private Dictionary<Guid, int[]> _recordAxisBaselines;
         private const float AxisRecordDeltaThreshold = 0.25f;

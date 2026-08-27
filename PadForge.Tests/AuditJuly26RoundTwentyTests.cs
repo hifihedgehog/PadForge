@@ -76,7 +76,7 @@ namespace PadForge.Tests
         /// the effect asked for.
         ///
         /// <para>It said "across the whole phase domain" and swept only [0, 1],
-        /// which its own neighbour below disproves: the function has no phase
+        /// which its own neighbor below disproves: the function has no phase
         /// normalization, so an out-of-domain input leaves the range. Those two
         /// tests contradicted each other, and the overclaim is the one that was
         /// wrong. The function is NOT hardened here on purpose. Since the

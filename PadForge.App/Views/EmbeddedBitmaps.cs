@@ -46,7 +46,7 @@ namespace PadForge.Views
             // extension dot too, so "assets/icons/foo.png" went in as
             // "assets/icons/foo/png" and the first lookup could never match
             // anything with a file extension. Every call fell through to what
-            // was labelled a fallback and was in fact the only working path.
+            // was labeled a fallback and was in fact the only working path.
             // One lookup now, in the form the resource table actually uses.
             var rm = new System.Resources.ResourceManager(
                 asm.GetName().Name + ".g", asm);

@@ -71,7 +71,7 @@ namespace PadForge.Tests
             // IsConfigured decides which entry wins when the resolver picks
             // between a configured pad and a pristine sibling. A setting the
             // user changed that does not register here can be silently
-            // discarded in favour of an untouched entry.
+            // discarded in favor of an untouched entry.
             var s = new TouchpadGestureSettings();
             switch (field)
             {

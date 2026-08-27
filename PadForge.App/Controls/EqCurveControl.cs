@@ -53,7 +53,7 @@ namespace PadForge.Controls
         // Frozen once. OnRender runs on every mouse-move during a drag, and
         // the Atom x5-Z8350 perf floor is the reason these are not rebuilt
         // there: ten brushes and pens a frame is pure garbage for a drawing
-        // that never changes colour.
+        // that never changes color.
         private static readonly Brush Bg = Frozen(new SolidColorBrush(Color.FromArgb(0x30, 0x00, 0x00, 0x00)));
         private static readonly Pen GridPen = Frozen(new Pen(Frozen(new SolidColorBrush(Color.FromArgb(0x38, 0xC8, 0xC8, 0xC8))), 1));
         private static readonly Pen ZeroPen = Frozen(new Pen(Frozen(new SolidColorBrush(Color.FromArgb(0x70, 0xC8, 0xC8, 0xC8))), 1));

@@ -295,7 +295,7 @@
             var b = bars[i];
             var el = document.createElement("div");
             // The mask carries the bar's shape, so the element is a plain
-            // rectangle of colour that the mask cuts to the real outline.
+            // rectangle of color that the mask cuts to the real outline.
             var url = "url('/img/" + b.image + "')";
             el.style.cssText =
                 "position:absolute;pointer-events:none;z-index:3;opacity:0;" +
@@ -311,7 +311,7 @@
 
         var ind = layout.indicatorLeds;
         if (ind) {
-            // Five LEDs in the DualSense's row, centred under the touchpad.
+            // Five LEDs in the DualSense's row, centered under the touchpad.
             // Spacing is in base units so it scales with the art like
             // everything else.
             var count = 5, gap = 16, dot = 10;
@@ -343,7 +343,7 @@
     }
 
     // The DualSense lights a SYMMETRIC pattern rather than one dot per
-    // player, which is what the pad itself does: one centre LED for player 1,
+    // player, which is what the pad itself does: one center LED for player 1,
     // the outer pair for player 2, and so on outward.
     var PIP_PATTERNS = [
         [0, 0, 1, 0, 0],
@@ -522,7 +522,7 @@
             var zone = document.createElement("div");
             zone.className = "touch-zone";
 
-            // Touchpad CLICK: a visible labelled pill sitting just above the
+            // Touchpad CLICK: a visible labeled pill sitting just above the
             // touch surface, so the user has an obvious place to tap for the
             // click that is distinct from the touch-drag surface. The DS4
             // already read well because its click zone extended above the

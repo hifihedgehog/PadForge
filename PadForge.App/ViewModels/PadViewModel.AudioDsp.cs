@@ -91,7 +91,7 @@ namespace PadForge.ViewModels
         /// <summary>What the last import did, shown under the buttons.
         ///
         /// <para>An import that finds nothing must SAY so. Declining to touch a
-        /// tuned EQ is the right behaviour and staying silent about it is not:
+        /// tuned EQ is the right behavior and staying silent about it is not:
         /// AutoEq publishes three formats and only two of them carry Filter
         /// lines, so the likeliest reason an import does nothing is that the
         /// user grabbed the Graphic EQ one, and a silent no-op reads as a

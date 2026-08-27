@@ -127,7 +127,7 @@ namespace PadForge.Tests
         public void FirstDevicePress_StillFires()
         {
             // Positive control: the evaluated device itself pressing A must
-            // still fire (the single-device behaviour is unchanged).
+            // still fire (the single-device behavior is unchanged).
             var first = ArrangeTwoDeviceSlot(firstButtonA: true, secondButtonA: false);
             var ms = ButtonAMultiSourceRow();
 

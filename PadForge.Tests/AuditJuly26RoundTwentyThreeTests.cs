@@ -17,7 +17,7 @@ namespace PadForge.Tests
     ///
     /// <para>Most came back clean. GetSlotDeviceStates returns a
     /// ThreadStatic list under a "consume before the next call" contract,
-    /// and all three of its callers honour it: each is a distinct method
+    /// and all three of its callers honor it: each is a distinct method
     /// with its own local, each consumes it in the loop immediately below,
     /// the three never call one another, and the only work inside those
     /// loops is SourceEvaluator in PadForge.Engine, which cannot reach an

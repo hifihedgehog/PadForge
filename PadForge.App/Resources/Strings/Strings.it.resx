@@ -142,7 +142,7 @@
   <data name="Status_DownloadingMidi" xml:space="preserve"><value>Download di Windows MIDI Services in corso…</value></data>
   <data name="Status_DownloadingInstallingMidi" xml:space="preserve"><value>Download e installazione di Windows MIDI Services in corso…</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Disinstallazione di Windows MIDI Services in corso…</value></data>
-  <data name="Status_OperationCancelled" xml:space="preserve"><value>Operazione annullata dall'utente.</value></data>
+  <data name="Status_OperationCanceled" xml:space="preserve"><value>Operazione annullata dall'utente.</value></data>
   <data name="Status_MidiInstallFailed_Format" xml:space="preserve"><value>Installazione MIDI Services non riuscita: {0}</value></data>
   <data name="Status_DownloadingSteamVR" xml:space="preserve"><value>Download di SteamVR in corso…</value></data>
   <data name="Status_DownloadingInstallingSteamVR" xml:space="preserve"><value>Download e installazione di SteamVR dai server di Valve… Sono diversi GB e può richiedere tempo.</value></data>
@@ -184,7 +184,7 @@
   <data name="Status_NoSettingsFile" xml:space="preserve"><value>Nessun file di impostazioni trovato sul disco.</value></data>
   <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>Nessun dispositivo connesso per la registrazione.</value></data>
   <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>Registrazione: premi un pulsante o muovi un asse per "{0}"...</value></data>
-  <data name="Status_RecordingCancelled" xml:space="preserve"><value>Registrazione annullata.</value></data>
+  <data name="Status_RecordingCanceled" xml:space="preserve"><value>Registrazione annullata.</value></data>
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Registrazione scaduta per "{0}".</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Motore avviato.</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>Motore arrestato.</value></data>

@@ -304,7 +304,7 @@ namespace PadForge.Common.Input
                     {
                         // Free a slot only when its drain wait signaled: the kernel
                         // keeps referencing the pinned buffer and native OVERLAPPED
-                        // until the cancelled completion fires, so a slot whose
+                        // until the canceled completion fires, so a slot whose
                         // write is still in flight after 100 ms is deliberately
                         // leaked (bounded, pathological-path-only) instead of
                         // handing the BT stack freed memory to complete into.
@@ -785,7 +785,7 @@ namespace PadForge.Common.Input
         /// EFFECTIVE path this frame. FollowHeadphoneJack (5) becomes
         /// StereoHeadset while the jack reads plugged, SpeakerOnly while
         /// it reads unplugged, and Default when no reading exists, so an
-        /// unobservable jack degrades to stock behaviour instead of
+        /// unobservable jack degrades to stock behavior instead of
         /// guessing. Every consumer of the path (the dispatcher's
         /// register write, the BT lane pid, the USB channel shaper) MUST
         /// route through this so a plug/unplug switches all three
@@ -2864,7 +2864,7 @@ namespace PadForge.Common.Input
                 // survived, so without this the filters ring the old
                 // transport's tail into the new one's first frames. Nothing
                 // called Reset at all before, which made the whole contract
-                // documentation rather than behaviour.
+                // documentation rather than behavior.
                 //
                 // HERE and not in DetachTransport_NoLock, which is where it
                 // reads more naturally: the EQ reset rebuilds its filter
@@ -3003,7 +3003,7 @@ namespace PadForge.Common.Input
             s.Player = null;
             if (s.BtHandle != new IntPtr(-1))
             {
-                // In-flight overlapped writes must be cancelled and their
+                // In-flight overlapped writes must be canceled and their
                 // pool drained before the handle and buffers go away.
                 NativeMethods.CancelIo(s.BtHandle);
                 s.Tx?.Dispose();
@@ -4621,7 +4621,7 @@ namespace PadForge.Common.Input
                     {
                         // CancelIo only requests cancellation: the kernel keeps
                         // referencing the pinned buffer and native OVERLAPPED until
-                        // the cancelled completion fires, so drain on the event and,
+                        // the canceled completion fires, so drain on the event and,
                         // when even that times out, leak the trio (bounded,
                         // pathological-path-only) instead of freeing memory the
                         // completion will write into. Same discipline as

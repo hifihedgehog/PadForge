@@ -360,7 +360,7 @@ namespace PadForge.Tests
         // ── The claim has to lapse when the claimant leaves ──
         //
         // PadForge stands down from the lightbar and the pips the moment
-        // anything else writes them, so a game's colour is not fought over.
+        // anything else writes them, so a game's color is not fought over.
         // That half was always right. The half that was missing: the claim
         // never expired, so after a game exited the bar sat on whatever it
         // last set for the rest of the process, and only restarting PadForge

@@ -41,8 +41,8 @@ namespace PadForge.Converters
                     double halfDot = dotSize / 2.0;
                     double pos = (v + 1.0) * 0.5 * dim - halfDot;
                     // Asymmetric clamp. The lower bound is -halfDot, which puts
-                    // the dot's CENTRE on 0, so the upper bound must be the
-                    // mirror of that (centre on dim), not a full dot-width in.
+                    // the dot's CENTER on 0, so the upper bound must be the
+                    // mirror of that (center on dim), not a full dot-width in.
                     // At dim - dotSize the dot stopped half its width short of
                     // the right edge while reaching the left one exactly, so a
                     // full-scale axis never rendered as full-scale.

@@ -150,7 +150,7 @@ namespace PadForge.Tests
         /// two apart without physically unplugging a DS3 mid-suite: with the
         /// pad attached both flags return true, and on a machine with no DS3
         /// both return false. A mutation flipping the flag survived every
-        /// behavioural test for exactly that reason.</para></summary>
+        /// behavioral test for exactly that reason.</para></summary>
         [Fact]
         public void MachineHasDs3_EnumeratesNonPresentDevnodes()
         {

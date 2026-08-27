@@ -94,7 +94,7 @@ namespace PadForge.Engine.Haptics
             for (int lag = minLag + 1; lag <= maxLag; lag++)
             {
                 // The lowest detectable tone has its period at maxLag, so treat the
-                // right edge as a falling neighbour to let a boundary peak count.
+                // right edge as a falling neighbor to let a boundary peak count.
                 double right = lag < maxLag ? _scores[lag + 1] : double.NegativeInfinity;
                 if (_scores[lag] > VoicedThreshold && _scores[lag] >= _scores[lag - 1] && _scores[lag] > right)
                 {

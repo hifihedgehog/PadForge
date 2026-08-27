@@ -1343,7 +1343,7 @@ namespace PadForge.Engine
                     // PadForge uses RawInput as a delta source for
                     // gamepad-mapping aim and scroll; adding a
                     // 0..65535 jump as a delta produces wild spurious
-                    // motion. Match SDL3 / XInput behaviour and
+                    // motion. Match SDL3 / XInput behavior and
                     // ignore these events.
                     // Skip only the DELTA, not the whole packet. This used to
                     // `return` outright, which also threw away the button and

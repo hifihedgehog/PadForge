@@ -19,7 +19,7 @@ triangles, so any shippable count means decimation, and decimating parts
 SEPARATELY leaves every part boundary as a seam where the two sides
 collapsed differently. The STEP is the exact surface. Meshed once at
 preview density it gives 170k triangles with true edges, and a shared
-edge discretisation across every B-rep face boundary, so there is nothing
+edge discretization across every B-rep face boundary, so there is nothing
 to decimate and no seam to open.
 
 Normals come from the B-rep surface at each node, not from the triangles.
@@ -142,7 +142,7 @@ def tessellate(shape, lin_defl, ang_defl):
     Nodes are per B-rep face, so a vertex on a boundary between two faces
     exists once per face with each face's own normal. That is what makes a
     tangent boundary shade smooth and a sharp one shade sharp with no
-    threshold involved. BRepMesh discretises the shared edge identically
+    threshold involved. BRepMesh discretizes the shared edge identically
     on both faces, so the positions coincide and no crack opens.
     """
     BRepMesh_IncrementalMesh(shape, lin_defl, False, ang_defl, True)
@@ -382,7 +382,7 @@ def main():
     global Y_SHIFT
     body_y = -verts[faces[groups["MainBody.obj"]]][:, :, 1]
     Y_SHIFT = float((body_y.min() + body_y.max()) / 2.0)
-    print(f"  Y shift {Y_SHIFT:+.2f} mm to centre the body on the camera axis")
+    print(f"  Y shift {Y_SHIFT:+.2f} mm to center the body on the camera axis")
 
     total = 0
     for part, sel in sorted(groups.items()):

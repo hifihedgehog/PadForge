@@ -1150,7 +1150,7 @@ namespace PadForge.ViewModels
         /// the current combination (round eight, R15): with Half + Either
         /// both on, the engine reads absolute deflection and Invert is
         /// documented inert, yet the checkbox was offered ungated while
-        /// both its neighbours carry applicability gates. Drives the
+        /// both its neighbors carry applicability gates. Drives the
         /// checkbox's IsEnabled so an inert option is visibly inert.</summary>
         public bool IsInvertApplicable => !(_isHalfAxis && _isBidirectional);
 

@@ -394,7 +394,7 @@ namespace PadForge.ViewModels
         public event Action<int> IdentityProtectionModeChangeRequested;
 
         /// <summary>Set the selected mode without raising the change request (used to
-        /// initialize from settings and to revert a cancelled switch).</summary>
+        /// initialize from settings and to revert a canceled switch).</summary>
         public void SetIdentityProtectionModeSilently(int index)
         {
             _suppressIdentityModeChange = true;

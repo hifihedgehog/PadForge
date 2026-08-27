@@ -87,7 +87,7 @@ namespace PadForge.Tests
         /// SUB-expression the layers diverge, because the guard keeps the
         /// rest of the formula alive (0 + 5) while the outer net discards
         /// the whole result (Infinity + 5 is still infinite, so 0). A
-        /// formula that divides by a source which happens to be centred
+        /// formula that divides by a source which happens to be centered
         /// therefore keeps computing instead of collapsing to nothing.</para></summary>
         [Theory]
         [InlineData("1 / 0 + 5", 5)]

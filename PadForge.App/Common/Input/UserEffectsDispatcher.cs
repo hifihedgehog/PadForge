@@ -183,7 +183,7 @@ namespace PadForge.Common.Input
 
         // Audio onset threshold for AudioPulseRandom: peak rising from
         // below this to above it counts as a pulse onset and rolls a
-        // new random colour.
+        // new random color.
         private const float AudioOnsetEnter = 0.30f;
         private const float AudioOnsetExit  = 0.15f;
 
@@ -202,7 +202,7 @@ namespace PadForge.Common.Input
         private volatile bool _disposed;
 
         // Per-mode runtime state. The synthesizer is stateless; the
-        // dispatcher carries random-colour memory across audio onsets,
+        // dispatcher carries random-color memory across audio onsets,
         // the active input-reactive pulse, and the previous button mask
         // for rising-edge detection.
         //
@@ -471,7 +471,7 @@ namespace PadForge.Common.Input
         /// consume-on-delivery contract the speaker-path one-shot uses.
         ///
         /// <para>Without this a DS5 powered on over BT sits on its firmware
-        /// default blue and ignores every colour PadForge writes, whatever
+        /// default blue and ignores every color PadForge writes, whatever
         /// the Lighting tab says, until an app restart happens to re-open
         /// the device (#334, second report). The standing FadeOut that
         /// d4c011f5 removed had been delivering this release by accident on
@@ -490,7 +490,7 @@ namespace PadForge.Common.Input
         /// <para>Two latches survive an unassign and would otherwise make
         /// a re-assigned pad behave as though it had never left, until the
         /// app is restarted. Reported 2026-08-01: unassign a DualSense,
-        /// re-assign it, and it never picks up its slot's identity colour.</para>
+        /// re-assign it, and it never picks up its slot's identity color.</para>
         ///
         /// <para>The first is <see cref="ExternalSubsystemState"/>. It is
         /// static, keyed by pad index, and deliberately never reset so a
@@ -601,8 +601,8 @@ namespace PadForge.Common.Input
             /// the grace window (unlike <see cref="LightbarRgb"/>, which is
             /// grace-gated and means "they own the bar right now"). When
             /// PadForge is deliberately not authoring the bar it carries
-            /// these bytes instead of zeros, so a firmware that honours the
-            /// RGB regardless of the enable bit re-applies the same colour
+            /// these bytes instead of zeros, so a firmware that honors the
+            /// RGB regardless of the enable bit re-applies the same color
             /// rather than blanking it.</summary>
             public byte[] LastLightbarRgb;
         }
@@ -756,7 +756,7 @@ namespace PadForge.Common.Input
         /// program that claimed them is gone.
         ///
         /// <para>PadForge stands down from both the moment anything else
-        /// writes them, so a game's colour is not fought over. That half was
+        /// writes them, so a game's color is not fought over. That half was
         /// right. The missing half is that the claim never lapsed: the record
         /// backing <see cref="ExternalSubsystemState.LightbarEverExternal"/>
         /// was only ever dropped when the slot's assigned devices changed, so
@@ -1326,7 +1326,7 @@ namespace PadForge.Common.Input
             float rawPeak = AudioPeakProvider?.Invoke() ?? 0f;
             float scaled = Math.Clamp(rawPeak * maxSensitivity, 0f, 1f);
 
-            // Roll a new random colour on the rising edge of an audio
+            // Roll a new random color on the rising edge of an audio
             // onset, so AudioPulseRandom flashes a fresh hue per pulse.
             // Slot-level — every AudioPulseRandom device on the slot
             // shares the same per-onset hue.
@@ -1345,7 +1345,7 @@ namespace PadForge.Common.Input
 
             // Drain button rising edges. The slot-level button mask is
             // shared across devices but each device rolls its own pulse
-            // colour using its own LightbarMode + palette, so two
+            // color using its own LightbarMode + palette, so two
             // DualSenses on the slot can flash independently.
             DrainInputPulses();
 
@@ -1441,7 +1441,7 @@ namespace PadForge.Common.Input
         private void RollRandomColor()
         {
             // Pick a vivid hue uniformly. Saturation+value pinned to 1
-            // so the colour reads cleanly through the diffuser at any
+            // so the color reads cleanly through the diffuser at any
             // peak intensity.
             int h = _rng.Next(0, 360);
             HsvToRgb(h, 1.0, 1.0, out var r, out var g, out var b);
@@ -1458,7 +1458,7 @@ namespace PadForge.Common.Input
             _lastButtons = buttons;
             if (newlyPressed == 0) return;
 
-            // Roll per-device pulse colour using each device's own
+            // Roll per-device pulse color using each device's own
             // input-reactive overlay mode + palette. The legacy
             // LightbarMode.InputReactive* values are still honored for
             // any unmigrated saves / runtime macro applications, but
@@ -1517,7 +1517,7 @@ namespace PadForge.Common.Input
                         }
                     }
                     // wantFixed: synthesizer reads the device's
-                    // LightbarRed/G/B; no per-device pulse colour to
+                    // LightbarRed/G/B; no per-device pulse color to
                     // roll here.
                 }
             }
@@ -1589,9 +1589,9 @@ namespace PadForge.Common.Input
             // tells callers to fall back to padIndex + 1. This site did not,
             // and the failure is invisible in the obvious place: the lightbar
             // looks right either way, because PlayerIdentityDefaults.Wrap maps
-            // both 0 and 1 to colour index 0. Only the pips give it away, since
+            // both 0 and 1 to color index 0. Only the pips give it away, since
             // they are gated on playerNumber > 0, so the pad shows player one's
-            // colour with no pips at all. Reported on hardware 2026-08-15.
+            // color with no pips at all. Reported on hardware 2026-08-15.
             if (playerNumber <= 0) playerNumber = _padIndex + 1;
 
             // For non-tick dispatches (slider drag, OnDevicesUpdated re-
@@ -1744,13 +1744,13 @@ namespace PadForge.Common.Input
                     // Web controller lightbar: a phone drawing a DualShock 4
                     // or a DualSense renders the same bar the hardware has, so
                     // it gets the same lighting engine rather than a still
-                    // colour. Same shape as the Move lane below it, and for
+                    // color. Same shape as the Move lane below it, and for
                     // the same reason: a device whose bar is not written with
-                    // a HID effect packet still deserves the shared colour
+                    // a HID effect packet still deserves the shared color
                     // core (static / breathing / palette / audio / battery /
                     // input-reactive), delivered through its own writer.
                     //
-                    // ApplyGuideLeds also sets this device's colour, but that
+                    // ApplyGuideLeds also sets this device's color, but that
                     // is a 30-second lane: fine for a static pick, unable to
                     // animate. Its value is simply overwritten here on the
                     // next dispatch, and PlayerNumber is left to it because
@@ -1976,15 +1976,15 @@ namespace PadForge.Common.Input
                     //
                     // Measured (#300, r3213 USB trace): 135 lightbar writes
                     // with the enable bit SET against 6 without, all carrying
-                    // the game's colour, while the effect lane wrote 439 times
+                    // the game's color, while the effect lane wrote 439 times
                     // a second. The reporter's description was exact: "an
                     // overlap between two, one lagging and the other not
                     // lagging, and the controller is flashing between them."
                     //
                     // Suppressing the ENABLE bit rather than the value is the
-                    // point. Clearing the colour alone would drop through to
+                    // point. Clearing the color alone would drop through to
                     // PadForge's own configured mode and still fight, just
-                    // with a different colour.
+                    // with a different color.
                     bool gameDrivenBar = devOverrides.LightbarRgb != null
                         && devOverrides.LightbarRgb.Length >= 3;
                     // The mirror override decays with the 1.5 s grace, but
@@ -2002,7 +2002,7 @@ namespace PadForge.Common.Input
                     // a host driving adaptive triggers or rumble and never
                     // touching the lightbar still took it away from the
                     // Lighting tab for the full 15 s idle window, so the
-                    // pad sat on its firmware default blue and no colour
+                    // pad sat on its firmware default blue and no color
                     // setting did anything. IsPassthroughTarget only asks
                     // that an online DualSense be mapped to the slot, so
                     // there was nothing else narrowing it either. The pips
@@ -2107,7 +2107,7 @@ namespace PadForge.Common.Input
                         rawAudioPeak * (float)devCfg.AudioLightbarSensitivity,
                         0f, 1f);
 
-                    // Per-device pulse colour + intensity (DrainInputPulses
+                    // Per-device pulse color + intensity (DrainInputPulses
                     // rolled per-device above).
                     var devState = _deviceStates.TryGetValue(ud.InstanceGuid, out var ds) ? ds : null;
                     uint devPulseColor = devState?.PulseColor ?? 0;
@@ -2313,7 +2313,7 @@ namespace PadForge.Common.Input
                             // An explicit user Output Path owns byte 7 and its
                             // enable bit; the #83 macro-speaker block keeps only
                             // its speaker-VOLUME half. Automatic preserves the
-                            // old behaviour byte for byte.
+                            // old behavior byte for byte.
                             bool userPathForced = pathVal > 0;
                             if (AudioPassthroughService.WantsSpeakerPath(ud.InstanceGuid))
                             {

@@ -95,7 +95,7 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public async Task Relay_Handshake_CancelledReturnsNull()
+        public async Task Relay_Handshake_CanceledReturnsNull()
         {
             // A relay lane that never hears from the peer must surface a clean
             // null (the caller then reports the failure), not an exception.
@@ -170,7 +170,7 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void CodeRelay_NormalisesLikeTheDhtSlot()
+        public void CodeRelay_NormalizesLikeTheDhtSlot()
         {
             // A retyped code with grouping dashes and different case must land
             // on the identical rendezvous, exactly as DeriveSlot promises.

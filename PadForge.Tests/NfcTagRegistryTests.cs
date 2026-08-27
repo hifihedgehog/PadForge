@@ -70,7 +70,7 @@ namespace PadForge.Tests
         public void NormalizeUid_UppercasesAndStripsSeparators()
         {
             Assert.Equal("04A1B2C3", NfcTagRegistry.NormalizeUid("04 a1:b2-c3"));
-            // A tap's UID and the stored UID both normalise, so they compare equal.
+            // A tap's UID and the stored UID both normalize, so they compare equal.
             Reset();
             NfcTagRegistry.Register("04 a1 b2 c3", "Card");
             Assert.Equal(1, NfcTagRegistry.ButtonForUid("04a1b2c3"));

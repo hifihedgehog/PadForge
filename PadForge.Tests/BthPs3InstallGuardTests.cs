@@ -111,7 +111,7 @@ namespace PadForge.Tests
             Assert.False(Ds3DriverInstaller.HasOrphanedServiceKey(_services, "Real"));
         }
 
-        // ── wiring the behavioural tests cannot reach ────────────────────
+        // ── wiring the behavioral tests cannot reach ────────────────────
 
         private static string PairSrc([CallerFilePath] string me = null)
             => File.ReadAllText(Path.Combine(
@@ -163,8 +163,8 @@ namespace PadForge.Tests
 
         // ── the install verdict waits for asynchronous PnP ───────────────
 
-        /// <summary>The poll helper honours its timeout and its success path.
-        /// Behavioural, since the helper is pure arithmetic over a probe.</summary>
+        /// <summary>The poll helper honors its timeout and its success path.
+        /// Behavioral, since the helper is pure arithmetic over a probe.</summary>
         [Fact]
         public void WaitForCondition_PollsToSuccessAndToTimeout()
         {

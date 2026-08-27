@@ -125,7 +125,7 @@ namespace PadForge.Tests
 
         /// <summary>Centroid lands on the origin.</summary>
         [Fact]
-        public void NormalizeCloud_CentresTheCentroid()
+        public void NormalizeCloud_CentersTheCentroid()
         {
             var norm = ShapeRecognizer.NormalizeCloud(
                 ShapeRecognizer.Resample(Circle(24, radius: 37f), 32));
@@ -186,7 +186,7 @@ namespace PadForge.Tests
             Assert.Equal(2, flat.Length);
         }
 
-        /// <summary>Translation invariance falls out of centring, and it is
+        /// <summary>Translation invariance falls out of centering, and it is
         /// what lets the same gesture score identically anywhere on the
         /// pad.
         ///
@@ -201,7 +201,7 @@ namespace PadForge.Tests
         /// alone leaves this green. It reddens only when both are broken. That
         /// is redundancy in the implementation rather than weakness in the
         /// test, but it means this test is not the guard for either step on its
-        /// own; NormalizeCloud_CentresTheCentroid covers the centring.</para>
+        /// own; NormalizeCloud_CentersTheCentroid covers the centering.</para>
         /// </summary>
         [Fact]
         public void NormalizeCloud_IsTranslationInvariant()
@@ -310,14 +310,14 @@ namespace PadForge.Tests
         /// convention came to light.
         ///
         /// <para>Null is the sentinel for "no signature could be built".
-        /// Every consumer already honours it: ScoreShifted and
+        /// Every consumer already honors it: ScoreShifted and
         /// BestRotationalScore both null-guard to 0, Reversed returns null
         /// for null, and TouchpadCustomGesture deliberately ASSIGNS null to
         /// ShapeTemplate.AngularSignature for the multi-finger case, so the
         /// field is nullable by contract rather than by accident.</para>
         ///
         /// <para>Worth knowing before tidying either class: the two
-        /// neighbouring recognizers use OPPOSITE degenerate conventions.
+        /// neighboring recognizers use OPPOSITE degenerate conventions.
         /// ShapeRecognizer.Resample and BuildCloud return an EMPTY ARRAY,
         /// AngularMarginRecognizer returns NULL. Both are internally
         /// consistent, so this pins them rather than proposing a

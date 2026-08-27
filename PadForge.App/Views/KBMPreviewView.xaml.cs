@@ -523,7 +523,7 @@ namespace PadForge.Views
                 // Every lane that moves the cursor, not just the deflection
                 // one. The rate lanes (gyro, touchpad, flick) report mouse
                 // COUNTS rather than a [-1..+1] deflection, so they are
-                // normalised by the counts one full deflection is worth
+                // normalized by the counts one full deflection is worth
                 // (KeyboardMouseVirtualController's per-poll spend) before
                 // being summed in. Sign matches what the VC sends: those
                 // lanes negate into screen space there, and screen-Y is

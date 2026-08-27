@@ -56,7 +56,7 @@ namespace PadForge.Common.Input
             0xC605, // CadMan
             0xC606, // SpaceMouse Classic
             0xC621, // Spaceball 5000
-            0xC623, // Space Traveller
+            0xC623, // Space Traveler
             0xC625, // Space Pilot
             0xC626, // Space Navigator
             0xC627, // Space Explorer
@@ -90,7 +90,7 @@ namespace PadForge.Common.Input
         public SpaceMouseService(Action<string> log = null) => _log = log ?? (_ => { });
 
         /// <summary>Begin watching for SpaceMouse devices. Call after SDL has
-        /// been initialised (SDL_INIT_JOYSTICK), like Ds3DirectService.Start.</summary>
+        /// been initialized (SDL_INIT_JOYSTICK), like Ds3DirectService.Start.</summary>
         public void Start()
         {
             if (_running) return;

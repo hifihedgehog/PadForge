@@ -1458,7 +1458,7 @@ namespace PadForge.Engine.Data
             sb.Append(LeftThumbLinear); sb.Append('|');
             sb.Append(RightThumbLinear); sb.Append('|');
             // Without these two, a PadSetting that differs ONLY in stick
-            // sensitivity hashes identically to its neighbour, and the
+            // sensitivity hashes identically to its neighbor, and the
             // checksum-keyed dedup then treats them as the same row.
             sb.Append(LeftThumbSensitivity); sb.Append('|');
             sb.Append(RightThumbSensitivity); sb.Append('|');
@@ -2236,7 +2236,7 @@ namespace PadForge.Engine.Data
         /// GUID appears in Sources, with only those device-owned
         /// Sources retained. Round-trips multi-source ExtraSources,
         /// CombineMode and CombineExpression across Copy / Paste /
-        /// Copy From. Not serialised by the on-disk XML path.</summary>
+        /// Copy From. Not serialized by the on-disk XML path.</summary>
         [System.Xml.Serialization.XmlIgnore]
         [System.Text.Json.Serialization.JsonIgnore]
         public System.Collections.Generic.List<MappingRow> DeviceScopedMultiSourceRows { get; set; }
@@ -2248,7 +2248,7 @@ namespace PadForge.Engine.Data
         /// currently-selected device. Paste replaces the target slot's
         /// MappingSet wholesale from this list; sources whose device
         /// isn't on the target slot stay in the table but are inert
-        /// until that device is assigned. Not serialised to the on-disk
+        /// until that device is assigned. Not serialized to the on-disk
         /// XML — this only travels through clipboard JSON.</summary>
         [System.Xml.Serialization.XmlIgnore]
         [System.Text.Json.Serialization.JsonIgnore]
@@ -2444,7 +2444,7 @@ namespace PadForge.Engine.Data
 
             // Opaque per-slot config snapshots (the per-(slot, device)
             // lighting / trigger / audio bag, custom layout for Extended,
-            // CC + note layout for MIDI). The caller serialises the
+            // CC + note layout for MIDI). The caller serializes the
             // App-side DTOs into
             // these strings; PadSetting just round-trips them. Keeps the
             // Engine assembly free of dependencies on App ViewModels.

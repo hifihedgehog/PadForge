@@ -1341,7 +1341,7 @@ namespace PadForge.ViewModels
             // rectangle, so the per-pad card looked broken.
             //
             // A pad the config does not map has no region, and the honest
-            // answer for it is the full-screen default, NOT a neighbour's
+            // answer for it is the full-screen default, NOT a neighbor's
             // rectangle. RCT3 Weno V0.1 maps only the right pad, so the left
             // pad's card should sit at 1.00 / 0.50 and the right pad's should
             // read 1.20 / 0.70.

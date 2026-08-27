@@ -109,7 +109,7 @@ namespace PadForge.Engine.Data
         /// time after the button has been released before deactivating").
         /// Hold mode keeps the layer engaged this many milliseconds past
         /// the input's release; a re-press inside the window continues the
-        /// engagement seamlessly, so the pending disengage is cancelled by
+        /// engagement seamlessly, so the pending disengage is canceled by
         /// the press (the audit-#2 M6 cancel-on-re-press shape, applied to
         /// the layer machinery instead of a macro pair). Other modes
         /// ignore it: their disengage is press-driven (Toggle / Cycle /

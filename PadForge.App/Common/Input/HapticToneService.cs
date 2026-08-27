@@ -1696,12 +1696,12 @@ namespace PadForge.Common.Input
                 if (Marshal.GetLastWin32Error() != ERROR_IO_PENDING) return false;
                 if (WaitForSingleObject(ev, 500) != 0)
                 {
-                    // Drain the cancelled write before the finally frees the
+                    // Drain the canceled write before the finally frees the
                     // pinned buffer + OVERLAPPED (use-after-free otherwise; see
                     // OverlappedWrite and WiiSpeakerService BtWritePool.Dispose).
                     // A drain that itself times out means the kernel still
                     // references them: the finally must leak the trio (bounded,
-                    // stalled-stack-only) instead of freeing memory the cancelled
+                    // stalled-stack-only) instead of freeing memory the canceled
                     // completion will write into.
                     try { CancelIo(h); } catch { }
                     try { leak = WaitForSingleObject(ev, 200) != 0; } catch { leak = true; }
@@ -1927,14 +1927,14 @@ namespace PadForge.Common.Input
                 {
                     // Timed out with the write still in flight. CancelIo only
                     // REQUESTS cancellation; the kernel/BT stack keeps a reference
-                    // to the pinned buffer + native OVERLAPPED until the (cancelled)
+                    // to the pinned buffer + native OVERLAPPED until the (canceled)
                     // completion fires, so the finally must NOT free them yet.
                     // Drain on the event first, exactly as WiiSpeakerService
                     // BtWritePool.Dispose (which cites the Sony BtWritePool).
                     // If even the drain times out (the stalled stack this 1000 ms
                     // timeout exists for), the finally leaks the trio (bounded,
                     // pathological-path-only) rather than freeing memory the
-                    // cancelled completion will write into.
+                    // canceled completion will write into.
                     try { CancelIo(h); } catch { }
                     try { leak = WaitForSingleObject(ev, 200) != 0; } catch { leak = true; }
                     return false;

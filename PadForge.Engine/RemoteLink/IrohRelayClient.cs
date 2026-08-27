@@ -217,7 +217,7 @@ namespace PadForge.Engine.RemoteLink
             _ws = ws;
             // The receive loop's lifetime is the CLIENT's, not the caller's.
             // Linking it to the connect token killed a cached, shared client
-            // the moment whoever first dialled through it cancelled their
+            // the moment whoever first dialed through it canceled their
             // token: IsConnected still read true, so the client kept being
             // handed out while nothing was reading from it, and every reply
             // vanished. Dispose is what ends this loop.

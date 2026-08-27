@@ -50,7 +50,7 @@ namespace PadForge.Tests
         private static string Dispatcher()
             => Source("PadForge.App", "Common", "Input", "UserEffectsDispatcher.cs");
 
-        // ───────────────────── the resolver, by behaviour ─────────────────────
+        // ───────────────────── the resolver, by behavior ─────────────────────
 
         /// <summary>A plugged reading routes to the headset, an unplugged one
         /// to the speaker. This is the half that always worked, given a

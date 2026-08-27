@@ -143,7 +143,7 @@ namespace PadForge.Tests
 
         /// <summary>THE DIRECTION. The preview draws the pad the config was
         /// authored ON, so a binding is anchored to the control the author
-        /// physically pressed and labelled with what it produces. Anchoring
+        /// physically pressed and labeled with what it produces. Anchoring
         /// on the target drew the VIRTUAL pad's geometry on the source
         /// device's body: a Deck touchpad bound to the d-pad lit the Deck's
         /// own d-pad and called it "Touchpad 0".</summary>

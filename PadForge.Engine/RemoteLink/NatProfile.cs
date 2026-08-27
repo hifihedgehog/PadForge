@@ -5,7 +5,7 @@ using System.Net;
 namespace PadForge.Engine.RemoteLink
 {
     /// <summary>
-    /// A socket's NAT behaviour, learned by probing several STUN servers from
+    /// A socket's NAT behavior, learned by probing several STUN servers from
     /// the same socket (#294 symmetric-NAT support). The mapping KIND decides
     /// how a peer punches to us:
     ///

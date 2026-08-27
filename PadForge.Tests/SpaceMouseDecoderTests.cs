@@ -47,15 +47,15 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void SplitShape_ZeroTriplet_IsAGenuineCentreReturn()
+        public void SplitShape_ZeroTriplet_IsAGenuineCenterReturn()
         {
             // AndunHH SpaceNavigator.md:44: after the last non-zero motion each
             // triplet is sent as zeros. Those zeros are real state.
             var d = new SpaceMouseDecoder(combinedReport: false);
             var move = Report(1, 300, -300, 42);
             d.Process(move, move.Length);
-            var centre = Report(1, 0, 0, 0);
-            d.Process(centre, centre.Length);
+            var center = Report(1, 0, 0, 0);
+            d.Process(center, center.Length);
 
             Assert.Equal(0, d.TranslateX);
             Assert.Equal(0, d.TranslateY);

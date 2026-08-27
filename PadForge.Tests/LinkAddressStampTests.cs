@@ -138,7 +138,7 @@ namespace PadForge.Tests
         /// they must not.
         ///
         /// <para>Asserted against the source text because the device-node read
-        /// needs a real PnP node and cannot run in-process. The behaviour
+        /// needs a real PnP node and cannot run in-process. The behavior
         /// either side of that flag is covered by the tests above; this pins
         /// the wiring that chooses it, which a mutation of the call site
         /// otherwise slips past.</para></summary>

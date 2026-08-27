@@ -2617,7 +2617,7 @@
                                                         HorizontalAlignment="Left" Padding="8,2"/>
                                             </StackPanel>
                                             <!-- Hold slider, Reactive only. Held at full intensity for this many ms before the fade begins.
-                                                 Labelled with the DURATION key, not Macro_LightbarHold_Label: that key labels the
+                                                 Labeled with the DURATION key, not Macro_LightbarHold_Label: that key labels the
                                                  mode picker above, and translators read it that way (es "Modo", de "Modus", it
                                                  "Modalità"), so sharing it made one of the two rows wrong in every locale. -->
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
@@ -3929,7 +3929,7 @@
                                 <Setter Property="HorizontalContentAlignment" Value="Left"/>
                                 <Style.Triggers>
                                     <!-- The base DataGridCell paints #FFF0F0F0 (the classic
-                                         Windows control grey) on IsSelected, which is the
+                                         Windows control gray) on IsSelected, which is the
                                          searing white on a selected row in dark mode. Keep
                                          selected cells transparent so the row's subtle ember
                                          wash shows through uniformly, and hold the text light. -->
@@ -6753,7 +6753,7 @@
                                     <ui:Button Command="{Binding ResetSteeringLockPulseCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_Steering_Reset_PulseMs, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                             </StackPanel>
-                            <!-- Lightbar colour + fade — only meaningful on a device with a lightbar. -->
+                            <!-- Lightbar color + fade — only meaningful on a device with a lightbar. -->
                             <StackPanel x:Name="LockLightbarSection">
                             <Separator Margin="0,8,0,8"/>
                             <!-- Color source: Base color (Fixed) / Random Hue / Palette Step — the three
@@ -6767,7 +6767,7 @@
                                 </ComboBox>
                             </StackPanel>
                             <!-- Fixed base color — full picker in a bounding box (matches every other
-                                 colour picker): HSV box, swatch, hex field, RGB sliders + per-channel resets.
+                                 color picker): HSV box, swatch, hex field, RGB sliders + per-channel resets.
                                  Shown only for the Fixed source. -->
                             <StackPanel Visibility="{Binding IsSteeringLockLightbarFixedColorVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                             <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Steering_Lock_LightbarColor, Source={x:Static strings:Strings.Instance}}" Margin="0,0,0,4"/>
@@ -8479,7 +8479,7 @@
                                 </StackPanel>
 
                                 <!-- Audio band thresholds (settings) — moved out of the audio
-                                     bands wrapper below so settings stay above colours. -->
+                                     bands wrapper below so settings stay above colors. -->
                                 <StackPanel Visibility="{Binding DeviceConfig.LightbarMode, Converter={StaticResource EnumEqualityVisibilityConverter}, ConverterParameter=AudioThresholds|AudioGradient|AudioCrossFade}">
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                         <TextBlock Text="{Binding Pad_Lighting_AudioLightbar_LowToMid, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
@@ -8516,7 +8516,7 @@
                                     <ui:Button Command="{Binding DeviceConfig.ResetAudioCrossFadePercentCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetAudioCrossFadePercent, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
 
-                                <!-- Single colour: Static / Breathing / AudioPulse / Strobe base modes.
+                                <!-- Single color: Static / Breathing / AudioPulse / Strobe base modes.
                                      Strobe square-waves between the configured RGB and
                                      black at LightbarPeriodMs cadence, so it uses the
                                      same base color as the static / breathing modes.
@@ -11659,7 +11659,7 @@
                                 </StackPanel>
                                 <!-- Output path (byte 7 bits 4-5, OutputPathSelect). Enum
                                      values 1-4 map to firmware paths 0-3; Automatic writes
-                                     nothing and keeps the #83 macro-speaker behaviour. An
+                                     nothing and keeps the #83 macro-speaker behavior. An
                                      explicit choice here OWNS the byte: the macro-speaker
                                      block yields its path half and keeps volume only. -->
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8"
@@ -11766,7 +11766,7 @@
                                          level as a cutoff plus a feed and exposes
                                          bs2b_set_level_fcut and bs2b_set_level_feed to set
                                          them independently, with the six classic presets
-                                         marked obsolete in their favour. Shown only at
+                                         marked obsolete in their favor. Shown only at
                                          Custom, because at every preset the pair comes from
                                          the preset and editing it would be a lie. -->
                                     <StackPanel Visibility="{Binding DeviceConfig.AudioCrossfeedIsCustom, Converter={StaticResource BoolToVisibilityConverter}}">

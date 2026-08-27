@@ -98,9 +98,9 @@ def write_mask(name, members):
     y0, y1 = int(ys.min()), int(ys.max()) + 1
     # CROPPED to its own bounds, not full-canvas. A full-canvas layer carrying
     # an OpacityMask is one element with both a mask and (when lit) a glow
-    # Effect, and WPF is not dependable about honouring the mask in that
+    # Effect, and WPF is not dependable about honoring the mask in that
     # combination: if it drops, the layer floods the entire pad with the lit
-    # colour. A layer bounded by its own control cannot do that.
+    # color. A layer bounded by its own control cannot do that.
     rgba = np.zeros((y1 - y0, x1 - x0, 4), np.uint8)
     rgba[:, :, :3] = 255
     rgba[:, :, 3] = m[y0:y1, x0:x1]

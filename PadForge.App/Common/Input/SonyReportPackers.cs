@@ -292,7 +292,7 @@ namespace PadForge.Common.Input
             if (gp.IsButtonPressed(Gamepad.GUIDE))    b9 |= 0x01; // PS
             // Both sources, matching the DS4 packer. tp.Click is the PHYSICAL
             // touchpad press; Gamepad.TOUCHPAD is a mapped or macro-driven one.
-            // Only the physical source was honoured here, so a macro bound to
+            // Only the physical source was honored here, so a macro bound to
             // Touchpad reached the host on a virtual DS4 and silently did
             // nothing on a virtual DualSense.
             if (gp.IsButtonPressed(Gamepad.TOUCHPAD)) b9 |= 0x02;

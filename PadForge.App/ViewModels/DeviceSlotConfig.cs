@@ -1256,7 +1256,7 @@ namespace PadForge.ViewModels
         /// hold period elapses), in milliseconds. Set to 0 for a hard
         /// cutoff — useful with a non-zero <see cref="LightbarInputHoldMs"/>
         /// to produce a clean on/off blink. The pre-v3.1.1 single-decay
-        /// behaviour is recovered by Hold=0, Decay=600 (the default).</summary>
+        /// behavior is recovered by Hold=0, Decay=600 (the default).</summary>
         public int LightbarInputDecayMs
         {
             get => _lightbarInputDecayMs;
@@ -1731,7 +1731,7 @@ namespace PadForge.ViewModels
     /// byte 7 bits 4-5, OutputPathSelect). Values 1-4 map to firmware
     /// paths 0-3, the four Sony names in duaLib's scePad surface
     /// (SCE_PAD_AUDIO_PATH_*). Automatic writes nothing and preserves
-    /// the #83 behaviour: firmware routing, with PadForge forcing the
+    /// the #83 behavior: firmware routing, with PadForge forcing the
     /// speaker only while it plays sounds there. Persisted numerically,
     /// so values are APPEND-ONLY.</summary>
     public enum AudioOutputPath
@@ -1934,7 +1934,7 @@ namespace PadForge.ViewModels
         /// <summary>Step through the configured lightbar palette
         /// on each button press.</summary>
         Cycle = 2,
-        /// <summary>Flash one fixed colour on each button press, taken from
+        /// <summary>Flash one fixed color on each button press, taken from
         /// <see cref="DeviceSlotConfig.InputReactiveR"/> and friends. That is
         /// deliberately NOT the base LightbarRed/Green/Blue, so a user can
         /// layer a white flash over a blue Static base. This doc used to name
@@ -2009,7 +2009,7 @@ namespace PadForge.ViewModels
         [XmlAttribute] public int AudioToneLimitHz { get; set; } = 800;
         // Audio DSP chain (#347). Defaults match the VM: no crossfeed, no EQ,
         // limiter on at 98 percent. A legacy config missing every attribute
-        // therefore loads as the pre-feature behaviour except that the
+        // therefore loads as the pre-feature behavior except that the
         // limiter is armed, which only ever removes clipping.
         [XmlAttribute] public int AudioCrossfeedLevel { get; set; }
         [XmlAttribute] public int AudioCrossfeedCutHz { get; set; } = 700;
@@ -2025,7 +2025,7 @@ namespace PadForge.ViewModels
         [XmlAttribute] public int AudioPersonaHapticsGain { get; set; } = 100;
         // Headphone jack hardware volume (0-100, default 100). Missing
         // attribute on legacy XML keeps the initializer, so old configs
-        // load as full volume, the pre-feature effective behaviour.
+        // load as full volume, the pre-feature effective behavior.
         [XmlAttribute] public int HeadphoneVolume { get; set; } = 100;
 
         /// <summary>#314. 48, the reference implementation's own default.</summary>

@@ -195,7 +195,7 @@ namespace PadForge.Engine.RemoteLink
         /// server is running and connections are live: STUN datagrams demux from
         /// sealed session datagrams by the magic cookie.
         /// </summary>
-        /// <summary>This socket's classified NAT behaviour from the last probe
+        /// <summary>This socket's classified NAT behavior from the last probe
         /// (#294), used to decide punch strategy. Null until probed.</summary>
         public NatProfile Nat { get; private set; }
 
@@ -298,7 +298,7 @@ namespace PadForge.Engine.RemoteLink
             try
             {
                 // Probe ALL servers (not just two) IN ORDER so the mapping's
-                // per-destination behaviour is classifiable: equal ports = cone,
+                // per-destination behavior is classifiable: equal ports = cone,
                 // stepped ports = sequential-symmetric (predictable, punchable),
                 // erratic = random-symmetric (needs a relay).
                 IPEndPoint first = null;
@@ -491,7 +491,7 @@ namespace PadForge.Engine.RemoteLink
         // peers move onto one LAN, or a NAT relaxes) the session should take
         // it. iroh does exactly this; without it a relayed link stays relayed
         // even with the two machines side by side. The relay carries the
-        // signalling, so the simultaneity a punch needs is free.
+        // signaling, so the simultaneity a punch needs is free.
 
         /// <summary>Our current candidate endpoints for a peer to punch.</summary>
         private List<IPEndPoint> PathCandidates()
@@ -770,7 +770,7 @@ namespace PadForge.Engine.RemoteLink
         private readonly System.Collections.Concurrent.ConcurrentDictionary<string, byte> _autoResponding = new();
 
         /// <summary>Capability-derived nonces for paired peers, so an unsolicited
-        /// DHT-lane dial is recognised too. Set by the host each maintenance
+        /// DHT-lane dial is recognized too. Set by the host each maintenance
         /// pass; empty is fine (the code lane needs no registration).</summary>
         public void SetKnownPunchNonces(IEnumerable<byte[]> nonces)
         {
@@ -825,7 +825,7 @@ namespace PadForge.Engine.RemoteLink
         }
 
         /// <summary>Every local IPv4 this machine holds, so the punch can
-        /// recognise its own endpoints (self-connect guard).</summary>
+        /// recognize its own endpoints (self-connect guard).</summary>
         private static IEnumerable<IPAddress> LocalAddresses()
         {
             List<IPAddress> list = new();
@@ -981,12 +981,12 @@ namespace PadForge.Engine.RemoteLink
         /// HOST half of the code-derived relay lane (#294). Connects to the
         /// relay AS the identity the host's own connection code addresses and
         /// waits there for a caller. No lookup is involved: the caller derives
-        /// the same key from the code it dialled, so it can reach this host
+        /// the same key from the code it dialed, so it can reach this host
         /// directly. This replaces carrying the caller's relay key over the
         /// DHT, which required the two machines' DHT views to converge and so
         /// failed across different ISPs.
         ///
-        /// Runs until cancelled, handling one caller at a time. Each accepted
+        /// Runs until canceled, handling one caller at a time. Each accepted
         /// call runs the UNMODIFIED handshake, exactly like every other lane.
         /// </summary>
         public async Task ListenOnCodeRelayAsync(Dht.CodeRendezvous.RelayRendezvous rdv, CancellationToken ct)
@@ -1032,7 +1032,7 @@ namespace PadForge.Engine.RemoteLink
                 string callerHex = Convert.ToHexString(callerKey);
                 if (!_relayInFlight.TryAdd(callerHex, 0)) continue; // retransmitted HELLO
                 SdlDiagLog.WriteLine($"RELAY listen: caller {callerHex.Substring(0, 16)}");
-                // No token on Task.Run: a cancelled token makes it never run
+                // No token on Task.Run: a canceled token makes it never run
                 // the body, so the finally never removes the in-flight key and
                 // that caller could never be accepted again. The body honors
                 // the token itself.

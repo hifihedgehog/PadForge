@@ -149,7 +149,7 @@ namespace PadForge.Tests
                 Counts(PadAt(0.53f), TicksAt(0.004f), src, slot);
                 Counts(PadAt(0.56f), TicksAt(0.008f), src, slot);
                 // A quiet poll inside the 25 ms window: real-speed motion
-                // keeps bridging, the shipped-for-months behaviour (the
+                // keeps bridging, the shipped-for-months behavior (the
                 // speed-gated hold only truncates jitter-scale spend).
                 Assert.True(Counts(PadAt(0.56f), TicksAt(0.018f), src, slot) > 0f,
                     "the bridge stopped during real motion");
@@ -317,7 +317,7 @@ namespace PadForge.Tests
         // ── cursor acceleration (per-pad card) ────────────────────────────
         //
         // Steam's mouse acceleration arrived on MappingSource.ParamAccel and
-        // the engine honoured it with no card showing it. The value lives on
+        // the engine honored it with no card showing it. The value lives on
         // the pad's own Mouse Acceleration setting now, so these tests prove
         // the ENGINE reads that setting: a card that saves a value the engine
         // ignores is the same defect one step further along.
@@ -531,7 +531,7 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void TheDefaultProfileIsBehaviourPreserving()
+        public void TheDefaultProfileIsBehaviorPreserving()
         {
             // Simple with acceleration 0 is the identity, which is what makes
             // it safe as the default: a pad that has never touched these
@@ -638,7 +638,7 @@ namespace PadForge.Tests
         [Fact]
         public void MomentumOn_CoastsAfterReleaseThenStops()
         {
-            // The trackball feel: keep travelling, decay, end. It must END,
+            // The trackball feel: keep traveling, decay, end. It must END,
             // or a flick leaves the cursor drifting forever.
             UseSettings(momentum: true, decay: 0.82f);
             try

@@ -198,7 +198,7 @@ namespace PadForge.SteamWorkshop.Tests
             // mask is a MIXED-case composite ("Layer_789818086_0_MS_
             // right_trackpad_24") and the display regex deliberately only
             // matches single-case runs, so it does not fire on identity
-            // strings at all. That is the correct behaviour for the display
+            // strings at all. That is the correct behavior for the display
             // rule and useless as a check on the identity, which is why this
             // asserts what it actually cares about.
             Assert.All(masks, m => Assert.Contains("_MS_", m, StringComparison.Ordinal));

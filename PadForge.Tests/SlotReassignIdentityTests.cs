@@ -11,7 +11,7 @@ namespace PadForge.Tests
     ///
     /// <para>Reported on hardware 2026-08-01: unassign a DualSense from a
     /// slot, re-assign it, and it never picks up the slot's identity
-    /// colour. Only restarting PadForge brought it back.</para>
+    /// color. Only restarting PadForge brought it back.</para>
     ///
     /// <para>Two latches survived the unassign. The per-slot external-write
     /// record is static, keyed by pad index, and deliberately never reset so
@@ -88,7 +88,7 @@ namespace PadForge.Tests
         // ── What the re-arm buys, at the synthesizer ──
 
         [Fact]
-        public void FloorArmed_AuthorsTheSlotIdentityColour()
+        public void FloorArmed_AuthorsTheSlotIdentityColor()
         {
             // The state a re-assigned slot must land in.
             var fields = Ds5EffectSynthesizer.BuildFields(
@@ -104,7 +104,7 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void FloorDisarmed_CarriesTheOldColourAndNeverReclaims()
+        public void FloorDisarmed_CarriesTheOldColorAndNeverReclaims()
         {
             // The stuck state the bug left behind: the latch is set, so the
             // floor stands down and the pad keeps whatever it was last told,

@@ -53,7 +53,7 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void TheSweepIsCentredOnTheConfiguredPercent()
+        public void TheSweepIsCenteredOnTheConfiguredPercent()
         {
             // Sweeping UP from the user's number would push the stick further
             // than they asked and risk crossing a game's dead zone into real
@@ -166,7 +166,7 @@ namespace PadForge.Tests
             Assert.Equal(axis == "RY" ? level : (short)0, gp.ThumbRY);
         }
 
-        /// <summary>The self-cancelling contract: real stick input past
+        /// <summary>The self-canceling contract: real stick input past
         /// the held level passes through byte-identical, in both
         /// directions. The level is the rest margin (owner ruling,
         /// 2026-08-19): anything under it is invisible to the game by the

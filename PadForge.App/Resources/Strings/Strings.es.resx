@@ -142,7 +142,7 @@
   <data name="Status_DownloadingMidi" xml:space="preserve"><value>Descargando Windows MIDI Services…</value></data>
   <data name="Status_DownloadingInstallingMidi" xml:space="preserve"><value>Descargando e instalando Windows MIDI Services…</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Desinstalando Windows MIDI Services…</value></data>
-  <data name="Status_OperationCancelled" xml:space="preserve"><value>Operación cancelada por el usuario.</value></data>
+  <data name="Status_OperationCanceled" xml:space="preserve"><value>Operación cancelada por el usuario.</value></data>
   <data name="Status_MidiInstallFailed_Format" xml:space="preserve"><value>Error en la instalación de MIDI Services: {0}</value></data>
   <data name="Status_DownloadingSteamVR" xml:space="preserve"><value>Descargando SteamVR…</value></data>
   <data name="Status_DownloadingInstallingSteamVR" xml:space="preserve"><value>Descargando e instalando SteamVR desde los servidores de Valve… Son varios GB y puede tardar.</value></data>
@@ -184,7 +184,7 @@
   <data name="Status_NoSettingsFile" xml:space="preserve"><value>No se encontró archivo de configuración en disco.</value></data>
   <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>No hay dispositivo conectado para grabar.</value></data>
   <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>Grabando: presione un botón o mueva un eje para "{0}"...</value></data>
-  <data name="Status_RecordingCancelled" xml:space="preserve"><value>Grabación cancelada.</value></data>
+  <data name="Status_RecordingCanceled" xml:space="preserve"><value>Grabación cancelada.</value></data>
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Tiempo de grabación agotado para "{0}".</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Motor iniciado.</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>Motor detenido.</value></data>

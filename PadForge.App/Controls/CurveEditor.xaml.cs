@@ -618,7 +618,7 @@ namespace PadForge.Controls
                 // every later index down, so a drag on an index at or after
                 // `hit` was left pointing one past the end and the next
                 // MouseMove threw ArgumentOutOfRangeException on the UI
-                // thread. Cancelling is simpler than renumbering and matches
+                // thread. Canceling is simpler than renumbering and matches
                 // what the user means by deleting the thing under the cursor.
                 if (_isDragging)
                 {

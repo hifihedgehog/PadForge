@@ -12,7 +12,7 @@ namespace PadForge.Engine
     ///   bytes 1-6, logical max 350), report ID 2 carries ROTATION (same layout),
     ///   report ID 3 carries buttons. Reports alternate on an 8 ms cadence, and
     ///   after the last non-zero motion each axis triplet is sent as zeros three
-    ///   times (the return-to-centre signal).
+    ///   times (the return-to-center signal).
     /// - hid.spacemouse/index.js:3-12 (joinInt16 sign extension), :16-19
     ///   (PERSISTENT translate/rotate fields; each report updates only its own
     ///   three axes), :26-47 (byte layout, buttons as 6 bytes x 8 bits).
@@ -29,7 +29,7 @@ namespace PadForge.Engine
     /// a complete device state publishes translation with stale rotation and vice
     /// versa at 125 Hz. So the six axes are persistent fields; each report
     /// updates only the axes it carries, and the consumer reads the assembly.
-    /// The trailing zero triplets are genuine centre returns, never coalesced.
+    /// The trailing zero triplets are genuine center returns, never coalesced.
     ///
     /// Whether report 1 carries six axes (combined) or three (split) is decided
     /// ONCE per device from the HID descriptor (does report 1 define usages
@@ -135,7 +135,7 @@ namespace PadForge.Engine
 
         /// <summary>Scale a raw axis value (logical range -350..350) to the full
         /// SDL axis range, clamped. 0 maps to exactly 0, preserving the sprung
-        /// puck's true centre for downstream deadzones.</summary>
+        /// puck's true center for downstream deadzones.</summary>
         public static short ToSdlAxis(short raw)
         {
             int v = raw * 32767 / LogicalMax;

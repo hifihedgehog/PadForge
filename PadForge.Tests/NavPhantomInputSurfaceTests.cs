@@ -159,7 +159,7 @@ namespace PadForge.Tests
         // ──────── the live capability lists (source-text locks) ────────
         //
         // Both gates sit behind SDL_GamepadHasButton and a live SDL_Gamepad
-        // handle, so they have no in-process seam: a behaviour test would need
+        // handle, so they have no in-process seam: a behavior test would need
         // a real Navigation attached. The contract is locked in the source,
         // the pattern this repo already uses (NavPairingTransportTests),
         // rather than left unlocked because it is awkward to reach.

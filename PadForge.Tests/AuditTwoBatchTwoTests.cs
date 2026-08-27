@@ -403,7 +403,7 @@ namespace PadForge.Tests
 
             gp = new Gamepad { Buttons = Gamepad.A };
             im.EvaluateSlotMacros(ref gp, macros);   // re-press inside the delay
-            Assert.False(release.IsExecuting);       // stale release cancelled
+            Assert.False(release.IsExecuting);       // stale release canceled
 
             System.Threading.Thread.Sleep(45);       // past the delay window
             gp = new Gamepad { Buttons = Gamepad.A };

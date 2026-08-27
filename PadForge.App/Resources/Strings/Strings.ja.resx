@@ -142,7 +142,7 @@
   <data name="Status_DownloadingMidi" xml:space="preserve"><value>Windows MIDI Services をダウンロードしています…</value></data>
   <data name="Status_DownloadingInstallingMidi" xml:space="preserve"><value>Windows MIDI Services をダウンロードしてインストールしています…</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Windows MIDI Services をアンインストールしています…</value></data>
-  <data name="Status_OperationCancelled" xml:space="preserve"><value>操作がユーザーによりキャンセルされました。</value></data>
+  <data name="Status_OperationCanceled" xml:space="preserve"><value>操作がユーザーによりキャンセルされました。</value></data>
   <data name="Status_MidiInstallFailed_Format" xml:space="preserve"><value>MIDI Services のインストールに失敗しました: {0}</value></data>
   <data name="Status_DownloadingSteamVR" xml:space="preserve"><value>SteamVR をダウンロード中…</value></data>
   <data name="Status_DownloadingInstallingSteamVR" xml:space="preserve"><value>Valve のサーバーから SteamVR をダウンロードしてインストール中… 数 GB あるため時間がかかることがあります。</value></data>
@@ -184,7 +184,7 @@
   <data name="Status_NoSettingsFile" xml:space="preserve"><value>ディスクに設定ファイルが見つかりません。</value></data>
   <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>記録するデバイスが接続されていません。</value></data>
   <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>記録中: 「{0}」のボタンを押すか軸を動かしてください...</value></data>
-  <data name="Status_RecordingCancelled" xml:space="preserve"><value>記録がキャンセルされました。</value></data>
+  <data name="Status_RecordingCanceled" xml:space="preserve"><value>記録がキャンセルされました。</value></data>
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>「{0}」の記録がタイムアウトしました。</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>エンジンが開始されました。</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>エンジンが停止されました。</value></data>

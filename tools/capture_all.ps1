@@ -956,8 +956,8 @@ function ScrollContent {
     [Win32]::ForceFG($script:hwnd)
     # HOVER, never click. WPF routes the wheel to whatever the pointer is
     # over, so the click bought nothing and cost correctness: the point is
-    # the window's centre, and once the VR slot made the Dashboard's card
-    # grid one row taller that centre landed on the ADD CONTROLLER card.
+    # the window's center, and once the VR slot made the Dashboard's card
+    # grid one row taller that center landed on the ADD CONTROLLER card.
     # The click opened the type-picker popup, the popup ate the wheel
     # events, the page never scrolled, and remote-link.png / dsu-port-box
     # .png shipped as the un-scrolled Dashboard with a popup floating over
@@ -2048,7 +2048,7 @@ function Reset-DeviceTypeFilter {
 function Get-DeviceListTop {
     # The Devices page has a sticky header and a chip row above the card list.
     # A card whose rect merely clears an arbitrary 120px still overlaps that
-    # band, and clicking its centre lands on the chips instead: that is how the
+    # band, and clicking its center lands on the chips instead: that is how the
     # G29 assignment enumerated 0 toggles on 2026-08-09 and took pad-wheel,
     # pad-impulse-triggers, pad-lighting-guide-led and wii-balance-sources with
     # it. Measure the real boundary off the ALL chip rather than guessing, and
@@ -2521,7 +2521,7 @@ if ($Only.Count -gt 0) {
     # card when it was written and, once the Diagnostics section landed above
     # it, photographed HidHide instead. Scroll in steps and stop when the
     # anchor is actually on screen, so the shot cannot silently drift onto a
-    # neighbouring card.
+    # neighboring card.
     $scrollTargets = @(
         @{ Shot = "dsu-port-box";               Page = "Dashboard"; Anchor = "Enable DSU Motion Server (CemuHook Motion Provider Protocol)" },
         @{ Shot = "remote-link";                Page = "Dashboard"; Anchor = "Remote Link" },
@@ -2686,7 +2686,7 @@ Nav "Profiles"; Cap "profiles"
 # auto-switch is on, so flip the checkbox on, capture, then flip it back. The
 # readout shows whatever exe is in front (PadForge during capture, so it reads
 # unmatched); a matched/lit readout needs the profile's game running in front,
-# which the capture can't stage. Toggling back keeps auto-switch behaviour off
+# which the capture can't stage. Toggling back keeps auto-switch behavior off
 # for the rest of the run (foreground is always PadForge -> always Default).
 # Matched CASE-INSENSITIVELY on a stable fragment, not on the full label.
 # UIA's NameProperty condition is case-sensitive, the checkbox has no

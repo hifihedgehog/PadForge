@@ -99,7 +99,7 @@ namespace PadForge.SteamWorkshop.Tests
 
         /// <summary>Cross is per-axis by design, so it maps to the axial shape
         /// (engine 1). Still a real stamp, still no shortfall note: the
-        /// geometry is honoured, it simply is not radial.</summary>
+        /// geometry is honored, it simply is not radial.</summary>
         [Fact]
         public void CrossDeadZone_EmitsTheAxialShape_AndFilesNoResidual()
         {

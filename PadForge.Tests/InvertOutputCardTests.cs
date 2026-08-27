@@ -141,7 +141,7 @@ namespace PadForge.Tests
             // Same guard style as the flick card's coverage test: these two
             // lines live deep inside service methods that need a running slot
             // to drive, so their presence is pinned textually and their
-            // behaviour by the round-trip tests above.
+            // behavior by the round-trip tests above.
             string input = Read("PadForge.App", "Services", "InputService.cs");
             Assert.Contains("mapping.InvertOutput = primary.InvertOutput;", input);
 

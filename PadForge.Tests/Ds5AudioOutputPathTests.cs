@@ -15,7 +15,7 @@ namespace PadForge.Tests
     /// MONO_LEFT_HEADSET (1), MONO_LEFT_HEADSET_AND_SPEAKER (2),
     /// ONLY_SPEAKER (3). Automatic (0) authors nothing: byte ships 0 with
     /// the enable bit clear, and the #83 macro-speaker routing stays the
-    /// byte's owner, exactly the pre-feature behaviour.</para>
+    /// byte's owner, exactly the pre-feature behavior.</para>
     ///
     /// <para>An explicit user path OWNS the byte: the dispatcher's
     /// macro-speaker block keeps only its speaker-volume half while a
@@ -128,7 +128,7 @@ namespace PadForge.Tests
         public void SpeakerShapes_KeepTheOriginalLayout(int path)
         {
             // ch0 silent, downmix on ch1 (the channel the speaker plays).
-            // This is the pre-picker behaviour and must never drift: it is
+            // This is the pre-picker behavior and must never drift: it is
             // what the internal speaker and the #83 macro routing consume.
             AudioPassthroughService.MapMirrorChannels(path, 0.5f, -0.25f, out var c0, out var c1);
             Assert.Equal(0f, c0);
@@ -211,7 +211,7 @@ namespace PadForge.Tests
         // headphones while the pad's PluggedHeadphones bit reads true,
         // speaker while it reads false, Default while no reading exists
         // (USB, or no persona lane), so an unobservable jack degrades to
-        // stock behaviour instead of guessing. The dispatcher's change
+        // stock behavior instead of guessing. The dispatcher's change
         // gating turns each plug/unplug into the one-shot route re-arm.
 
         [Fact]

@@ -46,7 +46,7 @@ namespace PadForge.Engine.Common.Mapping
 
         // Per-device captured neutral orientation (down-convention unit vector) for
         // MotionLean. The resting grip is a few degrees off true level, so without
-        // this the centre reads non-zero and the off-axis tilt bleeds into steering.
+        // this the center reads non-zero and the off-axis tilt bleeds into steering.
         // Faithful to JSM's neutralQuat (main.cpp:421-435, 891): captured once when
         // the steering source first sees real gravity for a device, held until profile
         // switch (Clear). Keyed by device GUID. The resting pose is physical, not per-slot.
@@ -376,7 +376,7 @@ namespace PadForge.Engine.Common.Mapping
             // diagonals only. OR is equivalent for analog input, since it
             // differs only when exactly one channel is exactly zero, and
             // atan2 is well defined with one zero component. The only case
-            // still skipped is a previous sample at dead centre, where no
+            // still skipped is a previous sample at dead center, where no
             // angle exists to difference against.
             if (len > 0 && (ws.LastX != 0 || ws.LastY != 0))
             {

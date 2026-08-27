@@ -51,7 +51,7 @@ namespace PadForge.Models3D
         {
             var MaterialBody = LoadTexturedMaterial("Body.png");
             // The clear ABXY shells and the Starfield trigger covers are
-            // the same moulded plastic. Flat diffuse alone left them
+            // the same molded plastic. Flat diffuse alone left them
             // barely there; the highlight is what reads as a shell over
             // the lettering rather than lettering printed on the button.
             var MaterialTransparent = AddGloss(

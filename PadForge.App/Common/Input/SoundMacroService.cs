@@ -185,7 +185,7 @@ namespace PadForge.Common.Input
                             p.slot == slot && ReferenceEquals(p.macroKey, macroKey)
                             && string.Equals(p.filePath, filePath, StringComparison.OrdinalIgnoreCase));
                         if (idx >= 0) _pendingLoops.RemoveAt(idx);
-                        else stillWanted = false;   // a release cancelled it mid-decode
+                        else stillWanted = false;   // a release canceled it mid-decode
                     }
                 }
                 if (decoded != null && stillWanted)

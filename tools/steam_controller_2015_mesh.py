@@ -1,7 +1,7 @@
 """Convert Valve's 2015 Steam Controller CAD into PadForge's per-part OBJs.
 
 Source: Valve's March 2016 "SteamControllerWorkshop03" archive, the STEP
-file in it, CC BY-NC-SA 4.0. It is a 50-solid assembly in millimetres
+file in it, CC BY-NC-SA 4.0. It is a 50-solid assembly in millimeters
 with every part named, and it is the ONLY source worth using for this
 pad. The reasons are the whole design:
 
@@ -65,7 +65,7 @@ DST = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
 # 1.0 mm floor the same settings give 108k, FEWER than the old coarse
 # mesh, while every large curve is bounded at 8.6 degrees per facet
 # instead of 34. Glyph solids get a smaller floor because their strokes
-# are about a millimetre wide.
+# are about a millimeter wide.
 PARTS = {
     "CaseTopGPrime":               ("MainBody.obj", 1.0),
     "CaseFrontGPrime":             ("MainBody.obj", 1.0),
@@ -99,7 +99,7 @@ PARTS = {
     "ButtonSelect-Shot2":          ("Back.obj", 1.0),
     "SteamButton_Plastic":         ("Special.obj", 1.0),
     # Shot1 is the printed glyph on each cap, a separate solid in the
-    # two-shot mould. Written as its own file so the model class can
+    # two-shot mold. Written as its own file so the model class can
     # give it the printed color and ride it on the cap's highlight.
     "ButtonA-Shot1":               ("B1-Symbol.obj", 0.4),
     "ButtonB-Shot1":               ("B2-Symbol.obj", 0.4),
@@ -163,7 +163,7 @@ def tessellate(shape, min_size):
     handles. A surface normal is exact: smooth where the surface is
     smooth, different across a boundary only where two faces really meet
     at an angle. Nodes are per B-rep face, so that boundary carries one
-    node per side with each side's own normal, and BRepMesh discretises
+    node per side with each side's own normal, and BRepMesh discretizes
     the shared edge identically on both, so no crack opens.
     """
     s = BRepBuilderAPI_Copy(shape).Shape()
@@ -389,7 +389,7 @@ def cut_at_radius(v, nrm, faces, cx, cy, r0):
 
     A triangle crossing the circle is CUT on it: the two edge crossings are
     solved exactly and the triangle is split along the chord between them.
-    Neighbouring triangles meet at those same crossing points, so the seam
+    Neighboring triangles meet at those same crossing points, so the seam
     comes out a continuous polyline on the circle rather than a boundary
     ragged by a triangle's width.
     """
@@ -482,7 +482,7 @@ def main():
             # is where the cover stops being flat and starts wrapping the
             # handle: binned every 5 mm, its depth runs 8.2 mm just
             # inboard of the crease and 11.2, 18.5 then 27.3 mm outboard.
-            # Rendering the cut against the moulded crease line puts it on
+            # Rendering the cut against the molded crease line puts it on
             # top of it.
             left, rest = cut_at_x(v, nrm, f, -30.0)
             mid, right = cut_at_x(rest[0], rest[1], rest[2], 30.0)

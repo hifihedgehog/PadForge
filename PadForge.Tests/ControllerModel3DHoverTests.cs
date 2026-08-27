@@ -162,7 +162,7 @@ namespace PadForge.Tests
         /// <summary>The 2015 Steam Controller's two pads are not two of a
         /// kind. SDL drives the LEFT one as the D-pad and the RIGHT one as
         /// the right thumbstick (SDL_hidapi_steam.c 1655 and 1673), and
-        /// Valve moulds a D-pad cross into the left cover, naming that solid
+        /// Valve molds a D-pad cross into the left cover, naming that solid
         /// TrackPadCoverDirectional against the right one's Smooth.
         ///
         /// <para>Each face is quartered in the mesh, so every direction has
@@ -398,17 +398,17 @@ namespace PadForge.Tests
             var cap = m.LeftThumbRing;
             Assert.NotNull(cap);
             var b = cap.Bounds;
-            var centre = new Vector3D(b.X + b.SizeX / 2, b.Y + b.SizeY / 2, b.Z + b.SizeZ / 2);
+            var center = new Vector3D(b.X + b.SizeX / 2, b.Y + b.SizeY / 2, b.Z + b.SizeZ / 2);
             double R = Math.Max(b.SizeX, b.SizeZ) / 2.0;
 
             var method = typeof(ControllerModelView).GetMethod("BuildClippedQuadrantMesh",
                 BindingFlags.NonPublic | BindingFlags.Static);
             foreach (var (isX, isNeg) in new[] { (false, true), (false, false), (true, true), (true, false) })
             {
-                var mesh = (MeshGeometry3D)method.Invoke(null, new object[] { cap, centre, isX, isNeg });
+                var mesh = (MeshGeometry3D)method.Invoke(null, new object[] { cap, center, isX, isNeg });
                 Assert.NotEmpty(mesh.Positions);
                 double nearest = mesh.Positions.Min(p =>
-                    Math.Sqrt((p.X - centre.X) * (p.X - centre.X) + (p.Z - centre.Z) * (p.Z - centre.Z)));
+                    Math.Sqrt((p.X - center.X) * (p.X - center.X) + (p.Z - center.Z) * (p.Z - center.Z)));
                 Assert.True(nearest >= 0.4 * R,
                     $"{family}: the wedge reaches r={nearest:F2} on a {R:F2} mm cap, so it is a filled slice, not a ring");
             }
@@ -440,7 +440,7 @@ namespace PadForge.Tests
         [InlineData("SteamDeck", "ButtonStart")]
         [InlineData("SteamController", "ButtonA")]
         [InlineData("SteamController", "ButtonGuide")]
-        public void LabelRidesItsKeyAndKeepsItsColour(string family, string role)
+        public void LabelRidesItsKeyAndKeepsItsColor(string family, string role)
         {
             using var m = ControllerModelBase.Create(family, null, false);
             var groups = m.ButtonMap[role];

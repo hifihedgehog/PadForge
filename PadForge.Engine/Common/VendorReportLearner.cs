@@ -205,7 +205,7 @@ namespace PadForge.Engine.Common
             {
                 // A byte whose press flipped MORE than one bit is a code, not
                 // a flag: the ROG Ally writes 166 for one button and 167 for
-                // its neighbour, and a mask match on 0xA6 would fire on both.
+                // its neighbor, and a mask match on 0xA6 would fire on both.
                 // Exact equality is the stricter reading and still holds for
                 // a flag byte whose flags rise together (GPD Win 5's 0x69).
                 for (int i = 0; i < bits.Count; i++)

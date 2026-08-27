@@ -122,7 +122,7 @@ namespace PadForge.Engine.Data
         /// constant value.
         ///
         /// <para>Reported by @HaraDaya on discussion #263: some titles gate
-        /// vibration on the stick MOVING rather than on it being off centre.
+        /// vibration on the stick MOVING rather than on it being off center.
         /// Prey (2017) is the measured example, "as long as there's movement
         /// on the stick, vibration is sent. If you hold it in one place it
         /// stops working." A constant hold cannot satisfy that, however large
@@ -154,7 +154,7 @@ namespace PadForge.Engine.Data
             // The Base layer's appearance trio, added after this gate was
             // written and the next instance of exactly what the note above
             // describes. A slot whose only authoring was renaming Base or
-            // giving it a colour or icon read as empty and was dropped on
+            // giving it a color or icon read as empty and was dropped on
             // cold load.
             || !string.IsNullOrEmpty(BaseLayerName)
             || !string.IsNullOrEmpty(BaseColor)

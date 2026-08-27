@@ -130,7 +130,7 @@ namespace PadForge.Common.Input
                 : (byte)(ValidFlagsAll & ~0x01);
 
             // No user-configurable flash for now — leave on/off zeroed so
-            // the firmware holds the chosen colour without blinking.
+            // the firmware holds the chosen color without blinking.
             return new Dictionary<string, object>
             {
                 { "btTag",       BtFramingTag      },  // BT only
@@ -220,7 +220,7 @@ namespace PadForge.Common.Input
             // color toward the overlay color by pulseIntensity, so a
             // press flashes the reactive flavor and decays back to the
             // base. Off + reactive collapses to a black base, matching
-            // legacy InputReactive*-as-base behaviour.
+            // legacy InputReactive*-as-base behavior.
             if (cfg.InputReactiveMode != InputReactiveMode.Off && pulseIntensity > 0f)
             {
                 var (rR, rG, rB) = Ds5EffectSynthesizer.ResolveReactiveOverlayColorPublic(

@@ -585,7 +585,7 @@ namespace PadForge.ViewModels
         /// source at the raw/descriptor layer, which exists only for a real
         /// Windows HID device, so an internal virtual source (a web touchpad,
         /// the on-screen overlay) has nothing to consume and the toggle did
-        /// nothing there. Its neighbours in the same panel already carry this
+        /// nothing there. Its neighbors in the same panel already carry this
         /// term (ShowInputHidingSection, ShowInputModeSection); this was the
         /// member of that family that missed it.</summary>
         public bool ShowConsumeToggle =>

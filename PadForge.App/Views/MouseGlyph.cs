@@ -35,7 +35,7 @@ namespace PadForge.Views
     /// movement, so the deflection ring is still ours, drawn into the palm
     /// where the artwork leaves a clear field.</para>
     ///
-    /// <para>Callers own behaviour. This returns the live shapes and attaches
+    /// <para>Callers own behavior. This returns the live shapes and attaches
     /// no handlers, tooltips or hit-testing policy, because the two surfaces
     /// differ there (the KBM preview is clickable for recording, the Devices
     /// pane is read-only).</para></summary>
@@ -81,7 +81,7 @@ namespace PadForge.Views
         }
 
         /// <summary>One art layer, tinted by using it as an alpha mask over a
-        /// flat brush. The shape comes from the artwork, the colour from us,
+        /// flat brush. The shape comes from the artwork, the color from us,
         /// so a control can light up without the art being recoloured or
         /// redrawn.</summary>
         private static Shape Layer(string file, Brush fill, Rect at)
@@ -241,7 +241,7 @@ namespace PadForge.Views
 
         /// <summary>The artwork's own line-work, added LAST so the seams read
         /// over the tinted controls. Drawn as a mask over the theme brush, so
-        /// it is the real art in the right colour, not a re-stroked copy.</summary>
+        /// it is the real art in the right color, not a re-stroked copy.</summary>
         internal static void AddOutline(Canvas canvas, Brush dim)
         {
             canvas.Children.Add(Layer(MouseArt.Line, dim, new Rect(0, 0, CanvasW, BodyH)));

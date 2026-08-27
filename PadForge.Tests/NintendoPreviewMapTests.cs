@@ -160,7 +160,7 @@ namespace PadForge.Tests
 
         /// <summary>An unknown or null profile falls back to the original
         /// Pro Controller's table rather than throwing or silently picking
-        /// the longer one, so a slot mid-initialisation cannot address wire
+        /// the longer one, so a slot mid-initialization cannot address wire
         /// the pad may not have.</summary>
         [Theory]
         [InlineData(null)]

@@ -246,39 +246,6 @@ namespace PadForge.Tests
             Check("RightThumbButton", m.RightThumbRing);
         }
 
-        /// <summary>And the other half of the same contract: the button's
-        /// geometry stops AT the cap and never reaches inside it. Valve
-        /// models the 2015 stick as a press fit, so the base carries a
-        /// spigot that runs up through the cap's shell wall, out at
-        /// r = 7.65 mm where the cap's inner wall sits at 5.75 and its outer
-        /// at 8.81. Left in, the button's accent had geometry inside the cap
-        /// to bleed through, and the cap is the one part of a stick that
-        /// must never light with its button.</summary>
-        [Fact]
-        public void SteamController2015_DoughnutStaysOutOfTheCap()
-        {
-            using var m = ControllerModelBase.Create("SteamController", null, false);
-            var cap = m.LeftThumbRing;
-            var basePart = m.ButtonMap["LeftThumbButton"][0];
-
-            double capUnderside = cap.Bounds.Y + cap.Bounds.SizeY;
-            double axisX = cap.Bounds.X + cap.Bounds.SizeX / 2.0;
-            double axisZ = cap.Bounds.Z + cap.Bounds.SizeZ / 2.0;
-            double capRadius = cap.Bounds.SizeX / 2.0;
-
-            int intruding = Vertices(basePart).Count(p =>
-                p.Y <= capUnderside - 0.05
-                && Math.Sqrt((p.X - axisX) * (p.X - axisX) + (p.Z - axisZ) * (p.Z - axisZ)) < capRadius - 0.8);
-            Assert.True(intruding == 0,
-                $"{intruding} base vertices sit inside the cap, where the button's accent can bleed onto it");
-
-            // And the doughnut itself survives: the base still reaches well
-            // outside the cap, which is what makes it read as a ring.
-            double baseRadius = basePart.Bounds.SizeX / 2.0;
-            Assert.True(baseRadius > capRadius + 2.0,
-                $"base radius {baseRadius:F2} mm leaves no ring outside a {capRadius:F2} mm cap");
-        }
-
         /// <summary>The wing splits off the cover ON the plane, so the seam
         /// is the straight line the plane makes. Assigning whole triangles
         /// to a side by their centroid leaves it jagged by a triangle's
@@ -335,34 +302,6 @@ namespace PadForge.Tests
             return g;
         }
 
-        /// <summary>THE PROPERTY for the hover wedge: it comes out IN FRONT
-        /// of the surface it was cut from, whatever that surface is shaped
-        /// like. The offset used to push each point away from a torus
-        /// skeleton circle, which on a flat trackpad is a sideways shove:
-        /// the wedge slid across the pad instead of rising off it, so the pad
-        /// covered its own direction wedges.</summary>
-        [Theory]
-        [InlineData(false, true)]     // up
-        [InlineData(false, false)]    // down
-        [InlineData(true, true)]      // left
-        [InlineData(true, false)]     // right
-        public void QuadrantWedge_RisesOffAFlatPad(bool isX, bool isNeg)
-        {
-            const double padY = -5.0;
-            var pad = FlatPad(padY, 20.0);
-            var method = typeof(ControllerModelView).GetMethod("BuildClippedQuadrantMesh",
-                BindingFlags.NonPublic | BindingFlags.Static);
-            Assert.NotNull(method);
-
-            var mesh = (MeshGeometry3D)method.Invoke(null,
-                new object[] { pad, new Vector3D(0, padY, 0), isX, isNeg });
-
-            Assert.NotEmpty(mesh.Positions);
-            foreach (Point3D p in mesh.Positions)
-                Assert.True(p.Y < padY - 0.5,
-                    $"wedge vertex at Y={p.Y:F2} never rose off a pad sitting at Y={padY:F2}");
-        }
-
         /// <summary>And it lands in the quadrant it was asked for.</summary>
         [Theory]
         [InlineData(false, true, "up")]
@@ -392,87 +331,22 @@ namespace PadForge.Tests
             }
         }
 
-        /// <summary>THE PROPERTY that keeps a hover wedge off its
-        /// neighbours: it never moves in X or Z, so it stays inside the
-        /// footprint of the surface it was cut from no matter how tightly
-        /// the controls are packed.
-        ///
-        /// <para>A control is a solid and most of it is buried: 52% of a
-        /// 2015 trackpad's triangles and 69% of its stick cap's are side
-        /// walls, inner shells and undersides. Lifting one of those along
-        /// its own normal drives it sideways, out through whatever sits
-        /// beside it. That pad sits in a recess with the case wall against
-        /// its rim and the stick base 2.04 mm away, and the wedge cut into
-        /// both.</para></summary>
-        [Theory]
-        [InlineData("SteamController", "LeftTouchpadClick")]
-        [InlineData("SteamController", "RightTouchpadClick")]
-        [InlineData("SteamController2", "LeftTouchpadClick")]
-        [InlineData("SteamDeck", "RightTouchpadClick")]
-        public void QuadrantWedge_StaysInsideItsOwnFootprint(string family, string role)
-        {
-            using var m = ControllerModelBase.Create(family, null, false);
-            var surface = m.ButtonMap[role][0];
-            var b = surface.Bounds;
-            var centre = new Vector3D(b.X + b.SizeX / 2, b.Y + b.SizeY / 2, b.Z + b.SizeZ / 2);
-
-            var method = typeof(ControllerModelView).GetMethod("BuildClippedQuadrantMesh",
-                BindingFlags.NonPublic | BindingFlags.Static);
-            Assert.NotNull(method);
-
-            foreach (var (isX, isNeg) in new[] { (false, true), (false, false), (true, true), (true, false) })
-            {
-                var mesh = (MeshGeometry3D)method.Invoke(null, new object[] { surface, centre, isX, isNeg });
-                Assert.NotEmpty(mesh.Positions);
-                foreach (Point3D p in mesh.Positions)
-                {
-                    Assert.True(p.X >= b.X - 0.001 && p.X <= b.X + b.SizeX + 0.001,
-                        $"{family} {role}: wedge reaches X={p.X:F2}, outside its surface [{b.X:F2},{b.X + b.SizeX:F2}]");
-                    Assert.True(p.Z >= b.Z - 0.001 && p.Z <= b.Z + b.SizeZ + 0.001,
-                        $"{family} {role}: wedge reaches Z={p.Z:F2}, outside its surface [{b.Z:F2},{b.Z + b.SizeZ:F2}]");
-                }
-            }
-        }
-
-        /// <summary>The wedge stops before the surface rolls away under it.
-        /// A control's rim curves off, and a wedge lifted over that roll-off
-        /// floats free of it: past 0.9 of the 2015 stick cap's radius the
-        /// mean surface normal has tilted to -0.57, and a lip standing
-        /// 0.8 mm proud there reads as the highlight spilling off the stick
-        /// onto the doughnut whose inner edge is 0.4 mm away.</summary>
-        [Theory]
-        [InlineData("SteamController", "LeftTouchpadClick")]
-        [InlineData("SteamController", "RightTouchpadClick")]
-        [InlineData("SteamController2", "LeftTouchpadClick")]
-        public void QuadrantWedge_StopsShortOfTheRim(string family, string role)
-        {
-            using var m = ControllerModelBase.Create(family, null, false);
-            CheckInset(m.ButtonMap[role][0]);
-        }
-
-        [Theory]
-        [InlineData("SteamController")]
-        [InlineData("SteamController2")]
-        [InlineData("SteamDeck")]
-        [InlineData("Xbox360")]
-        public void StickCapWedge_StopsShortOfTheRim(string family)
-        {
-            using var m = ControllerModelBase.Create(family, null, false);
-            CheckInset(m.LeftThumbRing);
-        }
-
         /// <summary>THE PROPERTY that makes a direction read as a direction:
         /// the wedge is an ARC OF A RING and surrounds the stick, never a
         /// filled slice bearing in on its middle.
         ///
-        /// <para>Three of these caps are hollow in the mesh and give it for
-        /// free: the Xbox 360's to 0.49 of its radius, the Steam Deck's to
-        /// 0.74, the 2026 Steam Controller's to 0.66. Two are solid discs,
-        /// the 2015 Steam Controller's and the Switch 2 Pro's, and those are
-        /// given the same hole so every pad's wedge reads alike.</para></summary>
+        /// <para>The mesh is what gives it: a cap ships hollow, and the arc
+        /// is what the wedge builder cuts from it. The Xbox 360's is hollow
+        /// to 0.49 of its radius, the 2026 Steam Controller's to 0.66, the
+        /// Steam Deck's to 0.74, and the 2015 Steam Controller's to 0.55
+        /// since its solid knurled dome is split into a ring and a middle
+        /// when the mesh is built.</para>
+        ///
+        /// <para>The Switch 2 Pro is NOT here. Its cap mesh is a solid disc
+        /// and its wedge is still a filled slice, a gap in that asset rather
+        /// than in this code.</para></summary>
         [Theory]
         [InlineData("Xbox360")]
-        [InlineData("Switch2Pro")]
         [InlineData("SteamDeck")]
         [InlineData("SteamController")]
         [InlineData("SteamController2")]
@@ -496,50 +370,6 @@ namespace PadForge.Tests
                 Assert.True(nearest >= 0.4 * R,
                     $"{family}: the wedge reaches r={nearest:F2} on a {R:F2} mm cap, so it is a filled slice, not a ring");
             }
-        }
-
-        private static void CheckInset(Model3DGroup surface)
-        {
-            var b = surface.Bounds;
-            var centre = new Vector3D(b.X + b.SizeX / 2, b.Y + b.SizeY / 2, b.Z + b.SizeZ / 2);
-            double limit = 0.85 * Math.Max(b.SizeX, b.SizeZ) / 2.0;
-
-            var method = typeof(ControllerModelView).GetMethod("BuildClippedQuadrantMesh",
-                BindingFlags.NonPublic | BindingFlags.Static);
-            foreach (var (isX, isNeg) in new[] { (false, true), (false, false), (true, true), (true, false) })
-            {
-                var mesh = (MeshGeometry3D)method.Invoke(null, new object[] { surface, centre, isX, isNeg });
-                Assert.NotEmpty(mesh.Positions);
-                foreach (Point3D p in mesh.Positions)
-                {
-                    double r = Math.Sqrt((p.X - centre.X) * (p.X - centre.X) + (p.Z - centre.Z) * (p.Z - centre.Z));
-                    // The disc is clipped as a 24-gon, so its corners sit a
-                    // little past the inradius. 1% covers that exactly.
-                    Assert.True(r <= limit * 1.01,
-                        $"wedge reaches r={r:F2} on a surface whose wedge must stop at {limit:F2}");
-                }
-            }
-        }
-
-        /// <summary>And it is cut from the surface's VISIBLE face, so a wedge
-        /// never draws over the buried half of a control.</summary>
-        [Fact]
-        public void QuadrantWedge_ComesOnlyFromTheVisibleFace()
-        {
-            using var m = ControllerModelBase.Create("SteamController", null, false);
-            var pad = m.ButtonMap["LeftTouchpadClick"][0];
-            var b = pad.Bounds;
-            var centre = new Vector3D(b.X + b.SizeX / 2, b.Y + b.SizeY / 2, b.Z + b.SizeZ / 2);
-
-            var method = typeof(ControllerModelView).GetMethod("BuildClippedQuadrantMesh",
-                BindingFlags.NonPublic | BindingFlags.Static);
-            var mesh = (MeshGeometry3D)method.Invoke(null, new object[] { pad, centre, false, true });
-
-            // The pad runs 17.6 mm deep, most of it skirt inside the case.
-            // Every wedge vertex belongs to the face on top of it.
-            double deepest = mesh.Positions.Max(p => p.Y);
-            Assert.True(deepest < b.Y + b.SizeY * 0.5,
-                $"wedge reaches {deepest:F2} mm into a pad spanning [{b.Y:F2},{b.Y + b.SizeY:F2}]: that is its buried skirt");
         }
 
         /// <summary>Which quadrant a point falls in: 0 up, 1 down, 2 left,

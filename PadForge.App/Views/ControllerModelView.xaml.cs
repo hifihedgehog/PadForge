@@ -1753,113 +1753,143 @@ namespace PadForge.Views
         // ─────────────────────────────────────────────
         //  Quadrant mesh building helpers
         // ─────────────────────────────────────────────
-
-        /// <summary>Builds one direction wedge: an arc of a ring lying on the
-        /// surface's top, a fixed band of its radius wide.
-        ///
-        /// <para>GENERATED, not cut out of the surface. Clipping the mesh was
-        /// the obvious approach and it kept failing on real parts. Most of a
-        /// control's triangles are buried walls, so the wedge drew inside the
-        /// case and through its neighbours. The rim rolls away, so a wedge
-        /// carried over it floated free. And the 2015 stick cap is KNURLED,
-        /// so picking triangles by how they face samples the ridge crests and
-        /// leaves the wedge a comb. None of that reaches a generated
-        /// sector.</para>
-        ///
-        /// <para>The band is 0.70 to 0.85 of the radius, which is where the
-        /// pads that carry a real ring put their own: the Steam Deck's ring
-        /// face runs 0.74 to 0.84 of its radius, the 2026 Steam Controller's
-        /// 0.74 to 0.85. Height comes from the surface itself, the topmost
-        /// point at each radius, so the wedge follows a domed cap and clears
-        /// a knurl instead of threading it.</para></summary>
+        /// <summary>
+        /// Builds a clipped quadrant mesh from the stick ring geometry.
+        /// Uses Sutherland-Hodgman clipping for clean diagonal edges and
+        /// geometric torus-outward offset to prevent z-fighting.
+        /// </summary>
         private static MeshGeometry3D BuildClippedQuadrantMesh(
             Model3DGroup ring, Vector3D center, bool isX, bool isNeg)
         {
-            var sb = ring.Bounds;
-            if (sb.IsEmpty) return new MeshGeometry3D();
-            double outerR = 0.85 * Math.Max(sb.SizeX, sb.SizeZ) / 2.0;
-            double innerR = 0.70 * Math.Max(sb.SizeX, sb.SizeZ) / 2.0;
+            // Quadrant boundary half-planes: a*cx + b*cz >= 0
+            // Each quadrant is the intersection of two half-planes at ±45°
+            double a1, b1, a2, b2;
+            if (isX && !isNeg)       { a1 =  1; b1 = -1; a2 =  1; b2 =  1; } // +X
+            else if (isX && isNeg)   { a1 = -1; b1 = -1; a2 = -1; b2 =  1; } // -X
+            else if (!isX && isNeg)  { a1 = -1; b1 =  1; a2 =  1; b2 =  1; } // +Z
+            else /* !isX && !isNeg */{ a1 =  1; b1 = -1; a2 = -1; b2 = -1; } // -Z
 
-            // Height profile: the topmost surface point at each radius. Taking
-            // the TOP is what steps over a knurl's valleys, and the lift then
-            // clears its crests.
-            const int bins = 16;
-            var top = new double[bins];
-            for (int i = 0; i < bins; i++) top[i] = double.NaN;
-            double lo = innerR * 0.85, span = outerR * 1.15 - lo;
+            // Compute torus major radius (average XZ distance from center to vertices)
+            double totalDist = 0;
+            int vertCount = 0;
             foreach (var child in ring.Children)
             {
-                if (child is not GeometryModel3D g || g.Geometry is not MeshGeometry3D mesh) continue;
-                foreach (Point3D q in mesh.Positions)
+                if (child is not GeometryModel3D geo || geo.Geometry is not MeshGeometry3D m)
+                    continue;
+                foreach (Point3D p in m.Positions)
                 {
-                    double dx = q.X - center.X, dz = q.Z - center.Z;
-                    double d = Math.Sqrt(dx * dx + dz * dz);
-                    if (d < lo || d > lo + span) continue;
-                    int bin = (int)((d - lo) / span * bins);
-                    if (bin < 0) bin = 0; else if (bin >= bins) bin = bins - 1;
-                    if (double.IsNaN(top[bin]) || q.Y < top[bin]) top[bin] = q.Y;
+                    double dx = p.X - center.X, dz = p.Z - center.Z;
+                    totalDist += Math.Sqrt(dx * dx + dz * dz);
+                    vertCount++;
                 }
             }
-            // Gaps take the nearest populated radius, and a surface that
-            // offered nothing at all takes the top of its own bounds.
-            double fallback = sb.Y;
-            for (int i = 0; i < bins; i++)
+            double majorR = vertCount > 0 ? totalDist / vertCount : 10.0;
+
+            var quadrantMesh = new MeshGeometry3D();
+            foreach (var child in ring.Children)
             {
-                if (!double.IsNaN(top[i])) continue;
-                for (int step = 1; step < bins; step++)
+                if (child is not GeometryModel3D geo || geo.Geometry is not MeshGeometry3D srcMesh)
+                    continue;
+
+                var positions = srcMesh.Positions;
+                var indices = srcMesh.TriangleIndices;
+                for (int t = 0; t + 2 < indices.Count; t += 3)
                 {
-                    if (i - step >= 0 && !double.IsNaN(top[i - step])) { top[i] = top[i - step]; break; }
-                    if (i + step < bins && !double.IsNaN(top[i + step])) { top[i] = top[i + step]; break; }
-                }
-                if (double.IsNaN(top[i])) top[i] = fallback;
-            }
+                    var p0 = positions[indices[t]];
+                    var p1 = positions[indices[t + 1]];
+                    var p2 = positions[indices[t + 2]];
 
-            // Read between the bins. Taking a bin whole steps the sector, and
-            // the steps show as slivers where one meets the next.
-            double HeightAt(double r)
-            {
-                double x = (r - lo) / span * bins - 0.5;
-                int i0 = (int)Math.Floor(x);
-                double frac = x - i0;
-                int i1 = i0 + 1;
-                if (i0 < 0) { i0 = 0; i1 = 0; frac = 0; }
-                else if (i1 >= bins) { i0 = bins - 1; i1 = bins - 1; frac = 0; }
-                return top[i0] + (top[i1] - top[i0]) * frac - 0.8;   // clear of the surface
-            }
+                    // Clip triangle against both quadrant boundary half-planes
+                    var poly = new List<Point3D> { p0, p1, p2 };
+                    poly = ClipPolygonByHalfPlane(poly, center, a1, b1);
+                    if (poly.Count < 3) continue;
+                    poly = ClipPolygonByHalfPlane(poly, center, a2, b2);
+                    if (poly.Count < 3) continue;
 
-            // The quadrant, as an angle range about the surface's centre.
-            // Theta runs from +X toward +Z, so +X is centred on 0 and +Z on
-            // a quarter turn, matching QuadrantSlot's reading of the face.
-            double mid = isX ? (isNeg ? Math.PI : 0.0)
-                             : (isNeg ? Math.PI / 2 : -Math.PI / 2);
-            double a0 = mid - Math.PI / 4, a1 = mid + Math.PI / 4;
-
-            const int steps = 24, rings = 3;
-            var built = new MeshGeometry3D();
-            for (int i = 0; i < steps; i++)
-            {
-                double th0 = a0 + (a1 - a0) * i / steps;
-                double th1 = a0 + (a1 - a0) * (i + 1) / steps;
-                for (int j = 0; j < rings; j++)
-                {
-                    double r0 = innerR + (outerR - innerR) * j / rings;
-                    double r1 = innerR + (outerR - innerR) * (j + 1) / rings;
-                    var p00 = Polar(center, r0, th0, HeightAt(r0));
-                    var p01 = Polar(center, r1, th0, HeightAt(r1));
-                    var p11 = Polar(center, r1, th1, HeightAt(r1));
-                    var p10 = Polar(center, r0, th1, HeightAt(r0));
-                    int b0 = built.Positions.Count;
-                    built.Positions.Add(p00); built.Positions.Add(p01);
-                    built.Positions.Add(p11); built.Positions.Add(p10);
-                    built.TriangleIndices.Add(b0); built.TriangleIndices.Add(b0 + 1); built.TriangleIndices.Add(b0 + 2);
-                    built.TriangleIndices.Add(b0); built.TriangleIndices.Add(b0 + 2); built.TriangleIndices.Add(b0 + 3);
+                    // Triangulate clipped polygon as a fan and offset outward
+                    for (int i = 1; i < poly.Count - 1; i++)
+                    {
+                        int baseIdx = quadrantMesh.Positions.Count;
+                        quadrantMesh.Positions.Add(OffsetTorusOutward(poly[0], center, majorR));
+                        quadrantMesh.Positions.Add(OffsetTorusOutward(poly[i], center, majorR));
+                        quadrantMesh.Positions.Add(OffsetTorusOutward(poly[i + 1], center, majorR));
+                        quadrantMesh.TriangleIndices.Add(baseIdx);
+                        quadrantMesh.TriangleIndices.Add(baseIdx + 1);
+                        quadrantMesh.TriangleIndices.Add(baseIdx + 2);
+                    }
                 }
             }
-            return built;
+            return quadrantMesh;
         }
 
-        private static Point3D Polar(Vector3D center, double r, double theta, double y)
-            => new Point3D(center.X + r * Math.Cos(theta), y, center.Z + r * Math.Sin(theta));
+        /// <summary>
+        /// Offsets a point outward from the torus surface by pushing it away
+        /// from the nearest point on the torus center circle (skeleton).
+        /// Works correctly for all surface orientations (top, bottom, inner, outer).
+        /// </summary>
+        private static Point3D OffsetTorusOutward(Point3D p, Vector3D center, double majorR)
+        {
+            const double offset = 0.8;
+            double dx = p.X - center.X, dz = p.Z - center.Z;
+            double dist = Math.Sqrt(dx * dx + dz * dz);
+            if (dist < 0.001) return p;
+
+            // Nearest point on the center circle (in the XZ plane at center.Y)
+            double sx = center.X + majorR * dx / dist;
+            double sy = center.Y;
+            double sz = center.Z + majorR * dz / dist;
+
+            // Direction from skeleton point to surface point = tube outward normal
+            double ox = p.X - sx, oy = p.Y - sy, oz = p.Z - sz;
+            double odist = Math.Sqrt(ox * ox + oy * oy + oz * oz);
+            if (odist < 0.001) return p;
+
+            return new Point3D(
+                p.X + ox / odist * offset,
+                p.Y + oy / odist * offset,
+                p.Z + oz / odist * offset);
+        }
+
+        /// <summary>
+        /// Sutherland-Hodgman polygon clipping against a half-plane
+        /// defined by a*cx + b*cz >= 0, where cx = p.X - center.X, cz = p.Z - center.Z.
+        /// </summary>
+        private static List<Point3D> ClipPolygonByHalfPlane(
+            List<Point3D> poly, Vector3D center, double a, double b)
+        {
+            var result = new List<Point3D>(poly.Count + 1);
+            for (int i = 0; i < poly.Count; i++)
+            {
+                var curr = poly[i];
+                var next = poly[(i + 1) % poly.Count];
+                double dCurr = a * (curr.X - center.X) + b * (curr.Z - center.Z);
+                double dNext = a * (next.X - center.X) + b * (next.Z - center.Z);
+
+                if (dCurr >= 0) // curr inside
+                {
+                    result.Add(curr);
+                    if (dNext < 0) // next outside → intersection
+                    {
+                        double t = dCurr / (dCurr - dNext);
+                        result.Add(LerpPoint(curr, next, t));
+                    }
+                }
+                else if (dNext >= 0) // curr outside, next inside → intersection
+                {
+                    double t = dCurr / (dCurr - dNext);
+                    result.Add(LerpPoint(curr, next, t));
+                }
+            }
+            return result;
+        }
+
+        private static Point3D LerpPoint(Point3D a, Point3D b, double t)
+        {
+            return new Point3D(
+                a.X + (b.X - a.X) * t,
+                a.Y + (b.Y - a.Y) * t,
+                a.Z + (b.Z - a.Z) * t);
+        }
 
         // ─────────────────────────────────────────────
         //  Map All flash animation

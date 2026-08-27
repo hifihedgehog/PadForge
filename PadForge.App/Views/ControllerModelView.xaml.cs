@@ -1754,315 +1754,112 @@ namespace PadForge.Views
         //  Quadrant mesh building helpers
         // ─────────────────────────────────────────────
 
-        /// <summary>
-        /// Builds a clipped quadrant mesh from the stick ring geometry.
-        /// Uses Sutherland-Hodgman clipping for clean diagonal edges and
-        /// geometric torus-outward offset to prevent z-fighting.
-        /// </summary>
+        /// <summary>Builds one direction wedge: an arc of a ring lying on the
+        /// surface's top, a fixed band of its radius wide.
+        ///
+        /// <para>GENERATED, not cut out of the surface. Clipping the mesh was
+        /// the obvious approach and it kept failing on real parts. Most of a
+        /// control's triangles are buried walls, so the wedge drew inside the
+        /// case and through its neighbours. The rim rolls away, so a wedge
+        /// carried over it floated free. And the 2015 stick cap is KNURLED,
+        /// so picking triangles by how they face samples the ridge crests and
+        /// leaves the wedge a comb. None of that reaches a generated
+        /// sector.</para>
+        ///
+        /// <para>The band is 0.70 to 0.85 of the radius, which is where the
+        /// pads that carry a real ring put their own: the Steam Deck's ring
+        /// face runs 0.74 to 0.84 of its radius, the 2026 Steam Controller's
+        /// 0.74 to 0.85. Height comes from the surface itself, the topmost
+        /// point at each radius, so the wedge follows a domed cap and clears
+        /// a knurl instead of threading it.</para></summary>
         private static MeshGeometry3D BuildClippedQuadrantMesh(
             Model3DGroup ring, Vector3D center, bool isX, bool isNeg)
         {
-            // Quadrant boundary half-planes: a*cx + b*cz >= 0
-            // Each quadrant is the intersection of two half-planes at ±45°
-            double a1, b1, a2, b2;
-            if (isX && !isNeg)       { a1 =  1; b1 = -1; a2 =  1; b2 =  1; } // +X
-            else if (isX && isNeg)   { a1 = -1; b1 = -1; a2 = -1; b2 =  1; } // -X
-            else if (!isX && isNeg)  { a1 = -1; b1 =  1; a2 =  1; b2 =  1; } // +Z
-            else /* !isX && !isNeg */{ a1 =  1; b1 = -1; a2 = -1; b2 = -1; } // -Z
-
-            // How far out the wedge may reach. A surface ROLLS OFF at its
-            // rim, and a wedge lifted over that roll-off floats free of it
-            // instead of lying on it: on the 2015 stick cap the mean surface
-            // normal past 0.9 of the radius has tilted to -0.57, and 48% of
-            // the cap's facing triangles live out there. A lip standing
-            // 0.8 mm proud of that reads as the highlight spilling off the
-            // stick, onto the doughnut whose inner edge is 0.4 mm away.
-            //
-            // Stopping at 0.85 of the radius keeps the wedge on the flat of
-            // the surface, where the same cap's normals are still -0.9 or
-            // better, and leaves a margin the eye reads as deliberate:
-            // 1.3 mm on that cap, 3.2 mm on a trackpad.
             var sb = ring.Bounds;
-            double surfaceR = Math.Max(sb.SizeX, sb.SizeZ) / 2.0;
-            double insetR = 0.85 * surfaceR;
+            if (sb.IsEmpty) return new MeshGeometry3D();
+            double outerR = 0.85 * Math.Max(sb.SizeX, sb.SizeZ) / 2.0;
+            double innerR = 0.70 * Math.Max(sb.SizeX, sb.SizeZ) / 2.0;
 
-            // A direction wedge SURROUNDS the stick. It is an arc of a ring,
-            // which is what the mesh gives you on a pad whose cap really is
-            // one: the Xbox 360's ring is hollow to 0.49 of its radius, the
-            // Steam Deck's to 0.74, the 2026 Steam Controller's to 0.66.
-            //
-            // Two caps are solid discs instead, the 2015 Steam Controller's
-            // and the Switch 2 Pro's, and on those the same code cut a filled
-            // pie slice running to a point at the middle. It bore in on the
-            // centre rather than ringing it, which is not how this preview
-            // has ever drawn a direction. Give a solid cap the hole its
-            // neighbours have, at 0.6 of the radius, near the middle of the
-            // three real ones.
-            double holeR = 0;
+            // Height profile: the topmost surface point at each radius. Taking
+            // the TOP is what steps over a knurl's valleys, and the lift then
+            // clears its crests.
+            const int bins = 16;
+            var top = new double[bins];
+            for (int i = 0; i < bins; i++) top[i] = double.NaN;
+            double lo = innerR * 0.85, span = outerR * 1.15 - lo;
+            foreach (var child in ring.Children)
             {
-                double minR = double.MaxValue;
-                foreach (var child in ring.Children)
-                    if (child is GeometryModel3D g && g.Geometry is MeshGeometry3D mm)
-                        foreach (Point3D q in mm.Positions)
-                        {
-                            double dx = q.X - center.X, dz = q.Z - center.Z;
-                            double d = Math.Sqrt(dx * dx + dz * dz);
-                            if (d < minR) minR = d;
-                        }
-                if (minR < 0.3 * surfaceR) holeR = 0.6 * surfaceR;
-            }
-
-            // Built twice at most: the visible face alone, then, only if a
-            // surface turns out to expose none, the whole thing. See the
-            // note on facingOnly below.
-            var quadrantMesh = Build(true);
-            if (quadrantMesh.Positions.Count == 0)
-                quadrantMesh = Build(false);
-            return quadrantMesh;
-
-            MeshGeometry3D Build(bool facingOnly)
-            {
-                var built = new MeshGeometry3D();
-                foreach (var child in ring.Children)
+                if (child is not GeometryModel3D g || g.Geometry is not MeshGeometry3D mesh) continue;
+                foreach (Point3D q in mesh.Positions)
                 {
-                    if (child is not GeometryModel3D geo || geo.Geometry is not MeshGeometry3D srcMesh)
-                        continue;
-
-                    var positions = srcMesh.Positions;
-                    var srcNormals = srcMesh.Normals;
-                    bool haveNormals = srcNormals != null && srcNormals.Count == positions.Count;
-                    var indices = srcMesh.TriangleIndices;
-                    for (int t = 0; t + 2 < indices.Count; t += 3)
-                    {
-                        int i0 = indices[t], i1 = indices[t + 1], i2 = indices[t + 2];
-                        var p0 = positions[i0];
-                        var p1 = positions[i1];
-                        var p2 = positions[i2];
-
-                        // Where the wedge will be lifted to: the surface's own
-                        // outward direction, taken from the mesh's normals when
-                        // it carries them (these all do, written per B-rep node)
-                        // and from the winding otherwise.
-                        Vector3D lift;
-                        if (haveNormals)
-                        {
-                            lift = srcNormals[i0] + srcNormals[i1] + srcNormals[i2];
-                            if (lift.LengthSquared < 1e-12) lift = FaceNormalOutOfPad(p0, p1, p2);
-                            else lift.Normalize();
-                        }
-                        else lift = FaceNormalOutOfPad(p0, p1, p2);
-
-                        // ONLY the face the user is looking at gets a wedge,
-                        // and it rises STRAIGHT out of that face.
-                        //
-                        // A control is a solid, and most of it is not its front
-                        // face: 52% of a 2015 trackpad's triangles and 69% of
-                        // its stick cap's are side walls, inner shells and
-                        // undersides, all of them buried. Lifting one of those
-                        // along its own normal drives it SIDEWAYS, out through
-                        // whatever sits beside it. That pad sits in a recess
-                        // with the case wall against its rim and the stick base
-                        // 2.04 mm off, so the wedge cut into both.
-                        //
-                        // Straight out means the wedge never moves in X or Z at
-                        // all, so it cannot reach a neighbour however tight the
-                        // packing. A face steeply enough turned that this would
-                        // not clear it is not one you can see anyway, which the
-                        // same test excludes.
-                        if (facingOnly)
-                        {
-                            if (lift.Y > -0.4) continue;
-                            lift = new Vector3D(0, -1, 0);
-                        }
-
-                        // Clip triangle against both quadrant boundary half-planes
-                        var poly = new List<Point3D> { p0, p1, p2 };
-                        poly = ClipPolygonByHalfPlane(poly, center, a1, b1);
-                        if (poly.Count < 3) continue;
-                        poly = ClipPolygonByHalfPlane(poly, center, a2, b2);
-                        if (poly.Count < 3) continue;
-
-                        // Then to the inset radius, so the wedge stops before
-                        // the surface rolls away under it.
-                        poly = ClipPolygonByRadius(poly, center, insetR);
-                        if (poly.Count < 3) continue;
-                        if (holeR > 0)
-                        {
-                            poly = ClipPolygonOutsideRadius(poly, center, holeR);
-                            if (poly.Count < 3) continue;
-                        }
-
-                        // Triangulate clipped polygon as a fan and offset outward
-                        for (int i = 1; i < poly.Count - 1; i++)
-                        {
-                            int baseIdx = built.Positions.Count;
-                            built.Positions.Add(OffsetAlong(poly[0], lift));
-                            built.Positions.Add(OffsetAlong(poly[i], lift));
-                            built.Positions.Add(OffsetAlong(poly[i + 1], lift));
-                            built.TriangleIndices.Add(baseIdx);
-                            built.TriangleIndices.Add(baseIdx + 1);
-                            built.TriangleIndices.Add(baseIdx + 2);
-                        }
-                    }
-                }
-                return built;
-            }
-        }
-
-        /// <summary>The triangle's own normal, turned to point OUT of the
-        /// controller's face. Model space puts the face along -Y, so the
-        /// outward side is the one with the negative Y component. A wall
-        /// standing perpendicular to the face (a stick cap's flank) has no Y
-        /// component to speak of and keeps its radial direction, which lifts
-        /// it clear of that wall just as well.
-        ///
-        /// <para>This replaced a TORUS offset that pushed each point away
-        /// from the nearest point on a skeleton circle of average radius.
-        /// That fit a stick's cap and nothing else. On a trackpad, a flat
-        /// disc, the skeleton sits half way out and every offset came out
-        /// RADIAL: the wedge slid sideways across the pad instead of rising
-        /// off it, so the pad covered its own direction wedges and hovering
-        /// them showed nothing (owner report).</para></summary>
-        private static Vector3D FaceNormalOutOfPad(Point3D a, Point3D b, Point3D c)
-        {
-            var n = Vector3D.CrossProduct(b - a, c - a);
-            if (n.LengthSquared < 1e-12) return new Vector3D(0, -1, 0);
-            n.Normalize();
-            if (n.Y > 0) n = -n;
-            return n;
-        }
-
-        /// <summary>Moves a point clear of its surface. 0.8 mm reads at every
-        /// zoom the preview allows without the wedge appearing to float.</summary>
-        private static Point3D OffsetAlong(Point3D p, Vector3D n)
-        {
-            const double offset = 0.8;
-            return new Point3D(p.X + n.X * offset, p.Y + n.Y * offset, p.Z + n.Z * offset);
-        }
-
-        /// <summary>
-        /// Sutherland-Hodgman polygon clipping against a half-plane
-        /// defined by a*cx + b*cz >= 0, where cx = p.X - center.X, cz = p.Z - center.Z.
-        /// </summary>
-        private static List<Point3D> ClipPolygonByHalfPlane(
-            List<Point3D> poly, Vector3D center, double a, double b)
-        {
-            var result = new List<Point3D>(poly.Count + 1);
-            for (int i = 0; i < poly.Count; i++)
-            {
-                var curr = poly[i];
-                var next = poly[(i + 1) % poly.Count];
-                double dCurr = a * (curr.X - center.X) + b * (curr.Z - center.Z);
-                double dNext = a * (next.X - center.X) + b * (next.Z - center.Z);
-
-                if (dCurr >= 0) // curr inside
-                {
-                    result.Add(curr);
-                    if (dNext < 0) // next outside → intersection
-                    {
-                        double t = dCurr / (dCurr - dNext);
-                        result.Add(LerpPoint(curr, next, t));
-                    }
-                }
-                else if (dNext >= 0) // curr outside, next inside → intersection
-                {
-                    double t = dCurr / (dCurr - dNext);
-                    result.Add(LerpPoint(curr, next, t));
+                    double dx = q.X - center.X, dz = q.Z - center.Z;
+                    double d = Math.Sqrt(dx * dx + dz * dz);
+                    if (d < lo || d > lo + span) continue;
+                    int bin = (int)((d - lo) / span * bins);
+                    if (bin < 0) bin = 0; else if (bin >= bins) bin = bins - 1;
+                    if (double.IsNaN(top[bin]) || q.Y < top[bin]) top[bin] = q.Y;
                 }
             }
-            return result;
-        }
-
-        /// <summary>Clips a polygon to a disc of the given radius about
-        /// <paramref name="center"/>, in the XZ plane.
-        ///
-        /// <para>A disc is not a half-plane, so it is clipped as a regular
-        /// 24-gon whose inradius is the radius asked for. That is within 1%
-        /// of a circle, and every edge it leaves behind is straight, which a
-        /// per-triangle radius test is not: dropping whole triangles leaves a
-        /// boundary ragged by a triangle's width, and this preview has been
-        /// caught doing exactly that once already.</para></summary>
-        private static List<Point3D> ClipPolygonByRadius(
-            List<Point3D> poly, Vector3D center, double radius)
-        {
-            const int sides = 24;
-
-            // Fast paths: wholly inside the inradius, or wholly outside the
-            // circumradius. Only the boundary band pays for the 24 clips.
-            double near = double.MaxValue, far = 0;
-            foreach (var p in poly)
+            // Gaps take the nearest populated radius, and a surface that
+            // offered nothing at all takes the top of its own bounds.
+            double fallback = sb.Y;
+            for (int i = 0; i < bins; i++)
             {
-                double dx = p.X - center.X, dz = p.Z - center.Z;
-                double d = Math.Sqrt(dx * dx + dz * dz);
-                if (d < near) near = d;
-                if (d > far) far = d;
-            }
-            if (far <= radius) return poly;
-            if (near >= radius / Math.Cos(Math.PI / sides)) return new List<Point3D>();
-
-            for (int i = 0; i < sides && poly.Count >= 3; i++)
-            {
-                double ang = 2.0 * Math.PI * i / sides;
-                poly = ClipPolygonByOffsetPlane(poly, center, -Math.Cos(ang), -Math.Sin(ang), radius);
-            }
-            return poly;
-        }
-
-        /// <summary>Clips a polygon to what lies OUTSIDE a disc, keeping the
-        /// far side.
-        ///
-        /// <para>That region is not convex, so it cannot be clipped the way
-        /// the disc itself is. It is done against the circle's TANGENT at the
-        /// polygon's own bearing instead, which is exact where the polygon is
-        /// small and these meshes are dense: a 2015 stick cap carries 3,494
-        /// facing triangles, so one spans a fraction of a degree and the
-        /// tangent and the arc are the same line to well under a tenth of a
-        /// millimetre.</para></summary>
-        private static List<Point3D> ClipPolygonOutsideRadius(
-            List<Point3D> poly, Vector3D center, double radius)
-        {
-            double sx = 0, sz = 0;
-            foreach (var p in poly) { sx += p.X - center.X; sz += p.Z - center.Z; }
-            double len = Math.Sqrt(sx * sx + sz * sz);
-            if (len < 1e-9) return new List<Point3D>();   // sits on the axis
-            return ClipPolygonByOffsetPlane(poly, center, sx / len, sz / len, -radius);
-        }
-
-        /// <summary>Sutherland-Hodgman against the half-plane
-        /// a*cx + b*cz + d &gt;= 0, the offset form
-        /// <see cref="ClipPolygonByHalfPlane"/> lacks.</summary>
-        private static List<Point3D> ClipPolygonByOffsetPlane(
-            List<Point3D> poly, Vector3D center, double a, double b, double d)
-        {
-            var result = new List<Point3D>(poly.Count + 1);
-            for (int i = 0; i < poly.Count; i++)
-            {
-                var curr = poly[i];
-                var next = poly[(i + 1) % poly.Count];
-                double dCurr = a * (curr.X - center.X) + b * (curr.Z - center.Z) + d;
-                double dNext = a * (next.X - center.X) + b * (next.Z - center.Z) + d;
-
-                if (dCurr >= 0)
+                if (!double.IsNaN(top[i])) continue;
+                for (int step = 1; step < bins; step++)
                 {
-                    result.Add(curr);
-                    if (dNext < 0)
-                        result.Add(LerpPoint(curr, next, dCurr / (dCurr - dNext)));
+                    if (i - step >= 0 && !double.IsNaN(top[i - step])) { top[i] = top[i - step]; break; }
+                    if (i + step < bins && !double.IsNaN(top[i + step])) { top[i] = top[i + step]; break; }
                 }
-                else if (dNext >= 0)
+                if (double.IsNaN(top[i])) top[i] = fallback;
+            }
+
+            // Read between the bins. Taking a bin whole steps the sector, and
+            // the steps show as slivers where one meets the next.
+            double HeightAt(double r)
+            {
+                double x = (r - lo) / span * bins - 0.5;
+                int i0 = (int)Math.Floor(x);
+                double frac = x - i0;
+                int i1 = i0 + 1;
+                if (i0 < 0) { i0 = 0; i1 = 0; frac = 0; }
+                else if (i1 >= bins) { i0 = bins - 1; i1 = bins - 1; frac = 0; }
+                return top[i0] + (top[i1] - top[i0]) * frac - 0.8;   // clear of the surface
+            }
+
+            // The quadrant, as an angle range about the surface's centre.
+            // Theta runs from +X toward +Z, so +X is centred on 0 and +Z on
+            // a quarter turn, matching QuadrantSlot's reading of the face.
+            double mid = isX ? (isNeg ? Math.PI : 0.0)
+                             : (isNeg ? Math.PI / 2 : -Math.PI / 2);
+            double a0 = mid - Math.PI / 4, a1 = mid + Math.PI / 4;
+
+            const int steps = 24, rings = 3;
+            var built = new MeshGeometry3D();
+            for (int i = 0; i < steps; i++)
+            {
+                double th0 = a0 + (a1 - a0) * i / steps;
+                double th1 = a0 + (a1 - a0) * (i + 1) / steps;
+                for (int j = 0; j < rings; j++)
                 {
-                    result.Add(LerpPoint(curr, next, dCurr / (dCurr - dNext)));
+                    double r0 = innerR + (outerR - innerR) * j / rings;
+                    double r1 = innerR + (outerR - innerR) * (j + 1) / rings;
+                    var p00 = Polar(center, r0, th0, HeightAt(r0));
+                    var p01 = Polar(center, r1, th0, HeightAt(r1));
+                    var p11 = Polar(center, r1, th1, HeightAt(r1));
+                    var p10 = Polar(center, r0, th1, HeightAt(r0));
+                    int b0 = built.Positions.Count;
+                    built.Positions.Add(p00); built.Positions.Add(p01);
+                    built.Positions.Add(p11); built.Positions.Add(p10);
+                    built.TriangleIndices.Add(b0); built.TriangleIndices.Add(b0 + 1); built.TriangleIndices.Add(b0 + 2);
+                    built.TriangleIndices.Add(b0); built.TriangleIndices.Add(b0 + 2); built.TriangleIndices.Add(b0 + 3);
                 }
             }
-            return result;
+            return built;
         }
 
-        private static Point3D LerpPoint(Point3D a, Point3D b, double t)
-        {
-            return new Point3D(
-                a.X + (b.X - a.X) * t,
-                a.Y + (b.Y - a.Y) * t,
-                a.Z + (b.Z - a.Z) * t);
-        }
+        private static Point3D Polar(Vector3D center, double r, double theta, double y)
+            => new Point3D(center.X + r * Math.Cos(theta), y, center.Z + r * Math.Sin(theta));
 
         // ─────────────────────────────────────────────
         //  Map All flash animation

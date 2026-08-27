@@ -29,6 +29,9 @@ namespace PadForge.Tests
         {
             var raw = RawHidState.Create(8, 22, 1);
             raw.Povs[0] = -1;
+            // A trigger rests at short.MinValue, not at zero: zero is the
+            // middle of its travel and Step 3 writes rest every frame.
+            raw.Axes[2] = raw.Axes[5] = short.MinValue;
             arrange?.Invoke(raw);
             var dest = new byte[ValveReportPackers.MaxReportSize];
             ValveReportPackers.ForProfile("steam-deck-composite").Pack(
@@ -151,16 +154,33 @@ namespace PadForge.Tests
             Assert.Equal(-3000, I16(b, 54));
         }
 
-        /// <summary>Triggers ride 0..32767 (HC's scale), negatives clamp to
-        /// rest, and a pulled trigger also sets its digital full-pull bit
-        /// (byte 8: L2 0x02, R2 0x01).</summary>
+        /// <summary>A trigger is RESCALED onto the wire, not clamped onto
+        /// it. The raw surface stores one bipolar, rest at short.MinValue and
+        /// full pull at short.MaxValue; the wire carries 0 to 32767, which
+        /// SDL decodes back with * 2 - 32768 (SDL_hidapi_steamdeck.c 234).
+        /// A pulled trigger also sets its digital bit (byte 8: L2 0x02,
+        /// R2 0x01).
+        ///
+        /// <para>This used to clamp to [0, 32767], which read every value
+        /// below mid-travel as rest. The old shape of this test asserted it:
+        /// a raw -5, five counts BELOW the middle of the pull, was expected
+        /// to come out at rest.</para></summary>
         [Fact]
-        public void Triggers_ClampAndSetDigitalBits()
+        public void Triggers_RescaleAndSetDigitalBits()
         {
-            var b = Pack(r => { r.Axes[2] = 16000; r.Axes[5] = -5; });
-            Assert.Equal(16000, U16(b, 44));
-            Assert.Equal(0, U16(b, 46));
+            var b = Pack(r => { r.Axes[2] = 16000; r.Axes[5] = short.MinValue; });
+            Assert.Equal((16000 + 32768) / 2, U16(b, 44));
+            Assert.Equal(0, U16(b, 46));                       // resting
             Assert.Equal(0x02, b[8] & 0x03);
+
+            // Rest, half and full, and the half is the one a clamp lost.
+            Assert.Equal(0, U16(Pack(r => r.Axes[2] = short.MinValue), 44));
+            Assert.Equal(16384, U16(Pack(r => r.Axes[2] = 0), 44));
+            Assert.Equal((int)short.MaxValue, (int)U16(Pack(r => r.Axes[2] = short.MaxValue), 44));
+
+            // A quarter pull moves the wire a quarter of the way, where the
+            // clamp left it at zero.
+            Assert.Equal(8192, U16(Pack(r => r.Axes[2] = -16384), 44));
         }
 
         /// <summary>Finger 0 is the LEFT pad, finger 1 the RIGHT, coordinates

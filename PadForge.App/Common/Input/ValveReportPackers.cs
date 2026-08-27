@@ -96,6 +96,23 @@ namespace PadForge.Common.Input
         private static short Axis(in RawHidState r, int i)
             => r.Axes != null && i < r.Axes.Length ? r.Axes[i] : (short)0;
 
+        /// <summary>A trigger slot, rescaled from the raw surface's range to
+        /// the wire's.
+        ///
+        /// <para>The engine stores a trigger BIPOLAR, rest at short.MinValue
+        /// and full pull at short.MaxValue (MapToRawTriggerAxis, whose own
+        /// comment is "Trigger rest is short.MinValue"). Every Valve wire
+        /// carries it UNSIGNED, 0 to 32767, which is what SDL's drivers
+        /// decode back with * 2 - 32768 (SDL_hidapi_steam.c 1645,
+        /// _steamdeck.c 234, _steam_triton.c 222).</para>
+        ///
+        /// <para>These packers CLAMPED to [0, 32767] instead of rescaling.
+        /// Rest and full pull both came out right by luck, and everything
+        /// between did not: the whole lower half of the travel read as zero,
+        /// then the upper half swept the entire range.</para></summary>
+        private static int Trigger(in RawHidState r, int i)
+            => r.Axes != null && i < r.Axes.Length ? (r.Axes[i] + 32768) / 2 : 0;
+
         // Valve axis slots, the interleaved [LX LY LT | RX RY RT] layout
         // ComputeAxisLayout produces for two sticks and two triggers.
         private const int AxLX = 0, AxLY = 1, AxLT = 2, AxRX = 3, AxRY = 4, AxRT = 5;
@@ -200,8 +217,8 @@ namespace PadForge.Common.Input
 
             short lx = Axis(raw, AxLX), ly = Axis(raw, AxLY);
             short rx = Axis(raw, AxRX), ry = Axis(raw, AxRY);
-            int lt = Math.Clamp((int)Axis(raw, AxLT), 0, (int)short.MaxValue);
-            int rt = Math.Clamp((int)Axis(raw, AxRT), 0, (int)short.MaxValue);
+            int lt = Trigger(raw, AxLT);
+            int rt = Trigger(raw, AxRT);
 
             // ulButtonsL bits 0..7 (STEAMDECK_LBUTTON: R2 0x01, L2 0x02,
             // R 0x04, L 0x08, Y 0x10, B 0x20, X 0x40, A 0x80). The digital
@@ -339,8 +356,8 @@ namespace PadForge.Common.Input
             dest[3] = 0x3C;
             WriteU32(dest, 4, packetNum);
 
-            int lt = Math.Clamp((int)Axis(raw, AxLT), 0, (int)short.MaxValue);
-            int rt = Math.Clamp((int)Axis(raw, AxRT), 0, (int)short.MaxValue);
+            int lt = Trigger(raw, AxLT);
+            int rt = Trigger(raw, AxRT);
             short lx = Axis(raw, AxLX), ly = Axis(raw, AxLY);
             short rx = Axis(raw, AxRX), ry = Axis(raw, AxRY);
 
@@ -435,8 +452,8 @@ namespace PadForge.Common.Input
             dest[0] = 0x42;
             dest[1] = (byte)(packetNum & 0xFF);
 
-            int lt = Math.Clamp((int)Axis(raw, AxLT), 0, (int)short.MaxValue);
-            int rt = Math.Clamp((int)Axis(raw, AxRT), 0, (int)short.MaxValue);
+            int lt = Trigger(raw, AxLT);
+            int rt = Trigger(raw, AxRT);
             short lx = Axis(raw, AxLX), ly = Axis(raw, AxLY);
             short rx = Axis(raw, AxRX), ry = Axis(raw, AxRY);
             var d = DPad(raw, P);

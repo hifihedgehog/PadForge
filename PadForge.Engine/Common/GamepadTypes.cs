@@ -182,6 +182,27 @@
                 for (int i = 0; i < Povs.Length; i++)
                     Povs[i] = -1;
         }
+
+        /// <summary>Clears to REST for a given layout, which for a stick is
+        /// centred and for a trigger is short.MinValue.
+        ///
+        /// <para><see cref="Clear"/> zeroes every axis, and zero is the
+        /// middle of a trigger's travel, not its rest. A slot cleared with it
+        /// reports both triggers HALF PULLED. That went unseen while the
+        /// Valve packers clamped a trigger to [0, 32767], which folded the
+        /// whole lower half of the range onto zero and hid it.</para></summary>
+        public void ClearToRest(in CustomControllerLayout layout)
+        {
+            Clear();
+            if (Axes == null) return;
+            for (int i = 0; i < Axes.Length; i++)
+            {
+                if (!layout.IsTriggerSlot(i)) continue;
+                Axes[i] = short.MinValue;
+                if (HardwareAxes != null && i < HardwareAxes.Length)
+                    HardwareAxes[i] = short.MinValue;
+            }
+        }
     }
 
     /// <summary>

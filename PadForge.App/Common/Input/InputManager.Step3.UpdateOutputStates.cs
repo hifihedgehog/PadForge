@@ -1450,7 +1450,7 @@ namespace PadForge.Common.Input
 
             // Engine-owned families (IR Pointer / IR Brightness / Balance /
             // Mouse Position / Midi), the other half of the parity with
-            // MapToThumbAxisSingle. ParseDescriptor does not recognise these,
+            // MapToThumbAxisSingle. ParseDescriptor does not recognize these,
             // so without this they fell straight to the invalid return and any
             // engine-owned source mapped to an analog TRIGGER read a flat zero,
             // while the identical descriptor on a thumb axis worked.

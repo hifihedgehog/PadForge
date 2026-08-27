@@ -59,7 +59,7 @@ namespace PadForge.Tests
             Assert.True(I16(right, ry) < -30000, $"{id} right Y {I16(right, ry)}");
         }
 
-        /// <summary>A lifted finger writes a centred pad, never a stale
+        /// <summary>A lifted finger writes a centered pad, never a stale
         /// position.</summary>
         [Theory]
         [InlineData("steam-deck-composite", 16, 18)]

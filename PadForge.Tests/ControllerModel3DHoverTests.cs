@@ -194,7 +194,7 @@ namespace PadForge.Tests
         }
 
         /// <summary>Every direction mesh sits where its name says, measured
-        /// from its own pad's centre.</summary>
+        /// from its own pad's center.</summary>
         [Theory]
         [InlineData("DPadUp", "LeftTouchpadClick", 0, 1)]
         [InlineData("DPadDown", "LeftTouchpadClick", 0, -1)]
@@ -414,8 +414,8 @@ namespace PadForge.Tests
             }
         }
 
-        /// <summary>A labelled key registers as the KEY, with its label
-        /// riding it, and the label keeps its own colour so it can be read.
+        /// <summary>A labeled key registers as the KEY, with its label
+        /// riding it, and the label keeps its own color so it can be read.
         ///
         /// <para>The Steam Deck had this inside out on both sides at once.
         /// Its Quick Access control was the 9.32 mm ThreeDots glyph while the
@@ -424,9 +424,9 @@ namespace PadForge.Tests
         /// and the wordmark on it was scenery, so everything lit EXCEPT the
         /// text.</para>
         ///
-        /// <para>The colour half is its own bug. A rider joins its host's
+        /// <para>The color half is its own bug. A rider joins its host's
         /// ButtonMap list, so a paint pass that runs AFTER the riders are
-        /// added repaints every label in its own cap's colour, and the same
+        /// added repaints every label in its own cap's color, and the same
         /// dictionary entry proves it: both groups end up sharing one
         /// material instance.</para></summary>
         [Theory]
@@ -524,7 +524,7 @@ namespace PadForge.Tests
         /// <summary>The ring-less split: the middle of the head is the
         /// click, the outer half is a direction.</summary>
         [Theory]
-        [InlineData(0.0, 0.0, false)]    // dead centre stays the click
+        [InlineData(0.0, 0.0, false)]    // dead center stays the click
         [InlineData(0.3, 0.0, false)]    // inside half the radius
         [InlineData(0.9, 0.0, true)]     // out at the edge
         [InlineData(0.0, -0.8, true)]

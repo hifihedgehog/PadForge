@@ -390,14 +390,14 @@ namespace PadForge.Models3D
         /// whole atlas squeezed onto its own UV island. Decode from a
         /// MemoryStream that outlives BeginInit/EndInit. keepAlpha is for
         /// decal overlays; body atlases ship opaque. Falls back to flat
-        /// grey if the resource is missing so the model still renders.</summary>
+        /// gray if the resource is missing so the model still renders.</summary>
         /// <summary>Give a material a specular highlight.
         /// DiffuseMaterial has no specular term, so a semi-transparent
         /// diffuse layer renders as a flat tint: the clear ABXY shells
         /// read as no shell at all, and the letters under them look
         /// printed straight onto the button. A Blinn-Phong highlight is
         /// what says "there is a glossy surface here". It is additive,
-        /// so the tint underneath keeps its colour.</summary>
+        /// so the tint underneath keeps its color.</summary>
         protected static Material AddGloss(Material baseMaterial, double intensity, double power)
         {
             if (baseMaterial == null) return null;
@@ -506,7 +506,7 @@ namespace PadForge.Models3D
 
         /// <summary>Applies a material to every GeometryModel3D in the
         /// group (front and back faces).</summary>
-        /// <summary>Give a part its resting colour AND register it as that
+        /// <summary>Give a part its resting color AND register it as that
         /// part's default, which is what the preview restores to after a
         /// press, a hover or a Map All flash.
         ///
@@ -524,7 +524,7 @@ namespace PadForge.Models3D
         }
 
         /// <summary>Paint every part registered under a pad-setting name,
-        /// so a control made of several meshes stays one colour.</summary>
+        /// so a control made of several meshes stays one color.</summary>
         protected void PaintTarget(string padSettingName, Material material)
         {
             if (!ButtonMap.TryGetValue(padSettingName, out var list)) return;

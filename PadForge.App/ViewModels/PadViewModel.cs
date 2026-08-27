@@ -2182,7 +2182,7 @@ namespace PadForge.ViewModels
                     if (existing != null)
                     {
                         // A later activator fills in what the first left
-                        // blank, so a named or coloured one is not lost to
+                        // blank, so a named or colored one is not lost to
                         // an unnamed one that happened to be first.
                         if (string.Equals(existing.LayerName, existing.LayerMask, StringComparison.Ordinal)
                             && !string.IsNullOrEmpty(a.LayerName))
@@ -2290,7 +2290,7 @@ namespace PadForge.ViewModels
                     var slot = MacroLayerChoices[i];
                     if (string.Equals(slot.LayerMask, mask, StringComparison.Ordinal))
                     {
-                        // Same entry: refresh its label and colour in place.
+                        // Same entry: refresh its label and color in place.
                         slot.LayerName = name;
                         slot.Color = color;
                         continue;
@@ -4170,9 +4170,9 @@ namespace PadForge.ViewModels
             return "#FF0000";
         }
 
-        // Lightbar pulse colour exposed as R/G/B bytes for the shared ColorPickerControl,
+        // Lightbar pulse color exposed as R/G/B bytes for the shared ColorPickerControl,
         // backed by the persisted hex string above (the engine reads the hex form). Keeps
-        // this colour setting consistent with every other lightbar colour in the app
+        // this color setting consistent with every other lightbar color in the app
         // instead of a raw hex text box. Writes funnel back through the hex setter, so the
         // existing dirty/save wiring on SteeringLockLightbarColor still fires.
         public byte SteeringLockColorR { get => ParseSteeringLockColor().r; set { var c = ParseSteeringLockColor(); SteeringLockLightbarColor = FormatSteeringLockColor(value, c.g, c.b); } }
@@ -4333,7 +4333,7 @@ namespace PadForge.ViewModels
         public ICommand RemoveSteeringLockPaletteColorCommand => _removeSteeringLockPaletteColorCommand ??= new RelayCommand<LightbarPaletteEntry>(entry =>
         { if (entry != null) SteeringLockLightbarPalette.Remove(entry); });
 
-        // Per-channel colour resets (match the other lightbar pickers); each resets its
+        // Per-channel color resets (match the other lightbar pickers); each resets its
         // channel to the #FF0000 default component, funneling through the hex setter.
         private ICommand _resetSteeringLockColorRCommand;
         public ICommand ResetSteeringLockColorRCommand => _resetSteeringLockColorRCommand ??= new RelayCommand(() => SteeringLockColorR = 0xFF);
@@ -4360,7 +4360,7 @@ namespace PadForge.ViewModels
         public ICommand ResetSteeringLockResistanceCommand => _resetSteeringLockResistanceCommand ??= new RelayCommand(() => SteeringLockATResistanceEnabled = false);
 
         // Reset all steering-lock-feedback settings to defaults (every channel off, pulse
-        // 80ms, fade 250ms, colour #FF0000). Each setter fires PropertyChanged, which the
+        // 80ms, fade 250ms, color #FF0000). Each setter fires PropertyChanged, which the
         // MainWindow handler turns into MarkDirty, so the reset persists like a manual edit.
         private ICommand _resetSteeringLockAllCommand;
         public ICommand ResetSteeringLockAllCommand => _resetSteeringLockAllCommand ??= new RelayCommand(() =>

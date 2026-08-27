@@ -395,7 +395,7 @@ namespace PadForge.Common.Input
             dest[11] = (byte)(lt >> 7);     // 8-bit trigger, 0..255
             dest[12] = (byte)(rt >> 7);
 
-            // Pads: signed i16, +Y up, 0 centre. Left from finger 0. Right
+            // Pads: signed i16, +Y up, 0 center. Left from finger 0. Right
             // from finger 1 when touched, else from the right-stick axes.
             WriteI16(dest, 16, pads.lTouch ? NormToPad(tp.X0) : (short)0);
             WriteI16(dest, 18, pads.lTouch ? NormToPadY(tp.Y0) : (short)0);

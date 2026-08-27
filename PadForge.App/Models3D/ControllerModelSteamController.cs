@@ -43,7 +43,7 @@ namespace PadForge.Models3D
         public ControllerModelSteamController() : base("SteamController")
         {
             // ── Rotation points ─────────────────────────
-            // Each is the mesh's own centre in X and Z with its rear edge
+            // Each is the mesh's own center in X and Z with its rear edge
             // in Y, the same construction the Xbox 360 model uses, read
             // off the converted meshes rather than eyeballed.
             JoystickRotationPointCenterLeftMillimeter = new Vector3D(-18.45f, -8.10f, -14.15f);
@@ -110,10 +110,10 @@ namespace PadForge.Models3D
             // Glyph riders. Valve's CAD carries each button as a two-shot
             // mould, the cap and the printed glyph as separate solids, so
             // the letters come out as their own meshes. They ride on
-            // their cap's highlight and take the printed colours: the
+            // their cap's highlight and take the printed colors: the
             // pack's SC art prints ABXY in green, red, blue and yellow on
             // black caps, and the system glyphs in white.
-            // Glyph colours are the Xbox 360 class's own, already calibrated
+            // Glyph colors are the Xbox 360 class's own, already calibrated
             // for this light rig.
             var glyph = Mat("#D4D4D4");
             AddRiderTo("ButtonA", "B1-Symbol.obj", Mat("#7cb63b"));
@@ -125,7 +125,7 @@ namespace PadForge.Models3D
             // SteamButton_Label is the in-mould label FILM, 12.2 mm square
             // on a 12.3 mm cap: the whole button face, not a logo glyph.
             // Painted white it was a white disc. There is no logo geometry
-            // to colour, so the face is a dark button face, a step lighter
+            // to color, so the face is a dark button face, a step lighter
             // than the cap so it reads as a button rather than a hole.
             AddRiderTo("ButtonGuide", "SpecialIcon.obj", Mat("#2E2F31"));
         }
@@ -140,7 +140,7 @@ namespace PadForge.Models3D
                 list.Add(rider);
         }
 
-        /// <summary>Resting colours, calibrated against the black controllers
+        /// <summary>Resting colors, calibrated against the black controllers
         /// this tree already ships. The viewport's rig is a #999999 sun, a
         /// #666666 ambient, a #595959 headlight and the ember rim, so a
         /// front-facing surface shows at about 1.3 times its hex. The three
@@ -150,9 +150,9 @@ namespace PadForge.Models3D
         /// palettes were wrong for the same reason: one sampled 2D art, one
         /// assumed the rig was a third as bright as it is.
         ///
-        /// <para>The face CAPS are dark, not lettered colours. On this pad
-        /// the ABXY caps are black plastic with coloured glyphs printed on
-        /// them, unlike the Xbox 360's coloured shells. The colour lives on
+        /// <para>The face CAPS are dark, not lettered colors. On this pad
+        /// the ABXY caps are black plastic with colored glyphs printed on
+        /// them, unlike the Xbox 360's colored shells. The color lives on
         /// the glyph riders added in the constructor, which Valve's STEP
         /// carries as their own solids.</para></summary>
         private void PaintEverything()
@@ -172,7 +172,7 @@ namespace PadForge.Models3D
             PaintTarget("RightGrip", body);
             PaintTarget("LeftTouchpadClick", surface);
             PaintTarget("RightTouchpadClick", surface);
-            // The pad quarters take the pad's own colour: they are the pad's
+            // The pad quarters take the pad's own color: they are the pad's
             // face, cut up so each direction can light on its own.
             foreach (var t in new[] { "DPadUp", "DPadDown", "DPadLeft", "DPadRight" })
                 PaintTarget(t, surface);

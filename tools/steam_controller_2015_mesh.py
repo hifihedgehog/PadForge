@@ -100,7 +100,7 @@ PARTS = {
     "SteamButton_Plastic":         ("Special.obj", 1.0),
     # Shot1 is the printed glyph on each cap, a separate solid in the
     # two-shot mould. Written as its own file so the model class can
-    # give it the printed colour and ride it on the cap's highlight.
+    # give it the printed color and ride it on the cap's highlight.
     "ButtonA-Shot1":               ("B1-Symbol.obj", 0.4),
     "ButtonB-Shot1":               ("B2-Symbol.obj", 0.4),
     "ButtonX-Shot1":               ("B3-Symbol.obj", 0.4),
@@ -499,7 +499,7 @@ def main():
             # These pads can be neither. They are deep concave bowls, 42 mm
             # across and 7.6 mm from rim to middle, so the preview's
             # torus-outward offset, which pushes a point away from a skeleton
-            # circle at the part's own centre, drives half of each face
+            # circle at the part's own center, drives half of each face
             # SIDEWAYS ACROSS the bowl instead of off it. Two quadrants
             # cleared and two sank under the surface.
             #
@@ -555,7 +555,7 @@ def main():
         else:
             meshes.setdefault(target, []).append((v, nrm, f))
 
-    # Centre X on the assembly so the model sits on the camera axis.
+    # Center X on the assembly so the model sits on the camera axis.
     allx = np.concatenate([v[:, 0] for parts in meshes.values() for v, _, _ in parts])
     xmid = (allx.min() + allx.max()) / 2.0
 

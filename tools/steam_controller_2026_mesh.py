@@ -253,7 +253,7 @@ def control_masks():
         small = cv2.resize(m.astype(np.uint8), (m.shape[1] // SS, m.shape[0] // SS),
                            interpolation=cv2.INTER_NEAREST).astype(bool)
         # A face-button silhouette is the disc MINUS its stroked glyph, and
-        # an unfilled disc rejects points at its exact centre, which is
+        # an unfilled disc rejects points at its exact center, which is
         # where the button's geometry projects.
         small = nd.binary_fill_holes(small)
         out[k] = nd.binary_dilation(small, iterations=3)

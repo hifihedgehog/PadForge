@@ -4161,10 +4161,10 @@ namespace PadForge.Services
                     if (cfg.LightbarMode == ViewModels.LightbarMode.Off)
                         return (0, 0, 0);
                     if (cfg.LightbarMode != ViewModels.LightbarMode.PlayerNumber)
-                        // The base colour, which is the right answer for a
+                        // The base color, which is the right answer for a
                         // static pick and a reasonable seed for anything else.
                         // Animated modes are no longer this lane's job:
-                        // UserEffectsDispatcher runs the same colour core for
+                        // UserEffectsDispatcher runs the same color core for
                         // this device that it runs for a physical pad, at
                         // dispatch rate, and overwrites whatever this 30-second
                         // lane last set. This still matters for the first paint
@@ -4206,7 +4206,7 @@ namespace PadForge.Services
                         // follows the device's Lighting config when one is
                         // set, else the Sony player-color convention. Animated
                         // modes are driven by UserEffectsDispatcher at dispatch
-                        // rate; this lane sets the resting colour.
+                        // rate; this lane sets the resting color.
                         {
                             var wud = FindUserDevice(dev.InstanceGuid);
                             if (wud?.Device is PadForge.Engine.WebControllerDevice web && wud.IsOnline)
@@ -5218,7 +5218,7 @@ namespace PadForge.Services
                     if (int.TryParse(rest, out int axisIdx) && ext.Axes != null
                         && axisIdx >= 0 && axisIdx < ext.Axes.Length)
                     {
-                        // A TRIGGER reads from rest, not from centre. The raw
+                        // A TRIGGER reads from rest, not from center. The raw
                         // surface stores one bipolar, rest at short.MinValue,
                         // so showing the stored number put -32768 in the grid
                         // for a trigger sitting still while an Xbox or

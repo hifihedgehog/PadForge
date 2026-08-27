@@ -883,7 +883,7 @@ namespace PadForge.Views
                     // rig): for the white-masked rider brush that means
                     // AmbientColor = accent too. AmbientColor filters the
                     // RAW brush independently of Color, so left white the
-                    // ambient term is grey (milky wash) and forced black
+                    // ambient term is gray (milky wash) and forced black
                     // it vanishes (dim, harsh shading). Accent-colored,
                     // every lighting term is accent-proportional: soft
                     // fill, exact hue, shaded. Rider overlays stay masked
@@ -1652,7 +1652,7 @@ namespace PadForge.Views
 
             // Anchored on the visible mesh so the arrow sits over the control
             // the user sees, not on a deflection pivot that can be offset
-            // (the DualSense's is 2.9 mm right of its ring centre). Any
+            // (the DualSense's is 2.9 mm right of its ring center). Any
             // surface that carries directions gets one, sticks and the 2015
             // Steam Controller's two pads alike.
             if (!TryFindQuadrantSurface(target, out var ring, out bool isX, out bool isNeg))
@@ -2017,7 +2017,7 @@ namespace PadForge.Views
             // Bumpers take the same shape, so their L1/R1 lettering
             // glows on press exactly as L2/R2's does under the trigger's
             // graded path. Hiding the rider instead (the default branch
-            // below) left the label grey while the button lit up.
+            // below) left the label gray while the button lit up.
             if (ReferenceEquals(group, _currentModel.LeftThumbRing)
                 || ReferenceEquals(group, _currentModel.RightThumbRing)
                 || IsShoulderButtonGroup(group))

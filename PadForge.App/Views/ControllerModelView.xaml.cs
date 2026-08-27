@@ -1770,6 +1770,21 @@ namespace PadForge.Views
             else if (!isX && isNeg)  { a1 = -1; b1 =  1; a2 =  1; b2 =  1; } // +Z
             else /* !isX && !isNeg */{ a1 =  1; b1 = -1; a2 = -1; b2 = -1; } // -Z
 
+            // How far out the wedge may reach. A surface ROLLS OFF at its
+            // rim, and a wedge lifted over that roll-off floats free of it
+            // instead of lying on it: on the 2015 stick cap the mean surface
+            // normal past 0.9 of the radius has tilted to -0.57, and 48% of
+            // the cap's facing triangles live out there. A lip standing
+            // 0.8 mm proud of that reads as the highlight spilling off the
+            // stick, onto the doughnut whose inner edge is 0.4 mm away.
+            //
+            // Stopping at 0.85 of the radius keeps the wedge on the flat of
+            // the surface, where the same cap's normals are still -0.9 or
+            // better, and leaves a margin the eye reads as deliberate:
+            // 1.3 mm on that cap, 3.2 mm on a trackpad.
+            var sb = ring.Bounds;
+            double insetR = 0.85 * Math.Max(sb.SizeX, sb.SizeZ) / 2.0;
+
             // Built twice at most: the visible face alone, then, only if a
             // surface turns out to expose none, the whole thing. See the
             // note on facingOnly below.
@@ -1838,6 +1853,11 @@ namespace PadForge.Views
                         poly = ClipPolygonByHalfPlane(poly, center, a1, b1);
                         if (poly.Count < 3) continue;
                         poly = ClipPolygonByHalfPlane(poly, center, a2, b2);
+                        if (poly.Count < 3) continue;
+
+                        // Then to the inset radius, so the wedge stops before
+                        // the surface rolls away under it.
+                        poly = ClipPolygonByRadius(poly, center, insetR);
                         if (poly.Count < 3) continue;
 
                         // Triangulate clipped polygon as a fan and offset outward
@@ -1916,6 +1936,69 @@ namespace PadForge.Views
                 {
                     double t = dCurr / (dCurr - dNext);
                     result.Add(LerpPoint(curr, next, t));
+                }
+            }
+            return result;
+        }
+
+        /// <summary>Clips a polygon to a disc of the given radius about
+        /// <paramref name="center"/>, in the XZ plane.
+        ///
+        /// <para>A disc is not a half-plane, so it is clipped as a regular
+        /// 24-gon whose inradius is the radius asked for. That is within 1%
+        /// of a circle, and every edge it leaves behind is straight, which a
+        /// per-triangle radius test is not: dropping whole triangles leaves a
+        /// boundary ragged by a triangle's width, and this preview has been
+        /// caught doing exactly that once already.</para></summary>
+        private static List<Point3D> ClipPolygonByRadius(
+            List<Point3D> poly, Vector3D center, double radius)
+        {
+            const int sides = 24;
+
+            // Fast paths: wholly inside the inradius, or wholly outside the
+            // circumradius. Only the boundary band pays for the 24 clips.
+            double near = double.MaxValue, far = 0;
+            foreach (var p in poly)
+            {
+                double dx = p.X - center.X, dz = p.Z - center.Z;
+                double d = Math.Sqrt(dx * dx + dz * dz);
+                if (d < near) near = d;
+                if (d > far) far = d;
+            }
+            if (far <= radius) return poly;
+            if (near >= radius / Math.Cos(Math.PI / sides)) return new List<Point3D>();
+
+            for (int i = 0; i < sides && poly.Count >= 3; i++)
+            {
+                double ang = 2.0 * Math.PI * i / sides;
+                poly = ClipPolygonByOffsetPlane(poly, center, -Math.Cos(ang), -Math.Sin(ang), radius);
+            }
+            return poly;
+        }
+
+        /// <summary>Sutherland-Hodgman against the half-plane
+        /// a*cx + b*cz + d &gt;= 0, the offset form
+        /// <see cref="ClipPolygonByHalfPlane"/> lacks.</summary>
+        private static List<Point3D> ClipPolygonByOffsetPlane(
+            List<Point3D> poly, Vector3D center, double a, double b, double d)
+        {
+            var result = new List<Point3D>(poly.Count + 1);
+            for (int i = 0; i < poly.Count; i++)
+            {
+                var curr = poly[i];
+                var next = poly[(i + 1) % poly.Count];
+                double dCurr = a * (curr.X - center.X) + b * (curr.Z - center.Z) + d;
+                double dNext = a * (next.X - center.X) + b * (next.Z - center.Z) + d;
+
+                if (dCurr >= 0)
+                {
+                    result.Add(curr);
+                    if (dNext < 0)
+                        result.Add(LerpPoint(curr, next, dCurr / (dCurr - dNext)));
+                }
+                else if (dNext >= 0)
+                {
+                    result.Add(LerpPoint(curr, next, dCurr / (dCurr - dNext)));
                 }
             }
             return result;

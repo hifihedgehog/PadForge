@@ -240,6 +240,17 @@ namespace PadForge.Models3D
             QuadrantMap[group] = new[] { up, down, left, right };
         }
 
+        /// <summary>Registers a group whose whole surface IS one direction,
+        /// the way a D-pad key is. It goes in <see cref="ClickMap"/> only:
+        /// hover and click-to-record resolve through that, while
+        /// <see cref="ButtonMap"/> drives the per-frame press glow and an
+        /// axis direction has no pressed state to drive it with.</summary>
+        protected void RegisterDirection(Model3DGroup group, string target)
+        {
+            if (group == null || string.IsNullOrEmpty(target)) return;
+            ClickMap[group] = target;
+        }
+
         protected void RegisterButton(string padSettingName, Model3DGroup group)
         {
             if (!ButtonMap.TryGetValue(padSettingName, out var list))

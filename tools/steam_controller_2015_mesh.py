@@ -26,6 +26,7 @@ import io
 import os
 import sys
 import time
+import math
 import numpy as np
 
 from OCP.STEPCAFControl import STEPCAFControl_Reader
@@ -80,7 +81,7 @@ PARTS = {
     # calls its ring, and the base under it (26.4 mm) is the click. Folding
     # both into the click mesh left this pad with no ring group, so its
     # stick had no direction target and no visible collar at all.
-    "ThumbTopGrip.01":             ("Joystick-Left-Ring.obj", 1.0),
+    "ThumbTopGrip.01":             ("STICKCAP", 1.0),       # ring split off below
     "ThumbTopBase.01":             ("STICKBASE", 1.0),      # spigot culled below
     # The lever behind each grip paddle. Mostly hidden inside the handle,
     # visible through a slot at the top, and part of the same control, so
@@ -306,6 +307,82 @@ def cut_at_x(v, nrm, faces, x0):
     return res
 
 
+def cut_at_radius(v, nrm, faces, cx, cy, r0):
+    """Split a mesh on the cylinder of radius r0 about the axis (cx, cy),
+    returning (inside, outside) as (verts, norms, faces) triples.
+
+    A triangle crossing the circle is CUT on it: the two edge crossings are
+    solved exactly and the triangle is split along the chord between them.
+    Neighbouring triangles meet at those same crossing points, so the seam
+    comes out a continuous polyline on the circle rather than a boundary
+    ragged by a triangle's width.
+    """
+    out = {0: ([], [], []), 1: ([], [], [])}    # 0 inside, 1 outside
+
+    def emit(side, poly):
+        vs, ns, fs = out[side]
+        base = len(vs)
+        for pos, nn in poly:
+            vs.append(pos)
+            ns.append(nn)
+        for i in range(1, len(poly) - 1):
+            fs.append((base, base + i, base + i + 1))
+
+    def rad(pt):
+        return math.hypot(pt[0] - cx, pt[1] - cy) - r0
+
+    for tri in faces:
+        pts = [(v[i], nrm[i]) for i in tri]
+        d = [rad(pt[0]) for pt in pts]
+        if all(x <= 0 for x in d):
+            emit(0, pts)
+            continue
+        if all(x >= 0 for x in d):
+            emit(1, pts)
+            continue
+        for side, keep_inside in ((0, True), (1, False)):
+            poly = []
+            for a in range(3):
+                b = (a + 1) % 3
+                da, db = d[a], d[b]
+                if (da <= 0) == keep_inside:
+                    poly.append(pts[a])
+                if (da > 0) != (db > 0):
+                    # Where the edge meets the circle, solved on the edge
+                    # itself rather than interpolated from the radii, so the
+                    # crossing is the same point for both triangles sharing
+                    # that edge.
+                    pa, pb = pts[a][0], pts[b][0]
+                    ex, ey = pb[0] - pa[0], pb[1] - pa[1]
+                    fx, fy = pa[0] - cx, pa[1] - cy
+                    A = ex * ex + ey * ey
+                    B = 2 * (fx * ex + fy * ey)
+                    C = fx * fx + fy * fy - r0 * r0
+                    disc = B * B - 4 * A * C
+                    if A < 1e-12 or disc < 0:
+                        tpar = abs(da) / (abs(da) + abs(db))
+                    else:
+                        sq = math.sqrt(disc)
+                        t1 = (-B - sq) / (2 * A)
+                        t2 = (-B + sq) / (2 * A)
+                        cands = [x for x in (t1, t2) if -1e-9 <= x <= 1 + 1e-9]
+                        tpar = cands[0] if cands else abs(da) / (abs(da) + abs(db))
+                    tpar = min(1.0, max(0.0, tpar))
+                    poly.append((pa + (pb - pa) * tpar,
+                                 pts[a][1] + (pts[b][1] - pts[a][1]) * tpar))
+            if len(poly) >= 3:
+                emit(side, poly)
+
+    res = []
+    for side in (0, 1):
+        vs, ns, fs = out[side]
+        if not fs:
+            res.append((np.zeros((0, 3)), np.zeros((0, 3)), np.zeros((0, 3), dtype=int)))
+        else:
+            res.append((np.array(vs), np.array(ns), np.array(fs, dtype=int)))
+    return res
+
+
 def main():
     os.makedirs(DST, exist_ok=True)
     t0 = time.time()
@@ -336,6 +413,22 @@ def main():
             meshes.setdefault("LeftGrip.obj", []).append(left)
             meshes.setdefault("RightGrip.obj", []).append(right)
             meshes.setdefault("MainBody.obj", []).append(mid)
+        elif target == "STICKCAP":
+            # Every other pad in this tree ships its stick cap as a RING with
+            # the middle open, and the preview's direction wedge is an arc cut
+            # from that ring: hollow to 0.49 of its radius on the Xbox 360,
+            # 0.66 on the 2026 Steam Controller, 0.74 on the Steam Deck. Valve
+            # models this one as a solid knurled dome, so the same code had
+            # nothing to cut an arc from and drew a filled slice instead.
+            #
+            # Split the dome the way the others come apart: the outer band is
+            # the ring, the middle belongs to the stick body. 0.55 of the
+            # radius sits between the Xbox 360's hole and the 2026's.
+            ax, ay = -18.40, -14.175
+            rr = np.hypot(v[:, 0] - ax, v[:, 1] - ay).max()
+            inner, outer = cut_at_radius(v, nrm, f, ax, ay, 0.55 * rr)
+            meshes.setdefault("Joystick-Left-Ring.obj", []).append(outer)
+            meshes.setdefault("LeftStickClick.obj", []).append(inner)
         elif target == "STICKBASE":
             # The base carries a spigot that reaches up INSIDE the cap and
             # through its shell wall: at Z 21 to 22 the spigot is out at

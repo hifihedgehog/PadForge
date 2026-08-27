@@ -141,7 +141,7 @@ namespace PadForge.Common.Input
         /// <see cref="Custom"/>. That level is libbs2b's real API:
         /// bs2b_set_level_fcut and bs2b_set_level_feed set the two halves of a
         /// level independently, and the header marks the six classic presets
-        /// obsolete in their favour.</para></summary>
+        /// obsolete in their favor.</para></summary>
         public void SetParams(int level, int sampleRate,
                               float customCutHz = 700f, float customFeedDb = 4.5f)
         {
@@ -234,7 +234,7 @@ namespace PadForge.Common.Input
 
     public sealed class EqBand
     {
-        /// <summary>The highest band frequency the DSP will honour, as a
+        /// <summary>The highest band frequency the DSP will honor, as a
         /// fraction of the sample rate. A band at or above Nyquist is not a
         /// filter, it is an exception waiting to happen inside the cookbook
         /// math, so <see cref="ParametricEqStage"/> clamps here. Exposed so

@@ -108,7 +108,7 @@ namespace PadForge.Common.Input
             return -1;
         }
 
-        /// <summary>Normalises a UID to the stored form: uppercase hex with any
+        /// <summary>Normalizes a UID to the stored form: uppercase hex with any
         /// spaces / colons / dashes (some readers format the UID) stripped, so a
         /// tap compares equal regardless of the source's punctuation.</summary>
         public static string NormalizeUid(string uid)
@@ -181,7 +181,7 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>Replaces the registry from persisted settings (load time). The
-        /// stored button is honoured so existing macro bindings stay valid across
+        /// stored button is honored so existing macro bindings stay valid across
         /// restarts; an absent / out-of-range / colliding button (older saves, hand
         /// edits) is reassigned the lowest free one.</summary>
         public static void LoadRegistry(IEnumerable<(string Uid, string Name, int Button)> entries)
@@ -207,7 +207,7 @@ namespace PadForge.Common.Input
             RegistryChanged?.Invoke(null, EventArgs.Empty);
         }
 
-        /// <summary>Serialisable view for the settings round-trip (save time).</summary>
+        /// <summary>Serializable view for the settings round-trip (save time).</summary>
         public static List<(string Uid, string Name, int Button)> SaveRegistry()
         {
             lock (_lock) return _tags.Select(t => (t.Uid, t.Name, t.Button)).ToList();

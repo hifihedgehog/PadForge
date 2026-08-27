@@ -438,7 +438,7 @@ namespace PadForge.Tests
         {
             // HC reads (report.Data[9] & 0x69) != 0 for R4: the three bits rise
             // together. More than one bit in a byte is a code, learned as exact
-            // equality, so a neighbouring code never reads as this button.
+            // equality, so a neighboring code never reads as this button.
             var idle0 = Report(16);
             var press = new List<byte[]> { Report(16, (9, 0x69)), Report(16, (9, 0x69)) };
             var release = new List<byte[]> { Report(16) };

@@ -367,7 +367,7 @@ namespace PadForge.Engine.Touchpad
             float dist = delta.Length();
 
             // Inside the deadzone: release whatever zone was held so
-            // the user can cancel a selection by pulling back to centre.
+            // the user can cancel a selection by pulling back to center.
             if (dist < settings.RadialCenterDeadzone)
             {
                 ReleaseCurrentRadialZone(padIdx, ctx, zones);
@@ -482,7 +482,7 @@ namespace PadForge.Engine.Touchpad
         /// from the gesture context. No-op when no zone is held.
         /// Called on every zone transition (so the prior zone's
         /// mapped button releases before the next one engages) and
-        /// when the finger re-enters the centre deadzone.</summary>
+        /// when the finger re-enters the center deadzone.</summary>
         private static void ReleaseCurrentRadialZone(int padIdx,
             TouchpadGestureContext ctx, int zones)
         {

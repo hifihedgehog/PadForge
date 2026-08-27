@@ -160,11 +160,11 @@ namespace PadForge.Views
         /// <summary>Draws a pack element in EMBER instead of its own paint.
         ///
         /// <para>The pack's *_Active and *_Click PNGs are authored in the
-        /// vendor's own highlight colour, which is blue. Dropping an ember
+        /// vendor's own highlight color, which is blue. Dropping an ember
         /// glow behind a blue sprite still reads as blue. So the sprite is
         /// used as an ALPHA MASK over a solid ember fill, which is the
         /// technique this repo already uses for the lightbar overlays: the
-        /// shape comes from the art, the colour comes from us, and the
+        /// shape comes from the art, the color comes from us, and the
         /// preview stays on-brand without touching the assets.</para></summary>
         private static FrameworkElement LoadTinted(string resourcePath, double x, double y, double w, double h)
         {

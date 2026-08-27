@@ -63,7 +63,7 @@ namespace PadForge.Tests
         {
             int slot = NewSlot();
             double t = 0;
-            // Push to 0.9, then walk back to centre over 400 ms: by the
+            // Push to 0.9, then walk back to center over 400 ms: by the
             // release, no sample in the last 100 ms clears the launch gate.
             for (int i = 0; i < 50; i++, t += 0.001)
                 TickX(slot, "d", 0.9f, t);
@@ -209,7 +209,7 @@ namespace PadForge.Tests
             for (int f = 0; f < 4; f++)
             {
                 // ~3 s of realistic activity between flings: circling
-                // (continuously engaged), then idle at centre.
+                // (continuously engaged), then idle at center.
                 for (int i = 0; i < 1500; i++, t += 0.001)
                 {
                     double a = i * 0.05;

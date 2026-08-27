@@ -228,7 +228,7 @@ namespace PadForge.Engine.RemoteLink
         // name used to arrive ONLY via LAN discovery, so the punch / code path
         // (no discovery) left every remote device unlabelled and the list read
         // as one undifferentiated pile (owner report 2026-08-11). Carrying it
-        // in the handshake makes labelling independent of how the peer was
+        // in the handshake makes labeling independent of how the peer was
         // found. Same append-only guarantees: an old peer stops before it.
         private const byte DeviceListExtV5Magic = 0xE6;
 

@@ -2330,13 +2330,13 @@ namespace PadForge.Services
         //  above iterate every slot for profile storage; these per-slot
         //  variants snapshot or apply one slot at a time, mirroring the
         //  in-process CopySlotConfigsAcrossSlots semantics but via DTOs
-        //  the caller can JSON-serialise.
+        //  the caller can JSON-serialize.
         // ─────────────────────────────────────────────
 
         /// <summary>Snapshots every device config on a single slot
         /// (anchor + per-device entries). Returns an empty array when
         /// the slot has nothing configured. Caller is responsible for
-        /// JSON-serialising the result into the clipboard payload.</summary>
+        /// JSON-serializing the result into the clipboard payload.</summary>
         public ViewModels.DeviceSlotConfigData[] BuildDeviceConfigSnapshotForSlot(int slotIndex)
         {
             if (slotIndex < 0 || slotIndex >= _mainVm.Pads.Count)
@@ -2497,7 +2497,7 @@ namespace PadForge.Services
 
         /// <summary>Snapshots the Extended custom layout on a single
         /// slot. Returns null when the slot isn't Extended or has no
-        /// config. Caller JSON-serialises the result.</summary>
+        /// config. Caller JSON-serializes the result.</summary>
         public ViewModels.ExtendedSlotConfigData BuildExtendedConfigSnapshotForSlot(int slotIndex)
         {
             if (slotIndex < 0 || slotIndex >= _mainVm.Pads.Count) return null;

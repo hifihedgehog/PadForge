@@ -574,7 +574,7 @@ namespace PadForge.Services
                 // Cycling hotspots FORWARD is Tab on LB; backward is the
                 // Shift+Tab chord on RB, which rides the macro lane because no
                 // single row target is a chord. Hold-to-reveal-hotspots is
-                // widespread but never standardised, and Tab is the half of
+                // widespread but never standardized, and Tab is the half of
                 // that split this profile picks.
                 Row(Key(VkSpace), Src(PadY), Src(PadBack)),
                 Row(Key(VkTab), Src(PadLB)),
@@ -749,7 +749,7 @@ namespace PadForge.Services
         ///
         /// <para>The transport runs on REAL system media keys through macros,
         /// not on in-page letter keys, so play/pause, track skip, volume and
-        /// mute work with the player unfocused or minimised. Those keys sit
+        /// mute work with the player unfocused or minimized. Those keys sit
         /// outside the row engine's closed VK set, which is why they ride the
         /// macro lane rather than rows.</para>
         ///
@@ -823,9 +823,9 @@ namespace PadForge.Services
         ///
         /// <para>The steering curve is an exponent above 1, which shrinks
         /// small deflections and leaves full lock reachable: fine control
-        /// near centre, unchanged at the edge. The anti-deadzone is a floor
+        /// near center, unchanged at the edge. The anti-deadzone is a floor
         /// on the output magnitude, which pre-compensates for the deadzone
-        /// most racing games apply on top of the pad's own. Exact centre
+        /// most racing games apply on top of the pad's own. Exact center
         /// still reads zero, so the car does not creep.</para>
         ///
         /// <para>Numbers are a shape, not a truth. Every engine names these
@@ -906,7 +906,7 @@ namespace PadForge.Services
         {
             var set = NewPadSet();
 
-            // Flight axes: soft near centre, full authority at the rim.
+            // Flight axes: soft near center, full authority at the rim.
             MappingSource Fly(string descriptor, double exponent)
             {
                 var src = Src(descriptor);

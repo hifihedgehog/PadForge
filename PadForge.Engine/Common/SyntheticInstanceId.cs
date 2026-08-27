@@ -16,7 +16,7 @@ namespace PadForge.Engine
     /// ascending integers, so every synthetic id is placed in the top half of
     /// the range, which SDL never reaches.
     ///
-    /// STABLE. String.GetHashCode is randomised per process in .NET Core, so
+    /// STABLE. String.GetHashCode is randomized per process in .NET Core, so
     /// the same MIDI endpoint or web client got a different id on every launch.
     /// FNV-1a is a fixed function of the bytes, so the same identity always
     /// yields the same id, in this run and the next.

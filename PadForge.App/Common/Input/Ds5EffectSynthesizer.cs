@@ -371,14 +371,14 @@ namespace PadForge.Common.Input
 
                 // Priority: macro override > input-reactive overlay > base
                 // mode. Macro override blends the configured macro RGB
-                // ×macroIntensity directly (legacy behaviour, full
+                // ×macroIntensity directly (legacy behavior, full
                 // override during the hold window). The input-reactive
                 // overlay layers OVER the base mode by lerping between
                 // the base color and the reactive flash by pulseIntensity
                 // — at intensity 1.0 you see the flash, as it decays
                 // toward 0 the base mode shows through. Off + overlay
                 // collapses to a black base, matching legacy
-                // InputReactive*-as-base-mode behaviour.
+                // InputReactive*-as-base-mode behavior.
                 if (macroOverrideActive)
                 {
                     ledR = (byte)Math.Round(cfg.MacroOverrideR * macroOverrideIntensity);
@@ -438,9 +438,9 @@ namespace PadForge.Common.Input
                 // Standing down: an external writer owns the bar and its
                 // grace window has expired, so the enable bit deliberately
                 // stays CLEAR and PadForge claims nothing. Carry their last
-                // colour in the RGB bytes anyway instead of zeros, so a
+                // color in the RGB bytes anyway instead of zeros, so a
                 // firmware that acts on the RGB regardless of the enable
-                // bit re-applies the same colour rather than blanking it.
+                // bit re-applies the same color rather than blanking it.
                 ledR = overrides.LastLightbarRgb[0];
                 ledG = overrides.LastLightbarRgb[1];
                 ledB = overrides.LastLightbarRgb[2];
@@ -608,7 +608,7 @@ namespace PadForge.Common.Input
             // explicitly asked for one.
             //
             // The improved-rumble bit was already set by the old 0xFF and
-            // stays unconditional. Rumble behaviour is not in scope here.
+            // stays unconditional. Rumble behavior is not in scope here.
             bool lightbarAuthored = (enableBits & EnableLightbar) != 0;
             byte validFlag2 = EnableImprovedRumbleEmulation;
             if (lightbarAuthored || overrides.LedBrightness.HasValue)

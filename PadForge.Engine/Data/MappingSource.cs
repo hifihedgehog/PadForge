@@ -409,7 +409,7 @@ namespace PadForge.Engine.Data
         /// usually live on the Base layer at engage time, and JSM itself
         /// suppresses mode-shift transition artifacts on its return path
         /// (Stick.h:84-87 ignore_stick_mode, "Modeshifting the stick mode
-        /// can create quirky behaviours on transition").</summary>
+        /// can create quirky behaviors on transition").</summary>
         [XmlAttribute] public bool ParamFlickOnEngage { get; set; } = false;
 
         // ─── Runtime "Menu {id} Item {k}" parse cache (not serialized:

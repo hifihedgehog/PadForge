@@ -195,7 +195,7 @@ namespace PadForge.Common.Input
         // (Family explainer for BOTH floors below.)
         //
         // Every payload on this lane is STATE, not an event: a trigger
-        // program, a lightbar colour, rumble levels. Each one supersedes the
+        // program, a lightbar color, rumble levels. Each one supersedes the
         // last, so sending the newest at a cap is indistinguishable at the
         // pad from sending all of them, and 8 ms is far finer than any of it
         // is perceived at.
@@ -343,7 +343,7 @@ namespace PadForge.Common.Input
             return buffer;
         }
 
-        /// <summary>valid_flag1 bit 2, the lightbar colour enable. SDL sets
+        /// <summary>valid_flag1 bit 2, the lightbar color enable. SDL sets
         /// exactly this bit to author the bar (SDL_hidapi_ps5.c:759,
         /// "Enable LED color").</summary>
         private const byte LightbarValidBit = 0x04;
@@ -353,8 +353,8 @@ namespace PadForge.Common.Input
         /// ucLedBlue 46) and dualsense-tester's field order.</summary>
         private const int LedRedOffset = 44;
 
-        /// <summary>Adds the slot's identity colour to a release frame, so a
-        /// pad handed back on shutdown carries PadForge's own colour instead
+        /// <summary>Adds the slot's identity color to a release frame, so a
+        /// pad handed back on shutdown carries PadForge's own color instead
         /// of whatever the game left.
         ///
         /// <para>The idle reclaim in UserEffectsDispatcher needs fifteen
@@ -375,14 +375,14 @@ namespace PadForge.Common.Input
 
         /// <summary>Transport of the targets seen on the last dispatch. Written
         /// by the worker inside DispatchOne, read by the worker when pacing the
-        /// next write, so no synchronisation is needed.</summary>
+        /// next write, so no synchronization is needed.</summary>
         private bool _lastTargetsWereBt = true;
 
         private long MinWriteIntervalMs => _lastTargetsWereBt
             ? MinWriteIntervalBtMs : MinWriteIntervalUsbMs;
 
         /// <summary>The payload most recently written by THIS lane. Used only
-        /// to recognise a repeat, and a repeat is dropped only when a genuine
+        /// to recognize a repeat, and a repeat is dropped only when a genuine
         /// change is already waiting. See <see cref="Enqueue"/> for why it
         /// must not be dropped otherwise.</summary>
         private byte[] _lastSent;
@@ -428,7 +428,7 @@ namespace PadForge.Common.Input
         /// <summary>Forwards one packet and records the write cost.</summary>
         private void WriteOne(in Ds5Effect effect)
         {
-            // Record what the pad now holds, so the producer can recognise a
+            // Record what the pad now holds, so the producer can recognize a
             // repeat of it at the door. Under the latch lock, because the
             // producer reads this on every packet.
             if (!effect.IsFeature)

@@ -124,7 +124,7 @@ namespace PadForge.Common.Input
                     {
                         // CancelIo only REQUESTS abort; `ol` is a stack local
                         // and `outBuf` unpins in the finally, so block until
-                        // the cancelled I/O actually completes before
+                        // the canceled I/O actually completes before
                         // unwinding (PlayStationEffectWriter drain).
                         CancelIo(handle);
                         GetOverlappedResult(handle, ref ol, out _, true);

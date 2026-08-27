@@ -78,7 +78,7 @@ internal static class Program
         }
         catch (OperationCanceledException)
         {
-            Console.Error.WriteLine("Cancelled. Manifest saved for the games harvested so far; re-run to resume.");
+            Console.Error.WriteLine("Canceled. Manifest saved for the games harvested so far; re-run to resume.");
             return 130;
         }
         catch (Exception ex)

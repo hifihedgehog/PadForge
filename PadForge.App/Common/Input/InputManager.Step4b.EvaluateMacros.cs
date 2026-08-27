@@ -2890,7 +2890,7 @@ namespace PadForge.Common.Input
                 if (twin.PairId != self.PairId || !twin.IsExecuting) continue;
                 twin.IsExecuting = false;
                 twin.CurrentActionIndex = 0;
-                // #237: a cancelled twin's combo state dies with it.
+                // #237: a canceled twin's combo state dies with it.
                 twin.ComboResumeIndex = 0;
                 twin.AwaitReleaseAfterBreak = false;
                 twin.RunReleasedFireToCompletion = false;
@@ -3465,7 +3465,7 @@ namespace PadForge.Common.Input
 
         /// <summary>HSV → RGB. Matches the converter in
         /// <see cref="UserEffectsDispatcher"/> so a Reactive RandomHue
-        /// macro flash uses the same colour distribution as the
+        /// macro flash uses the same color distribution as the
         /// existing InputReactive lightbar mode.</summary>
         private static void HsvToRgb(double h, double s, double v, out byte r, out byte g, out byte b)
         {
@@ -3668,7 +3668,7 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>Re-arms every yield latch of the macro's actions (macro
-        /// stopped, completed, or was cancelled).</summary>
+        /// stopped, completed, or was canceled).</summary>
         private static void ClearAxisYields(MacroItem macro)
         {
             if (_axisYielded.Count == 0 || macro?.Actions == null) return;

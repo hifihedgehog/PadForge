@@ -459,7 +459,7 @@ namespace PadForge.ViewModels
 
         private bool _momentumEnabled;
         /// <summary>Stick trackball (#291): flick the mouse stick and
-        /// release, and the cursor keeps travelling on the fling, coasting
+        /// release, and the cursor keeps traveling on the fling, coasting
         /// to a stop on the same constant-deceleration physics the
         /// touchpad's Momentum uses. Off by default.</summary>
         public bool MomentumEnabled
@@ -589,7 +589,7 @@ namespace PadForge.ViewModels
             DeadZoneShape = DeadZoneShape.ScaledRadial;
             CenterOffsetX = 0; CenterOffsetY = 0;
             if (IsCalibratingBoundary) StopBoundaryCalibration(commit: false);
-            // Centre calibration is the other in-flight run this reset has to
+            // Center calibration is the other in-flight run this reset has to
             // cancel, and it was the one that got missed.
             if (IsCalibrating) StopCalibration();
             BoundaryMap = ""; // #174: Reset All clears the boundary calibration too
@@ -682,7 +682,7 @@ namespace PadForge.ViewModels
 
         private DispatcherTimer _centerTimer;
 
-        /// <summary>Aborts an in-flight centre calibration without committing
+        /// <summary>Aborts an in-flight center calibration without committing
         /// its samples. Twin of StopBoundaryCalibration(commit: false).</summary>
         public void StopCalibration()
         {

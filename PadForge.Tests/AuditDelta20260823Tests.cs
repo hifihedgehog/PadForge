@@ -129,7 +129,7 @@ namespace PadForge.Tests
             var vm = new PadForge.ViewModels.EqBandVm(new EqBand()) { FrequencyHz = 30000f };
             Assert.Equal(EqBand.MaxFrequencyHz(48000), vm.FrequencyHz, 3);
 
-            // And the DSP honours the same number: a band pinned at the
+            // And the DSP honors the same number: a band pinned at the
             // ceiling still compiles into a live filter, which it can only do
             // if the stage does not reject it.
             var stage = new ParametricEqStage();
@@ -280,7 +280,7 @@ namespace PadForge.Tests
 
         /// <summary>AutoEq's OTHER download. One line, no filter lines, and it
         /// is the one a reasonable person grabs first, so the import has to
-        /// recognise that it found nothing rather than sit silent.</summary>
+        /// recognize that it found nothing rather than sit silent.</summary>
         [Fact]
         public void AutoEq_GraphicEqExport_ParsesToNothing()
         {
@@ -423,7 +423,7 @@ namespace PadForge.Tests
         /// <para>Two source-text locks in one, because both halves of this
         /// have no in-process seam. Nothing called MirrorChain.Reset at all,
         /// which made IMirrorStage.Reset's contract documentation rather than
-        /// behaviour. And it belongs in phase 3 rather than in
+        /// behavior. And it belongs in phase 3 rather than in
         /// DetachTransport_NoLock, where it reads more naturally, because the
         /// EQ reset rebuilds a filter array and this file's own rule is that
         /// filter arrays are never built under _lock.</para></summary>

@@ -501,7 +501,7 @@ namespace PadForge.Services
                 };
                 engine.RecognizeCompleted += (s, e) =>
                     Engine.SdlDiagLog.WriteLine($"VOICE [{ses.DisplayName}] recognize COMPLETED"
-                        + (e.Cancelled ? " (cancelled)" : "") + (e.Error != null ? " error=" + e.Error.Message : ""));
+                        + (e.Cancelled ? " (canceled)" : "") + (e.Error != null ? " error=" + e.Error.Message : ""));
                 engine.SpeechRecognitionRejected += (s, e) =>
                 {
                     Engine.SdlDiagLog.WriteLine($"VOICE [{ses.DisplayName}] rejected (nearest \"{e.Result?.Text}\" conf={e.Result?.Confidence ?? 0f:F2})");

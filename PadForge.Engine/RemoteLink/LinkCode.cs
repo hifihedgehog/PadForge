@@ -144,7 +144,7 @@ namespace PadForge.Engine.RemoteLink
             /// proves identity.</summary>
             public byte[] FingerprintPrefix { get; init; }
             public DateTimeOffset Expiry { get; init; }
-            /// <summary>The receiver's NAT behaviour, so the dialer knows whether
+            /// <summary>The receiver's NAT behavior, so the dialer knows whether
             /// to predict ports (symmetric CGNAT) or aim at the fixed public
             /// port (cone). Reconstructed with the public port as LastPort.</summary>
             public NatProfile Nat { get; init; }

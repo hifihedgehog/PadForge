@@ -508,7 +508,7 @@ namespace PadForge.Common
                 var si = Strings.Instance;
                 string axis = s.Substring(5).Trim();
                 // Aux rate family (#252) before the primary axis names: the
-                // left Joy-Con of a pair. Labelled with its own strings so
+                // left Joy-Con of a pair. Labeled with its own strings so
                 // the picker never shows two identical "Gyro Pitch" rows.
                 if (axis.StartsWith("L ", System.StringComparison.OrdinalIgnoreCase))
                 {

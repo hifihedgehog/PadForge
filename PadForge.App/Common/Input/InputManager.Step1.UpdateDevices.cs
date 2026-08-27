@@ -857,7 +857,7 @@ namespace PadForge.Common.Input
                 //    the same model apart, and that is DELIBERATE (owner decision,
                 //    2026-07-25). Identical controllers are physically
                 //    indistinguishable to their owner: you cannot tell which unit
-                //    you pulled out of the drawer without labelling the shell. So
+                //    you pulled out of the drawer without labeling the shell. So
                 //    identity here follows CONNECTION ORDER, not hardware. The
                 //    first unit powered on claims the stored entry and its
                 //    mappings, whichever unit it happens to be.

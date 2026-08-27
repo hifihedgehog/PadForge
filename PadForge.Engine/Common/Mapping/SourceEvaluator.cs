@@ -250,7 +250,7 @@ namespace PadForge.Engine.Common.Mapping
                 // The horizontal wheel is a rate output exactly like its
                 // vertical twin. Omitting it made a touchpad source on
                 // KbmScrollH read ABSOLUTE pad position, so resting a finger
-                // anywhere off centre scrolled sideways continuously instead
+                // anywhere off center scrolled sideways continuously instead
                 // of scrolling by the per-frame delta.
                 || target == "KbmScrollH";
         }

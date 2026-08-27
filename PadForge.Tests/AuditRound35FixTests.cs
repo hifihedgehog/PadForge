@@ -193,7 +193,7 @@ namespace PadForge.Tests
         // ── Horizontal wheel is a relative-motion target ──
 
         /// <summary>Omitting it made a touchpad source on the horizontal wheel
-        /// read ABSOLUTE pad position, so a finger resting off centre scrolled
+        /// read ABSOLUTE pad position, so a finger resting off center scrolled
         /// sideways continuously.</summary>
         [Theory]
         [InlineData("KbmMouseX", true)]
@@ -328,10 +328,10 @@ namespace PadForge.Tests
             Assert.Equal(2, macro.CurrentActionIndex);
         }
 
-        // ── Both Sony packers honour a mapped Touchpad press ──
+        // ── Both Sony packers honor a mapped Touchpad press ──
 
         /// <summary>tp.Click is the PHYSICAL touchpad press; Gamepad.TOUCHPAD
-        /// is a mapped or macro-driven one. The DS4 packer honoured both and
+        /// is a mapped or macro-driven one. The DS4 packer honored both and
         /// the DualSense packer only the physical source, so a macro bound to
         /// Touchpad reached the host on a virtual DS4 and silently did nothing
         /// on a virtual DualSense.</summary>
@@ -339,7 +339,7 @@ namespace PadForge.Tests
         [InlineData("dualshock-4-v1", 6)]
         [InlineData("dualsense", 9)]
         [InlineData("dualsense-edge", 9)]
-        public void SonyPackers_HonourAMappedTouchpadPress(string profileId, int buttonByte)
+        public void SonyPackers_HonorAMappedTouchpadPress(string profileId, int buttonByte)
         {
             var packer = PadForge.Common.Input.SonyReportPackers.ForProfile(profileId);
             Assert.NotNull(packer);
@@ -694,7 +694,7 @@ namespace PadForge.Tests
         /// that cache rests entirely on every site that changes the SET of
         /// contexts invalidating it. A site that adds a context without
         /// invalidating strands a menu: the context exists, and the fired
-        /// provider cannot see it. Silent, and it survives any behavioural
+        /// provider cannot see it. Silent, and it survives any behavioral
         /// test that happens to invalidate first.</summary>
         [Fact]
         public void EveryMenuContextMutation_InvalidatesTheSnapshot()
@@ -734,7 +734,7 @@ namespace PadForge.Tests
         /// hand-list previously discarded a menus-only slot on every launch.
         /// The Base layer's appearance trio was added after that note and was
         /// the next omission of the same kind: a slot whose only authoring was
-        /// renaming Base, or giving it a colour or icon, read as empty and was
+        /// renaming Base, or giving it a color or icon, read as empty and was
         /// dropped.</summary>
         [Theory]
         [InlineData("BaseLayerName")]
@@ -951,7 +951,7 @@ namespace PadForge.Tests
             // Reference result, allocating.
             var expected = MidiRawState.Combine(a, b);
 
-            // Same inputs, but writing into a. Distance-from-centre wins on CC,
+            // Same inputs, but writing into a. Distance-from-center wins on CC,
             // OR on notes, so the expected answer is independent of aliasing.
             var inPlace = MidiRawState.CombineInto(a, b, a);
 

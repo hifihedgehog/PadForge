@@ -251,7 +251,7 @@ namespace PadForge.Common.Input
                         // Timed out. CancelIo only REQUESTS abort; the write can
                         // still be in flight, and `ol` is a stack local while `buf`
                         // is pinned only until the finally below. Block until
-                        // the cancelled I/O actually completes before unwinding, or
+                        // the canceled I/O actually completes before unwinding, or
                         // the kernel writes completion status into freed stack
                         // memory / reads an unpinned buffer (the sibling drain in
                         // HapticToneService.OverlappedWrite exists for this reason).

@@ -20,7 +20,7 @@ namespace PadForge.Engine.RemoteLink
     /// port P and its per-destination step D (from probing several STUN servers
     /// in order). The window ramps P+D, P+2D, … and, because other subscribers
     /// share a sequential CGNAT pool and perturb the exact next value, also
-    /// covers the immediate neighbourhood around each predicted port.
+    /// covers the immediate neighborhood around each predicted port.
     /// </summary>
     public static class PortPredictor
     {
@@ -29,10 +29,10 @@ namespace PadForge.Engine.RemoteLink
         /// wide allocation drift while staying a ~1-2 s spray. Tunable per call.</summary>
         public const int DefaultWindowSteps = 512;
 
-        /// <summary>Neighbourhood radius sprayed around each predicted port to
+        /// <summary>Neighborhood radius sprayed around each predicted port to
         /// absorb the jitter from other subscribers allocating concurrently on
         /// the shared CGNAT pool.</summary>
-        public const int DefaultNeighbourhood = 2;
+        public const int DefaultNeighborhood = 2;
 
         /// <summary>
         /// Builds the ordered endpoint list to spray at a peer, given the peer's
@@ -43,14 +43,14 @@ namespace PadForge.Engine.RemoteLink
         /// - The raw advertised endpoints first (a cone peer, or the LAN path,
         ///   connects immediately with no prediction).
         /// - For a sequential-symmetric peer, the predicted forward window on
-        ///   its public IP: P+D, P-neighbourhood..P+neighbourhood around each,
+        ///   its public IP: P+D, P-neighborhood..P+neighborhood around each,
         ///   ramping outward.
         /// De-duplicated, port-bounded to 1..65535.
         /// </summary>
         public static IReadOnlyList<IPEndPoint> BuildSprayTargets(
             IPAddress peerPublicAddress, NatProfile peerProfile,
             IReadOnlyList<IPEndPoint> rawCandidates,
-            int windowSteps = DefaultWindowSteps, int neighbourhood = DefaultNeighbourhood)
+            int windowSteps = DefaultWindowSteps, int neighborhood = DefaultNeighborhood)
         {
             var result = new List<IPEndPoint>();
             var seen = new HashSet<(string, int)>();
@@ -85,7 +85,7 @@ namespace PadForge.Engine.RemoteLink
                     int predicted = basePort + k * d;
                     if (predicted > 65535) break;
                     Add(peerPublicAddress, predicted);
-                    for (int n = 1; n <= neighbourhood; n++)
+                    for (int n = 1; n <= neighborhood; n++)
                     {
                         Add(peerPublicAddress, predicted - n);
                         Add(peerPublicAddress, predicted + n);

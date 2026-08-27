@@ -159,7 +159,7 @@ namespace PadForge.Engine.Touchpad
         //
         // Separate feature from gesture recognition. Treats the touchpad
         // as a virtual analog stick (and/or D-pad) where the finger's
-        // landing position becomes the centre and current-minus-anchor
+        // landing position becomes the center and current-minus-anchor
         // delta drives stick X/Y or wedge-thresholded D-pad output. Lives
         // in the same per-(device, pad) settings shape because the data
         // model already supports it and the user picks both gesture
@@ -219,7 +219,7 @@ namespace PadForge.Engine.Touchpad
         /// cursor up when on.</summary>
         [XmlAttribute] public bool MouseInvertY { get; set; }
 
-        /// <summary><para>Momentum: the cursor keeps travelling after the
+        /// <summary><para>Momentum: the cursor keeps traveling after the
         /// finger lifts, coasting to a stop instead of halting dead. This is
         /// the trackball feel the Steam Controller's own lizard mode has, and
         /// it is most of why flicking across a pad there covers ground a
@@ -291,7 +291,7 @@ namespace PadForge.Engine.Touchpad
         /// lane.</para>
         /// <para>Exists as a per-pad setting because a Workshop import wrote
         /// it invisibly. Steam's mouse "acceleration" landed on
-        /// MappingSource.ParamAccel, which the engine honoured while no card
+        /// MappingSource.ParamAccel, which the engine honored while no card
         /// showed it, so an imported pad felt accelerated with nothing on
         /// screen to say why and nothing to turn it off. Sensitivity is a
         /// flat multiplier and cannot express it, so this is its own knob
@@ -311,7 +311,7 @@ namespace PadForge.Engine.Touchpad
         ///
         /// <para>Deliberately NO separate "Flat" value. Simple with
         /// acceleration 0 already IS flat, and offering both would be two
-        /// spellings of one behaviour, with the added trap that defaulting to
+        /// spellings of one behavior, with the added trap that defaulting to
         /// Flat would silently disable the acceleration slider for anyone who
         /// had already set it.</para>
         ///

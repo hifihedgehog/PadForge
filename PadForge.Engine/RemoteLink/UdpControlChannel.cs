@@ -47,11 +47,11 @@ namespace PadForge.Engine.RemoteLink
     /// handshake plus device lists), so stop-and-wait's one in-flight message
     /// per direction is ample and keeps the logic auditable.
     ///
-    /// FAILURE CONTRACT: a send that is cancelled or faults mid-flight leaves
+    /// FAILURE CONTRACT: a send that is canceled or faults mid-flight leaves
     /// the peer's expected sequence unknowable, so the channel POISONS itself
     /// (all later operations throw). That matches how the handshake uses it: a
-    /// cancelled handshake abandons the connection attempt outright, exactly as
-    /// a TCP connection is abandoned after a cancelled write.
+    /// canceled handshake abandons the connection attempt outright, exactly as
+    /// a TCP connection is abandoned after a canceled write.
     /// </summary>
     public sealed class UdpControlChannel : ILinkControlChannel, IDisposable
     {
@@ -132,7 +132,7 @@ namespace PadForge.Engine.RemoteLink
                     {
                         acked = await ackTcs.Task.WaitAsync(timer.Token).ConfigureAwait(false);
                         if (acked) { _sendSeq = seq + 1; return; }
-                        // The TCS only ever completes true or cancelled; a
+                        // The TCS only ever completes true or canceled; a
                         // false result cannot occur, but fall through safely.
                         break;
                     }

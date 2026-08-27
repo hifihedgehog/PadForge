@@ -1537,7 +1537,7 @@ namespace PadForge.Common.Input
                     // disengage deadline forward; after release the layer
                     // stays engaged until the deadline passes. A re-press
                     // inside the window re-engages the plain read first, so
-                    // the pending disengage is cancelled by the press (the
+                    // the pending disengage is canceled by the press (the
                     // M6 cancel-on-re-press shape on the layer machinery).
                     if (act.ReleaseDelayMs > 0)
                     {

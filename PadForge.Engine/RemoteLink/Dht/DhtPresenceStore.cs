@@ -138,7 +138,7 @@ namespace PadForge.Engine.RemoteLink.Dht
             public bool Queried;
             public Krpc.Response Stored; // the get response, if it carried an item
             /// <summary>A bootstrap router: a springboard with an UNKNOWN id,
-            /// not a storage candidate. Measured behaviour that forced this
+            /// not a storage candidate. Measured behavior that forced this
             /// distinction: of four routers, two never answer and one returns
             /// the SAME node eight times, so treating them as ordinary contacts
             /// starved the lookup before it reached any node that stores
@@ -262,7 +262,7 @@ namespace PadForge.Engine.RemoteLink.Dht
             lock (gate)
             {
                 shortlist.Sort(Order);
-                // The converged neighbourhood: the closest nodes we actually
+                // The converged neighborhood: the closest nodes we actually
                 // reached, nearest first. Publish writes to the token holders
                 // among them and a reader scans the same set, so both sides
                 // agree on WHERE the value lives. Anything still flagged a seed

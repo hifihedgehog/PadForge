@@ -196,7 +196,7 @@ namespace PadForge.Services
 
         /// <summary>
         /// Starts recording input for the specified mapping item.
-        /// If another recording is active, it is cancelled first.
+        /// If another recording is active, it is canceled first.
         /// </summary>
         /// <param name="mapping">The mapping item to record a source for.</param>
         /// <param name="padIndex">The pad index (0–15) to read input from.</param>
@@ -411,7 +411,7 @@ namespace PadForge.Services
             _timer.Start();
 
             // Prompt persists through the decay sweep: every session ends in
-            // a recorded / cancelled / timed-out write, so it cannot burn in.
+            // a recorded / canceled / timed-out write, so it cannot burn in.
             _mainVm.SetStatus(string.Format(Strings.Instance.Status_RecordingPrompt_Format, mapping.TargetLabel), persist: true);
         }
 
@@ -439,7 +439,7 @@ namespace PadForge.Services
             _isMouseByDevice.Clear();
             _axisCandidates.Clear();
 
-            _mainVm.StatusText = Strings.Instance.Status_RecordingCancelled;
+            _mainVm.StatusText = Strings.Instance.Status_RecordingCanceled;
         }
 
         // ─────────────────────────────────────────────

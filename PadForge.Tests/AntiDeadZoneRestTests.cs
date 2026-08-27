@@ -11,7 +11,7 @@ namespace PadForge.Tests
     /// internal deadzone once the user actually deflects the stick. Applied
     /// at rest it is a drift bug, and worse than a constant offset: the sign
     /// comes from the raw sensor reading, so a resting stick jittering either
-    /// side of centre oscillated between +anti and -anti every tick. The
+    /// side of center oscillated between +anti and -anti every tick. The
     /// Axial path never had this because it returns 0 inside the deadzone
     /// unconditionally; the shaped paths reached the post-deadzone stage
     /// with remapped == 0 and an anti-deadzone floor that ignored it.</para>

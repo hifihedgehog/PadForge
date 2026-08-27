@@ -1165,7 +1165,7 @@ def _process_dualsense_family(folder, margin, edge):
     if edge:
         # The floating tiles live in the gutter, so they are authored in the
         # widened frame directly and take no shift. Back above Fn, matching
-        # the mapping grid's own row order. Vertically centred on the body
+        # the mapping grid's own row order. Vertically centered on the body
         # (opaque rows 85..815 in the pack render).
         block = DS_TILE * 2 + DS_GAP
         top = (85 + 815) // 2 - block // 2
@@ -1625,7 +1625,7 @@ def _process_switchpro_family(folder, margin, switch2):
         # frame by a linear fit over the controls both pads carry, which
         # agrees to a few px on the right half and ~1 px at the D-pad.
         #
-        # C Button: mesh centroid x=0.00 (dead centre) z=-12.08 (below both
+        # C Button: mesh centroid x=0.00 (dead center) z=-12.08 (below both
         # the D-pad and the right stick) -> (742.5, 656) body-frame, and
         # Nintendo's own controller diagram places it "on the front face
         # between the D-pad and right stick area". It reuses the Capture
@@ -1740,7 +1740,7 @@ def _prepare_steamdeck_base():
     3. The remaining L4/L5/R4/R5 tiles are DESATURATED. They stay,
        because a rear paddle has no other representation on a front
        view, but the pack authors them in its own blue, which is off
-       this app's palette. Neutral grey matches the body, and the ember
+       this app's palette. Neutral gray matches the body, and the ember
        comes from the tinted overlay drawn on top, exactly as it does
        for every other element.
 
@@ -2063,8 +2063,8 @@ def _sc2_outline():
 
     The drawing carries three stroke passes and only one of them is art.
     The heavy black 1.44pt pass is the real edge geometry. The 0.36pt
-    grey pass is CAD surface topology, and the dashed 2.88pt pass is
-    dimension annotation. Filtering on colour, width and dash pattern
+    gray pass is CAD surface topology, and the dashed 2.88pt pass is
+    dimension annotation. Filtering on color, width and dash pattern
     keeps the first and drops the other two, which is what turns an
     engineering drawing into line art without any hand tracing.
     """
@@ -2129,7 +2129,7 @@ def _sc2_regions(gray):
     * the D-pad is the largest region left once pads and sticks are out,
     * a disc is round (aspect near one, box fill above a half) and the
       five discs on the upper half are ABXY plus Steam, with Steam the
-      one nearest the body's centre line and the other four resolved by
+      one nearest the body's center line and the other four resolved by
       their diamond positions,
     * a pill is wide (aspect above 1.8); the one below the body's middle
       is Quick Access and the upper two are Back and Start by side.
@@ -2160,7 +2160,7 @@ def _sc2_regions(gray):
     take("LeftTouchpadClick", pads[0])
     take("RightTouchpadClick", pads[1])
 
-    # Concentric pairs: same centre, one clearly larger box than the other.
+    # Concentric pairs: same center, one clearly larger box than the other.
     pairs = []
     rest = [i for i in parts if i not in used]
     for a in rest:
@@ -2215,7 +2215,7 @@ def _sc2_regions(gray):
 
 def _sc2_fill(gray, lab, stats, cent, body, named):
     """Paint the flat base: the pack's hard outline, flat fills, no
-    gradients. Colours come from the classification, so nothing is
+    gradients. Colors come from the classification, so nothing is
     positioned by hand.
 
     Two shapes need their own handling. The shoulder slivers are open
@@ -2226,7 +2226,7 @@ def _sc2_fill(gray, lab, stats, cent, body, named):
     the grips is not filled. The ABXY glyphs and the Steam logo are
     stroked outlines rather than filled shapes, so their interiors are
     painted after the discs, with the enclosed counters of A and B put
-    back to the disc colour.
+    back to the disc color.
     """
     h, w = gray.shape
     ink = gray <= 128
@@ -2291,14 +2291,14 @@ def _sc2_fill(gray, lab, stats, cent, body, named):
             for k in kids:
                 paint(lab == k, (0xFF, 0xFF, 0xFF))
             continue
-        colour = SC2_GLYPH[name[-1]]
+        color = SC2_GLYPH[name[-1]]
         kids.sort(key=lambda i: -stats[i][4])
         outer = []
         for k in kids:
             x, y, ww, hh, _ = stats[k]
             nested = any(x >= ox and y >= oy and x + ww <= ox + ow and y + hh <= oy + oh
                          for ox, oy, ow, oh in outer)
-            paint(lab == k, SC2_DISC if nested else colour)
+            paint(lab == k, SC2_DISC if nested else color)
             if not nested:
                 outer.append((x, y, ww, hh))
 
@@ -2326,7 +2326,7 @@ def _sc2_press_art(mask):
 
 def _sc2_dpad_quadrants(cross):
     """Cut the D-pad cross into four arms by 45 degree sectors from its
-    centre, so each direction gets its own arrow-shaped press art. The
+    center, so each direction gets its own arrow-shaped press art. The
     Deck flow splits a bbox in halves because it already has four
     per-direction PNGs to fit; here the art has to be made, and cutting
     the cross itself gives the arm rather than a rectangle over it."""
@@ -2354,7 +2354,7 @@ def process_steamcontroller2():
     authoritative front elevation is the reference drawing Valve
     published with the hardware, so this flow renders the drawing's
     outline pass, fills it in the pack's flat style, and cuts each
-    control out of the labelled regions. That keeps the asset
+    control out of the labeled regions. That keeps the asset
     reproducible from a cited source instead of hand-painted.
 
     What a front elevation cannot show, it does not claim: the bumpers,

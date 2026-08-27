@@ -262,10 +262,10 @@ namespace PadForge.Common.Input
             // cancellation; a write submitted with ERROR_IO_PENDING may still be
             // in flight when CancelIo returns, and the kernel/BT stack holds a
             // reference to the pinned data buffer and the native OVERLAPPED until
-            // that write actually completes (cancelled or not). Freeing them
+            // that write actually completes (canceled or not). Freeing them
             // before the completion is a use-after-free on memory the kernel is
             // still writing into. So wait on each slot's event (signaled on
-            // completion, including a cancelled completion) before freeing that
+            // completion, including a canceled completion) before freeing that
             // slot, exactly as the proven Sony BtWritePool.Dispose does
             // (AudioPassthroughService.cs).
             public void Dispose()
@@ -276,7 +276,7 @@ namespace PadForge.Common.Input
                 {
                     // A slot whose drain times out is still referenced by the
                     // kernel: leak that slot's trio (bounded, teardown-only)
-                    // rather than free memory the cancelled completion will
+                    // rather than free memory the canceled completion will
                     // write into (HapticToneService.OverlappedWrite pattern).
                     bool drained = true;
                     try { if (_ev[i] != IntPtr.Zero) drained = WaitForSingleObject(_ev[i], 100) == 0; } catch { drained = false; }
@@ -757,11 +757,11 @@ namespace PadForge.Common.Input
                 if (err != ERROR_IO_PENDING) return false; // rejected (87) or other error
                 if (WaitForSingleObject(ev, 500) != 0)
                 {
-                    // Drain the cancelled probe before the finally frees the
+                    // Drain the canceled probe before the finally frees the
                     // pinned buffer + OVERLAPPED; a drain that also times out
                     // means the kernel still references them, so leak the trio
                     // (bounded, probe-only) instead of freeing memory the
-                    // cancelled completion will write into (the
+                    // canceled completion will write into (the
                     // HapticToneService.OverlappedWrite pattern).
                     try { CancelIo(h); } catch { }
                     try { leak = WaitForSingleObject(ev, 200) != 0; } catch { leak = true; }

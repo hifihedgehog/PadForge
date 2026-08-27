@@ -115,7 +115,7 @@
          shared shape for the Sticks tab header. -->
     <StreamGeometry x:Key="ZackslyStickOuterRingGeometry">M256,83A173,173,0,1,0,429,256,173,173,0,0,0,256,83Zm0,294.29A121.25,121.25,0,1,1,377.25,256,121.38,121.38,0,0,1,256,377.25Z</StreamGeometry>
 
-    <!-- Stick inner disc — plain circle of radius 103.07 centred at
+    <!-- Stick inner disc — plain circle of radius 103.07 centered at
          (256,256). Not derivative; matches the inner radius of the
          Zacksly outer ring so the two compose. -->
     <StreamGeometry x:Key="ZackslyStickInnerDiscGeometry">M256,152.93 A103.07,103.07,0,1,1,256,359.06 A103.07,103.07,0,1,1,256,152.93 Z</StreamGeometry>

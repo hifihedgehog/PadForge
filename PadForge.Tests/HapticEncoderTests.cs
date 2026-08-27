@@ -412,7 +412,7 @@ namespace PadForge.Tests
         {
             var (hz, amp) = ReduceSine(220f, 0.5f);
             // Autocorrelation lag is integer, so 220 Hz lands on lag 36 (222 Hz)
-            // or 37 (216 Hz). Accept the quantization neighbourhood.
+            // or 37 (216 Hz). Accept the quantization neighborhood.
             Assert.InRange(hz, 210f, 232f);
             // 0.5-amplitude sine -> RMS ~0.354 -> *1.4 ~0.495.
             Assert.InRange(amp, 0.35f, 0.65f);

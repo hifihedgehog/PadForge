@@ -173,7 +173,7 @@ namespace PadForge.Tests
         {
             // Load leg, save leg, mode gating, and the copy back onto the
             // existing activator. WPF dialogs cannot run headless, so each
-            // leg is pinned where it lives; the behaviour half is covered by
+            // leg is pinned where it lives; the behavior half is covered by
             // the engine and translator tests.
             string dlg = File.ReadAllText(Path.Combine(RepoRoot(),
                 "PadForge.App", "Views", "ShiftActivatorDialog.xaml.cs"));

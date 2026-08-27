@@ -58,7 +58,7 @@ namespace PadForge.Tests
         }
 
         /// <summary>The writer side of the same contract: a full-negative
-        /// SDL short must land at 0, rest near centre, full positive at the
+        /// SDL short must land at 0, rest near center, full positive at the
         /// top of the range. If a writer ever switches to signed storage,
         /// this fails alongside the reader tests above.</summary>
         [Theory]

@@ -79,7 +79,7 @@ namespace PadForge.Tests
             Assert.True(CenterX(model.ButtonMap["RightFunction"][0]) > 0);
 
             // The Fn label rides its button (a static-overlay label
-            // would stay grey while the button lights), so the Fn
+            // would stay gray while the button lights), so the Fn
             // groups carry two geometries: cap + rider decal.
             Assert.Equal(2, model.ButtonMap["LeftFunction"][0].Children.Count);
             Assert.Equal(2, model.ButtonMap["RightFunction"][0].Children.Count);

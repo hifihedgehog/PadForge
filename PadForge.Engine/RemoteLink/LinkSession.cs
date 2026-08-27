@@ -28,7 +28,7 @@ namespace PadForge.Engine.RemoteLink
                        // even once both peers land on the same LAN (#294). The
                        // relay is the ideal signal for this: both peers are already
                        // reachable and authenticated there, so the punch both sides
-                       // must perform simultaneously is trivially synchronised.
+                       // must perform simultaneously is trivially synchronized.
                        // Payload: [0] count, then per candidate: [len][addr][port BE].
     }
 

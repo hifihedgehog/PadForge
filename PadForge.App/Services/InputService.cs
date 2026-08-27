@@ -7320,7 +7320,7 @@ namespace PadForge.Services
                     out var entrySourceType, out var entrySourceIsExtended);
                 if (devicePs == null) continue;
 
-                // Honour the entry's own layout metadata if present, else
+                // Honor the entry's own layout metadata if present, else
                 // fall back to the wrapping payload's layout.
                 var srcType = entrySourceType != VirtualControllerType.Xbox
                     || entrySourceIsExtended
@@ -9569,7 +9569,7 @@ namespace PadForge.Services
         /// <summary>Arms the code-derived relay listener (#294). The host
         /// connects to the relay AS the identity its connection code addresses
         /// and waits there. A caller derives the same key from the code it
-        /// dialled, so no lookup, no DHT convergence, and no NAT traversal is
+        /// dialed, so no lookup, no DHT convergence, and no NAT traversal is
         /// involved on this lane. Restarted whenever the code changes.</summary>
         /// <summary>Arms the STABLE identity relay listener: the address a
         /// paired peer reconnects to after a restart. Derived from our own
@@ -12462,7 +12462,7 @@ namespace PadForge.Services
 
             // Apply each re-key as its OWN single-hop pass, in queue order
             // (round ten, replacing round nine's chain collapse). The
-            // collapse folded pairs whenever one pair's NEW guid equalled
+            // collapse folded pairs whenever one pair's NEW guid equaled
             // an earlier pair's OLD guid, which is chain evidence ONLY for
             // a single row: when two devices swap ports, dev2's old guid
             // legitimately equals dev1's new one, and folding them merged

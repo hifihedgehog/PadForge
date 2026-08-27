@@ -6,7 +6,7 @@ using System.Windows.Input;
 namespace PadForge.Views
 {
     /// <summary>List picker for a sound — either a flat list of entry names
-    /// (single package) or a labelled list of sounds drawn from every added
+    /// (single package) or a labeled list of sounds drawn from every added
     /// package, with an optional "Browse files…" escape to the filesystem
     /// (issue #83). Same FluentWindow chrome as the other dialogs.</summary>
     public partial class PickSoundDialog : Wpf.Ui.Controls.FluentWindow
@@ -23,7 +23,7 @@ namespace PadForge.Views
         }
 
         /// <summary>The chosen value (the <see cref="Item.Value"/>, or the raw
-        /// string in the flat-list case), or null when cancelled.</summary>
+        /// string in the flat-list case), or null when canceled.</summary>
         public string SelectedSound => (SoundList.SelectedItem as Item)?.Value
                                        ?? SoundList.SelectedItem as string;
 
@@ -50,7 +50,7 @@ namespace PadForge.Views
                 SoundList.SelectedIndex = 0;
         }
 
-        /// <summary>Labelled picker over sounds from the added packages, with an
+        /// <summary>Labeled picker over sounds from the added packages, with an
         /// optional Browse-files escape and an optional pre-selected value.</summary>
         public PickSoundDialog(string description, IReadOnlyList<Item> items, bool allowBrowse, string preselectValue = null)
         {

@@ -33,7 +33,7 @@ namespace PadForge.Tests
 
         /// <summary>THE SAFETY PROPERTY. With no address there is nothing to
         /// target, so the control must not appear. This is exactly today's
-        /// behaviour, which is why opening the gate cannot regress a pad
+        /// behavior, which is why opening the gate cannot regress a pad
         /// whose address never arrives.</summary>
         [Theory]
         [InlineData(null)]
@@ -64,7 +64,7 @@ namespace PadForge.Tests
         [InlineData("", 0x057E, 0x2069)]
         // Combined Joy-Con pair, likewise.
         [InlineData("", 0x057E, 0x2008)]
-        public void PreviouslyRecognisedPads_StillQualifyWithNoAddress(
+        public void PreviouslyRecognizedPads_StillQualifyWithNoAddress(
             string path, ushort vid, ushort pid)
         {
             Assert.True(BluetoothLinkHelper.IsDisconnectTarget(path, vid, pid, null));

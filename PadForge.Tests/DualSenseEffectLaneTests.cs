@@ -110,7 +110,7 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void ARepeatOfWhatThePadHolds_IsRecognised()
+        public void ARepeatOfWhatThePadHolds_IsRecognized()
         {
             var lastSent = new byte[] { 0x02, 0x11, 0x22, 0x33 };
             var incoming = new byte[] { 0x02, 0x11, 0x22, 0x33 };
@@ -222,14 +222,14 @@ namespace PadForge.Tests
         {
             // Measured (#300): the reporter closes PadForge about ten seconds
             // after the game, and the idle reclaim needs fifteen, so the bar
-            // was still carrying the game's colour on the last line of his
+            // was still carrying the game's color on the last line of his
             // trace. The frame we send on the way out has to carry ours.
             var buffer = new byte[64];
             DualSensePassthroughDispatcher.BuildTriggerReleasePayload(buffer);
             DualSensePassthroughDispatcher.AddIdentityLightbar(buffer, 0x00, 0x00, 0x40);
 
             Assert.Equal(0x0C, buffer[0]);      // triggers still claimed
-            Assert.Equal(0x04, buffer[1]);      // lightbar colour enable
+            Assert.Equal(0x04, buffer[1]);      // lightbar color enable
             Assert.Equal(0x00, buffer[44]);
             Assert.Equal(0x00, buffer[45]);
             Assert.Equal(0x40, buffer[46]);     // player one blue

@@ -343,7 +343,7 @@ namespace PadForge.Tests
         [InlineData("steam-deck-composite")]
         [InlineData("steam-controller-composite")]
         [InlineData("steam-controller-2")]
-        public void Packer_ScalesATriggerFromRestNotFromCentre(string id)
+        public void Packer_ScalesATriggerFromRestNotFromCenter(string id)
         {
             var profile = HMaestroProfileCatalog.AllProfiles.First(p => p.Id == id);
             var fields = (IEnumerable)Prop(profile.ExtendedReport, "Fields");

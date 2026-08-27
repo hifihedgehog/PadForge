@@ -11,7 +11,7 @@ namespace PadForge.Tests
     ///
     /// The policy is CONNECTION ORDER, not hardware identity (owner decision,
     /// 2026-07-25). Identical controllers are physically indistinguishable to
-    /// their owner: without labelling the shell you cannot tell which unit you
+    /// their owner: without labeling the shell you cannot tell which unit you
     /// pulled out of the drawer. So the first unit powered on claims the stored
     /// entry and the mappings already built for it, whichever unit it is. What
     /// must hold is that identity is STABLE while PadForge runs.

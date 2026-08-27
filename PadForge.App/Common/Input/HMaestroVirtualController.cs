@@ -1074,7 +1074,7 @@ namespace PadForge.Common.Input
                     // equality here was unsatisfiable on every Bluetooth Sony
                     // profile, because Windows sizes the host write to the
                     // LARGEST declared output report (547) and the driver caps
-                    // its slot at 256, so RawBytes never equalled the 78-byte
+                    // its slot at 256, so RawBytes never equaled the 78-byte
                     // declared size and every effect frame was dropped.
                     && declaredSize > 0
                     && e.RawBytes.Length >= declaredSize
@@ -1138,7 +1138,7 @@ namespace PadForge.Common.Input
                 // so the extended bytes land at offsets 4 and 5 right after
                 // the standard motor bytes when present. When the standard
                 // 5-byte packet arrives without the extended bytes, the
-                // game is signalling "no trigger rumble," so zero the
+                // game is signaling "no trigger rumble," so zero the
                 // trigger motors to clear stale values.
                 if (pkt.Source == HMOutputSource.XInput && data.Length >= 5)
                 {

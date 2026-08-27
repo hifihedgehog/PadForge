@@ -39,7 +39,7 @@ namespace PadForge.Views
     /// the approved design artifact. Three states carry the flow: cold-forge
     /// opt-in (gate off), game search (portrait shelf), and the game room
     /// (hero art under the steel scrim, config list, translation manifest).
-    /// All network work is async, cache-first, and cancelled on re-entry;
+    /// All network work is async, cache-first, and canceled on re-entry;
     /// nothing here ever runs while the opt-in gate is off.
     /// </summary>
     public partial class WorkshopBrowseDialog : Wpf.Ui.Controls.FluentWindow
@@ -624,7 +624,7 @@ namespace PadForge.Views
             // Owned for the whole initial fill so a scroll event raised by
             // rows landing mid-load cannot start a second, overlapping page
             // fetch. A stale generation's finally skips the reset (its token
-            // is cancelled), so this flag always reflects the live one.
+            // is canceled), so this flag always reflects the live one.
             _configsFetchBusy = true;
             ConfigsEmptyPanel.Visibility = Visibility.Collapsed;
             ConfigsErrorPanel.Visibility = Visibility.Collapsed;
@@ -929,7 +929,7 @@ namespace PadForge.Views
             _ = LoadMoreConfigsAsync();
         }
 
-        /// <summary>Scroll-driven page fetch: single-flight, cancelled by a
+        /// <summary>Scroll-driven page fetch: single-flight, canceled by a
         /// tag or game switch through _gameCts (the stale task then leaves
         /// the fresh generation's flags and panels alone).</summary>
         private async Task LoadMoreConfigsAsync()
@@ -1317,7 +1317,7 @@ namespace PadForge.Views
         /// (as controller_configuration.vdf or {ugchandle}_legacy.bin, both text VDF),
         /// so a config the CDN cannot serve may still be readable from disk. Never
         /// throws. True when this method now owns the manifest panels (a fill, an
-        /// honest parse error, or a cancelled attempt); false when no local copy
+        /// honest parse error, or a canceled attempt); false when no local copy
         /// exists and the caller should show its own miss state.
         /// </summary>
         private async Task<bool> TryShowLocalConfigAsync(WorkshopConfigItem item, CancellationToken ct)
@@ -2285,7 +2285,7 @@ namespace PadForge.Views
         /// <para>The preview renders the controller the config was authored
         /// on (the body is picked from the config's own controller tag), so
         /// a binding belongs on the control the author physically pressed,
-        /// labelled with what it produces. Anchoring on the target instead
+        /// labeled with what it produces. Anchoring on the target instead
         /// drew the virtual pad's geometry on the source device's body: a
         /// Steam Deck touchpad bound to the d-pad lit the DECK'S d-pad and
         /// called it "Touchpad 0", which is backwards on every layout.</para></summary>

@@ -6,7 +6,7 @@ namespace PadForge.Tests
 {
     /// <summary>
     /// #334, the second report: a DualSense powered on over Bluetooth sat on
-    /// its firmware default blue and ignored every colour PadForge wrote,
+    /// its firmware default blue and ignored every color PadForge wrote,
     /// whatever the Lighting tab said, until an app restart happened to
     /// re-open the device.
     ///
@@ -73,8 +73,8 @@ namespace PadForge.Tests
             Assert.Equal(0x00, Setup(f));
         }
 
-        /// <summary>The configured colour rides the SAME packet as the
-        /// release, so there is no blue-then-black-then-colour staircase:
+        /// <summary>The configured color rides the SAME packet as the
+        /// release, so there is no blue-then-black-then-color staircase:
         /// the firmware hands the LEDs over and applies our bytes in one
         /// step. Off paints black, which is the second reporter's exact
         /// configuration.</summary>

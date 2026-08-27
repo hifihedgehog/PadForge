@@ -24,7 +24,7 @@ namespace PadForge.Views
     ///
     /// <para>Elements are tinted with the Rectangle + ImageBrush
     /// OpacityMask idiom (see [[feedback_controller_art_from_2dmodels_pipeline]]):
-    /// the cutout supplies the shape, one brush supplies the colour, so
+    /// the cutout supplies the shape, one brush supplies the color, so
     /// lit / hover / flash all drive the same layer instead of needing a
     /// second "-Active" bitmap per element.</para>
     ///
@@ -83,7 +83,7 @@ namespace PadForge.Views
         private System.Windows.Threading.DispatcherTimer _flashTimer;
         private string _hoverTarget;
 
-        // target -> the tint layer that colours it.
+        // target -> the tint layer that colors it.
         private readonly Dictionary<string, Image> _overlays = new(StringComparer.Ordinal);
         // Multi-target element key -> the region highlight: a second copy
         // of the element's cyan overlay at the drawn packs' 0.4 hover

@@ -29,7 +29,7 @@ namespace PadForge.Views
         }
 
         /// <summary>
-        /// The PadSetting selected by the user, or null if cancelled.
+        /// The PadSetting selected by the user, or null if canceled.
         /// </summary>
         public PadSetting SelectedPadSetting { get; private set; }
 

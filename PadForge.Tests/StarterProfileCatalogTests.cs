@@ -161,7 +161,7 @@ namespace PadForge.Tests
 
         /// <summary>Non-key KbM targets must be ones the engine routes.</summary>
         [Fact]
-        public void EveryNonKeyKbmTarget_IsRecognised()
+        public void EveryNonKeyKbmTarget_IsRecognized()
         {
             var known = new HashSet<string>(StringComparer.Ordinal)
             {

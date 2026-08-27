@@ -202,7 +202,7 @@ namespace PadForge.Models3D
             AttachRiderDecal(LeftThumbRing, "Decal-Joystick-Left-Ring.obj", MaterialDecal);
             AttachRiderDecal(RightThumbRing, "Decal-Joystick-Right-Ring.obj", MaterialDecal);
             // The L1/R1 lettering sat in the static Decal overlay, so a
-            // bumper press lit the button while its label stayed grey --
+            // bumper press lit the button while its label stayed gray --
             // L2/R2 glowed because the trigger path grades its riders.
             // Ride them on the bumpers, as the Series model does.
             if (ButtonMap.TryGetValue("LeftShoulder", out var lbList) && lbList.Count > 0)
@@ -210,7 +210,7 @@ namespace PadForge.Models3D
             if (ButtonMap.TryGetValue("RightShoulder", out var rbList) && rbList.Count > 0)
                 AttachRiderDecal(rbList[0], "Decal-R1.obj", MaterialDecal);
             // The Edge's Fn labels ride their buttons for the same
-            // reason: a static-overlay label stays grey while the
+            // reason: a static-overlay label stays gray while the
             // button under it lights.
             if (ButtonMap.TryGetValue("LeftFunction", out var lfnList) && lfnList.Count > 0)
                 AttachRiderDecal(lfnList[0], "Decal-Fn-Left.obj", MaterialDecal);

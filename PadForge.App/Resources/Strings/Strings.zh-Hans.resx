@@ -142,7 +142,7 @@
   <data name="Status_DownloadingMidi" xml:space="preserve"><value>正在下载 Windows MIDI Services…</value></data>
   <data name="Status_DownloadingInstallingMidi" xml:space="preserve"><value>正在下载并安装 Windows MIDI Services…</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>正在卸载 Windows MIDI Services…</value></data>
-  <data name="Status_OperationCancelled" xml:space="preserve"><value>操作已被用户取消。</value></data>
+  <data name="Status_OperationCanceled" xml:space="preserve"><value>操作已被用户取消。</value></data>
   <data name="Status_MidiInstallFailed_Format" xml:space="preserve"><value>MIDI Services 安装失败：{0}</value></data>
   <data name="Status_DownloadingSteamVR" xml:space="preserve"><value>正在下载 SteamVR…</value></data>
   <data name="Status_DownloadingInstallingSteamVR" xml:space="preserve"><value>正在从 Valve 服务器下载并安装 SteamVR… 共数 GB，可能需要一段时间。</value></data>
@@ -184,7 +184,7 @@
   <data name="Status_NoSettingsFile" xml:space="preserve"><value>磁盘上未找到设置文件。</value></data>
   <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>没有已连接的设备可供录制。</value></data>
   <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>录制中：请按下按钮或移动轴以绑定"{0}"...</value></data>
-  <data name="Status_RecordingCancelled" xml:space="preserve"><value>录制已取消。</value></data>
+  <data name="Status_RecordingCanceled" xml:space="preserve"><value>录制已取消。</value></data>
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>"{0}"的录制已超时。</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>引擎已启动。</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>引擎已停止。</value></data>

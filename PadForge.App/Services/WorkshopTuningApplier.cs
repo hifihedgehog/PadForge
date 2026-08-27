@@ -192,14 +192,14 @@ namespace PadForge.Services
         /// per-(device, pad), so the source is the only end of the row that
         /// identifies the card.</para>
         ///
-        /// <para>NOT behaviour-preserving on the cursor lane, deliberately.
+        /// <para>NOT behavior-preserving on the cursor lane, deliberately.
         /// ReadTouchpadMouseCounts never applied ParamAccel at all, so an
         /// import whose acceleration rode a touchpad-finger row into Mouse X
         /// or Mouse Y had it silently DROPPED, while the same stamp on an axis
         /// row did apply. The pad setting is read by both lanes, so folding
         /// makes the imported value take effect on the cursor for the first
         /// time. That is the point: the alternative is a value Steam authored,
-        /// PadForge stored, and nothing honoured.</para>
+        /// PadForge stored, and nothing honored.</para>
         ///
         /// <para>On the axis lane it IS exactly preserving: the same
         /// v x (1 + accel x |v|) curve, and the fold only runs while the card

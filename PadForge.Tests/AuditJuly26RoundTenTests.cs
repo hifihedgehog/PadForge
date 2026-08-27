@@ -304,7 +304,7 @@ namespace PadForge.Tests
         /// locked out of calibration for the process lifetime. The token
         /// is no longer passed to Task.Run; RunSampling checks it itself.</summary>
         [Fact]
-        public async Task PreCancelledToken_DoesNotLockTheProfileOut()
+        public async Task PreCanceledToken_DoesNotLockTheProfileOut()
         {
             SettingsManager.UserDevices = new DeviceCollection();
             var ud = new UserDevice

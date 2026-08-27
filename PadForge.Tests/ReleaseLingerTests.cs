@@ -13,7 +13,7 @@ namespace PadForge.Tests
 {
     /// <summary>Translator v22 engine pins: the two release-linger lanes
     /// (Steam's activator delay_end). UntilRelease macros keep executing
-    /// ReleaseLingerMs past the trigger release with a re-press cancelling
+    /// ReleaseLingerMs past the trigger release with a re-press canceling
     /// the pending stop (the M6 cancel-on-re-press shape on the pulse stop
     /// leg), Hold-mode shift activators keep their layer engaged
     /// ReleaseDelayMs past the release the same way, and the materializer
@@ -66,7 +66,7 @@ namespace PadForge.Tests
             Assert.True(macro.IsExecuting);
             Assert.NotEqual(DateTime.MinValue, macro.ReleaseLingerStartUtc);
 
-            // Re-press: the pending stop is cancelled (M6 shape).
+            // Re-press: the pending stop is canceled (M6 shape).
             gp = new Gamepad { Buttons = Gamepad.A };
             im.EvaluateSlotMacros(ref gp, macros);
             Assert.True(macro.IsExecuting);

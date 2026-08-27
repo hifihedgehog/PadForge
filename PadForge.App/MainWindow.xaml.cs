@@ -679,7 +679,7 @@ namespace PadForge
                 }
                 catch (System.ComponentModel.Win32Exception)
                 {
-                    _viewModel.StatusText = Strings.Instance.Status_OperationCancelled;
+                    _viewModel.StatusText = Strings.Instance.Status_OperationCanceled;
                 }
                 catch (Exception ex)
                 {
@@ -3969,7 +3969,7 @@ namespace PadForge
         }
 
         /// <summary>The muted "+" the collapsed rail shows for Add Controller.
-        /// Tertiary-grey to match the Dashboard card's add sign, DynamicResource
+        /// Tertiary-gray to match the Dashboard card's add sign, DynamicResource
         /// so it re-tints on a theme flip.</summary>
         private static FontIcon MakeAddControllerCollapsedIcon()
         {
@@ -6566,7 +6566,7 @@ namespace PadForge
         }
 
         /// <summary>Non-null while an update check runs. Doubles as the
-        /// reentrancy guard and is cancelled by OnClosing so an in-flight
+        /// reentrancy guard and is canceled by OnClosing so an in-flight
         /// Steam query never outlives shutdown.</summary>
         private System.Threading.CancellationTokenSource _workshopUpdateCts;
 
@@ -6649,7 +6649,7 @@ namespace PadForge
             }
             catch (OperationCanceledException) when (ct.IsCancellationRequested)
             {
-                // Shutdown cancelled the query. Nothing to report.
+                // Shutdown canceled the query. Nothing to report.
             }
             catch (System.Net.Http.HttpRequestException)
             {
@@ -7541,7 +7541,7 @@ namespace PadForge
                 // Mic LED / Player LED / audio-reactive / palette for PlayStation,
                 // custom layout for Extended, CC + note layout for MIDI). These
                 // live on PadViewModel, not PadSetting, so the clipboard JSON
-                // carries them as opaque DTO-serialised strings on PadSetting and
+                // carries them as opaque DTO-serialized strings on PadSetting and
                 // OnPasteSettings unpacks + applies via SettingsService.
                 var jsonOpts = new System.Text.Json.JsonSerializerOptions { WriteIndented = false };
                 var psConfigs = _settingsService.BuildDeviceConfigSnapshotForSlot(padVm.PadIndex);
@@ -8300,7 +8300,7 @@ namespace PadForge
             catch (System.ComponentModel.Win32Exception)
             {
                 // User declined UAC prompt.
-                _viewModel.StatusText = Strings.Instance.Status_OperationCancelled;
+                _viewModel.StatusText = Strings.Instance.Status_OperationCanceled;
             }
             catch (Exception ex)
             {

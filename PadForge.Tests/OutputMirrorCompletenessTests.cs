@@ -18,7 +18,7 @@ namespace PadForge.Tests
     /// private reader and a lambda captured into a static provider, with no
     /// seam a unit test can call. That is the same shape, and the same
     /// justification, as BthPs3PsmIoctlTests. A source-shape test is weaker
-    /// than a behavioural one and is used only where no seam exists.
+    /// than a behavioral one and is used only where no seam exists.
     /// </summary>
     public class OutputMirrorCompletenessTests
     {

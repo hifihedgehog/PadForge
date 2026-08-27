@@ -454,7 +454,7 @@ namespace PadForge.Tests
         // ── per-pad cursor acceleration ───────────────────────────────────
         //
         // Steam's mouse acceleration landed on MappingSource.ParamAccel, which
-        // the engine honoured while no card showed it: an imported pad felt
+        // the engine honored while no card showed it: an imported pad felt
         // accelerated with nothing on screen to say why and nothing to turn it
         // off. It folds onto the pad's own Mouse Acceleration card now.
 
@@ -606,7 +606,7 @@ namespace PadForge.Tests
         {
             // EmitMouseAxes serves stick-hosted mouse modes too, and there is
             // no card for a stick's cursor acceleration. The stamp must stay
-            // per-source (where the axis read still honours it) rather than be
+            // per-source (where the axis read still honors it) rather than be
             // eaten looking for a home or misrouted onto the gyro card.
             var set = ArrangeSlot(s => s.Rows.Add(new MappingRow
             {

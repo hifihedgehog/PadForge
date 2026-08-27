@@ -222,7 +222,7 @@ public class Strings : INotifyPropertyChanged
     public string Status_DownloadingMidi => Get("Status_DownloadingMidi");
     public string Status_DownloadingInstallingMidi => Get("Status_DownloadingInstallingMidi");
     public string Status_UninstallingMidi => Get("Status_UninstallingMidi");
-    public string Status_OperationCancelled => Get("Status_OperationCancelled");
+    public string Status_OperationCanceled => Get("Status_OperationCanceled");
     public string Status_MidiInstallFailed_Format => Get("Status_MidiInstallFailed_Format");
     public string Status_DeviceListRefreshed => Get("Status_DeviceListRefreshed");
     public string Status_Recorded_Format => Get("Status_Recorded_Format");
@@ -266,7 +266,7 @@ public class Strings : INotifyPropertyChanged
     public string Status_RecordingPrompt_Format => Get("Status_RecordingPrompt_Format");
     public string Status_RecordKindUp_Format => Get("Status_RecordKindUp_Format");
     public string Status_RecordKindDown_Format => Get("Status_RecordKindDown_Format");
-    public string Status_RecordingCancelled => Get("Status_RecordingCancelled");
+    public string Status_RecordingCanceled => Get("Status_RecordingCanceled");
     public string Status_RecordingTimedOut_Format => Get("Status_RecordingTimedOut_Format");
     public string Status_EngineStarted => Get("Status_EngineStarted");
     public string Status_EngineStopped => Get("Status_EngineStopped");

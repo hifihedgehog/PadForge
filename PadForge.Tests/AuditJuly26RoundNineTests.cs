@@ -247,11 +247,11 @@ namespace PadForge.Tests
 
         /// <summary>Mouse Motion was the one trigger arm with no
         /// Bidirectional branch, so Invert stayed live in Half + Either
-        /// while the editors greyed the checkbox out. It now mirrors
+        /// while the editors grayed the checkbox out. It now mirrors
         /// around center like its Axis and Gyro-Lean siblings: both
         /// directions pull, and Invert changes nothing.</summary>
         [Fact]
-        public void MouseMotionTrigger_HonoursBidirectional()
+        public void MouseMotionTrigger_HonorsBidirectional()
         {
             var s = new CustomInputState();
             s.JoyCon2MouseDY = -8;                    // half of full-scale, negative

@@ -3532,7 +3532,7 @@ namespace PadForge.Engine.Common.Mapping
         // proven pieces: the coast physics are the touch ball's exactly
         // (DecayVelocity above), the release velocity comes from recent
         // HISTORY rather than the final sample (sc-controller's mean-ring
-        // insight, adapted: a stick's return to centre passes through small
+        // insight, adapted: a stick's return to center passes through small
         // deflections by construction, so a mean would be diluted by the
         // snap-back; the launch takes the PEAK deflection of the last
         // 100 ms instead), and a minimum-launch gate keeps a slow guided
@@ -3602,12 +3602,12 @@ namespace PadForge.Engine.Common.Mapping
 
         /// <summary>How far back the launch looks for the fling's peak
         /// deflection. A release snap takes 30 to 60 ms of polls to cross
-        /// centre; 100 ms comfortably contains the pre-release push without
+        /// center; 100 ms comfortably contains the pre-release push without
         /// reaching back into unrelated earlier motion.</summary>
         private const float StickFlingWindowSeconds = 0.10f;
 
         /// <summary>Peak deflection below which a release does not coast.
-        /// A slow guided return to centre arrives with only small
+        /// A slow guided return to center arrives with only small
         /// deflections left inside the window, so it lands under this gate
         /// and the cursor stops where the user parked it; a real flick
         /// carries its full push through the window and clears it.</summary>
@@ -3944,7 +3944,7 @@ namespace PadForge.Engine.Common.Mapping
                     // first killed flings outright, then chopped the drag
                     // tail. So the window is SPEED-gated: at or above the
                     // lift-gate scale the spend bridges the full ceiling,
-                    // exactly the shipped-for-months behaviour, and only
+                    // exactly the shipped-for-months behavior, and only
                     // jitter-scale velocity (which is what the creep is,
                     // by definition: a few pixels over a whole window)
                     // stops after ~1.5 report gaps.

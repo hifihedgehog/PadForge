@@ -220,7 +220,7 @@ namespace PadForge.Common.Input
         /// stops however far over it is held. No constant value satisfies
         /// that, so the value has to travel.</para>
         ///
-        /// <para>The sweep is CENTRED on the configured percent, a quarter of
+        /// <para>The sweep is CENTERED on the configured percent, a quarter of
         /// it wide, so the user's number stays the average rather than
         /// becoming the floor or the ceiling. Sweeping upward from it would
         /// push the axis further than the user asked and risk crossing a

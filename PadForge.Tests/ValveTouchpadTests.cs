@@ -64,7 +64,7 @@ namespace PadForge.Tests
         [Theory]
         [InlineData("steam-deck-composite", 16, 18)]
         [InlineData("steam-controller-2", 18, 20)]
-        public void LiftedFinger_CentresThePad(string id, int lx, int ly)
+        public void LiftedFinger_CentersThePad(string id, int lx, int ly)
         {
             var b = Pack(id, new TouchpadState { Down0 = false, X0 = 1f, Y0 = 1f });
             Assert.Equal(0, I16(b, lx));

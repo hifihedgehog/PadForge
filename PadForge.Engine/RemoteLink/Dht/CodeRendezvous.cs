@@ -8,7 +8,7 @@ using System.Text;
 namespace PadForge.Engine.RemoteLink.Dht
 {
     /// <summary>
-    /// First-contact signalling over the public BitTorrent DHT (#294).
+    /// First-contact signaling over the public BitTorrent DHT (#294).
     ///
     /// WHY THIS EXISTS. A NAT hole punch needs BOTH peers to send toward each
     /// other at roughly the same moment. An idle host cannot simply "listen":
@@ -19,7 +19,7 @@ namespace PadForge.Engine.RemoteLink.Dht
     /// across the internet, which is exactly the field failure: LAN worked,
     /// Verizon-to-Comcast reported "0 inbound probes" on every attempt.
     ///
-    /// The missing piece is a signalling channel that carries the CALLER'S
+    /// The missing piece is a signaling channel that carries the CALLER'S
     /// address to the host. The DHT is that channel: free, third-party, and
     /// operator-independent (measured reachable from a Verizon hotspot).
     ///
@@ -59,7 +59,7 @@ namespace PadForge.Engine.RemoteLink.Dht
         /// query different DHT regions and need not converge. Deriving the
         /// rendezvous straight from the shared code removes the lookup: the
         /// host listens on the relay at <see cref="PublicKey"/>, and the caller
-        /// computes the SAME key from the code it dialled and connects to it.
+        /// computes the SAME key from the code it dialed and connects to it.
         /// Both pick the same relay host and control channel the same way, so
         /// the relay lane works whenever the relay itself is reachable.</summary>
         public sealed class RelayRendezvous
@@ -122,7 +122,7 @@ namespace PadForge.Engine.RemoteLink.Dht
         }
 
         /// <summary>Derives the relay rendezvous both peers compute from the
-        /// same code. Same normalisation as <see cref="DeriveSlot"/>.</summary>
+        /// same code. Same normalization as <see cref="DeriveSlot"/>.</summary>
         public static RelayRendezvous DeriveRelay(string code)
         {
             string norm = LinkCode.Normalize(code);
@@ -158,7 +158,7 @@ namespace PadForge.Engine.RemoteLink.Dht
         }
 
         /// <summary>Derives the slot both peers compute from the same code.
-        /// Normalised first, so grouping dashes and confusable glyphs in a
+        /// Normalized first, so grouping dashes and confusable glyphs in a
         /// retyped code still land on the identical slot.</summary>
         public static Slot DeriveSlot(string code)
         {

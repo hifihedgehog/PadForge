@@ -139,7 +139,7 @@ namespace PadForge.Tests
             Assert.False(Bep44Record.Verify(id.PublicKey, value, 7, sig, Encoding.ASCII.GetBytes("slot")));
         }
 
-        // ── code rendezvous: first-contact signalling (#294) ──
+        // ── code rendezvous: first-contact signaling (#294) ──
 
         [Fact]
         public void CodeRendezvous_BothSidesDeriveTheIdenticalSlotFromTheCode()

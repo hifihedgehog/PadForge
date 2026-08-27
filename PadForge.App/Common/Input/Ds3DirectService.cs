@@ -359,7 +359,7 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>Begin watching for a DS3 (USB or Bluetooth) and stream it as a virtual
-        /// joystick. Call after SDL has been initialised (SDL_INIT_JOYSTICK).</summary>
+        /// joystick. Call after SDL has been initialized (SDL_INIT_JOYSTICK).</summary>
         public void Start()
         {
             if (_running) return;
@@ -864,7 +864,7 @@ namespace PadForge.Common.Input
             byte[] buf = new byte[DS3_BT_INPUT_REPORT_SIZE];
             long lastProbe = 0;
             // _writerRun is this loop's detach signal: the writer's five-kick
-            // detach lowers it before cancelling, and a pad that streams only
+            // detach lowers it before canceling, and a pad that streams only
             // non-input frames (0xFF wake reports) keeps this loop cycling
             // between reads where a bare CancelIoEx can miss.
             int rxWake = 0, rxOther = 0, rxFails = 0, rxLastErr = 0;

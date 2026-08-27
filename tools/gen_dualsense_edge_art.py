@@ -107,7 +107,7 @@ def make_tile_sprite(path):
 
 def widen_with_tiles(src):
     """The Edge base construction: the plain-body render over a canvas
-    widened by MARGIN each side, with the four labelled tiles in the
+    widened by MARGIN each side, with the four labeled tiles in the
     gutter. Shared with tools/gen_2d_colorways.py, which derives the
     Edge's colorway bases from the DualSense colorway bases through this
     exact function so tile placement can never drift between them."""
@@ -146,7 +146,7 @@ def main():
 
     src = Image.open(os.path.join(SRC_DIR, "DualSense_base.png")).convert("RGBA")
 
-    # Two tiles per side, stacked and vertically centred on the body. Back
+    # Two tiles per side, stacked and vertically centered on the body. Back
     # above Fn, matching the mapping grid's own row order.
     out, placements = widen_with_tiles(src)
 

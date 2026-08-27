@@ -177,7 +177,7 @@ namespace PadForge.Tests
             // The half selection the descriptor's H prefix asked for survives...
             Assert.True(neg.HalfAxis);
             Assert.False(neg.Invert);
-            // ...and the Neg leg's sign flip lands where the read will honour it.
+            // ...and the Neg leg's sign flip lands where the read will honor it.
             Assert.True(neg.InvertOutput);
 
             // The contract that matters: upper-half deflection on Axis 7 has to

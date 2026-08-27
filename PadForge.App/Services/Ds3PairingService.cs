@@ -223,7 +223,7 @@ namespace PadForge.Services
             public bool Success { get; set; }
             /// <summary>One of: no-radio, no-ds3-usb, winusb-bind-failed, sixpair-failed,
             /// sixpair-not-committed, identity-inject-failed, install-failed,
-            /// driver-untrusted, psm-filter-missing, psm-arm-failed, cancelled, ok.</summary>
+            /// driver-untrusted, psm-filter-missing, psm-arm-failed, canceled, ok.</summary>
             public string Error { get; set; }
         }
 
@@ -301,7 +301,7 @@ namespace PadForge.Services
             // The dialog cancels its token when the user closes it mid-ceremony. Bail
             // before touching the pad or the radio so nothing runs headless after the
             // window is gone (the radio cycle in particular drops every BT device).
-            if (ct.IsCancellationRequested) { r.Error = "cancelled"; return r; }
+            if (ct.IsCancellationRequested) { r.Error = "canceled"; return r; }
 
             string path = FindWinUsbDs3();
             if (path == null) { _log("DS3 not found on USB."); r.Error = "no-ds3-usb"; return r; }
@@ -406,7 +406,7 @@ namespace PadForge.Services
             // remembered+authenticated and its stored Name is served to BthPS3 on every
             // connect instead of the clone's blank over-air name. Hardware-confirmed
             // 2026-07-09 (rem=16, identified as SIXAXIS, survives cycles, no security block).
-            if (ct.IsCancellationRequested) { r.Error = "cancelled"; return r; }
+            if (ct.IsCancellationRequested) { r.Error = "canceled"; return r; }
 
             // Steps 5-6 touch the radio: serialize against any concurrent unpair so
             // two cycles can't overlap. The pad is on USB here (no live BthPS3 link),
@@ -1164,7 +1164,7 @@ namespace PadForge.Services
             r.RadioMac = radio;
             _log($"Bluetooth radio: {Hex(radio, ':')}");
 
-            if (ct.IsCancellationRequested) { r.Error = "cancelled"; return r; }
+            if (ct.IsCancellationRequested) { r.Error = "canceled"; return r; }
 
             // The Move is found through HID because its ceremony runs there.
             // The Navigation controller cannot be: binding it to WinUSB for
@@ -1216,7 +1216,7 @@ namespace PadForge.Services
                     // a Navigation controller.
                     r.Error = "no-move-usb"; return r;
                 }
-                if (ct.IsCancellationRequested) { r.Error = "cancelled"; return r; }
+                if (ct.IsCancellationRequested) { r.Error = "canceled"; return r; }
 
                 if (!NavSixpair(radio, out macHex, out string navErr))
                 { r.Error = navErr; return r; }
@@ -1235,7 +1235,7 @@ namespace PadForge.Services
             r.Ds3Mac = macHex;
             StampLinkAddress(DS3_VID, (ushort)(isNav ? NAV_PID : MOVE_PID), macHex);
 
-            if (ct.IsCancellationRequested) { r.Error = "cancelled"; return r; }
+            if (ct.IsCancellationRequested) { r.Error = "canceled"; return r; }
 
             string remoteName = isNav ? "Navigation Controller" : "Motion Controller";
             int recordPid = isNav ? NAV_PID : MOVE_PID;

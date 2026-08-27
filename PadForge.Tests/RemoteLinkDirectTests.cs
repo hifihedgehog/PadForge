@@ -237,9 +237,9 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public async Task Arq_CancelledSend_PoisonsTheChannel()
+        public async Task Arq_CanceledSend_PoisonsTheChannel()
         {
-            // A cancelled in-flight send leaves the shared sequence state
+            // A canceled in-flight send leaves the shared sequence state
             // unknowable, so the channel must fail closed, never silently
             // desynchronize into ACKed-but-dropped messages.
             var (ta, _) = SimTransport.Pair(lossRate: 1.0, seed: 5); // pure loss: never acked
@@ -316,7 +316,7 @@ namespace PadForge.Tests
             };
             var targets = PortPredictor.BuildSprayTargets(peer.PublicAddress, peer,
                 rawCandidates: new[] { new IPEndPoint(peer.PublicAddress, 63284) },
-                windowSteps: 8, neighbourhood: 1);
+                windowSteps: 8, neighborhood: 1);
 
             Assert.Equal(new IPEndPoint(peer.PublicAddress, 63284), targets[0]);
             Assert.Contains(new IPEndPoint(peer.PublicAddress, 63286), targets);
@@ -415,7 +415,7 @@ namespace PadForge.Tests
             // A builds a predicted spray range for B (sequential, delta 2) from
             // B's advertised endpoint. B punches back at A's single endpoint.
             var bProfile = new NatProfile { Kind = NatKind.SymmetricSequential, PublicAddress = epB_stun.Address, LastPort = 40000, Delta = 2 };
-            var aCandidates = PortPredictor.BuildSprayTargets(epB_stun.Address, bProfile, new[] { epB_stun }, windowSteps: 64, neighbourhood: 1);
+            var aCandidates = PortPredictor.BuildSprayTargets(epB_stun.Address, bProfile, new[] { epB_stun }, windowSteps: 64, neighborhood: 1);
             Assert.Contains(epB_actual, aCandidates); // the real port is in the predicted set
 
             var wa = pa.PunchAsync(aCandidates, cts.Token);

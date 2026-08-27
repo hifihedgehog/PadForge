@@ -2910,7 +2910,7 @@ namespace PadForge.Common.Input
         ///
         /// <para>The resolver's <c>suppressed</c> flag is deliberately
         /// discarded here. Layers default to REPLACE semantics
-        /// (ShiftActivator.InheritUnmapped is false), so honouring suppression
+        /// (ShiftActivator.InheritUnmapped is false), so honoring suppression
         /// would silence gyro and accel the moment a layer without a motion
         /// row engaged. Motion never goes dark because of a layer: that is a
         /// product decision, and it makes this change a strict preference

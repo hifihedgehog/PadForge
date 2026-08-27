@@ -109,7 +109,7 @@ namespace PadForge.Tests
         /// disabling the push outright: with the grid hydrated the push
         /// is still authoritative and still rebuilds from it. A pad whose
         /// grid is loaded and holds no descriptor for the target clears
-        /// that row's sources, which is the behaviour every save relies
+        /// that row's sources, which is the behavior every save relies
         /// on.</summary>
         [Fact]
         public void Push_StillRebuildsFromTheGrid_WhenItIsHydrated()

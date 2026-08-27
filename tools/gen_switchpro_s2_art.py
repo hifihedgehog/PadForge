@@ -26,7 +26,7 @@ Positions are derived, not eyeballed:
     and Home measure 1.00), so C reuses the Capture press sprite.
 
 Palette is sampled from the base render, not guessed:
-  body #3A3B40, button outline #211E1E, cap grey #686B6E, glyph white.
+  body #3A3B40, button outline #211E1E, cap gray #686B6E, glyph white.
 """
 import os
 from PIL import Image, ImageDraw, ImageFont
@@ -39,7 +39,7 @@ PACK = os.path.join(os.path.dirname(ROOT), "Gamepad-Asset-Pack", "Controller Ass
 
 MARGIN = 160          # side gutter the floating tiles live in
 TILE = 130            # GL / GR tile edge
-TILE_Y = 735          # top of tile, centred on the grips
+TILE_Y = 735          # top of tile, centered on the grips
 SS = 4                # supersample factor for every drawn shape
 
 OUTLINE = (33, 30, 30, 255)
@@ -55,7 +55,7 @@ C_CX, C_CY = 742.5, 656.0
 
 def font(size):
     # The pack's A/B/X/Y glyphs are a regular-weight geometric sans, not a
-    # light one. A light face renders grey after antialiasing and reads as
+    # light one. A light face renders gray after antialiasing and reads as
     # a different family beside them.
     for name in ("segoeui.ttf", "arial.ttf"):
         p = os.path.join(r"C:\Windows\Fonts", name)
@@ -65,7 +65,7 @@ def font(size):
 
 
 def centred_text(draw, box, text, fnt, fill):
-    """Draw text optically centred in box (x0,y0,x1,y1) by its ink bbox."""
+    """Draw text optically centered in box (x0,y0,x1,y1) by its ink bbox."""
     x0, y0, x1, y1 = box
     bb = draw.textbbox((0, 0), text, font=fnt)
     tw, th = bb[2] - bb[0], bb[3] - bb[1]
@@ -88,7 +88,7 @@ def draw_c_button(img, cx, cy):
     rounded(d, (x0, y0, x1, y1), r, fill=OUTLINE)                 # dark rim
     inset = 6 * SS
     rounded(d, (x0 + inset, y0 + inset, x1 - inset, y1 - inset),
-            r - inset * 0.55, fill=CAP)                            # grey cap
+            r - inset * 0.55, fill=CAP)                            # gray cap
     centred_text(d, (x0 + inset, y0 + inset, x1 - inset, y1 - inset),
                  "C", font(int(34 * SS)), GLYPH)
     lay = lay.resize((img.width, img.height), Image.LANCZOS)

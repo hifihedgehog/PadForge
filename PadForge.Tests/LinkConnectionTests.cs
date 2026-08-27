@@ -55,7 +55,7 @@ namespace PadForge.Tests
             Assert.Single(rB.RemoteDevices);
             // Peer devices are suffixed with the owning machine's name so they
             // are distinguishable from local ones. This assertion used to
-            // expect the bare "A Pad", which was the unlabelled behaviour the
+            // expect the bare "A Pad", which was the unlabelled behavior the
             // 2026-08-11 regression report was about.
             Assert.StartsWith("A Pad", rB.RemoteDevices[0].Name);
             Assert.Contains($"({LinkConnection.SafeMachineName()})", rB.RemoteDevices[0].Name);
@@ -119,7 +119,7 @@ namespace PadForge.Tests
             // ones. The name used to arrive ONLY from LAN discovery, so the
             // punch / code path left every remote device unlabelled and the list
             // was one undifferentiated pile. The handshake now carries the
-            // sender's machine name, so labelling no longer depends on HOW the
+            // sender's machine name, so labeling no longer depends on HOW the
             // peer was found. This test uses the in-memory channel: no
             // discovery, no sockets, exactly the punch-path condition.
             var (chA, chB) = MemChannel.Pair();
@@ -134,7 +134,7 @@ namespace PadForge.Tests
             await taskA;
             var rB = await taskB;
 
-            // B consumed A's pad and must see it labelled with A's machine name.
+            // B consumed A's pad and must see it labeled with A's machine name.
             var dev = Assert.Single(rB.RemoteDevices);
             string expected = LinkConnection.SafeMachineName();
             Assert.False(string.IsNullOrWhiteSpace(expected));

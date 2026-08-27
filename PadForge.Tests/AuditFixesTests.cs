@@ -12,7 +12,7 @@ using Xunit;
 namespace PadForge.Tests
 {
     /// <summary>
-    /// Pins the behavioural fixes from the 2026-08-13 audit. Each test fails
+    /// Pins the behavioral fixes from the 2026-08-13 audit. Each test fails
     /// against the code as it stood before its fix, which is the only property
     /// that makes a regression test worth writing.
     /// </summary>

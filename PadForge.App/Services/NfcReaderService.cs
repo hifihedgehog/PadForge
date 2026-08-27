@@ -145,7 +145,7 @@ namespace PadForge.Services
                 if (rc != WinScard.SCARD_S_SUCCESS)
                 {
                     uint urc = unchecked((uint)rc);
-                    // Cancelled = Dispose() asked us to stop.
+                    // Canceled = Dispose() asked us to stop.
                     if (urc == WinScard.SCARD_E_CANCELLED) break;
 
                     // The Smart Card service stopped (e.g. the last reader was

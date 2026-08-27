@@ -61,8 +61,8 @@ namespace PadForge.Tests
             return state;
         }
 
-        /// <summary>Puts the pad at TRUE rest. The thumb axes centre, but the
-        /// TRIGGERS rest at 0 and travel up: leaving them at centre is a
+        /// <summary>Puts the pad at TRUE rest. The thumb axes center, but the
+        /// TRIGGERS rest at 0 and travel up: leaving them at center is a
         /// half-pull, which reads as pressed and made the first version of
         /// the at-rest test report every trigger binding as stuck.</summary>
         private static void Reset(CustomInputState s)
@@ -102,7 +102,7 @@ namespace PadForge.Tests
             {
                 int idx = int.Parse(c.Substring(5));
                 // Triggers (2 and 5) rest at 0 and travel up. The thumb axes
-                // are centred, so a wedge pushes one way or the other.
+                // are centered, so a wedge pushes one way or the other.
                 s.Axis[idx] = idx is 2 or 5 ? 65535 : (lowerHalf ? 0 : 65535);
                 return true;
             }
@@ -333,11 +333,11 @@ namespace PadForge.Tests
                 SourceCoercion.EvaluateForButtonTarget(state, s, Threshold, 0, DevGuid.ToString()));
         }
 
-        /// <summary>Racing's steering curve must soften near centre and still
+        /// <summary>Racing's steering curve must soften near center and still
         /// reach full lock. A half-deflection reads BELOW half output, and a
         /// full deflection still reads full.</summary>
         [Fact]
-        public void Racing_SteeringCurve_SoftensNearCentreAndStillReachesFullLock()
+        public void Racing_SteeringCurve_SoftensNearCenterAndStillReachesFullLock()
         {
             var state = ArrangePad();
             var set = StarterProfileCatalog.Find("racing").Build().SlotMappingSets[0];
@@ -352,7 +352,7 @@ namespace PadForge.Tests
             float full = SourceCoercion.EvaluateForBipolarAxisTarget(state, steer, 0, false, DevGuid.ToString());
 
             Assert.True(full > 0.95f, $"full lock did not reach full output (got {full})");
-            Assert.True(half < 0.5f, $"the curve did not soften near centre (half deflection gave {half})");
+            Assert.True(half < 0.5f, $"the curve did not soften near center (half deflection gave {half})");
             Assert.True(half > 0.05f, $"the curve crushed mid travel (half deflection gave {half})");
         }
 

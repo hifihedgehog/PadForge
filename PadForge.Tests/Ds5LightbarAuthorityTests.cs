@@ -11,9 +11,9 @@ namespace PadForge.Tests
     /// AllowAudioMute bit.
     ///
     /// <para>Every assertion here corresponds to a defect reported on
-    /// hardware 2026-08-01: PadForge's own lightbar colour would not hold
+    /// hardware 2026-08-01: PadForge's own lightbar color would not hold
     /// with nothing else running, and an external program's lightbar
-    /// colour, brightness and microphone state would not hold either.
+    /// color, brightness and microphone state would not hold either.
     /// Both devolved to a pitch-black bar.</para>
     ///
     /// <para>Ground truth for the byte layout is duaLib's
@@ -150,7 +150,7 @@ namespace PadForge.Tests
         [Fact]
         public void ValidFlag2_AlwaysCarriesImprovedRumble()
         {
-            // The old 0xFF set this bit too. Rumble behaviour is not in
+            // The old 0xFF set this bit too. Rumble behavior is not in
             // scope for the lightbar fix, so it stays unconditional.
             Assert.Equal(EnableImprovedRumbleEmulation,
                 Vf2(Ds5EffectSynthesizer.BuildFields(IdleConfig(), playerNumber: 3))
@@ -224,10 +224,10 @@ namespace PadForge.Tests
             Assert.Equal((byte)1, (byte)fields["ledBrightness"]);
         }
 
-        // ── The stand-down still carries their colour, not zeros ──
+        // ── The stand-down still carries their color, not zeros ──
 
         [Fact]
-        public void StandDown_CarriesTheLastExternalColour_NotZeros()
+        public void StandDown_CarriesTheLastExternalColor_NotZeros()
         {
             var ov = new UserEffectsDispatcher.ExternalSubsystemOverrides
             {
@@ -459,7 +459,7 @@ namespace PadForge.Tests
         // It is safe TODAY only because the enable bit is never asserted, so
         // the zero never applies. Unlike the mic it must NOT be forced to
         // maximum: that byte drives audio into someone's ears, so the correct
-        // behaviour is to leave the user's firmware setting alone. This pins
+        // behavior is to leave the user's firmware setting alone. This pins
         // the invariant that keeps it safe.
 
         private const byte EnableHeadphoneVolume = 0x10;   // validFlag0 bit 4

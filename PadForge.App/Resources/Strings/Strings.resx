@@ -145,7 +145,7 @@
   <data name="Status_DownloadingMidi" xml:space="preserve"><value>Downloading Windows MIDI Services…</value></data>
   <data name="Status_DownloadingInstallingMidi" xml:space="preserve"><value>Downloading and installing Windows MIDI Services…</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Uninstalling Windows MIDI Services…</value></data>
-  <data name="Status_OperationCancelled" xml:space="preserve"><value>Operation canceled by user.</value></data>
+  <data name="Status_OperationCanceled" xml:space="preserve"><value>Operation canceled by user.</value></data>
   <data name="Status_MidiInstallFailed_Format" xml:space="preserve"><value>MIDI Services install failed: {0}</value></data>
   <data name="Status_DownloadingSteamVR" xml:space="preserve"><value>Downloading SteamVR…</value></data>
   <data name="Status_DownloadingInstallingSteamVR" xml:space="preserve"><value>Downloading and installing SteamVR from Valve's servers… This is several GB and can take a while.</value></data>
@@ -194,7 +194,7 @@
   <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>Recording: press a button or move an axis for "{0}"...</value></data>
   <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>Recording "{0}": press the Up direction input...</value></data>
   <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>Recording "{0}": now press the Down direction input...</value></data>
-  <data name="Status_RecordingCancelled" xml:space="preserve"><value>Recording canceled.</value></data>
+  <data name="Status_RecordingCanceled" xml:space="preserve"><value>Recording canceled.</value></data>
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Recording timed out for "{0}".</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Engine started.</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>Engine stopped.</value></data>

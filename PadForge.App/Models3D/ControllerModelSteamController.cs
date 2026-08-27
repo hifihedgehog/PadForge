@@ -21,9 +21,12 @@ namespace PadForge.Models3D
     ///
     /// <para>Two departures from the standard part table, both physical.
     /// The pad has ONE analog stick, so there is no right stick and no
-    /// RightStickClick mesh. And it has no D-pad at all: the left
-    /// trackpad serves that role, which is why the 2D layout for this pad
-    /// carries no DPad entries either.</para>
+    /// RightStickClick mesh. And its D-pad is the LEFT TRACKPAD: SDL drives
+    /// that pad as the D-pad and the right one as the right thumbstick, so
+    /// the mesh tool quarters each face and the quarters arrive as their own
+    /// meshes. The left pad's four are DPadUp/Down/Left/Right and register
+    /// through the standard table like any D-pad key. The right pad's four
+    /// carry the right stick's axis directions and register below.</para>
     ///
     /// <para>The trackpads and the rear grip buttons are the controls the
     /// standard table has no slot for. Each grip paddle is the FLARED WING
@@ -34,6 +37,7 @@ namespace PadForge.Models3D
     public class ControllerModelSteamController : ControllerModelBase
     {
         private readonly Model3DGroup LeftPad, RightPad;
+        private readonly System.Collections.Generic.List<Model3DGroup> RightPadQuarters = new();
         private readonly Model3DGroup LeftGripButton, RightGripButton;
 
         public ControllerModelSteamController() : base("SteamController")
@@ -64,20 +68,34 @@ namespace PadForge.Models3D
             RegisterButton("RightTouchpadClick", RightPad);
             model3DGroup.Children.Add(RightPad);
 
-            // This pad's trackpads are not two of a kind. SDL drives the
-            // LEFT one as the D-pad and the RIGHT one as the right
-            // thumbstick, in its own words: "the left pad is normally
-            // mapped to D-Pad" and "the right pad is normally mapped to
-            // right thumbstick" (SDL_hidapi_steam.c 1655 and 1673), with
-            // RIGHTX and RIGHTY reading sRightPadX/Y at 1650 and the hat
-            // reading the left pad's four quadrant bits at 1630. Valve
-            // even moulds a D-pad cross into the left cover and names the
-            // solid TrackPadCoverDirectional against the right one's
-            // TrackPadCoverSmooth. So each pad's quadrants are directions
-            // and its middle is the click.
-            RegisterQuadrants(LeftPad, "DPadUp", "DPadDown", "DPadLeft", "DPadRight");
-            RegisterQuadrants(RightPad,
-                "RightThumbAxisYNeg", "RightThumbAxisY", "RightThumbAxisXNeg", "RightThumbAxisX");
+            // The right pad IS the right thumbstick, in SDL's own words:
+            // "the right pad is normally mapped to right thumbstick"
+            // (SDL_hidapi_steam.c 1673, with RIGHTX and RIGHTY reading
+            // sRightPadX/Y at 1650). Its four quarters carry that stick's
+            // axis directions and each highlights as itself, which is how a
+            // direction with its own mesh behaves everywhere in this tree.
+            // The left pad's quarters are D-pad keys and the standard part
+            // table has already registered them.
+            //
+            // Quarters rather than the quadrant-wedge path because these
+            // pads are deep concave bowls: the wedge's torus-outward offset
+            // drove half of each face sideways ACROSS the bowl instead of
+            // off it, so two quadrants cleared and two sank under the
+            // surface.
+            foreach (var (file, target) in new[]
+            {
+                ("RightPadUp.obj", "RightThumbAxisYNeg"),
+                ("RightPadDown.obj", "RightThumbAxisY"),
+                ("RightPadLeft.obj", "RightThumbAxisXNeg"),
+                ("RightPadRight.obj", "RightThumbAxisX"),
+            })
+            {
+                var quarter = TryLoadModel(file);
+                if (quarter == null) continue;
+                RegisterDirection(quarter, target);
+                RightPadQuarters.Add(quarter);
+                model3DGroup.Children.Add(quarter);
+            }
 
             LeftGripButton = LoadModel("LeftGrip.obj");
             RegisterButton("LeftGrip", LeftGripButton);
@@ -154,6 +172,12 @@ namespace PadForge.Models3D
             PaintTarget("RightGrip", body);
             PaintTarget("LeftTouchpadClick", surface);
             PaintTarget("RightTouchpadClick", surface);
+            // The pad quarters take the pad's own colour: they are the pad's
+            // face, cut up so each direction can light on its own.
+            foreach (var t in new[] { "DPadUp", "DPadDown", "DPadLeft", "DPadRight" })
+                PaintTarget(t, surface);
+            foreach (var q in RightPadQuarters)
+                Paint(q, surface);
             PaintTarget("LeftThumbButton", recess);
             // The knurled cap is its own solid and its own control (the
             // stick's directions), so it is painted here rather than riding

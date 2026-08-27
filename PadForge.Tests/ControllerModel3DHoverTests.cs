@@ -163,20 +163,62 @@ namespace PadForge.Tests
         /// kind. SDL drives the LEFT one as the D-pad and the RIGHT one as
         /// the right thumbstick (SDL_hidapi_steam.c 1655 and 1673), and
         /// Valve moulds a D-pad cross into the left cover, naming that solid
-        /// TrackPadCoverDirectional against the right one's Smooth. Each pad
-        /// keeps its click in the middle.</summary>
+        /// TrackPadCoverDirectional against the right one's Smooth.
+        ///
+        /// <para>Each face is quartered in the mesh, so every direction has
+        /// its OWN mesh and highlights as itself, the way a D-pad key does
+        /// everywhere else in this tree. The left pad's quarters are D-pad
+        /// keys; the right pad's carry the right stick's axis directions.
+        /// Each pad keeps its middle as its click.</para></summary>
         [Fact]
         public void SteamController2015_LeftPadIsTheDPad_RightPadIsTheStick()
         {
             using var m = ControllerModelBase.Create("SteamController", null, false);
-            var left = m.ButtonMap["LeftTouchpadClick"][0];
-            var right = m.ButtonMap["RightTouchpadClick"][0];
 
-            Assert.Equal(new[] { "DPadUp", "DPadDown", "DPadLeft", "DPadRight" }, m.QuadrantMap[left]);
-            Assert.Equal(new[] { "RightThumbAxisYNeg", "RightThumbAxisY", "RightThumbAxisXNeg", "RightThumbAxisX" },
-                m.QuadrantMap[right]);
-            Assert.True(m.ClickMap.ContainsKey(left));
-            Assert.True(m.ClickMap.ContainsKey(right));
+            foreach (var key in new[] { "DPadUp", "DPadDown", "DPadLeft", "DPadRight" })
+                Assert.True(m.ButtonMap.ContainsKey(key), $"the left pad has no {key} mesh");
+
+            foreach (var axis in new[] { "RightThumbAxisYNeg", "RightThumbAxisY",
+                                         "RightThumbAxisXNeg", "RightThumbAxisX" })
+                Assert.Contains(axis, m.ClickMap.Values);
+
+            // And each pad still clicks, through the middle left behind.
+            Assert.True(m.ButtonMap.ContainsKey("LeftTouchpadClick"));
+            Assert.True(m.ButtonMap.ContainsKey("RightTouchpadClick"));
+
+            // Nothing on this pad goes through the quadrant-wedge path any
+            // more: a bowl 42 mm across cannot carry one.
+            var pads = m.ButtonMap["LeftTouchpadClick"].Concat(m.ButtonMap["RightTouchpadClick"]);
+            foreach (var pad in pads)
+                Assert.False(m.QuadrantMap.ContainsKey(pad));
+        }
+
+        /// <summary>Every direction mesh sits where its name says, measured
+        /// from its own pad's centre.</summary>
+        [Theory]
+        [InlineData("DPadUp", "LeftTouchpadClick", 0, 1)]
+        [InlineData("DPadDown", "LeftTouchpadClick", 0, -1)]
+        [InlineData("DPadLeft", "LeftTouchpadClick", -1, 0)]
+        [InlineData("DPadRight", "LeftTouchpadClick", 1, 0)]
+        public void SteamController2015_DirectionMeshesSitWhereTheyClaim(
+            string role, string padRole, int wantX, int wantZ)
+        {
+            using var m = ControllerModelBase.Create("SteamController", null, false);
+            var pad = m.ButtonMap[padRole][0].Bounds;
+            double cx = pad.X + pad.SizeX / 2, cz = pad.Z + pad.SizeZ / 2;
+            var b = m.ButtonMap[role][0].Bounds;
+            double dx = b.X + b.SizeX / 2 - cx, dz = b.Z + b.SizeZ / 2 - cz;
+
+            if (wantX != 0)
+            {
+                Assert.True(Math.Abs(dx) > Math.Abs(dz), $"{role} is not mainly across the pad");
+                Assert.True(Math.Sign(dx) == wantX, $"{role} sits on the wrong side");
+            }
+            else
+            {
+                Assert.True(Math.Abs(dz) > Math.Abs(dx), $"{role} is not mainly up or down the pad");
+                Assert.True(Math.Sign(dz) == wantZ, $"{role} sits on the wrong side");
+            }
         }
 
         /// <summary>Every direction a Valve model offers resolves to a real

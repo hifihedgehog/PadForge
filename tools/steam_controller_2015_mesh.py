@@ -74,8 +74,11 @@ PARTS = {
     "BumperGPrime":                ("BUMPER", 1.0),        # split L/R below
     "TriggerCapLeftJAG":           ("Shoulder-Left-Trigger.obj", 1.0),
     "TriggerCapRightJAG":          ("Shoulder-Right-Trigger.obj", 1.0),
-    "TrackPadCoverDirectional.01": ("LeftPadTouch.obj", 1.0),
-    "TrackPadCoverSmooth.01":      ("RightPadTouch.obj", 1.0),
+    # Both pads carry DIRECTIONS, so each one's face is quartered below the
+    # way a D-pad is four keys everywhere else in this tree. See the note in
+    # the split itself.
+    "TrackPadCoverDirectional.01": ("LEFTPAD", 1.0),
+    "TrackPadCoverSmooth.01":      ("RIGHTPAD", 1.0),
     # The stick is two solids and they are two DIFFERENT controls: the
     # knurled cap top (18.6 mm) is the direction surface every other model
     # calls its ring, and the base under it (26.4 mm) is the click. Folding
@@ -307,6 +310,79 @@ def cut_at_x(v, nrm, faces, x0):
     return res
 
 
+def cut_at_plane(v, nrm, faces, nx, ny, d):
+    """Split a mesh on the plane nx*x + ny*y + d = 0, returning
+    (negative side, positive side). Straddling triangles are cut on the
+    plane, position and normal interpolated, so the seam is straight."""
+    out = {0: ([], [], []), 1: ([], [], [])}
+
+    def emit(side, poly):
+        vs, ns, fs = out[side]
+        base = len(vs)
+        for pos, nn in poly:
+            vs.append(pos)
+            ns.append(nn)
+        for i in range(1, len(poly) - 1):
+            fs.append((base, base + i, base + i + 1))
+
+    for tri in faces:
+        pts = [(v[i], nrm[i]) for i in tri]
+        dd = [nx * pt[0][0] + ny * pt[0][1] + d for pt in pts]
+        if all(x <= 0 for x in dd):
+            emit(0, pts)
+            continue
+        if all(x >= 0 for x in dd):
+            emit(1, pts)
+            continue
+        for side, keep_neg in ((0, True), (1, False)):
+            poly = []
+            for a in range(3):
+                b = (a + 1) % 3
+                da, db = dd[a], dd[b]
+                if (da <= 0) == keep_neg:
+                    poly.append(pts[a])
+                if (da > 0) != (db > 0):
+                    tpar = abs(da) / (abs(da) + abs(db))
+                    poly.append((pts[a][0] + (pts[b][0] - pts[a][0]) * tpar,
+                                 pts[a][1] + (pts[b][1] - pts[a][1]) * tpar))
+            if len(poly) >= 3:
+                emit(side, poly)
+
+    res = []
+    for side in (0, 1):
+        vs, ns, fs = out[side]
+        if not fs:
+            res.append((np.zeros((0, 3)), np.zeros((0, 3)), np.zeros((0, 3), dtype=int)))
+        else:
+            res.append((np.array(vs), np.array(ns), np.array(fs, dtype=int)))
+    return res
+
+
+def quarter_pad(v, nrm, faces, cx, cy):
+    """Cut a pad's face into its four direction quarters about (cx, cy).
+
+    Returns (up, down, left, right) in the preview's frame, where the
+    exported +Z is this file's +Y. The two cuts are the diagonals, so each
+    quarter is the region whose own direction dominates, which is the same
+    rule the preview uses to decide which direction a point is in.
+    """
+    # d1 = (x - cx) - (y - cy):  positive = right or down
+    # d2 = (x - cx) + (y - cy):  positive = right or up
+    negA, posA = cut_at_plane(v, nrm, faces, 1.0, -1.0, cy - cx)
+    quarters = {}
+    for part, tag in ((posA, 'A'), (negA, 'B')):
+        if len(part[2]) == 0:
+            quarters[tag + '0'] = part
+            quarters[tag + '1'] = part
+            continue
+        n2, p2 = cut_at_plane(part[0], part[1], part[2], 1.0, 1.0, -(cx + cy))
+        quarters[tag + '0'] = n2
+        quarters[tag + '1'] = p2
+    # A = d1>0: with d2>0 it is RIGHT, with d2<0 it is DOWN
+    # B = d1<0: with d2>0 it is UP,    with d2<0 it is LEFT
+    return quarters['B1'], quarters['A0'], quarters['B0'], quarters['A1']
+
+
 def cut_at_radius(v, nrm, faces, cx, cy, r0):
     """Split a mesh on the cylinder of radius r0 about the axis (cx, cy),
     returning (inside, outside) as (verts, norms, faces) triples.
@@ -413,6 +489,34 @@ def main():
             meshes.setdefault("LeftGrip.obj", []).append(left)
             meshes.setdefault("RightGrip.obj", []).append(right)
             meshes.setdefault("MainBody.obj", []).append(mid)
+        elif target in ("LEFTPAD", "RIGHTPAD"):
+            # SDL drives this pad's LEFT trackpad as the D-pad and its RIGHT
+            # one as the right thumbstick, so both faces carry four
+            # directions. Everywhere else in this tree a direction has its
+            # OWN mesh and highlights as itself: a D-pad is four keys, a
+            # stick's ring is a torus the preview cuts an arc from.
+            #
+            # These pads can be neither. They are deep concave bowls, 42 mm
+            # across and 7.6 mm from rim to middle, so the preview's
+            # torus-outward offset, which pushes a point away from a skeleton
+            # circle at the part's own centre, drives half of each face
+            # SIDEWAYS ACROSS the bowl instead of off it. Two quadrants
+            # cleared and two sank under the surface.
+            #
+            # So each face is quartered here and each quarter becomes its own
+            # mesh, which needs no offset at all. The middle stays with the
+            # pad as its click.
+            side = "Left" if target == "LEFTPAD" else "Right"
+            cx = (v[:, 0].min() + v[:, 0].max()) / 2.0
+            cy = (v[:, 1].min() + v[:, 1].max()) / 2.0
+            rr = max(v[:, 0].max() - v[:, 0].min(), v[:, 1].max() - v[:, 1].min()) / 2.0
+            inner, outer = cut_at_radius(v, nrm, f, cx, cy, 0.40 * rr)
+            meshes.setdefault(f"{side}PadTouch.obj", []).append(inner)
+            up, down, left, right = quarter_pad(outer[0], outer[1], outer[2], cx, cy)
+            names = (("Up", up), ("Down", down), ("Left", left), ("Right", right))
+            for nm, part in names:
+                stem = f"DPad{nm}.obj" if side == "Left" else f"RightPad{nm}.obj"
+                meshes.setdefault(stem, []).append(part)
         elif target == "STICKCAP":
             # Every other pad in this tree ships its stick cap as a RING with
             # the middle open, and the preview's direction wedge is an arc cut

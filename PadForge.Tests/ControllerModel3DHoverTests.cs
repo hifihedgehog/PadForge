@@ -461,6 +461,43 @@ namespace PadForge.Tests
             CheckInset(m.LeftThumbRing);
         }
 
+        /// <summary>THE PROPERTY that makes a direction read as a direction:
+        /// the wedge is an ARC OF A RING and surrounds the stick, never a
+        /// filled slice bearing in on its middle.
+        ///
+        /// <para>Three of these caps are hollow in the mesh and give it for
+        /// free: the Xbox 360's to 0.49 of its radius, the Steam Deck's to
+        /// 0.74, the 2026 Steam Controller's to 0.66. Two are solid discs,
+        /// the 2015 Steam Controller's and the Switch 2 Pro's, and those are
+        /// given the same hole so every pad's wedge reads alike.</para></summary>
+        [Theory]
+        [InlineData("Xbox360")]
+        [InlineData("Switch2Pro")]
+        [InlineData("SteamDeck")]
+        [InlineData("SteamController")]
+        [InlineData("SteamController2")]
+        public void StickCapWedge_IsAnArcNotAPieSlice(string family)
+        {
+            using var m = ControllerModelBase.Create(family, null, false);
+            var cap = m.LeftThumbRing;
+            Assert.NotNull(cap);
+            var b = cap.Bounds;
+            var centre = new Vector3D(b.X + b.SizeX / 2, b.Y + b.SizeY / 2, b.Z + b.SizeZ / 2);
+            double R = Math.Max(b.SizeX, b.SizeZ) / 2.0;
+
+            var method = typeof(ControllerModelView).GetMethod("BuildClippedQuadrantMesh",
+                BindingFlags.NonPublic | BindingFlags.Static);
+            foreach (var (isX, isNeg) in new[] { (false, true), (false, false), (true, true), (true, false) })
+            {
+                var mesh = (MeshGeometry3D)method.Invoke(null, new object[] { cap, centre, isX, isNeg });
+                Assert.NotEmpty(mesh.Positions);
+                double nearest = mesh.Positions.Min(p =>
+                    Math.Sqrt((p.X - centre.X) * (p.X - centre.X) + (p.Z - centre.Z) * (p.Z - centre.Z)));
+                Assert.True(nearest >= 0.4 * R,
+                    $"{family}: the wedge reaches r={nearest:F2} on a {R:F2} mm cap, so it is a filled slice, not a ring");
+            }
+        }
+
         private static void CheckInset(Model3DGroup surface)
         {
             var b = surface.Bounds;

@@ -524,11 +524,15 @@ namespace PadForge.Tests
         public void TheWholeStickMovesWithIt(string family, string appearance, bool extra)
         {
             using var m = ControllerModelBase.Create(family, appearance, extra);
-            void Check(string button, Model3DGroup ring)
+            void Check(string button, Model3DGroup ring, Model3DGroup thumb)
             {
                 if (ring == null || !m.ButtonMap.TryGetValue(button, out var groups)) return;
 
+                // The same set ControllerModelView tilts: the cap, the
+                // thumb, and everything the button lights. They are not one
+                // list, because a base the cap hides tilts without lighting.
                 var moving = new HashSet<Model3DGroup>(groups) { ring };
+                if (thumb != null) moving.Add(thumb);
                 var rb = ring.Bounds;
                 double cx = rb.X + rb.SizeX / 2, cz = rb.Z + rb.SizeZ / 2;
 
@@ -547,18 +551,13 @@ namespace PadForge.Tests
                     if (Math.Max(b.SizeX, b.SizeZ) > rb.SizeX * 1.6) continue;
                     double gx = b.X + b.SizeX / 2, gz = b.Z + b.SizeZ / 2;
                     if (Math.Abs(gx - cx) > onAxis || Math.Abs(gz - cz) > onAxis) continue;
-                    // Wholly behind the cap's rear face is inside the case:
-                    // furniture, not stick. -Y is out of the controller's
-                    // face, so a larger Y is deeper. The Steam Deck's well
-                    // floor is a 15.2 mm plug that sits there.
-                    if (b.Y > rb.Y + rb.SizeY) continue;
 
                     Assert.Fail($"{family}: a {b.SizeX:F1} mm part sits on {button}'s own axis but is "
                         + "not in the moving set, so it stays put while the stick tilts");
                 }
             }
-            Check("LeftThumbButton", m.LeftThumbRing);
-            Check("RightThumbButton", m.RightThumbRing);
+            Check("LeftThumbButton", m.LeftThumbRing, m.LeftThumb);
+            Check("RightThumbButton", m.RightThumbRing, m.RightThumb);
         }
 
         /// <summary>Nothing a stick button lights may be hidden behind the

@@ -774,10 +774,17 @@ namespace PadForge.Views
                             g2.Material = d0;
                     }
                 }
-                // Deflection glow covers the WHOLE stick, same as the
-                // button glow and the same set the tilt below moves.
-                foreach (var part in StickParts(thumbRing, thumb, btnProp))
-                    Grade(part);
+                // Deflection glow covers the cap and whatever the BUTTON
+                // lights, which is not always everything the tilt moves: a
+                // base that the cap is wider than shows only a sliver, and
+                // lighting it reads as a plate with the stick stuck through
+                // it (the Steam Deck's bulb). The model decides by what it
+                // puts in ButtonMap.
+                Grade(thumbRing);
+                if (_currentModel.ButtonMap.TryGetValue(btnProp, out var lit))
+                    foreach (var part in lit)
+                        if (part != null && !ReferenceEquals(part, thumbRing))
+                            Grade(part);
             }
 
             // Rotation

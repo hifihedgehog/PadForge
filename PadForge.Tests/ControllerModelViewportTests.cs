@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media.Media3D;
@@ -61,7 +61,7 @@ namespace PadForge.Tests
                 : needed == "XboxSeries" && profileId.StartsWith("xbox-series-", StringComparison.OrdinalIgnoreCase);
 
             using var m = ControllerModelBase.Create(needed, null, extra);
-            Assert.Equal(needed, m.ModelFamily);
+            Assert.Equal(wantFamily, m.ModelFamily);
 
             var bounds = m.model3DGroup.Bounds;
             Assert.False(bounds.IsEmpty, $"{profileId}: the model has no bounds, so nothing would draw");

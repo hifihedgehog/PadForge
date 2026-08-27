@@ -326,6 +326,7 @@ namespace PadForge.Views
             // this every profile/output switch leaked the old model's
             // transform graphs for the view's lifetime.
             _stickTransforms3D.Clear();
+            _stickParts.Clear();
             // The retained trigger angles key on the OUTGOING model the same
             // way, and they are passed by ref as the running state of the
             // smoothing. Left set, a switch carried the old model's pull angles
@@ -696,6 +697,35 @@ namespace PadForge.Views
         //  Joystick tilt (adapted from HC UpdateJoystick)
         // ─────────────────────────────────────────────
 
+        /// <summary>Every group one stick is made of, keyed by its ring.
+        /// Built once per model, because the deflection path runs per dirty
+        /// frame and must not allocate.</summary>
+        private readonly Dictionary<Model3DGroup, Model3DGroup[]> _stickParts = new();
+
+        /// <summary>The whole stick: its cap, its click mesh, and any other
+        /// group registered to the same button.
+        ///
+        /// <para>Two groups is not the whole stick on every pad. The Steam
+        /// Deck splits its into THREE, cap and capacitive barrel and collar,
+        /// and driving only the cap and the collar left the barrel standing
+        /// still in the middle while the rest of the stick leaned.</para></summary>
+        private Model3DGroup[] StickParts(Model3DGroup thumbRing, Model3D thumb, string buttonRole)
+        {
+            if (_stickParts.TryGetValue(thumbRing, out var cached)) return cached;
+
+            var parts = new List<Model3DGroup> { thumbRing };
+            if (thumb is Model3DGroup tg && !ReferenceEquals(tg, thumbRing))
+                parts.Add(tg);
+            if (_currentModel.ButtonMap.TryGetValue(buttonRole, out var registered))
+                foreach (var g in registered)
+                    if (g != null && !parts.Contains(g))
+                        parts.Add(g);
+
+            cached = parts.ToArray();
+            _stickParts[thumbRing] = cached;
+            return cached;
+        }
+
         private void UpdateJoystick(
             short rawX, short rawY,
             Model3DGroup thumbRing, Model3D thumb,
@@ -744,12 +774,10 @@ namespace PadForge.Views
                             g2.Material = d0;
                     }
                 }
-                Grade(thumbRing);
                 // Deflection glow covers the WHOLE stick, same as the
-                // button glow: the click mesh (stem/base/cap flank)
-                // grades with the ring (owner follow-up to 740db508).
-                if (thumb is Model3DGroup thumbGroup)
-                    Grade(thumbGroup);
+                // button glow and the same set the tilt below moves.
+                foreach (var part in StickParts(thumbRing, thumb, btnProp))
+                    Grade(part);
             }
 
             // Rotation
@@ -770,8 +798,8 @@ namespace PadForge.Views
                     new Point3D(rotationPoint.X, rotationPoint.Y, rotationPoint.Z)));
                 st = (group, ax, ay, float.NaN, float.NaN);
                 _stickTransforms3D[thumbRing] = st;
-                thumbRing.Transform = group;
-                if (thumb != null) thumb.Transform = group;
+                foreach (var part in StickParts(thumbRing, thumb, btnProp))
+                    part.Transform = group;
             }
             if (st.lastX != angleX || st.lastY != angleY)
             {
@@ -781,8 +809,8 @@ namespace PadForge.Views
                 // Reassert in case the model was rebuilt around the cache.
                 if (!ReferenceEquals(thumbRing.Transform, st.group))
                 {
-                    thumbRing.Transform = st.group;
-                    if (thumb != null) thumb.Transform = st.group;
+                    foreach (var part in StickParts(thumbRing, thumb, btnProp))
+                        part.Transform = st.group;
                 }
             }
         }
@@ -2155,6 +2183,7 @@ namespace PadForge.Views
             _currentModel?.Dispose();
             _currentModel = null;
             _stickTransforms3D.Clear();
+            _stickParts.Clear();
             _vm = null;
         }
     }

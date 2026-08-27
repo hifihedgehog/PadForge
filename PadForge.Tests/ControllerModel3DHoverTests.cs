@@ -511,6 +511,51 @@ namespace PadForge.Tests
                 Check("RightThumbButton", m.JoystickRotationPointCenterRightMillimeter);
         }
 
+        /// <summary>THE WHOLE STICK moves. Every piece of geometry sitting
+        /// on a stick has to be reachable from that stick's ring plus its
+        /// button's groups, because that is the exact set the view tilts and
+        /// grades. A piece registered anywhere else stands still while the
+        /// rest of the stick leans.
+        ///
+        /// <para>The Steam Deck's capacitive barrel was scenery, so its
+        /// stick moved as a cap and a collar with a frozen middle.</para></summary>
+        [Theory]
+        [MemberData(nameof(Families))]
+        public void TheWholeStickMovesWithIt(string family, string appearance, bool extra)
+        {
+            using var m = ControllerModelBase.Create(family, appearance, extra);
+            void Check(string button, Model3DGroup ring)
+            {
+                if (ring == null || !m.ButtonMap.TryGetValue(button, out var groups)) return;
+
+                var moving = new HashSet<Model3DGroup>(groups) { ring };
+                var rb = ring.Bounds;
+                double cx = rb.X + rb.SizeX / 2, cz = rb.Z + rb.SizeZ / 2;
+
+                // A part OF the stick is CONCENTRIC with it, which is what
+                // separates a barrel from a paddle that merely sits nearby:
+                // the DualSense Edge's left paddle is 9.8 mm off its stick's
+                // axis, a whole ring radius, while the Steam Deck's barrel is
+                // on it to a tenth of a millimetre.
+                double onAxis = rb.SizeX * 0.15;
+
+                foreach (var child in m.model3DGroup.Children)
+                {
+                    if (child is not Model3DGroup g || moving.Contains(g)) continue;
+                    var b = g.Bounds;
+                    if (b.IsEmpty) continue;
+                    if (Math.Max(b.SizeX, b.SizeZ) > rb.SizeX * 1.6) continue;
+                    double gx = b.X + b.SizeX / 2, gz = b.Z + b.SizeZ / 2;
+                    if (Math.Abs(gx - cx) > onAxis || Math.Abs(gz - cz) > onAxis) continue;
+
+                    Assert.Fail($"{family}: a {b.SizeX:F1} mm part sits on {button}'s own axis but is "
+                        + "not in the moving set, so it stays put while the stick tilts");
+                }
+            }
+            Check("LeftThumbButton", m.LeftThumbRing);
+            Check("RightThumbButton", m.RightThumbRing);
+        }
+
         /// <summary>Which quadrant a point falls in: 0 up, 1 down, 2 left,
         /// 3 right, in the model's X across / +Z up frame.</summary>
         [Theory]

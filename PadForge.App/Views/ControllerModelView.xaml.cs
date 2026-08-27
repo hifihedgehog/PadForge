@@ -1783,7 +1783,34 @@ namespace PadForge.Views
             // better, and leaves a margin the eye reads as deliberate:
             // 1.3 mm on that cap, 3.2 mm on a trackpad.
             var sb = ring.Bounds;
-            double insetR = 0.85 * Math.Max(sb.SizeX, sb.SizeZ) / 2.0;
+            double surfaceR = Math.Max(sb.SizeX, sb.SizeZ) / 2.0;
+            double insetR = 0.85 * surfaceR;
+
+            // A direction wedge SURROUNDS the stick. It is an arc of a ring,
+            // which is what the mesh gives you on a pad whose cap really is
+            // one: the Xbox 360's ring is hollow to 0.49 of its radius, the
+            // Steam Deck's to 0.74, the 2026 Steam Controller's to 0.66.
+            //
+            // Two caps are solid discs instead, the 2015 Steam Controller's
+            // and the Switch 2 Pro's, and on those the same code cut a filled
+            // pie slice running to a point at the middle. It bore in on the
+            // centre rather than ringing it, which is not how this preview
+            // has ever drawn a direction. Give a solid cap the hole its
+            // neighbours have, at 0.6 of the radius, near the middle of the
+            // three real ones.
+            double holeR = 0;
+            {
+                double minR = double.MaxValue;
+                foreach (var child in ring.Children)
+                    if (child is GeometryModel3D g && g.Geometry is MeshGeometry3D mm)
+                        foreach (Point3D q in mm.Positions)
+                        {
+                            double dx = q.X - center.X, dz = q.Z - center.Z;
+                            double d = Math.Sqrt(dx * dx + dz * dz);
+                            if (d < minR) minR = d;
+                        }
+                if (minR < 0.3 * surfaceR) holeR = 0.6 * surfaceR;
+            }
 
             // Built twice at most: the visible face alone, then, only if a
             // surface turns out to expose none, the whole thing. See the
@@ -1859,6 +1886,11 @@ namespace PadForge.Views
                         // the surface rolls away under it.
                         poly = ClipPolygonByRadius(poly, center, insetR);
                         if (poly.Count < 3) continue;
+                        if (holeR > 0)
+                        {
+                            poly = ClipPolygonOutsideRadius(poly, center, holeR);
+                            if (poly.Count < 3) continue;
+                        }
 
                         // Triangulate clipped polygon as a fan and offset outward
                         for (int i = 1; i < poly.Count - 1; i++)
@@ -1974,6 +2006,26 @@ namespace PadForge.Views
                 poly = ClipPolygonByOffsetPlane(poly, center, -Math.Cos(ang), -Math.Sin(ang), radius);
             }
             return poly;
+        }
+
+        /// <summary>Clips a polygon to what lies OUTSIDE a disc, keeping the
+        /// far side.
+        ///
+        /// <para>That region is not convex, so it cannot be clipped the way
+        /// the disc itself is. It is done against the circle's TANGENT at the
+        /// polygon's own bearing instead, which is exact where the polygon is
+        /// small and these meshes are dense: a 2015 stick cap carries 3,494
+        /// facing triangles, so one spans a fraction of a degree and the
+        /// tangent and the arc are the same line to well under a tenth of a
+        /// millimetre.</para></summary>
+        private static List<Point3D> ClipPolygonOutsideRadius(
+            List<Point3D> poly, Vector3D center, double radius)
+        {
+            double sx = 0, sz = 0;
+            foreach (var p in poly) { sx += p.X - center.X; sz += p.Z - center.Z; }
+            double len = Math.Sqrt(sx * sx + sz * sz);
+            if (len < 1e-9) return new List<Point3D>();   // sits on the axis
+            return ClipPolygonByOffsetPlane(poly, center, sx / len, sz / len, -radius);
         }
 
         /// <summary>Sutherland-Hodgman against the half-plane

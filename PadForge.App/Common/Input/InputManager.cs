@@ -2962,7 +2962,7 @@ namespace PadForge.Common.Input
             for (int i = 0; i < MaxPads; i++)
             {
                 CombinedOutputStates[i] = default;
-                CombinedRawHidStates[i].Clear();
+                CombinedRawHidStates[i].ClearToRest(SlotCustomLayouts[i]);
                 CombinedKbmRawStates[i] = default;
                 CombinedVrRawStates[i] = default;
                 CombinedTouchpadStates[i] = default;

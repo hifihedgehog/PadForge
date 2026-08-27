@@ -27,6 +27,8 @@ namespace PadForge.Tests
         {
             var raw = RawHidState.Create(8, 32, 1);
             raw.Povs[0] = -1;
+            raw.Axes[2] = raw.Axes[5] = short.MinValue;   // triggers rest low
+
             var dest = new byte[ValveReportPackers.MaxReportSize];
             ValveReportPackers.ForProfile(id).Pack(raw, tp, default, 1, dest);
             return dest;

@@ -1724,7 +1724,7 @@ namespace PadForge.Common.Input
                     if (vc != null && _slotInactiveCounter[padIndex] == 1)
                     {
                         CombinedOutputStates[padIndex].Clear();
-                        CombinedRawHidStates[padIndex].Clear();
+                        CombinedRawHidStates[padIndex].ClearToRest(SlotCustomLayouts[padIndex]);
                         CombinedMidiRawStates[padIndex].Clear();
                         CombinedKbmRawStates[padIndex].Clear();
                         CombinedVrRawStates[padIndex].Clear();

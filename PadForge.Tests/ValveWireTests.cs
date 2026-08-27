@@ -228,6 +228,10 @@ namespace PadForge.Tests
         {
             var raw = RawHidState.Create(8, 32, 1);
             raw.Povs[0] = -1;
+            // A trigger rests at short.MinValue, not at zero: zero is the
+            // middle of its travel. Step 3 writes that every frame, so a
+            // fixture that leaves the slots at zero is not a rest frame.
+            raw.Axes[2] = raw.Axes[5] = short.MinValue;
             arrange?.Invoke(raw);
             var dest = new byte[ValveReportPackers.MaxReportSize];
             ValveReportPackers.ForProfile(id).Pack(raw, tp, default, 1, dest);
@@ -309,14 +313,63 @@ namespace PadForge.Tests
             if (offsets.TryGetValue("leftStickY", out o)) Assert.Equal(-2000, I16(sticks, o));   // HID down to wire up
             if (offsets.TryGetValue("rightStickX", out o)) Assert.Equal(3000, I16(sticks, o));
             if (offsets.TryGetValue("rightStickY", out o)) Assert.Equal(-4000, I16(sticks, o));
+            // Triggers are rescaled on the way out, not copied. The raw
+            // surface stores one BIPOLAR, rest at short.MinValue, and every
+            // Valve wire carries it UNSIGNED 0 to 32767, which is what SDL
+            // decodes back with * 2 - 32768.
             Assert.True(offsets.ContainsKey("leftTrigger") && offsets.ContainsKey("rightTrigger"), id);
-            Assert.Equal(5000, I16(sticks, offsets["leftTrigger"]));
-            Assert.Equal(6000, I16(sticks, offsets["rightTrigger"]));
+            Assert.Equal((5000 + 32768) / 2, I16(sticks, offsets["leftTrigger"]));
+            Assert.Equal((6000 + 32768) / 2, I16(sticks, offsets["rightTrigger"]));
 
             var pads = PackFor(id, tp: new TouchpadState { Down0 = true, X0 = 1f, Y0 = 0.5f, Down1 = true, X1 = 0f, Y1 = 0.5f });
             Assert.Equal(short.MaxValue, I16(pads, offsets["leftPadX"]));
             Assert.Equal(0, I16(pads, offsets["leftPadY"]));
             Assert.Equal(short.MinValue + 1, I16(pads, offsets["rightPadX"]));
+        }
+
+        /// <summary>THE PROPERTY for a trigger on the wire: rest reads zero,
+        /// full pull reads the top of the range, and half pull reads half.
+        ///
+        /// <para>The middle is the whole point. The raw surface stores a
+        /// trigger BIPOLAR, rest at short.MinValue and full pull at
+        /// short.MaxValue, while every Valve wire carries it UNSIGNED 0 to
+        /// 32767 (SDL_hidapi_steam.c 1645, _steamdeck.c 234,
+        /// _steam_triton.c 222, each decoding back with * 2 - 32768). These
+        /// packers CLAMPED to [0, 32767] instead of rescaling, so both ends
+        /// came out right by luck and everything between did not: the lower
+        /// half of the travel read as zero and the upper half swept the
+        /// entire range.</para></summary>
+        [Theory]
+        [InlineData("steam-deck-composite")]
+        [InlineData("steam-controller-composite")]
+        [InlineData("steam-controller-2")]
+        public void Packer_ScalesATriggerFromRestNotFromCentre(string id)
+        {
+            var profile = HMaestroProfileCatalog.AllProfiles.First(p => p.Id == id);
+            var fields = (IEnumerable)Prop(profile.ExtendedReport, "Fields");
+            int off = -1;
+            foreach (var f in fields)
+            {
+                string sem = Prop(f, "Semantic")?.ToString();
+                string type = Prop(f, "Type")?.ToString() ?? "";
+                if (sem == "leftTrigger" && (type.StartsWith("int16") || type.StartsWith("uint16")))
+                    off = Convert.ToInt32(Prop(f, "Byte"));
+            }
+            Assert.True(off >= 0, id);
+            short Read(short rawTrigger)
+            {
+                var b = PackFor(id, r => r.Axes[2] = rawTrigger);
+                return (short)(b[off] | (b[off + 1] << 8));
+            }
+
+            Assert.Equal(0, Read(short.MinValue));                    // at rest
+            Assert.Equal(short.MaxValue, Read(short.MaxValue));       // fully pulled
+            // Half pull is the case a clamp gets wrong: it read zero.
+            short half = Read(0);
+            Assert.InRange(half, 16000, 16768);
+            // And it climbs all the way, rather than sitting at zero until
+            // the trigger is half down.
+            Assert.True(Read(-16384) > 3000, $"quarter pull read {Read(-16384)}");
         }
 
         /// <summary>The 2015 pad's right trackpad rides the right-stick axes

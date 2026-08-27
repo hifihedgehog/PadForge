@@ -5217,7 +5217,20 @@ namespace PadForge.Services
                         rest = rest.Slice(0, rest.Length - 3);
                     if (int.TryParse(rest, out int axisIdx) && ext.Axes != null
                         && axisIdx >= 0 && axisIdx < ext.Axes.Length)
+                    {
+                        // A TRIGGER reads from rest, not from centre. The raw
+                        // surface stores one bipolar, rest at short.MinValue,
+                        // so showing the stored number put -32768 in the grid
+                        // for a trigger sitting still while an Xbox or
+                        // PlayStation slot showed 0 for the same thing. Same
+                        // rescale the wire packers use.
+                        // A layout that was never set is all zeroes, and
+                        // IsTriggerSlot answers false for every index on one,
+                        // so no null check is needed on this value type.
+                        if (_inputManager.SlotCustomLayouts[padIndex].IsTriggerSlot(axisIdx))
+                            return (ext.Axes[axisIdx] + 32768) / 2;
                         return ext.Axes[axisIdx];
+                    }
                     return null;
                 }
                 // RawBtn{N}

@@ -460,6 +460,57 @@ namespace PadForge.Tests
                 $"{family}: {role}'s label was repainted in its key's own material and cannot be read");
         }
 
+        /// <summary>A stick that clicks is a stick that MOVES, and a trigger
+        /// that maps is a trigger that pulls. Both need a pivot and a
+        /// non-zero travel, and a zero angle rotates nothing at all.
+        ///
+        /// <para>The Steam Deck set neither. It was the only model in the
+        /// tree with no rotation points, so its sticks and triggers were
+        /// frozen while every other pad animated.</para></summary>
+        [Theory]
+        [MemberData(nameof(Families))]
+        public void SticksAndTriggersCanActuallyMove(string family, string appearance, bool extra)
+        {
+            using var m = ControllerModelBase.Create(family, appearance, extra);
+
+            if (m.ButtonMap.ContainsKey("LeftThumbButton") || m.LeftThumbRing != null)
+            {
+                Assert.True(m.JoystickMaxAngleDeg > 0,
+                    $"{family}: the sticks have no travel, so nothing deflects");
+                Assert.NotEqual(default, m.JoystickRotationPointCenterLeftMillimeter);
+            }
+            if (m.LeftShoulderTrigger != null)
+            {
+                Assert.True(m.TriggerMaxAngleDeg > 0,
+                    $"{family}: the triggers have no travel, so nothing pulls");
+                Assert.NotEqual(default, m.ShoulderTriggerRotationPointCenterLeftMillimeter);
+                Assert.NotEqual(default, m.ShoulderTriggerRotationPointCenterRightMillimeter);
+            }
+        }
+
+        /// <summary>A stick pivot sits at its click mesh's own center in X
+        /// and Z, which is what keeps a deflected stick in its recess rather
+        /// than swinging about some other point on the pad.</summary>
+        [Theory]
+        [MemberData(nameof(Families))]
+        public void StickPivotSitsOnItsOwnStick(string family, string appearance, bool extra)
+        {
+            using var m = ControllerModelBase.Create(family, appearance, extra);
+            void Check(string button, Vector3D pivot)
+            {
+                if (!m.ButtonMap.TryGetValue(button, out var groups)) return;
+                var b = groups[0].Bounds;
+                double cx = b.X + b.SizeX / 2, cz = b.Z + b.SizeZ / 2;
+                Assert.True(Math.Abs(pivot.X - cx) < 3.5,
+                    $"{family}: {button}'s pivot is {Math.Abs(pivot.X - cx):F1} mm off its own stick in X");
+                Assert.True(Math.Abs(pivot.Z - cz) < 3.5,
+                    $"{family}: {button}'s pivot is {Math.Abs(pivot.Z - cz):F1} mm off its own stick in Z");
+            }
+            Check("LeftThumbButton", m.JoystickRotationPointCenterLeftMillimeter);
+            if (m.RightThumbRing != null)
+                Check("RightThumbButton", m.JoystickRotationPointCenterRightMillimeter);
+        }
+
         /// <summary>Which quadrant a point falls in: 0 up, 1 down, 2 left,
         /// 3 right, in the model's X across / +Z up frame.</summary>
         [Theory]

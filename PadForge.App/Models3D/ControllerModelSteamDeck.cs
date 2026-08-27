@@ -45,6 +45,27 @@ namespace PadForge.Models3D
             var MaterialAccent = new DiffuseMaterial(new SolidColorBrush(ColorAccent));
             var MaterialScreen = new DiffuseMaterial(new SolidColorBrush(ColorScreen));
 
+            // ── Rotation points ─────────────────────────
+            // Without these the sticks and the triggers do not move at all:
+            // a zero max angle rotates nothing, and this model was the only
+            // one in the tree that set neither.
+            //
+            // Each stick pivot is its click mesh's own center in X and Z with
+            // its REAR edge in Y, the construction every other model here
+            // uses, read off the converted meshes.
+            JoystickRotationPointCenterLeftMillimeter  = new Vector3D(-102.83f, -3.58f, 34.50f);
+            JoystickRotationPointCenterRightMillimeter = new Vector3D( 102.83f, -3.58f, 34.50f);
+            JoystickMaxAngleDeg = 14.0f;
+
+            // The trigger hinges at its FRONT-REAR edge, the corner nearest
+            // the shell, which is where the Xbox 360 model puts its own. Its
+            // pull then swings the free end down the way a finger does.
+            // Taking the rear edge instead swings it up and out through the
+            // top of the shoulder.
+            ShoulderTriggerRotationPointCenterLeftMillimeter  = new Vector3D(-131.63f, 16.66f, 53.01f);
+            ShoulderTriggerRotationPointCenterRightMillimeter = new Vector3D( 131.63f, 16.66f, 53.01f);
+            TriggerMaxAngleDeg = 14.0f;
+
             // ── Mappable controls the standard table does not cover ──
             // The Quick Access KEY, mirror of the Steam key on the other
             // side: OEM1 is the 16.25 mm button and ThreeDots is the 9.32 mm

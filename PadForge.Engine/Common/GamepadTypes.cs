@@ -184,7 +184,7 @@
         }
 
         /// <summary>Clears to REST for a given layout, which for a stick is
-        /// centred and for a trigger is short.MinValue.
+        /// centered and for a trigger is short.MinValue.
         ///
         /// <para><see cref="Clear"/> zeroes every axis, and zero is the
         /// middle of a trigger's travel, not its rest. A slot cleared with it
@@ -290,7 +290,7 @@
         public float MouseTouchY;
 
         /// <summary>Stick trackball coast in exact counts for this poll
-        /// (#291): the fling a released mouse stick keeps travelling on.
+        /// (#291): the fling a released mouse stick keeps traveling on.
         /// Same KBM sign convention as <see cref="MouseDeltaY"/> (positive
         /// = up); the virtual controller negates Y into screen space
         /// exactly as it does for the deflection lane the coast launched

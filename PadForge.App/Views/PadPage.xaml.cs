@@ -494,7 +494,7 @@ namespace PadForge.Views
                         {
                             // A phone drawing a DualShock 4 or a DualSense gets
                             // the same Lighting tab the physical pad gets. The
-                            // colour already reaches it (ResolveWebLightbar
+                            // color already reaches it (ResolveWebLightbar
                             // reads this very config), so without the tab the
                             // config existed and could not be edited.
                             //
@@ -684,7 +684,7 @@ namespace PadForge.Views
                     vm.SelectedConfigTab = 0;
                 // Same shape as the Lighting tab above: TabWheel shows on
                 // (hasWheel || hasGenericWheel), so a generic SDL force-feedback
-                // wheel could not stay on its own tab to reach the auto-centre
+                // wheel could not stay on its own tab to reach the auto-center
                 // slider.
                 else if (vm.SelectedConfigTab == 11 && !(hasWheel || hasGenericWheel))
                     vm.SelectedConfigTab = 0;

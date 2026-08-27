@@ -145,7 +145,7 @@
   <data name="Status_DownloadingMidi" xml:space="preserve"><value>Downloading Windows MIDI Services…</value></data>
   <data name="Status_DownloadingInstallingMidi" xml:space="preserve"><value>Downloading and installing Windows MIDI Services…</value></data>
   <data name="Status_UninstallingMidi" xml:space="preserve"><value>Uninstalling Windows MIDI Services…</value></data>
-  <data name="Status_OperationCancelled" xml:space="preserve"><value>Operation cancelled by user.</value></data>
+  <data name="Status_OperationCancelled" xml:space="preserve"><value>Operation canceled by user.</value></data>
   <data name="Status_MidiInstallFailed_Format" xml:space="preserve"><value>MIDI Services install failed: {0}</value></data>
   <data name="Status_DownloadingSteamVR" xml:space="preserve"><value>Downloading SteamVR…</value></data>
   <data name="Status_DownloadingInstallingSteamVR" xml:space="preserve"><value>Downloading and installing SteamVR from Valve's servers… This is several GB and can take a while.</value></data>
@@ -194,7 +194,7 @@
   <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>Recording: press a button or move an axis for "{0}"...</value></data>
   <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>Recording "{0}": press the Up direction input...</value></data>
   <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>Recording "{0}": now press the Down direction input...</value></data>
-  <data name="Status_RecordingCancelled" xml:space="preserve"><value>Recording cancelled.</value></data>
+  <data name="Status_RecordingCancelled" xml:space="preserve"><value>Recording canceled.</value></data>
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Recording timed out for "{0}".</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Engine started.</value></data>
   <data name="Status_EngineStopped" xml:space="preserve"><value>Engine stopped.</value></data>
@@ -974,7 +974,7 @@
   <data name="Pad_Formula_Chip_Round" xml:space="preserve"><value>Round to nearest whole number</value></data>
   <data name="Pad_Formula_Chip_Sqrt" xml:space="preserve"><value>Square root</value></data>
   <data name="Pad_Formula_Chip_Pow" xml:space="preserve"><value>Raise to a power: pow(value, exponent). A response curve.</value></data>
-  <data name="Pad_Formula_Chip_Hypot" xml:space="preserve"><value>Distance from centre for a pair: hypot(x, y). The input to a radial dead zone.</value></data>
+  <data name="Pad_Formula_Chip_Hypot" xml:space="preserve"><value>Distance from center for a pair: hypot(x, y). The input to a radial dead zone.</value></data>
   <data name="Pad_Formula_Chip_Deadzone" xml:space="preserve"><value>Rescale past a dead zone: deadzone(value, inner, outer). Inside inner reads 0, outer reads full, sign kept.</value></data>
   <data name="Pad_Formula_Chip_Floor" xml:space="preserve"><value>Round down: floor(value).</value></data>
   <data name="Pad_Formula_Chip_Ceil" xml:space="preserve"><value>Round up: ceil(value).</value></data>
@@ -1498,7 +1498,7 @@
   <data name="Pad_Touchpad_MouseJitterReduction_Tooltip" xml:space="preserve"><value>Damps resting-hand tremor without a dead zone, so tiny deliberate movements still register.</value></data>
   <data name="Pad_ResetTouchpadMouseJitterReduction" xml:space="preserve"><value>Reset Jitter Reduction</value></data>
   <data name="Pad_Touchpad_MouseMomentum" xml:space="preserve"><value>Momentum</value></data>
-  <data name="Pad_Touchpad_MouseMomentum_Tooltip" xml:space="preserve"><value>The cursor keeps travelling after you lift your finger and coasts to a stop, like a trackball.</value></data>
+  <data name="Pad_Touchpad_MouseMomentum_Tooltip" xml:space="preserve"><value>The cursor keeps traveling after you lift your finger and coasts to a stop, like a trackball.</value></data>
   <data name="Pad_ResetTouchpadMouseMomentum" xml:space="preserve"><value>Reset Momentum</value></data>
   <data name="Pad_Touchpad_MouseMomentumDecay" xml:space="preserve"><value>Momentum Glide</value></data>
   <data name="Pad_Touchpad_MouseMomentumDecay_Tooltip" xml:space="preserve"><value>How far the cursor coasts. At the top of the range it keeps going until you touch the pad again.</value></data>
@@ -1724,7 +1724,7 @@
   <data name="Pad_GyroTilt_Reset_All" xml:space="preserve"><value>Reset Gyro Tilt</value></data>
   <data name="Pad_CombineChip_Tooltip" xml:space="preserve"><value>How this row's sources merge when more than one is active. Select the row to change it in the detail strip below.</value></data>
   <data name="Pad_StickMomentum" xml:space="preserve"><value>Momentum</value></data>
-  <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>Trackball mode: flick the stick and release, and the cursor keeps travelling, coasting to a stop. Moving the stick again catches it.</value></data>
+  <data name="Pad_StickMomentum_Tooltip" xml:space="preserve"><value>Trackball mode: flick the stick and release, and the cursor keeps traveling, coasting to a stop. Moving the stick again catches it.</value></data>
   <data name="Pad_StickMomentumGlide_Tooltip" xml:space="preserve"><value>How far the cursor coasts after a flick. At the top of the range it keeps going until you move the stick again.</value></data>
   <data name="Pad_Touchpad_MomentumFlingGain" xml:space="preserve"><value>Fling Boost</value></data>
   <data name="Pad_Touchpad_MomentumFlingGain_Tooltip" xml:space="preserve"><value>Scales how fast a fling launches without changing drag speed. 1.00 launches at exactly the speed your finger was moving.</value></data>
@@ -3105,7 +3105,7 @@
   <data name="Mapping_MenuItem_Format" xml:space="preserve"><value>Menu {0} Cell {1}</value></data>
   <data name="Dashboard_MenuOverlay" xml:space="preserve"><value>Menu Overlay</value></data>
   <data name="Dashboard_Overlays" xml:space="preserve"><value>Overlays</value></data>
-  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>On-screen indicators PadForge shows while you play. Turning one off never changes behaviour, only whether it is announced.</value></data>
+  <data name="Dashboard_OverlaysDescription" xml:space="preserve"><value>On-screen indicators PadForge shows while you play. Turning one off never changes behavior, only whether it is announced.</value></data>
   <data name="Dashboard_ShiftLayerFlyout" xml:space="preserve"><value>Shift Layer Flyout</value></data>
   <data name="Dashboard_ProfileOverlay" xml:space="preserve"><value>Profile Switch Overlay</value></data>
   <data name="Dashboard_MenuOverlayDescription" xml:space="preserve"><value>Show the on-screen ring or grid while a radial or touch menu is engaged. Menus still fire with the overlay off.</value></data>
@@ -3227,7 +3227,7 @@ You can retry later from Settings.</value></data>
   <data name="Starter_Media_Name" xml:space="preserve"><value>Media Remote</value></data>
   <data name="Starter_Media_Description" xml:space="preserve"><value>Playback, seeking, and a cursor for the ten-foot experience.</value></data>
   <data name="Starter_Racing_Name" xml:space="preserve"><value>Racing</value></data>
-  <data name="Starter_Racing_Description" xml:space="preserve"><value>Calmer steering and finer control near centre, on any pad.</value></data>
+  <data name="Starter_Racing_Description" xml:space="preserve"><value>Calmer steering and finer control near center, on any pad.</value></data>
   <data name="Starter_SpaceSim_Name" xml:space="preserve"><value>Space Sim</value></data>
   <data name="Starter_SpaceSim_Description" xml:space="preserve"><value>Six degrees of freedom on two sticks, with a precision mode for docking.</value></data>
   <data name="Starter_SpaceSim_PrecisionLayerName" xml:space="preserve"><value>Precision (Fine Control)</value></data>

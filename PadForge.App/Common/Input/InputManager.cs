@@ -2973,10 +2973,10 @@ namespace PadForge.Common.Input
                 // rate for the whole suspension.
                 MotionSnapshots[i] = default;
                 // MidiRawState.Clear(), not Array.Clear. The neutral CC value
-                // is 64 (centre), and Array.Clear writes 0, which is the
+                // is 64 (center), and Array.Clear writes 0, which is the
                 // MINIMUM. Alt-tabbing with background polling off therefore
                 // slammed every mapped CC to zero instead of releasing it to
-                // centre, while the other two neutralize sites for this same
+                // center, while the other two neutralize sites for this same
                 // array produced 64. CcValues and Notes are arrays, so
                 // clearing through the local struct copy still reaches the
                 // shared buffers.

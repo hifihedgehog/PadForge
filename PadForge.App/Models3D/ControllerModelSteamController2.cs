@@ -40,7 +40,7 @@ namespace PadForge.Models3D
         public ControllerModelSteamController2() : base("SteamController2")
         {
             // ── Rotation points ─────────────────────────
-            // Each is the mesh's own centre in X and Z with its rear edge
+            // Each is the mesh's own center in X and Z with its rear edge
             // in Y, the construction the Xbox 360 model uses, read off
             // the converted meshes rather than eyeballed.
             JoystickRotationPointCenterLeftMillimeter = new Vector3D(-23.13f, -28.26f, -31.35f);
@@ -88,7 +88,7 @@ namespace PadForge.Models3D
             PaintEverything();
         }
 
-        /// <summary>Resting colours, calibrated against the black controllers
+        /// <summary>Resting colors, calibrated against the black controllers
         /// this tree already ships. The viewport's rig is a #999999 sun, a
         /// #666666 ambient, a #595959 headlight and the ember rim, so a
         /// front-facing surface shows at about 1.3 times its hex. The three
@@ -100,7 +100,7 @@ namespace PadForge.Models3D
         ///
         /// <para>Face buttons stay dark for the same reason as the 2015
         /// pad. Valve prints the glyph on a black cap, and the CAD carries
-        /// no glyph mesh to colour.</para></summary>
+        /// no glyph mesh to color.</para></summary>
         private void PaintEverything()
         {
             var body    = Mat("#202224");

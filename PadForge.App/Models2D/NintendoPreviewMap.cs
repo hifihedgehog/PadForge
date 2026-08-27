@@ -167,7 +167,7 @@ public static class NintendoPreviewMap
         FamilyOf(profileIdA) == FamilyOf(profileIdB);
 
     /// <summary>The wire table for a profile. Each family gets its own;
-    /// an unlettered or unrecognised id falls back to the original Pro
+    /// an unlettered or unrecognized id falls back to the original Pro
     /// Controller's, which is the safe answer for a null.</summary>
     public static string[] ButtonTable(string profileId) => FamilyOf(profileId) switch
     {

@@ -414,6 +414,52 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary>A labelled key registers as the KEY, with its label
+        /// riding it, and the label keeps its own colour so it can be read.
+        ///
+        /// <para>The Steam Deck had this inside out on both sides at once.
+        /// Its Quick Access control was the 9.32 mm ThreeDots glyph while the
+        /// 16.25 mm key under it was scenery, so hovering lit three dots and
+        /// nothing else. Its Steam key was the reverse: the key registered
+        /// and the wordmark on it was scenery, so everything lit EXCEPT the
+        /// text.</para>
+        ///
+        /// <para>The colour half is its own bug. A rider joins its host's
+        /// ButtonMap list, so a paint pass that runs AFTER the riders are
+        /// added repaints every label in its own cap's colour, and the same
+        /// dictionary entry proves it: both groups end up sharing one
+        /// material instance.</para></summary>
+        [Theory]
+        [InlineData("SteamDeck", "ButtonGuide")]
+        [InlineData("SteamDeck", "ButtonQuickAccess")]
+        [InlineData("SteamDeck", "ButtonA")]
+        [InlineData("SteamDeck", "ButtonB")]
+        [InlineData("SteamDeck", "ButtonX")]
+        [InlineData("SteamDeck", "ButtonY")]
+        [InlineData("SteamDeck", "ButtonBack")]
+        [InlineData("SteamDeck", "ButtonStart")]
+        [InlineData("SteamController", "ButtonA")]
+        [InlineData("SteamController", "ButtonGuide")]
+        public void LabelRidesItsKeyAndKeepsItsColour(string family, string role)
+        {
+            using var m = ControllerModelBase.Create(family, null, false);
+            var groups = m.ButtonMap[role];
+            Assert.True(groups.Count >= 2, $"{family}: {role} carries no label rider");
+
+            var key = groups[0].Bounds;
+            var label = groups[1].Bounds;
+            Assert.True(label.SizeX < key.SizeX,
+                $"{family}: {role}'s label is {label.SizeX:F2} mm across against a {key.SizeX:F2} mm key, "
+                + "so the label is registered as the control");
+            Assert.True(label.X >= key.X - 0.05 && label.X + label.SizeX <= key.X + key.SizeX + 0.05,
+                $"{family}: {role}'s label does not sit within its key");
+
+            Assert.True(m.DefaultMaterials.TryGetValue(groups[0], out var keyMat));
+            Assert.True(m.DefaultMaterials.TryGetValue(groups[1], out var labelMat));
+            Assert.False(ReferenceEquals(keyMat, labelMat),
+                $"{family}: {role}'s label was repainted in its key's own material and cannot be read");
+        }
+
         /// <summary>Which quadrant a point falls in: 0 up, 1 down, 2 left,
         /// 3 right, in the model's X across / +Z up frame.</summary>
         [Theory]

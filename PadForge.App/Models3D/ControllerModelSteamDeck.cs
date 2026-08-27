@@ -46,7 +46,11 @@ namespace PadForge.Models3D
             var MaterialScreen = new DiffuseMaterial(new SolidColorBrush(ColorScreen));
 
             // ── Mappable controls the standard table does not cover ──
-            QuickAccess = LoadModel("ThreeDots.obj");
+            // The Quick Access KEY, mirror of the Steam key on the other
+            // side: OEM1 is the 16.25 mm button and ThreeDots is the 9.32 mm
+            // glyph printed on it, which rides it below. Registering the
+            // glyph as the control lit three dots and nothing under them.
+            QuickAccess = LoadModel("OEM1.obj");
             RegisterButton("ButtonQuickAccess", QuickAccess);
             model3DGroup.Children.Add(QuickAccess);
 
@@ -80,13 +84,26 @@ namespace PadForge.Models3D
             AddCosmetic("PowerButton.obj", MaterialAccent);
             AddCosmetic("VolumeUp.obj", MaterialAccent);
             AddCosmetic("VolumeDown.obj", MaterialAccent);
-            AddCosmetic("SteamText.obj", MaterialAccent);
-            AddCosmetic("OEM1.obj", MaterialAccent);
+
+            // The stick BODY, the capacitive barrel between the cap and the
+            // collar. It is part of the stick button, not scenery: this pad
+            // splits its stick into three solids where every other model
+            // ships two, and with the body left cosmetic the button lit only
+            // the thin collar at the case and the stick looked half dead.
+            // Added BEFORE the paint pass on purpose, so PaintTarget gives it
+            // the click mesh's own colour.
+            AddRiderTo("LeftThumbButton", "LeftStickTouch.obj", MaterialAccent);
+            AddRiderTo("RightThumbButton", "RightStickTouch.obj", MaterialAccent);
+
+            PaintEverything();
 
             // Glyph riders sit on their buttons and share their highlight,
-            // the same arrangement the other models use for label meshes.
-            // Valve prints the Deck's glyphs in white on a dark cap, and
-            // the letters carry no colour of their own.
+            // the arrangement every model here uses for a label mesh. Valve
+            // prints the Deck's in a light grey on a dark key.
+            //
+            // AFTER the paint pass, which is the half that was wrong: a rider
+            // joins its host's ButtonMap list, so PaintTarget reached these
+            // too and repainted every letter in its own cap's colour.
             var MaterialGlyph = new DiffuseMaterial(new SolidColorBrush(
                 (Color)ColorConverter.ConvertFromString("#D4D4D4")));
             AddRiderTo("ButtonA", "B1-Symbol.obj", MaterialGlyph);
@@ -95,17 +112,10 @@ namespace PadForge.Models3D
             AddRiderTo("ButtonY", "B4-Symbol.obj", MaterialGlyph);
             AddRiderTo("ButtonBack", "BackIcon.obj", MaterialGlyph);
             AddRiderTo("ButtonStart", "StartIcon.obj", MaterialGlyph);
-
-            // The stick BODY, the capacitive barrel between the cap and the
-            // collar. It is part of the stick button, not scenery: this pad
-            // splits its stick into three solids where every other model
-            // ships two, and with the body left cosmetic the button lit only
-            // the thin collar at the case and the stick looked half dead.
-            // PaintEverything gives it the click mesh's colour below.
-            AddRiderTo("LeftThumbButton", "LeftStickTouch.obj", MaterialAccent);
-            AddRiderTo("RightThumbButton", "RightStickTouch.obj", MaterialAccent);
-
-            PaintEverything();
+            // The Steam wordmark and the Quick Access dots are the same
+            // thing as a letter on a face key, one per side.
+            AddRiderTo("ButtonGuide", "SteamText.obj", MaterialGlyph);
+            AddRiderTo("ButtonQuickAccess", "ThreeDots.obj", MaterialGlyph);
         }
 
         /// <summary>Resting colours, calibrated against the black controllers

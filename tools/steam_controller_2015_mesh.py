@@ -534,26 +534,18 @@ def main():
             meshes.setdefault("Joystick-Left-Ring.obj", []).append(outer)
             meshes.setdefault("LeftStickClick.obj", []).append(inner)
         elif target == "STICKBASE":
-            # The base carries a spigot that reaches up INSIDE the cap and
-            # through its shell wall: at Z 21 to 22 the spigot is out at
-            # r = 7.65 mm while the cap's inner wall sits at r = 5.75 and
-            # its outer at 8.81, so the two solids interpenetrate. Valve
-            # models a press fit; a renderer draws it as a speckled fringe
-            # around the cap's rim where the spigot pokes through, and the
-            # accent would bleed onto the cap whenever the stick BUTTON lit
-            # up, which is the one thing the cap must never do.
+            # The base reaches up INSIDE the cap: at Z 21 to 22 it is out at
+            # r = 7.65 mm where the cap's inner wall sits at 5.75 and its
+            # outer at 8.81, so Valve's two solids interpenetrate the way a
+            # press fit does.
             #
-            # Everything of the base above Z 19.6, the cap's underside, and
-            # inside r = 8.0 is enclosed by the cap and cannot be seen. Drop
-            # it. The cap is a closed shell, so nothing opens up.
-            ax, ay = -18.40, -14.175          # the stick axis, from the two solids
-            tv = v[f]                                     # (tri, corner, xyz)
-            r = np.hypot(tv[:, :, 0] - ax, tv[:, :, 1] - ay)
-            # ANY corner inside the envelope drops the triangle. Testing the
-            # centroid instead leaves the straddling ring behind, 228 of them
-            # here, still reaching 2.3 mm up into the cap.
-            inside = (tv[:, :, 2] >= 19.6) & (r < 8.0)
-            meshes.setdefault("LeftStickClick.obj", []).append((v, nrm, f[~inside.any(axis=1)]))
+            # Nothing is culled from it. An earlier round dropped everything
+            # of the base above the cap's underside and inside r = 8, on the
+            # grounds that the cap enclosed it. The cap did, until the cap
+            # itself was split into a ring and a middle. After that the
+            # column between the middle and the base was covered by nothing,
+            # and the stick had a 2 mm gap where its stem should be.
+            meshes.setdefault("LeftStickClick.obj", []).append((v, nrm, f))
         elif target == "BUMPER":
             # One solid spanning both sides; split on the centreline so
             # each shoulder is its own highlight target.

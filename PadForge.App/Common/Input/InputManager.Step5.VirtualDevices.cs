@@ -2480,6 +2480,23 @@ namespace PadForge.Common.Input
             _extendedAppliedVendorId[padIndex] = SlotExtendedVendorId[padIndex];
             _extendedAppliedProductId[padIndex] = SlotExtendedProductId[padIndex];
 
+            // A profile whose descriptor leads with a mouse or a keyboard
+            // report cannot be driven, and deploying one costs the user
+            // their pointer: HIDMaestro frames every submission into the
+            // descriptor's FIRST input report and prepends that report's
+            // id, so our frames arrive as mouse motion. See
+            // HMaestroProfileCatalog.LeadsWithAPointingReport for the
+            // chain. The catalog hides these from the pickers; this refuses
+            // the slot that was saved before the guard existed, which the
+            // catalog filter deliberately cannot reach.
+            if (HMaestroProfileCatalog.LeadsWithAPointingReport(effectiveProfile))
+            {
+                Engine.SdlDiagLog.WriteLine(
+                    $"VC slot={padIndex} profile={effectiveProfile?.Id} REFUSED: the descriptor's "
+                    + "first input report is a mouse or keyboard, so every frame would drive the pointer");
+                return null;
+            }
+
             return new HMaestroVirtualController(_hmaestroContext, effectiveProfile, type);
         }
 

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using HIDMaestro;
 using PadForge.Common.Input;
 using PadForge.Engine;
 using PadForge.Models2D;
@@ -250,6 +251,21 @@ namespace PadForge.Tests
             raw.SetButton(i, on);
         }
 
+        /// <summary>The profile, catalog first and HIDMaestro's own context
+        /// second. The packer contract holds whether or not the catalog
+        /// offers the profile, and the 2026 Steam Controller is held back
+        /// from the pickers while its descriptor leads with a mouse (see
+        /// HMaestroProfileCatalog.LeadsWithAPointingReport). Its frame
+        /// layout still has to be right for the day that lifts.</summary>
+        private static HMProfile ProfileById(string id)
+        {
+            var p = HMaestroProfileCatalog.AllProfiles.FirstOrDefault(x => x.Id == id);
+            if (p != null) return p;
+            using var ctx = new HMContext();
+            ctx.LoadDefaultProfiles();
+            return ctx.AllProfiles.First(x => x.Id == id);
+        }
+
         /// <summary>For every button HIDMaestro names in the persona's
         /// extended-report spec, the packer sets exactly that bit at exactly
         /// that byte when the role's raw slot is pressed. Bits the spec
@@ -260,7 +276,7 @@ namespace PadForge.Tests
         [InlineData("steam-controller-2")]
         public void Packer_PutsEveryNamedSpecButtonOnItsBit(string id)
         {
-            var profile = HMaestroProfileCatalog.AllProfiles.First(p => p.Id == id);
+            var profile = ProfileById(id);
             var fields = (IEnumerable)Prop(profile.ExtendedReport, "Fields");
             int checkedBits = 0;
             foreach (var f in fields)
@@ -296,7 +312,7 @@ namespace PadForge.Tests
         [InlineData("steam-controller-2")]
         public void Packer_PutsEveryNamedSpecAxisAtItsOffset(string id)
         {
-            var profile = HMaestroProfileCatalog.AllProfiles.First(p => p.Id == id);
+            var profile = ProfileById(id);
             var fields = (IEnumerable)Prop(profile.ExtendedReport, "Fields");
             var offsets = new Dictionary<string, int>();
             foreach (var f in fields)
@@ -345,7 +361,7 @@ namespace PadForge.Tests
         [InlineData("steam-controller-2")]
         public void Packer_ScalesATriggerFromRestNotFromCenter(string id)
         {
-            var profile = HMaestroProfileCatalog.AllProfiles.First(p => p.Id == id);
+            var profile = ProfileById(id);
             var fields = (IEnumerable)Prop(profile.ExtendedReport, "Fields");
             int off = -1;
             foreach (var f in fields)

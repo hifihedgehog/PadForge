@@ -5,25 +5,22 @@ using Xunit;
 namespace PadForge.Tests
 {
     /// <summary>
-    /// A profile whose HID descriptor leads with a mouse or a keyboard
-    /// report cannot carry a hand-packed frame through HIDMaestro's raw
-    /// path, and the failure is loud: the frame comes back out as cursor
-    /// motion.
+    /// What a hand-packed frame needs from HIDMaestro to reach the wire on
+    /// the report it was built for.
     ///
-    /// <para>HMController.SubmitRawReport takes data bytes only, its own XML
-    /// says so, and the driver prepends the descriptor's FIRST report id.
-    /// Point that at a mouse and every frame we submit drives the pointer.
-    /// Valve's 2026 Steam Controller is exactly that shape: its lizard-mode
-    /// mouse (report 0x40) and keyboard (0x41) share one interface with its
-    /// controller state (0x42), and the mouse is first. A slot on that
-    /// profile drove the cursor with the rolling sequence number out of our
-    /// own frame, 250 times a second.</para>
+    /// <para>HIDMaestro frames a raw submission into the descriptor's FIRST
+    /// input report unless the profile declares its own id AND is always
+    /// armed, in which case the frame goes out verbatim (HM v1.7.1,
+    /// HIDMaestro#58). Before that release the 2026 Steam Controller had no
+    /// verbatim path, and its descriptor leads with the lizard-mode mouse
+    /// (report 0x40) ahead of the controller state (0x42), so every frame
+    /// arrived as a mouse report and the rolling sequence number in byte 1
+    /// drove the pointer 250 times a second.</para>
     ///
-    /// <para>HIDMaestro owns the fix (its raw path must honor
-    /// extendedReport.reportId, HIDMaestro issue 58). These
-    /// tests are the tripwire: they name the one profile in that condition
-    /// today, so a SECOND one cannot arrive unnoticed, and the named one
-    /// stops matching the moment HIDMaestro lands the fix.</para>
+    /// <para>These pin the pairing that keeps that shut: a packer's frame
+    /// carries its own report id exactly when the profile says it does, and
+    /// a profile that leads with a pointing report is only ever safe on the
+    /// verbatim path.</para>
     /// </summary>
     public class PointingReportProfileGuardTests
     {
@@ -46,21 +43,42 @@ namespace PadForge.Tests
         public void TheTritonDescriptorLeadsWithAMouse()
             => Assert.True(HMaestroProfileCatalog.LeadsWithAPointingReport(Hex(Triton)));
 
-        /// <summary>The 2026 Steam Controller is the ONLY profile that hand
-        /// packs a frame while its descriptor leads with a pointing report.
-        /// A second one arriving means a second controller would take over
-        /// the pointer, and this is where that gets caught.</summary>
+        /// <summary>Every packer's frame length equals the input report its
+        /// profile declares, so the frame carries the report id and takes
+        /// HIDMaestro's verbatim path. A packer one byte short is the
+        /// data-only form, and on a pointing-led descriptor that form is the
+        /// mouse.</summary>
         [Fact]
-        public void OnlyTheKnownProfilePacksAgainstAPointingLedDescriptor()
+        public void PackerFramesCarryTheirOwnReportId()
         {
-            var offenders = HMaestroProfileCatalog.AllProfiles
-                .Where(p => ValveReportPackers.ForProfile(p.Id) != null)
-                .Where(HMaestroProfileCatalog.LeadsWithAPointingReport)
-                .Select(p => p.Id)
-                .OrderBy(id => id)
-                .ToArray();
+            foreach (var p in HMaestroProfileCatalog.AllProfiles)
+            {
+                var packer = ValveReportPackers.ForProfile(p.Id);
+                if (packer == null) continue;
+                Assert.Equal(p.InputReportSize, packer.Size);
+            }
+        }
 
-            Assert.Equal(new[] { "steam-controller-2" }, offenders);
+        /// <summary>A profile that leads with a mouse or a keyboard is safe
+        /// ONLY on the verbatim path, which HIDMaestro takes when the
+        /// profile declares a non-zero report id and is always armed. Any
+        /// other pointing-led profile carrying a packer would be framed into
+        /// that pointing report, which is the 2026 Steam Controller's
+        /// original defect.</summary>
+        [Fact]
+        public void APointingLedPackerProfileTakesTheVerbatimPath()
+        {
+            foreach (var p in HMaestroProfileCatalog.AllProfiles)
+            {
+                if (ValveReportPackers.ForProfile(p.Id) == null) continue;
+                if (!HMaestroProfileCatalog.LeadsWithAPointingReport(p)) continue;
+
+                var spec = p.ExtendedReport;
+                Assert.True(spec != null && spec.AlwaysArmed && spec.ReportIdByte != 0,
+                    $"{p.Id} packs a frame while its descriptor leads with a pointing report, "
+                    + "and it does not declare the always-armed report id that makes HIDMaestro "
+                    + "emit the frame verbatim, so every frame would drive the pointer");
+            }
         }
 
         /// <summary>A keyboard first is the same defect: HID keyboard

@@ -159,11 +159,18 @@
          unstable in-progress work from the HIDMaestro repo. Update by
          copying the Release build of HIDMaestro.Core.dll from the
          HIDMaestro repo into Resources\HIDMaestro\ after tagging a
-         release there. Current: v1.4.3 (composite USB personas with embedded
+         release there. Current: v1.7.1, which lands the Triton raw path on
+         its own report instead of the lizard mouse (HM#58): a profile that
+         declares an input report id and is always armed now emits verbatim,
+         and SubmitRawExtendedReport is the explicit form of that. It also
+         corrects the 2026 pad's rear-button pairing to SDL's (R4 is paddle
+         1, R5 is paddle 2) and throws at profile load on a button name that
+         resolves to nothing, instead of dropping the bit in silence.
+         Earlier and still carried: composite USB personas with embedded
          usbip-win2 and the HMController.UsbAudio surface, HM#39, the
          microphone ring frame-alignment fix, HM#41, and the ROOT\HIDMAESTRO_UDE
          hardware-id token on the emulated host controller, HM#42, which is what
-         lets a devnode filter tell a composite persona from a real USB pad). -->
+         lets a devnode filter tell a composite persona from a real USB pad. -->
     <Reference Include="HIDMaestro.Core">
       <HintPath>Resources\HIDMaestro\HIDMaestro.Core.dll</HintPath>
     </Reference>

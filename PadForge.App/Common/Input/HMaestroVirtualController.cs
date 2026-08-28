@@ -206,6 +206,10 @@ namespace PadForge.Common.Input
             // same reason, HMController.cs "audit 1n"), and the raw submit
             // path read both per 1 kHz tick (~115 KB/s in the allocation
             // trace). Layout is immutable per profile.
+            var extSpec = _profile.ExtendedReport;
+            _extendedFrameCarriesItsOwnId =
+                extSpec != null && extSpec.AlwaysArmed && extSpec.ReportIdByte != 0;
+
             _cachedProfileSticks = _profile.Sticks;
             _cachedProfileTriggers = _profile.Triggers;
 
@@ -443,8 +447,28 @@ namespace PadForge.Common.Input
             // is the ONLY submit on USB Sony slots now that Step 5 skips
             // the redundant extended leg when a packer exists.
             TickFfb();
-            _controller.SubmitRawReport(report);
+
+            // A profile that declares its own input report id and is always
+            // armed is never in legacy mode, so its frames carry that id and
+            // must go out verbatim. HM v1.7.1 (HIDMaestro#58) infers that
+            // from LENGTH on SubmitRawReport, a frame the size of the
+            // declared report passing through untouched and one byte shorter
+            // taking the prepend. Say it outright instead. The inference is
+            // correct today and would flip silently the day a packer size or
+            // a declared size moved by one, and on the 2026 Steam Controller
+            // the prepend branch means the descriptor's FIRST report, which
+            // is that pad's lizard-mode mouse: every frame became cursor
+            // motion. PackerFramesCarryTheirOwnReportId pins the pairing.
+            if (_extendedFrameCarriesItsOwnId)
+                _controller.SubmitRawExtendedReport(report);
+            else
+                _controller.SubmitRawReport(report);
         }
+
+        /// <summary>True when this profile declares a non-zero input report
+        /// id and is always armed, which is HIDMaestro's definition of a
+        /// frame that already carries its own id.</summary>
+        private readonly bool _extendedFrameCarriesItsOwnId;
 
         /// <summary>Re-evaluates PID effect state on the engine clock. The
         /// HM packet callback applies the decoder only when the game sends a

@@ -202,13 +202,15 @@ namespace PadForge.Tests
         /// click on the Deck (bit 17 = LeftPadClick in SDL_hidapi_steamdeck.c)
         /// and the right pad click on the 2015 pad (bit 18 =
         /// STEAM_BUTTON_RIGHTPAD_CLICKED_MASK) and the 2026 pad (bit 22 =
-        /// RPad_Click); "LeftPaddle" / "RightPaddle" are L5 / R5 on the Deck
-        /// and 2026 pad (their bits are the PADDLE2 bits) and the grips on
-        /// the 2015 pad.</summary>
+        /// RPad_Click); "LeftPaddle" / "RightPaddle" are the grips on the
+        /// 2015 pad, L5 / R5 on the Deck (whose spec names only its PADDLE2
+        /// bits), and L4 / R4 on the 2026 pad, which names all four since
+        /// HM v1.7.1.</summary>
         private static string RoleFor(string specName, string id)
         {
             var fam = NintendoPreviewMap.FamilyOf(id);
             bool sc15 = fam == NintendoPreviewMap.Family.SteamController;
+            bool sc26 = fam == NintendoPreviewMap.Family.SteamController2;
             return specName switch
             {
                 "A" => "ButtonA", "B" => "ButtonB", "X" => "ButtonX", "Y" => "ButtonY",
@@ -216,8 +218,16 @@ namespace PadForge.Tests
                 "Back" => "ButtonBack", "Start" => "ButtonStart", "Guide" => "ButtonGuide",
                 "Misc1" => "ButtonQuickAccess",
                 "LeftStick" => "LeftThumbButton", "RightStick" => "RightThumbButton",
-                "LeftPaddle" => sc15 ? "LeftGrip" : "Paddle4",
-                "RightPaddle" => sc15 ? "RightGrip" : "Paddle3",
+                // The 2026 pad names all FOUR rear buttons since HM v1.7.1
+                // (HM#58 corrected the pairing to SDL's: R4 is paddle 1 at
+                // bit 7, R5 is paddle 2 at bit 8). PadForge numbers them
+                // R4 L4 R5 L5, so RightPaddle is Paddle1 there while the
+                // Deck, which names only its two PADDLE2 bits, keeps
+                // Paddle3 / Paddle4.
+                "LeftPaddle" => sc15 ? "LeftGrip" : sc26 ? "Paddle2" : "Paddle4",
+                "RightPaddle" => sc15 ? "RightGrip" : sc26 ? "Paddle1" : "Paddle3",
+                "LeftPaddle2" => "Paddle4",
+                "RightPaddle2" => "Paddle3",
                 "Touchpad" => fam == NintendoPreviewMap.Family.SteamDeck ? "LeftTouchpadClick" : "RightTouchpadClick",
                 "DPAD_UP" => "DPadUp", "DPAD_DOWN" => "DPadDown", "DPAD_LEFT" => "DPadLeft", "DPAD_RIGHT" => "DPadRight",
                 _ => null,   // trigger digitals and pad touches are derived, not slots

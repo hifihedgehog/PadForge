@@ -641,6 +641,47 @@ namespace PadForge.Services
         /// new device. The XML bug "DualSense assigned after Web Touchpad
         /// inherited the touchpad-only PadSetting" came from exactly this
         /// path.</para></summary>
+        /// <summary>Runs the automap for <paramref name="profileId"/> over
+        /// every device on a slot, filling targets that are EMPTY and
+        /// leaving everything the user bound alone.
+        ///
+        /// <para>This is what a profile change within one output type needs.
+        /// A type change re-authors the whole surface through
+        /// SettingsManager.ReAutoMapSlot, but changing an Extended slot from
+        /// one profile to another keeps the surface and only ADDS targets:
+        /// the Steam Controller 2026 has a D-pad and a Quick Access button
+        /// the Steam Deck's wire does not, and those rows came up empty
+        /// because nothing re-ran the automap for them.</para>
+        ///
+        /// <para>Snapshot the slot under the UserSettings lock and resolve
+        /// devices outside it. FindDeviceByInstanceGuid takes the
+        /// UserDevices lock, and taking it while holding UserSettings
+        /// inverts the canonical order into an ABBA deadlock with the
+        /// disconnect and migration paths.</para></summary>
+        public static void FillEmptyAutoMappingsForSlot(int padIndex,
+            Engine.VirtualControllerType outputType, string profileId)
+        {
+            var settings = SettingsManager.UserSettings;
+            if (settings == null) return;
+
+            var slot = new System.Collections.Generic.List<UserSetting>();
+            lock (settings.SyncRoot)
+            {
+                foreach (var us in settings.Items)
+                    if (us.MapTo == padIndex) slot.Add(us);
+            }
+
+            foreach (var us in slot)
+            {
+                var ud = SettingsManager.FindDeviceByInstanceGuid(us.InstanceGuid);
+                var ps = us.GetPadSetting();
+                if (ud == null || ps == null) continue;
+                FillEmptyAutoMappingsIfApplicable(ps, ud, outputType, profileId);
+                ps.UpdateChecksum();
+                us.PadSettingChecksum = ps.PadSettingChecksum;
+            }
+        }
+
         private static void FillEmptyAutoMappingsIfApplicable(PadSetting existingPs,
             UserDevice ud, Engine.VirtualControllerType outputType, string profileId = null)
         {

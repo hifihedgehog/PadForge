@@ -124,34 +124,26 @@ namespace PadForge.Models3D
             AddCosmetic("LeftStickWell.obj", MaterialWell);
             AddCosmetic("RightStickWell.obj", MaterialWell);
 
-            // ── The stick, split the way its author split it ──
-            // Three solids, and their names do not mean what the standard
-            // part table assumes:
+            // ── The stick: the base lights, the cap steers, the stem rides ──
+            // Three solids, and what each one is:
             //
             //   Joystick-Left-Ring  15.99 mm wide, outermost   the cap
             //   LeftStickTouch      12.24 mm wide              the stem
             //   LeftStickClick      15.22 x 2.62 mm            the base
-            //                                                  bulb, wholly
-            //                                                  behind the cap
             //
-            // On every other pad here *StickClick is the base cone under the
-            // cap, 1.35 to 1.63 times its width, so lighting it draws a
-            // collar around the stick. The Deck's is 0.95 times its cap, so
-            // the button lit a solid plate with the stick standing in the
-            // middle of it, and the sliver that cleared the cap fell on
-            // opposite sides of the two sticks, which is why one lit
-            // nothing like the other.
+            // The base is what the stick button lights, which is what every
+            // other pad here does: the DualSense, the Xbox Series, the
+            // Switch 2 Pro and the DS4 all light a base wider than their cap
+            // and leave the cap dark, so the glow reads as a collar around
+            // the stick. Lighting the stem instead put the glow on the FACE
+            // of the stick, which is the one thing the family never does.
             //
-            // HandheldCompanion carved these meshes and its own model
-            // lights the stem too (ModelSteamDeck.cs, case
-            // ButtonFlags.LeftStickTouch), painting the bulb in a separate
-            // plastic from the stick. The bulb still TILTS with the stick,
-            // the same as every other pad's base: it stays this stick's
-            // thumb, and only comes off the glow.
-            RegisterStemAsStickGlow(LeftThumb, "LeftThumbButton",
-                "LeftStickTouch.obj", MaterialAccent);
-            RegisterStemAsStickGlow(RightThumb, "RightThumbButton",
-                "RightStickTouch.obj", MaterialAccent);
+            // The stem still has to lean with the cap and the base, so it
+            // goes to AddStickRider: it moves, it does not light, and it is
+            // in no click map, since a click anywhere on the head already
+            // resolves through the cap or the base.
+            AddStickRider(LeftThumbRing, LoadStem("LeftStickTouch.obj"));
+            AddStickRider(RightThumbRing, LoadStem("RightStickTouch.obj"));
 
             PaintEverything();
 
@@ -241,31 +233,16 @@ namespace PadForge.Models3D
             model3DGroup.Children.Add(group);
         }
 
-        /// <summary>Moves a stick button's GLOW from the base bulb to the
-        /// stem under its cap, which is the part every other model here
-        /// lights.
-        ///
-        /// <para>The bulb still tilts with the stick, the same as every
-        /// other pad's base does: it stays this stick's thumb, which is
-        /// half of what the view's moving set is built from. It is only
-        /// taken off the glow, because the cap is wider than it is and
-        /// hides all but a sliver.</para></summary>
-        private void RegisterStemAsStickGlow(Model3DGroup bulb, string role,
-            string filename, Material bulbMaterial)
+        /// <summary>The shaft between a stick's cap and its base. Drawn
+        /// and painted, in no click or button map, and handed to
+        /// AddStickRider so it leans with the stick without lighting.</summary>
+        private Model3DGroup LoadStem(string filename)
         {
             var stem = TryLoadModel(filename);
-            if (stem == null) return;
+            if (stem == null) return null;
+            Paint(stem, Mat("#3A3B3D"));
             model3DGroup.Children.Add(stem);
-
-            if (bulb != null)
-            {
-                if (ButtonMap.TryGetValue(role, out var list))
-                    list.Remove(bulb);
-                ClickMap.Remove(bulb);
-                Paint(bulb, bulbMaterial);
-            }
-
-            RegisterButton(role, stem);
+            return stem;
         }
 
         private void AddRiderTo(string padSettingName, string filename, Material material)

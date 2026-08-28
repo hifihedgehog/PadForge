@@ -720,6 +720,11 @@ namespace PadForge.Views
                 foreach (var g in registered)
                     if (g != null && !parts.Contains(g))
                         parts.Add(g);
+            // Parts that lean without lighting: the Steam Deck's stem.
+            if (_currentModel.StickRiders.TryGetValue(thumbRing, out var riders))
+                foreach (var g in riders)
+                    if (g != null && !parts.Contains(g))
+                        parts.Add(g);
 
             cached = parts.ToArray();
             _stickParts[thumbRing] = cached;

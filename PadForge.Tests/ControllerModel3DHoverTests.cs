@@ -261,28 +261,32 @@ namespace PadForge.Tests
                         yield return p;
         }
 
-        /// <summary>THE PROPERTY for the stick button: its highlight covers
-        /// the stick from the case all the way up to the cap. Model space
-        /// puts the face along -Y, so the button's topmost geometry has to
-        /// reach the cap's underside.
+        /// <summary>THE PROPERTY for a stick: it is continuous. Whatever
+        /// the button lights, plus whatever rides the stick, reaches the
+        /// cap's underside, so no gap opens in the middle of the stick when
+        /// it leans. Model space puts the face along -Y, so the topmost
+        /// geometry has the smallest Y.
         ///
-        /// <para>The Steam Deck failed this. It splits its stick into three
-        /// solids where every other model ships two, and its middle one, the
-        /// capacitive barrel, was scenery. The button lit only the thin
-        /// collar at the case and the stick read as half dead.</para></summary>
+        /// <para>This asked for the BUTTON alone until 2026-08-27, which was
+        /// wrong for a stick built from three solids. The Steam Deck's stem
+        /// is the shaft between its cap and its base, and it rides without
+        /// lighting: the button lights the base, the same part of the stick
+        /// every other pad here lights.</para></summary>
         [Theory]
         [MemberData(nameof(Families))]
-        public void StickButtonReachesTheCap(string family, string appearance, bool extra)
+        public void TheStickIsContinuousUpToItsCap(string family, string appearance, bool extra)
         {
             using var m = ControllerModelBase.Create(family, appearance, extra);
             void Check(string button, Model3DGroup ring)
             {
                 if (ring == null || !m.ButtonMap.TryGetValue(button, out var groups)) return;
                 double capUnderside = ring.Bounds.Y + ring.Bounds.SizeY;
-                double buttonTop = groups.Min(g => g.Bounds.Y);
-                Assert.True(buttonTop <= capUnderside + 0.5,
-                    $"{family}: {button} stops {buttonTop - capUnderside:F2} mm short of the cap, "
-                    + "so the stem below it never lights");
+                double top = groups.Min(g => g.Bounds.Y);
+                if (m.StickRiders.TryGetValue(ring, out var riders) && riders.Count > 0)
+                    top = Math.Min(top, riders.Min(g => g.Bounds.Y));
+                Assert.True(top <= capUnderside + 0.5,
+                    $"{family}: {button} and its riders stop {top - capUnderside:F2} mm short of "
+                    + "the cap, so the stick has a gap in it");
             }
             Check("LeftThumbButton", m.LeftThumbRing);
             Check("RightThumbButton", m.RightThumbRing);
@@ -533,6 +537,8 @@ namespace PadForge.Tests
                 // list, because a base the cap hides tilts without lighting.
                 var moving = new HashSet<Model3DGroup>(groups) { ring };
                 if (thumb != null) moving.Add(thumb);
+                if (m.StickRiders.TryGetValue(ring, out var riders))
+                    foreach (var r in riders) moving.Add(r);
                 var rb = ring.Bounds;
                 double cx = rb.X + rb.SizeX / 2, cz = rb.Z + rb.SizeZ / 2;
 
@@ -617,38 +623,39 @@ namespace PadForge.Tests
             }
         }
 
-        /// <summary>Nothing a stick button lights may be hidden behind the
-        /// cap, because a glow you cannot see is not a glow.
+        /// <summary>The Steam Deck's stick button lights its BASE, the
+        /// same part of the stick every other pad here lights.
         ///
-        /// <para>The Steam Deck shipped one: the standard part table binds
-        /// *StickClick.obj to the stick button, and on this pad alone that
-        /// mesh is a flat plug on the WELL FLOOR, 0.95 times the cap's width
-        /// and wholly behind it, where every other pad's is the base cone
-        /// under the cap at 1.35 to 1.63 times its width. Pressing the stick
-        /// lit a solid plate with the stick standing in the middle of it,
-        /// and the sliver that cleared the cap fell on opposite sides of the
-        /// two sticks, so one lit nothing like the other.</para></summary>
-        [Theory]
-        [MemberData(nameof(Families))]
-        public void AStickButtonLightsNothingHiddenBehindItsCap(string family, string appearance, bool extra)
+        /// <para>The family is consistent: the DualSense, the DS4, the Xbox
+        /// Series, the Xbox 360 and the Switch 2 Pro all light a base wider
+        /// than their cap and leave the cap dark, so the glow reads as a
+        /// collar around the stick. The Deck's three solids make it possible
+        /// to get this exactly inside out, and an earlier pass did: it lit
+        /// the 12.24 mm stem, whose face IS the top of the stick, and left
+        /// the 15.22 mm base dark. Rendered through the app's own viewport
+        /// the difference is unmistakable, a lit stick face against every
+        /// other pad's lit collar.</para></summary>
+        [Fact]
+        public void TheSteamDeckLightsItsStickBaseAndNotItsFace()
         {
-            using var m = ControllerModelBase.Create(family, appearance, extra);
-            void Check(string button, Model3DGroup ring)
+            using var m = ControllerModelBase.Create("SteamDeck", null, false);
+            foreach (var (ring, button, side) in new[]
+                     { (m.LeftThumbRing, "LeftThumbButton", "left"),
+                       (m.RightThumbRing, "RightThumbButton", "right") })
             {
-                if (ring == null || !m.ButtonMap.TryGetValue(button, out var groups)) return;
-                var rb = ring.Bounds;
-                double capRear = rb.Y + rb.SizeY;
-                foreach (var g in groups)
-                {
-                    var b = g.Bounds;
-                    if (b.IsEmpty) continue;
-                    Assert.True(b.Y <= capRear + 0.01,
-                        $"{family}: {button} lights a {b.SizeX:F1} mm part that starts {b.Y - capRear:F1} mm "
-                        + "behind the cap's rear face, so the cap hides all but a sliver of it");
-                }
+                var lit = m.ButtonMap[button];
+                Assert.Single(lit);
+
+                // The base is the widest solid below the cap. The stem is
+                // the narrow one, and it rides without lighting.
+                double capWidth = ring.Bounds.SizeX;
+                Assert.True(lit[0].Bounds.SizeX > capWidth * 0.9,
+                    $"the {side} stick button lights a {lit[0].Bounds.SizeX:F1} mm part under a "
+                    + $"{capWidth:F1} mm cap, which is the stem, not the base");
+                Assert.True(m.StickRiders.TryGetValue(ring, out var riders) && riders.Count == 1,
+                    $"the {side} stem must ride the stick so it leans with the cap and the base");
+                Assert.DoesNotContain(riders[0], lit);
             }
-            Check("LeftThumbButton", m.LeftThumbRing);
-            Check("RightThumbButton", m.RightThumbRing);
         }
 
         /// <summary>Which quadrant a point falls in: 0 up, 1 down, 2 left,

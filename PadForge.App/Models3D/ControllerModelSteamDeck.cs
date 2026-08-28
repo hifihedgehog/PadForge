@@ -111,6 +111,19 @@ namespace PadForge.Models3D
             AddCosmetic("VolumeUp.obj", MaterialAccent);
             AddCosmetic("VolumeDown.obj", MaterialAccent);
 
+            // The inside of each stick well. The shell shipped with both
+            // wells capped by a flat disc of plastic at the plane the base
+            // bulb's back sits on, so the stick stood on a solid surface
+            // with no opening under it and appeared to slide across it when
+            // it leaned. tools/steam_deck_stick_well.py cuts that disc and
+            // generates these cups, which are near black so any part of the
+            // well the bulb uncovers reads as a cavity: 1.2 mm of it shows
+            // at rest, and a 2.7 mm crescent at full deflection.
+            var MaterialWell = new DiffuseMaterial(new SolidColorBrush(
+                (Color)ColorConverter.ConvertFromString("#08090A")));
+            AddCosmetic("LeftStickWell.obj", MaterialWell);
+            AddCosmetic("RightStickWell.obj", MaterialWell);
+
             // ── The stick, split the way its author split it ──
             // Three solids, and their names do not mean what the standard
             // part table assumes:

@@ -524,7 +524,7 @@ namespace PadForge.Tests
         public void TheWholeStickMovesWithIt(string family, string appearance, bool extra)
         {
             using var m = ControllerModelBase.Create(family, appearance, extra);
-            void Check(string button, Model3DGroup ring, Model3DGroup thumb)
+            void Check(string button, Model3DGroup ring, Model3DGroup thumb, double pivotY)
             {
                 if (ring == null || !m.ButtonMap.TryGetValue(button, out var groups)) return;
 
@@ -551,13 +551,70 @@ namespace PadForge.Tests
                     if (Math.Max(b.SizeX, b.SizeZ) > rb.SizeX * 1.6) continue;
                     double gx = b.X + b.SizeX / 2, gz = b.Z + b.SizeZ / 2;
                     if (Math.Abs(gx - cx) > onAxis || Math.Abs(gz - cz) > onAxis) continue;
+                    // Nothing that reaches past the stick's own pivot is
+                    // part of the stick: the pivot is inside the case by
+                    // construction. -Y is out of the face, so deeper is a
+                    // larger Y. This is what the Steam Deck's well liner is,
+                    // and its base bulb, which stops well short, is not.
+                    if (b.Y + b.SizeY > pivotY) continue;
 
                     Assert.Fail($"{family}: a {b.SizeX:F1} mm part sits on {button}'s own axis but is "
                         + "not in the moving set, so it stays put while the stick tilts");
                 }
             }
-            Check("LeftThumbButton", m.LeftThumbRing, m.LeftThumb);
-            Check("RightThumbButton", m.RightThumbRing, m.RightThumb);
+            Check("LeftThumbButton", m.LeftThumbRing, m.LeftThumb,
+                m.JoystickRotationPointCenterLeftMillimeter.Y);
+            Check("RightThumbButton", m.RightThumbRing, m.RightThumb,
+                m.JoystickRotationPointCenterRightMillimeter.Y);
+        }
+
+        /// <summary>A stick stands in an opening, not on a plate.
+        ///
+        /// <para>The Steam Deck's shell shipped with both wells capped by a
+        /// flat disc of plastic at the plane the base bulb's back sits on,
+        /// so the stick stood on a solid surface and appeared to slide
+        /// across it when it leaned. Vertex radius does not find that disc:
+        /// the triangle over the left stick's axis spans 17 mm and has every
+        /// corner outside the well, which is why the shell measured as open
+        /// while rendering closed. Cast a ray instead.</para></summary>
+        [Fact]
+        public void TheSteamDeckStandsItsSticksInOpenWells()
+        {
+            using var m = ControllerModelBase.Create("SteamDeck", null, false);
+            foreach (var (ring, side) in new[] { (m.LeftThumbRing, "left"), (m.RightThumbRing, "right") })
+            {
+                Assert.NotNull(ring);
+                var rb = ring.Bounds;
+                double ax = rb.X + rb.SizeX / 2, az = rb.Z + rb.SizeZ / 2;
+                double capRear = rb.Y + rb.SizeY;
+
+                double nearest = double.MaxValue;
+                foreach (var child in m.MainBody.Children)
+                {
+                    if (child is not GeometryModel3D geo || geo.Geometry is not MeshGeometry3D mesh)
+                        continue;
+                    var p = mesh.Positions;
+                    var idx = mesh.TriangleIndices;
+                    for (int i = 0; i + 2 < idx.Count; i += 3)
+                    {
+                        var a = p[idx[i]]; var b = p[idx[i + 1]]; var c = p[idx[i + 2]];
+                        double det = (b.Z - c.Z) * (a.X - c.X) + (c.X - b.X) * (a.Z - c.Z);
+                        if (Math.Abs(det) < 1e-12) continue;
+                        double w0 = ((b.Z - c.Z) * (ax - c.X) + (c.X - b.X) * (az - c.Z)) / det;
+                        double w1 = ((c.Z - a.Z) * (ax - c.X) + (a.X - c.X) * (az - c.Z)) / det;
+                        double w2 = 1 - w0 - w1;
+                        if (w0 < -1e-9 || w1 < -1e-9 || w2 < -1e-9) continue;
+                        double y = w0 * a.Y + w1 * b.Y + w2 * c.Y;
+                        if (y < nearest) nearest = y;
+                    }
+                }
+
+                // The back wall is 22 mm in. Anything nearer than 10 mm
+                // behind the cap is a floor the stick would stand on.
+                Assert.True(nearest > capRear + 10.0,
+                    $"the {side} stick well is capped {nearest - capRear:F1} mm behind the cap, "
+                    + "so the stick stands on a plate instead of in an opening");
+            }
         }
 
         /// <summary>Nothing a stick button lights may be hidden behind the

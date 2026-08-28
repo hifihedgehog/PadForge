@@ -192,6 +192,7 @@ namespace PadForge.Common.Input
                     _allProfiles = ctx.AllProfiles
                         .Where(p => p.IsDeployable)
                         .Where(p => !IsWithheldProfile(p.Id))
+                        .Where(p => !LeadsWithAPointingReport(p))
                         .OrderBy(p => p.Name, StringComparer.OrdinalIgnoreCase)
                         .ToList();
 
@@ -304,6 +305,98 @@ namespace PadForge.Common.Input
 
         internal static bool IsWithheldProfile(string profileId) =>
             !string.IsNullOrEmpty(profileId) && WithheldProfileIds.Contains(profileId);
+
+        /// <summary>True when the FIRST input report a descriptor declares
+        /// belongs to a mouse or a keyboard collection.
+        ///
+        /// <para>Such a profile cannot be driven. HIDMaestro frames every
+        /// input we submit into the descriptor's first input report and
+        /// prepends that report's id: SubmitRawReport takes data bytes only
+        /// (its own XML says so) and the driver re-prepends
+        /// ctx-&gt;FirstInputReportId, which
+        /// DeviceOrchestrator.ComputeInputReportByteLength reads as the
+        /// first Report ID in the descriptor. Point that at a mouse and
+        /// every frame we send becomes cursor motion.</para>
+        ///
+        /// <para>Valve's 2026 Steam Controller is exactly this shape. It
+        /// carries its lizard-mode mouse (report 0x40) and keyboard (0x41)
+        /// on the same interface as its controller state (0x42), and the
+        /// mouse comes first, so a slot on that profile drove the pointer
+        /// with its own rolling sequence number: byte 1 of our frame landed
+        /// on the mouse's relative X, 250 times a second. The owner had to
+        /// delete the virtual controller to get the cursor back.</para>
+        ///
+        /// <para>Descriptor-shaped rather than an id list, so it lifts by
+        /// itself when HIDMaestro either reorders the collections or honors
+        /// extendedReport.reportId on the raw path.</para></summary>
+        internal static bool LeadsWithAPointingReport(byte[] descriptor)
+        {
+            if (descriptor == null || descriptor.Length == 0) return false;
+
+            uint page = 0, pendingUsage = 0, appPage = 0, appUsage = 0;
+            bool haveUsage = false, sawReportId = false;
+            int depth = 0, currentReportId = 0, firstInputReportId = -1;
+            uint firstInputPage = 0, firstInputUsage = 0;
+
+            for (int i = 0; i < descriptor.Length;)
+            {
+                byte prefix = descriptor[i];
+                int size = prefix & 0x03;
+                if (size == 3) size = 4;
+                int type = (prefix >> 2) & 0x03;
+                int tag = (prefix >> 4) & 0x0F;
+
+                uint val = 0;
+                for (int j = 0; j < size && i + 1 + j < descriptor.Length; j++)
+                    val |= (uint)descriptor[i + 1 + j] << (8 * j);
+
+                if (type == 1)                       // Global
+                {
+                    if (tag == 0) page = val;        // Usage Page
+                    if (tag == 8) { currentReportId = (int)val; sawReportId = true; }
+                }
+                else if (type == 2)                  // Local
+                {
+                    if (tag == 0) { pendingUsage = val; haveUsage = true; }
+                }
+                else if (type == 0)                  // Main
+                {
+                    if (tag == 10)                   // Collection
+                    {
+                        if (depth == 0 && haveUsage) { appUsage = pendingUsage; appPage = page; }
+                        depth++;
+                    }
+                    else if (tag == 12)              // End Collection
+                    {
+                        depth--;
+                    }
+                    else if (tag == 8 && firstInputReportId < 0)   // Input
+                    {
+                        firstInputReportId = currentReportId;
+                        firstInputPage = appPage;
+                        firstInputUsage = appUsage;
+                    }
+                    haveUsage = false;
+                }
+
+                i += 1 + size;
+            }
+
+            // A descriptor with no report ids has one input report, and the
+            // driver prepends nothing, so there is nothing to collide with.
+            if (!sawReportId || firstInputReportId < 0) return false;
+
+            // Generic Desktop / Mouse and Generic Desktop / Keyboard.
+            return firstInputPage == 0x01 && (firstInputUsage == 0x02 || firstInputUsage == 0x06);
+        }
+
+        internal static bool LeadsWithAPointingReport(HMProfile p)
+        {
+            byte[] desc;
+            try { desc = p?.GetDescriptorBytes(); }
+            catch { return false; }
+            return LeadsWithAPointingReport(desc);
+        }
 
         private static bool IsXboxVendor(string vendor) =>
             !string.IsNullOrEmpty(vendor) &&

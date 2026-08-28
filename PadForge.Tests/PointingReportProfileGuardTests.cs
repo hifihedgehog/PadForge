@@ -1,25 +1,29 @@
+using System.Linq;
 using PadForge.Common.Input;
 using Xunit;
 
 namespace PadForge.Tests
 {
     /// <summary>
-    /// A virtual controller must never be built on a profile whose HID
-    /// descriptor leads with a mouse or a keyboard report.
+    /// A profile whose HID descriptor leads with a mouse or a keyboard
+    /// report cannot carry a hand-packed frame through HIDMaestro's raw
+    /// path, and the failure is loud: the frame comes back out as cursor
+    /// motion.
     ///
-    /// <para>HIDMaestro frames every input we submit into the descriptor's
-    /// FIRST input report and prepends that report's id. SubmitRawReport's
-    /// own XML says "Pass data bytes only, the driver prepends the Report ID
-    /// automatically", and DeviceOrchestrator.ComputeInputReportByteLength
-    /// takes that id from the first Report ID in the descriptor. Point it at
-    /// a mouse and every frame becomes cursor motion.</para>
+    /// <para>HMController.SubmitRawReport takes data bytes only, its own XML
+    /// says so, and the driver prepends the descriptor's FIRST report id.
+    /// Point that at a mouse and every frame we submit drives the pointer.
+    /// Valve's 2026 Steam Controller is exactly that shape: its lizard-mode
+    /// mouse (report 0x40) and keyboard (0x41) share one interface with its
+    /// controller state (0x42), and the mouse is first. A slot on that
+    /// profile drove the cursor with the rolling sequence number out of our
+    /// own frame, 250 times a second.</para>
     ///
-    /// <para>Valve's 2026 Steam Controller is exactly that shape: its
-    /// lizard-mode mouse (0x40) and keyboard (0x41) share the interface with
-    /// its controller state (0x42), and the mouse is first. A slot on that
-    /// profile drove the pointer with the rolling sequence number in byte 1
-    /// of our own frame, 250 times a second, and the owner had to delete the
-    /// virtual controller to stop it.</para>
+    /// <para>HIDMaestro owns the fix (its raw path must honor
+    /// extendedReport.reportId, HIDMaestro issue 58). These
+    /// tests are the tripwire: they name the one profile in that condition
+    /// today, so a SECOND one cannot arrive unnoticed, and the named one
+    /// stops matching the moment HIDMaestro lands the fix.</para>
     /// </summary>
     public class PointingReportProfileGuardTests
     {
@@ -39,13 +43,30 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void AMouseLeadingDescriptorIsRefused()
+        public void TheTritonDescriptorLeadsWithAMouse()
             => Assert.True(HMaestroProfileCatalog.LeadsWithAPointingReport(Hex(Triton)));
+
+        /// <summary>The 2026 Steam Controller is the ONLY profile that hand
+        /// packs a frame while its descriptor leads with a pointing report.
+        /// A second one arriving means a second controller would take over
+        /// the pointer, and this is where that gets caught.</summary>
+        [Fact]
+        public void OnlyTheKnownProfilePacksAgainstAPointingLedDescriptor()
+        {
+            var offenders = HMaestroProfileCatalog.AllProfiles
+                .Where(p => ValveReportPackers.ForProfile(p.Id) != null)
+                .Where(HMaestroProfileCatalog.LeadsWithAPointingReport)
+                .Select(p => p.Id)
+                .OrderBy(id => id)
+                .ToArray();
+
+            Assert.Equal(new[] { "steam-controller-2" }, offenders);
+        }
 
         /// <summary>A keyboard first is the same defect: HID keyboard
         /// reports are what the frame would become.</summary>
         [Fact]
-        public void AKeyboardLeadingDescriptorIsRefused()
+        public void AKeyboardLeadingDescriptorIsDetected()
         {
             byte[] kbd =
             {
@@ -66,7 +87,7 @@ namespace PadForge.Tests
         /// <summary>A gamepad that happens to use report ids is fine: the
         /// id the driver prepends is its own gamepad report.</summary>
         [Fact]
-        public void AGamepadWithReportIdsIsAllowed()
+        public void AGamepadWithReportIdsIsClean()
         {
             byte[] pad =
             {
@@ -87,7 +108,7 @@ namespace PadForge.Tests
         /// prepend, so there is nothing to collide with. That is the shape
         /// the 2015 Steam Controller and the Steam Deck ship.</summary>
         [Fact]
-        public void ADescriptorWithNoReportIdsIsAllowed()
+        public void ADescriptorWithNoReportIdsIsClean()
         {
             byte[] vendor =
             {
@@ -104,7 +125,7 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void AnEmptyDescriptorIsAllowed()
+        public void AnEmptyDescriptorIsClean()
         {
             Assert.False(HMaestroProfileCatalog.LeadsWithAPointingReport((byte[])null));
             Assert.False(HMaestroProfileCatalog.LeadsWithAPointingReport(System.Array.Empty<byte>()));

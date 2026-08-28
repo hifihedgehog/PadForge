@@ -192,7 +192,6 @@ namespace PadForge.Common.Input
                     _allProfiles = ctx.AllProfiles
                         .Where(p => p.IsDeployable)
                         .Where(p => !IsWithheldProfile(p.Id))
-                        .Where(p => !LeadsWithAPointingReport(p))
                         .OrderBy(p => p.Name, StringComparer.OrdinalIgnoreCase)
                         .ToList();
 
@@ -323,12 +322,22 @@ namespace PadForge.Common.Input
         /// on the same interface as its controller state (0x42), and the
         /// mouse comes first, so a slot on that profile drove the pointer
         /// with its own rolling sequence number: byte 1 of our frame landed
-        /// on the mouse's relative X, 250 times a second. The owner had to
-        /// delete the virtual controller to get the cursor back.</para>
+        /// on the mouse's relative X, 250 times a second.</para>
         ///
-        /// <para>Descriptor-shaped rather than an id list, so it lifts by
-        /// itself when HIDMaestro either reorders the collections or honors
-        /// extendedReport.reportId on the raw path.</para></summary>
+        /// <para>The fix belongs to HIDMaestro and is filed there as
+        /// HIDMaestro issue 58: its raw path must honor
+        /// extendedReport.reportId. Neither side can work
+        /// around it here. Submitting 53 data bytes instead only changes
+        /// which of our bytes becomes the X delta, and HIDMaestro's own
+        /// codec path cannot carry this pad either, because the profile's
+        /// button list omits Misc1, LT_DIGITAL, RT_DIGITAL and two of the
+        /// four rear buttons, and VendorBlobProgram silently skips a name
+        /// it cannot parse to an HMButton.</para>
+        ///
+        /// <para>So this is a TRIPWIRE, not a gate. It reads the descriptor
+        /// rather than an id list, so PointingReportProfileGuardTests
+        /// catches a second profile arriving in this condition, and stops
+        /// naming the first one when HIDMaestro lands the fix.</para></summary>
         internal static bool LeadsWithAPointingReport(byte[] descriptor)
         {
             if (descriptor == null || descriptor.Length == 0) return false;

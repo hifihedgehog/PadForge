@@ -1255,6 +1255,17 @@ namespace PadForge.Common.Input
             _nintendoWireStamp[padIndex] = profileId;
         }
 
+        /// <summary>The wire a slot's raw mapping data is currently authored
+        /// under, or null when no wire owns it.
+        ///
+        /// <para>A caller reads this to tell a LIVE profile change from a
+        /// restore: every path that installs data and profile together
+        /// stamps first, so stamp == incoming means the data already belongs
+        /// to that profile and must not be touched.</para></summary>
+        public static string GetWireStamp(int padIndex)
+            => padIndex >= 0 && padIndex < _nintendoWireStamp.Length
+                ? _nintendoWireStamp[padIndex] : null;
+
         public static void ReAutoMapSlot(int padIndex, Engine.VirtualControllerType outputType,
             string profileId = null)
         {

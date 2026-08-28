@@ -257,17 +257,40 @@ namespace PadForge.ViewModels
             {
                 if (SetProperty(ref _profileId, value))
                 {
-                    // Nintendo raw targets are WIRE-RELATIVE, and the two
-                    // Switch families share almost no indices. Move the
-                    // existing bindings by role before anything rebuilds
-                    // against the new wire, or every one of them keeps its
-                    // index and silently changes meaning. The translation
-                    // keys on SettingsManager's wire stamp, NOT on this
-                    // setter's previous value: restore/apply/import paths
-                    // stamp the incoming wire first and this call no-ops
-                    // for them, so only a live user change translates.
-                    if (_outputType == VirtualControllerType.Nintendo)
+                    // Raw targets are WIRE-RELATIVE, and the lettered
+                    // families share almost no indices: the two Switch
+                    // families, and the three Valve ones. Move the existing
+                    // bindings by role before anything rebuilds against the
+                    // new wire, or every one of them keeps its index and
+                    // silently changes meaning. The translation keys on
+                    // SettingsManager's wire stamp, NOT on this setter's
+                    // previous value: restore/apply/import paths stamp the
+                    // incoming wire first and this call no-ops for them, so
+                    // only a live user change translates.
+                    //
+                    // Read the stamp BEFORE translating, which overwrites it.
+                    string fromWire = SettingsManager.GetWireStamp(PadIndex);
+                    bool liveRetarget = !string.IsNullOrEmpty(fromWire)
+                        && !string.Equals(fromWire, value, System.StringComparison.OrdinalIgnoreCase);
+
+                    // Extended carries the three VALVE wires, which need the
+                    // same move Nintendo has always had and never got: a
+                    // slot switched from the Steam Deck to the 2015 Steam
+                    // Controller kept Steam on RawBtn10, which is the left
+                    // grip over there, and kept a left pad click on RawBtn16,
+                    // which is off the end of that 14-button wire.
+                    //
+                    // Both sides must be LETTERED. NintendoPreviewMap falls
+                    // back to the Switch Pro table for an unlettered id, so
+                    // translating a numbered Extended profile would map its
+                    // rows onto a wire that has nothing to do with them.
+                    bool bothLettered = Models2D.NintendoPreviewMap.IsLettered(value)
+                        && Models2D.NintendoPreviewMap.IsLettered(fromWire);
+                    if (liveRetarget
+                        && (_outputType == VirtualControllerType.Nintendo || bothLettered))
                         SettingsManager.TranslateNintendoRawMappings(PadIndex, value);
+                    else if (liveRetarget)
+                        SettingsManager.StampNintendoWire(PadIndex, value);
 
                     // For Extended slots, the profile defines the VC's layout.
                     // Sync ExtendedConfig's stick/trigger/POV/button counts from
@@ -282,6 +305,28 @@ namespace PadForge.ViewModels
                     if (_outputType is VirtualControllerType.Extended
                         or VirtualControllerType.Nintendo)
                     {
+                        // Then AUTOMAP what the new profile added. The
+                        // translation above moves what was already bound;
+                        // it cannot fill a target the outgoing wire never
+                        // had, and those are exactly the rows that came up
+                        // empty when switching to a Valve profile. Fill is
+                        // additive, so a binding the user authored or
+                        // deliberately cleared on THIS wire survives, and it
+                        // runs only on a live re-target so a restore never
+                        // refills what the user cleared.
+                        //
+                        // Merge into the slot's MappingSet before the
+                        // rebuild below, the same order the type-change path
+                        // uses: the grid rebuilds from the set, and the save
+                        // pipeline regenerates settings from the grid, so a
+                        // rebuild over a pre-merge set persists a skeleton
+                        // over the truth.
+                        if (liveRetarget)
+                        {
+                            DeviceService.FillEmptyAutoMappingsForSlot(PadIndex, _outputType, value);
+                            SettingsService.RefreshMappingSetsFromLegacy();
+                        }
+
                         SyncExtendedConfigFromProfile();
                         // Force Customize on whenever the user picks the
                         // synthetic "Custom" entry — it's only useful as a

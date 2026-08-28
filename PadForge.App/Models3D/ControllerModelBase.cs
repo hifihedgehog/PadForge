@@ -232,6 +232,23 @@ namespace PadForge.Models3D
         //  Button registration
         // ─────────────────────────────────────────────
 
+        /// <summary>Parts that lean with a stick without lighting with it,
+        /// keyed by that stick's ring.
+        ///
+        /// <para>Tilting and glowing are different sets. The Steam Deck's
+        /// stem is the shaft between its cap and its base: it has to lean
+        /// with them, and it must NOT light, because the glow belongs on the
+        /// base the way it does on every other pad here.</para></summary>
+        public readonly Dictionary<Model3DGroup, List<Model3DGroup>> StickRiders = new();
+
+        protected void AddStickRider(Model3DGroup ring, Model3DGroup part)
+        {
+            if (ring == null || part == null) return;
+            if (!StickRiders.TryGetValue(ring, out var list))
+                StickRiders[ring] = list = new List<Model3DGroup>();
+            list.Add(part);
+        }
+
         /// <summary>Registers a surface whose quadrants are four targets,
         /// in up / down / left / right order. See <see cref="QuadrantMap"/>.</summary>
         protected void RegisterQuadrants(Model3DGroup group, string up, string down, string left, string right)

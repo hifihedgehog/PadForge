@@ -65,31 +65,13 @@ namespace PadForge.Tests
         [Theory]
         [InlineData("steam-deck-composite")]
         [InlineData("steam-controller-composite")]
+        [InlineData("steam-controller-2")]
         [InlineData("steam-controller")]
         [InlineData("steam-deck")]
         public void ValveProfilesAreOffered(string id)
         {
             Assert.Contains(HMaestroProfileCatalog.AllProfiles, p => p.Id == id);
             Assert.Contains(HMaestroProfileCatalog.ExtendedProfiles, p => p.Id == id);
-        }
-
-        /// <summary>The 2026 Steam Controller is NOT offered, and the reason
-        /// is its descriptor, not a decision about the pad.
-        ///
-        /// <para>It carries its lizard-mode mouse (report 0x40) and keyboard
-        /// (0x41) ahead of its controller state (0x42) on one interface, and
-        /// HIDMaestro frames every submission into the FIRST input report a
-        /// descriptor declares. A slot on this profile drove the pointer with
-        /// the rolling sequence number out of our own frame, 250 times a
-        /// second, and the owner had to delete the virtual controller to get
-        /// the cursor back. This lifts by itself once HIDMaestro reorders
-        /// the collections or honors extendedReport.reportId on the raw
-        /// path, because the gate reads the descriptor.</para></summary>
-        [Fact]
-        public void TheSteamController2026IsHeldBackWhileItsDescriptorLeadsWithAMouse()
-        {
-            Assert.DoesNotContain(HMaestroProfileCatalog.AllProfiles,
-                p => p.Id == "steam-controller-2");
         }
 
         /// <summary>Each Valve profile resolves to its OWN art, never to a

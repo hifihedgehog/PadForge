@@ -39,44 +39,46 @@ namespace PadForge.Models3D
         private readonly Model3DGroup LeftPad, RightPad;
         private readonly System.Collections.Generic.List<Model3DGroup> RightPadQuarters = new();
 
-        /// <summary>This pad's touch surfaces span the WHOLE pad, which the
-        /// *PadTouch mesh alone does not.
+        /// <summary>This pad's touch face is the WHOLE pad, which the
+        /// *PadTouch mesh alone is not.
         ///
         /// <para>Both pads are carved into four direction quarters around a
         /// center disc: the left pad's quarters ARE this controller's D-pad
         /// (SDL reads its quadrant bits as a hat) and the right pad's are
-        /// the right stick's four directions. The center disc measures 16.93
-        /// by 16.94 mm against a pad about 42 mm across, so a finger dot
-        /// mapped to the disc alone would crawl around the middle 40% and
-        /// never reach an edge.</para></summary>
-        public override Rect3D TouchpadArea0 => Union(Touchpad,
-            "DPadUp", "DPadDown", "DPadLeft", "DPadRight");
+        /// the right stick's four directions. The center disc measures 16.9
+        /// mm against a pad about 42 mm across, so a finger dot fitted to
+        /// the disc alone would crawl around the middle 40% and never reach
+        /// an edge.</para></summary>
+        public override Model3DGroup[] TouchParts0
+            => Parts(Touchpad, "DPadUp", "DPadDown", "DPadLeft", "DPadRight");
 
-        public override Rect3D TouchpadArea1
+        public override Model3DGroup[] TouchParts1
         {
             get
             {
-                var r = TouchpadRight?.Bounds ?? Rect3D.Empty;
+                var list = new System.Collections.Generic.List<Model3DGroup>();
+                if (TouchpadRight != null) list.Add(TouchpadRight);
                 foreach (var q in RightPadQuarters)
-                    if (q != null) r.Union(q.Bounds);
-                return r;
+                    if (q != null) list.Add(q);
+                return list.ToArray();
             }
         }
 
-        /// <summary>The unioned area above IS the pad, so there is no bezel
-        /// left to crop.</summary>
+        /// <summary>The fitted face IS the pad, so there is no bezel left
+        /// to crop.</summary>
         public override double TouchpadXInsetFrac => 0.0;
         public override double TouchpadZTopInsetFrac => 0.0;
         public override double TouchpadZBottomInsetFrac => 0.0;
 
-        private Rect3D Union(Model3DGroup center, params string[] targets)
+        private Model3DGroup[] Parts(Model3DGroup center, params string[] targets)
         {
-            var r = center?.Bounds ?? Rect3D.Empty;
+            var list = new System.Collections.Generic.List<Model3DGroup>();
+            if (center != null) list.Add(center);
             foreach (var name in targets)
-                if (ButtonMap.TryGetValue(name, out var list))
-                    foreach (var g in list)
-                        if (g != null) r.Union(g.Bounds);
-            return r;
+                if (ButtonMap.TryGetValue(name, out var groups))
+                    foreach (var g in groups)
+                        if (g != null) list.Add(g);
+            return list.ToArray();
         }
         private readonly Model3DGroup LeftGripButton, RightGripButton;
 

@@ -110,17 +110,160 @@ namespace PadForge.Models3D
         /// surface, which is what a DualSense does.</para></summary>
         public Model3DGroup TouchpadRight;
 
-        /// <summary>The area each finger rides, in model space.
+        /// <summary>A pad's touchable face: where it sits, which way it
+        /// faces, and how far it runs across and up ITS OWN plane.
         ///
-        /// <para>The group's own bounds on every model whose pad is one
-        /// mesh, which measurement says is all of them but one: the pad
-        /// meshes ARE their touch surfaces, with a bezel of 1.2% on the 2026
-        /// Steam Controller and none at all on the Deck or the DualSense.
-        /// The 2015 Steam Controller splits each pad into four direction
-        /// quarters around a center disc, so it overrides these to span the
-        /// whole pad instead of the 40% the center covers.</para></summary>
-        public virtual Rect3D TouchpadArea0 => Touchpad?.Bounds ?? Rect3D.Empty;
-        public virtual Rect3D TouchpadArea1 => (TouchpadRight ?? Touchpad)?.Bounds ?? Rect3D.Empty;
+        /// <para>An axis-aligned bounding box cannot describe one. Every
+        /// Valve pad is canted: the 2026's faces 15 degrees off the
+        /// controller's own front and the 2015's 19, so a point placed on
+        /// the box lands beside the pad rather than on it, and the box's
+        /// corners reach past the pad's outline entirely.</para></summary>
+        public readonly struct TouchSurface
+        {
+            public readonly Point3D Center;
+            public readonly Vector3D Normal, AxisU, AxisV;
+            public readonly double ExtentU, ExtentV;
+
+            public TouchSurface(Point3D center, Vector3D normal, Vector3D u, Vector3D v,
+                double extentU, double extentV)
+            {
+                Center = center; Normal = normal; AxisU = u; AxisV = v;
+                ExtentU = extentU; ExtentV = extentV;
+            }
+
+            public bool IsEmpty => ExtentU <= 0 || ExtentV <= 0;
+
+            /// <summary>The point at normalized (u, v), lifted off the face
+            /// along its normal. u runs left to right and v top to bottom,
+            /// the convention the touch reports use.</summary>
+            public Point3D At(double u, double v, double lift)
+                => Center
+                 + AxisU * ((u - 0.5) * ExtentU)
+                 + AxisV * ((0.5 - v) * ExtentV)
+                 + Normal * lift;
+        }
+
+        private TouchSurface? _touchSurface0, _touchSurface1;
+
+        /// <summary>The parts whose front faces make up each pad. One mesh
+        /// on nearly every model; the 2015 Steam Controller overrides these
+        /// because each of its pads is four direction quarters around a
+        /// center disc, and the disc alone is 40% of the pad.</summary>
+        public virtual Model3DGroup[] TouchParts0
+            => Touchpad == null ? System.Array.Empty<Model3DGroup>() : new[] { Touchpad };
+        public virtual Model3DGroup[] TouchParts1
+            => (TouchpadRight ?? Touchpad) == null
+                ? System.Array.Empty<Model3DGroup>() : new[] { TouchpadRight ?? Touchpad };
+
+        public TouchSurface TouchpadSurface0
+            => _touchSurface0 ??= MeasureTouchSurface(TouchParts0);
+        public TouchSurface TouchpadSurface1
+            => _touchSurface1 ??= MeasureTouchSurface(TouchParts1);
+
+        /// <summary>Fits a pad's front face from its geometry.
+        ///
+        /// <para>Take the outward-facing triangles for a rough normal, keep
+        /// the ones lying within 5 mm of the frontmost point along it, and
+        /// re-fit. That 5 mm is what separates a face from its mounting: the
+        /// 2026's pad mesh runs 38 mm deep and its front face is a 3 mm
+        /// slab carrying 1775 of the 1800 outward-facing triangles, with the
+        /// boss more than 20 mm behind. All three Valve faces come out flat
+        /// to half a millimetre, so a plane is the whole story.</para>
+        ///
+        /// <para>The axes are built from the normal rather than fitted, so
+        /// they cannot come out arbitrary: U is the normal crossed with the
+        /// model's up, which points to the controller's right, and V is U
+        /// crossed back, which points to its top.</para></summary>
+        protected static TouchSurface MeasureTouchSurface(Model3DGroup[] parts)
+        {
+            if (parts == null || parts.Length == 0) return default;
+
+            var pts = new System.Collections.Generic.List<Point3D>();
+            var tris = new System.Collections.Generic.List<(Point3D A, Point3D B, Point3D C)>();
+            foreach (var g in parts)
+            {
+                if (g == null) continue;
+                foreach (var child in g.Children)
+                {
+                    if (child is not GeometryModel3D geo || geo.Geometry is not MeshGeometry3D mesh)
+                        continue;
+                    var pos = mesh.Positions;
+                    var idx = mesh.TriangleIndices;
+                    for (int i = 0; i + 2 < idx.Count; i += 3)
+                        tris.Add((pos[idx[i]], pos[idx[i + 1]], pos[idx[i + 2]]));
+                }
+            }
+            if (tris.Count == 0) return default;
+
+            static Vector3D FaceNormal(in (Point3D A, Point3D B, Point3D C) t, out double area)
+            {
+                var n = Vector3D.CrossProduct(t.B - t.A, t.C - t.A);
+                double len = n.Length;
+                area = len / 2.0;
+                if (len < 1e-12) return new Vector3D(0, 0, 0);
+                n /= len;
+                return n;
+            }
+
+            // Rough outward normal: -Y is out of the controller's face.
+            var rough = new Vector3D(0, 0, 0);
+            foreach (var tri in tris)
+            {
+                var n = FaceNormal(tri, out double area);
+                if (n.Y < -0.5) rough += n * area;
+            }
+            if (rough.Length < 1e-9) return default;
+            rough.Normalize();
+
+            double front = double.MinValue;
+            foreach (var tri in tris)
+            {
+                var n = FaceNormal(tri, out _);
+                if (Vector3D.DotProduct(n, rough) <= 0.5) continue;
+                var c = ((Vector3D)tri.A + (Vector3D)tri.B + (Vector3D)tri.C) / 3.0;
+                front = Math.Max(front, Vector3D.DotProduct(c, rough));
+            }
+            if (front == double.MinValue) return default;
+
+            var normal = new Vector3D(0, 0, 0);
+            foreach (var tri in tris)
+            {
+                var n = FaceNormal(tri, out double area);
+                if (Vector3D.DotProduct(n, rough) <= 0.5) continue;
+                var c = ((Vector3D)tri.A + (Vector3D)tri.B + (Vector3D)tri.C) / 3.0;
+                if (Vector3D.DotProduct(c, rough) < front - 5.0) continue;
+                normal += n * area;
+                pts.Add(tri.A); pts.Add(tri.B); pts.Add(tri.C);
+            }
+            if (pts.Count == 0 || normal.Length < 1e-9) return default;
+            normal.Normalize();
+
+            var axisU = Vector3D.CrossProduct(new Vector3D(0, 0, 1), normal);
+            if (axisU.Length < 1e-9) return default;
+            axisU.Normalize();
+            var axisV = Vector3D.CrossProduct(normal, axisU);
+            axisV.Normalize();
+
+            double u0 = double.MaxValue, u1 = double.MinValue;
+            double v0 = double.MaxValue, v1 = double.MinValue, n1 = double.MinValue;
+            foreach (var p in pts)
+            {
+                var q = (Vector3D)p;
+                double du = Vector3D.DotProduct(q, axisU);
+                double dv = Vector3D.DotProduct(q, axisV);
+                double dn = Vector3D.DotProduct(q, normal);
+                if (du < u0) u0 = du;
+                if (du > u1) u1 = du;
+                if (dv < v0) v0 = dv;
+                if (dv > v1) v1 = dv;
+                if (dn > n1) n1 = dn;
+            }
+
+            var center = (Point3D)(axisU * ((u0 + u1) / 2.0)
+                                 + axisV * ((v0 + v1) / 2.0)
+                                 + normal * n1);
+            return new TouchSurface(center, normal, axisU, axisV, u1 - u0, v1 - v0);
+        }
 
         /// <summary>Per-model fractional insets that crop the Touchpad mesh
         /// bounds down to the actual touch-sensitive surface for finger-sphere

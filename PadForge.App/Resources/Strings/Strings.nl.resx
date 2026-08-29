@@ -255,7 +255,7 @@
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Configureer het pollinggedrag en achtergrondverwerking.</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Engine automatisch starten bij opstarten</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Polling voortzetten wanneer het venster de focus verliest</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Polling-interval</value></data>
+  <data name="Settings_PollingInterval" xml:space="preserve"><value>Polling-interval (profielen kunnen dit overschrijven)</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Apparaten verbergen voor games</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Hoofdschakelaar voor HidHide-apparaatverberging en low-level invoerhooks. Bij uitschakeling worden geen apparaten verborgen, ongeacht individuele apparaatinstellingen.</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Venster</value></data>

@@ -255,7 +255,7 @@
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Configure el comportamiento de sondeo y el procesamiento en segundo plano.</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Iniciar motor automáticamente al abrir</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Continuar sondeo cuando la ventana pierde el foco</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Intervalo de sondeo</value></data>
+  <data name="Settings_PollingInterval" xml:space="preserve"><value>Intervalo de sondeo (los perfiles pueden anularlo)</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Ocultar dispositivos de los juegos</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Interruptor principal para la ocultación de dispositivos con HidHide y los hooks de entrada de bajo nivel. Cuando está desactivado, no se oculta ningún dispositivo independientemente de la configuración individual.</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Ventana</value></data>

@@ -113,7 +113,7 @@ namespace PadForge.Tests
                 OutputType = PadForge.Engine.VirtualControllerType.Extended,
                 ProfileId = "steam-controller",
             };
-            Assert.Single(vm.Mappings.Where(x => x.TargetSettingName == "RawBtn13"));
+            Assert.Single(vm.Mappings, x => x.TargetSettingName == "RawBtn13");
             Assert.Equal(profile, profile);
         }
 

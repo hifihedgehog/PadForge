@@ -214,9 +214,10 @@ public static class NintendoPreviewMap
     public static string[] AxisTable(string profileId) =>
         IsValve(profileId) ? PreviewByValveAxis : PreviewByNintendoAxis;
 
-    /// <summary>Stick count the raw surface has to be sized for.</summary>
-    public static int StickCount(string profileId) =>
-        FamilyOf(profileId) == Family.SteamController ? 2 : 2;   // the 2015 pad rides its right pad as a stick
+    /// <summary>Stick count the raw surface has to be sized for. Two on
+    /// every family: the 2015 pad has one physical stick and rides its
+    /// right trackpad as the other.</summary>
+    public static int StickCount(string profileId) => 2;
 
     /// <summary>Analog trigger count on the wire (zero on Nintendo, whose
     /// ZL / ZR are buttons).</summary>

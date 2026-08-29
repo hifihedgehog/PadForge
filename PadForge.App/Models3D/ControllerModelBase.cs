@@ -349,10 +349,6 @@ namespace PadForge.Models3D
 
             var center = (Point3D)(axisU * midU + axisV * midV + normal * n1);
 
-            // Round or not, measured the same way the rectangle was: the
-            // hull's area against the rectangle's. A circle fills 0.785 of
-            // its bounding square and a rounded square about 0.98, so the
-            // two are never in doubt.
             return new TouchSurface(center, normal, axisU, axisV, halfU * 2, halfV * 2, radius);
         }
 

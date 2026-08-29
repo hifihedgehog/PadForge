@@ -87,19 +87,30 @@ namespace PadForge.Tests
             }
         }
 
-        /// <summary>The pivot sits behind the pad the way the family's do:
+        /// <summary>The pivot sits behind the CAP the way the family's do:
         /// 17 mm on the DualSense, 19 on the Switch 2 Pro, 20 on the Xbox
-        /// Series, 22 on the Xbox 360.</summary>
+        /// Series, 22 on the Xbox 360. Measured from the cap and not from
+        /// the pad, because that is where those four are measured from and
+        /// this stick stands proud of its pad.</summary>
         [Fact]
-        public void ThePivotSitsBehindThePadLikeEveryOtherStick()
+        public void ThePivotSitsBehindTheCapLikeEveryOtherStick()
         {
             using var m = ControllerModelBase.Create("SteamController", null, false);
             var pad = m.TouchpadSurface1;
             var pivot = m.JoystickRotationPointCenterRightMillimeter;
 
-            double depth = Vector3D.DotProduct(
-                pad.Center - (Point3D)pivot, pad.Normal);
-            Assert.InRange(depth, 12.0, 26.0);
+            double capFace = double.MinValue;
+            foreach (var child in m.RightThumbRing.Children)
+            {
+                if (child is not GeometryModel3D geo || geo.Geometry is not MeshGeometry3D mesh)
+                    continue;
+                foreach (var p in mesh.Positions)
+                    capFace = Math.Max(capFace, Vector3D.DotProduct((Vector3D)p, pad.Normal));
+            }
+            Assert.True(capFace > double.MinValue);
+
+            double depth = capFace - Vector3D.DotProduct(pivot, pad.Normal);
+            Assert.InRange(depth, 15.0, 24.0);
         }
     }
 }

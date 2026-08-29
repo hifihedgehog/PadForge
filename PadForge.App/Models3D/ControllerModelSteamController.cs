@@ -12,6 +12,7 @@
 
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using HelixToolkit.Wpf;
 
 namespace PadForge.Models3D
 {
@@ -72,33 +73,34 @@ namespace PadForge.Models3D
 
         /// <summary>Stands a translucent thumbstick on the right pad.
         ///
-        /// <para>It is scenery with one job: it is this model's
+        /// <para>It is scenery with one job: the stick is this model's
         /// RightThumbRing, so the preview's joystick pass leans it with the
         /// right stick's axes, which the pad already drives (the axis table
         /// maps the pad to RightThumbAxisX and Y, and PadViewModel feeds
-        /// RawThumbRX and RY from it). It is in no click or button map, so
-        /// hovering still finds the pad's quarters and its click
+        /// RawThumbRX and RY from it). Neither piece is in a click or button
+        /// map, so hovering still finds the pad's quarters and its click
         /// underneath.</para>
         ///
+        /// <para>Two pieces, because a stick is two things. The doughnut
+        /// ring is the collar and stays put on the pad, the way a real one
+        /// is fixed to the shell. The stem and its dished cap are the stick
+        /// and lean.</para>
+        ///
         /// <para>Built from the pad's measured face rather than from
-        /// numbers: center, normal and extent all come from TouchSurface,
-        /// so the stick stands square to a pad that is canted 19 degrees and
-        /// scales with it. The pivot sits 19 mm behind the cap face, which
-        /// is where the family puts one (17 on the DualSense, 19 on the
-        /// Switch 2 Pro, 20 on the Xbox Series, 22 on the Xbox 360).</para></summary>
+        /// numbers: center, normal and radius all come from TouchSurface, so
+        /// it stands square to a pad canted 19 degrees and scales with it.
+        /// The pivot sits 19 mm behind the cap, which is where the family
+        /// puts one (17 on the DualSense, 19 on the Switch 2 Pro, 20 on the
+        /// Xbox Series, 22 on the Xbox 360).</para></summary>
         private void BuildRightStickGhost()
         {
             var pad = TouchpadSurface1;
             if (pad.IsEmpty) return;
 
-            // Sized off the pad so it reads as a stick on THIS pad: a cap a
-            // quarter of the pad across, on a stem half that wide.
-            double capR = pad.ExtentU * 0.155;
-            double stemR = capR * 0.42;
-            // Kept low on purpose. The pad is canted 19 degrees, so height
-            // along its normal also carries the cap down and outward, and a
-            // tall ghost stops reading as centered on the pad.
-            double rise = capR * 0.7;
+            // Everything scales off the pad's own radius. This pad is round,
+            // measured: its outline fills 0.786 of its bounding square where
+            // a circle gives 0.785.
+            double r = pad.Radius > 0 ? pad.Radius : pad.ExtentU / 2;
 
             // Stand it on the pad's OWN center, not the fitted plane's. The
             // plane is fitted from the four quarters as well as the center
@@ -109,33 +111,101 @@ namespace PadForge.Models3D
                                          disc.Y + disc.SizeY / 2,
                                          disc.Z + disc.SizeZ / 2);
             var up = pad.Normal;
-            // Slide it along the normal until it sits on the plane the pad's
-            // face defines, so it stands ON the pad rather than in it.
             double lift = Vector3D.DotProduct(pad.Center - discCenter, up);
             var face = discCenter + up * lift;
-            var capCenter = face + up * rise;
 
-            var mb = new HelixToolkit.Wpf.MeshBuilder(false, false);
-            mb.AddCylinder(face + up * 0.4, capCenter, stemR * 2, 20);
-            mb.AddSphere(capCenter, capR, 20, 12);
-
-            // Translucent, and lit from both sides: a see-through solid
-            // shows its own far wall, and without a back material that wall
-            // renders as a hole.
             // Dim and cool. A brighter ghost reads as a lit control, and
             // this one is never lit: it is a label for what the pad does.
             var brush = new SolidColorBrush(Color.FromArgb(0x55, 0x8F, 0xA0, 0xB4));
             var material = new DiffuseMaterial(brush);
-            var geo = new GeometryModel3D(mb.ToMesh(), material) { BackMaterial = material };
+
+            // ── The collar, fixed to the pad ──
+            double ringR = r * 0.36, tube = r * 0.045;
+            var ring = new MeshBuilder(false, false);
+            var torus = new System.Collections.Generic.List<(double R, double H)>();
+            for (int i = 0; i <= 16; i++)
+            {
+                double a = 2 * Math.PI * i / 16;
+                torus.Add((ringR + tube * Math.Cos(a), tube + tube * Math.Sin(a)));
+            }
+            Revolve(ring, face, up, torus, 40);
+            var collar = new Model3DGroup();
+            collar.Children.Add(new GeometryModel3D(ring.ToMesh(), material) { BackMaterial = material });
+            Paint(collar, material);
+            model3DGroup.Children.Add(collar);
+
+            // ── The stick, which leans ──
+            // A stem that tapers up into a cap whose face dishes back in,
+            // the shape every thumbstick in this tree has.
+            double stemR = r * 0.105, neckR = r * 0.085;
+            double capR = r * 0.235, capH = r * 0.30, lipH = r * 0.37, dishH = r * 0.335;
+            var body = new MeshBuilder(false, false);
+            Revolve(body, face, up, new System.Collections.Generic.List<(double, double)>
+            {
+                (0.0, 0.0),
+                (stemR, 0.0),
+                (neckR, capH * 0.75),
+                (capR * 0.86, capH),
+                (capR, lipH * 0.92),
+                (capR * 0.93, lipH),
+                (capR * 0.72, dishH),
+                (0.0, dishH * 0.97),
+            }, 40);
 
             RightThumbRing = new Model3DGroup();
-            RightThumbRing.Children.Add(geo);
+            RightThumbRing.Children.Add(
+                new GeometryModel3D(body.ToMesh(), material) { BackMaterial = material });
             Paint(RightThumbRing, material);
             model3DGroup.Children.Add(RightThumbRing);
 
-            var pivot = capCenter - up * 19.0;
+            var pivot = face + up * (lipH - 19.0);
             JoystickRotationPointCenterRightMillimeter =
                 new Vector3D(pivot.X, pivot.Y, pivot.Z);
+        }
+
+        /// <summary>Revolves a (radius, height) profile about an axis and
+        /// adds it to the builder. Height runs along the axis from the base
+        /// point. One helper covers the collar's torus and the stick's
+        /// tapered body, so both stay square to a canted pad without any
+        /// transform stack.</summary>
+        private static void Revolve(MeshBuilder mb, Point3D basePoint, Vector3D axis,
+            System.Collections.Generic.IList<(double R, double H)> profile, int segments)
+        {
+            if (profile.Count < 2 || segments < 3) return;
+
+            // Any two directions square to the axis will do: the shape is a
+            // surface of revolution, so where the seam falls does not show.
+            var side = Vector3D.CrossProduct(axis, new Vector3D(0, 0, 1));
+            if (side.Length < 1e-6) side = Vector3D.CrossProduct(axis, new Vector3D(1, 0, 0));
+            side.Normalize();
+            var other = Vector3D.CrossProduct(axis, side);
+            other.Normalize();
+
+            Point3D At(int seg, int step)
+            {
+                double a = 2 * Math.PI * (seg % segments) / segments;
+                var (rad, h) = profile[step];
+                return basePoint + axis * h + (side * Math.Cos(a) + other * Math.Sin(a)) * rad;
+            }
+
+            for (int step = 0; step + 1 < profile.Count; step++)
+            {
+                for (int seg = 0; seg < segments; seg++)
+                {
+                    var p0 = At(seg, step);
+                    var p1 = At(seg + 1, step);
+                    var p2 = At(seg + 1, step + 1);
+                    var p3 = At(seg, step + 1);
+
+                    // A profile point on the axis makes the quad a triangle.
+                    if (profile[step].R < 1e-9)
+                        mb.AddTriangle(p0, p2, p3);
+                    else if (profile[step + 1].R < 1e-9)
+                        mb.AddTriangle(p0, p1, p2);
+                    else
+                        mb.AddQuad(p0, p1, p2, p3);
+                }
+            }
         }
 
         private Model3DGroup[] Parts(Model3DGroup center, params string[] targets)

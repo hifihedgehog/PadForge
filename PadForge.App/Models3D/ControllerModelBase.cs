@@ -124,23 +124,52 @@ namespace PadForge.Models3D
             public readonly Vector3D Normal, AxisU, AxisV;
             public readonly double ExtentU, ExtentV;
 
+            /// <summary>The pad's radius when it is ROUND, else zero.
+            ///
+            /// <para>The 2015 Steam Controller's pads are circles: their
+            /// outlines fill 0.786 of their own bounding square against the
+            /// 0.785 a circle gives, with a radius steady to a twentieth of
+            /// a millimetre. The 2026's and the Deck's are rounded squares
+            /// at 0.975 and 0.983.</para></summary>
+            public readonly double Radius;
+
             public TouchSurface(Point3D center, Vector3D normal, Vector3D u, Vector3D v,
-                double extentU, double extentV)
+                double extentU, double extentV, double radius)
             {
                 Center = center; Normal = normal; AxisU = u; AxisV = v;
-                ExtentU = extentU; ExtentV = extentV;
+                ExtentU = extentU; ExtentV = extentV; Radius = radius;
             }
 
             public bool IsEmpty => ExtentU <= 0 || ExtentV <= 0;
 
             /// <summary>The point at normalized (u, v), lifted off the face
             /// along its normal. u runs left to right and v top to bottom,
-            /// the convention the touch reports use.</summary>
+            /// the convention the touch reports use.
+            ///
+            /// <para>On a ROUND pad the offset is held inside the circle. A
+            /// touch report's two axes span a square, and the corners of
+            /// that square are off a round pad: a finger cannot be there.
+            /// Real readings sit inside the circle and pass through
+            /// untouched, so this only pins the impossible ones to the
+            /// rim.</para></summary>
             public Point3D At(double u, double v, double lift)
-                => Center
-                 + AxisU * ((u - 0.5) * ExtentU)
-                 + AxisV * ((0.5 - v) * ExtentV)
-                 + Normal * lift;
+            {
+                double du = (u - 0.5) * ExtentU;
+                double dv = (0.5 - v) * ExtentV;
+
+                if (Radius > 0)
+                {
+                    double away = Math.Sqrt(du * du + dv * dv);
+                    if (away > Radius && away > 1e-9)
+                    {
+                        double scale = Radius / away;
+                        du *= scale;
+                        dv *= scale;
+                    }
+                }
+
+                return Center + AxisU * du + AxisV * dv + Normal * lift;
+            }
         }
 
         private TouchSurface? _touchSurface0, _touchSurface1;
@@ -265,6 +294,42 @@ namespace PadForge.Models3D
                              out double midU, out double midV))
                 return default;
 
+            // Round or not, measured the same way the rectangle was: the
+            // hull's area against the rectangle's. A circle fills 0.785 of
+            // its bounding square and a rounded square about 0.98, so the
+            // two are never in doubt. The 2015 Steam Controller's pads come
+            // out at 0.786.
+            //
+            // Computed HERE, in the rectangle's own frame and before the
+            // axes below are swapped or flipped. Reading it afterwards mixes
+            // frames, and mixing them read this pad's radius 11% long, which
+            // is enough to push the finger dot off the rim.
+            double radius = 0;
+            var hull = ConvexHull(flat);
+            if (hull.Count >= 3)
+            {
+                double hullArea = 0;
+                for (int i = 0; i < hull.Count; i++)
+                {
+                    var a = hull[i];
+                    var b2 = hull[(i + 1) % hull.Count];
+                    hullArea += a.X * b2.Y - b2.X * a.Y;
+                }
+                hullArea = Math.Abs(hullArea) / 2;
+                double rectArea = halfU * 2 * halfV * 2;
+                if (rectArea > 0 && hullArea / rectArea < 0.85)
+                {
+                    double sum = 0;
+                    foreach (var q in hull)
+                    {
+                        double du = q.X * dirU.X + q.Y * dirU.Y - midU;
+                        double dv = q.X * -dirU.Y + q.Y * dirU.X - midV;
+                        sum += Math.Sqrt(du * du + dv * dv);
+                    }
+                    radius = sum / hull.Count;
+                }
+            }
+
             var axisU = baseU * dirU.X + baseV * dirU.Y;
             var axisV = baseU * -dirU.Y + baseV * dirU.X;
             axisU.Normalize();
@@ -283,7 +348,12 @@ namespace PadForge.Models3D
             if (axisV.Z < 0) { axisV = -axisV; midV = -midV; }
 
             var center = (Point3D)(axisU * midU + axisV * midV + normal * n1);
-            return new TouchSurface(center, normal, axisU, axisV, halfU * 2, halfV * 2);
+
+            // Round or not, measured the same way the rectangle was: the
+            // hull's area against the rectangle's. A circle fills 0.785 of
+            // its bounding square and a rounded square about 0.98, so the
+            // two are never in doubt.
+            return new TouchSurface(center, normal, axisU, axisV, halfU * 2, halfV * 2, radius);
         }
 
         /// <summary>The smallest rectangle enclosing a set of 2D points, by

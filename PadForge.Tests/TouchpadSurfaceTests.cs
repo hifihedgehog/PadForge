@@ -173,6 +173,71 @@ namespace PadForge.Tests
             return best;
         }
 
+        /// <summary>A ROUND pad is measured as one, and a rounded square is
+        /// not. The 2015 Steam Controller's pads fill 0.786 of their own
+        /// bounding square where a circle gives 0.785; the 2026's and the
+        /// Deck's fill 0.975 and 0.983.</summary>
+        [Theory]
+        [InlineData("SteamController", true)]
+        [InlineData("SteamController2", false)]
+        [InlineData("SteamDeck", false)]
+        [InlineData("DualSense", false)]
+        public void ARoundPadIsMeasuredAsRound(string family, bool round)
+        {
+            using var m = ControllerModelBase.Create(family, null, false);
+            foreach (var s in new[] { m.TouchpadSurface0, m.TouchpadSurface1 })
+            {
+                Assert.False(s.IsEmpty);
+                if (round)
+                {
+                    Assert.True(s.Radius > 0, $"{family}: a round pad measured as a rectangle");
+                    // The radius is the pad's, not its bounding square's.
+                    Assert.InRange(s.Radius, s.ExtentU * 0.45, s.ExtentU * 0.55);
+                }
+                else
+                {
+                    Assert.Equal(0.0, s.Radius);
+                }
+            }
+        }
+
+        /// <summary>THE PROPERTY for a round pad: no reading can put the dot
+        /// off it. A touch report's two axes span a square and the corners
+        /// of that square are off a round pad, so a finger cannot be there.
+        /// Those coordinates come back pinned to the rim, and the rim is on
+        /// the pad.</summary>
+        [Fact]
+        public void ACornerReadingOnARoundPadLandsOnItsRim()
+        {
+            using var m = ControllerModelBase.Create("SteamController", null, false);
+
+            foreach (var (s, parts, side) in new[]
+                     { (m.TouchpadSurface0, m.TouchParts0, "left"),
+                       (m.TouchpadSurface1, m.TouchParts1, "right") })
+            {
+                Assert.True(s.Radius > 0);
+                var tris = Triangles(parts);
+
+                foreach (var (u, v) in new[] { (0.0, 0.0), (1.0, 0.0), (0.0, 1.0), (1.0, 1.0),
+                                               (0.05, 0.05), (0.95, 0.95) })
+                {
+                    var at = s.At(u, v, 1.5);
+                    var off = at - s.Center - s.Normal * 1.5;
+                    double away = Math.Sqrt(
+                        Math.Pow(Vector3D.DotProduct(off, s.AxisU), 2)
+                        + Math.Pow(Vector3D.DotProduct(off, s.AxisV), 2));
+
+                    Assert.True(away <= s.Radius + 0.01,
+                        $"the {side} pad is {s.Radius:F1} mm across the middle and ({u:F2}, "
+                        + $"{v:F2}) landed {away:F1} mm out, which is off the pad");
+
+                    double hit = RayDown(tris, at, -s.Normal);
+                    Assert.True(!double.IsNaN(hit) && hit < 6.0,
+                        $"the {side} pad has no surface under the pinned ({u:F2}, {v:F2})");
+                }
+            }
+        }
+
         /// <summary>The 2015 pad is four direction quarters around a center
         /// disc, and the disc is 16.9 mm against a 42 mm pad. Fitting the
         /// disc alone would pen the dot into the middle 40%.</summary>

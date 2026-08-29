@@ -38,6 +38,46 @@ namespace PadForge.Models3D
     {
         private readonly Model3DGroup LeftPad, RightPad;
         private readonly System.Collections.Generic.List<Model3DGroup> RightPadQuarters = new();
+
+        /// <summary>This pad's touch surfaces span the WHOLE pad, which the
+        /// *PadTouch mesh alone does not.
+        ///
+        /// <para>Both pads are carved into four direction quarters around a
+        /// center disc: the left pad's quarters ARE this controller's D-pad
+        /// (SDL reads its quadrant bits as a hat) and the right pad's are
+        /// the right stick's four directions. The center disc measures 16.93
+        /// by 16.94 mm against a pad about 42 mm across, so a finger dot
+        /// mapped to the disc alone would crawl around the middle 40% and
+        /// never reach an edge.</para></summary>
+        public override Rect3D TouchpadArea0 => Union(Touchpad,
+            "DPadUp", "DPadDown", "DPadLeft", "DPadRight");
+
+        public override Rect3D TouchpadArea1
+        {
+            get
+            {
+                var r = TouchpadRight?.Bounds ?? Rect3D.Empty;
+                foreach (var q in RightPadQuarters)
+                    if (q != null) r.Union(q.Bounds);
+                return r;
+            }
+        }
+
+        /// <summary>The unioned area above IS the pad, so there is no bezel
+        /// left to crop.</summary>
+        public override double TouchpadXInsetFrac => 0.0;
+        public override double TouchpadZTopInsetFrac => 0.0;
+        public override double TouchpadZBottomInsetFrac => 0.0;
+
+        private Rect3D Union(Model3DGroup center, params string[] targets)
+        {
+            var r = center?.Bounds ?? Rect3D.Empty;
+            foreach (var name in targets)
+                if (ButtonMap.TryGetValue(name, out var list))
+                    foreach (var g in list)
+                        if (g != null) r.Union(g.Bounds);
+            return r;
+        }
         private readonly Model3DGroup LeftGripButton, RightGripButton;
 
         public ControllerModelSteamController() : base("SteamController")
@@ -67,6 +107,11 @@ namespace PadForge.Models3D
             RightPad = LoadModel("RightPadTouch.obj");
             RegisterButton("RightTouchpadClick", RightPad);
             model3DGroup.Children.Add(RightPad);
+
+            // Both trackpads carry a touch preview. Finger 0 rides the left
+            // pad and finger 1 the right, the split the frame packers use.
+            Touchpad = LeftPad;
+            TouchpadRight = RightPad;
 
             // The right pad IS the right thumbstick, in SDL's own words:
             // "the right pad is normally mapped to right thumbstick"

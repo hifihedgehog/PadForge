@@ -63,6 +63,11 @@ namespace PadForge.Views
         private Ellipse _touchpadFinger0Dot;
         private Ellipse _touchpadFinger1Dot;
         private OverlayElement _touchpadOverlay;   // layout entry for positioning the dots
+        // The SECOND pad, on a layout that has two. Every Valve layout does:
+        // it declares LeftTouchpad and RightTouchpad where a one-pad layout
+        // declares Touchpad. Finger 0 rides the left, finger 1 the right,
+        // the split the frame packers use.
+        private OverlayElement _touchpadOverlay1;
 
         // Layout data
         private double _stickMaxTravel;
@@ -413,21 +418,38 @@ namespace PadForge.Views
             _touchpadFinger0Dot = null;
             _touchpadFinger1Dot = null;
             _touchpadOverlay = default;
-            if (TouchpadClickSprite(modelName) != null)
+            _touchpadOverlay1 = default;
             {
-                OverlayElement touchpad = default, click = default;
+                // A one-pad layout declares "Touchpad"; a two-pad one
+                // declares "LeftTouchpad" and "RightTouchpad", which every
+                // Valve layout does. The dots used to be gated on the
+                // one-pad CLICK SPRITE, so no Steam controller ever drew a
+                // touch point even though its layout carried both pads and
+                // the view model carried both fingers.
+                OverlayElement left = default, right = default, single = default, click = default;
                 foreach (var ov in overlays)
                 {
-                    if (ov.ElementType == OverlayElementType.Touchpad) touchpad = ov;
-                    if (ov.TargetName == "TouchpadClick") click = ov;
+                    if (ov.ElementType != OverlayElementType.Touchpad)
+                    {
+                        if (ov.TargetName == "TouchpadClick") click = ov;
+                        continue;
+                    }
+                    if (ov.TargetName == "LeftTouchpad") left = ov;
+                    else if (ov.TargetName == "RightTouchpad") right = ov;
+                    else single = ov;
                 }
-                if (touchpad != null)
+
+                _touchpadOverlay = left ?? single;
+                _touchpadOverlay1 = right ?? single;
+                if (_touchpadOverlay != null)
                 {
-                    _touchpadOverlay = touchpad;
                     // Click highlight visual uses TouchpadClick bounds (sized to
                     // the asset pack's click PNG); finger dots use Touchpad
-                    // bounds (the smaller actual touchpad surface).
-                    BuildTouchpadPreview(click ?? touchpad, modelName);
+                    // bounds (the smaller actual touchpad surface). The
+                    // highlight is a one-pad affordance: a two-pad layout
+                    // gives each click its own button art, which lights
+                    // through the ordinary button path.
+                    BuildTouchpadPreview(click ?? single ?? _touchpadOverlay, modelName);
                 }
             }
 
@@ -478,14 +500,21 @@ namespace PadForge.Views
             // has its own folder but ships the DualSense sprites, so
             // interpolating the folder name asked for a file that does not
             // exist and the preview never built.
+            // The click highlight needs the one-pad sprite; the finger dots
+            // do NOT, and returning here for want of it is what left every
+            // Steam controller without a touch point. A two-pad layout ships
+            // per-side click art instead, which lights through the button
+            // path, so it takes the dots and skips the highlight.
             string stem = TouchpadClickSprite(modelName);
-            if (stem == null) return;
-            string clickPng = $"2DModels/{modelName}/{stem}";
-            _touchpadClickHighlight = CreateImage(clickPng, ov.X, ov.Y, ov.Width, ov.Height);
-            _touchpadClickHighlight.IsHitTestVisible = false;
-            _touchpadClickHighlight.Visibility = Visibility.Collapsed;
-            Panel.SetZIndex(_touchpadClickHighlight, 6);
-            ModelCanvas.Children.Add(_touchpadClickHighlight);
+            if (stem != null)
+            {
+                string clickPng = $"2DModels/{modelName}/{stem}";
+                _touchpadClickHighlight = CreateImage(clickPng, ov.X, ov.Y, ov.Width, ov.Height);
+                _touchpadClickHighlight.IsHitTestVisible = false;
+                _touchpadClickHighlight.Visibility = Visibility.Collapsed;
+                Panel.SetZIndex(_touchpadClickHighlight, 6);
+                ModelCanvas.Children.Add(_touchpadClickHighlight);
+            }
 
             const double dotDiameter = 22;
             _touchpadFinger0Dot = new Ellipse
@@ -516,7 +545,7 @@ namespace PadForge.Views
 
         private void UpdateTouchpadPreview()
         {
-            if (_touchpadClickHighlight == null || _touchpadFinger0Dot == null || _touchpadFinger1Dot == null)
+            if (_touchpadFinger0Dot == null || _touchpadFinger1Dot == null)
                 return;
 
             // Don't overwrite hover state — HitArea_MouseEnter sets the
@@ -526,7 +555,8 @@ namespace PadForge.Views
             // visibility on the same rectangle, and writing here every render
             // frame would race with it.
             bool flashClaimsTouchpad = _flashTarget == "TouchpadClick";
-            if (_hoverTarget != "Touchpad" && _hoverTarget != "TouchpadClick"
+            if (_touchpadClickHighlight != null
+                && _hoverTarget != "Touchpad" && _hoverTarget != "TouchpadClick"
                 && !flashClaimsTouchpad)
             {
                 _touchpadClickHighlight.Visibility = _vm.TouchpadClickPressed
@@ -534,14 +564,20 @@ namespace PadForge.Views
                 _touchpadClickHighlight.Opacity = 1.0;
             }
 
-            UpdateFingerDot(_touchpadFinger0Dot, _vm.TouchpadFinger0Down,
+            UpdateFingerDot(_touchpadFinger0Dot, _touchpadOverlay, _vm.TouchpadFinger0Down,
                 _vm.TouchpadFinger0X, _vm.TouchpadFinger0Y);
-            UpdateFingerDot(_touchpadFinger1Dot, _vm.TouchpadFinger1Down,
+            UpdateFingerDot(_touchpadFinger1Dot, _touchpadOverlay1, _vm.TouchpadFinger1Down,
                 _vm.TouchpadFinger1X, _vm.TouchpadFinger1Y);
         }
 
-        private void UpdateFingerDot(Ellipse dot, bool down, double normX, double normY)
+        private void UpdateFingerDot(Ellipse dot, OverlayElement pad, bool down,
+            double normX, double normY)
         {
+            if (pad == null)
+            {
+                dot.Visibility = Visibility.Collapsed;
+                return;
+            }
             if (!down)
             {
                 dot.Visibility = Visibility.Collapsed;
@@ -549,8 +585,8 @@ namespace PadForge.Views
             }
             dot.Visibility = Visibility.Visible;
             // Center the dot on the normalized touchpad coordinate.
-            double cx = _touchpadOverlay.X + normX * _touchpadOverlay.Width;
-            double cy = _touchpadOverlay.Y + normY * _touchpadOverlay.Height;
+            double cx = pad.X + normX * pad.Width;
+            double cy = pad.Y + normY * pad.Height;
             Canvas.SetLeft(dot, cx - dot.Width / 2);
             Canvas.SetTop(dot, cy - dot.Height / 2);
         }

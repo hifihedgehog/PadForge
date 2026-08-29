@@ -448,7 +448,12 @@ namespace PadForge.Views
             if (_currentModel?.Touchpad == null || _vm == null) return;
 
             // ── Click highlight: swap touchpad surface material ─────────
-            bool clickPressed = _vm.TouchpadClickPressed;
+            // One-pad models only. A pad with two surfaces registers each
+            // click as its own button (LeftTouchpadClick / RightTouchpadClick
+            // on every Valve model), so those already light through the
+            // button path, and swapping the material here as well would
+            // fight it and light the LEFT pad for either click.
+            bool clickPressed = _currentModel.TouchpadRight == null && _vm.TouchpadClickPressed;
             if (clickPressed != _touchpadCurrentlyHighlighted
                 && _currentModel.Touchpad.Children.Count > 0
                 && _currentModel.Touchpad.Children[0] is GeometryModel3D geo)
@@ -468,13 +473,16 @@ namespace PadForge.Views
             }
 
             // ── Finger spheres: position above the touchpad surface ─────
-            var bounds = _currentModel.Touchpad.Bounds;
-            if (bounds.IsEmpty) return;
+            // Each finger rides its OWN surface. On a two-pad model that is
+            // the left pad and the right pad; on a one-pad model both areas
+            // are the same rectangle and this reads exactly as before.
+            var area0 = _currentModel.TouchpadArea0;
+            var area1 = _currentModel.TouchpadArea1;
 
             PositionFingerSphere(_touchpadFinger0Transform,
-                _vm.TouchpadFinger0Down, _vm.TouchpadFinger0X, _vm.TouchpadFinger0Y, bounds, _currentModel);
+                _vm.TouchpadFinger0Down, _vm.TouchpadFinger0X, _vm.TouchpadFinger0Y, area0, _currentModel);
             PositionFingerSphere(_touchpadFinger1Transform,
-                _vm.TouchpadFinger1Down, _vm.TouchpadFinger1X, _vm.TouchpadFinger1Y, bounds, _currentModel);
+                _vm.TouchpadFinger1Down, _vm.TouchpadFinger1X, _vm.TouchpadFinger1Y, area1, _currentModel);
         }
 
         private static void PositionFingerSphere(
@@ -482,6 +490,7 @@ namespace PadForge.Views
             PadForge.Models3D.ControllerModelBase model)
         {
             if (t == null) return;
+            if (bounds.IsEmpty) { t.OffsetY = -10000; return; }
             if (!down)
             {
                 // Park well off-screen so the sphere isn't visible / hit-testable.

@@ -350,7 +350,7 @@
 					{
 						"bindings"
 						{
-							"binding"		"key_press KEYPAD_5, Center Viewscreen"
+							"binding"		"key_press KEYPAD_5, Centre Viewscreen"
 						}
 						"settings"
 						{
@@ -876,7 +876,7 @@
 					{
 						"bindings"
 						{
-							"binding"		"key_press KEYPAD_5, Center Viewscreen"
+							"binding"		"key_press KEYPAD_5, Centre Viewscreen"
 						}
 						"settings"
 						{

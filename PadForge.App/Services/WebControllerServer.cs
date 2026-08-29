@@ -978,6 +978,12 @@ namespace PadForge.Services
             public double StickMaxTravel;
             public OverlayElement[] Overlays;
             public string[] Finishes;
+            /// <summary>True when the base render draws the triggers at
+            /// rest, so the client must not synthesize a rest copy from the
+            /// press art. Exactly the layouts the overlay generator excludes
+            /// from TriggerBase entries: the three Valve pads, whose trigger
+            /// art is the pack's press blue.</summary>
+            public bool BaseDrawsTriggers;
         }
 
         private static readonly LayoutDef[] LayoutDefs =
@@ -1017,15 +1023,15 @@ namespace PadForge.Services
                     BaseWidth = DualSenseEdgeLayout.BaseWidth, BaseHeight = DualSenseEdgeLayout.BaseHeight,
                     BasePath = DualSenseEdgeLayout.BasePath, StickMaxTravel = DualSenseEdgeLayout.StickMaxTravel,
                     Overlays = DualSenseEdgeLayout.Overlays, Finishes = Array.Empty<string>() },
-            new() { TypeKey = "steamdeck", Folder = "STEAMDECK", NameStem = "Steam Deck",
+            new() { TypeKey = "steamdeck", BaseDrawsTriggers = true, Folder = "STEAMDECK", NameStem = "Steam Deck",
                     BaseWidth = SteamDeckLayout.BaseWidth, BaseHeight = SteamDeckLayout.BaseHeight,
                     BasePath = SteamDeckLayout.BasePath, StickMaxTravel = SteamDeckLayout.StickMaxTravel,
                     Overlays = SteamDeckLayout.Overlays, Finishes = Array.Empty<string>() },
-            new() { TypeKey = "steamcontroller", Folder = "STEAMCONTROLLER", NameStem = "Steam Controller",
+            new() { TypeKey = "steamcontroller", BaseDrawsTriggers = true, Folder = "STEAMCONTROLLER", NameStem = "Steam Controller",
                     BaseWidth = SteamControllerLayout.BaseWidth, BaseHeight = SteamControllerLayout.BaseHeight,
                     BasePath = SteamControllerLayout.BasePath, StickMaxTravel = SteamControllerLayout.StickMaxTravel,
                     Overlays = SteamControllerLayout.Overlays, Finishes = Array.Empty<string>() },
-            new() { TypeKey = "steamcontroller2", Folder = "STEAMCONTROLLER2", NameStem = "Steam Controller (2026)",
+            new() { TypeKey = "steamcontroller2", BaseDrawsTriggers = true, Folder = "STEAMCONTROLLER2", NameStem = "Steam Controller (2026)",
                     BaseWidth = SteamController2Layout.BaseWidth, BaseHeight = SteamController2Layout.BaseHeight,
                     BasePath = SteamController2Layout.BasePath, StickMaxTravel = SteamController2Layout.StickMaxTravel,
                     Overlays = SteamController2Layout.Overlays, Finishes = Array.Empty<string>() },
@@ -1191,6 +1197,7 @@ namespace PadForge.Services
                   .Append(",\"baseHeight\":").Append(baseHeight)
                   .Append(",\"basePath\":\"").Append(basePath).Append('"')
                   .Append(",\"stickMaxTravel\":").Append(Num(stickMaxTravel))
+                  .Append(",\"baseDrawsTriggers\":").Append(def.BaseDrawsTriggers ? "true" : "false")
                   .Append(",\"overlays\":[");
 
                 for (int i = 0; i < overlays.Length; i++)

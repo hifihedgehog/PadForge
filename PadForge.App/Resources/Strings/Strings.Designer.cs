@@ -2127,6 +2127,10 @@ public class Strings : INotifyPropertyChanged
     public string Mapping_MotionAccel => Get("Mapping_MotionAccel");
     public string Mapping_MotionLean => Get("Mapping_MotionLean");
     public string Mapping_NunchukLean => Get("Mapping_NunchukLean");
+    public string Mapping_MotionShake => Get("Mapping_MotionShake");
+    public string Mapping_NunchukShake => Get("Mapping_NunchukShake");
+    public string Mapping_LeftJoyConShake => Get("Mapping_LeftJoyConShake");
+    public string Mapping_AuxMotionShake => Get("Mapping_AuxMotionShake");
     public string Mapping_LeftJoyConLean => Get("Mapping_LeftJoyConLean");
     public string Mapping_AuxMotionLean => Get("Mapping_AuxMotionLean");
     public string Mapping_NunchukAccel => Get("Mapping_NunchukAccel");

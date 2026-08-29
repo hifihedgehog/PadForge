@@ -2507,6 +2507,10 @@
   <data name="Mapping_NunchukLean" xml:space="preserve"><value>Inclinação do Nunchuk</value></data>
   <data name="Mapping_LeftJoyConLean" xml:space="preserve"><value>Inclinação do Joy-Con Esquerdo</value></data>
   <data name="Mapping_AuxMotionLean" xml:space="preserve"><value>Inclinação de Movimento Auxiliar</value></data>
+  <data name="Mapping_MotionShake" xml:space="preserve"><value>Sacudida de Movimento</value></data>
+  <data name="Mapping_NunchukShake" xml:space="preserve"><value>Sacudida do Nunchuk</value></data>
+  <data name="Mapping_LeftJoyConShake" xml:space="preserve"><value>Sacudida do Joy-Con Esquerdo</value></data>
+  <data name="Mapping_AuxMotionShake" xml:space="preserve"><value>Sacudida de Movimento Auxiliar</value></data>
   <data name="Devices_AccelAux" xml:space="preserve"><value>Acelerômetro Auxiliar</value></data>
   <data name="Devices_GyroAux" xml:space="preserve"><value>Giroscópio Auxiliar</value></data>
   <data name="Mapping_NunchukAccel" xml:space="preserve"><value>Acelerômetro do Nunchuk</value></data>

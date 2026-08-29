@@ -2513,6 +2513,10 @@
   <data name="Mapping_NunchukLean" xml:space="preserve"><value>双节棍控制器倾斜</value></data>
   <data name="Mapping_LeftJoyConLean" xml:space="preserve"><value>左 Joy-Con 倾斜</value></data>
   <data name="Mapping_AuxMotionLean" xml:space="preserve"><value>辅助体感倾斜</value></data>
+  <data name="Mapping_MotionShake" xml:space="preserve"><value>体感摇动</value></data>
+  <data name="Mapping_NunchukShake" xml:space="preserve"><value>双节棍控制器摇动</value></data>
+  <data name="Mapping_LeftJoyConShake" xml:space="preserve"><value>左 Joy-Con 摇动</value></data>
+  <data name="Mapping_AuxMotionShake" xml:space="preserve"><value>辅助体感摇动</value></data>
   <data name="Devices_AccelAux" xml:space="preserve"><value>辅助加速度计</value></data>
   <data name="Devices_GyroAux" xml:space="preserve"><value>辅助陀螺仪</value></data>
   <data name="Mapping_NunchukAccel" xml:space="preserve"><value>双节棍控制器加速度计</value></data>

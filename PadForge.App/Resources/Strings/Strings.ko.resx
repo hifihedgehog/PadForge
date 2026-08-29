@@ -2513,6 +2513,10 @@
   <data name="Mapping_NunchukLean" xml:space="preserve"><value>눈차크 기울임</value></data>
   <data name="Mapping_LeftJoyConLean" xml:space="preserve"><value>왼쪽 Joy-Con 기울임</value></data>
   <data name="Mapping_AuxMotionLean" xml:space="preserve"><value>보조 모션 기울임</value></data>
+  <data name="Mapping_MotionShake" xml:space="preserve"><value>모션 흔들기</value></data>
+  <data name="Mapping_NunchukShake" xml:space="preserve"><value>눈차크 흔들기</value></data>
+  <data name="Mapping_LeftJoyConShake" xml:space="preserve"><value>왼쪽 Joy-Con 흔들기</value></data>
+  <data name="Mapping_AuxMotionShake" xml:space="preserve"><value>보조 모션 흔들기</value></data>
   <data name="Devices_AccelAux" xml:space="preserve"><value>보조 가속도계</value></data>
   <data name="Devices_GyroAux" xml:space="preserve"><value>보조 자이로스코프</value></data>
   <data name="Mapping_NunchukAccel" xml:space="preserve"><value>눈차크 가속도계</value></data>

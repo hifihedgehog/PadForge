@@ -308,6 +308,14 @@ namespace PadForge.Services
         // projection. Low-pass-filtered against state.Accel[] each
         // Update tick. Cleared in Stop().
         private readonly Dictionary<Guid, (float gx, float gy, float gz)> _gravityState = new();
+
+        /// <summary>Per-device shake state (#364): the accel MAGNITUDE's own
+        /// EMA as the baseline and a decaying envelope of the deviation from
+        /// it, normalized to 2 g full scale. Same lock, same tick, and same
+        /// lifecycle as the gravity EMA above. The aux dict is the Nunchuk /
+        /// left Joy-Con twin.</summary>
+        private readonly Dictionary<Guid, (float g0, float env)> _shakeState = new();
+        private readonly Dictionary<Guid, (float g0, float env)> _shakeStateAux = new();
         // Aux (Nunchuk / left Joy-Con) gravity twin (#199), same lock.
         private readonly Dictionary<Guid, (float gx, float gy, float gz)> _gravityStateAux = new();
         private readonly object _gravityStateLock = new();
@@ -1360,6 +1368,25 @@ namespace PadForge.Services
                 }
             };
 
+            // Shake envelope pair (#364): the normalized envelopes the
+            // "Motion Shake" pair reads, computed beside the gravity EMA.
+            PadForge.Engine.Common.Mapping.SourceCoercion.ShakeEnvelopeProvider = deviceGuid =>
+            {
+                if (string.IsNullOrEmpty(deviceGuid) || !Guid.TryParse(deviceGuid, out var g)) return 0f;
+                lock (_gravityStateLock)
+                {
+                    return _shakeState.TryGetValue(g, out var v) ? v.env : 0f;
+                }
+            };
+            PadForge.Engine.Common.Mapping.SourceCoercion.ShakeEnvelopeProviderAux = deviceGuid =>
+            {
+                if (string.IsNullOrEmpty(deviceGuid) || !Guid.TryParse(deviceGuid, out var g)) return 0f;
+                lock (_gravityStateLock)
+                {
+                    return _shakeStateAux.TryGetValue(g, out var v) ? v.env : 0f;
+                }
+            };
+
             // Aux gravity twin (#199): same filter over AccelAux (the Nunchuk /
             // left Joy-Con), read by the "Motion Lean L" family.
             PadForge.Engine.Common.Mapping.SourceCoercion.GravityProviderAux = deviceGuid =>
@@ -1685,6 +1712,8 @@ namespace PadForge.Services
                     for (int i = 0; i < grGuids.Count; i++)
                     {
                         _gravityState.Remove(grGuids[i]);
+                        _shakeState.Remove(grGuids[i]);
+                        _shakeStateAux.Remove(grGuids[i]);
                         _gravityStateAux.Remove(grGuids[i]);
                     }
                 }
@@ -2382,6 +2411,8 @@ namespace PadForge.Services
                 PadForge.Engine.Common.Mapping.SourceCoercion.SlotStickDeflectionProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.GravityProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.GravityProviderAux = null;
+                PadForge.Engine.Common.Mapping.SourceCoercion.ShakeEnvelopeProvider = null;
+                PadForge.Engine.Common.Mapping.SourceCoercion.ShakeEnvelopeProviderAux = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.HasGyroAuxProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.CompassYawCorrectionProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.ButtonHeldProvider = null;
@@ -2423,7 +2454,8 @@ namespace PadForge.Services
                 // #107: stop sampling the cursor and unhook MouseCursorProvider.
                 _cursorControlService?.Dispose();
                 _cursorControlService = null;
-                lock (_gravityStateLock) { _gravityState.Clear(); _gravityStateAux.Clear(); }
+                lock (_gravityStateLock)
+                { _gravityState.Clear(); _gravityStateAux.Clear(); _shakeState.Clear(); _shakeStateAux.Clear(); }
             }
 
             // Final UI-thread VM updates: marshal back to the dispatcher
@@ -11995,6 +12027,8 @@ namespace PadForge.Services
                                 prev.gy * (1f - a) + st.Accel[1] * a,
                                 prev.gz * (1f - a) + st.Accel[2] * a);
                         }
+                        UpdateShakeState(_shakeState, d.InstanceGuid,
+                            st.Accel[0], st.Accel[1], st.Accel[2], dt);
                     }
 
                     // Aux (Nunchuk / left Joy-Con) twin (#199): same filter,
@@ -12012,11 +12046,42 @@ namespace PadForge.Services
                                 prevAux.gy * (1f - a) + st.AccelAux[1] * a,
                                 prevAux.gz * (1f - a) + st.AccelAux[2] * a);
                         }
+                        UpdateShakeState(_shakeStateAux, d.InstanceGuid,
+                            st.AccelAux[0], st.AccelAux[1], st.AccelAux[2], dt);
                     }
 
                     UpdateCompassEstimate(d, st, dt);
                 }
             }
+        }
+
+        /// <summary>One shake-state step (#364). The baseline g0 tracks the
+        /// accel MAGNITUDE with the same 0.02 EMA the gravity vector uses,
+        /// so it converges on gravity at rest and drifts only slowly during
+        /// motion. The envelope takes the instantaneous deviation and decays
+        /// with a 150 ms time constant, bridging the magnitude's crossings
+        /// of g during an oscillating shake (Dolphin's canonical shake is
+        /// 6 Hz, so the raw deviation nulls out twelve times a second).
+        /// Normalized to 2 g of deviation as full scale.</summary>
+        private static void UpdateShakeState(
+            Dictionary<Guid, (float g0, float env)> dict, Guid guid,
+            float ax, float ay, float az, float dt)
+        {
+            const float alpha = 0.02f;
+            const float fullScale = 19.6f;      // 2 g in m/s^2
+            const float tau = 0.150f;           // envelope decay seconds
+
+            float mag = MathF.Sqrt(ax * ax + ay * ay + az * az);
+            if (!dict.TryGetValue(guid, out var s))
+            {
+                dict[guid] = (mag, 0f);
+                return;
+            }
+            float g0 = s.g0 * (1f - alpha) + mag * alpha;
+            float dev = MathF.Abs(mag - g0) / fullScale;
+            if (dev > 1f) dev = 1f;
+            float decayed = s.env * MathF.Exp(-dt / tau);
+            dict[guid] = (g0, MathF.Max(dev, decayed));
         }
 
         // ── #271 item 5: compass-anchored yaw ──

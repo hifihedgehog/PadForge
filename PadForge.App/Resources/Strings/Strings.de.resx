@@ -2513,6 +2513,10 @@
   <data name="Mapping_NunchukLean" xml:space="preserve"><value>Nunchuk-Neigung</value></data>
   <data name="Mapping_LeftJoyConLean" xml:space="preserve"><value>Neigung linker Joy-Con</value></data>
   <data name="Mapping_AuxMotionLean" xml:space="preserve"><value>Zusätzliche Bewegungsneigung</value></data>
+  <data name="Mapping_MotionShake" xml:space="preserve"><value>Bewegungsschütteln</value></data>
+  <data name="Mapping_NunchukShake" xml:space="preserve"><value>Nunchuk-Schütteln</value></data>
+  <data name="Mapping_LeftJoyConShake" xml:space="preserve"><value>Schütteln linker Joy-Con</value></data>
+  <data name="Mapping_AuxMotionShake" xml:space="preserve"><value>Zusätzliches Bewegungsschütteln</value></data>
   <data name="Devices_AccelAux" xml:space="preserve"><value>Zusätzlicher Beschleunigungssensor</value></data>
   <data name="Devices_GyroAux" xml:space="preserve"><value>Zusätzlicher Gyroskopsensor</value></data>
   <data name="Mapping_NunchukAccel" xml:space="preserve"><value>Nunchuk-Beschleunigungssensor</value></data>

@@ -236,5 +236,56 @@ def main():
                    f"this sits on {p} and was taking the trackpad's highlight")
 
 
+def move_lettering():
+    """Move each paddle's engraved lettering out of the shell.
+
+    MainBody.obj carries the glyph strokes for the bottom paddles, dozens
+    of components under 3 mm sitting wholly inside R5's and L5's bounds.
+    They stayed shell-colored while the paddle lit, which is the lettering
+    that never highlighted. The shell's own geometry around a paddle
+    straddles its bounds rather than sitting inside them, so "fully
+    inside" separates the two without a size rule doing the work.
+
+    Idempotent: rerunning finds nothing inside and says so.
+    """
+    body = os.path.join(MODELS, "MainBody.obj")
+    v, vt, vn, faces = load(body)
+
+    paddle_bounds = {}
+    for name in ("R4", "R5", "L4", "L5"):
+        pv, pvt, pvn, pf = load(os.path.join(MODELS, f"{name}.obj"))
+        paddle_bounds[name] = bounds(pv, pvt, pvn, pf, range(len(pf)))
+
+    moved = {p: [] for p in paddle_bounds}
+    kept = []
+    for idxs in components(len(v), faces):
+        lo, hi = bounds(v, vt, vn, faces, idxs)
+        for name, (plo, phi) in paddle_bounds.items():
+            inside = all(lo[k] >= plo[k] - 0.6 and hi[k] <= phi[k] + 0.6 for k in range(3))
+            if inside and max(hi[k] - lo[k] for k in range(3)) < 4.0:
+                moved[name].extend(idxs)
+                break
+        else:
+            kept.extend(idxs)
+
+    total = sum(len(x) for x in moved.values())
+    if total == 0:
+        print("MainBody.obj: no lettering left inside a paddle")
+        return
+
+    print(f"MainBody.obj: {len(faces)} tris, moving {total} onto the paddles")
+    write(body, v, vt, vn, faces, sorted(kept),
+          "The 2026 shell. Its paddle lettering moved onto the paddles by "
+          "tools/steam_controller_2026_pads.py")
+    for name, idxs in moved.items():
+        if not idxs:
+            continue
+        append(os.path.join(MODELS, f"{name}.obj"), v, vt, vn, faces, sorted(idxs),
+               f"{name}'s lettering, moved off MainBody.obj by "
+               f"tools/steam_controller_2026_pads.py: it sat inside the paddle and stayed "
+               f"shell-colored while the paddle lit")
+
+
 if __name__ == "__main__":
     main()
+    move_lettering()

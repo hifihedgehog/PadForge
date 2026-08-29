@@ -149,7 +149,9 @@ namespace PadForge.Common.Input
         {
             bool lTouch = tp.Down0, rTouch = tp.Down1;
             bool lClick = Btn(raw, profileId, "LeftTouchpadClick");
-            bool rClick = Btn(raw, profileId, "RightTouchpadClick");
+            // The 2015 pad calls its right click the right STICK button,
+            // because that is what SDL reads it as.
+            bool rClick = Btn(raw, profileId, NintendoPreviewMap.RightPadClickRole(profileId));
             if (tp.Click)
             {
                 if (rTouch && !lTouch) rClick = true;

@@ -27,33 +27,43 @@ namespace PadForge.Tests
 
         }
 
-        /// <summary>A stick head is BOTH: directions around the rim and the
-        /// stick BUTTON in the middle. The click registration is what gives
-        /// it that middle, because TryResolveQuadrantHit hands the center to
-        /// the click when a quadrant surface is also in the ClickMap and
-        /// takes directions edge to edge when it is not.
+        /// <summary>The BASE carries the stick button and the head carries
+        /// the directions, which is how every stick in this tree is split.
+        /// Building the ghost as one body made the button own the cap, the
+        /// shape the owner rejected on the Steam Deck.
         ///
-        /// <para>The button is the PAD CLICK, because pressing this pad IS
-        /// the right stick button on this controller in SDL's mapping and
-        /// the wire carries no separate RightThumbButton. Head and pad
-        /// answer as one control, which is what the hardware does.</para></summary>
+        /// <para>The button is the pad's click, because pressing this pad IS
+        /// the right stick button: SDL sends it as
+        /// SDL_GAMEPAD_BUTTON_RIGHT_STICK. So the base and the pad answer as
+        /// one control and light together, and the wire carries no separate
+        /// RightTouchpadClick on that side.</para></summary>
         [Fact]
-        public void TheHeadCarriesTheStickButtonToo()
+        public void TheBaseCarriesTheStickButton()
         {
             using var m = ControllerModelBase.Create("SteamController", null, false);
 
-            Assert.True(m.ClickMap.TryGetValue(m.RightThumbRing, out var target),
-                "the stick head is in no click map, so its middle resolves a direction and the "
-                + "stick button cannot be reached on it at all");
-            Assert.Equal("RightTouchpadClick", target);
+            Assert.NotNull(m.RightThumb);
+            Assert.NotSame(m.RightThumb, m.RightThumbRing);
 
-            // And it lights with the pad, since they are one control.
-            Assert.Contains(m.RightThumbRing, m.ButtonMap["RightTouchpadClick"]);
-            Assert.Contains(m.TouchpadRight, m.ButtonMap["RightTouchpadClick"]);
+            Assert.True(m.ClickMap.TryGetValue(m.RightThumb, out var target),
+                "the stick base is in no click map, so the stick button cannot be reached on it");
+            Assert.Equal("RightThumbButton", target);
 
-            // The wire has no separate right stick button to bind instead.
+            // The base and the pad are one control and light together.
+            Assert.Contains(m.RightThumb, m.ButtonMap["RightThumbButton"]);
+            Assert.Contains(m.TouchpadRight, m.ButtonMap["RightThumbButton"]);
+
+            // And the head stays out of it, so pressing the button never
+            // lights the whole stick.
+            Assert.DoesNotContain(m.RightThumbRing, m.ButtonMap["RightThumbButton"]);
+            Assert.False(m.ClickMap.ContainsKey(m.RightThumbRing));
+
+            // The wire names that click the right stick button, so there is
+            // no RightTouchpadClick on this side to bind instead.
             Assert.True(Models2D.NintendoPreviewMap.IndexOf(
-                "steam-controller", "RightThumbButton") < 0);
+                "steam-controller", "RightThumbButton") >= 0);
+            Assert.True(Models2D.NintendoPreviewMap.IndexOf(
+                "steam-controller", "RightTouchpadClick") < 0);
         }
 
         /// <summary>The head carries the four directions by quadrant, which
@@ -86,7 +96,7 @@ namespace PadForge.Tests
             using var m = ControllerModelBase.Create("SteamController", null, false);
             var pad = m.TouchpadSurface1;
 
-            // One body: the ring is not a separate group left behind on the
+            // The ring is the head itself, not a collar left behind on the
             // pad while the stem leans.
             Assert.Single(m.RightThumbRing.Children);
 

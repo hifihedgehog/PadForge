@@ -34,6 +34,7 @@ namespace PadForge.Models3D
     public class ControllerModelSteamController2 : ControllerModelBase
     {
         private readonly Model3DGroup LeftPad, RightPad;
+        private readonly Model3DGroup LeftPadFace, RightPadFace;
         private readonly Model3DGroup QuickAccess;
         private readonly Model3DGroup L4, L5, R4, R5;
 
@@ -64,6 +65,20 @@ namespace PadForge.Models3D
             RightPad = LoadModel("RightPadTouch.obj");
             RegisterButton("RightTouchpadClick", RightPad);
             model3DGroup.Children.Add(RightPad);
+
+            // The pad's touch FACE, cut out of the assembly by
+            // tools/steam_controller_2026_pads.py. It registers to the same
+            // click, so it lights with the pad, and the finger dot rides it
+            // rather than the assembly: the surround's corner blocks and rim
+            // put the assembly's plane 2 mm past the pad's edge on every
+            // side, which is what pushed the dot off the pad.
+            LeftPadFace = LoadModel("LeftPadFace.obj");
+            RegisterButton("LeftTouchpadClick", LeftPadFace);
+            model3DGroup.Children.Add(LeftPadFace);
+
+            RightPadFace = LoadModel("RightPadFace.obj");
+            RegisterButton("RightTouchpadClick", RightPadFace);
+            model3DGroup.Children.Add(RightPadFace);
 
             // Both trackpads carry a touch preview. Finger 0 rides the left
             // pad and finger 1 the right, the split the frame packers use.
@@ -136,13 +151,20 @@ namespace PadForge.Models3D
                 PaintTarget(t, shell);
         }
 
-        /// <summary>The 2026's pad meshes are their own touch faces, 36.85
-        /// by 36.10 mm with a measured bezel of 1.2 percent on every side.
-        /// The face is dished, so the outward-facing triangles reach the
-        /// edges while only a strip sits at the frontmost plane.</summary>
-        public override double TouchpadXInsetFrac => 0.012;
-        public override double TouchpadZTopInsetFrac => 0.012;
-        public override double TouchpadZBottomInsetFrac => 0.011;
+        /// <summary>LeftPadFace.obj IS the touch face, so there is no bezel
+        /// left to crop. The 1.2 percent this used to carry was measured off
+        /// the whole pad assembly, before the face was cut out of it.</summary>
+        public override double TouchpadXInsetFrac => 0.0;
+        public override double TouchpadZTopInsetFrac => 0.0;
+        public override double TouchpadZBottomInsetFrac => 0.0;
+
+        /// <summary>The finger dot rides the pad's FACE, not the whole pad
+        /// assembly. The assembly carries four corner blocks and a rim that
+        /// stand outside the touch area, and fitting a plane across them put
+        /// the dot's travel about 2 mm past the pad's edge on every
+        /// side.</summary>
+        public override Model3DGroup[] TouchParts0 => new[] { LeftPadFace };
+        public override Model3DGroup[] TouchParts1 => new[] { RightPadFace };
 
         private static Material Mat(string hex) =>
             new DiffuseMaterial(new SolidColorBrush((Color)ColorConverter.ConvertFromString(hex)));

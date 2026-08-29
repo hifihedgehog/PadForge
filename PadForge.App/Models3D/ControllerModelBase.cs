@@ -238,31 +238,125 @@ namespace PadForge.Models3D
             if (pts.Count == 0 || normal.Length < 1e-9) return default;
             normal.Normalize();
 
-            var axisU = Vector3D.CrossProduct(new Vector3D(0, 0, 1), normal);
-            if (axisU.Length < 1e-9) return default;
-            axisU.Normalize();
-            var axisV = Vector3D.CrossProduct(normal, axisU);
-            axisV.Normalize();
+            // A provisional in-plane basis, only to get the points into 2D.
+            var baseU = Vector3D.CrossProduct(new Vector3D(0, 0, 1), normal);
+            if (baseU.Length < 1e-9) return default;
+            baseU.Normalize();
+            var baseV = Vector3D.CrossProduct(normal, baseU);
+            baseV.Normalize();
 
-            double u0 = double.MaxValue, u1 = double.MinValue;
-            double v0 = double.MaxValue, v1 = double.MinValue, n1 = double.MinValue;
+            var flat = new List<Point>(pts.Count);
+            double n1 = double.MinValue;
             foreach (var p in pts)
             {
                 var q = (Vector3D)p;
-                double du = Vector3D.DotProduct(q, axisU);
-                double dv = Vector3D.DotProduct(q, axisV);
-                double dn = Vector3D.DotProduct(q, normal);
-                if (du < u0) u0 = du;
-                if (du > u1) u1 = du;
-                if (dv < v0) v0 = dv;
-                if (dv > v1) v1 = dv;
-                if (dn > n1) n1 = dn;
+                flat.Add(new Point(Vector3D.DotProduct(q, baseU), Vector3D.DotProduct(q, baseV)));
+                n1 = Math.Max(n1, Vector3D.DotProduct(q, normal));
             }
 
-            var center = (Point3D)(axisU * ((u0 + u1) / 2.0)
-                                 + axisV * ((v0 + v1) / 2.0)
-                                 + normal * n1);
-            return new TouchSurface(center, normal, axisU, axisV, u1 - u0, v1 - v0);
+            // The pad's OWN rectangle, not one aligned to the controller.
+            // The 2026's pads are rotated 10.2 degrees within their plane, so
+            // an axis-aligned box around one is 18% larger than the pad and
+            // its edge midpoints fall outside the outline, which is what put
+            // the finger dot past the pad's edge. The minimum-area enclosing
+            // rectangle recovers the pad's own edges; on a pad that is not
+            // rotated, like the Deck's, it returns the axis-aligned one.
+            if (!MinAreaRect(flat, out var dirU, out double halfU, out double halfV,
+                             out double midU, out double midV))
+                return default;
+
+            var axisU = baseU * dirU.X + baseV * dirU.Y;
+            var axisV = baseU * -dirU.Y + baseV * dirU.X;
+            axisU.Normalize();
+            axisV.Normalize();
+
+            // U points to the controller's right and V to its top, whichever
+            // way the fit came out, so a touch report's x = 0 is always the
+            // pad's left edge.
+            if (Math.Abs(axisU.X) < Math.Abs(axisV.X))
+            {
+                (axisU, axisV) = (axisV, axisU);
+                (halfU, halfV) = (halfV, halfU);
+                (midU, midV) = (midV, midU);
+            }
+            if (axisU.X < 0) { axisU = -axisU; midU = -midU; }
+            if (axisV.Z < 0) { axisV = -axisV; midV = -midV; }
+
+            var center = (Point3D)(axisU * midU + axisV * midV + normal * n1);
+            return new TouchSurface(center, normal, axisU, axisV, halfU * 2, halfV * 2);
+        }
+
+        /// <summary>The smallest rectangle enclosing a set of 2D points, by
+        /// rotating calipers over the convex hull. A minimum-area rectangle
+        /// always has a side flush with a hull edge, so trying each edge in
+        /// turn finds it.</summary>
+        private static bool MinAreaRect(List<Point> pts, out Vector dir,
+            out double halfU, out double halfV, out double midU, out double midV)
+        {
+            dir = new Vector(1, 0);
+            halfU = halfV = midU = midV = 0;
+
+            var hull = ConvexHull(pts);
+            if (hull.Count < 3) return false;
+
+            double bestArea = double.MaxValue;
+            for (int i = 0; i < hull.Count; i++)
+            {
+                var e = hull[(i + 1) % hull.Count] - hull[i];
+                double len = e.Length;
+                if (len < 1e-9) continue;
+                var ax = e / len;
+                var ay = new Vector(-ax.Y, ax.X);
+
+                double u0 = double.MaxValue, u1 = double.MinValue;
+                double v0 = double.MaxValue, v1 = double.MinValue;
+                foreach (var p in hull)
+                {
+                    double u = p.X * ax.X + p.Y * ax.Y;
+                    double v = p.X * ay.X + p.Y * ay.Y;
+                    if (u < u0) u0 = u;
+                    if (u > u1) u1 = u;
+                    if (v < v0) v0 = v;
+                    if (v > v1) v1 = v;
+                }
+                double area = (u1 - u0) * (v1 - v0);
+                if (area >= bestArea) continue;
+
+                bestArea = area;
+                dir = ax;
+                halfU = (u1 - u0) / 2;
+                halfV = (v1 - v0) / 2;
+                midU = (u0 + u1) / 2;
+                midV = (v0 + v1) / 2;
+            }
+            return bestArea < double.MaxValue;
+        }
+
+        /// <summary>Monotone-chain convex hull, counter-clockwise.</summary>
+        private static List<Point> ConvexHull(List<Point> pts)
+        {
+            var p = new List<Point>(pts);
+            p.Sort((a, b) => a.X != b.X ? a.X.CompareTo(b.X) : a.Y.CompareTo(b.Y));
+            if (p.Count < 3) return p;
+
+            static double Cross(Point o, Point a, Point b)
+                => (a.X - o.X) * (b.Y - o.Y) - (a.Y - o.Y) * (b.X - o.X);
+
+            var hull = new List<Point>();
+            for (int pass = 0; pass < 2; pass++)
+            {
+                int start = hull.Count;
+                var seq = pass == 0 ? p : Enumerable.Reverse(p);
+                foreach (var q in seq)
+                {
+                    while (hull.Count >= start + 2
+                        && Cross(hull[hull.Count - 2], hull[hull.Count - 1], q) <= 0)
+                        hull.RemoveAt(hull.Count - 1);
+                    hull.Add(q);
+                }
+                hull.RemoveAt(hull.Count - 1);
+            }
+            return hull;
         }
 
         /// <summary>Per-model fractional insets that crop the Touchpad mesh

@@ -92,16 +92,38 @@ public static class NintendoPreviewMap
         "LeftThumbButton",                                      // 8    stick click
         "ButtonGuide",                                          // 9    Steam
         "LeftGrip", "RightGrip",                                // 10-11
-        // 13 is the RIGHT STICK BUTTON, not a pad click. Pressing this pad
-        // is what SDL sends as SDL_GAMEPAD_BUTTON_RIGHT_STICK
-        // (SDL_hidapi_steam.c 1627, from STEAM_BUTTON_RIGHTPAD_CLICKED_MASK),
-        // the same way the pad's surface is the right stick's axes. Naming
-        // it a pad click left this controller with no right stick button at
-        // all: nothing to map in the grid, nothing to flash, nothing to
-        // press. The LEFT pad's click is a real pad click, and SDL sends
-        // the actual stick as LEFT_STICK from its own mask.
-        "LeftTouchpadClick", "RightThumbButton",                // 12-13
+        "LeftTouchpadClick", "RightTouchpadClick",              // 12-13
     };
+
+    /// <summary>Roles that share a wire slot with another role.
+    ///
+    /// <para>The 2015 pad's right click is ONE bit doing TWO jobs, and SDL
+    /// reports it as both: SDL_GAMEPAD_BUTTON_RIGHT_STICK
+    /// (SDL_hidapi_steam.c 1627) AND the right touchpad's click on the
+    /// touchpad surface (1677), from the same
+    /// STEAM_BUTTON_RIGHTPAD_CLICKED_MASK. The pad is the right stick, so
+    /// clicking it is the right stick button, and it is still the pad's
+    /// click.</para>
+    ///
+    /// <para>The TABLE names the slot once, so the grid gets one row per
+    /// wire bit and the pad click keeps its own row. The alias is what lets
+    /// the stick button reach that same row: a preview or a model can name
+    /// either role and land on the same RawBtn.</para></summary>
+    private static readonly Dictionary<Family, Dictionary<string, string>> Aliases = new()
+    {
+        [Family.SteamController] = new()
+        {
+            ["RightThumbButton"] = "RightTouchpadClick",
+        },
+    };
+
+    /// <summary>The role a wire slot is actually named, resolving an alias.
+    /// Returns the name unchanged when the family has no alias for it.</summary>
+    public static string ResolveAlias(string profileId, string previewName)
+        => previewName != null
+           && Aliases.TryGetValue(FamilyOf(profileId), out var map)
+           && map.TryGetValue(previewName, out var real)
+            ? real : previewName;
 
     // Steam Controller 2026 (steam-controller-2). Two sticks, a real D-pad
     // reported as four buttons (sc2-research HID_REPORT_FORMAT.md, the
@@ -158,17 +180,6 @@ public static class NintendoPreviewMap
         return Family.None;
     }
 
-    /// <summary>What a family calls its RIGHT PAD's click.
-    ///
-    /// <para>Every Valve pad but one calls it RightTouchpadClick. The 2015
-    /// Steam Controller calls it RightThumbButton, because that is what it
-    /// is: SDL sends that pad's click as SDL_GAMEPAD_BUTTON_RIGHT_STICK.
-    /// Anything that has to reach the click without knowing the family asks
-    /// here.</para></summary>
-    public static string RightPadClickRole(string profileId)
-        => FamilyOf(profileId) == Family.SteamController
-            ? "RightThumbButton" : "RightTouchpadClick";
-
     /// <summary>True for any profile whose grid rows carry real control
     /// names and whose raw indices are resolved through this map.</summary>
     public static bool IsLettered(string profileId) => FamilyOf(profileId) != Family.None;
@@ -221,6 +232,7 @@ public static class NintendoPreviewMap
     public static int IndexOf(string profileId, string previewName)
     {
         if (string.IsNullOrEmpty(previewName)) return -1;
+        previewName = ResolveAlias(profileId, previewName);
         var table = ButtonTable(profileId);
         for (int i = 0; i < table.Length; i++)
             if (table[i] == previewName) return i;
@@ -261,6 +273,7 @@ public static class NintendoPreviewMap
         if (neg) return null;
 
         var table = ButtonTable(profileId);
+        name = ResolveAlias(profileId, name);
         for (int i = 0; i < table.Length; i++)
             if (name == table[i])
                 return $"RawBtn{i}";

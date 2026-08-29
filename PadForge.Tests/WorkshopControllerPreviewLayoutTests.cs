@@ -111,18 +111,16 @@ namespace PadForge.Tests
         /// right stick. Emitting a right stick RING or a d-pad key would
         /// anchor callouts to parts the pad does not have.
         ///
-        /// <para>Its right pad's CLICK is a different matter, and is named
-        /// RightThumbButton because that is what SDL sends it as. The pad
-        /// art carries it, so it is the one RightThumb* name here.</para></summary>
+        /// <para>The 3D preview stands a synthesized stick on that pad, but
+        /// the 2D art has no such part, so no RightThumb* callout belongs
+        /// here.</para></summary>
         [Fact]
         public void SteamControllerHasNoRightStickSolidAndNoDPadSolid()
         {
             var names = SteamControllerLayout.Overlays.Select(o => o.TargetName).ToList();
             Assert.Contains("LeftThumbRing", names);
-            Assert.DoesNotContain(names, n => n.StartsWith("RightThumbAxis", StringComparison.Ordinal));
-            Assert.DoesNotContain(names, n => n == "RightThumbRing");
+            Assert.DoesNotContain(names, n => n.StartsWith("RightThumb", StringComparison.Ordinal));
             Assert.DoesNotContain(names, n => n.StartsWith("DPad", StringComparison.Ordinal));
-            Assert.Contains("RightThumbButton", names);
             Assert.Contains("LeftGrip", names);
             Assert.Contains("RightGrip", names);
         }

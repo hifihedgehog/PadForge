@@ -1112,9 +1112,9 @@ namespace PadForge.Services
                 // zone for them. The physical click semantics (dpad press /
                 // right-stick click) are carried by the surfaces themselves.
                 ["LeftTouchpadClick"] = ("none", 0),
-                // Named RightThumbButton on this pad, because its click is
-                // the right stick button. Same reasoning: the surface
-                // carries it, so no separate zone.
+                ["RightTouchpadClick"] = ("none", 0),
+                // Its click is ALSO the right stick button, one bit doing
+                // two jobs. Same reasoning: the surface carries it.
                 ["RightThumbButton"] = ("none", 0),
                 ["LeftThumbButton"] = ("button", 8),     // the single physical stick is the LEFT stick
             },

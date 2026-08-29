@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using PadForge.Models3D;
@@ -49,21 +50,71 @@ namespace PadForge.Tests
                 "the stick base is in no click map, so the stick button cannot be reached on it");
             Assert.Equal("RightThumbButton", target);
 
-            // The base and the pad are one control and light together.
+            // Under BOTH names, because each path asks by a different one:
+            // the press loop reads roles, and the Map All flash translates
+            // the grid's raw target back through the table, which names the
+            // slot RightTouchpadClick.
             Assert.Contains(m.RightThumb, m.ButtonMap["RightThumbButton"]);
-            Assert.Contains(m.TouchpadRight, m.ButtonMap["RightThumbButton"]);
+            Assert.Contains(m.RightThumb, m.ButtonMap["RightTouchpadClick"]);
+            Assert.Contains(m.TouchpadRight, m.ButtonMap["RightTouchpadClick"]);
 
             // And the head stays out of it, so pressing the button never
             // lights the whole stick.
             Assert.DoesNotContain(m.RightThumbRing, m.ButtonMap["RightThumbButton"]);
             Assert.False(m.ClickMap.ContainsKey(m.RightThumbRing));
 
-            // The wire names that click the right stick button, so there is
-            // no RightTouchpadClick on this side to bind instead.
+            // The PAD CLICK keeps its own wire slot and its own row. The
+            // stick button reaches that same slot through the alias, which
+            // is what makes it selectable without inventing a second row for
+            // one bit.
             Assert.True(Models2D.NintendoPreviewMap.IndexOf(
-                "steam-controller", "RightThumbButton") >= 0);
-            Assert.True(Models2D.NintendoPreviewMap.IndexOf(
-                "steam-controller", "RightTouchpadClick") < 0);
+                "steam-controller", "RightTouchpadClick") >= 0);
+            Assert.Equal(
+                Models2D.NintendoPreviewMap.ToRaw("RightTouchpadClick", "steam-controller"),
+                Models2D.NintendoPreviewMap.ToRaw("RightThumbButton", "steam-controller"));
+        }
+
+        /// <summary>The three things a stick button does on every other
+        /// stick, done here: it flashes for mapping, it selects, and it
+        /// lights when engaged.
+        ///
+        /// <para>Each path asks by a different name, which is why the base
+        /// is registered under both. The Map All flash translates the grid's
+        /// raw target back through the TABLE, so it asks for
+        /// RightTouchpadClick. The press loop reads roles, so it asks for
+        /// RightThumbButton. A click on the mesh records through the alias,
+        /// which lands on the same wire slot the pad's own row owns.</para>
+        ///
+        /// <para>The pad keeps that row and its own name: this is one bit
+        /// doing two jobs, and SDL reports it as both.</para></summary>
+        [Fact]
+        public void TheStickButtonFlashesSelectsAndLights()
+        {
+            using var m = ControllerModelBase.Create("SteamController", null, false);
+            const string profile = "SteamController";
+
+            // SELECT: a click on the stick's base records a real row.
+            string raw = Models2D.NintendoPreviewMap.ToRaw("RightThumbButton", "steam-controller");
+            Assert.Equal("RawBtn13", raw);
+
+            // FLASH: that row translates back through the table, and what it
+            // names has to include the stick's own mesh or the stick sits
+            // still while the pad flashes.
+            string viaTable = Models2D.NintendoPreviewMap.ToPreview(raw, "steam-controller");
+            Assert.Equal("RightTouchpadClick", viaTable);
+            Assert.Contains(m.RightThumb, m.ButtonMap[viaTable]);
+
+            // ENGAGED: the press loop reads roles.
+            Assert.Contains(m.RightThumb, m.ButtonMap["RightThumbButton"]);
+
+            // And the grid lists that slot ONCE, under the pad's own name.
+            var vm = new PadForge.ViewModels.PadViewModel(0)
+            {
+                OutputType = PadForge.Engine.VirtualControllerType.Extended,
+                ProfileId = "steam-controller",
+            };
+            Assert.Single(vm.Mappings.Where(x => x.TargetSettingName == "RawBtn13"));
+            Assert.Equal(profile, profile);
         }
 
         /// <summary>The head carries the four directions by quadrant, which

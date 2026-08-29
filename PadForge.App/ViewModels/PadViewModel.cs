@@ -2712,6 +2712,14 @@ namespace PadForge.ViewModels
                 // index behind it comes from the canonical table.
                 void AddValve(string role)
                 {
+                    // One row per WIRE SLOT. A role that is an alias for
+                    // another shares its slot, and adding it would put two
+                    // rows on one RawBtn: the 2015 pad's right click is both
+                    // its pad click and its right stick button, one bit
+                    // doing two jobs. The table's own name gets the row, and
+                    // the alias still reaches it through IndexOf, so the
+                    // stick button selects and flashes that row.
+                    if (Models2D.NintendoPreviewMap.ResolveAlias(ProfileId, role) != role) return;
                     int i = Models2D.NintendoPreviewMap.IndexOf(ProfileId, role);
                     if (i < 0) return;   // this pad has no such control
                     Mappings.Add(new MappingItem(
@@ -8221,7 +8229,16 @@ namespace PadForge.ViewModels
                     case "LeftGrip": LeftGrip = down; break;
                     case "RightGrip": RightGrip = down; break;
                     case "LeftTouchpadClick": LeftTouchpadClick = down; break;
-                    case "RightTouchpadClick": RightTouchpadClick = down; break;
+                    case "RightTouchpadClick":
+                        RightTouchpadClick = down;
+                        // One bit, two jobs. On the 2015 pad this click is
+                        // ALSO the right stick button, which is how SDL
+                        // reads it, so the stick lights with the pad instead
+                        // of sitting dead while the pad is pressed.
+                        if (Models2D.NintendoPreviewMap.FamilyOf(ProfileId)
+                            == Models2D.NintendoPreviewMap.Family.SteamController)
+                            RightThumbButton = down;
+                        break;
                     case "DPadUp": DPadUp = down; dpadOnButtons = true; break;
                     case "DPadDown": DPadDown = down; dpadOnButtons = true; break;
                     case "DPadLeft": DPadLeft = down; dpadOnButtons = true; break;

@@ -184,10 +184,7 @@ namespace PadForge.Tests
 
             // And each pad still clicks, through the middle left behind.
             Assert.True(m.ButtonMap.ContainsKey("LeftTouchpadClick"));
-            // The right pad's click is the right STICK button on this
-            // controller, in SDL's own reading, so that is what it registers
-            // as and there is no RightTouchpadClick on that side.
-            Assert.True(m.ButtonMap.ContainsKey("RightThumbButton"));
+            Assert.True(m.ButtonMap.ContainsKey("RightTouchpadClick"));
 
             // Neither PAD goes through the quadrant-wedge path any more: a
             // bowl 42 mm across cannot carry one, which is why each face is
@@ -572,6 +569,11 @@ namespace PadForge.Tests
                     // larger Y. This is what the Steam Deck's well liner is,
                     // and its base bulb, which stops well short, is not.
                     if (b.Y + b.SizeY > pivotY) continue;
+                    // Nor is a part that is its OWN control. The 2015's
+                    // synthesized right stick stands on a TRACKPAD, so the
+                    // pad's disc is concentric with it and stays put, which
+                    // is correct: the stick leans and the pad does not.
+                    if (m.ClickMap.ContainsKey(g)) continue;
 
                     Assert.Fail($"{family}: a {b.SizeX:F1} mm part sits on {button}'s own axis but is "
                         + "not in the moving set, so it stays put while the stick tilts");
@@ -691,7 +693,7 @@ namespace PadForge.Tests
         [Theory]
         [InlineData("SteamController2", "ButtonA", "ButtonQuickAccess", "Paddle1", "Paddle4", "LeftTouchpadClick", "RightTouchpadClick")]
         [InlineData("SteamDeck", "ButtonA", "ButtonQuickAccess", "Paddle1", "Paddle4", "LeftTouchpadClick", "RightTouchpadClick")]
-        [InlineData("SteamController", "ButtonA", "LeftGrip", "RightGrip", "LeftTouchpadClick", "RightThumbButton", "ButtonStart")]
+        [InlineData("SteamController", "ButtonA", "LeftGrip", "RightGrip", "LeftTouchpadClick", "RightTouchpadClick", "ButtonStart")]
         public void ValveRolesGlow(string family, params string[] roles)
         {
             using var m = ControllerModelBase.Create(family, null, false);

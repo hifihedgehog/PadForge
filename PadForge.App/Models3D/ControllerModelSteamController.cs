@@ -179,13 +179,24 @@ namespace PadForge.Models3D
             // carries the button, which is what every stick here does. The
             // base class registered neither for this side, because at that
             // point this controller had no right stick to register.
-            //
-            // The button is the PAD CLICK: pressing this pad is the right
-            // stick button in SDL's own reading, so the base and the pad
-            // answer as one control and light together.
             RegisterQuadrants(RightThumbRing,
                 "RightThumbAxisYNeg", "RightThumbAxisY",
                 "RightThumbAxisXNeg", "RightThumbAxisX");
+
+            // BOTH names, because this is one bit doing two jobs and each
+            // path asks by a different one. The press loop reads roles, so
+            // the base has to be under RightThumbButton to light when the
+            // stick button reads pressed. The Map All flash translates the
+            // grid's RawBtn13 back through the TABLE, which names it
+            // RightTouchpadClick, so the base has to be under that name too
+            // or it sits still while the pad flashes. Registering it twice
+            // puts it in both lists.
+            //
+            // RightThumbButton goes LAST so the ClickMap keeps it: hovering
+            // the base then reads as the stick button, and the record
+            // request resolves through the alias to the same RawBtn13 the
+            // pad click owns.
+            RegisterButton("RightTouchpadClick", RightThumb);
             RegisterButton("RightThumbButton", RightThumb);
 
             var pivot = face + up * (headR - 19.0);
@@ -278,11 +289,7 @@ namespace PadForge.Models3D
             model3DGroup.Children.Add(LeftPad);
 
             RightPad = LoadModel("RightPadTouch.obj");
-            // The right pad's click IS the right stick button here, in
-            // SDL's own reading, so it registers as one. That is what puts a
-            // Right Stick Button row in the grid for this controller, and
-            // what the head's click zone resolves to.
-            RegisterButton("RightThumbButton", RightPad);
+            RegisterButton("RightTouchpadClick", RightPad);
             model3DGroup.Children.Add(RightPad);
 
             // Both trackpads carry a touch preview. Finger 0 rides the left
@@ -405,6 +412,7 @@ namespace PadForge.Models3D
             PaintTarget("LeftGrip", body);
             PaintTarget("RightGrip", body);
             PaintTarget("LeftTouchpadClick", surface);
+            PaintTarget("RightTouchpadClick", surface);
             PaintTarget("RightThumbButton", surface);
             // The pad quarters take the pad's own color: they are the pad's
             // face, cut up so each direction can light on its own.

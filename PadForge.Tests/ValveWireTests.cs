@@ -125,18 +125,24 @@ namespace PadForge.Tests
         [Fact]
         public void EachPadHasItsOwnControls()
         {
-            // 2015: one stick SOLID, two grips, no QAM, no paddles. It does
-            // have a right stick BUTTON, which is its right pad's click:
-            // SDL sends that click as SDL_GAMEPAD_BUTTON_RIGHT_STICK, so the
-            // wire carries no separate RightTouchpadClick for that side.
+            // 2015: one stick SOLID, two grips, no QAM, no paddles.
             Assert.True(NintendoPreviewMap.IndexOf("steam-controller", "LeftGrip") >= 0);
-            Assert.True(NintendoPreviewMap.IndexOf("steam-controller", "RightThumbButton") >= 0);
-            Assert.True(NintendoPreviewMap.IndexOf("steam-controller", "RightTouchpadClick") < 0);
-            Assert.Equal("RightThumbButton",
-                NintendoPreviewMap.RightPadClickRole("steam-controller"));
-            Assert.Equal("RightTouchpadClick",
-                NintendoPreviewMap.RightPadClickRole("steam-deck-composite"));
             Assert.True(NintendoPreviewMap.IndexOf("steam-controller", "ButtonQuickAccess") < 0);
+
+            // Its right pad's click is ONE bit doing TWO jobs: SDL sends it
+            // as SDL_GAMEPAD_BUTTON_RIGHT_STICK and as the right touchpad's
+            // click. The table names the slot once, so the pad click keeps
+            // its own row, and the stick button reaches the same slot
+            // through the alias.
+            Assert.True(NintendoPreviewMap.IndexOf("steam-controller", "RightTouchpadClick") >= 0);
+            Assert.Equal(
+                NintendoPreviewMap.ToRaw("RightTouchpadClick", "steam-controller"),
+                NintendoPreviewMap.ToRaw("RightThumbButton", "steam-controller"));
+            // And the alias is this family's alone: the Deck's two names are
+            // two different buttons.
+            Assert.NotEqual(
+                NintendoPreviewMap.ToRaw("RightTouchpadClick", "steam-deck-composite"),
+                NintendoPreviewMap.ToRaw("RightThumbButton", "steam-deck-composite"));
             Assert.True(NintendoPreviewMap.IndexOf("steam-controller", "Paddle1") < 0);
             // Deck and 2026: two sticks, four rear buttons, QAM, no grips.
             foreach (var id in new[] { "steam-deck-composite", "steam-controller-2" })
@@ -232,8 +238,6 @@ namespace PadForge.Tests
                 // R4 L4 R5 L5, so RightPaddle is Paddle1 there while the
                 // Deck, which names only its two PADDLE2 bits, keeps
                 // Paddle3 / Paddle4.
-                // The 2015's right pad click is its right stick button.
-                "Touchpad" when sc15 => "RightThumbButton",
                 "LeftPaddle" => sc15 ? "LeftGrip" : sc26 ? "Paddle2" : "Paddle4",
                 "RightPaddle" => sc15 ? "RightGrip" : sc26 ? "Paddle1" : "Paddle3",
                 "LeftPaddle2" => "Paddle4",

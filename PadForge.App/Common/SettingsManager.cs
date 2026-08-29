@@ -868,12 +868,7 @@ namespace PadForge.Common.Input
                         ps.TouchpadX2 = "Touchpad 1 Finger 0 X";
                         ps.TouchpadY2 = "Touchpad 1 Finger 0 Y";
                         ps.TouchpadContact2 = "Touchpad 1 Finger 0 Down";
-                        // Whichever name this family gives the right pad's
-                        // click. On the 2015 pad it is the right stick
-                        // button, and mapping the other name would silently
-                        // leave the click unbound.
-                        MapValve(Models2D.NintendoPreviewMap.RightPadClickRole(profileId),
-                            HasSrc(17) ? "Button 17" : "Touchpad 1 Click");
+                        MapValve("RightTouchpadClick", HasSrc(17) ? "Button 17" : "Touchpad 1 Click");
                     }
 
                     // IMU: every Valve frame carries gyro and accel, which

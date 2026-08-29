@@ -255,8 +255,8 @@
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Konfigurieren Sie das Abfrageverhalten und die Hintergrundverarbeitung.</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Engine beim Start automatisch starten</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Abfrage fortsetzen, wenn das Fenster den Fokus verliert</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Abfrageintervall (Profil-Überschreibungen haben Vorrang)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>In diesem Intervall fragt die Engine die Geräte ab. Trägt das aktive Profil eine eigene Abfragerate, bestimmt diese die Schleife, und dieser Wert übernimmt wieder, sobald das Profil deaktiviert wird.</value></data>
+  <data name="Settings_PollingInterval" xml:space="preserve"><value>Abfrageintervall (sofern kein Profil es überschreibt)</value></data>
+  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>In diesem Intervall fragt die Engine die Geräte ab. Solange ein Profil mit eigener Abfragerate aktiv ist, gilt stattdessen diese Rate. Danach gilt wieder dieser Wert.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Geräte vor Spielen verbergen</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Hauptschalter für HidHide-Geräteverbergung und Low-Level-Eingabe-Hooks. Bei Deaktivierung werden keine Geräte verborgen, unabhängig von den Einzelgeräteeinstellungen.</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Fenster</value></data>

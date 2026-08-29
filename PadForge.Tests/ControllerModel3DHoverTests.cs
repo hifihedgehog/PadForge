@@ -186,10 +186,16 @@ namespace PadForge.Tests
             Assert.True(m.ButtonMap.ContainsKey("LeftTouchpadClick"));
             Assert.True(m.ButtonMap.ContainsKey("RightTouchpadClick"));
 
-            // Nothing on this pad goes through the quadrant-wedge path any
-            // more: a bowl 42 mm across cannot carry one.
-            var pads = m.ButtonMap["LeftTouchpadClick"].Concat(m.ButtonMap["RightTouchpadClick"]);
-            foreach (var pad in pads)
+            // Neither PAD goes through the quadrant-wedge path any more: a
+            // bowl 42 mm across cannot carry one, which is why each face is
+            // quartered in the mesh instead.
+            //
+            // The synthesized right stick head does, and belongs there: it
+            // is a stick head, the shape the wedge path was written for, and
+            // it registers as the right pad's click because pressing this
+            // pad IS the right stick button. So it appears in that click's
+            // list beside the pad without being the pad.
+            foreach (var pad in new[] { m.Touchpad, m.TouchpadRight })
                 Assert.False(m.QuadrantMap.ContainsKey(pad));
         }
 

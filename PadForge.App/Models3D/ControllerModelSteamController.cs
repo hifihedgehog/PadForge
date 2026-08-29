@@ -158,17 +158,27 @@ namespace PadForge.Models3D
             Paint(RightThumbRing, material);
             model3DGroup.Children.Add(RightThumbRing);
 
-            // The head carries the four directions by quadrant, which is
-            // what a stick's ring does on every other model here. Without
-            // this the doughnut is inert: the pad's quarters answer a hover
-            // out at the rim while the head in the middle answers nothing,
-            // and the head is where a hand reaches for a stick.
+            // A stick head is BOTH: directions around the rim and the stick
+            // button in the middle. Registering it as a click as well as a
+            // quadrant surface is what gives it the click zone, because
+            // TryResolveQuadrantHit hands the middle to the click when a
+            // quadrant surface is also in the ClickMap and takes directions
+            // edge to edge when it is not.
             //
-            // The base registered nothing for this side, because at that
-            // point this controller had no right ring to register.
+            // The button here is the PAD CLICK. Pressing this pad is the
+            // right stick button on this controller, in SDL's own mapping
+            // (SDL_hidapi_steam.c reads the right pad's click as
+            // RIGHT_STICK), and the wire carries no separate
+            // RightThumbButton for it to be anything else. So the head and
+            // the pad under it answer as one control, which is what the
+            // hardware does.
+            //
+            // The base class registered nothing for this side, because at
+            // that point this controller had no right ring to register.
             RegisterQuadrants(RightThumbRing,
                 "RightThumbAxisYNeg", "RightThumbAxisY",
                 "RightThumbAxisXNeg", "RightThumbAxisX");
+            RegisterButton("RightTouchpadClick", RightThumbRing);
 
             var pivot = face + up * (headR - 19.0);
             JoystickRotationPointCenterRightMillimeter =
@@ -297,14 +307,6 @@ namespace PadForge.Models3D
                 model3DGroup.Children.Add(quarter);
             }
 
-            // ── The right pad IS the right stick, so show one ──
-            // Nothing on this controller reads as a right thumbstick, and
-            // the pad it lives on looks like the left one, which is a D-pad.
-            // A translucent stick standing on the pad's face says what the
-            // pad does and leans with it, and being see-through it never
-            // hides the pad's own quarters or its touch dot.
-            BuildRightStickGhost();
-
             LeftGripButton = LoadModel("LeftGrip.obj");
             RegisterButton("LeftGrip", LeftGripButton);
             model3DGroup.Children.Add(LeftGripButton);
@@ -314,6 +316,18 @@ namespace PadForge.Models3D
             model3DGroup.Children.Add(RightGripButton);
 
             PaintEverything();
+
+            // ── The right pad IS the right stick, so show one ──
+            // Nothing on this controller reads as a right thumbstick, and
+            // the pad it lives on looks like the left one, which is a D-pad.
+            // A translucent stick standing on the pad's face says what the
+            // pad does and leans with it, and being see-through it never
+            // hides the pad's own quarters or its touch dot.
+            //
+            // AFTER the paint pass, the same reason the glyph riders are:
+            // the stick registers as the pad's click, so PaintTarget would
+            // reach it and repaint the ghost in the pad's own solid color.
+            BuildRightStickGhost();
 
             // Glyph riders. Valve's CAD carries each button as a two-shot
             // mold, the cap and the printed glyph as separate solids, so

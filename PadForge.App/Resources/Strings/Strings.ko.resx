@@ -866,6 +866,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>실행 파일 (포그라운드 창과 매칭):</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>폴링 속도</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>기본값(전역 설정)</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>프로필 “{0}”이(가) 활성화된 동안 재정의됨: {1} ms</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>모든 슬롯의 매핑과 장치별 설정을 하나의 이름으로 스냅샷 저장합니다. 연결된 실행 파일은 자동으로 이 프로필로 전환됩니다.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>프로필 이름을 변경하고 이를 활성화하는 실행 파일을 업데이트합니다. 저장된 매핑과 설정은 변경되지 않습니다.</value></data>
 

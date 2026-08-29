@@ -15809,14 +15809,30 @@ namespace PadForge.Services
         {
             if (_inputManager == null) return;
             int ms = 0;
+            string activeName = null;
             string activeId = SettingsManager.ActiveProfileId;
             if (!string.IsNullOrEmpty(activeId))
             {
                 var active = SettingsManager.Profiles.Find(p => p.Id == activeId);
-                if (active != null) ms = active.PollingRateOverrideMs;
+                if (active != null)
+                {
+                    ms = active.PollingRateOverrideMs;
+                    activeName = active.Name;
+                }
             }
             _inputManager.PollingIntervalMs =
                 ResolvePollingMs(ms, _mainVm?.Settings?.PollingRateMs ?? 1);
+
+            // The Settings page says WHO is in charge of the knob (#365
+            // follow-up): a global setting that a profile silently outranks
+            // reads as broken. Written here, beside the rate itself, so the
+            // note and the loop can never disagree.
+            var settingsVm = _mainVm?.Settings;
+            if (settingsVm != null)
+                settingsVm.PollingOverrideNote = ms > 0 && activeName != null
+                    ? string.Format(Strings.Instance.Settings_PollingOverriddenBy_Format,
+                        activeName, Math.Clamp(ms, 1, 16))
+                    : null;
         }
 
         /// <summary>The pure half of the resolver, for the tests: the

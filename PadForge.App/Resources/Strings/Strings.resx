@@ -1850,6 +1850,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Executables (matched against foreground window):</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Polling Rate</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Default (Global Setting)</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Overridden while profile “{0}” is active: {1} ms</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Snapshots every slot's mappings and per-device settings under one name. Linked executables switch to it automatically.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Renames the profile and updates the executables that activate it. Stored mappings and settings are unchanged.</value></data>
 

@@ -131,6 +131,7 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <TextBlock Text="{Binding Settings_PollingInterval, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
@@ -139,14 +140,24 @@
                                       Minimum="1" Maximum="16"
                                       SpinButtonPlacementMode="Inline" Width="200" Margin="0,0,0,8"/>
                         <TextBlock Grid.Column="2" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="6,0,0,8" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                        <TextBlock Grid.Row="1" Text="{Binding Settings_HmInactivityTimeout, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                        <!-- Who is in charge of the knob (#365): while the
+                             active profile carries a polling override, the
+                             global value above is dormant, and a setting
+                             that is silently outranked reads as broken.
+                             Collapsed while the global value rules. -->
+                        <TextBlock Grid.Row="1" Grid.ColumnSpan="3"
+                                   Text="{Binding PollingOverrideNote}"
+                                   Visibility="{Binding PollingOverrideNote, Converter={StaticResource StringToVisibility}}"
+                                   TextWrapping="Wrap" Margin="0,0,0,8"
+                                   Foreground="{DynamicResource EmberBrush}"/>
+                        <TextBlock Grid.Row="2" Text="{Binding Settings_HmInactivityTimeout, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                    Margin="0,0,8,0"/>
-                        <ui:NumberBox Grid.Row="1" Grid.Column="1" Value="{Binding HmInactivityDestroyTimeoutSeconds, Mode=TwoWay}"
+                        <ui:NumberBox Grid.Row="2" Grid.Column="1" Value="{Binding HmInactivityDestroyTimeoutSeconds, Mode=TwoWay}"
                                       Minimum="0" Maximum="3600"
                                       SpinButtonPlacementMode="Inline" Width="200"
                                       ToolTip="{Binding Settings_HmInactivityTimeoutTooltip, Source={x:Static strings:Strings.Instance}}"/>
-                        <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Settings_SecondsZeroNever, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="6,0,0,0" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                        <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding Settings_SecondsZeroNever, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="6,0,0,0" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                     </Grid>
                 </StackPanel>
             </Border>

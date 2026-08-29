@@ -866,6 +866,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Ejecutables (comparados con la ventana en primer plano):</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Tasa de sondeo</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Predeterminada (ajuste global)</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Anulado mientras el perfil “{0}” está activo: {1} ms</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Guarda una instantánea de las asignaciones de cada slot y la configuración por dispositivo bajo un solo nombre. Los ejecutables vinculados cambian a él automáticamente.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Cambia el nombre del perfil y actualiza los ejecutables que lo activan. Las asignaciones y la configuración guardadas no cambian.</value></data>
 

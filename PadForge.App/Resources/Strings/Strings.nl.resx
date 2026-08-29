@@ -866,6 +866,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Uitvoerbare bestanden (vergeleken met voorgrondvenster):</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Pollingfrequentie</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Standaard (globale instelling)</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Overschreven zolang profiel “{0}” actief is: {1} ms</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Slaat een momentopname van de toewijzingen van elk slot en de instellingen per apparaat op onder één naam. Gekoppelde uitvoerbare bestanden schakelen er automatisch naar over.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Hernoemt het profiel en werkt de uitvoerbare bestanden bij die het activeren. Opgeslagen toewijzingen en instellingen blijven ongewijzigd.</value></data>
 

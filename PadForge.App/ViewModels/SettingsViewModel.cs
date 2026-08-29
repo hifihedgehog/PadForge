@@ -819,6 +819,22 @@ namespace PadForge.ViewModels
         }
 
 
+        private string _pollingOverrideNote;
+
+        /// <summary>Why the global polling knob is not currently in charge
+        /// (#365 follow-up): while the active profile carries a polling
+        /// override, this names the profile and the rate it imposes, and
+        /// the Settings page shows it under the knob. Null or empty while
+        /// the global value rules, which collapses the note. Written by
+        /// InputService.ApplyEffectivePollingRate, the same single owner
+        /// that writes the live rate, so the note can never disagree with
+        /// what the loop is actually doing.</summary>
+        public string PollingOverrideNote
+        {
+            get => _pollingOverrideNote;
+            set => SetProperty(ref _pollingOverrideNote, value);
+        }
+
         private int _pollingRateMs = 1;
 
         /// <summary>

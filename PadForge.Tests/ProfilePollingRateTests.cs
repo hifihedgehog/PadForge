@@ -97,6 +97,28 @@ namespace PadForge.Tests
             Assert.DoesNotContain("PollingRateOverrideMs", body);
         }
 
+        /// <summary>The Settings page says who is in charge of the knob:
+        /// the resolver writes the override note beside the rate itself
+        /// (set while an override rules, cleared when the global value
+        /// does), and the page binds it under the knob. A global setting a
+        /// profile silently outranks reads as broken, which is the owner's
+        /// exact complaint this follow-up answers.</summary>
+        [Fact]
+        public void TheSettingsPageNamesTheOverridingProfile()
+        {
+            string svc = RepoText("PadForge.App", "Services", "InputService.cs");
+            int at = svc.IndexOf("internal void ApplyEffectivePollingRate()", StringComparison.Ordinal);
+            Assert.True(at > 0);
+            string body = svc.Substring(at, 1800);
+            Assert.Contains("PollingOverrideNote = ms > 0 && activeName != null", body);
+            Assert.Contains("Settings_PollingOverriddenBy_Format", body);
+            Assert.Contains(": null", body);   // cleared when the global value rules
+
+            string page = RepoText("PadForge.App", "Views", "SettingsPage.xaml");
+            Assert.Contains("Binding PollingOverrideNote", page);
+            Assert.Contains("Converter={StaticResource StringToVisibility}", page);
+        }
+
         /// <summary>Editing the ACTIVE profile's override retunes the live
         /// loop immediately rather than at the next switch.</summary>
         [Fact]

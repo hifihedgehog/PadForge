@@ -866,6 +866,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>可执行文件（与前台窗口匹配）：</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>轮询率</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>默认（全局设置）</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>配置文件“{0}”激活期间被覆盖：{1} ms</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>将每个插槽的映射和各设备设置以一个名称保存为快照。关联的可执行文件会自动切换到该配置文件。</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>重命名配置文件并更新激活它的可执行文件。已保存的映射和设置保持不变。</value></data>
 

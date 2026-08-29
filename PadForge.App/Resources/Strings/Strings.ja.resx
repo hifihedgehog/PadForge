@@ -866,6 +866,7 @@
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>実行ファイル (フォアグラウンドウィンドウと照合):</value></data>
   <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>ポーリングレート</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>既定（グローバル設定）</value></data>
+  <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>プロファイル「{0}」が有効な間は上書きされます: {1} ms</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>各スロットのマッピングとデバイスごとの設定を 1 つの名前でスナップショットとして保存します。関連付けられた実行ファイルは自動的にこのプロファイルへ切り替わります。</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>プロファイルの名前を変更し、それを有効化する実行ファイルを更新します。保存済みのマッピングと設定は変更されません。</value></data>
 

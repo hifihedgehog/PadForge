@@ -25,10 +25,35 @@ namespace PadForge.Tests
             Assert.NotNull(m.RightThumbRing);
             Assert.NotEqual(new Vector3D(0, 0, 0), m.JoystickRotationPointCenterRightMillimeter);
 
-            // Scenery. A click or button entry would steal the pad's hover.
-            Assert.False(m.ClickMap.ContainsKey(m.RightThumbRing));
-            foreach (var kv in m.ButtonMap)
-                Assert.DoesNotContain(m.RightThumbRing, kv.Value);
+        }
+
+        /// <summary>A stick head is BOTH: directions around the rim and the
+        /// stick BUTTON in the middle. The click registration is what gives
+        /// it that middle, because TryResolveQuadrantHit hands the center to
+        /// the click when a quadrant surface is also in the ClickMap and
+        /// takes directions edge to edge when it is not.
+        ///
+        /// <para>The button is the PAD CLICK, because pressing this pad IS
+        /// the right stick button on this controller in SDL's mapping and
+        /// the wire carries no separate RightThumbButton. Head and pad
+        /// answer as one control, which is what the hardware does.</para></summary>
+        [Fact]
+        public void TheHeadCarriesTheStickButtonToo()
+        {
+            using var m = ControllerModelBase.Create("SteamController", null, false);
+
+            Assert.True(m.ClickMap.TryGetValue(m.RightThumbRing, out var target),
+                "the stick head is in no click map, so its middle resolves a direction and the "
+                + "stick button cannot be reached on it at all");
+            Assert.Equal("RightTouchpadClick", target);
+
+            // And it lights with the pad, since they are one control.
+            Assert.Contains(m.RightThumbRing, m.ButtonMap["RightTouchpadClick"]);
+            Assert.Contains(m.TouchpadRight, m.ButtonMap["RightTouchpadClick"]);
+
+            // The wire has no separate right stick button to bind instead.
+            Assert.True(Models2D.NintendoPreviewMap.IndexOf(
+                "steam-controller", "RightThumbButton") < 0);
         }
 
         /// <summary>The head carries the four directions by quadrant, which

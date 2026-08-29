@@ -634,20 +634,26 @@ namespace PadForge.Tests
             }
         }
 
-        /// <summary>The Steam Deck's stick button lights its BASE, the
-        /// same part of the stick every other pad here lights.
+        /// <summary>THE RULE for a stick button: it lights everything under
+        /// the cap's RING, and the ring stays dark because the ring is the
+        /// direction surface.
         ///
-        /// <para>The family is consistent: the DualSense, the DS4, the Xbox
-        /// Series, the Xbox 360 and the Switch 2 Pro all light a base wider
-        /// than their cap and leave the cap dark, so the glow reads as a
-        /// collar around the stick. The Deck's three solids make it possible
-        /// to get this exactly inside out, and an earlier pass did: it lit
-        /// the 12.24 mm stem, whose face IS the top of the stick, and left
-        /// the 15.22 mm base dark. Rendered through the app's own viewport
-        /// the difference is unmistakable, a lit stick face against every
-        /// other pad's lit collar.</para></summary>
+        /// <para>Whether that includes the top of the cap is the MESH's
+        /// answer, not a preference. Measured across the family, the Xbox
+        /// 360's click pokes 2.37 mm into its 3.35 mm cap, so its center
+        /// lights with the button; the DualSense, the Xbox Series and the
+        /// Switch 2 Pro stop exactly at the ring's back, so their caps stay
+        /// wholly dark. The Steam Deck is the 360's shape: its stem fills
+        /// the ring's middle and reaches within 0.22 mm of the cap face, so
+        /// it IS the top of the cap and lights.</para>
+        ///
+        /// <para>Two passes got this wrong in opposite directions. One lit
+        /// the stem alone and left the base dark, which put the glow on the
+        /// face with no collar. The next lit the base alone, which left the
+        /// top of the cap in its own hue while the rest of the stick lit,
+        /// reading as half a stick.</para></summary>
         [Fact]
-        public void TheSteamDeckLightsItsStickBaseAndNotItsFace()
+        public void TheSteamDeckStickButtonLightsEverythingUnderTheRing()
         {
             using var m = ControllerModelBase.Create("SteamDeck", null, false);
             foreach (var (ring, button, side) in new[]
@@ -655,17 +661,20 @@ namespace PadForge.Tests
                        (m.RightThumbRing, "RightThumbButton", "right") })
             {
                 var lit = m.ButtonMap[button];
-                Assert.Single(lit);
 
-                // The base is the widest solid below the cap. The stem is
-                // the narrow one, and it rides without lighting.
-                double capWidth = ring.Bounds.SizeX;
-                Assert.True(lit[0].Bounds.SizeX > capWidth * 0.9,
-                    $"the {side} stick button lights a {lit[0].Bounds.SizeX:F1} mm part under a "
-                    + $"{capWidth:F1} mm cap, which is the stem, not the base");
-                Assert.True(m.StickRiders.TryGetValue(ring, out var riders) && riders.Count == 1,
-                    $"the {side} stem must ride the stick so it leans with the cap and the base");
-                Assert.DoesNotContain(riders[0], lit);
+                // The ring steers and never lights.
+                Assert.DoesNotContain(ring, lit);
+
+                // Everything else does: the base collar AND the stem that
+                // fills the ring's middle.
+                double capFace = ring.Bounds.Y;
+                double capBack = ring.Bounds.Y + ring.Bounds.SizeY;
+                Assert.True(lit.Any(g => g.Bounds.SizeX > ring.Bounds.SizeX * 0.9),
+                    $"the {side} stick button lights nothing as wide as its cap, so it has no "
+                    + "base collar");
+                Assert.True(lit.Any(g => g.Bounds.Y <= capBack),
+                    $"the {side} stick button lights nothing that reaches into the cap, so the "
+                    + "top of the cap keeps its own hue while the rest of the stick lights");
             }
         }
 

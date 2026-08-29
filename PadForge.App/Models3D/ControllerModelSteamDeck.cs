@@ -130,26 +130,27 @@ namespace PadForge.Models3D
             AddCosmetic("LeftStickWell.obj", MaterialWell);
             AddCosmetic("RightStickWell.obj", MaterialWell);
 
-            // ── The stick: the base lights, the cap steers, the stem rides ──
+            // ── The stick: the cap steers, everything under it lights ──
             // Three solids, and what each one is:
             //
-            //   Joystick-Left-Ring  15.99 mm wide, outermost   the cap
+            //   Joystick-Left-Ring  15.99 mm wide, outermost   the cap RING
             //   LeftStickTouch      12.24 mm wide              the stem
             //   LeftStickClick      15.22 x 2.62 mm            the base
             //
-            // The base is what the stick button lights, which is what every
-            // other pad here does: the DualSense, the Xbox Series, the
-            // Switch 2 Pro and the DS4 all light a base wider than their cap
-            // and leave the cap dark, so the glow reads as a collar around
-            // the stick. Lighting the stem instead put the glow on the FACE
-            // of the stick, which is the one thing the family never does.
+            // The stem fills the ring's middle and reaches to within 0.22 mm
+            // of the cap's face, so it IS the top of the cap. That is the
+            // Xbox 360's shape, where the same job is done by the click mesh
+            // itself: its click pokes 2.37 mm into a 3.35 mm cap and the
+            // center lights with the button. The DualSense, the Xbox Series
+            // and the Switch 2 Pro have no such piece, their click stopping
+            // exactly at the ring's back, so their caps stay wholly dark.
             //
-            // The stem still has to lean with the cap and the base, so it
-            // goes to AddStickRider: it moves, it does not light, and it is
-            // in no click map, since a click anywhere on the head already
-            // resolves through the cap or the base.
-            AddStickRider(LeftThumbRing, LoadStem("LeftStickTouch.obj"));
-            AddStickRider(RightThumbRing, LoadStem("RightStickTouch.obj"));
+            // So the stem lights WITH the base. Leaving it out lit the base
+            // while the top of the cap kept its own hue, which reads as half
+            // a stick. Only the RING stays dark, because the ring is the
+            // direction surface.
+            RegisterButton("LeftThumbButton", LoadStem("LeftStickTouch.obj"));
+            RegisterButton("RightThumbButton", LoadStem("RightStickTouch.obj"));
 
             PaintEverything();
 

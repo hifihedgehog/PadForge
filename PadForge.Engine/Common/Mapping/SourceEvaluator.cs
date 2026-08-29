@@ -147,6 +147,10 @@ namespace PadForge.Engine.Common.Mapping
                 kind = "MotionLeanX";
             else if (kind == "Direct" && SourceCoercion.IsMotionLeanAuxDescriptor(src.Descriptor))
                 kind = "MotionLeanAuxX";
+            else if (kind == "Direct" && SourceCoercion.IsMotionShakeDescriptor(src.Descriptor))
+                kind = "MotionShake";
+            else if (kind == "Direct" && SourceCoercion.IsMotionShakeAuxDescriptor(src.Descriptor))
+                kind = "MotionShakeAux";
 
             switch (kind)
             {
@@ -210,6 +214,17 @@ namespace PadForge.Engine.Common.Mapping
                     double v = runtime.TickMotionLean(slotIndex, target, sourceIndex, src, state,
                         SourceCoercion.EffectiveDeviceGuid(src, evaluatedDeviceGuid), aux: true);
                     return src.Invert ? -(float)v : (float)v;
+                }
+                case "MotionShake":
+                case "MotionShakeAux":
+                {
+                    // Shake envelope as an axis (#364): unsigned 0..1, no
+                    // runtime state (the App computes the envelope beside
+                    // the gravity EMA and the provider hands it over).
+                    // Invert has nothing to point at on an envelope.
+                    return SourceCoercion.ReadShakeEnvelope(src,
+                        SourceCoercion.EffectiveDeviceGuid(src, evaluatedDeviceGuid),
+                        kind == "MotionShakeAux");
                 }
                 default:
                 {

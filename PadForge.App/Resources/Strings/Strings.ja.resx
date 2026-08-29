@@ -2513,6 +2513,10 @@
   <data name="Mapping_NunchukLean" xml:space="preserve"><value>ヌンチャクリーン</value></data>
   <data name="Mapping_LeftJoyConLean" xml:space="preserve"><value>左Joy-Conリーン</value></data>
   <data name="Mapping_AuxMotionLean" xml:space="preserve"><value>補助モーションリーン</value></data>
+  <data name="Mapping_MotionShake" xml:space="preserve"><value>モーションシェイク</value></data>
+  <data name="Mapping_NunchukShake" xml:space="preserve"><value>ヌンチャクシェイク</value></data>
+  <data name="Mapping_LeftJoyConShake" xml:space="preserve"><value>左Joy-Conシェイク</value></data>
+  <data name="Mapping_AuxMotionShake" xml:space="preserve"><value>補助モーションシェイク</value></data>
   <data name="Devices_AccelAux" xml:space="preserve"><value>補助加速度センサー</value></data>
   <data name="Devices_GyroAux" xml:space="preserve"><value>補助ジャイロスコープ</value></data>
   <data name="Mapping_NunchukAccel" xml:space="preserve"><value>ヌンチャク加速度センサー</value></data>

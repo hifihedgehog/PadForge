@@ -27,6 +27,14 @@ namespace PadForge.Common
             // left Joy-Con), in BOTH naming modes, so it sits above the
             // raw-numbered early return: Wii remotes are raw-numbered class and
             // they are exactly where this label matters.
+            // Aux shake (#364): contextual label, same C10 rule as the
+            // lean arm below (without a display arm the row renders the
+            // raw internal literal).
+            if (PadForge.Engine.Common.Mapping.SourceCoercion.IsMotionShakeAuxDescriptor(mapping.SourceDescriptor))
+            {
+                mapping.SetResolvedSourceText(ResolveMotionShakeAuxName(ud));
+                return;
+            }
             if (PadForge.Engine.Common.Mapping.SourceCoercion.IsMotionLeanAuxDescriptor(mapping.SourceDescriptor))
             {
                 mapping.SetResolvedSourceText(ResolveMotionLeanAuxName(ud));
@@ -1206,6 +1214,20 @@ namespace PadForge.Common
             return si.Mapping_AuxMotionLean;
         }
 
+        /// <summary>Contextual display label for the "Motion Shake L" aux
+        /// shake descriptor (#364). Same device resolution as
+        /// <see cref="ResolveMotionLeanAuxName"/>.</summary>
+        internal static string ResolveMotionShakeAuxName(PadForge.Engine.Data.UserDevice ud)
+        {
+            var si = Strings.Instance;
+            if (ud != null && ud.VendorId == 0x057E)
+            {
+                if (ud.ProdId == 0x0306 || ud.ProdId == 0x0330) return si.Mapping_NunchukShake;
+                return si.Mapping_LeftJoyConShake;
+            }
+            return si.Mapping_AuxMotionShake;
+        }
+
         /// <summary>Contextual display label for the "Motion Accel L"
         /// aux-accelerometer passthrough descriptor (#199 follow-up). Same
         /// device resolution as <see cref="ResolveMotionLeanAuxName"/>.</summary>
@@ -1910,6 +1932,16 @@ namespace PadForge.Common
             // display label per device.
             if (ud.HasAccelAux)
                 list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.MotionLeanAuxDescriptor, DisplayName = ResolveMotionLeanAuxName(ud) });
+
+            // Shake pair (#364, asked in #358): the accel magnitude's
+            // envelope, tilt-immune, for shake-to-press bindings. Advertised
+            // exactly like the lean pair: any accel gets the primary, any
+            // aux accel gets the contextual twin ("Nunchuk Shake" on a Wii
+            // Remote).
+            if (ud.HasAccel)
+                list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.MotionShakeDescriptor, DisplayName = si.Mapping_MotionShake });
+            if (ud.HasAccelAux)
+                list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.MotionShakeAuxDescriptor, DisplayName = ResolveMotionShakeAuxName(ud) });
 
             // Touchpad gesture descriptors come LAST in the per-device
             // section so they appear after raw hardware (touchpad axes,

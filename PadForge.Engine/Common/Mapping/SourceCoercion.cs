@@ -2073,6 +2073,63 @@ namespace PadForge.Engine.Common.Mapping
         /// I/H prefix grammar.</summary>
         public const string MotionLeanAuxDescriptor = "Motion Lean L";
 
+        /// <summary>The shake pair (#364, asked in discussion #358): the
+        /// accelerometer's MAGNITUDE leaving 1 g, as an envelope. Shake is a
+        /// magnitude event, not an orientation, so the read is tilt-immune
+        /// by construction: a slow reorientation keeps |accel| at gravity
+        /// and never fires it, which is the discriminator the lean pair
+        /// lacks. The envelope (150 ms decay, computed app-side beside the
+        /// gravity EMA) bridges the magnitude's zero crossings during an
+        /// oscillating shake: Dolphin's canonical emulated shake is 10 cm
+        /// of travel at 6 Hz (InputCommon Force.cpp, Shake::Shake), so raw
+        /// thresholding would flutter at twice that rate. Same "Motion "
+        /// prefix rationale as the lean pair above.</summary>
+        public const string MotionShakeDescriptor = "Motion Shake";
+
+        /// <summary>The aux (Nunchuk / left Joy-Con) twin of
+        /// <see cref="MotionShakeDescriptor"/>, displayed contextually
+        /// ("Nunchuk Shake" on a Wii Remote).</summary>
+        public const string MotionShakeAuxDescriptor = "Motion Shake L";
+
+        /// <summary>True when the descriptor is <see cref="MotionShakeDescriptor"/>.</summary>
+        public static bool IsMotionShakeDescriptor(string descriptor)
+            => descriptor != null
+            && string.Equals(descriptor.Trim(), MotionShakeDescriptor, StringComparison.OrdinalIgnoreCase);
+
+        /// <summary>True when the descriptor is <see cref="MotionShakeAuxDescriptor"/>.</summary>
+        public static bool IsMotionShakeAuxDescriptor(string descriptor)
+            => descriptor != null
+            && string.Equals(descriptor.Trim(), MotionShakeAuxDescriptor, StringComparison.OrdinalIgnoreCase);
+
+        /// <summary>Per-device shake envelope, normalized 0..1 with full
+        /// scale at 2 g of magnitude deviation. The App computes it beside
+        /// the gravity EMA (same tick, same lock) and this returns 0 for an
+        /// unknown device or before any accel arrives.</summary>
+        public static Func<string, float> ShakeEnvelopeProvider { get; set; }
+
+        /// <summary>Aux twin of <see cref="ShakeEnvelopeProvider"/>, over
+        /// the Nunchuk / left Joy-Con accelerometer.</summary>
+        public static Func<string, float> ShakeEnvelopeProviderAux { get; set; }
+
+        /// <summary>The shake envelope for a source, sensitivity-scaled and
+        /// clamped to 0..1. Unsigned by nature: an envelope has no
+        /// direction, so HalfAxis and Invert do not apply.</summary>
+        internal static float ReadShakeEnvelope(MappingSource src, string deviceGuid, bool aux)
+        {
+            var provider = aux ? ShakeEnvelopeProviderAux : ShakeEnvelopeProvider;
+            float env = provider?.Invoke(deviceGuid ?? "") ?? 0f;
+            float sens = PerSourceSensitivity(src);
+            if (sens != 1f) env *= sens;
+            return env < 0f ? 0f : (env > 1f ? 1f : env);
+        }
+
+        /// <summary>Default button threshold for a shake source, percent of
+        /// full scale: 25% of the 2 g range is about 0.5 g of deviation,
+        /// which a deliberate flick clears easily and handling noise does
+        /// not. The per-source DeadZone overrides it, the same grammar as
+        /// every other derived family.</summary>
+        internal const int ShakeButtonDefaultThresholdPercent = 25;
+
         /// <summary>True when the descriptor is <see cref="MotionLeanAuxDescriptor"/>.</summary>
         public static bool IsMotionLeanAuxDescriptor(string descriptor)
             => !string.IsNullOrEmpty(descriptor)
@@ -2482,7 +2539,11 @@ namespace PadForge.Engine.Common.Mapping
         /// <summary>Drops every captured lean neutral so the next real
         /// gravity sample re-latches the resting grip (profile switch /
         /// device re-open hygiene, the TickMotionLean Clear() twin).</summary>
-        public static void ResetGyroLeanNeutral() => _gyroLeanNeutral.Clear();
+        public static void ResetGyroLeanNeutral()
+        {
+            _gyroLeanNeutral.Clear();
+            _motionLeanNeutralStatic.Clear();
+        }
 
         /// <summary>Drops ONE device's captured lean/tilt neutral (#292):
         /// the Gyro Recenter macro's per-slot path, which must re-zero the
@@ -2493,6 +2554,69 @@ namespace PadForge.Engine.Common.Mapping
         /// string.</summary>
         public static void ResetGyroLeanNeutral(string deviceGuid)
             => _gyroLeanNeutral.TryRemove(LeanNeutralKey(deviceGuid), out _);
+
+        /// <summary>Neutral grips for the STATIC "Motion Lean" button read,
+        /// keyed like SourceKindRuntime's motion neutral (gid, gid|L). A
+        /// separate latch from the runtime's because this read has no
+        /// runtime, but captured from the same provider under the same
+        /// above-sentinel gate, so the two agree to within one tick.
+        /// Cleared with the gyro-lean neutrals on profile switch.</summary>
+        private static readonly ConcurrentDictionary<string, (double x, double y, double z)> _motionLeanNeutralStatic = new();
+
+        /// <summary>The "Motion Lean" / "Motion Lean L" value as a signed
+        /// -1..+1, the same math as SourceKindRuntime.TickMotionLean
+        /// (JSM-derived: negate to gravity-down, realign to the captured
+        /// resting grip, orientation-selected side component, inner/outer
+        /// deadzone remap) without the steering-lock bookkeeping. Serves
+        /// the BUTTON read: before this, a lean source on a button target
+        /// fell through the descriptor parser and evaluated to false,
+        /// always, which is #364's reported dead mapping (Nunchuk Lean on
+        /// ZR).</summary>
+        internal static float ReadMotionLeanValue(MappingSource src, string deviceGuid, bool aux)
+        {
+            var provider = aux ? GravityProviderAux : GravityProvider;
+            var grav = provider?.Invoke(deviceGuid ?? "") ?? (0f, 0f, -1f);
+            double gx = -grav.gx, gy = -grav.gy, gz = -grav.gz;
+            double gLen = Math.Sqrt(gx * gx + gy * gy + gz * gz);
+            if (gLen <= 0) return 0f;
+
+            string gid = aux ? LeanNeutralKey(deviceGuid) + "|L" : LeanNeutralKey(deviceGuid);
+            if (gLen > 4.0 && !_motionLeanNeutralStatic.ContainsKey(gid))
+                _motionLeanNeutralStatic[gid] = (gx / gLen, gy / gLen, gz / gLen);
+            if (_motionLeanNeutralStatic.TryGetValue(gid, out var n))
+            {
+                (gx, gy, gz) = SourceKindRuntime.RealignToDown(gx, gy, gz, n.x, n.y, n.z);
+                gLen = Math.Sqrt(gx * gx + gy * gy + gz * gz);
+                if (gLen <= 0) return 0f;
+            }
+            else
+            {
+                // No real gravity yet (sentinel): no lean, matching the
+                // runtime's gate so a unit-length fallback cannot read as
+                // a full-scale tilt at rest.
+                return 0f;
+            }
+
+            double side = (src?.ParamControllerOrientation ?? "Forward") switch
+            {
+                "Left"     => gz,
+                "Right"    => -gz,
+                "Backward" => -gx,
+                _          => gx,
+            };
+            double leanDeg = Math.Asin(Math.Clamp(side / gLen, -1.0, 1.0)) * 180.0 / Math.PI;
+            double sign = leanDeg < 0 ? -1 : 1;
+            double absLean = Math.Abs(leanDeg);
+            if (gy > 0) absLean = 180.0 - absLean;
+
+            double innerDz = src?.ParamMotionInnerDz ?? 0;
+            double outerDz = src?.ParamMotionOuterDz ?? 0;
+            double denom = 180.0 - outerDz - innerDz;
+            double remapped = denom > 0
+                ? Math.Clamp((absLean - innerDz) / denom, 0.0, 1.0)
+                : (absLean >= innerDz ? 1 : 0);
+            return (float)(sign * remapped);
+        }
 
         /// <summary>Canonical dictionary key for a device guid string:
         /// parseable guids collapse to lowercase "d" format, anything else
@@ -4495,6 +4619,33 @@ namespace PadForge.Engine.Common.Mapping
                 if (src.HalfAxis && !src.Bidirectional)
                     return src.Invert ? lv < -lth : lv > lth;
                 return Math.Abs(lv) > lth;
+            }
+
+            // The "Motion Lean" pair on a button target (#364): same wedge
+            // grammar as the gravity-tilt family above, over the steering
+            // lean's own math. Before this arm the pair fell through the
+            // numeric-descriptor parser below and read false, always.
+            if (IsMotionLeanDescriptor(s) || IsMotionLeanAuxDescriptor(s))
+            {
+                float mv = ReadMotionLeanValue(src, deviceGuid, IsMotionLeanAuxDescriptor(s));
+                int mdz = EffectiveThresholdPercent(src, globalThresholdPercent);
+                float mth = Math.Max(mdz, 1) / 100f;
+                if (src.HalfAxis && !src.Bidirectional)
+                    return src.Invert ? mv < -mth : mv > mth;
+                return Math.Abs(mv) > mth;
+            }
+
+            // Shake on a button (#364): the envelope has no direction, so
+            // the read is any-direction by nature and HalfAxis / Invert do
+            // not apply. The default threshold is shake's own (about 0.5 g
+            // of deviation), not the generic axis default: an envelope
+            // rests at 0, so the generic default would make a gentle bump
+            // a press.
+            if (IsMotionShakeDescriptor(s) || IsMotionShakeAuxDescriptor(s))
+            {
+                float env = ReadShakeEnvelope(src, deviceGuid, IsMotionShakeAuxDescriptor(s));
+                int sdz = src.DeadZone > 0 ? src.DeadZone : ShakeButtonDefaultThresholdPercent;
+                return env > Math.Max(sdz, 1) / 100f;
             }
 
             if (s.StartsWith("Gyro ", StringComparison.Ordinal))

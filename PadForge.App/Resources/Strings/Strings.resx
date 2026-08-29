@@ -1571,6 +1571,10 @@
   <data name="Mapping_NunchukLean" xml:space="preserve"><value>Nunchuk Lean</value></data>
   <data name="Mapping_LeftJoyConLean" xml:space="preserve"><value>Left Joy-Con Lean</value></data>
   <data name="Mapping_AuxMotionLean" xml:space="preserve"><value>Aux Motion Lean</value></data>
+  <data name="Mapping_MotionShake" xml:space="preserve"><value>Motion Shake</value></data>
+  <data name="Mapping_NunchukShake" xml:space="preserve"><value>Nunchuk Shake</value></data>
+  <data name="Mapping_LeftJoyConShake" xml:space="preserve"><value>Left Joy-Con Shake</value></data>
+  <data name="Mapping_AuxMotionShake" xml:space="preserve"><value>Aux Motion Shake</value></data>
   <data name="Mapping_NunchukAccel" xml:space="preserve"><value>Nunchuk Accelerometer</value></data>
   <data name="Mapping_LeftJoyConAccel" xml:space="preserve"><value>Left Joy-Con Accelerometer</value></data>
   <data name="Mapping_AuxMotionAccel" xml:space="preserve"><value>Aux Motion Accelerometer</value></data>

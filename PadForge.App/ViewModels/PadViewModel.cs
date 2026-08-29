@@ -7552,17 +7552,34 @@ namespace PadForge.ViewModels
         //  State update (30Hz from InputService)
         // ═══════════════════════════════════════════════
 
+        /// <summary>True for a slot whose preview is a picture of the
+        /// PHYSICAL pad, lit by wire index off the raw surface, rather than
+        /// of the virtual controller's output.
+        ///
+        /// <para>Both the raw bridge and the gamepad path write the same
+        /// gamepad-shaped properties, so exactly one of them may own a given
+        /// slot. This is the single answer to which, because when the two
+        /// disagreed the later writer won and the earlier one's work
+        /// vanished: the Valve families live under Extended, the gamepad
+        /// path skipped only Nintendo, and every Valve press lit for one
+        /// tick and went out. The 2015 pad showed it plainly, since its
+        /// d-pad is the left trackpad and nothing on that pad ever
+        /// lit.</para></summary>
+        private bool PreviewRidesRawSurface =>
+            _outputType == VirtualControllerType.Nintendo
+            || (_outputType == VirtualControllerType.Extended
+                && MacroButtonNames.IsValveLetteredProfile(ProfileId));
+
         public void UpdateFromEngineState(Gamepad gp, Engine.Vibration vibration, Engine.Vibration selectedDeviceVibration = null)
         {
-            // Nintendo slots: the gamepad surface is EMPTY by design (all
-            // input rides the raw surface) and UpdateNintendoPreviewFromRaw
-            // owns every gamepad-shaped preview property. Writing them from
-            // the empty surface here stomped the bridge's values on every
-            // tick the raw change-detect skipped, bouncing a held button's
-            // preview at analog-jitter cadence (#215 preview flicker). The
-            // vibration section below stays: the motor bars are fed by the
-            // feedback lane, not the raw bridge.
-            if (_outputType != VirtualControllerType.Nintendo)
+            // A slot whose preview rides the raw surface has its
+            // gamepad-shaped properties owned by UpdateNintendoPreviewFromRaw.
+            // Writing them here stomped the bridge's values on every tick the
+            // raw change-detect skipped, bouncing a held button's preview at
+            // analog-jitter cadence (#215 preview flicker). The vibration
+            // section below stays: the motor bars are fed by the feedback
+            // lane, not the raw bridge.
+            if (!PreviewRidesRawSurface)
             {
             ButtonA = gp.IsButtonPressed(Gamepad.A);
             ButtonB = gp.IsButtonPressed(Gamepad.B);
@@ -8182,9 +8199,7 @@ namespace PadForge.ViewModels
             // MacroButtonNames.NintendoExtendedLabel documents: face
             // B A Y X at 0-3, L R 4-5, ZL ZR 6-7, Minus Plus 8-9, stick
             // clicks 10-11, Home 12, Capture 13; hat 0; axes LX LY RX RY).
-            if (_outputType == VirtualControllerType.Nintendo
-                || (_outputType == VirtualControllerType.Extended
-                    && MacroButtonNames.IsValveLetteredProfile(ProfileId)))
+            if (PreviewRidesRawSurface)
                 UpdateNintendoPreviewFromRaw(raw);
         }
 

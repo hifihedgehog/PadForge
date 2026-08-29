@@ -96,12 +96,7 @@ namespace PadForge.Tests
             Assert.Equal(s.Mapping_RightPadTouch, byTarget["TouchpadContact2"]);
             Assert.False(byTarget.ContainsKey("TouchpadClick"));
             Assert.Contains($"RawBtn{NintendoPreviewMap.IndexOf(id, "LeftTouchpadClick")}", byTarget.Keys);
-            // Whichever name this family gives the right pad's click. The
-            // 2015 calls it the right STICK button, because that is what SDL
-            // sends it as.
-            Assert.Contains(
-                $"RawBtn{NintendoPreviewMap.IndexOf(id, NintendoPreviewMap.RightPadClickRole(id))}",
-                byTarget.Keys);
+            Assert.Contains($"RawBtn{NintendoPreviewMap.IndexOf(id, "RightTouchpadClick")}", byTarget.Keys);
         }
 
         private static DeviceObjectItem Btn(int i) => new() { InputIndex = i, ObjectType = DeviceObjectTypeFlags.PushButton };
@@ -187,9 +182,7 @@ namespace PadForge.Tests
             Assert.Equal("Button 12", Raw(ps, id, "RightGrip"));
             Assert.Equal("Button 13", Raw(ps, id, "LeftGrip"));
             Assert.Equal("Touchpad 0 Click", Raw(ps, id, "LeftTouchpadClick"));
-            // This pad's right click is the right STICK button, which is
-            // what SDL sends it as, so the automap fills that name.
-            Assert.Equal("Touchpad 1 Click", Raw(ps, id, "RightThumbButton"));
+            Assert.Equal("Touchpad 1 Click", Raw(ps, id, "RightTouchpadClick"));
             for (int i = 0; i < NintendoPreviewMap.ButtonCount(id); i++)
                 Assert.False(string.IsNullOrEmpty(ps.GetRawMapping($"RawBtn{i}")), $"RawBtn{i} unbound");
             Assert.Equal("Touchpad 1 Finger 0 X", ps.TouchpadX2);

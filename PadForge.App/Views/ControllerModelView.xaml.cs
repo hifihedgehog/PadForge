@@ -472,55 +472,52 @@ namespace PadForge.Views
                 }
             }
 
-            // ── Finger spheres: position above the touchpad surface ─────
-            // Each finger rides its OWN surface. On a two-pad model that is
-            // the left pad and the right pad; on a one-pad model both areas
-            // are the same rectangle and this reads exactly as before.
-            var area0 = _currentModel.TouchpadArea0;
-            var area1 = _currentModel.TouchpadArea1;
-
-            PositionFingerSphere(_touchpadFinger0Transform,
-                _vm.TouchpadFinger0Down, _vm.TouchpadFinger0X, _vm.TouchpadFinger0Y, area0, _currentModel);
-            PositionFingerSphere(_touchpadFinger1Transform,
-                _vm.TouchpadFinger1Down, _vm.TouchpadFinger1X, _vm.TouchpadFinger1Y, area1, _currentModel);
+            // ── Finger spheres: position ON the touchpad surface ────────
+            // Each finger rides its OWN pad. On a two-pad model that is the
+            // left pad and the right pad; on a one-pad model both surfaces
+            // are the same face.
+            PositionFingerSphere(_touchpadFinger0Transform, _vm.TouchpadFinger0Down,
+                _vm.TouchpadFinger0X, _vm.TouchpadFinger0Y,
+                _currentModel.TouchpadSurface0, _currentModel);
+            PositionFingerSphere(_touchpadFinger1Transform, _vm.TouchpadFinger1Down,
+                _vm.TouchpadFinger1X, _vm.TouchpadFinger1Y,
+                _currentModel.TouchpadSurface1, _currentModel);
         }
 
         private static void PositionFingerSphere(
-            TranslateTransform3D t, bool down, float normX, float normY, Rect3D bounds,
+            TranslateTransform3D t, bool down, float normX, float normY,
+            PadForge.Models3D.ControllerModelBase.TouchSurface surface,
             PadForge.Models3D.ControllerModelBase model)
         {
             if (t == null) return;
-            if (bounds.IsEmpty) { t.OffsetY = -10000; return; }
-            if (!down)
+            if (surface.IsEmpty || !down)
             {
                 // Park well off-screen so the sphere isn't visible / hit-testable.
                 t.OffsetY = -10000;
                 return;
             }
 
-            // Model coords: X = left/right (matches normX 0..1 left→right),
-            // Z = top/bottom of body (touch normY 0=top → high Z, 1=bottom →
-            // low Z), Y is the surface depth — float the sphere just in
-            // front of the touchpad face (Y at bounds.Min.Y + small offset
-            // toward the camera, which is -Y in HC's body model).
+            // The pad's OWN plane, not the model's axes. Every Valve pad is
+            // canted, the 2026's by 15 degrees and the 2015's by 19, so a
+            // point placed on the world-aligned bounding box sits beside the
+            // pad rather than on it and runs past its outline at the
+            // corners. TouchSurface.At walks the face's own axes.
             //
-            // Each model's Touchpad mesh extends past the actual touch surface
-            // by a different amount (DS4 Screen.obj has a small bezel; the
-            // DualSense Touchpad mesh is the entire central front-face area
-            // and is much larger than the real touchpad). The model owns the
-            // inset fractions so this code stays controller-agnostic.
-            double xInsetFrac      = model?.TouchpadXInsetFrac      ?? 0.03;
-            double zTopInsetFrac   = model?.TouchpadZTopInsetFrac   ?? 0.12;
-            double zBottomInsetFrac = model?.TouchpadZBottomInsetFrac ?? 0.12;
+            // The insets still crop: a mesh can carry more than the touch
+            // area, and the DualSense's is the whole central front-face
+            // panel, 9.7% wider each side than the pad it draws. Measured
+            // faces need none, so every Valve model sets them to zero.
+            double xi = model?.TouchpadXInsetFrac ?? 0.03;
+            double zt = model?.TouchpadZTopInsetFrac ?? 0.12;
+            double zb = model?.TouchpadZBottomInsetFrac ?? 0.12;
 
-            double touchX0 = bounds.X + bounds.SizeX * xInsetFrac;
-            double touchXSize = bounds.SizeX * (1.0 - 2 * xInsetFrac);
-            double touchZ0 = bounds.Z + bounds.SizeZ * zBottomInsetFrac;
-            double touchZSize = bounds.SizeZ * (1.0 - zTopInsetFrac - zBottomInsetFrac);
+            double u = xi + normX * (1.0 - 2 * xi);
+            double v = zt + normY * (1.0 - zt - zb);
 
-            t.OffsetX = touchX0 + (double)normX * touchXSize;
-            t.OffsetZ = touchZ0 + (1.0 - (double)normY) * touchZSize;
-            t.OffsetY = bounds.Y - 1.5;
+            var p = surface.At(u, v, 1.5);
+            t.OffsetX = p.X;
+            t.OffsetY = p.Y;
+            t.OffsetZ = p.Z;
         }
 
         // ─────────────────────────────────────────────

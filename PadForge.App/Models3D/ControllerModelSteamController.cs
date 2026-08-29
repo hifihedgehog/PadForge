@@ -100,7 +100,7 @@ namespace PadForge.Models3D
             // Everything scales off the pad's own radius. This pad is round,
             // measured: its outline fills 0.786 of its bounding square where
             // a circle gives 0.785.
-            double r = pad.Radius > 0 ? pad.Radius : pad.ExtentU / 2;
+            double padR = pad.Radius > 0 ? pad.Radius : pad.ExtentU / 2;
 
             // Stand it on the pad's OWN center, not the fitted plane's. The
             // plane is fitted from the four quarters as well as the center
@@ -114,51 +114,63 @@ namespace PadForge.Models3D
             double lift = Vector3D.DotProduct(pad.Center - discCenter, up);
             var face = discCenter + up * lift;
 
+            // ── The stick's own shape, in head radii ──
+            // Taken off the DualSense, whose numbers the Xbox Series and the
+            // Switch 2 Pro repeat within a few percent. Its head is 8.78 mm
+            // in radius and its profile runs, from the face back: a dish
+            // floor reaching r 0, a rim that widens 0.91 -> 1.00 over 3.5 mm,
+            // a 0.52 stem for another 3.5, then a base cone out to 1.36.
+            //
+            // The DOUGHNUT is that rim. It is the head's own outer wall, so
+            // it surrounds the dish and leans WITH the stick. It is not a
+            // collar on the shell, which is what an earlier pass built.
+            //
+            // The base cone is normally buried in the controller's shell, so
+            // only its shoulder shows here; the profile stops at the pad.
+            double headR = padR * 0.43;
+            var shape = new System.Collections.Generic.List<(double R, double H)>
+            {
+                (1.06, 0.00),   // the base's shoulder, sitting on the pad
+                (0.78, 0.12),
+                (0.57, 0.30),   // the waist
+                (0.54, 0.52),   // the stem
+                (0.97, 0.62),   // the rim flares out into the head
+                (1.00, 0.86),   // its outer wall, near straight
+                (0.94, 0.96),   // rolling over the top
+                (0.80, 1.00),   // the dish's outer lip: the doughnut
+                (0.45, 0.96),   // the dish floor, sloping back in
+                (0.00, 0.94),   // its center
+            };
+            for (int i = 0; i < shape.Count; i++)
+                shape[i] = (shape[i].R * headR, shape[i].H * headR);
+
+            var mb = new MeshBuilder(false, false);
+            Revolve(mb, face, up, shape, 44);
+
             // Dim and cool. A brighter ghost reads as a lit control, and
             // this one is never lit: it is a label for what the pad does.
             var brush = new SolidColorBrush(Color.FromArgb(0x55, 0x8F, 0xA0, 0xB4));
             var material = new DiffuseMaterial(brush);
 
-            // ── The collar, fixed to the pad ──
-            double ringR = r * 0.36, tube = r * 0.045;
-            var ring = new MeshBuilder(false, false);
-            var torus = new System.Collections.Generic.List<(double R, double H)>();
-            for (int i = 0; i <= 16; i++)
-            {
-                double a = 2 * Math.PI * i / 16;
-                torus.Add((ringR + tube * Math.Cos(a), tube + tube * Math.Sin(a)));
-            }
-            Revolve(ring, face, up, torus, 40);
-            var collar = new Model3DGroup();
-            collar.Children.Add(new GeometryModel3D(ring.ToMesh(), material) { BackMaterial = material });
-            Paint(collar, material);
-            model3DGroup.Children.Add(collar);
-
-            // ── The stick, which leans ──
-            // A stem that tapers up into a cap whose face dishes back in,
-            // the shape every thumbstick in this tree has.
-            double stemR = r * 0.105, neckR = r * 0.085;
-            double capR = r * 0.235, capH = r * 0.30, lipH = r * 0.37, dishH = r * 0.335;
-            var body = new MeshBuilder(false, false);
-            Revolve(body, face, up, new System.Collections.Generic.List<(double, double)>
-            {
-                (0.0, 0.0),
-                (stemR, 0.0),
-                (neckR, capH * 0.75),
-                (capR * 0.86, capH),
-                (capR, lipH * 0.92),
-                (capR * 0.93, lipH),
-                (capR * 0.72, dishH),
-                (0.0, dishH * 0.97),
-            }, 40);
-
             RightThumbRing = new Model3DGroup();
             RightThumbRing.Children.Add(
-                new GeometryModel3D(body.ToMesh(), material) { BackMaterial = material });
+                new GeometryModel3D(mb.ToMesh(), material) { BackMaterial = material });
             Paint(RightThumbRing, material);
             model3DGroup.Children.Add(RightThumbRing);
 
-            var pivot = face + up * (lipH - 19.0);
+            // The head carries the four directions by quadrant, which is
+            // what a stick's ring does on every other model here. Without
+            // this the doughnut is inert: the pad's quarters answer a hover
+            // out at the rim while the head in the middle answers nothing,
+            // and the head is where a hand reaches for a stick.
+            //
+            // The base registered nothing for this side, because at that
+            // point this controller had no right ring to register.
+            RegisterQuadrants(RightThumbRing,
+                "RightThumbAxisYNeg", "RightThumbAxisY",
+                "RightThumbAxisXNeg", "RightThumbAxisX");
+
+            var pivot = face + up * (headR - 19.0);
             JoystickRotationPointCenterRightMillimeter =
                 new Vector3D(pivot.X, pivot.Y, pivot.Z);
         }

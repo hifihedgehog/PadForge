@@ -31,6 +31,60 @@ namespace PadForge.Tests
                 Assert.DoesNotContain(m.RightThumbRing, kv.Value);
         }
 
+        /// <summary>The head carries the four directions by quadrant, which
+        /// is what a stick's ring does on every other model here. Without it
+        /// the doughnut is inert: the pad's quarters answer a hover out at
+        /// the rim while the head in the middle answers nothing, and the
+        /// head is where a hand reaches for a stick.</summary>
+        [Fact]
+        public void TheHeadCarriesTheFourDirections()
+        {
+            using var m = ControllerModelBase.Create("SteamController", null, false);
+
+            Assert.True(m.QuadrantMap.TryGetValue(m.RightThumbRing, out var targets),
+                "the stick head is in no quadrant map, so hovering it resolves nothing");
+            Assert.Equal(
+                new[] { "RightThumbAxisYNeg", "RightThumbAxisY",
+                        "RightThumbAxisXNeg", "RightThumbAxisX" },
+                targets);
+        }
+
+        /// <summary>The doughnut IS the head's rim, so it leans with the
+        /// stick. An earlier pass built it as a collar lying on the pad,
+        /// which is not what any stick in this tree looks like: measured on
+        /// the DualSense, the Xbox Series and the Switch 2 Pro, the ring
+        /// mesh is the FRONTMOST slab and the click mesh is the stem and
+        /// base cone behind it.</summary>
+        [Fact]
+        public void TheDoughnutIsPartOfTheHeadAndLeansWithIt()
+        {
+            using var m = ControllerModelBase.Create("SteamController", null, false);
+            var pad = m.TouchpadSurface1;
+
+            // One body: the ring is not a separate group left behind on the
+            // pad while the stem leans.
+            Assert.Single(m.RightThumbRing.Children);
+
+            // And it is a ring: the widest part of the head sits BEHIND its
+            // face, the way a dish with a raised rim measures.
+            var mesh = Assert.IsType<MeshGeometry3D>(
+                Assert.IsType<GeometryModel3D>(m.RightThumbRing.Children[0]).Geometry);
+
+            double faceH = double.MinValue, widest = 0, widestH = 0;
+            var center = pad.Center;
+            foreach (var p in mesh.Positions)
+            {
+                var off = p - center;
+                double h = Vector3D.DotProduct(off, pad.Normal);
+                double r = (off - pad.Normal * h).Length;
+                faceH = Math.Max(faceH, h);
+                if (r > widest) { widest = r; widestH = h; }
+            }
+            Assert.True(widestH < faceH,
+                $"the head is widest at its face ({widestH:F1} mm out of {faceH:F1}), so it has "
+                + "no rim standing around the dish");
+        }
+
         /// <summary>See-through, or it hides the pad's quarters and the
         /// finger dot that rides the same face.</summary>
         [Fact]

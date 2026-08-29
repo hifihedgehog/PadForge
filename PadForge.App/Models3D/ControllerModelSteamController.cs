@@ -70,6 +70,74 @@ namespace PadForge.Models3D
         public override double TouchpadZTopInsetFrac => 0.0;
         public override double TouchpadZBottomInsetFrac => 0.0;
 
+        /// <summary>Stands a translucent thumbstick on the right pad.
+        ///
+        /// <para>It is scenery with one job: it is this model's
+        /// RightThumbRing, so the preview's joystick pass leans it with the
+        /// right stick's axes, which the pad already drives (the axis table
+        /// maps the pad to RightThumbAxisX and Y, and PadViewModel feeds
+        /// RawThumbRX and RY from it). It is in no click or button map, so
+        /// hovering still finds the pad's quarters and its click
+        /// underneath.</para>
+        ///
+        /// <para>Built from the pad's measured face rather than from
+        /// numbers: center, normal and extent all come from TouchSurface,
+        /// so the stick stands square to a pad that is canted 19 degrees and
+        /// scales with it. The pivot sits 19 mm behind the cap face, which
+        /// is where the family puts one (17 on the DualSense, 19 on the
+        /// Switch 2 Pro, 20 on the Xbox Series, 22 on the Xbox 360).</para></summary>
+        private void BuildRightStickGhost()
+        {
+            var pad = TouchpadSurface1;
+            if (pad.IsEmpty) return;
+
+            // Sized off the pad so it reads as a stick on THIS pad: a cap a
+            // quarter of the pad across, on a stem half that wide.
+            double capR = pad.ExtentU * 0.155;
+            double stemR = capR * 0.42;
+            // Kept low on purpose. The pad is canted 19 degrees, so height
+            // along its normal also carries the cap down and outward, and a
+            // tall ghost stops reading as centered on the pad.
+            double rise = capR * 0.7;
+
+            // Stand it on the pad's OWN center, not the fitted plane's. The
+            // plane is fitted from the four quarters as well as the center
+            // disc, and the quarters are bowl walls, so its midpoint sits a
+            // millimetre or so off the pad's axis. The disc is the axis.
+            var disc = TouchpadRight.Bounds;
+            var discCenter = new Point3D(disc.X + disc.SizeX / 2,
+                                         disc.Y + disc.SizeY / 2,
+                                         disc.Z + disc.SizeZ / 2);
+            var up = pad.Normal;
+            // Slide it along the normal until it sits on the plane the pad's
+            // face defines, so it stands ON the pad rather than in it.
+            double lift = Vector3D.DotProduct(pad.Center - discCenter, up);
+            var face = discCenter + up * lift;
+            var capCenter = face + up * rise;
+
+            var mb = new HelixToolkit.Wpf.MeshBuilder(false, false);
+            mb.AddCylinder(face + up * 0.4, capCenter, stemR * 2, 20);
+            mb.AddSphere(capCenter, capR, 20, 12);
+
+            // Translucent, and lit from both sides: a see-through solid
+            // shows its own far wall, and without a back material that wall
+            // renders as a hole.
+            // Dim and cool. A brighter ghost reads as a lit control, and
+            // this one is never lit: it is a label for what the pad does.
+            var brush = new SolidColorBrush(Color.FromArgb(0x55, 0x8F, 0xA0, 0xB4));
+            var material = new DiffuseMaterial(brush);
+            var geo = new GeometryModel3D(mb.ToMesh(), material) { BackMaterial = material };
+
+            RightThumbRing = new Model3DGroup();
+            RightThumbRing.Children.Add(geo);
+            Paint(RightThumbRing, material);
+            model3DGroup.Children.Add(RightThumbRing);
+
+            var pivot = capCenter - up * 19.0;
+            JoystickRotationPointCenterRightMillimeter =
+                new Vector3D(pivot.X, pivot.Y, pivot.Z);
+        }
+
         private Model3DGroup[] Parts(Model3DGroup center, params string[] targets)
         {
             var list = new System.Collections.Generic.List<Model3DGroup>();
@@ -89,6 +157,9 @@ namespace PadForge.Models3D
             // in Y, the same construction the Xbox 360 model uses, read
             // off the converted meshes rather than eyeballed.
             JoystickRotationPointCenterLeftMillimeter = new Vector3D(-18.45f, -8.10f, -14.15f);
+            // The right pivot is filled in by BuildRightStickGhost below,
+            // from the pad's own measured face: this controller has no right
+            // stick to read one off.
             JoystickRotationPointCenterRightMillimeter = new Vector3D(0f, 0f, 0f);
             JoystickMaxAngleDeg = 18.0f;
 
@@ -143,6 +214,14 @@ namespace PadForge.Models3D
                 RightPadQuarters.Add(quarter);
                 model3DGroup.Children.Add(quarter);
             }
+
+            // ── The right pad IS the right stick, so show one ──
+            // Nothing on this controller reads as a right thumbstick, and
+            // the pad it lives on looks like the left one, which is a D-pad.
+            // A translucent stick standing on the pad's face says what the
+            // pad does and leans with it, and being see-through it never
+            // hides the pad's own quarters or its touch dot.
+            BuildRightStickGhost();
 
             LeftGripButton = LoadModel("LeftGrip.obj");
             RegisterButton("LeftGrip", LeftGripButton);

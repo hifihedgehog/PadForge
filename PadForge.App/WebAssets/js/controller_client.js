@@ -405,13 +405,19 @@
             if (bo.type === "triggerBase")
                 baseFor[bo.target.replace("TriggerBase", "Trigger")] = true;
         }
+        // The Valve layouts ship no TriggerBase because their BASE render
+        // already draws the trigger at rest, and their trigger art is the
+        // pack's press blue. Synthesizing a rest copy from that art painted
+        // a dim blue trigger on an idle controller, which no other surface
+        // shows. The server says which layouts draw their own rest state.
+        var baseDrawsTriggers = !!layout.baseDrawsTriggers;
 
         for (var i = 0; i < layout.overlays.length; i++) {
             var ov = layout.overlays[i];
             if (ov.type === "touchpad") continue; // no image — handled by setupTouchpadZone
             if (!ov.image || ov.image.endsWith("/")) continue; // no image — touch-zone only
 
-            if (ov.type === "trigger" && !baseFor[ov.target]) {
+            if (ov.type === "trigger" && !baseFor[ov.target] && !baseDrawsTriggers) {
                 // Synthetic rest state: the same art, dimmed, unclipped, and
                 // behind the live copy, exactly the role a TriggerBase plays.
                 var rest = document.createElement("img");
@@ -1161,6 +1167,12 @@
             }
         }
         if (!stickOv) return;
+        // A ring the layout marks "none" is a DRAWING, not a control: the
+        // 2015 Steam Controller's right-pad ghost stick is bound by the pad
+        // surface underneath, and building a nipplejs zone here would lay a
+        // relative joystick twice the pad's size over that surface (the
+        // stick zone's z-index outranks the touch zones') and swallow it.
+        if (stickOv.inputKind === "none") return;
 
         // Position zone centered on stick area, enlarged 2x for comfortable thumb use.
         var enlargeFactor = 2.0;

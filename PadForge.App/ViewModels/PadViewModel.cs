@@ -8295,20 +8295,35 @@ namespace PadForge.ViewModels
             RawThumbLY = FlipY(Ax(axLY));
             RawThumbRX = Ax(axRX);
             RawThumbRY = FlipY(Ax(axRY));
-            if (axLT >= 0) LeftTrigger = Math.Max(0, (int)Ax(axLT)) / 32767.0;
-            if (axRT >= 0) RightTrigger = Math.Max(0, (int)Ax(axRT)) / 32767.0;
+            // The raw surface stores a trigger BIPOLAR, rest at
+            // short.MinValue and full pull at short.MaxValue, so the whole
+            // travel rescales onto 0..1. Clamping at zero instead is the
+            // same defect the Valve frame packers shipped and fixed: the
+            // lower half of the pull read as zero, then the upper half
+            // swept the whole fill.
+            // The missing-array fallback is REST, not Ax's zero: zero is
+            // the half-pulled midpoint of a bipolar trigger, the same reason
+            // the packers' Trigger() falls back to 0 on ITS unsigned scale.
+            double TrigAx(int i) => raw.Axes != null && i < raw.Axes.Length
+                ? (raw.Axes[i] + 32768.0) / 65535.0 : 0;
+            if (axLT >= 0) LeftTrigger = TrigAx(axLT);
+            if (axRT >= 0) RightTrigger = TrigAx(axRT);
 
             // Normalized stick + raw trigger displays: with the engine-state
             // stomp gone (see UpdateFromEngineState), this bridge is the sole
             // writer of the whole preview surface for Nintendo slots. Same
             // formulas as the engine writer, applied to the flipped axes.
             static double NormAx(short v) => (v - (double)short.MinValue) / 65535.0;
-            ThumbLX = NormAx(Ax(0));
-            ThumbLY = 1.0 - NormAx(FlipY(Ax(1)));
-            ThumbRX = NormAx(Ax(2));
-            ThumbRY = 1.0 - NormAx(FlipY(Ax(3)));
-            RawLeftTrigger = (ushort)(LeftTrigger > 0.5 ? 65535 : 0);
-            RawRightTrigger = (ushort)(RightTrigger > 0.5 ? 65535 : 0);
+            ThumbLX = NormAx(Ax(axLX));
+            ThumbLY = 1.0 - NormAx(FlipY(Ax(axLY)));
+            // Through the axis table, never a literal: the Valve wires
+            // interleave the triggers, so the right stick sits at 3 and 4
+            // where Nintendo packs it at 2 and 3. Hardcoded slots read the
+            // left trigger as the right stick's X on every Valve slot.
+            ThumbRX = NormAx(Ax(axRX));
+            ThumbRY = 1.0 - NormAx(FlipY(Ax(axRY)));
+            RawLeftTrigger = (ushort)Math.Round(LeftTrigger * 65535.0);
+            RawRightTrigger = (ushort)Math.Round(RightTrigger * 65535.0);
         }
 
         /// <summary>

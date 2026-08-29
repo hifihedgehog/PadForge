@@ -255,7 +255,7 @@
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>폴링 동작 및 백그라운드 처리를 구성합니다.</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>실행 시 엔진 자동 시작</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>창이 포커스를 잃어도 폴링 계속</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>폴링 간격</value></data>
+  <data name="Settings_PollingInterval" xml:space="preserve"><value>폴링 간격 (프로필로 재정의 가능)</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>게임에서 장치 숨기기</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide 장치 숨김 및 저수준 입력 후킹의 마스터 스위치입니다. 끄면 장치별 설정에 관계없이 장치가 숨겨지지 않습니다.</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>창</value></data>

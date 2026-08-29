@@ -255,7 +255,7 @@
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>配置轮询行为和后台处理。</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>启动时自动运行引擎</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>窗口失去焦点时继续轮询</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>轮询间隔</value></data>
+  <data name="Settings_PollingInterval" xml:space="preserve"><value>轮询间隔（配置文件可覆盖）</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>对游戏隐藏设备</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide 设备隐藏和底层输入钩子的总开关。关闭后，无论单个设备设置如何，所有设备都不会被隐藏。</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>窗口</value></data>

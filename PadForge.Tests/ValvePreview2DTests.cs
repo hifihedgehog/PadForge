@@ -280,6 +280,46 @@ namespace PadForge.Tests
             Assert.Contains("[\"" + target + "\"] = (\"none\", 0)", block);
         }
 
+        /// <summary>The 2015's two repurposed pad surfaces LIGHT what they
+        /// drive. Every other zone type on the page adds the active class to
+        /// its own overlay on the way down, so a press is visible; the pad
+        /// surfaces sent their hat and their axes and lit nothing at all, and
+        /// on this pad the surfaces ARE the d-pad and the right stick, so
+        /// nothing else on the page could say a direction was pressed (owner
+        /// report 2026-08-29).</summary>
+        [Fact]
+        public void TheWebPadSurfacesLightTheControlsTheyDrive()
+        {
+            string js = RepoText("PadForge.App", "WebAssets", "js", "controller_client.js");
+
+            int dpad = js.IndexOf("function bindDpadSurface", StringComparison.Ordinal);
+            Assert.True(dpad > 0);
+            string dpadBody = js.Substring(dpad, js.IndexOf("function bindStickSurface",
+                StringComparison.Ordinal) - dpad);
+            Assert.Contains("lightDpadWedges(pov)", dpadBody);
+            Assert.Contains("lightDpadWedges(-1)", dpadBody);
+
+            int stick = js.IndexOf("function bindStickSurface", StringComparison.Ordinal);
+            string stickBody = js.Substring(stick, 2400);
+            Assert.Contains("moveStickOverlay(ringTarget, p.x, p.y)", stickBody);
+            Assert.Contains("moveStickOverlay(ringTarget, 0, 0)", stickBody);
+        }
+
+        /// <summary>A diagonal lights BOTH of its cardinals, the way the
+        /// desktop preview renders a hat diagonal. The wedge table is what
+        /// carries that, so it has all eight of a hat's steps.</summary>
+        [Fact]
+        public void TheWebWedgeTableCoversEveryHatStep()
+        {
+            string js = RepoText("PadForge.App", "WebAssets", "js", "controller_client.js");
+            int at = js.IndexOf("var DPAD_WEDGES", StringComparison.Ordinal);
+            Assert.True(at > 0);
+            string table = js.Substring(at, js.IndexOf("];", at, StringComparison.Ordinal) - at);
+            Assert.Equal(8, table.Split("[\"DPad").Length - 1);
+            foreach (var d in new[] { "DPadUp", "DPadDown", "DPadLeft", "DPadRight" })
+                Assert.Contains(d, table);
+        }
+
         /// <summary>The web client renders a decal and never binds one.</summary>
         [Fact]
         public void TheWebClientRendersDecalsWithoutBindingThem()

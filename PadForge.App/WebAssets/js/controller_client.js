@@ -818,6 +818,23 @@
 
     // The left pad as an 8-way D-pad: touch position picks the direction,
     // release centers the hat.
+    // The wedges cut out of this pad, in the order a hat's 45-degree steps
+    // visit them. Index i of a 4500-unit hat value lights the entries this
+    // names, so a diagonal lights BOTH of its cardinals, the way the desktop
+    // preview renders one.
+    var DPAD_WEDGES = [
+        ["DPadUp"], ["DPadUp", "DPadRight"], ["DPadRight"], ["DPadRight", "DPadDown"],
+        ["DPadDown"], ["DPadDown", "DPadLeft"], ["DPadLeft"], ["DPadLeft", "DPadUp"]
+    ];
+
+    function lightDpadWedges(pov) {
+        var lit = pov < 0 ? [] : DPAD_WEDGES[(pov / 4500) % 8];
+        for (var i = 0; i < 4; i++) {
+            var name = ["DPadUp", "DPadRight", "DPadDown", "DPadLeft"][i];
+            setOverlayActive(name, lit.indexOf(name) >= 0);
+        }
+    }
+
     function bindDpadSurface(ov) {
         var zone = makeSurfaceZone(ov);
         var active = false;
@@ -825,11 +842,18 @@
             var p = surfacePoint(zone, e);
             if (Math.sqrt(p.x * p.x + p.y * p.y) < 0.22) {
                 send({ type: "input", kind: "pov", code: 0, value: -1 });
+                lightDpadWedges(-1);
                 return;
             }
             var deg = Math.atan2(p.x, -p.y) * 180 / Math.PI;
             if (deg < 0) deg += 360;
-            send({ type: "input", kind: "pov", code: 0, value: (Math.round(deg / 45) % 8) * 4500 });
+            var pov = (Math.round(deg / 45) % 8) * 4500;
+            send({ type: "input", kind: "pov", code: 0, value: pov });
+            // The pad IS the d-pad here, so nothing else on the page can say
+            // a direction was pressed. Every other zone type lights its own
+            // overlay on the way down; the two repurposed pad surfaces sent
+            // their input and lit nothing at all.
+            lightDpadWedges(pov);
         }
         function down(e) { e.preventDefault(); active = true; update(e); haptic(); }
         function move(e) { if (active) { e.preventDefault(); update(e); } }
@@ -838,7 +862,9 @@
             if (e && e.preventDefault) e.preventDefault();
             active = false;
             send({ type: "input", kind: "pov", code: 0, value: -1 });
+            lightDpadWedges(-1);
         }
+        releaseFns.push(function () { lightDpadWedges(-1); });
         releaseFns.push(function () { up(null); });
         zone.addEventListener("touchstart", down, { passive: false });
         zone.addEventListener("touchmove", move, { passive: false });
@@ -855,6 +881,11 @@
     function bindStickSurface(ov) {
         var zone = makeSurfaceZone(ov);
         var baseAxis = ov.inputCode || 3;
+        // The stand-in stick standing on this pad, named by the axes the
+        // surface drives: 0 is the left stick's pair, 3 the right's. It
+        // leans with the drag, which is the only thing on the page that
+        // shows where the stick is.
+        var ringTarget = baseAxis === 0 ? "LeftThumbRing" : "RightThumbRing";
         var active = false, lastTs = 0;
         function update(e) {
             var now = (window.performance && performance.now) ? performance.now() : Date.now();
@@ -865,6 +896,7 @@
             if (mag > 1) { p.x /= mag; p.y /= mag; }
             send({ type: "input", kind: "axis", code: baseAxis, value: Math.round((p.x * 0.5 + 0.5) * 65535) });
             send({ type: "input", kind: "axis", code: baseAxis + 1, value: Math.round((p.y * 0.5 + 0.5) * 65535) });
+            moveStickOverlay(ringTarget, p.x, p.y);
         }
         function down(e) { e.preventDefault(); active = true; lastTs = 0; update(e); }
         function move(e) { if (active) { e.preventDefault(); update(e); } }
@@ -874,7 +906,9 @@
             active = false;
             send({ type: "input", kind: "axis", code: baseAxis, value: 32767 });
             send({ type: "input", kind: "axis", code: baseAxis + 1, value: 32767 });
+            moveStickOverlay(ringTarget, 0, 0);
         }
+        releaseFns.push(function () { moveStickOverlay(ringTarget, 0, 0); });
         releaseFns.push(function () { up(null); });
         zone.addEventListener("touchstart", down, { passive: false });
         zone.addEventListener("touchmove", move, { passive: false });

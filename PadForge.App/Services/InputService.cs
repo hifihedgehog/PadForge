@@ -750,7 +750,7 @@ namespace PadForge.Services
             // Create engine with the configured polling interval.
             _inputManager = new InputManager();
             _inputManagerStatic = _inputManager;
-            _inputManager.PollingIntervalMs = _mainVm.Settings.PollingRateMs;
+            ApplyEffectivePollingRate();
             _inputManager.HmInactivityTimeoutSeconds = _mainVm.Settings.HmInactivityDestroyTimeoutSeconds;
 
             // Copy controller types and per-slot configs immediately so Step 5
@@ -8887,7 +8887,10 @@ namespace PadForge.Services
         {
             if (e.PropertyName == nameof(SettingsViewModel.PollingRateMs) && _inputManager != null)
             {
-                _inputManager.PollingIntervalMs = _mainVm.Settings.PollingRateMs;
+                // Through the resolver, not a direct write: an active
+                // profile's override outranks the global knob until that
+                // profile deactivates.
+                ApplyEffectivePollingRate();
             }
             else if (e.PropertyName == nameof(SettingsViewModel.HmInactivityDestroyTimeoutSeconds) && _inputManager != null)
             {
@@ -15792,8 +15795,44 @@ namespace PadForge.Services
         /// none of them, so switching profiles from the UI carried a latched
         /// shift layer or an engaged gyro into the new profile while the
         /// foreground-monitor lane doing the same switch did not.</para></summary>
+        /// <summary>The ONE owner of the live polling interval (#365). The
+        /// active profile's override wins when it has one (nonzero), the
+        /// global Settings value applies otherwise, and both clamp to the
+        /// knob's own 1..16 range. Called wherever either input changes:
+        /// engine start, the Settings slider, every profile switch lane
+        /// (all of which run ResetRuntimeStateForProfileSwitch), and a
+        /// profile edit that may have retuned the ACTIVE profile. The loop
+        /// itself recomputes its target from PollingIntervalMs every cycle,
+        /// so the write takes effect on the next tick with no timer
+        /// churn.</summary>
+        internal void ApplyEffectivePollingRate()
+        {
+            if (_inputManager == null) return;
+            int ms = 0;
+            string activeId = SettingsManager.ActiveProfileId;
+            if (!string.IsNullOrEmpty(activeId))
+            {
+                var active = SettingsManager.Profiles.Find(p => p.Id == activeId);
+                if (active != null) ms = active.PollingRateOverrideMs;
+            }
+            _inputManager.PollingIntervalMs =
+                ResolvePollingMs(ms, _mainVm?.Settings?.PollingRateMs ?? 1);
+        }
+
+        /// <summary>The pure half of the resolver, for the tests: the
+        /// override wins when it has an opinion (nonzero), the global value
+        /// applies otherwise, and the result clamps to the knob's 1..16
+        /// range whichever side supplied it.</summary>
+        internal static int ResolvePollingMs(int overrideMs, int globalMs)
+            => Math.Clamp(overrideMs > 0 ? overrideMs : globalMs, 1, 16);
+
         private void ResetRuntimeStateForProfileSwitch()
         {
+            // Polling rate follows the profile (#365): resolved here because
+            // every switch lane (manual load, foreground auto-switch, revert,
+            // delete-active) funnels through this reset.
+            ApplyEffectivePollingRate();
+
             Common.Input.InputManager.ClearSourceKindRuntime();
             Common.Input.InputManager.ClearAllShiftRuntime();
             _inputManager?.ResetGyroEngageStates();
@@ -16052,13 +16091,15 @@ namespace PadForge.Services
         /// Snapshots the current runtime state into a new named profile.
         /// Returns the created ProfileData.
         /// </summary>
-        public ProfileData CreateSnapshotProfile(string name, string pipeSeparatedExePaths)
+        public ProfileData CreateSnapshotProfile(string name, string pipeSeparatedExePaths,
+            int pollingRateOverrideMs = 0)
         {
             ProfDiag("CreateSnapshotProfile:enter");
             var snapshot = SnapshotCurrentProfile();
             snapshot.Id = Guid.NewGuid().ToString("N");
             snapshot.Name = name.Trim();
             snapshot.ExecutableNames = pipeSeparatedExePaths;
+            snapshot.PollingRateOverrideMs = pollingRateOverrideMs;
             SettingsManager.Profiles.Add(snapshot);
             return snapshot;
         }
@@ -16086,12 +16127,18 @@ namespace PadForge.Services
         /// Updates a profile's name and executable paths.
         /// Returns the updated ProfileData, or null if not found.
         /// </summary>
-        public ProfileData EditProfile(string profileId, string newName, string newPipeSeparatedExePaths)
+        public ProfileData EditProfile(string profileId, string newName, string newPipeSeparatedExePaths,
+            int pollingRateOverrideMs = 0)
         {
             var profile = SettingsManager.Profiles.Find(p => p.Id == profileId);
             if (profile == null) return null;
             profile.Name = newName;
             profile.ExecutableNames = newPipeSeparatedExePaths;
+            profile.PollingRateOverrideMs = pollingRateOverrideMs;
+            // Editing the ACTIVE profile's override changes the live rate
+            // now, not at the next switch.
+            if (SettingsManager.ActiveProfileId == profileId)
+                ApplyEffectivePollingRate();
             return profile;
         }
 

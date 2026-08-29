@@ -864,6 +864,8 @@
   <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Profilname:</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>Neues Profil</value></data>
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Ausführbare Dateien (Abgleich mit Vordergrundfenster):</value></data>
+  <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Abfragerate</value></data>
+  <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Standard (globale Einstellung)</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Speichert die Zuordnungen aller Slots und die Geräteeinstellungen als Snapshot unter einem Namen. Verknüpfte ausführbare Dateien wechseln automatisch zu diesem Profil.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Benennt das Profil um und aktualisiert die ausführbaren Dateien, die es aktivieren. Gespeicherte Zuordnungen und Einstellungen bleiben unverändert.</value></data>
 

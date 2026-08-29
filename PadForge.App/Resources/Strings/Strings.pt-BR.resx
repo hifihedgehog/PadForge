@@ -864,6 +864,8 @@
   <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Nome do Perfil:</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>Novo Perfil</value></data>
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Executáveis (comparados com a janela em primeiro plano):</value></data>
+  <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Taxa de Sondagem</value></data>
+  <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Padrão (Configuração Global)</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Salva um instantâneo dos mapeamentos de cada slot e das configurações por dispositivo sob um único nome. Executáveis vinculados mudam para ele automaticamente.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Renomeia o perfil e atualiza os executáveis que o ativam. Mapeamentos e configurações salvos não são alterados.</value></data>
 

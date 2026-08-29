@@ -6386,7 +6386,7 @@ namespace PadForge
 
             string name = dialog.ProfileName;
             string exePaths = string.Join("|", dialog.ExecutablePaths);
-            var snapshot = _inputService.CreateSnapshotProfile(name, exePaths);
+            var snapshot = _inputService.CreateSnapshotProfile(name, exePaths, dialog.PollingOverrideMs);
 
             var listItem = new ViewModels.ProfileListItem
             {
@@ -6721,12 +6721,12 @@ namespace PadForge
                 : profile.ExecutableNames.Split('|', StringSplitOptions.RemoveEmptyEntries);
 
             var dialog = new Views.ProfileDialog { Owner = this };
-            dialog.LoadForEdit(profile.Name, exePaths);
+            dialog.LoadForEdit(profile.Name, exePaths, profile.PollingRateOverrideMs);
             if (dialog.ShowDialog() != true) return;
 
             string newName = dialog.ProfileName;
             string newExePaths = string.Join("|", dialog.ExecutablePaths);
-            _inputService.EditProfile(selected.Id, newName, newExePaths);
+            _inputService.EditProfile(selected.Id, newName, newExePaths, dialog.PollingOverrideMs);
 
             selected.Name = newName;
             selected.Executables = InputService.FormatExePaths(newExePaths);

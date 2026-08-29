@@ -864,6 +864,8 @@
   <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Nome profilo:</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>Nuovo profilo</value></data>
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Eseguibili (confrontati con la finestra in primo piano):</value></data>
+  <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Frequenza di polling</value></data>
+  <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Predefinita (impostazione globale)</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Salva uno snapshot delle mappature di ogni slot e delle impostazioni per dispositivo sotto un unico nome. Gli eseguibili collegati vi passano automaticamente.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Rinomina il profilo e aggiorna gli eseguibili che lo attivano. Le mappature e le impostazioni salvate restano invariate.</value></data>
 

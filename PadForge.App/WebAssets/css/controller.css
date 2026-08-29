@@ -87,6 +87,14 @@ body {
     z-index: 0;
 }
 
+/* Decals: printed markings on the body, always visible and never lit.
+   The 2015 Steam Controller's left pad carries its wedge boundaries this
+   way, so a drag on the surface shows where up stops and right starts. */
+#controller-container img.overlay.decal {
+    opacity: 1;
+    z-index: 2;
+}
+
 /* Stick overlays: always visible, translated by JS */
 #controller-container img.overlay.stick-ring {
     opacity: 1;

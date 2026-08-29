@@ -157,9 +157,13 @@ namespace PadForge.Tests
         }
 
         /// <summary>The 2026 pad has TWO sticks. The generation before it
-        /// had one, and the layout was built by classifying shapes in a
-        /// drawing, so a classifier that paired them wrongly would leave
-        /// this pad one stick short exactly like its predecessor.</summary>
+        /// had one physical stick, and the layout was built by classifying
+        /// shapes in a drawing, so a classifier that paired them wrongly
+        /// would leave this pad one stick short.
+        ///
+        /// <para>The 2015 pad also shows two, because its right trackpad IS
+        /// its right stick and the layout stands a stand-in on it. One ring
+        /// there would mean that control went missing again.</para></summary>
         [Fact]
         public void The2026LayoutHasBothSticks()
         {
@@ -167,8 +171,8 @@ namespace PadForge.Tests
                 .Count(o => o.ElementType == OverlayElementType.StickRing));
             Assert.Equal(2, SteamController2Layout.Overlays
                 .Count(o => o.ElementType == OverlayElementType.StickClick));
-            Assert.Single(SteamControllerLayout.Overlays,
-                o => o.ElementType == OverlayElementType.StickRing);
+            Assert.Equal(2, SteamControllerLayout.Overlays
+                .Count(o => o.ElementType == OverlayElementType.StickRing));
         }
     }
 }

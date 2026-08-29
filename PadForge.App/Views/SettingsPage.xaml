@@ -138,7 +138,8 @@
                                    Margin="0,0,8,8"/>
                         <ui:NumberBox Grid.Column="1" Value="{Binding PollingRateMs, Mode=TwoWay}"
                                       Minimum="1" Maximum="16"
-                                      SpinButtonPlacementMode="Inline" Width="200" Margin="0,0,0,8"/>
+                                      SpinButtonPlacementMode="Inline" Width="200" Margin="0,0,0,8"
+                                      ToolTip="{Binding Settings_PollingIntervalTooltip, Source={x:Static strings:Strings.Instance}}"/>
                         <TextBlock Grid.Column="2" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="6,0,0,8" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                         <!-- Who is in charge of the knob (#365): while the
                              active profile carries a polling override, the

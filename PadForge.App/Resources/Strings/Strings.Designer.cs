@@ -445,6 +445,7 @@ public class Strings : INotifyPropertyChanged
     public string Settings_AutoStart => Get("Settings_AutoStart");
     public string Settings_BackgroundPolling => Get("Settings_BackgroundPolling");
     public string Settings_PollingInterval => Get("Settings_PollingInterval");
+    public string Settings_PollingIntervalTooltip => Get("Settings_PollingIntervalTooltip");
     public string Settings_HideDevices => Get("Settings_HideDevices");
     public string Settings_HideDevicesTooltip => Get("Settings_HideDevicesTooltip");
     public string Settings_KeepCloaksBetweenLaunches => Get("Settings_KeepCloaksBetweenLaunches");

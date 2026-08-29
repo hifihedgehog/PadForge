@@ -592,7 +592,18 @@ namespace PadForge.Common.Input
             // has no PadForge-side AT configured.
             if (assertRightTriggerEnable) enableBits |= EnableRightTrigger;
             if (assertLeftTriggerEnable)  enableBits |= EnableLeftTrigger;
-            if (btConnectRelease)         enableBits |= ResetLights;
+            // The connect one-shot releases the TRIGGERS alongside the
+            // lights. Idle retention deliberately leaves the trigger
+            // enables clear so an external writer's effect survives, and
+            // that same retention preserved a STALE effect across a pad
+            // reconnect and across PadForge restarts: whatever program set
+            // it last session stayed stiff until a profile switch happened
+            // to send a release (discussion #350's exact report). The
+            // trigger bytes in this frame are the cfg encode, so Off ships
+            // zeros (release) and a configured effect ships itself, the
+            // same one-packet handoff the lightbar release uses.
+            if (btConnectRelease)
+                enableBits |= ResetLights | EnableRightTrigger | EnableLeftTrigger;
 
             // validFlag2, composed per-bit rather than blanket 0xFF.
             //

@@ -60,6 +60,44 @@ namespace PadForge.Tests
             Assert.Equal(FadeOut, Setup(f));
         }
 
+        /// <summary>The one-shot also RELEASES THE TRIGGERS (#350). Idle
+        /// retention leaves the trigger enable bits clear so an external
+        /// writer's effect survives, and that same retention preserved a
+        /// STALE adaptive-trigger effect across reconnects and PadForge
+        /// restarts: the pad stayed stiff until a profile switch happened
+        /// to send a release. The connect frame's trigger bytes are the
+        /// cfg encode (Off ships zeros), so asserting the enables here is
+        /// the release, in the same packet as the light handoff.</summary>
+        [Fact]
+        public void ConnectRelease_ReleasesTheTriggersToo()
+        {
+            const byte EnableRightTrigger = 0x04;   // validFlag0 bit 2
+            const byte EnableLeftTrigger = 0x08;    // validFlag0 bit 3
+
+            // The dispatcher's idle gates pass assert*TriggerEnable false
+            // (retention). The one-shot must override them.
+            var f = Ds5EffectSynthesizer.BuildFields(
+                OffConfig(), playerNumber: 1,
+                assertRightTriggerEnable: false, assertLeftTriggerEnable: false,
+                btConnectRelease: true);
+            byte vf0 = (byte)f["validFlag0"];
+            Assert.Equal(EnableRightTrigger, vf0 & EnableRightTrigger);
+            Assert.Equal(EnableLeftTrigger, vf0 & EnableLeftTrigger);
+            // And the payload is a RELEASE: mode byte 0 on both triggers.
+            Assert.Equal(0, ((byte[])f["rightTriggerEffect"])[0]);
+            Assert.Equal(0, ((byte[])f["leftTriggerEffect"])[0]);
+
+            // The steady idle loop keeps retention: no enables, so an
+            // external writer's live effect is preserved.
+            f = Ds5EffectSynthesizer.BuildFields(
+                OffConfig(), playerNumber: 1,
+                assertRightTriggerEnable: false, assertLeftTriggerEnable: false,
+                btConnectRelease: false);
+            vf0 = (byte)f["validFlag0"];
+            Assert.Equal(0, vf0 & EnableRightTrigger);
+            Assert.Equal(0, vf0 & EnableLeftTrigger);
+        }
+
         /// <summary>THE d4c011f5 INVARIANT, restated: the steady loop sends
         /// none of it. A standing release is the standing fade-to-black that
         /// commit removed.</summary>

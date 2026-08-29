@@ -106,16 +106,23 @@ namespace PadForge.Tests
             => Assert.Contains(SteamDeckLayout.Overlays,
                                o => string.Equals(o.TargetName, target, StringComparison.Ordinal));
 
-        /// <summary>The Steam Controller has ONE stick and NO d-pad (the
-        /// left trackpad serves that role). Emitting a right stick or a
-        /// d-pad would anchor callouts to parts the pad does not have.</summary>
+        /// <summary>The Steam Controller has ONE stick SOLID and no d-pad
+        /// solid: the left trackpad is the d-pad and the right one is the
+        /// right stick. Emitting a right stick RING or a d-pad key would
+        /// anchor callouts to parts the pad does not have.
+        ///
+        /// <para>Its right pad's CLICK is a different matter, and is named
+        /// RightThumbButton because that is what SDL sends it as. The pad
+        /// art carries it, so it is the one RightThumb* name here.</para></summary>
         [Fact]
-        public void SteamControllerHasNoRightStickAndNoDPad()
+        public void SteamControllerHasNoRightStickSolidAndNoDPadSolid()
         {
             var names = SteamControllerLayout.Overlays.Select(o => o.TargetName).ToList();
             Assert.Contains("LeftThumbRing", names);
-            Assert.DoesNotContain(names, n => n.StartsWith("RightThumb", StringComparison.Ordinal));
+            Assert.DoesNotContain(names, n => n.StartsWith("RightThumbAxis", StringComparison.Ordinal));
+            Assert.DoesNotContain(names, n => n == "RightThumbRing");
             Assert.DoesNotContain(names, n => n.StartsWith("DPad", StringComparison.Ordinal));
+            Assert.Contains("RightThumbButton", names);
             Assert.Contains("LeftGrip", names);
             Assert.Contains("RightGrip", names);
         }

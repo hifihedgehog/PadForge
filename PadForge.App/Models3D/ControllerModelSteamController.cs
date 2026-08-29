@@ -133,7 +133,7 @@ namespace PadForge.Models3D
                 (1.06, 0.00),   // the base's shoulder, sitting on the pad
                 (0.78, 0.12),
                 (0.57, 0.30),   // the waist
-                (0.54, 0.52),   // the stem
+                (0.54, 0.52),   // the stem, where the head begins
                 (0.97, 0.62),   // the rim flares out into the head
                 (1.00, 0.86),   // its outer wall, near straight
                 (0.94, 0.96),   // rolling over the top
@@ -144,41 +144,49 @@ namespace PadForge.Models3D
             for (int i = 0; i < shape.Count; i++)
                 shape[i] = (shape[i].R * headR, shape[i].H * headR);
 
-            var mb = new MeshBuilder(false, false);
-            Revolve(mb, face, up, shape, 44);
+            // TWO groups, split at the stem, because a stick is two controls
+            // and the tree keeps them apart everywhere: the RING is the head
+            // and carries the four directions, the CLICK MESH is the stem
+            // and base and carries the button. Building the ghost as one
+            // body made the button own the cap, which is the shape the owner
+            // rejected on the Steam Deck and which
+            // StickButtonDoesNotOwnTheCap has pinned since.
+            const int split = 3;
+            var baseShape = shape.GetRange(0, split + 1);
+            var headShape = shape.GetRange(split, shape.Count - split);
 
             // Dim and cool. A brighter ghost reads as a lit control, and
-            // this one is never lit: it is a label for what the pad does.
+            // this one is never lit at rest: it is a label for what the pad
+            // does.
             var brush = new SolidColorBrush(Color.FromArgb(0x55, 0x8F, 0xA0, 0xB4));
             var material = new DiffuseMaterial(brush);
 
-            RightThumbRing = new Model3DGroup();
-            RightThumbRing.Children.Add(
-                new GeometryModel3D(mb.ToMesh(), material) { BackMaterial = material });
-            Paint(RightThumbRing, material);
-            model3DGroup.Children.Add(RightThumbRing);
+            Model3DGroup Piece(System.Collections.Generic.List<(double R, double H)> profile)
+            {
+                var mb = new MeshBuilder(false, false);
+                Revolve(mb, face, up, profile, 44);
+                var g = new Model3DGroup();
+                g.Children.Add(new GeometryModel3D(mb.ToMesh(), material) { BackMaterial = material });
+                Paint(g, material);
+                model3DGroup.Children.Add(g);
+                return g;
+            }
 
-            // A stick head is BOTH: directions around the rim and the stick
-            // button in the middle. Registering it as a click as well as a
-            // quadrant surface is what gives it the click zone, because
-            // TryResolveQuadrantHit hands the middle to the click when a
-            // quadrant surface is also in the ClickMap and takes directions
-            // edge to edge when it is not.
+            RightThumb = Piece(baseShape);
+            RightThumbRing = Piece(headShape);
+
+            // The head carries the four directions by quadrant and the base
+            // carries the button, which is what every stick here does. The
+            // base class registered neither for this side, because at that
+            // point this controller had no right stick to register.
             //
-            // The button here is the PAD CLICK. Pressing this pad is the
-            // right stick button on this controller, in SDL's own mapping
-            // (SDL_hidapi_steam.c reads the right pad's click as
-            // RIGHT_STICK), and the wire carries no separate
-            // RightThumbButton for it to be anything else. So the head and
-            // the pad under it answer as one control, which is what the
-            // hardware does.
-            //
-            // The base class registered nothing for this side, because at
-            // that point this controller had no right ring to register.
+            // The button is the PAD CLICK: pressing this pad is the right
+            // stick button in SDL's own reading, so the base and the pad
+            // answer as one control and light together.
             RegisterQuadrants(RightThumbRing,
                 "RightThumbAxisYNeg", "RightThumbAxisY",
                 "RightThumbAxisXNeg", "RightThumbAxisX");
-            RegisterButton("RightTouchpadClick", RightThumbRing);
+            RegisterButton("RightThumbButton", RightThumb);
 
             var pivot = face + up * (headR - 19.0);
             JoystickRotationPointCenterRightMillimeter =
@@ -270,7 +278,11 @@ namespace PadForge.Models3D
             model3DGroup.Children.Add(LeftPad);
 
             RightPad = LoadModel("RightPadTouch.obj");
-            RegisterButton("RightTouchpadClick", RightPad);
+            // The right pad's click IS the right stick button here, in
+            // SDL's own reading, so it registers as one. That is what puts a
+            // Right Stick Button row in the grid for this controller, and
+            // what the head's click zone resolves to.
+            RegisterButton("RightThumbButton", RightPad);
             model3DGroup.Children.Add(RightPad);
 
             // Both trackpads carry a touch preview. Finger 0 rides the left
@@ -393,7 +405,7 @@ namespace PadForge.Models3D
             PaintTarget("LeftGrip", body);
             PaintTarget("RightGrip", body);
             PaintTarget("LeftTouchpadClick", surface);
-            PaintTarget("RightTouchpadClick", surface);
+            PaintTarget("RightThumbButton", surface);
             // The pad quarters take the pad's own color: they are the pad's
             // face, cut up so each direction can light on its own.
             foreach (var t in new[] { "DPadUp", "DPadDown", "DPadLeft", "DPadRight" })

@@ -184,7 +184,10 @@ namespace PadForge.Tests
 
             // And each pad still clicks, through the middle left behind.
             Assert.True(m.ButtonMap.ContainsKey("LeftTouchpadClick"));
-            Assert.True(m.ButtonMap.ContainsKey("RightTouchpadClick"));
+            // The right pad's click is the right STICK button on this
+            // controller, in SDL's own reading, so that is what it registers
+            // as and there is no RightTouchpadClick on that side.
+            Assert.True(m.ButtonMap.ContainsKey("RightThumbButton"));
 
             // Neither PAD goes through the quadrant-wedge path any more: a
             // bowl 42 mm across cannot carry one, which is why each face is
@@ -688,7 +691,7 @@ namespace PadForge.Tests
         [Theory]
         [InlineData("SteamController2", "ButtonA", "ButtonQuickAccess", "Paddle1", "Paddle4", "LeftTouchpadClick", "RightTouchpadClick")]
         [InlineData("SteamDeck", "ButtonA", "ButtonQuickAccess", "Paddle1", "Paddle4", "LeftTouchpadClick", "RightTouchpadClick")]
-        [InlineData("SteamController", "ButtonA", "LeftGrip", "RightGrip", "LeftTouchpadClick", "RightTouchpadClick", "ButtonStart")]
+        [InlineData("SteamController", "ButtonA", "LeftGrip", "RightGrip", "LeftTouchpadClick", "RightThumbButton", "ButtonStart")]
         public void ValveRolesGlow(string family, params string[] roles)
         {
             using var m = ControllerModelBase.Create(family, null, false);

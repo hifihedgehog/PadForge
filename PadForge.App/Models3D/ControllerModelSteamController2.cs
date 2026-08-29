@@ -65,6 +65,12 @@ namespace PadForge.Models3D
             RegisterButton("RightTouchpadClick", RightPad);
             model3DGroup.Children.Add(RightPad);
 
+            // Both trackpads carry a touch preview. Finger 0 rides the left
+            // pad and finger 1 the right, the split the frame packers use.
+            Touchpad = LeftPad;
+            TouchpadRight = RightPad;
+
+
             QuickAccess = LoadModel("ThreeDots.obj");
             RegisterButton("ButtonQuickAccess", QuickAccess);
             model3DGroup.Children.Add(QuickAccess);
@@ -129,6 +135,14 @@ namespace PadForge.Models3D
             foreach (var t in new[] { "Paddle1", "Paddle2", "Paddle3", "Paddle4" })
                 PaintTarget(t, shell);
         }
+
+        /// <summary>The 2026's pad meshes are their own touch faces, 36.85
+        /// by 36.10 mm with a measured bezel of 1.2 percent on every side.
+        /// The face is dished, so the outward-facing triangles reach the
+        /// edges while only a strip sits at the frontmost plane.</summary>
+        public override double TouchpadXInsetFrac => 0.012;
+        public override double TouchpadZTopInsetFrac => 0.012;
+        public override double TouchpadZBottomInsetFrac => 0.011;
 
         private static Material Mat(string hex) =>
             new DiffuseMaterial(new SolidColorBrush((Color)ColorConverter.ConvertFromString(hex)));

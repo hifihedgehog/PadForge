@@ -88,6 +88,12 @@ namespace PadForge.Models3D
             RegisterButton("RightTouchpadClick", RightPad);
             model3DGroup.Children.Add(RightPad);
 
+            // Both trackpads carry a touch preview. Finger 0 rides the left
+            // pad and finger 1 the right, the split the frame packers use.
+            Touchpad = LeftPad;
+            TouchpadRight = RightPad;
+
+
             R4 = LoadModel("R4.obj");
             RegisterButton("Paddle1", R4);
             model3DGroup.Children.Add(R4);
@@ -212,6 +218,13 @@ namespace PadForge.Models3D
             foreach (var t in new[] { "Paddle1", "Paddle2", "Paddle3", "Paddle4" })
                 PaintTarget(t, recess);
         }
+
+        /// <summary>The Deck's pad meshes are the touch faces exactly:
+        /// 32.50 by 32.50 mm, and every outward-facing triangle reaches all
+        /// four edges. No bezel to crop.</summary>
+        public override double TouchpadXInsetFrac => 0.0;
+        public override double TouchpadZTopInsetFrac => 0.0;
+        public override double TouchpadZBottomInsetFrac => 0.0;
 
         private static Material Mat(string hex) =>
             new DiffuseMaterial(new SolidColorBrush((Color)ColorConverter.ConvertFromString(hex)));

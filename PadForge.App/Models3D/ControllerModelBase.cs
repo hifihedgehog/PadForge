@@ -101,6 +101,27 @@ namespace PadForge.Models3D
         /// true, and floats finger spheres just above its surface.</summary>
         public Model3DGroup Touchpad;
 
+        /// <summary>The SECOND touch surface, on a pad that has two. Null on
+        /// a one-pad model, where both fingers ride <see cref="Touchpad"/>.
+        ///
+        /// <para>Every Valve pad has two, and the split is the one the frame
+        /// packers already use: finger 0 is the LEFT pad, finger 1 the
+        /// right. A one-pad model keeps reporting two fingers on the one
+        /// surface, which is what a DualSense does.</para></summary>
+        public Model3DGroup TouchpadRight;
+
+        /// <summary>The area each finger rides, in model space.
+        ///
+        /// <para>The group's own bounds on every model whose pad is one
+        /// mesh, which measurement says is all of them but one: the pad
+        /// meshes ARE their touch surfaces, with a bezel of 1.2% on the 2026
+        /// Steam Controller and none at all on the Deck or the DualSense.
+        /// The 2015 Steam Controller splits each pad into four direction
+        /// quarters around a center disc, so it overrides these to span the
+        /// whole pad instead of the 40% the center covers.</para></summary>
+        public virtual Rect3D TouchpadArea0 => Touchpad?.Bounds ?? Rect3D.Empty;
+        public virtual Rect3D TouchpadArea1 => (TouchpadRight ?? Touchpad)?.Bounds ?? Rect3D.Empty;
+
         /// <summary>Per-model fractional insets that crop the Touchpad mesh
         /// bounds down to the actual touch-sensitive surface for finger-sphere
         /// positioning. Defaults match the DS4 Screen.obj. Subclasses override

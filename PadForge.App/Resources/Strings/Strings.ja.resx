@@ -255,8 +255,8 @@
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>ポーリング動作とバックグラウンド処理を設定します。</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>起動時にエンジンを自動開始する</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>ウィンドウがフォーカスを失ってもポーリングを継続する</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>ポーリング間隔（プロファイルの上書きが優先）</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>エンジンはこの間隔でデバイスをポーリングします。アクティブなプロファイルが独自のポーリングレートを持つ間はそのレートが優先され、プロファイルが無効になるとこの値に戻ります。</value></data>
+  <data name="Settings_PollingInterval" xml:space="preserve"><value>ポーリング間隔（プロファイルが上書きしない限り）</value></data>
+  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>エンジンはこの間隔でデバイスをポーリングします。独自のポーリングレートを持つプロファイルが有効な間はそのレートが適用され、無効になるとこの値に戻ります。</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>ゲームからデバイスを隠す</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>HidHide によるデバイス非表示と低レベル入力フックのマスタースイッチです。オフの場合、個別デバイスの設定に関わらずすべてのデバイスが表示されます。</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>ウィンドウ</value></data>

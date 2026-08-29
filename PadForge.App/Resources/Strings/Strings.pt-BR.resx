@@ -255,8 +255,8 @@
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Configure o comportamento de polling e processamento em segundo plano.</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Iniciar Motor Automaticamente ao Abrir</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Continuar Polling Quando a Janela Perder o Foco</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Intervalo de Polling (Substituições de Perfil Prevalecem)</value></data>
-  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>O mecanismo consulta os dispositivos neste intervalo. Enquanto o perfil ativo tiver sua própria taxa de polling, essa taxa comanda o ciclo, e este valor volta a valer quando o perfil é desativado.</value></data>
+  <data name="Settings_PollingInterval" xml:space="preserve"><value>Intervalo de Polling (Salvo se um Perfil o Substituir)</value></data>
+  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>O mecanismo consulta os dispositivos neste intervalo. Enquanto um perfil com taxa de polling própria estiver ativo, vale essa taxa. Este valor volta a valer quando o perfil é desativado.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Ocultar Dispositivos dos Jogos</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Chave principal para ocultação de dispositivos via HidHide e hooks de entrada de baixo nível. Quando desativada, nenhum dispositivo é ocultado independentemente das configurações individuais.</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Janela</value></data>

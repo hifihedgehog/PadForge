@@ -1785,13 +1785,14 @@ namespace PadForge.Common.Input
                             var socdExt = ResolveSlotSocd(padIndex, extendedIndices: true);
                             if (socdExt != null)
                                 socdExt.ApplyExtended(CombinedRawHidStates[padIndex].Buttons);
-                            // Valve persona (#338): a slot whose HM profile is
-                            // the steam-deck-composite persona submits the
-                            // native Neptune frame instead of the field-encoded
-                            // raw surface, exactly the SubmitRawReport split
-                            // the Sony USB personas ride below. The lookup
-                            // misses for every profile shipping today; it
-                            // lights the release HM ships the profile (HM#56).
+                            // Valve persona (#338): a slot on a Valve
+                            // profile submits the pad's native frame instead
+                            // of the field-encoded raw surface, exactly the
+                            // SubmitRawReport split the Sony USB personas
+                            // ride below. The packer table carries all four
+                            // Valve profiles, and HMaestroVirtualController
+                            // picks the verbatim extended path for the ones
+                            // whose descriptors need it (HM#58).
                             var valvePacker = ValveReportPackers.ForProfile(hmExt.ProfileId);
                             if (valvePacker != null)
                             {

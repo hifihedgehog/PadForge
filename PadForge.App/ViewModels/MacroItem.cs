@@ -7217,7 +7217,6 @@ namespace PadForge.ViewModels
         public static string RawButtonLabel(string profileId, int number) =>
             (IsNintendoLetteredProfile(profileId) ? NintendoLetteredLabel(profileId, number - 1) : null)
             ?? (IsValveLetteredProfile(profileId) ? ValveLetteredLabel(profileId, number - 1) : null)
-            ?? (IsValveLetteredProfile(profileId) ? ValveLetteredLabel(profileId, number - 1) : null)
             ?? string.Format(Strings.Instance.Extended_Button_Format, number);
 
         /// <summary>Compact-label twin of <see cref="RawButtonLabel"/>

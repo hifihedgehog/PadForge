@@ -171,10 +171,11 @@ namespace PadForge.Views
         /// fallback shape as the 3D ResolveAnnotationAnchor).</summary>
         private Point? ResolveAnnotationAnchor(string targetSettingName)
         {
-            // Nintendo rows are raw grid names (RawBtn0, RawAxis1); anchors
+            // Lettered rows are raw grid names (RawBtn0, RawAxis1); anchors
             // are keyed by the preview element grammar. Translate first.
-            // Raw row names only occur here for Nintendo slots (Extended
-            // uses the schematic view, never this canvas).
+            // Raw row names reach this canvas from Nintendo slots and from
+            // Extended slots on a Valve profile, which draw the pad's own
+            // body here instead of the schematic.
             if (targetSettingName.StartsWith("Raw", System.StringComparison.Ordinal))
             {
                 targetSettingName = NintendoPreviewMap.ToPreview(targetSettingName, _vm?.ProfileId);

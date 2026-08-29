@@ -864,6 +864,8 @@
   <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Nom du profil :</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>Nouveau profil</value></data>
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Exécutables (comparés à la fenêtre au premier plan) :</value></data>
+  <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Taux d’interrogation</value></data>
+  <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Par défaut (réglage global)</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Enregistre un instantané des affectations de chaque emplacement et des paramètres par appareil sous un même nom. Les exécutables liés y basculent automatiquement.</value></data>
   <data name="ProfileDialog_EditDescription" xml:space="preserve"><value>Renomme le profil et met à jour les exécutables qui l'activent. Les affectations et paramètres enregistrés restent inchangés.</value></data>
 

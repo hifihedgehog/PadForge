@@ -6582,6 +6582,18 @@ namespace PadForge.Services
         [XmlElement]
         public string ExecutableNames { get; set; } = string.Empty;
 
+        /// <summary>Per-profile polling interval override in milliseconds
+        /// (#365, asked in discussion #362). SENTINEL CONTRACT: 0 means "no
+        /// opinion, follow the global Settings value", which is also what
+        /// every profile saved before this field deserializes to. Valid
+        /// overrides are 1..16 like the global knob. AUTHORED, not
+        /// snapshotted: SaveActiveProfileState's field copy deliberately
+        /// skips it (like Name and ExecutableNames) so a state save never
+        /// clobbers it, and the default profile never carries one, since
+        /// the default profile IS the global setting's home.</summary>
+        [XmlElement]
+        public int PollingRateOverrideMs { get; set; }
+
         [XmlArray("Entries")]
         [XmlArrayItem("Entry")]
         public ProfileEntry[] Entries { get; set; }

@@ -12,6 +12,15 @@ namespace PadForge.Views
 
         public ObservableCollection<string> ExecutablePaths { get; } = new();
 
+        /// <summary>The polling override choices, by interval (#365).
+        /// Index 0 is the "follow the global setting" sentinel (0 ms).</summary>
+        private static readonly int[] PollingChoicesMs = { 0, 1, 2, 4, 8, 16 };
+
+        /// <summary>Chosen polling override in milliseconds, 0 = follow the
+        /// global setting (the ProfileData sentinel).</summary>
+        public int PollingOverrideMs
+            => PollingChoicesMs[System.Math.Clamp(PollingRateBox.SelectedIndex, 0, PollingChoicesMs.Length - 1)];
+
         public ProfileDialog()
         {
             InitializeComponent();
@@ -25,6 +34,16 @@ namespace PadForge.Views
             MouseLeftButtonDown += (_, __) => { try { DragMove(); } catch { } };
 
             ExeListBox.ItemsSource = ExecutablePaths;
+            PollingRateBox.ItemsSource = new[]
+            {
+                Strings.Instance.ProfileDialog_PollingDefault,
+                "1000 Hz (1 ms)",
+                "500 Hz (2 ms)",
+                "250 Hz (4 ms)",
+                "125 Hz (8 ms)",
+                "62.5 Hz (16 ms)",
+            };
+            PollingRateBox.SelectedIndex = 0;
             NameBox.Text = Strings.Instance.ProfileDialog_DefaultName;
             NameBox.Focus();
             NameBox.SelectAll();
@@ -33,12 +52,14 @@ namespace PadForge.Views
         /// <summary>
         /// Pre-populates the dialog for editing an existing profile.
         /// </summary>
-        public void LoadForEdit(string name, IEnumerable<string> exePaths)
+        public void LoadForEdit(string name, IEnumerable<string> exePaths, int pollingOverrideMs = 0)
         {
             NameBox.Text = name;
             ExecutablePaths.Clear();
             foreach (var p in exePaths)
                 ExecutablePaths.Add(p);
+            int idx = System.Array.IndexOf(PollingChoicesMs, pollingOverrideMs);
+            PollingRateBox.SelectedIndex = idx >= 0 ? idx : 0;
             Title = Strings.Instance.ProfileDialog_Edit;
             ModeDescText.Text = Strings.Instance.ProfileDialog_EditDescription;
         }

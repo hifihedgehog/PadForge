@@ -2607,6 +2607,8 @@ public class Strings : INotifyPropertyChanged
     public string ProfileDialog_ProfileName => Get("ProfileDialog_ProfileName");
     public string ProfileDialog_DefaultName => Get("ProfileDialog_DefaultName");
     public string ProfileDialog_Executables => Get("ProfileDialog_Executables");
+    public string ProfileDialog_PollingRate => Get("ProfileDialog_PollingRate");
+    public string ProfileDialog_PollingDefault => Get("ProfileDialog_PollingDefault");
     public string ProfileDialog_SaveAsDescription => Get("ProfileDialog_SaveAsDescription");
     public string ProfileDialog_EditDescription => Get("ProfileDialog_EditDescription");
     public string CopyFrom_Title => Get("CopyFrom_Title");

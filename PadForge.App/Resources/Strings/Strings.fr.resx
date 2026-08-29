@@ -255,7 +255,7 @@
   <data name="Settings_InputEngineDesc" xml:space="preserve"><value>Configurer le comportement de scrutation et le traitement en arrière-plan.</value></data>
   <data name="Settings_AutoStart" xml:space="preserve"><value>Démarrer automatiquement le moteur au lancement</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Continuer la scrutation en arrière-plan</value></data>
-  <data name="Settings_PollingInterval" xml:space="preserve"><value>Intervalle de scrutation (les profils peuvent le remplacer)</value></data>
+  <data name="Settings_PollingInterval" xml:space="preserve"><value>Intervalle de scrutation (les remplacements de profil priment)</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Masquer les appareils des jeux</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Commutateur principal pour le masquage des appareils HidHide et les hooks d'entrée bas niveau. Lorsque désactivé, aucun appareil n'est masqué quels que soient les paramètres individuels.</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Fenêtre</value></data>

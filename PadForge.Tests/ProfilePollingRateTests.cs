@@ -117,6 +117,7 @@ namespace PadForge.Tests
             string page = RepoText("PadForge.App", "Views", "SettingsPage.xaml");
             Assert.Contains("Binding PollingOverrideNote", page);
             Assert.Contains("Converter={StaticResource StringToVisibility}", page);
+            Assert.Contains("Settings_PollingIntervalTooltip", page);
         }
 
         /// <summary>Editing the ACTIVE profile's override retunes the live

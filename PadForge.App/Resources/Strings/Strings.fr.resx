@@ -256,6 +256,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>Démarrer automatiquement le moteur au lancement</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Continuer la scrutation en arrière-plan</value></data>
   <data name="Settings_PollingInterval" xml:space="preserve"><value>Intervalle de scrutation (les remplacements de profil priment)</value></data>
+  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>Le moteur interroge les périphériques à cet intervalle. Tant que le profil actif porte son propre taux de scrutation, ce taux pilote la boucle, et cette valeur reprend la main dès que le profil se désactive.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Masquer les appareils des jeux</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Commutateur principal pour le masquage des appareils HidHide et les hooks d'entrée bas niveau. Lorsque désactivé, aucun appareil n'est masqué quels que soient les paramètres individuels.</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Fenêtre</value></data>
@@ -864,7 +865,7 @@
   <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Nom du profil :</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>Nouveau profil</value></data>
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Exécutables (comparés à la fenêtre au premier plan) :</value></data>
-  <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Taux d’interrogation</value></data>
+  <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Taux de scrutation</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Par défaut (réglage global)</value></data>
   <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Remplacé tant que le profil « {0} » est actif : {1} ms</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Enregistre un instantané des affectations de chaque emplacement et des paramètres par appareil sous un même nom. Les exécutables liés y basculent automatiquement.</value></data>

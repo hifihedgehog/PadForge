@@ -256,6 +256,7 @@
   <data name="Settings_AutoStart" xml:space="preserve"><value>Iniciar Motor Automaticamente ao Abrir</value></data>
   <data name="Settings_BackgroundPolling" xml:space="preserve"><value>Continuar Polling Quando a Janela Perder o Foco</value></data>
   <data name="Settings_PollingInterval" xml:space="preserve"><value>Intervalo de Polling (Substituições de Perfil Prevalecem)</value></data>
+  <data name="Settings_PollingIntervalTooltip" xml:space="preserve"><value>O mecanismo consulta os dispositivos neste intervalo. Enquanto o perfil ativo tiver sua própria taxa de polling, essa taxa comanda o ciclo, e este valor volta a valer quando o perfil é desativado.</value></data>
   <data name="Settings_HideDevices" xml:space="preserve"><value>Ocultar Dispositivos dos Jogos</value></data>
   <data name="Settings_HideDevicesTooltip" xml:space="preserve"><value>Chave principal para ocultação de dispositivos via HidHide e hooks de entrada de baixo nível. Quando desativada, nenhum dispositivo é ocultado independentemente das configurações individuais.</value></data>
   <data name="Settings_Window" xml:space="preserve"><value>Janela</value></data>
@@ -864,7 +865,7 @@
   <data name="ProfileDialog_ProfileName" xml:space="preserve"><value>Nome do Perfil:</value></data>
   <data name="ProfileDialog_DefaultName" xml:space="preserve"><value>Novo Perfil</value></data>
   <data name="ProfileDialog_Executables" xml:space="preserve"><value>Executáveis (comparados com a janela em primeiro plano):</value></data>
-  <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Taxa de Sondagem</value></data>
+  <data name="ProfileDialog_PollingRate" xml:space="preserve"><value>Taxa de Polling</value></data>
   <data name="ProfileDialog_PollingDefault" xml:space="preserve"><value>Padrão (Configuração Global)</value></data>
   <data name="Settings_PollingOverriddenBy_Format" xml:space="preserve"><value>Substituído enquanto o perfil “{0}” está ativo: {1} ms</value></data>
   <data name="ProfileDialog_SaveAsDescription" xml:space="preserve"><value>Salva um instantâneo dos mapeamentos de cada slot e das configurações por dispositivo sob um único nome. Executáveis vinculados mudam para ele automaticamente.</value></data>

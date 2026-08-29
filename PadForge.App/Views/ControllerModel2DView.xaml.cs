@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using PadForge.Engine;
@@ -68,6 +69,13 @@ namespace PadForge.Views
         // declares Touchpad. Finger 0 rides the left, finger 1 the right,
         // the split the frame packers use.
         private OverlayElement _touchpadOverlay1;
+        // A pad's click role, keyed by the pad's own target. One-pad
+        // layouts say "Touchpad" -> "TouchpadClick"; every Valve layout has
+        // two pads and per-side click art, and this is what lets the hover
+        // and the click-to-record reach the right side's.
+        private readonly Dictionary<string, string> _padClickTarget = new();
+        // Each pad's touch area, measured from its own click art.
+        private readonly Dictionary<string, PadTouchArea> _padAreas = new();
 
         // Layout data
         private double _stickMaxTravel;
@@ -224,6 +232,8 @@ namespace PadForge.Views
             _triggerClips.Clear();
             _elementTypes.Clear();
             _stickHighlights.Clear();
+            _padClickTarget.Clear();
+            _padAreas.Clear();
             _hoverTarget = null;
 
             int baseW, baseH;
@@ -357,6 +367,15 @@ namespace PadForge.Views
                     img.Visibility = Visibility.Visible;
                     img.Opacity = 1.0;
                 }
+                else if (ov.ElementType == OverlayElementType.Decal)
+                {
+                    // Printed markings, not a control: always visible, in
+                    // front of the body, and no hit rectangle, so the
+                    // control it explains keeps the whole area. The 2015
+                    // pad's wedge boundaries are the first of these.
+                    img.Visibility = Visibility.Visible;
+                    img.Opacity = 1.0;
+                }
                 else
                 {
                     // Buttons, StickClicks: hidden until pressed
@@ -374,9 +393,10 @@ namespace PadForge.Views
                 _overlayImages[ov.TargetName] = img;
                 ModelCanvas.Children.Add(img);
 
-                // StickClick + TriggerBase: no hit-test rect
+                // StickClick, TriggerBase and Decal: no hit-test rect
                 if (ov.ElementType == OverlayElementType.StickClick ||
-                    ov.ElementType == OverlayElementType.TriggerBase)
+                    ov.ElementType == OverlayElementType.TriggerBase ||
+                    ov.ElementType == OverlayElementType.Decal)
                     continue;
 
                 // Hit-test rectangle (always visible, transparent, catches all clicks)
@@ -437,6 +457,26 @@ namespace PadForge.Views
                     if (ov.TargetName == "LeftTouchpad") left = ov;
                     else if (ov.TargetName == "RightTouchpad") right = ov;
                     else single = ov;
+                }
+
+                // Each pad's click role, by the layouts' own naming: a
+                // pad is called X and its click X + "Click". Resolved from
+                // the table rather than assumed, so a layout that names
+                // them otherwise simply gets no entry instead of a
+                // silently wrong one.
+                foreach (var ov in overlays)
+                {
+                    if (ov.ElementType != OverlayElementType.Touchpad) continue;
+                    string want = ov.TargetName == "Touchpad"
+                        ? "TouchpadClick" : ov.TargetName + "Click";
+                    foreach (var c in overlays)
+                    {
+                        if (c.TargetName != want) continue;
+                        _padClickTarget[ov.TargetName] = want;
+                        _padAreas[ov.TargetName] = PadTouchArea.Measure(
+                            EmbeddedBitmaps.Load($"2DModels/{folder}/{Resolve(c.ImageFile)}"));
+                        break;
+                    }
                 }
 
                 _touchpadOverlay = left ?? single;
@@ -584,7 +624,16 @@ namespace PadForge.Views
                 return;
             }
             dot.Visibility = Visibility.Visible;
-            // Center the dot on the normalized touchpad coordinate.
+            // Center the dot on the normalized touchpad coordinate, pulled
+            // onto the pad's own touch area. The layout entry is a bounding
+            // BOX, and a pad is only rarely a box: the 2015 pads are discs
+            // and the 2026 pads are rounded squares canted a few degrees,
+            // so a corner of the box is off the pad and a touch reported
+            // near the rim drew its dot in mid-air. The area is measured
+            // from the pad's own click art, which is why this needs no
+            // per-layout shape table.
+            if (_padAreas.TryGetValue(pad.TargetName, out var area) && area != null)
+                (normX, normY) = area.Clamp(normX, normY);
             double cx = pad.X + normX * pad.Width;
             double cy = pad.Y + normY * pad.Height;
             Canvas.SetLeft(dot, cx - dot.Width / 2);
@@ -774,7 +823,12 @@ namespace PadForge.Views
                     // Touchpad surface routes to the click button — this is the
                     // affordance for binding the touchpad-press button via the
                     // big visible region rather than the narrow strip above.
-                    ControllerElementRecordRequested?.Invoke(this, "TouchpadClick");
+                    // On a two-pad layout that is the click of THIS pad; a
+                    // fixed "TouchpadClick" named a control no Valve layout
+                    // has, so clicking either pad bound nothing.
+                    ControllerElementRecordRequested?.Invoke(this,
+                        _padClickTarget.TryGetValue(target, out var side)
+                            ? side : "TouchpadClick");
                 }
                 else
                 {
@@ -830,13 +884,31 @@ namespace PadForge.Views
                 // must run before the overlay-image lookup: the strip has no
                 // image, and bailing there left its exclusive band with a
                 // hand cursor and no highlight.
-                if ((elemType == OverlayElementType.Touchpad || target == "TouchpadClick")
-                    && _touchpadClickHighlight != null)
+                if (elemType == OverlayElementType.Touchpad || target == "TouchpadClick")
                 {
-                    _hoverTarget = target;
-                    _touchpadClickHighlight.Visibility = Visibility.Visible;
-                    _touchpadClickHighlight.Opacity = 0.4;
-                    return;
+                    if (_touchpadClickHighlight != null)
+                    {
+                        _hoverTarget = target;
+                        _touchpadClickHighlight.Visibility = Visibility.Visible;
+                        _touchpadClickHighlight.Opacity = 0.4;
+                        return;
+                    }
+                    // Two pads: there is no shared highlight to show,
+                    // because each pad ships its own click art, so the
+                    // hover lights that side's sprite. _hoverTarget names
+                    // the SPRITE, not the zone, so the per-frame
+                    // SetOverlayVisible leaves it alone until the pointer
+                    // leaves. Without this every Valve layout hovered its
+                    // pads onto an image the layout never gave them, which
+                    // showed nothing at all.
+                    if (_padClickTarget.TryGetValue(target, out var side)
+                        && _overlayImages.TryGetValue(side, out var sideImg))
+                    {
+                        _hoverTarget = side;
+                        sideImg.Visibility = Visibility.Visible;
+                        sideImg.Opacity = 0.4;
+                        return;
+                    }
                 }
 
                 if (!_overlayImages.TryGetValue(target, out var img))

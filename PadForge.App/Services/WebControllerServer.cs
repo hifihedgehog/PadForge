@@ -1116,6 +1116,17 @@ namespace PadForge.Services
                 // Its click is ALSO the right stick button, one bit doing
                 // two jobs. Same reasoning: the surface carries it.
                 ["RightThumbButton"] = ("none", 0),
+                // The four wedges cut out of the left pad and the stand-in
+                // stick standing on the right one are DRAWINGS of what the
+                // surfaces already do. Give either a zone of its own and it
+                // covers the surface it explains: the wedges span the whole
+                // left pad, so the client's unified D-pad zone would be
+                // built over the pad and swallow every drag.
+                ["DPadUp"] = ("none", 0),
+                ["DPadDown"] = ("none", 0),
+                ["DPadLeft"] = ("none", 0),
+                ["DPadRight"] = ("none", 0),
+                ["RightThumbRing"] = ("none", 0),
                 ["LeftThumbButton"] = ("button", 8),     // the single physical stick is the LEFT stick
             },
         };
@@ -1195,6 +1206,7 @@ namespace PadForge.Services
                         OverlayElementType.StickRing => "stickRing",
                         OverlayElementType.StickClick => "stickClick",
                         OverlayElementType.Touchpad => "touchpad",
+                        OverlayElementType.Decal => "decal",
                         _ => "button"
                     };
 

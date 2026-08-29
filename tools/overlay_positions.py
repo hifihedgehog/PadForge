@@ -1721,6 +1721,22 @@ def _hit_polygons(overlay_path, _cache={}):
     return result
 
 
+def _tint_press_art(src_path, dst_path, ring=3):
+    """Turn a rest-state silhouette into press art: the pack's blue at
+    full alpha around the edge, washed inside. Same ring-plus-wash the
+    2026 CAD flow builds and the same shape the DualSense and Xbox packs
+    ship by hand, so a control that carries a legend stays readable when
+    it lights."""
+    im = cv2.imread(src_path, cv2.IMREAD_UNCHANGED)
+    solid = (im[:, :, 3] > 8).astype(np.uint8)
+    inner = cv2.erode(solid, np.ones((ring * 2 + 1, ring * 2 + 1), np.uint8))
+    art = np.zeros(im.shape, np.uint8)
+    art[:, :, :3] = SC2_ACTIVE_BGR
+    art[:, :, 3] = np.where(solid > 0, np.where(inner > 0, SC2_WASH_ALPHA, 255), 0)
+    cv2.imwrite(dst_path, art)
+    return art
+
+
 def _prepare_steamdeck_base():
     """Build STEAMDECK/SD_base.png from the pack's Compact render.
 
@@ -1807,7 +1823,11 @@ def _prepare_steamdeck_base():
         solid = (im[y:y + h, x:x + w, 3] > 8).astype(np.uint8)
         inner = cv2.erode(solid, np.ones((3, 3), np.uint8), iterations=9)
         sil = np.zeros((h, w, 4), np.uint8)
-        sil[:, :, :3] = 255
+        # The pack's own highlight blue, measured off SD_Face_Button.png and
+        # identical across the family (the 2026 CAD flow uses the same
+        # constant). An earlier pass wrote white here, so a hovered or bound
+        # rear paddle lit in a color no other control on any layout uses.
+        sil[:, :, :3] = SC2_ACTIVE_BGR
         sil[:, :, 3] = np.where(solid > 0, np.where(inner > 0, 96, 255), 0)
         cv2.imwrite(os.path.join(MODELS_DIR, "STEAMDECK", "SD_CompactTile.png"), sil)
 
@@ -1877,8 +1897,18 @@ def process_steamdeck():
 
     print("Parsing Steam Deck SVG elements...")
 
-    add("L2 Trigger", "SD_L2.png", "LeftTrigger", "Trigger")
-    add("R2 Trigger", "SD_R2.png", "RightTrigger", "Trigger")
+    # The Deck pack ships one trigger PNG per side and it is the REST
+    # silhouette, dark gray. Every other pack ships a second, blue
+    # "-Active" file that the Trigger element clips as the press fill, and
+    # without one the Deck filled and hovered its triggers in body gray:
+    # measured at RGB 47,48,47 against 32,195,229 for every other control
+    # on the same layout. The press art is derived from the rest
+    # silhouette here rather than hand-drawn, so it tracks the pack.
+    for stem in ("SD_L2", "SD_R2"):
+        _tint_press_art(os.path.join(ov_dir, stem + ".png"),
+                        os.path.join(ov_dir, stem + "-Active.png"))
+    add("L2 Trigger", "SD_L2-Active.png", "LeftTrigger", "Trigger")
+    add("R2 Trigger", "SD_R2-Active.png", "RightTrigger", "Trigger")
     add("L1 Button", "SD_L1.png", "LeftShoulder", "Button")
     add("R1 Button", "SD_R1.png", "RightShoulder", "Button")
 
@@ -1946,14 +1976,145 @@ def process_steamdeck():
     return {"base_width": base_w, "base_height": base_h, "results": results}
 
 
+def _sc_pad_disc(click_png):
+    """The touch disc of a round trackpad, measured off its own click art
+    rather than assumed to be the sprite's bounding square. Returns
+    (cx, cy, r) in sprite pixels."""
+    im = cv2.imread(click_png, cv2.IMREAD_UNCHANGED)
+    ys, xs = np.nonzero(im[:, :, 3] > 8)
+    cx, cy = (xs.min() + xs.max()) / 2.0, (ys.min() + ys.max()) / 2.0
+    r = min(xs.max() - xs.min(), ys.max() - ys.min()) / 2.0
+    return cx, cy, r
+
+
+def _sc_pad_sectors(click_png, out_dir, stem, inner=0.32):
+    """Cut a round trackpad into four direction wedges and write one press
+    sprite per direction.
+
+    The 2015 pad has no D-pad and no right stick of its own: SDL reads the
+    LEFT trackpad as the hat and the RIGHT one as the right stick's axes
+    (SDL_hidapi_steam.c). The 3D model already answers this by registering
+    quadrants on both pad surfaces, and this is the same answer in two
+    dimensions, so a direction can be hovered, flashed and bound on the
+    surface that actually sends it.
+
+    Each wedge is an annulus sector, so the middle of the pad stays with
+    the pad's own click rather than being swallowed by whichever direction
+    happens to be drawn last."""
+    im = cv2.imread(click_png, cv2.IMREAD_UNCHANGED)
+    h, w = im.shape[:2]
+    cx, cy, r = _sc_pad_disc(click_png)
+
+    yy, xx = np.mgrid[0:h, 0:w]
+    dx, dy = xx - cx, yy - cy
+    dist = np.sqrt(dx * dx + dy * dy)
+    band = (dist <= r) & (dist >= r * inner)
+
+    # The boundaries themselves, printed on the pad. A wedge only shows
+    # while it is hovered, bound or pressed, so without this nothing tells
+    # anyone WHERE up stops and right starts, which matters most on the
+    # web controller: there the pad is a surface you drag on rather than a
+    # thing you hover.
+    lines = np.zeros((h, w), np.uint8)
+    for sx, sy in ((1, 1), (1, -1)):
+        cv2.line(lines,
+                 (int(cx + sx * r * inner * 0.71), int(cy + sy * r * inner * 0.71)),
+                 (int(cx + sx * r * 0.71), int(cy + sy * r * 0.71)),
+                 255, 3, cv2.LINE_AA)
+        cv2.line(lines,
+                 (int(cx - sx * r * inner * 0.71), int(cy - sy * r * inner * 0.71)),
+                 (int(cx - sx * r * 0.71), int(cy - sy * r * 0.71)),
+                 255, 3, cv2.LINE_AA)
+    cv2.circle(lines, (int(cx), int(cy)), int(r * inner), 255, 3, cv2.LINE_AA)
+    decal = np.zeros((h, w, 4), np.uint8)
+    decal[:, :, :3] = 255
+    decal[:, :, 3] = (lines.astype(np.uint16) * 0x4C // 255).astype(np.uint8)
+    decal_fn = f"{stem}_Zones.png"
+    cv2.imwrite(os.path.join(out_dir, decal_fn), decal)
+
+    out = {"Zones": decal_fn}
+    for name, sel in [
+        ("Up", dy <= -np.abs(dx)),
+        ("Down", dy >= np.abs(dx)),
+        ("Left", dx <= -np.abs(dy)),
+        ("Right", dx >= np.abs(dy)),
+    ]:
+        mask = (band & sel).astype(np.uint8)
+        art = np.zeros((h, w, 4), np.uint8)
+        inner_m = cv2.erode(mask, np.ones((SC2_RING_PX * 2 + 1,) * 2, np.uint8))
+        art[:, :, :3] = SC2_ACTIVE_BGR
+        art[:, :, 3] = np.where(mask > 0,
+                                np.where(inner_m > 0, SC2_WASH_ALPHA, 255), 0)
+        fn = f"{stem}_{name}.png"
+        cv2.imwrite(os.path.join(out_dir, fn), art)
+        out[name] = fn
+    return out
+
+
+def _outline_decal(src_path, dst_path, alpha=0x4C, ring=3):
+    """Print a control's own outline on the body: always visible, never
+    lit, so a control with no printed marking of its own can still be
+    found. Traced from the control's press art, so the marking and the
+    highlight are the same shape by construction."""
+    im = cv2.imread(src_path, cv2.IMREAD_UNCHANGED)
+    solid = (im[:, :, 3] > 8).astype(np.uint8)
+    edge = solid - cv2.erode(solid, np.ones((ring * 2 + 1,) * 2, np.uint8))
+    art = np.zeros(im.shape, np.uint8)
+    art[:, :, :3] = 255
+    art[:, :, 3] = np.where(edge > 0, alpha, 0)
+    cv2.imwrite(dst_path, art)
+
+
+# The ghost stick's own translucent color, the 2015 3D model's
+# Color.FromArgb(0x55, 0x8F, 0xA0, 0xB4) written BGR. Dim and cool on
+# purpose: it is a label for what the pad does, never a lit control.
+SC_GHOST_BGR = (0xB4, 0xA0, 0x8F)
+
+
+def _sc_right_stick_art(out_dir, r):
+    """Draw the right pad's stand-in stick and its press art.
+
+    The pad IS the right stick here, and a bare trackpad shows nothing of
+    that, so the 2D view stands the same ghost on it that the 3D model
+    revolves: a dish inside a doughnut rim, at 0.43 of the pad's radius,
+    the proportion measured off the DualSense family. Returns the two
+    file names and the sprite's edge in pixels."""
+    R = int(round(r * 0.43))
+    size = R * 2 + 2
+    c = size // 2
+
+    ghost = np.zeros((size, size, 4), np.uint8)
+    cv2.circle(ghost, (c, c), R, (*SC_GHOST_BGR, 0x55), -1, cv2.LINE_AA)
+    # The doughnut: the head's own outer wall, brighter than the dish it
+    # surrounds so the shape reads as a stick and not as a disc.
+    cv2.circle(ghost, (c, c), int(R * 0.90), (*SC_GHOST_BGR, 0x99),
+               max(2, int(R * 0.20)), cv2.LINE_AA)
+    cv2.circle(ghost, (c, c), int(R * 0.62), (*SC_GHOST_BGR, 0x40), -1, cv2.LINE_AA)
+    cv2.imwrite(os.path.join(out_dir, "SC_RightStick.png"), ghost)
+
+    disc = np.zeros((size, size), np.uint8)
+    cv2.circle(disc, (c, c), R, 255, -1, cv2.LINE_AA)
+    solid = (disc > 0).astype(np.uint8)
+    inner = cv2.erode(solid, np.ones((SC2_RING_PX * 2 + 1,) * 2, np.uint8))
+    click = np.zeros((size, size, 4), np.uint8)
+    click[:, :, :3] = SC2_ACTIVE_BGR
+    click[:, :, 3] = np.where(solid > 0,
+                              np.where(inner > 0, SC2_WASH_ALPHA, 255), 0)
+    cv2.imwrite(os.path.join(out_dir, "SC_RightStick_Click.png"), click)
+    return "SC_RightStick.png", "SC_RightStick_Click.png", size
+
+
 def process_steamcontroller():
     """Extract Steam Controller (2026 retail name: the original Valve
     pad) overlay positions from the pack's Black theme SVG.
 
     Two departures from every other layout, both physical rather than
-    incidental: the pad has no D-pad (the LEFT trackpad serves that
-    role, and the SVG labels the cross as trackpad outline art), and it
-    carries a single analog stick, so no Right* stick entries exist.
+    incidental: the pad has no D-pad of its own and no second stick.
+    SDL reads the LEFT trackpad as the hat and the RIGHT one as the
+    right stick's axes, so both controls are cut out of the pad they
+    actually ride: four annulus wedges on the left, a stand-in stick on
+    the right. Without them the 2015 pad reached the 2D view with no way
+    to see, hover or bind either.
 
     The rear grip paddles are the one element the SVG does not label.
     Their positions come from differencing the pack's own
@@ -2019,13 +2180,52 @@ def process_steamcontroller():
         results.append(("", side + "Touchpad", "Touchpad", pos[0], pos[1], pos[2], pos[3]))
         print(f"  {side + 'TouchpadClick':20s} ({lbl:20s}) -> ({pos[0]:4d}, {pos[1]:4d}) {pos[2]:4d}x{pos[3]:3d}")
 
+    # The left pad's four hat directions and the right pad's stand-in
+    # stick, both added AFTER their pad's touch zone so the zone keeps the
+    # middle: hit rectangles resolve to the last one added in an overlap,
+    # and each wedge is clipped to its own art.
+    pads = {t_[1]: t_ for t_ in results if t_[1].endswith("TouchpadClick")}
+
+    lp = pads.get("LeftTouchpadClick")
+    if lp:
+        _, _, _, px, py, pw, ph = lp
+        wedges = _sc_pad_sectors(
+            os.path.join(ov_dir, "SC_LeftTrackpad_Click.png"), ov_dir, "SC_LeftPad")
+        results.append((wedges["Zones"], "LeftPadZones", "Decal", px, py, pw, ph))
+        for direction in ("Up", "Down", "Left", "Right"):
+            results.append((wedges[direction], "DPad" + direction, "Button",
+                            px, py, pw, ph))
+            print(f"  {'DPad' + direction:20s} ({'left pad wedge':20s}) -> "
+                  f"({px:4d}, {py:4d}) {pw:4d}x{ph:3d}")
+
+    rp = pads.get("RightTouchpadClick")
+    if rp:
+        _, _, _, px, py, pw, ph = rp
+        _, _, r = _sc_pad_disc(os.path.join(ov_dir, "SC_RightTrackpad_Click.png"))
+        ring_fn, click_fn, size = _sc_right_stick_art(ov_dir, r)
+        sx = px + (pw - size) // 2
+        sy = py + (ph - size) // 2
+        results.append((ring_fn, "RightThumbRing", "StickRing", sx, sy, size, size))
+        results.append((click_fn, "RightThumbButton", "StickClick", sx, sy, size, size))
+        print(f"  {'RightThumbRing':20s} ({'right pad ghost':20s}) -> "
+              f"({sx:4d}, {sy:4d}) {size:4d}x{size:3d}")
+
     # Grips: unlabeled in the SVG, measured by template difference (see
     # the docstring). Position is exact at base-canvas registration, so
     # no fitting applies.
-    results.append(("SC_LeftGrip_Button.png", "LeftGrip", "Button", 215, 560, 183, 327))
-    print(f"  {'LeftGrip':20s} ({'template diff':20s}) -> ( 215,  560)  183x327")
-    results.append(("SC_RightGrip_Button.png", "RightGrip", "Button", 1068, 563, 183, 327))
-    print(f"  {'RightGrip':20s} ({'template diff':20s}) -> (1068,  563)  183x327")
+    # The grips are on the BACK, and the front view draws nothing where
+    # they sit, so at rest the pad showed no sign it had them: on the web
+    # controller, where a control is only visible while it is pressed,
+    # they read as absent. Each gets its outline printed on the body,
+    # traced from its own press art so the marking and the highlight are
+    # the same shape.
+    for side, x, y in (("Left", 215, 560), ("Right", 1068, 563)):
+        press = f"SC_{side}Grip_Button.png"
+        zone = f"SC_{side}Grip_Zone.png"
+        _outline_decal(os.path.join(ov_dir, press), os.path.join(ov_dir, zone))
+        results.append((zone, side + "GripZone", "Decal", x, y, 183, 327))
+        results.append((press, side + "Grip", "Button", x, y, 183, 327))
+        print(f"  {side + 'Grip':20s} ({'template diff':20s}) -> ({x:4d}, {y:4d})  183x327")
 
     return {"base_width": base_w, "base_height": base_h, "results": results}
 
@@ -2346,6 +2546,80 @@ def _sc2_dpad_quadrants(cross):
     return out
 
 
+SC2_TILE = 150          # tile edge, final pixels
+SC2_TILE_GAP = 16
+SC2_TILE_MARGIN = 20    # canvas edge to tile
+
+
+def _sc2_edge_tiles(base):
+    """Stand the controls a front elevation cannot show in a column of
+    labeled tiles down each side of the canvas, and return their rects.
+
+    The bumpers, the analog triggers and the four rear grip buttons are
+    all on surfaces the drawing does not face. The Steam Deck layout
+    already answers this the same way, with the pack's own L4/L5/R4/R5
+    callout tiles beside the body, so the 2026 draws its own in the flat
+    style the rest of this base is painted in. Leaving them out is what
+    left the 2026 with no way to hover, bind or preview eight of its
+    controls, while the 3D model carried all eight.
+
+    Order down each column is L1, L2, L4, L5 and R1, R2, R4, R5, which
+    is shoulder, trigger, then the grips top to bottom, the order the
+    hardware wears them.
+    """
+    h, w = base.shape[:2]
+    side = SC2_TILE_MARGIN * 2 + SC2_TILE
+    out = np.zeros((h, w + side * 2, 4), np.uint8)
+    out[:, side:side + w] = base
+
+    rows = 4
+    span = rows * SC2_TILE + (rows - 1) * SC2_TILE_GAP
+    top = (h - span) // 2
+
+    legends = [
+        ("L1", "LeftShoulder", "Button"),
+        ("L2", "LeftTrigger", "Trigger"),
+        ("L4", "Paddle2", "Button"),
+        ("L5", "Paddle4", "Button"),
+        ("R1", "RightShoulder", "Button"),
+        ("R2", "RightTrigger", "Trigger"),
+        ("R4", "Paddle1", "Button"),
+        ("R5", "Paddle3", "Button"),
+    ]
+
+    tiles = []
+    for i, (legend, target, etype) in enumerate(legends):
+        col = i // rows
+        x = SC2_TILE_MARGIN if col == 0 else side + w + SC2_TILE_MARGIN
+        y = top + (i % rows) * (SC2_TILE + SC2_TILE_GAP)
+
+        # The tile itself: a rounded square in the body's recess color with
+        # the surface color as its edge, so it reads as part of the same
+        # drawing rather than as chrome laid over it.
+        tile = np.zeros((SC2_TILE, SC2_TILE, 4), np.uint8)
+        mask = np.zeros((SC2_TILE, SC2_TILE), np.uint8)
+        r = 18
+        cv2.rectangle(mask, (r, 0), (SC2_TILE - r, SC2_TILE), 255, -1)
+        cv2.rectangle(mask, (0, r), (SC2_TILE, SC2_TILE - r), 255, -1)
+        for cx, cy in ((r, r), (SC2_TILE - r, r), (r, SC2_TILE - r),
+                       (SC2_TILE - r, SC2_TILE - r)):
+            cv2.circle(mask, (cx, cy), r, 255, -1)
+        edge = mask - cv2.erode(mask, np.ones((7, 7), np.uint8))
+        tile[mask > 0] = (*SC2_RECESS, 255)
+        tile[edge > 0] = (*SC2_SURFACE, 255)
+
+        (tw, th), _ = cv2.getTextSize(legend, cv2.FONT_HERSHEY_SIMPLEX, 2.2, 5)
+        cv2.putText(tile, legend,
+                    ((SC2_TILE - tw) // 2, (SC2_TILE + th) // 2),
+                    cv2.FONT_HERSHEY_SIMPLEX, 2.2, (255, 255, 255, 255), 5,
+                    cv2.LINE_AA)
+
+        out[y:y + SC2_TILE, x:x + SC2_TILE] = tile
+        tiles.append((legend, target, etype, x, y, mask))
+
+    return out, tiles, side
+
+
 def process_steamcontroller2():
     """Build the 2026 Steam Controller layout from Valve's own CAD.
 
@@ -2370,12 +2644,15 @@ def process_steamcontroller2():
     base_full = _sc2_fill(gray, lab, stats, cent, body, named)
     S = SC2_SUPERSAMPLE
     fh, fw = base_full.shape[:2]
-    base_w, base_h = fw // S, fh // S
+    body_w, body_h = fw // S, fh // S
 
     ov_dir = os.path.join(MODELS_DIR, "STEAMCONTROLLER2")
     os.makedirs(ov_dir, exist_ok=True)
-    cv2.imwrite(os.path.join(ov_dir, "SC2_base.png"),
-                cv2.resize(base_full, (base_w, base_h), interpolation=cv2.INTER_AREA))
+
+    body_img = cv2.resize(base_full, (body_w, body_h), interpolation=cv2.INTER_AREA)
+    base_img, tiles, side = _sc2_edge_tiles(body_img)
+    base_w, base_h = base_img.shape[1], base_img.shape[0]
+    cv2.imwrite(os.path.join(ov_dir, "SC2_base.png"), base_img)
 
     elements = dict(named)
     masks = {k: (lab == v) for k, v in elements.items()}
@@ -2399,7 +2676,7 @@ def process_steamcontroller2():
         art = cv2.resize(art, (w, h), interpolation=cv2.INTER_AREA)
         fn = f"SC2_{name}.png"
         cv2.imwrite(os.path.join(ov_dir, fn), art)
-        x, y = x0 // S, y0 // S
+        x, y = x0 // S + side, y0 // S
         results.append((fn, target, etype, x, y, w, h))
         print(f"  {target:20s} ({name:18s}) -> ({x:4d}, {y:4d}) {w:4d}x{h:3d}")
         if also_zone:
@@ -2428,6 +2705,22 @@ def process_steamcontroller2():
         if name in masks:
             emit(name, masks[name], target, etype, zone)
 
+    # The side tiles, each with the same ring-plus-wash press art every
+    # other control on this layout gets, so a legend stays readable under
+    # the highlight.
+    for legend, target, etype, x, y, mask in tiles:
+        art = np.zeros((SC2_TILE, SC2_TILE, 4), np.uint8)
+        solid = (mask > 0).astype(np.uint8)
+        inner = cv2.erode(solid, np.ones((SC2_RING_PX * 2 + 1,) * 2, np.uint8))
+        art[:, :, :3] = SC2_ACTIVE_BGR
+        art[:, :, 3] = np.where(solid > 0,
+                                np.where(inner > 0, SC2_WASH_ALPHA, 255), 0)
+        fn = f"SC2_{target}.png"
+        cv2.imwrite(os.path.join(ov_dir, fn), art)
+        results.append((fn, target, etype, x, y, SC2_TILE, SC2_TILE))
+        print(f"  {target:20s} ({legend + ' tile':18s}) -> ({x:4d}, {y:4d}) "
+              f"{SC2_TILE:4d}x{SC2_TILE:3d}")
+
     return {"base_width": base_w, "base_height": base_h, "results": results}
 
 
@@ -2437,7 +2730,7 @@ def generate_csharp(layouts, output_path):
         "// AUTO-GENERATED by tools/overlay_positions.py -- do not edit manually",
         "namespace PadForge.Models2D;",
         "",
-        "public enum OverlayElementType { Button, Trigger, TriggerBase, StickRing, StickClick, FaceButtonGroup, Touchpad }",
+        "public enum OverlayElementType { Button, Trigger, TriggerBase, StickRing, StickClick, FaceButtonGroup, Touchpad, Decal }",
         "",
         "public record OverlayElement(string ImageFile, string TargetName, OverlayElementType ElementType, double X, double Y, double Width, double Height, string HitPath = null);",
         "",
@@ -2456,7 +2749,7 @@ def generate_csharp(layouts, output_path):
         lines.append("    public static readonly OverlayElement[] Overlays =")
         lines.append("    {")
         for fn, target, etype, x, y, w, h in data["results"]:
-            hit = _hit_polygons(os.path.join(ov_dir, fn)) if fn and etype not in ("TriggerBase",) else None
+            hit = _hit_polygons(os.path.join(ov_dir, fn)) if fn and etype not in ("TriggerBase", "Decal") else None
             if hit:
                 lines.append(f'        new("{fn}", "{target}", OverlayElementType.{etype}, {x}, {y}, {w}, {h}, "{hit}"),')
             else:

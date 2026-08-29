@@ -442,6 +442,8 @@
                 img.className = "overlay trigger-base";
             } else if (ov.type === "stickRing") {
                 img.className = "overlay stick-ring";
+            } else if (ov.type === "decal") {
+                img.className = "overlay decal";
             } else {
                 img.className = "overlay";
             }
@@ -497,6 +499,8 @@
             var ov = layout.overlays[i];
 
             if (ov.type === "stickRing" || ov.type === "stickClick") continue;
+            // Printed markings explain a control, they are not one.
+            if (ov.type === "decal") continue;
             // Explicitly disabled for this layout (e.g. the Steam Controller's
             // trackpad click zones, which would steal touches from the
             // repurposed pad surfaces underneath).

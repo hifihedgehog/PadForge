@@ -106,23 +106,46 @@ namespace PadForge.Tests
             => Assert.Contains(SteamDeckLayout.Overlays,
                                o => string.Equals(o.TargetName, target, StringComparison.Ordinal));
 
-        /// <summary>The Steam Controller has ONE stick SOLID and no d-pad
-        /// solid: the left trackpad is the d-pad and the right one is the
-        /// right stick. Emitting a right stick RING or a d-pad key would
-        /// anchor callouts to parts the pad does not have.
+        /// <summary>The Steam Controller carries its d-pad and its right
+        /// stick ON ITS TRACKPADS, because that is where the hardware puts
+        /// them: SDL reads the left pad as the hat and the right pad as the
+        /// right stick's axes (SDL_hidapi_steam.c). The 3D preview has stood
+        /// a synthesized stick on that pad since the model was built, and
+        /// the 2D view carried neither control at all, so the pad reached
+        /// the mapping page with nothing to hover, flash or bind for eight
+        /// of its inputs.
         ///
-        /// <para>The 3D preview stands a synthesized stick on that pad, but
-        /// the 2D art has no such part, so no RightThumb* callout belongs
-        /// here.</para></summary>
+        /// <para>The wedges and the stand-in stick are ANCHORED to the pads
+        /// they ride, which is what this pins: a wedge that drifted off the
+        /// left pad, or a stick that landed outside the right one, would
+        /// bind a control the user cannot see.</para></summary>
         [Fact]
-        public void SteamControllerHasNoRightStickSolidAndNoDPadSolid()
+        public void SteamControllerRidesItsPadsAsDPadAndRightStick()
         {
-            var names = SteamControllerLayout.Overlays.Select(o => o.TargetName).ToList();
-            Assert.Contains("LeftThumbRing", names);
-            Assert.DoesNotContain(names, n => n.StartsWith("RightThumb", StringComparison.Ordinal));
-            Assert.DoesNotContain(names, n => n.StartsWith("DPad", StringComparison.Ordinal));
-            Assert.Contains("LeftGrip", names);
-            Assert.Contains("RightGrip", names);
+            var by = SteamControllerLayout.Overlays.ToDictionary(o => o.TargetName);
+            Assert.Contains("LeftThumbRing", by.Keys);
+            Assert.Contains("LeftGrip", by.Keys);
+            Assert.Contains("RightGrip", by.Keys);
+
+            var left = by["LeftTouchpad"];
+            foreach (var d in new[] { "DPadUp", "DPadDown", "DPadLeft", "DPadRight" })
+            {
+                var w = by[d];
+                Assert.Equal(left.X, w.X);
+                Assert.Equal(left.Y, w.Y);
+                Assert.Equal(left.Width, w.Width);
+                Assert.Equal(left.Height, w.Height);
+            }
+
+            var right = by["RightTouchpad"];
+            foreach (var s in new[] { "RightThumbRing", "RightThumbButton" })
+            {
+                var g = by[s];
+                Assert.InRange(g.X, right.X, right.X + right.Width - g.Width);
+                Assert.InRange(g.Y, right.Y, right.Y + right.Height - g.Height);
+            }
+            Assert.Equal(OverlayElementType.StickRing, by["RightThumbRing"].ElementType);
+            Assert.Equal(OverlayElementType.StickClick, by["RightThumbButton"].ElementType);
         }
 
         /// <summary>Valve tags must reach Valve bodies. Before this, every

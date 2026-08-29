@@ -50,6 +50,12 @@ namespace PadForge.Common.Input
         // rumble-to-audio path read it without feedback loops.
         private long _inboundRumblePack;
 
+        /// <summary>Last logged XUSB SET_STATE shape (length + leading
+        /// bytes), so the FFBXIN evidence line fires per dialect change
+        /// rather than per packet.</summary>
+        private int _lastXusbTraceSig;
+        private int _lastFfbAnyTraceSig;
+
         /// <summary>The packed inbound game-feedback state (see
         /// <see cref="PadForge.Engine.Common.LfeOutputState"/>). Written
         /// by the HM output callbacks, read by the poll thread's feedback
@@ -1142,6 +1148,26 @@ namespace PadForge.Common.Input
                 }
 
                 int idx = FeedbackPadIndex;
+
+                // Evidence line (#350): every output packet, before any
+                // gate, so a packet dropped by the pad-index guard or
+                // decoded by another branch still shows its shape.
+                {
+                    var dspan = pkt.Data.Span;
+                    int sig = ((int)pkt.Source << 24) ^ (pkt.ReportId << 16) ^ dspan.Length;
+                    for (int i = 0; i < dspan.Length && i < 8; i++)
+                        sig = sig * 31 + dspan[i];
+                    if (sig != _lastFfbAnyTraceSig)
+                    {
+                        _lastFfbAnyTraceSig = sig;
+                        var hex = new System.Text.StringBuilder(24);
+                        for (int i = 0; i < dspan.Length && i < 12; i++)
+                            hex.Append(dspan[i].ToString("X2")).Append(' ');
+                        Engine.SdlDiagLog.WriteLine(
+                            $"FFBANY idx={idx} src={pkt.Source} rid=0x{pkt.ReportId:X2} len={dspan.Length} bytes={hex.ToString().TrimEnd()}");
+                    }
+                }
+
                 if (idx < 0 || idx >= vibrationStates.Length) return;
 
                 var data = pkt.Data.Span;
@@ -1153,40 +1179,62 @@ namespace PadForge.Common.Input
                 // alternating hi=127 / hi=0 — that's a square-wave
                 // duty cycle, not keepalive noise; don't filter zeros.
                 //
-                // Extended XINPUT_VIBRATION_EX (Xbox One+ impulse triggers)
-                // arrives via the same IOCTL with a longer payload — two
-                // extra bytes carry the per-trigger motor magnitudes. HM
-                // forwards the IOCTL data verbatim (confirmed against
-                // HIDMaestro driver/companion.c:651-730 — size-agnostic
-                // WdfRequestRetrieveInputBuffer + PublishOutput pass-through),
-                // so the extended bytes land at offsets 4 and 5 right after
-                // the standard motor bytes when present. When the standard
-                // 5-byte packet arrives without the extended bytes, the
-                // game is signaling "no trigger rumble," so zero the
-                // trigger motors to clear stale values.
+                // The XUSB SET_STATE wire struct is FIVE bytes and byte 4
+                // is a FLAGS byte (OpenXInput src/OpenXinput.cpp
+                // InSetState_t: deviceIndex, ledState, leftMotorSpeed,
+                // rightMotorSpeed, flags, with 0x01 = LED and 0x02 =
+                // VIBRATION). No extended vibration form exists on this
+                // wire: OpenXInput reimplements the whole protocol and has
+                // no trigger motors, and real impulse-trigger writes arrive
+                // on the 7-byte HID 0x0F lane below (probed 2026-05-19 and
+                // re-probed 2026-08-29).
+                //
+                // An earlier read here treated a payload of 7 or more bytes
+                // as "XINPUT_VIBRATION_EX" and took bytes 4 and 5 as
+                // trigger motors. HM forwards the caller's buffer verbatim
+                // at whatever size the caller supplied, so any stack that
+                // pads the struct handed the FLAGS byte (0x02, or 0x03 with
+                // LED) to the trigger lane, and the Sony impulse-AT pass
+                // turned even that value into an ENGAGED vibration-mode
+                // adaptive trigger on a DualSense: a faint buzz that
+                // resists the pull, on Virtual Xbox 360 slots only, exactly
+                // discussion #350's report.
                 if (pkt.Source == HMOutputSource.XInput && data.Length >= 5)
                 {
+                    // Evidence line for the XUSB dialect question (#350): the
+                    // wire has more than one SET_STATE shape and the length
+                    // gate below decides which bytes are trigger motors, so
+                    // record what actually arrives. Signature-gated so a
+                    // per-frame XInputSetState logs once per shape, not per
+                    // call.
+                    {
+                        int sig = data.Length;
+                        for (int i = 0; i < data.Length && i < 8; i++)
+                            sig = sig * 31 + data[i];
+                        if (sig != _lastXusbTraceSig)
+                        {
+                            _lastXusbTraceSig = sig;
+                            var hex = new System.Text.StringBuilder(data.Length * 3);
+                            for (int i = 0; i < data.Length && i < 12; i++)
+                                hex.Append(data[i].ToString("X2")).Append(' ');
+                            Engine.SdlDiagLog.WriteLine(
+                                $"FFBXIN slot={idx} len={data.Length} bytes={hex.ToString().TrimEnd()}");
+                        }
+                    }
                     vibrationStates[idx].LeftMotorSpeed = (ushort)(data[2] * 257);
                     vibrationStates[idx].RightMotorSpeed = (ushort)(data[3] * 257);
 
-                    if (data.Length >= 7)
-                    {
-                        vibrationStates[idx].LeftTriggerMotorSpeed = (ushort)(data[4] * 257);
-                        vibrationStates[idx].RightTriggerMotorSpeed = (ushort)(data[5] * 257);
-                    }
-                    else
-                    {
-                        vibrationStates[idx].LeftTriggerMotorSpeed = 0;
-                        vibrationStates[idx].RightTriggerMotorSpeed = 0;
-                    }
+                    // This wire carries no trigger motors, so an XUSB
+                    // vibration write always clears them.
+                    vibrationStates[idx].LeftTriggerMotorSpeed = 0;
+                    vibrationStates[idx].RightTriggerMotorSpeed = 0;
                     // Inbound pack (#236): same decode, controller-local.
                     // Zeros pass through unfiltered (the square-wave duty
                     // cycle note above applies to the audio path too).
                     System.Threading.Volatile.Write(ref _inboundRumblePack,
                         Engine.Common.LfeOutputState.Pack(
                             (ushort)(data[2] * 257), (ushort)(data[3] * 257),
-                            data.Length >= 7 ? (ushort)(data[4] * 257) : (ushort)0,
-                            data.Length >= 7 ? (ushort)(data[5] * 257) : (ushort)0));
+                            0, 0));
                     return;
                 }
 

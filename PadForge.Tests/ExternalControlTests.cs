@@ -271,5 +271,50 @@ namespace PadForge.Tests
             }
             return sb.ToString();
         }
+
+        /// <summary>The pipe starter is engine-gated like its DSU sibling:
+        /// the docs promise the pipe "while the engine is running", and an
+        /// un-gated starter let a checkbox toggle arm it engine-stopped
+        /// while an engine stop always killed it (audit C4).</summary>
+        [Fact]
+        public void ThePipeStarterIsEngineGated()
+        {
+            string svc = RepoText("PadForge.App", "Services", "InputService.cs");
+            int at = svc.IndexOf("private void StartExternalControlIfEnabled()", StringComparison.Ordinal);
+            Assert.True(at > 0);
+            string body = svc.Substring(at, 700);
+            Assert.Contains("_inputManager == null", body);
+        }
+
+        /// <summary>Releasing the pin drops the foreground monitor's dedup
+        /// cache. While pinned the check returns before reading the exe
+        /// path, so the cache holds pre-pin state; without the drop, a
+        /// matched game left focused through a deactivate never re-fires
+        /// its rule until focus changes (audit C5).</summary>
+        [Fact]
+        public void PinReleaseInvalidatesTheForegroundCache()
+        {
+            var mon = new PadForge.Services.ForegroundMonitorService();
+            var t = typeof(PadForge.Services.ForegroundMonitorService);
+            t.GetField("_lastExePath", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                .SetValue(mon, @"C:\game.exe");
+            t.GetField("_lastMatchedProfileId", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                .SetValue(mon, "some-profile");
+
+            mon.InvalidateCache();
+
+            Assert.Null(mon.LastForegroundExePath);
+            Assert.Null(mon.LastMatchedProfileId);
+
+            // Both pin-release sites call it: the external deactivate and
+            // the pipe teardown.
+            string svc = RepoText("PadForge.App", "Services", "InputService.cs");
+            int deact = svc.IndexOf("private string ExternalDeactivate()", StringComparison.Ordinal);
+            Assert.True(deact > 0);
+            Assert.Contains("InvalidateCache", svc.Substring(deact, 900));
+            int stop = svc.IndexOf("private void StopExternalControl()", StringComparison.Ordinal);
+            Assert.True(stop > 0);
+            Assert.Contains("InvalidateCache", svc.Substring(stop, 700));
+        }
     }
 }

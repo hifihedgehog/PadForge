@@ -58,8 +58,6 @@ namespace PadForge.Services
             _pipeName = string.IsNullOrEmpty(pipeName) ? PipeName : pipeName;
         }
 
-        /// <summary>The pipe this instance serves.</summary>
-        public string ServedPipeName => _pipeName;
 
         /// <summary>True while the accept loop is running.</summary>
         public bool IsRunning => _loop != null && !_loop.IsCompleted;

@@ -6364,7 +6364,7 @@ namespace PadForge
 
             string name = dialog.ProfileName;
             string exePaths = string.Join("|", dialog.ExecutablePaths);
-            var profile = _inputService.CreateEmptyProfile(name, exePaths);
+            var profile = _inputService.CreateEmptyProfile(name, exePaths, dialog.PollingOverrideMs);
 
             var listItem = new ViewModels.ProfileListItem
             {

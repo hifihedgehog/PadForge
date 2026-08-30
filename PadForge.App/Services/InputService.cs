@@ -9007,7 +9007,11 @@ namespace PadForge.Services
 
         private void StartExternalControlIfEnabled()
         {
-            if (!SettingsManager.EnableExternalControl) return;
+            // Engine-gated like StartDsuServerIfEnabled: the pipe serves
+            // "while the engine is running" (the docs' contract), so a
+            // checkbox toggle with the engine stopped arms nothing and the
+            // next engine start brings the pipe up.
+            if (!SettingsManager.EnableExternalControl || _inputManager == null) return;
             if (_externalControl != null) return; // already serving
             _externalControl = new ExternalControlService(ExecuteExternalControlCommand);
             _externalControl.Start();
@@ -9019,6 +9023,9 @@ namespace PadForge.Services
             _externalControl.Dispose();
             _externalControl = null;
             SettingsManager.ExternalProfilePinActive = false;
+            // Same release rule as ExternalDeactivate: a pin dropped here
+            // leaves the monitor dedup cache pre-pin, so it re-evaluates.
+            _foregroundMonitor?.InvalidateCache();
         }
 
         /// <summary>Runs one external-control command line and returns the
@@ -9071,6 +9078,7 @@ namespace PadForge.Services
         /// and pin it against the foreground monitor. Runs on the UI thread.</summary>
         private string ExternalActivate(string idOrName)
         {
+            ProfDiag("ExternalActivate:enter");
             var profiles = SettingsManager.Profiles;
             ProfileData target = FindProfileById(idOrName)
                 ?? profiles?.Find(p =>
@@ -9097,7 +9105,12 @@ namespace PadForge.Services
         /// the UI thread.</summary>
         private string ExternalDeactivate()
         {
+            ProfDiag("ExternalDeactivate:enter");
             SettingsManager.ExternalProfilePinActive = false;
+            // The pin held the monitor's check off, so its dedup cache is
+            // pre-pin state; drop it so a still-focused matched game
+            // re-fires its rule on the next check.
+            _foregroundMonitor?.InvalidateCache();
 
             if (SettingsManager.ActiveProfileId != null)
             {
@@ -16210,7 +16223,8 @@ namespace PadForge.Services
         /// Creates a new empty profile (no VCs, no device assignments).
         /// Returns the created ProfileData.
         /// </summary>
-        public ProfileData CreateEmptyProfile(string name, string pipeSeparatedExePaths)
+        public ProfileData CreateEmptyProfile(string name, string pipeSeparatedExePaths,
+            int pollingRateOverrideMs = 0)
         {
             ProfDiag("CreateEmptyProfile:enter");
             var profile = new ProfileData
@@ -16218,6 +16232,7 @@ namespace PadForge.Services
                 Id = Guid.NewGuid().ToString("N"),
                 Name = name.Trim(),
                 ExecutableNames = pipeSeparatedExePaths,
+                PollingRateOverrideMs = pollingRateOverrideMs,
                 Entries = Array.Empty<ProfileEntry>(),
                 PadSettings = Array.Empty<PadSetting>(),
                 SlotCreated = new bool[InputManager.MaxPads],

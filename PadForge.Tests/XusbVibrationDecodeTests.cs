@@ -64,5 +64,20 @@ namespace PadForge.Tests
             Assert.Contains("LeftTriggerMotorSpeed = (ushort)(data[0] * 655)", branch);
             Assert.Contains("RightTriggerMotorSpeed = (ushort)(data[1] * 655)", branch);
         }
+
+        /// <summary>The #350 evidence lines log once per SHAPE, and a shape
+        /// hash must exclude the motor magnitudes: hashing them made every
+        /// rumble frame a new shape and flooded the diagnostics ring at
+        /// rumble rate, evicting the context the lines exist to preserve.</summary>
+        [Fact]
+        public void TraceSignaturesHashShapeNotPayload()
+        {
+            string src = RepoText("PadForge.App", "Common", "Input", "HMaestroVirtualController.cs");
+            // FFBANY: source + report id + length only, no data-byte loop.
+            Assert.DoesNotContain("sig = sig * 31 + dspan[i]", src);
+            // FFBXIN: the length is the dialect, nothing else joins the hash.
+            Assert.Contains("int sig = data.Length;", src);
+            Assert.DoesNotContain("sig = sig * 31 + data[i]", src);
+        }
     }
 }

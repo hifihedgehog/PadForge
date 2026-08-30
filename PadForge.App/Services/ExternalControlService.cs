@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.IO.Pipes;
 using System.Security.AccessControl;
@@ -38,6 +38,7 @@ namespace PadForge.Services
         public const string PipeName = "PadForge.Control";
 
         private readonly Func<string, string> _executor;
+        private readonly string _pipeName;
         private CancellationTokenSource _cts;
         private Task _loop;
         private int _disposed;
@@ -45,10 +46,20 @@ namespace PadForge.Services
         /// <param name="executor">Runs one command line and returns the
         /// response line. Called off the UI thread; the executor is
         /// responsible for its own dispatch.</param>
-        public ExternalControlService(Func<string, string> executor)
+        /// <param name="pipeName">Overrides the pipe name. Production always
+        /// uses the default. A pipe name is MACHINE-GLOBAL, so a test that
+        /// served the production name would be answered by (or would collide
+        /// with) a running PadForge on the same machine: observed live, where
+        /// a test client reached the real app's server and got the real app's
+        /// reply. Tests pass a unique name.</param>
+        public ExternalControlService(Func<string, string> executor, string pipeName = null)
         {
             _executor = executor ?? throw new ArgumentNullException(nameof(executor));
+            _pipeName = string.IsNullOrEmpty(pipeName) ? PipeName : pipeName;
         }
+
+        /// <summary>The pipe this instance serves.</summary>
+        public string ServedPipeName => _pipeName;
 
         /// <summary>True while the accept loop is running.</summary>
         public bool IsRunning => _loop != null && !_loop.IsCompleted;
@@ -71,7 +82,7 @@ namespace PadForge.Services
             // iteration's token check.
             try
             {
-                using var nudge = new NamedPipeClientStream(".", PipeName, PipeDirection.Out);
+                using var nudge = new NamedPipeClientStream(".", _pipeName, PipeDirection.Out);
                 nudge.Connect(200);
             }
             catch { /* no server parked, or it already tore down */ }
@@ -88,18 +99,21 @@ namespace PadForge.Services
                 NamedPipeServerStream server = null;
                 try
                 {
-                    server = CreateServer();
+                    server = CreateServer(_pipeName);
                     await server.WaitForConnectionAsync(token).ConfigureAwait(false);
                     if (token.IsCancellationRequested) break;
 
                     string request = await ReadLineAsync(server, token).ConfigureAwait(false);
-                    if (!string.IsNullOrEmpty(request))
-                    {
-                        string response;
-                        try { response = _executor(request) ?? "error internal"; }
-                        catch { response = "error internal"; }
-                        await WriteLineAsync(server, response, token).ConfigureAwait(false);
-                    }
+
+                    // ALWAYS answer, including on an empty line. A client that
+                    // gets no response blocks in its own ReadLine until the
+                    // pipe closes, which reads as a hung launcher rather than
+                    // a rejected command. Live-verified on this defect: an
+                    // earlier guard skipped the write and a bare newline hung.
+                    string response;
+                    try { response = _executor(request) ?? "error internal"; }
+                    catch { response = "error internal"; }
+                    await WriteLineAsync(server, response, token).ConfigureAwait(false);
                 }
                 catch (OperationCanceledException) { break; }
                 catch { /* one bad connection never kills the loop */ }
@@ -110,7 +124,7 @@ namespace PadForge.Services
             }
         }
 
-        private static NamedPipeServerStream CreateServer()
+        private static NamedPipeServerStream CreateServer(string pipeName)
         {
             // Authenticated Users get read-write so an unelevated launcher can
             // drive an elevated PadForge. No Everyone, no anonymous.
@@ -122,7 +136,7 @@ namespace PadForge.Services
                 AccessControlType.Allow));
 
             return NamedPipeServerStreamAcl.Create(
-                PipeName,
+                pipeName,
                 PipeDirection.InOut,
                 NamedPipeServerStream.MaxAllowedServerInstances,
                 PipeTransmissionMode.Byte,

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
@@ -38,14 +38,15 @@ namespace PadForge.Tests
         public async Task ThePipeCarriesOneCommandAndOneResponse()
         {
             string seen = null;
+            string pipe = UniquePipeName("carries");
             using var svc = new ExternalControlService(cmd =>
             {
                 seen = cmd;
                 return "ok TestProfile";
-            });
+            }, pipe);
             svc.Start();
 
-            string response = await SendAsync("activate TestProfile");
+            string response = await SendAsync(pipe, "activate TestProfile");
 
             Assert.Equal("activate TestProfile", seen);
             Assert.Equal("ok TestProfile", response);
@@ -58,19 +59,37 @@ namespace PadForge.Tests
         public async Task AFailedCommandDoesNotKillTheServer()
         {
             int calls = 0;
+            string pipe = UniquePipeName("failed");
             using var svc = new ExternalControlService(cmd =>
             {
                 calls++;
                 if (calls == 1) throw new InvalidOperationException("boom");
                 return "ok second";
-            });
+            }, pipe);
             svc.Start();
 
-            string first = await SendAsync("activate Boom");
-            string second = await SendAsync("activate Fine");
+            string first = await SendAsync(pipe, "activate Boom");
+            string second = await SendAsync(pipe, "activate Fine");
 
             Assert.Equal("error internal", first);
             Assert.Equal("ok second", second);
+        }
+
+        /// <summary>Every request gets a response, an empty line included.
+        /// A client that gets nothing back blocks in its own read until the
+        /// pipe closes, which reads as a hung launcher rather than a rejected
+        /// command. Caught on live hardware: an earlier guard skipped the
+        /// write for empty input and a bare newline hung the client.</summary>
+        [Fact]
+        public async Task AnEmptyCommandStillAnswers()
+        {
+            string pipe = UniquePipeName("empty");
+            using var svc = new ExternalControlService(cmd =>
+                string.IsNullOrWhiteSpace(cmd) ? "error empty" : "ok", pipe);
+            svc.Start();
+
+            Assert.Equal("error empty", await SendAsync(pipe, ""));
+            Assert.Equal("ok", await SendAsync(pipe, "query"));   // loop survives it
         }
 
         /// <summary>The read is bounded: a client that never sends a newline
@@ -221,9 +240,16 @@ namespace PadForge.Tests
             Assert.True(forward < box);
         }
 
-        private static async Task<string> SendAsync(string command)
+        /// <summary>A pipe name is machine-global, so every wire test serves
+        /// its OWN name. Serving the production name would put the test client
+        /// in a race with a running PadForge on the same machine (observed:
+        /// the client reached the real app and read the real app's reply).</summary>
+        private static string UniquePipeName(string tag)
+            => "PadForge.Control.Test." + tag + "." + Environment.ProcessId;
+
+        private static async Task<string> SendAsync(string pipeName, string command)
         {
-            using var client = new NamedPipeClientStream(".", ExternalControlService.PipeName, PipeDirection.InOut);
+            using var client = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut);
             // The server may still be creating its first instance.
             for (int attempt = 0; ; attempt++)
             {

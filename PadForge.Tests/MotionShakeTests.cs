@@ -246,5 +246,33 @@ namespace PadForge.Tests
             Assert.NotNull(dir);
             return dir.FullName;
         }
+
+        /// <summary>The per-device ResetGyroLeanNeutral overload (the Gyro
+        /// Recenter macro's per-slot path) must drop the static lean-on-button
+        /// latch too, primary and aux keys, or a recenter leaves the button
+        /// read aligned to the old grip while the runtime lean re-zeroes.</summary>
+        [Fact]
+        public void PerDeviceNeutralResetClearsTheStaticLeanLatch()
+        {
+            var dictField = typeof(PadForge.Engine.Common.Mapping.SourceCoercion)
+                .GetField("_motionLeanNeutralStatic",
+                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+            Assert.NotNull(dictField);
+            var dict = (System.Collections.Concurrent.ConcurrentDictionary<string, (double x, double y, double z)>)dictField.GetValue(null);
+
+            string guid = System.Guid.NewGuid().ToString("d");
+            dict[guid] = (0, 0, -1);
+            dict[guid + "|L"] = (0, 0, -1);
+            // Same-window positive control: an unrelated device's latch survives.
+            string other = System.Guid.NewGuid().ToString("d");
+            dict[other] = (0, 0, -1);
+
+            PadForge.Engine.Common.Mapping.SourceCoercion.ResetGyroLeanNeutral(guid);
+
+            Assert.False(dict.ContainsKey(guid));
+            Assert.False(dict.ContainsKey(guid + "|L"));
+            Assert.True(dict.ContainsKey(other));
+            dict.TryRemove(other, out _);
+        }
     }
 }

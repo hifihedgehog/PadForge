@@ -1153,10 +1153,12 @@ namespace PadForge.Common.Input
                 // gate, so a packet dropped by the pad-index guard or
                 // decoded by another branch still shows its shape.
                 {
+                    // Shape only, never the payload: hashing the motor
+                    // magnitudes made every rumble frame a "new shape" and
+                    // flooded the 500-line diagnostics ring at rumble rate,
+                    // evicting the context these lines exist to preserve.
                     var dspan = pkt.Data.Span;
                     int sig = ((int)pkt.Source << 24) ^ (pkt.ReportId << 16) ^ dspan.Length;
-                    for (int i = 0; i < dspan.Length && i < 8; i++)
-                        sig = sig * 31 + dspan[i];
                     if (sig != _lastFfbAnyTraceSig)
                     {
                         _lastFfbAnyTraceSig = sig;
@@ -1208,9 +1210,13 @@ namespace PadForge.Common.Input
                     // per-frame XInputSetState logs once per shape, not per
                     // call.
                     {
+                        // Length IS the dialect (the #350 question is who
+                        // pads the buffer), and the hex line prints every
+                        // byte when it fires, so no payload joins the hash
+                        // (see the FFBANY shape-only note above). The prior
+                        // contract holds too: nothing in this branch reads
+                        // past byte 3.
                         int sig = data.Length;
-                        for (int i = 0; i < data.Length && i < 8; i++)
-                            sig = sig * 31 + data[i];
                         if (sig != _lastXusbTraceSig)
                         {
                             _lastXusbTraceSig = sig;

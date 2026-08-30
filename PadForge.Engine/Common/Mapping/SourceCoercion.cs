@@ -2553,7 +2553,13 @@ namespace PadForge.Engine.Common.Mapping
         /// cannot miss a latch made from a differently-cased profile
         /// string.</summary>
         public static void ResetGyroLeanNeutral(string deviceGuid)
-            => _gyroLeanNeutral.TryRemove(LeanNeutralKey(deviceGuid), out _);
+        {
+            _gyroLeanNeutral.TryRemove(LeanNeutralKey(deviceGuid), out _);
+            // The static lean-on-button latch (#364) re-zeroes with it, or a
+            // per-slot Gyro Recenter leaves the button read on the old grip.
+            _motionLeanNeutralStatic.TryRemove(LeanNeutralKey(deviceGuid), out _);
+            _motionLeanNeutralStatic.TryRemove(LeanNeutralKey(deviceGuid) + "|L", out _);
+        }
 
         /// <summary>Neutral grips for the STATIC "Motion Lean" button read,
         /// keyed like SourceKindRuntime's motion neutral (gid, gid|L). A

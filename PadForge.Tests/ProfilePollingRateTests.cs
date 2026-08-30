@@ -132,5 +132,21 @@ namespace PadForge.Tests
             Assert.Contains("PollingRateOverrideMs = pollingRateOverrideMs", body);
             Assert.Contains("ApplyEffectivePollingRate()", body);
         }
+
+        /// <summary>The dialog always renders the polling picker, so every
+        /// flow that shows it must thread the choice: Save As, Edit, AND New.
+        /// The New flow shipped dropping it (audit C3).</summary>
+        [Fact]
+        public void AllThreeDialogFlowsThreadTheOverride()
+        {
+            string mw = RepoText("PadForge.App", "MainWindow.xaml.cs");
+            int count = mw.Split(new[] { "dialog.PollingOverrideMs" }, StringSplitOptions.None).Length - 1;
+            Assert.Equal(3, count);
+
+            // All three creators carry the parameter: snapshot, edit, empty.
+            string svc = RepoText("PadForge.App", "Services", "InputService.cs");
+            int creators = svc.Split(new[] { "int pollingRateOverrideMs = 0)" }, StringSplitOptions.None).Length - 1;
+            Assert.Equal(3, creators);
+        }
     }
 }

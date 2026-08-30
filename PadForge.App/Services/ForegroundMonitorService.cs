@@ -103,6 +103,20 @@ namespace PadForge.Services
             }
         }
 
+        /// <summary>Drops the exe-path dedup and last-match memory so the
+        /// NEXT check re-evaluates the current foreground window from
+        /// scratch (#366). While an external pin holds, CheckForegroundWindow
+        /// returns before reading the path, so on release the cache still
+        /// holds pre-pin state; without this, a matched game left focused
+        /// through an external deactivate never re-fires its rule until
+        /// focus changes. OnProfileSwitchRequired skips same-profile
+        /// switches, so a spurious re-fire is a no-op.</summary>
+        public void InvalidateCache()
+        {
+            _lastExePath = null;
+            _lastMatchedProfileId = null;
+        }
+
         /// <summary>
         /// Sets the manual override flag so auto-switching won't re-trigger
         /// the same profile the user manually overrode.

@@ -123,6 +123,15 @@
                                    Visibility="{Binding NoProfileHasExecutables, Converter={StaticResource BoolToVisibilityConverter}}"/>
                     </StackPanel>
 
+                    <!-- External control (#366): the third way a profile can
+                         activate, beside the shortcut combo and the foreground
+                         match. Sits with them because it is profile activation,
+                         not a global engine service. Off by default. -->
+                    <CheckBox Content="{Binding Profiles_ExternalControl, Source={x:Static strings:Strings.Instance}}"
+                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                              IsChecked="{Binding EnableExternalControl}" Margin="0,8,0,8"
+                              ToolTip="{Binding Profiles_ExternalControlTooltip, Source={x:Static strings:Strings.Instance}}"/>
+
                     <!-- Profile card grid (#175 item 8): the text list became
                          steel cards on a wrap grid. Same ListBox contract as
                          before (SelectedItem binding, double-click load). Only

@@ -108,16 +108,60 @@ namespace PadForge
             catch { return tmpl; }
         }
 
+        /// <summary>External-control command (#366) parsed from the command
+        /// line at startup, applied once the engine is running. Null when no
+        /// profile argument was passed. See <see cref="ParseProfileCommand"/>.</summary>
+        internal static string PendingProfileCommand { get; private set; }
+
+        /// <summary>Consumed once by InputService.Start so a later engine
+        /// restart does not re-apply the startup profile.</summary>
+        internal static void ClearPendingProfileCommand() => PendingProfileCommand = null;
+
+        /// <summary>Maps <c>--profile "Name"</c> / <c>--default-profile</c> to
+        /// the external-control command grammar (#366), or null if neither is
+        /// present. Shared by the first-instance (deferred apply) and
+        /// second-instance (pipe forward) paths so both read the args the
+        /// same way.</summary>
+        internal static string ParseProfileCommand(string[] args)
+        {
+            if (args == null) return null;
+            for (int i = 0; i < args.Length; i++)
+            {
+                string a = args[i];
+                if (string.Equals(a, "--default-profile", StringComparison.OrdinalIgnoreCase))
+                    return "deactivate";
+                if (string.Equals(a, "--profile", StringComparison.OrdinalIgnoreCase)
+                    && i + 1 < args.Length)
+                    return "activate " + args[i + 1];
+            }
+            return null;
+        }
+
         protected override void OnStartup(StartupEventArgs e)
         {
             _singleInstanceMutex = new Mutex(true, "PadForge_SingleInstance", out bool isNewInstance);
             if (!isNewInstance)
             {
+                // A second instance carrying a profile argument is a launcher
+                // driving the running one (#366): forward the command over the
+                // pipe and exit silently, with no "already running" box.
+                string forward = ParseProfileCommand(e.Args);
+                if (forward != null)
+                {
+                    TryForwardExternalCommand(forward);
+                    Shutdown();
+                    return;
+                }
+
                 MessageBox.Show(Strings.Instance.App_AlreadyRunning, Strings.Instance.Common_PadForge,
                     MessageBoxButton.OK, MessageBoxImage.Information);
                 Shutdown();
                 return;
             }
+
+            // First instance: a profile argument applies once the engine is
+            // running (see InputService.Start's tail).
+            PendingProfileCommand = ParseProfileCommand(e.Args);
 
             base.OnStartup(e);
 
@@ -333,6 +377,39 @@ namespace PadForge
             }
 
             _startupUiReady = true;
+        }
+
+        /// <summary>Sends one command to the running instance's control pipe
+        /// (#366) and prints the response, so an elevated caller like a
+        /// launcher script sees the result. Best-effort: a closed pipe (the
+        /// user never enabled external control) fails quietly.</summary>
+        private static void TryForwardExternalCommand(string command)
+        {
+            try
+            {
+                using var client = new System.IO.Pipes.NamedPipeClientStream(
+                    ".", Services.ExternalControlService.PipeName,
+                    System.IO.Pipes.PipeDirection.InOut);
+                client.Connect(2000);
+                byte[] outBytes = System.Text.Encoding.UTF8.GetBytes(command + "\n");
+                client.Write(outBytes, 0, outBytes.Length);
+                client.Flush();
+
+                var sb = new System.Text.StringBuilder();
+                var one = new byte[1];
+                while (sb.Length < 1024)
+                {
+                    int n = client.Read(one, 0, 1);
+                    if (n == 0 || one[0] == (byte)'\n') break;
+                    if (one[0] == (byte)'\r') continue;
+                    sb.Append((char)one[0]);
+                }
+                Console.WriteLine(sb.ToString());
+            }
+            catch
+            {
+                Console.WriteLine("error not-connected");
+            }
         }
 
         private void OnPowerModeChanged(object sender, PowerModeChangedEventArgs e)

@@ -1084,6 +1084,18 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _enableAutoProfileSwitching, value);
         }
 
+        private bool _enableExternalControl;
+
+        /// <summary>Whether the external-control named pipe (#366) is served,
+        /// so a launcher or script can activate and deactivate profiles from
+        /// outside PadForge. InputService watches this to start and stop the
+        /// pipe live.</summary>
+        public bool EnableExternalControl
+        {
+            get => _enableExternalControl;
+            set => SetProperty(ref _enableExternalControl, value);
+        }
+
         private string _foregroundExeName = "-";
 
         /// <summary>Foreground exe filename the auto-switch monitor last saw

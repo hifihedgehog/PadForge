@@ -53,6 +53,14 @@ namespace PadForge.Services
             if (!SettingsManager.EnableAutoProfileSwitching)
                 return;
 
+            // A profile activated over the external-control pipe (#366) is
+            // pinned: a script (or launcher) asked for it explicitly, so
+            // focusing a game must not clobber that choice. The pin is
+            // released by an external deactivate, by any manual switch, and by
+            // app restart. See InputService.ExternalActivate.
+            if (SettingsManager.ExternalProfilePinActive)
+                return;
+
             var profiles = SettingsManager.Profiles;
             if (profiles == null || profiles.Count == 0)
                 return;

@@ -94,6 +94,7 @@ namespace PadForge.Services
         private readonly object _balanceLock = new();
         private DispatcherTimer _uiTimer;
         private ForegroundMonitorService _foregroundMonitor;
+        private ExternalControlService _externalControl;
         private ProfileData _defaultProfileSnapshot;
 
         // Active profile's touchpad custom-gesture working list. Mirrors
@@ -400,6 +401,9 @@ namespace PadForge.Services
         public void NoteManualProfileSwitch()
         {
             _foregroundMonitor?.SetManualOverride(SettingsManager.ActiveProfileId);
+            // The user outranks a script (#366): a manual switch releases any
+            // external pin, so the foreground monitor resumes for this session.
+            SettingsManager.ExternalProfilePinActive = false;
         }
 
         // ── Macro trigger recording state ──
@@ -2186,6 +2190,9 @@ namespace PadForge.Services
             _foregroundMonitor = new ForegroundMonitorService();
             _foregroundMonitor.ProfileSwitchRequired += OnAutoProfileSwitchRequired;
 
+            // Serve the external-control pipe (#366) if the user opted in.
+            StartExternalControlIfEnabled();
+
             // Capture default profile snapshot before any profile switches.
             // If the app restarted with a named profile active, LoadProfiles
             // already captured the default's state before overwriting with the
@@ -2257,6 +2264,17 @@ namespace PadForge.Services
 
             // Enter idle immediately if no slots are created.
             UpdateIdleState();
+
+            // A profile passed on the command line (#366) applies now that the
+            // engine is up. This is a direct in-process apply, so it works even
+            // when the external-control pipe is off (the pipe is for a launcher
+            // driving an ALREADY-running instance; this is the cold-start form).
+            string pending = App.PendingProfileCommand;
+            if (!string.IsNullOrEmpty(pending))
+            {
+                App.ClearPendingProfileCommand();
+                try { ExecuteExternalControlCommand(pending); } catch { }
+            }
         }
 
         /// <summary>
@@ -2358,6 +2376,7 @@ namespace PadForge.Services
                 _foregroundMonitor.ProfileSwitchRequired -= OnAutoProfileSwitchRequired;
                 _foregroundMonitor = null;
             }
+            StopExternalControl();
             StopDsuServer();
             StopWebServer();
             StopRemoteLink();
@@ -8892,6 +8911,16 @@ namespace PadForge.Services
                 // profile deactivates.
                 ApplyEffectivePollingRate();
             }
+            else if (e.PropertyName == nameof(SettingsViewModel.EnableExternalControl))
+            {
+                // Live start/stop of the external-control pipe (#366),
+                // mirroring the DSU / web server toggles below.
+                SettingsManager.EnableExternalControl = _mainVm.Settings.EnableExternalControl;
+                if (_mainVm.Settings.EnableExternalControl)
+                    StartExternalControlIfEnabled();
+                else
+                    StopExternalControl();
+            }
             else if (e.PropertyName == nameof(SettingsViewModel.HmInactivityDestroyTimeoutSeconds) && _inputManager != null)
             {
                 _inputManager.HmInactivityTimeoutSeconds = _mainVm.Settings.HmInactivityDestroyTimeoutSeconds;
@@ -8973,6 +9002,114 @@ namespace PadForge.Services
         // ─────────────────────────────────────────────
         //  DSU Motion Server lifecycle
         // ─────────────────────────────────────────────
+
+        // ── External control pipe (#366) ──
+
+        private void StartExternalControlIfEnabled()
+        {
+            if (!SettingsManager.EnableExternalControl) return;
+            if (_externalControl != null) return; // already serving
+            _externalControl = new ExternalControlService(ExecuteExternalControlCommand);
+            _externalControl.Start();
+        }
+
+        private void StopExternalControl()
+        {
+            if (_externalControl == null) return;
+            _externalControl.Dispose();
+            _externalControl = null;
+            SettingsManager.ExternalProfilePinActive = false;
+        }
+
+        /// <summary>Runs one external-control command line and returns the
+        /// response line (#366). Called off the UI thread by the pipe server,
+        /// so every state touch marshals onto the dispatcher. Verbs and
+        /// responses are fixed ASCII, never localized: this is a machine
+        /// interface. Grammar:
+        /// <list type="bullet">
+        /// <item><c>activate &lt;profile name or id&gt;</c> -> <c>ok &lt;name&gt;</c> | <c>error unknown-profile</c></item>
+        /// <item><c>deactivate</c> -> <c>ok default</c></item>
+        /// <item><c>query</c> -> <c>ok &lt;name|default&gt; pinned|unpinned</c></item>
+        /// </list></summary>
+        internal string ExecuteExternalControlCommand(string line)
+        {
+            if (string.IsNullOrWhiteSpace(line)) return "error empty";
+
+            // Split into verb and the rest (the profile name may contain
+            // spaces, so only the first token is the verb).
+            line = line.Trim();
+            int sp = line.IndexOf(' ');
+            string verb = (sp < 0 ? line : line.Substring(0, sp)).ToLowerInvariant();
+            string arg = sp < 0 ? string.Empty : line.Substring(sp + 1).Trim();
+
+            switch (verb)
+            {
+                case "activate":
+                    if (string.IsNullOrEmpty(arg)) return "error empty";
+                    return _dispatcher.Invoke(() => ExternalActivate(arg));
+
+                case "deactivate":
+                    return _dispatcher.Invoke(() => ExternalDeactivate());
+
+                case "query":
+                    return _dispatcher.Invoke(() =>
+                    {
+                        string id = SettingsManager.ActiveProfileId;
+                        string name = id == null
+                            ? "default"
+                            : (FindProfileById(id)?.Name ?? "default");
+                        string pin = SettingsManager.ExternalProfilePinActive ? "pinned" : "unpinned";
+                        return "ok " + name + " " + pin;
+                    });
+
+                default:
+                    return "error unknown-command";
+            }
+        }
+
+        /// <summary>Activate a profile by id first, then case-insensitive name,
+        /// and pin it against the foreground monitor. Runs on the UI thread.</summary>
+        private string ExternalActivate(string idOrName)
+        {
+            var profiles = SettingsManager.Profiles;
+            ProfileData target = FindProfileById(idOrName)
+                ?? profiles?.Find(p =>
+                    string.Equals(p.Name, idOrName, StringComparison.OrdinalIgnoreCase));
+            if (target == null) return "error unknown-profile";
+
+            // Pin BEFORE the switch so the monitor cannot race the apply.
+            SettingsManager.ExternalProfilePinActive = true;
+
+            if (SettingsManager.ActiveProfileId != target.Id)
+            {
+                SaveActiveProfileState();
+                SettingsManager.ActiveProfileId = target.Id;
+                _mainVm.Settings.ActiveProfileInfo = target.Name;
+                ApplyProfile(target);
+                ResetRuntimeStateForProfileSwitch();
+                _mainVm.StatusText = string.Format(
+                    Strings.Instance.Status_ProfileSwitched_Format, target.Name);
+            }
+            return "ok " + target.Name;
+        }
+
+        /// <summary>Release the pin and revert to the default profile. Runs on
+        /// the UI thread.</summary>
+        private string ExternalDeactivate()
+        {
+            SettingsManager.ExternalProfilePinActive = false;
+
+            if (SettingsManager.ActiveProfileId != null)
+            {
+                SaveActiveProfileState();
+                SettingsManager.ActiveProfileId = null;
+                _mainVm.Settings.ActiveProfileInfo = Strings.Instance.Profile_Default;
+                ApplyDefaultProfile();
+                ResetRuntimeStateForProfileSwitch();
+                _mainVm.StatusText = Strings.Instance.Status_ProfileSwitchedDefault;
+            }
+            return "ok default";
+        }
 
         private void StartDsuServerIfEnabled()
         {

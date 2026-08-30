@@ -844,6 +844,8 @@
   <data name="Profiles_Management" xml:space="preserve"><value>Gerenciamento de Perfis</value></data>
   <data name="Profiles_Description" xml:space="preserve"><value>Crie perfis de controle por aplicativo que alternam automaticamente com base no jogo ativo.</value></data>
   <data name="Profiles_AutoSwitch" xml:space="preserve"><value>Alternar Perfis Automaticamente com Base no Aplicativo em Primeiro Plano</value></data>
+  <data name="Profiles_ExternalControl" xml:space="preserve"><value>Permitir Controle Externo por Lançadores e Scripts</value></data>
+  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Disponibiliza um pipe nomeado local, PadForge.Control, para que Playnite, LaunchBox ou um script ative e desative perfis. Um perfil ativado assim permanece ativo até o script liberá-lo ou você trocar de perfil. Somente nesta máquina.</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Perfil ativo:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Sem Slots</value></data>
   <data name="Profiles_AutoSwitchRule_Format" xml:space="preserve"><value>Troca automática: {0}</value></data>

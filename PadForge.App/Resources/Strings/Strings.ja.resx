@@ -844,6 +844,8 @@
   <data name="Profiles_Management" xml:space="preserve"><value>プロファイル管理</value></data>
   <data name="Profiles_Description" xml:space="preserve"><value>アクティブなゲームに基づいて自動切り替えされるアプリケーション別コントローラープロファイルを作成します。</value></data>
   <data name="Profiles_AutoSwitch" xml:space="preserve"><value>フォアグラウンドアプリケーションに基づいてプロファイルを自動切り替えする</value></data>
+  <data name="Profiles_ExternalControl" xml:space="preserve"><value>ランチャーやスクリプトによる外部制御を許可</value></data>
+  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>ローカルの名前付きパイプ PadForge.Control を公開し、Playnite、LaunchBox、スクリプトからプロファイルを有効・無効にできます。この方法で有効にしたプロファイルは、スクリプトが解除するか自分で切り替えるまで有効のままです。ローカル専用。</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>アクティブなプロファイル:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>スロットなし</value></data>
   <data name="Profiles_AutoSwitchRule_Format" xml:space="preserve"><value>自動切り替え: {0}</value></data>

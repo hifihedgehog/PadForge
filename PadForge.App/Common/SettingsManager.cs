@@ -51,6 +51,18 @@ namespace PadForge.Common.Input
         /// <summary>Whether auto-switching profiles based on foreground application is enabled.</summary>
         public static bool EnableAutoProfileSwitching { get; set; }
 
+        /// <summary>Whether the external-control named pipe (#366) is served,
+        /// so a launcher or script can activate and deactivate profiles from
+        /// outside PadForge. Off by default; opt-in on the Profiles page.</summary>
+        public static bool EnableExternalControl { get; set; }
+
+        /// <summary>True while a profile was activated over the external
+        /// control channel (#366). The foreground monitor early-returns while
+        /// this holds, so focusing a game cannot clobber a scripted choice.
+        /// Cleared by an external deactivate, by any manual switch (through
+        /// NoteManualProfileSwitch), and by app restart. Never persisted.</summary>
+        public static bool ExternalProfilePinActive { get; set; }
+
         /// <summary>Global macros for profile shortcuts and other app-wide actions.</summary>
         public static GlobalMacroData[] GlobalMacros { get; set; }
 

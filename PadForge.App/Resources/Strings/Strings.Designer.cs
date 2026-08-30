@@ -2589,6 +2589,8 @@ public class Strings : INotifyPropertyChanged
     public string Profiles_Management => Get("Profiles_Management");
     public string Profiles_Description => Get("Profiles_Description");
     public string Profiles_AutoSwitch => Get("Profiles_AutoSwitch");
+    public string Profiles_ExternalControl => Get("Profiles_ExternalControl");
+    public string Profiles_ExternalControlTooltip => Get("Profiles_ExternalControlTooltip");
     public string Profiles_ActiveProfile => Get("Profiles_ActiveProfile");
     public string Profiles_NoSlots => Get("Profiles_NoSlots");
     public string Profiles_AutoSwitchRule_Format => Get("Profiles_AutoSwitchRule_Format");

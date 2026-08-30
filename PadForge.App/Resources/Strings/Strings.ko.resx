@@ -844,6 +844,8 @@
   <data name="Profiles_Management" xml:space="preserve"><value>프로필 관리</value></data>
   <data name="Profiles_Description" xml:space="preserve"><value>활성 게임에 따라 자동 전환되는 응용 프로그램별 컨트롤러 프로필을 생성합니다.</value></data>
   <data name="Profiles_AutoSwitch" xml:space="preserve"><value>포그라운드 응용 프로그램에 따라 프로필 자동 전환</value></data>
+  <data name="Profiles_ExternalControl" xml:space="preserve"><value>런처 및 스크립트의 외부 제어 허용</value></data>
+  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>로컬 명명된 파이프 PadForge.Control을 제공하여 Playnite, LaunchBox 또는 스크립트가 프로필을 활성화하고 해제할 수 있습니다. 이렇게 활성화된 프로필은 스크립트가 해제하거나 직접 프로필을 바꿀 때까지 유지됩니다. 로컬 전용.</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>활성 프로필:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>슬롯 없음</value></data>
   <data name="Profiles_AutoSwitchRule_Format" xml:space="preserve"><value>자동 전환: {0}</value></data>

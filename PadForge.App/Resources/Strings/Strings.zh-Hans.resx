@@ -844,6 +844,8 @@
   <data name="Profiles_Management" xml:space="preserve"><value>配置文件管理</value></data>
   <data name="Profiles_Description" xml:space="preserve"><value>创建按应用切换的控制器配置文件，可根据当前活跃游戏自动切换。</value></data>
   <data name="Profiles_AutoSwitch" xml:space="preserve"><value>根据前台应用自动切换配置文件</value></data>
+  <data name="Profiles_ExternalControl" xml:space="preserve"><value>允许启动器和脚本进行外部控制</value></data>
+  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>提供本地命名管道 PadForge.Control，使 Playnite、LaunchBox 或脚本可以启用和停用配置文件。以此方式启用的配置文件会一直生效，直到脚本释放它或您自己切换配置文件。仅限本机。</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>当前配置文件：</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>无插槽</value></data>
   <data name="Profiles_AutoSwitchRule_Format" xml:space="preserve"><value>自动切换：{0}</value></data>

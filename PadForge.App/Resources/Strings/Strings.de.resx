@@ -844,6 +844,8 @@
   <data name="Profiles_Management" xml:space="preserve"><value>Profilverwaltung</value></data>
   <data name="Profiles_Description" xml:space="preserve"><value>Erstellen Sie anwendungsspezifische Controller-Profile, die automatisch basierend auf dem aktiven Spiel wechseln.</value></data>
   <data name="Profiles_AutoSwitch" xml:space="preserve"><value>Profile automatisch basierend auf der Vordergrundanwendung wechseln</value></data>
+  <data name="Profiles_ExternalControl" xml:space="preserve"><value>Externe Steuerung durch Launcher und Skripte zulassen</value></data>
+  <data name="Profiles_ExternalControlTooltip" xml:space="preserve"><value>Stellt die lokale Named Pipe PadForge.Control bereit, damit Playnite, LaunchBox oder ein Skript Profile aktivieren und deaktivieren kann. Ein so aktiviertes Profil bleibt aktiv, bis das Skript es freigibt oder Sie selbst das Profil wechseln. Nur lokal.</value></data>
   <data name="Profiles_ActiveProfile" xml:space="preserve"><value>Aktives Profil:</value></data>
   <data name="Profiles_NoSlots" xml:space="preserve"><value>Keine Slots</value></data>
   <data name="Profiles_AutoSwitchRule_Format" xml:space="preserve"><value>Automatischer Wechsel: {0}</value></data>

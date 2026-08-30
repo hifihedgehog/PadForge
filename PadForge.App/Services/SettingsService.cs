@@ -2062,6 +2062,8 @@ namespace PadForge.Services
             vm.SetLanguageFromCode(appSettings.Language);
             vm.EnableAutoProfileSwitching = appSettings.EnableAutoProfileSwitching;
             SettingsManager.EnableAutoProfileSwitching = appSettings.EnableAutoProfileSwitching;
+            vm.EnableExternalControl = appSettings.EnableExternalControl;
+            SettingsManager.EnableExternalControl = appSettings.EnableExternalControl;
             vm.EnableCommunityConfigLookup = appSettings.EnableCommunityConfigLookup;
             vm.ShowLegacyWorkshopConfigs = appSettings.ShowLegacyWorkshopConfigs;
             SettingsManager.ActiveProfileId = appSettings.ActiveProfileId;
@@ -4024,6 +4026,7 @@ namespace PadForge.Services
                 .ToArray();
             // Sync the ViewModel toggle to the static state.
             SettingsManager.EnableAutoProfileSwitching = vm.EnableAutoProfileSwitching;
+            SettingsManager.EnableExternalControl = vm.EnableExternalControl;
 
             // Collect per-slot controller types and HIDMaestro profile slugs.
             var slotTypes = new int[_mainVm.Pads.Count];
@@ -4157,6 +4160,7 @@ namespace PadForge.Services
                 ThemeIndex = vm.SelectedThemeIndex,
                 Language = vm.LanguageCode,
                 EnableAutoProfileSwitching = vm.EnableAutoProfileSwitching,
+                EnableExternalControl = vm.EnableExternalControl,
                 EnableCommunityConfigLookup = vm.EnableCommunityConfigLookup,
                 ShowLegacyWorkshopConfigs = vm.ShowLegacyWorkshopConfigs,
                 ActiveProfileId = SettingsManager.ActiveProfileId,
@@ -5106,6 +5110,8 @@ namespace PadForge.Services
             // 4. Profiles: back to the single built-in Default entry.
             var settingsVm = _mainVm.Settings;
             SettingsManager.EnableAutoProfileSwitching = false;
+            SettingsManager.EnableExternalControl = false;
+            SettingsManager.ExternalProfilePinActive = false;
             SettingsManager.ActiveProfileId = null;
             SettingsManager.Profiles.Clear();
             settingsVm.ProfileItems.Clear();
@@ -5819,6 +5825,13 @@ namespace PadForge.Services
 
         [XmlElement]
         public bool EnableAutoProfileSwitching { get; set; }
+
+        /// <summary>Opt-in for the external-control named pipe (#366): a
+        /// launcher or script can activate and deactivate profiles from
+        /// outside PadForge. Default false. Every pre-#366 settings file
+        /// deserializes to false, so the pipe stays off until the user asks.</summary>
+        [XmlElement]
+        public bool EnableExternalControl { get; set; }
 
         /// <summary>
         /// Master opt-in for the Steam Workshop community-config feature

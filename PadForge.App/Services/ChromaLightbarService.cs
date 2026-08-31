@@ -132,6 +132,7 @@ namespace PadForge.Services
 
         private void Report(ChromaServiceState state)
         {
+            PadForge.Engine.SdlDiagLog.WriteLine($"CHROMA state={state}");
             try { StateChanged?.Invoke(state); } catch { }
         }
 

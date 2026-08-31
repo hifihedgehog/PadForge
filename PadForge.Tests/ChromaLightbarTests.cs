@@ -280,10 +280,24 @@ namespace PadForge.Tests
             Assert.Contains("(lbVf0 & 0x02) != 0", body);
             Assert.Contains("ChromaLightbarService.Publish(lbRgb[0], lbRgb[1], lbRgb[2])", body);
 
+            // GLOBAL ONLY: the app-settings legs exist, the profile legs
+            // do not. A new bool on ProfileData deserializes to false in
+            // every pre-existing profile, so riding profiles let any
+            // profile switch (foreground auto-switch included) kill the
+            // mirror seconds after the user enabled it. That shipped, the
+            // CHROMA diag trace named it, and this pins the fix.
             string ss = RepoText("PadForge.App", "Services", "SettingsService.cs");
-            int webLegs = ss.Split(new[] { "EnableWebController" }, StringSplitOptions.None).Length - 1;
-            int chromaLegs = ss.Split(new[] { "EnableChromaLightbar" }, StringSplitOptions.None).Length - 1;
-            Assert.Equal(webLegs, chromaLegs);
+            Assert.Contains("_mainVm.Dashboard.EnableChromaLightbar = appSettings.EnableChromaLightbar;", ss);
+            Assert.Contains("EnableChromaLightbar = _mainVm.Dashboard.EnableChromaLightbar,", ss);
+            Assert.DoesNotContain("active.EnableChromaLightbar", ss);
+            Assert.DoesNotContain("profile.EnableChromaLightbar", ss);
+
+            // The Dashboard autosave allowlist carries the toggle: a
+            // persisted property missing there changes live state but
+            // never marks the file dirty (the allowlist's own contract),
+            // which is how the checkbox shipped not saving.
+            string mw = RepoText("PadForge.App", "MainWindow.xaml.cs");
+            Assert.Contains("nameof(DashboardViewModel.EnableChromaLightbar)", mw);
 
             string page = RepoText("PadForge.App", "Views", "DashboardPage.xaml");
             Assert.Contains("Binding EnableChromaLightbar", page);

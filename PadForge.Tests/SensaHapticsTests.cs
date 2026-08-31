@@ -118,6 +118,19 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary>Init after Quit in the same process: an app engine
+        /// restart starts a fresh service worker, so a second Init must
+        /// succeed. DIAGNOSTIC for the ordering-dependent failure.</summary>
+        [Fact]
+        public void RealEngine_SurvivesReinit()
+        {
+            Assert.True(Har.Init());
+            Har.Quit();
+            bool second = Har.Init();
+            try { Assert.True(second); }
+            finally { if (second) Har.Quit(); }
+        }
+
         /// <summary>Amplitude conversion: the max of the four packed voices
         /// normalized to 0..1, matching LfeOutputState's packing order.</summary>
         [Theory]
@@ -164,6 +177,17 @@ namespace PadForge.Tests
             start = Environment.TickCount64;
             while (Environment.TickCount64 - start < 5000 && states.IsEmpty)
                 System.Threading.Thread.Sleep(10);
+
+            // The provider bring-up actually runs. The long.MinValue
+            // sentinel bug made this count sit at ZERO forever while the
+            // worker looked healthy from every other angle (tick-minus-
+            // MinValue overflows negative), so one attempt is the
+            // discriminating fact. Two is not asserted: a machine where
+            // the first init succeeds stops retrying by design.
+            long tries = Environment.TickCount64;
+            while (Environment.TickCount64 - tries < 5000 && svc.ProviderInitAttempts < 1)
+                System.Threading.Thread.Sleep(10);
+            Assert.True(svc.ProviderInitAttempts >= 1);
 
             svc.Stop();
             Assert.False(SensaHapticsService.PublisherArmed);

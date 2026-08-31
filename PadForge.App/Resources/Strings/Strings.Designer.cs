@@ -712,6 +712,8 @@ public class Strings : INotifyPropertyChanged
     public string Devices_Power => Get("Devices_Power");
     public string Devices_Dossier => Get("Devices_Dossier");
     public string Devices_IdleDisconnectMinutes => Get("Devices_IdleDisconnectMinutes");
+    public string Devices_QuickCharge => Get("Devices_QuickCharge");
+    public string Devices_QuickChargeTooltip => Get("Devices_QuickChargeTooltip");
     public string Devices_IdleDisconnectTooltip => Get("Devices_IdleDisconnectTooltip");
     public string DevObj_ConsumerPower => Get("DevObj_ConsumerPower");
     public string DevObj_ConsumerMenu => Get("DevObj_ConsumerMenu");

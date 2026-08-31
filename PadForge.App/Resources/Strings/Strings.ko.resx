@@ -2384,6 +2384,8 @@
   <data name="Devices_Power" xml:space="preserve"><value>전원</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>장치 정보</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>분 (0 = 안 함)</value></data>
+  <data name="Devices_QuickCharge" xml:space="preserve"><value>USB 연결 시 Bluetooth 연결 해제</value></data>
+  <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>퀵 충전. 이 패드가 USB로 연결되면 Bluetooth 링크를 끊어 무선을 켜지 않고 충전합니다. 케이블이 꽂힌 상태에서 Bluetooth를 다시 켜면 다음 연결 때까지 그대로 둡니다.</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>입력이 없는 상태로 설정한 분이 지나면 이 Bluetooth 컨트롤러의 연결을 끊어 절전 상태로 전환하고 배터리를 절약합니다. USB 연결 시에는 작동하지 않습니다.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>전원</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>메뉴</value></data>

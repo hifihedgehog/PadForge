@@ -2384,6 +2384,8 @@
   <data name="Devices_Power" xml:space="preserve"><value>電源</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>デバイス情報</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>分 (0 = しない)</value></data>
+  <data name="Devices_QuickCharge" xml:space="preserve"><value>USB接続時にBluetoothを切断</value></data>
+  <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>クイックチャージ。このパッドがUSBで接続されるとBluetoothリンクを切断し、無線を使わずに充電します。接続中にBluetoothを再接続した場合は、次に接続するまでそのままにします。</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>入力がないままこの分数が経過すると、このBluetoothコントローラーを切断してスリープさせ、バッテリーを節約します。USB接続時には作動しません。</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>電源</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>メニュー</value></data>

@@ -448,6 +448,18 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _idleDisconnectMinutes, Math.Max(0, value));
         }
 
+        private bool _quickChargeEnabled;
+
+        /// <summary>Quick Charge (#372): drop this pad's Bluetooth link when
+        /// its USB twin comes online. Shown with the idle-disconnect control
+        /// (same Bluetooth gate), persisted on UserDevice through the same
+        /// channel as the hiding toggles.</summary>
+        public bool QuickChargeEnabled
+        {
+            get => _quickChargeEnabled;
+            set => SetProperty(ref _quickChargeEnabled, value);
+        }
+
         private bool _showIdleDisconnect;
 
         /// <summary>Whether the idle-disconnect control applies to this device

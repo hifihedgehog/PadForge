@@ -432,8 +432,14 @@ namespace PadForge.Common.Input
             {
                 ud.IdleTrackedConnection = ud.Device;
                 ud.LastActiveTick = now;
+                // Fresh connection: re-arm Quick Charge (#372) so THIS
+                // arrival gets its one drop, and a later re-plug gets its
+                // own. The same freshness signal the idle stamp uses.
+                ud.QuickChargeHandled = false;
                 return;
             }
+
+            CheckQuickCharge(ud, now);
 
             if (ud.IdleDisconnectSeconds <= 0)
             {
@@ -467,6 +473,53 @@ namespace PadForge.Common.Input
             ud.LastActiveTick = now;
 
             FireIdleDisconnect(ud);
+        }
+
+        /// <summary>Quick Charge (#372, discussion #367): when this ONLINE
+        /// non-Bluetooth device has a Bluetooth-pathed twin record with the
+        /// same serial (the pad's MAC, identical dash format on both
+        /// transports per SDL's ps4/ps5 drivers) and that twin opted in,
+        /// drop the twin's radio link so the pad just charges. SDL already
+        /// removed the twin's JOYSTICK when this USB side arrived
+        /// (HIDAPI_DisconnectBluetoothDevice, a software de-dup), so the
+        /// radio drop by MAC is the whole remaining job. Fires once per
+        /// USB arrival (the QuickChargeHandled latch, re-armed by the
+        /// fresh-connection stamp): a user who re-links Bluetooth while
+        /// charging is not fought, diverging from DS4Windows on the same
+        /// user-outranks-automation principle as #366's pin.</summary>
+        private static void CheckQuickCharge(UserDevice ud, long now)
+        {
+            if (ud.QuickChargeHandled) return;
+            // ~1 Hz, the idle countdown's own cadence discipline.
+            if (now - ud.LastQuickChargeCheckTick < 1000) return;
+            ud.LastQuickChargeCheckTick = now;
+
+            // This side must be the WIRED one with a real MAC serial.
+            if (PadForge.Common.DeviceTransport.IsBluetooth(ud.DevicePath, ud.VendorId, ud.ProdId)) return;
+            if (!PadForge.Common.Input.BluetoothLinkHelper.TryParseAddress(ud.SerialNumber, out long addr) || addr == 0) return;
+
+            UserDevice twin = null;
+            var devices = SettingsManager.UserDevices;
+            lock (devices.SyncRoot)
+            {
+                for (int i = 0; i < devices.Items.Count; i++)
+                {
+                    var d = devices.Items[i];
+                    if (d == null || ReferenceEquals(d, ud) || !d.QuickChargeEnabled) continue;
+                    if (!PadForge.Common.Input.BluetoothLinkHelper.TryParseAddress(d.SerialNumber, out long dAddr) || dAddr != addr) continue;
+                    if (!PadForge.Common.DeviceTransport.IsBluetooth(d.DevicePath, d.VendorId, d.ProdId)) continue;
+                    twin = d;
+                    break;
+                }
+            }
+            if (twin == null) return;
+
+            ud.QuickChargeHandled = true;
+            string serial = twin.SerialNumber;
+            PadForge.Engine.SdlDiagLog.WriteLine(
+                $"QUICKCHARGE usb={ud.VendorId:X4}:{ud.ProdId:X4} dropping BT twin serial={serial}");
+            System.Threading.Tasks.Task.Run(() =>
+                PadForge.Common.Input.BluetoothLinkHelper.TryDisconnect(serial));
         }
 
         /// <summary>The capturing tail of the idle-disconnect countdown,

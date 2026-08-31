@@ -430,6 +430,7 @@ namespace PadForge.Services
                 ud.ConsumeInputEnabled = row.ConsumeInputEnabled;
                 ud.ForceRawJoystickMode = row.ForceRawJoystickMode;
                 ud.IdleDisconnectSeconds = Math.Max(0, row.IdleDisconnectMinutes) * 60;
+                ud.QuickChargeEnabled = row.QuickChargeEnabled;
             }
 
             _settingsService.MarkDirty();

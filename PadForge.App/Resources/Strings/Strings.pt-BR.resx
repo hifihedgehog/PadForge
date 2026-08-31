@@ -2378,6 +2378,8 @@
   <data name="Devices_Power" xml:space="preserve"><value>Energia</value></data>
   <data name="Devices_Dossier" xml:space="preserve"><value>Dossiê do Dispositivo</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minutos (0 = nunca)</value></data>
+  <data name="Devices_QuickCharge" xml:space="preserve"><value>Desconectar Bluetooth ao Conectar por USB</value></data>
+  <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Carga rápida. Quando este controle conecta por USB, o link Bluetooth é derrubado para que ele carregue sem alimentar o rádio. Se você reativar o Bluetooth com o cabo conectado, ele fica intacto até a próxima vez que conectar.</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Desconecta este controle Bluetooth após esses minutos sem entrada, para que entre em repouso e economize bateria. Nunca dispara via USB.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Liga/Desliga</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>Menu</value></data>

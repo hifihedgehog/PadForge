@@ -1072,6 +1072,16 @@
                                            VerticalAlignment="Center" Margin="8,0,0,0" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                             </StackPanel>
 
+                            <!-- Quick Charge (#372): Click, not Checked, so the
+                                 persistence handler never fires on the
+                                 binding-driven refresh when the selection
+                                 changes (the #161 lesson). -->
+                            <CheckBox Content="{Binding Devices_QuickCharge, Source={x:Static strings:Strings.Instance}}"
+                                      Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                      IsChecked="{Binding SelectedDevice.QuickChargeEnabled, Mode=TwoWay}"
+                                      Click="QuickCharge_Click" Margin="0,0,0,4"
+                                      ToolTip="{Binding Devices_QuickChargeTooltip, Source={x:Static strings:Strings.Instance}}"/>
+
                         </StackPanel>
 
                         <!-- The divider before the Raw Input State header sits

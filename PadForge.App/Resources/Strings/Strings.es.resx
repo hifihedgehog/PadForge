@@ -1635,6 +1635,9 @@
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Segunda entrada del acorde</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>Umbral del eje</value></data>
   <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>Ciclar por las capas</value></data>
+  <data name="Pad_Shift_HostLayer" xml:space="preserve"><value>Solo en la capa</value></data>
+  <data name="Pad_Shift_HostLayerAny" xml:space="preserve"><value>Cualquier capa</value></data>
+  <data name="Pad_Shift_HostLayer_Tooltip" xml:space="preserve"><value>La entrada solo cuenta mientras la capa elegida está activa. La comprobación ocurre al presionar y vale para toda la pulsación. Cualquier capa significa que la entrada siempre cuenta. Crea las salidas de cada capa en esa capa, con otro activador o un macro de Cambiar de capa.</value></data>
   <data name="Pad_Shift_Kind" xml:space="preserve"><value>Tipo de activador</value></data>
   <data name="Pad_Shift_KindButton" xml:space="preserve"><value>Botón</value></data>
   <data name="Pad_Shift_KindChord" xml:space="preserve"><value>Acorde (A + B)</value></data>

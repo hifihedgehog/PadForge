@@ -218,6 +218,24 @@ namespace PadForge.Engine.Data
         /// second leg).</summary>
         [XmlAttribute] public string GateDescriptor { get; set; } = "";
 
+        // ── v9 field (#370 follow-up) ──
+
+        /// <summary>v9 host-layer condition (#370 follow-up): when set, the
+        /// activator's input only counts while THIS layer is engaged on the
+        /// slot. The check is sampled when the input goes down and the
+        /// verdict holds for the whole press, so an activator whose own
+        /// firing changes the layer cannot cut its press short (Hold would
+        /// oscillate at tick rate otherwise). Empty (default) = any layer,
+        /// every pre-v9 activator's behavior. <c>"Base"</c> = only while
+        /// the base layer is active. This is what makes the Steam-style
+        /// action-set graph expressible in the activator machinery itself:
+        /// the same physical button carries a different activator per
+        /// engaged layer. A mask the slot no longer declares leaves the
+        /// activator inert (the gate can never match), and a same-named
+        /// layer re-add revives it, the layer-delete convention menus
+        /// already follow.</summary>
+        [XmlAttribute] public string HostLayerMask { get; set; } = "";
+
         // ── v4 fields (#206) ──
 
         /// <summary>v4 auto-cancel (#206): Toggle mode only. While the

@@ -411,6 +411,19 @@
                 <!-- Two activator-behavior checkboxes stacked together. Both
                      are toggles on the activator itself (not on the rows). -->
                 <StackPanel Grid.Row="12" x:Name="BehaviorChecksRow" Orientation="Vertical" Margin="0,0,0,12">
+                    <!-- v9 host-layer condition (#370 follow-up): the
+                         activator's input only counts while the chosen layer
+                         is active, decided at the press and held for the
+                         whole press. Any Layer (empty mask) is every
+                         activator's historical behavior. Hidden for Passive
+                         (no input to gate); see ApplyModeVisibility. -->
+                    <StackPanel x:Name="HostLayerRow" Margin="0,0,0,8">
+                        <TextBlock Text="{Binding Pad_Shift_HostLayer, Source={x:Static strings:Strings.Instance}}"
+                                   Margin="0,0,0,4"/>
+                        <ComboBox x:Name="HostLayerCombo" Width="320" HorizontalAlignment="Left"
+                                  DisplayMemberPath="DisplayName" SelectedValuePath="LayerMask"
+                                  ToolTip="{Binding Pad_Shift_HostLayer_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                    </StackPanel>
                     <!-- Inherit unmapped targets from Base. Off by default —
                          shift layer REPLACES Base entirely; targets the layer
                          doesn't map output zero. Check to fall through to Base. -->

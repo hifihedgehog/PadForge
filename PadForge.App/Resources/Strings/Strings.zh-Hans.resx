@@ -1634,6 +1634,9 @@
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>和弦的第二个输入</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>轴阈值</value></data>
   <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>循环层</value></data>
+  <data name="Pad_Shift_HostLayer" xml:space="preserve"><value>仅在指定层</value></data>
+  <data name="Pad_Shift_HostLayerAny" xml:space="preserve"><value>任何层</value></data>
+  <data name="Pad_Shift_HostLayer_Tooltip" xml:space="preserve"><value>仅当所选层处于激活状态时输入才生效。判定在按下的瞬间进行，并在整次按压期间保持。选择任何层则输入始终生效。每层的退出方式应在该层上创建，可使用另一个激活器或切换层宏。</value></data>
   <data name="Pad_Shift_Kind" xml:space="preserve"><value>激活器类型</value></data>
   <data name="Pad_Shift_KindButton" xml:space="preserve"><value>按钮</value></data>
   <data name="Pad_Shift_KindChord" xml:space="preserve"><value>和弦(A + B)</value></data>

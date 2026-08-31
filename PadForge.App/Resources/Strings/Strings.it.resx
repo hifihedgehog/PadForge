@@ -1655,6 +1655,9 @@
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Secondo ingresso dell'accordo</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>Soglia dell'asse</value></data>
   <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>Cicla tra i livelli</value></data>
+  <data name="Pad_Shift_HostLayer" xml:space="preserve"><value>Solo nel livello</value></data>
+  <data name="Pad_Shift_HostLayerAny" xml:space="preserve"><value>Qualsiasi livello</value></data>
+  <data name="Pad_Shift_HostLayer_Tooltip" xml:space="preserve"><value>L’input conta solo mentre il livello scelto è attivo. Il controllo avviene alla pressione e vale per l’intera pressione. Qualsiasi livello significa che l’input conta sempre. Crea le uscite di ogni livello su quel livello, con un altro attivatore o una macro Cambia livello.</value></data>
   <data name="Pad_Shift_Kind" xml:space="preserve"><value>Tipo di attivatore</value></data>
   <data name="Pad_Shift_KindButton" xml:space="preserve"><value>Pulsante</value></data>
   <data name="Pad_Shift_KindChord" xml:space="preserve"><value>Accordo (A + B)</value></data>

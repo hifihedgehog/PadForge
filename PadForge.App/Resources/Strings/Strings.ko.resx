@@ -1635,6 +1635,9 @@
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>코드의 두 번째 입력</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>축 임계값</value></data>
   <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>레이어 순환</value></data>
+  <data name="Pad_Shift_HostLayer" xml:space="preserve"><value>지정 레이어에서만</value></data>
+  <data name="Pad_Shift_HostLayerAny" xml:space="preserve"><value>모든 레이어</value></data>
+  <data name="Pad_Shift_HostLayer_Tooltip" xml:space="preserve"><value>선택한 레이어가 활성화된 동안에만 입력이 유효합니다. 판정은 누르는 순간 이루어지며 누르고 있는 동안 유지됩니다. 모든 레이어를 선택하면 입력이 항상 유효합니다. 각 레이어의 출구는 다른 활성화기나 레이어 전환 매크로로 해당 레이어에 만드세요.</value></data>
   <data name="Pad_Shift_Kind" xml:space="preserve"><value>활성화 종류</value></data>
   <data name="Pad_Shift_KindButton" xml:space="preserve"><value>버튼</value></data>
   <data name="Pad_Shift_KindChord" xml:space="preserve"><value>코드(A + B)</value></data>

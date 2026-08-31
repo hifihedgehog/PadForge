@@ -1635,6 +1635,9 @@
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Segunda Entrada do Acorde</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>Limite do Eixo</value></data>
   <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>Ciclar entre Camadas</value></data>
+  <data name="Pad_Shift_HostLayer" xml:space="preserve"><value>Somente na Camada</value></data>
+  <data name="Pad_Shift_HostLayerAny" xml:space="preserve"><value>Qualquer Camada</value></data>
+  <data name="Pad_Shift_HostLayer_Tooltip" xml:space="preserve"><value>A entrada só conta enquanto a camada escolhida está ativa. A verificação ocorre ao pressionar e vale por toda a pressão. Qualquer camada significa que a entrada sempre conta. Crie as saídas de cada camada nessa camada, com outro ativador ou um macro de Trocar de Camada.</value></data>
   <data name="Pad_Shift_Kind" xml:space="preserve"><value>Tipo de Ativador</value></data>
   <data name="Pad_Shift_KindButton" xml:space="preserve"><value>Botão</value></data>
   <data name="Pad_Shift_KindChord" xml:space="preserve"><value>Acorde (A + B)</value></data>

@@ -2279,6 +2279,9 @@
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Second Chord Input</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>Axis Threshold</value></data>
   <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>Cycle Through Layers</value></data>
+  <data name="Pad_Shift_HostLayer" xml:space="preserve"><value>Only While in Layer</value></data>
+  <data name="Pad_Shift_HostLayerAny" xml:space="preserve"><value>Any Layer</value></data>
+  <data name="Pad_Shift_HostLayer_Tooltip" xml:space="preserve"><value>The input only counts while the chosen layer is active. The check happens when the input goes down and holds for the whole press. Any Layer means the input always counts. Author each layer’s exits on that layer, with another activator or a Switch Layer macro.</value></data>
   <data name="Pad_Shift_CycleNextButton" xml:space="preserve"><value>Next Button</value></data>
   <data name="Pad_Shift_CyclePrevButton" xml:space="preserve"><value>Previous Button</value></data>
   <data name="Pad_Shift_CycleWrap" xml:space="preserve"><value>Wrap Around</value></data>

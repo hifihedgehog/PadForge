@@ -385,17 +385,6 @@ namespace PadForge.Services
                 if (data.AppSettings != null)
                     LoadAppSettings(data.AppSettings);
 
-                // Ghost-mapping guard: saves written before DeleteSlot
-                // dropped the slot's MappingSet can carry authored sets for
-                // slots that no longer exist. Loading one parks it in
-                // memory where the next same-index CreateSlot resurrects
-                // the deleted VC's bindings. Runs here because SlotCreated
-                // is only populated by LoadAppSettings above. Phase 2A
-                // (LoadOrMigrateSlotMappingSets) is too early to know
-                // which slots are real. Same shape as the lighting-config
-                // skip for uncreated slots in ApplyDeviceSlotConfigs.
-                MaskMappingSetsForUncreatedSlots();
-
                 // Publish user-imported HIDMaestro profiles to the catalog
                 // so they appear in the Extended dropdown alongside the
                 // built-in entries. _userProfiles is the in-memory mirror
@@ -427,6 +416,26 @@ namespace PadForge.Services
 
                 // Load profiles.
                 LoadProfiles(data.Profiles, data.AppSettings);
+
+                // Ghost-mapping guard: saves written before DeleteSlot
+                // dropped the slot's MappingSet can carry authored sets for
+                // slots that no longer exist. Loading one parks it in
+                // memory where the next same-index CreateSlot resurrects
+                // the deleted VC's bindings. MUST run after LoadProfiles,
+                // not after LoadAppSettings: LoadAppSettings restores the
+                // DEFAULT profile's topology, and when a named profile was
+                // active at shutdown, LoadProfiles then overwrites
+                // SlotCreated with the ACTIVE profile's. Masking between
+                // the two judged the active profile's live sets against
+                // the default's topology and gutted every slot only the
+                // active profile owns; the next autosave then wrote the
+                // gutted set over the STORED profile too, which is how a
+                // shift layer authored on an active profile was
+                // permanently wiped by a restart (discussion #375). Phase
+                // 2A (LoadOrMigrateSlotMappingSets) is still too early for
+                // the same reason. Same shape as the lighting-config skip
+                // for uncreated slots in ApplyDeviceSlotConfigs.
+                MaskMappingSetsForUncreatedSlots();
 
                 // Backfill motion-passthrough rows for every Sony-class
                 // slot. Runs after LoadAppSettings has populated slot

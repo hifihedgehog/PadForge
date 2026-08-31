@@ -2166,6 +2166,7 @@ namespace PadForge.Services
             PadForge.Services.WebCustomLayoutStore.LoadFrom(appSettings.WebCustomLayoutsJson);
             _mainVm.Dashboard.EnableWebController = appSettings.EnableWebController;
             _mainVm.Dashboard.EnableChromaLightbar = appSettings.EnableChromaLightbar;
+            _mainVm.Dashboard.EnableSensaHaptics = appSettings.EnableSensaHaptics;
             _mainVm.Dashboard.WebControllerPort = appSettings.WebControllerPort > 0
                 ? appSettings.WebControllerPort : 8080;
             _mainVm.Dashboard.EnableRemoteLink = appSettings.EnableRemoteLink;
@@ -4179,6 +4180,7 @@ namespace PadForge.Services
                 DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort,
                 EnableWebController = _mainVm.Dashboard.EnableWebController,
                 EnableChromaLightbar = _mainVm.Dashboard.EnableChromaLightbar,
+                EnableSensaHaptics = _mainVm.Dashboard.EnableSensaHaptics,
                 WebControllerPort = _mainVm.Dashboard.WebControllerPort,
                 WebCustomLayoutsJson = PadForge.Services.WebCustomLayoutStore.Json,
                 EnableRemoteLink = _mainVm.Dashboard.EnableRemoteLink,
@@ -5948,6 +5950,12 @@ namespace PadForge.Services
         /// failure shipped and was traced by the CHROMA diag lines.</summary>
         [XmlElement]
         public bool EnableChromaLightbar { get; set; }
+
+        /// <summary>Razer Sensa HD haptics translation opt-in (#374).
+        /// Default false. GLOBAL ONLY like the Chroma mirror above, and for
+        /// the same reason.</summary>
+        [XmlElement]
+        public bool EnableSensaHaptics { get; set; }
 
         [XmlElement]
         public int WebControllerPort { get; set; } = 8080;

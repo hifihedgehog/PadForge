@@ -96,6 +96,7 @@ namespace PadForge.Services
         private ForegroundMonitorService _foregroundMonitor;
         private ExternalControlService _externalControl;
         private ChromaLightbarService _chromaService;
+        private SensaHapticsService _sensaService;
         private ProfileData _defaultProfileSnapshot;
 
         // Active profile's touchpad custom-gesture working list. Mirrors
@@ -2197,6 +2198,9 @@ namespace PadForge.Services
             // Razer Chroma lightbar mirror (#373), opt-in.
             StartChromaIfEnabled();
 
+            // Razer Sensa HD haptics translation (#374), opt-in.
+            StartSensaIfEnabled();
+
             // Capture default profile snapshot before any profile switches.
             // If the app restarted with a named profile active, LoadProfiles
             // already captured the default's state before overwriting with the
@@ -2382,6 +2386,7 @@ namespace PadForge.Services
             }
             StopExternalControl();
             StopChromaService();
+            StopSensaService();
             StopDsuServer();
             StopWebServer();
             StopRemoteLink();
@@ -8968,6 +8973,13 @@ namespace PadForge.Services
                 else
                     StopChromaService();
             }
+            else if (e.PropertyName == nameof(DashboardViewModel.EnableSensaHaptics))
+            {
+                if (_mainVm.Dashboard.EnableSensaHaptics)
+                    StartSensaIfEnabled();
+                else
+                    StopSensaService();
+            }
             else if (e.PropertyName == nameof(DashboardViewModel.EnableWebController))
             {
                 if (_mainVm.Dashboard.EnableWebController)
@@ -9170,6 +9182,40 @@ namespace PadForge.Services
             _chromaService = null;
             _dispatcher.BeginInvoke(() =>
                 _mainVm.Dashboard.ChromaStatus = Strings.Instance.Common_Stopped);
+        }
+
+        // ── Razer Sensa HD haptics translation (#374) ──
+
+        private void StartSensaIfEnabled()
+        {
+            if (!_mainVm.Dashboard.EnableSensaHaptics || _inputManager == null)
+                return;
+            if (_sensaService != null)
+                return; // Already running.
+
+            _sensaService = new SensaHapticsService();
+            _sensaService.StateChanged += state =>
+            {
+                _dispatcher.BeginInvoke(() =>
+                {
+                    _mainVm.Dashboard.SensaStatus = state switch
+                    {
+                        SensaServiceState.Active => Strings.Instance.Dashboard_SensaActive,
+                        SensaServiceState.WaitingForRuntime => Strings.Instance.Dashboard_SensaWaiting,
+                        _ => Strings.Instance.Common_Stopped,
+                    };
+                });
+            };
+            _sensaService.Start();
+        }
+
+        private void StopSensaService()
+        {
+            if (_sensaService == null) return;
+            _sensaService.Dispose();
+            _sensaService = null;
+            _dispatcher.BeginInvoke(() =>
+                _mainVm.Dashboard.SensaStatus = Strings.Instance.Common_Stopped);
         }
 
         private void StartDsuServerIfEnabled()

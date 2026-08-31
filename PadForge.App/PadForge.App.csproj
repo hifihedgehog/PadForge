@@ -95,6 +95,17 @@
       hijack succeeds.  See PadForge #69 and memory/openxinput-devobj-stub-hijack-bug.md.
       xinput1_4.dll's devobj.dll import resolves from System32 unaided.
     -->
+    <!-- Interhaptics engine + Razer Sensa provider (#374): the same pair
+         every Unity title embedding Razer's public Interhaptics Core SDK
+         redistributes, vendored from WyvrnOfficial/Interhaptics_Unity_CoreSDK
+         Runtime/Plugins/x64. P/Invoked lazily by SensaHapticsService, so a
+         missing pair degrades to a diag line, never a crash. -->
+    <Content Include="Resources\Interhaptics\x64\HAR.dll" Link="HAR.dll" Condition="Exists('Resources\Interhaptics\x64\HAR.dll')">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Interhaptics\x64\Interhaptics.RazerProvider.dll" Link="Interhaptics.RazerProvider.dll" Condition="Exists('Resources\Interhaptics\x64\Interhaptics.RazerProvider.dll')">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\OpenXInput\x64\xinput1_4.dll" Link="xinput1_4.dll" Condition="Exists('Resources\OpenXInput\x64\xinput1_4.dll')">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

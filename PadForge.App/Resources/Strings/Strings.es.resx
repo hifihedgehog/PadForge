@@ -233,6 +233,12 @@
   <data name="Dashboard_ChromaWaiting" xml:space="preserve"><value>Razer Synapse no detectado. Reintentando.</value></data>
   <data name="Dashboard_ChromaConnected" xml:space="preserve"><value>Conectado a Razer Chroma</value></data>
   <data name="Dashboard_ChromaFooter" xml:space="preserve"><value>Requiere Razer Synapse con Chroma Connect. Funciona con cualquier mando físico: el color proviene del mando virtual que pinta el juego.</value></data>
+  <data name="Dashboard_Sensa" xml:space="preserve"><value>Razer Sensa HD Haptics</value></data>
+  <data name="Dashboard_SensaDescription" xml:space="preserve"><value>Traduce la vibración del mando a hápticos Razer Sensa HD, para que dispositivos Sensa como la línea Wolverine V3, el Kraken V4 Pro y el Freyja vibren con tus juegos.</value></data>
+  <data name="Dashboard_EnableSensa" xml:space="preserve"><value>Enviar la vibración a Sensa HD Haptics</value></data>
+  <data name="Dashboard_SensaWaiting" xml:space="preserve"><value>Runtime de Razer Sensa no encontrado. Reintentando.</value></data>
+  <data name="Dashboard_SensaActive" xml:space="preserve"><value>Enviando vibración a Sensa HD Haptics</value></data>
+  <data name="Dashboard_SensaFooter" xml:space="preserve"><value>Requiere Razer Synapse 4 con Sensa HD Haptics. En Synapse, pon la fuente háptica del dispositivo en Sensa HD Games.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Habilitar servidor de movimiento DSU (CemuHook Motion Provider protocol)</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>Puerto</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Proporciona datos de giroscopio y acelerómetro a Cemu, Dolphin, Yuzu, etc.</value></data>

@@ -3676,7 +3676,6 @@ namespace PadForge.Services
                 if (active.DsuMotionServerPort >= 1024 && active.DsuMotionServerPort <= 65535)
                     _mainVm.Dashboard.DsuMotionServerPort = active.DsuMotionServerPort;
                 _mainVm.Dashboard.EnableWebController = active.EnableWebController;
-                _mainVm.Dashboard.EnableChromaLightbar = active.EnableChromaLightbar;
                 if (active.WebControllerPort >= 1024 && active.WebControllerPort <= 65535)
                     _mainVm.Dashboard.WebControllerPort = active.WebControllerPort;
                 _mainVm.Dashboard.EnableTouchpadOverlay = active.EnableTouchpadOverlay;
@@ -3776,7 +3775,6 @@ namespace PadForge.Services
             profile.EnableDsuMotionServer = _mainVm.Dashboard.EnableDsuMotionServer;
             profile.DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort;
             profile.EnableWebController = _mainVm.Dashboard.EnableWebController;
-            profile.EnableChromaLightbar = _mainVm.Dashboard.EnableChromaLightbar;
             profile.WebControllerPort = _mainVm.Dashboard.WebControllerPort;
             profile.EnableTouchpadOverlay = _mainVm.Dashboard.EnableTouchpadOverlay;
             profile.EnableMenuOverlay = _mainVm.Dashboard.EnableMenuOverlay;
@@ -5941,8 +5939,13 @@ namespace PadForge.Services
         public bool EnableWebController { get; set; }
 
         /// <summary>Razer Chroma lightbar mirror opt-in (#373).
-        /// Default false: PadForge registers nothing with Synapse
-        /// until the user turns the mirror on.</summary>
+        /// Default false: PadForge registers nothing with Synapse until the
+        /// user turns the mirror on. GLOBAL ONLY, deliberately not on
+        /// ProfileData: Synapse is per-machine, and a new bool on profiles
+        /// deserializes to false in every pre-existing profile, so any
+        /// profile switch (the foreground auto-switch included) would turn
+        /// the mirror off seconds after the user turned it on. That exact
+        /// failure shipped and was traced by the CHROMA diag lines.</summary>
         [XmlElement]
         public bool EnableChromaLightbar { get; set; }
 
@@ -6778,12 +6781,6 @@ namespace PadForge.Services
         /// <summary>Whether the web controller server was enabled in this profile.</summary>
         [XmlElement]
         public bool EnableWebController { get; set; }
-
-        /// <summary>Razer Chroma lightbar mirror opt-in (#373).
-        /// Default false: PadForge registers nothing with Synapse
-        /// until the user turns the mirror on.</summary>
-        [XmlElement]
-        public bool EnableChromaLightbar { get; set; }
 
         /// <summary>Web controller server port for this profile.</summary>
         [XmlElement]

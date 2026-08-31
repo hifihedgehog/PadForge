@@ -606,6 +606,7 @@ namespace PadForge
                 if (e.PropertyName is nameof(DashboardViewModel.EnableDsuMotionServer)
                      or nameof(DashboardViewModel.DsuMotionServerPort)
                      or nameof(DashboardViewModel.EnableWebController)
+                     or nameof(DashboardViewModel.EnableChromaLightbar)
                      or nameof(DashboardViewModel.WebControllerPort)
                      or nameof(DashboardViewModel.EnableRemoteLink)
                      or nameof(DashboardViewModel.AutoReconnect)

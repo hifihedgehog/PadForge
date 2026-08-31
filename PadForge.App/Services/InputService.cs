@@ -9140,6 +9140,8 @@ namespace PadForge.Services
 
         private void StartChromaIfEnabled()
         {
+            PadForge.Engine.SdlDiagLog.WriteLine(
+                $"CHROMA start? enabled={_mainVm.Dashboard.EnableChromaLightbar} engine={_inputManager != null} live={_chromaService != null}");
             if (!_mainVm.Dashboard.EnableChromaLightbar || _inputManager == null)
                 return;
             if (_chromaService != null)

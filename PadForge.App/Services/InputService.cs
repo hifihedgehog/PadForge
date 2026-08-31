@@ -95,6 +95,7 @@ namespace PadForge.Services
         private DispatcherTimer _uiTimer;
         private ForegroundMonitorService _foregroundMonitor;
         private ExternalControlService _externalControl;
+        private ChromaLightbarService _chromaService;
         private ProfileData _defaultProfileSnapshot;
 
         // Active profile's touchpad custom-gesture working list. Mirrors
@@ -2193,6 +2194,9 @@ namespace PadForge.Services
             // Serve the external-control pipe (#366) if the user opted in.
             StartExternalControlIfEnabled();
 
+            // Razer Chroma lightbar mirror (#373), opt-in.
+            StartChromaIfEnabled();
+
             // Capture default profile snapshot before any profile switches.
             // If the app restarted with a named profile active, LoadProfiles
             // already captured the default's state before overwriting with the
@@ -2377,6 +2381,7 @@ namespace PadForge.Services
                 _foregroundMonitor = null;
             }
             StopExternalControl();
+            StopChromaService();
             StopDsuServer();
             StopWebServer();
             StopRemoteLink();
@@ -8956,6 +8961,13 @@ namespace PadForge.Services
                     StartDsuServerIfEnabled();
                 }
             }
+            else if (e.PropertyName == nameof(DashboardViewModel.EnableChromaLightbar))
+            {
+                if (_mainVm.Dashboard.EnableChromaLightbar)
+                    StartChromaIfEnabled();
+                else
+                    StopChromaService();
+            }
             else if (e.PropertyName == nameof(DashboardViewModel.EnableWebController))
             {
                 if (_mainVm.Dashboard.EnableWebController)
@@ -9122,6 +9134,40 @@ namespace PadForge.Services
                 _mainVm.StatusText = Strings.Instance.Status_ProfileSwitchedDefault;
             }
             return "ok default";
+        }
+
+        // ── Razer Chroma lightbar mirror (#373) ──
+
+        private void StartChromaIfEnabled()
+        {
+            if (!_mainVm.Dashboard.EnableChromaLightbar || _inputManager == null)
+                return;
+            if (_chromaService != null)
+                return; // Already running.
+
+            _chromaService = new ChromaLightbarService();
+            _chromaService.StateChanged += state =>
+            {
+                _dispatcher.BeginInvoke(() =>
+                {
+                    _mainVm.Dashboard.ChromaStatus = state switch
+                    {
+                        ChromaServiceState.Connected => Strings.Instance.Dashboard_ChromaConnected,
+                        ChromaServiceState.WaitingForSynapse => Strings.Instance.Dashboard_ChromaWaiting,
+                        _ => Strings.Instance.Common_Stopped,
+                    };
+                });
+            };
+            _chromaService.Start();
+        }
+
+        private void StopChromaService()
+        {
+            if (_chromaService == null) return;
+            _chromaService.Dispose();
+            _chromaService = null;
+            _dispatcher.BeginInvoke(() =>
+                _mainVm.Dashboard.ChromaStatus = Strings.Instance.Common_Stopped);
         }
 
         private void StartDsuServerIfEnabled()

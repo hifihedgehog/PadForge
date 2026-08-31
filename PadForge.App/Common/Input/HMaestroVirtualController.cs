@@ -1024,6 +1024,29 @@ namespace PadForge.Common.Input
                 int idx = FeedbackPadIndex;
                 if (idx < 0 || idx >= vibrationStates.Length) return;
 
+                // Chroma lightbar mirror (#373): every Sony profile's codec
+                // decodes a 'lightbar' rgb24 field (byte[3] R,G,B) with the
+                // per-transport offsets handled by the profile declaration,
+                // so no parser lives here. The family's validity bit says
+                // whether THIS write carries the lightbar: DualSense/Edge
+                // assert validFlag1 bit 2 (the NotifyExternalSubsystems
+                // gate), DualShock 4 asserts validFlag0 bit 1 (SDL
+                // k_EPS4EffectLED = 1 << 1). Publish is one volatile write,
+                // so an idle mirror costs nothing on this callback.
+                if (e.Fields.TryGetValue("lightbar", out var lbObj)
+                    && lbObj is byte[] lbRgb && lbRgb.Length >= 3)
+                {
+                    bool lbValid;
+                    if (IsDualSenseVirtual)
+                        lbValid = e.Fields.TryGetValue("validFlag1", out var vf1Obj)
+                            && vf1Obj is byte lbVf1 && (lbVf1 & 0x04) != 0;
+                    else
+                        lbValid = e.Fields.TryGetValue("validFlag0", out var vf0Obj)
+                            && vf0Obj is byte lbVf0 && (lbVf0 & 0x02) != 0;
+                    if (lbValid)
+                        PadForge.Services.ChromaLightbarService.Publish(lbRgb[0], lbRgb[1], lbRgb[2]);
+                }
+
                 int declaredSize = _profile.ExtendedOutputReport?.Size ?? -1;
 
                 if (e.Fields.TryGetValue("leftMotor", out var lmObj2) && lmObj2 is byte left

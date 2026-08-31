@@ -227,6 +227,12 @@
   <data name="Dashboard_DeleteSlotConfirm_Format" xml:space="preserve"><value>Die Zuweisung von {0} zugeordneten Gerät(en) wird aufgehoben.</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Bewegungsserver</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU-/CemuHook-Motion-Provider-Protokollserver für Gyroskop- und Beschleunigungsdaten.</value></data>
+  <data name="Dashboard_Chroma" xml:space="preserve"><value>Razer Chroma</value></data>
+  <data name="Dashboard_ChromaDescription" xml:space="preserve"><value>Leitet die Lightbar-Farbe, die ein Spiel auf einem virtuellen PlayStation-Controller setzt, an Razer-Chroma-Geräte weiter. PadForge erscheint in Razer Synapse als Chroma-App und lässt sich dort eingrenzen oder deaktivieren.</value></data>
+  <data name="Dashboard_EnableChroma" xml:space="preserve"><value>Lightbar auf Razer Chroma spiegeln</value></data>
+  <data name="Dashboard_ChromaWaiting" xml:space="preserve"><value>Razer Synapse nicht gefunden. Neuer Versuch folgt.</value></data>
+  <data name="Dashboard_ChromaConnected" xml:space="preserve"><value>Mit Razer Chroma verbunden</value></data>
+  <data name="Dashboard_ChromaFooter" xml:space="preserve"><value>Erfordert Razer Synapse mit Chroma Connect. Funktioniert mit jedem physischen Controller: Die Farbe stammt vom virtuellen Pad, das das Spiel bemalt.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU-Bewegungsserver aktivieren (CemuHook-Motion-Provider-Protokoll)</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>Port</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Stellt Gyroskop- und Beschleunigungsdaten für Cemu, Dolphin, Yuzu usw. bereit.</value></data>

@@ -233,6 +233,12 @@
   <data name="Dashboard_ChromaWaiting" xml:space="preserve"><value>未检测到Razer Synapse，正在重试。</value></data>
   <data name="Dashboard_ChromaConnected" xml:space="preserve"><value>已连接到Razer Chroma</value></data>
   <data name="Dashboard_ChromaFooter" xml:space="preserve"><value>需要带Chroma Connect的Razer Synapse。适用于任何物理手柄：颜色来自游戏绘制的虚拟手柄。</value></data>
+  <data name="Dashboard_Sensa" xml:space="preserve"><value>Razer Sensa HD Haptics</value></data>
+  <data name="Dashboard_SensaDescription" xml:space="preserve"><value>将手柄震动转换为Razer Sensa HD触感反馈，让Wolverine V3系列、Kraken V4 Pro和Freyja等Sensa设备随游戏震动。</value></data>
+  <data name="Dashboard_EnableSensa" xml:space="preserve"><value>将震动发送到Sensa HD触感</value></data>
+  <data name="Dashboard_SensaWaiting" xml:space="preserve"><value>未找到Razer Sensa运行时，正在重试。</value></data>
+  <data name="Dashboard_SensaActive" xml:space="preserve"><value>正在向Sensa HD触感传输震动</value></data>
+  <data name="Dashboard_SensaFooter" xml:space="preserve"><value>需要带Sensa HD触感的Razer Synapse 4。请在Synapse中将设备的触感源设为Sensa HD Games。</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>启用 DSU 体感服务器（CemuHook Motion Provider 协议）</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>端口</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>为 Cemu、Dolphin、Yuzu 等提供陀螺仪和加速度计数据。</value></data>

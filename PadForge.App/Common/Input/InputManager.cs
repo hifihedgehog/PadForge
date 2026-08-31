@@ -1607,6 +1607,7 @@ namespace PadForge.Common.Input
                         // UpdateVirtualDevices so a slot destroyed this
                         // tick publishes zeros the same tick.
                         UpdateRumbleAudioLane();
+                        UpdateSensaLane();
 
                         // Stall watchdog report: only outliers write anything.
                         long cycleMs = cycleTimer.ElapsedMilliseconds;

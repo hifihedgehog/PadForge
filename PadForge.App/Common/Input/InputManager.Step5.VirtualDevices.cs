@@ -283,6 +283,33 @@ namespace PadForge.Common.Input
         /// math, four voice masks, one volatile store per slot; no
         /// allocations, no syscalls.
         /// </summary>
+        /// <summary>Sensa HD haptics feed (#374): the max feedback voice
+        /// across every slot, normalized 0..1, published for the
+        /// SensaHapticsService worker. Same rumble authority as the
+        /// rumble-audio lane above (VC inbound pack max-merged with the
+        /// live vibration state, so test rumble counts too), and one
+        /// volatile read exits when the service is off.</summary>
+        private void UpdateSensaLane()
+        {
+            if (!PadForge.Services.SensaHapticsService.PublisherArmed) return;
+            float best = 0f;
+            int n = System.Math.Min(SettingsManager.SlotMappingSets?.Length ?? 0, MaxPads);
+            for (int slot = 0; slot < n; slot++)
+            {
+                long pack = GetInboundRumblePack(slot);
+                var vibe = VibrationStates[slot];
+                if (vibe != null)
+                {
+                    pack = Engine.Common.LfeOutputState.MaxMerge(pack,
+                        vibe.LeftMotorSpeed, vibe.RightMotorSpeed,
+                        vibe.LeftTriggerMotorSpeed, vibe.RightTriggerMotorSpeed);
+                }
+                float amp = PadForge.Services.SensaHapticsService.PackToAmplitude(pack);
+                if (amp > best) best = amp;
+            }
+            PadForge.Services.SensaHapticsService.PublishAmplitude(best);
+        }
+
         private void UpdateRumbleAudioLane()
         {
             var sets = SettingsManager.SlotMappingSets;

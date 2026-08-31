@@ -233,6 +233,12 @@
   <data name="Dashboard_ChromaWaiting" xml:space="preserve"><value>Razer Synapse를 찾지 못했습니다. 재시도 중.</value></data>
   <data name="Dashboard_ChromaConnected" xml:space="preserve"><value>Razer Chroma에 연결됨</value></data>
   <data name="Dashboard_ChromaFooter" xml:space="preserve"><value>Chroma Connect가 있는 Razer Synapse가 필요합니다. 어떤 물리 컨트롤러와도 작동하며, 색상은 게임이 그리는 가상 패드에서 옵니다.</value></data>
+  <data name="Dashboard_Sensa" xml:space="preserve"><value>Razer Sensa HD Haptics</value></data>
+  <data name="Dashboard_SensaDescription" xml:space="preserve"><value>컨트롤러 진동을 Razer Sensa HD 햁틱으로 변환하여 Wolverine V3 시리즈, Kraken V4 Pro, Freyja 같은 Sensa 장치가 게임과 함께 진동하도록 합니다.</value></data>
+  <data name="Dashboard_EnableSensa" xml:space="preserve"><value>진동을 Sensa HD 햁틱으로 전송</value></data>
+  <data name="Dashboard_SensaWaiting" xml:space="preserve"><value>Razer Sensa 런타임을 찾지 못했습니다. 재시도 중.</value></data>
+  <data name="Dashboard_SensaActive" xml:space="preserve"><value>Sensa HD 햁틱으로 진동 전송 중</value></data>
+  <data name="Dashboard_SensaFooter" xml:space="preserve"><value>Sensa HD 햁틱이 있는 Razer Synapse 4가 필요합니다. Synapse에서 장치의 햁틱 소스를 Sensa HD Games로 설정하세요.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU 모션 서버 활성화 (CemuHook Motion Provider protocol)</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>포트</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Cemu, Dolphin, Yuzu 등에 자이로 및 가속도계 데이터를 제공합니다.</value></data>

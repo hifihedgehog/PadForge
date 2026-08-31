@@ -361,6 +361,28 @@ namespace PadForge.ViewModels
         }
 
         // ─────────────────────────────────────────────
+        //  Razer Sensa HD haptics translation (#374)
+        // ─────────────────────────────────────────────
+
+        private bool _enableSensaHaptics;
+
+        /// <summary>Whether the Razer Sensa rumble translation is enabled.</summary>
+        public bool EnableSensaHaptics
+        {
+            get => _enableSensaHaptics;
+            set => SetProperty(ref _enableSensaHaptics, value);
+        }
+
+        private string _sensaStatus = Strings.Instance.Common_Stopped;
+
+        /// <summary>Current status of the Sensa translation for UI display.</summary>
+        public string SensaStatus
+        {
+            get => _sensaStatus;
+            set => SetProperty(ref _sensaStatus, value ?? Strings.Instance.Common_Stopped);
+        }
+
+        // ─────────────────────────────────────────────
         //  Web Controller Server
         // ─────────────────────────────────────────────
 

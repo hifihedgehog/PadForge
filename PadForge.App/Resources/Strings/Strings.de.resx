@@ -233,6 +233,12 @@
   <data name="Dashboard_ChromaWaiting" xml:space="preserve"><value>Razer Synapse nicht gefunden. Neuer Versuch folgt.</value></data>
   <data name="Dashboard_ChromaConnected" xml:space="preserve"><value>Mit Razer Chroma verbunden</value></data>
   <data name="Dashboard_ChromaFooter" xml:space="preserve"><value>Erfordert Razer Synapse mit Chroma Connect. Funktioniert mit jedem physischen Controller: Die Farbe stammt vom virtuellen Pad, das das Spiel bemalt.</value></data>
+  <data name="Dashboard_Sensa" xml:space="preserve"><value>Razer Sensa HD Haptics</value></data>
+  <data name="Dashboard_SensaDescription" xml:space="preserve"><value>Übersetzt Controller-Rumble in Razer Sensa HD-Haptik, damit Sensa-Geräte wie die Wolverine-V3-Reihe, das Kraken V4 Pro und der Freyja mit den Spielen vibrieren.</value></data>
+  <data name="Dashboard_EnableSensa" xml:space="preserve"><value>Rumble an Sensa HD-Haptik senden</value></data>
+  <data name="Dashboard_SensaWaiting" xml:space="preserve"><value>Razer Sensa-Laufzeit nicht gefunden. Neuer Versuch folgt.</value></data>
+  <data name="Dashboard_SensaActive" xml:space="preserve"><value>Rumble wird an Sensa HD-Haptik gestreamt</value></data>
+  <data name="Dashboard_SensaFooter" xml:space="preserve"><value>Erfordert Razer Synapse 4 mit Sensa HD-Haptik. Stellen Sie die Haptikquelle des Geräts in Synapse auf „Sensa HD Games“.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU-Bewegungsserver aktivieren (CemuHook-Motion-Provider-Protokoll)</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>Port</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Stellt Gyroskop- und Beschleunigungsdaten für Cemu, Dolphin, Yuzu usw. bereit.</value></data>

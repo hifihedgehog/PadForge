@@ -339,6 +339,12 @@ public class Strings : INotifyPropertyChanged
     public string Dashboard_ChromaWaiting => Get("Dashboard_ChromaWaiting");
     public string Dashboard_ChromaConnected => Get("Dashboard_ChromaConnected");
     public string Dashboard_ChromaFooter => Get("Dashboard_ChromaFooter");
+    public string Dashboard_Sensa => Get("Dashboard_Sensa");
+    public string Dashboard_SensaDescription => Get("Dashboard_SensaDescription");
+    public string Dashboard_EnableSensa => Get("Dashboard_EnableSensa");
+    public string Dashboard_SensaWaiting => Get("Dashboard_SensaWaiting");
+    public string Dashboard_SensaActive => Get("Dashboard_SensaActive");
+    public string Dashboard_SensaFooter => Get("Dashboard_SensaFooter");
     public string Dashboard_EnableDsu => Get("Dashboard_EnableDsu");
     public string Dashboard_Port => Get("Dashboard_Port");
     public string Dashboard_DsuFooter => Get("Dashboard_DsuFooter");

@@ -2587,6 +2587,9 @@
   <data name="MacroAction_PointerModeSet_Format" xml:space="preserve"><value>Aanwijzermodus instellen: {0}</value></data>
   <data name="MacroAction_PointerModeSet_Tooltip" xml:space="preserve"><value>Stelt de Wii-aanwijzermodus in op de hieronder gekozen modus voor elke IR-remote in het slot.</value></data>
   <data name="Macro_PointerSetMode_Hint" xml:space="preserve"><value>Kies de aanwijzermodus die deze actie toepast.</value></data>
+  <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>Van laag wisselen</value></data>
+  <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>Naar laag {0} wisselen</value></data>
+  <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>Springt dit slot naar de gekozen shift-laag. De laag blijft actief tot een volgende wissel, een Latch- of Cycle-activator, of een profielwissel. Base keert terug naar de basislaag. Beperk deze macro hierboven tot een laag zodat dezelfde knop per laag anders springt.</value></data>
   <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Aanwijzermodus resetten</value></data>
   <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>Aanwijzerafstemming resetten</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Positie sensorbalk resetten</value></data>

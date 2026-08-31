@@ -2210,6 +2210,9 @@ public class Strings : INotifyPropertyChanged
     public string MacroAction_PointerModeSet_Format => Get("MacroAction_PointerModeSet_Format");
     public string MacroAction_PointerModeSet_Tooltip => Get("MacroAction_PointerModeSet_Tooltip");
     public string Macro_PointerSetMode_Hint => Get("Macro_PointerSetMode_Hint");
+    public string MacroAction_Type_SwitchLayer => Get("MacroAction_Type_SwitchLayer");
+    public string MacroAction_SwitchLayer_Format => Get("MacroAction_SwitchLayer_Format");
+    public string Macro_SwitchLayer_Hint => Get("Macro_SwitchLayer_Hint");
     public string Pad_Lighting_GuideLed => Get("Pad_Lighting_GuideLed");
     public string Pad_Lighting_GuideLed_Subtitle => Get("Pad_Lighting_GuideLed_Subtitle");
     public string Pad_Lighting_GuideLed_Mode_Tooltip => Get("Pad_Lighting_GuideLed_Mode_Tooltip");

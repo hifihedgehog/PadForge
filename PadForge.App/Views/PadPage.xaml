@@ -1974,6 +1974,9 @@
                                             <ComboBoxItem Content="{Binding MacroAction_Type_PointerModeSet, Source={x:Static strings:Strings.Instance}}"
                                                           Tag="{x:Static vm:MacroActionType.PointerModeSet}"
                                                           ToolTip="{Binding MacroAction_PointerModeSet_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                            <ComboBoxItem Content="{Binding MacroAction_Type_SwitchLayer, Source={x:Static strings:Strings.Instance}}"
+                                                          Tag="{x:Static vm:MacroActionType.SwitchLayer}"
+                                                          ToolTip="{Binding Macro_SwitchLayer_Hint, Source={x:Static strings:Strings.Instance}}"/>
                                             <ComboBoxItem Content="{Binding MacroAction_Type_GuideLedBrightness, Source={x:Static strings:Strings.Instance}}"
                                                           Tag="{x:Static vm:MacroActionType.GuideLedBrightness}"
                                                           ToolTip="{Binding MacroAction_GuideLedBrightness_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
@@ -2760,6 +2763,26 @@
                                                 <ComboBoxItem Content="{Binding Pad_Pointer_Mode_43, Source={x:Static strings:Strings.Instance}}" Tag="Mouse43"/>
                                                 <ComboBoxItem Content="{Binding Pad_Pointer_Mode_169, Source={x:Static strings:Strings.Instance}}" Tag="Mouse169"/>
                                             </ComboBox>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- Switch Layer card (#377): one-shot jump to a shift
+                                         layer on this slot. Choices are the slot's own tab
+                                         strip (Base + every authored layer), the same
+                                         name/mask pairs the layer-scope picker uses. -->
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
+                                            Visibility="{Binding IsSwitchLayerType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding MacroAction_Type_SwitchLayer, Source={x:Static strings:Strings.Instance}}"
+                                                       FontWeight="SemiBold" Margin="0,0,0,4"/>
+                                            <TextBlock Text="{Binding Macro_SwitchLayer_Hint, Source={x:Static strings:Strings.Instance}}"
+                                                       FontSize="11" TextWrapping="Wrap" Margin="0,0,0,6"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                            <ComboBox Width="240" HorizontalAlignment="Left"
+                                                      ItemsSource="{Binding DataContext.LayerTabs, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                      SelectedValue="{Binding SwitchLayerMask, Mode=TwoWay}"
+                                                      SelectedValuePath="LayerMask"
+                                                      DisplayMemberPath="LayerName"/>
                                         </StackPanel>
                                     </Border>
 

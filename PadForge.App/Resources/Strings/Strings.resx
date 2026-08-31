@@ -2803,6 +2803,9 @@
   <data name="MacroAction_PointerModeSet_Format" xml:space="preserve"><value>Set pointer mode: {0}</value></data>
   <data name="MacroAction_PointerModeSet_Tooltip" xml:space="preserve"><value>Sets the Wii pointer mode to the one selected below for every IR-capable remote on the slot.</value></data>
   <data name="Macro_PointerSetMode_Hint" xml:space="preserve"><value>Pick the pointer mode this action applies.</value></data>
+  <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>Switch Layer</value></data>
+  <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>Switch to layer {0}</value></data>
+  <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>Jumps this slot to the chosen shift layer. The layer stays engaged until another switch, a Latch or Cycle activator, or a profile switch. Base returns to the base layer. Scope this macro to a layer above to make the same button jump differently per layer.</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>Guide Button LED</value></data>
   <data name="Pad_Lighting_GuideLed_Subtitle" xml:space="preserve"><value>Brightness of the glowing Guide or Home button. Xbox One and later controllers accept it over USB. The 2015 Steam Controller accepts it on any connection, and all Steam Controllers share one brightness. Switch Pro Controllers and right Joy-Cons (alone, paired, or in the charging grip) accept it on any connection.</value></data>
   <data name="Pad_Lighting_GuideLed_Mode_Tooltip" xml:space="preserve"><value>Device Default leaves the LED exactly as the controller firmware set it. Fixed Brightness holds the level below. Battery Level makes a fuller battery brighter and never drops below 10%. Xbox controllers accept Guide LED commands over USB only, so this setting has no effect on a Bluetooth connection. Switch controllers accept Home LED commands on any connection.</value></data>

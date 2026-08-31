@@ -2594,6 +2594,18 @@ namespace PadForge.Common.Input
                     break;
                 }
 
+                case MacroActionType.SwitchLayer:
+                {
+                    // One-shot layer switch (#377): the macro's own slot,
+                    // the #254 identity. The helper validates the mask and
+                    // writes the shift runtime with the Latch discipline.
+                    int slotIndex = macro.PadIndex;
+                    if (slotIndex >= 0 && slotIndex < MaxPads)
+                        ApplyMacroLayerSwitch(slotIndex, action.SwitchLayerMask);
+                    AdvanceAction(macro);
+                    break;
+                }
+
                 case MacroActionType.HeadphoneVolumeUp:
                 case MacroActionType.HeadphoneVolumeDown:
                 {

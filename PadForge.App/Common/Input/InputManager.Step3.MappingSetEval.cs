@@ -1063,6 +1063,63 @@ namespace PadForge.Common.Input
         /// <summary>Clears one slot's shift runtime state. Use when a single
         /// slot changes shift-activator topology (e.g. activator added/
         /// removed/edited) and we want the new shape to start clean.</summary>
+        /// <summary>Macro-driven layer switch (#377): engages
+        /// <paramref name="mask"/> on the slot with the Latch ("Custom")
+        /// activator's own discipline, writing the shift runtime's
+        /// CustomLayer override under the runtime lock with a version bump.
+        /// "Base" (or empty) returns to the base layer and clears the
+        /// activator stack, so a toggled layer releases too; a Hold
+        /// activator still physically held re-engages on the next tick,
+        /// which is what Hold means. A mask the slot's set does not declare
+        /// is a NO-OP: the guard lives inside the operation, so a stale
+        /// action left behind by a layer rename or delete goes inert
+        /// instead of engaging a rowless layer.</summary>
+        public static void ApplyMacroLayerSwitch(int slotIndex, string mask)
+        {
+            if (slotIndex < 0 || slotIndex >= _shiftRuntime.Length) return;
+            // Create-on-demand like ResolveActiveLayerMask: a macro can fire
+            // before the resolver's first pass over a slot has built its
+            // runtime (and the tests drive the helper directly).
+            var rt = _shiftRuntime[slotIndex] ??= new ShiftRuntime();
+
+            bool toBase = string.IsNullOrEmpty(mask)
+                || string.Equals(mask, "Base", System.StringComparison.Ordinal);
+            if (!toBase)
+            {
+                var set = slotIndex < (SettingsManager.SlotMappingSets?.Length ?? 0)
+                    ? SettingsManager.SlotMappingSets[slotIndex]
+                    : null;
+                bool declared = false;
+                var acts = set?.ShiftActivators;
+                if (acts != null)
+                {
+                    foreach (var a in acts)
+                    {
+                        if (a != null && string.Equals(a.LayerMask, mask, System.StringComparison.Ordinal))
+                        {
+                            declared = true;
+                            break;
+                        }
+                    }
+                }
+                if (!declared) return;
+            }
+
+            lock (rt.SyncRoot)
+            {
+                if (toBase)
+                {
+                    rt.CustomLayer = "";
+                    rt.Stack.Clear();
+                }
+                else
+                {
+                    rt.CustomLayer = mask;
+                }
+                rt.Version++;
+            }
+        }
+
         public static void ClearShiftRuntime(int slotIndex)
         {
             if (slotIndex < 0 || slotIndex >= _shiftRuntime.Length) return;

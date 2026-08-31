@@ -3438,6 +3438,7 @@ namespace PadForge.Services
                 LightbarCycleModesCsv = ad.LightbarCycleModesCsv,
                 PointerCycleModesCsv = ad.PointerCycleModesCsv,
                 PointerSetMode = ad.PointerSetMode ?? "Mouse",
+                SwitchLayerMask = ad.SwitchLayerMask ?? "Base",
                 GuideLedPercent = ad.GuideLedPercent,
                 SoundFilePath = ad.SoundFilePath ?? string.Empty,
                 SoundVolume = ad.SoundVolume > 0 ? ad.SoundVolume : 100,
@@ -4594,6 +4595,7 @@ namespace PadForge.Services
                 LightbarCycleModesCsv = a.LightbarCycleModesCsv,
                 PointerCycleModesCsv = a.PointerCycleModesCsv,
                 PointerSetMode = a.PointerSetMode,
+                SwitchLayerMask = a.SwitchLayerMask,
                 GuideLedPercent = a.GuideLedPercent,
                 SoundFilePath = string.IsNullOrEmpty(a.SoundFilePath) ? null : a.SoundFilePath,
                 SoundVolume = a.SoundVolume,
@@ -6463,6 +6465,8 @@ namespace PadForge.Services
         [XmlElement] public string PointerCycleModesCsv { get; set; } = "Mouse,FpsMouse,Mouse43,Mouse169";
         /// <summary>Target mode name for PointerModeSet (issue #203 follow-up).</summary>
         [XmlElement] public string PointerSetMode { get; set; } = "Mouse";
+        /// <summary>Target layer mask for SwitchLayer (#377).</summary>
+        [XmlElement] public string SwitchLayerMask { get; set; } = "Base";
         /// <summary>Brightness percent for GuideLedBrightness (#209).</summary>
         [XmlElement] public int GuideLedPercent { get; set; } = 100;
 

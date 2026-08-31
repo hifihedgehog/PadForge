@@ -2567,6 +2567,9 @@
   <data name="MacroAction_PointerModeSet_Format" xml:space="preserve"><value>设置指针模式：{0}</value></data>
   <data name="MacroAction_PointerModeSet_Tooltip" xml:space="preserve"><value>将槽位中所有支持IR的遥控器的Wii指针模式设置为下方所选模式。</value></data>
   <data name="Macro_PointerSetMode_Hint" xml:space="preserve"><value>选择此动作应用的指针模式。</value></data>
+  <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>切换层</value></data>
+  <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>切换到层{0}</value></data>
+  <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>将此插槽切换到所选的Shift层。该层保持激活，直到下一次切换、Latch或Cycle激活器或配置文件切换。Base返回基础层。配合上方的层限定，同一按钮可在不同层上执行不同跳转。</value></data>
   <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>重置指针模式</value></data>
   <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>重置指针调节</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>重置感应条位置</value></data>

@@ -128,6 +128,13 @@ namespace PadForge.Services
         /// <summary>Whether the poll-thread publisher should bother.</summary>
         public static bool PublisherArmed => Volatile.Read(ref s_publisherArmed) != 0;
 
+        /// <summary>Provider bring-up attempts this worker has made. The
+        /// long.MinValue sentinel bug made this observably ZERO while the
+        /// worker looked healthy from every other angle (found by a live
+        /// stack dump), so the retry cadence is a tested, countable fact.</summary>
+        internal int ProviderInitAttempts => Volatile.Read(ref _providerInitAttempts);
+        private int _providerInitAttempts;
+
         /// <summary>Publishes the merged rumble amplitude (0..1). Called at
         /// poll rate from the engine's rumble lane; one volatile write.</summary>
         public static void PublishAmplitude(float amplitude)
@@ -176,9 +183,11 @@ namespace PadForge.Services
             try
             {
                 // 1. Engine up (HAR.dll runs with no Razer device present).
+                PadForge.Engine.SdlDiagLog.WriteLine("SENSA worker: calling HAR.Init");
                 try { harUp = Har.Init(); }
-                catch (DllNotFoundException) { }
-                catch (EntryPointNotFoundException) { }
+                catch (DllNotFoundException) { PadForge.Engine.SdlDiagLog.WriteLine("SENSA HAR.dll not found"); }
+                catch (EntryPointNotFoundException) { PadForge.Engine.SdlDiagLog.WriteLine("SENSA HAR entry point missing"); }
+                PadForge.Engine.SdlDiagLog.WriteLine($"SENSA HAR.Init => {harUp}");
                 if (!harUp)
                 {
                     PadForge.Engine.SdlDiagLog.WriteLine("SENSA HAR.Init failed or HAR.dll missing");
@@ -205,7 +214,14 @@ namespace PadForge.Services
                 Har.SetEventIntensity(effectId, 0.0);
                 Har.PlayEvent(effectId, -clock.Elapsed.TotalSeconds, 0.0, 0.0);
 
-                long lastProviderTry = long.MinValue;
+                // Sentinel arithmetic, not long.MinValue: TickCount64 minus
+                // MinValue overflows negative, which silently disabled the
+                // provider retry forever (found by a live stack dump: the
+                // worker sat healthy in its tick loop while the init block
+                // never entered, and the attempts counter read zero). One
+                // full interval in the past fires the first attempt on the
+                // first tick.
+                long lastProviderTry = Environment.TickCount64 - _retryMs;
                 float lastIntensity = -1f;
                 Report(SensaServiceState.WaitingForRuntime);
 
@@ -218,6 +234,7 @@ namespace PadForge.Services
                     if (!providerUp && nowTick - lastProviderTry >= _retryMs)
                     {
                         lastProviderTry = nowTick;
+                        Interlocked.Increment(ref _providerInitAttempts);
                         try { providerUp = Provider.ProviderInit(); }
                         catch (DllNotFoundException) { }
                         catch (EntryPointNotFoundException) { }

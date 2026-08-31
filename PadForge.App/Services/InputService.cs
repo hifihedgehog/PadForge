@@ -9188,6 +9188,8 @@ namespace PadForge.Services
 
         private void StartSensaIfEnabled()
         {
+            PadForge.Engine.SdlDiagLog.WriteLine(
+                $"SENSA start? enabled={_mainVm.Dashboard.EnableSensaHaptics} engine={_inputManager != null} live={_sensaService != null}");
             if (!_mainVm.Dashboard.EnableSensaHaptics || _inputManager == null)
                 return;
             if (_sensaService != null)

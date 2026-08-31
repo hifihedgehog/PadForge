@@ -2165,6 +2165,7 @@ namespace PadForge.Services
             // Load web controller server settings.
             PadForge.Services.WebCustomLayoutStore.LoadFrom(appSettings.WebCustomLayoutsJson);
             _mainVm.Dashboard.EnableWebController = appSettings.EnableWebController;
+            _mainVm.Dashboard.EnableChromaLightbar = appSettings.EnableChromaLightbar;
             _mainVm.Dashboard.WebControllerPort = appSettings.WebControllerPort > 0
                 ? appSettings.WebControllerPort : 8080;
             _mainVm.Dashboard.EnableRemoteLink = appSettings.EnableRemoteLink;
@@ -3675,6 +3676,7 @@ namespace PadForge.Services
                 if (active.DsuMotionServerPort >= 1024 && active.DsuMotionServerPort <= 65535)
                     _mainVm.Dashboard.DsuMotionServerPort = active.DsuMotionServerPort;
                 _mainVm.Dashboard.EnableWebController = active.EnableWebController;
+                _mainVm.Dashboard.EnableChromaLightbar = active.EnableChromaLightbar;
                 if (active.WebControllerPort >= 1024 && active.WebControllerPort <= 65535)
                     _mainVm.Dashboard.WebControllerPort = active.WebControllerPort;
                 _mainVm.Dashboard.EnableTouchpadOverlay = active.EnableTouchpadOverlay;
@@ -3774,6 +3776,7 @@ namespace PadForge.Services
             profile.EnableDsuMotionServer = _mainVm.Dashboard.EnableDsuMotionServer;
             profile.DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort;
             profile.EnableWebController = _mainVm.Dashboard.EnableWebController;
+            profile.EnableChromaLightbar = _mainVm.Dashboard.EnableChromaLightbar;
             profile.WebControllerPort = _mainVm.Dashboard.WebControllerPort;
             profile.EnableTouchpadOverlay = _mainVm.Dashboard.EnableTouchpadOverlay;
             profile.EnableMenuOverlay = _mainVm.Dashboard.EnableMenuOverlay;
@@ -4177,6 +4180,7 @@ namespace PadForge.Services
                 EnableDsuMotionServer = _mainVm.Dashboard.EnableDsuMotionServer,
                 DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort,
                 EnableWebController = _mainVm.Dashboard.EnableWebController,
+                EnableChromaLightbar = _mainVm.Dashboard.EnableChromaLightbar,
                 WebControllerPort = _mainVm.Dashboard.WebControllerPort,
                 WebCustomLayoutsJson = PadForge.Services.WebCustomLayoutStore.Json,
                 EnableRemoteLink = _mainVm.Dashboard.EnableRemoteLink,
@@ -5936,6 +5940,12 @@ namespace PadForge.Services
         [XmlElement]
         public bool EnableWebController { get; set; }
 
+        /// <summary>Razer Chroma lightbar mirror opt-in (#373).
+        /// Default false: PadForge registers nothing with Synapse
+        /// until the user turns the mirror on.</summary>
+        [XmlElement]
+        public bool EnableChromaLightbar { get; set; }
+
         [XmlElement]
         public int WebControllerPort { get; set; } = 8080;
 
@@ -6768,6 +6778,12 @@ namespace PadForge.Services
         /// <summary>Whether the web controller server was enabled in this profile.</summary>
         [XmlElement]
         public bool EnableWebController { get; set; }
+
+        /// <summary>Razer Chroma lightbar mirror opt-in (#373).
+        /// Default false: PadForge registers nothing with Synapse
+        /// until the user turns the mirror on.</summary>
+        [XmlElement]
+        public bool EnableChromaLightbar { get; set; }
 
         /// <summary>Web controller server port for this profile.</summary>
         [XmlElement]

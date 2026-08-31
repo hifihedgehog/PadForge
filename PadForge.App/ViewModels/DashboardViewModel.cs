@@ -339,6 +339,28 @@ namespace PadForge.ViewModels
         }
 
         // ─────────────────────────────────────────────
+        //  Razer Chroma lightbar mirror (#373)
+        // ─────────────────────────────────────────────
+
+        private bool _enableChromaLightbar;
+
+        /// <summary>Whether the Razer Chroma lightbar mirror is enabled.</summary>
+        public bool EnableChromaLightbar
+        {
+            get => _enableChromaLightbar;
+            set => SetProperty(ref _enableChromaLightbar, value);
+        }
+
+        private string _chromaStatus = Strings.Instance.Common_Stopped;
+
+        /// <summary>Current status of the Chroma mirror for UI display.</summary>
+        public string ChromaStatus
+        {
+            get => _chromaStatus;
+            set => SetProperty(ref _chromaStatus, value ?? Strings.Instance.Common_Stopped);
+        }
+
+        // ─────────────────────────────────────────────
         //  Web Controller Server
         // ─────────────────────────────────────────────
 

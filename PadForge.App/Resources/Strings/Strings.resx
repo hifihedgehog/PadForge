@@ -263,6 +263,12 @@
   <data name="Dashboard_Services" xml:space="preserve"><value>Services</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Motion Server</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>DSU/CemuHook Motion Provider protocol server for gyro and accelerometer data.</value></data>
+  <data name="Dashboard_Chroma" xml:space="preserve"><value>Razer Chroma</value></data>
+  <data name="Dashboard_ChromaDescription" xml:space="preserve"><value>Forwards the lightbar color a game sets on a virtual PlayStation controller to your Razer Chroma devices. PadForge appears in Razer Synapse as a Chroma app, where you scope or disable it.</value></data>
+  <data name="Dashboard_EnableChroma" xml:space="preserve"><value>Mirror Lightbar to Razer Chroma</value></data>
+  <data name="Dashboard_ChromaWaiting" xml:space="preserve"><value>Razer Synapse not detected. Retrying.</value></data>
+  <data name="Dashboard_ChromaConnected" xml:space="preserve"><value>Connected to Razer Chroma</value></data>
+  <data name="Dashboard_ChromaFooter" xml:space="preserve"><value>Requires Razer Synapse with Chroma Connect. Works with any physical controller: the color comes from the virtual pad the game paints.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Enable DSU Motion Server (CemuHook Motion Provider Protocol)</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>Port</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Provides gyro and accelerometer data to Cemu, Dolphin, Yuzu, etc.</value></data>

@@ -1621,6 +1621,27 @@
                 </StackPanel>
             </Border>
 
+            <!-- ═══ Razer Chroma lightbar mirror (#373) ═══ -->
+            <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
+                <TextBlock Text="&#xE781;" Style="{StaticResource SectionGlyph}"/>
+                <TextBlock Text="{Binding Dashboard_Chroma, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" Style="{StaticResource SectionTitle}"/>
+            </StackPanel>
+
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
+                <StackPanel>
+                    <TextBlock Text="{Binding Dashboard_ChromaDescription, Source={x:Static strings:Strings.Instance}}"
+                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
+                    <CheckBox Content="{Binding Dashboard_EnableChroma, Source={x:Static strings:Strings.Instance}}"
+                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                              IsChecked="{Binding EnableChromaLightbar}" Margin="0,0,0,8"/>
+                    <TextBlock Text="{Binding ChromaStatus}" FontSize="12"
+                               FontFamily="{StaticResource TelemetryFontFamily}"
+                               Foreground="{DynamicResource ColdBrush}" Margin="0,0,0,4"/>
+                    <TextBlock Text="{Binding Dashboard_ChromaFooter, Source={x:Static strings:Strings.Instance}}"
+                               FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
+                </StackPanel>
+            </Border>
+
             <!-- Remote Link (issue #138) -->
             <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
                 <TextBlock Text="&#xE969;" Style="{StaticResource SectionGlyph}"/>

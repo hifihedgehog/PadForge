@@ -333,6 +333,12 @@ public class Strings : INotifyPropertyChanged
     public string Dashboard_Services => Get("Dashboard_Services");
     public string Dashboard_MotionServer => Get("Dashboard_MotionServer");
     public string Dashboard_DsuDescription => Get("Dashboard_DsuDescription");
+    public string Dashboard_Chroma => Get("Dashboard_Chroma");
+    public string Dashboard_ChromaDescription => Get("Dashboard_ChromaDescription");
+    public string Dashboard_EnableChroma => Get("Dashboard_EnableChroma");
+    public string Dashboard_ChromaWaiting => Get("Dashboard_ChromaWaiting");
+    public string Dashboard_ChromaConnected => Get("Dashboard_ChromaConnected");
+    public string Dashboard_ChromaFooter => Get("Dashboard_ChromaFooter");
     public string Dashboard_EnableDsu => Get("Dashboard_EnableDsu");
     public string Dashboard_Port => Get("Dashboard_Port");
     public string Dashboard_DsuFooter => Get("Dashboard_DsuFooter");

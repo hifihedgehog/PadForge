@@ -227,6 +227,12 @@
   <data name="Dashboard_DeleteSlotConfirm_Format" xml:space="preserve"><value>Se desasignarán {0} dispositivo(s) asignado(s).</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>Servidor de movimiento</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>Servidor DSU/CemuHook Motion Provider protocol para datos de giroscopio y acelerómetro.</value></data>
+  <data name="Dashboard_Chroma" xml:space="preserve"><value>Razer Chroma</value></data>
+  <data name="Dashboard_ChromaDescription" xml:space="preserve"><value>Reenvía el color de la barra de luz que un juego fija en un mando PlayStation virtual a tus dispositivos Razer Chroma. PadForge aparece en Razer Synapse como una app Chroma, donde puedes acotarlo o desactivarlo.</value></data>
+  <data name="Dashboard_EnableChroma" xml:space="preserve"><value>Reflejar la barra de luz en Razer Chroma</value></data>
+  <data name="Dashboard_ChromaWaiting" xml:space="preserve"><value>Razer Synapse no detectado. Reintentando.</value></data>
+  <data name="Dashboard_ChromaConnected" xml:space="preserve"><value>Conectado a Razer Chroma</value></data>
+  <data name="Dashboard_ChromaFooter" xml:space="preserve"><value>Requiere Razer Synapse con Chroma Connect. Funciona con cualquier mando físico: el color proviene del mando virtual que pinta el juego.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Habilitar servidor de movimiento DSU (CemuHook Motion Provider protocol)</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>Puerto</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Proporciona datos de giroscopio y acelerómetro a Cemu, Dolphin, Yuzu, etc.</value></data>

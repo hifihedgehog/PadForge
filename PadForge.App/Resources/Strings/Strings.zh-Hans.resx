@@ -227,6 +227,12 @@
   <data name="Dashboard_DeleteSlotConfirm_Format" xml:space="preserve"><value>将取消 {0} 个已映射设备的分配。</value></data>
   <data name="Dashboard_MotionServer" xml:space="preserve"><value>体感服务器</value></data>
   <data name="Dashboard_DsuDescription" xml:space="preserve"><value>用于陀螺仪和加速度计数据的 DSU / CemuHook Motion Provider 协议服务器。</value></data>
+  <data name="Dashboard_Chroma" xml:space="preserve"><value>Razer Chroma</value></data>
+  <data name="Dashboard_ChromaDescription" xml:space="preserve"><value>将游戏在虚拟PlayStation手柄上设置的灯条颜色转发到您的Razer Chroma设备。PadForge会作为Chroma应用显示在Razer Synapse中，可在那里限制范围或禁用。</value></data>
+  <data name="Dashboard_EnableChroma" xml:space="preserve"><value>将灯条镜像到Razer Chroma</value></data>
+  <data name="Dashboard_ChromaWaiting" xml:space="preserve"><value>未检测到Razer Synapse，正在重试。</value></data>
+  <data name="Dashboard_ChromaConnected" xml:space="preserve"><value>已连接到Razer Chroma</value></data>
+  <data name="Dashboard_ChromaFooter" xml:space="preserve"><value>需要带Chroma Connect的Razer Synapse。适用于任何物理手柄：颜色来自游戏绘制的虚拟手柄。</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>启用 DSU 体感服务器（CemuHook Motion Provider 协议）</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>端口</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>为 Cemu、Dolphin、Yuzu 等提供陀螺仪和加速度计数据。</value></data>

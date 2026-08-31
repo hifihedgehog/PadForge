@@ -1635,6 +1635,9 @@
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Deuxième entrée de l'accord</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>Seuil de l'axe</value></data>
   <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>Parcourir les couches</value></data>
+  <data name="Pad_Shift_HostLayer" xml:space="preserve"><value>Seulement dans le calque</value></data>
+  <data name="Pad_Shift_HostLayerAny" xml:space="preserve"><value>Tout calque</value></data>
+  <data name="Pad_Shift_HostLayer_Tooltip" xml:space="preserve"><value>L’entrée ne compte que lorsque le calque choisi est actif. La vérification a lieu à l’appui et vaut pour toute la pression. Tout calque signifie que l’entrée compte toujours. Créez les sorties de chaque calque sur ce calque, avec un autre activateur ou une macro Changer de calque.</value></data>
   <data name="Pad_Shift_Kind" xml:space="preserve"><value>Type d'activateur</value></data>
   <data name="Pad_Shift_KindButton" xml:space="preserve"><value>Bouton</value></data>
   <data name="Pad_Shift_KindChord" xml:space="preserve"><value>Accord (A + B)</value></data>

@@ -1528,6 +1528,7 @@ namespace PadForge.Views
             existing.ChordSecondDeviceGuid = dlg.Result.ChordSecondDeviceGuid;
             existing.ChordSecondDescriptor = dlg.Result.ChordSecondDescriptor;
             existing.AxisThreshold = dlg.Result.AxisThreshold;
+            existing.HostLayerMask = dlg.Result.HostLayerMask;
             existing.JumpToLayer = dlg.Result.JumpToLayer;
             existing.CycleLayers = dlg.Result.CycleLayers;
             existing.CyclePrevDeviceGuid = dlg.Result.CyclePrevDeviceGuid;
@@ -2145,6 +2146,14 @@ namespace PadForge.Views
                                 // (round five, X7).
                                 a.LayerMask = newMask;
                             }
+                            // v9 host-layer conditions follow the rename
+                            // too (#370 follow-up), or the gate goes inert
+                            // (it can never match) the moment its host
+                            // layer's mask changes. Before the CycleLayers
+                            // early-continue: a ringless activator still
+                            // carries a condition.
+                            if (string.Equals(a.HostLayerMask, oldMask, StringComparison.Ordinal))
+                                a.HostLayerMask = newMask;
                             if (string.IsNullOrEmpty(a.CycleLayers)) continue;
                             var stops = a.CycleLayers.Split('|', StringSplitOptions.RemoveEmptyEntries);
                             bool touched = false;

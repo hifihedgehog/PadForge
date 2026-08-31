@@ -2940,6 +2940,9 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Shift_ChordSecondInput => Get("Pad_Shift_ChordSecondInput");
     public string Pad_Shift_AxisThreshold => Get("Pad_Shift_AxisThreshold");
     public string Pad_Shift_CycleLayers => Get("Pad_Shift_CycleLayers");
+    public string Pad_Shift_HostLayer => Get("Pad_Shift_HostLayer");
+    public string Pad_Shift_HostLayerAny => Get("Pad_Shift_HostLayerAny");
+    public string Pad_Shift_HostLayer_Tooltip => Get("Pad_Shift_HostLayer_Tooltip");
     public string Pad_Shift_CycleNextButton => Get("Pad_Shift_CycleNextButton");
     public string Pad_Shift_CyclePrevButton => Get("Pad_Shift_CyclePrevButton");
     public string Pad_Shift_CycleWrap => Get("Pad_Shift_CycleWrap");

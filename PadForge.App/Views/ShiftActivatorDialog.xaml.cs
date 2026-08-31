@@ -258,6 +258,27 @@ namespace PadForge.Views
             cycleItems.Sort((x, y) => string.CompareOrdinal(x.LayerMask, y.LayerMask));
             CycleLayersList.ItemsSource = cycleItems;
 
+            // v9 host-layer condition (#370 follow-up): Any Layer (empty
+            // mask, the historical behavior), Base, then the slot's layers
+            // in the cycle list's canonical order (own layer included when
+            // editing: hosted-in-its-own-layer is the release-only shape).
+            // A stale host mask (its layer was deleted) is preserved as a
+            // raw-mask option instead of being silently rewritten to Any:
+            // the gate is inert either way, but Save must not broaden the
+            // activator to fire-anywhere behind the user's back.
+            var hostItems = new List<LayerOption>
+            {
+                new LayerOption { LayerMask = "", DisplayName = Strings.Instance.Pad_Shift_HostLayerAny },
+                new LayerOption { LayerMask = "Base", DisplayName = "Base" },
+            };
+            hostItems.AddRange(cycleItems);
+            string existingHost = existing?.HostLayerMask ?? "";
+            if (!string.IsNullOrEmpty(existingHost)
+                && !hostItems.Exists(o => string.Equals(o.LayerMask, existingHost, StringComparison.Ordinal)))
+                hostItems.Add(new LayerOption { LayerMask = existingHost, DisplayName = existingHost });
+            HostLayerCombo.ItemsSource = hostItems;
+            HostLayerCombo.SelectedValue = existingHost;
+
             // Validation context.
             _existingLayerNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             foreach (var a in _otherActivators)
@@ -692,6 +713,8 @@ namespace PadForge.Views
             // to-step). The Postpone toggle only makes sense with an own input.
             InputLabel.Visibility = isPassive ? Visibility.Collapsed : Visibility.Visible;
             InputRow.Visibility = isPassive ? Visibility.Collapsed : Visibility.Visible;
+            // v9 host-layer condition: Passive has no input to gate.
+            HostLayerRow.Visibility = isPassive ? Visibility.Collapsed : Visibility.Visible;
             KindLabel.Visibility = (isPassive || isCycle) ? Visibility.Collapsed : Visibility.Visible;
             KindCombo.Visibility = (isPassive || isCycle) ? Visibility.Collapsed : Visibility.Visible;
             DelayRow.Visibility = (isPassive || isCycle) ? Visibility.Collapsed : Visibility.Visible;
@@ -808,6 +831,11 @@ namespace PadForge.Views
 
             string mask = DeriveUniqueMask(name, _existingLayerMasks);
 
+            // v9 host-layer condition. Cleared for Passive (no input to
+            // gate), the AutoCancelMs convention: a hidden field must not
+            // spring to life if the user later switches the mode.
+            string hostLayerMask = isPassive ? "" : (HostLayerCombo.SelectedValue as string ?? "");
+
             // Latch (#119) has no jump target; it engages its own layer.
             string jumpToLayer = "";
 
@@ -851,6 +879,7 @@ namespace PadForge.Views
                 ChordSecondDeviceGuid = isCycle ? "" : (chordSecond?.DeviceGuid ?? ""),
                 ChordSecondDescriptor = isCycle ? "" : (chordSecond?.Descriptor ?? ""),
                 AxisThreshold = AxisThresholdSlider.Value,
+                HostLayerMask = hostLayerMask,
                 JumpToLayer = jumpToLayer,
                 CycleLayers = cycleLayers,
                 CyclePrevDeviceGuid = isCycle ? (chordSecond?.DeviceGuid ?? "") : "",

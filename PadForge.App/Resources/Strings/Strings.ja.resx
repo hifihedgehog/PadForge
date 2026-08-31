@@ -1635,6 +1635,9 @@
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>コードの2番目の入力</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>軸のしきい値</value></data>
   <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>レイヤーをサイクル</value></data>
+  <data name="Pad_Shift_HostLayer" xml:space="preserve"><value>指定レイヤー内のみ</value></data>
+  <data name="Pad_Shift_HostLayerAny" xml:space="preserve"><value>すべてのレイヤー</value></data>
+  <data name="Pad_Shift_HostLayer_Tooltip" xml:space="preserve"><value>選択したレイヤーが有効な間だけ入力が有効になります。判定は押した瞬間に行われ、押している間は維持されます。「すべてのレイヤー」では入力は常に有効です。各レイヤーからの出口は、別のアクティベーターまたはレイヤー切替マクロでそのレイヤー上に作成してください。</value></data>
   <data name="Pad_Shift_Kind" xml:space="preserve"><value>アクティベーターの種類</value></data>
   <data name="Pad_Shift_KindButton" xml:space="preserve"><value>ボタン</value></data>
   <data name="Pad_Shift_KindChord" xml:space="preserve"><value>コード(A + B)</value></data>

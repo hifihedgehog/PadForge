@@ -567,6 +567,16 @@ namespace PadForge.Common.Input
             public bool[] DoublePressRawWasDown = System.Array.Empty<bool>();
             public long[] DoublePressAnchorTicks = System.Array.Empty<long>();
             public bool[] DoublePressActive = System.Array.Empty<bool>();
+            // v9 host-layer condition (#370 follow-up): per-activator
+            // press-latched gate verdict plus the raw-input latch its
+            // rising-edge detection needs (WasDown stores the GATED read,
+            // the same reason the double-press gate keeps its own raw
+            // latch). The Prev pair serves the Cycle Previous button,
+            // which reads outside the shared input path.
+            public bool[] HostGateOpen = System.Array.Empty<bool>();
+            public bool[] HostGateRawWasDown = System.Array.Empty<bool>();
+            public bool[] HostGatePrevOpen = System.Array.Empty<bool>();
+            public bool[] HostGatePrevRawWasDown = System.Array.Empty<bool>();
             // #206 auto-cancel: last tick the engaged layer showed
             // activity (stamped at engage, refreshed from
             // LayerOutputTicks). Only meaningful while ToggleOn and
@@ -626,6 +636,10 @@ namespace PadForge.Common.Input
                 DoublePressRawWasDown = ResizeBool(DoublePressRawWasDown, newSize);
                 DoublePressAnchorTicks = ResizeLong(DoublePressAnchorTicks, newSize);
                 DoublePressActive = ResizeBool(DoublePressActive, newSize);
+                HostGateOpen = ResizeBool(HostGateOpen, newSize);
+                HostGateRawWasDown = ResizeBool(HostGateRawWasDown, newSize);
+                HostGatePrevOpen = ResizeBool(HostGatePrevOpen, newSize);
+                HostGatePrevRawWasDown = ResizeBool(HostGatePrevRawWasDown, newSize);
             }
 
             public void Clear()
@@ -645,6 +659,10 @@ namespace PadForge.Common.Input
                 System.Array.Clear(DoublePressRawWasDown, 0, DoublePressRawWasDown.Length);
                 System.Array.Clear(DoublePressAnchorTicks, 0, DoublePressAnchorTicks.Length);
                 System.Array.Clear(DoublePressActive, 0, DoublePressActive.Length);
+                System.Array.Clear(HostGateOpen, 0, HostGateOpen.Length);
+                System.Array.Clear(HostGateRawWasDown, 0, HostGateRawWasDown.Length);
+                System.Array.Clear(HostGatePrevOpen, 0, HostGatePrevOpen.Length);
+                System.Array.Clear(HostGatePrevRawWasDown, 0, HostGatePrevRawWasDown.Length);
                 LayerOutputTicks.Clear();
                 lock (SyncRoot)
                 {
@@ -1261,7 +1279,7 @@ namespace PadForge.Common.Input
                     && !string.IsNullOrEmpty(act.DeviceGuid))
                     continue;
 
-                UpdateActivatorState(rt, i, act, thisDeviceState, slotIndex);
+                UpdateActivatorState(rt, i, act, activators, thisDeviceState, slotIndex);
             }
 
             // v2 Postpone-the-mapping: rebuild the per-slot suppression
@@ -1331,11 +1349,36 @@ namespace PadForge.Common.Input
             ShiftRuntime rt,
             int actIdx,
             ShiftActivator act,
+            System.Collections.Generic.List<ShiftActivator> activators,
             CustomInputState state,
             int slotIndex)
         {
             // ── Read the activator's current input ──
             bool inputDown = ReadActivatorInput(act, state, slotIndex);
+
+            // ── v9 host-layer condition (#370 follow-up): when
+            //    HostLayerMask is set, the press only counts if that layer
+            //    was engaged at the moment the input went down, and the
+            //    verdict latches for the whole press. The latch matters
+            //    both ways: a press that opens the gate stays open even
+            //    though its own firing changes the layer (Hold would
+            //    oscillate at tick rate otherwise), and a press that finds
+            //    it closed stays closed even if the layer becomes the host
+            //    mid-hold, so entering a layer never conscripts an
+            //    already-held button. A closed press also writes false
+            //    into WasDown below, which keeps the postpone suppression
+            //    from consuming it, so the button's mapping rows on the
+            //    engaged layer fire instead: the same physical button
+            //    carries a different job per layer, which is the point. ──
+            if (!string.IsNullOrEmpty(act.HostLayerMask))
+            {
+                bool hostRawRising = inputDown && !rt.HostGateRawWasDown[actIdx];
+                if (hostRawRising)
+                    rt.HostGateOpen[actIdx] = HostGateSatisfied(rt, activators, act.HostLayerMask);
+                rt.HostGateRawWasDown[actIdx] = inputDown;
+                if (!inputDown) rt.HostGateOpen[actIdx] = false;
+                inputDown = rt.HostGateOpen[actIdx];
+            }
 
             // ── v7 double-press gate (translator v25): when DoublePressMs
             //    is set, the input counts as engaged only during the
@@ -1505,6 +1548,19 @@ namespace PadForge.Common.Input
                         prevDown = SourceKindRuntimeReadButtonLikeBool(prevState, act.CyclePrevDescriptor, prevGuid, slotIndex);
                     }
 
+                    // v9 host-layer condition: the Previous button reads
+                    // outside the shared input path above, so it carries its
+                    // own press-latched gate (same contract, own latches).
+                    if (!string.IsNullOrEmpty(act.HostLayerMask))
+                    {
+                        bool prevHostRawRising = prevDown && !rt.HostGatePrevRawWasDown[actIdx];
+                        if (prevHostRawRising)
+                            rt.HostGatePrevOpen[actIdx] = HostGateSatisfied(rt, activators, act.HostLayerMask);
+                        rt.HostGatePrevRawWasDown[actIdx] = prevDown;
+                        if (!prevDown) rt.HostGatePrevOpen[actIdx] = false;
+                        prevDown = rt.HostGatePrevOpen[actIdx];
+                    }
+
                     // The step edges. Cycle deliberately ignores DelayMs (a
                     // hold-to-engage debounce makes no sense on a
                     // press-to-step control), which is why it does not ride
@@ -1614,6 +1670,44 @@ namespace PadForge.Common.Input
             }
 
             rt.WasDown[actIdx] = inputDown;
+        }
+
+        /// <summary>v9 host-layer condition (#370 follow-up): is
+        /// <paramref name="hostMask"/> the slot's engaged layer right now?
+        /// Mirrors the resolver tail exactly: a non-empty CustomLayer (a
+        /// Latch or Cycle engagement, or a #377 Switch Layer macro jump)
+        /// wins, else the stack tail's own LayerMask, else Base. Reading
+        /// mid-pass is deliberate: an earlier activator's transition this
+        /// tick counts, and the alternative (a tick-start snapshot) costs
+        /// a lock on every pass for a distinction no press can observe.
+        /// Only called on press edges of host-gated activators.</summary>
+        private static bool HostGateSatisfied(
+            ShiftRuntime rt,
+            System.Collections.Generic.List<ShiftActivator> activators,
+            string hostMask)
+        {
+            string customLayer;
+            int winnerIdx;
+            lock (rt.SyncRoot)
+            {
+                customLayer = rt.CustomLayer;
+                winnerIdx = rt.Stack.Count > 0 ? rt.Stack[rt.Stack.Count - 1] : -1;
+            }
+            string engaged;
+            if (!string.IsNullOrEmpty(customLayer))
+            {
+                engaged = customLayer;
+            }
+            else if (winnerIdx < 0 || activators == null || winnerIdx >= activators.Count)
+            {
+                engaged = "Base";
+            }
+            else
+            {
+                var w = activators[winnerIdx];
+                engaged = string.IsNullOrEmpty(w?.LayerMask) ? "Base" : w.LayerMask;
+            }
+            return string.Equals(engaged, hostMask, System.StringComparison.Ordinal);
         }
 
         /// <summary>Reads the input for an activator according to its

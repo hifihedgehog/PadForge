@@ -1635,6 +1635,9 @@
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Zweite Akkord-Eingabe</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>Achsenschwellwert</value></data>
   <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>Ebenen durchlaufen</value></data>
+  <data name="Pad_Shift_HostLayer" xml:space="preserve"><value>Nur in Ebene</value></data>
+  <data name="Pad_Shift_HostLayerAny" xml:space="preserve"><value>Jede Ebene</value></data>
+  <data name="Pad_Shift_HostLayer_Tooltip" xml:space="preserve"><value>Die Eingabe zählt nur, solange die gewählte Ebene aktiv ist. Die Prüfung erfolgt beim Herunterdrücken und gilt für den gesamten Tastendruck. Jede Ebene bedeutet, dass die Eingabe immer zählt. Die Ausgänge einer Ebene gehören auf diese Ebene, über einen weiteren Aktivator oder ein Ebene-wechseln-Makro.</value></data>
   <data name="Pad_Shift_Kind" xml:space="preserve"><value>Aktivator-Art</value></data>
   <data name="Pad_Shift_KindButton" xml:space="preserve"><value>Taste</value></data>
   <data name="Pad_Shift_KindChord" xml:space="preserve"><value>Akkord (A + B)</value></data>

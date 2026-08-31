@@ -1655,6 +1655,9 @@
   <data name="Pad_Shift_ChordSecondInput" xml:space="preserve"><value>Tweede akkoord-invoer</value></data>
   <data name="Pad_Shift_AxisThreshold" xml:space="preserve"><value>As-drempel</value></data>
   <data name="Pad_Shift_CycleLayers" xml:space="preserve"><value>Door lagen cyclen</value></data>
+  <data name="Pad_Shift_HostLayer" xml:space="preserve"><value>Alleen in laag</value></data>
+  <data name="Pad_Shift_HostLayerAny" xml:space="preserve"><value>Elke laag</value></data>
+  <data name="Pad_Shift_HostLayer_Tooltip" xml:space="preserve"><value>De invoer telt alleen zolang de gekozen laag actief is. De controle gebeurt bij het indrukken en geldt voor de hele druk. Elke laag betekent dat de invoer altijd telt. Maak de uitgangen van elke laag op die laag, met een andere activator of een Van laag wisselen-macro.</value></data>
   <data name="Pad_Shift_Kind" xml:space="preserve"><value>Soort activator</value></data>
   <data name="Pad_Shift_KindButton" xml:space="preserve"><value>Knop</value></data>
   <data name="Pad_Shift_KindChord" xml:space="preserve"><value>Akkoord (A + B)</value></data>

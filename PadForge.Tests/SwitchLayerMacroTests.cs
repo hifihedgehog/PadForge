@@ -166,6 +166,18 @@ namespace PadForge.Tests
             Assert.Contains("ApplyMacroLayerSwitch(slotIndex, action.SwitchLayerMask);", body);
             Assert.Contains("AdvanceAction(macro);", body);
 
+            // The Base branch clears the activator stack too, so a
+            // toggled layer releases when a macro returns to Base. Source
+            // contract: driving a stacked Toggle through the full resolver
+            // is out of unit reach, and this pin keeps the clear from being
+            // silently dropped.
+            string step3 = RepoText("PadForge.App", "Common", "Input", "InputManager.Step3.MappingSetEval.cs");
+            int helper = step3.IndexOf("public static void ApplyMacroLayerSwitch", StringComparison.Ordinal);
+            Assert.True(helper > 0);
+            string helperBody = step3.Substring(helper, 2400);
+            Assert.Contains("rt.Stack.Clear();", helperBody);
+            Assert.Contains("rt.Version++;", helperBody);
+
             string page = RepoText("PadForge.App", "Views", "PadPage.xaml");
             Assert.Contains("Binding IsSwitchLayerType", page);
             Assert.Contains("{x:Static vm:MacroActionType.SwitchLayer}", page);

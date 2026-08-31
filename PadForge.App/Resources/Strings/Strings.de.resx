@@ -2567,6 +2567,9 @@
   <data name="MacroAction_PointerModeSet_Format" xml:space="preserve"><value>Zeigermodus festlegen: {0}</value></data>
   <data name="MacroAction_PointerModeSet_Tooltip" xml:space="preserve"><value>Legt den Wii-Zeigermodus für jede IR-fähige Remote im Slot auf den unten gewählten Modus fest.</value></data>
   <data name="Macro_PointerSetMode_Hint" xml:space="preserve"><value>Wähle den Zeigermodus, den diese Aktion anwendet.</value></data>
+  <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>Ebene wechseln</value></data>
+  <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>Zu Ebene {0} wechseln</value></data>
+  <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>Springt für diesen Slot zur gewählten Shift-Ebene. Die Ebene bleibt aktiv bis zum nächsten Wechsel, einem Latch- oder Cycle-Aktivator oder einem Profilwechsel. Basis kehrt zur Basisebene zurück. Mit einer Ebenen-Eingrenzung oben springt dieselbe Taste je Ebene unterschiedlich.</value></data>
   <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Zeigermodus zurücksetzen</value></data>
   <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>Zeiger-Abstimmung zurücksetzen</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Position der Sensorleiste zurücksetzen</value></data>

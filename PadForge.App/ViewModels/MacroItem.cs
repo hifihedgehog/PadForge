@@ -2730,6 +2730,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsLightbarModeCycleType));
                     OnPropertyChanged(nameof(IsPointerModeCycleType));
                     OnPropertyChanged(nameof(IsPointerModeSetType));
+                    OnPropertyChanged(nameof(IsSwitchLayerType));
                     OnPropertyChanged(nameof(IsGuideLedBrightnessType));
                     OnPropertyChanged(nameof(IsAnyLightbarType));
                     OnPropertyChanged(nameof(IsLightbarReactiveHold));
@@ -3156,6 +3157,10 @@ namespace PadForge.ViewModels
         /// <summary>True when Type is PointerModeCycle (issue #203).</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool IsPointerModeCycleType => _type == MacroActionType.PointerModeCycle;
+
+        /// <summary>True when Type is SwitchLayer (#377).</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsSwitchLayerType => _type == MacroActionType.SwitchLayer;
 
         /// <summary>True when Type is PointerModeSet (issue #203 follow-up).</summary>
         [System.Xml.Serialization.XmlIgnore]
@@ -5120,6 +5125,26 @@ namespace PadForge.ViewModels
             set => _pointerCycleIndex = value;
         }
 
+        // Target layer mask for SwitchLayer (#377). A MASK, not a display
+        // name: masks are the slot-scoped identity rows and macros gate on,
+        // and RetagMacrosEverywhere renames this field alongside
+        // MacroItem.LayerMask when a layer's mask changes. "Base" returns
+        // to the base layer (clearing the activator stack); a mask the
+        // slot's set no longer declares is a runtime no-op by design, so a
+        // stale action left by a layer delete goes inert instead of
+        // engaging a rowless layer.
+        private string _switchLayerMask = "Base";
+        /// <summary>The layer mask SwitchLayer engages.</summary>
+        public string SwitchLayerMask
+        {
+            get => _switchLayerMask;
+            set
+            {
+                if (SetProperty(ref _switchLayerMask, string.IsNullOrEmpty(value) ? "Base" : value))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
         // Target mode for PointerModeSet (issue #203 follow-up), the
         // pointer sibling of LightbarTargetMode. A mode NAME like the
         // cycle CSV, so the settings XML stays readable.
@@ -5367,6 +5392,9 @@ namespace PadForge.ViewModels
                     MacroActionType.PointerModeSet => string.Format(
                         Strings.Instance.MacroAction_PointerModeSet_Format,
                         PointerModeDisplayName(NormalizedPointerSetMode())),
+                    MacroActionType.SwitchLayer => string.Format(
+                        Strings.Instance.MacroAction_SwitchLayer_Format,
+                        _switchLayerMask),
                     MacroActionType.GuideLedBrightness => string.Format(
                         Strings.Instance.MacroAction_GuideLedBrightness_Format,
                         _guideLedPercent),
@@ -6253,7 +6281,17 @@ namespace PadForge.ViewModels
         /// construction: the gate is a decaying heartbeat, so a macro that
         /// dies mid-hold closes it ~100 ms later instead of latching
         /// listening on. At the tail; ordinal pinned.</summary>
-        VoiceListenWhileHeld = 54
+        VoiceListenWhileHeld = 54,
+
+        /// <summary>Switches the slot's engaged shift layer (#377, asked in
+        /// discussion #370). One-shot: writes the shift runtime's
+        /// CustomLayer override with the Latch ("Custom") activator's own
+        /// lock-and-version discipline, so the layer stays engaged until
+        /// another switch, a Latch/Cycle transition, or a profile switch.
+        /// Combined with the #254 per-layer macro scope, the same physical
+        /// button can jump to a different layer per engaged layer, which is
+        /// the Steam Input action-set-layer graph shape.</summary>
+        SwitchLayer = 55
     }
 
     /// <summary>One parsed part of a <see cref="MacroActionType.CycleTapList"/>

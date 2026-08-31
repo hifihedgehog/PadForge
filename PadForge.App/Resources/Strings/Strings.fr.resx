@@ -2567,6 +2567,9 @@
   <data name="MacroAction_PointerModeSet_Format" xml:space="preserve"><value>Définir le mode du pointeur : {0}</value></data>
   <data name="MacroAction_PointerModeSet_Tooltip" xml:space="preserve"><value>Définit le mode du pointeur Wii sur celui sélectionné ci-dessous pour chaque télécommande IR du slot.</value></data>
   <data name="Macro_PointerSetMode_Hint" xml:space="preserve"><value>Choisissez le mode de pointeur que cette action applique.</value></data>
+  <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>Changer de calque</value></data>
+  <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>Passer au calque {0}</value></data>
+  <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>Fait passer ce slot au calque shift choisi. Le calque reste actif jusqu’à un autre changement, un activateur Latch ou Cycle, ou un changement de profil. Base revient au calque de base. Limitez cette macro à un calque ci-dessus pour qu’un même bouton saute différemment selon le calque.</value></data>
   <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Réinitialiser le mode du pointeur</value></data>
   <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>Réinitialiser le réglage du pointeur</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>Réinitialiser la position de la barre de capteurs</value></data>

@@ -2194,8 +2194,21 @@ namespace PadForge.Views
                 if (padVm?.Macros == null) continue;
                 foreach (var mac in padVm.Macros)
                 {
-                    if (mac != null && string.Equals(mac.LayerMask, oldMask, StringComparison.Ordinal))
+                    if (mac == null) continue;
+                    if (string.Equals(mac.LayerMask, oldMask, StringComparison.Ordinal))
                         mac.LayerMask = newMask;
+                    // SwitchLayer action targets (#377) follow the rename
+                    // too, or the jump goes inert (the runtime's
+                    // undeclared-mask no-op) the moment a layer's mask
+                    // changes.
+                    if (mac.Actions == null) continue;
+                    foreach (var act in mac.Actions)
+                    {
+                        if (act != null
+                            && act.Type == PadForge.ViewModels.MacroActionType.SwitchLayer
+                            && string.Equals(act.SwitchLayerMask, oldMask, StringComparison.Ordinal))
+                            act.SwitchLayerMask = newMask;
+                    }
                 }
             }
         }

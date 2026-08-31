@@ -2567,6 +2567,9 @@
   <data name="MacroAction_PointerModeSet_Format" xml:space="preserve"><value>ポインターモードを設定: {0}</value></data>
   <data name="MacroAction_PointerModeSet_Tooltip" xml:space="preserve"><value>スロット内のIR対応リモコンすべてのWiiポインターモードを、下で選択したモードに設定します。</value></data>
   <data name="Macro_PointerSetMode_Hint" xml:space="preserve"><value>このアクションが適用するポインターモードを選択します。</value></data>
+  <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>レイヤー切替</value></data>
+  <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>レイヤー{0}に切替</value></data>
+  <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>このスロットを選択したシフトレイヤーに切り替えます。レイヤーは次の切替、Latch/Cycleアクティベーター、またはプロファイル切替まで維持されます。Baseで基本レイヤーに戻ります。上のレイヤー限定と組み合わせると、同じボタンでレイヤーごとに異なるジャンプができます。</value></data>
   <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>ポインターモードをリセット</value></data>
   <data name="Pad_ResetPointerTuning" xml:space="preserve"><value>ポインター調整をリセット</value></data>
   <data name="Pad_ResetSensorBarPos" xml:space="preserve"><value>センサーバーの位置をリセット</value></data>

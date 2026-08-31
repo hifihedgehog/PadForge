@@ -320,6 +320,18 @@ namespace PadForge.Views
         /// STALE value, which the next device-list sync then wrote back over
         /// the user's edit (observed: 1 → 0 reverted to 1).
         /// </summary>
+        /// <summary>Quick Charge checkbox (#372): the TwoWay binding has
+        /// already written the row when Click fires, so this only flushes
+        /// the row into the persisted UserDevice, the same lane as the
+        /// idle-disconnect box below.</summary>
+        private void QuickCharge_Click(object sender, RoutedEventArgs e)
+        {
+            var vm = DataContext as ViewModels.DevicesViewModel;
+            var dev = vm?.SelectedDevice;
+            if (dev == null) return;
+            vm.NotifyDeviceHidingChanged(dev.InstanceGuid);
+        }
+
         private void IdleDisconnect_LostFocus(object sender, RoutedEventArgs e)
         {
             var vm = DataContext as ViewModels.DevicesViewModel;

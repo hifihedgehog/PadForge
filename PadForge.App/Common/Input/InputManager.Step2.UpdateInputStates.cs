@@ -432,14 +432,15 @@ namespace PadForge.Common.Input
             {
                 ud.IdleTrackedConnection = ud.Device;
                 ud.LastActiveTick = now;
-                // Fresh connection: re-arm Quick Charge (#372) so THIS
-                // arrival gets its one drop, and a later re-plug gets its
-                // own. The same freshness signal the idle stamp uses.
-                ud.QuickChargeHandled = false;
+                // Quick Charge (#372) deliberately does NOT re-arm here:
+                // its edge memory must survive the reconnect, or a user who
+                // re-links Bluetooth while the cable stays in would be
+                // dropped again on arrival. The unplug (a charging=false
+                // read) is the only re-arm.
                 return;
             }
 
-            CheckQuickCharge(ud, now);
+            CheckQuickCharge(ud, state, now);
 
             if (ud.IdleDisconnectSeconds <= 0)
             {
@@ -475,51 +476,59 @@ namespace PadForge.Common.Input
             FireIdleDisconnect(ud);
         }
 
-        /// <summary>Quick Charge (#372, discussion #367): when this ONLINE
-        /// non-Bluetooth device has a Bluetooth-pathed twin record with the
-        /// same serial (the pad's MAC, identical dash format on both
-        /// transports per SDL's ps4/ps5 drivers) and that twin opted in,
-        /// drop the twin's radio link so the pad just charges. SDL already
-        /// removed the twin's JOYSTICK when this USB side arrived
-        /// (HIDAPI_DisconnectBluetoothDevice, a software de-dup), so the
-        /// radio drop by MAC is the whole remaining job. Fires once per
-        /// USB arrival (the QuickChargeHandled latch, re-armed by the
-        /// fresh-connection stamp): a user who re-links Bluetooth while
-        /// charging is not fought, diverging from DS4Windows on the same
-        /// user-outranks-automation principle as #366's pin.</summary>
-        private static void CheckQuickCharge(UserDevice ud, long now)
+        /// <summary>Quick Charge (#372, discussion #367, reworked after
+        /// @Jobima1st's bench showed the USB-twin scan never firing): the
+        /// trigger is this Bluetooth-connected pad's OWN charging report,
+        /// the DS4Windows shape and the owner-directed design ("the same
+        /// behavior as the idle timeout, with the charging state as the
+        /// trigger instead of the timer"). SDL surfaces the plug within its
+        /// ~5 s battery refresh (SDL_GetGamepadPowerInfo, CHARGING or
+        /// CHARGED) on the SAME record the checkbox lives on, so there is
+        /// no twin record, no serial parsing, and no dependence on the USB
+        /// side enumerating at all, and a wall charger triggers exactly
+        /// like a PC port. The drop is a rising-edge one-shot through the
+        /// idle timeout's own hardware-confirmed lane
+        /// (<see cref="FireIdleDisconnect"/>): QuickChargePrevCharging
+        /// remembers the last read across reconnects, so a user who
+        /// deliberately re-links Bluetooth while the cable stays in reads
+        /// charging with no edge and is left alone until the next unplug
+        /// re-arms it, the same user-outranks-automation principle as
+        /// #366's pin.</summary>
+        private static void CheckQuickCharge(UserDevice ud, CustomInputState state, long now)
         {
-            if (ud.QuickChargeHandled) return;
+            if (!ud.QuickChargeEnabled) return;
             // ~1 Hz, the idle countdown's own cadence discipline.
             if (now - ud.LastQuickChargeCheckTick < 1000) return;
             ud.LastQuickChargeCheckTick = now;
 
-            // This side must be the WIRED one with a real MAC serial.
-            if (PadForge.Common.DeviceTransport.IsBluetooth(ud.DevicePath, ud.VendorId, ud.ProdId)) return;
-            if (!PadForge.Common.Input.BluetoothLinkHelper.TryParseAddress(ud.SerialNumber, out long addr) || addr == 0) return;
+            if (!QuickChargeEdge(ud, state.BatteryCharging)) return;
 
-            UserDevice twin = null;
-            var devices = SettingsManager.UserDevices;
-            lock (devices.SyncRoot)
-            {
-                for (int i = 0; i < devices.Items.Count; i++)
-                {
-                    var d = devices.Items[i];
-                    if (d == null || ReferenceEquals(d, ud) || !d.QuickChargeEnabled) continue;
-                    if (!PadForge.Common.Input.BluetoothLinkHelper.TryParseAddress(d.SerialNumber, out long dAddr) || dAddr != addr) continue;
-                    if (!PadForge.Common.DeviceTransport.IsBluetooth(d.DevicePath, d.VendorId, d.ProdId)) continue;
-                    twin = d;
-                    break;
-                }
-            }
-            if (twin == null) return;
+            // Only a Bluetooth path has a radio link to drop, and the #162
+            // helper must recognize the device before the IOCTL is worth
+            // a worker.
+            if (!PadForge.Common.DeviceTransport.IsBluetooth(ud.DevicePath, ud.VendorId, ud.ProdId)) return;
+            if (!PadForge.Common.Input.BluetoothLinkHelper.IsDisconnectTarget(ud.DevicePath, ud.VendorId, ud.ProdId, ud.SerialNumber)) return;
 
-            ud.QuickChargeHandled = true;
-            string serial = twin.SerialNumber;
             PadForge.Engine.SdlDiagLog.WriteLine(
-                $"QUICKCHARGE usb={ud.VendorId:X4}:{ud.ProdId:X4} dropping BT twin serial={serial}");
-            System.Threading.Tasks.Task.Run(() =>
-                PadForge.Common.Input.BluetoothLinkHelper.TryDisconnect(serial));
+                $"QUICKCHARGE {ud.VendorId:X4}:{ud.ProdId:X4} charging over Bluetooth, dropping link serial={ud.SerialNumber}");
+            FireIdleDisconnect(ud);
+        }
+
+        /// <summary>Pure rising-edge decision for Quick Charge, extracted
+        /// for the tests (the GroupNeed arrangement): true exactly when the
+        /// charging read goes false to true. A false read re-arms. The edge
+        /// memory lives on the record and survives reconnects by design;
+        /// see <see cref="UserDevice.QuickChargePrevCharging"/>.</summary>
+        internal static bool QuickChargeEdge(UserDevice ud, bool charging)
+        {
+            if (!charging)
+            {
+                ud.QuickChargePrevCharging = false;
+                return false;
+            }
+            if (ud.QuickChargePrevCharging) return false;
+            ud.QuickChargePrevCharging = true;
+            return true;
         }
 
         /// <summary>The capturing tail of the idle-disconnect countdown,

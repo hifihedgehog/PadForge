@@ -2400,7 +2400,7 @@
   <data name="Devices_Dossier" xml:space="preserve"><value>Dossier de l'appareil</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minutes (0 = jamais)</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Déconnecter le Bluetooth lors du branchement USB</value></data>
-  <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Charge rapide. Quand cette manette se connecte en USB, sa liaison Bluetooth est coupée pour qu’elle charge sans alimenter la radio. Si vous réactivez le Bluetooth pendant la charge, il reste intact jusqu’au prochain branchement.</value></data>
+  <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Quick Charge. Lorsque cette manette signale qu’elle charge alors qu’elle est connectée en Bluetooth, la liaison Bluetooth est coupée pour qu’elle charge sans alimenter la radio. Toute source d’alimentation USB compte, chargeurs muraux compris. Si vous réactivez le Bluetooth avec le câble branché, il est laissé tranquille jusqu’au prochain débranchement.</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Déconnecte cette manette Bluetooth après ce nombre de minutes sans entrée, pour qu'elle se mette en veille et économise la batterie. Ne se déclenche jamais en USB.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Alimentation</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>Menu</value></data>

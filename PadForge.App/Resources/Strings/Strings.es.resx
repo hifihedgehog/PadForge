@@ -2400,7 +2400,7 @@
   <data name="Devices_Dossier" xml:space="preserve"><value>Dossier del dispositivo</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minutos (0 = nunca)</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Desconectar Bluetooth al conectar por USB</value></data>
-  <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Carga rápida. Cuando este mando se conecta por USB, se corta su enlace Bluetooth para que cargue sin alimentar la radio. Si vuelves a activar el Bluetooth con el cable puesto, se respeta hasta la próxima vez que lo conectes.</value></data>
+  <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Quick Charge. Cuando este mando informa de que está cargando mientras está conectado por Bluetooth, el enlace Bluetooth se corta para que cargue sin alimentar la radio. Cuenta cualquier fuente de alimentación USB, incluidos los cargadores de pared. Si vuelves a activar Bluetooth con el cable puesto, se deja en paz hasta el siguiente desenchufe.</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Desconecta este mando Bluetooth tras esos minutos sin entrada, para que entre en reposo y ahorre batería. Nunca se activa por USB.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Encendido</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>Menú</value></data>

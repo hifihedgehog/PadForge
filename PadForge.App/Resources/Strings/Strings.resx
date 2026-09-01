@@ -465,7 +465,7 @@
   <data name="Devices_Dossier" xml:space="preserve"><value>Device Dossier</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minutes (0 = never)</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Disconnect Bluetooth When Plugged In over USB</value></data>
-  <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Quick Charge. When this pad connects over USB, its Bluetooth link is dropped so the controller charges without powering the radio. If you turn Bluetooth back on while plugged in, it is left alone until the next time you plug in.</value></data>
+  <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Quick Charge. When this controller reports it is charging while connected over Bluetooth, the Bluetooth link is dropped so it charges without powering the radio. Any USB power source counts, including wall chargers. If you turn Bluetooth back on while the cable stays in, it is left alone until the next unplug.</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Disconnects this Bluetooth controller after this many minutes without input, so it sleeps and saves battery. Never fires over USB.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Power</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>Menu</value></data>

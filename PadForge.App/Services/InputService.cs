@@ -1992,6 +1992,19 @@ namespace PadForge.Services
                 return (false, 100);
             };
 
+            // #381: per-(slot, device) low-pass cutoff for the Triton PCM
+            // haptic stream, same provider shape.
+            PadForge.Common.Input.HapticToneService.TritonLowPassProvider = (slotIndex, deviceGuid) =>
+            {
+                if (slotIndex >= 0 && slotIndex < _mainVm.Pads.Count
+                    && _mainVm.Pads[slotIndex].PerDeviceSlotConfigs.TryGetValue(deviceGuid, out var c)
+                    && c != null)
+                {
+                    return c.AudioTritonLowPassHz;
+                }
+                return 250;
+            };
+
             // Discussion #223: motor-side audio routing for the combined
             // Joy-Con pair's dual-coil tone sink. Reads the per-slot merged
             // rumble snapshot the dashboard meter uses (FinalVibrationStates:

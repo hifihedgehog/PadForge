@@ -2061,6 +2061,9 @@
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Gain haptique</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Réinitialiser par défaut (désactivé)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Réinitialiser par défaut (100 %)</value></data>
+  <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>Coupure passe-bas des actionneurs</value></data>
+  <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>Maintient le streaming haptique du Steam Controller sous cette fréquence pour que les pavés vibrent au lieu de produire un son audible. Vers 250 Hz les actionneurs deviennent audibles. Augmentez pour plus de détail, baissez pour jouer plus silencieusement.</value></data>
+  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Réinitialiser à 250 Hz</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Les sons au-dessus de cette fréquence sont coupés ou repliés. La valeur par défaut de 800 Hz préserve les vibrations moteur et d'impact tout en capturant les bips aigus.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Réinitialiser les sons aigus</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Réinitialiser la limite de tonalité</value></data>

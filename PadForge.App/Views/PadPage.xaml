@@ -11625,6 +11625,23 @@
                                         <ui:Button Command="{Binding ResetPersonaHapticsGainCommand}" Style="{StaticResource ResetButton}"
                                                 ToolTip="{Binding Pad_ResetPersonaHapticsGain, Source={x:Static strings:Strings.Instance}}"/>
                                     </StackPanel>
+                                    <!-- #381: Steam Controller 2026 PCM low-pass. Only
+                                         the PCM-capable transports (wired / dongle) show
+                                         it; the stream keeps actuator content below this
+                                         cutoff so the pads move instead of singing. -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,4,0,0"
+                                                Visibility="{Binding SelectedDeviceIsTritonPcm, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock Text="{Binding Pad_Audio_TritonLowPass_Label, Source={x:Static strings:Strings.Instance}}"
+                                                   ToolTip="{Binding Pad_Audio_TritonLowPass_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                                   Style="{StaticResource DzLabel}"/>
+                                        <Slider Value="{Binding DeviceConfig.AudioTritonLowPassHz, Mode=TwoWay}" Minimum="60" Maximum="1000"
+                                                Style="{StaticResource DzSlider}"/>
+                                        <TextBox Text="{Binding DeviceConfig.AudioTritonLowPassHz, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                 Style="{StaticResource DzValueEdit}"/>
+                                        <TextBlock Text="Hz" Style="{StaticResource DzPercent}"/>
+                                        <ui:Button Command="{Binding ResetTritonLowPassCommand}" Style="{StaticResource ResetButton}"
+                                                ToolTip="{Binding Pad_ResetTritonLowPass, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
                                 </StackPanel>
                                 <TextBlock Text="{Binding Pad_Audio_NoSpeaker, Source={x:Static strings:Strings.Instance}}"
                                            Style="{StaticResource CardDescription}"

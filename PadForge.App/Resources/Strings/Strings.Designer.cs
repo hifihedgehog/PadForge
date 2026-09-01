@@ -2282,6 +2282,9 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Audio_PersonaHapticsGain_Label => Get("Pad_Audio_PersonaHapticsGain_Label");
     public string Pad_ResetPersonaHaptics => Get("Pad_ResetPersonaHaptics");
     public string Pad_ResetPersonaHapticsGain => Get("Pad_ResetPersonaHapticsGain");
+    public string Pad_Audio_TritonLowPass_Label => Get("Pad_Audio_TritonLowPass_Label");
+    public string Pad_Audio_TritonLowPass_Tooltip => Get("Pad_Audio_TritonLowPass_Tooltip");
+    public string Pad_ResetTritonLowPass => Get("Pad_ResetTritonLowPass");
     public string Pad_Audio_ToneLimit_Tooltip => Get("Pad_Audio_ToneLimit_Tooltip");
     public string Pad_ResetToneFilterMode => Get("Pad_ResetToneFilterMode");
     public string Pad_ResetToneLimit => Get("Pad_ResetToneLimit");

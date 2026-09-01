@@ -2081,6 +2081,9 @@
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Haptiekversterking</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Standaard herstellen (uit)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Standaard herstellen (100%)</value></data>
+  <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>Actuator-laagdoorlaatgrens</value></data>
+  <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>Houdt de haptische streaming van de Steam Controller onder deze frequentie zodat de pads trillen in plaats van hoorbaar geluid af te spelen. Rond 250 Hz worden de actuatoren hoorbaar. Hoger voor scherper detail, lager voor stiller spelen.</value></data>
+  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>Terugzetten naar 250 Hz</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>Tonen boven deze frequentie worden weggeknipt of gevouwen. De standaard 800 Hz behoudt motor- en impacttrillingen en vangt hoge pieptonen af.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>Hoge tonen resetten</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>Toonlimiet resetten</value></data>

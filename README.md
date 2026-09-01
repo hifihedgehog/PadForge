@@ -6,7 +6,9 @@
 
 *"And we talk of Christ, we rejoice in Christ, we preach of Christ, we prophesy of Christ, and we write according to our prophecies, that our children may know to what source they may look for a remission of their sins."* — 2 Nephi 25:26
 
-*Glory, honor, and praise to the Lord Jesus Christ, the source of all truth, forever and ever.*
+*Glory, honor, and praise to the Lord Jesus Christ, the source of all truth and salvation, forever and ever.*
+
+*You are warmly invited to visit [ComeUntoChrist.org](https://www.comeuntochrist.org) and learn more about The Church of Jesus Christ of Latter-day Saints.*
 
 ---
 

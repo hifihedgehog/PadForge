@@ -2112,6 +2112,21 @@
   <data name="Pad_Audio_Packages_Remove_Tooltip" xml:space="preserve"><value>Retirer le paquet sélectionné de la liste. Le fichier n'est pas supprimé.</value></data>
   <data name="Pad_Audio_Packages_Empty" xml:space="preserve"><value>Aucun paquet de sons ajouté.</value></data>
   <data name="Pad_Audio_Packages_PickSounds" xml:space="preserve"><value>Choisissez les fichiers audio du paquet</value></data>
+  <data name="Menu_Binding_Macro" xml:space="preserve"><value>Macro</value></data>
+  <data name="Menu_MacroPicker_Tip" xml:space="preserve"><value>La macro déclenchée par cette cellule. Le mode de déclenchement de la macro s'applique tant que la cellule est active.</value></data>
+  <data name="Menu_ChooseIcon_Tip" xml:space="preserve"><value>Choisir l'icône de cette cellule : une entrée d'un pack d'icônes ou un fichier image.</value></data>
+  <data name="Menu_Icon_None" xml:space="preserve"><value>(Aucune icône)</value></data>
+  <data name="Menu_Icon_PickFromPackage_Format" xml:space="preserve"><value>Choisir une icône dans {0}</value></data>
+  <data name="Menu_Icon_PickTitle" xml:space="preserve"><value>Choisir une icône</value></data>
+  <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>Packs d'icônes</value></data>
+  <data name="Pad_Menus_IconPackages_Desc" xml:space="preserve"><value>Un pack d'icônes est un fichier zip d'images portant l'extension .pficons. Ajoutez-le ici, puis choisissez ses icônes sur n'importe quelle cellule de menu. PadForge lit directement le fichier et ne le décompresse jamais. Gardez les packs à côté de PadForge.exe pour rester portable.</value></data>
+  <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>Ajouter un pack…</value></data>
+  <data name="Pad_Menus_IconPackages_Add_Tooltip" xml:space="preserve"><value>Ajouter un fichier .pficons existant à la liste.</value></data>
+  <data name="Pad_Menus_IconPackages_Create" xml:space="preserve"><value>Créer un pack…</value></data>
+  <data name="Pad_Menus_IconPackages_Create_Tooltip" xml:space="preserve"><value>Choisir des fichiers image et les enregistrer comme nouveau pack .pficons.</value></data>
+  <data name="Pad_Menus_IconPackages_Remove_Tooltip" xml:space="preserve"><value>Retirer le pack sélectionné de la liste. Le fichier n'est pas supprimé.</value></data>
+  <data name="Pad_Menus_IconPackages_Empty" xml:space="preserve"><value>Aucun pack d'icônes ajouté.</value></data>
+  <data name="Pad_Menus_IconPackages_PickImages" xml:space="preserve"><value>Choisir les fichiers image du pack</value></data>
   <data name="DeviceType_Midi" xml:space="preserve"><value>Contrôleur MIDI</value></data>
   <data name="Mapping_MidiNote_Format" xml:space="preserve"><value>Note {0} ({1})</value></data>
   <data name="Mapping_MidiCc_Format" xml:space="preserve"><value>CC {0}</value></data>

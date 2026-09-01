@@ -2536,6 +2536,21 @@
   <data name="Pad_Audio_Packages_Remove_Tooltip" xml:space="preserve"><value>Remove the selected package from the list. The file is not deleted.</value></data>
   <data name="Pad_Audio_Packages_Empty" xml:space="preserve"><value>No sound packages added.</value></data>
   <data name="Pad_Audio_Packages_PickSounds" xml:space="preserve"><value>Choose Sound Files for the Package</value></data>
+  <data name="Menu_Binding_Macro" xml:space="preserve"><value>Macro</value></data>
+  <data name="Menu_MacroPicker_Tip" xml:space="preserve"><value>The macro this cell triggers. The macro's own trigger mode applies while the cell is fired.</value></data>
+  <data name="Menu_ChooseIcon_Tip" xml:space="preserve"><value>Choose this cell's icon: an entry from an icon package or an image file.</value></data>
+  <data name="Menu_Icon_None" xml:space="preserve"><value>(No Icon)</value></data>
+  <data name="Menu_Icon_PickFromPackage_Format" xml:space="preserve"><value>Choose an icon from {0}</value></data>
+  <data name="Menu_Icon_PickTitle" xml:space="preserve"><value>Pick an Icon</value></data>
+  <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>Icon Packages</value></data>
+  <data name="Pad_Menus_IconPackages_Desc" xml:space="preserve"><value>An icon package is one zip file of images with the .pficons extension. Add one here, then pick its icons on any menu cell. PadForge reads straight from the file and never unpacks it. Keep packages next to PadForge.exe to stay portable.</value></data>
+  <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>Add Package…</value></data>
+  <data name="Pad_Menus_IconPackages_Add_Tooltip" xml:space="preserve"><value>Add an existing .pficons file to the list.</value></data>
+  <data name="Pad_Menus_IconPackages_Create" xml:space="preserve"><value>Create Package…</value></data>
+  <data name="Pad_Menus_IconPackages_Create_Tooltip" xml:space="preserve"><value>Pick image files and save them as a new .pficons package.</value></data>
+  <data name="Pad_Menus_IconPackages_Remove_Tooltip" xml:space="preserve"><value>Remove the selected package from the list. The file is not deleted.</value></data>
+  <data name="Pad_Menus_IconPackages_Empty" xml:space="preserve"><value>No icon packages added.</value></data>
+  <data name="Pad_Menus_IconPackages_PickImages" xml:space="preserve"><value>Choose Image Files for the Package</value></data>
   <data name="DeviceType_Midi" xml:space="preserve"><value>MIDI Controller</value></data>
   <data name="Mapping_MidiNote_Format" xml:space="preserve"><value>Note {0} ({1})</value></data>
   <data name="Mapping_MidiCc_Format" xml:space="preserve"><value>CC {0}</value></data>

@@ -32,6 +32,17 @@ namespace PadForge.Common
         private static readonly Dictionary<string, BitmapImage> Cache =
             new(StringComparer.OrdinalIgnoreCase);
 
+        static MenuIconResolver()
+        {
+            // #390: a pack registration, rename, or removal changes what
+            // pficon:// references resolve to, and misses are cached, so
+            // the whole cache drops on any registry change.
+            IconPackageManager.RegistryChanged += (_, __) =>
+            {
+                lock (Sync) Cache.Clear();
+            };
+        }
+
         private static string _steamRoot;
         private static bool _steamRootProbed;
 
@@ -60,18 +71,89 @@ namespace PadForge.Common
             Path.Combine("steamui", "images", "controller"),
         };
 
-        /// <summary>Resolves an authored icon name to a cached, frozen
-        /// image, or null (invalid name shape, no Steam install, or no
-        /// such file). Never throws: any load failure caches as a miss.</summary>
+        /// <summary>Resolves an authored icon reference to a cached,
+        /// frozen image, or null. Three forms (#390):
+        /// a <c>pficon://Package/entry</c> pack reference, a loose image
+        /// file path (exe-relative or absolute), or a bare Steam
+        /// binding-icon name resolved under the Steam install. Never
+        /// throws: any load failure caches as a miss.</summary>
         public static ImageSource Resolve(string iconName)
         {
-            if (!MenuItemDefinition.IsValidIconName(iconName)) return null;
+            if (string.IsNullOrEmpty(iconName)) return null;
+            bool packRef = IconPackageManager.IsPackageRef(iconName);
+            bool loosePath = !packRef && IsLooseImagePath(iconName);
+            if (!packRef && !loosePath && !MenuItemDefinition.IsValidIconName(iconName)) return null;
             lock (Sync)
             {
                 if (Cache.TryGetValue(iconName, out var cached)) return cached;
-                var loaded = Load(iconName);
+                var loaded = packRef ? LoadFromPack(iconName)
+                    : loosePath ? LoadFromFile(IconPackageManager.ResolvePath(iconName))
+                    : Load(iconName);
                 Cache[iconName] = loaded;
                 return loaded;
+            }
+        }
+
+        /// <summary>A loose image path: carries a directory separator or
+        /// a drive colon (which the Steam-name gate rejects) and one of
+        /// the pack image extensions. Purely a shape test; existence is
+        /// the loader's problem and a miss caches like any other.</summary>
+        internal static bool IsLooseImagePath(string reference)
+        {
+            if (string.IsNullOrEmpty(reference) || reference.Length > 1024) return false;
+            if (reference.IndexOf('/') < 0 && reference.IndexOf('\\') < 0 && reference.IndexOf(':') < 0)
+                return false;
+            string ext;
+            try { ext = Path.GetExtension(reference); }
+            catch (ArgumentException) { return false; }
+            foreach (var e in IconPackageManager.ImageExtensions)
+                if (string.Equals(ext, e, StringComparison.OrdinalIgnoreCase)) return true;
+            return false;
+        }
+
+        private static BitmapImage LoadFromPack(string iconRef)
+        {
+            byte[] bytes = IconPackageManager.TryReadIcon(iconRef);
+            if (bytes == null || bytes.Length == 0) return null;
+            try
+            {
+                var img = new BitmapImage();
+                img.BeginInit();
+                img.StreamSource = new MemoryStream(bytes, writable: false);
+                img.CacheOption = BitmapCacheOption.OnLoad;
+                img.DecodePixelWidth = 96;
+                img.EndInit();
+                img.Freeze();
+                return img;
+            }
+            catch (Exception ex) when (ex is IOException or NotSupportedException
+                or ArgumentException or InvalidOperationException
+                or System.IO.FileFormatException)
+            {
+                return null;
+            }
+        }
+
+        private static BitmapImage LoadFromFile(string path)
+        {
+            try
+            {
+                if (!File.Exists(path)) return null;
+                var img = new BitmapImage();
+                img.BeginInit();
+                img.UriSource = new Uri(Path.GetFullPath(path), UriKind.Absolute);
+                img.CacheOption = BitmapCacheOption.OnLoad;
+                img.DecodePixelWidth = 96;
+                img.EndInit();
+                img.Freeze();
+                return img;
+            }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException
+                or NotSupportedException or ArgumentException or UriFormatException
+                or InvalidOperationException or System.Security.SecurityException
+                or System.IO.FileFormatException or PathTooLongException)
+            {
+                return null;
             }
         }
 

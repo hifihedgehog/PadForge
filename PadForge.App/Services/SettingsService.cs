@@ -1957,6 +1957,8 @@ namespace PadForge.Services
             var vm = _mainVm.Settings;
             PadForge.Common.SoundPackageManager.LoadRegistry(
                 appSettings.SoundPackages?.Select(p => (p.Name, p.Path)));
+            PadForge.Common.IconPackageManager.LoadRegistry(
+                appSettings.IconPackages?.Select(p => (p.Name, p.Path)));
             PadForge.Common.Input.NfcTagRegistry.LoadRegistry(
                 appSettings.NfcTags?.Select(t => (t.Uid, t.Name, t.Button)));
             PadForge.Common.Input.VoicePhraseRegistry.LoadRegistry(
@@ -4034,6 +4036,9 @@ namespace PadForge.Services
             var soundPackages = PadForge.Common.SoundPackageManager.SaveRegistry()
                 .Select(p => new SoundPackageData { Name = p.Name, Path = p.Path })
                 .ToArray();
+            var iconPackages = PadForge.Common.IconPackageManager.SaveRegistry()
+                .Select(p => new IconPackageData { Name = p.Name, Path = p.Path })
+                .ToArray();
             var nfcTags = PadForge.Common.Input.NfcTagRegistry.SaveRegistry()
                 .Select(t => new NfcTagData { Uid = t.Uid, Name = t.Name, Button = t.Button })
                 .ToArray();
@@ -4137,6 +4142,7 @@ namespace PadForge.Services
             return new AppSettingsData
             {
                 SoundPackages = soundPackages,
+                IconPackages = iconPackages,
                 NfcTags = nfcTags,
                 MappingPickerHiddenDevices = pickerHidden,
                 PsMoveCalibrations = PadForge.Common.Input.PsMoveCalibrationRegistry.SaveRegistry(),
@@ -5507,6 +5513,18 @@ namespace PadForge.Services
         public string Path { get; set; }
     }
 
+    /// <summary>One registered menu icon pack (#390), the sound-package
+    /// shape.</summary>
+    public class IconPackageData
+    {
+        [XmlAttribute]
+        public string Name { get; set; }
+
+        /// <summary>Exe-relative when under the application directory.</summary>
+        [XmlAttribute]
+        public string Path { get; set; }
+    }
+
     /// <summary>A registered NFC tag (issue #150): UID (uppercase hex), name, and
     /// the stable raw-button index it occupies (so saved macro bindings survive).</summary>
     public class NfcTagData
@@ -5671,6 +5689,13 @@ namespace PadForge.Services
         [XmlArray("SoundPackages")]
         [XmlArrayItem("Package")]
         public SoundPackageData[] SoundPackages { get; set; }
+
+        /// <summary>Registered menu icon packs (#390): Name + stored path
+        /// (exe-relative when the pack sits in the application directory,
+        /// for portable kits).</summary>
+        [XmlArray("IconPackages")]
+        [XmlArrayItem("Package")]
+        public IconPackageData[] IconPackages { get; set; }
 
         /// <summary>Registered NFC tags (issue #150): each UID + chosen name,
         /// exposed by the NFC reader device as a named, bindable button.</summary>

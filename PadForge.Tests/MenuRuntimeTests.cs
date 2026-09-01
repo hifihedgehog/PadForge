@@ -333,6 +333,7 @@ namespace PadForge.Tests
                     Icon = "ghost_040_act_0050.png",
                 },
                 new MenuItemDefinition { Index = 3, Label = "Raw", ExtendedButton = 37 },
+                new MenuItemDefinition { Index = 4, Label = "Combo", MacroName = "Jump Combo" },
                 new MenuItemDefinition { Index = 5, Label = "Map" },
             },
         };
@@ -367,6 +368,7 @@ namespace PadForge.Tests
                 Assert.Equal(a.Items[i].XboxButtons, b.Items[i].XboxButtons);
                 Assert.Equal(a.Items[i].ExtendedButton, b.Items[i].ExtendedButton);
                 Assert.Equal(a.Items[i].Icon, b.Items[i].Icon);
+                Assert.Equal(a.Items[i].MacroName, b.Items[i].MacroName);
             }
         }
 

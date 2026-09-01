@@ -2112,6 +2112,21 @@
   <data name="Pad_Audio_Packages_Remove_Tooltip" xml:space="preserve"><value>選択したパッケージを一覧から削除します。ファイル自体は削除されません。</value></data>
   <data name="Pad_Audio_Packages_Empty" xml:space="preserve"><value>サウンドパッケージはありません。</value></data>
   <data name="Pad_Audio_Packages_PickSounds" xml:space="preserve"><value>パッケージに入れるサウンドファイルを選択</value></data>
+  <data name="Menu_Binding_Macro" xml:space="preserve"><value>マクロ</value></data>
+  <data name="Menu_MacroPicker_Tip" xml:space="preserve"><value>このセルが起動するマクロです。セルが作動している間、マクロ自身のトリガーモードが適用されます。</value></data>
+  <data name="Menu_ChooseIcon_Tip" xml:space="preserve"><value>このセルのアイコンを選択します。アイコンパックの項目または画像ファイルを指定できます。</value></data>
+  <data name="Menu_Icon_None" xml:space="preserve"><value>（アイコンなし）</value></data>
+  <data name="Menu_Icon_PickFromPackage_Format" xml:space="preserve"><value>{0} からアイコンを選択</value></data>
+  <data name="Menu_Icon_PickTitle" xml:space="preserve"><value>アイコンを選択</value></data>
+  <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>アイコンパック</value></data>
+  <data name="Pad_Menus_IconPackages_Desc" xml:space="preserve"><value>アイコンパックは拡張子 .pficons の画像入り zip ファイルです。ここに追加すると、任意のメニューセルでそのアイコンを選択できます。PadForge はファイルから直接読み取り、展開することはありません。ポータブルに保つには、パックを PadForge.exe の隣に置いてください。</value></data>
+  <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>パックを追加…</value></data>
+  <data name="Pad_Menus_IconPackages_Add_Tooltip" xml:space="preserve"><value>既存の .pficons ファイルを一覧に追加します。</value></data>
+  <data name="Pad_Menus_IconPackages_Create" xml:space="preserve"><value>パックを作成…</value></data>
+  <data name="Pad_Menus_IconPackages_Create_Tooltip" xml:space="preserve"><value>画像ファイルを選択して新しい .pficons パックとして保存します。</value></data>
+  <data name="Pad_Menus_IconPackages_Remove_Tooltip" xml:space="preserve"><value>選択したパックを一覧から削除します。ファイル自体は削除されません。</value></data>
+  <data name="Pad_Menus_IconPackages_Empty" xml:space="preserve"><value>アイコンパックは追加されていません。</value></data>
+  <data name="Pad_Menus_IconPackages_PickImages" xml:space="preserve"><value>パックに入れる画像ファイルを選択</value></data>
   <data name="DeviceType_Midi" xml:space="preserve"><value>MIDIコントローラー</value></data>
   <data name="Mapping_MidiNote_Format" xml:space="preserve"><value>ノート {0} ({1})</value></data>
   <data name="Mapping_MidiCc_Format" xml:space="preserve"><value>CC {0}</value></data>

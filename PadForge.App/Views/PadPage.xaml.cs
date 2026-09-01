@@ -105,6 +105,9 @@ namespace PadForge.Views
             PadForge.Common.SoundPackageManager.RegistryChanged -= OnSoundPackageRegistryChanged;
             PadForge.Common.SoundPackageManager.RegistryChanged += OnSoundPackageRegistryChanged;
             RefreshSoundPackages();
+            PadForge.Common.IconPackageManager.RegistryChanged -= OnIconPackageRegistryChanged;
+            PadForge.Common.IconPackageManager.RegistryChanged += OnIconPackageRegistryChanged;
+            RefreshIconPackages();
             SyncBassShakerMeterTimer();
         }
 
@@ -112,6 +115,7 @@ namespace PadForge.Views
         {
             PadForge.Common.SoundPackageManager.RegistryChanged -= OnSoundPackageRegistryChanged;
             _bassShakerMeterTimer?.Stop();
+            PadForge.Common.IconPackageManager.RegistryChanged -= OnIconPackageRegistryChanged;
         }
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -1299,6 +1303,146 @@ namespace PadForge.Views
         {
             if (SoundPackagesList.SelectedItem is PadForge.Common.SoundPackageManager.PackageRef pkg)
                 PadForge.Common.SoundPackageManager.Unregister(pkg.Name);
+        }
+
+        // ─────────────────────────────────────────────
+        //  Icon Packages card (#390, the Sound Packages shape)
+        // ─────────────────────────────────────────────
+
+        private void OnIconPackageRegistryChanged(object sender, EventArgs e)
+        {
+            // The registry can change from non-UI code paths (profile import).
+            Dispatcher.BeginInvoke(new Action(RefreshIconPackages));
+        }
+
+        private void RefreshIconPackages()
+        {
+            var packages = PadForge.Common.IconPackageManager.Packages;
+            IconPackagesList.ItemsSource = packages;
+            IconPackagesEmptyText.Visibility = packages.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private void IconPackageAdd_Click(object sender, RoutedEventArgs e)
+        {
+            string ext = PadForge.Common.IconPackageManager.FileExtension;
+            var dlg = new Microsoft.Win32.OpenFileDialog
+            {
+                Title = PadForge.Resources.Strings.Strings.Instance.Pad_Menus_IconPackages_Add,
+                Filter = $"PadForge icon packages (*{ext})|*{ext}|All files|*.*",
+                Multiselect = true,
+                CheckFileExists = true,
+            };
+            if (dlg.ShowDialog() != true) return;
+            foreach (string file in dlg.FileNames)
+                PadForge.Common.IconPackageManager.Register(file);
+        }
+
+        private void IconPackageCreate_Click(object sender, RoutedEventArgs e)
+        {
+            var pick = new Microsoft.Win32.OpenFileDialog
+            {
+                Title = PadForge.Resources.Strings.Strings.Instance.Pad_Menus_IconPackages_PickImages,
+                Filter = "Image files|*.png;*.jpg;*.jpeg;*.bmp;*.gif|All files|*.*",
+                Multiselect = true,
+                CheckFileExists = true,
+            };
+            if (pick.ShowDialog() != true || pick.FileNames.Length == 0) return;
+
+            string ext = PadForge.Common.IconPackageManager.FileExtension;
+            var save = new Microsoft.Win32.SaveFileDialog
+            {
+                Title = PadForge.Resources.Strings.Strings.Instance.Pad_Menus_IconPackages_Create,
+                FileName = "Icons" + ext,
+                Filter = $"PadForge icon packages (*{ext})|*{ext}",
+            };
+            if (save.ShowDialog() != true) return;
+
+            string displayName = System.IO.Path.GetFileNameWithoutExtension(save.FileName);
+            if (PadForge.Common.IconPackageManager.ExportPackage(save.FileName, displayName, pick.FileNames))
+                PadForge.Common.IconPackageManager.Register(save.FileName);
+        }
+
+        private void IconPackageRemove_Click(object sender, RoutedEventArgs e)
+        {
+            if (IconPackagesList.SelectedItem is PadForge.Common.IconPackageManager.PackageRef pkg)
+                PadForge.Common.IconPackageManager.Unregister(pkg.Name);
+        }
+
+        /// <summary>Choose a menu cell's icon (#390): registered packs'
+        /// entries offered directly (the sound-pick shape), a (None)
+        /// entry to clear when one is set, and a filesystem browse for a
+        /// loose image or a pack that hasn't been added yet. The
+        /// button's DataContext is the MenuCellItem.</summary>
+        private void MenuCellChooseIcon_Click(object sender, RoutedEventArgs e)
+        {
+            if ((sender as FrameworkElement)?.DataContext is not PadForge.ViewModels.MenuCellItem cell)
+                return;
+
+            var s = PadForge.Resources.Strings.Strings.Instance;
+            var items = new System.Collections.Generic.List<PickSoundDialog.Item>();
+            if (cell.HasIcon)
+                items.Add(new PickSoundDialog.Item(s.Menu_Icon_None, ""));
+            foreach (var p in PadForge.Common.IconPackageManager.Packages)
+                foreach (var entry in PadForge.Common.IconPackageManager.ListIcons(p.Name))
+                    items.Add(new PickSoundDialog.Item(
+                        $"{System.IO.Path.GetFileName(entry)}  —  {p.Name}",
+                        PadForge.Common.IconPackageManager.MakeRef(p.Name, entry)));
+
+            if (items.Count > 0)
+            {
+                var picker = new PickSoundDialog(s.Menu_Icon_PickTitle, items,
+                    allowBrowse: true, preselectValue: cell.IconName)
+                { Owner = Window.GetWindow(this) };
+                if (picker.ShowDialog() != true) return;
+                if (!picker.BrowseRequested)
+                {
+                    // SelectedSound is "" for the (None) entry: clear.
+                    if (picker.SelectedSound != null)
+                        cell.SetIcon(picker.SelectedSound);
+                    return;
+                }
+                // "Browse files…": fall through to the filesystem dialog.
+            }
+
+            BrowseMenuIconFromDisk(cell);
+        }
+
+        /// <summary>Filesystem browse for a loose image or a
+        /// <c>.pficons</c> pack. Picking a pack registers it and offers
+        /// its icons, so the cell stores <c>pficon://Package/entry</c>
+        /// and a shared profile resolves on any machine carrying the
+        /// pack. A loose image stores exe-relative when it sits under
+        /// the app directory (the portable-kit rule).</summary>
+        private void BrowseMenuIconFromDisk(PadForge.ViewModels.MenuCellItem cell)
+        {
+            var s = PadForge.Resources.Strings.Strings.Instance;
+            var dlg = new Microsoft.Win32.OpenFileDialog
+            {
+                Title = s.Menu_Icon_PickTitle,
+                Filter = "Images and icon packages|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.pficons"
+                       + "|Icon packages (*.pficons)|*.pficons|All files|*.*",
+                CheckFileExists = true,
+            };
+            if (dlg.ShowDialog() != true) return;
+
+            if (dlg.FileName.EndsWith(PadForge.Common.IconPackageManager.FileExtension,
+                    StringComparison.OrdinalIgnoreCase))
+            {
+                string pkg = PadForge.Common.IconPackageManager.Register(dlg.FileName);
+                if (pkg == null) return;
+                var icons = PadForge.Common.IconPackageManager.ListIcons(pkg);
+                if (icons.Count == 0) return;
+                string entry = icons.Count == 1
+                    ? icons[0]
+                    : PromptPickFromList(
+                        string.Format(s.Menu_Icon_PickFromPackage_Format, pkg),
+                        icons);
+                if (entry != null)
+                    cell.SetIcon(PadForge.Common.IconPackageManager.MakeRef(pkg, entry));
+                return;
+            }
+
+            cell.SetIcon(PadForge.Common.IconPackageManager.MakeStoredPath(dlg.FileName));
         }
 
         /// <summary>Preview the action's sound through the pad's configured

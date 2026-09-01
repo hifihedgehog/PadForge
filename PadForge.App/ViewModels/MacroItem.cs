@@ -66,12 +66,31 @@ namespace PadForge.ViewModels
 
         private string _name = Strings.Instance.Macro_NewMacro;
 
-        /// <summary>User-facing name for this macro.</summary>
+        /// <summary>User-facing name for this macro. Menu cells reference
+        /// macros by this name (#390), so a rename announces itself
+        /// through <see cref="Renamed"/> and the subscriber retags the
+        /// slot's menu cells, the RetagMacrosEverywhere discipline
+        /// applied to this reference.</summary>
         public string Name
         {
             get => _name;
-            set => SetProperty(ref _name, value);
+            set
+            {
+                string old = _name;
+                if (SetProperty(ref _name, value) && !string.IsNullOrEmpty(old)
+                    && !string.Equals(old, value, StringComparison.Ordinal))
+                {
+                    try { Renamed?.Invoke(this, old, value); } catch { }
+                }
+            }
         }
+
+        /// <summary>Raised after a macro's name changes, with the old and
+        /// new names. Static because the subscriber (the menu-cell retag
+        /// in the view layer) outlives any one macro and needs no
+        /// per-instance wiring. The macro's <see cref="PadIndex"/> scopes
+        /// the sweep.</summary>
+        public static event Action<MacroItem, string, string> Renamed;
 
         /// <summary>Pad index (0-based) of the slot that owns this macro.
         /// Set when the macro is added to a slot's collection or loaded
@@ -2518,6 +2537,17 @@ namespace PadForge.ViewModels
         /// <summary>Whether the trigger was active on the previous frame.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool WasTriggerActive { get; set; }
+
+        /// <summary>Menu-cell trigger stamp (#390): the macro pass tick
+        /// on which a fired menu cell last named this macro. The menu
+        /// runtime's per-tick walk stamps it BEFORE the evaluators run,
+        /// and both evaluator twins treat a current stamp as
+        /// trigger-active alongside the macro's own triggers, so every
+        /// trigger mode keeps its semantics. A stale stamp is simply
+        /// false: no clearing pass exists or is needed. Poll thread
+        /// only.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public long MenuTriggerTick { get; set; } = -1;
 
         /// <summary>Raw trigger state on the previous frame for the Toggle
         /// mode's edge detector (#238). Separate from

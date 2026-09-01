@@ -12828,12 +12828,71 @@
                                                           DisplayMemberPath="Label" SelectedValuePath="Value"
                                                           SelectedValue="{Binding SelectedButtonFlag, Mode=TwoWay}"
                                                           Visibility="{Binding ShowButtonPicker, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                <!-- #390 macro cells: the slot's macros, with the
+                                                     stale-name marked entry per the never-lie rule. -->
+                                                <ComboBox MinWidth="140" Margin="8,0,0,0"
+                                                          common:ComboBoxWidthBehavior.SizeToItems="True"
+                                                          common:ComboBoxWidthBehavior.WidthGroup="MenuCellMacroCombos"
+                                                          ToolTip="{Binding Menu_MacroPicker_Tip, Source={x:Static strings:Strings.Instance}}"
+                                                          ItemsSource="{Binding MacroOptions}"
+                                                          DisplayMemberPath="Label" SelectedValuePath="Descriptor"
+                                                          SelectedValue="{Binding SelectedMacroName, Mode=TwoWay}"
+                                                          Visibility="{Binding ShowMacroPicker, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                <!-- #390 custom icons: pack entries, image files,
+                                                     or clear, via the shared picker dialog. -->
+                                                <ui:Button Click="MenuCellChooseIcon_Click" Margin="6,0,0,0"
+                                                           ToolTip="{Binding Menu_ChooseIcon_Tip, Source={x:Static strings:Strings.Instance}}">
+                                                    <TextBlock Text="&#xEB9F;" FontFamily="Segoe MDL2 Assets" FontSize="14"/>
+                                                </ui:Button>
                                                 <ui:Button Command="{Binding ResetCellCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0" ToolTip="{Binding Menu_Reset_Cell, Source={x:Static strings:Strings.Instance}}"/>
                                             </StackPanel>
                                         </Grid>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
+
+                            <!-- Icon Packages card (#390), the Sound Packages
+                                 card's shape on the Menus tab. -->
+                            <Border Style="{StaticResource CardBorder}" Margin="0,16,0,0">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="&#xEB9F;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
+                                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                        <TextBlock Text="{Binding Pad_Menus_IconPackages_Header, Source={x:Static strings:Strings.Instance}}"
+                                                   Style="{StaticResource CardTitle}"/>
+                                    </StackPanel>
+                                    <TextBlock Text="{Binding Pad_Menus_IconPackages_Desc, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardDescription}"/>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <Button Content="{Binding Pad_Menus_IconPackages_Add, Source={x:Static strings:Strings.Instance}}"
+                                                Click="IconPackageAdd_Click" Padding="10,4"
+                                                ToolTip="{Binding Pad_Menus_IconPackages_Add_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <Button Content="{Binding Pad_Menus_IconPackages_Create, Source={x:Static strings:Strings.Instance}}"
+                                                Click="IconPackageCreate_Click" Padding="10,4" Margin="6,0,0,0"
+                                                ToolTip="{Binding Pad_Menus_IconPackages_Create_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                        <Button Content="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}"
+                                                Click="IconPackageRemove_Click" Padding="10,4" Margin="6,0,0,0"
+                                                ToolTip="{Binding Pad_Menus_IconPackages_Remove_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    </StackPanel>
+                                    <TextBlock x:Name="IconPackagesEmptyText"
+                                               Text="{Binding Pad_Menus_IconPackages_Empty, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardDescription}"/>
+                                    <ListBox x:Name="IconPackagesList" MaxHeight="170"
+                                             ItemContainerStyle="{StaticResource EmberSelectListItem}">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal" Margin="0,2">
+                                                    <TextBlock Text="&#xEB9F;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+                                                               FontSize="13" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                                    <TextBlock Text="{Binding Path}" VerticalAlignment="Center"
+                                                               Margin="10,0,0,0" Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontSize="12"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </StackPanel>
+                            </Border>
                         </StackPanel>
                     </ScrollViewer>
                 </Grid>

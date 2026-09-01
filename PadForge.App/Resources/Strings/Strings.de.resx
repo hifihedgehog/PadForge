@@ -2112,6 +2112,21 @@
   <data name="Pad_Audio_Packages_Remove_Tooltip" xml:space="preserve"><value>Das ausgewählte Paket aus der Liste entfernen. Die Datei wird nicht gelöscht.</value></data>
   <data name="Pad_Audio_Packages_Empty" xml:space="preserve"><value>Keine Soundpakete hinzugefügt.</value></data>
   <data name="Pad_Audio_Packages_PickSounds" xml:space="preserve"><value>Sounddateien für das Paket auswählen</value></data>
+  <data name="Menu_Binding_Macro" xml:space="preserve"><value>Makro</value></data>
+  <data name="Menu_MacroPicker_Tip" xml:space="preserve"><value>Das Makro, das diese Zelle auslöst. Der Auslösemodus des Makros gilt, solange die Zelle aktiv ist.</value></data>
+  <data name="Menu_ChooseIcon_Tip" xml:space="preserve"><value>Symbol dieser Zelle wählen: ein Eintrag aus einem Symbolpaket oder eine Bilddatei.</value></data>
+  <data name="Menu_Icon_None" xml:space="preserve"><value>(Kein Symbol)</value></data>
+  <data name="Menu_Icon_PickFromPackage_Format" xml:space="preserve"><value>Symbol aus {0} wählen</value></data>
+  <data name="Menu_Icon_PickTitle" xml:space="preserve"><value>Symbol auswählen</value></data>
+  <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>Symbolpakete</value></data>
+  <data name="Pad_Menus_IconPackages_Desc" xml:space="preserve"><value>Ein Symbolpaket ist eine ZIP-Datei mit Bildern und der Endung .pficons. Hier hinzufügen, dann die Symbole in jeder Menüzelle auswählen. PadForge liest direkt aus der Datei und entpackt sie nie. Pakete neben PadForge.exe halten, um portabel zu bleiben.</value></data>
+  <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>Paket hinzufügen…</value></data>
+  <data name="Pad_Menus_IconPackages_Add_Tooltip" xml:space="preserve"><value>Eine vorhandene .pficons-Datei zur Liste hinzufügen.</value></data>
+  <data name="Pad_Menus_IconPackages_Create" xml:space="preserve"><value>Paket erstellen…</value></data>
+  <data name="Pad_Menus_IconPackages_Create_Tooltip" xml:space="preserve"><value>Bilddateien auswählen und als neues .pficons-Paket speichern.</value></data>
+  <data name="Pad_Menus_IconPackages_Remove_Tooltip" xml:space="preserve"><value>Das ausgewählte Paket aus der Liste entfernen. Die Datei wird nicht gelöscht.</value></data>
+  <data name="Pad_Menus_IconPackages_Empty" xml:space="preserve"><value>Keine Symbolpakete hinzugefügt.</value></data>
+  <data name="Pad_Menus_IconPackages_PickImages" xml:space="preserve"><value>Bilddateien für das Paket auswählen</value></data>
   <data name="DeviceType_Midi" xml:space="preserve"><value>MIDI-Controller</value></data>
   <data name="Mapping_MidiNote_Format" xml:space="preserve"><value>Note {0} ({1})</value></data>
   <data name="Mapping_MidiCc_Format" xml:space="preserve"><value>CC {0}</value></data>

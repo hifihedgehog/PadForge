@@ -372,7 +372,7 @@
   <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>读取原始 HID 索引而非 SDL 的手柄映射，适用于 SDL 错误识别按钮/轴布局的情况</value></data>
   <data name="Devices_InputHiding" xml:space="preserve"><value>输入隐藏</value></data>
   <data name="Devices_HideFromGames" xml:space="preserve"><value>对游戏隐藏（HidHide）</value></data>
-  <data name="Devices_HideTooltip" xml:space="preserve"><value>通过 HidHide 驱动将此设备完全隐藏，使其他应用程序无法看到</value></data>
+  <data name="Devices_HideTooltip" xml:space="preserve"><value>通过 HidHide 驱动将此设备完全对其他应用程序隐藏。开启后请重新连接手柄：已经打开它的程序（包括 Windows 本身）会一直占用，直到它重新出现。</value></data>
   <data name="Devices_HideTooltipInstall" xml:space="preserve"><value>请安装 HidHide 驱动以启用此选项</value></data>
   <data name="Devices_ConsumeMapped" xml:space="preserve"><value>拦截已映射的输入（钩子）</value></data>
   <data name="Devices_ConsumeTooltip" xml:space="preserve"><value>仅屏蔽已映射的特定按键/按钮，未映射的输入仍然正常传递</value></data>

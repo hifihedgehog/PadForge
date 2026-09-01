@@ -372,7 +372,7 @@
   <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>Legge gli indici HID grezzi invece della mappatura gamepad di SDL. Usare quando SDL identifica erroneamente il layout di pulsanti/assi.</value></data>
   <data name="Devices_InputHiding" xml:space="preserve"><value>Nascondimento input</value></data>
   <data name="Devices_HideFromGames" xml:space="preserve"><value>Nascondi ai giochi (HidHide)</value></data>
-  <data name="Devices_HideTooltip" xml:space="preserve"><value>Nasconde completamente questo dispositivo alle altre applicazioni tramite il driver HidHide</value></data>
+  <data name="Devices_HideTooltip" xml:space="preserve"><value>Nasconde completamente questo dispositivo alle altre applicazioni tramite il driver HidHide. Ricollega il controller dopo l’attivazione: tutto ciò che lo aveva già aperto, Windows compreso, lo mantiene finché non ricompare.</value></data>
   <data name="Devices_HideTooltipInstall" xml:space="preserve"><value>Installa il driver HidHide per abilitare questa opzione</value></data>
   <data name="Devices_ConsumeMapped" xml:space="preserve"><value>Consuma input mappati (hook)</value></data>
   <data name="Devices_ConsumeTooltip" xml:space="preserve"><value>Sopprime solo i tasti/pulsanti specifici che sono mappati, lasciando passare gli input non mappati</value></data>

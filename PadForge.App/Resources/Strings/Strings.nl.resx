@@ -372,7 +372,7 @@
   <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>Ruwe HID-indices lezen in plaats van SDL's gamepad-toewijzing. Gebruik wanneer SDL de knop-/asindeling verkeerd herkent.</value></data>
   <data name="Devices_InputHiding" xml:space="preserve"><value>Invoerverberging</value></data>
   <data name="Devices_HideFromGames" xml:space="preserve"><value>Verbergen voor games (HidHide)</value></data>
-  <data name="Devices_HideTooltip" xml:space="preserve"><value>Verbergt dit apparaat volledig voor andere toepassingen via het HidHide-stuurprogramma</value></data>
+  <data name="Devices_HideTooltip" xml:space="preserve"><value>Verbergt dit apparaat volledig voor andere toepassingen via het HidHide-stuurprogramma. Sluit de controller opnieuw aan na het inschakelen: alles wat hem al open had, Windows inbegrepen, houdt hem vast tot hij opnieuw verschijnt.</value></data>
   <data name="Devices_HideTooltipInstall" xml:space="preserve"><value>Installeer het HidHide-stuurprogramma om deze optie in te schakelen</value></data>
   <data name="Devices_ConsumeMapped" xml:space="preserve"><value>Toegewezen invoer verbruiken (hooks)</value></data>
   <data name="Devices_ConsumeTooltip" xml:space="preserve"><value>Onderdrukt alleen de specifieke toetsen/knoppen die zijn toegewezen, en laat niet-toegewezen invoer door</value></data>

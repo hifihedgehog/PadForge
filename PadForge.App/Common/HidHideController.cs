@@ -470,13 +470,29 @@ namespace PadForge.Common
             if (HasHidMaestroHardwareId(devInst))
                 return true;
 
-            // Walk the parent chain. At each level test both the INSTANCE ID
-            // string and the manufacturer registry value — catching either
-            // lets us filter HIDMaestro-parented HID children correctly
-            // regardless of whether the MFG property read succeeds (char[]
-            // marshalling of CM_Get_DevNode_Registry_Property can silently
-            // return empty for some devices; the string check is the
-            // reliable backstop).
+            // Walk the parent chain. At each level test the INSTANCE ID
+            // string, the manufacturer registry value, the HARDWARE IDS,
+            // and the driver service. Catching any one lets us filter
+            // HIDMaestro-parented HID children correctly regardless of
+            // whether the MFG property read succeeds (char[] marshalling of
+            // CM_Get_DevNode_Registry_Property can silently return empty for
+            // some devices; the string check is the reliable backstop).
+            //
+            // The hardware-id and service legs are the composite USB persona
+            // (#391 follow-up). A persona enumerates through the REAL USB
+            // stack (vhci, UDE, usbccgp, hidusb) and every identifier on it
+            // is genuine Sony by design, so neither the instance ids nor the
+            // manufacturer name anywhere on its path say HIDMaestro. The ONE
+            // marker is an additive hardware id on the emulated host
+            // controller, ROOT\HIDMAESTRO_UDE (HM#42, v1.4.3), four hops up
+            // from the persona's HID interface, with the usbip2_ude service
+            // as the fallback for a pre-1.4.3 driver. This mirrors
+            // InputManager.IsOnUsbipVhci, the guard that keeps PadForge from
+            // ingesting its own persona. Without these legs the VID/PID sweep
+            // that hides a physical DualSense also hid the virtual one the
+            // slot had just created (the reporter's r3503 trace: a second
+            // 054C:0CE6 tree at depth 3 and 4 swept two seconds after the
+            // PlayStation slot's persona attached).
             var idBuf = new System.Text.StringBuilder(512);
             for (int depth = 0; depth < 16; depth++)
             {
@@ -489,6 +505,12 @@ namespace PadForge.Common
                     if (MatchesHidMaestroPattern(curId))
                         return true;
                 }
+
+                // --- hardware ids + service (the persona's host controller) ---
+                if (depth > 0 && HasHidMaestroHardwareId(devInst))
+                    return true;
+                if (string.Equals(GetDevNodeService(devInst), "usbip2_ude", StringComparison.OrdinalIgnoreCase))
+                    return true;
 
                 // --- manufacturer property check ---
                 var mfg = new char[128];
@@ -687,6 +709,24 @@ namespace PadForge.Common
                     result.Add(id);
 
             return result;
+        }
+
+        private static readonly DEVPROPKEY DEVPKEY_Device_Service =
+            new DEVPROPKEY { fmtid = new Guid(0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0), pid = 6 };
+
+        /// <summary>The devnode's driver service name, or null. Used by the
+        /// HIDMaestro walk to recognize the usbip-win2 emulated host
+        /// controller under a composite persona (#391 follow-up).</summary>
+        private static string GetDevNodeService(uint devInst)
+        {
+            byte[] buf = new byte[512];
+            uint size = (uint)buf.Length;
+            int rc = CM_Get_DevNode_PropertyW(devInst, DEVPKEY_Device_Service,
+                out uint type, buf, ref size, 0);
+            if (rc != CR_SUCCESS || type != DEVPROP_TYPE_STRING) return null;
+            string s = System.Text.Encoding.Unicode.GetString(buf, 0, (int)size);
+            int nul = s.IndexOf('\0');
+            return nul >= 0 ? s.Substring(0, nul) : s;
         }
 
         private static Guid GetContainerId(uint devInst)

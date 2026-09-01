@@ -17,6 +17,23 @@ namespace PadForge.Tests
     /// </summary>
     public class HidHideDiagnosticsTests
     {
+        /// <summary>The present-node sweep (#391) widens a record's hide
+        /// list only when it is the sole record of its VID/PID, so two
+        /// distinct pads of one product never hide each other.</summary>
+        [Fact]
+        public void SiblingSweep_OnlyForTheSoleRecordOfItsProduct()
+        {
+            var ds = new PadForge.Engine.Data.UserDevice { VendorId = 0x054C, ProdId = 0x0CE6 };
+            var xbox = new PadForge.Engine.Data.UserDevice { VendorId = 0x045E, ProdId = 0x0B13 };
+            var ds2 = new PadForge.Engine.Data.UserDevice { VendorId = 0x054C, ProdId = 0x0CE6 };
+
+            Assert.True(PadForge.Services.InputService.HidHideSiblingSweepAllowed(new[] { ds, xbox }, ds));
+            Assert.False(PadForge.Services.InputService.HidHideSiblingSweepAllowed(new[] { ds, ds2, xbox }, ds));
+            Assert.True(PadForge.Services.InputService.HidHideSiblingSweepAllowed(new[] { ds, null, xbox }, ds));
+            Assert.False(PadForge.Services.InputService.HidHideSiblingSweepAllowed(new[] { ds }, null));
+            Assert.False(PadForge.Services.InputService.HidHideSiblingSweepAllowed(new[] { ds }, new PadForge.Engine.Data.UserDevice()));
+        }
+
         [Fact]
         public void ComputeMissing_IsACaseInsensitiveSetDifference()
         {
@@ -52,11 +69,16 @@ namespace PadForge.Tests
             string svc = RepoText("PadForge.App", "Services", "InputService.cs");
             int at = svc.IndexOf("public void ApplyDeviceHiding()", StringComparison.Ordinal);
             Assert.True(at > 0);
-            string body = svc.Substring(at, 12000);
+            string body = svc.Substring(at, 24000);
             Assert.Contains("HidHideController.TryProbe(out int hidHideErr)", body);
             Assert.Contains("HIDHIDE UNAVAILABLE: hiding requested for", body);
             Assert.Contains("HIDHIDE apply devices=", body);
             Assert.Contains("HIDHIDE dev {ud.VendorId:X4}:{ud.ProdId:X4} id={instanceId} expanded=", body);
+            // The first-pass sweep of present nodes sits in the real-path
+            // branch, behind the sole-record gate, and reports what it added.
+            Assert.Contains("if (HidHideSiblingSweepAllowed(snapshot, ud))", body);
+            Assert.Contains("foreach (var realId in FindInstanceIdsForDevice(ud))", body);
+            Assert.Contains("sweep={sweep.Count}", body);
             Assert.Contains("HIDHIDE dev {ud.VendorId:X4}:{ud.ProdId:X4} synthetic path=", body);
             Assert.Contains("SyncManagedDevices(desiredIds, out var added, out var removed)", body);
             Assert.Contains("MissingFromBlacklist(desiredIds)", body);

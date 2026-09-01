@@ -372,7 +372,7 @@
   <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>Ler índices HID brutos em vez do mapeamento de gamepad do SDL. Use quando o SDL identificar incorretamente o layout de botões/eixos</value></data>
   <data name="Devices_InputHiding" xml:space="preserve"><value>Ocultação de Entrada</value></data>
   <data name="Devices_HideFromGames" xml:space="preserve"><value>Ocultar dos Jogos (HidHide)</value></data>
-  <data name="Devices_HideTooltip" xml:space="preserve"><value>Oculta completamente este dispositivo de outros aplicativos via o driver HidHide</value></data>
+  <data name="Devices_HideTooltip" xml:space="preserve"><value>Oculta completamente este dispositivo de outros aplicativos por meio do driver HidHide. Reconecte o controle depois de ativar: tudo o que já o tinha aberto, inclusive o Windows, o mantém até que ele reapareça.</value></data>
   <data name="Devices_HideTooltipInstall" xml:space="preserve"><value>Instale o driver HidHide para ativar esta opção</value></data>
   <data name="Devices_ConsumeMapped" xml:space="preserve"><value>Consumir Entradas Mapeadas (Hooks)</value></data>
   <data name="Devices_ConsumeTooltip" xml:space="preserve"><value>Suprime apenas as teclas/botões específicos que estão mapeados, permitindo que entradas não mapeadas passem</value></data>

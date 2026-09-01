@@ -372,7 +372,7 @@
   <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>Lee índices HID sin procesar en lugar de la asignación de mando de SDL. Úselo cuando SDL identifique incorrectamente la distribución de botones/ejes.</value></data>
   <data name="Devices_InputHiding" xml:space="preserve"><value>Ocultación de entrada</value></data>
   <data name="Devices_HideFromGames" xml:space="preserve"><value>Ocultar de los juegos (HidHide)</value></data>
-  <data name="Devices_HideTooltip" xml:space="preserve"><value>Oculta completamente este dispositivo de otras aplicaciones mediante el controlador HidHide</value></data>
+  <data name="Devices_HideTooltip" xml:space="preserve"><value>Oculta por completo este dispositivo a otras aplicaciones mediante el controlador HidHide. Vuelve a conectar el mando después de activarlo: todo lo que ya lo tenía abierto, Windows incluido, lo conserva hasta que vuelva a aparecer.</value></data>
   <data name="Devices_HideTooltipInstall" xml:space="preserve"><value>Instale el controlador HidHide para activar esta opción</value></data>
   <data name="Devices_ConsumeMapped" xml:space="preserve"><value>Consumir entradas asignadas (hooks)</value></data>
   <data name="Devices_ConsumeTooltip" xml:space="preserve"><value>Suprime solo las teclas/botones específicos que están asignados, permitiendo que las entradas no asignadas pasen</value></data>

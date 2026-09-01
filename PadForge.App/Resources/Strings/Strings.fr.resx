@@ -372,7 +372,7 @@
   <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>Lire les indices HID bruts au lieu du mapping manette SDL. À utiliser lorsque SDL identifie mal la disposition des boutons/axes.</value></data>
   <data name="Devices_InputHiding" xml:space="preserve"><value>Masquage des entrées</value></data>
   <data name="Devices_HideFromGames" xml:space="preserve"><value>Masquer des jeux (HidHide)</value></data>
-  <data name="Devices_HideTooltip" xml:space="preserve"><value>Masque complètement cet appareil des autres applications via le pilote HidHide</value></data>
+  <data name="Devices_HideTooltip" xml:space="preserve"><value>Masque complètement cet appareil aux autres applications via le pilote HidHide. Rebranchez la manette après l’activation : tout ce qui l’avait déjà ouverte, Windows compris, la garde jusqu’à ce qu’elle réapparaisse.</value></data>
   <data name="Devices_HideTooltipInstall" xml:space="preserve"><value>Installez le pilote HidHide pour activer cette option</value></data>
   <data name="Devices_ConsumeMapped" xml:space="preserve"><value>Consommer les entrées assignées (hooks)</value></data>
   <data name="Devices_ConsumeTooltip" xml:space="preserve"><value>Supprime uniquement les touches/boutons spécifiquement assignés, laissant passer les entrées non assignées</value></data>

@@ -239,6 +239,12 @@
   <data name="Dashboard_SensaWaiting" xml:space="preserve"><value>Runtime de Razer Sensa no encontrado. Reintentando.</value></data>
   <data name="Dashboard_SensaActive" xml:space="preserve"><value>Enviando vibración a Sensa HD Haptics</value></data>
   <data name="Dashboard_SensaFooter" xml:space="preserve"><value>Requiere Razer Synapse 4 con Sensa HD Haptics. En Synapse, pon la fuente háptica del dispositivo en Sensa HD Games.</value></data>
+  <data name="Dashboard_Lightsync" xml:space="preserve"><value>Logitech LIGHTSYNC</value></data>
+  <data name="Dashboard_LightsyncDescription" xml:space="preserve"><value>Reenvía el color de la barra de luz que un juego establece en un mando PlayStation virtual a tus dispositivos Logitech LIGHTSYNC a través de Logitech G HUB.</value></data>
+  <data name="Dashboard_EnableLightsync" xml:space="preserve"><value>Reflejar la barra de luz en Logitech LIGHTSYNC</value></data>
+  <data name="Dashboard_LightsyncWaiting" xml:space="preserve"><value>Logitech G HUB no detectado. Reintentando.</value></data>
+  <data name="Dashboard_LightsyncConnected" xml:space="preserve"><value>Conectado a Logitech LIGHTSYNC</value></data>
+  <data name="Dashboard_LightsyncFooter" xml:space="preserve"><value>Requiere Logitech G HUB (o Logitech Gaming Software). Funciona con cualquier mando físico: el color proviene del mando virtual que el juego pinta.</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Habilitar servidor de movimiento DSU (CemuHook Motion Provider protocol)</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>Puerto</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Proporciona datos de giroscopio y acelerómetro a Cemu, Dolphin, Yuzu, etc.</value></data>

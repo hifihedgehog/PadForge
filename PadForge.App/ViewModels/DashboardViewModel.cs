@@ -383,6 +383,28 @@ namespace PadForge.ViewModels
         }
 
         // ─────────────────────────────────────────────
+        //  Logitech LIGHTSYNC lightbar mirror (#382)
+        // ─────────────────────────────────────────────
+
+        private bool _enableLightsyncLightbar;
+
+        /// <summary>Whether the Logitech LIGHTSYNC lightbar mirror is enabled.</summary>
+        public bool EnableLightsyncLightbar
+        {
+            get => _enableLightsyncLightbar;
+            set => SetProperty(ref _enableLightsyncLightbar, value);
+        }
+
+        private string _lightsyncStatus = Strings.Instance.Common_Stopped;
+
+        /// <summary>Current status of the Lightsync mirror for UI display.</summary>
+        public string LightsyncStatus
+        {
+            get => _lightsyncStatus;
+            set => SetProperty(ref _lightsyncStatus, value ?? Strings.Instance.Common_Stopped);
+        }
+
+        // ─────────────────────────────────────────────
         //  Web Controller Server
         // ─────────────────────────────────────────────
 

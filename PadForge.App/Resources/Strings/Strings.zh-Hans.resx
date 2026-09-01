@@ -239,6 +239,12 @@
   <data name="Dashboard_SensaWaiting" xml:space="preserve"><value>未找到Razer Sensa运行时，正在重试。</value></data>
   <data name="Dashboard_SensaActive" xml:space="preserve"><value>正在向Sensa HD触感传输震动</value></data>
   <data name="Dashboard_SensaFooter" xml:space="preserve"><value>需要带Sensa HD触感的Razer Synapse 4。请在Synapse中将设备的触感源设为Sensa HD Games。</value></data>
+  <data name="Dashboard_Lightsync" xml:space="preserve"><value>Logitech LIGHTSYNC</value></data>
+  <data name="Dashboard_LightsyncDescription" xml:space="preserve"><value>将游戏在虚拟PlayStation手柄上设置的灯条颜色，通过Logitech G HUB转发到您的罗技LIGHTSYNC设备。</value></data>
+  <data name="Dashboard_EnableLightsync" xml:space="preserve"><value>将灯条镜像到罗技LIGHTSYNC</value></data>
+  <data name="Dashboard_LightsyncWaiting" xml:space="preserve"><value>未检测到Logitech G HUB。正在重试。</value></data>
+  <data name="Dashboard_LightsyncConnected" xml:space="preserve"><value>已连接到罗技LIGHTSYNC</value></data>
+  <data name="Dashboard_LightsyncFooter" xml:space="preserve"><value>需要Logitech G HUB（或Logitech Gaming Software）。适用于任何物理手柄：颜色来自游戏所绘制的虚拟手柄。</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>启用 DSU 体感服务器（CemuHook Motion Provider 协议）</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>端口</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>为 Cemu、Dolphin、Yuzu 等提供陀螺仪和加速度计数据。</value></data>

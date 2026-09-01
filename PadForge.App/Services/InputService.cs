@@ -96,6 +96,7 @@ namespace PadForge.Services
         private ForegroundMonitorService _foregroundMonitor;
         private ExternalControlService _externalControl;
         private ChromaLightbarService _chromaService;
+        private LightsyncLightbarService _lightsyncService;
         private SensaHapticsService _sensaService;
         private ProfileData _defaultProfileSnapshot;
 
@@ -2211,6 +2212,9 @@ namespace PadForge.Services
             // Razer Chroma lightbar mirror (#373), opt-in.
             StartChromaIfEnabled();
 
+            // Logitech LIGHTSYNC lightbar mirror (#382), opt-in.
+            StartLightsyncIfEnabled();
+
             // Razer Sensa HD haptics translation (#374), opt-in.
             StartSensaIfEnabled();
 
@@ -2399,6 +2403,7 @@ namespace PadForge.Services
             }
             StopExternalControl();
             StopChromaService();
+            StopLightsyncService();
             StopSensaService();
             StopDsuServer();
             StopWebServer();
@@ -8986,6 +8991,13 @@ namespace PadForge.Services
                 else
                     StopChromaService();
             }
+            else if (e.PropertyName == nameof(DashboardViewModel.EnableLightsyncLightbar))
+            {
+                if (_mainVm.Dashboard.EnableLightsyncLightbar)
+                    StartLightsyncIfEnabled();
+                else
+                    StopLightsyncService();
+            }
             else if (e.PropertyName == nameof(DashboardViewModel.EnableSensaHaptics))
             {
                 if (_mainVm.Dashboard.EnableSensaHaptics)
@@ -9195,6 +9207,42 @@ namespace PadForge.Services
             _chromaService = null;
             _dispatcher.BeginInvoke(() =>
                 _mainVm.Dashboard.ChromaStatus = Strings.Instance.Common_Stopped);
+        }
+
+        // ── Logitech LIGHTSYNC lightbar mirror (#382) ──
+
+        private void StartLightsyncIfEnabled()
+        {
+            PadForge.Engine.SdlDiagLog.WriteLine(
+                $"LIGHTSYNC start? enabled={_mainVm.Dashboard.EnableLightsyncLightbar} engine={_inputManager != null} live={_lightsyncService != null}");
+            if (!_mainVm.Dashboard.EnableLightsyncLightbar || _inputManager == null)
+                return;
+            if (_lightsyncService != null)
+                return; // Already running.
+
+            _lightsyncService = new LightsyncLightbarService();
+            _lightsyncService.StateChanged += state =>
+            {
+                _dispatcher.BeginInvoke(() =>
+                {
+                    _mainVm.Dashboard.LightsyncStatus = state switch
+                    {
+                        LightsyncServiceState.Connected => Strings.Instance.Dashboard_LightsyncConnected,
+                        LightsyncServiceState.WaitingForGHub => Strings.Instance.Dashboard_LightsyncWaiting,
+                        _ => Strings.Instance.Common_Stopped,
+                    };
+                });
+            };
+            _lightsyncService.Start();
+        }
+
+        private void StopLightsyncService()
+        {
+            if (_lightsyncService == null) return;
+            _lightsyncService.Dispose();
+            _lightsyncService = null;
+            _dispatcher.BeginInvoke(() =>
+                _mainVm.Dashboard.LightsyncStatus = Strings.Instance.Common_Stopped);
         }
 
         // ── Razer Sensa HD haptics translation (#374) ──

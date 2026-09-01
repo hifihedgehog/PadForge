@@ -1076,11 +1076,16 @@
                                  persistence handler never fires on the
                                  binding-driven refresh when the selection
                                  changes (the #161 lesson). -->
-                            <CheckBox Content="{Binding Devices_QuickCharge, Source={x:Static strings:Strings.Instance}}"
-                                      Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                            <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                       IsChecked="{Binding SelectedDevice.QuickChargeEnabled, Mode=TwoWay}"
                                       Click="QuickCharge_Click" Margin="0,0,0,4"
-                                      ToolTip="{Binding Devices_QuickChargeTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                      ToolTip="{Binding Devices_QuickChargeTooltip, Source={x:Static strings:Strings.Instance}}">
+                                <!-- Wrapped content, not a bare string: the label
+                                     is longer than the panel and the default
+                                     single-line presenter clipped it mid-word. -->
+                                <TextBlock Text="{Binding Devices_QuickCharge, Source={x:Static strings:Strings.Instance}}"
+                                           TextWrapping="Wrap"/>
+                            </CheckBox>
 
                         </StackPanel>
 

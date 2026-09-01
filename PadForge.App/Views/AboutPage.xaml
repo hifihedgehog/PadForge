@@ -42,6 +42,13 @@
                     <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="13" LineHeight="20"
                                FontStyle="Italic" Margin="0,12,0,0"
                                Text="{Binding About_TestimonyDoxology, Source={x:Static strings:Strings.Instance}}"/>
+                    <TextBlock TextWrapping="Wrap" FontSize="13" LineHeight="20" Margin="0,12,0,0">
+                        <Hyperlink NavigateUri="https://www.comeuntochrist.org"
+                                   RequestNavigate="OnInviteNavigate"
+                                   Foreground="{DynamicResource EmberBrush}">
+                            <Run Text="{Binding About_TestimonyInvite, Source={x:Static strings:Strings.Instance}, Mode=OneWay}"/>
+                        </Hyperlink>
+                    </TextBlock>
                 </StackPanel>
             </Border>
 

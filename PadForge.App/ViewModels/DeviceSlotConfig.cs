@@ -473,6 +473,19 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _audioPersonaHapticsGain, value);
         }
 
+        private int _audioTritonLowPassHz = 250;
+        /// <summary>#381: low-pass cutoff in Hz for the Steam Controller
+        /// 2026 PCM haptic stream (60-1000, default 250). Above roughly
+        /// 250 Hz the pad's actuators start behaving like small speakers;
+        /// 250 is the requester's hardware-measured threshold on their
+        /// unit, kept tunable because it is one unit's measurement, not a
+        /// device specification.</summary>
+        public int AudioTritonLowPassHz
+        {
+            get => _audioTritonLowPassHz;
+            set => SetProperty(ref _audioTritonLowPassHz, Math.Clamp(value, 60, 1000));
+        }
+
         // ────────────────────────────────────────────────
         //  Lightbar: macro-driven override (#63)
         // ────────────────────────────────────────────────
@@ -2023,6 +2036,9 @@ namespace PadForge.ViewModels
         // the VM: off / 100%.
         [XmlAttribute] public bool AudioPersonaHapticsEnabled { get; set; }
         [XmlAttribute] public int AudioPersonaHapticsGain { get; set; } = 100;
+        // #381: Triton PCM low-pass cutoff. Missing attribute on legacy
+        // XML keeps the initializer, the 250 Hz default.
+        [XmlAttribute] public int AudioTritonLowPassHz { get; set; } = 250;
         // Headphone jack hardware volume (0-100, default 100). Missing
         // attribute on legacy XML keeps the initializer, so old configs
         // load as full volume, the pre-feature effective behavior.

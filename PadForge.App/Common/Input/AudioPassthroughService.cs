@@ -1761,12 +1761,24 @@ namespace PadForge.Common.Input
                 Engine.SdlDiagLog.WriteLine(
                     $"PERSONA rx cb={_personaCbCount} bytes={_personaCbBytes} targets={feed.Targets.Length} streaming={output.IsStreaming} spkGain={(feed.SpeakerMuted ? 0f : feed.SpeakerGain):F4} spkSends={_personaSpkSends} audible={_personaLastAudible}");
             }
-            var targets = feed.Targets;
-            if (targets.Length == 0) return;
             int ch = output.Channels;
             if (ch < 2) return;
             int stride = ch * 2;
             var span = pcm.Span;
+
+            // #381 (reworking #271 item 1's placement): the actuator-sink
+            // submit runs BEFORE the Sony-target gate. A slot whose only
+            // physical device is a Steam Controller or Switch pad has no
+            // Sony audio targets, and the old order returned below before
+            // the submit, so persona haptics never reached ANY actuator
+            // sink on such a slot (the requester's routing find in
+            // discussion #371). One volatile read when the feature is off.
+            if (feed.HapL >= 0 && feed.HapR >= 0 && ch > Math.Max(feed.HapL, feed.HapR))
+                HapticToneService.SubmitPersonaHaptics(
+                    feed.Slot, span, stride, feed.HapL * 2, feed.HapR * 2);
+
+            var targets = feed.Targets;
+            if (targets.Length == 0) return;
             float spkGain = feed.SpeakerMuted ? 0f : feed.SpeakerGain;
 
             // ── Authored-haptics sniffer ──
@@ -1862,12 +1874,8 @@ namespace PadForge.Common.Input
                 }
             }
 
-            // #271 item 1: mirror the haptic channels into the slot's
-            // persona-enabled actuator sinks (Switch HD Rumble / Steam
-            // Controller tones). One volatile read when the feature is off.
-            if (feed.HapL >= 0 && feed.HapR >= 0 && ch > Math.Max(feed.HapL, feed.HapR))
-                HapticToneService.SubmitPersonaHaptics(
-                    feed.Slot, span, stride, feed.HapL * 2, feed.HapR * 2);
+            // #271 item 1's actuator submit moved above the Sony-target
+            // gate (#381), where it runs for slots with no Sony pad too.
         }
 
         /// <summary>Called from the reconcile's desired-state pass with

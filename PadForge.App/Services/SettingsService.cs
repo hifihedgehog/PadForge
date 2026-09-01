@@ -2422,6 +2422,7 @@ namespace PadForge.Services
                 || c.AudioEqPreampDb != 0
                 || !c.AudioLimiterEnabled || c.AudioLimiterCeiling != 98
                 || c.AudioPersonaHapticsEnabled || c.AudioPersonaHapticsGain != 100
+                || c.AudioTritonLowPassHz != 250
                 // #239: enabled synthetic pressure is copy-worthy, and a
                 // changed touch level keeps the config alive while the
                 // toggle is momentarily off (the #185/#202 keep-alive rule).
@@ -2453,6 +2454,7 @@ namespace PadForge.Services
                 || c.AudioEqPreampDb != 0
                 || !c.AudioLimiterEnabled || c.AudioLimiterCeiling != 98
                 || c.AudioPersonaHapticsEnabled || c.AudioPersonaHapticsGain != 100
+                || c.AudioTritonLowPassHz != 250
                 || c.TouchpadSyntheticPressure
                 || c.TouchpadSyntheticTouchPercent != 50);
 
@@ -2794,6 +2796,7 @@ namespace PadForge.Services
                     cfg.AudioLimiterCeiling = cfgData.AudioLimiterCeiling;
                     cfg.AudioPersonaHapticsEnabled = cfgData.AudioPersonaHapticsEnabled;
                     cfg.AudioPersonaHapticsGain = cfgData.AudioPersonaHapticsGain;
+                    cfg.AudioTritonLowPassHz = cfgData.AudioTritonLowPassHz;
                     // Migrate legacy MicLightOn to the new MicLedMode if
                     // the new field hasn't been set explicitly.
                     if (cfgData.MicLedMode != ViewModels.MicLedMode.Off)
@@ -4354,6 +4357,7 @@ namespace PadForge.Services
                 AudioLimiterCeiling = cfg.AudioLimiterCeiling,
                 AudioPersonaHapticsEnabled = cfg.AudioPersonaHapticsEnabled,
                 AudioPersonaHapticsGain = cfg.AudioPersonaHapticsGain,
+                AudioTritonLowPassHz = cfg.AudioTritonLowPassHz,
                 HeadphoneVolume = cfg.HeadphoneVolume,
                 Ds5AudioBufferLength = cfg.Ds5AudioBufferLength,
                 AudioOutputPath = cfg.AudioOutputPath,

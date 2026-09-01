@@ -1233,6 +1233,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(SelectedDeviceHasDs5AudioBuffer));
                     OnPropertyChanged(nameof(SelectedDeviceHasNoSpeaker));
                     OnPropertyChanged(nameof(SelectedDeviceHasHapticTones));
+                    OnPropertyChanged(nameof(SelectedDeviceIsTritonPcm));
                     OnPropertyChanged(nameof(SelectedDeviceHasTouchpadPulse));
                     // The EQ bands are per device and live on DeviceConfig as
                     // one encoded attribute, so the grid rows are rebuilt on
@@ -5546,6 +5547,24 @@ namespace PadForge.ViewModels
             }
         }
 
+        /// <summary>True when the SELECTED assigned device is a Steam
+        /// Controller 2026 on a PCM-capable transport (wired 0x1302 or a
+        /// dongle 0x1304/0x1305), the set the #381 native PCM stream
+        /// drives. Gates the actuator low-pass card: on BLE (0x1303) and
+        /// every other haptic family the setting has no effect, so it is
+        /// not shown there.</summary>
+        public bool SelectedDeviceIsTritonPcm
+        {
+            get
+            {
+                var sel = SelectedMappedDevice;
+                if (sel == null || sel.InstanceGuid == Guid.Empty) return false;
+                var ud = PadForge.Common.Input.SettingsManager.FindDeviceByInstanceGuid(sel.InstanceGuid);
+                if (ud == null || ud.VendorId != 0x28DE) return false;
+                return ud.ProdId == 0x1302 || ud.ProdId == 0x1304 || ud.ProdId == 0x1305;
+            }
+        }
+
         /// <summary>True when the SELECTED assigned device has a touchpad
         /// AND a haptic lane the swipe-tick feature can drive (Steam
         /// Controller family actuators, or a dispatcher-driven Sony pad).
@@ -5688,6 +5707,13 @@ namespace PadForge.ViewModels
             _resetPersonaHapticsGainCommand ??= new RelayCommand(() =>
             {
                 if (DeviceConfig != null) DeviceConfig.AudioPersonaHapticsGain = 100;
+            });
+
+        private RelayCommand _resetTritonLowPassCommand;
+        public RelayCommand ResetTritonLowPassCommand =>
+            _resetTritonLowPassCommand ??= new RelayCommand(() =>
+            {
+                if (DeviceConfig != null) DeviceConfig.AudioTritonLowPassHz = 250;
             });
 
         private RelayCommand _resetToneLimitHzCommand;
@@ -6014,6 +6040,7 @@ namespace PadForge.ViewModels
                     DeviceConfig.AudioToneLimitHz = 800;
                     DeviceConfig.AudioPersonaHapticsEnabled = false;
                     DeviceConfig.AudioPersonaHapticsGain = 100;
+                    DeviceConfig.AudioTritonLowPassHz = 250;
                     DeviceConfig.Ds5AudioBufferLength = PadForge.Common.Input.AudioPassthroughService.Ds5AudioBufferLengthDefault;
                     DeviceConfig.HeadphoneVolume = 100;
                     DeviceConfig.AudioOutputPath = AudioOutputPath.Automatic;
@@ -7160,6 +7187,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(SelectedDeviceHasDs5AudioBuffer));
                     OnPropertyChanged(nameof(SelectedDeviceHasNoSpeaker));
                     OnPropertyChanged(nameof(SelectedDeviceHasHapticTones));
+                    OnPropertyChanged(nameof(SelectedDeviceIsTritonPcm));
                     OnPropertyChanged(nameof(MirrorEngageSelectedInput));
                     RefreshMirrorSources();
                 }

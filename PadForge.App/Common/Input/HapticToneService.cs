@@ -143,6 +143,13 @@ namespace PadForge.Common.Input
         /// sink's ~4 Hz config cadence, like the tone filter above.</summary>
         public static Func<int, Guid, (bool Enabled, int GainPct)> PersonaHapticsProvider { get; set; }
 
+        /// <summary>#381: per-(slot, device) low-pass cutoff in Hz for the
+        /// Triton PCM haptic stream, default 250 (the requester's
+        /// hardware-measured audibility threshold, deliberately tunable).
+        /// Same low-cadence provider shape as the tone filter: each sink
+        /// re-reads at ~4 Hz on its own stream thread.</summary>
+        public static Func<int, Guid, int> TritonLowPassProvider { get; set; }
+
         // ── Combined-pair motor-side audio routing (discussion #223) ─────
         // The reporter holds one Joy-Con per hand and wants the HD-haptic
         // audio to follow the ACTIVE motor: left motor commanded -> left
@@ -697,6 +704,29 @@ namespace PadForge.Common.Input
             public float PulseAmp;
             public long PulseLastSendMs;
             public bool PulseRemoteZeroPending;
+
+            // ── #381 Triton native PCM stream lane ──
+            // Wired (0x1302) and dongle (0x1304/0x1305) Tritons stream
+            // the actuator mix as real PCM through output reports
+            // 0x86/0x88 instead of reducing it to a dominant tone. All
+            // state below is stream-thread only.
+            public bool PcmCapable;
+            public bool PcmMuLaw;
+            public bool PcmArmed;
+            public ISampleProvider PcmSource;
+            public TritonPcmLowPassProvider PcmFilter;
+            public long PcmLastContentMs;
+            public int PcmCfgHz = 250;
+            public float PcmSynthPhase;
+            public float PcmPulseEnv;
+            public float PcmPulsePhase;
+            public float[] PcmFloatBuf;
+            public short[] PcmPending;
+            public int PcmPendingCount;
+            public byte[] PcmPktScratch;
+            public TritonPcmWriteRing PcmRing;
+            public long PcmDropCount;
+            public long PcmDiagLastMs;
         }
 
         private static readonly object _lock = new();
@@ -1514,6 +1544,13 @@ namespace PadForge.Common.Input
                         s.UseWriteFile = usbTriton || puckTriton;
                         s.TritonPinWriteFile = usbTriton || puckTriton;
                         s.TritonSerialLane = usbTriton || puckTriton;
+                        // #381: the same two transports carry the PCM
+                        // stream. BLE (0x1303) stays on the 0x83 tone lane:
+                        // no reference sustains full-rate PCM over direct
+                        // BLE (only live-haptics tries it at reduced rates
+                        // it marks experimental).
+                        s.PcmCapable = usbTriton || puckTriton;
+                        s.PcmMuLaw = puckTriton;
                         PadForge.Engine.SdlDiagLog.WriteLine(
                             $"HAPTICDIAG triton-build usb={(usbTriton ? 1 : 0)} puck={(puckTriton ? 1 : 0)} outlenCaps={capOut} featCaps={capFeat} path-tail={(path != null && path.Length > 24 ? path.Substring(path.Length - 24) : path)}");
                     }
@@ -1551,6 +1588,19 @@ namespace PadForge.Common.Input
                     // write (HidD_SetFeature, report id 0x00) is self-contained.
                 }
 
+                // #381: PCM-capable Tritons read the STEREO mixer through
+                // a Butterworth low-pass and the same sinc resampler,
+                // bypassing the mono reduction entirely. Only one chain is
+                // ever read at runtime (the stream loop branches), so the
+                // pull-model single-reader rule holds.
+                TritonPcmLowPassProvider pcmLp = null;
+                ISampleProvider pcmSrc = null;
+                if (s.PcmCapable)
+                {
+                    pcmLp = new TritonPcmLowPassProvider(s.MacroMixer, s.PcmCfgHz);
+                    pcmSrc = new SincResamplingSampleProvider(pcmLp, ReduceRate);
+                }
+
                 var mono = new StereoToMonoSampleProvider(s.MacroMixer) { LeftVolume = 0.5f, RightVolume = 0.5f };
                 // Sinc mode, not NAudio's stock wrapper: the stock IIR
                 // anti-alias filter sits at 2772 Hz for this ratio and was
@@ -1571,6 +1621,8 @@ namespace PadForge.Common.Input
                     s.PairSecondHandle = h2;
                     h2 = IntPtr.Zero;
                     s.MonoSource = resampled;
+                    s.PcmFilter = pcmLp;
+                    s.PcmSource = pcmSrc;
                     s.Reducer = new HapticToneReducer(ReduceRate);
                     s.Running = true;
                     s.Thread = new Thread(() => StreamLoop(s)) { IsBackground = true, Name = "PadForge HD Haptic" };
@@ -1621,6 +1673,12 @@ namespace PadForge.Common.Input
                             // must not re-arm past this stop and leave an
                             // actuator sounding on a dead sink. TritonStop
                             // itself bypasses the fence via TritonSendCore.
+                            // #381: an armed PCM stream is disabled first
+                            // (0x86 disable pair), while the handle is
+                            // still live and before the fence.
+                            if (s.PcmArmed)
+                                try { DisarmTritonPcm(s); } catch { }
+                            try { s.PcmRing?.Dispose(); } catch { }
                             s.TornDown = true;
                             TritonStop(s); // 0x83 stop on the lane's actuator set
                             break;
@@ -1992,6 +2050,200 @@ namespace PadForge.Common.Input
             s.SteamOn = false;
         }
 
+        // ── #381 Triton native PCM stream lane ─────────────────────────
+        //    Wired and dongle Tritons carry the actuator mix as real PCM
+        //    (reports 0x86/0x88, verified against TritonLib, the
+        //    live-haptics tool, sc2ds, and the steam-controller-stuff
+        //    firmware tables). The mix is the same MacroMixer every
+        //    source already feeds, so persona haptics, sound macros, and
+        //    the system-audio mirror all ride the stream and nothing is
+        //    silenced by it: the requester's exclusive-ownership
+        //    limitation dissolves into mixing. The stream is fed
+        //    CONTINUOUSLY while armed, silence included, because the
+        //    firmware's underrun recovery can itself fail (fwstrings
+        //    3849-3854); the idle teardown bounds the cost.
+
+        private const int PcmFramesPerTick = 80;      // 10 ms at 8 kHz
+        private const int PcmHangoverMs = 2000;       // idle teardown, re-arm is ~12 ms
+        private const int PcmPendingCapFrames = 320;  // 40 ms backlog cap, drop-oldest
+        private const float PcmPulseHz = 160f;        // swipe tick pitch
+
+        private static bool StreamTritonPcmTick(Sink s, float toneHz, float amp,
+            bool testActive, bool remoteActive, long nowMs)
+        {
+            if (s.PcmSource == null) return false;
+            s.PcmFloatBuf ??= new float[PcmFramesPerTick * 2];
+            s.PcmPending ??= new short[PcmPendingCapFrames * 2];
+            s.PcmPktScratch ??= new byte[Engine.Haptics.TritonPcmEncoder.PacketLength];
+            var f = s.PcmFloatBuf;
+
+            bool audible;
+            if (testActive || remoteActive)
+            {
+                // Direct lanes render as a synthesized sine: with a PCM
+                // wire there is no reason to leave the stream for 0x83,
+                // and a clean sine beats a re-detected tone. amp arrives
+                // slot-volume scaled by the shared tick body.
+                float hz = Math.Clamp(toneHz, 1f, 3900f);
+                float step = (float)(2 * Math.PI * hz / Engine.Haptics.TritonPcmEncoder.SampleRate);
+                float a = Math.Clamp(amp, 0f, 1f);
+                for (int i = 0; i < PcmFramesPerTick; i++)
+                {
+                    float v = a * (float)Math.Sin(s.PcmSynthPhase);
+                    s.PcmSynthPhase += step;
+                    f[i * 2] = v;
+                    f[i * 2 + 1] = v;
+                }
+                if (s.PcmSynthPhase > 64f) s.PcmSynthPhase %= (float)(2 * Math.PI);
+                audible = a > 0.02f;
+            }
+            else
+            {
+                int got = 0;
+                try { got = s.PcmSource.Read(f, 0, f.Length); } catch { }
+                for (int i = got; i < f.Length; i++) f[i] = 0f;
+                // On-controller sinks own their loudness (the tone lane's
+                // slot-volume contract), applied per sample here.
+                float vol = Math.Clamp(SoundMacroService.GetSlotVolume(s.Slot) / 100f, 0f, 1f);
+                float peak = 0f;
+                for (int i = 0; i < f.Length; i++)
+                {
+                    float v = f[i] * vol;
+                    f[i] = v;
+                    if (v < 0f) v = -v;
+                    if (v > peak) peak = v;
+                }
+                audible = peak > 0.002f;
+                s.PcmSynthPhase = 0f;
+            }
+
+            // Swipe-haptic overlay (#219 via #381): a short decaying burst
+            // summed into the stream.
+            if (s.PcmPulseEnv > 0.003f)
+            {
+                float step = (float)(2 * Math.PI * PcmPulseHz / Engine.Haptics.TritonPcmEncoder.SampleRate);
+                float env = s.PcmPulseEnv;
+                float decay = 0.9908f; // halves every ~75 samples (~9 ms)
+                for (int i = 0; i < PcmFramesPerTick; i++)
+                {
+                    float v = env * (float)Math.Sin(s.PcmPulsePhase);
+                    s.PcmPulsePhase += step;
+                    env *= decay;
+                    f[i * 2] += v;
+                    f[i * 2 + 1] += v;
+                }
+                s.PcmPulseEnv = env;
+                audible = true;
+            }
+            else if (s.PcmPulseEnv != 0f)
+            {
+                s.PcmPulseEnv = 0f;
+                s.PcmPulsePhase = 0f;
+            }
+
+            if (audible) s.PcmLastContentMs = nowMs;
+            bool want = testActive || (nowMs - s.PcmLastContentMs) < PcmHangoverMs;
+
+            if (want && !s.PcmArmed && !ArmTritonPcm(s))
+                return false;
+            if (!want)
+            {
+                if (s.PcmArmed) DisarmTritonPcm(s);
+                return false;
+            }
+
+            // s16 into the pending buffer. The cap drops OLDEST frames so
+            // a stall degrades to a bounded skip, never growing latency
+            // (the requester's Puck backlog finding, kept as the safety
+            // valve behind the overlapped ring).
+            int space = s.PcmPending.Length - s.PcmPendingCount;
+            if (space < f.Length)
+            {
+                int dropShorts = f.Length - space;
+                Array.Copy(s.PcmPending, dropShorts, s.PcmPending, 0, s.PcmPendingCount - dropShorts);
+                s.PcmPendingCount -= dropShorts;
+                s.PcmDropCount += dropShorts / 2;
+            }
+            for (int i = 0; i < f.Length; i++)
+                s.PcmPending[s.PcmPendingCount + i] = Engine.Haptics.TritonPcmEncoder.FloatToS16(f[i]);
+            s.PcmPendingCount += f.Length;
+
+            // Submit whole packets through the overlapped ring: up to four
+            // in flight, so the USB stack fills every interrupt slot and
+            // cadence is not bound by per-write completion latency.
+            s.PcmRing ??= new TritonPcmWriteRing(s.OutLen);
+            int fpp = Engine.Haptics.TritonPcmEncoder.FramesPerPacket(s.PcmMuLaw);
+            int consumed = 0;
+            while (s.PcmPendingCount - consumed >= fpp * 2)
+            {
+                Engine.Haptics.TritonPcmEncoder.EncodeStereoPacketInto(
+                    s.PcmPktScratch,
+                    new ReadOnlySpan<short>(s.PcmPending, consumed, fpp * 2),
+                    fpp, s.PcmMuLaw);
+                if (!s.PcmRing.TrySubmit(s.Handle, s.PcmPktScratch)) break;
+                consumed += fpp * 2;
+            }
+            if (consumed > 0)
+            {
+                Array.Copy(s.PcmPending, consumed, s.PcmPending, 0, s.PcmPendingCount - consumed);
+                s.PcmPendingCount -= consumed;
+            }
+
+            if (nowMs - s.PcmDiagLastMs >= 5000)
+            {
+                s.PcmDiagLastMs = nowMs;
+                PadForge.Engine.SdlDiagLog.WriteLine(
+                    $"TRITONPCM stream mulaw={(s.PcmMuLaw ? 1 : 0)} pendingFrames={s.PcmPendingCount / 2} dropped={s.PcmDropCount} hardFail={s.PcmRing.HardFailures} lp={s.PcmCfgHz}");
+            }
+            return true;
+        }
+
+        /// <summary>Arms the PCM stream: disable both targets, settle
+        /// 10 ms, enable both with the transport's mode. The leading
+        /// disables make the enables idempotent because reconfiguring a
+        /// running stream is rejected (0x44 bit 6). Targets 2 and 5 are
+        /// the 0x86 table's INT_BOTH and TP_BOTH, all four actuators,
+        /// the arrangement every working reference ships.</summary>
+        private static bool ArmTritonPcm(Sink s)
+        {
+            byte mode = s.PcmMuLaw
+                ? Engine.Haptics.TritonPcmEncoder.ModePuck8kMuLaw
+                : Engine.Haptics.TritonPcmEncoder.ModeWired8k16;
+            bool ok = TritonPcmConfigWrite(s, enable: false, Engine.Haptics.TritonPcmEncoder.TargetInternalBoth, mode);
+            ok &= TritonPcmConfigWrite(s, enable: false, Engine.Haptics.TritonPcmEncoder.TargetTrackpadBoth, mode);
+            Thread.Sleep(10);
+            ok &= TritonPcmConfigWrite(s, enable: true, Engine.Haptics.TritonPcmEncoder.TargetInternalBoth, mode);
+            ok &= TritonPcmConfigWrite(s, enable: true, Engine.Haptics.TritonPcmEncoder.TargetTrackpadBoth, mode);
+            if (!ok)
+            {
+                PadForge.Engine.SdlDiagLog.WriteLine(
+                    $"TRITONPCM arm FAILED mulaw={(s.PcmMuLaw ? 1 : 0)} outLen={s.OutLen}");
+                return false;
+            }
+            s.PcmArmed = true;
+            s.PcmPendingCount = 0;
+            PadForge.Engine.SdlDiagLog.WriteLine(
+                $"TRITONPCM arm mode={mode} targets=2+5 mulaw={(s.PcmMuLaw ? 1 : 0)} outLen={s.OutLen}");
+            return true;
+        }
+
+        /// <summary>Disables the stream (0x86 disable pair), the
+        /// live-haptics teardown shape. Also runs from TeardownSink while
+        /// the handle is still live.</summary>
+        private static void DisarmTritonPcm(Sink s)
+        {
+            s.PcmArmed = false;
+            s.PcmPendingCount = 0;
+            TritonPcmConfigWrite(s, enable: false, Engine.Haptics.TritonPcmEncoder.TargetInternalBoth, 0);
+            TritonPcmConfigWrite(s, enable: false, Engine.Haptics.TritonPcmEncoder.TargetTrackpadBoth, 0);
+            PadForge.Engine.SdlDiagLog.WriteLine("TRITONPCM disarm");
+        }
+
+        private static bool TritonPcmConfigWrite(Sink s, bool enable, byte target, byte mode)
+            => HidOutputWrite(s, ResizeOut(
+                Engine.Haptics.TritonPcmEncoder.EncodeStreamCommand(enable, target, mode),
+                Math.Max(4, s.OutLen)));
+
         // ── Stream thread: reduce the mono mix to (freq, amp) per tick, encode
         //    per family, write one report. One report per tick, never bursting. ──
         private static void StreamLoop(Sink s)
@@ -2012,7 +2264,11 @@ namespace PadForge.Common.Input
                 while (s.Running)
                 {
                     int got = 0;
-                    try { got = s.MonoSource.Read(monoF, 0, SamplesPerTick); } catch { }
+                    // #381: PCM-capable sinks read the mixer through their
+                    // own stereo chain inside StreamTritonPcmTick; reading
+                    // the mono chain here too would double-drain it.
+                    if (!s.PcmCapable)
+                        try { got = s.MonoSource.Read(monoF, 0, SamplesPerTick); } catch { }
                     for (int i = got; i < SamplesPerTick; i++) monoF[i] = 0f;
 
                     // Cheap silence gate: an idle sink must not run the per-tick
@@ -2062,6 +2318,24 @@ namespace PadForge.Common.Input
                                 s.PersonaVolume.Volume = Math.Clamp(pGain, 25, 300) / 100f;
                         }
                         catch { }
+
+                        // #381: PCM low-pass cutoff refresh, same cadence.
+                        // SetCutoff runs on this thread between reads, the
+                        // MirrorDsp swap discipline.
+                        if (s.PcmFilter != null)
+                        {
+                            try
+                            {
+                                var lpp = TritonLowPassProvider;
+                                int lpHz = lpp != null ? lpp(s.Slot, s.DeviceGuid) : 250;
+                                if (lpHz != s.PcmCfgHz)
+                                {
+                                    s.PcmCfgHz = lpHz;
+                                    s.PcmFilter.SetCutoff(lpHz);
+                                }
+                            }
+                            catch { }
+                        }
                     }
 
                     float toneHz, amp;
@@ -2099,7 +2373,7 @@ namespace PadForge.Common.Input
                     // setting). Owner-side remote frames are exempt: the
                     // consumer applied ITS filter before shipping, same
                     // principle as the slot volume below.
-                    if (!remoteActive)
+                    if (!remoteActive && !s.PcmCapable)
                         (toneHz, amp) = ApplyToneFilter(s.ToneFilterMode, s.ToneLimitHz,
                             toneHz, amp, ref s.ToneLastPassHz, ref s.ToneAboveLatch);
 
@@ -2138,7 +2412,14 @@ namespace PadForge.Common.Input
                             // SC2026 (Triton): the 0x83 LFO-tone OUTPUT report written directly to our
                             // own HID handle. The Triton does not use 0x8f (confirmed: Valve's SDL
                             // driver and OpenPuck's real-capture both drive it via output reports only).
-                            case Family.Steam2026: StreamTritonTick(s, toneHz, amp, streaming); break;
+                            case Family.Steam2026:
+                                // #381: wired/dongle Tritons stream native
+                                // PCM; BLE keeps the 0x83 tone lane.
+                                if (s.PcmCapable)
+                                    streaming = StreamTritonPcmTick(s, toneHz, amp, testActive, remoteActive, nowMs);
+                                else
+                                    StreamTritonTick(s, toneHz, amp, streaming);
+                                break;
                             case Family.SteamDeck: StreamSteamDeckTick(s, toneHz, amp, streaming); break;
                             default: StreamJoyConTick(s, toneHz, amp, streaming, testActive, nowMs); break;
                         }
@@ -2148,7 +2429,17 @@ namespace PadForge.Common.Input
                     // dispatch so a pulse and a tone re-arm never land in the
                     // same tick out of order.
                     int pulseSides = Interlocked.Exchange(ref s.PulsePendingSides, 0);
-                    if (pulseSides != 0 || s.PulseRemoteZeroPending)
+                    if (pulseSides != 0 && s.PcmCapable && s.PcmArmed)
+                    {
+                        // #381: while the PCM stream owns the actuators the
+                        // swipe tick is synthesized into it (next tick's
+                        // overlay) instead of racing 0x82 against an active
+                        // stream, an interaction no reference documents.
+                        s.PcmPulseEnv = Math.Max(s.PcmPulseEnv,
+                            Math.Clamp(s.PulseAmp, 0f, 1f) * 0.6f);
+                        s.PcmLastContentMs = nowMs;
+                    }
+                    else if (pulseSides != 0 || s.PulseRemoteZeroPending)
                         SendTouchpadPulses(s, pulseSides, nowMs);
 
                     if (streaming)

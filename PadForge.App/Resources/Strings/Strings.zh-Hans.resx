@@ -2049,6 +2049,9 @@
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>触觉增益</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>重置为默认值（关闭）</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>重置为默认值（100%）</value></data>
+  <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>执行器低通截止</value></data>
+  <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>将Steam Controller的触觉流保持在此频率以下，使触控板振动而不发出可闻声音。约250 Hz以上执行器开始发声。调高获得更锐利的细节，调低则更安静。</value></data>
+  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>重置为250 Hz</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>超过此频率的音调将被切除或下折。默认 800 Hz 可保留引擎与冲击震动，只捕捉刺耳的蜂鸣音。</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>重置高音</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>重置音调上限</value></data>

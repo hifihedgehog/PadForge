@@ -2061,6 +2061,9 @@
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>햅틱 게인</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>기본값으로 재설정 (끄기)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>기본값으로 재설정 (100%)</value></data>
+  <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>액추에이터 로우패스 컷오프</value></data>
+  <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>Steam Controller 햇틱 스트리밍을 이 주파수 이하로 유지하여 패드가 소리를 내지 않고 진동하게 합니다. 약 250 Hz부터 액추에이터 소리가 들리기 시작합니다. 높이면 디테일이 살고 낮추면 더 조용해집니다.</value></data>
+  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>250 Hz로 재설정</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>이 주파수를 넘는 음은 잘리거나 접힙니다. 기본값 800 Hz는 엔진과 타격 진동을 유지하면서 날카로운 비프음만 잡아냅니다.</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>고음 재설정</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>톤 한도 재설정</value></data>

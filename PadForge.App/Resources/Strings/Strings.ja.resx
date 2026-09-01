@@ -2061,6 +2061,9 @@
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>ハプティクス ゲイン</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>既定に戻す (オフ)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>既定に戻す (100%)</value></data>
+  <data name="Pad_Audio_TritonLowPass_Label" xml:space="preserve"><value>アクチュエーターローパスカットオフ</value></data>
+  <data name="Pad_Audio_TritonLowPass_Tooltip" xml:space="preserve"><value>Steam Controllerのハプティクスストリーミングをこの周波数以下に抑え、パッドが音を鳴らさず振動するようにします。約250 Hzを超えるとアクチュエーターの音が聞こえ始めます。上げると細部が鋭くなり、下げると静かになります。</value></data>
+  <data name="Pad_ResetTritonLowPass" xml:space="preserve"><value>250 Hzにリセット</value></data>
   <data name="Pad_Audio_ToneLimit_Tooltip" xml:space="preserve"><value>この周波数を超える音はカットまたはフォールドされます。既定の 800 Hz ならエンジン音や衝撃の振動は残り、甲高いビープ音だけを捕捉します。</value></data>
   <data name="Pad_ResetToneFilterMode" xml:space="preserve"><value>高音をリセット</value></data>
   <data name="Pad_ResetToneLimit" xml:space="preserve"><value>トーン上限をリセット</value></data>

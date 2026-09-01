@@ -349,23 +349,24 @@ namespace PadForge.Engine.Data
         public int IdleDisconnectSeconds { get; set; }
 
         /// <summary>Quick Charge (#372, asked in discussion #367): when this
-        /// Bluetooth-pathed device's physical controller comes online over
-        /// USB (same serial, which for these pads is the Bluetooth MAC),
-        /// drop the Bluetooth link so the pad just charges. SDL already
-        /// de-duplicates the JOYSTICK when the USB twin arrives, but that is
-        /// software only: the radio link stays up and keeps drawing power,
-        /// which is the report this answers. Default off.</summary>
+        /// Bluetooth-connected controller reports that it is CHARGING (a
+        /// cable arrived, any USB power source), drop the Bluetooth link so
+        /// the pad just charges without powering the radio. The trigger is
+        /// the pad's own charging report on this record, the DS4Windows
+        /// shape: the first shipped pass keyed on the USB twin's arrival
+        /// instead and @Jobima1st's bench showed it never firing, so the
+        /// rework rides the same lane the idle timeout does with the
+        /// charging state in place of the timer. Default off.</summary>
         [XmlElement]
         public bool QuickChargeEnabled { get; set; }
 
-        /// <summary>One Quick Charge drop per USB arrival (#372): set on the
-        /// USB-side device after its Bluetooth twin's link is dropped, and
-        /// cleared when a fresh connection is detected, so the scan never
-        /// re-fires the radio IOCTL while the pad stays plugged and a user
-        /// who deliberately re-links Bluetooth while charging is not fought.
-        /// Polling thread only.</summary>
+        /// <summary>Quick Charge edge memory (#372): the last charging read,
+        /// so the drop fires only on the false-to-true edge. Deliberately
+        /// NOT reset on a fresh connection: a user who re-links Bluetooth
+        /// while the cable stays in reads charging=true with no edge and is
+        /// left alone until an unplug re-arms it. Polling thread only.</summary>
         [XmlIgnore]
-        public bool QuickChargeHandled { get; set; }
+        public bool QuickChargePrevCharging { get; set; }
 
         /// <summary>
         /// Cached HID device instance IDs resolved via SetupAPI for HidHide blacklisting.
@@ -435,8 +436,9 @@ namespace PadForge.Engine.Data
         [XmlIgnore]
         public long LastIdleCheckTick { get; set; }
 
-        /// <summary>Last tick the Quick Charge twin scan ran (#372), same
-        /// ~1 Hz discipline as the idle countdown. Polling thread only.</summary>
+        /// <summary>Last tick the Quick Charge charging-edge check ran
+        /// (#372), same ~1 Hz discipline as the idle countdown. Polling
+        /// thread only.</summary>
         [XmlIgnore]
         public long LastQuickChargeCheckTick { get; set; }
 

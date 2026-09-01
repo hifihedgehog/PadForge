@@ -2420,7 +2420,7 @@
   <data name="Devices_Dossier" xml:space="preserve"><value>Apparaatdossier</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minuten (0 = nooit)</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Bluetooth loskoppelen bij aansluiten via USB</value></data>
-  <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Snelladen. Wanneer deze pad via USB verbindt, wordt de Bluetooth-verbinding verbroken zodat de controller laadt zonder de radio te voeden. Schakel je Bluetooth weer in terwijl de kabel erin zit, dan blijft die staan tot de volgende keer dat je inplugt.</value></data>
+  <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Quick Charge. Wanneer deze controller meldt dat hij oplaadt terwijl hij via Bluetooth is verbonden, wordt de Bluetooth-verbinding verbroken zodat hij oplaadt zonder de radio te voeden. Elke USB-voedingsbron telt, ook wandladers. Zet je Bluetooth weer aan terwijl de kabel erin zit, dan blijft het met rust tot de volgende keer dat je de kabel lostrekt.</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Koppelt deze Bluetooth-controller los na dit aantal minuten zonder invoer, zodat deze in slaapstand gaat en batterij bespaart. Wordt nooit geactiveerd via USB.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Aan/uit</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>Menu</value></data>

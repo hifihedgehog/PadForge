@@ -2400,7 +2400,7 @@
   <data name="Devices_Dossier" xml:space="preserve"><value>设备档案</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>分钟（0 = 从不）</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>通过USB连接时断开蓝牙</value></data>
-  <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>快速充电。此手柄通过USB连接时会断开其蓝牙链接，让手柄充电时不再为无线供电。若在接线时重新打开蓝牙，则保持不变，直到下次接线。</value></data>
+  <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>快速充电。当此控制器在蓝牙连接期间报告正在充电时，将断开蓝牙链接，使其充电时不再为无线模块供电。任何USB电源都有效，包括墙充。若在插着线时重新开启蓝牙，将保持不动，直到下次拔线。</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>在无输入达到设定分钟数后断开此蓝牙控制器，使其休眠以节省电量。USB 连接时不会触发。</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>电源</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>菜单</value></data>

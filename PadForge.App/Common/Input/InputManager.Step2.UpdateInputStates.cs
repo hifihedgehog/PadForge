@@ -503,15 +503,49 @@ namespace PadForge.Common.Input
 
             if (!QuickChargeEdge(ud, state.BatteryCharging)) return;
 
-            // Only a Bluetooth path has a radio link to drop, and the #162
-            // helper must recognize the device before the IOCTL is worth
-            // a worker.
-            if (!PadForge.Common.DeviceTransport.IsBluetooth(ud.DevicePath, ud.VendorId, ud.ProdId)) return;
-            if (!PadForge.Common.Input.BluetoothLinkHelper.IsDisconnectTarget(ud.DevicePath, ud.VendorId, ud.ProdId, ud.SerialNumber)) return;
+            // Two shapes reach this edge, because BuildInstanceGuid keys
+            // identity on serial:{vid}:{pid}:{serial} and Sony pads report
+            // the SAME MAC serial on both transports, so the cable does NOT
+            // create a twin record: the USB arrival REBINDS this record and
+            // overwrites DevicePath with the USB path. That rebind is what
+            // killed both earlier passes on @Jobima1st's bench (the twin
+            // scan found no second record because there never is one, and
+            // the first edge rework died on a Bluetooth-path gate that the
+            // rebind had already falsified).
+            if (PadForge.Common.DeviceTransport.IsBluetooth(ud.DevicePath, ud.VendorId, ud.ProdId))
+            {
+                // Still Bluetooth-pathed: the wall-charger shape (power with
+                // no USB data), or a pad SDL does not de-dup. Full #162 lane.
+                if (!PadForge.Common.Input.BluetoothLinkHelper.IsDisconnectTarget(ud.DevicePath, ud.VendorId, ud.ProdId, ud.SerialNumber))
+                {
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        $"QUICKCHARGE {ud.VendorId:X4}:{ud.ProdId:X4} edge on Bluetooth path but not a disconnect target, serial={ud.SerialNumber}");
+                    return;
+                }
+                PadForge.Engine.SdlDiagLog.WriteLine(
+                    $"QUICKCHARGE {ud.VendorId:X4}:{ud.ProdId:X4} charging over Bluetooth, dropping link serial={ud.SerialNumber}");
+                FireIdleDisconnect(ud);
+                return;
+            }
 
+            // Wired-pathed: the cable-into-PC shape. The record now reads
+            // through the USB wrapper, but the pad's Bluetooth radio link
+            // may still be up (SDL's de-dup removes only the JOYSTICK).
+            // The link is addressed by the record's own MAC serial, which
+            // the rebind preserves (an arrival that reports no serial never
+            // erases one). A pad that was never on Bluetooth makes this a
+            // cheap radio query that finds nothing.
+            if (!PadForge.Common.Input.BluetoothLinkHelper.TryParseAddress(ud.SerialNumber, out long qcAddr) || qcAddr == 0)
+            {
+                PadForge.Engine.SdlDiagLog.WriteLine(
+                    $"QUICKCHARGE {ud.VendorId:X4}:{ud.ProdId:X4} edge on wired path but no parseable address, serial={ud.SerialNumber}");
+                return;
+            }
+            string qcSerial = ud.SerialNumber;
             PadForge.Engine.SdlDiagLog.WriteLine(
-                $"QUICKCHARGE {ud.VendorId:X4}:{ud.ProdId:X4} charging over Bluetooth, dropping link serial={ud.SerialNumber}");
-            FireIdleDisconnect(ud);
+                $"QUICKCHARGE {ud.VendorId:X4}:{ud.ProdId:X4} charging on wired rebind, dropping radio by address serial={qcSerial}");
+            System.Threading.Tasks.Task.Run(() =>
+                PadForge.Common.Input.BluetoothLinkHelper.TryDisconnect(qcSerial));
         }
 
         /// <summary>Pure rising-edge decision for Quick Charge, extracted

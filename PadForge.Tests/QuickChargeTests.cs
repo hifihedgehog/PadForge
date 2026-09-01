@@ -88,25 +88,38 @@ namespace PadForge.Tests
         }
 
         /// <summary>The trigger's source contract: opt-in gated, driven by
-        /// the state's charging read through the pure edge, Bluetooth-path
-        /// and #162-target gated, and dropped through FireIdleDisconnect,
-        /// the idle timeout's own lane, with the diag line for traces. The
-        /// old USB-twin scan is gone.</summary>
+        /// the state's charging read through the pure edge, then BOTH
+        /// post-edge shapes. A Bluetooth-pathed record (wall charger, or a
+        /// pad SDL does not de-dup) drops through FireIdleDisconnect, the
+        /// idle timeout's own lane. A wired-rebound record (the cable
+        /// rewrote DevicePath because identity keys on the shared MAC
+        /// serial, so no twin record ever exists) drops the radio by its
+        /// own serial. Every branch logs a QUICKCHARGE line, so the next
+        /// trace speaks whichever way it goes. The old cross-record scan
+        /// stays gone.</summary>
         [Fact]
-        public void TriggerContract_ChargingEdgeOnTheBluetoothRecord()
+        public void TriggerContract_BothPostEdgeShapes()
         {
             string src = RepoText("PadForge.App", "Common", "Input", "InputManager.Step2.UpdateInputStates.cs");
             int at = src.IndexOf("private static void CheckQuickCharge", StringComparison.Ordinal);
             Assert.True(at > 0);
-            string body = src.Substring(at, 1600);
+            int end = src.IndexOf("internal static bool QuickChargeEdge", at);
+            Assert.True(end > at);
+            string body = src.Substring(at, end - at);
 
             Assert.Contains("if (!ud.QuickChargeEnabled) return;", body);
             Assert.Contains("QuickChargeEdge(ud, state.BatteryCharging)", body);
+            // Bluetooth-pathed shape: the #162 lane.
             Assert.Contains("DeviceTransport.IsBluetooth(ud.DevicePath", body);
             Assert.Contains("BluetoothLinkHelper.IsDisconnectTarget(ud.DevicePath", body);
             Assert.Contains("FireIdleDisconnect(ud);", body);
-            Assert.Contains("QUICKCHARGE", body);
-            Assert.DoesNotContain("twin", body);
+            // Wired-rebind shape: radio drop by the record's own MAC.
+            Assert.Contains("BluetoothLinkHelper.TryParseAddress(ud.SerialNumber", body);
+            Assert.Contains("BluetoothLinkHelper.TryDisconnect(qcSerial)", body);
+            // Diagnosability: all four outcomes print.
+            Assert.Equal(4, body.Split("QUICKCHARGE ").Length - 1);
+            // The cross-record scan stays gone, and so does its latch.
+            Assert.DoesNotContain("ReferenceEquals(d, ud)", body);
             Assert.DoesNotContain("QuickChargeHandled", src);
         }
 

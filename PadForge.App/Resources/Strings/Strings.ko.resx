@@ -2112,6 +2112,21 @@
   <data name="Pad_Audio_Packages_Remove_Tooltip" xml:space="preserve"><value>선택한 패키지를 목록에서 제거합니다. 파일 자체는 삭제되지 않습니다.</value></data>
   <data name="Pad_Audio_Packages_Empty" xml:space="preserve"><value>추가된 사운드 패키지가 없습니다.</value></data>
   <data name="Pad_Audio_Packages_PickSounds" xml:space="preserve"><value>패키지에 넣을 사운드 파일 선택</value></data>
+  <data name="Menu_Binding_Macro" xml:space="preserve"><value>매크로</value></data>
+  <data name="Menu_MacroPicker_Tip" xml:space="preserve"><value>이 셀이 실행하는 매크로입니다. 셀이 작동하는 동안 매크로 자체의 트리거 모드가 적용됩니다.</value></data>
+  <data name="Menu_ChooseIcon_Tip" xml:space="preserve"><value>이 셀의 아이콘을 선택합니다. 아이콘 팩 항목 또는 이미지 파일을 지정할 수 있습니다.</value></data>
+  <data name="Menu_Icon_None" xml:space="preserve"><value>(아이콘 없음)</value></data>
+  <data name="Menu_Icon_PickFromPackage_Format" xml:space="preserve"><value>{0}에서 아이콘 선택</value></data>
+  <data name="Menu_Icon_PickTitle" xml:space="preserve"><value>아이콘 선택</value></data>
+  <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>아이콘 팩</value></data>
+  <data name="Pad_Menus_IconPackages_Desc" xml:space="preserve"><value>아이콘 팩은 확장자가 .pficons인 이미지 zip 파일 하나입니다. 여기에 추가하면 모든 메뉴 셀에서 해당 아이콘을 선택할 수 있습니다. PadForge는 파일에서 직접 읽으며 압축을 풀지 않습니다. 휴대성을 유지하려면 팩을 PadForge.exe 옆에 두세요.</value></data>
+  <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>팩 추가…</value></data>
+  <data name="Pad_Menus_IconPackages_Add_Tooltip" xml:space="preserve"><value>기존 .pficons 파일을 목록에 추가합니다.</value></data>
+  <data name="Pad_Menus_IconPackages_Create" xml:space="preserve"><value>팩 만들기…</value></data>
+  <data name="Pad_Menus_IconPackages_Create_Tooltip" xml:space="preserve"><value>이미지 파일을 선택하여 새 .pficons 팩으로 저장합니다.</value></data>
+  <data name="Pad_Menus_IconPackages_Remove_Tooltip" xml:space="preserve"><value>선택한 팩을 목록에서 제거합니다. 파일은 삭제되지 않습니다.</value></data>
+  <data name="Pad_Menus_IconPackages_Empty" xml:space="preserve"><value>추가된 아이콘 팩이 없습니다.</value></data>
+  <data name="Pad_Menus_IconPackages_PickImages" xml:space="preserve"><value>팩에 넣을 이미지 파일 선택</value></data>
   <data name="DeviceType_Midi" xml:space="preserve"><value>MIDI 컨트롤러</value></data>
   <data name="Mapping_MidiNote_Format" xml:space="preserve"><value>노트 {0} ({1})</value></data>
   <data name="Mapping_MidiCc_Format" xml:space="preserve"><value>CC {0}</value></data>

@@ -631,8 +631,36 @@ namespace PadForge.Common.Input
                     {
                         MenuItemDefinition item;
                         try { item = def.Items[k]; } catch { break; }
-                        if (item == null
-                            || (item.VirtualKey <= 0 && item.XboxButtons == 0 && item.ExtendedButton <= 0))
+                        if (item == null) continue;
+
+                        // #390 macro cells: stamp the named macro while
+                        // this cell is fired. This walk runs BEFORE the
+                        // slot evaluators, which read a CURRENT stamp as
+                        // an additional trigger source, so the macro's
+                        // own trigger mode governs the semantics. A name
+                        // the slot's macros do not declare is an inert
+                        // no-op, the #377 stale-mask convention. First
+                        // name match wins, the evaluator's own order.
+                        if (!string.IsNullOrEmpty(item.MacroName)
+                            && IsMenuItemFired(slot, null, def.MenuId, item.Index))
+                        {
+                            var slotMacros = MacroSnapshots[slot];
+                            if (slotMacros != null)
+                            {
+                                for (int m = 0; m < slotMacros.Length; m++)
+                                {
+                                    var mac = slotMacros[m];
+                                    if (mac != null && string.Equals(
+                                        mac.Name, item.MacroName, StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        mac.MenuTriggerTick = MacroPassTick;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
+                        if (item.VirtualKey <= 0 && item.XboxButtons == 0 && item.ExtendedButton <= 0)
                             continue;
                         if (!IsMenuItemFired(slot, null, def.MenuId, item.Index)) continue;
                         if (item.VirtualKey > 0

@@ -472,6 +472,14 @@ namespace PadForge.ViewModels
         /// a marked entry instead of a lying "None".</summary>
         internal Func<int, int, bool> RowBoundProvider;
 
+        /// <summary>#390 macro cells: the slot's macro names for the cell
+        /// editor's Macro picker, wired by the owning PadViewModel from
+        /// its live macro collection. Null or empty = the slot has no
+        /// macros, and the Macro binding kind is not offered fresh (a
+        /// cell already carrying a name keeps its marked entry, the
+        /// never-lie convention).</summary>
+        internal Func<System.Collections.Generic.IReadOnlyList<string>> MacroNamesProvider;
+
         /// <summary>Raised after a structural edit (kind, cell count,
         /// center cell, enabled) that changes which "Menu N Item K"
         /// descriptors exist, so the owner can refresh the slot's input
@@ -975,12 +983,22 @@ namespace PadForge.ViewModels
         {
             if (item == null || Entry.Items == null) return;
             if (string.IsNullOrEmpty(item.Label) && string.IsNullOrEmpty(item.Icon)
+                && string.IsNullOrEmpty(item.MacroName)
                 && item.VirtualKey <= 0
                 && item.XboxButtons == 0 && item.ExtendedButton <= 0)
                 Entry.Items.Remove(item);
         }
 
         internal void RaiseChanged() => OnEdited();
+
+        /// <summary>Re-raises every cell row's bindings after an external
+        /// mutation of the underlying items (#390: the macro-rename
+        /// retag). The cell refresh raises the same property set a
+        /// culture change does, which covers every picker.</summary>
+        internal void RefreshCellsAfterExternalEdit()
+        {
+            foreach (var c in Cells) c.RefreshCulture();
+        }
     }
 
     /// <summary>One cell row in the menu editor: label + one direct
@@ -1058,6 +1076,13 @@ namespace PadForge.ViewModels
         /// would look like the import had lost it.</para></summary>
         internal const int RowBoundKind = 3;
 
+        /// <summary>Binding-kind value 4 (#390): the cell triggers a saved
+        /// macro of the same slot by name. Offered fresh only while the
+        /// slot has macros; a cell already carrying a name the slot no
+        /// longer declares keeps a marked entry (never-lie), and the
+        /// runtime treats the stale name as an inert no-op.</summary>
+        internal const int MacroKind = 4;
+
         /// <summary>Binding kinds, DYNAMIC per slot type: None and
         /// Keyboard Key everywhere, Controller Button only where the
         /// slot's output can actually press one. A stale button binding
@@ -1084,6 +1109,13 @@ namespace PadForge.ViewModels
                         Value = 2,
                         Label = string.Format(s.Menu_Binding_Unsupported_Format, s.Menu_Binding_Button),
                     });
+                // #390: Macro is offered fresh only while the slot HAS
+                // macros (a picker over nothing is a dead choice); a cell
+                // already carrying a name keeps the plain entry so the
+                // selection never lies.
+                if ((_owner.MacroNamesProvider?.Invoke()?.Count ?? 0) > 0
+                    || !string.IsNullOrEmpty(_item?.MacroName))
+                    list.Add(new MenuIntOption { Value = MacroKind, Label = s.Menu_Binding_Macro });
                 if (BindingKind == RowBoundKind)
                     list.Add(new MenuIntOption { Value = RowBoundKind, Label = s.Menu_Binding_RowBound });
                 return list;
@@ -1102,8 +1134,10 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(BindingKindOptions));
             OnPropertyChanged(nameof(KeyOptions));
             OnPropertyChanged(nameof(ButtonOptions));
+            OnPropertyChanged(nameof(MacroOptions));
             OnPropertyChanged(nameof(SelectedKeyVk));
             OnPropertyChanged(nameof(SelectedButtonFlag));
+            OnPropertyChanged(nameof(SelectedMacroName));
         }
 
         /// <summary>0 = none, 1 = key, 2 = VC button (Xbox mask on
@@ -1119,6 +1153,7 @@ namespace PadForge.ViewModels
                 {
                     if (_item.VirtualKey > 0) return 1;
                     if (_item.XboxButtons != 0 || _item.ExtendedButton > 0) return 2;
+                    if (!string.IsNullOrEmpty(_item.MacroName)) return MacroKind;
                 }
                 return _owner.RowBoundProvider?.Invoke(_owner.Entry.MenuId, Index) == true
                     ? RowBoundKind : 0;
@@ -1137,6 +1172,7 @@ namespace PadForge.ViewModels
                         _item.VirtualKey = 0;
                         _item.XboxButtons = 0;
                         _item.ExtendedButton = 0;
+                        _item.MacroName = "";
                         _owner.DropItemIfEmpty(_item);
                         if (_owner.Entry.Items?.Contains(_item) != true) _item = null;
                     }
@@ -1148,11 +1184,26 @@ namespace PadForge.ViewModels
                     {
                         _item.XboxButtons = 0;
                         _item.ExtendedButton = 0;
+                        _item.MacroName = "";
                         if (_item.VirtualKey <= 0) _item.VirtualKey = 0x20; // Space
+                    }
+                    else if (value == MacroKind)
+                    {
+                        // #390: default to the slot's first macro, the
+                        // Space / Gamepad.A convention for this kind.
+                        _item.VirtualKey = 0;
+                        _item.XboxButtons = 0;
+                        _item.ExtendedButton = 0;
+                        if (string.IsNullOrEmpty(_item.MacroName))
+                        {
+                            var names = _owner.MacroNamesProvider?.Invoke();
+                            _item.MacroName = names != null && names.Count > 0 ? names[0] : "";
+                        }
                     }
                     else
                     {
                         _item.VirtualKey = 0;
+                        _item.MacroName = "";
                         if (_owner.ButtonStyle == MacroButtonStyle.Numbered)
                         {
                             _item.XboxButtons = 0;
@@ -1165,12 +1216,20 @@ namespace PadForge.ViewModels
                                 _item.XboxButtons = PadForge.Engine.Gamepad.A;
                         }
                     }
+                    // A Macro pick with no macros available authored
+                    // nothing: prune the empty item so the kind snaps
+                    // back instead of stranding a blank cell.
+                    _owner.DropItemIfEmpty(_item);
+                    if (_owner.Entry.Items?.Contains(_item) != true) _item = null;
                 }
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(ShowKeyPicker));
                 OnPropertyChanged(nameof(ShowButtonPicker));
+                OnPropertyChanged(nameof(ShowMacroPicker));
                 OnPropertyChanged(nameof(SelectedKeyVk));
                 OnPropertyChanged(nameof(SelectedButtonFlag));
+                OnPropertyChanged(nameof(SelectedMacroName));
+                OnPropertyChanged(nameof(MacroOptions));
                 // The row-bound sentinel entry appears only while no
                 // direct binding exists, so the list follows the kind.
                 OnPropertyChanged(nameof(BindingKindOptions));
@@ -1180,6 +1239,72 @@ namespace PadForge.ViewModels
 
         public bool ShowKeyPicker => BindingKind == 1;
         public bool ShowButtonPicker => BindingKind == 2;
+        public bool ShowMacroPicker => BindingKind == MacroKind;
+
+        /// <summary>The slot's macro names for the Macro kind's picker
+        /// (#390). A stale name the slot no longer declares appends as a
+        /// marked entry so the selection never lies. Built per read: the
+        /// list is tiny and follows live macro edits.</summary>
+        public IReadOnlyList<MenuHostOption> MacroOptions
+        {
+            get
+            {
+                var list = new List<MenuHostOption>();
+                var names = _owner.MacroNamesProvider?.Invoke();
+                if (names != null)
+                    foreach (var n in names)
+                        if (!string.IsNullOrEmpty(n))
+                            list.Add(new MenuHostOption { Descriptor = n, Label = n });
+                string cur = _item?.MacroName ?? "";
+                if (cur.Length > 0 && !list.Exists(o => string.Equals(o.Descriptor, cur, StringComparison.OrdinalIgnoreCase)))
+                    list.Add(new MenuHostOption
+                    {
+                        Descriptor = cur,
+                        Label = string.Format(Strings.Instance.Menu_Binding_Unsupported_Format, cur),
+                    });
+                return list;
+            }
+        }
+
+        /// <summary>The picked macro name. Setting it clears the other
+        /// value spaces, the mutual-clear discipline every kind
+        /// follows.</summary>
+        public string SelectedMacroName
+        {
+            get => _item?.MacroName ?? "";
+            set
+            {
+                string v = value ?? "";
+                if (v.Length == 0 || string.Equals(_item?.MacroName ?? "", v, StringComparison.Ordinal)) return;
+                _item ??= _owner.EnsureItem(Index);
+                _item.MacroName = v;
+                _item.VirtualKey = 0;
+                _item.XboxButtons = 0;
+                _item.ExtendedButton = 0;
+                OnPropertyChanged();
+                _owner.RaiseChanged();
+            }
+        }
+
+        /// <summary>Sets or clears the cell's icon reference (#390): a
+        /// pficon:// pack entry, a loose image path, or a Steam art name.
+        /// The view-layer picker calls this; an empty reference clears
+        /// and prunes an otherwise-empty item.</summary>
+        internal void SetIcon(string reference)
+        {
+            string v = reference ?? "";
+            if ((_item?.Icon ?? "") == v) return;
+            if (v.Length == 0 && _item == null) return;
+            _item ??= _owner.EnsureItem(Index);
+            _item.Icon = v;
+            _owner.DropItemIfEmpty(_item);
+            if (_owner.Entry.Items?.Contains(_item) != true) _item = null;
+            OnPropertyChanged(nameof(HasIcon));
+            OnPropertyChanged(nameof(IconName));
+            OnPropertyChanged(nameof(IconImage));
+            OnPropertyChanged(nameof(ShowIconGlyph));
+            _owner.RaiseChanged();
+        }
 
         private static SocdKeyOption[] _fullKeyOptionsCache;
         private static int _fullKeyOptionsCulture;

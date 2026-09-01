@@ -247,12 +247,25 @@ namespace PadForge.Common.Input
         // static SendInput emission helpers can read it.
         private static bool _currentMacroSlotRestricted;
 
+        /// <summary>Macro pass counter (#390 macro cells): incremented once
+        /// per EvaluateMacros pass. The menu runtime's walk stamps
+        /// <see cref="ViewModels.MacroItem.MenuTriggerTick"/> with the
+        /// current value for every fired cell naming a macro, and the slot
+        /// evaluators read a CURRENT stamp as an additional trigger
+        /// source. Poll thread only.</summary>
+        internal long MacroPassTick;
+
         /// <summary>
         /// Step 4b: Evaluate macros for all pad slots.
         /// Called after CombineOutputStates and before VirtualDevices.
         /// </summary>
         private void EvaluateMacros()
         {
+            // #390 macro cells: one tick per pass. The menu walk below
+            // stamps macros a fired cell names with this value, and the
+            // slot evaluators read a CURRENT stamp as trigger-active.
+            MacroPassTick++;
+
             _currentMacroSlotRestricted = false; // global macros emit no keystrokes
             EvaluateGlobalMacros();
 
@@ -505,20 +518,30 @@ namespace PadForge.Common.Input
                 // Skip macros with no trigger configured (unless Always /
                 // CustomExpression mode. Custom always has a formula that
                 // evaluates, even if the formula references no variables).
+                // #390: a CURRENT menu-cell stamp is a trigger too, and an
+                // executing macro must keep evaluating so a cell-started
+                // run completes and releases its latches (a stamp is one
+                // tick wide; only cell-started macros can be executing
+                // with no own trigger, so existing behavior is unchanged).
+                bool menuCellHeld = macro.MenuTriggerTick == MacroPassTick;
                 bool hasButtons = macro.UsesRawTrigger || macro.TriggerButtons != 0;
-                if (macro.TriggerMode != MacroTriggerMode.Always &&
-                    macro.TriggerMode != MacroTriggerMode.CustomExpression &&
-                    !macro.UsesAxisTrigger && !macro.UsesPovTrigger && !hasButtons &&
-                    !macro.UsesGestureTrigger && !macro.UsesDescriptorTrigger)
+                bool hasOwnTrigger = macro.TriggerMode == MacroTriggerMode.Always
+                    || macro.TriggerMode == MacroTriggerMode.CustomExpression
+                    || macro.UsesAxisTrigger || macro.UsesPovTrigger || hasButtons
+                    || macro.UsesGestureTrigger || macro.UsesDescriptorTrigger;
+                if (!hasOwnTrigger && !menuCellHeld && !macro.IsExecuting)
                     continue;
 
                 // Determine trigger state. Buttons, POVs, gestures, descriptors,
-                // AND axes must all be active together.
+                // AND axes must all be active together. A fired menu cell
+                // naming this macro ORs in as an independent source (#390).
                 bool triggerActive;
-                if (macro.TriggerMode == MacroTriggerMode.Always)
+                if (!hasOwnTrigger)
+                    triggerActive = menuCellHeld;
+                else if (macro.TriggerMode == MacroTriggerMode.Always)
                     triggerActive = true;
                 else if (macro.TriggerMode == MacroTriggerMode.CustomExpression)
-                    triggerActive = EvaluateCustomExpressionTrigger(macro, in gp);
+                    triggerActive = EvaluateCustomExpressionTrigger(macro, in gp) || menuCellHeld;
                 else
                 {
                     bool buttonOk = true;
@@ -600,7 +623,8 @@ namespace PadForge.Common.Input
                         }
                     }
 
-                    triggerActive = buttonOk && povOk && gestureOk && descriptorOk && axisOk;
+                    triggerActive = (buttonOk && povOk && gestureOk && descriptorOk && axisOk)
+                        || menuCellHeld;
                 }
 
                 // Shift-layer gate (translator v25, always_on_action): a
@@ -2137,7 +2161,7 @@ namespace PadForge.Common.Input
                 }
                 case MacroActionType.RepeatKeyWhileHeld:
                     ExecuteRepeatKeyWhileHeld(action);
-                    break;
+                    break;
                 case MacroActionType.VoiceListenWhileHeld:
                     // Push-to-talk (issue #315): a heartbeat per frame while
                     // held. Release needs no callback because the gate decays
@@ -3971,20 +3995,29 @@ namespace PadForge.Common.Input
 
                 // Skip macros with no trigger configured (unless Always /
                 // CustomExpression mode).
+                // #390: a CURRENT menu-cell stamp is a trigger too, and an
+                // executing macro must keep evaluating so a cell-started
+                // run completes and releases its latches (the Gamepad
+                // twin's exact rule).
+                bool menuCellHeld = macro.MenuTriggerTick == MacroPassTick;
                 bool hasButtons = macro.UsesRawTrigger || macro.UsesCustomTrigger || macro.TriggerButtons != 0;
-                if (macro.TriggerMode != MacroTriggerMode.Always &&
-                    macro.TriggerMode != MacroTriggerMode.CustomExpression &&
-                    !macro.UsesAxisTrigger && !macro.UsesPovTrigger && !hasButtons &&
-                    !macro.UsesGestureTrigger && !macro.UsesDescriptorTrigger)
+                bool hasOwnTrigger = macro.TriggerMode == MacroTriggerMode.Always
+                    || macro.TriggerMode == MacroTriggerMode.CustomExpression
+                    || macro.UsesAxisTrigger || macro.UsesPovTrigger || hasButtons
+                    || macro.UsesGestureTrigger || macro.UsesDescriptorTrigger;
+                if (!hasOwnTrigger && !menuCellHeld && !macro.IsExecuting)
                     continue;
 
                 // Check trigger condition. Buttons, POVs, gestures, descriptors,
-                // AND axes must all be active together.
+                // AND axes must all be active together. A fired menu cell
+                // naming this macro ORs in as an independent source (#390).
                 bool triggerActive;
-                if (macro.TriggerMode == MacroTriggerMode.Always)
+                if (!hasOwnTrigger)
+                    triggerActive = menuCellHeld;
+                else if (macro.TriggerMode == MacroTriggerMode.Always)
                     triggerActive = true;
                 else if (macro.TriggerMode == MacroTriggerMode.CustomExpression)
-                    triggerActive = EvaluateCustomExpressionTriggerExtended(macro, in raw);
+                    triggerActive = EvaluateCustomExpressionTriggerExtended(macro, in raw) || menuCellHeld;
                 else
                 {
                     bool buttonOk = true;
@@ -4066,7 +4099,8 @@ namespace PadForge.Common.Input
                         }
                     }
 
-                    triggerActive = buttonOk && povOk && gestureOk && descriptorOk && axisOk;
+                    triggerActive = (buttonOk && povOk && gestureOk && descriptorOk && axisOk)
+                        || menuCellHeld;
                 }
 
                 // Shift-layer gate (translator v25), mirroring the Gamepad
@@ -4515,7 +4549,7 @@ namespace PadForge.Common.Input
                 }
                 case MacroActionType.RepeatKeyWhileHeld:
                     ExecuteRepeatKeyWhileHeld(action);
-                    break;
+                    break;
                 case MacroActionType.VoiceListenWhileHeld:
                     // Push-to-talk (issue #315), the twin of the slot-macro
                     // dispatch above: same heartbeat, same decay contract.

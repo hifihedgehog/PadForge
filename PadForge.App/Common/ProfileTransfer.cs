@@ -25,6 +25,12 @@ namespace PadForge.Common
         private const string ProfileEntry = "profile.xml";
         private const string PackagesPrefix = "packages/";
 
+        /// <summary>Icon packs (#390) ride beside the sound packages under
+        /// their own prefix, with their own alias map, the same landing
+        /// rules on import.</summary>
+        private const string IconsPrefix = "icons/";
+        private const string IconAliasMapEntry = "icons/_aliases.txt";
+
         /// <summary>Maps each macro sound ref's package alias to the bundled
         /// file that supplies it, one <c>alias\tfilename</c> line per entry.
         ///
@@ -87,6 +93,26 @@ namespace PadForge.Common
                         using var ms = new StreamWriter(mapEntry.Open());
                         foreach (var line in aliasMap) ms.WriteLine(line);
                     }
+
+                    // #390: icon packs referenced by the profile's menu
+                    // cells, same bundling and alias rules.
+                    var iconAliasMap = new List<string>();
+                    foreach (string pkg in ReferencedIconPackages(profile))
+                    {
+                        string file = IconPackageManager.ResolvePackageFile(pkg);
+                        if (file == null || !File.Exists(file)) continue;
+                        string entryFile = Path.GetFileName(file);
+                        zip.CreateEntryFromFile(file, IconsPrefix + entryFile, CompressionLevel.Optimal);
+                        bundled.Add(pkg);
+                        if (!pkg.Contains('	') && !entryFile.Contains('	'))
+                            iconAliasMap.Add(pkg + "	" + entryFile);
+                    }
+                    if (iconAliasMap.Count > 0)
+                    {
+                        var mapEntry = zip.CreateEntry(IconAliasMapEntry);
+                        using var ms = new StreamWriter(mapEntry.Open());
+                        foreach (var line in iconAliasMap) ms.WriteLine(line);
+                    }
                 }
                 File.Move(tmpPath, destPath, overwrite: true);
             }
@@ -140,64 +166,14 @@ namespace PadForge.Common
                              && x.Name.EndsWith(SoundPackageManager.FileExtension, StringComparison.OrdinalIgnoreCase)))
                 {
                     // Entry names come from the archive: strip every path
-                    // component (both separator styles) and bound the result
-                    // to the app directory, so a crafted archive can't write
-                    // outside it (ZipSlip).
+                    // component (both separator styles); the shared landing
+                    // helper bounds and copies (ZipSlip, byte-identical
+                    // reuse, dedup rename, capped copy).
                     string slashed = e.Name.Replace('\\', '/');
                     string fileName = slashed.Substring(slashed.LastIndexOf('/') + 1);
                     if (string.IsNullOrWhiteSpace(fileName)) continue;
-                    string target = Path.GetFullPath(Path.Combine(appDir, fileName));
-                    if (!target.StartsWith(Path.GetFullPath(appDir), StringComparison.OrdinalIgnoreCase))
-                        continue;
-
-                    if (File.Exists(target) && EntryMatchesFile(e, target))
-                    {
-                        // Byte-identical package already here: reuse it.
-                        // Name + length alone is NOT identity. Two different
-                        // packages that happen to share a name and a size
-                        // (same tool, same layout, different audio) silently
-                        // resolved to whichever landed first, so the imported
-                        // macro played the wrong sounds. Compare content.
-                    }
-                    else
-                    {
-                        if (File.Exists(target))
-                        {
-                            string stem = Path.GetFileNameWithoutExtension(fileName);
-                            int n = 2;
-                            do
-                            {
-                                target = Path.Combine(appDir, $"{stem} ({n++}){SoundPackageManager.FileExtension}");
-                            } while (File.Exists(target));
-                        }
-                        // Bounded copy instead of ExtractToFile: the entry's
-                        // DECLARED length is attacker metadata and the real
-                        // stream is unbounded, so a highly-compressed entry
-                        // could fill the disk (zip bomb). Cap the bytes
-                        // actually written and delete the partial file on
-                        // any failure or overrun.
-                        try
-                        {
-                            const long MaxPackageBytes = 512L * 1024 * 1024;
-                            using var src = e.Open();
-                            using var dst = File.Create(target);
-                            var chunk = new byte[81920];
-                            long total = 0;
-                            int got;
-                            while ((got = src.Read(chunk, 0, chunk.Length)) > 0)
-                            {
-                                total += got;
-                                if (total > MaxPackageBytes)
-                                    throw new IOException("bundled package exceeds the size cap");
-                                dst.Write(chunk, 0, got);
-                            }
-                        }
-                        catch
-                        {
-                            try { File.Delete(target); } catch { }
-                            continue; // skip this package, keep importing the profile
-                        }
-                    }
+                    string target = TryLandEntry(e, appDir, fileName, SoundPackageManager.FileExtension);
+                    if (target == null) continue; // skip this package, keep importing the profile
 
                     string name = SoundPackageManager.Register(target, out string probedName);
                     if (name == null) continue;
@@ -227,6 +203,39 @@ namespace PadForge.Common
                     if (!rewrote && !string.Equals(name, probedName, StringComparison.OrdinalIgnoreCase))
                         RewritePackageRefs(profile, probedName, name, rewrittenActions);
                 }
+
+                // #390: icon packs, the identical landing and rewrite
+                // discipline against the menus' pficon:// references.
+                var iconAliasesByFile = ReadAliasMap(zip, IconAliasMapEntry);
+                var rewrittenItems = new HashSet<object>(
+                    System.Collections.Generic.ReferenceEqualityComparer.Instance);
+                foreach (var e in zip.Entries.Where(x =>
+                             x.FullName.StartsWith(IconsPrefix, StringComparison.OrdinalIgnoreCase)
+                             && x.Name.EndsWith(IconPackageManager.FileExtension, StringComparison.OrdinalIgnoreCase)))
+                {
+                    string slashed = e.Name.Replace('\\', '/');
+                    string fileName = slashed.Substring(slashed.LastIndexOf('/') + 1);
+                    if (string.IsNullOrWhiteSpace(fileName)) continue;
+                    string target = TryLandEntry(e, appDir, fileName, IconPackageManager.FileExtension);
+                    if (target == null) continue;
+
+                    string name = IconPackageManager.Register(target, out string probedName);
+                    if (name == null) continue;
+                    registeredPackages.Add(name);
+
+                    bool rewrote = false;
+                    if (iconAliasesByFile.TryGetValue(fileName, out var aliases))
+                    {
+                        foreach (var alias in aliases)
+                        {
+                            if (string.Equals(alias, name, StringComparison.OrdinalIgnoreCase)) { rewrote = true; continue; }
+                            RewriteIconPackageRefs(profile, alias, name, rewrittenItems);
+                            rewrote = true;
+                        }
+                    }
+                    if (!rewrote && !string.Equals(name, probedName, StringComparison.OrdinalIgnoreCase))
+                        RewriteIconPackageRefs(profile, probedName, name, rewrittenItems);
+                }
                 return profile;
             }
             catch
@@ -240,12 +249,12 @@ namespace PadForge.Common
         /// archives that predate the map, or a malformed one: an unreadable
         /// map must degrade to the old probed-name path, never fail the
         /// import.</summary>
-        private static Dictionary<string, List<string>> ReadAliasMap(ZipArchive zip)
+        private static Dictionary<string, List<string>> ReadAliasMap(ZipArchive zip, string mapEntryName = AliasMapEntry)
         {
             var map = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase);
             try
             {
-                var e = zip.GetEntry(AliasMapEntry);
+                var e = zip.GetEntry(mapEntryName);
                 if (e == null) return map;
                 using var r = new StreamReader(e.Open());
                 string line;
@@ -342,6 +351,109 @@ namespace PadForge.Common
                     }
                 }
             }
+        }
+
+        /// <summary>Lands one bundled package entry beside the exe with
+        /// the audit-hardened rules shared by sound packages and icon
+        /// packs: the ZipSlip bound, byte-identical reuse (full content
+        /// compare, never name plus size), the dedup-suffix rename, and
+        /// a bounded copy that deletes the partial file on overrun.
+        /// Returns the landed path, or null when the entry was
+        /// skipped.</summary>
+        private static string TryLandEntry(ZipArchiveEntry e, string appDir, string fileName, string fileExtension)
+        {
+            string target = Path.GetFullPath(Path.Combine(appDir, fileName));
+            if (!target.StartsWith(Path.GetFullPath(appDir), StringComparison.OrdinalIgnoreCase))
+                return null;
+
+            if (File.Exists(target) && EntryMatchesFile(e, target))
+                return target;
+
+            if (File.Exists(target))
+            {
+                string stem = Path.GetFileNameWithoutExtension(fileName);
+                int n = 2;
+                do
+                {
+                    target = Path.Combine(appDir, $"{stem} ({n++}){fileExtension}");
+                } while (File.Exists(target));
+            }
+            // Bounded copy instead of ExtractToFile: the entry's DECLARED
+            // length is attacker metadata and the real stream is
+            // unbounded, so a highly-compressed entry could fill the disk
+            // (zip bomb). Cap the bytes actually written and delete the
+            // partial file on any failure or overrun.
+            try
+            {
+                const long MaxPackageBytes = 512L * 1024 * 1024;
+                using var src = e.Open();
+                using var dst = File.Create(target);
+                var chunk = new byte[81920];
+                long total = 0;
+                int got;
+                while ((got = src.Read(chunk, 0, chunk.Length)) > 0)
+                {
+                    total += got;
+                    if (total > MaxPackageBytes)
+                        throw new IOException("bundled package exceeds the size cap");
+                    dst.Write(chunk, 0, got);
+                }
+            }
+            catch
+            {
+                try { File.Delete(target); } catch { }
+                return null;
+            }
+            return target;
+        }
+
+        /// <summary>Rewrites every menu cell icon ref pointing at
+        /// <paramref name="fromPackage"/> to <paramref name="toPackage"/>
+        /// (#390), the sound rewrite's discipline: each item moves at
+        /// most once per import.</summary>
+        private static void RewriteIconPackageRefs(ProfileData profile, string fromPackage, string toPackage,
+            HashSet<object> alreadyRewritten = null)
+        {
+            if (profile.SlotMappingSets == null) return;
+            foreach (var ms in profile.SlotMappingSets)
+            {
+                if (ms?.Menus == null) continue;
+                foreach (var def in ms.Menus)
+                {
+                    if (def?.Items == null) continue;
+                    foreach (var it in def.Items)
+                    {
+                        if (it == null) continue;
+                        if (alreadyRewritten != null && alreadyRewritten.Contains(it)) continue;
+                        if (IconPackageManager.TryParseRef(it.Icon, out string pkg, out string entry)
+                            && string.Equals(pkg, fromPackage, StringComparison.OrdinalIgnoreCase))
+                        {
+                            it.Icon = IconPackageManager.MakeRef(toPackage, entry);
+                            alreadyRewritten?.Add(it);
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>Distinct icon-pack names referenced by the profile's
+        /// menu cells (#390).</summary>
+        private static IEnumerable<string> ReferencedIconPackages(ProfileData profile)
+        {
+            var names = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            if (profile.SlotMappingSets == null) return names;
+            foreach (var ms in profile.SlotMappingSets)
+            {
+                if (ms?.Menus == null) continue;
+                foreach (var def in ms.Menus)
+                {
+                    if (def?.Items == null) continue;
+                    foreach (var it in def.Items)
+                        if (it != null && IconPackageManager.TryParseRef(it.Icon, out string pkg, out _))
+                            names.Add(pkg);
+                }
+            }
+            return names;
         }
 
         /// <summary>Distinct sound-package names referenced by the

@@ -72,6 +72,10 @@ namespace PadForge.ViewModels
             // a user import), raise PropertyChanged so the dropdown's
             // ItemsSource binding picks up the new entries.
             HMaestroProfileCatalog.CatalogReloaded += OnCatalogReloaded;
+            // #390 macro cells: a macro rename retags this slot's menu
+            // cells. Static hook, filtered by PadIndex inside; pad VMs
+            // live for the app's lifetime, so no unsubscribe leg exists.
+            MacroItem.Renamed += OnMacroRenamed;
             // #175 telemetry board: keep the "{n} DIRECT" readout in sync
             // with row edits and rebuilds. Hooked before the first
             // RebuildMappings so the initial rows are counted too.
@@ -6144,6 +6148,47 @@ namespace PadForge.ViewModels
             vm.InputChoicesProvider = () => SlotAvailableInputs;
             vm.RowBoundProvider = IsMenuItemRowBound;
             vm.StructureChanged = () => MenusStructureChanged?.Invoke();
+            // #390 macro cells: the cell editor's Macro picker lists this
+            // slot's macros, live.
+            vm.MacroNamesProvider = () =>
+            {
+                var names = new System.Collections.Generic.List<string>(Macros.Count);
+                foreach (var m in Macros)
+                    if (m != null && !string.IsNullOrEmpty(m.Name)) names.Add(m.Name);
+                return names;
+            };
+        }
+
+        /// <summary>#390 macro cells: a macro rename retags every menu
+        /// cell on this slot that referenced the old name, the
+        /// RetagMacrosEverywhere discipline applied to this reference.
+        /// Subscribed once per pad VM to the static
+        /// <see cref="MacroItem.Renamed"/> hook (pad VMs live for the
+        /// app's lifetime). Runs on the UI thread like every other
+        /// editor mutation.</summary>
+        private void OnMacroRenamed(MacroItem macro, string oldName, string newName)
+        {
+            if (macro == null || macro.PadIndex != PadIndex) return;
+            if (string.IsNullOrEmpty(oldName) || string.IsNullOrEmpty(newName)) return;
+            var menus = SlotMenuSet?.Menus;
+            if (menus == null) return;
+            bool retagged = false;
+            foreach (var def in menus)
+            {
+                if (def?.Items == null) continue;
+                foreach (var it in def.Items)
+                    if (it != null && string.Equals(it.MacroName, oldName, StringComparison.Ordinal))
+                    {
+                        it.MacroName = newName;
+                        retagged = true;
+                    }
+            }
+            if (retagged)
+            {
+                foreach (var menu in Menus)
+                    menu?.RefreshCellsAfterExternalEdit();
+                ConfigItemDirtyCallback?.Invoke();
+            }
         }
 
         /// <summary>True when a Mappings row source or a macro trigger on

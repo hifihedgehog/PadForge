@@ -80,15 +80,29 @@ namespace PadForge.Engine.Menus
         /// absent in older files = 0.</summary>
         [XmlAttribute] public int ExtendedButton { get; set; }
 
-        /// <summary>Steam Input cell icon name (the binding string's third
-        /// comma field, e.g. "ghost_050_menu_0030.png"): a bare PNG file
-        /// name in the local Steam client's binding-icon art
+        /// <summary>Macro cell (#390): the name of a saved macro on the
+        /// same slot this cell triggers while fired. The cell acts as an
+        /// additional trigger source for the macro, so the macro's own
+        /// trigger mode keeps its semantics (a While Held macro runs
+        /// while a Click cell is held, one-shot fire types present their
+        /// commit pulse as one clean edge). A name the slot no longer
+        /// declares is an inert no-op, the #377 stale-mask convention.
+        /// Renames retag through the macro name-change hook. Schema
+        /// append-only: absent in older files = empty.</summary>
+        [XmlAttribute] public string MacroName { get; set; } = "";
+
+        /// <summary>Cell icon reference. Three forms, resolved by the
+        /// app-side MenuIconResolver in this order: a
+        /// "pficon://Package/entry" icon-pack reference (#390), a loose
+        /// image file path (exe-relative preferred), or a bare Steam
+        /// binding-icon file name (the binding string's third comma
+        /// field, e.g. "ghost_050_menu_0030.png") resolved against the
+        /// local Steam client's art
         /// (tenfoot\resource\images\library\controller\binding_icons).
-        /// The overlay resolves it against the Steam install at display
-        /// time and falls back to the text label when Steam or the file
-        /// is absent. Never a path: only names passing
-        /// <see cref="IsValidIconName"/> are stored. Schema append-only:
-        /// absent in older files = empty.</summary>
+        /// The overlay falls back to the text label when nothing
+        /// resolves. The Workshop translator's carry gate stores only
+        /// names passing <see cref="IsValidIconName"/>. Schema
+        /// append-only: absent in older files = empty.</summary>
         [XmlAttribute] public string Icon { get; set; } = "";
 
         /// <summary>Whether <paramref name="name"/> is a plausible Steam
@@ -264,6 +278,7 @@ namespace PadForge.Engine.Menus
                         VirtualKey = it.VirtualKey,
                         XboxButtons = it.XboxButtons,
                         ExtendedButton = it.ExtendedButton,
+                        MacroName = it.MacroName,
                         Icon = it.Icon,
                     });
                 }

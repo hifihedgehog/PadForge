@@ -693,6 +693,17 @@
   <data name="Macro_AddAction" xml:space="preserve"><value>Actie toevoegen</value></data>
   <data name="Macro_EditAction" xml:space="preserve"><value>Actie bewerken</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Type</value></data>
+  <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Virtuele knoppen</value></data>
+  <data name="Macro_Cat_VcAxes" xml:space="preserve"><value>Virtuele assen &amp; stuur</value></data>
+  <data name="Macro_Cat_Keyboard" xml:space="preserve"><value>Toetsenbord &amp; tekst</value></data>
+  <data name="Macro_Cat_Mouse" xml:space="preserve"><value>Muis</value></data>
+  <data name="Macro_Cat_Flow" xml:space="preserve"><value>Timing &amp; verloop</value></data>
+  <data name="Macro_Cat_Rumble" xml:space="preserve"><value>Trilling</value></data>
+  <data name="Macro_Cat_Leds" xml:space="preserve"><value>Lightbar &amp; leds</value></data>
+  <data name="Macro_Cat_Sound" xml:space="preserve"><value>Geluid &amp; volume</value></data>
+  <data name="Macro_Cat_Motion" xml:space="preserve"><value>Beweging &amp; aanwijzer</value></data>
+  <data name="Macro_Cat_Layers" xml:space="preserve"><value>Lagen &amp; overlays</value></data>
+  <data name="Macro_Cat_System" xml:space="preserve"><value>Systeem &amp; apps</value></data>
   <data name="Macro_ButtonPress" xml:space="preserve"><value>Knop indrukken</value></data>
   <data name="Macro_ButtonRelease" xml:space="preserve"><value>Knop loslaten</value></data>
   <data name="Macro_KeyPress" xml:space="preserve"><value>Toets indrukken</value></data>

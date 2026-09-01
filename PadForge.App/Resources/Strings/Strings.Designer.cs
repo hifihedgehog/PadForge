@@ -1609,6 +1609,17 @@ public class Strings : INotifyPropertyChanged
     public string Macro_AddAction => Get("Macro_AddAction");
     public string Macro_EditAction => Get("Macro_EditAction");
     public string Macro_ActionType => Get("Macro_ActionType");
+    public string Macro_Cat_VcButtons => Get("Macro_Cat_VcButtons");
+    public string Macro_Cat_VcAxes => Get("Macro_Cat_VcAxes");
+    public string Macro_Cat_Keyboard => Get("Macro_Cat_Keyboard");
+    public string Macro_Cat_Mouse => Get("Macro_Cat_Mouse");
+    public string Macro_Cat_Flow => Get("Macro_Cat_Flow");
+    public string Macro_Cat_Rumble => Get("Macro_Cat_Rumble");
+    public string Macro_Cat_Leds => Get("Macro_Cat_Leds");
+    public string Macro_Cat_Sound => Get("Macro_Cat_Sound");
+    public string Macro_Cat_Motion => Get("Macro_Cat_Motion");
+    public string Macro_Cat_Layers => Get("Macro_Cat_Layers");
+    public string Macro_Cat_System => Get("Macro_Cat_System");
     public string Macro_ButtonPress => Get("Macro_ButtonPress");
     public string Macro_ButtonRelease => Get("Macro_ButtonRelease");
     public string Macro_KeyPress => Get("Macro_KeyPress");

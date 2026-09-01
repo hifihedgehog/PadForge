@@ -180,7 +180,12 @@ namespace PadForge.Tests
 
             string page = RepoText("PadForge.App", "Views", "PadPage.xaml");
             Assert.Contains("Binding IsSwitchLayerType", page);
-            Assert.Contains("{x:Static vm:MacroActionType.SwitchLayer}", page);
+            // The type picker moved to the grouped catalog: the offer
+            // lives in MacroTypeCatalog (census-pinned there), and the
+            // picker binds the grouped view.
+            Assert.Contains("MacroTypeCatalog.View", page);
+            Assert.Contains(PadForge.ViewModels.MacroTypeCatalog.Choices,
+                c => c.Type == PadForge.ViewModels.MacroActionType.SwitchLayer);
             int card = page.IndexOf("Switch Layer card (#377)", StringComparison.Ordinal);
             Assert.True(card > 0);
             string cardBody = page.Substring(card, 2400);

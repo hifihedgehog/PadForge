@@ -1939,149 +1939,44 @@
                                         <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_ActionType, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                                    Width="80" Margin="0,0,8,0"/>
                                         <ComboBox SelectedValue="{Binding Type, Mode=TwoWay}"
-                                                  SelectedValuePath="Tag" MinWidth="150">
-                                            <ComboBoxItem Content="{Binding Macro_ButtonPress, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroActionType.ButtonPress}"/>
-                                            <ComboBoxItem Content="{Binding Macro_ButtonRelease, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroActionType.ButtonRelease}"/>
-                                            <ComboBoxItem Content="{Binding Macro_KeyPress, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroActionType.KeyPress}"/>
-                                            <ComboBoxItem Content="{Binding Macro_KeyRelease, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroActionType.KeyRelease}"/>
-                                            <ComboBoxItem Content="{Binding Macro_Delay, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroActionType.Delay}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_ComboBreak, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.ComboBreak}"
-                                                          ToolTip="{Binding MacroAction_ComboBreak_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding Macro_SetAxis, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroActionType.AxisSet}"/>
-                                            <ComboBoxItem Content="{Binding Macro_SystemVolume, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroActionType.SystemVolume}"/>
-                                            <ComboBoxItem Content="{Binding Macro_AppVolume, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroActionType.AppVolume}"/>
-                                            <ComboBoxItem Content="{Binding Macro_MouseMove, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroActionType.MouseMove}"/>
-                                            <ComboBoxItem Content="{Binding Macro_MouseButtonPress, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroActionType.MouseButtonPress}"/>
-                                            <ComboBoxItem Content="{Binding Macro_MouseButtonRelease, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroActionType.MouseButtonRelease}"/>
-                                            <ComboBoxItem Content="{Binding Macro_MouseScroll, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroActionType.MouseScroll}"/>
-                                            <ComboBoxItem Content="{Binding Macro_ToggleTouchpadOverlay, Source={x:Static strings:Strings.Instance}}" Tag="{x:Static vm:MacroActionType.ToggleTouchpadOverlay}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_LightbarColor, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.LightbarColor}"
-                                                          ToolTip="{Binding MacroAction_LightbarColor_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_LightbarColorClear, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.LightbarColorClear}"
-                                                          ToolTip="{Binding MacroAction_LightbarColorClear_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_LightbarModeSet, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.LightbarModeSet}"
-                                                          ToolTip="{Binding MacroAction_LightbarModeSet_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_LightbarModeCycle, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.LightbarModeCycle}"
-                                                          ToolTip="{Binding MacroAction_LightbarModeCycle_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_PointerModeCycle, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.PointerModeCycle}"
-                                                          ToolTip="{Binding MacroAction_PointerModeCycle_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_PointerModeSet, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.PointerModeSet}"
-                                                          ToolTip="{Binding MacroAction_PointerModeSet_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_SwitchLayer, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.SwitchLayer}"
-                                                          ToolTip="{Binding Macro_SwitchLayer_Hint, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_GuideLedBrightness, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.GuideLedBrightness}"
-                                                          ToolTip="{Binding MacroAction_GuideLedBrightness_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_Rumble, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.Rumble}"
-                                                          ToolTip="{Binding MacroAction_Rumble_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_RumbleStop, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.RumbleStop}"
-                                                          ToolTip="{Binding MacroAction_RumbleStop_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_RumbleTrigger, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.RumbleTrigger}"
-                                                          ToolTip="{Binding MacroAction_RumbleTrigger_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_RumbleTriggerStop, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.RumbleTriggerStop}"
-                                                          ToolTip="{Binding MacroAction_RumbleTriggerStop_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_PlaySound, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.PlaySound}"
-                                                          ToolTip="{Binding MacroAction_PlaySound_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_SoundStop, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.SoundStop}"
-                                                          ToolTip="{Binding MacroAction_SoundStop_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding Macro_SetGyroEngaged, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.SetGyroEngaged}"
-                                                          ToolTip="{Binding Macro_SetGyroEngaged_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_GyroRecenter, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.GyroRecenter}"
-                                                          ToolTip="{Binding MacroAction_GyroRecenter_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_MouseRecenter, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.MouseRecenter}"
-                                                          ToolTip="{Binding MacroAction_MouseRecenter_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_MouseFixPosition, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.MouseFixPosition}"
-                                                          ToolTip="{Binding MacroAction_MouseFixPosition_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_MouseLimitRegion, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.MouseLimitRegion}"
-                                                          ToolTip="{Binding MacroAction_MouseLimitRegion_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_MoveMouseToScreenPosition, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.MoveMouseToScreenPosition}"
-                                                          ToolTip="{Binding MacroAction_MoveMouseToScreenPosition_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_RepeatKeyWhileHeld, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.RepeatKeyWhileHeld}"
-                                                          ToolTip="{Binding MacroAction_RepeatKeyWhileHeld_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_RepeatVcButtonWhileHeld, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.RepeatVcButtonWhileHeld}"
-                                                          ToolTip="{Binding MacroAction_RepeatVcButtonWhileHeld_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_ToggleVcButton, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.ToggleVcButton}"
-                                                          ToolTip="{Binding MacroAction_ToggleVcButton_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_ToggleKey, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.ToggleKey}"
-                                                          ToolTip="{Binding MacroAction_ToggleKey_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_AxisHold, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.AxisHold}"
-                                                          ToolTip="{Binding MacroAction_AxisHold_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_AxisAdd, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.AxisAdd}"
-                                                          ToolTip="{Binding MacroAction_AxisAdd_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_AxisScale, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.AxisScale}"
-                                                          ToolTip="{Binding MacroAction_AxisScale_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_HeadphoneVolumeUp, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.HeadphoneVolumeUp}"
-                                                          ToolTip="{Binding MacroAction_HeadphoneVolumeUp_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_HeadphoneVolumeDown, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.HeadphoneVolumeDown}"
-                                                          ToolTip="{Binding MacroAction_HeadphoneVolumeDown_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_VoiceListenWhileHeld, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.VoiceListenWhileHeld}"
-                                                          ToolTip="{Binding MacroAction_VoiceListenWhileHeld_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_AxisSetLatched, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.AxisSetLatched}"
-                                                          ToolTip="{Binding MacroAction_AxisSetLatched_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_AxisLatchRelease, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.AxisLatchRelease}"
-                                                          ToolTip="{Binding MacroAction_AxisLatchRelease_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_MouseWheelTap, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.MouseWheelTap}"
-                                                          ToolTip="{Binding MacroAction_MouseWheelTap_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_MouseNudge, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.MouseNudge}"
-                                                          ToolTip="{Binding MacroAction_MouseNudge_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_CycleTapList, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.CycleTapList}"
-                                                          ToolTip="{Binding MacroAction_CycleTapList_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_ToggleMouseButton, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.ToggleMouseButton}"
-                                                          ToolTip="{Binding MacroAction_ToggleMouseButton_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_ToggleVcAxis, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.ToggleVcAxis}"
-                                                          ToolTip="{Binding MacroAction_ToggleVcAxis_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_RepeatVcAxisWhileHeld, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.RepeatVcAxisWhileHeld}"
-                                                          ToolTip="{Binding MacroAction_RepeatVcAxisWhileHeld_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_ToggleWheel, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.ToggleWheel}"
-                                                          ToolTip="{Binding MacroAction_ToggleWheel_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_DisconnectController, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.DisconnectController}"
-                                                          ToolTip="{Binding MacroAction_DisconnectController_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_RunProgram, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.RunProgram}"
-                                                          ToolTip="{Binding MacroAction_RunProgram_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <ComboBoxItem Content="{Binding MacroAction_Type_TextBlock, Source={x:Static strings:Strings.Instance}}"
-                                                          Tag="{x:Static vm:MacroActionType.TextBlock}"
-                                                          ToolTip="{Binding MacroAction_TextBlock_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                  SelectedValuePath="Type" MinWidth="150"
+                                                  ItemsSource="{Binding Source={x:Static vm:MacroTypeCatalog.View}}"
+                                                  DisplayMemberPath="Label"
+                                                  IsSynchronizedWithCurrentItem="False"
+                                                  VirtualizingPanel.IsVirtualizing="True"
+                                                  VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                                                  VirtualizingPanel.VirtualizationMode="Recycling">
+                                            <!-- Grouped action-type picker: the catalog carries
+                                                 every MacroActionType exactly once (census-
+                                                 pinned), grouped by what the action acts on,
+                                                 the cross-device input picker's GroupStyle
+                                                 arrangement. Tooltips ride the item container. -->
+                                            <ComboBox.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <VirtualizingStackPanel/>
+                                                </ItemsPanelTemplate>
+                                            </ComboBox.ItemsPanel>
+                                            <ComboBox.ItemContainerStyle>
+                                                <Style TargetType="ComboBoxItem" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
+                                                    <Setter Property="ToolTip" Value="{Binding Tooltip}"/>
+                                                </Style>
+                                            </ComboBox.ItemContainerStyle>
+                                            <ComboBox.GroupStyle>
+                                                <GroupStyle>
+                                                    <GroupStyle.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <Border Background="{DynamicResource SubtleFillColorSecondaryBrush}"
+                                                                    Padding="6,3,6,3">
+                                                                <TextBlock Text="{Binding Name}"
+                                                                           FontSize="11"
+                                                                           FontWeight="SemiBold"
+                                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                           TextTrimming="CharacterEllipsis"/>
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </GroupStyle.HeaderTemplate>
+                                                </GroupStyle>
+                                            </ComboBox.GroupStyle>
                                         </ComboBox>
                                     </StackPanel>
 

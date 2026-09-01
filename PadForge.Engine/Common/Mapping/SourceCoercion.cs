@@ -285,6 +285,11 @@ namespace PadForge.Engine.Common.Mapping
             // magnetic heading, so downstream integration is drift-free.
             // Default false.
             public bool CompassYaw;
+
+            // How the controller is held (#392): "Pointing" (default),
+            // "Sideways", or "Upright". Null or empty reads as Pointing.
+            // Applied by RotateForGrip / GripAxis to the BODY sensor only.
+            public string Grip;
         }
 
         /// <summary>Looks up the per-(device, slot) gyro tuning bundle
@@ -2578,10 +2583,9 @@ namespace PadForge.Engine.Common.Mapping
         /// fell through the descriptor parser and evaluated to false,
         /// always, which is #364's reported dead mapping (Nunchuk Lean on
         /// ZR).</summary>
-        internal static float ReadMotionLeanValue(MappingSource src, string deviceGuid, bool aux)
+        internal static float ReadMotionLeanValue(MappingSource src, string deviceGuid, bool aux, int slotIndex = -1)
         {
-            var provider = aux ? GravityProviderAux : GravityProvider;
-            var grav = provider?.Invoke(deviceGuid ?? "") ?? (0f, 0f, -1f);
+            var grav = ReadGravity(deviceGuid, slotIndex, aux);
             double gx = -grav.gx, gy = -grav.gy, gz = -grav.gz;
             double gLen = Math.Sqrt(gx * gx + gy * gy + gz * gz);
             if (gLen <= 0) return 0f;
@@ -2640,12 +2644,12 @@ namespace PadForge.Engine.Common.Mapping
         /// range IS the gain, in degrees a user can reason about). Returns
         /// 0 until real gravity arrives (provider sentinel magnitude is
         /// ~1, real gravity ~9.8 m/s²).</summary>
-        internal static float ReadGyroLean(MappingSource src, string canonical, string deviceGuid)
+        internal static float ReadGyroLean(MappingSource src, string canonical, string deviceGuid, int slotIndex = -1)
         {
             string c = canonical.Trim();
             bool isX = string.Equals(c, GyroLeanXDescriptor, StringComparison.OrdinalIgnoreCase)
                 || string.Equals(c, GyroTiltXDescriptor, StringComparison.OrdinalIgnoreCase);
-            var grav = GravityProvider?.Invoke(deviceGuid ?? "") ?? (0f, 0f, -1f);
+            var grav = ReadGravity(deviceGuid, slotIndex, aux: false);
             // Reaction force → gravity-down, the TickMotionLean convention.
             double gx = -grav.gx, gy = -grav.gy, gz = -grav.gz;
             double gLen = Math.Sqrt(gx * gx + gy * gy + gz * gz);
@@ -3077,13 +3081,13 @@ namespace PadForge.Engine.Common.Mapping
             string space = tuning.Space ?? "Local";
             if (space == "Player")
             {
-                var grav = (aux ? GravityProviderAux : GravityProvider)?.Invoke(deviceGuid) ?? (0f, 0f, -1f);
+                var grav = ReadGravity(deviceGuid, slotIndex, aux);
                 (yaw, pitch) = PlayerSpaceProject(
                     gPitch, gYaw, gRoll, grav.gx, grav.gy, grav.gz, tuning.PlayerYawRelax);
             }
             else if (space == "World")
             {
-                var grav = (aux ? GravityProviderAux : GravityProvider)?.Invoke(deviceGuid) ?? (0f, 0f, -1f);
+                var grav = ReadGravity(deviceGuid, slotIndex, aux);
                 (yaw, pitch) = WorldSpaceProject(
                     gPitch, gYaw, gRoll, grav.gx, grav.gy, grav.gz, tuning.WorldSideReduction);
             }
@@ -3124,7 +3128,13 @@ namespace PadForge.Engine.Common.Mapping
             // and a Pitch row never consumes yaw. Applied before
             // smoothing/sensitivity so the correction rides the same
             // shaping as the signal it corrects.
-            if (tuning.CompassYaw && !isRollSource && !isPitchSource)
+            // Grip (#392): the correction is measured on the body's yaw
+            // axis, so it only belongs on a yaw lane that the grip still
+            // feeds from that axis. Sideways (face up) keeps yaw on yaw. The
+            // Wii Wheel and Upright holds feed the yaw lane from pitch and
+            // roll, where the compass has nothing to say.
+            if (tuning.CompassYaw && !isRollSource && !isPitchSource
+                && GripAxis(tuning.Grip, 1).source == 1)
             {
                 float? compassCorr = CompassYawCorrectionProvider?.Invoke(deviceGuid);
                 if (compassCorr.HasValue) yaw += compassCorr.Value;
@@ -3284,14 +3294,14 @@ namespace PadForge.Engine.Common.Mapping
             float pPitch, pYaw, pRoll;
             if (space == "Player")
             {
-                var grav = (aux ? GravityProviderAux : GravityProvider)?.Invoke(deviceGuid) ?? (0f, 0f, -1f);
+                var grav = ReadGravity(deviceGuid, slotIndex, aux);
                 (pYaw, pPitch) = PlayerSpaceProject(
                     gPitch, gYaw, gRoll, grav.gx, grav.gy, grav.gz, tuning.PlayerYawRelax);
                 pRoll = 0f;
             }
             else if (space == "World")
             {
-                var grav = (aux ? GravityProviderAux : GravityProvider)?.Invoke(deviceGuid) ?? (0f, 0f, -1f);
+                var grav = ReadGravity(deviceGuid, slotIndex, aux);
                 (pYaw, pPitch) = WorldSpaceProject(
                     gPitch, gYaw, gRoll, grav.gx, grav.gy, grav.gz, tuning.WorldSideReduction);
                 pRoll = 0f;
@@ -3391,6 +3401,119 @@ namespace PadForge.Engine.Common.Mapping
         /// must stay a real single-sensor stream (native-frame contract),
         /// so fusion is selected only by the mapping path's descriptor
         /// classification.</summary>
+        // ─── Grip: the hold's body-to-game rotation (#392) ──────────────
+
+        public const string GripPointing = "Pointing";
+        public const string GripSideways = "Sideways";
+        public const string GripWiiWheel = "WiiWheel";
+        public const string GripUpright = "Upright";
+
+        /// <summary>Rotates a body-frame sensor vector into the frame a game
+        /// expects for the given grip (#392). The driver delivers every
+        /// controller in the frame of its natural hold, a Wii Remote aimed
+        /// at the screen, +X right, +Y out of the face, +Z toward the
+        /// player. Three other holds:
+        /// <list type="bullet">
+        /// <item>Sideways, face up: the body turned a quarter turn about the
+        /// vertical so its top edge points left and the face stays up, the
+        /// NES-style hold and Dolphin's "Sideways Wii Remote"
+        /// (WiimoteEmu.cpp GetOrientation RotateZ). (x, y, z) becomes
+        /// (z, y, -x), the same swap SDL's Switch driver applies to a single
+        /// left Joy-Con held sideways (SDL_hidapi_switch.c SendSensorUpdate,
+        /// mini-gamepad branch).</item>
+        /// <item>Wii Wheel, face toward the player: top edge left AND the
+        /// face turned to the player, the wheel shell's hold. The face
+        /// normal now points at the screen axis, so the steering motion, a
+        /// rotation about the face normal, is body yaw and must come out as
+        /// the roll a flat pad reports when rolled like a wheel, and the
+        /// remote's right edge points up, so body pitch is the world yaw.
+        /// (x, y, z) becomes (z, x, y). Bench-derived on the owner's remote
+        /// (2026-09-01): with the face-up table this hold steered on yaw.</item>
+        /// <item>Upright: the top edge pointed up. (x, y, z) becomes
+        /// (x, -z, y), so gravity at rest lands on +Y where a flat pad reports
+        /// it, Dolphin's RotateX. Bench-confirmed on the owner's remote.</item>
+        /// </list>
+        /// All three are proper rotations (determinant +1), so one table
+        /// serves the gyro, the accelerometer, and the gravity estimate alike,
+        /// and the snapshot stays frame-consistent. Unknown or empty grips are
+        /// the identity.</summary>
+        public static (float x, float y, float z) RotateForGrip(string grip, float x, float y, float z)
+        {
+            switch (grip)
+            {
+                case GripSideways: return (z, y, -x);
+                case GripWiiWheel: return (z, x, y);
+                case GripUpright:  return (x, -z, y);
+                default:           return (x, y, z);
+            }
+        }
+
+        /// <summary>The per-axis form of <see cref="RotateForGrip"/>: the
+        /// source axis and sign that produce the requested output axis, so
+        /// a single-axis read can debias the SOURCE axis before applying
+        /// the sign. Pinned against RotateForGrip by test.</summary>
+        internal static (int source, float sign) GripAxis(string grip, int axis)
+        {
+            switch (grip)
+            {
+                case GripSideways:
+                    return axis switch { 0 => (2, 1f), 2 => (0, -1f), _ => (axis, 1f) };
+                case GripWiiWheel:
+                    return axis switch { 0 => (2, 1f), 1 => (0, 1f), 2 => (1, 1f), _ => (axis, 1f) };
+                case GripUpright:
+                    return axis switch { 1 => (2, -1f), 2 => (1, 1f), _ => (axis, 1f) };
+                default:
+                    return (axis, 1f);
+            }
+        }
+
+        private static string GetGrip(string deviceGuid, int slotIndex)
+            => GetGyroTuning(deviceGuid, slotIndex).Grip;
+
+        /// <summary>Rotates a hat reading into the held frame (#392). The
+        /// D-pad is a vector in the same body frame as the sensors, so the
+        /// grip that turns the gyro turns the hat. With the top edge to the
+        /// left (Sideways and Wii Wheel alike) the pad's physical Right
+        /// points up in the world, so a physical 9000 reads as 0 (Up), 0 as
+        /// 27000 (Left), 18000 as 9000 (Right), 27000 as 18000 (Down), which
+        /// is Dolphin's sideways D-pad table (WiimoteEmu.cpp
+        /// dpad_sideways_bitmasks), and the angle arithmetic carries the
+        /// diagonals for free. Upright keeps the pad's Up pointing up.
+        /// Centered (negative) passes through.</summary>
+        public static int GripPov(string deviceGuid, int slotIndex, int centidegrees)
+        {
+            if (centidegrees < 0) return centidegrees;
+            string grip = GetGrip(deviceGuid, slotIndex);
+            if (grip != GripSideways && grip != GripWiiWheel) return centidegrees;
+            return ((centidegrees - 9000) % 36000 + 36000) % 36000;
+        }
+
+        /// <summary>Rotates a body-sensor triple in place by the (device,
+        /// slot) grip (#392). The App's snapshot builder and the Gyro tab's
+        /// live readout call this for the accelerometer copy; the gyro copy
+        /// already flows through the calibrated read below.</summary>
+        public static void ApplyMotionGrip(string deviceGuid, int slotIndex, ref float x, ref float y, ref float z)
+        {
+            (x, y, z) = RotateForGrip(GetGrip(deviceGuid, slotIndex), x, y, z);
+        }
+
+        /// <summary>The gravity estimate every Player Space, World Space,
+        /// lean, and tilt read consumes, rotated by the (device, slot) grip
+        /// for the body sensor (#392). The aux sensor (Nunchuk, left
+        /// Joy-Con) is a separate body in the other hand and keeps its own
+        /// frame. The no-data sentinel (0, 0, -1) is returned unrotated so
+        /// a sideways grip does not invent a different resting default
+        /// before the first real sample.</summary>
+        internal static (float gx, float gy, float gz) ReadGravity(string deviceGuid, int slotIndex, bool aux)
+        {
+            var provider = aux ? GravityProviderAux : GravityProvider;
+            var got = provider?.Invoke(deviceGuid ?? "");
+            if (got == null) return (0f, 0f, -1f);
+            var grav = got.Value;
+            if (aux) return grav;
+            return RotateForGrip(GetGrip(deviceGuid, slotIndex), grav.gx, grav.gy, grav.gz);
+        }
+
         private static float ReadCalibratedGyroRate(CustomInputState state, int gyroAxis, string deviceGuid, int slotIndex, bool aux = false)
             => ReadCalibratedGyroRate(state, gyroAxis, deviceGuid, slotIndex, aux ? GyroSide.Left : GyroSide.Right);
 
@@ -3415,20 +3538,36 @@ namespace PadForge.Engine.Common.Mapping
             float[] srcArr = aux ? state?.GyroAux : state?.Gyro;
             if (srcArr == null) return 0f;
             if (gyroAxis < 0 || gyroAxis >= srcArr.Length) return 0f;
+            // Grip (#392): the requested axis reads its SOURCE axis with a
+            // sign. The bias is subtracted on the source axis, the frame the
+            // calibrator samples, so recalibrating and changing the grip
+            // stay independent. Body sensor only: the aux half is a
+            // separate body in the other hand.
+            float gripSign = 1f;
+            if (!aux)
+            {
+                var (sourceAxis, sign) = GripAxis(GetGrip(deviceGuid, slotIndex), gyroAxis);
+                if (sourceAxis >= 0 && sourceAxis < srcArr.Length)
+                {
+                    gyroAxis = sourceAxis;
+                    gripSign = sign;
+                }
+            }
             float raw = srcArr[gyroAxis];
             // The aux sensor is a DIFFERENT physical gyro sharing the device
             // GUID (#252), so it carries its own at-rest bias. Subtracting
             // the right Joy-Con's drift from the left half would be wrong.
             var provider = aux ? GyroAuxBiasProvider : GyroBiasProvider;
-            if (provider == null || string.IsNullOrEmpty(deviceGuid)) return raw;
+            if (provider == null || string.IsNullOrEmpty(deviceGuid)) return gripSign * raw;
             var bias = provider(deviceGuid, slotIndex);
-            return gyroAxis switch
+            float debiased = gyroAxis switch
             {
                 0 => raw - bias.pitch,
                 1 => raw - bias.yaw,
                 2 => raw - bias.roll,
                 _ => raw,
             };
+            return gripSign * debiased;
         }
 
         // ─── Per-target-type evaluators ────────────────────────────────
@@ -4619,7 +4758,7 @@ namespace PadForge.Engine.Common.Mapping
             // lets the stick-dpad wedge table lower onto it 1:1.
             if (IsGravityTiltFamilyDescriptor(s))
             {
-                float lv = ReadGyroLean(src, s, deviceGuid);
+                float lv = ReadGyroLean(src, s, deviceGuid, slotIndex);
                 int ldz = EffectiveThresholdPercent(src, globalThresholdPercent);
                 float lth = Math.Max(ldz, 1) / 100f;
                 if (src.HalfAxis && !src.Bidirectional)
@@ -4633,7 +4772,7 @@ namespace PadForge.Engine.Common.Mapping
             // numeric-descriptor parser below and read false, always.
             if (IsMotionLeanDescriptor(s) || IsMotionLeanAuxDescriptor(s))
             {
-                float mv = ReadMotionLeanValue(src, deviceGuid, IsMotionLeanAuxDescriptor(s));
+                float mv = ReadMotionLeanValue(src, deviceGuid, IsMotionLeanAuxDescriptor(s), slotIndex);
                 int mdz = EffectiveThresholdPercent(src, globalThresholdPercent);
                 float mth = Math.Max(mdz, 1) / 100f;
                 if (src.HalfAxis && !src.Bidirectional)
@@ -4832,7 +4971,7 @@ namespace PadForge.Engine.Common.Mapping
 
                 case SourceType.PovDirection:
                     if (idx < 0 || idx >= CustomInputState.MaxPovs) return false;
-                    return PovMatches(state.Povs[idx], povDir);
+                    return PovMatches(GripPov(deviceGuid, slotIndex, state.Povs[idx]), povDir);
 
                 default:
                     return false;
@@ -4960,7 +5099,7 @@ namespace PadForge.Engine.Common.Mapping
             // curve/range channel like the other analog lanes.
             if (IsGravityTiltFamilyDescriptor(s))
             {
-                float lv = ReadGyroLean(src, s, deviceGuid);
+                float lv = ReadGyroLean(src, s, deviceGuid, slotIndex);
                 if (src.HalfAxis)
                 {
                     if (src.Bidirectional) return Math.Min(1f, Math.Abs(lv));
@@ -5107,7 +5246,7 @@ namespace PadForge.Engine.Common.Mapping
 
                 case SourceType.PovDirection:
                     if (idx < 0 || idx >= CustomInputState.MaxPovs) return 0f;
-                    return PovMatches(state.Povs[idx], povDir) ? 1f : 0f;
+                    return PovMatches(GripPov(deviceGuid, slotIndex, state.Povs[idx]), povDir) ? 1f : 0f;
 
                 default:
                     return 0f;
@@ -5228,7 +5367,7 @@ namespace PadForge.Engine.Common.Mapping
             // magnitude otherwise, the Mouse Motion unipolar shape.
             if (IsGravityTiltFamilyDescriptor(s))
             {
-                float lv = ReadGyroLean(src, s, deviceGuid);
+                float lv = ReadGyroLean(src, s, deviceGuid, slotIndex);
                 if (src.HalfAxis && !src.Bidirectional)
                     return Math.Max(0f, src.Invert ? -lv : lv);
                 return Math.Abs(lv);
@@ -5360,7 +5499,7 @@ namespace PadForge.Engine.Common.Mapping
 
                 case SourceType.PovDirection:
                     if (idx < 0 || idx >= CustomInputState.MaxPovs) return 0f;
-                    return PovMatches(state.Povs[idx], povDir) ? 1f : 0f;
+                    return PovMatches(GripPov(deviceGuid, slotIndex, state.Povs[idx]), povDir) ? 1f : 0f;
 
                 default:
                     return 0f;

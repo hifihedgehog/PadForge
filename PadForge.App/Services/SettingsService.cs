@@ -3133,6 +3133,7 @@ namespace PadForge.Services
 
                 // Load JoyShockMapper-canongyro extensions.
                 padVm.GyroSpace = string.IsNullOrEmpty(ps.GyroSpace) ? "Local" : ps.GyroSpace;
+                padVm.MotionGrip = string.IsNullOrEmpty(ps.MotionGrip) ? "Pointing" : ps.MotionGrip;
                 padVm.GyroPlayerSpaceYawRelaxFactor = TryParseDouble(ps.GyroPlayerSpaceYawRelaxFactor, 1.41);
                 padVm.GyroWorldSpaceSideReductionThreshold = TryParseDouble(ps.GyroWorldSpaceSideReductionThreshold, 0.125);
                 padVm.GyroTighteningThresholdDegPerSec = TryParseDouble(ps.GyroTighteningThresholdDegPerSec, 3.0);
@@ -4776,6 +4777,7 @@ namespace PadForge.Services
 
                     // Write JoyShockMapper-canongyro extensions.
                     ps.GyroSpace = padVm.GyroSpace ?? "Local";
+                    ps.MotionGrip = padVm.MotionGrip ?? "Pointing";
                     ps.GyroPlayerSpaceYawRelaxFactor = padVm.GyroPlayerSpaceYawRelaxFactor.ToString(ic);
                     ps.GyroWorldSpaceSideReductionThreshold = padVm.GyroWorldSpaceSideReductionThreshold.ToString(ic);
                     ps.GyroTighteningThresholdDegPerSec = padVm.GyroTighteningThresholdDegPerSec.ToString(ic);

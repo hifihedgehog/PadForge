@@ -385,7 +385,8 @@ namespace PadForge.Views
             // devices with only the Guide LED card visible.
             bool hasGuideLed = false;
             bool hasForceFeedback = false;
-            bool hasGyro = false;
+            bool hasGyro = false;      // any motion sensor: the tab (Grip, Tilt, Motion Steering read the accelerometer)
+            bool hasGyroRate = false;  // a gyroscope: the rate cards (#392 widened the tab to accelerometer-only devices)
             bool hasMouse = false;
             bool hasIrPointer = false; // #146 Wii Remote IR camera -> Pointer tab
             bool hasImpulseTriggers = false;
@@ -419,7 +420,13 @@ namespace PadForge.Views
                             || ud.CapType == InputDeviceType.Flight
                             || ud.CapType == InputDeviceType.FirstPerson;
 
-                        hasGyro = ud.HasGyro;
+                        // #392: the Grip card, the Gyro Tilt card, and Motion
+                        // Steering are accelerometer features, and a bare Wii
+                        // Remote (no Motion Plus) is exactly the Wii Wheel case,
+                        // so the tab shows on either sensor and the rate-only
+                        // cards hide without a gyro.
+                        hasGyro = ud.HasGyro || ud.HasAccel;
+                        hasGyroRate = ud.HasGyro;
                         hasMouse = ud.IsMouse;
                         hasIrPointer = ud.HasIrCamera;
                         hasImpulseTriggers = ud.HasRumbleTriggers;
@@ -605,6 +612,13 @@ namespace PadForge.Views
             // mouse, so the mouse capability doubles as the gate.
             if (CompassYawCard != null)
                 CompassYawCard.Visibility = hasS2Mag ? Visibility.Visible : Visibility.Collapsed;
+            // Gyro-rate cards (#392): hidden on an accelerometer-only device.
+            var rateVis = hasGyroRate ? Visibility.Visible : Visibility.Collapsed;
+            if (GyroPassthroughCard != null) GyroPassthroughCard.Visibility = rateVis;
+            if (GyroCalibrationCard != null) GyroCalibrationCard.Visibility = rateVis;
+            if (GyroSensitivityCard != null) GyroSensitivityCard.Visibility = rateVis;
+            if (GyroResponseCard != null) GyroResponseCard.Visibility = rateVis;
+            if (GyroEngageCard != null) GyroEngageCard.Visibility = rateVis;
 
             // Family-correct preview (#175): same PID split as the
             // capability gates above. Rebuild the art scene only when the

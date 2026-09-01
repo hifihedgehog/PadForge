@@ -2827,14 +2827,22 @@ namespace PadForge.Common.Input
                     // from the aux (Nunchuk / left Joy-Con) accelerometer
                     // instead of the body's (#199 follow-up). Same scaling
                     // and invert semantics either way.
-                    var accel = (accelSrc.Src != null
-                        && MappingSetMigrator.IsMotionAccelAuxDescriptor(accelSrc.Src.Descriptor))
-                        ? s.AccelAux : s.Accel;
+                    bool accelAux = accelSrc.Src != null
+                        && MappingSetMigrator.IsMotionAccelAuxDescriptor(accelSrc.Src.Descriptor);
+                    var accel = accelAux ? s.AccelAux : s.Accel;
                     if (accel != null && accel.Length >= 3)
                     {
                         ax = accel[0] * MsToG;
                         ay = accel[1] * MsToG;
                         az = accel[2] * MsToG;
+                        // Grip (#392): the body accelerometer rotates into
+                        // the frame the game expects, both states of the
+                        // passthrough tuning toggle, since a hold is a fact
+                        // about the frame and not a tuning choice. The gyro
+                        // copy below gets the same rotation inside
+                        // GetPassthroughGyro's calibrated read.
+                        if (!accelAux)
+                            SourceCoercion.ApplyMotionGrip(accelSrc.Ud.InstanceGuidString, padIndex, ref ax, ref ay, ref az);
                         if (accelSrc.Src != null && accelSrc.Src.Invert)
                         {
                             ax = -ax; ay = -ay; az = -az;

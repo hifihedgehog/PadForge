@@ -1335,6 +1335,8 @@
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Responsvorm</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Ruimte</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = ruwe controller-assen. Player = yaw geprojecteerd op de echte verticale as (zwaartekracht), pitch blijft lokaal. Door Jibb Smart aanbevolen standaard voor natuurlijk gevoel bij elke kanteling. World = yaw én pitch geprojecteerd op wereldassen.</value></data>
+  <data name="Settings_MotionGrip" xml:space="preserve"><value>Vastgehouden als</value></data>
+  <data name="Settings_MotionGrip_Tooltip" xml:space="preserve"><value>Hoe de controller wordt vastgehouden. Wijzend behoudt het assenstelsel van het stuurprogramma, een Wii Remote gericht op het scherm. Zijwaarts is de afstandsbediening plat gedraaid met de bovenrand naar links en de voorkant nog boven, de NES-greep. Wii Wheel is de bovenrand naar links met de voorkant naar je toe gedraaid, de greep van de stuurschaal. Rechtop is de afstandsbediening gericht op het plafond. Elke greep draait gyroscoop, versnellingsmeter en zwaartekracht samen, voor toewijzingen en voor de beweging die de virtuele controller meldt. De D-pad volgt hetzelfde assenstelsel, dus Omhoog is omhoog in de greep.</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Pitch (Y) omkeren</value></data>
   <data name="Settings_GyroInvertPitch_Tooltip" xml:space="preserve"><value>Globale pitch-omkering. Wordt na de Player/World-projectie toegepast, onafhankelijk van de Invert-vlaggen per bron in de toewijzingstabel.</value></data>
   <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Yaw (X) omkeren</value></data>
@@ -1384,6 +1386,12 @@
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Lokaal</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Speler</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>Wereld</value></data>
+  <data name="Pad_Gyro_Grip_Pointing" xml:space="preserve"><value>Wijzend</value></data>
+  <data name="Pad_Gyro_Grip_Sideways" xml:space="preserve"><value>Zijwaarts, voorkant boven</value></data>
+  <data name="Pad_Gyro_Grip_WiiWheel" xml:space="preserve"><value>Wii Wheel, voorkant naar je toe</value></data>
+  <data name="Pad_Gyro_Grip_Upright" xml:space="preserve"><value>Rechtop</value></data>
+  <data name="Pad_Gyro_Grip_Header" xml:space="preserve"><value>Greep</value></data>
+  <data name="Pad_Gyro_Grip_Subtitle" xml:space="preserve"><value>Hoe de controller wordt vastgehouden. Draait gyroscoop, versnellingsmeter en zwaartekracht samen, voor toewijzingen en voor de beweging die de virtuele controller meldt. De D-pad volgt hetzelfde assenstelsel, dus Omhoog is omhoog in de greep.</value></data>
   <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>Lineair</value></data>
   <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>Agressief</value></data>
   <data name="Pad_Gyro_Curve_Relaxed" xml:space="preserve"><value>Soepel</value></data>
@@ -1397,6 +1405,7 @@
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Activering resetten</value></data>
   <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Bewegingsdoorgifte resetten</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Ruimte resetten</value></data>
+  <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>Greep resetten</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Horizontale gevoeligheid resetten</value></data>
   <data name="Pad_ResetGyroSensitivityV" xml:space="preserve"><value>Verticale gevoeligheid resetten</value></data>
   <data name="Pad_ResetGyroSensitivityUnits" xml:space="preserve"><value>Eenheden resetten</value></data>

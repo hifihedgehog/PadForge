@@ -684,6 +684,17 @@ namespace PadForge.Engine.Data
         /// axes). Player is the popular sweet spot.</summary>
         [XmlElement] public string GyroSpace { get; set; } = "Local";
 
+        /// <summary>How the controller is held (#392): "Pointing" (default,
+        /// the frame the driver delivers, a Wii Remote aimed at the screen),
+        /// "Sideways" (top edge left, face up, the NES-style hold),
+        /// "WiiWheel" (top edge left, face toward the player, the wheel
+        /// shell's hold), or "Upright" (top edge up). Rotates the body gyro, accelerometer,
+        /// and gravity into the frame a game expects, for mapping sources
+        /// and for the motion the virtual controller reports. Per (device,
+        /// slot) because the hold belongs to the game, not the pad, and
+        /// profiles carry PadSettings.</summary>
+        [XmlElement] public string MotionGrip { get; set; } = "Pointing";
+
         /// <summary>Player Space yaw relaxation factor. Default 1.41
         /// (~√2) per GamepadMotion.hpp. Lets the projected yaw range
         /// slightly past the raw magnitude so feel doesn't get muted
@@ -1562,6 +1573,7 @@ namespace PadForge.Engine.Data
             sb.Append(GyroAuxBiasRoll); sb.Append('|');
             sb.Append(GyroCalibratedAtUtc); sb.Append('|');
             sb.Append(GyroSpace); sb.Append('|');
+            sb.Append(MotionGrip); sb.Append('|');
             sb.Append(GyroPlayerSpaceYawRelaxFactor); sb.Append('|');
             sb.Append(GyroWorldSpaceSideReductionThreshold); sb.Append('|');
             sb.Append(GyroTighteningThresholdDegPerSec); sb.Append('|');
@@ -2207,7 +2219,7 @@ namespace PadForge.Engine.Data
             nameof(GyroCompassYaw),
             nameof(MagBiasX), nameof(MagBiasY), nameof(MagBiasZ), nameof(MagFieldNorm),
             nameof(GyroCalibratedAtUtc),
-            nameof(GyroSpace), nameof(GyroPlayerSpaceYawRelaxFactor),
+            nameof(GyroSpace), nameof(MotionGrip), nameof(GyroPlayerSpaceYawRelaxFactor),
             nameof(GyroWorldSpaceSideReductionThreshold),
             nameof(GyroTighteningThresholdDegPerSec),
             nameof(GyroSmoothingThresholdDegPerSec),

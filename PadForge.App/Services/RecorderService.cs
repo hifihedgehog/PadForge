@@ -711,7 +711,12 @@ namespace PadForge.Services
                 {
                     if (baseline.Povs[i] < 0 && current.Povs[i] >= 0)
                     {
-                        string direction = CentidegreesToDirection(current.Povs[i]);
+                        // Grip (#392): record the direction in the held frame,
+                        // the same frame the row will read it in, so a press
+                        // that points up on a sideways remote records as Up.
+                        string direction = CentidegreesToDirection(
+                            PadForge.Engine.Common.Mapping.SourceCoercion.GripPov(
+                                dg.ToString(), _activePadIndex, current.Povs[i]));
                         CompleteRecording(MapType.POV, i, direction, axisPositive: false, winningDevice: dg);
                         return;
                     }

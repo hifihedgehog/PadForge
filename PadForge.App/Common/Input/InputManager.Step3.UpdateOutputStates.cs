@@ -322,7 +322,7 @@ namespace PadForge.Common.Input
             else
             {
                 // Legacy/combined: extract all 4 directions from a single POV hat.
-                MapDPadFromPov(state, ps.DPad, ref gp);
+                MapDPadFromPov(state, ps.DPad, ref gp, deviceGuid, slotIndex);
             }
 
             // ── Triggers ──
@@ -1315,7 +1315,9 @@ namespace PadForge.Common.Input
                 case MapType.POV:
                     if (desc.Index >= 0 && desc.Index < state.Povs.Length)
                     {
-                        return IsPovDirectionActive(state.Povs[desc.Index], desc.PovDirection);
+                        // Grip (#392): the hat reads in the held frame.
+                        return IsPovDirectionActive(
+                            SourceCoercion.GripPov(deviceGuid, slotIndex, state.Povs[desc.Index]), desc.PovDirection);
                     }
                     return false;
 
@@ -1358,7 +1360,8 @@ namespace PadForge.Common.Input
         /// If the DPad mapping descriptor points to a POV hat (or pipe-separated list),
         /// extracts the directional components and sets the corresponding D-pad button flags.
         /// </summary>
-        private static void MapDPadFromPov(CustomInputState state, string descriptor, ref Gamepad gp)
+        private static void MapDPadFromPov(CustomInputState state, string descriptor, ref Gamepad gp,
+            string deviceGuid, int slotIndex)
         {
             if (string.IsNullOrWhiteSpace(descriptor))
                 return;
@@ -1368,18 +1371,20 @@ namespace PadForge.Common.Input
             {
                 foreach (string part in PipePartsCached(descriptor))
                 {
-                    MapDPadFromPovSingle(state, part, ref gp);
+                    MapDPadFromPovSingle(state, part, ref gp, deviceGuid, slotIndex);
                 }
                 return;
             }
 
-            MapDPadFromPovSingle(state, descriptor, ref gp);
+            MapDPadFromPovSingle(state, descriptor, ref gp, deviceGuid, slotIndex);
         }
 
         /// <summary>
-        /// Maps a single POV descriptor to D-pad button flags.
+        /// Maps a single POV descriptor to D-pad button flags, read in the
+        /// held frame (#392).
         /// </summary>
-        private static void MapDPadFromPovSingle(CustomInputState state, string descriptor, ref Gamepad gp)
+        private static void MapDPadFromPovSingle(CustomInputState state, string descriptor, ref Gamepad gp,
+            string deviceGuid, int slotIndex)
         {
             var desc = ParseDescriptor(descriptor);
             if (!desc.IsValid || desc.Type != MapType.POV)
@@ -1388,7 +1393,7 @@ namespace PadForge.Common.Input
             if (desc.Index < 0 || desc.Index >= state.Povs.Length)
                 return;
 
-            int pov = state.Povs[desc.Index];
+            int pov = SourceCoercion.GripPov(deviceGuid, slotIndex, state.Povs[desc.Index]);
             if (pov < 0) return; // Centered
 
             if (IsPovDirectionActive(pov, "Up"))
@@ -1481,12 +1486,13 @@ namespace PadForge.Common.Input
             if (desc.Type == MapType.POV
                 && desc.Index >= 0 && desc.Index < state.Povs.Length)
             {
-                bool active = IsPovDirectionActive(state.Povs[desc.Index], desc.PovDirection);
+                bool active = IsPovDirectionActive(
+                    SourceCoercion.GripPov(deviceGuid, slotIndex, state.Povs[desc.Index]), desc.PovDirection);
                 if (desc.Inverted) active = !active;
                 return active ? (ushort)65535 : (ushort)0;
             }
 
-            int rawValue = GetRawValue(state, desc);
+            int rawValue = GetRawValue(state, desc, deviceGuid, slotIndex);
 
             // Keep full unsigned 16-bit range (0–65535) for trigger precision.
             if (desc.Inverted)
@@ -1563,7 +1569,7 @@ namespace PadForge.Common.Input
             if (!desc.IsValid)
                 return 0;
 
-            int rawValue = GetRawValue(state, desc);
+            int rawValue = GetRawValue(state, desc, deviceGuid, slotIndex);
 
             // Convert unsigned (0–65535) to signed (-32768 to 32767).
             int signed = rawValue - 32768;
@@ -1687,7 +1693,7 @@ namespace PadForge.Common.Input
         /// For buttons, returns 0 or 65535.
         /// For POV, returns axis-equivalent based on direction.
         /// </summary>
-        private static int GetRawValue(CustomInputState state, MappingDescriptor desc)
+        private static int GetRawValue(CustomInputState state, MappingDescriptor desc, string deviceGuid, int slotIndex)
         {
             switch (desc.Type)
             {
@@ -1707,10 +1713,10 @@ namespace PadForge.Common.Input
                     return 0;
 
                 case MapType.POV:
-                    // Map POV direction to axis value.
+                    // Map POV direction to axis value, in the held frame (#392).
                     if (desc.Index >= 0 && desc.Index < state.Povs.Length)
                     {
-                        int pov = state.Povs[desc.Index];
+                        int pov = SourceCoercion.GripPov(deviceGuid, slotIndex, state.Povs[desc.Index]);
                         return PovDirectionToAxisValue(pov, desc.PovDirection);
                     }
                     return 32767; // Center

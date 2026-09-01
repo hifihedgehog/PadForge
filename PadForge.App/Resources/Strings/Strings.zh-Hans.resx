@@ -450,10 +450,11 @@
   <data name="Pad_ExtendedVid" xml:space="preserve"><value>VID</value></data>
   <data name="Pad_ExtendedPid" xml:space="preserve"><value>PID</value></data>
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>力反馈</value></data>
-  <data name="About_Testimony" xml:space="preserve"><value>见证</value></data>
-  <data name="About_TestimonyScripture" xml:space="preserve"><value>「我们谈论基督，我们以基督为乐，我们传扬基督，我们预言基督，我们也照我们的预言写作，好使我们的儿女得以知道他们可以仰望什么根源，以求他们的罪得赦。」—— 尼腓二书 25:26</value></data>
+  <data name="About_Testimony" xml:space="preserve"><value>诚挚的邀请</value></data>
+  <data name="About_TestimonyScripture" xml:space="preserve"><value>「我们谈论基督，我们以基督为乐，我们传扬基督，我们预言基督，我们也照我们的预言写作，好使我们的儿女得以知道他们可以仰望什么根源，以求他们的罪得赦。」</value></data>
+  <data name="About_TestimonyRef" xml:space="preserve"><value>尼腓二书 25:26</value></data>
   <data name="About_TestimonyDoxology" xml:space="preserve"><value>愿荣耀、尊贵、赞美归于主耶稣基督，一切真理与救恩的根源，直到永永远远。</value></data>
-  <data name="About_TestimonyInvite" xml:space="preserve"><value>诚挚邀请您访问 ComeUntoChrist.org，进一步了解耶稣基督后期圣徒教会。</value></data>
+  <data name="About_TestimonyInvite" xml:space="preserve"><value>诚挚邀请您访问 ComeUntoChrist.org，进一步了解祂和耶稣基督后期圣徒教会。</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>通道</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>MIDI 通道（1-16）</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>CC 数量</value></data>

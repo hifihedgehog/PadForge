@@ -411,10 +411,11 @@
   <data name="About_OpenXInputDesc" xml:space="preserve"><value>Drop-in XInput replacement. Filters PadForge's own virtual controllers from its own view. Upstream trademark disclaimer, no OSS license.</value></data>
   <data name="About_HidHide" xml:space="preserve"><value>HidHide</value></data>
   <data name="About_HidHideDesc" xml:space="preserve"><value>Kernel driver for hiding physical devices from games. MIT.</value></data>
-  <data name="About_Testimony" xml:space="preserve"><value>Testimony</value></data>
-  <data name="About_TestimonyScripture" xml:space="preserve"><value>"And we talk of Christ, we rejoice in Christ, we preach of Christ, we prophesy of Christ, and we write according to our prophecies, that our children may know to what source they may look for a remission of their sins." — 2 Nephi 25:26</value></data>
+  <data name="About_Testimony" xml:space="preserve"><value>An Invitation</value></data>
+  <data name="About_TestimonyScripture" xml:space="preserve"><value>"And we talk of Christ, we rejoice in Christ, we preach of Christ, we prophesy of Christ, and we write according to our prophecies, that our children may know to what source they may look for a remission of their sins."</value></data>
+  <data name="About_TestimonyRef" xml:space="preserve"><value>2 Nephi 25:26</value></data>
   <data name="About_TestimonyDoxology" xml:space="preserve"><value>Glory, honor, and praise to the Lord Jesus Christ, the source of all truth and salvation, forever and ever.</value></data>
-  <data name="About_TestimonyInvite" xml:space="preserve"><value>You are warmly invited to visit ComeUntoChrist.org and learn more about The Church of Jesus Christ of Latter-day Saints.</value></data>
+  <data name="About_TestimonyInvite" xml:space="preserve"><value>You are warmly invited to visit ComeUntoChrist.org and learn more about Him and The Church of Jesus Christ of Latter-day Saints.</value></data>
   <data name="About_Bs2b" xml:space="preserve"><value>bs2b</value></data>
   <data name="About_Bs2bDesc" xml:space="preserve"><value>Bauer stereophonic-to-binaural crossfeed for headphone output. MIT.</value></data>
   <data name="About_Concentus" xml:space="preserve"><value>Concentus</value></data>

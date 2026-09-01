@@ -2175,6 +2175,7 @@ namespace PadForge.Services
             PadForge.Services.WebCustomLayoutStore.LoadFrom(appSettings.WebCustomLayoutsJson);
             _mainVm.Dashboard.EnableWebController = appSettings.EnableWebController;
             _mainVm.Dashboard.EnableChromaLightbar = appSettings.EnableChromaLightbar;
+            _mainVm.Dashboard.EnableLightsyncLightbar = appSettings.EnableLightsyncLightbar;
             _mainVm.Dashboard.EnableSensaHaptics = appSettings.EnableSensaHaptics;
             _mainVm.Dashboard.WebControllerPort = appSettings.WebControllerPort > 0
                 ? appSettings.WebControllerPort : 8080;
@@ -4193,6 +4194,7 @@ namespace PadForge.Services
                 DsuMotionServerPort = _mainVm.Dashboard.DsuMotionServerPort,
                 EnableWebController = _mainVm.Dashboard.EnableWebController,
                 EnableChromaLightbar = _mainVm.Dashboard.EnableChromaLightbar,
+                EnableLightsyncLightbar = _mainVm.Dashboard.EnableLightsyncLightbar,
                 EnableSensaHaptics = _mainVm.Dashboard.EnableSensaHaptics,
                 WebControllerPort = _mainVm.Dashboard.WebControllerPort,
                 WebCustomLayoutsJson = PadForge.Services.WebCustomLayoutStore.Json,
@@ -5971,6 +5973,15 @@ namespace PadForge.Services
         /// the same reason.</summary>
         [XmlElement]
         public bool EnableSensaHaptics { get; set; }
+
+        /// <summary>Logitech LIGHTSYNC lightbar mirror opt-in (#382).
+        /// Default false. GLOBAL ONLY like the Chroma mirror above, and
+        /// for the same reason: G HUB is per-machine, and a new bool on
+        /// ProfileData deserializes to false in every pre-existing
+        /// profile, which the foreground auto-switch would then stomp
+        /// onto the global seconds after the user opted in.</summary>
+        [XmlElement]
+        public bool EnableLightsyncLightbar { get; set; }
 
         [XmlElement]
         public int WebControllerPort { get; set; } = 8080;

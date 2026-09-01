@@ -345,6 +345,12 @@ public class Strings : INotifyPropertyChanged
     public string Dashboard_SensaWaiting => Get("Dashboard_SensaWaiting");
     public string Dashboard_SensaActive => Get("Dashboard_SensaActive");
     public string Dashboard_SensaFooter => Get("Dashboard_SensaFooter");
+    public string Dashboard_Lightsync => Get("Dashboard_Lightsync");
+    public string Dashboard_LightsyncDescription => Get("Dashboard_LightsyncDescription");
+    public string Dashboard_EnableLightsync => Get("Dashboard_EnableLightsync");
+    public string Dashboard_LightsyncWaiting => Get("Dashboard_LightsyncWaiting");
+    public string Dashboard_LightsyncConnected => Get("Dashboard_LightsyncConnected");
+    public string Dashboard_LightsyncFooter => Get("Dashboard_LightsyncFooter");
     public string Dashboard_EnableDsu => Get("Dashboard_EnableDsu");
     public string Dashboard_Port => Get("Dashboard_Port");
     public string Dashboard_DsuFooter => Get("Dashboard_DsuFooter");

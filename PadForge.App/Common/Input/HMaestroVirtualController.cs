@@ -1044,7 +1044,13 @@ namespace PadForge.Common.Input
                         lbValid = e.Fields.TryGetValue("validFlag0", out var vf0Obj)
                             && vf0Obj is byte lbVf0 && (lbVf0 & 0x02) != 0;
                     if (lbValid)
+                    {
                         PadForge.Services.ChromaLightbarService.Publish(lbRgb[0], lbRgb[1], lbRgb[2]);
+                        // Lightsync lightbar mirror (#382): the Logitech
+                        // sibling rides the exact same decoded field and
+                        // validity gate, one more volatile write.
+                        PadForge.Services.LightsyncLightbarService.Publish(lbRgb[0], lbRgb[1], lbRgb[2]);
+                    }
                 }
 
                 int declaredSize = _profile.ExtendedOutputReport?.Size ?? -1;

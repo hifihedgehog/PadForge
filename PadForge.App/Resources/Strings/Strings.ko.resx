@@ -693,6 +693,17 @@
   <data name="Macro_AddAction" xml:space="preserve"><value>동작 추가</value></data>
   <data name="Macro_EditAction" xml:space="preserve"><value>동작 편집</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>유형</value></data>
+  <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>가상 버튼</value></data>
+  <data name="Macro_Cat_VcAxes" xml:space="preserve"><value>가상 축·휠</value></data>
+  <data name="Macro_Cat_Keyboard" xml:space="preserve"><value>키보드·텍스트</value></data>
+  <data name="Macro_Cat_Mouse" xml:space="preserve"><value>마우스</value></data>
+  <data name="Macro_Cat_Flow" xml:space="preserve"><value>타이밍·흐름</value></data>
+  <data name="Macro_Cat_Rumble" xml:space="preserve"><value>진동</value></data>
+  <data name="Macro_Cat_Leds" xml:space="preserve"><value>라이트바·LED</value></data>
+  <data name="Macro_Cat_Sound" xml:space="preserve"><value>사운드·볼륨</value></data>
+  <data name="Macro_Cat_Motion" xml:space="preserve"><value>모션·포인터</value></data>
+  <data name="Macro_Cat_Layers" xml:space="preserve"><value>레이어·오버레이</value></data>
+  <data name="Macro_Cat_System" xml:space="preserve"><value>시스템·앱</value></data>
   <data name="Macro_ButtonPress" xml:space="preserve"><value>버튼 누르기</value></data>
   <data name="Macro_ButtonRelease" xml:space="preserve"><value>버튼 놓기</value></data>
   <data name="Macro_KeyPress" xml:space="preserve"><value>키 누르기</value></data>

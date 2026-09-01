@@ -693,6 +693,17 @@
   <data name="Macro_AddAction" xml:space="preserve"><value>Ajouter une action</value></data>
   <data name="Macro_EditAction" xml:space="preserve"><value>Modifier l'action</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Type </value></data>
+  <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Boutons virtuels</value></data>
+  <data name="Macro_Cat_VcAxes" xml:space="preserve"><value>Axes virtuels et volant</value></data>
+  <data name="Macro_Cat_Keyboard" xml:space="preserve"><value>Clavier et texte</value></data>
+  <data name="Macro_Cat_Mouse" xml:space="preserve"><value>Souris</value></data>
+  <data name="Macro_Cat_Flow" xml:space="preserve"><value>Rythme et enchaînement</value></data>
+  <data name="Macro_Cat_Rumble" xml:space="preserve"><value>Vibration</value></data>
+  <data name="Macro_Cat_Leds" xml:space="preserve"><value>Barre lumineuse et LED</value></data>
+  <data name="Macro_Cat_Sound" xml:space="preserve"><value>Son et volume</value></data>
+  <data name="Macro_Cat_Motion" xml:space="preserve"><value>Mouvement et pointeur</value></data>
+  <data name="Macro_Cat_Layers" xml:space="preserve"><value>Calques et overlays</value></data>
+  <data name="Macro_Cat_System" xml:space="preserve"><value>Système et applications</value></data>
   <data name="Macro_ButtonPress" xml:space="preserve"><value>Appui bouton</value></data>
   <data name="Macro_ButtonRelease" xml:space="preserve"><value>Relâchement bouton</value></data>
   <data name="Macro_KeyPress" xml:space="preserve"><value>Appui touche</value></data>

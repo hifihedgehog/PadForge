@@ -693,6 +693,17 @@
   <data name="Macro_AddAction" xml:space="preserve"><value>アクションを追加</value></data>
   <data name="Macro_EditAction" xml:space="preserve"><value>アクションを編集</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>種類</value></data>
+  <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>仮想ボタン</value></data>
+  <data name="Macro_Cat_VcAxes" xml:space="preserve"><value>仮想軸・ホイール</value></data>
+  <data name="Macro_Cat_Keyboard" xml:space="preserve"><value>キーボード・テキスト</value></data>
+  <data name="Macro_Cat_Mouse" xml:space="preserve"><value>マウス</value></data>
+  <data name="Macro_Cat_Flow" xml:space="preserve"><value>タイミング・フロー</value></data>
+  <data name="Macro_Cat_Rumble" xml:space="preserve"><value>振動</value></data>
+  <data name="Macro_Cat_Leds" xml:space="preserve"><value>ライトバー・LED</value></data>
+  <data name="Macro_Cat_Sound" xml:space="preserve"><value>サウンド・音量</value></data>
+  <data name="Macro_Cat_Motion" xml:space="preserve"><value>モーション・ポインター</value></data>
+  <data name="Macro_Cat_Layers" xml:space="preserve"><value>レイヤー・オーバーレイ</value></data>
+  <data name="Macro_Cat_System" xml:space="preserve"><value>システム・アプリ</value></data>
   <data name="Macro_ButtonPress" xml:space="preserve"><value>ボタン押下</value></data>
   <data name="Macro_ButtonRelease" xml:space="preserve"><value>ボタン解放</value></data>
   <data name="Macro_KeyPress" xml:space="preserve"><value>キー押下</value></data>

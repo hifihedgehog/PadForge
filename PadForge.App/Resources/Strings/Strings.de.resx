@@ -693,6 +693,17 @@
   <data name="Macro_AddAction" xml:space="preserve"><value>Aktion hinzufügen</value></data>
   <data name="Macro_EditAction" xml:space="preserve"><value>Aktion bearbeiten</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>Typ</value></data>
+  <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>Virtuelle Tasten</value></data>
+  <data name="Macro_Cat_VcAxes" xml:space="preserve"><value>Virtuelle Achsen &amp; Lenkrad</value></data>
+  <data name="Macro_Cat_Keyboard" xml:space="preserve"><value>Tastatur &amp; Text</value></data>
+  <data name="Macro_Cat_Mouse" xml:space="preserve"><value>Maus</value></data>
+  <data name="Macro_Cat_Flow" xml:space="preserve"><value>Timing &amp; Ablauf</value></data>
+  <data name="Macro_Cat_Rumble" xml:space="preserve"><value>Vibration</value></data>
+  <data name="Macro_Cat_Leds" xml:space="preserve"><value>Lightbar &amp; LEDs</value></data>
+  <data name="Macro_Cat_Sound" xml:space="preserve"><value>Sound &amp; Lautstärke</value></data>
+  <data name="Macro_Cat_Motion" xml:space="preserve"><value>Bewegung &amp; Zeiger</value></data>
+  <data name="Macro_Cat_Layers" xml:space="preserve"><value>Ebenen &amp; Overlays</value></data>
+  <data name="Macro_Cat_System" xml:space="preserve"><value>System &amp; Apps</value></data>
   <data name="Macro_ButtonPress" xml:space="preserve"><value>Taste drücken</value></data>
   <data name="Macro_ButtonRelease" xml:space="preserve"><value>Taste loslassen</value></data>
   <data name="Macro_KeyPress" xml:space="preserve"><value>Taste drücken</value></data>

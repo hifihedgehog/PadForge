@@ -693,6 +693,17 @@
   <data name="Macro_AddAction" xml:space="preserve"><value>添加动作</value></data>
   <data name="Macro_EditAction" xml:space="preserve"><value>编辑动作</value></data>
   <data name="Macro_ActionType" xml:space="preserve"><value>类型</value></data>
+  <data name="Macro_Cat_VcButtons" xml:space="preserve"><value>虚拟按键</value></data>
+  <data name="Macro_Cat_VcAxes" xml:space="preserve"><value>虚拟轴与方向盘</value></data>
+  <data name="Macro_Cat_Keyboard" xml:space="preserve"><value>键盘与文本</value></data>
+  <data name="Macro_Cat_Mouse" xml:space="preserve"><value>鼠标</value></data>
+  <data name="Macro_Cat_Flow" xml:space="preserve"><value>时序与流程</value></data>
+  <data name="Macro_Cat_Rumble" xml:space="preserve"><value>振动</value></data>
+  <data name="Macro_Cat_Leds" xml:space="preserve"><value>灯条与LED</value></data>
+  <data name="Macro_Cat_Sound" xml:space="preserve"><value>声音与音量</value></data>
+  <data name="Macro_Cat_Motion" xml:space="preserve"><value>体感与指针</value></data>
+  <data name="Macro_Cat_Layers" xml:space="preserve"><value>层与悬浮窗</value></data>
+  <data name="Macro_Cat_System" xml:space="preserve"><value>系统与应用</value></data>
   <data name="Macro_ButtonPress" xml:space="preserve"><value>按下按钮</value></data>
   <data name="Macro_ButtonRelease" xml:space="preserve"><value>释放按钮</value></data>
   <data name="Macro_KeyPress" xml:space="preserve"><value>按下按键</value></data>

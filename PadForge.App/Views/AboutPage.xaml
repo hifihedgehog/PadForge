@@ -29,31 +29,29 @@
                 </StackPanel>
             </Border>
 
-            <!-- An Invitation: the padforge.org invite panel in this
-                 page's card language. Centered verse in italics, the
-                 citation on its own small caps line, the testimony
-                 upright, and the invitation sentence muted with only
-                 ComeUntoChrist.org carrying the ember link (built in
-                 code-behind so the split survives language changes). -->
+            <!-- An Invitation: the verse, its citation, the testimony,
+                 and the invitation with only ComeUntoChrist.org as the
+                 ember link (built in code-behind so the split survives
+                 language changes). Laid out exactly like every other
+                 card on this page: full-width left-aligned text at the
+                 page's body size. Centering a narrow column inside a
+                 wide card bands the sides with whitespace; do not. -->
             <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
                 <TextBlock Text="&#xE734;" Style="{StaticResource SectionGlyph}"/>
                 <TextBlock Text="{Binding About_Testimony, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" Style="{StaticResource SectionTitle}"/>
             </StackPanel>
-            <Border Style="{StaticResource CardBorder}" Padding="28,26" Margin="0,0,0,20">
-                <StackPanel MaxWidth="560" HorizontalAlignment="Center">
-                    <TextBlock TextWrapping="Wrap" TextAlignment="Center" FontStyle="Italic"
-                               FontSize="13.5" LineHeight="22"
-                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+            <Border Style="{StaticResource CardBorder}" Padding="20" Margin="0,0,0,20">
+                <StackPanel>
+                    <TextBlock TextWrapping="Wrap" FontStyle="Italic" LineHeight="20"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                Text="{Binding About_TestimonyScripture, Source={x:Static strings:Strings.Instance}}"/>
-                    <TextBlock TextAlignment="Center" Margin="0,10,0,0" FontSize="11" FontWeight="SemiBold"
+                    <TextBlock Margin="0,6,0,0" FontSize="11" FontWeight="SemiBold"
                                Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                Text="{Binding About_TestimonyRef, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"/>
-                    <TextBlock TextWrapping="Wrap" TextAlignment="Center" Margin="0,16,0,0"
-                               FontSize="13" LineHeight="20"
-                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                    <TextBlock TextWrapping="Wrap" Margin="0,14,0,0" LineHeight="20"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                Text="{Binding About_TestimonyDoxology, Source={x:Static strings:Strings.Instance}}"/>
-                    <TextBlock x:Name="InviteLine" TextWrapping="Wrap" TextAlignment="Center" Margin="0,12,0,0"
-                               FontSize="13" LineHeight="20"
+                    <TextBlock x:Name="InviteLine" TextWrapping="Wrap" Margin="0,10,0,0" LineHeight="20"
                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                 </StackPanel>
             </Border>

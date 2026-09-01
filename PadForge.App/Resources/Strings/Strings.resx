@@ -531,7 +531,7 @@
   <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>Read raw HID indices instead of SDL's gamepad mapping. Use when SDL misidentifies button/axis layout.</value></data>
   <data name="Devices_InputHiding" xml:space="preserve"><value>Input Hiding</value></data>
   <data name="Devices_HideFromGames" xml:space="preserve"><value>Hide from Games (HidHide)</value></data>
-  <data name="Devices_HideTooltip" xml:space="preserve"><value>Completely hides this device from other applications via the HidHide driver</value></data>
+  <data name="Devices_HideTooltip" xml:space="preserve"><value>Completely hides this device from other applications via the HidHide driver. Reconnect the controller after turning this on: anything that already had it open, Windows included, keeps it until it re-arrives.</value></data>
   <data name="Devices_HideTooltipInstall" xml:space="preserve"><value>Install the HidHide driver to enable this option</value></data>
   <data name="Devices_ConsumeMapped" xml:space="preserve"><value>Consume Mapped Inputs (Hooks)</value></data>
   <data name="Devices_ConsumeTooltip" xml:space="preserve"><value>Suppresses only the specific keys/buttons that are mapped, letting unmapped inputs pass through</value></data>

@@ -372,7 +372,7 @@
   <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>Rohe HID-Indizes lesen anstatt SDLs Gamepad-Zuordnung. Verwenden, wenn SDL das Button-/Achsen-Layout falsch erkennt.</value></data>
   <data name="Devices_InputHiding" xml:space="preserve"><value>Eingabeverbergung</value></data>
   <data name="Devices_HideFromGames" xml:space="preserve"><value>Vor Spielen verbergen (HidHide)</value></data>
-  <data name="Devices_HideTooltip" xml:space="preserve"><value>Verbirgt dieses Gerät vollständig vor anderen Anwendungen über den HidHide-Treiber</value></data>
+  <data name="Devices_HideTooltip" xml:space="preserve"><value>Verbirgt dieses Gerät vollständig vor anderen Anwendungen über den HidHide-Treiber. Nach dem Einschalten den Controller neu verbinden: Alles, was ihn bereits geöffnet hatte, auch Windows selbst, behält ihn, bis er neu erscheint.</value></data>
   <data name="Devices_HideTooltipInstall" xml:space="preserve"><value>Installieren Sie den HidHide-Treiber, um diese Option zu aktivieren</value></data>
   <data name="Devices_ConsumeMapped" xml:space="preserve"><value>Zugeordnete Eingaben verbrauchen (Hooks)</value></data>
   <data name="Devices_ConsumeTooltip" xml:space="preserve"><value>Unterdrückt nur die spezifischen Tasten/Buttons, die zugeordnet sind, und lässt nicht zugeordnete Eingaben durch</value></data>

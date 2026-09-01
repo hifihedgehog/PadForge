@@ -372,7 +372,7 @@
   <data name="Devices_ForceRawTooltip" xml:space="preserve"><value>SDL のゲームパッドマッピングの代わりに生の HID インデックスを読み取ります。SDL がボタン/軸レイアウトを誤認識する場合に使用してください。</value></data>
   <data name="Devices_InputHiding" xml:space="preserve"><value>入力の非表示</value></data>
   <data name="Devices_HideFromGames" xml:space="preserve"><value>ゲームから隠す (HidHide)</value></data>
-  <data name="Devices_HideTooltip" xml:space="preserve"><value>HidHide ドライバーを使用して、このデバイスを他のアプリケーションから完全に隠します</value></data>
+  <data name="Devices_HideTooltip" xml:space="preserve"><value>HidHide ドライバー経由でこのデバイスを他のアプリケーションから完全に隠します。オンにしたらコントローラーを接続し直してください。すでに開いていたもの (Windows 自身を含む) は、再接続されるまで保持し続けます。</value></data>
   <data name="Devices_HideTooltipInstall" xml:space="preserve"><value>このオプションを有効にするには HidHide ドライバーをインストールしてください</value></data>
   <data name="Devices_ConsumeMapped" xml:space="preserve"><value>マッピング済み入力を消費する (フック)</value></data>
   <data name="Devices_ConsumeTooltip" xml:space="preserve"><value>マッピングされた特定のキー/ボタンのみを抑制し、マッピングされていない入力はそのまま通過させます</value></data>

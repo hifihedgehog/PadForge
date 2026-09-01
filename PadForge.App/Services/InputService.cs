@@ -11325,6 +11325,25 @@ namespace PadForge.Services
         /// 0x2067 Left / 0x2066 Right) AND a gen-1 pair docked in the charging
         /// grip, whose only PnP node is the grip itself (0x200E), so all three
         /// are searched.</summary>
+        /// <summary>Whether the present-node sweep may widen a record's
+        /// hide list to every present node of its VID/PID (#391). True when
+        /// the record is the only one of its VID/PID in the registry, so
+        /// every present node of that product is this pad on one of its
+        /// transports. With two records of one product the sweep is off
+        /// and the record hides its own DevicePath only, as before, so a
+        /// second identical pad is never hidden by the first.</summary>
+        internal static bool HidHideSiblingSweepAllowed(UserDevice[] snapshot, UserDevice ud)
+        {
+            if (ud == null || ud.VendorId == 0 || ud.ProdId == 0) return false;
+            int same = 0;
+            foreach (var other in snapshot)
+            {
+                if (other == null) continue;
+                if (other.VendorId == ud.VendorId && other.ProdId == ud.ProdId) same++;
+            }
+            return same == 1;
+        }
+
         private static List<string> FindInstanceIdsForDevice(UserDevice ud)
         {
             var pidLookups = (ud.VendorId, ud.ProdId) switch
@@ -11536,8 +11555,34 @@ namespace PadForge.Services
                             var expanded = HidHideController.ExpandToBaseContainerAndChildren(instanceId);
                             foreach (var id in expanded)
                                 desiredIds.Add(id);
+
+                            // #391: the persisted DevicePath names the transport the
+                            // pad was LAST seen on. The first apply after a transport
+                            // switch runs before Step1 rebinds it (the reporter's
+                            // trace: SDL added the USB interface, the apply hid the
+                            // Bluetooth node ten milliseconds before Step1 registered
+                            // the device, and the USB interface stayed open to games
+                            // for two seconds until the next apply). HidHide blocks
+                            // new opens only, so a game that opened the pad in that
+                            // window kept it after the correction, which is the
+                            // persistent double input. Sweep every PRESENT node of
+                            // this VID/PID as well, so the live transport is hidden
+                            // on the first pass whichever path the record carries.
+                            // Gated to a record that is the only one of its VID/PID,
+                            // so two distinct pads never hide each other.
+                            var sweep = new List<string>();
+                            if (HidHideSiblingSweepAllowed(snapshot, ud))
+                            {
+                                foreach (var realId in FindInstanceIdsForDevice(ud))
+                                {
+                                    if (desiredIds.Contains(realId)) continue;
+                                    foreach (var id in HidHideController.ExpandToBaseContainerAndChildren(realId))
+                                        if (desiredIds.Add(id)) sweep.Add(id);
+                                }
+                            }
                             PadForge.Engine.SdlDiagLog.WriteLine(
-                                $"HIDHIDE dev {ud.VendorId:X4}:{ud.ProdId:X4} id={instanceId} expanded={expanded.Count} [{string.Join(" | ", expanded)}]");
+                                $"HIDHIDE dev {ud.VendorId:X4}:{ud.ProdId:X4} id={instanceId} expanded={expanded.Count} [{string.Join(" | ", expanded)}]"
+                                + (sweep.Count > 0 ? $" sweep={sweep.Count} [{string.Join(" | ", sweep)}]" : ""));
                         }
                         // Fallback for synthetic paths (e.g., "XInput#0"): look up by VID/PID.
                         else if (ud.VendorId > 0 && ud.ProdId > 0)

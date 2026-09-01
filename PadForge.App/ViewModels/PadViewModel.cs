@@ -3011,6 +3011,22 @@ namespace PadForge.ViewModels
             new GyroLabeledOption(() => Strings.Instance.Pad_Gyro_Space_World,  "World"),
         };
 
+        // ── Grip (#392): how the controller is held, per (device, slot).
+        // Stored as the canonical English identifier like GyroSpace.
+        private string _motionGrip = "Pointing";
+        public string MotionGrip
+        {
+            get => _motionGrip;
+            set => SetProperty(ref _motionGrip, string.IsNullOrEmpty(value) ? "Pointing" : value);
+        }
+        public IReadOnlyList<GyroLabeledOption> MotionGripOptions { get; } = new[]
+        {
+            new GyroLabeledOption(() => Strings.Instance.Pad_Gyro_Grip_Pointing, "Pointing"),
+            new GyroLabeledOption(() => Strings.Instance.Pad_Gyro_Grip_Sideways, "Sideways"),
+            new GyroLabeledOption(() => Strings.Instance.Pad_Gyro_Grip_WiiWheel, "WiiWheel"),
+            new GyroLabeledOption(() => Strings.Instance.Pad_Gyro_Grip_Upright,  "Upright"),
+        };
+
         // ── Motion Steering (v3.4 #94) — SETTINGS for the "Motion Lean" input.
         // Motion Lean is a first-class input descriptor: the user maps it to an
         // axis from the input dropdown in Mappings, like any gyro input. This
@@ -3444,6 +3460,9 @@ namespace PadForge.ViewModels
         private RelayCommand _resetGyroSpaceCommand;
         public RelayCommand ResetGyroSpaceCommand =>
             _resetGyroSpaceCommand ??= new RelayCommand(() => GyroSpace = "Local");
+        private RelayCommand _resetMotionGripCommand;
+        public RelayCommand ResetMotionGripCommand =>
+            _resetMotionGripCommand ??= new RelayCommand(() => MotionGrip = "Pointing");
 
         private RelayCommand _resetGyroSensitivityHCommand;
         public RelayCommand ResetGyroSensitivityHCommand =>

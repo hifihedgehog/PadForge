@@ -1315,6 +1315,8 @@
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Forme de réponse</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Espace</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = axes bruts du contrôleur. Player = le lacet est projeté sur la verticale réelle (gravité), le tangage reste local. Défaut recommandé par Jibb Smart pour un ressenti naturel quelle que soit l'inclinaison. World = lacet et tangage projetés sur les axes du monde.</value></data>
+  <data name="Settings_MotionGrip" xml:space="preserve"><value>Tenue comme</value></data>
+  <data name="Settings_MotionGrip_Tooltip" xml:space="preserve"><value>Comment la manette est tenue. Pointé conserve le repère fourni par le pilote, une Wii Remote pointée vers l’écran. De côté est la télécommande tournée à plat, bord supérieur vers la gauche et face toujours vers le haut, la prise de type NES. Wii Wheel est le bord supérieur vers la gauche avec la face tournée vers vous, la prise de la coque volant. Vertical est la télécommande pointée vers le plafond. Chacune fait tourner ensemble le gyroscope, l’accéléromètre et la gravité, pour les affectations et pour le mouvement que rapporte la manette virtuelle. La croix directionnelle suit le même repère, donc Haut est le haut de la prise.</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Inverser le tangage (Y)</value></data>
   <data name="Settings_GyroInvertPitch_Tooltip" xml:space="preserve"><value>Inversion globale du tangage. S'applique après la projection Player/World, indépendante des indicateurs Invert par source dans la table d'affectations.</value></data>
   <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Inverser le lacet (X)</value></data>
@@ -1364,6 +1366,12 @@
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Local</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Joueur</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>Monde</value></data>
+  <data name="Pad_Gyro_Grip_Pointing" xml:space="preserve"><value>Pointé</value></data>
+  <data name="Pad_Gyro_Grip_Sideways" xml:space="preserve"><value>De côté, face vers le haut</value></data>
+  <data name="Pad_Gyro_Grip_WiiWheel" xml:space="preserve"><value>Wii Wheel, face vers vous</value></data>
+  <data name="Pad_Gyro_Grip_Upright" xml:space="preserve"><value>Vertical</value></data>
+  <data name="Pad_Gyro_Grip_Header" xml:space="preserve"><value>Prise en main</value></data>
+  <data name="Pad_Gyro_Grip_Subtitle" xml:space="preserve"><value>Comment la manette est tenue. Fait tourner ensemble le gyroscope, l’accéléromètre et la gravité, pour les affectations et pour le mouvement que rapporte la manette virtuelle. La croix directionnelle suit le même repère, donc Haut est le haut de la prise.</value></data>
   <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>Linéaire</value></data>
   <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>Agressive</value></data>
   <data name="Pad_Gyro_Curve_Relaxed" xml:space="preserve"><value>Souple</value></data>
@@ -1377,6 +1385,7 @@
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Réinitialiser l'activation</value></data>
   <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Réinitialiser la transmission du mouvement</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Réinitialiser l'espace</value></data>
+  <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>Réinitialiser la prise en main</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Réinitialiser la sensibilité horizontale</value></data>
   <data name="Pad_ResetGyroSensitivityV" xml:space="preserve"><value>Réinitialiser la sensibilité verticale</value></data>
   <data name="Pad_ResetGyroSensitivityUnits" xml:space="preserve"><value>Réinitialiser les unités</value></data>

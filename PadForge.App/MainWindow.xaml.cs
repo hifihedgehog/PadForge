@@ -1415,7 +1415,7 @@ namespace PadForge
                         nameof(PadViewModel.GyroDeadZoneDegPerSec) or nameof(PadViewModel.GyroSmoothingAlpha) or
                         nameof(PadViewModel.GyroAcceleration) or nameof(PadViewModel.GyroOutputCurve) or
                         nameof(PadViewModel.GyroSensitivityUnits) or nameof(PadViewModel.GyroEasyAimStickThreshold) or
-                        nameof(PadViewModel.GyroSpace) or
+                        nameof(PadViewModel.GyroSpace) or nameof(PadViewModel.MotionGrip) or
                         // Gyro Tilt envelope card (#292), per-(device, slot).
                         nameof(PadViewModel.GyroTiltRangeDeg) or nameof(PadViewModel.GyroTiltInnerDz) or
                         nameof(PadViewModel.GyroPlayerSpaceYawRelaxFactor) or
@@ -1465,6 +1465,12 @@ namespace PadForge
                     {
                         _settingsService.MarkDirty();
                     }
+                    // Grip (#392): the hold changed, so the captured resting
+                    // grips (the gravity estimate, the lean and tilt neutrals)
+                    // are in the old frame. Re-reference exactly as the Gyro
+                    // Recenter macro does for this slot.
+                    if (e.PropertyName == nameof(PadViewModel.MotionGrip))
+                        PadForge.Common.Input.InputManager.GyroRecenterApply?.Invoke(capturedPad.PadIndex);
                 };
 
                 // Extended custom stick/trigger config changes (indices 2+) trigger autosave.

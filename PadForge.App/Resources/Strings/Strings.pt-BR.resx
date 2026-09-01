@@ -1315,6 +1315,8 @@
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Forma da Resposta</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Espaço</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = eixos brutos do controle. Player = o yaw é projetado na vertical real (gravidade). O pitch permanece local. Padrão recomendado por Jibb Smart para uma sensação natural em qualquer inclinação. World = yaw e pitch projetados nos eixos do mundo.</value></data>
+  <data name="Settings_MotionGrip" xml:space="preserve"><value>Segurado Como</value></data>
+  <data name="Settings_MotionGrip_Tooltip" xml:space="preserve"><value>Como o controle é segurado. Apontando mantém o referencial que o driver entrega, um Wii Remote apontado para a tela. De lado é o controle virado na horizontal com a borda superior para a esquerda e a face ainda para cima, a empunhadura estilo NES. Wii Wheel é a borda superior para a esquerda com a face voltada para você, a empunhadura da carcaça de volante. Vertical é o controle apontado para o teto. Cada uma gira juntos o giroscópio, o acelerômetro e a gravidade, para os mapeamentos e para o movimento que o controle virtual informa. O direcional segue o mesmo referencial, então Cima é para cima na empunhadura.</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Inverter Pitch (Y)</value></data>
   <data name="Settings_GyroInvertPitch_Tooltip" xml:space="preserve"><value>Inversão global do pitch. Aplicada após a projeção Player/World. Independente das flags Invert por fonte na tabela de mapeamentos.</value></data>
   <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Inverter Yaw (X)</value></data>
@@ -1364,6 +1366,12 @@
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Local</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Jogador</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>Mundo</value></data>
+  <data name="Pad_Gyro_Grip_Pointing" xml:space="preserve"><value>Apontando</value></data>
+  <data name="Pad_Gyro_Grip_Sideways" xml:space="preserve"><value>De Lado, Face para Cima</value></data>
+  <data name="Pad_Gyro_Grip_WiiWheel" xml:space="preserve"><value>Wii Wheel, Face Voltada para Você</value></data>
+  <data name="Pad_Gyro_Grip_Upright" xml:space="preserve"><value>Vertical</value></data>
+  <data name="Pad_Gyro_Grip_Header" xml:space="preserve"><value>Empunhadura</value></data>
+  <data name="Pad_Gyro_Grip_Subtitle" xml:space="preserve"><value>Como o controle é segurado. Gira juntos o giroscópio, o acelerômetro e a gravidade, para os mapeamentos e para o movimento que o controle virtual informa. O direcional segue o mesmo referencial, então Cima é para cima na empunhadura.</value></data>
   <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>Linear</value></data>
   <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>Agressiva</value></data>
   <data name="Pad_Gyro_Curve_Relaxed" xml:space="preserve"><value>Suave</value></data>
@@ -1377,6 +1385,7 @@
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Restaurar Ativação</value></data>
   <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Restaurar Transmissão do Movimento</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Restaurar Espaço</value></data>
+  <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>Restaurar Empunhadura</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Restaurar Sensibilidade Horizontal</value></data>
   <data name="Pad_ResetGyroSensitivityV" xml:space="preserve"><value>Restaurar Sensibilidade Vertical</value></data>
   <data name="Pad_ResetGyroSensitivityUnits" xml:space="preserve"><value>Restaurar Unidades</value></data>

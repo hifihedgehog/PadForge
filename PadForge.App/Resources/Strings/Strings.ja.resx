@@ -1315,6 +1315,8 @@
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>応答整形</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>座標系</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = コントローラー素のローカル軸。Player = ヨーを現実の鉛直 (重力) 軸に投影、ピッチはローカルのまま。Jibb Smart 推奨の既定。傾けてもナチュラル。World = ヨーもピッチもワールド軸に投影。</value></data>
+  <data name="Settings_MotionGrip" xml:space="preserve"><value>持ち方</value></data>
+  <data name="Settings_MotionGrip_Tooltip" xml:space="preserve"><value>コントローラーの持ち方。ポインティングはドライバーが渡す座標系のまま、画面に向けた Wii リモコン。横持ちは上端を左にして表面を上に向けたまま平らに回した持ち方、ファミコン風。Wii ハンドルは上端を左にして表面を自分側に向けた持ち方、ハンドル型アタッチメントの持ち方。縦持ちは天井に向けたリモコン。いずれもジャイロ、加速度、重力をまとめて回転し、割り当てと仮想コントローラーが報告するモーションの両方に適用します。 十字ボタンも同じ座標系に従い、持ち方での上が上になります。</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>ピッチ (Y) 反転</value></data>
   <data name="Settings_GyroInvertPitch_Tooltip" xml:space="preserve"><value>ピッチ軸の全体反転。Player/World 投影の後に適用。マッピング表のソース単位 Invert とは独立。</value></data>
   <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>ヨー (X) 反転</value></data>
@@ -1364,6 +1366,12 @@
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>ローカル</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>プレイヤー</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>ワールド</value></data>
+  <data name="Pad_Gyro_Grip_Pointing" xml:space="preserve"><value>ポインティング</value></data>
+  <data name="Pad_Gyro_Grip_Sideways" xml:space="preserve"><value>横持ち（表面を上）</value></data>
+  <data name="Pad_Gyro_Grip_WiiWheel" xml:space="preserve"><value>Wii ハンドル（表面を自分側）</value></data>
+  <data name="Pad_Gyro_Grip_Upright" xml:space="preserve"><value>縦持ち</value></data>
+  <data name="Pad_Gyro_Grip_Header" xml:space="preserve"><value>持ち方</value></data>
+  <data name="Pad_Gyro_Grip_Subtitle" xml:space="preserve"><value>コントローラーの持ち方。ジャイロ、加速度、重力をまとめて回転し、割り当てと仮想コントローラーが報告するモーションの両方に適用します。 十字ボタンも同じ座標系に従い、持ち方での上が上になります。</value></data>
   <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>リニア</value></data>
   <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>アグレッシブ</value></data>
   <data name="Pad_Gyro_Curve_Relaxed" xml:space="preserve"><value>ソフト</value></data>
@@ -1377,6 +1385,7 @@
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>アクティベートをリセット</value></data>
   <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>モーションのパススルーをリセット</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>座標系をリセット</value></data>
+  <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>持ち方をリセット</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>水平感度をリセット</value></data>
   <data name="Pad_ResetGyroSensitivityV" xml:space="preserve"><value>垂直感度をリセット</value></data>
   <data name="Pad_ResetGyroSensitivityUnits" xml:space="preserve"><value>単位をリセット</value></data>

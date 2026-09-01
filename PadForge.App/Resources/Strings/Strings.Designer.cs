@@ -2393,6 +2393,8 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Gyro_Response_Header => Get("Pad_Gyro_Response_Header");
     public string Settings_GyroSpace => Get("Settings_GyroSpace");
     public string Settings_GyroSpace_Tooltip => Get("Settings_GyroSpace_Tooltip");
+    public string Settings_MotionGrip => Get("Settings_MotionGrip");
+    public string Settings_MotionGrip_Tooltip => Get("Settings_MotionGrip_Tooltip");
     public string Settings_GyroInvertPitch => Get("Settings_GyroInvertPitch");
     public string Settings_GyroInvertPitch_Tooltip => Get("Settings_GyroInvertPitch_Tooltip");
     public string Pad_Gyro_Compass_Header => Get("Pad_Gyro_Compass_Header");
@@ -2440,6 +2442,12 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Gyro_Space_Local => Get("Pad_Gyro_Space_Local");
     public string Pad_Gyro_Space_Player => Get("Pad_Gyro_Space_Player");
     public string Pad_Gyro_Space_World => Get("Pad_Gyro_Space_World");
+    public string Pad_Gyro_Grip_Pointing => Get("Pad_Gyro_Grip_Pointing");
+    public string Pad_Gyro_Grip_Sideways => Get("Pad_Gyro_Grip_Sideways");
+    public string Pad_Gyro_Grip_WiiWheel => Get("Pad_Gyro_Grip_WiiWheel");
+    public string Pad_Gyro_Grip_Upright => Get("Pad_Gyro_Grip_Upright");
+    public string Pad_Gyro_Grip_Header => Get("Pad_Gyro_Grip_Header");
+    public string Pad_Gyro_Grip_Subtitle => Get("Pad_Gyro_Grip_Subtitle");
     public string Pad_Gyro_Curve_Linear => Get("Pad_Gyro_Curve_Linear");
     public string Pad_Gyro_Curve_Aggressive => Get("Pad_Gyro_Curve_Aggressive");
     public string Pad_Gyro_Curve_Relaxed => Get("Pad_Gyro_Curve_Relaxed");
@@ -2453,6 +2461,7 @@ public class Strings : INotifyPropertyChanged
     public string Pad_Gyro_ResetEngage_All_Tooltip => Get("Pad_Gyro_ResetEngage_All_Tooltip");
     public string Pad_Gyro_ResetPassthrough_All_Tooltip => Get("Pad_Gyro_ResetPassthrough_All_Tooltip");
     public string Pad_ResetGyroSpace => Get("Pad_ResetGyroSpace");
+    public string Pad_ResetMotionGrip => Get("Pad_ResetMotionGrip");
     public string Pad_ResetGyroSensitivityH => Get("Pad_ResetGyroSensitivityH");
     public string Pad_ResetGyroSensitivityV => Get("Pad_ResetGyroSensitivityV");
     public string Pad_ResetGyroSensitivityUnits => Get("Pad_ResetGyroSensitivityUnits");

@@ -448,8 +448,8 @@ namespace PadForge.Engine.Common.Mapping
             var key = (slotIndex, target ?? "", sourceIndex);
             // aux (#199): read the Nunchuk / left Joy-Con gravity twin instead
             // of the body's. Same math, independent sensor.
-            var provider = aux ? SourceCoercion.GravityProviderAux : SourceCoercion.GravityProvider;
-            var grav = provider?.Invoke(deviceGuid ?? "") ?? (0f, 0f, -1f);
+            // Grip-rotated for the body sensor (#392), the aux half untouched.
+            var grav = SourceCoercion.ReadGravity(deviceGuid, slotIndex, aux);
             // The provider returns the raw accelerometer = the reaction force, which reads
             // +1g UP at rest. The JSM-derived lean math below expects the gravity-DOWN vector
             // (JoyShockMapper negates accel into gravity, so its grav.y is -1g at rest and its

@@ -9445,7 +9445,7 @@
 
             <!-- ══════════════════════════════════════
                  TAB 8: GYRO
-                 (visible when the selected mapped device has a gyroscope)
+                 (visible when the selected mapped device has a gyroscope or an accelerometer)
                  ══════════════════════════════════════ -->
             <TabItem>
                 <ScrollViewer Padding="24,0" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
@@ -9460,6 +9460,39 @@
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                    TextWrapping="Wrap" Margin="0,0,0,16"/>
 
+                        <!-- ─── Grip card (#392) ─── -->
+                        <!-- How the controller is held. Pointing is the frame the
+                             driver delivers; Sideways (face up), Wii Wheel (face
+                             toward the player), and Upright rotate the body gyro,
+                             accelerometer, and gravity together, so a Wii Remote
+                             held like a wheel reads as a flat pad to mappings and
+                             to the virtual controller's motion. Shown
+                             for any motion device, gyro or accelerometer alone. -->
+                        <Border Style="{StaticResource CardBorder}">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="&#xE815;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_Gyro_Grip_Header, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                </StackPanel>
+                                <TextBlock Text="{Binding Pad_Gyro_Grip_Subtitle, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource CardDescription}"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Settings_MotionGrip, Source={x:Static strings:Strings.Instance}}"
+                                               Width="270" VerticalAlignment="Center"
+                                               ToolTip="{Binding Settings_MotionGrip_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <ComboBox ItemsSource="{Binding MotionGripOptions}"
+                                              SelectedValue="{Binding MotionGrip, Mode=TwoWay}"
+                                              SelectedValuePath="Value" DisplayMemberPath="Display"
+                                              Width="260" VerticalAlignment="Center"
+                                              ToolTip="{Binding Settings_MotionGrip_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <ui:Button Command="{Binding ResetMotionGripCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetMotionGrip, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
                         <!-- ─── Motion Passthrough card ─── -->
                         <!-- Tab-wide scope toggle: whether this tab's tuning
                              reaches the virtual controller's motion passthrough
@@ -9467,7 +9500,7 @@
                              Uses CardBorder's default bottom-12 margin so the
                              gap between this and the Calibration card matches
                              every other adjacent-card gap on the Pad page. -->
-                        <Border Style="{StaticResource CardBorder}">
+                        <Border x:Name="GyroPassthroughCard" Style="{StaticResource CardBorder}">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="&#xE72A;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
@@ -9584,7 +9617,7 @@
                         </Border>
 
                         <!-- ─── Calibration card ─── -->
-                        <Border Style="{StaticResource CardBorder}">
+                        <Border x:Name="GyroCalibrationCard" Style="{StaticResource CardBorder}">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="&#xF272;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
@@ -9664,7 +9697,7 @@
                         </Border>
 
                         <!-- ─── Sensitivity card ─── -->
-                        <Border Style="{StaticResource CardBorder}">
+                        <Border x:Name="GyroSensitivityCard" Style="{StaticResource CardBorder}">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="&#xE9E9;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
@@ -9821,7 +9854,7 @@
                         </Border>
 
                         <!-- ─── Response shaping card ─── -->
-                        <Border Style="{StaticResource CardBorder}">
+                        <Border x:Name="GyroResponseCard" Style="{StaticResource CardBorder}">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="&#xF1CB;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
@@ -9927,7 +9960,7 @@
                         </Border>
 
                         <!-- ─── Engage card ─── -->
-                        <Border Style="{StaticResource CardBorder}">
+                        <Border x:Name="GyroEngageCard" Style="{StaticResource CardBorder}">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="&#xE7E8;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"

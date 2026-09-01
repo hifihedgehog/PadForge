@@ -1297,6 +1297,12 @@
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>Lokal</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>Spieler</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>Welt</value></data>
+  <data name="Pad_Gyro_Grip_Pointing" xml:space="preserve"><value>Zeigend</value></data>
+  <data name="Pad_Gyro_Grip_Sideways" xml:space="preserve"><value>Seitlich, Vorderseite oben</value></data>
+  <data name="Pad_Gyro_Grip_WiiWheel" xml:space="preserve"><value>Wii Wheel, Vorderseite zu dir</value></data>
+  <data name="Pad_Gyro_Grip_Upright" xml:space="preserve"><value>Aufrecht</value></data>
+  <data name="Pad_Gyro_Grip_Header" xml:space="preserve"><value>Haltung</value></data>
+  <data name="Pad_Gyro_Grip_Subtitle" xml:space="preserve"><value>Wie der Controller gehalten wird. Dreht Gyroskop, Beschleunigungssensor und Schwerkraft gemeinsam, für Zuordnungen und für die Bewegung, die der virtuelle Controller meldet. Das Steuerkreuz folgt demselben Bezugssystem, Oben ist also oben in der Haltung.</value></data>
   <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>Linear</value></data>
   <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>Aggressiv</value></data>
   <data name="Pad_Gyro_Curve_Relaxed" xml:space="preserve"><value>Sanft</value></data>
@@ -1310,6 +1316,7 @@
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>Aktivierung zurücksetzen</value></data>
   <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>Bewegungsdurchleitung zurücksetzen</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>Bezugssystem zurücksetzen</value></data>
+  <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>Haltung zurücksetzen</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>Horizontale Empfindlichkeit zurücksetzen</value></data>
   <data name="Pad_ResetGyroSensitivityV" xml:space="preserve"><value>Vertikale Empfindlichkeit zurücksetzen</value></data>
   <data name="Pad_ResetGyroSensitivityUnits" xml:space="preserve"><value>Einheiten zurücksetzen</value></data>
@@ -1351,6 +1358,8 @@
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>Antwortform</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>Bezugssystem</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = unveränderte Controller-Achsen. Player = Yaw wird auf die reale Vertikale (Schwerkraft) projiziert, Pitch bleibt lokal. Jibb Smarts empfohlener Standard für natürliches Gefühl bei jeder Neigung. World = Yaw und Pitch werden beide auf Weltachsen projiziert.</value></data>
+  <data name="Settings_MotionGrip" xml:space="preserve"><value>Gehalten als</value></data>
+  <data name="Settings_MotionGrip_Tooltip" xml:space="preserve"><value>Wie der Controller gehalten wird. Zeigend behält das Bezugssystem des Treibers bei, eine auf den Bildschirm gerichtete Wii-Fernbedienung. Seitlich ist die flach gedrehte Fernbedienung mit der Oberkante nach links und der Vorderseite weiterhin oben, die NES-Haltung. Wii Wheel ist die Oberkante nach links mit der Vorderseite zu dir gedreht, die Haltung der Lenkradschale. Aufrecht ist die zur Decke gerichtete Fernbedienung. Jede Haltung dreht Gyroskop, Beschleunigungssensor und Schwerkraft gemeinsam, für Zuordnungen und für die Bewegung, die der virtuelle Controller meldet. Das Steuerkreuz folgt demselben Bezugssystem, Oben ist also oben in der Haltung.</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>Pitch (Y) invertieren</value></data>
   <data name="Settings_GyroInvertPitch_Tooltip" xml:space="preserve"><value>Globale Pitch-Inversion. Wird nach der Player/World-Projektion angewendet, unabhängig von den Invert-Flags pro Quelle in der Zuordnungstabelle.</value></data>
   <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>Yaw (X) invertieren</value></data>

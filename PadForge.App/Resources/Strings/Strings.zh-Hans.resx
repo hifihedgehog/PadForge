@@ -1315,6 +1315,8 @@
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>响应整形</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>坐标系</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = 手柄原始本地轴。Player = 把偏航投影到真实垂直轴（重力），俯仰保持本地。Jibb Smart 推荐的默认值，在任意倾斜角度都自然。World = 偏航与俯仰均投影到世界坐标轴。</value></data>
+  <data name="Settings_MotionGrip" xml:space="preserve"><value>握持方式</value></data>
+  <data name="Settings_MotionGrip_Tooltip" xml:space="preserve"><value>手柄的握持方式。指向屏幕保持驱动提供的坐标系，即 Wii 遥控器指向屏幕。横握是遥控器平放转过来、顶端朝左、正面仍朝上，即 NES 式握法。Wii 方向盘是顶端朝左、正面转向自己，即方向盘外壳的握法。竖握为遥控器指向天花板。每种方式都同时旋转陀螺仪、加速度计和重力，用于映射以及虚拟手柄报告的体感。 十字键遵循同一坐标系，因此“上”即握持时的上方。</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>反转俯仰（Y）</value></data>
   <data name="Settings_GyroInvertPitch_Tooltip" xml:space="preserve"><value>俯仰轴的全局反转。在 Player/World 投影之后应用。与映射表中各源的 Invert 标志互相独立。</value></data>
   <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>反转偏航（X）</value></data>
@@ -1364,6 +1366,12 @@
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>本地</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>玩家</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>世界</value></data>
+  <data name="Pad_Gyro_Grip_Pointing" xml:space="preserve"><value>指向屏幕</value></data>
+  <data name="Pad_Gyro_Grip_Sideways" xml:space="preserve"><value>横握，正面朝上</value></data>
+  <data name="Pad_Gyro_Grip_WiiWheel" xml:space="preserve"><value>Wii 方向盘，正面朝向自己</value></data>
+  <data name="Pad_Gyro_Grip_Upright" xml:space="preserve"><value>竖握</value></data>
+  <data name="Pad_Gyro_Grip_Header" xml:space="preserve"><value>握持</value></data>
+  <data name="Pad_Gyro_Grip_Subtitle" xml:space="preserve"><value>手柄的握持方式。同时旋转陀螺仪、加速度计和重力，用于映射以及虚拟手柄报告的体感。 十字键遵循同一坐标系，因此“上”即握持时的上方。</value></data>
   <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>线性</value></data>
   <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>激进</value></data>
   <data name="Pad_Gyro_Curve_Relaxed" xml:space="preserve"><value>平缓</value></data>
@@ -1377,6 +1385,7 @@
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>重置激活</value></data>
   <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>重置运动透传</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>重置坐标系</value></data>
+  <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>重置握持方式</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>重置水平灵敏度</value></data>
   <data name="Pad_ResetGyroSensitivityV" xml:space="preserve"><value>重置垂直灵敏度</value></data>
   <data name="Pad_ResetGyroSensitivityUnits" xml:space="preserve"><value>重置单位</value></data>

@@ -1315,6 +1315,7 @@ namespace PadForge.Services
                     InvertRoll = TryParseBoolPs(ps.GyroInvertRollEffective, false),
                     ApplyToPassthrough = TryParseBoolPs(ps.GyroApplyTuningToPassthrough, false),
                     CompassYaw = TryParseBoolPs(ps.GyroCompassYaw, false),
+                    Grip = string.IsNullOrEmpty(ps.MotionGrip) ? "Pointing" : ps.MotionGrip,
                 };
             });
             PadForge.Engine.Common.Mapping.SourceCoercion.GyroTuningProvider = (deviceGuid, slotIndex) =>
@@ -2826,17 +2827,23 @@ namespace PadForge.Services
                             float by = biasMemo.Yaw;
                             float br = biasMemo.Roll;
                             var st = ud.InputState;
+                            // Grip (#392): the readout shows the rotated frame,
+                            // what the mappings and the virtual controller get.
                             if (st != null && ud.HasGyro && st.Gyro != null && st.Gyro.Length >= 3)
                             {
-                                padVm.GyroLiveRatePitch = (st.Gyro[0] - bp) * RadToDeg;
-                                padVm.GyroLiveRateYaw   = (st.Gyro[1] - by) * RadToDeg;
-                                padVm.GyroLiveRateRoll  = (st.Gyro[2] - br) * RadToDeg;
+                                float lp = st.Gyro[0] - bp, ly = st.Gyro[1] - by, lr = st.Gyro[2] - br;
+                                PadForge.Engine.Common.Mapping.SourceCoercion.ApplyMotionGrip(ud.InstanceGuidString, i, ref lp, ref ly, ref lr);
+                                padVm.GyroLiveRatePitch = lp * RadToDeg;
+                                padVm.GyroLiveRateYaw   = ly * RadToDeg;
+                                padVm.GyroLiveRateRoll  = lr * RadToDeg;
                             }
                             if (st != null && ud.HasAccel && st.Accel != null && st.Accel.Length >= 3)
                             {
-                                padVm.AccelLiveX = st.Accel[0] * MsToG;
-                                padVm.AccelLiveY = st.Accel[1] * MsToG;
-                                padVm.AccelLiveZ = st.Accel[2] * MsToG;
+                                float lx = st.Accel[0], lyy = st.Accel[1], lz = st.Accel[2];
+                                PadForge.Engine.Common.Mapping.SourceCoercion.ApplyMotionGrip(ud.InstanceGuidString, i, ref lx, ref lyy, ref lz);
+                                padVm.AccelLiveX = lx * MsToG;
+                                padVm.AccelLiveY = lyy * MsToG;
+                                padVm.AccelLiveZ = lz * MsToG;
                             }
                             // Label memo keyed on the timestamp string
                             // reference: the parse + Format re-ran per tick
@@ -3995,6 +4002,9 @@ namespace PadForge.Services
             if (!string.IsNullOrEmpty(ps.GyroSpace)
                 && !string.Equals(ps.GyroSpace, "Local", StringComparison.Ordinal))
                 AddToken(parts, "SPACE " + ps.GyroSpace);
+            if (!string.IsNullOrEmpty(ps.MotionGrip)
+                && !string.Equals(ps.MotionGrip, "Pointing", StringComparison.Ordinal))
+                AddToken(parts, "GRIP " + ps.MotionGrip);
             if (!string.IsNullOrEmpty(ps.GyroAimEngageButton)) AddToken(parts, "ENGAGE");
             if (PsFlagSet(ps.GyroInvertPitch)) AddToken(parts, "INV P");
             if (PsFlagSet(ps.GyroInvertYaw)) AddToken(parts, "INV Y");
@@ -5899,6 +5909,7 @@ namespace PadForge.Services
             ps.Model3DAppearances = padVm.Model3DAppearances ?? "";
             // JoyShockMapper-canon extensions.
             ps.GyroSpace = padVm.GyroSpace ?? "Local";
+            ps.MotionGrip = padVm.MotionGrip ?? "Pointing";
             ps.GyroPlayerSpaceYawRelaxFactor = padVm.GyroPlayerSpaceYawRelaxFactor.ToString("F2", ic);
             ps.GyroWorldSpaceSideReductionThreshold = padVm.GyroWorldSpaceSideReductionThreshold.ToString("F3", ic);
             ps.GyroTighteningThresholdDegPerSec = padVm.GyroTighteningThresholdDegPerSec.ToString("F1", ic);
@@ -6333,6 +6344,7 @@ namespace PadForge.Services
             padVm.PointerFpsSpeed = (int)TryParseFloatPs(ps.PointerFpsSpeed, 35f);
             // JoyShockMapper-canon extensions.
             padVm.GyroSpace = string.IsNullOrEmpty(ps.GyroSpace) ? "Local" : ps.GyroSpace;
+            padVm.MotionGrip = string.IsNullOrEmpty(ps.MotionGrip) ? "Pointing" : ps.MotionGrip;
             padVm.GyroPlayerSpaceYawRelaxFactor = TryParseDouble(ps.GyroPlayerSpaceYawRelaxFactor, 1.41);
             padVm.GyroWorldSpaceSideReductionThreshold = TryParseDouble(ps.GyroWorldSpaceSideReductionThreshold, 0.125);
             padVm.GyroTighteningThresholdDegPerSec = TryParseDouble(ps.GyroTighteningThresholdDegPerSec, 3.0);

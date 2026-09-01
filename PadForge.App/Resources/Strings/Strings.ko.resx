@@ -1315,6 +1315,8 @@
   <data name="Pad_Gyro_Response_Header" xml:space="preserve"><value>응답 형성</value></data>
   <data name="Settings_GyroSpace" xml:space="preserve"><value>좌표계</value></data>
   <data name="Settings_GyroSpace_Tooltip" xml:space="preserve"><value>Local = 컨트롤러 로컬 축. Player = 요(yaw)를 실제 수직축(중력)에 투영, 피치는 로컬 유지. Jibb Smart 권장 기본값. 어떤 기울기에서도 자연스러움. World = 요와 피치 모두 월드 축에 투영.</value></data>
+  <data name="Settings_MotionGrip" xml:space="preserve"><value>잡는 방법</value></data>
+  <data name="Settings_MotionGrip_Tooltip" xml:space="preserve"><value>컨트롤러를 잡는 방법. 포인팅은 드라이버가 전달하는 좌표계를 그대로 유지하며, 화면을 향한 Wii 리모컨입니다. 가로는 윗면을 왼쪽으로 두고 앞면은 여전히 위를 향하게 평평하게 돌린 NES 방식 그립입니다. Wii 휠은 윗면을 왼쪽으로 두고 앞면을 나를 향해 돌린 휠 셸 그립입니다. 세로는 천장을 향한 리모컨입니다. 각각 자이로, 가속도계, 중력을 함께 회전해 매핑과 가상 컨트롤러가 보고하는 모션 모두에 적용합니다. 십자 버튼도 같은 좌표계를 따르므로, 위는 잡은 상태에서의 위입니다.</value></data>
   <data name="Settings_GyroInvertPitch" xml:space="preserve"><value>피치(Y) 반전</value></data>
   <data name="Settings_GyroInvertPitch_Tooltip" xml:space="preserve"><value>피치 축의 전역 반전. Player/World 투영 후에 적용. 매핑 표의 소스별 Invert 플래그와 독립.</value></data>
   <data name="Settings_GyroInvertYaw" xml:space="preserve"><value>요(X) 반전</value></data>
@@ -1364,6 +1366,12 @@
   <data name="Pad_Gyro_Space_Local" xml:space="preserve"><value>로컬</value></data>
   <data name="Pad_Gyro_Space_Player" xml:space="preserve"><value>플레이어</value></data>
   <data name="Pad_Gyro_Space_World" xml:space="preserve"><value>월드</value></data>
+  <data name="Pad_Gyro_Grip_Pointing" xml:space="preserve"><value>포인팅</value></data>
+  <data name="Pad_Gyro_Grip_Sideways" xml:space="preserve"><value>가로, 앞면 위로</value></data>
+  <data name="Pad_Gyro_Grip_WiiWheel" xml:space="preserve"><value>Wii 휠, 앞면을 나를 향해</value></data>
+  <data name="Pad_Gyro_Grip_Upright" xml:space="preserve"><value>세로</value></data>
+  <data name="Pad_Gyro_Grip_Header" xml:space="preserve"><value>그립</value></data>
+  <data name="Pad_Gyro_Grip_Subtitle" xml:space="preserve"><value>컨트롤러를 잡는 방법. 자이로, 가속도계, 중력을 함께 회전해 매핑과 가상 컨트롤러가 보고하는 모션 모두에 적용합니다. 십자 버튼도 같은 좌표계를 따르므로, 위는 잡은 상태에서의 위입니다.</value></data>
   <data name="Pad_Gyro_Curve_Linear" xml:space="preserve"><value>선형</value></data>
   <data name="Pad_Gyro_Curve_Aggressive" xml:space="preserve"><value>공격적</value></data>
   <data name="Pad_Gyro_Curve_Relaxed" xml:space="preserve"><value>완만</value></data>
@@ -1377,6 +1385,7 @@
   <data name="Pad_Gyro_ResetEngage_All_Tooltip" xml:space="preserve"><value>활성화 재설정</value></data>
   <data name="Pad_Gyro_ResetPassthrough_All_Tooltip" xml:space="preserve"><value>모션 패스스루 재설정</value></data>
   <data name="Pad_ResetGyroSpace" xml:space="preserve"><value>좌표계 재설정</value></data>
+  <data name="Pad_ResetMotionGrip" xml:space="preserve"><value>잡는 방법 재설정</value></data>
   <data name="Pad_ResetGyroSensitivityH" xml:space="preserve"><value>수평 감도 재설정</value></data>
   <data name="Pad_ResetGyroSensitivityV" xml:space="preserve"><value>수직 감도 재설정</value></data>
   <data name="Pad_ResetGyroSensitivityUnits" xml:space="preserve"><value>단위 재설정</value></data>

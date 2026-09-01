@@ -2746,6 +2746,10 @@ namespace PadForge.Common.Input
                         continue;
                     }
                     bool isBt = (ud.DevicePath ?? "").IndexOf("{00001124", StringComparison.OrdinalIgnoreCase) >= 0;
+                    // #387: a Bluetooth-pathed record re-arms the dual-link
+                    // drop, so an unplug, Bluetooth session, and replug gets
+                    // a fresh drop on the next wired sink build.
+                    if (isBt) lock (_dualDropLock) _dualDropDoneForPath.Remove(guid);
                     bool isDs4 = Ds4Pids.Contains((ushort)ud.ProdId);
                     // DS4 audio is BLUETOOTH-ONLY: the wired DS4 exposes no
                     // USB audio interface at all (ds4mac docs §3.1 — HID
@@ -3025,6 +3029,51 @@ namespace PadForge.Common.Input
         /// commit under the lock only if the sink is still the wanted one.
         /// A losing build (device unassigned mid-open) is disposed as an
         /// orphan.</summary>
+        // ── #387: the dual-link drop's once-per-wired-path memory ──
+        private static readonly object _dualDropLock = new();
+        private static readonly Dictionary<Guid, string> _dualDropDoneForPath = new();
+
+        /// <summary>The dual-link drop's edge decision (#387), pure for the
+        /// tests: true exactly once per (device, wired path). The map entry
+        /// is re-armed by the reconcile whenever the record is
+        /// Bluetooth-pathed, so each Bluetooth-then-wired transition earns
+        /// one drop and a deliberate re-link while plugged is never
+        /// fought.</summary>
+        internal static bool DualDropWanted(Guid guid, string usbPath, Dictionary<Guid, string> map)
+        {
+            if (map.TryGetValue(guid, out string done) && done == usbPath) return false;
+            map[guid] = usbPath;
+            return true;
+        }
+
+        /// <summary>Drops the stale Bluetooth radio link behind a wired
+        /// audio sink (#387), addressed by the record's own MAC serial
+        /// through the hardware-proven #162 lane. Gates: the serial must
+        /// parse as a nonzero address (an all-zero MAC parses, the #372
+        /// lesson), and the drop runs once per wired path.</summary>
+        private static void TryDropStaleBtLinkOnce(Sink s)
+        {
+            try
+            {
+                var ud = SettingsManager.FindDeviceByInstanceGuid(s.DeviceGuid);
+                string serial = ud?.SerialNumber;
+                if (!BluetoothLinkHelper.TryParseAddress(serial, out long addr) || addr == 0) return;
+                lock (_dualDropLock)
+                {
+                    if (!DualDropWanted(s.DeviceGuid, s.HidPath, _dualDropDoneForPath)) return;
+                }
+                Engine.SdlDiagLog.WriteLine("SINK dual-link guid=" + s.DeviceGuid.ToString("N").Substring(0, 8)
+                    + " dropping stale radio serial=" + serial
+                    + " (the pad mutes USB audio while both links are up)");
+                System.Threading.Tasks.Task.Run(() => BluetoothLinkHelper.TryDisconnect(serial));
+            }
+            catch
+            {
+                // The drop is best-effort: a failed radio query must never
+                // block the sink build.
+            }
+        }
+
         private static void BuildTransportOnWorker(Sink s)
         {
             Engine.SdlDiagLog.WriteLine("SINK build guid=" + s.DeviceGuid.ToString("N").Substring(0, 8)
@@ -3094,6 +3143,19 @@ namespace PadForge.Common.Input
             }
 
             // USB: find the UAC endpoint with the same Container ID as the HID.
+            // #387 first: while a Sony pad holds BOTH links, its firmware
+            // mutes the USB audio interface in both directions (bench-measured
+            // on a dual-connected DualSense: a tone played straight into the
+            // pad's endpoint with PadForge bypassed stays silent, and the
+            // capture side delivers zero buffers, while USB-only plays both).
+            // SDL's de-dup already moved input to USB but leaves the radio
+            // link up. Audio was routed at this pad, so finish the transport
+            // switch: drop the stale radio link by the record's own MAC, once
+            // per wired path. A pad that was never on Bluetooth makes this a
+            // radio query that finds nothing, and a deliberate re-link after
+            // the drop is left alone (the #372 promise: no repeat until the
+            // record passes through a Bluetooth path again).
+            TryDropStaleBtLinkOnce(s);
             try
             {
                 Guid container = NativeMethods.GetContainerIdForDevicePath(s.HidPath);

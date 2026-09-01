@@ -1182,6 +1182,7 @@ public class Strings : INotifyPropertyChanged
     public string About_TestimonyScripture => Get("About_TestimonyScripture");
     public string About_TestimonyDoxology => Get("About_TestimonyDoxology");
     public string About_TestimonyInvite => Get("About_TestimonyInvite");
+    public string About_TestimonyRef => Get("About_TestimonyRef");
     public string Pad_MidiChannel => Get("Pad_MidiChannel");
     public string Pad_MidiChannelTooltip => Get("Pad_MidiChannelTooltip");
     public string Pad_MidiCCCount => Get("Pad_MidiCCCount");

@@ -11475,8 +11475,23 @@ namespace PadForge.Services
             }
 
             // ── HidHide ──
-            if (HidHideController.IsAvailable())
+            // #391 diagnostics: this path used to be silent end to end, so a
+            // "the physical was not hidden" report could not be adjudicated
+            // from a trace, and a driver whose control device did not open
+            // skipped the whole block with nothing said while the UI read
+            // Installed off the MSI registry scan.
+            bool hidHideUp = HidHideController.TryProbe(out int hidHideErr);
+            int wantHiding = 0;
+            foreach (var ud in snapshot)
+                if (ud.HidHideEnabled && !string.IsNullOrEmpty(ud.DevicePath)) wantHiding++;
+            if (!hidHideUp && wantHiding > 0)
             {
+                PadForge.Engine.SdlDiagLog.WriteLine(
+                    $"HIDHIDE UNAVAILABLE: hiding requested for {wantHiding} device(s) but the control device did not open (err={hidHideErr}). Nothing is hidden.");
+            }
+            if (hidHideUp)
+            {
+                PadForge.Engine.SdlDiagLog.WriteLine($"HIDHIDE apply devices={snapshot.Length} wantHiding={wantHiding}");
                 // Build the set of desired whitelist paths (PadForge + user list).
                 var desiredPaths = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                 string exePath = System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName;
@@ -11518,8 +11533,11 @@ namespace PadForge.Services
                             // the XUSB base container or other HID children
                             // (Xbox 360 wired exposes an XUSB-class parent
                             // with multiple HID descendants).
-                            foreach (var id in HidHideController.ExpandToBaseContainerAndChildren(instanceId))
+                            var expanded = HidHideController.ExpandToBaseContainerAndChildren(instanceId);
+                            foreach (var id in expanded)
                                 desiredIds.Add(id);
+                            PadForge.Engine.SdlDiagLog.WriteLine(
+                                $"HIDHIDE dev {ud.VendorId:X4}:{ud.ProdId:X4} id={instanceId} expanded={expanded.Count} [{string.Join(" | ", expanded)}]");
                         }
                         // Fallback for synthetic paths (e.g., "XInput#0"): look up by VID/PID.
                         else if (ud.VendorId > 0 && ud.ProdId > 0)
@@ -11573,6 +11591,8 @@ namespace PadForge.Services
                                 }
                             }
 
+                            PadForge.Engine.SdlDiagLog.WriteLine(
+                                $"HIDHIDE dev {ud.VendorId:X4}:{ud.ProdId:X4} synthetic path={ud.DevicePath} vidpid ids={realIds.Count} cached={ud.HidHideInstanceIds.Count}");
                             if (realIds.Count > 0)
                             {
                                 // Merge — never discard cached IDs. Preserves
@@ -11601,7 +11621,7 @@ namespace PadForge.Services
                 }
 
                 // Atomically sync — only adds/removes the diff, never clears the blacklist.
-                HidHideController.SyncManagedDevices(desiredIds);
+                HidHideController.SyncManagedDevices(desiredIds, out var added, out var removed);
 
                 // Persist updated cache to settings.
                 if (cacheUpdated)
@@ -11609,6 +11629,17 @@ namespace PadForge.Services
 
                 if (desiredIds.Count > 0)
                     HidHideController.SetActive(true);
+
+                // #391: read the driver's list back. A write the caller
+                // believes landed but the driver dropped is the one failure
+                // no other signal catches.
+                var missing = HidHideController.MissingFromBlacklist(desiredIds);
+                bool active = HidHideController.GetActive();
+                PadForge.Engine.SdlDiagLog.WriteLine(
+                    $"HIDHIDE sync desired={desiredIds.Count} added={added.Count} removed={removed.Count} active={active}"
+                    + (missing == null ? " readback=FAILED"
+                        : missing.Count == 0 ? " readback=ok"
+                        : $" readback=MISSING {missing.Count} [{string.Join(" | ", missing)}]"));
             }
 
             // ── Input hooks ──

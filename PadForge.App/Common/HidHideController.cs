@@ -169,6 +169,58 @@ namespace PadForge.Common
             }
         }
 
+        /// <summary>The availability check with its reason (#391): true
+        /// when the control device opens, else false with the Win32
+        /// error the open returned. The hiding path gates on this open
+        /// while the status surfaces read the MSI registry scan, and the
+        /// two are different signals. When the open fails, the error is
+        /// what a trace needs, since a bare false read as "nothing to
+        /// hide" and the whole hiding path went silent.</summary>
+        public static bool TryProbe(out int win32Error)
+        {
+            win32Error = 0;
+            try
+            {
+                var handle = CreateFileW(DevicePath, GENERIC_READ | GENERIC_WRITE, 0,
+                    IntPtr.Zero, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, IntPtr.Zero);
+                if (handle == null || handle.IsInvalid)
+                {
+                    win32Error = Marshal.GetLastWin32Error();
+                    handle?.Dispose();
+                    return false;
+                }
+                handle.Dispose();
+                return true;
+            }
+            catch
+            {
+                win32Error = -1;
+                return false;
+            }
+        }
+
+        /// <summary>Read-back verification (#391): the desired instance
+        /// IDs the driver's blacklist does NOT carry after a write. Null
+        /// when the list could not be read. A non-empty result means a
+        /// write the caller believes landed did not.</summary>
+        public static List<string> MissingFromBlacklist(IEnumerable<string> desiredIds)
+        {
+            var present = GetBlacklist();
+            if (present == null) return null;
+            return ComputeMissing(desiredIds, present);
+        }
+
+        /// <summary>Pure set difference, case-insensitive, for the
+        /// read-back verification and its tests.</summary>
+        internal static List<string> ComputeMissing(IEnumerable<string> desired, IEnumerable<string> present)
+        {
+            var have = new HashSet<string>(present ?? Array.Empty<string>(), StringComparer.OrdinalIgnoreCase);
+            var missing = new List<string>();
+            foreach (var id in desired ?? Array.Empty<string>())
+                if (!string.IsNullOrEmpty(id) && !have.Contains(id)) missing.Add(id);
+            return missing;
+        }
+
         /// <summary>
         /// Gets the current device blacklist (device instance IDs), or NULL if
         /// the driver could not be read.
@@ -263,11 +315,18 @@ namespace PadForge.Common
         /// window where HidHide briefly un-hides devices.
         /// </summary>
         public static void SyncManagedDevices(HashSet<string> desiredIds)
+            => SyncManagedDevices(desiredIds, out _, out _);
+
+        /// <summary>The sync with its diff reported (#391), so the caller
+        /// can log exactly what changed in the driver's list.</summary>
+        public static void SyncManagedDevices(HashSet<string> desiredIds, out List<string> added, out List<string> removed)
         {
+            added = new List<string>();
+            removed = new List<string>();
             lock (_lock)
             {
-                var toAdd = new List<string>();
-                var toRemove = new List<string>();
+                var toAdd = added;
+                var toRemove = removed;
 
                 foreach (var id in desiredIds)
                 {

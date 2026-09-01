@@ -684,6 +684,7 @@ namespace PadForge.Common.Input
             public string MirrorSourceId = "";
             public WasapiLoopbackCapture MirrorCapture;
             public ISampleProvider MirrorInput;
+            public BufferedWaveProvider MirrorBuf;
 
             // ── #271 item 1: persona authored-haptics input ──
             // Pushed by AudioPassthroughService.OnPersonaFrames (HM pacing
@@ -727,6 +728,17 @@ namespace PadForge.Common.Input
             public TritonPcmWriteRing PcmRing;
             public long PcmDropCount;
             public long PcmDiagLastMs;
+
+            // ── #371 follow-up: idle catch-up drain (stream thread) ──
+            // The idle loop reads one 10 ms mixer block per ~16 ms
+            // coarse-timer wake, so wall-clock producers feeding the
+            // mixer (PersonaBuf, MirrorBuf) accumulate backlog that
+            // becomes onset latency. IdleDrainBlocks counts the extra
+            // blocks the catch-up drain consumed to hold those buffers
+            // at one tick of depth; BufDiagLastMs paces the HAPTICBUF
+            // diagnostic that makes the depth observable while idle.
+            public long IdleDrainBlocks;
+            public long BufDiagLastMs;
         }
 
         private static readonly object _lock = new();
@@ -1395,6 +1407,7 @@ namespace PadForge.Common.Input
                 cap.StartRecording();
                 dev.Dispose();
                 s.MirrorCapture = cap;
+                s.MirrorBuf = buf; // visible to the idle catch-up drain
 
                 ISampleProvider sp = buf.ToSampleProvider();
                 if (sp.WaveFormat.SampleRate != MixRate) sp = new WdlResamplingSampleProvider(sp, MixRate);
@@ -1434,6 +1447,7 @@ namespace PadForge.Common.Input
             try { s.MirrorCapture?.Dispose(); } catch { }
             s.MirrorCapture = null;
             s.MirrorInput = null;
+            s.MirrorBuf = null;
             s.MirrorOn = false;
         }
 
@@ -2068,6 +2082,43 @@ namespace PadForge.Common.Input
         private const int PcmPendingCapFrames = 320;  // 40 ms backlog cap, drop-oldest
         private const float PcmPulseHz = 160f;        // swipe tick pitch
 
+        // ── #371 follow-up: idle catch-up drain ──
+        // At idle the loop reads one 10 ms block per ~16 ms wake (the
+        // coarse timer rounds Thread.Sleep(15) up), so a producer that
+        // writes in wall-clock time out-paces the reader by roughly a
+        // third. PersonaBuf then climbs to its 250 ms cap in under a
+        // second (the requester's follow-up measurement in discussion
+        // #371), and every new haptic onset queues behind that stale
+        // audio where the downstream PcmPending cap can never reach it.
+        // The MirrorBuf has the identical shape at 500 ms. The drain
+        // keeps every wall-clock-fed buffer at one tick of depth by
+        // consuming extra blocks on each idle wake, bounded per wake so
+        // a post-suspend backlog recovers in a few wakes without a read
+        // storm. Blocks are never discarded blind: the PCM drain runs
+        // the full tick (audibility, arm, submit), and the mono drain
+        // peak-checks and marks content, so an onset buried in backlog
+        // starts the stream at most one block late.
+        internal const int IdleDrainKeepMs = 15;   // one tick + wake jitter
+        internal const int IdleDrainMaxBlocks = 5; // 50 ms per wake, recovery bound
+
+        /// <summary>The idle catch-up drain policy: consume blocks while
+        /// the deepest wall-clock-fed buffer holds more than one tick,
+        /// stop at the per-wake bound, and stop the moment a drained
+        /// block carries content (the stream resumes on the next
+        /// iteration and plays the rest at cadence). Returns the number
+        /// of blocks drained. Pure control flow, unit-tested directly;
+        /// StreamLoop supplies the closures once per sink thread.</summary>
+        internal static int IdleCatchUpDrain(Func<double> deepestBufferedMs, Func<bool> drainBlockHasContent)
+        {
+            int drained = 0;
+            while (drained < IdleDrainMaxBlocks && deepestBufferedMs() > IdleDrainKeepMs)
+            {
+                drained++;
+                if (drainBlockHasContent()) break;
+            }
+            return drained;
+        }
+
         private static bool StreamTritonPcmTick(Sink s, float toneHz, float amp,
             bool testActive, bool remoteActive, long nowMs)
         {
@@ -2193,7 +2244,8 @@ namespace PadForge.Common.Input
             {
                 s.PcmDiagLastMs = nowMs;
                 PadForge.Engine.SdlDiagLog.WriteLine(
-                    $"TRITONPCM stream mulaw={(s.PcmMuLaw ? 1 : 0)} pendingFrames={s.PcmPendingCount / 2} dropped={s.PcmDropCount} hardFail={s.PcmRing.HardFailures} lp={s.PcmCfgHz}");
+                    $"TRITONPCM stream mulaw={(s.PcmMuLaw ? 1 : 0)} pendingFrames={s.PcmPendingCount / 2} dropped={s.PcmDropCount} hardFail={s.PcmRing.HardFailures} lp={s.PcmCfgHz}"
+                    + $" personaMs={(s.PersonaBuf != null ? s.PersonaBuf.BufferedDuration.TotalMilliseconds : 0):F0} idleDrained={s.IdleDrainBlocks}");
             }
             return true;
         }
@@ -2254,6 +2306,44 @@ namespace PadForge.Common.Input
             // AboveNormal + the 1 ms global timer while a tone is actually streaming.
             try { Thread.CurrentThread.Priority = ThreadPriority.BelowNormal; } catch { }
             bool fast = false;
+
+            // #371 follow-up: the idle catch-up drain's closures, allocated
+            // once per sink thread (the idle loop must not churn the GC).
+            Func<double> drainDepthMs = () =>
+            {
+                double d = 0;
+                try
+                {
+                    var pb = s.PersonaBuf;
+                    if (pb != null) d = pb.BufferedDuration.TotalMilliseconds;
+                    var mb = s.MirrorBuf;
+                    if (mb != null)
+                    {
+                        double m = mb.BufferedDuration.TotalMilliseconds;
+                        if (m > d) d = m;
+                    }
+                }
+                catch { }
+                return d;
+            };
+            Func<bool> drainBlock = () =>
+            {
+                long wakeMs = Environment.TickCount64;
+                if (s.PcmCapable)
+                {
+                    // The full tick: reads 10 ms, checks audibility, arms
+                    // and submits when the backlog carries an onset. Only
+                    // with a live handle; a sink mid-teardown skips it.
+                    return s.Handle != IntPtr.Zero
+                        && StreamTritonPcmTick(s, 0f, 0f, testActive: false, remoteActive: false, wakeMs);
+                }
+                int n = 0;
+                try { n = s.MonoSource.Read(monoF, 0, SamplesPerTick); } catch { }
+                float pk = 0f;
+                for (int i = 0; i < n; i++) { float a = monoF[i]; if (a < 0f) a = -a; if (a > pk) pk = a; }
+                if (pk > 0.002f) { s.LastContentMs = wakeMs; return true; }
+                return false;
+            };
             try
             {
                 var sw = System.Diagnostics.Stopwatch.StartNew();
@@ -2335,6 +2425,20 @@ namespace PadForge.Common.Input
                                 }
                             }
                             catch { }
+                        }
+
+                        // #371 follow-up diagnostic (the requester's ask):
+                        // the wall-clock-fed input depths and the catch-up
+                        // counter, emitted armed or idle, any family, so
+                        // input-stage accumulation is directly observable.
+                        if ((s.PersonaOn || s.MirrorOn) && nowMs - s.BufDiagLastMs >= 5000)
+                        {
+                            s.BufDiagLastMs = nowMs;
+                            double pMs = 0, mMs = 0;
+                            try { var pb = s.PersonaBuf; if (pb != null) pMs = pb.BufferedDuration.TotalMilliseconds; } catch { }
+                            try { var mb = s.MirrorBuf; if (mb != null) mMs = mb.BufferedDuration.TotalMilliseconds; } catch { }
+                            PadForge.Engine.SdlDiagLog.WriteLine(
+                                $"HAPTICBUF slot={s.Slot} personaMs={pMs:F0} mirrorMs={mMs:F0} idleDrained={s.IdleDrainBlocks}");
                         }
                     }
 
@@ -2465,6 +2569,13 @@ namespace PadForge.Common.Input
                         }
                         Thread.Sleep(15); // idle: coarse timer, minimal CPU, no poll preemption
                         next = sw.ElapsedTicks + intervalTicks;
+
+                        // #371 follow-up: hold the wall-clock-fed inputs at
+                        // one tick of depth. Only persona and mirror write
+                        // in wall-clock time; a sink without either cannot
+                        // accumulate and keeps today's idle cost.
+                        if (s.PersonaOn || s.MirrorOn)
+                            s.IdleDrainBlocks += IdleCatchUpDrain(drainDepthMs, drainBlock);
                     }
                 }
             }

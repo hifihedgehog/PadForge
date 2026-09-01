@@ -70,6 +70,8 @@ namespace PadForge.Tests
         [InlineData(255, 100)]
         [InlineData(128, 50)]
         [InlineData(64, 25)]
+        [InlineData(2, 1)]     // 0.78: rounding, never truncation (Aurora's bug)
+        [InlineData(130, 51)]  // 50.98: same discrimination from above
         [InlineData(-5, 0)]
         [InlineData(300, 100)]
         public void ToPercent_RoundsAndClamps(int channel, int expected)

@@ -452,7 +452,8 @@
   <data name="Pad_ExtendedForceFeedback" xml:space="preserve"><value>Force Feedback</value></data>
   <data name="About_Testimony" xml:space="preserve"><value>Testemunho</value></data>
   <data name="About_TestimonyScripture" xml:space="preserve"><value>"E falamos de Cristo, regozijamo-nos em Cristo, pregamos Cristo, profetizamos de Cristo e escrevemos segundo as nossas profecias, para que nossos filhos saibam a que fonte podem recorrer em busca da remissão de seus pecados." — 2 Néfi 25:26</value></data>
-  <data name="About_TestimonyDoxology" xml:space="preserve"><value>Glória, honra e louvor ao Senhor Jesus Cristo, fonte de toda a verdade, para todo o sempre.</value></data>
+  <data name="About_TestimonyDoxology" xml:space="preserve"><value>Glória, honra e louvor ao Senhor Jesus Cristo, fonte de toda a verdade e salvação, para todo o sempre.</value></data>
+  <data name="About_TestimonyInvite" xml:space="preserve"><value>Você está cordialmente convidado a visitar ComeUntoChrist.org e conhecer mais sobre A Igreja de Jesus Cristo dos Santos dos Últimos Dias.</value></data>
   <data name="Pad_MidiChannel" xml:space="preserve"><value>Canal</value></data>
   <data name="Pad_MidiChannelTooltip" xml:space="preserve"><value>Canal MIDI (1-16)</value></data>
   <data name="Pad_MidiCCCount" xml:space="preserve"><value>Quantidade de CC</value></data>

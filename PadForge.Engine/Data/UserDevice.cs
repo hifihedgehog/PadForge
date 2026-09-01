@@ -353,10 +353,14 @@ namespace PadForge.Engine.Data
         /// cable arrived, any USB power source), drop the Bluetooth link so
         /// the pad just charges without powering the radio. The trigger is
         /// the pad's own charging report on this record, the DS4Windows
-        /// shape: the first shipped pass keyed on the USB twin's arrival
-        /// instead and @Jobima1st's bench showed it never firing, so the
-        /// rework rides the same lane the idle timeout does with the
-        /// charging state in place of the timer. Default off.</summary>
+        /// shape. Two earlier passes failed on @Jobima1st's bench for one
+        /// reason found in code: BuildInstanceGuid keys identity on the
+        /// serial, Sony pads carry the same MAC on both transports, so a
+        /// cable REBINDS this record to the USB wrapper (no twin record
+        /// ever exists, and the path stops reading as Bluetooth). The
+        /// check therefore handles both shapes: a Bluetooth-pathed record
+        /// drops through the idle timeout's lane, and a wired-rebound
+        /// record drops the radio by its own MAC serial. Default off.</summary>
         [XmlElement]
         public bool QuickChargeEnabled { get; set; }
 

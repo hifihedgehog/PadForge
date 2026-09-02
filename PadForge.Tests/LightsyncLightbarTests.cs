@@ -38,6 +38,14 @@ namespace PadForge.Tests
             /// unbounded native call of a G HUB cold start.</summary>
             public ManualResetEventSlim InitGate;
 
+            /// <summary>When set, the SetLighting call numbered
+            /// <see cref="BlockSetOnCall"/> (1-based) blocks on it after
+            /// logging: the unbounded native call of a streaming session
+            /// whose engine host just died.</summary>
+            public ManualResetEventSlim SetGate;
+            public int BlockSetOnCall;
+            private int _setCalls;
+
             /// <summary>Optional cross-instance log ("tag:call") so a test
             /// with two services can order their engine calls.</summary>
             public FakeNative(string tag = null, List<string> shared = null)
@@ -67,6 +75,8 @@ namespace PadForge.Tests
             public bool SetLighting(int r, int g, int b)
             {
                 Log("set");
+                if (SetGate != null && Interlocked.Increment(ref _setCalls) == BlockSetOnCall)
+                    SetGate.Wait();
                 if (SetOk) lock (_lock) Lit.Add((r, g, b));
                 return SetOk;
             }
@@ -271,6 +281,72 @@ namespace PadForge.Tests
             }
 
             // The live session tears down normally.
+            newSvc.Stop();
+            Assert.True(newFake.Count("restore-shutdown") >= 1, "the live session must restore then shutdown");
+            lock (newStates) Assert.Equal(LightsyncServiceState.Stopped, newStates[^1]);
+        }
+
+        /// <summary>The orphan's other exit. A worker already STREAMING
+        /// when Stop times out (its SetLighting call blocks past the stop
+        /// wait) does not take the finally path: the blocked call returns
+        /// false as the third failure of the streak, the loop breaks into
+        /// the post-session teardown, and only then does the outer loop
+        /// see the cancellation. That teardown site has its own
+        /// generation gate, and this pins it: the superseded worker must
+        /// unload and never restore-shutdown the new session, and its
+        /// instance must report nothing after Stop.</summary>
+        [Fact]
+        public void OrphanedStreamingWorker_SkipsRestoreShutdownAtThePostSessionTeardown()
+        {
+            var shared = new List<string>();
+            using var gate = new ManualResetEventSlim(false);
+            var oldFake = new FakeNative("old", shared) { SetOk = false, SetGate = gate, BlockSetOnCall = 3 };
+            var oldStates = new List<LightsyncServiceState>();
+            var oldSvc = new LightsyncLightbarService(oldFake,
+                retryMs: 100, pollMs: 10, settleMs: 5, presenceSettleMs: 5, livenessMs: 500,
+                stopWaitMs: 200);
+            oldSvc.StateChanged += s => { lock (oldStates) oldStates.Add(s); };
+            LightsyncLightbarService.Publish(255, 0, 0);
+            oldSvc.Start();
+            // Two failed sends, then the third blocks inside the SDK.
+            Assert.True(WaitFor(() => oldFake.Count("set") >= 3), "the old worker never reached the blocking send");
+            lock (oldStates) Assert.Contains(LightsyncServiceState.Connected, oldStates);
+
+            long t0 = Environment.TickCount64;
+            oldSvc.Dispose();
+            Assert.True(Environment.TickCount64 - t0 < 2000, "Stop must return after its bounded wait");
+            int oldStatesAfterStop;
+            lock (oldStates) oldStatesAfterStop = oldStates.Count;
+
+            var newFake = new FakeNative("new", shared);
+            var newStates = new List<LightsyncServiceState>();
+            using var newSvc = new LightsyncLightbarService(newFake,
+                retryMs: 100, pollMs: 10, settleMs: 5, presenceSettleMs: 5, livenessMs: 500,
+                stopWaitMs: 200);
+            newSvc.StateChanged += s => { lock (newStates) newStates.Add(s); };
+            newSvc.Start();
+
+            Thread.Sleep(150);
+            Assert.Equal(0, newFake.Count("load"));
+
+            gate.Set();
+            Assert.True(WaitFor(() => newFake.Lit.Count >= 1), "the new worker never connected");
+            lock (newStates) Assert.Contains(LightsyncServiceState.Connected, newStates);
+
+            Assert.True(WaitFor(() => oldFake.Count("unload") >= 1), "the orphan never unloaded");
+            Assert.Equal(0, oldFake.Count("restore-shutdown"));
+            string[] log;
+            lock (shared) log = shared.ToArray();
+            int oldUnload = Array.IndexOf(log, "old:unload");
+            int newLoad = Array.IndexOf(log, "new:load");
+            Assert.True(oldUnload >= 0 && newLoad > oldUnload, $"order was {string.Join(",", log)}");
+
+            lock (oldStates)
+            {
+                Assert.Equal(oldStatesAfterStop, oldStates.Count);
+                Assert.DoesNotContain(LightsyncServiceState.Stopped, oldStates);
+            }
+
             newSvc.Stop();
             Assert.True(newFake.Count("restore-shutdown") >= 1, "the live session must restore then shutdown");
             lock (newStates) Assert.Equal(LightsyncServiceState.Stopped, newStates[^1]);

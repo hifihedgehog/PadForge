@@ -2429,6 +2429,11 @@ namespace PadForge.Services
                 _inputManager.Dispose();
                 _inputManager = null;
                 _inputManagerStatic = null;
+                // The dashboard tick stops with the engine, so the head
+                // tracking card settles to Stopped here. Queued after the
+                // null above, so a tick that raced the teardown cannot
+                // rewrite a live line behind it.
+                _dispatcher.BeginInvoke(() => UpdateHeadTrackingStatus());
                 UserEffectsDispatcher.SlotButtonsProvider = null;
                 UserEffectsDispatcher.SlotRumbleForDeviceProvider = null;
                 UserEffectsDispatcher.SlotRawRumbleProvider = null;
@@ -3333,6 +3338,10 @@ namespace PadForge.Services
             };
             _mainVm.HasActiveSlots = !_inputManager.IsIdle;
             dash.PollingFrequency = _inputManager.CurrentFrequency;
+
+            // Head tracking card (#355): the Devices row's source line, on
+            // the dashboard cadence. Two volatile reads when nothing moved.
+            UpdateHeadTrackingStatus();
 
             // Snapshot devices under lock to avoid cross-thread collection-modified
             // exceptions when the engine's UpdateDevices runs concurrently.
@@ -4742,6 +4751,43 @@ namespace PadForge.Services
                         return string.Format(s.HeadTracker_StatusFreeTrackFailed_Format, ht.UdpPort);
                     return string.Format(s.HeadTracker_StatusWaiting_Format, ht.UdpPort);
             }
+        }
+
+        // Cache key for the Dashboard head tracking status line: the device
+        // INSTANCE plus its StatusVersion, the Devices row's key. A reopen
+        // restarts StatusVersion at 0, so a version-only check kept the
+        // retired device's line, port number and all.
+        private object _headTrackingStatusDevice;
+        private int _headTrackingStatusVersion = int.MinValue;
+        // The version the "Stopped" line was written under. No live device
+        // ever reports it (StatusVersion starts at 0), and int.MinValue is
+        // reserved for "rebuild whatever the state" (language change).
+        private const int HeadTrackingStatusStopped = -1;
+
+        /// <summary>The Dashboard card's status line (issue #355): the same
+        /// text as the Devices row, rebuilt on the dashboard tick only when
+        /// the device's StatusVersion moves. "Stopped" while the feature is
+        /// off, the engine is down, or the row has not opened yet.</summary>
+        private void UpdateHeadTrackingStatus()
+        {
+            var dash = _mainVm.Dashboard;
+            var im = _inputManager;
+            var ht = im != null && im.IsRunning && dash.HeadTrackingEnabled ? im.HeadTracker : null;
+            if (ht == null)
+            {
+                if (_headTrackingStatusVersion == HeadTrackingStatusStopped)
+                    return;
+                _headTrackingStatusDevice = null;
+                _headTrackingStatusVersion = HeadTrackingStatusStopped;
+                dash.HeadTrackingStatus = Strings.Instance.Common_Stopped;
+                return;
+            }
+            int version = ht.StatusVersion;
+            if (ReferenceEquals(_headTrackingStatusDevice, ht) && _headTrackingStatusVersion == version)
+                return;
+            _headTrackingStatusDevice = ht;
+            _headTrackingStatusVersion = version;
+            dash.HeadTrackingStatus = BuildHeadTrackerStatus(ht);
         }
 
         private void UpdateDevicesRawState()
@@ -11378,6 +11424,12 @@ namespace PadForge.Services
                 dash.DsuServerStatus = Strings.Instance.Common_Stopped;
             else
                 dash.DsuServerStatus = string.Format(Strings.Instance.Server_ListeningOn_Format, _mainVm.Dashboard.DsuMotionServerPort);
+
+            // Head tracking (#355): drop the cache so the line rebuilds in
+            // the new language whatever its state, Stopped included.
+            _headTrackingStatusDevice = null;
+            _headTrackingStatusVersion = int.MinValue;
+            UpdateHeadTrackingStatus();
 
             // Web controller server
             if (_webServer == null)

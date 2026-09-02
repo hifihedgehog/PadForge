@@ -249,6 +249,7 @@
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU-bewegingsserver inschakelen (CemuHook Motion Provider-protocol)</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>Poort</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Levert gyroscoop- en versnellingsmetergegevens voor Cemu, Dolphin, Yuzu, enz.</value></data>
+  <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Werkt met OpenTrack en elke tracker die zijn UDP-uitvoer verzendt of naar het gedeelde geheugen van FreeTrack 2.0 schrijft.</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Webcontroller</value></data>
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>Bied een gamepad-interface aan voor browsers op uw lokale netwerk.</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Webcontroller-server inschakelen</value></data>
@@ -2395,18 +2396,18 @@
   <data name="HeadTracker_X" xml:space="preserve"><value>Hoofd X</value></data>
   <data name="HeadTracker_Y" xml:space="preserve"><value>Hoofd Y</value></data>
   <data name="HeadTracker_Z" xml:space="preserve"><value>Hoofd Z</value></data>
-  <data name="Settings_HeadTracking" xml:space="preserve"><value>Hoofdtracking</value></data>
-  <data name="Settings_HeadTrackingDesc" xml:space="preserve"><value>Leest een hoofdpositie van de UDP-uitvoer van OpenTrack of van het gedeelde geheugen van FreeTrack 2.0 en toont die als zes assen op een Hoofdtracker-apparaat: gieren, stampen, rollen en de drie verplaatsingen. Wijs gieren toe aan een stick-as om rond te kijken terwijl beide duimen op de knoppen blijven.</value></data>
-  <data name="Settings_HeadTrackingEnable" xml:space="preserve"><value>Hoofdtracking-invoer inschakelen</value></data>
-  <data name="Settings_HeadTrackingEnable_Tooltip" xml:space="preserve"><value>Voegt de rij Hoofdtracker toe op de pagina Apparaten. Kies in OpenTrack de uitvoer "UDP over network" en verstuur naar 127.0.0.1 op de onderstaande poort, of kies "freetrack 2.0 Enhanced".</value></data>
-  <data name="Settings_HeadTrackingFreeTrack" xml:space="preserve"><value>Ook het gedeelde geheugen van FreeTrack 2.0 lezen</value></data>
-  <data name="Settings_HeadTrackingFreeTrack_Tooltip" xml:space="preserve"><value>Leest de FT_SharedMem-toewijzing die de uitvoer "freetrack 2.0 Enhanced" van OpenTrack schrijft. Games die FreeTrack lezen blijven ernaast werken.</value></data>
-  <data name="Settings_HeadTrackingPort" xml:space="preserve"><value>UDP-poort</value></data>
-  <data name="Settings_HeadTrackingPort_Tooltip" xml:space="preserve"><value>De poort waarnaar de uitvoer "UDP over network" van OpenTrack verstuurt. De standaardwaarde van OpenTrack is 4242.</value></data>
-  <data name="Settings_HeadTrackingRotationRange" xml:space="preserve"><value>Rotatiebereik (graden)</value></data>
-  <data name="Settings_HeadTrackingRotationRange_Tooltip" xml:space="preserve"><value>Hoofdrotatie waarbij de assen gieren, stampen en rollen hun volledige uitslag bereiken.</value></data>
-  <data name="Settings_HeadTrackingTranslationRange" xml:space="preserve"><value>Verplaatsingsbereik (cm)</value></data>
-  <data name="Settings_HeadTrackingTranslationRange_Tooltip" xml:space="preserve"><value>Hoofdverplaatsing waarbij de assen X, Y en Z hun volledige uitslag bereiken.</value></data>
+  <data name="Dashboard_HeadTracking" xml:space="preserve"><value>Hoofdtracking</value></data>
+  <data name="Dashboard_HeadTrackingDesc" xml:space="preserve"><value>Leest een hoofdpositie van de UDP-uitvoer van OpenTrack of van het gedeelde geheugen van FreeTrack 2.0 en toont die als zes assen op een Hoofdtracker-apparaat: gieren, stampen, rollen en de drie verplaatsingen. Wijs gieren toe aan een stick-as om rond te kijken terwijl beide duimen op de knoppen blijven.</value></data>
+  <data name="Dashboard_HeadTrackingEnable" xml:space="preserve"><value>Hoofdtracking-invoer inschakelen</value></data>
+  <data name="Dashboard_HeadTrackingEnable_Tooltip" xml:space="preserve"><value>Voegt de rij Hoofdtracker toe op de pagina Apparaten. Kies in OpenTrack de uitvoer "UDP over network" en verstuur naar 127.0.0.1 op de onderstaande poort, of kies "freetrack 2.0 Enhanced".</value></data>
+  <data name="Dashboard_HeadTrackingFreeTrack" xml:space="preserve"><value>Ook het gedeelde geheugen van FreeTrack 2.0 lezen</value></data>
+  <data name="Dashboard_HeadTrackingFreeTrack_Tooltip" xml:space="preserve"><value>Leest de FT_SharedMem-toewijzing die de uitvoer "freetrack 2.0 Enhanced" van OpenTrack schrijft. Games die FreeTrack lezen blijven ernaast werken.</value></data>
+  <data name="Dashboard_HeadTrackingPort" xml:space="preserve"><value>UDP-poort</value></data>
+  <data name="Dashboard_HeadTrackingPort_Tooltip" xml:space="preserve"><value>De poort waarnaar de uitvoer "UDP over network" van OpenTrack verstuurt. De standaardwaarde van OpenTrack is 4242.</value></data>
+  <data name="Dashboard_HeadTrackingRotationRange" xml:space="preserve"><value>Rotatiebereik (graden)</value></data>
+  <data name="Dashboard_HeadTrackingRotationRange_Tooltip" xml:space="preserve"><value>Hoofdrotatie waarbij de assen gieren, stampen en rollen hun volledige uitslag bereiken.</value></data>
+  <data name="Dashboard_HeadTrackingTranslationRange" xml:space="preserve"><value>Verplaatsingsbereik (cm)</value></data>
+  <data name="Dashboard_HeadTrackingTranslationRange_Tooltip" xml:space="preserve"><value>Hoofdverplaatsing waarbij de assen X, Y en Z hun volledige uitslag bereiken.</value></data>
   <data name="HeadTracker_StatusWaiting_Format" xml:space="preserve"><value>Wacht op een tracker op UDP-poort {0}.</value></data>
   <data name="HeadTracker_StatusUdp_Format" xml:space="preserve"><value>Ontvangt via UDP van {0}.</value></data>
   <data name="HeadTracker_StatusFreeTrack" xml:space="preserve"><value>Ontvangt van het gedeelde geheugen van FreeTrack.</value></data>

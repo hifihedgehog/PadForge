@@ -285,6 +285,7 @@
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Enable DSU Motion Server (CemuHook Motion Provider Protocol)</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>Port</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Provides gyro and accelerometer data to Cemu, Dolphin, Yuzu, etc.</value></data>
+  <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Works with OpenTrack and any tracker that sends its UDP output or writes FreeTrack 2.0 shared memory.</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Web Controller</value></data>
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>Serve a gamepad UI to browsers on your local network.</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Enable Web Controller Server</value></data>
@@ -2775,18 +2776,18 @@
   <data name="HeadTracker_X" xml:space="preserve"><value>Head X</value></data>
   <data name="HeadTracker_Y" xml:space="preserve"><value>Head Y</value></data>
   <data name="HeadTracker_Z" xml:space="preserve"><value>Head Z</value></data>
-  <data name="Settings_HeadTracking" xml:space="preserve"><value>Head Tracking</value></data>
-  <data name="Settings_HeadTrackingDesc" xml:space="preserve"><value>Reads a head pose from OpenTrack's UDP output or from the FreeTrack 2.0 shared memory and exposes it as six axes on a Head Tracker device: yaw, pitch, roll, and the three translations. Map head yaw to a stick axis to look around while both thumbs stay on the buttons.</value></data>
-  <data name="Settings_HeadTrackingEnable" xml:space="preserve"><value>Enable Head Tracking Input</value></data>
-  <data name="Settings_HeadTrackingEnable_Tooltip" xml:space="preserve"><value>Adds the Head Tracker row on the Devices page. In OpenTrack, choose the "UDP over network" output and send to 127.0.0.1 on the port below, or choose "freetrack 2.0 Enhanced".</value></data>
-  <data name="Settings_HeadTrackingFreeTrack" xml:space="preserve"><value>Also Read FreeTrack 2.0 Shared Memory</value></data>
-  <data name="Settings_HeadTrackingFreeTrack_Tooltip" xml:space="preserve"><value>Reads the FT_SharedMem mapping OpenTrack's "freetrack 2.0 Enhanced" output writes. Games that read FreeTrack keep working alongside.</value></data>
-  <data name="Settings_HeadTrackingPort" xml:space="preserve"><value>UDP Port</value></data>
-  <data name="Settings_HeadTrackingPort_Tooltip" xml:space="preserve"><value>The port OpenTrack's "UDP over network" output sends to. OpenTrack's default is 4242.</value></data>
-  <data name="Settings_HeadTrackingRotationRange" xml:space="preserve"><value>Rotation Range (Degrees)</value></data>
-  <data name="Settings_HeadTrackingRotationRange_Tooltip" xml:space="preserve"><value>Head rotation that moves the yaw, pitch, and roll axes to full deflection.</value></data>
-  <data name="Settings_HeadTrackingTranslationRange" xml:space="preserve"><value>Translation Range (cm)</value></data>
-  <data name="Settings_HeadTrackingTranslationRange_Tooltip" xml:space="preserve"><value>Head travel that moves the X, Y, and Z axes to full deflection.</value></data>
+  <data name="Dashboard_HeadTracking" xml:space="preserve"><value>Head Tracking</value></data>
+  <data name="Dashboard_HeadTrackingDesc" xml:space="preserve"><value>Reads a head pose from OpenTrack's UDP output or from the FreeTrack 2.0 shared memory and exposes it as six axes on a Head Tracker device: yaw, pitch, roll, and the three translations. Map head yaw to a stick axis to look around while both thumbs stay on the buttons.</value></data>
+  <data name="Dashboard_HeadTrackingEnable" xml:space="preserve"><value>Enable Head Tracking Input</value></data>
+  <data name="Dashboard_HeadTrackingEnable_Tooltip" xml:space="preserve"><value>Adds the Head Tracker row on the Devices page. In OpenTrack, choose the "UDP over network" output and send to 127.0.0.1 on the port below, or choose "freetrack 2.0 Enhanced".</value></data>
+  <data name="Dashboard_HeadTrackingFreeTrack" xml:space="preserve"><value>Also Read FreeTrack 2.0 Shared Memory</value></data>
+  <data name="Dashboard_HeadTrackingFreeTrack_Tooltip" xml:space="preserve"><value>Reads the FT_SharedMem mapping OpenTrack's "freetrack 2.0 Enhanced" output writes. Games that read FreeTrack keep working alongside.</value></data>
+  <data name="Dashboard_HeadTrackingPort" xml:space="preserve"><value>UDP Port</value></data>
+  <data name="Dashboard_HeadTrackingPort_Tooltip" xml:space="preserve"><value>The port OpenTrack's "UDP over network" output sends to. OpenTrack's default is 4242.</value></data>
+  <data name="Dashboard_HeadTrackingRotationRange" xml:space="preserve"><value>Rotation Range (Degrees)</value></data>
+  <data name="Dashboard_HeadTrackingRotationRange_Tooltip" xml:space="preserve"><value>Head rotation that moves the yaw, pitch, and roll axes to full deflection.</value></data>
+  <data name="Dashboard_HeadTrackingTranslationRange" xml:space="preserve"><value>Translation Range (cm)</value></data>
+  <data name="Dashboard_HeadTrackingTranslationRange_Tooltip" xml:space="preserve"><value>Head travel that moves the X, Y, and Z axes to full deflection.</value></data>
   <data name="HeadTracker_StatusWaiting_Format" xml:space="preserve"><value>Waiting for a tracker on UDP port {0}.</value></data>
   <data name="HeadTracker_StatusUdp_Format" xml:space="preserve"><value>Receiving over UDP from {0}.</value></data>
   <data name="HeadTracker_StatusFreeTrack" xml:space="preserve"><value>Receiving from FreeTrack shared memory.</value></data>

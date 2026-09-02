@@ -339,6 +339,114 @@ namespace PadForge.ViewModels
         }
 
         // ─────────────────────────────────────────────
+        //  Head Tracking (#355)
+        // ─────────────────────────────────────────────
+        // A UDP listener on OpenTrack's port plus a FreeTrack 2.0 shared
+        // memory reader, surfaced as the Head Tracker device row. The
+        // setters mirror into the static HeadTrackingRuntime the poll
+        // thread's device sweep reads, so a change lands whoever writes it
+        // (global load, profile apply, the user). The enable rides profiles
+        // as a nullable leg (ProfileData.EnableHeadTracking). The port,
+        // the FreeTrack toggle and the two ranges are global.
+
+        private bool _headTrackingEnabled;
+
+        /// <summary>Head tracking (issue #355): adds the Head Tracker row fed
+        /// by OpenTrack's UDP output and the FreeTrack 2.0 shared memory. Off
+        /// by default. The engine sweep reads the runtime flag this mirrors.</summary>
+        public bool HeadTrackingEnabled
+        {
+            get => _headTrackingEnabled;
+            set
+            {
+                if (SetProperty(ref _headTrackingEnabled, value))
+                    PadForge.Common.Input.HeadTrackingRuntime.Enabled = value;
+            }
+        }
+
+        private int _headTrackingUdpPort = PadForge.Common.Input.HeadTrackingRuntime.DefaultUdpPort;
+
+        /// <summary>UDP port OpenTrack's "UDP over network" output sends to.</summary>
+        public int HeadTrackingUdpPort
+        {
+            get => _headTrackingUdpPort;
+            set
+            {
+                int v = Math.Clamp(value, 1, 65535);
+                if (SetProperty(ref _headTrackingUdpPort, v))
+                    PadForge.Common.Input.HeadTrackingRuntime.UdpPort = v;
+            }
+        }
+
+        private RelayCommand _resetHeadTrackingPortCommand;
+        public RelayCommand ResetHeadTrackingPortCommand =>
+            _resetHeadTrackingPortCommand ??= new RelayCommand(() =>
+                HeadTrackingUdpPort = PadForge.Common.Input.HeadTrackingRuntime.DefaultUdpPort);
+
+        private bool _headTrackingFreeTrack = true;
+
+        /// <summary>Whether the FreeTrack 2.0 shared memory is read as well.</summary>
+        public bool HeadTrackingFreeTrack
+        {
+            get => _headTrackingFreeTrack;
+            set
+            {
+                if (SetProperty(ref _headTrackingFreeTrack, value))
+                    PadForge.Common.Input.HeadTrackingRuntime.FreeTrackEnabled = value;
+            }
+        }
+
+        private int _headTrackingRotationRange = PadForge.Common.Input.HeadTrackingRuntime.DefaultRotationRangeDeg;
+
+        /// <summary>Degrees of head rotation at full axis deflection.</summary>
+        public int HeadTrackingRotationRange
+        {
+            get => _headTrackingRotationRange;
+            set
+            {
+                int v = Math.Clamp(value, 1, 180);
+                if (SetProperty(ref _headTrackingRotationRange, v))
+                    PadForge.Common.Input.HeadTrackingRuntime.RotationRangeDeg = v;
+            }
+        }
+
+        private RelayCommand _resetHeadTrackingRotationRangeCommand;
+        public RelayCommand ResetHeadTrackingRotationRangeCommand =>
+            _resetHeadTrackingRotationRangeCommand ??= new RelayCommand(() =>
+                HeadTrackingRotationRange = PadForge.Common.Input.HeadTrackingRuntime.DefaultRotationRangeDeg);
+
+        private int _headTrackingTranslationRange = PadForge.Common.Input.HeadTrackingRuntime.DefaultTranslationRangeCm;
+
+        /// <summary>Centimeters of head travel at full axis deflection.</summary>
+        public int HeadTrackingTranslationRange
+        {
+            get => _headTrackingTranslationRange;
+            set
+            {
+                int v = Math.Clamp(value, 1, 500);
+                if (SetProperty(ref _headTrackingTranslationRange, v))
+                    PadForge.Common.Input.HeadTrackingRuntime.TranslationRangeCm = v;
+            }
+        }
+
+        private RelayCommand _resetHeadTrackingTranslationRangeCommand;
+        public RelayCommand ResetHeadTrackingTranslationRangeCommand =>
+            _resetHeadTrackingTranslationRangeCommand ??= new RelayCommand(() =>
+                HeadTrackingTranslationRange = PadForge.Common.Input.HeadTrackingRuntime.DefaultTranslationRangeCm);
+
+        private string _headTrackingStatus = Strings.Instance.Common_Stopped;
+
+        /// <summary>The Head Tracker row's source line (which source is live,
+        /// or why neither is), pushed by InputService on the dashboard tick
+        /// whenever the device's StatusVersion moves. Stopped while the
+        /// feature is off or the engine is down.</summary>
+        public string HeadTrackingStatus
+        {
+            get => _headTrackingStatus;
+            set => SetProperty(ref _headTrackingStatus, value ?? Strings.Instance.Common_Stopped);
+        }
+
+        // ─────────────────────────────────────────────
         //  Razer Chroma lightbar mirror (#373)
         // ─────────────────────────────────────────────
 

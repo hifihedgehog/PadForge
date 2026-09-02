@@ -249,6 +249,7 @@
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Abilita server di movimento DSU (CemuHook Motion Provider protocol)</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>Porta</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Fornisce dati di giroscopio e accelerometro a Cemu, Dolphin, Yuzu, ecc.</value></data>
+  <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Funziona con OpenTrack e con qualsiasi tracker che invii il suo output UDP o scriva nella memoria condivisa FreeTrack 2.0.</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Controller Web</value></data>
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>Fornisce un'interfaccia gamepad ai browser nella rete locale.</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Attiva server controller web</value></data>
@@ -2397,18 +2398,18 @@
   <data name="HeadTracker_X" xml:space="preserve"><value>Testa X</value></data>
   <data name="HeadTracker_Y" xml:space="preserve"><value>Testa Y</value></data>
   <data name="HeadTracker_Z" xml:space="preserve"><value>Testa Z</value></data>
-  <data name="Settings_HeadTracking" xml:space="preserve"><value>Tracciamento della testa</value></data>
-  <data name="Settings_HeadTrackingDesc" xml:space="preserve"><value>Legge la posa della testa dall'uscita UDP di OpenTrack o dalla memoria condivisa FreeTrack 2.0 e la espone come sei assi su un dispositivo Tracciamento della testa: imbardata, beccheggio, rollio e le tre traslazioni. Mappa l'imbardata su un asse dello stick per guardarti intorno tenendo entrambi i pollici sui pulsanti.</value></data>
-  <data name="Settings_HeadTrackingEnable" xml:space="preserve"><value>Abilita l'input di tracciamento della testa</value></data>
-  <data name="Settings_HeadTrackingEnable_Tooltip" xml:space="preserve"><value>Aggiunge la riga Tracciamento della testa nella pagina Dispositivi. In OpenTrack scegli l'uscita "UDP over network" e invia a 127.0.0.1 sulla porta sottostante, oppure scegli "freetrack 2.0 Enhanced".</value></data>
-  <data name="Settings_HeadTrackingFreeTrack" xml:space="preserve"><value>Leggi anche la memoria condivisa FreeTrack 2.0</value></data>
-  <data name="Settings_HeadTrackingFreeTrack_Tooltip" xml:space="preserve"><value>Legge la mappatura FT_SharedMem scritta dall'uscita "freetrack 2.0 Enhanced" di OpenTrack. I giochi che leggono FreeTrack continuano a funzionare in parallelo.</value></data>
-  <data name="Settings_HeadTrackingPort" xml:space="preserve"><value>Porta UDP</value></data>
-  <data name="Settings_HeadTrackingPort_Tooltip" xml:space="preserve"><value>La porta a cui invia l'uscita "UDP over network" di OpenTrack. Il valore predefinito di OpenTrack è 4242.</value></data>
-  <data name="Settings_HeadTrackingRotationRange" xml:space="preserve"><value>Intervallo di rotazione (gradi)</value></data>
-  <data name="Settings_HeadTrackingRotationRange_Tooltip" xml:space="preserve"><value>Rotazione della testa che porta gli assi di imbardata, beccheggio e rollio alla deflessione massima.</value></data>
-  <data name="Settings_HeadTrackingTranslationRange" xml:space="preserve"><value>Intervallo di traslazione (cm)</value></data>
-  <data name="Settings_HeadTrackingTranslationRange_Tooltip" xml:space="preserve"><value>Spostamento della testa che porta gli assi X, Y e Z alla deflessione massima.</value></data>
+  <data name="Dashboard_HeadTracking" xml:space="preserve"><value>Tracciamento della testa</value></data>
+  <data name="Dashboard_HeadTrackingDesc" xml:space="preserve"><value>Legge la posa della testa dall'uscita UDP di OpenTrack o dalla memoria condivisa FreeTrack 2.0 e la espone come sei assi su un dispositivo Tracciamento della testa: imbardata, beccheggio, rollio e le tre traslazioni. Mappa l'imbardata su un asse dello stick per guardarti intorno tenendo entrambi i pollici sui pulsanti.</value></data>
+  <data name="Dashboard_HeadTrackingEnable" xml:space="preserve"><value>Abilita l'input di tracciamento della testa</value></data>
+  <data name="Dashboard_HeadTrackingEnable_Tooltip" xml:space="preserve"><value>Aggiunge la riga Tracciamento della testa nella pagina Dispositivi. In OpenTrack scegli l'uscita "UDP over network" e invia a 127.0.0.1 sulla porta sottostante, oppure scegli "freetrack 2.0 Enhanced".</value></data>
+  <data name="Dashboard_HeadTrackingFreeTrack" xml:space="preserve"><value>Leggi anche la memoria condivisa FreeTrack 2.0</value></data>
+  <data name="Dashboard_HeadTrackingFreeTrack_Tooltip" xml:space="preserve"><value>Legge la mappatura FT_SharedMem scritta dall'uscita "freetrack 2.0 Enhanced" di OpenTrack. I giochi che leggono FreeTrack continuano a funzionare in parallelo.</value></data>
+  <data name="Dashboard_HeadTrackingPort" xml:space="preserve"><value>Porta UDP</value></data>
+  <data name="Dashboard_HeadTrackingPort_Tooltip" xml:space="preserve"><value>La porta a cui invia l'uscita "UDP over network" di OpenTrack. Il valore predefinito di OpenTrack è 4242.</value></data>
+  <data name="Dashboard_HeadTrackingRotationRange" xml:space="preserve"><value>Intervallo di rotazione (gradi)</value></data>
+  <data name="Dashboard_HeadTrackingRotationRange_Tooltip" xml:space="preserve"><value>Rotazione della testa che porta gli assi di imbardata, beccheggio e rollio alla deflessione massima.</value></data>
+  <data name="Dashboard_HeadTrackingTranslationRange" xml:space="preserve"><value>Intervallo di traslazione (cm)</value></data>
+  <data name="Dashboard_HeadTrackingTranslationRange_Tooltip" xml:space="preserve"><value>Spostamento della testa che porta gli assi X, Y e Z alla deflessione massima.</value></data>
   <data name="HeadTracker_StatusWaiting_Format" xml:space="preserve"><value>In attesa di un tracker sulla porta UDP {0}.</value></data>
   <data name="HeadTracker_StatusUdp_Format" xml:space="preserve"><value>Ricezione via UDP da {0}.</value></data>
   <data name="HeadTracker_StatusFreeTrack" xml:space="preserve"><value>Ricezione dalla memoria condivisa FreeTrack.</value></data>

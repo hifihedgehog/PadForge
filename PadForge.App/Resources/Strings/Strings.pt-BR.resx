@@ -249,6 +249,7 @@
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Habilitar Servidor de Movimento DSU (CemuHook Motion Provider Protocol)</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>Porta</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Fornece dados de giroscópio e acelerômetro para Cemu, Dolphin, Yuzu, etc.</value></data>
+  <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Funciona com o OpenTrack e com qualquer rastreador que envie sua saída UDP ou grave na memória compartilhada do FreeTrack 2.0.</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Controle Web</value></data>
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>Sirva uma interface de gamepad para navegadores na sua rede local.</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Ativar Servidor de Controle Web</value></data>
@@ -2369,18 +2370,18 @@
   <data name="HeadTracker_X" xml:space="preserve"><value>Cabeça X</value></data>
   <data name="HeadTracker_Y" xml:space="preserve"><value>Cabeça Y</value></data>
   <data name="HeadTracker_Z" xml:space="preserve"><value>Cabeça Z</value></data>
-  <data name="Settings_HeadTracking" xml:space="preserve"><value>Rastreamento de Cabeça</value></data>
-  <data name="Settings_HeadTrackingDesc" xml:space="preserve"><value>Lê a pose da cabeça pela saída UDP do OpenTrack ou pela memória compartilhada do FreeTrack 2.0 e a expõe como seis eixos em um dispositivo Rastreador de Cabeça: guinada, inclinação, rolagem e as três translações. Mapeie a guinada da cabeça para um eixo do analógico para olhar ao redor com os dois polegares nos botões.</value></data>
-  <data name="Settings_HeadTrackingEnable" xml:space="preserve"><value>Ativar Entrada de Rastreamento de Cabeça</value></data>
-  <data name="Settings_HeadTrackingEnable_Tooltip" xml:space="preserve"><value>Adiciona a linha Rastreador de Cabeça na página Dispositivos. No OpenTrack, escolha a saída "UDP over network" e envie para 127.0.0.1 na porta abaixo, ou escolha "freetrack 2.0 Enhanced".</value></data>
-  <data name="Settings_HeadTrackingFreeTrack" xml:space="preserve"><value>Também Ler a Memória Compartilhada do FreeTrack 2.0</value></data>
-  <data name="Settings_HeadTrackingFreeTrack_Tooltip" xml:space="preserve"><value>Lê o mapeamento FT_SharedMem que a saída "freetrack 2.0 Enhanced" do OpenTrack grava. Jogos que leem o FreeTrack continuam funcionando junto.</value></data>
-  <data name="Settings_HeadTrackingPort" xml:space="preserve"><value>Porta UDP</value></data>
-  <data name="Settings_HeadTrackingPort_Tooltip" xml:space="preserve"><value>A porta para a qual a saída "UDP over network" do OpenTrack envia. O padrão do OpenTrack é 4242.</value></data>
-  <data name="Settings_HeadTrackingRotationRange" xml:space="preserve"><value>Faixa de Rotação (Graus)</value></data>
-  <data name="Settings_HeadTrackingRotationRange_Tooltip" xml:space="preserve"><value>Rotação da cabeça que leva os eixos de guinada, inclinação e rolagem à deflexão máxima.</value></data>
-  <data name="Settings_HeadTrackingTranslationRange" xml:space="preserve"><value>Faixa de Translação (cm)</value></data>
-  <data name="Settings_HeadTrackingTranslationRange_Tooltip" xml:space="preserve"><value>Deslocamento da cabeça que leva os eixos X, Y e Z à deflexão máxima.</value></data>
+  <data name="Dashboard_HeadTracking" xml:space="preserve"><value>Rastreamento de Cabeça</value></data>
+  <data name="Dashboard_HeadTrackingDesc" xml:space="preserve"><value>Lê a pose da cabeça pela saída UDP do OpenTrack ou pela memória compartilhada do FreeTrack 2.0 e a expõe como seis eixos em um dispositivo Rastreador de Cabeça: guinada, inclinação, rolagem e as três translações. Mapeie a guinada da cabeça para um eixo do analógico para olhar ao redor com os dois polegares nos botões.</value></data>
+  <data name="Dashboard_HeadTrackingEnable" xml:space="preserve"><value>Ativar Entrada de Rastreamento de Cabeça</value></data>
+  <data name="Dashboard_HeadTrackingEnable_Tooltip" xml:space="preserve"><value>Adiciona a linha Rastreador de Cabeça na página Dispositivos. No OpenTrack, escolha a saída "UDP over network" e envie para 127.0.0.1 na porta abaixo, ou escolha "freetrack 2.0 Enhanced".</value></data>
+  <data name="Dashboard_HeadTrackingFreeTrack" xml:space="preserve"><value>Também Ler a Memória Compartilhada do FreeTrack 2.0</value></data>
+  <data name="Dashboard_HeadTrackingFreeTrack_Tooltip" xml:space="preserve"><value>Lê o mapeamento FT_SharedMem que a saída "freetrack 2.0 Enhanced" do OpenTrack grava. Jogos que leem o FreeTrack continuam funcionando junto.</value></data>
+  <data name="Dashboard_HeadTrackingPort" xml:space="preserve"><value>Porta UDP</value></data>
+  <data name="Dashboard_HeadTrackingPort_Tooltip" xml:space="preserve"><value>A porta para a qual a saída "UDP over network" do OpenTrack envia. O padrão do OpenTrack é 4242.</value></data>
+  <data name="Dashboard_HeadTrackingRotationRange" xml:space="preserve"><value>Faixa de Rotação (Graus)</value></data>
+  <data name="Dashboard_HeadTrackingRotationRange_Tooltip" xml:space="preserve"><value>Rotação da cabeça que leva os eixos de guinada, inclinação e rolagem à deflexão máxima.</value></data>
+  <data name="Dashboard_HeadTrackingTranslationRange" xml:space="preserve"><value>Faixa de Translação (cm)</value></data>
+  <data name="Dashboard_HeadTrackingTranslationRange_Tooltip" xml:space="preserve"><value>Deslocamento da cabeça que leva os eixos X, Y e Z à deflexão máxima.</value></data>
   <data name="HeadTracker_StatusWaiting_Format" xml:space="preserve"><value>Aguardando um rastreador na porta UDP {0}.</value></data>
   <data name="HeadTracker_StatusUdp_Format" xml:space="preserve"><value>Recebendo por UDP de {0}.</value></data>
   <data name="HeadTracker_StatusFreeTrack" xml:space="preserve"><value>Recebendo da memória compartilhada do FreeTrack.</value></data>

@@ -249,6 +249,7 @@
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>启用 DSU 体感服务器（CemuHook Motion Provider 协议）</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>端口</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>为 Cemu、Dolphin、Yuzu 等提供陀螺仪和加速度计数据。</value></data>
+  <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>适用于 OpenTrack 以及任何发送其 UDP 输出或写入 FreeTrack 2.0 共享内存的追踪器。</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>网页控制器</value></data>
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>在局域网中为浏览器提供手柄界面。</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>启用网页控制器服务器</value></data>
@@ -2375,18 +2376,18 @@
   <data name="HeadTracker_X" xml:space="preserve"><value>头部 X</value></data>
   <data name="HeadTracker_Y" xml:space="preserve"><value>头部 Y</value></data>
   <data name="HeadTracker_Z" xml:space="preserve"><value>头部 Z</value></data>
-  <data name="Settings_HeadTracking" xml:space="preserve"><value>头部追踪</value></data>
-  <data name="Settings_HeadTrackingDesc" xml:space="preserve"><value>从 OpenTrack 的 UDP 输出或 FreeTrack 2.0 共享内存读取头部姿态，并作为头部追踪器设备的六个轴公开：偏航、俯仰、翻滚和三个平移。将头部偏航映射到摇杆轴，即可在两个拇指都留在按键上时环顾四周。</value></data>
-  <data name="Settings_HeadTrackingEnable" xml:space="preserve"><value>启用头部追踪输入</value></data>
-  <data name="Settings_HeadTrackingEnable_Tooltip" xml:space="preserve"><value>在设备页面添加头部追踪器行。在 OpenTrack 中选择“UDP over network”输出并发送到 127.0.0.1 的下方端口，或选择“freetrack 2.0 Enhanced”。</value></data>
-  <data name="Settings_HeadTrackingFreeTrack" xml:space="preserve"><value>同时读取 FreeTrack 2.0 共享内存</value></data>
-  <data name="Settings_HeadTrackingFreeTrack_Tooltip" xml:space="preserve"><value>读取 OpenTrack“freetrack 2.0 Enhanced”输出写入的 FT_SharedMem 映射。读取 FreeTrack 的游戏可同时继续使用。</value></data>
-  <data name="Settings_HeadTrackingPort" xml:space="preserve"><value>UDP 端口</value></data>
-  <data name="Settings_HeadTrackingPort_Tooltip" xml:space="preserve"><value>OpenTrack“UDP over network”输出的发送端口。OpenTrack 的默认值为 4242。</value></data>
-  <data name="Settings_HeadTrackingRotationRange" xml:space="preserve"><value>旋转范围（度）</value></data>
-  <data name="Settings_HeadTrackingRotationRange_Tooltip" xml:space="preserve"><value>使偏航、俯仰和翻滚轴达到满偏的头部旋转量。</value></data>
-  <data name="Settings_HeadTrackingTranslationRange" xml:space="preserve"><value>平移范围（厘米）</value></data>
-  <data name="Settings_HeadTrackingTranslationRange_Tooltip" xml:space="preserve"><value>使 X、Y、Z 轴达到满偏的头部移动量。</value></data>
+  <data name="Dashboard_HeadTracking" xml:space="preserve"><value>头部追踪</value></data>
+  <data name="Dashboard_HeadTrackingDesc" xml:space="preserve"><value>从 OpenTrack 的 UDP 输出或 FreeTrack 2.0 共享内存读取头部姿态，并作为头部追踪器设备的六个轴公开：偏航、俯仰、翻滚和三个平移。将头部偏航映射到摇杆轴，即可在两个拇指都留在按键上时环顾四周。</value></data>
+  <data name="Dashboard_HeadTrackingEnable" xml:space="preserve"><value>启用头部追踪输入</value></data>
+  <data name="Dashboard_HeadTrackingEnable_Tooltip" xml:space="preserve"><value>在设备页面添加头部追踪器行。在 OpenTrack 中选择“UDP over network”输出并发送到 127.0.0.1 的下方端口，或选择“freetrack 2.0 Enhanced”。</value></data>
+  <data name="Dashboard_HeadTrackingFreeTrack" xml:space="preserve"><value>同时读取 FreeTrack 2.0 共享内存</value></data>
+  <data name="Dashboard_HeadTrackingFreeTrack_Tooltip" xml:space="preserve"><value>读取 OpenTrack“freetrack 2.0 Enhanced”输出写入的 FT_SharedMem 映射。读取 FreeTrack 的游戏可同时继续使用。</value></data>
+  <data name="Dashboard_HeadTrackingPort" xml:space="preserve"><value>UDP 端口</value></data>
+  <data name="Dashboard_HeadTrackingPort_Tooltip" xml:space="preserve"><value>OpenTrack“UDP over network”输出的发送端口。OpenTrack 的默认值为 4242。</value></data>
+  <data name="Dashboard_HeadTrackingRotationRange" xml:space="preserve"><value>旋转范围（度）</value></data>
+  <data name="Dashboard_HeadTrackingRotationRange_Tooltip" xml:space="preserve"><value>使偏航、俯仰和翻滚轴达到满偏的头部旋转量。</value></data>
+  <data name="Dashboard_HeadTrackingTranslationRange" xml:space="preserve"><value>平移范围（厘米）</value></data>
+  <data name="Dashboard_HeadTrackingTranslationRange_Tooltip" xml:space="preserve"><value>使 X、Y、Z 轴达到满偏的头部移动量。</value></data>
   <data name="HeadTracker_StatusWaiting_Format" xml:space="preserve"><value>正在 UDP 端口 {0} 等待追踪器。</value></data>
   <data name="HeadTracker_StatusUdp_Format" xml:space="preserve"><value>正在通过 UDP 从 {0} 接收。</value></data>
   <data name="HeadTracker_StatusFreeTrack" xml:space="preserve"><value>正在从 FreeTrack 共享内存接收。</value></data>

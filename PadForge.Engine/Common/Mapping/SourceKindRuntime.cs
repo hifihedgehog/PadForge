@@ -50,7 +50,9 @@ namespace PadForge.Engine.Common.Mapping
         // Faithful to JSM's neutralQuat (main.cpp:421-435, 891): captured once when
         // the steering source first sees real gravity for a device, held until profile
         // switch (Clear). Keyed by device GUID. The resting pose is physical, not per-slot.
-        private Dictionary<string, (double x, double y, double z)> _motionNeutral = new();
+        // The grip tag records the hold the vector was captured under (#392), so a
+        // hold change drops the stale-frame latch on the next read.
+        private Dictionary<string, (double x, double y, double z, string grip)> _motionNeutral = new();
 
         // ── Flick stick (#225) ──
         // Per-row flick stick state, JSM's Stick flick fields (Stick.h:75-90)
@@ -190,7 +192,11 @@ namespace PadForge.Engine.Common.Mapping
         /// <summary>
         /// Updates the Incremental accumulator for this source and returns
         /// the per-frame contribution (already in the source kind's
-        /// configured range — unipolar [ParamMin, ParamMax]).
+        /// configured range, unipolar [ParamMin, ParamMax]).
+        /// <paramref name="evaluatedDeviceGuid"/> is the device the
+        /// evaluator is reading, the grip key for a hat-named up or down
+        /// input (#392). A non-empty source guid wins over it, the same
+        /// fallback SourceEvaluator's gate uses.
         /// </summary>
         public double TickIncremental(
             int slotIndex,
@@ -198,7 +204,8 @@ namespace PadForge.Engine.Common.Mapping
             int sourceIndex,
             MappingSource src,
             CustomInputState state,
-            double frameDeltaSeconds)
+            double frameDeltaSeconds,
+            string evaluatedDeviceGuid = null)
         {
             if (src == null || state == null) return 0;
             var key = (slotIndex, target ?? "", sourceIndex);
@@ -215,8 +222,9 @@ namespace PadForge.Engine.Common.Mapping
             if (current < src.ParamMin) current = src.ParamMin;
             if (current > src.ParamMax) current = src.ParamMax;
 
-            bool up = ReadButtonLikeBool(state, src.ParamUp);
-            bool down = ReadButtonLikeBool(state, src.ParamDown);
+            string gripGuid = SourceCoercion.EffectiveDeviceGuid(src, evaluatedDeviceGuid);
+            bool up = ReadButtonLikeBool(state, src.ParamUp, gripGuid, slotIndex);
+            bool down = ReadButtonLikeBool(state, src.ParamDown, gripGuid, slotIndex);
 
             double rate = src.ParamRate;
             if (rate < 0) rate = 0;
@@ -261,8 +269,10 @@ namespace PadForge.Engine.Common.Mapping
         /// holds (cruise) when off. Pressing the opposite key while still on the
         /// original side first returns toward zero at the release rate, multiplied by
         /// <see cref="MappingSource.ParamReverseMultiplier"/> when autocenter is on,
-        /// then attacks the new side once it crosses zero. Linear ramps only; the
+        /// then attacks the new side once it crosses zero. Linear ramps only. The
         /// FreePIE center_reduction shaping is out of scope per the recipe.
+        /// <paramref name="evaluatedDeviceGuid"/> keys the grip for a hat-named
+        /// key (#392), with a non-empty source guid winning over it.
         /// </summary>
         public double TickRamped(
             int slotIndex,
@@ -270,7 +280,8 @@ namespace PadForge.Engine.Common.Mapping
             int sourceIndex,
             MappingSource src,
             CustomInputState state,
-            double frameDeltaSeconds)
+            double frameDeltaSeconds,
+            string evaluatedDeviceGuid = null)
         {
             if (src == null || state == null) return 0;
             var key = (slotIndex, target ?? "", sourceIndex);
@@ -281,8 +292,9 @@ namespace PadForge.Engine.Common.Mapping
             replay.Seq = FrameSeq;
             _rampedAccum.TryGetValue(key, out double v);
 
-            bool up = ReadButtonLikeBool(state, src.ParamUp);     // positive direction
-            bool down = ReadButtonLikeBool(state, src.ParamDown); // negative direction
+            string gripGuid = SourceCoercion.EffectiveDeviceGuid(src, evaluatedDeviceGuid);
+            bool up = ReadButtonLikeBool(state, src.ParamUp, gripGuid, slotIndex);     // positive direction
+            bool down = ReadButtonLikeBool(state, src.ParamDown, gripGuid, slotIndex); // negative direction
 
             double attack = src.ParamAttackTime;   if (attack < 0) attack = 0;
             double release = src.ParamReleaseTime; if (release < 0) release = 0;
@@ -474,9 +486,17 @@ namespace PadForge.Engine.Common.Mapping
             // crosses the capture gate first latch its grip as the shared
             // neutral, and the other would realign against the wrong
             // orientation. Same dict so Clear() covers both on profile switch.
+            // The latch carries the hold it was captured under (#392): the
+            // body gravity above is grip-rotated, so a neutral from the old
+            // hold is a vector in the old frame. A grip change drops it and
+            // the next real sample re-latches.
             string gid = aux ? (deviceGuid ?? "") + "|L" : (deviceGuid ?? "");
+            string grip = SourceCoercion.LatchGrip(deviceGuid, slotIndex, aux);
+            if (_motionNeutral.TryGetValue(gid, out var had)
+                && !string.Equals(had.grip, grip, StringComparison.Ordinal))
+                _motionNeutral.Remove(gid);
             if (gLen > 4.0 && !_motionNeutral.ContainsKey(gid))
-                _motionNeutral[gid] = (gx / gLen, gy / gLen, gz / gLen);
+                _motionNeutral[gid] = (gx / gLen, gy / gLen, gz / gLen, grip);
             if (_motionNeutral.TryGetValue(gid, out var n))
             {
                 (gx, gy, gz) = RealignToDown(gx, gy, gz, n.x, n.y, n.z);
@@ -891,10 +911,15 @@ namespace PadForge.Engine.Common.Mapping
         }
 
         // Reads a button-like descriptor (Button N or POV N Dir) from a
-        // CustomInputState. No deadzone handling here — Incremental's up
-        // and down inputs are bool intent buttons; analog inputs aren't a
-        // sensible up/down trigger for an accumulator.
-        private static bool ReadButtonLikeBool(CustomInputState state, string descriptor)
+        // CustomInputState. No deadzone handling here. Incremental's up
+        // and down inputs are bool intent buttons, and analog inputs aren't
+        // a sensible up/down trigger for an accumulator. The hat reads in
+        // the held frame (#392): deviceGuid and slotIndex select the grip,
+        // the same rotation the Direct path and Step 3 apply, so an
+        // Incremental or Ramped param naming "POV 0 Up" counts the press
+        // that points up on a sideways remote.
+        private static bool ReadButtonLikeBool(CustomInputState state, string descriptor,
+            string deviceGuid, int slotIndex)
         {
             if (state == null || string.IsNullOrWhiteSpace(descriptor)) return false;
             // Fold "Gamepad ButtonA" / "Gamepad DPadUp" aliases (#9) to
@@ -915,7 +940,7 @@ namespace PadForge.Engine.Common.Mapping
                 if (parts.Length >= 3 && int.TryParse(parts[1], out int povIdx) &&
                     povIdx >= 0 && povIdx < state.Povs.Length)
                 {
-                    int v = state.Povs[povIdx];
+                    int v = SourceCoercion.GripPov(deviceGuid, slotIndex, state.Povs[povIdx]);
                     if (v < 0) return false;
                     int n = ((v % 36000) + 36000) % 36000;
                     return parts[2].ToLowerInvariant() switch

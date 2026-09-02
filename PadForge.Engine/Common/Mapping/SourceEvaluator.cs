@@ -100,7 +100,7 @@ namespace PadForge.Engine.Common.Mapping
                 {
                     if (runtime == null) return false;
                     double v = runtime.TickIncremental(slotIndex, target, sourceIndex,
-                        src, state, frameDeltaSeconds);
+                        src, state, frameDeltaSeconds, evaluatedDeviceGuid);
                     bool result = v > 0.5;
                     return src.Invert ? !result : result;
                 }
@@ -111,7 +111,8 @@ namespace PadForge.Engine.Common.Mapping
                     return false;
                 case "InvertOnHold":
                 {
-                    bool modifier = ReadButtonLikeBool(state, src.ParamModifier);
+                    bool modifier = ReadButtonLikeBool(state, src.ParamModifier,
+                        SourceCoercion.EffectiveDeviceGuid(src, evaluatedDeviceGuid), slotIndex);
                     var inner = CloneAsDirect(src, invertOverride: src.Invert ^ modifier);
                     return SourceCoercion.EvaluateForButtonTarget(state, inner, globalThresholdPercent, slotIndex, evaluatedDeviceGuid);
                 }
@@ -158,7 +159,7 @@ namespace PadForge.Engine.Common.Mapping
                 {
                     if (runtime == null) return 0f;
                     double v = runtime.TickIncremental(slotIndex, target, sourceIndex,
-                        src, state, frameDeltaSeconds);
+                        src, state, frameDeltaSeconds, evaluatedDeviceGuid);
                     if (v < -1) v = -1;
                     if (v > 1) v = 1;
                     return src.Invert ? -(float)v : (float)v;
@@ -167,14 +168,15 @@ namespace PadForge.Engine.Common.Mapping
                 {
                     if (runtime == null) return 0f;
                     double v = runtime.TickRamped(slotIndex, target, sourceIndex,
-                        src, state, frameDeltaSeconds);
+                        src, state, frameDeltaSeconds, evaluatedDeviceGuid);
                     if (v < -1) v = -1;
                     if (v > 1) v = 1;
                     return src.Invert ? -(float)v : (float)v;
                 }
                 case "InvertOnHold":
                 {
-                    bool modifier = ReadButtonLikeBool(state, src.ParamModifier);
+                    bool modifier = ReadButtonLikeBool(state, src.ParamModifier,
+                        SourceCoercion.EffectiveDeviceGuid(src, evaluatedDeviceGuid), slotIndex);
                     var inner = CloneAsDirect(src, invertOverride: src.Invert ^ modifier);
                     return SourceCoercion.EvaluateForBipolarAxisTarget(state, inner, slotIndex, relativeTouchpad, evaluatedDeviceGuid);
                 }
@@ -332,7 +334,7 @@ namespace PadForge.Engine.Common.Mapping
                 {
                     if (runtime == null) return 0f;
                     double v = runtime.TickIncremental(slotIndex, target, sourceIndex,
-                        src, state, frameDeltaSeconds);
+                        src, state, frameDeltaSeconds, evaluatedDeviceGuid);
                     if (v < 0) v = 0;
                     if (v > 1) v = 1;
                     return src.Invert ? 1f - (float)v : (float)v;
@@ -344,14 +346,15 @@ namespace PadForge.Engine.Common.Mapping
                     // negative-direction key reads as released (issue #111).
                     if (runtime == null) return 0f;
                     double v = runtime.TickRamped(slotIndex, target, sourceIndex,
-                        src, state, frameDeltaSeconds);
+                        src, state, frameDeltaSeconds, evaluatedDeviceGuid);
                     if (v < 0) v = 0;
                     if (v > 1) v = 1;
                     return (float)v;
                 }
                 case "InvertOnHold":
                 {
-                    bool modifier = ReadButtonLikeBool(state, src.ParamModifier);
+                    bool modifier = ReadButtonLikeBool(state, src.ParamModifier,
+                        SourceCoercion.EffectiveDeviceGuid(src, evaluatedDeviceGuid), slotIndex);
                     var inner = CloneAsDirect(src, invertOverride: src.Invert ^ modifier);
                     return SourceCoercion.EvaluateForTriggerTarget(state, inner, slotIndex, evaluatedDeviceGuid);
                 }
@@ -377,8 +380,12 @@ namespace PadForge.Engine.Common.Mapping
 
         // Mirrors SourceKindRuntime's button-like reader so the
         // InvertOnHold modifier-button check stays consistent with
-        // Incremental's up/down inputs.
-        private static bool ReadButtonLikeBool(CustomInputState state, string descriptor)
+        // Incremental's up/down inputs. The hat reads in the held frame
+        // (#392): deviceGuid and slotIndex select the grip, the same
+        // rotation the Direct path applies, so a "POV 0 Up" modifier on a
+        // sideways remote is the press that points up.
+        private static bool ReadButtonLikeBool(CustomInputState state, string descriptor,
+            string deviceGuid, int slotIndex)
         {
             if (state == null || string.IsNullOrWhiteSpace(descriptor)) return false;
             // Fold "Gamepad ButtonA" / "Gamepad DPadUp" aliases (#9) to
@@ -400,7 +407,7 @@ namespace PadForge.Engine.Common.Mapping
                 if (parts.Length >= 3 && int.TryParse(parts[1], out int povIdx) &&
                     povIdx >= 0 && povIdx < state.Povs.Length)
                 {
-                    int v = state.Povs[povIdx];
+                    int v = SourceCoercion.GripPov(deviceGuid, slotIndex, state.Povs[povIdx]);
                     if (v < 0) return false;
                     int n = ((v % 36000) + 36000) % 36000;
                     return parts[2].ToLowerInvariant() switch

@@ -2535,11 +2535,46 @@ namespace PadForge.Engine.Common.Mapping
             => IsGyroLeanDescriptor(descriptor) || IsGyroTiltDescriptor(descriptor);
 
         /// <summary>Per-device captured resting grip for the lean pair
-        /// (unit gravity-down vector). Shared by both axes so X and Y
-        /// realign against the same neutral. Cleared by
-        /// <see cref="ResetGyroLeanNeutral"/> on profile switch alongside
-        /// SourceKindRuntime's motion neutral.</summary>
-        private static readonly ConcurrentDictionary<string, (double x, double y, double z)> _gyroLeanNeutral = new();
+        /// (unit gravity-down vector) tagged with the hold it was captured
+        /// under. Shared by both axes so X and Y realign against the same
+        /// neutral. Cleared by <see cref="ResetGyroLeanNeutral"/> on
+        /// profile switch alongside SourceKindRuntime's motion neutral, and
+        /// dropped on read when the hold changes (#392).</summary>
+        private static readonly ConcurrentDictionary<string, (double x, double y, double z, string grip)> _gyroLeanNeutral = new();
+
+        /// <summary>The hold a lean neutral is latched under (#392): the
+        /// body read's grip, or the empty string for the aux sensor, which
+        /// never rotates. Every neutral latch stores this beside the vector
+        /// and every read compares it: a neutral captured under one hold is
+        /// a vector in that hold's frame, so after the grip changes it must
+        /// be dropped and re-latched from the next real sample. Doing it on
+        /// the read covers every way the grip can change (the Gyro tab, a
+        /// profile switch, external profile control) and closes the window
+        /// where the UI-thread recenter ran before the polling thread saw
+        /// the new grip and re-latched in the old frame.</summary>
+        internal static string LatchGrip(string deviceGuid, int slotIndex, bool aux)
+            => aux ? "" : (GetGrip(deviceGuid, slotIndex) ?? "");
+
+        /// <summary>Reads a captured neutral for <paramref name="gid"/> if
+        /// one exists in the current hold's frame. A neutral tagged with a
+        /// different hold is removed and reported absent so the caller
+        /// re-latches.</summary>
+        private static bool TryGetLeanNeutral(
+            ConcurrentDictionary<string, (double x, double y, double z, string grip)> latches,
+            string gid, string grip, out (double x, double y, double z) neutral)
+        {
+            if (latches.TryGetValue(gid, out var got))
+            {
+                if (string.Equals(got.grip, grip, StringComparison.Ordinal))
+                {
+                    neutral = (got.x, got.y, got.z);
+                    return true;
+                }
+                latches.TryRemove(gid, out _);
+            }
+            neutral = default;
+            return false;
+        }
 
         /// <summary>Drops every captured lean neutral so the next real
         /// gravity sample re-latches the resting grip (profile switch /
@@ -2571,8 +2606,9 @@ namespace PadForge.Engine.Common.Mapping
         /// separate latch from the runtime's because this read has no
         /// runtime, but captured from the same provider under the same
         /// above-sentinel gate, so the two agree to within one tick.
-        /// Cleared with the gyro-lean neutrals on profile switch.</summary>
-        private static readonly ConcurrentDictionary<string, (double x, double y, double z)> _motionLeanNeutralStatic = new();
+        /// Cleared with the gyro-lean neutrals on profile switch, and
+        /// tagged with the hold like them (#392).</summary>
+        private static readonly ConcurrentDictionary<string, (double x, double y, double z, string grip)> _motionLeanNeutralStatic = new();
 
         /// <summary>The "Motion Lean" / "Motion Lean L" value as a signed
         /// -1..+1, the same math as SourceKindRuntime.TickMotionLean
@@ -2590,10 +2626,19 @@ namespace PadForge.Engine.Common.Mapping
             double gLen = Math.Sqrt(gx * gx + gy * gy + gz * gz);
             if (gLen <= 0) return 0f;
 
+            // The latch carries the hold it was captured under (#392): a
+            // grip change drops it and the next real sample re-latches in
+            // the new frame.
             string gid = aux ? LeanNeutralKey(deviceGuid) + "|L" : LeanNeutralKey(deviceGuid);
-            if (gLen > 4.0 && !_motionLeanNeutralStatic.ContainsKey(gid))
-                _motionLeanNeutralStatic[gid] = (gx / gLen, gy / gLen, gz / gLen);
-            if (_motionLeanNeutralStatic.TryGetValue(gid, out var n))
+            string grip = LatchGrip(deviceGuid, slotIndex, aux);
+            bool haveNeutral = TryGetLeanNeutral(_motionLeanNeutralStatic, gid, grip, out var n);
+            if (!haveNeutral && gLen > 4.0)
+            {
+                n = (gx / gLen, gy / gLen, gz / gLen);
+                _motionLeanNeutralStatic[gid] = (n.x, n.y, n.z, grip);
+                haveNeutral = true;
+            }
+            if (haveNeutral)
             {
                 (gx, gy, gz) = SourceKindRuntime.RealignToDown(gx, gy, gz, n.x, n.y, n.z);
                 gLen = Math.Sqrt(gx * gx + gy * gy + gz * gz);
@@ -2658,15 +2703,19 @@ namespace PadForge.Engine.Common.Mapping
             // produce a full-scale Y at rest.
             if (gLen < 4.0) return 0f;
 
+            // The latch carries the hold it was captured under (#392): a
+            // grip change drops it and this sample re-latches in the new
+            // frame. Body sensor only, so the aux flag is false.
             string gid = LeanNeutralKey(deviceGuid);
-            if (!_gyroLeanNeutral.ContainsKey(gid))
-                _gyroLeanNeutral[gid] = (gx / gLen, gy / gLen, gz / gLen);
-            if (_gyroLeanNeutral.TryGetValue(gid, out var n))
+            string grip = LatchGrip(deviceGuid, slotIndex, aux: false);
+            if (!TryGetLeanNeutral(_gyroLeanNeutral, gid, grip, out var n))
             {
-                (gx, gy, gz) = SourceKindRuntime.RealignToDown(gx, gy, gz, n.x, n.y, n.z);
-                gLen = Math.Sqrt(gx * gx + gy * gy + gz * gz);
-                if (gLen <= 0) return 0f;
+                n = (gx / gLen, gy / gLen, gz / gLen);
+                _gyroLeanNeutral[gid] = (n.x, n.y, n.z, grip);
             }
+            (gx, gy, gz) = SourceKindRuntime.RealignToDown(gx, gy, gz, n.x, n.y, n.z);
+            gLen = Math.Sqrt(gx * gx + gy * gy + gz * gz);
+            if (gLen <= 0) return 0f;
 
             double comp = isX ? gx : gz;
             double leanDeg = Math.Asin(Math.Clamp(comp / gLen, -1.0, 1.0)) * 180.0 / Math.PI;
@@ -3517,19 +3566,25 @@ namespace PadForge.Engine.Common.Mapping
         private static float ReadCalibratedGyroRate(CustomInputState state, int gyroAxis, string deviceGuid, int slotIndex, bool aux = false)
             => ReadCalibratedGyroRate(state, gyroAxis, deviceGuid, slotIndex, aux ? GyroSide.Left : GyroSide.Right);
 
-        private static float ReadCalibratedGyroRate(CustomInputState state, int gyroAxis, string deviceGuid, int slotIndex, GyroSide side)
+        private static float ReadCalibratedGyroRate(CustomInputState state, int gyroAxis, string deviceGuid, int slotIndex, GyroSide side,
+            bool gripAux = false)
         {
             // Fused (#271 item 6): both halves debiased by their OWN bias,
             // then averaged. Only when the device really carries the aux
             // sensor: GyroAux is always allocated, so the capability comes
             // from the provider, and without it the bare family reads the
-            // primary byte-identically to the pre-fusion behavior.
+            // primary byte-identically to the pre-fusion behavior. The
+            // fused family declares both halves one body (a paired
+            // Joy-Con grip), so the left half turns with the grip here and
+            // only here (#392): averaging a rotated right half with an
+            // unrotated left half would mix two physical axes under a
+            // sideways hold. The standalone Left read keeps its own frame.
             if (side == GyroSide.Fused)
             {
                 float fusedRight = ReadCalibratedGyroRate(state, gyroAxis, deviceGuid, slotIndex, GyroSide.Right);
                 if (HasGyroAuxProvider?.Invoke(deviceGuid) == true)
                 {
-                    float fusedLeft = ReadCalibratedGyroRate(state, gyroAxis, deviceGuid, slotIndex, GyroSide.Left);
+                    float fusedLeft = ReadCalibratedGyroRate(state, gyroAxis, deviceGuid, slotIndex, GyroSide.Left, gripAux: true);
                     return 0.5f * (fusedRight + fusedLeft);
                 }
                 return fusedRight;
@@ -3541,10 +3596,11 @@ namespace PadForge.Engine.Common.Mapping
             // Grip (#392): the requested axis reads its SOURCE axis with a
             // sign. The bias is subtracted on the source axis, the frame the
             // calibrator samples, so recalibrating and changing the grip
-            // stay independent. Body sensor only: the aux half is a
-            // separate body in the other hand.
+            // stay independent. Body sensor only, plus the aux half when the
+            // Fused caller asks for it: a standalone aux read is a separate
+            // body in the other hand.
             float gripSign = 1f;
-            if (!aux)
+            if (!aux || gripAux)
             {
                 var (sourceAxis, sign) = GripAxis(GetGrip(deviceGuid, slotIndex), gyroAxis);
                 if (sourceAxis >= 0 && sourceAxis < srcArr.Length)

@@ -1467,10 +1467,14 @@ namespace PadForge
                     }
                     // Grip (#392): the hold changed, so the captured resting
                     // grips (the gravity estimate, the lean and tilt neutrals)
-                    // are in the old frame. Re-reference exactly as the Gyro
-                    // Recenter macro does for this slot.
-                    if (e.PropertyName == nameof(PadViewModel.MotionGrip))
-                        PadForge.Common.Input.InputManager.GyroRecenterApply?.Invoke(capturedPad.PadIndex);
+                    // are in the old frame. Re-reference the ONE device whose
+                    // grip changed, the device the page is editing, and only
+                    // on a user edit: a PadSetting load (device selection,
+                    // profile switch) mirrors stored state and must not drop
+                    // every device's estimate on the slot.
+                    if (e.PropertyName == nameof(PadViewModel.MotionGrip)
+                        && InputService.ShouldRecenterOnGripChange(capturedPad))
+                        _inputService?.RecenterMotionForSelectedDevice(capturedPad);
                 };
 
                 // Extended custom stick/trigger config changes (indices 2+) trigger autosave.

@@ -3019,6 +3019,13 @@ namespace PadForge.ViewModels
             get => _motionGrip;
             set => SetProperty(ref _motionGrip, string.IsNullOrEmpty(value) ? "Pointing" : value);
         }
+
+        /// <summary>True while InputService.LoadPadSettingIntoViewModel is
+        /// mirroring a PadSetting into this VM (#392). PropertyChanged
+        /// listeners that react to a USER edit (the MotionGrip recenter)
+        /// read it to skip the load-time writes. Plain field, no
+        /// notification: it is a scope marker, not a bound property.</summary>
+        public bool IsLoadingPadSetting { get; set; }
         public IReadOnlyList<GyroLabeledOption> MotionGripOptions { get; } = new[]
         {
             new GyroLabeledOption(() => Strings.Instance.Pad_Gyro_Grip_Pointing, "Pointing"),

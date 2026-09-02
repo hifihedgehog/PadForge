@@ -258,14 +258,16 @@ namespace PadForge.Tests
                 .GetField("_motionLeanNeutralStatic",
                     System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
             Assert.NotNull(dictField);
-            var dict = (System.Collections.Concurrent.ConcurrentDictionary<string, (double x, double y, double z)>)dictField.GetValue(null);
+            // The latch carries the hold it was captured under (#392), the
+            // fourth tuple member.
+            var dict = (System.Collections.Concurrent.ConcurrentDictionary<string, (double x, double y, double z, string grip)>)dictField.GetValue(null);
 
             string guid = System.Guid.NewGuid().ToString("d");
-            dict[guid] = (0, 0, -1);
-            dict[guid + "|L"] = (0, 0, -1);
+            dict[guid] = (0, 0, -1, "");
+            dict[guid + "|L"] = (0, 0, -1, "");
             // Same-window positive control: an unrelated device's latch survives.
             string other = System.Guid.NewGuid().ToString("d");
-            dict[other] = (0, 0, -1);
+            dict[other] = (0, 0, -1, "");
 
             PadForge.Engine.Common.Mapping.SourceCoercion.ResetGyroLeanNeutral(guid);
 

@@ -1472,7 +1472,11 @@ namespace PadForge.Common.Input
                 if (!MacroItem.ParsePovTrigger(v.Pov, out int idx, out int targetCd)) return 0f;
                 var povs = ud.InputState.Povs;
                 if (povs == null || idx < 0 || idx >= povs.Length || povs[idx] < 0) return 0f;
-                int diff = Math.Abs(povs[idx] - targetCd);
+                // Held frame (#392): the variable recorder stores the
+                // grip-rotated angle, so the live read rotates the same way.
+                int held = PadForge.Engine.Common.Mapping.SourceCoercion.GripPov(
+                    ud.InstanceGuidString, slotIndex, povs[idx]);
+                int diff = Math.Abs(held - targetCd);
                 if (diff > 18000) diff = 36000 - diff;
                 return diff <= 2250 ? 1f : 0f;
             }
@@ -1511,7 +1515,11 @@ namespace PadForge.Common.Input
                 if (!MacroItem.ParsePovTrigger(v.Pov, out int idx, out int targetCd)) return 0f;
                 var povs = ud.InputState.Povs;
                 if (povs == null || idx < 0 || idx >= povs.Length || povs[idx] < 0) return 0f;
-                int diff = Math.Abs(povs[idx] - targetCd);
+                // Held frame (#392): the variable recorder stores the
+                // grip-rotated angle, so the live read rotates the same way.
+                int held = PadForge.Engine.Common.Mapping.SourceCoercion.GripPov(
+                    ud.InstanceGuidString, slotIndex, povs[idx]);
+                int diff = Math.Abs(held - targetCd);
                 if (diff > 18000) diff = 36000 - diff;
                 return diff <= 2250 ? 1f : 0f;
             }
@@ -1702,15 +1710,22 @@ namespace PadForge.Common.Input
             return false;
         }
 
+        /// <summary>True when any online device on the slot holds the hat
+        /// within 22.5 degrees of <paramref name="targetCd"/>. The hat reads
+        /// in the held frame (#392): the recorder stores the grip-rotated
+        /// angle, so the live read rotates the same way.</summary>
         private bool AnySlotDevicePovActive(int slotIndex, int povIdx, int targetCd)
         {
             int n = EnsureSlotTriggerDevices(slotIndex);
             for (int i = 0; i < n; i++)
             {
-                var povs = _slotTriggerDeviceScratch[i].InputState?.Povs;
+                var device = _slotTriggerDeviceScratch[i];
+                var povs = device.InputState?.Povs;
                 if (povs == null || povIdx < 0 || povIdx >= povs.Length || povs[povIdx] < 0)
                     continue;
-                int diff = Math.Abs(povs[povIdx] - targetCd);
+                int held = PadForge.Engine.Common.Mapping.SourceCoercion.GripPov(
+                    device.InstanceGuidString, slotIndex, povs[povIdx]);
+                int diff = Math.Abs(held - targetCd);
                 if (diff > 18000) diff = 36000 - diff;
                 if (diff <= 2250) return true;
             }
@@ -1883,7 +1898,10 @@ namespace PadForge.Common.Input
         /// Checks whether every POV-entry on the macro's trigger is currently
         /// active on its respective assigned device. Same multi-device-first
         /// fallback shape as <see cref="CheckRawButtonTrigger"/>. Each entry
-        /// must match within ±45° of its stored centidegrees.
+        /// must match within 22.5 degrees of its stored centidegrees. The hat
+        /// reads in the held frame (#392), the same rotation the mapping
+        /// rows and the recorder apply, so a stored Up fires from the press
+        /// that points up on a sideways remote.
         /// </summary>
         private bool CheckRawPovTrigger(MacroItem macro)
         {
@@ -1906,14 +1924,16 @@ namespace PadForge.Common.Input
                     if (ud == null || !ud.IsOnline || ud.InputState?.Povs == null) return false;
                     var povs = ud.InputState.Povs;
                     if (idx < 0 || idx >= povs.Length || povs[idx] < 0) return false;
-                    int diff = Math.Abs(povs[idx] - targetCd);
+                    int held = PadForge.Engine.Common.Mapping.SourceCoercion.GripPov(
+                        ud.InstanceGuidString, macro.PadIndex, povs[idx]);
+                    int diff = Math.Abs(held - targetCd);
                     if (diff > 18000) diff = 36000 - diff;
                     if (diff > 2250) return false;
                 }
                 return true;
             }
 
-            // Legacy single-device fallback.
+            // Legacy single-device fallback, the same held-frame read.
             var udLegacy = FindSlotDeviceByInstanceGuid(macro.TriggerDeviceGuid, macro.PadIndex);
             if (udLegacy == null || !udLegacy.IsOnline || udLegacy.InputState == null)
                 return false;
@@ -1927,7 +1947,9 @@ namespace PadForge.Common.Input
                     return false;
                 if (idx < 0 || idx >= legacyPovs.Length || legacyPovs[idx] < 0)
                     return false;
-                int diff = Math.Abs(legacyPovs[idx] - targetCd);
+                int held = PadForge.Engine.Common.Mapping.SourceCoercion.GripPov(
+                    udLegacy.InstanceGuidString, macro.PadIndex, legacyPovs[idx]);
+                int diff = Math.Abs(held - targetCd);
                 if (diff > 18000) diff = 36000 - diff;
                 if (diff > 2250) return false;
             }

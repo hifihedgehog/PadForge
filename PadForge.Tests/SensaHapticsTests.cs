@@ -241,7 +241,17 @@ namespace PadForge.Tests
                 t0 = Environment.TickCount64;
                 while (Environment.TickCount64 - t0 < 2000 && b.ProviderInitAttempts < 1)
                     System.Threading.Thread.Sleep(5);
-                System.Threading.Thread.Sleep(300);
+                // The discriminating observation is A's finally, which runs
+                // only after A's provider init returns and its loop sees the
+                // stop. That native call can outlast any fixed settle, so
+                // wait for A's worker to be gone before asserting. With the
+                // join, A was already gone before B armed. Without it, A's
+                // finally lands here and clears the flag under B.
+                t0 = Environment.TickCount64;
+                while (Environment.TickCount64 - t0 < 8000 && a.WorkerAlive)
+                    System.Threading.Thread.Sleep(10);
+                Assert.False(a.WorkerAlive, "A's worker never exited after the hook released");
+                System.Threading.Thread.Sleep(100);
                 Assert.True(b.WorkerAlive, "B's worker died after A's teardown");
                 Assert.True(SensaHapticsService.PublisherArmed, "A's finally disarmed the publisher under B");
                 Assert.True(b.ProviderInitAttempts >= 1, "B never reached its own bring-up");

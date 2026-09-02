@@ -149,6 +149,25 @@ namespace PadForge.Common
         private static readonly HashSet<string> _managedDeviceIds = new(StringComparer.OrdinalIgnoreCase);
         private static readonly object _lock = new();
 
+        /// <summary>Test seam (InternalsVisibleTo PadForge.Tests): the
+        /// control-device IOCTL, as (ioctl, inBuffer, outBuffer) to (ok,
+        /// bytesReturned). Null in production, where <see cref="TryIo"/>
+        /// opens the driver and calls DeviceIoControl. A fake here can
+        /// mirror the driver's contract for the two-call read and the
+        /// whole-list write, which is how the exact-size read and the
+        /// driver-first sync are proven without the driver.</summary>
+        internal static Func<uint, byte[], byte[], (bool ok, int bytes)> IoSeam;
+
+        /// <summary>Drops the in-process managed set, for tests that
+        /// drive the sync through <see cref="IoSeam"/> from a clean
+        /// slate. Production never calls it: the managed set is what
+        /// RemoveManagedDevices needs to leave other tools' entries
+        /// alone.</summary>
+        internal static void ResetManagedForTests()
+        {
+            lock (_lock) _managedDeviceIds.Clear();
+        }
+
         // ─────────────────────────────────────────────
         //  Public API
         // ─────────────────────────────────────────────
@@ -237,11 +256,14 @@ namespace PadForge.Common
         }
 
         /// <summary>
-        /// Replaces the entire device blacklist.
+        /// Replaces the entire device blacklist. Returns whether the
+        /// driver accepted the write, since a refused SET leaves the
+        /// driver's list as it was and the caller must not record the
+        /// new list as landed.
         /// </summary>
-        public static void SetBlacklist(List<string> instanceIds)
+        public static bool SetBlacklist(List<string> instanceIds)
         {
-            SetMultiSzList(IOCTL_SET_BLACKLIST, instanceIds);
+            return SetMultiSzList(IOCTL_SET_BLACKLIST, instanceIds);
         }
 
         /// <summary>
@@ -253,11 +275,12 @@ namespace PadForge.Common
         }
 
         /// <summary>
-        /// Replaces the entire application whitelist.
+        /// Replaces the entire application whitelist. Returns whether the
+        /// driver accepted the write.
         /// </summary>
-        public static void SetWhitelist(List<string> paths)
+        public static bool SetWhitelist(List<string> paths)
         {
-            SetMultiSzList(IOCTL_SET_WHITELIST, paths);
+            return SetMultiSzList(IOCTL_SET_WHITELIST, paths);
         }
 
         /// <summary>
@@ -265,12 +288,8 @@ namespace PadForge.Common
         /// </summary>
         public static bool GetActive()
         {
-            using var handle = OpenDevice();
-            if (handle == null || handle.IsInvalid) return false;
-
             byte[] outBuffer = new byte[1];
-            if (!DeviceIoControl(handle, IOCTL_GET_ACTIVE, null, 0,
-                outBuffer, outBuffer.Length, out _, IntPtr.Zero))
+            if (!TryIo(IOCTL_GET_ACTIVE, null, outBuffer, out _))
                 return false;
 
             return outBuffer[0] != 0;
@@ -281,12 +300,8 @@ namespace PadForge.Common
         /// </summary>
         public static void SetActive(bool active)
         {
-            using var handle = OpenDevice();
-            if (handle == null || handle.IsInvalid) return;
-
             byte[] inBuffer = new byte[] { active ? (byte)1 : (byte)0 };
-            DeviceIoControl(handle, IOCTL_SET_ACTIVE, inBuffer, inBuffer.Length,
-                null, 0, out _, IntPtr.Zero);
+            TryIo(IOCTL_SET_ACTIVE, inBuffer, null, out _);
         }
 
         /// <summary>
@@ -304,60 +319,79 @@ namespace PadForge.Common
                 // would clear the user's whole blacklist.
                 if (list == null) return;
                 list.RemoveAll(id => _managedDeviceIds.Contains(id));
-                SetBlacklist(list);
-                _managedDeviceIds.Clear();
+                // A refused write leaves our entries in the driver, and they
+                // stay ours to remove on the next call. The engine-start
+                // stale-cloak sweep clears whatever a crash leaves behind.
+                if (SetBlacklist(list))
+                    _managedDeviceIds.Clear();
             }
         }
 
         /// <summary>
-        /// Atomically syncs the blacklist to match the desired set of managed device IDs.
-        /// Only adds/removes the diff — never clears the entire blacklist, avoiding a
-        /// window where HidHide briefly un-hides devices.
+        /// Syncs the blacklist to match the desired set of managed device IDs.
+        /// Only adds/removes the diff and never clears the entire blacklist,
+        /// so there is no window where HidHide briefly un-hides devices.
+        /// Returns false when the driver could not be read or refused the
+        /// write.
         /// </summary>
-        public static void SyncManagedDevices(HashSet<string> desiredIds)
+        public static bool SyncManagedDevices(HashSet<string> desiredIds)
             => SyncManagedDevices(desiredIds, out _, out _);
 
         /// <summary>The sync with its diff reported (#391), so the caller
-        /// can log exactly what changed in the driver's list.</summary>
-        public static void SyncManagedDevices(HashSet<string> desiredIds, out List<string> added, out List<string> removed)
+        /// can log exactly what changed in the driver's list.
+        ///
+        /// <para>The diff is taken against the DRIVER's list, not against
+        /// the in-process managed set. The managed set only remembers
+        /// which entries are PadForge's to remove. Diffing against it
+        /// alone had two holes: an entry another tool dropped (the HidHide
+        /// client saves its whole list, and the driver's SET is a full
+        /// replace, Logic.c OnControlDeviceIoSetBlacklist) was never
+        /// re-added because the managed set still listed it, and a SET the
+        /// driver refused was recorded as landed all the same. Either way
+        /// the read-back printed MISSING on every apply and nothing fixed
+        /// it. Now: an id is added when the driver lacks it, removed when
+        /// it left the desired set and the driver still carries it, and
+        /// the managed set moves to the desired set only after a write
+        /// the driver accepted (or when there was nothing to write).</para></summary>
+        public static bool SyncManagedDevices(HashSet<string> desiredIds, out List<string> added, out List<string> removed)
         {
             added = new List<string>();
             removed = new List<string>();
             lock (_lock)
             {
-                var toAdd = added;
-                var toRemove = removed;
+                var list = GetBlacklist();
+                // Bail on a failed read. This method's own contract is
+                // "never clears the entire blacklist", and a failed read
+                // that fell through to SetBlacklist did precisely that.
+                if (list == null) return false;
+                var present = new HashSet<string>(list, StringComparer.OrdinalIgnoreCase);
 
                 foreach (var id in desiredIds)
                 {
-                    if (!_managedDeviceIds.Contains(id))
-                        toAdd.Add(id);
+                    if (!string.IsNullOrEmpty(id) && !present.Contains(id))
+                        added.Add(id);
                 }
                 foreach (var id in _managedDeviceIds)
                 {
-                    if (!desiredIds.Contains(id))
-                        toRemove.Add(id);
+                    if (!desiredIds.Contains(id) && present.Contains(id))
+                        removed.Add(id);
                 }
 
-                if (toAdd.Count == 0 && toRemove.Count == 0) return;
-
-                var list = GetBlacklist();
-                // Same bail. This method's own contract is "never clears the
-                // entire blacklist", and a failed read that fell through to
-                // SetBlacklist did precisely that.
-                if (list == null) return;
-                foreach (var id in toRemove)
-                    list.RemoveAll(x => string.Equals(x, id, StringComparison.OrdinalIgnoreCase));
-                foreach (var id in toAdd)
+                if (added.Count > 0 || removed.Count > 0)
                 {
-                    if (!list.Contains(id, StringComparer.OrdinalIgnoreCase))
-                        list.Add(id);
+                    foreach (var id in removed)
+                        list.RemoveAll(x => string.Equals(x, id, StringComparison.OrdinalIgnoreCase));
+                    list.AddRange(added);
+                    // A refused write leaves the driver's list as it was, so
+                    // the managed set stays as it was too: the next apply
+                    // diffs against the driver again and retries.
+                    if (!SetBlacklist(list)) return false;
                 }
-                SetBlacklist(list);
 
                 _managedDeviceIds.Clear();
                 foreach (var id in desiredIds)
                     _managedDeviceIds.Add(id);
+                return true;
             }
         }
 
@@ -769,6 +803,28 @@ namespace PadForge.Common
             return Encoding.Unicode.GetString(buf, 0, chars * 2);
         }
 
+        /// <summary>Whether a PnP instance id names a devnode that is
+        /// present right now. CM_Locate_DevNodeW WITHOUT the PHANTOM flag
+        /// fails for a node Windows remembers but has no device behind
+        /// (the expansion walk above asks for phantoms on purpose, since
+        /// it hides offline pads pre-emptively). The sibling-sweep gate
+        /// uses this to count only the records of a product that are
+        /// actually plugged in, so a stale offline record of a pad the
+        /// user re-paired under a new serial cannot switch the sweep
+        /// off for the live one.</summary>
+        internal static bool IsInstancePresent(string instanceId)
+        {
+            if (string.IsNullOrEmpty(instanceId)) return false;
+            try
+            {
+                return CM_Locate_DevNodeW(out _, instanceId, 0) == CR_SUCCESS;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         // ─────────────────────────────────────────────
         //  Private helpers
         // ─────────────────────────────────────────────
@@ -793,29 +849,62 @@ namespace PadForge.Common
             return handle;
         }
 
+        /// <summary>One control-device IOCTL: through <see cref="IoSeam"/>
+        /// when a test installed one, else open the driver and call
+        /// DeviceIoControl. Null buffers marshal as NULL pointers with a
+        /// zero length, which is how the size probe is expressed.</summary>
+        private static bool TryIo(uint ioctl, byte[] inBuffer, byte[] outBuffer, out int bytesReturned)
+        {
+            var seam = IoSeam;
+            if (seam != null)
+            {
+                var r = seam(ioctl, inBuffer, outBuffer);
+                bytesReturned = r.bytes;
+                return r.ok;
+            }
+
+            bytesReturned = 0;
+            using var handle = OpenDevice();
+            if (handle == null || handle.IsInvalid) return false;
+            return DeviceIoControl(handle, ioctl, inBuffer, inBuffer?.Length ?? 0,
+                outBuffer, outBuffer?.Length ?? 0, out bytesReturned, IntPtr.Zero);
+        }
+
         /// <summary>
         /// Reads a multi-SZ string list from HidHide via a GET IOCTL, or
         /// returns NULL when the driver could not be read. An empty list is a
         /// successful read of an empty list, which is a different fact.
+        ///
+        /// <para>Two calls, the CLI's shape (HidHideCLI FilterDriverProxy.cpp
+        /// GetBlacklist): a probe with NO output buffer, which the driver
+        /// answers with the byte count it needs (Logic.c
+        /// OnControlDeviceIoGetBlacklist completes the zero-length case with
+        /// neededSizeInCharacters * sizeof(WCHAR)), then a read into a buffer
+        /// of exactly that many bytes. The old guess-and-grow read (4096
+        /// bytes, then 65536) failed on every list past 2048 characters,
+        /// because the driver copies with RtlStringCchCopyUnicodeStringEx
+        /// (Config.c HidHideCollectionToMultiString) whose validator rejects
+        /// any destination over NTSTRSAFE_UNICODE_STRING_MAX_CCH = 32767
+        /// characters with STATUS_INVALID_PARAMETER, and 65536 bytes is
+        /// 32768 characters. A user with a few pads' worth of expanded
+        /// instance paths therefore read as "driver unreadable" and the
+        /// null-bail consumers hid nothing. The exact-size buffer passes
+        /// the validator for every list the driver can serve at all: the
+        /// driver's own cap is the character count it reports, so a list
+        /// it cannot hand out is one no client, the CLI included, can read.</para>
         /// </summary>
         private static List<string> GetMultiSzList(uint ioctl)
         {
             var result = new List<string>();
 
-            using var handle = OpenDevice();
-            if (handle == null || handle.IsInvalid) return null;
+            if (!TryIo(ioctl, null, null, out int needed) || needed <= 0)
+                return null;
 
-            // First call with small buffer to get required size.
-            byte[] outBuffer = new byte[4096];
-            if (!DeviceIoControl(handle, ioctl, null, 0,
-                outBuffer, outBuffer.Length, out int bytesReturned, IntPtr.Zero))
-            {
-                // Try larger buffer on failure.
-                outBuffer = new byte[65536];
-                if (!DeviceIoControl(handle, ioctl, null, 0,
-                    outBuffer, outBuffer.Length, out bytesReturned, IntPtr.Zero))
-                    return null;
-            }
+            byte[] outBuffer = new byte[needed];
+            if (!TryIo(ioctl, null, outBuffer, out int bytesReturned))
+                return null;
+            if (bytesReturned > outBuffer.Length)
+                bytesReturned = outBuffer.Length;
 
             // An EMPTY list is a 2-byte reply, and calling that malformed broke
             // hiding outright. The driver serializes a list as each string plus
@@ -850,13 +939,14 @@ namespace PadForge.Common
         }
 
         /// <summary>
-        /// Writes a multi-SZ string list to HidHide via a SET IOCTL.
+        /// Writes a multi-SZ string list to HidHide via a SET IOCTL and
+        /// returns whether the driver accepted it. The result used to be
+        /// discarded, so a refused SET (the driver failed the request, or
+        /// the control device would not open) was recorded by the sync as
+        /// landed and never retried.
         /// </summary>
-        private static void SetMultiSzList(uint ioctl, List<string> entries)
+        private static bool SetMultiSzList(uint ioctl, List<string> entries)
         {
-            using var handle = OpenDevice();
-            if (handle == null || handle.IsInvalid) return;
-
             // Build multi-SZ buffer: each string null-terminated, plus final null.
             var sb = new StringBuilder();
             foreach (string entry in entries)
@@ -870,8 +960,7 @@ namespace PadForge.Common
             sb.Append('\0'); // Double-null terminator.
 
             byte[] inBuffer = Encoding.Unicode.GetBytes(sb.ToString());
-            DeviceIoControl(handle, ioctl, inBuffer, inBuffer.Length,
-                null, 0, out _, IntPtr.Zero);
+            return TryIo(ioctl, inBuffer, null, out _);
         }
 
         /// <summary>

@@ -200,7 +200,7 @@ namespace PadForge.Common.Input
                     // Track the SDL instance ID with its wrapper.
                     _openedSdlInstanceIds[wrapper.SdlInstanceId] = wrapper;
 
-                    changed = true;
+                    MarkChanged(ref changed);
                 }
                 catch (Exception ex)
                 {
@@ -298,7 +298,7 @@ namespace PadForge.Common.Input
                         ud.HasTouchpad = true;
                         _openedPtpHandles.Add(handle);
                         _ptpHandleToGuid[handle] = guid;
-                        changed = true;
+                        MarkChanged(ref changed, "ptp", $"+ {name} {vid:X4}:{pid:X4}");
                     }
                 }
 
@@ -325,7 +325,7 @@ namespace PadForge.Common.Input
                             _ptpHandleToGuid.Remove(h);
                         }
                         disconnected.Add(h);
-                        changed = true;
+                        MarkChanged(ref changed, "ptp", $"- handle=0x{h.ToInt64():X}");
                     }
                 }
                 foreach (var h in disconnected)
@@ -348,7 +348,7 @@ namespace PadForge.Common.Input
                     mergedUd.IsOnline = true;
                     mergedUd.HasTouchpad = true;
                     _ptpMergedCreated = true;
-                    changed = true;
+                    MarkChanged(ref changed, "ptp", "+ merged touchpads");
                 }
                 // PTP claims the digitizer collection, which causes Windows to
                 // send synthetic mouse WM_INPUT with hDevice=0 instead of the
@@ -402,7 +402,7 @@ namespace PadForge.Common.Input
                     NeutralizeMappedOutputsFor(mergedUd);
                 }
                 _ptpMergedCreated = false;
-                changed = true;
+                MarkChanged(ref changed, "ptp", "- merged touchpads");
             }
 
             // --- Phase 1e: MIDI input endpoints (issue #128) ---
@@ -469,7 +469,7 @@ namespace PadForge.Common.Input
                     if (offlineUd != null && offlineUd.Device != null)
                     {
                         MarkDeviceOffline(offlineUd);
-                        changed = true;
+                        MarkChanged(ref changed);
                     }
                     // Orphaned wrapper: no UserDevice references it anymore
                     // (UI Remove dropped the record, or a replug rebind
@@ -528,7 +528,7 @@ namespace PadForge.Common.Input
                 MarkDeviceOffline(ud);
                 disconnectedIds.Add(sdlId);
                 _sdlDisconnectCandidateSince.Remove(sdlId);
-                changed = true;
+                MarkChanged(ref changed);
             }
 
             // Clean up tracking for disconnected devices.
@@ -1133,7 +1133,7 @@ namespace PadForge.Common.Input
         private bool EnumerateKeyboards(RawInputListener.DeviceInfo[] keyboards)
         {
             // Prune tracked handles whose UserDevice was removed (e.g. via UI "Remove").
-            PruneOrphanedHandles(_openedKeyboardHandles);
+            PruneOrphanedHandles(_openedKeyboardHandles, "keyboard");
 
             bool changed = false;
 
@@ -1155,7 +1155,7 @@ namespace PadForge.Common.Input
 
                     _openedKeyboardHandles.Add(kb.Handle);
                     wrapper = null; // ownership transferred to UserDevice
-                    changed = true;
+                    MarkChanged(ref changed, "keyboard", $"+ {kb.Name} handle=0x{kb.Handle.ToInt64():X}");
                 }
                 catch (Exception ex)
                 {
@@ -1180,7 +1180,7 @@ namespace PadForge.Common.Input
         private bool EnumerateConsumerControls(RawInputListener.DeviceInfo[] consumers)
         {
             // Prune tracked handles whose UserDevice was removed (e.g. via UI "Remove").
-            PruneOrphanedHandles(_openedConsumerHandles);
+            PruneOrphanedHandles(_openedConsumerHandles, "consumer");
 
             bool changed = false;
 
@@ -1202,7 +1202,7 @@ namespace PadForge.Common.Input
 
                     _openedConsumerHandles.Add(cc.Handle);
                     wrapper = null; // ownership transferred to UserDevice
-                    changed = true;
+                    MarkChanged(ref changed, "consumer", $"+ {cc.Name} handle=0x{cc.Handle.ToInt64():X}");
                 }
                 catch (Exception ex)
                 {
@@ -1224,7 +1224,7 @@ namespace PadForge.Common.Input
         private bool EnumerateMice(RawInputListener.DeviceInfo[] mice)
         {
             // Prune tracked handles whose UserDevice was removed (e.g. via UI "Remove").
-            PruneOrphanedHandles(_openedMouseHandles);
+            PruneOrphanedHandles(_openedMouseHandles, "mouse");
 
             bool changed = false;
 
@@ -1255,7 +1255,7 @@ namespace PadForge.Common.Input
 
                     _openedMouseHandles.Add(mouse.Handle);
                     wrapper = null; // ownership transferred to UserDevice
-                    changed = true;
+                    MarkChanged(ref changed, "mouse", $"+ {mouse.Name} handle=0x{mouse.Handle.ToInt64():X}");
                 }
                 catch (Exception ex)
                 {
@@ -1544,7 +1544,7 @@ namespace PadForge.Common.Input
                         ud.LoadFromExternalDevice(dev);
                         ud.IsOnline = true;
                         _openedMidiInputs[id] = dev;
-                        changed = true;
+                        MarkChanged(ref changed, "midi", $"+ {name}");
                     }
                     catch (Exception ex)
                     {
@@ -1585,7 +1585,7 @@ namespace PadForge.Common.Input
                         }
                         dev.Dispose();
                         _openedMidiInputs.Remove(id);
-                        changed = true;
+                        MarkChanged(ref changed, "midi", $"- {id}");
                     }
                 }
             }
@@ -1691,7 +1691,7 @@ namespace PadForge.Common.Input
                         ud.LoadFromExternalDevice(dev);
                         ud.IsOnline = true;
                         _openedMicDevices[kv.Key] = dev;
-                        changed = true;
+                        MarkChanged(ref changed, "mic", $"+ {kv.Value}");
                     }
                     catch (Exception ex)
                     {
@@ -1717,7 +1717,7 @@ namespace PadForge.Common.Input
                         }
                         dev.Dispose();
                         _openedMicDevices.Remove(id);
-                        changed = true;
+                        MarkChanged(ref changed, "mic", $"- {id}");
                     }
                 }
             }
@@ -1834,7 +1834,7 @@ namespace PadForge.Common.Input
                         ud.LoadFromExternalDevice(dev);
                         ud.IsOnline = true;
                         _openedNfcReaders[reader] = dev;
-                        changed = true;
+                        MarkChanged(ref changed, "nfc", $"+ {reader}");
                     }
                     catch (Exception ex)
                     {
@@ -1864,7 +1864,7 @@ namespace PadForge.Common.Input
                         }
                         dev.Dispose();
                         _openedNfcReaders.Remove(reader);
-                        changed = true;
+                        MarkChanged(ref changed, "nfc", $"- {reader}");
                     }
                 }
             }
@@ -1917,7 +1917,7 @@ namespace PadForge.Common.Input
                         ud.LoadFromExternalDevice(dev);
                         ud.IsOnline = true;
                         _openedHeadsets[dev.DevicePath] = dev;
-                        changed = true;
+                        MarkChanged(ref changed, "headset", $"+ {dev.Name}");
                     }
                     catch (Exception ex)
                     {
@@ -1956,7 +1956,7 @@ namespace PadForge.Common.Input
                         }
                         dev.Dispose();
                         _openedHeadsets.Remove(path);
-                        changed = true;
+                        MarkChanged(ref changed, "headset", $"- {path}");
                     }
                 }
 
@@ -2223,7 +2223,7 @@ namespace PadForge.Common.Input
                             ud.LoadFromExternalDevice(dev);
                             ud.IsOnline = true;
                             _handheldDevice = dev;
-                            changed = true;
+                            MarkChanged(ref changed, "handheld", "+ buttons");
                         }
                         else dev.Dispose();
                     }
@@ -2244,7 +2244,7 @@ namespace PadForge.Common.Input
                         ud.LoadFromExternalDevice(pending);
                         ud.IsOnline = true;
                         _systemMotionDevice = pending;
-                        changed = true;
+                        MarkChanged(ref changed, "handheld", "+ system motion");
                     }
                     catch (Exception ex)
                     {
@@ -2268,7 +2268,7 @@ namespace PadForge.Common.Input
                         _systemMotionDevice.Dispose();
                         _systemMotionDevice = null;
                         _systemMotionProbed = false; // re-probe, the sensor may be back
-                        changed = true;
+                        MarkChanged(ref changed, "handheld", dead ? "- system motion (dead)" : "- system motion (removed by user)");
                     }
                 }
             }
@@ -2353,7 +2353,7 @@ namespace PadForge.Common.Input
                 }
                 _handheldDevice.Dispose();
                 _handheldDevice = null;
-                changed = true;
+                MarkChanged(ref changed, "handheld", "- buttons (feature off)");
             }
             var pending = _systemMotionPending;
             if (pending != null)
@@ -2372,7 +2372,7 @@ namespace PadForge.Common.Input
                 }
                 _systemMotionDevice.Dispose();
                 _systemMotionDevice = null;
-                changed = true;
+                MarkChanged(ref changed, "handheld", "- system motion (feature off)");
             }
             _systemMotionProbed = false;
             _systemMotionOpenFailed = false;
@@ -2409,7 +2409,7 @@ namespace PadForge.Common.Input
                     if (!enabled || removedByUser || reconfigured)
                     {
                         RetireHeadTrackerRow();
-                        changed = true;
+                        MarkChanged(ref changed, "headtracker", !enabled ? "- (feature off)" : removedByUser ? "- (removed by user)" : "- (reconfigured)");
                     }
                 }
 
@@ -2424,7 +2424,7 @@ namespace PadForge.Common.Input
                             ud.LoadFromExternalDevice(created);
                             ud.IsOnline = true;
                             _headTrackerDevice = created;
-                            changed = true;
+                            MarkChanged(ref changed, "headtracker", "+ opened");
                         }
                         else created.Dispose();
                     }
@@ -2534,7 +2534,7 @@ namespace PadForge.Common.Input
                         else
                         {
                             MarkDeviceOffline(ud);
-                            changed = true;
+                            MarkChanged(ref changed);
                             disconnected.Add(handle);
                         }
                     }
@@ -2558,13 +2558,42 @@ namespace PadForge.Common.Input
             return changed;
         }
 
+        /// <summary>Flags a device-list change that a DEV line already
+        /// named: the SDL open (DEV + above it) and every path through
+        /// MarkDeviceOffline (DEV -). The overload below is for every
+        /// other flip.</summary>
+        private static void MarkChanged(ref bool changed) => changed = true;
+
+        /// <summary>Flags a device-list change and names it, one line
+        /// "DEVCHG {lane} {what}". Every flip of the flag raises
+        /// DevicesUpdated, and that runs ApplyDeviceHiding (a CM
+        /// enumeration plus driver IOCTLs) and the registry signature. On
+        /// the owner's idle bench something flipped every enumeration
+        /// interval and nothing said what: the flips were silent
+        /// assignments, so the trace showed the consequence (215 of 305
+        /// lines were HIDHIDE apply) and never the cause. Every flip now
+        /// goes through here, so the next such trace names the lane and
+        /// the device that flapped.</summary>
+        private static void MarkChanged(ref bool changed, string lane, string what)
+        {
+            MarkChanged(ref changed);
+            Engine.SdlDiagLog.WriteLine($"DEVCHG {lane} {what}");
+        }
+
         /// <summary>
         /// Removes tracked handles that no longer have a corresponding UserDevice.
         /// This handles the case where the user removes a device via the UI while
-        /// it's still physically connected — the tracking must be cleared so the
+        /// it's still physically connected. The tracking must be cleared so the
         /// device can be re-detected on the next enumeration cycle.
+        ///
+        /// <para>Each prune logs, because a pruned handle is re-opened by the
+        /// caller on the same pass and that re-open is a device-list change.
+        /// A record that keeps going offline between enumerations (the
+        /// consumer-control lane was the suspect on the owner's idle bench)
+        /// shows here as a prune and a DEVCHG open every interval, with the
+        /// lane and the handle, instead of as an unexplained flap.</para>
         /// </summary>
-        private void PruneOrphanedHandles(HashSet<IntPtr> trackedHandles)
+        private void PruneOrphanedHandles(HashSet<IntPtr> trackedHandles, string lane)
         {
             if (trackedHandles.Count == 0)
                 return;
@@ -2577,7 +2606,10 @@ namespace PadForge.Common.Input
             }
 
             for (int i = 0; i < toRemove.Count; i++)
+            {
                 trackedHandles.Remove(toRemove[i]);
+                Engine.SdlDiagLog.WriteLine($"DEVCHG {lane} prune handle=0x{toRemove[i].ToInt64():X} (no online record)");
+            }
         }
 
         // ─────────────────────────────────────────────

@@ -493,15 +493,24 @@ namespace PadForge.Common.Input
         /// deliberately re-links Bluetooth while the cable stays in reads
         /// charging with no edge and is left alone until the next unplug
         /// re-arms it, the same user-outranks-automation principle as
-        /// #366's pin.</summary>
+        /// #366's pin. The first read after the check starts observing a
+        /// record seeds that memory instead of comparing against it (see
+        /// <see cref="QuickChargeStep"/>), so an app restart with the cable
+        /// in and the radio deliberately re-linked does not read the
+        /// default false as a plug edge and drop the link the user chose
+        /// to keep.</summary>
         private static void CheckQuickCharge(UserDevice ud, CustomInputState state, long now)
         {
-            if (!ud.QuickChargeEnabled) return;
-            // ~1 Hz, the idle countdown's own cadence discipline.
-            if (now - ud.LastQuickChargeCheckTick < 1000) return;
-            ud.LastQuickChargeCheckTick = now;
-
-            if (!QuickChargeEdge(ud, state.BatteryCharging)) return;
+            if (!ud.QuickChargeEnabled)
+            {
+                // Off: forget the observation so the next enable seeds
+                // afresh from the live read. Otherwise a stale unplugged
+                // memory from before the flag went off would fire on the
+                // first read after it comes back on while already plugged.
+                if (ud.LastQuickChargeCheckTick != 0) ud.LastQuickChargeCheckTick = 0;
+                return;
+            }
+            if (!QuickChargeStep(ud, state.BatteryCharging, now)) return;
 
             // Two shapes reach this edge, because BuildInstanceGuid keys
             // identity on serial:{vid}:{pid}:{serial} and Sony pads report
@@ -563,6 +572,32 @@ namespace PadForge.Common.Input
             if (ud.QuickChargePrevCharging) return false;
             ud.QuickChargePrevCharging = true;
             return true;
+        }
+
+        /// <summary>One observation of a record's charging read, pure for
+        /// the tests: true exactly when this read is a plug edge the
+        /// caller should act on. Three gates in order. The FIRST read of
+        /// a record (LastQuickChargeCheckTick still zero) seeds the edge
+        /// memory from the live state and is never an edge: both fields
+        /// are [XmlIgnore], so after an app restart the memory is the
+        /// default false, and comparing a plugged-in pad's first read
+        /// against that default fired a drop on a link the user had
+        /// deliberately re-made while the cable stayed in. The same rule
+        /// means turning the checkbox on while already plugged does not
+        /// drop the link, which is the stated trigger (the charging edge,
+        /// never the charging state). Then the ~1 Hz cadence, the idle
+        /// countdown's own discipline. Then <see cref="QuickChargeEdge"/>.</summary>
+        internal static bool QuickChargeStep(UserDevice ud, bool charging, long now)
+        {
+            if (ud.LastQuickChargeCheckTick == 0)
+            {
+                ud.QuickChargePrevCharging = charging;
+                ud.LastQuickChargeCheckTick = now;
+                return false;
+            }
+            if (now - ud.LastQuickChargeCheckTick < 1000) return false;
+            ud.LastQuickChargeCheckTick = now;
+            return QuickChargeEdge(ud, charging);
         }
 
         /// <summary>The capturing tail of the idle-disconnect countdown,

@@ -107,8 +107,10 @@ namespace PadForge.Tests
             Assert.True(end > at);
             string body = src.Substring(at, end - at);
 
-            Assert.Contains("if (!ud.QuickChargeEnabled) return;", body);
-            Assert.Contains("QuickChargeEdge(ud, state.BatteryCharging)", body);
+            Assert.Contains("if (!ud.QuickChargeEnabled)", body);
+            // Off forgets the observation, so the next enable seeds afresh.
+            Assert.Contains("if (ud.LastQuickChargeCheckTick != 0) ud.LastQuickChargeCheckTick = 0;", body);
+            Assert.Contains("QuickChargeStep(ud, state.BatteryCharging, now)", body);
             // Bluetooth-pathed shape: the #162 lane.
             Assert.Contains("DeviceTransport.IsBluetooth(ud.DevicePath", body);
             Assert.Contains("BluetoothLinkHelper.IsDisconnectTarget(ud.DevicePath", body);
@@ -123,6 +125,44 @@ namespace PadForge.Tests
             Assert.DoesNotContain("QuickChargeHandled", src);
         }
 
+        /// <summary>THE F24 BUG. Both edge fields are in-memory, so after
+        /// an app restart the memory is the default false, and a pad that
+        /// was plugged in with its radio deliberately re-linked read its
+        /// first charging=true as a plug edge and lost the link the user
+        /// chose to keep. The first observation now seeds the memory and
+        /// is never an edge. Then the cadence, then the real edge.</summary>
+        [Fact]
+        public void Step_FirstObservationSeedsNeverFires()
+        {
+            var ud = new UserDevice();
+
+            // Restart with the cable in: seed, no drop.
+            Assert.False(InputManager.QuickChargeStep(ud, true, 1000));
+            Assert.True(ud.QuickChargePrevCharging);
+            Assert.Equal(1000, ud.LastQuickChargeCheckTick);
+            // Still plugged a second later: no edge.
+            Assert.False(InputManager.QuickChargeStep(ud, true, 2100));
+            // Unplug re-arms.
+            Assert.False(InputManager.QuickChargeStep(ud, false, 3200));
+            // Within the cadence window: not even looked at.
+            Assert.False(InputManager.QuickChargeStep(ud, true, 3500));
+            // The next real plug edge fires.
+            Assert.True(InputManager.QuickChargeStep(ud, true, 4300));
+            Assert.False(InputManager.QuickChargeStep(ud, true, 5400));
+
+            // The same seed rule covers turning the checkbox on while
+            // already plugged: the first read is a seed, not a drop.
+            var enabledWhilePlugged = new UserDevice();
+            Assert.False(InputManager.QuickChargeStep(enabledWhilePlugged, true, 9000));
+            Assert.False(InputManager.QuickChargeStep(enabledWhilePlugged, true, 10100));
+
+            // A fresh record whose first read is unplugged: the seed is
+            // false and the first plug fires as before.
+            var unplugged = new UserDevice();
+            Assert.False(InputManager.QuickChargeStep(unplugged, false, 1000));
+            Assert.True(InputManager.QuickChargeStep(unplugged, true, 2100));
+        }
+
         /// <summary>The persistence sibling set: the row fill and the row
         /// flush both carry the flag, like the idle-disconnect legs they sit
         /// beside, and the Devices page checkbox uses Click (never Checked,
@@ -132,6 +172,7 @@ namespace PadForge.Tests
         {
             string fill = RepoText("PadForge.App", "Services", "InputService.cs");
             Assert.Contains("row.QuickChargeEnabled = ud.QuickChargeEnabled;", fill);
+            Assert.Contains("row.ShowQuickCharge = DeviceRowViewModel.ComputeShowQuickCharge(ud.DevicePath, ud.VendorId, ud.ProdId, ud.SerialNumber);", fill);
 
             string flush = RepoText("PadForge.App", "Services", "DeviceService.cs");
             Assert.Contains("ud.QuickChargeEnabled = row.QuickChargeEnabled;", flush);
@@ -142,6 +183,55 @@ namespace PadForge.Tests
             Assert.Contains("Devices_QuickCharge,", page);
             Assert.Contains("Devices_QuickChargeTooltip,", page);
             Assert.DoesNotContain("Checked=\"QuickCharge", page);
+            // F23: the checkbox sits in its own container on its own gate,
+            // the section on the union, the idle row on its own.
+            Assert.Contains("Binding SelectedDevice.ShowPowerSection, Converter", page);
+            Assert.Contains("Binding SelectedDevice.ShowQuickCharge, Converter", page);
+            Assert.Contains("Binding SelectedDevice.ShowIdleDisconnect, Converter", page);
+            int quickGate = page.IndexOf("Binding SelectedDevice.ShowQuickCharge, Converter", StringComparison.Ordinal);
+            int checkbox = page.IndexOf("Click=\"QuickCharge_Click\"", StringComparison.Ordinal);
+            Assert.True(quickGate > 0 && quickGate < checkbox);
+        }
+
+        /// <summary>THE F23 BUG. The checkbox lived behind ShowIdleDisconnect,
+        /// which is false for a USB path, and the USB cable rebinds a Sony
+        /// record to the USB path (identity keys on the shared MAC serial),
+        /// so the checkbox vanished exactly while the pad was plugged in.
+        /// ShowQuickCharge is the disconnect gate OR the wired-path gate
+        /// CheckQuickCharge fires on: a serial that parses as a non-zero
+        /// Bluetooth address.</summary>
+        [Fact]
+        public void ShowQuickCharge_UsbReboundSonyWithMacSerial()
+        {
+            const string usb = @"\\?\hid#vid_054c&pid_0ce6&mi_03#8&1a2b3c4d&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}";
+            const string bt = @"\\?\hid#{00001124-0000-1000-8000-00805f9b34fb}_vid&0002054c_pid&0ce6#9&1&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}";
+
+            // The idle gate says no to the USB path. The Quick Charge gate says yes.
+            Assert.False(BluetoothLinkHelper.IsDisconnectTarget(usb, 0x054C, 0x0CE6, "aa:bb:cc:dd:ee:ff"));
+            Assert.True(PadForge.ViewModels.DeviceRowViewModel.ComputeShowQuickCharge(usb, 0x054C, 0x0CE6, "aa:bb:cc:dd:ee:ff"));
+            Assert.True(PadForge.ViewModels.DeviceRowViewModel.ComputeShowQuickCharge(usb, 0x054C, 0x0CE6, "aabbccddeeff"));
+            // No parseable address, no wired-path drop, no checkbox.
+            Assert.False(PadForge.ViewModels.DeviceRowViewModel.ComputeShowQuickCharge(usb, 0x054C, 0x0CE6, "1234"));
+            Assert.False(PadForge.ViewModels.DeviceRowViewModel.ComputeShowQuickCharge(usb, 0x054C, 0x0CE6, ""));
+            Assert.False(PadForge.ViewModels.DeviceRowViewModel.ComputeShowQuickCharge(usb, 0x054C, 0x0CE6, null));
+            // A zero address is what the wired path refuses too.
+            Assert.False(PadForge.ViewModels.DeviceRowViewModel.ComputeShowQuickCharge(usb, 0x054C, 0x0CE6, "00:00:00:00:00:00"));
+            // The Bluetooth-pathed shape shows with any serial.
+            Assert.True(PadForge.ViewModels.DeviceRowViewModel.ComputeShowQuickCharge(bt, 0x054C, 0x0CE6, ""));
+
+            // The view model: Quick Charge alone still draws the section
+            // and the rule under it.
+            var vm = new PadForge.ViewModels.DeviceRowViewModel
+            {
+                DeviceTypeKey = "Gamepad",
+                DevicePath = usb,
+                ShowIdleDisconnect = false,
+                ShowQuickCharge = true,
+            };
+            Assert.True(vm.ShowPowerSection);
+            Assert.True(vm.ShowRawInputDivider);
+            vm.ShowQuickCharge = false;
+            Assert.False(vm.ShowPowerSection);
         }
     }
 }

@@ -368,7 +368,11 @@ namespace PadForge.Engine.Data
         /// so the drop fires only on the false-to-true edge. Deliberately
         /// NOT reset on a fresh connection: a user who re-links Bluetooth
         /// while the cable stays in reads charging=true with no edge and is
-        /// left alone until an unplug re-arms it. Polling thread only.</summary>
+        /// left alone until an unplug re-arms it. Not persisted either, so
+        /// the check's FIRST read of a record seeds it from the live state
+        /// (InputManager.QuickChargeStep) rather than comparing against
+        /// the default false, which read a plugged-in restart as a plug
+        /// edge. Polling thread only.</summary>
         [XmlIgnore]
         public bool QuickChargePrevCharging { get; set; }
 
@@ -441,8 +445,11 @@ namespace PadForge.Engine.Data
         public long LastIdleCheckTick { get; set; }
 
         /// <summary>Last tick the Quick Charge charging-edge check ran
-        /// (#372), same ~1 Hz discipline as the idle countdown. Polling
-        /// thread only.</summary>
+        /// (#372), same ~1 Hz discipline as the idle countdown. Zero means
+        /// the check has not observed this record yet: that first
+        /// observation seeds <see cref="QuickChargePrevCharging"/> and is
+        /// never an edge, and the check zeroes it again while the flag is
+        /// off so the next enable seeds afresh. Polling thread only.</summary>
         [XmlIgnore]
         public long LastQuickChargeCheckTick { get; set; }
 

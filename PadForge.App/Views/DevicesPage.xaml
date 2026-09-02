@@ -1055,12 +1055,21 @@
                         <Separator Margin="0,4,0,8"
                                    Visibility="{Binding SelectedDevice.ShowInputModeOrHidingSection, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
-                        <!-- ─── Power (#162, wireless controllers only) ─── -->
-                        <StackPanel Visibility="{Binding SelectedDevice.ShowIdleDisconnect, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <!-- ─── Power (#162, wireless controllers only) ───
+                             The section draws when either of its controls
+                             does. Each control carries its own gate: the idle
+                             countdown needs a disconnect target, and Quick
+                             Charge (#372) also shows on a Sony record the USB
+                             cable rebound to its wired path, which is not a
+                             disconnect target and is exactly when the feature
+                             fires. Behind the section gate alone, the checkbox
+                             vanished the moment the pad was plugged in. -->
+                        <StackPanel Visibility="{Binding SelectedDevice.ShowPowerSection, Converter={StaticResource BoolToVisibilityConverter}}">
                             <TextBlock Text="{Binding Devices_Power, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"
                                        Style="{StaticResource SectionEyebrow}" Margin="0,0,0,6"/>
 
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
+                                        Visibility="{Binding SelectedDevice.ShowIdleDisconnect, Converter={StaticResource BoolToVisibilityConverter}}"
                                         ToolTip="{Binding Devices_IdleDisconnectTooltip, Source={x:Static strings:Strings.Instance}}">
                                 <TextBlock Text="{Binding Devices_IdleDisconnect, Source={x:Static strings:Strings.Instance}}"
                                            VerticalAlignment="Center" Margin="0,0,8,0"
@@ -1072,26 +1081,29 @@
                                            VerticalAlignment="Center" Margin="8,0,0,0" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                             </StackPanel>
 
-                            <!-- Quick Charge (#372): Click, not Checked, so the
-                                 persistence handler never fires on the
-                                 binding-driven refresh when the selection
-                                 changes (the #161 lesson). -->
-                            <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                      IsChecked="{Binding SelectedDevice.QuickChargeEnabled, Mode=TwoWay}"
-                                      Click="QuickCharge_Click" Margin="0,0,0,4"
-                                      ToolTip="{Binding Devices_QuickChargeTooltip, Source={x:Static strings:Strings.Instance}}">
-                                <!-- Wrapped content, not a bare string: the label
-                                     is longer than the panel and the default
-                                     single-line presenter clipped it mid-word. -->
-                                <TextBlock Text="{Binding Devices_QuickCharge, Source={x:Static strings:Strings.Instance}}"
-                                           TextWrapping="Wrap"/>
-                            </CheckBox>
+                            <!-- Quick Charge (#372): its own container, gated on
+                                 ShowQuickCharge (see the section comment). Click,
+                                 not Checked, so the persistence handler never
+                                 fires on the binding-driven refresh when the
+                                 selection changes (the #161 lesson). -->
+                            <StackPanel Visibility="{Binding SelectedDevice.ShowQuickCharge, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                          IsChecked="{Binding SelectedDevice.QuickChargeEnabled, Mode=TwoWay}"
+                                          Click="QuickCharge_Click" Margin="0,0,0,4"
+                                          ToolTip="{Binding Devices_QuickChargeTooltip, Source={x:Static strings:Strings.Instance}}">
+                                    <!-- Wrapped content, not a bare string: the label
+                                         is longer than the panel and the default
+                                         single-line presenter clipped it mid-word. -->
+                                    <TextBlock Text="{Binding Devices_QuickCharge, Source={x:Static strings:Strings.Instance}}"
+                                               TextWrapping="Wrap"/>
+                                </CheckBox>
+                            </StackPanel>
 
                         </StackPanel>
 
                         <!-- The divider before the Raw Input State header sits
                              OUTSIDE the Power panel above, deliberately: that
-                             panel is gated on ShowIdleDisconnect, and a divider
+                             panel is gated on ShowPowerSection, and a divider
                              inside it vanished for every device without a Power
                              section (NFC readers, microphones), leaving the
                              assignment elements flush against the header.

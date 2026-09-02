@@ -74,7 +74,7 @@ namespace PadForge.Common.Input
 
     /// <summary>
     /// Small overlapped WriteFile ring for the Triton PCM stream (#381):
-    /// up to four 0x88 reports in flight so submission cadence is set by
+    /// up to Slots 0x88 reports in flight so submission cadence is set by
     /// the pacing clock, not per-write completion latency. This is the
     /// answer to the requester's Puck finding (synchronous writes
     /// sustained about 250 reports a second against a needed 258, so
@@ -88,7 +88,15 @@ namespace PadForge.Common.Input
     /// </summary>
     internal sealed class TritonPcmWriteRing : IDisposable
     {
-        private const int Slots = 4;
+        /// <summary>Reports in flight at once. The wired 16-bit mode packs
+        /// TritonPcmEncoder.FramesPerPacket16 = 15 frames per packet and
+        /// the tick produces HapticToneService.PcmFramesPerTick = 80 frames
+        /// every 10 ms, so a tick submits six packets (5.33, the fraction
+        /// carrying into the next tick). Four slots left the fifth and
+        /// sixth submit refused every tick, PcmPending pinned at its cap,
+        /// and a quarter of every second dropped (F18). Eight is six plus
+        /// two of completion-jitter headroom.</summary>
+        internal const int Slots = 8;
 
         [StructLayout(LayoutKind.Sequential)]
         private struct NativeOverlapped64
@@ -128,21 +136,46 @@ namespace PadForge.Common.Input
         public long HardFailures;
 
         public TritonPcmWriteRing(int reportLen)
+            : this(reportLen, () => CreateEventW(IntPtr.Zero, manualReset: true, initialState: true, null))
+        {
+        }
+
+        /// <summary>Test seam (InternalsVisibleTo PadForge.Tests): the
+        /// event factory is injectable so the zero-handle path can be
+        /// driven without exhausting kernel handles. Throws
+        /// InvalidOperationException when any event fails to create,
+        /// after releasing everything allocated so far (F16): a zero
+        /// event is never signaled, so its slot would never be reclaimed
+        /// and the ring would go silent once every slot had been used.</summary>
+        internal TritonPcmWriteRing(int reportLen, Func<IntPtr> createEvent)
         {
             _reportLen = Math.Max(reportLen, 64);
             for (int i = 0; i < Slots; i++)
             {
                 _bufs[i] = new byte[_reportLen];
                 _pins[i] = GCHandle.Alloc(_bufs[i], GCHandleType.Pinned);
-                _events[i] = CreateEventW(IntPtr.Zero, manualReset: true, initialState: true, null);
+                _events[i] = createEvent();
+                if (_events[i] == IntPtr.Zero)
+                {
+                    // Nothing has reached the kernel yet, so every slot
+                    // built so far can be freed outright.
+                    int err = Marshal.GetLastWin32Error();
+                    for (int j = 0; j <= i; j++)
+                    {
+                        if (_events[j] != IntPtr.Zero) { try { CloseHandle(_events[j]); } catch { } }
+                        if (_ovls[j] != IntPtr.Zero) { try { Marshal.FreeHGlobal(_ovls[j]); } catch { } }
+                        if (_pins[j].IsAllocated) { try { _pins[j].Free(); } catch { } }
+                    }
+                    throw new InvalidOperationException($"CreateEventW returned a zero handle for slot {i} (err={err})");
+                }
                 _ovls[i] = Marshal.AllocHGlobal(Marshal.SizeOf<NativeOverlapped64>());
                 var ovl = new NativeOverlapped64 { EventHandle = _events[i] };
                 Marshal.StructureToPtr(ovl, _ovls[i], false);
             }
         }
 
-        /// <summary>Tries to submit one report. Returns false when all
-        /// four slots still have writes in flight (the caller keeps the
+        /// <summary>Tries to submit one report. Returns false when every
+        /// slot still has a write in flight (the caller keeps the
         /// frames pending and retries next tick). A hard write failure
         /// consumes the report and counts it, so a dead handle degrades
         /// to counted drops instead of a stalled stream.</summary>

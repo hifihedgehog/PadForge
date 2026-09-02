@@ -198,6 +198,63 @@ namespace PadForge.Tests
             Assert.True(states.Count >= 2);
         }
 
+        /// <summary>F10: a worker still inside ProviderInit outlives its
+        /// service's Stop (3 s join, then _thread nulled regardless). Its
+        /// finally used to disarm the publisher and Har.Quit under the
+        /// NEXT instance's engine. The next worker now joins its
+        /// predecessor before arming, so once the old worker is released
+        /// the new one is still armed and still running. The hook holds
+        /// worker A inside the bring-up window. A's Dispose returns after
+        /// the timed-out join, B starts and waits on A, the hook is
+        /// released, and B must survive A's teardown.</summary>
+        [Fact]
+        public void Service_NextWorkerWaitsForAStragglingPredecessor()
+        {
+            using var hold = new System.Threading.ManualResetEventSlim(false);
+            SensaHapticsService.BeforeProviderInit = () => hold.Wait(10000);
+            SensaHapticsService a = null, b = null;
+            try
+            {
+                a = new SensaHapticsService(retryMs: 50, tickMs: 5);
+                a.Start();
+                long t0 = Environment.TickCount64;
+                while (Environment.TickCount64 - t0 < 3000 && a.ProviderInitAttempts < 1)
+                    System.Threading.Thread.Sleep(5);
+                Assert.True(SensaHapticsService.PublisherArmed);
+                Assert.True(a.ProviderInitAttempts >= 1, "worker A never reached the bring-up window");
+
+                // Stop joins 3 s while A sits in the hook, then gives up
+                // with A's worker still parked there and still armed.
+                a.Dispose();
+                Assert.True(SensaHapticsService.PublisherArmed,
+                    "A's Dispose must return with A's worker still armed and parked in the hook");
+
+                b = new SensaHapticsService(retryMs: 50, tickMs: 5);
+                b.Start();
+                System.Threading.Thread.Sleep(100);
+                // B is parked on A's join and has not armed on its own yet:
+                // the armed flag still belongs to A.
+                Assert.True(b.WorkerAlive);
+                Assert.Equal(0, b.ProviderInitAttempts);
+
+                hold.Set();
+                t0 = Environment.TickCount64;
+                while (Environment.TickCount64 - t0 < 2000 && b.ProviderInitAttempts < 1)
+                    System.Threading.Thread.Sleep(5);
+                System.Threading.Thread.Sleep(300);
+                Assert.True(b.WorkerAlive, "B's worker died after A's teardown");
+                Assert.True(SensaHapticsService.PublisherArmed, "A's finally disarmed the publisher under B");
+                Assert.True(b.ProviderInitAttempts >= 1, "B never reached its own bring-up");
+            }
+            finally
+            {
+                hold.Set();
+                SensaHapticsService.BeforeProviderInit = null;
+                b?.Dispose();
+                a?.Dispose();
+            }
+        }
+
         /// <summary>Source contracts: the poll-lane publisher exists behind
         /// the armed gate with the same rumble authority as the audio lane,
         /// the setting is GLOBAL ONLY with the autosave allowlist entry

@@ -109,6 +109,19 @@ namespace PadForge.Services
         /// is off.</summary>
         private static int s_publisherArmed;
 
+        /// <summary>The most recent worker thread, joined by the next
+        /// worker before it arms the publisher. Stop joins 3 s and nulls
+        /// _thread regardless, so a worker still inside ProviderInit can
+        /// outlive its service. When it returned, its finally disarmed the
+        /// publisher and called Har.Quit under the NEW instance's engine
+        /// (F10). Static because the publisher flag it protects is.</summary>
+        private static Thread s_lastWorker;
+
+        /// <summary>Test seam (InternalsVisibleTo PadForge.Tests): runs on
+        /// the worker right before Provider.ProviderInit, so a test can
+        /// hold a worker inside the bring-up window.</summary>
+        internal static Action BeforeProviderInit;
+
         private readonly int _retryMs;
         private readonly int _tickMs;
         private Thread _thread;
@@ -134,6 +147,10 @@ namespace PadForge.Services
         /// stack dump), so the retry cadence is a tested, countable fact.</summary>
         internal int ProviderInitAttempts => Volatile.Read(ref _providerInitAttempts);
         private int _providerInitAttempts;
+
+        /// <summary>Whether this instance's worker thread is alive (test
+        /// seam for the predecessor hand-off).</summary>
+        internal bool WorkerAlive => _thread?.IsAlive == true;
 
         /// <summary>Publishes the merged rumble amplitude (0..1). Called at
         /// poll rate from the engine's rumble lane; one volatile write.</summary>
@@ -177,6 +194,12 @@ namespace PadForge.Services
 
         private void Worker()
         {
+            // Serialize against a predecessor that outlived its Stop (F10):
+            // its finally disarms the publisher and quits the engine, and
+            // both must land before this worker arms and inits, never
+            // after.
+            var prev = Interlocked.Exchange(ref s_lastWorker, Thread.CurrentThread);
+            if (prev != null && prev != Thread.CurrentThread && prev.IsAlive) prev.Join();
             Volatile.Write(ref s_publisherArmed, 1);
             bool harUp = false;
             bool providerUp = false;
@@ -235,6 +258,7 @@ namespace PadForge.Services
                     {
                         lastProviderTry = nowTick;
                         Interlocked.Increment(ref _providerInitAttempts);
+                        BeforeProviderInit?.Invoke();
                         try { providerUp = Provider.ProviderInit(); }
                         catch (DllNotFoundException) { }
                         catch (EntryPointNotFoundException) { }

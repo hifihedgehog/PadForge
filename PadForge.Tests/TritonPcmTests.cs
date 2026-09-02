@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using NAudio.Wave;
 using PadForge.Engine.Haptics;
 using Xunit;
@@ -227,9 +228,10 @@ namespace PadForge.Tests
         /// <summary>The service contracts: PCM capability rides the same
         /// transport split as the serialized tone lane, the Steam2026
         /// dispatch branches to the PCM tick, the arm sequence is
-        /// disable-pair, 10 ms, enable-pair, teardown disarms the stream
-        /// while the handle is live, and an armed stream absorbs swipe
-        /// pulses instead of racing 0x82.</summary>
+        /// disable-pair, 10 ms, enable-pair, teardown fences BEFORE it
+        /// disarms the stream (F15: a stream thread that outlived the
+        /// Join cannot re-enable past the disable), and an armed stream
+        /// absorbs swipe pulses instead of racing 0x82.</summary>
         [Fact]
         public void ServiceContracts_ArmDispatchTeardownAndPulses()
         {
@@ -253,10 +255,79 @@ namespace PadForge.Tests
             int td = hts.IndexOf("if (s.PcmArmed)\n                                try { DisarmTritonPcm(s); } catch { }".Replace("\n", "\r\n"), StringComparison.Ordinal);
             if (td < 0) td = hts.IndexOf("try { DisarmTritonPcm(s); } catch { }", StringComparison.Ordinal);
             int fence = hts.IndexOf("s.TornDown = true;", StringComparison.Ordinal);
-            Assert.True(td > 0 && fence > td, "teardown must disarm the stream before the fence");
+            Assert.True(td > 0 && fence > 0 && fence < td, "teardown must raise the fence before it disarms the stream");
+
+            // The fence is read by ArmTritonPcm before its first config
+            // write, so the disable pair above is the last 0x86 the pad
+            // sees from a torn-down sink.
+            int armTornDown = armBody.IndexOf("if (s.TornDown || !s.Running) return false;", StringComparison.Ordinal);
+            Assert.True(armTornDown > 0 && armTornDown < d1, "ArmTritonPcm must check TornDown before its first TritonPcmConfigWrite");
 
             Assert.Contains("if (pulseSides != 0 && s.PcmCapable && s.PcmArmed)", hts);
             Assert.Contains("s.PcmPulseEnv = Math.Max(s.PcmPulseEnv,", hts);
+        }
+
+        /// <summary>F13: the PCM overlay branch consumes PulseAmp the way
+        /// SendTouchpadPulses does. PulseAmp is max-wins from the polling
+        /// thread, and the overlay branch bypasses SendTouchpadPulses, so
+        /// without the zero a lowered slider kept the loudest tick.</summary>
+        [Fact]
+        public void PcmOverlay_ConsumesPulseAmp()
+        {
+            string hts = RepoText("PadForge.App", "Common", "Input", "HapticToneService.cs");
+            int at = hts.IndexOf("if (pulseSides != 0 && s.PcmCapable && s.PcmArmed)", StringComparison.Ordinal);
+            Assert.True(at > 0);
+            int seed = hts.IndexOf("s.PcmPulseEnv = Math.Max(", at, StringComparison.Ordinal);
+            int zero = hts.IndexOf("s.PulseAmp = 0f;", at, StringComparison.Ordinal);
+            int next = hts.IndexOf("else if (pulseSides != 0", at, StringComparison.Ordinal);
+            Assert.True(seed > at, "the PcmPulseEnv seed is gone from the overlay branch");
+            Assert.True(zero > seed && next > zero, "the overlay branch must zero PulseAmp after seeding PcmPulseEnv");
+        }
+
+        /// <summary>F14: a failed 0x86 arm burst waits PcmArmRetryGapMs
+        /// before the next attempt. Zero means no failure yet.</summary>
+        [Fact]
+        public void ArmRetryGate_WaitsAfterAFailure()
+        {
+            Assert.Equal(250, PadForge.Common.Input.HapticToneService.PcmArmRetryGapMs);
+            Assert.True(PadForge.Common.Input.HapticToneService.ShouldRetryPcmArm(nowMs: 12345, lastFailMs: 0));
+            Assert.False(PadForge.Common.Input.HapticToneService.ShouldRetryPcmArm(nowMs: 1005, lastFailMs: 1000));
+            Assert.False(PadForge.Common.Input.HapticToneService.ShouldRetryPcmArm(nowMs: 1249, lastFailMs: 1000));
+            Assert.True(PadForge.Common.Input.HapticToneService.ShouldRetryPcmArm(nowMs: 1250, lastFailMs: 1000));
+            Assert.True(PadForge.Common.Input.HapticToneService.ShouldRetryPcmArm(nowMs: 1300, lastFailMs: 1000));
+        }
+
+        /// <summary>F16: a zero event handle would leave its slot
+        /// unreclaimable and the ring silent, so the constructor refuses
+        /// the ring and releases what it built. The factory hands out two
+        /// real events and then fails, so the release path closes real
+        /// handles.</summary>
+        [Fact]
+        public void WriteRing_RefusesAZeroEvent()
+        {
+            int calls = 0;
+            var ex = Assert.Throws<InvalidOperationException>(() =>
+                new PadForge.Common.Input.TritonPcmWriteRing(64, () =>
+                    ++calls <= 2 ? CreateEventW(IntPtr.Zero, true, true, null) : IntPtr.Zero));
+            Assert.Equal(3, calls);
+            Assert.Contains("slot 2", ex.Message);
+        }
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern IntPtr CreateEventW(IntPtr attrs, bool manualReset, bool initialState, string name);
+
+        /// <summary>F18: the ring holds every packet one tick can produce
+        /// plus one of headroom. Wired 16-bit mode packs 15 frames per
+        /// packet and the tick yields 80, so six packets leave per tick.
+        /// Four slots refused the fifth and sixth every tick.</summary>
+        [Fact]
+        public void WriteRing_HoldsATickOfPackets()
+        {
+            int perTick = (PadForge.Common.Input.HapticToneService.PcmFramesPerTick + TritonPcmEncoder.FramesPerPacket16 - 1)
+                / TritonPcmEncoder.FramesPerPacket16;
+            Assert.Equal(6, perTick);
+            Assert.True(PadForge.Common.Input.TritonPcmWriteRing.Slots >= perTick + 1,
+                $"Slots={PadForge.Common.Input.TritonPcmWriteRing.Slots} cannot carry {perTick} packets a tick plus headroom");
         }
 
         private static string RepoText(params string[] parts)

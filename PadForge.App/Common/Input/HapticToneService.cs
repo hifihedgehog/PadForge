@@ -612,6 +612,16 @@ namespace PadForge.Common.Input
             // 40 ms cadence instead of retrying per tick (the flood-wedge
             // hazard the cap exists for). Cleared on a successful arm.
             public bool ArmRetryPending;
+            // #381 PCM twin of ArmRetryPending: TickCount64 stamp of the
+            // last failed 0x86 arm burst, zero once an arm lands. The tick
+            // refuses a new arm for PcmArmRetryGapMs after a failure. An
+            // arm is four writes plus a 10 ms settle, so a per-tick retry
+            // against a refusing device was up to five bursts and five
+            // FAILED lines per idle wake (F14).
+            public long PcmArmRetryMs;
+            // Edge latch for the PCM arm failure log: one FAILED line when
+            // a streak starts, one "arm ok" line when it ends.
+            public bool PcmArmFailing;
 
             public long LastContentMs = long.MinValue / 2;
 
@@ -1682,18 +1692,20 @@ namespace PadForge.Common.Input
                     {
                         case Family.Steam: SteamStop(s); break;     // 2015: classic 0x8f feature stop (both haptics)
                         case Family.Steam2026:
-                            // Fence BEFORE the final stop (C18): a stream
-                            // tick still in flight after a timed-out Join
-                            // must not re-arm past this stop and leave an
-                            // actuator sounding on a dead sink. TritonStop
-                            // itself bypasses the fence via TritonSendCore.
-                            // #381: an armed PCM stream is disabled first
-                            // (0x86 disable pair), while the handle is
-                            // still live and before the fence.
+                            // Fence FIRST (C18, F15): a stream tick still
+                            // in flight after a timed-out Join must not
+                            // re-arm the 0x83 lane past TritonStop, and
+                            // must not re-enable the PCM stream past the
+                            // 0x86 disable pair below. TritonSend and
+                            // ArmTritonPcm both read TornDown. The
+                            // teardown's own writes bypass the fence:
+                            // TritonStop through TritonSendCore, and the
+                            // #381 DisarmTritonPcm through HidOutputWrite,
+                            // both while the handle is still live.
+                            s.TornDown = true;
                             if (s.PcmArmed)
                                 try { DisarmTritonPcm(s); } catch { }
                             try { s.PcmRing?.Dispose(); } catch { }
-                            s.TornDown = true;
                             TritonStop(s); // 0x83 stop on the lane's actuator set
                             break;
                         case Family.SteamDeck:                       // Deck: 0x8F note-off on both haptics (same as 2015)
@@ -2077,10 +2089,17 @@ namespace PadForge.Common.Input
         //    firmware's underrun recovery can itself fail (fwstrings
         //    3849-3854); the idle teardown bounds the cost.
 
-        private const int PcmFramesPerTick = 80;      // 10 ms at 8 kHz
+        internal const int PcmFramesPerTick = 80;     // 10 ms at 8 kHz, sizes the write ring (F18 test)
         private const int PcmHangoverMs = 2000;       // idle teardown, re-arm is ~12 ms
         private const int PcmPendingCapFrames = 320;  // 40 ms backlog cap, drop-oldest
         private const float PcmPulseHz = 160f;        // swipe tick pitch
+        internal const int PcmArmRetryGapMs = 250;    // wait after a failed arm, the arm itself sleeps 10 ms (F14)
+
+        /// <summary>The PCM arm retry gate (F14): true when no arm has
+        /// failed yet (stamp zero) or the last failure is at least
+        /// PcmArmRetryGapMs old. Pure, unit-tested directly.</summary>
+        internal static bool ShouldRetryPcmArm(long nowMs, long lastFailMs)
+            => lastFailMs == 0 || nowMs - lastFailMs >= PcmArmRetryGapMs;
 
         // ── #371 follow-up: idle catch-up drain ──
         // At idle the loop reads one 10 ms block per ~16 ms wake (the
@@ -2195,8 +2214,19 @@ namespace PadForge.Common.Input
             if (audible) s.PcmLastContentMs = nowMs;
             bool want = testActive || (nowMs - s.PcmLastContentMs) < PcmHangoverMs;
 
-            if (want && !s.PcmArmed && !ArmTritonPcm(s))
-                return false;
+            if (want && !s.PcmArmed)
+            {
+                // A failed arm waits PcmArmRetryGapMs before the next
+                // attempt, the PCM twin of the 0x83 lane's ArmRetryPending
+                // cadence (F14). The stamp is set here on failure and
+                // cleared by ArmTritonPcm when an arm lands.
+                if (!ShouldRetryPcmArm(nowMs, s.PcmArmRetryMs)) return false;
+                if (!ArmTritonPcm(s))
+                {
+                    s.PcmArmRetryMs = nowMs;
+                    return false;
+                }
+            }
             if (!want)
             {
                 if (s.PcmArmed) DisarmTritonPcm(s);
@@ -2219,10 +2249,25 @@ namespace PadForge.Common.Input
                 s.PcmPending[s.PcmPendingCount + i] = Engine.Haptics.TritonPcmEncoder.FloatToS16(f[i]);
             s.PcmPendingCount += f.Length;
 
-            // Submit whole packets through the overlapped ring: up to four
-            // in flight, so the USB stack fills every interrupt slot and
-            // cadence is not bound by per-write completion latency.
-            s.PcmRing ??= new TritonPcmWriteRing(s.OutLen);
+            // Submit whole packets through the overlapped ring: up to
+            // TritonPcmWriteRing.Slots in flight, so the USB stack fills
+            // every interrupt slot and cadence is not bound by per-write
+            // completion latency. A ring whose events would not create is
+            // refused at construction (F16): the stream is disabled again
+            // and this sink falls back to the 0x83 tone lane instead of
+            // streaming into a ring that can never reclaim its slots.
+            if (s.PcmRing == null)
+            {
+                try { s.PcmRing = new TritonPcmWriteRing(s.OutLen); }
+                catch (InvalidOperationException ex)
+                {
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        $"TRITONPCM ring FAILED slot={s.Slot} {ex.Message}, falling back to 0x83");
+                    if (s.PcmArmed) DisarmTritonPcm(s);
+                    s.PcmCapable = false;
+                    return false;
+                }
+            }
             int fpp = Engine.Haptics.TritonPcmEncoder.FramesPerPacket(s.PcmMuLaw);
             int consumed = 0;
             while (s.PcmPendingCount - consumed >= fpp * 2)
@@ -2255,9 +2300,15 @@ namespace PadForge.Common.Input
         /// disables make the enables idempotent because reconfiguring a
         /// running stream is rejected (0x44 bit 6). Targets 2 and 5 are
         /// the 0x86 table's INT_BOTH and TP_BOTH, all four actuators,
-        /// the arrangement every working reference ships.</summary>
+        /// the arrangement every working reference ships. Refused once
+        /// the sink is torn down or stopped (F15): TeardownSink fences,
+        /// disables the stream, then closes the handle, and a stream
+        /// thread that outlived the 3 s Join must not re-enable the
+        /// stream in between. The failure log is edge-gated (F14): one
+        /// FAILED line per streak, one "arm ok" line when it ends.</summary>
         private static bool ArmTritonPcm(Sink s)
         {
+            if (s.TornDown || !s.Running) return false;
             byte mode = s.PcmMuLaw
                 ? Engine.Haptics.TritonPcmEncoder.ModePuck8kMuLaw
                 : Engine.Haptics.TritonPcmEncoder.ModeWired8k16;
@@ -2268,12 +2319,22 @@ namespace PadForge.Common.Input
             ok &= TritonPcmConfigWrite(s, enable: true, Engine.Haptics.TritonPcmEncoder.TargetTrackpadBoth, mode);
             if (!ok)
             {
-                PadForge.Engine.SdlDiagLog.WriteLine(
-                    $"TRITONPCM arm FAILED mulaw={(s.PcmMuLaw ? 1 : 0)} outLen={s.OutLen}");
+                if (!s.PcmArmFailing)
+                {
+                    s.PcmArmFailing = true;
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        $"TRITONPCM arm FAILED mulaw={(s.PcmMuLaw ? 1 : 0)} outLen={s.OutLen}");
+                }
                 return false;
             }
             s.PcmArmed = true;
             s.PcmPendingCount = 0;
+            s.PcmArmRetryMs = 0;
+            if (s.PcmArmFailing)
+            {
+                s.PcmArmFailing = false;
+                PadForge.Engine.SdlDiagLog.WriteLine("TRITONPCM arm ok, failure streak ended");
+            }
             PadForge.Engine.SdlDiagLog.WriteLine(
                 $"TRITONPCM arm mode={mode} targets=2+5 mulaw={(s.PcmMuLaw ? 1 : 0)} outLen={s.OutLen}");
             return true;
@@ -2539,8 +2600,14 @@ namespace PadForge.Common.Input
                         // swipe tick is synthesized into it (next tick's
                         // overlay) instead of racing 0x82 against an active
                         // stream, an interaction no reference documents.
+                        // PulseAmp is max-wins from the polling thread and
+                        // is consumed here the same way SendTouchpadPulses
+                        // consumes it: read, then zero, so a lowered slider
+                        // takes effect on the next swipe instead of the pad
+                        // keeping the loudest tick it ever queued (F13).
                         s.PcmPulseEnv = Math.Max(s.PcmPulseEnv,
                             Math.Clamp(s.PulseAmp, 0f, 1f) * 0.6f);
+                        s.PulseAmp = 0f;
                         s.PcmLastContentMs = nowMs;
                     }
                     else if (pulseSides != 0 || s.PulseRemoteZeroPending)

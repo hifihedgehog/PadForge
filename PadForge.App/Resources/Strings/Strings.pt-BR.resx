@@ -807,7 +807,7 @@
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Modo</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Escolha quais modos da barra de luz a macro deve alternar. Cada disparo avança para o próximo modo marcado.</value></data>
 
-  <!-- ═══ Macro action — Rumble ═══ -->
+  <!-- ═══ Macro action: Rumble ═══ -->
   <data name="MacroAction_Type_Rumble" xml:space="preserve"><value>Vibração</value></data>
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>Aciona a vibração do dispositivo físico do slot a partir de uma macro. Reactive opera em força total na janela de retenção e depois reduz linearmente até zero. Sticky mantém a força total até uma ação Parar vibração ser executada. Sobrepõe-se à vibração do jogo via max() para que o retorno do usuário seja sempre sentido.</value></data>
   <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Pulso de vibração {0} ({1}ms)</value></data>
@@ -924,7 +924,7 @@
 
   <!-- ═══ Polling Frequency ═══ -->
   <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
-  <data name="Dashboard_PollingDash" xml:space="preserve"><value>—</value></data>
+  <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Preview Views ═══ -->
   <data name="Preview_CCOutputs" xml:space="preserve"><value>Saídas CC</value></data>
@@ -1569,19 +1569,19 @@
   <data name="Pad_Lighting_Mode_Breathing" xml:space="preserve"><value>Respiração (Cor Única com Fade)</value></data>
   <data name="Pad_Lighting_Mode_Rainbow" xml:space="preserve"><value>Ciclo Arco-Íris</value></data>
   <data name="Pad_Lighting_Mode_ColorCycle" xml:space="preserve"><value>Ciclo de Cores</value></data>
-  <data name="Pad_Lighting_Mode_AudioPulse" xml:space="preserve"><value>Pulso por Áudio — Cor Estática</value></data>
-  <data name="Pad_Lighting_Mode_AudioPulseRandom" xml:space="preserve"><value>Pulso por Áudio — Cor Aleatória por Batida</value></data>
-  <data name="Pad_Lighting_Mode_AudioPulseRainbow" xml:space="preserve"><value>Pulso por Áudio — Ciclo Arco-Íris</value></data>
-  <data name="Pad_Lighting_Mode_AudioThresholds" xml:space="preserve"><value>Bandas de Áudio — Três Cores, Transições Duras</value></data>
-  <data name="Pad_Lighting_Mode_AudioGradient" xml:space="preserve"><value>Bandas de Áudio — Três Cores, Gradiente Suave</value></data>
-  <data name="Pad_Lighting_Mode_AudioCrossFade" xml:space="preserve"><value>Bandas de Áudio — Três Cores, Crossfade nos Limites</value></data>
-  <data name="Pad_Lighting_Mode_Battery" xml:space="preserve"><value>Bateria — Gradiente por Nível de Carga</value></data>
-  <data name="Pad_Lighting_Mode_Strobe" xml:space="preserve"><value>Estroboscópico — Piscar em Onda Quadrada</value></data>
+  <data name="Pad_Lighting_Mode_AudioPulse" xml:space="preserve"><value>Pulso por Áudio: Cor Estática</value></data>
+  <data name="Pad_Lighting_Mode_AudioPulseRandom" xml:space="preserve"><value>Pulso por Áudio: Cor Aleatória por Batida</value></data>
+  <data name="Pad_Lighting_Mode_AudioPulseRainbow" xml:space="preserve"><value>Pulso por Áudio: Ciclo Arco-Íris</value></data>
+  <data name="Pad_Lighting_Mode_AudioThresholds" xml:space="preserve"><value>Bandas de Áudio: Três Cores, Transições Duras</value></data>
+  <data name="Pad_Lighting_Mode_AudioGradient" xml:space="preserve"><value>Bandas de Áudio: Três Cores, Gradiente Suave</value></data>
+  <data name="Pad_Lighting_Mode_AudioCrossFade" xml:space="preserve"><value>Bandas de Áudio: Três Cores, Crossfade nos Limites</value></data>
+  <data name="Pad_Lighting_Mode_Battery" xml:space="preserve"><value>Bateria: Gradiente por Nível de Carga</value></data>
+  <data name="Pad_Lighting_Mode_Strobe" xml:space="preserve"><value>Estroboscópico: Piscar em Onda Quadrada</value></data>
   <data name="Pad_Lighting_BatteryLowColor" xml:space="preserve"><value>Bateria Baixa</value></data>
   <data name="Pad_Lighting_BatteryHighColor" xml:space="preserve"><value>Bateria Cheia</value></data>
-    <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>Reativo à Entrada — Cor Aleatória por Pressão</value></data>
-  <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>Reativo à Entrada — Percorrer Paleta</value></data>
-  <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>Reativo à Entrada — Uma Cor por Pressionamento</value></data>
+    <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>Reativo à Entrada: Cor Aleatória por Pressão</value></data>
+  <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>Reativo à Entrada: Percorrer Paleta</value></data>
+  <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>Reativo à Entrada: Uma Cor por Pressionamento</value></data>
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Brilho</value></data>
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>Período</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>Paleta</value></data>
@@ -2173,13 +2173,13 @@
     <value>As senhas não coincidem.</value>
   </data>
   <data name="RemoteLink_IdentityModeSecure" xml:space="preserve">
-    <value>Seguro — somente este PC</value>
+    <value>Seguro: somente este PC</value>
   </data>
   <data name="RemoteLink_IdentityModePortablePassword" xml:space="preserve">
-    <value>Portátil — protegido por senha</value>
+    <value>Portátil: protegido por senha</value>
   </data>
   <data name="RemoteLink_IdentityModePortableOpen" xml:space="preserve">
-    <value>Portátil — sem senha</value>
+    <value>Portátil: sem senha</value>
   </data>
   <data name="RemoteLink_IdentityHintPortablePassword" xml:space="preserve">
     <value>Sua identidade viaja neste drive e é desbloqueada com sua senha em qualquer PC. Um drive perdido não serve para nada sem ela.</value>

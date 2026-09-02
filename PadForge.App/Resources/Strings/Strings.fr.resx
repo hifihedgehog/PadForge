@@ -807,7 +807,7 @@
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Mode </value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Choisis les modes de barre lumineuse parcourus par la macro. Chaque déclenchement passe au mode coché suivant.</value></data>
 
-  <!-- ═══ Macro action — Rumble ═══ -->
+  <!-- ═══ Macro action: Rumble ═══ -->
   <data name="MacroAction_Type_Rumble" xml:space="preserve"><value>Vibration</value></data>
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>Pilote la vibration du périphérique physique du slot depuis une macro. Reactive tient pleine intensité pendant la fenêtre de maintien puis fond linéairement à zéro. Sticky maintient à pleine intensité jusqu'à l'exécution d'une action Arrêter la vibration. Se superpose à la vibration du jeu via max() pour que le retour utilisateur reste toujours perceptible.</value></data>
   <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Pulsation {0} ({1}ms)</value></data>
@@ -924,7 +924,7 @@
 
   <!-- ═══ Polling Frequency ═══ -->
   <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
-  <data name="Dashboard_PollingDash" xml:space="preserve"><value>—</value></data>
+  <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Preview Views ═══ -->
   <data name="Preview_CCOutputs" xml:space="preserve"><value>Sorties CC</value></data>
@@ -1569,19 +1569,19 @@
   <data name="Pad_Lighting_Mode_Breathing" xml:space="preserve"><value>Respiration (une couleur qui s'estompe)</value></data>
   <data name="Pad_Lighting_Mode_Rainbow" xml:space="preserve"><value>Cycle arc-en-ciel</value></data>
   <data name="Pad_Lighting_Mode_ColorCycle" xml:space="preserve"><value>Cycle de couleurs</value></data>
-  <data name="Pad_Lighting_Mode_AudioPulse" xml:space="preserve"><value>Pulse audio — couleur fixe</value></data>
-  <data name="Pad_Lighting_Mode_AudioPulseRandom" xml:space="preserve"><value>Pulse audio — couleur aléatoire par beat</value></data>
-  <data name="Pad_Lighting_Mode_AudioPulseRainbow" xml:space="preserve"><value>Pulse audio — cycle arc-en-ciel</value></data>
-  <data name="Pad_Lighting_Mode_AudioThresholds" xml:space="preserve"><value>Bandes audio — trois couleurs, transitions nettes</value></data>
-  <data name="Pad_Lighting_Mode_AudioGradient" xml:space="preserve"><value>Bandes audio — trois couleurs, dégradé doux</value></data>
-  <data name="Pad_Lighting_Mode_AudioCrossFade" xml:space="preserve"><value>Bandes audio — trois couleurs, fondu enchaîné aux limites</value></data>
-  <data name="Pad_Lighting_Mode_Battery" xml:space="preserve"><value>Batterie — Dégradé selon le niveau de charge</value></data>
-  <data name="Pad_Lighting_Mode_Strobe" xml:space="preserve"><value>Stroboscope — Clignotement carré</value></data>
+  <data name="Pad_Lighting_Mode_AudioPulse" xml:space="preserve"><value>Pulse audio: couleur fixe</value></data>
+  <data name="Pad_Lighting_Mode_AudioPulseRandom" xml:space="preserve"><value>Pulse audio: couleur aléatoire par beat</value></data>
+  <data name="Pad_Lighting_Mode_AudioPulseRainbow" xml:space="preserve"><value>Pulse audio: cycle arc-en-ciel</value></data>
+  <data name="Pad_Lighting_Mode_AudioThresholds" xml:space="preserve"><value>Bandes audio: trois couleurs, transitions nettes</value></data>
+  <data name="Pad_Lighting_Mode_AudioGradient" xml:space="preserve"><value>Bandes audio: trois couleurs, dégradé doux</value></data>
+  <data name="Pad_Lighting_Mode_AudioCrossFade" xml:space="preserve"><value>Bandes audio: trois couleurs, fondu enchaîné aux limites</value></data>
+  <data name="Pad_Lighting_Mode_Battery" xml:space="preserve"><value>Batterie: Dégradé selon le niveau de charge</value></data>
+  <data name="Pad_Lighting_Mode_Strobe" xml:space="preserve"><value>Stroboscope: Clignotement carré</value></data>
   <data name="Pad_Lighting_BatteryLowColor" xml:space="preserve"><value>Batterie Faible</value></data>
   <data name="Pad_Lighting_BatteryHighColor" xml:space="preserve"><value>Batterie Pleine</value></data>
-    <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>Réactif aux entrées — couleur aléatoire par appui</value></data>
-  <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>Réactif aux entrées — parcourir la palette</value></data>
-  <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>Réactif aux entrées — couleur unique par pression</value></data>
+    <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>Réactif aux entrées: couleur aléatoire par appui</value></data>
+  <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>Réactif aux entrées: parcourir la palette</value></data>
+  <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>Réactif aux entrées: couleur unique par pression</value></data>
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Luminosité</value></data>
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>Période</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>Palette</value></data>
@@ -2173,13 +2173,13 @@
     <value>Les mots de passe ne correspondent pas.</value>
   </data>
   <data name="RemoteLink_IdentityModeSecure" xml:space="preserve">
-    <value>Sécurisé — ce PC uniquement</value>
+    <value>Sécurisé: ce PC uniquement</value>
   </data>
   <data name="RemoteLink_IdentityModePortablePassword" xml:space="preserve">
-    <value>Portable — protégé par mot de passe</value>
+    <value>Portable: protégé par mot de passe</value>
   </data>
   <data name="RemoteLink_IdentityModePortableOpen" xml:space="preserve">
-    <value>Portable — sans mot de passe</value>
+    <value>Portable: sans mot de passe</value>
   </data>
   <data name="RemoteLink_IdentityHintPortablePassword" xml:space="preserve">
     <value>Votre identité voyage sur ce lecteur et se déverrouille avec votre mot de passe sur n'importe quel PC. Un lecteur perdu est inutile sans lui.</value>

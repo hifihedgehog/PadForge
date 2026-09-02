@@ -807,7 +807,7 @@
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Modus</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Kies welke lightbar-modi de macro moet doorlopen. Elke activering springt naar de volgende aangevinkte modus.</value></data>
 
-  <!-- ═══ Macro action — Rumble ═══ -->
+  <!-- ═══ Macro action: Rumble ═══ -->
   <data name="MacroAction_Type_Rumble" xml:space="preserve"><value>Trillen</value></data>
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>Stuurt het trillen van het fysieke apparaat van de slot vanuit een macro. Reactive draait op volle sterkte gedurende het houdvenster en faden vervolgens lineair naar nul. Sticky houdt op volle sterkte totdat een Trillen stoppen-actie loopt. Wordt via max() over door spel gegenereerd trillen gelegd, zodat door de gebruiker gestuurde feedback altijd voelbaar blijft.</value></data>
   <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Trilpuls {0} ({1}ms)</value></data>
@@ -924,9 +924,9 @@
 
   <!-- ═══ Polling Frequency ═══ -->
   <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
-  <data name="Dashboard_PollingDash" xml:space="preserve"><value>—</value></data>
+  <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
-  <!-- ═══ Pad — Sticks/Triggers Settings ═══ -->
+  <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->
   <data name="Pad_DeadZoneX" xml:space="preserve"><value>Deadzone X</value></data>
   <data name="Pad_DeadZoneY" xml:space="preserve"><value>Deadzone Y</value></data>
   <data name="Pad_AntiDeadZoneX" xml:space="preserve"><value>Anti-deadzone X</value></data>
@@ -949,7 +949,7 @@
   <data name="Pad_Preset_Label" xml:space="preserve"><value>Voorinstelling</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Trigger-as</value></data>
 
-  <!-- ═══ Pad — Force Feedback ═══ -->
+  <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Force Feedback / Trillen</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Totale versterking</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Linkermotor</value></data>
@@ -960,7 +960,7 @@
   <data name="Pad_TestRumble" xml:space="preserve"><value>Trillen testen</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Motoractiviteit</value></data>
 
-  <!-- ═══ Pad — Constant Force ═══ -->
+  <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Constante kracht</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Past een continue kracht op dit apparaat toe tot je deze uitschakelt. Door een spel verstuurde kracht heeft voorrang zolang die actief is en wordt hervat zodra het spel stopt.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Constante kracht toepassen</value></data>
@@ -971,7 +971,7 @@
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Constante kracht X resetten</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Constante kracht Y resetten</value></data>
 
-  <!-- ═══ Pad — Reset Tooltips ═══ -->
+  <!-- ═══ Pad: Reset Tooltips ═══ -->
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>Middenverschuiving X herstellen</value></data>
   <data name="Pad_Sticks_Boundary_Calibrate" xml:space="preserve"><value>Grens kalibreren</value></data>
   <data name="Pad_Sticks_Boundary_Recalibrate" xml:space="preserve"><value>Grens opnieuw kalibreren</value></data>
@@ -1000,7 +1000,7 @@
   <data name="Pad_ResetLeftMotor" xml:space="preserve"><value>Linkermotor herstellen</value></data>
   <data name="Pad_ResetRightMotor" xml:space="preserve"><value>Rechtermotor herstellen</value></data>
 
-  <!-- ═══ Pad — Macro Hints ═══ -->
+  <!-- ═══ Pad: Macro Hints ═══ -->
   <data name="Macro_RecordHint" xml:space="preserve"><value>Druk op knoppen of beweeg een as/trigger om op te nemen. Assen worden gedetecteerd wanneer ze meer dan 50% worden uitgeslagen.</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>Toevoegen uit lijst</value></data>
   <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>Kies een triggerinvoer uit de apparaten van het slot in plaats van deze op te nemen. Op het tabblad Touchpad ingeschakelde gebaren verschijnen hier.</value></data>
@@ -1589,19 +1589,19 @@
   <data name="Pad_Lighting_Mode_Breathing" xml:space="preserve"><value>Ademen (één kleur dimt)</value></data>
   <data name="Pad_Lighting_Mode_Rainbow" xml:space="preserve"><value>Regenboogcyclus</value></data>
   <data name="Pad_Lighting_Mode_ColorCycle" xml:space="preserve"><value>Kleurcyclus</value></data>
-  <data name="Pad_Lighting_Mode_AudioPulse" xml:space="preserve"><value>Audiopuls — statische kleur</value></data>
-  <data name="Pad_Lighting_Mode_AudioPulseRandom" xml:space="preserve"><value>Audiopuls — willekeurige kleur per beat</value></data>
-  <data name="Pad_Lighting_Mode_AudioPulseRainbow" xml:space="preserve"><value>Audiopuls — regenboogcyclus</value></data>
-  <data name="Pad_Lighting_Mode_AudioThresholds" xml:space="preserve"><value>Audiobanden — drie kleuren, harde overgangen</value></data>
-  <data name="Pad_Lighting_Mode_AudioGradient" xml:space="preserve"><value>Audiobanden — drie kleuren, vloeiend verloop</value></data>
-  <data name="Pad_Lighting_Mode_AudioCrossFade" xml:space="preserve"><value>Audiobanden — drie kleuren, crossfade bij grenzen</value></data>
-  <data name="Pad_Lighting_Mode_Battery" xml:space="preserve"><value>Batterij — Verloop op basis van laadniveau</value></data>
-  <data name="Pad_Lighting_Mode_Strobe" xml:space="preserve"><value>Stroboscoop — Blokgolf-knipperlicht</value></data>
+  <data name="Pad_Lighting_Mode_AudioPulse" xml:space="preserve"><value>Audiopuls: statische kleur</value></data>
+  <data name="Pad_Lighting_Mode_AudioPulseRandom" xml:space="preserve"><value>Audiopuls: willekeurige kleur per beat</value></data>
+  <data name="Pad_Lighting_Mode_AudioPulseRainbow" xml:space="preserve"><value>Audiopuls: regenboogcyclus</value></data>
+  <data name="Pad_Lighting_Mode_AudioThresholds" xml:space="preserve"><value>Audiobanden: drie kleuren, harde overgangen</value></data>
+  <data name="Pad_Lighting_Mode_AudioGradient" xml:space="preserve"><value>Audiobanden: drie kleuren, vloeiend verloop</value></data>
+  <data name="Pad_Lighting_Mode_AudioCrossFade" xml:space="preserve"><value>Audiobanden: drie kleuren, crossfade bij grenzen</value></data>
+  <data name="Pad_Lighting_Mode_Battery" xml:space="preserve"><value>Batterij: Verloop op basis van laadniveau</value></data>
+  <data name="Pad_Lighting_Mode_Strobe" xml:space="preserve"><value>Stroboscoop: Blokgolf-knipperlicht</value></data>
   <data name="Pad_Lighting_BatteryLowColor" xml:space="preserve"><value>Lage Batterij</value></data>
   <data name="Pad_Lighting_BatteryHighColor" xml:space="preserve"><value>Volle Batterij</value></data>
-    <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>Invoerreactief — willekeurige kleur per druk</value></data>
-  <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>Invoerreactief — door palet bladeren</value></data>
-  <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>Invoerreactief — één kleur per druk</value></data>
+    <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>Invoerreactief: willekeurige kleur per druk</value></data>
+  <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>Invoerreactief: door palet bladeren</value></data>
+  <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>Invoerreactief: één kleur per druk</value></data>
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Helderheid</value></data>
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>Periode</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>Palet</value></data>
@@ -2193,13 +2193,13 @@
     <value>De wachtwoorden komen niet overeen.</value>
   </data>
   <data name="RemoteLink_IdentityModeSecure" xml:space="preserve">
-    <value>Beveiligd — alleen deze pc</value>
+    <value>Beveiligd: alleen deze pc</value>
   </data>
   <data name="RemoteLink_IdentityModePortablePassword" xml:space="preserve">
-    <value>Draagbaar — wachtwoordbeveiligd</value>
+    <value>Draagbaar: wachtwoordbeveiligd</value>
   </data>
   <data name="RemoteLink_IdentityModePortableOpen" xml:space="preserve">
-    <value>Draagbaar — geen wachtwoord</value>
+    <value>Draagbaar: geen wachtwoord</value>
   </data>
   <data name="RemoteLink_IdentityHintPortablePassword" xml:space="preserve">
     <value>Je identiteit reist mee op dit station en wordt op elke pc met je wachtwoord ontgrendeld. Een verloren station is zonder wachtwoord nutteloos.</value>

@@ -807,7 +807,7 @@
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>模式</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>选择宏要循环的灯条模式。每次触发跳到下一个已勾选模式。</value></data>
 
-  <!-- ═══ Macro action — Rumble ═══ -->
+  <!-- ═══ Macro action: Rumble ═══ -->
   <data name="MacroAction_Type_Rumble" xml:space="preserve"><value>震动</value></data>
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>从宏驱动该插槽物理设备的震动。Reactive 在保持窗口内以全强度运行，然后在淡出窗口内线性降至零。Sticky 保持全强度，直到执行停止震动动作。通过 max() 覆盖到游戏驱动的震动之上，确保用户驱动的反馈始终能感受到。</value></data>
   <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>震动 {0} ({1}ms)</value></data>
@@ -924,7 +924,7 @@
 
   <!-- ═══ Polling Frequency ═══ -->
   <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
-  <data name="Dashboard_PollingDash" xml:space="preserve"><value>—</value></data>
+  <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Preview Views ═══ -->
   <data name="Preview_CCOutputs" xml:space="preserve"><value>CC 输出</value></data>
@@ -1568,19 +1568,19 @@
   <data name="Pad_Lighting_Mode_Breathing" xml:space="preserve"><value>呼吸(单色渐隐渐显)</value></data>
   <data name="Pad_Lighting_Mode_Rainbow" xml:space="preserve"><value>彩虹循环</value></data>
   <data name="Pad_Lighting_Mode_ColorCycle" xml:space="preserve"><value>颜色循环</value></data>
-  <data name="Pad_Lighting_Mode_AudioPulse" xml:space="preserve"><value>音频脉冲 — 静态颜色</value></data>
-  <data name="Pad_Lighting_Mode_AudioPulseRandom" xml:space="preserve"><value>音频脉冲 — 每拍随机颜色</value></data>
-  <data name="Pad_Lighting_Mode_AudioPulseRainbow" xml:space="preserve"><value>音频脉冲 — 彩虹循环</value></data>
-  <data name="Pad_Lighting_Mode_AudioThresholds" xml:space="preserve"><value>音频频带 — 三色,硬切换</value></data>
-  <data name="Pad_Lighting_Mode_AudioGradient" xml:space="preserve"><value>音频频带 — 三色,平滑渐变</value></data>
-  <data name="Pad_Lighting_Mode_AudioCrossFade" xml:space="preserve"><value>音频频带 — 三色,边界交叉淡化</value></data>
-  <data name="Pad_Lighting_Mode_Battery" xml:space="preserve"><value>电池 — 按电量渐变</value></data>
-  <data name="Pad_Lighting_Mode_Strobe" xml:space="preserve"><value>频闪 — 方波闪烁</value></data>
+  <data name="Pad_Lighting_Mode_AudioPulse" xml:space="preserve"><value>音频脉冲：静态颜色</value></data>
+  <data name="Pad_Lighting_Mode_AudioPulseRandom" xml:space="preserve"><value>音频脉冲：每拍随机颜色</value></data>
+  <data name="Pad_Lighting_Mode_AudioPulseRainbow" xml:space="preserve"><value>音频脉冲：彩虹循环</value></data>
+  <data name="Pad_Lighting_Mode_AudioThresholds" xml:space="preserve"><value>音频频带：三色,硬切换</value></data>
+  <data name="Pad_Lighting_Mode_AudioGradient" xml:space="preserve"><value>音频频带：三色,平滑渐变</value></data>
+  <data name="Pad_Lighting_Mode_AudioCrossFade" xml:space="preserve"><value>音频频带：三色,边界交叉淡化</value></data>
+  <data name="Pad_Lighting_Mode_Battery" xml:space="preserve"><value>电池：按电量渐变</value></data>
+  <data name="Pad_Lighting_Mode_Strobe" xml:space="preserve"><value>频闪：方波闪烁</value></data>
   <data name="Pad_Lighting_BatteryLowColor" xml:space="preserve"><value>低电量</value></data>
   <data name="Pad_Lighting_BatteryHighColor" xml:space="preserve"><value>满电量</value></data>
-    <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>输入响应 — 每次按下随机颜色</value></data>
-  <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>输入响应 — 循环调色板</value></data>
-  <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>输入响应 — 每次按下单一颜色</value></data>
+    <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>输入响应：每次按下随机颜色</value></data>
+  <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>输入响应：循环调色板</value></data>
+  <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>输入响应：每次按下单一颜色</value></data>
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>亮度</value></data>
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>周期</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>调色板</value></data>
@@ -2173,13 +2173,13 @@
     <value>两次输入的密码不一致。</value>
   </data>
   <data name="RemoteLink_IdentityModeSecure" xml:space="preserve">
-    <value>安全 — 仅此电脑</value>
+    <value>安全：仅此电脑</value>
   </data>
   <data name="RemoteLink_IdentityModePortablePassword" xml:space="preserve">
-    <value>便携 — 密码保护</value>
+    <value>便携：密码保护</value>
   </data>
   <data name="RemoteLink_IdentityModePortableOpen" xml:space="preserve">
-    <value>便携 — 无密码</value>
+    <value>便携：无密码</value>
   </data>
   <data name="RemoteLink_IdentityHintPortablePassword" xml:space="preserve">
     <value>你的身份信息随此驱动器一同携带，在任何电脑上用密码解锁。即便驱动器丢失，没有密码也无法使用。</value>

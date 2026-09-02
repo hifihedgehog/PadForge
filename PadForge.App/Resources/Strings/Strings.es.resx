@@ -807,7 +807,7 @@
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Modo</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Selecciona qué modos de barra de luz debe ciclar el macro. Cada disparo avanza al siguiente modo marcado.</value></data>
 
-  <!-- ═══ Macro action — Rumble ═══ -->
+  <!-- ═══ Macro action: Rumble ═══ -->
   <data name="MacroAction_Type_Rumble" xml:space="preserve"><value>Vibración</value></data>
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>Activa la vibración del dispositivo físico del slot desde una macro. Reactive funciona a plena intensidad durante la ventana de retención y luego baja linealmente a cero. Sticky mantiene la intensidad completa hasta que se ejecute una acción Detener vibración. Se superpone con la vibración del juego mediante max() para que la respuesta del usuario siempre se note.</value></data>
   <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Pulso de vibración {0} ({1}ms)</value></data>
@@ -924,7 +924,7 @@
 
   <!-- ═══ Polling Frequency ═══ -->
   <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
-  <data name="Dashboard_PollingDash" xml:space="preserve"><value>—</value></data>
+  <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Preview Views ═══ -->
   <data name="Preview_CCOutputs" xml:space="preserve"><value>Salidas CC</value></data>
@@ -1569,19 +1569,19 @@
   <data name="Pad_Lighting_Mode_Breathing" xml:space="preserve"><value>Respiración (una sola color que se atenúa)</value></data>
   <data name="Pad_Lighting_Mode_Rainbow" xml:space="preserve"><value>Ciclo arcoíris</value></data>
   <data name="Pad_Lighting_Mode_ColorCycle" xml:space="preserve"><value>Ciclo de colores</value></data>
-  <data name="Pad_Lighting_Mode_AudioPulse" xml:space="preserve"><value>Pulso por audio — color estático</value></data>
-  <data name="Pad_Lighting_Mode_AudioPulseRandom" xml:space="preserve"><value>Pulso por audio — color aleatorio por beat</value></data>
-  <data name="Pad_Lighting_Mode_AudioPulseRainbow" xml:space="preserve"><value>Pulso por audio — ciclo arcoíris</value></data>
-  <data name="Pad_Lighting_Mode_AudioThresholds" xml:space="preserve"><value>Bandas de audio — tres colores, transiciones duras</value></data>
-  <data name="Pad_Lighting_Mode_AudioGradient" xml:space="preserve"><value>Bandas de audio — tres colores, degradado suave</value></data>
-  <data name="Pad_Lighting_Mode_AudioCrossFade" xml:space="preserve"><value>Bandas de audio — tres colores, fundido cruzado en los límites</value></data>
-  <data name="Pad_Lighting_Mode_Battery" xml:space="preserve"><value>Batería — Degradado por nivel de carga</value></data>
-  <data name="Pad_Lighting_Mode_Strobe" xml:space="preserve"><value>Estroboscópico — Parpadeo de onda cuadrada</value></data>
+  <data name="Pad_Lighting_Mode_AudioPulse" xml:space="preserve"><value>Pulso por audio: color estático</value></data>
+  <data name="Pad_Lighting_Mode_AudioPulseRandom" xml:space="preserve"><value>Pulso por audio: color aleatorio por beat</value></data>
+  <data name="Pad_Lighting_Mode_AudioPulseRainbow" xml:space="preserve"><value>Pulso por audio: ciclo arcoíris</value></data>
+  <data name="Pad_Lighting_Mode_AudioThresholds" xml:space="preserve"><value>Bandas de audio: tres colores, transiciones duras</value></data>
+  <data name="Pad_Lighting_Mode_AudioGradient" xml:space="preserve"><value>Bandas de audio: tres colores, degradado suave</value></data>
+  <data name="Pad_Lighting_Mode_AudioCrossFade" xml:space="preserve"><value>Bandas de audio: tres colores, fundido cruzado en los límites</value></data>
+  <data name="Pad_Lighting_Mode_Battery" xml:space="preserve"><value>Batería: Degradado por nivel de carga</value></data>
+  <data name="Pad_Lighting_Mode_Strobe" xml:space="preserve"><value>Estroboscópico: Parpadeo de onda cuadrada</value></data>
   <data name="Pad_Lighting_BatteryLowColor" xml:space="preserve"><value>Batería Baja</value></data>
   <data name="Pad_Lighting_BatteryHighColor" xml:space="preserve"><value>Batería Llena</value></data>
-    <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>Reactivo a entrada — color aleatorio por pulsación</value></data>
-  <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>Reactivo a entrada — recorrer la paleta</value></data>
-  <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>Reactivo a entrada — un solo color por pulsación</value></data>
+    <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>Reactivo a entrada: color aleatorio por pulsación</value></data>
+  <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>Reactivo a entrada: recorrer la paleta</value></data>
+  <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>Reactivo a entrada: un solo color por pulsación</value></data>
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Brillo</value></data>
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>Período</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>Paleta</value></data>
@@ -2173,13 +2173,13 @@
     <value>Las contraseñas no coinciden.</value>
   </data>
   <data name="RemoteLink_IdentityModeSecure" xml:space="preserve">
-    <value>Seguro — solo este PC</value>
+    <value>Seguro: solo este PC</value>
   </data>
   <data name="RemoteLink_IdentityModePortablePassword" xml:space="preserve">
-    <value>Portátil — protegido con contraseña</value>
+    <value>Portátil: protegido con contraseña</value>
   </data>
   <data name="RemoteLink_IdentityModePortableOpen" xml:space="preserve">
-    <value>Portátil — sin contraseña</value>
+    <value>Portátil: sin contraseña</value>
   </data>
   <data name="RemoteLink_IdentityHintPortablePassword" xml:space="preserve">
     <value>Su identidad viaja en esta unidad y se desbloquea con su contraseña en cualquier PC. Una unidad perdida no sirve de nada sin ella.</value>

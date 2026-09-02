@@ -807,7 +807,7 @@
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Modus</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Wähle aus, durch welche Lightbar-Modi das Makro wechseln soll. Jede Auslösung springt zum nächsten markierten Modus.</value></data>
 
-  <!-- ═══ Macro action — Rumble ═══ -->
+  <!-- ═══ Macro action: Rumble ═══ -->
   <data name="MacroAction_Type_Rumble" xml:space="preserve"><value>Vibration</value></data>
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>Steuert die Vibration des physischen Geräts des Slots aus einem Makro. Reactive läuft im Haltefenster mit voller Stärke und blendet dann linear auf null aus. Sticky hält die volle Stärke, bis eine Vibration-stoppen-Aktion ausgeführt wird. Wird per max() über die spielgesteuerte Vibration gelegt, sodass benutzergesteuertes Feedback immer spürbar bleibt.</value></data>
   <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Vibration {0} ({1}ms)</value></data>
@@ -924,7 +924,7 @@
 
   <!-- ═══ Polling Frequency ═══ -->
   <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
-  <data name="Dashboard_PollingDash" xml:space="preserve"><value>—</value></data>
+  <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Preview Views ═══ -->
   <data name="Preview_CCOutputs" xml:space="preserve"><value>CC-Ausgänge</value></data>
@@ -1569,19 +1569,19 @@
   <data name="Pad_Lighting_Mode_Breathing" xml:space="preserve"><value>Atmen (eine Farbe pulsiert)</value></data>
   <data name="Pad_Lighting_Mode_Rainbow" xml:space="preserve"><value>Regenbogenzyklus</value></data>
   <data name="Pad_Lighting_Mode_ColorCycle" xml:space="preserve"><value>Farbzyklus</value></data>
-  <data name="Pad_Lighting_Mode_AudioPulse" xml:space="preserve"><value>Audiopuls — statische Farbe</value></data>
-  <data name="Pad_Lighting_Mode_AudioPulseRandom" xml:space="preserve"><value>Audiopuls — Zufallsfarbe pro Beat</value></data>
-  <data name="Pad_Lighting_Mode_AudioPulseRainbow" xml:space="preserve"><value>Audiopuls — Regenbogenzyklus</value></data>
-  <data name="Pad_Lighting_Mode_AudioThresholds" xml:space="preserve"><value>Audiobänder — drei Farben, harte Übergänge</value></data>
-  <data name="Pad_Lighting_Mode_AudioGradient" xml:space="preserve"><value>Audiobänder — drei Farben, sanfter Verlauf</value></data>
-  <data name="Pad_Lighting_Mode_AudioCrossFade" xml:space="preserve"><value>Audiobänder — drei Farben, Crossfade an den Grenzen</value></data>
-  <data name="Pad_Lighting_Mode_Battery" xml:space="preserve"><value>Akku — Verlauf nach Ladestand</value></data>
-  <data name="Pad_Lighting_Mode_Strobe" xml:space="preserve"><value>Stroboskop — Rechteck-Blitzen</value></data>
+  <data name="Pad_Lighting_Mode_AudioPulse" xml:space="preserve"><value>Audiopuls: statische Farbe</value></data>
+  <data name="Pad_Lighting_Mode_AudioPulseRandom" xml:space="preserve"><value>Audiopuls: Zufallsfarbe pro Beat</value></data>
+  <data name="Pad_Lighting_Mode_AudioPulseRainbow" xml:space="preserve"><value>Audiopuls: Regenbogenzyklus</value></data>
+  <data name="Pad_Lighting_Mode_AudioThresholds" xml:space="preserve"><value>Audiobänder: drei Farben, harte Übergänge</value></data>
+  <data name="Pad_Lighting_Mode_AudioGradient" xml:space="preserve"><value>Audiobänder: drei Farben, sanfter Verlauf</value></data>
+  <data name="Pad_Lighting_Mode_AudioCrossFade" xml:space="preserve"><value>Audiobänder: drei Farben, Crossfade an den Grenzen</value></data>
+  <data name="Pad_Lighting_Mode_Battery" xml:space="preserve"><value>Akku: Verlauf nach Ladestand</value></data>
+  <data name="Pad_Lighting_Mode_Strobe" xml:space="preserve"><value>Stroboskop: Rechteck-Blitzen</value></data>
   <data name="Pad_Lighting_BatteryLowColor" xml:space="preserve"><value>Niedriger Akku</value></data>
   <data name="Pad_Lighting_BatteryHighColor" xml:space="preserve"><value>Voller Akku</value></data>
-    <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>Eingabereaktiv — Zufallsfarbe pro Druck</value></data>
-  <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>Eingabereaktiv — Palette durchlaufen</value></data>
-  <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>Eingabereaktiv — Einzelfarbe pro Druck</value></data>
+    <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>Eingabereaktiv: Zufallsfarbe pro Druck</value></data>
+  <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>Eingabereaktiv: Palette durchlaufen</value></data>
+  <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>Eingabereaktiv: Einzelfarbe pro Druck</value></data>
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>Helligkeit</value></data>
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>Periode</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>Palette</value></data>
@@ -2173,13 +2173,13 @@
     <value>Die Passwörter stimmen nicht überein.</value>
   </data>
   <data name="RemoteLink_IdentityModeSecure" xml:space="preserve">
-    <value>Sicher — nur dieser PC</value>
+    <value>Sicher: nur dieser PC</value>
   </data>
   <data name="RemoteLink_IdentityModePortablePassword" xml:space="preserve">
-    <value>Portabel — passwortgeschützt</value>
+    <value>Portabel: passwortgeschützt</value>
   </data>
   <data name="RemoteLink_IdentityModePortableOpen" xml:space="preserve">
-    <value>Portabel — ohne Passwort</value>
+    <value>Portabel: ohne Passwort</value>
   </data>
   <data name="RemoteLink_IdentityHintPortablePassword" xml:space="preserve">
     <value>Ihre Identität reist auf diesem Laufwerk mit und wird mit Ihrem Passwort auf jedem PC entsperrt. Ein verlorenes Laufwerk ist ohne das Passwort nutzlos.</value>

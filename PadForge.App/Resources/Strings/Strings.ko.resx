@@ -807,7 +807,7 @@
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>모드</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>매크로가 순환할 라이트바 모드를 선택하세요. 발화할 때마다 다음 체크된 모드로 이동합니다.</value></data>
 
-  <!-- ═══ Macro action — Rumble ═══ -->
+  <!-- ═══ Macro action: Rumble ═══ -->
   <data name="MacroAction_Type_Rumble" xml:space="preserve"><value>진동</value></data>
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>매크로에서 슬롯의 물리 기기 진동을 구동합니다. Reactive는 유지 시간 동안 최대 강도로 작동한 다음 페이드 구간 동안 선형으로 0까지 감소합니다. Sticky는 진동 정지 액션이 실행될 때까지 최대 강도를 유지합니다. 게임 구동 진동 위에 max()로 겹쳐지므로 사용자 피드백은 항상 느껴집니다.</value></data>
   <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>진동 {0} ({1}ms)</value></data>
@@ -924,7 +924,7 @@
 
   <!-- ═══ Polling Frequency ═══ -->
   <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
-  <data name="Dashboard_PollingDash" xml:space="preserve"><value>—</value></data>
+  <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Preview Views ═══ -->
   <data name="Preview_CCOutputs" xml:space="preserve"><value>CC 출력</value></data>
@@ -1569,19 +1569,19 @@
   <data name="Pad_Lighting_Mode_Breathing" xml:space="preserve"><value>브리딩 (단색 페이드)</value></data>
   <data name="Pad_Lighting_Mode_Rainbow" xml:space="preserve"><value>레인보우 사이클</value></data>
   <data name="Pad_Lighting_Mode_ColorCycle" xml:space="preserve"><value>색상 사이클</value></data>
-  <data name="Pad_Lighting_Mode_AudioPulse" xml:space="preserve"><value>오디오 펄스 — 단색</value></data>
-  <data name="Pad_Lighting_Mode_AudioPulseRandom" xml:space="preserve"><value>오디오 펄스 — 비트마다 랜덤 색상</value></data>
-  <data name="Pad_Lighting_Mode_AudioPulseRainbow" xml:space="preserve"><value>오디오 펄스 — 레인보우 사이클</value></data>
-  <data name="Pad_Lighting_Mode_AudioThresholds" xml:space="preserve"><value>오디오 밴드 — 세 가지 색, 즉시 전환</value></data>
-  <data name="Pad_Lighting_Mode_AudioGradient" xml:space="preserve"><value>오디오 밴드 — 세 가지 색, 부드러운 그라데이션</value></data>
-  <data name="Pad_Lighting_Mode_AudioCrossFade" xml:space="preserve"><value>오디오 밴드 — 세 가지 색, 경계에서 크로스페이드</value></data>
-  <data name="Pad_Lighting_Mode_Battery" xml:space="preserve"><value>배터리 — 충전 레벨에 따른 그라데이션</value></data>
-  <data name="Pad_Lighting_Mode_Strobe" xml:space="preserve"><value>스트로보 — 사각파 점멸</value></data>
+  <data name="Pad_Lighting_Mode_AudioPulse" xml:space="preserve"><value>오디오 펄스: 단색</value></data>
+  <data name="Pad_Lighting_Mode_AudioPulseRandom" xml:space="preserve"><value>오디오 펄스: 비트마다 랜덤 색상</value></data>
+  <data name="Pad_Lighting_Mode_AudioPulseRainbow" xml:space="preserve"><value>오디오 펄스: 레인보우 사이클</value></data>
+  <data name="Pad_Lighting_Mode_AudioThresholds" xml:space="preserve"><value>오디오 밴드: 세 가지 색, 즉시 전환</value></data>
+  <data name="Pad_Lighting_Mode_AudioGradient" xml:space="preserve"><value>오디오 밴드: 세 가지 색, 부드러운 그라데이션</value></data>
+  <data name="Pad_Lighting_Mode_AudioCrossFade" xml:space="preserve"><value>오디오 밴드: 세 가지 색, 경계에서 크로스페이드</value></data>
+  <data name="Pad_Lighting_Mode_Battery" xml:space="preserve"><value>배터리: 충전 레벨에 따른 그라데이션</value></data>
+  <data name="Pad_Lighting_Mode_Strobe" xml:space="preserve"><value>스트로보: 사각파 점멸</value></data>
   <data name="Pad_Lighting_BatteryLowColor" xml:space="preserve"><value>배터리 부족</value></data>
   <data name="Pad_Lighting_BatteryHighColor" xml:space="preserve"><value>완전 충전</value></data>
-    <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>입력 반응 — 누를 때마다 랜덤 색상</value></data>
-  <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>입력 반응 — 팔레트 순회</value></data>
-  <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>입력 반응 — 누름마다 단일 색상</value></data>
+    <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>입력 반응: 누를 때마다 랜덤 색상</value></data>
+  <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>입력 반응: 팔레트 순회</value></data>
+  <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>입력 반응: 누름마다 단일 색상</value></data>
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>밝기</value></data>
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>주기</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>팔레트</value></data>
@@ -2173,13 +2173,13 @@
     <value>비밀번호가 일치하지 않습니다.</value>
   </data>
   <data name="RemoteLink_IdentityModeSecure" xml:space="preserve">
-    <value>보안 — 이 PC 전용</value>
+    <value>보안: 이 PC 전용</value>
   </data>
   <data name="RemoteLink_IdentityModePortablePassword" xml:space="preserve">
-    <value>휴대용 — 비밀번호 보호</value>
+    <value>휴대용: 비밀번호 보호</value>
   </data>
   <data name="RemoteLink_IdentityModePortableOpen" xml:space="preserve">
-    <value>휴대용 — 비밀번호 없음</value>
+    <value>휴대용: 비밀번호 없음</value>
   </data>
   <data name="RemoteLink_IdentityHintPortablePassword" xml:space="preserve">
     <value>신원 정보가 이 드라이브에 담겨 이동하며, 어떤 PC에서든 비밀번호로 잠금이 해제됩니다. 드라이브를 잃어버려도 비밀번호가 없으면 쓸모가 없습니다.</value>

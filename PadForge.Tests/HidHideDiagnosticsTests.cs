@@ -398,6 +398,11 @@ namespace PadForge.Tests
             // The suspect lane names its device on the re-open.
             Assert.Contains("MarkChanged(ref changed, \"consumer\", $\"+ {cc.Name} handle=0x{cc.Handle.ToInt64():X}\");", src);
             Assert.Contains("PruneOrphanedHandles(_openedConsumerHandles, \"consumer\");", src);
+            // The prune's online-record lookup must recognize the consumer
+            // wrapper by its raw-input handle. Without this match every
+            // consumer handle was pruned and re-opened on each enumeration,
+            // which the first DEVCHG harvest named as the five-second flap.
+            Assert.Contains("if (d.Device is ConsumerControlWrapper cc && cc.RawInputHandle == handle)", src);
             Assert.Contains("DEVCHG {lane} prune handle=0x", src);
             // Named flips outnumber the silent ones by design: the silent
             // overload is for the four sites a DEV line already covers,

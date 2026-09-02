@@ -2829,9 +2829,15 @@ namespace PadForge.Common.Input
             var devices = SettingsManager.UserDevices?.Items;
             if (devices == null) return null;
 
-            // The keyboard/mouse wrappers store _sdlId = (uint)devicePath.GetHashCode().
+            // The raw-input wrappers store _sdlId = (uint)devicePath.GetHashCode().
             // We need to match on the device reference since we can't recover the path
-            // from just the handle. Check Device.RawInputHandle for keyboard/mouse wrappers.
+            // from just the handle. Check Device.RawInputHandle on every raw-input
+            // wrapper kind. The consumer-control wrapper was missing from this list,
+            // so PruneOrphanedHandles found no online record for any consumer handle,
+            // dropped all of them, and the lane re-opened them on the same pass every
+            // enumeration: three device flips every five seconds on an idle bench,
+            // each one raising DevicesUpdated and a full hiding apply. The DEVCHG
+            // trace named it.
             lock (SettingsManager.UserDevices.SyncRoot)
             {
                 for (int i = 0; i < devices.Count; i++)
@@ -2843,6 +2849,8 @@ namespace PadForge.Common.Input
                     if (d.Device is SdlKeyboardWrapper kb && kb.RawInputHandle == handle)
                         return d;
                     if (d.Device is SdlMouseWrapper mouse && mouse.RawInputHandle == handle)
+                        return d;
+                    if (d.Device is ConsumerControlWrapper cc && cc.RawInputHandle == handle)
                         return d;
                 }
                 return null;

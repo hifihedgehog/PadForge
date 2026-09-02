@@ -245,6 +245,7 @@
   <data name="Dashboard_LightsyncWaiting" xml:space="preserve"><value>未检测到Logitech G HUB。正在重试。</value></data>
   <data name="Dashboard_LightsyncConnected" xml:space="preserve"><value>已连接到罗技LIGHTSYNC</value></data>
   <data name="Dashboard_LightsyncFooter" xml:space="preserve"><value>需要Logitech G HUB（或Logitech Gaming Software）。适用于任何物理手柄：颜色来自游戏所绘制的虚拟手柄。</value></data>
+  <data name="Dashboard_LightbarMirrors" xml:space="preserve"><value>灯条镜像</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>启用 DSU 体感服务器（CemuHook Motion Provider 协议）</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>端口</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>为 Cemu、Dolphin、Yuzu 等提供陀螺仪和加速度计数据。</value></data>

@@ -245,6 +245,7 @@
   <data name="Dashboard_LightsyncWaiting" xml:space="preserve"><value>Logitech G HUB를 찾을 수 없습니다. 재시도 중.</value></data>
   <data name="Dashboard_LightsyncConnected" xml:space="preserve"><value>Logitech LIGHTSYNC에 연결됨</value></data>
   <data name="Dashboard_LightsyncFooter" xml:space="preserve"><value>Logitech G HUB(또는 Logitech Gaming Software)가 필요합니다. 모든 물리 컨트롤러와 작동합니다. 색상은 게임이 칠하는 가상 패드에서 나옵니다.</value></data>
+  <data name="Dashboard_LightbarMirrors" xml:space="preserve"><value>라이트바 미러링</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU 모션 서버 활성화 (CemuHook Motion Provider protocol)</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>포트</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Cemu, Dolphin, Yuzu 등에 자이로 및 가속도계 데이터를 제공합니다.</value></data>

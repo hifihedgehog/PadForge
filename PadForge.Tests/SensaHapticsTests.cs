@@ -267,8 +267,9 @@ namespace PadForge.Tests
 
         /// <summary>Source contracts: the poll-lane publisher exists behind
         /// the armed gate with the same rumble authority as the audio lane,
-        /// the setting is GLOBAL ONLY with the autosave allowlist entry
-        /// (both #373 lessons, applied from birth), and the Dashboard card
+        /// the setting has a global leg, a nullable per-profile leg and the
+        /// autosave allowlist entry (the #373 lessons, applied from
+        /// birth), and the Dashboard card
         /// binds the toggle and status.</summary>
         [Fact]
         public void FeedAndSiblingContracts()
@@ -287,8 +288,14 @@ namespace PadForge.Tests
             string ss = RepoText("PadForge.App", "Services", "SettingsService.cs");
             Assert.Contains("_mainVm.Dashboard.EnableSensaHaptics = appSettings.EnableSensaHaptics;", ss);
             Assert.Contains("EnableSensaHaptics = _mainVm.Dashboard.EnableSensaHaptics,", ss);
-            Assert.DoesNotContain("active.EnableSensaHaptics", ss);
-            Assert.DoesNotContain("profile.EnableSensaHaptics", ss);
+            // Rides profiles as a NULLABLE leg (null = no opinion, the
+            // #365 polling-override shape), so a pre-existing profile
+            // never stomps the global. Behavioral half:
+            // ProfileServiceToggleTests.
+            Assert.Contains("public bool? EnableSensaHaptics { get; set; }", ss);
+            Assert.Contains("if (profile.EnableSensaHaptics is bool sensa)", ss);
+            Assert.Contains("if (profile.EnableSensaHaptics != null)", ss);
+            Assert.Contains("case nameof(DashboardViewModel.EnableSensaHaptics):", ss);
 
             string mw = RepoText("PadForge.App", "MainWindow.xaml.cs");
             Assert.Contains("nameof(DashboardViewModel.EnableSensaHaptics)", mw);

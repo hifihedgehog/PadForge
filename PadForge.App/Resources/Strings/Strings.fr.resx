@@ -245,6 +245,7 @@
   <data name="Dashboard_LightsyncWaiting" xml:space="preserve"><value>Logitech G HUB introuvable. Nouvelle tentative.</value></data>
   <data name="Dashboard_LightsyncConnected" xml:space="preserve"><value>Connecté à Logitech LIGHTSYNC</value></data>
   <data name="Dashboard_LightsyncFooter" xml:space="preserve"><value>Nécessite Logitech G HUB (ou Logitech Gaming Software). Fonctionne avec toute manette physique : la couleur vient de la manette virtuelle que le jeu peint.</value></data>
+  <data name="Dashboard_LightbarMirrors" xml:space="preserve"><value>Reflets de la barre lumineuse</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Activer le serveur de mouvement DSU (CemuHook Motion Provider protocol)</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>Port</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Fournit les données du gyroscope et de l'accéléromètre à Cemu, Dolphin, Yuzu, etc.</value></data>

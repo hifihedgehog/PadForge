@@ -245,6 +245,7 @@
   <data name="Dashboard_LightsyncWaiting" xml:space="preserve"><value>Logitech G HUB niet gevonden. Opnieuw proberen.</value></data>
   <data name="Dashboard_LightsyncConnected" xml:space="preserve"><value>Verbonden met Logitech LIGHTSYNC</value></data>
   <data name="Dashboard_LightsyncFooter" xml:space="preserve"><value>Vereist Logitech G HUB (of Logitech Gaming Software). Werkt met elke fysieke controller: de kleur komt van de virtuele pad die de game inkleurt.</value></data>
+  <data name="Dashboard_LightbarMirrors" xml:space="preserve"><value>Lightbar-spiegeling</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU-bewegingsserver inschakelen (CemuHook Motion Provider-protocol)</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>Poort</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Levert gyroscoop- en versnellingsmetergegevens voor Cemu, Dolphin, Yuzu, enz.</value></data>

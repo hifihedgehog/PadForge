@@ -16216,6 +16216,13 @@ namespace PadForge.Services
             if (profile.Macros != null)
                 _settingsService?.LoadMacros(profile.Macros);
 
+            // The three Dashboard service toggles ride profiles with a
+            // no-opinion default: a non-null leg starts or stops the mirror
+            // through the Dashboard setter, a null leg leaves the current
+            // value alone, so the Default snapshot and pre-existing profiles
+            // never stomp the global. Every switch lane funnels through here.
+            _settingsService?.ApplyProfileServiceToggles(profile);
+
             // NOW the macro re-key lands (round ten): the macros that
             // exist at this point are the INCOMING profile's, freshly
             // built from its DTOs, and they carry whatever guids the

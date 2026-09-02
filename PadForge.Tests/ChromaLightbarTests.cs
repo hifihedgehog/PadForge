@@ -417,17 +417,23 @@ namespace PadForge.Tests
             Assert.Contains("(lbVf0 & 0x02) != 0", body);
             Assert.Contains("ChromaLightbarService.Publish(lbRgb[0], lbRgb[1], lbRgb[2])", body);
 
-            // GLOBAL ONLY: the app-settings legs exist, the profile legs
-            // do not. A new bool on ProfileData deserializes to false in
-            // every pre-existing profile, so riding profiles let any
-            // profile switch (foreground auto-switch included) kill the
-            // mirror seconds after the user enabled it. That shipped, the
-            // CHROMA diag trace named it, and this pins the fix.
+            // Dashboard toggles ride profiles. The global legs are the value
+            // when the active profile has no opinion, and the profile leg is
+            // a NULLABLE bool (the #365 polling-override shape): a plain bool
+            // read as false in every pre-existing profile and the first
+            // switch killed the mirror, which commit 087568bd answered by
+            // going global-only. That was the wrong fix, and this pins the
+            // right one: apply on a non-null leg, author on a user change,
+            // refresh only an existing opinion at save. The behavioral half
+            // lives in ProfileServiceToggleTests.
             string ss = RepoText("PadForge.App", "Services", "SettingsService.cs");
             Assert.Contains("_mainVm.Dashboard.EnableChromaLightbar = appSettings.EnableChromaLightbar;", ss);
             Assert.Contains("EnableChromaLightbar = _mainVm.Dashboard.EnableChromaLightbar,", ss);
-            Assert.DoesNotContain("active.EnableChromaLightbar", ss);
-            Assert.DoesNotContain("profile.EnableChromaLightbar", ss);
+            Assert.Contains("public bool? EnableChromaLightbar { get; set; }", ss);
+            Assert.Contains("if (profile.EnableChromaLightbar is bool chroma)", ss);
+            Assert.Contains("ApplyProfileServiceToggles(active);", ss);
+            Assert.Contains("if (profile.EnableChromaLightbar != null)", ss);
+            Assert.Contains("case nameof(DashboardViewModel.EnableChromaLightbar):", ss);
 
             // The Dashboard autosave allowlist carries the toggle: a
             // persisted property missing there changes live state but

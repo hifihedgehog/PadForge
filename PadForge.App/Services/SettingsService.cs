@@ -155,6 +155,10 @@ namespace PadForge.Services
             // backfill without each caller needing an instance reference.
             // See AfterMappingSetsRefreshed for context.
             AfterMappingSetsRefreshed = EnsureMotionRowsForAllSlots;
+
+            // The three mirror toggles author themselves into the active
+            // profile on a user change. See OnDashboardServiceToggleChanged.
+            _mainVm.Dashboard.PropertyChanged += OnDashboardServiceToggleChanged;
         }
 
         // ─────────────────────────────────────────────
@@ -2176,9 +2180,19 @@ namespace PadForge.Services
             // Load web controller server settings.
             PadForge.Services.WebCustomLayoutStore.LoadFrom(appSettings.WebCustomLayoutsJson);
             _mainVm.Dashboard.EnableWebController = appSettings.EnableWebController;
-            _mainVm.Dashboard.EnableChromaLightbar = appSettings.EnableChromaLightbar;
-            _mainVm.Dashboard.EnableLightsyncLightbar = appSettings.EnableLightsyncLightbar;
-            _mainVm.Dashboard.EnableSensaHaptics = appSettings.EnableSensaHaptics;
+            // The three mirror toggles' GLOBAL legs, the value that stands
+            // when the active profile has no opinion. Under the guard, or
+            // the record-on-change hook would write these into the active
+            // profile (ActiveProfileId is already set above) and turn its
+            // null into an opinion it never authored.
+            _applyingServiceToggles = true;
+            try
+            {
+                _mainVm.Dashboard.EnableChromaLightbar = appSettings.EnableChromaLightbar;
+                _mainVm.Dashboard.EnableLightsyncLightbar = appSettings.EnableLightsyncLightbar;
+                _mainVm.Dashboard.EnableSensaHaptics = appSettings.EnableSensaHaptics;
+            }
+            finally { _applyingServiceToggles = false; }
             _mainVm.Dashboard.WebControllerPort = appSettings.WebControllerPort > 0
                 ? appSettings.WebControllerPort : 8080;
             _mainVm.Dashboard.EnableRemoteLink = appSettings.EnableRemoteLink;
@@ -3708,6 +3722,74 @@ namespace PadForge.Services
                     ? active.TouchpadOverlayWidth : 500;
                 _mainVm.Dashboard.TouchpadOverlayHeight = active.TouchpadOverlayHeight > 0
                     ? active.TouchpadOverlayHeight : 250;
+                // The three mirror toggles ride profiles too, as nullable
+                // legs: only a profile with an opinion moves the toggle.
+                ApplyProfileServiceToggles(active);
+            }
+        }
+
+        /// <summary>True while this service itself writes the three mirror
+        /// toggles on the Dashboard VM (global load, profile apply), so
+        /// <see cref="OnDashboardServiceToggleChanged"/> records only what
+        /// the USER changed.</summary>
+        private bool _applyingServiceToggles;
+
+        /// <summary>Applies a profile's opinion on the three mirror toggles
+        /// (Razer Chroma #373, Logitech LIGHTSYNC #382, Razer Sensa #374) to
+        /// the Dashboard VM, whose PropertyChanged starts or stops the
+        /// service. A null leg leaves the toggle where it is: the global
+        /// AppSettings value, or whatever the last opinionated profile set.
+        /// The nullable contract mirrors <see cref="ProfileData.PollingRateOverrideMs"/>
+        /// (0 there, null here) and is why a plain bool was the wrong shape:
+        /// it read as false in every pre-existing profile and the first
+        /// profile switch turned the mirror off. Runs on the cold path beside
+        /// the six plain-bool legs and belongs at the same spot on the runtime
+        /// switch lane (InputService.ApplyProfile). The default snapshot
+        /// never carries an opinion (no snapshot builder sets these), so a
+        /// switch back to Default leaves the toggles alone.</summary>
+        internal void ApplyProfileServiceToggles(ProfileData profile)
+        {
+            if (profile == null) return;
+            _applyingServiceToggles = true;
+            try
+            {
+                if (profile.EnableChromaLightbar is bool chroma)
+                    _mainVm.Dashboard.EnableChromaLightbar = chroma;
+                if (profile.EnableLightsyncLightbar is bool lightsync)
+                    _mainVm.Dashboard.EnableLightsyncLightbar = lightsync;
+                if (profile.EnableSensaHaptics is bool sensa)
+                    _mainVm.Dashboard.EnableSensaHaptics = sensa;
+            }
+            finally { _applyingServiceToggles = false; }
+        }
+
+        /// <summary>The AUTHORING leg: a user change of one of the three
+        /// mirror toggles while a named profile is active becomes that
+        /// profile's opinion, in memory at once (so a foreground switch
+        /// inside the autosave window still carries it) and on disk at the
+        /// next save. With no named profile active the change is the global
+        /// value alone. Writes made by this service (global load, profile
+        /// apply) are skipped through <see cref="_applyingServiceToggles"/>,
+        /// so a profile with no opinion keeps none until the user gives it
+        /// one.</summary>
+        private void OnDashboardServiceToggleChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (_applyingServiceToggles) return;
+            string activeId = SettingsManager.ActiveProfileId;
+            if (string.IsNullOrEmpty(activeId)) return;
+            var profile = SettingsManager.Profiles?.Find(p => p.Id == activeId);
+            if (profile == null) return;
+            switch (e.PropertyName)
+            {
+                case nameof(DashboardViewModel.EnableChromaLightbar):
+                    profile.EnableChromaLightbar = _mainVm.Dashboard.EnableChromaLightbar;
+                    break;
+                case nameof(DashboardViewModel.EnableLightsyncLightbar):
+                    profile.EnableLightsyncLightbar = _mainVm.Dashboard.EnableLightsyncLightbar;
+                    break;
+                case nameof(DashboardViewModel.EnableSensaHaptics):
+                    profile.EnableSensaHaptics = _mainVm.Dashboard.EnableSensaHaptics;
+                    break;
             }
         }
 
@@ -3798,6 +3880,17 @@ namespace PadForge.Services
             profile.EnableMenuOverlay = _mainVm.Dashboard.EnableMenuOverlay;
             profile.EnableShiftLayerFlyout = _mainVm.Dashboard.EnableShiftLayerFlyout;
             profile.EnableProfileOverlay = _mainVm.Dashboard.EnableProfileOverlay;
+            // The three mirror toggles are AUTHORED nullable legs (see
+            // ProfileData.EnableChromaLightbar): refresh a recorded opinion
+            // from the live value, never invent one here. The live value
+            // already equals the opinion after apply or record-on-change,
+            // so this only closes the window between the two.
+            if (profile.EnableChromaLightbar != null)
+                profile.EnableChromaLightbar = _mainVm.Dashboard.EnableChromaLightbar;
+            if (profile.EnableLightsyncLightbar != null)
+                profile.EnableLightsyncLightbar = _mainVm.Dashboard.EnableLightsyncLightbar;
+            if (profile.EnableSensaHaptics != null)
+                profile.EnableSensaHaptics = _mainVm.Dashboard.EnableSensaHaptics;
             profile.TouchpadOverlayOpacity = _mainVm.Dashboard.TouchpadOverlayOpacity;
             profile.TouchpadOverlayMonitor = _mainVm.Dashboard.TouchpadOverlayMonitor;
             profile.TouchpadOverlayLeft = _mainVm.Dashboard.TouchpadOverlayLeft;
@@ -5984,29 +6077,26 @@ namespace PadForge.Services
         [XmlElement]
         public bool EnableWebController { get; set; }
 
-        /// <summary>Razer Chroma lightbar mirror opt-in (#373).
-        /// Default false: PadForge registers nothing with Synapse until the
-        /// user turns the mirror on. GLOBAL ONLY, deliberately not on
-        /// ProfileData: Synapse is per-machine, and a new bool on profiles
-        /// deserializes to false in every pre-existing profile, so any
-        /// profile switch (the foreground auto-switch included) would turn
-        /// the mirror off seconds after the user turned it on. That exact
-        /// failure shipped and was traced by the CHROMA diag lines.</summary>
+        /// <summary>Razer Chroma lightbar mirror opt-in (#373), the GLOBAL
+        /// leg. Default false: PadForge registers nothing with Synapse until
+        /// the user turns the mirror on. This is the value that stands when
+        /// the active profile has no opinion. The per-profile leg is the
+        /// nullable <see cref="ProfileData.EnableChromaLightbar"/>: a plain
+        /// bool there read as false in every pre-existing profile and the
+        /// first profile switch turned the mirror off, which the CHROMA diag
+        /// lines traced.</summary>
         [XmlElement]
         public bool EnableChromaLightbar { get; set; }
 
-        /// <summary>Razer Sensa HD haptics translation opt-in (#374).
-        /// Default false. GLOBAL ONLY like the Chroma mirror above, and for
-        /// the same reason.</summary>
+        /// <summary>Razer Sensa HD haptics translation opt-in (#374), the
+        /// GLOBAL leg. Default false. Per-profile leg:
+        /// <see cref="ProfileData.EnableSensaHaptics"/>.</summary>
         [XmlElement]
         public bool EnableSensaHaptics { get; set; }
 
-        /// <summary>Logitech LIGHTSYNC lightbar mirror opt-in (#382).
-        /// Default false. GLOBAL ONLY like the Chroma mirror above, and
-        /// for the same reason: G HUB is per-machine, and a new bool on
-        /// ProfileData deserializes to false in every pre-existing
-        /// profile, which the foreground auto-switch would then stomp
-        /// onto the global seconds after the user opted in.</summary>
+        /// <summary>Logitech LIGHTSYNC lightbar mirror opt-in (#382), the
+        /// GLOBAL leg. Default false. Per-profile leg:
+        /// <see cref="ProfileData.EnableLightsyncLightbar"/>.</summary>
         [XmlElement]
         public bool EnableLightsyncLightbar { get; set; }
 
@@ -6866,6 +6956,33 @@ namespace PadForge.Services
         /// change. Default on. The switch still happens when off.</summary>
         [XmlElement]
         public bool EnableProfileOverlay { get; set; } = true;
+
+        /// <summary>Razer Chroma lightbar mirror (#373), the profile's leg.
+        /// NULLABLE CONTRACT, the same shape as <see cref="PollingRateOverrideMs"/>
+        /// (0 there, null here): null means "no opinion, the toggle keeps
+        /// its current value", which is also what every profile saved
+        /// before this field deserializes to. A plain bool read as false in
+        /// every pre-existing profile and the first profile switch turned
+        /// the mirror off (commit 087568bd went global-only for exactly
+        /// that, which was the wrong fix). AUTHORED: the profile records a
+        /// value when the user changes the Dashboard toggle while it is
+        /// active (SettingsService.OnDashboardServiceToggleChanged), and no
+        /// snapshot builder invents one, so the default snapshot and a
+        /// Save As copy start with no opinion.</summary>
+        [XmlElement]
+        public bool? EnableChromaLightbar { get; set; }
+
+        /// <summary>Logitech LIGHTSYNC lightbar mirror (#382), the profile's
+        /// leg. Same nullable, authored contract as
+        /// <see cref="EnableChromaLightbar"/>.</summary>
+        [XmlElement]
+        public bool? EnableLightsyncLightbar { get; set; }
+
+        /// <summary>Razer Sensa HD haptics translation (#374), the profile's
+        /// leg. Same nullable, authored contract as
+        /// <see cref="EnableChromaLightbar"/>.</summary>
+        [XmlElement]
+        public bool? EnableSensaHaptics { get; set; }
 
         [XmlElement]
         public double TouchpadOverlayOpacity { get; set; } = 0.25;

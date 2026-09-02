@@ -1621,14 +1621,21 @@
                 </StackPanel>
             </Border>
 
-            <!-- ═══ Razer Chroma lightbar mirror (#373) ═══ -->
+            <!-- ═══ Lightbar mirrors: Razer Chroma (#373) and Logitech LIGHTSYNC (#382) ═══
+                 One section, one glyph, one card with a row per vendor. Both
+                 rows forward the same virtual-pad lightbar color, so they
+                 share the section rather than repeating its icon. Each row
+                 keeps its own strings, bindings, status line and footer. -->
             <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
                 <TextBlock Text="&#xE781;" Style="{StaticResource SectionGlyph}"/>
-                <TextBlock Text="{Binding Dashboard_Chroma, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" Style="{StaticResource SectionTitle}"/>
+                <TextBlock Text="{Binding Dashboard_LightbarMirrors, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" Style="{StaticResource SectionTitle}"/>
             </StackPanel>
 
             <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
                 <StackPanel>
+                    <!-- Razer Chroma row. Divider-separated sub-title inside the
+                         card (the Remote Link identity idiom). -->
+                    <TextBlock Text="{Binding Dashboard_Chroma, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardSectionTitle}" FontSize="14" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,6"/>
                     <TextBlock Text="{Binding Dashboard_ChromaDescription, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
                     <CheckBox Content="{Binding Dashboard_EnableChroma, Source={x:Static strings:Strings.Instance}}"
@@ -1638,6 +1645,21 @@
                                FontFamily="{StaticResource TelemetryFontFamily}"
                                Foreground="{DynamicResource ColdBrush}" Margin="0,0,0,4"/>
                     <TextBlock Text="{Binding Dashboard_ChromaFooter, Source={x:Static strings:Strings.Instance}}"
+                               FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
+
+                    <Border Height="1" Background="{DynamicResource DividerStrokeColorDefaultBrush}" Margin="0,14,0,14"/>
+
+                    <!-- Logitech LIGHTSYNC row. -->
+                    <TextBlock Text="{Binding Dashboard_Lightsync, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardSectionTitle}" FontSize="14" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,6"/>
+                    <TextBlock Text="{Binding Dashboard_LightsyncDescription, Source={x:Static strings:Strings.Instance}}"
+                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
+                    <CheckBox Content="{Binding Dashboard_EnableLightsync, Source={x:Static strings:Strings.Instance}}"
+                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                              IsChecked="{Binding EnableLightsyncLightbar}" Margin="0,0,0,8"/>
+                    <TextBlock Text="{Binding LightsyncStatus}" FontSize="12"
+                               FontFamily="{StaticResource TelemetryFontFamily}"
+                               Foreground="{DynamicResource ColdBrush}" Margin="0,0,0,4"/>
+                    <TextBlock Text="{Binding Dashboard_LightsyncFooter, Source={x:Static strings:Strings.Instance}}"
                                FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
                 </StackPanel>
             </Border>
@@ -1659,27 +1681,6 @@
                                FontFamily="{StaticResource TelemetryFontFamily}"
                                Foreground="{DynamicResource ColdBrush}" Margin="0,0,0,4"/>
                     <TextBlock Text="{Binding Dashboard_SensaFooter, Source={x:Static strings:Strings.Instance}}"
-                               FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
-                </StackPanel>
-            </Border>
-
-            <!-- ═══ Logitech LIGHTSYNC lightbar mirror (#382) ═══ -->
-            <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
-                <TextBlock Text="&#xE781;" Style="{StaticResource SectionGlyph}"/>
-                <TextBlock Text="{Binding Dashboard_Lightsync, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" Style="{StaticResource SectionTitle}"/>
-            </StackPanel>
-
-            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
-                <StackPanel>
-                    <TextBlock Text="{Binding Dashboard_LightsyncDescription, Source={x:Static strings:Strings.Instance}}"
-                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
-                    <CheckBox Content="{Binding Dashboard_EnableLightsync, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding EnableLightsyncLightbar}" Margin="0,0,0,8"/>
-                    <TextBlock Text="{Binding LightsyncStatus}" FontSize="12"
-                               FontFamily="{StaticResource TelemetryFontFamily}"
-                               Foreground="{DynamicResource ColdBrush}" Margin="0,0,0,4"/>
-                    <TextBlock Text="{Binding Dashboard_LightsyncFooter, Source={x:Static strings:Strings.Instance}}"
                                FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
                 </StackPanel>
             </Border>

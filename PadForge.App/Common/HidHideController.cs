@@ -85,6 +85,13 @@ namespace PadForge.Common
 
         private static readonly Guid GUID_DEVCLASS_HIDCLASS = new("745a17a0-74d3-11d0-b6fe-00a0c90f57da");
         private static readonly Guid GUID_DEVCLASS_XUSBCLASS = new("d61ca365-5af4-4486-998b-9db4734c6ca3");
+        /// <summary>The Xbox One and Series GIP class (xboxgipsynthetic.inf,
+        /// and the class table of every Windows 10 and 11 build). HidHide's
+        /// installer registers the driver as an upper filter on this class
+        /// beside HIDClass and XnaComposite (HidHideMSI.wxs), so an
+        /// instance path of this class on the blacklist is honored on
+        /// create the same way (#400).</summary>
+        private static readonly Guid GUID_DEVCLASS_XBOXCOMPOSITE = new("05f5cfe2-4733-4950-a6bb-07aad01a3a84");
         private static readonly Guid GUID_CONTAINER_ID_SYSTEM = new("00000000-0000-0000-ffff-ffffffffffff");
         private const uint DIGCF_PRESENT = 0x02;
 
@@ -680,101 +687,220 @@ namespace PadForge.Common
         //  Base-container expansion
         // ─────────────────────────────────────────────
 
+        /// <summary>One PnP devnode as the expansion sees it: its instance
+        /// id and its setup class.</summary>
+        internal readonly record struct PnpNode(string InstanceId, Guid ClassGuid);
+
+        /// <summary>The setup classes HidHide installs its upper filter on
+        /// (HidHideMSI.wxs: HIDClass, XnaComposite, XboxComposite). A
+        /// blacklisted instance path of any other class is inert, because
+        /// the driver is not on that stack to see the create.</summary>
+        internal static bool IsHidHideFilteredClass(Guid classGuid)
+            => classGuid == GUID_DEVCLASS_HIDCLASS
+            || classGuid == GUID_DEVCLASS_XUSBCLASS
+            || classGuid == GUID_DEVCLASS_XBOXCOMPOSITE;
+
         /// <summary>
-        /// Expand a HID instance ID into the full set of instance paths that
-        /// HidHide Configuration Client would blacklist when the user blocks
-        /// this device. Mirrors the algorithm in
-        /// <c>HidHide/HidHideClient/src/BlacklistDlg.cpp:294-345</c>:
+        /// Expand a HID instance ID into the full set of instance paths to
+        /// blacklist for the device it belongs to. The shape follows
+        /// HidHide Configuration Client
+        /// (<c>HidHide/HidHideClient/src/BlacklistDlg.cpp:294-345</c>), and
+        /// adds the one thing the client cannot express (#400):
         ///
         /// <list type="number">
         /// <item>Walk parents via Container ID until the parent has a
         /// different Container ID; the last device with the same ID is the
         /// base container (typically the USB or XUSB device).</item>
-        /// <item>Get the base container's class GUID
-        /// (<c>DEVPKEY_Device_ClassGuid</c>).</item>
-        /// <item>Count the base container's immediate children. Of those,
-        /// count how many are HID-class.</item>
-        /// <item>If the base container is HID-class or XUSB-class AND every
-        /// child is a HID, add the base container instance path to the
-        /// blacklist too (lets HidHide hide the device at the parent
-        /// boundary so XInput / WGI can't see it through any of the other
-        /// child paths).</item>
+        /// <item>Every node between the HID node and the base container
+        /// whose class HidHide filters is blacklisted too. On a pad whose
+        /// XUSB node is an INTERFACE of a USB composite parent (the Legion
+        /// Go's built-in controller, a pad on the Xbox 360 wireless
+        /// receiver) that node is neither the base nor an immediate HID
+        /// child, and without this step XInput opened it freely while
+        /// every HID interface beside it was hidden. The client's tree
+        /// lists HID devices only, so it has no way to name that node.
+        /// The driver honors it: HidHide is an upper filter on
+        /// XnaComposite and matches the device's own path on create.</item>
+        /// <item>If the base container is HID, XUSB, or XboxComposite class
+        /// AND every child is a HID, add the base container instance path
+        /// too (lets HidHide hide the device at the parent boundary so
+        /// XInput / WGI can't see it through any of the other child
+        /// paths).</item>
         /// <item>Always add every HID-child instance path.</item>
         /// </list>
+        ///
+        /// <para><paramref name="keepOut"/> names nodes that belong to a
+        /// device PadForge lists as its own row with hiding off. Those are
+        /// never added, and a base container is never blocked while one of
+        /// its HID children is kept out, since blocking the parent would
+        /// hide that row too. HidHide's own client offers the same
+        /// per-child selection under one device entry. Every id the
+        /// predicate removed is reported through <paramref name="keptOut"/>
+        /// for the diag line.</para>
         ///
         /// Returns the list with the input <paramref name="hidInstanceId"/>
         /// preserved (so a single-blacklist call still works) plus any
         /// additional paths discovered.
         /// </summary>
         public static List<string> ExpandToBaseContainerAndChildren(string hidInstanceId)
+            => ExpandToBaseContainerAndChildren(hidInstanceId, null, null);
+
+        public static List<string> ExpandToBaseContainerAndChildren(
+            string hidInstanceId, Func<string, bool> keepOut, ICollection<string> keptOut)
         {
-            var result = new List<string>();
-            if (string.IsNullOrEmpty(hidInstanceId)) return result;
-            result.Add(hidInstanceId);
+            if (string.IsNullOrEmpty(hidInstanceId)) return new List<string>();
 
             if (CM_Locate_DevNodeW(out uint hidDevInst, hidInstanceId, CM_LOCATE_DEVNODE_PHANTOM) != CR_SUCCESS)
-                return result;
+                return new List<string> { hidInstanceId };
 
             Guid hidContainerId = GetContainerId(hidDevInst);
             if (hidContainerId == Guid.Empty || hidContainerId == GUID_CONTAINER_ID_SYSTEM)
-                return result;
+                return new List<string> { hidInstanceId };
 
-            // Walk parents while Container ID stays the same. The last
-            // matching parent is the base container.
+            // Walk parents while Container ID stays the same, recording
+            // each intermediate node. The last matching parent is the base
+            // container.
+            var chain = new List<PnpNode>();
             uint baseContainer = hidDevInst;
             uint current = hidDevInst;
             while (CM_Get_Parent(out uint parent, current, 0) == CR_SUCCESS)
             {
                 if (GetContainerId(parent) != hidContainerId) break;
+                if (baseContainer != hidDevInst)
+                    chain.Add(new PnpNode(GetInstanceId(baseContainer), GetClassGuid(baseContainer)));
                 baseContainer = parent;
                 current = parent;
             }
 
-            string baseContainerInstanceId = GetInstanceId(baseContainer);
-            Guid baseContainerClassGuid = GetClassGuid(baseContainer);
+            var baseNode = baseContainer == hidDevInst
+                ? new PnpNode(null, Guid.Empty)
+                : new PnpNode(GetInstanceId(baseContainer), GetClassGuid(baseContainer));
 
-            // Enumerate immediate children of base container, count HIDs.
-            int totalChildren = 0;
-            int hidChildren = 0;
-            var hidChildInstanceIds = new List<string>();
-            if (CM_Get_Child(out uint firstChild, baseContainer, 0) == CR_SUCCESS)
+            // Enumerate immediate children of base container.
+            var children = new List<PnpNode>();
+            if (baseContainer != hidDevInst
+                && CM_Get_Child(out uint firstChild, baseContainer, 0) == CR_SUCCESS)
             {
                 uint child = firstChild;
                 while (true)
                 {
-                    totalChildren++;
-                    if (GetClassGuid(child) == GUID_DEVCLASS_HIDCLASS)
-                    {
-                        hidChildren++;
-                        var childInstanceId = GetInstanceId(child);
-                        if (!string.IsNullOrEmpty(childInstanceId))
-                            hidChildInstanceIds.Add(childInstanceId);
-                    }
+                    children.Add(new PnpNode(GetInstanceId(child), GetClassGuid(child)));
                     if (CM_Get_Sibling(out uint sibling, child, 0) != CR_SUCCESS) break;
                     child = sibling;
                 }
             }
 
-            // HidHide rule: only blacklist the base container when it's a
-            // HID/XUSB class device AND every child is a HID. For an Xbox
-            // 360 wired controller the base container is XUSB-class with
-            // a single HID child, so this fires; for a USB-class root with
-            // mixed children (e.g. a controller that also exposes audio)
-            // the base container stays unblocked and only the HID
-            // interfaces are filtered.
+            return ComposeBlacklist(hidInstanceId, chain, baseNode, children, keepOut, keptOut);
+        }
+
+        /// <summary>The pure rule behind <see cref="ExpandToBaseContainerAndChildren(string, Func{string, bool}, ICollection{string})"/>,
+        /// separated from cfgmgr32 so the trees can be pinned in tests.
+        /// <paramref name="chain"/> runs from the HID node's parent up to,
+        /// and excluding, the base container. <paramref name="baseContainer"/>
+        /// carries a null id when the HID node is its own base (a
+        /// stand-alone device), and <paramref name="children"/> are the
+        /// base container's immediate children.</summary>
+        internal static List<string> ComposeBlacklist(
+            string hidInstanceId,
+            IReadOnlyList<PnpNode> chain,
+            PnpNode baseContainer,
+            IReadOnlyList<PnpNode> children,
+            Func<string, bool> keepOut,
+            ICollection<string> keptOut)
+        {
+            var result = new List<string>();
+            if (string.IsNullOrEmpty(hidInstanceId)) return result;
+            result.Add(hidInstanceId);
+            keepOut ??= _ => false;
+
+            void Add(string id)
+            {
+                if (string.IsNullOrEmpty(id)) return;
+                if (result.Contains(id, StringComparer.OrdinalIgnoreCase)) return;
+                if (keepOut(id))
+                {
+                    // A node can be both on the chain and a base child
+                    // (the xinputhid node under a wired 360 pad). One report.
+                    if (keptOut != null && !keptOut.Contains(id, StringComparer.OrdinalIgnoreCase))
+                        keptOut.Add(id);
+                    return;
+                }
+                result.Add(id);
+            }
+
+            // Step 2: the nodes between the HID node and the base, on
+            // classes the driver filters.
+            if (chain != null)
+                foreach (var node in chain)
+                    if (IsHidHideFilteredClass(node.ClassGuid))
+                        Add(node.InstanceId);
+
+            // Step 3: the base container, by HidHide's own rule, with the
+            // GIP class beside the XUSB one, and never over a kept-out row.
+            int totalChildren = 0;
+            int hidChildren = 0;
+            bool anyChildKeptOut = false;
+            var hidChildInstanceIds = new List<string>();
+            if (children != null)
+            {
+                foreach (var child in children)
+                {
+                    totalChildren++;
+                    if (child.ClassGuid != GUID_DEVCLASS_HIDCLASS) continue;
+                    hidChildren++;
+                    if (string.IsNullOrEmpty(child.InstanceId)) continue;
+                    hidChildInstanceIds.Add(child.InstanceId);
+                    if (keepOut(child.InstanceId)) anyChildKeptOut = true;
+                }
+            }
+
             bool blockBase = totalChildren > 0
                 && hidChildren == totalChildren
-                && (baseContainerClassGuid == GUID_DEVCLASS_HIDCLASS
-                 || baseContainerClassGuid == GUID_DEVCLASS_XUSBCLASS)
-                && !string.IsNullOrEmpty(baseContainerInstanceId);
+                && !anyChildKeptOut
+                && (baseContainer.ClassGuid == GUID_DEVCLASS_HIDCLASS
+                 || baseContainer.ClassGuid == GUID_DEVCLASS_XUSBCLASS
+                 || baseContainer.ClassGuid == GUID_DEVCLASS_XBOXCOMPOSITE)
+                && !string.IsNullOrEmpty(baseContainer.InstanceId);
 
-            if (blockBase && !result.Contains(baseContainerInstanceId, StringComparer.OrdinalIgnoreCase))
-                result.Add(baseContainerInstanceId);
+            if (blockBase)
+                Add(baseContainer.InstanceId);
 
+            // Step 4: every HID child of the base.
             foreach (var id in hidChildInstanceIds)
-                if (!result.Contains(id, StringComparer.OrdinalIgnoreCase))
-                    result.Add(id);
+                Add(id);
 
+            return result;
+        }
+
+        /// <summary>A node and its same-container ancestors, the HID node
+        /// first and the base container last: what a device row with
+        /// hiding OFF contributes to the keep-out set (#400). Phantom
+        /// nodes resolve too, matching the expansion's own locate.</summary>
+        internal static List<string> ChainInstanceIds(string hidInstanceId)
+        {
+            var result = new List<string>();
+            if (string.IsNullOrEmpty(hidInstanceId)) return result;
+            result.Add(hidInstanceId);
+            try
+            {
+                if (CM_Locate_DevNodeW(out uint devInst, hidInstanceId, CM_LOCATE_DEVNODE_PHANTOM) != CR_SUCCESS)
+                    return result;
+                Guid containerId = GetContainerId(devInst);
+                if (containerId == Guid.Empty || containerId == GUID_CONTAINER_ID_SYSTEM)
+                    return result;
+                uint current = devInst;
+                while (CM_Get_Parent(out uint parent, current, 0) == CR_SUCCESS)
+                {
+                    if (GetContainerId(parent) != containerId) break;
+                    string id = GetInstanceId(parent);
+                    if (!string.IsNullOrEmpty(id)) result.Add(id);
+                    current = parent;
+                }
+            }
+            catch
+            {
+                // cfgmgr32 trouble leaves the row's own id as its whole chain.
+            }
             return result;
         }
 

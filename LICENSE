@@ -49,6 +49,7 @@ Third-Party Licenses and Attributions
 
 3D Controller Models
   Adapted from Handheld Companion (https://github.com/Valkirie/HandheldCompanion)
+  The Xbox 360, Xbox One, DualShock 4, DualSense and Steam Deck bodies.
   Copyright (c) CasperH2O, Lesueur Benjamin, trippyone
   Licensed under CC BY-NC-SA 4.0
 
@@ -354,10 +355,43 @@ ZstdSharp
   the executable as ZstdSharp.dll.
   Licensed under the MIT License
 
+Interhaptics engine and Razer provider
+  https://github.com/WyvrnOfficial/Interhaptics_Unity_CoreSDK
+  Copyright (c) 2025 Wyvrn. All rights reserved.
+  The Interhaptics haptic engine and its Razer provider, which turn
+  controller rumble into Razer Sensa HD effects. Ships unmodified inside
+  the executable as HAR.dll and Interhaptics.RazerProvider.dll, the same
+  pair every application embedding the public Interhaptics Core SDK
+  redistributes.
+  Distributed under the Wyvrn End User License Agreement
+  (https://www.wyvrn.com/eula/)
+
+Valve Steam Controller CAD
+  https://gitlab.steamos.cloud/SteamHardware/SteamController (2026 pad)
+  Valve's March 2016 Steam Controller CAD release (2015 pad)
+  Copyright 2016 and 2026 Valve Corporation
+  The Steam Controller (2015) and Steam Controller (2026) 3D models are
+  meshed from Valve's published STEP files. PadForge is not associated
+  with or endorsed by Valve.
+  Licensed under CC BY-NC-SA 4.0
+
+MinGW-w64 runtime
+  https://www.mingw-w64.org/
+  libgcc_s_seh-1.dll and libstdc++-6.dll are the GNU Compiler Collection
+  runtime libraries, Copyright (C) Free Software Foundation, Inc.
+  libwinpthread-1.dll is the mingw-w64 winpthreads library, Copyright (c)
+  the mingw-w64 project. The three arrive with the Vosk package as the
+  native runtime libvosk needs and ship unmodified inside the executable.
+  libgcc and libstdc++ are licensed under the GNU General Public License
+  v3 with the GCC Runtime Library Exception v3.1. libwinpthread is
+  licensed under the mingw-w64 winpthreads license (MIT-style terms).
+
 Protocol documentation references (no code from these projects ships)
   Dolphin (https://github.com/dolphin-emu/dolphin, GPL-2.0): the Wii
   controller Bluetooth pairing ceremony's Win32 API call order and the
-  Wii Remote speaker's Yamaha ADPCM constants.
+  Wii Remote speaker's Yamaha ADPCM constants, and the emulated Wii Remote's
+  sideways and upright orientation rotation and sideways D-pad table
+  (WiimoteEmu.cpp).
   DS4Windows (https://github.com/Ryochan7/DS4Windows, GPL-3.0): DualShock
   idle-disconnect, touchpad boundary, and battery decode behavior.
   xone and xow (https://github.com/medusalix/xone,
@@ -376,6 +410,38 @@ Protocol documentation references (no code from these projects ships)
   corroboration, and the combined Bluetooth transport layout.
   OpenRGB (https://gitlab.com/CalcProgrammer1/OpenRGB, GPL-2.0):
   DualSense lightbar output-report byte usage.
+  TritonLib and SteamHapticsPlayer (https://github.com/Pixel1011/TritonLib,
+  https://github.com/Pixel1011/SteamHapticsPlayer, Apache-2.0),
+  steam-controller-live-haptics
+  (https://github.com/FamBoy32-dev/steam-controller-live-haptics, MIT),
+  steam-controller-stuff (https://github.com/iczero/steam-controller-stuff,
+  MIT) and sc2ds (https://github.com/ga2mer/sc2ds, no license published):
+  the Steam Controller 2026 PCM haptics stream, reports 0x86, 0x88 and
+  0x44.
+  Colore (https://github.com/chroma-sdk/Colore, MIT): corroboration of
+  the Razer Chroma REST API request and effect framing.
+  Aurora (https://github.com/Aurora-RGB/Aurora, MIT), Artemis.Plugins
+  (https://github.com/Artemis-RGB/Artemis.Plugins, PolyForm Noncommercial
+  1.0.0), RGB.NET (https://github.com/DarthAffe/RGB.NET, LGPL-2.1),
+  Logitech-LED (https://github.com/sidewinder94/Logitech-LED, GPL-2.0),
+  logitech-led-sdk-rs (https://github.com/nathaniel-daniel/logitech-led-sdk-rs,
+  Apache-2.0) and LogiLed2Corsair (https://github.com/VRocker/LogiLed2Corsair,
+  MIT): the Logitech LED SDK engine entry points and calling convention
+  behind the LIGHTSYNC lightbar mirror. PadForge loads G HUB's own engine
+  at run time and ships no Logitech binary.
+  opentrack (https://github.com/opentrack/opentrack, ISC): the UDP tracker
+  datagram and the FreeTrack 2.0 shared-memory layout for head tracking.
+  Lenovo Legion Toolkit (https://github.com/BartoszCichecki/LenovoLegionToolkit,
+  GPL-3.0): the Lenovo WMI utility-event class the handheld hidden-button
+  learner subscribes to, and the elevated IPC server pattern behind
+  external profile control.
+  InputPlumber (https://github.com/ShadowBlip/InputPlumber, GPL-3.0):
+  handheld PC identity strings and vendor-report notes cross-checked for
+  the hidden-button learner.
+  linuxmotehook (https://github.com/v1993/linuxmotehook, Apache-2.0) and
+  WiimoteHook (https://github.com/epigramx/WiimoteHook, closed source, read
+  through its documentation): the Wii Remote hold-orientation presets the
+  Grip setting mirrors.
   PadForge's implementations are original C# and contain no code from
   these projects.
 

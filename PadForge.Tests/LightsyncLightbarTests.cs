@@ -25,6 +25,8 @@ namespace PadForge.Tests
         {
             private readonly object _lock = new();
             private readonly List<string> _calls = new();
+            private readonly string _tag;
+            private readonly List<string> _shared;
             public readonly List<(int R, int G, int B)> Lit = new();
 
             public volatile bool Present = true;
@@ -32,13 +34,34 @@ namespace PadForge.Tests
             public volatile bool InitOk = true;
             public volatile bool SetOk = true;
 
-            private void Log(string s) { lock (_lock) _calls.Add(s); }
+            /// <summary>When set, Init blocks on it after logging: the
+            /// unbounded native call of a G HUB cold start.</summary>
+            public ManualResetEventSlim InitGate;
+
+            /// <summary>Optional cross-instance log ("tag:call") so a test
+            /// with two services can order their engine calls.</summary>
+            public FakeNative(string tag = null, List<string> shared = null)
+            {
+                _tag = tag;
+                _shared = shared;
+            }
+
+            private void Log(string s)
+            {
+                lock (_lock) _calls.Add(s);
+                if (_shared != null) lock (_shared) _shared.Add(_tag + ":" + s);
+            }
             public string[] Calls { get { lock (_lock) return _calls.ToArray(); } }
             public int Count(string name) => Calls.Count(c => c == name);
 
             public bool SoftwarePresent() { Log("present"); return Present; }
             public bool TryLoad(out string detail) { Log("load"); detail = "fake"; return LoadOk; }
-            public bool Init() { Log("init"); return InitOk; }
+            public bool Init()
+            {
+                Log("init");
+                InitGate?.Wait();
+                return InitOk;
+            }
             public bool SetTargetAll() { Log("target"); return true; }
             public bool SaveCurrent() { Log("save"); return true; }
             public bool SetLighting(int r, int g, int b)
@@ -181,6 +204,76 @@ namespace PadForge.Tests
             fake.SetOk = true;
             Assert.True(WaitFor(() => fake.Lit.Count >= 1), "recovery never sent");
             lock (states) Assert.Contains(LightsyncServiceState.Connected, states);
+        }
+
+        /// <summary>A Stop that times out with the worker stuck inside the
+        /// SDK (Init during a G HUB cold start) orphans the worker, and the
+        /// owner disposes and recreates the service on re-enable. When the
+        /// orphan returns it must neither call LogiLedShutdown, which is
+        /// process-global and would tear down the new instance's session,
+        /// nor report into the old instance's Dashboard closure, and the
+        /// new worker must not touch the engine until the orphan is out
+        /// of it.</summary>
+        [Fact]
+        public void OrphanedWorker_NeverShutsDownOrReportsOverTheNewSession()
+        {
+            var shared = new List<string>();
+            using var gate = new ManualResetEventSlim(false);
+            var oldFake = new FakeNative("old", shared) { InitGate = gate };
+            var oldStates = new List<LightsyncServiceState>();
+            var oldSvc = new LightsyncLightbarService(oldFake,
+                retryMs: 100, pollMs: 10, settleMs: 5, presenceSettleMs: 5, livenessMs: 500,
+                stopWaitMs: 200);
+            oldSvc.StateChanged += s => { lock (oldStates) oldStates.Add(s); };
+            oldSvc.Start();
+            Assert.True(WaitFor(() => oldFake.Count("init") >= 1), "the old worker never reached Init");
+
+            // The owner's re-enable: dispose (Stop waits 200 ms and gives
+            // up), then a fresh instance.
+            long t0 = Environment.TickCount64;
+            oldSvc.Dispose();
+            Assert.True(Environment.TickCount64 - t0 < 2000, "Stop must return after its bounded wait");
+            int oldStatesAfterStop;
+            lock (oldStates) oldStatesAfterStop = oldStates.Count;
+
+            var newFake = new FakeNative("new", shared);
+            var newStates = new List<LightsyncServiceState>();
+            using var newSvc = new LightsyncLightbarService(newFake,
+                retryMs: 100, pollMs: 10, settleMs: 5, presenceSettleMs: 5, livenessMs: 500,
+                stopWaitMs: 200);
+            newSvc.StateChanged += s => { lock (newStates) newStates.Add(s); };
+            LightsyncLightbarService.Publish(255, 0, 0);
+            newSvc.Start();
+
+            // The new worker holds off the engine while the orphan is inside it.
+            Thread.Sleep(150);
+            Assert.Equal(0, newFake.Count("load"));
+
+            gate.Set();
+            Assert.True(WaitFor(() => newFake.Lit.Count >= 1), "the new worker never connected");
+            lock (newStates) Assert.Contains(LightsyncServiceState.Connected, newStates);
+
+            // The orphan unloaded without a restore-shutdown, and before the
+            // new worker loaded the engine.
+            Assert.True(WaitFor(() => oldFake.Count("unload") >= 1), "the orphan never unloaded");
+            Assert.Equal(0, oldFake.Count("restore-shutdown"));
+            string[] log;
+            lock (shared) log = shared.ToArray();
+            int oldUnload = Array.IndexOf(log, "old:unload");
+            int newLoad = Array.IndexOf(log, "new:load");
+            Assert.True(oldUnload >= 0 && newLoad > oldUnload, $"order was {string.Join(",", log)}");
+
+            // The old instance raised nothing after its Stop returned.
+            lock (oldStates)
+            {
+                Assert.Equal(oldStatesAfterStop, oldStates.Count);
+                Assert.DoesNotContain(LightsyncServiceState.Stopped, oldStates);
+            }
+
+            // The live session tears down normally.
+            newSvc.Stop();
+            Assert.True(newFake.Count("restore-shutdown") >= 1, "the live session must restore then shutdown");
+            lock (newStates) Assert.Equal(LightsyncServiceState.Stopped, newStates[^1]);
         }
 
         /// <summary>The feed and sibling source contracts: the publish

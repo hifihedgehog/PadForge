@@ -162,6 +162,111 @@ namespace PadForge.Tests
             Assert.True(PadForge.Services.InputService.HidHideSiblingSweepAllowed(new[] { ds, xbox }, ds));
         }
 
+        /// <summary>THE SECOND-PAD BUG (#391 follow-up). The sole-record
+        /// count passed for one enumeration interval after a second pad
+        /// of the same model was plugged in for the first time, since the
+        /// new pad had no record yet, and the sweep hid it. The sweep is
+        /// now scoped to the record's serial: a Sony pad reports its MAC
+        /// as the HID serial on both transports, so the record's own USB
+        /// and Bluetooth nodes match and any other pad's node does not,
+        /// whatever the count says. A node with no readable serial still
+        /// follows the count, and a record with no serial keeps the old
+        /// rule unchanged.</summary>
+        [Fact]
+        public void SweepSelection_IsScopedToTheRecordsSerial()
+        {
+            const string usb = @"HID\VID_054C&PID_0CE6&MI_03\9&2A1B3C4D&0&0000";
+            const string bt = @"HID\{00001124-0000-1000-8000-00805F9B34FB}_VID&0002054C_PID&0CE6\9&1479B2EE&0&0000";
+            const string second = @"HID\VID_054C&PID_0CE6&MI_03\9&5E6F7A8B&0&0000";
+            const string mute = @"HID\VID_054C&PID_0CE6&MI_03\9&0F0E0D0C&0&0000";
+            var candidates = new[] { usb, bt, second, mute };
+            // USB answers HidD with the bare twelve digits, the Bluetooth
+            // node's parent carries them in its instance id, the second
+            // pad has its own MAC, and the fourth node reads nothing.
+            var serials = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                [usb] = "0C27565874D8",
+                [bt] = "0c27565874d8",
+                [second] = "A1B2C3D4E5F6",
+            };
+            Func<string, string> reader = id => serials.TryGetValue(id, out var s) ? s : null;
+            // SDL's dash form, as Step 1 copies it into the record.
+            const string record = "0c-27-56-58-74-d8";
+
+            // Sole record of the product: the second pad's node is
+            // excluded all the same, and the unreadable node follows the
+            // count (on).
+            var picked = PadForge.Services.InputService.SelectHidHideSweepNodes(
+                record, candidates, true, reader, out bool bySerial, out int other, out int unread);
+            Assert.True(bySerial);
+            Assert.Equal(new[] { usb, bt, mute }, picked);
+            Assert.Equal(1, other);
+            Assert.Equal(1, unread);
+
+            // A second record of the product exists: the record's own USB
+            // and Bluetooth nodes are still hidden, the unreadable node
+            // follows the count (off).
+            picked = PadForge.Services.InputService.SelectHidHideSweepNodes(
+                record, candidates, false, reader, out bySerial, out other, out unread);
+            Assert.True(bySerial);
+            Assert.Equal(new[] { usb, bt }, picked);
+            Assert.Equal(1, other);
+            Assert.Equal(1, unread);
+
+            // No record serial, or an all-zero one: the old rule, unchanged.
+            picked = PadForge.Services.InputService.SelectHidHideSweepNodes(
+                null, candidates, true, reader, out bySerial, out other, out unread);
+            Assert.False(bySerial);
+            Assert.Equal(candidates, picked);
+            Assert.Equal(0, other + unread);
+            Assert.Empty(PadForge.Services.InputService.SelectHidHideSweepNodes(
+                "", candidates, false, reader, out _, out _, out _));
+            Assert.Empty(PadForge.Services.InputService.SelectHidHideSweepNodes(
+                "00:00:00:00:00:00", candidates, false, reader, out bySerial, out _, out _));
+            Assert.False(bySerial);
+            Assert.Empty(PadForge.Services.InputService.SelectHidHideSweepNodes(
+                record, null, true, reader, out _, out _, out _));
+
+            // A serial that is not an address compares as text, and a
+            // reader that throws reads as nothing.
+            Func<string, string> text = id => id == usb ? "not-a-mac" : throw new InvalidOperationException();
+            picked = PadForge.Services.InputService.SelectHidHideSweepNodes(
+                record, new[] { usb, bt }, false, text, out _, out other, out unread);
+            Assert.Empty(picked);
+            Assert.Equal(1, other);
+            Assert.Equal(1, unread);
+
+            // The diag line names the rule and the gate.
+            Assert.Equal("serial=match other=1 unread=1 gate=off(same=2)",
+                PadForge.Services.InputService.HidHideSweepDecision(true, false, 2, 1, 1));
+            Assert.Equal("serial=none gate=on",
+                PadForge.Services.InputService.HidHideSweepDecision(false, true, 1, 0, 0));
+
+            // The text half of the reader: the MAC segment of a BTHENUM
+            // instance id, both shapes, and nothing from anything else.
+            Assert.Equal("0C27565874D8", HidHideController.ParseBluetoothAddressSegment(
+                @"BTHENUM\{00001124-0000-1000-8000-00805f9b34fb}_VID&0002054C_PID&0CE6\9&1479B2EE&0&0C27565874D8_C00000000"));
+            Assert.Equal("0C27565874D8", HidHideController.ParseBluetoothAddressSegment(
+                @"BTHENUM\DEV_0C27565874D8\9&1479B2EE&0&BLUETOOTHDEVICE_0C27565874D8"));
+            Assert.Null(HidHideController.ParseBluetoothAddressSegment(bt));
+            Assert.Null(HidHideController.ParseBluetoothAddressSegment(
+                @"BTHENUM\{00001124-0000-1000-8000-00805f9b34fb}_VID&0002054C_PID&0CE6\9&1479B2EE&0&000000000000_C00000000"));
+            Assert.Null(HidHideController.ParseBluetoothAddressSegment(@"USB\VID_054C&PID_0CE6\0C27565874D8"));
+            Assert.Null(HidHideController.ParseBluetoothAddressSegment(null));
+
+            // The seam stands in for cfgmgr32 and hid.dll.
+            HidHideController.SerialReader = _ => "112233445566";
+            try
+            {
+                Assert.Equal("112233445566", HidHideController.ReadInstanceSerial(usb));
+            }
+            finally
+            {
+                HidHideController.SerialReader = null;
+            }
+            Assert.Null(HidHideController.ReadInstanceSerial(null));
+        }
+
         [Fact]
         public void ComputeMissing_IsACaseInsensitiveSetDifference()
         {
@@ -324,6 +429,15 @@ namespace PadForge.Tests
             Assert.Contains("internal static bool IsInstancePresent(string instanceId)", ctl);
             // Present means present: no phantom flag on the probe.
             Assert.Contains("CM_Locate_DevNodeW(out _, instanceId, 0) == CR_SUCCESS", ctl);
+            // The serial reader behind the scoped sweep: seam, text half,
+            // then the HID interface opened the hidapi way (access 0,
+            // read/write shared) and HidD_GetSerialNumberString.
+            Assert.Contains("internal static Func<string, string> SerialReader;", ctl);
+            Assert.Contains("internal static string ReadInstanceSerial(string instanceId)", ctl);
+            Assert.Contains("internal static string ParseBluetoothAddressSegment(string instanceId)", ctl);
+            Assert.Contains("CM_Get_Device_Interface_ListW(ref guid, instanceId, buffer, len,", ctl);
+            Assert.Contains("CreateFileW(interfacePath, 0, FILE_SHARE_READ | FILE_SHARE_WRITE,", ctl);
+            Assert.Contains("HidD_GetSerialNumberString(handle, bytes, (uint)bytes.Length)", ctl);
             // The two-call read: a null probe, then the exact size.
             Assert.Contains("if (!TryIo(ioctl, null, null, out int needed) || needed <= 0)", ctl);
             Assert.Contains("byte[] outBuffer = new byte[needed];", ctl);
@@ -351,20 +465,24 @@ namespace PadForge.Tests
             Assert.Contains("HIDHIDE apply devices=", body);
             Assert.Contains("HIDHIDE dev {ud.VendorId:X4}:{ud.ProdId:X4} id={instanceId} expanded=", body);
             // The first-pass sweep of present nodes sits in the real-path
-            // branch, behind the sole-record gate, and reports both outcomes.
+            // branch, scoped by serial with the sole-record gate as the
+            // fallback, and the line names the rule and the gate.
             Assert.Contains("bool sweepOn = HidHideSiblingSweepAllowed(snapshot, ud, out int same, null);", body);
-            Assert.Contains("foreach (var realId in FindInstanceIdsForDevice(ud))", body);
+            Assert.Contains("var picked = SelectHidHideSweepNodes(ud.SerialNumber, FindInstanceIdsForDevice(ud),", body);
             Assert.Contains("sweep={sweep.Count}", body);
-            Assert.Contains("sweep=off(same={same})", body);
-            // The synthetic branch is gated the same way and hides nothing
-            // for a record with a present twin, saying so.
+            Assert.Contains("HidHideSweepDecision(bySerial, sweepOn, same, other, unread)", body);
+            Assert.DoesNotContain("foreach (var realId in FindInstanceIdsForDevice(ud))", body);
+            // The synthetic branch is scoped the same way, hides nothing
+            // for a serial-less record with a present twin, and says so.
             int synthetic = body.IndexOf("// Fallback for synthetic paths", StringComparison.Ordinal);
             Assert.True(synthetic > 0);
-            int gate = body.IndexOf("if (!HidHideSiblingSweepAllowed(snapshot, ud, out int syntheticSame, null))", synthetic, StringComparison.Ordinal);
-            int resolve = body.IndexOf("var realIds = FindInstanceIdsForDevice(ud);", synthetic, StringComparison.Ordinal);
-            Assert.True(gate > synthetic && gate < resolve);
-            Assert.Contains("synthetic twin present: not hidden (same={syntheticSame})", body);
+            int gate = body.IndexOf("bool sweepOn = HidHideSiblingSweepAllowed(snapshot, ud, out int syntheticSame, null);", synthetic, StringComparison.Ordinal);
+            int resolve = body.IndexOf("? SelectHidHideSweepNodes(ud.SerialNumber, FindInstanceIdsForDevice(ud),", synthetic, StringComparison.Ordinal);
+            int twin = body.IndexOf("if (!sweepOn && realIds.Count == 0)", synthetic, StringComparison.Ordinal);
+            Assert.True(gate > synthetic && gate < resolve && resolve < twin);
+            Assert.Contains("synthetic twin present: not hidden (same={syntheticSame}) {decision}", body);
             Assert.Contains("HIDHIDE dev {ud.VendorId:X4}:{ud.ProdId:X4} synthetic path=", body);
+            Assert.Contains("cached={ud.HidHideInstanceIds.Count} {decision}", body);
             Assert.Contains("bool synced = HidHideController.SyncManagedDevices(desiredIds, out var added, out var removed);", body);
             Assert.Contains("MissingFromBlacklist(desiredIds)", body);
             Assert.Contains("readback=MISSING", body);

@@ -1,0 +1,3 @@
+# Store every text file with LF line endings whatever the committing machine uses.
+# Commit d30921e4 stored a CRLF copy of one file and turned a 167-line change into 12,000.
+* text=auto

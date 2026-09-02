@@ -11599,6 +11599,54 @@ namespace PadForge.Services
             => (bySerial ? $"serial=match other={other} unread={unread}" : "serial=none")
                + (soleRecord ? " gate=on" : $" gate=off(same={same})");
 
+        /// <summary>The nodes no hide may touch because they belong to a
+        /// device PadForge shows as its own row with Hide from Games OFF
+        /// (#400, discussion #397). A handheld's built-in controller is
+        /// one USB composite device whose touchpad is a separate row here,
+        /// and the pad's expansion used to hide that row's interface along
+        /// with every other HID sibling, then the VID/PID sweep hid its
+        /// HID node again. Each such row contributes its own HID node and
+        /// its same-container ancestors, so the expansion of any OTHER
+        /// record skips those nodes and never blocks a base container over
+        /// them. Interfaces PadForge does not show as rows stay with the
+        /// pad, exactly as before.
+        ///
+        /// <para>Online rows with a real HID path only. An offline record
+        /// is a memory, and letting one veto a live pad's sweep would
+        /// reopen the transport-switch double input (#391). Synthetic
+        /// paths (XInput#N, web://, overlay://) resolve to no HID node and
+        /// contribute nothing. The chain reader is a parameter so the tests
+        /// stand in for cfgmgr32. Production passes null and gets
+        /// <see cref="HidHideController.ChainInstanceIds"/>.</para></summary>
+        internal static HashSet<string> BuildHidHideKeepOut(
+            UserDevice[] snapshot, Func<string, IReadOnlyList<string>> chainOf)
+        {
+            var set = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            if (snapshot == null) return set;
+            chainOf ??= HidHideController.ChainInstanceIds;
+            foreach (var ud in snapshot)
+            {
+                if (ud == null || ud.HidHideEnabled || !ud.IsOnline) continue;
+                string id = HidHideController.DevicePathToInstanceId(ud.DevicePath);
+                if (id == null) continue;
+                if (!id.Contains("VID_", StringComparison.OrdinalIgnoreCase)
+                    && !id.Contains("VID&", StringComparison.OrdinalIgnoreCase))
+                    continue;
+                IReadOnlyList<string> chain;
+                try { chain = chainOf(id); }
+                catch { chain = new[] { id }; }
+                if (chain == null) continue;
+                foreach (var node in chain)
+                    if (!string.IsNullOrEmpty(node)) set.Add(node);
+            }
+            return set;
+        }
+
+        /// <summary>The diag suffix naming what the keep-out set removed
+        /// from one record's hide list, empty when nothing was.</summary>
+        private static string HidHideKeptNote(List<string> kept)
+            => kept == null || kept.Count == 0 ? "" : $" kept={kept.Count} [{string.Join(" | ", kept)}]";
+
         private static List<string> FindInstanceIdsForDevice(UserDevice ud)
         {
             var pidLookups = (ud.VendorId, ud.ProdId) switch
@@ -11801,6 +11849,14 @@ namespace PadForge.Services
                 var desiredIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                 bool cacheUpdated = false;
 
+                // #400: rows the user left visible own their nodes. Built
+                // once per apply from the same snapshot, consulted by every
+                // expansion and sweep below.
+                var keepOutSet = BuildHidHideKeepOut(snapshot, null);
+                Func<string, bool> keepOut = id => keepOutSet.Contains(id);
+                if (keepOutSet.Count > 0)
+                    hidLog.Add($"HIDHIDE keepout n={keepOutSet.Count} [{string.Join(" | ", keepOutSet)}]");
+
                 foreach (var ud in snapshot)
                 {
                     if (ud.HidHideEnabled && !string.IsNullOrEmpty(ud.DevicePath))
@@ -11825,7 +11881,8 @@ namespace PadForge.Services
                             // the XUSB base container or other HID children
                             // (Xbox 360 wired exposes an XUSB-class parent
                             // with multiple HID descendants).
-                            var expanded = HidHideController.ExpandToBaseContainerAndChildren(instanceId);
+                            var kept = new List<string>();
+                            var expanded = HidHideController.ExpandToBaseContainerAndChildren(instanceId, keepOut, kept);
                             foreach (var id in expanded)
                                 desiredIds.Add(id);
 
@@ -11863,14 +11920,16 @@ namespace PadForge.Services
                                 foreach (var realId in picked)
                                 {
                                     if (desiredIds.Contains(realId)) continue;
-                                    foreach (var id in HidHideController.ExpandToBaseContainerAndChildren(realId))
+                                    if (keepOut(realId)) { kept.Add(realId); continue; }
+                                    foreach (var id in HidHideController.ExpandToBaseContainerAndChildren(realId, keepOut, kept))
                                         if (desiredIds.Add(id)) sweep.Add(id);
                                 }
                             }
                             hidLog.Add(
                                 $"HIDHIDE dev {ud.VendorId:X4}:{ud.ProdId:X4} id={instanceId} expanded={expanded.Count} [{string.Join(" | ", expanded)}]"
                                 + $" sweep={sweep.Count} [{string.Join(" | ", sweep)}] "
-                                + HidHideSweepDecision(bySerial, sweepOn, same, other, unread));
+                                + HidHideSweepDecision(bySerial, sweepOn, same, other, unread)
+                                + HidHideKeptNote(kept));
                         }
                         // Fallback for synthetic paths (e.g., "XInput#0"): look up by VID/PID.
                         else if (ud.VendorId > 0 && ud.ProdId > 0)
@@ -11946,11 +12005,20 @@ namespace PadForge.Services
                                 }
                             }
 
-                            hidLog.Add(
-                                $"HIDHIDE dev {ud.VendorId:X4}:{ud.ProdId:X4} synthetic path={ud.DevicePath} vidpid ids={realIds.Count} cached={ud.HidHideInstanceIds.Count} {decision}");
+                            // #400: a VID/PID lookup on a composite pad returns
+                            // its sibling rows' HID nodes too (the Legion Go's
+                            // touchpad). Those never enter the cache or the
+                            // hide list while their own row says visible.
+                            var kept = new List<string>();
+                            realIds.RemoveAll(id =>
+                            {
+                                if (!keepOut(id)) return false;
+                                kept.Add(id);
+                                return true;
+                            });
                             if (realIds.Count > 0)
                             {
-                                // Merge — never discard cached IDs. Preserves
+                                // Merge, never discard cached IDs. Preserves
                                 // Controller 2's ID when only Controller 1 is online.
                                 foreach (var id in realIds)
                                 {
@@ -11961,16 +12029,27 @@ namespace PadForge.Services
                                     }
                                 }
                                 foreach (var id in ud.HidHideInstanceIds)
-                                    foreach (var expandedId in HidHideController.ExpandToBaseContainerAndChildren(id))
+                                {
+                                    // A cached id from before a sibling row was
+                                    // left visible follows that row now.
+                                    if (keepOut(id)) { kept.Add(id); continue; }
+                                    foreach (var expandedId in HidHideController.ExpandToBaseContainerAndChildren(id, keepOut, kept))
                                         desiredIds.Add(expandedId);
+                                }
                             }
                             else if (ud.HidHideInstanceIds.Count > 0)
                             {
-                                // Device is offline — use cached IDs to pre-emptively blacklist.
+                                // Device is offline. Use cached IDs to pre-emptively blacklist.
                                 foreach (var cachedId in ud.HidHideInstanceIds)
-                                    foreach (var expandedId in HidHideController.ExpandToBaseContainerAndChildren(cachedId))
+                                {
+                                    if (keepOut(cachedId)) { kept.Add(cachedId); continue; }
+                                    foreach (var expandedId in HidHideController.ExpandToBaseContainerAndChildren(cachedId, keepOut, kept))
                                         desiredIds.Add(expandedId);
+                                }
                             }
+                            hidLog.Add(
+                                $"HIDHIDE dev {ud.VendorId:X4}:{ud.ProdId:X4} synthetic path={ud.DevicePath} vidpid ids={realIds.Count} cached={ud.HidHideInstanceIds.Count} {decision}"
+                                + HidHideKeptNote(kept));
                         }
                     }
                 }

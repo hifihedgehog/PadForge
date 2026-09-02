@@ -3401,7 +3401,7 @@ You can retry later from Settings.</value></data>
   <data name="Macro_SlowInterval_Label" xml:space="preserve"><value>Slow Interval</value></data>
   <data name="Macro_SlowInterval_Tooltip" xml:space="preserve"><value>Repeat period at the lightest press. The Interval row above is the full-press period.</value></data>
   <data name="Macro_TurboRateCurve_Label" xml:space="preserve"><value>Rate Curve</value></data>
-  <data name="Macro_PressureTurboHint" xml:space="preserve"><value>Pick the analog source the rate follows: a trigger, or a DualShock 3 pressure axis (Axis 6-15).</value></data>
+  <data name="Macro_PressureTurboHint" xml:space="preserve"><value>Pick the analog source the rate follows: a trigger, a DualShock 3 pressure axis (Axis 6-15), or the stick this macro triggers on. When the source is the trigger’s own axis, the pressure follows the trigger’s direction, so a stick reads 0 at center and 1 at full push either way.</value></data>
   <data name="MacroAction_PressureSuffix" xml:space="preserve"><value>(pressure)</value></data>
   <data name="Macro_PressureStart_Label" xml:space="preserve"><value>Ramp Start</value></data>
   <data name="Macro_PressureStart_Tooltip" xml:space="preserve"><value>Pressure where the ramp begins. Below this, the rate stays at the Slow Interval.</value></data>

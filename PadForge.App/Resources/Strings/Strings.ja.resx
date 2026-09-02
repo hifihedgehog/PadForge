@@ -3350,7 +3350,7 @@
   <data name="Macro_SlowInterval_Label" xml:space="preserve"><value>低速インターバル</value></data>
   <data name="Macro_SlowInterval_Tooltip" xml:space="preserve"><value>最も軽く押したときの連射周期です。上のインターバルは全押し時の周期です。</value></data>
   <data name="Macro_TurboRateCurve_Label" xml:space="preserve"><value>レートカーブ</value></data>
-  <data name="Macro_PressureTurboHint" xml:space="preserve"><value>レートが追従するアナログソースを選択します。トリガーまたはDualShock 3の感圧軸(軸6-15)。</value></data>
+  <data name="Macro_PressureTurboHint" xml:space="preserve"><value>レートが追従するアナログソースを選びます。トリガー、DualShock 3 の圧力軸 (軸 6-15)、またはこのマクロを発動させるスティックです。ソースがトリガー自身の軸なら、圧力はトリガーの方向に従い、スティックはどちらの向きでも中央で 0、いっぱいに倒して 1 になります。</value></data>
   <data name="MacroAction_PressureSuffix" xml:space="preserve"><value>(感圧)</value></data>
   <data name="Macro_PressureStart_Label" xml:space="preserve"><value>ランプ開始</value></data>
   <data name="Macro_PressureStart_Tooltip" xml:space="preserve"><value>ランプが始まる押し込み量です。これ未満では低速インターバルのままです。</value></data>

@@ -3344,7 +3344,7 @@ Você pode tentar novamente mais tarde em Configurações.</value></data>
   <data name="Macro_SlowInterval_Label" xml:space="preserve"><value>Intervalo Lento</value></data>
   <data name="Macro_SlowInterval_Tooltip" xml:space="preserve"><value>Período de repetição no toque mais leve. O intervalo acima vale para o aperto completo.</value></data>
   <data name="Macro_TurboRateCurve_Label" xml:space="preserve"><value>Curva de Frequência</value></data>
-  <data name="Macro_PressureTurboHint" xml:space="preserve"><value>Escolha a fonte analógica que a frequência acompanha: um gatilho ou um eixo de pressão do DualShock 3 (Eixo 6-15).</value></data>
+  <data name="Macro_PressureTurboHint" xml:space="preserve"><value>Escolha a fonte analógica que a taxa segue: um gatilho, um eixo de pressão do DualShock 3 (eixos 6-15) ou o analógico que aciona esta macro. Se a fonte for o próprio eixo do acionador, a pressão segue a direção do acionador, então um analógico lê 0 no centro e 1 no fim do curso em qualquer sentido.</value></data>
   <data name="MacroAction_PressureSuffix" xml:space="preserve"><value>(pressão)</value></data>
   <data name="Macro_PressureStart_Label" xml:space="preserve"><value>Início da Rampa</value></data>
   <data name="Macro_PressureStart_Tooltip" xml:space="preserve"><value>Pressão onde a rampa começa. Abaixo disso, a frequência fica no intervalo lento.</value></data>

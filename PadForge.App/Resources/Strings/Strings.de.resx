@@ -3350,7 +3350,7 @@ Du kannst es später in den Einstellungen erneut versuchen.</value></data>
   <data name="Macro_SlowInterval_Label" xml:space="preserve"><value>Langsames Intervall</value></data>
   <data name="Macro_SlowInterval_Tooltip" xml:space="preserve"><value>Wiederholperiode bei leichtestem Druck. Das obige Intervall gilt bei vollem Druck.</value></data>
   <data name="Macro_TurboRateCurve_Label" xml:space="preserve"><value>Ratenkurve</value></data>
-  <data name="Macro_PressureTurboHint" xml:space="preserve"><value>Analoge Quelle wählen, der die Rate folgt: ein Trigger oder eine DualShock-3-Druckachse (Achse 6-15).</value></data>
+  <data name="Macro_PressureTurboHint" xml:space="preserve"><value>Wähle die analoge Quelle, der die Rate folgt: einen Trigger, eine DualShock-3-Druckachse (Achse 6-15) oder den Stick, der dieses Makro auslöst. Ist die Quelle die Achse des Auslösers selbst, folgt der Druck dessen Richtung, sodass ein Stick in der Mitte 0 und bei vollem Ausschlag 1 liest, in beide Richtungen.</value></data>
   <data name="MacroAction_PressureSuffix" xml:space="preserve"><value>(Druck)</value></data>
   <data name="Macro_PressureStart_Label" xml:space="preserve"><value>Rampenbeginn</value></data>
   <data name="Macro_PressureStart_Tooltip" xml:space="preserve"><value>Druck, bei dem die Rampe beginnt. Darunter bleibt die Rate beim langsamen Intervall.</value></data>

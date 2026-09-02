@@ -11413,6 +11413,13 @@ namespace PadForge.Services
         /// off and the record hides its own DevicePath only, as before, so
         /// a second identical pad is never hidden by the first.
         ///
+        /// <para>This count is the fallback rule only. A record with a
+        /// Bluetooth address for a serial scopes the sweep to nodes that
+        /// report the same serial, whatever the count says
+        /// (<see cref="SelectHidHideSweepNodes"/>). The count still
+        /// decides nodes whose serial cannot be read, and records with no
+        /// serial.</para>
+        ///
         /// <para>"Here" is the record itself, any online record, or an
         /// offline record whose persisted path or cached instance ids
         /// resolve to a PRESENT devnode (no phantoms). Counting every
@@ -11457,6 +11464,88 @@ namespace PadForge.Services
                     if (!string.IsNullOrEmpty(cachedId) && probe(cachedId)) return true;
             return false;
         }
+
+        /// <summary>Whether a record's serial is a Bluetooth address the
+        /// sweep can scope on: six hex octets, not all zero. A Sony pad's
+        /// record carries its MAC on both transports (SDL sets the device
+        /// serial from the pairing report over USB and from the HID
+        /// serial string over Bluetooth, and Step 1 copies it into
+        /// UserDevice.SerialNumber).</summary>
+        internal static bool HidHideSerialScopes(string serial, out long address)
+            => PadForge.Common.Input.BluetoothLinkHelper.TryParseAddress(serial, out address) && address != 0;
+
+        /// <summary>Which of the present nodes of a record's VID/PID the
+        /// sweep may hide (#391 follow-up). The sole-record count alone
+        /// had a hole: a second pad of the same model plugged in for the
+        /// first time has no record for one enumeration interval, the
+        /// count reads one, and the sweep hid the new pad too. The sweep
+        /// must never touch another pad, so it is scoped to the record's
+        /// own identity, its serial.
+        ///
+        /// <para>With a record serial that parses as a Bluetooth address:
+        /// a node whose serial equals it is kept whatever
+        /// <paramref name="soleRecord"/> says (both the pad's USB and
+        /// Bluetooth nodes report the same MAC), a node with a different
+        /// serial is never kept, and a node with no readable serial
+        /// follows the old count rule. Parsed addresses are compared when
+        /// both parse, else the strings, case-insensitively. With no such
+        /// record serial the old rule stands unchanged: every candidate
+        /// when the record is the sole present one of its product, none
+        /// otherwise. <paramref name="other"/> and <paramref name="unread"/>
+        /// count the nodes the serial check excluded and the nodes it could
+        /// not judge, for the diag line. The reader is a parameter so the
+        /// tests stand in for hid.dll. Production passes null and gets
+        /// <see cref="HidHideController.ReadInstanceSerial"/>.</para></summary>
+        internal static List<string> SelectHidHideSweepNodes(
+            string recordSerial, IReadOnlyList<string> candidates, bool soleRecord,
+            Func<string, string> serialReader, out bool bySerial, out int other, out int unread)
+        {
+            other = 0;
+            unread = 0;
+            var picked = new List<string>();
+            bySerial = HidHideSerialScopes(recordSerial, out long recordAddress);
+            if (candidates == null || candidates.Count == 0) return picked;
+
+            if (!bySerial)
+            {
+                if (soleRecord)
+                    foreach (var id in candidates)
+                        if (!string.IsNullOrEmpty(id)) picked.Add(id);
+                return picked;
+            }
+
+            serialReader ??= HidHideController.ReadInstanceSerial;
+            foreach (var id in candidates)
+            {
+                if (string.IsNullOrEmpty(id)) continue;
+                string nodeSerial;
+                try { nodeSerial = serialReader(id); }
+                catch { nodeSerial = null; }
+
+                if (string.IsNullOrWhiteSpace(nodeSerial))
+                {
+                    unread++;
+                    if (soleRecord) picked.Add(id);
+                    continue;
+                }
+
+                bool same = PadForge.Common.Input.BluetoothLinkHelper.TryParseAddress(nodeSerial, out long nodeAddress)
+                    ? nodeAddress == recordAddress
+                    : string.Equals(nodeSerial.Trim(), recordSerial.Trim(), StringComparison.OrdinalIgnoreCase);
+                if (same) picked.Add(id);
+                else other++;
+            }
+            return picked;
+        }
+
+        /// <summary>The sweep's decision for the diag line: which rule
+        /// chose the nodes and how the gate read. "serial=match other=1
+        /// unread=0 gate=off(same=2)" says the record's own nodes were
+        /// hidden by serial with a second pad present and left alone.
+        /// "serial=none gate=on" is the old count rule, sole record.</summary>
+        internal static string HidHideSweepDecision(bool bySerial, bool soleRecord, int same, int other, int unread)
+            => (bySerial ? $"serial=match other={other} unread={unread}" : "serial=none")
+               + (soleRecord ? " gate=on" : $" gate=off(same={same})");
 
         private static List<string> FindInstanceIdsForDevice(UserDevice ud)
         {
@@ -11700,16 +11789,26 @@ namespace PadForge.Services
                             // persistent double input. Sweep every PRESENT node of
                             // this VID/PID as well, so the live transport is hidden
                             // on the first pass whichever path the record carries.
-                            // Gated to a record that is the only PRESENT one of its
-                            // VID/PID, so two distinct pads never hide each other.
-                            // The diag line always says which way the gate went:
-                            // "sweep=off(same=N)" used to be silence, and silence
-                            // could not be told from a sweep that found nothing.
+                            // Scoped to the pad's own identity: a record with a
+                            // Bluetooth address for a serial hides only the present
+                            // nodes that report the same serial, so a second pad
+                            // of the same model is never touched, not even in the
+                            // interval before it has a record of its own. Nodes
+                            // with no readable serial, and records with no serial,
+                            // fall back to the sole-present-record gate. The diag
+                            // line always says which rule chose and which way the
+                            // gate went: "gate=off(same=N)" used to be silence, and
+                            // silence could not be told from a sweep that found
+                            // nothing.
                             var sweep = new List<string>();
                             bool sweepOn = HidHideSiblingSweepAllowed(snapshot, ud, out int same, null);
-                            if (sweepOn)
+                            bool bySerial = HidHideSerialScopes(ud.SerialNumber, out _);
+                            int other = 0, unread = 0;
+                            if (sweepOn || bySerial)
                             {
-                                foreach (var realId in FindInstanceIdsForDevice(ud))
+                                var picked = SelectHidHideSweepNodes(ud.SerialNumber, FindInstanceIdsForDevice(ud),
+                                    sweepOn, null, out bySerial, out other, out unread);
+                                foreach (var realId in picked)
                                 {
                                     if (desiredIds.Contains(realId)) continue;
                                     foreach (var id in HidHideController.ExpandToBaseContainerAndChildren(realId))
@@ -11718,26 +11817,35 @@ namespace PadForge.Services
                             }
                             hidLog.Add(
                                 $"HIDHIDE dev {ud.VendorId:X4}:{ud.ProdId:X4} id={instanceId} expanded={expanded.Count} [{string.Join(" | ", expanded)}]"
-                                + (sweepOn ? $" sweep={sweep.Count} [{string.Join(" | ", sweep)}]" : $" sweep=off(same={same})"));
+                                + $" sweep={sweep.Count} [{string.Join(" | ", sweep)}] "
+                                + HidHideSweepDecision(bySerial, sweepOn, same, other, unread));
                         }
                         // Fallback for synthetic paths (e.g., "XInput#0"): look up by VID/PID.
                         else if (ud.VendorId > 0 && ud.ProdId > 0)
                         {
-                            // The same sole-record gate as the sweep above. This
-                            // branch resolves by VID/PID alone, so with two
-                            // identical pads and one record on the XInput backend
-                            // it hid BOTH pads and cached both ids on the one
-                            // record, and the second pad stayed hidden from every
-                            // game with no record saying so. A twin present means
-                            // this record hides nothing, said out loud.
-                            if (!HidHideSiblingSweepAllowed(snapshot, ud, out int syntheticSame, null))
+                            // The same rules as the sweep above. This branch
+                            // resolves by VID/PID alone, so with two identical
+                            // pads and one record on the XInput backend it hid
+                            // BOTH pads and cached both ids on the one record,
+                            // and the second pad stayed hidden from every game
+                            // with no record saying so. A record with a serial
+                            // keeps only the nodes that report it. Without one,
+                            // a twin present means this record hides nothing,
+                            // said out loud.
+                            bool sweepOn = HidHideSiblingSweepAllowed(snapshot, ud, out int syntheticSame, null);
+                            bool bySerial = HidHideSerialScopes(ud.SerialNumber, out _);
+                            int other = 0, unread = 0;
+                            var realIds = (sweepOn || bySerial)
+                                ? SelectHidHideSweepNodes(ud.SerialNumber, FindInstanceIdsForDevice(ud),
+                                    sweepOn, null, out bySerial, out other, out unread)
+                                : new List<string>();
+                            string decision = HidHideSweepDecision(bySerial, sweepOn, syntheticSame, other, unread);
+                            if (!sweepOn && realIds.Count == 0)
                             {
                                 hidLog.Add(
-                                    $"HIDHIDE dev {ud.VendorId:X4}:{ud.ProdId:X4} synthetic twin present: not hidden (same={syntheticSame})");
+                                    $"HIDHIDE dev {ud.VendorId:X4}:{ud.ProdId:X4} synthetic twin present: not hidden (same={syntheticSame}) {decision}");
                                 continue;
                             }
-
-                            var realIds = FindInstanceIdsForDevice(ud);
 
                             // Scrub any HIDMaestro-manufactured instance IDs that
                             // got cached from a previous PadForge version whose
@@ -11787,7 +11895,7 @@ namespace PadForge.Services
                             }
 
                             hidLog.Add(
-                                $"HIDHIDE dev {ud.VendorId:X4}:{ud.ProdId:X4} synthetic path={ud.DevicePath} vidpid ids={realIds.Count} cached={ud.HidHideInstanceIds.Count}");
+                                $"HIDHIDE dev {ud.VendorId:X4}:{ud.ProdId:X4} synthetic path={ud.DevicePath} vidpid ids={realIds.Count} cached={ud.HidHideInstanceIds.Count} {decision}");
                             if (realIds.Count > 0)
                             {
                                 // Merge — never discard cached IDs. Preserves

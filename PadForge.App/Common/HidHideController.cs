@@ -90,8 +90,34 @@ namespace PadForge.Common
 
         private const uint GENERIC_READ = 0x80000000;
         private const uint GENERIC_WRITE = 0x40000000;
+        private const uint FILE_SHARE_READ = 0x1;
+        private const uint FILE_SHARE_WRITE = 0x2;
         private const uint OPEN_EXISTING = 3;
         private const uint FILE_ATTRIBUTE_NORMAL = 0x80;
+
+        // ─────────────────────────────────────────────
+        //  HID interface + serial string (the sweep's identity check)
+        // ─────────────────────────────────────────────
+
+        private static readonly Guid GUID_DEVINTERFACE_HID = new("4d1e55b2-f16f-11cf-88cb-001111000030");
+        private const uint CM_GET_DEVICE_INTERFACE_LIST_PRESENT = 0;
+
+        [DllImport("cfgmgr32.dll", CharSet = CharSet.Unicode)]
+        private static extern int CM_Get_Device_Interface_List_SizeW(
+            out uint pulLen, ref Guid interfaceClassGuid,
+            [MarshalAs(UnmanagedType.LPWStr)] string pDeviceID, uint ulFlags);
+
+        [DllImport("cfgmgr32.dll", CharSet = CharSet.Unicode)]
+        private static extern int CM_Get_Device_Interface_ListW(
+            ref Guid interfaceClassGuid, [MarshalAs(UnmanagedType.LPWStr)] string pDeviceID,
+            [Out] char[] buffer, uint bufferLen, uint ulFlags);
+
+        // BOOLEAN return, one byte, the same marshaling BluetoothLinkHelper
+        // uses for its own copy of this import.
+        [DllImport("hid.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        private static extern bool HidD_GetSerialNumberString(
+            SafeFileHandle hidDeviceObject, byte[] buffer, uint bufferLength);
 
         // ─────────────────────────────────────────────
         //  cfgmgr32 P/Invoke for base-container expansion
@@ -157,6 +183,13 @@ namespace PadForge.Common
         /// whole-list write, which is how the exact-size read and the
         /// driver-first sync are proven without the driver.</summary>
         internal static Func<uint, byte[], byte[], (bool ok, int bytes)> IoSeam;
+
+        /// <summary>Test seam, the same shape as the presence probe the
+        /// sweep gate takes: instance id to the node's serial string, or
+        /// null. Null in production, where <see cref="ReadInstanceSerial"/>
+        /// reads cfgmgr32 and hid.dll. A fake here lets the serial-scoped
+        /// sweep selection be proven without a pad on the bench.</summary>
+        internal static Func<string, string> SerialReader;
 
         /// <summary>Drops the in-process managed set, for tests that
         /// drive the sync through <see cref="IoSeam"/> from a clean
@@ -823,6 +856,160 @@ namespace PadForge.Common
             {
                 return false;
             }
+        }
+
+        /// <summary>The serial string of a HID node, by instance id, or
+        /// null when nothing is readable (#391 follow-up). The present-node
+        /// sweep hides a node only when this equals the record's serial,
+        /// so a second pad of the same model is never swept up with the
+        /// first.
+        ///
+        /// <para>A Sony pad reports its Bluetooth MAC as the HID serial on
+        /// both transports. Over USB, HidD_GetSerialNumberString returns
+        /// the twelve hex digits (SDL SDL_hidapi_ps5.c InitDevice reformats
+        /// a twelve-character device serial into aa-bb-cc-dd-ee-ff, and
+        /// SDL_hidapi_ps4.c does the same). Over Bluetooth Classic the
+        /// BTHENUM node carries the MAC in the last segment of its
+        /// instance id. The HID node itself is the BTHENUM node's child
+        /// and has no MAC in its own id, so the text check runs on the
+        /// node and then on its parent, which needs no handle at all.
+        /// Only then is the node's HID interface opened (cfgmgr32
+        /// interface list for GUID_DEVINTERFACE_HID, PRESENT flag) with
+        /// access 0 and read/write sharing, the hidapi enumeration open
+        /// (SDL src/hidapi/windows/hid.c open_device, share_mode
+        /// FILE_SHARE_READ|FILE_SHARE_WRITE), and HidD_GetSerialNumberString
+        /// is asked (hid.c 909). PadForge is whitelisted in HidHide, so the
+        /// open succeeds for a node already on the blacklist. BLE HID
+        /// nodes answer HidD with nothing (hid.c 613), and a node with no
+        /// readable serial falls back to the sole-record gate.</para>
+        ///
+        /// <para>Goes through <see cref="SerialReader"/> when a test
+        /// installed one.</para></summary>
+        internal static string ReadInstanceSerial(string instanceId)
+        {
+            if (string.IsNullOrEmpty(instanceId)) return null;
+            var seam = SerialReader;
+            if (seam != null) return seam(instanceId);
+            try
+            {
+                string serial = ParseBluetoothAddressSegment(instanceId);
+                if (serial != null) return serial;
+
+                if (CM_Locate_DevNodeW(out uint devInst, instanceId, 0) == CR_SUCCESS)
+                {
+                    // Two hops cover HID child under BTHENUM service node
+                    // under the BTHENUM device node.
+                    var idBuf = new StringBuilder(512);
+                    uint current = devInst;
+                    for (int hop = 0; hop < 2; hop++)
+                    {
+                        if (CM_Get_Parent(out uint parent, current, 0) != CR_SUCCESS) break;
+                        if (parent == 0 || parent == current) break;
+                        idBuf.Clear();
+                        idBuf.EnsureCapacity(512);
+                        if (CM_Get_Device_IDW(parent, idBuf, idBuf.Capacity, 0) == CR_SUCCESS)
+                        {
+                            serial = ParseBluetoothAddressSegment(idBuf.ToString());
+                            if (serial != null) return serial;
+                        }
+                        current = parent;
+                    }
+                }
+
+                return ReadHidSerialString(instanceId);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>Pure text check: the twelve-hex-digit Bluetooth address
+        /// in a BTHENUM instance id, else null. Two shapes carry it. The
+        /// service node ends its last segment with the address and a
+        /// channel suffix (BTHENUM\{...}_VID&amp;0002054C_PID&amp;0CE6\9&amp;1479B2EE&amp;0&amp;0C27565874D8_C00000000),
+        /// and the device node names it after DEV_ and again after
+        /// BLUETOOTHDEVICE_ (BTHENUM\DEV_0C27565874D8\9&amp;1479B2EE&amp;0&amp;BLUETOOTHDEVICE_0C27565874D8).
+        /// An all-zero address is no address.</summary>
+        internal static string ParseBluetoothAddressSegment(string instanceId)
+        {
+            if (string.IsNullOrEmpty(instanceId)) return null;
+            if (!instanceId.StartsWith(@"BTHENUM\", StringComparison.OrdinalIgnoreCase)) return null;
+
+            int slash = instanceId.LastIndexOf('\\');
+            if (slash < 0 || slash + 1 >= instanceId.Length) return null;
+            string leaf = instanceId.Substring(slash + 1);
+            int amp = leaf.LastIndexOf('&');
+            string tail = amp >= 0 ? leaf.Substring(amp + 1) : leaf;
+            foreach (var token in tail.Split('_'))
+            {
+                if (IsBluetoothAddressToken(token)) return token;
+            }
+
+            // BTHENUM\DEV_<mac>\...: the second segment.
+            const string devPrefix = @"BTHENUM\DEV_";
+            if (instanceId.StartsWith(devPrefix, StringComparison.OrdinalIgnoreCase)
+                && instanceId.Length >= devPrefix.Length + 12)
+            {
+                string token = instanceId.Substring(devPrefix.Length, 12);
+                if (IsBluetoothAddressToken(token)) return token;
+            }
+            return null;
+        }
+
+        private static bool IsBluetoothAddressToken(string token)
+        {
+            if (token == null || token.Length != 12) return false;
+            bool nonZero = false;
+            foreach (char c in token)
+            {
+                if (!Uri.IsHexDigit(c)) return false;
+                if (c != '0') nonZero = true;
+            }
+            return nonZero;
+        }
+
+        /// <summary>Opens each present HID interface of the instance and
+        /// returns the first non-empty serial string. Null when the
+        /// instance has no present HID interface, none opens, or the
+        /// device answers HidD with an empty string.</summary>
+        private static string ReadHidSerialString(string instanceId)
+        {
+            var guid = GUID_DEVINTERFACE_HID;
+            if (CM_Get_Device_Interface_List_SizeW(out uint len, ref guid, instanceId,
+                    CM_GET_DEVICE_INTERFACE_LIST_PRESENT) != CR_SUCCESS || len <= 1)
+                return null;
+            var buffer = new char[len];
+            if (CM_Get_Device_Interface_ListW(ref guid, instanceId, buffer, len,
+                    CM_GET_DEVICE_INTERFACE_LIST_PRESENT) != CR_SUCCESS)
+                return null;
+
+            // Multi-SZ: each path null-terminated, an empty string ends it.
+            int start = 0;
+            for (int i = 0; i < buffer.Length; i++)
+            {
+                if (buffer[i] != '\0') continue;
+                if (i == start) break;
+                string path = new string(buffer, start, i - start);
+                start = i + 1;
+                string serial = ReadHidSerialFromInterface(path);
+                if (serial != null) return serial;
+            }
+            return null;
+        }
+
+        private static string ReadHidSerialFromInterface(string interfacePath)
+        {
+            using var handle = CreateFileW(interfacePath, 0, FILE_SHARE_READ | FILE_SHARE_WRITE,
+                IntPtr.Zero, OPEN_EXISTING, 0, IntPtr.Zero);
+            if (handle == null || handle.IsInvalid) return null;
+            var bytes = new byte[512];
+            if (!HidD_GetSerialNumberString(handle, bytes, (uint)bytes.Length)) return null;
+            string s = Encoding.Unicode.GetString(bytes);
+            int nul = s.IndexOf('\0');
+            if (nul >= 0) s = s.Substring(0, nul);
+            s = s.Trim();
+            return s.Length == 0 ? null : s;
         }
 
         // ─────────────────────────────────────────────

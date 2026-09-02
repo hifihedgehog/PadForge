@@ -3403,4 +3403,5 @@ Vous pouvez réessayer plus tard depuis les Paramètres.</value></data>
   <data name="MacroAction_Type_VoiceListenWhileHeld" xml:space="preserve"><value>Écoute vocale (maintenu)</value></data>
   <data name="MacroAction_VoiceListenWhileHeld_Tooltip" xml:space="preserve"><value>Appuyer pour parler des macros vocales : tant que cette macro est maintenue, la reconnaissance écoute. Réglez l'écoute sur « Appuyer pour parler » dans Gérer les macros vocales.</value></data>
   <data name="DeviceType_Microphone" xml:space="preserve"><value>Micro</value></data>
+  <data name="Menu_Macro_Missing_Format" xml:space="preserve"><value>{0} (macro introuvable)</value></data>
 </root>

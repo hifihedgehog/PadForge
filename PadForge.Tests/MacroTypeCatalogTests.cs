@@ -127,4 +127,40 @@ namespace PadForge.Tests
             return File.ReadAllText(Path.Combine(new[] { dir.FullName }.Concat(parts).ToArray()));
         }
     }
+
+    /// <summary>The catalog captured its labels once as strings with no
+    /// Strings.CultureChanged hook, so a live language change left the
+    /// macro type picker in the old language, the Menus-tab bug (owner
+    /// report 2026-07-16) on one more list. In the serialized culture
+    /// collection because CurrentUICulture is process-global.</summary>
+    [Collection("CultureSwitching")]
+    public class MacroTypeCatalogCultureTests
+    {
+        [Fact]
+        public void Choices_RefillInPlaceOnCultureChange()
+        {
+            var before = System.Globalization.CultureInfo.CurrentUICulture;
+            try
+            {
+                PadForge.Resources.Strings.Strings.ChangeCulture(System.Globalization.CultureInfo.GetCultureInfo("en"));
+                var list = MacroTypeCatalog.Choices;
+                string en = list[0].Label;
+                Assert.Equal("Button Press", en);
+
+                PadForge.Resources.Strings.Strings.ChangeCulture(System.Globalization.CultureInfo.GetCultureInfo("pt-BR"));
+                var S = PadForge.Resources.Strings.Strings.Instance;
+                // The SAME list instance, refilled: an x:Static-bound view
+                // over a replaced list would keep the old one.
+                Assert.Same(list, MacroTypeCatalog.Choices);
+                Assert.NotEqual(en, MacroTypeCatalog.Choices[0].Label);
+                Assert.Equal(S.Macro_ButtonPress, MacroTypeCatalog.Choices[0].Label);
+                Assert.Equal(S.Macro_Cat_VcButtons, MacroTypeCatalog.Choices[0].Category);
+                Assert.Equal(Enum.GetValues<MacroActionType>().Length, MacroTypeCatalog.Choices.Count);
+            }
+            finally
+            {
+                PadForge.Resources.Strings.Strings.ChangeCulture(before);
+            }
+        }
+    }
 }

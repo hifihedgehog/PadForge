@@ -1,5 +1,7 @@
-﻿using PadForge.Common.Input;
+using System;
+using PadForge.Common.Input;
 using PadForge.Engine;
+using PadForge.Engine.Data;
 using PadForge.ViewModels;
 using Xunit;
 
@@ -113,6 +115,58 @@ namespace PadForge.Tests
             im.EvaluateSlotMacrosExtended(ref raw, macros);
 
             Assert.True(im.ToggleTouchpadOverlayRequested);
+        }
+
+        /// <summary>SwitchLayer (#377) is the third slot-level action, and
+        /// its gap was worse than inert: with no case, the raw loop never
+        /// advanced the action, so the run re-dispatched the no-op every
+        /// tick with CurrentActionIndex frozen. Drives the REAL shift
+        /// runtime from an Extended-slot macro: the layer engages and the
+        /// one-shot run finishes.</summary>
+        [Fact]
+        public void SwitchLayer_EngagesTheLayerOnRawHidSlot_AndTheRunAdvances()
+        {
+            var savedSets = SettingsManager.SlotMappingSets;
+            try
+            {
+                SettingsManager.SlotMappingSets = new MappingSet[InputManager.MaxPads];
+                var set = new MappingSet();
+                set.ShiftActivators.Add(new ShiftActivator
+                {
+                    LayerMask = "Shift1",
+                    LayerName = "Shift1",
+                    DeviceGuid = Guid.NewGuid().ToString(),
+                    Descriptor = "PadA",
+                });
+                SettingsManager.SlotMappingSets[0] = set;
+                InputManager.ClearShiftRuntime(0);
+
+                var im = new InputManager();
+                var m = RawTriggerMacro("switch", new MacroAction
+                {
+                    Type = MacroActionType.SwitchLayer,
+                    SwitchLayerMask = "Shift1",
+                });
+                var macros = new[] { m };
+                Assert.Equal("Base", InputManager.GetEngagedLayerMask(0, set));
+
+                var raw = RawHidState.Create(8, 32, 1);
+                raw.Buttons[0] = 1;
+                im.EvaluateSlotMacrosExtended(ref raw, macros);
+                Assert.Equal("Shift1", InputManager.GetEngagedLayerMask(0, set));
+
+                // The button up, one more tick: the one-shot advanced past
+                // its only action and the run is over, never re-dispatched.
+                raw = RawHidState.Create(8, 32, 1);
+                im.EvaluateSlotMacrosExtended(ref raw, macros);
+                Assert.False(m.IsExecuting);
+                Assert.Equal("Shift1", InputManager.GetEngagedLayerMask(0, set));
+            }
+            finally
+            {
+                SettingsManager.SlotMappingSets = savedSets;
+                InputManager.ClearShiftRuntime(0);
+            }
         }
     }
 }

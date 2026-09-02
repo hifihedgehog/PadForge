@@ -3397,4 +3397,5 @@ Você pode tentar novamente mais tarde em Configurações.</value></data>
   <data name="MacroAction_Type_VoiceListenWhileHeld" xml:space="preserve"><value>Escuta de Voz (Enquanto Segura)</value></data>
   <data name="MacroAction_VoiceListenWhileHeld_Tooltip" xml:space="preserve"><value>Apertar para falar dos Macros de Voz: enquanto este macro é segurado, o reconhecedor escuta. Defina a Escuta como "Apertar para Falar" em Gerenciar Macros de Voz.</value></data>
   <data name="DeviceType_Microphone" xml:space="preserve"><value>Microfone</value></data>
+  <data name="Menu_Macro_Missing_Format" xml:space="preserve"><value>{0} (macro inexistente)</value></data>
 </root>

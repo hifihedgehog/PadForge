@@ -6184,7 +6184,9 @@ namespace PadForge.ViewModels
         /// Subscribed once per pad VM to the static
         /// <see cref="MacroItem.Renamed"/> hook (pad VMs live for the
         /// app's lifetime). Runs on the UI thread like every other
-        /// editor mutation.</summary>
+        /// editor mutation. The match is case-insensitive, the menu
+        /// runtime's own comparer: a cell the runtime resolved to this
+        /// macro under the old name must follow it to the new one.</summary>
         private void OnMacroRenamed(MacroItem macro, string oldName, string newName)
         {
             if (macro == null || macro.PadIndex != PadIndex) return;
@@ -6196,7 +6198,7 @@ namespace PadForge.ViewModels
             {
                 if (def?.Items == null) continue;
                 foreach (var it in def.Items)
-                    if (it != null && string.Equals(it.MacroName, oldName, StringComparison.Ordinal))
+                    if (it != null && string.Equals(it.MacroName, oldName, StringComparison.OrdinalIgnoreCase))
                     {
                         it.MacroName = newName;
                         retagged = true;

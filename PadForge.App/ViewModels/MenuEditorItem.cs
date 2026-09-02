@@ -954,11 +954,16 @@ namespace PadForge.ViewModels
             // the shape flips back; deleting it made a Radial/Grid style
             // toggle silently destroy the user's bindings (Codex audit
             // 2026-07-16: grid cell 0 died on Grid-to-Radial, ring cell N
-            // and the center died the other way).
+            // and the center died the other way). "No data" is the same
+            // test DropItemIfEmpty applies, MacroName included (#390): a
+            // macro-only cell out past a smaller shape's reach was the one
+            // value space this list omitted, so Radial 8 to Grid 4 and
+            // back deleted it.
             if (Entry.Items != null)
             {
                 Entry.Items.RemoveAll(it => it == null
                     || ((string.IsNullOrEmpty(it.Label) && string.IsNullOrEmpty(it.Icon)
+                         && string.IsNullOrEmpty(it.MacroName)
                          && it.VirtualKey <= 0 && it.XboxButtons == 0 && it.ExtendedButton <= 0)
                         && (Entry.Kind == MenuKind.Radial
                             ? it.Index > Entry.CellCount || it.Index < 0 || (it.Index == 0 && !Entry.HasCenter)
@@ -1243,8 +1248,12 @@ namespace PadForge.ViewModels
 
         /// <summary>The slot's macro names for the Macro kind's picker
         /// (#390). A stale name the slot no longer declares appends as a
-        /// marked entry so the selection never lies. Built per read: the
-        /// list is tiny and follows live macro edits.</summary>
+        /// marked entry so the selection never lies, worded for what it
+        /// is (a macro that no longer exists, never "not on this slot
+        /// type", which is the button picker's sibling message for a
+        /// different condition). Built per read: the list is tiny and
+        /// follows live macro edits. Names compare case-insensitively,
+        /// the menu runtime's own comparer for resolving a cell.</summary>
         public IReadOnlyList<MenuHostOption> MacroOptions
         {
             get
@@ -1260,7 +1269,7 @@ namespace PadForge.ViewModels
                     list.Add(new MenuHostOption
                     {
                         Descriptor = cur,
-                        Label = string.Format(Strings.Instance.Menu_Binding_Unsupported_Format, cur),
+                        Label = string.Format(Strings.Instance.Menu_Macro_Missing_Format, cur),
                     });
                 return list;
             }
@@ -1268,14 +1277,16 @@ namespace PadForge.ViewModels
 
         /// <summary>The picked macro name. Setting it clears the other
         /// value spaces, the mutual-clear discipline every kind
-        /// follows.</summary>
+        /// follows. The no-change test is case-insensitive like the
+        /// runtime's resolve and the option list above, so a pick that
+        /// differs only in case is not a new binding.</summary>
         public string SelectedMacroName
         {
             get => _item?.MacroName ?? "";
             set
             {
                 string v = value ?? "";
-                if (v.Length == 0 || string.Equals(_item?.MacroName ?? "", v, StringComparison.Ordinal)) return;
+                if (v.Length == 0 || string.Equals(_item?.MacroName ?? "", v, StringComparison.OrdinalIgnoreCase)) return;
                 _item ??= _owner.EnsureItem(Index);
                 _item.MacroName = v;
                 _item.VirtualKey = 0;

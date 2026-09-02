@@ -518,18 +518,25 @@ namespace PadForge.Common.Input
                 // Skip macros with no trigger configured (unless Always /
                 // CustomExpression mode. Custom always has a formula that
                 // evaluates, even if the formula references no variables).
-                // #390: a CURRENT menu-cell stamp is a trigger too, and an
-                // executing macro must keep evaluating so a cell-started
-                // run completes and releases its latches (a stamp is one
-                // tick wide; only cell-started macros can be executing
-                // with no own trigger, so existing behavior is unchanged).
+                // #390: a CURRENT menu-cell stamp is a trigger too. A
+                // cell-only macro that has EVER been stamped keeps
+                // evaluating from then on, stamped or not: the unstamped
+                // tick is its release edge, and the edge tracking below
+                // (WasTriggerActive, the mode switch) plus the per-tick
+                // latch overlay only run past this guard. Skipping
+                // unstamped ticks made OnRelease, ShortPress, and
+                // SinglePress never fire, made OnPress a once-per-session
+                // event when the run finished inside the fire window, and
+                // dropped ToggleKey latches. The skip keeps only the
+                // never-stamped case (the -1 sentinel), so a cell-less
+                // macro with no trigger costs nothing, as before.
                 bool menuCellHeld = macro.MenuTriggerTick == MacroPassTick;
                 bool hasButtons = macro.UsesRawTrigger || macro.TriggerButtons != 0;
                 bool hasOwnTrigger = macro.TriggerMode == MacroTriggerMode.Always
                     || macro.TriggerMode == MacroTriggerMode.CustomExpression
                     || macro.UsesAxisTrigger || macro.UsesPovTrigger || hasButtons
                     || macro.UsesGestureTrigger || macro.UsesDescriptorTrigger;
-                if (!hasOwnTrigger && !menuCellHeld && !macro.IsExecuting)
+                if (!hasOwnTrigger && !menuCellHeld && !macro.IsExecuting && macro.MenuTriggerTick < 0)
                     continue;
 
                 // Determine trigger state. Buttons, POVs, gestures, descriptors,
@@ -2229,10 +2236,11 @@ namespace PadForge.Common.Input
         /// TRIGGER, never from a knob of its own: a macro that fires on a
         /// stick half already says which half.
         /// <list type="number">
-        /// <item>A trigger entry on the same device and axis as the pressure
-        /// source: Half Axis reads the deflection from center into the half
-        /// the entry selects (Invert = the lower half, Either = both sides);
-        /// a full-axis entry is trigger-style and reads raw / 65535 (Invert
+        /// <item>A trigger entry on the pressure source's axis, on the same
+        /// device or device-free (Guid.Empty, the "(Any device)" pick):
+        /// Half Axis reads the deflection from center into the half the
+        /// entry selects (Invert = the lower half, Either = both sides). A
+        /// full-axis entry is trigger-style and reads raw / 65535 (Invert
         /// flips it).</item>
         /// <item>Otherwise a legacy slot axis target on the corresponding
         /// gamepad axis (the AxisTargetToDeviceIndex table): Positive and
@@ -2258,6 +2266,12 @@ namespace PadForge.Common.Input
                 return absolute;
 
             // 1. A multi-device trigger entry on the pressure source's axis.
+            //    A device-free entry (Guid.Empty, the picker's "(Any
+            //    device)" form from TryBuildTriggerEntry) names the axis on
+            //    whichever slot device supplies it, so it matches any
+            //    source device, the same contract the trigger evaluation
+            //    gives it. Requiring an exact device match here skipped
+            //    every such entry and fell through to the absolute read.
             var entries = macro.GetTriggerInputEntries();
             if (entries != null)
             {
@@ -2265,7 +2279,7 @@ namespace PadForge.Common.Input
                 {
                     var e = entries[i];
                     if (e == null || e.AxisTarget == MacroAxisTarget.None) continue;
-                    if (e.DeviceGuid != action.SourceDeviceGuid) continue;
+                    if (e.DeviceGuid != Guid.Empty && e.DeviceGuid != action.SourceDeviceGuid) continue;
                     if (AxisTargetToDeviceIndex(e.AxisTarget) != action.SourceDeviceAxisIndex) continue;
                     if (!e.HalfAxis)
                         return e.Invert ? 1f - absolute : absolute;
@@ -4074,17 +4088,20 @@ namespace PadForge.Common.Input
 
                 // Skip macros with no trigger configured (unless Always /
                 // CustomExpression mode).
-                // #390: a CURRENT menu-cell stamp is a trigger too, and an
-                // executing macro must keep evaluating so a cell-started
-                // run completes and releases its latches (the Gamepad
-                // twin's exact rule).
+                // #390: a CURRENT menu-cell stamp is a trigger too, and a
+                // cell-only macro that has EVER been stamped keeps
+                // evaluating from then on so its unstamped tick lands as a
+                // release edge (OnRelease, ShortPress, SinglePress, the
+                // OnPress re-arm, the ToggleKey overlay). Only the never-
+                // stamped case (the -1 sentinel) skips, the Gamepad twin's
+                // exact rule.
                 bool menuCellHeld = macro.MenuTriggerTick == MacroPassTick;
                 bool hasButtons = macro.UsesRawTrigger || macro.UsesCustomTrigger || macro.TriggerButtons != 0;
                 bool hasOwnTrigger = macro.TriggerMode == MacroTriggerMode.Always
                     || macro.TriggerMode == MacroTriggerMode.CustomExpression
                     || macro.UsesAxisTrigger || macro.UsesPovTrigger || hasButtons
                     || macro.UsesGestureTrigger || macro.UsesDescriptorTrigger;
-                if (!hasOwnTrigger && !menuCellHeld && !macro.IsExecuting)
+                if (!hasOwnTrigger && !menuCellHeld && !macro.IsExecuting && macro.MenuTriggerTick < 0)
                     continue;
 
                 // Check trigger condition. Buttons, POVs, gestures, descriptors,
@@ -5060,13 +5077,17 @@ namespace PadForge.Common.Input
                     AdvanceAction(macro);
                     break;
 
-                // Slot-level actions, mirrored from the Gamepad loop. Both
-                // effects are output-type-independent (a global overlay
-                // request and a slot-keyed gyro latch, neither touching the
-                // Gamepad state), but slot routing is exclusive: a raw-HID
-                // surface runs THIS loop and never the Gamepad one. Without
-                // these cases the macro editor still offered both actions on
-                // an Extended slot and they silently did nothing.
+                // Slot-level actions, mirrored from the Gamepad loop. All
+                // three effects are output-type-independent (a global
+                // overlay request, a slot-keyed gyro latch, and a shift-
+                // runtime write, none touching the Gamepad state), but slot
+                // routing is exclusive: a raw-HID surface runs THIS loop
+                // and never the Gamepad one. Without these cases the macro
+                // editor still offered the actions on an Extended slot and
+                // they silently did nothing. SwitchLayer was worse than
+                // inert: with no case the default branch never advanced
+                // the action, so the run re-dispatched the same no-op
+                // every tick with CurrentActionIndex frozen.
                 case MacroActionType.ToggleTouchpadOverlay:
                     ToggleTouchpadOverlayRequested = true;
                     AdvanceAction(macro);
@@ -5091,6 +5112,19 @@ namespace PadForge.Common.Input
                                 break;
                         }
                     }
+                    AdvanceAction(macro);
+                    break;
+                }
+
+                case MacroActionType.SwitchLayer:
+                {
+                    // One-shot layer switch (#377) on the macro's own slot,
+                    // the Gamepad twin's exact case: the helper validates
+                    // the mask and writes the shift runtime with the Latch
+                    // discipline.
+                    int slotIndex = macro.PadIndex;
+                    if (slotIndex >= 0 && slotIndex < MaxPads)
+                        ApplyMacroLayerSwitch(slotIndex, action.SwitchLayerMask);
                     AdvanceAction(macro);
                     break;
                 }

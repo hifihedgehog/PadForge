@@ -3403,4 +3403,5 @@ Du kannst es später in den Einstellungen erneut versuchen.</value></data>
   <data name="MacroAction_Type_VoiceListenWhileHeld" xml:space="preserve"><value>Sprach-Zuhören (gehalten)</value></data>
   <data name="MacroAction_VoiceListenWhileHeld_Tooltip" xml:space="preserve"><value>Push-to-Talk für Sprachmakros: Solange dieses Makro gehalten wird, hört der Erkenner zu. Stellen Sie das Zuhören unter "Sprachmakros verwalten" auf Push-to-Talk.</value></data>
   <data name="DeviceType_Microphone" xml:space="preserve"><value>Mikrofon</value></data>
+  <data name="Menu_Macro_Missing_Format" xml:space="preserve"><value>{0} (kein solches Makro)</value></data>
 </root>

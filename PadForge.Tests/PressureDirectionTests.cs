@@ -155,6 +155,21 @@ namespace PadForge.Tests
             return count;
         }
 
+        /// <summary>A device-free entry (Guid.Empty, the picker's "(Any
+        /// device)" form) names the axis on whichever slot device
+        /// supplies it, so it directs the pressure like a device-bound
+        /// one. The exact-device match skipped it and fell through to the
+        /// absolute read, which is backward for a lower-half trigger.</summary>
+        [Fact]
+        public void DeviceFreeEntry_DirectsThePressureToo()
+        {
+            var m = WithEntry(MacroAxisTarget.LeftStickY, half: true, invert: true, either: false, device: Guid.Empty);
+            var a = Source(1);
+            Assert.Equal(1f, R(m, a, 0), 3);
+            Assert.Equal(0f, R(m, a, 65535), 3);
+            Assert.Equal(0f, R(m, a, 32768), 3);
+        }
+
         private static string RepoText(params string[] parts)
         {
             var dir = new DirectoryInfo(AppContext.BaseDirectory);

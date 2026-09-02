@@ -66,18 +66,30 @@ namespace PadForge.ViewModels
 
         private string _name = Strings.Instance.Macro_NewMacro;
 
+        /// <summary>True once <see cref="Name"/> has been assigned. The
+        /// field's initializer is the localized "New Macro" placeholder,
+        /// so the first assignment is construction (the settings loader's
+        /// object initializer, a test's initializer, the editor's Add),
+        /// not a rename. Announcing it retagged every menu cell whose
+        /// MacroName was literally "New Macro" to the macro being LOADED,
+        /// once per macro per profile load.</summary>
+        private bool _nameArmed;
+
         /// <summary>User-facing name for this macro. Menu cells reference
         /// macros by this name (#390), so a rename announces itself
         /// through <see cref="Renamed"/> and the subscriber retags the
         /// slot's menu cells, the RetagMacrosEverywhere discipline
-        /// applied to this reference.</summary>
+        /// applied to this reference. Only a change AFTER the first
+        /// assignment is a rename (<see cref="_nameArmed"/>).</summary>
         public string Name
         {
             get => _name;
             set
             {
                 string old = _name;
-                if (SetProperty(ref _name, value) && !string.IsNullOrEmpty(old)
+                bool armed = _nameArmed;
+                _nameArmed = true;
+                if (SetProperty(ref _name, value) && armed && !string.IsNullOrEmpty(old)
                     && !string.Equals(old, value, StringComparison.Ordinal))
                 {
                     try { Renamed?.Invoke(this, old, value); } catch { }

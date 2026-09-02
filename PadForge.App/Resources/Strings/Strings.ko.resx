@@ -3403,4 +3403,5 @@
   <data name="MacroAction_Type_VoiceListenWhileHeld" xml:space="preserve"><value>음성 듣기(누르는 동안)</value></data>
   <data name="MacroAction_VoiceListenWhileHeld_Tooltip" xml:space="preserve"><value>음성 매크로의 눌러서 말하기: 이 매크로를 누르는 동안 인식기가 듣습니다. 음성 매크로 관리에서 듣기를 "눌러서 말하기"로 설정하세요.</value></data>
   <data name="DeviceType_Microphone" xml:space="preserve"><value>마이크</value></data>
+  <data name="Menu_Macro_Missing_Format" xml:space="preserve"><value>{0} (해당 매크로 없음)</value></data>
 </root>

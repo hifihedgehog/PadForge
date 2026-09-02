@@ -1086,12 +1086,19 @@ namespace PadForge.Common.Input
         /// activator's own discipline, writing the shift runtime's
         /// CustomLayer override under the runtime lock with a version bump.
         /// "Base" (or empty) returns to the base layer and clears the
-        /// activator stack, so a toggled layer releases too; a Hold
-        /// activator still physically held re-engages on the next tick,
-        /// which is what Hold means. A mask the slot's set does not declare
-        /// is a NO-OP: the guard lives inside the operation, so a stale
-        /// action left behind by a layer rename or delete goes inert
-        /// instead of engaging a rowless layer.</summary>
+        /// activator stack AND the per-activator engagement state that
+        /// feeds it (ToggleOn, the Sticky trio, the Hold linger, the
+        /// auto-cancel epoch), the subset of <see cref="ShiftRuntime.Clear"/>
+        /// that is engagement rather than edge tracking. Clearing the
+        /// stack alone held Base for one tick: the Toggle case runs
+        /// UpdateStack from ToggleOn every tick and pushed the engaged
+        /// activator straight back, and a Sticky left StickyEngaged
+        /// orphaned. WasDown stays, so a Hold activator still physically
+        /// held re-engages on the next tick, which is what Hold means. A
+        /// mask the slot's set does not declare is a NO-OP: the guard
+        /// lives inside the operation, so a stale action left behind by a
+        /// layer rename or delete goes inert instead of engaging a
+        /// rowless layer.</summary>
         public static void ApplyMacroLayerSwitch(int slotIndex, string mask)
         {
             if (slotIndex < 0 || slotIndex >= _shiftRuntime.Length) return;
@@ -1129,6 +1136,16 @@ namespace PadForge.Common.Input
                 {
                     rt.CustomLayer = "";
                     rt.Stack.Clear();
+                    // Engagement state only, never the edge trackers
+                    // (WasDown, the double-press and host-gate arrays):
+                    // those decide what the NEXT physical edge means, and
+                    // a held Hold must read as still held.
+                    System.Array.Clear(rt.ToggleOn, 0, rt.ToggleOn.Length);
+                    System.Array.Clear(rt.StickyEngaged, 0, rt.StickyEngaged.Length);
+                    System.Array.Clear(rt.StickyConsumerActive, 0, rt.StickyConsumerActive.Length);
+                    System.Array.Clear(rt.StickyBaselines, 0, rt.StickyBaselines.Length);
+                    System.Array.Clear(rt.HoldLingerUntilTicks, 0, rt.HoldLingerUntilTicks.Length);
+                    System.Array.Clear(rt.AutoCancelLastActivityTicks, 0, rt.AutoCancelLastActivityTicks.Length);
                 }
                 else
                 {

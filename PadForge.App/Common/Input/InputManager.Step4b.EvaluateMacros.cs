@@ -1290,7 +1290,7 @@ namespace PadForge.Common.Input
                 if (a == null) continue;
                 if (a.Type == MacroActionType.ToggleVcButton)
                 {
-                    if (a.VcToggleLatched && LatchPhaseOn(a))
+                    if (a.VcToggleLatched && LatchPhaseOn(macro, a))
                     {
                         gp.Buttons |= a.ButtonFlags;
                         _macroPassOutputButtons |= a.ButtonFlags; // R1 overlay
@@ -1298,7 +1298,7 @@ namespace PadForge.Common.Input
                 }
                 else if (a.Type == MacroActionType.ToggleKey)
                 {
-                    if (a.KeyToggleLatched && LatchPhaseOn(a) && !_currentMacroSlotRestricted)
+                    if (a.KeyToggleLatched && LatchPhaseOn(macro, a) && !_currentMacroSlotRestricted)
                     {
                         var codes = a.ParsedKeyCodes;
                         for (int k = 0; k < codes.Length; k++)
@@ -1311,7 +1311,7 @@ namespace PadForge.Common.Input
                     // frame, the AxisHold shape. #237 yield gate applies:
                     // the latch stays latched, only the write yields, and
                     // unlatching re-arms the yield for the next latch.
-                    if (a.VcAxisToggleLatched && LatchPhaseOn(a) && !AxisWriteYields(in _preMacroGp, a))
+                    if (a.VcAxisToggleLatched && LatchPhaseOn(macro, a) && !AxisWriteYields(in _preMacroGp, a))
                         ApplyAxisHoldAction(ref gp, a);
                     if (!a.VcAxisToggleLatched)
                         _axisYielded.Remove(a);
@@ -1324,7 +1324,7 @@ namespace PadForge.Common.Input
                     // the reconcile releases and re-presses it (M3: this
                     // branch was the one latch that ignored the flag and
                     // held solid).
-                    if (a.MouseToggleLatched && LatchPhaseOn(a) && !_currentMacroSlotRestricted)
+                    if (a.MouseToggleLatched && LatchPhaseOn(macro, a) && !_currentMacroSlotRestricted)
                         _desiredLatchedMouseButtons.Add(a.MouseButton);
                 }
                 else if (a.Type == MacroActionType.ToggleWheel)
@@ -1334,7 +1334,7 @@ namespace PadForge.Common.Input
                     if (a.WheelToggleLatched && !_currentMacroSlotRestricted)
                     {
                         int interval = a.IntervalMs > 0 ? a.IntervalMs : 100;
-                        if (ShouldFireOneShot(a, interval, ReadTurboPressure(a)))
+                        if (ShouldFireOneShot(a, interval, ReadTurboPressure(macro, a)))
                             ExecuteMouseWheelTap(a);
                     }
                 }
@@ -1346,8 +1346,8 @@ namespace PadForge.Common.Input
         /// <see cref="MacroAction.PulseWhileLatched"/> composes Steam's
         /// toggle + hold_repeats. Instance since #290: the pulse rate can
         /// follow a live pressure source.</summary>
-        private bool LatchPhaseOn(MacroAction a)
-            => !a.PulseWhileLatched || TickRepeatVcButtonPhase(a, ReadTurboPressure(a));
+        private bool LatchPhaseOn(MacroItem macro, MacroAction a)
+            => !a.PulseWhileLatched || TickRepeatVcButtonPhase(a, ReadTurboPressure(macro, a));
 
         /// <summary>Mouse buttons the enabled macros' latched
         /// ToggleMouseButton actions want held down this frame (v18).
@@ -2031,7 +2031,7 @@ namespace PadForge.Common.Input
             {
                 var ca = macro.Actions[i];
                 if (!IsContinuousAction(ca.Type)) continue;
-                ExecuteSingleAction(ref gp, ca);
+                ExecuteSingleAction(ref gp, macro, ca);
             }
 
             // 2. Process the current sequential action (skip over continuous ones).
@@ -2111,7 +2111,7 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>Executes a single continuous action (no advance logic).</summary>
-        private void ExecuteSingleAction(ref Gamepad gp, MacroAction action)
+        private void ExecuteSingleAction(ref Gamepad gp, MacroItem macro, MacroAction action)
         {
             bool useDevice = action.AxisSource == MacroAxisSource.InputDevice;
             switch (action.Type)
@@ -2160,7 +2160,7 @@ namespace PadForge.Common.Input
                     break;
                 }
                 case MacroActionType.RepeatKeyWhileHeld:
-                    ExecuteRepeatKeyWhileHeld(action);
+                    ExecuteRepeatKeyWhileHeld(macro, action);
                     break;
                 case MacroActionType.VoiceListenWhileHeld:
                     // Push-to-talk (issue #315): a heartbeat per frame while
@@ -2173,7 +2173,7 @@ namespace PadForge.Common.Input
                     // the square wave ORs the target into the combined output
                     // exactly like a ButtonPress; the OFF half writes nothing,
                     // so the button reads released (gp is rebuilt per frame).
-                    if (TickRepeatVcButtonPhase(action, ReadTurboPressure(action)))
+                    if (TickRepeatVcButtonPhase(action, ReadTurboPressure(macro, action)))
                     {
                         gp.Buttons |= action.ButtonFlags;
                         _macroPassOutputButtons |= action.ButtonFlags; // R1 overlay
@@ -2185,7 +2185,7 @@ namespace PadForge.Common.Input
                     // on the ON half. gp is rebuilt per frame, so the OFF
                     // half reads released. #237 yield gate applies like
                     // the plain hold.
-                    if (TickRepeatVcButtonPhase(action, ReadTurboPressure(action)) && !AxisWriteYields(in _preMacroGp, action))
+                    if (TickRepeatVcButtonPhase(action, ReadTurboPressure(macro, action)) && !AxisWriteYields(in _preMacroGp, action))
                         ApplyAxisHoldAction(ref gp, action);
                     break;
             }
@@ -2197,9 +2197,9 @@ namespace PadForge.Common.Input
         /// parsed key. The timing state lives on the action (default MinValue) so
         /// the first held frame fires immediately, then firing is rate-limited to
         /// one pulse per <see cref="MacroAction.IntervalMs"/>.</summary>
-        private void ExecuteRepeatKeyWhileHeld(MacroAction action)
+        private void ExecuteRepeatKeyWhileHeld(MacroItem macro, MacroAction action)
         {
-            if (!ShouldFireOneShot(action, action.IntervalMs, ReadTurboPressure(action)))
+            if (!ShouldFireOneShot(action, action.IntervalMs, ReadTurboPressure(macro, action)))
                 return;
             var keyCodes = action.ParsedKeyCodes;
             if (keyCodes.Length == 0) return;
@@ -2224,10 +2224,89 @@ namespace PadForge.Common.Input
         // stick-to-wheel (Mapping.cs:5022-5051) and JoyShockMapper's scroll
         // (Stick.cpp:15-80).
 
+        /// <summary>Resolves the pressure-scaled turbo's 0..1 pressure from a
+        /// raw axis reading (#393, discussion #386). Direction comes from the
+        /// TRIGGER, never from a knob of its own: a macro that fires on a
+        /// stick half already says which half.
+        /// <list type="number">
+        /// <item>A trigger entry on the same device and axis as the pressure
+        /// source: Half Axis reads the deflection from center into the half
+        /// the entry selects (Invert = the lower half, Either = both sides);
+        /// a full-axis entry is trigger-style and reads raw / 65535 (Invert
+        /// flips it).</item>
+        /// <item>Otherwise a legacy slot axis target on the corresponding
+        /// gamepad axis (the AxisTargetToDeviceIndex table): Positive and
+        /// Negative read the deflection from center into that half, Any reads
+        /// raw / 65535.</item>
+        /// <item>Otherwise raw / 65535, byte-identical to the #290 read, so a
+        /// pressure source that is not the macro's trigger (a trigger or a
+        /// DualShock 3 pressure axis on a button-triggered macro) keeps
+        /// exactly what it shipped with.</item>
+        /// </list>
+        /// The bug this replaces: the read was always raw / 65535, the
+        /// stick's absolute position, so a push toward the low end read as
+        /// FALLING pressure and a gentle upward push repeated faster than a
+        /// hard one. Every direction now ramps 0 at rest to 1 at full push,
+        /// which is what the ramp endpoints, the curve, and the rate blend
+        /// were written against. The volume and mouse actions keep
+        /// ReadAxisFromDevice, where absolute position is the meaning.</summary>
+        internal static float ResolveTurboPressure01(MacroItem macro, MacroAction action, int raw)
+        {
+            if (raw < 0) raw = 0; else if (raw > 65535) raw = 65535;
+            float absolute = raw / 65535f;
+            if (macro == null || action == null || action.SourceDeviceAxisIndex < 0)
+                return absolute;
+
+            // 1. A multi-device trigger entry on the pressure source's axis.
+            var entries = macro.GetTriggerInputEntries();
+            if (entries != null)
+            {
+                for (int i = 0; i < entries.Count; i++)
+                {
+                    var e = entries[i];
+                    if (e == null || e.AxisTarget == MacroAxisTarget.None) continue;
+                    if (e.DeviceGuid != action.SourceDeviceGuid) continue;
+                    if (AxisTargetToDeviceIndex(e.AxisTarget) != action.SourceDeviceAxisIndex) continue;
+                    if (!e.HalfAxis)
+                        return e.Invert ? 1f - absolute : absolute;
+                    if (e.Bidirectional)
+                        return Math.Min(1f, Math.Abs(raw - 32768) / 32768f);
+                    return e.Invert
+                        ? Math.Max(0f, (32768 - raw) / 32768f)
+                        : Math.Max(0f, (raw - 32768) / 32767f);
+                }
+            }
+
+            // 2. A legacy slot axis target on the corresponding gamepad axis.
+            var targets = macro.TriggerAxisTargets;
+            if (targets != null)
+            {
+                for (int i = 0; i < targets.Length; i++)
+                {
+                    if (AxisTargetToDeviceIndex(targets[i]) != action.SourceDeviceAxisIndex) continue;
+                    var dir = macro.GetAxisDirection(i);
+                    if (dir == MacroAxisDirection.Positive) return Math.Max(0f, (raw - 32768) / 32767f);
+                    if (dir == MacroAxisDirection.Negative) return Math.Max(0f, (32768 - raw) / 32768f);
+                    return absolute;
+                }
+            }
+
+            // 3. Not the trigger's axis: the absolute read, as shipped.
+            return absolute;
+        }
+
         /// <summary>The action's live 0..1 pressure when its gate is on,
         /// otherwise 0 (unused by the legacy paths).</summary>
-        private float ReadTurboPressure(MacroAction action)
-            => action.PressureScaledRate ? ReadAxisFromDevice(action) : 0f;
+        private float ReadTurboPressure(MacroItem macro, MacroAction action)
+        {
+            if (!action.PressureScaledRate) return 0f;
+            if (action.SourceDeviceGuid == Guid.Empty || action.SourceDeviceAxisIndex < 0) return 0f;
+            var device = FindOnlineDeviceByInstanceGuid(action.SourceDeviceGuid);
+            if (device == null || device.InputState == null || device.InputState.Axis == null
+                || action.SourceDeviceAxisIndex >= device.InputState.Axis.Length)
+                return 0f;
+            return ResolveTurboPressure01(macro, action, device.InputState.Axis[action.SourceDeviceAxisIndex]);
+        }
 
         /// <summary>Pressure-scaled repeat rate in Hz (#290):
         /// <see cref="MacroAction.SlowIntervalMs"/> at zero pressure,
@@ -4341,7 +4420,7 @@ namespace PadForge.Common.Input
                 if (a == null) continue;
                 if (a.Type == MacroActionType.ToggleVcButton)
                 {
-                    if (a.VcToggleLatched && LatchPhaseOn(a) && raw.Buttons != null)
+                    if (a.VcToggleLatched && LatchPhaseOn(macro, a) && raw.Buttons != null)
                     {
                         var cw = a.CustomButtonWords;
                         for (int w = 0; w < raw.Buttons.Length && w < cw.Length; w++)
@@ -4354,7 +4433,7 @@ namespace PadForge.Common.Input
                 }
                 else if (a.Type == MacroActionType.ToggleKey)
                 {
-                    if (a.KeyToggleLatched && LatchPhaseOn(a) && !_currentMacroSlotRestricted)
+                    if (a.KeyToggleLatched && LatchPhaseOn(macro, a) && !_currentMacroSlotRestricted)
                     {
                         var codes = a.ParsedKeyCodes;
                         for (int k = 0; k < codes.Length; k++)
@@ -4364,7 +4443,7 @@ namespace PadForge.Common.Input
                 else if (a.Type == MacroActionType.ToggleVcAxis || a.Type == MacroActionType.AxisSetLatched)
                 {
                     // #237 yield gate, the Gamepad-path twin's rationale.
-                    if (a.VcAxisToggleLatched && LatchPhaseOn(a) && raw.Axes != null)
+                    if (a.VcAxisToggleLatched && LatchPhaseOn(macro, a) && raw.Axes != null)
                     {
                         int yIdx = MacroAxisTargetToRawIndex(a.AxisTarget);
                         bool yields = yIdx >= 0 && yIdx < _preMacroRawAxes.Length
@@ -4378,7 +4457,7 @@ namespace PadForge.Common.Input
                 else if (a.Type == MacroActionType.ToggleMouseButton)
                 {
                     // LatchPhaseOn: the Gamepad-path twin's rationale (M3).
-                    if (a.MouseToggleLatched && LatchPhaseOn(a) && !_currentMacroSlotRestricted)
+                    if (a.MouseToggleLatched && LatchPhaseOn(macro, a) && !_currentMacroSlotRestricted)
                         _desiredLatchedMouseButtons.Add(a.MouseButton);
                 }
                 else if (a.Type == MacroActionType.ToggleWheel)
@@ -4386,7 +4465,7 @@ namespace PadForge.Common.Input
                     if (a.WheelToggleLatched && !_currentMacroSlotRestricted)
                     {
                         int interval = a.IntervalMs > 0 ? a.IntervalMs : 100;
-                        if (ShouldFireOneShot(a, interval, ReadTurboPressure(a)))
+                        if (ShouldFireOneShot(a, interval, ReadTurboPressure(macro, a)))
                             ExecuteMouseWheelTap(a);
                     }
                 }
@@ -4422,7 +4501,7 @@ namespace PadForge.Common.Input
             {
                 var ca = macro.Actions[i];
                 if (!IsContinuousAction(ca.Type)) continue;
-                ExecuteSingleActionRaw(ref raw, ca);
+                ExecuteSingleActionRaw(ref raw, macro, ca);
             }
 
             // 2. Process the current sequential action (skip over continuous ones).
@@ -4499,7 +4578,7 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>Executes a single continuous action for Extended raw state.</summary>
-        private void ExecuteSingleActionRaw(ref RawHidState raw, MacroAction action)
+        private void ExecuteSingleActionRaw(ref RawHidState raw, MacroItem macro, MacroAction action)
         {
             bool useDevice = action.AxisSource == MacroAxisSource.InputDevice;
             switch (action.Type)
@@ -4548,7 +4627,7 @@ namespace PadForge.Common.Input
                     break;
                 }
                 case MacroActionType.RepeatKeyWhileHeld:
-                    ExecuteRepeatKeyWhileHeld(action);
+                    ExecuteRepeatKeyWhileHeld(macro, action);
                     break;
                 case MacroActionType.VoiceListenWhileHeld:
                     // Push-to-talk (issue #315), the twin of the slot-macro
@@ -4559,7 +4638,7 @@ namespace PadForge.Common.Input
                     // Extended twin of the Gamepad-path turbo (issue #9 wave
                     // 1b): the ON half ORs the action's wide button words in,
                     // mirroring the Extended ButtonPress case.
-                    if (TickRepeatVcButtonPhase(action, ReadTurboPressure(action)) && raw.Buttons != null)
+                    if (TickRepeatVcButtonPhase(action, ReadTurboPressure(macro, action)) && raw.Buttons != null)
                     {
                         var cw = action.CustomButtonWords;
                         for (int w = 0; w < raw.Buttons.Length && w < cw.Length; w++)
@@ -4573,7 +4652,7 @@ namespace PadForge.Common.Input
                 case MacroActionType.RepeatVcAxisWhileHeld:
                     // Extended twin of the axis turbo (v18). #237 yield
                     // gate applies like the plain hold.
-                    if (TickRepeatVcButtonPhase(action, ReadTurboPressure(action)) && raw.Axes != null)
+                    if (TickRepeatVcButtonPhase(action, ReadTurboPressure(macro, action)) && raw.Axes != null)
                     {
                         if (!AxisWriteYieldsRawValueAt(
                                 MacroAxisTargetToRawIndex(action.AxisTarget), action))

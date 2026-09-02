@@ -3350,7 +3350,7 @@ Puedes volver a intentarlo más tarde desde Configuración.</value></data>
   <data name="Macro_SlowInterval_Label" xml:space="preserve"><value>Intervalo lento</value></data>
   <data name="Macro_SlowInterval_Tooltip" xml:space="preserve"><value>Período de repetición con la pulsación más suave. El intervalo de arriba es el de pulsación completa.</value></data>
   <data name="Macro_TurboRateCurve_Label" xml:space="preserve"><value>Curva de frecuencia</value></data>
-  <data name="Macro_PressureTurboHint" xml:space="preserve"><value>Elige la fuente analógica que sigue la frecuencia: un gatillo o un eje de presión de DualShock 3 (Eje 6-15).</value></data>
+  <data name="Macro_PressureTurboHint" xml:space="preserve"><value>Elige la fuente analógica que sigue la frecuencia: un gatillo, un eje de presión de DualShock 3 (ejes 6-15) o el stick con el que se dispara esta macro. Si la fuente es el propio eje del disparador, la presión sigue la dirección del disparador, de modo que un stick lee 0 en el centro y 1 a tope en cualquiera de los dos sentidos.</value></data>
   <data name="MacroAction_PressureSuffix" xml:space="preserve"><value>(presión)</value></data>
   <data name="Macro_PressureStart_Label" xml:space="preserve"><value>Inicio de rampa</value></data>
   <data name="Macro_PressureStart_Tooltip" xml:space="preserve"><value>Presión donde comienza la rampa. Por debajo, la frecuencia se mantiene en el intervalo lento.</value></data>

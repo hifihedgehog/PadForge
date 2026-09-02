@@ -3350,7 +3350,7 @@ Vous pouvez réessayer plus tard depuis les Paramètres.</value></data>
   <data name="Macro_SlowInterval_Label" xml:space="preserve"><value>Intervalle lent</value></data>
   <data name="Macro_SlowInterval_Tooltip" xml:space="preserve"><value>Période de répétition à l'appui le plus léger. L'intervalle ci-dessus s'applique à l'appui complet.</value></data>
   <data name="Macro_TurboRateCurve_Label" xml:space="preserve"><value>Courbe de cadence</value></data>
-  <data name="Macro_PressureTurboHint" xml:space="preserve"><value>Choisissez la source analogique suivie par la cadence : une gâchette ou un axe de pression DualShock 3 (axe 6-15).</value></data>
+  <data name="Macro_PressureTurboHint" xml:space="preserve"><value>Choisissez la source analogique que suit la cadence : une gâchette, un axe de pression DualShock 3 (axes 6-15) ou le stick qui déclenche cette macro. Si la source est l’axe du déclencheur lui-même, la pression suit la direction du déclencheur, donc un stick lit 0 au centre et 1 à fond dans les deux sens.</value></data>
   <data name="MacroAction_PressureSuffix" xml:space="preserve"><value>(pression)</value></data>
   <data name="Macro_PressureStart_Label" xml:space="preserve"><value>Début de rampe</value></data>
   <data name="Macro_PressureStart_Tooltip" xml:space="preserve"><value>Pression où la rampe commence. En dessous, la cadence reste à l'intervalle lent.</value></data>

@@ -3350,7 +3350,7 @@
   <data name="Macro_SlowInterval_Label" xml:space="preserve"><value>느린 간격</value></data>
   <data name="Macro_SlowInterval_Tooltip" xml:space="preserve"><value>가장 살짝 눌렀을 때의 반복 주기입니다. 위의 간격은 완전히 눌렀을 때 적용됩니다.</value></data>
   <data name="Macro_TurboRateCurve_Label" xml:space="preserve"><value>속도 곡선</value></data>
-  <data name="Macro_PressureTurboHint" xml:space="preserve"><value>속도가 따라갈 아날로그 소스를 선택하세요. 트리거 또는 DualShock 3 압력 축(축 6-15).</value></data>
+  <data name="Macro_PressureTurboHint" xml:space="preserve"><value>속도가 따라갈 아날로그 소스를 선택합니다. 트리거, DualShock 3 압력 축(축 6-15), 또는 이 매크로를 발동하는 스틱입니다. 소스가 트리거 자체의 축이면 압력은 트리거의 방향을 따르므로, 스틱은 어느 방향이든 중앙에서 0, 끝까지 밀면 1로 읽힙니다.</value></data>
   <data name="MacroAction_PressureSuffix" xml:space="preserve"><value>(압력)</value></data>
   <data name="Macro_PressureStart_Label" xml:space="preserve"><value>램프 시작</value></data>
   <data name="Macro_PressureStart_Tooltip" xml:space="preserve"><value>램프가 시작되는 압력입니다. 이보다 약하면 느린 간격이 유지됩니다.</value></data>

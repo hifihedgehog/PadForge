@@ -3350,7 +3350,7 @@
   <data name="Macro_SlowInterval_Label" xml:space="preserve"><value>慢速间隔</value></data>
   <data name="Macro_SlowInterval_Tooltip" xml:space="preserve"><value>最轻按压时的连发周期。上方的间隔为全力按下时的周期。</value></data>
   <data name="Macro_TurboRateCurve_Label" xml:space="preserve"><value>速率曲线</value></data>
-  <data name="Macro_PressureTurboHint" xml:space="preserve"><value>选择速率跟随的模拟源:扳机或 DualShock 3 压感轴(轴 6-15)。</value></data>
+  <data name="Macro_PressureTurboHint" xml:space="preserve"><value>选择频率所跟随的模拟源：扳机、DualShock 3 压力轴（轴 6-15），或触发此宏的摇杆。若来源就是触发器自身的轴，压力将跟随触发器的方向，因此摇杆在中心读作 0，推到底读作 1，两个方向皆然。</value></data>
   <data name="MacroAction_PressureSuffix" xml:space="preserve"><value>(压感)</value></data>
   <data name="Macro_PressureStart_Label" xml:space="preserve"><value>斜坡起点</value></data>
   <data name="Macro_PressureStart_Tooltip" xml:space="preserve"><value>斜坡开始的按压力度。低于此值时保持慢速间隔。</value></data>

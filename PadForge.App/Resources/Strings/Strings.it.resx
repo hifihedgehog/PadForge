@@ -3372,7 +3372,7 @@ Puoi riprovare più tardi dalle Impostazioni.</value></data>
   <data name="Macro_SlowInterval_Label" xml:space="preserve"><value>Intervallo lento</value></data>
   <data name="Macro_SlowInterval_Tooltip" xml:space="preserve"><value>Periodo di ripetizione alla pressione più leggera. L'intervallo qui sopra vale a pressione completa.</value></data>
   <data name="Macro_TurboRateCurve_Label" xml:space="preserve"><value>Curva di frequenza</value></data>
-  <data name="Macro_PressureTurboHint" xml:space="preserve"><value>Scegli la sorgente analogica seguita dalla frequenza: un grilletto o un asse di pressione del DualShock 3 (asse 6-15).</value></data>
+  <data name="Macro_PressureTurboHint" xml:space="preserve"><value>Scegli la sorgente analogica che la frequenza segue: un grilletto, un asse di pressione DualShock 3 (assi 6-15) o lo stick con cui questa macro si attiva. Se la sorgente è l’asse dell’attivatore stesso, la pressione segue la direzione dell’attivatore, quindi uno stick legge 0 al centro e 1 a fondo corsa in entrambi i versi.</value></data>
   <data name="MacroAction_PressureSuffix" xml:space="preserve"><value>(pressione)</value></data>
   <data name="Macro_PressureStart_Label" xml:space="preserve"><value>Inizio rampa</value></data>
   <data name="Macro_PressureStart_Tooltip" xml:space="preserve"><value>Pressione da cui parte la rampa. Al di sotto, la frequenza resta all'intervallo lento.</value></data>

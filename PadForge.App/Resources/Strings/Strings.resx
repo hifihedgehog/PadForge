@@ -715,19 +715,19 @@
   <data name="Pad_Lighting_Mode_Breathing" xml:space="preserve"><value>Breathing (Single Color Fades)</value></data>
   <data name="Pad_Lighting_Mode_Rainbow" xml:space="preserve"><value>Rainbow Cycle</value></data>
   <data name="Pad_Lighting_Mode_ColorCycle" xml:space="preserve"><value>Color Cycle</value></data>
-  <data name="Pad_Lighting_Mode_AudioPulse" xml:space="preserve"><value>Audio Pulse — Static Color</value></data>
-  <data name="Pad_Lighting_Mode_AudioPulseRandom" xml:space="preserve"><value>Audio Pulse — Random Color per Beat</value></data>
-  <data name="Pad_Lighting_Mode_AudioPulseRainbow" xml:space="preserve"><value>Audio Pulse — Rainbow Cycle</value></data>
-  <data name="Pad_Lighting_Mode_AudioThresholds" xml:space="preserve"><value>Audio Bands — Three Colors, Hard Transitions</value></data>
-  <data name="Pad_Lighting_Mode_AudioGradient" xml:space="preserve"><value>Audio Bands — Three Colors, Smooth Gradient</value></data>
-  <data name="Pad_Lighting_Mode_AudioCrossFade" xml:space="preserve"><value>Audio Bands — Three Colors, Crossfade at Boundaries</value></data>
-  <data name="Pad_Lighting_Mode_Battery" xml:space="preserve"><value>Battery — Gradient by Charge Level</value></data>
-  <data name="Pad_Lighting_Mode_Strobe" xml:space="preserve"><value>Strobe — Square-Wave Flash</value></data>
+  <data name="Pad_Lighting_Mode_AudioPulse" xml:space="preserve"><value>Audio Pulse: Static Color</value></data>
+  <data name="Pad_Lighting_Mode_AudioPulseRandom" xml:space="preserve"><value>Audio Pulse: Random Color per Beat</value></data>
+  <data name="Pad_Lighting_Mode_AudioPulseRainbow" xml:space="preserve"><value>Audio Pulse: Rainbow Cycle</value></data>
+  <data name="Pad_Lighting_Mode_AudioThresholds" xml:space="preserve"><value>Audio Bands: Three Colors, Hard Transitions</value></data>
+  <data name="Pad_Lighting_Mode_AudioGradient" xml:space="preserve"><value>Audio Bands: Three Colors, Smooth Gradient</value></data>
+  <data name="Pad_Lighting_Mode_AudioCrossFade" xml:space="preserve"><value>Audio Bands: Three Colors, Crossfade at Boundaries</value></data>
+  <data name="Pad_Lighting_Mode_Battery" xml:space="preserve"><value>Battery: Gradient by Charge Level</value></data>
+  <data name="Pad_Lighting_Mode_Strobe" xml:space="preserve"><value>Strobe: Square-Wave Flash</value></data>
   <data name="Pad_Lighting_BatteryLowColor" xml:space="preserve"><value>Low Battery</value></data>
   <data name="Pad_Lighting_BatteryHighColor" xml:space="preserve"><value>Full Battery</value></data>
-  <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>Input Reactive — Random Color per Press</value></data>
-  <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>Input Reactive — Cycle Through Palette</value></data>
-  <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>Input Reactive — Single Color per Press</value></data>
+  <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>Input Reactive: Random Color per Press</value></data>
+  <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>Input Reactive: Cycle Through Palette</value></data>
+  <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>Input Reactive: Single Color per Press</value></data>
 
   <!-- v3.2+ Input Reactive overlay (separate dropdown layered on top of base mode) -->
   <data name="Pad_Lighting_InputReactive" xml:space="preserve"><value>Input Reactive</value></data>
@@ -1221,7 +1221,7 @@
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>Mode</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>Pick which lightbar modes the macro should cycle through. Each fire advances to the next checked mode.</value></data>
 
-  <!-- ═══ Macro action — Rumble ═══ -->
+  <!-- ═══ Macro action: Rumble ═══ -->
   <data name="MacroAction_Type_Rumble" xml:space="preserve"><value>Rumble</value></data>
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>Drives the slot's physical device rumble from a macro. Reactive runs at full strength for the hold window then fades to zero across the fade window. Sticky holds at full strength until a Stop Rumble action runs. Layers on top of game-driven rumble via max() so user-driven feedback is always felt.</value></data>
   <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>Pulse rumble {0} ({1}ms)</value></data>
@@ -1849,7 +1849,7 @@
   <data name="DevObj_LeftPaddle1" xml:space="preserve"><value>Left Paddle 1</value></data>
   <data name="DevObj_LeftPaddle2" xml:space="preserve"><value>Left Paddle 2</value></data>
 
-  <!-- ═══ Keyboard Key Names (OEM/Numpad operators — not already in VirtualKey section) ═══ -->
+  <!-- ═══ Keyboard Key Names (OEM/Numpad operators: not already in VirtualKey section) ═══ -->
   <data name="Key_NumpadMultiply" xml:space="preserve"><value>Numpad *</value></data>
   <data name="Key_NumpadAdd" xml:space="preserve"><value>Numpad +</value></data>
   <data name="Key_NumpadSubtract" xml:space="preserve"><value>Numpad -</value></data>
@@ -1919,9 +1919,9 @@
 
   <!-- ═══ Polling Frequency ═══ -->
   <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
-  <data name="Dashboard_PollingDash" xml:space="preserve"><value>—</value></data>
+  <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
-  <!-- ═══ Pad — Sticks/Triggers Settings ═══ -->
+  <!-- ═══ Pad: Sticks/Triggers Settings ═══ -->
   <data name="Pad_DeadZoneX" xml:space="preserve"><value>Deadzone X</value></data>
   <data name="Pad_DeadZoneY" xml:space="preserve"><value>Deadzone Y</value></data>
   <data name="Pad_AntiDeadZoneX" xml:space="preserve"><value>Anti-Deadzone X</value></data>
@@ -1944,7 +1944,7 @@
   <data name="Pad_Preset_Label" xml:space="preserve"><value>Preset</value></data>
   <data name="Pad_TriggerAxis" xml:space="preserve"><value>Trigger Axis</value></data>
 
-  <!-- ═══ Pad — Force Feedback ═══ -->
+  <!-- ═══ Pad: Force Feedback ═══ -->
   <data name="Pad_ForceFeedbackRumble" xml:space="preserve"><value>Force Feedback / Rumble / Haptics</value></data>
   <data name="Pad_OverallGain" xml:space="preserve"><value>Overall Gain</value></data>
   <data name="Pad_LeftMotorLabel" xml:space="preserve"><value>Left Motor</value></data>
@@ -1955,7 +1955,7 @@
   <data name="Pad_TestRumble" xml:space="preserve"><value>Test Rumble</value></data>
   <data name="Pad_MotorActivity" xml:space="preserve"><value>Motor Activity</value></data>
 
-  <!-- ═══ Pad — Constant Force ═══ -->
+  <!-- ═══ Pad: Constant Force ═══ -->
   <data name="Pad_ConstantForce_Header" xml:space="preserve"><value>Constant Force</value></data>
   <data name="Pad_ConstantForce_Description" xml:space="preserve"><value>Apply a continuous force to this device until you toggle off. Game-driven force from any source overrides while it's active and resumes when the game stops.</value></data>
   <data name="Pad_ConstantForce_Toggle" xml:space="preserve"><value>Apply Constant Force</value></data>
@@ -1966,7 +1966,7 @@
   <data name="Pad_ResetConstantForceX" xml:space="preserve"><value>Reset Constant Force X</value></data>
   <data name="Pad_ResetConstantForceY" xml:space="preserve"><value>Reset Constant Force Y</value></data>
 
-  <!-- ═══ Pad — Reset Tooltips ═══ -->
+  <!-- ═══ Pad: Reset Tooltips ═══ -->
   <data name="Pad_ResetCenterOffsetX" xml:space="preserve"><value>Reset Center Offset X</value></data>
   <data name="Pad_Sticks_Boundary_Calibrate" xml:space="preserve"><value>Calibrate Boundary</value></data>
   <data name="Pad_Sticks_Boundary_Recalibrate" xml:space="preserve"><value>Recalibrate Boundary</value></data>
@@ -1999,13 +1999,13 @@
   <data name="Pad_ResetAudioLeftMotor" xml:space="preserve"><value>Reset Left Motor</value></data>
   <data name="Pad_ResetAudioRightMotor" xml:space="preserve"><value>Reset Right Motor</value></data>
 
-  <!-- ═══ Pad — Adaptive Triggers reset tooltips ═══ -->
+  <!-- ═══ Pad: Adaptive Triggers reset tooltips ═══ -->
   <data name="Pad_ResetLeftTrigger" xml:space="preserve"><value>Reset Left Trigger</value></data>
   <data name="Pad_ResetRightTrigger" xml:space="preserve"><value>Reset Right Trigger</value></data>
   <data name="Pad_ResetStrength" xml:space="preserve"><value>Reset Strength</value></data>
   <data name="Pad_ResetFrequency" xml:space="preserve"><value>Reset Frequency</value></data>
 
-  <!-- ═══ Pad — Lighting reset tooltips ═══ -->
+  <!-- ═══ Pad: Lighting reset tooltips ═══ -->
   <data name="Pad_ResetLightbarMode" xml:space="preserve"><value>Reset Lightbar Mode</value></data>
   <data name="Pad_ResetLedBrightness" xml:space="preserve"><value>Reset LED Brightness</value></data>
   <data name="Pad_ResetPlayerPattern" xml:space="preserve"><value>Reset Player Pattern</value></data>
@@ -2031,7 +2031,7 @@
   <data name="Pad_ResetAudioHighG" xml:space="preserve"><value>Reset High Band Green</value></data>
   <data name="Pad_ResetAudioHighB" xml:space="preserve"><value>Reset High Band Blue</value></data>
 
-  <!-- ═══ Pad — Macro Hints ═══ -->
+  <!-- ═══ Pad: Macro Hints ═══ -->
   <data name="Macro_RecordHint" xml:space="preserve"><value>Press buttons or move an axis/trigger to record. Axes are detected when deflected past 50%.</value></data>
   <data name="Macro_AddTriggerFromList" xml:space="preserve"><value>Add from List</value></data>
   <data name="Macro_AddTriggerFromList_Tooltip" xml:space="preserve"><value>Pick a trigger input from the slot's devices instead of recording it. Touchpad gestures enabled on the Touchpad tab appear here.</value></data>
@@ -2595,13 +2595,13 @@
     <value>The passwords don't match.</value>
   </data>
   <data name="RemoteLink_IdentityModeSecure" xml:space="preserve">
-    <value>Secure — This PC Only</value>
+    <value>Secure: This PC Only</value>
   </data>
   <data name="RemoteLink_IdentityModePortablePassword" xml:space="preserve">
-    <value>Portable — Password Protected</value>
+    <value>Portable: Password Protected</value>
   </data>
   <data name="RemoteLink_IdentityModePortableOpen" xml:space="preserve">
-    <value>Portable — No Password</value>
+    <value>Portable: No Password</value>
   </data>
   <data name="RemoteLink_IdentityHintPortablePassword" xml:space="preserve">
     <value>Your identity travels on this drive and unlocks with your password on any PC. A lost drive is useless without it.</value>

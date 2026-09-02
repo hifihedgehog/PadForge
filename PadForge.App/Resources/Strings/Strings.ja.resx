@@ -807,7 +807,7 @@
   <data name="Macro_LightbarTargetMode_Label" xml:space="preserve"><value>モード</value></data>
   <data name="Macro_LightbarCycleModes_Hint" xml:space="preserve"><value>マクロが循環するライトバーモードを選択します。発火ごとに次のチェック済みモードへ進みます。</value></data>
 
-  <!-- ═══ Macro action — Rumble ═══ -->
+  <!-- ═══ Macro action: Rumble ═══ -->
   <data name="MacroAction_Type_Rumble" xml:space="preserve"><value>ランブル</value></data>
   <data name="MacroAction_Rumble_Tooltip" xml:space="preserve"><value>マクロからスロットの物理デバイスのランブルを駆動します。Reactive はホールド時間中フルストレングスで動作し、その後フェード時間で線形に0へ減衰します。Sticky はランブル停止アクションが実行されるまでフルストレングスで保持します。ゲーム駆動のランブルに max() で重ねるため、ユーザー駆動のフィードバックは常に感じられます。</value></data>
   <data name="MacroAction_Rumble_Reactive_Format" xml:space="preserve"><value>ランブル {0} ({1}ms)</value></data>
@@ -924,7 +924,7 @@
 
   <!-- ═══ Polling Frequency ═══ -->
   <data name="Dashboard_PollingHz_Format" xml:space="preserve"><value>{0:F1} Hz</value></data>
-  <data name="Dashboard_PollingDash" xml:space="preserve"><value>—</value></data>
+  <data name="Dashboard_PollingDash" xml:space="preserve"><value>–</value></data>
 
   <!-- ═══ Preview Views ═══ -->
   <data name="Preview_CCOutputs" xml:space="preserve"><value>CC 出力</value></data>
@@ -1569,19 +1569,19 @@
   <data name="Pad_Lighting_Mode_Breathing" xml:space="preserve"><value>ブリージング (単色フェード)</value></data>
   <data name="Pad_Lighting_Mode_Rainbow" xml:space="preserve"><value>レインボーサイクル</value></data>
   <data name="Pad_Lighting_Mode_ColorCycle" xml:space="preserve"><value>カラーサイクル</value></data>
-  <data name="Pad_Lighting_Mode_AudioPulse" xml:space="preserve"><value>オーディオパルス — 静止カラー</value></data>
-  <data name="Pad_Lighting_Mode_AudioPulseRandom" xml:space="preserve"><value>オーディオパルス — ビートごとにランダムカラー</value></data>
-  <data name="Pad_Lighting_Mode_AudioPulseRainbow" xml:space="preserve"><value>オーディオパルス — レインボーサイクル</value></data>
-  <data name="Pad_Lighting_Mode_AudioThresholds" xml:space="preserve"><value>オーディオバンド — 3 色、ハードな切り替え</value></data>
-  <data name="Pad_Lighting_Mode_AudioGradient" xml:space="preserve"><value>オーディオバンド — 3 色、滑らかなグラデーション</value></data>
-  <data name="Pad_Lighting_Mode_AudioCrossFade" xml:space="preserve"><value>オーディオバンド — 3 色、境界でクロスフェード</value></data>
-  <data name="Pad_Lighting_Mode_Battery" xml:space="preserve"><value>バッテリー — 残量に応じたグラデーション</value></data>
-  <data name="Pad_Lighting_Mode_Strobe" xml:space="preserve"><value>ストロボ — 矩形波点滅</value></data>
+  <data name="Pad_Lighting_Mode_AudioPulse" xml:space="preserve"><value>オーディオパルス：静止カラー</value></data>
+  <data name="Pad_Lighting_Mode_AudioPulseRandom" xml:space="preserve"><value>オーディオパルス：ビートごとにランダムカラー</value></data>
+  <data name="Pad_Lighting_Mode_AudioPulseRainbow" xml:space="preserve"><value>オーディオパルス：レインボーサイクル</value></data>
+  <data name="Pad_Lighting_Mode_AudioThresholds" xml:space="preserve"><value>オーディオバンド：3 色、ハードな切り替え</value></data>
+  <data name="Pad_Lighting_Mode_AudioGradient" xml:space="preserve"><value>オーディオバンド：3 色、滑らかなグラデーション</value></data>
+  <data name="Pad_Lighting_Mode_AudioCrossFade" xml:space="preserve"><value>オーディオバンド：3 色、境界でクロスフェード</value></data>
+  <data name="Pad_Lighting_Mode_Battery" xml:space="preserve"><value>バッテリー：残量に応じたグラデーション</value></data>
+  <data name="Pad_Lighting_Mode_Strobe" xml:space="preserve"><value>ストロボ：矩形波点滅</value></data>
   <data name="Pad_Lighting_BatteryLowColor" xml:space="preserve"><value>低残量</value></data>
   <data name="Pad_Lighting_BatteryHighColor" xml:space="preserve"><value>満充電</value></data>
-    <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>インプットリアクティブ — 押すたびにランダムカラー</value></data>
-  <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>インプットリアクティブ — パレットを巡回</value></data>
-  <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>インプットリアクティブ — 押下ごとに単色</value></data>
+    <data name="Pad_Lighting_Mode_InputReactive" xml:space="preserve"><value>インプットリアクティブ：押すたびにランダムカラー</value></data>
+  <data name="Pad_Lighting_Mode_InputReactiveCycle" xml:space="preserve"><value>インプットリアクティブ：パレットを巡回</value></data>
+  <data name="Pad_Lighting_Mode_InputReactiveFixed" xml:space="preserve"><value>インプットリアクティブ：押下ごとに単色</value></data>
   <data name="Pad_Lighting_RainbowBrightness" xml:space="preserve"><value>明るさ</value></data>
   <data name="Pad_Lighting_Period" xml:space="preserve"><value>周期</value></data>
   <data name="Pad_Lighting_PaletteHeader" xml:space="preserve"><value>パレット</value></data>
@@ -2173,13 +2173,13 @@
     <value>パスワードが一致しません。</value>
   </data>
   <data name="RemoteLink_IdentityModeSecure" xml:space="preserve">
-    <value>セキュア — この PC のみ</value>
+    <value>セキュア：この PC のみ</value>
   </data>
   <data name="RemoteLink_IdentityModePortablePassword" xml:space="preserve">
-    <value>ポータブル — パスワード保護あり</value>
+    <value>ポータブル：パスワード保護あり</value>
   </data>
   <data name="RemoteLink_IdentityModePortableOpen" xml:space="preserve">
-    <value>ポータブル — パスワードなし</value>
+    <value>ポータブル：パスワードなし</value>
   </data>
   <data name="RemoteLink_IdentityHintPortablePassword" xml:space="preserve">
     <value>ご自身の ID はこのドライブに入って持ち運ばれ、どの PC でもパスワードで解除されます。ドライブを紛失しても、パスワードがなければ役に立ちません。</value>

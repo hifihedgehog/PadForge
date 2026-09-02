@@ -1699,7 +1699,9 @@ namespace PadForge.Services
             // next tick (the fresh-connect fast-converge path). That is the
             // "re-reference to the current pose" half of the recenter for
             // Player/World-space projection and Motion Lean. Touches only
-            // lock-guarded state, per the GyroRecenterApply contract.
+            // lock-guarded state, per the GyroRecenterApply contract. The
+            // per-device body of the drop is shared with the grip change
+            // handler's single-device recenter (#392).
             InputManager.GyroRecenterApply = slotIdx =>
             {
                 var grSettings = SettingsManager.UserSettings;
@@ -1715,24 +1717,7 @@ namespace PadForge.Services
                     }
                 }
                 if (grGuids.Count == 0) return;
-                lock (_gravityStateLock)
-                {
-                    for (int i = 0; i < grGuids.Count; i++)
-                    {
-                        _gravityState.Remove(grGuids[i]);
-                        _shakeState.Remove(grGuids[i]);
-                        _shakeStateAux.Remove(grGuids[i]);
-                        _gravityStateAux.Remove(grGuids[i]);
-                    }
-                }
-                // Gyro Lean / Gyro Tilt resting grip (#292): the issue and
-                // the docs promise Gyro Recenter re-zeroes it, and until now
-                // nothing did (only a profile switch cleared the dict). The
-                // dict is a ConcurrentDictionary keyed by device guid string;
-                // per-device removal leaves other slots' grips alone.
-                for (int i = 0; i < grGuids.Count; i++)
-                    PadForge.Engine.Common.Mapping.SourceCoercion.ResetGyroLeanNeutral(
-                        grGuids[i].ToString());
+                RecenterMotionState(grGuids);
             };
 
             // Cursor-position source (#107): a 200 Hz sampler publishes the
@@ -5195,7 +5180,8 @@ namespace PadForge.Services
                     mapping.IsInputActive = false;
                     continue;
                 }
-                int fallbackValue = ReadMappedValue(fallbackState, mapping.SourceDescriptor);
+                // The fallback device is the guid the grip keys on (#392).
+                int fallbackValue = ReadMappedValue(fallbackState, mapping.SourceDescriptor, ud.InstanceGuidString, padIndex);
                 mapping.CurrentValueText = LiveValueString(fallbackValue);
                 mapping.IsInputActive = mapping.IsTargetDiscrete
                     ? fallbackValue != 0
@@ -5451,8 +5437,11 @@ namespace PadForge.Services
         /// <summary>
         /// Reads a value from a CustomInputState using a mapping descriptor string.
         /// Simplified version of the Step 3 parser for display purposes.
+        /// <paramref name="deviceGuid"/> and <paramref name="slotIndex"/> key
+        /// the grip (#392) for a directional hat descriptor, which reads as
+        /// the row does: 1 while the held-frame direction matches, else 0.
         /// </summary>
-        private static int ReadMappedValue(CustomInputState state, string descriptor)
+        private static int ReadMappedValue(CustomInputState state, string descriptor, string deviceGuid, int slotIndex)
         {
             if (string.IsNullOrEmpty(descriptor))
                 return 0;
@@ -5519,6 +5508,17 @@ namespace PadForge.Services
                 return 0;
 
             string typeName = parts[0].ToLowerInvariant();
+
+            // A directional hat ("POV 0 Up") is a button to the row: 1 in
+            // the sector, else 0, read in the held frame (#392). The raw
+            // angle made a held Up (0 centidegrees) show as inactive at the
+            // caller's nonzero test. The bare "POV 0" form keeps the angle.
+            if (typeName == "pov" && parts.Length >= 3)
+            {
+                if (index < 0 || index >= CustomInputState.MaxPovs) return 0;
+                int held = PadForge.Engine.Common.Mapping.SourceCoercion.GripPov(deviceGuid, slotIndex, state.Povs[index]);
+                return PovInDirection(held, parts[2]) ? 1 : 0;
+            }
 
             return typeName switch
             {
@@ -6213,8 +6213,76 @@ namespace PadForge.Services
         /// <see cref="SettingsService.ResetToDefaults"/> leans on for
         /// closure instead of maintaining a parallel hand-list of fields
         /// (the hand-list rotted once already: gyro, steering, wheel,
-        /// trigger routing, and touchpad gestures all survived reset).</summary>
+        /// trigger routing, and touchpad gestures all survived reset).
+        /// The VM's <see cref="PadViewModel.IsLoadingPadSetting"/> flag is
+        /// raised for the duration so PropertyChanged listeners can tell a
+        /// load from a user edit: the MotionGrip listener in MainWindow
+        /// recenters the motion state on a user change only (#392), and a
+        /// device selection or profile switch must not drop every device's
+        /// gravity estimate on the slot.</summary>
         internal static void LoadPadSettingIntoViewModel(PadViewModel padVm, PadSetting ps)
+        {
+            padVm.IsLoadingPadSetting = true;
+            try
+            {
+                LoadPadSettingIntoViewModelCore(padVm, ps);
+            }
+            finally
+            {
+                padVm.IsLoadingPadSetting = false;
+            }
+        }
+
+        /// <summary>The MotionGrip PropertyChanged decision (#392): a grip
+        /// write that arrives through a PadSetting load is a mirror of
+        /// stored state, not a change of hold, and must not recenter.</summary>
+        internal static bool ShouldRecenterOnGripChange(PadViewModel padVm)
+            => padVm != null && !padVm.IsLoadingPadSetting;
+
+        /// <summary>Recenters the motion state of the device the Pad page is
+        /// editing (#392): the grip changed for that one (device, slot), so
+        /// its gravity estimate, shake envelope, and lean and tilt neutrals
+        /// are in the old frame. The other devices on the slot keep theirs.
+        /// The Gyro Recenter macro's pad-wide drop is
+        /// <see cref="InputManager.GyroRecenterApply"/>.</summary>
+        internal void RecenterMotionForSelectedDevice(PadViewModel padVm)
+        {
+            if (padVm == null) return;
+            var ud = FindSelectedDeviceForSlot(padVm);
+            if (ud == null || ud.InstanceGuid == Guid.Empty) return;
+            RecenterMotionState(new System.Collections.Generic.List<Guid>(1) { ud.InstanceGuid });
+        }
+
+        /// <summary>Drops the app-side motion state for each guid so the
+        /// gravity estimator re-seeds from the next accelerometer sample
+        /// (the fresh-connect fast-converge path), then the engine's lean
+        /// and tilt neutrals for the same devices. Lock-guarded state only,
+        /// so the polling thread (the macro) and the UI thread (the grip
+        /// handler) can both call it.</summary>
+        private void RecenterMotionState(System.Collections.Generic.List<Guid> guids)
+        {
+            if (guids == null || guids.Count == 0) return;
+            lock (_gravityStateLock)
+            {
+                for (int i = 0; i < guids.Count; i++)
+                {
+                    _gravityState.Remove(guids[i]);
+                    _shakeState.Remove(guids[i]);
+                    _shakeStateAux.Remove(guids[i]);
+                    _gravityStateAux.Remove(guids[i]);
+                }
+            }
+            // Gyro Lean / Gyro Tilt resting grip (#292): the issue and
+            // the docs promise Gyro Recenter re-zeroes it, and until now
+            // nothing did (only a profile switch cleared the dict). The
+            // dict is a ConcurrentDictionary keyed by device guid string,
+            // so per-device removal leaves other slots' grips alone.
+            for (int i = 0; i < guids.Count; i++)
+                PadForge.Engine.Common.Mapping.SourceCoercion.ResetGyroLeanNeutral(
+                    guids[i].ToString());
+        }
+
+        private static void LoadPadSettingIntoViewModelCore(PadViewModel padVm, PadSetting ps)
         {
             // Dead zones.
             padVm.LeftDeadZoneShape = (int)Common.Input.InputManager.ParseDeadZoneShape(ps.LeftThumbDeadZoneShape);
@@ -14216,7 +14284,9 @@ namespace PadForge.Services
                     }
                 }
 
-                // 2. POV deflection from centered baseline.
+                // 2. POV deflection from centered baseline. The angle is
+                // stored in the held frame (#392), the frame the variable
+                // read (ReadExpressionVariable) compares against.
                 var povs = ud.InputState.Povs;
                 if (povs != null)
                 {
@@ -14227,7 +14297,8 @@ namespace PadForge.Services
                         int wasCentered = basePovs == null || p >= basePovs.Length || basePovs[p] < 0 ? 1 : 0;
                         if (now >= 0 && wasCentered == 1)
                         {
-                            FinalizeExpressionVariableInputDevice(ud.InstanceGuid, rawButton: -1, pov: $"{p}:{now}", axis: MacroAxisTarget.None);
+                            int held = PadForge.Engine.Common.Mapping.SourceCoercion.GripPov(ud.InstanceGuidString, padIndex, now);
+                            FinalizeExpressionVariableInputDevice(ud.InstanceGuid, rawButton: -1, pov: $"{p}:{held}", axis: MacroAxisTarget.None);
                             return;
                         }
                     }
@@ -14802,6 +14873,10 @@ namespace PadForge.Services
                             }
                         }
 
+                        // Hats record in the held frame (#392): the angle
+                        // stored is the one the evaluator compares against
+                        // its own grip-rotated read, so a press that points
+                        // up on a sideways remote records as Up.
                         var povs = ud.InputState.Povs;
                         if (povs != null)
                         {
@@ -14811,7 +14886,7 @@ namespace PadForge.Services
                                     currentEntries.Add(new MacroItem.TriggerInputEntry
                                     {
                                         DeviceGuid = ud.InstanceGuid,
-                                        Pov = $"{p}:{povs[p]}"
+                                        Pov = $"{p}:{PadForge.Engine.Common.Mapping.SourceCoercion.GripPov(ud.InstanceGuidString, _recordingPadIndex, povs[p])}"
                                     });
                             }
                         }

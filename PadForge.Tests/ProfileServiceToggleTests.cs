@@ -379,8 +379,8 @@ namespace PadForge.Tests
 
         /// <summary>Head Tracking is a Dashboard service (#355 move): a UDP
         /// listener plus a FreeTrack reader with a live status that rides
-        /// profiles, so it sits with the services, after the Motion Server
-        /// and before the Web Controller, under its own glyph (E77B, the
+        /// profiles, so it sits with the services, after Remote Link and
+        /// before the Motion Server, under its own glyph (E77B, the
         /// one the Settings card wore) with the status line and the footer
         /// the Dashboard idiom gives every service. The Settings page no
         /// longer carries it, and the strings moved with the card.</summary>
@@ -389,11 +389,11 @@ namespace PadForge.Tests
         {
             string page = RepoText("PadForge.App", "Views", "DashboardPage.xaml");
             Assert.Equal(1, page.Split(new[] { "&#xE77B;" }, StringSplitOptions.None).Length - 1);
-            int motion = page.IndexOf("Binding Dashboard_MotionServer,", StringComparison.Ordinal);
+            int remote = page.IndexOf("Binding Dashboard_RemoteLink,", StringComparison.Ordinal);
             int head = page.IndexOf("Binding Dashboard_HeadTracking,", StringComparison.Ordinal);
-            int web = page.IndexOf("Binding Dashboard_WebController,", StringComparison.Ordinal);
-            Assert.True(motion > 0 && head > motion && web > head, "Head Tracking sits between the Motion Server and the Web Controller");
-            string card = page.Substring(head, web - head);
+            int motion = page.IndexOf("Binding Dashboard_MotionServer,", StringComparison.Ordinal);
+            Assert.True(remote > 0 && head > remote && motion > head, "Head Tracking sits between Remote Link and the Motion Server");
+            string card = page.Substring(head, motion - head);
             foreach (var needle in new[]
             {
                 "Binding Dashboard_HeadTrackingDesc,", "Binding Dashboard_HeadTrackingEnable,", "Binding HeadTrackingEnabled",
@@ -404,7 +404,7 @@ namespace PadForge.Tests
                 "Binding HeadTrackingStatus", "Binding Dashboard_HeadTrackingFooter,",
             })
                 Assert.Contains(needle, card);
-            // One card: a single CardBorder between the section title and the Web Controller.
+            // One card: a single CardBorder between the section title and the Motion Server.
             Assert.Equal(1, card.Split(new[] { "StaticResource CardBorder" }, StringSplitOptions.None).Length - 1);
 
             string settings = RepoText("PadForge.App", "Views", "SettingsPage.xaml");

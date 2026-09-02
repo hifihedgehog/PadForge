@@ -8426,14 +8426,11 @@ namespace PadForge
                 }
                 catch { }
             }
-            // Status tiers past "installed" (#287): the background consumer
-            // knows whether SteamVR is running, and the VR slots' SDK pipes
-            // know whether the driver and the virtual hands are live.
-            _viewModel.Dashboard.IsSteamVrRunning =
-                PadForge.Common.Input.OpenVrConsumerService.ServerConnected;
-            var (vrDrv, vrLive) = PadForge.Common.Input.HMaestroVRController.GlobalDriverStatus();
-            _viewModel.Dashboard.IsVrDriverConnected = vrDrv;
-            _viewModel.Dashboard.AreVrControllersLive = vrLive;
+            // Status tiers past "installed" (#287): the Settings card's
+            // SteamVR row reads the background consumer and the VR slots'
+            // SDK pipes itself, so the refresh only raises its notification.
+            // The Dashboard's driver strip, which carried the same tiers,
+            // is gone.
             _viewModel.Settings.RefreshSteamVrStatus();
             // Ownership (the Steam-free shape PadForge created) gates the
             // uninstall button; a Steam-client install never reads as owned.

@@ -24,9 +24,6 @@ namespace PadForge.ViewModels
         {
             Title = Strings.Instance.Dashboard_Title;
             OnPropertyChanged(nameof(PollingFrequencyText));
-            OnPropertyChanged(nameof(HidHideStatusText));
-            OnPropertyChanged(nameof(MidiServicesStatusText));
-            OnPropertyChanged(nameof(SteamVrStatusText));
             OnPropertyChanged(nameof(TouchpadOverlayStatus));
         }
 
@@ -190,19 +187,14 @@ namespace PadForge.ViewModels
 
         private bool _isHidHideInstalled;
 
-        /// <summary>Whether HidHide is installed.</summary>
+        /// <summary>Whether HidHide is installed. The Dashboard's driver
+        /// status strip is gone (Settings carries the full HidHide card), so
+        /// this flag has no display text of its own here.</summary>
         public bool IsHidHideInstalled
         {
             get => _isHidHideInstalled;
-            set
-            {
-                if (SetProperty(ref _isHidHideInstalled, value))
-                    OnPropertyChanged(nameof(HidHideStatusText));
-            }
+            set => SetProperty(ref _isHidHideInstalled, value);
         }
-
-        /// <summary>Display text for HidHide status.</summary>
-        public string HidHideStatusText => IsHidHideInstalled ? Strings.Instance.Common_Installed : Strings.Instance.Common_NotInstalled;
 
         // ─────────────────────────────────────────────
         //  Windows MIDI Services status
@@ -210,86 +202,27 @@ namespace PadForge.ViewModels
 
         private bool _isMidiServicesInstalled;
 
-        /// <summary>Whether Windows MIDI Services is installed.</summary>
+        /// <summary>Whether Windows MIDI Services is installed. Gates the
+        /// MIDI slot type button in the code-behind. The status text lives
+        /// on the Settings card.</summary>
         public bool IsMidiServicesInstalled
         {
             get => _isMidiServicesInstalled;
-            set
-            {
-                if (SetProperty(ref _isMidiServicesInstalled, value))
-                    OnPropertyChanged(nameof(MidiServicesStatusText));
-            }
+            set => SetProperty(ref _isMidiServicesInstalled, value);
         }
-
-        /// <summary>Display text for MIDI Services status.</summary>
-        public string MidiServicesStatusText => IsMidiServicesInstalled ? Strings.Instance.Common_Installed : Strings.Instance.Common_NotInstalled;
 
         private bool _isSteamVrInstalled;
 
         /// <summary>Whether SteamVR is installed (gates the VR slot type,
         /// issue #49). Kept current by MainWindow's periodic status refresh
-        /// alongside the MIDI Services flag.</summary>
+        /// alongside the MIDI Services flag. The tiered SteamVR status row
+        /// (#287) lives on the Settings card, which reads the live statics
+        /// itself.</summary>
         public bool IsSteamVrInstalled
         {
             get => _isSteamVrInstalled;
-            set
-            {
-                if (SetProperty(ref _isSteamVrInstalled, value))
-                    OnPropertyChanged(nameof(SteamVrStatusText));
-            }
+            set => SetProperty(ref _isSteamVrInstalled, value);
         }
-
-        private bool _isSteamVrRunning;
-
-        /// <summary>Whether the background VR consumer is connected to a
-        /// running SteamVR (#287).</summary>
-        public bool IsSteamVrRunning
-        {
-            get => _isSteamVrRunning;
-            set
-            {
-                if (SetProperty(ref _isSteamVrRunning, value))
-                    OnPropertyChanged(nameof(SteamVrStatusText));
-            }
-        }
-
-        private bool _isVrDriverConnected;
-
-        /// <summary>Whether any VR slot's OpenVR driver is connected in
-        /// SteamVR (the SDK's DriverConnected, consumed at last, #287).</summary>
-        public bool IsVrDriverConnected
-        {
-            get => _isVrDriverConnected;
-            set
-            {
-                if (SetProperty(ref _isVrDriverConnected, value))
-                    OnPropertyChanged(nameof(SteamVrStatusText));
-            }
-        }
-
-        private bool _areVrControllersLive;
-
-        /// <summary>Whether any VR slot's virtual hands are registered and
-        /// live in SteamVR (the SDK's ControllersLive, #287).</summary>
-        public bool AreVrControllersLive
-        {
-            get => _areVrControllersLive;
-            set
-            {
-                if (SetProperty(ref _areVrControllersLive, value))
-                    OnPropertyChanged(nameof(SteamVrStatusText));
-            }
-        }
-
-        /// <summary>Display text for the SteamVR row in the driver-status
-        /// card. Tiered (#287): the deepest true state wins, so the row can
-        /// finally say more than "installed".</summary>
-        public string SteamVrStatusText =>
-            !IsSteamVrInstalled ? Strings.Instance.Common_NotInstalled
-            : AreVrControllersLive ? Strings.Instance.Vr_Status_ControllersLive
-            : IsVrDriverConnected ? Strings.Instance.Vr_Status_DriverConnected
-            : IsSteamVrRunning ? Strings.Instance.Vr_Status_Running
-            : Strings.Instance.Common_Installed;
 
         // ─────────────────────────────────────────────
         //  DSU Motion Server

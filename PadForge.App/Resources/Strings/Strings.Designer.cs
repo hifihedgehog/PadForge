@@ -451,7 +451,6 @@ public class Strings : INotifyPropertyChanged
     public string Settings_HmInactivityTimeout => Get("Settings_HmInactivityTimeout");
     public string Settings_HmInactivityTimeoutTooltip => Get("Settings_HmInactivityTimeoutTooltip");
     public string Settings_SecondsZeroNever => Get("Settings_SecondsZeroNever");
-    public string Dashboard_Drivers => Get("Dashboard_Drivers");
     public string Dashboard_NoDevice => Get("Dashboard_NoDevice");
     public string Settings_Title => Get("Settings_Title");
     public string Settings_Appearance => Get("Settings_Appearance");

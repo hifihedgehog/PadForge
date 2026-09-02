@@ -260,7 +260,6 @@
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Dekking</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>Positie resetten</value></data>
   <data name="TouchpadOverlay_DragTooltip" xml:space="preserve"><value>Rechtsklik en vasthouden om te slepen</value></data>
-  <data name="Dashboard_Drivers" xml:space="preserve"><value>Stuurprogramma's</value></data>
   <data name="Dashboard_NoDevice" xml:space="preserve"><value>Geen apparaat</value></data>
 
   <!-- ═══ Settings ═══ -->

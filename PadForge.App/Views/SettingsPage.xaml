@@ -103,6 +103,28 @@
                 </StackPanel>
             </Border>
 
+            <!-- ═══ Window ═══ -->
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,20">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <TextBlock Text="&#xE737;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
+                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBlock Text="{Binding Settings_Window, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardTitle}"/>
+                    </StackPanel>
+                    <TextBlock Text="{Binding Settings_WindowDesc, Source={x:Static strings:Strings.Instance}}"
+                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
+                    <CheckBox Content="{Binding Settings_MinimizeToTray, Source={x:Static strings:Strings.Instance}}"
+                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                              IsChecked="{Binding MinimizeToTray}" Margin="0,0,0,8"/>
+                    <CheckBox Content="{Binding Settings_StartMinimized, Source={x:Static strings:Strings.Instance}}"
+                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                              IsChecked="{Binding StartMinimized}" Margin="0,0,0,8"/>
+                    <CheckBox Content="{Binding Settings_StartAtLogin, Source={x:Static strings:Strings.Instance}}"
+                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                              IsChecked="{Binding StartAtLogin}"/>
+                </StackPanel>
+            </Border>
+
             <!-- ═══ Engine ═══ -->
             <Border Style="{StaticResource CardBorder}" Margin="0,0,0,20">
                 <StackPanel>
@@ -163,62 +185,6 @@
                 </StackPanel>
             </Border>
 
-            <!-- ═══ Window ═══ -->
-            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,20">
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                        <TextBlock Text="&#xE737;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
-                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
-                        <TextBlock Text="{Binding Settings_Window, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardTitle}"/>
-                    </StackPanel>
-                    <TextBlock Text="{Binding Settings_WindowDesc, Source={x:Static strings:Strings.Instance}}"
-                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
-                    <CheckBox Content="{Binding Settings_MinimizeToTray, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding MinimizeToTray}" Margin="0,0,0,8"/>
-                    <CheckBox Content="{Binding Settings_StartMinimized, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding StartMinimized}" Margin="0,0,0,8"/>
-                    <CheckBox Content="{Binding Settings_StartAtLogin, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding StartAtLogin}"/>
-                </StackPanel>
-            </Border>
-
-            <!-- ═══ Battery Alerts (#293) ═══ -->
-            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,20">
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                        <TextBlock Text="&#xE83F;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
-                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
-                        <TextBlock Text="{Binding Settings_BatteryNotify, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardTitle}"/>
-                    </StackPanel>
-                    <TextBlock Text="{Binding Settings_BatteryNotifyDesc, Source={x:Static strings:Strings.Instance}}"
-                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
-                    <CheckBox Content="{Binding Settings_BatteryNotifyEnable, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding BatteryNotifyEnabled}" Margin="0,0,0,8"/>
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8"
-                                IsEnabled="{Binding BatteryNotifyEnabled}">
-                        <TextBlock Text="{Binding Settings_BatteryNotifyThreshold, Source={x:Static strings:Strings.Instance}}"
-                                   VerticalAlignment="Center"
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,0"/>
-                        <ui:NumberBox Value="{Binding BatteryNotifyThreshold, Mode=TwoWay}"
-                                      Minimum="5" Maximum="50"
-                                      SpinButtonPlacementMode="Inline" Width="160"/>
-                        <TextBlock Text="%" VerticalAlignment="Center" Margin="6,0,0,0"
-                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                    </StackPanel>
-                    <CheckBox Content="{Binding Settings_BatteryNotifyVibrate, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding BatteryNotifyVibrate}"
-                              IsEnabled="{Binding BatteryNotifyEnabled}"/>
-                    <Button Content="{Binding Settings_BatteryNotifyTest, Source={x:Static strings:Strings.Instance}}"
-                            Click="TestBatteryNotify_Click" Margin="0,12,0,0" HorizontalAlignment="Left"
-                            IsEnabled="{Binding BatteryNotifyEnabled}"/>
-                </StackPanel>
-            </Border>
-
             <!-- ═══ Assignment Prompts ═══
                  Two opt-outs for the pad-page offer banner. Auto-assigning
                  outright was ruled out (sim rigs and arcade setups have
@@ -262,6 +228,40 @@
                               ToolTip="{Binding Settings_HandheldEnable_Tooltip, Source={x:Static strings:Strings.Instance}}"
                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                               IsChecked="{Binding HandheldButtonsEnabled}"/>
+                </StackPanel>
+            </Border>
+
+            <!-- ═══ Battery Alerts (#293) ═══ -->
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,20">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <TextBlock Text="&#xE83F;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
+                                   VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBlock Text="{Binding Settings_BatteryNotify, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardTitle}"/>
+                    </StackPanel>
+                    <TextBlock Text="{Binding Settings_BatteryNotifyDesc, Source={x:Static strings:Strings.Instance}}"
+                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
+                    <CheckBox Content="{Binding Settings_BatteryNotifyEnable, Source={x:Static strings:Strings.Instance}}"
+                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                              IsChecked="{Binding BatteryNotifyEnabled}" Margin="0,0,0,8"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8"
+                                IsEnabled="{Binding BatteryNotifyEnabled}">
+                        <TextBlock Text="{Binding Settings_BatteryNotifyThreshold, Source={x:Static strings:Strings.Instance}}"
+                                   VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,0"/>
+                        <ui:NumberBox Value="{Binding BatteryNotifyThreshold, Mode=TwoWay}"
+                                      Minimum="5" Maximum="50"
+                                      SpinButtonPlacementMode="Inline" Width="160"/>
+                        <TextBlock Text="%" VerticalAlignment="Center" Margin="6,0,0,0"
+                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                    </StackPanel>
+                    <CheckBox Content="{Binding Settings_BatteryNotifyVibrate, Source={x:Static strings:Strings.Instance}}"
+                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                              IsChecked="{Binding BatteryNotifyVibrate}"
+                              IsEnabled="{Binding BatteryNotifyEnabled}"/>
+                    <Button Content="{Binding Settings_BatteryNotifyTest, Source={x:Static strings:Strings.Instance}}"
+                            Click="TestBatteryNotify_Click" Margin="0,12,0,0" HorizontalAlignment="Left"
+                            IsEnabled="{Binding BatteryNotifyEnabled}"/>
                 </StackPanel>
             </Border>
 

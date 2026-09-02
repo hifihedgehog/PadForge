@@ -108,12 +108,30 @@ namespace PadForge.Services
         // last-writer-wins across slots. The Chroma shape verbatim.
         private static int s_publishedRgb = -1;
 
+        // Generation stamp of the most recent Start across every instance.
+        // Native calls are unbounded (Init during a G HUB cold start, the
+        // 14 s Artemis waits out), so Stop's wait can expire with the
+        // worker still inside one. The owner disposes and recreates the
+        // service on re-enable, and the orphaned worker of the OLD instance
+        // must neither report into the Dashboard (its closure would
+        // overwrite the live instance's status) nor call LogiLedShutdown,
+        // which is process-global and would tear down the NEW worker's
+        // session. Each worker captures the generation it started under
+        // and compares against this on every report and at teardown.
+        private static int s_generation;
+
+        // The worker task a timed-out Stop left running, or null. The next
+        // Start waits for it before loading the engine so two workers never
+        // overlap inside the SDK (every reference serializes SDK calls).
+        private static Task s_orphan;
+
         private readonly ILogiLedNative _native;
         private readonly int _retryMs;
         private readonly int _pollMs;
         private readonly int _settleMs;
         private readonly int _presenceSettleMs;
         private readonly int _livenessMs;
+        private readonly int _stopWaitMs;
         private CancellationTokenSource _cts;
         private Task _loop;
         private int _disposed;
@@ -131,7 +149,8 @@ namespace PadForge.Services
             int pollMs = 100,
             int settleMs = 100,
             int presenceSettleMs = 5000,
-            int livenessMs = 5000)
+            int livenessMs = 5000,
+            int stopWaitMs = 3000)
         {
             _native = native ?? new LogiLedEngineNative();
             _retryMs = retryMs;
@@ -139,6 +158,7 @@ namespace PadForge.Services
             _settleMs = settleMs;
             _presenceSettleMs = presenceSettleMs;
             _livenessMs = livenessMs;
+            _stopWaitMs = stopWaitMs;
         }
 
         /// <summary>Publishes the game-set lightbar color. Called from the
@@ -160,30 +180,76 @@ namespace PadForge.Services
             if (_cts != null) return;
             _cts = new CancellationTokenSource();
             var ct = _cts.Token;
-            _loop = Task.Run(() => LoopAsync(ct));
+            // Every Start supersedes whatever worker came before it, an
+            // orphan of a timed-out Stop included.
+            int generation = Interlocked.Increment(ref s_generation);
+            _loop = Task.Run(() => LoopAsync(ct, generation));
         }
 
         public void Stop()
         {
             if (_cts == null) return;
             _cts.Cancel();
-            try { _loop?.Wait(3000); } catch { }
+            // The worker may be inside an unbounded native call. Give it
+            // the wait, then let it finish on its own as an orphan: the
+            // generation check strips its reports and its process-global
+            // teardown once a newer Start exists, and that Start waits for
+            // it before touching the engine.
+            bool finished = true;
+            try { finished = _loop == null || _loop.Wait(_stopWaitMs); } catch { }
+            if (!finished)
+            {
+                Volatile.Write(ref s_orphan, _loop);
+                PadForge.Engine.SdlDiagLog.WriteLine(
+                    $"LIGHTSYNC stop timed out after {_stopWaitMs} ms, worker orphaned inside the SDK");
+            }
             _cts.Dispose();
             _cts = null;
             _loop = null;
         }
 
-        private void Report(LightsyncServiceState state)
+        /// <summary>True once a newer Start exists than the one that made
+        /// <paramref name="generation"/>: the worker holding it is an orphan
+        /// whose reports and process-global teardown belong to nobody.</summary>
+        private static bool Superseded(int generation)
+            => generation != Volatile.Read(ref s_generation);
+
+        private void Report(LightsyncServiceState state, int generation)
         {
+            // A superseded worker's StateChanged closure targets the
+            // Dashboard the live instance now owns: drop the report.
+            if (Superseded(generation))
+            {
+                PadForge.Engine.SdlDiagLog.WriteLine($"LIGHTSYNC superseded worker dropped state={state}");
+                return;
+            }
             PadForge.Engine.SdlDiagLog.WriteLine($"LIGHTSYNC state={state}");
             try { StateChanged?.Invoke(state); } catch { }
         }
 
-        private async Task LoopAsync(CancellationToken ct)
+        private async Task LoopAsync(CancellationToken ct, int generation)
         {
             bool wasAbsent = true;
             try
             {
+                // A worker a timed-out Stop orphaned may still be inside the
+                // SDK. Wait it out before loading the engine: the SDK is one
+                // session per process, and every reference serializes its
+                // calls. The orphan's own finally unloads the engine, and
+                // only then does this worker load it.
+                Task orphan = Volatile.Read(ref s_orphan);
+                if (orphan != null && !orphan.IsCompleted)
+                {
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        "LIGHTSYNC waiting for the orphaned worker of the previous session to leave the SDK");
+                    Report(LightsyncServiceState.WaitingForGHub, generation);
+                    while (!orphan.IsCompleted)
+                        await Task.Delay(50, ct);
+                }
+                // Clear a finished orphan (discarding the Task the exchange
+                // hands back) so no later worker waits on a completed task.
+                _ = Interlocked.CompareExchange(ref s_orphan, null, orphan);
+
                 while (!ct.IsCancellationRequested)
                 {
                     // Presence gate before any native load: the wasted
@@ -195,7 +261,7 @@ namespace PadForge.Services
                     if (!present)
                     {
                         wasAbsent = true;
-                        Report(LightsyncServiceState.WaitingForGHub);
+                        Report(LightsyncServiceState.WaitingForGHub, generation);
                         await Task.Delay(_retryMs, ct);
                         continue;
                     }
@@ -212,14 +278,14 @@ namespace PadForge.Services
                     if (!_native.TryLoad(out string detail))
                     {
                         PadForge.Engine.SdlDiagLog.WriteLine($"LIGHTSYNC load failed: {detail}");
-                        Report(LightsyncServiceState.WaitingForGHub);
+                        Report(LightsyncServiceState.WaitingForGHub, generation);
                         await Task.Delay(_retryMs, ct);
                         continue;
                     }
                     if (!_native.Init())
                     {
                         _native.Unload();
-                        Report(LightsyncServiceState.WaitingForGHub);
+                        Report(LightsyncServiceState.WaitingForGHub, generation);
                         await Task.Delay(_retryMs, ct);
                         continue;
                     }
@@ -229,7 +295,7 @@ namespace PadForge.Services
                     await Task.Delay(_settleMs, ct);
                     _native.SetTargetAll();
                     _native.SaveCurrent();
-                    Report(LightsyncServiceState.Connected);
+                    Report(LightsyncServiceState.Connected, generation);
 
                     int lastSent = -1;
                     long lastSendMs = 0;
@@ -265,13 +331,17 @@ namespace PadForge.Services
                     }
 
                     // Session over (engine died, or we are stopping): put
-                    // the user's lighting back and release the engine.
-                    try { _native.RestoreAndShutdown(); } catch { }
+                    // the user's lighting back and release the engine. A
+                    // superseded worker skips the restore and shutdown,
+                    // which are process-global and belong to the newer
+                    // session now.
+                    if (!Superseded(generation))
+                        try { _native.RestoreAndShutdown(); } catch { }
                     try { _native.Unload(); } catch { }
                     if (!ct.IsCancellationRequested)
                     {
                         wasAbsent = true;
-                        Report(LightsyncServiceState.WaitingForGHub);
+                        Report(LightsyncServiceState.WaitingForGHub, generation);
                         await Task.Delay(_retryMs, ct);
                     }
                 }
@@ -280,9 +350,14 @@ namespace PadForge.Services
             catch { }
             finally
             {
-                try { _native.RestoreAndShutdown(); } catch { }
+                // A superseded worker (a newer Start happened while this
+                // one sat inside the SDK) unloads and nothing more:
+                // LogiLedShutdown would kill the newer session, and the
+                // Stopped report would land on the live Dashboard status.
+                if (!Superseded(generation))
+                    try { _native.RestoreAndShutdown(); } catch { }
                 try { _native.Unload(); } catch { }
-                Report(LightsyncServiceState.Stopped);
+                Report(LightsyncServiceState.Stopped, generation);
             }
         }
 

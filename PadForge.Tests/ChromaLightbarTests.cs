@@ -71,6 +71,20 @@ namespace PadForge.Tests
             public string SessionPath => "/chromasdk";
             public bool RefuseInit { get; set; }
 
+            /// <summary>Delay before the FIRST init POST is answered, the
+            /// cold-Synapse shape. Answered from another thread so the
+            /// serve loop stays free for the retry that follows the
+            /// client's timeout.</summary>
+            public int FirstInitDelayMs { get; set; }
+
+            /// <summary>The "result" the FIRST category PUT answers with
+            /// (HTTP 200 either way, the REST server's rejection shape).
+            /// Every later PUT answers 0.</summary>
+            public int FirstPutResult { get; set; }
+
+            private int _initCount;
+            private int _putCount;
+
             public FakeChromaServer()
             {
                 // Bind a free port by probing; HttpListener cannot bind port 0.
@@ -104,9 +118,12 @@ namespace PadForge.Tests
                     Requests.Enqueue((ctx.Request.HttpMethod, ctx.Request.Url.AbsolutePath, body));
 
                     string response;
-                    if (ctx.Request.Url.AbsolutePath == "/razer/chromasdk"
-                        && ctx.Request.HttpMethod == "POST")
+                    int delayMs = 0;
+                    string path = ctx.Request.Url.AbsolutePath;
+                    if (path == "/razer/chromasdk" && ctx.Request.HttpMethod == "POST")
                     {
+                        if (Interlocked.Increment(ref _initCount) == 1)
+                            delayMs = FirstInitDelayMs;
                         if (RefuseInit)
                         {
                             response = "{\"result\":1168}";
@@ -118,21 +135,44 @@ namespace PadForge.Tests
                                 + Endpoint + SessionPath + "\"}";
                         }
                     }
+                    else if (ctx.Request.HttpMethod == "PUT"
+                        && path.StartsWith(SessionPath + "/")
+                        && path != SessionPath + "/heartbeat")
+                    {
+                        int result = Interlocked.Increment(ref _putCount) == 1 ? FirstPutResult : 0;
+                        response = "{\"result\":" + result + "}";
+                    }
                     else
                     {
                         response = "{\"result\":0}";
                     }
 
-                    byte[] bytes = Encoding.UTF8.GetBytes(response);
+                    if (delayMs > 0)
+                    {
+                        var late = ctx;
+                        string lateResponse = response;
+                        new Thread(() =>
+                        {
+                            Thread.Sleep(delayMs);
+                            Respond(late, lateResponse);
+                        }) { IsBackground = true }.Start();
+                        continue;
+                    }
+                    Respond(ctx, response);
+                }
+            }
+
+            private static void Respond(HttpListenerContext ctx, string response)
+            {
+                byte[] bytes = Encoding.UTF8.GetBytes(response);
+                try
+                {
                     ctx.Response.ContentType = "application/json";
                     ctx.Response.ContentLength64 = bytes.Length;
-                    try
-                    {
-                        ctx.Response.OutputStream.Write(bytes, 0, bytes.Length);
-                        ctx.Response.OutputStream.Close();
-                    }
-                    catch { /* client gone */ }
+                    ctx.Response.OutputStream.Write(bytes, 0, bytes.Length);
+                    ctx.Response.OutputStream.Close();
                 }
+                catch { /* client gone */ }
             }
 
             public bool WaitFor(Func<bool> condition, int timeoutMs = 5000)
@@ -298,6 +338,65 @@ namespace PadForge.Tests
             Assert.True(server.WaitFor(() =>
                 server.Requests.Count(r => r.Path == "/razer/chromasdk") >= 2));
             Assert.DoesNotContain(ChromaServiceState.Connected, states);
+        }
+
+        /// <summary>A slow init answer (a cold Synapse taking longer than
+        /// the HTTP timeout to answer the POST) is a retry, never a stop.
+        /// HttpClient signals its timeout as TaskCanceledException, an
+        /// OperationCanceledException subclass, and the loop once caught
+        /// every one as a Stop and reported Stopped with the toggle on.
+        /// The fake answers the first init late from another thread and
+        /// the second at once: the sequence must run Waiting then
+        /// Connected, with no Stopped anywhere.</summary>
+        [Fact]
+        public void SlowInit_IsRetriedNotStopped()
+        {
+            using var server = new FakeChromaServer { FirstInitDelayMs = 1500 };
+            var states = new ConcurrentQueue<ChromaServiceState>();
+            using var svc = new ChromaLightbarService(
+                server.Endpoint, heartbeatMs: 200, retryMs: 100, pollMs: 25, httpTimeoutMs: 300);
+            svc.StateChanged += s => states.Enqueue(s);
+            svc.Start();
+
+            Assert.True(server.WaitFor(() => states.Contains(ChromaServiceState.Connected)),
+                "the retried init never connected");
+            var sequence = states.ToArray();
+            Assert.Equal(ChromaServiceState.WaitingForSynapse, sequence[0]);
+            Assert.Contains(ChromaServiceState.Connected, sequence);
+            Assert.DoesNotContain(ChromaServiceState.Stopped, sequence);
+            Assert.True(server.Requests.Count(r => r.Path == "/razer/chromasdk" && r.Method == "POST") >= 2,
+                "the timed-out init was not retried");
+        }
+
+        /// <summary>A rejected effect: the REST server answers HTTP 200 with
+        /// a nonzero result (87, RzInvalidParameter in Colore's Result.cs,
+        /// which Colore checks after every effect call). The mirror must
+        /// retry the same color on the next poll rather than remember it
+        /// as sent and hold the previous color until the game writes a new
+        /// one. The fake rejects the first category PUT and accepts every
+        /// later one: two rounds of six for one color, then silence, with
+        /// the session intact.</summary>
+        [Fact]
+        public void RejectedPut_IsRetriedOnTheNextPoll()
+        {
+            using var server = new FakeChromaServer { FirstPutResult = 87 };
+            using var svc = new ChromaLightbarService(
+                server.Endpoint, heartbeatMs: 200, retryMs: 100, pollMs: 25);
+            svc.Start();
+            Assert.True(server.WaitFor(() =>
+                server.Requests.Any(r => r.Path == "/razer/chromasdk" && r.Method == "POST")));
+
+            ChromaLightbarService.Publish(0, 255, 0); // BGR 65280
+            Assert.True(server.WaitFor(() =>
+                server.Requests.Count(r => r.Body.Contains("\"color\":65280")) >= 12),
+                "the rejected color was never retried");
+            Assert.Equal(2, server.Requests.Count(r =>
+                r.Path == "/chromasdk/keyboard" && r.Body.Contains("\"color\":65280")));
+
+            // Accepted on the retry: no third round, and no session teardown.
+            Thread.Sleep(300);
+            Assert.Equal(12, server.Requests.Count(r => r.Body.Contains("\"color\":65280")));
+            Assert.DoesNotContain(server.Requests, r => r.Method == "DELETE");
         }
 
         /// <summary>The feed's source contract: the OutputDecoded handler

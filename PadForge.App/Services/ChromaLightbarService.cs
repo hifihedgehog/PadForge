@@ -87,14 +87,26 @@ namespace PadForge.Services
         /// changes. The owner marshals to the UI thread.</summary>
         public event Action<ChromaServiceState> StateChanged;
 
+        /// <summary>How long one REST call may take before HttpClient
+        /// abandons it. A cold Synapse answers the init POST late, and the
+        /// loop treats that as a retry, never as a stop.</summary>
+        internal const int DefaultHttpTimeoutMs = 5000;
+
         public ChromaLightbarService(
             string endpoint = null, int heartbeatMs = 1000, int retryMs = 30000, int pollMs = 100)
+            : this(endpoint, heartbeatMs, retryMs, pollMs, DefaultHttpTimeoutMs) { }
+
+        /// <summary>Test seam for the HTTP timeout: the bench provokes a
+        /// slow init answer in hundreds of milliseconds rather than the
+        /// five seconds production waits for a cold Synapse.</summary>
+        internal ChromaLightbarService(
+            string endpoint, int heartbeatMs, int retryMs, int pollMs, int httpTimeoutMs)
         {
             _endpoint = string.IsNullOrEmpty(endpoint) ? DefaultEndpoint : endpoint.TrimEnd('/');
             _heartbeatMs = heartbeatMs;
             _retryMs = retryMs;
             _pollMs = pollMs;
-            _http = new HttpClient { Timeout = TimeSpan.FromSeconds(5) };
+            _http = new HttpClient { Timeout = TimeSpan.FromMilliseconds(httpTimeoutMs) };
         }
 
         /// <summary>Publishes the game-set lightbar color. Called from the
@@ -141,9 +153,15 @@ namespace PadForge.Services
             while (!ct.IsCancellationRequested)
             {
                 string session = null;
+                // HttpClient signals its own timeout as TaskCanceledException,
+                // an OperationCanceledException subclass, so the filter is
+                // what keeps a slow init (a cold Synapse answering the POST
+                // late) on the retry path below instead of leaving the loop
+                // and reporting Stopped while the toggle stays on. Only a
+                // Stop, seen on the token, ends the loop here.
                 try { session = await InitAsync(ct).ConfigureAwait(false); }
-                catch (OperationCanceledException) { break; }
-                catch { /* Synapse absent or refused: retry below */ }
+                catch (OperationCanceledException) when (ct.IsCancellationRequested) { break; }
+                catch { /* Synapse absent, refused, or slow: retry below */ }
 
                 if (session == null)
                 {
@@ -176,14 +194,20 @@ namespace PadForge.Services
                         int rgb = Volatile.Read(ref s_publishedRgb);
                         if (rgb >= 0 && rgb != lastSent)
                         {
-                            await SendStaticAsync(session, ToBgr(rgb), ct).ConfigureAwait(false);
-                            lastSent = rgb;
+                            // lastSent advances only when every category
+                            // accepted the effect. A rejected PUT (HTTP 200
+                            // with a nonzero result) leaves it unchanged so
+                            // the next poll retries the same color instead
+                            // of holding the previous one until the game
+                            // writes a new color.
+                            if (await SendStaticAsync(session, ToBgr(rgb), ct).ConfigureAwait(false))
+                                lastSent = rgb;
                         }
 
                         await Task.Delay(_pollMs, ct).ConfigureAwait(false);
                     }
                 }
-                catch (OperationCanceledException) { /* stopping */ }
+                catch (OperationCanceledException) { /* stopping, or a call timed out: the token check below tells them apart */ }
                 catch { /* transport broke: fall through to reconnect */ }
 
                 // End the session either way; a fresh init replaces it on
@@ -217,18 +241,85 @@ namespace PadForge.Services
             return string.IsNullOrWhiteSpace(uri) ? null : uri.TrimEnd('/');
         }
 
-        private async Task SendStaticAsync(string session, int bgr, CancellationToken ct)
+        /// <summary>The result code for a category with no device behind
+        /// it: Colore Data/Result.cs DeviceNotConnected = 1167, the one code
+        /// Colore's native path (NativeApi.cs QueryDeviceAsync) reads as
+        /// "no device" rather than as an error. A mirror addressing all six
+        /// categories counts it as accepted.</summary>
+        internal const int ResultDeviceNotConnected = 1167;
+
+        /// <summary>The last rejection logged ("category result=code"), so a
+        /// category the server keeps rejecting costs one diag line per
+        /// distinct failure rather than one per poll. Cleared when a push
+        /// is accepted in full.</summary>
+        private string _lastRejectLogged;
+
+        /// <summary>PUTs CHROMA_STATIC to every category and returns whether
+        /// all of them accepted it. The REST server answers HTTP 200 with a
+        /// nonzero "result" on a rejected effect, and Colore checks that
+        /// field after every effect call (Rest/RestApi.cs SetEffectAsync and
+        /// CreateEffectAsync), so acceptance is read from the body, never
+        /// from the status code alone. Zero and DeviceNotConnected accept.
+        /// A rejection is logged once per distinct category and code, and
+        /// the caller leaves lastSent alone so the next poll retries.</summary>
+        private async Task<bool> SendStaticAsync(string session, int bgr, CancellationToken ct)
         {
             string body = "{\"effect\":\"CHROMA_STATIC\",\"param\":{\"color\":"
                 + bgr.ToString(System.Globalization.CultureInfo.InvariantCulture) + "}}";
+            string firstReject = null;
             foreach (string category in Categories)
             {
                 using var resp = await _http.PutAsync(
                     session + "/" + category, JsonContent(body), ct).ConfigureAwait(false);
-                // A category with no device present still answers OK; a
-                // non-success here means the session broke, which the next
-                // heartbeat detects. Keep pushing the rest either way.
+                // Keep pushing the remaining categories after a rejection so
+                // one bad category never starves the others. A non-success
+                // status means the session broke, which the next heartbeat
+                // detects and answers with a re-init.
+                string reject = null;
+                if (!resp.IsSuccessStatusCode)
+                {
+                    reject = category + " http=" + (int)resp.StatusCode;
+                }
+                else
+                {
+                    string content = await resp.Content.ReadAsStringAsync(ct).ConfigureAwait(false);
+                    if (!TryReadResult(content, out int result))
+                        reject = category + " result=unparsable";
+                    else if (result != 0 && result != ResultDeviceNotConnected)
+                        reject = category + " result=" + result.ToString(System.Globalization.CultureInfo.InvariantCulture);
+                }
+                firstReject ??= reject;
             }
+
+            if (firstReject == null)
+            {
+                _lastRejectLogged = null;
+                return true;
+            }
+            if (firstReject != _lastRejectLogged)
+            {
+                _lastRejectLogged = firstReject;
+                PadForge.Engine.SdlDiagLog.WriteLine($"CHROMA effect rejected: {firstReject}, retrying on the next poll");
+            }
+            return false;
+        }
+
+        /// <summary>Reads the "result" integer every effect response carries
+        /// (Colore Rest/Data/SdkResponse.cs). False when the body is not
+        /// that shape, which the caller treats as a rejection, the way
+        /// Colore treats a null response.</summary>
+        private static bool TryReadResult(string content, out int result)
+        {
+            result = 0;
+            try
+            {
+                using var doc = JsonDocument.Parse(content);
+                return doc.RootElement.ValueKind == JsonValueKind.Object
+                    && doc.RootElement.TryGetProperty("result", out var prop)
+                    && prop.ValueKind == JsonValueKind.Number
+                    && prop.TryGetInt32(out result);
+            }
+            catch (JsonException) { return false; }
         }
 
         private static StringContent JsonContent(string body)

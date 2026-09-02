@@ -29,6 +29,37 @@ namespace PadForge.Tests
     [Collection("ChromaPublishedColor")]
     public class ChromaLightbarTests : IDisposable
     {
+        /// <summary>Accepts every TCP connection and closes it at once: the
+        /// fastest possible "no Synapse here" on any machine, independent of
+        /// how long the OS takes to refuse a closed port.</summary>
+        private sealed class DeadTcpServer : IDisposable
+        {
+            private readonly System.Net.Sockets.TcpListener _listener;
+            private readonly Thread _thread;
+            private volatile bool _stop;
+            public string Endpoint { get; }
+            public DeadTcpServer()
+            {
+                _listener = new System.Net.Sockets.TcpListener(System.Net.IPAddress.Loopback, 0);
+                _listener.Start();
+                Endpoint = "http://127.0.0.1:" + ((System.Net.IPEndPoint)_listener.LocalEndpoint).Port;
+                _thread = new Thread(() =>
+                {
+                    while (!_stop)
+                    {
+                        try { using var s = _listener.AcceptSocket(); s.Close(); }
+                        catch { break; }
+                    }
+                }) { IsBackground = true };
+                _thread.Start();
+            }
+            public void Dispose()
+            {
+                _stop = true;
+                try { _listener.Stop(); } catch { }
+            }
+        }
+
         private sealed class FakeChromaServer : IDisposable
         {
             private readonly HttpListener _listener;
@@ -226,10 +257,17 @@ namespace PadForge.Tests
         [Fact]
         public void NoSynapse_ReportsWaitingAndRetries()
         {
-            // A port with no listener: bind-then-close to find a free one.
-            using var probe = new FakeChromaServer();
-            string deadEndpoint = probe.Endpoint;
-            probe.Dispose();
+            // A server that accepts and immediately drops every connection,
+            // so the init attempt fails at once on any machine. The earlier
+            // shape, bind-then-close for a port with no listener, leaned on
+            // the OS refusing the connect instantly, and this bench refuses a
+            // loopback connect to a closed port only after about two seconds
+            // (curl: "Connection refused" after 2043 ms). Two retries then
+            // landed at about four seconds inside the five-second window, and
+            // suite load pushed the second past it (named 2026-09-01 under a
+            // TRX hammer, one failure in two runs at twelve percent CPU).
+            using var dead = new DeadTcpServer();
+            string deadEndpoint = dead.Endpoint;
 
             var states = new ConcurrentQueue<ChromaServiceState>();
             using var svc = new ChromaLightbarService(

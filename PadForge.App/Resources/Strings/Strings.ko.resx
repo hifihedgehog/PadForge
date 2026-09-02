@@ -249,6 +249,7 @@
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU 모션 서버 활성화 (CemuHook Motion Provider protocol)</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>포트</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Cemu, Dolphin, Yuzu 등에 자이로 및 가속도계 데이터를 제공합니다.</value></data>
+  <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>OpenTrack 및 해당 UDP 출력을 보내거나 FreeTrack 2.0 공유 메모리에 쓰는 모든 트래커와 함께 작동합니다.</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>웹 컨트롤러</value></data>
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>로컬 네트워크의 브라우저에 게임패드 UI를 제공합니다.</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>웹 컨트롤러 서버 활성화</value></data>
@@ -2375,18 +2376,18 @@
   <data name="HeadTracker_X" xml:space="preserve"><value>머리 X</value></data>
   <data name="HeadTracker_Y" xml:space="preserve"><value>머리 Y</value></data>
   <data name="HeadTracker_Z" xml:space="preserve"><value>머리 Z</value></data>
-  <data name="Settings_HeadTracking" xml:space="preserve"><value>헤드 트래킹</value></data>
-  <data name="Settings_HeadTrackingDesc" xml:space="preserve"><value>OpenTrack의 UDP 출력 또는 FreeTrack 2.0 공유 메모리에서 머리 자세를 읽어 헤드 트래커 장치의 6개 축(요, 피치, 롤, 세 방향 이동)으로 노출합니다. 머리 요를 스틱 축에 매핑하면 두 엄지를 버튼에 둔 채 주위를 둘러볼 수 있습니다.</value></data>
-  <data name="Settings_HeadTrackingEnable" xml:space="preserve"><value>헤드 트래킹 입력 사용</value></data>
-  <data name="Settings_HeadTrackingEnable_Tooltip" xml:space="preserve"><value>장치 페이지에 헤드 트래커 행을 추가합니다. OpenTrack에서 "UDP over network" 출력을 선택하고 아래 포트의 127.0.0.1로 보내거나 "freetrack 2.0 Enhanced"를 선택하세요.</value></data>
-  <data name="Settings_HeadTrackingFreeTrack" xml:space="preserve"><value>FreeTrack 2.0 공유 메모리도 읽기</value></data>
-  <data name="Settings_HeadTrackingFreeTrack_Tooltip" xml:space="preserve"><value>OpenTrack의 "freetrack 2.0 Enhanced" 출력이 쓰는 FT_SharedMem 매핑을 읽습니다. FreeTrack을 읽는 게임은 함께 계속 동작합니다.</value></data>
-  <data name="Settings_HeadTrackingPort" xml:space="preserve"><value>UDP 포트</value></data>
-  <data name="Settings_HeadTrackingPort_Tooltip" xml:space="preserve"><value>OpenTrack의 "UDP over network" 출력이 보내는 포트입니다. OpenTrack의 기본값은 4242입니다.</value></data>
-  <data name="Settings_HeadTrackingRotationRange" xml:space="preserve"><value>회전 범위(도)</value></data>
-  <data name="Settings_HeadTrackingRotationRange_Tooltip" xml:space="preserve"><value>요, 피치, 롤 축이 최대로 움직이는 머리 회전량입니다.</value></data>
-  <data name="Settings_HeadTrackingTranslationRange" xml:space="preserve"><value>이동 범위(cm)</value></data>
-  <data name="Settings_HeadTrackingTranslationRange_Tooltip" xml:space="preserve"><value>X, Y, Z 축이 최대로 움직이는 머리 이동량입니다.</value></data>
+  <data name="Dashboard_HeadTracking" xml:space="preserve"><value>헤드 트래킹</value></data>
+  <data name="Dashboard_HeadTrackingDesc" xml:space="preserve"><value>OpenTrack의 UDP 출력 또는 FreeTrack 2.0 공유 메모리에서 머리 자세를 읽어 헤드 트래커 장치의 6개 축(요, 피치, 롤, 세 방향 이동)으로 노출합니다. 머리 요를 스틱 축에 매핑하면 두 엄지를 버튼에 둔 채 주위를 둘러볼 수 있습니다.</value></data>
+  <data name="Dashboard_HeadTrackingEnable" xml:space="preserve"><value>헤드 트래킹 입력 사용</value></data>
+  <data name="Dashboard_HeadTrackingEnable_Tooltip" xml:space="preserve"><value>장치 페이지에 헤드 트래커 행을 추가합니다. OpenTrack에서 "UDP over network" 출력을 선택하고 아래 포트의 127.0.0.1로 보내거나 "freetrack 2.0 Enhanced"를 선택하세요.</value></data>
+  <data name="Dashboard_HeadTrackingFreeTrack" xml:space="preserve"><value>FreeTrack 2.0 공유 메모리도 읽기</value></data>
+  <data name="Dashboard_HeadTrackingFreeTrack_Tooltip" xml:space="preserve"><value>OpenTrack의 "freetrack 2.0 Enhanced" 출력이 쓰는 FT_SharedMem 매핑을 읽습니다. FreeTrack을 읽는 게임은 함께 계속 동작합니다.</value></data>
+  <data name="Dashboard_HeadTrackingPort" xml:space="preserve"><value>UDP 포트</value></data>
+  <data name="Dashboard_HeadTrackingPort_Tooltip" xml:space="preserve"><value>OpenTrack의 "UDP over network" 출력이 보내는 포트입니다. OpenTrack의 기본값은 4242입니다.</value></data>
+  <data name="Dashboard_HeadTrackingRotationRange" xml:space="preserve"><value>회전 범위(도)</value></data>
+  <data name="Dashboard_HeadTrackingRotationRange_Tooltip" xml:space="preserve"><value>요, 피치, 롤 축이 최대로 움직이는 머리 회전량입니다.</value></data>
+  <data name="Dashboard_HeadTrackingTranslationRange" xml:space="preserve"><value>이동 범위(cm)</value></data>
+  <data name="Dashboard_HeadTrackingTranslationRange_Tooltip" xml:space="preserve"><value>X, Y, Z 축이 최대로 움직이는 머리 이동량입니다.</value></data>
   <data name="HeadTracker_StatusWaiting_Format" xml:space="preserve"><value>UDP 포트 {0}에서 트래커를 기다리는 중입니다.</value></data>
   <data name="HeadTracker_StatusUdp_Format" xml:space="preserve"><value>{0}에서 UDP로 수신 중입니다.</value></data>
   <data name="HeadTracker_StatusFreeTrack" xml:space="preserve"><value>FreeTrack 공유 메모리에서 수신 중입니다.</value></data>

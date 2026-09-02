@@ -3,9 +3,9 @@ using System;
 namespace PadForge.Common.Input
 {
     /// <summary>
-    /// The Settings mirror the engine reads for head tracking (issue #355),
+    /// The Dashboard mirror the engine reads for head tracking (issue #355),
     /// the shape of <see cref="HandheldButtonRegistry.FeatureEnabled"/>:
-    /// static, written by the Settings view model on the UI thread, read by
+    /// static, written by the Dashboard view model on the UI thread, read by
     /// the poll thread's device sweep and by the device on every read.
     ///
     /// <para><see cref="Version"/> bumps on a change that needs the row
@@ -25,7 +25,7 @@ namespace PadForge.Common.Input
         private static volatile int _translationRangeCm = DefaultTranslationRangeCm;
         private static volatile int _version;
 
-        /// <summary>The Settings toggle. Off by default: no device row, no
+        /// <summary>The Dashboard toggle. Off by default: no device row, no
         /// socket, no file mapping, no thread.</summary>
         public static bool Enabled
         {

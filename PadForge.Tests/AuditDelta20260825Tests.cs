@@ -285,11 +285,17 @@ namespace PadForge.Tests
                 // directly above the assign-offer pair in the Settings page
                 // and had the identical gap.
                 "BatteryNotifyEnabled", "BatteryNotifyThreshold", "BatteryNotifyVibrate",
-                "HeadTrackingEnabled", "HeadTrackingUdpPort", "HeadTrackingFreeTrack",
-                "HeadTrackingRotationRange", "HeadTrackingTranslationRange",
                 "HandheldButtonsEnabled",
             })
                 Assert.Contains("nameof(SettingsViewModel." + prop + ")", mainWindow);
+            // Head tracking moved to the Dashboard (#355 move), so its five
+            // ride the Dashboard allowlist with the DSU server's pair.
+            foreach (string prop in new[]
+            {
+                "HeadTrackingEnabled", "HeadTrackingUdpPort", "HeadTrackingFreeTrack",
+                "HeadTrackingRotationRange", "HeadTrackingTranslationRange",
+            })
+                Assert.Contains("nameof(DashboardViewModel." + prop + ")", mainWindow);
         }
 
         [Fact]

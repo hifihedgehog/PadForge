@@ -249,6 +249,7 @@
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Activer le serveur de mouvement DSU (CemuHook Motion Provider protocol)</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>Port</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Fournit les données du gyroscope et de l'accéléromètre à Cemu, Dolphin, Yuzu, etc.</value></data>
+  <data name="Dashboard_HeadTrackingFooter" xml:space="preserve"><value>Fonctionne avec OpenTrack et tout tracker qui envoie sa sortie UDP ou écrit dans la mémoire partagée FreeTrack 2.0.</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Contrôleur Web</value></data>
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>Diffuser une interface manette vers les navigateurs de votre réseau local.</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Activer le serveur de contrôleur web</value></data>
@@ -2375,18 +2376,18 @@
   <data name="HeadTracker_X" xml:space="preserve"><value>Tête X</value></data>
   <data name="HeadTracker_Y" xml:space="preserve"><value>Tête Y</value></data>
   <data name="HeadTracker_Z" xml:space="preserve"><value>Tête Z</value></data>
-  <data name="Settings_HeadTracking" xml:space="preserve"><value>Suivi de tête</value></data>
-  <data name="Settings_HeadTrackingDesc" xml:space="preserve"><value>Lit la pose de la tête depuis la sortie UDP d'OpenTrack ou la mémoire partagée FreeTrack 2.0 et l'expose en six axes sur un périphérique Suivi de tête : lacet, tangage, roulis et les trois translations. Associez le lacet à un axe de stick pour regarder autour de vous en gardant les deux pouces sur les boutons.</value></data>
-  <data name="Settings_HeadTrackingEnable" xml:space="preserve"><value>Activer l'entrée de suivi de tête</value></data>
-  <data name="Settings_HeadTrackingEnable_Tooltip" xml:space="preserve"><value>Ajoute la ligne Suivi de tête sur la page Périphériques. Dans OpenTrack, choisissez la sortie « UDP over network » et envoyez vers 127.0.0.1 sur le port ci-dessous, ou choisissez « freetrack 2.0 Enhanced ».</value></data>
-  <data name="Settings_HeadTrackingFreeTrack" xml:space="preserve"><value>Lire aussi la mémoire partagée FreeTrack 2.0</value></data>
-  <data name="Settings_HeadTrackingFreeTrack_Tooltip" xml:space="preserve"><value>Lit le mappage FT_SharedMem écrit par la sortie « freetrack 2.0 Enhanced » d'OpenTrack. Les jeux qui lisent FreeTrack continuent de fonctionner en parallèle.</value></data>
-  <data name="Settings_HeadTrackingPort" xml:space="preserve"><value>Port UDP</value></data>
-  <data name="Settings_HeadTrackingPort_Tooltip" xml:space="preserve"><value>Le port vers lequel la sortie « UDP over network » d'OpenTrack envoie. La valeur par défaut d'OpenTrack est 4242.</value></data>
-  <data name="Settings_HeadTrackingRotationRange" xml:space="preserve"><value>Plage de rotation (degrés)</value></data>
-  <data name="Settings_HeadTrackingRotationRange_Tooltip" xml:space="preserve"><value>Rotation de la tête qui amène les axes de lacet, tangage et roulis à la déflexion maximale.</value></data>
-  <data name="Settings_HeadTrackingTranslationRange" xml:space="preserve"><value>Plage de translation (cm)</value></data>
-  <data name="Settings_HeadTrackingTranslationRange_Tooltip" xml:space="preserve"><value>Déplacement de la tête qui amène les axes X, Y et Z à la déflexion maximale.</value></data>
+  <data name="Dashboard_HeadTracking" xml:space="preserve"><value>Suivi de tête</value></data>
+  <data name="Dashboard_HeadTrackingDesc" xml:space="preserve"><value>Lit la pose de la tête depuis la sortie UDP d'OpenTrack ou la mémoire partagée FreeTrack 2.0 et l'expose en six axes sur un périphérique Suivi de tête : lacet, tangage, roulis et les trois translations. Associez le lacet à un axe de stick pour regarder autour de vous en gardant les deux pouces sur les boutons.</value></data>
+  <data name="Dashboard_HeadTrackingEnable" xml:space="preserve"><value>Activer l'entrée de suivi de tête</value></data>
+  <data name="Dashboard_HeadTrackingEnable_Tooltip" xml:space="preserve"><value>Ajoute la ligne Suivi de tête sur la page Périphériques. Dans OpenTrack, choisissez la sortie « UDP over network » et envoyez vers 127.0.0.1 sur le port ci-dessous, ou choisissez « freetrack 2.0 Enhanced ».</value></data>
+  <data name="Dashboard_HeadTrackingFreeTrack" xml:space="preserve"><value>Lire aussi la mémoire partagée FreeTrack 2.0</value></data>
+  <data name="Dashboard_HeadTrackingFreeTrack_Tooltip" xml:space="preserve"><value>Lit le mappage FT_SharedMem écrit par la sortie « freetrack 2.0 Enhanced » d'OpenTrack. Les jeux qui lisent FreeTrack continuent de fonctionner en parallèle.</value></data>
+  <data name="Dashboard_HeadTrackingPort" xml:space="preserve"><value>Port UDP</value></data>
+  <data name="Dashboard_HeadTrackingPort_Tooltip" xml:space="preserve"><value>Le port vers lequel la sortie « UDP over network » d'OpenTrack envoie. La valeur par défaut d'OpenTrack est 4242.</value></data>
+  <data name="Dashboard_HeadTrackingRotationRange" xml:space="preserve"><value>Plage de rotation (degrés)</value></data>
+  <data name="Dashboard_HeadTrackingRotationRange_Tooltip" xml:space="preserve"><value>Rotation de la tête qui amène les axes de lacet, tangage et roulis à la déflexion maximale.</value></data>
+  <data name="Dashboard_HeadTrackingTranslationRange" xml:space="preserve"><value>Plage de translation (cm)</value></data>
+  <data name="Dashboard_HeadTrackingTranslationRange_Tooltip" xml:space="preserve"><value>Déplacement de la tête qui amène les axes X, Y et Z à la déflexion maximale.</value></data>
   <data name="HeadTracker_StatusWaiting_Format" xml:space="preserve"><value>En attente d'un tracker sur le port UDP {0}.</value></data>
   <data name="HeadTracker_StatusUdp_Format" xml:space="preserve"><value>Réception par UDP depuis {0}.</value></data>
   <data name="HeadTracker_StatusFreeTrack" xml:space="preserve"><value>Réception depuis la mémoire partagée FreeTrack.</value></data>

@@ -1533,6 +1533,95 @@
                 </StackPanel>
             </Border>
 
+            <!-- ═══ Head Tracking (#355) ═══
+                 A UDP listener on OpenTrack's port plus a FreeTrack 2.0
+                 shared-memory reader, surfaced as the Head Tracker device
+                 row. A service with an enable, a port and a live status,
+                 so it sits with the other services and rides profiles
+                 (ProfileData.EnableHeadTracking, the mirrors' nullable
+                 contract). The status line is the Devices row's source
+                 line, pushed by InputService on the dashboard tick. -->
+            <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
+                <TextBlock Text="&#xE77B;" Style="{StaticResource SectionGlyph}"/>
+                <TextBlock Text="{Binding Dashboard_HeadTracking, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" Style="{StaticResource SectionTitle}"/>
+            </StackPanel>
+
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
+                <StackPanel>
+                    <TextBlock Text="{Binding Dashboard_HeadTrackingDesc, Source={x:Static strings:Strings.Instance}}"
+                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
+                    <CheckBox Content="{Binding Dashboard_HeadTrackingEnable, Source={x:Static strings:Strings.Instance}}"
+                              ToolTip="{Binding Dashboard_HeadTrackingEnable_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                              IsChecked="{Binding HeadTrackingEnabled}" Margin="0,0,0,8"/>
+                    <CheckBox Content="{Binding Dashboard_HeadTrackingFreeTrack, Source={x:Static strings:Strings.Instance}}"
+                              ToolTip="{Binding Dashboard_HeadTrackingFreeTrack_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                              IsChecked="{Binding HeadTrackingFreeTrack}" Margin="0,0,0,8"/>
+                    <!-- One grid so the three boxes line up under labels of
+                         different widths. Each row is the Motion Server port
+                         row: label, box, reset. -->
+                    <Grid Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="{Binding Dashboard_HeadTrackingPort, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,8"/>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,8">
+                            <ui:NumberBox Value="{Binding HeadTrackingUdpPort, Mode=TwoWay}"
+                                          Minimum="1" Maximum="65535"
+                                          SpinButtonPlacementMode="Inline" Width="200"
+                                          ToolTip="{Binding Dashboard_HeadTrackingPort_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                            <ui:Button Style="{StaticResource EmberIconButton}"
+                                       Command="{Binding ResetHeadTrackingPortCommand}" VerticalAlignment="Center"
+                                       ToolTip="{Binding Common_Reset, Source={x:Static strings:Strings.Instance}}">
+                                <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                            </ui:Button>
+                        </StackPanel>
+                        <TextBlock Grid.Row="1" Text="{Binding Dashboard_HeadTrackingRotationRange, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,8"/>
+                        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,8">
+                            <ui:NumberBox Value="{Binding HeadTrackingRotationRange, Mode=TwoWay}"
+                                          Minimum="1" Maximum="180"
+                                          SpinButtonPlacementMode="Inline" Width="200"
+                                          ToolTip="{Binding Dashboard_HeadTrackingRotationRange_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                            <ui:Button Style="{StaticResource EmberIconButton}"
+                                       Command="{Binding ResetHeadTrackingRotationRangeCommand}" VerticalAlignment="Center"
+                                       ToolTip="{Binding Common_Reset, Source={x:Static strings:Strings.Instance}}">
+                                <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                            </ui:Button>
+                        </StackPanel>
+                        <TextBlock Grid.Row="2" Text="{Binding Dashboard_HeadTrackingTranslationRange, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,0"/>
+                        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
+                            <ui:NumberBox Value="{Binding HeadTrackingTranslationRange, Mode=TwoWay}"
+                                          Minimum="1" Maximum="500"
+                                          SpinButtonPlacementMode="Inline" Width="200"
+                                          ToolTip="{Binding Dashboard_HeadTrackingTranslationRange_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                            <ui:Button Style="{StaticResource EmberIconButton}"
+                                       Command="{Binding ResetHeadTrackingTranslationRangeCommand}" VerticalAlignment="Center"
+                                       ToolTip="{Binding Common_Reset, Source={x:Static strings:Strings.Instance}}">
+                                <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                            </ui:Button>
+                        </StackPanel>
+                    </Grid>
+                    <!-- The Devices row's source line: which source is live,
+                         or why neither is. Stopped while the feature is off
+                         or the engine is down. -->
+                    <TextBlock Text="{Binding HeadTrackingStatus}" FontSize="12"
+                               FontFamily="{StaticResource TelemetryFontFamily}"
+                               Foreground="{DynamicResource ColdBrush}" Margin="0,0,0,4"/>
+                    <TextBlock Text="{Binding Dashboard_HeadTrackingFooter, Source={x:Static strings:Strings.Instance}}"
+                               FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
+                </StackPanel>
+            </Border>
+
             <!-- ═══ Web Controller ═══ -->
             <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
                 <TextBlock Text="&#xE774;" Style="{StaticResource SectionGlyph}"/>

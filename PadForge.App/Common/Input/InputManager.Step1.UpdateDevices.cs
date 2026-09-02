@@ -1326,6 +1326,13 @@ namespace PadForge.Common.Input
         private readonly object _headTrackerLock = new object();
         private volatile bool _headTrackerInputsSuppressed;
 
+        /// <summary>The live Head Tracker row, null while the feature is off
+        /// or the row is retired. Read by the Dashboard status lane
+        /// (InputService.UpdateHeadTrackingStatus), which keys its cache on
+        /// the instance plus <see cref="HeadTrackerDevice.StatusVersion"/>,
+        /// so a reopen (new instance, version back at 0) still rebuilds.</summary>
+        internal HeadTrackerDevice HeadTracker => _headTrackerDevice;
+
         // Sony headset head trackers (Phase 1g, issue #188). Discovery,
         // qualification (Bluetooth feature-report reads) and the enable
         // sequence are all blocking device I/O, so the worker does the
@@ -2382,7 +2389,7 @@ namespace PadForge.Common.Input
         /// <summary>Called on app shutdown in the same window as the NFC,
         /// microphone and headset teardowns: after Stop(), before
         /// ShutdownSdl().</summary>
-        /// <summary>Phase 1i (issue #355). One row while the Settings toggle
+        /// <summary>Phase 1i (issue #355). One row while the Dashboard toggle
         /// is on, recreated when the user removes it (the NFC recreate
         /// pattern) and reopened when the port or the FreeTrack toggle
         /// changes. Off with nothing to retire: two volatile reads and out.</summary>

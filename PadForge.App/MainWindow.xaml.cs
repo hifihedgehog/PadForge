@@ -577,11 +577,6 @@ namespace PadForge
                      or nameof(SettingsViewModel.HmInactivityDestroyTimeoutSeconds)
                      or nameof(SettingsViewModel.EnableInputHiding)
                      or nameof(SettingsViewModel.HandheldButtonsEnabled)
-                     or nameof(SettingsViewModel.HeadTrackingEnabled)
-                     or nameof(SettingsViewModel.HeadTrackingUdpPort)
-                     or nameof(SettingsViewModel.HeadTrackingFreeTrack)
-                     or nameof(SettingsViewModel.HeadTrackingRotationRange)
-                     or nameof(SettingsViewModel.HeadTrackingTranslationRange)
                      or nameof(SettingsViewModel.AssignOfferNewDevice)
                      or nameof(SettingsViewModel.AssignOfferEmptySlot)
                      or nameof(SettingsViewModel.BatteryNotifyEnabled)
@@ -595,16 +590,22 @@ namespace PadForge
                     _settingsService.MarkDirty();
             };
 
-            // Persist DSU / Remote Link / web controller / overlay settings on
-            // change (Dashboard VM). This list must cover every Dashboard
-            // property LoadAppSettings restores and BuildAppSettings writes:
-            // a persisted property missing here changes live state but never
-            // marks the file dirty, so a normal close (which saves only when
-            // IsDirty) silently discards it. The Remote Link trio was missing.
+            // Persist DSU / head tracking / Remote Link / web controller /
+            // overlay settings on change (Dashboard VM). This list must cover
+            // every Dashboard property LoadAppSettings restores and
+            // BuildAppSettings writes: a persisted property missing here
+            // changes live state but never marks the file dirty, so a normal
+            // close (which saves only when IsDirty) silently discards it. The
+            // Remote Link trio was missing.
             _viewModel.Dashboard.PropertyChanged += (s, e) =>
             {
                 if (e.PropertyName is nameof(DashboardViewModel.EnableDsuMotionServer)
                      or nameof(DashboardViewModel.DsuMotionServerPort)
+                     or nameof(DashboardViewModel.HeadTrackingEnabled)
+                     or nameof(DashboardViewModel.HeadTrackingUdpPort)
+                     or nameof(DashboardViewModel.HeadTrackingFreeTrack)
+                     or nameof(DashboardViewModel.HeadTrackingRotationRange)
+                     or nameof(DashboardViewModel.HeadTrackingTranslationRange)
                      or nameof(DashboardViewModel.EnableWebController)
                      or nameof(DashboardViewModel.EnableChromaLightbar)
                      or nameof(DashboardViewModel.EnableLightsyncLightbar)

@@ -11339,21 +11339,55 @@ namespace PadForge.Services
         /// are searched.</summary>
         /// <summary>Whether the present-node sweep may widen a record's
         /// hide list to every present node of its VID/PID (#391). True when
-        /// the record is the only one of its VID/PID in the registry, so
+        /// the record is the only one of its VID/PID that is HERE, so
         /// every present node of that product is this pad on one of its
-        /// transports. With two records of one product the sweep is off
-        /// and the record hides its own DevicePath only, as before, so a
-        /// second identical pad is never hidden by the first.</summary>
+        /// transports. With two such records of one product the sweep is
+        /// off and the record hides its own DevicePath only, as before, so
+        /// a second identical pad is never hidden by the first.
+        ///
+        /// <para>"Here" is the record itself, any online record, or an
+        /// offline record whose persisted path or cached instance ids
+        /// resolve to a PRESENT devnode (no phantoms). Counting every
+        /// record of the product, offline ones included, switched the sweep
+        /// off for good once a pad had ever been paired under a second
+        /// serial: the stale record stayed in the registry, the count read
+        /// two, and the live pad's other transport was never hidden. The
+        /// probe is a parameter so the tests can stand in for cfgmgr32.
+        /// Production passes null and gets
+        /// <see cref="HidHideController.IsInstancePresent"/>.
+        /// <paramref name="same"/> reports the count for the diag line.</para></summary>
         internal static bool HidHideSiblingSweepAllowed(UserDevice[] snapshot, UserDevice ud)
+            => HidHideSiblingSweepAllowed(snapshot, ud, out _, null);
+
+        internal static bool HidHideSiblingSweepAllowed(UserDevice[] snapshot, UserDevice ud, out int same, Func<string, bool> presenceProbe)
         {
+            same = 0;
             if (ud == null || ud.VendorId == 0 || ud.ProdId == 0) return false;
-            int same = 0;
+            presenceProbe ??= HidHideController.IsInstancePresent;
             foreach (var other in snapshot)
             {
                 if (other == null) continue;
-                if (other.VendorId == ud.VendorId && other.ProdId == ud.ProdId) same++;
+                if (other.VendorId != ud.VendorId || other.ProdId != ud.ProdId) continue;
+                if (ReferenceEquals(other, ud) || other.IsOnline || HidHideRecordIsPresent(other, presenceProbe))
+                    same++;
             }
             return same == 1;
+        }
+
+        /// <summary>An offline record counts as present when its persisted
+        /// DevicePath, converted to an instance id, or any of its cached
+        /// HidHide instance ids names a devnode the probe finds. A synthetic
+        /// path (XInput#N) converts to nothing cfgmgr32 knows and probes
+        /// false, which is right: an offline XInput record has no node.</summary>
+        private static bool HidHideRecordIsPresent(UserDevice other, Func<string, bool> probe)
+        {
+            string id = HidHideController.DevicePathToInstanceId(other.DevicePath);
+            if (id != null && probe(id)) return true;
+            var cached = other.HidHideInstanceIds;
+            if (cached != null)
+                foreach (var cachedId in cached)
+                    if (!string.IsNullOrEmpty(cachedId) && probe(cachedId)) return true;
+            return false;
         }
 
         private static List<string> FindInstanceIdsForDevice(UserDevice ud)
@@ -11486,6 +11520,21 @@ namespace PadForge.Services
             catch { /* best effort, same as the engine-start sweep */ }
         }
 
+        /// <summary>The desired blacklist the last apply computed, and the
+        /// last tick the "unchanged" line printed. DevicesUpdated fires on
+        /// every device-list flip, and an idle bench flipped something every
+        /// enumeration interval (the owner's trace: 215 of 305 diag lines
+        /// were the HIDHIDE apply block, five seconds apart, all identical).
+        /// The sync still runs on every apply, since after the driver-first
+        /// diff it is a cheap read and no write, but the block prints only
+        /// when the desired set differs from the last one, or once a minute
+        /// while the sync or read-back reports trouble. Otherwise one
+        /// "unchanged" line at most once a minute keeps the trace showing
+        /// the path is alive.</summary>
+        private HashSet<string> _lastHidHideDesired;
+        private long _lastHidHideUnchangedLogTick;
+        private long _lastHidHideTroubleLogTick;
+
         public void ApplyDeviceHiding()
         {
             if (!_mainVm.Settings.EnableInputHiding)
@@ -11522,7 +11571,10 @@ namespace PadForge.Services
             }
             if (hidHideUp)
             {
-                PadForge.Engine.SdlDiagLog.WriteLine($"HIDHIDE apply devices={snapshot.Length} wantHiding={wantHiding}");
+                // Buffered, printed at the end only when the desired set
+                // moved or the sync misbehaved (see _lastHidHideDesired).
+                var hidLog = new List<string>();
+                hidLog.Add($"HIDHIDE apply devices={snapshot.Length} wantHiding={wantHiding}");
                 // Build the set of desired whitelist paths (PadForge + user list).
                 var desiredPaths = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                 string exePath = System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName;
@@ -11580,10 +11632,14 @@ namespace PadForge.Services
                             // persistent double input. Sweep every PRESENT node of
                             // this VID/PID as well, so the live transport is hidden
                             // on the first pass whichever path the record carries.
-                            // Gated to a record that is the only one of its VID/PID,
-                            // so two distinct pads never hide each other.
+                            // Gated to a record that is the only PRESENT one of its
+                            // VID/PID, so two distinct pads never hide each other.
+                            // The diag line always says which way the gate went:
+                            // "sweep=off(same=N)" used to be silence, and silence
+                            // could not be told from a sweep that found nothing.
                             var sweep = new List<string>();
-                            if (HidHideSiblingSweepAllowed(snapshot, ud))
+                            bool sweepOn = HidHideSiblingSweepAllowed(snapshot, ud, out int same, null);
+                            if (sweepOn)
                             {
                                 foreach (var realId in FindInstanceIdsForDevice(ud))
                                 {
@@ -11592,13 +11648,27 @@ namespace PadForge.Services
                                         if (desiredIds.Add(id)) sweep.Add(id);
                                 }
                             }
-                            PadForge.Engine.SdlDiagLog.WriteLine(
+                            hidLog.Add(
                                 $"HIDHIDE dev {ud.VendorId:X4}:{ud.ProdId:X4} id={instanceId} expanded={expanded.Count} [{string.Join(" | ", expanded)}]"
-                                + (sweep.Count > 0 ? $" sweep={sweep.Count} [{string.Join(" | ", sweep)}]" : ""));
+                                + (sweepOn ? $" sweep={sweep.Count} [{string.Join(" | ", sweep)}]" : $" sweep=off(same={same})"));
                         }
                         // Fallback for synthetic paths (e.g., "XInput#0"): look up by VID/PID.
                         else if (ud.VendorId > 0 && ud.ProdId > 0)
                         {
+                            // The same sole-record gate as the sweep above. This
+                            // branch resolves by VID/PID alone, so with two
+                            // identical pads and one record on the XInput backend
+                            // it hid BOTH pads and cached both ids on the one
+                            // record, and the second pad stayed hidden from every
+                            // game with no record saying so. A twin present means
+                            // this record hides nothing, said out loud.
+                            if (!HidHideSiblingSweepAllowed(snapshot, ud, out int syntheticSame, null))
+                            {
+                                hidLog.Add(
+                                    $"HIDHIDE dev {ud.VendorId:X4}:{ud.ProdId:X4} synthetic twin present: not hidden (same={syntheticSame})");
+                                continue;
+                            }
+
                             var realIds = FindInstanceIdsForDevice(ud);
 
                             // Scrub any HIDMaestro-manufactured instance IDs that
@@ -11648,7 +11718,7 @@ namespace PadForge.Services
                                 }
                             }
 
-                            PadForge.Engine.SdlDiagLog.WriteLine(
+                            hidLog.Add(
                                 $"HIDHIDE dev {ud.VendorId:X4}:{ud.ProdId:X4} synthetic path={ud.DevicePath} vidpid ids={realIds.Count} cached={ud.HidHideInstanceIds.Count}");
                             if (realIds.Count > 0)
                             {
@@ -11677,8 +11747,10 @@ namespace PadForge.Services
                     }
                 }
 
-                // Atomically sync — only adds/removes the diff, never clears the blacklist.
-                HidHideController.SyncManagedDevices(desiredIds, out var added, out var removed);
+                // Sync the diff against the DRIVER's list, never clearing the
+                // blacklist. False means the read or the write failed and the
+                // managed set was left as it was, so the next apply retries.
+                bool synced = HidHideController.SyncManagedDevices(desiredIds, out var added, out var removed);
 
                 // Persist updated cache to settings.
                 if (cacheUpdated)
@@ -11692,11 +11764,33 @@ namespace PadForge.Services
                 // no other signal catches.
                 var missing = HidHideController.MissingFromBlacklist(desiredIds);
                 bool active = HidHideController.GetActive();
-                PadForge.Engine.SdlDiagLog.WriteLine(
+                hidLog.Add(
                     $"HIDHIDE sync desired={desiredIds.Count} added={added.Count} removed={removed.Count} active={active}"
+                    + (synced ? "" : " write=REFUSED")
                     + (missing == null ? " readback=FAILED"
                         : missing.Count == 0 ? " readback=ok"
                         : $" readback=MISSING {missing.Count} [{string.Join(" | ", missing)}]"));
+
+                // Print the block when the desired set moved, or once a
+                // minute while something is wrong (a persistent MISSING was
+                // the flood itself, so trouble repeats at the heartbeat's
+                // rate, not the enumeration's). Else the heartbeat line.
+                long tick = Environment.TickCount64;
+                bool desiredMoved = _lastHidHideDesired == null || !_lastHidHideDesired.SetEquals(desiredIds);
+                bool trouble = !synced || missing == null || missing.Count > 0;
+                if (desiredMoved || (trouble && tick - _lastHidHideTroubleLogTick >= 60_000))
+                {
+                    foreach (var line in hidLog)
+                        PadForge.Engine.SdlDiagLog.WriteLine(line);
+                    _lastHidHideDesired = new HashSet<string>(desiredIds, StringComparer.OrdinalIgnoreCase);
+                    if (trouble) _lastHidHideTroubleLogTick = tick;
+                }
+                else if (tick - _lastHidHideUnchangedLogTick >= 60_000)
+                {
+                    _lastHidHideUnchangedLogTick = tick;
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        $"HIDHIDE apply unchanged (n={desiredIds.Count})" + (trouble ? " trouble persists, see the last block" : ""));
+                }
             }
 
             // ── Input hooks ──
@@ -12298,6 +12392,12 @@ namespace PadForge.Services
             row.IdleDisconnectMinutes = ud.IdleDisconnectSeconds / 60;
             row.QuickChargeEnabled = ud.QuickChargeEnabled;
             row.ShowIdleDisconnect = PadForge.Common.Input.BluetoothLinkHelper.IsDisconnectTarget(ud.DevicePath, ud.VendorId, ud.ProdId, ud.SerialNumber);
+            // Quick Charge (#372) has its own, wider gate: the USB cable
+            // rebinds a Sony record to the wired path, which is not a
+            // disconnect target, and the checkbox vanished exactly while
+            // the pad was plugged in. Same predicate the wired-path drop
+            // fires on (DeviceRowViewModel.ComputeShowQuickCharge).
+            row.ShowQuickCharge = DeviceRowViewModel.ComputeShowQuickCharge(ud.DevicePath, ud.VendorId, ud.ProdId, ud.SerialNumber);
 
             // Battery indicator (#167): seed through the same effective-battery
             // path the 5 s tick uses (#187). Seeding raw SDL battery here blinked

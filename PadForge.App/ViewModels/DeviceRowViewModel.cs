@@ -470,8 +470,54 @@ namespace PadForge.ViewModels
             set
             {
                 if (SetProperty(ref _showIdleDisconnect, value))
+                {
+                    OnPropertyChanged(nameof(ShowPowerSection));
                     OnPropertyChanged(nameof(ShowRawInputDivider));
+                }
             }
+        }
+
+        private bool _showQuickCharge;
+
+        /// <summary>Whether the Quick Charge checkbox (#372) applies to this
+        /// device. Wider than <see cref="ShowIdleDisconnect"/> on purpose:
+        /// the checkbox used to live behind that gate, and the USB cable
+        /// REBINDS a Sony record to the USB path (identity keys on the
+        /// shared MAC serial, so no twin record exists), which is a path
+        /// the disconnect predicate rejects. The checkbox therefore
+        /// vanished exactly while the pad was plugged in, the one moment
+        /// the feature is about. Seeded by <see cref="ComputeShowQuickCharge"/>.</summary>
+        public bool ShowQuickCharge
+        {
+            get => _showQuickCharge;
+            set
+            {
+                if (SetProperty(ref _showQuickCharge, value))
+                {
+                    OnPropertyChanged(nameof(ShowPowerSection));
+                    OnPropertyChanged(nameof(ShowRawInputDivider));
+                }
+            }
+        }
+
+        /// <summary>The Power section draws when either control in it
+        /// does: the idle countdown, or the Quick Charge checkbox.</summary>
+        public bool ShowPowerSection => ShowIdleDisconnect || ShowQuickCharge;
+
+        /// <summary>The Quick Charge visibility rule, static so the tests
+        /// need no view model: a disconnect target (the Bluetooth-pathed
+        /// shape), or a record whose serial parses as a non-zero Bluetooth
+        /// address. The second leg is EXACTLY the gate CheckQuickCharge's
+        /// wired path fires on (InputManager.Step2: TryParseAddress on the
+        /// record's own serial, address non-zero), with no vendor gate,
+        /// because the feature fires for any pad that reports its radio's
+        /// MAC as the serial on both transports, and a setting the engine
+        /// acts on must have its card wherever it acts.</summary>
+        internal static bool ComputeShowQuickCharge(string devicePath, ushort vendorId, ushort productId, string serial)
+        {
+            if (PadForge.Common.Input.BluetoothLinkHelper.IsDisconnectTarget(devicePath, vendorId, productId, serial))
+                return true;
+            return PadForge.Common.Input.BluetoothLinkHelper.TryParseAddress(serial, out long address) && address != 0;
         }
 
         private int _batteryPercent = -1;
@@ -659,8 +705,11 @@ namespace PadForge.ViewModels
         /// microphone) would then have no divider at all and the Raw Input
         /// State header would sit flush against the assignment controls,
         /// which is the defect the unconditional divider was introduced to
-        /// fix. So: draw when Power drew, or when nothing above it did.</para></summary>
-        public bool ShowRawInputDivider => ShowIdleDisconnect || !ShowInputModeOrHidingSection;
+        /// fix. So: draw when Power drew, or when nothing above it did.
+        /// Power drew when either of its controls did
+        /// (<see cref="ShowPowerSection"/>), so a wired-rebound Sony pad
+        /// showing only the Quick Charge checkbox still gets its rule.</para></summary>
+        public bool ShowRawInputDivider => ShowPowerSection || !ShowInputModeOrHidingSection;
 
         // ─────────────────────────────────────────────
         //  Device path

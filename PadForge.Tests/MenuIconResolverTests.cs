@@ -10,6 +10,12 @@ namespace PadForge.Tests
     /// (null here) whenever the name, the install, or the file is
     /// absent. These pins drive the resolver through a fake Steam root
     /// so no test depends on a real install.</summary>
+    // Shares the icon-package registry collection with IconPackageTests:
+    // a registry change there fires MenuIconResolver.RegistryChanged and
+    // clears the static image cache, and with the two classes in parallel
+    // collections that clear landed between this class's two Resolve calls
+    // and broke the same-instance pin (named 2026-09-01 under suite load).
+    [Collection("IconPackageRegistry")]
     public class MenuIconResolverTests : IDisposable
     {
         /// <summary>The smallest valid PNG (1x1 transparent), so the

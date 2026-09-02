@@ -2511,7 +2511,7 @@
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>Snap Tap 模式的 SOCD 清理语义，由 valignatev 提供。MIT。</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
-  <data name="About_DolphinDesc" xml:space="preserve"><value>Wii 配对流程与扬声器 ADPCM 文档。GPL，仅作为文档阅读，不随附任何 GPL 代码。</value></data>
+  <data name="About_DolphinDesc" xml:space="preserve"><value>Wii 配对流程、扬声器 ADPCM 以及 Wii 遥控器横握与竖握方向的文档。GPL，仅作文档参考，不随附任何 GPL 代码。</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>
   <data name="About_Ds4WindowsDesc" xml:space="preserve"><value>DualShock 行为文档：空闲断开、触摸板边界、电池解码。GPL，仅文档。</value></data>
   <data name="About_XoneXow" xml:space="preserve"><value>xone / xow</value></data>
@@ -3216,7 +3216,7 @@
     <value>用于触摸板转鼠标输出的指针加速曲线。以 C# 重新推导 libinput 的触摸板加速配置。MIT。</value>
   </data>
   <data name="About_HandheldCompanionDesc" xml:space="preserve">
-    <value>3D 手柄模型（Xbox 360、Xbox One、DualShock 4、DualSense），作者 CasperH2O、Lesueur Benjamin、trippyone。CC BY-NC-SA 4.0。</value>
+    <value>3D 控制器模型（Xbox 360、Xbox One、DualShock 4、DualSense、Steam Deck），由 CasperH2O、Lesueur Benjamin、trippyone 提供。CC BY-NC-SA 4.0。</value>
   </data>
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
     <value>2D 手柄示意图（Xbox 360、Xbox One S、Xbox Series、DualShock 4、DualSense），作者 AL2009man。MIT。</value>
@@ -3405,4 +3405,64 @@
   <data name="MacroAction_VoiceListenWhileHeld_Tooltip" xml:space="preserve"><value>语音宏的按键说话：按住此宏时识别器收听。请在管理语音宏中将收听设为"按键说话"。</value></data>
   <data name="DeviceType_Microphone" xml:space="preserve"><value>麦克风</value></data>
   <data name="Menu_Macro_Missing_Format" xml:space="preserve"><value>{0}（无此宏）</value></data>
+  <data name="About_Interhaptics" xml:space="preserve">
+    <value>Interhaptics (Wyvrn)</value>
+  </data>
+  <data name="About_InterhapticsDesc" xml:space="preserve">
+    <value>Razer Sensa HD 触觉镜像背后的触觉引擎与 Razer 提供程序。HAR.dll 和 Interhaptics.RazerProvider.dll 未经修改地从公开的 Core SDK 随 PadForge 一起提供。由 Wyvrn 出品。Wyvrn EULA。</value>
+  </data>
+  <data name="About_ValveCad" xml:space="preserve">
+    <value>Valve Steam Controller CAD</value>
+  </data>
+  <data name="About_ValveCadDesc" xml:space="preserve">
+    <value>由 Valve 发布的 STEP 文件网格化而成的 Steam Controller (2015) 与 Steam Controller (2026) 3D 模型。Copyright Valve Corporation。CC BY-NC-SA 4.0。PadForge 与 Valve 无关联，亦未获 Valve 认可。</value>
+  </data>
+  <data name="About_MingwRuntime" xml:space="preserve">
+    <value>MinGW-w64 runtime</value>
+  </data>
+  <data name="About_MingwRuntimeDesc" xml:space="preserve">
+    <value>Vosk 识别器所需的原生运行时 libgcc_s_seh-1.dll、libstdc++-6.dll 和 libwinpthread-1.dll，随 PadForge 一起提供。带 GCC Runtime Library Exception 的 GPL-3.0，以及 mingw-w64 winpthreads 许可证。</value>
+  </data>
+  <data name="About_TritonLib" xml:space="preserve">
+    <value>TritonLib and Steam Controller haptics research</value>
+  </data>
+  <data name="About_TritonLibDesc" xml:space="preserve">
+    <value>Steam Controller 2026 的 PCM 触觉流（报告 0x86、0x88 和 0x44），由 Pixel1011 (Apache-2.0)、FamBoy32-dev (MIT)、iczero (MIT) 和 ga2mer 提供。仅作文档参考，不随附任何代码。</value>
+  </data>
+  <data name="About_Colore" xml:space="preserve">
+    <value>Colore</value>
+  </data>
+  <data name="About_ColoreDesc" xml:space="preserve">
+    <value>用于灯条镜像的 Razer Chroma REST API 帧格式佐证，由 Adam Hellberg 和 Brandon Scott 提供。MIT。仅作文档参考，不随附任何代码。</value>
+  </data>
+  <data name="About_LogitechLedRefs" xml:space="preserve">
+    <value>Logitech LED SDK references</value>
+  </data>
+  <data name="About_LogitechLedRefsDesc" xml:space="preserve">
+    <value>LIGHTSYNC 灯条镜像背后的引擎入口点与调用约定，取自 Aurora (MIT)、Artemis.Plugins (PolyForm Noncommercial)、RGB.NET (LGPL-2.1)、Logitech-LED (GPL-2.0)、logitech-led-sdk-rs (Apache-2.0) 和 LogiLed2Corsair (MIT)。PadForge 加载 G HUB 自身的引擎，不随附任何 Logitech 代码。</value>
+  </data>
+  <data name="About_Opentrack" xml:space="preserve">
+    <value>opentrack</value>
+  </data>
+  <data name="About_OpentrackDesc" xml:space="preserve">
+    <value>用于头部追踪的 UDP 追踪器数据报和 FreeTrack 2.0 共享内存布局。ISC。仅作文档参考，不随附任何代码。</value>
+  </data>
+  <data name="About_LegionToolkit" xml:space="preserve">
+    <value>Lenovo Legion Toolkit</value>
+  </data>
+  <data name="About_LegionToolkitDesc" xml:space="preserve">
+    <value>掌机隐藏按键学习所订阅的 Lenovo WMI 实用事件类，以及外部配置文件控制背后的提权 IPC 服务器模式。GPL-3.0，仅作文档参考，不随附任何 GPL 代码。</value>
+  </data>
+  <data name="About_InputPlumber" xml:space="preserve">
+    <value>InputPlumber</value>
+  </data>
+  <data name="About_InputPlumberDesc" xml:space="preserve">
+    <value>为隐藏按键学习交叉核对的掌机 PC 识别字符串与厂商报告说明。GPL-3.0，仅作文档参考，不随附任何 GPL 代码。</value>
+  </data>
+  <data name="About_Linuxmotehook" xml:space="preserve">
+    <value>linuxmotehook and WiimoteHook</value>
+  </data>
+  <data name="About_LinuxmotehookDesc" xml:space="preserve">
+    <value>握持设置所对应的 Wii 遥控器握持方向预设。linuxmotehook 采用 Apache-2.0。WiimoteHook 是通过其文档参考的闭源工具。不随附任何代码。</value>
+  </data>
 </root>

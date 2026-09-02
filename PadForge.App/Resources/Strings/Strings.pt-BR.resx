@@ -2505,7 +2505,7 @@
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>Semântica de limpeza SOCD para os modos Snap Tap, por valignatev. MIT.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
-  <data name="About_DolphinDesc" xml:space="preserve"><value>Documentação da cerimônia de pareamento do Wii e do ADPCM do alto-falante. GPL, lida apenas como documentação, nenhum código GPL é distribuído.</value></data>
+  <data name="About_DolphinDesc" xml:space="preserve"><value>Documentação da cerimônia de pareamento do Wii, do ADPCM do alto-falante e da orientação lateral e vertical do Wii Remote. GPL, lido apenas como documentação, nenhum código GPL é distribuído.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>
   <data name="About_Ds4WindowsDesc" xml:space="preserve"><value>Documentação do comportamento do DualShock: desconexão por inatividade, limites do touchpad, decodificação da bateria. GPL, apenas documentação.</value></data>
   <data name="About_XoneXow" xml:space="preserve"><value>xone / xow</value></data>
@@ -3210,7 +3210,7 @@ Você pode tentar novamente mais tarde em Configurações.</value></data>
     <value>Curva de aceleração do ponteiro do trackpad para saída de touchpad para mouse. Rederivação em C# do perfil de aceleração de touchpad do libinput. MIT.</value>
   </data>
   <data name="About_HandheldCompanionDesc" xml:space="preserve">
-    <value>Modelos 3D de controles (Xbox 360, Xbox One, DualShock 4, DualSense), por CasperH2O, Lesueur Benjamin, trippyone. CC BY-NC-SA 4.0.</value>
+    <value>Modelos 3D de controles (Xbox 360, Xbox One, DualShock 4, DualSense, Steam Deck), por CasperH2O, Lesueur Benjamin, trippyone. CC BY-NC-SA 4.0.</value>
   </data>
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
     <value>Esquemas 2D de controles (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), por AL2009man. MIT.</value>
@@ -3399,4 +3399,64 @@ Você pode tentar novamente mais tarde em Configurações.</value></data>
   <data name="MacroAction_VoiceListenWhileHeld_Tooltip" xml:space="preserve"><value>Apertar para falar dos Macros de Voz: enquanto este macro é segurado, o reconhecedor escuta. Defina a Escuta como "Apertar para Falar" em Gerenciar Macros de Voz.</value></data>
   <data name="DeviceType_Microphone" xml:space="preserve"><value>Microfone</value></data>
   <data name="Menu_Macro_Missing_Format" xml:space="preserve"><value>{0} (macro inexistente)</value></data>
+  <data name="About_Interhaptics" xml:space="preserve">
+    <value>Interhaptics (Wyvrn)</value>
+  </data>
+  <data name="About_InterhapticsDesc" xml:space="preserve">
+    <value>Motor háptico e provedor Razer por trás do espelho háptico Razer Sensa HD. HAR.dll e Interhaptics.RazerProvider.dll são incluídos no PadForge sem modificações a partir do Core SDK público. Por Wyvrn. EULA da Wyvrn.</value>
+  </data>
+  <data name="About_ValveCad" xml:space="preserve">
+    <value>Valve Steam Controller CAD</value>
+  </data>
+  <data name="About_ValveCadDesc" xml:space="preserve">
+    <value>Os modelos 3D do Steam Controller (2015) e do Steam Controller (2026), gerados a partir dos arquivos STEP publicados pela Valve. Copyright Valve Corporation. CC BY-NC-SA 4.0. O PadForge não é associado à Valve nem endossado por ela.</value>
+  </data>
+  <data name="About_MingwRuntime" xml:space="preserve">
+    <value>MinGW-w64 runtime</value>
+  </data>
+  <data name="About_MingwRuntimeDesc" xml:space="preserve">
+    <value>libgcc_s_seh-1.dll, libstdc++-6.dll e libwinpthread-1.dll, o runtime nativo de que o reconhecedor Vosk precisa, incluído no PadForge. GPL-3.0 com a GCC Runtime Library Exception e a licença winpthreads do mingw-w64.</value>
+  </data>
+  <data name="About_TritonLib" xml:space="preserve">
+    <value>TritonLib and Steam Controller haptics research</value>
+  </data>
+  <data name="About_TritonLibDesc" xml:space="preserve">
+    <value>Fluxo háptico PCM do Steam Controller 2026 (relatórios 0x86, 0x88 e 0x44), por Pixel1011 (Apache-2.0), FamBoy32-dev (MIT), iczero (MIT) e ga2mer. Somente documentação, nenhum código é distribuído.</value>
+  </data>
+  <data name="About_Colore" xml:space="preserve">
+    <value>Colore</value>
+  </data>
+  <data name="About_ColoreDesc" xml:space="preserve">
+    <value>Confirmação do formato da API REST do Razer Chroma para o espelho da barra de luz, por Adam Hellberg e Brandon Scott. MIT. Somente documentação, nenhum código é distribuído.</value>
+  </data>
+  <data name="About_LogitechLedRefs" xml:space="preserve">
+    <value>Logitech LED SDK references</value>
+  </data>
+  <data name="About_LogitechLedRefsDesc" xml:space="preserve">
+    <value>Pontos de entrada do motor e convenção de chamada por trás do espelho da barra de luz LIGHTSYNC, lidos de Aurora (MIT), Artemis.Plugins (PolyForm Noncommercial), RGB.NET (LGPL-2.1), Logitech-LED (GPL-2.0), logitech-led-sdk-rs (Apache-2.0) e LogiLed2Corsair (MIT). O PadForge carrega o próprio motor do G HUB e não distribui código da Logitech.</value>
+  </data>
+  <data name="About_Opentrack" xml:space="preserve">
+    <value>opentrack</value>
+  </data>
+  <data name="About_OpentrackDesc" xml:space="preserve">
+    <value>Datagrama UDP do rastreador e layout de memória compartilhada FreeTrack 2.0 para rastreamento de cabeça. ISC. Somente documentação, nenhum código é distribuído.</value>
+  </data>
+  <data name="About_LegionToolkit" xml:space="preserve">
+    <value>Lenovo Legion Toolkit</value>
+  </data>
+  <data name="About_LegionToolkitDesc" xml:space="preserve">
+    <value>A classe de eventos WMI de utilitário da Lenovo à qual o aprendizado de botões ocultos de portáteis se inscreve, e o padrão de servidor IPC elevado por trás do controle externo de perfis. GPL-3.0, lido apenas como documentação, nenhum código GPL é distribuído.</value>
+  </data>
+  <data name="About_InputPlumber" xml:space="preserve">
+    <value>InputPlumber</value>
+  </data>
+  <data name="About_InputPlumberDesc" xml:space="preserve">
+    <value>Cadeias de identidade de PCs portáteis e notas de relatórios do fabricante, conferidas para o aprendizado de botões ocultos. GPL-3.0, lido apenas como documentação, nenhum código GPL é distribuído.</value>
+  </data>
+  <data name="About_Linuxmotehook" xml:space="preserve">
+    <value>linuxmotehook and WiimoteHook</value>
+  </data>
+  <data name="About_LinuxmotehookDesc" xml:space="preserve">
+    <value>Predefinições de orientação de pegada do Wii Remote que a configuração de Pegada reflete. O linuxmotehook é Apache-2.0. O WiimoteHook é uma ferramenta de código fechado lida por meio de sua documentação. Nenhum código é distribuído.</value>
+  </data>
 </root>

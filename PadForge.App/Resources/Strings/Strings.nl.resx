@@ -2531,7 +2531,7 @@
   <data name="About_Hitboxer" xml:space="preserve"><value>hitboxer</value></data>
   <data name="About_HitboxerDesc" xml:space="preserve"><value>SOCD-opschoningssemantiek voor de Snap Tap-modi, door valignatev. MIT.</value></data>
   <data name="About_Dolphin" xml:space="preserve"><value>Dolphin</value></data>
-  <data name="About_DolphinDesc" xml:space="preserve"><value>Documentatie van de Wii-koppelingsceremonie en de luidspreker-ADPCM. GPL, alleen als documentatie gelezen, er wordt geen GPL-code meegeleverd.</value></data>
+  <data name="About_DolphinDesc" xml:space="preserve"><value>Documentatie van de Wii-koppelingsprocedure, de luidspreker-ADPCM en de zijwaartse en rechtopstaande richting van de Wii Remote. GPL, alleen als documentatie gelezen, er wordt geen GPL-code meegeleverd.</value></data>
   <data name="About_Ds4Windows" xml:space="preserve"><value>DS4Windows</value></data>
   <data name="About_Ds4WindowsDesc" xml:space="preserve"><value>Documentatie van DualShock-gedrag: inactiviteitsverbreking, touchpadgrenzen, batterijdecodering. GPL, alleen documentatie.</value></data>
   <data name="About_XoneXow" xml:space="preserve"><value>xone / xow</value></data>
@@ -3236,7 +3236,7 @@ Je kunt het later opnieuw proberen via Instellingen.</value></data>
     <value>Versnellingscurve van de trackpadaanwijzer voor touchpad-naar-muis-uitvoer. C#-herafleiding van het touchpad-versnellingsprofiel van libinput. MIT.</value>
   </data>
   <data name="About_HandheldCompanionDesc" xml:space="preserve">
-    <value>3D-controllermodellen (Xbox 360, Xbox One, DualShock 4, DualSense), door CasperH2O, Lesueur Benjamin, trippyone. CC BY-NC-SA 4.0.</value>
+    <value>3D-controllermodellen (Xbox 360, Xbox One, DualShock 4, DualSense, Steam Deck), door CasperH2O, Lesueur Benjamin, trippyone. CC BY-NC-SA 4.0.</value>
   </data>
   <data name="About_GamepadAssetPackDesc" xml:space="preserve">
     <value>2D-controllerschema's (Xbox 360, Xbox One S, Xbox Series, DualShock 4, DualSense), door AL2009man. MIT.</value>
@@ -3425,4 +3425,64 @@ Je kunt het later opnieuw proberen via Instellingen.</value></data>
   <data name="MacroAction_VoiceListenWhileHeld_Tooltip" xml:space="preserve"><value>Push-to-talk voor spraakmacro's: zolang deze macro wordt vastgehouden, luistert de herkenner. Zet Luisteren op Push-to-talk in Spraakmacro's beheren.</value></data>
   <data name="DeviceType_Microphone" xml:space="preserve"><value>Microfoon</value></data>
   <data name="Menu_Macro_Missing_Format" xml:space="preserve"><value>{0} (geen macro met die naam)</value></data>
+  <data name="About_Interhaptics" xml:space="preserve">
+    <value>Interhaptics (Wyvrn)</value>
+  </data>
+  <data name="About_InterhapticsDesc" xml:space="preserve">
+    <value>Haptische engine en Razer-provider achter de Razer Sensa HD-haptiekspiegel. HAR.dll en Interhaptics.RazerProvider.dll worden ongewijzigd uit de openbare Core SDK met PadForge meegeleverd. Van Wyvrn. Wyvrn-EULA.</value>
+  </data>
+  <data name="About_ValveCad" xml:space="preserve">
+    <value>Valve Steam Controller CAD</value>
+  </data>
+  <data name="About_ValveCadDesc" xml:space="preserve">
+    <value>De 3D-modellen van de Steam Controller (2015) en Steam Controller (2026), gemesht uit de door Valve gepubliceerde STEP-bestanden. Copyright Valve Corporation. CC BY-NC-SA 4.0. PadForge is niet verbonden met Valve en wordt niet door Valve onderschreven.</value>
+  </data>
+  <data name="About_MingwRuntime" xml:space="preserve">
+    <value>MinGW-w64 runtime</value>
+  </data>
+  <data name="About_MingwRuntimeDesc" xml:space="preserve">
+    <value>libgcc_s_seh-1.dll, libstdc++-6.dll en libwinpthread-1.dll, de native runtime die de Vosk-herkenner nodig heeft, meegeleverd in PadForge. GPL-3.0 met de GCC Runtime Library Exception, en de mingw-w64 winpthreads-licentie.</value>
+  </data>
+  <data name="About_TritonLib" xml:space="preserve">
+    <value>TritonLib and Steam Controller haptics research</value>
+  </data>
+  <data name="About_TritonLibDesc" xml:space="preserve">
+    <value>PCM-haptiekstroom van de Steam Controller 2026 (rapporten 0x86, 0x88 en 0x44), door Pixel1011 (Apache-2.0), FamBoy32-dev (MIT), iczero (MIT) en ga2mer. Alleen documentatie, er wordt geen code meegeleverd.</value>
+  </data>
+  <data name="About_Colore" xml:space="preserve">
+    <value>Colore</value>
+  </data>
+  <data name="About_ColoreDesc" xml:space="preserve">
+    <value>Bevestiging van de Razer Chroma REST API-framing voor de lichtbalkspiegel, door Adam Hellberg en Brandon Scott. MIT. Alleen documentatie, er wordt geen code meegeleverd.</value>
+  </data>
+  <data name="About_LogitechLedRefs" xml:space="preserve">
+    <value>Logitech LED SDK references</value>
+  </data>
+  <data name="About_LogitechLedRefsDesc" xml:space="preserve">
+    <value>Engine-ingangspunten en aanroepconventie achter de LIGHTSYNC-lichtbalkspiegel, gelezen uit Aurora (MIT), Artemis.Plugins (PolyForm Noncommercial), RGB.NET (LGPL-2.1), Logitech-LED (GPL-2.0), logitech-led-sdk-rs (Apache-2.0) en LogiLed2Corsair (MIT). PadForge laadt de engine van G HUB zelf en levert geen Logitech-code mee.</value>
+  </data>
+  <data name="About_Opentrack" xml:space="preserve">
+    <value>opentrack</value>
+  </data>
+  <data name="About_OpentrackDesc" xml:space="preserve">
+    <value>UDP-trackerdatagram en FreeTrack 2.0-gedeeldgeheugenindeling voor hoofdtracking. ISC. Alleen documentatie, er wordt geen code meegeleverd.</value>
+  </data>
+  <data name="About_LegionToolkit" xml:space="preserve">
+    <value>Lenovo Legion Toolkit</value>
+  </data>
+  <data name="About_LegionToolkitDesc" xml:space="preserve">
+    <value>De Lenovo WMI-utility-eventklasse waarop de leerfunctie voor verborgen handheldknoppen zich abonneert, en het patroon van de verhoogde IPC-server achter externe profielbesturing. GPL-3.0, alleen als documentatie gelezen, er wordt geen GPL-code meegeleverd.</value>
+  </data>
+  <data name="About_InputPlumber" xml:space="preserve">
+    <value>InputPlumber</value>
+  </data>
+  <data name="About_InputPlumberDesc" xml:space="preserve">
+    <value>Identiteitsreeksen van handheld-pc's en notities over fabrikantrapporten, gecontroleerd voor de leerfunctie voor verborgen knoppen. GPL-3.0, alleen als documentatie gelezen, er wordt geen GPL-code meegeleverd.</value>
+  </data>
+  <data name="About_Linuxmotehook" xml:space="preserve">
+    <value>linuxmotehook and WiimoteHook</value>
+  </data>
+  <data name="About_LinuxmotehookDesc" xml:space="preserve">
+    <value>Voorinstellingen voor de vasthoudrichting van de Wii Remote die de Greep-instelling weerspiegelt. linuxmotehook is Apache-2.0. WiimoteHook is een gesloten tool die via zijn documentatie is gelezen. Er wordt geen code meegeleverd.</value>
+  </data>
 </root>

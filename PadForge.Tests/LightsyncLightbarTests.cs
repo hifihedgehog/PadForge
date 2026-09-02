@@ -354,8 +354,9 @@ namespace PadForge.Tests
 
         /// <summary>The feed and sibling source contracts: the publish
         /// call beside Chroma's inside the lightbar validity gate, the
-        /// GLOBAL-ONLY persistence (both #373 post-ship lessons applied
-        /// from birth), the autosave allowlist entry, the Dashboard
+        /// global leg plus the nullable per-profile leg (the #373
+        /// post-ship lesson, applied from birth), the autosave allowlist
+        /// entry, the Dashboard
         /// bindings, and the native layer's loader constants (the shim's
         /// registry key, Aurora's engine validation string, the altered
         /// search path, and byte-return cdecl delegates).</summary>
@@ -370,11 +371,14 @@ namespace PadForge.Tests
             string ss = RepoText("PadForge.App", "Services", "SettingsService.cs");
             Assert.Contains("_mainVm.Dashboard.EnableLightsyncLightbar = appSettings.EnableLightsyncLightbar;", ss);
             Assert.Contains("EnableLightsyncLightbar = _mainVm.Dashboard.EnableLightsyncLightbar,", ss);
-            // GLOBAL ONLY: a new bool on ProfileData deserializes to false
-            // in every pre-existing profile and the auto-switch would
-            // stomp the global (#373's shipped defect, pinned absent).
-            Assert.DoesNotContain("active.EnableLightsyncLightbar", ss);
-            Assert.DoesNotContain("profile.EnableLightsyncLightbar", ss);
+            // Rides profiles as a NULLABLE leg (null = no opinion, the
+            // #365 polling-override shape), so a pre-existing profile
+            // never stomps the global. Behavioral half:
+            // ProfileServiceToggleTests.
+            Assert.Contains("public bool? EnableLightsyncLightbar { get; set; }", ss);
+            Assert.Contains("if (profile.EnableLightsyncLightbar is bool lightsync)", ss);
+            Assert.Contains("if (profile.EnableLightsyncLightbar != null)", ss);
+            Assert.Contains("case nameof(DashboardViewModel.EnableLightsyncLightbar):", ss);
 
             string mw = RepoText("PadForge.App", "MainWindow.xaml.cs");
             Assert.Contains("nameof(DashboardViewModel.EnableLightsyncLightbar)", mw);

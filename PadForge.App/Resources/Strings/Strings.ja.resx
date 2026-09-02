@@ -245,6 +245,7 @@
   <data name="Dashboard_LightsyncWaiting" xml:space="preserve"><value>Logitech G HUBが見つかりません。再試行中。</value></data>
   <data name="Dashboard_LightsyncConnected" xml:space="preserve"><value>Logitech LIGHTSYNCに接続済み</value></data>
   <data name="Dashboard_LightsyncFooter" xml:space="preserve"><value>Logitech G HUB（またはLogitech Gaming Software）が必要です。物理コントローラーの種類は問いません。色はゲームが描く仮想パッドから取得されます。</value></data>
+  <data name="Dashboard_LightbarMirrors" xml:space="preserve"><value>ライトバーのミラーリング</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>DSU モーションサーバーを有効化 (CemuHook Motion Provider protocol)</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>ポート</value></data>
   <data name="Dashboard_DsuFooter" xml:space="preserve"><value>Cemu、Dolphin、Yuzu などにジャイロおよび加速度センサーのデータを提供します。</value></data>

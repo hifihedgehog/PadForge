@@ -351,6 +351,7 @@ public class Strings : INotifyPropertyChanged
     public string Dashboard_LightsyncWaiting => Get("Dashboard_LightsyncWaiting");
     public string Dashboard_LightsyncConnected => Get("Dashboard_LightsyncConnected");
     public string Dashboard_LightsyncFooter => Get("Dashboard_LightsyncFooter");
+    public string Dashboard_LightbarMirrors => Get("Dashboard_LightbarMirrors");
     public string Dashboard_EnableDsu => Get("Dashboard_EnableDsu");
     public string Dashboard_Port => Get("Dashboard_Port");
     public string Dashboard_DsuFooter => Get("Dashboard_DsuFooter");

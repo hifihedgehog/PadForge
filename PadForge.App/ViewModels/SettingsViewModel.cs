@@ -501,11 +501,12 @@ namespace PadForge.ViewModels
             }
         }
 
-        /// <summary>SteamVR status display text. Tiered like the
-        /// Dashboard's row (#287 audit): the two rows describe the same
-        /// subject and used to contradict each other once the consumer or a
-        /// VR slot was live. Reads the live statics; MainWindow's periodic
-        /// refresh raises the change notification.</summary>
+        /// <summary>SteamVR status display text, tiered (#287 audit): the
+        /// deepest true state wins, so the row says more than "installed"
+        /// once the consumer or a VR slot is live. This is the only SteamVR
+        /// status row now that the Dashboard's driver strip is gone. Reads
+        /// the live statics. MainWindow's periodic refresh raises the change
+        /// notification.</summary>
         public string SteamVrStatusText
         {
             get
@@ -519,8 +520,8 @@ namespace PadForge.ViewModels
             }
         }
 
-        /// <summary>Raises the SteamVR row's change notification; called by
-        /// MainWindow's status refresh beside the Dashboard tier push.</summary>
+        /// <summary>Raises the SteamVR row's change notification. MainWindow's
+        /// periodic status refresh calls it.</summary>
         public void RefreshSteamVrStatus() => OnPropertyChanged(nameof(SteamVrStatusText));
 
         private string _steamVrInstallDir = PadForge.Common.DriverInstaller.SteamVrInstallDir;

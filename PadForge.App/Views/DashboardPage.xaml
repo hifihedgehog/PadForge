@@ -1472,156 +1472,6 @@
             </StackPanel>
             <Border Height="1" Background="{DynamicResource DividerStrokeColorDefaultBrush}" Margin="0,6,0,0"/>
 
-            <!-- ═══ Motion Server ═══ -->
-            <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
-                <TextBlock Text="&#xE7AD;" Style="{StaticResource SectionGlyph}"/>
-                <TextBlock Text="{Binding Dashboard_MotionServer, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" Style="{StaticResource SectionTitle}"/>
-            </StackPanel>
-
-            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
-                <StackPanel>
-                    <TextBlock Text="{Binding Dashboard_DsuDescription, Source={x:Static strings:Strings.Instance}}"
-                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
-                    <CheckBox Content="{Binding Dashboard_EnableDsu, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding EnableDsuMotionServer}" Margin="0,0,0,8"/>
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                        <TextBlock Text="{Binding Dashboard_Port, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                   Margin="0,0,8,0"/>
-                        <ui:NumberBox Value="{Binding DsuMotionServerPort, Mode=TwoWay}"
-                                      Minimum="1024" Maximum="65535"
-                                      SpinButtonPlacementMode="Inline" Width="200"/>
-                        <ui:Button Style="{StaticResource EmberIconButton}"
-                                   Command="{Binding ResetDsuPortCommand}" VerticalAlignment="Center"
-                                   ToolTip="{Binding Common_Reset, Source={x:Static strings:Strings.Instance}}">
-                            <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                        </ui:Button>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                        <!-- Serving = flame (#175 item 76); the green dot stays
-                             strictly health. Binds the server's running truth,
-                             not the enable checkbox (#175 phase 2 item 2). -->
-                        <Path Data="{StaticResource FlameOuterGeometry}"
-                              Width="11" Height="11" Stretch="Uniform"
-                              VerticalAlignment="Center" Margin="0,0,6,0">
-                            <Path.Style>
-                                <Style TargetType="Path">
-                                    <Setter Property="Fill" Value="Transparent"/>
-                                    <Setter Property="Stroke" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
-                                    <Setter Property="StrokeThickness" Value="1.1"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsDsuServerRunning}" Value="True">
-                                            <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
-                                            <Setter Property="Stroke" Value="{x:Null}"/>
-                                            <Setter Property="Effect">
-                                                <Setter.Value>
-                                                    <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
-                                                </Setter.Value>
-                                            </Setter>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Path.Style>
-                        </Path>
-                        <TextBlock Text="{Binding DsuServerStatus}" FontSize="12"
-                                   FontFamily="{StaticResource TelemetryFontFamily}"
-                                   Foreground="{DynamicResource ColdBrush}"/>
-                    </StackPanel>
-                    <TextBlock Text="{Binding Dashboard_DsuFooter, Source={x:Static strings:Strings.Instance}}"
-                               FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
-                </StackPanel>
-            </Border>
-
-            <!-- ═══ Head Tracking (#355) ═══
-                 A UDP listener on OpenTrack's port plus a FreeTrack 2.0
-                 shared-memory reader, surfaced as the Head Tracker device
-                 row. A service with an enable, a port and a live status,
-                 so it sits with the other services and rides profiles
-                 (ProfileData.EnableHeadTracking, the mirrors' nullable
-                 contract). The status line is the Devices row's source
-                 line, pushed by InputService on the dashboard tick. -->
-            <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
-                <TextBlock Text="&#xE77B;" Style="{StaticResource SectionGlyph}"/>
-                <TextBlock Text="{Binding Dashboard_HeadTracking, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" Style="{StaticResource SectionTitle}"/>
-            </StackPanel>
-
-            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
-                <StackPanel>
-                    <TextBlock Text="{Binding Dashboard_HeadTrackingDesc, Source={x:Static strings:Strings.Instance}}"
-                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
-                    <CheckBox Content="{Binding Dashboard_HeadTrackingEnable, Source={x:Static strings:Strings.Instance}}"
-                              ToolTip="{Binding Dashboard_HeadTrackingEnable_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding HeadTrackingEnabled}" Margin="0,0,0,8"/>
-                    <CheckBox Content="{Binding Dashboard_HeadTrackingFreeTrack, Source={x:Static strings:Strings.Instance}}"
-                              ToolTip="{Binding Dashboard_HeadTrackingFreeTrack_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding HeadTrackingFreeTrack}" Margin="0,0,0,8"/>
-                    <!-- One grid so the three boxes line up under labels of
-                         different widths. Each row is the Motion Server port
-                         row: label, box, reset. -->
-                    <Grid Margin="0,0,0,8">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Text="{Binding Dashboard_HeadTrackingPort, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,8"/>
-                        <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,8">
-                            <ui:NumberBox Value="{Binding HeadTrackingUdpPort, Mode=TwoWay}"
-                                          Minimum="1" Maximum="65535"
-                                          SpinButtonPlacementMode="Inline" Width="200"
-                                          ToolTip="{Binding Dashboard_HeadTrackingPort_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                            <ui:Button Style="{StaticResource EmberIconButton}"
-                                       Command="{Binding ResetHeadTrackingPortCommand}" VerticalAlignment="Center"
-                                       ToolTip="{Binding Common_Reset, Source={x:Static strings:Strings.Instance}}">
-                                <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                            </ui:Button>
-                        </StackPanel>
-                        <TextBlock Grid.Row="1" Text="{Binding Dashboard_HeadTrackingRotationRange, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,8"/>
-                        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,8">
-                            <ui:NumberBox Value="{Binding HeadTrackingRotationRange, Mode=TwoWay}"
-                                          Minimum="1" Maximum="180"
-                                          SpinButtonPlacementMode="Inline" Width="200"
-                                          ToolTip="{Binding Dashboard_HeadTrackingRotationRange_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                            <ui:Button Style="{StaticResource EmberIconButton}"
-                                       Command="{Binding ResetHeadTrackingRotationRangeCommand}" VerticalAlignment="Center"
-                                       ToolTip="{Binding Common_Reset, Source={x:Static strings:Strings.Instance}}">
-                                <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                            </ui:Button>
-                        </StackPanel>
-                        <TextBlock Grid.Row="2" Text="{Binding Dashboard_HeadTrackingTranslationRange, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,0"/>
-                        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
-                            <ui:NumberBox Value="{Binding HeadTrackingTranslationRange, Mode=TwoWay}"
-                                          Minimum="1" Maximum="500"
-                                          SpinButtonPlacementMode="Inline" Width="200"
-                                          ToolTip="{Binding Dashboard_HeadTrackingTranslationRange_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                            <ui:Button Style="{StaticResource EmberIconButton}"
-                                       Command="{Binding ResetHeadTrackingTranslationRangeCommand}" VerticalAlignment="Center"
-                                       ToolTip="{Binding Common_Reset, Source={x:Static strings:Strings.Instance}}">
-                                <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                            </ui:Button>
-                        </StackPanel>
-                    </Grid>
-                    <!-- The Devices row's source line: which source is live,
-                         or why neither is. Stopped while the feature is off
-                         or the engine is down. -->
-                    <TextBlock Text="{Binding HeadTrackingStatus}" FontSize="12"
-                               FontFamily="{StaticResource TelemetryFontFamily}"
-                               Foreground="{DynamicResource ColdBrush}" Margin="0,0,0,4"/>
-                    <TextBlock Text="{Binding Dashboard_HeadTrackingFooter, Source={x:Static strings:Strings.Instance}}"
-                               FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
-                </StackPanel>
-            </Border>
-
             <!-- ═══ Web Controller ═══ -->
             <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
                 <TextBlock Text="&#xE774;" Style="{StaticResource SectionGlyph}"/>
@@ -1706,70 +1556,6 @@
                     </StackPanel>
 
                     <TextBlock Text="{Binding Dashboard_WebFooter, Source={x:Static strings:Strings.Instance}}"
-                               FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
-                </StackPanel>
-            </Border>
-
-            <!-- ═══ Lightbar mirrors: Razer Chroma (#373) and Logitech LIGHTSYNC (#382) ═══
-                 One section, one glyph, one card with a row per vendor. Both
-                 rows forward the same virtual-pad lightbar color, so they
-                 share the section rather than repeating its icon. Each row
-                 keeps its own strings, bindings, status line and footer. -->
-            <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
-                <TextBlock Text="&#xE781;" Style="{StaticResource SectionGlyph}"/>
-                <TextBlock Text="{Binding Dashboard_LightbarMirrors, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" Style="{StaticResource SectionTitle}"/>
-            </StackPanel>
-
-            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
-                <StackPanel>
-                    <!-- Razer Chroma row. Divider-separated sub-title inside the
-                         card (the Remote Link identity idiom). -->
-                    <TextBlock Text="{Binding Dashboard_Chroma, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardSectionTitle}" FontSize="14" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,6"/>
-                    <TextBlock Text="{Binding Dashboard_ChromaDescription, Source={x:Static strings:Strings.Instance}}"
-                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
-                    <CheckBox Content="{Binding Dashboard_EnableChroma, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding EnableChromaLightbar}" Margin="0,0,0,8"/>
-                    <TextBlock Text="{Binding ChromaStatus}" FontSize="12"
-                               FontFamily="{StaticResource TelemetryFontFamily}"
-                               Foreground="{DynamicResource ColdBrush}" Margin="0,0,0,4"/>
-                    <TextBlock Text="{Binding Dashboard_ChromaFooter, Source={x:Static strings:Strings.Instance}}"
-                               FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
-
-                    <Border Height="1" Background="{DynamicResource DividerStrokeColorDefaultBrush}" Margin="0,14,0,14"/>
-
-                    <!-- Logitech LIGHTSYNC row. -->
-                    <TextBlock Text="{Binding Dashboard_Lightsync, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardSectionTitle}" FontSize="14" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,6"/>
-                    <TextBlock Text="{Binding Dashboard_LightsyncDescription, Source={x:Static strings:Strings.Instance}}"
-                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
-                    <CheckBox Content="{Binding Dashboard_EnableLightsync, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding EnableLightsyncLightbar}" Margin="0,0,0,8"/>
-                    <TextBlock Text="{Binding LightsyncStatus}" FontSize="12"
-                               FontFamily="{StaticResource TelemetryFontFamily}"
-                               Foreground="{DynamicResource ColdBrush}" Margin="0,0,0,4"/>
-                    <TextBlock Text="{Binding Dashboard_LightsyncFooter, Source={x:Static strings:Strings.Instance}}"
-                               FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
-                </StackPanel>
-            </Border>
-
-            <!-- ═══ Razer Sensa HD haptics translation (#374) ═══ -->
-            <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
-                <TextBlock Text="&#xE877;" Style="{StaticResource SectionGlyph}"/>
-                <TextBlock Text="{Binding Dashboard_Sensa, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" Style="{StaticResource SectionTitle}"/>
-            </StackPanel>
-
-            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
-                <StackPanel>
-                    <TextBlock Text="{Binding Dashboard_SensaDescription, Source={x:Static strings:Strings.Instance}}"
-                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
-                    <CheckBox Content="{Binding Dashboard_EnableSensa, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding EnableSensaHaptics}" Margin="0,0,0,8"/>
-                    <TextBlock Text="{Binding SensaStatus}" FontSize="12"
-                               FontFamily="{StaticResource TelemetryFontFamily}"
-                               Foreground="{DynamicResource ColdBrush}" Margin="0,0,0,4"/>
-                    <TextBlock Text="{Binding Dashboard_SensaFooter, Source={x:Static strings:Strings.Instance}}"
                                FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
                 </StackPanel>
             </Border>
@@ -1984,6 +1770,220 @@
                 </StackPanel>
             </Border>
 
+            <!-- ═══ Head Tracking (#355) ═══
+                 A UDP listener on OpenTrack's port plus a FreeTrack 2.0
+                 shared-memory reader, surfaced as the Head Tracker device
+                 row. A service with an enable, a port and a live status,
+                 so it sits with the other services and rides profiles
+                 (ProfileData.EnableHeadTracking, the mirrors' nullable
+                 contract). The status line is the Devices row's source
+                 line, pushed by InputService on the dashboard tick. -->
+            <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
+                <TextBlock Text="&#xE77B;" Style="{StaticResource SectionGlyph}"/>
+                <TextBlock Text="{Binding Dashboard_HeadTracking, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" Style="{StaticResource SectionTitle}"/>
+            </StackPanel>
+
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
+                <StackPanel>
+                    <TextBlock Text="{Binding Dashboard_HeadTrackingDesc, Source={x:Static strings:Strings.Instance}}"
+                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
+                    <CheckBox Content="{Binding Dashboard_HeadTrackingEnable, Source={x:Static strings:Strings.Instance}}"
+                              ToolTip="{Binding Dashboard_HeadTrackingEnable_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                              IsChecked="{Binding HeadTrackingEnabled}" Margin="0,0,0,8"/>
+                    <CheckBox Content="{Binding Dashboard_HeadTrackingFreeTrack, Source={x:Static strings:Strings.Instance}}"
+                              ToolTip="{Binding Dashboard_HeadTrackingFreeTrack_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                              IsChecked="{Binding HeadTrackingFreeTrack}" Margin="0,0,0,8"/>
+                    <!-- One grid so the three boxes line up under labels of
+                         different widths. Each row is the Motion Server port
+                         row: label, box, reset. -->
+                    <Grid Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="{Binding Dashboard_HeadTrackingPort, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,8"/>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,8">
+                            <ui:NumberBox Value="{Binding HeadTrackingUdpPort, Mode=TwoWay}"
+                                          Minimum="1" Maximum="65535"
+                                          SpinButtonPlacementMode="Inline" Width="200"
+                                          ToolTip="{Binding Dashboard_HeadTrackingPort_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                            <ui:Button Style="{StaticResource EmberIconButton}"
+                                       Command="{Binding ResetHeadTrackingPortCommand}" VerticalAlignment="Center"
+                                       ToolTip="{Binding Common_Reset, Source={x:Static strings:Strings.Instance}}">
+                                <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                            </ui:Button>
+                        </StackPanel>
+                        <TextBlock Grid.Row="1" Text="{Binding Dashboard_HeadTrackingRotationRange, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,8"/>
+                        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,8">
+                            <ui:NumberBox Value="{Binding HeadTrackingRotationRange, Mode=TwoWay}"
+                                          Minimum="1" Maximum="180"
+                                          SpinButtonPlacementMode="Inline" Width="200"
+                                          ToolTip="{Binding Dashboard_HeadTrackingRotationRange_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                            <ui:Button Style="{StaticResource EmberIconButton}"
+                                       Command="{Binding ResetHeadTrackingRotationRangeCommand}" VerticalAlignment="Center"
+                                       ToolTip="{Binding Common_Reset, Source={x:Static strings:Strings.Instance}}">
+                                <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                            </ui:Button>
+                        </StackPanel>
+                        <TextBlock Grid.Row="2" Text="{Binding Dashboard_HeadTrackingTranslationRange, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,0"/>
+                        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
+                            <ui:NumberBox Value="{Binding HeadTrackingTranslationRange, Mode=TwoWay}"
+                                          Minimum="1" Maximum="500"
+                                          SpinButtonPlacementMode="Inline" Width="200"
+                                          ToolTip="{Binding Dashboard_HeadTrackingTranslationRange_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                            <ui:Button Style="{StaticResource EmberIconButton}"
+                                       Command="{Binding ResetHeadTrackingTranslationRangeCommand}" VerticalAlignment="Center"
+                                       ToolTip="{Binding Common_Reset, Source={x:Static strings:Strings.Instance}}">
+                                <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                            </ui:Button>
+                        </StackPanel>
+                    </Grid>
+                    <!-- The Devices row's source line: which source is live,
+                         or why neither is. Stopped while the feature is off
+                         or the engine is down. -->
+                    <TextBlock Text="{Binding HeadTrackingStatus}" FontSize="12"
+                               FontFamily="{StaticResource TelemetryFontFamily}"
+                               Foreground="{DynamicResource ColdBrush}" Margin="0,0,0,4"/>
+                    <TextBlock Text="{Binding Dashboard_HeadTrackingFooter, Source={x:Static strings:Strings.Instance}}"
+                               FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <!-- ═══ Motion Server ═══ -->
+            <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
+                <TextBlock Text="&#xE7AD;" Style="{StaticResource SectionGlyph}"/>
+                <TextBlock Text="{Binding Dashboard_MotionServer, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" Style="{StaticResource SectionTitle}"/>
+            </StackPanel>
+
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
+                <StackPanel>
+                    <TextBlock Text="{Binding Dashboard_DsuDescription, Source={x:Static strings:Strings.Instance}}"
+                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
+                    <CheckBox Content="{Binding Dashboard_EnableDsu, Source={x:Static strings:Strings.Instance}}"
+                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                              IsChecked="{Binding EnableDsuMotionServer}" Margin="0,0,0,8"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <TextBlock Text="{Binding Dashboard_Port, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   Margin="0,0,8,0"/>
+                        <ui:NumberBox Value="{Binding DsuMotionServerPort, Mode=TwoWay}"
+                                      Minimum="1024" Maximum="65535"
+                                      SpinButtonPlacementMode="Inline" Width="200"/>
+                        <ui:Button Style="{StaticResource EmberIconButton}"
+                                   Command="{Binding ResetDsuPortCommand}" VerticalAlignment="Center"
+                                   ToolTip="{Binding Common_Reset, Source={x:Static strings:Strings.Instance}}">
+                            <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </ui:Button>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                        <!-- Serving = flame (#175 item 76); the green dot stays
+                             strictly health. Binds the server's running truth,
+                             not the enable checkbox (#175 phase 2 item 2). -->
+                        <Path Data="{StaticResource FlameOuterGeometry}"
+                              Width="11" Height="11" Stretch="Uniform"
+                              VerticalAlignment="Center" Margin="0,0,6,0">
+                            <Path.Style>
+                                <Style TargetType="Path">
+                                    <Setter Property="Fill" Value="Transparent"/>
+                                    <Setter Property="Stroke" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                    <Setter Property="StrokeThickness" Value="1.1"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsDsuServerRunning}" Value="True">
+                                            <Setter Property="Fill" Value="{DynamicResource EmberBrush}"/>
+                                            <Setter Property="Stroke" Value="{x:Null}"/>
+                                            <Setter Property="Effect">
+                                                <Setter.Value>
+                                                    <DropShadowEffect Color="#FF6B2C" BlurRadius="8" ShadowDepth="0" Opacity="0.5"/>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Path.Style>
+                        </Path>
+                        <TextBlock Text="{Binding DsuServerStatus}" FontSize="12"
+                                   FontFamily="{StaticResource TelemetryFontFamily}"
+                                   Foreground="{DynamicResource ColdBrush}"/>
+                    </StackPanel>
+                    <TextBlock Text="{Binding Dashboard_DsuFooter, Source={x:Static strings:Strings.Instance}}"
+                               FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <!-- ═══ Lightbar mirrors: Razer Chroma (#373) and Logitech LIGHTSYNC (#382) ═══
+                 One section, one glyph, one card with a row per vendor. Both
+                 rows forward the same virtual-pad lightbar color, so they
+                 share the section rather than repeating its icon. Each row
+                 keeps its own strings, bindings, status line and footer. -->
+            <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
+                <TextBlock Text="&#xE781;" Style="{StaticResource SectionGlyph}"/>
+                <TextBlock Text="{Binding Dashboard_LightbarMirrors, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" Style="{StaticResource SectionTitle}"/>
+            </StackPanel>
+
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
+                <StackPanel>
+                    <!-- Razer Chroma row. Divider-separated sub-title inside the
+                         card (the Remote Link identity idiom). -->
+                    <TextBlock Text="{Binding Dashboard_Chroma, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardSectionTitle}" FontSize="14" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,6"/>
+                    <TextBlock Text="{Binding Dashboard_ChromaDescription, Source={x:Static strings:Strings.Instance}}"
+                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
+                    <CheckBox Content="{Binding Dashboard_EnableChroma, Source={x:Static strings:Strings.Instance}}"
+                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                              IsChecked="{Binding EnableChromaLightbar}" Margin="0,0,0,8"/>
+                    <TextBlock Text="{Binding ChromaStatus}" FontSize="12"
+                               FontFamily="{StaticResource TelemetryFontFamily}"
+                               Foreground="{DynamicResource ColdBrush}" Margin="0,0,0,4"/>
+                    <TextBlock Text="{Binding Dashboard_ChromaFooter, Source={x:Static strings:Strings.Instance}}"
+                               FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
+
+                    <Border Height="1" Background="{DynamicResource DividerStrokeColorDefaultBrush}" Margin="0,14,0,14"/>
+
+                    <!-- Logitech LIGHTSYNC row. -->
+                    <TextBlock Text="{Binding Dashboard_Lightsync, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardSectionTitle}" FontSize="14" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,6"/>
+                    <TextBlock Text="{Binding Dashboard_LightsyncDescription, Source={x:Static strings:Strings.Instance}}"
+                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
+                    <CheckBox Content="{Binding Dashboard_EnableLightsync, Source={x:Static strings:Strings.Instance}}"
+                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                              IsChecked="{Binding EnableLightsyncLightbar}" Margin="0,0,0,8"/>
+                    <TextBlock Text="{Binding LightsyncStatus}" FontSize="12"
+                               FontFamily="{StaticResource TelemetryFontFamily}"
+                               Foreground="{DynamicResource ColdBrush}" Margin="0,0,0,4"/>
+                    <TextBlock Text="{Binding Dashboard_LightsyncFooter, Source={x:Static strings:Strings.Instance}}"
+                               FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <!-- ═══ Razer Sensa HD haptics translation (#374) ═══ -->
+            <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
+                <TextBlock Text="&#xE877;" Style="{StaticResource SectionGlyph}"/>
+                <TextBlock Text="{Binding Dashboard_Sensa, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" Style="{StaticResource SectionTitle}"/>
+            </StackPanel>
+
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,0">
+                <StackPanel>
+                    <TextBlock Text="{Binding Dashboard_SensaDescription, Source={x:Static strings:Strings.Instance}}"
+                               Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
+                    <CheckBox Content="{Binding Dashboard_EnableSensa, Source={x:Static strings:Strings.Instance}}"
+                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                              IsChecked="{Binding EnableSensaHaptics}" Margin="0,0,0,8"/>
+                    <TextBlock Text="{Binding SensaStatus}" FontSize="12"
+                               FontFamily="{StaticResource TelemetryFontFamily}"
+                               Foreground="{DynamicResource ColdBrush}" Margin="0,0,0,4"/>
+                    <TextBlock Text="{Binding Dashboard_SensaFooter, Source={x:Static strings:Strings.Instance}}"
+                               FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,4,0,0"/>
+                </StackPanel>
+            </Border>
+
             <!-- ═══ Overlays (menu #9 B-17, shift layer, profile switch) ═══ -->
             <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
                 <!-- E700 = Segoe MDL2 GlobalNavButton, the canonical menu glyph. -->
@@ -2092,60 +2092,6 @@
                                    Foreground="{DynamicResource ColdBrush}"/>
                     </StackPanel>
                 </StackPanel>
-            </Border>
-
-            <!-- ═══ Driver status ═══ -->
-            <StackPanel Orientation="Horizontal" Margin="0,20,0,12">
-                <TextBlock Text="&#xED5D;" Style="{StaticResource SectionGlyph}"/>
-                <TextBlock Text="{Binding Dashboard_Drivers, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}" Style="{StaticResource SectionTitle}"/>
-            </StackPanel>
-
-            <Border Style="{StaticResource CardBorder}" Padding="20" Margin="0,0,0,8">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="&#xED1A;" FontFamily="Segoe MDL2 Assets" FontSize="14"
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                   VerticalAlignment="Center" Margin="0,0,6,0"/>
-                        <TextBlock Text="HidHide" FontWeight="SemiBold"
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                    </StackPanel>
-                    <TextBlock Grid.Column="1" Text="{Binding HidHideStatusText}" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-
-                    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,8,0,0">
-                        <TextBlock Text="&#xE8D6;" FontFamily="Segoe MDL2 Assets" FontSize="14"
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                   VerticalAlignment="Center" Margin="0,0,6,0"/>
-                        <TextBlock Text="MIDI Services" FontWeight="SemiBold"
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                    </StackPanel>
-                    <TextBlock Grid.Row="1" Grid.Column="1"
-                               Text="{Binding MidiServicesStatusText}" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                               Margin="0,8,0,0"/>
-
-                    <!-- SteamVR (VR controllers, #49): same status treatment
-                         as its dependency siblings above. -->
-                    <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,8,0,0">
-                        <TextBlock Text="&#xF119;" FontFamily="Segoe MDL2 Assets" FontSize="14"
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                   VerticalAlignment="Center" Margin="0,0,6,0"/>
-                        <TextBlock Text="SteamVR" FontWeight="SemiBold"
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                    </StackPanel>
-                    <TextBlock Grid.Row="2" Grid.Column="1"
-                               Text="{Binding SteamVrStatusText}" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                               Margin="0,8,0,0"/>
-
-                </Grid>
             </Border>
             </StackPanel>
 

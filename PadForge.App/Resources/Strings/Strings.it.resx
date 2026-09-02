@@ -260,7 +260,6 @@
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Opacità</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>Reimposta posizione</value></data>
   <data name="TouchpadOverlay_DragTooltip" xml:space="preserve"><value>Clic destro e tieni premuto per trascinare</value></data>
-  <data name="Dashboard_Drivers" xml:space="preserve"><value>Driver</value></data>
   <data name="Dashboard_NoDevice" xml:space="preserve"><value>Nessun dispositivo</value></data>
 
   <!-- ═══ Settings ═══ -->

@@ -260,7 +260,6 @@
   <data name="Dashboard_TouchpadOverlayOpacity" xml:space="preserve"><value>Opacité</value></data>
   <data name="Dashboard_TouchpadOverlayResetPosition" xml:space="preserve"><value>Réinitialiser la position</value></data>
   <data name="TouchpadOverlay_DragTooltip" xml:space="preserve"><value>Clic droit maintenu pour déplacer</value></data>
-  <data name="Dashboard_Drivers" xml:space="preserve"><value>Pilotes</value></data>
   <data name="Dashboard_NoDevice" xml:space="preserve"><value>Aucun appareil</value></data>
 
   <!-- ═══ Settings ═══ -->

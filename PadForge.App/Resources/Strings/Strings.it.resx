@@ -3425,4 +3425,5 @@ Puoi riprovare più tardi dalle Impostazioni.</value></data>
   <data name="MacroAction_Type_VoiceListenWhileHeld" xml:space="preserve"><value>Ascolto vocale (tenuto premuto)</value></data>
   <data name="MacroAction_VoiceListenWhileHeld_Tooltip" xml:space="preserve"><value>Premi per parlare delle macro vocali: mentre questa macro è tenuta premuta, il riconoscimento ascolta. Imposta l'ascolto su "Premi per parlare" in Gestisci macro vocali.</value></data>
   <data name="DeviceType_Microphone" xml:space="preserve"><value>Microfono</value></data>
+  <data name="Menu_Macro_Missing_Format" xml:space="preserve"><value>{0} (macro inesistente)</value></data>
 </root>

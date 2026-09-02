@@ -3452,4 +3452,5 @@ You can retry later from Settings.</value></data>
   <data name="MacroAction_Type_VoiceListenWhileHeld" xml:space="preserve"><value>Voice Listen (While Held)</value></data>
   <data name="MacroAction_VoiceListenWhileHeld_Tooltip" xml:space="preserve"><value>Push to talk for Voice Macros: while this macro is held, the recognizer listens. Set Listening to Push to Talk in Manage Voice Macros.</value></data>
   <data name="DeviceType_Microphone" xml:space="preserve"><value>Microphone</value></data>
+  <data name="Menu_Macro_Missing_Format" xml:space="preserve"><value>{0} (no such macro)</value></data>
 </root>

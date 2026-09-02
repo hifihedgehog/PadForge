@@ -274,6 +274,20 @@ namespace PadForge.Common
             }
         }
 
+        /// <summary>The package's manifest entry: any entry NAMED
+        /// manifest.json, compared case-insensitively, the shallowest
+        /// (shortest full path) when several exist. Null when none.</summary>
+        private static ZipArchiveEntry FindManifestEntry(ZipArchive zip)
+        {
+            ZipArchiveEntry best = null;
+            foreach (var e in zip.Entries)
+            {
+                if (!string.Equals(e.Name, "manifest.json", StringComparison.OrdinalIgnoreCase)) continue;
+                if (best == null || e.FullName.Length < best.FullName.Length) best = e;
+            }
+            return best;
+        }
+
         /// <summary>Display name from manifest.json when present, else the
         /// file name; null when the zip has no audio entries.</summary>
         private static string ProbePackageName(string filePath)
@@ -285,7 +299,14 @@ namespace PadForge.Common
                     AudioExtensions.Contains(System.IO.Path.GetExtension(e.Name), StringComparer.OrdinalIgnoreCase));
                 if (!hasAudio) return null;
 
-                var man = zip.GetEntry("manifest.json");
+                // GetEntry is an ordinal, root-only lookup: a package
+                // zipped from a folder ("Pack/manifest.json") or authored
+                // on a case-preserving tool ("Manifest.json") never found
+                // its manifest and registered under the file name. Match
+                // the entry NAME case-insensitively anywhere in the zip
+                // and prefer the shallowest one, so a root manifest still
+                // wins over a nested sample's.
+                var man = FindManifestEntry(zip);
                 if (man != null)
                 {
                     // A manifest only carries a name: cap the read so a

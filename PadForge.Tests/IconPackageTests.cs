@@ -239,6 +239,45 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary>The manifest lookup was an ordinal, root-only
+        /// GetEntry: a pack zipped from a folder or authored with a
+        /// capitalized file name registered under the file name instead
+        /// of its manifest name. The lookup now matches the entry NAME
+        /// case-insensitively anywhere in the zip, on both package
+        /// managers.</summary>
+        [Fact]
+        public void Register_FindsANestedOrRecasedManifest_OnBothPackageKinds()
+        {
+            string icons = Path.Combine(_dir, "nested.pficons");
+            using (var fs = File.Create(icons))
+            using (var zip = new ZipArchive(fs, ZipArchiveMode.Create))
+            {
+                var man = zip.CreateEntry("Pack/Manifest.json");
+                using (var w = new StreamWriter(man.Open())) w.Write("{\"name\":\"Named\"}");
+                var img = zip.CreateEntry("Pack/icon.png");
+                using var s = img.Open();
+                s.Write(OnePxPng, 0, OnePxPng.Length);
+            }
+            Assert.Equal("Named", IconPackageManager.Register(icons));
+
+            SoundPackageManager.LoadRegistry(null);
+            try
+            {
+                string sounds = Path.Combine(_dir, "nested.pfsounds");
+                using (var fs = File.Create(sounds))
+                using (var zip = new ZipArchive(fs, ZipArchiveMode.Create))
+                {
+                    var man = zip.CreateEntry("Pack/MANIFEST.JSON");
+                    using (var w = new StreamWriter(man.Open())) w.Write("{\"name\":\"Named Sounds\"}");
+                    var wav = zip.CreateEntry("Pack/click.wav");
+                    using var s = wav.Open();
+                    s.Write(OnePxPng, 0, OnePxPng.Length); // only the extension is probed
+                }
+                Assert.Equal("Named Sounds", SoundPackageManager.Register(sounds));
+            }
+            finally { SoundPackageManager.LoadRegistry(null); }
+        }
+
         /// <summary>The settings legs: IconPackages persists beside
         /// SoundPackages with the same DTO shape, load and save.</summary>
         [Fact]

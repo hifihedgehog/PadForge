@@ -3403,4 +3403,5 @@
   <data name="MacroAction_Type_VoiceListenWhileHeld" xml:space="preserve"><value>语音收听（按住时）</value></data>
   <data name="MacroAction_VoiceListenWhileHeld_Tooltip" xml:space="preserve"><value>语音宏的按键说话：按住此宏时识别器收听。请在管理语音宏中将收听设为"按键说话"。</value></data>
   <data name="DeviceType_Microphone" xml:space="preserve"><value>麦克风</value></data>
+  <data name="Menu_Macro_Missing_Format" xml:space="preserve"><value>{0}（无此宏）</value></data>
 </root>

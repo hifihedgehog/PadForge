@@ -166,16 +166,21 @@ namespace PadForge.Tests
             Assert.Contains("ApplyMacroLayerSwitch(slotIndex, action.SwitchLayerMask);", body);
             Assert.Contains("AdvanceAction(macro);", body);
 
-            // The Base branch clears the activator stack too, so a
-            // toggled layer releases when a macro returns to Base. Source
-            // contract: driving a stacked Toggle through the full resolver
-            // is out of unit reach, and this pin keeps the clear from being
-            // silently dropped.
+            // The Base branch clears the activator stack AND the
+            // engagement state that rebuilds it (ToggleOn, the Sticky
+            // trio), so a toggled layer releases when a macro returns to
+            // Base and stays released on the next resolver tick.
+            // ApplyMacroLayerSwitch_BaseReleasesAToggledLayer drives that
+            // through the full resolver. This pin keeps the clears from
+            // being silently dropped.
             string step3 = RepoText("PadForge.App", "Common", "Input", "InputManager.Step3.MappingSetEval.cs");
             int helper = step3.IndexOf("public static void ApplyMacroLayerSwitch", StringComparison.Ordinal);
             Assert.True(helper > 0);
-            string helperBody = step3.Substring(helper, 2400);
+            string helperBody = step3.Substring(helper, 3400);
             Assert.Contains("rt.Stack.Clear();", helperBody);
+            Assert.Contains("System.Array.Clear(rt.ToggleOn, 0, rt.ToggleOn.Length);", helperBody);
+            Assert.Contains("System.Array.Clear(rt.StickyEngaged, 0, rt.StickyEngaged.Length);", helperBody);
+            Assert.DoesNotContain("rt.WasDown", helperBody);
             Assert.Contains("rt.Version++;", helperBody);
 
             string page = RepoText("PadForge.App", "Views", "PadPage.xaml");
@@ -192,6 +197,44 @@ namespace PadForge.Tests
             Assert.Contains("DataContext.LayerTabs", cardBody);
             Assert.Contains("SelectedValue=\"{Binding SwitchLayerMask, Mode=TwoWay}\"", cardBody);
             Assert.Contains("SelectedValuePath=\"LayerMask\"", cardBody);
+        }
+
+        /// <summary>Base from a TOGGLED layer, through the real resolver:
+        /// clearing the stack alone held Base for one tick, because the
+        /// Toggle case rebuilds the stack from ToggleOn every tick and
+        /// pushed the engaged activator straight back. The switch clears
+        /// the engagement state too, so the next tick with the button up
+        /// stays on Base.</summary>
+        [Fact]
+        public void ApplyMacroLayerSwitch_BaseReleasesAToggledLayer()
+        {
+            SettingsManager.SlotMappingSets = new MappingSet[InputManager.MaxPads];
+            var set = new MappingSet();
+            var dev = Guid.NewGuid();
+            set.ShiftActivators.Add(new ShiftActivator
+            {
+                LayerMask = "Shift1",
+                LayerName = "Shift1",
+                DeviceGuid = dev.ToString(),
+                Descriptor = "Button 9",
+                Mode = "Toggle",
+                InheritUnmapped = false,
+            });
+            SettingsManager.SlotMappingSets[0] = set;
+            InputManager.ClearShiftRuntime(0);
+
+            var down = new PadForge.Engine.CustomInputState();
+            down.Buttons[9] = true;
+            var up = new PadForge.Engine.CustomInputState();
+            InputManager.ResolveActiveLayerMask(0, set, down, dev.ToString());   // press: toggles on
+            InputManager.ResolveActiveLayerMask(0, set, up, dev.ToString());     // release: stays on
+            Assert.Equal("Shift1", InputManager.GetEngagedLayerMask(0, set));
+
+            InputManager.ApplyMacroLayerSwitch(0, "Base");
+            Assert.Equal("Base", InputManager.GetEngagedLayerMask(0, set));
+            // The tick that used to undo it.
+            Assert.Equal("Base", InputManager.ResolveActiveLayerMask(0, set, up, dev.ToString()));
+            Assert.Equal("Base", InputManager.GetEngagedLayerMask(0, set));
         }
 
         private static string RepoText(params string[] parts)

@@ -29,13 +29,34 @@ namespace PadForge.ViewModels
     /// </summary>
     public static class MacroTypeCatalog
     {
-        private static IReadOnlyList<MacroTypeChoice> _choices;
+        // ONE list instance for the catalog's lifetime: the labels and
+        // category headers are localized strings captured at build, so a
+        // live language switch refills this same instance in place (the
+        // MacroAction.VirtualKeyValues / Strings.CultureChanged pattern)
+        // and the grouped view over it refreshes. A fresh list per
+        // culture would strand the x:Static-bound view on the old one,
+        // the exact bug the Menus tab shipped (owner report 2026-07-16).
+        private static readonly List<MacroTypeChoice> _choices = new(56);
+        private static bool _built;
         private static ICollectionView _view;
+
+        static MacroTypeCatalog()
+        {
+            // Static handler: held strongly by the weak event, which is
+            // right for a process-lifetime catalog.
+            Strings.CultureChanged += OnCultureChanged;
+        }
 
         /// <summary>The flat catalog in display order (categories in
         /// presentation order, items in their in-category order).</summary>
         public static IReadOnlyList<MacroTypeChoice> Choices
-            => _choices ??= Build();
+        {
+            get
+            {
+                if (!_built) Fill();
+                return _choices;
+            }
+        }
 
         /// <summary>The grouped view the XAML picker binds to. Grouped on
         /// <see cref="MacroTypeChoice.Category"/>, the AvailableInputsView
@@ -54,10 +75,27 @@ namespace PadForge.ViewModels
             }
         }
 
-        private static IReadOnlyList<MacroTypeChoice> Build()
+        /// <summary>Rebuilds the catalog in the new culture. A never-
+        /// built catalog stays unbuilt (the first read builds it in the
+        /// culture current then). The view's Refresh re-reads the
+        /// grouping so the headers re-letter too.</summary>
+        private static void OnCultureChanged()
+        {
+            if (!_built) return;
+            Fill();
+            _view?.Refresh();
+        }
+
+        private static void Fill()
+        {
+            _choices.Clear();
+            Build(_choices);
+            _built = true;
+        }
+
+        private static void Build(List<MacroTypeChoice> list)
         {
             var S = Strings.Instance;
-            var list = new List<MacroTypeChoice>(56);
             void Add(MacroActionType type, string label, string category, string tooltip)
                 => list.Add(new MacroTypeChoice { Type = type, Label = label, Category = category, Tooltip = tooltip });
 
@@ -119,7 +157,6 @@ namespace PadForge.ViewModels
                 Add(MacroActionType.VoiceListenWhileHeld, S.MacroAction_Type_VoiceListenWhileHeld, S.Macro_Cat_System, S.MacroAction_VoiceListenWhileHeld_Tooltip);
                 Add(MacroActionType.DisconnectController, S.MacroAction_Type_DisconnectController, S.Macro_Cat_System, S.MacroAction_DisconnectController_Tooltip);
             }
-            return list;
         }
     }
 }

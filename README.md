@@ -583,7 +583,7 @@ Per-slot touchpad tuning on any source with a touchpad surface (DualSense, DualS
 The Wii Remote's IR camera as an on-screen pointer. FPS-mouse mode, aspect-corrected border modes, and an off-screen freeze that holds position instead of snapping to a corner.
 
 ### Wii Remote grip
-![The Grip card on the Gyro tab](screenshots/pad-gyro-grip.jpg)
+<!-- pending capture: ![The Grip card on the Gyro tab](screenshots/pad-gyro-grip.jpg) -->
 How the controller is held: Pointing, Sideways (Face Up), Wii Wheel (Face Toward You), or Upright. The gyro, the accelerometer, gravity, and the D-pad all rotate into the game's frame together.
 
 ### Macros
@@ -591,11 +591,11 @@ How the controller is held: Pointing, Sideways (Face Up), Wii Wheel (Face Toward
 Combo triggers from buttons, axes, and POV directions. Action sequences with key presses, mouse moves, scroll, delays, system volume, app volume, lightbar overrides, rumble overrides, and axis actions that latch, release, and scale virtual axes. Twelve fire modes: On Press, On Single / Double / Triple Press, On Long Press, On Short Press, On Release, While Held, Toggle, Turbo, Always, and a custom formula. A Switch Layer action jumps the slot to Base or any authored layer, and a per-macro layer scope limits a macro to chosen shift layers. A macro toolbar duplicates a macro, copies and pastes it into another virtual controller, and pulls every macro from another controller in one step. Mouse-cursor actions snap the pointer to center (Recenter Mouse), pin it at a coordinate (Fix Mouse Position), or fence it inside a rectangle (Limit Mouse Region).
 
 ### Menu macro cells
-![A radial menu cell bound to a macro](screenshots/menu-macro-cell.jpg)
+<!-- pending capture: ![A radial menu cell bound to a macro](screenshots/menu-macro-cell.jpg) -->
 A cell in a radial or grid menu can run a macro instead of pressing a button.
 
 ### Menu icon packages
-![The Icon Packages card on the Menus tab](screenshots/menu-icon-packs.jpg)
+<!-- pending capture: ![The Icon Packages card on the Menus tab](screenshots/menu-icon-packs.jpg) -->
 An icon package is one zip of images with a .pficons extension. Add one and its icons are available on any menu cell. PadForge reads straight from the file and never unpacks it.
 
 ### Per-app profiles
@@ -631,11 +631,11 @@ Hold a mouse button and flick up, down, left, or right. Each direction, plus a c
 Flight sticks, racing wheels, HOTAS, third-party gamepads. 231 HIDMaestro profiles plus a Custom mode that builds a HID descriptor from scratch. Up to 8 axes, 128 buttons, 4 POV hats. Configurable VID, PID, and product string.
 
 ### Steam Deck virtual controller
-![An Extended slot presenting a Steam Deck](screenshots/pad-extended-steam-deck.jpg)
+<!-- pending capture: ![An Extended slot presenting a Steam Deck](screenshots/pad-extended-steam-deck.jpg) -->
 An Extended slot on a Steam Deck profile: Valve's own vendor and product IDs, both trackpads, and the rear buttons, with a one-to-one automap from a real Deck.
 
 ### Steam Controller virtual controller
-![An Extended slot presenting a Steam Controller 2026](screenshots/pad-extended-steam-controller.jpg)
+<!-- pending capture: ![An Extended slot presenting a Steam Controller 2026](screenshots/pad-extended-steam-controller.jpg) -->
 The Steam Controller (Wired) and the Steam Controller (2026) present the same way, each with its own input frame, its own automap, and a 3D body meshed from Valve's published CAD.
 
 ### PlayStation virtual controller

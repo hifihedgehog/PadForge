@@ -250,7 +250,11 @@ namespace PadForge.Tests
         /// <summary>The per-device ResetGyroLeanNeutral overload (the Gyro
         /// Recenter macro's per-slot path) must drop the static lean-on-button
         /// latch too, primary and aux keys, or a recenter leaves the button
-        /// read aligned to the old grip while the runtime lean re-zeroes.</summary>
+        /// read aligned to the old grip while the runtime lean re-zeroes.
+        ///
+        /// <para>Keys carry the SLOT as well as the device, because the grip
+        /// they are tagged with is per-(device, slot). The caller names a
+        /// device, so the reset retires every slot's latch for it.</para></summary>
         [Fact]
         public void PerDeviceNeutralResetClearsTheStaticLeanLatch()
         {
@@ -263,18 +267,22 @@ namespace PadForge.Tests
             var dict = (System.Collections.Concurrent.ConcurrentDictionary<string, (double x, double y, double z, string grip)>)dictField.GetValue(null);
 
             string guid = System.Guid.NewGuid().ToString("d");
-            dict[guid] = (0, 0, -1, "");
-            dict[guid + "|L"] = (0, 0, -1, "");
+            // Slot 0's primary and aux latches, and slot 3's, because one
+            // device can sit on several slots and be held differently on each.
+            dict[guid + "#0"] = (0, 0, -1, "");
+            dict[guid + "#0|L"] = (0, 0, -1, "");
+            dict[guid + "#3"] = (0, 0, -1, "");
             // Same-window positive control: an unrelated device's latch survives.
             string other = System.Guid.NewGuid().ToString("d");
-            dict[other] = (0, 0, -1, "");
+            dict[other + "#0"] = (0, 0, -1, "");
 
             PadForge.Engine.Common.Mapping.SourceCoercion.ResetGyroLeanNeutral(guid);
 
-            Assert.False(dict.ContainsKey(guid));
-            Assert.False(dict.ContainsKey(guid + "|L"));
-            Assert.True(dict.ContainsKey(other));
-            dict.TryRemove(other, out _);
+            Assert.False(dict.ContainsKey(guid + "#0"));
+            Assert.False(dict.ContainsKey(guid + "#0|L"));
+            Assert.False(dict.ContainsKey(guid + "#3"));
+            Assert.True(dict.ContainsKey(other + "#0"));
+            dict.TryRemove(other + "#0", out _);
         }
     }
 }

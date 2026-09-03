@@ -574,12 +574,30 @@ namespace PadForge.Common.Input
 
             lock (settings.SyncRoot)
             {
-                // Check if already assigned to this exact slot — return existing.
+                // Already assigned to this exact slot: return the existing row.
                 var exactMatch = settings.Items.FirstOrDefault(
                     s => s.InstanceGuid == instanceGuid && s.MapTo == padIndex);
 
                 if (exactMatch != null)
                     return exactMatch;
+
+                // A PARKED row for this device is the same device with the
+                // user's authoring on it, waiting to come back. ApplyProfile
+                // already adopts one by matching the guid with no MapTo
+                // filter, so this path must too. Creating a fresh row instead
+                // left the device with two persisted rows and handed
+                // DeviceService a null PadSetting, which then overwrote the
+                // slot with a default automap. That was survivable while the
+                // load purged every parked row. a5de3709 keeps the ones
+                // carrying settings, so the duplicate became permanent.
+                var parked = settings.Items.FirstOrDefault(
+                    s => s.InstanceGuid == instanceGuid && s.MapTo < 0);
+
+                if (parked != null)
+                {
+                    parked.MapTo = padIndex;
+                    return parked;
+                }
 
                 // Create a new UserSetting for this slot (supports multi-slot assignment).
                 var us = new UserSetting
@@ -637,6 +655,17 @@ namespace PadForge.Common.Input
                     // Unassign from this slot.
                     settings.Items.Remove(existing);
                     return (false, null);
+                }
+
+                // Adopt a parked row rather than duplicating the device, for
+                // the reason spelled out in AssignDeviceToSlot above.
+                var parked = settings.Items.FirstOrDefault(
+                    s => s.InstanceGuid == instanceGuid && s.MapTo < 0);
+
+                if (parked != null)
+                {
+                    parked.MapTo = padIndex;
+                    return (true, parked);
                 }
 
                 // Assign to this slot (new UserSetting entry).

@@ -113,3 +113,6 @@ __pycache__/
 tools/SteamWorkshopSweep/cache/
 PadForge.Tests/TestResults/
 PadForge.SteamWorkshop.Tests/TestResults/
+
+# WPF XAML compilation temp project. A generated copy was committed twice before this pattern existed.
+*_wpftmp.csproj

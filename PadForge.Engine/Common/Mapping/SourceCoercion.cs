@@ -2594,11 +2594,17 @@ namespace PadForge.Engine.Common.Mapping
         /// string.</summary>
         public static void ResetGyroLeanNeutral(string deviceGuid)
         {
-            _gyroLeanNeutral.TryRemove(LeanNeutralKey(deviceGuid), out _);
+            // Keys carry the slot now, so retire every slot's latch for this
+            // device. The caller names a device, not a (device, slot).
+            string prefix = LeanNeutralDevicePrefix(deviceGuid);
+            foreach (var key in _gyroLeanNeutral.Keys)
+                if (key.StartsWith(prefix, StringComparison.Ordinal))
+                    _gyroLeanNeutral.TryRemove(key, out _);
             // The static lean-on-button latch (#364) re-zeroes with it, or a
             // per-slot Gyro Recenter leaves the button read on the old grip.
-            _motionLeanNeutralStatic.TryRemove(LeanNeutralKey(deviceGuid), out _);
-            _motionLeanNeutralStatic.TryRemove(LeanNeutralKey(deviceGuid) + "|L", out _);
+            foreach (var key in _motionLeanNeutralStatic.Keys)
+                if (key.StartsWith(prefix, StringComparison.Ordinal))
+                    _motionLeanNeutralStatic.TryRemove(key, out _);
         }
 
         /// <summary>Neutral grips for the STATIC "Motion Lean" button read,
@@ -2629,7 +2635,7 @@ namespace PadForge.Engine.Common.Mapping
             // The latch carries the hold it was captured under (#392): a
             // grip change drops it and the next real sample re-latches in
             // the new frame.
-            string gid = aux ? LeanNeutralKey(deviceGuid) + "|L" : LeanNeutralKey(deviceGuid);
+            string gid = aux ? LeanNeutralKey(deviceGuid, slotIndex) + "|L" : LeanNeutralKey(deviceGuid, slotIndex);
             string grip = LatchGrip(deviceGuid, slotIndex, aux);
             bool haveNeutral = TryGetLeanNeutral(_motionLeanNeutralStatic, gid, grip, out var n);
             if (!haveNeutral && gLen > 4.0)
@@ -2677,8 +2683,22 @@ namespace PadForge.Engine.Common.Mapping
         /// parseable guids collapse to lowercase "d" format, anything else
         /// passes through. The latch, the lookup, and the per-device reset
         /// all agree through this.</summary>
-        private static string LeanNeutralKey(string deviceGuid)
-            => Guid.TryParse(deviceGuid, out var g) ? g.ToString() : (deviceGuid ?? "");
+        /// <summary>The latch key. It carries the SLOT as well as the device
+        /// because the grip it is tagged with is per-(device, slot): a device
+        /// on two slots can be held two ways. Keyed by device alone, the two
+        /// slots shared one entry, each read found the other slot's grip tag,
+        /// dropped the latch and re-latched from the current sample, and
+        /// RealignToDown then mapped that sample exactly onto down. Gyro Lean,
+        /// Gyro Tilt and the static Motion Lean read a constant zero on both
+        /// slots for as long as the assignment stood.</summary>
+        private static string LeanNeutralKey(string deviceGuid, int slotIndex)
+            => (Guid.TryParse(deviceGuid, out var g) ? g.ToString() : (deviceGuid ?? ""))
+               + "#" + slotIndex.ToString(System.Globalization.CultureInfo.InvariantCulture);
+
+        /// <summary>The device half of a latch key, without the slot. Used to
+        /// retire every slot's latch for one device.</summary>
+        private static string LeanNeutralDevicePrefix(string deviceGuid)
+            => (Guid.TryParse(deviceGuid, out var g) ? g.ToString() : (deviceGuid ?? "")) + "#";
 
         /// <summary>The gravity-tilt family read: bipolar [-1..+1]. The
         /// lean pair saturates at 90 degrees of tilt from the resting grip
@@ -2706,7 +2726,7 @@ namespace PadForge.Engine.Common.Mapping
             // The latch carries the hold it was captured under (#392): a
             // grip change drops it and this sample re-latches in the new
             // frame. Body sensor only, so the aux flag is false.
-            string gid = LeanNeutralKey(deviceGuid);
+            string gid = LeanNeutralKey(deviceGuid, slotIndex);
             string grip = LatchGrip(deviceGuid, slotIndex, aux: false);
             if (!TryGetLeanNeutral(_gyroLeanNeutral, gid, grip, out var n))
             {
@@ -5654,7 +5674,12 @@ namespace PadForge.Engine.Common.Mapping
             return (pt, idx, dir, true);
         }
 
-        private static bool PovMatches(int povCentidegrees, string direction)
+        /// <summary>Public because the app layer's mapping-grid preview reads
+        /// the same hat through it. A second copy of this sector rule drifted
+        /// from this one on three points at once (no "Any" member,
+        /// case-sensitive names, exclusive instead of inclusive bounds), so
+        /// both sides call this one.</summary>
+        public static bool PovMatches(int povCentidegrees, string direction)
         {
             // -1 (or any negative) signals POV centered.
             if (povCentidegrees < 0 || string.IsNullOrEmpty(direction)) return false;

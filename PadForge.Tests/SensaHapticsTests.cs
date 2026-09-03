@@ -265,6 +265,67 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary>The predecessor join is bounded. A predecessor wedged
+        /// inside ProviderInit used to block every later worker on an
+        /// unbounded Join, so each enable added one parked thread and the
+        /// feature never came back. The successor now waits its deadline and
+        /// quits without arming, because arming over a live predecessor is
+        /// the very handoff fault the join exists to prevent, and it reports
+        /// Stopped through its normal teardown. The hook here stays closed
+        /// until the cleanup, so worker A cannot have left it.</summary>
+        [Fact]
+        public void Service_GivesUpOnAWedgedPredecessorInsteadOfBlockingForever()
+        {
+            using var hold = new System.Threading.ManualResetEventSlim(false);
+            System.Threading.Thread aThread = null;
+            SensaHapticsService.BeforeProviderInit = () =>
+            {
+                aThread ??= System.Threading.Thread.CurrentThread;
+                hold.Wait(30000);
+            };
+            SensaHapticsService a = null, b = null;
+            try
+            {
+                a = new SensaHapticsService(retryMs: 50, tickMs: 5);
+                a.Start();
+                long t0 = Environment.TickCount64;
+                while (Environment.TickCount64 - t0 < 5000 && a.ProviderInitAttempts < 1)
+                    System.Threading.Thread.Sleep(5);
+                Assert.True(a.ProviderInitAttempts >= 1, "worker A never reached the bring-up window");
+
+                // Stop joins 3 s and gives up with A still parked in the hook.
+                a.Dispose();
+                Assert.True(SensaHapticsService.PublisherArmed,
+                    "A's Dispose must return with A's worker still armed and parked in the hook");
+                Assert.NotNull(aThread);
+
+                var states = new System.Collections.Concurrent.ConcurrentQueue<SensaServiceState>();
+                b = new SensaHapticsService(retryMs: 50, tickMs: 5, predecessorJoinMs: 250);
+                b.StateChanged += s => states.Enqueue(s);
+                b.Start();
+
+                t0 = Environment.TickCount64;
+                while (Environment.TickCount64 - t0 < 5000 && b.WorkerAlive)
+                    System.Threading.Thread.Sleep(10);
+                Assert.False(b.WorkerAlive, "B's worker never gave up on the wedged predecessor");
+                // Positive control: A is still inside the hook, so B left on
+                // its deadline and not because A finished.
+                Assert.True(aThread.IsAlive, "A was not wedged, so the give-up path never ran");
+                Assert.Equal(0, b.ProviderInitAttempts);
+                Assert.Contains(SensaServiceState.Stopped, states);
+            }
+            finally
+            {
+                hold.Set();
+                SensaHapticsService.BeforeProviderInit = null;
+                // Let A finish its engine teardown before the next test
+                // touches the shared native engine.
+                aThread?.Join(10000);
+                b?.Dispose();
+                a?.Dispose();
+            }
+        }
+
         /// <summary>Source contracts: the poll-lane publisher exists behind
         /// the armed gate with the same rumble authority as the audio lane,
         /// the setting has a global leg, a nullable per-profile leg and the

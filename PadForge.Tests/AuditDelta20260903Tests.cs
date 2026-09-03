@@ -1,0 +1,318 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using PadForge.Common;
+using PadForge.Common.Input;
+using PadForge.Engine.Common.Mapping;
+using PadForge.Engine.Data;
+using Xunit;
+
+namespace PadForge.Tests
+{
+    /// <summary>
+    /// Delta audit 2026-09-03 (8fe63743..HEAD). Behavioral pins for the fixes
+    /// that have a seam, and source pins for the ones that do not.
+    /// </summary>
+    public class AuditDelta20260903Tests
+    {
+        private const uint IOCTL_GET_BLACKLIST = 0x80016008;
+
+        private static string RepoRoot()
+        {
+            var d = new DirectoryInfo(AppContext.BaseDirectory);
+            while (d != null && !File.Exists(Path.Combine(d.FullName, "PadForge.sln")))
+                d = d.Parent;
+            Assert.NotNull(d);
+            return d.FullName;
+        }
+
+        private static string Src(string rel)
+            => File.ReadAllText(Path.Combine(RepoRoot(), rel));
+
+        // ── The multi-SZ reader stops at the terminator ──────────────────
+
+        /// <summary>HidHide's Config.c HidHideCollectionToMultiString sums
+        /// "neededSizeInCharacters += string.Length" over a UNICODE_STRING,
+        /// whose Length is in BYTES, so the driver reports (2C + N + 1)
+        /// characters while writing (C + N + 1). The completion hands that
+        /// inflated count back, and the bytes past what the driver wrote are
+        /// METHOD_BUFFERED system-buffer pool it never touched. Reading the
+        /// whole reported length turned that pool into blacklist entries.
+        /// The existing FakeDriver hides this because it copies into a
+        /// zero-filled array; a real system buffer carries whatever was
+        /// there. This fake fills the tail, which is the case that matters.
+        /// </summary>
+        [Fact]
+        public void MultiSzRead_StopsAtTheTerminator_AndIgnoresTheOverReportedTail()
+        {
+            var entries = new List<string> { "HID\\VID_054C&PID_0CE6\\ABC" };
+
+            // The driver's own arithmetic, bug included.
+            int reportedChars = 0;
+            foreach (var s in entries) reportedChars += s.Length * 2 + 1;
+            reportedChars += 1;
+            int reportedBytes = reportedChars * 2;
+
+            // What it actually writes: each string, its terminator, then the
+            // multi-string terminator.
+            var written = new StringBuilder();
+            foreach (var s in entries) { written.Append(s); written.Append('\0'); }
+            written.Append('\0');
+            byte[] real = Encoding.Unicode.GetBytes(written.ToString());
+
+            HidHideController.IoSeam = (ioctl, inBuf, outBuf) =>
+            {
+                if (ioctl != IOCTL_GET_BLACKLIST) return (false, 0);
+                if (outBuf == null || outBuf.Length == 0) return (true, reportedBytes);
+
+                // Uninitialized pool first, then the driver's real write over
+                // the front of it. The tail is what the old parser consumed.
+                for (int i = 0; i < outBuf.Length; i++) outBuf[i] = 0x41;
+                Array.Copy(real, outBuf, Math.Min(real.Length, outBuf.Length));
+                return (true, reportedBytes);
+            };
+
+            try
+            {
+                var got = HidHideController.GetBlacklist();
+                Assert.NotNull(got);
+                Assert.Equal(entries, got);
+            }
+            finally { HidHideController.IoSeam = null; }
+        }
+
+        /// <summary>An empty list is a single terminator, two bytes, and must
+        /// read as a successful read of nothing rather than as a failure.
+        /// Calling it malformed broke hiding outright once already.</summary>
+        [Fact]
+        public void MultiSzRead_EmptyListIsTwoBytesAndReadsAsEmpty()
+        {
+            HidHideController.IoSeam = (ioctl, inBuf, outBuf) =>
+            {
+                if (ioctl != IOCTL_GET_BLACKLIST) return (false, 0);
+                if (outBuf == null || outBuf.Length == 0) return (true, 2);
+                outBuf[0] = 0; outBuf[1] = 0;
+                return (true, 2);
+            };
+
+            try
+            {
+                var got = HidHideController.GetBlacklist();
+                Assert.NotNull(got);
+                Assert.Empty(got);
+            }
+            finally { HidHideController.IoSeam = null; }
+        }
+
+        // ── One POV sector rule, not two ─────────────────────────────────
+
+        /// <summary>The mapping grid's preview kept its own copy of the sector
+        /// rule and it had drifted on three points. PovMatches is the one
+        /// implementation now, and the app's PovInDirection calls it.</summary>
+        [Fact]
+        public void PovMatches_CarriesAny_IsCaseInsensitive_AndIsInclusiveAtTheDiagonals()
+        {
+            // "Any" is a first-class direction. PhysicalSlotResolver emits
+            // "POV 0 Any" for a Steam dpad's edge and click, so every Workshop
+            // import depends on it.
+            Assert.True(SourceCoercion.PovMatches(0, "Any"));
+            Assert.True(SourceCoercion.PovMatches(18000, "Any"));
+            Assert.True(SourceCoercion.PovMatches(0, "any"));
+            Assert.False(SourceCoercion.PovMatches(-1, "Any"));
+
+            // Case-insensitive, like both engine readers.
+            Assert.True(SourceCoercion.PovMatches(0, "up"));
+            Assert.True(SourceCoercion.PovMatches(9000, "RIGHT"));
+
+            // Inclusive at the diagonal: the engine reports two directions
+            // there, and the grid used to report one.
+            Assert.True(SourceCoercion.PovMatches(4500, "Up"));
+            Assert.True(SourceCoercion.PovMatches(4500, "Right"));
+        }
+
+        /// <summary>The app-side preview delegates rather than repeating the
+        /// rule, so the two cannot drift again.</summary>
+        [Fact]
+        public void PovInDirection_DelegatesToTheEngineRule()
+        {
+            string svc = Src(Path.Combine("PadForge.App", "Services", "InputService.cs"));
+            Assert.Contains(
+                "=> PadForge.Engine.Common.Mapping.SourceCoercion.PovMatches(centidegrees, dir);",
+                svc);
+            Assert.DoesNotContain("\"Up\"    => cd >= 31500 || cd <  4500,", svc);
+        }
+
+        // ── A parked row is adopted, never duplicated ────────────────────
+
+        /// <summary>ApplyProfile parks a device the incoming profile does not
+        /// assign at MapTo -1 and keeps its PadSetting. The load stopped
+        /// deleting those rows (a5de3709), so the assign path had to stop
+        /// creating a second row beside them: two persisted rows for one
+        /// device, and DeviceService overwriting the slot with a default
+        /// automap because the fresh row carried no PadSetting.</summary>
+        [Fact]
+        public void AssignDeviceToSlot_AdoptsAParkedRow()
+        {
+            var saved = SettingsManager.UserSettings;
+            try
+            {
+                SettingsManager.UserSettings = new SettingsCollection();
+                var guid = Guid.NewGuid();
+                var parked = new UserSetting { InstanceGuid = guid, MapTo = -1 };
+                SettingsManager.UserSettings.Items.Add(parked);
+
+                var got = SettingsManager.AssignDeviceToSlot(guid, 2);
+
+                Assert.Same(parked, got);
+                Assert.Equal(2, got.MapTo);
+                Assert.Single(SettingsManager.UserSettings.Items);
+            }
+            finally { SettingsManager.UserSettings = saved; }
+        }
+
+        /// <summary>The toggle path is the same shape and does not delegate to
+        /// AssignDeviceToSlot, so it carries the same rule.</summary>
+        [Fact]
+        public void ToggleDeviceSlotAssignment_AdoptsAParkedRow()
+        {
+            var saved = SettingsManager.UserSettings;
+            try
+            {
+                SettingsManager.UserSettings = new SettingsCollection();
+                var guid = Guid.NewGuid();
+                var parked = new UserSetting { InstanceGuid = guid, MapTo = -1 };
+                SettingsManager.UserSettings.Items.Add(parked);
+
+                var (assigned, us) = SettingsManager.ToggleDeviceSlotAssignment(guid, 1);
+
+                Assert.True(assigned);
+                Assert.Same(parked, us);
+                Assert.Equal(1, us.MapTo);
+                Assert.Single(SettingsManager.UserSettings.Items);
+            }
+            finally { SettingsManager.UserSettings = saved; }
+        }
+
+        /// <summary>A device already on the slot still returns that row, and a
+        /// device with no parked row still gets a new one. The positive
+        /// control for the two tests above.</summary>
+        [Fact]
+        public void AssignDeviceToSlot_StillCreatesARowWhenNothingIsParked()
+        {
+            var saved = SettingsManager.UserSettings;
+            try
+            {
+                SettingsManager.UserSettings = new SettingsCollection();
+                var guid = Guid.NewGuid();
+
+                var first = SettingsManager.AssignDeviceToSlot(guid, 0);
+                Assert.NotNull(first);
+                Assert.Equal(0, first.MapTo);
+
+                // A second slot for the same device is a second row, which is
+                // what multi-slot assignment means.
+                var second = SettingsManager.AssignDeviceToSlot(guid, 3);
+                Assert.NotSame(first, second);
+                Assert.Equal(3, second.MapTo);
+                Assert.Equal(2, SettingsManager.UserSettings.Items.Count);
+            }
+            finally { SettingsManager.UserSettings = saved; }
+        }
+
+        // ── Source pins for the fixes with no seam ───────────────────────
+
+        /// <summary>CycleIndex is engagement state. ShiftRuntime.Clear says so
+        /// and clears it; the Switch Layer to Base partial clear did not, so a
+        /// Cycle activator's cursor stayed on the layer just released.</summary>
+        [Fact]
+        public void SwitchLayerToBase_ClearsTheCycleCursor()
+        {
+            string src = Src(Path.Combine(
+                "PadForge.App", "Common", "Input", "InputManager.Step3.MappingSetEval.cs"));
+            Assert.Contains("System.Array.Clear(rt.CycleIndex, 0, rt.CycleIndex.Length);", src);
+        }
+
+        /// <summary>The combined-DPad read carries the slot and the device, so
+        /// the hat follows the grip the way every individual DPad row does.
+        /// Without them EvaluateForButtonTarget took a negative slot and
+        /// GripPov was the identity.</summary>
+        [Fact]
+        public void CombinedDpad_ReadsThroughTheSlotAndDeviceSoTheGripApplies()
+        {
+            string src = Src(Path.Combine(
+                "PadForge.App", "Common", "Input", "InputManager.Step3.MappingSetEval.cs"));
+            Assert.Contains("EvalPovBool(state, src, \"Up\",    slotIndex, thisDeviceGuid)", src);
+            Assert.Contains(
+                "SourceCoercion.EvaluateForButtonTarget(state, synth, 50, slotIndex, evaluatedDeviceGuid)",
+                src);
+        }
+
+        /// <summary>MenuTriggerTick has no other clear site, so the guard
+        /// retires it once the release edge has been delivered. Left set, a
+        /// macro fired once from a menu cell evaluated on every poll for the
+        /// rest of the session. Both evaluator twins carry the rule.</summary>
+        [Fact]
+        public void MenuCellStamp_RetiresAfterTheReleaseEdge_InBothTwins()
+        {
+            string src = Src(Path.Combine(
+                "PadForge.App", "Common", "Input", "InputManager.Step4b.EvaluateMacros.cs"));
+            int retire = CountOf(src, "if (macro.MenuTriggerTick >= 0 && !macro.WasTriggerActive)");
+            int reset = CountOf(src, "macro.LastEvaluatedUtc = DateTime.MinValue;");
+            Assert.Equal(2, retire);
+            Assert.True(reset >= 2, $"expected the skip to reset the edge fields in both twins, saw {reset}");
+        }
+
+        /// <summary>A device-pinned trigger entry outranks a device-free one on
+        /// the same axis. Returning on the first match let "(Any device)" win
+        /// on list order, and the two can carry opposite Invert.</summary>
+        [Fact]
+        public void PressureDirection_PrefersTheDevicePinnedEntry()
+        {
+            string src = Src(Path.Combine(
+                "PadForge.App", "Common", "Input", "InputManager.Step4b.EvaluateMacros.cs"));
+            Assert.Contains("if (e.DeviceGuid == action.SourceDeviceGuid) { pinned = e; break; }", src);
+            Assert.Contains("var pick = pinned ?? anyDevice;", src);
+        }
+
+        /// <summary>Adoption belongs to ApplyDeviceHiding, which has eleven
+        /// call sites, not to Start, which was one of them.</summary>
+        [Fact]
+        public void CloakAdoption_RunsFromTheApplyPathNotOnlyFromStart()
+        {
+            string svc = Src(Path.Combine("PadForge.App", "Services", "InputService.cs"));
+            Assert.Contains("EnsureHidHideCloaksAdopted();", svc);
+            Assert.Contains("private void EnsureHidHideCloaksAdopted()", svc);
+        }
+
+        /// <summary>The whitelist lane honors its write result and only then
+        /// drops the path from the managed set, the way the blacklist lane
+        /// was rewritten to.</summary>
+        [Fact]
+        public void WhitelistSync_HonorsTheWriteResultBeforeRetiringAPath()
+        {
+            string svc = Src(Path.Combine("PadForge.App", "Services", "InputService.cs"));
+            Assert.Contains("if (changed && !HidHideController.SetWhitelist(currentWhitelist))", svc);
+        }
+
+        /// <summary>The lean neutral is keyed by (device, slot) because the
+        /// grip it is tagged with is per-(device, slot). Keyed by device
+        /// alone, a device on two slots held two ways dropped and re-latched
+        /// on every read and the lean families read a constant zero.</summary>
+        [Fact]
+        public void LeanNeutral_IsKeyedByDeviceAndSlot()
+        {
+            string src = Src(Path.Combine(
+                "PadForge.Engine", "Common", "Mapping", "SourceCoercion.cs"));
+            Assert.Contains("private static string LeanNeutralKey(string deviceGuid, int slotIndex)", src);
+            Assert.Contains("LeanNeutralKey(deviceGuid, slotIndex)", src);
+        }
+
+        private static int CountOf(string haystack, string needle)
+        {
+            int n = 0, i = 0;
+            while ((i = haystack.IndexOf(needle, i, StringComparison.Ordinal)) >= 0) { n++; i += needle.Length; }
+            return n;
+        }
+    }
+}

@@ -2255,27 +2255,12 @@ namespace PadForge.Services
                 }
                 catch { /* best effort */ }
             }
-            else
-            {
-                // Cloaks were kept on purpose, so this session inherits
-                // entries it did not write. Adopt them as managed, or the
-                // sync's removal set is computed from an empty set and the
-                // driver's list can only grow: an entry an older build wrote
-                // too broadly outlives the fix that narrowed it, through
-                // every apply and every reboot, and the device it hides
-                // stays hidden with nothing saying so (#397 follow-up).
-                try
-                {
-                    if (HidHideController.IsAvailable())
-                    {
-                        int adopted = HidHideController.AdoptExistingAsManaged();
-                        if (adopted > 0)
-                            PadForge.Engine.SdlDiagLog.WriteLine(
-                                $"HIDHIDE adopted {adopted} kept entr{(adopted == 1 ? "y" : "ies")} from the previous session");
-                    }
-                }
-                catch { /* best effort */ }
-            }
+            // Cloaks kept on purpose mean this session inherits entries it did
+            // not write, and they have to be adopted or the sync's removal set
+            // is computed from an empty set and the driver's list can only
+            // grow (#397 follow-up). EnsureHidHideCloaksAdopted does it, from
+            // inside ApplyDeviceHiding, so every entry point gets it and not
+            // just this one.
             _managedWhitelistDosPaths.Clear();
 
             // Apply device hiding (HidHide + input hooks) if master switch is on.
@@ -5489,25 +5474,19 @@ namespace PadForge.Services
             return null;
         }
 
-        /// <summary>True when an Extended POV's centidegree value is in
-        /// the sector matching the named cardinal direction. Matches
-        /// the engine's 4-way sector partition used in Step 3/4.</summary>
+        /// <summary>True when an Extended POV's centidegree value is in the
+        /// sector matching the named direction. Calls the engine's own
+        /// SourceCoercion.PovMatches rather than repeating its rule, because
+        /// the local copy had drifted from it on three points at once. It
+        /// carried no "Any" member, so every Workshop dpad import read as
+        /// permanently inactive in the grid while the engine fired it,
+        /// PhysicalSlotResolver emitting "POV 0 Any" for edge and click. It
+        /// compared direction names case-sensitively against the engine's
+        /// OrdinalIgnoreCase. And its upper bounds were exclusive against the
+        /// engine's inclusive, so at exactly 45, 135, 225 and 315 degrees the
+        /// engine reported two directions and the grid one.</summary>
         private static bool PovInDirection(int centidegrees, string dir)
-        {
-            if (centidegrees < 0) return false;
-            // Normalize to [0, 36000).
-            int cd = centidegrees % 36000;
-            // Same 90°-sector mapping the engine uses: any angle within
-            // 45° of the cardinal counts. Up = [-45°, +45°] mod 360.
-            return dir switch
-            {
-                "Up"    => cd >= 31500 || cd <  4500,
-                "Right" => cd >=  4500 && cd < 13500,
-                "Down"  => cd >= 13500 && cd < 22500,
-                "Left"  => cd >= 22500 && cd < 31500,
-                _ => false,
-            };
-        }
+            => PadForge.Engine.Common.Mapping.SourceCoercion.PovMatches(centidegrees, dir);
 
         /// <summary>
         /// Reads a value from a CustomInputState using a mapping descriptor string.
@@ -11884,6 +11863,32 @@ namespace PadForge.Services
         private long _lastHidHideUnchangedLogTick;
         private long _lastHidHideTroubleLogTick;
 
+        /// <summary>Whether this process has already taken ownership of the
+        /// cloaks a previous session left behind. One adoption per process:
+        /// after it, the managed set tracks what we wrote.</summary>
+        private bool _hidHideCloaksAdopted;
+
+        /// <summary>Takes ownership of blacklist entries this process did not
+        /// write, so the sync can retire them. Runs once, and only while
+        /// Keep devices cloaked between launches is on, which is the setting
+        /// that leaves entries behind in the first place. With the setting
+        /// off, engine start clears the list outright and there is nothing to
+        /// adopt.</summary>
+        private void EnsureHidHideCloaksAdopted()
+        {
+            if (_hidHideCloaksAdopted) return;
+            _hidHideCloaksAdopted = true;
+            if (!_mainVm.Settings.KeepHidHideCloaksBetweenLaunches) return;
+            try
+            {
+                int adopted = HidHideController.AdoptExistingAsManaged();
+                if (adopted > 0)
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        $"HIDHIDE adopted {adopted} kept entr{(adopted == 1 ? "y" : "ies")} from the previous session");
+            }
+            catch { /* best effort */ }
+        }
+
         public void ApplyDeviceHiding()
         {
             if (!_mainVm.Settings.EnableInputHiding)
@@ -11920,6 +11925,17 @@ namespace PadForge.Services
             }
             if (hidHideUp)
             {
+                // Adoption belongs to the OPERATION, not to Start(). Kept
+                // cloaks mean this session inherits entries it did not write,
+                // and the sync's removal set is computed from _managedDeviceIds,
+                // so without adopting them the driver's list can only grow.
+                // Start() was the only caller that adopted, while this method
+                // has eleven call sites and ten of them run with the engine
+                // stopped: a save, an autosave, a reset, a whitelist edit, a
+                // hiding-toggle change, and WM_DEVICECHANGE all reach here
+                // first on a launch where the user never presses Start.
+                EnsureHidHideCloaksAdopted();
+
                 // Buffered, printed at the end only when the desired set
                 // moved or the sync misbehaved (see _lastHidHideDesired).
                 var hidLog = new List<string>();
@@ -12284,9 +12300,14 @@ namespace PadForge.Services
                 if (!desiredDosPaths.Contains(managed))
                     toRemove.Add(managed);
             }
+            // The managed set is not touched until the write lands, below.
+            // Dropping a path here and then having SetWhitelist refused left
+            // it gone from our set and still in the driver, where no later
+            // sync could ever find it again. That is the same hole the
+            // blacklist lane was rewritten to close, and the whitelist lane
+            // had kept it.
             foreach (var path in toRemove)
             {
-                _managedWhitelistDosPaths.Remove(path);
                 if (currentWhitelist.RemoveAll(p => string.Equals(p, path, StringComparison.OrdinalIgnoreCase)) > 0)
                     changed = true;
             }
@@ -12324,8 +12345,13 @@ namespace PadForge.Services
                 }
             }
 
-            if (changed)
-                HidHideController.SetWhitelist(currentWhitelist);
+            // A refused write leaves the driver's list as it was, so the managed
+            // set stays as it was too and the next sync diffs and retries.
+            if (changed && !HidHideController.SetWhitelist(currentWhitelist))
+                return;
+
+            foreach (var path in toRemove)
+                _managedWhitelistDosPaths.Remove(path);
         }
 
         /// <summary>
@@ -12770,11 +12796,16 @@ namespace PadForge.Services
                 // DevicePaths that resolve via DevicePathToInstanceId so they
                 // stayed populated when offline — this closes the gap for
                 // XInput devices.
-                if (realIds.Count > 0)
-                {
-                    ud.HidHideInstanceIds.Clear();
-                    ud.HidHideInstanceIds.AddRange(realIds);
-                }
+                // Merge, never discard. ApplyDeviceHiding writes this same cache
+                // and its comment states the contract: cached ids are preserved
+                // so Controller 2's id survives while only Controller 1 is
+                // online. A clear-and-rewrite here is the second writer of one
+                // cache with the opposite contract, and a UI row refresh
+                // destroyed exactly the offline sibling's id the apply path had
+                // deliberately kept.
+                foreach (var realId in realIds)
+                    if (!ud.HidHideInstanceIds.Contains(realId))
+                        ud.HidHideInstanceIds.Add(realId);
             }
             else
                 row.HidHideInstancePath = string.Empty;

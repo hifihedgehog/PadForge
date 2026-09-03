@@ -114,8 +114,18 @@ namespace PadForge.Services
         /// _thread regardless, so a worker still inside ProviderInit can
         /// outlive its service. When it returned, its finally disarmed the
         /// publisher and called Har.Quit under the NEW instance's engine
-        /// (F10). Static because the publisher flag it protects is.</summary>
+        /// (F10). Static because the publisher flag it protects is. The
+        /// successor's join is bounded by
+        /// <see cref="DefaultPredecessorJoinMs"/>, and on the deadline the
+        /// successor hands this slot back and quits rather than arming.</summary>
         private static Thread s_lastWorker;
+
+        /// <summary>How long a worker waits for a straggling predecessor to
+        /// leave ProviderInit. Ten seconds is long past any bring-up the
+        /// provider completes and short enough that a wedged one costs the
+        /// user one wait, never a hung enable. An unbounded join blocked
+        /// every later worker and leaked one thread per enable.</summary>
+        internal const int DefaultPredecessorJoinMs = 10000;
 
         /// <summary>Test seam (InternalsVisibleTo PadForge.Tests): runs on
         /// the worker right before Provider.ProviderInit, so a test can
@@ -124,6 +134,7 @@ namespace PadForge.Services
 
         private readonly int _retryMs;
         private readonly int _tickMs;
+        private readonly int _predecessorJoinMs;
         private Thread _thread;
         private volatile bool _stop;
         private int _disposed;
@@ -133,9 +144,16 @@ namespace PadForge.Services
         public event Action<SensaServiceState> StateChanged;
 
         public SensaHapticsService(int retryMs = 30000, int tickMs = 16)
+            : this(retryMs, tickMs, DefaultPredecessorJoinMs) { }
+
+        /// <summary>Test seam for the predecessor-join deadline: the bench
+        /// provokes the give-up path in a fraction of a second instead of
+        /// the ten seconds production allows a straggler.</summary>
+        internal SensaHapticsService(int retryMs, int tickMs, int predecessorJoinMs)
         {
             _retryMs = retryMs;
             _tickMs = tickMs;
+            _predecessorJoinMs = predecessorJoinMs;
         }
 
         /// <summary>Whether the poll-thread publisher should bother.</summary>
@@ -194,17 +212,33 @@ namespace PadForge.Services
 
         private void Worker()
         {
-            // Serialize against a predecessor that outlived its Stop (F10):
-            // its finally disarms the publisher and quits the engine, and
-            // both must land before this worker arms and inits, never
-            // after.
-            var prev = Interlocked.Exchange(ref s_lastWorker, Thread.CurrentThread);
-            if (prev != null && prev != Thread.CurrentThread && prev.IsAlive) prev.Join();
-            Volatile.Write(ref s_publisherArmed, 1);
             bool harUp = false;
             bool providerUp = false;
             try
             {
+                // Serialize against a predecessor that outlived its Stop
+                // (F10): its finally disarms the publisher and quits the
+                // engine, and both must land before this worker arms and
+                // inits, never after. The join is bounded, because a
+                // predecessor outlives its Stop only by sitting inside a
+                // ProviderInit that has not returned, and an unbounded join
+                // blocked every later worker behind it and leaked one thread
+                // per enable. On the deadline this worker gives the slot
+                // back to the straggler and quits without arming: arming
+                // over a live predecessor is the very handoff fault the join
+                // exists to prevent, since that predecessor's finally would
+                // then disarm the publisher underneath it.
+                var prev = Interlocked.Exchange(ref s_lastWorker, Thread.CurrentThread);
+                if (prev != null && prev != Thread.CurrentThread && prev.IsAlive
+                    && !prev.Join(_predecessorJoinMs))
+                {
+                    Interlocked.CompareExchange(ref s_lastWorker, prev, Thread.CurrentThread);
+                    PadForge.Engine.SdlDiagLog.WriteLine(
+                        $"SENSA predecessor join timed out after {_predecessorJoinMs} ms, worker quitting without arming");
+                    return; // finally reports Stopped.
+                }
+                Volatile.Write(ref s_publisherArmed, 1);
+
                 // 1. Engine up (HAR.dll runs with no Razer device present).
                 PadForge.Engine.SdlDiagLog.WriteLine("SENSA worker: calling HAR.Init");
                 try { harUp = Har.Init(); }

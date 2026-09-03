@@ -2086,7 +2086,7 @@
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>1オクターブずつ折り下げる</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>トーン上限</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>DualSense ハプティクスをこのコントローラーで再生</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>ゲームがこのスロットを仮想 DualSense として駆動し、オーサリングされたハプティクスオーディオを出力する場合、そのトラックをこのコントローラーのアクチュエーターでトーンとして再生します。オーディオから導出するため、デザイナーの意図した感触の近似であり、完全な再現ではありません。</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>ゲームがこのスロットを仮想 DualSense として駆動し、オーサリングされたハプティクスオーディオを出力する場合、そのトラックをこのコントローラーのアクチュエーターで再生します。USB またはドングル接続の Steam Controller 2026 はトラックをそのまま再生します。それ以外のコントローラー、および Bluetooth 接続のこのコントローラーでは、オーディオから導出したトーンで再生され、デザイナーの意図した感触を再現するのではなく近似します。</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>ハプティクス ゲイン</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>既定に戻す (オフ)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>既定に戻す (100%)</value></data>

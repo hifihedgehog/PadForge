@@ -2514,7 +2514,7 @@
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Fold Them Down an Octave</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Tone Limit</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>Play DualSense Haptics on This Controller</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>When a game drives this slot as a virtual DualSense with authored haptic audio, play that track on this controller's actuators as tones. Derived from the audio, so it approximates the designer's feel rather than reproducing it exactly.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>When a game drives this slot as a virtual DualSense with authored haptic audio, play that track on this controller's actuators. A Steam Controller 2026 over USB or its dongle plays the track itself. Every other controller, and that one over Bluetooth, gets tones derived from the audio, which approximate the designer's feel rather than reproduce it.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Haptics Gain</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Reset to Default (Off)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Reset to Default (100%)</value></data>

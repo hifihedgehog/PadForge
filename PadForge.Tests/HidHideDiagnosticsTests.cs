@@ -109,6 +109,16 @@ namespace PadForge.Tests
             }
         }
 
+        /// <summary>The gate decides on ContainerId when it can read one,
+        /// and falls back to this row count when it cannot (#397 follow-up).
+        /// These cases pin the fallback, so they hand it a node source that
+        /// finds nothing and keep cfgmgr32 out of the test.</summary>
+        private static bool RowRule(PadForge.Engine.Data.UserDevice[] snapshot,
+                                    PadForge.Engine.Data.UserDevice ud,
+                                    out int same, Func<string, bool> presenceProbe)
+            => PadForge.Services.InputService.HidHideSiblingSweepAllowed(
+                   snapshot, ud, out same, out _, presenceProbe, (v, p) => null, null);
+
         /// <summary>The present-node sweep (#391) widens a record's hide
         /// list only when it is the sole PRESENT record of its VID/PID, so
         /// two distinct pads of one product never hide each other. A
@@ -124,13 +134,13 @@ namespace PadForge.Tests
             var ds2 = new PadForge.Engine.Data.UserDevice { VendorId = 0x054C, ProdId = 0x0CE6, IsOnline = true };
             Func<string, bool> nothingPresent = _ => false;
 
-            Assert.True(PadForge.Services.InputService.HidHideSiblingSweepAllowed(new[] { ds, xbox }, ds, out int same, nothingPresent));
+            Assert.True(RowRule(new[] { ds, xbox }, ds, out int same, nothingPresent));
             Assert.Equal(1, same);
-            Assert.False(PadForge.Services.InputService.HidHideSiblingSweepAllowed(new[] { ds, ds2, xbox }, ds, out same, nothingPresent));
+            Assert.False(RowRule(new[] { ds, ds2, xbox }, ds, out same, nothingPresent));
             Assert.Equal(2, same);
-            Assert.True(PadForge.Services.InputService.HidHideSiblingSweepAllowed(new[] { ds, null, xbox }, ds, out _, nothingPresent));
-            Assert.False(PadForge.Services.InputService.HidHideSiblingSweepAllowed(new[] { ds }, null, out _, nothingPresent));
-            Assert.False(PadForge.Services.InputService.HidHideSiblingSweepAllowed(new[] { ds }, new PadForge.Engine.Data.UserDevice(), out _, nothingPresent));
+            Assert.True(RowRule(new[] { ds, null, xbox }, ds, out _, nothingPresent));
+            Assert.False(RowRule(new[] { ds }, null, out _, nothingPresent));
+            Assert.False(RowRule(new[] { ds }, new PadForge.Engine.Data.UserDevice(), out _, nothingPresent));
 
             // THE BUG: a second, OFFLINE record of the product (the pad
             // paired earlier under another serial) whose persisted path
@@ -141,25 +151,50 @@ namespace PadForge.Tests
                 VendorId = 0x054C, ProdId = 0x0CE6, IsOnline = false,
                 DevicePath = @"\\?\hid#{00001124-0000-1000-8000-00805f9b34fb}_vid&0002054c_pid&0ce6#9&deadbeef&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}",
             };
-            Assert.True(PadForge.Services.InputService.HidHideSiblingSweepAllowed(new[] { ds, stale, xbox }, ds, out same, nothingPresent));
+            Assert.True(RowRule(new[] { ds, stale, xbox }, ds, out same, nothingPresent));
             Assert.Equal(1, same);
 
             // The same offline record with a path the probe DOES find is a
             // second pad that is plugged in, and the sweep stays off.
             string staleId = HidHideController.DevicePathToInstanceId(stale.DevicePath);
             Func<string, bool> stalePresent = id => string.Equals(id, staleId, StringComparison.OrdinalIgnoreCase);
-            Assert.False(PadForge.Services.InputService.HidHideSiblingSweepAllowed(new[] { ds, stale, xbox }, ds, out same, stalePresent));
+            Assert.False(RowRule(new[] { ds, stale, xbox }, ds, out same, stalePresent));
             Assert.Equal(2, same);
 
             // A cached instance id counts the same way as the path.
             var cachedOnly = new PadForge.Engine.Data.UserDevice { VendorId = 0x054C, ProdId = 0x0CE6, DevicePath = "XInput#1" };
             cachedOnly.HidHideInstanceIds.Add(@"HID\VID_054C&PID_0CE6\7&1");
             Func<string, bool> cachedPresent = id => id.StartsWith(@"HID\VID_054C&PID_0CE6\7&1", StringComparison.OrdinalIgnoreCase);
-            Assert.False(PadForge.Services.InputService.HidHideSiblingSweepAllowed(new[] { ds, cachedOnly }, ds, out _, cachedPresent));
-            Assert.True(PadForge.Services.InputService.HidHideSiblingSweepAllowed(new[] { ds, cachedOnly }, ds, out _, nothingPresent));
+            Assert.False(RowRule(new[] { ds, cachedOnly }, ds, out _, cachedPresent));
+            Assert.True(RowRule(new[] { ds, cachedOnly }, ds, out _, nothingPresent));
 
-            // The two-argument form is the production default (cfgmgr32).
-            Assert.True(PadForge.Services.InputService.HidHideSiblingSweepAllowed(new[] { ds, xbox }, ds));
+            // With a node source that reports ONE container for every node,
+            // the row count no longer decides and a composite device's
+            // extra rows stop shutting the sweep. This is the #397 fix: a
+            // handheld's gamepad, touchpad and keyboard are three rows of
+            // one physical device, and the old rule read three pads.
+            Assert.True(PadForge.Services.InputService.HidHideSiblingSweepAllowed(
+                new[] { ds, ds2, xbox }, ds, out int rows, out int devices, nothingPresent,
+                (v, p) => new[] { @"HID\VID_054C&PID_0CE6&MI_00\one", @"HID\VID_054C&PID_0CE6&MI_01\two" },
+                _ => "{11111111-2222-3333-4444-555555555555}"));
+            Assert.Equal(2, rows);
+            Assert.Equal(1, devices);
+
+            // Two containers are two real pads, and the gate still shuts.
+            Assert.False(PadForge.Services.InputService.HidHideSiblingSweepAllowed(
+                new[] { ds, ds2, xbox }, ds, out _, out devices, nothingPresent,
+                (v, p) => new[] { @"HID\VID_054C&PID_0CE6\padA", @"HID\VID_054C&PID_0CE6\padB" },
+                id => id.EndsWith("padA", StringComparison.Ordinal)
+                        ? "{11111111-2222-3333-4444-555555555555}"
+                        : "{66666666-7777-8888-9999-000000000000}"));
+            Assert.Equal(2, devices);
+
+            // A node whose container cannot be read means the count is
+            // meaningless, so the row rule decides rather than a guess.
+            Assert.False(PadForge.Services.InputService.HidHideSiblingSweepAllowed(
+                new[] { ds, ds2, xbox }, ds, out _, out devices, nothingPresent,
+                (v, p) => new[] { @"HID\VID_054C&PID_0CE6\padA" }, _ => null));
+            Assert.Equal(0, devices);
         }
 
         /// <summary>THE SECOND-PAD BUG (#391 follow-up). The sole-record
@@ -237,10 +272,17 @@ namespace PadForge.Tests
             Assert.Equal(1, unread);
 
             // The diag line names the rule and the gate.
-            Assert.Equal("serial=match other=1 unread=1 gate=off(same=2)",
+            Assert.Equal("serial=match other=1 unread=1 gate=off(same=2) devices=?",
                 PadForge.Services.InputService.HidHideSweepDecision(true, false, 2, 1, 1));
-            Assert.Equal("serial=none gate=on",
+            Assert.Equal("serial=none gate=on devices=?",
                 PadForge.Services.InputService.HidHideSweepDecision(false, true, 1, 0, 0));
+            // A read container count says how many PHYSICAL devices the
+            // gate saw, which is what separates one composite pad with
+            // several rows from two pads of a model (#397 follow-up).
+            Assert.Equal("serial=none gate=on devices=1",
+                PadForge.Services.InputService.HidHideSweepDecision(false, true, 3, 0, 0, 1));
+            Assert.Equal("serial=none gate=off(same=2) devices=2",
+                PadForge.Services.InputService.HidHideSweepDecision(false, false, 2, 0, 0, 2));
 
             // The text half of the reader: the MAC segment of a BTHENUM
             // instance id, both shapes, and nothing from anything else.
@@ -467,16 +509,16 @@ namespace PadForge.Tests
             // The first-pass sweep of present nodes sits in the real-path
             // branch, scoped by serial with the sole-record gate as the
             // fallback, and the line names the rule and the gate.
-            Assert.Contains("bool sweepOn = HidHideSiblingSweepAllowed(snapshot, ud, out int same, null);", body);
+            Assert.Contains("bool sweepOn = HidHideSiblingSweepAllowed(snapshot, ud, out int same, out int devices, null, null, null);", body);
             Assert.Contains("var picked = SelectHidHideSweepNodes(ud.SerialNumber, FindInstanceIdsForDevice(ud),", body);
             Assert.Contains("sweep={sweep.Count}", body);
-            Assert.Contains("HidHideSweepDecision(bySerial, sweepOn, same, other, unread)", body);
+            Assert.Contains("HidHideSweepDecision(bySerial, sweepOn, same, other, unread, devices)", body);
             Assert.DoesNotContain("foreach (var realId in FindInstanceIdsForDevice(ud))", body);
             // The synthetic branch is scoped the same way, hides nothing
             // for a serial-less record with a present twin, and says so.
             int synthetic = body.IndexOf("// Fallback for synthetic paths", StringComparison.Ordinal);
             Assert.True(synthetic > 0);
-            int gate = body.IndexOf("bool sweepOn = HidHideSiblingSweepAllowed(snapshot, ud, out int syntheticSame, null);", synthetic, StringComparison.Ordinal);
+            int gate = body.IndexOf("bool sweepOn = HidHideSiblingSweepAllowed(snapshot, ud, out int syntheticSame, out int syntheticDevices, null, null, null);", synthetic, StringComparison.Ordinal);
             int resolve = body.IndexOf("? SelectHidHideSweepNodes(ud.SerialNumber, FindInstanceIdsForDevice(ud),", synthetic, StringComparison.Ordinal);
             int twin = body.IndexOf("if (!sweepOn && realIds.Count == 0)", synthetic, StringComparison.Ordinal);
             Assert.True(gate > synthetic && gate < resolve && resolve < twin);

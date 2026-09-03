@@ -169,6 +169,53 @@ namespace PadForge.Tests
             Assert.Contains("ExternalProfilePinActive = false", body);
         }
 
+        /// <summary>EVERY manual lane calls that choke point, which is the
+        /// half the sibling test above assumed rather than checked. There are
+        /// four ways a user switches profiles by hand: the status-bar
+        /// switcher, the Profiles page Load button, Revert to Default, and a
+        /// controller shortcut. Only the switcher called
+        /// NoteManualProfileSwitch. The Load and Revert buttons noted nothing
+        /// at all, so auto-switch could yank the profile straight back, and
+        /// the shortcut lane set the override directly and left the external
+        /// pin standing, so the checkbox tooltip's promise that switching
+        /// profiles yourself releases a scripted hold was false on two of the
+        /// four. All four go through the one funnel now.</summary>
+        [Fact]
+        public void EveryManualSwitchLaneGoesThroughThatChokePoint()
+        {
+            string mw = RepoText("PadForge.App", "MainWindow.xaml.cs");
+            string svc = RepoText("PadForge.App", "Services", "InputService.cs");
+
+            // The Profiles page Load button, before the switch.
+            int load = mw.IndexOf("private void OnLoadProfile(object sender, EventArgs e)", StringComparison.Ordinal);
+            Assert.True(load > 0);
+            string loadBody = mw.Substring(load, 900);
+            int loadNote = loadBody.IndexOf("_inputService.NoteManualProfileSwitch();", StringComparison.Ordinal);
+            int loadApply = loadBody.IndexOf("_inputService.LoadProfile(", StringComparison.Ordinal);
+            Assert.True(loadNote > 0 && loadApply > loadNote);
+
+            // Revert to Default, before the switch.
+            int revert = mw.IndexOf("private void OnRevertToDefault(object sender, EventArgs e)", StringComparison.Ordinal);
+            Assert.True(revert > 0);
+            string revertBody = mw.Substring(revert, 600);
+            int revertNote = revertBody.IndexOf("_inputService.NoteManualProfileSwitch();", StringComparison.Ordinal);
+            int revertApply = revertBody.IndexOf("_inputService.RevertToDefaultProfile();", StringComparison.Ordinal);
+            Assert.True(revertNote > 0 && revertApply > revertNote);
+
+            // The status-bar switcher, which always did.
+            int sw = mw.IndexOf("private void ActivateProfileFromSwitcher(", StringComparison.Ordinal);
+            Assert.True(sw > 0);
+            Assert.Contains("_inputService.NoteManualProfileSwitch();", mw.Substring(sw, 900));
+
+            // The controller shortcut lane takes the funnel rather than
+            // poking the foreground monitor and skipping the pin release.
+            int tick = svc.IndexOf("string pendingSwitch = _inputManager.PendingProfileSwitchId;", StringComparison.Ordinal);
+            Assert.True(tick > 0);
+            string tickBody = svc.Substring(tick, 1400);
+            Assert.Contains("NoteManualProfileSwitch();", tickBody);
+            Assert.DoesNotContain("_foregroundMonitor.SetManualOverride(SettingsManager.ActiveProfileId);", tickBody);
+        }
+
         /// <summary>The pin is runtime-only. Persisting it would leave a user
         /// stuck on a scripted profile after a restart with no UI that
         /// explains why.</summary>

@@ -5665,10 +5665,11 @@ namespace PadForge
 
         /// <summary>
         /// Applies a profile chosen in the switcher flyout: the same path
-        /// as the Profiles page Load button (OnLoadProfile / OnRevertToDefault),
-        /// plus the manual-override note the shortcut path makes in
-        /// InputService.UiTimer_Tick so auto-switching won't immediately
-        /// fight the choice.
+        /// as the Profiles page Load button (OnLoadProfile / OnRevertToDefault).
+        /// All four manual paths, this one, those two, and the controller
+        /// shortcut in InputService.UiTimer_Tick, note the manual override so
+        /// auto-switching will not immediately fight the choice, and release
+        /// any external hold a script placed.
         /// </summary>
         private void ActivateProfileFromSwitcher(ViewModels.ProfileListItem item)
         {
@@ -6758,6 +6759,11 @@ namespace PadForge
 
             if (selected.IsDefault) { OnRevertToDefault(sender, e); return; }
 
+            // A user pressing Load is a manual switch, so it records the
+            // override and releases any external hold, the same as the
+            // status-bar switcher and a controller shortcut. Called BEFORE
+            // the switch: the override id is the pre-switch active id.
+            _inputService.NoteManualProfileSwitch();
             _inputService.LoadProfile(selected.Id);
             var profile = SettingsManager.Profiles.Find(p => p.Id == selected.Id);
             if (profile != null)
@@ -6770,6 +6776,9 @@ namespace PadForge
 
         private void OnRevertToDefault(object sender, EventArgs e)
         {
+            // Same manual-switch rule as OnLoadProfile. Reaching Default by
+            // hand releases an external hold too.
+            _inputService.NoteManualProfileSwitch();
             _inputService.RevertToDefaultProfile();
             _viewModel.Settings.ActiveProfileInfo = Strings.Instance.Common_Default;
             _viewModel.StatusText = Strings.Instance.Status_ProfileRevertedDefault;

@@ -1431,6 +1431,28 @@ $toastKeys = @(
     @{ Path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\PushNotifications"; Name = "ToastEnabled" },
     @{ Path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings"; Name = "NOC_GLOBAL_SETTING_TOASTS_ENABLED" }
 )
+# The prior values live on disk, not just in this shell. A run that is
+# killed before STEP 4 leaves both keys at 0, and the NEXT run then reads 0
+# as "the value to put back" and restores the suppression permanently. That
+# happened during the 4.4.0 capture: a killed run left
+# NOC_GLOBAL_SETTING_TOASTS_ENABLED at 0 while ToastEnabled had already been
+# restored to 1, and the two keys disagreeing is the signature. Same shape as
+# the settings backup guard above: a leftover file means an earlier run died,
+# so put its values back BEFORE reading the current ones.
+$toastPriorPath = Join-Path $logDir "toast-prior.json"
+if (Test-Path $toastPriorPath) {
+    Write-Host "  A previous run died before restoring toasts; putting its values back first" -ForegroundColor Yellow
+    try {
+        $stale = Get-Content $toastPriorPath -Raw | ConvertFrom-Json
+        foreach ($tk in $toastKeys) {
+            $k = "$($tk.Path)|$($tk.Name)"
+            $v = $stale.$k
+            if ($null -eq $v) { Remove-ItemProperty -Path $tk.Path -Name $tk.Name -EA SilentlyContinue }
+            else { Set-ItemProperty -Path $tk.Path -Name $tk.Name -Value ([int]$v) -Type DWord }
+        }
+    } catch { Write-Host "  !! could not read $toastPriorPath : $_" -ForegroundColor Yellow }
+    Remove-Item $toastPriorPath -Force -EA SilentlyContinue
+}
 $toastPrior = @{}
 foreach ($tk in $toastKeys) {
     try {
@@ -1440,6 +1462,8 @@ foreach ($tk in $toastKeys) {
         Set-ItemProperty -Path $tk.Path -Name $tk.Name -Value 0 -Type DWord
     } catch { Write-Host "  !! toast suppress failed for $($tk.Name): $_" -ForegroundColor Yellow }
 }
+try { $toastPrior | ConvertTo-Json | Set-Content -Path $toastPriorPath -Encoding utf8 }
+catch { Write-Host "  !! could not write $toastPriorPath : $_" -ForegroundColor Yellow }
 Write-Host "  Toast notifications suppressed for the run"
 
 # ==============================================================================
@@ -5982,6 +6006,7 @@ foreach ($tk in $toastKeys) {
         else { Set-ItemProperty -Path $tk.Path -Name $tk.Name -Value $prior -Type DWord }
     } catch { Write-Host "  !! toast restore failed for $($tk.Name): $_" -ForegroundColor Yellow }
 }
+Remove-Item $toastPriorPath -Force -EA SilentlyContinue
 Write-Host "  Toast notification settings restored"
 
 # Relaunch PadForge clean on the restored (owner) settings so the app is left

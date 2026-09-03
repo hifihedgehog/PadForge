@@ -2634,8 +2634,16 @@ namespace PadForge.Services
                 _inputManager.PendingProfileSwitchId = "\0";
                 _inputManager.PendingProfileSwitchIsManual = false;
 
-                if (isManual && _foregroundMonitor != null)
-                    _foregroundMonitor.SetManualOverride(SettingsManager.ActiveProfileId);
+                // One funnel for every manual switch (the shortcut here, the
+                // status-bar switcher, and the Profiles page Load and Revert
+                // buttons). It records the override AND releases an external
+                // hold, which this site used to skip: a controller shortcut
+                // switched the profile while the script's pin stayed set, so
+                // the foreground monitor remained suppressed and the tooltip's
+                // promise that switching profiles yourself releases the hold
+                // was false on two of its three paths.
+                if (isManual)
+                    NoteManualProfileSwitch();
 
                 OnProfileSwitchRequired(pendingSwitch);
                 // Display only. The switch above has already happened, so

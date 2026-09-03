@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -810,6 +810,40 @@ namespace PadForge.Common
         /// preserved (so a single-blacklist call still works) plus any
         /// additional paths discovered.
         /// </summary>
+        /// <summary>The "VID_xxxx&PID_yyyy" token of an instance id, or null
+        /// when it carries none. Every interface and HID collection of one USB
+        /// composite device repeats it, and the composite parent above them (a
+        /// hub) does not, so it bounds a parent walk to one physical device by
+        /// construction.</summary>
+        internal static string VidPidToken(string instanceId)
+        {
+            if (string.IsNullOrEmpty(instanceId)) return null;
+            int v = instanceId.IndexOf("VID_", StringComparison.OrdinalIgnoreCase);
+            if (v < 0) return null;
+            int pidAt = instanceId.IndexOf("PID_", v, StringComparison.OrdinalIgnoreCase);
+            if (pidAt < 0) return null;
+            int end = pidAt + 4;
+            while (end < instanceId.Length && Uri.IsHexDigit(instanceId[end])) end++;
+            if (end == pidAt + 4) return null;
+            return instanceId.Substring(v, end - v);
+        }
+
+        /// <summary>Whether a devnode belongs to the same physical device as
+        /// the node a walk started from.
+        ///
+        /// <para>Normally that is ContainerId equality. Inside the SYSTEM
+        /// container it cannot be: GUID_CONTAINER_ID_SYSTEM is not "unknown",
+        /// it means "built in and non-removable", and EVERY built-in device
+        /// shares the one value, so a container-equality walk would climb to
+        /// the ACPI root and blacklist half the machine. The USB composite VID
+        /// and PID token bounds it instead, and stops at the hub.</para></summary>
+        private static bool SameDeviceScope(uint devInst, bool systemScoped, Guid containerId, string vidPid)
+        {
+            if (!systemScoped) return GetContainerId(devInst) == containerId;
+            string token = VidPidToken(GetInstanceId(devInst));
+            return token != null && string.Equals(token, vidPid, StringComparison.OrdinalIgnoreCase);
+        }
+
         public static List<string> ExpandToBaseContainerAndChildren(string hidInstanceId)
             => ExpandToBaseContainerAndChildren(hidInstanceId, null, null);
 
@@ -822,18 +856,30 @@ namespace PadForge.Common
                 return new List<string> { hidInstanceId };
 
             Guid hidContainerId = GetContainerId(hidDevInst);
-            if (hidContainerId == Guid.Empty || hidContainerId == GUID_CONTAINER_ID_SYSTEM)
+
+            // A SYSTEM container is not "cannot tell". It says the device is
+            // built in and non-removable, which is exactly the handheld case
+            // this rule was written for. Bailing here made a882ed19 chain
+            // expansion inert on those pads: on this bench 21 of 33 HIDClass
+            // devices carry GUID_CONTAINER_ID_SYSTEM, the internal composite
+            // ones included, while a removable USB pad gets a real container,
+            // which is why the bench line looked right. SameDeviceScope bounds
+            // the walk by the USB composite instead, so it still cannot climb
+            // past the composite parent to the ACPI root.
+            bool systemScoped = hidContainerId == GUID_CONTAINER_ID_SYSTEM;
+            string scopeToken = systemScoped ? VidPidToken(hidInstanceId) : null;
+            if (hidContainerId == Guid.Empty || (systemScoped && scopeToken == null))
                 return new List<string> { hidInstanceId };
 
-            // Walk parents while Container ID stays the same, recording
-            // each intermediate node. The last matching parent is the base
-            // container.
+            // Walk parents while the node stays inside the same physical
+            // device, recording each intermediate node. The last one that
+            // matches is the base container.
             var chain = new List<PnpNode>();
             uint baseContainer = hidDevInst;
             uint current = hidDevInst;
             while (CM_Get_Parent(out uint parent, current, 0) == CR_SUCCESS)
             {
-                if (GetContainerId(parent) != hidContainerId) break;
+                if (!SameDeviceScope(parent, systemScoped, hidContainerId, scopeToken)) break;
                 if (baseContainer != hidDevInst)
                     chain.Add(new PnpNode(GetInstanceId(baseContainer), GetClassGuid(baseContainer)));
                 baseContainer = parent;
@@ -965,15 +1011,20 @@ namespace PadForge.Common
         /// first and the base container last: what a device row with
         /// hiding OFF contributes to the keep-out set (#400). Phantom
         /// nodes resolve too, matching the expansion's own locate.</summary>
-        /// <summary>The devnode's ContainerId as a string key, or null when
-        /// the node is unknown, reports no container, or reports the system
-        /// container. Every interface and every HID collection of ONE
-        /// physical device shares this value, and two pads of the same model
-        /// have two different ones. That is the fact the sibling-sweep gate
-        /// needs and could not get from a VID/PID row count: on a composite
-        /// handheld the gamepad, touchpad and keyboard are three PadForge
-        /// rows of one device, and counting rows read that as three pads
-        /// (#397 follow-up).</summary>
+        /// <summary>A key identifying the PHYSICAL device a devnode belongs
+        /// to, or null when the node is unknown or nothing can identify it.
+        ///
+        /// <para>Every interface and every HID collection of ONE physical
+        /// device shares the key, and two pads of the same model have two
+        /// different ones. That is the fact the sibling-sweep gate needs and
+        /// could not get from a VID/PID row count: on a composite handheld
+        /// the gamepad, touchpad and keyboard are three PadForge rows of one
+        /// device, and counting rows read that as three pads (#397).</para>
+        ///
+        /// <para>For a removable device the key is its ContainerId. A
+        /// built-in device reports GUID_CONTAINER_ID_SYSTEM, which every
+        /// built-in device on the machine shares, so the key is its USB
+        /// composite parent instead.</para></summary>
         internal static string ContainerKeyOf(string instanceId)
         {
             if (string.IsNullOrEmpty(instanceId)) return null;
@@ -982,8 +1033,30 @@ namespace PadForge.Common
                 if (CM_Locate_DevNodeW(out uint devInst, instanceId, CM_LOCATE_DEVNODE_PHANTOM) != CR_SUCCESS)
                     return null;
                 Guid containerId = GetContainerId(devInst);
-                if (containerId == Guid.Empty || containerId == GUID_CONTAINER_ID_SYSTEM)
-                    return null;
+                if (containerId == GUID_CONTAINER_ID_SYSTEM)
+                {
+                    // Every built-in device shares this one value, so it can
+                    // never tell two pads apart, and returning null here sent
+                    // the gate back to the row count that ffda86b5 replaced:
+                    // a composite handheld three rows read as three pads and
+                    // the sweep shut, which is the empty dev-list from #397.
+                    // The USB composite parent IS a discriminator. Two
+                    // interfaces of one pad walk to the same node. Two pads do
+                    // not. Null still means "cannot tell" when there is no
+                    // composite to reach.
+                    string token = VidPidToken(instanceId);
+                    if (token == null) return null;
+                    uint node = devInst;
+                    string compositeId = null;
+                    while (CM_Get_Parent(out uint parent, node, 0) == CR_SUCCESS)
+                    {
+                        if (!SameDeviceScope(parent, true, containerId, token)) break;
+                        compositeId = GetInstanceId(parent);
+                        node = parent;
+                    }
+                    return string.IsNullOrEmpty(compositeId) ? null : compositeId;
+                }
+                if (containerId == Guid.Empty) return null;
                 return containerId.ToString("D");
             }
             catch
@@ -1004,12 +1077,16 @@ namespace PadForge.Common
                 if (CM_Locate_DevNodeW(out uint devInst, hidInstanceId, CM_LOCATE_DEVNODE_PHANTOM) != CR_SUCCESS)
                     return result;
                 Guid containerId = GetContainerId(devInst);
-                if (containerId == Guid.Empty || containerId == GUID_CONTAINER_ID_SYSTEM)
+                // Same scope rule as the expansion: a built-in device is
+                // bounded by its USB composite, never by the system container.
+                bool systemScoped = containerId == GUID_CONTAINER_ID_SYSTEM;
+                string scopeToken = systemScoped ? VidPidToken(hidInstanceId) : null;
+                if (containerId == Guid.Empty || (systemScoped && scopeToken == null))
                     return result;
                 uint current = devInst;
                 while (CM_Get_Parent(out uint parent, current, 0) == CR_SUCCESS)
                 {
-                    if (GetContainerId(parent) != containerId) break;
+                    if (!SameDeviceScope(parent, systemScoped, containerId, scopeToken)) break;
                     string id = GetInstanceId(parent);
                     if (!string.IsNullOrEmpty(id)) result.Add(id);
                     current = parent;

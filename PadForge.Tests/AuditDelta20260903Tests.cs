@@ -295,6 +295,58 @@ namespace PadForge.Tests
             Assert.Contains("if (changed && !HidHideController.SetWhitelist(currentWhitelist))", svc);
         }
 
+        // ── The system container is a device fact, not "cannot tell" ─────
+
+        /// <summary>GUID_CONTAINER_ID_SYSTEM means "built in and
+        /// non-removable", and every built-in device on the machine shares it,
+        /// so it cannot tell two pads apart. Treating it as unknown made
+        /// a882ed19's chain rule and ffda86b5's sweep gate inert on exactly the
+        /// handheld pads they were written for. The USB composite's VID and PID
+        /// token bounds the walk instead. These are REAL instance ids read off
+        /// this bench, where 21 of 33 HIDClass devices carry the system
+        /// container.</summary>
+        [Theory]
+        [InlineData(@"HID\VID_048D&PID_C193&MI_00&COL01\9&11407328&0&0000", "VID_048D&PID_C193")]
+        [InlineData(@"HID\VID_048D&PID_C193&MI_01\9&3517B0EA&0&0000", "VID_048D&PID_C193")]
+        [InlineData(@"HID\VID_048D&PID_C197&COL05\8&11B458CB&0&0004", "VID_048D&PID_C197")]
+        [InlineData(@"USB\VID_17EF&PID_61EB&MI_00\7&2f8b1c3d&0&0000", "VID_17EF&PID_61EB")]
+        [InlineData(@"USB\VID_17EF&PID_61EB\0123456789", "VID_17EF&PID_61EB")]
+        [InlineData(@"HID\VID_054C&PID_0CE6&MI_03\8&1e2f3a4b&0&0000", "VID_054C&PID_0CE6")]
+        public void VidPidToken_ReadsTheCompositeScopeFromRealInstanceIds(string instanceId, string expected)
+            => Assert.Equal(expected, HidHideController.VidPidToken(instanceId));
+
+        /// <summary>Nodes with nothing to scope by return null, and the callers
+        /// still read that as "cannot tell" and fall back to the old rule. The
+        /// ACPI and hub nodes are the ones a walk must stop at.</summary>
+        [Theory]
+        [InlineData(@"ACPI\GXTP5100\3&62D7E73&0")]
+        [InlineData(@"ACPI\IDEA5003\1")]
+        [InlineData(@"USB\ROOT_HUB30\4&1a2b3c4d&0")]
+        [InlineData(@"HID\IDEA5003&COL01\4&10D72E27&0&0000")]
+        [InlineData("")]
+        [InlineData(null)]
+        public void VidPidToken_IsNullWhenThereIsNothingToScopeBy(string instanceId)
+            => Assert.Null(HidHideController.VidPidToken(instanceId));
+
+        /// <summary>The whole point of the token: interfaces of ONE composite
+        /// share it and two different pads do not, which is the discrimination
+        /// the system container cannot provide. The hub's differs from the
+        /// composite's, so the parent walk stops there and can never climb to
+        /// the ACPI root, which is the reason the old code gave up.</summary>
+        [Fact]
+        public void VidPidToken_UnitesOnePadsInterfacesAndStopsAtTheHub()
+        {
+            string padA0 = HidHideController.VidPidToken(@"USB\VID_17EF&PID_61EB&MI_00\7&aaa&0&0000");
+            string padA3 = HidHideController.VidPidToken(@"HID\VID_17EF&PID_61EB&MI_03&COL02\7&bbb&0&0001");
+            string padB0 = HidHideController.VidPidToken(@"USB\VID_17EF&PID_61EC&MI_00\7&ccc&0&0000");
+
+            Assert.Equal(padA0, padA3);
+            Assert.NotEqual(padA0, padB0);
+
+            Assert.NotNull(HidHideController.VidPidToken(@"USB\VID_17EF&PID_61EB\0123456789"));
+            Assert.Null(HidHideController.VidPidToken(@"USB\ROOT_HUB30\4&1a2b3c4d&0"));
+        }
+
         /// <summary>The lean neutral is keyed by (device, slot) because the
         /// grip it is tagged with is per-(device, slot). Keyed by device
         /// alone, a device on two slots held two ways dropped and re-latched

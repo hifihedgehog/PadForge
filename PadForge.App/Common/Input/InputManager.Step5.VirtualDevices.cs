@@ -370,7 +370,7 @@ namespace PadForge.Common.Input
         public VirtualControllerType[] SlotControllerTypes { get; } = new VirtualControllerType[MaxPads];
 
         /// <summary>
-        /// Per-slot HIDMaestro profile slug. Identifies which of the 225
+        /// Per-slot HIDMaestro profile slug. Identifies which of the 231
         /// embedded profiles the slot uses (e.g. "xbox-360-wired",
         /// "dualsense", "logitech-g920"). Empty string falls back to a
         /// category-appropriate default in CreateHMaestroController.
@@ -2351,7 +2351,7 @@ namespace PadForge.Common.Input
         /// <summary>
         /// Constructs a HIDMaestro-backed virtual controller using the named
         /// embedded profile. The profile slug must match a profile shipped in
-        /// HIDMaestro.Core's embedded catalog (225 profiles across 32 vendors).
+        /// HIDMaestro.Core's embedded catalog (231 profiles across 32 vendors).
         ///
         /// For Extended slots, applies per-slot customizations on top of the
         /// catalog profile via <see cref="HMProfileBuilder"/>:

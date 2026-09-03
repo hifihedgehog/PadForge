@@ -2106,7 +2106,7 @@
   <data name="Pad_Audio_ToneFilter_Fold" xml:space="preserve"><value>Per octaaf omlaag vouwen</value></data>
   <data name="Pad_Audio_ToneLimit_Label" xml:space="preserve"><value>Toonlimiet</value></data>
   <data name="Pad_Audio_PersonaHaptics_Label" xml:space="preserve"><value>DualSense-haptiek op deze controller afspelen</value></data>
-  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Wanneer een game dit slot als virtuele DualSense aanstuurt met een geautoreerd haptisch audiospoor, wordt dat spoor als tonen op de actuatoren van deze controller afgespeeld. Afgeleid van de audio, dus een benadering van het ontworpen gevoel, geen exacte reproductie.</value></data>
+  <data name="Pad_Audio_PersonaHaptics_Tooltip" xml:space="preserve"><value>Wanneer een game dit slot als virtuele DualSense aanstuurt met een geautoreerd haptisch audiospoor, wordt dat spoor op de actuatoren van deze controller afgespeeld. Een Steam Controller 2026 via USB of zijn dongle speelt het spoor zelf af. Elke andere controller, en deze via Bluetooth, krijgt tonen die uit de audio zijn afgeleid en het ontworpen gevoel benaderen in plaats van reproduceren.</value></data>
   <data name="Pad_Audio_PersonaHapticsGain_Label" xml:space="preserve"><value>Haptiekversterking</value></data>
   <data name="Pad_ResetPersonaHaptics" xml:space="preserve"><value>Standaard herstellen (uit)</value></data>
   <data name="Pad_ResetPersonaHapticsGain" xml:space="preserve"><value>Standaard herstellen (100%)</value></data>

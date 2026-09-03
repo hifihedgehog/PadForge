@@ -302,10 +302,47 @@ namespace PadForge.Tests
         [Fact]
         public void LeanNeutral_IsKeyedByDeviceAndSlot()
         {
+            var key = typeof(SourceCoercion).GetMethod(
+                "LeanNeutralKey",
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+            Assert.NotNull(key);
+
+            string guid = Guid.NewGuid().ToString("d");
+            string slot0 = (string)key.Invoke(null, new object[] { guid, 0 });
+            string slot3 = (string)key.Invoke(null, new object[] { guid, 3 });
+
+            // The whole point: one device on two slots gets two latches,
+            // because the grip each is tagged with is per-(device, slot).
+            Assert.NotEqual(slot0, slot3);
+
+            // Same-window positive control: the same slot is the same key, so
+            // the difference above is the slot and not a fresh value each call.
+            Assert.Equal(slot0, (string)key.Invoke(null, new object[] { guid, 0 }));
+
+            // And two devices on one slot stay separate.
+            string other = Guid.NewGuid().ToString("d");
+            Assert.NotEqual(slot0, (string)key.Invoke(null, new object[] { other, 0 }));
+
+            // The device half is still a prefix the per-device reset can match.
+            var prefix = typeof(SourceCoercion).GetMethod(
+                "LeanNeutralDevicePrefix",
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+            Assert.NotNull(prefix);
+            string p = (string)prefix.Invoke(null, new object[] { guid });
+            Assert.StartsWith(p, slot0);
+            Assert.StartsWith(p, slot3);
+        }
+
+        /// <summary>The source pin beside the behavioral one: both read sites
+        /// pass the slot, so the key's slot component is actually reached.
+        /// The behavioral test above proves the key separates slots; this one
+        /// proves the callers hand it a slot to separate by.</summary>
+        [Fact]
+        public void LeanNeutral_BothReadSitesPassTheSlot()
+        {
             string src = Src(Path.Combine(
                 "PadForge.Engine", "Common", "Mapping", "SourceCoercion.cs"));
-            Assert.Contains("private static string LeanNeutralKey(string deviceGuid, int slotIndex)", src);
-            Assert.Contains("LeanNeutralKey(deviceGuid, slotIndex)", src);
+            Assert.Equal(3, CountOf(src, "LeanNeutralKey(deviceGuid, slotIndex)"));
         }
 
         private static int CountOf(string haystack, string needle)

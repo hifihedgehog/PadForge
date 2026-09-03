@@ -170,13 +170,33 @@
          unstable in-progress work from the HIDMaestro repo. Update by
          copying the Release build of HIDMaestro.Core.dll from the
          HIDMaestro repo into Resources\HIDMaestro\ after tagging a
-         release there. Current: v1.7.1, which lands the Triton raw path on
-         its own report instead of the lizard mouse (HM#58): a profile that
-         declares an input report id and is always armed now emits verbatim,
-         and SubmitRawExtendedReport is the explicit form of that. It also
-         corrects the 2026 pad's rear-button pairing to SDL's (R4 is paddle
-         1, R5 is paddle 2) and throws at profile load on a button name that
-         resolves to nothing, instead of dropping the bit in silence.
+         release there. Current: v1.7.3, which gives all four native
+         binaries a version resource. They had none: no CompanyName, no
+         ProductName, no FileDescription. Unsigned on disk (the SDK
+         Authenticode-signs the driver at install time, not at build time)
+         and at the install prevalence of a freshly built file, that is
+         close to a worked example of what an antivirus machine-learning
+         model distrusts, and Defender called HIDMaestro.dll
+         Trojan:Win32/Bearfoos.A!ml on 2026-09-02. The !ml suffix marks a
+         machine-learning verdict rather than a signature match, so
+         clearing one hash would not have helped: every rebuild mints a
+         new one. Whether it changes the verdict is unconfirmed, since the
+         machine that raised it has an allow in place and the old binary
+         scans clean there too, so there is no honest before-and-after
+         available. The three binaries PadForge carries embedded read
+         1.7.3.0 with company, product and description set, against
+         nothing at all in 1.7.2, which is what 4.4.0 shipped.
+         v1.7.2 before it gave the Xbox 360 family one WGI gamepad
+         (HM#59), where the devnode restart rather than the dedup property
+         turned out to be the operative leg.
+         v1.7.1 before that landed the Triton raw path on its own report
+         instead of the lizard mouse (HM#58): a profile that declares an
+         input report id and is always armed emits verbatim, and
+         SubmitRawExtendedReport is the explicit form of that. It also
+         corrected the 2026 pad's rear-button pairing to SDL's (R4 is
+         paddle 1, R5 is paddle 2) and throws at profile load on a button
+         name that resolves to nothing, instead of dropping the bit in
+         silence.
          Earlier and still carried: composite USB personas with embedded
          usbip-win2 and the HMController.UsbAudio surface, HM#39, the
          microphone ring frame-alignment fix, HM#41, and the ROOT\HIDMAESTRO_UDE

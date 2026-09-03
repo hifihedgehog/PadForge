@@ -99,7 +99,7 @@ OpenVR API
   Copyright (c) 2015, Valve Corporation
   C# client binding (openvr_api.cs) compiled into PadForge for consuming
   VR headsets and motion controllers as input sources (#287). The native
-  openvr_api.dll is not distributed; it is loaded from the user's own
+  openvr_api.dll is not distributed. It is loaded from the user's own
   SteamVR installation.
   Licensed under the BSD 3-Clause License (full text at the end of this file)
 
@@ -229,20 +229,22 @@ $Q Super-Quick Recognizer
   Copyright (c) 2018-2019 Nathan Magrofuoco, Jacob O. Wobbrock,
   Radu-Daniel Vatavu, Lisa Anthony. The touchpad shape-template matcher is
   a C# re-derivation of the canonical JavaScript reference.
-  Licensed under the BSD 3-Clause License
+  Licensed under the BSD 3-Clause License (full text at the end of this file)
 
 GestureSign
   https://github.com/TransposonY/GestureSign
   Copyright (c) 2016 TransposonY. The touchpad angular-margin scoring is a
   C# re-derivation of its PointPatternAnalyzer approach.
-  Licensed under the BSD 3-Clause License
+  Licensed under the BSD 3-Clause License (full text at the end of this file)
 
 libusb
   https://github.com/libusb/libusb
   USB access library used by the bundled SDL3 fork for the Switch 2 Pro
-  wired driver. Redistributed unmodified as libusb-1.0.dll beside the
-  executable, loaded dynamically and separately replaceable. Source code
-  for the shipped binary is available at the project page above.
+  wired driver. Ships unmodified inside the executable as libusb-1.0.dll,
+  extracted on startup and loaded dynamically by the SDL3 fork. Source
+  code for the shipped binary is available at the project page above, and
+  PadForge's own source is public, so the executable can be rebuilt
+  against a modified libusb.
   Licensed under the GNU Lesser General Public License v2.1 or later
   (full text below)
 
@@ -452,10 +454,20 @@ Special Thanks
 
 --------------------------------------------------------------------------------
 
-BSD 3-Clause License (BthPS3 + BthPS3PSM, redistributed in binary form)
-========================================================================
+BSD 3-Clause License (BthPS3 and BthPS3PSM, the OpenVR API C# binding, the
+$Q Super-Quick Recognizer re-derivation, and the GestureSign re-derivation,
+all redistributed in binary form)
+==========================================================================
 
 Copyright (c) 2018-2026, Nefarius Software Solutions e.U.
+  (BthPS3 and BthPS3PSM)
+Copyright (c) 2015, Valve Corporation
+  (OpenVR API C# binding)
+Copyright (c) 2018-2019, Nathan Magrofuoco, Jacob O. Wobbrock,
+Radu-Daniel Vatavu, and Lisa Anthony
+  ($Q Super-Quick Recognizer)
+Copyright (c) 2016, TransposonY
+  (GestureSign)
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -471,6 +483,10 @@ modification, are permitted provided that the following conditions are met:
 3. Neither the name of the copyright holder nor the names of its
    contributors may be used to endorse or promote products derived from
    this software without specific prior written permission.
+
+For the $Q Super-Quick Recognizer the third condition names the University
+Stefan cel Mare of Suceava, the University of Washington, and the
+University of Florida in place of the copyright holder.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE

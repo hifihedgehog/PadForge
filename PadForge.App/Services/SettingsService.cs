@@ -368,14 +368,42 @@ namespace PadForge.Services
                     }
                 }
 
-                // Purge orphaned UserSettings (MapTo == -1) left by older versions.
+                // Purge EMPTY orphaned UserSettings left by older versions.
+                //
+                // This began as a migration: a much older DeleteSlot parked
+                // entries at MapTo = -1 instead of removing them, they piled
+                // up, and they overflowed the FindByInstanceGuid buffer
+                // (bc456e3c). That commit fixed DeleteSlot, filtered the
+                // buffer lookup on MapTo >= 0, and added this sweep for files
+                // the old build had already written.
+                //
+                // Purging on MapTo alone outlived its purpose and started
+                // eating live data. ApplyProfile parks every device the
+                // incoming profile does not assign at MapTo = -1 and KEEPS
+                // its PadSetting, deliberately, so switching back restores
+                // it (InputService.ApplyProfile). Those parked rows carry the
+                // user's mappings: in the reporter's file all 104 Map
+                // elements sat on PadSettings reached from profile entries,
+                // and 53 of them belonged to parked rows. Deleting them here
+                // left the device unassigned, the next assign found no
+                // PadSetting and wrote a fresh raw-surface auto-map over the
+                // slot, and the autosave then wrote all of that over the
+                // STORED profile, which is why Load could not bring it back
+                // and only a re-import could (#404, discussion #395).
+                //
+                // So judge on emptiness, not on MapTo. A parked row with a
+                // PadSetting is a user's authoring. A parked row with none is
+                // the legacy orphan this sweep was written for. The buffer
+                // that started it is protected by the lookup's own MapTo >= 0
+                // filter, not by this sweep.
+                //
                 // Lock guards the polling thread's FindByInstanceGuid /
                 // FindByPadIndex iteration: Reload() can fire while the engine
                 // is running, and List<T>.RemoveAll mutating concurrently with
                 // a foreach is undefined behavior.
                 lock (SettingsManager.UserSettings.SyncRoot)
                 {
-                    SettingsManager.UserSettings.Items.RemoveAll(us => us.MapTo < 0);
+                    SettingsManager.UserSettings.Items.RemoveAll(IsEmptyLegacyOrphan);
                 }
 
                 // Phase 2A — load persisted SlotMappingSets when present;
@@ -698,6 +726,15 @@ namespace PadForge.Services
             ms.Rows.RemoveAll(r => r == null
                 || ((r.Sources == null || r.Sources.Count == 0) && !r.NoInherit));
         }
+
+        /// <summary>A UserSetting the legacy-orphan sweep may drop: parked
+        /// off every slot AND carrying no settings object at all. A parked
+        /// row WITH a PadSetting is what ApplyProfile creates for every
+        /// device the incoming profile does not assign, and it holds that
+        /// device's mappings, so it must survive a load (#404, discussion
+        /// #395). Internal so the round-trip tests can pin both halves.</summary>
+        internal static bool IsEmptyLegacyOrphan(UserSetting us)
+            => us == null || (us.MapTo < 0 && us.GetPadSetting() == null);
 
         private static MappingSet BuildOneSlotFromLegacy(int slot)
         {

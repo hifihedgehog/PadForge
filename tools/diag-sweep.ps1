@@ -2,9 +2,10 @@
 # Deploys the freshly published build, launches it with PADFORGE_DIAG
 # armed (the SdlDiagLog ring mirrors to a file), walks the pages via
 # UIA so lazily realized templates evaluate their bindings, opens the
-# Workshop browse dialog and realizes its search results (the 1o
-# coverage rule: page navigation alone never realizes dialogs), then
-# relaunches clean with the mirror off. Acceptance bar: the harvest at
+# Workshop browse dialog (the 1o coverage rule: page navigation alone
+# never realizes dialogs) and realizes its search results when the
+# community config lookup is on, then relaunches clean with the mirror
+# off. Acceptance bar: the harvest at
 # C:\tmp\pfdiag-verify.log contains no error-class lines (BINDERR,
 # FAILED, exception). Progress notes: C:\tmp\pf-sweep-out.txt
 $ErrorActionPreference = 'Continue'
@@ -234,7 +235,17 @@ public static class W {
                 $li = New-Object System.Windows.Automation.PropertyCondition($ae::ControlTypeProperty, $CT::ListItem)
                 $tiles = $dlg.FindAll($TS::Descendants, $li)
                 Note "workshop tiles/cards=$($tiles.Count) first='$(if ($tiles.Count) { $tiles[0].Current.Name })'"
-            } else { Note 'workshop search box not found' }
+            } else {
+                # Not a defect on its own. WorkshopBrowseDialog opens in
+                # WsState.Search only when EnableCommunityConfigLookup is on
+                # (ApplyGateState); with it off the dialog shows the cold gate
+                # and SearchPanel stays Collapsed, so no search box exists to
+                # find. The gate view IS realized either way. Turning the
+                # setting on here would reach the live Steam network from a
+                # routine gate run, so the search view stays out of scope and
+                # the note says which of the two states was covered.
+                Note 'workshop search box not found (cold gate: community config lookup is off, search view not covered)'
+            }
             [W]::SendMessage($dlgHwnd, 0x0010, [IntPtr]::Zero, [IntPtr]::Zero) | Out-Null  # WM_CLOSE
             Start-Sleep 2
             Note "workshop dialog closed=$(-not [W]::IsWindowVisible($dlgHwnd))"

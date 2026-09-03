@@ -352,6 +352,54 @@ namespace PadForge.Tests
             lock (newStates) Assert.Equal(LightsyncServiceState.Stopped, newStates[^1]);
         }
 
+        /// <summary>The orphan wait is bounded. A worker that never leaves
+        /// the SDK used to hold every successor in the wait loop with no
+        /// deadline, so the mirror sat on WaitingForGHub for as long as the
+        /// toggle stayed on and the only exit was turning it off. The
+        /// successor now waits its deadline, logs, and loads the engine
+        /// anyway: an overlapped session beats a dead feature. The gate here
+        /// never opens until the cleanup, so the orphan is still inside Init
+        /// while the new worker connects.</summary>
+        [Fact]
+        public void OrphanThatNeverReturns_ReleasesTheNewWorkerAtTheDeadline()
+        {
+            using var gate = new ManualResetEventSlim(false);
+            var oldFake = new FakeNative { InitGate = gate };
+            var oldSvc = new LightsyncLightbarService(oldFake,
+                retryMs: 100, pollMs: 10, settleMs: 5, presenceSettleMs: 5, livenessMs: 500,
+                stopWaitMs: 200);
+            var newFake = new FakeNative();
+            LightsyncLightbarService newSvc = null;
+            try
+            {
+                oldSvc.Start();
+                Assert.True(WaitFor(() => oldFake.Count("init") >= 1), "the old worker never reached Init");
+                oldSvc.Dispose(); // the 200 ms stop wait expires: the worker is orphaned
+
+                var newStates = new List<LightsyncServiceState>();
+                newSvc = new LightsyncLightbarService(newFake,
+                    retryMs: 100, pollMs: 10, settleMs: 5, presenceSettleMs: 5, livenessMs: 500,
+                    stopWaitMs: 200, orphanWaitMs: 300);
+                newSvc.StateChanged += s => { lock (newStates) newStates.Add(s); };
+                LightsyncLightbarService.Publish(0, 255, 0);
+                newSvc.Start();
+
+                Assert.True(WaitFor(() => newFake.Lit.Count >= 1),
+                    "the new worker never got past the orphan wait");
+                lock (newStates) Assert.Contains(LightsyncServiceState.Connected, newStates);
+                // Positive control: the orphan really is still parked inside
+                // Init, so the new worker got through on the deadline and
+                // not because the orphan quietly finished.
+                Assert.Equal(0, oldFake.Count("unload"));
+            }
+            finally
+            {
+                gate.Set();
+                WaitFor(() => oldFake.Count("unload") >= 1);
+                newSvc?.Dispose();
+            }
+        }
+
         /// <summary>The feed and sibling source contracts: the publish
         /// call beside Chroma's inside the lightbar validity gate, the
         /// global leg plus the nullable per-profile leg (the #373

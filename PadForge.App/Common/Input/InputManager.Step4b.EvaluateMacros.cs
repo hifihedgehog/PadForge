@@ -536,8 +536,29 @@ namespace PadForge.Common.Input
                     || macro.TriggerMode == MacroTriggerMode.CustomExpression
                     || macro.UsesAxisTrigger || macro.UsesPovTrigger || hasButtons
                     || macro.UsesGestureTrigger || macro.UsesDescriptorTrigger;
-                if (!hasOwnTrigger && !menuCellHeld && !macro.IsExecuting && macro.MenuTriggerTick < 0)
-                    continue;
+                if (!hasOwnTrigger && !menuCellHeld && !macro.IsExecuting)
+                {
+                    // A stamp keeps the macro evaluating for exactly as long as
+                    // the release edge needs, then retires. MenuTriggerTick has
+                    // no other clear site anywhere, so leaving it set meant a
+                    // macro fired once from a menu cell evaluated on every pass
+                    // of both loops for the rest of the session, at the poll
+                    // rate, even after the user deleted the cell.
+                    if (macro.MenuTriggerTick >= 0 && !macro.WasTriggerActive)
+                        macro.MenuTriggerTick = -1;
+
+                    if (macro.MenuTriggerTick < 0)
+                    {
+                        // Reset the edge fields on the way out, the same way the
+                        // disabled-macro skip above does. Skipping without them
+                        // froze a stale WasTriggerActive, and the first press
+                        // after the macro got a trigger again read as already
+                        // held and did nothing.
+                        macro.WasTriggerActive = false;
+                        macro.LastEvaluatedUtc = DateTime.MinValue;
+                        continue;
+                    }
+                }
 
                 // Determine trigger state. Buttons, POVs, gestures, descriptors,
                 // AND axes must all be active together. A fired menu cell
@@ -2297,17 +2318,29 @@ namespace PadForge.Common.Input
             var entries = macro.GetTriggerInputEntries();
             if (entries != null)
             {
+                // A device-PINNED entry outranks a device-free one on the same
+                // axis. Returning on the first match let "(Any device)" win
+                // purely on list order, and the two entries can carry opposite
+                // Invert, so the pressure read backward for a user who had
+                // pinned the entry to this pad (#393).
+                ViewModels.MacroItem.TriggerInputEntry pinned = null, anyDevice = null;
                 for (int i = 0; i < entries.Count; i++)
                 {
                     var e = entries[i];
                     if (e == null || e.AxisTarget == MacroAxisTarget.None) continue;
-                    if (e.DeviceGuid != Guid.Empty && e.DeviceGuid != action.SourceDeviceGuid) continue;
                     if (AxisTargetToDeviceIndex(e.AxisTarget) != action.SourceDeviceAxisIndex) continue;
-                    if (!e.HalfAxis)
-                        return e.Invert ? 1f - absolute : absolute;
-                    if (e.Bidirectional)
+                    if (e.DeviceGuid == action.SourceDeviceGuid) { pinned = e; break; }
+                    if (e.DeviceGuid == Guid.Empty && anyDevice == null) anyDevice = e;
+                }
+
+                var pick = pinned ?? anyDevice;
+                if (pick != null)
+                {
+                    if (!pick.HalfAxis)
+                        return pick.Invert ? 1f - absolute : absolute;
+                    if (pick.Bidirectional)
                         return Math.Min(1f, Math.Abs(raw - 32768) / 32768f);
-                    return e.Invert
+                    return pick.Invert
                         ? Math.Max(0f, (32768 - raw) / 32768f)
                         : Math.Max(0f, (raw - 32768) / 32767f);
                 }
@@ -4123,8 +4156,29 @@ namespace PadForge.Common.Input
                     || macro.TriggerMode == MacroTriggerMode.CustomExpression
                     || macro.UsesAxisTrigger || macro.UsesPovTrigger || hasButtons
                     || macro.UsesGestureTrigger || macro.UsesDescriptorTrigger;
-                if (!hasOwnTrigger && !menuCellHeld && !macro.IsExecuting && macro.MenuTriggerTick < 0)
-                    continue;
+                if (!hasOwnTrigger && !menuCellHeld && !macro.IsExecuting)
+                {
+                    // A stamp keeps the macro evaluating for exactly as long as
+                    // the release edge needs, then retires. MenuTriggerTick has
+                    // no other clear site anywhere, so leaving it set meant a
+                    // macro fired once from a menu cell evaluated on every pass
+                    // of both loops for the rest of the session, at the poll
+                    // rate, even after the user deleted the cell.
+                    if (macro.MenuTriggerTick >= 0 && !macro.WasTriggerActive)
+                        macro.MenuTriggerTick = -1;
+
+                    if (macro.MenuTriggerTick < 0)
+                    {
+                        // Reset the edge fields on the way out, the same way the
+                        // disabled-macro skip above does. Skipping without them
+                        // froze a stale WasTriggerActive, and the first press
+                        // after the macro got a trigger again read as already
+                        // held and did nothing.
+                        macro.WasTriggerActive = false;
+                        macro.LastEvaluatedUtc = DateTime.MinValue;
+                        continue;
+                    }
+                }
 
                 // Check trigger condition. Buttons, POVs, gestures, descriptors,
                 // AND axes must all be active together. A fired menu cell

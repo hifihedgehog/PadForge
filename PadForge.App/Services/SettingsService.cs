@@ -156,8 +156,9 @@ namespace PadForge.Services
             // See AfterMappingSetsRefreshed for context.
             AfterMappingSetsRefreshed = EnsureMotionRowsForAllSlots;
 
-            // The three mirror toggles author themselves into the active
-            // profile on a user change. See OnDashboardServiceToggleChanged.
+            // The four service toggles author themselves into the active
+            // profile on a user change: the three mirrors plus head tracking.
+            // See OnDashboardServiceToggleChanged.
             _mainVm.Dashboard.PropertyChanged += OnDashboardServiceToggleChanged;
         }
 
@@ -3189,7 +3190,22 @@ namespace PadForge.Services
 
                 // Load JoyShockMapper-canongyro extensions.
                 padVm.GyroSpace = string.IsNullOrEmpty(ps.GyroSpace) ? "Local" : ps.GyroSpace;
-                padVm.MotionGrip = string.IsNullOrEmpty(ps.MotionGrip) ? "Pointing" : ps.MotionGrip;
+
+                // This is the SECOND loader of MotionGrip. The first,
+                // InputService.LoadPadSettingIntoViewModel, raises
+                // IsLoadingPadSetting so the MainWindow listener can tell a
+                // stored value from a user change of hold (#392). Without the
+                // same flag here, a settings reload while the engine runs read
+                // as a user edit and dropped every device's live gravity and
+                // shake estimate on the slot, which is what the flag exists
+                // to prevent.
+                bool wasLoadingGrip = padVm.IsLoadingPadSetting;
+                padVm.IsLoadingPadSetting = true;
+                try
+                {
+                    padVm.MotionGrip = string.IsNullOrEmpty(ps.MotionGrip) ? "Pointing" : ps.MotionGrip;
+                }
+                finally { padVm.IsLoadingPadSetting = wasLoadingGrip; }
                 padVm.GyroPlayerSpaceYawRelaxFactor = TryParseDouble(ps.GyroPlayerSpaceYawRelaxFactor, 1.41);
                 padVm.GyroWorldSpaceSideReductionThreshold = TryParseDouble(ps.GyroWorldSpaceSideReductionThreshold, 0.125);
                 padVm.GyroTighteningThresholdDegPerSec = TryParseDouble(ps.GyroTighteningThresholdDegPerSec, 3.0);
@@ -3764,7 +3780,7 @@ namespace PadForge.Services
                     ? active.TouchpadOverlayWidth : 500;
                 _mainVm.Dashboard.TouchpadOverlayHeight = active.TouchpadOverlayHeight > 0
                     ? active.TouchpadOverlayHeight : 250;
-                // The three mirror toggles ride profiles too, as nullable
+                // The four service toggles ride profiles too, as nullable
                 // legs: only a profile with an opinion moves the toggle.
                 ApplyProfileServiceToggles(active);
             }

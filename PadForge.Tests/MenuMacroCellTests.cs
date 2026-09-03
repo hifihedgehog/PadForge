@@ -211,9 +211,17 @@ namespace PadForge.Tests
         /// <summary>Both evaluator twins carry the identical trigger
         /// integration: the pass tick increments once per pass, a current
         /// stamp bypasses the no-trigger skip and ORs into triggerActive,
-        /// and a macro that has ever been stamped keeps evaluating so its
-        /// unstamped tick lands as a release edge and its latches stay
-        /// applied. Only the never-stamped sentinel skips.</summary>
+        /// and a stamped macro keeps evaluating so its unstamped tick lands
+        /// as a release edge and its latches stay applied.
+        ///
+        /// <para>The stamp then RETIRES. MenuTriggerTick has no other clear
+        /// site anywhere, so keeping it set meant a macro fired once from a
+        /// menu cell was fully evaluated on every pass of both twins for the
+        /// rest of the session, at the poll rate, even after the user deleted
+        /// the cell. Once the release edge has been delivered the guard puts
+        /// it back to the never-stamped sentinel and the macro costs nothing
+        /// again. The skip resets the edge fields on its way out, the way the
+        /// disabled-macro skip above it already did.</para></summary>
         [Fact]
         public void BothEvaluatorTwins_ConsumeTheStamp()
         {
@@ -221,7 +229,10 @@ namespace PadForge.Tests
             Assert.Contains("MacroPassTick++;", ev);
             // Twice: the Gamepad twin and the Extended twin.
             Assert.Equal(2, CountOf(ev, "bool menuCellHeld = macro.MenuTriggerTick == MacroPassTick;"));
-            Assert.Equal(2, CountOf(ev, "if (!hasOwnTrigger && !menuCellHeld && !macro.IsExecuting && macro.MenuTriggerTick < 0)"));
+            Assert.Equal(2, CountOf(ev, "if (!hasOwnTrigger && !menuCellHeld && !macro.IsExecuting)"));
+            // The stamp retires once the release edge has landed, in both twins.
+            Assert.Equal(2, CountOf(ev, "if (macro.MenuTriggerTick >= 0 && !macro.WasTriggerActive)"));
+            Assert.Equal(2, CountOf(ev, "macro.MenuTriggerTick = -1;"));
             Assert.Equal(2, CountOf(ev, "triggerActive = menuCellHeld;"));
             // Four OR sites: each twin's custom-expression branch and its
             // component-AND assembly.

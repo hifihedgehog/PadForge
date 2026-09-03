@@ -1438,7 +1438,10 @@ $toastKeys = @(
 # NOC_GLOBAL_SETTING_TOASTS_ENABLED at 0 while ToastEnabled had already been
 # restored to 1, and the two keys disagreeing is the signature. Same shape as
 # the settings backup guard above: a leftover file means an earlier run died,
-# so put its values back BEFORE reading the current ones.
+# so put its values back BEFORE reading the current ones. The marker is
+# deleted only after every key is back, so a restore that throws leaves the
+# file on disk and the next run retries instead of recording the suppressed
+# zeros as the values to put back.
 $toastPriorPath = Join-Path $logDir "toast-prior.json"
 if (Test-Path $toastPriorPath) {
     Write-Host "  A previous run died before restoring toasts; putting its values back first" -ForegroundColor Yellow
@@ -1446,12 +1449,18 @@ if (Test-Path $toastPriorPath) {
         $stale = Get-Content $toastPriorPath -Raw | ConvertFrom-Json
         foreach ($tk in $toastKeys) {
             $k = "$($tk.Path)|$($tk.Name)"
-            $v = $stale.$k
+            # Set-StrictMode -Version Latest turns a missing property into a
+            # terminating error, and a zero-length file leaves $stale itself
+            # $null. Probe the property bag first so one absent key is read as
+            # "the value was absent before" instead of aborting the loop and
+            # stranding the other key at 0.
+            $has = ($null -ne $stale) -and ($stale.PSObject.Properties.Name -contains $k)
+            $v = if ($has) { $stale.$k } else { $null }
             if ($null -eq $v) { Remove-ItemProperty -Path $tk.Path -Name $tk.Name -EA SilentlyContinue }
             else { Set-ItemProperty -Path $tk.Path -Name $tk.Name -Value ([int]$v) -Type DWord }
         }
+        Remove-Item $toastPriorPath -Force -EA SilentlyContinue
     } catch { Write-Host "  !! could not read $toastPriorPath : $_" -ForegroundColor Yellow }
-    Remove-Item $toastPriorPath -Force -EA SilentlyContinue
 }
 $toastPrior = @{}
 foreach ($tk in $toastKeys) {

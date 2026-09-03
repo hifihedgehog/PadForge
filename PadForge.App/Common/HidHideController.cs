@@ -477,9 +477,32 @@ namespace PadForge.Common
         {
             lock (_lock)
             {
-                SetBlacklist(new List<string>());
-                SetActive(false);
-                _managedDeviceIds.Clear();
+                // A REFUSED write must not be recorded as a clear. The control
+                // device is exclusive (HidHide ControlDevice.c calls
+                // WdfDeviceInitSetExclusive), so any other client holding it
+                // fails our open and this write with it. Emptying the managed
+                // set on that path left the driver holding the previous
+                // session's entries with nothing able to name them: the sync
+                // only ever retires ids it finds in _managedDeviceIds, so those
+                // devices stayed hidden forever. Adopting whatever the driver
+                // still holds keeps them retirable, which is what
+                // AdoptExistingAsManaged does for the keep-cloaks branch.
+                if (SetBlacklist(new List<string>()))
+                {
+                    SetActive(false);
+                    _managedDeviceIds.Clear();
+                }
+                else
+                {
+                    var stillThere = GetBlacklist();
+                    if (stillThere != null)
+                    {
+                        _managedDeviceIds.Clear();
+                        foreach (var id in stillThere)
+                            if (!string.IsNullOrEmpty(id))
+                                _managedDeviceIds.Add(id);
+                    }
+                }
             }
         }
 
@@ -855,8 +878,22 @@ namespace PadForge.Common
         {
             var result = new List<string>();
             if (string.IsNullOrEmpty(hidInstanceId)) return result;
-            result.Add(hidInstanceId);
             keepOut ??= _ => false;
+
+            // The primary node follows the keep-out set like every other node.
+            // Three of the four apply-loop call sites test it before calling
+            // and skip. The real-path expansion did not, so a node belonging
+            // to a row the user left visible was blacklisted anyway and never
+            // showed up in the kept list. The test lives here now rather than
+            // at the call sites, so a fifth caller inherits it (#400).
+            if (keepOut(hidInstanceId))
+            {
+                if (keptOut != null && !keptOut.Contains(hidInstanceId, StringComparer.OrdinalIgnoreCase))
+                    keptOut.Add(hidInstanceId);
+                return result;
+            }
+
+            result.Add(hidInstanceId);
 
             void Add(string id)
             {
@@ -892,8 +929,15 @@ namespace PadForge.Common
                 {
                     totalChildren++;
                     if (child.ClassGuid != GUID_DEVCLASS_HIDCLASS) continue;
-                    hidChildren++;
+                    // Count only children whose id actually read. A child whose
+                    // GetInstanceId failed used to count toward hidChildren and
+                    // then skip the keepOut test, so hidChildren could reach
+                    // totalChildren while anyChildKeptOut stayed false. One
+                    // transient cfgmgr32 failure then blocked the base container
+                    // over a row the user had left visible, which is the #400
+                    // regression this rule exists to prevent.
                     if (string.IsNullOrEmpty(child.InstanceId)) continue;
+                    hidChildren++;
                     hidChildInstanceIds.Add(child.InstanceId);
                     if (keepOut(child.InstanceId)) anyChildKeptOut = true;
                 }
@@ -1315,11 +1359,25 @@ namespace PadForge.Common
             // Parse multi-SZ: null-separated UTF-16 strings, double-null terminated.
             string fullString = Encoding.Unicode.GetString(outBuffer, 0, bytesReturned);
 
-            // Split on null characters, filter empty entries.
+            // STOP AT THE MULTI-STRING TERMINATOR, because the driver reports
+            // MORE bytes than it wrote. HidHide's Config.c
+            // HidHideCollectionToMultiString accumulates
+            // "neededSizeInCharacters += string.Length" over a UNICODE_STRING,
+            // whose Length is in BYTES, so for N paths totaling C characters it
+            // reports (2C + N + 1) characters while writing (C + N + 1). The
+            // completion at Logic.c OnControlDeviceIoGetBlacklist hands that
+            // inflated count back as Information, and the I/O manager copies it
+            // out of the METHOD_BUFFERED system buffer, so the last 2C bytes are
+            // pool the driver never wrote. Reading to the terminator ignores
+            // them. HidHide's own client survives this only because it
+            // over-allocates a zero-initialized vector.
+            //
+            // An empty list is a single terminator, so the first entry is empty
+            // and the loop adds nothing, which is the correct empty result.
             foreach (string entry in fullString.Split('\0'))
             {
-                if (!string.IsNullOrEmpty(entry))
-                    result.Add(entry);
+                if (entry.Length == 0) break;
+                result.Add(entry);
             }
 
             return result;

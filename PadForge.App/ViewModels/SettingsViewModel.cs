@@ -374,6 +374,15 @@ namespace PadForge.ViewModels
             get => _identityProtectionModeIndex;
             set
             {
+                // A negative index is never a user pick. It is what Selector
+                // writes back when its ItemsSource is replaced, and
+                // IdentityProtectionModes hands out a NEW array on every read,
+                // so raising it on a language change blanked the box and
+                // pushed -1 into the source. InputService then turned that
+                // into mode 0, which matches no current mode, so it did not
+                // early-return and called EnsureIdentityUnlocked: changing the
+                // app language popped the Remote Link password dialog.
+                if (value < 0) return;
                 if (SetProperty(ref _identityProtectionModeIndex, value) && !_suppressIdentityModeChange)
                 {
                     OnPropertyChanged(nameof(IdentityProtectionHint));

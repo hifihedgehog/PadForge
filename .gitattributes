@@ -1,3 +1,10 @@
 # Store every text file with LF line endings whatever the committing machine uses.
 # Commit d30921e4 stored a CRLF copy of one file and turned a 167-line change into 12,000.
 * text=auto
+
+# The driver INFs under PadForge.App/Resources are members of a signed
+# catalog (.cat), and a catalog hashes the exact bytes of every file it
+# covers. The index holds these with LF, so pin the checkout to CRLF. A
+# clone with core.autocrlf=false or input would otherwise write LF and the
+# bytes would no longer match the signature.
+PadForge.App/Resources/**/*.inf text eol=crlf

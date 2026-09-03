@@ -125,6 +125,14 @@ namespace PadForge.Services
         // overlap inside the SDK (every reference serializes SDK calls).
         private static Task s_orphan;
 
+        /// <summary>How long a new worker waits for that orphan before it
+        /// loads the engine anyway. Above the 14 s an Artemis-launched G HUB
+        /// cold start takes, so a merely slow engine host is still waited
+        /// out. Past it the orphan counts as stuck, and waiting on forever
+        /// would pin the successor on WaitingForGHub with the toggle on and
+        /// no exit but turning it off.</summary>
+        internal const int DefaultOrphanWaitMs = 15000;
+
         private readonly ILogiLedNative _native;
         private readonly int _retryMs;
         private readonly int _pollMs;
@@ -132,6 +140,7 @@ namespace PadForge.Services
         private readonly int _presenceSettleMs;
         private readonly int _livenessMs;
         private readonly int _stopWaitMs;
+        private readonly int _orphanWaitMs;
         private CancellationTokenSource _cts;
         private Task _loop;
         private int _disposed;
@@ -150,7 +159,8 @@ namespace PadForge.Services
             int settleMs = 100,
             int presenceSettleMs = 5000,
             int livenessMs = 5000,
-            int stopWaitMs = 3000)
+            int stopWaitMs = 3000,
+            int orphanWaitMs = DefaultOrphanWaitMs)
         {
             _native = native ?? new LogiLedEngineNative();
             _retryMs = retryMs;
@@ -159,6 +169,7 @@ namespace PadForge.Services
             _presenceSettleMs = presenceSettleMs;
             _livenessMs = livenessMs;
             _stopWaitMs = stopWaitMs;
+            _orphanWaitMs = orphanWaitMs;
         }
 
         /// <summary>Publishes the game-set lightbar color. Called from the
@@ -236,19 +247,31 @@ namespace PadForge.Services
                 // SDK. Wait it out before loading the engine: the SDK is one
                 // session per process, and every reference serializes its
                 // calls. The orphan's own finally unloads the engine, and
-                // only then does this worker load it.
+                // only then does this worker load it. The wait carries a
+                // deadline. A native call that never returns would otherwise
+                // hold this worker on WaitingForGHub for as long as the
+                // toggle stays on, so on the deadline the orphan counts as
+                // stuck and this worker goes on to the engine. An overlapped
+                // session beats a dead feature.
                 Task orphan = Volatile.Read(ref s_orphan);
                 if (orphan != null && !orphan.IsCompleted)
                 {
                     PadForge.Engine.SdlDiagLog.WriteLine(
                         "LIGHTSYNC waiting for the orphaned worker of the previous session to leave the SDK");
                     Report(LightsyncServiceState.WaitingForGHub, generation);
-                    while (!orphan.IsCompleted)
+                    long deadline = Environment.TickCount64 + _orphanWaitMs;
+                    while (!orphan.IsCompleted && Environment.TickCount64 < deadline)
                         await Task.Delay(50, ct);
+                    if (!orphan.IsCompleted)
+                        PadForge.Engine.SdlDiagLog.WriteLine(
+                            $"LIGHTSYNC orphan wait timed out after {_orphanWaitMs} ms, loading the engine anyway");
                 }
                 // Clear a finished orphan (discarding the Task the exchange
                 // hands back) so no later worker waits on a completed task.
-                _ = Interlocked.CompareExchange(ref s_orphan, null, orphan);
+                // A straggler this worker gave up on stays in the slot, so
+                // the next worker gives it its own bounded wait.
+                if (orphan == null || orphan.IsCompleted)
+                    _ = Interlocked.CompareExchange(ref s_orphan, null, orphan);
 
                 while (!ct.IsCancellationRequested)
                 {

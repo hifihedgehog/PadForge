@@ -14,11 +14,15 @@ using System.Net.Sockets;
 //   DsuDiag verdict 0        record 5 s on slot 0
 //   DsuDiag verdict 0 8      record 8 s on slot 0
 //
-// The verdict answers two questions from one recording:
-//   HOLD   comes from mean accelerometer. Gravity names the axis pointing
-//          down, which is how the controller was oriented.
-//   MOTION comes from the gyro. Peak rate and integrated angle per axis
-//          name which rotation was actually performed.
+// The verdict answers two questions from one run:
+//   HOLD   comes from the mean accelerometer over the still countdown, before
+//          the recording window opens. Gravity names the axis pointing down,
+//          which is how the controller was oriented. Averaged over the
+//          rotation instead, gravity sweeps from axis to axis and the mean
+//          magnitude collapses.
+//   MOTION comes from the gyro over the recording window. Peak rate and
+//          integrated angle per axis name which rotation was actually
+//          performed.
 
 const int Port = 26760;
 const ushort ProtocolVersion = 1001;
@@ -114,15 +118,53 @@ void RunVerdict()
 {
     Console.WriteLine();
     Console.WriteLine("VERDICT MODE");
-    Console.WriteLine("  Hold the controller the way you mean to hold it, then perform");
-    Console.WriteLine("  ONE rotation while recording. Hold still until recording starts.");
+    Console.WriteLine("  Hold the controller the way you mean to hold it and keep it still");
+    Console.WriteLine("  until RECORDING appears. The hold is read during that countdown.");
+    Console.WriteLine("  Then perform ONE rotation while it records.");
     Console.WriteLine();
 
-    for (int i = 3; i > 0; i--)
+    // The hold is sampled here, over the still countdown, not over the
+    // recording window. Averaging accelerometer across the rotation sweeps
+    // gravity from one axis to another, so the mean magnitude under-reads what
+    // gravity actually was and the off-axis warning fires on a square hold.
+    var hold = new List<(int Slot, Sample S)>();
+    var holdSeen = new uint[MaxSlots];
+    var holdStart = DateTime.UtcNow;
+    int shownSecond = -1;
+
+    while (true)
     {
-        Console.Write($"\r  Starting in {i}...   ");
-        Thread.Sleep(1000);
+        double left = 3.0 - (DateTime.UtcNow - holdStart).TotalSeconds;
+        if (left <= 0) break;
+
+        int secs = (int)Math.Ceiling(left);
+        if (secs != shownSecond)
+        {
+            Console.Write($"\r  Hold still. Starting in {secs}...   ");
+            shownSecond = secs;
+        }
+
+        if (udp.Available == 0) { Thread.Sleep(2); continue; }
+
+        byte[] hd;
+        try { hd = udp.Receive(ref server); }
+        catch (SocketException) { continue; }
+
+        if (!TryReadSample(hd, out int hSlot, out bool hConn, out uint hPkt, out Sample hSample))
+            continue;
+        if (!hConn) continue;
+        if (slotFilter.HasValue && hSlot != slotFilter.Value) continue;
+        if (hPkt == holdSeen[hSlot]) continue;
+        holdSeen[hSlot] = hPkt;
+        hold.Add((hSlot, hSample));
     }
+
+    // Everything still queued arrived before the recording window. Left in
+    // place it drains in one burst at the top of the loop, every packet
+    // stamped with the same dequeue instant, which inflated both the sample
+    // count and the reported rate.
+    int dropped = DrainSocket();
+
     Console.WriteLine($"\r  RECORDING for {captureSeconds:F1} s. Do the motion now.        ");
 
     var samples = new List<Sample>();
@@ -174,9 +216,7 @@ void RunVerdict()
     double span = (samples[^1].At - samples[0].At).TotalSeconds;
     double hz = span > 0 ? (samples.Count - 1) / span : 0;
 
-    double ax = samples.Average(v => (double)v.AccelX);
-    double ay = samples.Average(v => (double)v.AccelY);
-    double az = samples.Average(v => (double)v.AccelZ);
+    var stillHold = hold.Where(h => h.Slot == chosen).Select(h => h.S).ToList();
 
     double pkP = samples.Max(v => Math.Abs((double)v.Pitch));
     double pkY = samples.Max(v => Math.Abs((double)v.Yaw));
@@ -193,19 +233,45 @@ void RunVerdict()
     }
 
     Console.WriteLine($"Slot {chosen}: {samples.Count} samples over {span:F1} s ({hz:F0} Hz)");
+    if (dropped > 0)
+        Console.WriteLine($"  (Dropped {dropped} pre-window packet{(dropped == 1 ? "" : "s")}.)");
     Console.WriteLine();
 
-    Console.WriteLine("HOLD  (mean accelerometer, g. Gravity names which way was down.)");
-    Console.WriteLine($"    X: {ax,7:F2}    Y: {ay,7:F2}    Z: {az,7:F2}");
-    string gAxis = Dominant(Math.Abs(ax), Math.Abs(ay), Math.Abs(az), "X", "Y", "Z");
-    double gVal = gAxis == "X" ? ax : gAxis == "Y" ? ay : az;
-    double gMag = Math.Sqrt(ax * ax + ay * ay + az * az);
-    Console.WriteLine($"    Gravity sits on {(gVal < 0 ? "-" : "+")}{gAxis} at {Math.Abs(gVal):F2} g " +
-                      $"(total {gMag:F2} g).");
-    double offAxis = Math.Sqrt(Math.Max(0, gMag * gMag - gVal * gVal));
-    if (offAxis > 0.35)
-        Console.WriteLine($"    WARNING: {offAxis:F2} g sits off that axis. The hold was tilted, " +
-                          "not square to any face.");
+    Console.WriteLine("HOLD  (mean accelerometer over the still countdown, g. Gravity names");
+    Console.WriteLine("       which way was down.)");
+    if (stillHold.Count < 3)
+    {
+        Console.WriteLine($"    Countdown sample count: {stillHold.Count}. That is too few to name a hold");
+        Console.WriteLine("    axis. Check that the slot was sending before the countdown started.");
+    }
+    else
+    {
+        double ax = stillHold.Average(v => (double)v.AccelX);
+        double ay = stillHold.Average(v => (double)v.AccelY);
+        double az = stillHold.Average(v => (double)v.AccelZ);
+        double gMag = Math.Sqrt(ax * ax + ay * ay + az * az);
+        Console.WriteLine($"    X: {ax,7:F2}    Y: {ay,7:F2}    Z: {az,7:F2}   ({stillHold.Count} samples)");
+
+        // A still controller reads about 1 g. Anything near zero means the
+        // accelerometer sent nothing, and naming an axis off that noise prints
+        // a confident answer built on no signal.
+        if (gMag < 0.3)
+        {
+            Console.WriteLine($"    The accelerometer reported nothing usable: {gMag:F2} g total against the");
+            Console.WriteLine("    1 g gravity reads on a still controller. No hold axis can be named.");
+        }
+        else
+        {
+            string gAxis = Dominant(Math.Abs(ax), Math.Abs(ay), Math.Abs(az), "X", "Y", "Z");
+            double gVal = gAxis == "X" ? ax : gAxis == "Y" ? ay : az;
+            Console.WriteLine($"    Gravity sits on {(gVal < 0 ? "-" : "+")}{gAxis} at {Math.Abs(gVal):F2} g " +
+                              $"(total {gMag:F2} g).");
+            double offAxis = Math.Sqrt(Math.Max(0, gMag * gMag - gVal * gVal));
+            if (offAxis > 0.35)
+                Console.WriteLine($"    WARNING: {offAxis:F2} g sits off that axis. The hold was tilted, " +
+                                  "not square to any face.");
+        }
+    }
     Console.WriteLine();
 
     Console.WriteLine("MOTION  (gyro, degrees per second and integrated degrees)");
@@ -223,12 +289,34 @@ void RunVerdict()
 
     string mAxis = Dominant(pkP, pkY, pkR, "PITCH", "YAW", "ROLL");
     double second = new[] { pkP, pkY, pkR }.OrderByDescending(v => v).Skip(1).First();
-    double ratio = second > 0.001 ? top / second : 999;
 
     Console.Write($"VERDICT: the dominant rotation was {mAxis}");
-    if (ratio >= 3) Console.WriteLine($", cleanly, at {ratio:F1}x the next axis.");
-    else if (ratio >= 1.5) Console.WriteLine($", but only {ratio:F1}x the next axis. The motion was mixed.");
-    else Console.WriteLine($" by {ratio:F1}x, which is no separation at all. The motion was mixed.");
+    if (second <= 0.001)
+    {
+        // No divisor, so there is no ratio to print. Report what was measured.
+        Console.WriteLine(", and the other two axes read zero. The motion was on one axis alone.");
+    }
+    else
+    {
+        double ratio = top / second;
+        if (ratio >= 3) Console.WriteLine($", cleanly, at {ratio:F1}x the next axis.");
+        else if (ratio >= 1.5) Console.WriteLine($", but only {ratio:F1}x the next axis. The motion was mixed.");
+        else Console.WriteLine($" by {ratio:F1}x, which is no separation at all. The motion was mixed.");
+    }
+}
+
+// Empty the receive queue without blocking. Polling Available takes only what
+// is already buffered, so no read has to time out to learn the queue is dry.
+int DrainSocket()
+{
+    int n = 0;
+    while (udp.Available > 0 && n < 20000)
+    {
+        try { udp.Receive(ref server); }
+        catch (SocketException) { break; }
+        n++;
+    }
+    return n;
 }
 
 string Dominant(double a, double b, double c, string na, string nb, string nc)

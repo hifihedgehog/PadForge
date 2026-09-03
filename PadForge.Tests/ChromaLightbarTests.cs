@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -397,6 +398,91 @@ namespace PadForge.Tests
             Thread.Sleep(300);
             Assert.Equal(12, server.Requests.Count(r => r.Body.Contains("\"color\":65280")));
             Assert.DoesNotContain(server.Requests, r => r.Method == "DELETE");
+        }
+
+        /// <summary>A Stop whose wait expires with the worker parked inside
+        /// the owner's StateChanged marshal orphans that worker, and the
+        /// owner then disposes and recreates the service on re-enable
+        /// (InputService StopChromaService, then StartChromaIfEnabled). Both
+        /// closures write the SAME Dashboard status, so when the orphan
+        /// finally returns, the Stopped it reports at the end of its loop
+        /// must be dropped: the live instance is Connected and owns the
+        /// status. The Lightsync sibling's
+        /// OrphanedWorker_NeverShutsDownOrReportsOverTheNewSession, applied
+        /// to the REST mirror.</summary>
+        [Fact]
+        public void OrphanedWorker_NeverReportsOverTheNewSession()
+        {
+            using var server = new FakeChromaServer();
+            using var gate = new ManualResetEventSlim(false);
+            using var parked = new ManualResetEventSlim(false);
+
+            // The one Dashboard status both instances write, and each
+            // instance's own reports.
+            var dashboard = new List<ChromaServiceState>();
+            var oldStates = new List<ChromaServiceState>();
+            var newStates = new List<ChromaServiceState>();
+
+            var oldSvc = new ChromaLightbarService(
+                server.Endpoint, heartbeatMs: 200, retryMs: 500, pollMs: 25);
+            oldSvc.StateChanged += s =>
+            {
+                lock (dashboard) dashboard.Add(s);
+                lock (oldStates) oldStates.Add(s);
+                if (s == ChromaServiceState.Connected) { parked.Set(); gate.Wait(); }
+            };
+            try
+            {
+                oldSvc.Start();
+                Assert.True(parked.Wait(10000), "the old worker never reached Connected");
+
+                // Stop, not Dispose: production disposes, and the only
+                // difference to the orphan is that its session DELETE then
+                // fails on a disposed HttpClient. Keeping the client alive
+                // makes that DELETE the positive control below.
+                long t0 = Environment.TickCount64;
+                oldSvc.Stop();
+                Assert.True(Environment.TickCount64 - t0 < 6000,
+                    "Stop must return after its bounded wait");
+                int oldStatesAfterStop;
+                lock (oldStates) oldStatesAfterStop = oldStates.Count;
+
+                using var newSvc = new ChromaLightbarService(
+                    server.Endpoint, heartbeatMs: 200, retryMs: 500, pollMs: 25);
+                newSvc.StateChanged += s =>
+                {
+                    lock (dashboard) dashboard.Add(s);
+                    lock (newStates) newStates.Add(s);
+                };
+                newSvc.Start();
+                Assert.True(server.WaitFor(() =>
+                    { lock (newStates) return newStates.Contains(ChromaServiceState.Connected); }),
+                    "the new worker never connected");
+
+                // Release the orphan. It ends its session and runs off the
+                // end of the loop, which is where the Stopped report lives.
+                gate.Set();
+                Assert.True(server.WaitFor(() => server.Requests.Any(r => r.Method == "DELETE")),
+                    "the orphan never ended its session, so it never reached the report");
+                Thread.Sleep(300);
+
+                lock (oldStates)
+                {
+                    Assert.Equal(oldStatesAfterStop, oldStates.Count);
+                    Assert.DoesNotContain(ChromaServiceState.Stopped, oldStates);
+                }
+                lock (dashboard)
+                    Assert.Equal(ChromaServiceState.Connected, dashboard[^1]);
+
+                // The live session still tears down normally.
+                newSvc.Stop();
+                lock (newStates) Assert.Equal(ChromaServiceState.Stopped, newStates[^1]);
+            }
+            finally
+            {
+                gate.Set();
+                oldSvc.Dispose();
+            }
         }
 
         /// <summary>The feed's source contract: the OutputDecoded handler

@@ -74,6 +74,17 @@ namespace PadForge.Services
         /// mirror is off costs one volatile write.</summary>
         private static int s_publishedRgb = -1;
 
+        /// <summary>Generation stamp of the most recent Start across every
+        /// instance. Stop waits three seconds and then clears its state
+        /// whether or not the worker left, so a worker parked in a REST call
+        /// or in the owner's StateChanged marshal can outlive its service.
+        /// The owner disposes and recreates the service on re-enable, and
+        /// the orphaned worker of the OLD instance must not report into the
+        /// Dashboard status the live instance now owns. Each worker captures
+        /// the generation it started under and compares against this on
+        /// every report. The Lightsync mirror's shape, leg for leg.</summary>
+        private static int s_generation;
+
         private readonly string _endpoint;
         private readonly int _heartbeatMs;
         private readonly int _retryMs;
@@ -129,26 +140,46 @@ namespace PadForge.Services
             if (_cts != null) return; // Already started.
             _cts = new CancellationTokenSource();
             var token = _cts.Token;
-            _loop = Task.Run(() => LoopAsync(token), token);
+            // Every Start supersedes whatever worker came before it, an
+            // orphan of a timed-out Stop included.
+            int generation = Interlocked.Increment(ref s_generation);
+            _loop = Task.Run(() => LoopAsync(token, generation), token);
         }
 
         public void Stop()
         {
             if (_cts == null) return;
             try { _cts.Cancel(); } catch { }
+            // The worker may be parked in a REST call or in the owner's
+            // StateChanged marshal. Give it the wait, then let it finish on
+            // its own as an orphan: the generation check strips its reports
+            // once a newer Start exists, and the session it ends is its own.
             try { _loop?.Wait(3000); } catch { }
             _cts.Dispose();
             _cts = null;
             _loop = null;
         }
 
-        private void Report(ChromaServiceState state)
+        /// <summary>True once a newer Start exists than the one that made
+        /// <paramref name="generation"/>: the worker holding it is an orphan
+        /// whose reports belong to nobody.</summary>
+        private static bool Superseded(int generation)
+            => generation != Volatile.Read(ref s_generation);
+
+        private void Report(ChromaServiceState state, int generation)
         {
+            // A superseded worker's StateChanged closure targets the
+            // Dashboard the live instance now owns: drop the report.
+            if (Superseded(generation))
+            {
+                PadForge.Engine.SdlDiagLog.WriteLine($"CHROMA superseded worker dropped state={state}");
+                return;
+            }
             PadForge.Engine.SdlDiagLog.WriteLine($"CHROMA state={state}");
             try { StateChanged?.Invoke(state); } catch { }
         }
 
-        private async Task LoopAsync(CancellationToken ct)
+        private async Task LoopAsync(CancellationToken ct, int generation)
         {
             while (!ct.IsCancellationRequested)
             {
@@ -165,13 +196,13 @@ namespace PadForge.Services
 
                 if (session == null)
                 {
-                    Report(ChromaServiceState.WaitingForSynapse);
+                    Report(ChromaServiceState.WaitingForSynapse, generation);
                     try { await Task.Delay(_retryMs, ct).ConfigureAwait(false); }
                     catch (OperationCanceledException) { break; }
                     continue;
                 }
 
-                Report(ChromaServiceState.Connected);
+                Report(ChromaServiceState.Connected, generation);
                 int lastSent = -1;
                 long lastHeartbeat = Environment.TickCount64;
                 try
@@ -220,12 +251,12 @@ namespace PadForge.Services
                 catch { /* best effort */ }
 
                 if (ct.IsCancellationRequested) break;
-                Report(ChromaServiceState.WaitingForSynapse);
+                Report(ChromaServiceState.WaitingForSynapse, generation);
                 try { await Task.Delay(_retryMs, ct).ConfigureAwait(false); }
                 catch (OperationCanceledException) { break; }
             }
 
-            Report(ChromaServiceState.Stopped);
+            Report(ChromaServiceState.Stopped, generation);
         }
 
         private async Task<string> InitAsync(CancellationToken ct)

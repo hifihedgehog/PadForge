@@ -1140,6 +1140,13 @@ namespace PadForge.Common.Input
                     // (WasDown, the double-press and host-gate arrays):
                     // those decide what the NEXT physical edge means, and
                     // a held Hold must read as still held.
+                    //
+                    // CycleIndex is engagement state, which ShiftRuntime.Clear
+                    // says in its own comment and clears under this same lock.
+                    // Leaving it behind left a Cycle activator's cursor on the
+                    // layer just released, so the next Next press stepped from
+                    // there instead of from Base and skipped the layers between.
+                    System.Array.Clear(rt.CycleIndex, 0, rt.CycleIndex.Length);
                     System.Array.Clear(rt.ToggleOn, 0, rt.ToggleOn.Length);
                     System.Array.Clear(rt.StickyEngaged, 0, rt.StickyEngaged.Length);
                     System.Array.Clear(rt.StickyConsumerActive, 0, rt.StickyConsumerActive.Length);
@@ -3577,10 +3584,17 @@ namespace PadForge.Common.Input
                 // wrote all four DPad bits.
                 if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor)) continue;
                 // Construct synthetic POV-direction sources to reuse the coercion path.
-                up    |= EvalPovBool(state, src, "Up");
-                down  |= EvalPovBool(state, src, "Down");
-                left  |= EvalPovBool(state, src, "Left");
-                right |= EvalPovBool(state, src, "Right");
+                // The slot and device travel with the read so the hat follows
+                // the grip (#392). Without them EvaluateForButtonTarget took
+                // its defaults, GyroTuningProvider answered the default tuning
+                // for a negative slot, and GripPov was the identity: the
+                // combined-DPad row emitted the physical direction while every
+                // individual DPadUp/Down/Left/Right row emitted the rotated
+                // one, on the pad most likely to be held sideways.
+                up    |= EvalPovBool(state, src, "Up",    slotIndex, thisDeviceGuid);
+                down  |= EvalPovBool(state, src, "Down",  slotIndex, thisDeviceGuid);
+                left  |= EvalPovBool(state, src, "Left",  slotIndex, thisDeviceGuid);
+                right |= EvalPovBool(state, src, "Right", slotIndex, thisDeviceGuid);
             }
             if (up || down || left || right) StampLayerActivity(slotIndex, row);
             if (up)    gp.SetButton(Gamepad.DPAD_UP, true);
@@ -3607,7 +3621,9 @@ namespace PadForge.Common.Input
         private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<MappingSource, PovSynthCache>
             s_povSynthCache = new();
 
-        private static bool EvalPovBool(CustomInputState state, MappingSource src, string direction)
+        private static bool EvalPovBool(
+            CustomInputState state, MappingSource src, string direction,
+            int slotIndex, string evaluatedDeviceGuid)
         {
             // Build (once) a POV-direction descriptor: original descriptor
             // is "POV N" (no direction); we tack on the direction under test.
@@ -3659,7 +3675,7 @@ namespace PadForge.Common.Input
                 _ => cache.Right,
             };
             if (synth == null) return false;
-            return SourceCoercion.EvaluateForButtonTarget(state, synth, 50);
+            return SourceCoercion.EvaluateForButtonTarget(state, synth, 50, slotIndex, evaluatedDeviceGuid);
         }
 
         // ─── Target → Gamepad-field dispatch ─────────────────────────────

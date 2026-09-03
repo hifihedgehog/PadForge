@@ -2255,6 +2255,27 @@ namespace PadForge.Services
                 }
                 catch { /* best effort */ }
             }
+            else
+            {
+                // Cloaks were kept on purpose, so this session inherits
+                // entries it did not write. Adopt them as managed, or the
+                // sync's removal set is computed from an empty set and the
+                // driver's list can only grow: an entry an older build wrote
+                // too broadly outlives the fix that narrowed it, through
+                // every apply and every reboot, and the device it hides
+                // stays hidden with nothing saying so (#397 follow-up).
+                try
+                {
+                    if (HidHideController.IsAvailable())
+                    {
+                        int adopted = HidHideController.AdoptExistingAsManaged();
+                        if (adopted > 0)
+                            PadForge.Engine.SdlDiagLog.WriteLine(
+                                $"HIDHIDE adopted {adopted} kept entr{(adopted == 1 ? "y" : "ies")} from the previous session");
+                    }
+                }
+                catch { /* best effort */ }
+            }
             _managedWhitelistDosPaths.Clear();
 
             // Apply device hiding (HidHide + input hooks) if master switch is on.
@@ -11495,8 +11516,40 @@ namespace PadForge.Services
             => HidHideSiblingSweepAllowed(snapshot, ud, out _, null);
 
         internal static bool HidHideSiblingSweepAllowed(UserDevice[] snapshot, UserDevice ud, out int same, Func<string, bool> presenceProbe)
+            => HidHideSiblingSweepAllowed(snapshot, ud, out same, out _, presenceProbe, null, null);
+
+        /// <summary>How many PHYSICAL devices of this record's VID/PID are
+        /// present, counted by ContainerId rather than by PadForge rows.
+        ///
+        /// <para>The row count alone was wrong on every composite device.
+        /// A handheld's built-in controller is one USB composite whose
+        /// gamepad, touchpad and keyboard are three separate rows here, all
+        /// carrying the same VID/PID because they are interfaces of one
+        /// device. The old rule read that as three pads and shut the sweep,
+        /// and on the XInput pad, whose path is SDL's synthetic "XInput#N"
+        /// and so has no node of its own to expand, shutting the sweep meant
+        /// nothing was hidden at all (#397 follow-up, reported against
+        /// 4.4.0 as an empty HidHide list).</para>
+        ///
+        /// <para>Container ids answer it exactly: one physical device, one
+        /// container, however many interfaces it exposes. When they cannot
+        /// be read the old row rule still decides, because a wrong guess
+        /// that hides a stranger's pad is worse than one that hides
+        /// nothing. <paramref name="devices"/> reports the container count
+        /// for the diag line, and is zero when the fallback decided.</para>
+        ///
+        /// <para>The same pad on USB and on Bluetooth is two containers by
+        /// design. That case never reaches this gate: it is scoped by
+        /// serial instead, and the caller runs the sweep when either the
+        /// gate or the serial says so.</para></summary>
+        internal static bool HidHideSiblingSweepAllowed(
+            UserDevice[] snapshot, UserDevice ud, out int same, out int devices,
+            Func<string, bool> presenceProbe,
+            Func<ushort, ushort, IReadOnlyList<string>> nodesOf,
+            Func<string, string> containerOf)
         {
             same = 0;
+            devices = 0;
             if (ud == null || ud.VendorId == 0 || ud.ProdId == 0) return false;
             presenceProbe ??= HidHideController.IsInstancePresent;
             foreach (var other in snapshot)
@@ -11506,7 +11559,29 @@ namespace PadForge.Services
                 if (ReferenceEquals(other, ud) || other.IsOnline || HidHideRecordIsPresent(other, presenceProbe))
                     same++;
             }
-            return same == 1;
+
+            nodesOf ??= (v, p) => HidHideController.FindInstanceIdsByVidPid(v, p);
+            containerOf ??= HidHideController.ContainerKeyOf;
+
+            IReadOnlyList<string> nodes;
+            try { nodes = nodesOf(ud.VendorId, ud.ProdId); }
+            catch { nodes = null; }
+            if (nodes == null || nodes.Count == 0) return same == 1;
+
+            var containers = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var node in nodes)
+            {
+                if (string.IsNullOrEmpty(node)) continue;
+                string key = containerOf(node);
+                // One unreadable node and the count means nothing, so the
+                // old rule decides rather than a partial answer.
+                if (key == null) return same == 1;
+                containers.Add(key);
+            }
+            if (containers.Count == 0) return same == 1;
+
+            devices = containers.Count;
+            return devices <= 1;
         }
 
         /// <summary>An offline record counts as present when its persisted
@@ -11604,8 +11679,17 @@ namespace PadForge.Services
         /// hidden by serial with a second pad present and left alone.
         /// "serial=none gate=on" is the old count rule, sole record.</summary>
         internal static string HidHideSweepDecision(bool bySerial, bool soleRecord, int same, int other, int unread)
+            => HidHideSweepDecision(bySerial, soleRecord, same, other, unread, 0);
+
+        /// <summary>As above, naming how many PHYSICAL devices of the
+        /// VID/PID were counted by ContainerId. "devices=1" is one pad
+        /// however many rows it shows, "devices=2" is two pads, and
+        /// "devices=?" means no container could be read and the row count
+        /// decided instead (#397 follow-up).</summary>
+        internal static string HidHideSweepDecision(bool bySerial, bool soleRecord, int same, int other, int unread, int devices)
             => (bySerial ? $"serial=match other={other} unread={unread}" : "serial=none")
-               + (soleRecord ? " gate=on" : $" gate=off(same={same})");
+               + (soleRecord ? " gate=on" : $" gate=off(same={same})")
+               + (devices > 0 ? $" devices={devices}" : " devices=?");
 
         /// <summary>The nodes no hide may touch because they belong to a
         /// device PadForge shows as its own row with Hide from Games OFF
@@ -11918,7 +12002,7 @@ namespace PadForge.Services
                             // silence could not be told from a sweep that found
                             // nothing.
                             var sweep = new List<string>();
-                            bool sweepOn = HidHideSiblingSweepAllowed(snapshot, ud, out int same, null);
+                            bool sweepOn = HidHideSiblingSweepAllowed(snapshot, ud, out int same, out int devices, null, null, null);
                             bool bySerial = HidHideSerialScopes(ud.SerialNumber, out _);
                             int other = 0, unread = 0;
                             if (sweepOn || bySerial)
@@ -11936,7 +12020,7 @@ namespace PadForge.Services
                             hidLog.Add(
                                 $"HIDHIDE dev {ud.VendorId:X4}:{ud.ProdId:X4} id={instanceId} expanded={expanded.Count} [{string.Join(" | ", expanded)}]"
                                 + $" sweep={sweep.Count} [{string.Join(" | ", sweep)}] "
-                                + HidHideSweepDecision(bySerial, sweepOn, same, other, unread)
+                                + HidHideSweepDecision(bySerial, sweepOn, same, other, unread, devices)
                                 + HidHideKeptNote(kept));
                         }
                         // Fallback for synthetic paths (e.g., "XInput#0"): look up by VID/PID.
@@ -11951,14 +12035,14 @@ namespace PadForge.Services
                             // keeps only the nodes that report it. Without one,
                             // a twin present means this record hides nothing,
                             // said out loud.
-                            bool sweepOn = HidHideSiblingSweepAllowed(snapshot, ud, out int syntheticSame, null);
+                            bool sweepOn = HidHideSiblingSweepAllowed(snapshot, ud, out int syntheticSame, out int syntheticDevices, null, null, null);
                             bool bySerial = HidHideSerialScopes(ud.SerialNumber, out _);
                             int other = 0, unread = 0;
                             var realIds = (sweepOn || bySerial)
                                 ? SelectHidHideSweepNodes(ud.SerialNumber, FindInstanceIdsForDevice(ud),
                                     sweepOn, null, out bySerial, out other, out unread)
                                 : new List<string>();
-                            string decision = HidHideSweepDecision(bySerial, sweepOn, syntheticSame, other, unread);
+                            string decision = HidHideSweepDecision(bySerial, sweepOn, syntheticSame, other, unread, syntheticDevices);
                             if (!sweepOn && realIds.Count == 0)
                             {
                                 hidLog.Add(

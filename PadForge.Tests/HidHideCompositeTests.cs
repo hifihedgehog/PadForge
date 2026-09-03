@@ -93,6 +93,71 @@ namespace PadForge.Tests
             Assert.Empty(kept);
         }
 
+
+        /// <summary>THE 4.4.0 REGRESSION, reported on discussion #397 as an
+        /// empty HidHide list. The sibling gate counted PadForge ROWS
+        /// sharing a VID/PID, and a Legion Go's gamepad, touchpad and
+        /// keyboard are three rows of ONE composite device, all carrying
+        /// 17EF:61EB. The gate read three pads and shut. The pad's path is
+        /// SDL's synthetic "XInput#0", so it has no node of its own to
+        /// expand, and a shut gate meant the apply loop wrote nothing at
+        /// all. Counting ContainerId instead reads one device and opens.
+        ///
+        /// <para>The guard is still wanted: two pads of one model really
+        /// are two containers, and the gate must still shut for them.</para></summary>
+        [Fact]
+        public void CompositeHandheld_IsOneDevice_NotThreeTwins()
+        {
+            var pad = new PadForge.Engine.Data.UserDevice
+            {
+                VendorId = 0x17EF, ProdId = 0x61EB, IsOnline = true,
+                HidHideEnabled = true, DevicePath = "XInput#0",
+            };
+            var touchpad = new PadForge.Engine.Data.UserDevice
+            {
+                VendorId = 0x17EF, ProdId = 0x61EB, IsOnline = true, HidHideEnabled = false,
+                DevicePath = @"\?\HID#VID_17EF&PID_61EB&MI_01&Col04#8&23789&0&0003#{4d1e55b2-f16f-11cf-88cb-001111000030}",
+            };
+            var keyboard = new PadForge.Engine.Data.UserDevice
+            {
+                VendorId = 0x17EF, ProdId = 0x61EB, IsOnline = true, HidHideEnabled = false,
+                DevicePath = @"\?\HID#VID_17EF&PID_61EB&MI_02#8&23789&0&0002#{4d1e55b2-f16f-11cf-88cb-001111000030}",
+            };
+            var snapshot = new[] { pad, touchpad, keyboard };
+            Func<string, bool> nothingPresent = _ => false;
+
+            // Every interface of the one physical device, as the VID/PID
+            // sweep sees them, all reporting the same container.
+            var nodes = new[]
+            {
+                @"HID\VID_17EF&PID_61EB&IG_00\0&97150E8&0&0000",
+                @"HID\VID_17EF&PID_61EB&MI_01&COL04\8&23789&0&0003",
+                @"HID\VID_17EF&PID_61EB&MI_02\8&23789&0&0002",
+            };
+            const string OneContainer = "{aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee}";
+
+            bool allowed = PadForge.Services.InputService.HidHideSiblingSweepAllowed(
+                snapshot, pad, out int rows, out int devices, nothingPresent,
+                (v, p) => nodes, _ => OneContainer);
+
+            Assert.Equal(3, rows);      // three rows, which used to shut it
+            Assert.Equal(1, devices);   // one physical device
+            Assert.True(allowed);       // so the sweep runs and the pad is hidden
+
+            // Two pads of the model: two containers, and the gate shuts.
+            string second = @"HID\VID_17EF&PID_61EB&IG_00\0&OTHERPAD&0&0000";
+            var both = new List<string>(nodes) { second };
+            bool twoPads = PadForge.Services.InputService.HidHideSiblingSweepAllowed(
+                snapshot, pad, out _, out int twoDevices, nothingPresent,
+                (v, p) => both,
+                id => id.Contains("OTHERPAD", StringComparison.Ordinal)
+                        ? "{99999999-8888-7777-6666-555555555555}"
+                        : OneContainer);
+
+            Assert.Equal(2, twoDevices);
+            Assert.False(twoPads);
+        }
+
         private const string LegionHid = @"HID\VID_17EF&PID_6182&IG_00\9&3F1E2D0&0&0000";
         private const string LegionXinputHid = @"USB\VID_17EF&PID_6182&IG_00\8&3F1E2D0&0&0000";
         private const string LegionXusb = @"USB\VID_17EF&PID_6182&MI_00\7&1F2E3D4&0&0000";
@@ -137,9 +202,21 @@ namespace PadForge.Tests
         /// <summary>The second half of the report: the touchpad is its own
         /// row with Hide from Games off. Its HID node and its interface
         /// node are in the keep-out set, so the pad's expansion leaves the
-        /// touchpad interface alone and says so, while the keyboard and
-        /// vendor interfaces, which PadForge shows as no row, stay with
-        /// the pad.</summary>
+        /// touchpad interface alone and says so.
+        ///
+        /// <para>CORRECTION, 2026-09-03. An earlier version of this comment
+        /// said the keyboard interface shows as no row and stays hidden
+        /// with the pad. That is wrong, and the reporter said so.
+        /// RawInputListener.EnumerateKeyboards filters on nothing but
+        /// RIM_TYPEKEYBOARD, so EVERY raw-input keyboard becomes its own
+        /// row, a composite gamepad's keyboard interface included, and
+        /// with Hide from Games off by default the keep-out set protects
+        /// it exactly as it protects the touchpad. The VENDOR interface
+        /// genuinely has no row, because it is neither keyboard, mouse,
+        /// consumer control, touchpad nor an SDL joystick, so that one
+        /// does stay with the pad. The same wrong claim went out in the
+        /// a882ed19 commit message and in a reply on discussion
+        /// #397.</para></summary>
         [Fact]
         public void LegionGo_LeavesTheVisibleTouchpadRowAlone()
         {

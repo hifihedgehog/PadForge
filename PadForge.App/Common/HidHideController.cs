@@ -435,6 +435,39 @@ namespace PadForge.Common
             }
         }
 
+        /// <summary>Seeds the managed set from the driver's CURRENT list, so
+        /// a session that kept the previous session's cloaks can still take
+        /// them away.
+        ///
+        /// <para>Without this the managed set starts empty,
+        /// <see cref="SyncManagedDevices"/> computes its removals from that
+        /// empty set, and the driver's list can only ever grow. An entry an
+        /// older PadForge wrote too broadly then survives every apply, every
+        /// restart and every reboot, with nothing in this session's state
+        /// saying so. That is what left an upgrading Legion Go owner's
+        /// touchpad dead after the #400 fix narrowed what gets written: the
+        /// new build wrote the right set and never removed the old one
+        /// (#397 follow-up).</para>
+        ///
+        /// <para>Adopting entries another tool may have written is no more
+        /// aggressive than the cloaks-off path, which calls
+        /// <see cref="ClearAll"/> and drops everyone's entries outright.
+        /// Returns how many were adopted, or zero when the list could not
+        /// be read.</para></summary>
+        public static int AdoptExistingAsManaged()
+        {
+            lock (_lock)
+            {
+                var list = GetBlacklist();
+                if (list == null) return 0;
+                _managedDeviceIds.Clear();
+                foreach (var id in list)
+                    if (!string.IsNullOrEmpty(id))
+                        _managedDeviceIds.Add(id);
+                return _managedDeviceIds.Count;
+            }
+        }
+
         /// <summary>
         /// Clears the entire HidHide blacklist and disables cloaking.
         /// Called on startup to remove stale entries from a previous crash
@@ -508,6 +541,18 @@ namespace PadForge.Common
                 SetupDiDestroyDeviceInfoList(devInfoSet);
             }
 
+            // setupapi hands these back in whatever order it enumerated
+            // them, and the Devices page shows element [0] as the device's
+            // path. On a composite pad every collection matches the same
+            // VID/PID, so an unsorted [0] was whichever collection the bus
+            // happened to list first: a Legion Go owner saw a digitizer
+            // collection under MI_01 named as the path of the XInput
+            // gamepad, and it persisted into PadForge.xml and into every
+            // bug report copied from that page. Sorting makes the pick
+            // deterministic, and it puts the IG_ game controller ahead of
+            // the MI_ interface collections into the bargain.
+            // StableXInputInstance.FindAll sorts for exactly this reason.
+            result.Sort(StringComparer.OrdinalIgnoreCase);
             return result;
         }
 
@@ -876,6 +921,35 @@ namespace PadForge.Common
         /// first and the base container last: what a device row with
         /// hiding OFF contributes to the keep-out set (#400). Phantom
         /// nodes resolve too, matching the expansion's own locate.</summary>
+        /// <summary>The devnode's ContainerId as a string key, or null when
+        /// the node is unknown, reports no container, or reports the system
+        /// container. Every interface and every HID collection of ONE
+        /// physical device shares this value, and two pads of the same model
+        /// have two different ones. That is the fact the sibling-sweep gate
+        /// needs and could not get from a VID/PID row count: on a composite
+        /// handheld the gamepad, touchpad and keyboard are three PadForge
+        /// rows of one device, and counting rows read that as three pads
+        /// (#397 follow-up).</summary>
+        internal static string ContainerKeyOf(string instanceId)
+        {
+            if (string.IsNullOrEmpty(instanceId)) return null;
+            try
+            {
+                if (CM_Locate_DevNodeW(out uint devInst, instanceId, CM_LOCATE_DEVNODE_PHANTOM) != CR_SUCCESS)
+                    return null;
+                Guid containerId = GetContainerId(devInst);
+                if (containerId == Guid.Empty || containerId == GUID_CONTAINER_ID_SYSTEM)
+                    return null;
+                return containerId.ToString("D");
+            }
+            catch
+            {
+                // cfgmgr32 trouble reads as "cannot tell", and the caller
+                // falls back to the old rule rather than guessing.
+                return null;
+            }
+        }
+
         internal static List<string> ChainInstanceIds(string hidInstanceId)
         {
             var result = new List<string>();

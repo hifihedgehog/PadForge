@@ -53,6 +53,28 @@ PadForge is for sim racers running wheels in games that only understand Xbox con
 </p>
 
 <details>
+<summary><b>New in 4.4.0:</b> Valve hardware from an Extended slot, head tracking from OpenTrack, your desk lighting up with the pad, and the buttons a handheld PC hides</summary>
+
+- **Valve hardware from an Extended slot.** A Steam Deck Controller, a Steam Controller (Wired), a Steam Controller (2026), and Composite variants of the first two, each with Valve's own vendor and product IDs. The Composite and 2026 profiles pack Valve's native input frame with both trackpads and the rear buttons, and a one-to-one automap lands a real Valve pad's controls straight across. The two Steam Controller bodies in the 3D preview are meshed from Valve's published CAD.
+- **Handheld PCs give up their hidden buttons.** Rear paddles, menu keys, wheels, and vendor hotkeys on the Legion Go, ROG Ally, GPD Win, OneXPlayer, AYANEO, AYN, Zotac Zone, and MSI Claw become named buttons by watching you press each one, through a typed key combination, a vendor HID report bit, or a vendor WMI event. No per-model table ships. The machine's own gyroscope joins as a System Motion device.
+- **Head tracking from OpenTrack.** OpenTrack's UDP output, port 4242 by default, and the FreeTrack 2.0 shared memory both arrive as one Head Tracker device with six axes: yaw, pitch, roll, and the three translations. Turn it on in the Dashboard's Head Tracking section.
+- **The desk lights up with the pad.** Razer Chroma and Logitech LIGHTSYNC devices take the virtual pad's lightbar color, and Razer Sensa HD hardware plays its rumble. Three Dashboard toggles, each one a profile can carry. Chroma and Sensa need Razer Synapse installed and LIGHTSYNC needs G HUB, since each runs on the vendor's own engine.
+- **The Steam Controller 2026 plays a DualSense persona's haptics as PCM.** Wired or on the dongle, the persona's authored haptic track streams to the pad's own actuators instead of collapsing to a tone, with sound macros, the system-audio mirror, and swipe ticks riding the same stream. Over Bluetooth the pad stays on the tone lane.
+- **A macro can change the shift layer.** A Switch Layer action jumps the slot to Base or to any layer you authored, and it holds until another switch, a Latch or Cycle activator, or a profile change. A shift activator can carry an Only While in Layer condition, checked when the input goes down and held for the whole press, so one button can mean something different on every layer.
+- **Menu cells fire macros, and the icons are yours.** A radial or grid cell can run a macro instead of pressing a button. An icon package is one zip of images with a .pficons extension, added from the Menus tab and read straight from the file without unpacking.
+- **Launchers and scripts switch profiles.** Turn on Allow External Control by Launchers and Scripts and PadForge serves a local named pipe that Playnite, LaunchBox, or a one-line script can activate a profile through. The profile is held until the script releases it or you switch one yourself.
+- **A profile can carry its own polling rate**, 1000 Hz down to 62.5 Hz, overriding the Settings interval while that profile is active.
+- **Quick Charge drops the Bluetooth link when the pad plugs in.** A controller that reports it is charging over USB has its radio link dropped, so it charges without powering the radio. Any USB power source counts, wall chargers included.
+- **The Wii Remote learns how it is held.** A Grip card on the Gyro tab rotates the gyro, the accelerometer, gravity, and the D-pad into the game's frame for Pointing, Sideways (Face Up), Wii Wheel (Face Toward You), or Upright.
+- **Motion Shake is a mapping source**, and on a Wii Remote the aux entry names itself Nunchuk Shake.
+- **Assignment prompts.** When a device connects while a virtual controller's page is open, PadForge offers to assign it there, with two opt-outs in Settings. Keyboards, mice, touchpads, and media keys are never offered.
+- **Hide from Games reaches an XInput interface buried inside a composite pad**, the shape a handheld's built-in controller and a pad on an Xbox 360 wireless receiver both have. A device row you deliberately left visible keeps its own nodes.
+- **The Dashboard and Settings pages run in the order they mean**, and the driver status strip left the Dashboard for Settings, where the drivers are installed.
+- **Fixes:** pressure-scaled turbo takes its direction from the trigger instead of reading a stick's lower half backward, a dual-connected Sony pad drops its stale radio link when the wired audio sink builds, switching an Extended slot's profile carries the bindings across and maps the new ones, phantom adaptive triggers no longer appear on Virtual Xbox 360 slots, and unassigning a device drops its per-slot config instead of leaving it behind.
+
+</details>
+
+<details>
 <summary><b>New in 4.3.2:</b> crossfeed, a graphic EQ, and a limiter for the DualSense headset jack, and Copy / Paste that really carries the whole slot</summary>
 
 - **A processing chain for the DualSense headset jack.** Under Output Path on the Audio tab, three stages run on everything the slot plays before the pad encodes it. **Crossfeed** mixes a little of each channel into the other the way a room does, with bs2b's six classic presets, Jan Meier, the bs2b default, and a Custom level with its own cutoff and feed sliders. A **graphic parametric EQ**: a log-frequency curve with one draggable handle per band, drag for frequency and gain, wheel for width, with typed rows underneath and six band types. A **limiter**, on by default, so a boosted band never clips the pad's encoder.
@@ -196,6 +218,10 @@ The Nintendo slot type creates a virtual Switch Pro Controller through HIDMaestr
 
 ![Nintendo virtual controller with the Switch Pro preset](screenshots/nintendo.jpg)
 
+### A Steam Deck, or a Steam Controller from either year.
+
+An Extended slot can present a Steam Deck Controller, a Steam Controller (Wired), which is the 2015 pad, or a Steam Controller (2026), plus Composite variants of the first two. Each carries Valve's own vendor and product IDs rather than a stand-in. The Composite and 2026 profiles pack Valve's native input frame, both trackpads and the rear buttons included, and a one-to-one automap lands a real Valve pad's controls straight across. The plain Steam Deck Controller profile carries the identity with a standard gamepad frame. In the 3D preview, the two Steam Controller bodies are meshed from Valve's own published CAD. The Deck's body comes from Handheld Companion.
+
 ### A SteamVR hand pair, driven by whatever you already own.
 
 The VR slot type presents a left and a right hand to SteamVR, so a gamepad, a flight stick, a keyboard, or a phone over Wi-Fi can drive them. One slot serves both hands, so there is no left slot and right slot to keep in sync. Every stick, trigger, grip and button is a mapping target, and triggers and grips stay genuinely analog rather than collapsing to on and off. When a game buzzes a hand, that pulse comes back out through the physical device driving the slot.
@@ -228,6 +254,10 @@ Each slot can carry extra mapping tables that turn on while a button, chord, or 
 
 A shift-layer button can wait for a long press. Set a hold-to-fire delay on a Toggle, Latch, or Sticky activator, and a quick tap does its normal job while a hold flips the layer. An activator can also fire on release instead of on press, so the layer flips when you let go. A Toggle layer can also cancel itself: leave it untouched for the time you set and it drops back to Base on its own, so you never get stranded on the wrong layer.
 
+### A macro that changes the layer.
+
+A Switch Layer action jumps the slot to Base or to any layer you have authored, and the layer holds until another switch, a Latch or Cycle activator, or a profile change. A shift activator can carry an Only While in Layer condition of its own, so the input counts only while the layer you name is engaged. The check happens when the input goes down and holds for the whole press, so an activator that changes the layer cannot cut its own press short. Scope a Switch Layer macro to a layer and the same button jumps somewhere different from each one.
+
 ### Move the mouse, move the stick.
 
 Two new mapping sources, Mouse Position X and Mouse Position Y, read where the desktop cursor sits on screen. Center reads zero, and distance from center pushes the stick toward its edge. (That differs from the Mouse Speed X/Y sources, which read how fast the mouse moves.) Each row using a Mouse Position source gets its own Sensitivity, from 0.1 to 5.0. At 1.0 the stick reaches full deflection when the cursor sits 10% of the screen width from center. Raise it for less cursor travel, lower it for more. A Mouse Position source can drive a stick axis, a trigger, or a button. Primary monitor only.
@@ -255,6 +285,10 @@ A Touchpad tab on every slot whose source carries a touchpad surface (DualSense,
 Drop a Text Block into a macro's action sequence and it types out plain text, one character at a time, at a delay you set. Bind it to a button and a chat line, a spawn command, or a wall of config drops in without touching the keyboard.
 
 ![Text Block macro action](screenshots/macros.jpg)
+
+### A menu cell that runs a macro, drawn with your icons.
+
+A slot's radial and grid menus put a page of actions under one button, and a cell can run a macro instead of pressing a button. The icons are yours to supply: an icon package is one zip of PNG, JPG, BMP, or GIF images with a `.pficons` extension, added from the Icon Packages card on the Menus tab. PadForge reads straight from the file and never unpacks it, so keeping a package next to `PadForge.exe` keeps the setup portable. SVG is not read.
 
 ---
 
@@ -287,6 +321,10 @@ PadForge sets the Guide button LED brightness on an Xbox One, Elite, or Series p
 
 ![Guide button LED brightness](screenshots/guide-led.jpg)
 
+### The desk lights up with the pad.
+
+Razer Chroma keyboards, mice, headsets, mousepads, keypads, and Chroma Link devices take the virtual pad's lightbar color, Logitech LIGHTSYNC devices take it too, and Razer Sensa HD hardware plays the pad's rumble as a haptic effect. Three toggles on the Dashboard, and a profile can carry each one or leave it alone. PadForge reaches Chroma through the REST server Razer Synapse hosts, loads G HUB's own LED engine for LIGHTSYNC rather than shipping a Logitech binary, and drives Sensa through the Interhaptics engine bundled inside the executable. Each path needs the vendor's own software installed: Synapse for the two Razer features, G HUB for the Logitech one.
+
 ### Sound from the speaker in your hands.
 
 The DualSense and DualShock 4 have a speaker built into the pad, and PadForge can drive it. Mirror a Windows audio output to the pad, or send a slot's macro sounds straight to it. The DualSense plays over USB or Bluetooth. The DualShock 4 plays over Bluetooth. Each speaker-capable pad gets its own per-slot Audio tab, with a source picker and a master volume. Controllers with haptic actuators instead of a speaker (Joy-Con, Switch Pro, the Steam Controller, the Steam Deck, and the Steam Controller 2026) play the same macro sounds as a vibrating tone, so beeps and short cues come through the grip. On a combined Joy-Con pair the tone follows the motor the game drives, left motor through the left coil and right through the right. A Wii Remote plays them through its own speaker.
@@ -297,11 +335,15 @@ The DualSense headset jack gets a processing chain of its own: bs2b crossfeed wi
 
 ![Audio tab](screenshots/audio.jpg)
 
+### Native haptics on the 2026 Steam Controller.
+
+With a DualSense persona on the slot, a Steam Controller 2026 on USB or its dongle plays the persona's authored haptic track as PCM on its own actuators, instead of reducing it to a single tone. Sound macros, the system-audio mirror, and touchpad swipe ticks ride the same stream. An actuator low-pass cutoff, 250 Hz by default, keeps the pads vibrating rather than audibly playing the sound. Over Bluetooth the pad stays on the tone lane.
+
 ---
 
 ## Motion: aim with the controller, not the stick.
 
-Reference frames (Local, Player, World). Dual-threshold smoothing. Real-world calibration. A cross-device Aim Engage button, plus a stick gate that wakes the gyro from any stick and any direction, read before the stick's own deadzone so a nudge the game ignores still arms it. Tuning saves per pad per slot, so the same pad on two slots can feel two different ways. Gyro Pitch / Yaw / Roll bind as first-class sources in the mapping table, and a paired Joy-Con exposes the LEFT Joy-Con's motion as separate aux sources beside the pair's own.
+Reference frames (Local, Player, World). Dual-threshold smoothing. Real-world calibration. A cross-device Aim Engage button, plus a stick gate that wakes the gyro from any stick and any direction, read before the stick's own deadzone so a nudge the game ignores still arms it. Tuning saves per pad per slot, so the same pad on two slots can feel two different ways. Gyro Pitch / Yaw / Roll bind as first-class sources in the mapping table, and a paired Joy-Con exposes the LEFT Joy-Con's motion as separate aux sources beside the pair's own. Motion Shake binds like any other source on anything with an accelerometer, and on a Wii Remote the aux entry names itself Nunchuk Shake.
 
 ![Gyro tab](screenshots/gyro.jpg)
 
@@ -315,11 +357,19 @@ The Wii Remote's IR camera drives an on-screen pointer, mapped to the mouse or a
 
 ![Wii pointer modes](screenshots/pointer.jpg)
 
+### Hold the Wii Remote any way you like.
+
+A Grip card on the Gyro tab says how the controller is held: Pointing, Sideways (Face Up), Wii Wheel (Face Toward You), or Upright. The gyro, the accelerometer, and gravity rotate into the game's frame together, for mappings and for the motion the virtual controller reports, and the D-pad follows the same frame, so Up is up in the hold you are using. Mario Kart in an emulator gets a wheel.
+
 ### Turn your head to aim.
 
 Sony headphones that carry a head tracker become a motion source, confirmed on the WH-1000XM5 family. The whole gyro pipeline takes it: gyro-to-stick, gyro-to-mouse, aim engage, calibration, and the DSU motion server. Discovery is by capability rather than a model list, so any headset exposing the same sensor collection is a candidate, whatever its name.
 
 Worth knowing because it explains the behavior: on these headsets the raw gyro channel streams zeros while the rotation vector carries the real motion, so PadForge synthesizes an ordinary gyro rate from consecutive rotation samples. It reports rotation, never position, so leaning closer to the screen changes nothing. Pair it with Aim Engage, because head tracking that is always live is disorienting in most games.
+
+### Or let OpenTrack turn it.
+
+PadForge reads OpenTrack's UDP output, on port 4242 by default, and the FreeTrack 2.0 shared memory at the same time. Either one arrives as a single Head Tracker device with six axes, yaw, pitch and roll plus the three translations, which bind in the mapping table like any other axis. Turn it on in the Dashboard's Head Tracking section, where the port, the rotation range in degrees, and the translation range in centimeters are set.
 
 ### Gyro into Cemu, Dolphin, Yuzu, and Ryujinx.
 
@@ -367,6 +417,10 @@ Plug in an NFC reader (any PC/SC contactless reader, like an ACR122U) and a tag 
 
 Handheld gaming PCs (Legion Go, ROG Ally, GPD Win, OneXPlayer, AYANEO, AYN, Zotac Zone, MSI Claw) and gaming laptops carry rear paddles, menu keys, wheels, and vendor hotkeys that never show up as part of a controller. The firmware types a key combination for each one, sets a bit in a vendor HID report, or raises a vendor WMI event (a Legion laptop's Vantage key). Turn on Handheld PC Buttons in Settings, press each button once in Learn / Manage Hidden Buttons, and it becomes a named button on a Hidden Buttons device row: mappings, macros, shift layers, everything. Learned combinations are swallowed before the shell sees them, so Win+D stops minimizing your desktop. No per-model table ships in the app, so a handheld released tomorrow learns the same way. The machine's own gyroscope joins as a System Motion device for handhelds whose sensor sits in the tablet.
 
+### The launcher picks the profile.
+
+Turn on Allow External Control by Launchers and Scripts on the Profiles page and PadForge serves a local named pipe. Playnite, LaunchBox, or a one-line script activates a profile by name, and that profile is held, so the foreground-window watcher stands down until the script releases it or you switch profiles yourself. Local machine only, and the pipe stays closed until you open it. A profile can also carry its own polling rate, from 1000 Hz down to 62.5 Hz, overriding the Settings interval while it is active.
+
 ---
 
 ## Every device: local co-op without limits.
@@ -397,11 +451,15 @@ Every wireless pad that reports a battery shows its charge on the Devices page, 
 
 ![Battery indicator and the Power section on the Devices page](screenshots/devices.jpg)
 
+### Plug it in, and the radio lets go.
+
+Turn on Disconnect Bluetooth When Plugged In over USB and a controller that reports it is charging drops its Bluetooth link, so it charges without powering the radio. It reads the pad's own charging report rather than a vendor table, so any controller that reports its radio address as its serial on both transports qualifies. Any USB power source counts, wall chargers included. It fires once per plug cycle, and if you turn Bluetooth back on with the cable still in, PadForge leaves it alone until the next unplug.
+
 ---
 
 ## PadForge vs other controller mappers
 
-Comparison reflects each tool's shipping release as of July 2026. Verified against each project's own docs and source: x360ce v4.17.15.0 (last release Nov 2020), XOutput v3.32 (archived and deprecated Dec 2024), reWASD v9.4.0 (May 2026), ds4windowsapp/DS4Windows v3.5 (Feb 2026), and Steamworks Documentation (Action Set Layers / Activators / Mode Shifting / Input Source Modes). ⚠️ means the feature exists but is limited or unverified at the level of detail PadForge implements it.
+Comparison reflects each tool's shipping release as of July 2026, with the rows added for 4.4.0 re-checked in September 2026. Verified against each project's own docs and source: x360ce v4.17.15.0 (last release Nov 2020), XOutput v3.32 (archived and deprecated Dec 2024), reWASD v9.4.0 (May 2026), ds4windowsapp/DS4Windows v3.5 (Feb 2026), and Steamworks Documentation (Action Set Layers / Activators / Mode Shifting / Input Source Modes). ⚠️ means the feature exists but is limited or unverified at the level of detail PadForge implements it.
 
 <details>
 <summary><b>Feature by feature</b></summary>
@@ -417,6 +475,7 @@ Comparison reflects each tool's shipping release as of July 2026. Verified again
 | DualShock 4 virtual output | ✅ | ❌ | ❌ | ✅ | ✅ | ❌ |
 | DualSense virtual output | ✅ | ❌ | ❌ | ❌ input only | ❌ | ❌ |
 | Switch Pro virtual output | ✅ via HIDMaestro | ❌ | ❌ | ✅ | ❌ | ❌ |
+| Steam Deck / Steam Controller virtual output | ✅ via HIDMaestro, Valve VID/PID, both trackpads | ❌ | ❌ | ❌ Xbox 360 / Xbox One / DS4 / Switch Pro / DS3 only | ❌ xbox360 / dualshock4 only | ❌ |
 | Flight stick / wheel / HOTAS virtual output (DirectInput) | ✅ 231 HM profiles | ❌ | ❌ | ❌ | ❌ | ❌ |
 | MIDI virtual output | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | MIDI input as a mapping source | ✅ notes / CC / pitch bend / encoders | ❌ | ❌ | ❌ | ❌ | ❌ |
@@ -444,11 +503,13 @@ Comparison reflects each tool's shipping release as of July 2026. Verified again
 | Phone as controller | ✅ in-browser, no app install, up to 16 phones at once, touchpad layout included | ❌ | ❌ | ⚠️ reWASD Mobile app (one phone, no touchpad layout) | ❌ | ❌ |
 | Share a controller with another PC's games over a network | ✅ Remote Link, LAN or internet by code, both directions, feedback returns | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Per-app profile switching | ✅ | ✅ since v4.17.12 (Nov 2020) | ❌ | ✅ Autodetect | ✅ | ✅ per-game by design |
+| Profile switching driven by a launcher or script | ✅ local named pipe, profile held until released | ⚠️ unverified | ⚠️ unverified | ✅ reWASDCommandLine `apply` | ✅ `-command LoadProfile` / `LoadTempProfile` | ⚠️ unverified |
 | Max simultaneous virtual controllers | 16 | 4 (hard-coded PAD1-4 in UI) | 4 (UI matches XInput slot indices) | 4 (Slot UI cap) | 4 (Output Slots UI cap) | 1 per physical pad |
 | 1000 Hz polling | ✅ | ⚠️ unverified | ⚠️ unverified | ✅ user-selectable 500 / 1000 Hz | ✅ on USB DS4 | ⚠️ unverified |
 | 3D + 2D controller visualization | ✅ | ⚠️ 2D Xbox 360 only | ❌ | ⚠️ 2D only | ⚠️ basic | ⚠️ configurator preview |
 | Multi-point sensitivity curve editor | ✅ unlimited points | ⚠️ single slider | ⚠️ deadzone only | ✅ custom 4-point | ⚠️ preset curves | ✅ response curves |
 | 2026 Steam Controller support | ✅ via SDL3 fork | ❌ | ❌ | ⚠️ unverified | ❌ | ✅ |
+| Handheld PC hidden buttons (rear paddles, vendor hotkeys) as mappable inputs | ✅ learned per device, no per-model table | ⚠️ unverified | ⚠️ unverified | ❌ documented unsupported on ROG Ally and Ayaneo | ⚠️ unverified | ⚠️ unverified |
 | DualShock 3 support | ✅ USB + in-app Bluetooth pairing, sixaxis, pressure, rumble | ❌ | ❌ | ✅ input + gyro | ✅ input, accel pitch/roll | ✅ native, no gyro |
 | Wii Remote / Nunchuk / Classic / Wii U Pro as a source | ✅ all four forms, in-app pairing, IR pointer | ❌ | ❌ | ✅ pairing, no IR pointer (v9.4+) | ❌ | ❌ |
 
@@ -463,7 +524,7 @@ Comparison reflects each tool's shipping release as of July 2026. Verified again
 
 ### Dashboard
 ![Dashboard](screenshots/dashboard.jpg)
-Polling rate, device count, every virtual controller slot, DSU motion server, web controller server, and driver health on one screen.
+Polling rate, device count, every virtual controller slot, and the service sections: web controller, Remote Link, head tracking, DSU motion server, lightbar mirrors, and the overlays. Driver status lives on the Settings page.
 
 ### 3D controller visualization
 ![Controller](screenshots/controller.jpg)
@@ -521,13 +582,33 @@ Per-slot touchpad tuning on any source with a touchpad surface (DualSense, DualS
 ![Wii pointer modes](screenshots/pointer.jpg)
 The Wii Remote's IR camera as an on-screen pointer. FPS-mouse mode, aspect-corrected border modes, and an off-screen freeze that holds position instead of snapping to a corner.
 
+### Wii Remote grip
+![The Grip card on the Gyro tab](screenshots/pad-gyro-grip.jpg)
+How the controller is held: Pointing, Sideways (Face Up), Wii Wheel (Face Toward You), or Upright. The gyro, the accelerometer, gravity, and the D-pad all rotate into the game's frame together.
+
 ### Macros
 ![Macros](screenshots/macros.jpg)
-Combo triggers from buttons, axes, and POV directions. Action sequences with key presses, mouse moves, scroll, delays, system volume, app volume, lightbar overrides, rumble overrides, and axis actions that latch, release, and scale virtual axes. Twelve fire modes: On Press, On Single / Double / Triple Press, On Long Press, On Short Press, On Release, While Held, Toggle, Turbo, Always, and a custom formula. A per-macro layer scope limits a macro to chosen shift layers. A macro toolbar duplicates a macro, copies and pastes it into another virtual controller, and pulls every macro from another controller in one step. Mouse-cursor actions snap the pointer to center (Recenter Mouse), pin it at a coordinate (Fix Mouse Position), or fence it inside a rectangle (Limit Mouse Region).
+Combo triggers from buttons, axes, and POV directions. Action sequences with key presses, mouse moves, scroll, delays, system volume, app volume, lightbar overrides, rumble overrides, and axis actions that latch, release, and scale virtual axes. Twelve fire modes: On Press, On Single / Double / Triple Press, On Long Press, On Short Press, On Release, While Held, Toggle, Turbo, Always, and a custom formula. A Switch Layer action jumps the slot to Base or any authored layer, and a per-macro layer scope limits a macro to chosen shift layers. A macro toolbar duplicates a macro, copies and pastes it into another virtual controller, and pulls every macro from another controller in one step. Mouse-cursor actions snap the pointer to center (Recenter Mouse), pin it at a coordinate (Fix Mouse Position), or fence it inside a rectangle (Limit Mouse Region).
+
+### Menu macro cells
+![A radial menu cell bound to a macro](screenshots/menu-macro-cell.jpg)
+A cell in a radial or grid menu can run a macro instead of pressing a button.
+
+### Menu icon packages
+![The Icon Packages card on the Menus tab](screenshots/menu-icon-packs.jpg)
+An icon package is one zip of images with a .pficons extension. Add one and its icons are available on any menu cell. PadForge reads straight from the file and never unpacks it.
 
 ### Per-app profiles
 ![Profiles](screenshots/profiles.jpg)
 Each profile holds its own mappings, deadzones, force feedback, lighting, and macros. PadForge watches the foreground window and switches profiles automatically when a matching app gains focus. Controller-shortcut combos cycle profiles without touching the keyboard.
+
+### External profile control
+![Allow External Control by Launchers and Scripts on the Profiles page](screenshots/profiles-external-control.jpg)
+A local named pipe lets Playnite, LaunchBox, or a script activate a profile and hold it until the script releases it or you switch profiles yourself. Off until you turn it on.
+
+### Per-profile polling rate
+![The polling rate picker in the profile dialog](screenshots/profile-polling-override.jpg)
+A profile can override the Settings polling interval: 1000, 500, 250, 125, or 62.5 Hz, or Default (Global Setting) to follow Settings.
 
 ### Steam Workshop config import
 ![Steam Workshop config browser](screenshots/workshop-search.jpg)
@@ -549,6 +630,14 @@ Hold a mouse button and flick up, down, left, or right. Each direction, plus a c
 ![Extended](screenshots/extended.jpg)
 Flight sticks, racing wheels, HOTAS, third-party gamepads. 231 HIDMaestro profiles plus a Custom mode that builds a HID descriptor from scratch. Up to 8 axes, 128 buttons, 4 POV hats. Configurable VID, PID, and product string.
 
+### Steam Deck virtual controller
+![An Extended slot presenting a Steam Deck](screenshots/pad-extended-steam-deck.jpg)
+An Extended slot on a Steam Deck profile: Valve's own vendor and product IDs, both trackpads, and the rear buttons, with a one-to-one automap from a real Deck.
+
+### Steam Controller virtual controller
+![An Extended slot presenting a Steam Controller 2026](screenshots/pad-extended-steam-controller.jpg)
+The Steam Controller (Wired) and the Steam Controller (2026) present the same way, each with its own input frame, its own automap, and a 3D body meshed from Valve's published CAD.
+
 ### PlayStation virtual controller
 ![PlayStation](screenshots/playstation.jpg)
 DualShock 4, DualSense, and DualSense Edge through HIDMaestro. Source gyro, accelerometer, touchpad, and battery passed through to the game.
@@ -568,6 +657,10 @@ Pick the virtual controller type. Buttons dim when you hit the per-type limit.
 ### Devices
 ![Devices](screenshots/devices.jpg)
 Every detected gamepad, joystick, keyboard, mouse, and touchpad as a card. Live raw axes, buttons, POV compass, gyro / accelerometer values, and touchpad finger positions for the selected device. Per-device HidHide toggle and Force Raw Joystick mode for when SDL3 guesses the gamepad layout wrong.
+
+### Quick Charge
+![The Power section on a DualSense device card](screenshots/devices-quick-charge.jpg)
+Disconnect Bluetooth When Plugged In over USB drops the radio link when the pad reports it is charging, so it charges without powering the radio. Any USB power source counts.
 
 ### DualShock 3
 ![DualShock 3 device card](screenshots/devices-ds3.jpg)
@@ -589,9 +682,25 @@ Connect a phone or tablet over Wi-Fi or scan the Dashboard QR code. Ten controll
 ![Remote Link](screenshots/remote-link.jpg)
 Pair your PCs and share their controllers every way. A wheel on one drives a game on another, with rumble, force feedback, adaptive triggers, lightbar, player LEDs, and speaker audio returning to the physical pad. Pair each pair once with a six-digit code. Trusted PCs reconnect on their own.
 
+### Head tracking
+![The Head Tracking section on the Dashboard](screenshots/dashboard-head-tracking.jpg)
+OpenTrack over UDP and the FreeTrack 2.0 shared memory as one six-axis Head Tracker device. Set the UDP port, the rotation range in degrees, and the translation range in centimeters.
+
+### Lightbar mirrors
+![Lightbar Mirrors and Razer Sensa HD Haptics on the Dashboard](screenshots/dashboard-lightbar-mirrors.jpg)
+Razer Chroma and Logitech LIGHTSYNC take the virtual pad's lightbar color, and Razer Sensa HD hardware plays its rumble. A profile can carry each toggle or leave it alone.
+
+### Assignment prompts
+![The Assignment Prompts card in Settings](screenshots/settings-assignment-prompts.jpg)
+When a device connects while a virtual controller's page is open, PadForge offers to assign it there. Two opt-outs, both on. Keyboards, mice, touchpads, and media keys are never offered.
+
+### Handheld PC buttons
+![The Handheld PC Buttons card in Settings](screenshots/settings-handheld-buttons.jpg)
+Learn a handheld's rear paddles, menu keys, and vendor hotkeys by pressing each one. Learned key combinations are swallowed before the shell sees them.
+
 ### Settings
 ![Settings](screenshots/settings.jpg)
-Language (10 locales, live-switch with no restart). Theme (System Default / Light / Dark). Polling interval (1-16 ms). Auto-start at login, minimize to tray, master input-hiding toggle.
+Language (10 locales, live-switch with no restart). Theme (System Default / Light / Dark). Polling interval (1-16 ms). Auto-start at login, minimize to tray, master input-hiding toggle. Driver status for HidHide, HIDMaestro, Windows MIDI Services, and SteamVR.
 
 </details>
 

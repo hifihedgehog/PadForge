@@ -211,22 +211,36 @@ try {
     Start-Process -FilePath $exe
     Start-Sleep 18
 
-    # Discover the scheme rather than assuming it: the secure lane is used
-    # when the cert binds, and plain http is the documented fallback.
-    $scheme = $null
-    foreach ($try in 'https', 'http') {
-        if (Probe-Web "${try}://localhost:${Port}/") { $scheme = $try; break }
+    # Discover the HOST as well as the scheme. The server binds the
+    # machine's LAN address, not the loopback: its whole point is a phone on
+    # the same network, and the Dashboard prints that address beside its QR
+    # code ("Running on https://10.19.90.40:8080"). Probing localhost
+    # answers nothing on either scheme, which reads exactly like a dead
+    # server and skipped all six shots in the 4.4.0 run. Try loopback first,
+    # then every IPv4 address this machine holds.
+    $hosts = @('localhost')
+    try {
+        $hosts += @(Get-NetIPAddress -AddressFamily IPv4 -EA SilentlyContinue |
+            Where-Object { $_.IPAddress -ne '127.0.0.1' } |
+            Select-Object -ExpandProperty IPAddress)
+    } catch {}
+    $base = $null
+    foreach ($h in $hosts) {
+        foreach ($try in 'https', 'http') {
+            if (Probe-Web "${try}://${h}:${Port}/") { $base = "${try}://${h}:${Port}"; break }
+        }
+        if ($base) { break }
     }
-    if (-not $scheme) { $scheme = 'https' }
-    Write-Host "  server scheme: $scheme" -ForegroundColor Cyan
+    if (-not $base) { $base = "https://localhost:${Port}" }
+    Write-Host "  server base: $base" -ForegroundColor Cyan
 
     $shots = @(
-        @{ Url = "${scheme}://localhost:${Port}/";                                 Name = 'web-landing';    Wait = 6000; W = 1900; H = 1300 },
-        @{ Url = "${scheme}://localhost:${Port}/controller.html?layout=xbox360";   Name = 'web-controller'; Wait = 9500 },
-        @{ Url = "${scheme}://localhost:${Port}/controller.html?layout=dualsense"; Name = 'web-dualsense';  Wait = 9500 },
-        @{ Url = "${scheme}://localhost:${Port}/controller.html?layout=steamdeck"; Name = 'web-steamdeck';  Wait = 9500 },
-        @{ Url = "${scheme}://localhost:${Port}/controller.html?layout=switch2pro";Name = 'web-switch2pro'; Wait = 9500 },
-        @{ Url = "${scheme}://localhost:${Port}/custom.html";                      Name = 'web-custom';     Wait = 7000 }
+        @{ Url = "$base/";                                 Name = 'web-landing';    Wait = 6000; W = 1900; H = 1300 },
+        @{ Url = "$base/controller.html?layout=xbox360";   Name = 'web-controller'; Wait = 9500 },
+        @{ Url = "$base/controller.html?layout=dualsense"; Name = 'web-dualsense';  Wait = 9500 },
+        @{ Url = "$base/controller.html?layout=steamdeck"; Name = 'web-steamdeck';  Wait = 9500 },
+        @{ Url = "$base/controller.html?layout=switch2pro";Name = 'web-switch2pro'; Wait = 9500 },
+        @{ Url = "$base/custom.html";                      Name = 'web-custom';     Wait = 7000 }
     )
     foreach ($s in $shots) {
         $h = if ($s.ContainsKey('H')) { $s.H } else { 720 }

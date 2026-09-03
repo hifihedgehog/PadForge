@@ -112,6 +112,30 @@ $map = @{
     "macro-repeat-key"            = "macro-repeat-key"
     "mapping-sensitivity"         = "mapping-sensitivity"
     "gamepad-source-picker"       = "gamepad-source-picker"
+    # v4.4.0 additions. A new shot with no entry here never refreshes its
+    # repo JPG, which is the trap this file has fallen into once per release:
+    # membership in this table decides whether a picture updates, and a stale
+    # one looks exactly like a fresh one until somebody opens it. jpg names
+    # drop the pad- prefix, like the rest of the map.
+    "dashboard-lightbar-mirrors"    = "dashboard-lightbar-mirrors"
+    "dashboard-head-tracking"       = "dashboard-head-tracking"
+    "settings-handheld-buttons"     = "settings-handheld-buttons"
+    "settings-assignment-prompts"   = "settings-assignment-prompts"
+    "devices-quick-charge"          = "devices-quick-charge"
+    "devices-head-tracking"         = "devices-head-tracking"
+    "pad-gyro-grip"                 = "gyro-grip"
+    "macro-switch-layer"            = "macro-switch-layer"
+    "menu-macro-cell"               = "menu-macro-cell"
+    "menu-icon-packs"               = "menu-icon-packs"
+    "profiles-external-control"     = "profiles-external-control"
+    "profile-polling-override"      = "profile-polling-override"
+    "pad-extended-steam-controller" = "extended-steam-controller"
+    "pad-extended-steam-deck"       = "extended-steam-deck"
+    # Captured since 4.0 and never mapped, so its repo JPG has never been
+    # written from a capture. The site asset resolves through the mirror's
+    # ALIAS table, which is why nothing caught it here.
+    "pad-bass-shakers"              = "bass-shakers"
+    "settings-diagnostics"          = "settings-diagnostics"
 }
 
 $jpgEncoder = [System.Drawing.Imaging.ImageCodecInfo]::GetImageEncoders() | Where-Object { $_.MimeType -eq "image/jpeg" }

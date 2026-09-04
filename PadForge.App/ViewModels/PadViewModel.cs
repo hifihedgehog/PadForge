@@ -397,7 +397,14 @@ namespace PadForge.ViewModels
         /// <para>Sets Preset to Custom so downstream isExtended checks route
         /// through the dynamic mapping path rather than the fixed Xbox layout.</para>
         /// </summary>
-        private void SyncExtendedConfigFromProfile()
+        /// <remarks>THE one place a profile's HID descriptor turns into the
+        /// slot's layout counts. It is not a display helper: the counts it
+        /// writes are what Step 5 builds the virtual controller from, and it
+        /// carries the Nintendo lettered-count and Valve wire-table
+        /// corrections that a raw AxisCount reading gets wrong. Internal so
+        /// the Extended card's Reset uses it instead of keeping a third,
+        /// cruder copy of the same derivation (#395).</remarks>
+        internal void SyncExtendedConfigFromProfile()
         {
             var profile = AvailableProfiles?.FirstOrDefault(p =>
                 string.Equals(p.Id, _profileId, System.StringComparison.OrdinalIgnoreCase));

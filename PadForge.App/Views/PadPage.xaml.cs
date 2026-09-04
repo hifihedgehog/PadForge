@@ -2705,7 +2705,15 @@ namespace PadForge.Views
 
             if (e.PropertyName == nameof(PadForge.ViewModels.ExtendedSlotConfig.Customize)
                 || e.PropertyName == nameof(PadForge.ViewModels.ExtendedSlotConfig.OemNameOverride)
-                || e.PropertyName == nameof(PadForge.ViewModels.ExtendedSlotConfig.ProductString))
+                || e.PropertyName == nameof(PadForge.ViewModels.ExtendedSlotConfig.ProductString)
+                // The counts are displayed from the config now, so the card
+                // has to hear them change. Picking a preset seeds all four
+                // through SyncExtendedConfigFromProfile, and without these the
+                // boxes kept showing the previous preset's numbers (#395).
+                || e.PropertyName == nameof(PadForge.ViewModels.ExtendedSlotConfig.ThumbstickCount)
+                || e.PropertyName == nameof(PadForge.ViewModels.ExtendedSlotConfig.TriggerCount)
+                || e.PropertyName == nameof(PadForge.ViewModels.ExtendedSlotConfig.PovCount)
+                || e.PropertyName == nameof(PadForge.ViewModels.ExtendedSlotConfig.ButtonCount))
             {
                 SyncExtendedConfigBar();
             }
@@ -2783,35 +2791,33 @@ namespace PadForge.Views
             ExtendedOemOverrideChk.IsChecked = vm.ExtendedConfig?.OemNameOverride == true;
             ExtendedCustomizeChk.IsChecked = vm.ExtendedConfig?.Customize == true;
 
-            if (profile != null)
-            {
-                // Layout counts derived from the profile's HID descriptor.
-                // HMProfile exposes total AxisCount, ButtonCount, HasHat.
-                // Sticks/triggers split is not directly exposed by the SDK,
-                // so use the standard gamepad convention: first four axes
-                // pair into two sticks (LX/LY/RX/RY), remaining axes are
-                // triggers. Works for typical gamepads (6 axes → 2+2);
-                // degenerate cases (joysticks with 2-3 axes) collapse to
-                // 1 stick + remainder triggers.
-                int axes = profile.AxisCount;
-                int sticks = System.Math.Min(axes, 4) / 2;
-                int triggers = System.Math.Max(0, axes - sticks * 2);
-
-                RawStickCountBox.Text = sticks.ToString();
-                ExtendedTriggerCountBox.Text = triggers.ToString();
-                RawPovCountBox.Text = (profile.HasHat ? 1 : 0).ToString();
-                RawButtonCountBox.Text = profile.ButtonCount.ToString();
-            }
-            else
-            {
-                // No profile resolved (e.g. catalog not loaded yet) — fall
-                // back to the persisted ExtendedConfig so the UI has something
-                // to show rather than blank fields.
-                RawStickCountBox.Text = vm.ExtendedConfig.ThumbstickCount.ToString();
-                ExtendedTriggerCountBox.Text = vm.ExtendedConfig.TriggerCount.ToString();
-                RawPovCountBox.Text = vm.ExtendedConfig.PovCount.ToString();
-                RawButtonCountBox.Text = vm.ExtendedConfig.ButtonCount.ToString();
-            }
+            // The four count boxes read the SAME field their edits write,
+            // which is the field Step 5 builds the virtual controller from
+            // (InputService fills CustomControllerLayout straight out of
+            // ExtendedConfig, unconditionally). They used to re-derive the
+            // counts from the profile's HID descriptor whenever a profile
+            // resolved, so a user who set 1 trigger and 24 buttons saw the
+            // preset's 2 and 16 instead, and every re-sync (the OEM override
+            // checkbox, the Customize checkbox, an edited product string)
+            // put the preset's numbers back on screen (#395, @heinthanth).
+            //
+            // Two further things were wrong with reading the descriptor here.
+            // It was a SECOND derivation of a rule PadViewModel already owns
+            // in SyncExtendedConfigFromProfile, and a cruder one: it guessed
+            // the stick and trigger split from AxisCount instead of reading
+            // the profile's own StickCount and TriggerCount, and it knew
+            // nothing about the Nintendo lettered-count or Valve wire-table
+            // corrections. And the three identity fields above already do
+            // the right thing, so one card had two rules.
+            //
+            // The descriptor still reaches these boxes. It reaches them the
+            // way it reaches the controller: picking a preset seeds
+            // ExtendedConfig through that one seeder, and this reads what the
+            // seeder wrote.
+            RawStickCountBox.Text = vm.ExtendedConfig.ThumbstickCount.ToString();
+            ExtendedTriggerCountBox.Text = vm.ExtendedConfig.TriggerCount.ToString();
+            RawPovCountBox.Text = vm.ExtendedConfig.PovCount.ToString();
+            RawButtonCountBox.Text = vm.ExtendedConfig.ButtonCount.ToString();
         }
 
         private void ExtendedOverride_Changed(object sender, RoutedEventArgs e)
@@ -3535,10 +3541,6 @@ namespace PadForge.Views
                 string.Equals(p.Id, vm.ProfileId, System.StringComparison.OrdinalIgnoreCase));
             if (profile == null) return;
 
-            int axes = profile.AxisCount;
-            int sticks = System.Math.Min(axes, 4) / 2;
-            int triggers = System.Math.Max(0, axes - sticks * 2);
-
             // Write the config first (fires property-changed → persist +
             // triggers Pass 1 destroy/rebuild when Customize is active and
             // the values differ from the applied snapshot). _syncingExtendedConfig
@@ -3550,10 +3552,13 @@ namespace PadForge.Views
                 vm.ExtendedConfig.ProductString = !string.IsNullOrEmpty(profile.ProductString)
                     ? profile.ProductString
                     : profile.Name ?? string.Empty;
-                vm.ExtendedConfig.ThumbstickCount = sticks;
-                vm.ExtendedConfig.TriggerCount = triggers;
-                vm.ExtendedConfig.PovCount = profile.HasHat ? 1 : 0;
-                vm.ExtendedConfig.ButtonCount = profile.ButtonCount;
+                // The counts come from the ONE seeder, which reads the
+                // profile's own StickCount and TriggerCount and applies the
+                // Nintendo and Valve corrections. Deriving them here from
+                // AxisCount put different numbers in the config than picking
+                // the same preset does, on exactly the profiles that need
+                // the corrections most (#395).
+                vm.SyncExtendedConfigFromProfile();
                 vm.ExtendedConfig.OemNameOverride = false;
                 // VID / PID are override fields too, and the handler's own
                 // comment promises every one of them is snapped back. Left
@@ -3655,6 +3660,13 @@ namespace PadForge.Views
 
         private void ApplyExtendedCustomValues()
         {
+            // The guard ExtendedOverride_Changed has carried all along, and
+            // this sibling did not. SyncExtendedFields writes all four boxes
+            // programmatically, and this handler reads all four whenever ANY
+            // one of them loses focus, so a sync landing mid-edit could push
+            // the freshly-written text straight back into the model as if the
+            // user had typed it (#395).
+            if (_syncingExtendedConfig) return;
             if (DataContext is not PadViewModel vm) return;
 
             if (int.TryParse(RawStickCountBox.Text, out int sticks))

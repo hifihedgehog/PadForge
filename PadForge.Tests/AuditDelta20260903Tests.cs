@@ -491,12 +491,18 @@ namespace PadForge.Tests
         // -- The token walk cannot reach our own virtual pads -------------
 
         /// <summary>A HIDMaestro pad roots at ROOT\VID_xxxx and PID_yyyy with
-        /// an IG_nn suffix, and its HID child repeats that token, so a
-        /// token-bounded walk unites them. Every ROOT node on this bench
-        /// carries the system container (32 of 32 measured), which is exactly
-        /// when the token branch runs. Before the bail was removed such a node
-        /// never walked at all. With it gone the walk climbs into the PadForge
-        /// enumerator and blacklists the controller we just created.</summary>
+        /// an IG_nn suffix, and its HID child repeats that token, so the token
+        /// alone cannot tell them apart. This pins the guard that can.
+        ///
+        /// <para>Backstop, not a live defect, and the first version of this
+        /// comment claimed otherwise. A walk starting on a real pad climbs USB
+        /// composites and hubs, never a ROOT node, and it can only START on
+        /// one of ours if a UserDevice row exists for it. Step1's self-virtual
+        /// guard prevents that row by returning before FindOrCreateUserDevice,
+        /// so our own pads never reach the Devices list and nothing can mark
+        /// one for hiding. The guard earns its place because that enumeration
+        /// layer is documented as having failed once, after a driver upgrade
+        /// gave the virtual devnodes fresh instance paths.</para></summary>
         [Fact]
         public void HidMaestroRootAndItsChild_ShareTheToken_SoTheWalkMustRefuseIt()
         {

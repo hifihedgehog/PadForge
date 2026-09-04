@@ -875,13 +875,23 @@ namespace PadForge.Common
         {
             string id = GetInstanceId(devInst);
 
-            // Never scope into one of our own virtual pads. HIDMaestro roots
-            // its nodes at ROOT\VID_xxxx&PID_yyyy&IG_nn, every ROOT node on
-            // this bench carries the system container (32 of 32 measured), and
-            // the root repeats the token its HID child carries. Without this
-            // the token walk climbs out of a real pad into PadForge's own
-            // enumerator and blacklists the controller we just created, which
-            // is the self-hide #391 already cost a round.
+            // Backstop, not a live fix, and the first comment here claimed
+            // otherwise. A real pad's parents are its USB composite and its
+            // hub, never a ROOT node, so a walk that STARTS on a real pad
+            // cannot reach one of ours. Reaching one needs the walk to start
+            // there, which needs a UserDevice row with hiding switched on, and
+            // Step1's self-virtual guard hits `continue` before
+            // FindOrCreateUserDevice, so no such row is ever built. Nothing
+            // shows our own pads in the Devices list, so nothing can mark one.
+            //
+            // It stays because the layer that prevents it is documented as
+            // having failed. That guard's own comment records a driver upgrade
+            // recreating the virtual devnodes with fresh instance paths and
+            // slipping past both the fork enumeration filter and the cloak. If
+            // that recurs, this keeps the mistake to one node instead of the
+            // ROOT parent and every sibling under it, because HIDMaestro roots
+            // its nodes at ROOT\VID_xxxx&PID_yyyy&IG_nn and the child repeats
+            // the token the parent carries.
             if (MatchesHidMaestroPattern(id)) return false;
 
             if (!systemScoped) return GetContainerId(devInst) == containerId;

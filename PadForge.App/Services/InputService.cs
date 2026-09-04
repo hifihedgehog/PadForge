@@ -15663,6 +15663,7 @@ namespace PadForge.Services
                 list.Add(new KbmSlotConfigData
                 {
                     SlotIndex = i,
+                    Surfaces = cfg.Surfaces,
                     SocdMode = cfg.SocdMode,
                     SocdPairs = cfg.SocdPairs
                 });
@@ -16453,8 +16454,12 @@ namespace PadForge.Services
                         _mainVm.Pads[idx].OutputType == VirtualControllerType.KeyboardMouse)
                     {
                         var cfg = _mainVm.Pads[idx].KbmConfig;
+                        cfg.Surfaces = cfgData.Surfaces;
                         cfg.SocdMode = cfgData.SocdMode;
                         cfg.SocdPairs = cfgData.SocdPairs;
+                        // The mode narrows the mapping table, so the view has
+                        // to hear about a profile apply too (#408).
+                        _mainVm.Pads[idx].NotifyKbmSurfacesChanged();
                     }
                 }
             }

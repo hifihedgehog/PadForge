@@ -3322,6 +3322,27 @@
                             </Border>
                         </Popup>
 
+                        <!-- Keyboard / mouse scope (#408, @Xaklse on Discord).
+                             Sits with the search box and the device funnel
+                             because it is the same kind of thing: a view
+                             control over the table, session-only, ANDed with
+                             the search. Distinct from the slot's Surfaces
+                             mode, which is persistent output configuration.
+                             KbmSocdCardVisible is the Keyboard + Mouse slot
+                             gate despite its SOCD-era name, so the scope
+                             appears on no other slot type. -->
+                        <ComboBox x:Name="MappingSurfaceScopeBox" Margin="4,0,0,0" MinWidth="110"
+                                  VerticalAlignment="Center" Padding="6,2"
+                                  IsSynchronizedWithCurrentItem="False"
+                                  SelectedValuePath="Tag"
+                                  SelectedValue="{Binding MappingSurfaceScope, Mode=TwoWay}"
+                                  ToolTip="{Binding Pad_Mapping_Scope_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                  Visibility="{Binding KbmSocdCardVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <ComboBoxItem Tag="All" Content="{Binding Pad_Mapping_Scope_All, Source={x:Static strings:Strings.Instance}}"/>
+                            <ComboBoxItem Tag="Mouse" Content="{Binding Pad_Mapping_Scope_Mouse, Source={x:Static strings:Strings.Instance}}"/>
+                            <ComboBoxItem Tag="Keyboard" Content="{Binding Pad_Mapping_Scope_Keyboard, Source={x:Static strings:Strings.Instance}}"/>
+                        </ComboBox>
+
                         <!-- Clear All rides at the far end in warning chrome
                              (#175 item 1d): it wipes every mapping row, so it
                              no longer leads the strip, and the Click path asks
@@ -13248,6 +13269,62 @@
                                             </StackPanel>
                                         </Button>
                                     </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Surfaces card (#408, @Xaklse on Discord): which
+                             halves of a Keyboard + Mouse slot are live. Its
+                             own card rather than a row on the SOCD card
+                             below, because that card's header says SOCD and
+                             the page's card language decides where a setting
+                             lives. Same visibility gate, so both appear only
+                             on a Keyboard + Mouse slot. -->
+                        <Border Style="{StaticResource CardBorder}" Margin="0,8,0,0"
+                                Visibility="{Binding KbmSocdCardVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="&#xE7FC;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_Kbm_Surfaces_Label, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                    <ui:Button Command="{Binding KbmConfig.ResetSurfacesCommand}" Style="{StaticResource ResetAllButton}"
+                                               Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                               ToolTip="{Binding Pad_Kbm_Surfaces_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <TextBlock Text="{Binding Pad_Kbm_Surfaces_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource CardDescription}"/>
+
+                                <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                    <TextBlock Text="{Binding Pad_Kbm_Surfaces_Label, Source={x:Static strings:Strings.Instance}}"
+                                               Width="140" VerticalAlignment="Center"
+                                               ToolTip="{Binding Pad_Kbm_Surfaces_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <!-- Bound to the PadViewModel forwarder, not to
+                                         KbmConfig.Surfaces: the KbmConfig setter replaces
+                                         the instance on a profile load, so binding through
+                                         the owner keeps the table refresh alive. -->
+                                    <ComboBox ItemsSource="{Binding KbmConfig.AvailableKbmSurfaces}"
+                                              SelectedValue="{Binding KbmSurfaces, Mode=TwoWay}"
+                                              SelectedValuePath="Value"
+                                              IsSynchronizedWithCurrentItem="False"
+                                              MinWidth="260" VerticalAlignment="Center" Padding="4,2"
+                                              ToolTip="{Binding Pad_Kbm_Surfaces_Tooltip, Source={x:Static strings:Strings.Instance}}">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Vertical" Margin="0,2,0,2">
+                                                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="12"/>
+                                                    <TextBlock Text="{Binding Description}"
+                                                               FontSize="10"
+                                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                               TextWrapping="Wrap" MaxWidth="260"
+                                                               Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ComboBoxItem}}, Converter={StaticResource NullToCollapsedConverter}, FallbackValue=Collapsed}"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                    <ui:Button Command="{Binding KbmConfig.ResetSurfacesCommand}" Style="{StaticResource ResetButton}"
+                                               VerticalAlignment="Center" Margin="8,0,0,0"
+                                               ToolTip="{Binding Pad_Kbm_Surfaces_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                             </StackPanel>
                         </Border>

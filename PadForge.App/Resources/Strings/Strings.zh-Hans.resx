@@ -3465,4 +3465,40 @@
   <data name="About_LinuxmotehookDesc" xml:space="preserve">
     <value>握持设置所对应的 Wii 遥控器握持方向预设。linuxmotehook 采用 Apache-2.0。WiimoteHook 是通过其文档参考的闭源工具。不随附任何代码。</value>
   </data>
+  <data name="Pad_Kbm_Surfaces_Label" xml:space="preserve">
+    <value>输入面</value>
+  </data>
+  <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
+    <value>选择此插槽启用哪些部分。关闭的一侧会隐藏其行并停止发送，但映射会保留，重新开启后即可恢复。</value>
+  </data>
+  <data name="Pad_Kbm_Surfaces_Both_Name" xml:space="preserve">
+    <value>键盘和鼠标</value>
+  </data>
+  <data name="Pad_Kbm_Surfaces_Both_Description" xml:space="preserve">
+    <value>该插槽同时发送按键和鼠标输入。</value>
+  </data>
+  <data name="Pad_Kbm_Surfaces_MouseOnly_Name" xml:space="preserve">
+    <value>仅鼠标</value>
+  </data>
+  <data name="Pad_Kbm_Surfaces_MouseOnly_Description" xml:space="preserve">
+    <value>仅显示鼠标行，且仅发送鼠标输入。</value>
+  </data>
+  <data name="Pad_Kbm_Surfaces_KeyboardOnly_Name" xml:space="preserve">
+    <value>仅键盘</value>
+  </data>
+  <data name="Pad_Kbm_Surfaces_KeyboardOnly_Description" xml:space="preserve">
+    <value>仅显示键盘行，且仅发送按键。</value>
+  </data>
+  <data name="Pad_Mapping_Scope_All" xml:space="preserve">
+    <value>全部</value>
+  </data>
+  <data name="Pad_Mapping_Scope_Keyboard" xml:space="preserve">
+    <value>键盘</value>
+  </data>
+  <data name="Pad_Mapping_Scope_Mouse" xml:space="preserve">
+    <value>鼠标</value>
+  </data>
+  <data name="Pad_Mapping_Scope_Tooltip" xml:space="preserve">
+    <value>将表格限定为键盘行或鼠标行。</value>
+  </data>
 </root>

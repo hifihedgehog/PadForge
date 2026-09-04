@@ -2387,6 +2387,7 @@ namespace PadForge.Services
                 var d = dst.KbmConfig;
                 if (s != null && d != null)
                 {
+                    d.Surfaces = s.Surfaces;
                     d.SocdMode = s.SocdMode;
                     d.SocdPairs = s.SocdPairs;
                 }
@@ -3087,8 +3088,12 @@ namespace PadForge.Services
                     _mainVm.Pads[idx].OutputType == Engine.VirtualControllerType.KeyboardMouse)
                 {
                     var cfg = _mainVm.Pads[idx].KbmConfig;
+                    cfg.Surfaces = cfgData.Surfaces;
                     cfg.SocdMode = cfgData.SocdMode;
                     cfg.SocdPairs = cfgData.SocdPairs;
+                    // The mode narrows the mapping table, so the view has to
+                    // hear about a load, not just about the dropdown (#408).
+                    _mainVm.Pads[idx].NotifyKbmSurfacesChanged();
                 }
             }
         }

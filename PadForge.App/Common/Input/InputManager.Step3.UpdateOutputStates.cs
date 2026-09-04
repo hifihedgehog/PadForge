@@ -185,8 +185,16 @@ namespace PadForge.Common.Input
                     if (slot >= 0 && slot < MaxPads &&
                         SlotControllerTypes[slot] == VirtualControllerType.KeyboardMouse)
                     {
+                        // The slot's surface mode drops the half it does not
+                        // drive (#408). Gated here, at the one place the raw
+                        // state leaves the mapper, so every mouse lane is
+                        // covered and not just the ones in the button loop.
+                        var kbmSurfaces = _kbmConfigs[slot];
                         us.KbmRawOutputState = MapInputToKbmRaw(
-                            ud.InputState, ps, ms, deviceGuidStr, slot);
+                            ud.InputState, ps, ms, deviceGuidStr, slot)
+                            .WithSurfaces(
+                                kbmSurfaces == null || kbmSurfaces.KeyboardEnabled,
+                                kbmSurfaces == null || kbmSurfaces.MouseEnabled);
                     }
 
                     // For Vr slots, produce the raw VR output state.

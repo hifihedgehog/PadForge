@@ -3514,4 +3514,40 @@ You can retry later from Settings.</value></data>
   <data name="About_LinuxmotehookDesc" xml:space="preserve">
     <value>Wii Remote hold-orientation presets the Grip setting mirrors. linuxmotehook is Apache-2.0. WiimoteHook is a closed-source tool read through its documentation. No code ships.</value>
   </data>
+  <data name="Pad_Kbm_Surfaces_Label" xml:space="preserve">
+    <value>Surfaces</value>
+  </data>
+  <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
+    <value>Choose which halves of this slot are live. Turning a half off hides its rows and stops it sending, and keeps its mappings so turning it back on restores them.</value>
+  </data>
+  <data name="Pad_Kbm_Surfaces_Both_Name" xml:space="preserve">
+    <value>Keyboard and Mouse</value>
+  </data>
+  <data name="Pad_Kbm_Surfaces_Both_Description" xml:space="preserve">
+    <value>The slot sends keystrokes and mouse input.</value>
+  </data>
+  <data name="Pad_Kbm_Surfaces_MouseOnly_Name" xml:space="preserve">
+    <value>Mouse Only</value>
+  </data>
+  <data name="Pad_Kbm_Surfaces_MouseOnly_Description" xml:space="preserve">
+    <value>Only the mouse rows are shown, and only mouse input is sent.</value>
+  </data>
+  <data name="Pad_Kbm_Surfaces_KeyboardOnly_Name" xml:space="preserve">
+    <value>Keyboard Only</value>
+  </data>
+  <data name="Pad_Kbm_Surfaces_KeyboardOnly_Description" xml:space="preserve">
+    <value>Only the keyboard rows are shown, and only keystrokes are sent.</value>
+  </data>
+  <data name="Pad_Mapping_Scope_All" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="Pad_Mapping_Scope_Keyboard" xml:space="preserve">
+    <value>Keyboard</value>
+  </data>
+  <data name="Pad_Mapping_Scope_Mouse" xml:space="preserve">
+    <value>Mouse</value>
+  </data>
+  <data name="Pad_Mapping_Scope_Tooltip" xml:space="preserve">
+    <value>Narrow the table to keyboard rows or mouse rows.</value>
+  </data>
 </root>

@@ -3459,4 +3459,40 @@ Você pode tentar novamente mais tarde em Configurações.</value></data>
   <data name="About_LinuxmotehookDesc" xml:space="preserve">
     <value>Predefinições de orientação de pegada do Wii Remote que a configuração de Pegada reflete. O linuxmotehook é Apache-2.0. O WiimoteHook é uma ferramenta de código fechado lida por meio de sua documentação. Nenhum código é distribuído.</value>
   </data>
+  <data name="Pad_Kbm_Surfaces_Label" xml:space="preserve">
+    <value>Superfícies</value>
+  </data>
+  <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
+    <value>Escolha quais metades deste slot ficam ativas. Desligar uma metade oculta suas linhas e para o envio, mas mantém os mapeamentos para que voltem ao religá-la.</value>
+  </data>
+  <data name="Pad_Kbm_Surfaces_Both_Name" xml:space="preserve">
+    <value>Teclado e Mouse</value>
+  </data>
+  <data name="Pad_Kbm_Surfaces_Both_Description" xml:space="preserve">
+    <value>O slot envia pressionamentos de teclas e entradas do mouse.</value>
+  </data>
+  <data name="Pad_Kbm_Surfaces_MouseOnly_Name" xml:space="preserve">
+    <value>Somente Mouse</value>
+  </data>
+  <data name="Pad_Kbm_Surfaces_MouseOnly_Description" xml:space="preserve">
+    <value>Apenas as linhas do mouse são exibidas e apenas entradas do mouse são enviadas.</value>
+  </data>
+  <data name="Pad_Kbm_Surfaces_KeyboardOnly_Name" xml:space="preserve">
+    <value>Somente Teclado</value>
+  </data>
+  <data name="Pad_Kbm_Surfaces_KeyboardOnly_Description" xml:space="preserve">
+    <value>Apenas as linhas do teclado são exibidas e apenas pressionamentos de teclas são enviados.</value>
+  </data>
+  <data name="Pad_Mapping_Scope_All" xml:space="preserve">
+    <value>Tudo</value>
+  </data>
+  <data name="Pad_Mapping_Scope_Keyboard" xml:space="preserve">
+    <value>Teclado</value>
+  </data>
+  <data name="Pad_Mapping_Scope_Mouse" xml:space="preserve">
+    <value>Mouse</value>
+  </data>
+  <data name="Pad_Mapping_Scope_Tooltip" xml:space="preserve">
+    <value>Restringe a tabela às linhas de teclado ou de mouse.</value>
+  </data>
 </root>

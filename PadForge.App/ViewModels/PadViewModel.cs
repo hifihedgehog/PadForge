@@ -801,6 +801,37 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _kbmConfig, value ?? new());
         }
 
+        /// <summary>The Keyboard + Mouse surface mode, forwarded from
+        /// <see cref="KbmConfig"/> for the card's dropdown (#408).
+        ///
+        /// <para>The UI binds THIS rather than KbmConfig.Surfaces so nothing
+        /// has to subscribe to the config instance. That setter REPLACES the
+        /// object on a profile load, and a listener anchored to the old
+        /// instance goes silently dead, which is the same shape that killed
+        /// the effects dispatcher when ResetDeviceSlotConfigs started handing
+        /// out fresh DeviceSlotConfigs.</para></summary>
+        public string KbmSurfaces
+        {
+            get => _kbmConfig?.Surfaces ?? KbmSlotConfig.DefaultSurfaces;
+            set
+            {
+                var cfg = _kbmConfig;
+                if (cfg == null || cfg.Surfaces == value) return;
+                cfg.Surfaces = value;
+                NotifyKbmSurfacesChanged();
+            }
+        }
+
+        /// <summary>Re-reads the surface mode after something OTHER than the
+        /// dropdown wrote it, a profile apply or a settings load, and
+        /// re-filters the table so hidden halves disappear without waiting
+        /// for the next keystroke.</summary>
+        public void NotifyKbmSurfacesChanged()
+        {
+            OnPropertyChanged(nameof(KbmSurfaces));
+            ApplyMappingPickerFilter();
+        }
+
         // ═══════════════════════════════════════════════
         //  #1: Multi-device selection within a slot
         // ═══════════════════════════════════════════════
@@ -1051,7 +1082,46 @@ namespace PadForge.ViewModels
         /// <summary>True while any filter narrows the list, so the funnel
         /// button can read as engaged.</summary>
         public bool MappingPickerFilterActive
-            => HiddenPickerDeviceKeys.Count > 0 || _mappingInputSearch.Length > 0;
+            => HiddenPickerDeviceKeys.Count > 0
+               || _mappingInputSearch.Length > 0
+               || _mappingSurfaceScope != "All";
+
+        private string _mappingSurfaceScope = "All";
+        /// <summary>Keyboard + Mouse table scope: "All", "Keyboard" or
+        /// "Mouse" (#408, @Xaklse on Discord). A VIEW control, session-only
+        /// like the search text, and distinct from KbmConfig.Surfaces, which
+        /// is persistent output configuration. The scope narrows what you are
+        /// looking at inside whatever the mode already allows.</summary>
+        public string MappingSurfaceScope
+        {
+            get => _mappingSurfaceScope;
+            set
+            {
+                string v = value;
+                if (v != "Keyboard" && v != "Mouse") v = "All";
+                if (!SetProperty(ref _mappingSurfaceScope, v)) return;
+                ApplyMappingPickerFilter();
+            }
+        }
+
+        /// <summary>Whether a Keyboard + Mouse row survives the slot's
+        /// surface mode and the table's scope. Non-KBM rows are unaffected,
+        /// so this is a no-op on every other slot type.</summary>
+        internal static bool RowMatchesSurface(MappingItem m, string scope, KbmSlotConfig cfg)
+        {
+            if (m == null) return false;
+            var kind = KbmSurfaceOf(m.TargetSettingName);
+            if (kind == null) return true;
+
+            // The persistent mode first: a half the slot does not drive has
+            // no business showing rows the engine will not dispatch.
+            if (cfg != null && !cfg.Allows(kind.Value)) return false;
+
+            // Then the transient view scope.
+            if (scope == "Keyboard") return kind.Value == KbmSurfaceKind.Keyboard;
+            if (scope == "Mouse") return kind.Value == KbmSurfaceKind.Mouse;
+            return true;
+        }
 
         /// <summary>A grid row matches the search when its target label
         /// or its selected source's display name carries the text. Rows
@@ -1091,12 +1161,21 @@ namespace PadForge.ViewModels
             var rowView = CollectionViewSource.GetDefaultView(Mappings);
             if (rowView != null)
             {
-                if (string.IsNullOrEmpty(_mappingInputSearch))
+                // The surface mode narrows rows even with no search and no
+                // scope, so the zero-cost null filter only applies when all
+                // three are inert (#408).
+                var kbmCfg = OutputType == VirtualControllerType.KeyboardMouse ? KbmConfig : null;
+                bool surfaceNarrows = _mappingSurfaceScope != "All"
+                    || (kbmCfg != null && kbmCfg.Surfaces != KbmSlotConfig.DefaultSurfaces);
+
+                if (string.IsNullOrEmpty(_mappingInputSearch) && !surfaceNarrows)
                     rowView.Filter = null;
                 else
                 {
                     string search = _mappingInputSearch;
-                    rowView.Filter = o => RowMatchesSearch(o as MappingItem, search);
+                    string scope = _mappingSurfaceScope;
+                    rowView.Filter = o => RowMatchesSearch(o as MappingItem, search)
+                                       && RowMatchesSurface(o as MappingItem, scope, kbmCfg);
                 }
                 shown = 0;
                 foreach (var _ in rowView) shown++;
@@ -1105,7 +1184,7 @@ namespace PadForge.ViewModels
             // Field-provable delivery (the first attempt shipped with no
             // way to tell whether typing reached the filter at all).
             PadForge.Engine.SdlDiagLog.WriteLine(
-                $"MAPFILTER slot={PadIndex} search=\"{_mappingInputSearch}\" hiddenDevices={HiddenPickerDeviceKeys.Count} rowsShown={(shown < 0 ? "n/a" : shown.ToString())}/{Mappings.Count}");
+                $"MAPFILTER slot={PadIndex} search=\"{_mappingInputSearch}\" scope={_mappingSurfaceScope} surfaces={(OutputType == VirtualControllerType.KeyboardMouse ? KbmConfig?.Surfaces ?? "n/a" : "n/a")} hiddenDevices={HiddenPickerDeviceKeys.Count} rowsShown={(shown < 0 ? "n/a" : shown.ToString())}/{Mappings.Count}");
 
             OnPropertyChanged(nameof(MappingPickerFilterActive));
         }
@@ -2609,6 +2688,30 @@ namespace PadForge.ViewModels
             void AddKey(string label, byte vk)
                 => Mappings.Add(new MappingItem(label, $"KbmKey{vk:X2}", MappingCategory.Buttons));
 
+            // MOUSE FIRST (#408). The keyboard block below is about 110 rows
+            // and the mouse is 9, so mouse bindings used to sit under the
+            // whole keyboard and anyone binding a stick to mouse look had to
+            // scroll past every letter, digit, function key and numpad key to
+            // reach them. Map All walks Mappings in order too, so it now
+            // starts on the mouse for the same reason.
+
+            // ── Mouse buttons ──
+            Mappings.Add(new MappingItem(Strings.Instance.Mouse_LeftClick, "KbmMBtn0", MappingCategory.Buttons));
+            Mappings.Add(new MappingItem(Strings.Instance.Mouse_RightClick, "KbmMBtn1", MappingCategory.Buttons));
+            Mappings.Add(new MappingItem(Strings.Instance.Mouse_MiddleClick, "KbmMBtn2", MappingCategory.Buttons));
+            Mappings.Add(new MappingItem(Strings.Instance.Mouse_Button4, "KbmMBtn3", MappingCategory.Buttons));
+            Mappings.Add(new MappingItem(Strings.Instance.Mouse_Button5, "KbmMBtn4", MappingCategory.Buttons));
+
+            // ── Mouse movement axes (bidirectional) ──
+            Mappings.Add(new MappingItem(Strings.Instance.Mouse_X, "KbmMouseX", MappingCategory.LeftStick, negSettingName: "KbmMouseXNeg"));
+            Mappings.Add(new MappingItem(Strings.Instance.Mouse_Y, "KbmMouseY", MappingCategory.LeftStick, negSettingName: "KbmMouseYNeg"));
+
+            // ── Mouse scroll (bidirectional, visualized as Right Stick Y) ──
+            Mappings.Add(new MappingItem(Strings.Instance.Mouse_Scroll, "KbmScroll", MappingCategory.RightStick, negSettingName: "KbmScrollNeg"));
+
+            // ── Horizontal mouse scroll (issue #154, office-mouse tilt wheel) ──
+            Mappings.Add(new MappingItem(Strings.Instance.Mouse_ScrollH, "KbmScrollH", MappingCategory.RightStick, negSettingName: "KbmScrollHNeg"));
+
             // ── Letters ──
             for (int i = 0; i < 26; i++)
                 AddKey(((char)('A' + i)).ToString(), (byte)(0x41 + i));
@@ -2674,23 +2777,28 @@ namespace PadForge.ViewModels
             AddKey("Num -", 0x6D);
             AddKey("Num .", 0x6E);
             AddKey("Num /", 0x6F);
+        }
 
-            // ── Mouse buttons ──
-            Mappings.Add(new MappingItem(Strings.Instance.Mouse_LeftClick, "KbmMBtn0", MappingCategory.Buttons));
-            Mappings.Add(new MappingItem(Strings.Instance.Mouse_RightClick, "KbmMBtn1", MappingCategory.Buttons));
-            Mappings.Add(new MappingItem(Strings.Instance.Mouse_MiddleClick, "KbmMBtn2", MappingCategory.Buttons));
-            Mappings.Add(new MappingItem(Strings.Instance.Mouse_Button4, "KbmMBtn3", MappingCategory.Buttons));
-            Mappings.Add(new MappingItem(Strings.Instance.Mouse_Button5, "KbmMBtn4", MappingCategory.Buttons));
-
-            // ── Mouse movement axes (bidirectional) ──
-            Mappings.Add(new MappingItem(Strings.Instance.Mouse_X, "KbmMouseX", MappingCategory.LeftStick, negSettingName: "KbmMouseXNeg"));
-            Mappings.Add(new MappingItem(Strings.Instance.Mouse_Y, "KbmMouseY", MappingCategory.LeftStick, negSettingName: "KbmMouseYNeg"));
-
-            // ── Mouse scroll (bidirectional, visualized as Right Stick Y) ──
-            Mappings.Add(new MappingItem(Strings.Instance.Mouse_Scroll, "KbmScroll", MappingCategory.RightStick, negSettingName: "KbmScrollNeg"));
-
-            // ── Horizontal mouse scroll (issue #154, office-mouse tilt wheel) ──
-            Mappings.Add(new MappingItem(Strings.Instance.Mouse_ScrollH, "KbmScrollH", MappingCategory.RightStick, negSettingName: "KbmScrollHNeg"));
+        /// <summary>Which half of a Keyboard + Mouse slot a mapping row
+        /// belongs to, or null when the row is not a Keyboard + Mouse row at
+        /// all. ONE classifier, called by the surface mode and by the table
+        /// filter, so the two cannot drift apart the way two copies of the
+        /// POV sector rule did (#408).
+        ///
+        /// <para>The descriptor vocabulary is the fact it reads, and it is
+        /// the same vocabulary the engine dispatches on: keyboard rows are
+        /// "KbmKey" plus the VK in hex, and every other Kbm row is mouse
+        /// (KbmMBtn0..4, KbmMouseX/Y, KbmScroll, KbmScrollH).</para></summary>
+        internal static KbmSurfaceKind? KbmSurfaceOf(string settingName)
+        {
+            if (string.IsNullOrEmpty(settingName)) return null;
+            if (settingName.StartsWith("KbmKey", StringComparison.Ordinal))
+                return KbmSurfaceKind.Keyboard;
+            if (settingName.StartsWith("KbmMBtn", StringComparison.Ordinal)
+                || settingName.StartsWith("KbmMouse", StringComparison.Ordinal)
+                || settingName.StartsWith("KbmScroll", StringComparison.Ordinal))
+                return KbmSurfaceKind.Mouse;
+            return null;
         }
 
         /// <summary>

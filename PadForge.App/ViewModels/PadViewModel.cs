@@ -222,6 +222,14 @@ namespace PadForge.ViewModels
                     // output type, never a physical-device capability.
                     OnPropertyChanged(nameof(RumbleAudioTabVisible));
                     OnPropertyChanged(nameof(OutputTabVisible));
+                    // The table scope only exists on a Keyboard + Mouse slot.
+                    // Its box disappears with the slot type, so leaving the
+                    // value set would strand a filter nothing can clear.
+                    OnPropertyChanged(nameof(KbmSocdCardVisible));
+                    OnPropertyChanged(nameof(KbmSocdEditorVisible));
+                    OnPropertyChanged(nameof(KbmSurfaceScopeVisible));
+                    _mappingSurfaceScope = "All";
+                    OnPropertyChanged(nameof(MappingSurfaceScope));
                     if (!OutputTabVisible && SelectedConfigTab == OutputTabIndex)
                         SelectedConfigTab = 0;
 
@@ -805,11 +813,10 @@ namespace PadForge.ViewModels
         /// <see cref="KbmConfig"/> for the card's dropdown (#408).
         ///
         /// <para>The UI binds THIS rather than KbmConfig.Surfaces so nothing
-        /// has to subscribe to the config instance. That setter REPLACES the
-        /// object on a profile load, and a listener anchored to the old
-        /// instance goes silently dead, which is the same shape that killed
-        /// the effects dispatcher when ResetDeviceSlotConfigs started handing
-        /// out fresh DeviceSlotConfigs.</para></summary>
+        /// has to subscribe to the config instance, and every apply leg
+        /// mutates that instance in place rather than raising anything the
+        /// chip is bound to. The forwarder plus NotifyKbmSurfacesChanged is
+        /// what carries a load, a paste or a profile switch to the view.</para></summary>
         public string KbmSurfaces
         {
             get => _kbmConfig?.Surfaces ?? KbmSlotConfig.DefaultSurfaces;
@@ -839,6 +846,16 @@ namespace PadForge.ViewModels
         public void NotifyKbmSurfacesChanged()
         {
             OnPropertyChanged(nameof(KbmSurfaces));
+            OnPropertyChanged(nameof(KbmSocdEditorVisible));
+            OnPropertyChanged(nameof(KbmSurfaceScopeVisible));
+            // A mode that hides the scope box has to retire the scope with it,
+            // or the box comes back later still narrowed to a half that is now
+            // the only half.
+            if (!KbmSurfaceScopeVisible && _mappingSurfaceScope != "All")
+            {
+                _mappingSurfaceScope = "All";
+                OnPropertyChanged(nameof(MappingSurfaceScope));
+            }
             ApplyMappingPickerFilter();
         }
 
@@ -1107,6 +1124,11 @@ namespace PadForge.ViewModels
             get => _mappingSurfaceScope;
             set
             {
+                // Refused rather than coerced, for the reason KbmSurfaces
+                // gives: an empty write is a Selector resolving before its
+                // items, not a user pick, and coercing it to All would clear a
+                // scope the user set.
+                if (string.IsNullOrEmpty(value)) return;
                 string v = value;
                 if (v != "Keyboard" && v != "Mouse") v = "All";
                 if (!SetProperty(ref _mappingSurfaceScope, v)) return;
@@ -2498,6 +2520,12 @@ namespace PadForge.ViewModels
             // re-seeds on the same paths.
             ReloadSocd();
             ReloadKeepAwake();
+
+            // The rows are new objects, so whatever filter was installed no
+            // longer describes them. Without this a slot switched TO Keyboard
+            // + Mouse while its parked mode says Mouse Only shows all hundred
+            // keyboard rows until the next keystroke in the search box (#408).
+            ApplyMappingPickerFilter();
 
             MappingsRebuilt?.Invoke(this, EventArgs.Empty);
         }
@@ -6745,6 +6773,23 @@ namespace PadForge.ViewModels
         public bool KbmSocdCardVisible =>
             _outputType == VirtualControllerType.KeyboardMouse;
 
+        /// <summary>Gate for the SOCD card proper. SOCD resolves opposing
+        /// KEYBOARD directions, so a slot whose keyboard half is off has
+        /// nothing for the card to configure and must not offer an editor for
+        /// keys it cannot emit (#408).</summary>
+        public bool KbmSocdEditorVisible =>
+            _outputType == VirtualControllerType.KeyboardMouse
+            && (_kbmConfig?.KeyboardEnabled ?? true);
+
+        /// <summary>Gate for the mapping table's keyboard / mouse scope. The
+        /// scope narrows what you look at inside what the mode already allows,
+        /// so under a single-surface mode its only two outcomes are everything
+        /// and nothing. Hiding it is what keeps Mouse Only plus a Keyboard
+        /// scope from emptying the table with no explanation (#408).</summary>
+        public bool KbmSurfaceScopeVisible =>
+            _outputType == VirtualControllerType.KeyboardMouse
+            && (_kbmConfig?.Surfaces ?? KbmSlotConfig.DefaultSurfaces) == KbmSlotConfig.DefaultSurfaces;
+
         /// <summary>True when the slot's pairs use the flat raw-index
         /// grammar ("12:13"). Mirrors the engine gate exactly: Step 5
         /// treats every Extended slot as raw-surface
@@ -7081,6 +7126,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(SocdMode));
             OnPropertyChanged(nameof(SocdCardVisible));
             OnPropertyChanged(nameof(KbmSocdCardVisible));
+            OnPropertyChanged(nameof(KbmSocdEditorVisible));
             OnPropertyChanged(nameof(SocdUsesRawIndices));
             OnPropertyChanged(nameof(AvailableSlotSocdModes));
             OnPropertyChanged(nameof(SocdButtonOptions));
@@ -7668,7 +7714,12 @@ namespace PadForge.ViewModels
             // isolated by touch) and rows opted out of the bulk Map All
             // walk (e.g., the optional Xbox Series Share button — visible
             // and individually mappable but not in the default sequence).
-            if (!mapping.IsRecordable || !mapping.IncludeInMapAll)
+            // A row the slot's surface mode hides is a row the engine will not
+            // dispatch, so walking the user through it records a binding that
+            // can never fire. Skipping is the whole point of the mode: a Mouse
+            // Only slot must not prompt through a hundred keyboard keys (#408).
+            if (!mapping.IsRecordable || !mapping.IncludeInMapAll
+                || !RowMatchesSurface(mapping, "All", KbmConfig))
             {
                 MapAllCurrentIndex++;
                 AdvanceMapAll();

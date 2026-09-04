@@ -3469,7 +3469,7 @@ Puedes volver a intentarlo más tarde desde Configuración.</value></data>
     <value>Elige qué mitades de esta ranura están activas. Al desactivar una mitad se ocultan sus filas y deja de enviar, pero conserva sus asignaciones para que vuelvan al reactivarla.</value>
   </data>
   <data name="Pad_Kbm_Surfaces_Both_Name" xml:space="preserve">
-    <value>Teclado y ratón</value>
+    <value>Teclado + Ratón</value>
   </data>
   <data name="Pad_Kbm_Surfaces_MouseOnly_Name" xml:space="preserve">
     <value>Solo ratón</value>

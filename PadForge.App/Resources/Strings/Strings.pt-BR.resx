@@ -3463,7 +3463,7 @@ Você pode tentar novamente mais tarde em Configurações.</value></data>
     <value>Escolha quais metades deste slot ficam ativas. Desligar uma metade oculta suas linhas e para o envio, mas mantém os mapeamentos para que voltem ao religá-la.</value>
   </data>
   <data name="Pad_Kbm_Surfaces_Both_Name" xml:space="preserve">
-    <value>Teclado e Mouse</value>
+    <value>Teclado + Mouse</value>
   </data>
   <data name="Pad_Kbm_Surfaces_MouseOnly_Name" xml:space="preserve">
     <value>Somente Mouse</value>

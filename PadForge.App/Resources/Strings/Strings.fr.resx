@@ -3469,7 +3469,7 @@ Vous pouvez réessayer plus tard depuis les Paramètres.</value></data>
     <value>Choisissez les moitiés actives de cet emplacement. Désactiver une moitié masque ses lignes et arrête son envoi, tout en conservant ses affectations pour les retrouver à la réactivation.</value>
   </data>
   <data name="Pad_Kbm_Surfaces_Both_Name" xml:space="preserve">
-    <value>Clavier et souris</value>
+    <value>Clavier + Souris</value>
   </data>
   <data name="Pad_Kbm_Surfaces_MouseOnly_Name" xml:space="preserve">
     <value>Souris uniquement</value>

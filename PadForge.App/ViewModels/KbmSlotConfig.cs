@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.Xml.Serialization;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -111,11 +111,17 @@ namespace PadForge.ViewModels
         /// Stored locale-stable like <see cref="SocdMode"/>, and the
         /// dropdown maps it through <see cref="KbmSurfaceOption"/>.
         ///
-        /// <para>Turning a half off HIDES its rows and stops its dispatch.
-        /// It does NOT delete the mappings: they stay on the PadSetting so
-        /// turning the half back on restores the user's work, which is the
-        /// same parked-state contract the settings load honors for a device
-        /// a profile does not assign.</para></summary>
+        /// <para>Turning a half off HIDES its rows and stops the slot from
+        /// dispatching them. It does NOT delete the mappings: they stay on the
+        /// PadSetting so turning the half back on restores the user's work,
+        /// which is the same parked-state contract the settings load honors
+        /// for a device a profile does not assign.</para>
+        ///
+        /// <para>The gate covers the slot's own keyboard and mouse output, the
+        /// KbmRawState the Keyboard + Mouse virtual controller submits. It does
+        /// NOT cover macros, which reach the OS through SendInput on every slot
+        /// type including gamepads, and are therefore not this slot's
+        /// output.</para></summary>
         public string Surfaces
         {
             get => _surfaces;
@@ -139,7 +145,15 @@ namespace PadForge.ViewModels
         /// <summary>Whether a row of the given half should be shown and
         /// dispatched under the current mode.</summary>
         public bool Allows(KbmSurfaceKind kind)
-            => kind == KbmSurfaceKind.Keyboard ? KeyboardEnabled : MouseEnabled;
+            => kind switch
+            {
+                KbmSurfaceKind.Keyboard => KeyboardEnabled,
+                KbmSurfaceKind.Mouse => MouseEnabled,
+                // A member added without a case here would otherwise take the
+                // mouse branch in silence. Fail loud instead: KbmSurfaceOf and
+                // RowMatchesSurface both need the same edit.
+                _ => throw new System.ArgumentOutOfRangeException(nameof(kind)),
+            };
 
         private string _socdMode = "Off";
         /// <summary>SOCD mode name: "Off", "LastWins", "Neutral", "FirstWins".
@@ -217,8 +231,21 @@ namespace PadForge.ViewModels
             });
 
         private RelayCommand _resetSocdCommand;
+        /// <summary>The SOCD card's Reset All. It resets the SOCD card, and
+        /// nothing else. It used to call ResetToDefaults, which also rewrote
+        /// the surface mode that lives in the Preset chip a tab away, so a
+        /// click meant to clear key pairs silently turned a Mouse Only slot
+        /// back into a Keyboard + Mouse one (#408).</summary>
         public RelayCommand ResetSocdCommand =>
-            _resetSocdCommand ??= new RelayCommand(ResetToDefaults);
+            _resetSocdCommand ??= new RelayCommand(ResetSocdToDefaults);
+
+        /// <summary>SOCD mode and pairs only. ResetToDefaults is the whole-slot
+        /// reset and still includes the surface mode.</summary>
+        public void ResetSocdToDefaults()
+        {
+            SocdMode = "Off";
+            SocdPairs = DefaultSocdPairs;
+        }
 
         private RelayCommand _resetSocdModeCommand;
         /// <summary>Mode-only reset for the card's mode row. The card's
@@ -232,8 +259,7 @@ namespace PadForge.ViewModels
         public void ResetToDefaults()
         {
             Surfaces = DefaultSurfaces;
-            SocdMode = "Off";
-            SocdPairs = DefaultSocdPairs;
+            ResetSocdToDefaults();
         }
 
         private static KbmSurfaceOption[] _surfaceOptionsCache;

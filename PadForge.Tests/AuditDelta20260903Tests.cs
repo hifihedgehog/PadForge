@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -14,6 +14,7 @@ namespace PadForge.Tests
     /// Delta audit 2026-09-03 (8fe63743..HEAD). Behavioral pins for the fixes
     /// that have a seam, and source pins for the ones that do not.
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public class AuditDelta20260903Tests
     {
         private const uint IOCTL_GET_BLACKLIST = 0x80016008;
@@ -395,6 +396,209 @@ namespace PadForge.Tests
             string src = Src(Path.Combine(
                 "PadForge.Engine", "Common", "Mapping", "SourceCoercion.cs"));
             Assert.Equal(3, CountOf(src, "LeanNeutralKey(deviceGuid, slotIndex)"));
+        }
+
+        // -- Round two: the surface mode has to survive being written -----
+
+        /// <summary>Every KbmSlotConfigData an initializer builds must carry
+        /// Surfaces, and every leg that applies one must assign it. Four of the
+        /// six sites did neither when the mode shipped, including the writer
+        /// behind the settings file, so the slot forgot the preset on restart
+        /// while the dropdown, the filter and the preview all worked.
+        ///
+        /// <para>Structural on purpose. The DTO round trip was already pinned
+        /// and passed throughout, because the gap was never in the DTO: it was
+        /// in the four builders that never set the field. This counts the
+        /// sites instead, so the NEXT field added to the DTO fails here rather
+        /// than in a user settings file.</para></summary>
+        [Fact]
+        public void EveryKbmSlotConfigDataSite_CarriesTheSurfaceMode()
+        {
+            string settings = Src(Path.Combine("PadForge.App", "Services", "SettingsService.cs"));
+            string input = Src(Path.Combine("PadForge.App", "Services", "InputService.cs"));
+
+            int built = CountOf(settings, "new ViewModels.KbmSlotConfigData")
+                      + CountOf(input, "new KbmSlotConfigData");
+            // The trailing comma is what makes this the INITIALIZER form. A
+            // bare "Surfaces = cfg.Surfaces" also matches the apply leg's
+            // "d.Surfaces = cfg.Surfaces;", which counted a fifth builder that
+            // does not exist.
+            int carried = CountOf(settings, "Surfaces = cfg.Surfaces,")
+                        + CountOf(input, "Surfaces = cfg.Surfaces,");
+            Assert.True(built >= 4, "expected at least four builders, saw " + built);
+            Assert.Equal(built, carried);
+
+            int applied = CountOf(settings, "Surfaces = cfgData.Surfaces")
+                        + CountOf(input, "Surfaces = cfgData.Surfaces")
+                        + CountOf(settings, "d.Surfaces = cfg.Surfaces");
+            Assert.True(applied >= 3, "expected the three apply legs, saw " + applied);
+        }
+
+        /// <summary>Writers that change the mode behind the view back each have
+        /// to say so. The chip, the mapping filter and the preview all hang off
+        /// PadViewModel.KbmSurfaces, which none of them touch directly.</summary>
+        [Fact]
+        public void EveryWriterOfTheSurfaceMode_TellsTheView()
+        {
+            string settings = Src(Path.Combine("PadForge.App", "Services", "SettingsService.cs"));
+            string input = Src(Path.Combine("PadForge.App", "Services", "InputService.cs"));
+            int notifies = CountOf(settings, "NotifyKbmSurfacesChanged()")
+                         + CountOf(input, "NotifyKbmSurfacesChanged()");
+            Assert.True(notifies >= 5, "expected five notify sites, saw " + notifies);
+        }
+
+        /// <summary>The chip must not call the slot type something the header
+        /// six pixels away does not. Checked in every locale, because the
+        /// drift was translated ten times over.</summary>
+        [Fact]
+        public void SurfaceModeBoth_UsesEachLocalesOwnSlotTypeName()
+        {
+            string dir = Path.Combine(RepoRoot(), "PadForge.App", "Resources", "Strings");
+            var files = Directory.GetFiles(dir, "Strings*.resx");
+            Assert.Equal(10, files.Length);
+            foreach (var f in files)
+            {
+                string x = File.ReadAllText(f);
+                string slot = ResxValue(x, "ControllerType_KeyboardMouse");
+                string both = ResxValue(x, "Pad_Kbm_Surfaces_Both_Name");
+                Assert.False(string.IsNullOrEmpty(slot), Path.GetFileName(f));
+                Assert.Equal(slot, both);
+            }
+        }
+
+        /// <summary>American English, and the construction a word-list sweep
+        /// does not catch. The British bare gerund drops the preposition after
+        /// "stops it", and the American form keeps it.</summary>
+        [Fact]
+        public void SurfaceModeTooltip_IsAmericanEnglish()
+        {
+            string x = Src(Path.Combine(
+                "PadForge.App", "Resources", "Strings", "Strings.resx"));
+            string tip = ResxValue(x, "Pad_Kbm_Surfaces_Tooltip");
+            Assert.Contains("stops it from sending", tip);
+        }
+
+        private static string ResxValue(string resx, string key)
+        {
+            var m = System.Text.RegularExpressions.Regex.Match(
+                resx,
+                "<data name=\"" + System.Text.RegularExpressions.Regex.Escape(key)
+                    + "\"[^>]*>\\s*<value>(.*?)</value>",
+                System.Text.RegularExpressions.RegexOptions.Singleline);
+            return m.Success ? m.Groups[1].Value : null;
+        }
+
+        // -- The token walk cannot reach our own virtual pads -------------
+
+        /// <summary>A HIDMaestro pad roots at ROOT\VID_xxxx and PID_yyyy with
+        /// an IG_nn suffix, and its HID child repeats that token, so a
+        /// token-bounded walk unites them. Every ROOT node on this bench
+        /// carries the system container (32 of 32 measured), which is exactly
+        /// when the token branch runs. Before the bail was removed such a node
+        /// never walked at all. With it gone the walk climbs into the PadForge
+        /// enumerator and blacklists the controller we just created.</summary>
+        [Fact]
+        public void HidMaestroRootAndItsChild_ShareTheToken_SoTheWalkMustRefuseIt()
+        {
+            string child = @"HID\VID_045E&PID_028E&IG_00\7&1a2b3c&0&0000";
+            string root = @"ROOT\VID_045E&PID_028E&IG_00\0000";
+
+            // The hazard: the token alone cannot tell them apart.
+            Assert.Equal(HidHideController.VidPidToken(child),
+                         HidHideController.VidPidToken(root));
+
+            // The guard that has to catch it instead.
+            Assert.True(HidHideController.IsHidMaestroDeviceInstance(root));
+            Assert.True(HidHideController.IsHidMaestroDeviceInstance(
+                @"ROOT\VID_045E&PID_028E&XI_00\0000"));
+
+            // Same-window positive control: a real pad nodes are untouched.
+            Assert.False(HidHideController.IsHidMaestroDeviceInstance(
+                @"USB\VID_17EF&PID_61EB&MI_00\7&2f8b1c3d&0&0000"));
+        }
+
+        /// <summary>The token is a FIELD PAIR, not a span from the first VID_
+        /// to the last hex digit. Reading it as a span let IndexOf cross a path
+        /// separator and return two segments as one token, which would unite
+        /// devices that share nothing.</summary>
+        [Theory]
+        // The span reading returned "VID_045E&XI_00\PID_0B13" here, one token
+        // spanning two path segments. There is no VID/PID field PAIR in this
+        // string, so null is the honest answer and the caller falls back.
+        [InlineData(@"ROOT\VID_045E&XI_00\PID_0B13", null)]
+        [InlineData(@"USB\VID_054C&PID_0CE66\x", null)]
+        [InlineData(@"SOMETHING\VID_ZZZZ&PID_5", null)]
+        [InlineData(@"SOMETHING\VID_045E&PID_5", null)]
+        [InlineData(@"FTDIBUS\VID_0403+PID_6001+A50285BI\0000", "VID_0403&PID_6001")]
+        [InlineData(@"usb\vid_17ef&pid_61eb\0123456789", "VID_17EF&PID_61EB")]
+        public void VidPidToken_ReadsAFieldPairAndNotASpan(string instanceId, string expected)
+            => Assert.Equal(expected, HidHideController.VidPidToken(instanceId));
+
+        /// <summary>A member added to KbmSurfaceKind without a case in Allows
+        /// used to take the mouse branch in silence. It throws now, and the two
+        /// real members still answer.</summary>
+        [Fact]
+        public void SurfaceAllows_HandlesEveryMemberExplicitly()
+        {
+            var cfg = new PadForge.ViewModels.KbmSlotConfig { Surfaces = "MouseOnly" };
+            Assert.False(cfg.Allows(PadForge.ViewModels.KbmSurfaceKind.Keyboard));
+            Assert.True(cfg.Allows(PadForge.ViewModels.KbmSurfaceKind.Mouse));
+
+            Assert.Equal(2, Enum.GetValues(typeof(PadForge.ViewModels.KbmSurfaceKind)).Length);
+            Assert.Throws<ArgumentOutOfRangeException>(
+                () => cfg.Allows((PadForge.ViewModels.KbmSurfaceKind)7));
+        }
+
+        /// <summary>Map All walks the FULL row list, so without a surface test
+        /// a Mouse Only slot prompts through all hundred hidden keyboard rows,
+        /// recording bindings the engine will never dispatch. That is the exact
+        /// scrolling the mode exists to remove.</summary>
+        [Fact]
+        public void MapAll_SkipsRowsTheSurfaceModeHides()
+        {
+            string src = Src(Path.Combine(
+                "PadForge.App", "ViewModels", "PadViewModel.cs"));
+            Assert.Contains(
+                "|| !RowMatchesSurface(mapping, \"All\", KbmConfig))",
+                src);
+        }
+
+        /// <summary>A rebuilt row set is new objects, so the installed filter
+        /// no longer describes them.</summary>
+        [Fact]
+        public void RebuildMappings_RefiltersTheNewRows()
+        {
+            string src = Src(Path.Combine(
+                "PadForge.App", "ViewModels", "PadViewModel.cs"));
+            int rebuilt = src.IndexOf("MappingsRebuilt?.Invoke(this, EventArgs.Empty);",
+                                      StringComparison.Ordinal);
+            Assert.True(rebuilt > 0);
+            int filter = src.LastIndexOf("ApplyMappingPickerFilter();", rebuilt,
+                                         StringComparison.Ordinal);
+            Assert.True(filter > 0 && rebuilt - filter < 400,
+                "RebuildMappings must refilter before it announces the rebuild");
+        }
+
+        /// <summary>The SOCD card edits opposing KEYBOARD directions, and the
+        /// table scope only means anything when both halves are live. They used
+        /// to share one gate that only asked whether the slot was Keyboard plus
+        /// Mouse, so Mouse Only showed a key-pair editor for keys it cannot
+        /// emit, and a Keyboard scope emptied the table with no explanation.
+        /// </summary>
+        [Fact]
+        public void TheSocdCardAndTheTableScope_FollowTheSurfaceMode()
+        {
+            string vm = Src(Path.Combine("PadForge.App", "ViewModels", "PadViewModel.cs"));
+            Assert.Contains("public bool KbmSocdEditorVisible =>", vm);
+            Assert.Contains("public bool KbmSurfaceScopeVisible =>", vm);
+
+            string xaml = Src(Path.Combine("PadForge.App", "Views", "PadPage.xaml"));
+            Assert.Contains("Binding KbmSocdEditorVisible", xaml);
+            Assert.Contains("Binding KbmSurfaceScopeVisible", xaml);
+
+            string cfg = Src(Path.Combine("PadForge.App", "ViewModels", "KbmSlotConfig.cs"));
+            Assert.Contains("new RelayCommand(ResetSocdToDefaults)", cfg);
+            Assert.DoesNotContain("new RelayCommand(ResetToDefaults)", cfg);
         }
 
         private static int CountOf(string haystack, string needle)

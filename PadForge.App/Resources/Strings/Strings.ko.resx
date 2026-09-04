@@ -3469,7 +3469,7 @@
     <value>이 슬롯에서 사용할 면을 선택합니다. 끈 쪽은 행이 숨겨지고 전송도 멈추지만 매핑은 그대로 남아 다시 켜면 복원됩니다.</value>
   </data>
   <data name="Pad_Kbm_Surfaces_Both_Name" xml:space="preserve">
-    <value>키보드 및 마우스</value>
+    <value>키보드 + 마우스</value>
   </data>
   <data name="Pad_Kbm_Surfaces_MouseOnly_Name" xml:space="preserve">
     <value>마우스만</value>

@@ -3469,7 +3469,7 @@
     <value>选择此插槽启用哪些部分。关闭的一侧会隐藏其行并停止发送，但映射会保留，重新开启后即可恢复。</value>
   </data>
   <data name="Pad_Kbm_Surfaces_Both_Name" xml:space="preserve">
-    <value>键盘和鼠标</value>
+    <value>键盘 + 鼠标</value>
   </data>
   <data name="Pad_Kbm_Surfaces_MouseOnly_Name" xml:space="preserve">
     <value>仅鼠标</value>

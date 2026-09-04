@@ -3469,7 +3469,7 @@ Du kannst es später in den Einstellungen erneut versuchen.</value></data>
     <value>Legt fest, welche Hälften dieses Slots aktiv sind. Eine deaktivierte Hälfte blendet ihre Zeilen aus und sendet nichts mehr, behält aber ihre Zuweisungen, sodass sie beim Wiedereinschalten zurückkehren.</value>
   </data>
   <data name="Pad_Kbm_Surfaces_Both_Name" xml:space="preserve">
-    <value>Tastatur und Maus</value>
+    <value>Tastatur + Maus</value>
   </data>
   <data name="Pad_Kbm_Surfaces_MouseOnly_Name" xml:space="preserve">
     <value>Nur Maus</value>

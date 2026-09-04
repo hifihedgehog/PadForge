@@ -3515,10 +3515,10 @@ You can retry later from Settings.</value></data>
     <value>Wii Remote hold-orientation presets the Grip setting mirrors. linuxmotehook is Apache-2.0. WiimoteHook is a closed-source tool read through its documentation. No code ships.</value>
   </data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
-    <value>Choose which halves of this slot are live. Turning a half off hides its rows and stops it sending, and keeps its mappings so turning it back on restores them.</value>
+    <value>Choose which halves of this slot are live. Turning a half off hides its rows and stops it from sending, and keeps its mappings so turning it back on restores them.</value>
   </data>
   <data name="Pad_Kbm_Surfaces_Both_Name" xml:space="preserve">
-    <value>Keyboard and Mouse</value>
+    <value>Keyboard + Mouse</value>
   </data>
   <data name="Pad_Kbm_Surfaces_MouseOnly_Name" xml:space="preserve">
     <value>Mouse Only</value>

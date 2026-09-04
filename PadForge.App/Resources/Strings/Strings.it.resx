@@ -3491,7 +3491,7 @@ Puoi riprovare più tardi dalle Impostazioni.</value></data>
     <value>Scegli quali metà di questo slot sono attive. Disattivando una metà se ne nascondono le righe e si interrompe l'invio, ma le assegnazioni restano e tornano riattivandola.</value>
   </data>
   <data name="Pad_Kbm_Surfaces_Both_Name" xml:space="preserve">
-    <value>Tastiera e mouse</value>
+    <value>Tastiera + Mouse</value>
   </data>
   <data name="Pad_Kbm_Surfaces_MouseOnly_Name" xml:space="preserve">
     <value>Solo mouse</value>

@@ -3489,4 +3489,21 @@ Vous pouvez réessayer plus tard depuis les Paramètres.</value></data>
   <data name="Pad_Mapping_Scope_Tooltip" xml:space="preserve">
     <value>Restreint le tableau aux lignes du clavier ou de la souris.</value>
   </data>
+  <data name="Menu_Layer" xml:space="preserve"><value>Calque</value></data>
+  <data name="Menu_Layer_Tip" xml:space="preserve"><value>Choisissez le calque qui autorise ce menu. « Tout calque » et « Base » l'autorisent aussi sous d'autres calques actifs. Un calque nommé doit correspondre au calque actif.</value></data>
+  <data name="Menu_Reset_Layer" xml:space="preserve"><value>Rétablir « Tout calque » et désactiver l'ouverture maintenue par le calque.</value></data>
+  <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (absent de cet emplacement)</value></data>
+  <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>Le calque maintient le menu ouvert</value></data>
+  <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>Garde ce menu ouvert tant que son calque nommé est actif. L'entrée physique sélectionnée dirige la surbrillance. « Tout calque » et « Base » utilisent l'ouverture normale.</value></data>
+  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Rétablir l'ouverture au toucher ou à la déviation.</value></data>
+  <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Diriger avec</value></data>
+  <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>L'entrée physique qui dirige la cellule en surbrillance tant que le calque garde le menu ouvert.</value></data>
+  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Lu depuis les manettes physiques assignées à cet emplacement. Le calque ouvre le menu, cette entrée le dirige. Les affectations des cellules déterminent la sortie.</value></data>
+  <data name="Menu_IconScale" xml:space="preserve"><value>Taille de l'icône</value></data>
+  <data name="Menu_IconScale_Tip" xml:space="preserve"><value>Taille de l'icône par rapport à la taille normale du menu, de 25 % à 200 %. Effacer l'icône la rétablit à 100 %.</value></data>
+  <data name="Menu_Fire_Click_LayerHold_Desc" xml:space="preserve"><value>Maintient l'affectation de la cellule en surbrillance tant que l'entrée de clic est maintenue. Un centre radial en surbrillance peut se déclencher pendant que le stick est au repos.</value></data>
+  <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>Se déclenche une fois au relâchement de l'entrée de clic. Si la surface est relâchée au même instant, déclenche la sélection précédente.</value></data>
+  <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>Se déclenche une fois quand vous levez le doigt ou ramenez le stick dans la zone morte d'activation, le menu restant ouvert. Quitter le calque valide aussi une sélection encore dirigée.</value></data>
+  <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>Maintient l'affectation tant que sa cellule est en surbrillance. Un centre radial peut se déclencher dès l'ouverture du calque.</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Les pressions directionnelles parcourent les cellules et déclenchent chaque cellule nouvellement sélectionnée. Ce comportement de barre rapide n'utilise ni le mode de déclenchement ni l'entrée de clic.</value></data>
 </root>

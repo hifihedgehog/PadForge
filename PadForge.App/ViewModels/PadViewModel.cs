@@ -2488,6 +2488,12 @@ namespace PadForge.ViewModels
             while (MacroLayerChoices.Count > desired.Count)
                 MacroLayerChoices.RemoveAt(MacroLayerChoices.Count - 1);
 
+            // #413: the menu pickers project this list, so they reconcile
+            // right after it. This also covers a layer RENAME, which retags
+            // Entry.LayerMask in place before landing here: the refresh
+            // re-raises the menu VM's mask so its picker re-reads it.
+            foreach (var mvm in Menus)
+                mvm?.RefreshLayerChoices();
         }
 
         /// <summary>
@@ -6327,6 +6333,11 @@ namespace PadForge.ViewModels
             vm.InputChoicesProvider = () => SlotAvailableInputs;
             vm.RowBoundProvider = IsMenuItemRowBound;
             vm.StructureChanged = () => MenusStructureChanged?.Invoke();
+            // #413 layer gate: the menu's picker mirrors this slot's layer
+            // choices (Any Layer, Base, every named layer, every cycle stop)
+            // and adds its own marked entry for a mask not among them.
+            vm.LayerChoicesProvider = () => MacroLayerChoices;
+            vm.RefreshLayerChoices();
             // #390 macro cells: the cell editor's Macro picker lists this
             // slot's macros, live.
             vm.MacroNamesProvider = () =>

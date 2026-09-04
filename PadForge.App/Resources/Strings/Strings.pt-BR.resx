@@ -3483,4 +3483,21 @@ Você pode tentar novamente mais tarde em Configurações.</value></data>
   <data name="Pad_Mapping_Scope_Tooltip" xml:space="preserve">
     <value>Restringe a tabela às linhas de teclado ou de mouse.</value>
   </data>
+  <data name="Menu_Layer" xml:space="preserve"><value>Camada</value></data>
+  <data name="Menu_Layer_Tip" xml:space="preserve"><value>Escolha a camada que permite este menu. “Qualquer Camada” e “Base” o permitem também sob outras camadas ativas. Uma camada nomeada precisa coincidir com a camada ativa.</value></data>
+  <data name="Menu_Reset_Layer" xml:space="preserve"><value>Redefinir para “Qualquer Camada” e desligar a abertura mantida pela camada.</value></data>
+  <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (não consta neste slot)</value></data>
+  <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>A Camada Mantém o Menu Aberto</value></data>
+  <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>Mantém este menu aberto enquanto sua camada nomeada estiver ativa. A entrada física selecionada direciona o destaque. “Qualquer Camada” e “Base” abrem da forma habitual.</value></data>
+  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Redefinir para abrir ao tocar ou inclinar.</value></data>
+  <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Direcionar Com</value></data>
+  <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>A entrada física que direciona a célula destacada enquanto a camada mantém o menu aberto.</value></data>
+  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Lido dos controles físicos atribuídos a este slot. A camada abre o menu e esta entrada o direciona. Os mapeamentos das células determinam a saída.</value></data>
+  <data name="Menu_IconScale" xml:space="preserve"><value>Tamanho do Ícone</value></data>
+  <data name="Menu_IconScale_Tip" xml:space="preserve"><value>Tamanho do ícone em relação ao tamanho normal do menu, de 25% a 200%. Remover o ícone redefine para 100%.</value></data>
+  <data name="Menu_Fire_Click_LayerHold_Desc" xml:space="preserve"><value>Mantém o mapeamento da célula destacada enquanto a entrada de clique é mantida. Um centro radial destacado pode disparar com o analógico em repouso.</value></data>
+  <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>Dispara uma vez quando a entrada de clique é solta. Se a superfície for solta no mesmo instante, dispara a seleção anterior.</value></data>
+  <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>Dispara uma vez ao levantar o dedo ou ao devolver o analógico para dentro da zona morta de ativação, com o menu ainda aberto. Sair da camada também confirma uma seleção ainda em direcionamento.</value></data>
+  <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>Mantém o mapeamento enquanto a célula estiver destacada. Um centro radial pode disparar imediatamente quando a camada abre.</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Pressionar as direções percorre as células e dispara cada célula recém-selecionada. Esse comportamento de barra rápida não usa o Modo de Disparo nem a Entrada de Clique.</value></data>
 </root>

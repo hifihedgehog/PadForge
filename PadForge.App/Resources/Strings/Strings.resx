@@ -3538,4 +3538,21 @@ You can retry later from Settings.</value></data>
   <data name="Pad_Mapping_Scope_Tooltip" xml:space="preserve">
     <value>Narrow the table to keyboard rows or mouse rows.</value>
   </data>
+  <data name="Menu_Layer" xml:space="preserve"><value>Layer</value></data>
+  <data name="Menu_Layer_Tip" xml:space="preserve"><value>Choose the layer that permits this menu. Any Layer and Base both allow it under other active layers. A named layer must match the currently active layer.</value></data>
+  <data name="Menu_Reset_Layer" xml:space="preserve"><value>Reset to Any Layer and turn off layer-held opening.</value></data>
+  <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (not listed on this slot)</value></data>
+  <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>Layer Holds the Menu Open</value></data>
+  <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>Keep this menu open while its named layer is active. The selected physical input steers the highlight. Any Layer and Base use normal surface opening.</value></data>
+  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Reset to opening on touch or deflection.</value></data>
+  <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Steer With</value></data>
+  <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>The physical input that steers the highlighted cell while the layer keeps this menu open.</value></data>
+  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Read from the physical controllers assigned to this slot. The layer opens the menu; this input steers it. Cell bindings determine its output.</value></data>
+  <data name="Menu_IconScale" xml:space="preserve"><value>Icon Size</value></data>
+  <data name="Menu_IconScale_Tip" xml:space="preserve"><value>Icon size relative to the menu's normal icon size, from 25% to 200%. Clearing the icon resets it to 100%.</value></data>
+  <data name="Menu_Fire_Click_LayerHold_Desc" xml:space="preserve"><value>Holds the highlighted cell's binding while the Click Input is held. A highlighted radial center can fire while the stick rests.</value></data>
+  <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>Fires once when the Click Input releases. If the surface releases in the same instant, fires the previous selection.</value></data>
+  <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>Fires once when you lift your finger or return the stick inside the Engage Deadzone, while the menu stays open. Leaving the layer also commits a selection still being steered.</value></data>
+  <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>Holds the binding while its cell is highlighted. A radial center can fire immediately when the layer opens.</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Direction presses step through the cells and fire each newly selected cell. This hotbar behavior does not use Fire Mode or Click Input.</value></data>
 </root>

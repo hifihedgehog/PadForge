@@ -1122,7 +1122,8 @@ namespace PadForge.Services
                 Kind = MenuKind.Radial,
                 HostDescriptor = host,
                 LayerMask = layer,
-                // Fires when the hosting layer ends, i.e. when the held
+                // Touch Release: commits when the stick re-centers, and
+                // also when the hosting layer ends, i.e. when the held
                 // opener is released. The configurator's own wording:
                 // "when the trackpad is no longer touched or when the
                 // mode shift button is released".
@@ -1130,12 +1131,20 @@ namespace PadForge.Services
                 CellCount = cells.Length,
                 HasCenter = false,
                 ShowLabels = true,
+                // Ordinary surface engagement, stated rather than defaulted:
+                // a layer mask alone must never opt a menu into stay-open
+                // mode (#413).
+                LayerHoldsOpen = false,
             };
             for (int i = 0; i < cells.Length; i++)
             {
                 menu.Items.Add(new MenuItemDefinition
                 {
-                    Index = i,
+                    // Ring slots are 1..N; index 0 is the center, which this
+                    // menu does not have. Authoring from 0 put the first cell
+                    // on an index the ring never hovers and left slot N empty
+                    // on every starter radial (found during #413).
+                    Index = i + 1,
                     Label = cells[i].Label,
                     VirtualKey = cells[i].Vk,
                 });

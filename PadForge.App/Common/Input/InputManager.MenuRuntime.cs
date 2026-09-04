@@ -92,6 +92,15 @@ namespace PadForge.Common.Input
             public string HostSigCustomY;
             public string HostSigClick;
             public int HostSigHalf = int.MinValue;
+            /// <summary>Authored layer gate and stay-open flag last seen
+            /// (#413). An EDIT to either resets the evaluator state, so a
+            /// configuration change is never mistaken for a release edge that
+            /// commits an old in-flight interaction. The effective engaged
+            /// layer changing is NOT an edit and must still reach the
+            /// evaluator as the release it is.</summary>
+            public bool LayerSigInitialized;
+            public string LayerSigMask;
+            public bool LayerSigHoldsOpen;
             public bool IsStick;
             /// <summary>Button-pair host (translator v25): the hover vector
             /// is composed from four direction bools (a physical D-pad or
@@ -237,13 +246,33 @@ namespace PadForge.Common.Input
                     EnsureMenuSources(ctx, def);
                     ctx.LastTickMs = nowMs;
 
-                    // Layer gate. Base menus stay live under an overlaying
-                    // layer (the same inherit-by-default posture Base rows
-                    // have); layered menus need their exact layer engaged,
-                    // and the layer ending lands in the evaluator as the
-                    // release edge (Steam's mode-shift-end commit).
+                    // An authored change to the gate or the stay-open flag
+                    // (#413) resets the state rather than playing through the
+                    // evaluator as a release. First sight only initializes.
+                    string authoredMask = def.LayerMask ?? "";
+                    if (!ctx.LayerSigInitialized)
+                    {
+                        ctx.LayerSigInitialized = true;
+                        ctx.LayerSigMask = authoredMask;
+                        ctx.LayerSigHoldsOpen = def.LayerHoldsOpen;
+                    }
+                    else if (!string.Equals(ctx.LayerSigMask, authoredMask, StringComparison.Ordinal)
+                             || ctx.LayerSigHoldsOpen != def.LayerHoldsOpen)
+                    {
+                        ctx.State.Reset();
+                        ctx.LayerSigMask = authoredMask;
+                        ctx.LayerSigHoldsOpen = def.LayerHoldsOpen;
+                    }
+
+                    // Layer gate. Base menus are unconditionally eligible,
+                    // including under an overlaying layer (unlike Base
+                    // mapping rows, which need InheritUnmapped and can be
+                    // overridden per target). Layered menus need their exact
+                    // layer engaged, and the layer ending lands in the
+                    // evaluator as the release edge (Steam's mode-shift-end
+                    // commit).
                     bool layerOk;
-                    string mask = def.LayerMask ?? "";
+                    string mask = authoredMask;
                     if (mask.Length == 0 || mask == "Base")
                     {
                         layerOk = true;
@@ -257,6 +286,12 @@ namespace PadForge.Common.Input
                         }
                         layerOk = string.Equals(engagedLayer, mask, StringComparison.Ordinal);
                     }
+
+                    // Stay-open (#413): a real layer keeps the menu open and
+                    // the surface only steers. Empty and Base cannot hold a
+                    // menu open, there being no exit, so they take the
+                    // surface path even with the flag set.
+                    bool layerHolds = def.LayerHoldsOpen && mask.Length > 0 && mask != "Base";
 
                     double dz = Math.Clamp(def.EngageDeadzonePercent, 1, 95) / 100.0;
                     double dx = 0, dy = 0;
@@ -288,8 +323,13 @@ namespace PadForge.Common.Input
                         {
                             MenuEvaluator.StepButtonPairGrid(ctx.State, def, layerOk,
                                 up, down, left, right, nowMs);
+                            // Hotbars keep their step-and-pulse contract in
+                            // every mode; only the overlay's lifetime follows
+                            // the stay-open flag (#413), so a layer-held
+                            // hotbar stays on screen between presses.
                             PublishMenuOverlay(slot, ud.InstanceGuid, def, ctx.State,
-                                (up || down || left || right) && layerOk, nowMs);
+                                MenuEvaluator.ComputeSurfaceActive(def, up || down || left || right, layerOk),
+                                nowMs, engagedLayer);
                             continue;
                         }
                         dx = (right ? 1 : 0) - (left ? 1 : 0);
@@ -304,7 +344,10 @@ namespace PadForge.Common.Input
                     {
                         // Null sources = an unconfigured Custom opener
                         // (or one with no click assigned): axes read
-                        // centered, so the menu simply never engages.
+                        // centered, so a surface-mode menu never engages.
+                        // A stay-open one (#413) can still open from its
+                        // layer; it just cannot steer, and centerAtRest
+                        // below refuses it a resting center.
                         dx = ctx.SrcX != null ? SourceCoercion.EvaluateForBipolarAxisTarget(
                             newState, ctx.SrcX, slot, false, ud.InstanceGuidString) : 0;
                         dy = ctx.SrcY != null ? SourceCoercion.EvaluateForBipolarAxisTarget(
@@ -330,7 +373,11 @@ namespace PadForge.Common.Input
                         // IS the commit gesture (Steam: a stick inside the
                         // deadzone counts as untouched), so hysteresis there
                         // would break every no-click commit.
-                        bool centerNeedsHold = def.Kind == MenuKind.Radial
+                        // Not in stay-open mode (#413): State.Engaged stays
+                        // true at rest there, so the lowered threshold would
+                        // apply before any new deflection and misread it.
+                        bool centerNeedsHold = !layerHolds
+                            && def.Kind == MenuKind.Radial
                             && def.HasCenter
                             && def.FireType != MenuFireType.TouchRelease;
                         double mag = Math.Sqrt(dx * dx + dy * dy);
@@ -360,13 +407,35 @@ namespace PadForge.Common.Input
                             clicked = SourceCoercion.EvaluateForButtonTarget(
                                 newState, ctx.SrcClick, 50, slot, ud.InstanceGuidString);
                         }
+                        else if (layerHolds && ctx.SrcClick != null)
+                        {
+                            // Stay-open (#413): the menu is open with the
+                            // finger up, so a separately assigned click that
+                            // is still held must read as held. Leaving it
+                            // false here manufactured a click-release edge on
+                            // every lift.
+                            clicked = SourceCoercion.EvaluateForButtonTarget(
+                                newState, ctx.SrcClick, 50, slot, ud.InstanceGuidString);
+                        }
                     }
 
-                    bool surfaceActive = physical && layerOk;
-                    MenuEvaluator.Update(ctx.State, def, surfaceActive, clicked,
-                        dx, dy, (dx + 1.0) / 2.0, (dy + 1.0) / 2.0, nowMs);
+                    bool surfaceActive = MenuEvaluator.ComputeSurfaceActive(def, physical, layerOk);
+                    if (layerHolds)
+                    {
+                        // A configured stick resting at center hovers the
+                        // center cell when the menu has one. An unconfigured
+                        // Custom opener reads zero axes and must not.
+                        bool centerAtRest = ctx.IsStick && ctx.SrcX != null && ctx.SrcY != null;
+                        MenuEvaluator.UpdateLayerEngaged(ctx.State, def, surfaceActive, physical, clicked,
+                            centerAtRest, dx, dy, (dx + 1.0) / 2.0, (dy + 1.0) / 2.0, nowMs);
+                    }
+                    else
+                    {
+                        MenuEvaluator.Update(ctx.State, def, surfaceActive, clicked,
+                            dx, dy, (dx + 1.0) / 2.0, (dy + 1.0) / 2.0, nowMs);
+                    }
 
-                    PublishMenuOverlay(slot, ud.InstanceGuid, def, ctx.State, surfaceActive, nowMs);
+                    PublishMenuOverlay(slot, ud.InstanceGuid, def, ctx.State, surfaceActive, nowMs, engagedLayer);
                 }
             }
         }
@@ -375,7 +444,7 @@ namespace PadForge.Common.Input
         /// claims the snapshot when it is free (or stale), the owner
         /// refreshes hover every tick, and releases on disengage.</summary>
         private void PublishMenuOverlay(int slot, Guid device, MenuDefinitionEntry def,
-            MenuRuntimeState st, bool surfaceActive, long nowMs)
+            MenuRuntimeState st, bool surfaceActive, long nowMs, string engagedLayer)
         {
             var cur = _activeMenuOverlay;
             bool owner = cur != null && cur.Slot == slot && cur.Device == device
@@ -383,9 +452,24 @@ namespace PadForge.Common.Input
 
             if (surfaceActive)
             {
+                // Stay-open handoff (#413): when a cell's macro switches this
+                // slot to another layer, the parent's layer has ended THIS
+                // tick and it will release on its own evaluation, but if the
+                // child is evaluated first it would be refused until the next
+                // poll and the overlay would blank for a whole poll. An owner
+                // on the SAME slot whose real layer is no longer the engaged
+                // one is provably departing, so the child may take the
+                // snapshot now. Another slot's owner is never evicted, and a
+                // null engagedLayer (only a real-layer candidate resolves
+                // it) never authorizes preemption.
+                bool ownerDeparting = cur != null && cur.Slot == slot
+                    && engagedLayer != null && cur.Menu != null
+                    && !string.IsNullOrEmpty(cur.Menu.LayerMask) && cur.Menu.LayerMask != "Base"
+                    && !string.Equals(cur.Menu.LayerMask, engagedLayer, StringComparison.Ordinal);
+
                 // Another engaged menu owns the snapshot and is still
                 // refreshing it. First-engaged keeps winning.
-                if (cur != null && !owner && nowMs - cur.StampMs <= MenuContextStaleMs)
+                if (cur != null && !owner && !ownerDeparting && nowMs - cur.StampMs <= MenuContextStaleMs)
                     return;
 
                 // The snapshot is immutable once published (the UI timer
@@ -430,6 +514,12 @@ namespace PadForge.Common.Input
                 && string.Equals(ctx.HostSigCustomY, def.CustomYDescriptor, StringComparison.Ordinal)
                 && string.Equals(ctx.HostSigClick, def.ClickDescriptor, StringComparison.Ordinal)
                 && ctx.HostSigHalf == def.HostHalf) return;
+            // A host / axis / click reassignment on a stay-open menu (#413)
+            // must not complete the previous physical interaction through
+            // the new sources. Surface-mode menus never hold state across a
+            // host edit worth preserving either, but only the stay-open case
+            // can misfire from it, so the reset is scoped to it.
+            if (def.LayerHoldsOpen) ctx.State.Reset();
             ctx.HostSigHost = def.HostDescriptor;
             ctx.HostSigCustomX = def.CustomXDescriptor;
             ctx.HostSigCustomY = def.CustomYDescriptor;

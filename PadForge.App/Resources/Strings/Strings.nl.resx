@@ -3509,4 +3509,21 @@ Je kunt het later opnieuw proberen via Instellingen.</value></data>
   <data name="Pad_Mapping_Scope_Tooltip" xml:space="preserve">
     <value>Beperkt de tabel tot toetsenbord- of muisrijen.</value>
   </data>
+  <data name="Menu_Layer" xml:space="preserve"><value>Laag</value></data>
+  <data name="Menu_Layer_Tip" xml:space="preserve"><value>Kies de laag die dit menu toestaat. ‘Elke laag’ en ‘Basis’ staan het ook toe onder andere actieve lagen. Een benoemde laag moet overeenkomen met de actieve laag.</value></data>
+  <data name="Menu_Reset_Layer" xml:space="preserve"><value>Terug naar ‘Elke laag’ en het openhouden door de laag uitschakelen.</value></data>
+  <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (niet aanwezig in deze sleuf)</value></data>
+  <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>Laag houdt het menu open</value></data>
+  <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>Houdt dit menu open zolang de benoemde laag actief is. De gekozen fysieke invoer stuurt de markering. ‘Elke laag’ en ‘Basis’ openen op de gewone manier.</value></data>
+  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Terug naar openen bij aanraking of uitwijking.</value></data>
+  <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Sturen met</value></data>
+  <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>De fysieke invoer die de gemarkeerde cel stuurt zolang de laag het menu openhoudt.</value></data>
+  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Gelezen van de fysieke controllers die aan deze sleuf zijn toegewezen. De laag opent het menu, deze invoer stuurt het. De celtoewijzingen bepalen de uitvoer.</value></data>
+  <data name="Menu_IconScale" xml:space="preserve"><value>Pictogramgrootte</value></data>
+  <data name="Menu_IconScale_Tip" xml:space="preserve"><value>Pictogramgrootte ten opzichte van de normale grootte in het menu, van 25% tot 200%. Het pictogram wissen zet dit terug op 100%.</value></data>
+  <data name="Menu_Fire_Click_LayerHold_Desc" xml:space="preserve"><value>Houdt de toewijzing van de gemarkeerde cel vast zolang de klikinvoer wordt ingedrukt. Een gemarkeerd radiaal midden kan vuren terwijl de stick in rust is.</value></data>
+  <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>Vuurt één keer wanneer de klikinvoer wordt losgelaten. Als het oppervlak op hetzelfde moment loskomt, vuurt de vorige selectie.</value></data>
+  <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>Vuurt één keer wanneer u uw vinger optilt of de stick terugbrengt in de activeringsdode zone, terwijl het menu open blijft. De laag verlaten bevestigt ook een selectie die nog wordt gestuurd.</value></data>
+  <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>Houdt de toewijzing vast zolang de cel is gemarkeerd. Een radiaal midden kan direct vuren wanneer de laag opent.</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Richtingsdrukken stappen door de cellen en vuren elke nieuw geselecteerde cel. Dit hotbar-gedrag gebruikt geen vuurmodus of klikinvoer.</value></data>
 </root>

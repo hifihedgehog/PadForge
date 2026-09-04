@@ -3489,4 +3489,21 @@
   <data name="Pad_Mapping_Scope_Tooltip" xml:space="preserve">
     <value>表をキーボードまたはマウスの行だけに絞り込みます。</value>
   </data>
+  <data name="Menu_Layer" xml:space="preserve"><value>レイヤー</value></data>
+  <data name="Menu_Layer_Tip" xml:space="preserve"><value>このメニューを許可するレイヤーを選びます。「すべてのレイヤー」と「ベース」は、他のレイヤーが有効なときも許可します。名前付きレイヤーは、現在有効なレイヤーと一致する必要があります。</value></data>
+  <data name="Menu_Reset_Layer" xml:space="preserve"><value>「すべてのレイヤー」に戻し、レイヤーによる開いたままの状態を無効にします。</value></data>
+  <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0}（このスロットにはありません）</value></data>
+  <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>レイヤーがメニューを開いたままにする</value></data>
+  <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>名前付きレイヤーが有効な間、このメニューを開いたままにします。選択した物理入力でハイライトを操作します。「すべてのレイヤー」と「ベース」は通常どおり開きます。</value></data>
+  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>タッチまたは傾けで開く設定に戻します。</value></data>
+  <data name="Menu_Host_SteerWith" xml:space="preserve"><value>操作入力</value></data>
+  <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>レイヤーがメニューを開いている間、ハイライトされたセルを操作する物理入力です。</value></data>
+  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>このスロットに割り当てられた物理コントローラーから読み取ります。レイヤーがメニューを開き、この入力で操作します。出力はセルの割り当てで決まります。</value></data>
+  <data name="Menu_IconScale" xml:space="preserve"><value>アイコンサイズ</value></data>
+  <data name="Menu_IconScale_Tip" xml:space="preserve"><value>メニューの標準アイコンサイズに対する比率で、25%から200%まで。アイコンを消すと100%に戻ります。</value></data>
+  <data name="Menu_Fire_Click_LayerHold_Desc" xml:space="preserve"><value>クリック入力を押している間、ハイライトされたセルの割り当てを保持します。スティックが中央にあるとき、ハイライトされたラジアル中央も発動できます。</value></data>
+  <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>クリック入力を離したときに一度発動します。同時にサーフェスも離した場合は、直前の選択を発動します。</value></data>
+  <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>メニューを開いたまま、指を離すかスティックを有効デッドゾーン内に戻したときに一度発動します。レイヤーを離れたときも、操作中の選択を確定します。</value></data>
+  <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>そのセルがハイライトされている間、割り当てを保持します。レイヤーが開くと、ラジアル中央がすぐに発動することがあります。</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>方向入力でセルを順に移動し、新しく選ばれたセルを発動します。このホットバー動作は発動モードやクリック入力を使いません。</value></data>
 </root>

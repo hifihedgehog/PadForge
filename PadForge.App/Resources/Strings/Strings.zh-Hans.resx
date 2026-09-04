@@ -3489,4 +3489,21 @@
   <data name="Pad_Mapping_Scope_Tooltip" xml:space="preserve">
     <value>将表格限定为键盘行或鼠标行。</value>
   </data>
+  <data name="Menu_Layer" xml:space="preserve"><value>层</value></data>
+  <data name="Menu_Layer_Tip" xml:space="preserve"><value>选择允许此菜单的层。“任意层”和“基础层”在其他层激活时同样允许。命名层必须与当前激活的层一致。</value></data>
+  <data name="Menu_Reset_Layer" xml:space="preserve"><value>重置为“任意层”，并关闭由层保持打开。</value></data>
+  <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0}（此插槽中不存在）</value></data>
+  <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>由层保持菜单打开</value></data>
+  <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>在命名层激活期间保持此菜单打开。所选的物理输入用于移动高亮。“任意层”和“基础层”按常规方式打开。</value></data>
+  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>重置为通过触摸或偏转打开。</value></data>
+  <data name="Menu_Host_SteerWith" xml:space="preserve"><value>操控输入</value></data>
+  <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>在层保持菜单打开期间，用于移动高亮单元格的物理输入。</value></data>
+  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>从分配给此插槽的物理控制器读取。层打开菜单，此输入进行操控。输出由单元格绑定决定。</value></data>
+  <data name="Menu_IconScale" xml:space="preserve"><value>图标大小</value></data>
+  <data name="Menu_IconScale_Tip" xml:space="preserve"><value>相对于菜单默认图标大小的比例，范围 25% 到 200%。清除图标后恢复为 100%。</value></data>
+  <data name="Menu_Fire_Click_LayerHold_Desc" xml:space="preserve"><value>按住点击输入期间保持高亮单元格的绑定。摇杆静止时，高亮的轮盘中心也可触发。</value></data>
+  <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>在点击输入释放时触发一次。若表面在同一瞬间释放，则触发上一次的选择。</value></data>
+  <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>在菜单保持打开的情况下，抬起手指或将摇杆回到激活死区内时触发一次。离开层时也会确认仍在操控中的选择。</value></data>
+  <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>单元格高亮期间保持其绑定。层打开时，轮盘中心可能立即触发。</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>方向按键逐格移动并触发每个新选中的单元格。此快捷栏行为不使用触发模式或点击输入。</value></data>
 </root>

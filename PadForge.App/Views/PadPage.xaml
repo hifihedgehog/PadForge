@@ -12453,21 +12453,90 @@
                                 </StackPanel>
                             </Grid>
 
+                            <!-- Layer gate (#413, @brawler14801 on discussion #409). The
+                                 field, its persistence and the runtime gate all existed;
+                                 only the editor did not, so an imported or starter
+                                 profile could carry a layer-gated menu and a hand-built
+                                 one could not. Same shape and the same two visibility
+                                 triggers as the macro editor's Layer row: shown when the
+                                 slot has layers, or when this menu already carries a
+                                 scope so it is always visible and clearable. -->
+                            <Grid Margin="0,0,0,8">
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding DataContext.HasShiftLayers, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ShowsLayerRow}" Value="True">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuEditorLabel"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           Text="{Binding Menu_Layer, Source={x:Static strings:Strings.Instance}}"
+                                           ToolTip="{Binding Menu_Layer_Tip, Source={x:Static strings:Strings.Instance}}"
+                                           Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="260"/>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                    <!-- The picker's collection is reconciled in place and
+                                         never replaced, so the width behavior's ItemsSource
+                                         watch would never fire; the version counter tells
+                                         it when labels changed under a stable identity. -->
+                                    <ComboBox MinWidth="200" ItemsSource="{Binding LayerChoices}"
+                                              common:ComboBoxWidthBehavior.SizeToItems="True"
+                                              common:ComboBoxWidthBehavior.WidthGroup="MenuSettingCombos"
+                                              common:ComboBoxWidthBehavior.ItemsVersion="{Binding LayerChoicesVersion}"
+                                              ToolTip="{Binding Menu_Layer_Tip, Source={x:Static strings:Strings.Instance}}"
+                                              SelectedValue="{Binding LayerMask, Mode=TwoWay}"
+                                              SelectedValuePath="LayerMask"
+                                              DisplayMemberPath="LayerName"/>
+                                    <ui:Button Command="{Binding ResetLayerCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0" ToolTip="{Binding Menu_Reset_Layer, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <!-- Stay-open (#413): the layer holds the menu open and the
+                                 surface only steers. A modifier on the gate above, so it
+                                 lives directly under it and shows once a real layer is
+                                 chosen (or while the flag is set, so a loaded file's
+                                 flag is always visible and resettable). -->
+                            <Grid Margin="0,0,0,8"
+                                  Visibility="{Binding ShowLayerHold, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuEditorLabel"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                    <CheckBox Content="{Binding Menu_LayerHoldsOpen, Source={x:Static strings:Strings.Instance}}"
+                                              ToolTip="{Binding Menu_LayerHoldsOpen_Tip, Source={x:Static strings:Strings.Instance}}"
+                                              IsChecked="{Binding LayerHoldsOpen, Mode=TwoWay}" VerticalAlignment="Center"/>
+                                    <ui:Button Command="{Binding ResetLayerHoldsOpenCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0" ToolTip="{Binding Menu_Reset_LayerHoldsOpen, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                            </Grid>
+
                             <!-- Host input row (Reset + Record per canon) -->
                             <Grid Margin="0,0,0,8">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" SharedSizeGroup="MenuEditorLabel"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
+                                <!-- "Opens With" in surface mode; "Steer With" when the
+                                     layer holds the menu open (#413), because then the
+                                     surface no longer opens anything. -->
                                 <TextBlock Grid.Column="0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                           Text="{Binding Menu_HostInput, Source={x:Static strings:Strings.Instance}}"
-                                           ToolTip="{Binding Menu_HostInput_Tip, Source={x:Static strings:Strings.Instance}}"
+                                           Text="{Binding HostInputLabel}"
+                                           ToolTip="{Binding HostInputTip}"
                                            Margin="0,0,12,0" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="260"/>
                                 <StackPanel Grid.Column="1" Orientation="Horizontal">
                                     <ComboBox MinWidth="200" ItemsSource="{Binding HostOptions}"
                                               common:ComboBoxWidthBehavior.SizeToItems="True"
                                               common:ComboBoxWidthBehavior.WidthGroup="MenuSettingCombos"
-                                              ToolTip="{Binding Menu_HostInput_Tip, Source={x:Static strings:Strings.Instance}}"
+                                              ToolTip="{Binding HostInputTip}"
                                               DisplayMemberPath="Label"
                                               SelectedItem="{Binding SelectedHost, Mode=TwoWay}"/>
                                     <ui:Button Command="{Binding DataContext.MenuHostRecordCommand,
@@ -12489,7 +12558,7 @@
                                     <ColumnDefinition Width="Auto" SharedSizeGroup="MenuEditorLabel"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="1" Text="{Binding Menu_HostInput_Caption, Source={x:Static strings:Strings.Instance}}"
+                                <TextBlock Grid.Column="1" Text="{Binding HostInputCaption}"
                                            Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                            TextWrapping="Wrap" MaxWidth="520" HorizontalAlignment="Left"
                                            Margin="0,2,0,0" FontSize="12"/>
@@ -12864,17 +12933,25 @@
                                         <Grid Margin="0,0,0,6">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" SharedSizeGroup="MenuCellHeader"/>
+                                                <!-- Icon indicator and size live in their own shared
+                                                     column (#413), so a row with an icon and a row
+                                                     without keep their label and pickers aligned. -->
+                                                <ColumnDefinition Width="Auto" SharedSizeGroup="MenuCellIconControls"/>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Grid.Column="0" Text="{Binding Header}" VerticalAlignment="Center"
                                                        Margin="0,0,8,0" TextWrapping="Wrap" MaxWidth="160"
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                                            <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                                <!-- Imported Steam icon indicator (translator v21):
-                                                     the resolved local-Steam glyph, or the picture
-                                                     placeholder when the art is not on this
-                                                     machine. Indicator only, the reset button
-                                                     clears it with the rest of the cell. -->
+                                            <!-- Imported Steam icon indicator (translator v21): the
+                                                 resolved local-Steam glyph, or the picture placeholder
+                                                 when the art is not on this machine. Beside it the
+                                                 per-cell size (#413, @brawler14801): a bar rather than
+                                                 a number so neighboring cells compare by eye, gated on
+                                                 HasIcon (not on the image resolving) so unavailable
+                                                 art keeps its size editable, and reset to 100 with
+                                                 the icon so no size sits on a cell that renders none. -->
+                                            <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,8,0"
+                                                        Visibility="{Binding HasIcon, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <Image Width="16" Height="16" Margin="0,0,6,0"
                                                        VerticalAlignment="Center"
                                                        Source="{Binding IconImage}"
@@ -12886,6 +12963,18 @@
                                                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                            ToolTip="{Binding IconName}"
                                                            Visibility="{Binding ShowIconGlyph, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                <Slider Width="72" Minimum="25" Maximum="200"
+                                                        SmallChange="5" LargeChange="25"
+                                                        TickFrequency="25" IsSnapToTickEnabled="False"
+                                                        VerticalAlignment="Center" Margin="0,0,6,0"
+                                                        Value="{Binding IconScalePercent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                        ToolTip="{Binding Menu_IconScale_Tip, Source={x:Static strings:Strings.Instance}}"
+                                                        AutomationProperties.Name="{Binding Menu_IconScale, Source={x:Static strings:Strings.Instance}}"/>
+                                                <TextBlock Width="42" VerticalAlignment="Center" TextAlignment="Right"
+                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                           Text="{Binding IconScalePercent, StringFormat={}{0}%}"/>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="2" Orientation="Horizontal">
                                                 <!-- Pickers auto-size to their widest ITEM, one
                                                      width group per column, so rows stay in
                                                      column across selections AND long locales

@@ -2343,6 +2343,10 @@ namespace PadForge.SteamWorkshop.Translation
                 CustomXDescriptor = customX,
                 CustomYDescriptor = customY,
                 LayerMask = layer == "Base" ? "" : layer,
+                // Imported mode-shift menus keep ordinary surface engagement.
+                // Steam has no stay-open menu, so a mask alone must never
+                // opt an import into it (#413).
+                LayerHoldsOpen = false,
                 FireType = (PadForge.Engine.Menus.MenuFireType)Math.Clamp(
                     ParseIntSetting(settings, "touchmenu_button_fire_type", 0), 0, 3),
                 CellCount = cellCount,

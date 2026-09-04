@@ -334,9 +334,19 @@
             else MouseButtons &= (byte)~(1 << index);
         }
 
-        public void Clear()
+        /// <summary>Zeroes the keyboard half.</summary>
+        public void ClearKeyboard()
         {
             Keys0 = Keys1 = Keys2 = Keys3 = 0;
+        }
+
+        /// <summary>Zeroes every mouse lane. There are a dozen of them and
+        /// the count keeps growing (velocity, scroll, horizontal scroll,
+        /// absolute pointer, flick, gyro, touchpad, coast), so a surface gate
+        /// zeroes HERE rather than threading a flag through each lane, where
+        /// the next lane added would silently escape it (#408).</summary>
+        public void ClearMouse()
+        {
             MouseDeltaX = MouseDeltaY = ScrollDelta = 0;
             ScrollDeltaH = PreDzScrollDeltaH = 0;
             MouseButtons = 0;
@@ -348,6 +358,28 @@
             MouseGyroX = MouseGyroY = 0f;
             MouseTouchX = MouseTouchY = 0f;
             MouseStickCoastX = MouseStickCoastY = 0f;
+        }
+
+        /// <summary>Both halves. The field list lives in the two halves so a
+        /// new field lands in exactly one of them and the surface gate keeps
+        /// covering everything Clear covers.</summary>
+        public void Clear()
+        {
+            ClearKeyboard();
+            ClearMouse();
+        }
+
+        /// <summary>Drops the halves this slot does not drive (#408). A
+        /// Keyboard + Mouse slot set to Mouse only must not emit keystrokes
+        /// from bindings the user left in place, and the reverse. The
+        /// mappings themselves are untouched, so switching the half back on
+        /// restores them.</summary>
+        public KbmRawState WithSurfaces(bool keyboardEnabled, bool mouseEnabled)
+        {
+            var copy = this;
+            if (!keyboardEnabled) copy.ClearKeyboard();
+            if (!mouseEnabled) copy.ClearMouse();
+            return copy;
         }
 
         /// <summary>

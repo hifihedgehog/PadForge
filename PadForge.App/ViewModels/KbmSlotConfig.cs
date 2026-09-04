@@ -15,6 +15,24 @@ namespace PadForge.ViewModels
         public string Description { get; set; } = "";
     }
 
+    /// <summary>Which half of a Keyboard + Mouse slot a mapping row drives
+    /// (#408). The classifier lives on PadViewModel as KbmSurfaceOf, reading
+    /// the same descriptor vocabulary the engine dispatches on.</summary>
+    public enum KbmSurfaceKind
+    {
+        Keyboard,
+        Mouse,
+    }
+
+    /// <summary>One entry in the surface-mode dropdown. Same shape as
+    /// <see cref="SocdModeOption"/>, which is the card's other mode row.</summary>
+    public sealed class KbmSurfaceOption
+    {
+        public string Value { get; set; } = "";
+        public string Name { get; set; } = "";
+        public string Description { get; set; } = "";
+    }
+
     /// <summary>Pickable keyboard key for the SOCD pair editor. The list
     /// mirrors the KBM mapping targets built by
     /// PadViewModel.InitializeKeyboardMouseMappings (same keys, same
@@ -80,6 +98,47 @@ namespace PadForge.ViewModels
         {
             RebuildPairItems();
         }
+
+        /// <summary>The surface mode's default and the value every file
+        /// written before #408 reads as: the slot drives both halves, which
+        /// is what Keyboard + Mouse has always meant.</summary>
+        public const string DefaultSurfaces = "Both";
+
+        private string _surfaces = DefaultSurfaces;
+        /// <summary>Which halves of the slot are live: "Both",
+        /// "KeyboardOnly" or "MouseOnly" (#408, @Xaklse on Discord).
+        /// Stored locale-stable like <see cref="SocdMode"/>, and the
+        /// dropdown maps it through <see cref="KbmSurfaceOption"/>.
+        ///
+        /// <para>Turning a half off HIDES its rows and stops its dispatch.
+        /// It does NOT delete the mappings: they stay on the PadSetting so
+        /// turning the half back on restores the user's work, which is the
+        /// same parked-state contract the settings load honors for a device
+        /// a profile does not assign.</para></summary>
+        public string Surfaces
+        {
+            get => _surfaces;
+            set
+            {
+                string v = value;
+                if (v != "KeyboardOnly" && v != "MouseOnly") v = DefaultSurfaces;
+                if (!SetProperty(ref _surfaces, v)) return;
+                OnPropertyChanged(nameof(KeyboardEnabled));
+                OnPropertyChanged(nameof(MouseEnabled));
+            }
+        }
+
+        /// <summary>Whether the keyboard half is live. Read by the mapping
+        /// table and by the engine's Keyboard + Mouse dispatch.</summary>
+        public bool KeyboardEnabled => _surfaces != "MouseOnly";
+
+        /// <summary>Whether the mouse half is live.</summary>
+        public bool MouseEnabled => _surfaces != "KeyboardOnly";
+
+        /// <summary>Whether a row of the given half should be shown and
+        /// dispatched under the current mode.</summary>
+        public bool Allows(KbmSurfaceKind kind)
+            => kind == KbmSurfaceKind.Keyboard ? KeyboardEnabled : MouseEnabled;
 
         private string _socdMode = "Off";
         /// <summary>SOCD mode name: "Off", "LastWins", "Neutral", "FirstWins".
@@ -171,8 +230,40 @@ namespace PadForge.ViewModels
         /// subscribers survive; same invariant as MidiSlotConfig).</summary>
         public void ResetToDefaults()
         {
+            Surfaces = DefaultSurfaces;
             SocdMode = "Off";
             SocdPairs = DefaultSocdPairs;
+        }
+
+        private RelayCommand _resetSurfacesCommand;
+        /// <summary>Surface-mode reset for the card's own row, beside the
+        /// SOCD mode's. Every row on this page carries one.</summary>
+        public RelayCommand ResetSurfacesCommand =>
+            _resetSurfacesCommand ??= new RelayCommand(() => Surfaces = DefaultSurfaces);
+
+        private static KbmSurfaceOption[] _surfaceOptionsCache;
+        private static int _surfaceOptionsCacheCulture;
+
+        public System.Collections.Generic.IReadOnlyList<KbmSurfaceOption> AvailableKbmSurfaces
+            => GetSurfaceOptions();
+
+        private static KbmSurfaceOption[] GetSurfaceOptions()
+        {
+            int culture = System.Globalization.CultureInfo.CurrentUICulture.LCID;
+            var cached = _surfaceOptionsCache;
+            if (cached != null && _surfaceOptionsCacheCulture == culture)
+                return cached;
+
+            var s = PadForge.Resources.Strings.Strings.Instance;
+            var arr = new[]
+            {
+                new KbmSurfaceOption { Value = "Both",         Name = s.Pad_Kbm_Surfaces_Both_Name,         Description = s.Pad_Kbm_Surfaces_Both_Description },
+                new KbmSurfaceOption { Value = "MouseOnly",    Name = s.Pad_Kbm_Surfaces_MouseOnly_Name,    Description = s.Pad_Kbm_Surfaces_MouseOnly_Description },
+                new KbmSurfaceOption { Value = "KeyboardOnly", Name = s.Pad_Kbm_Surfaces_KeyboardOnly_Name, Description = s.Pad_Kbm_Surfaces_KeyboardOnly_Description },
+            };
+            _surfaceOptionsCache = arr;
+            _surfaceOptionsCacheCulture = culture;
+            return arr;
         }
 
         // ── Dropdown item sources ──
@@ -290,6 +381,10 @@ namespace PadForge.ViewModels
     public class KbmSlotConfigData
     {
         [XmlAttribute] public int SlotIndex { get; set; }
+        /// <summary>#408. An absent attribute leaves this initializer, so
+        /// every file and profile written before the surface mode existed
+        /// reads as Both and behaves exactly as it did.</summary>
+        [XmlAttribute] public string Surfaces { get; set; } = KbmSlotConfig.DefaultSurfaces;
         [XmlAttribute] public string SocdMode { get; set; } = "Off";
         [XmlAttribute] public string SocdPairs { get; set; } = KbmSlotConfig.DefaultSocdPairs;
     }

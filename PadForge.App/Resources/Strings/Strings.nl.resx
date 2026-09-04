@@ -3485,4 +3485,40 @@ Je kunt het later opnieuw proberen via Instellingen.</value></data>
   <data name="About_LinuxmotehookDesc" xml:space="preserve">
     <value>Voorinstellingen voor de vasthoudrichting van de Wii Remote die de Greep-instelling weerspiegelt. linuxmotehook is Apache-2.0. WiimoteHook is een gesloten tool die via zijn documentatie is gelezen. Er wordt geen code meegeleverd.</value>
   </data>
+  <data name="Pad_Kbm_Surfaces_Label" xml:space="preserve">
+    <value>Invoervlakken</value>
+  </data>
+  <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
+    <value>Kies welke helften van deze sleuf actief zijn. Een uitgeschakelde helft verbergt zijn rijen en stopt met verzenden, maar behoudt zijn toewijzingen zodat ze terugkomen als je hem weer inschakelt.</value>
+  </data>
+  <data name="Pad_Kbm_Surfaces_Both_Name" xml:space="preserve">
+    <value>Toetsenbord en muis</value>
+  </data>
+  <data name="Pad_Kbm_Surfaces_Both_Description" xml:space="preserve">
+    <value>De sleuf verstuurt toetsaanslagen en muisinvoer.</value>
+  </data>
+  <data name="Pad_Kbm_Surfaces_MouseOnly_Name" xml:space="preserve">
+    <value>Alleen muis</value>
+  </data>
+  <data name="Pad_Kbm_Surfaces_MouseOnly_Description" xml:space="preserve">
+    <value>Alleen de muisrijen worden getoond en alleen muisinvoer wordt verstuurd.</value>
+  </data>
+  <data name="Pad_Kbm_Surfaces_KeyboardOnly_Name" xml:space="preserve">
+    <value>Alleen toetsenbord</value>
+  </data>
+  <data name="Pad_Kbm_Surfaces_KeyboardOnly_Description" xml:space="preserve">
+    <value>Alleen de toetsenbordrijen worden getoond en alleen toetsaanslagen worden verstuurd.</value>
+  </data>
+  <data name="Pad_Mapping_Scope_All" xml:space="preserve">
+    <value>Alles</value>
+  </data>
+  <data name="Pad_Mapping_Scope_Keyboard" xml:space="preserve">
+    <value>Toetsenbord</value>
+  </data>
+  <data name="Pad_Mapping_Scope_Mouse" xml:space="preserve">
+    <value>Muis</value>
+  </data>
+  <data name="Pad_Mapping_Scope_Tooltip" xml:space="preserve">
+    <value>Beperkt de tabel tot toetsenbord- of muisrijen.</value>
+  </data>
 </root>

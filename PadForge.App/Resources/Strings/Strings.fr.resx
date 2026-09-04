@@ -3465,4 +3465,40 @@ Vous pouvez réessayer plus tard depuis les Paramètres.</value></data>
   <data name="About_LinuxmotehookDesc" xml:space="preserve">
     <value>Préréglages d'orientation de tenue de la Wii Remote que reflète le réglage Prise en main. linuxmotehook est Apache-2.0. WiimoteHook est un outil à code fermé lu à travers sa documentation. Aucun code livré.</value>
   </data>
+  <data name="Pad_Kbm_Surfaces_Label" xml:space="preserve">
+    <value>Surfaces</value>
+  </data>
+  <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
+    <value>Choisissez les moitiés actives de cet emplacement. Désactiver une moitié masque ses lignes et arrête son envoi, tout en conservant ses affectations pour les retrouver à la réactivation.</value>
+  </data>
+  <data name="Pad_Kbm_Surfaces_Both_Name" xml:space="preserve">
+    <value>Clavier et souris</value>
+  </data>
+  <data name="Pad_Kbm_Surfaces_Both_Description" xml:space="preserve">
+    <value>L'emplacement envoie des frappes et des entrées souris.</value>
+  </data>
+  <data name="Pad_Kbm_Surfaces_MouseOnly_Name" xml:space="preserve">
+    <value>Souris uniquement</value>
+  </data>
+  <data name="Pad_Kbm_Surfaces_MouseOnly_Description" xml:space="preserve">
+    <value>Seules les lignes de la souris sont affichées et seules les entrées souris sont envoyées.</value>
+  </data>
+  <data name="Pad_Kbm_Surfaces_KeyboardOnly_Name" xml:space="preserve">
+    <value>Clavier uniquement</value>
+  </data>
+  <data name="Pad_Kbm_Surfaces_KeyboardOnly_Description" xml:space="preserve">
+    <value>Seules les lignes du clavier sont affichées et seules les frappes sont envoyées.</value>
+  </data>
+  <data name="Pad_Mapping_Scope_All" xml:space="preserve">
+    <value>Tout</value>
+  </data>
+  <data name="Pad_Mapping_Scope_Keyboard" xml:space="preserve">
+    <value>Clavier</value>
+  </data>
+  <data name="Pad_Mapping_Scope_Mouse" xml:space="preserve">
+    <value>Souris</value>
+  </data>
+  <data name="Pad_Mapping_Scope_Tooltip" xml:space="preserve">
+    <value>Restreint le tableau aux lignes du clavier ou de la souris.</value>
+  </data>
 </root>

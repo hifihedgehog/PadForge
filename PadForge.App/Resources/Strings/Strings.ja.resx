@@ -3465,29 +3465,17 @@
   <data name="About_LinuxmotehookDesc" xml:space="preserve">
     <value>グリップ設定が反映する Wii リモコンの持ち方向プリセット。linuxmotehook は Apache-2.0。WiimoteHook はドキュメントを通じて参照したクローズドソースのツール。コードは同梱しません。</value>
   </data>
-  <data name="Pad_Kbm_Surfaces_Label" xml:space="preserve">
-    <value>入力面</value>
-  </data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>このスロットで有効にする面を選びます。無効にした面は行が非表示になり送信も止まりますが、割り当ては保持されるため再度有効にすると元に戻ります。</value>
   </data>
   <data name="Pad_Kbm_Surfaces_Both_Name" xml:space="preserve">
     <value>キーボードとマウス</value>
   </data>
-  <data name="Pad_Kbm_Surfaces_Both_Description" xml:space="preserve">
-    <value>このスロットはキー入力とマウス入力の両方を送信します。</value>
-  </data>
   <data name="Pad_Kbm_Surfaces_MouseOnly_Name" xml:space="preserve">
     <value>マウスのみ</value>
   </data>
-  <data name="Pad_Kbm_Surfaces_MouseOnly_Description" xml:space="preserve">
-    <value>マウスの行だけを表示し、マウス入力だけを送信します。</value>
-  </data>
   <data name="Pad_Kbm_Surfaces_KeyboardOnly_Name" xml:space="preserve">
     <value>キーボードのみ</value>
-  </data>
-  <data name="Pad_Kbm_Surfaces_KeyboardOnly_Description" xml:space="preserve">
-    <value>キーボードの行だけを表示し、キー入力だけを送信します。</value>
   </data>
   <data name="Pad_Mapping_Scope_All" xml:space="preserve">
     <value>すべて</value>

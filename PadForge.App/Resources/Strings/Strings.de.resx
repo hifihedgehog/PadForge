@@ -3465,29 +3465,17 @@ Du kannst es später in den Einstellungen erneut versuchen.</value></data>
   <data name="About_LinuxmotehookDesc" xml:space="preserve">
     <value>Voreinstellungen für die Halteausrichtung der Wii-Fernbedienung, die die Griff-Einstellung spiegelt. linuxmotehook ist Apache-2.0. WiimoteHook ist ein Closed-Source-Werkzeug, das über seine Dokumentation gelesen wurde. Kein Code wird ausgeliefert.</value>
   </data>
-  <data name="Pad_Kbm_Surfaces_Label" xml:space="preserve">
-    <value>Eingabearten</value>
-  </data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>Legt fest, welche Hälften dieses Slots aktiv sind. Eine deaktivierte Hälfte blendet ihre Zeilen aus und sendet nichts mehr, behält aber ihre Zuweisungen, sodass sie beim Wiedereinschalten zurückkehren.</value>
   </data>
   <data name="Pad_Kbm_Surfaces_Both_Name" xml:space="preserve">
     <value>Tastatur und Maus</value>
   </data>
-  <data name="Pad_Kbm_Surfaces_Both_Description" xml:space="preserve">
-    <value>Der Slot sendet Tastenanschläge und Mauseingaben.</value>
-  </data>
   <data name="Pad_Kbm_Surfaces_MouseOnly_Name" xml:space="preserve">
     <value>Nur Maus</value>
   </data>
-  <data name="Pad_Kbm_Surfaces_MouseOnly_Description" xml:space="preserve">
-    <value>Es werden nur die Mauszeilen angezeigt und nur Mauseingaben gesendet.</value>
-  </data>
   <data name="Pad_Kbm_Surfaces_KeyboardOnly_Name" xml:space="preserve">
     <value>Nur Tastatur</value>
-  </data>
-  <data name="Pad_Kbm_Surfaces_KeyboardOnly_Description" xml:space="preserve">
-    <value>Es werden nur die Tastaturzeilen angezeigt und nur Tastenanschläge gesendet.</value>
   </data>
   <data name="Pad_Mapping_Scope_All" xml:space="preserve">
     <value>Alle</value>

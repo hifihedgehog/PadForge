@@ -1217,14 +1217,10 @@ public class Strings : INotifyPropertyChanged
     public string Pad_MidiVelocity => Get("Pad_MidiVelocity");
     public string Pad_MidiVelocityTooltip => Get("Pad_MidiVelocityTooltip");
     public string Pad_Kbm_Socd_Tooltip => Get("Pad_Kbm_Socd_Tooltip");
-    public string Pad_Kbm_Surfaces_Label => Get("Pad_Kbm_Surfaces_Label");
     public string Pad_Kbm_Surfaces_Tooltip => Get("Pad_Kbm_Surfaces_Tooltip");
     public string Pad_Kbm_Surfaces_Both_Name => Get("Pad_Kbm_Surfaces_Both_Name");
-    public string Pad_Kbm_Surfaces_Both_Description => Get("Pad_Kbm_Surfaces_Both_Description");
     public string Pad_Kbm_Surfaces_MouseOnly_Name => Get("Pad_Kbm_Surfaces_MouseOnly_Name");
-    public string Pad_Kbm_Surfaces_MouseOnly_Description => Get("Pad_Kbm_Surfaces_MouseOnly_Description");
     public string Pad_Kbm_Surfaces_KeyboardOnly_Name => Get("Pad_Kbm_Surfaces_KeyboardOnly_Name");
-    public string Pad_Kbm_Surfaces_KeyboardOnly_Description => Get("Pad_Kbm_Surfaces_KeyboardOnly_Description");
     public string Pad_Mapping_Scope_All => Get("Pad_Mapping_Scope_All");
     public string Pad_Mapping_Scope_Keyboard => Get("Pad_Mapping_Scope_Keyboard");
     public string Pad_Mapping_Scope_Mouse => Get("Pad_Mapping_Scope_Mouse");

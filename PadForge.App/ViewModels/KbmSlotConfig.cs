@@ -1,4 +1,4 @@
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Xml.Serialization;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -24,13 +24,14 @@ namespace PadForge.ViewModels
         Mouse,
     }
 
-    /// <summary>One entry in the surface-mode dropdown. Same shape as
-    /// <see cref="SocdModeOption"/>, which is the card's other mode row.</summary>
+    /// <summary>One entry in the Preset chip's surface dropdown, the
+    /// Keyboard + Mouse counterpart of the HIDMaestro profile a gamepad slot
+    /// picks there. No Description: a chip shows one short label, which is
+    /// why the profile combo beside it is a flat DisplayMemberPath too.</summary>
     public sealed class KbmSurfaceOption
     {
         public string Value { get; set; } = "";
         public string Name { get; set; } = "";
-        public string Description { get; set; } = "";
     }
 
     /// <summary>Pickable keyboard key for the SOCD pair editor. The list
@@ -235,12 +236,6 @@ namespace PadForge.ViewModels
             SocdPairs = DefaultSocdPairs;
         }
 
-        private RelayCommand _resetSurfacesCommand;
-        /// <summary>Surface-mode reset for the card's own row, beside the
-        /// SOCD mode's. Every row on this page carries one.</summary>
-        public RelayCommand ResetSurfacesCommand =>
-            _resetSurfacesCommand ??= new RelayCommand(() => Surfaces = DefaultSurfaces);
-
         private static KbmSurfaceOption[] _surfaceOptionsCache;
         private static int _surfaceOptionsCacheCulture;
 
@@ -257,9 +252,9 @@ namespace PadForge.ViewModels
             var s = PadForge.Resources.Strings.Strings.Instance;
             var arr = new[]
             {
-                new KbmSurfaceOption { Value = "Both",         Name = s.Pad_Kbm_Surfaces_Both_Name,         Description = s.Pad_Kbm_Surfaces_Both_Description },
-                new KbmSurfaceOption { Value = "MouseOnly",    Name = s.Pad_Kbm_Surfaces_MouseOnly_Name,    Description = s.Pad_Kbm_Surfaces_MouseOnly_Description },
-                new KbmSurfaceOption { Value = "KeyboardOnly", Name = s.Pad_Kbm_Surfaces_KeyboardOnly_Name, Description = s.Pad_Kbm_Surfaces_KeyboardOnly_Description },
+                new KbmSurfaceOption { Value = "Both",         Name = s.Pad_Kbm_Surfaces_Both_Name },
+                new KbmSurfaceOption { Value = "MouseOnly",    Name = s.Pad_Kbm_Surfaces_MouseOnly_Name },
+                new KbmSurfaceOption { Value = "KeyboardOnly", Name = s.Pad_Kbm_Surfaces_KeyboardOnly_Name },
             };
             _surfaceOptionsCache = arr;
             _surfaceOptionsCacheCulture = culture;

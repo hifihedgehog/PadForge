@@ -815,6 +815,16 @@ namespace PadForge.ViewModels
             get => _kbmConfig?.Surfaces ?? KbmSlotConfig.DefaultSurfaces;
             set
             {
+                // A null or empty write is NEVER a user pick. It is what a
+                // Selector pushes back through a TwoWay SelectedValue binding
+                // when it resolves before its ItemsSource is populated, which
+                // happens on every load of a slot that already had a mode.
+                // Accepting it let KbmSlotConfig coerce the stored value to
+                // Both, the autosave wrote that, and the slot forgot the
+                // preset. Same shape as the negative index the Remote Link
+                // identity picker pushed back on a culture change.
+                if (string.IsNullOrEmpty(value)) return;
+
                 var cfg = _kbmConfig;
                 if (cfg == null || cfg.Surfaces == value) return;
                 cfg.Surfaces = value;

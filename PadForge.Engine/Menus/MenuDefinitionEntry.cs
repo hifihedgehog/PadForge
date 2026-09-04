@@ -105,6 +105,14 @@ namespace PadForge.Engine.Menus
         /// append-only: absent in older files = empty.</summary>
         [XmlAttribute] public string Icon { get; set; } = "";
 
+        /// <summary>Cell icon size as percent of the menu's normal icon box
+        /// (#413). 100 = the identity, so every file written before this
+        /// field renders exactly as it did. The editor and the overlay both
+        /// clamp to 25..200. The editor resets it to 100 when the icon is
+        /// cleared, so no size sits on a cell that renders none. Schema
+        /// append-only: absent in older files = 100.</summary>
+        [XmlAttribute] public int IconScalePercent { get; set; } = 100;
+
         /// <summary>Whether <paramref name="name"/> is a plausible Steam
         /// binding-icon file name: a bare "*.png" with no directory
         /// separators, drive colons, or characters outside the set the
@@ -232,6 +240,17 @@ namespace PadForge.Engine.Menus
 
         [XmlAttribute] public bool Enabled { get; set; } = true;
 
+        /// <summary>Stay-open mode (#413, discussion #409). When true and
+        /// <see cref="LayerMask"/> names a real layer (nonempty and not
+        /// "Base"), the layer being engaged is what keeps the menu open, and
+        /// the host surface only steers the hover. Entering the layer opens
+        /// the menu, leaving it closes the menu. Empty or "Base" cannot hold
+        /// a menu open (there is no exit), so the runtime falls back to
+        /// ordinary surface engagement for them. Schema append-only: absent
+        /// in older files = false, which is byte-identical behavior to
+        /// before the field existed.</summary>
+        [XmlAttribute] public bool LayerHoldsOpen { get; set; }
+
         [XmlElement("Item")] public List<MenuItemDefinition> Items { get; set; } = new();
 
         /// <summary>Deep copy. Every clone site (profile apply, slot copy,
@@ -265,6 +284,7 @@ namespace PadForge.Engine.Menus
                 OpacityPercent = OpacityPercent,
                 EngageDeadzonePercent = EngageDeadzonePercent,
                 Enabled = Enabled,
+                LayerHoldsOpen = LayerHoldsOpen,
             };
             if (Items != null)
             {
@@ -280,6 +300,7 @@ namespace PadForge.Engine.Menus
                         ExtendedButton = it.ExtendedButton,
                         MacroName = it.MacroName,
                         Icon = it.Icon,
+                        IconScalePercent = it.IconScalePercent,
                     });
                 }
             }

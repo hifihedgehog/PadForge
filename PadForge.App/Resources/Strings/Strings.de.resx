@@ -3489,4 +3489,21 @@ Du kannst es später in den Einstellungen erneut versuchen.</value></data>
   <data name="Pad_Mapping_Scope_Tooltip" xml:space="preserve">
     <value>Beschränkt die Tabelle auf Tastatur- oder Mauszeilen.</value>
   </data>
+  <data name="Menu_Layer" xml:space="preserve"><value>Ebene</value></data>
+  <data name="Menu_Layer_Tip" xml:space="preserve"><value>Wählt die Ebene, die dieses Menü zulässt. „Jede Ebene“ und „Basis“ erlauben es auch unter anderen aktiven Ebenen. Eine benannte Ebene muss der gerade aktiven Ebene entsprechen.</value></data>
+  <data name="Menu_Reset_Layer" xml:space="preserve"><value>Auf „Jede Ebene“ zurücksetzen und das Offenhalten durch die Ebene ausschalten.</value></data>
+  <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (auf diesem Slot nicht vorhanden)</value></data>
+  <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>Ebene hält das Menü offen</value></data>
+  <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>Hält dieses Menü offen, solange seine benannte Ebene aktiv ist. Die gewählte physische Eingabe steuert die Hervorhebung. „Jede Ebene“ und „Basis“ öffnen wie gewohnt über die Oberfläche.</value></data>
+  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Zurücksetzen auf Öffnen bei Berührung oder Auslenkung.</value></data>
+  <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Steuern mit</value></data>
+  <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>Die physische Eingabe, die die hervorgehobene Zelle steuert, während die Ebene das Menü offen hält.</value></data>
+  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Wird von den diesem Slot zugewiesenen physischen Controllern gelesen. Die Ebene öffnet das Menü, diese Eingabe steuert es. Die Zellenbelegungen bestimmen die Ausgabe.</value></data>
+  <data name="Menu_IconScale" xml:space="preserve"><value>Symbolgröße</value></data>
+  <data name="Menu_IconScale_Tip" xml:space="preserve"><value>Symbolgröße relativ zur normalen Symbolgröße des Menüs, von 25 % bis 200 %. Das Entfernen des Symbols setzt sie auf 100 % zurück.</value></data>
+  <data name="Menu_Fire_Click_LayerHold_Desc" xml:space="preserve"><value>Hält die Belegung der hervorgehobenen Zelle, solange die Klick-Eingabe gehalten wird. Eine hervorgehobene Radialmitte kann auslösen, während der Stick ruht.</value></data>
+  <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>Löst einmal aus, wenn die Klick-Eingabe losgelassen wird. Wird die Oberfläche im selben Moment losgelassen, löst die vorherige Auswahl aus.</value></data>
+  <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>Löst einmal aus, wenn Sie den Finger heben oder den Stick in die Aktivierungs-Totzone zurückführen, während das Menü offen bleibt. Das Verlassen der Ebene bestätigt ebenfalls eine noch gesteuerte Auswahl.</value></data>
+  <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>Hält die Belegung, solange ihre Zelle hervorgehoben ist. Eine Radialmitte kann sofort auslösen, wenn die Ebene öffnet.</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Richtungstasten schalten durch die Zellen und lösen jede neu gewählte Zelle aus. Dieses Hotbar-Verhalten nutzt weder Auslösemodus noch Klick-Eingabe.</value></data>
 </root>

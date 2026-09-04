@@ -27,6 +27,14 @@ namespace PadForge.Common
     {
         private static readonly object Sync = new();
 
+        /// <summary>Decode width for every icon source (#413). Steam ships its
+        /// binding icons at 256, and a cell can now ask for up to 200% of the
+        /// menu's icon box, which at 400% menu scale is 240 DIP. 96 was picked
+        /// when the overlay only ever drew a glyph-sized box, and scaling that
+        /// decode up softened visibly. One constant, so the three loaders
+        /// cannot drift apart.</summary>
+        private const int IconDecodePixelWidth = 256;
+
         /// <summary>Name -> frozen image, misses cached as null so a menu
         /// rebuild never re-probes the disk for a known-absent file.</summary>
         private static readonly Dictionary<string, BitmapImage> Cache =
@@ -121,7 +129,7 @@ namespace PadForge.Common
                 img.BeginInit();
                 img.StreamSource = new MemoryStream(bytes, writable: false);
                 img.CacheOption = BitmapCacheOption.OnLoad;
-                img.DecodePixelWidth = 96;
+                img.DecodePixelWidth = IconDecodePixelWidth;
                 img.EndInit();
                 img.Freeze();
                 return img;
@@ -143,7 +151,7 @@ namespace PadForge.Common
                 img.BeginInit();
                 img.UriSource = new Uri(Path.GetFullPath(path), UriKind.Absolute);
                 img.CacheOption = BitmapCacheOption.OnLoad;
-                img.DecodePixelWidth = 96;
+                img.DecodePixelWidth = IconDecodePixelWidth;
                 img.EndInit();
                 img.Freeze();
                 return img;
@@ -171,10 +179,10 @@ namespace PadForge.Common
                     img.BeginInit();
                     img.UriSource = new Uri(path, UriKind.Absolute);
                     img.CacheOption = BitmapCacheOption.OnLoad;
-                    // The source art is 256px and the overlay renders it
-                    // at glyph size, so decode small and keep the cache
-                    // cheap.
-                    img.DecodePixelWidth = 96;
+                    // The source art is 256px. Decoding at its native size
+                    // means a cell scaled up to 200% never upsamples Steam
+                    // art (#413).
+                    img.DecodePixelWidth = IconDecodePixelWidth;
                     img.EndInit();
                     img.Freeze();
                     return img;

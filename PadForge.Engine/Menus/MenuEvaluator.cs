@@ -13,6 +13,15 @@ namespace PadForge.Engine.Menus
         /// <summary>Host click held last frame (pad click / stick click).</summary>
         public bool Clicked;
 
+        /// <summary>Stay-open menus only (#413): the surface was PHYSICALLY
+        /// engaged last frame (touch down / stick past the deadzone) while
+        /// the menu was open. <see cref="Engaged"/> means the menu is open,
+        /// which in stay-open mode the layer decides, so the two split. This
+        /// is what arms a Touch Release commit: lifting or re-centering
+        /// commits, and the layer ending commits only an interaction that
+        /// was still in progress, never one that already released.</summary>
+        public bool PhysicalEngaged;
+
         /// <summary>Item index currently hovered, -1 = none. Radial: 0 =
         /// center, 1..N ring; grid: 0-based cell.</summary>
         public int HoveredIndex = -1;
@@ -40,6 +49,7 @@ namespace PadForge.Engine.Menus
         {
             Engaged = false;
             Clicked = false;
+            PhysicalEngaged = false;
             HoveredIndex = -1;
             AssertedIndex = -1;
             PulsedIndex = -1;
@@ -72,10 +82,27 @@ namespace PadForge.Engine.Menus
         /// edge at any reasonable polling rate").</summary>
         public const int CommitPulseMs = 100;
 
-        /// <summary>Advances one menu's state for this poll frame.
+        /// <summary>Whether a menu is open this frame (#413). Surface mode:
+        /// physically engaged AND the layer gate passes, the shape every menu
+        /// had before stay-open existed. Stay-open mode (LayerHoldsOpen with a
+        /// real layer): the layer gate alone, so entering the layer opens the
+        /// menu and leaving it closes the menu while the surface only steers.
+        /// Empty and "Base" masks cannot hold a menu open, there being no exit,
+        /// so they take the surface path even with the flag set.</summary>
+        public static bool ComputeSurfaceActive(MenuDefinitionEntry def, bool physical, bool layerOk)
+        {
+            if (def == null) return false;
+            string mask = def.LayerMask ?? "";
+            bool layerHolds = def.LayerHoldsOpen && mask.Length > 0 && mask != "Base";
+            return layerOk && (layerHolds || physical);
+        }
+
+        /// <summary>Advances one SURFACE-mode menu's state for this poll frame.
         /// <paramref name="surfaceActive"/> = physically engaged AND the
         /// hosting layer active; a layer ending therefore lands here as a
         /// release edge, which is exactly Steam's mode-shift-end commit.
+        /// Stay-open menus go through <see cref="UpdateLayerEngaged"/>, which
+        /// keeps this path byte-for-byte as it was.
         /// (<paramref name="dx"/>, <paramref name="dy"/>) is the
         /// center-relative deflection (-1..1, +Y down) used by radial
         /// menus; (<paramref name="nx"/>, <paramref name="ny"/>) is the
@@ -147,6 +174,96 @@ namespace PadForge.Engine.Menus
             st.HoveredIndex = hover;
             st.Engaged = surfaceActive;
             st.Clicked = surfaceActive && clicked;
+        }
+
+        /// <summary>Advances one STAY-OPEN menu's state for this poll frame
+        /// (#413). <paramref name="menuActive"/> is the layer gate: the menu
+        /// is open while it holds. <paramref name="physical"/> is the surface
+        /// (touch down / stick past the deadzone) and only steers the hover,
+        /// so at rest a stick radial shows its center when it has one and a
+        /// grid or an untouched pad shows nothing. The four fire types keep
+        /// their meaning with one refinement each: Touch Release commits on
+        /// the PHYSICAL release (lift / re-center) while the menu stays open,
+        /// and the layer ending commits only an interaction still in
+        /// progress, so one gesture can never fire twice. Click Release on a
+        /// simultaneous release and re-center commits the ring cell that was
+        /// hovered, never the resting center that just appeared.</summary>
+        public static void UpdateLayerEngaged(MenuRuntimeState st, MenuDefinitionEntry def,
+            bool menuActive, bool physical, bool clicked, bool centerAtRest,
+            double dx, double dy, double nx, double ny, long nowMs)
+        {
+            if (st == null || def == null) return;
+
+            int hover = -1;
+            if (menuActive)
+            {
+                if (physical)
+                {
+                    hover = def.Kind == MenuKind.Radial
+                        ? MenuSelectionMath.RadialIndexFromVector(dx, dy, def.CellCount,
+                            def.HasCenter, Math.Clamp(def.EngageDeadzonePercent, 1, 95) / 100.0)
+                        : MenuSelectionMath.GridIndexFromPosition(nx, ny, def.CellCount);
+                }
+                else if (centerAtRest && def.Kind == MenuKind.Radial && def.HasCenter)
+                {
+                    // A configured stick resting inside the deadzone hovers
+                    // the center cell, the same answer RadialIndexFromVector
+                    // gives a held stick at center. Grids never hover at
+                    // rest: GridIndexFromPosition clamps every position into
+                    // a cell, so a synthetic (0.5, 0.5) would light the
+                    // middle cell with no finger on the pad.
+                    hover = 0;
+                }
+            }
+
+            switch (def.FireType)
+            {
+                case MenuFireType.Click:
+                    st.AssertedIndex = menuActive && clicked && hover >= 0 ? hover : -1;
+                    break;
+
+                case MenuFireType.ClickRelease:
+                    if (st.Engaged && st.Clicked && !clicked)
+                    {
+                        // The surface releasing in the same frame as the click
+                        // must not swap in the resting center that just
+                        // appeared: the cell the user was pointing at is the
+                        // previous frame's hover.
+                        bool physicalEnded = st.PhysicalEngaged && !physical;
+                        int commit = !menuActive || physicalEnded ? st.HoveredIndex : hover;
+                        if (commit >= 0)
+                            Pulse(st, commit, nowMs);
+                    }
+                    st.AssertedIndex = -1;
+                    break;
+
+                case MenuFireType.TouchRelease:
+                    // One physical interaction commits once: on lift or
+                    // re-center while the menu stays open, or on the layer
+                    // ending while the surface is still engaged. A release
+                    // that already happened is not re-armed by the layer
+                    // ending, and opening at rest arms nothing.
+                    if (st.Engaged && st.PhysicalEngaged
+                        && (!menuActive || !physical)
+                        && st.HoveredIndex >= 0)
+                    {
+                        Pulse(st, st.HoveredIndex, nowMs);
+                    }
+                    st.AssertedIndex = -1;
+                    break;
+
+                case MenuFireType.Always:
+                    st.AssertedIndex = menuActive && hover >= 0 ? hover : -1;
+                    break;
+            }
+
+            if (st.PulsedIndex >= 0 && nowMs >= st.PulseUntilMs)
+                st.PulsedIndex = -1;
+
+            st.HoveredIndex = hover;
+            st.Engaged = menuActive;
+            st.PhysicalEngaged = menuActive && physical;
+            st.Clicked = menuActive && clicked;
         }
 
         /// <summary>Advances a button-pair GRID (hotbar) for this poll

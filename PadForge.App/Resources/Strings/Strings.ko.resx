@@ -3489,4 +3489,21 @@
   <data name="Pad_Mapping_Scope_Tooltip" xml:space="preserve">
     <value>표를 키보드 행 또는 마우스 행으로 좁힙니다.</value>
   </data>
+  <data name="Menu_Layer" xml:space="preserve"><value>레이어</value></data>
+  <data name="Menu_Layer_Tip" xml:space="preserve"><value>이 메뉴를 허용할 레이어를 선택합니다. ‘모든 레이어’와 ‘베이스’는 다른 레이어가 활성화된 상태에서도 허용합니다. 이름 있는 레이어는 현재 활성 레이어와 일치해야 합니다.</value></data>
+  <data name="Menu_Reset_Layer" xml:space="preserve"><value>‘모든 레이어’로 되돌리고 레이어가 메뉴를 열어 두는 기능을 끕니다.</value></data>
+  <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (이 슬롯에 없음)</value></data>
+  <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>레이어가 메뉴를 열어 둠</value></data>
+  <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>이름 있는 레이어가 활성화된 동안 이 메뉴를 열어 둡니다. 선택한 물리 입력이 강조 표시를 조작합니다. ‘모든 레이어’와 ‘베이스’는 평소처럼 표면으로 열립니다.</value></data>
+  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>터치 또는 기울임으로 열기로 되돌립니다.</value></data>
+  <data name="Menu_Host_SteerWith" xml:space="preserve"><value>조작 입력</value></data>
+  <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>레이어가 메뉴를 열어 두는 동안 강조된 셀을 조작하는 물리 입력입니다.</value></data>
+  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>이 슬롯에 할당된 물리 컨트롤러에서 읽습니다. 레이어가 메뉴를 열고 이 입력이 조작합니다. 출력은 셀 바인딩이 결정합니다.</value></data>
+  <data name="Menu_IconScale" xml:space="preserve"><value>아이콘 크기</value></data>
+  <data name="Menu_IconScale_Tip" xml:space="preserve"><value>메뉴 기본 아이콘 크기에 대한 비율로, 25%에서 200%까지. 아이콘을 지우면 100%로 되돌아갑니다.</value></data>
+  <data name="Menu_Fire_Click_LayerHold_Desc" xml:space="preserve"><value>클릭 입력을 누르고 있는 동안 강조된 셀의 바인딩을 유지합니다. 스틱이 중앙에 있을 때 강조된 원형 중심도 발동할 수 있습니다.</value></data>
+  <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>클릭 입력을 놓을 때 한 번 발동합니다. 같은 순간에 표면도 놓으면 이전 선택을 발동합니다.</value></data>
+  <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>메뉴가 열린 상태에서 손가락을 떼거나 스틱을 활성 데드존 안으로 되돌릴 때 한 번 발동합니다. 레이어를 벗어나도 조작 중인 선택이 확정됩니다.</value></data>
+  <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>해당 셀이 강조된 동안 바인딩을 유지합니다. 레이어가 열리면 원형 중심이 즉시 발동할 수 있습니다.</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>방향 입력으로 셀을 차례로 이동하며 새로 선택된 셀을 발동합니다. 이 핫바 동작은 발동 모드나 클릭 입력을 사용하지 않습니다.</value></data>
 </root>

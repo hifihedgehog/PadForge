@@ -71,6 +71,7 @@ namespace PadForge.ViewModels
             KindOptionsBacking = BuildKindOptions();
             HostHalfOptionsBacking = BuildHostHalfOptions();
             FireOptionsBacking = BuildFireOptions();
+            LayerHoldFireOptionsBacking = BuildLayerHoldFireOptions();
         }
 
         /// <summary>Which input the freeform recorder is currently aimed
@@ -183,6 +184,10 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(FireOptions));
             OnPropertyChanged(nameof(SelectedHost));
             OnPropertyChanged(nameof(SelectedFireDescription));
+            OnPropertyChanged(nameof(HostInputLabel));
+            OnPropertyChanged(nameof(HostInputTip));
+            OnPropertyChanged(nameof(HostInputCaption));
+            RefreshLayerChoices();
             RefreshInputChoices();
             foreach (var cell in Cells)
                 cell.RefreshCulture();
@@ -225,11 +230,247 @@ namespace PadForge.ViewModels
                 if (kind == MenuKind.Grid) Entry.HasCenter = false;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(IsRadial));
+                OnPropertyChanged(nameof(IsButtonPairGrid));
+                OnPropertyChanged(nameof(SelectedFireDescription));
                 RebuildCells();
                 OnEdited();
                 StructureChanged?.Invoke();
             }
         }
+
+        // ── Layer gate and stay-open (#413, discussion #409) ─────
+        // The field, its persistence and the runtime gate all existed;
+        // only the editor did not. Copies MacroItem.LayerMask's shape,
+        // including its null-write defense.
+
+        /// <summary>Shift layer this menu is gated to. Empty and "Base" are
+        /// the same branch at the runtime (a Base menu stays live under an
+        /// overlaying layer), and both authored spellings are preserved as
+        /// written so a loaded "Base" never turns into "" behind the user's
+        /// back. A null write is a picker artifact (the Selector coercing a
+        /// vanished item to null), never a user choice, and is ignored.
+        /// Clearing the gate also clears the stay-open flag, which has
+        /// nothing to hold without a real layer.</summary>
+        public string LayerMask
+        {
+            get => Entry.LayerMask ?? "";
+            set
+            {
+                if (value == null) return;
+                if (string.Equals(Entry.LayerMask ?? "", value, StringComparison.Ordinal)) return;
+                Entry.LayerMask = value;
+                if (!HasNamedLayer && Entry.LayerHoldsOpen)
+                    Entry.LayerHoldsOpen = false;
+                RefreshLayerChoices();
+                OnPropertyChanged();
+                RaiseLayerDependents();
+                OnEdited();
+            }
+        }
+
+        /// <summary>True when the menu carries any scope, "Base" included:
+        /// the macro editor's visibility predicate.</summary>
+        public bool HasLayerScope => !string.IsNullOrEmpty(Entry.LayerMask);
+
+        /// <summary>True when the mask names a real layer, the only shape
+        /// that can hold a menu open.</summary>
+        public bool HasNamedLayer => HasLayerScope && Entry.LayerMask != "Base";
+
+        /// <summary>The Layer row shows for any scoped menu, and for a menu
+        /// whose stay-open flag is set even with no layer (a loaded file can
+        /// carry that), so an unrepresentable state is always visible and
+        /// clearable rather than silently gating.</summary>
+        public bool ShowsLayerRow => HasLayerScope || Entry.LayerHoldsOpen;
+
+        /// <summary>The stay-open checkbox shows once a real layer is chosen,
+        /// and stays visible while the flag is set so a malformed loaded
+        /// configuration can be reset.</summary>
+        public bool ShowLayerHold => HasNamedLayer || Entry.LayerHoldsOpen;
+
+        /// <summary>Stay-open mode: the layer holds the menu open and the
+        /// surface only steers. Accepts false always and true only with a
+        /// real layer, the same rule the runtime applies.</summary>
+        public bool LayerHoldsOpen
+        {
+            get => Entry.LayerHoldsOpen;
+            set
+            {
+                if (value && !HasNamedLayer) return;
+                if (Entry.LayerHoldsOpen == value) return;
+                Entry.LayerHoldsOpen = value;
+                OnPropertyChanged();
+                RaiseLayerDependents();
+                OnEdited();
+            }
+        }
+
+        /// <summary>What the runtime will actually do with the flag.</summary>
+        public bool EffectiveLayerHoldsOpen => Entry.LayerHoldsOpen && HasNamedLayer;
+
+        private void RaiseLayerDependents()
+        {
+            OnPropertyChanged(nameof(HasLayerScope));
+            OnPropertyChanged(nameof(HasNamedLayer));
+            OnPropertyChanged(nameof(ShowsLayerRow));
+            OnPropertyChanged(nameof(ShowLayerHold));
+            OnPropertyChanged(nameof(LayerHoldsOpen));
+            OnPropertyChanged(nameof(EffectiveLayerHoldsOpen));
+            OnPropertyChanged(nameof(FireOptions));
+            OnPropertyChanged(nameof(SelectedFireDescription));
+            OnPropertyChanged(nameof(HostInputLabel));
+            OnPropertyChanged(nameof(HostInputTip));
+            OnPropertyChanged(nameof(HostInputCaption));
+        }
+
+        public RelayCommand ResetLayerCommand => _resetLayer ??= new RelayCommand(() =>
+        {
+            LayerMask = "";
+            // The setter above already dropped the flag for a real layer
+            // going away. A malformed file can carry the flag with an
+            // already-empty mask, which the setter's no-change return would
+            // leave in place, so clear it explicitly too.
+            LayerHoldsOpen = false;
+            if (Entry.LayerHoldsOpen)
+            {
+                Entry.LayerHoldsOpen = false;
+                RaiseLayerDependents();
+                OnEdited();
+            }
+        });
+        private RelayCommand _resetLayer;
+
+        public RelayCommand ResetLayerHoldsOpenCommand => _resetLayerHold ??= new RelayCommand(() =>
+        {
+            if (!Entry.LayerHoldsOpen) return;
+            Entry.LayerHoldsOpen = false;
+            RaiseLayerDependents();
+            OnEdited();
+        });
+        private RelayCommand _resetLayerHold;
+
+        /// <summary>This menu's layer picker items: the slot's layer choices
+        /// (Any Layer, Base, every named layer, every cycle stop) plus, when
+        /// the authored mask is not among them, a marked entry carrying it,
+        /// so the selection never lies about a mask that arrived by import
+        /// or was renamed away. Reconciled IN PLACE by mask, never
+        /// Clear()ed: clearing drops the Selector's SelectedItem and a
+        /// same-value re-push does not re-resolve it, which blanked the
+        /// macro picker over intact data once already.</summary>
+        public ObservableCollection<ShiftLayerInfo> LayerChoices { get; } = new();
+
+        /// <summary>Supplies the slot's shared layer choices, wired by the
+        /// owning PadViewModel. Null (tests) seeds Any Layer and Base.</summary>
+        internal Func<IEnumerable<ShiftLayerInfo>> LayerChoicesProvider;
+
+        private int _layerChoicesVersion;
+        /// <summary>Bumped after every reconcile so the width behavior
+        /// remeasures a collection whose identity never changes.</summary>
+        public int LayerChoicesVersion => _layerChoicesVersion;
+
+        internal void RefreshLayerChoices()
+        {
+            var desired = new List<(string Mask, string Name, string Color)>();
+            var provided = LayerChoicesProvider?.Invoke();
+            if (provided != null)
+            {
+                foreach (var c in provided)
+                {
+                    if (c == null) continue;
+                    string m = c.LayerMask ?? "";
+                    bool dup = false;
+                    foreach (var d in desired)
+                        if (string.Equals(d.Mask, m, StringComparison.Ordinal)) { dup = true; break; }
+                    if (!dup) desired.Add((m, c.LayerName ?? m, c.Color ?? ""));
+                }
+            }
+            else
+            {
+                desired.Add(("", Strings.Instance.Macro_Layer_Any, ""));
+                desired.Add(("Base", "Base", ""));
+            }
+
+            string cur = Entry.LayerMask ?? "";
+            if (cur.Length > 0)
+            {
+                bool present = false;
+                foreach (var d in desired)
+                    if (string.Equals(d.Mask, cur, StringComparison.Ordinal)) { present = true; break; }
+                if (!present)
+                    desired.Add((cur, string.Format(Strings.Instance.Menu_Layer_Missing_Format, cur), ""));
+            }
+
+            // Reconcile by index, reusing the instance at each position when
+            // its mask matches, moving an existing instance into place when
+            // the order changed, inserting only genuine additions, and
+            // trimming only the tail. PadViewModel.RebuildLayerTabs does the
+            // same dance for the macro picker and for the same reason.
+            for (int i = 0; i < desired.Count; i++)
+            {
+                var (mask, name, color) = desired[i];
+                if (i < LayerChoices.Count)
+                {
+                    var slot = LayerChoices[i];
+                    if (string.Equals(slot.LayerMask, mask, StringComparison.Ordinal))
+                    {
+                        slot.LayerName = name;
+                        slot.Color = color;
+                        continue;
+                    }
+                    int found = -1;
+                    for (int k = i + 1; k < LayerChoices.Count; k++)
+                        if (string.Equals(LayerChoices[k].LayerMask, mask, StringComparison.Ordinal))
+                        { found = k; break; }
+                    if (found >= 0)
+                    {
+                        LayerChoices.Move(found, i);
+                        LayerChoices[i].LayerName = name;
+                        LayerChoices[i].Color = color;
+                        continue;
+                    }
+                    LayerChoices.Insert(i, new ShiftLayerInfo { LayerMask = mask, LayerName = name, Color = color });
+                    continue;
+                }
+                LayerChoices.Add(new ShiftLayerInfo { LayerMask = mask, LayerName = name, Color = color });
+            }
+            while (LayerChoices.Count > desired.Count)
+                LayerChoices.RemoveAt(LayerChoices.Count - 1);
+
+            _layerChoicesVersion++;
+            OnPropertyChanged(nameof(LayerChoicesVersion));
+            // A direct model retag (a layer rename rewrites Entry.LayerMask
+            // in place) lands here too, so the picker re-reads the mask.
+            OnPropertyChanged(nameof(LayerMask));
+            RaiseLayerDependents();
+        }
+
+        /// <summary>Button-pair GRID hosts (D-pad / diamond hotbars) step and
+        /// pulse on their own, independent of Fire Mode, so the fire caption
+        /// says so instead of describing a mode that does not apply.</summary>
+        public bool IsButtonPairGrid
+        {
+            get
+            {
+                if (Entry.Kind != MenuKind.Grid) return false;
+                string host = (Entry.HostDescriptor ?? "").Trim();
+                return host.Equals("Gamepad DPad", StringComparison.Ordinal)
+                    || host.Equals("Gamepad Diamond", StringComparison.Ordinal);
+            }
+        }
+
+        /// <summary>The host row's label: "Opens With" in surface mode, where
+        /// the surface opens the menu, and "Steer With" in stay-open mode, where
+        /// the layer opens it and the surface only moves the highlight.</summary>
+        public string HostInputLabel => EffectiveLayerHoldsOpen
+            ? Strings.Instance.Menu_Host_SteerWith
+            : Strings.Instance.Menu_HostInput;
+
+        public string HostInputTip => EffectiveLayerHoldsOpen
+            ? Strings.Instance.Menu_Host_SteerWith_Tip
+            : Strings.Instance.Menu_HostInput_Tip;
+
+        public string HostInputCaption => EffectiveLayerHoldsOpen
+            ? Strings.Instance.Menu_Host_SteerWith_Caption
+            : Strings.Instance.Menu_HostInput_Caption;
 
         // NOTE: the option lists below are instance accessors over static
         // backing fields on purpose. WPF's {Binding X} resolves against
@@ -333,6 +574,8 @@ namespace PadForge.ViewModels
                 OnPropertyChanged(nameof(HostIsTouchpad));
                 OnPropertyChanged(nameof(HostHalfIndex));
                 OnPropertyChanged(nameof(IsCustomHost));
+                OnPropertyChanged(nameof(IsButtonPairGrid));
+                OnPropertyChanged(nameof(SelectedFireDescription));
                 RefreshInputChoices();
                 OnEdited();
             }
@@ -773,15 +1016,36 @@ namespace PadForge.ViewModels
                                 Description = Strings.Instance.Menu_Fire_Always_Desc },
         };
 
-        public IReadOnlyList<MenuIntOption> FireOptions => FireOptionsBacking;
+        /// <summary>The same four values and labels with the stay-open
+        /// explanations (#413): Touch Release commits on lift or re-center
+        /// while the menu stays open, and a resting radial center is live
+        /// for the hold-shaped types.</summary>
+        private static IReadOnlyList<MenuIntOption> LayerHoldFireOptionsBacking = BuildLayerHoldFireOptions();
+
+        private static IReadOnlyList<MenuIntOption> BuildLayerHoldFireOptions() => new[]
+        {
+            new MenuIntOption { Value = 0, Label = Strings.Instance.Menu_Fire_Click,
+                                Description = Strings.Instance.Menu_Fire_Click_LayerHold_Desc },
+            new MenuIntOption { Value = 1, Label = Strings.Instance.Menu_Fire_ClickRelease,
+                                Description = Strings.Instance.Menu_Fire_ClickRelease_LayerHold_Desc },
+            new MenuIntOption { Value = 2, Label = Strings.Instance.Menu_Fire_TouchRelease,
+                                Description = Strings.Instance.Menu_Fire_TouchRelease_LayerHold_Desc },
+            new MenuIntOption { Value = 3, Label = Strings.Instance.Menu_Fire_Always,
+                                Description = Strings.Instance.Menu_Fire_Always_LayerHold_Desc },
+        };
+
+        public IReadOnlyList<MenuIntOption> FireOptions =>
+            EffectiveLayerHoldsOpen ? LayerHoldFireOptionsBacking : FireOptionsBacking;
 
         /// <summary>The selected fire mode's explanation, rendered as a
         /// persistent caption under the combo. A tooltip alone was not
         /// enough: "On Click" reads as self-explanatory while actually
         /// requiring a stick / trackpad CLICK, and the one user test we
-        /// have (owner, 2026-07-16) walked straight past it.</summary>
-        public string SelectedFireDescription =>
-            FireOptionsBacking[Math.Clamp((int)Entry.FireType, 0, 3)].Description;
+        /// have (owner, 2026-07-16) walked straight past it. A button-pair
+        /// grid host ignores Fire Mode entirely, and says so.</summary>
+        public string SelectedFireDescription => IsButtonPairGrid
+            ? Strings.Instance.Menu_Fire_ButtonPairGrid_Desc
+            : FireOptions[Math.Clamp((int)Entry.FireType, 0, 3)].Description;
 
         public int FireTypeIndex
         {
@@ -878,6 +1142,8 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(HostIsTouchpad));
             OnPropertyChanged(nameof(HostHalfIndex));
             OnPropertyChanged(nameof(IsCustomHost));
+            OnPropertyChanged(nameof(IsButtonPairGrid));
+            OnPropertyChanged(nameof(SelectedFireDescription));
             RefreshInputChoices();
             OnEdited();
         });
@@ -1051,6 +1317,25 @@ namespace PadForge.ViewModels
         /// <summary>True when the cell carries an icon the local machine
         /// cannot render (the placeholder-glyph case).</summary>
         public bool ShowIconGlyph => HasIcon && IconImage == null;
+
+        /// <summary>Per-cell icon size as percent of the menu's normal icon
+        /// box (#413). Clamped 25..200 both ways. Reading never rewrites the
+        /// stored value. A size edit on a cell with no icon authors nothing,
+        /// because HasIcon already means an item exists and a size without
+        /// an icon is meaningless.</summary>
+        public int IconScalePercent
+        {
+            get => HasIcon ? Math.Clamp(_item.IconScalePercent, 25, 200) : 100;
+            set
+            {
+                if (!HasIcon) return;
+                int v = Math.Clamp(value, 25, 200);
+                if (_item.IconScalePercent == v) return;
+                _item.IconScalePercent = v;
+                OnPropertyChanged();
+                _owner.RaiseChanged();
+            }
+        }
 
         public string Label
         {
@@ -1303,17 +1588,30 @@ namespace PadForge.ViewModels
         /// and prunes an otherwise-empty item.</summary>
         internal void SetIcon(string reference)
         {
-            string v = reference ?? "";
-            if ((_item?.Icon ?? "") == v) return;
+            // Null is not a selection (the picker never passes one; a
+            // cancel returns before reaching here). Empty clears.
+            if (reference == null) return;
+            string v = reference;
             if (v.Length == 0 && _item == null) return;
+            // The size rides the icon (#413): a first icon starts at 100, a
+            // replacement keeps the size, a clear resets it so no size sits
+            // on a cell that renders none. An equal reference still resets
+            // a stray size on an icon-free item, which a loaded file can
+            // carry.
+            bool resetScale = v.Length == 0 || !HasIcon;
+            if ((_item?.Icon ?? "") == v
+                && (!resetScale || (_item?.IconScalePercent ?? 100) == 100))
+                return;
             _item ??= _owner.EnsureItem(Index);
             _item.Icon = v;
+            if (resetScale) _item.IconScalePercent = 100;
             _owner.DropItemIfEmpty(_item);
             if (_owner.Entry.Items?.Contains(_item) != true) _item = null;
             OnPropertyChanged(nameof(HasIcon));
             OnPropertyChanged(nameof(IconName));
             OnPropertyChanged(nameof(IconImage));
             OnPropertyChanged(nameof(ShowIconGlyph));
+            OnPropertyChanged(nameof(IconScalePercent));
             _owner.RaiseChanged();
         }
 
@@ -1454,15 +1752,10 @@ namespace PadForge.ViewModels
         {
             // Icon first: with the icon counting as cell data, clearing
             // label + binding alone would leave an icon-only item alive
-            // and the row un-resettable.
+            // and the row un-resettable. Through SetIcon so the size resets
+            // with it (#413).
             if (_item != null && !string.IsNullOrEmpty(_item.Icon))
-            {
-                _item.Icon = "";
-                OnPropertyChanged(nameof(HasIcon));
-                OnPropertyChanged(nameof(IconImage));
-                OnPropertyChanged(nameof(ShowIconGlyph));
-                _owner.RaiseChanged();
-            }
+                SetIcon("");
             Label = "";
             BindingKind = 0;
             // Label / BindingKind setters skip their drop when unchanged,

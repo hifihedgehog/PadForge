@@ -148,7 +148,8 @@ namespace PadForge.Views
                     var it = m.Items[i];
                     if (it != null)
                         sb.Append('|').Append(it.Index).Append('=').Append(it.Label)
-                          .Append('~').Append(it.Icon);
+                          .Append('~').Append(it.Icon)
+                          .Append('~').Append(it.IconScalePercent);
                 }
             }
             return sb.ToString();
@@ -371,7 +372,12 @@ namespace PadForge.Views
             ImageSource iconSrc = string.IsNullOrEmpty(item.Icon)
                 ? null : Common.MenuIconResolver.Resolve(item.Icon);
             bool labelShown = showLabels && !string.IsNullOrEmpty(item.Label);
-            double iconSize = 30 * Math.Max(scale, 0.7);
+            // Per-cell size (#413): the menu's shared icon box times the
+            // cell's own percent. 100 is the identity, so every menu authored
+            // before the field renders exactly as before. The label offsets
+            // below key on iconSize, so they follow the cell.
+            double iconSize = 30 * Math.Max(scale, 0.7)
+                * Math.Clamp(item.IconScalePercent, 25, 200) / 100.0;
 
             if (iconSrc != null)
             {

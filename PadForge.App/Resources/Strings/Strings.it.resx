@@ -3511,4 +3511,21 @@ Puoi riprovare più tardi dalle Impostazioni.</value></data>
   <data name="Pad_Mapping_Scope_Tooltip" xml:space="preserve">
     <value>Restringe la tabella alle righe di tastiera o di mouse.</value>
   </data>
+  <data name="Menu_Layer" xml:space="preserve"><value>Livello</value></data>
+  <data name="Menu_Layer_Tip" xml:space="preserve"><value>Scegli il livello che consente questo menu. «Qualsiasi livello» e «Base» lo consentono anche sotto altri livelli attivi. Un livello con nome deve corrispondere al livello attivo.</value></data>
+  <data name="Menu_Reset_Layer" xml:space="preserve"><value>Ripristina «Qualsiasi livello» e disattiva l'apertura mantenuta dal livello.</value></data>
+  <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (non presente in questo slot)</value></data>
+  <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>Il livello tiene aperto il menu</value></data>
+  <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>Tiene aperto questo menu mentre il suo livello con nome è attivo. L'input fisico selezionato guida l'evidenziazione. «Qualsiasi livello» e «Base» aprono nel modo consueto.</value></data>
+  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Ripristina l'apertura al tocco o alla deflessione.</value></data>
+  <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Guida con</value></data>
+  <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>L'input fisico che guida la cella evidenziata mentre il livello tiene aperto il menu.</value></data>
+  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Letto dai controller fisici assegnati a questo slot. Il livello apre il menu, questo input lo guida. Le assegnazioni delle celle determinano l'output.</value></data>
+  <data name="Menu_IconScale" xml:space="preserve"><value>Dimensione icona</value></data>
+  <data name="Menu_IconScale_Tip" xml:space="preserve"><value>Dimensione dell'icona rispetto a quella normale del menu, dal 25% al 200%. Rimuovendo l'icona torna al 100%.</value></data>
+  <data name="Menu_Fire_Click_LayerHold_Desc" xml:space="preserve"><value>Tiene attiva l'assegnazione della cella evidenziata mentre l'input di clic è premuto. Un centro radiale evidenziato può attivarsi mentre lo stick è a riposo.</value></data>
+  <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>Si attiva una volta al rilascio dell'input di clic. Se la superficie viene rilasciata nello stesso istante, attiva la selezione precedente.</value></data>
+  <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>Si attiva una volta quando sollevi il dito o riporti lo stick nella zona morta di attivazione, mentre il menu resta aperto. Uscire dal livello conferma anche una selezione ancora guidata.</value></data>
+  <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>Tiene attiva l'assegnazione mentre la sua cella è evidenziata. Un centro radiale può attivarsi subito all'apertura del livello.</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Le pressioni direzionali scorrono le celle e attivano ogni cella appena selezionata. Questo comportamento da hotbar non usa la modalità di attivazione né l'input di clic.</value></data>
 </root>

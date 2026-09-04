@@ -56,6 +56,25 @@ namespace PadForge.Common
         public static void SetWidthGroup(DependencyObject d, string value) => d.SetValue(WidthGroupProperty, value);
         public static string GetWidthGroup(DependencyObject d) => (string)d.GetValue(WidthGroupProperty);
 
+        /// <summary>Explicit remeasure trigger (#413). The behavior watches
+        /// ItemsSource IDENTITY, which is right for the option lists that
+        /// rebuild on a culture switch. A collection reconciled IN PLACE, the
+        /// way the layer pickers must be so a rename never drops the selected
+        /// item, keeps its identity while its labels change, and nothing here
+        /// would notice. Bind a counter the owner bumps after each reconcile
+        /// and the combo remeasures on every change of it.</summary>
+        public static readonly DependencyProperty ItemsVersionProperty =
+            DependencyProperty.RegisterAttached("ItemsVersion", typeof(int),
+                typeof(ComboBoxWidthBehavior), new PropertyMetadata(0, OnItemsVersionChanged));
+
+        public static void SetItemsVersion(DependencyObject d, int value) => d.SetValue(ItemsVersionProperty, value);
+        public static int GetItemsVersion(DependencyObject d) => (int)d.GetValue(ItemsVersionProperty);
+
+        private static void OnItemsVersionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is ComboBox cb && cb.IsLoaded && GetSizeToItems(cb)) Resize(cb);
+        }
+
         /// <summary>This combo's own measured width (before group max).</summary>
         private static readonly DependencyProperty MeasuredWidthProperty =
             DependencyProperty.RegisterAttached("MeasuredWidth", typeof(double),

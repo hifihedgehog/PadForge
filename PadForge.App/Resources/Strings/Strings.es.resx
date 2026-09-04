@@ -3489,4 +3489,21 @@ Puedes volver a intentarlo más tarde desde Configuración.</value></data>
   <data name="Pad_Mapping_Scope_Tooltip" xml:space="preserve">
     <value>Limita la tabla a las filas de teclado o de ratón.</value>
   </data>
+  <data name="Menu_Layer" xml:space="preserve"><value>Capa</value></data>
+  <data name="Menu_Layer_Tip" xml:space="preserve"><value>Elige la capa que permite este menú. «Cualquier capa» y «Base» lo permiten también bajo otras capas activas. Una capa con nombre debe coincidir con la capa activa.</value></data>
+  <data name="Menu_Reset_Layer" xml:space="preserve"><value>Restablecer a «Cualquier capa» y desactivar la apertura mantenida por la capa.</value></data>
+  <data name="Menu_Layer_Missing_Format" xml:space="preserve"><value>{0} (no está en esta ranura)</value></data>
+  <data name="Menu_LayerHoldsOpen" xml:space="preserve"><value>La capa mantiene el menú abierto</value></data>
+  <data name="Menu_LayerHoldsOpen_Tip" xml:space="preserve"><value>Mantiene este menú abierto mientras su capa con nombre esté activa. La entrada física seleccionada dirige el resaltado. «Cualquier capa» y «Base» abren de la forma habitual.</value></data>
+  <data name="Menu_Reset_LayerHoldsOpen" xml:space="preserve"><value>Restablecer la apertura al tocar o desviar.</value></data>
+  <data name="Menu_Host_SteerWith" xml:space="preserve"><value>Dirigir con</value></data>
+  <data name="Menu_Host_SteerWith_Tip" xml:space="preserve"><value>La entrada física que dirige la celda resaltada mientras la capa mantiene el menú abierto.</value></data>
+  <data name="Menu_Host_SteerWith_Caption" xml:space="preserve"><value>Se lee de los mandos físicos asignados a esta ranura. La capa abre el menú y esta entrada lo dirige. Las asignaciones de las celdas determinan la salida.</value></data>
+  <data name="Menu_IconScale" xml:space="preserve"><value>Tamaño del icono</value></data>
+  <data name="Menu_IconScale_Tip" xml:space="preserve"><value>Tamaño del icono relativo al tamaño normal del menú, del 25 % al 200 %. Quitar el icono lo restablece al 100 %.</value></data>
+  <data name="Menu_Fire_Click_LayerHold_Desc" xml:space="preserve"><value>Mantiene la asignación de la celda resaltada mientras se mantiene la entrada de clic. Un centro radial resaltado puede disparar mientras el stick descansa.</value></data>
+  <data name="Menu_Fire_ClickRelease_LayerHold_Desc" xml:space="preserve"><value>Dispara una vez al soltar la entrada de clic. Si la superficie se suelta en el mismo instante, dispara la selección anterior.</value></data>
+  <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>Dispara una vez al levantar el dedo o al devolver el stick a la zona muerta de activación, mientras el menú sigue abierto. Salir de la capa también confirma una selección aún dirigida.</value></data>
+  <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>Mantiene la asignación mientras su celda esté resaltada. Un centro radial puede disparar de inmediato al abrirse la capa.</value></data>
+  <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>Las pulsaciones de dirección recorren las celdas y disparan cada celda nueva seleccionada. Este comportamiento de barra rápida no usa el modo de disparo ni la entrada de clic.</value></data>
 </root>

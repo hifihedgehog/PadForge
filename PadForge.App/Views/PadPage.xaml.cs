@@ -2713,9 +2713,17 @@ namespace PadForge.Views
             // Xbox / PlayStation use the compact preset dropdown bar; Extended
             // has its own full config bar with profile + override fields, so
             // hide the compact bar when Extended is active.
-            HMaestroProfileBar.Visibility = (vm.HasHMaestroProfileBar && !isExtended)
+            // Keyboard + Mouse rides the same chip (#408). It has no
+            // HIDMaestro profile, so the chip was empty for it, but which
+            // halves the slot drives is the same kind of choice as Xbox 360
+            // against Elite. The chip carries two combos and shows one.
+            bool isKbm = vm.OutputType == Engine.VirtualControllerType.KeyboardMouse;
+
+            HMaestroProfileBar.Visibility = ((vm.HasHMaestroProfileBar && !isExtended) || isKbm)
                 ? Visibility.Visible
                 : Visibility.Collapsed;
+            HMaestroProfileCombo.Visibility = isKbm ? Visibility.Collapsed : Visibility.Visible;
+            KbmSurfacesCombo.Visibility = isKbm ? Visibility.Visible : Visibility.Collapsed;
 
             ExtendedConfigBar.Visibility = isExtended ? Visibility.Visible : Visibility.Collapsed;
 

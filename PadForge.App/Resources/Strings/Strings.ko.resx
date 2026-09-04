@@ -3465,29 +3465,17 @@
   <data name="About_LinuxmotehookDesc" xml:space="preserve">
     <value>그립 설정이 반영하는 Wii 리모컨의 잡는 방향 프리셋. linuxmotehook은 Apache-2.0입니다. WiimoteHook은 문서를 통해 참고한 비공개 소스 도구입니다. 코드는 포함하지 않습니다.</value>
   </data>
-  <data name="Pad_Kbm_Surfaces_Label" xml:space="preserve">
-    <value>입력 면</value>
-  </data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>이 슬롯에서 사용할 면을 선택합니다. 끈 쪽은 행이 숨겨지고 전송도 멈추지만 매핑은 그대로 남아 다시 켜면 복원됩니다.</value>
   </data>
   <data name="Pad_Kbm_Surfaces_Both_Name" xml:space="preserve">
     <value>키보드 및 마우스</value>
   </data>
-  <data name="Pad_Kbm_Surfaces_Both_Description" xml:space="preserve">
-    <value>슬롯이 키 입력과 마우스 입력을 모두 보냅니다.</value>
-  </data>
   <data name="Pad_Kbm_Surfaces_MouseOnly_Name" xml:space="preserve">
     <value>마우스만</value>
   </data>
-  <data name="Pad_Kbm_Surfaces_MouseOnly_Description" xml:space="preserve">
-    <value>마우스 행만 표시하고 마우스 입력만 보냅니다.</value>
-  </data>
   <data name="Pad_Kbm_Surfaces_KeyboardOnly_Name" xml:space="preserve">
     <value>키보드만</value>
-  </data>
-  <data name="Pad_Kbm_Surfaces_KeyboardOnly_Description" xml:space="preserve">
-    <value>키보드 행만 표시하고 키 입력만 보냅니다.</value>
   </data>
   <data name="Pad_Mapping_Scope_All" xml:space="preserve">
     <value>전체</value>

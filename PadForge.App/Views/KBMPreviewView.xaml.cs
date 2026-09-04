@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -159,6 +159,7 @@ namespace PadForge.Views
         private void OnVmPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(PadViewModel.OutputType)) { Dispatcher.Invoke(RebuildLayout); return; }
+            if (e.PropertyName == nameof(PadViewModel.KbmSurfaces)) { Dispatcher.Invoke(ApplySurfaceVisibility); return; }
             if (e.PropertyName == nameof(PadViewModel.CurrentRecordingTarget)) { Dispatcher.Invoke(() => UpdateFlashTarget(_vm?.CurrentRecordingTarget)); return; }
             _dirty = true;
         }
@@ -171,8 +172,38 @@ namespace PadForge.Views
             if (_vm == null || _vm.OutputType != VirtualControllerType.KeyboardMouse) return;
             BuildKeyboardCanvas();
             BuildMouseCanvas();
+            ApplySurfaceVisibility();
             _layoutBuilt = true;
             _dirty = true;
+        }
+
+        /// <summary>Shows only the halves the slot actually drives (#408).
+        /// A slot set to Mouse Only sends no keystrokes, so drawing a
+        /// keyboard for it misrepresents what the pad does.</summary>
+        private void ApplySurfaceVisibility()
+            => ApplySurfaceVisibility(
+                _vm?.KbmConfig?.KeyboardEnabled ?? true,
+                _vm?.KbmConfig?.MouseEnabled ?? true);
+
+        /// <summary>The element half, taking the two flags directly. Internal
+        /// so a test can drive it without Bind, which builds both canvases and
+        /// needs application resources a bare test host does not load.
+        ///
+        /// <para>The row height goes with the visibility. Collapsing the
+        /// Viewbox alone leaves its star row holding the space, so Mouse Only
+        /// would draw the mouse in the bottom two fifths under an empty
+        /// gap.</para></summary>
+        internal void ApplySurfaceVisibility(bool keyboard, bool mouse)
+        {
+            KeyboardHost.Visibility = keyboard ? Visibility.Visible : Visibility.Collapsed;
+            MouseHost.Visibility = mouse ? Visibility.Visible : Visibility.Collapsed;
+
+            KeyboardRow.Height = keyboard
+                ? new GridLength(mouse ? 3 : 1, GridUnitType.Star)
+                : new GridLength(0);
+            MouseRow.Height = mouse
+                ? new GridLength(keyboard ? 2 : 1, GridUnitType.Star)
+                : new GridLength(0);
         }
 
         // ─────────────────────────────────────────────

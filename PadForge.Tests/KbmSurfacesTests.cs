@@ -1,5 +1,10 @@
-using System;
+﻿using System;
+using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Windows;
+using System.Windows.Controls;
+using PadForge.Views;
 using PadForge.Engine;
 using PadForge.Engine.Common;
 using PadForge.ViewModels;
@@ -16,6 +21,43 @@ namespace PadForge.Tests
     /// </summary>
     public class KbmSurfacesTests
     {
+        private static string RepoRoot()
+        {
+            var dir = new DirectoryInfo(AppContext.BaseDirectory);
+            while (dir != null && !File.Exists(Path.Combine(dir.FullName, "PadForge.sln")))
+                dir = dir.Parent;
+            Assert.NotNull(dir);
+            return dir.FullName;
+        }
+
+        private static string Src(string rel)
+            => File.ReadAllText(Path.Combine(RepoRoot(), rel));
+
+        /// <summary>WPF elements demand STA, so each body runs on its own STA
+        /// thread and rethrows what it caught. Same helper shape as
+        /// TreeWalkTests.</summary>
+        private static void RunSta(Action body)
+        {
+            Exception failure = null;
+            var t = new Thread(() =>
+            {
+                try { body(); }
+                catch (Exception ex) { failure = ex; }
+            });
+            t.SetApartmentState(ApartmentState.STA);
+            t.IsBackground = true;
+            t.Start();
+            Assert.True(t.Join(15000), "STA test body timed out");
+            if (failure != null) throw failure;
+        }
+
+        private static (Viewbox kb, Viewbox mouse, RowDefinition kbRow, RowDefinition mouseRow)
+            Parts(KBMPreviewView v)
+            => ((Viewbox)v.FindName("KeyboardHost"),
+                (Viewbox)v.FindName("MouseHost"),
+                (RowDefinition)v.FindName("KeyboardRow"),
+                (RowDefinition)v.FindName("MouseRow"));
+
         private static MappingItem Row(string settingName)
             => new MappingItem(settingName, settingName, MappingCategory.Buttons);
 
@@ -155,6 +197,65 @@ namespace PadForge.Tests
             Assert.Equal("Both", cfg.Surfaces);
         }
 
+        // ── The mode survives the binding, which is what forgot it ───────
+
+        /// <summary>THE BUG THE OWNER HIT: the slot did not remember its
+        /// preset. A TwoWay SelectedValue binding pushes NULL back into its
+        /// source when the Selector resolves before its ItemsSource is
+        /// populated, which happens on every load of a slot that already had
+        /// a mode. The setter took that null, KbmSlotConfig coerced it to
+        /// Both, and the autosave wrote Both over the user's choice.
+        ///
+        /// <para>Same shape as the negative index the Remote Link identity
+        /// picker pushes back on a culture change.</para></summary>
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        public void KbmSurfaces_IgnoresTheSelectorsEmptyWriteBack(string writeBack)
+        {
+            var vm = new PadViewModel(0) { OutputType = VirtualControllerType.KeyboardMouse };
+            vm.KbmSurfaces = "MouseOnly";
+            Assert.Equal("MouseOnly", vm.KbmSurfaces);
+
+            // What the ComboBox does before its items exist.
+            vm.KbmSurfaces = writeBack;
+
+            Assert.Equal("MouseOnly", vm.KbmSurfaces);
+            Assert.Equal("MouseOnly", vm.KbmConfig.Surfaces);
+        }
+
+        /// <summary>Same-window positive control: a real pick still lands, so
+        /// the guard above rejects only the empty write-back.</summary>
+        [Fact]
+        public void KbmSurfaces_StillAcceptsARealPick()
+        {
+            var vm = new PadViewModel(0) { OutputType = VirtualControllerType.KeyboardMouse };
+            vm.KbmSurfaces = "MouseOnly";
+            Assert.Equal("MouseOnly", vm.KbmConfig.Surfaces);
+            vm.KbmSurfaces = "KeyboardOnly";
+            Assert.Equal("KeyboardOnly", vm.KbmConfig.Surfaces);
+            vm.KbmSurfaces = "Both";
+            Assert.Equal("Both", vm.KbmConfig.Surfaces);
+        }
+
+        /// <summary>The mode round-trips through the persisted snapshot, which
+        /// is the shape AppSettings and every profile store.</summary>
+        [Fact]
+        public void Surfaces_RoundTripsThroughTheXmlSnapshot()
+        {
+            var data = new KbmSlotConfigData { SlotIndex = 3, Surfaces = "MouseOnly" };
+            var ser = new System.Xml.Serialization.XmlSerializer(typeof(KbmSlotConfigData));
+            string xml;
+            using (var sw = new StringWriter()) { ser.Serialize(sw, data); xml = sw.ToString(); }
+
+            Assert.Contains("Surfaces=\"MouseOnly\"", xml);
+
+            using var sr = new StringReader(xml);
+            var back = (KbmSlotConfigData)ser.Deserialize(sr);
+            Assert.Equal("MouseOnly", back.Surfaces);
+            Assert.Equal(3, back.SlotIndex);
+        }
+
         // ── The dispatch gate ────────────────────────────────────────────
 
         /// <summary>A half the slot does not drive sends nothing. Gated on
@@ -216,6 +317,69 @@ namespace PadForge.Tests
             Assert.False(s.GetKey(0x41));
             Assert.Equal(0, s.MouseDeltaX);
             Assert.Equal(0f, s.MouseGyroY);
+        }
+
+        // ── The preview shows only the halves the slot drives ────────────
+
+        /// <summary>A slot set to Mouse Only sends no keystrokes, so drawing a
+        /// keyboard for it misrepresents what the pad does. The row height
+        /// goes with the visibility: collapsing the Viewbox alone would leave
+        /// its star row holding the space and the mouse would sit in the
+        /// bottom two fifths under an empty gap.
+        ///
+        /// <para>Drives the element half directly. Bind builds both canvases,
+        /// which needs application resources a bare test host does not
+        /// load.</para></summary>
+        [Fact]
+        public void Preview_ShowsOnlyTheHalvesTheSlotDrives()
+        {
+            RunSta(() =>
+            {
+                var view = new KBMPreviewView();
+                var (kb, mouse, kbRow, mouseRow) = Parts(view);
+
+                view.ApplySurfaceVisibility(keyboard: true, mouse: true);
+                Assert.Equal(Visibility.Visible, kb.Visibility);
+                Assert.Equal(Visibility.Visible, mouse.Visibility);
+                Assert.Equal(3, kbRow.Height.Value);
+                Assert.Equal(2, mouseRow.Height.Value);
+
+                view.ApplySurfaceVisibility(keyboard: false, mouse: true);
+                Assert.Equal(Visibility.Collapsed, kb.Visibility);
+                Assert.Equal(Visibility.Visible, mouse.Visibility);
+                Assert.Equal(0, kbRow.Height.Value);
+                Assert.True(mouseRow.Height.IsStar, "the surviving half must take the space");
+
+                view.ApplySurfaceVisibility(keyboard: true, mouse: false);
+                Assert.Equal(Visibility.Visible, kb.Visibility);
+                Assert.Equal(Visibility.Collapsed, mouse.Visibility);
+                Assert.True(kbRow.Height.IsStar, "the surviving half must take the space");
+                Assert.Equal(0, mouseRow.Height.Value);
+
+                // Same-window positive control: back to both restores the
+                // original 3:2 split rather than leaving one half stretched.
+                view.ApplySurfaceVisibility(keyboard: true, mouse: true);
+                Assert.Equal(Visibility.Visible, kb.Visibility);
+                Assert.Equal(Visibility.Visible, mouse.Visibility);
+                Assert.Equal(3, kbRow.Height.Value);
+                Assert.Equal(2, mouseRow.Height.Value);
+            });
+        }
+
+        /// <summary>The preview listens for the mode, so changing it repaints
+        /// without waiting for a slot-type change, and the first paint after a
+        /// layout rebuild is gated too.</summary>
+        [Fact]
+        public void Preview_ListensForTheSurfaceMode()
+        {
+            string src = Src(Path.Combine("PadForge.App", "Views", "KBMPreviewView.xaml.cs"));
+            Assert.Contains(
+                "if (e.PropertyName == nameof(PadViewModel.KbmSurfaces)) { Dispatcher.Invoke(ApplySurfaceVisibility); return; }",
+                src);
+            int build = src.IndexOf("BuildMouseCanvas();", StringComparison.Ordinal);
+            int gate = src.IndexOf("ApplySurfaceVisibility();", build, StringComparison.Ordinal);
+            Assert.True(build > 0 && gate > build,
+                "RebuildLayout must apply the surface gate after building the canvases");
         }
 
         // ── The table scope ──────────────────────────────────────────────

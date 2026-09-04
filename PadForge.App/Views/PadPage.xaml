@@ -507,6 +507,37 @@
                                 </Style>
                             </ComboBox.Style>
                         </ComboBox>
+
+                        <!-- Keyboard + Mouse surfaces (#408, @Xaklse on
+                             Discord). A Keyboard + Mouse slot has no
+                             HIDMaestro profile, so this chip was empty for
+                             it. Which halves the slot drives IS its preset,
+                             the same choice as Xbox 360 against Elite, so it
+                             belongs in this chip. Same properties as the
+                             profile combo above, flat names only: a chip
+                             shows one short label, never a description.
+                             Exactly one of the two combos is visible. -->
+                        <ComboBox x:Name="KbmSurfacesCombo" VerticalAlignment="Center"
+                                  MaxWidth="380"
+                                  Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                  FontSize="12.5"
+                                  AutomationProperties.AutomationId="KbmSurfacesCombo"
+                                  ItemsSource="{Binding KbmConfig.AvailableKbmSurfaces}"
+                                  DisplayMemberPath="Name"
+                                  SelectedValuePath="Value"
+                                  SelectedValue="{Binding KbmSurfaces, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  ToolTip="{Binding Pad_Kbm_Surfaces_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                  PreviewKeyDown="ProfileCombo_PreviewKeyDown">
+                            <ComboBox.Style>
+                                <Style TargetType="ComboBox" BasedOn="{StaticResource DefaultComboBoxStyle}">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="BorderBrush" Value="Transparent"/>
+                                    <Setter Property="MinHeight" Value="0"/>
+                                    <Setter Property="Padding" Value="4,0"/>
+                                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                </Style>
+                            </ComboBox.Style>
+                        </ComboBox>
                     </StackPanel>
                 </Border>
 <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
@@ -13269,62 +13300,6 @@
                                             </StackPanel>
                                         </Button>
                                     </StackPanel>
-                                </StackPanel>
-                            </StackPanel>
-                        </Border>
-
-                        <!-- Surfaces card (#408, @Xaklse on Discord): which
-                             halves of a Keyboard + Mouse slot are live. Its
-                             own card rather than a row on the SOCD card
-                             below, because that card's header says SOCD and
-                             the page's card language decides where a setting
-                             lives. Same visibility gate, so both appear only
-                             on a Keyboard + Mouse slot. -->
-                        <Border Style="{StaticResource CardBorder}" Margin="0,8,0,0"
-                                Visibility="{Binding KbmSocdCardVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-                            <StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                    <TextBlock Text="&#xE7FC;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
-                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
-                                    <TextBlock Text="{Binding Pad_Kbm_Surfaces_Label, Source={x:Static strings:Strings.Instance}}"
-                                               Style="{StaticResource CardTitle}"/>
-                                    <ui:Button Command="{Binding KbmConfig.ResetSurfacesCommand}" Style="{StaticResource ResetAllButton}"
-                                               Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
-                                               ToolTip="{Binding Pad_Kbm_Surfaces_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                </StackPanel>
-                                <TextBlock Text="{Binding Pad_Kbm_Surfaces_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                                           Style="{StaticResource CardDescription}"/>
-
-                                <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
-                                    <TextBlock Text="{Binding Pad_Kbm_Surfaces_Label, Source={x:Static strings:Strings.Instance}}"
-                                               Width="140" VerticalAlignment="Center"
-                                               ToolTip="{Binding Pad_Kbm_Surfaces_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                    <!-- Bound to the PadViewModel forwarder, not to
-                                         KbmConfig.Surfaces: the KbmConfig setter replaces
-                                         the instance on a profile load, so binding through
-                                         the owner keeps the table refresh alive. -->
-                                    <ComboBox ItemsSource="{Binding KbmConfig.AvailableKbmSurfaces}"
-                                              SelectedValue="{Binding KbmSurfaces, Mode=TwoWay}"
-                                              SelectedValuePath="Value"
-                                              IsSynchronizedWithCurrentItem="False"
-                                              MinWidth="260" VerticalAlignment="Center" Padding="4,2"
-                                              ToolTip="{Binding Pad_Kbm_Surfaces_Tooltip, Source={x:Static strings:Strings.Instance}}">
-                                        <ComboBox.ItemTemplate>
-                                            <DataTemplate>
-                                                <StackPanel Orientation="Vertical" Margin="0,2,0,2">
-                                                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="12"/>
-                                                    <TextBlock Text="{Binding Description}"
-                                                               FontSize="10"
-                                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                               TextWrapping="Wrap" MaxWidth="260"
-                                                               Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ComboBoxItem}}, Converter={StaticResource NullToCollapsedConverter}, FallbackValue=Collapsed}"/>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </ComboBox.ItemTemplate>
-                                    </ComboBox>
-                                    <ui:Button Command="{Binding KbmConfig.ResetSurfacesCommand}" Style="{StaticResource ResetButton}"
-                                               VerticalAlignment="Center" Margin="8,0,0,0"
-                                               ToolTip="{Binding Pad_Kbm_Surfaces_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                             </StackPanel>
                         </Border>

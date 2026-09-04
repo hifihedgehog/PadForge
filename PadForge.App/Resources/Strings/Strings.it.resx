@@ -3487,29 +3487,17 @@ Puoi riprovare più tardi dalle Impostazioni.</value></data>
   <data name="About_LinuxmotehookDesc" xml:space="preserve">
     <value>Preset di orientamento dell'impugnatura del Wii Remote che l'impostazione Impugnatura rispecchia. linuxmotehook è Apache-2.0. WiimoteHook è uno strumento a sorgente chiuso letto attraverso la sua documentazione. Nessun codice distribuito.</value>
   </data>
-  <data name="Pad_Kbm_Surfaces_Label" xml:space="preserve">
-    <value>Superfici</value>
-  </data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>Scegli quali metà di questo slot sono attive. Disattivando una metà se ne nascondono le righe e si interrompe l'invio, ma le assegnazioni restano e tornano riattivandola.</value>
   </data>
   <data name="Pad_Kbm_Surfaces_Both_Name" xml:space="preserve">
     <value>Tastiera e mouse</value>
   </data>
-  <data name="Pad_Kbm_Surfaces_Both_Description" xml:space="preserve">
-    <value>Lo slot invia pressioni di tasti e input del mouse.</value>
-  </data>
   <data name="Pad_Kbm_Surfaces_MouseOnly_Name" xml:space="preserve">
     <value>Solo mouse</value>
   </data>
-  <data name="Pad_Kbm_Surfaces_MouseOnly_Description" xml:space="preserve">
-    <value>Vengono mostrate solo le righe del mouse e inviato solo l'input del mouse.</value>
-  </data>
   <data name="Pad_Kbm_Surfaces_KeyboardOnly_Name" xml:space="preserve">
     <value>Solo tastiera</value>
-  </data>
-  <data name="Pad_Kbm_Surfaces_KeyboardOnly_Description" xml:space="preserve">
-    <value>Vengono mostrate solo le righe della tastiera e inviate solo le pressioni di tasti.</value>
   </data>
   <data name="Pad_Mapping_Scope_All" xml:space="preserve">
     <value>Tutto</value>

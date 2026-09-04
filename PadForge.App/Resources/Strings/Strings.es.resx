@@ -3465,29 +3465,17 @@ Puedes volver a intentarlo más tarde desde Configuración.</value></data>
   <data name="About_LinuxmotehookDesc" xml:space="preserve">
     <value>Preajustes de orientación de sujeción del Wii Remote que refleja el ajuste de Agarre. linuxmotehook es Apache-2.0. WiimoteHook es una herramienta de código cerrado leída a través de su documentación. No se distribuye código.</value>
   </data>
-  <data name="Pad_Kbm_Surfaces_Label" xml:space="preserve">
-    <value>Superficies</value>
-  </data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">
     <value>Elige qué mitades de esta ranura están activas. Al desactivar una mitad se ocultan sus filas y deja de enviar, pero conserva sus asignaciones para que vuelvan al reactivarla.</value>
   </data>
   <data name="Pad_Kbm_Surfaces_Both_Name" xml:space="preserve">
     <value>Teclado y ratón</value>
   </data>
-  <data name="Pad_Kbm_Surfaces_Both_Description" xml:space="preserve">
-    <value>La ranura envía pulsaciones de teclas y entradas de ratón.</value>
-  </data>
   <data name="Pad_Kbm_Surfaces_MouseOnly_Name" xml:space="preserve">
     <value>Solo ratón</value>
   </data>
-  <data name="Pad_Kbm_Surfaces_MouseOnly_Description" xml:space="preserve">
-    <value>Solo se muestran las filas del ratón y solo se envían entradas de ratón.</value>
-  </data>
   <data name="Pad_Kbm_Surfaces_KeyboardOnly_Name" xml:space="preserve">
     <value>Solo teclado</value>
-  </data>
-  <data name="Pad_Kbm_Surfaces_KeyboardOnly_Description" xml:space="preserve">
-    <value>Solo se muestran las filas del teclado y solo se envían pulsaciones de teclas.</value>
   </data>
   <data name="Pad_Mapping_Scope_All" xml:space="preserve">
     <value>Todo</value>

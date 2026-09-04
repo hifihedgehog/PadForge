@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -818,15 +818,49 @@ namespace PadForge.Common
         internal static string VidPidToken(string instanceId)
         {
             if (string.IsNullOrEmpty(instanceId)) return null;
-            int v = instanceId.IndexOf("VID_", StringComparison.OrdinalIgnoreCase);
-            if (v < 0) return null;
-            int pidAt = instanceId.IndexOf("PID_", v, StringComparison.OrdinalIgnoreCase);
-            if (pidAt < 0) return null;
-            int end = pidAt + 4;
-            while (end < instanceId.Length && Uri.IsHexDigit(instanceId[end])) end++;
-            if (end == pidAt + 4) return null;
-            return instanceId.Substring(v, end - v);
+
+            // Scan every VID_ in the string, not only the first. ROOT\VID_045E&XI_00
+            // carries one with no PID of its own, and taking the first blindly
+            // let IndexOf reach across the backslash into the NEXT path segment
+            // and return "VID_045E&XI_00\PID_0B13" as if it were one field.
+            int v = -1;
+            while ((v = instanceId.IndexOf("VID_", v + 1, StringComparison.OrdinalIgnoreCase)) >= 0)
+            {
+                // VID_ + exactly four hex, one separator, PID_ + exactly four
+                // hex. Windows writes both fields at that width, and anything
+                // wider or narrower is not the field pair we are matching on.
+                int vid = v + 4;
+                if (!IsHexRun(instanceId, vid, 4)) continue;
+                int sep = vid + 4;
+                if (sep >= instanceId.Length) continue;
+                char c = instanceId[sep];
+                if (c != '&' && c != '+') continue;
+                int pid = sep + 1;
+                if (!Substr(instanceId, pid, 4).Equals("PID_", StringComparison.OrdinalIgnoreCase)) continue;
+                if (!IsHexRun(instanceId, pid + 4, 4)) continue;
+                // A fifth hex digit means the field is wider than the pair we
+                // are reading, so it is not this shape.
+                if (IsHexRun(instanceId, pid + 8, 1)) continue;
+
+                // Normalized to the ampersand form so the two separators
+                // Windows uses compare equal. FTDIBUS writes VID_0403+PID_6001
+                // for the same pair USB writes with an ampersand, and a walk
+                // that crosses the two would otherwise stop one hop early.
+                return ("VID_" + instanceId.Substring(vid, 4)
+                        + "&PID_" + instanceId.Substring(pid + 4, 4)).ToUpperInvariant();
+            }
+            return null;
         }
+
+        private static bool IsHexRun(string s, int at, int count)
+        {
+            if (at < 0 || at + count > s.Length) return false;
+            for (int i = 0; i < count; i++) if (!Uri.IsHexDigit(s[at + i])) return false;
+            return true;
+        }
+
+        private static string Substr(string s, int at, int count)
+            => at < 0 || at + count > s.Length ? string.Empty : s.Substring(at, count);
 
         /// <summary>Whether a devnode belongs to the same physical device as
         /// the node a walk started from.
@@ -839,10 +873,42 @@ namespace PadForge.Common
         /// and PID token bounds it instead, and stops at the hub.</para></summary>
         private static bool SameDeviceScope(uint devInst, bool systemScoped, Guid containerId, string vidPid)
         {
+            string id = GetInstanceId(devInst);
+
+            // Never scope into one of our own virtual pads. HIDMaestro roots
+            // its nodes at ROOT\VID_xxxx&PID_yyyy&IG_nn, every ROOT node on
+            // this bench carries the system container (32 of 32 measured), and
+            // the root repeats the token its HID child carries. Without this
+            // the token walk climbs out of a real pad into PadForge's own
+            // enumerator and blacklists the controller we just created, which
+            // is the self-hide #391 already cost a round.
+            if (MatchesHidMaestroPattern(id)) return false;
+
             if (!systemScoped) return GetContainerId(devInst) == containerId;
-            string token = VidPidToken(GetInstanceId(devInst));
+            string token = VidPidToken(id);
             return token != null && string.Equals(token, vidPid, StringComparison.OrdinalIgnoreCase);
         }
+
+        /// <summary>One parent hop, refusing a devnode that names itself as its
+        /// own parent. cfgmgr32 does not promise an acyclic walk, and none of
+        /// the three token walks caps depth, so the guard IsHidMaestroDevice
+        /// already carries belongs on them too.</summary>
+        private static bool TryParent(uint node, out uint parent)
+        {
+            parent = 0;
+            if (CM_Get_Parent(out uint p, node, 0) != CR_SUCCESS) return false;
+            if (p == 0 || p == node) return false;
+            parent = p;
+            return true;
+        }
+
+        /// <summary>Deeper than any real PnP chain, so a cycle cfgmgr32 hands
+        /// back ends the walk instead of spinning it.</summary>
+        private const int MaxDevnodeDepth = 64;
+
+        /// <summary>Wider than any real composite. The sibling ring is the one
+        /// walk cfgmgr32 gives no natural end to.</summary>
+        private const int MaxDevnodeSiblings = 256;
 
         public static List<string> ExpandToBaseContainerAndChildren(string hidInstanceId)
             => ExpandToBaseContainerAndChildren(hidInstanceId, null, null);
@@ -876,35 +942,46 @@ namespace PadForge.Common
             // matches is the base container.
             var chain = new List<PnpNode>();
             uint baseContainer = hidDevInst;
-            uint current = hidDevInst;
-            while (CM_Get_Parent(out uint parent, current, 0) == CR_SUCCESS)
+            try
             {
-                if (!SameDeviceScope(parent, systemScoped, hidContainerId, scopeToken)) break;
-                if (baseContainer != hidDevInst)
-                    chain.Add(new PnpNode(GetInstanceId(baseContainer), GetClassGuid(baseContainer)));
-                baseContainer = parent;
-                current = parent;
-            }
-
-            var baseNode = baseContainer == hidDevInst
-                ? new PnpNode(null, Guid.Empty)
-                : new PnpNode(GetInstanceId(baseContainer), GetClassGuid(baseContainer));
-
-            // Enumerate immediate children of base container.
-            var children = new List<PnpNode>();
-            if (baseContainer != hidDevInst
-                && CM_Get_Child(out uint firstChild, baseContainer, 0) == CR_SUCCESS)
-            {
-                uint child = firstChild;
-                while (true)
+                uint current = hidDevInst;
+                for (int depth = 0; depth < MaxDevnodeDepth && TryParent(current, out uint parent); depth++)
                 {
-                    children.Add(new PnpNode(GetInstanceId(child), GetClassGuid(child)));
-                    if (CM_Get_Sibling(out uint sibling, child, 0) != CR_SUCCESS) break;
-                    child = sibling;
+                    if (!SameDeviceScope(parent, systemScoped, hidContainerId, scopeToken)) break;
+                    if (baseContainer != hidDevInst)
+                        chain.Add(new PnpNode(GetInstanceId(baseContainer), GetClassGuid(baseContainer)));
+                    baseContainer = parent;
+                    current = parent;
                 }
-            }
 
-            return ComposeBlacklist(hidInstanceId, chain, baseNode, children, keepOut, keptOut);
+                var baseNode = baseContainer == hidDevInst
+                    ? new PnpNode(null, Guid.Empty)
+                    : new PnpNode(GetInstanceId(baseContainer), GetClassGuid(baseContainer));
+
+                // Enumerate immediate children of base container.
+                var children = new List<PnpNode>();
+                if (baseContainer != hidDevInst
+                    && CM_Get_Child(out uint firstChild, baseContainer, 0) == CR_SUCCESS)
+                {
+                    uint child = firstChild;
+                    for (int n = 0; n < MaxDevnodeSiblings; n++)
+                    {
+                        children.Add(new PnpNode(GetInstanceId(child), GetClassGuid(child)));
+                        if (CM_Get_Sibling(out uint sibling, child, 0) != CR_SUCCESS) break;
+                        if (sibling == child) break;
+                        child = sibling;
+                    }
+                }
+
+                return ComposeBlacklist(hidInstanceId, chain, baseNode, children, keepOut, keptOut);
+            }
+            catch
+            {
+                // Same contract as ContainerKeyOf and ChainInstanceIds, which
+                // both already catch here: cfgmgr32 trouble degrades to the
+                // node we were handed rather than escaping into the apply loop.
+                return new List<string> { hidInstanceId };
+            }
         }
 
         /// <summary>The pure rule behind <see cref="ExpandToBaseContainerAndChildren(string, Func{string, bool}, ICollection{string})"/>,
@@ -1048,7 +1125,7 @@ namespace PadForge.Common
                     if (token == null) return null;
                     uint node = devInst;
                     string compositeId = null;
-                    while (CM_Get_Parent(out uint parent, node, 0) == CR_SUCCESS)
+                    for (int depth = 0; depth < MaxDevnodeDepth && TryParent(node, out uint parent); depth++)
                     {
                         if (!SameDeviceScope(parent, true, containerId, token)) break;
                         compositeId = GetInstanceId(parent);
@@ -1084,7 +1161,7 @@ namespace PadForge.Common
                 if (containerId == Guid.Empty || (systemScoped && scopeToken == null))
                     return result;
                 uint current = devInst;
-                while (CM_Get_Parent(out uint parent, current, 0) == CR_SUCCESS)
+                for (int depth = 0; depth < MaxDevnodeDepth && TryParent(current, out uint parent); depth++)
                 {
                     if (!SameDeviceScope(parent, systemScoped, containerId, scopeToken)) break;
                     string id = GetInstanceId(parent);

@@ -374,7 +374,13 @@ namespace PadForge.Tests
         {
             string src = Src(Path.Combine("PadForge.App", "Views", "KBMPreviewView.xaml.cs"));
             Assert.Contains(
-                "if (e.PropertyName == nameof(PadViewModel.KbmSurfaces)) { Dispatcher.Invoke(ApplySurfaceVisibility); return; }",
+                "if (e.PropertyName == nameof(PadViewModel.KbmSurfaces))",
+                src);
+            // And it marks the surface dirty, the way both sibling branches
+            // do. A half coming back into view has widgets painted from a
+            // stale snapshot behind it.
+            Assert.Contains(
+                "ApplySurfaceVisibility(); _paintedValid = false; _dirty = true;",
                 src);
             int build = src.IndexOf("BuildMouseCanvas();", StringComparison.Ordinal);
             int gate = src.IndexOf("ApplySurfaceVisibility();", build, StringComparison.Ordinal);

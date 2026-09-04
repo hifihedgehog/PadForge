@@ -189,6 +189,13 @@ namespace PadForge.Views
                 ExtendedProfileCombo?
                     .GetBindingExpression(System.Windows.Controls.ComboBox.SelectedValueProperty)?
                     .UpdateTarget();
+                // The third preset combo needs it for the same reason, and
+                // more so: AvailableKbmSurfaces is an LCID-keyed cache that
+                // hands back a NEW array after a language change, and a
+                // Selector drops a selection whose item object is gone.
+                KbmSurfacesCombo?
+                    .GetBindingExpression(System.Windows.Controls.ComboBox.SelectedValueProperty)?
+                    .UpdateTarget();
             }), System.Windows.Threading.DispatcherPriority.Loaded);
         }
 

@@ -522,12 +522,13 @@
                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                   FontSize="12.5"
                                   AutomationProperties.AutomationId="KbmSurfacesCombo"
+                                  IsSynchronizedWithCurrentItem="False"
                                   ItemsSource="{Binding KbmConfig.AvailableKbmSurfaces}"
                                   DisplayMemberPath="Name"
                                   SelectedValuePath="Value"
                                   SelectedValue="{Binding KbmSurfaces, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   ToolTip="{Binding Pad_Kbm_Surfaces_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                                  PreviewKeyDown="ProfileCombo_PreviewKeyDown">
+                                  PreviewKeyDown="MappingComboBox_PreviewKeyDown">
                             <ComboBox.Style>
                                 <Style TargetType="ComboBox" BasedOn="{StaticResource DefaultComboBoxStyle}">
                                     <Setter Property="Background" Value="Transparent"/>
@@ -3359,16 +3360,17 @@
                              control over the table, session-only, ANDed with
                              the search. Distinct from the slot's Surfaces
                              mode, which is persistent output configuration.
-                             KbmSocdCardVisible is the Keyboard + Mouse slot
-                             gate despite its SOCD-era name, so the scope
-                             appears on no other slot type. -->
+                             KbmSurfaceScopeVisible keeps it to a Keyboard +
+                             Mouse slot driving BOTH halves: under a
+                             single-surface mode a scope can only show
+                             everything or nothing. -->
                         <ComboBox x:Name="MappingSurfaceScopeBox" Margin="4,0,0,0" MinWidth="110"
                                   VerticalAlignment="Center" Padding="6,2"
                                   IsSynchronizedWithCurrentItem="False"
                                   SelectedValuePath="Tag"
                                   SelectedValue="{Binding MappingSurfaceScope, Mode=TwoWay}"
                                   ToolTip="{Binding Pad_Mapping_Scope_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                                  Visibility="{Binding KbmSocdCardVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                  Visibility="{Binding KbmSurfaceScopeVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                             <ComboBoxItem Tag="All" Content="{Binding Pad_Mapping_Scope_All, Source={x:Static strings:Strings.Instance}}"/>
                             <ComboBoxItem Tag="Mouse" Content="{Binding Pad_Mapping_Scope_Mouse, Source={x:Static strings:Strings.Instance}}"/>
                             <ComboBoxItem Tag="Keyboard" Content="{Binding Pad_Mapping_Scope_Keyboard, Source={x:Static strings:Strings.Instance}}"/>
@@ -13311,7 +13313,7 @@
                              that used to sit under the preview. Mutually
                              exclusive with the gamepad card above. -->
                         <Border Style="{StaticResource CardBorder}" Margin="0,8,0,0"
-                                Visibility="{Binding KbmSocdCardVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                Visibility="{Binding KbmSocdEditorVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <TextBlock Text="&#xE8AB;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"

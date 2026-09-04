@@ -3469,7 +3469,7 @@
     <value>このスロットで有効にする面を選びます。無効にした面は行が非表示になり送信も止まりますが、割り当ては保持されるため再度有効にすると元に戻ります。</value>
   </data>
   <data name="Pad_Kbm_Surfaces_Both_Name" xml:space="preserve">
-    <value>キーボードとマウス</value>
+    <value>キーボード + マウス</value>
   </data>
   <data name="Pad_Kbm_Surfaces_MouseOnly_Name" xml:space="preserve">
     <value>マウスのみ</value>

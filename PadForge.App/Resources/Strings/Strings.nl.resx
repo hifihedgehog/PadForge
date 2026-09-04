@@ -3489,7 +3489,7 @@ Je kunt het later opnieuw proberen via Instellingen.</value></data>
     <value>Kies welke helften van deze sleuf actief zijn. Een uitgeschakelde helft verbergt zijn rijen en stopt met verzenden, maar behoudt zijn toewijzingen zodat ze terugkomen als je hem weer inschakelt.</value>
   </data>
   <data name="Pad_Kbm_Surfaces_Both_Name" xml:space="preserve">
-    <value>Toetsenbord en muis</value>
+    <value>Toetsenbord + Muis</value>
   </data>
   <data name="Pad_Kbm_Surfaces_MouseOnly_Name" xml:space="preserve">
     <value>Alleen muis</value>

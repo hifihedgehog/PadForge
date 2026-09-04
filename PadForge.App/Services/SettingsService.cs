@@ -2390,6 +2390,7 @@ namespace PadForge.Services
                     d.Surfaces = s.Surfaces;
                     d.SocdMode = s.SocdMode;
                     d.SocdPairs = s.SocdPairs;
+                    dst.NotifyKbmSurfacesChanged();
                 }
             }
         }
@@ -2687,6 +2688,7 @@ namespace PadForge.Services
             return new ViewModels.KbmSlotConfigData
             {
                 SlotIndex = slotIndex,
+                Surfaces = cfg.Surfaces,
                 SocdMode = cfg.SocdMode,
                 SocdPairs = cfg.SocdPairs,
             };
@@ -2703,8 +2705,12 @@ namespace PadForge.Services
             if (padVm.OutputType != Engine.VirtualControllerType.KeyboardMouse) return;
             var d = padVm.KbmConfig;
             if (d == null) return;
+            d.Surfaces = cfg.Surfaces;
             d.SocdMode = cfg.SocdMode;
             d.SocdPairs = cfg.SocdPairs;
+            // The mode narrows the mapping table and the preview, so a paste
+            // has to tell the view, exactly as a profile apply does.
+            padVm.NotifyKbmSurfacesChanged();
         }
 
         /// <summary>
@@ -4644,6 +4650,7 @@ namespace PadForge.Services
                 list.Add(new ViewModels.KbmSlotConfigData
                 {
                     SlotIndex = i,
+                    Surfaces = cfg.Surfaces,
                     SocdMode = cfg.SocdMode,
                     SocdPairs = cfg.SocdPairs
                 });
@@ -4660,6 +4667,7 @@ namespace PadForge.Services
                 list.Add(new ViewModels.KbmSlotConfigData
                 {
                     SlotIndex = i,
+                    Surfaces = cfg.Surfaces,
                     SocdMode = cfg.SocdMode,
                     SocdPairs = cfg.SocdPairs
                 });
@@ -5267,6 +5275,11 @@ namespace PadForge.Services
                 padVm.ExtendedConfig.ResetToDefaults();
                 padVm.MidiConfig.ResetToDefaults();
                 padVm.KbmConfig.ResetToDefaults();
+                // The reset put the surface mode back to Both. Without this
+                // the chip's TwoWay target keeps the old value, and re-picking
+                // what it already displays raises no SelectionChanged, so the
+                // user cannot correct the display from the chip.
+                padVm.NotifyKbmSurfacesChanged();
                 // The reset replaced the slot's whole raw surface, so no
                 // wire owns it any more; clear the stamp and let the next
                 // Nintendo profile adopt (translate nothing).

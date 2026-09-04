@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -159,7 +159,13 @@ namespace PadForge.Views
         private void OnVmPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(PadViewModel.OutputType)) { Dispatcher.Invoke(RebuildLayout); return; }
-            if (e.PropertyName == nameof(PadViewModel.KbmSurfaces)) { Dispatcher.Invoke(ApplySurfaceVisibility); return; }
+            if (e.PropertyName == nameof(PadViewModel.KbmSurfaces))
+            {
+                // Marked dirty like both siblings: a half coming back into
+                // view has widgets painted from a stale snapshot behind it.
+                Dispatcher.Invoke(() => { ApplySurfaceVisibility(); _paintedValid = false; _dirty = true; });
+                return;
+            }
             if (e.PropertyName == nameof(PadViewModel.CurrentRecordingTarget)) { Dispatcher.Invoke(() => UpdateFlashTarget(_vm?.CurrentRecordingTarget)); return; }
             _dirty = true;
         }
@@ -195,6 +201,13 @@ namespace PadForge.Views
         /// gap.</para></summary>
         internal void ApplySurfaceVisibility(bool keyboard, bool mouse)
         {
+            // A flash on a half about to be collapsed would blink a widget
+            // nobody can see, and it would hold the hover gate shut over the
+            // half that stays visible.
+            var flashing = PadViewModel.KbmSurfaceOf(_flashTarget);
+            if (flashing == KbmSurfaceKind.Keyboard && !keyboard) UpdateFlashTarget(null);
+            else if (flashing == KbmSurfaceKind.Mouse && !mouse) UpdateFlashTarget(null);
+
             KeyboardHost.Visibility = keyboard ? Visibility.Visible : Visibility.Collapsed;
             MouseHost.Visibility = mouse ? Visibility.Visible : Visibility.Collapsed;
 

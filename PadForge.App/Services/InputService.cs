@@ -75,6 +75,12 @@ namespace PadForge.Services
         // runtime the same way the instance-side profile apply does.
         // Written on the UI thread in Start/Stop, read on the UI thread.
         private static InputManager _inputManagerStatic;
+
+        /// <summary>Slot-scoped menu runtime reset (#413), the menu twin of
+        /// InputManager.ClearShiftRuntime. Static so the layer editor can
+        /// call it beside that one without holding the service instance.</summary>
+        public static void ClearMenuRuntimeForSlot(int slot)
+            => _inputManagerStatic?.ClearMenuRuntimeForSlot(slot);
         // Reused across SlotRumbleForDeviceProvider invocations so the
         // dispatcher's per-device rumble pump doesn't allocate per tick.
         private Vibration _constantForceScratchSony;

@@ -191,6 +191,53 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void ClickRelease_AClickThatOutlivesTheTouch_CommitsTheCellItStartedOn()
+        {
+            // Touchpad (no resting center): touch cell 2 with the click held,
+            // lift one poll before releasing the click. The lift must not
+            // discard the selection.
+            var def = Held(MenuFireType.ClickRelease, hasCenter: false);
+            var st = new MenuRuntimeState();
+            Tick(st, def, true, false, false, false, 0, 0, 1000);      // open, untouched
+            Tick(st, def, true, true, true, false, 1.0, 0.0, 1010);    // cell 2, clicked
+            Tick(st, def, true, false, true, false, 0, 0, 1020);       // lift, click held
+            Assert.Equal(2, st.HoveredIndex);
+            Assert.False(MenuEvaluator.IsItemFired(st, 2, 1020));
+            Tick(st, def, true, false, false, false, 0, 0, 1030);      // release
+            Assert.True(MenuEvaluator.IsItemFired(st, 2, 1030));
+        }
+
+        [Fact]
+        public void ClickRelease_ALiftWithoutAClick_LeavesNothingPending()
+        {
+            var def = Held(MenuFireType.ClickRelease, hasCenter: false);
+            var st = new MenuRuntimeState();
+            Tick(st, def, true, true, false, false, 1.0, 0.0, 1000);   // touch cell 2, no click
+            Tick(st, def, true, false, false, false, 0, 0, 1010);      // lift
+            Assert.Equal(-1, st.HoveredIndex);
+            Tick(st, def, true, false, true, false, 0, 0, 1020);       // click with the finger up
+            Tick(st, def, true, false, false, false, 0, 0, 1030);      // release
+            for (int i = 0; i <= 4; i++)
+                Assert.False(MenuEvaluator.IsItemFired(st, i, 1030));
+        }
+
+        [Fact]
+        public void ClickRelease_OnAStickWithACenter_RecenteringWhileClickedCommitsTheCenter()
+        {
+            // The stick has a resting hover, so the pending carry does not
+            // apply: the user is pointing at the center when the click lifts.
+            var def = Held(MenuFireType.ClickRelease, hasCenter: true);
+            var st = new MenuRuntimeState();
+            Tick(st, def, true, false, false, true, 0, 0, 1000);
+            Tick(st, def, true, true, true, true, 1.0, 0.0, 1010);     // cell 2, clicked
+            Tick(st, def, true, false, true, true, 0, 0, 1020);        // re-center, click held
+            Assert.Equal(0, st.HoveredIndex);
+            Tick(st, def, true, false, false, true, 0, 0, 1030);
+            Assert.True(MenuEvaluator.IsItemFired(st, 0, 1030));
+            Assert.False(MenuEvaluator.IsItemFired(st, 2, 1030));
+        }
+
+        [Fact]
         public void Always_AssertsAResidentCenterTheMomentTheLayerOpens()
         {
             var def = Held(MenuFireType.Always, hasCenter: true);
@@ -334,47 +381,153 @@ namespace PadForge.Tests
             Assert.Equal(Strings.Instance.Menu_Fire_ButtonPairGrid_Desc, vm.SelectedFireDescription);
         }
 
+        [Fact]
+        public void FireTypeIndex_IgnoresANothingSelectedPush()
+        {
+            // A Selector losing its items pushes -1. Clamping that to 0 would
+            // turn Touch Release into Click on every stay-open toggle.
+            var vm = Editor();
+            vm.FireTypeIndex = (int)MenuFireType.TouchRelease;
+            int edits = 0;
+            vm.Changed += () => edits++;
+            vm.FireTypeIndex = -1;
+            Assert.Equal(MenuFireType.TouchRelease, vm.Entry.FireType);
+            Assert.Equal(0, edits);
+        }
+
+        [Fact]
+        public void TogglingStayOpen_ReRaisesFireTypeIndexAfterTheOptionsSwap()
+        {
+            var vm = Editor();
+            vm.LayerMask = "L1";
+            vm.FireTypeIndex = (int)MenuFireType.TouchRelease;
+            var raised = new List<string>();
+            vm.PropertyChanged += (_, e) => raised.Add(e.PropertyName);
+            vm.LayerHoldsOpen = true;
+            int options = raised.IndexOf("FireOptions");
+            int index = raised.IndexOf("FireTypeIndex", Math.Max(options, 0));
+            Assert.True(options >= 0, "FireOptions was not raised");
+            Assert.True(index > options, "FireTypeIndex must be re-raised after FireOptions so the picker re-resolves");
+            Assert.Equal(MenuFireType.TouchRelease, vm.Entry.FireType);
+        }
+
+        [Fact]
+        public void Rename_RetargetsThePickerBeforeTheOldEntryIsRemoved()
+        {
+            var choices = new List<ShiftLayerInfo>
+            {
+                new() { LayerMask = "", LayerName = "Any" },
+                new() { LayerMask = "Base", LayerName = "Base" },
+                new() { LayerMask = "L1", LayerName = "Radial" },
+            };
+            var vm = new MenuEditorItem(new MenuDefinitionEntry { LayerMask = "L1" })
+            {
+                LayerChoicesProvider = () => choices,
+            };
+            vm.RefreshLayerChoices();
+            Assert.Contains(vm.LayerChoices, c => c.LayerMask == "L1");
+
+            // Configure renames the layer: the slot's list carries L2 and the
+            // menu was retagged in place, exactly as RenameMaskEverywhere does.
+            choices[2] = new ShiftLayerInfo { LayerMask = "L2", LayerName = "Radial" };
+            vm.Entry.LayerMask = "L2";
+
+            var events = new List<string>();
+            vm.PropertyChanged += (_, e) => { if (e.PropertyName == "LayerMask") events.Add("retarget"); };
+            vm.LayerChoices.CollectionChanged += (_, e) =>
+            {
+                if (e.OldItems != null)
+                    foreach (ShiftLayerInfo old in e.OldItems) events.Add("remove:" + old.LayerMask);
+            };
+            vm.RefreshLayerChoices();
+
+            int retarget = events.IndexOf("retarget");
+            int removal = events.IndexOf("remove:L1");
+            Assert.True(removal >= 0, "the obsolete L1 entry must be removed");
+            Assert.True(retarget >= 0 && retarget < removal,
+                "the picker must be pointed at L2 before the entry it was selecting disappears");
+            Assert.DoesNotContain(vm.LayerChoices, c => c.LayerMask == "L1");
+            Assert.Contains(vm.LayerChoices, c => c.LayerMask == "L2" && c.LayerName == "Radial");
+        }
+
+        [Fact]
+        public void RecordingACustomHost_RaisesTheHotbarCaptionDependents()
+        {
+            var vm = Editor(new MenuDefinitionEntry { MenuId = 1, CellCount = 4, Kind = MenuKind.Grid, HostDescriptor = "Gamepad DPad" });
+            Assert.True(vm.IsButtonPairGrid);
+            var raised = new List<string>();
+            vm.PropertyChanged += (_, e) => raised.Add(e.PropertyName);
+            Assert.True(vm.TryApplyRecordedHost("Axis 5"));
+            Assert.Equal("Custom", vm.Entry.HostDescriptor);
+            Assert.False(vm.IsButtonPairGrid);
+            Assert.Contains("IsButtonPairGrid", raised);
+            Assert.Contains("SelectedFireDescription", raised);
+        }
+
         // ── Editor: per-cell icon size ───────────────────────────────────
 
-        private static MenuCellItem Cell(MenuItemDefinition seed = null)
+        private static (MenuCellItem cell, MenuDefinitionEntry entry) Cell(MenuItemDefinition seed = null)
         {
             var entry = new MenuDefinitionEntry { MenuId = 1, CellCount = 4 };
             if (seed != null) entry.Items.Add(seed);
-            return new MenuEditorItem(entry).Cells.First(c => c.Index == (seed?.Index ?? 1));
+            return (new MenuEditorItem(entry).Cells.First(c => c.Index == (seed?.Index ?? 1)), entry);
         }
 
         [Fact]
         public void IconScale_OnACellWithNoIcon_AuthorsNothing()
         {
-            var cell = Cell();
+            var (cell, entry) = Cell();
             cell.IconScalePercent = 150;
             Assert.Equal(100, cell.IconScalePercent);
             Assert.False(cell.HasIcon);
+            Assert.Empty(entry.Items);                     // no item was created to hold it
         }
 
         [Fact]
-        public void IconScale_ClampsBothWays()
+        public void IconScale_ClampsBothWays_InTheStoredValue()
         {
-            var cell = Cell(new MenuItemDefinition { Index = 1, Icon = "a.png" });
+            var seed = new MenuItemDefinition { Index = 1, Icon = "a.png" };
+            var (cell, _) = Cell(seed);
             cell.IconScalePercent = 500;
-            Assert.Equal(200, cell.IconScalePercent);
+            Assert.Equal(200, seed.IconScalePercent);
             cell.IconScalePercent = 3;
-            Assert.Equal(25, cell.IconScalePercent);
-            // A loaded out-of-range value reads clamped without being rewritten.
-            var wild = Cell(new MenuItemDefinition { Index = 1, Icon = "a.png", IconScalePercent = 999 });
-            Assert.Equal(200, wild.IconScalePercent);
+            Assert.Equal(25, seed.IconScalePercent);
         }
 
         [Fact]
-        public void SetIcon_ReplacementKeepsTheSize_ClearResetsIt()
+        public void IconScale_ALoadedOutOfRangeValue_ReadsClampedWithoutBeingRewritten()
+        {
+            var wild = new MenuItemDefinition { Index = 1, Icon = "a.png", IconScalePercent = 999 };
+            var (cell, _) = Cell(wild);
+            Assert.Equal(200, cell.IconScalePercent);
+            Assert.Equal(999, wild.IconScalePercent);      // reading is not an edit
+        }
+
+        [Fact]
+        public void SetIcon_ReplacementKeepsTheSize_ClearResetsItAndPrunesAnIconOnlyItem()
         {
             var seed = new MenuItemDefinition { Index = 1, Icon = "a.png", IconScalePercent = 150 };
-            var cell = Cell(seed);
+            var (cell, entry) = Cell(seed);
             cell.SetIcon("b.png");
+            Assert.Equal("b.png", seed.Icon);
             Assert.Equal(150, seed.IconScalePercent);
             cell.SetIcon("");
             Assert.False(cell.HasIcon);
-            Assert.Equal(100, cell.IconScalePercent);
+            Assert.Equal(100, seed.IconScalePercent);
+            Assert.Empty(entry.Items);                     // icon-only item, gone with its icon
+        }
+
+        [Fact]
+        public void ResetCell_NormalizesALoadedSizeWithNoIcon()
+        {
+            // A file can carry IconScalePercent on an item that has no icon.
+            // Reset routes through SetIcon unconditionally so that state is
+            // normalized and the empty item pruned.
+            var stray = new MenuItemDefinition { Index = 1, IconScalePercent = 150 };
+            var (cell, entry) = Cell(stray);
+            cell.ResetCellCommand.Execute(null);
+            Assert.Equal(100, stray.IconScalePercent);
+            Assert.Empty(entry.Items);
         }
 
         [Fact]

@@ -121,6 +121,30 @@ namespace PadForge.Common.Input
         /// (poll hiccups ride through; a deleted menu expires).</summary>
         private const int MenuContextStaleMs = 250;
 
+        /// <summary>Stay-open driver per (slot, menu) (#413). Every device
+        /// assigned to the slot evaluates a layer-held menu, and at rest each
+        /// one is active, so without arbitration the first-polled idle pad
+        /// would hold the overlay and assert the resting center while another
+        /// pad steers. The device with physical input takes the record, a
+        /// resting device keeps it until another moves or the record goes
+        /// stale (unplugged). Non-drivers still evaluate, so an interaction
+        /// on a pad that just lost the record completes on its own release,
+        /// but they hover nothing at rest and never publish.</summary>
+        private sealed class MenuDriverRecord { public Guid Device; public long StampMs; }
+        private readonly ConcurrentDictionary<(int Slot, int MenuId), MenuDriverRecord> _menuDrivers = new();
+
+        private bool ResolveStayOpenDriver(int slot, int menuId, Guid device, bool physical, long nowMs)
+        {
+            var key = (slot, menuId);
+            if (_menuDrivers.TryGetValue(key, out var rec))
+            {
+                if (rec.Device == device) { rec.StampMs = nowMs; return true; }
+                if (!physical && nowMs - rec.StampMs <= MenuContextStaleMs) return false;
+            }
+            _menuDrivers[key] = new MenuDriverRecord { Device = device, StampMs = nowMs };
+            return true;
+        }
+
         private long _menuCtxLastPurgeMs;
 
         /// <summary>Clears every menu runtime context and the overlay
@@ -132,8 +156,30 @@ namespace PadForge.Common.Input
         internal void ResetMenuRuntime()
         {
             MenuContexts.Clear();
+            _menuDrivers.Clear();
             InvalidateMenuContextsSnapshot();
             _activeMenuOverlay = null;
+        }
+
+        /// <summary>Drops one slot's menu contexts, driver records and
+        /// overlay ownership (#413). Called beside ClearShiftRuntime when an
+        /// authored change ends a layer (an activator edit or delete): the
+        /// gate failing on the next tick would otherwise land in a stay-open
+        /// menu as the release edge and commit an interaction the user was
+        /// mid-way through, a configuration operation firing a binding.</summary>
+        internal void ClearMenuRuntimeForSlot(int slot)
+        {
+            bool removed = false;
+            foreach (var kv in MenuContexts)
+                if (kv.Key.Slot == slot)
+                    removed |= MenuContexts.TryRemove(kv.Key, out _);
+            if (removed) InvalidateMenuContextsSnapshot();
+            foreach (var kv in _menuDrivers)
+                if (kv.Key.Slot == slot)
+                    _menuDrivers.TryRemove(kv.Key, out _);
+            var cur = _activeMenuOverlay;
+            if (cur != null && cur.Slot == slot)
+                _activeMenuOverlay = null;
         }
 
         /// <summary>Drops one device's menu contexts (and its overlay
@@ -148,6 +194,9 @@ namespace PadForge.Common.Input
                 if (kv.Key.Device == device)
                     removed |= MenuContexts.TryRemove(kv.Key, out _);
             if (removed) InvalidateMenuContextsSnapshot();
+            foreach (var kv in _menuDrivers)
+                if (kv.Value.Device == device)
+                    _menuDrivers.TryRemove(kv.Key, out _);
             var cur = _activeMenuOverlay;
             if (cur != null && cur.Device == device)
                 _activeMenuOverlay = null;
@@ -177,7 +226,7 @@ namespace PadForge.Common.Input
         /// <see cref="UpdateGestureContexts"/>, and unlike that walk it is
         /// NOT gated on the device having touchpads (sticks host menus
         /// too).</summary>
-        private void UpdateMenuContexts(Engine.Data.UserDevice ud, CustomInputState newState)
+        internal void UpdateMenuContexts(Engine.Data.UserDevice ud, CustomInputState newState)
         {
             if (ud == null || newState == null) return;
 
@@ -327,9 +376,11 @@ namespace PadForge.Common.Input
                             // every mode; only the overlay's lifetime follows
                             // the stay-open flag (#413), so a layer-held
                             // hotbar stays on screen between presses.
-                            PublishMenuOverlay(slot, ud.InstanceGuid, def, ctx.State,
-                                MenuEvaluator.ComputeSurfaceActive(def, up || down || left || right, layerOk),
-                                nowMs, engagedLayer);
+                            bool pairPhysical = up || down || left || right;
+                            bool pairActive = MenuEvaluator.ComputeSurfaceActive(def, pairPhysical, layerOk);
+                            if (layerHolds && pairActive)
+                                pairActive = ResolveStayOpenDriver(slot, def.MenuId, ud.InstanceGuid, pairPhysical, nowMs);
+                            PublishMenuOverlay(slot, ud.InstanceGuid, def, ctx.State, pairActive, nowMs, engagedLayer);
                             continue;
                         }
                         dx = (right ? 1 : 0) - (left ? 1 : 0);
@@ -420,14 +471,20 @@ namespace PadForge.Common.Input
                     }
 
                     bool surfaceActive = MenuEvaluator.ComputeSurfaceActive(def, physical, layerOk);
+                    bool publishActive = surfaceActive;
                     if (layerHolds)
                     {
-                        // A configured stick resting at center hovers the
+                        // Only the driving device (see _menuDrivers) hovers
+                        // the resting center and publishes the overlay. A
+                        // configured stick resting at center hovers the
                         // center cell when the menu has one. An unconfigured
                         // Custom opener reads zero axes and must not.
-                        bool centerAtRest = ctx.IsStick && ctx.SrcX != null && ctx.SrcY != null;
+                        bool driver = surfaceActive
+                            && ResolveStayOpenDriver(slot, def.MenuId, ud.InstanceGuid, physical, nowMs);
+                        bool centerAtRest = driver && ctx.IsStick && ctx.SrcX != null && ctx.SrcY != null;
                         MenuEvaluator.UpdateLayerEngaged(ctx.State, def, surfaceActive, physical, clicked,
                             centerAtRest, dx, dy, (dx + 1.0) / 2.0, (dy + 1.0) / 2.0, nowMs);
+                        publishActive = driver;
                     }
                     else
                     {
@@ -435,7 +492,7 @@ namespace PadForge.Common.Input
                             dx, dy, (dx + 1.0) / 2.0, (dy + 1.0) / 2.0, nowMs);
                     }
 
-                    PublishMenuOverlay(slot, ud.InstanceGuid, def, ctx.State, surfaceActive, nowMs, engagedLayer);
+                    PublishMenuOverlay(slot, ud.InstanceGuid, def, ctx.State, publishActive, nowMs, engagedLayer);
                 }
             }
         }

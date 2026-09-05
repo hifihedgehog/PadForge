@@ -187,7 +187,8 @@ namespace PadForge.Engine.Menus
         /// and the layer ending commits only an interaction still in
         /// progress, so one gesture can never fire twice. Click Release on a
         /// simultaneous release and re-center commits the ring cell that was
-        /// hovered, never the resting center that just appeared.</summary>
+        /// hovered, never the resting center that just appeared, and a click
+        /// that outlives the touch commits the cell it started on.</summary>
         public static void UpdateLayerEngaged(MenuRuntimeState st, MenuDefinitionEntry def,
             bool menuActive, bool physical, bool clicked, bool centerAtRest,
             double dx, double dy, double nx, double ny, long nowMs)
@@ -214,6 +215,16 @@ namespace PadForge.Engine.Menus
                     // middle cell with no finger on the pad.
                     hover = 0;
                 }
+                else if (def.FireType == MenuFireType.ClickRelease
+                         && clicked && st.Clicked && st.HoveredIndex >= 0)
+                {
+                    // Pending click selection: the finger lifted (or a stick
+                    // with no resting center re-centered) while the click is
+                    // still held. The cell the click started on stays
+                    // selected until the click releases, or a lift one poll
+                    // ahead of the release would commit nothing.
+                    hover = st.HoveredIndex;
+                }
             }
 
             switch (def.FireType)
@@ -230,7 +241,9 @@ namespace PadForge.Engine.Menus
                         // appeared: the cell the user was pointing at is the
                         // previous frame's hover.
                         bool physicalEnded = st.PhysicalEngaged && !physical;
-                        int commit = !menuActive || physicalEnded ? st.HoveredIndex : hover;
+                        // No current hover on the release frame means the
+                        // selection is the pending one carried above.
+                        int commit = !menuActive || physicalEnded || hover < 0 ? st.HoveredIndex : hover;
                         if (commit >= 0)
                             Pulse(st, commit, nowMs);
                     }

@@ -179,9 +179,10 @@ namespace PadForge.Common
                     img.BeginInit();
                     img.UriSource = new Uri(path, UriKind.Absolute);
                     img.CacheOption = BitmapCacheOption.OnLoad;
-                    // The source art is 256px. Decoding at its native size
-                    // means a cell scaled up to 200% never upsamples Steam
-                    // art (#413).
+                    // The source art is 256px, so decoding at its native
+                    // size covers a 200% cell at 400% menu scale (240 DIP)
+                    // up to 100% display scaling without upsampling (#413).
+                    // Past that the decode is the art's ceiling either way.
                     img.DecodePixelWidth = IconDecodePixelWidth;
                     img.EndInit();
                     img.Freeze();

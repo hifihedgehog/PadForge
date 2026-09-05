@@ -227,6 +227,12 @@ namespace PadForge.SteamWorkshop.Tests
             Assert.Equal(2, p.Menus.Count);
             Assert.Equal(MenuFireType.TouchRelease, p.Menus[0].FireType);
             Assert.Equal(MenuFireType.Click, p.Menus[1].FireType);
+            // #413: an import is surface-engaged with identity icon sizes.
+            Assert.All(p.Menus, m =>
+            {
+                Assert.False(m.LayerHoldsOpen);
+                Assert.All(m.Items, i => Assert.Equal(100, i.IconScalePercent));
+            });
         }
 
         [Fact]

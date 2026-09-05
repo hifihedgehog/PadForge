@@ -43,9 +43,11 @@ namespace PadForge.Common.Input
     /// <para>An interface absent from an enumeration keeps its record and its
     /// spent budget through one real absence (the change counter moved), and
     /// is forgotten on the second. Without a counter move an absence is a
-    /// flake and changes nothing. While any Flydigi wrapper is detached and
-    /// awaiting cleanup the pad is in flux, and every deadline is pushed
-    /// out.</para>
+    /// flake and changes nothing. An interface that is really absent does
+    /// not arm the caller: an unplugged pad would otherwise hold the delay
+    /// cadence, and its enumerations, until the next counter move. While any
+    /// Flydigi wrapper is detached and awaiting cleanup the pad is in flux,
+    /// and every deadline is pushed out.</para>
     ///
     /// <para>What a nudge does is SDL's business: it re-probes EVERY unclaimed
     /// HIDAPI device on the system, so one pad's nudge can probe a second pad
@@ -69,6 +71,7 @@ namespace PadForge.Common.Input
             public long Due;
             public int Attempts;
             public bool Claimed;
+            public bool Present;
             public int RealAbsences;
         }
 
@@ -79,14 +82,16 @@ namespace PadForge.Common.Input
         /// <summary>Interfaces currently tracked, claimed or not.</summary>
         public int Tracked => _interfaces.Count;
 
-        /// <summary>True while any unclaimed interface still has attempts left,
-        /// which is when the caller keeps observing on the delay cadence.</summary>
+        /// <summary>True while any present, unclaimed interface still has
+        /// attempts left, which is when the caller keeps observing on the delay
+        /// cadence. An interface missing from the last real observation is not
+        /// present.</summary>
         public bool Armed
         {
             get
             {
                 foreach (var i in _interfaces.Values)
-                    if (!i.Claimed && i.Attempts < MaxAttempts) return true;
+                    if (i.Present && !i.Claimed && i.Attempts < MaxAttempts) return true;
                 return false;
             }
         }
@@ -118,6 +123,7 @@ namespace PadForge.Common.Input
                 foreach (var kv in _interfaces)
                 {
                     if (present.Contains(kv.Key)) continue;
+                    kv.Value.Present = false;
                     if (++kv.Value.RealAbsences >= 2) gone.Add(kv.Key);
                 }
                 foreach (var path in gone) _interfaces.Remove(path);
@@ -141,6 +147,7 @@ namespace PadForge.Common.Input
                     _interfaces[path] = i;
                 }
                 i.RealAbsences = 0;
+                i.Present = true;
                 if (claimed.Contains(path)) { i.Claimed = true; continue; }
                 if (i.Claimed)
                 {

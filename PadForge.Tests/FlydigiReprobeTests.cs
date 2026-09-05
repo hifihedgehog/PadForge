@@ -176,6 +176,33 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void AnAbsentInterface_DoesNotKeepThePolicyArmed()
+        {
+            // A arrives with a budget and is unplugged: the counter moves and
+            // the enumeration no longer lists it. The record survives one real
+            // absence, but an absent interface must not hold the caller on the
+            // delay cadence, or an unplugged pad costs an enumeration every
+            // 1.2 s until some other device moves the counter.
+            var p = new FlydigiReprobePolicy();
+            Obs(p, 0, new[] { A }, ordinary: new uint[] { 7 }, real: true);
+            Assert.True(p.Armed);
+            Obs(p, 5_000, None, ordinary: new uint[] { 7 }, real: true);
+            Assert.Equal(1, p.Tracked);
+            Assert.False(p.Armed);
+            // Back after that one absence: the same record, still with budget.
+            Obs(p, 10_000, new[] { A }, ordinary: new uint[] { 7 }, real: true);
+            Assert.True(p.Armed);
+            Assert.Single(Obs(p, 10_000 + D, new[] { A }, ordinary: new uint[] { 7 }));
+            // A flake, an absence without a counter move, changes nothing and
+            // the retries continue on the cadence.
+            var q = new FlydigiReprobePolicy();
+            Obs(q, 0, new[] { A }, ordinary: new uint[] { 7 }, real: true);
+            Obs(q, 600, None, ordinary: new uint[] { 7 });
+            Assert.True(q.Armed);
+            Assert.Single(Obs(q, D, new[] { A }, ordinary: new uint[] { 7 }));
+        }
+
+        [Fact]
         public void APadWithNoJoystickView_IsStillSeen_AndProbed()
         {
             var p = new FlydigiReprobePolicy();
@@ -255,9 +282,12 @@ namespace PadForge.Tests
             int enumAt = tickBody.IndexOf("SdlHidEnumeration.Paths(0x37D7, 0xFFA0)", System.StringComparison.Ordinal);
             int nullAt = tickBody.IndexOf("if (present == null) return;", System.StringComparison.Ordinal);
             int snapAt = tickBody.IndexOf("foreach (var w in _openedSdlInstanceIds.Values)", System.StringComparison.Ordinal);
-            int confirmAt = tickBody.IndexOf("_flydigiConfirmDue = changed ? now + FlydigiReprobePolicy.DelayMs : 0;", System.StringComparison.Ordinal);
+            int confirmAt = tickBody.IndexOf("if (changed) _flydigiConfirmDue = now + FlydigiReprobePolicy.DelayMs;", System.StringComparison.Ordinal);
+            int keepAt = tickBody.IndexOf("else if (confirm) _flydigiConfirmDue = 0;", System.StringComparison.Ordinal);
+            Assert.True(keepAt > confirmAt, "a pending confirmation is cleared only when it fires or is rescheduled");
+            Assert.DoesNotContain("_flydigiConfirmDue = changed ?", tickBody);
             int observeAt = tickBody.IndexOf("_flydigiReprobe.Observe(now, present, claimed, ordinary, inFlux, absencesAreReal: changed)", System.StringComparison.Ordinal);
-            Assert.True(countAt > 0 && wrapAt > countAt && gateAt > wrapAt && enumAt > gateAt && nullAt > enumAt && snapAt > nullAt && confirmAt > snapAt && observeAt > confirmAt,
+            Assert.True(countAt > 0 && wrapAt > countAt && gateAt > wrapAt && enumAt > gateAt && nullAt > enumAt && snapAt > nullAt && confirmAt > snapAt && observeAt > keepAt,
                 "counter, wrapper change, gate, enumerate, null check, snapshot after the enumeration, confirmation scheduled, observe");
             Assert.Contains("!w.IsAttached", tickBody);
             Assert.Contains("else ordinary.Add(w.SdlInstanceId);", tickBody);

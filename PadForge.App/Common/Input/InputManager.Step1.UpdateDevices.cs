@@ -605,7 +605,9 @@ namespace PadForge.Common.Input
         /// opens the gate, so a replacement wrapper reaches the policy without
         /// a counter move, and one confirmation pass follows every counter-move
         /// observation a delay later, so a single enumeration that missed a
-        /// present device does not end discovery. A healthy pad costs the
+        /// present device does not end discovery. Only the confirmation itself
+        /// or a new counter move touches that deadline: an observation the
+        /// wrapper set or the cadence opened leaves it pending. A healthy pad costs the
         /// enumerations its own arrival and confirmation take, plus whatever
         /// other device changes on the system trigger. A failed enumeration
         /// is not an observation. The wrapper snapshot is taken AFTER the
@@ -647,7 +649,8 @@ namespace PadForge.Common.Input
             _flydigiObserveTick = now;
             _flydigiChangeCount = count.Value;
             _flydigiChangeCountKnown = true;
-            _flydigiConfirmDue = changed ? now + FlydigiReprobePolicy.DelayMs : 0;
+            if (changed) _flydigiConfirmDue = now + FlydigiReprobePolicy.DelayMs;
+            else if (confirm) _flydigiConfirmDue = 0;
             var due = _flydigiReprobe.Observe(now, present, claimed, ordinary, inFlux, absencesAreReal: changed);
             if (due.Count == 0) return;
             var (written, value) = TryFlydigiReprobeNudge();

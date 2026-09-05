@@ -22,20 +22,20 @@ namespace PadForge.Common.Input
     ///
     /// <para>Each ordinary connection has its own deadline and its own
     /// budget, keyed by SDL joystick id, which is new on every arrival. A
-    /// reconnect between two enumeration passes starts fresh, another pad
-    /// arriving does not renew a budget this pad has spent, and a
-    /// connection whose census once said every pad had its view is done:
-    /// this is startup recovery, not a standing retry. The census compares
-    /// views, not pads: every Flydigi V2 pad PadForge has an XInput view of
-    /// counts once, and every V2 pad with its enhanced view has one hidapi
-    /// view, so fewer hidapi views than XInput views means a pad is missing
-    /// its enhanced view. The counts correspond only for pads PadForge has
-    /// an XInput view of, which is the stated coverage.</para>
+    /// reconnect between two enumeration passes starts fresh, and another
+    /// pad arriving does not renew a budget this pad has spent. An enhanced
+    /// view is matched to a connection by arrival order, not by count: SDL
+    /// enumerates a pad's views together, and a view recovered by a probe
+    /// arrives after that connection's own nudge, so an enhanced arrival
+    /// satisfies the newest connection not yet satisfied. Counting views
+    /// could not say whose view it was, and a pad whose XInput view never
+    /// opened made the counts lie about another pad. A satisfied connection
+    /// is done: this is startup recovery, not a standing retry.</para>
     ///
     /// <para>Pure and clock-free so the tests pin it. What the attempt
-    /// counter measures is requested hint writes: a write can be rejected by
-    /// SDL, or its notification lost to a concurrent re-evaluation, so the
-    /// budget is four and not three.</para>
+    /// counter measures is requested hint writes, and a write can be refused
+    /// when an environment variable outranks the hint, so the budget is four
+    /// rather than three.</para>
     /// </summary>
     internal sealed class FlydigiReprobePolicy
     {
@@ -46,19 +46,21 @@ namespace PadForge.Common.Input
 
         private sealed class Connection
         {
+            public long Arrived;
             public long Due;
             public int Attempts;
+            public bool Satisfied;
         }
 
         private readonly Dictionary<uint, Connection> _ordinary = new Dictionary<uint, Connection>();
 
-        /// <summary>True while any ordinary connection still has attempts left.</summary>
+        /// <summary>True while any connection is unsatisfied with attempts left.</summary>
         public bool Armed
         {
             get
             {
                 foreach (var c in _ordinary.Values)
-                    if (c.Attempts < MaxAttempts) return true;
+                    if (!c.Satisfied && c.Attempts < MaxAttempts) return true;
                 return false;
             }
         }
@@ -70,35 +72,42 @@ namespace PadForge.Common.Input
         /// nudge fired for, for the diagnostics line.</summary>
         public int LastAttempt { get; private set; }
 
-        /// <summary>A Flydigi view opened. A hidapi view arms nothing: the
-        /// tick's census decides whether every pad has one. Any other backend
-        /// under a joystick id not seen before is a new connection with its
-        /// own deadline <see cref="DelayMs"/> from now and its own budget.
-        /// The same id again changes nothing.</summary>
+        /// <summary>A Flydigi view opened. An ordinary backend under a joystick
+        /// id not seen before is a new connection with its own deadline
+        /// <see cref="DelayMs"/> from now and its own budget. The same id again
+        /// changes nothing. A hidapi view is the enhanced view of some pad:
+        /// it satisfies the newest connection that arrived no later than now
+        /// and is not yet satisfied. With none to satisfy it is a pad whose
+        /// ordinary view PadForge did not open, and it changes nothing.</summary>
         public void OnArrival(uint sdlInstanceId, bool onHidapi, long nowTicks)
         {
-            if (onHidapi) return;
+            if (onHidapi)
+            {
+                Connection newest = null;
+                foreach (var c in _ordinary.Values)
+                    if (!c.Satisfied && c.Arrived <= nowTicks && (newest == null || c.Arrived > newest.Arrived))
+                        newest = c;
+                if (newest != null) newest.Satisfied = true;
+                return;
+            }
             if (_ordinary.ContainsKey(sdlInstanceId)) return;
-            _ordinary[sdlInstanceId] = new Connection { Due = nowTicks + DelayMs, Attempts = 0 };
+            _ordinary[sdlInstanceId] = new Connection { Arrived = nowTicks, Due = nowTicks + DelayMs, Attempts = 0 };
         }
 
         /// <summary>A view closed. Its connection's budget goes with it.</summary>
         public void OnDeparture(uint sdlInstanceId) => _ordinary.Remove(sdlInstanceId);
 
-        /// <summary>Called every polling tick with the census. True when a
-        /// probe is due now: at least one V2 pad is present on XInput, fewer
-        /// pads have their enhanced view than are present, and at least one
-        /// connection is past its deadline with attempts left. Every due
-        /// connection spends one attempt and is rescheduled. Every pad having
-        /// its view ends recovery for every present connection.</summary>
-        public bool ShouldNudge(long nowTicks, int xinputViews, int enhancedViews)
+        /// <summary>Called every polling tick. True when a probe is due now:
+        /// at least one unsatisfied connection is past its deadline with
+        /// attempts left. Every such connection spends one attempt and is
+        /// rescheduled.</summary>
+        public bool ShouldNudge(long nowTicks)
         {
-            if (xinputViews == 0 || enhancedViews >= xinputViews) { Disarm(); return false; }
             bool any = false;
             int max = 0;
             foreach (var c in _ordinary.Values)
             {
-                if (c.Attempts >= MaxAttempts || nowTicks < c.Due) continue;
+                if (c.Satisfied || c.Attempts >= MaxAttempts || nowTicks < c.Due) continue;
                 c.Attempts++;
                 c.Due = nowTicks + DelayMs;
                 any = true;
@@ -106,13 +115,6 @@ namespace PadForge.Common.Input
             }
             if (any) LastAttempt = max;
             return any;
-        }
-
-        /// <summary>Ends recovery for every present connection. Their ids stay
-        /// known so a repeated arrival of the same id arms nothing.</summary>
-        public void Disarm()
-        {
-            foreach (var c in _ordinary.Values) c.Attempts = MaxAttempts;
         }
 
         /// <summary>The hint string that changes SDL's stored value without

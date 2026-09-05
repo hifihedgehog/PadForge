@@ -208,6 +208,61 @@ namespace PadForge.Tests
             finally { RemoteLinkOutputRouter.IsPeerConnected = savedQuery; }
         }
 
+        [Fact]
+        public async System.Threading.Tasks.Task TheFeedbackPass_HoldsTheDeviceOutputGate_AcrossItsStop()
+        {
+            // A thread standing in for a peer's frame mid-apply holds the gate.
+            // The pass must not decide or stop until that thread lets go.
+            var saved = SettingsManager.UserSettings;
+            try
+            {
+                SettingsManager.UserSettings = new SettingsCollection();
+                var (ud, _, sent) = Rumbling("fb-" + Guid.NewGuid().ToString("N"));
+                var held = new System.Threading.ManualResetEventSlim();
+                var release = new System.Threading.ManualResetEventSlim();
+                long releasedAt = 0;
+                var holder = new System.Threading.Thread(() =>
+                {
+                    lock (ud.OutputSync)
+                    {
+                        held.Set();
+                        release.Wait();
+                        releasedAt = System.Diagnostics.Stopwatch.GetTimestamp();
+                    }
+                });
+                holder.Start();
+                held.Wait();
+                var im = new InputManager();
+                var pass = System.Threading.Tasks.Task.Run(() => { RunFeedbackPass(im, ud); return System.Diagnostics.Stopwatch.GetTimestamp(); });
+                Assert.NotSame(pass, await System.Threading.Tasks.Task.WhenAny(pass, System.Threading.Tasks.Task.Delay(300)));  // still held
+                Assert.Empty(sent);
+                release.Set();
+                holder.Join();
+                long passDone = await pass;
+                Assert.True(passDone >= releasedAt, "the pass finished before the gate was released");
+                Assert.Equal(new[] { ((ushort)0, (ushort)0) }, sent);
+            }
+            finally { SettingsManager.UserSettings = saved; }
+        }
+
+        [Fact]
+        public void TheReceiveCallback_IsGated_AndBoundToItsServer()
+        {
+            string svc = System.IO.File.ReadAllText(System.IO.Path.Combine(RepoRoot(), "PadForge.App", "Services", "InputService.cs"));
+            Assert.Contains("origin.OutputReceived += (fp, slot, payload) => OnRemoteOutputReceived(origin, fp, slot, payload);", svc);
+            int at = svc.IndexOf("private void OnRemoteOutputReceived(LinkServer origin,", StringComparison.Ordinal);
+            Assert.True(at > 0);
+            string body = svc.Substring(at, 1400);
+            int gate = body.IndexOf("lock (ud?.OutputSync ?? _unresolvedOutputSync)", StringComparison.Ordinal);
+            int check = body.IndexOf("if (!ReferenceEquals(Volatile.Read(ref _linkServer), origin)) return;", StringComparison.Ordinal);
+            int apply = body.IndexOf("ApplyRemoteOutput(effect, source, ud, peerFingerprint);", StringComparison.Ordinal);
+            Assert.True(gate > 0 && check > gate && apply > check, "gate, then the server check, then the apply");
+            string step2 = System.IO.File.ReadAllText(System.IO.Path.Combine(RepoRoot(), "PadForge.App", "Common", "Input", "InputManager.Step2.UpdateInputStates.cs"));
+            int zero = step2.IndexOf("if (slotCount == 0)", StringComparison.Ordinal);
+            string block = step2.Substring(zero, 1600);
+            Assert.True(block.IndexOf("lock (ud.OutputSync)", StringComparison.Ordinal) < block.IndexOf("StopDeviceForces", StringComparison.Ordinal));
+        }
+
         private static string RepoRoot()
         {
             var d = new System.IO.DirectoryInfo(AppContext.BaseDirectory);

@@ -607,6 +607,11 @@ namespace PadForge.Services
                 device.RumbleRequested += (low, high) =>
                 {
                     if (cts.IsCancellationRequested || ws.State != WebSocketState.Open) return;
+                    // A forwarded pad's ping carries the current rumble (#402),
+                    // so rumble on the page is a lease the pings renew and a
+                    // gap in communication ends it.
+                    session.RumbleLeft = (int)low;
+                    session.RumbleRight = (int)high;
                     _ = SendJsonAsync(ws, new { type = "rumble", left = (int)low, right = (int)high }, cts.Token, session.SendGate);
                 };
                 // Lightbar + player identity (#296): the phone renders the
@@ -682,7 +687,10 @@ namespace PadForge.Services
                     // on the PC. The 30 s socket keepalive stays the
                     // connection deadline.
                     if (typeKey == "gamepad")
+                    {
+                        session.Freshness = new GamepadFreshness(Environment.TickCount64);
                         _ = RunInputDeadline(session, cts.Token);
+                    }
 
                     // Receive loop. A text message can arrive in several frames,
                     // and handing a fragment to the JSON parser dropped the
@@ -718,16 +726,21 @@ namespace PadForge.Services
 
                         if (result.EndOfMessage && assembledLen == 0 && !overflowed)
                         {
-                            // The common case: one frame, one message. Stamped and
-                            // applied under the deadline lock (#402): the deadline's
-                            // check-then-neutralize cannot interleave with a press
-                            // that arrived after its check, and a fragment that
-                            // never completes renews nothing.
+                            // The common case: one frame, one message. Applied under
+                            // the deadline lock (#402): the deadline's check-then-
+                            // neutralize cannot interleave with a press that arrived
+                            // after its check. Input is applied only while the session
+                            // is fresh (a timely echo of the server's ping): a slow link
+                            // draining old presses cannot keep a dead page alive, and
+                            // nothing it delivers after expiry is applied.
+                            bool resync;
                             lock (session.DeadlineLock)
                             {
-                                session.NoteMessage();
-                                ProcessMessage(device, buffer, result.Count);
+                                resync = ProcessMessage(device, buffer, result.Count,
+                                    acceptInput: session.Freshness == null || !session.Freshness.Expired,
+                                    session.Freshness);
                             }
+                            if (resync) session.RequestResync();
                             continue;
                         }
 
@@ -749,11 +762,14 @@ namespace PadForge.Services
                         {
                             if (!overflowed && assembledLen > 0)
                             {
+                                bool resync;
                                 lock (session.DeadlineLock)
                                 {
-                                    session.NoteMessage();
-                                    ProcessMessage(device, assembled, assembledLen);
+                                    resync = ProcessMessage(device, assembled, assembledLen,
+                                        acceptInput: session.Freshness == null || !session.Freshness.Expired,
+                                        session.Freshness);
                                 }
+                                if (resync) session.RequestResync();
                             }
                             assembledLen = 0;
                             overflowed = false;
@@ -810,18 +826,25 @@ namespace PadForge.Services
             }
         }
 
-        private void ProcessMessage(WebControllerDevice device, byte[] data, int length)
+        /// <summary>Applies one client message to the device. <paramref name="acceptInput"/>
+        /// is false while a forwarded pad's session is expired (#402): input,
+        /// motion and touch are then dropped, capability and echo messages
+        /// still land. Returns true when an echo turned an expired session
+        /// fresh again, which is the moment the page must resend everything.</summary>
+        internal static bool ProcessMessage(WebControllerDevice device, byte[] data, int length,
+            bool acceptInput = true, GamepadFreshness freshness = null)
         {
             try
             {
                 using var doc = JsonDocument.Parse(data.AsMemory(0, length));
                 var root = doc.RootElement;
 
-                if (!root.TryGetProperty("type", out var typeProp)) return;
+                if (!root.TryGetProperty("type", out var typeProp)) return false;
                 var type = typeProp.GetString();
 
                 if (type == "input")
                 {
+                    if (!acceptInput) return false;
                     var kind = root.GetProperty("kind").GetString();
                     var code = root.GetProperty("code").GetInt32();
                     var value = root.GetProperty("value").GetInt32();
@@ -840,6 +863,7 @@ namespace PadForge.Services
                     // on first arrival, mirroring the touchpad pattern, so the
                     // Devices page and the gyro pipeline discover the source
                     // the moment it streams.
+                    if (!acceptInput) return false;
                     if (!device.HasGyro) device.EnableMotionCaps();
                     float gx = root.TryGetProperty("gx", out var gxp) ? (float)gxp.GetDouble() : 0f;
                     float gy = root.TryGetProperty("gy", out var gyp) ? (float)gyp.GetDouble() : 0f;
@@ -851,8 +875,11 @@ namespace PadForge.Services
                 }
                 else if (type == "hb")
                 {
-                    // A forwarded pad's liveness beat (#402). The receive loop
-                    // already stamped the session before dispatching here.
+                    // A forwarded pad's echo of the server's ping (#402). Only a
+                    // timely echo counts as fresh: the ping's own send tick
+                    // bounds the round trip, so a delayed echo renews nothing.
+                    if (freshness != null && root.TryGetProperty("n", out var np) && np.TryGetInt32(out int n))
+                        return freshness.Ack(n, Environment.TickCount64);
                 }
                 else if (type == "caps")
                 {
@@ -881,6 +908,10 @@ namespace PadForge.Services
                     // {type:"input", kind:"button", code:16, ...} message
                     // (handled by the "input" branch above) so this branch
                     // only carries finger position now.
+                    // A forwarded pad (#402) has no touch surface: its page never
+                    // sends this, and another client on its session must not
+                    // leave a finger down that the deadline's release cannot lift.
+                    if (!acceptInput || device.LayoutKey == "gamepad") return false;
                     device.HasTouchpad = true;
 
                     int finger = root.TryGetProperty("finger", out var fp) ? fp.GetInt32() : 0;
@@ -894,6 +925,7 @@ namespace PadForge.Services
             {
                 // Ignore malformed messages.
             }
+            return false;
         }
 
         private static async Task SendJsonAsync(WebSocket ws, object obj, CancellationToken ct, SemaphoreSlim gate = null)
@@ -1147,13 +1179,66 @@ namespace PadForge.Services
                 foreach (int s in rawButtons) if (s > 10 && s != 16) ext.Add(s);
                 if (ext.Count > 0) device.SetExtendedButtons(ext.ToArray());
                 device.SetCustomSurface(rawAxes, rawButtons, hasPov: false);
+                // Every raw axis rests at center, and so must the registered
+                // state: the constructor's stock defaults put the trigger axes
+                // at zero, which for a raw pad is an endpoint.
+                device.AxesCenterAtRest = true;
+                device.NeutralizeAll();
                 return;
             }
             var extras = GamepadExtendedSlots(buttons - 17);
             if (extras.Length > 0) device.SetExtendedButtons(extras);
         }
 
-        private const int GamepadInputDeadlineMs = 3000;
+        /// <summary>A forwarded pad's liveness (#402), as acknowledged freshness.
+        /// The server pings once a second and the page echoes the ping's number
+        /// while it is visible and sampling. Fresh means an echo arrived within
+        /// <see cref="MaxRoundTripMs"/> of its ping's send tick. No fresh echo
+        /// for <see cref="DeadlineMs"/> expires the session: the device is
+        /// neutralized and its input is dropped until a fresh echo arrives,
+        /// which is when the page is asked to resend. Input messages never
+        /// count as freshness, so a slow link draining stale presses cannot
+        /// keep a dead page alive. Every member is called under the session's
+        /// deadline lock.</summary>
+        internal sealed class GamepadFreshness
+        {
+            public const int DeadlineMs = 3000;
+            public const int MaxRoundTripMs = 1500;
+            private const int Ring = 8;
+            private readonly long[] _pingSent = new long[Ring];
+            private int _seq;
+
+            /// <summary>Tick of the last fresh echo, or of creation.</summary>
+            public long FreshTicks { get; private set; }
+            /// <summary>True from expiry until the next fresh echo.</summary>
+            public bool Expired { get; set; }
+
+            public GamepadFreshness(long nowTicks) { FreshTicks = nowTicks; }
+
+            /// <summary>Records a ping and returns its number for the wire.</summary>
+            public int NextPing(long nowTicks)
+            {
+                _seq++;
+                _pingSent[_seq % Ring] = nowTicks;
+                return _seq;
+            }
+
+            /// <summary>An echo of ping <paramref name="seq"/>. Returns true when
+            /// this echo turned an expired session fresh again.</summary>
+            public bool Ack(int seq, long nowTicks)
+            {
+                if (seq <= 0 || seq > _seq || seq <= _seq - Ring) return false;   // unknown, or fallen out of the ring
+                long rtt = nowTicks - _pingSent[seq % Ring];
+                if (rtt < 0 || rtt > MaxRoundTripMs) return false;                 // too slow to vouch for anything
+                FreshTicks = nowTicks;
+                if (!Expired) return false;
+                Expired = false;
+                return true;
+            }
+
+            /// <summary>True when the session should expire now.</summary>
+            public bool ShouldExpire(long nowTicks) => !Expired && nowTicks - FreshTicks > DeadlineMs;
+        }
 
         private static async Task RunInputDeadline(ClientSession session, CancellationToken ct)
         {
@@ -1162,29 +1247,30 @@ namespace PadForge.Services
                 while (!ct.IsCancellationRequested && session.Socket.State == WebSocketState.Open)
                 {
                     await Task.Delay(1000, ct);
+                    long now = Environment.TickCount64;
+                    int seq;
                     bool fired = false;
-                    long idle;
                     // Check and act under the same lock the receive loop holds while
-                    // it stamps and applies a message, so a press that lands after
-                    // the check is never erased by the neutralize that follows it.
+                    // it applies a message, so a press that lands after the check is
+                    // never erased by the neutralize that follows it.
                     lock (session.DeadlineLock)
                     {
-                        idle = Environment.TickCount64 - session.LastMessageTicks;
-                        if (idle > GamepadInputDeadlineMs && !session.Neutralized)
+                        seq = session.Freshness.NextPing(now);
+                        if (session.Freshness.ShouldExpire(now))
                         {
-                            session.Neutralized = true;
+                            session.Freshness.Expired = true;
                             session.Device.NeutralizeAll();
                             fired = true;
                         }
                     }
                     if (fired)
-                    {
-                        PadForge.Engine.SdlDiagLog.WriteLine($"WEBGP deadline {session.Device.Name} idle={idle}ms neutralized");
-                        // The page's change cache still believes its holds are on
-                        // the server. Ask it to resend everything.
-                        if (session.Socket.State == WebSocketState.Open)
-                            await SendJsonAsync(session.Socket, new { type = "resync" }, ct, session.SendGate);
-                    }
+                        PadForge.Engine.SdlDiagLog.WriteLine($"WEBGP deadline {session.Device.Name} idle={now - session.Freshness.FreshTicks}ms neutralized");
+                    // Never await a send here: a stalled send must not stall the
+                    // next check. The ping carries the slot's current rumble.
+                    if (session.Socket.State == WebSocketState.Open)
+                        _ = SendJsonAsync(session.Socket,
+                            new { type = "ping", n = seq, l = session.RumbleLeft, r = session.RumbleRight },
+                            ct, session.SendGate);
                 }
             }
             catch (OperationCanceledException) { }
@@ -1536,18 +1622,30 @@ namespace PadForge.Services
             /// must not overlap.</summary>
             public SemaphoreSlim SendGate { get; } = new SemaphoreSlim(1, 1);
 
-            /// <summary>Tick of the last text message from this client (#402),
-            /// read by the forwarded pad's input deadline.</summary>
-            public long LastMessageTicks = Environment.TickCount64;
-            public bool Neutralized;
-            /// <summary>Held while a message is stamped and applied, and while
-            /// the deadline checks and neutralizes, so the two never interleave.</summary>
+            /// <summary>A forwarded pad's acknowledged freshness (#402). Null on
+            /// every other session.</summary>
+            public GamepadFreshness Freshness;
+            /// <summary>The rumble last sent to this client, carried by the
+            /// forwarded pad's pings so the page's rumble lease follows it.</summary>
+            public int RumbleLeft, RumbleRight;
+            /// <summary>Held while a message is applied, and while the deadline
+            /// checks and neutralizes, so the two never interleave.</summary>
             public readonly object DeadlineLock = new object();
+            private int _resyncInFlight;
 
-            public void NoteMessage()
+            /// <summary>Asks the page to resend everything it holds, once per
+            /// in-flight send, never awaited by the caller.</summary>
+            public void RequestResync()
             {
-                LastMessageTicks = Environment.TickCount64;
-                Neutralized = false;
+                if (Interlocked.Exchange(ref _resyncInFlight, 1) == 1) return;
+                _ = SendResyncAsync();
+            }
+
+            private async Task SendResyncAsync()
+            {
+                try { await SendJsonAsync(Socket, new { type = "resync" }, CancellationSource.Token, SendGate); }
+                catch { }
+                finally { Interlocked.Exchange(ref _resyncInFlight, 0); }
             }
 
             public ClientSession(WebSocket socket, WebControllerDevice device, CancellationTokenSource cts)

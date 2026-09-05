@@ -85,9 +85,31 @@ namespace PadForge.Tests
             var pad = Pad();
             WebControllerServer.ConfigureGamepadShape(pad, "raw", "12", "2");
             Assert.Equal(Enumerable.Range(0, 12).ToArray(), pad.SupportedButtonIndices);
-            // The custom surface reports the pad's real axes through the device
-            // objects the picker reads; the state array stays six wide.
+            // The picker reads the device objects: two axes, twelve buttons, no hat.
+            var objs = pad.GetDeviceObjects();
+            Assert.Equal(new[] { 0, 1 }, objs.Where(o => o.ObjectType == DeviceObjectTypeFlags.AbsoluteAxis).Select(o => o.InputIndex).OrderBy(i => i).ToArray());
+            Assert.Equal(Enumerable.Range(0, 12).ToArray(), objs.Where(o => o.ObjectType == DeviceObjectTypeFlags.PushButton).Select(o => o.InputIndex).OrderBy(i => i).ToArray());
+            Assert.DoesNotContain(objs, o => o.ObjectType == DeviceObjectTypeFlags.PointOfViewController);
+            // The state array stays six wide (a tracked limitation shared with
+            // built pads: NumAxes and NumHats report the stock shape).
             Assert.Equal(6, pad.NumAxes);
+        }
+
+        [Fact]
+        public void RawShape_RestsEveryAxisAtCenter_FromRegistration()
+        {
+            // The constructor puts the trigger axes at zero. For a raw pad that
+            // is an endpoint, and the pad is registered before its first
+            // snapshot arrives, so the raw path must center them itself.
+            var pad = Pad();
+            WebControllerServer.ConfigureGamepadShape(pad, "raw", "12", "6");
+            var s = pad.GetCurrentState();
+            for (int i = 0; i < 6; i++) Assert.Equal(32767, s.Axis[i]);
+            Assert.True(pad.AxesCenterAtRest);
+            var stock = Pad();
+            WebControllerServer.ConfigureGamepadShape(stock, "standard", "17", "4");
+            Assert.False(stock.AxesCenterAtRest);
+            Assert.Equal(0, stock.GetCurrentState().Axis[2]);
         }
 
         [Fact]
@@ -142,24 +164,155 @@ namespace PadForge.Tests
             for (int i = 0; i < 6; i++) Assert.Equal(32767, s.Axis[i]);
         }
 
+        // ── Acknowledged freshness (the server's state machine) ──────────
+
         [Fact]
-        public void Deadline_TellsThePageToResync_AndThePageObeys()
+        public void Freshness_ATimelyEcho_KeepsTheSessionFresh()
         {
-            // After a neutralize the page's change cache still holds its last
-            // sent values, so an unchanged hold would stay released until it
-            // changed. The server asks for a resend and the page drops its cache.
+            var f = new WebControllerServer.GamepadFreshness(1000);
+            for (long t = 2000; t <= 20000; t += 1000)
+            {
+                Assert.False(f.ShouldExpire(t));
+                int n = f.NextPing(t);
+                Assert.False(f.Ack(n, t + 40));             // fresh, no transition
+                Assert.False(f.Expired);
+            }
+        }
+
+        [Fact]
+        public void Freshness_NoEcho_ExpiresAfterTheDeadline_Once()
+        {
+            var f = new WebControllerServer.GamepadFreshness(1000);
+            f.NextPing(2000); f.NextPing(3000); f.NextPing(4000);
+            Assert.False(f.ShouldExpire(4000));             // 3000 ms exactly is not over
+            Assert.True(f.ShouldExpire(4001));
+            f.Expired = true;
+            Assert.False(f.ShouldExpire(9000));             // already expired: fires once
+        }
+
+        [Fact]
+        public void Freshness_ASlowEcho_RenewsNothing()
+        {
+            // The echo of a ping that took longer than the round-trip bound is
+            // as stale as the input queued in front of it.
+            var f = new WebControllerServer.GamepadFreshness(1000);
+            int n = f.NextPing(2000);
+            Assert.False(f.Ack(n, 2000 + WebControllerServer.GamepadFreshness.MaxRoundTripMs + 1));
+            Assert.Equal(1000, f.FreshTicks);
+            Assert.True(f.ShouldExpire(4001));
+        }
+
+        [Fact]
+        public void Freshness_AFreshEchoAfterExpiry_IsTheOneResyncSignal()
+        {
+            var f = new WebControllerServer.GamepadFreshness(1000);
+            f.NextPing(2000); f.NextPing(3000); f.NextPing(4000);
+            Assert.True(f.ShouldExpire(5000)); f.Expired = true;
+            int n = f.NextPing(6000);
+            Assert.True(f.Ack(n, 6050));                    // expired -> fresh: resync
+            Assert.False(f.Expired);
+            Assert.Equal(6050, f.FreshTicks);
+            int m = f.NextPing(7000);
+            Assert.False(f.Ack(m, 7050));                   // already fresh: no second resync
+        }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(-1)]
+        [InlineData(99)]
+        public void Freshness_AnUnknownPingNumber_IsIgnored(int seq)
+        {
+            var f = new WebControllerServer.GamepadFreshness(1000);
+            f.NextPing(2000);
+            Assert.False(f.Ack(seq, 2010));
+            Assert.Equal(1000, f.FreshTicks);
+        }
+
+        [Fact]
+        public void Freshness_APingFallenOutOfTheRing_IsIgnored()
+        {
+            var f = new WebControllerServer.GamepadFreshness(0);
+            int first = f.NextPing(1000);
+            for (int i = 0; i < 8; i++) f.NextPing(2000 + i * 1000);
+            Assert.False(f.Ack(first, 1010));               // the slot was reused
+        }
+
+        // ── ProcessMessage under the freshness policy ───────────────────
+
+        private static bool Apply(WebControllerDevice pad, string json, bool accept = true, WebControllerServer.GamepadFreshness f = null)
+        {
+            var bytes = System.Text.Encoding.UTF8.GetBytes(json);
+            return WebControllerServer.ProcessMessage(pad, bytes, bytes.Length, accept, f);
+        }
+
+        [Fact]
+        public void ProcessMessage_DropsInputWhileExpired_AndAppliesItWhenFresh()
+        {
+            var pad = Pad();
+            Assert.False(Apply(pad, "{\"type\":\"input\",\"kind\":\"button\",\"code\":0,\"value\":1}", accept: false));
+            Assert.False(pad.GetCurrentState().Buttons[0]);
+            Assert.False(Apply(pad, "{\"type\":\"input\",\"kind\":\"axis\",\"code\":0,\"value\":65535}", accept: false));
+            Assert.Equal(32767, pad.GetCurrentState().Axis[0]);
+            Assert.False(Apply(pad, "{\"type\":\"input\",\"kind\":\"button\",\"code\":0,\"value\":1}"));
+            Assert.True(pad.GetCurrentState().Buttons[0]);
+        }
+
+        [Fact]
+        public void ProcessMessage_AnEchoIsAppliedEvenWhileExpired_AndReportsTheTransition()
+        {
+            var pad = Pad();
+            var f = new WebControllerServer.GamepadFreshness(Environment.TickCount64 - 10_000);
+            f.Expired = true;
+            int n = f.NextPing(Environment.TickCount64);
+            Assert.True(Apply(pad, "{\"type\":\"hb\",\"n\":" + n + "}", accept: false, f));
+            Assert.False(f.Expired);
+            Assert.False(Apply(pad, "{\"type\":\"hb\"}", accept: true, f));           // no number: nothing
+            Assert.False(Apply(pad, "{\"type\":\"hb\",\"n\":\"x\"}", accept: true, f)); // malformed: nothing
+        }
+
+        [Fact]
+        public void ProcessMessage_RefusesTouchOnAForwardedPad_AndKeepsItForDrawnPads()
+        {
+            var pad = Pad();
+            Assert.False(Apply(pad, "{\"type\":\"touchpad\",\"finger\":0,\"x\":0.5,\"y\":0.5,\"down\":true}"));
+            Assert.False(pad.HasTouchpad);
+            var ds4 = Pad("ds4");
+            Apply(ds4, "{\"type\":\"touchpad\",\"finger\":0,\"x\":0.5,\"y\":0.5,\"down\":true}");
+            Assert.True(ds4.HasTouchpad);
+        }
+
+        [Fact]
+        public void ProcessMessage_CapsStillLandWhileExpired()
+        {
+            var pad = Pad();
+            Assert.True(pad.HasRumble);
+            Apply(pad, "{\"type\":\"caps\",\"vibrate\":false}", accept: false);
+            Assert.False(pad.HasRumble);
+        }
+
+        [Fact]
+        public void ThePage_SpeaksTheFreshnessAndResyncWire()
+        {
+            // The translator is not executed here (no JavaScript host). These pin
+            // the wire the page speaks against the server's, and the identity
+            // rules, by reading the script.
             string server = File.ReadAllText(Path.Combine(RepoRoot(), "PadForge.App", "Services", "WebControllerServer.cs"));
             Assert.Contains("type = \"resync\"", server);
+            Assert.Contains("type = \"ping\", n = seq", server);
             string js = Asset("js", "gamepad_client.js");
+            Assert.Contains("msg.type === \"ping\"", js);
+            Assert.Contains("type: \"hb\", n: msg.n", js);
             Assert.Contains("msg.type === \"resync\"", js);
             Assert.Contains("slot.sent = null; slot.needSnapshot = true;", js);
-            // Identity is per tab, like the drawn controller pages, so two tabs
-            // never replace each other's server sessions under one key.
-            Assert.Contains("sessionStorage.getItem(clientIdKey)", js);
-            Assert.DoesNotContain("localStorage.", js);        // no call, the comment may name it
-            // A heartbeat needs a fresh poll and an uncongested socket.
+            // An echo needs a fresh poll and an uncongested socket.
             Assert.Contains("if (now() - lastPollTs > FRESH_SAMPLE_MS) return;", js);
             Assert.Contains("bufferedAmount > BUFFER_LIMIT_BYTES) return;", js);
+            // Identity: per tab, and claimed across tabs so a copied tab mints its own.
+            Assert.Contains("sessionStorage.getItem(clientIdKey)", js);
+            Assert.DoesNotContain("localStorage.", js);        // no call, the comment may name it
+            Assert.Contains("new BroadcastChannel(\"padforge_gamepad_identity\")", js);
+            // Rumble is a lease the pings renew.
+            Assert.Contains("RUMBLE_LEASE_MS", js);
         }
 
         // ── The page's tables against the server's slot map ─────────────

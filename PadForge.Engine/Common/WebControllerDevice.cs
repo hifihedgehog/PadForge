@@ -370,14 +370,18 @@ namespace PadForge.Engine
             }
         }
 
+        /// <summary>True when every axis of this device rests at center (a raw
+        /// forwarded pad, #402, whose axes carry no trigger meaning). The stock
+        /// shape and a built pad rest their trigger and slider axes at zero.</summary>
+        public bool AxesCenterAtRest { get; set; }
+
         /// <summary>Everything at rest: buttons up, axes at rest, hat centered
-        /// (#402). The server calls this when a forwarded pad's page stops
-        /// heartbeating, so a phone that slept mid-hold cannot leave a button
-        /// latched on the PC. Rest for a stock shape is sticks at center and
-        /// triggers at zero. A custom surface (a raw forwarded pad, a built
-        /// pad) has no trigger semantics, so every axis rests at center,
-        /// which is what the page's own neutral sends. Touch fingers and the
-        /// accelerometer are left alone. Gyro rates expire on their own.</summary>
+        /// (#402). The server calls this when a forwarded pad's session expires,
+        /// so a phone that slept mid-hold cannot leave a button latched on the
+        /// PC, and once at registration for a raw pad. Rest is sticks at center
+        /// and triggers at zero unless <see cref="AxesCenterAtRest"/> says every
+        /// axis centers. Touch fingers and the accelerometer are left alone.
+        /// Gyro rates expire on their own.</summary>
         public void NeutralizeAll()
         {
             lock (_stateLock)
@@ -385,7 +389,7 @@ namespace PadForge.Engine
                 var s = _currentState.Clone();
                 for (int i = 0; i < s.Buttons.Length; i++) s.Buttons[i] = false;
                 for (int i = 0; i < NumGamepadAxes && i < s.Axis.Length; i++)
-                    s.Axis[i] = (!_hasCustomSurface && (i == 2 || i == 5)) ? 0 : 32767;
+                    s.Axis[i] = (!AxesCenterAtRest && (i == 2 || i == 5)) ? 0 : 32767;
                 if (s.Povs.Length > 0) s.Povs[0] = -1;
                 Volatile.Write(ref _currentState, s);
             }

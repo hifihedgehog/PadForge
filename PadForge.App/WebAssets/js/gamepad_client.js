@@ -4,10 +4,17 @@
 // through the Gamepad API and forwarded to PadForge as a "Browser Gamepad"
 // device, one WebSocket per pad. The wire is the web controller's own:
 // {type:"input", kind:"button"|"axis"|"pov", code, value} on PadForge's
-// normalized slots, {type:"caps"} once, and {type:"hb"} once a second while
-// the page is visible AND sampling the pad, so the server can neutralize a
-// pad whose phone went to sleep mid-hold. The server answers a neutralize
-// with {type:"resync"} and the page resends everything it holds.
+// normalized slots, and {type:"caps"} once.
+//
+// Freshness is acknowledged, never assumed. The server sends {type:"ping",
+// n} once a second. This page echoes {type:"hb", n} only while it is
+// visible, has sampled the pad within the last half second, and its socket
+// is not congested. The server counts a pad fresh only on a timely echo, so
+// a slow link draining old presses cannot keep a dead page alive. While a
+// pad is expired the server drops its input and holds everything released.
+// When a fresh echo arrives the server sends {type:"resync"} and this page
+// resends everything it holds. The ping also carries the slot's current
+// rumble, so rumble here is a lease renewed by pings, not a latch.
 (function () {
     "use strict";
 
@@ -25,23 +32,43 @@
     var STANDARD_BUTTON_COUNT = 17;
     var MAX_RAW_BUTTON_SLOT = 21;   // raw mode: browser index i -> slot i, skipping 16
     var MAX_AXES = 6;
-    var HEARTBEAT_MS = 1000;
-    var FRESH_SAMPLE_MS = 500;       // a heartbeat needs a poll this recent
+    var FRESH_SAMPLE_MS = 500;       // an echo needs a poll this recent
     var RUMBLE_EFFECT_MS = 250;
     var RUMBLE_RENEW_MS = 100;
+    var RUMBLE_LEASE_MS = 3000;      // no ping this long: rumble stops
     var BUFFER_LIMIT_BYTES = 64 * 1024;
-    var CONGESTION_CLOSE_MS = 3000;  // a socket over the limit this long is abandoned
+    var CONGESTION_REPLACE_MS = 3000; // a socket over the limit this long is replaced
+    var IDENTITY_CLAIM_MS = 150;
 
-    // ── Identity: per tab, like the drawn controller pages ─────────────
-    // sessionStorage, not localStorage: two tabs of this page in one profile
-    // must not share a token, or their pads would replace each other's
+    // ── Identity: per tab, and claimed across tabs ─────────────────────
+    // sessionStorage is per tab, but a duplicated tab or an opener-created
+    // window starts with a copy of it. On load the page claims its token on
+    // a BroadcastChannel. A tab already holding the same token answers, and
+    // the newcomer mints its own, so two tabs never replace each other's
     // server sessions under one key.
     var clientIdKey = "padforge_gamepad_client_id";
     var clientId = null;
     try { clientId = sessionStorage.getItem(clientIdKey); } catch (e) { }
-    if (!clientId) {
-        clientId = "gp-" + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
-        try { sessionStorage.setItem(clientIdKey, clientId); } catch (e) { }
+    function mintClientId() {
+        var id = "gp-" + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+        try { sessionStorage.setItem(clientIdKey, id); } catch (e) { }
+        return id;
+    }
+    if (!clientId) clientId = mintClientId();
+    var identityChannel = null;
+    function settleIdentity(done) {
+        try { identityChannel = new BroadcastChannel("padforge_gamepad_identity"); } catch (e) { identityChannel = null; }
+        if (!identityChannel) { done(); return; }
+        var nonce = Math.random().toString(36).slice(2);
+        var taken = false;
+        identityChannel.onmessage = function (ev) {
+            var m = ev.data || {};
+            if (m.nonce === nonce) return;
+            if (m.claim === clientId) identityChannel.postMessage({ taken: clientId, nonce: nonce });
+            else if (m.taken === clientId) taken = true;
+        };
+        identityChannel.postMessage({ claim: clientId, nonce: nonce });
+        setTimeout(function () { if (taken) clientId = mintClientId(); done(); }, IDENTITY_CLAIM_MS);
     }
 
     // ── Pure translation (the server-side contract test pins these tables) ──
@@ -103,9 +130,11 @@
                 else out.droppedAxes++;
             }
         } else {
-            // Raw: every axis is a centered stick axis, at rest 32767. A pad
-            // whose trigger rests at -1 on an axis reads half scale at rest in
-            // this mode. The page says so.
+            // Raw: every axis is forwarded as the browser reports it, on a
+            // centered scale (-1 -> 0, 0 -> 32767, +1 -> 65535). A trigger the
+            // pad reports as an axis at -1 reads at the low end at rest. The
+            // server's timeout neutral centers every raw axis until this page
+            // reports again.
             for (var j = 0; j < buttons.length; j++) {
                 var slot = rawButtonSlot(j);
                 if (slot < 0) out.droppedButtons++;
@@ -161,11 +190,13 @@
         for (var j = 0; j < slots.length; j++)
             if (!slots[j].live) return slots[j];
         var s = { n: slots.length + 1, id: gp.id, live: false, ws: null, gen: 0, sent: null, needSnapshot: true,
-                  hbTimer: null, rumbleTimer: null, rumbleGen: 0, phoneLevel: 0, overSince: 0, dropped: 0, serverName: null };
+                  rumbleTimer: null, rumbleGen: 0, rumbleLeft: 0, rumbleRight: 0, actuatorFailed: false,
+                  lastPingTs: 0, phoneLevel: 0, overSince: 0, dropped: 0, serverName: null };
         slots.push(s);
         return s;
     }
     function anyLive() { for (var i = 0; i < slots.length; i++) if (slots[i].live) return true; return false; }
+    function isOpen(slot) { return !!slot.ws && slot.ws.readyState === WebSocket.OPEN; }
 
     function wsUrlFor(slot) {
         var proto = location.protocol === "https:" ? "wss:" : "ws:";
@@ -188,6 +219,9 @@
         slot.sent = null;
         slot.needSnapshot = true;
         slot.overSince = 0;
+        slot.lastPingTs = 0;
+        slot.actuatorFailed = false;      // a new connection gets the actuator a fresh try
+        setRumble(slot, 0, 0);
         if (slot.ws) retireSocket(slot.ws);
         slot.gen++;
         var gen = slot.gen;
@@ -202,20 +236,20 @@
             sendOn(slot, { type: "caps", vibrate: canRumble, mapping: gp.mapping || "", buttons: slot.buttons, axes: slot.axes });
             slot.sent = null;          // a new server device starts neutral: resend everything
             slot.needSnapshot = true;
-            startHeartbeat(slot, gen);
+            slot.lastPingTs = now();   // the lease starts at open, the first ping is a second away
             requestWakeLock();
             renderPads(true);
         };
         ws.onmessage = function (ev) {
             if (slot.gen !== gen) return;
             var msg; try { msg = JSON.parse(ev.data); } catch (e) { return; }
-            if (msg.type === "connected") { slot.serverName = msg.name; renderPads(true); }
+            if (msg.type === "ping") onPing(slot, msg);
+            else if (msg.type === "connected") { slot.serverName = msg.name; renderPads(true); }
             else if (msg.type === "resync") { slot.sent = null; slot.needSnapshot = true; }
-            else if (msg.type === "rumble") { if (!document.hidden) setRumble(slot, msg.left | 0, msg.right | 0); }
+            else if (msg.type === "rumble") applyRumble(slot, msg.left | 0, msg.right | 0);
         };
         ws.onclose = function () {
             if (slot.gen !== gen) return;
-            stopHeartbeat(slot);
             setRumble(slot, 0, 0);
             slot.ws = null;
             if (slot.live) setTimeout(function () {
@@ -229,10 +263,9 @@
     }
 
     function closeSlot(slot) {
-        stopHeartbeat(slot);
         setRumble(slot, 0, 0);
         if (slot.ws) {
-            if (slot.ws.readyState === WebSocket.OPEN) sendNeutral(slot);
+            if (isOpen(slot)) sendNeutral(slot);
             retireSocket(slot.ws);      // CONNECTING sockets too
         }
         slot.gen++;                     // orphan every pending handler
@@ -259,20 +292,19 @@
         slot.needSnapshot = true;
     }
 
-    // A heartbeat says "this page is sampling the pad right now". It is not
-    // sent while hidden, while the socket is congested, or when the last
-    // successful poll is older than FRESH_SAMPLE_MS, so the server's deadline
-    // measures the thing it is meant to measure.
-    function startHeartbeat(slot, gen) {
-        stopHeartbeat(slot);
-        slot.hbTimer = setInterval(function () {
-            if (slot.gen !== gen || document.hidden) return;
-            if (now() - lastPollTs > FRESH_SAMPLE_MS) return;
-            if (slot.ws && slot.ws.bufferedAmount > BUFFER_LIMIT_BYTES) return;
-            sendOn(slot, { type: "hb" });
-        }, HEARTBEAT_MS);
+    // The server's once-a-second ping. The echo says "this page is sampling
+    // the pad right now": not while hidden, not while the socket is
+    // congested, not when the last successful poll is older than
+    // FRESH_SAMPLE_MS. The ping also carries the slot's current rumble,
+    // which renews the rumble lease and restores rumble after a gap.
+    function onPing(slot, msg) {
+        slot.lastPingTs = now();
+        if (typeof msg.l === "number" && typeof msg.r === "number") applyRumble(slot, msg.l | 0, msg.r | 0);
+        if (document.hidden) return;
+        if (now() - lastPollTs > FRESH_SAMPLE_MS) return;
+        if (slot.ws && slot.ws.bufferedAmount > BUFFER_LIMIT_BYTES) return;
+        sendOn(slot, { type: "hb", n: msg.n });
     }
-    function stopHeartbeat(slot) { if (slot.hbTimer) { clearInterval(slot.hbTimer); slot.hbTimer = null; } }
 
     function liveGamepad(slot) {
         var pads;
@@ -302,13 +334,15 @@
             var ws = slot.ws;
             if (!ws || ws.readyState !== WebSocket.OPEN) continue;
             if (ws.bufferedAmount > BUFFER_LIMIT_BYTES) {
-                // Input behind a drained-slowly queue is stale by the time it
-                // lands. Stop queuing, and if the queue does not clear in
-                // CONGESTION_CLOSE_MS abandon the socket: the server's deadline
-                // neutralizes the pad, and the reconnect sends a snapshot.
+                // Input behind a slowly draining queue is stale by the time it
+                // lands. Stop queuing. If the queue does not clear in
+                // CONGESTION_REPLACE_MS, open a replacement socket at once
+                // rather than waiting for the old one to drain and close: the
+                // server retires the old session under the same key, and the
+                // new one starts with a snapshot.
                 slot.needSnapshot = true;
                 if (!slot.overSince) slot.overSince = now();
-                else if (now() - slot.overSince > CONGESTION_CLOSE_MS) { slot.overSince = 0; retireSocket(ws); }
+                else if (now() - slot.overSince > CONGESTION_REPLACE_MS) { openSlot(slot, gp); dirty = true; }
                 continue;
             }
             slot.overSince = 0;
@@ -336,14 +370,23 @@
     function actuatorUsable(actuator) {
         if (!actuator || typeof actuator.playEffect !== "function") return false;
         // Chromium lists the effects it can play. When the list exists and
-        // lacks dual-rumble, the actuator cannot serve us.
-        if (actuator.effects && actuator.effects.length && actuator.effects.indexOf("dual-rumble") < 0) return false;
+        // lacks dual-rumble, empty included, the actuator cannot serve us.
+        if (Array.isArray(actuator.effects) && actuator.effects.indexOf("dual-rumble") < 0) return false;
         return true;
+    }
+    function leaseAlive(slot) { return slot.live && now() - slot.lastPingTs <= RUMBLE_LEASE_MS; }
+    // A rumble from the server, or carried by a ping. Hidden pages rumble
+    // nothing, and a value equal to the current one is not restarted.
+    function applyRumble(slot, left, right) {
+        if (document.hidden) { left = 0; right = 0; }
+        if (left === slot.rumbleLeft && right === slot.rumbleRight) return;
+        setRumble(slot, left, right);
     }
     function stopRumbleTimer(slot) {
         if (slot.rumbleTimer) { clearInterval(slot.rumbleTimer); slot.rumbleTimer = null; }
     }
     function setRumble(slot, left, right) {
+        slot.rumbleLeft = left; slot.rumbleRight = right;
         var gp = slot.live ? liveGamepad(slot) : null;
         var actuator = gp && gp.vibrationActuator;
         var strong = Math.max(0, Math.min(1, left / 65535)), weak = Math.max(0, Math.min(1, right / 65535));
@@ -357,7 +400,8 @@
             }
             var fail = function () {
                 // Only this request's own failure may touch this request's timer,
-                // and a failed actuator hands the pad to the phone's vibrator.
+                // and a failed actuator hands the pad to the phone's vibrator
+                // until the pad's next connection.
                 if (slot.rumbleGen !== myGen) return;
                 stopRumbleTimer(slot);
                 slot.actuatorFailed = true;
@@ -365,6 +409,7 @@
             };
             var fire = function () {
                 if (slot.rumbleGen !== myGen) return;
+                if (!leaseAlive(slot)) { stopRumbleTimer(slot); slot.rumbleLeft = 0; slot.rumbleRight = 0; return; }
                 try {
                     actuator.playEffect("dual-rumble", { startDelay: 0, duration: RUMBLE_EFFECT_MS, strongMagnitude: strong, weakMagnitude: weak })
                         .then(function (r) {
@@ -381,13 +426,24 @@
         // Phone vibrator, shared by every pad without an actuator: the level is
         // the strongest request, so one pad stopping never cancels another's.
         slot.phoneLevel = Math.max(strong, weak);
+        refreshPhoneVibrate();
+    }
+    function refreshPhoneVibrate() {
         var level = 0;
-        for (var i = 0; i < slots.length; i++) if (slots[i].live && slots[i].phoneLevel) level = Math.max(level, slots[i].phoneLevel);
+        for (var i = 0; i < slots.length; i++) {
+            var s = slots[i];
+            if (!s.live || !s.phoneLevel) continue;
+            if (!leaseAlive(s)) { s.phoneLevel = 0; s.rumbleLeft = 0; s.rumbleRight = 0; continue; }
+            level = Math.max(level, s.phoneLevel);
+        }
         phoneVibrate.level = level;
         if (!vibrateFn) return;
         if (level === 0) { if (phoneVibrate.timer) { clearInterval(phoneVibrate.timer); phoneVibrate.timer = null; } try { vibrateFn(0); } catch (e) { } return; }
         if (!phoneVibrate.timer) {
-            var pulse = function () { if (!document.hidden) { try { vibrateFn(Math.round(phoneVibrate.level * 200)); } catch (e) { } } };
+            var pulse = function () {
+                refreshPhoneVibrate();          // re-evaluates the leases, stops itself at zero
+                if (phoneVibrate.level && !document.hidden) { try { vibrateFn(Math.round(phoneVibrate.level * 200)); } catch (e) { } }
+            };
             pulse();
             phoneVibrate.timer = setInterval(pulse, 150);
         }
@@ -446,20 +502,21 @@
         var host = el("pads");
         if (!host) return;
         var rows = [];
-        var live = 0;
+        var live = 0, open = 0;
         for (var i = 0; i < slots.length; i++) {
             var s = slots[i];
             if (!s.live) continue;
             live++;
             var gp = liveGamepad(s);
-            var state = s.ws && s.ws.readyState === WebSocket.OPEN ? "forwarding" : "connecting";
+            var opened = isOpen(s);
+            if (opened) open++;
             var extras = s.mode === "standard" ? Math.min(EXTRA_SLOTS.length, Math.max(0, s.buttons - STANDARD_BUTTON_COUNT)) : 0;
             var notes = [];
             if (extras > 0) notes.push(extras + " extra button" + (extras > 1 ? "s" : "") + " on the paddle and Misc slots");
             if (s.dropped) notes.push(s.dropped + " control" + (s.dropped > 1 ? "s" : "") + " beyond PadForge's slots dropped");
-            if (s.mode === "raw") notes.push("raw layout: the browser did not recognize this pad, so button i is slot i and axis i is axis i, every axis rests at center");
+            if (s.mode === "raw") notes.push("raw layout: the browser did not recognize this pad, so button i is slot i and axis i is axis i, forwarded as the browser reports them");
             rows.push({
-                name: (s.serverName || ("Browser Gamepad " + s.n)) + " · " + state,
+                name: (s.serverName || ("Browser Gamepad " + s.n)) + " · " + (opened ? "forwarding" : "connecting"),
                 meta: (gp ? gp.id : s.id) + " · " + s.buttons + " buttons, " + s.axes + " axes · " + (s.mode === "standard" ? "standard layout" : "raw layout"),
                 note: notes.join(" · ")
             });
@@ -467,7 +524,7 @@
         var lockText = !("wakeLock" in navigator)
             ? "This address cannot hold the screen awake. Set the screen timeout long enough while you play."
             : (wake.sentinel ? "Screen held awake while a pad is forwarded." : (live ? "Screen wake lock not held." : ""));
-        var key = JSON.stringify(rows) + "|" + lockText + "|" + live;
+        var key = JSON.stringify(rows) + "|" + lockText + "|" + live + "|" + open;
         if (!force && key === lastRender) return;
         lastRender = key;
         host.innerHTML = "";
@@ -484,7 +541,9 @@
         if (prompt) prompt.style.display = live ? "none" : "";
         var lock = el("lock");
         if (lock) lock.textContent = lockText;
-        setStatus(live ? ("Forwarding " + live + (live > 1 ? " pads" : " pad")) : "Waiting for a controller");
+        setStatus(open ? ("Forwarding " + open + (open > 1 ? " pads" : " pad"))
+            : live ? ("Connecting " + live + (live > 1 ? " pads" : " pad"))
+            : "Waiting for a controller");
     }
 
     function start() {
@@ -496,7 +555,7 @@
             return;
         }
         renderPads(true);
-        poll();
+        settleIdentity(function () { poll(); });
     }
 
     document.addEventListener("DOMContentLoaded", start);

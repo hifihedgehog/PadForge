@@ -18,7 +18,7 @@ namespace PadForge.Tests
     /// view stayed offline. PadForge asks SDL to probe again after the pad's
     /// first second by changing the hint's string and not its meaning. The
     /// identity is the vendor interface's HID path, and generations come from
-    /// Flydigi wrapper identity.
+    /// ordinary Flydigi wrapper ids.
     /// </summary>
     [Collection("FlydigiSwitchStatics")]
     public class FlydigiReprobeTests
@@ -27,73 +27,86 @@ namespace PadForge.Tests
         private const string A = @"\\?\HID#VID_37D7&PID_2401&MI_01#7&2e838171&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}";
         private const string B = @"\\?\HID#VID_37D7&PID_2401&MI_01#7&0abc0abc&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}";
         private static readonly string[] None = new string[0];
-        private static readonly (string, uint)[] NoClaims = new (string, uint)[0];
         private static readonly uint[] NoIds = new uint[0];
 
         private static IReadOnlyList<string> Obs(FlydigiReprobePolicy p, long t, string[] present,
-            (string, uint)[] claimed = null, uint[] attached = null, bool flux = false, bool real = false)
-            => p.Observe(t, present, claimed ?? NoClaims, attached ?? NoIds, flux, real);
+            string[] claimed = null, uint[] ordinary = null, bool flux = false, bool real = false)
+            => p.Observe(t, present, claimed ?? None, ordinary ?? NoIds, flux, real);
 
         [Fact]
         public void AnUnclaimedInterface_IsProbedAfterTheDelay_ThenSpaced()
         {
             var p = new FlydigiReprobePolicy();
-            // The pad's XInput view (id 7) is attached: a connection event on
-            // first sight, which sets the deadline one delay out.
-            Assert.Empty(Obs(p, 1000, new[] { A }, attached: new uint[] { 7 }, real: true));
+            Assert.Empty(Obs(p, 1000, new[] { A }, ordinary: new uint[] { 7 }, real: true));   // arrival
             Assert.True(p.Armed);
-            Assert.Empty(Obs(p, 1000 + D - 1, new[] { A }, attached: new uint[] { 7 }));
-            Assert.Equal(new[] { A }, Obs(p, 1000 + D, new[] { A }, attached: new uint[] { 7 }));
+            Assert.Empty(Obs(p, 1000 + D - 1, new[] { A }, ordinary: new uint[] { 7 }));
+            Assert.Equal(new[] { A }, Obs(p, 1000 + D, new[] { A }, ordinary: new uint[] { 7 }));
             Assert.Equal(1, p.LastAttempt);
-            Assert.Empty(Obs(p, 1000 + D + 10, new[] { A }, attached: new uint[] { 7 }));
-            Assert.Single(Obs(p, 1000 + 2 * D, new[] { A }, attached: new uint[] { 7 }));
+            Assert.Empty(Obs(p, 1000 + D + 10, new[] { A }, ordinary: new uint[] { 7 }));
+            Assert.Single(Obs(p, 1000 + 2 * D, new[] { A }, ordinary: new uint[] { 7 }));
             Assert.Equal(2, p.LastAttempt);
         }
 
         [Fact]
-        public void AClaimedInterface_IsNeverProbed_WhileItsClaimingWrapperIsAttached()
+        public void AClaimedInterface_IsNeverProbed_WhileAnEnhancedWrapperHoldsItsPath()
         {
             var p = new FlydigiReprobePolicy();
-            Assert.Empty(Obs(p, 0, new[] { A }, new[] { (A.ToUpperInvariant(), 8u) }, new uint[] { 7, 8 }, real: true));
+            Assert.Empty(Obs(p, 0, new[] { A }, new[] { A.ToUpperInvariant() }, new uint[] { 7 }, real: true));
             Assert.False(p.Armed);
-            Assert.Empty(Obs(p, 10 * D, new[] { A }, new[] { (A, 8u) }, new uint[] { 7, 8 }));
+            Assert.Empty(Obs(p, 10 * D, new[] { A }, new[] { A }, new uint[] { 7 }));
             Assert.False(p.Armed);
         }
 
         [Fact]
-        public void AClaimGoesStale_WhenItsWrapperIsGone_AndThePathStays()
+        public void AClaimGoesStale_WhenNoEnhancedWrapperHoldsThePath_AndItStays()
         {
-            // A reconnect at the same path: the old enhanced wrapper (8) is
-            // cleaned up, the path is still present, the new connection's
-            // probe failed. The interface starts over with a fresh deadline.
+            // A reconnect at the same path: the old enhanced wrapper is gone,
+            // the path is still present, the new connection's probe failed.
             var p = new FlydigiReprobePolicy();
-            Obs(p, 0, new[] { A }, new[] { (A, 8u) }, new uint[] { 7, 8 }, real: true);
+            Obs(p, 0, new[] { A }, new[] { A }, new uint[] { 7 }, real: true);
             Assert.False(p.Armed);
-            Assert.Empty(Obs(p, 5000, new[] { A }, attached: new uint[] { 9 }));      // 8 gone, 9 is the new XInput view
+            Assert.Empty(Obs(p, 5000, new[] { A }, ordinary: new uint[] { 7 }));      // claim gone
             Assert.True(p.Armed);
-            Assert.Empty(Obs(p, 5000 + D - 1, new[] { A }, attached: new uint[] { 9 }));
-            Assert.Single(Obs(p, 5000 + D, new[] { A }, attached: new uint[] { 9 }));
+            Assert.Empty(Obs(p, 5000 + D - 1, new[] { A }, ordinary: new uint[] { 7 }));
+            Assert.Single(Obs(p, 5000 + D, new[] { A }, ordinary: new uint[] { 7 }));
             Assert.Equal(1, p.LastAttempt);
         }
 
         [Fact]
-        public void ANewFlydigiJoystickId_RenewsAnUnclaimedInterfacesBudget()
+        public void ANewOrdinaryJoystickId_RenewsAnUnclaimedInterfacesBudget_OnceOnly()
         {
-            // A exhausted its budget. A joystick id never seen before means a
-            // pad arrived or came back: A gets four more, one delay out.
             var p = new FlydigiReprobePolicy();
-            Obs(p, 0, new[] { A }, attached: new uint[] { 7 }, real: true);
-            for (long t = 0; t <= D * 12; t += 100) Obs(p, t, new[] { A }, attached: new uint[] { 7 });
+            Obs(p, 0, new[] { A }, ordinary: new uint[] { 7 }, real: true);
+            for (long t = 0; t <= D * 12; t += 100) Obs(p, t, new[] { A }, ordinary: new uint[] { 7 });
             Assert.False(p.Armed);
-            Assert.Empty(Obs(p, 100_000, new[] { A }, attached: new uint[] { 11 }));
+            Assert.Empty(Obs(p, 100_000, new[] { A }, ordinary: new uint[] { 11 }));   // a new XInput view
             Assert.True(p.Armed);
-            Assert.Empty(Obs(p, 100_000 + D - 1, new[] { A }, attached: new uint[] { 11 }));
-            Assert.Single(Obs(p, 100_000 + D, new[] { A }, attached: new uint[] { 11 }));
-            Assert.Equal(1, p.LastAttempt);
-            // The same id again is not an event.
-            for (long t = 100_000 + D; t <= 100_000 + D * 12; t += 100) Obs(p, t, new[] { A }, attached: new uint[] { 11 });
+            Assert.Empty(Obs(p, 100_000 + D - 1, new[] { A }, ordinary: new uint[] { 11 }));
+            Assert.Single(Obs(p, 100_000 + D, new[] { A }, ordinary: new uint[] { 11 }));
+            for (long t = 100_000 + D; t <= 100_000 + D * 12; t += 100) Obs(p, t, new[] { A }, ordinary: new uint[] { 11 });
             Assert.False(p.Armed);
-            Assert.Empty(Obs(p, 200_000, new[] { A }, attached: new uint[] { 11 }));
+            // The same id again, and a known id leaving and returning (PadForge
+            // closed and reopened the wrapper), are not arrivals.
+            Assert.Empty(Obs(p, 200_000, new[] { A }, ordinary: new uint[] { 11 }));
+            Assert.False(p.Armed);
+            Obs(p, 200_100, new[] { A }, ordinary: NoIds);
+            Assert.Empty(Obs(p, 200_200, new[] { A }, ordinary: new uint[] { 7, 11 }));
+            Assert.False(p.Armed);
+        }
+
+        [Fact]
+        public void ANewEnhancedWrapper_IsNotAConnectionEvent()
+        {
+            // B's enhanced view recreated on an availability change (or B's
+            // recovery) must not renew A's spent budget.
+            var p = new FlydigiReprobePolicy();
+            Obs(p, 0, new[] { A, B }, new[] { B }, new uint[] { 1, 3 }, real: true);
+            for (long t = 0; t <= D * 12; t += 100) Obs(p, t, new[] { A, B }, new[] { B }, new uint[] { 1, 3 });
+            Assert.False(p.Armed);
+            // B's enhanced wrapper is replaced by a new one under the same path:
+            // the claim is unbroken (the path is claimed on this observation),
+            // and no ordinary id is new.
+            Assert.Empty(Obs(p, 100_000, new[] { A, B }, new[] { B }, new uint[] { 1, 3 }));
             Assert.False(p.Armed);
         }
 
@@ -101,39 +114,55 @@ namespace PadForge.Tests
         public void TwoIdenticalPads_AreTwoPaths_AndOnlyTheUnclaimedOneIsProbed()
         {
             var p = new FlydigiReprobePolicy();
-            Obs(p, 0, new[] { A, B }, new[] { (A, 2u) }, new uint[] { 1, 2, 3 }, real: true);
-            Assert.Equal(new[] { B }, Obs(p, D, new[] { A, B }, new[] { (A, 2u) }, new uint[] { 1, 2, 3 }));
-            // B recovered: its enhanced wrapper (4) is a new id, a connection
-            // event, but B is claimed now and A stays claimed.
-            Assert.Empty(Obs(p, 2 * D, new[] { A, B }, new[] { (A, 2u), (B, 4u) }, new uint[] { 1, 2, 3, 4 }));
+            Obs(p, 0, new[] { A, B }, new[] { A }, new uint[] { 1, 3 }, real: true);
+            Assert.Equal(new[] { B }, Obs(p, D, new[] { A, B }, new[] { A }, new uint[] { 1, 3 }));
+            Assert.Empty(Obs(p, 2 * D, new[] { A, B }, new[] { A, B }, new uint[] { 1, 3 }));   // B recovered
             Assert.False(p.Armed);
         }
 
         [Fact]
         public void ACounterMove_ResetsNothing_ItOnlyMakesAbsencesReal()
         {
-            // Unrelated notifications every second must not starve the deadline
-            // or renew a spent budget.
             var p = new FlydigiReprobePolicy();
-            Obs(p, 0, new[] { A }, attached: new uint[] { 7 }, real: true);
-            Assert.Empty(Obs(p, 1000, new[] { A }, attached: new uint[] { 7 }, real: true));
-            Assert.Single(Obs(p, D, new[] { A }, attached: new uint[] { 7 }, real: true));       // due on time
-            for (long t = D; t <= D * 12; t += 100) Obs(p, t, new[] { A }, attached: new uint[] { 7 }, real: true);
+            Obs(p, 0, new[] { A }, ordinary: new uint[] { 7 }, real: true);
+            Assert.Empty(Obs(p, 1000, new[] { A }, ordinary: new uint[] { 7 }, real: true));
+            Assert.Single(Obs(p, D, new[] { A }, ordinary: new uint[] { 7 }, real: true));
+            for (long t = D; t <= D * 12; t += 100) Obs(p, t, new[] { A }, ordinary: new uint[] { 7 }, real: true);
             Assert.False(p.Armed);
-            Assert.Empty(Obs(p, 100_000, new[] { A }, attached: new uint[] { 7 }, real: true));  // no renewal
+            Assert.Empty(Obs(p, 100_000, new[] { A }, ordinary: new uint[] { 7 }, real: true));
             Assert.False(p.Armed);
-            // Absent while the counter moved: gone. Absent without: a flake.
-            Obs(p, 200_000, None, attached: new uint[] { 7 });
+        }
+
+        [Fact]
+        public void OneRealAbsence_IsAFlake_TheSecondIsGone()
+        {
+            // A is exhausted. One enumeration on a counter move misses it, the
+            // confirmation finds it again: the spent budget must survive.
+            var p = new FlydigiReprobePolicy();
+            Obs(p, 0, new[] { A }, ordinary: new uint[] { 7 }, real: true);
+            for (long t = 0; t <= D * 12; t += 100) Obs(p, t, new[] { A }, ordinary: new uint[] { 7 });
+            Assert.False(p.Armed);
+            Obs(p, 100_000, None, ordinary: new uint[] { 7 }, real: true);          // missed once
             Assert.Equal(1, p.Tracked);
-            Obs(p, 200_100, None, attached: new uint[] { 7 }, real: true);
+            Assert.Empty(Obs(p, 100_000 + D, new[] { A }, ordinary: new uint[] { 7 }));   // back, still spent
+            Assert.False(p.Armed);
+            // Absent on two real observations in a row: gone. Back again is a
+            // fresh interface.
+            Obs(p, 200_000, None, ordinary: new uint[] { 7 }, real: true);
+            Obs(p, 200_000 + D, None, ordinary: new uint[] { 7 }, real: true);
             Assert.Equal(0, p.Tracked);
+            Obs(p, 300_000, new[] { A }, ordinary: new uint[] { 7 }, real: true);
+            Assert.True(p.Armed);
+            // An absence without a counter move never counts.
+            var q = new FlydigiReprobePolicy();
+            Obs(q, 0, new[] { A }, ordinary: new uint[] { 7 }, real: true);
+            for (int k = 0; k < 5; k++) Obs(q, 1000 + k, None, ordinary: new uint[] { 7 });
+            Assert.Equal(1, q.Tracked);
         }
 
         [Fact]
         public void APadWithNoJoystickView_IsStillSeen_AndProbed()
         {
-            // Presence comes from the HID enumeration. With no wrapper there is
-            // no connection event, so the deadline is one delay from first sight.
             var p = new FlydigiReprobePolicy();
             Obs(p, 0, new[] { A }, real: true);
             Assert.Empty(Obs(p, D - 1, new[] { A }));
@@ -144,11 +173,11 @@ namespace PadForge.Tests
         public void FluxDefersEveryDeadline_SoAQuickReplugGetsItsFullDelay()
         {
             var p = new FlydigiReprobePolicy();
-            Obs(p, 0, new[] { A }, attached: new uint[] { 7 }, real: true);
-            Assert.Empty(Obs(p, 1200, new[] { A }, attached: new uint[] { 7 }, flux: true));    // deferred to 2400
-            Assert.Empty(Obs(p, 1900, new[] { A }, attached: new uint[] { 7 }, flux: true));    // deferred to 3100
-            Assert.Empty(Obs(p, 2400, new[] { A }, attached: new uint[] { 7 }));
-            Assert.Single(Obs(p, 3100, new[] { A }, attached: new uint[] { 7 }));
+            Obs(p, 0, new[] { A }, ordinary: new uint[] { 7 }, real: true);
+            Assert.Empty(Obs(p, 1200, new[] { A }, ordinary: new uint[] { 7 }, flux: true));
+            Assert.Empty(Obs(p, 1900, new[] { A }, ordinary: new uint[] { 7 }, flux: true));
+            Assert.Empty(Obs(p, 2400, new[] { A }, ordinary: new uint[] { 7 }));
+            Assert.Single(Obs(p, 3100, new[] { A }, ordinary: new uint[] { 7 }));
         }
 
         [Theory]
@@ -204,19 +233,19 @@ namespace PadForge.Tests
             string step1 = File.ReadAllText(Path.Combine(RepoRoot(), "PadForge.App", "Common", "Input", "InputManager.Step1.UpdateDevices.cs"));
             int tick = step1.IndexOf("private void FlydigiReprobeTick()", System.StringComparison.Ordinal);
             Assert.True(tick > 0);
-            string tickBody = step1.Substring(tick, 3600);
-            // Counter, gates, enumerate, null check, THEN the wrapper snapshot, then observe.
+            string tickBody = step1.Substring(tick, 4200);
             int countAt = tickBody.IndexOf("SdlHidEnumeration.DeviceChangeCount()", System.StringComparison.Ordinal);
-            int gateAt = tickBody.IndexOf("if (!changed && !confirm && !_flydigiReprobe.Armed) return;", System.StringComparison.Ordinal);
+            int wrapAt = tickBody.IndexOf("bool wrappersChanged = FlydigiOrdinaryWrappersChanged();", System.StringComparison.Ordinal);
+            int gateAt = tickBody.IndexOf("if (!changed && !confirm && !wrappersChanged && !_flydigiReprobe.Armed) return;", System.StringComparison.Ordinal);
             int enumAt = tickBody.IndexOf("SdlHidEnumeration.Paths(0x37D7, 0xFFA0)", System.StringComparison.Ordinal);
             int nullAt = tickBody.IndexOf("if (present == null) return;", System.StringComparison.Ordinal);
             int snapAt = tickBody.IndexOf("foreach (var w in _openedSdlInstanceIds.Values)", System.StringComparison.Ordinal);
             int confirmAt = tickBody.IndexOf("_flydigiConfirmDue = changed ? now + FlydigiReprobePolicy.DelayMs : 0;", System.StringComparison.Ordinal);
-            int observeAt = tickBody.IndexOf("_flydigiReprobe.Observe(now, present, claimed, attached, inFlux, absencesAreReal: changed)", System.StringComparison.Ordinal);
-            Assert.True(countAt > 0 && gateAt > countAt && enumAt > gateAt && nullAt > enumAt && snapAt > nullAt && confirmAt > snapAt && observeAt > confirmAt,
-                "counter, gate, enumerate, null check, snapshot after the enumeration, confirmation scheduled, observe");
+            int observeAt = tickBody.IndexOf("_flydigiReprobe.Observe(now, present, claimed, ordinary, inFlux, absencesAreReal: changed)", System.StringComparison.Ordinal);
+            Assert.True(countAt > 0 && wrapAt > countAt && gateAt > wrapAt && enumAt > gateAt && nullAt > enumAt && snapAt > nullAt && confirmAt > snapAt && observeAt > confirmAt,
+                "counter, wrapper change, gate, enumerate, null check, snapshot after the enumeration, confirmation scheduled, observe");
             Assert.Contains("!w.IsAttached", tickBody);
-            Assert.Contains("claimed.Add((w.DevicePath, w.SdlInstanceId))", tickBody);
+            Assert.Contains("else ordinary.Add(w.SdlInstanceId);", tickBody);
             Assert.DoesNotContain("OnArrival(", step1);
         }
 

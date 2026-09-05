@@ -723,11 +723,14 @@ namespace PadForge.Common.Input
                 // one writer is RumbleRequested. Xbox impulse pads and vendor
                 // wheels write through their own paths below, which this branch
                 // cannot reach, and a pad a remote peer is driving (#138) keeps
-                // its output, zero local slots or not.
+                // its output, zero local slots or not: the peer's lease while it
+                // is fresh, and past that whether the peer was the last writer,
+                // since a peer holding an unchanged rumble ships it once.
                 if (ud.ForceFeedbackState.IsActive
                     && ud.Device is PadForge.Engine.WebControllerDevice web
                     && (web.HasRumble || web.HasHaptic)
-                    && !RemoteLinkOutputRouter.IsClaimedByPeer(ud.DevicePath))
+                    && !RemoteLinkOutputRouter.IsClaimedByPeer(ud.DevicePath)
+                    && !RemoteLinkOutputRouter.PeerWroteLast(ud.DevicePath))
                     ud.ForceFeedbackState.StopDeviceForces(web);
                 return;
             }
@@ -973,6 +976,8 @@ namespace PadForge.Common.Input
             // One guard covers every class below — Xbox impulse, generic SDL rumble,
             // vendor FFB, and wheels. Lapses ~3 s after the remote falls quiet.
             if (RemoteLinkOutputRouter.IsClaimedByPeer(ud.DevicePath)) return;
+            // Every write below is local: the last writer is no longer the peer.
+            RemoteLinkOutputRouter.NoteLocalWrite(ud.DevicePath);
 
             if (isXboxImpulse)
             {

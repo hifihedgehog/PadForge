@@ -428,6 +428,7 @@
                 stopRumbleTimer(slot);
                 slot.actuatorFailed = true;
                 setRumble(slot, left, right);
+                renderPads(true);          // the row's rumble route changed
             };
             var fire = function () {
                 if (slot.rumbleGen !== myGen) return;

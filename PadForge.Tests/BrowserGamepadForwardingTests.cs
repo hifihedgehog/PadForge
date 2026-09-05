@@ -322,9 +322,9 @@ namespace PadForge.Tests
         [Fact]
         public void TheFeedbackPass_StopsADeviceThatLeftItsLastSlot_AndTeardownIsOneStep()
         {
-            // Both are pinned at the source. The feedback pass needs a live
-            // InputManager and the teardown a live socket, neither of which
-            // this project hosts.
+            // The teardown and the connect are pinned at the source: they sit
+            // inside a live socket handler. The feedback pass itself runs for
+            // real in BrowserGamepadFeedbackPassTests.
             string step2 = File.ReadAllText(Path.Combine(RepoRoot(), "PadForge.App", "Common", "Input", "InputManager.Step2.UpdateInputStates.cs"));
             int at = step2.IndexOf("if (slotCount == 0)", StringComparison.Ordinal);
             Assert.True(at > 0);
@@ -332,6 +332,7 @@ namespace PadForge.Tests
             Assert.Contains("ud.ForceFeedbackState.StopDeviceForces(web);", block);
             Assert.Contains("is PadForge.Engine.WebControllerDevice web", block);          // web pads only
             Assert.Contains("!RemoteLinkOutputRouter.IsClaimedByPeer(ud.DevicePath)", block); // a peer's output stays
+            Assert.Contains("!RemoteLinkOutputRouter.PeerWroteLast(ud.DevicePath)", block);   // past its lease too
             Assert.True(block.IndexOf("StopDeviceForces", StringComparison.Ordinal) < block.IndexOf("return;", StringComparison.Ordinal));
             string server = File.ReadAllText(Path.Combine(RepoRoot(), "PadForge.App", "Services", "WebControllerServer.cs"));
             int fin = server.IndexOf("bool stillRegistered =", StringComparison.Ordinal);

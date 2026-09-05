@@ -38,8 +38,14 @@ namespace PadForge.Tests
             FlydigiServiceWatch.Refresh();
             Assert.NotNull(FlydigiServiceWatch.Running);
             Assert.False(string.IsNullOrEmpty(FlydigiServiceWatch.Detail), "Detail says 'none' when nothing runs");
-            // Two scans back to back see the same processes.
-            Assert.False(FlydigiServiceWatch.Refresh(), "an unchanged process set must not republish the device rows");
+            // The flag and the value agree: a second scan reports a change
+            // exactly when Running differs from the first scan's.
+            string first = FlydigiServiceWatch.Running;
+            bool changed = FlydigiServiceWatch.Refresh();
+            Assert.Equal(!string.Equals(first, FlydigiServiceWatch.Running, System.StringComparison.Ordinal), changed);
+            // Names are canonical: every entry is spelled as the watch lists it.
+            foreach (var n in FlydigiServiceWatch.Running.Split(", ", System.StringSplitOptions.RemoveEmptyEntries))
+                Assert.Contains(n, new[] { "SpaceStationService", "GameControllerService", "Flydigi Space Station" });
         }
 
         [Fact]
@@ -67,6 +73,15 @@ namespace PadForge.Tests
             // With the driver unavailable every image reads unknown, never a verdict.
             if (s.StartsWith("hidhide=unavailable"))
                 Assert.All(verdicts, v => Assert.Equal("unknown", v));
+            // A driver that answered reports each read's own outcome, never a
+            // false value standing in for a failed read.
+            if (s.StartsWith("hidhide=ok"))
+            {
+                Assert.Matches(@"active=(true|false|read-failed|err:\w+)", s);
+                Assert.Matches(@"whitelist=(\d+|read-failed|err:\w+)", s);
+                if (s.Contains("whitelist=read-failed"))
+                    Assert.All(verdicts, v => Assert.Equal("unknown", v));
+            }
         }
 
         [Fact]

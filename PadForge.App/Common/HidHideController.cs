@@ -333,11 +333,14 @@ namespace PadForge.Common
                 }
                 else
                 {
+                    // Each read reports its own outcome. GetActive folds a
+                    // failed IOCTL into false and GetWhitelist into null, so
+                    // the snapshot asks the outcome-bearing forms.
                     sb.Append("hidhide=ok active=");
-                    try { sb.Append(GetActive() ? "true" : "false"); }
+                    try { sb.Append(TryGetActive(out bool active) ? (active ? "true" : "false") : "read-failed"); }
                     catch (Exception ex) { sb.Append("err:").Append(ex.GetType().Name); }
                     sb.Append(" whitelist=");
-                    try { whitelist = GetWhitelist(); sb.Append(whitelist?.Count ?? -1); }
+                    try { whitelist = GetWhitelist(); sb.Append(whitelist == null ? "read-failed" : whitelist.Count.ToString()); }
                     catch (Exception ex) { sb.Append("err:").Append(ex.GetType().Name); }
                 }
             }
@@ -378,6 +381,18 @@ namespace PadForge.Common
                 return false;
 
             return outBuffer[0] != 0;
+        }
+
+        /// <summary>GetActive with the read outcome separated from the value
+        /// (#395 diagnostics): a failed IOCTL is not "inactive".</summary>
+        public static bool TryGetActive(out bool active)
+        {
+            byte[] outBuffer = new byte[1];
+            active = false;
+            if (!TryIo(IOCTL_GET_ACTIVE, null, outBuffer, out _))
+                return false;
+            active = outBuffer[0] != 0;
+            return true;
         }
 
         /// <summary>

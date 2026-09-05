@@ -67,12 +67,14 @@ namespace PadForge.Common.Input
                     string n;
                     try { n = p.ProcessName; }
                     catch { continue; }
-                    bool match = false;
+                    string canonical = null;
                     foreach (var name in Names)
-                        if (string.Equals(n, name, StringComparison.OrdinalIgnoreCase)) { match = true; break; }
-                    if (!match) continue;
-                    if (seen.Add(n)) found.Add(n);
-                    details.Add(Describe(p, n));
+                        if (string.Equals(n, name, StringComparison.OrdinalIgnoreCase)) { canonical = name; break; }
+                    if (canonical == null) continue;
+                    // The canonical spelling from Names, so two spellings of one
+                    // image cannot make Running differ between scans.
+                    if (seen.Add(canonical)) found.Add(canonical);
+                    details.Add(Describe(p, canonical));
                 }
                 found.Sort(StringComparer.OrdinalIgnoreCase);
                 _running = string.Join(", ", found);

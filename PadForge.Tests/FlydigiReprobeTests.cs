@@ -141,9 +141,9 @@ namespace PadForge.Tests
             Assert.True(nudge > 0);
             string body = im.Substring(nudge, 900);
             Assert.Contains("lock (_flydigiHintLock)", body);
-            Assert.True(body.IndexOf("if (!_flydigiEnhancedDesired) return (false, null);", System.StringComparison.Ordinal)
-                        < body.IndexOf("SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_FLYDIGI, next)", System.StringComparison.Ordinal),
-                        "the switch is read under the lock, before the write");
+            int gate = body.IndexOf("if (!_flydigiEnhancedDesired) return (false, null);", System.StringComparison.Ordinal);
+            int write = body.IndexOf("SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_FLYDIGI, next)", System.StringComparison.Ordinal);
+            Assert.True(gate > 0 && write > gate, "the switch is read under the lock, before the write");
             // The tick follows both enumeration gates, so it runs every poll
             // cycle and not on the 2 s or 5 s enumeration cadence.
             int idle = im.IndexOf("if (_enumerationTimer.ElapsedMilliseconds >= 5000)", System.StringComparison.Ordinal);
@@ -154,6 +154,28 @@ namespace PadForge.Tests
             string step1 = File.ReadAllText(Path.Combine(RepoRoot(), "PadForge.App", "Common", "Input", "InputManager.Step1.UpdateDevices.cs"));
             Assert.Contains("_flydigiReprobe.OnArrival(wrapper.SdlInstanceId, wrapper.Backend == \"hidapi\", Environment.TickCount64);", step1);
             Assert.Contains("_flydigiReprobe.OnDeparture(sdlId);", step1);
+        }
+
+        [Fact]
+        public void TheNudge_WritesNothingWhileTheSwitchIsOff_AndAlternatesWhileOn()
+        {
+            // SDL hints need no SDL_Init. The switch's recorded state is
+            // restored afterward so the other tests see the default.
+            bool before = PadForge.Common.Input.InputManager.FlydigiEnhancedProtocolDesired;
+            try
+            {
+                PadForge.Common.Input.InputManager.ApplyFlydigiEnhancedProtocol(false);
+                var off = PadForge.Common.Input.InputManager.TryFlydigiReprobeNudge();
+                Assert.False(off.written);
+                Assert.Null(off.value);
+                PadForge.Common.Input.InputManager.ApplyFlydigiEnhancedProtocol(true);
+                var first = PadForge.Common.Input.InputManager.TryFlydigiReprobeNudge();
+                var second = PadForge.Common.Input.InputManager.TryFlydigiReprobeNudge();
+                Assert.Equal("true", first.value);          // "1" was just written by the switch
+                Assert.Equal("1", second.value);
+                Assert.Equal(first.written, second.written); // both accepted or both refused by a higher-priority override
+            }
+            finally { PadForge.Common.Input.InputManager.ApplyFlydigiEnhancedProtocol(before); }
         }
 
         private static string RepoRoot()

@@ -234,10 +234,12 @@ namespace PadForge.Tests
                 held.Wait();
                 var im = new InputManager();
                 var pass = System.Threading.Tasks.Task.Run(() => { RunFeedbackPass(im, ud); return System.Diagnostics.Stopwatch.GetTimestamp(); });
-                Assert.NotSame(pass, await System.Threading.Tasks.Task.WhenAny(pass, System.Threading.Tasks.Task.Delay(300)));  // still held
-                Assert.Empty(sent);
-                release.Set();
-                holder.Join();
+                try
+                {
+                    Assert.NotSame(pass, await System.Threading.Tasks.Task.WhenAny(pass, System.Threading.Tasks.Task.Delay(300)));  // still held
+                    Assert.Empty(sent);
+                }
+                finally { release.Set(); holder.Join(5000); }       // never leave the holder blocked on a failure
                 long passDone = await pass;
                 Assert.True(passDone >= releasedAt, "the pass finished before the gate was released");
                 Assert.Equal(new[] { ((ushort)0, (ushort)0) }, sent);
@@ -259,8 +261,10 @@ namespace PadForge.Tests
             Assert.True(gate > 0 && check > gate && apply > check, "gate, then the server check, then the apply");
             string step2 = System.IO.File.ReadAllText(System.IO.Path.Combine(RepoRoot(), "PadForge.App", "Common", "Input", "InputManager.Step2.UpdateInputStates.cs"));
             int zero = step2.IndexOf("if (slotCount == 0)", StringComparison.Ordinal);
-            string block = step2.Substring(zero, 1600);
+            string block = step2.Substring(zero, 2600);
             Assert.True(block.IndexOf("lock (ud.OutputSync)", StringComparison.Ordinal) < block.IndexOf("StopDeviceForces", StringComparison.Ordinal));
+            // The gate is taken for web pads only, so a native device's pending write never holds the polling thread.
+            Assert.True(block.IndexOf("is PadForge.Engine.WebControllerDevice web", StringComparison.Ordinal) < block.IndexOf("lock (ud.OutputSync)", StringComparison.Ordinal));
         }
 
         private static string RepoRoot()

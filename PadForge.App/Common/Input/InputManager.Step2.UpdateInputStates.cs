@@ -729,14 +729,18 @@ namespace PadForge.Common.Input
                 // Under the device's output gate (#416), the same one a peer's
                 // relayed frame holds from its claim through its write, so the
                 // decision here and the stop are one step against that write.
-                lock (ud.OutputSync)
+                // The gate is taken for a web pad only: a native device's pending
+                // HID write under its gate must never hold the polling thread.
+                if (ud.Device is PadForge.Engine.WebControllerDevice web && ud.ForceFeedbackState.IsActive)
                 {
-                    if (ud.ForceFeedbackState.IsActive
-                        && ud.Device is PadForge.Engine.WebControllerDevice web
-                        && (web.HasRumble || web.HasHaptic)
-                        && !RemoteLinkOutputRouter.IsClaimedByPeer(ud.DevicePath)
-                        && !RemoteLinkOutputRouter.PeerWroteLast(ud.DevicePath))
-                        ud.ForceFeedbackState.StopDeviceForces(web);
+                    lock (ud.OutputSync)
+                    {
+                        if (ud.ForceFeedbackState.IsActive
+                            && (web.HasRumble || web.HasHaptic)
+                            && !RemoteLinkOutputRouter.IsClaimedByPeer(ud.DevicePath)
+                            && !RemoteLinkOutputRouter.PeerWroteLast(ud.DevicePath))
+                            ud.ForceFeedbackState.StopDeviceForces(web);
+                    }
                 }
                 return;
             }

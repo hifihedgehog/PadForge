@@ -28,23 +28,30 @@ namespace PadForge.Common.Input
     /// and a pad PadForge has no joystick view of is still seen.</para>
     ///
     /// <para>Generations come from Flydigi's own signals, never from SDL's
-    /// system-wide HID change counter, which moves for any device and on a
-    /// timer when notifications are unavailable, and which the caller uses
-    /// only to decide WHEN to enumerate. A claim goes stale when the
-    /// wrapper that made it is no longer attached while its path is still
-    /// present: that is the enhanced view of a connection that ended, and
-    /// the interface starts over. A Flydigi joystick id never seen before is
-    /// a connection event, and every unclaimed interface gets a fresh budget
-    /// and a deadline at least one delay away. An interface absent from an
-    /// enumeration is forgotten only when the caller says absences are real
-    /// (the change counter moved). Without that an absence is a flake, and
-    /// the state stands. While any Flydigi wrapper is detached and awaiting
-    /// cleanup the pad is in flux, and every deadline is pushed out.</para>
+    /// system-wide HID change counter, which the caller uses only to decide
+    /// WHEN to enumerate. A claim goes stale when no attached enhanced
+    /// wrapper carries its path any more while the path is still present:
+    /// that connection ended, and the interface starts over. A joystick id
+    /// never seen before among the ORDINARY Flydigi wrappers is a connection
+    /// event, and every unclaimed interface gets a fresh budget with a
+    /// deadline at least one delay away. Enhanced wrapper ids do not count:
+    /// SDL recreates the enhanced joystick on an availability change with no
+    /// physical arrival. Known ids are never pruned, since PadForge can
+    /// close and reopen a wrapper on a still-connected joystick under the
+    /// same id, and that is not an arrival either.</para>
+    ///
+    /// <para>An interface absent from an enumeration keeps its record and its
+    /// spent budget through one real absence (the change counter moved), and
+    /// is forgotten on the second. Without a counter move an absence is a
+    /// flake and changes nothing. While any Flydigi wrapper is detached and
+    /// awaiting cleanup the pad is in flux, and every deadline is pushed
+    /// out.</para>
     ///
     /// <para>What a nudge does is SDL's business: it re-probes EVERY unclaimed
     /// HIDAPI device on the system, so one pad's nudge can probe a second pad
     /// before that pad's own deadline, and an exhausted pad is probed again
-    /// by another's nudge. The budget bounds requests, not probes. Accepted.
+    /// by another's nudge, and a second pad's physical reconnect renews the
+    /// first pad's budget. The budget bounds requests, not probes. Accepted.
     /// Pure and clock-free so the tests pin it.</para>
     /// </summary>
     internal sealed class FlydigiReprobePolicy
@@ -62,12 +69,12 @@ namespace PadForge.Common.Input
             public long Due;
             public int Attempts;
             public bool Claimed;
-            public uint ClaimedBy;
+            public int RealAbsences;
         }
 
         private readonly Dictionary<string, Interface> _interfaces =
             new Dictionary<string, Interface>(StringComparer.OrdinalIgnoreCase);
-        private readonly HashSet<uint> _knownFlydigiIds = new HashSet<uint>();
+        private readonly HashSet<uint> _knownOrdinaryIds = new HashSet<uint>();
 
         /// <summary>Interfaces currently tracked, claimed or not.</summary>
         public int Tracked => _interfaces.Count;
@@ -90,40 +97,39 @@ namespace PadForge.Common.Input
 
         /// <summary>One observation. <paramref name="presentPaths"/> is a
         /// successful enumeration (a failed one is not an observation).
-        /// <paramref name="claimed"/> pairs each attached enhanced wrapper's
-        /// path with its SDL joystick id. <paramref name="attachedFlydigiIds"/>
-        /// are the joystick ids of every attached Flydigi wrapper, any
-        /// backend. <paramref name="inFlux"/> says a Flydigi wrapper is
-        /// detached and awaiting cleanup. <paramref name="absencesAreReal"/>
-        /// says SDL's change counter moved since the last observation.
-        /// Returns the unclaimed paths whose probe is due now, each of which
-        /// spends one attempt. Empty means no nudge.</summary>
+        /// <paramref name="claimedPaths"/> are the attached enhanced wrappers'
+        /// paths. <paramref name="attachedOrdinaryIds"/> are the joystick ids
+        /// of every attached Flydigi wrapper that is not enhanced.
+        /// <paramref name="inFlux"/> says a Flydigi wrapper is detached and
+        /// awaiting cleanup. <paramref name="absencesAreReal"/> says SDL's
+        /// change counter moved since the last observation. Returns the
+        /// unclaimed paths whose probe is due now, each of which spends one
+        /// attempt. Empty means no nudge.</summary>
         public IReadOnlyList<string> Observe(long nowTicks, IReadOnlyList<string> presentPaths,
-            IReadOnlyList<(string path, uint instanceId)> claimed, IReadOnlyCollection<uint> attachedFlydigiIds,
+            IReadOnlyList<string> claimedPaths, IReadOnlyCollection<uint> attachedOrdinaryIds,
             bool inFlux, bool absencesAreReal)
         {
             var present = new HashSet<string>(presentPaths ?? Array.Empty<string>(), StringComparer.OrdinalIgnoreCase);
-            var claimedBy = new Dictionary<string, uint>(StringComparer.OrdinalIgnoreCase);
-            if (claimed != null)
-                foreach (var c in claimed)
-                    if (!string.IsNullOrEmpty(c.path)) claimedBy[c.path] = c.instanceId;
-            var attached = new HashSet<uint>(attachedFlydigiIds ?? Array.Empty<uint>());
+            var claimed = new HashSet<string>(claimedPaths ?? Array.Empty<string>(), StringComparer.OrdinalIgnoreCase);
 
             if (absencesAreReal)
             {
                 var gone = new List<string>();
-                foreach (var path in _interfaces.Keys)
-                    if (!present.Contains(path)) gone.Add(path);
+                foreach (var kv in _interfaces)
+                {
+                    if (present.Contains(kv.Key)) continue;
+                    if (++kv.Value.RealAbsences >= 2) gone.Add(kv.Key);
+                }
                 foreach (var path in gone) _interfaces.Remove(path);
             }
 
-            // A Flydigi joystick id never seen before is a connection event:
-            // some pad arrived or came back. Unclaimed interfaces start their
-            // budget over, with a deadline at least one delay away.
+            // A new ordinary joystick id is a connection event: some pad arrived
+            // or came back. Unclaimed interfaces start their budget over, with a
+            // deadline at least one delay away.
             bool connectionEvent = false;
-            foreach (var id in attached)
-                if (_knownFlydigiIds.Add(id)) connectionEvent = true;
-            _knownFlydigiIds.RemoveWhere(id => !attached.Contains(id));
+            if (attachedOrdinaryIds != null)
+                foreach (var id in attachedOrdinaryIds)
+                    if (_knownOrdinaryIds.Add(id)) connectionEvent = true;
 
             var due = new List<string>();
             int max = 0;
@@ -134,12 +140,12 @@ namespace PadForge.Common.Input
                     i = new Interface { Due = nowTicks + DelayMs };
                     _interfaces[path] = i;
                 }
-                if (claimedBy.TryGetValue(path, out uint by)) { i.Claimed = true; i.ClaimedBy = by; continue; }
+                i.RealAbsences = 0;
+                if (claimed.Contains(path)) { i.Claimed = true; continue; }
                 if (i.Claimed)
                 {
-                    // The wrapper that claimed this path is gone while the path is
-                    // still here: that connection ended, this is the next one.
-                    if (attached.Contains(i.ClaimedBy)) continue;
+                    // The enhanced wrapper that claimed this path is gone while the
+                    // path is still here: that connection ended, this is the next.
                     i.Claimed = false;
                     i.Attempts = 0;
                     i.Due = nowTicks + DelayMs;

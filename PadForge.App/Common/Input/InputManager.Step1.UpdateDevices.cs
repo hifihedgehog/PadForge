@@ -577,6 +577,7 @@ namespace PadForge.Common.Input
         private long _flydigiConfirmDue;
         private uint _flydigiChangeCount;
         private bool _flydigiChangeCountKnown;
+        private readonly System.Collections.Generic.HashSet<uint> _flydigiLastOrdinaryIds = new System.Collections.Generic.HashSet<uint>();
 
         /// <summary>#395: a Flydigi pad whose vendor interface SDL did not claim
         /// at arrival (the reporter's logs show two of three) has no enhanced
@@ -600,17 +601,19 @@ namespace PadForge.Common.Input
         /// found, since its arrival moves the counter. The counter decides
         /// only WHEN to look: it moves for any device and on a timer when
         /// notifications are unavailable, so the policy never resets state on
-        /// it. One confirmation pass follows every counter-move observation a
-        /// delay later, so a single enumeration that missed a present device
-        /// does not end discovery. A failed enumeration is not an observation.
-        /// The wrapper snapshot is taken AFTER the enumeration, so a wrapper
-        /// that detached during it is not read as a claim, and every claim
-        /// carries the joystick id that made it, so the policy can see a
-        /// claim go stale when that wrapper is gone. A detached Flydigi
-        /// wrapper awaiting cleanup means the pad is in flux, and the policy
-        /// defers every deadline. The enumeration's cost lands on the polling
-        /// thread and is logged past 25 ms, the same bar as the other stall
-        /// lines.</para></summary>
+        /// it. A change in the set of attached ordinary Flydigi wrappers also
+        /// opens the gate, so a replacement wrapper reaches the policy without
+        /// a counter move, and one confirmation pass follows every counter-move
+        /// observation a delay later, so a single enumeration that missed a
+        /// present device does not end discovery. A healthy pad costs the
+        /// enumerations its own arrival and confirmation take, plus whatever
+        /// other device changes on the system trigger. A failed enumeration
+        /// is not an observation. The wrapper snapshot is taken AFTER the
+        /// enumeration, so a wrapper that detached during it is not read as a
+        /// claim. A detached Flydigi wrapper awaiting cleanup means the pad is
+        /// in flux, and the policy defers every deadline. The enumeration's
+        /// cost lands on the polling thread and is logged past 25 ms, the
+        /// same bar as the other stall lines.</para></summary>
         private void FlydigiReprobeTick()
         {
             if (!FlydigiEnhancedProtocolDesired) return;
@@ -619,8 +622,9 @@ namespace PadForge.Common.Input
             bool changed = !_flydigiChangeCountKnown || count.Value != _flydigiChangeCount;
             long now = Environment.TickCount64;
             bool confirm = _flydigiConfirmDue != 0 && now >= _flydigiConfirmDue;
-            if (!changed && !confirm && !_flydigiReprobe.Armed) return;
-            if (!changed && !confirm && now - _flydigiObserveTick < FlydigiReprobePolicy.DelayMs) return;
+            bool wrappersChanged = FlydigiOrdinaryWrappersChanged();
+            if (!changed && !confirm && !wrappersChanged && !_flydigiReprobe.Armed) return;
+            if (!changed && !confirm && !wrappersChanged && now - _flydigiObserveTick < FlydigiReprobePolicy.DelayMs) return;
 
             long tsEnum = Stopwatch.GetTimestamp();
             var present = Engine.SdlHidEnumeration.Paths(0x37D7, 0xFFA0);
@@ -629,24 +633,41 @@ namespace PadForge.Common.Input
             if (present == null) return;                       // a failed enumeration is not an observation
 
             bool inFlux = false;
-            var claimed = new System.Collections.Generic.List<(string path, uint instanceId)>();
-            var attached = new System.Collections.Generic.List<uint>();
+            var claimed = new System.Collections.Generic.List<string>();
+            var ordinary = new System.Collections.Generic.List<uint>();
             foreach (var w in _openedSdlInstanceIds.Values)
             {
                 if (w == null || w.VendorId != 0x37D7) continue;
                 if (!w.IsAttached) { inFlux = true; continue; }
-                attached.Add(w.SdlInstanceId);
-                if (w.Backend == "hidapi" && !string.IsNullOrEmpty(w.DevicePath)) claimed.Add((w.DevicePath, w.SdlInstanceId));
+                if (w.Backend == "hidapi") { if (!string.IsNullOrEmpty(w.DevicePath)) claimed.Add(w.DevicePath); }
+                else ordinary.Add(w.SdlInstanceId);
             }
+            _flydigiLastOrdinaryIds.Clear();
+            foreach (var id in ordinary) _flydigiLastOrdinaryIds.Add(id);
             _flydigiObserveTick = now;
             _flydigiChangeCount = count.Value;
             _flydigiChangeCountKnown = true;
             _flydigiConfirmDue = changed ? now + FlydigiReprobePolicy.DelayMs : 0;
-            var due = _flydigiReprobe.Observe(now, present, claimed, attached, inFlux, absencesAreReal: changed);
+            var due = _flydigiReprobe.Observe(now, present, claimed, ordinary, inFlux, absencesAreReal: changed);
             if (due.Count == 0) return;
             var (written, value) = TryFlydigiReprobeNudge();
             Engine.SdlDiagLog.WriteLine(
-                $"FLYDIGI reprobe attempt={_flydigiReprobe.LastAttempt}/{FlydigiReprobePolicy.MaxAttempts} unclaimed={due.Count} present={present.Count} claimed={claimed.Count} flux={inFlux} changed={changed} confirm={confirm} hint={value ?? "-"} written={written} first={due[0]}");
+                $"FLYDIGI reprobe attempt={_flydigiReprobe.LastAttempt}/{FlydigiReprobePolicy.MaxAttempts} unclaimed={due.Count} present={present.Count} claimed={claimed.Count} flux={inFlux} changed={changed} confirm={confirm} wrappers={wrappersChanged} hint={value ?? "-"} written={written} first={due[0]}");
+        }
+
+        /// <summary>Whether the set of attached, non-enhanced Flydigi wrappers
+        /// differs from the one the last observation saw. Cheap enough for
+        /// every tick: a handful of wrappers at most.</summary>
+        private bool FlydigiOrdinaryWrappersChanged()
+        {
+            int seen = 0;
+            foreach (var w in _openedSdlInstanceIds.Values)
+            {
+                if (w == null || w.VendorId != 0x37D7 || !w.IsAttached || w.Backend == "hidapi") continue;
+                seen++;
+                if (!_flydigiLastOrdinaryIds.Contains(w.SdlInstanceId)) return true;
+            }
+            return seen != _flydigiLastOrdinaryIds.Count;
         }
 
         // ─────────────────────────────────────────────

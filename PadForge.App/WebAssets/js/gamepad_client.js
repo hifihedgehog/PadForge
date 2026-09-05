@@ -248,7 +248,7 @@
             var caps = { type: "caps", vibrate: canRumble, mapping: gp.mapping || "", buttons: slot.buttons, axes: slot.axes };
             // A raw pad's rest is wherever its axes sit right now, as far as
             // this page can tell. The server returns them there on expiry.
-            if (slot.mode === "raw") { var fresh = liveGamepad(slot); caps.rest = translate(fresh || gp, "raw").axes; }
+            if (slot.mode === "raw") { var fresh = liveGamepad(slot); caps.rest = translate(fresh || gp, "raw").axes; slot.rest = caps.rest; }
             sendOn(slot, caps);
             slot.sent = null;          // a new server device starts neutral: resend everything
             slot.needSnapshot = true;
@@ -300,9 +300,12 @@
 
     function sendNeutral(slot) {
         var n = neutralFor(slot.mode, slot.buttons, slot.axes);
+        // A raw pad's neutral is the rest this page sampled at open, the same
+        // values the server returns to on expiry, never a synthetic center.
+        var axes = (slot.mode === "raw" && slot.rest) ? slot.rest : n.axes;
         var k;
         for (k in n.buttons) sendOn(slot, { type: "input", kind: "button", code: +k, value: 0 });
-        for (k in n.axes) sendOn(slot, { type: "input", kind: "axis", code: +k, value: n.axes[k] });
+        for (k in axes) sendOn(slot, { type: "input", kind: "axis", code: +k, value: axes[k] });
         if (n.pov !== null) sendOn(slot, { type: "input", kind: "pov", code: 0, value: -1 });
         slot.sent = null;
         slot.needSnapshot = true;
@@ -542,6 +545,12 @@
             if (extras > 0) notes.push(extras + " extra button" + (extras > 1 ? "s" : "") + " on the paddle and Misc slots");
             if (s.dropped) notes.push(s.dropped + " control" + (s.dropped > 1 ? "s" : "") + " beyond PadForge's slots dropped");
             if (s.mode === "raw") notes.push("raw layout: the browser did not recognize this pad, so button i is slot i and axis i is axis i, forwarded as the browser reports them");
+            // Where rumble goes, said on screen: iPhone Safari exposes neither a
+            // gamepad actuator nor a vibrator, so a pad forwarded from one gets none.
+            var act = gp && gp.vibrationActuator;
+            notes.push(actuatorUsable(act) && !s.actuatorFailed ? "rumble: the pad's own motors"
+                : vibrateFn ? "rumble: this device's vibrator"
+                : "rumble: not available in this browser");
             rows.push({
                 name: (s.serverName || ("Browser Gamepad " + s.n)) + " · " + (opened ? "forwarding" : "connecting"),
                 meta: (gp ? gp.id : s.id) + " · " + s.buttons + " buttons, " + s.axes + " axes · " + (s.mode === "standard" ? "standard layout" : "raw layout"),

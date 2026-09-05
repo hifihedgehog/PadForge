@@ -695,9 +695,18 @@ namespace PadForge.Engine.Data
                 out _, out _, out int actuatorCount);
             ActuatorCount = actuatorCount;
 
-            // Initialize force feedback state for devices with rumble or haptic FFB.
+            // Initialize force feedback state for devices with rumble or haptic
+            // FFB. A reload of the SAME device object (a web pad's capability
+            // refresh) keeps its cache: a fresh one forgets the rumble last
+            // sent, so a game's next zero looks like no change and the pad, or
+            // its page, rumbles on (#402). Decided here, before anything is
+            // published, so no disposable cache is ever visible to the polling
+            // thread. A different object is a new connection and starts clean.
             if (wrapper.HasRumble || wrapper.HasHaptic)
-                ForceFeedbackState = new ForceFeedbackState();
+            {
+                if (ForceFeedbackState == null || !ReferenceEquals(Device, wrapper))
+                    ForceFeedbackState = new ForceFeedbackState();
+            }
 
             // Store the device wrapper for state reading in the polling loop.
             // A replug can reach here while the previous connection's wrapper
@@ -748,17 +757,7 @@ namespace PadForge.Engine.Data
         {
             if (wrapper == null)
                 throw new ArgumentNullException(nameof(wrapper));
-            // A capability refresh reloads the SAME live device (a web pad's
-            // caps flip after connect). A fresh ForceFeedbackState there would
-            // forget the rumble last sent, so a game's next zero would look
-            // like no change and the pad, or its page, would rumble on
-            // (#402). Keep the cache when the device object is unchanged. A
-            // different device object is a new connection and starts clean.
-            var priorDevice = Device;
-            var priorFeedback = ForceFeedbackState;
             LoadFromDevice(wrapper);
-            if (priorFeedback != null && ForceFeedbackState != null && ReferenceEquals(priorDevice, wrapper))
-                ForceFeedbackState = priorFeedback;
         }
 
         /// <summary>

@@ -9768,6 +9768,7 @@ namespace PadForge.Services
             // A peer's last session dropped: release the output ownership it held
             // on local shared devices (#402), so a rumble it left running ends.
             _linkServer.PeerDropped += RemoteLinkOutputRouter.ReleasePeer;
+            _linkServer.PeerConnected += RemoteLinkOutputRouter.PeerConnected;
             _linkServer.AudioReceived += OnRemoteAudioReceived;
             _linkServer.SourceDemandReceived += OnRemoteSourceDemandReceived;
             _linkServer.DeviceConnected += device =>
@@ -10844,7 +10845,12 @@ namespace PadForge.Services
             // rumble/lightbar for OutputLeaseMs.
             if (effect.Kind != OutputEffectCodec.Kind.PlayerIndex
                 && effect.Kind != OutputEffectCodec.Kind.GuideLed)
-                RemoteLinkOutputRouter.ClaimOutput(ud?.DevicePath ?? source.DevicePath, peerFingerprint);
+            {
+                // A refused claim means this peer's last session dropped after
+                // the frame was decoded (#402). Its output is not applied: nothing
+                // would be left to release what it wrote.
+                if (!RemoteLinkOutputRouter.ClaimOutput(ud?.DevicePath ?? source.DevicePath, peerFingerprint)) return;
+            }
             try
             {
                 var handle = source.GamepadHandle;

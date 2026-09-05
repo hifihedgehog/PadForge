@@ -102,6 +102,9 @@ namespace PadForge.Engine.RemoteLink
         /// on local shared devices (#402): a peer that leaves mid-rumble sent
         /// no zero, and without this the rumble it wrote last would stand.</summary>
         public event Action<string> PeerDropped;
+        /// <summary>A session with this peer was added, by fingerprint. The owner
+        /// lifts the "gone" mark a drop left, so the peer's claims count again.</summary>
+        public event Action<string> PeerConnected;
         // A status CODE, not English text: the App maps it to a localized string. Engine
         // can't reach the App's resources, so it must not emit user-facing prose (#138 F35).
         public event Action<LinkStatus> StatusChanged;
@@ -1792,7 +1795,7 @@ namespace PadForge.Engine.RemoteLink
 
                 foreach (var d in dupes) _connections.Remove(d);
             }
-            foreach (var d in dupes) DropConnection(d);
+            foreach (var d in dupes) DropConnection(d, replaced: true);
 
             var conn = new LinkPeerConnection
             {
@@ -1817,6 +1820,7 @@ namespace PadForge.Engine.RemoteLink
                 conn.RemoteDevices[d.LinkSlot] = d;
             }
             lock (_lock) _connections.Add(conn);
+            try { PeerConnected?.Invoke(conn.PeerFingerprintHex); } catch { /* best effort */ }
             foreach (var d in conn.RemoteDevices.Values) DeviceConnected?.Invoke(d);
             StatusChanged?.Invoke(new LinkStatus(LinkStatusKind.PeerConnected, peer: Short(conn.PeerFingerprintHex), deviceCount: conn.RemoteDevices.Count));
         }
@@ -2096,7 +2100,7 @@ namespace PadForge.Engine.RemoteLink
             }
         }
 
-        private void DropConnection(LinkPeerConnection c)
+        private void DropConnection(LinkPeerConnection c, bool replaced = false)
         {
             foreach (var d in c.RemoteDevices.Values)
             {
@@ -2107,7 +2111,10 @@ namespace PadForge.Engine.RemoteLink
             try { c.Tcp?.Dispose(); } catch { }
             // Only the peer's last session releases its ownership. A duplicate
             // session dropped in favor of another (simultaneous connect) leaves
-            // the peer connected, and its held output is still meant.
+            // the peer connected, and its held output is still meant. The
+            // caller says so: at that site the replacement is not yet in the
+            // list, so the membership check below would read as a departure.
+            if (replaced) return;
             string fp = c.PeerFingerprintHex;
             if (string.IsNullOrEmpty(fp)) return;
             bool last;

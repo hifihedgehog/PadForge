@@ -717,11 +717,18 @@ namespace PadForge.Common.Input
             if (slotCount == 0)
             {
                 // Unassigning a device's last slot sends no zero of its own, so
-                // a rumble in flight at that moment stayed on the pad, and on a
-                // forwarded pad's page, which renews whatever it was last told
-                // (#402). Stop it here, once, the tick the slots run out.
-                if (ud.ForceFeedbackState.IsActive && ud.Device != null)
-                    ud.ForceFeedbackState.StopDeviceForces(ud.Device);
+                // a rumble in flight at that moment stayed on a forwarded pad's
+                // page, which renews whatever it was last told (#402). Stop it
+                // here, once, the tick the slots run out. Web pads only: their
+                // one writer is RumbleRequested. Xbox impulse pads and vendor
+                // wheels write through their own paths below, which this branch
+                // cannot reach, and a pad a remote peer is driving (#138) keeps
+                // its output, zero local slots or not.
+                if (ud.ForceFeedbackState.IsActive
+                    && ud.Device is PadForge.Engine.WebControllerDevice web
+                    && (web.HasRumble || web.HasHaptic)
+                    && !RemoteLinkOutputRouter.IsClaimedByPeer(ud.DevicePath))
+                    ud.ForceFeedbackState.StopDeviceForces(web);
                 return;
             }
 

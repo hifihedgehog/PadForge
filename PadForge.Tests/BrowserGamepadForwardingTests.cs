@@ -281,6 +281,27 @@ namespace PadForge.Tests
             Assert.Equal(32767, stock.GetCurrentState().Axis[0]);      // stock rest is fixed
         }
 
+        [Fact]
+        public void RawRest_ArrivingAfterExpiry_LandsAtOnce()
+        {
+            // The deadline neutralized to the default center before caps came.
+            // It fires once per expiry, so the rest must be applied on arrival.
+            var raw = Pad();
+            WebControllerServer.ConfigureGamepadShape(raw, "raw", "12", "6");
+            var f = new WebControllerServer.GamepadFreshness(Environment.TickCount64 - 10_000);
+            f.Expired = true;
+            raw.NeutralizeAll();
+            Assert.Equal(32767, raw.GetCurrentState().Axis[2]);
+            Apply(raw, "{\"type\":\"caps\",\"vibrate\":true,\"mapping\":\"\",\"rest\":{\"2\":0}}", accept: false, f);
+            Assert.Equal(0, raw.GetCurrentState().Axis[2]);
+            // Fresh session: the rest is stored, the live state is left alone.
+            var live = Pad();
+            WebControllerServer.ConfigureGamepadShape(live, "raw", "12", "6");
+            live.UpdateAxis(2, 65535);
+            Apply(live, "{\"type\":\"caps\",\"vibrate\":true,\"mapping\":\"\",\"rest\":{\"2\":0}}", accept: true, new WebControllerServer.GamepadFreshness(Environment.TickCount64));
+            Assert.Equal(65535, live.GetCurrentState().Axis[2]);
+        }
+
         // ── Rumble that outlives its source ─────────────────────────────
 
         [Fact]
@@ -307,14 +328,24 @@ namespace PadForge.Tests
             string step2 = File.ReadAllText(Path.Combine(RepoRoot(), "PadForge.App", "Common", "Input", "InputManager.Step2.UpdateInputStates.cs"));
             int at = step2.IndexOf("if (slotCount == 0)", StringComparison.Ordinal);
             Assert.True(at > 0);
-            string block = step2.Substring(at, 600);
-            Assert.Contains("ud.ForceFeedbackState.StopDeviceForces(ud.Device);", block);
+            string block = step2.Substring(at, 1500);
+            Assert.Contains("ud.ForceFeedbackState.StopDeviceForces(web);", block);
+            Assert.Contains("is PadForge.Engine.WebControllerDevice web", block);          // web pads only
+            Assert.Contains("!RemoteLinkOutputRouter.IsClaimedByPeer(ud.DevicePath)", block); // a peer's output stays
             Assert.True(block.IndexOf("StopDeviceForces", StringComparison.Ordinal) < block.IndexOf("return;", StringComparison.Ordinal));
             string server = File.ReadAllText(Path.Combine(RepoRoot(), "PadForge.App", "Services", "WebControllerServer.cs"));
             int fin = server.IndexOf("bool stillRegistered =", StringComparison.Ordinal);
             Assert.True(fin > 0);
             string before = server.Substring(Math.Max(0, fin - 120), 120);
             Assert.Contains("lock (_registrationLock)", before);
+            // The connect callback is delivered inside the registration lock, right
+            // after the install, so a superseded session cannot deliver it late.
+            int install = server.IndexOf("_clients[compositeKey] = session;", StringComparison.Ordinal);
+            Assert.True(install > 0);
+            string after = server.Substring(install, 900);
+            int connectAt = after.IndexOf("DeviceConnected?.Invoke(device)", StringComparison.Ordinal);
+            int closeAt = after.IndexOf("\n                }", StringComparison.Ordinal);
+            Assert.True(connectAt > 0 && connectAt < closeAt, "DeviceConnected must fire before the registration lock closes");
         }
 
         // ── ProcessMessage under the freshness policy ───────────────────

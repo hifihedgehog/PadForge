@@ -662,17 +662,25 @@ namespace PadForge.Services
                         catch { /* best effort */ }
                     }
                     _clients[compositeKey] = session;
+                    // Connect under the same lock (#402). Outside it, a session
+                    // that had installed itself could pause here while a
+                    // replacement retired it, installed and connected, then
+                    // deliver its own connect late: the engine would bind the
+                    // row to the retired device while the replacement's socket
+                    // kept answering. Under the lock every retire, install and
+                    // connect is whole and in order. Swallowed like the retire's
+                    // disconnect above, so a handler throw cannot orphan the
+                    // session before the try/finally below takes over.
+                    try { DeviceConnected?.Invoke(device); } catch { /* best effort */ }
                 }
 
                 // Once the session is registered, everything runs under try/finally
-                // so a throw from an event handler (DeviceConnected/StatusChanged),
-                // the confirm send, or the receive path can't orphan the session in
+                // so a throw from an event handler (StatusChanged), the confirm
+                // send, or the receive path can't orphan the session in
                 // _clients: that would leak ws/cts and permanently consume one of
                 // MaxClients slots. The finally is the sole teardown path.
                 try
                 {
-                    // Notify that a device connected.
-                    DeviceConnected?.Invoke(device);
                     StatusChanged?.Invoke(this, string.Format(Strings.Instance.Server_RunningClients_Format, _clients.Count));
 
                     // Send connection confirmation.
@@ -922,6 +930,11 @@ namespace PadForge.Services
                         foreach (var p in rest.EnumerateObject())
                             if (int.TryParse(p.Name, out int axis) && p.Value.TryGetInt32(out int value))
                                 device.SetRawAxisRest(axis, value);
+                        // Caps can arrive after the session already expired at
+                        // the default center. The deadline fires once per expiry,
+                        // so the new rest must land now, under the same lock the
+                        // caller holds for the deadline.
+                        if (freshness != null && freshness.Expired) device.NeutralizeAll();
                     }
                 }
                 else if (type == "touchpad")

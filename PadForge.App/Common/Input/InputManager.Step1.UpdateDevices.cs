@@ -587,25 +587,18 @@ namespace PadForge.Common.Input
         /// the delay is the policy's and not the 2 s or 5 s enumeration
         /// cadence. Only while the switch is on: off means the user does not
         /// want the view, and the write itself is refused under the switch's
-        /// lock. The census counts views of ATTACHED V2 wrappers only: a
-        /// wrapper awaiting the disconnect debounce is not a view, and SDL
-        /// keeps an XInput view beside the enhanced one for vendor 37D7
-        /// alone, which is what makes one XInput view per pad and one hidapi
-        /// view per pad with its enhanced view comparable. The recovery is
-        /// bounded to V2 pads PadForge has an XInput view of.</summary>
+        /// lock. Which connection is still missing its view is the policy's
+        /// business: it matches an enhanced arrival to its connection by
+        /// arrival order, since a count of views could not say whose view it
+        /// was. The recovery is bounded to pads PadForge has an ordinary view
+        /// of. The attached V2 views are listed in the line for the log's sake.</summary>
         private void FlydigiReprobeTick()
         {
             if (!_flydigiReprobe.Armed || !FlydigiEnhancedProtocolDesired) return;
-            int xinput = 0, hidapi = 0;
+            if (!_flydigiReprobe.ShouldNudge(Environment.TickCount64)) return;
             var views = new System.Collections.Generic.List<string>();
             foreach (var w in _openedSdlInstanceIds.Values)
-            {
-                if (w == null || !w.IsAttached || w.VendorId != 0x37D7) continue;
-                views.Add(w.Backend);
-                if (w.Backend == "xinput") xinput++;
-                else if (w.Backend == "hidapi") hidapi++;
-            }
-            if (!_flydigiReprobe.ShouldNudge(Environment.TickCount64, xinput, hidapi)) return;
+                if (w != null && w.IsAttached && w.VendorId == 0x37D7) views.Add(w.Backend);
             var (written, value) = TryFlydigiReprobeNudge();
             Engine.SdlDiagLog.WriteLine(
                 $"FLYDIGI reprobe attempt={_flydigiReprobe.LastAttempt}/{FlydigiReprobePolicy.MaxAttempts} views=[{string.Join(",", views)}] hint={value ?? "-"} written={written}");

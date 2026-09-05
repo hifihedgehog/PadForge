@@ -15,184 +15,112 @@ namespace PadForge.Tests
     /// of three arrivals ("driver = NONE") while Flydigi's own service, one
     /// second later, was answered in 24 ms, and the slot bound to the enhanced
     /// view stayed offline. PadForge asks SDL to probe again after the pad's
-    /// first second by changing the hint's string and not its meaning.
+    /// first second by changing the hint's string and not its meaning. The
+    /// identity is the vendor interface's HID path.
     /// </summary>
     [Collection("FlydigiSwitchStatics")]
     public class FlydigiReprobeTests
     {
         private const int D = FlydigiReprobePolicy.DelayMs;
+        private const string A = @"\\?\HID#VID_37D7&PID_2401&MI_01#7&2e838171&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}";
+        private const string B = @"\\?\HID#VID_37D7&PID_2401&MI_01#7&0abc0abc&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}";
+        private static readonly string[] None = new string[0];
 
         [Fact]
-        public void AnOrdinaryArrival_ArmsOneProbe_AfterTheDelay_SpacedNotPerTick()
+        public void AnUnclaimedInterface_IsProbedAfterTheDelay_ThenSpaced()
         {
             var p = new FlydigiReprobePolicy();
-            p.OnArrival(7, onHidapi: false, nowTicks: 1000);
+            Assert.Empty(p.Observe(1000, new[] { A }, None, false));           // first seen: deadline set, no probe
             Assert.True(p.Armed);
-            Assert.False(p.ShouldNudge(1000 + D - 1));    // not yet
-            Assert.True(p.ShouldNudge(1000 + D));         // due
+            Assert.Empty(p.Observe(1000 + D - 1, new[] { A }, None, false));   // not yet
+            var due = p.Observe(1000 + D, new[] { A }, None, false);
+            Assert.Equal(new[] { A }, due);
             Assert.Equal(1, p.LastAttempt);
-            Assert.False(p.ShouldNudge(1000 + D + 10));   // spaced
-            Assert.True(p.ShouldNudge(1000 + 2 * D));
+            Assert.Empty(p.Observe(1000 + D + 10, new[] { A }, None, false)); // spaced
+            Assert.Single(p.Observe(1000 + 2 * D, new[] { A }, None, false));
             Assert.Equal(2, p.LastAttempt);
         }
 
         [Fact]
-        public void AnEnhancedArrival_SatisfiesTheConnectionItBelongsTo_AndRecoveryEnds()
+        public void AClaimedInterface_IsNeverProbed_AndStaysDoneIfItsViewLaterGoes()
         {
-            // SDL enumerates a pad's views together: xinput 7 then hidapi 8.
             var p = new FlydigiReprobePolicy();
-            p.OnArrival(7, false, 0);
-            p.OnArrival(8, true, 2);
+            Assert.Empty(p.Observe(0, new[] { A }, new[] { A.ToUpperInvariant() }, false));   // case-insensitive
             Assert.False(p.Armed);
-            Assert.False(p.ShouldNudge(D));
-            // Startup recovery only: the view vanishing later does not restart it.
-            p.OnDeparture(8);
+            Assert.Empty(p.Observe(10 * D, new[] { A }, None, false));        // the enhanced view went away: startup recovery only
             Assert.False(p.Armed);
         }
 
         [Fact]
-        public void AnEnhancedArrivalWithNoConnectionToSatisfy_ChangesNothing()
+        public void TwoIdenticalPads_AreTwoPaths_AndOnlyTheUnclaimedOneIsProbed()
         {
             var p = new FlydigiReprobePolicy();
-            p.OnArrival(8, true, 0);              // a pad whose XInput view PadForge never opened
+            p.Observe(0, new[] { A, B }, new[] { A }, false);
+            var due = p.Observe(D, new[] { A, B }, new[] { A }, false);
+            Assert.Equal(new[] { B }, due);
+            // B recovers: its path shows up claimed, and nothing is left to do.
+            Assert.Empty(p.Observe(2 * D, new[] { A, B }, new[] { A, B }, false));
             Assert.False(p.Armed);
-            Assert.Equal(0, p.OrdinaryViews);
-            p.OnArrival(7, false, 10);            // a later connection is not satisfied by an earlier view
+        }
+
+        [Fact]
+        public void APadWithNoXInputView_IsStillSeen()
+        {
+            // The interface is present on the bus whether or not PadForge has
+            // any joystick view of the pad. Presence is what is observed.
+            var p = new FlydigiReprobePolicy();
+            p.Observe(0, new[] { A }, None, false);
+            Assert.Single(p.Observe(D, new[] { A }, None, false));
+        }
+
+        [Fact]
+        public void FourAttempts_ThenTheProbesStop_UntilThePathLeavesAndReturns()
+        {
+            var p = new FlydigiReprobePolicy();
+            int fired = 0;
+            for (long t = 0; t <= D * 12; t += 100)
+                if (p.Observe(t, new[] { A }, None, false).Count > 0) fired++;
+            Assert.Equal(FlydigiReprobePolicy.MaxAttempts, fired);
+            Assert.False(p.Armed);
+            Assert.Equal(1, p.Tracked);
+            // Gone from the bus and back: a fresh deadline and budget.
+            p.Observe(100_000, None, None, false);
+            Assert.Equal(0, p.Tracked);
+            p.Observe(100_100, new[] { A }, None, false);
             Assert.True(p.Armed);
-            Assert.True(p.ShouldNudge(10 + D));
-        }
-
-        [Fact]
-        public void OneHealthyPad_DoesNotHideASecondPadMissingItsView()
-        {
-            // Pad A: xinput 1 and hidapi 2 at 0. Pad B: xinput 3 only at 10.
-            var p = new FlydigiReprobePolicy();
-            p.OnArrival(1, false, 0);
-            p.OnArrival(2, true, 1);
-            p.OnArrival(3, false, 10);
-            Assert.True(p.ShouldNudge(D + 10));                 // B is due, A is satisfied
+            Assert.Empty(p.Observe(100_100 + D - 1, new[] { A }, None, false));
+            Assert.Single(p.Observe(100_100 + D, new[] { A }, None, false));
             Assert.Equal(1, p.LastAttempt);
-            p.OnArrival(4, true, D + 40);                       // B's view came up after its nudge
-            Assert.False(p.Armed);
-            Assert.False(p.ShouldNudge(2 * D + 10));
-        }
-
-        [Fact]
-        public void APadWhoseXInputViewNeverOpened_DoesNotMaskAnotherPad()
-        {
-            // Pad A: hidapi 2 only (its XInput open failed). Pad B: xinput 3 only.
-            // A count of views would read one and one and stop B's recovery.
-            var p = new FlydigiReprobePolicy();
-            p.OnArrival(2, true, 0);
-            p.OnArrival(3, false, 10);
-            Assert.True(p.Armed);
-            Assert.True(p.ShouldNudge(10 + D));
-        }
-
-        [Fact]
-        public void OneEnhancedArrival_SatisfiesOnlyTheNewestUnsatisfiedConnection()
-        {
-            // Two pads failed their probe: A at 0, B at 10. One enhanced view
-            // arrives at 20. It is B's (the newest), A is still owed a probe at
-            // its own deadline D, ten milliseconds before B's would have been.
-            var p = new FlydigiReprobePolicy();
-            p.OnArrival(1, false, 0);
-            p.OnArrival(3, false, 10);
-            p.OnArrival(4, true, 20);
-            Assert.True(p.Armed);
-            Assert.True(p.ShouldNudge(D));            // A, due at exactly D
-            Assert.Equal(1, p.LastAttempt);
-            Assert.False(p.ShouldNudge(D + 10));      // B would have been due here, and is satisfied
-            p.OnArrival(5, true, D + 30);             // A's view comes up after its nudge
-            Assert.False(p.Armed);
         }
 
         [Fact]
         public void ASecondPadArriving_DoesNotRenewTheFirstPadsSpentBudget()
         {
             var p = new FlydigiReprobePolicy();
-            p.OnArrival(1, false, 0);
-            int fired = 0;
-            for (long t = 0; t <= D * 12; t += 100)
-                if (p.ShouldNudge(t)) fired++;
+            for (long t = 0; t <= D * 12; t += 100) p.Observe(t, new[] { A }, None, false);
+            Assert.False(p.Armed);
+            p.Observe(100_000, new[] { A, B }, None, false);       // B arrives, A is still present and spent
+            Assert.True(p.Armed);
+            var due = p.Observe(100_000 + D, new[] { A, B }, None, false);
+            Assert.Equal(new[] { B }, due);                         // A stays silent
+            int fired = 1;
+            for (long t = 100_000 + D + 100; t <= 100_000 + D * 12; t += 100)
+                if (p.Observe(t, new[] { A, B }, None, false).Count > 0) fired++;
             Assert.Equal(FlydigiReprobePolicy.MaxAttempts, fired);
-            Assert.False(p.Armed);
-            // Pad B arrives and leaves again before its own deadline. If B's
-            // arrival had renewed A's budget, A would fire again now.
-            p.OnArrival(2, false, 100_000);
-            Assert.True(p.Armed);
-            p.OnDeparture(2);
-            Assert.False(p.Armed);
-            for (long t = 100_000; t <= 100_000 + D * 12; t += 100)
-                Assert.False(p.ShouldNudge(t));
-            // B arrives again and stays: only B's four fire.
-            p.OnArrival(4, false, 200_000);
-            fired = 0;
-            for (long t = 200_000; t <= 200_000 + D * 12; t += 100)
-                if (p.ShouldNudge(t)) fired++;
-            Assert.Equal(FlydigiReprobePolicy.MaxAttempts, fired);
-            Assert.Equal(FlydigiReprobePolicy.MaxAttempts, p.LastAttempt);
         }
 
         [Fact]
-        public void TheLastOrdinaryViewLeaving_Disarms_AndUnknownIdsAreIgnored()
+        public void FluxDefersEveryDeadline_SoAQuickReplugGetsItsFullDelay()
         {
+            // The old wrapper is detached and awaiting cleanup from 500 to
+            // 2000, and the pad came back at 1000 with a failed probe. The
+            // probe must not fire at 1200, 200 ms into the new connection.
             var p = new FlydigiReprobePolicy();
-            p.OnArrival(1, false, 0);
-            p.OnArrival(2, false, 0);
-            p.OnDeparture(99);
-            Assert.True(p.Armed);
-            p.OnDeparture(1);
-            Assert.True(p.Armed);
-            p.OnDeparture(2);
-            Assert.False(p.Armed);
-            Assert.Equal(0, p.OrdinaryViews);
-        }
-
-        [Fact]
-        public void FourAttempts_ThenTheProbesStop_UntilANewConnection()
-        {
-            var p = new FlydigiReprobePolicy();
-            p.OnArrival(1, false, 0);
-            int fired = 0;
-            for (long t = 0; t <= D * 12; t += 100)
-                if (p.ShouldNudge(t)) fired++;
-            Assert.Equal(FlydigiReprobePolicy.MaxAttempts, fired);
-            Assert.False(p.Armed);
-            // The same joystick id seen again re-arms nothing.
-            p.OnArrival(1, false, 100_000);
-            Assert.False(p.Armed);
-            // A replug is a new joystick id: a fresh deadline and budget.
-            p.OnDeparture(1);
-            p.OnArrival(2, false, 100_000);
-            Assert.True(p.Armed);
-            Assert.False(p.ShouldNudge(100_000 + D - 1));
-            Assert.True(p.ShouldNudge(100_000 + D));
-            Assert.Equal(1, p.LastAttempt);
-        }
-
-        [Fact]
-        public void AReconnectBetweenEnumerations_StartsAFreshDeadline()
-        {
-            // Old connection armed at 0. The pad left at 500 and came back as a
-            // new SDL joystick, opened at 2100. The probe must not fire at 2100
-            // on the old deadline, 200 ms into the new connection.
-            var p = new FlydigiReprobePolicy();
-            p.OnArrival(1, false, 0);
-            p.OnDeparture(1);
-            p.OnArrival(2, false, 2100);
-            Assert.False(p.ShouldNudge(2100));
-            Assert.False(p.ShouldNudge(2100 + D - 1));
-            Assert.True(p.ShouldNudge(2100 + D));
-        }
-
-        [Fact]
-        public void TheSameJoystickIdSeenAgain_DoesNotResetTheClock()
-        {
-            var p = new FlydigiReprobePolicy();
-            p.OnArrival(1, false, 0);
-            p.OnArrival(1, false, 900);
-            Assert.True(p.ShouldNudge(D));
+            p.Observe(0, new[] { A }, None, false);
+            Assert.Empty(p.Observe(1200, new[] { A }, None, inFlux: true));    // deferred to 2400
+            Assert.Empty(p.Observe(1900, new[] { A }, None, inFlux: true));    // deferred to 3100
+            Assert.Empty(p.Observe(2400, new[] { A }, None, false));           // still not due
+            Assert.Single(p.Observe(3100, new[] { A }, None, false));
         }
 
         [Theory]
@@ -204,7 +132,19 @@ namespace PadForge.Tests
             => Assert.Equal(expected, FlydigiReprobePolicy.NextHintValue(current));
 
         [Fact]
-        public void TheSwitchAndTheNudge_ShareOneLock_TakeTheJoystickLock_AndTheTickRunsOnBothLoops()
+        public void SdlHidEnumeration_Marshals_AgainstThisMachinesDevices()
+        {
+            // Any vendor, any usage page: the machine's own keyboard and mouse
+            // collections are enough to walk the native list end to end. The
+            // Flydigi filter on this bench is empty and must not throw.
+            var all = PadForge.Engine.SdlHidEnumeration.Paths(0, 0);
+            Assert.All(all, path => Assert.False(string.IsNullOrWhiteSpace(path)));
+            var flydigi = PadForge.Engine.SdlHidEnumeration.Paths(0x37D7, 0xFFA0);
+            Assert.NotNull(flydigi);
+        }
+
+        [Fact]
+        public void TheSwitchAndTheNudge_ShareOneLock_TakeTheJoystickLock_AndTheTickObservesPaths()
         {
             string im = File.ReadAllText(Path.Combine(RepoRoot(), "PadForge.App", "Common", "Input", "InputManager.cs"));
             int apply = im.IndexOf("public static void ApplyFlydigiEnhancedProtocol(bool enabled)", System.StringComparison.Ordinal);
@@ -219,9 +159,6 @@ namespace PadForge.Tests
             int gate = body.IndexOf("if (!_flydigiEnhancedDesired) return (false, null);", System.StringComparison.Ordinal);
             int write = body.IndexOf("WriteFlydigiHintUnderJoystickLock(next)", System.StringComparison.Ordinal);
             Assert.True(gate > 0 && write > gate, "the switch is read under the lock, before the write");
-            // The write itself holds SDL's joystick lock, so a concurrent
-            // HIDAPI re-evaluation on the UI pump cannot clear the change
-            // flag out from under it. Both anchors must exist, in order.
             int helper = im.IndexOf("private static bool WriteFlydigiHintUnderJoystickLock(string value)", System.StringComparison.Ordinal);
             Assert.True(helper > 0);
             string helperBody = im.Substring(helper, 500);
@@ -229,17 +166,20 @@ namespace PadForge.Tests
             int setAt = helperBody.IndexOf("SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_FLYDIGI, value)", System.StringComparison.Ordinal);
             int unlockAt = helperBody.IndexOf("finally { SDL_UnlockJoysticks(); }", System.StringComparison.Ordinal);
             Assert.True(lockAt > 0 && setAt > lockAt && unlockAt > setAt, "lock, write, unlock in finally");
-            // The tick follows both enumeration gates, so it runs every poll
-            // cycle and not on the 2 s or 5 s enumeration cadence.
             int idle = im.IndexOf("if (_enumerationTimer.ElapsedMilliseconds >= 5000)", System.StringComparison.Ordinal);
             int normal = im.IndexOf("if (firstCycle || _enumerationTimer.ElapsedMilliseconds >= EnumerationIntervalMs)", System.StringComparison.Ordinal);
             Assert.True(idle > 0 && normal > 0);
             Assert.Contains("FlydigiReprobeTick();", im.Substring(idle, 400));
             Assert.Contains("FlydigiReprobeTick();", im.Substring(normal, 600));
             string step1 = File.ReadAllText(Path.Combine(RepoRoot(), "PadForge.App", "Common", "Input", "InputManager.Step1.UpdateDevices.cs"));
-            Assert.Contains("_flydigiReprobe.OnArrival(wrapper.SdlInstanceId, wrapper.Backend == \"hidapi\", Environment.TickCount64);", step1);
-            Assert.Contains("_flydigiReprobe.OnDeparture(sdlId);", step1);
-            Assert.Contains("_flydigiReprobe.ShouldNudge(Environment.TickCount64)", step1);
+            int tick = step1.IndexOf("private void FlydigiReprobeTick()", System.StringComparison.Ordinal);
+            Assert.True(tick > 0);
+            string tickBody = step1.Substring(tick, 2600);
+            Assert.Contains("SdlHidEnumeration.Paths(0x37D7, 0xFFA0)", tickBody);
+            Assert.Contains("w.Backend == \"hidapi\"", tickBody);
+            Assert.Contains("!w.IsAttached", tickBody);
+            Assert.Contains("_flydigiReprobe.Observe(", tickBody);
+            Assert.DoesNotContain("OnArrival(", step1);
         }
 
         [Fact]
@@ -263,12 +203,12 @@ namespace PadForge.Tests
                 Assert.Equal(first.written, second.written);
                 if (first.written)
                 {
-                    Assert.Equal("true", first.value);      // "1" was just written by the switch
+                    Assert.Equal("true", first.value);
                     Assert.Equal("1", second.value);
                 }
                 else
                 {
-                    Assert.Equal("true", first.value);      // the cache did not move on a refused write
+                    Assert.Equal("true", first.value);
                     Assert.Equal("true", second.value);
                 }
             }

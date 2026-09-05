@@ -186,10 +186,6 @@ namespace PadForge.Common.Input
                         // whitelisted), beside SDL's own driver-outcome line.
                         FlydigiServiceWatch.Refresh();
                         _flydigiWatchTick = Environment.TickCount64;
-                        // A Flydigi pad whose vendor interface SDL did not claim
-                        // at arrival gets a second probe after its first second
-                        // (#395). See FlydigiReprobePolicy.
-                        _flydigiReprobe.OnArrival(wrapper.SdlInstanceId, wrapper.Backend == "hidapi", Environment.TickCount64);
                         Engine.SdlDiagLog.WriteLine(FlydigiServiceWatch.DescribeArrival(
                             wrapper.VendorId, wrapper.ProductId, instanceId, wrapper.Backend, wrapper.DevicePath,
                             FlydigiServiceWatch.Detail,
@@ -552,7 +548,6 @@ namespace PadForge.Common.Input
             foreach (uint sdlId in disconnectedIds)
             {
                 _openedSdlInstanceIds.Remove(sdlId);
-                _flydigiReprobe.OnDeparture(sdlId);
             }
 
             // #395: keep the Flydigi Space Station notice on the Devices page
@@ -578,30 +573,50 @@ namespace PadForge.Common.Input
         private long _flydigiWatchTick;
         private readonly FlydigiReprobePolicy _flydigiReprobe = new FlydigiReprobePolicy();
 
-        /// <summary>#395: a Flydigi pad present on XInput with no enhanced view
-        /// is a pad whose vendor probe failed at arrival (the reporter's logs
-        /// show two of three), and a slot bound to that view stays offline.
-        /// Ask SDL to probe again, a bounded number of times, by changing the
-        /// Flydigi hint's string without changing its meaning. Runs every
-        /// poll cycle on the polling thread, after the enumeration gate, so
-        /// the delay is the policy's and not the 2 s or 5 s enumeration
-        /// cadence. Only while the switch is on: off means the user does not
-        /// want the view, and the write itself is refused under the switch's
-        /// lock. Which connection is still missing its view is the policy's
-        /// business: it matches an enhanced arrival to its connection by
-        /// arrival order, since a count of views could not say whose view it
-        /// was. The recovery is bounded to pads PadForge has an ordinary view
-        /// of. The attached V2 views are listed in the line for the log's sake.</summary>
+        private long _flydigiObserveTick;
+
+        /// <summary>#395: a Flydigi pad whose vendor interface SDL did not claim
+        /// at arrival (the reporter's logs show two of three) has no enhanced
+        /// view, and a slot bound to that view stays offline. Ask SDL to probe
+        /// again, a bounded number of times, by changing the Flydigi hint's
+        /// string without changing its meaning. Runs every poll cycle on the
+        /// polling thread, after the enumeration gate, so the delay is the
+        /// policy's and not the 2 s or 5 s enumeration cadence. Only while the
+        /// switch is on: off means the user does not want the view, and the
+        /// write itself is refused under the switch's lock.
+        ///
+        /// <para>Which interface is unclaimed is observed, not guessed: SDL's
+        /// raw HID enumeration lists the vendor's 0xFFA0 interfaces by path,
+        /// and an attached enhanced wrapper carries the path of the interface
+        /// it claimed. The enumeration runs no more often than the policy's
+        /// delay, and only while PadForge has some Flydigi V2 wrapper or the
+        /// policy still tracks an interface, so an idle session costs
+        /// nothing. A detached Flydigi wrapper awaiting cleanup means the pad
+        /// is in flux, and the policy defers every deadline.</para></summary>
         private void FlydigiReprobeTick()
         {
-            if (!_flydigiReprobe.Armed || !FlydigiEnhancedProtocolDesired) return;
-            if (!_flydigiReprobe.ShouldNudge(Environment.TickCount64)) return;
-            var views = new System.Collections.Generic.List<string>();
+            if (!FlydigiEnhancedProtocolDesired) return;
+            long now = Environment.TickCount64;
+            if (now - _flydigiObserveTick < FlydigiReprobePolicy.DelayMs) return;
+            bool anyV2 = false, inFlux = false;
+            var claimed = new System.Collections.Generic.List<string>();
             foreach (var w in _openedSdlInstanceIds.Values)
-                if (w != null && w.IsAttached && w.VendorId == 0x37D7) views.Add(w.Backend);
+            {
+                if (w == null || w.VendorId != 0x37D7) continue;
+                anyV2 = true;
+                if (!w.IsAttached) { inFlux = true; continue; }
+                if (w.Backend == "hidapi" && !string.IsNullOrEmpty(w.DevicePath)) claimed.Add(w.DevicePath);
+            }
+            if (!anyV2 && _flydigiReprobe.Tracked == 0) return;
+            _flydigiObserveTick = now;
+            System.Collections.Generic.List<string> present;
+            try { present = Engine.SdlHidEnumeration.Paths(0x37D7, 0xFFA0); }
+            catch { return; }
+            var due = _flydigiReprobe.Observe(now, present, claimed, inFlux);
+            if (due.Count == 0) return;
             var (written, value) = TryFlydigiReprobeNudge();
             Engine.SdlDiagLog.WriteLine(
-                $"FLYDIGI reprobe attempt={_flydigiReprobe.LastAttempt}/{FlydigiReprobePolicy.MaxAttempts} views=[{string.Join(",", views)}] hint={value ?? "-"} written={written}");
+                $"FLYDIGI reprobe attempt={_flydigiReprobe.LastAttempt}/{FlydigiReprobePolicy.MaxAttempts} unclaimed={due.Count} present={present.Count} claimed={claimed.Count} flux={inFlux} hint={value ?? "-"} written={written} first={due[0]}");
         }
 
         // ─────────────────────────────────────────────

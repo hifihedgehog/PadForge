@@ -12,6 +12,11 @@ namespace PadForge.Tests
     /// the touch ball's constant-deceleration physics and reaches exactly
     /// zero.
     /// </summary>
+    // Touches SourceCoercion statics (the frame gate and the aim-engage
+    // provider). Serialized with every other class that does, or a parallel
+    // run can flip them under another class mid-assertion (seen once on
+    // 2026-09-05 in WorkshopV18ChannelTests, passed alone and on rerun).
+    [Collection("SettingsManagerStatics")]
     public class StickCoastTests
     {
         private const long Freq = 10_000_000;   // 100 ns ticks

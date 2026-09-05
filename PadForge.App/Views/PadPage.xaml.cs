@@ -2721,7 +2721,14 @@ namespace PadForge.Views
                 || e.PropertyName == nameof(PadForge.ViewModels.ExtendedSlotConfig.ThumbstickCount)
                 || e.PropertyName == nameof(PadForge.ViewModels.ExtendedSlotConfig.TriggerCount)
                 || e.PropertyName == nameof(PadForge.ViewModels.ExtendedSlotConfig.PovCount)
-                || e.PropertyName == nameof(PadForge.ViewModels.ExtendedSlotConfig.ButtonCount))
+                || e.PropertyName == nameof(PadForge.ViewModels.ExtendedSlotConfig.ButtonCount)
+                // The identity boxes read the config too. A profile switch
+                // that carries another VID/PID wrote them after the counts,
+                // and without these the boxes kept the outgoing ids, which a
+                // later focus loss on the box wrote back over the incoming
+                // profile's value (#395).
+                || e.PropertyName == nameof(PadForge.ViewModels.ExtendedSlotConfig.VendorId)
+                || e.PropertyName == nameof(PadForge.ViewModels.ExtendedSlotConfig.ProductId))
             {
                 SyncExtendedConfigBar();
             }

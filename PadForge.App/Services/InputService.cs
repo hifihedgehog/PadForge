@@ -8948,20 +8948,21 @@ namespace PadForge.Services
             // offline, moments before the countdown expired), the poll thread
             // has already cleared the fired latch and this teardown is STALE:
             // executing it would destroy the live VC of an active slot and
-            // cascade its siblings. The latch is the handshake.
-            if (!_inputManager.InactivityFireStillValid(padIndex))
+            // cascade its siblings. The latch is the handshake, and the engine
+            // re-checks it under the same lock the poll thread clears it
+            // under, then runs the teardown and the bubble-down cascade as
+            // one operation, so the check and the destroys cannot straddle a
+            // poll cycle.
+            var slotType = _mainVm.Pads[padIndex].OutputType;
+            bool tornDown = false;
+            try { tornDown = _inputManager.TryInactivityTeardown(padIndex, slotType); }
+            catch { /* best effort */ }
+            if (!tornDown)
             {
                 PadForge.Engine.SdlDiagLog.WriteLine(
                     $"VCTRACE slot={padIndex} stale inactivity teardown IGNORED (slot active again)");
                 return;
             }
-
-            var slotType = _mainVm.Pads[padIndex].OutputType;
-
-            try { _inputManager.DestroyVirtualControllerAsync(padIndex); }
-            catch { /* best effort */ }
-
-            RunBubbleDownCascadeFromPosition(padIndex, slotType);
 
             // Refresh UI status (slot will show as "awaiting devices").
             UpdatePadDeviceInfo();

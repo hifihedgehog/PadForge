@@ -463,6 +463,59 @@ namespace PadForge.Common.Input
         private readonly CustomControllerLayout[] _extendedAppliedLayout = new CustomControllerLayout[MaxPads];
 
         /// <summary>
+        /// The configuration a HIDMaestro controller under construction was
+        /// built with, written by the create worker on the thread pool and
+        /// copied into the applied arrays by <see cref="PublishExtendedApplied"/>
+        /// under the lifecycle lock when that controller wins its slot. The
+        /// applied arrays are read and moved by the reorder under the lock,
+        /// so the worker must not write them outside it.
+        /// </summary>
+        private readonly string[] _extendedPendingProductString = new string[MaxPads];
+        private readonly CustomControllerLayout[] _extendedPendingLayout = new CustomControllerLayout[MaxPads];
+        private readonly bool[] _extendedPendingFfbEnabled = new bool[MaxPads];
+        private readonly int[] _extendedPendingVendorId = new int[MaxPads];
+        private readonly int[] _extendedPendingProductId = new int[MaxPads];
+
+        /// <summary>
+        /// The Extended configuration a controller is built from, captured on
+        /// the polling thread under the lifecycle lock when the create is
+        /// kicked, and carried through construction into the applied state.
+        /// The worker never rereads the live Slot* arrays: the UI writes them
+        /// at any time, and a controller built from one value with applied
+        /// state recorded from a later value would never be rebuilt, which
+        /// can leave two pads on one VID/PID while the configuration names
+        /// two.
+        /// </summary>
+        private readonly struct ExtendedBuild
+        {
+            public readonly bool Customize;
+            public readonly bool OemEnabled;
+            public readonly string ProductString;
+            public readonly CustomControllerLayout Layout;
+            public readonly bool Ffb;
+            public readonly int Vid;
+            public readonly int Pid;
+            public ExtendedBuild(bool customize, bool oemEnabled, string productString, CustomControllerLayout layout, bool ffb, int vid, int pid)
+            {
+                Customize = customize; OemEnabled = oemEnabled; ProductString = productString;
+                Layout = layout; Ffb = ffb; Vid = vid; Pid = pid;
+            }
+        }
+
+        private ExtendedBuild CaptureExtendedBuild(int padIndex) => new ExtendedBuild(
+            SlotExtendedCustomize[padIndex], SlotOemOverrideEnabled[padIndex], SlotOemOverrideLabel[padIndex],
+            SlotCustomLayouts[padIndex], SlotExtendedFfbEnabled[padIndex], SlotExtendedVendorId[padIndex], SlotExtendedProductId[padIndex]);
+
+        /// <summary>
+        /// Set by <see cref="DestroyAllVirtualControllers"/> under the lifecycle
+        /// lock and cleared by every Step 5 cycle. A create worker that
+        /// finishes after the engine tore everything down (a shutdown past the
+        /// 30 s lifecycle wait) finds it set and disposes its result instead of
+        /// publishing a controller nothing will ever destroy.
+        /// </summary>
+        private bool _lifecycleClosed;
+
+        /// <summary>
         /// Per-slot Extended FFB-enabled flag. Pushed from
         /// <c>ExtendedConfig.ForceFeedbackEnabled</c> by InputService. Default
         /// true: existing slots keep the HID PID 1.0 force-feedback descriptor
@@ -533,7 +586,15 @@ namespace PadForge.Common.Input
                 {
                     if (claimed != 0)
                     {
-                        // Orphaned claim — release it so refs don't leak.
+                        // A create worker acquires the claim before Connect
+                        // and publishes its controller seconds later. Until
+                        // then the slot reads empty here, and releasing the
+                        // claim would strip the label while Windows is
+                        // enumerating the new device. Not an orphan while
+                        // that worker is in flight.
+                        var connecting = _pendingConnectTask[padIndex];
+                        if (connecting != null && !connecting.IsCompleted) continue;
+                        // Orphaned claim. Release it so refs don't leak.
                         ReleaseOemOverrideClaim(padIndex, claimed, "orphan-no-vc");
                     }
                     continue;
@@ -783,6 +844,28 @@ namespace PadForge.Common.Input
         private readonly System.Threading.Tasks.Task[] _pendingDisposeTask = new System.Threading.Tasks.Task[MaxPads];
 
         /// <summary>
+        /// One lock over virtual controller lifecycle state:
+        /// <see cref="_virtualControllers"/>, <see cref="_pendingDisposeTask"/>,
+        /// the per-VC applied-state arrays, and the inactivity latch.
+        /// <see cref="UpdateVirtualDevices"/> holds it for a whole cycle. The
+        /// UI-thread entries (<see cref="DestroyVirtualControllerAsync"/> from
+        /// the bubble-down cascades, <see cref="TryInactivityTeardown"/>,
+        /// <see cref="RerouteVirtualControllersForReorder"/>) each take it for
+        /// their whole change, so a cycle sees none or all of a caller's
+        /// stores. Before this, the cascade destroy nulled the slot pointer
+        /// and published the dispose task as two stores beside a running
+        /// cycle. A cycle between them saw an empty slot with no dispose
+        /// pending, and Pass 2 created the replacement while the old pad was
+        /// still on the bus. Two pads with one VID/PID attached at once shift
+        /// DirectInput's per-VID/PID instance GUID ordinal, and a game that
+        /// saved the temporary GUID is left pointing at a pad that no longer
+        /// reports it (discussion #395). A cycle holds the lock for
+        /// microseconds when nothing changes. HM creates and disposes run on
+        /// the thread pool, outside it.
+        /// </summary>
+        private readonly object _vcLifecycleLock = new object();
+
+        /// <summary>
         /// Per-slot async-connect tracker. Pass 2 hands the
         /// <c>CreateController</c> + <c>Connect</c> + <c>RegisterFeedbackCallback</c>
         /// chain to a thread-pool task and stores the task here so the
@@ -919,6 +1002,15 @@ namespace PadForge.Common.Input
         /// kernel assigns sequential indices matching the PadForge slot numbers.
         /// </summary>
         private void UpdateVirtualDevices()
+        {
+            lock (_vcLifecycleLock)
+            {
+                _lifecycleClosed = false;
+                UpdateVirtualDevicesLocked();
+            }
+        }
+
+        private void UpdateVirtualDevicesLocked()
         {
             if (!VirtualControllersEnabled)
                 return;
@@ -1374,7 +1466,15 @@ namespace PadForge.Common.Input
                 PadForge.Engine.SdlDiagLog.WriteLine(hb.ToString());
             }
 
-            if (anyNeedsCreate && !anyDisposePending && !anyConnectPending)
+            // The UI writes slot configuration (created, enabled, type,
+            // profile) outside the lifecycle lock, so a change can land after
+            // Pass 1 visited the slot it retires and before this point. That
+            // slot still holds its pad. Creating a sibling now would put two
+            // pads of one VID/PID on the bus at once. Wait one cycle: Pass 1
+            // retires it next time, and the dispose gate then holds.
+            bool anyRetiring = anyNeedsCreate && AnySlotRetiring();
+
+            if (anyNeedsCreate && !anyDisposePending && !anyConnectPending && !anyRetiring)
             {
                 for (int padIndex = 0; padIndex < MaxPads; padIndex++)
                 {
@@ -1427,19 +1527,13 @@ namespace PadForge.Common.Input
                             continue;
 
 
-                        // For Xbox profiles: ensure HIDMaestro context is up
-                        // (which runs RemoveAllVirtualControllers to clean
-                        // stale devices from prior sessions) BEFORE taking
-                        // the XInput slot snapshot. Otherwise the snapshot
-                        // includes old virtuals and the delta detection can't
-                        // find the new one.
-                        bool isMsSlot = SlotControllerTypes[padIndex] == VirtualControllerType.Xbox;
-                        if (isMsSlot) EnsureHMaestroContext();
-
-                        bool isHmSlot = slotType == VirtualControllerType.Xbox
-                                     || slotType == VirtualControllerType.PlayStation
-                                     || slotType == VirtualControllerType.Nintendo
-                                     || slotType == VirtualControllerType.Extended;
+                        // HIDMaestro context initialization (the stale device
+                        // sweep, profile load, driver install, seconds on a
+                        // first run) happens inside the create worker on the
+                        // thread pool, in CreateVirtualController. Never here:
+                        // this runs on the polling thread under the lifecycle
+                        // lock, and the XInput slot snapshot an inline call
+                        // once had to precede no longer exists.
 
                         // MIDI rides the same async chain: its Connect()
                         // drives Windows MIDI Services over WinRT RPC
@@ -1449,7 +1543,13 @@ namespace PadForge.Common.Input
                         // thread it wedged the engine and the close path
                         // (owner repro 2026-07-23). Only KeyboardMouse is
                         // genuinely cheap enough to build inline.
-                        if (isHmSlot || slotType == VirtualControllerType.Midi)
+                        // Every type rides the async chain, KeyboardMouse
+                        // included. Its own Connect is cheap, but the factory
+                        // then attaches a UserEffectsDispatcher whose ApplyOnce
+                        // writes to the physical pad, up to a second of
+                        // blocking HID output, and VR's first Connect registers
+                        // the SteamVR driver. The polling thread holds the
+                        // lifecycle lock here and must not wait on either.
                         {
                             // Visual-order gate: only kick off the create for
                             // the visually-highest eligible HM slot in this
@@ -1552,13 +1652,14 @@ namespace PadForge.Common.Input
                             int capturedIndex = padIndex;
                             var capturedType = slotType;
                             var capturedProfile = SlotProfileIds[padIndex];
+                            var capturedBuild = CaptureExtendedBuild(padIndex);
                             PadForge.Engine.SdlDiagLog.WriteLine(
                                 $"VCTRACE slot={padIndex} async create KICK type={slotType}");
                             _pendingConnectTask[padIndex] = System.Threading.Tasks.Task.Run(() =>
                             {
                                 try
                                 {
-                                    var vcAsync = CreateVirtualController(capturedIndex);
+                                    var vcAsync = CreateVirtualController(capturedIndex, capturedType, capturedProfile, capturedBuild);
                                     PadForge.Engine.SdlDiagLog.WriteLine(
                                         $"VCTRACE slot={capturedIndex} async create RESULT vc={(vcAsync == null ? "null" : vcAsync.GetType().Name)} connected={vcAsync?.IsConnected ?? false}");
                                     if (vcAsync != null && vcAsync.IsConnected)
@@ -1581,9 +1682,39 @@ namespace PadForge.Common.Input
                                         // clear-to-repopulate gap: that VC now
                                         // loses the swap and tears itself down
                                         // instead of displacing the real one.
-                                        var prior = System.Threading.Interlocked.CompareExchange(
-                                            ref _virtualControllers[capturedIndex], vcAsync, null);
-                                        if (prior != null)
+                                        // Under the lifecycle lock: the reorder
+                                        // snapshots and rewrites this array under
+                                        // it, and a publication beside that
+                                        // rewrite let the reorder's plain store
+                                        // overwrite a just-published controller,
+                                        // which then lived on the bus with no
+                                        // handle in any slot. The applied-state
+                                        // arrays the reorder moves are published
+                                        // in the same critical section.
+                                        IVirtualController prior = null;
+                                        bool closed;
+                                        lock (_vcLifecycleLock)
+                                        {
+                                            closed = _lifecycleClosed;
+                                            if (!closed)
+                                            {
+                                                prior = System.Threading.Interlocked.CompareExchange(
+                                                    ref _virtualControllers[capturedIndex], vcAsync, null);
+                                                if (prior == null) PublishExtendedApplied(capturedIndex);
+                                            }
+                                        }
+                                        if (closed)
+                                        {
+                                            // The engine tore everything down
+                                            // while this create was running.
+                                            // Nothing would ever destroy a
+                                            // controller published now.
+                                            PadForge.Engine.SdlDiagLog.WriteLine(
+                                                $"VCTRACE slot={capturedIndex} async create finished after teardown, disposing");
+                                            try { vcAsync.Dispose(); }
+                                            catch { /* best effort */ }
+                                        }
+                                        else if (prior != null)
                                         {
                                             try { vcAsync.Dispose(); }
                                             catch { /* best effort */ }
@@ -1685,33 +1816,6 @@ namespace PadForge.Common.Input
                             // this one completes, preserving the
                             // ascending-kernel-slot allocation guarantee.
                             break;
-                        }
-                        else
-                        {
-                            // KeyboardMouse only. Genuinely cheap, no
-                            // driver or service bring-up.
-                            var vc = CreateVirtualController(padIndex);
-                            _virtualControllers[padIndex] = vc;
-
-                            if (vc != null && vc.IsConnected)
-                            {
-                                _slotInitializing[padIndex] = false;
-                                break;
-                            }
-                            else if (vc == null)
-                            {
-                                LatchCreateFailed(padIndex);
-                                _slotInitializing[padIndex] = false;
-                            }
-                            else
-                            {
-                                // Created but not connected — dispose and latch
-                                // failure so we don't loop on the next cycle.
-                                try { vc.Dispose(); } catch { /* best effort */ }
-                                _virtualControllers[padIndex] = null;
-                                LatchCreateFailed(padIndex);
-                                _slotInitializing[padIndex] = false;
-                            }
                         }
                     }
                 }
@@ -2232,10 +2336,17 @@ namespace PadForge.Common.Input
             _ => null
         };
 
-        private IVirtualController CreateVirtualController(int padIndex)
+        /// <summary>Builds and connects the controller for a slot. The type
+        /// is the caller's captured decision, not a fresh read of
+        /// <see cref="SlotControllerTypes"/>: the UI can change the type
+        /// between the decision and this call, and the polling thread's
+        /// inline path must not find itself building a MIDI controller,
+        /// whose Connect waits on the MIDI service, under the lifecycle
+        /// lock. A controller built for a type the slot no longer has is
+        /// retired by Pass 1's type check on the next cycle.</summary>
+        private IVirtualController CreateVirtualController(int padIndex, VirtualControllerType controllerType,
+            string capturedProfileId, in ExtendedBuild build)
         {
-            var controllerType = SlotControllerTypes[padIndex];
-
             // MIDI and KeyboardMouse stay on their dedicated implementations.
             // Xbox / PlayStation / Nintendo / Extended route through HIDMaestro.
             if (controllerType == VirtualControllerType.Xbox
@@ -2251,10 +2362,10 @@ namespace PadForge.Common.Input
             }
 
             // Resolve the per-slot HIDMaestro profile slug, falling back to
-            // the category default if the slot has no explicit selection.
-            string slotProfileId = SlotProfileIds[padIndex];
-            string profileId = !string.IsNullOrEmpty(slotProfileId)
-                ? slotProfileId
+            // the category default if the slot has no explicit selection. The
+            // slug is the caller's capture, taken with the type and the build.
+            string profileId = !string.IsNullOrEmpty(capturedProfileId)
+                ? capturedProfileId
                 : GetDefaultProfileId(controllerType);
 
             IVirtualController vc = null;
@@ -2262,10 +2373,10 @@ namespace PadForge.Common.Input
             {
                 vc = controllerType switch
                 {
-                    VirtualControllerType.Xbox => CreateHMaestroController(VirtualControllerType.Xbox, profileId, padIndex),
-                    VirtualControllerType.PlayStation => CreateHMaestroController(VirtualControllerType.PlayStation, profileId, padIndex),
-                    VirtualControllerType.Extended => CreateHMaestroController(VirtualControllerType.Extended, profileId, padIndex),
-                    VirtualControllerType.Nintendo => CreateHMaestroController(VirtualControllerType.Nintendo, profileId, padIndex),
+                    VirtualControllerType.Xbox => CreateHMaestroController(VirtualControllerType.Xbox, profileId, padIndex, in build),
+                    VirtualControllerType.PlayStation => CreateHMaestroController(VirtualControllerType.PlayStation, profileId, padIndex, in build),
+                    VirtualControllerType.Extended => CreateHMaestroController(VirtualControllerType.Extended, profileId, padIndex, in build),
+                    VirtualControllerType.Nintendo => CreateHMaestroController(VirtualControllerType.Nintendo, profileId, padIndex, in build),
                     VirtualControllerType.Midi => CreateMidiController(padIndex),
                     VirtualControllerType.KeyboardMouse => new KeyboardMouseVirtualController(padIndex),
                     VirtualControllerType.Vr => new HMaestroVRController(),
@@ -2280,12 +2391,12 @@ namespace PadForge.Common.Input
                 // pass at the top of UpdateVirtualDevices handles subsequent
                 // toggles and edits; this is the initial acquisition.
                 if (controllerType == VirtualControllerType.Extended
-                    && SlotOemOverrideEnabled[padIndex]
+                    && build.OemEnabled
                     && vc is HMaestroVirtualController hmOem)
                 {
                     ushort vid = hmOem.ProfileVendorId;
                     ushort pid = hmOem.ProfileProductId;
-                    string label = SlotOemOverrideLabel[padIndex];
+                    string label = build.ProductString;
                     if (!string.IsNullOrEmpty(label) && vid != 0 && pid != 0)
                         TryAcquireOemOverrideClaim(padIndex, vid, pid, label);
                 }
@@ -2365,7 +2476,7 @@ namespace PadForge.Common.Input
         ///     only re-shaped the PadForge mapping grid without affecting
         ///     the real device.
         /// </summary>
-        private IVirtualController CreateHMaestroController(VirtualControllerType type, string profileId, int padIndex)
+        private IVirtualController CreateHMaestroController(VirtualControllerType type, string profileId, int padIndex, in ExtendedBuild build)
         {
             if (_hmaestroContext == null)
             {
@@ -2386,14 +2497,14 @@ namespace PadForge.Common.Input
 
             HMProfile effectiveProfile = baseProfile;
 
-            if (type == VirtualControllerType.Extended && SlotExtendedCustomize[padIndex])
+            if (type == VirtualControllerType.Extended && build.Customize)
             {
-                string userProductString = SlotOemOverrideLabel[padIndex];
+                string userProductString = build.ProductString;
                 bool productStringOverrides =
                     !string.IsNullOrEmpty(userProductString)
                     && !string.Equals(userProductString, baseProfile.ProductString, StringComparison.Ordinal);
 
-                var layout = SlotCustomLayouts[padIndex];
+                var layout = build.Layout;
                 int userSticks = layout.Sticks;
                 int userTriggers = layout.Triggers;
                 int userPovs = layout.Povs;
@@ -2428,14 +2539,14 @@ namespace PadForge.Common.Input
                 // user enabled the FFB checkbox: ffbOverrides was false,
                 // descriptor was reused as-is, and a no-FFB catalog
                 // descriptor stayed no-FFB regardless of the toggle.
-                bool forceFeedbackEnabled = SlotExtendedFfbEnabled[padIndex];
+                bool forceFeedbackEnabled = build.Ffb;
                 bool ffbOverrides = true;
 
                 // VID/PID override (0 = use the profile's value). Counts as an
                 // override only when non-zero AND different from the base profile,
                 // so re-displaying the profile's own VID/PID doesn't force a rebuild.
-                int userVid = SlotExtendedVendorId[padIndex];
-                int userPid = SlotExtendedProductId[padIndex];
+                int userVid = build.Vid;
+                int userPid = build.Pid;
                 bool vidPidOverrides =
                     (userVid > 0 && userVid != baseProfile.VendorId)
                     || (userPid > 0 && userPid != baseProfile.ProductId);
@@ -2501,14 +2612,28 @@ namespace PadForge.Common.Input
 
             // Record what configuration this VC was built with so Pass 1 can
             // detect config deltas and trigger a rebuild when the user edits
-            // the Extended override fields on a live slot.
-            _extendedAppliedProductString[padIndex] = SlotOemOverrideLabel[padIndex] ?? string.Empty;
-            _extendedAppliedLayout[padIndex] = SlotCustomLayouts[padIndex];
-            _extendedAppliedFfbEnabled[padIndex] = SlotExtendedFfbEnabled[padIndex];
-            _extendedAppliedVendorId[padIndex] = SlotExtendedVendorId[padIndex];
-            _extendedAppliedProductId[padIndex] = SlotExtendedProductId[padIndex];
+            // the Extended override fields on a live slot. Pending until the
+            // worker wins the slot and publishes under the lifecycle lock.
+            _extendedPendingProductString[padIndex] = build.ProductString ?? string.Empty;
+            _extendedPendingLayout[padIndex] = build.Layout;
+            _extendedPendingFfbEnabled[padIndex] = build.Ffb;
+            _extendedPendingVendorId[padIndex] = build.Vid;
+            _extendedPendingProductId[padIndex] = build.Pid;
 
             return new HMaestroVirtualController(_hmaestroContext, effectiveProfile, type);
+        }
+
+        /// <summary>Copies the configuration a just-published HIDMaestro
+        /// controller was built with into the applied arrays Pass 1 compares
+        /// against. Called under the lifecycle lock, right after the
+        /// controller won its slot.</summary>
+        private void PublishExtendedApplied(int padIndex)
+        {
+            _extendedAppliedProductString[padIndex] = _extendedPendingProductString[padIndex];
+            _extendedAppliedLayout[padIndex] = _extendedPendingLayout[padIndex];
+            _extendedAppliedFfbEnabled[padIndex] = _extendedPendingFfbEnabled[padIndex];
+            _extendedAppliedVendorId[padIndex] = _extendedPendingVendorId[padIndex];
+            _extendedAppliedProductId[padIndex] = _extendedPendingProductId[padIndex];
         }
 
         /// <summary>
@@ -2544,15 +2669,56 @@ namespace PadForge.Common.Input
             => DestroyVirtualController(padIndex, asyncDispose: false);
 
         /// <summary>
-        /// Public entry point for the bubble-up cascade in InputService.
-        /// Tears down the slot's VC asynchronously so the polling thread is
-        /// not blocked, and Pass 2 picks up the now-null slot to recreate
-        /// once any pending dispose has finished.
+        /// Entry point for the bubble-down cascades in InputService, called
+        /// from the UI thread. Tears down the slot's VC asynchronously so no
+        /// thread blocks on HIDMaestro, under the lifecycle lock, so the slot
+        /// reads as empty and its dispose reads as pending together, and
+        /// Pass 2 waits for that dispose before it creates anything.
         /// </summary>
         public void DestroyVirtualControllerAsync(int padIndex)
         {
             if (padIndex < 0 || padIndex >= MaxPads) return;
-            DestroyVirtualController(padIndex, asyncDispose: true);
+            lock (_vcLifecycleLock) DestroyVirtualController(padIndex, asyncDispose: true);
+        }
+
+        /// <summary>
+        /// The inactivity teardown, from the UI thread, as one operation
+        /// under the lifecycle lock: the fired latch is re-checked under the
+        /// same lock the polling thread clears it under, so a device that
+        /// came back in the dispatcher hop vetoes the whole teardown, not
+        /// just its first half. When the latch holds, the slot's VC is torn
+        /// down and every HM VC at a strictly higher position in the same
+        /// group's order follows it (the bubble-down cascade), so Pass 2
+        /// recreates them in ascending position order once every dispose
+        /// has finished. Returns false when nothing was done: the latch was
+        /// cleared, or the index is out of range.
+        /// </summary>
+        public bool TryInactivityTeardown(int padIndex, VirtualControllerType slotType)
+        {
+            if (padIndex < 0 || padIndex >= MaxPads) return false;
+            lock (_vcLifecycleLock)
+            {
+                if (!InactivityFireStillValid(padIndex)) return false;
+                DestroyVirtualController(padIndex, asyncDispose: true);
+                if (slotType == VirtualControllerType.Xbox
+                    || slotType == VirtualControllerType.PlayStation
+                    || slotType == VirtualControllerType.Nintendo
+                    || slotType == VirtualControllerType.Extended)
+                {
+                    var order = SettingsManager.SlotOrders.GetOrderSnapshotFor(slotType);
+                    int pos = Array.IndexOf(order, padIndex);
+                    if (pos >= 0)
+                    {
+                        for (int p = pos + 1; p < order.Length; p++)
+                        {
+                            int higher = order[p];
+                            if (!IsHmVcAt(higher)) continue;
+                            DestroyVirtualController(higher, asyncDispose: true);
+                        }
+                    }
+                }
+                return true;
+            }
         }
 
         /// <summary>
@@ -2571,6 +2737,31 @@ namespace PadForge.Common.Input
         {
             if (padIndex < 0 || padIndex >= MaxPads) return false;
             return _virtualControllers[padIndex] is HMaestroVirtualController;
+        }
+
+        /// <summary>
+        /// True while any slot still holds a controller the live configuration
+        /// says must go: the slot was deleted or disabled, its type changed, or
+        /// its HIDMaestro profile changed. Pass 1 retires such a slot on its
+        /// next visit. Pass 2 asks before creating anything (see the gate
+        /// there). Sixteen array reads, called under the lifecycle lock.
+        /// </summary>
+        internal bool AnySlotRetiring()
+        {
+            for (int i = 0; i < MaxPads; i++)
+            {
+                var vc = _virtualControllers[i];
+                if (vc == null) continue;
+                if (!SettingsManager.SlotCreated[i] || !SettingsManager.SlotEnabled[i]) return true;
+                if (!IsSlotActive(i) && !HasAnyDeviceMapped(i)) return true;
+                if (vc.Type != SlotControllerTypes[i]) return true;
+                if (vc is HMaestroVirtualController hm)
+                {
+                    string desired = SlotProfileIds[i];
+                    if (!string.IsNullOrEmpty(desired) && !string.Equals(desired, hm.ProfileId, StringComparison.Ordinal)) return true;
+                }
+            }
+            return false;
         }
 
         /// <summary>
@@ -2640,6 +2831,18 @@ namespace PadForge.Common.Input
         /// per rule (i).
         /// </summary>
         public void RerouteVirtualControllersForReorder(
+            VirtualControllerType groupType,
+            IReadOnlyList<int> oldOrder,
+            IReadOnlyList<int> newOrder)
+        {
+            // Runs on the UI thread. The lifecycle lock keeps a Step 5 cycle
+            // from reading the arrangement half written, and keeps this
+            // method's destroys from landing after a cycle's Pass 2 gate
+            // check and before its creates.
+            lock (_vcLifecycleLock) RerouteVirtualControllersForReorderLocked(groupType, oldOrder, newOrder);
+        }
+
+        private void RerouteVirtualControllersForReorderLocked(
             VirtualControllerType groupType,
             IReadOnlyList<int> oldOrder,
             IReadOnlyList<int> newOrder)
@@ -3015,13 +3218,12 @@ namespace PadForge.Common.Input
 
             if (asyncDispose)
             {
-                // Null the pointer so Step 5 / Dashboard see the slot as empty
-                // immediately. The captured `vc` is disposed in the background.
-                // Track the task so Pass 2 can skip creation until every
-                // pending dispose has finished. This preserves ascending-
+                // Publish the dispose task, then empty the slot. Pass 2 gates
+                // creation on the task, so a reader that finds the slot empty
+                // must already find the task pending. The captured `vc` is
+                // disposed in the background. This preserves ascending-
                 // slot-order kernel allocation.
-                _virtualControllers[padIndex] = null;
-                _pendingDisposeTask[padIndex] = System.Threading.Tasks.Task.Run(() =>
+                var disposeTask = System.Threading.Tasks.Task.Run(() =>
                 {
                     try
                     {
@@ -3035,6 +3237,15 @@ namespace PadForge.Common.Input
                     }
                     catch { /* best effort */ }
                 });
+                // A slot can be emptied, refilled by a reorder, and emptied
+                // again while the first dispose still runs. The gate reads one
+                // task per slot, so an overwrite would drop the first dispose
+                // from the record while its pad is still on the bus. Chain.
+                var earlier = _pendingDisposeTask[padIndex];
+                _pendingDisposeTask[padIndex] = (earlier != null && !earlier.IsCompleted)
+                    ? System.Threading.Tasks.Task.WhenAll(earlier, disposeTask)
+                    : disposeTask;
+                _virtualControllers[padIndex] = null;
             }
             else
             {
@@ -3079,14 +3290,20 @@ namespace PadForge.Common.Input
 
         private void DestroyAllVirtualControllers()
         {
-            for (int i = 0; i < MaxPads; i++)
+            lock (_vcLifecycleLock)
             {
-                // MIDI teardown talks to Windows MIDI Services (WinRT); a
-                // hung service must not hang Stop. HM teardown stays
-                // synchronous and ordered (kernel-slot semantics).
-                DestroyVirtualController(i,
-                    asyncDispose: _virtualControllers[i] is MidiVirtualController);
-                _virtualControllers[i] = null;
+                // A create worker still running past the lifecycle wait
+                // must not publish into the slots emptied here.
+                _lifecycleClosed = true;
+                for (int i = 0; i < MaxPads; i++)
+                {
+                    // MIDI teardown talks to Windows MIDI Services (WinRT); a
+                    // hung service must not hang Stop. HM teardown stays
+                    // synchronous and ordered (kernel-slot semantics).
+                    DestroyVirtualController(i,
+                        asyncDispose: _virtualControllers[i] is MidiVirtualController);
+                    _virtualControllers[i] = null;
+                }
             }
         }
 

@@ -189,7 +189,7 @@ namespace PadForge.Common.Input
                         // A Flydigi pad whose vendor interface SDL did not claim
                         // at arrival gets a second probe after its first second
                         // (#395). See FlydigiReprobePolicy.
-                        _flydigiReprobe.OnArrival(wrapper.Backend == "hidapi", Environment.TickCount64);
+                        _flydigiReprobe.OnArrival(wrapper.SdlInstanceId, wrapper.Backend == "hidapi", Environment.TickCount64);
                         Engine.SdlDiagLog.WriteLine(FlydigiServiceWatch.DescribeArrival(
                             wrapper.VendorId, wrapper.ProductId, instanceId, wrapper.Backend, wrapper.DevicePath,
                             FlydigiServiceWatch.Detail,
@@ -552,6 +552,7 @@ namespace PadForge.Common.Input
             foreach (uint sdlId in disconnectedIds)
             {
                 _openedSdlInstanceIds.Remove(sdlId);
+                _flydigiReprobe.OnDeparture(sdlId);
             }
 
             // #395: keep the Flydigi Space Station notice on the Devices page
@@ -566,33 +567,6 @@ namespace PadForge.Common.Input
                     MarkChanged(ref changed, "flydigi", $"service running=[{FlydigiServiceWatch.Running}]");
             }
 
-            // #395: a Flydigi pad present on XInput with no enhanced view is
-            // a pad whose vendor probe failed at arrival (the user's logs show
-            // two of three), and the slot bound to that view stays offline.
-            // Ask SDL to probe again, up to three times, by changing the
-            // Flydigi hint's string without changing its meaning. Only while
-            // the switch is on: off means the user does not want the view.
-            if (_flydigiReprobe.Armed && FlydigiEnhancedProtocolDesired)
-            {
-                bool anyFlydigi = false, enhanced = false;
-                var views = new System.Collections.Generic.List<string>();
-                foreach (var w in _openedSdlInstanceIds.Values)
-                {
-                    if (w == null || !FlydigiServiceWatch.IsFlydigiDevice(w.VendorId, w.ProductId)) continue;
-                    anyFlydigi = true;
-                    views.Add(w.Backend);
-                    if (w.Backend == "hidapi") enhanced = true;
-                }
-                if (_flydigiReprobe.ShouldNudge(flydigiNow, anyFlydigi, enhanced))
-                {
-                    string next = FlydigiReprobePolicy.NextHintValue(_flydigiHintValue);
-                    bool accepted;
-                    try { accepted = SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_FLYDIGI, next); } catch { accepted = false; }
-                    if (accepted) _flydigiHintValue = next;
-                    Engine.SdlDiagLog.WriteLine(
-                        $"FLYDIGI reprobe attempt={_flydigiReprobe.Attempts}/{FlydigiReprobePolicy.MaxAttempts} views=[{string.Join(",", views)}] hint={next} accepted={accepted}");
-                }
-            }
 
             // --- Notify if anything changed ---
             if (changed)
@@ -603,6 +577,36 @@ namespace PadForge.Common.Input
 
         private long _flydigiWatchTick;
         private readonly FlydigiReprobePolicy _flydigiReprobe = new FlydigiReprobePolicy();
+
+        /// <summary>#395: a Flydigi pad present on XInput with no enhanced view
+        /// is a pad whose vendor probe failed at arrival (the reporter's logs
+        /// show two of three), and a slot bound to that view stays offline.
+        /// Ask SDL to probe again, a bounded number of times, by changing the
+        /// Flydigi hint's string without changing its meaning. Runs every
+        /// poll cycle on the polling thread, after the enumeration gate, so
+        /// the delay is the policy's and not the 2 s or 5 s enumeration
+        /// cadence. Only while the switch is on: off means the user does not
+        /// want the view, and the write itself is refused under the switch's
+        /// lock. The census counts views: one XInput view per physical pad,
+        /// one hidapi view per pad with its enhanced view. The recovery is
+        /// bounded to pads PadForge has an ordinary view of.</summary>
+        private void FlydigiReprobeTick()
+        {
+            if (!_flydigiReprobe.Armed || !FlydigiEnhancedProtocolDesired) return;
+            int xinput = 0, hidapi = 0;
+            var views = new System.Collections.Generic.List<string>();
+            foreach (var w in _openedSdlInstanceIds.Values)
+            {
+                if (w == null || !FlydigiServiceWatch.IsFlydigiDevice(w.VendorId, w.ProductId)) continue;
+                views.Add(w.Backend);
+                if (w.Backend == "xinput") xinput++;
+                else if (w.Backend == "hidapi") hidapi++;
+            }
+            if (!_flydigiReprobe.ShouldNudge(Environment.TickCount64, xinput, hidapi)) return;
+            var (written, value) = TryFlydigiReprobeNudge();
+            Engine.SdlDiagLog.WriteLine(
+                $"FLYDIGI reprobe attempt={_flydigiReprobe.Attempts}/{FlydigiReprobePolicy.MaxAttempts} views=[{string.Join(",", views)}] hint={value ?? "-"} written={written}");
+        }
 
         // ─────────────────────────────────────────────
         //  UserDevice lookup helpers

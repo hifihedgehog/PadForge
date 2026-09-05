@@ -1207,20 +1207,46 @@ namespace PadForge.Common.Input
             // state lives here and InitializeSdl replays it before every
             // SDL_Init. The hint's acceptance is logged because an environment
             // variable can outrank a normal-priority hint without throwing.
-            _flydigiEnhancedDesired = enabled;
+            // Under the same lock as the re-probe's write (#395), so the switch
+            // going off can never be overwritten by a nudge that read it on.
             bool accepted;
-            try { accepted = SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_FLYDIGI, enabled ? "1" : "0"); }
-            catch { accepted = false; }
-            if (accepted) _flydigiHintValue = enabled ? "1" : "0";
+            lock (_flydigiHintLock)
+            {
+                _flydigiEnhancedDesired = enabled;
+                try { accepted = SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_FLYDIGI, enabled ? "1" : "0"); }
+                catch { accepted = false; }
+                if (accepted) _flydigiHintValue = enabled ? "1" : "0";
+            }
             Engine.SdlDiagLog.WriteLine($"FLYDIGI hint {SDL_HINT_JOYSTICK_HIDAPI_FLYDIGI}={(enabled ? 1 : 0)} accepted={accepted}");
         }
 
+        /// <summary>One write to the Flydigi hint for a re-probe (#395): the
+        /// switch is read, the alternated string written and recorded, all
+        /// under the lock the switch itself takes. Returns whether SDL took
+        /// the write and what was written. Nothing is written while the
+        /// switch is off.</summary>
+        internal static (bool written, string value) TryFlydigiReprobeNudge()
+        {
+            lock (_flydigiHintLock)
+            {
+                if (!_flydigiEnhancedDesired) return (false, null);
+                string next = FlydigiReprobePolicy.NextHintValue(_flydigiHintValue);
+                bool accepted;
+                try { accepted = SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_FLYDIGI, next); }
+                catch { accepted = false; }
+                if (accepted) _flydigiHintValue = next;
+                return (accepted, next);
+            }
+        }
+
+        private static readonly object _flydigiHintLock = new object();
         private static volatile bool _flydigiEnhancedDesired = true;
         /// <summary>The string last written to the Flydigi hint (#395). The
         /// re-probe alternates it between "1" and "true", which SDL reads as
         /// the same boolean, so its callback fires and unclaimed devices are
-        /// probed again while claimed ones are left alone.</summary>
-        private static volatile string _flydigiHintValue = "1";
+        /// probed again while claimed ones are left alone. Written only
+        /// under <see cref="_flydigiHintLock"/>.</summary>
+        private static string _flydigiHintValue = "1";
 
         /// <summary>The switch's recorded state, replayed by InitializeSdl.</summary>
         public static bool FlydigiEnhancedProtocolDesired => _flydigiEnhancedDesired;
@@ -1490,6 +1516,7 @@ namespace PadForge.Common.Input
                                 _enumerationTimer.Restart();
                                 UpdateDevices();
                             }
+                            FlydigiReprobeTick();
 
                             // Read input states even in idle mode so the Devices
                             // page preview works for unassigned devices.
@@ -1620,6 +1647,7 @@ namespace PadForge.Common.Input
                             UpdateDevices();
                             enumMs = (Stopwatch.GetTimestamp() - tsEnum) * 1000 / Stopwatch.Frequency;
                         }
+                        FlydigiReprobeTick();
 
                         UpdateInputStates();
                         // Remote Link (#138): fold this tick's fresh snapshots

@@ -9765,6 +9765,9 @@ namespace PadForge.Services
             // the reader on the device's owner, and a peer's demand arms ours.
             RemoteLinkOutputRouter.SendSourceDemand = (fp, slot, payload) => _linkServer?.PushSourceDemand(fp, slot, payload);
             _linkServer.OutputReceived += OnRemoteOutputReceived;
+            // A peer's last session dropped: release the output ownership it held
+            // on local shared devices (#402), so a rumble it left running ends.
+            _linkServer.PeerDropped += RemoteLinkOutputRouter.ReleasePeer;
             _linkServer.AudioReceived += OnRemoteAudioReceived;
             _linkServer.SourceDemandReceived += OnRemoteSourceDemandReceived;
             _linkServer.DeviceConnected += device =>
@@ -10684,6 +10687,11 @@ namespace PadForge.Services
                     }
                 }
 
+                // A device no longer shared out releases any peer ownership of its
+                // output (#402): a peer cannot hold what it can no longer reach.
+                foreach (var old in _remoteLinkExposedSnapshot)
+                    if (old.ud != null && !sources.Any(s => ReferenceEquals(s.Item3, old.ud)))
+                        RemoteLinkOutputRouter.ReleaseDevice(old.ud.DevicePath);
                 _remoteLinkExposed.Clear();
                 _remoteLinkExposed.AddRange(sources);
                 _remoteLinkExposedSnapshot = sources.ToArray();
@@ -10836,7 +10844,7 @@ namespace PadForge.Services
             // rumble/lightbar for OutputLeaseMs.
             if (effect.Kind != OutputEffectCodec.Kind.PlayerIndex
                 && effect.Kind != OutputEffectCodec.Kind.GuideLed)
-                RemoteLinkOutputRouter.ClaimOutput(ud?.DevicePath ?? source.DevicePath);
+                RemoteLinkOutputRouter.ClaimOutput(ud?.DevicePath ?? source.DevicePath, peerFingerprint);
             try
             {
                 var handle = source.GamepadHandle;

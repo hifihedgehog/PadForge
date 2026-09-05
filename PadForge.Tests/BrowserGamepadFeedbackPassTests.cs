@@ -86,6 +86,75 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void APeerThatLeaves_ReleasesItsOwnership_AndTheStopRunsOnce()
+        {
+            // The peer's last session dropped without a zero. Its ownership is
+            // released by fingerprint, and the next pass ends what it left.
+            var saved = SettingsManager.UserSettings;
+            try
+            {
+                SettingsManager.UserSettings = new SettingsCollection();
+                var (ud, _, sent) = Rumbling("fb-" + Guid.NewGuid().ToString("N"));
+                string peer = "fp-" + Guid.NewGuid().ToString("N");
+                RemoteLinkOutputRouter.ClaimOutput(ud.DevicePath, peer);
+                var lease = (System.Collections.Concurrent.ConcurrentDictionary<string, long>)
+                    typeof(RemoteLinkOutputRouter).GetField("_outputLease", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
+                lease[ud.DevicePath] = Environment.TickCount64 - 10_000;
+                RunFeedbackPass(new InputManager(), ud);
+                Assert.Empty(sent);                                         // still the peer's
+                RemoteLinkOutputRouter.ReleasePeer("fp-someone-else");
+                Assert.True(RemoteLinkOutputRouter.PeerWroteLast(ud.DevicePath));   // another peer's drop is not ours
+                RemoteLinkOutputRouter.ReleasePeer(peer.ToUpperInvariant());        // fingerprints compare case-insensitively
+                Assert.False(RemoteLinkOutputRouter.PeerWroteLast(ud.DevicePath));
+                RunFeedbackPass(new InputManager(), ud);
+                Assert.Equal(new[] { ((ushort)0, (ushort)0) }, sent);
+                Assert.False(ud.ForceFeedbackState.IsActive);
+            }
+            finally { SettingsManager.UserSettings = saved; }
+        }
+
+        [Fact]
+        public void ADeviceNoLongerShared_ReleasesItsOwnership()
+        {
+            var saved = SettingsManager.UserSettings;
+            try
+            {
+                SettingsManager.UserSettings = new SettingsCollection();
+                var (ud, _, sent) = Rumbling("fb-" + Guid.NewGuid().ToString("N"));
+                RemoteLinkOutputRouter.ClaimOutput(ud.DevicePath, "fp-x");
+                Assert.True(RemoteLinkOutputRouter.IsClaimedByPeer(ud.DevicePath));
+                RemoteLinkOutputRouter.ReleaseDevice(ud.DevicePath);
+                Assert.False(RemoteLinkOutputRouter.IsClaimedByPeer(ud.DevicePath));  // the lease goes with it
+                Assert.False(RemoteLinkOutputRouter.PeerWroteLast(ud.DevicePath));
+                RunFeedbackPass(new InputManager(), ud);
+                Assert.Single(sent);
+            }
+            finally { SettingsManager.UserSettings = saved; }
+        }
+
+        [Fact]
+        public void TheReleasesAreWired_AtThePeerDrop_TheUnshare_AndTheClaim()
+        {
+            string svc = System.IO.File.ReadAllText(System.IO.Path.Combine(RepoRoot(), "PadForge.App", "Services", "InputService.cs"));
+            Assert.Contains("_linkServer.PeerDropped += RemoteLinkOutputRouter.ReleasePeer;", svc);
+            Assert.Contains("RemoteLinkOutputRouter.ReleaseDevice(old.ud.DevicePath);", svc);
+            Assert.Contains("RemoteLinkOutputRouter.ClaimOutput(ud?.DevicePath ?? source.DevicePath, peerFingerprint);", svc);
+            string link = System.IO.File.ReadAllText(System.IO.Path.Combine(RepoRoot(), "PadForge.Engine", "RemoteLink", "LinkServer.cs"));
+            Assert.Contains("PeerDropped?.Invoke(fp)", link);
+            string router = System.IO.File.ReadAllText(System.IO.Path.Combine(RepoRoot(), "PadForge.App", "Common", "Input", "RemoteLinkOutputRouter.cs"));
+            int clear = router.IndexOf("public static void Clear()", StringComparison.Ordinal);
+            Assert.Contains("_peerWroteLast.Clear();", router.Substring(clear, 700));
+        }
+
+        private static string RepoRoot()
+        {
+            var d = new System.IO.DirectoryInfo(AppContext.BaseDirectory);
+            while (d != null && !System.IO.File.Exists(System.IO.Path.Combine(d.FullName, "PadForge.sln"))) d = d.Parent;
+            Assert.NotNull(d);
+            return d.FullName;
+        }
+
+        [Fact]
         public void AWebPadARemotePeerIsDriving_KeepsItsRumble()
         {
             var saved = SettingsManager.UserSettings;

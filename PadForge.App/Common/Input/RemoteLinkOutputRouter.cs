@@ -100,25 +100,30 @@ namespace PadForge.Common.Input
 
         /// <summary>Owner: a relayed output frame arrived for this LOCAL shared device —
         /// a remote game is driving it. Refreshes the sole-writer lease.</summary>
-        public static void ClaimOutput(string localDevicePath)
+        public static void ClaimOutput(string localDevicePath, string peerFingerprint = null)
         {
             if (!string.IsNullOrEmpty(localDevicePath))
             {
                 _outputLease[localDevicePath] = Environment.TickCount64;
-                _peerWroteLast[localDevicePath] = true;
+                _peerWroteLast[localDevicePath] = peerFingerprint ?? string.Empty;
             }
         }
 
-        // Who wrote the device's output last is a fact, not a lease (#402). A
-        // peer holding an unchanged rumble ships it once (the dedup above), so
-        // its lease lapses while its rumble is still meant. The owner's
-        // zero-slot stop asks this, not the lease, before ending a rumble on a
-        // device with no local assignments: peer-written output is the peer's
-        // to end. Cleared the moment the local pipeline writes.
-        private static readonly ConcurrentDictionary<string, bool> _peerWroteLast = new(StringComparer.OrdinalIgnoreCase);
+        // Who wrote the device's output last, and which peer (#402). A peer
+        // holding an unchanged rumble ships it once (the dedup above), so its
+        // lease lapses while its rumble is still meant. The owner's zero-slot
+        // stop asks this, not the lease, before ending a rumble on a device
+        // with no local assignments: peer-written output is the peer's to end.
+        // Released when the local pipeline takes over (the lease policy: a
+        // mapped local output may take the device back once the lease lapses),
+        // when the peer's last session drops, when the device stops being
+        // shared, and on Clear. A peer that leaves mid-rumble sent no zero,
+        // and without those releases its rumble would stand forever.
+        private static readonly ConcurrentDictionary<string, string> _peerWroteLast = new(StringComparer.OrdinalIgnoreCase);
 
-        /// <summary>Owner: the local output pipeline is about to write this
-        /// device. From here on the last writer is local.</summary>
+        /// <summary>Owner: the local output pipeline is taking this device
+        /// back (its lease lapsed and a local slot writes). The peer is no
+        /// longer the last writer.</summary>
         public static void NoteLocalWrite(string localDevicePath)
         {
             if (!string.IsNullOrEmpty(localDevicePath))
@@ -129,6 +134,26 @@ namespace PadForge.Common.Input
         /// written to this LOCAL device, whether or not its lease is still fresh.</summary>
         public static bool PeerWroteLast(string localDevicePath) =>
             !string.IsNullOrEmpty(localDevicePath) && _peerWroteLast.ContainsKey(localDevicePath);
+
+        /// <summary>Owner: the peer's last session dropped. Every device it wrote
+        /// last is released, lease and ownership, so the local pipeline's
+        /// zero-slot stop may end what the peer left running.</summary>
+        public static void ReleasePeer(string peerFingerprint)
+        {
+            if (string.IsNullOrEmpty(peerFingerprint)) return;
+            foreach (var kv in _peerWroteLast)
+                if (string.Equals(kv.Value, peerFingerprint, StringComparison.OrdinalIgnoreCase))
+                    ReleaseDevice(kv.Key);
+        }
+
+        /// <summary>Owner: this local device is no longer shared out. Whatever a
+        /// peer wrote to it is no longer the peer's to hold.</summary>
+        public static void ReleaseDevice(string localDevicePath)
+        {
+            if (string.IsNullOrEmpty(localDevicePath)) return;
+            _peerWroteLast.TryRemove(localDevicePath, out _);
+            _outputLease.TryRemove(localDevicePath, out _);
+        }
 
         /// <summary>Owner: true while a peer's relay holds the output lease on this LOCAL
         /// device, so the local output pipeline must skip its write (the relay is the sole
@@ -166,6 +191,7 @@ namespace PadForge.Common.Input
             // Drop output leases too, or a stale lease would keep the owner's local
             // output suppressed for up to OutputLeaseMs after Remote Link stops.
             _outputLease.Clear();
+            _peerWroteLast.Clear();
         }
 
         // ── Ship: Sony effect (47/31-byte USB-shape body) ───────────────────

@@ -97,6 +97,11 @@ namespace PadForge.Engine.RemoteLink
 
         public event Action<RemotePeerDevice> DeviceConnected;
         public event Action<RemotePeerDevice> DeviceDisconnected;
+        /// <summary>A peer's LAST session dropped (timeout, revocation, stop), by
+        /// fingerprint. The owner releases any output ownership that peer held
+        /// on local shared devices (#402): a peer that leaves mid-rumble sent
+        /// no zero, and without this the rumble it wrote last would stand.</summary>
+        public event Action<string> PeerDropped;
         // A status CODE, not English text: the App maps it to a localized string. Engine
         // can't reach the App's resources, so it must not emit user-facing prose (#138 F35).
         public event Action<LinkStatus> StatusChanged;
@@ -2100,6 +2105,19 @@ namespace PadForge.Engine.RemoteLink
                 d.Dispose();
             }
             try { c.Tcp?.Dispose(); } catch { }
+            // Only the peer's last session releases its ownership. A duplicate
+            // session dropped in favor of another (simultaneous connect) leaves
+            // the peer connected, and its held output is still meant.
+            string fp = c.PeerFingerprintHex;
+            if (string.IsNullOrEmpty(fp)) return;
+            bool last;
+            lock (_lock)
+                last = !_connections.Any(o => !ReferenceEquals(o, c)
+                    && string.Equals(o.PeerFingerprintHex, fp, StringComparison.OrdinalIgnoreCase));
+            if (last)
+            {
+                try { PeerDropped?.Invoke(fp); } catch { /* best effort */ }
+            }
         }
 
         public void Dispose() => Stop();

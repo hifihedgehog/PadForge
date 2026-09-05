@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PadForge - Browser Gamepad</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta name="mobile-web-app-capable" content="yes">
+    <style>
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { margin: 0; background: #1a1a2e; color: #eee; font-family: 'Segoe UI', sans-serif; min-height: 100vh; }
+        .header { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: #16213e; border-bottom: 1px solid #0f3460; }
+        .header a { color: #888; text-decoration: none; font-size: 14px; }
+        .header a:hover { color: #e94560; }
+        .header .title { font-weight: 600; font-size: 16px; flex: 1; }
+        .header #status { font-size: 12px; color: #9aa; }
+        .header #fsMount button { margin-left: 8px; }
+        main { padding: 16px; max-width: 720px; margin: 0 auto; }
+        #prompt { text-align: center; padding: 40px 16px; color: #ccc; font-size: 18px; line-height: 1.5; }
+        #prompt small { display: block; margin-top: 12px; font-size: 13px; color: #888; }
+        .pad { background: #16213e; border: 1px solid #0f3460; border-radius: 10px; padding: 12px 14px; margin-bottom: 12px; }
+        .pad-name { font-weight: 600; color: #7CFC00; }
+        .pad-meta { font-size: 12px; color: #9aa; margin-top: 4px; word-break: break-word; }
+        .pad-note { font-size: 12px; color: #e9a545; margin-top: 4px; }
+        #lock { font-size: 12px; color: #888; margin-top: 16px; }
+        .how { margin-top: 24px; font-size: 13px; color: #9aa; line-height: 1.6; }
+        .how b { color: #ccc; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="/">&larr; Layouts</a>
+        <span class="title">Browser Gamepad</span>
+        <span id="status">Connecting...</span>
+        <span id="fsMount"></span>
+    </div>
+    <main>
+        <div id="prompt">
+            Press a button on your controller.
+            <small>Browsers hide a controller until you press something on it. A pad paired to this phone, or the pad built into this handheld, then shows here and PadForge sees it as a controller on the PC.</small>
+        </div>
+        <div id="pads"></div>
+        <div id="lock"></div>
+        <div class="how">
+            <b>Two or more pads</b> on one device each become their own controller. <b>Extra buttons</b> beyond the standard seventeen appear on the paddle and Misc slots, up to ten, and you map them like any other button. A pad the browser did not recognize is forwarded raw: up to 21 buttons and six axes, every axis resting at center. <b>Rumble</b> goes to the pad when its browser can drive it, otherwise to the phone's vibrator where the browser offers one. If this page stops reporting for a few seconds, PadForge releases everything on the pad.
+        </div>
+    </main>
+    <script src="/js/fullscreen.js"></script>
+    <script src="/js/gamepad_client.js"></script>
+</body>
+</html>

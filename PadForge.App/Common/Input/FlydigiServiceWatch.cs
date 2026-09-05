@@ -93,11 +93,14 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>The one FLYDIGI arrival record, built here so a test reads
-        /// the emitted line rather than the production source. The HidHide
-        /// snapshot is a configuration read, not proof of an open handle.</summary>
+        /// the emitted line rather than the production source. The caller
+        /// passes the service detail it read, so the line is one snapshot
+        /// and nothing reads the static twice around a parallel scan. The
+        /// HidHide snapshot is a configuration read, not proof of an open
+        /// handle.</summary>
         public static string DescribeArrival(ushort vendorId, ushort productId, uint sdlInstanceId,
-            string backend, string devicePath, string hidHideSnapshot)
-            => $"FLYDIGI arrival {vendorId:X4}:{productId:X4} sdl={sdlInstanceId} backend={backend} path={devicePath} service=[{Detail}] {hidHideSnapshot}";
+            string backend, string devicePath, string serviceDetail, string hidHideSnapshot)
+            => $"FLYDIGI arrival {vendorId:X4}:{productId:X4} sdl={sdlInstanceId} backend={backend} path={devicePath} service=[{serviceDetail}] {hidHideSnapshot}";
 
         private static string Describe(Process p, string name)
         {

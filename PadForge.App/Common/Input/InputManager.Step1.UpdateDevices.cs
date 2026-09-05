@@ -188,6 +188,7 @@ namespace PadForge.Common.Input
                         _flydigiWatchTick = Environment.TickCount64;
                         Engine.SdlDiagLog.WriteLine(FlydigiServiceWatch.DescribeArrival(
                             wrapper.VendorId, wrapper.ProductId, instanceId, wrapper.Backend, wrapper.DevicePath,
+                            FlydigiServiceWatch.Detail,
                             HidHideController.DescribeReach("SpaceStationService.exe", "GameControllerService.exe")));
                     }
 

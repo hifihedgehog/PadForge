@@ -176,14 +176,17 @@ namespace PadForge.Tests
 
         /// <summary>Displaying the config means the card has to hear the config
         /// change. Picking a preset seeds all four counts, and without these
-        /// the boxes kept showing the previous preset's numbers.</summary>
+        /// the boxes kept showing the previous preset's numbers. The identity
+        /// boxes are the same shape: a profile switch that carries another
+        /// VID/PID rewrote the config and the boxes kept the outgoing ids, and
+        /// a focus loss on such a box wrote the old id back (#395).</summary>
         [Fact]
-        public void TheCard_HearsEveryCountChange()
+        public void TheCard_HearsEveryCountChange_AndEveryIdentityChange()
         {
             string handler = Body(PadPage(),
                 "private void OnExtendedConfigBarPropertyChanged(object sender, PropertyChangedEventArgs e)");
             foreach (var member in new[]
-                     { "ThumbstickCount", "TriggerCount", "PovCount", "ButtonCount" })
+                     { "ThumbstickCount", "TriggerCount", "PovCount", "ButtonCount", "VendorId", "ProductId", "ProductString", "Customize", "OemNameOverride" })
                 Assert.Contains($"ExtendedSlotConfig.{member})", handler);
         }
 

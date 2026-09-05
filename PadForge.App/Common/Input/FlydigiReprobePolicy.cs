@@ -27,13 +27,17 @@ namespace PadForge.Common.Input
     /// its path and unclaimed otherwise. Two identical pads have two paths,
     /// and a pad PadForge has no joystick view of is still seen.</para>
     ///
-    /// <para>Connections are told apart by SDL's HID device-change counter,
-    /// which moves on every HID arrival or removal on the system. A counter
-    /// move resets every tracked interface: a claimed one is re-read from the
-    /// wrappers on the same observation, an unclaimed one gets a fresh
-    /// deadline and budget, since it may be a reconnect at the same path. An
-    /// interface absent from an enumeration is forgotten only when the
-    /// counter moved. Without a move an absence is an enumeration flake, and
+    /// <para>Generations come from Flydigi's own signals, never from SDL's
+    /// system-wide HID change counter, which moves for any device and on a
+    /// timer when notifications are unavailable, and which the caller uses
+    /// only to decide WHEN to enumerate. A claim goes stale when the
+    /// wrapper that made it is no longer attached while its path is still
+    /// present: that is the enhanced view of a connection that ended, and
+    /// the interface starts over. A Flydigi joystick id never seen before is
+    /// a connection event, and every unclaimed interface gets a fresh budget
+    /// and a deadline at least one delay away. An interface absent from an
+    /// enumeration is forgotten only when the caller says absences are real
+    /// (the change counter moved). Without that an absence is a flake, and
     /// the state stands. While any Flydigi wrapper is detached and awaiting
     /// cleanup the pad is in flux, and every deadline is pushed out.</para>
     ///
@@ -58,10 +62,12 @@ namespace PadForge.Common.Input
             public long Due;
             public int Attempts;
             public bool Claimed;
+            public uint ClaimedBy;
         }
 
         private readonly Dictionary<string, Interface> _interfaces =
             new Dictionary<string, Interface>(StringComparer.OrdinalIgnoreCase);
+        private readonly HashSet<uint> _knownFlydigiIds = new HashSet<uint>();
 
         /// <summary>Interfaces currently tracked, claimed or not.</summary>
         public int Tracked => _interfaces.Count;
@@ -83,35 +89,41 @@ namespace PadForge.Common.Input
         public int LastAttempt { get; private set; }
 
         /// <summary>One observation. <paramref name="presentPaths"/> is a
-        /// successful enumeration (a failed one is not an observation and must
-        /// not be passed). <paramref name="claimedPaths"/> are the attached
-        /// enhanced wrappers' paths. <paramref name="inFlux"/> says a Flydigi
-        /// wrapper is detached and awaiting cleanup. <paramref name="deviceChanged"/>
-        /// says SDL's HID change counter moved since the last observation.
+        /// successful enumeration (a failed one is not an observation).
+        /// <paramref name="claimed"/> pairs each attached enhanced wrapper's
+        /// path with its SDL joystick id. <paramref name="attachedFlydigiIds"/>
+        /// are the joystick ids of every attached Flydigi wrapper, any
+        /// backend. <paramref name="inFlux"/> says a Flydigi wrapper is
+        /// detached and awaiting cleanup. <paramref name="absencesAreReal"/>
+        /// says SDL's change counter moved since the last observation.
         /// Returns the unclaimed paths whose probe is due now, each of which
         /// spends one attempt. Empty means no nudge.</summary>
         public IReadOnlyList<string> Observe(long nowTicks, IReadOnlyList<string> presentPaths,
-            IReadOnlyList<string> claimedPaths, bool inFlux, bool deviceChanged)
+            IReadOnlyList<(string path, uint instanceId)> claimed, IReadOnlyCollection<uint> attachedFlydigiIds,
+            bool inFlux, bool absencesAreReal)
         {
             var present = new HashSet<string>(presentPaths ?? Array.Empty<string>(), StringComparer.OrdinalIgnoreCase);
-            var claimed = new HashSet<string>(claimedPaths ?? Array.Empty<string>(), StringComparer.OrdinalIgnoreCase);
+            var claimedBy = new Dictionary<string, uint>(StringComparer.OrdinalIgnoreCase);
+            if (claimed != null)
+                foreach (var c in claimed)
+                    if (!string.IsNullOrEmpty(c.path)) claimedBy[c.path] = c.instanceId;
+            var attached = new HashSet<uint>(attachedFlydigiIds ?? Array.Empty<uint>());
 
-            if (deviceChanged)
+            if (absencesAreReal)
             {
-                // Something arrived or left. An interface still present may be a
-                // new connection at an old path: start it over. A still-claimed
-                // one is re-marked below on this same observation. An absent one
-                // is really gone.
                 var gone = new List<string>();
-                foreach (var kv in _interfaces)
-                {
-                    if (!present.Contains(kv.Key)) { gone.Add(kv.Key); continue; }
-                    kv.Value.Claimed = false;
-                    kv.Value.Attempts = 0;
-                    kv.Value.Due = nowTicks + DelayMs;
-                }
+                foreach (var path in _interfaces.Keys)
+                    if (!present.Contains(path)) gone.Add(path);
                 foreach (var path in gone) _interfaces.Remove(path);
             }
+
+            // A Flydigi joystick id never seen before is a connection event:
+            // some pad arrived or came back. Unclaimed interfaces start their
+            // budget over, with a deadline at least one delay away.
+            bool connectionEvent = false;
+            foreach (var id in attached)
+                if (_knownFlydigiIds.Add(id)) connectionEvent = true;
+            _knownFlydigiIds.RemoveWhere(id => !attached.Contains(id));
 
             var due = new List<string>();
             int max = 0;
@@ -122,8 +134,23 @@ namespace PadForge.Common.Input
                     i = new Interface { Due = nowTicks + DelayMs };
                     _interfaces[path] = i;
                 }
-                if (claimed.Contains(path)) { i.Claimed = true; continue; }
-                if (i.Claimed) continue;                       // claimed once this connection: done
+                if (claimedBy.TryGetValue(path, out uint by)) { i.Claimed = true; i.ClaimedBy = by; continue; }
+                if (i.Claimed)
+                {
+                    // The wrapper that claimed this path is gone while the path is
+                    // still here: that connection ended, this is the next one.
+                    if (attached.Contains(i.ClaimedBy)) continue;
+                    i.Claimed = false;
+                    i.Attempts = 0;
+                    i.Due = nowTicks + DelayMs;
+                    continue;
+                }
+                if (connectionEvent)
+                {
+                    i.Attempts = 0;
+                    i.Due = Math.Max(i.Due, nowTicks + DelayMs);
+                    continue;
+                }
                 if (inFlux) { i.Due = Math.Max(i.Due, nowTicks + DelayMs); continue; }
                 if (i.Attempts >= MaxAttempts || nowTicks < i.Due) continue;
                 i.Attempts++;

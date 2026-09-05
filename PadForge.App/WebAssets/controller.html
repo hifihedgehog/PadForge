@@ -9,6 +9,8 @@
 <body>
 
 <div id="statusBar"></div>
+<!-- Fullscreen toggle mount (#402): top-left, beside the status bar, off every control. -->
+<div id="fsMount" style="position:fixed;top:4px;left:6px;z-index:46;display:flex;gap:6px;"></div>
 
 <div id="controller-viewport">
     <div id="controller-container">
@@ -30,6 +32,7 @@
 </div>
 
 <script src="/js/nipplejs.min.js"></script>
+<script src="/js/fullscreen.js"></script>
 <script src="/js/controller_client.js"></script>
 
 </body>

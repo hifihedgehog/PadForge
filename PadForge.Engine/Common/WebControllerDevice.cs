@@ -370,6 +370,27 @@ namespace PadForge.Engine
             }
         }
 
+        /// <summary>Everything at rest: buttons up, axes at rest, hat centered
+        /// (#402). The server calls this when a forwarded pad's page stops
+        /// heartbeating, so a phone that slept mid-hold cannot leave a button
+        /// latched on the PC. Rest for a stock shape is sticks at center and
+        /// triggers at zero. A custom surface (a raw forwarded pad, a built
+        /// pad) has no trigger semantics, so every axis rests at center,
+        /// which is what the page's own neutral sends. Touch fingers and the
+        /// accelerometer are left alone. Gyro rates expire on their own.</summary>
+        public void NeutralizeAll()
+        {
+            lock (_stateLock)
+            {
+                var s = _currentState.Clone();
+                for (int i = 0; i < s.Buttons.Length; i++) s.Buttons[i] = false;
+                for (int i = 0; i < NumGamepadAxes && i < s.Axis.Length; i++)
+                    s.Axis[i] = (!_hasCustomSurface && (i == 2 || i == 5)) ? 0 : 32767;
+                if (s.Povs.Length > 0) s.Povs[0] = -1;
+                Volatile.Write(ref _currentState, s);
+            }
+        }
+
         /// <summary>Updates POV hat value. Called from WebSocket receive thread.</summary>
         /// <param name="value">Centidegrees (0=N, 9000=E, etc.) or -1 for centered.</param>
         public void UpdatePov(int value)

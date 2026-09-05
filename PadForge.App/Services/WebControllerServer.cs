@@ -458,16 +458,22 @@ namespace PadForge.Services
             {
                 // Extract client ID from query string.
                 var clientId = ctx.Request.QueryString["id"] ?? Guid.NewGuid().ToString("N");
-
-                if (_clients.Count >= MaxClients)
+                var clientType = ctx.Request.QueryString["type"] ?? "xbox360";
+                var layoutParam = ctx.Request.QueryString["layout"] ?? "xbox360";
+                // The cheap pre-filter must not reject a client whose id is
+                // already registered: that is a reconnect the locked
+                // registration below retires and replaces (#402 review). It
+                // used to run before the key existed, so a phone reconnecting
+                // at the client limit got a 503 while its own stale session
+                // held the slot.
+                bool preIsTouchpad = clientType.Equals("touchpad", StringComparison.OrdinalIgnoreCase);
+                var preKey = (preIsTouchpad ? "touchpad" : layoutParam.ToLowerInvariant()) + ":" + clientId;
+                if (_clients.Count >= MaxClients && !_clients.ContainsKey(preKey))
                 {
                     ctx.Response.StatusCode = 503;
                     ctx.Response.Close();
                     return;
                 }
-
-                var clientType = ctx.Request.QueryString["type"] ?? "xbox360";
-                var layoutParam = ctx.Request.QueryString["layout"] ?? "xbox360";
 
                 // Keepalive pings, so a phone that left the network (screen
                 // off, Wi-Fi dropped, walked out of range) is detected instead
@@ -490,6 +496,12 @@ namespace PadForge.Services
                 string customLayoutJson = null;
                 if (isTouchpadClient)
                     name = $"Web Touchpad {padId}";
+                else if (typeKey == "gamepad")
+                    // A controller paired to the phone, or built into the
+                    // handheld, forwarded through the browser's Gamepad API
+                    // (#402). Its own type key, so its ProductGuid is distinct
+                    // from every drawn layout.
+                    name = $"Browser Gamepad {padId}";
                 else if (typeKey.StartsWith("custom:", StringComparison.Ordinal))
                 {
                     // A builder pad (#296 phase 4): its own typeKey per layout
@@ -564,6 +576,13 @@ namespace PadForge.Services
                         device.SetCustomSurface(axes.ToArray(), buttons.ToArray(), hasPov);
                     }
                     catch { }
+                }
+                else if (!isTouchpadClient && typeKey == "gamepad")
+                {
+                    // A forwarded pad (#402) declares its shape from the query
+                    // the page built after discovering the controller.
+                    ConfigureGamepadShape(device, ctx.Request.QueryString["mode"],
+                        ctx.Request.QueryString["buttons"], ctx.Request.QueryString["axes"]);
                 }
                 else if (!isTouchpadClient)
                 {
@@ -656,6 +675,14 @@ namespace PadForge.Services
                     // A reconnecting client missed any LED/player push that
                     // happened while it was away; replay the current state.
                     device.ResendIdentity();
+                    // A forwarded pad's phone can sleep or lose Wi-Fi mid-hold
+                    // (#402): the page heartbeats once a second, and this
+                    // neutralizes the device when nothing has arrived for
+                    // GamepadInputDeadlineMs, so a button cannot stay latched
+                    // on the PC. The 30 s socket keepalive stays the
+                    // connection deadline.
+                    if (typeKey == "gamepad")
+                        _ = RunInputDeadline(session, cts.Token);
 
                     // Receive loop. A text message can arrive in several frames,
                     // and handing a fragment to the JSON parser dropped the
@@ -691,8 +718,16 @@ namespace PadForge.Services
 
                         if (result.EndOfMessage && assembledLen == 0 && !overflowed)
                         {
-                            // The common case: one frame, one message.
-                            ProcessMessage(device, buffer, result.Count);
+                            // The common case: one frame, one message. Stamped and
+                            // applied under the deadline lock (#402): the deadline's
+                            // check-then-neutralize cannot interleave with a press
+                            // that arrived after its check, and a fragment that
+                            // never completes renews nothing.
+                            lock (session.DeadlineLock)
+                            {
+                                session.NoteMessage();
+                                ProcessMessage(device, buffer, result.Count);
+                            }
                             continue;
                         }
 
@@ -713,7 +748,13 @@ namespace PadForge.Services
                         if (result.EndOfMessage)
                         {
                             if (!overflowed && assembledLen > 0)
-                                ProcessMessage(device, assembled, assembledLen);
+                            {
+                                lock (session.DeadlineLock)
+                                {
+                                    session.NoteMessage();
+                                    ProcessMessage(device, assembled, assembledLen);
+                                }
+                            }
                             assembledLen = 0;
                             overflowed = false;
                         }
@@ -744,6 +785,10 @@ namespace PadForge.Services
                             await ws.CloseAsync(WebSocketCloseStatus.NormalClosure, null, CancellationToken.None);
                     }
                     catch { /* best effort */ }
+                    // Dispose does not cancel. The forwarded pad's deadline task
+                    // (#402) waits on this token, so cancel first or it wakes once a
+                    // second forever, holding the session and its device.
+                    try { cts.Cancel(); } catch { }
                     cts.Dispose();
                     // Dispose the WebSocket after CloseAsync (the documented close
                     // lifecycle). A late fire-and-forget rumble send would hit a
@@ -804,14 +849,28 @@ namespace PadForge.Services
                     float az = root.TryGetProperty("az", out var azp) ? (float)azp.GetDouble() : 0f;
                     device.UpdateMotion(gx, gy, gz, ax, ay, az);
                 }
+                else if (type == "hb")
+                {
+                    // A forwarded pad's liveness beat (#402). The receive loop
+                    // already stamped the session before dispatching here.
+                }
                 else if (type == "caps")
                 {
                     // What this browser can actually do. Sent once right after
-                    // the socket opens. Only ever narrows a claim we would
-                    // otherwise make on the client's behalf.
+                    // the socket opens. Sets the rumble claim in either
+                    // direction to what the client reported.
                     if (root.TryGetProperty("vibrate", out var vp)
                         && vp.ValueKind is JsonValueKind.True or JsonValueKind.False)
                         device.HasRumble = vp.GetBoolean();
+                    if (root.TryGetProperty("mapping", out var mp))
+                    {
+                        // A forwarded pad (#402) says how the browser mapped it
+                        // and how big it is, for the diagnostics log.
+                        int nb = root.TryGetProperty("buttons", out var nbp) && nbp.TryGetInt32(out int nbv) ? nbv : -1;
+                        int na = root.TryGetProperty("axes", out var nap) && nap.TryGetInt32(out int nav) ? nav : -1;
+                        PadForge.Engine.SdlDiagLog.WriteLine(
+                            $"WEBGP caps {device.Name} mapping=\"{mp.GetString()}\" buttons={nb} axes={na} vibrate={device.HasRumble}");
+                    }
                 }
                 else if (type == "touchpad")
                 {
@@ -1040,6 +1099,98 @@ namespace PadForge.Services
         /// <summary>Resolves a layout request key (query value, any case,
         /// legacy aliases included) to its registry row, defaulting to
         /// xbox360 exactly as the old if-chain did.</summary>
+        /// <summary>Where a forwarded pad's browser buttons 17 and up land
+        /// (#402): PadForge's extended slots in a fixed order, never 16 (the
+        /// touchpad click), at most ten. The page's EXTRA_SLOTS table is this
+        /// list, and the contract test holds the two together.</summary>
+        internal static readonly int[] GamepadExtraSlotOrder = { 11, 12, 13, 14, 15, 17, 18, 19, 20, 21 };
+
+        internal static int[] GamepadExtendedSlots(int extras)
+        {
+            if (extras <= 0) return Array.Empty<int>();
+            if (extras > GamepadExtraSlotOrder.Length) extras = GamepadExtraSlotOrder.Length;
+            var r = new int[extras];
+            Array.Copy(GamepadExtraSlotOrder, r, extras);
+            return r;
+        }
+
+        /// <summary>Raw mode for a pad the browser did not recognize (#402):
+        /// browser button i is slot i with 16 skipped and 21 the ceiling,
+        /// browser axis i is axis i for the first six. Nothing is guessed, so
+        /// every control the pad has is reachable and the user maps it.</summary>
+        internal static void GamepadRawSurface(int buttons, int axes, out int[] axesOut, out int[] buttonsOut)
+        {
+            var b = new List<int>();
+            for (int i = 0; i < Math.Max(0, buttons); i++)
+            {
+                int slot = i < 16 ? i : i + 1;
+                if (slot > 21) break;
+                b.Add(slot);
+            }
+            var a = new List<int>();
+            for (int i = 0; i < Math.Min(Math.Max(0, axes), 6); i++) a.Add(i);
+            axesOut = a.ToArray();
+            buttonsOut = b.ToArray();
+        }
+
+        /// <summary>Declares a forwarded pad's shape from the socket query
+        /// (#402), before the device registers, so the Devices page and the
+        /// mapping picker see the pad's real surface from the first tick.</summary>
+        internal static void ConfigureGamepadShape(WebControllerDevice device, string mode, string buttonsParam, string axesParam)
+        {
+            int buttons = int.TryParse(buttonsParam, out int nb) ? Math.Clamp(nb, 0, 64) : 17;
+            int axes = int.TryParse(axesParam, out int na) ? Math.Clamp(na, 0, 16) : 4;
+            if (string.Equals(mode, "raw", StringComparison.OrdinalIgnoreCase))
+            {
+                GamepadRawSurface(buttons, axes, out var rawAxes, out var rawButtons);
+                var ext = new List<int>();
+                foreach (int s in rawButtons) if (s > 10 && s != 16) ext.Add(s);
+                if (ext.Count > 0) device.SetExtendedButtons(ext.ToArray());
+                device.SetCustomSurface(rawAxes, rawButtons, hasPov: false);
+                return;
+            }
+            var extras = GamepadExtendedSlots(buttons - 17);
+            if (extras.Length > 0) device.SetExtendedButtons(extras);
+        }
+
+        private const int GamepadInputDeadlineMs = 3000;
+
+        private static async Task RunInputDeadline(ClientSession session, CancellationToken ct)
+        {
+            try
+            {
+                while (!ct.IsCancellationRequested && session.Socket.State == WebSocketState.Open)
+                {
+                    await Task.Delay(1000, ct);
+                    bool fired = false;
+                    long idle;
+                    // Check and act under the same lock the receive loop holds while
+                    // it stamps and applies a message, so a press that lands after
+                    // the check is never erased by the neutralize that follows it.
+                    lock (session.DeadlineLock)
+                    {
+                        idle = Environment.TickCount64 - session.LastMessageTicks;
+                        if (idle > GamepadInputDeadlineMs && !session.Neutralized)
+                        {
+                            session.Neutralized = true;
+                            session.Device.NeutralizeAll();
+                            fired = true;
+                        }
+                    }
+                    if (fired)
+                    {
+                        PadForge.Engine.SdlDiagLog.WriteLine($"WEBGP deadline {session.Device.Name} idle={idle}ms neutralized");
+                        // The page's change cache still believes its holds are on
+                        // the server. Ask it to resend everything.
+                        if (session.Socket.State == WebSocketState.Open)
+                            await SendJsonAsync(session.Socket, new { type = "resync" }, ct, session.SendGate);
+                    }
+                }
+            }
+            catch (OperationCanceledException) { }
+            catch { }
+        }
+
         private static LayoutDef ResolveLayout(string type)
         {
             string k = (type ?? "xbox360").Trim().ToLowerInvariant();
@@ -1384,6 +1535,20 @@ namespace PadForge.Services
             /// second outstanding send, so rapid rumble (SetRumble + StopRumble)
             /// must not overlap.</summary>
             public SemaphoreSlim SendGate { get; } = new SemaphoreSlim(1, 1);
+
+            /// <summary>Tick of the last text message from this client (#402),
+            /// read by the forwarded pad's input deadline.</summary>
+            public long LastMessageTicks = Environment.TickCount64;
+            public bool Neutralized;
+            /// <summary>Held while a message is stamped and applied, and while
+            /// the deadline checks and neutralizes, so the two never interleave.</summary>
+            public readonly object DeadlineLock = new object();
+
+            public void NoteMessage()
+            {
+                LastMessageTicks = Environment.TickCount64;
+                Neutralized = false;
+            }
 
             public ClientSession(WebSocket socket, WebControllerDevice device, CancellationTokenSource cts)
             {

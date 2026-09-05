@@ -51,12 +51,17 @@ namespace PadForge.Tests
         [Fact]
         public void DescribeArrival_CarriesTheIdentityTheViewAndTheSnapshot()
         {
-            FlydigiServiceWatch.Refresh();
+            // The detail is passed in, so the line is one snapshot. The earlier
+            // shape read the static twice, and a second read differing from the
+            // first is the one way this test failed (seen once on 09-04, not
+            // reproduced in three full runs).
             string line = FlydigiServiceWatch.DescribeArrival(0x37D7, 0x2401, 7, "hidapi",
-                @"\\?\HID#VID_37D7&PID_2401&MI_01#7&2e838171&0&0000", "hidhide=ok active=true whitelist=2 SpaceStationService.exe=name-listed");
+                @"\\?\HID#VID_37D7&PID_2401&MI_01#7&2e838171&0&0000",
+                @"SpaceStationService.exe pid=4242 v=4.1.2 path=C:\x\SpaceStationService.exe",
+                "hidhide=ok active=true whitelist=2 SpaceStationService.exe=name-listed");
             Assert.StartsWith("FLYDIGI arrival 37D7:2401 sdl=7 backend=hidapi path=", line);
             Assert.Contains(@"MI_01#7&2e838171", line);
-            Assert.Contains("service=[" + FlydigiServiceWatch.Detail + "]", line);
+            Assert.Contains("service=[SpaceStationService.exe pid=4242 v=4.1.2 path=", line);
             Assert.EndsWith("SpaceStationService.exe=name-listed", line);
         }
 

@@ -71,6 +71,7 @@
         <a href="/">&larr; Back</a>
         <span>PadForge Touchpad</span>
         <span id="status" class="status">Connecting...</span>
+        <span id="fsMount"></span>
     </div>
     <div class="touchpad" id="touchpad">
         <div class="finger-dot f0" id="dot0" style="display:none;"></div>
@@ -78,6 +79,7 @@
     </div>
     <div class="click-button" id="clickButton">Click</div>
 
+    <script src="/js/fullscreen.js"></script>
     <script>
     // iOS Safari: WebSocket upgrades fail after page navigation but work
     // after reload.  Auto-reload once on first navigation to work around this.

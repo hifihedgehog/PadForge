@@ -18,8 +18,10 @@ namespace PadForge.Tests
     /// it names the service on the Devices page, records the environment on
     /// every Flydigi arrival, labels each SDL view by backend, and offers a
     /// switch for SDL's Flydigi driver. These pin the emitted records and the
-    /// state the runtime replays, not the production source text.
+    /// state the runtime replays, not the production source text. Rides the
+    /// switch's collection: ApplyFlydigiEnhancedProtocol is one static.
     /// </summary>
+    [Collection("FlydigiSwitchStatics")]
     public class FlydigiServiceConflictTests
     {
         [Theory]

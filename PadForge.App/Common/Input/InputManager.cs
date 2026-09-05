@@ -1213,8 +1213,7 @@ namespace PadForge.Common.Input
             lock (_flydigiHintLock)
             {
                 _flydigiEnhancedDesired = enabled;
-                try { accepted = SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_FLYDIGI, enabled ? "1" : "0"); }
-                catch { accepted = false; }
+                accepted = WriteFlydigiHintUnderJoystickLock(enabled ? "1" : "0");
                 if (accepted) _flydigiHintValue = enabled ? "1" : "0";
             }
             Engine.SdlDiagLog.WriteLine($"FLYDIGI hint {SDL_HINT_JOYSTICK_HIDAPI_FLYDIGI}={(enabled ? 1 : 0)} accepted={accepted}");
@@ -1231,12 +1230,30 @@ namespace PadForge.Common.Input
             {
                 if (!_flydigiEnhancedDesired) return (false, null);
                 string next = FlydigiReprobePolicy.NextHintValue(_flydigiHintValue);
-                bool accepted;
-                try { accepted = SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_FLYDIGI, next); }
-                catch { accepted = false; }
+                bool accepted = WriteFlydigiHintUnderJoystickLock(next);
                 if (accepted) _flydigiHintValue = next;
                 return (accepted, next);
             }
+        }
+
+        /// <summary>The one place the Flydigi hint is written. SDL's HIDAPI
+        /// layer consumes its hints-changed flag inside its device update,
+        /// under the joystick lock, and clears the flag AFTER re-evaluating
+        /// drivers, so a write landing during a re-evaluation on another
+        /// thread (the UI pump also updates joysticks) could be cleared
+        /// unseen. Holding the joystick lock across the write serializes it
+        /// with that consumer. Before SDL_Init the lock is a no-op. Lock
+        /// order is the managed switch lock first, then SDL's, and nothing
+        /// takes them the other way around.</summary>
+        private static bool WriteFlydigiHintUnderJoystickLock(string value)
+        {
+            try
+            {
+                SDL_LockJoysticks();
+                try { return SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_FLYDIGI, value); }
+                finally { SDL_UnlockJoysticks(); }
+            }
+            catch { return false; }
         }
 
         private static readonly object _flydigiHintLock = new object();

@@ -161,6 +161,21 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void APresenceBetweenTwoRealAbsences_ResetsTheCount()
+        {
+            // Absent, present, absent: two flakes with a real sighting between
+            // them, not a removal. Only two absences IN A ROW forget the record.
+            var p = new FlydigiReprobePolicy();
+            Obs(p, 0, new[] { A }, ordinary: new uint[] { 7 }, real: true);
+            Obs(p, 10_000, None, ordinary: new uint[] { 7 }, real: true);
+            Obs(p, 20_000, new[] { A }, ordinary: new uint[] { 7 }, real: true);
+            Obs(p, 30_000, None, ordinary: new uint[] { 7 }, real: true);
+            Assert.Equal(1, p.Tracked);
+            Obs(p, 40_000, None, ordinary: new uint[] { 7 }, real: true);
+            Assert.Equal(0, p.Tracked);
+        }
+
+        [Fact]
         public void APadWithNoJoystickView_IsStillSeen_AndProbed()
         {
             var p = new FlydigiReprobePolicy();

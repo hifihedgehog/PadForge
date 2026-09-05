@@ -100,13 +100,33 @@ namespace PadForge.Common.Input
 
         /// <summary>Owner: a relayed output frame arrived for this LOCAL shared device —
         /// a remote game is driving it. Refreshes the sole-writer lease.</summary>
-        public static void ClaimOutput(string localDevicePath, string peerFingerprint = null)
+        public static bool ClaimOutput(string localDevicePath, string peerFingerprint = null)
         {
-            if (!string.IsNullOrEmpty(localDevicePath))
+            if (string.IsNullOrEmpty(localDevicePath)) return false;
+            lock (_ownerLock)
             {
+                // A frame decoded before its peer's last session dropped, and
+                // claiming after the release, would re-own the device for a peer
+                // that is gone, with nothing left to release it. Refused until
+                // the peer connects again.
+                if (!string.IsNullOrEmpty(peerFingerprint) && _gonePeers.Contains(peerFingerprint)) return false;
                 _outputLease[localDevicePath] = Environment.TickCount64;
                 _peerWroteLast[localDevicePath] = peerFingerprint ?? string.Empty;
+                return true;
             }
+        }
+
+        // Claim, release and takeover are one critical section (#402): a release
+        // that compared a peer's record and then removed by key alone could
+        // delete another peer's newer claim, and its fresh lease with it.
+        private static readonly object _ownerLock = new object();
+        private static readonly System.Collections.Generic.HashSet<string> _gonePeers = new(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>Owner: a session with this peer was added. Its claims count again.</summary>
+        public static void PeerConnected(string peerFingerprint)
+        {
+            if (string.IsNullOrEmpty(peerFingerprint)) return;
+            lock (_ownerLock) _gonePeers.Remove(peerFingerprint);
         }
 
         // Who wrote the device's output last, and which peer (#402). A peer
@@ -126,24 +146,37 @@ namespace PadForge.Common.Input
         /// longer the last writer.</summary>
         public static void NoteLocalWrite(string localDevicePath)
         {
-            if (!string.IsNullOrEmpty(localDevicePath))
-                _peerWroteLast.TryRemove(localDevicePath, out _);
+            if (string.IsNullOrEmpty(localDevicePath)) return;
+            lock (_ownerLock) _peerWroteLast.TryRemove(localDevicePath, out _);
         }
 
         /// <summary>Owner: true when a peer's relayed frame was the last thing
         /// written to this LOCAL device, whether or not its lease is still fresh.</summary>
-        public static bool PeerWroteLast(string localDevicePath) =>
-            !string.IsNullOrEmpty(localDevicePath) && _peerWroteLast.ContainsKey(localDevicePath);
+        public static bool PeerWroteLast(string localDevicePath)
+        {
+            if (string.IsNullOrEmpty(localDevicePath)) return false;
+            lock (_ownerLock) return _peerWroteLast.ContainsKey(localDevicePath);
+        }
 
         /// <summary>Owner: the peer's last session dropped. Every device it wrote
         /// last is released, lease and ownership, so the local pipeline's
-        /// zero-slot stop may end what the peer left running.</summary>
+        /// zero-slot stop may end what the peer left running. Another peer's
+        /// newer claim on the same device is left alone. The peer is marked gone
+        /// until it connects again, so a frame of its still in flight cannot
+        /// re-own anything.</summary>
         public static void ReleasePeer(string peerFingerprint)
         {
             if (string.IsNullOrEmpty(peerFingerprint)) return;
-            foreach (var kv in _peerWroteLast)
-                if (string.Equals(kv.Value, peerFingerprint, StringComparison.OrdinalIgnoreCase))
-                    ReleaseDevice(kv.Key);
+            lock (_ownerLock)
+            {
+                _gonePeers.Add(peerFingerprint);
+                foreach (var kv in _peerWroteLast.ToArray())
+                {
+                    if (!string.Equals(kv.Value, peerFingerprint, StringComparison.OrdinalIgnoreCase)) continue;
+                    _peerWroteLast.TryRemove(kv.Key, out _);
+                    _outputLease.TryRemove(kv.Key, out _);
+                }
+            }
         }
 
         /// <summary>Owner: this local device is no longer shared out. Whatever a
@@ -151,8 +184,11 @@ namespace PadForge.Common.Input
         public static void ReleaseDevice(string localDevicePath)
         {
             if (string.IsNullOrEmpty(localDevicePath)) return;
-            _peerWroteLast.TryRemove(localDevicePath, out _);
-            _outputLease.TryRemove(localDevicePath, out _);
+            lock (_ownerLock)
+            {
+                _peerWroteLast.TryRemove(localDevicePath, out _);
+                _outputLease.TryRemove(localDevicePath, out _);
+            }
         }
 
         /// <summary>Owner: true while a peer's relay holds the output lease on this LOCAL
@@ -190,8 +226,14 @@ namespace PadForge.Common.Input
             _lastNfcDemandMs.Clear();
             // Drop output leases too, or a stale lease would keep the owner's local
             // output suppressed for up to OutputLeaseMs after Remote Link stops.
-            _outputLease.Clear();
-            _peerWroteLast.Clear();
+            // Ownership goes too. The gone marks stay: a frame still in flight
+            // after Remote Link stopped must not re-own a device, and a peer
+            // that connects again is unmarked by PeerConnected.
+            lock (_ownerLock)
+            {
+                _outputLease.Clear();
+                _peerWroteLast.Clear();
+            }
         }
 
         // ── Ship: Sony effect (47/31-byte USB-shape body) ───────────────────

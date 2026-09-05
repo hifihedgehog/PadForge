@@ -209,23 +209,31 @@ namespace PadForge.Tests
         {
             static PadForge.Engine.Data.UserDevice Row(string path)
                 => new PadForge.Engine.Data.UserDevice { VendorId = 0x37D7, ProdId = 0x2401, DevicePath = path, IsOnline = true };
-            var mi01 = Row(@"\?\HID#VID_37D7&PID_2401&MI_01#7&2E838171&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}");
-            var mi01b = Row(@"\?\HID#VID_37D7&PID_2401&MI_01#7&2e838171&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}");
-            var mi02 = Row(@"\?\HID#VID_37D7&PID_2401&MI_02#7&aac43af&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}");
-            var mi03 = Row(@"\?\HID#VID_37D7&PID_2401&MI_03#7&192AFA13&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}");
+            var mi01 = Row(@"\\?\HID#VID_37D7&PID_2401&MI_01#7&2E838171&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}");
+            var mi01b = Row(@"\\?\HID#VID_37D7&PID_2401&MI_01#7&2e838171&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}");
+            var mi02 = Row(@"\\?\HID#VID_37D7&PID_2401&MI_02#7&aac43af&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}");
+            var mi03 = Row(@"\\?\HID#VID_37D7&PID_2401&MI_03#7&192AFA13&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}");
             var xinput = Row("XInput#0");
             var snapshot = new[] { mi01, mi01b, mi02, mi03, xinput };
+            // What the production provider returns: the PRESENT HID nodes of
+            // the VID/PID (never USB nodes), and one container for the three.
             var nodes = new[]
             {
-                @"HID\VID_37D7&PID_2401&MI_01&2E838171&0&0000", @"HID\VID_37D7&PID_2401&MI_02&aac43af&0&0000",
-                @"HID\VID_37D7&PID_2401&MI_03&192AFA13&0&0000", @"USB\VID_37D7&PID_2401&MI_01&141C1CD7&0&0001",
-                @"USB\VID_37D7&PID_2401&MI_02&141C1CD7&0&0002", @"USB\VID_37D7&PID_2401&MI_03&141C1CD7&0&0003",
+                @"HID\VID_37D7&PID_2401&MI_01\7&2E838171&0&0000",
+                @"HID\VID_37D7&PID_2401&MI_02\7&AAC43AF&0&0000",
+                @"HID\VID_37D7&PID_2401&MI_03\7&192AFA13&0&0000",
             };
             string oneContainer = "{0badc0de-0000-4000-8000-000000002401}";
+            var containers = new System.Collections.Generic.Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                [nodes[0]] = oneContainer, [nodes[1]] = oneContainer, [nodes[2]] = oneContainer,
+            };
+            string ContainerOf(string id)
+                => containers.TryGetValue(id, out var c) ? c : throw new Xunit.Sdk.XunitException("unexpected node " + id);
             foreach (var ud in snapshot)
             {
                 Assert.True(PadForge.Services.InputService.HidHideSiblingSweepAllowed(
-                    snapshot, ud, out int same, out int devices, _ => false, (v, p) => nodes, _ => oneContainer),
+                    snapshot, ud, out int same, out int devices, _ => false, (v, p) => nodes, ContainerOf),
                     $"the gate shut for {ud.DevicePath}");
                 Assert.Equal(5, same);      // the row count the 4.4.0 rule misread
                 Assert.Equal(1, devices);   // one container, one pad

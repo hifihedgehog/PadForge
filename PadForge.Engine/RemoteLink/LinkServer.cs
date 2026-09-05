@@ -102,9 +102,17 @@ namespace PadForge.Engine.RemoteLink
         /// on local shared devices (#402): a peer that leaves mid-rumble sent
         /// no zero, and without this the rumble it wrote last would stand.</summary>
         public event Action<string> PeerDropped;
-        /// <summary>A session with this peer was added, by fingerprint. The owner
-        /// lifts the "gone" mark a drop left, so the peer's claims count again.</summary>
-        public event Action<string> PeerConnected;
+
+        /// <summary>True while at least one session with this peer is in the
+        /// list. The owner's output router asks this at claim and release time
+        /// (#402), under its own lock, instead of tracking connect and drop
+        /// events, whose order across threads is not the order of membership.</summary>
+        public bool IsPeerConnected(string fingerprintHex)
+        {
+            if (string.IsNullOrEmpty(fingerprintHex)) return false;
+            lock (_lock)
+                return _connections.Any(c => string.Equals(c.PeerFingerprintHex, fingerprintHex, StringComparison.OrdinalIgnoreCase));
+        }
         // A status CODE, not English text: the App maps it to a localized string. Engine
         // can't reach the App's resources, so it must not emit user-facing prose (#138 F35).
         public event Action<LinkStatus> StatusChanged;
@@ -1820,7 +1828,6 @@ namespace PadForge.Engine.RemoteLink
                 conn.RemoteDevices[d.LinkSlot] = d;
             }
             lock (_lock) _connections.Add(conn);
-            try { PeerConnected?.Invoke(conn.PeerFingerprintHex); } catch { /* best effort */ }
             foreach (var d in conn.RemoteDevices.Values) DeviceConnected?.Invoke(d);
             StatusChanged?.Invoke(new LinkStatus(LinkStatusKind.PeerConnected, peer: Short(conn.PeerFingerprintHex), deviceCount: conn.RemoteDevices.Count));
         }

@@ -91,12 +91,16 @@ namespace PadForge.Tests
             // The peer's last session dropped without a zero. Its ownership is
             // released by fingerprint, and the next pass ends what it left.
             var saved = SettingsManager.UserSettings;
+            var savedQuery = RemoteLinkOutputRouter.IsPeerConnected;
+            var connected = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            RemoteLinkOutputRouter.IsPeerConnected = fp => connected.Contains(fp);
             try
             {
                 SettingsManager.UserSettings = new SettingsCollection();
                 var (ud, _, sent) = Rumbling("fb-" + Guid.NewGuid().ToString("N"));
                 string peer = "fp-" + Guid.NewGuid().ToString("N");
-                RemoteLinkOutputRouter.ClaimOutput(ud.DevicePath, peer);
+                connected.Add(peer);
+                Assert.True(RemoteLinkOutputRouter.ClaimOutput(ud.DevicePath, peer));
                 var lease = (System.Collections.Concurrent.ConcurrentDictionary<string, long>)
                     typeof(RemoteLinkOutputRouter).GetField("_outputLease", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
                 lease[ud.DevicePath] = Environment.TickCount64 - 10_000;
@@ -104,13 +108,14 @@ namespace PadForge.Tests
                 Assert.Empty(sent);                                         // still the peer's
                 RemoteLinkOutputRouter.ReleasePeer("fp-someone-else");
                 Assert.True(RemoteLinkOutputRouter.PeerWroteLast(ud.DevicePath));   // another peer's drop is not ours
+                connected.Remove(peer);                                             // its last session is gone
                 RemoteLinkOutputRouter.ReleasePeer(peer.ToUpperInvariant());        // fingerprints compare case-insensitively
                 Assert.False(RemoteLinkOutputRouter.PeerWroteLast(ud.DevicePath));
                 RunFeedbackPass(new InputManager(), ud);
                 Assert.Equal(new[] { ((ushort)0, (ushort)0) }, sent);
                 Assert.False(ud.ForceFeedbackState.IsActive);
             }
-            finally { SettingsManager.UserSettings = saved; }
+            finally { SettingsManager.UserSettings = saved; RemoteLinkOutputRouter.IsPeerConnected = savedQuery; }
         }
 
         [Fact]
@@ -139,47 +144,68 @@ namespace PadForge.Tests
             Assert.Contains("_linkServer.PeerDropped += RemoteLinkOutputRouter.ReleasePeer;", svc);
             Assert.Contains("RemoteLinkOutputRouter.ReleaseDevice(old.ud.DevicePath);", svc);
             Assert.Contains("if (!RemoteLinkOutputRouter.ClaimOutput(ud?.DevicePath ?? source.DevicePath, peerFingerprint)) return;", svc);
-            Assert.Contains("_linkServer.PeerConnected += RemoteLinkOutputRouter.PeerConnected;", svc);
+            Assert.Contains("RemoteLinkOutputRouter.IsPeerConnected = fp => ReferenceEquals(_linkServer, link) && link.IsPeerConnected(fp);", svc);
             string link = System.IO.File.ReadAllText(System.IO.Path.Combine(RepoRoot(), "PadForge.Engine", "RemoteLink", "LinkServer.cs"));
             Assert.Contains("PeerDropped?.Invoke(fp)", link);
             Assert.Contains("foreach (var d in dupes) DropConnection(d, replaced: true);", link);   // no false departure
-            Assert.Contains("PeerConnected?.Invoke(conn.PeerFingerprintHex)", link);
+            Assert.Contains("public bool IsPeerConnected(string fingerprintHex)", link);
             string router = System.IO.File.ReadAllText(System.IO.Path.Combine(RepoRoot(), "PadForge.App", "Common", "Input", "RemoteLinkOutputRouter.cs"));
             int clear = router.IndexOf("public static void Clear()", StringComparison.Ordinal);
             Assert.Contains("_peerWroteLast.Clear();", router.Substring(clear, 1200));
         }
 
         [Fact]
-        public void AGonePeer_CannotReclaim_UntilItConnectsAgain()
+        public void AClaim_NeedsALiveSession_AndALateReleaseAfterAReconnect_DoesNothing()
         {
-            // A frame decoded before the drop, claiming after the release, would
-            // re-own the device for a peer with nothing left to release it.
-            string path = "web://gone-" + Guid.NewGuid().ToString("N");
-            string peer = "fp-" + Guid.NewGuid().ToString("N");
-            Assert.True(RemoteLinkOutputRouter.ClaimOutput(path, peer));
-            RemoteLinkOutputRouter.ReleasePeer(peer);
-            Assert.False(RemoteLinkOutputRouter.ClaimOutput(path, peer));
-            Assert.False(RemoteLinkOutputRouter.PeerWroteLast(path));
-            Assert.False(RemoteLinkOutputRouter.IsClaimedByPeer(path));
-            RemoteLinkOutputRouter.PeerConnected(peer);
-            Assert.True(RemoteLinkOutputRouter.ClaimOutput(path, peer));
-            Assert.True(RemoteLinkOutputRouter.PeerWroteLast(path));
-            RemoteLinkOutputRouter.ReleaseDevice(path);
+            // Membership decides, not the order of connect and drop notices.
+            var connected = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            var savedQuery = RemoteLinkOutputRouter.IsPeerConnected;
+            RemoteLinkOutputRouter.IsPeerConnected = fp => connected.Contains(fp);
+            try
+            {
+                string path = "web://live-" + Guid.NewGuid().ToString("N");
+                string peer = "fp-" + Guid.NewGuid().ToString("N");
+                // A frame from a peer with no session (dropped before the claim) is refused.
+                Assert.False(RemoteLinkOutputRouter.ClaimOutput(path, peer));
+                Assert.False(RemoteLinkOutputRouter.PeerWroteLast(path));
+                connected.Add(peer);
+                Assert.True(RemoteLinkOutputRouter.ClaimOutput(path, peer.ToUpperInvariant()));
+                // The old session's drop notice arrives late, after the reconnect:
+                // the peer has a session, so nothing is released.
+                RemoteLinkOutputRouter.ReleasePeer(peer);
+                Assert.True(RemoteLinkOutputRouter.PeerWroteLast(path));
+                Assert.True(RemoteLinkOutputRouter.IsClaimedByPeer(path));
+                // The peer really leaves: the release lands.
+                connected.Remove(peer);
+                RemoteLinkOutputRouter.ReleasePeer(peer);
+                Assert.False(RemoteLinkOutputRouter.PeerWroteLast(path));
+                Assert.False(RemoteLinkOutputRouter.IsClaimedByPeer(path));
+            }
+            finally { RemoteLinkOutputRouter.IsPeerConnected = savedQuery; }
         }
 
         [Fact]
         public void ADepartingPeersRelease_LeavesAnotherPeersNewerClaim()
         {
-            string path = "web://two-" + Guid.NewGuid().ToString("N");
-            string a = "fp-a-" + Guid.NewGuid().ToString("N"), b = "fp-b-" + Guid.NewGuid().ToString("N");
-            Assert.True(RemoteLinkOutputRouter.ClaimOutput(path, a));
-            Assert.True(RemoteLinkOutputRouter.ClaimOutput(path, b));       // B took the device over
-            RemoteLinkOutputRouter.ReleasePeer(a);
-            Assert.True(RemoteLinkOutputRouter.PeerWroteLast(path));         // still B's
-            Assert.True(RemoteLinkOutputRouter.IsClaimedByPeer(path));       // lease intact
-            RemoteLinkOutputRouter.ReleasePeer(b);
-            Assert.False(RemoteLinkOutputRouter.PeerWroteLast(path));
-            RemoteLinkOutputRouter.PeerConnected(a); RemoteLinkOutputRouter.PeerConnected(b);
+            var connected = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            var savedQuery = RemoteLinkOutputRouter.IsPeerConnected;
+            RemoteLinkOutputRouter.IsPeerConnected = fp => connected.Contains(fp);
+            try
+            {
+                string path = "web://two-" + Guid.NewGuid().ToString("N");
+                string a = "fp-a-" + Guid.NewGuid().ToString("N"), b = "fp-b-" + Guid.NewGuid().ToString("N");
+                connected.Add(a); connected.Add(b);
+                Assert.True(RemoteLinkOutputRouter.ClaimOutput(path, a));
+                Assert.True(RemoteLinkOutputRouter.ClaimOutput(path, b));       // B took the device over
+                connected.Remove(a);
+                RemoteLinkOutputRouter.ReleasePeer(a);
+                Assert.True(RemoteLinkOutputRouter.PeerWroteLast(path));         // still B's
+                Assert.True(RemoteLinkOutputRouter.IsClaimedByPeer(path));       // lease intact
+                connected.Remove(b);
+                RemoteLinkOutputRouter.ReleasePeer(b);
+                Assert.False(RemoteLinkOutputRouter.PeerWroteLast(path));
+            }
+            finally { RemoteLinkOutputRouter.IsPeerConnected = savedQuery; }
         }
 
         private static string RepoRoot()

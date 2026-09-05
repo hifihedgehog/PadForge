@@ -9768,7 +9768,10 @@ namespace PadForge.Services
             // A peer's last session dropped: release the output ownership it held
             // on local shared devices (#402), so a rumble it left running ends.
             _linkServer.PeerDropped += RemoteLinkOutputRouter.ReleasePeer;
-            _linkServer.PeerConnected += RemoteLinkOutputRouter.PeerConnected;
+            // Membership for the router's claim and release decisions (#402):
+            // the link server's own list, read at the moment of the decision.
+            var link = _linkServer;
+            RemoteLinkOutputRouter.IsPeerConnected = fp => ReferenceEquals(_linkServer, link) && link.IsPeerConnected(fp);
             _linkServer.AudioReceived += OnRemoteAudioReceived;
             _linkServer.SourceDemandReceived += OnRemoteSourceDemandReceived;
             _linkServer.DeviceConnected += device =>

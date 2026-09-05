@@ -107,9 +107,11 @@ namespace PadForge.Common.Input
             {
                 // A frame decoded before its peer's last session dropped, and
                 // claiming after the release, would re-own the device for a peer
-                // that is gone, with nothing left to release it. Refused until
-                // the peer connects again.
-                if (!string.IsNullOrEmpty(peerFingerprint) && _gonePeers.Contains(peerFingerprint)) return false;
+                // that is gone, with nothing left to release it. Membership is
+                // asked here, under the same lock the release takes, so a claim
+                // either precedes the removal (and the release that follows it
+                // cleans up) or sees no session and is refused.
+                if (!string.IsNullOrEmpty(peerFingerprint) && !PeerHasSession(peerFingerprint)) return false;
                 _outputLease[localDevicePath] = Environment.TickCount64;
                 _peerWroteLast[localDevicePath] = peerFingerprint ?? string.Empty;
                 return true;
@@ -120,13 +122,21 @@ namespace PadForge.Common.Input
         // that compared a peer's record and then removed by key alone could
         // delete another peer's newer claim, and its fresh lease with it.
         private static readonly object _ownerLock = new object();
-        private static readonly System.Collections.Generic.HashSet<string> _gonePeers = new(StringComparer.OrdinalIgnoreCase);
 
-        /// <summary>Owner: a session with this peer was added. Its claims count again.</summary>
-        public static void PeerConnected(string peerFingerprint)
+        /// <summary>Owner: whether a peer has a live session right now, answered
+        /// by the link server from its connection list. Connect and drop
+        /// EVENTS are not used for this: their order across threads is not the
+        /// order of membership, and a late drop notice after a reconnect, or a
+        /// late connect notice after a revoke, mis-marked the peer for the
+        /// life of a session. Unset (no link server) means every peer counts
+        /// as connected, which is the pre-#402 behavior.</summary>
+        public static Func<string, bool> IsPeerConnected { get; set; }
+
+        private static bool PeerHasSession(string peerFingerprint)
         {
-            if (string.IsNullOrEmpty(peerFingerprint)) return;
-            lock (_ownerLock) _gonePeers.Remove(peerFingerprint);
+            var q = IsPeerConnected;
+            if (q == null) return true;
+            try { return q(peerFingerprint); } catch { return false; }
         }
 
         // Who wrote the device's output last, and which peer (#402). A peer
@@ -161,15 +171,15 @@ namespace PadForge.Common.Input
         /// <summary>Owner: the peer's last session dropped. Every device it wrote
         /// last is released, lease and ownership, so the local pipeline's
         /// zero-slot stop may end what the peer left running. Another peer's
-        /// newer claim on the same device is left alone. The peer is marked gone
-        /// until it connects again, so a frame of its still in flight cannot
-        /// re-own anything.</summary>
+        /// newer claim on the same device is left alone. A release that arrives
+        /// after the peer has a NEW session (the old drop's notice delivered
+        /// late) does nothing: membership, not the notice, decides.</summary>
         public static void ReleasePeer(string peerFingerprint)
         {
             if (string.IsNullOrEmpty(peerFingerprint)) return;
             lock (_ownerLock)
             {
-                _gonePeers.Add(peerFingerprint);
+                if (PeerHasSession(peerFingerprint)) return;
                 foreach (var kv in _peerWroteLast.ToArray())
                 {
                     if (!string.Equals(kv.Value, peerFingerprint, StringComparison.OrdinalIgnoreCase)) continue;
@@ -226,9 +236,8 @@ namespace PadForge.Common.Input
             _lastNfcDemandMs.Clear();
             // Drop output leases too, or a stale lease would keep the owner's local
             // output suppressed for up to OutputLeaseMs after Remote Link stops.
-            // Ownership goes too. The gone marks stay: a frame still in flight
-            // after Remote Link stopped must not re-own a device, and a peer
-            // that connects again is unmarked by PeerConnected.
+            // Ownership goes too. A frame still in flight after Remote Link
+            // stopped finds no session for its peer and is refused.
             lock (_ownerLock)
             {
                 _outputLease.Clear();

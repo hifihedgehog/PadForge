@@ -726,12 +726,18 @@ namespace PadForge.Common.Input
                 // its output, zero local slots or not: the peer's lease while it
                 // is fresh, and past that whether the peer was the last writer,
                 // since a peer holding an unchanged rumble ships it once.
-                if (ud.ForceFeedbackState.IsActive
-                    && ud.Device is PadForge.Engine.WebControllerDevice web
-                    && (web.HasRumble || web.HasHaptic)
-                    && !RemoteLinkOutputRouter.IsClaimedByPeer(ud.DevicePath)
-                    && !RemoteLinkOutputRouter.PeerWroteLast(ud.DevicePath))
-                    ud.ForceFeedbackState.StopDeviceForces(web);
+                // Under the device's output gate (#416), the same one a peer's
+                // relayed frame holds from its claim through its write, so the
+                // decision here and the stop are one step against that write.
+                lock (ud.OutputSync)
+                {
+                    if (ud.ForceFeedbackState.IsActive
+                        && ud.Device is PadForge.Engine.WebControllerDevice web
+                        && (web.HasRumble || web.HasHaptic)
+                        && !RemoteLinkOutputRouter.IsClaimedByPeer(ud.DevicePath)
+                        && !RemoteLinkOutputRouter.PeerWroteLast(ud.DevicePath))
+                        ud.ForceFeedbackState.StopDeviceForces(web);
+                }
                 return;
             }
 

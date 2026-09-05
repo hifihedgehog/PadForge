@@ -21,6 +21,16 @@ namespace PadForge.Engine.Data
     /// </summary>
     public partial class UserDevice : INotifyPropertyChanged
     {
+        /// <summary>Serializes the two writers of this device's output that run
+        /// on different threads (#416): a remote peer's relayed frame being
+        /// claimed and applied, and the feedback pass deciding whether the
+        /// device has no local slots and stopping it. Without one gate the
+        /// pass could stop a frame the peer was applying, then reset its own
+        /// cache under the peer's write, leaving a nonzero command with the
+        /// feedback state reading inactive, so nothing ever stopped it.</summary>
+        [XmlIgnore]
+        public object OutputSync { get; } = new object();
+
         public UserDevice()
         {
             DateCreated = DateTime.Now;

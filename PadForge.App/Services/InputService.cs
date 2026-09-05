@@ -9764,7 +9764,11 @@ namespace PadForge.Services
             // Reverse DEMAND relay (#241): a live NFC mapping on our side arms
             // the reader on the device's owner, and a peer's demand arms ours.
             RemoteLinkOutputRouter.SendSourceDemand = (fp, slot, payload) => _linkServer?.PushSourceDemand(fp, slot, payload);
-            _linkServer.OutputReceived += OnRemoteOutputReceived;
+            // Bound to THIS server (#416): a frame decoded by a server that has
+            // since been stopped is refused inside the device gate, so it cannot
+            // overwrite a reconnected peer's output on the server that replaced it.
+            var origin = _linkServer;
+            origin.OutputReceived += (fp, slot, payload) => OnRemoteOutputReceived(origin, fp, slot, payload);
             // A peer's last session dropped: release the output ownership it held
             // on local shared devices (#402), so a rumble it left running ends.
             _linkServer.PeerDropped += RemoteLinkOutputRouter.ReleasePeer;
@@ -10834,12 +10838,29 @@ namespace PadForge.Services
             && _remoteNfcDemandMs.TryGetValue(deviceGuid, out long ms)
             && Environment.TickCount64 - ms < McuDemandWindowMs;
 
-        private void OnRemoteOutputReceived(string peerFingerprint, byte slot, byte[] payload)
+        private void OnRemoteOutputReceived(LinkServer origin, string peerFingerprint, byte slot, byte[] payload)
         {
             if (!OutputEffectCodec.TryDecode(payload, out var effect))
                 return;
             if (!ResolveExposed(slot, out var source, out var ud))
                 return;
+            // The device's output gate (#416), held from the claim through the
+            // write, the same gate the feedback pass holds across its zero-slot
+            // decision and stop. Inside it, the frame is refused when its
+            // server is no longer the current one: a stopped server's in-flight
+            // frame must not land after the replacement server's.
+            lock (ud?.OutputSync ?? _unresolvedOutputSync)
+            {
+                if (!ReferenceEquals(Volatile.Read(ref _linkServer), origin)) return;
+                ApplyRemoteOutput(effect, source, ud, peerFingerprint);
+            }
+        }
+
+        /// <summary>Gate for a relayed frame whose device has no UserDevice row.</summary>
+        private static readonly object _unresolvedOutputSync = new object();
+
+        private void ApplyRemoteOutput(OutputEffectCodec.OutputEffect effect, ISdlInputDevice source, UserDevice ud, string peerFingerprint)
+        {
             // Sole-writer guard (#138): this frame means a remote game is driving the
             // shared device. Refresh the output lease so the owner's LOCAL output pipeline
             // yields. The apply below is the sole hardware writer (no two-writer stutter).

@@ -574,6 +574,8 @@ namespace PadForge.Common.Input
         private readonly FlydigiReprobePolicy _flydigiReprobe = new FlydigiReprobePolicy();
 
         private long _flydigiObserveTick;
+        private uint _flydigiChangeCount;
+        private bool _flydigiChangeCountKnown;
 
         /// <summary>#395: a Flydigi pad whose vendor interface SDL did not claim
         /// at arrival (the reporter's logs show two of three) has no enhanced
@@ -588,35 +590,48 @@ namespace PadForge.Common.Input
         /// <para>Which interface is unclaimed is observed, not guessed: SDL's
         /// raw HID enumeration lists the vendor's 0xFFA0 interfaces by path,
         /// and an attached enhanced wrapper carries the path of the interface
-        /// it claimed. The enumeration runs no more often than the policy's
-        /// delay, and only while PadForge has some Flydigi V2 wrapper or the
-        /// policy still tracks an interface, so an idle session costs
-        /// nothing. A detached Flydigi wrapper awaiting cleanup means the pad
-        /// is in flux, and the policy defers every deadline.</para></summary>
+        /// it claimed. That enumeration opens every HID interface on the
+        /// system to read its attributes, so it runs only when SDL's HID
+        /// device-change counter has moved since the last observation, or on
+        /// the policy's delay cadence while an unclaimed interface is being
+        /// retried. A healthy pad costs one enumeration at its arrival and
+        /// none after. A pad PadForge opened no joystick view of is still
+        /// found, since its arrival moves the counter. A failed enumeration is
+        /// not an observation. A detached Flydigi wrapper awaiting cleanup
+        /// means the pad is in flux, and the policy defers every deadline.
+        /// The enumeration's cost lands on the polling thread and is logged
+        /// when it exceeds 25 ms, the same bar as the other stall lines.</para></summary>
         private void FlydigiReprobeTick()
         {
             if (!FlydigiEnhancedProtocolDesired) return;
+            uint? count = Engine.SdlHidEnumeration.DeviceChangeCount();
+            if (count == null) return;
+            bool changed = !_flydigiChangeCountKnown || count.Value != _flydigiChangeCount;
             long now = Environment.TickCount64;
-            if (now - _flydigiObserveTick < FlydigiReprobePolicy.DelayMs) return;
-            bool anyV2 = false, inFlux = false;
+            if (!changed && !_flydigiReprobe.Armed) return;
+            if (!changed && now - _flydigiObserveTick < FlydigiReprobePolicy.DelayMs) return;
+
+            bool inFlux = false;
             var claimed = new System.Collections.Generic.List<string>();
             foreach (var w in _openedSdlInstanceIds.Values)
             {
                 if (w == null || w.VendorId != 0x37D7) continue;
-                anyV2 = true;
                 if (!w.IsAttached) { inFlux = true; continue; }
                 if (w.Backend == "hidapi" && !string.IsNullOrEmpty(w.DevicePath)) claimed.Add(w.DevicePath);
             }
-            if (!anyV2 && _flydigiReprobe.Tracked == 0) return;
+            long tsEnum = Stopwatch.GetTimestamp();
+            var present = Engine.SdlHidEnumeration.Paths(0x37D7, 0xFFA0);
+            long enumMs = (Stopwatch.GetTimestamp() - tsEnum) * 1000 / Stopwatch.Frequency;
+            if (enumMs >= 25) Engine.SdlDiagLog.WriteLine($"STALL flydigi hid-enumerate={enumMs}ms");
+            if (present == null) return;                       // a failed enumeration is not an observation
             _flydigiObserveTick = now;
-            System.Collections.Generic.List<string> present;
-            try { present = Engine.SdlHidEnumeration.Paths(0x37D7, 0xFFA0); }
-            catch { return; }
-            var due = _flydigiReprobe.Observe(now, present, claimed, inFlux);
+            _flydigiChangeCount = count.Value;
+            _flydigiChangeCountKnown = true;
+            var due = _flydigiReprobe.Observe(now, present, claimed, inFlux, changed);
             if (due.Count == 0) return;
             var (written, value) = TryFlydigiReprobeNudge();
             Engine.SdlDiagLog.WriteLine(
-                $"FLYDIGI reprobe attempt={_flydigiReprobe.LastAttempt}/{FlydigiReprobePolicy.MaxAttempts} unclaimed={due.Count} present={present.Count} claimed={claimed.Count} flux={inFlux} hint={value ?? "-"} written={written} first={due[0]}");
+                $"FLYDIGI reprobe attempt={_flydigiReprobe.LastAttempt}/{FlydigiReprobePolicy.MaxAttempts} unclaimed={due.Count} present={present.Count} claimed={claimed.Count} flux={inFlux} changed={changed} hint={value ?? "-"} written={written} first={due[0]}");
         }
 
         // ─────────────────────────────────────────────

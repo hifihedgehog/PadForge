@@ -16,10 +16,10 @@ namespace PadForge.Engine
     public static class SdlHidEnumeration
     {
         // Mirrors SDL_hid_device_info in include/SDL3/SDL_hidapi.h. Sequential
-        // layout with natural alignment is what the C compiler produces, so
-        // the marshaler's offsets match the native ones on every field.
+        // layout with natural alignment is what the C compiler produces with
+        // SDL's eight-byte packing on x64: 80 bytes, next at 72.
         [StructLayout(LayoutKind.Sequential)]
-        private struct DeviceInfo
+        internal struct DeviceInfo
         {
             public IntPtr path;                 // char*
             public ushort vendor_id;
@@ -44,17 +44,52 @@ namespace PadForge.Engine
         [DllImport("SDL3", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_hid_free_enumeration")]
         private static extern void SDL_hid_free_enumeration(IntPtr devs);
 
+        [DllImport("SDL3", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_hid_device_change_count")]
+        private static extern uint SDL_hid_device_change_count();
+
+        /// <summary>The managed mirror's size and the offsets of the fields
+        /// the walk depends on, for the layout test.</summary>
+        internal static (int size, int usagePage, int next) LayoutProbe()
+            => (Marshal.SizeOf<DeviceInfo>(),
+                (int)Marshal.OffsetOf<DeviceInfo>(nameof(DeviceInfo.usage_page)),
+                (int)Marshal.OffsetOf<DeviceInfo>(nameof(DeviceInfo.next)));
+
+        /// <summary>SDL's counter of HID device arrivals and removals, kept
+        /// from Windows device notifications, so a caller can skip an
+        /// expensive enumeration when nothing changed. Null when SDL could
+        /// not be reached.</summary>
+        public static uint? DeviceChangeCount()
+        {
+            try { return SDL_hid_device_change_count(); }
+            catch { return null; }
+        }
+
+        [DllImport("SDL3", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_hid_init")]
+        private static extern int SDL_hid_init();
+
+        private static bool _hidReady;
+
         /// <summary>The device paths of every present HID interface with this
-        /// vendor id (0 for any) and this usage page (0 for any). SDL
-        /// initializes its HID layer on demand, so this needs no prior init.
-        /// Returns an empty list on any failure.</summary>
+        /// vendor id (0 for any) and this usage page (0 for any). SDL's HID
+        /// layer is initialized once here and held (SDL refcounts it, and the
+        /// joystick layer holds its own count), so a NULL enumeration result
+        /// afterward is "no devices" and never a failed init. Returns null
+        /// when SDL could not be reached or its init failed, which the caller
+        /// must not read as "no devices". An empty list is a successful
+        /// enumeration that found none.</summary>
         public static List<string> Paths(ushort vendorId, ushort usagePage)
         {
             var result = new List<string>();
             IntPtr head = IntPtr.Zero;
             try
             {
+                if (!_hidReady)
+                {
+                    if (SDL_hid_init() < 0) return null;
+                    _hidReady = true;
+                }
                 head = SDL_hid_enumerate(vendorId, 0);
+                if (head == IntPtr.Zero) return result;
                 for (IntPtr p = head; p != IntPtr.Zero;)
                 {
                     var info = Marshal.PtrToStructure<DeviceInfo>(p);
@@ -65,10 +100,11 @@ namespace PadForge.Engine
                     }
                     p = info.next;
                 }
+                return result;
             }
             catch
             {
-                result.Clear();
+                return null;
             }
             finally
             {
@@ -77,7 +113,7 @@ namespace PadForge.Engine
                     try { SDL_hid_free_enumeration(head); } catch { }
                 }
             }
-            return result;
         }
+
     }
 }

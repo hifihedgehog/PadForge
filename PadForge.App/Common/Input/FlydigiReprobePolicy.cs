@@ -24,30 +24,33 @@ namespace PadForge.Common.Input
     /// HID enumeration says which vendor interfaces are present, SDL names
     /// the enhanced joystick it creates for one by that same path, so an
     /// interface is claimed exactly when an attached enhanced wrapper carries
-    /// its path and unclaimed otherwise. That is true correspondence: two
-    /// identical pads have two paths, a pad with no XInput view is still
-    /// seen, and no arrival order or view count has to be guessed at.</para>
+    /// its path and unclaimed otherwise. Two identical pads have two paths,
+    /// and a pad PadForge has no joystick view of is still seen.</para>
     ///
-    /// <para>Each unclaimed interface has its own deadline and budget from
-    /// the moment it is first observed unclaimed. An interface that leaves
-    /// the enumeration is forgotten, so a reconnect at the same path starts
-    /// fresh. While any Flydigi wrapper is detached and awaiting cleanup the
-    /// pad is in flux, and every deadline is pushed out, so a replug too
-    /// quick for the enumeration to notice is still given its full delay.
-    /// An interface once observed claimed is done: this is startup recovery,
-    /// not a standing retry.</para>
+    /// <para>Connections are told apart by SDL's HID device-change counter,
+    /// which moves on every HID arrival or removal on the system. A counter
+    /// move resets every tracked interface: a claimed one is re-read from the
+    /// wrappers on the same observation, an unclaimed one gets a fresh
+    /// deadline and budget, since it may be a reconnect at the same path. An
+    /// interface absent from an enumeration is forgotten only when the
+    /// counter moved. Without a move an absence is an enumeration flake, and
+    /// the state stands. While any Flydigi wrapper is detached and awaiting
+    /// cleanup the pad is in flux, and every deadline is pushed out.</para>
     ///
-    /// <para>Pure and clock-free so the tests pin it. What the attempt
-    /// counter measures is requested hint writes, and a write can be refused
-    /// when an environment variable outranks the hint, so the budget is four
-    /// rather than three.</para>
+    /// <para>What a nudge does is SDL's business: it re-probes EVERY unclaimed
+    /// HIDAPI device on the system, so one pad's nudge can probe a second pad
+    /// before that pad's own deadline, and an exhausted pad is probed again
+    /// by another's nudge. The budget bounds requests, not probes. Accepted.
+    /// Pure and clock-free so the tests pin it.</para>
     /// </summary>
     internal sealed class FlydigiReprobePolicy
     {
         /// <summary>Space Station waits 1000 ms before its first command and is
         /// answered. The probe here waits a little longer. The caller also
-        /// enumerates no more often than this.</summary>
+        /// observes no more often than this while retrying.</summary>
         public const int DelayMs = 1200;
+        /// <summary>Requested hint writes per interface per connection. A write
+        /// can be refused when an environment variable outranks the hint.</summary>
         public const int MaxAttempts = 4;
 
         private sealed class Interface
@@ -63,7 +66,8 @@ namespace PadForge.Common.Input
         /// <summary>Interfaces currently tracked, claimed or not.</summary>
         public int Tracked => _interfaces.Count;
 
-        /// <summary>True while any unclaimed interface still has attempts left.</summary>
+        /// <summary>True while any unclaimed interface still has attempts left,
+        /// which is when the caller keeps observing on the delay cadence.</summary>
         public bool Armed
         {
             get
@@ -78,22 +82,36 @@ namespace PadForge.Common.Input
         /// observation fired for, for the diagnostics line.</summary>
         public int LastAttempt { get; private set; }
 
-        /// <summary>One observation: the vendor interfaces present now, the
-        /// paths of the attached enhanced wrappers, and whether any Flydigi
-        /// wrapper is detached and awaiting cleanup. Returns the unclaimed
-        /// paths whose probe is due now, each of which spends one attempt.
-        /// Empty means no nudge.</summary>
+        /// <summary>One observation. <paramref name="presentPaths"/> is a
+        /// successful enumeration (a failed one is not an observation and must
+        /// not be passed). <paramref name="claimedPaths"/> are the attached
+        /// enhanced wrappers' paths. <paramref name="inFlux"/> says a Flydigi
+        /// wrapper is detached and awaiting cleanup. <paramref name="deviceChanged"/>
+        /// says SDL's HID change counter moved since the last observation.
+        /// Returns the unclaimed paths whose probe is due now, each of which
+        /// spends one attempt. Empty means no nudge.</summary>
         public IReadOnlyList<string> Observe(long nowTicks, IReadOnlyList<string> presentPaths,
-            IReadOnlyList<string> claimedPaths, bool inFlux)
+            IReadOnlyList<string> claimedPaths, bool inFlux, bool deviceChanged)
         {
             var present = new HashSet<string>(presentPaths ?? Array.Empty<string>(), StringComparer.OrdinalIgnoreCase);
             var claimed = new HashSet<string>(claimedPaths ?? Array.Empty<string>(), StringComparer.OrdinalIgnoreCase);
 
-            // Gone from the bus: forgotten, so a return starts fresh.
-            var gone = new List<string>();
-            foreach (var path in _interfaces.Keys)
-                if (!present.Contains(path)) gone.Add(path);
-            foreach (var path in gone) _interfaces.Remove(path);
+            if (deviceChanged)
+            {
+                // Something arrived or left. An interface still present may be a
+                // new connection at an old path: start it over. A still-claimed
+                // one is re-marked below on this same observation. An absent one
+                // is really gone.
+                var gone = new List<string>();
+                foreach (var kv in _interfaces)
+                {
+                    if (!present.Contains(kv.Key)) { gone.Add(kv.Key); continue; }
+                    kv.Value.Claimed = false;
+                    kv.Value.Attempts = 0;
+                    kv.Value.Due = nowTicks + DelayMs;
+                }
+                foreach (var path in gone) _interfaces.Remove(path);
+            }
 
             var due = new List<string>();
             int max = 0;
@@ -105,7 +123,7 @@ namespace PadForge.Common.Input
                     _interfaces[path] = i;
                 }
                 if (claimed.Contains(path)) { i.Claimed = true; continue; }
-                if (i.Claimed) continue;                       // once claimed, done
+                if (i.Claimed) continue;                       // claimed once this connection: done
                 if (inFlux) { i.Due = Math.Max(i.Due, nowTicks + DelayMs); continue; }
                 if (i.Attempts >= MaxAttempts || nowTicks < i.Due) continue;
                 i.Attempts++;

@@ -103,8 +103,32 @@ namespace PadForge.Common.Input
         public static void ClaimOutput(string localDevicePath)
         {
             if (!string.IsNullOrEmpty(localDevicePath))
+            {
                 _outputLease[localDevicePath] = Environment.TickCount64;
+                _peerWroteLast[localDevicePath] = true;
+            }
         }
+
+        // Who wrote the device's output last is a fact, not a lease (#402). A
+        // peer holding an unchanged rumble ships it once (the dedup above), so
+        // its lease lapses while its rumble is still meant. The owner's
+        // zero-slot stop asks this, not the lease, before ending a rumble on a
+        // device with no local assignments: peer-written output is the peer's
+        // to end. Cleared the moment the local pipeline writes.
+        private static readonly ConcurrentDictionary<string, bool> _peerWroteLast = new(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>Owner: the local output pipeline is about to write this
+        /// device. From here on the last writer is local.</summary>
+        public static void NoteLocalWrite(string localDevicePath)
+        {
+            if (!string.IsNullOrEmpty(localDevicePath))
+                _peerWroteLast.TryRemove(localDevicePath, out _);
+        }
+
+        /// <summary>Owner: true when a peer's relayed frame was the last thing
+        /// written to this LOCAL device, whether or not its lease is still fresh.</summary>
+        public static bool PeerWroteLast(string localDevicePath) =>
+            !string.IsNullOrEmpty(localDevicePath) && _peerWroteLast.ContainsKey(localDevicePath);
 
         /// <summary>Owner: true while a peer's relay holds the output lease on this LOCAL
         /// device, so the local output pipeline must skip its write (the relay is the sole

@@ -57,6 +57,35 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void AWebPadAPeerWroteLast_KeepsItsRumble_AfterTheLeaseLapses()
+        {
+            // A peer holding an unchanged rumble ships it once, so its lease
+            // lapses in three seconds while the rumble is still meant. Who wrote
+            // last does not lapse.
+            var saved = SettingsManager.UserSettings;
+            try
+            {
+                SettingsManager.UserSettings = new SettingsCollection();
+                var (ud, _, sent) = Rumbling("fb-" + Guid.NewGuid().ToString("N"));
+                RemoteLinkOutputRouter.ClaimOutput(ud.DevicePath);
+                var lease = (System.Collections.Concurrent.ConcurrentDictionary<string, long>)
+                    typeof(RemoteLinkOutputRouter).GetField("_outputLease", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
+                lease[ud.DevicePath] = Environment.TickCount64 - 10_000;      // the lease is long gone
+                Assert.False(RemoteLinkOutputRouter.IsClaimedByPeer(ud.DevicePath));
+                Assert.True(RemoteLinkOutputRouter.PeerWroteLast(ud.DevicePath));
+                RunFeedbackPass(new InputManager(), ud);
+                Assert.Empty(sent);
+                Assert.True(ud.ForceFeedbackState.IsActive);
+                // Once the local pipeline writes, the peer is no longer the last
+                // writer, and the stop applies again.
+                RemoteLinkOutputRouter.NoteLocalWrite(ud.DevicePath);
+                RunFeedbackPass(new InputManager(), ud);
+                Assert.Equal(new[] { ((ushort)0, (ushort)0) }, sent);
+            }
+            finally { SettingsManager.UserSettings = saved; }
+        }
+
+        [Fact]
         public void AWebPadARemotePeerIsDriving_KeepsItsRumble()
         {
             var saved = SettingsManager.UserSettings;

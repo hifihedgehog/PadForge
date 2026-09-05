@@ -90,6 +90,24 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void OneEnhancedArrival_SatisfiesOnlyTheNewestUnsatisfiedConnection()
+        {
+            // Two pads failed their probe: A at 0, B at 10. One enhanced view
+            // arrives at 20. It is B's (the newest), A is still owed a probe at
+            // its own deadline D, ten milliseconds before B's would have been.
+            var p = new FlydigiReprobePolicy();
+            p.OnArrival(1, false, 0);
+            p.OnArrival(3, false, 10);
+            p.OnArrival(4, true, 20);
+            Assert.True(p.Armed);
+            Assert.True(p.ShouldNudge(D));            // A, due at exactly D
+            Assert.Equal(1, p.LastAttempt);
+            Assert.False(p.ShouldNudge(D + 10));      // B would have been due here, and is satisfied
+            p.OnArrival(5, true, D + 30);             // A's view comes up after its nudge
+            Assert.False(p.Armed);
+        }
+
+        [Fact]
         public void ASecondPadArriving_DoesNotRenewTheFirstPadsSpentBudget()
         {
             var p = new FlydigiReprobePolicy();

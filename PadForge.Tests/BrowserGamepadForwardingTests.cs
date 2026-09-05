@@ -231,10 +231,90 @@ namespace PadForge.Tests
         [Fact]
         public void Freshness_APingFallenOutOfTheRing_IsIgnored()
         {
+            // The ring holds eight pings. Ping 1's slot is reused by ping 9 at
+            // 9000. An echo of ping 1 arriving at 9050 sits within the round
+            // trip of the REUSED slot's tick, so a missing eviction check would
+            // accept it. The session stays expired and its fresh tick unmoved.
             var f = new WebControllerServer.GamepadFreshness(0);
             int first = f.NextPing(1000);
             for (int i = 0; i < 8; i++) f.NextPing(2000 + i * 1000);
-            Assert.False(f.Ack(first, 1010));               // the slot was reused
+            f.Expired = true;
+            Assert.False(f.Ack(first, 9050));
+            Assert.True(f.Expired);
+            Assert.Equal(0, f.FreshTicks);
+        }
+
+        [Theory]
+        [InlineData(1499, true)]
+        [InlineData(1500, true)]
+        [InlineData(1501, false)]
+        public void Freshness_TheRoundTripBound_IsInclusive(int rtt, bool fresh)
+        {
+            var f = new WebControllerServer.GamepadFreshness(0);
+            f.Expired = true;
+            int n = f.NextPing(1000);
+            Assert.Equal(fresh, f.Ack(n, 1000 + rtt));
+            Assert.Equal(!fresh, f.Expired);
+        }
+
+        // ── Raw rest values ─────────────────────────────────────────────
+
+        [Fact]
+        public void RawRest_ComesFromThePage_AndAStockShapeIgnoresIt()
+        {
+            var raw = Pad();
+            WebControllerServer.ConfigureGamepadShape(raw, "raw", "12", "6");
+            Apply(raw, "{\"type\":\"caps\",\"vibrate\":true,\"mapping\":\"\",\"buttons\":12,\"axes\":6,\"rest\":{\"2\":0,\"5\":0,\"0\":32767,\"9\":1,\"x\":5}}");
+            raw.UpdateAxis(2, 65535); raw.UpdateAxis(5, 40000); raw.UpdateAxis(1, 0);
+            raw.NeutralizeAll();
+            var s = raw.GetCurrentState();
+            Assert.Equal(0, s.Axis[2]); Assert.Equal(0, s.Axis[5]);     // the pad's own rest
+            Assert.Equal(32767, s.Axis[0]); Assert.Equal(32767, s.Axis[1]);
+            raw.SetRawAxisRest(3, 70000);
+            raw.NeutralizeAll();
+            Assert.Equal(65535, raw.GetCurrentState().Axis[3]);        // clamped
+            var stock = Pad();
+            WebControllerServer.ConfigureGamepadShape(stock, "standard", "17", "4");
+            stock.SetRawAxisRest(0, 0);
+            stock.UpdateAxis(0, 65535);
+            stock.NeutralizeAll();
+            Assert.Equal(32767, stock.GetCurrentState().Axis[0]);      // stock rest is fixed
+        }
+
+        // ── Rumble that outlives its source ─────────────────────────────
+
+        [Fact]
+        public void LoadFromWebDevice_KeepsTheFeedbackCache_ForTheSameDevice_AndStartsCleanForANewOne()
+        {
+            var web = Pad();
+            var ud = new PadForge.Engine.Data.UserDevice();
+            ud.LoadFromWebDevice(web);
+            var first = ud.ForceFeedbackState;
+            Assert.NotNull(first);
+            ud.LoadFromWebDevice(web);                                  // a capability refresh
+            Assert.Same(first, ud.ForceFeedbackState);
+            var replacement = new WebControllerDevice(web.DevicePath.Substring("web://".Length), web.Name, false, "gamepad");
+            ud.LoadFromWebDevice(replacement);                          // a new connection
+            Assert.NotSame(first, ud.ForceFeedbackState);
+        }
+
+        [Fact]
+        public void TheFeedbackPass_StopsADeviceThatLeftItsLastSlot_AndTeardownIsOneStep()
+        {
+            // Both are pinned at the source. The feedback pass needs a live
+            // InputManager and the teardown a live socket, neither of which
+            // this project hosts.
+            string step2 = File.ReadAllText(Path.Combine(RepoRoot(), "PadForge.App", "Common", "Input", "InputManager.Step2.UpdateInputStates.cs"));
+            int at = step2.IndexOf("if (slotCount == 0)", StringComparison.Ordinal);
+            Assert.True(at > 0);
+            string block = step2.Substring(at, 600);
+            Assert.Contains("ud.ForceFeedbackState.StopDeviceForces(ud.Device);", block);
+            Assert.True(block.IndexOf("StopDeviceForces", StringComparison.Ordinal) < block.IndexOf("return;", StringComparison.Ordinal));
+            string server = File.ReadAllText(Path.Combine(RepoRoot(), "PadForge.App", "Services", "WebControllerServer.cs"));
+            int fin = server.IndexOf("bool stillRegistered =", StringComparison.Ordinal);
+            Assert.True(fin > 0);
+            string before = server.Substring(Math.Max(0, fin - 120), 120);
+            Assert.Contains("lock (_registrationLock)", before);
         }
 
         // ── ProcessMessage under the freshness policy ───────────────────
@@ -313,6 +393,11 @@ namespace PadForge.Tests
             Assert.Contains("new BroadcastChannel(\"padforge_gamepad_identity\")", js);
             // Rumble is a lease the pings renew.
             Assert.Contains("RUMBLE_LEASE_MS", js);
+            // A raw pad sends where its axes rest, and a late identity answer acts.
+            Assert.Contains("caps.rest = translate(", js);
+            Assert.Contains("else if (m.taken === clientId) onIdentityTaken();", js);
+            // The vibrator bootstrap installs its timer before the first pulse.
+            Assert.Contains("if (!phoneVibrate.timer) phoneVibrate.timer = setInterval(phonePulse, 150);\n        phonePulse();", js.Replace("\r\n", "\n"));
         }
 
         // ── The page's tables against the server's slot map ─────────────

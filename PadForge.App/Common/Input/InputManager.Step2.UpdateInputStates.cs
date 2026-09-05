@@ -714,7 +714,16 @@ namespace PadForge.Common.Input
             if (settings == null) return;
 
             int slotCount = settings.FindByInstanceGuid(ud.InstanceGuid, _instanceGuidBuffer);
-            if (slotCount == 0) return;
+            if (slotCount == 0)
+            {
+                // Unassigning a device's last slot sends no zero of its own, so
+                // a rumble in flight at that moment stayed on the pad, and on a
+                // forwarded pad's page, which renews whatever it was last told
+                // (#402). Stop it here, once, the tick the slots run out.
+                if (ud.ForceFeedbackState.IsActive && ud.Device != null)
+                    ud.ForceFeedbackState.StopDeviceForces(ud.Device);
+                return;
+            }
 
             // Per-(device, slot) PadSetting drives the audio-rumble + FFB
             // gain applied to THIS device. Different physical devices on

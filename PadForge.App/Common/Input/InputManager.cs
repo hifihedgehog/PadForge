@@ -1211,10 +1211,16 @@ namespace PadForge.Common.Input
             bool accepted;
             try { accepted = SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_FLYDIGI, enabled ? "1" : "0"); }
             catch { accepted = false; }
+            if (accepted) _flydigiHintValue = enabled ? "1" : "0";
             Engine.SdlDiagLog.WriteLine($"FLYDIGI hint {SDL_HINT_JOYSTICK_HIDAPI_FLYDIGI}={(enabled ? 1 : 0)} accepted={accepted}");
         }
 
         private static volatile bool _flydigiEnhancedDesired = true;
+        /// <summary>The string last written to the Flydigi hint (#395). The
+        /// re-probe alternates it between "1" and "true", which SDL reads as
+        /// the same boolean, so its callback fires and unclaimed devices are
+        /// probed again while claimed ones are left alone.</summary>
+        private static volatile string _flydigiHintValue = "1";
 
         /// <summary>The switch's recorded state, replayed by InitializeSdl.</summary>
         public static bool FlydigiEnhancedProtocolDesired => _flydigiEnhancedDesired;

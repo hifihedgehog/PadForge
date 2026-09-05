@@ -1744,6 +1744,7 @@ namespace PadForge.Views
                 // Cycle park a mask string that only their own mode's tick
                 // rewrites, so Latch -> Hold left the slot stuck engaged.
                 PadForge.Common.Input.InputManager.ClearShiftRuntime(_currentPadVm.PadIndex);
+                PadForge.Services.InputService.ClearMenuRuntimeForSlot(_currentPadVm.PadIndex);
             }
 
             else if (!string.Equals(oldCycle, existing.CycleLayers, StringComparison.Ordinal))
@@ -1755,6 +1756,7 @@ namespace PadForge.Views
                 // cannot throw, but a cursor rebased by a clamp lands the
                 // user somewhere they did not choose. Reset it instead.
                 PadForge.Common.Input.InputManager.ClearShiftRuntime(_currentPadVm.PadIndex);
+                PadForge.Services.InputService.ClearMenuRuntimeForSlot(_currentPadVm.PadIndex);
             }
 
             _currentPadVm.RebuildLayerTabs(slotMs.ShiftActivators);
@@ -1773,6 +1775,7 @@ namespace PadForge.Views
         {
             if (_currentPadVm != null)
                 PadForge.Common.Input.InputManager.ClearShiftRuntime(_currentPadVm.PadIndex);
+                PadForge.Services.InputService.ClearMenuRuntimeForSlot(_currentPadVm.PadIndex);
             var sets = PadForge.Common.Input.SettingsManager.SlotMappingSets;
             if (sets == null) return;
             for (int i = 0; i < sets.Length; i++)
@@ -1788,7 +1791,11 @@ namespace PadForge.Views
                         || PadForge.Common.Input.InputManager.PipeListContains(a.CycleLayers, newMask))
                     { touched = true; break; }
                 }
-                if (touched) PadForge.Common.Input.InputManager.ClearShiftRuntime(i);
+                if (touched)
+                {
+                    PadForge.Common.Input.InputManager.ClearShiftRuntime(i);
+                    PadForge.Services.InputService.ClearMenuRuntimeForSlot(i);
+                }
             }
         }
 
@@ -2129,6 +2136,7 @@ namespace PadForge.Views
             // (round five, X12): the all-slots reset also wiped unrelated
             // pads' live engagement.
             PadForge.Common.Input.InputManager.ClearShiftRuntime(padVmAtOpen.PadIndex);
+            PadForge.Services.InputService.ClearMenuRuntimeForSlot(padVmAtOpen.PadIndex);
 
             // Snap the active tab back to Base; RebuildLayerTabs will
             // also recover if the active mask no longer matches a tab.

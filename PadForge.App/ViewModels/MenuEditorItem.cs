@@ -182,6 +182,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(HostOptions));
             OnPropertyChanged(nameof(HostHalfOptions));
             OnPropertyChanged(nameof(FireOptions));
+            OnPropertyChanged(nameof(FireTypeIndex));
             OnPropertyChanged(nameof(SelectedHost));
             OnPropertyChanged(nameof(SelectedFireDescription));
             OnPropertyChanged(nameof(HostInputLabel));
@@ -315,7 +316,12 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(ShowLayerHold));
             OnPropertyChanged(nameof(LayerHoldsOpen));
             OnPropertyChanged(nameof(EffectiveLayerHoldsOpen));
+            // FireOptions swaps to a different list instance, and WPF drops a
+            // Selector's selection when its items are replaced. Re-raising
+            // FireTypeIndex right after makes the picker re-resolve the
+            // preserved enum instead of showing blank over it.
             OnPropertyChanged(nameof(FireOptions));
+            OnPropertyChanged(nameof(FireTypeIndex));
             OnPropertyChanged(nameof(SelectedFireDescription));
             OnPropertyChanged(nameof(HostInputLabel));
             OnPropertyChanged(nameof(HostInputTip));
@@ -432,6 +438,11 @@ namespace PadForge.ViewModels
                 }
                 LayerChoices.Add(new ShiftLayerInfo { LayerMask = mask, LayerName = name, Color = color });
             }
+            // Retarget the picker BEFORE the tail trim removes the entry it
+            // may still be selecting (a rename retags Entry.LayerMask and the
+            // old mask's entry is now obsolete). Removing a selected item
+            // first would push a null write and leave the picker blank.
+            OnPropertyChanged(nameof(LayerMask));
             while (LayerChoices.Count > desired.Count)
                 LayerChoices.RemoveAt(LayerChoices.Count - 1);
 
@@ -554,6 +565,10 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(HostOptions));
             OnPropertyChanged(nameof(SelectedHost));
             OnPropertyChanged(nameof(HostIsTouchpad));
+            // The fire caption follows the host: a hotbar's D-pad host says
+            // Fire Mode does not apply, a recorded axis host says it does.
+            OnPropertyChanged(nameof(IsButtonPairGrid));
+            OnPropertyChanged(nameof(SelectedFireDescription));
         }
 
         public MenuHostOption SelectedHost
@@ -1052,6 +1067,10 @@ namespace PadForge.ViewModels
             get => (int)Entry.FireType;
             set
             {
+                // A Selector losing its items pushes "nothing selected". That
+                // is not an edit, and clamping it to 0 would silently turn
+                // Touch Release into Click.
+                if (value < 0) return;
                 var f = (MenuFireType)Math.Clamp(value, 0, 3);
                 if (Entry.FireType == f) return;
                 Entry.FireType = f;
@@ -1753,8 +1772,9 @@ namespace PadForge.ViewModels
             // Icon first: with the icon counting as cell data, clearing
             // label + binding alone would leave an icon-only item alive
             // and the row un-resettable. Through SetIcon so the size resets
-            // with it (#413).
-            if (_item != null && !string.IsNullOrEmpty(_item.Icon))
+            // with it (#413), unconditionally, so a loaded item carrying a
+            // size with no icon is normalized by the same path.
+            if (_item != null)
                 SetIcon("");
             Label = "";
             BindingKind = 0;

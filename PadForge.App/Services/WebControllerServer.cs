@@ -784,12 +784,26 @@ namespace PadForge.Services
                     // here would evict the NEW session and offline the device the
                     // new connection just brought up (audit F9). Only tear down
                     // when this session is still the registered one.
-                    bool stillRegistered = ((System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, ClientSession>>)_clients)
-                        .Remove(new System.Collections.Generic.KeyValuePair<string, ClientSession>(compositeKey, session));
-                    if (stillRegistered)
+                    //
+                    // The remove and the disconnect are ONE step under the
+                    // registration lock (#402). Split, this loop could remove its
+                    // own entry, lose the thread, and fire DeviceDisconnected after
+                    // a replacement under the same key had registered: the engine
+                    // unregisters by InstanceGuid, which the replacement shares,
+                    // so the live replacement went offline while its socket kept
+                    // answering. Under the lock the two orders are whole: either
+                    // this teardown finishes before the replacement registers, or
+                    // the replacement's registration retires this session first
+                    // and the remove here fails.
+                    lock (_registrationLock)
                     {
-                        device.SetConnected(false);
-                        DeviceDisconnected?.Invoke(device);
+                        bool stillRegistered = ((System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, ClientSession>>)_clients)
+                            .Remove(new System.Collections.Generic.KeyValuePair<string, ClientSession>(compositeKey, session));
+                        if (stillRegistered)
+                        {
+                            device.SetConnected(false);
+                            DeviceDisconnected?.Invoke(device);
+                        }
                     }
                     StatusChanged?.Invoke(this, _clients.Count > 0
                         ? string.Format(Strings.Instance.Server_RunningClients_Format, _clients.Count)
@@ -897,6 +911,17 @@ namespace PadForge.Services
                         int na = root.TryGetProperty("axes", out var nap) && nap.TryGetInt32(out int nav) ? nav : -1;
                         PadForge.Engine.SdlDiagLog.WriteLine(
                             $"WEBGP caps {device.Name} mapping=\"{mp.GetString()}\" buttons={nb} axes={na} vibrate={device.HasRumble}");
+                    }
+                    // A raw pad's axes at the moment it connected (#402): where
+                    // each one rests, as far as the page can tell. The device
+                    // returns them there when the session expires, so a trigger
+                    // the pad reports as an axis at -1 releases to its low end
+                    // and not to a synthetic center.
+                    if (root.TryGetProperty("rest", out var rest) && rest.ValueKind == JsonValueKind.Object)
+                    {
+                        foreach (var p in rest.EnumerateObject())
+                            if (int.TryParse(p.Name, out int axis) && p.Value.TryGetInt32(out int value))
+                                device.SetRawAxisRest(axis, value);
                     }
                 }
                 else if (type == "touchpad")

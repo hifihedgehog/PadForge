@@ -370,10 +370,21 @@ namespace PadForge.Engine
             }
         }
 
-        /// <summary>True when every axis of this device rests at center (a raw
-        /// forwarded pad, #402, whose axes carry no trigger meaning). The stock
-        /// shape and a built pad rest their trigger and slider axes at zero.</summary>
+        /// <summary>True for a raw forwarded pad (#402), whose axes carry no
+        /// trigger meaning: each rests where <see cref="SetRawAxisRest"/> put it,
+        /// center until told otherwise. The stock shape and a built pad rest
+        /// their trigger and slider axes at zero.</summary>
         public bool AxesCenterAtRest { get; set; }
+        private readonly int[] _rawAxisRest = { 32767, 32767, 32767, 32767, 32767, 32767 };
+
+        /// <summary>Where a raw pad's axis sits at rest, sampled by the page when
+        /// the pad connected (#402). Ignored on a stock shape, whose rest is
+        /// fixed. Clamped to the wire range.</summary>
+        public void SetRawAxisRest(int axis, int value)
+        {
+            if (!AxesCenterAtRest || axis < 0 || axis >= _rawAxisRest.Length) return;
+            _rawAxisRest[axis] = Math.Clamp(value, 0, 65535);
+        }
 
         /// <summary>Everything at rest: buttons up, axes at rest, hat centered
         /// (#402). The server calls this when a forwarded pad's session expires,
@@ -389,7 +400,7 @@ namespace PadForge.Engine
                 var s = _currentState.Clone();
                 for (int i = 0; i < s.Buttons.Length; i++) s.Buttons[i] = false;
                 for (int i = 0; i < NumGamepadAxes && i < s.Axis.Length; i++)
-                    s.Axis[i] = (!AxesCenterAtRest && (i == 2 || i == 5)) ? 0 : 32767;
+                    s.Axis[i] = AxesCenterAtRest ? _rawAxisRest[i] : (i == 2 || i == 5) ? 0 : 32767;
                 if (s.Povs.Length > 0) s.Povs[0] = -1;
                 Volatile.Write(ref _currentState, s);
             }

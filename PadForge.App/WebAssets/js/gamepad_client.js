@@ -38,14 +38,16 @@
     var RUMBLE_LEASE_MS = 3000;      // no ping this long: rumble stops
     var BUFFER_LIMIT_BYTES = 64 * 1024;
     var CONGESTION_REPLACE_MS = 3000; // a socket over the limit this long is replaced
-    var IDENTITY_CLAIM_MS = 150;
+    var IDENTITY_CLAIM_MS = 300;
 
     // ── Identity: per tab, and claimed across tabs ─────────────────────
     // sessionStorage is per tab, but a duplicated tab or an opener-created
     // window starts with a copy of it. On load the page claims its token on
     // a BroadcastChannel. A tab already holding the same token answers, and
     // the newcomer mints its own, so two tabs never replace each other's
-    // server sessions under one key.
+    // server sessions under one key. The claim stays open: a frozen tab
+    // that answers late still wins, and the newcomer re-mints and reopens
+    // its pads under the new token.
     var clientIdKey = "padforge_gamepad_client_id";
     var clientId = null;
     try { clientId = sessionStorage.getItem(clientIdKey); } catch (e) { }
@@ -56,19 +58,29 @@
     }
     if (!clientId) clientId = mintClientId();
     var identityChannel = null;
+    var identityNonce = Math.random().toString(36).slice(2);
+    function onIdentityTaken() {
+        // Another tab holds this token. Mint a new one and move every live
+        // pad onto it. Before polling starts there is nothing to move.
+        clientId = mintClientId();
+        for (var i = 0; i < slots.length; i++) {
+            var s = slots[i];
+            if (!s.live) continue;
+            var g = liveGamepad(s);
+            if (g) openSlot(s, g); else closeSlot(s);
+        }
+    }
     function settleIdentity(done) {
         try { identityChannel = new BroadcastChannel("padforge_gamepad_identity"); } catch (e) { identityChannel = null; }
         if (!identityChannel) { done(); return; }
-        var nonce = Math.random().toString(36).slice(2);
-        var taken = false;
         identityChannel.onmessage = function (ev) {
             var m = ev.data || {};
-            if (m.nonce === nonce) return;
-            if (m.claim === clientId) identityChannel.postMessage({ taken: clientId, nonce: nonce });
-            else if (m.taken === clientId) taken = true;
+            if (m.nonce === identityNonce) return;
+            if (m.claim === clientId) identityChannel.postMessage({ taken: clientId, nonce: identityNonce });
+            else if (m.taken === clientId) onIdentityTaken();
         };
-        identityChannel.postMessage({ claim: clientId, nonce: nonce });
-        setTimeout(function () { if (taken) clientId = mintClientId(); done(); }, IDENTITY_CLAIM_MS);
+        identityChannel.postMessage({ claim: clientId, nonce: identityNonce });
+        setTimeout(done, IDENTITY_CLAIM_MS);
     }
 
     // ── Pure translation (the server-side contract test pins these tables) ──
@@ -233,7 +245,11 @@
             if (slot.gen !== gen || slot.ws !== ws) { retireSocket(ws); return; }
             var actuator = gp.vibrationActuator;
             var canRumble = actuatorUsable(actuator) || !!vibrateFn;
-            sendOn(slot, { type: "caps", vibrate: canRumble, mapping: gp.mapping || "", buttons: slot.buttons, axes: slot.axes });
+            var caps = { type: "caps", vibrate: canRumble, mapping: gp.mapping || "", buttons: slot.buttons, axes: slot.axes };
+            // A raw pad's rest is wherever its axes sit right now, as far as
+            // this page can tell. The server returns them there on expiry.
+            if (slot.mode === "raw") { var fresh = liveGamepad(slot); caps.rest = translate(fresh || gp, "raw").axes; }
+            sendOn(slot, caps);
             slot.sent = null;          // a new server device starts neutral: resend everything
             slot.needSnapshot = true;
             slot.lastPingTs = now();   // the lease starts at open, the first ping is a second away
@@ -394,6 +410,9 @@
         slot.rumbleGen++;
         var myGen = slot.rumbleGen;
         if (actuatorUsable(actuator) && !slot.actuatorFailed) {
+            // This path owns the slot's rumble: a phone contribution left by an
+            // earlier fallback ends here, in the zero branch too.
+            if (slot.phoneLevel) { slot.phoneLevel = 0; refreshPhoneVibrate(); }
             if (strong === 0 && weak === 0) {
                 if (typeof actuator.reset === "function") { try { actuator.reset().catch(function () { }); } catch (e) { } }
                 return;
@@ -428,7 +447,9 @@
         slot.phoneLevel = Math.max(strong, weak);
         refreshPhoneVibrate();
     }
-    function refreshPhoneVibrate() {
+    // The phone level right now: the strongest live, leased contribution.
+    // Expired leases are zeroed here, so the next carried rumble restarts them.
+    function phoneLevelNow() {
         var level = 0;
         for (var i = 0; i < slots.length; i++) {
             var s = slots[i];
@@ -436,17 +457,23 @@
             if (!leaseAlive(s)) { s.phoneLevel = 0; s.rumbleLeft = 0; s.rumbleRight = 0; continue; }
             level = Math.max(level, s.phoneLevel);
         }
-        phoneVibrate.level = level;
-        if (!vibrateFn) return;
-        if (level === 0) { if (phoneVibrate.timer) { clearInterval(phoneVibrate.timer); phoneVibrate.timer = null; } try { vibrateFn(0); } catch (e) { } return; }
-        if (!phoneVibrate.timer) {
-            var pulse = function () {
-                refreshPhoneVibrate();          // re-evaluates the leases, stops itself at zero
-                if (phoneVibrate.level && !document.hidden) { try { vibrateFn(Math.round(phoneVibrate.level * 200)); } catch (e) { } }
-            };
-            pulse();
-            phoneVibrate.timer = setInterval(pulse, 150);
+        return level;
+    }
+    function phonePulse() {
+        phoneVibrate.level = phoneLevelNow();
+        if (phoneVibrate.level === 0) {
+            if (phoneVibrate.timer) { clearInterval(phoneVibrate.timer); phoneVibrate.timer = null; }
+            try { vibrateFn(0); } catch (e) { }
+            return;
         }
+        if (!document.hidden) { try { vibrateFn(Math.round(phoneVibrate.level * 200)); } catch (e) { } }
+    }
+    function refreshPhoneVibrate() {
+        if (!vibrateFn) return;
+        // Install the timer before the first pulse: the pulse stops the timer
+        // itself at zero, and must never re-enter this bootstrap.
+        if (!phoneVibrate.timer) phoneVibrate.timer = setInterval(phonePulse, 150);
+        phonePulse();
     }
     function stopAllRumble() {
         for (var i = 0; i < slots.length; i++) if (slots[i].live) setRumble(slots[i], 0, 0);

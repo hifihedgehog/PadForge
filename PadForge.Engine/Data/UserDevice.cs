@@ -748,7 +748,17 @@ namespace PadForge.Engine.Data
         {
             if (wrapper == null)
                 throw new ArgumentNullException(nameof(wrapper));
+            // A capability refresh reloads the SAME live device (a web pad's
+            // caps flip after connect). A fresh ForceFeedbackState there would
+            // forget the rumble last sent, so a game's next zero would look
+            // like no change and the pad, or its page, would rumble on
+            // (#402). Keep the cache when the device object is unchanged. A
+            // different device object is a new connection and starts clean.
+            var priorDevice = Device;
+            var priorFeedback = ForceFeedbackState;
             LoadFromDevice(wrapper);
+            if (priorFeedback != null && ForceFeedbackState != null && ReferenceEquals(priorDevice, wrapper))
+                ForceFeedbackState = priorFeedback;
         }
 
         /// <summary>

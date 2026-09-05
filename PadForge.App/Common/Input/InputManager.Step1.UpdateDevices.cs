@@ -186,6 +186,10 @@ namespace PadForge.Common.Input
                         // whitelisted), beside SDL's own driver-outcome line.
                         FlydigiServiceWatch.Refresh();
                         _flydigiWatchTick = Environment.TickCount64;
+                        // A Flydigi pad whose vendor interface SDL did not claim
+                        // at arrival gets a second probe after its first second
+                        // (#395). See FlydigiReprobePolicy.
+                        _flydigiReprobe.OnArrival(wrapper.Backend == "hidapi", Environment.TickCount64);
                         Engine.SdlDiagLog.WriteLine(FlydigiServiceWatch.DescribeArrival(
                             wrapper.VendorId, wrapper.ProductId, instanceId, wrapper.Backend, wrapper.DevicePath,
                             FlydigiServiceWatch.Detail,
@@ -562,6 +566,34 @@ namespace PadForge.Common.Input
                     MarkChanged(ref changed, "flydigi", $"service running=[{FlydigiServiceWatch.Running}]");
             }
 
+            // #395: a Flydigi pad present on XInput with no enhanced view is
+            // a pad whose vendor probe failed at arrival (the user's logs show
+            // two of three), and the slot bound to that view stays offline.
+            // Ask SDL to probe again, up to three times, by changing the
+            // Flydigi hint's string without changing its meaning. Only while
+            // the switch is on: off means the user does not want the view.
+            if (_flydigiReprobe.Armed && FlydigiEnhancedProtocolDesired)
+            {
+                bool anyFlydigi = false, enhanced = false;
+                var views = new System.Collections.Generic.List<string>();
+                foreach (var w in _openedSdlInstanceIds.Values)
+                {
+                    if (w == null || !FlydigiServiceWatch.IsFlydigiDevice(w.VendorId, w.ProductId)) continue;
+                    anyFlydigi = true;
+                    views.Add(w.Backend);
+                    if (w.Backend == "hidapi") enhanced = true;
+                }
+                if (_flydigiReprobe.ShouldNudge(flydigiNow, anyFlydigi, enhanced))
+                {
+                    string next = FlydigiReprobePolicy.NextHintValue(_flydigiHintValue);
+                    bool accepted;
+                    try { accepted = SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_FLYDIGI, next); } catch { accepted = false; }
+                    if (accepted) _flydigiHintValue = next;
+                    Engine.SdlDiagLog.WriteLine(
+                        $"FLYDIGI reprobe attempt={_flydigiReprobe.Attempts}/{FlydigiReprobePolicy.MaxAttempts} views=[{string.Join(",", views)}] hint={next} accepted={accepted}");
+                }
+            }
+
             // --- Notify if anything changed ---
             if (changed)
             {
@@ -570,6 +602,7 @@ namespace PadForge.Common.Input
         }
 
         private long _flydigiWatchTick;
+        private readonly FlydigiReprobePolicy _flydigiReprobe = new FlydigiReprobePolicy();
 
         // ─────────────────────────────────────────────
         //  UserDevice lookup helpers

@@ -686,6 +686,10 @@ namespace PadForge.Common.Input
                 // XInput enumeration and prevents Xbox controllers from appearing.
                 SDL_SetHint(SDL_HINT_JOYSTICK_XINPUT, "1");
 
+                // #395: replay the Flydigi driver switch. The previous SDL_Quit
+                // dropped every hint, and this manager is a new instance.
+                ApplyFlydigiEnhancedProtocol(_flydigiEnhancedDesired);
+
                 // Devices SDL's hidapi layer must never enumerate or probe
                 // (issue #235: connecting a Nacon PS4 Compact, 146B:0603,
                 // froze the app until unplug). Leading hypothesis, refined
@@ -1185,6 +1189,35 @@ namespace PadForge.Common.Input
                 }
             });
         }
+
+        /// <summary>The SDL Flydigi HIDAPI driver switch (#395). On, the
+        /// default, SDL drives a Flydigi pad's vendor interface for M1 to M4,
+        /// C, Z, LM, RM and motion. Off leaves the pad on its XInput view
+        /// only, which is the state a user needs while Flydigi Space Station
+        /// must keep sight of the pad: both drove that interface and one
+        /// Vader 5 Pro re-enumerated in a loop until the service lost access.
+        /// SDL_SetHint is thread-safe and a hint set before SDL_Init persists,
+        /// so this runs at settings load and again on every toggle. The
+        /// driver's hint callback re-enumerates live, the mechanism
+        /// RescanWiiControllers leans on.</summary>
+        public static void ApplyFlydigiEnhancedProtocol(bool enabled)
+        {
+            // SDL_Quit runs SDL_QuitHints, so an engine stop and start would
+            // silently revert the switch to the driver's default. The desired
+            // state lives here and InitializeSdl replays it before every
+            // SDL_Init. The hint's acceptance is logged because an environment
+            // variable can outrank a normal-priority hint without throwing.
+            _flydigiEnhancedDesired = enabled;
+            bool accepted;
+            try { accepted = SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_FLYDIGI, enabled ? "1" : "0"); }
+            catch { accepted = false; }
+            Engine.SdlDiagLog.WriteLine($"FLYDIGI hint {SDL_HINT_JOYSTICK_HIDAPI_FLYDIGI}={(enabled ? 1 : 0)} accepted={accepted}");
+        }
+
+        private static volatile bool _flydigiEnhancedDesired = true;
+
+        /// <summary>The switch's recorded state, replayed by InitializeSdl.</summary>
+        public static bool FlydigiEnhancedProtocolDesired => _flydigiEnhancedDesired;
 
         public void Start()
         {

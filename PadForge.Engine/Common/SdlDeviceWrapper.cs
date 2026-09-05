@@ -250,6 +250,30 @@ namespace PadForge.Engine
         /// <summary>SDL joystick GUID string (32 hex chars) used for gamecontrollerdb matching.</summary>
         public string SdlGuid { get; private set; } = string.Empty;
 
+        /// <summary>Which SDL Windows backend produced this joystick, read
+        /// from the GUID's driver-signature byte (SDL_CreateJoystickGUID puts
+        /// it at data[14], hex chars 28-29 of the GUID string): 'x' XInput,
+        /// 'h' HIDAPI, 'r' RawInput, 'w' WGI, and DirectInput leaves it zero.
+        /// The name cannot tell a pad's views apart (#395: one Vader 5 Pro
+        /// arrives as three or four joysticks, two of them named alike).</summary>
+        public string Backend => BackendFromGuid(SdlGuid);
+
+        public static string BackendFromGuid(string sdlGuid)
+        {
+            if (string.IsNullOrEmpty(sdlGuid) || sdlGuid.Length < 30) return "unknown";
+            if (!int.TryParse(sdlGuid.AsSpan(28, 2), System.Globalization.NumberStyles.HexNumber, null, out int sig))
+                return "unknown";
+            return sig switch
+            {
+                'x' => "xinput",
+                'h' => "hidapi",
+                'r' => "rawinput",
+                'w' => "wgi",
+                0 => "dinput",
+                _ => $"0x{sig:X2}",
+            };
+        }
+
         /// <summary>
         /// Deterministic instance GUID for this device, derived from VID+PID+Serial
         /// (when serial is available) or device path. Used to match saved settings

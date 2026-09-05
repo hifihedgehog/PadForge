@@ -878,6 +878,13 @@
                         <TextBlock Text="{Binding SelectedDevice.HandheldDaemonWarning}" TextWrapping="Wrap"
                                    FontSize="11" Foreground="{DynamicResource EmberBrush}" Margin="0,0,0,8"
                                    Visibility="{Binding SelectedDevice.HasHandheldDaemonWarning, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        <!-- Flydigi Space Station notice (#395): the service and
+                             SDL's Flydigi driver both drive the pad's vendor
+                             interface, and the pad re-enumerated in a loop while
+                             the service could reach it. -->
+                        <TextBlock Text="{Binding SelectedDevice.FlydigiServiceWarning}" TextWrapping="Wrap"
+                                   FontSize="11" Foreground="{DynamicResource EmberBrush}" Margin="0,0,0,8"
+                                   Visibility="{Binding SelectedDevice.HasFlydigiServiceWarning, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                         <!-- Head tracker source line (#355): which source is live,
                              or why nothing arrives. Bound to the TEXT, not to the

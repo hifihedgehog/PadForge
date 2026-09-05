@@ -59,6 +59,7 @@ namespace SDL3
         // (MCU costs battery + changes report cadence); runtime-toggleable.
         public const string SDL_HINT_JOYSTICK_HIDAPI_SWITCH_NFC = "SDL_JOYSTICK_HIDAPI_SWITCH_NFC";
         public const string SDL_HINT_JOYSTICK_HIDAPI_PS3_SIXAXIS_DRIVER = "SDL_JOYSTICK_HIDAPI_PS3_SIXAXIS_DRIVER";
+        public const string SDL_HINT_JOYSTICK_HIDAPI_FLYDIGI = "SDL_JOYSTICK_HIDAPI_FLYDIGI";
         public const string SDL_HINT_VIDEO_ALLOW_SCREENSAVER = "SDL_VIDEO_ALLOW_SCREENSAVER";
 
         // ─────────────────────────────────────────────

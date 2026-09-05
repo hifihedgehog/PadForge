@@ -2658,6 +2658,9 @@ public class Strings : INotifyPropertyChanged
     public string Handheld_ChordFormat => Get("Handheld_ChordFormat");
     public string Handheld_NoDevice => Get("Handheld_NoDevice");
     public string Handheld_DaemonWarning_Format => Get("Handheld_DaemonWarning_Format");
+    public string Flydigi_ServiceWarning_Format => Get("Flydigi_ServiceWarning_Format");
+    public string Settings_FlydigiEnhanced => Get("Settings_FlydigiEnhanced");
+    public string Settings_FlydigiEnhancedTooltip => Get("Settings_FlydigiEnhancedTooltip");
     public string Handheld_Export => Get("Handheld_Export");
     public string Handheld_Import => Get("Handheld_Import");
     public string Handheld_ExportedFormat => Get("Handheld_ExportedFormat");

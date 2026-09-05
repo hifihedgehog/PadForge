@@ -314,6 +314,51 @@ namespace PadForge.Common
             return GetMultiSzList(IOCTL_GET_WHITELIST);
         }
 
+        /// <summary>One configuration snapshot for the diagnostics log (#395):
+        /// whether the driver answered, its active flag, the whitelist size,
+        /// and for each named image whether some whitelist entry ends in that
+        /// file name. Every read reports its own outcome. It describes
+        /// configuration, not whether any process holds a device handle, and
+        /// a file-name match is not a full-path match. Two IOCTLs however
+        /// many names are asked about.</summary>
+        public static string DescribeReach(params string[] exeNames)
+        {
+            var sb = new System.Text.StringBuilder();
+            List<string> whitelist = null;
+            try
+            {
+                if (!IsAvailable())
+                {
+                    sb.Append("hidhide=unavailable");
+                }
+                else
+                {
+                    sb.Append("hidhide=ok active=");
+                    try { sb.Append(GetActive() ? "true" : "false"); }
+                    catch (Exception ex) { sb.Append("err:").Append(ex.GetType().Name); }
+                    sb.Append(" whitelist=");
+                    try { whitelist = GetWhitelist(); sb.Append(whitelist?.Count ?? -1); }
+                    catch (Exception ex) { sb.Append("err:").Append(ex.GetType().Name); }
+                }
+            }
+            catch (Exception ex)
+            {
+                sb.Append("hidhide=err:").Append(ex.GetType().Name);
+            }
+            foreach (var exe in exeNames ?? Array.Empty<string>())
+            {
+                string verdict = "unknown";
+                if (whitelist != null)
+                {
+                    verdict = "not-listed";
+                    foreach (var p in whitelist)
+                        if (p != null && p.EndsWith("\\" + exe, StringComparison.OrdinalIgnoreCase)) { verdict = "name-listed"; break; }
+                }
+                sb.Append(' ').Append(exe).Append('=').Append(verdict);
+            }
+            return sb.ToString();
+        }
+
         /// <summary>
         /// Replaces the entire application whitelist. Returns whether the
         /// driver accepted the write.

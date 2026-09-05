@@ -12869,6 +12869,9 @@ namespace PadForge.Services
             // the row carries the latest answer for the details pane.
             row.HandheldDaemonRunning = ud.CapType == InputDeviceType.HandheldButtons
                 ? PadForge.Common.Input.HandheldDaemonWatch.Running : string.Empty;
+            // Flydigi Space Station notice (#395): same shape, Flydigi rows only.
+            row.FlydigiServiceRunning = PadForge.Common.Input.FlydigiServiceWatch.IsFlydigiDevice(row.VendorId, row.ProductId)
+                ? PadForge.Common.Input.FlydigiServiceWatch.Running : string.Empty;
 
             // Resolve slot assignments (device can be assigned to multiple slots).
             row.SetAssignedSlots(SettingsManager.GetAssignedSlots(ud.InstanceGuid));

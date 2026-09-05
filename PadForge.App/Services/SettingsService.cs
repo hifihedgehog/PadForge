@@ -2084,6 +2084,10 @@ namespace PadForge.Services
             vm.SelectedThemeIndex = appSettings.ThemeIndex;
             vm.EnableInputHiding = appSettings.EnableInputHiding;
             vm.KeepHidHideCloaksBetweenLaunches = appSettings.KeepHidHideCloaksBetweenLaunches;
+            vm.FlydigiEnhancedProtocol = appSettings.FlydigiEnhancedProtocol;
+            // The hint must be in place before SDL_Init, and a hint set early
+            // persists, so the load applies it (#395).
+            PadForge.Common.Input.InputManager.ApplyFlydigiEnhancedProtocol(appSettings.FlydigiEnhancedProtocol);
             // Default-profile custom-gesture catalog. InputService
             // wires the applier from StartEngine, which runs AFTER
             // this load path on cold start, so stash the loaded list
@@ -4400,6 +4404,7 @@ namespace PadForge.Services
                 FirstRunTourCompleted = vm.FirstRunTourCompleted,
                 EnableInputHiding = vm.EnableInputHiding,
                 KeepHidHideCloaksBetweenLaunches = vm.KeepHidHideCloaksBetweenLaunches,
+                FlydigiEnhancedProtocol = vm.FlydigiEnhancedProtocol,
                 // Default profile's custom gestures. When a named profile is
                 // active, defaultSnap.TouchpadGestures carries the gestures
                 // recorded on the default; when default is active, pull
@@ -6303,6 +6308,13 @@ namespace PadForge.Services
         /// </summary>
         [XmlElement]
         public bool KeepHidHideCloaksBetweenLaunches { get; set; } = false;
+
+        /// <summary>SDL's Flydigi HIDAPI driver (#395). On by default. Off
+        /// leaves Flydigi pads on their XInput view so Flydigi Space Station
+        /// can keep sight of the pad without the two fighting over its
+        /// vendor interface. Absent in older files = on, the shipped behavior.</summary>
+        [XmlElement]
+        public bool FlydigiEnhancedProtocol { get; set; } = true;
 
         /// <summary>
         /// User-specified application paths to whitelist in HidHide.

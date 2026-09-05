@@ -22,6 +22,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(DeviceType));
             OnPropertyChanged(nameof(StatusText));
             OnPropertyChanged(nameof(CapabilitiesSummary));
+            OnPropertyChanged(nameof(FlydigiServiceWarning));
         }
 
         // ─────────────────────────────────────────────
@@ -105,6 +106,9 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(HasNfcCapabilityChip));
                     OnPropertyChanged(nameof(ShowManageVoicePhrases));
                     OnPropertyChanged(nameof(CapabilitiesSummary));
+                    OnPropertyChanged(nameof(IsFlydigiDevice));
+                    OnPropertyChanged(nameof(HasFlydigiServiceWarning));
+                    OnPropertyChanged(nameof(FlydigiServiceWarning));
                     // Transport depends on VID/PID for the fork BLE Switch 2
                     // case (empty DevicePath never fires its own notify).
                     OnPropertyChanged(nameof(IsBluetoothLink));
@@ -128,6 +132,9 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(HasNfcCapabilityChip));
                     OnPropertyChanged(nameof(ShowManageVoicePhrases));
                     OnPropertyChanged(nameof(CapabilitiesSummary));
+                    OnPropertyChanged(nameof(IsFlydigiDevice));
+                    OnPropertyChanged(nameof(HasFlydigiServiceWarning));
+                    OnPropertyChanged(nameof(FlydigiServiceWarning));
                     OnPropertyChanged(nameof(IsBluetoothLink));
                 }
             }
@@ -636,6 +643,31 @@ namespace PadForge.ViewModels
 
         public string HandheldDaemonWarning => HasHandheldDaemonWarning
             ? string.Format(Strings.Instance.Handheld_DaemonWarning_Format, _handheldDaemonRunning)
+            : string.Empty;
+
+        private string _flydigiServiceRunning = string.Empty;
+
+        /// <summary>Flydigi Space Station processes running (#395), empty
+        /// when none. Written by the device list sync for Flydigi rows.</summary>
+        public string FlydigiServiceRunning
+        {
+            get => _flydigiServiceRunning;
+            set
+            {
+                if (SetProperty(ref _flydigiServiceRunning, value ?? string.Empty))
+                {
+                    OnPropertyChanged(nameof(HasFlydigiServiceWarning));
+                    OnPropertyChanged(nameof(FlydigiServiceWarning));
+                }
+            }
+        }
+
+        public bool IsFlydigiDevice => PadForge.Common.Input.FlydigiServiceWatch.IsFlydigiDevice(VendorId, ProductId);
+
+        public bool HasFlydigiServiceWarning => IsFlydigiDevice && !string.IsNullOrEmpty(_flydigiServiceRunning);
+
+        public string FlydigiServiceWarning => HasFlydigiServiceWarning
+            ? string.Format(Strings.Instance.Flydigi_ServiceWarning_Format, _flydigiServiceRunning)
             : string.Empty;
 
         /// <summary>Whether to show the "Consume mapped inputs" toggle (real

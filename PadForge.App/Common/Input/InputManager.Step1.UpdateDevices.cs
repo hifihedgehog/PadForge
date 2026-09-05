@@ -177,7 +177,19 @@ namespace PadForge.Common.Input
                     }
 
                     Debug.WriteLine($"[Step1] Accepted device: SDL#{instanceId} VID={wrapper.VendorId:X4} PID={wrapper.ProductId:X4} path={wrapper.DevicePath} name={wrapper.Name}");
-                    Engine.SdlDiagLog.WriteLine($"DEV + SDL#{instanceId} {wrapper.VendorId:X4}:{wrapper.ProductId:X4} {wrapper.Name}");
+                    Engine.SdlDiagLog.WriteLine($"DEV + SDL#{instanceId} {wrapper.VendorId:X4}:{wrapper.ProductId:X4} {wrapper.Name} backend={wrapper.Backend} type={wrapper.JoystickType} path={wrapper.DevicePath}");
+                    if (FlydigiServiceWatch.IsFlydigiDevice(wrapper.VendorId, wrapper.ProductId))
+                    {
+                        // #395: the one party PadForge cannot see is Flydigi's
+                        // service, so every arrival records whether it runs and
+                        // whether it can reach this pad (hiding inactive, or
+                        // whitelisted), beside SDL's own driver-outcome line.
+                        FlydigiServiceWatch.Refresh();
+                        _flydigiWatchTick = Environment.TickCount64;
+                        Engine.SdlDiagLog.WriteLine(FlydigiServiceWatch.DescribeArrival(
+                            wrapper.VendorId, wrapper.ProductId, instanceId, wrapper.Backend, wrapper.DevicePath,
+                            HidHideController.DescribeReach("SpaceStationService.exe", "GameControllerService.exe")));
+                    }
 
                     UserDevice ud = FindOrCreateUserDevice(wrapper.InstanceGuid, wrapper.ProductGuid,
                         currentInstanceIds, wrapper.SerialNumber);
@@ -537,12 +549,26 @@ namespace PadForge.Common.Input
                 _openedSdlInstanceIds.Remove(sdlId);
             }
 
+            // #395: keep the Flydigi Space Station notice on the Devices page
+            // current while the service starts and stops between arrivals.
+            // A start or stop of the service with no device change must still
+            // reach the rows, and DevicesUpdated is what re-populates them.
+            long flydigiNow = Environment.TickCount64;
+            if (flydigiNow - _flydigiWatchTick >= 10000)
+            {
+                _flydigiWatchTick = flydigiNow;
+                if (FlydigiServiceWatch.Refresh())
+                    MarkChanged(ref changed, "flydigi", $"service running=[{FlydigiServiceWatch.Running}]");
+            }
+
             // --- Notify if anything changed ---
             if (changed)
             {
                 DevicesUpdated?.Invoke(this, EventArgs.Empty);
             }
         }
+
+        private long _flydigiWatchTick;
 
         // ─────────────────────────────────────────────
         //  UserDevice lookup helpers

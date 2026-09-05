@@ -141,6 +141,10 @@
                     <CheckBox Content="{Binding Settings_BackgroundPolling, Source={x:Static strings:Strings.Instance}}"
                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                               IsChecked="{Binding EnablePollingOnFocusLoss}" Margin="0,0,0,8"/>
+                    <CheckBox Content="{Binding Settings_FlydigiEnhanced, Source={x:Static strings:Strings.Instance}}"
+                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                              ToolTip="{Binding Settings_FlydigiEnhancedTooltip, Source={x:Static strings:Strings.Instance}}"
+                              IsChecked="{Binding FlydigiEnhancedProtocol}" Margin="0,0,0,8"/>
                     <!-- Shared label column (#175 typography): both rows sit
                          in one Grid so the NumberBoxes align to one left
                          edge regardless of label length. -->

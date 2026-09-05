@@ -839,6 +839,16 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _keepHidHideCloaksBetweenLaunches, value);
         }
 
+        private bool _flydigiEnhancedProtocol = true;
+
+        /// <summary>SDL's Flydigi HIDAPI driver switch (#395). See
+        /// InputManager.ApplyFlydigiEnhancedProtocol.</summary>
+        public bool FlydigiEnhancedProtocol
+        {
+            get => _flydigiEnhancedProtocol;
+            set => SetProperty(ref _flydigiEnhancedProtocol, value);
+        }
+
         // ─────────────────────────────────────────────
         //  Community Configs (Steam Workshop, issue #9)
         // ─────────────────────────────────────────────

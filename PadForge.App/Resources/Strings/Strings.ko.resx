@@ -3506,4 +3506,7 @@
   <data name="Menu_Fire_TouchRelease_LayerHold_Desc" xml:space="preserve"><value>메뉴가 열린 상태에서 손가락을 떼거나 스틱을 활성 데드존 안으로 되돌릴 때 한 번 발동합니다. 레이어를 벗어나도 조작 중인 선택이 확정됩니다.</value></data>
   <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>해당 셀이 강조된 동안 바인딩을 유지합니다. 레이어가 열리면 원형 중심이 즉시 발동할 수 있습니다.</value></data>
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>방향 입력으로 셀을 차례로 이동하며 새로 선택된 셀을 발동합니다. 이 핫바 동작은 발동 모드나 클릭 입력을 사용하지 않습니다.</value></data>
+  <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigi 확장 프로토콜</value></data>
+  <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Flydigi 컨트롤러를 벤더 인터페이스로 읽어 M1~M4, C, Z, LM, RM 버튼과 모션을 사용합니다. Flydigi Space Station 서비스도 같은 인터페이스를 사용합니다. 끄면 PadForge는 그 인터페이스에 아무것도 보내지 않고 표준 XInput 뷰로 컨트롤러를 읽습니다. 추가 버튼과 모션은 사용할 수 없습니다. 이것이 반복되는 연결 해제를 멈추는지는 확인되지 않았습니다.</value></data>
+  <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi 소프트웨어가 실행 중입니다: {0}. PadForge와 같은 컨트롤러 인터페이스를 사용하며, 둘이 모두 접근할 수 있는 동안 이 컨트롤러가 반복해서 연결 해제되었습니다. PadForge를 사용하는 동안 서비스를 중지하거나, 컨트롤러를 숨긴 채 HidHide 허용 목록에서 서비스를 제거하거나, 설정에서 Flydigi 확장 프로토콜을 끄세요.</value></data>
 </root>

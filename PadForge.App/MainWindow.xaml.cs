@@ -566,6 +566,9 @@ namespace PadForge
                 if (e.PropertyName == nameof(SettingsViewModel.DiagnosticsLoggingEnabled))
                     Common.DiagnosticsLogControl.Apply(_viewModel.Settings.DiagnosticsLoggingEnabled);
 
+                if (e.PropertyName == nameof(SettingsViewModel.FlydigiEnhancedProtocol))
+                    Common.Input.InputManager.ApplyFlydigiEnhancedProtocol(_viewModel.Settings.FlydigiEnhancedProtocol);
+
                 if (e.PropertyName is nameof(SettingsViewModel.SelectedThemeIndex)
                      or nameof(SettingsViewModel.AutoStartEngine)
                      or nameof(SettingsViewModel.MinimizeToTray)
@@ -583,6 +586,7 @@ namespace PadForge
                      or nameof(SettingsViewModel.BatteryNotifyThreshold)
                      or nameof(SettingsViewModel.BatteryNotifyVibrate)
                      or nameof(SettingsViewModel.KeepHidHideCloaksBetweenLaunches)
+                     or nameof(SettingsViewModel.FlydigiEnhancedProtocol)
                      or nameof(SettingsViewModel.Use2DControllerView)
                      or nameof(SettingsViewModel.EnableAutoProfileSwitching)
                      or nameof(SettingsViewModel.EnableCommunityConfigLookup)

@@ -377,9 +377,9 @@ The built-in DSU / Cemuhook server broadcasts gyroscope and accelerometer on UDP
 
 DSU serves slots 1 through 4 independently of their virtual output type. A sensor-equipped controller assigned to an Xbox slot can provide Xbox buttons and sticks alongside DSU motion, with no motion mapping required.
 
-When neither motion row exists, DSU selects an online assigned sensor. It prefers a complete gyro/accelerometer pair, then gyro-only, then accelerometer-only. Equal candidates follow device assignment order, and both channels come from the same sensor. Calibration, grip, and Apply Gyro Tuning to Motion Passthrough still apply.
+All sources on a motion row participate in its combine mode, using the same axis combiner as other mappings: MaxAbs by default, or Sum, Average, or Custom. Gyroscope and accelerometer channels are reconciled independently after each source's calibration, grip, and optional tuning. Native motion output and DSU receive the same reconciled result.
 
-An explicit Gyro or Accelerometer motion row makes the mapped selection authoritative, including empty or offline sources. Removing both rows restores automatic DSU sourcing. Virtual HID motion continues to follow its mappings.
+When neither motion row exists, DSU applies the default MaxAbs combine to every enabled, assigned device with the relevant sensor. For example, a Steam Controller and DualSense assigned to the same virtual Xbox controller can both contribute motion. Each virtual controller still has one DSU stream. An explicit Gyro or Accelerometer motion row remains authoritative, including empty or offline sources. Virtual HID motion continues to follow its mappings.
 
 ### The Joy-Con 2 is a mouse. So use it like one.
 

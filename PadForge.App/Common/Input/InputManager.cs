@@ -464,13 +464,13 @@ namespace PadForge.Common.Input
         public Guid[] SelectedDeviceGuids { get; } = new Guid[MaxPads];
 
         /// <summary>
-        /// Per-slot mapped motion snapshots for virtual HID output.
+        /// Per-slot reconciled motion snapshots for mapped native output.
         /// Written by the polling thread after Step 2.
         /// </summary>
         public MotionSnapshot[] MotionSnapshots { get; } = new MotionSnapshot[MaxPads];
 
-        /// <summary>DSU also exposes assigned sensors when a slot has no
-        /// motion mappings, including slots whose HID output has no IMU.</summary>
+        /// <summary>DSU receives the same reconciled slot motion. Without
+        /// motion mappings, it uses the default combine over assigned sensors.</summary>
         internal MotionSnapshot[] DsuMotionSnapshots { get; } = new MotionSnapshot[DsuMotionServer.MaxSlots];
 
         /// <summary>
@@ -2760,16 +2760,13 @@ namespace PadForge.Common.Input
         private const float MsToG = 1f / 9.80665f;
 
         /// <summary>
-        /// Snapshots per-slot motion data driven by the slot's MappingSet
-        /// rows. Gyro source comes from the first online device whose
-        /// mapping row targets <c>MotionGyro</c>; accel source from the
-        /// first online device whose mapping row targets <c>MotionAccel</c>.
-        /// The two sub-channels can resolve to different devices.
+        /// Reconciles each slot's motion sources using its mapping rows'
+        /// combine modes. Gyro and acceleration are independent channels.
         /// Called on the polling thread after Step 2 (UpdateInputStates).
         ///
         /// <para>Explicit motion rows select the sources for HID and DSU.
-        /// Without either row, DSU uses an assigned online sensor device.
-        /// That automatic stream is separate from the mapped HID snapshot.</para>
+        /// Without either row, DSU uses the default axis combine over all
+        /// enabled, assigned sensor devices. No separate source ranking.</para>
         /// </summary>
         // F5g gate state (poll thread only).
         private readonly object[] _motionRowsSetRef = new object[MaxPads];
@@ -2777,6 +2774,14 @@ namespace PadForge.Common.Input
         private readonly long[] _motionRowsCheckedTick = new long[MaxPads];
         private readonly bool[] _motionHasGyroRow = new bool[MaxPads];
         private readonly bool[] _motionHasAccelRow = new bool[MaxPads];
+
+        private readonly List<UserDevice> _motionAssignedDevices = new(8);
+        private readonly List<float> _motionRowX = new(8);
+        private readonly List<float> _motionRowY = new(8);
+        private readonly List<float> _motionRowZ = new(8);
+        private readonly List<float> _motionAssignedX = new(8);
+        private readonly List<float> _motionAssignedY = new(8);
+        private readonly List<float> _motionAssignedZ = new(8);
 
         private static readonly MappingSource AutomaticAuxGyro = new()
         {
@@ -2806,8 +2811,14 @@ namespace PadForge.Common.Input
 
         private void UpdateMotionSnapshots()
         {
+            _motionAssignedDevices.Clear();
             var settings = SettingsManager.UserSettings;
-            if (settings == null) return;
+            if (settings == null)
+            {
+                Array.Clear(MotionSnapshots);
+                Array.Clear(DsuMotionSnapshots);
+                return;
+            }
 
             // Every assigned sensor must be reachable. Match Step 3's
             // reusable settings buffer when a slot has more than 64 devices.
@@ -2848,10 +2859,8 @@ namespace PadForge.Common.Input
                 int batteryPercent = -1;
                 bool batteryCharging = false;
                 int batterySignature = 17;
-                UserDevice automaticDevice = null;
-                bool automaticAux = false;
-                int automaticRank = 0;
                 bool dsuSlot = dsuEnabled && padIndex < DsuMotionSnapshots.Length;
+                _motionAssignedDevices.Clear();
                 for (int i = 0; i < slotCount; i++)
                 {
                     var us = _padIndexBuffer[i];
@@ -2860,16 +2869,8 @@ namespace PadForge.Common.Input
                     if (ud == null || !ud.IsOnline || ud.Device == null) continue;
                     var state = ud.InputState;
                     if (state == null) continue;
-                    if (dsuSlot)
-                    {
-                        // Prefer a complete IMU, then gyro-only, then
-                        // accel-only. Equal candidates retain assignment
-                        // order. Both channels come from the same sensor.
-                        ConsiderAutomaticMotion(ud, false, ref automaticDevice,
-                            ref automaticAux, ref automaticRank);
-                        ConsiderAutomaticMotion(ud, true, ref automaticDevice,
-                            ref automaticAux, ref automaticRank);
-                    }
+                    if (us.IsEnabled)
+                        _motionAssignedDevices.Add(ud);
                     if (batteryPercent < 0 && state.BatteryPercent >= 0)
                     {
                         batteryPercent = state.BatteryPercent;
@@ -2889,7 +2890,8 @@ namespace PadForge.Common.Input
 
                 // HID motion is mapping-driven. DSU uses that same selection
                 // when either motion row exists, including an empty/offline
-                // row. With neither row, it gets the automatic sensor above.
+                // row. With neither row, reconcile every assigned sensor
+                // through the same axis combine used by a default motion row.
                 var ms = (SettingsManager.SlotMappingSets != null
                     && padIndex < SettingsManager.SlotMappingSets.Length)
                     ? SettingsManager.SlotMappingSets[padIndex] : null;
@@ -2912,43 +2914,106 @@ namespace PadForge.Common.Input
                     _motionHasAccelRow[padIndex] = HasRowForTarget(ms, MappingSetMigrator.MotionAccelTarget);
                 }
 
-                var gyroSrc = _motionHasGyroRow[padIndex]
-                    ? ResolveMotionSource(ms, MappingSetMigrator.MotionGyroTarget, requireGyro: true, padIndex)
-                    : default;
-                var accelSrc = _motionHasAccelRow[padIndex]
-                    ? ResolveMotionSource(ms, MappingSetMigrator.MotionAccelTarget, requireGyro: false, padIndex)
-                    : default;
-
-                var mapped = CaptureMotionSnapshot(gyroSrc, accelSrc, padIndex, timestampUs);
-                MotionSnapshots[padIndex] = mapped;
-                if (padIndex < DsuMotionSnapshots.Length)
+                try
                 {
-                    var dsu = mapped;
-                    if (dsuSlot && !_motionHasGyroRow[padIndex] && !_motionHasAccelRow[padIndex])
+                    var gyro = _motionHasGyroRow[padIndex]
+                        ? ReconcileMappedMotion(ms, MappingSetMigrator.MotionGyroTarget,
+                            requireGyro: true, padIndex, timestampUs) : default;
+                    var accel = _motionHasAccelRow[padIndex]
+                        ? ReconcileMappedMotion(ms, MappingSetMigrator.MotionAccelTarget,
+                            requireGyro: false, padIndex, timestampUs) : default;
+                    var mapped = JoinMotionChannels(gyro, accel, timestampUs);
+                    MotionSnapshots[padIndex] = mapped;
+                    if (padIndex < DsuMotionSnapshots.Length)
                     {
-                        dsu = CaptureMotionSnapshot(
-                            (automaticDevice, automaticAux ? AutomaticAuxGyro : null),
-                            (automaticDevice, automaticAux ? AutomaticAuxAccel : null),
-                            padIndex, timestampUs);
+                        var dsu = mapped;
+                        if (dsuSlot && !_motionHasGyroRow[padIndex] && !_motionHasAccelRow[padIndex])
+                        {
+                            gyro = ReconcileAssignedMotion(null, true, padIndex, timestampUs);
+                            accel = ReconcileAssignedMotion(null, false, padIndex, timestampUs);
+                            dsu = JoinMotionChannels(gyro, accel, timestampUs);
+                        }
+                        DsuMotionSnapshots[padIndex] = dsu;
                     }
-                    DsuMotionSnapshots[padIndex] = dsu;
+                }
+                finally
+                {
+                    _motionAssignedDevices.Clear();
                 }
             }
         }
 
-        private static void ConsiderAutomaticMotion(UserDevice device, bool aux,
-            ref UserDevice selected, ref bool selectedAux, ref int selectedRank)
+        private static MotionSnapshot JoinMotionChannels(
+            MotionSnapshot gyro, MotionSnapshot accel, long timestampUs)
+            => new()
+            {
+                GyroPitch = gyro.GyroPitch, GyroYaw = gyro.GyroYaw, GyroRoll = gyro.GyroRoll,
+                AccelX = accel.AccelX, AccelY = accel.AccelY, AccelZ = accel.AccelZ,
+                HasMotion = gyro.HasMotion || accel.HasMotion, TimestampUs = timestampUs,
+            };
+
+        private MotionSnapshot ReconcileAssignedMotion(MappingSource source, bool requireGyro,
+            int slotIndex, long timestampUs)
         {
-            var state = device.InputState;
-            bool gyro = aux ? device.Device.HasGyroAux : device.Device.HasGyro;
-            bool accel = aux ? device.Device.HasAccelAux : device.Device.HasAccel;
-            gyro &= (aux ? state.GyroAux : state.Gyro) is { Length: >= 3 };
-            accel &= (aux ? state.AccelAux : state.Accel) is { Length: >= 3 };
-            int rank = gyro ? (accel ? 3 : 2) : (accel ? 1 : 0);
-            if (rank <= selectedRank) return;
-            selected = device;
-            selectedAux = aux;
-            selectedRank = rank;
+            _motionAssignedX.Clear();
+            _motionAssignedY.Clear();
+            _motionAssignedZ.Clear();
+            foreach (var device in _motionAssignedDevices)
+            {
+                var sample = ReadMotionChannel(device, source, requireGyro, slotIndex, timestampUs);
+                // Default sources follow the device's primary channel. An
+                // auxiliary channel is used only if the primary is absent.
+                if (!sample.HasMotion && source == null)
+                    sample = ReadMotionChannel(device,
+                        requireGyro ? AutomaticAuxGyro : AutomaticAuxAccel,
+                        requireGyro, slotIndex, timestampUs);
+                if (!sample.HasMotion) continue;
+                AppendMotionValues(sample, requireGyro,
+                    _motionAssignedX, _motionAssignedY, _motionAssignedZ);
+            }
+            return CombineMotionValues(null, requireGyro, _motionAssignedX,
+                _motionAssignedY, _motionAssignedZ, _motionAssignedX.Count > 0, timestampUs);
+        }
+
+        private static MotionSnapshot ReadMotionChannel(UserDevice device, MappingSource source,
+            bool requireGyro, int slotIndex, long timestampUs)
+        {
+            var sample = requireGyro
+                ? CaptureMotionSnapshot((device, source), default, slotIndex, timestampUs)
+                : CaptureMotionSnapshot(default, (device, source), slotIndex, timestampUs);
+            bool finite = requireGyro
+                ? float.IsFinite(sample.GyroPitch) && float.IsFinite(sample.GyroYaw) && float.IsFinite(sample.GyroRoll)
+                : float.IsFinite(sample.AccelX) && float.IsFinite(sample.AccelY) && float.IsFinite(sample.AccelZ);
+            return finite ? sample : new MotionSnapshot { TimestampUs = timestampUs };
+        }
+
+        private static void AppendMotionValues(MotionSnapshot sample, bool gyro,
+            List<float> x, List<float> y, List<float> z)
+        {
+            x.Add(gyro ? sample.GyroPitch : sample.AccelX);
+            y.Add(gyro ? sample.GyroYaw : sample.AccelY);
+            z.Add(gyro ? sample.GyroRoll : sample.AccelZ);
+        }
+
+        private static MotionSnapshot CombineMotionValues(MappingRow row, bool gyro,
+            List<float> x, List<float> y, List<float> z, bool available, long timestampUs)
+        {
+            if (!available) return new MotionSnapshot { TimestampUs = timestampUs };
+            string mode = row?.CombineMode ?? "";
+            var expression = mode == "Custom" ? GetOrCompileExpression(row) : null;
+            // These are physical units, not normalized stick axes. Reuse the
+            // row combiner without the scalar target's [-1,1] output clamp.
+            float vx = expression != null ? expression.Evaluate(x) : CombineHelper.CombineAxis(mode, x);
+            float vy = expression != null ? expression.Evaluate(y) : CombineHelper.CombineAxis(mode, y);
+            float vz = expression != null ? expression.Evaluate(z) : CombineHelper.CombineAxis(mode, z);
+            if (!float.IsFinite(vx)) vx = 0f;
+            if (!float.IsFinite(vy)) vy = 0f;
+            if (!float.IsFinite(vz)) vz = 0f;
+            return gyro
+                ? new MotionSnapshot { GyroPitch = vx, GyroYaw = vy, GyroRoll = vz,
+                    HasMotion = true, TimestampUs = timestampUs }
+                : new MotionSnapshot { AccelX = vx, AccelY = vy, AccelZ = vz,
+                    HasMotion = true, TimestampUs = timestampUs };
         }
 
         private static MotionSnapshot CaptureMotionSnapshot(
@@ -3024,13 +3089,7 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>
-        /// Walks the slot's mapping rows for the given motion target name,
-        /// returning the first source whose owning device is online and
-        /// (when <paramref name="requireGyro"/>) has gyro capability. The
-        /// per-tick walk + first-online wins gives natural hand-off when
-        /// devices come and go without restarting the engine.
-        /// </summary>
-        /// <summary>Motion row candidates for the slot's engaged layer, in
+        /// Motion row candidates for the slot's engaged layer, in
         /// preference order: the layer's own row, then Base, then any other
         /// row naming the target.
         ///
@@ -3120,20 +3179,20 @@ namespace PadForge.Common.Input
         /// thread only, so the candidate walk allocates nothing per tick.</summary>
         private MappingRow[] _motionRowCandidateBuf = new MappingRow[8];
 
-        private (UserDevice Ud, MappingSource Src) ResolveMotionSource(
-            MappingSet ms, string targetName, bool requireGyro, int slotIndex)
+        private MotionSnapshot ReconcileMappedMotion(
+            MappingSet ms, string targetName, bool requireGyro, int slotIndex, long timestampUs)
         {
-            if (ms?.Rows == null) return (null, null);
+            if (ms?.Rows == null) return new MotionSnapshot { TimestampUs = timestampUs };
             BuildMotionRowCandidates(ms, targetName, slotIndex, ref _motionRowCandidateBuf, out int count);
             var buf = _motionRowCandidateBuf;
             try
             {
                 for (int c = 0; c < count; c++)
                 {
-                    var hit = ResolveMotionSourceFromRow(buf[c], requireGyro);
-                    if (hit.Ud != null) return hit;
+                    var sample = ReconcileMotionRow(buf[c], requireGyro, slotIndex, timestampUs);
+                    if (sample.HasMotion) return sample;
                 }
-                return (null, null);
+                return new MotionSnapshot { TimestampUs = timestampUs };
             }
             finally
             {
@@ -3143,35 +3202,40 @@ namespace PadForge.Common.Input
             }
         }
 
-        private (UserDevice Ud, MappingSource Src) ResolveMotionSourceFromRow(
-            MappingRow row, bool requireGyro)
+        private MotionSnapshot ReconcileMotionRow(
+            MappingRow row, bool requireGyro, int slotIndex, long timestampUs)
         {
+            _motionRowX.Clear();
+            _motionRowY.Clear();
+            _motionRowZ.Clear();
+            bool available = false;
             var sources = row?.Sources;
             if (sources != null)
             {
                 for (int i = 0; i < sources.Count; i++)
                 {
                     var src = sources[i];
-                    if (src == null) continue;
-                    if (!SourceCoercion.IsMotionDescriptor(src.Descriptor)) continue;
-                    if (string.IsNullOrEmpty(src.DeviceGuid)) continue;
-                    if (!TryParseGuidCached(src.DeviceGuid, out var guid)) continue;
-                    var ud = FindOnlineDeviceByInstanceGuid(guid);
-                    if (ud == null || !ud.IsOnline || ud.Device == null) continue;
-                    if (ud.InputState == null) continue;
-                    // "Motion Accel L" needs the aux (Nunchuk / left Joy-Con)
-                    // sensor, not the body accelerometer (#199 follow-up).
-                    // "Motion Gyro L" is the gyro twin (#252): the left half
-                    // of a combined pair, whose capability is its own.
-                    bool wantsAux = requireGyro
-                        ? MappingSetMigrator.IsMotionGyroAuxDescriptor(src.Descriptor)
-                        : MappingSetMigrator.IsMotionAccelAuxDescriptor(src.Descriptor);
-                    if (requireGyro ? (wantsAux ? !ud.Device.HasGyroAux : !ud.Device.HasGyro)
-                        : (wantsAux ? !ud.Device.HasAccelAux : !ud.Device.HasAccel)) continue;
-                    return (ud, src);
+                    if (IsRowModifierSource(src)) continue;
+                    MotionSnapshot sample = default;
+                    if (src != null && SourceCoercion.IsMotionDescriptor(src.Descriptor))
+                    {
+                        if (string.IsNullOrEmpty(src.DeviceGuid))
+                            sample = ReconcileAssignedMotion(src, requireGyro, slotIndex, timestampUs);
+                        else if (TryParseGuidCached(src.DeviceGuid, out var guid))
+                        {
+                            var device = FindOnlineDeviceByInstanceGuid(guid);
+                            if (device?.IsOnline == true)
+                                sample = ReadMotionChannel(device, src, requireGyro, slotIndex, timestampUs);
+                        }
+                    }
+                    // Keep source positions, including unavailable entries,
+                    // for Custom expressions and the usual Average semantics.
+                    AppendMotionValues(sample, requireGyro, _motionRowX, _motionRowY, _motionRowZ);
+                    available |= sample.HasMotion;
                 }
             }
-            return (null, null);
+            return CombineMotionValues(row, requireGyro, _motionRowX,
+                _motionRowY, _motionRowZ, available, timestampUs);
         }
 
         /// <summary>

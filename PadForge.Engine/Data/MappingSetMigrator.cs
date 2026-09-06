@@ -660,8 +660,8 @@ namespace PadForge.Engine.Data
         /// Multiple devices on the same slot accumulate as multiple
         /// sources on the single per-target row, matching the existing
         /// multi-source pattern for buttons / axes / touchpad. The
-        /// engine resolves at runtime by walking sources in order and
-        /// picking the first online device (first-mapped-and-active wins).
+        /// engine reconciles their live values with the row's axis combine
+        /// mode, matching other multi-source analog mappings.
         /// </para>
         /// </summary>
         public static void EnsureMotionRows(
@@ -759,7 +759,7 @@ namespace PadForge.Engine.Data
                 {
                     Target      = target,
                     LayerMask   = "Base",
-                    CombineMode = "",  // engine special-cases motion; combine ignored
+                    CombineMode = "",  // Default MaxAbs, matching other axis rows.
                     Sources     = additions,
                 });
             }

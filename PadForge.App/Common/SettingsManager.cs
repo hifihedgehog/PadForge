@@ -1119,8 +1119,8 @@ namespace PadForge.Common.Input
                 // slot's motion channel. EnsureMotionRows mirrors the
                 // marker into the per-slot MappingSet so the engine
                 // sees the row.
-                // DSU has an automatic sensor source when these HID motion
-                // mappings are absent, including on Xbox outputs.
+                // DSU reconciles the assigned sensors when these native
+                // motion mappings are absent, including on Xbox outputs.
                 if (outputType is Engine.VirtualControllerType.PlayStation
                     or Engine.VirtualControllerType.Nintendo)
                 {

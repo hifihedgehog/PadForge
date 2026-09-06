@@ -27,12 +27,14 @@ namespace PadForge.Models3D
             "Carbon", "Robot", "ElectricVolt", "DaystrikeCamo", "HaloInfinite",
             "Starfield", "StellarShift", "DeepPink", "Porsche75th",
             "VelocityGreen", "PulseRed", "ShockBlue", "Remix",
+            "Sonic",
         };
         public static readonly string[] AppearanceNames =
         {
             "Carbon Black", "Robot White", "Electric Volt", "Daystrike Camo", "Halo Infinite",
             "Starfield", "Stellar Shift", "Deep Pink", "Porsche 75th Anniversary",
             "Velocity Green", "Pulse Red", "Shock Blue", "Remix Special Edition",
+            "Sonic the Hedgehog Limited Edition",
         };
 
         private readonly Model3DGroup ShareButton;
@@ -47,7 +49,7 @@ namespace PadForge.Models3D
         /// Xbox One, Elite and Adaptive profiles render this same mesh,
         /// so for them Share stays present but inert.</param>
         public ControllerModelXboxSeries(string appearance = "Carbon", bool enableShare = true)
-            : base($"XboxSeries.{Validate(appearance)}")
+            : base($"XboxSeries.{Validate(appearance)}", appearance == "Sonic" ? "XboxSeries.Carbon" : null)
         {
             var MaterialBody = LoadTexturedMaterial("Body.png");
             // The clear ABXY shells and the Starfield trigger covers are
@@ -106,6 +108,15 @@ namespace PadForge.Models3D
                 if (DefaultMaterials.ContainsKey(child)) continue;
                 ApplyMaterial(child, MaterialBody);
                 DefaultMaterials[child] = MaterialBody;
+            }
+
+            if (appearance == "Sonic")
+            {
+                // Custom shell art uses the Carbon mesh's UV layout.
+                // Controls and their moving decals keep the original atlases.
+                var shell = LoadTexturedMaterial("Shell.png", resourceModelName: ModelName);
+                ApplyMaterial(MainBody, shell);
+                DefaultMaterials[MainBody] = shell;
             }
 
             DrawAccentHighlights();

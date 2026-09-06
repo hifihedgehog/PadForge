@@ -67,10 +67,11 @@ namespace PadForge.Models3D
 
         public Model3DGroup model3DGroup = new();
         public string ModelName;
+        private readonly string _resourceModelName;
 
         /// <summary>Stable family identity for model selection. Equals
         /// ModelName by default; appearance-variant models set ModelName
-        /// to "{family}.{appearance}" (the embedded-resource folder) and
+        /// to "{family}.{appearance}" and
         /// keep the family here so EnsureModel's identity check doesn't
         /// rebuild every tick.</summary>
         public string ModelFamily;
@@ -484,9 +485,12 @@ namespace PadForge.Models3D
         //  Constructor
         // ─────────────────────────────────────────────
 
-        protected ControllerModelBase(string modelName)
+        /// <param name="resourceModelName">An explicit shared asset set for
+        /// skins that keep an existing model's geometry and controls.</param>
+        protected ControllerModelBase(string modelName, string resourceModelName = null)
         {
             ModelName = modelName;
+            _resourceModelName = resourceModelName ?? modelName;
             int dot = modelName.IndexOf('.');
             ModelFamily = dot > 0 ? modelName.Substring(0, dot) : modelName;
 
@@ -753,9 +757,9 @@ namespace PadForge.Models3D
             return group;
         }
 
-        protected Material LoadTexturedMaterial(string filename, double opacity = 1.0)
+        protected Material LoadTexturedMaterial(string filename, double opacity = 1.0, string resourceModelName = null)
         {
-            return TryLoadTexturedMaterial(filename, opacity)
+            return TryLoadTexturedMaterial(filename, opacity, resourceModelName)
                 ?? new DiffuseMaterial(new SolidColorBrush(
                        (Color)ColorConverter.ConvertFromString("#5C5D60")));
         }
@@ -763,12 +767,12 @@ namespace PadForge.Models3D
         /// <summary>As LoadTexturedMaterial, but returns null when the
         /// embedded resource does not exist (appearance folders may omit
         /// an atlas, e.g. a colorway whose trim merged into the body).</summary>
-        protected Material TryLoadTexturedMaterial(string filename, double opacity = 1.0)
+        protected Material TryLoadTexturedMaterial(string filename, double opacity = 1.0, string resourceModelName = null)
         {
             try
             {
                 var assembly = Assembly.GetExecutingAssembly();
-                string suffix = $".{ModelName}.{filename}";
+                string suffix = $".{resourceModelName ?? _resourceModelName}.{filename}";
                 foreach (var name in assembly.GetManifestResourceNames())
                 {
                     if (!name.EndsWith(suffix, StringComparison.OrdinalIgnoreCase))
@@ -889,7 +893,7 @@ namespace PadForge.Models3D
             // MSBuild prefixes folder names starting with a digit (e.g. "3DModels" → "_3DModels")
             // but keeps hyphens and other characters as-is in resource names.
             // Search by suffix to avoid needing the exact prefix.
-            string suffix = $".{ModelName}.{filename}";
+            string suffix = $".{_resourceModelName}.{filename}";
             string resourceName = null;
 
             foreach (var name in assembly.GetManifestResourceNames())

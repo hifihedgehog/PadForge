@@ -3507,7 +3507,7 @@
   <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>单元格高亮期间保持其绑定。层打开时，轮盘中心可能立即触发。</value></data>
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>方向按键逐格移动并触发每个新选中的单元格。此快捷栏行为不使用触发模式或点击输入。</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigi 增强协议</value></data>
-  <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>使用 SDL 的 Flydigi 驱动，通过厂商接口读取 Flydigi 手柄，以使用 M1 至 M4、C、Z、LM、RM 按键和体感。Flydigi 空间站的服务也使用该接口。关闭后，PadForge 不再使用该驱动，若手柄提供标准 XInput 视图则通过它读取，额外按键和体感不可用。此项能否消除反复断开尚未确认。</value></data>
+  <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>启用受支持的 Flydigi 手柄的额外按键和体感传感器。</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi 软件正在运行：{0}。它可以使用与 PadForge 相同的手柄接口，且有报告称一台 Vader 5 Pro 在两者都能访问时反复断开。如果此手柄出现断开重连，请在使用 PadForge 时停止该服务，或保持手柄隐藏并将该服务从 HidHide 白名单中移除，或尝试在设置中关闭"Flydigi 增强协议"，其效果尚未确认。</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>允许远程更改分配</value>

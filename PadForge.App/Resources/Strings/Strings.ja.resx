@@ -3507,7 +3507,7 @@
   <data name="Menu_Fire_Always_LayerHold_Desc" xml:space="preserve"><value>そのセルがハイライトされている間、割り当てを保持します。レイヤーが開くと、ラジアル中央がすぐに発動することがあります。</value></data>
   <data name="Menu_Fire_ButtonPairGrid_Desc" xml:space="preserve"><value>方向入力でセルを順に移動し、新しく選ばれたセルを発動します。このホットバー動作は発動モードやクリック入力を使いません。</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigi 拡張プロトコル</value></data>
-  <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>SDL の Flydigi ドライバーを使い、Flydigi コントローラーをベンダーインターフェイス経由で読み取って M1〜M4、C、Z、LM、RM ボタンとモーションを使えるようにします。Flydigi Space Station のサービスも同じインターフェイスを使います。オフにすると PadForge はこのドライバーを使わず、コントローラーが標準の XInput ビューを備えていればそれで読み取ります。追加ボタンとモーションは使えません。これで繰り返す切断が止まるかは確認されていません。</value></data>
+  <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>対応するFlydigiコントローラーの追加ボタンとモーションセンサーを有効にします。</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi のソフトウェアが実行中です: {0}。PadForge と同じコントローラーインターフェイスを使用できます。両方がアクセスできる状態で Vader 5 Pro が繰り返し切断されたという報告があります。このコントローラーが切断と再接続を繰り返す場合は、PadForge の使用中にサービスを停止する、コントローラーを非表示のままにして HidHide のホワイトリストからサービスを削除する、または設定の「Flydigi 拡張プロトコル」をオフにして試してください。効果は確認されていません。</value></data>
   <data name="RemoteLink_AllowAssignments" xml:space="preserve">
     <value>リモートからの割り当て変更を許可</value>

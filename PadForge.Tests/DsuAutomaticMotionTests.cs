@@ -18,6 +18,232 @@ namespace PadForge.Tests
     public class DsuAutomaticMotionTests
     {
         [Theory]
+        [InlineData(false)]
+        [InlineData(true)]
+        public async Task AllAssignedMotionSources_UseTheExistingAxisReconciliation(bool mapped)
+        {
+            using var rig = new MotionRig();
+            var first = rig.AddDevice(0, 0.1f, -0.8f, 0.2f);
+            var second = rig.AddDevice(0, 0.9f, -0.1f, -0.7f);
+            rig.ConfigureSlot(0, mapped ? VirtualControllerType.PlayStation : VirtualControllerType.Xbox, first);
+            if (mapped)
+                MappingSetMigrator.EnsureMotionRows(SettingsManager.SlotMappingSets[0], 1,
+                    new[] { (second.InstanceGuidString, true, true) });
+            var packets = await rig.TickAndReceive();
+            Assert.Equal(0.9f * 180f / MathF.PI, ReadFloat(packets[0], 88), 4);
+            Assert.Equal(0.8f * 180f / MathF.PI, ReadFloat(packets[0], 92), 4);
+            Assert.Equal(0.7f * 180f / MathF.PI, ReadFloat(packets[0], 96), 4);
+            if (mapped)
+                Assert.Equal(0.9f * 180f / MathF.PI, rig.Manager.MotionSnapshots[0].GyroPitch, 4);
+            else
+                Assert.False(rig.Manager.MotionSnapshots[0].HasMotion);
+        }
+
+        [Theory]
+        [InlineData("MaxAbs", 400f, 0.8f)]
+        [InlineData("Sum", 700f, 1.5f)]
+        [InlineData("Average", 350f, 0.75f)]
+        [InlineData("Custom", 1100f, 2.3f)]
+        public async Task MotionRows_UseTheirCombineModeWithoutAStickRangeClamp(string mode, float gyro, float accel)
+        {
+            using var rig = new MotionRig();
+            var first = rig.AddDevice(0, 300f * MathF.PI / 180f, 0f, 0f);
+            var second = rig.AddDevice(0, 400f * MathF.PI / 180f, 0f, 0f);
+            first.InputState.Accel[0] = 0.7f * 9.80665f;
+            second.InputState.Accel[0] = 0.8f * 9.80665f;
+            rig.ConfigureSlot(0, VirtualControllerType.PlayStation, first);
+            MappingSetMigrator.EnsureMotionRows(SettingsManager.SlotMappingSets[0], 1,
+                new[] { (second.InstanceGuidString, true, true) });
+            foreach (var row in SettingsManager.SlotMappingSets[0].Rows)
+            {
+                row.CombineMode = mode;
+                row.CombineExpression = "s[0] + s[1] * 2";
+            }
+            var packets = await rig.TickAndReceive();
+            Assert.Equal(gyro, ReadFloat(packets[0], 88), 2);
+            Assert.Equal(-accel, ReadFloat(packets[0], 76), 4);
+            Assert.Equal(gyro, rig.Manager.MotionSnapshots[0].GyroPitch, 2);
+            Assert.Equal(accel, rig.Manager.MotionSnapshots[0].AccelX, 4);
+        }
+
+        [Theory]
+        [InlineData("MaxAbs", 0.4f)]
+        [InlineData("Sum", 0.2f)]
+        [InlineData("Average", 0.1f)]
+        public async Task SourceInversion_IsAppliedBeforeReconciliation(string mode, float expected)
+        {
+            using var rig = new MotionRig();
+            var first = rig.AddDevice(0, 0.2f, 0f, 0f);
+            var second = rig.AddDevice(0, 0.4f, 0f, 0f);
+            rig.ConfigureSlot(0, VirtualControllerType.PlayStation, first);
+            var row = SettingsManager.SlotMappingSets[0].Rows[0];
+            row.Sources[0].Invert = true;
+            row.Sources.Add(Source(second, MappingSetMigrator.MotionGyroSourceDescriptor));
+            row.CombineMode = mode;
+            Assert.Equal(expected * 180f / MathF.PI, ReadFloat((await rig.TickAndReceive())[0], 88), 4);
+        }
+
+        [Fact]
+        public async Task CustomMotion_PreservesOfflineSourcePositions()
+        {
+            using var rig = new MotionRig();
+            var offline = rig.AddDevice(0, 5f, 5f, 5f, online: false);
+            var online = rig.AddDevice(0, 0.4f, 0f, 0f);
+            rig.ConfigureSlot(0, VirtualControllerType.PlayStation, offline);
+            var row = SettingsManager.SlotMappingSets[0].Rows[0];
+            row.Sources.Add(Source(online, MappingSetMigrator.MotionGyroSourceDescriptor));
+            row.CombineMode = "Custom";
+            row.CombineExpression = "s[1] - s[0] * 2";
+            Assert.Equal(0.4f * 180f / MathF.PI, ReadFloat((await rig.TickAndReceive())[0], 88), 4);
+        }
+
+        [Fact]
+        public async Task AnyDeviceMotion_ReconcilesAssignedDevicesAsOneSourcePosition()
+        {
+            using var rig = new MotionRig();
+            var first = rig.AddDevice(0, 0.2f, 0f, 0f);
+            rig.AddDevice(0, 0.8f, 0f, 0f);
+            rig.AddDevice(0, 9f, 9f, 9f, gyro: false, accel: false);
+            rig.ConfigureSlot(0, VirtualControllerType.PlayStation, first);
+            var row = SettingsManager.SlotMappingSets[0].Rows[0];
+            row.Sources[0].DeviceGuid = "";
+            row.Sources.Add(Source(first, MappingSetMigrator.MotionGyroSourceDescriptor));
+            row.CombineMode = "Sum";
+            // Like other rows, Any Device is one source value. Listing an
+            // explicit source beside it deliberately adds another contribution.
+            Assert.Equal(1f * 180f / MathF.PI, ReadFloat((await rig.TickAndReceive())[0], 88), 4);
+        }
+
+        [Fact]
+        public async Task EveryDevice_UsesItsOwnCalibrationAndGripBeforeReconciliation()
+        {
+            using var rig = new MotionRig();
+            var first = rig.AddDevice(0, 0.1f, 0.8f, 0.3f);
+            var second = rig.AddDevice(0, 0.4f, 0.5f, 0.6f);
+            rig.ConfigureSlot(0, VirtualControllerType.Xbox, first);
+            SourceCoercion.GyroBiasProvider = (id, _) => id == first.InstanceGuidString
+                ? (0.1f, 0f, 0f) : (0f, 0.2f, 0f);
+            SourceCoercion.GyroTuningProvider = (id, _) => new SourceCoercion.GyroTuning
+            {
+                Grip = id == first.InstanceGuidString ? "Pointing" : "Sideways",
+                ApplyToPassthrough = false,
+            };
+            var packet = (await rig.TickAndReceive())[0];
+            Assert.Equal(0.6f * 180f / MathF.PI, ReadFloat(packet, 88), 4);
+            Assert.Equal(-0.8f * 180f / MathF.PI, ReadFloat(packet, 92), 4);
+            Assert.Equal(0.4f * 180f / MathF.PI, ReadFloat(packet, 96), 4);
+        }
+
+        [Fact]
+        public async Task IdleFirstDevice_DoesNotBlockMotionFromTheSecond()
+        {
+            using var rig = new MotionRig();
+            var first = rig.AddDevice(0, 0f, 0f, 0f);
+            var second = rig.AddDevice(0, 0f, 0.5f, 0f);
+            rig.ConfigureSlot(0, VirtualControllerType.Xbox, first);
+            var packet = (await rig.TickAndReceive())[0];
+            Assert.Equal(-0.5f * 180f / MathF.PI, ReadFloat(packet, 92), 4);
+            second.InputState.Gyro[1] = 0f;
+            first.InputState.Gyro[1] = -0.3f;
+            packet = (await rig.TickAndReceive())[0];
+            Assert.Equal(0.3f * 180f / MathF.PI, ReadFloat(packet, 92), 4);
+        }
+
+        [Fact]
+        public async Task DisabledOrInvalidSource_DoesNotBlockAnotherAssignedDevice()
+        {
+            using var rig = new MotionRig();
+            var first = rig.AddDevice(0, 5f, 5f, 5f);
+            rig.AddDevice(0, 0.4f, 0f, 0f);
+            rig.ConfigureSlot(0, VirtualControllerType.Xbox, first);
+            SettingsManager.UserSettings.Items[0].IsEnabled = false;
+            Assert.Equal(0.4f * 180f / MathF.PI, ReadFloat((await rig.TickAndReceive())[0], 88), 4);
+            SettingsManager.UserSettings.Items[0].IsEnabled = true;
+            first.InputState.Gyro[0] = float.NaN;
+            Assert.Equal(0.4f * 180f / MathF.PI, ReadFloat((await rig.TickAndReceive())[0], 88), 4);
+        }
+
+        [Fact]
+        public async Task MissingSettings_ClearsPreviouslyPublishedMotion()
+        {
+            using var rig = new MotionRig();
+            var first = rig.AddDevice(0, 0.2f, 0.3f, 0.4f);
+            rig.ConfigureSlot(0, VirtualControllerType.Xbox, first);
+            await rig.TickAndReceive();
+            SettingsManager.UserSettings = null;
+            var packet = (await rig.TickAndReceive())[0];
+            Assert.Equal(0, packet[22]);
+            Assert.Equal(0f, ReadFloat(packet, 88));
+        }
+
+        [Fact]
+        public async Task MotionLayers_KeepTheirExistingPriorityAndBaseFallback()
+        {
+            InputManager.ClearAllShiftRuntime();
+            try
+            {
+                using var rig = new MotionRig();
+                var first = rig.AddDevice(0, 0.2f, 0f, 0f);
+                var second = rig.AddDevice(0, 0.4f, 0f, 0f);
+                rig.ConfigureSlot(0, VirtualControllerType.PlayStation, first);
+                var set = SettingsManager.SlotMappingSets[0];
+                var layer = new MappingRow
+                {
+                    Target = MappingSetMigrator.MotionGyroTarget, LayerMask = "View",
+                    CombineMode = "Sum", NoInherit = true,
+                    Sources = new()
+                    {
+                        Source(first, MappingSetMigrator.MotionGyroSourceDescriptor),
+                        Source(second, MappingSetMigrator.MotionGyroSourceDescriptor),
+                    },
+                };
+                set.Rows.Add(layer);
+                set.ShiftActivators.Add(new ShiftActivator
+                {
+                    DeviceGuid = "", Descriptor = "Button 28", Mode = "Hold",
+                    LayerMask = "View", LayerName = "View", Kind = "Button",
+                    InheritUnmapped = false, DelayMs = 0, AutoCancelMs = 0,
+                });
+                first.InputState.Buttons[28] = true;
+                Assert.Equal("View", InputManager.ResolveActiveLayerMask(0, set, first.InputState, ""));
+                Assert.Equal(0.6f * 180f / MathF.PI, ReadFloat((await rig.TickAndReceive())[0], 88), 4);
+                layer.Sources.Clear();
+                // Motion retains the established Base fallback even when a
+                // replace layer has no usable motion source.
+                Assert.Equal(0.2f * 180f / MathF.PI, ReadFloat((await rig.TickAndReceive())[0], 88), 4);
+            }
+            finally
+            {
+                InputManager.ClearAllShiftRuntime();
+            }
+        }
+
+        [Fact]
+        public async Task MaxAbsTie_UsesTheSameFirstContributionRuleAsOtherAxes()
+        {
+            using var rig = new MotionRig();
+            var first = rig.AddDevice(0, 0.5f, 0f, 0f);
+            rig.AddDevice(0, -0.5f, 0f, 0f);
+            rig.ConfigureSlot(0, VirtualControllerType.Xbox, first);
+            Assert.Equal(0.5f * 180f / MathF.PI, ReadFloat((await rig.TickAndReceive())[0], 88), 4);
+            SettingsManager.UserSettings.Items.Reverse();
+            Assert.Equal(-0.5f * 180f / MathF.PI, ReadFloat((await rig.TickAndReceive())[0], 88), 4);
+        }
+
+        [Fact]
+        public async Task CustomOverflow_DoesNotSendNonFiniteMotion()
+        {
+            using var rig = new MotionRig();
+            var first = rig.AddDevice(0, 0.2f, 0f, 0f);
+            rig.ConfigureSlot(0, VirtualControllerType.PlayStation, first);
+            var row = SettingsManager.SlotMappingSets[0].Rows[0];
+            row.CombineMode = "Custom";
+            row.CombineExpression = "1000000000 * 1000000000 * 1000000000 * 1000000000 * 1000000000";
+            Assert.True(MappingExpression.Compile(row.CombineExpression).IsValid);
+            Assert.Equal(0f, ReadFloat((await rig.TickAndReceive())[0], 88));
+        }
+
+        [Theory]
         [InlineData(VirtualControllerType.Xbox)]
         [InlineData(VirtualControllerType.Extended)]
         [InlineData(VirtualControllerType.Midi)]
@@ -114,7 +340,7 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public async Task AutomaticSource_PrefersACompleteImuAndKeepsItsSensorsTogether()
+        public async Task AutomaticSources_ReconcileAllAvailableSensorChannels()
         {
             using var rig = new MotionRig();
             var accelOnly = rig.AddDevice(0, 8f, 8f, 8f, gyro: false);
@@ -124,26 +350,26 @@ namespace PadForge.Tests
             gyroOnly.InputState.Accel[0] = 60f;
             rig.ConfigureSlot(0, VirtualControllerType.Xbox, full);
             var packets = await rig.TickAndReceive();
-            Assert.Equal(-0.25f, ReadFloat(packets[0], 76), 5);
-            Assert.Equal(0.1f * 180f / MathF.PI, ReadFloat(packets[0], 88), 4);
+            Assert.Equal(-50f / 9.80665f, ReadFloat(packets[0], 76), 5);
+            Assert.Equal(9f * 180f / MathF.PI, ReadFloat(packets[0], 88), 4);
         }
 
         [Fact]
-        public async Task AutomaticSource_UsesAssignmentOrderAndTracksOnlineAndAssignedState()
+        public async Task AutomaticSources_TrackEveryOnlineAndAssignedDevice()
         {
             using var rig = new MotionRig();
-            var first = rig.AddDevice(0, 0.1f, 0f, 0f);
+            var first = rig.AddDevice(0, 0.3f, 0f, 0f);
             var second = rig.AddDevice(0, 0.2f, 0f, 0f);
             rig.ConfigureSlot(0, VirtualControllerType.Xbox, first);
             SettingsManager.UserDevices.Items.Reverse();
             var packets = await rig.TickAndReceive();
-            Assert.Equal(0.1f * 180f / MathF.PI, ReadFloat(packets[0], 88), 4);
+            Assert.Equal(0.3f * 180f / MathF.PI, ReadFloat(packets[0], 88), 4);
             first.IsOnline = false;
             packets = await rig.TickAndReceive();
             Assert.Equal(0.2f * 180f / MathF.PI, ReadFloat(packets[0], 88), 4);
             first.IsOnline = true;
             packets = await rig.TickAndReceive();
-            Assert.Equal(0.1f * 180f / MathF.PI, ReadFloat(packets[0], 88), 4);
+            Assert.Equal(0.3f * 180f / MathF.PI, ReadFloat(packets[0], 88), 4);
             SettingsManager.UserSettings.Items.RemoveAll(s => s.InstanceGuid == first.InstanceGuid);
             packets = await rig.TickAndReceive();
             Assert.Equal(0.2f * 180f / MathF.PI, ReadFloat(packets[0], 88), 4);
@@ -222,7 +448,7 @@ namespace PadForge.Tests
             Assert.True(rig.Manager.MotionSnapshots[0].HasMotion);
             SettingsManager.SlotMappingSets[0] = null;
             packets = await rig.TickAndReceive();
-            Assert.Equal(0.1f * 180f / MathF.PI, ReadFloat(packets[0], 88), 4);
+            Assert.Equal(0.4f * 180f / MathF.PI, ReadFloat(packets[0], 88), 4);
             Assert.False(rig.Manager.MotionSnapshots[0].HasMotion);
         }
 
@@ -245,7 +471,7 @@ namespace PadForge.Tests
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public async Task CompleteAuxiliaryImu_OnlyYieldsToAnEarlierCompleteBodyImu(bool bodyIsComplete)
+        public async Task AutomaticSources_UsePrimaryOrAvailableAuxiliaryChannels(bool bodyIsComplete)
         {
             using var rig = new MotionRig();
             var body = rig.AddDevice(0, 0.2f, 0.3f, 0.4f, accel: bodyIsComplete);

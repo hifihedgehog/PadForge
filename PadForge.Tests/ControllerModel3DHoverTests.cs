@@ -30,6 +30,8 @@ namespace PadForge.Tests
             new object[] { "Xbox360", null, false },
             new object[] { "XboxSeries", "Carbon", true },
             new object[] { "XboxSeries", "Carbon", false },
+            new object[] { "XboxSeries", "Sonic", true },
+            new object[] { "XboxSeries", "Sonic", false },
             new object[] { "DS4", "JetBlack", false },
             new object[] { "DualSense", "White", false },
             new object[] { "DualSenseEdge", null, false },

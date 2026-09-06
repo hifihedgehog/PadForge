@@ -35,6 +35,9 @@ namespace PadForge.Engine.RemoteLink
         /// be a trigger source for a keyboard/mouse/scroll macro action.</summary>
         [XmlAttribute] public bool GamepadOnly { get; set; }
 
+        /// <summary>Explicit consent for this peer to assign its shared devices here.</summary>
+        [XmlAttribute] public bool AllowRemoteAssignments { get; set; }
+
         /// <summary>Base64 of the 32-byte pairwise DHT rendezvous capability
         /// (#294), derived once at first-contact pairing from the session secret
         /// and stored so the internet presence lane can publish/look up this
@@ -78,7 +81,7 @@ namespace PadForge.Engine.RemoteLink
             }
         }
 
-        public static PeerTrust FromPublicKey(byte[] publicKey, string name, string pairedUtc, bool reconnect, bool gamepadOnly)
+        public static PeerTrust FromPublicKey(byte[] publicKey, string name, string pairedUtc, bool reconnect, bool gamepadOnly, bool allowRemoteAssignments = false)
             => new()
             {
                 PublicKeyBase64 = Convert.ToBase64String(publicKey),
@@ -86,6 +89,7 @@ namespace PadForge.Engine.RemoteLink
                 PairedUtc = pairedUtc ?? "",
                 ReconnectEnabled = reconnect,
                 GamepadOnly = gamepadOnly,
+                AllowRemoteAssignments = allowRemoteAssignments,
             };
     }
 }

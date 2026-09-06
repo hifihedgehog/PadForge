@@ -12,9 +12,12 @@ namespace PadForge.ViewModels
     {
         private readonly Action<string, string> _onRename;
         private readonly string _hostName;
+        private readonly Action<string, bool> _onAssignmentPermission;
 
         public RemoteLinkTrustedPeer(string name, string hostName, string fingerprintHex, string pairedUtc, bool gamepadOnly, bool isOnline,
-            Action<string> onRevoke, Action<string, string> onRename, Action<string> onConnect)
+            Action<string> onRevoke, Action<string, string> onRename, Action<string> onConnect,
+            bool allowRemoteAssignments = false, Action<string, bool> onAssignmentPermission = null,
+            Action<string> onAssignments = null)
         {
             _hostName = hostName ?? "";
             _name = !string.IsNullOrWhiteSpace(name) ? name : DefaultName(_hostName);
@@ -23,6 +26,9 @@ namespace PadForge.ViewModels
             GamepadOnly = gamepadOnly;
             _isOnline = isOnline;
             _onRename = onRename;
+            _allowRemoteAssignments = allowRemoteAssignments;
+            _onAssignmentPermission = onAssignmentPermission;
+            AssignmentsCommand = new RelayCommand(() => onAssignments?.Invoke(FingerprintHex));
             RevokeCommand = new RelayCommand(() => onRevoke?.Invoke(FingerprintHex));
             ConnectCommand = new RelayCommand(() => { if (!string.IsNullOrEmpty(_reachableHostPort)) onConnect?.Invoke(_reachableHostPort); });
         }
@@ -79,6 +85,18 @@ namespace PadForge.ViewModels
         public string FingerprintHex { get; }
         public string PairedUtc { get; }
         public bool GamepadOnly { get; }
+
+        public RelayCommand AssignmentsCommand { get; }
+        private bool _allowRemoteAssignments;
+        public bool AllowRemoteAssignments
+        {
+            get => _allowRemoteAssignments;
+            set
+            {
+                if (SetProperty(ref _allowRemoteAssignments, value))
+                    _onAssignmentPermission?.Invoke(FingerprintHex, value);
+            }
+        }
 
         /// <summary>Short, grouped fingerprint for display.</summary>
         public string FingerprintDisplay

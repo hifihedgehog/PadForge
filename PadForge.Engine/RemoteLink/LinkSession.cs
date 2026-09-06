@@ -30,6 +30,7 @@ namespace PadForge.Engine.RemoteLink
                        // reachable and authenticated there, so the punch both sides
                        // must perform simultaneously is trivially synchronized.
                        // Payload: [0] count, then per candidate: [len][addr][port BE].
+        Assignments = 9, // consent-gated assignment queries and edits for a paired PC
     }
 
     /// <summary>

@@ -136,6 +136,10 @@ namespace PadForge.Services
         /// </summary>
         public bool IsDirty { get; private set; }
 
+        private long _assignmentRevision = 1;
+        internal long AssignmentRevision => System.Threading.Interlocked.Read(ref _assignmentRevision);
+        internal void InvalidateAssignmentSnapshot() => System.Threading.Interlocked.Increment(ref _assignmentRevision);
+
         /// <summary>
         /// Raised after autosave completes so callers can perform post-save actions
         /// (e.g. refreshing the default profile snapshot).
@@ -237,6 +241,7 @@ namespace PadForge.Services
         /// <param name="filePath">Path to the settings XML file.</param>
         public void LoadFromFile(string filePath)
         {
+            InvalidateAssignmentSnapshot();
             if (!File.Exists(filePath))
                 return;
 
@@ -1738,12 +1743,20 @@ namespace PadForge.Services
         /// must not persist across the unassign / reassign round-trip.</summary>
         public static void StripDeviceFromAllSlots(Guid instanceGuid)
         {
+            for (int slot = 0; slot < (SettingsManager.SlotMappingSets?.Length ?? 0); slot++)
+                StripDeviceFromSlot(instanceGuid, slot);
+        }
+
+        /// <summary>Clear one route without removing the device's sources from its other slots.</summary>
+        public static void StripDeviceFromSlot(Guid instanceGuid, int slotIndex)
+        {
             string guidStr = instanceGuid.ToString().ToLowerInvariant();
             var sets = SettingsManager.SlotMappingSets;
             if (sets != null)
             {
                 for (int slot = 0; slot < sets.Length; slot++)
                 {
+                    if (slot != slotIndex) continue;
                     var ms = sets[slot];
                     if (ms?.Rows == null) continue;
                     foreach (var row in ms.Rows)
@@ -5223,6 +5236,7 @@ namespace PadForge.Services
         /// </summary>
         public void ResetToDefaults()
         {
+            InvalidateAssignmentSnapshot();
             // Closure by construction, not by hand-list. The old body
             // enumerated fields one by one and rotted as features landed
             // (user-confirmed: the HidHide toggles and whitelist, the
@@ -5530,6 +5544,7 @@ namespace PadForge.Services
         /// </summary>
         public void MarkDirty()
         {
+            InvalidateAssignmentSnapshot();
             IsDirty = true;
 
             var dispatcher = System.Windows.Application.Current?.Dispatcher;

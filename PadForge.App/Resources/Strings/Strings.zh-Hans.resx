@@ -3509,4 +3509,43 @@
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigi 增强协议</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>使用 SDL 的 Flydigi 驱动，通过厂商接口读取 Flydigi 手柄，以使用 M1 至 M4、C、Z、LM、RM 按键和体感。Flydigi 空间站的服务也使用该接口。关闭后，PadForge 不再使用该驱动，若手柄提供标准 XInput 视图则通过它读取，额外按键和体感不可用。此项能否消除反复断开尚未确认。</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi 软件正在运行：{0}。它可以使用与 PadForge 相同的手柄接口，且有报告称一台 Vader 5 Pro 在两者都能访问时反复断开。如果此手柄出现断开重连，请在使用 PadForge 时停止该服务，或保持手柄隐藏并将该服务从 HidHide 白名单中移除，或尝试在设置中关闭"Flydigi 增强协议"，其效果尚未确认。</value></data>
+  <data name="RemoteLink_AllowAssignments" xml:space="preserve">
+    <value>允许远程更改分配</value>
+  </data>
+  <data name="RemoteLink_AssignmentPermissionDescription" xml:space="preserve">
+    <value>允许此对等设备将其共享设备分配给本机现有的虚拟控制器。关闭此选项会保留现有分配。</value>
+  </data>
+  <data name="RemoteLink_AssignDevices" xml:space="preserve">
+    <value>分配共享设备</value>
+  </data>
+  <data name="RemoteLink_AssignmentTitle_Format" xml:space="preserve">
+    <value>{0} 上的分配</value>
+  </data>
+  <data name="RemoteLink_AssignmentDescription" xml:space="preserve">
+    <value>选择本机共享的设备，然后选择另一台电脑上的虚拟控制器。</value>
+  </data>
+  <data name="RemoteLink_AssignmentProfile_Format" xml:space="preserve">
+    <value>配置文件：{0}</value>
+  </data>
+  <data name="RemoteLink_AssignmentDenied" xml:space="preserve">
+    <value>在另一台电脑的 Remote Link &gt; 已配对电脑中，允许本机远程更改分配。</value>
+  </data>
+  <data name="RemoteLink_AssignmentUnavailable" xml:space="preserve">
+    <value>设备或连接不可用。请重新连接并重新打开此窗口。</value>
+  </data>
+  <data name="RemoteLink_AssignmentStale" xml:space="preserve">
+    <value>另一台电脑的设置已更改。请检查分配后重试。</value>
+  </data>
+  <data name="RemoteLink_AssignmentTimeout" xml:space="preserve">
+    <value>另一台电脑未响应。请刷新以检查更改是否已应用。两台电脑都需要使用支持远程分配的版本。</value>
+  </data>
+  <data name="RemoteLink_AssignmentNoDevices" xml:space="preserve">
+    <value>没有正在共享的本地设备。请连接控制器或打开网页控制器，然后刷新。</value>
+  </data>
+  <data name="RemoteLink_AssignmentNoSlots" xml:space="preserve">
+    <value>请在另一台电脑上创建虚拟控制器，然后刷新。</value>
+  </data>
+  <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
+    <value>正在等待另一台电脑...</value>
+  </data>
 </root>

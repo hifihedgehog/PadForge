@@ -3531,4 +3531,43 @@ Puoi riprovare più tardi dalle Impostazioni.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Protocollo avanzato Flydigi</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Usa il driver Flydigi di SDL, che legge i controller Flydigi tramite la loro interfaccia proprietaria per i pulsanti M1-M4, C, Z, LM e RM e il movimento. Anche il servizio di Flydigi Space Station usa quell'interfaccia. Disattivato, PadForge non usa il driver e legge il controller dalla sua vista XInput standard quando ne offre una, senza i pulsanti extra e il movimento. Non è confermato che questo fermi una disconnessione ripetuta.</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Software Flydigi in esecuzione: {0}. Può usare la stessa interfaccia del controller di PadForge, e un Vader 5 Pro è stato segnalato disconnettersi ripetutamente mentre entrambi vi avevano accesso. Se questo controller si disconnette e si riconnette, arresta il servizio mentre usi PadForge, mantieni il controller nascosto e rimuovi il servizio dalla whitelist di HidHide, oppure prova a disattivare "Protocollo avanzato Flydigi" nelle Impostazioni, senza conferma che aiuti.</value></data>
+  <data name="RemoteLink_AllowAssignments" xml:space="preserve">
+    <value>Consenti modifiche alle assegnazioni da remoto</value>
+  </data>
+  <data name="RemoteLink_AssignmentPermissionDescription" xml:space="preserve">
+    <value>Consente a questo peer di assegnare i suoi dispositivi condivisi ai controller virtuali esistenti di questo PC. La disattivazione conserva le assegnazioni esistenti.</value>
+  </data>
+  <data name="RemoteLink_AssignDevices" xml:space="preserve">
+    <value>Assegna dispositivi condivisi</value>
+  </data>
+  <data name="RemoteLink_AssignmentTitle_Format" xml:space="preserve">
+    <value>Assegnazioni su {0}</value>
+  </data>
+  <data name="RemoteLink_AssignmentDescription" xml:space="preserve">
+    <value>Seleziona un dispositivo condiviso da questo PC, poi i suoi controller virtuali sull'altro PC.</value>
+  </data>
+  <data name="RemoteLink_AssignmentProfile_Format" xml:space="preserve">
+    <value>Profilo: {0}</value>
+  </data>
+  <data name="RemoteLink_AssignmentDenied" xml:space="preserve">
+    <value>Sull'altro PC, consenti le modifiche alle assegnazioni da remoto per questo PC in Remote Link &gt; PC associati.</value>
+  </data>
+  <data name="RemoteLink_AssignmentUnavailable" xml:space="preserve">
+    <value>Il dispositivo o la connessione non è disponibile. Riconnetti e riapri questa finestra.</value>
+  </data>
+  <data name="RemoteLink_AssignmentStale" xml:space="preserve">
+    <value>Le impostazioni sull'altro PC sono cambiate. Controlla le assegnazioni e riprova.</value>
+  </data>
+  <data name="RemoteLink_AssignmentTimeout" xml:space="preserve">
+    <value>L'altro PC non ha risposto. Aggiorna per verificare se la modifica è stata applicata. Entrambi i PC richiedono una versione che supporti le assegnazioni da remoto.</value>
+  </data>
+  <data name="RemoteLink_AssignmentNoDevices" xml:space="preserve">
+    <value>Nessun dispositivo locale condiviso. Collega un controller o apri un controller web, poi aggiorna.</value>
+  </data>
+  <data name="RemoteLink_AssignmentNoSlots" xml:space="preserve">
+    <value>Crea un controller virtuale sull'altro PC, poi aggiorna.</value>
+  </data>
+  <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
+    <value>In attesa dell'altro PC...</value>
+  </data>
 </root>

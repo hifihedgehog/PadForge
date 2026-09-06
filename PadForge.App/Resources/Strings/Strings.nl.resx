@@ -3529,4 +3529,43 @@ Je kunt het later opnieuw proberen via Instellingen.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Uitgebreid Flydigi-protocol</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>De Flydigi-driver van SDL gebruiken, die Flydigi-controllers via hun fabrikantinterface leest voor de knoppen M1 tot M4, C, Z, LM en RM en beweging. De service van Flydigi Space Station gebruikt die interface ook. Uitgeschakeld gebruikt PadForge de driver niet en leest het de controller via de standaard XInput-weergave als die er is, zonder de extra knoppen en beweging. Of dit een terugkerende verbreking stopt, is niet bevestigd.</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi-software wordt uitgevoerd: {0}. Het kan dezelfde controllerinterface gebruiken als PadForge, en van een Vader 5 Pro is gemeld dat hij herhaaldelijk de verbinding verloor terwijl beide toegang hadden. Als deze controller wegvalt en opnieuw verbindt: stop de service terwijl u PadForge gebruikt, houd de controller verborgen en verwijder de service uit de HidHide-whitelist, of probeer de optie "Uitgebreid Flydigi-protocol" in Instellingen uit te schakelen. Of dat helpt, is niet bevestigd.</value></data>
+  <data name="RemoteLink_AllowAssignments" xml:space="preserve">
+    <value>Externe toewijzingswijzigingen toestaan</value>
+  </data>
+  <data name="RemoteLink_AssignmentPermissionDescription" xml:space="preserve">
+    <value>Hiermee mag deze peer zijn gedeelde apparaten toewijzen aan bestaande virtuele controllers op deze pc. Bestaande toewijzingen blijven behouden wanneer je dit uitschakelt.</value>
+  </data>
+  <data name="RemoteLink_AssignDevices" xml:space="preserve">
+    <value>Gedeelde apparaten toewijzen</value>
+  </data>
+  <data name="RemoteLink_AssignmentTitle_Format" xml:space="preserve">
+    <value>Toewijzingen op {0}</value>
+  </data>
+  <data name="RemoteLink_AssignmentDescription" xml:space="preserve">
+    <value>Selecteer een apparaat dat deze pc deelt en kies daarna de virtuele controllers op de andere pc.</value>
+  </data>
+  <data name="RemoteLink_AssignmentProfile_Format" xml:space="preserve">
+    <value>Profiel: {0}</value>
+  </data>
+  <data name="RemoteLink_AssignmentDenied" xml:space="preserve">
+    <value>Sta op de andere pc externe toewijzingswijzigingen voor deze pc toe onder Remote Link &gt; Gekoppelde pc's.</value>
+  </data>
+  <data name="RemoteLink_AssignmentUnavailable" xml:space="preserve">
+    <value>Het apparaat of de verbinding is niet beschikbaar. Maak opnieuw verbinding en open dit venster opnieuw.</value>
+  </data>
+  <data name="RemoteLink_AssignmentStale" xml:space="preserve">
+    <value>De instellingen op de andere pc zijn gewijzigd. Controleer de toewijzingen en probeer het opnieuw.</value>
+  </data>
+  <data name="RemoteLink_AssignmentTimeout" xml:space="preserve">
+    <value>De andere pc heeft niet geantwoord. Vernieuw om te controleren of de wijziging is toegepast. Beide pc's hebben een versie nodig die externe toewijzingen ondersteunt.</value>
+  </data>
+  <data name="RemoteLink_AssignmentNoDevices" xml:space="preserve">
+    <value>Er worden geen lokale apparaten gedeeld. Sluit een controller aan of open een webcontroller en vernieuw daarna.</value>
+  </data>
+  <data name="RemoteLink_AssignmentNoSlots" xml:space="preserve">
+    <value>Maak een virtuele controller op de andere pc en vernieuw daarna.</value>
+  </data>
+  <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
+    <value>Wachten op de andere pc...</value>
+  </data>
 </root>

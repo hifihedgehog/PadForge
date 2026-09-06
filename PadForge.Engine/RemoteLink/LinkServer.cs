@@ -1586,6 +1586,15 @@ namespace PadForge.Engine.RemoteLink
         }
 
         /// <summary>Fingerprints of peers with a live session right now (for UI state).</summary>
+        public Func<LinkAssignmentContext, Task<LinkAssignmentReply>> AssignmentHandler { get; set; }
+
+        public LinkAssignmentChannel GetAssignmentChannel(string fingerprint)
+        {
+            lock (_lock)
+                return _connections.FirstOrDefault(c => string.Equals(c.PeerFingerprintHex, fingerprint,
+                    StringComparison.OrdinalIgnoreCase))?.Assignments;
+        }
+
         public IReadOnlyList<string> ConnectedFingerprints()
         {
             lock (_lock)
@@ -1827,6 +1836,13 @@ namespace PadForge.Engine.RemoteLink
                 d.SetConnected(d.Info.Online);
                 conn.RemoteDevices[d.LinkSlot] = d;
             }
+            conn.Assignments = new LinkAssignmentChannel(conn.PeerFingerprintHex,
+                () => { lock (_lock) return _connections.Contains(conn); },
+                () => _trust.AllowsRemoteAssignments(conn.PeerFingerprintHex),
+                id => conn.RemoteDevices.Values.FirstOrDefault(d => d.Info.PeerLocalDeviceId == id),
+                payload => SendSealed(conn, conn.DataSession.Seal(LinkMessageType.Assignments, 0, 0, payload)),
+                context => AssignmentHandler?.Invoke(context) ?? Task.FromResult(
+                    LinkAssignmentReply.For(context.Request, LinkAssignmentStatus.Unavailable)));
             lock (_lock) _connections.Add(conn);
             foreach (var d in conn.RemoteDevices.Values) DeviceConnected?.Invoke(d);
             StatusChanged?.Invoke(new LinkStatus(LinkStatusKind.PeerConnected, peer: Short(conn.PeerFingerprintHex), deviceCount: conn.RemoteDevices.Count));
@@ -1937,7 +1953,9 @@ namespace PadForge.Engine.RemoteLink
                     System.Threading.Interlocked.Exchange(ref c.UpgradeProvisionalTicks, 0);
                 }
 
-                if (type == LinkMessageType.Input)
+                if (type == LinkMessageType.Assignments)
+                    c.Assignments?.Receive(payload);
+                else if (type == LinkMessageType.Input)
                 {
                     // Route by slot id to the matching device (the peer streams each of
                     // its devices on its own slot). Pass the send timestamp for
@@ -2109,6 +2127,7 @@ namespace PadForge.Engine.RemoteLink
 
         private void DropConnection(LinkPeerConnection c, bool replaced = false)
         {
+            c.Assignments?.Close();
             foreach (var d in c.RemoteDevices.Values)
             {
                 d.SetConnected(false);
@@ -2140,6 +2159,7 @@ namespace PadForge.Engine.RemoteLink
 
         private sealed class LinkPeerConnection
         {
+            public LinkAssignmentChannel Assignments;
             public LinkSession DataSession;
             /// <summary>Devices the peer exposes, keyed by their stable link slot (#138 live
             /// device sync). Concurrent: the UDP loop routes + reconciles it, the reaper

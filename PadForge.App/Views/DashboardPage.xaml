@@ -1680,6 +1680,9 @@
                                             <Run Text="{Binding HostName, Mode=OneWay}" FontWeight="SemiBold"/>
                                             <Run Text="{Binding FingerprintDisplay, Mode=OneWay, StringFormat='  ·  {0}'}" FontFamily="{StaticResource TelemetryFontFamily}"/>
                                         </TextBlock>
+                                        <CheckBox IsChecked="{Binding AllowRemoteAssignments, Mode=TwoWay}" Margin="0,6,8,0"
+                                                  Content="{Binding RemoteLink_AllowAssignments, Source={x:Static strings:Strings.Instance}}"
+                                                  ToolTip="{Binding RemoteLink_AssignmentPermissionDescription, Source={x:Static strings:Strings.Instance}}"/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
                                         <!-- No Appearance=Primary (dark text on the accent
@@ -1690,6 +1693,9 @@
                                                    Visibility="{Binding CanConnect, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                         <Button Content="{Binding RemoteLink_Revoke, Source={x:Static strings:Strings.Instance}}"
                                                 Command="{Binding RevokeCommand}"/>
+                                        <Button Content="{Binding RemoteLink_AssignDevices, Source={x:Static strings:Strings.Instance}}"
+                                                Command="{Binding AssignmentsCommand}" Margin="8,0,0,0"
+                                                Visibility="{Binding IsOnline, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                     </StackPanel>
                                 </Grid>
                             </DataTemplate>

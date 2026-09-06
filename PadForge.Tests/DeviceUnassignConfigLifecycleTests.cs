@@ -21,7 +21,7 @@ namespace PadForge.Tests
     /// keeps it.
     /// </summary>
     [Collection("SettingsManagerStatics")]
-    public class DeviceUnassignConfigLifecycleTests : IDisposable
+    public partial class DeviceUnassignConfigLifecycleTests : IDisposable
     {
         private static readonly Guid PadGuid = new("33333333-3333-3333-3333-333333333333");
         private static readonly Guid OtherGuid = new("44444444-4444-4444-4444-444444444444");

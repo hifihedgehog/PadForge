@@ -3558,4 +3558,43 @@ You can retry later from Settings.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigi Enhanced Protocol</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Use SDL's Flydigi driver, which reads Flydigi controllers through their vendor interface for the M1 to M4, C, Z, LM and RM buttons and motion. Flydigi Space Station's service uses that interface too. Off, PadForge does not use the driver and reads the controller through its standard XInput view where it offers one, without the extra buttons and motion. Whether this stops a repeating disconnect is not confirmed.</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi software is running: {0}. It can use the same controller interface as PadForge, and a Vader 5 Pro has been reported disconnecting repeatedly while both had access. If this controller drops and reconnects, stop the service while using PadForge, keep the controller hidden and remove the service from the HidHide whitelist, or try turning off "Flydigi Enhanced Protocol" in Settings, which is not confirmed to help.</value></data>
+  <data name="RemoteLink_AllowAssignments" xml:space="preserve">
+    <value>Allow Remote Assignment Changes</value>
+  </data>
+  <data name="RemoteLink_AssignmentPermissionDescription" xml:space="preserve">
+    <value>Lets this peer assign its shared devices to this PC's existing virtual controllers. Turning this off preserves existing assignments.</value>
+  </data>
+  <data name="RemoteLink_AssignDevices" xml:space="preserve">
+    <value>Assign Shared Devices</value>
+  </data>
+  <data name="RemoteLink_AssignmentTitle_Format" xml:space="preserve">
+    <value>Assignments on {0}</value>
+  </data>
+  <data name="RemoteLink_AssignmentDescription" xml:space="preserve">
+    <value>Select a device shared by this PC, then choose its virtual controllers on the other PC.</value>
+  </data>
+  <data name="RemoteLink_AssignmentProfile_Format" xml:space="preserve">
+    <value>Profile: {0}</value>
+  </data>
+  <data name="RemoteLink_AssignmentDenied" xml:space="preserve">
+    <value>On the other PC, allow remote assignment changes for this PC under Remote Link &gt; Paired PCs.</value>
+  </data>
+  <data name="RemoteLink_AssignmentUnavailable" xml:space="preserve">
+    <value>The device or connection is unavailable. Reconnect and reopen this window.</value>
+  </data>
+  <data name="RemoteLink_AssignmentStale" xml:space="preserve">
+    <value>Settings changed on the other PC. Review the assignments and try again.</value>
+  </data>
+  <data name="RemoteLink_AssignmentTimeout" xml:space="preserve">
+    <value>The other PC did not answer. Refresh to check whether the change was applied. Both PCs need a version that supports remote assignments.</value>
+  </data>
+  <data name="RemoteLink_AssignmentNoDevices" xml:space="preserve">
+    <value>No local devices are being shared. Connect a controller or open a web controller, then refresh.</value>
+  </data>
+  <data name="RemoteLink_AssignmentNoSlots" xml:space="preserve">
+    <value>Create a virtual controller on the other PC, then refresh.</value>
+  </data>
+  <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
+    <value>Waiting for the other PC...</value>
+  </data>
 </root>

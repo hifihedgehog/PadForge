@@ -3509,4 +3509,43 @@ Vous pouvez réessayer plus tard depuis les Paramètres.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Protocole avancé Flydigi</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Utiliser le pilote Flydigi de SDL, qui lit les manettes Flydigi via leur interface constructeur pour les boutons M1 à M4, C, Z, LM et RM et le mouvement. Le service de Flydigi Space Station utilise aussi cette interface. Désactivé, PadForge n'utilise pas ce pilote et lit la manette par sa vue XInput standard quand elle en offre une, sans les boutons supplémentaires ni le mouvement. Il n'est pas confirmé que cela arrête une déconnexion répétée.</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Un logiciel Flydigi est en cours d'exécution : {0}. Il peut utiliser la même interface de manette que PadForge, et une Vader 5 Pro a été signalée se déconnectant à répétition pendant que les deux y avaient accès. Si cette manette se déconnecte et se reconnecte, arrêtez le service pendant l'utilisation de PadForge, gardez la manette masquée et retirez le service de la liste blanche HidHide, ou essayez de désactiver « Protocole avancé Flydigi » dans les Paramètres, sans garantie que cela aide.</value></data>
+  <data name="RemoteLink_AllowAssignments" xml:space="preserve">
+    <value>Autoriser les changements d'affectation à distance</value>
+  </data>
+  <data name="RemoteLink_AssignmentPermissionDescription" xml:space="preserve">
+    <value>Autorise ce pair à affecter ses périphériques partagés aux manettes virtuelles existantes de ce PC. La désactivation conserve les affectations existantes.</value>
+  </data>
+  <data name="RemoteLink_AssignDevices" xml:space="preserve">
+    <value>Affecter les périphériques partagés</value>
+  </data>
+  <data name="RemoteLink_AssignmentTitle_Format" xml:space="preserve">
+    <value>Affectations sur {0}</value>
+  </data>
+  <data name="RemoteLink_AssignmentDescription" xml:space="preserve">
+    <value>Sélectionnez un périphérique partagé par ce PC, puis ses manettes virtuelles sur l'autre PC.</value>
+  </data>
+  <data name="RemoteLink_AssignmentProfile_Format" xml:space="preserve">
+    <value>Profil : {0}</value>
+  </data>
+  <data name="RemoteLink_AssignmentDenied" xml:space="preserve">
+    <value>Sur l'autre PC, autorisez les changements d'affectation à distance pour ce PC dans Remote Link &gt; PC associés.</value>
+  </data>
+  <data name="RemoteLink_AssignmentUnavailable" xml:space="preserve">
+    <value>Le périphérique ou la connexion est indisponible. Rétablissez la connexion et rouvrez cette fenêtre.</value>
+  </data>
+  <data name="RemoteLink_AssignmentStale" xml:space="preserve">
+    <value>Les paramètres ont changé sur l'autre PC. Vérifiez les affectations et réessayez.</value>
+  </data>
+  <data name="RemoteLink_AssignmentTimeout" xml:space="preserve">
+    <value>L'autre PC n'a pas répondu. Actualisez pour vérifier si le changement a été appliqué. Les deux PC doivent utiliser une version prenant en charge les affectations à distance.</value>
+  </data>
+  <data name="RemoteLink_AssignmentNoDevices" xml:space="preserve">
+    <value>Aucun périphérique local n'est partagé. Connectez une manette ou ouvrez une manette web, puis actualisez.</value>
+  </data>
+  <data name="RemoteLink_AssignmentNoSlots" xml:space="preserve">
+    <value>Créez une manette virtuelle sur l'autre PC, puis actualisez.</value>
+  </data>
+  <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
+    <value>En attente de l'autre PC...</value>
+  </data>
 </root>

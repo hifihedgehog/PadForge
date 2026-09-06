@@ -3509,4 +3509,43 @@
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Flydigi 拡張プロトコル</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>SDL の Flydigi ドライバーを使い、Flydigi コントローラーをベンダーインターフェイス経由で読み取って M1〜M4、C、Z、LM、RM ボタンとモーションを使えるようにします。Flydigi Space Station のサービスも同じインターフェイスを使います。オフにすると PadForge はこのドライバーを使わず、コントローラーが標準の XInput ビューを備えていればそれで読み取ります。追加ボタンとモーションは使えません。これで繰り返す切断が止まるかは確認されていません。</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Flydigi のソフトウェアが実行中です: {0}。PadForge と同じコントローラーインターフェイスを使用できます。両方がアクセスできる状態で Vader 5 Pro が繰り返し切断されたという報告があります。このコントローラーが切断と再接続を繰り返す場合は、PadForge の使用中にサービスを停止する、コントローラーを非表示のままにして HidHide のホワイトリストからサービスを削除する、または設定の「Flydigi 拡張プロトコル」をオフにして試してください。効果は確認されていません。</value></data>
+  <data name="RemoteLink_AllowAssignments" xml:space="preserve">
+    <value>リモートからの割り当て変更を許可</value>
+  </data>
+  <data name="RemoteLink_AssignmentPermissionDescription" xml:space="preserve">
+    <value>この接続先が共有するデバイスを、このPCの既存の仮想コントローラーに割り当てることを許可します。オフにしても既存の割り当ては保持されます。</value>
+  </data>
+  <data name="RemoteLink_AssignDevices" xml:space="preserve">
+    <value>共有デバイスを割り当て</value>
+  </data>
+  <data name="RemoteLink_AssignmentTitle_Format" xml:space="preserve">
+    <value>{0} の割り当て</value>
+  </data>
+  <data name="RemoteLink_AssignmentDescription" xml:space="preserve">
+    <value>このPCが共有するデバイスを選択し、接続先PCの仮想コントローラーを選んでください。</value>
+  </data>
+  <data name="RemoteLink_AssignmentProfile_Format" xml:space="preserve">
+    <value>プロファイル: {0}</value>
+  </data>
+  <data name="RemoteLink_AssignmentDenied" xml:space="preserve">
+    <value>接続先PCの Remote Link &gt; ペアリング済みPC で、このPCからのリモート割り当て変更を許可してください。</value>
+  </data>
+  <data name="RemoteLink_AssignmentUnavailable" xml:space="preserve">
+    <value>デバイスまたは接続を利用できません。再接続して、このウィンドウを開き直してください。</value>
+  </data>
+  <data name="RemoteLink_AssignmentStale" xml:space="preserve">
+    <value>接続先PCの設定が変更されました。割り当てを確認して再試行してください。</value>
+  </data>
+  <data name="RemoteLink_AssignmentTimeout" xml:space="preserve">
+    <value>接続先PCから応答がありません。更新して変更が適用されたか確認してください。両方のPCでリモート割り当てに対応したバージョンが必要です。</value>
+  </data>
+  <data name="RemoteLink_AssignmentNoDevices" xml:space="preserve">
+    <value>共有中のローカルデバイスがありません。コントローラーを接続するかWebコントローラーを開いてから更新してください。</value>
+  </data>
+  <data name="RemoteLink_AssignmentNoSlots" xml:space="preserve">
+    <value>接続先PCで仮想コントローラーを作成してから更新してください。</value>
+  </data>
+  <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
+    <value>接続先PCの応答を待っています...</value>
+  </data>
 </root>

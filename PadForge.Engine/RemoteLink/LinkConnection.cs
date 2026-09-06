@@ -31,6 +31,7 @@ namespace PadForge.Engine.RemoteLink
     {
         public bool Approved { get; init; }
         public bool GamepadOnly { get; init; }
+        public bool AllowRemoteAssignments { get; init; }
         public static implicit operator PairingApproval(bool approved) => new() { Approved = approved };
     }
 
@@ -114,7 +115,8 @@ namespace PadForge.Engine.RemoteLink
                 }) ?? false;
                 if (!approval.Approved)
                     throw new LinkConnectionException("Pairing rejected by the user.");
-                trust.Grant(result.PeerStaticPublicKey, name: "", pairedUtc: nowUtc, reconnect: true, gamepadOnly: approval.GamepadOnly);
+                trust.Grant(result.PeerStaticPublicKey, name: "", pairedUtc: nowUtc, reconnect: true,
+                    gamepadOnly: approval.GamepadOnly, allowRemoteAssignments: approval.AllowRemoteAssignments);
             }
             // KnownAutoSelect / KnownManual: already pinned, the signature proved possession.
 

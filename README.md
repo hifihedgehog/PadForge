@@ -375,6 +375,12 @@ PadForge reads OpenTrack's UDP output, on port 4242 by default, and the FreeTrac
 
 The built-in DSU / Cemuhook server broadcasts gyroscope and accelerometer on UDP port 26760 so emulators can use real motion for Splatoon, Wii titles, 3DS games, and anything else that asks for it. DualSense, DualShock 4, Switch Pro, and 2026 Steam Controller sources all work out of the box.
 
+DSU serves slots 1 through 4 independently of their virtual output type. A sensor-equipped controller assigned to an Xbox slot can provide Xbox buttons and sticks alongside DSU motion, with no motion mapping required.
+
+When neither motion row exists, DSU selects an online assigned sensor. It prefers a complete gyro/accelerometer pair, then gyro-only, then accelerometer-only. Equal candidates follow device assignment order, and both channels come from the same sensor. Calibration, grip, and Apply Gyro Tuning to Motion Passthrough still apply.
+
+An explicit Gyro or Accelerometer motion row makes the mapped selection authoritative, including empty or offline sources. Removing both rows restores automatic DSU sourcing. Virtual HID motion continues to follow its mappings.
+
 ### The Joy-Con 2 is a mouse. So use it like one.
 
 A Nintendo Switch 2 Joy-Con has an optical sensor on its face. Set it on a desk and slide it. Two new sources, Mouse Motion X and Mouse Motion Y, drive a stick for mouse-look, a button, or the scroll wheel, each with its own Sensitivity from 0.1 to 5.0. The right Joy-Con's IR camera also reports a brightness value you can map, so covering the sensor works like a button.

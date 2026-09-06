@@ -148,7 +148,7 @@ namespace PadForge.Common.Input
         // slot-count constant here capped per-slot device mappings at 16
         // (round 33, S14). Poll thread only; the async create-failure
         // validation passes its own buffer (see IsSlotActive's overload).
-        private readonly UserSetting[] _padIndexBuffer = new UserSetting[64];
+        private UserSetting[] _padIndexBuffer = new UserSetting[64];
         private readonly UserSetting[] _instanceGuidBuffer = new UserSetting[MaxPads];
 
         /// <summary>
@@ -464,10 +464,14 @@ namespace PadForge.Common.Input
         public Guid[] SelectedDeviceGuids { get; } = new Guid[MaxPads];
 
         /// <summary>
-        /// Per-slot motion snapshots for DSU (cemuhook) streaming.
-        /// Written by the polling thread after Step 2, read by the DSU server.
+        /// Per-slot mapped motion snapshots for virtual HID output.
+        /// Written by the polling thread after Step 2.
         /// </summary>
         public MotionSnapshot[] MotionSnapshots { get; } = new MotionSnapshot[MaxPads];
+
+        /// <summary>DSU also exposes assigned sensors when a slot has no
+        /// motion mappings, including slots whose HID output has no IMU.</summary>
+        internal MotionSnapshot[] DsuMotionSnapshots { get; } = new MotionSnapshot[DsuMotionServer.MaxSlots];
 
         /// <summary>
         /// Per-slot battery percentage (0..100, or -1 if no assigned device
@@ -2763,20 +2767,25 @@ namespace PadForge.Common.Input
         /// The two sub-channels can resolve to different devices.
         /// Called on the polling thread after Step 2 (UpdateInputStates).
         ///
-        /// <para>Pre-v3.2.3 this function walked <c>UserSettings.Items</c>
-        /// in storage order and took the first-online device with sensors
-        /// as the motion source. That hid the source-selection decision
-        /// from the user; v3.2.3 surfaces it as mapping-table rows that
-        /// the user can add, remove, and reorder. Multi-device hand-off
-        /// (Switch Pro off → DualSense on) still works naturally because
-        /// the engine walks each row's sources in order every tick and
-        /// the first online one wins.</para>
+        /// <para>Explicit motion rows select the sources for HID and DSU.
+        /// Without either row, DSU uses an assigned online sensor device.
+        /// That automatic stream is separate from the mapped HID snapshot.</para>
         /// </summary>
         // F5g gate state (poll thread only).
         private readonly object[] _motionRowsSetRef = new object[MaxPads];
+        private readonly int[] _motionRowsCount = new int[MaxPads];
         private readonly long[] _motionRowsCheckedTick = new long[MaxPads];
         private readonly bool[] _motionHasGyroRow = new bool[MaxPads];
         private readonly bool[] _motionHasAccelRow = new bool[MaxPads];
+
+        private static readonly MappingSource AutomaticAuxGyro = new()
+        {
+            Descriptor = MappingSetMigrator.MotionGyroAuxSourceDescriptor,
+        };
+        private static readonly MappingSource AutomaticAuxAccel = new()
+        {
+            Descriptor = MappingSetMigrator.MotionAccelAuxSourceDescriptor,
+        };
 
         /// <summary>Permissive row-presence scan: true when ANY row names
         /// the target, regardless of sources/online state, so the gate can
@@ -2800,12 +2809,19 @@ namespace PadForge.Common.Input
             var settings = SettingsManager.UserSettings;
             if (settings == null) return;
 
+            // Every assigned sensor must be reachable. Match Step 3's
+            // reusable settings buffer when a slot has more than 64 devices.
+            int settingsCount = settings.Count;
+            if (_padIndexBuffer.Length < settingsCount)
+                _padIndexBuffer = new UserSetting[settingsCount];
+
             // Microseconds since an arbitrary epoch. Scale in double:
             // GetTimestamp() * 1_000_000 overflows Int64 once the machine
             // has been up long enough (~10 days at a 10 MHz QPC), which
             // would make the relayed sensor timestamp wrap and jump.
             long timestampUs = (long)(Stopwatch.GetTimestamp()
                 * (1_000_000.0 / Stopwatch.Frequency));
+            bool dsuEnabled = DsuServer != null;
 
             for (int padIndex = 0; padIndex < MaxPads; padIndex++)
             {
@@ -2815,9 +2831,9 @@ namespace PadForge.Common.Input
                 // setup.
                 if (!SettingsManager.SlotCreated[padIndex])
                 {
-                    var mb = MotionSnapshots[padIndex];
-                    if (mb.HasMotion)
-                        MotionSnapshots[padIndex] = new MotionSnapshot { HasMotion = false };
+                    MotionSnapshots[padIndex] = default;
+                    if (padIndex < DsuMotionSnapshots.Length)
+                        DsuMotionSnapshots[padIndex] = default;
                     continue;
                 }
 
@@ -2832,6 +2848,10 @@ namespace PadForge.Common.Input
                 int batteryPercent = -1;
                 bool batteryCharging = false;
                 int batterySignature = 17;
+                UserDevice automaticDevice = null;
+                bool automaticAux = false;
+                int automaticRank = 0;
+                bool dsuSlot = dsuEnabled && padIndex < DsuMotionSnapshots.Length;
                 for (int i = 0; i < slotCount; i++)
                 {
                     var us = _padIndexBuffer[i];
@@ -2840,6 +2860,16 @@ namespace PadForge.Common.Input
                     if (ud == null || !ud.IsOnline || ud.Device == null) continue;
                     var state = ud.InputState;
                     if (state == null) continue;
+                    if (dsuSlot)
+                    {
+                        // Prefer a complete IMU, then gyro-only, then
+                        // accel-only. Equal candidates retain assignment
+                        // order. Both channels come from the same sensor.
+                        ConsiderAutomaticMotion(ud, false, ref automaticDevice,
+                            ref automaticAux, ref automaticRank);
+                        ConsiderAutomaticMotion(ud, true, ref automaticDevice,
+                            ref automaticAux, ref automaticRank);
+                    }
                     if (batteryPercent < 0 && state.BatteryPercent >= 0)
                     {
                         batteryPercent = state.BatteryPercent;
@@ -2857,26 +2887,26 @@ namespace PadForge.Common.Input
                     UserEffectsDispatcher.NotifyBatteryPercentChanged(padIndex);
                 }
 
-                // Motion source resolution from the slot's MappingSet.
-                // Sony-class slots (and any future motion-capable VC) have
-                // motion rows populated by EnsureMotionRows on load + on
-                // device-assignment events. Non-Sony slots have no motion
-                // rows → both resolves return null → HasMotion=false.
+                // HID motion is mapping-driven. DSU uses that same selection
+                // when either motion row exists, including an empty/offline
+                // row. With neither row, it gets the automatic sensor above.
                 var ms = (SettingsManager.SlotMappingSets != null
                     && padIndex < SettingsManager.SlotMappingSets.Length)
                     ? SettingsManager.SlotMappingSets[padIndex] : null;
 
                 // 250 ms row-presence gate (engage-lane cadence): slots
-                // whose MappingSet has no motion rows at all (every
-                // non-Sony slot) skip both per-tick row walks. Permissive
-                // scan (target match only), so a row that exists but is
+                // whose MappingSet has no motion rows skip both per-tick
+                // source walks. Scan target names only, so an existing but
                 // offline keeps the per-tick failover walk it always had.
-                // A set-reference change re-scans immediately.
+                // Replacing the set or adding/removing a row re-scans immediately.
                 long nowMotionTick = Environment.TickCount64;
+                int rowCount = ms?.Rows?.Count ?? 0;
                 if (!ReferenceEquals(_motionRowsSetRef[padIndex], ms)
+                    || _motionRowsCount[padIndex] != rowCount
                     || nowMotionTick - _motionRowsCheckedTick[padIndex] >= 250)
                 {
                     _motionRowsSetRef[padIndex] = ms;
+                    _motionRowsCount[padIndex] = rowCount;
                     _motionRowsCheckedTick[padIndex] = nowMotionTick;
                     _motionHasGyroRow[padIndex] = HasRowForTarget(ms, MappingSetMigrator.MotionGyroTarget);
                     _motionHasAccelRow[padIndex] = HasRowForTarget(ms, MappingSetMigrator.MotionAccelTarget);
@@ -2889,101 +2919,108 @@ namespace PadForge.Common.Input
                     ? ResolveMotionSource(ms, MappingSetMigrator.MotionAccelTarget, requireGyro: false, padIndex)
                     : default;
 
-                if (gyroSrc.Ud == null && accelSrc.Ud == null)
+                var mapped = CaptureMotionSnapshot(gyroSrc, accelSrc, padIndex, timestampUs);
+                MotionSnapshots[padIndex] = mapped;
+                if (padIndex < DsuMotionSnapshots.Length)
                 {
-                    MotionSnapshots[padIndex] = new MotionSnapshot
+                    var dsu = mapped;
+                    if (dsuSlot && !_motionHasGyroRow[padIndex] && !_motionHasAccelRow[padIndex])
                     {
-                        TimestampUs = timestampUs,
-                        HasMotion = false
-                    };
-                    continue;
-                }
-
-                // Accel: raw scaled read, no tuning chain (PadForge has no
-                // per-axis accel tuning; the Gyro tab knobs are gyro-only).
-                // Per-row Invert on the source flips all three axes uniformly
-                // — same semantics as the gyro path below.
-                float ax = 0f, ay = 0f, az = 0f;
-                if (accelSrc.Ud != null)
-                {
-                    var s = accelSrc.Ud.InputState;
-                    // "Motion Accel L" sources the slot's single IMU stream
-                    // from the aux (Nunchuk / left Joy-Con) accelerometer
-                    // instead of the body's (#199 follow-up). Same scaling
-                    // and invert semantics either way.
-                    bool accelAux = accelSrc.Src != null
-                        && MappingSetMigrator.IsMotionAccelAuxDescriptor(accelSrc.Src.Descriptor);
-                    var accel = accelAux ? s.AccelAux : s.Accel;
-                    if (accel != null && accel.Length >= 3)
-                    {
-                        ax = accel[0] * MsToG;
-                        ay = accel[1] * MsToG;
-                        az = accel[2] * MsToG;
-                        // Grip (#392): the body accelerometer rotates into
-                        // the frame the game expects, both states of the
-                        // passthrough tuning toggle, since a hold is a fact
-                        // about the frame and not a tuning choice. The gyro
-                        // copy below gets the same rotation inside
-                        // GetPassthroughGyro's calibrated read.
-                        if (!accelAux)
-                            SourceCoercion.ApplyMotionGrip(accelSrc.Ud.InstanceGuidString, padIndex, ref ax, ref ay, ref az);
-                        if (accelSrc.Src != null && accelSrc.Src.Invert)
-                        {
-                            ax = -ax; ay = -ay; az = -az;
-                        }
+                        dsu = CaptureMotionSnapshot(
+                            (automaticDevice, automaticAux ? AutomaticAuxGyro : null),
+                            (automaticDevice, automaticAux ? AutomaticAuxAccel : null),
+                            padIndex, timestampUs);
                     }
+                    DsuMotionSnapshots[padIndex] = dsu;
                 }
-
-                // Gyro: per-(device, slot) Gyro tab tuning chain via
-                // GetPassthroughGyro — calibration bias, deadzone,
-                // sensitivity, smoothing, invert, etc. The function
-                // returns raw rad/s when the device's Apply Tuning to
-                // Motion Passthrough toggle is off, or when every
-                // Gyro tab control is at its default on an uncalibrated
-                // device. Native sensor frame preserved (no sign
-                // transform); the DSU server's BuildPadDataPacket and
-                // the Sony report packers apply their own protocol-
-                // specific frames downstream. The per-row Invert on the
-                // mapping source stacks on top of the Gyro tab toggles
-                // (both true = no net flip) so the mapping table's
-                // checkbox behaves the same way it does for every
-                // other source kind.
-                float gx = 0f, gy = 0f, gz = 0f;
-                if (gyroSrc.Ud != null)
-                {
-                    var s = gyroSrc.Ud.InputState;
-                    // "Motion Gyro L" (#252) streams the LEFT Joy-Con's gyro
-                    // instead of the body gyro, the twin of what
-                    // "Motion Accel L" already does for the accel above.
-                    bool gyroAux = MappingSetMigrator.IsMotionGyroAuxDescriptor(gyroSrc.Src?.Descriptor);
-                    var gyroArr = gyroAux ? s.GyroAux : s.Gyro;
-                    if (gyroArr != null && gyroArr.Length >= 3)
-                    {
-                        SourceCoercion.GetPassthroughGyro(
-                            s, gyroSrc.Ud.InstanceGuidString, padIndex,
-                            out float tunedPitch, out float tunedYaw, out float tunedRoll, gyroAux);
-                        gx = tunedPitch * RadToDeg;
-                        gy = tunedYaw * RadToDeg;
-                        gz = tunedRoll * RadToDeg;
-                        if (gyroSrc.Src != null && gyroSrc.Src.Invert)
-                        {
-                            gx = -gx; gy = -gy; gz = -gz;
-                        }
-                    }
-                }
-
-                MotionSnapshots[padIndex] = new MotionSnapshot
-                {
-                    AccelX = ax,
-                    AccelY = ay,
-                    AccelZ = az,
-                    GyroPitch = gx,
-                    GyroYaw = gy,
-                    GyroRoll = gz,
-                    TimestampUs = timestampUs,
-                    HasMotion = true
-                };
             }
+        }
+
+        private static void ConsiderAutomaticMotion(UserDevice device, bool aux,
+            ref UserDevice selected, ref bool selectedAux, ref int selectedRank)
+        {
+            var state = device.InputState;
+            bool gyro = aux ? device.Device.HasGyroAux : device.Device.HasGyro;
+            bool accel = aux ? device.Device.HasAccelAux : device.Device.HasAccel;
+            gyro &= (aux ? state.GyroAux : state.Gyro) is { Length: >= 3 };
+            accel &= (aux ? state.AccelAux : state.Accel) is { Length: >= 3 };
+            int rank = gyro ? (accel ? 3 : 2) : (accel ? 1 : 0);
+            if (rank <= selectedRank) return;
+            selected = device;
+            selectedAux = aux;
+            selectedRank = rank;
+        }
+
+        private static MotionSnapshot CaptureMotionSnapshot(
+            (UserDevice Ud, MappingSource Src) gyroSrc,
+            (UserDevice Ud, MappingSource Src) accelSrc,
+            int padIndex, long timestampUs)
+        {
+            bool hasMotion = false;
+
+            // Acceleration is in g. The body follows the configured grip,
+            // while an auxiliary sensor keeps its own frame. A mapping
+            // source can invert all three axes.
+            float ax = 0f, ay = 0f, az = 0f;
+            if (accelSrc.Ud?.Device != null && accelSrc.Ud.InputState != null)
+            {
+                var s = accelSrc.Ud.InputState;
+                bool accelAux = accelSrc.Src != null
+                    && MappingSetMigrator.IsMotionAccelAuxDescriptor(accelSrc.Src.Descriptor);
+                var accel = accelAux ? s.AccelAux : s.Accel;
+                bool hasAccel = accelAux ? accelSrc.Ud.Device.HasAccelAux : accelSrc.Ud.Device.HasAccel;
+                if (hasAccel && accel != null && accel.Length >= 3)
+                {
+                    hasMotion = true;
+                    ax = accel[0] * MsToG;
+                    ay = accel[1] * MsToG;
+                    az = accel[2] * MsToG;
+                    if (!accelAux)
+                        SourceCoercion.ApplyMotionGrip(accelSrc.Ud.InstanceGuidString, padIndex, ref ax, ref ay, ref az);
+                    if (accelSrc.Src != null && accelSrc.Src.Invert)
+                    {
+                        ax = -ax; ay = -ay; az = -az;
+                    }
+                }
+            }
+
+            // Use the same calibration, body grip and optional tuning for
+            // mapped and automatic motion. Wire conversion belongs to the
+            // output encoder. A mapping's Invert follows the device tuning.
+            float gx = 0f, gy = 0f, gz = 0f;
+            if (gyroSrc.Ud?.Device != null && gyroSrc.Ud.InputState != null)
+            {
+                var s = gyroSrc.Ud.InputState;
+                bool gyroAux = MappingSetMigrator.IsMotionGyroAuxDescriptor(gyroSrc.Src?.Descriptor);
+                var gyroArr = gyroAux ? s.GyroAux : s.Gyro;
+                bool hasGyro = gyroAux ? gyroSrc.Ud.Device.HasGyroAux : gyroSrc.Ud.Device.HasGyro;
+                if (hasGyro && gyroArr != null && gyroArr.Length >= 3)
+                {
+                    hasMotion = true;
+                    SourceCoercion.GetPassthroughGyro(
+                        s, gyroSrc.Ud.InstanceGuidString, padIndex,
+                        out float tunedPitch, out float tunedYaw, out float tunedRoll, gyroAux);
+                    gx = tunedPitch * RadToDeg;
+                    gy = tunedYaw * RadToDeg;
+                    gz = tunedRoll * RadToDeg;
+                    if (gyroSrc.Src != null && gyroSrc.Src.Invert)
+                    {
+                        gx = -gx; gy = -gy; gz = -gz;
+                    }
+                }
+            }
+
+            return new MotionSnapshot
+            {
+                AccelX = ax,
+                AccelY = ay,
+                AccelZ = az,
+                GyroPitch = gx,
+                GyroYaw = gy,
+                GyroRoll = gz,
+                TimestampUs = timestampUs,
+                HasMotion = hasMotion
+            };
         }
 
         /// <summary>
@@ -3065,6 +3102,8 @@ namespace PadForge.Common.Input
                 // mid-motion and the virtual pad kept reporting that angular
                 // rate for the whole suspension.
                 MotionSnapshots[i] = default;
+                if (i < DsuMotionSnapshots.Length)
+                    DsuMotionSnapshots[i] = default;
                 // MidiRawState.Clear(), not Array.Clear. The neutral CC value
                 // is 64 (center), and Array.Clear writes 0, which is the
                 // MINIMUM. Alt-tabbing with background polling off therefore
@@ -3143,10 +3182,10 @@ namespace PadForge.Common.Input
             var server = DsuServer;
             if (server == null) return;
 
-            for (int padIndex = 0; padIndex < MaxPads; padIndex++)
+            for (int padIndex = 0; padIndex < DsuMotionSnapshots.Length; padIndex++)
             {
                 bool connected = IsSlotActive(padIndex);
-                server.BroadcastMotion(padIndex, MotionSnapshots[padIndex], connected);
+                server.BroadcastMotion(padIndex, DsuMotionSnapshots[padIndex], connected);
             }
         }
 

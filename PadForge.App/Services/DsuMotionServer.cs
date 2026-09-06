@@ -36,7 +36,7 @@ namespace PadForge.Services
         //  Constants
         // ─────────────────────────────────────────────
 
-        private const int MaxSlots = 4;
+        internal const int MaxSlots = 4;
         private const ushort ProtocolVersion = 1001;
         private const int HeaderSize = 16;
 

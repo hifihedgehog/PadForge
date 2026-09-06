@@ -644,15 +644,15 @@ namespace PadForge.Engine.Data
 
         /// <summary>
         /// Idempotent backfill: ensures every gyro / accel-capable device
-        /// assigned to a Sony-class slot has its motion-passthrough source
+        /// assigned to a motion-capable output has its motion source
         /// represented in the slot's <see cref="MappingSet"/>. Runs every
         /// load (both XML-content and legacy-migration branches) so the
-        /// engine's motion path can stay rows-only with no first-wins
-        /// fallback.
+        /// virtual HID motion path can stay mapping-driven. DSU has a
+        /// separate automatic source when neither motion row exists.
         ///
-        /// <para>Non-Sony slots are no-ops — Xbox / Extended-gamepad /
-        /// MIDI / KBM virtual controllers have no motion channel to
-        /// relay. Devices without the relevant sensor capability are
+        /// <para>Outputs without a native motion channel get no rows.
+        /// DSU can still expose their assigned devices' sensors.
+        /// Devices without the relevant sensor capability are
         /// skipped per sub-channel.</para>
         ///
         /// <para>Idempotency: a device already present in a row's

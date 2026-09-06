@@ -28,6 +28,8 @@ namespace PadForge.Models3D
             "Starfield", "StellarShift", "DeepPink", "Porsche75th",
             "VelocityGreen", "PulseRed", "ShockBlue", "Remix",
             "Sonic",
+            "Razer", "CaptainAmerica", "BobaFett", "Mandalorian",
+            "Stormtrooper", "DarthVader", "Squadrons",
         };
         public static readonly string[] AppearanceNames =
         {
@@ -35,6 +37,9 @@ namespace PadForge.Models3D
             "Starfield", "Stellar Shift", "Deep Pink", "Porsche 75th Anniversary",
             "Velocity Green", "Pulse Red", "Shock Blue", "Remix Special Edition",
             "Sonic the Hedgehog Limited Edition",
+            "Razer Limited Edition", "Captain America Limited Edition",
+            "Boba Fett Limited Edition", "The Mandalorian Beskar Edition",
+            "Stormtrooper Limited Edition", "Darth Vader Limited Edition", "Star Wars: Squadrons",
         };
 
         private readonly Model3DGroup ShareButton;
@@ -44,12 +49,16 @@ namespace PadForge.Models3D
         private static string Validate(string appearance)
             => System.Array.IndexOf(AppearanceIds, appearance) >= 0 ? appearance : AppearanceIds[0];
 
+        private static bool HasCustomShell(string appearance)
+            => appearance is "Sonic" or "Razer" or "CaptainAmerica" or "BobaFett"
+                or "Mandalorian" or "Stormtrooper" or "DarthVader" or "Squadrons";
+
         /// <param name="enableShare">Wire the Share mesh into the click
         /// and highlight maps. Only Series profiles have that button;
         /// Xbox One, Elite and Adaptive profiles render this same mesh,
         /// so for them Share stays present but inert.</param>
         public ControllerModelXboxSeries(string appearance = "Carbon", bool enableShare = true)
-            : base($"XboxSeries.{Validate(appearance)}", appearance == "Sonic" ? "XboxSeries.Carbon" : null)
+            : base($"XboxSeries.{Validate(appearance)}", HasCustomShell(appearance) ? "XboxSeries.Carbon" : null)
         {
             var MaterialBody = LoadTexturedMaterial("Body.png");
             // The clear ABXY shells and the Starfield trigger covers are
@@ -110,7 +119,7 @@ namespace PadForge.Models3D
                 DefaultMaterials[child] = MaterialBody;
             }
 
-            if (appearance == "Sonic")
+            if (HasCustomShell(appearance))
             {
                 // Custom shell art uses the Carbon mesh's UV layout.
                 // Controls and their moving decals keep the original atlases.

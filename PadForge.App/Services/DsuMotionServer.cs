@@ -10,8 +10,8 @@ using PadForge.Resources.Strings;
 namespace PadForge.Services
 {
     /// <summary>
-    /// Snapshot of a single slot's motion data, ready for DSU transmission.
-    /// Units are already converted to DSU conventions:
+    /// Snapshot of a single slot's motion data in SDL's sensor frame,
+    /// after the configured grip rotation. Each output owns its wire transform.
     ///   Accel: g-force (1g ≈ 9.80665 m/s²)
     ///   Gyro: degrees per second
     /// </summary>
@@ -517,12 +517,11 @@ namespace PadForge.Services
             // Motion timestamp (microseconds)
             BinaryPrimitives.WriteInt64LittleEndian(packet.AsSpan(o + 48), snapshot.TimestampUs);
 
-            // The DSU/cemuhook convention negates accelerometer X/Y/Z and
-            // gyro pitch/roll relative to SDL's native sensor frame. The
-            // MotionSnapshot is kept in SDL's native frame (so the Sony
-            // HID report packers stay faithful to a real controller); the
-            // DSU sign transform is applied here, at the DSU packet, so
-            // only DSU clients see it.
+            // Cemuhook uses accel (-X,-Y,-Z) and gyro (X,-Y,-Z) relative
+            // to SDL's sensor frame. DS4Windows' SixAxis.populate and
+            // UdpServer use this convention. Eden's UDP decoder then uses
+            // the same axis directions as its SDL decoder. Keep the transform
+            // here because the HID packers consume the shared SDL frame.
 
             // Accelerometer (3 × float)
             WriteFloat(packet, o + 56, -snapshot.AccelX);
@@ -530,8 +529,8 @@ namespace PadForge.Services
             WriteFloat(packet, o + 64, -snapshot.AccelZ);
 
             // Gyroscope (3 × float)
-            WriteFloat(packet, o + 68, -snapshot.GyroPitch);
-            WriteFloat(packet, o + 72, snapshot.GyroYaw);
+            WriteFloat(packet, o + 68, snapshot.GyroPitch);
+            WriteFloat(packet, o + 72, -snapshot.GyroYaw);
             WriteFloat(packet, o + 76, -snapshot.GyroRoll);
 
             FinalizeCrc(packet);

@@ -88,8 +88,15 @@
                         Margin="0,0,0,12"
                         Message="{Binding RemoteLink_ConsentWarning, Source={x:Static strings:Strings.Instance}}"/>
 
-            <CheckBox Grid.Row="4" x:Name="GamepadOnlyCheck"
-                      Content="{Binding RemoteLink_GamepadOnly, Source={x:Static strings:Strings.Instance}}"/>
+            <StackPanel Grid.Row="4">
+                <CheckBox x:Name="GamepadOnlyCheck"
+                          Content="{Binding RemoteLink_GamepadOnly, Source={x:Static strings:Strings.Instance}}"/>
+                <CheckBox x:Name="AssignmentsCheck" Margin="0,8,0,0"
+                          Content="{Binding RemoteLink_AllowAssignments, Source={x:Static strings:Strings.Instance}}"/>
+                <TextBlock Text="{Binding RemoteLink_AssignmentPermissionDescription, Source={x:Static strings:Strings.Instance}}"
+                           TextWrapping="Wrap" FontSize="12" Margin="0,4,0,0"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+            </StackPanel>
 
             <!-- Footer band (#175 dialog language): Pair is the consent
                  affirmative and wears the ember accent. Reject declines

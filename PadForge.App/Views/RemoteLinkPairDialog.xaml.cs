@@ -30,6 +30,7 @@ namespace PadForge.Views
 
         /// <summary>True if the user chose to restrict this peer to gamepad-only output.</summary>
         public bool GamepadOnly => GamepadOnlyCheck.IsChecked == true;
+        public bool AllowRemoteAssignments => AssignmentsCheck.IsChecked == true;
 
         // "123456" -> "123 456" for easier eyeball comparison.
         private static string FormatSas(string sas)

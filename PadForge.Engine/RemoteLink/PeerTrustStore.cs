@@ -82,7 +82,7 @@ namespace PadForge.Engine.RemoteLink
         /// Pin a peer after a successful first-time pairing (or update an existing
         /// entry's metadata). Returns the stored entry. Caller persists afterward.
         /// </summary>
-        public PeerTrust Grant(byte[] publicKey, string name, string pairedUtc, bool reconnect, bool gamepadOnly)
+        public PeerTrust Grant(byte[] publicKey, string name, string pairedUtc, bool reconnect, bool gamepadOnly, bool? allowRemoteAssignments = null)
         {
             if (publicKey == null || publicKey.Length != PeerCrypto.KeySize)
                 throw new ArgumentException("Peer public key must be a 32-byte Ed25519 key.", nameof(publicKey));
@@ -94,9 +94,10 @@ namespace PadForge.Engine.RemoteLink
                     existing.Name = name ?? existing.Name;
                     existing.ReconnectEnabled = reconnect;
                     existing.GamepadOnly = gamepadOnly;
+                    if (allowRemoteAssignments.HasValue) existing.AllowRemoteAssignments = allowRemoteAssignments.Value;
                     return existing;
                 }
-                var entry = PeerTrust.FromPublicKey(publicKey, name, pairedUtc, reconnect, gamepadOnly);
+                var entry = PeerTrust.FromPublicKey(publicKey, name, pairedUtc, reconnect, gamepadOnly, allowRemoteAssignments ?? false);
                 _peers.Add(entry);
                 return entry;
             }
@@ -182,6 +183,24 @@ namespace PadForge.Engine.RemoteLink
         {
             var entry = Find(publicKey);
             return entry?.GamepadOnly ?? true;
+        }
+
+        public bool AllowsRemoteAssignments(string fingerprint)
+        {
+            lock (_lock)
+                return _peers.Any(p => p.AllowRemoteAssignments &&
+                    string.Equals(p.FingerprintHex, fingerprint, StringComparison.OrdinalIgnoreCase));
+        }
+
+        public bool SetRemoteAssignmentsAllowed(string fingerprint, bool allowed)
+        {
+            lock (_lock)
+            {
+                var peer = _peers.FirstOrDefault(p => string.Equals(p.FingerprintHex, fingerprint, StringComparison.OrdinalIgnoreCase));
+                if (peer == null) return false;
+                peer.AllowRemoteAssignments = allowed;
+                return true;
+            }
         }
 
         private static bool KeyEquals(byte[] a, byte[] b)

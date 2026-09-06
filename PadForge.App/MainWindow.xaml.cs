@@ -391,6 +391,7 @@ namespace PadForge
             Views.PadPage.Recorder = _recorderService;
             Views.PadPage.InputService = _inputService;
             _deviceService = new DeviceService(_viewModel, _settingsService);
+            _inputService.DeviceAssignments = _deviceService;
             // Per-device calibrate-gyro button on the Devices page goes
             // through this static reference to reach the shared
             // GyroCalibratorService.

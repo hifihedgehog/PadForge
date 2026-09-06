@@ -3509,4 +3509,43 @@ Puedes volver a intentarlo más tarde desde Configuración.</value></data>
   <data name="Settings_FlydigiEnhanced" xml:space="preserve"><value>Protocolo mejorado de Flydigi</value></data>
   <data name="Settings_FlydigiEnhancedTooltip" xml:space="preserve"><value>Usar el controlador Flydigi de SDL, que lee los mandos Flydigi a través de su interfaz de fabricante para los botones M1 a M4, C, Z, LM y RM y el movimiento. El servicio de Flydigi Space Station también usa esa interfaz. Desactivado, PadForge no usa el controlador y lee el mando por su vista XInput estándar cuando la ofrece, sin los botones adicionales ni el movimiento. No está confirmado que esto detenga una desconexión repetida.</value></data>
   <data name="Flydigi_ServiceWarning_Format" xml:space="preserve"><value>Hay software de Flydigi en ejecución: {0}. Puede usar la misma interfaz del mando que PadForge, y se ha informado de un Vader 5 Pro que se desconectaba repetidamente mientras ambos tenían acceso. Si este mando se desconecta y reconecta, detenga el servicio mientras usa PadForge, mantenga el mando oculto y quite el servicio de la lista blanca de HidHide, o pruebe a desactivar «Protocolo mejorado de Flydigi» en Configuración, aunque no está confirmado que ayude.</value></data>
+  <data name="RemoteLink_AllowAssignments" xml:space="preserve">
+    <value>Permitir cambios de asignación remotos</value>
+  </data>
+  <data name="RemoteLink_AssignmentPermissionDescription" xml:space="preserve">
+    <value>Permite que este equipo asigne sus dispositivos compartidos a los mandos virtuales existentes de este PC. Al desactivarlo se conservan las asignaciones.</value>
+  </data>
+  <data name="RemoteLink_AssignDevices" xml:space="preserve">
+    <value>Asignar dispositivos compartidos</value>
+  </data>
+  <data name="RemoteLink_AssignmentTitle_Format" xml:space="preserve">
+    <value>Asignaciones en {0}</value>
+  </data>
+  <data name="RemoteLink_AssignmentDescription" xml:space="preserve">
+    <value>Selecciona un dispositivo compartido por este PC y después sus mandos virtuales en el otro PC.</value>
+  </data>
+  <data name="RemoteLink_AssignmentProfile_Format" xml:space="preserve">
+    <value>Perfil: {0}</value>
+  </data>
+  <data name="RemoteLink_AssignmentDenied" xml:space="preserve">
+    <value>En el otro PC, permite los cambios de asignación remotos para este PC en Remote Link &gt; Equipos emparejados.</value>
+  </data>
+  <data name="RemoteLink_AssignmentUnavailable" xml:space="preserve">
+    <value>El dispositivo o la conexión no está disponible. Vuelve a conectar y abre de nuevo esta ventana.</value>
+  </data>
+  <data name="RemoteLink_AssignmentStale" xml:space="preserve">
+    <value>La configuración del otro PC ha cambiado. Revisa las asignaciones e inténtalo de nuevo.</value>
+  </data>
+  <data name="RemoteLink_AssignmentTimeout" xml:space="preserve">
+    <value>El otro PC no ha respondido. Actualiza para comprobar si se aplicó el cambio. Ambos equipos necesitan una versión compatible con las asignaciones remotas.</value>
+  </data>
+  <data name="RemoteLink_AssignmentNoDevices" xml:space="preserve">
+    <value>No se comparten dispositivos locales. Conecta un mando o abre un mando web y actualiza.</value>
+  </data>
+  <data name="RemoteLink_AssignmentNoSlots" xml:space="preserve">
+    <value>Crea un mando virtual en el otro PC y actualiza.</value>
+  </data>
+  <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
+    <value>Esperando al otro PC...</value>
+  </data>
 </root>

@@ -303,6 +303,8 @@ namespace PadForge.ViewModels
 
         /// <summary>Raised when the user clicks Connect on a paired-but-offline peer (host:port).</summary>
         public event Action<string> PeerConnectRequested;
+        public event Action<string, bool> PeerAssignmentPermissionChanged;
+        public event Action<string> PeerAssignmentsRequested;
 
         private RelayCommand _revokeAllPeersCommand;
         public RelayCommand RevokeAllPeersCommand =>
@@ -323,7 +325,10 @@ namespace PadForge.ViewModels
                 TrustedPeers.Add(new RemoteLinkTrustedPeer(p.Name, p.HostName, p.FingerprintHex, p.PairedUtc, p.GamepadOnly, online,
                     fp => PeerRevokeRequested?.Invoke(fp),
                     (fp, name) => PeerRenameRequested?.Invoke(fp, name),
-                    hostPort => PeerConnectRequested?.Invoke(hostPort)));
+                    hostPort => PeerConnectRequested?.Invoke(hostPort),
+                    p.AllowRemoteAssignments,
+                    (fp, allowed) => PeerAssignmentPermissionChanged?.Invoke(fp, allowed),
+                    fp => PeerAssignmentsRequested?.Invoke(fp)));
             }
         }
 

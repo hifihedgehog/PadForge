@@ -132,7 +132,7 @@ namespace PadForge.Services
             if (existingPs == null || IsForeignPadSetting(existingPs, udForGuid, outputType, slotProfileId))
             {
                 if (existingPs != null)
-                    SettingsService.StripDeviceFromAllSlots(instanceGuid);
+                    SettingsService.StripDeviceFromSlot(instanceGuid, slotIndex);
                 var ps = SettingsManager.CreateDefaultPadSetting(udForGuid, outputType, slotProfileId);
                 us.SetPadSetting(ps);
                 us.PadSettingChecksum = ps.PadSettingChecksum;
@@ -228,7 +228,7 @@ namespace PadForge.Services
             if (existingPs == null || IsForeignPadSetting(existingPs, udForGuid, outputType, slotProfileId))
             {
                 if (existingPs != null)
-                    SettingsService.StripDeviceFromAllSlots(instanceGuid);
+                    SettingsService.StripDeviceFromSlot(instanceGuid, slotIndex);
                 var ps = SettingsManager.CreateDefaultPadSetting(udForGuid, outputType, slotProfileId);
                 us.SetPadSetting(ps);
                 us.PadSettingChecksum = ps.PadSettingChecksum;
@@ -270,105 +270,53 @@ namespace PadForge.Services
             var selectedRow = _mainVm.Devices.SelectedDevice;
             if (selectedRow == null) return;
 
-            if (slotIndex < 0 || slotIndex >= InputManager.MaxPads) return;
+            SetDeviceSlotAssignment(selectedRow.InstanceGuid, slotIndex,
+                !SettingsManager.GetAssignedSlots(selectedRow.InstanceGuid).Contains(slotIndex));
+        }
 
-            // Auto-create the virtual controller slot if it doesn't exist yet.
-            if (!SettingsManager.SlotCreated[slotIndex])
+        /// <summary>Set one route without changing the selected device. Repeated requests are no-ops.</summary>
+        public bool SetDeviceSlotAssignment(Guid instanceGuid, int slotIndex, bool assigned)
+        {
+            if (slotIndex < 0 || slotIndex >= InputManager.MaxPads) return false;
+            var row = _mainVm.Devices.FindByGuid(instanceGuid);
+            if (row == null) return false;
+            var current = SettingsManager.GetAssignedSlots(instanceGuid);
+            row.SetAssignedSlots(current);
+            if (current.Contains(slotIndex) == assigned) return true;
+            if (assigned) AssignDeviceToSlot(instanceGuid, slotIndex);
+            else UnassignFromSlot(row, slotIndex);
+            return SettingsManager.GetAssignedSlots(instanceGuid).Contains(slotIndex) == assigned;
+        }
+
+        private void UnassignFromSlot(ViewModels.DeviceRowViewModel row, int slotIndex)
+        {
+            Guid instanceGuid = row.InstanceGuid;
+            lock (SettingsManager.UserSettings.SyncRoot)
+                SettingsManager.UserSettings.Items.RemoveAll(s => s.InstanceGuid == instanceGuid && s.MapTo == slotIndex);
+
+            SettingsService.StripDeviceFromSlot(instanceGuid, slotIndex);
+            _mainVm.Pads[slotIndex].RemoveDeviceConfig(instanceGuid);
+            var remaining = SettingsManager.GetAssignedSlots(instanceGuid);
+            if (remaining.Count == 0)
             {
-                // Seed the category default, the same reason the create path in
-                // CreateSlotsForDevices documents: the engine falls back to this
-                // default silently when SlotProfileIds is null, so without the
-                // seed the profile dropdown shows NO selection on a slot that is
-                // in fact running the default. All three auto-create blocks in
-                // this file missed it.
-                _mainVm.Pads[slotIndex].ProfileId =
-                    InputManager.GetDefaultProfileId(_mainVm.Pads[slotIndex].OutputType);
-                SettingsManager.SlotCreated[slotIndex] = true;
-                SettingsManager.SlotEnabled[slotIndex] = true;
-                SettingsManager.SlotOrders.Add(slotIndex, _mainVm.Pads[slotIndex].OutputType);
-            }
-
-            Guid instanceGuid = selectedRow.InstanceGuid;
-            var (assigned, us) = SettingsManager.ToggleDeviceSlotAssignment(instanceGuid, slotIndex);
-
-            if (assigned && us != null)
-            {
-                // Populate device info on the new UserSetting.
-                var udForGuid = SettingsManager.FindDeviceByInstanceGuid(instanceGuid);
-                if (udForGuid != null)
-                    us.ProductGuid = udForGuid.ProductGuid;
-
-                // Create PadSetting for the new assignment.
-                var existingPs = us.GetPadSetting();
-                var outputType = _mainVm.Pads[slotIndex].OutputType;
-                var slotProfileId = _mainVm.Pads[slotIndex].ProfileId;
-                if (existingPs == null || IsForeignPadSetting(existingPs, udForGuid, outputType, slotProfileId))
+                var device = SettingsManager.FindDeviceByInstanceGuid(instanceGuid);
+                if (device != null)
                 {
-                    if (existingPs != null)
-                        SettingsService.StripDeviceFromAllSlots(instanceGuid);
-                    var ps = SettingsManager.CreateDefaultPadSetting(udForGuid, outputType, slotProfileId);
-                    us.SetPadSetting(ps);
-                    us.PadSettingChecksum = ps.PadSettingChecksum;
+                    device.HidHideEnabled = false;
+                    device.ConsumeInputEnabled = false;
+                    row.HidHideEnabled = false;
+                    row.ConsumeInputEnabled = false;
                 }
-                else
-                {
-                    FillEmptyAutoMappingsIfApplicable(existingPs, udForGuid, outputType, slotProfileId);
-                }
-
-                // Auto-enable input hiding defaults for newly assigned devices.
-                AutoEnableHidingDefaults(udForGuid, selectedRow);
-
-                // Rebuild the per-VC MappingSet so the Mappings tab + engine
-                // pick up the just-auto-mapped sources immediately.
-                SettingsService.RefreshMappingSetsFromLegacy();
-
-                _mainVm.StatusText = string.Format(Strings.Instance.Status_DeviceAssignedSlot_Format, selectedRow.DeviceName, ResolveDisplaySlotNumber(slotIndex));
             }
-            else
-            {
-                // Device was unassigned from this slot.
-                // Strip its MappingSet sources synchronously — see
-                // UnassignDevice for the rationale (atomic unassign,
-                // no autosave race).
-                SettingsService.StripDeviceFromAllSlots(instanceGuid);
-
-                // This slot's config for the device leaves with the
-                // assignment. Other slots the device stays on keep theirs.
-                _mainVm.Pads[slotIndex].RemoveDeviceConfig(instanceGuid);
-
-                // If device has no more slot assignments, auto-disable hiding.
-                var remainingSlots = SettingsManager.GetAssignedSlots(instanceGuid);
-                if (remainingSlots == null || remainingSlots.Count == 0)
-                {
-                    var udForGuid = SettingsManager.FindDeviceByInstanceGuid(instanceGuid);
-                    if (udForGuid != null)
-                    {
-                        udForGuid.HidHideEnabled = false;
-                        udForGuid.ConsumeInputEnabled = false;
-                        selectedRow.HidHideEnabled = false;
-                        selectedRow.ConsumeInputEnabled = false;
-                    }
-                }
-
-                _mainVm.StatusText = string.Format(Strings.Instance.Status_DeviceUnassignedSlot_Format, selectedRow.DeviceName, slotIndex + 1);
-            }
-
-            // Update device row display.
-            selectedRow.SetAssignedSlots(SettingsManager.GetAssignedSlots(instanceGuid));
-
+            row.SetAssignedSlots(remaining);
+            _mainVm.StatusText = string.Format(Strings.Instance.Status_DeviceUnassignedSlot_Format,
+                row.DeviceName, ResolveDisplaySlotNumber(slotIndex));
             _settingsService.MarkDirty();
             DeviceAssignmentChanged?.Invoke(this, EventArgs.Empty);
             DeviceHidingStateChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        // ─────────────────────────────────────────────
-        //  Hide device
-        // ─────────────────────────────────────────────
-
-        /// <summary>
-        /// Hides a device from the device list. The device remains in
-        /// SettingsManager but is marked as hidden and won't be shown.
-        /// </summary>
+        /// <summary>Hide a device card without removing its settings.</summary>
         private void OnHideDevice(object sender, Guid instanceGuid)
         {
             var ud = SettingsManager.FindDeviceByInstanceGuid(instanceGuid);

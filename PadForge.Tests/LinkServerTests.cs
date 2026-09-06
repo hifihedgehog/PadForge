@@ -20,7 +20,7 @@ namespace PadForge.Tests
     public sealed class RemoteLinkSocketsCollection { }
 
     [Collection("RemoteLinkSockets")]
-    public class LinkServerTests
+    public partial class LinkServerTests
     {
         /// <summary>An ephemeral port number free on BOTH protocols, verified
         /// with the server's exact binds (LinkServer.Start:

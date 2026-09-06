@@ -31,6 +31,7 @@ namespace PadForge.Services
     /// </summary>
     public class InputService : IDisposable
     {
+        internal DeviceService DeviceAssignments { get; set; }
         // ─────────────────────────────────────────────
         //  Constants
         // ─────────────────────────────────────────────
@@ -547,6 +548,12 @@ namespace PadForge.Services
             _mainVm.Settings.PeerRevokeAllRequested += OnPeerRevokeAllRequested;
             _mainVm.Settings.PeerRenameRequested += OnPeerRenameRequested;
             _mainVm.Settings.PeerConnectRequested += OnConnectToPeerRequested;
+            _mainVm.Settings.PeerAssignmentPermissionChanged += (fp, allowed) =>
+            {
+                if (_settingsService?.RemoteLink.Trust.SetRemoteAssignmentsAllowed(fp, allowed) == true)
+                    _settingsService.MarkDirty();
+            };
+            _mainVm.Settings.PeerAssignmentsRequested += OnPeerAssignmentsRequested;
             _mainVm.Settings.IdentityProtectionModeChangeRequested += OnIdentityProtectionModeChangeRequested;
             // The dropdown is seeded by SeedIdentityProtectionDisplay, NOT
             // here: this constructor runs before SettingsService is assigned
@@ -589,6 +596,17 @@ namespace PadForge.Services
             if (entry == null) return;
             entry.Name = newName ?? "";
             try { _settingsService?.Save(); } catch { }
+        }
+
+        private void OnPeerAssignmentsRequested(string fingerprint)
+        {
+            var channel = _linkServer?.GetAssignmentChannel(fingerprint);
+            if (channel == null) return;
+            var name = _settingsService?.RemoteLink.Trust.ResolvePeerLabel(fingerprint) ?? fingerprint;
+            var dialog = new Views.RemoteAssignmentsDialog(name, channel, () => BuildExposedDevices());
+            var owner = System.Windows.Application.Current?.MainWindow;
+            if (owner?.IsLoaded == true) dialog.Owner = owner;
+            dialog.Show();
         }
 
         /// <summary>The user picked a different identity-protection mode (issue #138). Re-wrap
@@ -9769,6 +9787,10 @@ namespace PadForge.Services
             // since been stopped is refused inside the device gate, so it cannot
             // overwrite a reconnected peer's output on the server that replaced it.
             var origin = _linkServer;
+            var assignments = new RemoteAssignmentService(_mainVm, _settingsService, DeviceAssignments);
+            origin.AssignmentHandler = context => _dispatcher.InvokeAsync(() =>
+                ReferenceEquals(_linkServer, origin) ? assignments.Handle(context)
+                    : LinkAssignmentReply.For(context.Request, LinkAssignmentStatus.Unavailable)).Task;
             origin.OutputReceived += (fp, slot, payload) => OnRemoteOutputReceived(origin, fp, slot, payload);
             // A peer's last session dropped: release the output ownership it held
             // on local shared devices (#402), so a rumble it left running ends.
@@ -10416,7 +10438,7 @@ namespace PadForge.Services
         /// without prompting.</summary>
         private PairingApproval ApprovePairing(PendingPairing pending)
         {
-            (bool approved, bool gamepadOnly) r;
+            (bool approved, bool gamepadOnly, bool assignments) r;
             // CRITICAL: if the handshake resumed on the UI thread (an outbound pair
             // started from a button captures the WPF SynchronizationContext), a
             // BeginInvoke+Wait would deadlock the UI thread against itself and the
@@ -10428,7 +10450,7 @@ namespace PadForge.Services
             }
             else
             {
-                (bool approved, bool gamepadOnly) captured = (false, false);
+                (bool approved, bool gamepadOnly, bool assignments) captured = (false, false, false);
                 var done = new System.Threading.ManualResetEventSlim(false);
                 _dispatcher.BeginInvoke(() =>
                 {
@@ -10445,10 +10467,10 @@ namespace PadForge.Services
                 r = captured;
             }
             // Persistence happens in DeviceConnected, after the grant lands in the trust store.
-            return new PairingApproval { Approved = r.approved, GamepadOnly = r.gamepadOnly };
+            return new PairingApproval { Approved = r.approved, GamepadOnly = r.gamepadOnly, AllowRemoteAssignments = r.assignments };
         }
 
-        private (bool approved, bool gamepadOnly) ShowPairDialog(PendingPairing pending)
+        private (bool approved, bool gamepadOnly, bool assignments) ShowPairDialog(PendingPairing pending)
         {
             try
             {
@@ -10456,9 +10478,9 @@ namespace PadForge.Services
                 var owner = System.Windows.Application.Current?.MainWindow;
                 if (owner != null && owner.IsLoaded) dlg.Owner = owner;
                 bool ok = dlg.ShowDialog() == true;
-                return (ok, dlg.GamepadOnly);
+                return (ok, dlg.GamepadOnly, dlg.AllowRemoteAssignments);
             }
-            catch { return (false, false); }
+            catch { return (false, false, false); }
         }
 
         private async void OnConnectToPeerRequested(string hostPort)
@@ -16170,6 +16192,8 @@ namespace PadForge.Services
             if (profile == null)
                 return;
 
+            _settingsService?.InvalidateAssignmentSnapshot();
+
             // Clear shift-activator runtime state (toggle latches, was-down
             // markers, engagement stack, custom-layer state) so the new
             // profile starts every activator un-engaged. Without this a
@@ -16987,6 +17011,7 @@ namespace PadForge.Services
 
         public void ApplyDefaultProfile()
         {
+            _settingsService?.InvalidateAssignmentSnapshot();
             if (_defaultProfileSnapshot != null)
             {
                 ApplyProfile(_defaultProfileSnapshot);
@@ -17355,6 +17380,7 @@ namespace PadForge.Services
         /// </summary>
         public void OnSlotDeleted(int padIndex, VirtualControllerType deletedType, int oldGroupPosition, bool deletedSlotHadActiveVc = true)
         {
+            _settingsService?.InvalidateAssignmentSnapshot();
             if (_inputManager != null && deletedSlotHadActiveVc)
             {
                 RunBubbleDownCascadeAfterDelete(deletedType, oldGroupPosition);
@@ -17376,6 +17402,7 @@ namespace PadForge.Services
 
         private void RefreshAfterSlotReorder()
         {
+            _settingsService?.InvalidateAssignmentSnapshot();
             UpdatePadDeviceInfo();
 
             // Rebuild mapping item collections so each pad's mapping rows

@@ -17,7 +17,6 @@ public sealed class WindowsTabletDevice : ISdlInputDevice
 {
     private readonly TabletReportDescriptor descriptor;
     private readonly object gate = new();
-    private readonly SemaphoreSlim transition = new(1, 1);
     private readonly Action<WindowsTabletDevice, int, bool, string> changed;
     private CancellationTokenSource request;
     private CaptureInput stream;
@@ -124,6 +123,15 @@ public sealed class WindowsTabletDevice : ISdlInputDevice
         }
     }
 
+    internal void ClearSharedState()
+    {
+        lock (gate)
+        {
+            if (closed || stream != null || captureWanted) return;
+            descriptor.Reset();
+        }
+    }
+
     public void PrepareForUnhide()
     {
         CancellationTokenSource cancel;
@@ -168,7 +176,9 @@ public sealed class WindowsTabletDevice : ISdlInputDevice
             captureState = wanted || restore ? TabletCaptureState.Switching : TabletCaptureState.Shared;
             captureError = "";
             descriptor.Reset();
-            operation = Task.Run(() => ChangeCaptureAsync(version, wanted, restore, rollbackNewHide, next));
+            // Reserve before scheduling so a replacement reader follows the pending restore.
+            var turn = TabletCaptureQueue.Reserve(DeviceInstanceId);
+            operation = Task.Run(() => ChangeCaptureAsync(version, wanted, restore, rollbackNewHide, next, turn));
         }
         Cancel(previous);
         close?.Dispose();
@@ -208,16 +218,23 @@ public sealed class WindowsTabletDevice : ISdlInputDevice
         lock (gate) return !closed && generation == version;
     }
 
-    private async Task ChangeCaptureAsync(int version, bool wanted, bool restore, bool rollback, CancellationTokenSource cancellation)
+    private async Task ChangeCaptureAsync(int version, bool wanted, bool restore, bool rollback,
+        CancellationTokenSource cancellation, TabletCaptureQueue.Turn turn)
     {
         CancellationToken stop = cancellation.Token;
-        bool entered = false;
+        bool finishingRestore = false;
         CaptureInput input = null;
         try
         {
-            await transition.WaitAsync(stop).ConfigureAwait(false);
-            entered = true;
-            if (!Owns(version)) return;
+            // Even a canceled turn drains in order. It cannot let a later reader overtake native I/O.
+            await turn.Predecessor.ConfigureAwait(false);
+            stop.ThrowIfCancellationRequested();
+            lock (gate)
+            {
+                bool mayFinishAfterClose = restore && closed && !captureWanted && generation == version + 1;
+                if ((closed || generation != version) && !mayFinishAfterClose) return;
+                finishingRestore = restore;
+            }
             if (!wanted)
             {
                 if (restore) restart(stop);
@@ -261,29 +278,39 @@ public sealed class WindowsTabletDevice : ISdlInputDevice
                         if (closed || generation != version) return;
                         recognized = descriptor.Decode(pin.AddrOfPinnedObject(), count);
                     }
-                    if (recognized) SetStatus(version, TabletCaptureState.Captured, "");
+                    if (recognized)
+                    {
+                        rollback = false;
+                        SetStatus(version, TabletCaptureState.Captured, "");
+                    }
                 }
             }
             finally { pin.Free(); }
         }
         catch (OperationCanceledException) when (stop.IsCancellationRequested) { }
-        catch (Exception) when (stop.IsCancellationRequested || !Owns(version)) { }
+        catch (Exception) when (stop.IsCancellationRequested || !Owns(version) && !finishingRestore) { }
         catch (Exception error)
         {
             lock (gate)
             {
-                if (closed || generation != version) return;
-                descriptor.Reset();
+                if (closed || generation != version)
+                {
+                    if (!finishingRestore) return;
+                }
+                else descriptor.Reset();
             }
             SdlDiagLog.WriteLine($"TABLET {(wanted ? "capture" : "restore")} failed: {DeviceInstanceId}: {error.Message}");
             SetStatus(version, TabletCaptureState.Failed, error.Message, rollback);
         }
         finally
         {
-            input?.Dispose();
-            lock (gate) { if (ReferenceEquals(stream, input)) stream = null; }
-            if (entered) transition.Release();
-            cancellation.Dispose();
+            try { input?.Dispose(); }
+            finally
+            {
+                lock (gate) { if (ReferenceEquals(stream, input)) stream = null; }
+                cancellation.Dispose();
+                turn.Complete();
+            }
         }
     }
 
@@ -315,7 +342,9 @@ public sealed class WindowsTabletDevice : ISdlInputDevice
             closed = true;
             generation++;
             captureState = TabletCaptureState.Offline;
-            cancel = request;
+            // An already-requested unhide must finish after an outstanding native open returns.
+            // Its queue turn also blocks a replacement reader from opening too early.
+            cancel = captureWanted ? request : null;
             close = stream;
             stream = null;
         }

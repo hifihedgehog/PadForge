@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Concurrent;
 using System.IO;
+using System.Collections.Generic;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
@@ -16,8 +18,11 @@ public class TabletCaptureTests
         internal readonly Channel<byte[]> Reports = Channel.CreateUnbounded<byte[]>();
         internal readonly TaskCompletionSource Reading = new(TaskCreationOptions.RunContinuationsAsynchronously);
         internal int DisposeCount;
+        private int readCalls;
+        internal int ReadCalls => Volatile.Read(ref readCalls);
         public override async ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
         {
+            Interlocked.Increment(ref readCalls);
             Reading.TrySetResult();
             var report = await Reports.Reader.ReadAsync(cancellationToken);
             report.CopyTo(buffer);
@@ -168,5 +173,120 @@ public class TabletCaptureTests
         using var reader = new WindowsTabletReader();
         reader.Dispose();
         Assert.Throws<ObjectDisposedException>(() => reader.Start());
+    }
+
+    [Theory]
+    [InlineData(0, true)]
+    [InlineData(9, true)]
+    [InlineData(1, false)]
+    public async Task ReadFailureOnlyRollsBackBeforeTheFirstValidReport(int reportId, bool expectedRollback)
+    {
+        using var f = new TabletReportStateTests.Fixture();
+        var input = new Input();
+        var failed = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+        using var device = new WindowsTabletDevice(f.Decoder, (_, _, rollback, error) =>
+        {
+            if (error.Length > 0) failed.TrySetResult(rollback);
+        }, () => input);
+        device.SetCapture(true, true);
+        await input.Reading.Task.WaitAsync(TimeSpan.FromSeconds(5));
+        if (reportId != 0)
+        {
+            input.Reports.Writer.TryWrite(new byte[] { (byte)reportId, 0 });
+            await Until(() => input.ReadCalls >= 2);
+        }
+        if (reportId == 1)
+        {
+            Assert.Equal(TabletCaptureState.Captured, device.CaptureState);
+            Assert.True(device.GetCurrentState().Touchpads[0].FingerDown[0]);
+        }
+        else Assert.Equal(TabletCaptureState.WaitingForInput, device.CaptureState);
+        input.Reports.Writer.TryComplete(new IOException("device removed"));
+        Assert.Equal(expectedRollback, await failed.Task.WaitAsync(TimeSpan.FromSeconds(5)));
+        Assert.False(device.GetCurrentState().Touchpads[0].FingerDown[0]);
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task RawVisibilityLossReleasesSharedContactAndPreservesExclusiveContact(bool captured)
+    {
+        using var f = new TabletReportStateTests.Fixture();
+        var input = new Input();
+        using var device = new WindowsTabletDevice(f.Decoder, null, () => input);
+        using var reader = new WindowsTabletReader();
+        if (captured)
+        {
+            device.SetCapture(true);
+            input.Reports.Writer.TryWrite(new byte[] { 1, 0 });
+            await Until(() => device.CaptureState == TabletCaptureState.Captured);
+        }
+        else Assert.True(f.Decode());
+        Assert.True(device.GetCurrentState().Touchpads[0].FingerDown[0]);
+        const BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic;
+        typeof(WindowsTabletReader).GetField("running", flags).SetValue(reader, true);
+        // Hold the census so the event's immediate state change is measured independently.
+        typeof(WindowsTabletReader).GetField("enumerating", flags).SetValue(reader, 1);
+        var devices = (Dictionary<string, WindowsTabletDevice>)typeof(WindowsTabletReader).GetField("devices", flags).GetValue(reader);
+        var paths = (Dictionary<IntPtr, string>)typeof(WindowsTabletReader).GetField("rawPaths", flags).GetValue(reader);
+        devices[device.DevicePath] = device;
+        paths[new IntPtr(123)] = device.DevicePath;
+        typeof(WindowsTabletReader).GetMethod("ProcessMessage", flags).Invoke(reader,
+            new object[] { IntPtr.Zero, 0xFEu, new IntPtr(2), new IntPtr(123) });
+        Assert.Equal(captured, device.GetCurrentState().Touchpads[0].FingerDown[0]);
+        Assert.True(device.IsAttached);
+        Assert.Same(device, Assert.Single(reader.GetDevices()));
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task PendingRestoreSurvivesDisposalAndPrecedesAReplacementReader(bool restoreFails)
+    {
+        string identity = Guid.NewGuid().ToString("N");
+        using var oldFixture = new TabletReportStateTests.Fixture(identity: identity);
+        using var newFixture = new TabletReportStateTests.Fixture(identity: identity);
+        using var releaseOpen = new ManualResetEventSlim();
+        var opening = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var replacementOpening = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        int opens = 0, restarts = 0, observedRestarts = 0;
+        var staleInput = new Input();
+        var newInput = new Input();
+        using var oldDevice = new WindowsTabletDevice(oldFixture.Decoder, null, () =>
+        {
+            if (Interlocked.Increment(ref opens) == 1) throw new IOException("collection is busy");
+            opening.TrySetResult();
+            if (!releaseOpen.Wait(TimeSpan.FromSeconds(5))) throw new TimeoutException();
+            return staleInput;
+        }, _ =>
+        {
+            if (Interlocked.Increment(ref restarts) == 2 && restoreFails) throw new IOException("restore failed");
+        }, () => true);
+        using var newDevice = new WindowsTabletDevice(newFixture.Decoder, null, () =>
+        {
+            observedRestarts = Volatile.Read(ref restarts);
+            replacementOpening.TrySetResult();
+            return newInput;
+        });
+        try
+        {
+            oldDevice.SetCapture(true);
+            await opening.Task.WaitAsync(TimeSpan.FromSeconds(5));
+            oldDevice.PrepareForUnhide();
+            oldDevice.SetCapture(false);
+            Assert.False(await Task.Run(() => oldDevice.WaitForTransition(TimeSpan.FromMilliseconds(25))));
+            oldDevice.Dispose();
+            newDevice.SetCapture(true);
+            await Task.WhenAny(replacementOpening.Task, Task.Delay(200));
+            Assert.False(replacementOpening.Task.IsCompleted);
+            releaseOpen.Set();
+            await newInput.Reading.Task.WaitAsync(TimeSpan.FromSeconds(5));
+            Assert.Equal(2, restarts);
+            Assert.Equal(2, observedRestarts);
+            Assert.Equal(1, staleInput.DisposeCount);
+            Assert.Equal(TabletCaptureState.Offline, oldDevice.CaptureState);
+            Assert.True(await Task.Run(() => oldDevice.WaitForTransition(TimeSpan.FromSeconds(5))));
+        }
+        finally { releaseOpen.Set(); }
     }
 }

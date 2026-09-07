@@ -173,7 +173,12 @@ public sealed class WindowsTabletReader : IDisposable
                 if (message == 0xFE && wParam == new IntPtr(2))
                 {
                     // HidHide removes Raw Input visibility while the HID collection remains connected.
-                    rawPaths.Remove(lParam);
+                    if (rawPaths.Remove(lParam, out string path))
+                    {
+                        WindowsTabletDevice device;
+                        lock (gate) devices.TryGetValue(path, out device);
+                        device?.ClearSharedState();
+                    }
                 }
                 ScheduleEnumeration();
             }

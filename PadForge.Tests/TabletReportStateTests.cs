@@ -34,9 +34,10 @@ public class TabletReportStateTests
         internal readonly Values Values = new();
         internal readonly TabletReportDescriptor Decoder;
         internal readonly IntPtr Report = Marshal.AllocHGlobal(2);
-        internal Fixture(bool pressure = true, byte buttonReport = 1, byte valueReport = 1)
+        internal Fixture(bool pressure = true, byte buttonReport = 1, byte valueReport = 1, string identity = null)
         {
-            Decoder = new TabletReportDescriptor("test", "HID\\test", "test", "", 1, 2, IntPtr.Zero, 2,
+            identity ??= Guid.NewGuid().ToString("N");
+            Decoder = new TabletReportDescriptor("test:" + identity, "HID\\test\\" + identity, "test", "", 1, 2, IntPtr.Zero, 2,
                 new(valueReport, 1, 1, 0x30, 0, 100, 8, true), new(valueReport, 1, 1, 0x31, 0, 100, 8, true),
                 pressure ? new(valueReport, 13, 1, 0x30, 0, 255, 8, false) : null,
                 new(buttonReport, 13, 1, 0x42),

@@ -3548,4 +3548,17 @@ Puedes volver a intentarlo más tarde desde Configuración.</value></data>
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
     <value>Esperando al otro PC...</value>
   </data>
+  <data name="DeviceType_Tablet" xml:space="preserve"><value>Tableta Gráfica</value></data>
+  <data name="Tablet_InputShared" xml:space="preserve"><value>Entrada compartida</value></data>
+  <data name="Tablet_InputSwitching" xml:space="preserve"><value>Cambiando entrada</value></data>
+  <data name="Tablet_InputWaiting" xml:space="preserve"><value>Esperando entrada de la tableta</value></data>
+  <data name="Tablet_InputCaptured" xml:space="preserve"><value>Capturada por PadForge</value></data>
+  <data name="Tablet_InputFailed" xml:space="preserve"><value>Entrada de tableta no disponible</value></data>
+  <data name="Tablet_CaptureFailed_Format" xml:space="preserve"><value>No se pudo capturar {0}</value></data>
+  <data name="Tablet_HideHelp" xml:space="preserve"><value>Con el motor en marcha, ocultar el dispositivo reinicia la entrada del lápiz y la lee solo en PadForge. Al dejar de ocultarlo, la entrada vuelve a Windows. Si se conserva la ocultación entre sesiones, el puntero nativo sigue desactivado al cerrar PadForge.</value></data>
+  <data name="Tablet_Barrel" xml:space="preserve"><value>Botón lateral del lápiz</value></data>
+  <data name="Tablet_SecondaryBarrel" xml:space="preserve"><value>Botón lateral secundario</value></data>
+  <data name="Tablet_Eraser" xml:space="preserve"><value>Borrador</value></data>
+  <data name="Tablet_Inverted" xml:space="preserve"><value>Lápiz invertido</value></data>
+  <data name="Tablet_InRange" xml:space="preserve"><value>Lápiz en alcance</value></data>
 </root>

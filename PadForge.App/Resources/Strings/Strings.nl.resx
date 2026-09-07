@@ -3568,4 +3568,17 @@ Je kunt het later opnieuw proberen via Instellingen.</value></data>
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
     <value>Wachten op de andere pc...</value>
   </data>
+  <data name="DeviceType_Tablet" xml:space="preserve"><value>Tekentablet</value></data>
+  <data name="Tablet_InputShared" xml:space="preserve"><value>Gedeelde invoer</value></data>
+  <data name="Tablet_InputSwitching" xml:space="preserve"><value>Invoer omschakelen</value></data>
+  <data name="Tablet_InputWaiting" xml:space="preserve"><value>Wachten op tabletinvoer</value></data>
+  <data name="Tablet_InputCaptured" xml:space="preserve"><value>Overgenomen door PadForge</value></data>
+  <data name="Tablet_InputFailed" xml:space="preserve"><value>Tabletinvoer niet beschikbaar</value></data>
+  <data name="Tablet_CaptureFailed_Format" xml:space="preserve"><value>Kan {0} niet overnemen</value></data>
+  <data name="Tablet_HideHelp" xml:space="preserve"><value>Wanneer de engine draait, herstart Apparaat verbergen de peninvoer van de tablet en leest alleen PadForge deze. Als u het verbergen uitschakelt, krijgt Windows de invoer terug. Als apparaten tussen sessies verborgen blijven, blijft de Windows-aanwijzer ook na het sluiten van PadForge uitgeschakeld.</value></data>
+  <data name="Tablet_Barrel" xml:space="preserve"><value>Penknop</value></data>
+  <data name="Tablet_SecondaryBarrel" xml:space="preserve"><value>Tweede penknop</value></data>
+  <data name="Tablet_Eraser" xml:space="preserve"><value>Pengum</value></data>
+  <data name="Tablet_Inverted" xml:space="preserve"><value>Pen omgekeerd</value></data>
+  <data name="Tablet_InRange" xml:space="preserve"><value>Pen binnen bereik</value></data>
 </root>

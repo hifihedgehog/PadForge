@@ -3548,4 +3548,17 @@
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
     <value>接続先PCの応答を待っています...</value>
   </data>
+  <data name="DeviceType_Tablet" xml:space="preserve"><value>ペンタブレット</value></data>
+  <data name="Tablet_InputShared" xml:space="preserve"><value>共有入力</value></data>
+  <data name="Tablet_InputSwitching" xml:space="preserve"><value>入力を切り替え中</value></data>
+  <data name="Tablet_InputWaiting" xml:space="preserve"><value>タブレット入力を待機中</value></data>
+  <data name="Tablet_InputCaptured" xml:space="preserve"><value>PadForge が取得中</value></data>
+  <data name="Tablet_InputFailed" xml:space="preserve"><value>タブレット入力を利用できません</value></data>
+  <data name="Tablet_CaptureFailed_Format" xml:space="preserve"><value>{0} の入力を取得できませんでした</value></data>
+  <data name="Tablet_HideHelp" xml:space="preserve"><value>エンジンの実行中にデバイスを非表示にすると、タブレットのペン入力が再起動し、PadForge のみが読み取ります。非表示を解除すると、入力は Windows に戻ります。起動間で非表示を維持する場合、PadForge を閉じた後も Windows のポインター入力は無効のままです。</value></data>
+  <data name="Tablet_Barrel" xml:space="preserve"><value>ペンのサイドボタン</value></data>
+  <data name="Tablet_SecondaryBarrel" xml:space="preserve"><value>ペンの第2サイドボタン</value></data>
+  <data name="Tablet_Eraser" xml:space="preserve"><value>ペンの消しゴム</value></data>
+  <data name="Tablet_Inverted" xml:space="preserve"><value>ペンを反転</value></data>
+  <data name="Tablet_InRange" xml:space="preserve"><value>ペンが検出範囲内</value></data>
 </root>

@@ -300,6 +300,16 @@ namespace PadForge.Engine.Data
         /// — callers fall back to the legacy two-finger assumption.</summary>
         public int[] CapTouchpadFingerCounts { get; set; }
 
+        public bool? CapTouchpadPressure { get; set; }
+        public bool? CapTouchpadClick { get; set; }
+        public bool ShouldSerializeCapTouchpadPressure() => CapTouchpadPressure.HasValue;
+        public bool ShouldSerializeCapTouchpadClick() => CapTouchpadClick.HasValue;
+
+        [XmlIgnore]
+        public bool SupportsTouchpadPressure => CapTouchpadPressure ?? (!IsTablet && !(IsTouchpad && Device == null));
+        [XmlIgnore]
+        public bool SupportsTouchpadClick => CapTouchpadClick ?? (!IsTablet && !(IsTouchpad && Device == null));
+
         /// <summary>Whether the device exposes per-trigger ("impulse") rumble
         /// motors (Xbox One / Elite / Series). Driven by
         /// <c>SDL_PROP_JOYSTICK_CAP_TRIGGER_RUMBLE_BOOLEAN</c>.</summary>
@@ -503,6 +513,9 @@ namespace PadForge.Engine.Data
         [XmlIgnore]
         public bool IsTouchpad => CapType == InputDeviceType.Touchpad;
 
+        [XmlIgnore]
+        public bool IsTablet => CapType == InputDeviceType.Tablet;
+
         /// <summary>True if this device is a Consumer Control HID collection
         /// (issue #168: media remotes, headset strips, keyboard media rows).</summary>
         [XmlIgnore]
@@ -674,6 +687,8 @@ namespace PadForge.Engine.Data
             HasTouchpad = wrapper.HasTouchpad;
             CapTouchpadCount = wrapper.NumTouchpads;
             CapTouchpadFingerCounts = wrapper.TouchpadFingerCounts;
+            CapTouchpadPressure = wrapper.TouchpadPressureSupported;
+            CapTouchpadClick = wrapper.TouchpadClickSupported;
             HasRumbleTriggers = wrapper.HasRumbleTriggers;
             // HasIrCamera / IsBalanceBoard are identity-derived (computed from VID +
             // ProductName), so nothing to assign here. They are correct online and

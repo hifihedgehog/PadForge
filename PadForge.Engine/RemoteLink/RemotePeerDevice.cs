@@ -71,6 +71,8 @@ namespace PadForge.Engine.RemoteLink
         public bool HasTouchpad { get; set; }
         public int NumTouchpads { get; set; }
         public int[] TouchpadFingerCounts { get; set; }
+        public bool? TouchpadPressureSupported { get; set; }
+        public bool? TouchpadClickSupported { get; set; }
 
         /// <summary>Whether the owner's device carries an NFC reader (#241).
         /// Rides the v3 capability tail, because the v1 caps byte was
@@ -268,6 +270,8 @@ namespace PadForge.Engine.RemoteLink
         public bool HasTouchpad => Info.HasTouchpad;
         public int NumTouchpads => Info.HasTouchpad ? Math.Max(1, Info.NumTouchpads) : 0;
         public int[] TouchpadFingerCounts => Info.TouchpadFingerCounts ?? Array.Empty<int>();
+        public bool? TouchpadPressureSupported => Info.TouchpadPressureSupported;
+        public bool? TouchpadClickSupported => Info.TouchpadClickSupported;
         public HapticEffectStrategy HapticStrategy => HapticEffectStrategy.None;
         public IntPtr HapticHandle => IntPtr.Zero;
         public uint HapticFeatures => 0;

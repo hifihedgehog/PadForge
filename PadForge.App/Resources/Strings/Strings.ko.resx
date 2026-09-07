@@ -3548,4 +3548,17 @@
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
     <value>다른 PC를 기다리는 중...</value>
   </data>
+  <data name="DeviceType_Tablet" xml:space="preserve"><value>펜 태블릿</value></data>
+  <data name="Tablet_InputShared" xml:space="preserve"><value>공유 입력</value></data>
+  <data name="Tablet_InputSwitching" xml:space="preserve"><value>입력 전환 중</value></data>
+  <data name="Tablet_InputWaiting" xml:space="preserve"><value>태블릿 입력 대기 중</value></data>
+  <data name="Tablet_InputCaptured" xml:space="preserve"><value>PadForge에서 입력 수신 중</value></data>
+  <data name="Tablet_InputFailed" xml:space="preserve"><value>태블릿 입력을 사용할 수 없음</value></data>
+  <data name="Tablet_CaptureFailed_Format" xml:space="preserve"><value>{0} 입력을 가져올 수 없음</value></data>
+  <data name="Tablet_HideHelp" xml:space="preserve"><value>엔진 실행 중에 장치를 숨기면 태블릿의 펜 입력이 다시 시작되고 PadForge만 입력을 읽습니다. 숨김을 해제하면 입력이 Windows로 돌아갑니다. 실행 사이에 숨김을 유지하면 PadForge를 종료한 후에도 Windows 포인터 입력이 비활성화된 상태로 유지됩니다.</value></data>
+  <data name="Tablet_Barrel" xml:space="preserve"><value>펜 측면 버튼</value></data>
+  <data name="Tablet_SecondaryBarrel" xml:space="preserve"><value>펜 보조 측면 버튼</value></data>
+  <data name="Tablet_Eraser" xml:space="preserve"><value>펜 지우개</value></data>
+  <data name="Tablet_Inverted" xml:space="preserve"><value>펜 뒤집힘</value></data>
+  <data name="Tablet_InRange" xml:space="preserve"><value>펜 감지 범위 내</value></data>
 </root>

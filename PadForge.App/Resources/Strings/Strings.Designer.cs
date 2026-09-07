@@ -3357,4 +3357,17 @@ public class Strings : INotifyPropertyChanged
     public string Pad_RumbleAudio_Sweep_Tooltip => Get("Pad_RumbleAudio_Sweep_Tooltip");
     public string Pad_RumbleAudio_StopTest => Get("Pad_RumbleAudio_StopTest");
     public string Pad_RumbleAudio_StopTest_Tooltip => Get("Pad_RumbleAudio_StopTest_Tooltip");
+    public string DeviceType_Tablet => Get("DeviceType_Tablet");
+    public string Tablet_InputShared => Get("Tablet_InputShared");
+    public string Tablet_InputSwitching => Get("Tablet_InputSwitching");
+    public string Tablet_InputWaiting => Get("Tablet_InputWaiting");
+    public string Tablet_InputCaptured => Get("Tablet_InputCaptured");
+    public string Tablet_InputFailed => Get("Tablet_InputFailed");
+    public string Tablet_CaptureFailed_Format => Get("Tablet_CaptureFailed_Format");
+    public string Tablet_HideHelp => Get("Tablet_HideHelp");
+    public string Tablet_Barrel => Get("Tablet_Barrel");
+    public string Tablet_SecondaryBarrel => Get("Tablet_SecondaryBarrel");
+    public string Tablet_Eraser => Get("Tablet_Eraser");
+    public string Tablet_Inverted => Get("Tablet_Inverted");
+    public string Tablet_InRange => Get("Tablet_InRange");
 }

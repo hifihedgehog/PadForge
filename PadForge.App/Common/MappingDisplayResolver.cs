@@ -1006,6 +1006,11 @@ namespace PadForge.Common
                 return string.Format(s.DevObj_ConsumerDynamic_Format, name.Substring("Consumer ".Length));
             var localized = name switch
             {
+                "Pen Barrel" => s.Tablet_Barrel,
+                "Pen Secondary Barrel" => s.Tablet_SecondaryBarrel,
+                "Pen Eraser" => s.Tablet_Eraser,
+                "Pen Inverted" => s.Tablet_Inverted,
+                "Pen In Range" => s.Tablet_InRange,
                 "Any NFC Tag" => s.Mapping_NfcAnyTag,
                 "Left Stick X" => s.DevObj_LeftStickX,
                 "Left Stick Y" => s.DevObj_LeftStickY,
@@ -1650,9 +1655,8 @@ namespace PadForge.Common
                 // analog axis therefore shipped an exact duplicate of
                 // "Finger N Down" wearing a different name, plus nine windowed
                 // pressure zones that can only ever read fully-in or fully-out.
-                // Real analog pressure comes from SDL-backed pads only.
-                // Same discriminator the Click block below uses.
-                bool ptpNoPressure = ud.IsTouchpad && ud.Device == null;
+                // Tablet descriptors report pressure support explicitly.
+                bool ptpNoPressure = !ud.SupportsTouchpadPressure;
 
                 for (int p = 0; p < numPads; p++)
                 {
@@ -1727,8 +1731,7 @@ namespace PadForge.Common
                 // SDL defines it once with no per-pad numbering, so emit exactly one
                 // click descriptor, never "Touchpad 1 Click". A multi-pad device's
                 // second physical click surfaces as its own gamepad button (MISC2).
-                bool isPtpSystemTouchpad = ud.IsTouchpad && ud.Device == null;
-                if (!isPtpSystemTouchpad)
+                if (ud.SupportsTouchpadClick)
                 {
                     list.Add(new InputChoice { Descriptor = "Touchpad 0 Click", DisplayName = si.Mapping_TouchpadClick });
                     // Windowed clicks (v18, G2): click AND finger 0 inside
@@ -2017,7 +2020,8 @@ namespace PadForge.Common
              ud.CapType != InputDeviceType.HandheldButtons &&
              // Head tracker axes are named (Head Yaw, Head Pitch, ...),
              // not "Axis N" (#355).
-             ud.CapType != InputDeviceType.HeadTracker);
+             ud.CapType != InputDeviceType.HeadTracker &&
+             ud.CapType != InputDeviceType.Tablet);
 
         /// <summary>Surfaces touchpad gesture descriptors in the input
         /// picker, one block per touchpad surface the device exposes.

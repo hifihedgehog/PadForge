@@ -393,6 +393,10 @@ namespace PadForge.Engine.RemoteLink
                 // count rides the v4 tail; this is the half a consumer cannot
                 // compute, since the flag excludes sensor-surfaced extras.
                 if (devices[i].HasExtraGenericAxes) caps2 |= 4;
+                if (devices[i].TouchpadPressureSupported.HasValue) caps2 |= 8;
+                if (devices[i].TouchpadPressureSupported == true) caps2 |= 16;
+                if (devices[i].TouchpadClickSupported.HasValue) caps2 |= 32;
+                if (devices[i].TouchpadClickSupported == true) caps2 |= 64;
                 buf.Add(caps2);
             }
 
@@ -564,6 +568,8 @@ namespace PadForge.Engine.RemoteLink
                             list[i].HasNfcReader = (caps2 & 1) != 0;
                             list[i].HasGyroAux = (caps2 & 2) != 0;
                             list[i].HasExtraGenericAxes = (caps2 & 4) != 0;
+                            list[i].TouchpadPressureSupported = (caps2 & 8) != 0 ? (caps2 & 16) != 0 : null;
+                            list[i].TouchpadClickSupported = (caps2 & 32) != 0 ? (caps2 & 64) != 0 : null;
                         }
                     }
                 }
@@ -574,6 +580,8 @@ namespace PadForge.Engine.RemoteLink
                         info.HasNfcReader = false;
                         info.HasGyroAux = false;
                         info.HasExtraGenericAxes = false;
+                        info.TouchpadPressureSupported = null;
+                        info.TouchpadClickSupported = null;
                     }
                     // Cursor unreliable: do not read v4. The v2 catch has
                     // always done this; v3's did not need to until a tail was

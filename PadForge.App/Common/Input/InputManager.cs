@@ -1301,6 +1301,7 @@ namespace PadForge.Common.Input
             // stops Windows from synthesizing mouse reports for the same device.
             _ptpReader = new PrecisionTouchpadReader();
             _ptpReader.Start();
+            StartTabletReader();
 
             _running = true;
             _enumerationTimer.Restart();
@@ -1407,6 +1408,7 @@ namespace PadForge.Common.Input
             _ptpReader?.Stop();
             _ptpReader?.Dispose();
             _ptpReader = null;
+            StopTabletReader();
 
             StopAllForceFeedback();
 

@@ -3570,4 +3570,17 @@ Puoi riprovare più tardi dalle Impostazioni.</value></data>
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
     <value>In attesa dell'altro PC...</value>
   </data>
+  <data name="DeviceType_Tablet" xml:space="preserve"><value>Tavoletta grafica</value></data>
+  <data name="Tablet_InputShared" xml:space="preserve"><value>Input condiviso</value></data>
+  <data name="Tablet_InputSwitching" xml:space="preserve"><value>Cambio dell'input</value></data>
+  <data name="Tablet_InputWaiting" xml:space="preserve"><value>In attesa della tavoletta</value></data>
+  <data name="Tablet_InputCaptured" xml:space="preserve"><value>Acquisita da PadForge</value></data>
+  <data name="Tablet_InputFailed" xml:space="preserve"><value>Input della tavoletta non disponibile</value></data>
+  <data name="Tablet_CaptureFailed_Format" xml:space="preserve"><value>Impossibile acquisire {0}</value></data>
+  <data name="Tablet_HideHelp" xml:space="preserve"><value>Con il motore in esecuzione, nascondere il dispositivo riavvia l'input della penna e lo riserva a PadForge. Disattivando questa opzione, l'input torna a Windows. Se i dispositivi restano nascosti tra le sessioni, il puntatore nativo resta disattivato anche dopo la chiusura di PadForge.</value></data>
+  <data name="Tablet_Barrel" xml:space="preserve"><value>Pulsante laterale della penna</value></data>
+  <data name="Tablet_SecondaryBarrel" xml:space="preserve"><value>Secondo pulsante laterale</value></data>
+  <data name="Tablet_Eraser" xml:space="preserve"><value>Gomma della penna</value></data>
+  <data name="Tablet_Inverted" xml:space="preserve"><value>Penna capovolta</value></data>
+  <data name="Tablet_InRange" xml:space="preserve"><value>Penna nel raggio di rilevamento</value></data>
 </root>

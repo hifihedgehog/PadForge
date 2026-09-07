@@ -3548,4 +3548,17 @@ Du kannst es später in den Einstellungen erneut versuchen.</value></data>
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
     <value>Warten auf den anderen PC...</value>
   </data>
+  <data name="DeviceType_Tablet" xml:space="preserve"><value>Grafiktablett</value></data>
+  <data name="Tablet_InputShared" xml:space="preserve"><value>Geteilte Eingabe</value></data>
+  <data name="Tablet_InputSwitching" xml:space="preserve"><value>Eingabe wird umgeschaltet</value></data>
+  <data name="Tablet_InputWaiting" xml:space="preserve"><value>Warten auf Tabletteingabe</value></data>
+  <data name="Tablet_InputCaptured" xml:space="preserve"><value>Von PadForge erfasst</value></data>
+  <data name="Tablet_InputFailed" xml:space="preserve"><value>Tabletteingabe nicht verfügbar</value></data>
+  <data name="Tablet_CaptureFailed_Format" xml:space="preserve"><value>{0} konnte nicht erfasst werden</value></data>
+  <data name="Tablet_HideHelp" xml:space="preserve"><value>Bei laufender Engine startet das Ausblenden die Stifteingabe des Tabletts neu und liest sie nur in PadForge. Wenn Sie das Ausblenden ausschalten, erhält Windows die Eingabe wieder. Beibehaltene Ausblendungen lassen den Windows-Zeiger auch nach dem Schließen von PadForge deaktiviert.</value></data>
+  <data name="Tablet_Barrel" xml:space="preserve"><value>Stifttaste</value></data>
+  <data name="Tablet_SecondaryBarrel" xml:space="preserve"><value>Zweite Stifttaste</value></data>
+  <data name="Tablet_Eraser" xml:space="preserve"><value>Radierer</value></data>
+  <data name="Tablet_Inverted" xml:space="preserve"><value>Stift umgedreht</value></data>
+  <data name="Tablet_InRange" xml:space="preserve"><value>Stift in Reichweite</value></data>
 </root>

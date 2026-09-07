@@ -23,6 +23,7 @@ namespace PadForge.Common
             InputDeviceType.Keyboard => "\uE765",        // KeyboardClassic
             InputDeviceType.Mouse => "\uE962",           // Mouse
             InputDeviceType.Touchpad => "\uEFA5",        // Touchpad
+            InputDeviceType.Tablet => "\uEFA5",
             InputDeviceType.Midi => "\uE8D6",            // MIDI badge glyph
             InputDeviceType.Nfc => "\uE9A1",             // TapAndSend
             InputDeviceType.ConsumerControl => "\uEA69", // Media (media-key strips)

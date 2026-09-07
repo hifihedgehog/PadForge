@@ -543,7 +543,14 @@ namespace PadForge.Tests
 
             // Gated on the same discriminator the Click block already uses for
             // laptop trackpads.
-            Assert.Contains("bool ptpNoPressure = ud.IsTouchpad && ud.Device == null;", src);
+            var ptp = new PadForge.Engine.Data.UserDevice
+            {
+                CapType = PadForge.Engine.InputDeviceType.Touchpad,
+                HasTouchpad = true
+            };
+            var choices = PadForge.Common.MappingDisplayResolver.BuildInputChoices(ptp);
+            Assert.DoesNotContain(choices, item => item.Descriptor.Contains("Pressure"));
+            Assert.Contains("bool ptpNoPressure = !ud.SupportsTouchpadPressure;", src);
             Assert.Contains("if (!ptpNoPressure)", src);
         }
 

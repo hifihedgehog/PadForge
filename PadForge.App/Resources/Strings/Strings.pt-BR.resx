@@ -3542,4 +3542,17 @@ Você pode tentar novamente mais tarde em Configurações.</value></data>
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
     <value>Aguardando o outro PC...</value>
   </data>
+  <data name="DeviceType_Tablet" xml:space="preserve"><value>Mesa Digitalizadora</value></data>
+  <data name="Tablet_InputShared" xml:space="preserve"><value>Entrada Compartilhada</value></data>
+  <data name="Tablet_InputSwitching" xml:space="preserve"><value>Alternando Entrada</value></data>
+  <data name="Tablet_InputWaiting" xml:space="preserve"><value>Aguardando Entrada da Mesa</value></data>
+  <data name="Tablet_InputCaptured" xml:space="preserve"><value>Capturada Pelo PadForge</value></data>
+  <data name="Tablet_InputFailed" xml:space="preserve"><value>Entrada da Mesa Indisponível</value></data>
+  <data name="Tablet_CaptureFailed_Format" xml:space="preserve"><value>Não Foi Possível Capturar {0}</value></data>
+  <data name="Tablet_HideHelp" xml:space="preserve"><value>Com o mecanismo em execução, ocultar o dispositivo reinicia a entrada da caneta e a reserva ao PadForge. Ao desativar a ocultação, a entrada volta ao Windows. Se os dispositivos permanecerem ocultos entre sessões, o ponteiro nativo continuará desativado após fechar o PadForge.</value></data>
+  <data name="Tablet_Barrel" xml:space="preserve"><value>Botão Lateral da Caneta</value></data>
+  <data name="Tablet_SecondaryBarrel" xml:space="preserve"><value>Segundo Botão Lateral</value></data>
+  <data name="Tablet_Eraser" xml:space="preserve"><value>Borracha da Caneta</value></data>
+  <data name="Tablet_Inverted" xml:space="preserve"><value>Caneta Invertida</value></data>
+  <data name="Tablet_InRange" xml:space="preserve"><value>Caneta ao Alcance</value></data>
 </root>

@@ -109,6 +109,7 @@ namespace PadForge.Engine
         // shared memory (issue #355): six absolute axes, yaw, pitch, roll
         // and the three translations, centered at rest.
         public const int HeadTracker = 34;
+        public const int Tablet = 35;
     }
 
     // ─────────────────────────────────────────────────────────────────

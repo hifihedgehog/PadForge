@@ -29,7 +29,7 @@ namespace PadForge.Services
     ///   This service's timer runs on the WPF dispatcher at ~30Hz.
     ///   All ViewModel property sets happen on the UI thread (safe for data binding).
     /// </summary>
-    public class InputService : IDisposable
+    public partial class InputService : IDisposable
     {
         internal DeviceService DeviceAssignments { get; set; }
         // ─────────────────────────────────────────────
@@ -861,6 +861,7 @@ namespace PadForge.Services
 
             // Subscribe to engine events (raised on background thread).
             _inputManager.DevicesUpdated += OnDevicesUpdated;
+            _inputManager.TabletCaptureChanged += OnTabletCaptureChanged;
             _inputManager.FrequencyUpdated += OnFrequencyUpdated;
             _inputManager.ErrorOccurred += OnErrorOccurred;
             _inputManager.HmVcInactivityDestroyed += OnHmVcInactivityDestroyed;
@@ -2482,6 +2483,7 @@ namespace PadForge.Services
             if (_inputManager != null)
             {
                 _inputManager.DevicesUpdated -= OnDevicesUpdated;
+                _inputManager.TabletCaptureChanged -= OnTabletCaptureChanged;
                 _inputManager.FrequencyUpdated -= OnFrequencyUpdated;
                 _inputManager.ErrorOccurred -= OnErrorOccurred;
                 _inputManager.HmVcInactivityDestroyed -= OnHmVcInactivityDestroyed;
@@ -4175,7 +4177,7 @@ namespace PadForge.Services
                 int povCount = Math.Min(ud.CapPovCount, CustomInputState.MaxPovs);
                 bool isKb = ud.CapType == InputDeviceType.Keyboard;
                 bool isMouse = ud.CapType == InputDeviceType.Mouse;
-                bool isTouchpad = ud.CapType == InputDeviceType.Touchpad;
+                bool isTouchpad = ud.CapType == InputDeviceType.Touchpad || ud.IsTablet;
                 bool isMidi = ud.CapType == InputDeviceType.Midi;
                 bool isNfc = ud.CapType == InputDeviceType.Nfc;
                 bool isHeadset = ud.CapType == InputDeviceType.HeadsetMotion;
@@ -4888,7 +4890,7 @@ namespace PadForge.Services
                 int povCount = Math.Min(ud.CapPovCount, CustomInputState.MaxPovs);
                 bool isKb = ud.CapType == InputDeviceType.Keyboard;
                 bool isMouse = ud.CapType == InputDeviceType.Mouse;
-                bool isTouchpad2 = ud.CapType == InputDeviceType.Touchpad;
+                bool isTouchpad2 = ud.CapType == InputDeviceType.Touchpad || ud.IsTablet;
                 bool isMidi2 = ud.CapType == InputDeviceType.Midi;
                 bool isNfc2 = ud.CapType == InputDeviceType.Nfc;
                 bool isHeadset2 = ud.CapType == InputDeviceType.HeadsetMotion;
@@ -10645,7 +10647,7 @@ namespace PadForge.Services
                             // from THIS machine's learned set.
                             if (devType == InputDeviceType.ConsumerControl || devType == InputDeviceType.Nfc
                                 || devType == InputDeviceType.Microphone || devType == InputDeviceType.HandheldButtons
-                                || devType == InputDeviceType.HeadTracker)
+                                || devType == InputDeviceType.HeadTracker || devType == InputDeviceType.Tablet)
                                 try { objects = dev.GetDeviceObjects(); } catch { }
                             var info = new RemotePeerDeviceInfo
                             {
@@ -10694,6 +10696,8 @@ namespace PadForge.Services
                                 HasTouchpad = dev.HasTouchpad,
                                 NumTouchpads = dev.NumTouchpads,
                                 TouchpadFingerCounts = dev.TouchpadFingerCounts,
+                                TouchpadPressureSupported = dev.TouchpadPressureSupported,
+                                TouchpadClickSupported = dev.TouchpadClickSupported,
                                 InputDeviceType = dev.GetInputDeviceType(),
                                 // Forward the owner's named inputs so the peer's
                                 // mapping picker and Devices preview read identically
@@ -11992,6 +11996,7 @@ namespace PadForge.Services
             }
             if (hidHideUp)
             {
+                PrepareTabletVisibilityChanges(snapshot);
                 // Adoption belongs to the OPERATION, not to Start(). Kept
                 // cloaks mean this session inherits entries it did not write,
                 // and the sync's removal set is computed from _managedDeviceIds,
@@ -12037,6 +12042,23 @@ namespace PadForge.Services
                     if (ud.HidHideEnabled && !string.IsNullOrEmpty(ud.DevicePath))
                     {
                         string instanceId = HidHideController.DevicePathToInstanceId(ud.DevicePath);
+
+                        if (ud.IsTablet)
+                        {
+                            // A digitizer owns its HID collection. Do not capture a
+                            // composite device's independent keyboard or mouse.
+                            if (instanceId != null && instanceId.StartsWith("HID\\", StringComparison.OrdinalIgnoreCase)
+                                && !keepOut(instanceId) && !HidHideController.IsHidMaestroDeviceInstance(instanceId))
+                            {
+                                desiredIds.Add(instanceId);
+                                if (!ud.HidHideInstanceIds.Contains(instanceId))
+                                {
+                                    ud.HidHideInstanceIds.Add(instanceId);
+                                    cacheUpdated = true;
+                                }
+                            }
+                            continue;
+                        }
 
                         // If the DevicePath produced a valid HID instance ID, use it directly.
                         // Match three transports:
@@ -12246,6 +12268,7 @@ namespace PadForge.Services
                 // no other signal catches.
                 var missing = HidHideController.MissingFromBlacklist(desiredIds);
                 bool active = HidHideController.GetActive();
+                RefreshTabletCapture(snapshot, synced, added);
                 hidLog.Add(
                     $"HIDHIDE sync desired={desiredIds.Count} added={added.Count} removed={removed.Count} active={active}"
                     + (synced ? "" : " write=REFUSED")
@@ -12433,6 +12456,8 @@ namespace PadForge.Services
         /// shutdown path when KeepHidHideCloaksBetweenLaunches is on.</param>
         public void RemoveDeviceHiding(bool keepCloaks = false)
         {
+            var tabletInputs = _inputManager?.GetTabletDevices() ?? Array.Empty<PadForge.Engine.Tablets.WindowsTabletDevice>();
+            foreach (var tablet in tabletInputs) tablet.PrepareForUnhide();
             // ── HidHide ──
             if (!keepCloaks)
             {
@@ -12443,6 +12468,7 @@ namespace PadForge.Services
                 }
                 catch { /* Best effort — driver may not be available */ }
                 _managedWhitelistDosPaths.Clear();
+                FinishTabletRelease(tabletInputs);
             }
 
             // ── Input hooks ──
@@ -12616,6 +12642,8 @@ namespace PadForge.Services
                   .Append(d.RawAxisCount).Append('|')
                   .Append(d.ActuatorCount).Append('|')
                   .Append(d.CapTouchpadCount).Append('|')
+                  .Append(d.CapTouchpadPressure).Append('|')
+                  .Append(d.CapTouchpadClick).Append('|')
                   .Append(d.HasGyro).Append(d.HasAccel)
                   .Append(d.HasGyroAux).Append(d.HasAccelAux)
                   .Append(d.HasTouchpad).Append(d.HasRumbleTriggers)
@@ -12833,6 +12861,8 @@ namespace PadForge.Services
             row.HasGyro = ud.HasGyro;
             row.HasAccel = ud.HasAccel;
             row.HasTouchpad = ud.HasTouchpad;
+            row.TabletCaptureState = ud.Device is PadForge.Engine.Tablets.WindowsTabletDevice tablet
+                ? tablet.CaptureState : PadForge.Engine.Tablets.TabletCaptureState.Offline;
             row.DevicePath = ud.DevicePath;
 
             // Resolve the HID instance path for display.
@@ -12920,6 +12950,7 @@ namespace PadForge.Services
                 InputDeviceType.Mouse => "Mouse",
                 InputDeviceType.Keyboard => "Keyboard",
                 InputDeviceType.Touchpad => "Touchpad",
+                InputDeviceType.Tablet => "Tablet",
                 InputDeviceType.Midi => "Midi",
                 InputDeviceType.Nfc => "Nfc",
                 InputDeviceType.Microphone => "Microphone",

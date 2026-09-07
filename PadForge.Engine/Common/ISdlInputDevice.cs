@@ -93,6 +93,8 @@ namespace PadForge.Engine
         /// Default is empty; the SDL wrapper overrides with real per-pad counts
         /// so the mapping picker only offers fingers the device actually has.</summary>
         int[] TouchpadFingerCounts => System.Array.Empty<int>();
+        bool? TouchpadPressureSupported => null;
+        bool? TouchpadClickSupported => null;
         HapticEffectStrategy HapticStrategy { get; }
         IntPtr HapticHandle { get; }
         uint HapticFeatures { get; }

@@ -2145,6 +2145,9 @@ namespace PadForge.Engine.RemoteLink
                 if (byId.TryGetValue(id, out var existing))
                 {
                     bool slotChanged = existing.LinkSlot != info.Slot;
+                    bool touchCapabilitiesChanged = info.NumTouchpads > 0 &&
+                        (existing.Info.TouchpadPressureSupported != info.TouchpadPressureSupported
+                        || existing.Info.TouchpadClickSupported != info.TouchpadClickSupported);
                     existing.LinkSlot = info.Slot;
                     existing.SetConnected(info.Online); // same device, just active/inactive (+ maybe a new slot)
                     // Refresh relayed metadata in place: the owner's named
@@ -2160,6 +2163,8 @@ namespace PadForge.Engine.RemoteLink
                         // reader that sees the new NumTouchpads also sees the
                         // matching array (readers bounds-check regardless).
                         existing.Info.TouchpadFingerCounts = info.TouchpadFingerCounts;
+                        existing.Info.TouchpadPressureSupported = info.TouchpadPressureSupported;
+                        existing.Info.TouchpadClickSupported = info.TouchpadClickSupported;
                         existing.Info.NumTouchpads = info.NumTouchpads;
                     }
                     if (!string.IsNullOrEmpty(info.SerialNumber))
@@ -2186,7 +2191,7 @@ namespace PadForge.Engine.RemoteLink
                     existing.Info.InputDeviceType = info.InputDeviceType;
                     next[info.Slot] = existing;
                     // Re-register only when the slot moved, so the slot-stamped output route refreshes.
-                    if (slotChanged) notifications.Add(() => DeviceConnected?.Invoke(existing));
+                    if (slotChanged || touchCapabilitiesChanged) notifications.Add(() => DeviceConnected?.Invoke(existing));
                 }
                 else
                 {

@@ -3597,4 +3597,17 @@ You can retry later from Settings.</value></data>
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
     <value>Waiting for the other PC...</value>
   </data>
+  <data name="DeviceType_Tablet" xml:space="preserve"><value>Drawing Tablet</value></data>
+  <data name="Tablet_InputShared" xml:space="preserve"><value>Shared Input</value></data>
+  <data name="Tablet_InputSwitching" xml:space="preserve"><value>Switching Input</value></data>
+  <data name="Tablet_InputWaiting" xml:space="preserve"><value>Waiting For Tablet Input</value></data>
+  <data name="Tablet_InputCaptured" xml:space="preserve"><value>Captured By PadForge</value></data>
+  <data name="Tablet_InputFailed" xml:space="preserve"><value>Tablet Input Unavailable</value></data>
+  <data name="Tablet_CaptureFailed_Format" xml:space="preserve"><value>Could Not Capture {0}</value></data>
+  <data name="Tablet_HideHelp" xml:space="preserve"><value>With the engine running, Hide Device restarts the tablet's pen input and reads it only in PadForge. Turning hiding off returns it to Windows. Kept cloaks also keep the native pointer disabled after PadForge closes.</value></data>
+  <data name="Tablet_Barrel" xml:space="preserve"><value>Pen Barrel Button</value></data>
+  <data name="Tablet_SecondaryBarrel" xml:space="preserve"><value>Pen Secondary Barrel Button</value></data>
+  <data name="Tablet_Eraser" xml:space="preserve"><value>Pen Eraser</value></data>
+  <data name="Tablet_Inverted" xml:space="preserve"><value>Pen Inverted</value></data>
+  <data name="Tablet_InRange" xml:space="preserve"><value>Pen In Range</value></data>
 </root>

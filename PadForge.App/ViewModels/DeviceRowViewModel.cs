@@ -23,6 +23,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(StatusText));
             OnPropertyChanged(nameof(CapabilitiesSummary));
             OnPropertyChanged(nameof(FlydigiServiceWarning));
+            OnPropertyChanged(nameof(TabletInputStatus));
         }
 
         // ─────────────────────────────────────────────
@@ -165,7 +166,10 @@ namespace PadForge.ViewModels
             set
             {
                 if (SetProperty(ref _isOnline, value))
+                {
                     OnPropertyChanged(nameof(StatusText));
+                    OnPropertyChanged(nameof(TabletInputStatus));
+                }
             }
         }
 
@@ -178,7 +182,10 @@ namespace PadForge.ViewModels
             set
             {
                 if (SetProperty(ref _isEnabled, value))
+                {
                     OnPropertyChanged(nameof(StatusText));
+                    OnPropertyChanged(nameof(TabletInputStatus));
+                }
             }
         }
 
@@ -255,6 +262,8 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsHeadTrackerDevice));
                     OnPropertyChanged(nameof(ShowLearnHandheldButton));
                     OnPropertyChanged(nameof(HasHandheldDaemonWarning));
+                    OnPropertyChanged(nameof(IsTabletDevice));
+                    OnPropertyChanged(nameof(ShowTabletCaptureStatus));
                     OnPropertyChanged(nameof(HandheldDaemonWarning));
                 }
             }
@@ -272,6 +281,7 @@ namespace PadForge.ViewModels
             "Mouse" => Strings.Instance.DeviceType_Mouse,
             "Keyboard" => Strings.Instance.DeviceType_Keyboard,
             "Touchpad" => Strings.Instance.DeviceType_Touchpad,
+            "Tablet" => Strings.Instance.DeviceType_Tablet,
             "Midi" => Strings.Instance.DeviceType_Midi,
             "Nfc" => Strings.Instance.DeviceType_Nfc,
             "Microphone" => Strings.Instance.DeviceType_Microphone,
@@ -711,6 +721,24 @@ namespace PadForge.ViewModels
         /// (now-empty) body when nothing applies.</summary>
         public bool ShowInputHidingSection => !IsInternalVirtual;
 
+        public bool IsTabletDevice => DeviceTypeKey == "Tablet";
+        public bool ShowTabletCaptureStatus => IsTabletDevice && !IsInternalVirtual;
+        private PadForge.Engine.Tablets.TabletCaptureState _tabletCaptureState;
+        public PadForge.Engine.Tablets.TabletCaptureState TabletCaptureState
+        {
+            get => _tabletCaptureState;
+            set { if (SetProperty(ref _tabletCaptureState, value)) OnPropertyChanged(nameof(TabletInputStatus)); }
+        }
+        public string TabletInputStatus => TabletCaptureState switch
+        {
+            PadForge.Engine.Tablets.TabletCaptureState.Switching => Strings.Instance.Tablet_InputSwitching,
+            PadForge.Engine.Tablets.TabletCaptureState.WaitingForInput => Strings.Instance.Tablet_InputWaiting,
+            PadForge.Engine.Tablets.TabletCaptureState.Captured => Strings.Instance.Tablet_InputCaptured,
+            PadForge.Engine.Tablets.TabletCaptureState.Failed => Strings.Instance.Tablet_InputFailed,
+            PadForge.Engine.Tablets.TabletCaptureState.Offline => StatusText,
+            _ => Strings.Instance.Tablet_InputShared
+        };
+
         /// <summary>True when the "Input Mode" section (Force raw joystick mode)
         /// should be shown. Only real gamepads — virtual web/overlay sources are
         /// WYSIWYG and have no SDL gamepad-mapping layer to bypass.</summary>
@@ -758,6 +786,7 @@ namespace PadForge.ViewModels
                 if (SetProperty(ref _devicePath, value))
                 {
                     OnPropertyChanged(nameof(IsInternalVirtual));
+                    OnPropertyChanged(nameof(ShowTabletCaptureStatus));
                     OnPropertyChanged(nameof(ShowInputHidingSection));
                     OnPropertyChanged(nameof(ShowInputModeSection));
                     // ShowConsumeToggle now gates on IsInternalVirtual, which
@@ -822,7 +851,7 @@ namespace PadForge.ViewModels
         public bool IsGamepad => DeviceTypeKey == "Gamepad";
 
         /// <summary>True if this device can have community mappings submitted (joysticks only, not gamepads/mice/keyboards).</summary>
-        public bool ShowSubmitMapping => DeviceTypeKey != "Gamepad" && DeviceTypeKey != "Mouse" && DeviceTypeKey != "Keyboard" && DeviceTypeKey != "Touchpad" && DeviceTypeKey != "Midi" && DeviceTypeKey != "Nfc" && DeviceTypeKey != "HeadsetMotion" && DeviceTypeKey != "Microphone" && DeviceTypeKey != "ConsumerControl" && DeviceTypeKey != "HandheldButtons" && DeviceTypeKey != "SystemMotion" && DeviceTypeKey != "HeadTracker";
+        public bool ShowSubmitMapping => DeviceTypeKey != "Gamepad" && DeviceTypeKey != "Mouse" && DeviceTypeKey != "Keyboard" && DeviceTypeKey != "Touchpad" && DeviceTypeKey != "Tablet" && DeviceTypeKey != "Midi" && DeviceTypeKey != "Nfc" && DeviceTypeKey != "HeadsetMotion" && DeviceTypeKey != "Microphone" && DeviceTypeKey != "HandheldButtons" && DeviceTypeKey != "ConsumerControl" && DeviceTypeKey != "SystemMotion" && DeviceTypeKey != "HeadTracker";
 
         /// <summary>True for an NFC reader (issue #150): shows the "Register/Manage
         /// NFC Tags" button, which opens the tap-to-name registration flow.

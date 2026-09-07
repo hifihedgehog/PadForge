@@ -3548,4 +3548,17 @@
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
     <value>正在等待另一台电脑...</value>
   </data>
+  <data name="DeviceType_Tablet" xml:space="preserve"><value>绘图板</value></data>
+  <data name="Tablet_InputShared" xml:space="preserve"><value>共享输入</value></data>
+  <data name="Tablet_InputSwitching" xml:space="preserve"><value>正在切换输入</value></data>
+  <data name="Tablet_InputWaiting" xml:space="preserve"><value>等待绘图板输入</value></data>
+  <data name="Tablet_InputCaptured" xml:space="preserve"><value>由 PadForge 接管</value></data>
+  <data name="Tablet_InputFailed" xml:space="preserve"><value>绘图板输入不可用</value></data>
+  <data name="Tablet_CaptureFailed_Format" xml:space="preserve"><value>无法接管 {0}</value></data>
+  <data name="Tablet_HideHelp" xml:space="preserve"><value>引擎运行时，隐藏设备会重新启动绘图板的笔输入，并仅由 PadForge 读取。关闭隐藏后，输入将返回 Windows。如果保持设备在两次启动之间隐藏，关闭 PadForge 后原生指针输入仍会被禁用。</value></data>
+  <data name="Tablet_Barrel" xml:space="preserve"><value>笔侧键</value></data>
+  <data name="Tablet_SecondaryBarrel" xml:space="preserve"><value>笔第二侧键</value></data>
+  <data name="Tablet_Eraser" xml:space="preserve"><value>笔橡皮擦</value></data>
+  <data name="Tablet_Inverted" xml:space="preserve"><value>笔已翻转</value></data>
+  <data name="Tablet_InRange" xml:space="preserve"><value>笔在感应范围内</value></data>
 </root>

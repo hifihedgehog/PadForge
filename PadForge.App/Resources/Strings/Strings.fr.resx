@@ -3548,4 +3548,17 @@ Vous pouvez réessayer plus tard depuis les Paramètres.</value></data>
   <data name="RemoteLink_AssignmentBusy" xml:space="preserve">
     <value>En attente de l'autre PC...</value>
   </data>
+  <data name="DeviceType_Tablet" xml:space="preserve"><value>Tablette graphique</value></data>
+  <data name="Tablet_InputShared" xml:space="preserve"><value>Entrée partagée</value></data>
+  <data name="Tablet_InputSwitching" xml:space="preserve"><value>Changement d'entrée</value></data>
+  <data name="Tablet_InputWaiting" xml:space="preserve"><value>En attente de la tablette</value></data>
+  <data name="Tablet_InputCaptured" xml:space="preserve"><value>Capturée par PadForge</value></data>
+  <data name="Tablet_InputFailed" xml:space="preserve"><value>Entrée de tablette indisponible</value></data>
+  <data name="Tablet_CaptureFailed_Format" xml:space="preserve"><value>Impossible de capturer {0}</value></data>
+  <data name="Tablet_HideHelp" xml:space="preserve"><value>Lorsque le moteur fonctionne, masquer le périphérique redémarre l'entrée du stylet et la réserve à PadForge. Désactiver le masquage rend cette entrée à Windows. Si le masquage est conservé entre les sessions, le pointeur natif reste désactivé après la fermeture de PadForge.</value></data>
+  <data name="Tablet_Barrel" xml:space="preserve"><value>Bouton latéral du stylet</value></data>
+  <data name="Tablet_SecondaryBarrel" xml:space="preserve"><value>Second bouton latéral</value></data>
+  <data name="Tablet_Eraser" xml:space="preserve"><value>Gomme du stylet</value></data>
+  <data name="Tablet_Inverted" xml:space="preserve"><value>Stylet retourné</value></data>
+  <data name="Tablet_InRange" xml:space="preserve"><value>Stylet à portée</value></data>
 </root>

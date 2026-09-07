@@ -1132,23 +1132,23 @@ namespace PadForge.Common.Input
                 return ps;
             }
 
-            // Touchpad-type devices (web touchpad, overlay, PTP) auto-map
-            // touchpad data to PlayStation. TouchpadClick is dropped only
-            // for PTP system touchpads, which are uniquely identified by
-            // having no ISdlInputDevice wrapper attached (they're read by
-            // PrecisionTouchpadReader, not SDL). Web touchpad clients and
-            // TouchpadOverlayDevice both attach a wrapper and expose a
-            // virtual click button.
-            if (ud.CapType == InputDeviceType.Touchpad && ud.HasTouchpad &&
+            // Touchpad and tablet sources carry their contact surface to PlayStation.
+            // Verified capabilities control finger count and click availability.
+            if ((ud.CapType == InputDeviceType.Touchpad || ud.IsTablet) && ud.HasTouchpad &&
                 outputType == Engine.VirtualControllerType.PlayStation)
             {
                 ps.TouchpadX1 = "Touchpad 0 Finger 0 X";
                 ps.TouchpadY1 = "Touchpad 0 Finger 0 Y";
                 ps.TouchpadContact1 = "Touchpad 0 Finger 0 Down";
-                ps.TouchpadX2 = "Touchpad 0 Finger 1 X";
-                ps.TouchpadY2 = "Touchpad 0 Finger 1 Y";
-                ps.TouchpadContact2 = "Touchpad 0 Finger 1 Down";
-                if (ud.Device != null)
+                int fingers = ud.CapTouchpadFingerCounts is { Length: > 0 } && ud.CapTouchpadFingerCounts[0] > 0
+                    ? ud.CapTouchpadFingerCounts[0] : ud.IsTablet ? 1 : 2;
+                if (fingers >= 2)
+                {
+                    ps.TouchpadX2 = "Touchpad 0 Finger 1 X";
+                    ps.TouchpadY2 = "Touchpad 0 Finger 1 Y";
+                    ps.TouchpadContact2 = "Touchpad 0 Finger 1 Down";
+                }
+                if (ud.SupportsTouchpadClick)
                     ps.TouchpadClick = "Touchpad 0 Click";
 
                 ps.UpdateChecksum();

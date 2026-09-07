@@ -279,6 +279,8 @@ namespace PadForge.Common.Input
                 });
             }
 
+            UpdateTabletDevices(ref changed);
+
             // --- Phase 1d: Precision Touchpads (per-hardware device) ---
             if (_ptpReader != null && _ptpReader.IsAvailable)
             {

@@ -1028,6 +1028,9 @@
                                         <Style TargetType="TextBlock">
                                             <Setter Property="Text" Value="{Binding Devices_HideTooltip, Source={x:Static strings:Strings.Instance}}"/>
                                             <Style.Triggers>
+                                                <DataTrigger Binding="{Binding SelectedDevice.IsTabletDevice}" Value="True">
+                                                    <Setter Property="Text" Value="{Binding Tablet_HideHelp, Source={x:Static strings:Strings.Instance}}"/>
+                                                </DataTrigger>
                                                 <DataTrigger Binding="{Binding SelectedDevice.IsHidHideAvailable}" Value="False">
                                                     <Setter Property="Text" Value="{Binding Devices_HideTooltipInstall, Source={x:Static strings:Strings.Instance}}"/>
                                                 </DataTrigger>
@@ -1037,6 +1040,11 @@
                                 </TextBlock>
                             </CheckBox.ToolTip>
                         </CheckBox>
+
+                        <TextBlock Text="{Binding SelectedDevice.TabletInputStatus}"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   TextWrapping="Wrap" Margin="0,0,0,8"
+                                   Visibility="{Binding SelectedDevice.ShowTabletCaptureStatus, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                         <CheckBox Content="{Binding Devices_ConsumeMapped, Source={x:Static strings:Strings.Instance}}"
                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"

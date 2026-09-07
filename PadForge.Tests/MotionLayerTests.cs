@@ -94,7 +94,9 @@ namespace PadForge.Tests
                 .Where(r => r.Target == MappingSetMigrator.MotionGyroTarget)
                 .ToList();
             Assert.Single(gyroRows);
-            Assert.Contains(gyroRows[0].Sources, s => s.DeviceGuid == GyroDev);
+            Assert.Empty(gyroRows[0].Sources);
+            var accelRow = Assert.Single(ms.Rows, r => r.Target == MappingSetMigrator.MotionAccelTarget);
+            Assert.Contains(accelRow.Sources, s => s.DeviceGuid == GyroDev);
         }
 
         /// <summary>The ordinary case still works: no rows at all yields a

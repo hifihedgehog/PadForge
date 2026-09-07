@@ -531,7 +531,7 @@ def emit_registry(fam_results):
     w("    }")
     w("")
     w("    /// <summary>2D colorway sets per asset folder. The family key is")
-    w("    /// the per-pad appearance store's key (PadSetting.Model3DAppearances),")
+    w("    /// the per-pad appearance store's key (PadViewModel.Model3DAppearances),")
     w("    /// the same one the 3D picker writes, so one selection drives both")
     w("    /// views; a view without art for the chosen id falls back to its")
     w("    /// default. Entry 0 is the default (the stock files).</summary>")

@@ -5,78 +5,210 @@ using PadForge.Engine.RemoteLink;
 
 namespace PadForge.Common.Input
 {
-    /// <summary>
-    /// Consumer-side hub for the reverse output relay (issue #138). A shared device
-    /// is a <c>RemotePeerDevice</c> with a "peer://" path: the consumer's output
-    /// pipeline computes the full, config-applied output for it and then fails at the
-    /// final hardware write (CreateFileW on "peer://" fails; the SDL handle is Zero).
-    /// Each write chokepoint hands its config-baked payload here instead; this maps
-    /// the device path to its owner and ships a transport-agnostic semantic frame.
-    /// The owner re-encodes it for the real hardware.
-    ///
-    /// <para>The mapping is fixed at connect time (peer:// path -&gt; owner fingerprint +
-    /// link slot), so there is no per-frame route lookup beyond a dictionary read, and
-    /// nothing here runs when no device is shared.</para>
-    /// </summary>
+    /// <summary>Routes each shared device's output through the connection that advertised it.</summary>
     internal static class RemoteLinkOutputRouter
     {
-        public readonly struct Target
+        public sealed class Target
         {
             public readonly string Fingerprint;
             public readonly byte LinkSlot;
-            public Target(string fingerprint, byte linkSlot) { Fingerprint = fingerprint; LinkSlot = linkSlot; }
+            public readonly LinkConnectionLifetime Connection;
+            public readonly RemotePeerDevice Owner;
+            public readonly string DeviceId;
+            internal readonly object Gate = new();
+            internal byte[] Sony;
+            internal (ushort, ushort, ushort, ushort, int, bool)? Vibration;
+            internal byte[] Wheel;
+            internal (float Hz, float Amp)? Tone;
+            internal int? Player;
+            internal int? Guide;
+            internal long NfcDemandMs;
+            internal Target(string fingerprint, byte slot, LinkConnectionLifetime connection, RemotePeerDevice owner)
+            {
+                Fingerprint = fingerprint;
+                LinkSlot = slot;
+                Connection = connection;
+                Owner = owner;
+                DeviceId = owner?.Info.PeerLocalDeviceId;
+            }
         }
 
-        // peer:// device path -> owner target. Concurrent: registered/cleared on the
-        // socket DeviceConnected/Disconnected thread, read on the polling/effect threads.
         private static readonly ConcurrentDictionary<string, Target> _byPath = new(StringComparer.Ordinal);
-
-        // Exact-repeat dedup per path+channel so a static effect (held lightbar / steady
-        // force) is sent once and a quiet device costs no bandwidth. Square-wave values
-        // still forward (each distinct value differs from the last).
-        private static readonly ConcurrentDictionary<string, byte[]> _lastSony = new(StringComparer.Ordinal);
-        private static readonly ConcurrentDictionary<string, (ushort, ushort, ushort, ushort, int)> _lastVib = new(StringComparer.Ordinal);
-        private static readonly ConcurrentDictionary<string, byte[]> _lastWheel = new(StringComparer.Ordinal);
-
-        /// <summary>Wired by InputService to LinkServer.PushOutputEffect / PushAudio.</summary>
         public static Action<string, byte, byte[]> SendOutput { get; set; }
         public static Action<string, byte, byte[]> SendAudio { get; set; }
-
-        /// <summary>Wired by InputService to LinkServer.PushSourceDemand (#241).</summary>
         public static Action<string, byte, byte[]> SendSourceDemand { get; set; }
-
-        /// <summary>Demand kinds for <see cref="ShipNfcDemand"/>'s payload byte.</summary>
+        public static Func<LinkConnectionLifetime, byte, string, byte[], bool> SendScopedOutput { get; set; }
+        public static Func<LinkConnectionLifetime, byte, string, byte[], bool> SendScopedAudio { get; set; }
+        public static Func<LinkConnectionLifetime, byte, string, byte[], bool> SendScopedDemand { get; set; }
         public const byte DemandKindNfc = 1;
+        public static int DeviceCount => _byPath.Count;
+        public static bool IsPeerPath(string path) => !string.IsNullOrEmpty(path) && path.StartsWith("peer://", StringComparison.Ordinal);
 
-        /// <summary>Consumer: report live NFC-reader demand for a peer device
-        /// to its owner (#241). Rate-bounded to one datagram per device per
-        /// second: the owner's arming window is seconds wide and treats each
-        /// arrival as a fresh stamp, so a per-tick send would be pure traffic.
-        /// Letting it lapse IS the "off" signal, matching the local demand
-        /// latch's own expiry contract.</summary>
-        public static void ShipNfcDemand(string peerDevicePath)
+        public static void ShipNfcDemand(string path)
         {
-            var send = SendSourceDemand;
-            if (send == null || !IsPeerPath(peerDevicePath)) return;
-            if (!_byPath.TryGetValue(peerDevicePath, out var route)) return;
-
-            long now = Environment.TickCount64;
-            long last = _lastNfcDemandMs.TryGetValue(peerDevicePath, out long v) ? v : 0;
-            if (now - last < NfcDemandIntervalMs) return;
-            _lastNfcDemandMs[peerDevicePath] = now;
-
-            try { send(route.Fingerprint, route.LinkSlot, new[] { DemandKindNfc }); }
-            catch { /* best effort: the next demand tick retries */ }
+            if (!_byPath.TryGetValue(path, out var target)) return;
+            lock (target.Gate)
+            {
+                long now = Environment.TickCount64;
+                if (now - target.NfcDemandMs < 1000) return;
+                if (Dispatch(target, LinkMessageType.SourceDemand, new[] { DemandKindNfc })) target.NfcDemandMs = now;
+            }
         }
 
-        private static readonly ConcurrentDictionary<string, long> _lastNfcDemandMs =
-            new(StringComparer.OrdinalIgnoreCase);
-        private const long NfcDemandIntervalMs = 1000;
+        public static void Register(string path, string fingerprint, byte slot)
+            => Register(path, fingerprint, slot, null, null);
 
-        public static int DeviceCount => _byPath.Count;
+        public static void Register(string path, string fingerprint, byte slot,
+            LinkConnectionLifetime connection, RemotePeerDevice owner)
+        {
+            if (string.IsNullOrEmpty(path) || string.IsNullOrEmpty(fingerprint)) return;
+            _byPath[path] = new Target(fingerprint, slot, connection, owner);
+        }
 
-        public static bool IsPeerPath(string devicePath) =>
-            !string.IsNullOrEmpty(devicePath) && devicePath.StartsWith("peer://", StringComparison.Ordinal);
+        public static void Unregister(string path)
+        {
+            if (!string.IsNullOrEmpty(path)) _byPath.TryRemove(path, out _);
+        }
+
+        public static void Unregister(string path, RemotePeerDevice owner)
+        {
+            if (string.IsNullOrEmpty(path) || !_byPath.TryGetValue(path, out var target)
+                || !ReferenceEquals(target.Owner, owner)) return;
+            ((System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, Target>>)_byPath)
+                .Remove(new System.Collections.Generic.KeyValuePair<string, Target>(path, target));
+        }
+
+        public static void Clear()
+        {
+            _byPath.Clear();
+            lock (_ownerLock)
+            {
+                _outputLease.Clear();
+                _peerWroteLast.Clear();
+            }
+        }
+
+        public static bool ShipSonyEffect(string path, ReadOnlySpan<byte> body)
+        {
+            if (!_byPath.TryGetValue(path, out var target)) return false;
+            lock (target.Gate)
+            {
+                if (body.Length == 0) return true;
+                if (target.Sony != null && body.SequenceEqual(target.Sony)) return true;
+                if (!Dispatch(target, LinkMessageType.Output, OutputEffectCodec.EncodeSonyEffect(body))) return false;
+                target.Sony = body.ToArray();
+                return true;
+            }
+        }
+
+        public static bool ShipVibration(string path, Vibration vibration)
+        {
+            if (vibration == null || !_byPath.TryGetValue(path, out var target)) return false;
+            lock (target.Gate) return ShipVibration(target, vibration);
+        }
+
+        private static bool ShipVibration(Target target, Vibration vibration)
+        {
+            int signature = vibration.HasDirectionalData || vibration.HasConditionData
+                ? unchecked((int)(vibration.EffectType * 31 + (uint)vibration.SignedMagnitude * 7
+                    + vibration.Direction * 13 + vibration.Period)) : 0;
+            bool active = vibration.LeftMotorSpeed != 0 || vibration.RightMotorSpeed != 0
+                || vibration.LeftTriggerMotorSpeed != 0 || vibration.RightTriggerMotorSpeed != 0
+                || vibration.HasDirectionalData || vibration.HasConditionData;
+            var key = (vibration.LeftMotorSpeed, vibration.RightMotorSpeed, vibration.LeftTriggerMotorSpeed,
+                vibration.RightTriggerMotorSpeed, signature, active);
+            if (!vibration.HasDirectionalData && !vibration.HasConditionData && target.Vibration == key) return true;
+            if (!Dispatch(target, LinkMessageType.Output, OutputEffectCodec.EncodeVibration(vibration))) return false;
+            target.Vibration = key;
+            return true;
+        }
+
+        public static bool StopVibration(string path)
+        {
+            if (!_byPath.TryGetValue(path, out var target)) return false;
+            lock (target.Gate)
+                return target.Vibration is { Item6: true } && ShipVibration(target, new Vibration());
+        }
+
+        public static bool ShipWheel(string path, bool hasCond, bool dir, short force, short peak,
+            int ac, uint effect, int period, short pc, short nc, short off, int db, int ps, int ns,
+            int condGain, ushort rangeDeg, ushort ledMask, bool ledValid)
+        {
+            if (!_byPath.TryGetValue(path, out var target)) return false;
+            byte[] payload = OutputEffectCodec.EncodeWheel(hasCond, dir, force, peak, ac, effect,
+                period, pc, nc, off, db, ps, ns, condGain, rangeDeg, ledMask, ledValid);
+            lock (target.Gate)
+            {
+                if (target.Wheel != null && payload.AsSpan().SequenceEqual(target.Wheel)) return true;
+                if (!Dispatch(target, LinkMessageType.Output, payload)) return false;
+                target.Wheel = payload;
+                return true;
+            }
+        }
+
+        public static bool ShipHapticTone(string path, float hz, float amplitude)
+        {
+            if (!_byPath.TryGetValue(path, out var target)) return false;
+            lock (target.Gate)
+            {
+                if (amplitude <= 0 && target.Tone is { Amp: <= 0 }) return true;
+                if (!Dispatch(target, LinkMessageType.Output, OutputEffectCodec.EncodeHapticTone(hz, amplitude))) return false;
+                target.Tone = (hz, amplitude);
+                return true;
+            }
+        }
+
+        public static bool ShipPlayerIndex(string path, int number)
+        {
+            if (!_byPath.TryGetValue(path, out var target)) return false;
+            lock (target.Gate)
+            {
+                if (target.Player == number) return true;
+                if (!Dispatch(target, LinkMessageType.Output, OutputEffectCodec.EncodePlayerIndex(number))) return false;
+                target.Player = number;
+                return true;
+            }
+        }
+
+        public static bool ShipGuideLed(string path, int percent)
+        {
+            if (!_byPath.TryGetValue(path, out var target)) return false;
+            percent = Math.Clamp(percent, 0, 100);
+            lock (target.Gate)
+            {
+                if (target.Guide == percent) return true;
+                if (!Dispatch(target, LinkMessageType.Output, OutputEffectCodec.EncodeGuideLed(percent))) return false;
+                target.Guide = percent;
+                return true;
+            }
+        }
+
+        public static bool ShipAudio(string path, byte[] pcm)
+            => pcm != null && _byPath.TryGetValue(path, out var target)
+                && Dispatch(target, LinkMessageType.Audio, pcm);
+
+        private static bool Dispatch(Target target, LinkMessageType type, byte[] payload)
+        {
+            if (target.Connection != null)
+            {
+                var send = type switch
+                {
+                    LinkMessageType.Audio => SendScopedAudio,
+                    LinkMessageType.SourceDemand => SendScopedDemand,
+                    _ => SendScopedOutput
+                };
+                return send?.Invoke(target.Connection, target.LinkSlot, target.DeviceId, payload) == true;
+            }
+            var legacy = type switch
+            {
+                LinkMessageType.Audio => SendAudio,
+                LinkMessageType.SourceDemand => SendSourceDemand,
+                _ => SendOutput
+            };
+            if (legacy == null) return false;
+            legacy(target.Fingerprint, target.LinkSlot, payload);
+            return true;
+        }
 
         // ── Owner-side output lease (#138 sole-writer guard) ─────────────────────────
         // A device physically on THIS machine can be both shared out to a peer AND mapped
@@ -209,161 +341,5 @@ namespace PadForge.Common.Input
             && _outputLease.TryGetValue(localDevicePath, out var t)
             && Environment.TickCount64 - t <= OutputLeaseMs;
 
-        public static void Register(string devicePath, string fingerprint, byte linkSlot)
-        {
-            if (string.IsNullOrEmpty(devicePath) || string.IsNullOrEmpty(fingerprint)) return;
-            _byPath[devicePath] = new Target(fingerprint, linkSlot);
-        }
-
-        public static void Unregister(string devicePath)
-        {
-            if (string.IsNullOrEmpty(devicePath)) return;
-            _byPath.TryRemove(devicePath, out _);
-            _lastSony.TryRemove(devicePath, out _);
-            _lastVib.TryRemove(devicePath, out _);
-            _lastWheel.TryRemove(devicePath, out _);
-            _lastTone.TryRemove(devicePath, out _);
-            _lastPlayerIndex.TryRemove(devicePath, out _);
-            _lastGuideLed.TryRemove(devicePath, out _);
-            _lastNfcDemandMs.TryRemove(devicePath, out _);
-        }
-
-        public static void Clear()
-        {
-            _byPath.Clear();
-            _lastSony.Clear(); _lastVib.Clear(); _lastWheel.Clear(); _lastTone.Clear();
-            _lastPlayerIndex.Clear(); _lastGuideLed.Clear();
-            _lastNfcDemandMs.Clear();
-            // Drop output leases too, or a stale lease would keep the owner's local
-            // output suppressed for up to OutputLeaseMs after Remote Link stops.
-            // Ownership goes too. A frame still in flight after Remote Link
-            // stopped finds no session for its peer and is refused.
-            lock (_ownerLock)
-            {
-                _outputLease.Clear();
-                _peerWroteLast.Clear();
-            }
-        }
-
-        // ── Ship: Sony effect (47/31-byte USB-shape body) ───────────────────
-
-        /// <summary>True when the path is a shared device and the effect was shipped
-        /// (so the caller skips its local write).</summary>
-        public static bool ShipSonyEffect(string devicePath, ReadOnlySpan<byte> effectBody)
-        {
-            if (!_byPath.TryGetValue(devicePath, out var t)) return false;
-            if (effectBody.Length == 0) return true;
-            if (_lastSony.TryGetValue(devicePath, out var prev) && prev.AsSpan().SequenceEqual(effectBody))
-                return true;
-            _lastSony[devicePath] = effectBody.ToArray();
-            byte[] blob = OutputEffectCodec.EncodeSonyEffect(effectBody);
-            Dispatch(t, blob);
-            return true;
-        }
-
-        // ── Ship: full Vibration (rumble + impulse + directional + condition) ─
-
-        public static bool ShipVibration(string devicePath, Vibration v)
-        {
-            if (v == null || !_byPath.TryGetValue(devicePath, out var t)) return false;
-            // Cheap dedup on the common scalar case (directional frames always ship).
-            int dirHash = v.HasDirectionalData || v.HasConditionData
-                ? unchecked((int)(v.EffectType * 31 + (uint)v.SignedMagnitude * 7 + v.Direction * 13 + v.Period))
-                : 0;
-            var key = (v.LeftMotorSpeed, v.RightMotorSpeed, v.LeftTriggerMotorSpeed, v.RightTriggerMotorSpeed, dirHash);
-            if (!v.HasDirectionalData && !v.HasConditionData
-                && _lastVib.TryGetValue(devicePath, out var pv) && pv.Equals(key))
-                return true;
-            _lastVib[devicePath] = key;
-            byte[] blob = OutputEffectCodec.EncodeVibration(v);
-            Dispatch(t, blob);
-            return true;
-        }
-
-        // ── Ship: wheel FFB (semantic; owner re-encodes per vendor) ─────────
-
-        public static bool ShipWheel(string devicePath,
-            bool hasCond, bool dir, short force, short peak, int ac, uint effect, int period,
-            short pc, short nc, short off, int db, int ps, int ns, int condGain,
-            ushort rangeDeg, ushort ledMask, bool ledValid)
-        {
-            if (!_byPath.TryGetValue(devicePath, out var t)) return false;
-            byte[] blob = OutputEffectCodec.EncodeWheel(hasCond, dir, force, peak, ac, effect, period,
-                pc, nc, off, db, ps, ns, condGain, rangeDeg, ledMask, ledValid);
-            if (_lastWheel.TryGetValue(devicePath, out var prev) && prev.AsSpan().SequenceEqual(blob))
-                return true;
-            _lastWheel[devicePath] = blob;
-            Dispatch(t, blob);
-            return true;
-        }
-
-        // ── Ship: HD haptic tone (#147, consumer-reduced, owner re-encodes) ─
-
-        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, (float Hz, float Amp)> _lastTone = new();
-
-        public static bool ShipHapticTone(string devicePath, float toneHz, float amplitude)
-        {
-            if (!_byPath.TryGetValue(devicePath, out var t)) return false;
-            // Dedup only the silent steady state: while a tone plays, every
-            // tick ships (the owner's hangover expiry needs the refresh), but
-            // silence after silence sends nothing.
-            if (amplitude <= 0f && _lastTone.TryGetValue(devicePath, out var prev) && prev.Amp <= 0f)
-                return true;
-            _lastTone[devicePath] = (toneHz, amplitude);
-            byte[] blob = OutputEffectCodec.EncodeHapticTone(toneHz, amplitude);
-            Dispatch(t, blob);
-            return true;
-        }
-
-        // ── Ship: player index (#191, non-Sony shared pad LED number) ───────
-
-        private static readonly ConcurrentDictionary<string, int> _lastPlayerIndex = new(StringComparer.Ordinal);
-
-        public static bool ShipPlayerIndex(string devicePath, int oneBasedSlotNumber)
-        {
-            if (!_byPath.TryGetValue(devicePath, out var t)) return false;
-            // Dedup: the LED number changes only on a topology change, so ship once.
-            if (_lastPlayerIndex.TryGetValue(devicePath, out var prev) && prev == oneBasedSlotNumber)
-                return true;
-            _lastPlayerIndex[devicePath] = oneBasedSlotNumber;
-            Dispatch(t, OutputEffectCodec.EncodePlayerIndex(oneBasedSlotNumber));
-            return true;
-        }
-
-        // ── Ship: Guide / Home LED brightness (#209, owner re-applies) ──────
-
-        private static readonly ConcurrentDictionary<string, int> _lastGuideLed = new(StringComparer.Ordinal);
-
-        public static bool ShipGuideLed(string devicePath, int percent0to100)
-        {
-            if (!_byPath.TryGetValue(devicePath, out var t)) return false;
-            int pct = percent0to100 < 0 ? 0 : (percent0to100 > 100 ? 100 : percent0to100);
-            // Dedup: brightness changes only on a config edit / battery cadence,
-            // so ship once. The dedup cache is cleared on Unregister, so a peer
-            // replug re-ships on the next apply pass (the PlayerIndex contract).
-            if (_lastGuideLed.TryGetValue(devicePath, out var prev) && prev == pct)
-                return true;
-            _lastGuideLed[devicePath] = pct;
-            Dispatch(t, OutputEffectCodec.EncodeGuideLed(pct));
-            return true;
-        }
-
-        // ── Ship: speaker PCM (out of band on the Audio datagram) ───────────
-
-        public static bool ShipAudio(string devicePath, byte[] pcmBlock)
-        {
-            if (pcmBlock == null || !_byPath.TryGetValue(devicePath, out var t)) return false;
-            var send = SendAudio;
-            if (send == null) return false;
-            send(t.Fingerprint, t.LinkSlot, pcmBlock);
-            return true;
-        }
-
-        private static void Dispatch(Target t, byte[] blob)
-        {
-            var send = SendOutput;
-            if (send == null) return;
-            send(t.Fingerprint, t.LinkSlot, blob);
-        }
     }
 }

@@ -849,15 +849,38 @@ namespace PadForge.Common.Input
         // with no rumble writer at all.
         private static readonly System.Collections.Concurrent.ConcurrentDictionary<int, UserEffectsDispatcher> _instances = new();
 
-        public UserEffectsDispatcher(int padIndex, DeviceSlotConfig config)
+        public UserEffectsDispatcher(int padIndex, DeviceSlotConfig config, bool startTimer = true)
         {
             _padIndex = padIndex;
             _config = config;
-            if (_config != null)
-                _config.PropertyChanged += OnConfigChanged;
-            _instances[padIndex] = this;
-            RollRandomColor();
+            _instances.TryGetValue(padIndex, out var previous);
+            try
+            {
+                if (_config != null)
+                    _config.PropertyChanged += OnConfigChanged;
+                _instances[padIndex] = this;
+                RollRandomColor();
+                if (startTimer) UpdateAnimTimer();
+            }
+            catch
+            {
+                Dispose();
+                // Failed construction never takes ownership from a live dispatcher.
+                // A concurrent replacement still has priority over the prior one.
+                if (previous != null && !previous._disposed
+                    && _instances.TryAdd(padIndex, previous)
+                    && previous._disposed)
+                    ((System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<int, UserEffectsDispatcher>>)_instances)
+                        .Remove(new System.Collections.Generic.KeyValuePair<int, UserEffectsDispatcher>(padIndex, previous));
+                throw;
+            }
+        }
+
+        internal void StartDeferredEffects()
+        {
+            if (_disposed) return;
             UpdateAnimTimer();
+            ApplyOnce();
         }
 
         /// <summary>Pure core of the single-writer ownership walk

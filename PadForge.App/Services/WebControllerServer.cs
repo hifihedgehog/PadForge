@@ -30,7 +30,69 @@ namespace PadForge.Services
         private const int DefaultPort = 8080;
         private const string WebAssetPrefix = "PadForge.WebAssets.";
 
-        private HttpListener _listener;
+        private IWebControllerListener _listener;
+        private readonly object _lifecycleLock = new();
+        private readonly Func<int, IDisposable> _prepareEndpoint;
+        private readonly Func<IWebControllerListener> _createListener;
+        private readonly Action<Thread> _startThread;
+        private readonly Action<Thread> _joinThread;
+        private CancellationTokenSource _acceptLifetime;
+        private IDisposable _binding;
+        private long _startGeneration;
+        private bool _starting;
+        private bool _stopping;
+
+        public WebControllerServer() : this(null, null) { }
+
+        internal WebControllerServer(Func<int, IDisposable> prepareEndpoint,
+            Func<IWebControllerListener> createListener, Action<Thread> startThread = null,
+            Action<Thread> joinThread = null)
+        {
+            _prepareEndpoint = prepareEndpoint ?? PrepareEndpoint;
+            _createListener = createListener ?? (() => new HttpWebControllerListener());
+            _startThread = startThread ?? (thread => thread.Start());
+            _joinThread = joinThread ?? (thread =>
+            {
+                if (thread != null && thread != Thread.CurrentThread) thread.Join(3000);
+            });
+        }
+
+        internal bool IsRunning => _running;
+        internal long Generation => Volatile.Read(ref _startGeneration);
+
+        internal int? AllocateClientNumber(long generation, string compositeKey, string typeKey)
+        {
+            lock (_registrationLock)
+            {
+                if (!IsServing(generation)) return null;
+                return _clientPadIds.GetOrAdd(compositeKey,
+                    _ => _typePadCounters.AddOrUpdate(typeKey, 1, (_, value) => value + 1));
+            }
+        }
+
+        internal void PublishSessionStatus(long generation, bool removed)
+        {
+            if (!removed || !IsServing(generation)) return;
+            RaiseStatus(generation, _clients.Count > 0
+                ? string.Format(Strings.Instance.Server_RunningClients_Format, _clients.Count)
+                : string.Format(Strings.Instance.Server_RunningOn_Format, Url));
+        }
+
+        private bool IsServing(long generation)
+        {
+            lock (_lifecycleLock)
+                return _running && !_disposed && generation == _startGeneration;
+        }
+
+        private void RaiseStatus(long generation, string text)
+        {
+            if (generation != Generation) return;
+            var status = new Status(generation, text);
+            var handlers = StatusChanged;
+            if (handlers == null) return;
+            foreach (EventHandler<Status> handler in handlers.GetInvocationList())
+                try { handler(this, status); } catch { }
+        }
         private Thread _acceptThread;
         private volatile bool _running;
         private int _port;
@@ -47,7 +109,8 @@ namespace PadForge.Services
         private Dictionary<string, byte[]> _imageCache;
 
         /// <summary>Raised when server status changes (for UI display).</summary>
-        public event EventHandler<string> StatusChanged;
+        public sealed record Status(long Generation, string Text);
+        public event EventHandler<Status> StatusChanged;
 
         /// <summary>Raised when a browser client connects and a device is created.</summary>
         public event Action<WebControllerDevice> DeviceConnected;
@@ -69,97 +132,138 @@ namespace PadForge.Services
         //  Lifecycle
         // ─────────────────────────────────────────────
 
+        private IDisposable PrepareEndpoint(int port)
+        {
+            if (_imageCache == null)
+            {
+                if (Application.Current?.Dispatcher != null)
+                    Application.Current.Dispatcher.Invoke(() => _imageCache = LoadImageCache());
+                else
+                    _imageCache = LoadImageCache();
+            }
+            Task.Run(() => EnsureFirewallRule(port));
+            return WebControllerTls.AcquireBinding(port);
+        }
+
         public bool Start(int port = DefaultPort)
         {
-            if (_running) return true;
+            long generation;
+            lock (_lifecycleLock)
+            {
+                if (_disposed || _stopping) return false;
+                if (_running) return true;
+                if (_starting) return false;
+                _starting = true;
+                generation = ++_startGeneration;
+            }
 
-            _port = port;
-            _localIp = GetLocalIpAddress();
-
+            IWebControllerListener pending = null;
+            IDisposable pendingBinding = null;
+            CancellationTokenSource pendingLifetime = null;
             try
             {
-                // Pre-cache 2D model PNGs for web serving (must load on UI thread).
-                if (_imageCache == null)
+                // Preparation can wait on the UI dispatcher. It holds no lifecycle lock.
+                pendingBinding = _prepareEndpoint(port);
+                bool https = pendingBinding != null;
+                string localIp = GetLocalIpAddress();
+                lock (_lifecycleLock)
+                    if (_disposed || generation != _startGeneration) return false;
+
+                pending = _createListener();
+                try { pending.Start($"{(https ? "https" : "http")}://+:{port}/"); }
+                catch when (https)
                 {
-                    if (Application.Current?.Dispatcher != null)
-                        Application.Current.Dispatcher.Invoke(() => _imageCache = LoadImageCache());
-                    else
-                        _imageCache = LoadImageCache();
+                    try { pending.Close(); } catch { }
+                    pendingBinding.Dispose();
+                    pendingBinding = null;
+                    https = false;
+                    pending = _createListener();
+                    pending.Start($"http://+:{port}/");
                 }
 
-                // Fire-and-forget: the rule only affects external inbound
-                // reachability, not the local _listener.Start() bind below, and
-                // Start() runs on the UI thread (the web-controller toggle),
-                // where RunNetsh's two possible netsh spawns block up to 5s
-                // each. EnsureFirewallRule is static, touches no instance
-                // state, and is already best-effort (swallows its own
-                // failures), so a thread-pool hop changes nothing but the
-                // blocked thread.
-                System.Threading.Tasks.Task.Run(() => EnsureFirewallRule(port));
-
-                // Secure lane (#296 phase 0). DeviceMotionEvent only fires in
-                // a secure context, so bind a self-signed cert and serve
-                // https:// when the binding succeeds. Any failure (not
-                // elevated, netsh unavailable) falls back to plain http, and
-                // everything except the phone sensors still works.
-                _https = WebControllerTls.EnsureHttpsBinding(port) != null;
-
-                _listener = new HttpListener();
-                _listener.Prefixes.Add($"{(_https ? "https" : "http")}://+:{port}/");
-                try { _listener.Start(); }
-                catch when (_https)
-                {
-                    // The https prefix can fail even after a good sslcert bind
-                    // (namespace ACL, a stale binding). Retry as plain http so
-                    // the controller still serves.
-                    PadForge.Engine.SdlDiagLog.WriteLine("WEBTLS https listen failed, falling back to http");
-                    try { _listener.Close(); } catch { }
-                    _https = false;
-                    _listener = new HttpListener();
-                    _listener.Prefixes.Add($"http://+:{port}/");
-                    _listener.Start();
-                }
-                _running = true;
-
-                _acceptThread = new Thread(AcceptLoop)
+                pendingLifetime = new CancellationTokenSource();
+                var ownedListener = pending;
+                var token = pendingLifetime.Token;
+                var acceptThread = new Thread(() => AcceptLoop(ownedListener, token, generation))
                 {
                     Name = "PadForge.WebServer",
                     IsBackground = true
                 };
-                _acceptThread.Start();
-
-                StatusChanged?.Invoke(this, string.Format(Strings.Instance.Server_RunningOn_Format, Url));
+                lock (_lifecycleLock)
+                {
+                    if (_disposed || generation != _startGeneration) return false;
+                    // The new thread waits on IsServing until publication releases this lock.
+                    _startThread(acceptThread);
+                    _port = port;
+                    _localIp = localIp;
+                    _https = https;
+                    _listener = pending;
+                    _acceptThread = acceptThread;
+                    _acceptLifetime = pendingLifetime;
+                    _binding = pendingBinding;
+                    _running = true;
+                    _starting = false;
+                    pending = null;
+                    pendingLifetime = null;
+                    pendingBinding = null;
+                }
+                RaiseStatus(generation, string.Format(Strings.Instance.Server_RunningOn_Format, Url));
                 return true;
             }
             catch (HttpListenerException ex)
             {
-                // Close before dropping the reference: a listener that bound
-                // its prefix and failed later still holds the http.sys
-                // registration, and nulling the field leaked it until process
-                // exit, so the retry hit "port in use" against ourselves.
-                try { _listener?.Close(); } catch { }
-                _listener = null;
                 var msg = ex.ErrorCode == 5
                     ? string.Format(Strings.Instance.Server_AccessDenied_Format, port)
                     : string.Format(Strings.Instance.Server_PortInUse_Format, port);
-                StatusChanged?.Invoke(this, msg);
+                RaiseStatus(generation, msg);
                 return false;
             }
             catch (Exception)
             {
-                try { _listener?.Close(); } catch { }
-                _listener = null;
-                StatusChanged?.Invoke(this, Strings.Instance.Server_FailedToStart);
+                RaiseStatus(generation, Strings.Instance.Server_FailedToStart);
                 return false;
+            }
+            finally
+            {
+                // Rejected startup resources remain local until they have been released.
+                try { pendingLifetime?.Cancel(); } catch { }
+                try { pending?.Close(); } catch { }
+                pendingLifetime?.Dispose();
+                pendingBinding?.Dispose();
+                lock (_lifecycleLock)
+                    if (generation == _startGeneration) _starting = false;
             }
         }
 
         public void Stop()
         {
-            if (!_running) return;
-            _running = false;
+            IWebControllerListener listener;
+            Thread acceptThread;
+            CancellationTokenSource lifetime;
+            IDisposable binding;
+            long generation;
+            lock (_lifecycleLock)
+            {
+                generation = ++_startGeneration;
+                _starting = false;
+                if (_stopping || !_running) return;
+                _stopping = true;
+                _running = false;
+                listener = _listener;
+                _listener = null;
+                acceptThread = _acceptThread;
+                _acceptThread = null;
+                lifetime = _acceptLifetime;
+                _acceptLifetime = null;
+                binding = _binding;
+                _binding = null;
+                _https = false;
+            }
 
-            try { _listener?.Stop(); _listener?.Close(); }
+            try
+            {
+            try { lifetime?.Cancel(); } catch { }
+            try { listener?.Stop(); listener?.Close(); }
             catch { /* best effort */ }
 
             // Snapshot the live devices BEFORE anything clears the registry.
@@ -171,20 +275,22 @@ namespace PadForge.Services
             // the device list as a phantom online controller for the rest of
             // the session.
             var stopping = new System.Collections.Generic.List<WebControllerDevice>();
-            foreach (var kvp in _clients)
-                if (kvp.Value?.Device != null) stopping.Add(kvp.Value.Device);
-
-            // Close all client WebSockets.
-            foreach (var kvp in _clients)
+            ClientSession[] sessions;
+            lock (_registrationLock)
             {
-                try { kvp.Value.CancellationSource.Cancel(); }
+                sessions = _clients.Values.ToArray();
+                foreach (var session in sessions)
+                    if (session?.Device != null) stopping.Add(session.Device);
+                _clients.Clear();
+            }
+
+            foreach (var session in sessions)
+            {
+                try { session.CancellationSource.Cancel(); }
                 catch { /* best effort */ }
             }
 
-            _acceptThread?.Join(3000);
-            _acceptThread = null;
-            _listener = null;
-            _clients.Clear();
+            _joinThread(acceptThread);
 
             // Fire the teardown ourselves, AFTER the clear. Doing it here
             // rather than before is what keeps it exactly-once: with _clients
@@ -202,25 +308,20 @@ namespace PadForge.Services
             _clientPadIds.Clear();
             _typePadCounters.Clear();
 
-            // Give the http.sys certificate binding back. Nothing called
-            // RemoveBinding, so turning the web controller off (or moving it to
-            // another port, which stops and restarts) left the old port bound
-            // to our certificate for the life of the machine, including after
-            // uninstall. Off the UI thread: it spawns netsh.
-            if (_https)
-            {
-                int boundPort = _port;
-                _https = false;
-                Task.Run(() => { try { WebControllerTls.RemoveBinding(boundPort); } catch { } });
+            RaiseStatus(generation, Strings.Instance.Common_Stopped);
             }
-
-            StatusChanged?.Invoke(this, Strings.Instance.Common_Stopped);
+            finally
+            {
+                // Releasing an older lease cannot remove a newer startup's binding.
+                binding?.Dispose();
+                lifetime?.Dispose();
+                lock (_lifecycleLock) _stopping = false;
+            }
         }
 
         public void Dispose()
         {
-            if (_disposed) return;
-            _disposed = true;
+            lock (_lifecycleLock) _disposed = true;
             Stop();
             GC.SuppressFinalize(this);
         }
@@ -229,30 +330,34 @@ namespace PadForge.Services
         //  Accept loop
         // ─────────────────────────────────────────────
 
-        private void AcceptLoop()
+        private void AcceptLoop(IWebControllerListener listener, CancellationToken lifetime, long generation)
         {
-            while (_running)
+            while (!lifetime.IsCancellationRequested && IsServing(generation))
             {
                 HttpListenerContext ctx;
                 try
                 {
-                    ctx = _listener.GetContext();
+                    ctx = listener.GetContext();
                 }
                 catch
                 {
-                    if (!_running) break;
+                    if (lifetime.IsCancellationRequested || !IsServing(generation)) break;
                     // A dead listener throws immediately and forever, and the
                     // bare continue burned a core spinning on it. Stop when the
                     // listener is gone; pause briefly on a transient failure.
-                    var l = _listener;
-                    if (l == null || !l.IsListening) break;
+                    if (!listener.IsListening) break;
                     Thread.Sleep(50);
                     continue;
                 }
 
+                if (lifetime.IsCancellationRequested || !IsServing(generation))
+                {
+                    try { ctx?.Response.Close(); } catch { }
+                    break;
+                }
                 if (ctx.Request.IsWebSocketRequest)
                 {
-                    _ = Task.Run(() => HandleWebSocketAsync(ctx));
+                    _ = Task.Run(() => HandleWebSocketAsync(ctx, lifetime, generation));
                 }
                 else
                 {
@@ -451,7 +556,7 @@ namespace PadForge.Services
         //  WebSocket handling
         // ─────────────────────────────────────────────
 
-        private async Task HandleWebSocketAsync(HttpListenerContext ctx)
+        private async Task HandleWebSocketAsync(HttpListenerContext ctx, CancellationToken lifetime, long generation)
         {
             WebSocket ws = null;
             try
@@ -490,8 +595,13 @@ namespace PadForge.Services
                 // Per-type pad numbering: each type (xbox360/ds4/touchpad) starts at 1.
                 var typeKey = isTouchpadClient ? "touchpad" : layoutParam.ToLowerInvariant();
                 var compositeKey = typeKey + ":" + clientId;
-                var padId = _clientPadIds.GetOrAdd(compositeKey,
-                    _ => _typePadCounters.AddOrUpdate(typeKey, 1, (_, v) => v + 1));
+                int? allocated = AllocateClientNumber(generation, compositeKey, typeKey);
+                if (!allocated.HasValue)
+                {
+                    ws.Dispose();
+                    return;
+                }
+                int padId = allocated.Value;
                 string name;
                 string customLayoutJson = null;
                 if (isTouchpadClient)
@@ -600,7 +710,7 @@ namespace PadForge.Services
                 }
                 device.SetConnected(true);
 
-                var cts = new CancellationTokenSource();
+                var cts = CancellationTokenSource.CreateLinkedTokenSource(lifetime);
                 var session = new ClientSession(ws, device, cts);
 
                 // Handle rumble feedback → send to browser.
@@ -639,6 +749,12 @@ namespace PadForge.Services
                 // phantom.
                 lock (_registrationLock)
                 {
+                    if (!IsServing(generation) || lifetime.IsCancellationRequested)
+                    {
+                        ws.Dispose();
+                        cts.Dispose();
+                        return;
+                    }
                     _clients.TryGetValue(compositeKey, out var prior);
                     if (prior == null && _clients.Count >= MaxClients)
                     {
@@ -681,7 +797,7 @@ namespace PadForge.Services
                 // MaxClients slots. The finally is the sole teardown path.
                 try
                 {
-                    StatusChanged?.Invoke(this, string.Format(Strings.Instance.Server_RunningClients_Format, _clients.Count));
+                    PublishSessionStatus(generation, true);
 
                     // Send connection confirmation.
                     await SendJsonAsync(ws, new { type = "connected", padId, name }, cts.Token, session.SendGate);
@@ -709,7 +825,7 @@ namespace PadForge.Services
                     byte[] assembled = null;
                     int assembledLen = 0;
                     bool overflowed = false;
-                    while (ws.State == WebSocketState.Open && _running && !cts.Token.IsCancellationRequested)
+                    while (ws.State == WebSocketState.Open && IsServing(generation) && !cts.Token.IsCancellationRequested)
                     {
                         WebSocketReceiveResult result;
                         try
@@ -803,9 +919,10 @@ namespace PadForge.Services
                     // this teardown finishes before the replacement registers, or
                     // the replacement's registration retires this session first
                     // and the remove here fails.
+                    bool stillRegistered;
                     lock (_registrationLock)
                     {
-                        bool stillRegistered = ((System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, ClientSession>>)_clients)
+                        stillRegistered = ((System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, ClientSession>>)_clients)
                             .Remove(new System.Collections.Generic.KeyValuePair<string, ClientSession>(compositeKey, session));
                         if (stillRegistered)
                         {
@@ -813,9 +930,7 @@ namespace PadForge.Services
                             DeviceDisconnected?.Invoke(device);
                         }
                     }
-                    StatusChanged?.Invoke(this, _clients.Count > 0
-                        ? string.Format(Strings.Instance.Server_RunningClients_Format, _clients.Count)
-                        : string.Format(Strings.Instance.Server_RunningOn_Format, Url ?? $"http://{_localIp}:{_port}"));
+                    PublishSessionStatus(generation, stillRegistered);
 
                     try
                     {

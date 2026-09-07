@@ -442,8 +442,9 @@
                         }, fail);
                 } catch (e) { fail(); }
             };
-            fire();
+            // A synchronous fallback must be able to cancel this timer.
             slot.rumbleTimer = setInterval(fire, RUMBLE_RENEW_MS);
+            fire();
             return;
         }
         // Phone vibrator, shared by every pad without an actuator: the level is

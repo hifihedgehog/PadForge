@@ -145,6 +145,7 @@ namespace PadForge.Services
                 SlotEnabled = slotEnabled,
                 SlotControllerTypes = slotTypes,
                 SlotProfileIds = slotProfileIds,
+                SlotModel3DAppearances = SlotAppearancePersistence.Empty(),
                 Macros = macros,
                 WorkshopSource = source,
             };

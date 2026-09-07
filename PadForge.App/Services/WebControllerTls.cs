@@ -30,6 +30,10 @@ namespace PadForge.Services
         private const string AppId = "{b9a1f2c4-7d3e-4a6b-9c8f-1e2d3a4b5c6d}";
         private const string CertSubject = "CN=PadForge Web Controller";
         private const string FriendlyName = "PadForge Web Controller";
+        private static readonly WebControllerBindingPool BindingPool = new(
+            port => EnsureHttpsBinding(port) != null, RemoveBinding);
+
+        internal static IDisposable AcquireBinding(int port) => BindingPool.Acquire(port);
 
         /// <summary>Ensures a certificate exists and is bound to the port.
         /// Returns the cert thumbprint on success, or null if any step failed

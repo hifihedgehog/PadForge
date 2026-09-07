@@ -20,6 +20,11 @@ namespace PadForge.Engine.Common.Mapping
     /// </summary>
     public static class SourceEvaluator
     {
+        /// <summary>A blank Direct source occupies a position but reads no input.</summary>
+        public static bool IsUnmappedDirect(MappingSource source)
+            => source != null && string.IsNullOrEmpty(source.Descriptor)
+                && string.Equals(source.Kind ?? "Direct", "Direct", StringComparison.Ordinal);
+
         /// <summary>Per-source AND gate (v18): when
         /// <see cref="MappingSource.GateDescriptor"/> is set, the source
         /// contributes only while that second descriptor reads true on the
@@ -91,7 +96,7 @@ namespace PadForge.Engine.Common.Mapping
             SourceKindRuntime runtime, double frameDeltaSeconds,
             string evaluatedDeviceGuid = null)
         {
-            if (src == null) return false;
+            if (src == null || IsUnmappedDirect(src)) return false;
             if (!GateHeld(state, src, slotIndex, evaluatedDeviceGuid, globalThresholdPercent)) return false;
 
             switch (src.Kind ?? "Direct")
@@ -127,7 +132,7 @@ namespace PadForge.Engine.Common.Mapping
             SourceKindRuntime runtime, double frameDeltaSeconds,
             string evaluatedDeviceGuid = null)
         {
-            if (src == null) return 0f;
+            if (src == null || IsUnmappedDirect(src)) return 0f;
             if (!GateHeld(state, src, slotIndex, evaluatedDeviceGuid)) return 0f;
 
             // Touchpad source readings differ between relative-motion
@@ -325,7 +330,7 @@ namespace PadForge.Engine.Common.Mapping
             SourceKindRuntime runtime, double frameDeltaSeconds,
             string evaluatedDeviceGuid = null)
         {
-            if (src == null) return 0f;
+            if (src == null || IsUnmappedDirect(src)) return 0f;
             if (!GateHeld(state, src, slotIndex, evaluatedDeviceGuid)) return 0f;
 
             switch (src.Kind ?? "Direct")

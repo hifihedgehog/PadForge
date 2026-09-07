@@ -216,7 +216,8 @@ namespace PadForge.Tests
             int cont = page.IndexOf("if (string.IsNullOrEmpty(a.CycleLayers)) continue;", StringComparison.Ordinal);
             Assert.True(sweep > 0, "RenameMaskEverywhere lost the HostLayerMask sweep");
             Assert.True(cont > sweep, "the HostLayerMask sweep must run before the CycleLayers early-continue");
-            Assert.Contains("existing.HostLayerMask = dlg.Result.HostLayerMask;", page);
+            Assert.Contains("existing.HostLayerMask = replacement.HostLayerMask;", page);
+            Assert.Contains("ApplyShiftActivatorEdit(_currentPadVm.PadIndex, existing, dlg.Result);", page);
 
             string dlgXaml = RepoText("PadForge.App", "Views", "ShiftActivatorDialog.xaml");
             Assert.Contains("x:Name=\"HostLayerCombo\"", dlgXaml);

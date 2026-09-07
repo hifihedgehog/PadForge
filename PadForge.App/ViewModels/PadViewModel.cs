@@ -2211,6 +2211,8 @@ namespace PadForge.ViewModels
             set
             {
                 var v = value ?? "Base";
+                if (string.Equals(_activeLayerMask, v, StringComparison.Ordinal)) return;
+                LayerChanging?.Invoke(this, EventArgs.Empty);
                 if (SetProperty(ref _activeLayerMask, v))
                 {
                     foreach (var t in LayerTabs)
@@ -2226,6 +2228,9 @@ namespace PadForge.ViewModels
         /// reload per-row source data so the DataGrid reflects the picked
         /// layer's rows instead of the previous layer's.</summary>
         public event EventHandler LayerActivated;
+
+        /// <summary>Raised before the active layer changes, while the grid still belongs to the old layer.</summary>
+        public event EventHandler LayerChanging;
 
         /// <summary>Authored color hint of the layer currently being
         /// authored ("#AARRGGBB" or empty when unset). The Mappings
@@ -4651,6 +4656,9 @@ namespace PadForge.ViewModels
         /// </summary>
         public void ResetAllSettings()
         {
+            Model3DAppearances = "";
+            KbmConfig.ResetToDefaults();
+            NotifyKbmSurfacesChanged();
             ResetDeadZoneSettings();
             LeftSensitivityCurveX = "0,0;1,1";
             LeftSensitivityCurveY = "0,0;1,1";
@@ -5552,7 +5560,7 @@ namespace PadForge.ViewModels
                     MenuId = id,
                     Name = string.Format(Strings.Instance.Menu_NewNameFormat, id),
                 };
-                set.Menus.Add(entry);
+                InputService.EditMenuConfiguration(PadIndex, () => set.Menus.Add(entry), entry.MenuId);
                 var vm = new MenuEditorItem(entry);
                 ApplyMenuButtonStyle(vm);
                 vm.Changed += OnMenuEdited;
@@ -5568,7 +5576,8 @@ namespace PadForge.ViewModels
             {
                 var vm = _selectedMenu;
                 if (vm == null) return;
-                SlotMenuSet?.Menus.Remove(vm.Entry);
+                InputService.EditMenuConfiguration(PadIndex,
+                    () => SlotMenuSet?.Menus.Remove(vm.Entry), vm.Entry.MenuId);
                 Menus.Remove(vm);
                 SelectedMenu = Menus.LastOrDefault();
                 OnMenuEdited();
@@ -5588,7 +5597,7 @@ namespace PadForge.ViewModels
                     if (m != null && m.MenuId >= id) id = m.MenuId + 1;
                 clone.MenuId = id;
                 clone.Name = string.Format(Strings.Instance.Macro_CopyNameFormat, vm.Entry.Name);
-                set.Menus.Add(clone);
+                InputService.EditMenuConfiguration(PadIndex, () => set.Menus.Add(clone), clone.MenuId);
                 var cloneVm = new MenuEditorItem(clone);
                 ApplyMenuButtonStyle(cloneVm);
                 cloneVm.Changed += OnMenuEdited;
@@ -5972,7 +5981,7 @@ namespace PadForge.ViewModels
 
         private string _model3DAppearances = "";
         /// <summary>3D preview colorway per model family, comma-joined
-        /// "Family=AppearanceId" pairs on <see cref="PadSetting"/>, so each
+        /// "Family=AppearanceId" pairs saved with the slot, so each
         /// virtual controller keeps its own appearance per family. Cosmetic
         /// only.</summary>
         public string Model3DAppearances
@@ -6333,6 +6342,7 @@ namespace PadForge.ViewModels
             vm.InputChoicesProvider = () => SlotAvailableInputs;
             vm.RowBoundProvider = IsMenuItemRowBound;
             vm.StructureChanged = () => MenusStructureChanged?.Invoke();
+            vm.RuntimeEdit = edit => InputService.TryEditMenuConfiguration(PadIndex, edit, vm.Entry.MenuId);
             // #413 layer gate: the menu's picker mirrors this slot's layer
             // choices (Any Layer, Base, every named layer, every cycle stop)
             // and adds its own marked entry for a mask not among them.
@@ -7588,7 +7598,8 @@ namespace PadForge.ViewModels
         public RelayCommand CopySettingsCommand =>
             _copySettingsCommand ??= new RelayCommand(
                 () => CopySettingsRequested?.Invoke(this, EventArgs.Empty),
-                () => HasSelectedDevice);
+                () => HasSelectedDevice || (PadIndex >= 0
+                    && PadIndex < SettingsManager.SlotCreated.Length && SettingsManager.SlotCreated[PadIndex]));
 
         /// <summary>
         /// Raised when the user wants to paste settings from the clipboard.
@@ -7600,7 +7611,8 @@ namespace PadForge.ViewModels
         public RelayCommand PasteSettingsCommand =>
             _pasteSettingsCommand ??= new RelayCommand(
                 () => PasteSettingsRequested?.Invoke(this, EventArgs.Empty),
-                () => HasSelectedDevice);
+                () => HasSelectedDevice || (PadIndex >= 0
+                    && PadIndex < SettingsManager.SlotCreated.Length && SettingsManager.SlotCreated[PadIndex]));
 
         /// <summary>
         /// Raised when the user wants to copy settings from another device.
@@ -7612,7 +7624,8 @@ namespace PadForge.ViewModels
         public RelayCommand CopyFromCommand =>
             _copyFromCommand ??= new RelayCommand(
                 () => CopyFromRequested?.Invoke(this, EventArgs.Empty),
-                () => HasSelectedDevice);
+                () => HasSelectedDevice || (PadIndex >= 0
+                    && PadIndex < SettingsManager.SlotCreated.Length && SettingsManager.SlotCreated[PadIndex]));
 
         // ── Map All ──
 

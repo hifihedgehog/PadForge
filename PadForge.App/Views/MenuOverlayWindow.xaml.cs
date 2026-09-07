@@ -257,6 +257,35 @@ namespace PadForge.Views
                         inner * 1.6, 13 * Math.Max(scale, 0.7), scale);
                 }
             }
+            ExpandRadialCanvasForContent();
+        }
+
+        private void ExpandRadialCanvasForContent()
+        {
+            double padding = 0;
+            foreach (FrameworkElement child in MenuCanvas.Children)
+            {
+                if (child is not Image && child is not TextBlock) continue;
+                double width = double.IsNaN(child.Width) ? child.DesiredSize.Width : child.Width;
+                double height = double.IsNaN(child.Height) ? child.DesiredSize.Height : child.Height;
+                double left = Canvas.GetLeft(child);
+                double top = Canvas.GetTop(child);
+                padding = Math.Max(padding, Math.Max(-left, -top));
+                padding = Math.Max(padding,
+                    Math.Max(left + width - MenuCanvas.Width, top + height - MenuCanvas.Height));
+            }
+            if (padding <= 0) return;
+            padding = Math.Ceiling(padding);
+            // Symmetric padding keeps the ring centered and preserves every cell's geometry.
+            foreach (FrameworkElement child in MenuCanvas.Children)
+            {
+                double left = Canvas.GetLeft(child);
+                double top = Canvas.GetTop(child);
+                Canvas.SetLeft(child, (double.IsNaN(left) ? 0 : left) + padding);
+                Canvas.SetTop(child, (double.IsNaN(top) ? 0 : top) + padding);
+            }
+            MenuCanvas.Width += 2 * padding;
+            MenuCanvas.Height += 2 * padding;
         }
 
         /// <summary>Annular sector for ring slot <paramref name="slot"/>
@@ -308,14 +337,50 @@ namespace PadForge.Views
             double cw = GridCellWidth * scale;
             double ch = GridCellHeight * scale;
             double gap = GridCellGap * scale;
+            double fontSize = 13 * Math.Max(scale, 0.7);
 
             int cellCount = Math.Clamp(menu.CellCount, 0, MaxRenderCells);
             var (cols, rows) = MenuSelectionMath.GridShape(cellCount);
             if (cols <= 0) { MenuCanvas.Width = 0; MenuCanvas.Height = 0; return; }
+            var bound = BoundItems(menu);
+            foreach (var pair in bound)
+            {
+                if (pair.Key < 0 || pair.Key >= cellCount) continue;
+                var item = pair.Value;
+                bool hasIcon = !string.IsNullOrEmpty(item.Icon)
+                    && Common.MenuIconResolver.Resolve(item.Icon) != null;
+                if (hasIcon)
+                {
+                    double iconWidth = 30 * Math.Max(scale, 0.7)
+                        * Math.Clamp(item.IconScalePercent, 25, 200) / 100.0;
+                    cw = Math.Max(cw, iconWidth + 8 * scale);
+                }
+                if (menu.ShowLabels && !string.IsNullOrEmpty(item.Label))
+                    cw = Math.Max(cw, 36);
+            }
+            foreach (var pair in bound)
+            {
+                if (pair.Key < 0 || pair.Key >= cellCount) continue;
+                var item = pair.Value;
+                bool hasIcon = !string.IsNullOrEmpty(item.Icon)
+                    && Common.MenuIconResolver.Resolve(item.Icon) != null;
+                double iconSize = 30 * Math.Max(scale, 0.7)
+                    * Math.Clamp(item.IconScalePercent, 25, 200) / 100.0;
+                bool labelShown = menu.ShowLabels && !string.IsNullOrEmpty(item.Label);
+                double halfHeight = hasIcon ? iconSize / 2 : 0;
+                if (labelShown)
+                {
+                    var label = MakeLabel(item.Label, cw - 12, fontSize);
+                    label.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                    halfHeight = hasIcon
+                        ? Math.Max(iconSize * 0.95, iconSize * 0.55 + label.DesiredSize.Height / 2)
+                        : label.DesiredSize.Height / 2;
+                }
+                ch = Math.Max(ch, 2 * halfHeight + 8 * scale);
+            }
             MenuCanvas.Width = cols * cw + (cols - 1) * gap;
             MenuCanvas.Height = rows * ch + (rows - 1) * gap;
 
-            var bound = BoundItems(menu);
             for (int idx = 0; idx < cellCount; idx++)
             {
                 int col = idx % cols, row = idx / cols;

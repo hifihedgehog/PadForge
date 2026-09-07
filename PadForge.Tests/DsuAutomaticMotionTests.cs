@@ -41,6 +41,10 @@ namespace PadForge.Tests
 
         [Theory]
         [InlineData("MaxAbs", 400f, 0.8f)]
+        [InlineData("OR", 400f, 0.8f)]
+        [InlineData("AND", 400f, 0.8f)]
+        [InlineData("XOR", 400f, 0.8f)]
+        [InlineData("StickTrim", 400f, 0.8f)]
         [InlineData("Sum", 700f, 1.5f)]
         [InlineData("Average", 350f, 0.75f)]
         [InlineData("Custom", 1100f, 2.3f)]
@@ -503,6 +507,42 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public async Task DisabledSlot_SendsZeroSensorsBesideAnEnabledControl()
+        {
+            using var rig = new MotionRig();
+            var a = rig.AddDevice(0, 0.2f, 0.3f, 0.4f);
+            var b = rig.AddDevice(1, 0.6f, 0.7f, 0.8f);
+            rig.ConfigureSlot(0, VirtualControllerType.Xbox, a);
+            rig.ConfigureSlot(1, VirtualControllerType.Xbox, b);
+            var active = await rig.TickAndReceive();
+            Assert.Equal(2, active[0][21]);
+            Assert.Equal(2, active[0][22]);
+            Assert.NotEqual(0f, ReadFloat(active[0], 88));
+            Assert.NotEqual(0f, ReadFloat(active[1], 88));
+
+            SettingsManager.SlotEnabled[0] = false;
+            a.InputState.Gyro[0] = 1.2f;
+            a.InputState.Accel[0] = 19.6133f;
+            var disabled = await rig.TickAndReceive();
+            Assert.Equal(0, disabled[0][21]);
+            Assert.Equal(0, disabled[0][22]);
+            Assert.Equal(0, disabled[0][31]);
+            foreach (int offset in new[] { 76, 80, 84, 88, 92, 96 })
+            {
+                Assert.Equal(0f, ReadFloat(disabled[0], offset));
+                Assert.Equal(ReadFloat(active[1], offset), ReadFloat(disabled[1], offset));
+            }
+            Assert.Equal(2, disabled[1][21]);
+            Assert.Equal(2, disabled[1][22]);
+
+            SettingsManager.SlotEnabled[0] = true;
+            var resumed = await rig.TickAndReceive();
+            Assert.Equal(2, resumed[0][21]);
+            Assert.Equal(2, resumed[0][22]);
+            Assert.Equal(1.2f * 180f / MathF.PI, ReadFloat(resumed[0], 88), 4);
+        }
+
+        [Fact]
         public async Task DisabledRemovedAndNeutralizedSlots_DoNotLeaveAnActiveMotionSample()
         {
             using var rig = new MotionRig();
@@ -523,6 +563,340 @@ namespace PadForge.Tests
             Assert.Equal(0f, rig.Manager.DsuMotionSnapshots[0].GyroPitch);
         }
 
+        [Theory]
+        [InlineData(false, false)]
+        [InlineData(false, true)]
+        [InlineData(true, true)]
+        public async Task FocusPolicy_LeavesLiveMotionAloneUnlessSuspensionApplies(bool suspend, bool foreground)
+        {
+            using var rig = new MotionRig();
+            var device = rig.AddDevice(0, 0.2f, 0.3f, 0.4f);
+            rig.ConfigureSlot(0, VirtualControllerType.Xbox, device);
+            var packet = (await rig.TickAndReceive())[0];
+            Assert.NotEqual(0f, ReadFloat(packet, 88));
+            int submissions = 0, releases = 0;
+            rig.Manager.SuspendWhenBackground = suspend;
+            rig.Manager.HostIsForeground = foreground;
+
+            Assert.False(rig.Manager.ApplyFocusSuspension(() => submissions++, () => releases++));
+
+            Assert.Equal(0, submissions);
+            Assert.Equal(0, releases);
+            Assert.True(rig.Manager.DsuMotionSnapshots[0].HasMotion);
+            Assert.Equal(ReadFloat(packet, 88), rig.Manager.DsuMotionSnapshots[0].GyroPitch);
+        }
+
+        [Fact]
+        public async Task FocusSuspension_DeliversNeutralPacketsAndRearmsAfterResume()
+        {
+            using var rig = new MotionRig();
+            var device = rig.AddDevice(0, 0.2f, 0.3f, 0.4f);
+            rig.ConfigureSlot(0, VirtualControllerType.Xbox, device);
+            Assert.NotEqual(0f, ReadFloat((await rig.TickAndReceive())[0], 88));
+            int submissions = 0, releases = 0;
+            rig.Manager.SuspendWhenBackground = true;
+            rig.Manager.HostIsForeground = false;
+
+            Assert.True(rig.Manager.ApplyFocusSuspension(() => submissions++, () => releases++));
+            Assert.Equal(2, submissions);
+            Assert.Equal(1, releases);
+            var firstNeutral = await rig.ReceivePackets();
+            AssertNeutralDsuPackets(firstNeutral);
+            Assert.True(BinaryPrimitives.ReadInt64LittleEndian(firstNeutral[0].AsSpan(68)) > 0);
+            Assert.Equal(0, rig.Manager.DsuMotionSnapshots[0].TimestampUs);
+
+            device.InputState.Gyro[0] = 0.9f;
+            await Task.Delay(2);
+            Assert.True(rig.Manager.ApplyFocusSuspension(() => submissions++, () => releases++));
+            Assert.Equal(3, submissions);
+            Assert.Equal(1, releases);
+            var repeatedNeutral = await rig.ReceivePackets();
+            AssertNeutralDsuPackets(repeatedNeutral);
+            AssertDsuTimeAdvanced(firstNeutral, repeatedNeutral);
+            Assert.Equal(0, rig.Manager.DsuMotionSnapshots[0].TimestampUs);
+
+            rig.Manager.HostIsForeground = true;
+            Assert.False(rig.Manager.ApplyFocusSuspension(() => submissions++, () => releases++));
+            Assert.Equal(0.9f * 180f / MathF.PI, ReadFloat((await rig.TickAndReceive())[0], 88), 4);
+            rig.Manager.HostIsForeground = false;
+            Assert.True(rig.Manager.ApplyFocusSuspension(() => submissions++, () => releases++));
+            Assert.Equal(2, releases);
+            AssertNeutralDsuPackets(await rig.ReceivePackets());
+        }
+
+        [Fact]
+        public async Task FocusSuspension_DeliversNeutralEvenWhenControllerSubmissionThrows()
+        {
+            using var rig = new MotionRig();
+            var device = rig.AddDevice(0, 0.2f, 0.3f, 0.4f);
+            rig.ConfigureSlot(0, VirtualControllerType.Xbox, device);
+            Assert.NotEqual(0f, ReadFloat((await rig.TickAndReceive())[0], 88));
+            rig.Manager.SuspendWhenBackground = true;
+            rig.Manager.HostIsForeground = false;
+            int releases = 0;
+
+            Assert.True(rig.Manager.ApplyFocusSuspension(
+                () => throw new InvalidOperationException("Controller submission test"), () => releases++));
+
+            Assert.Equal(1, releases);
+            AssertNeutralDsuPackets(await rig.ReceivePackets());
+            Assert.True(rig.Manager.ApplyFocusSuspension(
+                () => throw new InvalidOperationException("Controller upkeep test"), () => releases++));
+            Assert.Equal(1, releases);
+            AssertNeutralDsuPackets(await rig.ReceivePackets());
+        }
+
+        private static void AssertNeutralDsuPackets(Dictionary<int, byte[]> packets)
+        {
+            Assert.Equal(4, packets.Count);
+            foreach (var packet in packets.Values)
+            {
+                Assert.Equal(0, packet[22]);
+                foreach (int offset in new[] { 76, 80, 84, 88, 92, 96 })
+                    Assert.Equal(0f, ReadFloat(packet, offset));
+            }
+        }
+
+        private static void AssertDsuTimeAdvanced(Dictionary<int, byte[]> first, Dictionary<int, byte[]> second)
+        {
+            foreach (var slot in first.Keys)
+            {
+                Assert.True(BinaryPrimitives.ReadInt64LittleEndian(second[slot].AsSpan(68))
+                    > BinaryPrimitives.ReadInt64LittleEndian(first[slot].AsSpan(68)));
+                Assert.True(BinaryPrimitives.ReadUInt32LittleEndian(second[slot].AsSpan(32))
+                    > BinaryPrimitives.ReadUInt32LittleEndian(first[slot].AsSpan(32)));
+            }
+        }
+        [Theory]
+        [InlineData(false, false)]
+        [InlineData(false, true)]
+        [InlineData(true, false)]
+        [InlineData(true, true)]
+        public async Task LastSlotDisableOrDelete_CanIdleBeforeAnotherMotionPoll(bool delete, bool liveController)
+        {
+            using var rig = new MotionRig();
+            var device = rig.AddDevice(0, 0.2f, 0.3f, 0.4f);
+            rig.ConfigureSlot(0, VirtualControllerType.Xbox, device);
+            using var policy = new IdlePolicyRig(rig.Manager);
+            var controller = liveController ? new IdleController() : null;
+            rig.Manager.GetVirtualControllers()[0] = controller;
+            rig.Manager.HmInactivityTimeoutSeconds = 60;
+            policy.Refresh();
+            Assert.False(rig.Manager.IsIdle);
+            var moving = await rig.TickAndReceive();
+            Assert.NotEqual(0f, ReadFloat(moving[0], 88));
+            long cachedTime = rig.Manager.DsuMotionSnapshots[0].TimestampUs;
+
+            if (delete) policy.Devices.DeleteSlot(0);
+            else policy.Devices.SetSlotEnabled(0, false);
+            policy.Refresh();
+
+            Assert.True(rig.Manager.IsIdle);
+            Assert.Same(controller, rig.Manager.GetVirtualControllers()[0]);
+            Assert.True(rig.Manager.DsuMotionSnapshots[0].HasMotion);
+            Assert.Equal(cachedTime, rig.Manager.DsuMotionSnapshots[0].TimestampUs);
+            Assert.True(rig.Manager.BeginIdlePoll());
+            var neutral = await rig.ReceivePackets();
+            AssertNeutralDsuPackets(neutral);
+            foreach (var packet in neutral.Values)
+            {
+                Assert.Equal(0, packet[21]);
+                Assert.Equal(0, packet[31]);
+                Assert.True(BinaryPrimitives.ReadInt64LittleEndian(packet.AsSpan(68)) > 0);
+            }
+            Assert.Equal(cachedTime, rig.Manager.DsuMotionSnapshots[0].TimestampUs);
+            await Task.Delay(2);
+            Assert.True(rig.Manager.BeginIdlePoll());
+            var repeated = await rig.ReceivePackets();
+            AssertNeutralDsuPackets(repeated);
+            AssertDsuTimeAdvanced(neutral, repeated);
+        }
+
+        [Fact]
+        public async Task AnotherActiveSlot_KeepsTheNormalMotionPathAvailable()
+        {
+            using var rig = new MotionRig();
+            var first = rig.AddDevice(0, 0.2f, 0.3f, 0.4f);
+            var second = rig.AddDevice(1, 0.6f, 0.7f, 0.8f);
+            rig.ConfigureSlot(0, VirtualControllerType.Xbox, first);
+            rig.ConfigureSlot(1, VirtualControllerType.Xbox, second);
+            using var policy = new IdlePolicyRig(rig.Manager);
+            Assert.NotEqual(0f, ReadFloat((await rig.TickAndReceive())[0], 88));
+
+            policy.Devices.SetSlotEnabled(0, false);
+            policy.Refresh();
+
+            Assert.False(rig.Manager.IsIdle);
+            Assert.False(rig.Manager.BeginIdlePoll());
+            Assert.Equal(0, rig.AvailablePacketBytes);
+            var packets = await rig.TickAndReceive();
+            Assert.Equal(0f, ReadFloat(packets[0], 88));
+            Assert.Equal(0.6f * 180f / MathF.PI, ReadFloat(packets[1], 88), 4);
+        }
+
+        [Theory]
+        [InlineData(60, true, false, false)]
+        [InlineData(60, false, true, false)]
+        [InlineData(0, true, true, false)]
+        [InlineData(60, true, false, true)]
+        [InlineData(60, false, true, true)]
+        [InlineData(0, true, true, true)]
+        public async Task LastAssignedDeviceLeaves_OnlyWaitsForAnEnabledControllerWithATimeout(
+            int timeout, bool liveController, bool expectedIdle, bool unassign)
+        {
+            using var rig = new MotionRig();
+            var device = rig.AddDevice(0, 0.2f, 0.3f, 0.4f);
+            rig.ConfigureSlot(0, VirtualControllerType.Xbox, device);
+            using var policy = new IdlePolicyRig(rig.Manager);
+            if (liveController) rig.Manager.GetVirtualControllers()[0] = new IdleController();
+            rig.Manager.HmInactivityTimeoutSeconds = timeout;
+            Assert.NotEqual(0f, ReadFloat((await rig.TickAndReceive())[0], 88));
+
+            if (unassign) policy.Devices.UnassignDevice(device.InstanceGuid);
+            else device.IsOnline = false;
+            policy.Refresh();
+
+            Assert.Equal(expectedIdle, rig.Manager.IsIdle);
+            Assert.Equal(expectedIdle, rig.Manager.BeginIdlePoll());
+            var packets = expectedIdle ? await rig.ReceivePackets() : await rig.TickAndReceive();
+            AssertNeutralDsuPackets(packets);
+        }
+
+        [Fact]
+        public async Task IdleWakeBeforeTheUiRefresh_DoesNotRepublishCachedMotion()
+        {
+            using var rig = new MotionRig();
+            var device = rig.AddDevice(0, 0.2f, 0.3f, 0.4f);
+            rig.ConfigureSlot(0, VirtualControllerType.Xbox, device);
+            using var policy = new IdlePolicyRig(rig.Manager);
+            rig.Manager.HmInactivityTimeoutSeconds = 0;
+            Assert.NotEqual(0f, ReadFloat((await rig.TickAndReceive())[0], 88));
+            device.IsOnline = false;
+            policy.Refresh();
+            Assert.True(rig.Manager.IsIdle);
+
+            device.IsOnline = true;
+            device.InputState.Gyro[0] = 0.9f;
+            Assert.True(rig.Manager.BeginIdlePoll());
+            var waiting = await rig.ReceivePackets();
+            Assert.Equal(2, waiting[0][21]);
+            AssertNeutralDsuPackets(waiting);
+
+            policy.Refresh();
+            Assert.False(rig.Manager.BeginIdlePoll());
+            Assert.Equal(0, rig.AvailablePacketBytes);
+            Assert.Equal(0.9f * 180f / MathF.PI, ReadFloat((await rig.TickAndReceive())[0], 88), 4);
+        }
+
+        [Fact]
+        public async Task IdleDelivery_ReadsTheCurrentServerAfterPauseAndReplacement()
+        {
+            using var rig = new MotionRig();
+            var device = rig.AddDevice(0, 0.2f, 0.3f, 0.4f);
+            rig.ConfigureSlot(0, VirtualControllerType.Xbox, device);
+            using var policy = new IdlePolicyRig(rig.Manager);
+            Assert.NotEqual(0f, ReadFloat((await rig.TickAndReceive())[0], 88));
+            policy.Devices.SetSlotEnabled(0, false);
+            policy.Refresh();
+            Assert.True(rig.Manager.BeginIdlePoll());
+            AssertNeutralDsuPackets(await rig.ReceivePackets());
+
+            var oldServer = rig.Manager.DsuServer;
+            rig.Manager.DsuServer = null;
+            oldServer.Stop();
+            Assert.True(rig.Manager.BeginIdlePoll());
+            Assert.Equal(0, rig.AvailablePacketBytes);
+
+            using var replacement = new DsuMotionServer();
+            try
+            {
+                Assert.True(replacement.Start(0));
+                rig.UseServer(replacement);
+                Assert.True(rig.Manager.BeginIdlePoll());
+                var resumed = await rig.ReceivePackets();
+                AssertNeutralDsuPackets(resumed);
+                Assert.True(BinaryPrimitives.ReadInt64LittleEndian(resumed[0].AsSpan(68)) > 0);
+            }
+            finally
+            {
+                rig.Manager.DsuServer = null;
+            }
+        }
+
+        private sealed class IdlePolicyRig : IDisposable
+        {
+            private readonly Action _afterRefresh = SettingsService.AfterMappingSetsRefreshed;
+            private readonly Dictionary<VirtualControllerType, int[]> _orders = new();
+            private readonly InputService _service;
+            private readonly Action _refresh;
+            public DeviceService Devices { get; }
+
+            public IdlePolicyRig(InputManager manager)
+            {
+                // These service methods do not need a running WPF application.
+                // An application would also enable SettingsService's autosave timer.
+                Assert.Null(System.Windows.Application.Current);
+                foreach (var type in Enum.GetValues<VirtualControllerType>())
+                {
+                    var order = SettingsManager.SlotOrders.GetOrderFor(type);
+                    _orders[type] = order.ToArray();
+                    order.Clear();
+                }
+                try
+                {
+                    for (int i = 0; i < InputManager.MaxPads; i++)
+                        if (SettingsManager.SlotCreated[i])
+                            SettingsManager.SlotOrders.Add(i, manager.SlotControllerTypes[i]);
+                    var vm = new PadForge.ViewModels.MainViewModel();
+                    Devices = new DeviceService(vm, new SettingsService(vm));
+                    // UpdateIdleState uses the manager and shared settings. Avoid
+                    // the constructor's unrelated device and UI subscriptions.
+                    _service = (InputService)System.Runtime.CompilerServices.RuntimeHelpers
+                        .GetUninitializedObject(typeof(InputService));
+                    typeof(InputService).GetField("_inputManager", BindingFlags.Instance | BindingFlags.NonPublic)
+                        .SetValue(_service, manager);
+                    _refresh = typeof(InputService).GetMethod("UpdateIdleState",
+                        BindingFlags.Instance | BindingFlags.NonPublic).CreateDelegate<Action>(_service);
+                }
+                catch
+                {
+                    Dispose();
+                    throw;
+                }
+            }
+
+            public void Refresh()
+            {
+                // Fixtures contain no NFC device. Keep its unrelated hint latch
+                // at the current capture value so this call performs no native I/O.
+                typeof(InputService).GetField("_switchNfcArmed", BindingFlags.Instance | BindingFlags.NonPublic)
+                    .SetValue(_service, NfcTagRegistry.RegistrationCaptureActive);
+                _refresh();
+            }
+
+            public void Dispose()
+            {
+                SettingsService.AfterMappingSetsRefreshed = _afterRefresh;
+                foreach (var pair in _orders)
+                {
+                    var order = SettingsManager.SlotOrders.GetOrderFor(pair.Key);
+                    order.Clear();
+                    order.AddRange(pair.Value);
+                }
+            }
+        }
+
+        private sealed class IdleController : IVirtualController
+        {
+            public VirtualControllerType Type => VirtualControllerType.Xbox;
+            public bool IsConnected => true;
+            public int FeedbackPadIndex { get; set; }
+            public void Connect() { }
+            public void Disconnect() { }
+            public void SubmitGamepadState(Gamepad state) { }
+            public void RegisterFeedbackCallback(int padIndex, Vibration[] vibrationStates) { }
+            public void Dispose() { }
+        }
         [Fact]
         public void ServerOff_SkipsAutomaticMotionAndResumesFromCurrentSamples()
         {
@@ -678,6 +1052,11 @@ namespace PadForge.Tests
             {
                 _update();
                 _broadcast();
+                return await ReceivePackets();
+            }
+
+            public async Task<Dictionary<int, byte[]>> ReceivePackets()
+            {
                 var packets = new Dictionary<int, byte[]>();
                 while (packets.Count < 4)
                 {
@@ -686,6 +1065,16 @@ namespace PadForge.Tests
                     packets.Add(result.Buffer[20], result.Buffer);
                 }
                 return packets;
+            }
+
+            public int AvailablePacketBytes => _client.Available;
+
+            public void UseServer(DsuMotionServer server)
+            {
+                Manager.DsuServer = server;
+                typeof(DsuMotionServer).GetMethod("HandlePadDataRequest",
+                    BindingFlags.Instance | BindingFlags.NonPublic).Invoke(server,
+                    new object[] { new byte[28], 28, _client.Client.LocalEndPoint });
             }
 
             public void Update() => _update();

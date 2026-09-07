@@ -696,6 +696,38 @@ namespace PadForge.Engine.Data
                 devices, dev => dev.HasAccel);
         }
 
+        public static bool IsMotionTarget(string target)
+            => target == MotionGyroTarget || target == MotionAccelTarget;
+
+        /// <summary>Empty rows and rows containing only modifiers have no motion inputs.</summary>
+        public static bool IsEmptyMotionRow(MappingRow row)
+        {
+            if (row == null || !IsMotionTarget(row.Target)) return false;
+            if (row.Sources == null || row.Sources.Count == 0) return true;
+            foreach (var source in row.Sources)
+                if (source == null
+                    || !string.Equals(source.Kind ?? "Direct", "InvertOnHold", StringComparison.Ordinal))
+                    return false;
+            return true;
+        }
+
+        /// <summary>Whether automatic mapping must leave this motion row's sources intact.</summary>
+        public static bool PreservesMotionSources(MappingRow row)
+        {
+            if (row == null || !IsMotionTarget(row.Target)) return false;
+            if (row.CombineMode == "Custom" || IsEmptyMotionRow(row))
+                return true;
+            foreach (var source in row.Sources)
+            {
+                if (source != null
+                    && !string.Equals(source.Kind ?? "Direct", "InvertOnHold", StringComparison.Ordinal)
+                    && string.IsNullOrEmpty(source.DeviceGuid)
+                    && Common.Mapping.SourceCoercion.IsMotionDescriptor(source.Descriptor))
+                    return true;
+            }
+            return false;
+        }
+
         private static void EnsureMotionRowForSensor(
             MappingSet ms, string target, string descriptor,
             IReadOnlyList<(string DeviceGuid, bool HasGyro, bool HasAccel)> devices,
@@ -723,6 +755,10 @@ namespace PadForge.Engine.Data
                 row = candidate;
                 break;
             }
+
+            // Empty rows disable this channel. Custom rows keep their argument
+            // positions, and an Any Device motion source already covers the slot.
+            if (PreservesMotionSources(row)) return;
 
             // Collect already-represented device guids for this target so we
             // don't double-add. Case-insensitive guid match (XML round-trips

@@ -1680,93 +1680,135 @@ namespace PadForge.Views
             // Apply edits in-place. LayerMask may change when the user
             // renames; if so, retag every MappingRow on the old mask to
             // the new mask so the existing authoring stays attached.
-            string oldMask = existing.LayerMask;
-            string oldMode = existing.Mode;   // round five, X12 inverse
-            string oldCycle = existing.CycleLayers;
-            existing.LayerName = dlg.Result.LayerName;
-            existing.LayerMask = dlg.Result.LayerMask;
-            existing.DeviceGuid = dlg.Result.DeviceGuid;
-            existing.Descriptor = dlg.Result.Descriptor;
-            existing.Mode = dlg.Result.Mode;
-            existing.Kind = dlg.Result.Kind;
-            existing.InheritUnmapped = dlg.Result.InheritUnmapped;
-            existing.ChordSecondDeviceGuid = dlg.Result.ChordSecondDeviceGuid;
-            existing.ChordSecondDescriptor = dlg.Result.ChordSecondDescriptor;
-            existing.AxisThreshold = dlg.Result.AxisThreshold;
-            existing.HostLayerMask = dlg.Result.HostLayerMask;
-            existing.JumpToLayer = dlg.Result.JumpToLayer;
-            existing.CycleLayers = dlg.Result.CycleLayers;
-            existing.CyclePrevDeviceGuid = dlg.Result.CyclePrevDeviceGuid;
-            existing.CyclePrevDescriptor = dlg.Result.CyclePrevDescriptor;
-            existing.CycleWrap = dlg.Result.CycleWrap;
-            existing.CycleIncludeBase = dlg.Result.CycleIncludeBase;
-            existing.DelayMs = dlg.Result.DelayMs;
-            existing.AutoCancelMs = dlg.Result.AutoCancelMs;
-            existing.Color = dlg.Result.Color;
-            existing.Icon = dlg.Result.Icon;
-            existing.PostponeMapping = dlg.Result.PostponeMapping;
-            existing.FireOnRelease = dlg.Result.FireOnRelease;
-
-            if (!string.Equals(oldMask, existing.LayerMask, StringComparison.Ordinal))
+            using (PadForge.Services.InputService.EnterMenuEdit())
             {
-                // A mask change renames the LOGICAL layer, and mask
-                // equality is the layer identity across slots (audit
-                // 2026-07-25 round four, R10/R19/R28). Split-config imports
-                // clone the same activator and cycle ring onto both member
-                // slots, so a current-slot-only rewrite left the twin
-                // split-brained: its ring stepped onto the dead mask while
-                // the globally-retagged macros waited on the new one. The
-                // rename therefore follows the mask EVERYWHERE: activators,
-                // cycle rings, rows, menus, and macros on every slot. For
-                // two independently hand-authored same-named layers this
-                // co-renames both, which is visible and non-lossy; the
-                // half-global alternative silently broke imports.
-                RenameMaskEverywhere(oldMask, existing.LayerMask, existing);
+                string oldMask = existing.LayerMask;
+                string oldMode = existing.Mode;   // round five, X12 inverse
+                string oldCycle = existing.CycleLayers;
+                ApplyShiftActivatorEdit(_currentPadVm.PadIndex, existing, dlg.Result);
 
-                // Drop engagement so nothing stays parked on a mask that no
-                // longer exists (R12). Scoped to the slots the rename
-                // actually touched (round five, X12): the all-slots reset
-                // wiped every OTHER pad's live engagement too, which for
-                // Toggle re-fired an edge and for Cycle lost the ring
-                // position, on a pad whose owner did nothing.
-                ClearShiftRuntimeForTouchedSlots(oldMask, existing.LayerMask);
+                if (!string.Equals(oldMask, existing.LayerMask, StringComparison.Ordinal))
+                {
+                    // A mask change renames the LOGICAL layer, and mask
+                    // equality is the layer identity across slots (audit
+                    // 2026-07-25 round four, R10/R19/R28). Split-config imports
+                    // clone the same activator and cycle ring onto both member
+                    // slots, so a current-slot-only rewrite left the twin
+                    // split-brained: its ring stepped onto the dead mask while
+                    // the globally-retagged macros waited on the new one. The
+                    // rename therefore follows the mask EVERYWHERE: activators,
+                    // cycle rings, rows, menus, and macros on every slot. For
+                    // two independently hand-authored same-named layers this
+                    // co-renames both, which is visible and non-lossy; the
+                    // half-global alternative silently broke imports.
+                    RenameMaskEverywhere(oldMask, existing.LayerMask, existing);
 
-                // Sibling tab strips and pickers mirror their own slot
-                // activators; rebuild them all so the rename shows
-                // everywhere it landed.
-                RebuildAllPadLayerTabs(oldMask, existing.LayerMask);
+                    // Drop engagement so nothing stays parked on a mask that no
+                    // longer exists (R12). Scoped to the slots the rename
+                    // actually touched (round five, X12): the all-slots reset
+                    // wiped every OTHER pad's live engagement too, which for
+                    // Toggle re-fired an edge and for Cycle lost the ring
+                    // position, on a pad whose owner did nothing.
+                    ClearShiftRuntimeForTouchedSlots(oldMask, existing.LayerMask);
+
+                    // Sibling tab strips and pickers mirror their own slot
+                    // activators; rebuild them all so the rename shows
+                    // everywhere it landed.
+                    RebuildAllPadLayerTabs(oldMask, existing.LayerMask);
+                }
+
+                else if (!string.Equals(oldMode, existing.Mode, StringComparison.Ordinal))
+                {
+                    // A MODE change with an unchanged mask strands this slot's
+                    // runtime just as badly (round five, X12 inverse): Latch and
+                    // Cycle park a mask string that only their own mode's tick
+                    // rewrites, so Latch -> Hold left the slot stuck engaged.
+                    PadForge.Common.Input.InputManager.ClearShiftRuntime(_currentPadVm.PadIndex);
+                    PadForge.Services.InputService.ClearMenuRuntimeForSlot(_currentPadVm.PadIndex);
+                }
+
+                else if (!string.Equals(oldCycle, existing.CycleLayers, StringComparison.Ordinal))
+                {
+                    // Same mask, same mode, different ring. The live cursor
+                    // indexes the OLD list, so shortening the ring leaves it
+                    // pointing past the end and the next press evaluates a stop
+                    // that no longer exists. ShiftCycleStepper clamps so this
+                    // cannot throw, but a cursor rebased by a clamp lands the
+                    // user somewhere they did not choose. Reset it instead.
+                    PadForge.Common.Input.InputManager.ClearShiftRuntime(_currentPadVm.PadIndex);
+                    PadForge.Services.InputService.ClearMenuRuntimeForSlot(_currentPadVm.PadIndex);
+                }
+
+                _currentPadVm.RebuildLayerTabs(slotMs.ShiftActivators);
+                // Macros retag LAST (round six, R2): every pad's picker
+                // choices now hold the new mask, so the SelectedValue each
+                // retag pushes resolves instead of blanking the picker.
+                if (!string.Equals(oldMask, existing.LayerMask, StringComparison.Ordinal))
+                    RetagMacrosEverywhere(AllPadViewModels(), oldMask, existing.LayerMask);
             }
-
-            else if (!string.Equals(oldMode, existing.Mode, StringComparison.Ordinal))
-            {
-                // A MODE change with an unchanged mask strands this slot's
-                // runtime just as badly (round five, X12 inverse): Latch and
-                // Cycle park a mask string that only their own mode's tick
-                // rewrites, so Latch -> Hold left the slot stuck engaged.
-                PadForge.Common.Input.InputManager.ClearShiftRuntime(_currentPadVm.PadIndex);
-                PadForge.Services.InputService.ClearMenuRuntimeForSlot(_currentPadVm.PadIndex);
-            }
-
-            else if (!string.Equals(oldCycle, existing.CycleLayers, StringComparison.Ordinal))
-            {
-                // Same mask, same mode, different ring. The live cursor
-                // indexes the OLD list, so shortening the ring leaves it
-                // pointing past the end and the next press evaluates a stop
-                // that no longer exists. ShiftCycleStepper clamps so this
-                // cannot throw, but a cursor rebased by a clamp lands the
-                // user somewhere they did not choose. Reset it instead.
-                PadForge.Common.Input.InputManager.ClearShiftRuntime(_currentPadVm.PadIndex);
-                PadForge.Services.InputService.ClearMenuRuntimeForSlot(_currentPadVm.PadIndex);
-            }
-
-            _currentPadVm.RebuildLayerTabs(slotMs.ShiftActivators);
-            // Macros retag LAST (round six, R2): every pad's picker
-            // choices now hold the new mask, so the SelectedValue each
-            // retag pushes resolves instead of blanking the picker.
-            if (!string.Equals(oldMask, existing.LayerMask, StringComparison.Ordinal))
-                RetagMacrosEverywhere(AllPadViewModels(), oldMask, existing.LayerMask);
             _currentPadVm.ActiveLayerMask = existing.LayerMask;
             _currentPadVm.ConfigItemDirtyCallback?.Invoke();
+        }
+
+        internal static void ApplyShiftActivatorEdit(int slot, Engine.Data.ShiftActivator existing,
+            Engine.Data.ShiftActivator replacement)
+        {
+            using var publication = PadForge.Services.InputService.EnterMenuEdit();
+            bool runtimeChanged = existing.LayerMask != replacement.LayerMask
+                || existing.DeviceGuid != replacement.DeviceGuid
+                || existing.Descriptor != replacement.Descriptor
+                || existing.Mode != replacement.Mode
+                || existing.Kind != replacement.Kind
+                || existing.InheritUnmapped != replacement.InheritUnmapped
+                || existing.ChordSecondDeviceGuid != replacement.ChordSecondDeviceGuid
+                || existing.ChordSecondDescriptor != replacement.ChordSecondDescriptor
+                || existing.AxisThreshold != replacement.AxisThreshold
+                || existing.HostLayerMask != replacement.HostLayerMask
+                || existing.JumpToLayer != replacement.JumpToLayer
+                || existing.CycleLayers != replacement.CycleLayers
+                || existing.CyclePrevDeviceGuid != replacement.CyclePrevDeviceGuid
+                || existing.CyclePrevDescriptor != replacement.CyclePrevDescriptor
+                || existing.CycleWrap != replacement.CycleWrap
+                || existing.CycleIncludeBase != replacement.CycleIncludeBase
+                || existing.DelayMs != replacement.DelayMs
+                || existing.AutoCancelMs != replacement.AutoCancelMs
+                || existing.PostponeMapping != replacement.PostponeMapping
+                || existing.FireOnRelease != replacement.FireOnRelease;
+            void Apply()
+            {
+                existing.LayerName = replacement.LayerName;
+                existing.LayerMask = replacement.LayerMask;
+                existing.DeviceGuid = replacement.DeviceGuid;
+                existing.Descriptor = replacement.Descriptor;
+                existing.Mode = replacement.Mode;
+                existing.Kind = replacement.Kind;
+                existing.InheritUnmapped = replacement.InheritUnmapped;
+                existing.ChordSecondDeviceGuid = replacement.ChordSecondDeviceGuid;
+                existing.ChordSecondDescriptor = replacement.ChordSecondDescriptor;
+                existing.AxisThreshold = replacement.AxisThreshold;
+                existing.HostLayerMask = replacement.HostLayerMask;
+                existing.JumpToLayer = replacement.JumpToLayer;
+                existing.CycleLayers = replacement.CycleLayers;
+                existing.CyclePrevDeviceGuid = replacement.CyclePrevDeviceGuid;
+                existing.CyclePrevDescriptor = replacement.CyclePrevDescriptor;
+                existing.CycleWrap = replacement.CycleWrap;
+                existing.CycleIncludeBase = replacement.CycleIncludeBase;
+                existing.DelayMs = replacement.DelayMs;
+                existing.AutoCancelMs = replacement.AutoCancelMs;
+                existing.Color = replacement.Color;
+                existing.Icon = replacement.Icon;
+                existing.PostponeMapping = replacement.PostponeMapping;
+                existing.FireOnRelease = replacement.FireOnRelease;
+            }
+            if (runtimeChanged)
+            {
+                PadForge.Services.InputService.EditMenuConfiguration(slot, () =>
+                {
+                    Apply();
+                    PadForge.Common.Input.InputManager.ClearShiftRuntime(slot);
+                });
+            }
+            else Apply();
         }
 
         /// <summary>Clears the shift runtime only for slots a mask rename
@@ -1949,6 +1991,25 @@ namespace PadForge.Views
             return null;
         }
 
+        internal static Engine.Data.MappingRow CloneLayerRow(Engine.Data.MappingRow source, string layer)
+        {
+            var copy = new Engine.Data.MappingRow
+            {
+                Target = source.Target,
+                LayerMask = layer,
+                CombineMode = source.CombineMode,
+                CombineExpression = source.CombineExpression,
+                NoInherit = source.NoInherit,
+                TrimDeadzone = source.TrimDeadzone,
+                TrimRate = source.TrimRate,
+                TrimResetOnRelease = source.TrimResetOnRelease,
+            };
+            copy.Sources = PadForge.Services.InputService.CopyRowSources(source,
+                s => s.DeviceGuid ?? "", out bool suppressPair);
+            copy.SuppressBipolarPair = suppressPair;
+            return copy;
+        }
+
         private void ShiftLayer_Copy_Click(object sender, RoutedEventArgs e)
         {
             if (_currentPadVm == null) return;
@@ -1964,21 +2025,7 @@ namespace PadForge.Views
                 if (r == null) continue;
                 if (!string.Equals(r.LayerMask, mask, StringComparison.Ordinal)) continue;
                 // Deep-clone so a later Paste isn't a reference share.
-                var rc = new Engine.Data.MappingRow
-                {
-                    Target = r.Target,
-                    LayerMask = r.LayerMask,
-                    CombineMode = r.CombineMode,
-                    CombineExpression = r.CombineExpression,
-                    NoInherit = r.NoInherit,
-                    TrimDeadzone = r.TrimDeadzone,
-                    TrimRate = r.TrimRate,
-                    TrimResetOnRelease = r.TrimResetOnRelease,
-                    Sources = new System.Collections.Generic.List<Engine.Data.MappingSource>(),
-                };
-                if (r.Sources != null)
-                    foreach (var s in r.Sources)
-                        if (s != null) rc.Sources.Add(CloneSource(s));
+                var rc = CloneLayerRow(r, r.LayerMask);
                 _shiftLayerClipboard.Add(rc);
             }
         }
@@ -2012,21 +2059,7 @@ namespace PadForge.Views
             foreach (var r in _shiftLayerClipboard)
             {
                 if (r == null) continue;
-                var rc = new Engine.Data.MappingRow
-                {
-                    Target = r.Target,
-                    LayerMask = mask,
-                    CombineMode = r.CombineMode,
-                    CombineExpression = r.CombineExpression,
-                    NoInherit = r.NoInherit,
-                    TrimDeadzone = r.TrimDeadzone,
-                    TrimRate = r.TrimRate,
-                    TrimResetOnRelease = r.TrimResetOnRelease,
-                    Sources = new System.Collections.Generic.List<Engine.Data.MappingSource>(),
-                };
-                if (r.Sources != null)
-                    foreach (var s in r.Sources)
-                        if (s != null) rc.Sources.Add(CloneSource(s));
+                var rc = CloneLayerRow(r, mask);
                 pasted.Add(rc);
             }
 
@@ -2127,17 +2160,6 @@ namespace PadForge.Views
 
             ExecuteLayerDelete(slotMs, activator, mask, AllPadViewModels());
 
-            // The engine's shift runtime may still be ENGAGED on the deleted
-            // mask (round four, R12: Latch/Toggle/Cycle park the mask string
-            // until their own activator's tick rewrites it, and that
-            // activator is gone). Removing an activator also shifts every
-            // later activator's INDEX down, and the runtime is index-parallel,
-            // so this slot's state must be dropped either way. Slot-scoped
-            // (round five, X12): the all-slots reset also wiped unrelated
-            // pads' live engagement.
-            PadForge.Common.Input.InputManager.ClearShiftRuntime(padVmAtOpen.PadIndex);
-            PadForge.Services.InputService.ClearMenuRuntimeForSlot(padVmAtOpen.PadIndex);
-
             // Snap the active tab back to Base; RebuildLayerTabs will
             // also recover if the active mask no longer matches a tab.
             padVmAtOpen.ActiveLayerMask = "Base";
@@ -2166,77 +2188,88 @@ namespace PadForge.Views
             string mask,
             System.Collections.Generic.IEnumerable<PadViewModel> padVms)
         {
-            // Swap, don't Remove in place: same poll-thread enumeration
-            // hazard as the Add path above.
-            if (slotMs.ShiftActivators != null)
+            using var menuPublication = PadForge.Services.InputService.EnterMenuEdit();
+            var slotSets = PadForge.Common.Input.SettingsManager.SlotMappingSets;
+            int slotIndex = slotSets == null ? -1 : Array.IndexOf(slotSets, slotMs);
+            try
             {
-                var trimmed = new System.Collections.Generic.List<PadForge.Engine.Data.ShiftActivator>(
-                    slotMs.ShiftActivators);
-                trimmed.Remove(activator);
-                slotMs.ShiftActivators = trimmed;
-            }
-            if (string.Equals(mask, "Base", StringComparison.Ordinal))
-                return;
-
-            if (slotMs.Rows != null)
-            {
-                // Reference swap, same reason as the two handlers above.
-                slotMs.Rows = slotMs.Rows.FindAll(
-                    r => !(r != null && string.Equals(r.LayerMask, mask, StringComparison.Ordinal)));
-            }
-
-            // Scrub the deleted mask from THIS slot's cycle rings FIRST
-            // (round five, X9). Running it after the declare scan let a
-            // same-slot ring satisfy the scan and spare the macros, and then
-            // the scrub removed that very stop: the macros kept a mask
-            // nothing declared and went permanently dark, which is the exact
-            // failure the scan exists to prevent.
-            foreach (var a in slotMs.ShiftActivators)
-            {
-                if (a == null || string.IsNullOrEmpty(a.CycleLayers)) continue;
-                var stops = a.CycleLayers.Split('|', StringSplitOptions.RemoveEmptyEntries);
-                var kept = new System.Collections.Generic.List<string>(stops.Length);
-                foreach (var stop in stops)
-                    if (!string.Equals(stop, mask, StringComparison.Ordinal)) kept.Add(stop);
-                if (kept.Count != stops.Length) a.CycleLayers = string.Join("|", kept);
-            }
-
-            // Does a RELATED slot still declare this mask? Only a slot from
-            // the same import counts (round five, X10): keeping the macros
-            // alive because an UNRELATED pad happens to own a same-named
-            // hand-authored layer handed that pad's controller remote
-            // control over these macros through the gate's fallback, which
-            // is the coupling this audit lineage removed from the Base
-            // branch. Import masks share a "Layer_{fileId}_" domain; a
-            // hand-authored mask matches no domain and never counts.
-            bool maskStillDeclared = RelatedSlotStillDeclares(
-                PadForge.Common.Input.SettingsManager.SlotMappingSets, slotMs, mask);
-
-            if (!maskStillDeclared)
-            {
-                // #254 A-3: deleting a layer keeps its macros (rows die with
-                // the layer because they ARE its content; macros are
-                // standalone authoring). They are DISABLED FIRST and only
-                // then untagged (round four, R18): the engine reads these
-                // shared instances live on the poll thread, and the old
-                // order opened a window where the macro was enabled and
-                // ungated between the two writes, firing once globally
-                // during the delete. Disabled preserves the authoring;
-                // "" clears the dead mask.
-                foreach (var padVm in padVms)
+                // Swap, don't Remove in place: same poll-thread enumeration
+                // hazard as the Add path above.
+                if (slotMs.ShiftActivators != null)
                 {
-                    foreach (var mac in padVm.Macros)
-                    {
-                        if (mac == null || !string.Equals(mac.LayerMask, mask, StringComparison.Ordinal))
-                            continue;
-                        mac.IsEnabled = false;
-                        mac.LayerMask = "";
-                    }
+                    var trimmed = new System.Collections.Generic.List<PadForge.Engine.Data.ShiftActivator>(
+                        slotMs.ShiftActivators);
+                    trimmed.Remove(activator);
+                    slotMs.ShiftActivators = trimmed;
                 }
-                // Layer-scoped menus on the deleted mask stay tagged: they
-                // have no disable field, an untag would silently broaden
-                // them to always-available, and a same-named layer re-add
-                // revives them (hand-authored masks are name-derived).
+                if (string.Equals(mask, "Base", StringComparison.Ordinal))
+                    return;
+
+                if (slotMs.Rows != null)
+                {
+                    // Reference swap, same reason as the two handlers above.
+                    slotMs.Rows = slotMs.Rows.FindAll(
+                        r => !(r != null && string.Equals(r.LayerMask, mask, StringComparison.Ordinal)));
+                }
+
+                // Scrub the deleted mask from THIS slot's cycle rings FIRST
+                // (round five, X9). Running it after the declare scan let a
+                // same-slot ring satisfy the scan and spare the macros, and then
+                // the scrub removed that very stop: the macros kept a mask
+                // nothing declared and went permanently dark, which is the exact
+                // failure the scan exists to prevent.
+                foreach (var a in slotMs.ShiftActivators)
+                {
+                    if (a == null || string.IsNullOrEmpty(a.CycleLayers)) continue;
+                    var stops = a.CycleLayers.Split('|', StringSplitOptions.RemoveEmptyEntries);
+                    var kept = new System.Collections.Generic.List<string>(stops.Length);
+                    foreach (var stop in stops)
+                        if (!string.Equals(stop, mask, StringComparison.Ordinal)) kept.Add(stop);
+                    if (kept.Count != stops.Length) a.CycleLayers = string.Join("|", kept);
+                }
+
+                // Does a RELATED slot still declare this mask? Only a slot from
+                // the same import counts (round five, X10): keeping the macros
+                // alive because an UNRELATED pad happens to own a same-named
+                // hand-authored layer handed that pad's controller remote
+                // control over these macros through the gate's fallback, which
+                // is the coupling this audit lineage removed from the Base
+                // branch. Import masks share a "Layer_{fileId}_" domain; a
+                // hand-authored mask matches no domain and never counts.
+                bool maskStillDeclared = RelatedSlotStillDeclares(
+                    PadForge.Common.Input.SettingsManager.SlotMappingSets, slotMs, mask);
+
+                if (!maskStillDeclared)
+                {
+                    // #254 A-3: deleting a layer keeps its macros (rows die with
+                    // the layer because they ARE its content; macros are
+                    // standalone authoring). They are DISABLED FIRST and only
+                    // then untagged (round four, R18): the engine reads these
+                    // shared instances live on the poll thread, and the old
+                    // order opened a window where the macro was enabled and
+                    // ungated between the two writes, firing once globally
+                    // during the delete. Disabled preserves the authoring;
+                    // "" clears the dead mask.
+                    foreach (var padVm in padVms)
+                    {
+                        foreach (var mac in padVm.Macros)
+                        {
+                            if (mac == null || !string.Equals(mac.LayerMask, mask, StringComparison.Ordinal))
+                                continue;
+                            mac.IsEnabled = false;
+                            mac.LayerMask = "";
+                        }
+                    }
+                    // Keep the menu's authored layer gate after deletion.
+                }
+            }
+            finally
+            {
+                if (slotIndex >= 0)
+                {
+                    PadForge.Common.Input.InputManager.ClearShiftRuntime(slotIndex);
+                    PadForge.Services.InputService.ClearMenuRuntimeForSlot(slotIndex);
+                }
             }
         }
 

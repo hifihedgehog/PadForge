@@ -1279,6 +1279,8 @@ namespace PadForge.Common.Input
 
             if (!InitializeSdl())
                 return;
+            if (_personaAudioOwner.Closed)
+                _personaAudioOwner = new AudioPassthroughService.PersonaOwner();
 
             // Virtual-controller filtering is handled entirely by PadForge's
             // SDL3 fork: HID enumeration walks each device's PnP ancestor
@@ -1363,6 +1365,7 @@ namespace PadForge.Common.Input
                 return;
 
             _running = false;
+            AudioPassthroughService.ClosePersonaOwner(_personaAudioOwner);
 
             // Macro sounds die with the engine. Releases the WASAPI clients.
             SoundMacroService.StopAll();
@@ -1514,7 +1517,7 @@ namespace PadForge.Common.Input
                 while (_running)
                 {
                     // ── Idle mode: skip expensive pipeline, sleep at ~20Hz ──
-                    if (_idle)
+                    if (BeginIdlePoll())
                     {
                         try
                         {
@@ -1541,24 +1544,27 @@ namespace PadForge.Common.Input
 
                             // Read input states even in idle mode so the Devices
                             // page preview works for unassigned devices.
-                            UpdateInputStates();
-                            // Remote Link accumulation runs in idle mode too:
-                            // shared devices keep streaming while no slot is
-                            // active on this end.
-                            RemoteLinkPollTick?.Invoke();
+                            using (EnterMenuPublication())
+                            {
+                                UpdateInputStates();
+                                // Remote Link accumulation runs in idle mode too:
+                                // shared devices keep streaming while no slot is
+                                // active on this end.
+                                RemoteLinkPollTick?.Invoke();
 
-                            // Evaluate global macros (profile shortcuts) even in idle
-                            // so the user can switch away from an empty profile.
-                            EvaluateGlobalMacros();
+                                // Evaluate global macros (profile shortcuts) even in idle
+                                // so the user can switch away from an empty profile.
+                                EvaluateGlobalMacros();
 
-                            // The slot macro evaluator (and its ToggleKey
-                            // reconcile) doesn't run in idle, so release any
-                            // latched macro key (issue #9 wave 1b) rather
-                            // than leave it stuck down while PadForge is
-                            // inactive. Latch bits stay set on the actions;
-                            // the desired-set rebuild re-asserts them when
-                            // the pipeline wakes. No-op when nothing is held.
-                            ReleaseAllLatchedMacroKeys();
+                                // The slot macro evaluator (and its ToggleKey
+                                // reconcile) doesn't run in idle, so release any
+                                // latched macro key (issue #9 wave 1b) rather
+                                // than leave it stuck down while PadForge is
+                                // inactive. Latch bits stay set on the actions;
+                                // the desired-set rebuild re-asserts them when
+                                // the pipeline wakes. No-op when nothing is held.
+                                ReleaseAllLatchedMacroKeys();
+                            }
                         }
                         catch (Exception ex)
                         {
@@ -1578,48 +1584,8 @@ namespace PadForge.Common.Input
                         continue;
                     }
 
-                    // ── Focus suspend: the engine half of the background-
-                    //    polling setting. The user UNCHECKED "continue polling
-                    //    when window loses focus", so with PadForge behind
-                    //    another window the engine stops: no output evaluation,
-                    //    no VC submits, no macros, no Remote Link. The label is
-                    //    the contract. Distinct from _idle, which engages only
-                    //    when nothing is active; this engages BECAUSE things
-                    //    are active and the user wants them off while away.
-                    if (SuspendWhenBackground && !HostIsForeground)
+                    if (ApplyFocusSuspension())
                     {
-                        if (!_focusSuspended)
-                        {
-                            _focusSuspended = true;
-                            try
-                            {
-                                // Neutral edge: zero every combined surface and
-                                // submit once, so the game we just left behind
-                                // is not stuck holding whatever was pressed at
-                                // the instant focus moved.
-                                NeutralizeCombinedOutputs();
-                                UpdateVirtualDevices();
-                                ReleaseAllLatchedMacroKeys();
-                            }
-                            catch (Exception ex)
-                            {
-                                RaiseError("Focus-suspend neutral edge", ex);
-                            }
-                            Engine.SdlDiagLog.WriteLine(
-                                "ENGINE suspended: unfocused and background polling disabled");
-                        }
-                        // Same silence-republish idle carries (#236): the
-                        // feedback lane is not running, so keep the audio lane
-                        // silenced every iteration rather than once.
-                        RumbleAudioService.SilenceAll();
-                        // Step 5 keeps running at this loop's 10 Hz, on neutral
-                        // state. Skipping it froze the create/dispose gates and
-                        // BOTH watchdogs for the whole suspension: a dispose
-                        // in flight when focus left stayed half-done, silently,
-                        // until refocus. Suspension stops the engine DRIVING
-                        // inputs; it must not stop the lifecycle machinery.
-                        try { UpdateVirtualDevices(); }
-                        catch (Exception ex) { RaiseError("Focus-suspend VC upkeep", ex); }
                         CurrentFrequency = 0;
                         _frequencyCounter = 0;
                         _frequencyTimer.Restart();
@@ -1629,11 +1595,6 @@ namespace PadForge.Common.Input
                         wallClock.Restart();
                         expectedTicks = 0;
                         continue;
-                    }
-                    if (_focusSuspended)
-                    {
-                        _focusSuspended = false;
-                        Engine.SdlDiagLog.WriteLine("ENGINE resumed: foreground regained");
                     }
 
                     // Calculate target ticks each cycle so PollingIntervalMs can be
@@ -1670,23 +1631,26 @@ namespace PadForge.Common.Input
                         }
                         FlydigiReprobeTick();
 
-                        UpdateInputStates();
-                        // Remote Link (#138): fold this tick's fresh snapshots
-                        // into the per-exposed-device delta accumulators. The
-                        // poll thread is the SOLE GetCurrentState caller; the
-                        // 125 Hz stream tick ships snapshots + drained deltas,
-                        // never reads the wrappers (destructive mouse / JC2
-                        // baseline reads split motion between two callers).
-                        RemoteLinkPollTick?.Invoke();
-                        UpdateGyroEngageStates();
-                        UpdateTriggerRouteEngageStates();
-                        UpdateHapticMirrorEngageStates();
-                        UpdateMotionSnapshots();
-                        BroadcastDsuMotion();
-                        UpdateOutputStates();
-                        CombineOutputStates();
-                        EvaluateMacros();
-                        UpdateVirtualDevices();
+                        using (EnterMenuPublication())
+                        {
+                            UpdateInputStates();
+                            // Remote Link (#138): fold this tick's fresh snapshots
+                            // into the per-exposed-device delta accumulators. The
+                            // poll thread is the SOLE GetCurrentState caller; the
+                            // 125 Hz stream tick ships snapshots + drained deltas,
+                            // never reads the wrappers (destructive mouse / JC2
+                            // baseline reads split motion between two callers).
+                            RemoteLinkPollTick?.Invoke();
+                            UpdateGyroEngageStates();
+                            UpdateTriggerRouteEngageStates();
+                            UpdateHapticMirrorEngageStates();
+                            UpdateMotionSnapshots();
+                            BroadcastDsuMotion();
+                            UpdateOutputStates();
+                            CombineOutputStates();
+                            EvaluateMacros();
+                            UpdateVirtualDevices();
+                        }
                         RetrieveOutputStates();
                         UpdateDs3PlayerNumber();
                         UpdateMovePlayerNumber();
@@ -3137,6 +3101,81 @@ namespace PadForge.Common.Input
             }
         }
 
+        /// <summary>Checks the idle gate and publishes neutral DSU data before
+        /// idle maintenance. No input evaluation or native submission runs here.</summary>
+        internal bool BeginIdlePoll()
+        {
+            if (!_idle) return false;
+            var server = DsuServer;
+            if (server == null) return true;
+
+            // The UI can enter idle before another normal motion poll.
+            // Use a local neutral value even if the cached sample is still moving.
+            var neutral = new MotionSnapshot
+            {
+                TimestampUs = (long)(Stopwatch.GetTimestamp()
+                    * (1_000_000.0 / Stopwatch.Frequency)),
+            };
+            try
+            {
+                for (int padIndex = 0; padIndex < DsuMotionSnapshots.Length; padIndex++)
+                    server.BroadcastMotion(padIndex, neutral, IsSlotActive(padIndex));
+            }
+            catch (Exception ex) { RaiseError("Idle DSU delivery", ex); }
+            return true;
+        }
+
+        /// <summary>Applies the focus policy before input evaluation. Optional callbacks
+        /// replace controller submission and key release in tests.</summary>
+        internal bool ApplyFocusSuspension(Action submitControllers = null, Action releaseKeys = null)
+        {
+            using var publication = EnterMenuPublication();
+            if (!SuspendWhenBackground || HostIsForeground)
+            {
+                if (_focusSuspended)
+                {
+                    _focusSuspended = false;
+                    Engine.SdlDiagLog.WriteLine("ENGINE resumed: foreground regained");
+                }
+                return false;
+            }
+
+            if (!_focusSuspended)
+            {
+                _focusSuspended = true;
+                try
+                {
+                    NeutralizeCombinedOutputs();
+                    if (submitControllers == null) UpdateVirtualDevices();
+                    else submitControllers();
+                }
+                catch (Exception ex) { RaiseError("Focus-suspend neutral edge", ex); }
+                finally
+                {
+                    try
+                    {
+                        if (releaseKeys == null) ReleaseAllLatchedMacroKeys();
+                        else releaseKeys();
+                    }
+                    catch (Exception ex) { RaiseError("Focus-suspend macro-key release", ex); }
+                }
+                Engine.SdlDiagLog.WriteLine("ENGINE suspended: unfocused and background polling disabled");
+            }
+
+            RumbleAudioService.SilenceAll();
+            try
+            {
+                if (submitControllers == null) UpdateVirtualDevices();
+                else submitControllers();
+            }
+            catch (Exception ex) { RaiseError("Focus-suspend VC upkeep", ex); }
+
+            // Repeat neutral packets at the suspended loop's 10 Hz cadence.
+            // A controller submission failure must not prevent network delivery.
+            try { BroadcastDsuMotion(); }
+            catch (Exception ex) { RaiseError("Focus-suspend DSU delivery", ex); }
+            return true;
+        }
         /// <summary>Zeroes every combined output surface Step 5 submits.
         ///
         /// <para>The focus-suspend neutral edge: called once when the engine
@@ -3246,10 +3285,16 @@ namespace PadForge.Common.Input
             var server = DsuServer;
             if (server == null) return;
 
+            bool refreshTimestamp = _focusSuspended;
+            long timestampUs = refreshTimestamp
+                ? (long)(Stopwatch.GetTimestamp()
+                    * (1_000_000.0 / Stopwatch.Frequency)) : 0;
             for (int padIndex = 0; padIndex < DsuMotionSnapshots.Length; padIndex++)
             {
                 bool connected = IsSlotActive(padIndex);
-                server.BroadcastMotion(padIndex, DsuMotionSnapshots[padIndex], connected);
+                var snapshot = DsuMotionSnapshots[padIndex];
+                if (refreshTimestamp) snapshot.TimestampUs = timestampUs;
+                server.BroadcastMotion(padIndex, snapshot, connected);
             }
         }
 

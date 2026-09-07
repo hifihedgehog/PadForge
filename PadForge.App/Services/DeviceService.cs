@@ -90,6 +90,8 @@ namespace PadForge.Services
                 return;
             }
 
+            _settingsService.FlushPendingDeviceEdits();
+
             // Auto-create the virtual controller slot if it doesn't exist yet.
             if (!SettingsManager.SlotCreated[slotIndex])
             {
@@ -200,6 +202,8 @@ namespace PadForge.Services
             // Check if already assigned to this slot.
             if (row.AssignedSlots.Contains(slotIndex)) return;
 
+            _settingsService.FlushPendingDeviceEdits();
+
             // Auto-create the virtual controller slot if it doesn't exist yet.
             if (!SettingsManager.SlotCreated[slotIndex])
             {
@@ -290,6 +294,8 @@ namespace PadForge.Services
 
         private void UnassignFromSlot(ViewModels.DeviceRowViewModel row, int slotIndex)
         {
+            _settingsService.FlushPendingDeviceEdits();
+
             Guid instanceGuid = row.InstanceGuid;
             lock (SettingsManager.UserSettings.SyncRoot)
                 SettingsManager.UserSettings.Items.RemoveAll(s => s.InstanceGuid == instanceGuid && s.MapTo == slotIndex);
@@ -342,6 +348,8 @@ namespace PadForge.Services
         /// </summary>
         private void OnRemoveDevice(object sender, Guid instanceGuid)
         {
+            _settingsService.FlushPendingDeviceEdits();
+
             SettingsManager.RemoveDevice(instanceGuid);
             foreach (var pad in _mainVm.Pads)
                 pad.RemoveDeviceConfig(instanceGuid);
@@ -395,6 +403,8 @@ namespace PadForge.Services
         /// <param name="instanceGuid">Device to unassign.</param>
         public void UnassignDevice(Guid instanceGuid)
         {
+            _settingsService.FlushPendingDeviceEdits();
+
             SettingsManager.UnassignDevice(instanceGuid);
 
             // Strip every per-VC MappingSet source bound to this device.
@@ -446,6 +456,8 @@ namespace PadForge.Services
             {
                 if (!SettingsManager.SlotCreated[i])
                 {
+                    _settingsService.FlushPendingDeviceEdits();
+
                     // Set OutputType BEFORE SlotCreated so that the PropertyChanged
                     // handler's call to RefreshNavControllerItems() sees SlotCreated[i]=false
                     // and doesn't trigger a premature sidebar rebuild.
@@ -495,6 +507,8 @@ namespace PadForge.Services
             // Resolving it after the removal below would not work either: the
             // slot is gone from the order by then.
             int displayNo = ResolveDisplaySlotNumber(slotIndex);
+
+            _settingsService.FlushPendingDeviceEdits();
 
             SettingsManager.SlotCreated[slotIndex] = false;
             SettingsManager.SlotEnabled[slotIndex] = true; // Reset to default.

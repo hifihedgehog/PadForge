@@ -83,6 +83,7 @@ namespace PadForge.Common.Input
         internal sealed class MenuTickContext
         {
             public readonly MenuRuntimeState State = new();
+            public MenuDefinitionEntry Definition;
             // Last host signature the wrappers were built for. The four
             // descriptor fields are stored raw and compared individually
             // so the per-tick rebuild check allocates nothing on the
@@ -145,6 +146,36 @@ namespace PadForge.Common.Input
             return true;
         }
 
+        private bool IsCurrentMenuOwner(MappingSet[] sets, int slot, int menuId,
+            MenuDefinitionEntry definition = null)
+        {
+            var menus = slot >= 0 && slot < sets.Length ? sets[slot]?.Menus : null;
+            if (menus == null) return false;
+            for (int i = 0; i < menus.Count; i++)
+            {
+                var entry = menus[i];
+                if (entry?.Enabled == true && entry.MenuId == menuId
+                    && (definition == null || ReferenceEquals(definition, entry))) return true;
+            }
+            return false;
+        }
+
+        private void PruneMenuOwners(MappingSet[] sets, long nowMs)
+        {
+            bool removed = false;
+            foreach (var kv in MenuContexts)
+                if (!IsCurrentMenuOwner(sets, kv.Key.Slot, kv.Key.MenuId, kv.Value.Definition))
+                    removed |= MenuContexts.TryRemove(kv.Key, out _);
+            if (removed) InvalidateMenuContextsSnapshot();
+            foreach (var kv in _menuDrivers)
+                if (!IsCurrentMenuOwner(sets, kv.Key.Slot, kv.Key.MenuId)
+                    || nowMs - kv.Value.StampMs > 10000)
+                    _menuDrivers.TryRemove(kv.Key, out _);
+            var overlay = _activeMenuOverlay;
+            if (overlay != null && !IsCurrentMenuOwner(sets, overlay.Slot, overlay.Menu.MenuId, overlay.Menu))
+                _activeMenuOverlay = null;
+        }
+
         private long _menuCtxLastPurgeMs;
 
         /// <summary>Clears every menu runtime context and the overlay
@@ -179,6 +210,19 @@ namespace PadForge.Common.Input
                     _menuDrivers.TryRemove(kv.Key, out _);
             var cur = _activeMenuOverlay;
             if (cur != null && cur.Slot == slot)
+                _activeMenuOverlay = null;
+        }
+
+        internal void ClearMenuRuntimeForMenu(int slot, int menuId)
+        {
+            bool removed = false;
+            foreach (var kv in MenuContexts)
+                if (kv.Key.Slot == slot && kv.Key.MenuId == menuId)
+                    removed |= MenuContexts.TryRemove(kv.Key, out _);
+            if (removed) InvalidateMenuContextsSnapshot();
+            _menuDrivers.TryRemove((slot, menuId), out _);
+            var overlay = _activeMenuOverlay;
+            if (overlay != null && overlay.Slot == slot && overlay.Menu?.MenuId == menuId)
                 _activeMenuOverlay = null;
         }
 
@@ -228,6 +272,7 @@ namespace PadForge.Common.Input
         /// too).</summary>
         internal void UpdateMenuContexts(Engine.Data.UserDevice ud, CustomInputState newState)
         {
+            using var publication = EnterMenuPublication();
             if (ud == null || newState == null) return;
 
             var sets = SettingsManager.SlotMappingSets;
@@ -238,13 +283,12 @@ namespace PadForge.Common.Input
 
             long nowMs = Environment.TickCount64;
 
-            // Bounded growth: contexts key on (slot, device, menu id), menu
-            // ids grow monotonically across add/delete cycles, and nothing
-            // else removes entries, so a long session leaked dead contexts.
-            // A slow sweep drops anything nobody has ticked for 10 s.
+            // The slow sweep also handles definition changes outside the editor.
+            // Live stay-open drivers renew their timestamps on every tick.
             if (nowMs - _menuCtxLastPurgeMs > 5000)
             {
                 _menuCtxLastPurgeMs = nowMs;
+                PruneMenuOwners(sets, nowMs);
                 bool purged = false;
                 foreach (var kv in MenuContexts)
                     if (nowMs - kv.Value.LastTickMs > 10000)
@@ -267,24 +311,31 @@ namespace PadForge.Common.Input
                 {
                     MenuDefinitionEntry def;
                     try { def = menus[i]; } catch { break; }
-                    // Items are NOT required: a menu whose cells carry no
-                    // direct bindings (or no items at all) still hovers,
-                    // shows the overlay, and fires its cells as menu-item
-                    // sources for mapping rows and macro triggers, exactly
-                    // as the binding-kind tooltip promises. The old
-                    // Items.Count == 0 skip silently killed pure-source
-                    // menus (audit 2026-07-16).
-                    if (def == null || !def.Enabled)
+                    // A menu can drive mapping rows and macro triggers without
+                    // direct bindings or authored items. Keep evaluating its cells.
+                    if (def == null) continue;
+                    if (!def.Enabled)
+                    {
+                        if (MenuContexts.ContainsKey((slot, ud.InstanceGuid, def.MenuId))
+                            || _menuDrivers.ContainsKey((slot, def.MenuId)))
+                            ClearMenuRuntimeForMenu(slot, def.MenuId);
                         continue;
+                    }
                     if (!string.IsNullOrEmpty(def.DeviceGuid)
                         && !string.Equals(def.DeviceGuid, ud.InstanceGuidString,
                             StringComparison.OrdinalIgnoreCase))
                         continue;
 
                     var key = (slot, ud.InstanceGuid, def.MenuId);
-                    if (!MenuContexts.TryGetValue(key, out var ctx))
+                    MenuContexts.TryGetValue(key, out var ctx);
+                    if (ctx != null && !ReferenceEquals(ctx.Definition, def))
                     {
-                        ctx = new MenuTickContext();
+                        ClearMenuRuntimeForMenu(slot, def.MenuId);
+                        ctx = null;
+                    }
+                    if (ctx == null)
+                    {
+                        ctx = new MenuTickContext { Definition = def };
                         MenuContexts[key] = ctx;
                         // New membership, so the cached array is stale. Only on
                         // the create path: the re-stamp below runs every tick
@@ -479,9 +530,12 @@ namespace PadForge.Common.Input
                         // configured stick resting at center hovers the
                         // center cell when the menu has one. An unconfigured
                         // Custom opener reads zero axes and must not.
+                        bool canHoverCenterAtRest = ctx.IsStick && ctx.SrcX != null && ctx.SrcY != null
+                            && def.Kind == MenuKind.Radial && def.HasCenter;
                         bool driver = surfaceActive
-                            && ResolveStayOpenDriver(slot, def.MenuId, ud.InstanceGuid, physical, nowMs);
-                        bool centerAtRest = driver && ctx.IsStick && ctx.SrcX != null && ctx.SrcY != null;
+                            && ResolveStayOpenDriver(slot, def.MenuId, ud.InstanceGuid,
+                                physical || (clicked && canHoverCenterAtRest), nowMs);
+                        bool centerAtRest = driver && canHoverCenterAtRest;
                         MenuEvaluator.UpdateLayerEngaged(ctx.State, def, surfaceActive, physical, clicked,
                             centerAtRest, dx, dy, (dx + 1.0) / 2.0, (dy + 1.0) / 2.0, nowMs);
                         publishActive = driver;

@@ -40,6 +40,8 @@ namespace PadForge.Engine.RemoteLink
     public sealed class LinkConnectionResult
     {
         public byte[] DataKey { get; init; }
+        internal byte[] PeerPublicKey { get; init; }
+        internal LinkAdmission Admission { get; init; }
         public bool IsInitiator { get; init; }
         public byte[] PeerFingerprint { get; init; }
         public string PeerFingerprintHex { get; init; }
@@ -82,6 +84,11 @@ namespace PadForge.Engine.RemoteLink
             IReadOnlyList<RemotePeerDeviceInfo> exposeLocal, byte[] capabilities,
             Func<PendingPairing, PairingApproval> approve, string nowUtc, CancellationToken ct)
         {
+            var admission = (exposeLocal as LinkExposureSnapshot)?.AdmissionFactory?.Invoke(ct);
+            bool transferred = false;
+            if (admission != null) ct = admission.Token;
+            try
+            {
             var hs = new LinkHandshake(identity, capabilities ?? Array.Empty<byte>(), isInitiator);
 
             // ── Authenticated key exchange over the reliable channel ──
@@ -104,6 +111,22 @@ namespace PadForge.Engine.RemoteLink
             HandshakeResult result = hs.Result
                 ?? throw new LinkConnectionException("Handshake did not complete.");
 
+            // A session reset continues an existing pairing and cannot select another peer.
+            if (exposeLocal is LinkExposureSnapshot prepared && prepared.Reconnect != null
+                && !prepared.Reconnect.Allows(result.PeerStaticPublicKey))
+                throw new LinkConnectionException("The reconnect is no longer authorized for this peer.");
+
+            string fingerprint = Convert.ToHexString(result.PeerFingerprint);
+            if (admission != null)
+                await admission.BindAsync(fingerprint, isInitiator,
+                    isInitiator == (identity.Fingerprint.AsSpan().SequenceCompareTo(result.PeerFingerprint) < 0)).ConfigureAwait(false);
+
+            void UpdateTrust(Action update)
+            {
+                if (admission == null) update();
+                else if (!admission.TryRun(update)) throw new LinkConnectionException("Connection admission was canceled.");
+            }
+
             // ── Admission: an unknown key always needs an explicit grant ──
             var decision = trust.Decide(result.PeerStaticPublicKey);
             if (decision == TrustDecision.FirstContact)
@@ -115,8 +138,9 @@ namespace PadForge.Engine.RemoteLink
                 }) ?? false;
                 if (!approval.Approved)
                     throw new LinkConnectionException("Pairing rejected by the user.");
-                trust.Grant(result.PeerStaticPublicKey, name: "", pairedUtc: nowUtc, reconnect: true,
+                void Grant() => trust.Grant(result.PeerStaticPublicKey, name: "", pairedUtc: nowUtc, reconnect: true,
                     gamepadOnly: approval.GamepadOnly, allowRemoteAssignments: approval.AllowRemoteAssignments);
+                UpdateTrust(Grant);
             }
             // KnownAutoSelect / KnownManual: already pinned, the signature proved possession.
 
@@ -133,7 +157,7 @@ namespace PadForge.Engine.RemoteLink
             {
                 var transcript = Dht.PresenceRecord.PairingTranscript(identity.Fingerprint, result.PeerFingerprint);
                 var capability = Dht.PresenceRecord.DeriveCapability(result.SessionKey, transcript);
-                trust.SetRendezvousCapability(result.PeerStaticPublicKey, capability);
+                UpdateTrust(() => trust.SetRendezvousCapability(result.PeerStaticPublicKey, capability));
             }
 
             // ── Separate control + data keys from the one session secret ──
@@ -146,7 +170,10 @@ namespace PadForge.Engine.RemoteLink
             // ── Exchange exposed-device lists (sealed). Send then receive: both
             //    sides write first, so a buffered channel never deadlocks. ──
             byte[] listPayload = EncodeDeviceList(exposeLocal ?? Array.Empty<RemotePeerDeviceInfo>());
-            await channel.SendAsync(control.Seal(LinkMessageType.Input, CtrlDeviceList, 0, listPayload), ct);
+            byte[] localSealed = control.Seal(LinkMessageType.Input, CtrlDeviceList, 0, listPayload);
+            // A failed write can still reach the peer and let it publish this session.
+            (exposeLocal as LinkExposureSnapshot)?.HandshakeProgress?.MarkInventorySendStarted();
+            await channel.SendAsync(localSealed, ct);
 
             byte[] peerSealed = await channel.ReceiveAsync(ct);
             if (!control.Open(peerSealed, out _, out byte ctrlType, out _, out byte[] peerListPayload) || ctrlType != CtrlDeviceList)
@@ -160,7 +187,7 @@ namespace PadForge.Engine.RemoteLink
             // Persist the peer's machine name so every later surface (device
             // rows, the peer manager, the hot-plug reconcile) labels it too.
             if (!string.IsNullOrWhiteSpace(peerMachineName))
-                trust?.SetHostName(result.PeerStaticPublicKey, peerMachineName);
+                UpdateTrust(() => trust?.SetHostName(result.PeerStaticPublicKey, peerMachineName));
 
             var remoteDevices = new List<RemotePeerDevice>();
             foreach (var info in peerInfos)
@@ -180,14 +207,20 @@ namespace PadForge.Engine.RemoteLink
                 remoteDevices.Add(new RemotePeerDevice(info));
             }
 
+            ct.ThrowIfCancellationRequested();
+            transferred = true;
             return new LinkConnectionResult
             {
                 DataKey = dataKey,
+                PeerPublicKey = result.PeerStaticPublicKey,
+                Admission = admission,
                 IsInitiator = isInitiator,
                 PeerFingerprint = result.PeerFingerprint,
                 PeerFingerprintHex = peerFpHex,
                 RemoteDevices = remoteDevices,
             };
+            }
+            finally { if (!transferred) admission?.Dispose(); }
         }
 
         // ── Device-list framing ─────────────────────────────────────────────

@@ -769,68 +769,7 @@ namespace PadForge
 
             // Refresh PadPage dropdowns and Devices-page slot buttons after assignment changes.
             _deviceService.DeviceAssignmentChanged += (s, e) =>
-            {
-                // Assigning a device auto-maps it and rebuilds the slot's
-                // MappingSet, leaving every pad's Mappings ViewModel momentarily
-                // behind. RefreshDeviceList below re-selects the slot's device,
-                // which fires OnSelectedDeviceChanged → SaveViewModelToPadSetting
-                // BEFORE RefreshMappingsToViewModel reloads the ViewModel. Mark
-                // the mapping views stale up front so that save skips its
-                // destructive clear+rewrite instead of wiping the fresh auto-map
-                // (the DualSense-to-an-occupied-slot "only the Share button maps"
-                // bug; see PadViewModel.MappingsViewLoaded). RefreshMappingsToViewModel
-                // clears the flag again once the ViewModel is current.
-                foreach (var p in _viewModel.Pads)
-                    p.MappingsViewLoaded = false;
-
-                _inputService.RefreshDeviceList();
-                _viewModel.Devices.RefreshSlotButtons();
-
-                // Player-identity idle floor (#191): slot creation and
-                // device (un)assignment both renumber and re-home pads.
-                _inputService.ReseedPlayerIdentities();
-
-                // Issue #83. Controller-audio sinks follow assignments.
-                PadForge.Common.Input.AudioPassthroughService.Reconcile();
-                PadForge.Common.Input.WiiSpeakerService.Reconcile();
-                PadForge.Common.Input.HapticToneService.Reconcile();
-
-                // Issue #61 fix — bring the per-VC MappingSets up to
-                // date with every assigned device's PadSetting BEFORE
-                // re-syncing the PadViewModels. Adding a new device
-                // populates its PadSetting with auto-mapped descriptors;
-                // running the additive merge here makes those sources
-                // visible in the Mappings tab immediately, instead of
-                // only after the user toggles the Device dropdown
-                // (which used to be the only thing that re-pulled
-                // descriptors from the new device's PadSetting).
-                SettingsService.RefreshMappingSetsFromLegacy();
-
-                // Two distinct refreshes per pad. They're independent
-                // now that the Mappings tab is fully decoupled from the
-                // assigned-device dropdown:
-                //   • RefreshMappingsToViewModel — per-VC mapping pass,
-                //     reads the slot's MappingSet (just updated by
-                //     RefreshMappingSetsFromLegacy above with the new
-                //     device's auto-mapped sources). Always runs.
-                //   • LoadPadSettingToViewModel — per-device TUNING load
-                //     (deadzones, FFB, lighting, etc.). Runs only when
-                //     a device is selected, since tuning needs a device.
-                // Previously these were collapsed into a single call,
-                // which meant the mapping refresh was gated on having a
-                // selected device — that broke auto-mapping visibility
-                // after first assignment when the dropdown was still
-                // pointing at Empty.
-                for (int i = 0; i < _viewModel.Pads.Count; i++)
-                {
-                    var padVm = _viewModel.Pads[i];
-                    InputService.RefreshMappingsToViewModel(padVm);
-                    var selected = padVm.SelectedMappedDevice;
-                    if (selected != null && selected.InstanceGuid != Guid.Empty)
-                        InputService.LoadPadSettingToViewModel(padVm, selected.InstanceGuid);
-                    _inputService.RefreshAvailableInputsForSlot(padVm);
-                }
-            };
+                _inputService.RefreshAfterDeviceAssignmentChange();
 
             // Re-apply device hiding when a toggle changes.
             _deviceService.DeviceHidingStateChanged += (s, e) =>
@@ -7543,7 +7482,7 @@ namespace PadForge
         private void OnCopySettings(PadViewModel padVm)
         {
             var ps = _inputService.GetCurrentPadSetting(padVm.PadIndex);
-            if (ps == null)
+            if (ps == null && !SettingsManager.SlotCreated[padVm.PadIndex])
             {
                 _viewModel.SetStatus(Strings.Instance.Status_NoDeviceToCopyFrom, persist: true);
                 return;
@@ -7551,6 +7490,7 @@ namespace PadForge
 
             try
             {
+                ps = SlotAppearancePersistence.CreateClipboardSetting(padVm, ps);
                 var copyOutputType = padVm.OutputType;
                 bool copyIsExtended = copyOutputType is VirtualControllerType.Extended
                     or VirtualControllerType.Nintendo
@@ -7572,7 +7512,8 @@ namespace PadForge
                 // carries them as opaque DTO-serialized strings on PadSetting and
                 // OnPasteSettings unpacks + applies via SettingsService.
                 var jsonOpts = new System.Text.Json.JsonSerializerOptions { WriteIndented = false };
-                var psConfigs = _settingsService.BuildDeviceConfigSnapshotForSlot(padVm.PadIndex);
+                var psConfigs = SlotAppearancePersistence.FilterClipboardDeviceConfigs(ps,
+                    _settingsService.BuildDeviceConfigSnapshotForSlot(padVm.PadIndex));
                 if (psConfigs != null && psConfigs.Length > 0)
                     ps.SlotDeviceConfigsJson = System.Text.Json.JsonSerializer.Serialize(psConfigs, jsonOpts);
                 var extCfg = _settingsService.BuildExtendedConfigSnapshotForSlot(padVm.PadIndex);
@@ -7632,8 +7573,8 @@ namespace PadForge
                 // tuning for legacy compat with older paste payloads.
                 var perDevice = InputService.BuildPerDeviceSettingsSnapshot(
                     padVm.PadIndex, copyOutputType, copyIsExtended);
-                if (perDevice != null && perDevice.Length > 0)
-                    ps.SlotPerDeviceSettingsJson = System.Text.Json.JsonSerializer.Serialize(perDevice, jsonOpts);
+                ps.SlotPerDeviceSettingsJson = System.Text.Json.JsonSerializer.Serialize(
+                    perDevice ?? Array.Empty<PadForge.Engine.Data.PerDeviceSettingsEntry>(), jsonOpts);
 
                 Clipboard.SetText(ps.ToJson(copyOutputType, copyIsExtended));
                 _viewModel.StatusText = Strings.Instance.Status_SettingsCopied;
@@ -7656,6 +7597,8 @@ namespace PadForge
                     _viewModel.SetStatus(Strings.Instance.Status_InvalidClipboard, persist: true);
                     return;
                 }
+
+                SlotAppearancePersistence.ApplyClipboardSetting(padVm, ps);
 
                 var targetType = padVm.OutputType;
                 bool targetIsExtended = targetType is VirtualControllerType.Extended
@@ -7743,7 +7686,8 @@ namespace PadForge
                     try
                     {
                         var psConfigs = System.Text.Json.JsonSerializer.Deserialize<ViewModels.DeviceSlotConfigData[]>(ps.SlotDeviceConfigsJson);
-                        _settingsService.ApplyDeviceSlotConfigsToSlot(padVm.PadIndex, psConfigs);
+                        _settingsService.ApplyDeviceSlotConfigsToSlot(padVm.PadIndex,
+                            SlotAppearancePersistence.FilterClipboardDeviceConfigs(ps, psConfigs));
                     }
                     catch { /* malformed payload — Lighting tab paste skipped */ }
                 }
@@ -7775,14 +7719,10 @@ namespace PadForge
                     catch { /* malformed payload, SOCD paste skipped */ }
                 }
 
-                // Per-device tuning for EVERY device on the source slot,
-                // not just the currently-selected one. Match by InstanceGuid
-                // first (perfect round-trip on same machine), ProductGuid
-                // fallback (same model, different physical unit). Entries
-                // with no target match are skipped. The outer ApplyPadSetting
-                // call above already wrote the selected device — applying
-                // the per-device array now will overwrite it with the same
-                // (or fresher) data, which is fine and idempotent.
+                // Restore each source device's tuning by instance GUID, then by
+                // product GUID for another unit of the same model. Unmatched
+                // entries are skipped. An explicit empty list carries no device
+                // tuning. Older payloads retain their top-level settings.
                 if (!string.IsNullOrEmpty(ps.SlotPerDeviceSettingsJson))
                 {
                     try
@@ -8140,6 +8080,19 @@ namespace PadForge
                 }
             }
 
+            foreach (int slot in SlotAppearancePersistence.UnlistedCopySlots(
+                _viewModel.Pads, padVm.PadIndex, slotChosenDevice.Keys))
+            {
+                var source = _viewModel.Pads[slot];
+                var donor = new UserSetting
+                {
+                    MapTo = slot,
+                    InstanceGuid = source.SelectedMappedDevice?.InstanceGuid ?? Guid.Empty,
+                };
+                AddEntry(entries, donor, SlotAppearancePersistence.CreateClipboardSetting(
+                    source, _inputService.GetCurrentPadSetting(slot)));
+            }
+
             void AddEntry(List<CopyFromDialog.DeviceEntry> list, UserSetting us, PadSetting ps)
             {
                 var outputType = VirtualControllerType.Xbox;
@@ -8174,7 +8127,7 @@ namespace PadForge
                 list.Add(new CopyFromDialog.DeviceEntry
                 {
                     Name = primary,
-                    SlotLabel = $"{us.InstanceGuid:D}",
+                    SlotLabel = us.InstanceGuid == Guid.Empty ? string.Empty : $"{us.InstanceGuid:D}",
                     LayoutLabel = string.Empty,
                     InstanceGuid = us.InstanceGuid,
                     PadSetting = ps,
@@ -8254,36 +8207,8 @@ namespace PadForge
                 if (sourceDeviceOnThisSlot)
                     targetDeviceOverride = srcEntry.InstanceGuid;
 
-                _inputService.ApplyPadSettingToCurrentDeviceTranslated(
-                    padVm.PadIndex, srcEntry.PadSetting,
-                    srcEntry.OutputType, srcEntry.IsExtended,
-                    targetOutputType, targetIsExtended,
-                    targetDeviceOverride);
-
-                // Apply EVERY source-slot device's per-device tuning, not
-                // just the one the dialog highlighted. Match by InstanceGuid
-                // first (perfect round-trip), ProductGuid fallback (same model,
-                // different unit). The dialog's SelectedEntry only identifies
-                // WHICH slot to copy from; the slot's per-device tuning for
-                // gyro, touchpad-tab settings, deadzones, etc. comes along
-                // for every device.
-                if (srcEntry.SourceSlot >= 0 && srcEntry.SourceSlot != padVm.PadIndex)
-                {
-                    var perDevice = InputService.BuildPerDeviceSettingsSnapshot(
-                        srcEntry.SourceSlot, srcEntry.OutputType, srcEntry.IsExtended);
-                    if (perDevice != null && perDevice.Length > 0)
-                        _inputService.ApplyPerDeviceSettingsToSlot(padVm.PadIndex, perDevice,
-                            srcEntry.OutputType, srcEntry.IsExtended,
-                            targetOutputType, targetIsExtended);
-                }
-
-                // PadSetting carries deadzones, sensitivity, FFB, mapping
-                // descriptors. The per-slot config tabs (Lighting / custom
-                // Extended layout / MIDI CC+note layout) live on PadViewModel,
-                // not PadSetting — clone those explicitly so a "Copy From"
-                // actually copies the whole slot, not just half.
-                if (srcEntry.SourceSlot >= 0)
-                    _settingsService.CopySlotConfigsAcrossSlots(srcEntry.SourceSlot, padVm.PadIndex);
+                ApplyCopyFromSettings(_inputService, _settingsService, padVm, srcEntry,
+                    targetOutputType, targetIsExtended, targetDeviceOverride);
 
                 // Rebuild the target slot's shift-layer tab strip from the
                 // freshly-copied activators so layers authored on the source
@@ -8305,6 +8230,44 @@ namespace PadForge
                 _settingsService.MarkDirty();
                 _viewModel.StatusText = Strings.Instance.Status_SettingsCopiedFromDevice;
             }
+        }
+
+        internal static void ApplyCopyFromSettings(InputService input, SettingsService settings,
+            PadViewModel padVm, CopyFromDialog.DeviceEntry srcEntry,
+            VirtualControllerType targetOutputType, bool targetIsExtended, Guid? targetDeviceOverride = null)
+        {
+            input.ApplyPadSettingToCurrentDeviceTranslated(
+                padVm.PadIndex, srcEntry.PadSetting,
+                srcEntry.OutputType, srcEntry.IsExtended,
+                targetOutputType, targetIsExtended,
+                targetDeviceOverride);
+
+            // Apply EVERY source-slot device's per-device tuning, not
+            // just the one the dialog highlighted. Match by InstanceGuid
+            // first (perfect round-trip), ProductGuid fallback (same model,
+            // different unit). The dialog's SelectedEntry only identifies
+            // WHICH slot to copy from; the slot's per-device tuning for
+            // gyro, touchpad-tab settings, deadzones, etc. comes along
+            // for every device.
+            if (srcEntry.SourceSlot >= 0 && srcEntry.SourceSlot != padVm.PadIndex)
+            {
+                var perDevice = InputService.BuildPerDeviceSettingsSnapshot(
+                    srcEntry.SourceSlot, srcEntry.OutputType, srcEntry.IsExtended);
+                if (perDevice != null && perDevice.Length > 0)
+                    input.ApplyPerDeviceSettingsToSlot(padVm.PadIndex, perDevice,
+                        srcEntry.OutputType, srcEntry.IsExtended,
+                        targetOutputType, targetIsExtended);
+            }
+
+            // PadSetting carries deadzones, sensitivity, FFB, mapping
+            // descriptors. The per-slot config tabs (Lighting / custom
+            // Extended layout / MIDI CC+note layout) live on PadViewModel,
+            // not PadSetting — clone those explicitly so a "Copy From"
+            // actually copies the whole slot, not just half.
+            if (srcEntry.SourceSlot >= 0)
+                settings.CopySlotConfigsAcrossSlots(srcEntry.SourceSlot, padVm.PadIndex);
+            else
+                SlotAppearancePersistence.ApplyLegacyDeviceSetting(padVm, srcEntry.PadSetting);
         }
 
         // ─────────────────────────────────────────────

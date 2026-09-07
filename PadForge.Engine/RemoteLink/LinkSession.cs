@@ -130,8 +130,12 @@ namespace PadForge.Engine.RemoteLink
         /// nothing trusted. The window advances only on a verified, fresh datagram.
         /// </summary>
         public bool Open(ReadOnlySpan<byte> datagram, out LinkMessageType type, out byte slotId, out ulong timestampUs, out byte[] payload)
+            => Open(datagram, out type, out slotId, out timestampUs, out _, out payload);
+
+        public bool Open(ReadOnlySpan<byte> datagram, out LinkMessageType type, out byte slotId,
+            out ulong timestampUs, out uint sequence, out byte[] payload)
         {
-            type = default; slotId = 0; timestampUs = 0; payload = Array.Empty<byte>();
+            type = default; slotId = 0; timestampUs = 0; sequence = 0; payload = Array.Empty<byte>();
             if (datagram.Length < HeaderSize + PeerCrypto.TagSize) return false;
 
             byte typeEpoch = datagram[0];
@@ -180,6 +184,7 @@ namespace PadForge.Engine.RemoteLink
 
             type = msgType;
             timestampUs = ts;
+            sequence = seq;
             payload = opened;
             return true;
         }

@@ -23,7 +23,7 @@ namespace PadForge.Models2D
     }
 
     /// <summary>2D colorway sets per asset folder. The family key is
-    /// the per-pad appearance store's key (PadSetting.Model3DAppearances),
+    /// the per-pad appearance store's key (PadViewModel.Model3DAppearances),
     /// the same one the 3D picker writes, so one selection drives both
     /// views; a view without art for the chosen id falls back to its
     /// default. Entry 0 is the default (the stock files).</summary>

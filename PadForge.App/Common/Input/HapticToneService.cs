@@ -393,92 +393,81 @@ namespace PadForge.Common.Input
             }
         }
 
-        // On-demand RemoteDriven sink creation state: one pending build at a
-        // time per device, and a backoff window after a failed open so a
-        // 100 Hz tone stream cannot spin CreateFile retries (audit F4).
-        private static readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, byte> _remoteSinkPending = new();
         private static readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, long> _remoteSinkFailUntil = new();
+        private static readonly DeferredRemoteToneQueue _remoteToneStarts = new(BuildRemoteToneSink);
 
-        /// <summary>A paired peer shipped one reduced haptic-tone frame for a local
-        /// device it consumes over Remote Link (#138 x #147). Sets the direct-drive
-        /// override on the device's sink; when the device has no locally-assigned
-        /// sink (the owner may not map it to any slot), a RemoteDriven sink is
-        /// created on demand and reaped by Reconcile once frames stop. Runs on the
-        /// UDP receive thread, so it must NEVER block: sink construction (raw HID
-        /// open + per-family init sleeps, up to ~800 ms) is queued to the thread
-        /// pool and frames simply drop until the sink is live (audit F4). The
-        /// field writes follow the TestHz idiom (value fields first, the Until
-        /// gate last).</summary>
-        public static void ApplyRemoteTone(Engine.Data.UserDevice ud, float toneHz, float amplitude)
+        /// <summary>Updates the owner's tone override. Sink preparation stays off the receive thread.</summary>
+        public static void ApplyRemoteTone(Engine.Data.UserDevice ud, float toneHz, float amplitude,
+            PadForge.Engine.RemoteLink.LinkEffectTicket ticket = null)
         {
-            if (ud == null || _suppressed) return;
-            var fam = FamilyOf(ud);
-            if (fam == Family.None) return;
-
-            long now = Environment.TickCount64;
-            long until = now + 250;
+            if (ud == null || _suppressed || FamilyOf(ud) == Family.None) return;
+            var request = new RemoteToneRequest(ud, toneHz, amplitude, ticket);
             bool found = false;
             lock (_lock)
             {
-                foreach (var s in _sinks)
-                    if (s.DeviceGuid == ud.InstanceGuid)
+                foreach (var sink in _sinks)
+                    if (sink.DeviceGuid == ud.InstanceGuid)
                     {
-                        s.RemoteHz = toneHz;
-                        s.RemoteAmp = Math.Clamp(amplitude, 0f, 1f);
-                        s.RemoteUntilMs = until;
+                        Volatile.Write(ref sink.RemoteRequest, request);
                         found = true;
                     }
             }
-            if (found || amplitude <= 0f) return;
+            // Zeros replace an earlier pending request even when no sink exists yet.
+            _remoteToneStarts.Submit(request, !found && request.Amplitude > 0);
+        }
 
-            // No sink yet: queue the build off this thread. One in flight per
-            // device, and a failed open backs off before the next attempt.
-            if (_remoteSinkFailUntil.TryGetValue(ud.InstanceGuid, out long failUntil) && now < failUntil)
-                return;
-            if (!_remoteSinkPending.TryAdd(ud.InstanceGuid, 0)) return;
-
-            var guid = ud.InstanceGuid;
-            var path = ud.DevicePath;
-            var gamepad = ud.Device?.GamepadHandle ?? IntPtr.Zero;
-            System.Threading.Tasks.Task.Run(() =>
+        private static void BuildRemoteToneSink(RemoteToneRequest request, Func<RemoteToneRequest> latest)
+        {
+            var ud = request.Device;
+            if (_suppressed || !request.IsCurrent) return;
+            long now = Environment.TickCount64;
+            if (_remoteSinkFailUntil.TryGetValue(ud.InstanceGuid, out long until) && now < until) return;
+            var sink = new Sink
             {
-                try
+                DeviceGuid = ud.InstanceGuid,
+                Slot = -1,
+                Family = FamilyOf(ud),
+                HidPath = ud.DevicePath,
+                GamepadHandle = request.Source?.GamepadHandle ?? IntPtr.Zero,
+                RemoteDriven = true,
+                RemoteRequest = request,
+                MacroMixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(MixRate, 2)) { ReadFully = true },
+            };
+            Sink existing;
+            lock (_lock)
+            {
+                if (_suppressed) return;
+                existing = _sinks.Find(item => item.DeviceGuid == ud.InstanceGuid);
+                if (existing == null) _sinks.Add(sink);
+            }
+            if (existing != null)
+            {
+                var current = latest();
+                current.TryPublish(latest, () =>
                 {
-                    var sink = new Sink
-                    {
-                        DeviceGuid = guid,
-                        Slot = -1,
-                        Family = fam,
-                        HidPath = path,
-                        GamepadHandle = gamepad,
-                        RemoteDriven = true,
-                        RemoteHz = toneHz,
-                        RemoteAmp = Math.Clamp(amplitude, 0f, 1f),
-                        RemoteUntilMs = Environment.TickCount64 + 250,
-                        MacroMixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(MixRate, 2)) { ReadFully = true },
-                    };
                     lock (_lock)
-                    {
-                        if (_suppressed) return;
-                        // A slot sink may have appeared while we queued
-                        // (Reconcile ran): it supersedes; do not add a second
-                        // writer for the same handle (audit F5).
-                        if (_sinks.Exists(s => s.DeviceGuid == guid)) return;
-                        _sinks.Add(sink);
-                    }
-                    if (!BuildSink(sink))
-                    {
-                        lock (_lock) _sinks.Remove(sink);
-                        _remoteSinkFailUntil[guid] = Environment.TickCount64 + 3000;
-                    }
-                    else
-                    {
-                        _remoteSinkFailUntil.TryRemove(guid, out _);
-                    }
-                }
-                catch { _remoteSinkFailUntil[guid] = Environment.TickCount64 + 3000; }
-                finally { _remoteSinkPending.TryRemove(guid, out _); }
+                        if (!_suppressed && _sinks.Contains(existing)) Volatile.Write(ref existing.RemoteRequest, current);
+                });
+                return;
+            }
+            bool published = false;
+            bool built = BuildSink(sink, install =>
+            {
+                var current = latest();
+                if (!ReferenceEquals(current.Source, request.Source)) return false;
+                return current.TryPublish(latest, () =>
+                {
+                    Volatile.Write(ref sink.RemoteRequest, current);
+                    install();
+                    published = sink.Running;
+                });
             });
+            if (!published)
+            {
+                lock (_lock) _sinks.Remove(sink);
+            }
+            if (!built) _remoteSinkFailUntil[ud.InstanceGuid] = Environment.TickCount64 + 3000;
+            else _remoteSinkFailUntil.TryRemove(ud.InstanceGuid, out _);
         }
 
         // Mixer rate matches SoundMacroService so decoded PCM mixes in cleanly.
@@ -676,18 +665,9 @@ namespace PadForge.Common.Input
             // The sink runs the mixer + reducer as usual but SHIPS the per-tick
             // (freq, amp) pair over the link instead of writing hardware.
             public bool Remote;
-            // Owner side: a paired peer is driving this local device's tone.
-            // Filled by ApplyRemoteTone from the UDP receive thread; the stream
-            // loop plays it via the same direct-drive idiom as the test tone
-            // (same benign torn-read tolerance: Until is written last). The
-            // consumer already applied ITS slot volume, so the owner must not
-            // scale again. RemoteDriven marks a sink created on demand for a
-            // device with no local slot assignment; Reconcile keeps it alive
-            // while frames stay fresh instead of tearing it down.
+            // The immutable request carries its connection and effect sequence through rendering.
             public bool RemoteDriven;
-            public float RemoteHz;
-            public float RemoteAmp;
-            public long RemoteUntilMs;
+            public RemoteToneRequest RemoteRequest;
 
             // System-audio passthrough mirror (same option DualSense/Wii expose).
             public bool MirrorOn;
@@ -1157,7 +1137,7 @@ namespace PadForge.Common.Input
                             // over and ApplyRemoteTone drives it instead.
                             bool superseded = desired.Exists(d => d.Guid == s.DeviceGuid);
                             bool stale = !remoteOnline.Contains(s.DeviceGuid)
-                                || (staleNow - s.RemoteUntilMs) > 10_000;
+                                || (staleNow - (Volatile.Read(ref s.RemoteRequest)?.UntilMs ?? 0)) > 10_000;
                             if (!superseded && !stale) continue;
                         }
                         else
@@ -1465,7 +1445,7 @@ namespace PadForge.Common.Input
         /// thread. Returns false if the handle could not be opened (caller drops
         /// the sink to retry). Runs OUTSIDE _lock. Same commit/race discipline as
         /// WiiSpeakerService.BuildSink.</summary>
-        private static bool BuildSink(Sink s)
+        private static bool BuildSink(Sink s, Func<Action, bool> publish = null)
         {
             IntPtr h = IntPtr.Zero;
             IntPtr h2 = IntPtr.Zero;
@@ -1631,27 +1611,29 @@ namespace PadForge.Common.Input
                 // rolling high tones off (-9 dB at 3.2 kHz) before the #202
                 // fold could bring them down. See SincResamplingSampleProvider.
                 var resampled = new SincResamplingSampleProvider(mono, ReduceRate);
-                lock (_lock)
+                void Install()
                 {
-                    if (_suppressed || !_sinks.Contains(s))
+                    lock (_lock)
                     {
-                        try { CloseHandle(h); } catch { }
+                        if (_suppressed || !_sinks.Contains(s)) return;
+                        s.Handle = h;
                         h = IntPtr.Zero;
-                        if (h2 != IntPtr.Zero) { try { CloseHandle(h2); } catch { } h2 = IntPtr.Zero; }
-                        return true; // race lost: sink already dropped
+                        s.PairSecondHandle = h2;
+                        h2 = IntPtr.Zero;
+                        s.MonoSource = resampled;
+                        s.PcmFilter = pcmLp;
+                        s.PcmSource = pcmSrc;
+                        s.Reducer = new HapticToneReducer(ReduceRate);
+                        s.Running = true;
+                        s.Thread = new Thread(() => StreamLoop(s)) { IsBackground = true, Name = "PadForge HD Haptic" };
+                        s.Thread.Start();
                     }
-                    s.Handle = h;
-                    h = IntPtr.Zero;
-                    s.PairSecondHandle = h2;
-                    h2 = IntPtr.Zero;
-                    s.MonoSource = resampled;
-                    s.PcmFilter = pcmLp;
-                    s.PcmSource = pcmSrc;
-                    s.Reducer = new HapticToneReducer(ReduceRate);
-                    s.Running = true;
-                    s.Thread = new Thread(() => StreamLoop(s)) { IsBackground = true, Name = "PadForge HD Haptic" };
-                    s.Thread.Start();
                 }
+                if (publish == null) Install();
+                else publish(Install);
+                // A retired request never transfers its prepared handles to a running sink.
+                if (h != IntPtr.Zero && h != INVALID) { try { CloseHandle(h); } catch { } h = IntPtr.Zero; }
+                if (h2 != IntPtr.Zero && h2 != INVALID) { try { CloseHandle(h2); } catch { } h2 = IntPtr.Zero; }
                 return true;
             }
             catch
@@ -2505,7 +2487,9 @@ namespace PadForge.Common.Input
 
                     float toneHz, amp;
                     bool testActive = s.TestUntilMs > nowMs;
-                    bool remoteActive = !testActive && s.RemoteUntilMs > nowMs;
+                    var remoteRequest = Volatile.Read(ref s.RemoteRequest);
+                    bool remoteActive = !testActive && remoteRequest != null
+                        && remoteRequest.UntilMs > nowMs && remoteRequest.IsCurrent;
                     if (testActive)
                     {
                         // Direct fixed test tone: a KNOWN frequency driven straight to
@@ -2520,7 +2504,7 @@ namespace PadForge.Common.Input
                         // Owner lane (#138 x #147): a linked consumer reduced its
                         // macro mix and shipped the pair; drive it straight to the
                         // encoder, same direct idiom as the test tone.
-                        toneHz = s.RemoteHz; amp = s.RemoteAmp;
+                        toneHz = remoteRequest.Hz; amp = remoteRequest.Amplitude;
                     }
                     else
                     {

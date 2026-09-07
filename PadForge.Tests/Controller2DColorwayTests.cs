@@ -13,7 +13,7 @@ namespace PadForge.Tests
     /// the Gamepad-Asset-Pack templates). A colorway is one base render plus
     /// the rest-art sprites that differ from the default's; press-highlight
     /// art is shared. The registry's family keys write into the SAME per-pad
-    /// appearance store the 3D picker uses (PadSetting.Model3DAppearances),
+    /// appearance store the 3D picker uses (PadViewModel.Model3DAppearances),
     /// so ids must match the 3D families' ids wherever the same physical
     /// colorway exists in both views.
     /// </summary>

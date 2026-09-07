@@ -324,14 +324,26 @@ namespace PadForge.Common.Input
             IsConnected = false;
         }
 
+        /// <summary>Registers a new controller's effects without starting output.</summary>
+        internal UserEffectsDispatcher PrepareDeviceEffectsForPublication(PadForge.ViewModels.DeviceSlotConfig config)
+        {
+            if (config == null) return null;
+            lock (_dispatcherLock)
+            {
+                if (!IsConnected) return null;
+                // A new controller reaches this only after winning its slot.
+                // Timer startup and physical output follow outside the lifecycle lock.
+                return _userEffectsDispatcher ??= new UserEffectsDispatcher(FeedbackPadIndex, config, startTimer: false);
+            }
+        }
+
         /// <summary>Attaches a per-slot
         /// <see cref="DeviceSlotConfig"/> so user-configured trigger
         /// / lightbar / audio effects synthesize and forward to the
         /// assigned physical DualSense via SDL_SendGamepadEffect.
-        /// Called by Step 5 right after RegisterFeedbackCallback for
-        /// every HM-backed slot — the dispatcher's runtime resolve
-        /// returns no targets when the slot has no DS5 physical mapped,
-        /// so attaching unconditionally is cheap. Decoupling the gate
+        /// Initial registration belongs to Step 5's winning publication.
+        /// This method rebinds a live slot after device or configuration changes.
+        /// The dispatcher resolves no targets when no supported physical pad is mapped. Decoupling the gate
         /// from the virtual's identity lets Feature B work when the
         /// user has a DS4 virtual + physical DS5 assignment, or any
         /// other mismatch where they still want to drive the assigned

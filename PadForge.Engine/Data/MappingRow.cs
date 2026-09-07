@@ -59,6 +59,11 @@ namespace PadForge.Engine.Data
         /// load and cached on the row at runtime.</summary>
         [XmlAttribute] public string CombineExpression { get; set; } = "";
 
+        /// <summary>Keeps the first two Custom arguments separate when their
+        /// device ids and inversion would otherwise encode a bipolar pair.
+        /// Ignored by other combine modes.</summary>
+        [XmlAttribute] public bool SuppressBipolarPair { get; set; }
+
         /// <summary>
         /// Shift-layer "do not inherit" flag. When true on a non-Base row,
         /// the row suppresses Base fallthrough for this target on this

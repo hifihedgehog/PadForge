@@ -183,7 +183,8 @@ namespace PadForge.Tests
 
             string page = File.ReadAllText(Path.Combine(RepoRoot(),
                 "PadForge.App", "Views", "PadPage.xaml.cs"));
-            Assert.Contains("existing.FireOnRelease = dlg.Result.FireOnRelease;", page);
+            Assert.Contains("existing.FireOnRelease = replacement.FireOnRelease;", page);
+            Assert.Contains("ApplyShiftActivatorEdit(_currentPadVm.PadIndex, existing, dlg.Result);", page);
         }
     }
 }

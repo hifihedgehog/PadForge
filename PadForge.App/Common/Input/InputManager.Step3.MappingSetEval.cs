@@ -2706,14 +2706,13 @@ namespace PadForge.Common.Input
             return LookupDeviceState(deviceGuid);
         }
 
-        /// <summary>True when sources[i] looks like the bipolar Neg
-        /// pair of sources[0] — same device, descriptor matches the
-        /// pair encoding (post-prefix-stripped), Invert flipped. Used
-        /// only for bipolar axis targets where the migrator and the
-        /// save path emit the Neg as Sources[1].</summary>
-        private static bool IsBipolarNegPair(MappingSource primary, MappingSource candidate)
+        /// <summary>True when two numeric sources share a device and have
+        /// opposite inversion. The migrator and save path store the negative
+        /// leg at Sources[1] for bipolar axis targets.</summary>
+        internal static bool IsBipolarNegPair(MappingSource primary, MappingSource candidate)
         {
             if (primary == null || candidate == null) return false;
+            if (IsRowModifierSource(primary) || IsRowModifierSource(candidate)) return false;
             if (!string.Equals(primary.DeviceGuid ?? "", candidate.DeviceGuid ?? "",
                 System.StringComparison.OrdinalIgnoreCase)) return false;
             return primary.Invert != candidate.Invert;
@@ -2721,7 +2720,7 @@ namespace PadForge.Common.Input
 
         /// <summary>True when the row's target is a bipolar-axis kind
         /// where a Neg-pair encoding is meaningful.</summary>
-        private static bool TargetIsBipolarAxis(string target)
+        internal static bool TargetIsBipolarAxis(string target)
             => target == "LeftThumbAxisX" || target == "LeftThumbAxisY"
             || target == "RightThumbAxisX" || target == "RightThumbAxisY"
             || (target != null && target.StartsWith("RawAxis", System.StringComparison.Ordinal));
@@ -2806,6 +2805,7 @@ namespace PadForge.Common.Input
 
             int negPairIndex = -1;
             if (TargetIsBipolarAxis(row.Target) && srcsCount >= 2
+                && !(row.CombineMode == "Custom" && row.SuppressBipolarPair)
                 && IsBipolarNegPair(srcs[0], srcs[1]))
             {
                 negPairIndex = 1;
@@ -3328,7 +3328,8 @@ namespace PadForge.Common.Input
             {
                 var src = sources[i];
                 if (IsRowModifierSource(src)) continue;
-                if (src == null) { values.Add(0f); flags.Add(0f); continue; }
+                if (src == null || SourceEvaluator.IsUnmappedDirect(src))
+                { values.Add(0f); flags.Add(0f); continue; }
                 // Consume/postpone parity (2026-07-25 audit): a suppressed
                 // source reads INACTIVE, exactly like a lifted finger or an
                 // offline device. The other evaluators check this too; the

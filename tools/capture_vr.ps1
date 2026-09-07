@@ -6,7 +6,7 @@
 # chain, which memory has recorded dying across four separate runs). Every
 # input this script needs is a persisted field:
 #
-#   PadSetting.Model3DAppearances  "DualSense=SpiderMan2,XboxSeries=Starfield"
+#   AppSettings.SlotModel3DAppearances  "DualSense=SpiderMan2,XboxSeries=Starfield"
 #   AppSettings.Use2DControllerView  true|false
 #   AppSettings.SlotCreated / SlotControllerTypes  the slot itself
 #
@@ -138,6 +138,10 @@ try {
             $n.InnerText = $value
         }
 
+        # The scene is stored in the default profile fields.
+        Set-Node $app "ActiveProfileId" ""
+        Set-Node $app "EnableAutoProfileSwitching" "false"
+
         # One slot, created and enabled, of the scene's type. The arrays are
         # element-per-item; rebuild them wholesale so there is no stale tail.
         foreach ($pair in @(@("SlotCreated","Created"), @("SlotEnabled","Enabled"), @("SlotControllerTypes","Type"))) {
@@ -177,13 +181,17 @@ try {
         Set-Node $app "StartMinimized" "false"
         Set-Node $app "Language" "en"
 
-        # The appearance itself, on slot 0's PadSetting.
-        $psList = $ns.SelectSingleNode("PadSettings")
-        if ($psList -and $psList.HasChildNodes) {
-            $ps0 = $psList.ChildNodes[0]
-            Set-Node $ps0 "Model3DAppearances" "$($sc.Fam)=$($sc.App)"
-        } else {
-            Note "  !! no PadSettings to write the appearance into"
+        # Slot 0's appearance is independent of assigned input devices.
+        $appearanceArr = $app.SelectSingleNode("SlotModel3DAppearances")
+        if (-not $appearanceArr) {
+            $appearanceArr = $xml.CreateElement("SlotModel3DAppearances")
+            [void]$app.AppendChild($appearanceArr)
+        }
+        while ($appearanceArr.HasChildNodes) { [void]$appearanceArr.RemoveChild($appearanceArr.FirstChild) }
+        for ($i = 0; $i -lt 16; $i++) {
+            $e = $xml.CreateElement("Appearance")
+            $e.InnerText = if ($i -eq 0) { "$($sc.Fam)=$($sc.App)" } else { "" }
+            [void]$appearanceArr.AppendChild($e)
         }
 
         $xml.Save($PadForgeXml)

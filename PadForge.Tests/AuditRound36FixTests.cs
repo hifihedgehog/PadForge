@@ -258,17 +258,12 @@ namespace PadForge.Tests
         [Fact]
         public void AutosaveDescriptorWrite_PassesASeedToTheClear()
         {
-            string src = Src("PadForge.App/Services/SettingsService.cs");
-
-            // Positive control: the per-device clear loop must still be there.
-            Assert.Contains("ClearMappingDescriptors(", src);
-
-            Assert.DoesNotMatch(
-                new Regex(@"devPs\.ClearMappingDescriptors\(\s*\)"),
-                src);
-            Assert.Matches(
-                new Regex(@"devPs\.ClearMappingDescriptors\(\s*\r?\n?\s*seeded\."),
-                src);
+            string caller = Src("PadForge.App/Services/SettingsService.cs");
+            Assert.Contains("LegacyBaseMappingProjection.Write(padVm,", caller);
+            string projection = Src("PadForge.App/Services/LegacyBaseMappingProjection.cs");
+            // The caller's Base projection still seeds the per-device clear.
+            Assert.Contains("ClearMappingDescriptors(pair.Value)", projection);
+            Assert.DoesNotMatch(new Regex(@"ClearMappingDescriptors\(\s*\)"), projection);
         }
     }
 }

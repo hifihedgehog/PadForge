@@ -608,10 +608,8 @@ namespace PadForge.Engine.Data
         /// default.</summary>
         [XmlElement] public string PointerFpsSpeed { get; set; } = "35";
 
-        /// <summary>3D preview colorway per model family, so each virtual
-        /// controller keeps its own appearance ("XboxSeries=PulseRed,
-        /// DualSense=Midnight"). Families absent from the list use their
-        /// default. Cosmetic only; never read by the engine.</summary>
+        /// <summary>Legacy appearance map, retained for old settings and explicit clipboard copies.
+        /// Current appearance ownership is per virtual controller slot.</summary>
         [XmlElement] public string Model3DAppearances { get; set; } = "";
 
         /// <summary>At-rest bias for Pitch axis (rad/s), subtracted from

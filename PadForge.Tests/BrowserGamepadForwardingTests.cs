@@ -333,9 +333,12 @@ namespace PadForge.Tests
             Assert.Contains("is PadForge.Engine.WebControllerDevice web", block);          // web pads only
             Assert.Contains("!RemoteLinkOutputRouter.IsClaimedByPeer(ud.DevicePath)", block); // a peer's output stays
             Assert.Contains("!RemoteLinkOutputRouter.PeerWroteLast(ud.DevicePath)", block);   // past its lease too
-            Assert.True(block.IndexOf("StopDeviceForces", StringComparison.Ordinal) < block.IndexOf("return;", StringComparison.Ordinal));
+            int webBranch = block.IndexOf("if (ud.Device is PadForge.Engine.WebControllerDevice web", StringComparison.Ordinal);
+            int stop = block.IndexOf("StopDeviceForces", StringComparison.Ordinal);
+            int webReturn = block.IndexOf("return;", webBranch, StringComparison.Ordinal);
+            Assert.True(webBranch > 0 && stop > webBranch && webReturn > stop);
             string server = File.ReadAllText(Path.Combine(RepoRoot(), "PadForge.App", "Services", "WebControllerServer.cs"));
-            int fin = server.IndexOf("bool stillRegistered =", StringComparison.Ordinal);
+            int fin = server.IndexOf("stillRegistered = ((System.Collections.Generic.ICollection<", StringComparison.Ordinal);
             Assert.True(fin > 0);
             string before = server.Substring(Math.Max(0, fin - 120), 120);
             Assert.Contains("lock (_registrationLock)", before);

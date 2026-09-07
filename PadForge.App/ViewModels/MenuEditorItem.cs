@@ -51,6 +51,7 @@ namespace PadForge.ViewModels
 
         /// <summary>Raised after any persisted field changes.</summary>
         public event Action Changed;
+        internal Func<Action, bool> RuntimeEdit;
 
         // ── Culture-current option lists ─────────────────────────
         // NO ordering dependence on the CultureChanged event: a C# `static`
@@ -214,7 +215,22 @@ namespace PadForge.ViewModels
         public bool Enabled
         {
             get => Entry.Enabled;
-            set { if (Entry.Enabled != value) { Entry.Enabled = value; OnPropertyChanged(); OnEdited(); StructureChanged?.Invoke(); } }
+            set
+            {
+                if (Entry.Enabled == value) return;
+                if (RuntimeEdit != null)
+                {
+                    if (!RuntimeEdit(() => Entry.Enabled = value))
+                    {
+                        OnPropertyChanged();
+                        return;
+                    }
+                }
+                else Entry.Enabled = value;
+                OnPropertyChanged();
+                OnEdited();
+                StructureChanged?.Invoke();
+            }
         }
 
         public bool IsRadial => Entry.Kind == MenuKind.Radial;

@@ -115,6 +115,13 @@ namespace PadForge.Engine.RemoteLink
         /// <summary>The owner's SDL joystick GUID, so a peer's controller can
         /// be reported upstream with a complete dossier.</summary>
         public string SdlGuid { get; set; }
+
+        internal RemotePeerDeviceInfo CloneForSlot(byte slot)
+        {
+            var copy = (RemotePeerDeviceInfo)MemberwiseClone();
+            copy.Slot = slot;
+            return copy;
+        }
     }
 
     /// <summary>
@@ -150,6 +157,7 @@ namespace PadForge.Engine.RemoteLink
         private readonly int[] _supportedAxisIndices;
 
         public RemotePeerDeviceInfo Info { get; }
+        public LinkConnectionLifetime Connection { get; internal set; }
 
         /// <summary>This device's slot id on the link (its index in the owner's exposed
         /// list, symmetric across both peers). The reverse output channel stamps this
@@ -265,6 +273,7 @@ namespace PadForge.Engine.RemoteLink
         public uint HapticFeatures => 0;
         public int NumHapticAxes => 0;
         public bool IsAttached => _connected && !_disposed;
+        public bool IsRetired => _disposed;
         public ushort VendorId { get; }
         public ushort ProductId { get; }
         public Guid InstanceGuid { get; }
@@ -313,7 +322,7 @@ namespace PadForge.Engine.RemoteLink
 
         public CustomInputState GetCurrentState(bool forceRaw = false)
         {
-            if (_disposed) return null;
+            if (!IsAttached) return null;
             lock (_stateLock)
             {
                 // Once frames have flowed, a silent gap past the stale window reads

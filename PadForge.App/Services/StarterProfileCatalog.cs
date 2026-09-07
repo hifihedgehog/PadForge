@@ -1493,6 +1493,7 @@ namespace PadForge.Services
                 SlotEnabled = enabled,
                 SlotControllerTypes = types,
                 SlotProfileIds = ids,
+                SlotModel3DAppearances = SlotAppearancePersistence.Empty(),
                 SlotMappingSets = sets,
                 Macros = macros?.Where(m => m != null).ToArray() ?? Array.Empty<MacroData>(),
                 ExecutableNames = string.Empty,

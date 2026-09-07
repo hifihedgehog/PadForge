@@ -159,7 +159,10 @@ namespace PadForge.ViewModels
             // ripples to the variable-alias display for that position.
             if (e.PropertyName == nameof(MappingSourceItem.Descriptor)
                 || e.PropertyName == nameof(MappingSourceItem.DeviceLabel)
-                || e.PropertyName == nameof(MappingSourceItem.SelectedInput))
+                || e.PropertyName == nameof(MappingSourceItem.SelectedInput)
+                || e.PropertyName == nameof(MappingSourceItem.Kind)
+                || e.PropertyName == nameof(MappingSourceItem.Invert)
+                || e.PropertyName == nameof(MappingSourceItem.DeviceGuid))
             {
                 RefreshVariableAliases();
             }
@@ -341,6 +344,7 @@ namespace PadForge.ViewModels
                 OnPropertyChanged(nameof(PrimaryKindLabel));
                 OnPropertyChanged(nameof(IsTrivialDirect));
                 OnPropertyChanged(nameof(HasAnySource));
+                RefreshVariableAliases();
                 // A primary set (or loaded) as InvertOnHold with no contributing
                 // secondary is inert; revert it to Direct (#111 audit C).
                 EnforcePrimaryKindGate();
@@ -350,6 +354,9 @@ namespace PadForge.ViewModels
             {
                 RefreshExtraSourceInputs(msi);
             }
+            if (e.PropertyName == nameof(MappingSourceItem.DeviceGuid)
+                || e.PropertyName == nameof(MappingSourceItem.Invert))
+                RefreshVariableAliases();
             // A stateful primary's feeds are the Up/Down/Modifier keys on
             // the kind holder; binding or clearing one flips HasAnySource
             // where SourceDescriptor cannot.
@@ -373,6 +380,7 @@ namespace PadForge.ViewModels
             if (p == null) return;
             if (src == null || string.Equals(src.Kind ?? "Direct", "Direct", StringComparison.Ordinal))
             {
+                p.Invert = false;
                 p.ParamUp = "";
                 p.ParamDown = "";
                 p.ParamModifier = "";
@@ -380,6 +388,7 @@ namespace PadForge.ViewModels
                 return;
             }
             p.DeviceGuid = src.DeviceGuid ?? "";
+            p.Invert = src.Invert;
             p.ParamUp = src.ParamUp ?? "";
             p.ParamDown = src.ParamDown ?? "";
             p.ParamRate = src.ParamRate;
@@ -438,6 +447,28 @@ namespace PadForge.ViewModels
         // ─────────────────────────────────────────────
 
         private string _sourceDescriptor = string.Empty;
+        private bool _primarySourceExists;
+        private bool _suppressBipolarPair;
+
+        /// <summary>Keeps the copied Custom argument positions during edits.</summary>
+        internal bool SuppressBipolarPair
+        {
+            get => _suppressBipolarPair;
+            set
+            {
+                if (SetProperty(ref _suppressBipolarPair, value)) RefreshVariableAliases();
+            }
+        }
+
+        /// <summary>Retains a loaded primary position when its input is blank.</summary>
+        internal bool PrimarySourceExists
+        {
+            get => _primarySourceExists;
+            set
+            {
+                if (SetProperty(ref _primarySourceExists, value)) RefreshVariableAliases();
+            }
+        }
 
         /// <summary>
         /// The mapping descriptor string identifying the physical input source.
@@ -450,6 +481,9 @@ namespace PadForge.ViewModels
             get => _sourceDescriptor;
             set
             {
+                if (!_suppressPrimaryKindGate)
+                    PrimarySourceExists = !string.IsNullOrEmpty(value)
+                        || (IsCustomCombine && PrimarySourceExists);
                 if (SetProperty(ref _sourceDescriptor, value ?? string.Empty))
                 {
                     _resolvedSourceText = null; // Clear until re-resolved
@@ -1705,11 +1739,19 @@ namespace PadForge.ViewModels
         /// MaxAbs, Sum, Average, OR, AND, XOR, Custom.</summary>
         public string CombineMode
         {
-            get => _combineMode;
+            get => Engine.Data.MappingSetMigrator.IsMotionTarget(TargetSettingName)
+                && _combineMode is not ("" or "MaxAbs" or "Sum" or "Average" or "Custom")
+                    ? "MaxAbs" : _combineMode;
             set
             {
                 if (SetProperty(ref _combineMode, value ?? ""))
                 {
+                    if (!_suppressPrimaryKindGate && !IsCustomCombine)
+                    {
+                        PrimarySourceExists = !string.IsNullOrEmpty(_sourceDescriptor) || !IsPrimaryDirect;
+                        SuppressBipolarPair = false;
+                    }
+                    RefreshVariableAliases();
                     OnPropertyChanged(nameof(CombineModeDisplayName));
                     OnPropertyChanged(nameof(IsCustomCombine));
                     OnPropertyChanged(nameof(ShouldShowCustomExpression));
@@ -1741,11 +1783,8 @@ namespace PadForge.ViewModels
 
         public bool IsMultiSource => ExtraSources.Count > 0 || !IsPrimaryDirect;
 
-        /// <summary>Number of source variables the row's combine formula can
-        /// reference. Primary slot (<c>a</c>) is always present, plus one
-        /// per ExtraSource. Drives the chip-palette visibility so users
-        /// only see letters that map to a real source.</summary>
-        public int VariableCount => 1 + (ExtraSources?.Count ?? 0);
+        /// <summary>Number of positions supplied to the combine formula.</summary>
+        public int VariableCount => PositionalSourceCount;
         public bool IsCustomCombine => string.Equals(_combineMode, "Custom", StringComparison.Ordinal);
 
         /// <summary>True only when a row has multiple sources AND the
@@ -1836,7 +1875,7 @@ namespace PadForge.ViewModels
         {
             get
             {
-                string m = _combineMode ?? "";
+                string m = CombineMode ?? "";
                 if (m.Length == 0) return "";
                 foreach (var o in AvailableCombineModes)
                     if (string.Equals(o.Value, m, StringComparison.Ordinal))
@@ -1855,13 +1894,25 @@ namespace PadForge.ViewModels
         private static CombineModeOption[] _availableCombineModesNoTrimCache;
         private static int _availableCombineModesCacheCulture;
 
-        /// <summary>Trigger-target rows see the full list; every other
-        /// row gets the list without StickTrim (#155), the engine only
-        /// intercepts that mode at the trigger sites.</summary>
+        /// <summary>Motion rows use axis combine modes. StickTrim is available on trigger rows.</summary>
         public System.Collections.Generic.IReadOnlyList<CombineModeOption> AvailableCombineModes
-            => IsTriggerTarget
-                ? GetAvailableCombineModes()
-                : GetAvailableCombineModesWithoutTrim();
+            => Engine.Data.MappingSetMigrator.IsMotionTarget(TargetSettingName)
+                ? GetAvailableMotionCombineModes()
+                : IsTriggerTarget ? GetAvailableCombineModes() : GetAvailableCombineModesWithoutTrim();
+
+        private static CombineModeOption[] _motionCombineModes;
+        private static CombineModeOption[] _motionModesDerivedFrom;
+
+        private static CombineModeOption[] GetAvailableMotionCombineModes()
+        {
+            var full = GetAvailableCombineModes();
+            if (ReferenceEquals(_motionModesDerivedFrom, full) && _motionCombineModes != null)
+                return _motionCombineModes;
+            _motionCombineModes = System.Array.FindAll(full,
+                option => option.Value is "MaxAbs" or "Sum" or "Average" or "Custom");
+            _motionModesDerivedFrom = full;
+            return _motionCombineModes;
+        }
 
         // Keyed by reference identity of the full array it was derived
         // from: a culture change swaps the full cache first (inside
@@ -2021,7 +2072,8 @@ namespace PadForge.ViewModels
         /// device as the primary with Invert flipped on a bipolar-axis
         /// target, because it merges into the primary's own slot; and any
         /// InvertOnHold source, which is a row modifier and never enters the
-        /// combine. Null and postpone-suppressed sources DO get a 0f
+        /// combine. Custom rows with pair suppression keep both positions.
+        /// Null and postpone-suppressed sources DO get a 0f
         /// placeholder there, precisely to keep the letters stable, so they
         /// still count here.</para>
         ///
@@ -2043,7 +2095,8 @@ namespace PadForge.ViewModels
             MappingSourceItem hit = null;
             bool primaryIsModifier = string.Equals(
                 PrimaryKindSource?.Kind ?? "Direct", "InvertOnHold", StringComparison.Ordinal);
-            bool primaryExists = !string.IsNullOrEmpty(_sourceDescriptor) || primaryIsModifier;
+            bool primaryExists = !string.IsNullOrEmpty(_sourceDescriptor) || !IsPrimaryDirect
+                || (IsCustomCombine && PrimarySourceExists);
             if (primaryExists && !primaryIsModifier)
             {
                 if (count == wanted) hit = null;   // slot 0 IS the primary
@@ -2052,16 +2105,27 @@ namespace PadForge.ViewModels
 
             if (ExtraSources == null) return hit;
 
-            // The engine's neg-pair test, on the same two facts: Sources[1]
-            // shares the primary's device and its Invert is flipped.
+            // Match the engine's pair rule: two numeric sources on the same
+            // device with opposite inversion.
             int negPairIdx = -1;
-            if (IsBipolarAxisTarget && primaryExists && ExtraSources.Count > 0)
+            bool foldsPair = IsBipolarAxisTarget
+                || ((TargetSettingName?.StartsWith("RawAxis", StringComparison.Ordinal) ?? false)
+                    && Category != MappingCategory.Triggers);
+            if (foldsPair && !(IsCustomCombine && SuppressBipolarPair)
+                && primaryExists && !primaryIsModifier && ExtraSources.Count > 0)
             {
                 PadForge.Engine.Common.Mapping.SourceCoercion.StripLegacyPrefix(
                     _sourceDescriptor, out bool primaryInvert, out _);
+                string primaryGuid = PrimarySourceDeviceGuid;
+                if (!IsPrimaryDirect)
+                {
+                    primaryGuid = PrimaryKindSource?.DeviceGuid;
+                    primaryInvert = PrimaryKindSource?.Invert ?? false;
+                }
                 var first = ExtraSources[0];
                 if (first != null
-                    && string.Equals(first.DeviceGuid ?? "", PrimarySourceDeviceGuid ?? "",
+                    && !string.Equals(first.Kind ?? "Direct", "InvertOnHold", StringComparison.Ordinal)
+                    && string.Equals(first.DeviceGuid ?? "", primaryGuid ?? "",
                         StringComparison.OrdinalIgnoreCase)
                     && first.Invert != primaryInvert)
                     negPairIdx = 0;
@@ -2093,20 +2157,16 @@ namespace PadForge.ViewModels
         /// UI order). Empty if no source occupies that slot.</summary>
         private string GetVariableAlias(int index)
         {
-            // Slot 0 is the primary ONLY when the primary actually occupies a
-            // positional slot. WalkPositionalSlots already encodes when it does
-            // not: an empty descriptor, or an InvertOnHold primary, which is a
-            // modifier rather than a source. In those cases slot 0 belongs to
-            // the first eligible ExtraSource, and returning early here handed
-            // the formula editor an empty alias for a letter that does refer to
-            // something. PositionalSourceCount counts that slot, so the letter
-            // was offered and then could not be named.
+            // A stored blank primary keeps slot zero with an empty alias.
+            // A modifier takes no slot, so the first contributing extra is a.
             bool primaryIsModifier = string.Equals(
                 PrimaryKindSource?.Kind ?? "Direct", "InvertOnHold", StringComparison.Ordinal);
-            bool primaryOwnsSlotZero = !string.IsNullOrEmpty(_sourceDescriptor) && !primaryIsModifier;
+            bool primaryOwnsSlotZero = (!string.IsNullOrEmpty(_sourceDescriptor) || !IsPrimaryDirect
+                || (IsCustomCombine && PrimarySourceExists)) && !primaryIsModifier;
 
             if (index == 0 && primaryOwnsSlotZero)
             {
+                if (IsPrimaryDirect && string.IsNullOrEmpty(_sourceDescriptor)) return "";
                 string name = _selectedInput?.DisplayName ?? _resolvedSourceText ?? _sourceDescriptor;
                 return string.IsNullOrEmpty(_primarySourceDeviceLabel)
                     ? name : _primarySourceDeviceLabel + " · " + name;
@@ -2122,6 +2182,8 @@ namespace PadForge.ViewModels
 
         private void RefreshVariableAliases()
         {
+            OnPropertyChanged(nameof(VariableCount));
+            OnPropertyChanged(nameof(IsCombineExpressionWarning));
             OnPropertyChanged(nameof(VariableALabel));
             OnPropertyChanged(nameof(VariableBLabel));
             OnPropertyChanged(nameof(VariableCLabel));
@@ -2186,7 +2248,8 @@ namespace PadForge.ViewModels
                 || t.StartsWith("KbmScroll", StringComparison.Ordinal)
                 || t.StartsWith("MidiCC", StringComparison.Ordinal)
                 || t.StartsWith("Touchpad", StringComparison.Ordinal)
-                || IsVrAxisTarget(t);
+                || IsVrAxisTarget(t)
+                || Engine.Data.MappingSetMigrator.IsMotionTarget(t);
             CombineMode = isAxis ? "MaxAbs" : "OR";
         }
 

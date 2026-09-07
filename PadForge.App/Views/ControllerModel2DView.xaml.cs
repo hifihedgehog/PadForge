@@ -33,7 +33,7 @@ namespace PadForge.Views
         // 2D colorway state: the resolved id for the loaded model (null when
         // the folder ships a single colorway), the appearance-store family
         // key, and the folder's set, kept for the picker's handler. The
-        // store is PadSetting.Model3DAppearances, shared with the 3D picker.
+        // store is PadViewModel.Model3DAppearances, shared with the 3D picker.
         private string _loadedColorway;
         private string _colorwayFamilyKey;
         private Colorway2D[] _colorwaySet;

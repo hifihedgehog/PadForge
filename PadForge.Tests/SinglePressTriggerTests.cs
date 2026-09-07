@@ -88,7 +88,8 @@ namespace PadForge.Tests
         [Fact]
         public void ChainResets_NextIsolatedPressFiresAgain()
         {
-            var im = new InputManager();
+            var now = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            var im = new InputManager { SinglePressUtcNow = () => now };
             var macros = new[] { Macro(MacroTriggerMode.SinglePress, 1000, windowMs: 800) };
 
             // Fast pair: suppressed.
@@ -96,14 +97,16 @@ namespace PadForge.Tests
             Tick(im, macros, held: false);
             Tick(im, macros, held: true);
             Tick(im, macros, held: false);
-            Thread.Sleep(950);
+            now = now.AddMilliseconds(950);
             Assert.Equal(0, Tick(im, macros, held: false));  // quiet: chain resets, no fire
 
             // A later isolated press fires normally.
             Tick(im, macros, held: true);
             Tick(im, macros, held: false);
-            Thread.Sleep(950);
-            Assert.Equal(1000, Tick(im, macros, held: false));
+            now = now.AddMilliseconds(950);
+            double elapsedBeforeTick = (now - macros[0].TriggerLastPressUtc).TotalMilliseconds;
+            ushort result = Tick(im, macros, held: false);
+            Assert.True(result == 1000, $"Expected 1000, got {result}; elapsed before tick: {elapsedBeforeTick:F2} ms");
         }
 
         [Fact]
@@ -128,6 +131,58 @@ namespace PadForge.Tests
             Tick(im, macros, held: false);
             Thread.Sleep(950);
             Assert.Equal(1000, Tick(im, macros, held: false));
+        }
+
+        [Theory]
+        [InlineData(false, 800, 0)]
+        [InlineData(false, 801, 1000)]
+        [InlineData(false, 1050, 1000)]
+        [InlineData(false, 1051, 0)]
+        [InlineData(true, 800, 0)]
+        [InlineData(true, 801, 1000)]
+        [InlineData(true, 1050, 1000)]
+        [InlineData(true, 1051, 0)]
+        public void SinglePressClock_PreservesWindowAndGraceInBothEvaluators(
+            bool extended, int elapsedMs, int expected)
+        {
+            var now = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            var im = new InputManager { SinglePressUtcNow = () => now };
+            var macro = Macro(MacroTriggerMode.SinglePress, 1000, windowMs: 800);
+            macro.Actions[0].AxisTarget = MacroAxisTarget.LeftStickX;
+            if (extended)
+            {
+                macro.TriggerButtons = 0;
+                macro.TriggerCustomButtons = "00000001,00000000,00000000,00000000";
+            }
+            var macros = new[] { macro };
+            short Evaluate(bool held)
+            {
+                if (extended)
+                {
+                    var raw = RawHidState.Create(8, 32, 1);
+                    raw.Buttons[0] = held ? 1u : 0u;
+                    im.EvaluateSlotMacrosExtended(ref raw, macros);
+                    return raw.Axes[0];
+                }
+                var gp = new Gamepad { Buttons = held ? Gamepad.A : (ushort)0 };
+                im.EvaluateSlotMacros(ref gp, macros);
+                return gp.ThumbLX;
+            }
+
+            Assert.Equal(0, Evaluate(true));
+            Assert.Equal(now, macro.TriggerLastPressUtc);
+            Assert.Equal(0, Evaluate(false));
+            now = now.AddMilliseconds(elapsedMs);
+            double elapsedBeforeTick = (now - macro.TriggerLastPressUtc).TotalMilliseconds;
+            short result = Evaluate(false);
+            Assert.True(result == expected,
+                $"Expected {expected}, got {result}; elapsed before tick: {elapsedBeforeTick:F2} ms");
+            if (elapsedMs > 800)
+            {
+                Assert.Equal(0, macro.TriggerPressStreak);
+                Assert.Equal(DateTime.MinValue, macro.TriggerLastPressUtc);
+                Assert.Equal(0, Evaluate(false));
+            }
         }
 
         [Fact]

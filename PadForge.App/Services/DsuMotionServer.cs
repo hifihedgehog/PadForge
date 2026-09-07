@@ -188,6 +188,8 @@ namespace PadForge.Services
             if (!_running || _socket == null || slot < 0 || slot >= MaxSlots)
                 return;
 
+            if (!connected)
+                snapshot = new MotionSnapshot { TimestampUs = snapshot.TimestampUs };
             _slotConnected[slot] = connected;
             _slotHasMotion[slot] = snapshot.HasMotion;
 

@@ -46,7 +46,7 @@ namespace PadForge.Common.Input
     /// volume in the effect report while a device's sink is active —
     /// <see cref="WantsSpeakerPath"/> / <see cref="TryConsumeSpeakerPathCleared"/>.</para>
     /// </summary>
-    internal static class AudioPassthroughService
+    internal static partial class AudioPassthroughService
     {
         private const int MaxPads = 16;
         private const int Rate = 48000;
@@ -864,7 +864,7 @@ namespace PadForge.Common.Input
         /// byte, so the sink-owned watch stays out of its way.</summary>
         private static bool PersonaCoversJack(Guid pad)
         {
-            foreach (var f in _personaFeeds.Values)
+            foreach (var f in SnapshotPersonaFeeds())
                 if (f != null && (f.UsbJackPadGuid == pad || f.BtMicPadGuid == pad))
                     return true;
             return false;
@@ -1070,7 +1070,7 @@ namespace PadForge.Common.Input
                     if (_haptic.Length < frames * 2) _haptic = new short[frames * 2];
                     // Read through the CAPTURED ring, never re-index. This
                     // runs on NAudio's WASAPI render thread while
-                    // DetachPersonaFeed can TryRemove the same key; the
+                    // RetirePersonaFeed can TryRemove the same key; the
                     // indexer's KeyNotFoundException would kill the render
                     // thread outright, and SinkAlive treats a non-null
                     // Player as healthy, so the reconcile never rebuilt it.
@@ -1431,7 +1431,7 @@ namespace PadForge.Common.Input
         // demand): a composite slot with passthrough off and no macros
         // still builds its pads' transports.
 
-        private sealed class PersonaFeed
+        internal sealed class PersonaFeed
         {
             public HIDMaestro.HMUsbAudio Audio;
             public int Slot;   // #271 item 1: keys the actuator-sink submit
@@ -1457,7 +1457,16 @@ namespace PadForge.Common.Input
             public float[] MicFloatDst = Array.Empty<float>();
             public Action<HIDMaestro.HMAudioOutput, ReadOnlyMemory<byte>> FramesHandler;
             public EventHandler<HIDMaestro.HMAudioControlChangedEventArgs> ControlHandler;
-            public WasapiCapture Mic;
+            public IWaveIn Mic;
+            public readonly object CallbackGate = new();
+            public PersonaOwner Owner;
+            public volatile bool Published;
+            public bool RoutingPending = true;
+            public volatile int RouteGeneration;
+            public int NativeRouteGeneration = -1;
+            public int CleanupQueued;
+            public bool NativeCleanupComplete;
+            public Action<HIDMaestro.HMMicrophoneInput, bool> StreamingHandler;
             public Guid MicPadGuid;
             public byte[] MicScratch = Array.Empty<byte>();
             // BT mic reader (DS5 only): parallel sync HID handle; Windows
@@ -1516,12 +1525,12 @@ namespace PadForge.Common.Input
             // Serializes the two HID reader lanes' start/stop/publish/close.
             // The generation gate alone decides OWNERSHIP but cannot make the
             // handle steal atomic: two concurrent Stop callers (reconcile
-            // pass vs DetachPersonaFeed at shutdown) could both snapshot the
+            // pass vs RetirePersonaFeed at shutdown) could both snapshot the
             // same handle before either zeroed the field and close it twice,
             // the handle-recycle defect class. No Stop joins a reader thread,
             // so nothing can deadlock on this. Blocking reads stay OUTSIDE.
             public readonly object HidLaneLock = new object();
-            // Set by DetachPersonaFeed before its Stops: a reconcile pass
+            // Set by RetirePersonaFeed before its Stops: a reconcile pass
             // holding this feed from before the removal must not Start a new
             // reader on it (nobody would ever stop that orphan).
             public volatile bool Retired;
@@ -1581,8 +1590,6 @@ namespace PadForge.Common.Input
             }
         }
 
-        /// <summary>Attach the composite persona's audio surfaces for a
-        /// slot. Called by Step 5 after Connect; idempotent per slot.</summary>
         /// <summary>The dB at which a persona's mic feature unit sits at
         /// unity. It is the unit's own declared maximum (volumeMaxRaw / 256
         /// in the persona descriptor), because the reference emulation
@@ -1595,12 +1602,14 @@ namespace PadForge.Common.Input
                && profileId.StartsWith("dualshock-4", StringComparison.OrdinalIgnoreCase)
                 ? 24.0 : 48.0;
 
-        public static void AttachPersonaFeed(int slot, HIDMaestro.HMUsbAudio audio, string profileId = null)
+        /// <summary>Registers a winning composite controller's audio owner.
+        /// The caller requests native reconciliation after publication.</summary>
+        internal static PersonaFeed RegisterPersonaFeed(PersonaOwner owner, int slot,
+            HIDMaestro.HMUsbAudio audio, string profileId = null)
         {
-            if (audio == null) return;
-            DetachPersonaFeed(slot);
+            if (audio == null || owner.Closed) return null;
 
-            var feed = new PersonaFeed { Audio = audio, Slot = slot, MicUnity = MicUnityDb(profileId) };
+            var feed = new PersonaFeed { Owner = owner, Audio = audio, Slot = slot, MicUnity = MicUnityDb(profileId) };
             // The DS5 persona streams 48 kHz and matches the sink domain
             // 1:1; the DS4 persona streams 32 kHz (the real pad's UAC
             // rate), and pushing those samples into the 48 kHz sink
@@ -1615,6 +1624,7 @@ namespace PadForge.Common.Input
             feed.FramesHandler = (output, pcm) => OnPersonaFrames(feed, output, pcm);
             feed.ControlHandler = (_, e) =>
             {
+                if (feed.Retired) return;
                 Engine.SdlDiagLog.WriteLine(
                     $"PERSONA ctrl fn={e.Function} mute={e.IsMute}/{e.MuteValue} dB={e.VolumeDb:F1} raw={e.RawValue}");
                 // UAC1 s16 dB → linear. Mute and volume are separate
@@ -1650,39 +1660,26 @@ namespace PadForge.Common.Input
             };
             audio.Output.FramesReceived += feed.FramesHandler;
             audio.ControlChanged += feed.ControlHandler;
-            audio.Microphone.StreamingChanged += (_, on) =>
-                Engine.SdlDiagLog.WriteLine("PERSONA mic host capture pin " + (on ? "OPEN" : "CLOSED"));
-
-            _personaFeeds[slot] = feed;
-            Reconcile();
-        }
-
-        /// <summary>Detach and stop a slot's persona feed. Safe when none
-        /// is attached. Rings persist until sink teardown, matching the
-        /// remote-audio ring lifecycle.</summary>
-        public static void DetachPersonaFeed(int slot)
-        {
-            if (!_personaFeeds.TryRemove(slot, out var feed)) return;
-            // Retire BEFORE stopping: a reconcile pass that grabbed this feed
-            // before the TryRemove could otherwise re-Start a reader lane on
-            // it after the Stops below, and no later pass would ever see the
-            // feed again to stop that orphan.
-            feed.Retired = true;
-            try
+            feed.StreamingHandler = (_, on) =>
             {
-                if (feed.FramesHandler != null) feed.Audio.Output.FramesReceived -= feed.FramesHandler;
-                if (feed.ControlHandler != null) feed.Audio.ControlChanged -= feed.ControlHandler;
-            }
-            catch { }
-            StopPersonaMic(feed);
-            StopBtMic(feed);
-            StopUsbJack(feed);
-            foreach (var g in feed.Targets)
+                if (!feed.Retired)
+                    Engine.SdlDiagLog.WriteLine("PERSONA mic host capture pin " + (on ? "OPEN" : "CLOSED"));
+            };
+            audio.Microphone.StreamingChanged += feed.StreamingHandler;
+
+            lock (_personaFeedLock)
             {
-                _personaSpeakerRings.TryRemove(g, out _);
-                _personaHapticRings.TryRemove(g, out _);
+                if (owner.Closed)
+                {
+                    RetirePersonaFeedNoLock(feed);
+                    return null;
+                }
+                _personaFeeds.TryGetValue(slot, out var previous);
+                _personaFeeds[slot] = feed;
+                if (previous != null) RetirePersonaFeedNoLock(previous);
+                lock (feed.CallbackGate) feed.Published = true;
             }
-            Reconcile();
+            return feed;
         }
 
         /// <summary>True for the persona feature-unit names that carry the
@@ -1749,6 +1746,15 @@ namespace PadForge.Common.Input
         }
 
         private static void OnPersonaFrames(PersonaFeed feed, HIDMaestro.HMAudioOutput output, ReadOnlyMemory<byte> pcm)
+        {
+            lock (feed.CallbackGate)
+            {
+                if (feed.Retired || !feed.Published) return;
+                RoutePersonaFrames(feed, output, pcm);
+            }
+        }
+
+        private static void RoutePersonaFrames(PersonaFeed feed, HIDMaestro.HMAudioOutput output, ReadOnlyMemory<byte> pcm)
         {
             // Reception-layer heartbeat: proves host PCM reaches us at all,
             // independent of any decode or routing beyond this point.
@@ -1882,13 +1888,41 @@ namespace PadForge.Common.Input
         /// the slot's current Sony pad GUIDs, so the pacing-thread
         /// callback never walks settings. Also starts/moves the mic
         /// capture to the first USB pad in the set.</summary>
-        private static void RefreshPersonaTargets(int slot, List<(Guid Guid, string Path, bool IsBt, bool IsDs4)> pads)
+        internal static void RefreshPersonaTargets(PersonaFeed feed, int slot, int generation,
+            List<(Guid Guid, string Path, bool IsBt, bool IsDs4)> pads)
         {
-            if (!_personaFeeds.TryGetValue(slot, out var feed)) return;
+            lock (_personaIoGate)
+            {
+                DrainRetiredPersonaFeeds();
+                if (!IsCurrentPersonaFeed(feed, slot, generation)) return;
+                if (feed.NativeRouteGeneration != generation)
+                {
+                    StopPersonaMic(feed);
+                    StopBtMic(feed);
+                    StopUsbJack(feed);
+                    feed.NativeRouteGeneration = generation;
+                }
+                RefreshPersonaTargetsOnWorker(feed, slot, generation, pads);
+            }
+        }
+
+        private static void RefreshPersonaTargetsOnWorker(PersonaFeed feed, int slot, int generation,
+            List<(Guid Guid, string Path, bool IsBt, bool IsDs4)> pads)
+        {
             var guids = new Guid[pads.Count];
             for (int i = 0; i < pads.Count; i++) guids[i] = pads[i].Guid;
-            var prior = feed.Targets;
-            feed.Targets = guids;
+            Guid[] prior;
+            lock (_personaFeedLock)
+            {
+                if (!IsCurrentPersonaFeedNoLock(feed, slot, generation)) return;
+                lock (feed.CallbackGate)
+                {
+                    prior = feed.Targets;
+                    feed.Targets = guids;
+                    feed.RoutingPending = false;
+                }
+                ClearUnusedPersonaRingsNoLock(prior);
+            }
             if (prior.Length != guids.Length)
                 Engine.SdlDiagLog.WriteLine(
                     $"PERSONA targets slot={slot} count={guids.Length}"
@@ -1904,7 +1938,7 @@ namespace PadForge.Common.Input
             if (micPad != feed.MicPadGuid)
             {
                 StopPersonaMic(feed);
-                if (micPad != Guid.Empty) StartPersonaMic(feed, micPad, micPath);
+                if (micPad != Guid.Empty) StartPersonaMic(feed, micPad, micPath, slot, generation);
             }
 
             Guid btMicPad = Guid.Empty; string btMicPath = null;
@@ -1934,13 +1968,13 @@ namespace PadForge.Common.Input
                 if (usbJackPad != feed.UsbJackPadGuid)
                 {
                     StopUsbJack(feed);
-                    if (usbJackPad != Guid.Empty) StartUsbJack(feed, usbJackPad, usbJackPath);
+                    if (usbJackPad != Guid.Empty) StartUsbJack(feed, usbJackPad, usbJackPath, generation);
                 }
 
                 if (btMicPad != feed.BtMicPadGuid)
                 {
                     StopBtMic(feed);
-                    if (btMicPad != Guid.Empty) StartBtMic(feed, btMicPad, btMicPath);
+                    if (btMicPad != Guid.Empty) StartBtMic(feed, btMicPad, btMicPath, generation);
                 }
             }
         }
@@ -1952,17 +1986,17 @@ namespace PadForge.Common.Input
         /// endpoint is stereo, so the mono decode is duplicated. The mic
         /// OPEN command itself is sent by the BT tick (ManageDs5MicOpen)
         /// through the sink's writer, keeping one write lane.</summary>
-        private static void StartBtMic(PersonaFeed feed, Guid padGuid, string hidPath)
+        private static void StartBtMic(PersonaFeed feed, Guid padGuid, string hidPath, int generation)
         {
           lock (feed.HidLaneLock)
           {
-            if (feed.Retired) return;
+            if (feed.Retired || feed.RouteGeneration != generation) return;
             feed.BtMicStop = false;
             feed.BtMicRxFrames = 0;
             feed.BtMicPadGuid = padGuid;
             int gen = System.Threading.Interlocked.Increment(ref feed.BtMicGenBox);
             feed.BtMicGen = gen;
-            var th = new System.Threading.Thread(() => BtMicLoop(feed, hidPath, gen))
+            var th = new System.Threading.Thread(() => BtMicLoop(feed, hidPath, gen, generation))
             {
                 IsBackground = true,
                 Name = "PersonaBtMic",
@@ -1974,16 +2008,16 @@ namespace PadForge.Common.Input
             Engine.SdlDiagLog.WriteLine("PERSONA mic bt-reader start pad=" + padGuid.ToString("N").Substring(0, 8));
         }
 
-        private static void StartUsbJack(PersonaFeed feed, Guid padGuid, string hidPath)
+        private static void StartUsbJack(PersonaFeed feed, Guid padGuid, string hidPath, int generation)
         {
             lock (feed.HidLaneLock)
             {
-                if (feed.Retired) return;
+                if (feed.Retired || feed.RouteGeneration != generation) return;
                 feed.UsbJackStop = false;
                 feed.UsbJackPadGuid = padGuid;
                 int gen = System.Threading.Interlocked.Increment(ref feed.UsbJackGenBox);
                 feed.UsbJackGen = gen;
-                var th = new System.Threading.Thread(() => UsbJackLoop(feed, hidPath, gen))
+                var th = new System.Threading.Thread(() => UsbJackLoop(feed, hidPath, gen, generation))
                 { IsBackground = true, Name = "PadForge.PersonaUsbJack" };
                 feed.UsbJackThread = th;
                 th.Start();
@@ -2023,7 +2057,7 @@ namespace PadForge.Common.Input
         /// for the Follow Headphone Jack route. Read-only: this handle
         /// never writes, so it cannot collide with the effect writer's
         /// single-writer contract.</summary>
-        private static void UsbJackLoop(PersonaFeed feed, string hidPath, int gen)
+        private static void UsbJackLoop(PersonaFeed feed, string hidPath, int gen, int generation)
         {
             IntPtr h = NativeMethods.OpenHidSync(hidPath);
             if (h == IntPtr.Zero || h == new IntPtr(-1))
@@ -2038,14 +2072,14 @@ namespace PadForge.Common.Input
             // slip between the check and the publish and miss this handle.
             lock (feed.HidLaneLock)
             {
-                if (feed.UsbJackGen != gen) { NativeMethods.CloseHandle(h); return; }
+                if (feed.Retired || feed.RouteGeneration != generation || feed.UsbJackGen != gen) { NativeMethods.CloseHandle(h); return; }
                 feed.UsbJackHandle = h;
             }
             var report = new byte[64];
             bool haveLast = false; bool last = false;
             // Read through the LOCAL handle throughout: the shared field
             // belongs to whichever generation currently owns the lane.
-            while (!feed.UsbJackStop && feed.UsbJackGen == gen)
+            while (!feed.Retired && feed.RouteGeneration == generation && !feed.UsbJackStop && feed.UsbJackGen == gen)
             {
                 if (!NativeMethods.ReadFileSync(h, report, report.Length, out int got) || got < 55)
                 {
@@ -2121,7 +2155,7 @@ namespace PadForge.Common.Input
           }
         }
 
-        private static void BtMicLoop(PersonaFeed feed, string hidPath, int gen)
+        private static void BtMicLoop(PersonaFeed feed, string hidPath, int gen, int generation)
         {
             IntPtr h = NativeMethods.OpenHidSync(hidPath);
             if (h == IntPtr.Zero || h == new IntPtr(-1))
@@ -2135,7 +2169,7 @@ namespace PadForge.Common.Input
             // and here for the same reason.
             lock (feed.HidLaneLock)
             {
-                if (feed.BtMicGen != gen) { NativeMethods.CloseHandle(h); return; }
+                if (feed.Retired || feed.RouteGeneration != generation || feed.BtMicGen != gen) { NativeMethods.CloseHandle(h); return; }
                 feed.BtMicHandle = h;
             }
             // Channel count is BtMicChannels, whose own doc block below
@@ -2147,7 +2181,7 @@ namespace PadForge.Common.Input
             var outBuf = new byte[BtMicFrameSamples * 4];
             long lastLog = 0;
             // Local handle + generation, exactly as UsbJackLoop documents.
-            while (!feed.BtMicStop && feed.BtMicGen == gen)
+            while (!feed.Retired && feed.RouteGeneration == generation && !feed.BtMicStop && feed.BtMicGen == gen)
             {
                 if (!NativeMethods.ReadFileSync(h, report, report.Length, out int got) || got < 78)
                 {
@@ -2337,7 +2371,11 @@ namespace PadForge.Common.Input
                 // was verified here rather than merely assumed.
                 if (_micGuardDisabled || MicSubmitFits(mic.BufferedBytes, subBytes))
                 {
-                    mic.Submit(outBuf.AsSpan(0, subBytes));
+                    lock (feed.CallbackGate)
+                    {
+                        if (feed.Retired || feed.RouteGeneration != generation) break;
+                        mic.Submit(outBuf.AsSpan(0, subBytes));
+                    }
                 }
                 else
                 {
@@ -2477,7 +2515,7 @@ namespace PadForge.Common.Input
 
         private static PersonaFeed FindFeedForBtMicPad(Guid padGuid)
         {
-            foreach (var kv in _personaFeeds)
+            foreach (var kv in SnapshotPersonaFeedEntries())
                 if (kv.Value.BtMicPadGuid == padGuid) return kv.Value;
             return null;
         }
@@ -2491,7 +2529,7 @@ namespace PadForge.Common.Input
         internal static bool TryGetSoleBtMicPad(out Guid padGuid)
         {
             padGuid = Guid.Empty;
-            foreach (var kv in _personaFeeds)
+            foreach (var kv in SnapshotPersonaFeedEntries())
             {
                 if (kv.Value.BtMicPadGuid == Guid.Empty) continue;
                 if (padGuid != Guid.Empty) { padGuid = Guid.Empty; return false; }
@@ -2506,26 +2544,23 @@ namespace PadForge.Common.Input
         internal static bool IsBtMicLaneActive(Guid padGuid)
         {
             if (padGuid == Guid.Empty) return false;
-            foreach (var kv in _personaFeeds)
+            foreach (var kv in SnapshotPersonaFeedEntries())
                 if (kv.Value.BtMicPadGuid == padGuid) return true;
             return false;
         }
 
-        private static void StartPersonaMic(PersonaFeed feed, Guid padGuid, string hidPath)
+        private static void StartPersonaMic(PersonaFeed feed, Guid padGuid, string hidPath,
+            int slot, int generation)
         {
+            if (!IsCurrentPersonaFeed(feed, slot, generation)) return;
+            IWaveIn candidate = null;
             try
             {
-                Guid container = NativeMethods.GetContainerIdForDevicePath(hidPath);
-                if (container == Guid.Empty) return;
-                using var en = new MMDeviceEnumerator();
-                MMDevice match = null;
-                foreach (var dev in en.EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active))
-                    if (GetEndpointContainerId(dev) == container) { match = dev; break; }
-                if (match == null) return;
-
-                var cap = new WasapiCapture(match);
+                var cap = candidate = PersonaMicCaptureFactory(hidPath);
+                if (cap == null) return;
                 cap.DataAvailable += (_, a) =>
                 {
+                    if (feed.Retired || feed.RouteGeneration != generation) return;
                     var mic = feed.Audio.Microphone;
                     float gain = feed.MicMuted ? 0f : feed.MicGain;
                     int inCh = cap.WaveFormat.Channels, outCh = mic.Channels;
@@ -2601,13 +2636,25 @@ namespace PadForge.Common.Input
                         feed.MicScratch[i * 2] = (byte)sVal;
                         feed.MicScratch[i * 2 + 1] = (byte)(sVal >> 8);
                     }
-                    mic.Submit(feed.MicScratch.AsSpan(0, need));
+                    lock (feed.CallbackGate)
+                    {
+                        if (feed.Retired || feed.RouteGeneration != generation) return;
+                        mic.Submit(feed.MicScratch.AsSpan(0, need));
+                    }
                 };
                 cap.StartRecording();
-                feed.Mic = cap;
-                feed.MicPadGuid = padGuid;
+                lock (_personaFeedLock)
+                {
+                    if (IsCurrentPersonaFeedNoLock(feed, slot, generation))
+                    {
+                        feed.Mic = cap;
+                        feed.MicPadGuid = padGuid;
+                        candidate = null;
+                    }
+                }
             }
-            catch { StopPersonaMic(feed); }
+            catch { }
+            finally { DisposePersonaCapture(candidate); }
         }
 
         private static void StopPersonaMic(PersonaFeed feed)
@@ -2615,8 +2662,7 @@ namespace PadForge.Common.Input
             var cap = feed.Mic;
             feed.Mic = null;
             feed.MicPadGuid = Guid.Empty;
-            if (cap == null) return;
-            try { cap.StopRecording(); cap.Dispose(); } catch { }
+            DisposePersonaCapture(cap);
         }
 
         /// <summary>Requests a sink reconcile and returns immediately. Call
@@ -2674,6 +2720,7 @@ namespace PadForge.Common.Input
             _workSignal.Set();
             foreach (var s in drop) DisposeTransport(s);
             foreach (var c in caps) StopCaptureEntry(c);
+            RequestRetiredPersonaDrain();
         }
 
         // ─────────────────────────────────────────────
@@ -2721,7 +2768,8 @@ namespace PadForge.Common.Input
                 // macros, exactly like the remote-audio demand. The same
                 // walk refreshes the feed's target list so the pacing-
                 // thread callback never touches settings.
-                bool personaDemand = _personaFeeds.ContainsKey(slot);
+                var personaFeed = SnapshotPersonaFeed(slot, out int personaGeneration);
+                bool personaDemand = personaFeed != null;
                 var personaPads = personaDemand ? new List<(Guid Guid, string Path, bool IsBt, bool IsDs4)>() : null;
                 foreach (var (guid, ud) in EnumerateAssignedSonyPads(slot))
                 {
@@ -2767,7 +2815,7 @@ namespace PadForge.Common.Input
                     personaPads?.Add((guid, ud.DevicePath, isBt, isDs4));
                     desired.Add((slot, guid, ud.DevicePath, isBt, isDs4, ptOn, mirrorSrc, false, false));
                 }
-                if (personaDemand) RefreshPersonaTargets(slot, personaPads);
+                if (personaDemand) RefreshPersonaTargets(personaFeed, slot, personaGeneration, personaPads);
             }
 
             // Owner: a paired peer is streaming speaker audio for one of OUR physical

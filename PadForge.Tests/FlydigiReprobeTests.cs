@@ -275,20 +275,26 @@ namespace PadForge.Tests
             string step1 = File.ReadAllText(Path.Combine(RepoRoot(), "PadForge.App", "Common", "Input", "InputManager.Step1.UpdateDevices.cs"));
             int tick = step1.IndexOf("private void FlydigiReprobeTick()", System.StringComparison.Ordinal);
             Assert.True(tick > 0);
-            string tickBody = step1.Substring(tick, 4200);
+            int tickEnd = step1.IndexOf("private bool FlydigiOrdinaryWrappersChanged()", tick, System.StringComparison.Ordinal);
+            Assert.True(tickEnd > tick);
+            string tickBody = step1.Substring(tick, tickEnd - tick);
+            int retryAt = tickBody.IndexOf("if (now < _flydigiHidRetryDue) return;", System.StringComparison.Ordinal);
             int countAt = tickBody.IndexOf("SdlHidEnumeration.DeviceChangeCount()", System.StringComparison.Ordinal);
+            int enabledAt = tickBody.IndexOf("if (!FlydigiEnhancedProtocolDesired) return;", System.StringComparison.Ordinal);
+            int coreAt = tickBody.IndexOf("FlydigiReprobeTick(null, null, null, null);", System.StringComparison.Ordinal);
+            Assert.True(enabledAt > 0 && coreAt > enabledAt && countAt > coreAt);
             int wrapAt = tickBody.IndexOf("bool wrappersChanged = FlydigiOrdinaryWrappersChanged();", System.StringComparison.Ordinal);
             int gateAt = tickBody.IndexOf("if (!changed && !confirm && !wrappersChanged && !_flydigiReprobe.Armed) return;", System.StringComparison.Ordinal);
             int enumAt = tickBody.IndexOf("SdlHidEnumeration.Paths(0x37D7, 0xFFA0)", System.StringComparison.Ordinal);
-            int nullAt = tickBody.IndexOf("if (present == null) return;", System.StringComparison.Ordinal);
+            int nullAt = tickBody.IndexOf("if (present == null)", System.StringComparison.Ordinal);
             int snapAt = tickBody.IndexOf("foreach (var w in _openedSdlInstanceIds.Values)", System.StringComparison.Ordinal);
             int confirmAt = tickBody.IndexOf("if (changed) _flydigiConfirmDue = now + FlydigiReprobePolicy.DelayMs;", System.StringComparison.Ordinal);
             int keepAt = tickBody.IndexOf("else if (confirm) _flydigiConfirmDue = 0;", System.StringComparison.Ordinal);
             Assert.True(keepAt > confirmAt, "a pending confirmation is cleared only when it fires or is rescheduled");
             Assert.DoesNotContain("_flydigiConfirmDue = changed ?", tickBody);
             int observeAt = tickBody.IndexOf("_flydigiReprobe.Observe(now, present, claimed, ordinary, inFlux, absencesAreReal: changed)", System.StringComparison.Ordinal);
-            Assert.True(countAt > 0 && wrapAt > countAt && gateAt > wrapAt && enumAt > gateAt && nullAt > enumAt && snapAt > nullAt && confirmAt > snapAt && observeAt > keepAt,
-                "counter, wrapper change, gate, enumerate, null check, snapshot after the enumeration, confirmation scheduled, observe");
+            Assert.True(retryAt > 0 && countAt > retryAt && wrapAt > countAt && gateAt > wrapAt && enumAt > gateAt && nullAt > enumAt && snapAt > nullAt && confirmAt > snapAt && observeAt > keepAt,
+                "retry deadline, counter, wrapper change, gate, enumerate, null check, snapshot, confirmation, observe");
             Assert.Contains("!w.IsAttached", tickBody);
             Assert.Contains("else ordinary.Add(w.SdlInstanceId);", tickBody);
             Assert.DoesNotContain("OnArrival(", step1);

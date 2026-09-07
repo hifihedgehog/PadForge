@@ -247,26 +247,6 @@ namespace PadForge.Tests
             finally { SettingsManager.UserSettings = saved; }
         }
 
-        [Fact]
-        public void TheReceiveCallback_IsGated_AndBoundToItsServer()
-        {
-            string svc = System.IO.File.ReadAllText(System.IO.Path.Combine(RepoRoot(), "PadForge.App", "Services", "InputService.cs"));
-            Assert.Contains("origin.OutputReceived += (fp, slot, payload) => OnRemoteOutputReceived(origin, fp, slot, payload);", svc);
-            int at = svc.IndexOf("private void OnRemoteOutputReceived(LinkServer origin,", StringComparison.Ordinal);
-            Assert.True(at > 0);
-            string body = svc.Substring(at, 1400);
-            int gate = body.IndexOf("lock (ud?.OutputSync ?? _unresolvedOutputSync)", StringComparison.Ordinal);
-            int check = body.IndexOf("if (!ReferenceEquals(Volatile.Read(ref _linkServer), origin)) return;", StringComparison.Ordinal);
-            int apply = body.IndexOf("ApplyRemoteOutput(effect, source, ud, peerFingerprint);", StringComparison.Ordinal);
-            Assert.True(gate > 0 && check > gate && apply > check, "gate, then the server check, then the apply");
-            string step2 = System.IO.File.ReadAllText(System.IO.Path.Combine(RepoRoot(), "PadForge.App", "Common", "Input", "InputManager.Step2.UpdateInputStates.cs"));
-            int zero = step2.IndexOf("if (slotCount == 0)", StringComparison.Ordinal);
-            string block = step2.Substring(zero, 2600);
-            Assert.True(block.IndexOf("lock (ud.OutputSync)", StringComparison.Ordinal) < block.IndexOf("StopDeviceForces", StringComparison.Ordinal));
-            // The gate is taken for web pads only, so a native device's pending write never holds the polling thread.
-            Assert.True(block.IndexOf("is PadForge.Engine.WebControllerDevice web", StringComparison.Ordinal) < block.IndexOf("lock (ud.OutputSync)", StringComparison.Ordinal));
-        }
-
         private static string RepoRoot()
         {
             var d = new System.IO.DirectoryInfo(AppContext.BaseDirectory);

@@ -257,6 +257,52 @@ namespace PadForge.Tests
             Assert.False(im.AnySlotRetiring());
         }
 
+        [Theory]
+        [InlineData("ProductString")]
+        [InlineData("Sticks")]
+        [InlineData("Triggers")]
+        [InlineData("Povs")]
+        [InlineData("Buttons")]
+        [InlineData("ForceFeedback")]
+        [InlineData("VendorId")]
+        [InlineData("ProductId")]
+        public void ExtendedConfigurationDrift_HoldsCreationUntilRetired(string changed)
+        {
+            var im = Arrange(NewFake());
+            var hm = (HMaestroVirtualController)System.Runtime.CompilerServices.RuntimeHelpers
+                .GetUninitializedObject(typeof(HMaestroVirtualController));
+            var flags = BindingFlags.Instance | BindingFlags.NonPublic;
+            typeof(HMaestroVirtualController).GetField("_profile", flags).SetValue(hm,
+                new HIDMaestro.HMProfileBuilder().Id("audit-retirement").Vid(0xCAFE).Pid(1).Build());
+            typeof(HMaestroVirtualController).GetField("_type", flags)
+                .SetValue(hm, VirtualControllerType.Extended);
+            Field<IVirtualController[]>(im, "_virtualControllers")[Pad] = hm;
+            im.SlotControllerTypes[Pad] = VirtualControllerType.Extended;
+            im.SlotProfileIds[Pad] = "audit-retirement";
+            Field<bool[]>(im, "_extendedAppliedFfbEnabled")[Pad] = im.SlotExtendedFfbEnabled[Pad];
+
+            // An assigned offline device keeps the slot eligible without native I/O.
+            // The matching profile and configuration must pass before any mutation.
+            Assert.False(im.AnySlotRetiring());
+            switch (changed)
+            {
+                case "ProductString": im.SlotOemOverrideLabel[Pad] = "Different name"; break;
+                case "Sticks": im.SlotCustomLayouts[Pad].Sticks++; break;
+                case "Triggers": im.SlotCustomLayouts[Pad].Triggers++; break;
+                case "Povs": im.SlotCustomLayouts[Pad].Povs++; break;
+                case "Buttons": im.SlotCustomLayouts[Pad].Buttons++; break;
+                case "ForceFeedback": im.SlotExtendedFfbEnabled[Pad] = false; break;
+                case "VendorId": im.SlotExtendedVendorId[Pad] = 0xCAFE; break;
+                case "ProductId": im.SlotExtendedProductId[Pad] = 1; break;
+                default: throw new ArgumentOutOfRangeException(nameof(changed));
+            }
+            Assert.True(im.AnySlotRetiring());
+
+            // Removing the retiring controller releases the creation gate.
+            Field<IVirtualController[]>(im, "_virtualControllers")[Pad] = null;
+            Assert.False(im.AnySlotRetiring());
+        }
+
         [Fact]
         public async Task ASecondDestroyOnTheSameSlot_KeepsTheFirstDisposeOnRecord()
         {
@@ -329,12 +375,16 @@ namespace PadForge.Tests
             Assert.Contains("if (anyNeedsCreate && !anyDisposePending && !anyConnectPending && !anyRetiring)", step5);
             Assert.Contains("if (!IsSlotActive(i) && !HasAnyDeviceMapped(i)) return true;", step5);
             int kick = step5.IndexOf("async create KICK", StringComparison.Ordinal);
-            int publishLock = step5.IndexOf("lock (_vcLifecycleLock)", kick, StringComparison.Ordinal);
-            int exchange = step5.IndexOf("Interlocked.CompareExchange(", kick, StringComparison.Ordinal);
-            int applied = step5.IndexOf("if (prior == null) PublishExtendedApplied(capturedIndex);", kick, StringComparison.Ordinal);
-            int closedRead = step5.IndexOf("closed = _lifecycleClosed;", kick, StringComparison.Ordinal);
-            Assert.True(kick > 0 && publishLock > kick && closedRead > publishLock && exchange > closedRead && applied > exchange && applied - publishLock < 900,
-                "the worker takes the lock, reads the shutdown flag, then publishes the pointer and the applied state inside it");
+            Assert.Contains("!TryPublishCreatedController(capturedIndex, vcAsync,", step5);
+            int publishMethod = step5.IndexOf("internal bool TryPublishCreatedController(", StringComparison.Ordinal);
+            int publishLock = step5.IndexOf("lock (_vcLifecycleLock)", publishMethod, StringComparison.Ordinal);
+            int closedRead = step5.IndexOf("if (_lifecycleClosed) return false;", publishMethod, StringComparison.Ordinal);
+            int effects = step5.IndexOf("effects = new UserEffectsDispatcher(", publishMethod, StringComparison.Ordinal);
+            int pointer = step5.IndexOf("_virtualControllers[padIndex] = controller;", publishMethod, StringComparison.Ordinal);
+            int applied = step5.IndexOf("PublishExtendedApplied(padIndex);", publishMethod, StringComparison.Ordinal);
+            Assert.True(publishMethod > kick && publishLock > publishMethod && closedRead > publishLock
+                && effects > closedRead && pointer > effects && applied > pointer,
+                "the worker checks closure and constructs effects before publishing the pointer and applied state under one lock");
             // The build configuration is captured at kick time and carried
             // through construction. The factories never reread the live
             // Extended arrays.
@@ -345,6 +395,9 @@ namespace PadForge.Tests
             int midiFactory = step5.IndexOf("private IVirtualController CreateMidiController(", StringComparison.Ordinal);
             Assert.True(factory > 0 && hmFactory > factory && midiFactory > hmFactory);
             string factories = step5.Substring(factory, midiFactory - factory);
+            Assert.DoesNotContain(".AttachDeviceConfig(", factories);
+            Assert.Contains("effects = hm.PrepareDeviceEffectsForPublication(", step5);
+            Assert.Contains("try { effects?.StartDeferredEffects(); }", step5);
             foreach (var live in new[] { "SlotExtendedCustomize[padIndex]", "SlotOemOverrideEnabled[padIndex]", "SlotOemOverrideLabel[padIndex]", "SlotCustomLayouts[padIndex]", "SlotExtendedFfbEnabled[padIndex]", "SlotExtendedVendorId[padIndex]", "SlotExtendedProductId[padIndex]", "SlotProfileIds[padIndex]" })
                 Assert.DoesNotContain(live, factories);
             // Teardown closes the lifecycle under the lock, and the live OEM

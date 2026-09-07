@@ -82,6 +82,40 @@ namespace PadForge.Services
         /// call it beside that one without holding the service instance.</summary>
         public static void ClearMenuRuntimeForSlot(int slot)
             => _inputManagerStatic?.ClearMenuRuntimeForSlot(slot);
+        internal static InputManager.MenuPublicationScope EnterMenuEdit()
+        {
+            if (!System.Threading.Monitor.IsEntered(InputManager.MenuPublicationSync)
+                && _inputManagerStatic?.MenuLifecycleLockHeldByCurrentThread == true)
+                throw new InvalidOperationException("Acquire menu publication before the virtual-controller lifecycle lock.");
+            return InputManager.EnterMenuPublication();
+        }
+
+        internal static bool TryEditMenuConfiguration(int slot, Action edit, int? menuId = null)
+        {
+            if (InputManager.MenuDataLockHeldByCurrentThread
+                || _inputManagerStatic?.MenuLifecycleLockHeldByCurrentThread == true
+                || VmMappingsStale || SuppressMappingEditPush)
+                return false;
+            EditMenuConfiguration(slot, edit, menuId);
+            return true;
+        }
+
+        internal static void EditMenuConfiguration(int slot, Action edit, int? menuId = null)
+        {
+            ArgumentNullException.ThrowIfNull(edit);
+            using (EnterMenuEdit())
+            {
+                try { edit(); }
+                finally
+                {
+                    if (menuId.HasValue)
+                        _inputManagerStatic?.ClearMenuRuntimeForMenu(slot, menuId.Value);
+                    else
+                        _inputManagerStatic?.ClearMenuRuntimeForSlot(slot);
+                }
+            }
+        }
+
         // Reused across SlotRumbleForDeviceProvider invocations so the
         // dispatcher's per-device rumble pump doesn't allocate per tick.
         private Vibration _constantForceScratchSony;
@@ -141,6 +175,8 @@ namespace PadForge.Services
         private string _lastHandledCall;
         private readonly List<(RemotePeerDeviceInfo info, ISdlInputDevice source, UserDevice ud, RemoteDeltaAccumulator acc, byte slot)> _remoteLinkExposed = new();
         private readonly object _remoteLinkExposedLock = new();
+        private readonly object _remotePeerRegistrationLock = new();
+        private long _remoteInventoryRevision;
         // Lock-free snapshot of _remoteLinkExposed for the two hot readers
         // (the poll thread's per-tick delta accumulation and the 125 Hz
         // stream tick). Rebuilt under the exposed lock; readers only swap
@@ -489,6 +525,7 @@ namespace PadForge.Services
             {
                 padVm.SelectedDeviceChanged += OnSelectedDeviceChanged;
                 padVm.MappingsRebuilt += OnMappingsRebuilt;
+                padVm.LayerChanging += OnLayerChanging;
                 padVm.LayerActivated += OnLayerActivated;
                 // RebuildStickConfigs resets the new items' steering to defaults; reload the
                 // selected assigned device's steering into them (per-device, #94).
@@ -2378,7 +2415,7 @@ namespace PadForge.Services
 
                 // NOTE: do NOT unsubscribe the constructor-only handlers here
                 // (Devices.PropertyChanged, and per-pad SelectedDeviceChanged /
-                // MappingsRebuilt / LayerActivated). Start() never re-adds them,
+                // MappingsRebuilt / LayerChanging / LayerActivated). Start() never re-adds them,
                 // so tearing them down on an engine Stop permanently breaks
                 // device-selection / mapping-rebuild / layer-switch until the
                 // app restarts. They are bound to app-lifetime VMs, not the
@@ -5851,13 +5888,16 @@ namespace PadForge.Services
         /// <summary>
         /// Saves the current PadViewModel state to a specific device's PadSetting.
         /// </summary>
-        private static void SaveViewModelToPadSetting(PadViewModel padVm, Guid instanceGuid, bool syncMappings = true)
+        private void SaveViewModelToPadSetting(PadViewModel padVm, Guid instanceGuid, bool syncMappings = true)
         {
+            if (VmMappingsStale || SuppressMappingEditPush) return;
             var us = SettingsManager.FindSettingByInstanceGuidAndSlot(instanceGuid, padVm.PadIndex);
             if (us == null) return;
 
             var ps = us.GetPadSetting();
             if (ps == null) return;
+            if (syncMappings && padVm.MappingsViewLoaded)
+                _settingsService?.PushUiExtraSourcesIntoSlotMappingSets();
 
             // Issue #50: all double→string conversions MUST use InvariantCulture.
             // Without it, locales like German produce "20,5" (comma separator),
@@ -5984,7 +6024,6 @@ namespace PadForge.Services
             ps.IrSmoothing = (padVm.IrSmoothingPercent / 100.0).ToString(System.Globalization.CultureInfo.InvariantCulture);
             ps.PointerMode = string.IsNullOrEmpty(padVm.PointerMode) ? "Mouse" : padVm.PointerMode;
             ps.PointerFpsSpeed = padVm.PointerFpsSpeed.ToString(ic);
-            ps.Model3DAppearances = padVm.Model3DAppearances ?? "";
             // JoyShockMapper-canon extensions.
             ps.GyroSpace = padVm.GyroSpace ?? "Local";
             ps.MotionGrip = padVm.MotionGrip ?? "Pointing";
@@ -6115,128 +6154,10 @@ namespace PadForge.Services
                 }
             }
 
-            // Mapping descriptors: clear + rewrite only when explicitly requested.
-            // The 30Hz SyncViewModelToPadSettings path passes syncMappings=false
-            // because ClearMappingDescriptors() creates a race window — the polling
-            // thread can read the PadSetting between the clear and the rewrite,
-            // seeing empty mapping strings → zero Gamepad output.
-            // Mappings are only synced on explicit save, preset change, or device switch.
-            //
-            // Phase 2C — issue #61: a mapping descriptor authored via the
-            // unified-view picker can target a DIFFERENT device than the
-            // slot's currently-selected one (the user can pick from any
-            // device's grouped section). Writing all descriptors
-            // unconditionally to the selected device's PadSetting bled
-            // gamepad-class descriptors (Axis 0, Button N) into a
-            // keyboard's fields — and once the gamepad was unassigned,
-            // those stale fields became the row's "primary" via the
-            // legacy fallback, sticking the joystick at -1. Now we
-            // route each descriptor to the OWNING device's PadSetting
-            // and explicitly clear the same target on every OTHER
-            // device in the slot so any historical bleed heals over
-            // saves.
-            // GUARD: only run the destructive mapping clear+rewrite when the
-            // Mappings ViewModel actually mirrors the slot's current MappingSet.
-            // RefreshMappingsCore sets MappingsViewLoaded; a device assignment
-            // clears it (MainWindow's DeviceAssignmentChanged handler) for the
-            // window between auto-mapping the new device and reloading the
-            // ViewModel. During that window OnSelectedDeviceChanged can fire this
-            // save with a STALE (typically empty) padVm.Mappings — clearing every
-            // slot device's descriptors and rewriting from it would erase the
-            // freshly auto-mapped pad (the trace caught a DualSense dropping from
-            // 21 descriptors to 0). The MappingSet is authoritative and already
-            // holds the auto-map, so skipping the push loses nothing; the next
-            // save, after RefreshMappingsToViewModel, persists the mappings.
-            // Per-device tuning (saved above this block) is unaffected.
-            if (syncMappings && padVm.MappingsViewLoaded)
-            {
-                // Snapshot every assigned device for this slot so the
-                // bleed-cleanup pass can iterate without re-locking.
-                var slotDevices = new System.Collections.Generic.List<(Guid g, PadSetting devPs)>();
-                lock (SettingsManager.UserSettings.SyncRoot)
-                {
-                    foreach (var devUs in SettingsManager.UserSettings.Items)
-                    {
-                        if (devUs == null || devUs.MapTo != padVm.PadIndex) continue;
-                        var devPs = devUs.GetPadSetting();
-                        if (devPs == null) continue;
-                        slotDevices.Add((devUs.InstanceGuid, devPs));
-                    }
-                }
-
-                // Clear every assigned device's mapping fields. We'll
-                // rewrite below on the owning device only; everyone
-                // else stays cleared.
-                foreach (var (_, devPs) in slotDevices)
-                    devPs.ClearMappingDescriptors();
-
-                foreach (var mapping in padVm.Mappings)
-                {
-                    string target = mapping.TargetSettingName;
-
-                    // Resolve the owning device's PadSetting from the
-                    // row's PrimarySourceDeviceGuid. Falls back to the
-                    // passed instanceGuid (selected device) when the
-                    // row has no recorded source device, which keeps
-                    // the legacy single-device flow working.
-                    PadSetting owningPs = ps;
-                    if (!string.IsNullOrEmpty(mapping.PrimarySourceDeviceGuid)
-                        && Guid.TryParse(mapping.PrimarySourceDeviceGuid, out var owningGuid))
-                    {
-                        foreach (var (g, devPs) in slotDevices)
-                        {
-                            if (g == owningGuid) { owningPs = devPs; break; }
-                        }
-                    }
-
-                    if (target.StartsWith("Raw", StringComparison.Ordinal))
-                    {
-                        owningPs.SetRawMapping(target, mapping.SourceDescriptor ?? string.Empty);
-                        if (mapping.NegSettingName != null)
-                            owningPs.SetRawMapping(mapping.NegSettingName, mapping.NegSourceDescriptor ?? string.Empty);
-                    }
-                    else if (target.StartsWith("Midi", StringComparison.Ordinal))
-                    {
-                        owningPs.SetMidiMapping(target, mapping.SourceDescriptor ?? string.Empty);
-                        if (mapping.NegSettingName != null)
-                            owningPs.SetMidiMapping(mapping.NegSettingName, mapping.NegSourceDescriptor ?? string.Empty);
-                    }
-                    else if (target.StartsWith("Kbm", StringComparison.Ordinal))
-                    {
-                        owningPs.SetKbmMapping(target, mapping.SourceDescriptor ?? string.Empty);
-                        if (mapping.NegSettingName != null)
-                            owningPs.SetKbmMapping(mapping.NegSettingName, mapping.NegSourceDescriptor ?? string.Empty);
-                    }
-                    else if (target.StartsWith("Vr", StringComparison.Ordinal))
-                    {
-                        owningPs.SetVrMapping(target, mapping.SourceDescriptor ?? string.Empty);
-                        if (mapping.NegSettingName != null)
-                            owningPs.SetVrMapping(mapping.NegSettingName, mapping.NegSourceDescriptor ?? string.Empty);
-                    }
-                    else
-                    {
-                        var prop = typeof(PadSetting).GetProperty(target);
-                        if (prop != null && prop.PropertyType == typeof(string) && prop.CanWrite)
-                            prop.SetValue(owningPs, mapping.SourceDescriptor ?? string.Empty);
-
-                        if (mapping.NegSettingName != null)
-                        {
-                            var negProp = typeof(PadSetting).GetProperty(mapping.NegSettingName);
-                            if (negProp != null && negProp.PropertyType == typeof(string) && negProp.CanWrite)
-                                negProp.SetValue(owningPs, mapping.NegSourceDescriptor ?? string.Empty);
-                        }
-                    }
-
-                    // Save per-mapping deadzone on the owning device.
-                    if (mapping.MappingDeadZone > 0)
-                        owningPs.SetMappingDeadZone(target, mapping.MappingDeadZone.ToString());
-                    else
-                        owningPs.SetMappingDeadZone(target, "");
-
-                    // Save per-mapping Bidirectional flag.
-                    owningPs.SetMappingBidirectional(target, mapping.IsBidirectional ? "1" : "");
-                }
-            }
+            // Mapping descriptors come from Base. The selected Shift layer remains
+            // in the MappingSet and never becomes a layerless legacy binding.
+            if (syncMappings)
+                LegacyBaseMappingProjection.Write(padVm, instanceGuid);
         }
 
         /// <summary>
@@ -6486,7 +6407,6 @@ namespace PadForge.Services
             padVm.IrSensorBarCompPercent = (int)Math.Round(TryParseFloatPs(ps.IrSensorBarComp, 0f) * 100f);
             padVm.IrSmoothingPercent = (int)Math.Round(TryParseFloatPs(ps.IrSmoothing, 0f) * 100f);
             padVm.PointerMode = string.IsNullOrEmpty(ps.PointerMode) ? "Mouse" : ps.PointerMode;
-            padVm.Model3DAppearances = ps.Model3DAppearances ?? "";
             padVm.PointerFpsSpeed = (int)TryParseFloatPs(ps.PointerFpsSpeed, 35f);
             // JoyShockMapper-canon extensions.
             padVm.GyroSpace = string.IsNullOrEmpty(ps.GyroSpace) ? "Local" : ps.GyroSpace;
@@ -6691,6 +6611,7 @@ namespace PadForge.Services
                 // (#111 follow-up). Either way the extras start at index 1.
                 msRowsByTarget.TryGetValue(target, out var msRow);
                 var primarySrc = (msRow?.Sources != null && msRow.Sources.Count > 0) ? msRow.Sources[0] : null;
+                mapping.PrimarySourceExists = msRow?.Sources?.Count > 0;
                 bool primaryIsKind = primarySrc != null
                     && !string.Equals(primarySrc.Kind ?? "Direct", "Direct", StringComparison.Ordinal);
 
@@ -6758,6 +6679,7 @@ namespace PadForge.Services
                 // ExtraSources / CombineMode / CombineExpression from
                 // the matching MappingSet row.
                 mapping.ExtraSources.Clear();
+                mapping.SuppressBipolarPair = false;
                 mapping.CombineMode = "";
                 mapping.CombineExpression = "";
                 mapping.TrimDeadzone = 25;
@@ -6766,6 +6688,7 @@ namespace PadForge.Services
                 if (msRowsByTarget.TryGetValue(target, out var msRow2))
                 {
                     mapping.CombineMode = msRow2.CombineMode ?? "";
+                    mapping.SuppressBipolarPair = mapping.IsCustomCombine && msRow2.SuppressBipolarPair;
                     mapping.CombineExpression = msRow2.CombineExpression ?? "";
                     mapping.TrimDeadzone = msRow2.TrimDeadzone;
                     mapping.TrimRate = msRow2.TrimRate;
@@ -6783,7 +6706,7 @@ namespace PadForge.Services
                             // without this an imported (empty-guid) secondary
                             // showed blank, or once synced against the slot's
                             // inputs borrowed the slot's first concrete controller.
-                            extra.DeviceLabel = ResolveDeviceLabel(msRow2.Sources[si].DeviceGuid);
+                            extra.DeviceLabel = ResolveDeviceLabel(msRow2.Sources[si]?.DeviceGuid);
                             mapping.ExtraSources.Add(extra);
                         }
                     }
@@ -7387,6 +7310,14 @@ namespace PadForge.Services
                 return;
 
             var padVm = _mainVm.Pads[padIndex];
+            if (!SlotAppearancePersistence.CarriesDeviceSettings(source))
+            {
+                RefreshMappingsCore(padVm);
+                var current = padVm.SelectedMappedDevice;
+                PopulateAvailableInputs(padVm, current != null && current.InstanceGuid != Guid.Empty
+                    ? FindUserDevice(current.InstanceGuid) : null);
+                return;
+            }
             Guid targetGuid = targetDeviceGuidOverride
                 ?? padVm.SelectedMappedDevice?.InstanceGuid
                 ?? Guid.Empty;
@@ -7582,7 +7513,7 @@ namespace PadForge.Services
         /// Sources with their DeviceGuid substituted for the target
         /// device's GUID. Other devices' contributions on the same
         /// row are preserved.</summary>
-        private static void ApplyMultiSourceRowsToCurrentDevice(int padIndex,
+        internal static void ApplyMultiSourceRowsToCurrentDevice(int padIndex,
             Guid targetDeviceGuid,
             System.Collections.Generic.IList<Engine.Data.MappingRow> deviceRows)
         {
@@ -7606,6 +7537,15 @@ namespace PadForge.Services
                         && string.Equals(r.LayerMask ?? "Base", layer, StringComparison.Ordinal))
                     { targetRow = r; break; }
                 }
+                // Partial copies recompose the row. Layout metadata belongs
+                // to the prefix that survives, not to a displaced donor span.
+                var previousSources = targetRow?.Sources;
+                bool hadPrefix = previousSources?.Count >= 2;
+                var previousFirst = hadPrefix ? previousSources[0] : null;
+                var previousSecond = hadPrefix ? previousSources[1] : null;
+                bool previousSuppression = targetRow?.CombineMode == "Custom"
+                    && targetRow.SuppressBipolarPair;
+
                 if (targetRow == null)
                 {
                     targetRow = new Engine.Data.MappingRow
@@ -7646,6 +7586,16 @@ namespace PadForge.Services
                 {
                     targetRow.Sources = new System.Collections.Generic.List<Engine.Data.MappingSource>();
                 }
+
+                bool retainedPrefix = hadPrefix && targetRow.Sources.Count >= 2
+                    && ReferenceEquals(previousFirst, targetRow.Sources[0])
+                    && ReferenceEquals(previousSecond, targetRow.Sources[1]);
+                bool incomingPrefix = targetRow.Sources.Count == 0
+                    && srcRow.Sources?.Count >= 2
+                    && srcRow.Sources[0] != null && srcRow.Sources[1] != null;
+                targetRow.SuppressBipolarPair = srcRow.CombineMode == "Custom"
+                    && ((retainedPrefix && previousSuppression)
+                        || (incomingPrefix && srcRow.SuppressBipolarPair));
 
                 // Inject the snapshot's Sources with target device GUID.
                 if (srcRow.Sources != null)
@@ -7729,14 +7679,8 @@ namespace PadForge.Services
                         TrimResetOnRelease = r.TrimResetOnRelease,
                         Sources = new System.Collections.Generic.List<Engine.Data.MappingSource>(),
                     };
-                    if (r.Sources != null)
-                    {
-                        foreach (var s in r.Sources)
-                        {
-                            if (s == null) continue;
-                            rc.Sources.Add(s.Clone());   // Clone() carries every Param* field
-                        }
-                    }
+                    rc.Sources = CopyRowSources(r, s => s.DeviceGuid ?? "", out bool suppressPair);
+                    rc.SuppressBipolarPair = suppressPair;
                     copy.Rows.Add(rc);
                 }
             }
@@ -8035,15 +7979,7 @@ namespace PadForge.Services
             foreach (var row in ms.Rows)
             {
                 if (row == null) continue;
-                var clonedSources = new System.Collections.Generic.List<Engine.Data.MappingSource>();
-                if (row.Sources != null)
-                {
-                    foreach (var s in row.Sources)
-                    {
-                        if (s == null) continue;
-                        clonedSources.Add(s.Clone());   // Clone() carries every Param* field
-                    }
-                }
+                var clonedSources = CopyRowSources(row, s => s.DeviceGuid ?? "", out bool suppressPair);
                 result.Add(new Engine.Data.MappingRow
                 {
                     Target = row.Target,
@@ -8055,6 +7991,7 @@ namespace PadForge.Services
                     TrimRate = row.TrimRate,
                     TrimResetOnRelease = row.TrimResetOnRelease,
                     Sources = clonedSources,
+                    SuppressBipolarPair = suppressPair,
                 });
             }
             return result;
@@ -8065,8 +8002,8 @@ namespace PadForge.Services
         /// Each source's DeviceGuid is retargeted onto the target slot's
         /// same-ProductGuid (same "variation") device — see
         /// <see cref="RetargetDeviceGuidForSlot"/> for the exact rule.
-        /// Sources whose product isn't represented on the target slot are
-        /// dropped from the cloned row.</summary>
+        /// Unmatched sources become neutral positions in Custom rows and are
+        /// dropped from other rows.</summary>
         public static void ApplySlotMappingSetFromRows(int padIndex,
             System.Collections.Generic.IList<Engine.Data.MappingRow> rows)
         {
@@ -8114,18 +8051,9 @@ namespace PadForge.Services
                     TrimResetOnRelease = r.TrimResetOnRelease,
                     Sources = new System.Collections.Generic.List<Engine.Data.MappingSource>(),
                 };
-                if (r.Sources != null)
-                {
-                    foreach (var s in r.Sources)
-                    {
-                        if (s == null) continue;
-                        var retargeted = RetargetDeviceGuidForSlot(s.DeviceGuid, padIndex);
-                        if (retargeted == null) continue;
-                        var clonedSrc = s.Clone();
-                        clonedSrc.DeviceGuid = retargeted;   // Clone() carries every Param* field
-                        rc.Sources.Add(clonedSrc);
-                    }
-                }
+                rc.Sources = CopyRowSources(r,
+                    s => RetargetDeviceGuidForSlot(s.DeviceGuid, padIndex), out bool suppressPair);
+                rc.SuppressBipolarPair = suppressPair;
                 copy.Rows.Add(rc);
             }
             SettingsManager.SlotMappingSets[padIndex] = copy;
@@ -8138,6 +8066,64 @@ namespace PadForge.Services
             Common.Input.InputManager.ResetSourceKindRuntimeForSlot(padIndex);
         }
 
+        internal static List<MappingSource> CopyRowSources(MappingRow row,
+            Func<MappingSource, string> retarget, out bool suppressBipolarPair)
+        {
+            bool custom = row.CombineMode == "Custom";
+            suppressBipolarPair = row.SuppressBipolarPair;
+            var result = new List<MappingSource>();
+            if (row.Sources == null) return result;
+            foreach (var source in row.Sources)
+            {
+                if (source == null)
+                {
+                    if (custom) result.Add(new MappingSource());
+                    continue;
+                }
+                // A blank position has no device binding or input parameters.
+                if (custom && PadForge.Engine.Common.Mapping.SourceEvaluator.IsUnmappedDirect(source))
+                {
+                    result.Add(new MappingSource());
+                    continue;
+                }
+                string guid = retarget(source);
+                if (guid == null)
+                {
+                    if (custom)
+                        result.Add(source.Kind == "InvertOnHold"
+                            ? new MappingSource { Kind = "InvertOnHold" }
+                            : new MappingSource());
+                    continue;
+                }
+                var clone = source.Clone();
+                clone.DeviceGuid = guid;
+                result.Add(clone);
+            }
+            if (custom) suppressBipolarPair = PreserveCopiedPairShape(row, result);
+            return result;
+        }
+
+        private static bool PreserveCopiedPairShape(MappingRow original, List<MappingSource> copied)
+        {
+            bool suppress = original.CombineMode == "Custom" && original.SuppressBipolarPair;
+            if (!Common.Input.InputManager.TargetIsBipolarAxis(original.Target)
+                || original.Sources == null || copied.Count < 2)
+                return suppress;
+            bool hadPair = !suppress && original.Sources.Count >= 2
+                && Common.Input.InputManager.IsBipolarNegPair(original.Sources[0], original.Sources[1]);
+            bool hasPair = Common.Input.InputManager.IsBipolarNegPair(copied[0], copied[1]);
+            if (hadPair && !hasPair)
+            {
+                // Keep both stored entries: their pair occupies one variable,
+                // while both entries still select the combined evaluation path.
+                copied[1].DeviceGuid = copied[0].DeviceGuid;
+                copied[1].Invert = !copied[0].Invert;
+            }
+            // Copying keeps separate arguments separate even when their
+            // destination device ids now match.
+            return suppress || (!hadPair && hasPair);
+        }
+
         /// <summary>
         /// Retargets a source row's DeviceGuid onto the target slot's
         /// equivalent same-ProductGuid device, so Copy From / Copy / Paste
@@ -8148,7 +8134,7 @@ namespace PadForge.Services
         /// itself assigned to the target slot, keep it. Otherwise pick the
         /// first target-slot UserSetting whose ProductGuid matches the
         /// source device's ProductGuid. Returns null when the target slot
-        /// has no device of that variation — caller drops the source.</para>
+        /// has no device of that variation. Custom copies reserve its position.</para>
         /// </summary>
         private static string RetargetDeviceGuidForSlot(string sourceDeviceGuidStr, int targetSlot)
         {
@@ -8220,6 +8206,12 @@ namespace PadForge.Services
                     LayerMask = row.LayerMask ?? "Base",
                     CombineMode = row.CombineMode ?? "",
                     CombineExpression = row.CombineExpression ?? "",
+                    // A partial slice inherits layout only for the same first
+                    // two stored entries. A new prefix uses the default rule.
+                    SuppressBipolarPair = row.CombineMode == "Custom" && row.SuppressBipolarPair
+                        && row.Sources.Count >= 2 && deviceSources.Count >= 2
+                        && ReferenceEquals(row.Sources[0], deviceSources[0])
+                        && ReferenceEquals(row.Sources[1], deviceSources[1]),
                     NoInherit = row.NoInherit,
                     TrimDeadzone = row.TrimDeadzone,
                     TrimRate = row.TrimRate,
@@ -8236,9 +8228,8 @@ namespace PadForge.Services
         /// is retargeted onto the target slot's same-ProductGuid (same
         /// "variation") device — see <see cref="RetargetDeviceGuidForSlot"/>
         /// for the exact rule. Carries every device's contribution, every
-        /// extra source, combine modes, and Custom formulas (not just one
-        /// device's slice). Sources whose product isn't represented on the
-        /// target slot are dropped from the cloned row.</summary>
+        /// extra source, combine modes, and Custom formulas. Unmatched sources
+        /// become neutral positions in Custom rows and are dropped from other rows.</summary>
         public static void ReplaceSlotMappingSet(int targetSlot, int sourceSlot)
         {
             var sets = SettingsManager.SlotMappingSets;
@@ -8314,18 +8305,9 @@ namespace PadForge.Services
                         TrimResetOnRelease = r.TrimResetOnRelease,
                         Sources = new System.Collections.Generic.List<Engine.Data.MappingSource>(),
                     };
-                    if (r.Sources != null)
-                    {
-                        foreach (var s in r.Sources)
-                        {
-                            if (s == null) continue;
-                            var retargeted = RetargetDeviceGuidForSlot(s.DeviceGuid, targetSlot);
-                            if (retargeted == null) continue;
-                            var clonedSrc = s.Clone();
-                            clonedSrc.DeviceGuid = retargeted;   // Clone() carries every Param* field
-                            rc.Sources.Add(clonedSrc);
-                        }
-                    }
+                    rc.Sources = CopyRowSources(r,
+                        s => RetargetDeviceGuidForSlot(s.DeviceGuid, targetSlot), out bool suppressPair);
+                    rc.SuppressBipolarPair = suppressPair;
                     copy.Rows.Add(rc);
                 }
             }
@@ -8511,6 +8493,13 @@ namespace PadForge.Services
                 && padVm.SelectedMappedDevice.InstanceGuid != Guid.Empty
                 ? FindUserDevice(padVm.SelectedMappedDevice.InstanceGuid) : null;
             PopulateAvailableInputs(padVm, ud);
+        }
+
+        /// <summary>Commits the outgoing layer before the grid switches to another layer.</summary>
+        private void OnLayerChanging(object sender, EventArgs e)
+        {
+            if (sender is PadViewModel padVm && padVm.MappingsViewLoaded)
+                _settingsService?.FlushPendingDeviceEdits();
         }
 
         /// <summary>Reloads every MappingItem on the slot when the user
@@ -9692,27 +9681,26 @@ namespace PadForge.Services
             });
         }
 
-        private void OnWebServerStatusChanged(object sender, string status)
+        private void OnWebServerStatusChanged(object sender, WebControllerServer.Status status)
         {
-            var url = _webServer?.Url;
-            _dispatcher.BeginInvoke(() =>
-            {
-                _mainVm.Dashboard.WebControllerStatus = status;
-                _mainVm.Dashboard.WebControllerClientCount = _webServer?.ClientCount ?? 0;
-                // Flame truth (#175 phase 2 item 2): lifecycle, not checkbox.
-                _mainVm.Dashboard.IsWebControllerRunning = _webServer != null;
+            if (sender is not WebControllerServer server) return;
+            _dispatcher.BeginInvoke(() => ApplyWebServerStatus(server, status));
+        }
 
-                // URL + QR for the card (#296): the phone types or scans to
-                // reach the controller. Rebuild the QR only when the URL
-                // changes, since building it is not free.
-                if (_mainVm.Dashboard.WebControllerUrl != url)
-                {
-                    _mainVm.Dashboard.WebControllerUrl = url;
-                    var qr = string.IsNullOrEmpty(url) ? null : WebControllerServer.RenderQr(url);
-                    _mainVm.Dashboard.WebControllerQr = qr;
-                    _mainVm.Dashboard.HasWebControllerQr = qr != null;
-                }
-            });
+        internal void ApplyWebServerStatus(WebControllerServer server, WebControllerServer.Status status)
+        {
+            if (!ReferenceEquals(_webServer, server) || server.Generation != status.Generation) return;
+            var url = server.Url;
+            _mainVm.Dashboard.WebControllerStatus = status.Text;
+            _mainVm.Dashboard.WebControllerClientCount = server.ClientCount;
+            _mainVm.Dashboard.IsWebControllerRunning = server.IsRunning;
+            if (_mainVm.Dashboard.WebControllerUrl != url)
+            {
+                _mainVm.Dashboard.WebControllerUrl = url;
+                var qr = string.IsNullOrEmpty(url) ? null : WebControllerServer.RenderQr(url);
+                _mainVm.Dashboard.WebControllerQr = qr;
+                _mainVm.Dashboard.HasWebControllerQr = qr != null;
+            }
         }
 
         private void StopWebServer()
@@ -9778,11 +9766,14 @@ namespace PadForge.Services
             });
             // Reverse output relay (#138): our game's output for a remote device is
             // shipped to its owner; a peer's output for OUR device drives our hardware.
-            RemoteLinkOutputRouter.SendOutput = (fp, slot, payload) => _linkServer?.PushOutputEffect(fp, slot, payload);
-            RemoteLinkOutputRouter.SendAudio = (fp, slot, payload) => _linkServer?.PushAudio(fp, slot, payload);
+            RemoteLinkOutputRouter.SendScopedOutput = (connection, slot, id, payload) =>
+                _linkServer?.PushOutputEffect(connection, slot, id, payload) == true;
+            RemoteLinkOutputRouter.SendScopedAudio = (connection, slot, id, payload) =>
+                _linkServer?.PushAudio(connection, slot, id, payload) == true;
             // Reverse DEMAND relay (#241): a live NFC mapping on our side arms
             // the reader on the device's owner, and a peer's demand arms ours.
-            RemoteLinkOutputRouter.SendSourceDemand = (fp, slot, payload) => _linkServer?.PushSourceDemand(fp, slot, payload);
+            RemoteLinkOutputRouter.SendScopedDemand = (connection, slot, id, payload) =>
+                _linkServer?.PushSourceDemand(connection, slot, id, payload) == true;
             // Bound to THIS server (#416): a frame decoded by a server that has
             // since been stopped is refused inside the device gate, so it cannot
             // overwrite a reconnected peer's output on the server that replaced it.
@@ -9791,7 +9782,7 @@ namespace PadForge.Services
             origin.AssignmentHandler = context => _dispatcher.InvokeAsync(() =>
                 ReferenceEquals(_linkServer, origin) ? assignments.Handle(context)
                     : LinkAssignmentReply.For(context.Request, LinkAssignmentStatus.Unavailable)).Task;
-            origin.OutputReceived += (fp, slot, payload) => OnRemoteOutputReceived(origin, fp, slot, payload);
+            origin.FrameReceived += frame => OnRemoteFrameReceived(origin, frame);
             // A peer's last session dropped: release the output ownership it held
             // on local shared devices (#402), so a rumble it left running ends.
             _linkServer.PeerDropped += RemoteLinkOutputRouter.ReleasePeer;
@@ -9799,19 +9790,10 @@ namespace PadForge.Services
             // the link server's own list, read at the moment of the decision.
             var link = _linkServer;
             RemoteLinkOutputRouter.IsPeerConnected = fp => ReferenceEquals(_linkServer, link) && link.IsPeerConnected(fp);
-            _linkServer.AudioReceived += OnRemoteAudioReceived;
-            _linkServer.SourceDemandReceived += OnRemoteSourceDemandReceived;
+
             _linkServer.DeviceConnected += device =>
             {
-                // Mark the restriction BEFORE the device goes online, or there is a
-                // window where its frames stream while IsSlotRestricted is still false.
-                bool restricted = _settingsService?.RemoteLink?.Trust?.Peers?
-                    .Any(t => string.Equals(t.FingerprintHex, device.Info.PeerFingerprintHex, StringComparison.OrdinalIgnoreCase) && t.GamepadOnly) ?? false;
-                _inputManager.SetDeviceRestricted(device.InstanceGuid, restricted);
-                _inputManager.RegisterPeerDevice(device);
-                // Map this device's "peer://" path to its owner so every output
-                // chokepoint can ship its config-baked output back (issue #138).
-                RemoteLinkOutputRouter.Register(device.DevicePath, device.Info.PeerFingerprintHex, device.LinkSlot);
+                if (!TryRegisterRemotePeer(origin, device)) return;
                 // A remote pad connects AFTER the startup audio-reconcile check, so its
                 // speaker-passthrough config is never seen. Kick the audio service now so
                 // the worker starts and evaluates this peer:// pad as a ship target (#138).
@@ -9827,9 +9809,16 @@ namespace PadForge.Services
             };
             _linkServer.DeviceDisconnected += device =>
             {
-                _inputManager.SetDeviceRestricted(device.InstanceGuid, false);
-                _inputManager.UnregisterExternalDevice(device.InstanceGuid);
-                RemoteLinkOutputRouter.Unregister(device.DevicePath);
+                lock (_remotePeerRegistrationLock)
+                {
+                    var current = SettingsManager.FindDeviceByInstanceGuid(device.InstanceGuid);
+                    if (ReferenceEquals(current?.Device, device) && _inputManager != null)
+                    {
+                        _inputManager.SetDeviceRestricted(device.InstanceGuid, false);
+                        _inputManager.UnregisterExternalDevice(device.InstanceGuid);
+                    }
+                    RemoteLinkOutputRouter.Unregister(device.DevicePath, device);
+                }
                 OnLinkPeersChanged();
             };
 
@@ -10027,7 +10016,7 @@ namespace PadForge.Services
                 {
                     PeerPublicKey = peerKey, Capability = cap,
                     SelfDirection = selfDir, PeerDirection = peerDir,
-                    IsConnected = connected.Contains(t.FingerprintHex),
+                    IsConnected = connected.Contains(t.FingerprintHex) || server.IsPeerConnecting(t.FingerprintHex),
                 });
             }
             if (peers.Count == 0) return;
@@ -10246,6 +10235,7 @@ namespace PadForge.Services
                     if (entry == null || !entry.ReconnectEnabled) continue;                                  // not a trusted auto-reconnect peer
                     if (connectedFps.Any(f => string.Equals(f, p.FingerprintHex, StringComparison.OrdinalIgnoreCase))) continue; // already linked
                     if (string.CompareOrdinal(myFp, p.FingerprintHex) >= 0) continue;                        // the lower fingerprint dials; the other listens
+                    if (_linkServer.IsPeerConnecting(p.FingerprintHex)) continue;
                     if (_autoReconnectCooldown.TryGetValue(p.FingerprintHex, out var last) && now - last < AutoReconnectCooldownMs) continue;
                     _autoReconnectCooldown[p.FingerprintHex] = now;
                     // Marshal the dial to the UI thread: OnConnectToPeerRequested mutates VM
@@ -10301,6 +10291,25 @@ namespace PadForge.Services
             });
         }
 
+        internal bool TryRegisterRemotePeer(LinkServer origin, RemotePeerDevice device)
+        {
+            lock (_remotePeerRegistrationLock)
+            {
+                if (!ReferenceEquals(_linkServer, origin) || device.Connection?.IsCurrent != true || device.IsRetired || _inputManager == null) return false;
+                // Mark the restriction BEFORE the device goes online, or there is a
+                // window where its frames stream while IsSlotRestricted is still false.
+                bool restricted = _settingsService?.RemoteLink?.Trust?.Peers?
+                    .Any(t => string.Equals(t.FingerprintHex, device.Info.PeerFingerprintHex, StringComparison.OrdinalIgnoreCase) && t.GamepadOnly) ?? false;
+                _inputManager.SetDeviceRestricted(device.InstanceGuid, restricted);
+                _inputManager.RegisterPeerDevice(device);
+                // Map this device's "peer://" path to its owner so every output
+                // chokepoint can ship its config-baked output back (issue #138).
+                RemoteLinkOutputRouter.Register(device.DevicePath, device.Info.PeerFingerprintHex,
+                    device.LinkSlot, device.Connection, device);
+                return true;
+            }
+        }
+
         private void StopRemoteLink()
         {
             _remoteLinkStreamTimer?.Dispose();
@@ -10340,6 +10349,9 @@ namespace PadForge.Services
             RemoteLinkOutputRouter.SendOutput = null;
             RemoteLinkOutputRouter.SendSourceDemand = null;
             RemoteLinkOutputRouter.SendAudio = null;
+            RemoteLinkOutputRouter.SendScopedOutput = null;
+            RemoteLinkOutputRouter.SendScopedAudio = null;
+            RemoteLinkOutputRouter.SendScopedDemand = null;
             RemoteLinkOutputRouter.Clear();
             _remoteWheelOneShot.Clear();
             if (_linkDiscovery != null)
@@ -10569,12 +10581,12 @@ namespace PadForge.Services
             await server.ConnectAsync(host, port, expose);
         }
 
-        /// <summary>Build descriptors for every online physical controller this PC
-        /// shares, and remember their live sources for the stream timer. The slot id
-        /// is the list index, matching the order the peer rebuilds the devices in.</summary>
+        /// <summary>Build the shared source snapshot. Each connection translates these
+        /// stable source IDs to its own reserved wire slots.</summary>
         private IReadOnlyList<RemotePeerDeviceInfo> BuildExposedDevices()
         {
             var list = new List<RemotePeerDeviceInfo>();
+            LinkDeviceInventory inventory;
             var sources = new List<(RemotePeerDeviceInfo info, ISdlInputDevice source, UserDevice ud, RemoteDeltaAccumulator acc, byte slot)>();
 
             // Hold the exposed lock around stable-slot allocation + the snapshot update so
@@ -10726,8 +10738,10 @@ namespace PadForge.Services
                 _remoteLinkExposed.Clear();
                 _remoteLinkExposed.AddRange(sources);
                 _remoteLinkExposedSnapshot = sources.ToArray();
+                inventory = new LinkDeviceInventory(++_remoteInventoryRevision, list,
+                    sources.ToDictionary(entry => entry.info.PeerLocalDeviceId, entry => (object)entry.source, StringComparer.Ordinal));
             }
-            return list;
+            return inventory;
         }
 
         /// <summary>Share every device the user sees in Devices — gamepads, joysticks,
@@ -10781,6 +10795,7 @@ namespace PadForge.Services
                     return;
                 }
 
+                var recipients = server.CaptureInputTargets();
                 ulong ts = (ulong)(System.Diagnostics.Stopwatch.GetTimestamp() * (1_000_000.0 / System.Diagnostics.Stopwatch.Frequency));
                 foreach (var e in exposed)
                 {
@@ -10797,55 +10812,35 @@ namespace PadForge.Services
                     var s = snap.Clone();
                     e.acc.DrainInto(s, e.source is PadForge.Engine.SdlMouseWrapper);
                     var caps = new CustomInputStateCodec.Caps(e.source.HasGyro, e.source.HasAccel, e.source.HasAccelAux, e.source.HasGyroAux);
-                    server.PushLocalFrame(e.slot, s, caps, ts);
+                    server.PushLocalFrame(recipients, e.info.PeerLocalDeviceId, s, caps, ts);
                 }
             }
             finally { System.Threading.Volatile.Write(ref _streamTickGuard, 0); }
         }
 
-        /// <summary>Rebuild the consumer-side reverse-output routes (#138 M2): VC pad
-        /// slot -&gt; the remote targets (owner fingerprint + link slot) whose devices are
-        /// mapped to that slot. Called on peer connect/disconnect and on remap, so the
-        /// capture taps in HMaestroVirtualController forward to the right owner.</summary>
         // Owner-side neutral PadSetting for replaying a relayed Vibration: the consumer
         // already baked every gain in, so the owner must not re-scale (ForceOverall=100).
         private static readonly PadSetting _remoteApplyPs = new PadSetting { ForceOverall = "100" };
         // Owner-side wheel one-shot dedup (range/autocenter/LEDs are in every frame but
         // change rarely; re-writing them per frame would halve the wheel poll rate).
         private readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, (int range, int ac, int ledMask, bool ledValid)> _remoteWheelOneShot = new();
-        /// <summary>Resolve a link slot to the owner's physical source + UserDevice.</summary>
-        private bool ResolveExposed(byte slot, out ISdlInputDevice source, out UserDevice ud)
+        /// <summary>Resolve the authenticated source ID to its current physical device.</summary>
+        private bool ResolveExposed(string deviceId, out ISdlInputDevice source, out UserDevice ud)
         {
-            source = null; ud = null;
+            source = null;
+            ud = null;
+            if (string.IsNullOrEmpty(deviceId)) return false;
             lock (_remoteLinkExposedLock)
-                foreach (var e in _remoteLinkExposed)
-                    if (e.slot == slot) { source = e.source; break; }
-            if (source == null) return false;
-            ud = SettingsManager.FindDeviceByInstanceGuid(source.InstanceGuid);
-            return true;
-        }
-
-        /// <summary>A paired peer sent reverse output for one of THIS PC's shared devices
-        /// (issue #138). Map the link slot to the physical source and drive the hardware
-        /// directly — no local game / virtual controller is involved. The consumer baked
-        /// in all config; the owner only re-encodes for its real device. Runs on the UDP
-        /// receive thread (one writer).</summary>
-        /// <summary>Owner: a consumer reports live demand for a demand-gated
-        /// source on one of our shared devices (#241). Demand latches are
-        /// machine-local (SourceCoercion stamps them where the mapping
-        /// evaluates), so without this the consumer's NFC binding never armed
-        /// our reader and could never fire. Stamps a wall-clock mark that
-        /// <see cref="RefreshSwitchNfcArming"/> reads exactly like the local
-        /// latch, so the same demand window, teardown, and Bluetooth gate
-        /// apply and a lapsed peer stops arming the hardware on its own.</summary>
-        private void OnRemoteSourceDemandReceived(string peerFingerprint, byte slot, byte[] payload)
-        {
-            if (payload == null || payload.Length < 1) return;
-            if (payload[0] != RemoteLinkOutputRouter.DemandKindNfc) return;
-            if (!ResolveExposed(slot, out var source, out var ud)) return;
-            var guid = ud?.InstanceGuid ?? source?.InstanceGuid ?? Guid.Empty;
-            if (guid == Guid.Empty) return;
-            _remoteNfcDemandMs[guid] = Environment.TickCount64;
+            {
+                foreach (var entry in _remoteLinkExposed)
+                {
+                    if (!string.Equals(entry.info.PeerLocalDeviceId, deviceId, StringComparison.Ordinal)) continue;
+                    source = entry.source;
+                    ud = entry.ud;
+                    return true;
+                }
+            }
+            return false;
         }
 
         /// <summary>Per-device wall-clock stamp of the most recent peer NFC
@@ -10861,28 +10856,43 @@ namespace PadForge.Services
             && _remoteNfcDemandMs.TryGetValue(deviceGuid, out long ms)
             && Environment.TickCount64 - ms < McuDemandWindowMs;
 
-        private void OnRemoteOutputReceived(LinkServer origin, string peerFingerprint, byte slot, byte[] payload)
+        /// <summary>Apply authenticated effects, speaker audio, and NFC demand to a
+        /// currently shared source. OutputSync precedes the connection commit gate.</summary>
+        private void OnRemoteFrameReceived(LinkServer origin, LinkIncomingFrame frame)
         {
-            if (!OutputEffectCodec.TryDecode(payload, out var effect))
-                return;
-            if (!ResolveExposed(slot, out var source, out var ud))
-                return;
-            // The device's output gate (#416), held from the claim through the
-            // write, the same gate the feedback pass holds across its zero-slot
-            // decision and stop. Inside it, the frame is refused when its
-            // server is no longer the current one: a stopped server's in-flight
-            // frame must not land after the replacement server's.
-            lock (ud?.OutputSync ?? _unresolvedOutputSync)
+            OutputEffectCodec.OutputEffect effect = default;
+            int family = 0;
+            if (frame.Type == LinkMessageType.Output)
             {
-                if (!ReferenceEquals(Volatile.Read(ref _linkServer), origin)) return;
-                ApplyRemoteOutput(effect, source, ud, peerFingerprint);
+                if (!OutputEffectCodec.TryDecode(frame.Payload, out effect)) return;
+                family = (int)effect.Kind;
+            }
+            if (!ResolveExposed(frame.DeviceId, out var source, out var device)) return;
+            lock (device?.OutputSync ?? _unresolvedOutputSync)
+            {
+                frame.TryCommit(family, () =>
+                {
+                    if (!ReferenceEquals(Volatile.Read(ref _linkServer), origin)
+                        || !ResolveExposed(frame.DeviceId, out var currentSource, out var currentDevice)
+                        || !ReferenceEquals(currentSource, source) || !ReferenceEquals(currentDevice, device)
+                        || device?.IsOnline != true || !ReferenceEquals(device.Device, source)) return;
+                    if (frame.Type == LinkMessageType.Output)
+                        ApplyRemoteOutput(effect, source, device, frame.PeerFingerprint,
+                            family == (int)OutputEffectCodec.Kind.HapticTone ? frame.Ticket(family) : null);
+                    else if (frame.Type == LinkMessageType.Audio)
+                        AudioPassthroughService.FeedRemoteAudio(device.InstanceGuid, frame.Payload);
+                    else if (frame.Type == LinkMessageType.SourceDemand && frame.Payload.Length > 0
+                        && frame.Payload[0] == RemoteLinkOutputRouter.DemandKindNfc)
+                        _remoteNfcDemandMs[device.InstanceGuid] = Environment.TickCount64;
+                });
             }
         }
 
         /// <summary>Gate for a relayed frame whose device has no UserDevice row.</summary>
         private static readonly object _unresolvedOutputSync = new object();
 
-        private void ApplyRemoteOutput(OutputEffectCodec.OutputEffect effect, ISdlInputDevice source, UserDevice ud, string peerFingerprint)
+        private void ApplyRemoteOutput(OutputEffectCodec.OutputEffect effect, ISdlInputDevice source, UserDevice ud,
+            string peerFingerprint, LinkEffectTicket toneTicket = null)
         {
             // Sole-writer guard (#138): this frame means a remote game is driving the
             // shared device. Refresh the output lease so the owner's LOCAL output pipeline
@@ -10954,7 +10964,7 @@ namespace PadForge.Services
                         // #147 over the link: the consumer reduced its macro mix
                         // to a (freq, amp) pair; re-encode with the owner's own
                         // per-family tone writer (Joy-Con / Steam / Triton / Deck).
-                        HapticToneService.ApplyRemoteTone(ud, effect.HapticToneHz, effect.HapticToneAmp);
+                        HapticToneService.ApplyRemoteTone(ud, effect.HapticToneHz, effect.HapticToneAmp, toneTicket);
                         break;
 
                     case OutputEffectCodec.Kind.PlayerIndex:
@@ -11061,16 +11071,6 @@ namespace PadForge.Services
                 else ThrustmasterRawHidWriter.WriteRpmLeds(path, mask);
             }
             _remoteWheelOneShot[source.InstanceGuid] = (w.RangeDeg, w.Ac, w.LedMask, w.LedValid);
-        }
-
-        /// <summary>A paired peer sent a speaker PCM block for one of THIS PC's shared
-        /// pads (issue #138). Feed it to the owner's audio passthrough, which renders it
-        /// to the real DualSense/DualShock speaker (BT Opus/SBC or USB UAC).</summary>
-        private void OnRemoteAudioReceived(string peerFingerprint, byte slot, byte[] payload)
-        {
-            if (payload == null || payload.Length < 2) return;
-            if (!ResolveExposed(slot, out var source, out _)) return;
-            AudioPassthroughService.FeedRemoteAudio(source.InstanceGuid, payload);
         }
 
         // ─────────────────────────────────────────────
@@ -12736,6 +12736,14 @@ namespace PadForge.Services
             if (!ud.IsOnline)
                 return false;
 
+            if (ud.IsHidden)
+                return true;
+
+            // Web and peer wrappers are input sources. Their names and paths
+            // do not identify this process's virtual outputs.
+            if (ud.Device is WebControllerDevice or RemotePeerDevice)
+                return false;
+
             // ── Name-based detection ──
             string name = ud.ResolvedName;
             if (!string.IsNullOrEmpty(name))
@@ -12753,10 +12761,6 @@ namespace PadForge.Services
                 if (pathLower.Contains("vigem") || pathLower.Contains("virtual"))
                     return true;
             }
-
-            // ── Hidden flag ──
-            if (ud.IsHidden)
-                return true;
 
             return false;
         }
@@ -12948,6 +12952,32 @@ namespace PadForge.Services
         /// re-enumeration. Called before uninstalling Windows MIDI Services.
         /// </summary>
         public void ShutdownMidiInputs() => _inputManager?.ShutdownMidiInputs();
+
+        /// <summary>Refreshes device lists and mapping grids after a topology change.
+        /// DeviceService flushes hydrated edits before changing the topology.</summary>
+        public void RefreshAfterDeviceAssignmentChange()
+        {
+            // Device-list refresh can select a device and save its old grid.
+            // Mark grids stale first so that save cannot erase the new auto-map.
+            foreach (var pad in _mainVm.Pads) pad.MappingsViewLoaded = false;
+            RefreshDeviceList();
+            _mainVm.Devices.RefreshSlotButtons();
+            ReseedPlayerIdentities();
+            AudioPassthroughService.Reconcile();
+            WiiSpeakerService.Reconcile();
+            HapticToneService.Reconcile();
+            // Merge new device mappings before reloading each slot's grid.
+            // Tuning remains per selected device and is loaded separately.
+            SettingsService.RefreshMappingSetsFromLegacy();
+            foreach (var pad in _mainVm.Pads)
+            {
+                RefreshMappingsToViewModel(pad);
+                var selected = pad.SelectedMappedDevice;
+                if (selected != null && selected.InstanceGuid != Guid.Empty)
+                    LoadPadSettingToViewModel(pad, selected.InstanceGuid);
+                RefreshAvailableInputsForSlot(pad);
+            }
+        }
 
         /// <summary>
         /// Forces a full re-sync of the device list UI from the current
@@ -15633,6 +15663,7 @@ namespace PadForge.Services
                     .Select(i => (int)_mainVm.Pads[i].OutputType).ToArray(),
                 SlotProfileIds = Enumerable.Range(0, _mainVm.Pads.Count)
                     .Select(i => _mainVm.Pads[i].ProfileId).ToArray(),
+                SlotModel3DAppearances = SlotAppearancePersistence.Capture(_mainVm.Pads),
                 ExtendedConfigs = SnapshotExtendedConfigs(),
                 // Per-(slot, device) lighting / adaptive triggers / audio.
                 // Rides profiles like the Extended / MIDI / KBM configs
@@ -15851,6 +15882,8 @@ namespace PadForge.Services
 
             int controllerTypeLen = p.SlotControllerTypes?.Length ?? 0;
             int profileIdLen = p.SlotProfileIds?.Length ?? 0;
+            var appearances = SlotAppearancePersistence.ResolveProfile(p, count: maxPads);
+            var newAppearances = SlotAppearancePersistence.Empty(maxPads);
             var newControllerTypes = new int[controllerTypeLen];
             var newProfileIds = new string[profileIdLen];
             for (int i = 0; i < newProfileIds.Length; i++) newProfileIds[i] = "";
@@ -15866,6 +15899,8 @@ namespace PadForge.Services
                     newControllerTypes[newIdx] = p.SlotControllerTypes[oldIdx];
                 if (oldIdx < profileIdLen && newIdx < profileIdLen)
                     newProfileIds[newIdx] = p.SlotProfileIds[oldIdx];
+                if (oldIdx < appearances.Length)
+                    newAppearances[newIdx] = appearances[oldIdx];
             }
 
             p.SlotCreated = newCreated;
@@ -15878,6 +15913,7 @@ namespace PadForge.Services
             if (p.SlotMappingSets != null) p.SlotMappingSets = newMappingSets;
             if (p.SlotControllerTypes != null) p.SlotControllerTypes = newControllerTypes;
             if (p.SlotProfileIds != null) p.SlotProfileIds = newProfileIds;
+            p.SlotModel3DAppearances = newAppearances;
 
             if (p.Entries != null)
             {
@@ -16295,6 +16331,8 @@ namespace PadForge.Services
                 }
             }
 
+            var slotAppearances = SlotAppearancePersistence.ResolveProfile(profile, _mainVm.Pads);
+
             // ── Single-pass transition of device assignments ──
             // Each profile fully owns slot assignments. Avoid the reset-then-
             // rebuild shape (set every us.MapTo = -1, then reapply from
@@ -16641,6 +16679,7 @@ namespace PadForge.Services
             VmMappingsStale = true;
             try
             {
+            SlotAppearancePersistence.Apply(_mainVm.Pads, slotAppearances);
             UpdatePadDeviceInfo();
 
 
@@ -16907,6 +16946,7 @@ namespace PadForge.Services
                     profile.SlotEnabled = snapshot.SlotEnabled;
                     profile.SlotControllerTypes = snapshot.SlotControllerTypes;
                     profile.SlotProfileIds = snapshot.SlotProfileIds;
+                    profile.SlotModel3DAppearances = snapshot.SlotModel3DAppearances;
                     profile.ExtendedConfigs = snapshot.ExtendedConfigs;
                     profile.DeviceSlotConfigs = snapshot.DeviceSlotConfigs;
                     profile.MidiConfigs = snapshot.MidiConfigs;
@@ -17046,6 +17086,8 @@ namespace PadForge.Services
             VmMappingsStale = true;
             try
             {
+                // No default snapshot owns an appearance in this recovery path.
+                SlotAppearancePersistence.Apply(_mainVm.Pads, SlotAppearancePersistence.Empty());
                 var sets = SettingsManager.SlotMappingSets;
                 if (sets != null)
                     for (int i = 0; i < sets.Length; i++)
@@ -17106,6 +17148,7 @@ namespace PadForge.Services
                 SlotCreated = new bool[InputManager.MaxPads],
                 SlotEnabled = new bool[InputManager.MaxPads],
                 SlotControllerTypes = new int[InputManager.MaxPads],
+                SlotModel3DAppearances = SlotAppearancePersistence.Empty(),
                 // Empty, NOT null. On ProfileData both of these use null as the
                 // legacy sentinel for "saved before this rode profiles, leave
                 // the live state alone" (ApplyProfile keys on exactly that), so

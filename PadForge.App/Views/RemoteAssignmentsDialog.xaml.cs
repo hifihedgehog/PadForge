@@ -31,6 +31,8 @@ namespace PadForge.Views
             _devices = devices;
             InitializeComponent();
             Title = string.Format(S.Instance.RemoteLink_AssignmentTitle_Format, peerName);
+            // Drag from the header or other unused window space.
+            MouseLeftButtonDown += (_, __) => { try { DragMove(); } catch (InvalidOperationException) { } };
             Loaded += async (_, _) => { _ready = true; await RefreshAsync(true); };
             Closed += (_, _) => { _closed = true; _closing.Cancel(); _closing.Dispose(); };
         }

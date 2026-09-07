@@ -30,7 +30,32 @@ namespace PadForge.Engine.RemoteLink
         private readonly byte[] _caps;
 
         private readonly object _lock = new();
+        private readonly object _registrationGate = new();
+        private readonly LinkAdmissionCoordinator _admissions = new();
+        private long _lifecycleVersion;
+        private sealed class RekeyWork
+        {
+            internal CancellationTokenSource Lifetime;
+            internal readonly TaskCompletionSource Done = new(TaskCreationOptions.RunContinuationsAsynchronously);
+            internal long Generation;
+            internal LinkPeerConnection Retired;
+            internal TaskCompletionSource ConnectionChanged = new(TaskCreationOptions.RunContinuationsAsynchronously);
+        }
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<string, RekeyWork> _rekeying = new(StringComparer.OrdinalIgnoreCase);
+
+        public bool IsPeerConnecting(string fingerprint) => !string.IsNullOrEmpty(fingerprint)
+            && (_rekeying.ContainsKey(fingerprint) || _admissions.HasPending(fingerprint));
+        internal Task[] RekeyTasks => _rekeying.Values.Select(work => work.Done.Task).ToArray();
+
+        private LinkExposureSnapshot PrepareExposure(IReadOnlyList<RemotePeerDeviceInfo> source)
+        {
+            var exposure = source is LinkExposureSnapshot prepared ? new LinkExposureSnapshot(prepared)
+                : new LinkExposureSnapshot(source) { ServerGeneration = Volatile.Read(ref _lifecycleVersion) };
+            exposure.AdmissionFactory ??= _admissions.Capture();
+            return exposure;
+        }
         private readonly List<LinkPeerConnection> _connections = new();
+        private readonly HashSet<LinkPeerConnection> _routeReaders = new();
         private TcpListener _tcp;
         private Socket _udp;
         private CancellationTokenSource _cts;
@@ -45,7 +70,7 @@ namespace PadForge.Engine.RemoteLink
         // (each rejects a wrong nonce itself); control datagrams (0xC0/0xC1)
         // route to the channel whose id matches.
         private readonly System.Collections.Concurrent.ConcurrentDictionary<int, Action<IPEndPoint, byte[]>> _punchSinks = new();
-        private readonly System.Collections.Concurrent.ConcurrentDictionary<uint, Action<byte[]>> _controlSinks = new();
+        private readonly OwnedLinkCallbacks<uint, Action<byte[]>> _controlSinks = new();
 
         // Relay lane (#294): iroh relay fallback when no punch can land. Both
         // peers behind CGNAT/symmetric NAT have NO direct path; the only route
@@ -69,8 +94,8 @@ namespace PadForge.Engine.RemoteLink
         private readonly SemaphoreSlim _relayListenGate = new(1, 1);
         private readonly SemaphoreSlim _relayIdentityGate = new(1, 1);
         private readonly SemaphoreSlim _relayDialGate = new(1, 1);
-        private readonly System.Collections.Concurrent.ConcurrentDictionary<uint, Action<byte[], byte[]>> _relayControlSinks = new();
-        private readonly System.Collections.Concurrent.ConcurrentDictionary<string, Action<byte[], uint>> _relayHelloWaiters = new();
+        private readonly OwnedLinkCallbacks<uint, Action<byte[], byte[]>> _relayControlSinks = new();
+        private readonly OwnedLinkCallbacks<string, Action<byte[], uint>> _relayHelloWaiters = new();
         /// <summary>First byte of a relay HELLO (peer key announcement). The
         /// 0xC0-0xC3 space belongs to control/punch; sealed frames start
         /// (type&lt;&lt;4)|epoch with type 1..7, so 0xC4 is unclaimed.</summary>
@@ -78,12 +103,12 @@ namespace PadForge.Engine.RemoteLink
         /// <summary>The host's answer to a HELLO, so the caller knows someone
         /// is listening on the code before it starts the handshake.</summary>
         public const byte TagRelayHelloAck = 0xC5;
-        private readonly System.Collections.Concurrent.ConcurrentDictionary<uint, Action> _relayAckWaiters = new();
+        private readonly OwnedLinkCallbacks<uint, Action> _relayAckWaiters = new();
         /// <summary>Listen-side control sinks keyed by the CALLER's relay key.
         /// The code-derived channel is fixed, so keying the listen side by
         /// channel would make two simultaneous callers overwrite each other.
         /// Source keys are unique per caller, so this is collision-free.</summary>
-        private readonly System.Collections.Concurrent.ConcurrentDictionary<string, Action<byte[]>> _relayListenSinks = new();
+        private readonly OwnedLinkCallbacks<string, Action<byte[]>> _relayListenSinks = new();
         /// <summary>Callers whose handshake is already running, so the repeated
         /// HELLOs a caller sends while waiting never start a second one.</summary>
         private readonly System.Collections.Concurrent.ConcurrentDictionary<string, byte> _relayInFlight = new();
@@ -130,20 +155,8 @@ namespace PadForge.Engine.RemoteLink
             { Kind = kind; Port = port; Peer = peer; DeviceCount = deviceCount; Message = message; }
         }
 
-        /// <summary>A paired peer sent reverse output (rumble / DualSense effect packet)
-        /// for one of THIS PC's shared devices (issue #138 M2). Args: peer fingerprint,
-        /// the slot id (this PC's exposed-device index), and the raw OutputEffectCodec
-        /// payload. InputService maps the slot to the physical device and drives it.</summary>
-        public event Action<string, byte, byte[]> OutputReceived;
-
-        /// <summary>Raised on the OWNER when a consumer reports live demand
-        /// for one of our shared devices' demand-gated sources (#241 NFC).
-        /// Args: peer fingerprint, link slot, payload ([0] = demand kind).</summary>
-        public event Action<string, byte, byte[]> SourceDemandReceived;
-
-        /// <summary>A paired peer sent a speaker PCM block (issue #138) for one of THIS
-        /// PC's shared pads. Args: peer fingerprint, link slot, raw PCM block.</summary>
-        public event Action<string, byte, byte[]> AudioReceived;
+        /// <summary>Authenticated reverse traffic. The receiver takes its device gate before TryCommit.</summary>
+        public event Action<LinkIncomingFrame> FrameReceived;
 
         /// <summary>Supplies the local devices to expose to a peer. Used by inbound
         /// (responder) connections so both sides share their controllers, not just the
@@ -416,6 +429,7 @@ namespace PadForge.Engine.RemoteLink
         public bool Start(int port)
         {
             if (IsRunning) return true;
+            Interlocked.Increment(ref _lifecycleVersion);
             _port = port;
             _cts = new CancellationTokenSource();
 
@@ -465,7 +479,9 @@ namespace PadForge.Engine.RemoteLink
         public void Stop()
         {
             if (!IsRunning) return;
+            Interlocked.Increment(ref _lifecycleVersion);
             IsRunning = false;
+            _admissions.Stop();
             // The STUN-learned mapping belongs to the socket being closed; a
             // restarted socket gets a different mapping, so never let the old
             // one be advertised (finding 8).
@@ -478,7 +494,13 @@ namespace PadForge.Engine.RemoteLink
             try { _cts.Cancel(); } catch { }
             _reaper?.Dispose(); _reaper = null;
             LinkPeerConnection[] conns;
-            lock (_lock) { conns = _connections.ToArray(); _connections.Clear(); }
+            lock (_lock)
+            {
+                conns = _connections.Concat(_routeReaders).Distinct().ToArray();
+                _connections.Clear();
+                _routeReaders.Clear();
+                _rekeying.Clear();
+            }
             foreach (var c in conns) DropConnection(c);
             try { _tcp?.Stop(); } catch { }
             try { _udp?.Close(); } catch { }
@@ -705,6 +727,7 @@ namespace PadForge.Engine.RemoteLink
             // a default dual-stack TcpClient yields IPv4-mapped-IPv6 endpoints the
             // IPv4 UDP socket can't SendTo.
             var client = new TcpClient(AddressFamily.InterNetwork);
+            var exposure = PrepareExposure(exposeLocal ?? ExposeProvider?.Invoke() ?? Array.Empty<RemotePeerDeviceInfo>());
             bool registered = false;
             try
             {
@@ -712,13 +735,13 @@ namespace PadForge.Engine.RemoteLink
                 using var linked = CancellationTokenSource.CreateLinkedTokenSource(ct, _cts?.Token ?? CancellationToken.None, timeout.Token);
                 await client.ConnectAsync(host, port, linked.Token).ConfigureAwait(false);
                 var channel = new TcpControlChannel(client.GetStream());
-                var result = await LinkConnection.RunInitiatorAsync(channel, _identity, _trust, exposeLocal, _caps, _approve, _nowUtc(), linked.Token).ConfigureAwait(false);
+                var result = await LinkConnection.RunInitiatorAsync(channel, _identity, _trust, exposure, _caps, _approve, _nowUtc(), linked.Token).ConfigureAwait(false);
 
                 var peerIp = ((IPEndPoint)client.Client.RemoteEndPoint).Address;
                 if (peerIp.IsIPv4MappedToIPv6) peerIp = peerIp.MapToIPv4();
-                Register(result, client, new IPEndPoint(peerIp, port), exposeLocal);
-                registered = true;
-                return true;
+                registered = Register(result, client, new IPEndPoint(peerIp, port), exposure,
+                    knownTcpTarget: new IPEndPoint(peerIp, port));
+                return registered;
             }
             catch (Exception ex)
             {
@@ -829,7 +852,7 @@ namespace PadForge.Engine.RemoteLink
                 {
                     try
                     {
-                        var expose = ExposeProvider?.Invoke() ?? Array.Empty<RemotePeerDeviceInfo>();
+                        var expose = PrepareExposure(ExposeProvider?.Invoke() ?? Array.Empty<RemotePeerDeviceInfo>());
                         await PunchConnectAsync(asInitiator, new[] { from }, nonce, expose,
                             TimeSpan.FromSeconds(20), _cts?.Token ?? CancellationToken.None).ConfigureAwait(false);
                     }
@@ -881,14 +904,14 @@ namespace PadForge.Engine.RemoteLink
                 System.Threading.Interlocked.Increment(ref probesIn);
                 punchAdapter.OnDatagram?.Invoke(from, dg);
             };
-            _controlSinks[channelId] = dg => controlAdapter.OnDatagram?.Invoke(dg);
+            var controlRegistration = _controlSinks.Register(channelId, dg => controlAdapter.OnDatagram?.Invoke(dg));
             string candStr = candidates == null ? "(none)" : string.Join(",", candidates.Select(c => c.ToString()));
             SdlDiagLog.WriteLine($"PUNCH {(isInitiator ? "init" : "resp")}: start chan={channelId:X8} candidates=[{candStr}]");
             try
             {
                 using var timeout = new CancellationTokenSource(punchTimeout + TimeSpan.FromSeconds(HandshakeTimeoutSeconds + 5));
                 using var linked = CancellationTokenSource.CreateLinkedTokenSource(ct, _cts?.Token ?? CancellationToken.None, timeout.Token);
-                var expose = exposeLocal ?? ExposeProvider?.Invoke() ?? Array.Empty<RemotePeerDeviceInfo>();
+                var expose = PrepareExposure(exposeLocal ?? ExposeProvider?.Invoke() ?? Array.Empty<RemotePeerDeviceInfo>());
 
                 // Our own endpoints, so the punch can never target or accept
                 // itself. Two machines behind ONE router share a public IP, so
@@ -912,8 +935,7 @@ namespace PadForge.Engine.RemoteLink
                     return false;
                 }
                 SdlDiagLog.WriteLine($"PUNCH {(isInitiator ? "init" : "resp")}: connected via {punched.PeerEndpoint}");
-                Register(punched.Connection, client: null, peerUdpEndpoint: punched.PeerEndpoint, exposeLocal: expose);
-                return true;
+                return Register(punched.Connection, client: null, peerUdpEndpoint: punched.PeerEndpoint, exposeLocal: expose);
             }
             catch (Exception ex)
             {
@@ -924,7 +946,7 @@ namespace PadForge.Engine.RemoteLink
             finally
             {
                 _punchSinks.TryRemove(punchKey, out _);
-                _controlSinks.TryRemove(channelId, out _);
+                controlRegistration.Dispose();
             }
         }
 
@@ -1029,7 +1051,7 @@ namespace PadForge.Engine.RemoteLink
                 // Wait for a caller's HELLO addressed to our code identity.
                 var tcs = new TaskCompletionSource<byte[]>(TaskCreationOptions.RunContinuationsAsynchronously);
                 string waitKey = "code:" + rdv.Channel.ToString("X8");
-                _relayHelloWaiters[waitKey] = (k, _) => tcs.TrySetResult(k);
+                var helloRegistration = _relayHelloWaiters.Register(waitKey, (k, _) => tcs.TrySetResult(k));
                 byte[] callerKey;
                 try
                 {
@@ -1038,7 +1060,7 @@ namespace PadForge.Engine.RemoteLink
                     callerKey = tcs.Task.Result;
                 }
                 catch (OperationCanceledException) { break; }
-                finally { _relayHelloWaiters.TryRemove(waitKey, out _); }
+                finally { helloRegistration.Dispose(); }
 
                 // Handle the call on its own task and go straight back to
                 // waiting. Awaiting it here meant one pending call held the
@@ -1081,7 +1103,7 @@ namespace PadForge.Engine.RemoteLink
             bool asInitiator = CompareKeys(rdv.PublicKey, callerKey) < 0;
             var adapter = new RelayControlAdapter(relay, callerKey);
             string callerHex = Convert.ToHexString(callerKey);
-            _relayListenSinks[callerHex] = dg => adapter.OnDatagram?.Invoke(dg);
+            var listenRegistration = _relayListenSinks.Register(callerHex, dg => adapter.OnDatagram?.Invoke(dg));
             try
             {
                 using var timeout = CancellationTokenSource.CreateLinkedTokenSource(ct);
@@ -1089,7 +1111,7 @@ namespace PadForge.Engine.RemoteLink
                 // person. The accept loop is no longer blocked meanwhile, so a
                 // long wait here costs nothing.
                 timeout.CancelAfter(TimeSpan.FromMinutes(3));
-                var expose = ExposeProvider?.Invoke() ?? Array.Empty<RemotePeerDeviceInfo>();
+                var expose = PrepareExposure(ExposeProvider?.Invoke() ?? Array.Empty<RemotePeerDeviceInfo>());
                 var result = await PunchedConnection.ConnectRelayOnChannelAsync(
                     adapter, rdv.Channel, asInitiator,
                     _identity, _trust, expose, _caps, _approve, _nowUtc(), timeout.Token).ConfigureAwait(false);
@@ -1098,7 +1120,7 @@ namespace PadForge.Engine.RemoteLink
                 Register(result, client: null, peerUdpEndpoint: null, exposeLocal: expose,
                     relayPeerKey: callerKey, relayClient: relay);
             }
-            finally { _relayListenSinks.TryRemove(callerHex, out _); }
+            finally { listenRegistration.Dispose(); }
         }
 
         /// <summary>
@@ -1128,7 +1150,7 @@ namespace PadForge.Engine.RemoteLink
             hello[0] = TagRelayHello;
             System.Buffers.Binary.BinaryPrimitives.WriteUInt32BigEndian(hello.AsSpan(1), rdv.Channel);
             var ackTcs = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
-            _relayAckWaiters[rdv.Channel] = () => ackTcs.TrySetResult(true);
+            var ackRegistration = _relayAckWaiters.Register(rdv.Channel, () => ackTcs.TrySetResult(true));
             try
             {
                 using var helloCts = CancellationTokenSource.CreateLinkedTokenSource(linked.Token);
@@ -1149,30 +1171,29 @@ namespace PadForge.Engine.RemoteLink
                 bool asInitiator = CompareKeys(relay.PublicKey, rdv.PublicKey) < 0;
                 var adapter = new RelayControlAdapter(relay, rdv.PublicKey);
                 string hostHex = Convert.ToHexString(rdv.PublicKey);
-                _relayControlSinks[rdv.Channel] = (src, dg) =>
+                var controlRegistration = _relayControlSinks.Register(rdv.Channel, (src, dg) =>
                 {
                     if (Convert.ToHexString(src) == hostHex) adapter.OnDatagram?.Invoke(dg);
-                };
+                });
                 try
                 {
-                    var expose = exposeLocal ?? ExposeProvider?.Invoke() ?? Array.Empty<RemotePeerDeviceInfo>();
+                    var expose = PrepareExposure(exposeLocal ?? ExposeProvider?.Invoke() ?? Array.Empty<RemotePeerDeviceInfo>());
                     var result = await PunchedConnection.ConnectRelayOnChannelAsync(
                         adapter, rdv.Channel, asInitiator,
                         _identity, _trust, expose, _caps, _approve, _nowUtc(), linked.Token).ConfigureAwait(false);
                     if (result == null) { SdlDiagLog.WriteLine("RELAY dial: handshake did not complete"); return false; }
                     SdlDiagLog.WriteLine("RELAY dial: handshake complete");
-                    Register(result, client: null, peerUdpEndpoint: null, exposeLocal: expose,
+                    return Register(result, client: null, peerUdpEndpoint: null, exposeLocal: expose,
                         relayPeerKey: rdv.PublicKey, relayClient: relay);
-                    return true;
                 }
-                finally { _relayControlSinks.TryRemove(rdv.Channel, out _); }
+                finally { controlRegistration.Dispose(); }
             }
             catch (Exception ex)
             {
                 SdlDiagLog.WriteLine($"RELAY dial: exception {ex.GetType().Name} {ex.Message}");
                 return false;
             }
-            finally { _relayAckWaiters.TryRemove(rdv.Channel, out _); }
+            finally { ackRegistration.Dispose(); }
         }
 
         /// <summary>Deterministic ordering of two relay keys, so the two sides
@@ -1242,7 +1263,7 @@ namespace PadForge.Engine.RemoteLink
             {
                 if (!relay.IsConnected) break;
                 var tcs = new TaskCompletionSource<(byte[] key, uint chan)>(TaskCreationOptions.RunContinuationsAsynchronously);
-                _relayHelloWaiters["identity"] = (k, c) => tcs.TrySetResult((k, c));
+                var helloRegistration = _relayHelloWaiters.Register("identity", (k, c) => tcs.TrySetResult((k, c)));
                 (byte[] key, uint chan) call;
                 try
                 {
@@ -1251,7 +1272,7 @@ namespace PadForge.Engine.RemoteLink
                     call = tcs.Task.Result;
                 }
                 catch (OperationCanceledException) { break; }
-                finally { _relayHelloWaiters.TryRemove("identity", out _); }
+                finally { helloRegistration.Dispose(); }
 
                 string callerHex = Convert.ToHexString(call.key);
                 if (!_relayInFlight.TryAdd(callerHex, 0)) continue;
@@ -1293,7 +1314,7 @@ namespace PadForge.Engine.RemoteLink
             hello[0] = TagRelayHello;
             System.Buffers.Binary.BinaryPrimitives.WriteUInt32BigEndian(hello.AsSpan(1), chan);
             var ackTcs = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
-            _relayAckWaiters[chan] = () => ackTcs.TrySetResult(true);
+            var ackRegistration = _relayAckWaiters.Register(chan, () => ackTcs.TrySetResult(true));
             try
             {
                 using var helloCts = CancellationTokenSource.CreateLinkedTokenSource(linked.Token);
@@ -1313,30 +1334,29 @@ namespace PadForge.Engine.RemoteLink
                 bool asInitiator = CompareKeys(relay.PublicKey, rdv.PublicKey) < 0;
                 var adapter = new RelayControlAdapter(relay, rdv.PublicKey);
                 string peerHex = Convert.ToHexString(rdv.PublicKey);
-                _relayControlSinks[chan] = (src, dg) =>
+                var controlRegistration = _relayControlSinks.Register(chan, (src, dg) =>
                 {
                     if (Convert.ToHexString(src) == peerHex) adapter.OnDatagram?.Invoke(dg);
-                };
+                });
                 try
                 {
-                    var expose = exposeLocal ?? ExposeProvider?.Invoke() ?? Array.Empty<RemotePeerDeviceInfo>();
+                    var expose = PrepareExposure(exposeLocal ?? ExposeProvider?.Invoke() ?? Array.Empty<RemotePeerDeviceInfo>());
                     var result = await PunchedConnection.ConnectRelayOnChannelAsync(
                         adapter, chan, asInitiator,
                         _identity, _trust, expose, _caps, _approve, _nowUtc(), linked.Token).ConfigureAwait(false);
                     if (result == null) { SdlDiagLog.WriteLine("RELAY identity dial: handshake did not complete"); return false; }
                     SdlDiagLog.WriteLine("RELAY identity dial: reconnected");
-                    Register(result, client: null, peerUdpEndpoint: null, exposeLocal: expose,
+                    return Register(result, client: null, peerUdpEndpoint: null, exposeLocal: expose,
                         relayPeerKey: rdv.PublicKey, relayClient: relay);
-                    return true;
                 }
-                finally { _relayControlSinks.TryRemove(chan, out _); }
+                finally { controlRegistration.Dispose(); }
             }
             catch (Exception ex)
             {
                 SdlDiagLog.WriteLine($"RELAY identity dial: exception {ex.GetType().Name} {ex.Message}");
                 return false;
             }
-            finally { _relayAckWaiters.TryRemove(chan, out _); }
+            finally { ackRegistration.Dispose(); }
         }
 
         /// <summary>Shared accept half for any listening relay identity.</summary>
@@ -1353,12 +1373,12 @@ namespace PadForge.Engine.RemoteLink
             bool asInitiator = CompareKeys(myKey, callerKey) < 0;
             var adapter = new RelayControlAdapter(relay, callerKey);
             string callerHex = Convert.ToHexString(callerKey);
-            _relayListenSinks[callerHex] = dg => adapter.OnDatagram?.Invoke(dg);
+            var listenRegistration = _relayListenSinks.Register(callerHex, dg => adapter.OnDatagram?.Invoke(dg));
             try
             {
                 using var timeout = CancellationTokenSource.CreateLinkedTokenSource(ct);
                 timeout.CancelAfter(TimeSpan.FromMinutes(3));
-                var expose = ExposeProvider?.Invoke() ?? Array.Empty<RemotePeerDeviceInfo>();
+                var expose = PrepareExposure(ExposeProvider?.Invoke() ?? Array.Empty<RemotePeerDeviceInfo>());
                 var result = await PunchedConnection.ConnectRelayOnChannelAsync(
                     adapter, chan, asInitiator,
                     _identity, _trust, expose, _caps, _approve, _nowUtc(), timeout.Token).ConfigureAwait(false);
@@ -1367,7 +1387,7 @@ namespace PadForge.Engine.RemoteLink
                 Register(result, client: null, peerUdpEndpoint: null, exposeLocal: expose,
                     relayPeerKey: callerKey, relayClient: relay);
             }
-            finally { _relayListenSinks.TryRemove(callerHex, out _); }
+            finally { listenRegistration.Dispose(); }
         }
 
         /// <summary>Relay-lane connect (#294): the UNMODIFIED authenticated
@@ -1394,16 +1414,17 @@ namespace PadForge.Engine.RemoteLink
 
             byte[] peerKey = peerRelayKey;
             System.Threading.CancellationTokenSource helloCts = null;
+            IDisposable controlRegistration = null;
             try
             {
                 if (peerKey == null)
                 {
                     // Wait for the peer's HELLO to learn its relay key.
                     var tcs = new TaskCompletionSource<byte[]>(TaskCreationOptions.RunContinuationsAsynchronously);
-                    _relayHelloWaiters[nonceHex] = (k, _) => tcs.TrySetResult(k);
+                    var helloRegistration = _relayHelloWaiters.Register(nonceHex, (k, _) => tcs.TrySetResult(k));
                     try { peerKey = await tcs.Task.WaitAsync(linked.Token).ConfigureAwait(false); }
                     catch (OperationCanceledException) { SdlDiagLog.WriteLine("RELAY connect: no HELLO within the window"); return false; }
-                    finally { _relayHelloWaiters.TryRemove(nonceHex, out _); }
+                    finally { helloRegistration.Dispose(); }
                     SdlDiagLog.WriteLine($"RELAY connect: HELLO from {Convert.ToHexString(peerKey).Substring(0, 16)}");
                 }
                 else
@@ -1428,12 +1449,12 @@ namespace PadForge.Engine.RemoteLink
 
                 var adapter = new RelayControlAdapter(relay, peerKey);
                 string peerKeyHex = Convert.ToHexString(peerKey);
-                _relayControlSinks[channelId] = (src, dg) =>
+                controlRegistration = _relayControlSinks.Register(channelId, (src, dg) =>
                 {
                     if (Convert.ToHexString(src) == peerKeyHex) adapter.OnDatagram?.Invoke(dg);
-                };
+                });
 
-                var expose = exposeLocal ?? ExposeProvider?.Invoke() ?? Array.Empty<RemotePeerDeviceInfo>();
+                var expose = PrepareExposure(exposeLocal ?? ExposeProvider?.Invoke() ?? Array.Empty<RemotePeerDeviceInfo>());
                 var result = await PunchedConnection.ConnectRelayAsync(
                     adapter, sharedNonce, handshakeAsInitiator,
                     _identity, _trust, expose, _caps, _approve, _nowUtc(), linked.Token).ConfigureAwait(false);
@@ -1443,9 +1464,8 @@ namespace PadForge.Engine.RemoteLink
                     return false;
                 }
                 SdlDiagLog.WriteLine($"RELAY connect: handshake complete via {host}");
-                Register(result, client: null, peerUdpEndpoint: null, exposeLocal: expose,
+                return Register(result, client: null, peerUdpEndpoint: null, exposeLocal: expose,
                     relayPeerKey: peerKey, relayClient: relay);
-                return true;
             }
             catch (Exception ex)
             {
@@ -1457,7 +1477,7 @@ namespace PadForge.Engine.RemoteLink
             {
                 try { helloCts?.Cancel(); } catch { }
                 helloCts?.Dispose();
-                _relayControlSinks.TryRemove(channelId, out _);
+                controlRegistration?.Dispose();
             }
         }
 
@@ -1508,7 +1528,7 @@ namespace PadForge.Engine.RemoteLink
                 // Sealed session datagram over the relay lane. No endpoint to
                 // learn: relayed arrivals never teach a UDP address.
                 LinkPeerConnection[] conns;
-                lock (_lock) conns = _connections.ToArray();
+                lock (_lock) conns = _connections.Concat(_routeReaders).Distinct().ToArray();
                 foreach (var c in conns)
                     if (TryDispatchSession(c, dg, from: null)) return;
             }
@@ -1606,14 +1626,76 @@ namespace PadForge.Engine.RemoteLink
         /// devices go offline and its UDP datagrams stop routing (no session opens them).</summary>
         public void RevokePeer(string fingerprintHex)
         {
-            LinkPeerConnection[] conns;
-            lock (_lock)
+            LinkPeerConnection[] conns = Array.Empty<LinkPeerConnection>();
+            RekeyWork work = null;
+            _admissions.Revoke(fingerprintHex, () =>
             {
-                conns = _connections.Where(c => string.Equals(c.PeerFingerprintHex, fingerprintHex, StringComparison.OrdinalIgnoreCase)).ToArray();
-                foreach (var c in conns) _connections.Remove(c);
-            }
+                lock (_lock)
+                {
+                    _rekeying.TryRemove(fingerprintHex, out work);
+                    conns = _connections.Concat(_routeReaders).Where(c => string.Equals(c.PeerFingerprintHex,
+                        fingerprintHex, StringComparison.OrdinalIgnoreCase)).Distinct().ToArray();
+                    foreach (var c in conns) { _connections.Remove(c); _routeReaders.Remove(c); }
+                }
+            });
+            try { work?.Lifetime.Cancel(); } catch (ObjectDisposedException) { }
             foreach (var c in conns) DropConnection(c);
         }
+
+        public sealed class InputTargets
+        {
+            internal readonly (LinkConnectionLifetime Connection, IReadOnlyDictionary<byte, LinkSourceBinding> Bindings)[] Items;
+            internal InputTargets((LinkConnectionLifetime, IReadOnlyDictionary<byte, LinkSourceBinding>)[] items) => Items = items;
+        }
+
+        public InputTargets CaptureInputTargets()
+        {
+            lock (_lock)
+                return new InputTargets(_connections.Select(connection =>
+                    (connection.Lifetime, connection.Lifetime.CaptureInputBindings())).ToArray());
+        }
+
+        public void PushLocalFrame(InputTargets targets, string deviceId, CustomInputState state,
+            CustomInputStateCodec.Caps caps, ulong timestampUs)
+        {
+            if (targets == null || targets.Items.Length == 0) return;
+            byte[] payload = CustomInputStateCodec.Encode(state, caps);
+            foreach (var target in targets.Items)
+            {
+                try
+                {
+                    if (target.Connection.SendInput(target.Bindings, deviceId, payload, timestampUs))
+                        Interlocked.Increment(ref DiagDatagramsSent);
+                }
+                catch (Exception ex) { DiagLastError = "push: " + ex.Message; }
+            }
+        }
+
+        private bool SendConnectionFrame(LinkPeerConnection connection, LinkMessageType type, byte slot,
+            ulong stamp, byte[] payload)
+        {
+            if (payload == null) return false;
+            try
+            {
+                if (!SendSealed(connection, connection.DataSession.Seal(type, slot, stamp, payload)))
+                {
+                    DiagLastError = "send: peer transport not learned yet";
+                    return false;
+                }
+                if (type != LinkMessageType.Input) Interlocked.Increment(ref DiagDatagramsSent);
+                if (type == LinkMessageType.Output) Interlocked.Increment(ref DiagOutputSent);
+                if (type == LinkMessageType.SourceDemand) Interlocked.Increment(ref DiagDemandSent);
+                return true;
+            }
+            catch (Exception ex) { DiagLastError = "send: " + ex.Message; return false; }
+        }
+
+        public bool PushOutputEffect(LinkConnectionLifetime connection, byte slot, string deviceId, byte[] payload)
+            => connection?.Send(LinkMessageType.Output, slot, payload, deviceId: deviceId) == true;
+        public bool PushAudio(LinkConnectionLifetime connection, byte slot, string deviceId, byte[] payload)
+            => connection?.Send(LinkMessageType.Audio, slot, payload, deviceId: deviceId) == true;
+        public bool PushSourceDemand(LinkConnectionLifetime connection, byte slot, string deviceId, byte[] payload)
+            => connection?.Send(LinkMessageType.SourceDemand, slot, payload, deviceId: deviceId) == true;
 
         /// <summary>Seal and send one exposed local device's state to every peer consuming it.</summary>
         public void PushLocalFrame(byte slot, CustomInputState state, CustomInputStateCodec.Caps caps, ulong timestampUs)
@@ -1752,7 +1834,7 @@ namespace PadForge.Engine.RemoteLink
                 using var linked = CancellationTokenSource.CreateLinkedTokenSource(ct, timeout.Token);
                 var channel = new TcpControlChannel(client.GetStream());
                 // Expose our own devices to the peer too, so sharing is bidirectional.
-                var expose = ExposeProvider?.Invoke() ?? (IReadOnlyList<RemotePeerDeviceInfo>)Array.Empty<RemotePeerDeviceInfo>();
+                var expose = PrepareExposure(ExposeProvider?.Invoke() ?? (IReadOnlyList<RemotePeerDeviceInfo>)Array.Empty<RemotePeerDeviceInfo>());
                 var result = await LinkConnection.RunResponderAsync(channel, _identity, _trust, expose, _caps, _approve, _nowUtc(), linked.Token).ConfigureAwait(false);
                 // The peer's UDP endpoint is learned from the first inbound datagram.
                 Register(result, client, peerUdpEndpoint: null, exposeLocal: expose);
@@ -1765,87 +1847,117 @@ namespace PadForge.Engine.RemoteLink
             finally { System.Threading.Interlocked.Decrement(ref _pendingHandshakes); }
         }
 
-        private void Register(LinkConnectionResult result, TcpClient client, IPEndPoint peerUdpEndpoint, IReadOnlyList<RemotePeerDeviceInfo> exposeLocal, byte[] relayPeerKey = null, IrohRelayClient relayClient = null)
+        private bool Register(LinkConnectionResult result, TcpClient client, IPEndPoint peerUdpEndpoint,
+            IReadOnlyList<RemotePeerDeviceInfo> exposeLocal, byte[] relayPeerKey = null, IrohRelayClient relayClient = null,
+            IPEndPoint knownTcpTarget = null)
         {
-            // Dedup: a reconnecting peer replaces its prior connection instead of
-            // stacking a second one (and leaking the old socket/devices).
-            //
-            // SIMULTANEOUS CONNECT. Both peers can complete a handshake with
-            // each other at the same moment: our dial lands while their dial
-            // (or the auto-responder answering their probe) lands on us. Two
-            // valid sessions then exist for one pair, and "newest wins" is not
-            // a decision both machines can agree on, since each sees its own
-            // arrival last. They can drop each other's keeper and flap. So a
-            // COLLISION (a duplicate that is only seconds old) is resolved by a
-            // rule both sides compute identically from the two fingerprints:
-            // keep the session where the lower fingerprint is the initiator.
-            // An old duplicate is an ordinary reconnect and the new one wins.
-            const long CollisionWindowSeconds = 10;
-            LinkPeerConnection[] dupes;
-            lock (_lock)
+            lock (_registrationGate)
             {
-                dupes = _connections.Where(c => string.Equals(c.PeerFingerprintHex, result.PeerFingerprintHex, StringComparison.OrdinalIgnoreCase)).ToArray();
-
-                if (dupes.Length > 0 && _identity?.Fingerprint != null && result.PeerFingerprint != null)
+                var exposure = exposeLocal as LinkExposureSnapshot ?? PrepareExposure(exposeLocal);
+                if (result.Admission == null || !IsRunning
+                    || exposure.ServerGeneration != Volatile.Read(ref _lifecycleVersion)
+                    || !(exposure.Reconnect?.CanPublish ?? true))
                 {
-                    long now = System.Diagnostics.Stopwatch.GetTimestamp();
-                    bool anyFresh = dupes.Any(d =>
-                        (now - d.EstablishedTicks) < System.Diagnostics.Stopwatch.Frequency * CollisionWindowSeconds);
-                    if (anyFresh)
-                    {
-                        bool weAreLower = CompareKeys(_identity.Fingerprint, result.PeerFingerprint) < 0;
-                        // The canonical session is the one whose initiator is
-                        // the lower fingerprint. Both machines reach the same
-                        // verdict about the same pair of sessions.
-                        bool incomingIsCanonical = result.IsInitiator == weAreLower;
-                        if (!incomingIsCanonical)
-                        {
-                            SdlDiagLog.WriteLine(
-                                $"LINK simultaneous connect with {Short(result.PeerFingerprintHex)}: keeping the existing session");
-                            try { client?.Dispose(); } catch { }
-                            return;
-                        }
-                        SdlDiagLog.WriteLine(
-                            $"LINK simultaneous connect with {Short(result.PeerFingerprintHex)}: keeping the new session");
-                    }
+                    RejectRegistration(result, client);
+                    return false;
                 }
+                var conn = new LinkPeerConnection
+                {
+                    Admission = result.Admission,
+                    DataSession = new LinkSession(result.DataKey, result.IsInitiator),
+                    RemoteDevices = new System.Collections.Concurrent.ConcurrentDictionary<byte, RemotePeerDevice>(),
+                    PeerUdpEndpoint = peerUdpEndpoint,
+                    KnownTcpTarget = knownTcpTarget,
+                    RelayPeerKey = relayPeerKey,
+                    RelayClient = relayClient,
+                    PathNonce = PeerCrypto.DeriveKey(result.DataKey, salt: null,
+                        System.Text.Encoding.ASCII.GetBytes("PadForge/path-upgrade/v1"), HolePuncher.NonceLen),
+                    Tcp = client,
+                    PeerFingerprintHex = result.PeerFingerprintHex,
+                    LastActivityTicks = System.Diagnostics.Stopwatch.GetTimestamp(),
+                    EstablishedTicks = System.Diagnostics.Stopwatch.GetTimestamp(),
+                    Exposure = exposure,
+                    LatestInventory = exposure.Source,
+                };
+                conn.Lifetime = new LinkConnectionLifetime(conn.PeerFingerprintHex, exposure,
+                    () => { lock (_lock) return _connections.Contains(conn); },
+                    (type, slot, stamp, payload) => SendConnectionFrame(conn, type, slot, stamp, payload));
+                if (!conn.Lifetime.AcceptPeerInventory(result.RemoteDevices.Select(device => device.Info).ToArray(),
+                    0, true, out _))
+                {
+                    RejectRegistration(result, client);
+                    return false;
+                }
+                foreach (var device in result.RemoteDevices)
+                {
+                    device.Connection = conn.Lifetime;
+                    device.LinkSlot = device.Info.Slot;
+                    device.SetConnected(device.Info.Online);
+                    conn.RemoteDevices[device.LinkSlot] = device;
+                }
+                conn.Assignments = new LinkAssignmentChannel(conn.PeerFingerprintHex,
+                    () => { lock (_lock) return _connections.Contains(conn); },
+                    () => _trust.AllowsRemoteAssignments(conn.PeerFingerprintHex),
+                    id => conn.RemoteDevices.Values.FirstOrDefault(device => device.Info.PeerLocalDeviceId == id),
+                    payload => conn.Lifetime.Send(LinkMessageType.Assignments, 0, payload),
+                    context => AssignmentHandler?.Invoke(context) ?? Task.FromResult(
+                        LinkAssignmentReply.For(context.Request, LinkAssignmentStatus.Unavailable)));
 
-                foreach (var d in dupes) _connections.Remove(d);
+                LinkPeerConnection[] dupes = Array.Empty<LinkPeerConnection>();
+                bool published = result.Admission.TryPublish(() =>
+                {
+                    lock (_lock)
+                    {
+                        if (!IsRunning || exposure.ServerGeneration != Volatile.Read(ref _lifecycleVersion)
+                            || !_trust.IsTrusted(result.PeerPublicKey) || !(exposure.Reconnect?.CanPublish ?? true)) return false;
+                        dupes = _connections.Where(existing => string.Equals(existing.PeerFingerprintHex,
+                            result.PeerFingerprintHex, StringComparison.OrdinalIgnoreCase)).ToArray();
+                        // Keep the existing canonical-initiator collision policy. Admissions
+                        // order same-peer handshakes before inventory exchange and publication.
+                        const long CollisionWindowSeconds = 10;
+                        long now = System.Diagnostics.Stopwatch.GetTimestamp();
+                        bool anyFresh = dupes.Any(existing => now - existing.EstablishedTicks
+                            < System.Diagnostics.Stopwatch.Frequency * CollisionWindowSeconds);
+                        bool weAreLower = CompareKeys(_identity.Fingerprint, result.PeerFingerprint) < 0;
+                        if (anyFresh && result.IsInitiator != weAreLower) return false;
+                        foreach (var existing in dupes) _connections.Remove(existing);
+                        _connections.Add(conn);
+                        if (_rekeying.TryGetValue(conn.PeerFingerprintHex, out var recovery)) recovery.ConnectionChanged.TrySetResult();
+                        return true;
+                    }
+                });
+                if (!published)
+                {
+                    conn.Lifetime.Retire();
+                    conn.Assignments.Close();
+                    RejectRegistration(result, client);
+                    return false;
+                }
+                // Neither the admission gate nor the membership lock is held during retirement.
+                foreach (var d in dupes) DropConnection(d, replaced: true);
+                foreach (var device in conn.RemoteDevices.Values) DeviceConnected?.Invoke(device);
+                StatusChanged?.Invoke(new LinkStatus(LinkStatusKind.PeerConnected, peer: Short(conn.PeerFingerprintHex), deviceCount: conn.RemoteDevices.Count));
+                try
+                {
+                    var currentInventory = ExposeProvider?.Invoke();
+                    if (currentInventory != null)
+                    {
+                        var publication = conn.Lifetime.PublishLocalInventory(currentInventory);
+                        if (publication != LinkConnectionLifetime.InventoryResult.Stale) conn.LatestInventory = currentInventory;
+                        if (publication == LinkConnectionLifetime.InventoryResult.Exhausted) QueueRekey(conn);
+                    }
+                    conn.Lifetime.Send(LinkMessageType.Keepalive, 0, Array.Empty<byte>());
+                }
+                catch (Exception ex) { DiagLastError = "devlist: " + ex.Message; }
+                return true;
             }
-            foreach (var d in dupes) DropConnection(d, replaced: true);
+        }
 
-            var conn = new LinkPeerConnection
-            {
-                DataSession = new LinkSession(result.DataKey, result.IsInitiator),
-                RemoteDevices = new System.Collections.Concurrent.ConcurrentDictionary<byte, RemotePeerDevice>(),
-                PeerUdpEndpoint = peerUdpEndpoint,
-                RelayPeerKey = relayPeerKey,
-                RelayClient = relayClient,
-                PathNonce = PeerCrypto.DeriveKey(result.DataKey, salt: null,
-                    System.Text.Encoding.ASCII.GetBytes("PadForge/path-upgrade/v1"), HolePuncher.NonceLen),
-                Tcp = client,
-                PeerFingerprintHex = result.PeerFingerprintHex,
-                LastActivityTicks = System.Diagnostics.Stopwatch.GetTimestamp(),
-                EstablishedTicks = System.Diagnostics.Stopwatch.GetTimestamp(),
-            };
-            // Key each device by the owner's STABLE slot (carried in the device list), so a
-            // device hot-plugged after connect routes by a slot that never shifts (#138).
-            foreach (var d in result.RemoteDevices)
-            {
-                d.LinkSlot = d.Info.Slot;
-                d.SetConnected(d.Info.Online);
-                conn.RemoteDevices[d.LinkSlot] = d;
-            }
-            conn.Assignments = new LinkAssignmentChannel(conn.PeerFingerprintHex,
-                () => { lock (_lock) return _connections.Contains(conn); },
-                () => _trust.AllowsRemoteAssignments(conn.PeerFingerprintHex),
-                id => conn.RemoteDevices.Values.FirstOrDefault(d => d.Info.PeerLocalDeviceId == id),
-                payload => SendSealed(conn, conn.DataSession.Seal(LinkMessageType.Assignments, 0, 0, payload)),
-                context => AssignmentHandler?.Invoke(context) ?? Task.FromResult(
-                    LinkAssignmentReply.For(context.Request, LinkAssignmentStatus.Unavailable)));
-            lock (_lock) _connections.Add(conn);
-            foreach (var d in conn.RemoteDevices.Values) DeviceConnected?.Invoke(d);
-            StatusChanged?.Invoke(new LinkStatus(LinkStatusKind.PeerConnected, peer: Short(conn.PeerFingerprintHex), deviceCount: conn.RemoteDevices.Count));
+        private static void RejectRegistration(LinkConnectionResult result, TcpClient client)
+        {
+            result.Admission?.Dispose();
+            foreach (var device in result.RemoteDevices) device.Dispose();
+            try { client?.Dispose(); } catch { }
         }
 
         // ── UDP receive (data + learn-endpoint) ─────────────────────────────
@@ -1921,7 +2033,7 @@ namespace PadForge.Engine.RemoteLink
             }
 
             LinkPeerConnection[] conns;
-            lock (_lock) conns = _connections.ToArray();
+            lock (_lock) conns = _connections.Concat(_routeReaders).Distinct().ToArray();
 
             // The AEAD tag identifies the owning session. Only the right
             // session opens it, and a failed open never advances a replay window.
@@ -1936,13 +2048,19 @@ namespace PadForge.Engine.RemoteLink
         private bool TryDispatchSession(LinkPeerConnection c, ReadOnlySpan<byte> datagram, IPEndPoint from)
         {
             {
-                if (!c.DataSession.Open(datagram, out var type, out byte slot, out ulong ts, out byte[] payload))
+                if (!c.DataSession.Open(datagram, out var type, out byte slot, out ulong ts, out uint sequence, out byte[] payload))
                     return false;
 
                 System.Threading.Interlocked.Increment(ref DiagDatagramsOpened);
+                c.Confirmed.TrySetResult();
+                c.Admission?.PeerObserved();
                 System.Threading.Interlocked.Exchange(ref c.LastActivityTicks, System.Diagnostics.Stopwatch.GetTimestamp());
                 // Learn the peer's UDP endpoint on first verified datagram (responder side).
-                if (from != null && c.PeerUdpEndpoint == null) c.PeerUdpEndpoint = from;
+                if (from != null)
+                {
+                    if (c.PeerUdpEndpoint == null) c.PeerUdpEndpoint = from;
+                    c.EndpointLearned.TrySetResult(c.PeerUdpEndpoint);
+                }
                 // Direct-path liveness, so an upgraded session that loses its
                 // direct route can fall back to the relay. This is also what
                 // CONFIRMS a provisional upgrade: the datagram opened, so the
@@ -1953,6 +2071,8 @@ namespace PadForge.Engine.RemoteLink
                     System.Threading.Interlocked.Exchange(ref c.UpgradeProvisionalTicks, 0);
                 }
 
+                // A retired TCP responder can learn its route, but cannot deliver application data.
+                if (!c.Lifetime.IsCurrent) return true;
                 if (type == LinkMessageType.Assignments)
                     c.Assignments?.Receive(payload);
                 else if (type == LinkMessageType.Input)
@@ -1960,29 +2080,19 @@ namespace PadForge.Engine.RemoteLink
                     // Route by slot id to the matching device (the peer streams each of
                     // its devices on its own slot). Pass the send timestamp for
                     // newest-wins (the replay window accepts in-window reorders).
-                    if (c.RemoteDevices.TryGetValue(slot, out var rd))
-                        rd.ApplyFramePayload(payload, ts);
+                    c.Lifetime.TryApplyInput(slot, sequence, () =>
+                    {
+                        if (c.RemoteDevices.TryGetValue(slot, out var rd)) rd.ApplyFramePayload(payload, ts);
+                    });
                 }
-                else if (type == LinkMessageType.Output)
+                else if (type is LinkMessageType.Output or LinkMessageType.Audio or LinkMessageType.SourceDemand)
                 {
-                    // Reverse feedback from a consumer of one of OUR shared devices.
-                    // Surface it for InputService to map slot -> physical device and
-                    // drive the hardware (LinkServer is Engine-side, no UserDevices).
-                    System.Threading.Interlocked.Increment(ref DiagOutputReceived);
-                    OutputReceived?.Invoke(c.PeerFingerprintHex, slot, payload);
-                }
-                else if (type == LinkMessageType.SourceDemand)
-                {
-                    // A consumer's live mapping wants a demand-gated source on
-                    // one of OUR devices (#241). Surface it so InputService can
-                    // map slot -> physical device and arm the hardware.
-                    System.Threading.Interlocked.Increment(ref DiagDemandReceived);
-                    SourceDemandReceived?.Invoke(c.PeerFingerprintHex, slot, payload);
-                }
-                else if (type == LinkMessageType.Audio)
-                {
-                    System.Threading.Interlocked.Increment(ref DiagAudioReceived);
-                    AudioReceived?.Invoke(c.PeerFingerprintHex, slot, payload);
+                    var frame = new LinkIncomingFrame(c.Lifetime, type, slot, sequence, payload);
+                    if (type == LinkMessageType.Output) Interlocked.Increment(ref DiagOutputReceived);
+                    else if (type == LinkMessageType.Audio) Interlocked.Increment(ref DiagAudioReceived);
+                    else Interlocked.Increment(ref DiagDemandReceived);
+                    // The callback takes OutputSync before entering the connection commit gate.
+                    FrameReceived?.Invoke(frame);
                 }
                 else if (type == LinkMessageType.PathOffer)
                 {
@@ -1996,7 +2106,15 @@ namespace PadForge.Engine.RemoteLink
                 {
                     // The owner's current exposed-device set: add new, remove gone, update
                     // active/inactive — so devices hot-plugged after connect appear live (#138).
-                    try { ReconcileRemoteDevices(c, LinkConnection.DecodeDeviceList(payload)); }
+                    try
+                    {
+                        var infos = LinkConnection.DecodeDeviceList(payload);
+                        var notifications = new List<Action>();
+                        bool applied = c.Lifetime.AcceptPeerInventory(infos, sequence, false, out bool conflict,
+                            () => ReconcileRemoteDevices(c, infos, notifications));
+                        if (conflict) QueueRekey(c);
+                        if (applied) foreach (var notify in notifications) notify();
+                    }
                     catch (Exception ex) { DiagLastError = "devlist-recv: " + ex.Message; }
                 }
                 return true;
@@ -2007,7 +2125,7 @@ namespace PadForge.Engine.RemoteLink
         /// appeared, drop ones that vanished, and update active/inactive on the rest. Fires
         /// DeviceConnected / DeviceDisconnected so InputService registers/unregisters them
         /// exactly as it does for the handshake set. Runs on the UDP receive thread.</summary>
-        private void ReconcileRemoteDevices(LinkPeerConnection c, List<RemotePeerDeviceInfo> infos)
+        private void ReconcileRemoteDevices(LinkPeerConnection c, List<RemotePeerDeviceInfo> infos, List<Action> notifications)
         {
             // Reconcile by the device's STABLE id (PeerLocalDeviceId), not its link slot. Keying
             // by slot fired DeviceConnected for the new slot then DeviceDisconnected for the old
@@ -2068,7 +2186,7 @@ namespace PadForge.Engine.RemoteLink
                     existing.Info.InputDeviceType = info.InputDeviceType;
                     next[info.Slot] = existing;
                     // Re-register only when the slot moved, so the slot-stamped output route refreshes.
-                    if (slotChanged) DeviceConnected?.Invoke(existing);
+                    if (slotChanged) notifications.Add(() => DeviceConnected?.Invoke(existing));
                 }
                 else
                 {
@@ -2081,10 +2199,10 @@ namespace PadForge.Engine.RemoteLink
                     if (!string.IsNullOrWhiteSpace(peerLabel))
                         info.Name = $"{info.Name} ({peerLabel})";
 
-                    var dev = new RemotePeerDevice(info) { LinkSlot = info.Slot };
+                    var dev = new RemotePeerDevice(info) { LinkSlot = info.Slot, Connection = c.Lifetime };
                     dev.SetConnected(info.Online);
                     next[info.Slot] = dev;
-                    DeviceConnected?.Invoke(dev);
+                    notifications.Add(() => DeviceConnected?.Invoke(dev));
                 }
             }
 
@@ -2095,7 +2213,7 @@ namespace PadForge.Engine.RemoteLink
             {
                 if (keptIds.Contains(d.Info.PeerLocalDeviceId ?? "")) continue;
                 d.SetConnected(false);
-                DeviceDisconnected?.Invoke(d);
+                notifications.Add(() => DeviceDisconnected?.Invoke(d));
                 d.Dispose();
             }
         }
@@ -2106,50 +2224,234 @@ namespace PadForge.Engine.RemoteLink
         public void PushDeviceList(IReadOnlyList<RemotePeerDeviceInfo> devices)
         {
             if (devices == null) return;
-            LinkPeerConnection[] conns;
-            lock (_lock) conns = _connections.ToArray();
-            // No peers: skip the ~KB device-list encode that otherwise
-            // ran every 2 s push with nobody to receive it.
-            if (conns.Length == 0) return;
-            byte[] payload;
-            try { payload = LinkConnection.EncodeDeviceList(devices); }
-            catch (Exception ex) { DiagLastError = "devlist-enc: " + ex.Message; return; }
-            ulong ts = (ulong)(System.Diagnostics.Stopwatch.GetTimestamp() * (1_000_000.0 / System.Diagnostics.Stopwatch.Frequency));
-            foreach (var c in conns)
+            LinkPeerConnection[] connections;
+            lock (_lock) connections = _connections.ToArray();
+            foreach (var connection in connections)
             {
                 try
                 {
-                    if (!SendSealed(c, c.DataSession.Seal(LinkMessageType.DeviceList, 0, ts, payload))) continue;
+                    var result = connection.Lifetime.PublishLocalInventory(devices);
+                    if (result != LinkConnectionLifetime.InventoryResult.Stale) connection.LatestInventory = devices;
+                    if (result == LinkConnectionLifetime.InventoryResult.Exhausted) QueueRekey(connection);
                 }
                 catch (Exception ex) { DiagLastError = "devlist: " + ex.Message; }
             }
         }
 
-        private void DropConnection(LinkPeerConnection c, bool replaced = false)
+        private void QueueRekey(LinkPeerConnection connection)
         {
-            c.Assignments?.Close();
-            foreach (var d in c.RemoteDevices.Values)
+            string fingerprint = connection.PeerFingerprintHex;
+            RekeyWork work;
+            bool start = false;
+            bool learnRoute;
+            lock (_lock)
             {
-                d.SetConnected(false);
-                DeviceDisconnected?.Invoke(d);
-                d.Dispose();
+                if (!IsRunning || !_connections.Remove(connection)) return;
+                if (!_rekeying.TryGetValue(fingerprint, out work))
+                {
+                    work = new RekeyWork
+                    {
+                        Lifetime = CancellationTokenSource.CreateLinkedTokenSource(_cts.Token),
+                        Generation = _lifecycleVersion
+                    };
+                    _rekeying[fingerprint] = work;
+                    start = true;
+                }
+                Volatile.Write(ref work.Retired, connection);
+                learnRoute = connection.Tcp != null && connection.KnownTcpTarget == null
+                    && connection.PeerUdpEndpoint == null && connection.RelayClient == null;
+                if (learnRoute)
+                {
+                    connection.RouteWork = work;
+                    _routeReaders.Add(connection);
+                }
+                work.ConnectionChanged.TrySetResult();
             }
-            try { c.Tcp?.Dispose(); } catch { }
-            // Only the peer's last session releases its ownership. A duplicate
-            // session dropped in favor of another (simultaneous connect) leaves
-            // the peer connected, and its held output is still meant. The
-            // caller says so: at that site the replacement is not yet in the
-            // list, so the membership check below would read as a departure.
+            try { DropConnection(connection, keepRouteReader: learnRoute); }
+            finally { if (start) _ = RekeyAsync(fingerprint, work); }
+        }
+
+        private bool OwnsRekey(string fingerprint, RekeyWork work)
+        {
+            lock (_lock)
+                return IsRunning && work.Generation == _lifecycleVersion && !work.Lifetime.IsCancellationRequested
+                    && _rekeying.TryGetValue(fingerprint, out var current) && ReferenceEquals(current, work);
+        }
+
+        private async Task<bool> RunRekeyAttemptAsync(string fingerprint, RekeyWork work,
+            LinkExposureSnapshot exposure, Func<LinkExposureSnapshot, Task<bool>> connect)
+        {
+            var progress = new LinkHandshakeProgress();
+            var attempt = new LinkExposureSnapshot(exposure) { HandshakeProgress = progress };
+            bool registered = false;
+            try { return registered = await connect(attempt).ConfigureAwait(false); }
+            finally
+            {
+                if (!registered && progress.InventorySendStarted)
+                {
+                    LinkPeerConnection[] uncertain = Array.Empty<LinkPeerConnection>();
+                    _admissions.TryInvalidatePeer(fingerprint, () =>
+                    {
+                        lock (_lock)
+                        {
+                            if (!OwnsRekey(fingerprint, work)) return false;
+                            uncertain = _connections.Where(item => string.Equals(item.PeerFingerprintHex,
+                                fingerprint, StringComparison.OrdinalIgnoreCase)).ToArray();
+                            foreach (var item in uncertain) _connections.Remove(item);
+                            return true;
+                        }
+                    });
+                    // The peer could have replaced these sessions with the failed
+                    // attempt. Earlier traffic and pending admissions cannot settle
+                    // recovery. Keep the known recovery route and the trust grant.
+                    foreach (var item in uncertain) DropConnection(item);
+                }
+            }
+        }
+
+        private async Task RekeyAsync(string fingerprint, RekeyWork work)
+        {
+            var token = work.Lifetime.Token;
+            try
+            {
+                while (OwnsRekey(fingerprint, work))
+                {
+                    var peer = _trust.Peers.FirstOrDefault(item => string.Equals(item.FingerprintHex,
+                        fingerprint, StringComparison.OrdinalIgnoreCase));
+                    if (peer == null) return;
+                    try
+                    {
+                        LinkPeerConnection current;
+                        Task changed;
+                        lock (_lock)
+                        {
+                            if (work.ConnectionChanged.Task.IsCompleted)
+                                work.ConnectionChanged = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+                            changed = work.ConnectionChanged.Task;
+                            current = _connections.FirstOrDefault(item => item.PeerFingerprintHex == fingerprint);
+                        }
+                        if (current != null)
+                        {
+                            current.Lifetime.Send(LinkMessageType.Keepalive, 0, Array.Empty<byte>());
+                            await Task.WhenAny(current.Confirmed.Task, Task.Delay(3500, token)).ConfigureAwait(false);
+                            if (!OwnsRekey(fingerprint, work)) return;
+                            if (current.Confirmed.Task.IsCompleted && current.Lifetime.IsCurrent)
+                            {
+                                var inventory = ExposeProvider?.Invoke() ?? current.LatestInventory;
+                                var result = current.Lifetime.PublishLocalInventory(inventory);
+                                bool ready = result is LinkConnectionLifetime.InventoryResult.Sent
+                                    or LinkConnectionLifetime.InventoryResult.Stale;
+                                lock (_lock)
+                                {
+                                    if (ready && _connections.Contains(current) && OwnsRekey(fingerprint, work))
+                                    {
+                                        _rekeying.TryRemove(fingerprint, out _);
+                                        return;
+                                    }
+                                }
+                            }
+                            bool removed;
+                            lock (_lock) removed = _connections.Remove(current);
+                            if (removed)
+                            {
+                                Volatile.Write(ref work.Retired, current);
+                                DropConnection(current);
+                            }
+                            continue;
+                        }
+                        var retired = Volatile.Read(ref work.Retired);
+                        if (retired.KnownTcpTarget == null && retired.PeerUdpEndpoint == null && retired.RelayClient == null)
+                        {
+                            await Task.WhenAny(retired.EndpointLearned.Task, changed).WaitAsync(token).ConfigureAwait(false);
+                            if (retired.EndpointLearned.Task.IsCompletedSuccessfully) CloseRetiredRoute(retired);
+                            continue;
+                        }
+                        CloseRetiredRoute(retired);
+                        var source = ExposeProvider?.Invoke() ?? retired.LatestInventory;
+                        var exposure = new LinkExposureSnapshot(source)
+                        {
+                            ServerGeneration = work.Generation,
+                            Reconnect = new LinkReconnectAuthorization(peer.PublicKey,
+                                () => OwnsRekey(fingerprint, work) && _trust.IsTrusted(peer.PublicKey))
+                        };
+                        var endpoint = retired.PeerUdpEndpoint;
+                        if (retired.KnownTcpTarget is { } tcpTarget)
+                        {
+                            using var attempt = CancellationTokenSource.CreateLinkedTokenSource(token);
+                            attempt.CancelAfter(TimeSpan.FromSeconds(3));
+                            await RunRekeyAttemptAsync(fingerprint, work, exposure,
+                                prepared => ConnectAsync(tcpTarget.Address.ToString(), tcpTarget.Port, prepared, attempt.Token)).ConfigureAwait(false);
+                        }
+                        if (!OwnsRekey(fingerprint, work)) return;
+                        if (!IsPeerConnected(fingerprint) && endpoint != null)
+                        {
+                            // A pinned recovery attempt needs no manual pairing wait.
+                            using var punchAttempt = CancellationTokenSource.CreateLinkedTokenSource(token);
+                            punchAttempt.CancelAfter(TimeSpan.FromSeconds(3));
+                            byte[] nonce = LinkCode.TwoWayPunchNonce(_identity.Fingerprint, PeerCrypto.Fingerprint(peer.PublicKey));
+                            bool initiator = LinkCode.IsHandshakeInitiator(_identity.Fingerprint, PeerCrypto.Fingerprint(peer.PublicKey));
+                            await RunRekeyAttemptAsync(fingerprint, work, exposure,
+                                prepared => ConnectByPunchAsync(new[] { endpoint }, nonce, initiator, prepared,
+                                    punchTimeout: TimeSpan.FromSeconds(3), ct: punchAttempt.Token)).ConfigureAwait(false);
+                        }
+                        if (!OwnsRekey(fingerprint, work)) return;
+                        if (!IsPeerConnected(fingerprint) && peer.RendezvousCapability is { } capability)
+                            await RunRekeyAttemptAsync(fingerprint, work, exposure,
+                                prepared => ConnectByIdentityRelayAsync(peer.PublicKey, capability, prepared,
+                                    timeout: TimeSpan.FromSeconds(10), ct: token)).ConfigureAwait(false);
+                    }
+                    catch (OperationCanceledException) when (token.IsCancellationRequested) { return; }
+                    catch (Exception ex) { DiagLastError = "rekey: " + ex.Message; }
+                    await Task.Delay(1000, token).ConfigureAwait(false);
+                }
+            }
+            catch (OperationCanceledException) when (token.IsCancellationRequested) { }
+            finally
+            {
+                lock (_lock)
+                    if (_rekeying.TryGetValue(fingerprint, out var current) && ReferenceEquals(current, work))
+                        _rekeying.TryRemove(fingerprint, out _);
+                LinkPeerConnection[] readers;
+                lock (_lock) readers = _routeReaders.Where(reader => ReferenceEquals(reader.RouteWork, work)).ToArray();
+                foreach (var reader in readers) CloseRetiredRoute(reader);
+                work.Lifetime.Dispose();
+                work.Done.TrySetResult();
+            }
+        }
+
+        private void CloseRetiredRoute(LinkPeerConnection connection)
+        {
+            lock (_lock) _routeReaders.Remove(connection);
+            try { Interlocked.Exchange(ref connection.Tcp, null)?.Dispose(); } catch { }
+        }
+
+        private void DropConnection(LinkPeerConnection c, bool replaced = false, bool keepRouteReader = false)
+        {
+            c.Lifetime?.Retire();
+            if (Interlocked.Exchange(ref c.RetirementStarted, 1) != 0)
+            {
+                if (!keepRouteReader) CloseRetiredRoute(c);
+                return;
+            }
+            c.Admission?.Dispose();
+            c.Assignments?.Close();
+            foreach (var device in c.RemoteDevices.Values)
+            {
+                device.SetConnected(false);
+                try { DeviceDisconnected?.Invoke(device); } catch { }
+                device.Dispose();
+            }
+            if (!keepRouteReader) CloseRetiredRoute(c);
             if (replaced) return;
             string fp = c.PeerFingerprintHex;
             if (string.IsNullOrEmpty(fp)) return;
             bool last;
             lock (_lock)
-                last = !_connections.Any(o => !ReferenceEquals(o, c)
-                    && string.Equals(o.PeerFingerprintHex, fp, StringComparison.OrdinalIgnoreCase));
+                last = !_connections.Any(other => !ReferenceEquals(other, c)
+                    && string.Equals(other.PeerFingerprintHex, fp, StringComparison.OrdinalIgnoreCase));
             if (last)
             {
-                try { PeerDropped?.Invoke(fp); } catch { /* best effort */ }
+                try { PeerDropped?.Invoke(fp); } catch { }
             }
         }
 
@@ -2159,6 +2461,15 @@ namespace PadForge.Engine.RemoteLink
 
         private sealed class LinkPeerConnection
         {
+            public LinkAdmission Admission;
+            public int RetirementStarted;
+            public RekeyWork RouteWork;
+            public readonly TaskCompletionSource<IPEndPoint> EndpointLearned = new(TaskCreationOptions.RunContinuationsAsynchronously);
+            public IPEndPoint KnownTcpTarget;
+            public LinkConnectionLifetime Lifetime;
+            public readonly TaskCompletionSource Confirmed = new(TaskCreationOptions.RunContinuationsAsynchronously);
+            public LinkExposureSnapshot Exposure;
+            public IReadOnlyList<RemotePeerDeviceInfo> LatestInventory;
             public LinkAssignmentChannel Assignments;
             public LinkSession DataSession;
             /// <summary>Devices the peer exposes, keyed by their stable link slot (#138 live

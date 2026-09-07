@@ -82,10 +82,10 @@ namespace PadForge.Tests
         [Fact]
         public void SinglePress_StaleArm_NeverGhostFires()
         {
-            var im = new InputManager();
-            // Window scaled with its sleeps (round ten, same load class as
-            // the sibling above): the inside/outside relationships are
-            // preserved, only the margin against a starved scheduler grows.
+            var now = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            var im = new InputManager { SinglePressUtcNow = () => now };
+            // Keep the 800 ms window and its stale grace while advancing
+            // only the SinglePress clock between evaluations.
             var m = Macro(MacroTriggerMode.SinglePress, MacroRepeatMode.Once, 800,
                 TriggerSet(1000));
             var macros = new[] { m };
@@ -94,15 +94,17 @@ namespace PadForge.Tests
             Tick(im, macros, held: false);
             // Simulate a stopped pipeline: no evaluation until far past
             // the window plus the grace.
-            Thread.Sleep(1400);
+            now = now.AddMilliseconds(1400);
             Assert.Equal(0, Tick(im, macros, held: false));  // reset, no ghost
             Assert.Equal(0, m.TriggerPressStreak);
 
             // A fresh isolated press still fires normally.
             Tick(im, macros, held: true);
             Tick(im, macros, held: false);
-            Thread.Sleep(950);
-            Assert.Equal(1000, Tick(im, macros, held: false));
+            now = now.AddMilliseconds(950);
+            double elapsedBeforeTick = (now - m.TriggerLastPressUtc).TotalMilliseconds;
+            ushort result = Tick(im, macros, held: false);
+            Assert.True(result == 1000, $"Expected 1000, got {result}; elapsed before tick: {elapsedBeforeTick:F2} ms");
         }
 
         // ─── D2: mode switch voids transients ───

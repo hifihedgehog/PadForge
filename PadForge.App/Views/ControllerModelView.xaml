@@ -54,7 +54,7 @@
                     VerticalAlignment="Top" Margin="0,8,8,0">
             <!-- Colorway picker: shown only when the current model family
                  ships more than one appearance. Per virtual controller
-                 (persisted on the pad's PadSetting), so two VCs of the
+                 (persisted with the slot), so two VCs of the
                  same family can wear different colorways. -->
             <ComboBox x:Name="AppearancePicker"
                       AutomationProperties.AutomationId="AppearancePicker"

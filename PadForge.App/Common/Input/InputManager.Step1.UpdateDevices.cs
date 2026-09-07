@@ -574,6 +574,7 @@ namespace PadForge.Common.Input
         private readonly FlydigiReprobePolicy _flydigiReprobe = new FlydigiReprobePolicy();
 
         private long _flydigiObserveTick;
+        private long _flydigiHidRetryDue;
         private long _flydigiConfirmDue;
         private uint _flydigiChangeCount;
         private bool _flydigiChangeCountKnown;
@@ -619,20 +620,41 @@ namespace PadForge.Common.Input
         private void FlydigiReprobeTick()
         {
             if (!FlydigiEnhancedProtocolDesired) return;
-            uint? count = Engine.SdlHidEnumeration.DeviceChangeCount();
-            if (count == null) return;
+            FlydigiReprobeTick(null, null, null, null);
+        }
+
+        internal void FlydigiReprobeTick(Func<long> clock, Func<uint?> readCount,
+            Func<System.Collections.Generic.List<string>> readPaths,
+            Func<(bool written, string value)> nudge)
+        {
+            // SDL can retry HID initialization in the counter read itself.
+            // A failed read changes only this retry deadline.
+            long now = clock == null ? Environment.TickCount64 : clock();
+            if (now < _flydigiHidRetryDue) return;
+            uint? count = readCount == null ? Engine.SdlHidEnumeration.DeviceChangeCount() : readCount();
+            // SDL skips zero on counter wrap. Zero means HIDAPI is unavailable.
+            if (count == null || count.Value == 0)
+            {
+                _flydigiHidRetryDue = (clock == null ? Environment.TickCount64 : clock()) + FlydigiReprobePolicy.DelayMs;
+                return;
+            }
+            _flydigiHidRetryDue = 0;
+            now = clock == null ? Environment.TickCount64 : clock();
             bool changed = !_flydigiChangeCountKnown || count.Value != _flydigiChangeCount;
-            long now = Environment.TickCount64;
             bool confirm = _flydigiConfirmDue != 0 && now >= _flydigiConfirmDue;
             bool wrappersChanged = FlydigiOrdinaryWrappersChanged();
             if (!changed && !confirm && !wrappersChanged && !_flydigiReprobe.Armed) return;
             if (!changed && !confirm && !wrappersChanged && now - _flydigiObserveTick < FlydigiReprobePolicy.DelayMs) return;
 
             long tsEnum = Stopwatch.GetTimestamp();
-            var present = Engine.SdlHidEnumeration.Paths(0x37D7, 0xFFA0);
+            var present = readPaths == null ? Engine.SdlHidEnumeration.Paths(0x37D7, 0xFFA0) : readPaths();
             long enumMs = (Stopwatch.GetTimestamp() - tsEnum) * 1000 / Stopwatch.Frequency;
             if (enumMs >= 25) Engine.SdlDiagLog.WriteLine($"STALL flydigi hid-enumerate={enumMs}ms");
-            if (present == null) return;                       // a failed enumeration is not an observation
+            if (present == null)
+            {
+                _flydigiHidRetryDue = (clock == null ? Environment.TickCount64 : clock()) + FlydigiReprobePolicy.DelayMs;
+                return;
+            }
 
             bool inFlux = false;
             var claimed = new System.Collections.Generic.List<string>();
@@ -653,7 +675,7 @@ namespace PadForge.Common.Input
             else if (confirm) _flydigiConfirmDue = 0;
             var due = _flydigiReprobe.Observe(now, present, claimed, ordinary, inFlux, absencesAreReal: changed);
             if (due.Count == 0) return;
-            var (written, value) = TryFlydigiReprobeNudge();
+            var (written, value) = nudge == null ? TryFlydigiReprobeNudge() : nudge();
             Engine.SdlDiagLog.WriteLine(
                 $"FLYDIGI reprobe attempt={_flydigiReprobe.LastAttempt}/{FlydigiReprobePolicy.MaxAttempts} unclaimed={due.Count} present={present.Count} claimed={claimed.Count} flux={inFlux} changed={changed} confirm={confirm} wrappers={wrappersChanged} hint={value ?? "-"} written={written} first={due[0]}");
         }

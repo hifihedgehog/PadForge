@@ -68,7 +68,9 @@ namespace PadForge.Common.Input
                 snapshotCount = 0;
                 for (int i = 0; i < devices.Count; i++)
                 {
-                    if (devices[i].IsOnline)
+                    // A live remote connection can recover after its input deadline.
+                    if (devices[i].IsOnline
+                        || devices[i].Device is PadForge.Engine.RemoteLink.RemotePeerDevice { IsAttached: true })
                         _deviceSnapshotBuffer[snapshotCount++] = devices[i];
                 }
             }
@@ -116,6 +118,13 @@ namespace PadForge.Common.Input
                         // Read failed — device may have been disconnected.
                         ud.IsOnline = false;
                         continue;
+                    }
+
+                    if (!ud.IsOnline
+                        && ud.Device is PadForge.Engine.RemoteLink.RemotePeerDevice { IsAttached: true })
+                    {
+                        ud.IsOnline = true;
+                        DevicesUpdated?.Invoke(this, EventArgs.Empty);
                     }
 
                     // Atomic reference swap — safe for cross-thread reading.
@@ -716,6 +725,12 @@ namespace PadForge.Common.Input
             int slotCount = settings.FindByInstanceGuid(ud.InstanceGuid, _instanceGuidBuffer);
             if (slotCount == 0)
             {
+                if (RemoteLinkOutputRouter.IsPeerPath(ud.DevicePath))
+                {
+                    RemoteLinkOutputRouter.StopVibration(ud.DevicePath);
+                    return;
+                }
+
                 // Unassigning a device's last slot sends no zero of its own, so
                 // a rumble in flight at that moment stayed on a forwarded pad's
                 // page, which renews whatever it was last told (#402). Stop it
@@ -980,6 +995,10 @@ namespace PadForge.Common.Input
                 return;
             }
 
+            // Skip a contested write instead of waiting for another output writer.
+            if (!System.Threading.Monitor.TryEnter(ud.OutputSync)) return;
+            try
+            {
             // Sole-writer guard (#138): this LOCAL device is also shared out and a remote
             // game is actively driving it (a relayed frame holds the output lease). Skip
             // the owner's local write so the inbound relay is the sole hardware writer.
@@ -1226,6 +1245,8 @@ namespace PadForge.Common.Input
             }
 
             ud.ForceFeedbackState.SetDeviceForces(ud, ud.Device, firstPadSetting, _combinedVibration);
+            }
+            finally { System.Threading.Monitor.Exit(ud.OutputSync); }
         }
 
         private readonly System.Collections.Generic.Dictionary<Guid, bool> _nintendoRumbleWasHot = new();

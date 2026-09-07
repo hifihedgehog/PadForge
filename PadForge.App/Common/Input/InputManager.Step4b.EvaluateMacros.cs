@@ -1195,9 +1195,12 @@ namespace PadForge.Common.Input
         /// engine stop or process suspend and must not ghost-fire.</summary>
         private const int SinglePressStaleGraceMs = 250;
 
-        private static bool EvaluateSinglePressTrigger(MacroItem macro, bool triggerActive, bool wasTriggerActive)
+        /// <summary>Overrides only the SinglePress clock for deterministic tests.</summary>
+        internal Func<DateTime> SinglePressUtcNow { get; set; }
+
+        private bool EvaluateSinglePressTrigger(MacroItem macro, bool triggerActive, bool wasTriggerActive)
         {
-            var now = DateTime.UtcNow;
+            var now = SinglePressUtcNow?.Invoke() ?? DateTime.UtcNow;
             if (triggerActive && !wasTriggerActive)
             {
                 bool chained = macro.TriggerLastPressUtc != DateTime.MinValue

@@ -439,9 +439,16 @@ namespace PadForge.Common.Input
         /// <summary>
         /// Per-slot record of the (VID, PID) this slot currently has an OEM
         /// claim on, so destroy can undo exactly what create applied even if
-        /// the user edited the profile or flag in between. -1 when inactive.
+        /// the user edited the profile or flag in between. Zero when inactive.
         /// </summary>
         private readonly uint[] _oemOverrideClaimedVidPid = new uint[MaxPads];
+
+        // A connecting worker owns this claim until publication. Reordering
+        // a live controller moves only the published claim arrays.
+        private sealed record PendingOemClaim(uint Key, string Label);
+        private readonly PendingOemClaim[] _pendingOemClaims = new PendingOemClaim[MaxPads];
+        internal Action<ushort, ushort, string> OemOverrideSet = HIDMaestro.HMOemNameOverride.Set;
+        internal Action<ushort, ushort> OemOverrideClear = HIDMaestro.HMOemNameOverride.Clear;
 
         /// <summary>
         /// Per-slot snapshot of the ProductString that was baked into the
@@ -629,7 +636,7 @@ namespace PadForge.Common.Input
                 {
                     try
                     {
-                        HIDMaestro.HMOemNameOverride.Set(vid, pid, desiredLabel);
+                        OemOverrideSet(vid, pid, desiredLabel);
                         _lastAppliedOemLabel[padIndex] = desiredLabel;
                     }
                     catch (Exception)
@@ -639,47 +646,78 @@ namespace PadForge.Common.Input
             }
         }
 
-        private void TryAcquireOemOverrideClaim(int padIndex, ushort vid, ushort pid, string label)
+        internal void TryAcquireOemOverrideClaim(int padIndex, ushort vid, ushort pid, string label, bool pending = false)
         {
-            try
+            lock (_vcLifecycleLock)
             {
-                HIDMaestro.HMOemNameOverride.Set(vid, pid, label);
-                uint key = ((uint)vid << 16) | pid;
-                _oemOverrideRefs.TryGetValue(key, out int n);
-                _oemOverrideRefs[key] = n + 1;
-                _oemOverrideClaimedVidPid[padIndex] = key;
-                _lastAppliedOemLabel[padIndex] = label;
-            }
-            catch (Exception)
-            {
+                if (_lifecycleClosed) return;
+                try
+                {
+                    OemOverrideSet(vid, pid, label);
+                    uint key = ((uint)vid << 16) | pid;
+                    uint previous = pending ? _pendingOemClaims[padIndex]?.Key ?? 0 : _oemOverrideClaimedVidPid[padIndex];
+                    if (previous != key)
+                    {
+                        if (previous != 0) ReleaseOemOverrideReference(previous);
+                        _oemOverrideRefs.TryGetValue(key, out int n);
+                        _oemOverrideRefs[key] = n + 1;
+                    }
+                    if (pending)
+                        _pendingOemClaims[padIndex] = new PendingOemClaim(key, label);
+                    else
+                    {
+                        _oemOverrideClaimedVidPid[padIndex] = key;
+                        _lastAppliedOemLabel[padIndex] = label;
+                    }
+                }
+                catch (Exception) { }
             }
         }
 
         private void ReleaseOemOverrideClaim(int padIndex, uint claimedKey, string reason)
         {
-            _oemOverrideClaimedVidPid[padIndex] = 0;
-            _lastAppliedOemLabel[padIndex] = null;
-            if (!_oemOverrideRefs.TryGetValue(claimedKey, out int n)) return;
-            n--;
-            if (n <= 0)
+            lock (_vcLifecycleLock)
             {
-                _oemOverrideRefs.Remove(claimedKey);
-                try
-                {
-                    ushort vid = (ushort)(claimedKey >> 16);
-                    ushort pid = (ushort)(claimedKey & 0xFFFF);
-                    HIDMaestro.HMOemNameOverride.Clear(vid, pid);
-                }
-                catch (Exception)
-                {
-                }
-            }
-            else
-            {
-                _oemOverrideRefs[claimedKey] = n;
+                if (_oemOverrideClaimedVidPid[padIndex] != claimedKey) return;
+                _oemOverrideClaimedVidPid[padIndex] = 0;
+                _lastAppliedOemLabel[padIndex] = null;
+                ReleaseOemOverrideReference(claimedKey);
             }
         }
 
+        internal void ReleasePendingOemOverrideClaim(int padIndex)
+        {
+            lock (_vcLifecycleLock)
+            {
+                var claim = _pendingOemClaims[padIndex];
+                if (claim == null) return;
+                _pendingOemClaims[padIndex] = null;
+                ReleaseOemOverrideReference(claim.Key);
+            }
+        }
+
+        private void PublishPendingOemOverrideClaim(int padIndex)
+        {
+            var claim = _pendingOemClaims[padIndex];
+            if (claim == null) return;
+            uint previous = _oemOverrideClaimedVidPid[padIndex];
+            if (previous != 0) ReleaseOemOverrideClaim(padIndex, previous, "replace-orphan");
+            _oemOverrideClaimedVidPid[padIndex] = claim.Key;
+            _lastAppliedOemLabel[padIndex] = claim.Label;
+            _pendingOemClaims[padIndex] = null;
+        }
+
+        private void ReleaseOemOverrideReference(uint claimedKey)
+        {
+            if (!_oemOverrideRefs.TryGetValue(claimedKey, out int n)) return;
+            if (n <= 1)
+            {
+                _oemOverrideRefs.Remove(claimedKey);
+                try { OemOverrideClear((ushort)(claimedKey >> 16), (ushort)claimedKey); }
+                catch (Exception) { }
+            }
+            else _oemOverrideRefs[claimedKey] = n - 1;
+        }
 
         /// <summary>
         /// Per-slot MIDI configuration snapshot. Written by InputService at 30Hz.
@@ -1094,45 +1132,19 @@ namespace PadForge.Common.Input
                     }
                 }
 
-                // Detect Extended config edits on an already-connected slot:
-                // ProductString edited, stick/trigger/POV/button counts
-                // changed, or the force-feedback toggle flipped. Each requires
-                // a rebuild because HIDMaestro bakes iProduct and the HID
-                // descriptor at CreateController time. Compare the current
-                // desired config against the snapshot recorded when the VC was
-                // last created.
-                if (vc is HMaestroVirtualController hmExtVc
-                    && SlotControllerTypes[padIndex] == VirtualControllerType.Extended)
+                // Extended name, layout, force feedback, and identity edits
+                // require a rebuild. The creation gate uses the same comparison
+                // if the UI changes a slot after this pass visited it.
+                if (vc is HMaestroVirtualController
+                    && SlotControllerTypes[padIndex] == VirtualControllerType.Extended
+                    && ExtendedConfigurationChanged(padIndex))
                 {
-                    string desiredPs = SlotOemOverrideLabel[padIndex] ?? string.Empty;
-                    var desiredLayout = SlotCustomLayouts[padIndex];
-                    bool desiredFfb = SlotExtendedFfbEnabled[padIndex];
-                    int desiredVid = SlotExtendedVendorId[padIndex];
-                    int desiredPid = SlotExtendedProductId[padIndex];
-                    bool psChanged = !string.Equals(
-                        desiredPs,
-                        _extendedAppliedProductString[padIndex] ?? string.Empty,
-                        StringComparison.Ordinal);
-                    var appliedLayout = _extendedAppliedLayout[padIndex];
-                    bool layoutChanged =
-                        desiredLayout.Sticks != appliedLayout.Sticks ||
-                        desiredLayout.Triggers != appliedLayout.Triggers ||
-                        desiredLayout.Povs != appliedLayout.Povs ||
-                        desiredLayout.Buttons != appliedLayout.Buttons;
-                    bool ffbChanged = desiredFfb != _extendedAppliedFfbEnabled[padIndex];
-                    bool vidPidChanged =
-                        desiredVid != _extendedAppliedVendorId[padIndex]
-                        || desiredPid != _extendedAppliedProductId[padIndex];
-
-                    if (psChanged || layoutChanged || ffbChanged || vidPidChanged)
-                    {
-                        if (IsSlotActive(padIndex)) BeginInitializing(padIndex);
-                        else _slotInitializing[padIndex] = false;
-                        DestroyVirtualController(padIndex, asyncDispose: true);
-                        _virtualControllers[padIndex] = null;
-                        _createFailed[padIndex] = false;
-                        vc = null;
-                    }
+                    if (IsSlotActive(padIndex)) BeginInitializing(padIndex);
+                    else _slotInitializing[padIndex] = false;
+                    DestroyVirtualController(padIndex, asyncDispose: true);
+                    _virtualControllers[padIndex] = null;
+                    _createFailed[padIndex] = false;
+                    vc = null;
                 }
 
                 // Slot deleted or disabled by user — destroy immediately.
@@ -1541,15 +1553,11 @@ namespace PadForge.Common.Input
                         // can block for seconds or hang outright when the
                         // service is slow or missing. Inline on the polling
                         // thread it wedged the engine and the close path
-                        // (owner repro 2026-07-23). Only KeyboardMouse is
-                        // genuinely cheap enough to build inline.
-                        // Every type rides the async chain, KeyboardMouse
-                        // included. Its own Connect is cheap, but the factory
-                        // then attaches a UserEffectsDispatcher whose ApplyOnce
-                        // writes to the physical pad, up to a second of
-                        // blocking HID output, and VR's first Connect registers
-                        // the SteamVR driver. The polling thread holds the
-                        // lifecycle lock here and must not wait on either.
+                        // (owner repro 2026-07-23). Every type uses the async
+                        // chain, including KeyboardMouse. Effects initialization
+                        // after publication can block on physical output, and
+                        // VR's first Connect registers the SteamVR driver.
+                        // Neither runs on the polling thread under this lock.
                         {
                             // Visual-order gate: only kick off the create for
                             // the visually-highest eligible HM slot in this
@@ -1653,13 +1661,16 @@ namespace PadForge.Common.Input
                             var capturedType = slotType;
                             var capturedProfile = SlotProfileIds[padIndex];
                             var capturedBuild = CaptureExtendedBuild(padIndex);
+                            var capturedPersonaOwner = _personaAudioOwner;
                             PadForge.Engine.SdlDiagLog.WriteLine(
                                 $"VCTRACE slot={padIndex} async create KICK type={slotType}");
                             _pendingConnectTask[padIndex] = System.Threading.Tasks.Task.Run(() =>
                             {
+                                IVirtualController vcAsync = null;
+                                bool published = false;
                                 try
                                 {
-                                    var vcAsync = CreateVirtualController(capturedIndex, capturedType, capturedProfile, capturedBuild);
+                                    vcAsync = CreateVirtualController(capturedIndex, capturedType, capturedProfile, capturedBuild);
                                     PadForge.Engine.SdlDiagLog.WriteLine(
                                         $"VCTRACE slot={capturedIndex} async create RESULT vc={(vcAsync == null ? "null" : vcAsync.GetType().Name)} connected={vcAsync?.IsConnected ?? false}");
                                     if (vcAsync != null && vcAsync.IsConnected)
@@ -1691,18 +1702,9 @@ namespace PadForge.Common.Input
                                         // handle in any slot. The applied-state
                                         // arrays the reorder moves are published
                                         // in the same critical section.
-                                        IVirtualController prior = null;
-                                        bool closed;
-                                        lock (_vcLifecycleLock)
-                                        {
-                                            closed = _lifecycleClosed;
-                                            if (!closed)
-                                            {
-                                                prior = System.Threading.Interlocked.CompareExchange(
-                                                    ref _virtualControllers[capturedIndex], vcAsync, null);
-                                                if (prior == null) PublishExtendedApplied(capturedIndex);
-                                            }
-                                        }
+                                        bool closed = !TryPublishCreatedController(capturedIndex, vcAsync,
+                                            out var prior, out var effects, out var personaFeed, capturedPersonaOwner);
+                                        published = !closed && prior == null;
                                         if (closed)
                                         {
                                             // The engine tore everything down
@@ -1719,39 +1721,26 @@ namespace PadForge.Common.Input
                                             try { vcAsync.Dispose(); }
                                             catch { /* best effort */ }
 
-                                            // The spare we just tore down owned
-                                            // a UserEffectsDispatcher, and it
-                                            // registered that dispatcher under
-                                            // this pad's key while it was
-                                            // connecting. If it registered
-                                            // AFTER the winner did, it replaced
-                                            // the winner in the static registry
-                                            // and its Dispose just removed the
-                                            // key (its own instance being the
-                                            // registered one, the "don't yank a
-                                            // fresh dispatcher's key" guard
-                                            // does not fire). The winner is
-                                            // then live but unreachable from
-                                            // the registry, so battery /
-                                            // sound-routing pokes for this slot
-                                            // silently stop. Re-attach it to
-                                            // re-claim the key. Idempotent when
-                                            // the key already points at the
-                                            // winner.
-                                            if (prior is HMaestroVirtualController priorHm)
-                                            {
-                                                var cfg = _deviceSlotConfigs[capturedIndex];
-                                                if (cfg != null)
-                                                {
-                                                    try { priorHm.AttachDeviceConfig(cfg); }
-                                                    catch { /* best effort */ }
-                                                }
-                                            }
+                                            // Unpublished controllers never register user effects,
+                                            // so disposing the spare leaves the winner's binding alone.
                                         }
-                                        else if (vcAsync is HMaestroVirtualController)
+                                        else
                                         {
-                                            try { _hmaestroContext?.FinalizeNames(); }
-                                            catch { /* best effort */ }
+                                            // Provider walks, timers, and physical output run after
+                                            // publication, outside the lifecycle lock. Teardown can
+                                            // dispose this captured dispatcher before it starts.
+                                            try { AudioPassthroughService.RequestPersonaReconcile(personaFeed); }
+                                            catch (Exception ex) { RaiseError($"Failed to reconcile persona audio for pad {capturedIndex}", ex); }
+                                            try { effects?.StartDeferredEffects(); }
+                                            catch (Exception ex)
+                                            {
+                                                RaiseError($"Failed to apply effects for pad {capturedIndex}", ex);
+                                            }
+                                            if (vcAsync is HMaestroVirtualController)
+                                            {
+                                                try { _hmaestroContext?.FinalizeNames(); }
+                                                catch { /* best effort */ }
+                                            }
                                         }
                                     }
                                     else if (vcAsync == null)
@@ -1798,6 +1787,10 @@ namespace PadForge.Common.Input
                                 }
                                 catch (Exception ex)
                                 {
+                                    if (!published)
+                                    {
+                                        try { vcAsync?.Dispose(); } catch { }
+                                    }
                                     PadForge.Engine.SdlDiagLog.WriteLine(
                                         $"VCTRACE slot={capturedIndex} async create THREW {ex.GetType().Name}: {ex.Message}");
                                     RaiseError($"Failed to create virtual controller for pad {capturedIndex}", ex);
@@ -1805,6 +1798,9 @@ namespace PadForge.Common.Input
                                 }
                                 finally
                                 {
+                                    // Publication transfers the claim. A failed, spare, or
+                                    // closed worker releases only its unpublished claim.
+                                    ReleasePendingOemOverrideClaim(capturedIndex);
                                     _slotInitializing[capturedIndex] = false;
                                     PadForge.Engine.SdlDiagLog.WriteLine(
                                         $"VCTRACE slot={capturedIndex} async create DONE");
@@ -2398,56 +2394,12 @@ namespace PadForge.Common.Input
                     ushort pid = hmOem.ProfileProductId;
                     string label = build.ProductString;
                     if (!string.IsNullOrEmpty(label) && vid != 0 && pid != 0)
-                        TryAcquireOemOverrideClaim(padIndex, vid, pid, label);
+                        TryAcquireOemOverrideClaim(padIndex, vid, pid, label, pending: true);
                 }
 
                 vc.Connect();
 
                 vc.RegisterFeedbackCallback(padIndex, VibrationStates);
-
-                // Attach Feature B's user-effects dispatcher when this is
-                // a virtual DualSense slot. Hook is a no-op on non-DS5
-                // virtuals (the inner IsDualSenseVirtual check short-
-                // circuits). Reference is stored from InputService.Start
-                // / live-edit hooks alongside MidiConfig / ExtendedConfig.
-                if (vc is HMaestroVirtualController hmVc)
-                {
-                    var psCfg = _deviceSlotConfigs[padIndex];
-                    if (psCfg != null)
-                        hmVc.AttachDeviceConfig(psCfg);
-
-                    // Composite persona (HM v1.4.0): route the virtual
-                    // pad's game-rendered audio to the slot's physical
-                    // pads. Null UsbAudio on every UMDF2 profile makes
-                    // this a no-op for them.
-                    var usbAudio = hmVc.UsbAudio;
-                    if (usbAudio != null)
-                    {
-                        AudioPassthroughService.AttachPersonaFeed(padIndex, usbAudio, hmVc.ProfileId);
-                        PadForge.Engine.SdlDiagLog.WriteLine(
-                            $"VCTRACE slot={padIndex} persona audio feed attached profile={hmVc.ProfileId} ch={usbAudio.Output.Channels}@{usbAudio.Output.SampleRateHz}");
-                    }
-                }
-                else
-                {
-                    // KBM / MIDI: no HM VC means no HM-owned dispatcher.
-                    // Create one inline here so any Sony pad mapped to the
-                    // slot still receives effect packets. Step 2's
-                    // ApplyForceFeedback returns early for Sony VID/PID,
-                    // and the per-slot poke loop calls
-                    // UserEffectsDispatcher.OnPollingTick — both expect a
-                    // dispatcher to exist in _instances[padIndex]. The
-                    // dispatcher's runtime resolve gates on physical Sony
-                    // VID/PID, so attaching for every non-HM slot is cheap
-                    // when no Sony pad is mapped.
-                    var psCfg = _deviceSlotConfigs[padIndex];
-                    if (psCfg != null)
-                    {
-                        var d = new UserEffectsDispatcher(padIndex, psCfg);
-                        d.ApplyOnce();
-                        _nonHmDispatchers[padIndex] = d;
-                    }
-                }
 
                 return vc;
             }
@@ -2456,6 +2408,56 @@ namespace PadForge.Common.Input
                 vc?.Dispose();
                 RaiseError($"Failed to create {SlotControllerTypes[padIndex]} virtual controller for pad {padIndex}", ex);
                 return null;
+            }
+        }
+
+        private readonly AudioPassthroughService.PersonaFeed[] _personaAudioFeeds = new AudioPassthroughService.PersonaFeed[MaxPads];
+        private volatile AudioPassthroughService.PersonaOwner _personaAudioOwner = new();
+        internal Func<IVirtualController, HIDMaestro.HMUsbAudio> PersonaAudioProvider =
+            controller => (controller as HMaestroVirtualController)?.UsbAudio;
+
+        internal bool TryPublishCreatedController(int padIndex, IVirtualController controller,
+            out IVirtualController prior, out UserEffectsDispatcher effects)
+            => TryPublishCreatedController(padIndex, controller, out prior, out effects, out _);
+
+        internal bool TryPublishCreatedController(int padIndex, IVirtualController controller,
+            out IVirtualController prior, out UserEffectsDispatcher effects,
+            out AudioPassthroughService.PersonaFeed personaFeed,
+            AudioPassthroughService.PersonaOwner personaOwner = null)
+        {
+            lock (_vcLifecycleLock)
+            {
+                effects = null;
+                personaFeed = null;
+                prior = _virtualControllers[padIndex];
+                if (_lifecycleClosed) return false;
+                if (prior != null) return true;
+
+                // Every effects dispatcher registers only for a winning controller.
+                // Construction here does no provider walk or physical output.
+                // A constructor failure leaves the controller unpublished.
+                if (controller is HMaestroVirtualController hm)
+                    effects = hm.PrepareDeviceEffectsForPublication(_deviceSlotConfigs[padIndex]);
+                else if (_deviceSlotConfigs[padIndex] != null)
+                {
+                    effects = new UserEffectsDispatcher(padIndex, _deviceSlotConfigs[padIndex], startTimer: false);
+                    _nonHmDispatchers[padIndex] = effects;
+                }
+                // Composite audio creates demand even with mirror audio and macros off.
+                // Registration is managed. Native reconciliation follows publication.
+                var audioOwner = personaOwner ?? _personaAudioOwner;
+                if (!audioOwner.Closed)
+                {
+                    var audio = PersonaAudioProvider(controller);
+                    if (audio != null)
+                        personaFeed = AudioPassthroughService.RegisterPersonaFeed(audioOwner, padIndex, audio,
+                            (controller as HMaestroVirtualController)?.ProfileId);
+                }
+                _personaAudioFeeds[padIndex] = personaFeed;
+                _virtualControllers[padIndex] = controller;
+                PublishExtendedApplied(padIndex);
+                PublishPendingOemOverrideClaim(padIndex);
+                return true;
             }
         }
 
@@ -2739,12 +2741,25 @@ namespace PadForge.Common.Input
             return _virtualControllers[padIndex] is HMaestroVirtualController;
         }
 
+        private bool ExtendedConfigurationChanged(int padIndex)
+        {
+            var desired = SlotCustomLayouts[padIndex];
+            var applied = _extendedAppliedLayout[padIndex];
+            return !string.Equals(SlotOemOverrideLabel[padIndex] ?? string.Empty,
+                    _extendedAppliedProductString[padIndex] ?? string.Empty, StringComparison.Ordinal)
+                || desired.Sticks != applied.Sticks
+                || desired.Triggers != applied.Triggers
+                || desired.Povs != applied.Povs
+                || desired.Buttons != applied.Buttons
+                || SlotExtendedFfbEnabled[padIndex] != _extendedAppliedFfbEnabled[padIndex]
+                || SlotExtendedVendorId[padIndex] != _extendedAppliedVendorId[padIndex]
+                || SlotExtendedProductId[padIndex] != _extendedAppliedProductId[padIndex];
+        }
+
         /// <summary>
-        /// True while any slot still holds a controller the live configuration
-        /// says must go: the slot was deleted or disabled, its type changed, or
-        /// its HIDMaestro profile changed. Pass 1 retires such a slot on its
-        /// next visit. Pass 2 asks before creating anything (see the gate
-        /// there). Sixteen array reads, called under the lifecycle lock.
+        /// True while a controller awaits retirement after a slot, type,
+        /// profile, or Extended configuration change. Pass 2 checks this
+        /// under the lifecycle lock before starting another create.
         /// </summary>
         internal bool AnySlotRetiring()
         {
@@ -2759,6 +2774,8 @@ namespace PadForge.Common.Input
                 {
                     string desired = SlotProfileIds[i];
                     if (!string.IsNullOrEmpty(desired) && !string.Equals(desired, hm.ProfileId, StringComparison.Ordinal)) return true;
+                    if (SlotControllerTypes[i] == VirtualControllerType.Extended
+                        && ExtendedConfigurationChanged(i)) return true;
                 }
             }
             return false;
@@ -2839,29 +2856,34 @@ namespace PadForge.Common.Input
             // from reading the arrangement half written, and keeps this
             // method's destroys from landing after a cycle's Pass 2 gate
             // check and before its creates.
-            lock (_vcLifecycleLock) RerouteVirtualControllersForReorderLocked(groupType, oldOrder, newOrder);
+            List<AudioPassthroughService.PersonaFeed> feeds;
+            lock (_vcLifecycleLock)
+                feeds = RerouteVirtualControllersForReorderLocked(groupType, oldOrder, newOrder);
+            foreach (var feed in feeds) AudioPassthroughService.RequestPersonaReconcile(feed);
         }
 
-        private void RerouteVirtualControllersForReorderLocked(
+        private List<AudioPassthroughService.PersonaFeed> RerouteVirtualControllersForReorderLocked(
             VirtualControllerType groupType,
             IReadOnlyList<int> oldOrder,
             IReadOnlyList<int> newOrder)
         {
+            var movedFeeds = new List<AudioPassthroughService.PersonaFeed>();
             if (groupType != VirtualControllerType.Xbox
                 && groupType != VirtualControllerType.PlayStation
                 && groupType != VirtualControllerType.Nintendo
                 && groupType != VirtualControllerType.Extended)
-                return;
+                return movedFeeds;
 
-            if (oldOrder == null || newOrder == null) return;
-            if (oldOrder.Count != newOrder.Count) return;
+            if (oldOrder == null || newOrder == null) return movedFeeds;
+            if (oldOrder.Count != newOrder.Count) return movedFeeds;
             int n = oldOrder.Count;
-            if (n == 0) return;
+            if (n == 0) return movedFeeds;
 
             // Decide per visual position: reuse the existing VC at this
             // kernel slot, or destroy it. Snapshot the per-VC state at
             // the same time so we can move it with the VC.
             var reuseAtPosition = new IVirtualController[n];
+            var reuseAudioAtPosition = new AudioPassthroughService.PersonaFeed[n];
             // This method runs on the UI thread. IsSlotActive's parameterless
             // overload reads through _padIndexBuffer, the POLL thread's
             // preallocated scratch, and the buffer-explicit overload's own doc
@@ -2907,6 +2929,7 @@ namespace PadForge.Common.Input
                 if (string.Equals(oldProfile ?? string.Empty, newProfile ?? string.Empty, StringComparison.Ordinal))
                 {
                     reuseAtPosition[V] = oldVC;
+                    reuseAudioAtPosition[V] = _personaAudioFeeds[oldPad];
                     stateExtendedAppliedProductString[V] = _extendedAppliedProductString[oldPad];
                     stateExtendedAppliedLayout[V] = _extendedAppliedLayout[oldPad];
                     stateExtendedAppliedFfbEnabled[V] = _extendedAppliedFfbEnabled[oldPad];
@@ -2940,6 +2963,7 @@ namespace PadForge.Common.Input
                 int newPad = newOrder[V];
                 if (oldPad == newPad) continue;
                 _virtualControllers[oldPad] = null;
+                _personaAudioFeeds[oldPad] = null;
                 _extendedAppliedProductString[oldPad] = null;
                 _extendedAppliedLayout[oldPad] = default;
                 _extendedAppliedFfbEnabled[oldPad] = false;
@@ -2962,6 +2986,7 @@ namespace PadForge.Common.Input
                 if (vc == null) continue;
 
                 _virtualControllers[newPad] = vc;
+                _personaAudioFeeds[newPad] = reuseAudioAtPosition[V];
                 _extendedAppliedProductString[newPad] = stateExtendedAppliedProductString[V];
                 _extendedAppliedLayout[newPad] = stateExtendedAppliedLayout[V];
                 _extendedAppliedFfbEnabled[newPad] = stateExtendedAppliedFfbEnabled[V];
@@ -2969,16 +2994,28 @@ namespace PadForge.Common.Input
                 _extendedAppliedProductId[newPad] = stateExtendedAppliedProductId[V];
                 _oemOverrideClaimedVidPid[newPad] = stateOemOverrideClaimedVidPid[V];
                 _lastAppliedOemLabel[newPad] = stateLastAppliedOemLabel[V];
+            }
+            var audioMoves = new List<(AudioPassthroughService.PersonaFeed Feed, int Slot)>();
+            for (int v = 0; v < n; v++)
+                if (reuseAtPosition[v] != null && oldOrder[v] != newOrder[v]
+                    && newOrder[v] >= 0 && newOrder[v] < MaxPads)
+                    audioMoves.Add((reuseAudioAtPosition[v], newOrder[v]));
+            AudioPassthroughService.ReroutePersonaFeeds(audioMoves);
+            foreach (var move in audioMoves)
+                if (move.Feed != null) movedFeeds.Add(move.Feed);
 
-                // Re-point the VC's effect dispatchers too, not just its
-                // feedback index. They capture their pad in a readonly field
-                // and resolve physical targets from it, so a moved VC kept
-                // driving the OLD pad's controllers. _deviceSlotConfigs is
-                // keyed by pad index, which is data identity and does not move
-                // in a reorder, so newPad's entry is already the right config.
-                if (vc is HMaestroVirtualController hm)
+            // Keep the existing dispatcher retarget order. All controller and
+            // audio routing metadata is now in place before these live calls.
+            // Dispatchers capture pad identity. The destination's configuration
+            // remains keyed by that pad index and must follow the reused VC.
+            for (int v = 0; v < n; v++)
+            {
+                int newPad = newOrder[v];
+                if (newPad < 0 || newPad >= MaxPads) continue;
+                if (reuseAtPosition[v] is HMaestroVirtualController hm)
                     hm.RetargetToPad(newPad, _deviceSlotConfigs[newPad]);
             }
+            return movedFeeds;
         }
 
         /// <summary>
@@ -3102,14 +3139,17 @@ namespace PadForge.Common.Input
         private void DestroyVirtualController(int padIndex, bool asyncDispose)
         {
             var vc = _virtualControllers[padIndex];
-            if (vc == null) return;
+            var personaFeed = _personaAudioFeeds[padIndex];
+            _personaAudioFeeds[padIndex] = null;
+            AudioPassthroughService.RetirePersonaFeed(personaFeed);
+            if (vc == null)
+            {
+                ReleaseSlotEffectsAndClaims(padIndex);
+                return;
+            }
 
-            // Composite persona (HM v1.4.0): detach the audio feed
-            // synchronously before disposal, same rationale as the C38
-            // feedback-callback detach below. Unsubscribes the pacing-
-            // thread handlers and stops the mic capture; a no-op for
-            // slots that never had one.
-            AudioPassthroughService.DetachPersonaFeed(padIndex);
+            // The exact audio owner is retired before SDK disposal. Its native
+            // capture/reader cleanup runs separately from this lifecycle lock.
 
             // #236: VC destruction is an explicit silence edge for ALL
             // FOUR voices (the legacy lifecycle zeroing below touches only
@@ -3167,26 +3207,10 @@ namespace PadForge.Common.Input
             // a stale Winner mis-suppresses the first press.
             _slotButtonSocd[padIndex]?.Reset();
 
-            // Non-HM dispatcher (KBM / MIDI) lives outside the VC, so the
-            // VC's Disconnect doesn't dispose it. Tear down explicitly here.
-            // HM-owned dispatchers are disposed inside HM VC.Disconnect; this
-            // array stays null for HM slots and is a no-op for them.
-            var nonHmDisp = _nonHmDispatchers[padIndex];
-            if (nonHmDisp != null)
-            {
-                _nonHmDispatchers[padIndex] = null;
-                try { nonHmDisp.Dispose(); }
-                catch { /* best effort */ }
-            }
-
-            // Release this slot's OEM-name claim, if it held one. Ref count
-            // gates the actual HMOemNameOverride.Clear call so sibling slots
-            // targeting the same profile keep the override active until the
-            // last holder releases. Also resets the applied-config snapshot
-            // so a subsequent recreate rebuilds from scratch.
-            uint claimedKey = _oemOverrideClaimedVidPid[padIndex];
-            if (claimedKey != 0)
-                ReleaseOemOverrideClaim(padIndex, claimedKey, "destroy");
+            // Keep live teardown ordering: silence feedback before disposing
+            // non-HM effects and releasing claims, then disconnect the controller.
+            ReleaseSlotEffectsAndClaims(padIndex);
+            // Reset the applied snapshot so a later creation starts fresh.
             _extendedAppliedProductString[padIndex] = null;
             _extendedAppliedLayout[padIndex] = default;
             _extendedAppliedFfbEnabled[padIndex] = false;
@@ -3288,6 +3312,18 @@ namespace PadForge.Common.Input
             _cleanShutdownPerformed = true;
         }
 
+        private void ReleaseSlotEffectsAndClaims(int padIndex)
+        {
+            var nonHmEffects = _nonHmDispatchers[padIndex];
+            _nonHmDispatchers[padIndex] = null;
+            try { nonHmEffects?.Dispose(); } catch { }
+            var connecting = _pendingConnectTask[padIndex];
+            if (_lifecycleClosed || connecting == null || connecting.IsCompleted)
+                ReleasePendingOemOverrideClaim(padIndex);
+            uint claimedKey = _oemOverrideClaimedVidPid[padIndex];
+            if (claimedKey != 0) ReleaseOemOverrideClaim(padIndex, claimedKey, "destroy");
+        }
+
         private void DestroyAllVirtualControllers()
         {
             lock (_vcLifecycleLock)
@@ -3295,6 +3331,7 @@ namespace PadForge.Common.Input
                 // A create worker still running past the lifecycle wait
                 // must not publish into the slots emptied here.
                 _lifecycleClosed = true;
+                AudioPassthroughService.ClosePersonaOwner(_personaAudioOwner);
                 for (int i = 0; i < MaxPads; i++)
                 {
                     // MIDI teardown talks to Windows MIDI Services (WinRT); a

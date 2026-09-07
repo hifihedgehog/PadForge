@@ -1281,9 +1281,6 @@ namespace PadForge.Services
                     Overlays = SteamController2Layout.Overlays, Finishes = Array.Empty<string>() },
         };
 
-        /// <summary>Resolves a layout request key (query value, any case,
-        /// legacy aliases included) to its registry row, defaulting to
-        /// xbox360 exactly as the old if-chain did.</summary>
         /// <summary>Where a forwarded pad's browser buttons 17 and up land
         /// (#402): PadForge's extended slots in a fixed order, never 16 (the
         /// touchpad click), at most ten. The page's EXTRA_SLOTS table is this
@@ -1301,8 +1298,8 @@ namespace PadForge.Services
 
         /// <summary>Raw mode for a pad the browser did not recognize (#402):
         /// browser button i is slot i with 16 skipped and 21 the ceiling,
-        /// browser axis i is axis i for the first six. Nothing is guessed, so
-        /// every control the pad has is reachable and the user maps it.</summary>
+        /// browser axis i is axis i for the first six. The user maps the
+        /// forwarded controls.</summary>
         internal static void GamepadRawSurface(int buttons, int axes, out int[] axesOut, out int[] buttonsOut)
         {
             var b = new List<int>();
@@ -1332,9 +1329,8 @@ namespace PadForge.Services
                 foreach (int s in rawButtons) if (s > 10 && s != 16) ext.Add(s);
                 if (ext.Count > 0) device.SetExtendedButtons(ext.ToArray());
                 device.SetCustomSurface(rawAxes, rawButtons, hasPov: false);
-                // Every raw axis rests at center, and so must the registered
-                // state: the constructor's stock defaults put the trigger axes
-                // at zero, which for a raw pad is an endpoint.
+                // Start raw axes at center until the page supplies their sampled
+                // rest values. Stock trigger defaults would start two at an endpoint.
                 device.AxesCenterAtRest = true;
                 device.NeutralizeAll();
                 return;
@@ -1430,6 +1426,7 @@ namespace PadForge.Services
             catch { }
         }
 
+        /// <summary>Resolves a layout key and its legacy aliases, defaulting to xbox360.</summary>
         private static LayoutDef ResolveLayout(string type)
         {
             string k = (type ?? "xbox360").Trim().ToLowerInvariant();

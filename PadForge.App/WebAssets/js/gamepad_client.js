@@ -142,11 +142,11 @@
                 else out.droppedAxes++;
             }
         } else {
-            // Raw: every axis is forwarded as the browser reports it, on a
+            // Raw: forwarded axes keep the browser's values on a
             // centered scale (-1 -> 0, 0 -> 32767, +1 -> 65535). A trigger the
             // pad reports as an axis at -1 reads at the low end at rest. The
-            // server's timeout neutral centers every raw axis until this page
-            // reports again.
+            // server returns each raw axis to the rest sampled at connection
+            // when the session expires.
             for (var j = 0; j < buttons.length; j++) {
                 var slot = rawButtonSlot(j);
                 if (slot < 0) out.droppedButtons++;
@@ -546,7 +546,7 @@
             var notes = [];
             if (extras > 0) notes.push(extras + " extra button" + (extras > 1 ? "s" : "") + " on the paddle and Misc slots");
             if (s.dropped) notes.push(s.dropped + " control" + (s.dropped > 1 ? "s" : "") + " beyond PadForge's slots dropped");
-            if (s.mode === "raw") notes.push("raw layout: the browser did not recognize this pad, so button i is slot i and axis i is axis i, forwarded as the browser reports them");
+            if (s.mode === "raw") notes.push("raw layout: the browser did not recognize this pad. Buttons and axes keep the browser's order");
             // Where rumble goes, said on screen: iPhone Safari exposes neither a
             // gamepad actuator nor a vibrator, so a pad forwarded from one gets none.
             var act = gp && gp.vibrationActuator;

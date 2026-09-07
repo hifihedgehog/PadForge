@@ -390,8 +390,8 @@ namespace PadForge.Engine
         /// (#402). The server calls this when a forwarded pad's session expires,
         /// so a phone that slept mid-hold cannot leave a button latched on the
         /// PC, and once at registration for a raw pad. Rest is sticks at center
-        /// and triggers at zero unless <see cref="AxesCenterAtRest"/> says every
-        /// axis centers. Touch fingers and the accelerometer are left alone.
+        /// and triggers at zero unless <see cref="AxesCenterAtRest"/> selects the
+        /// sampled raw rest values. Touch fingers and the accelerometer are left alone.
         /// Gyro rates expire on their own.</summary>
         public void NeutralizeAll()
         {

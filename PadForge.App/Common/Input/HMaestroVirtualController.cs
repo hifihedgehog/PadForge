@@ -134,7 +134,7 @@ namespace PadForge.Common.Input
         // READS (companion.c ReadGipData, incremented by the 8 ms pump AND
         // by every IOCTL_XUSB_GET_STATE), and at >500 unchanged-SeqNo reads
         // it tears the mapping down and zeroes the XInput state. A 250 ms
-        // keepalive let any consumer mix totalling ~2 000 reads/sec force
+        // keepalive let any consumer mix totaling ~2 000 reads/sec force
         // repeated one-frame releases of held inputs (audit
         // 2026-07-16). 16 ms tolerates ~31 000 reads/sec, which matches the
         // watchdog margin the slowest configurable baseline poll interval

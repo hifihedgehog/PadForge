@@ -116,11 +116,17 @@
                     <CheckBox Content="{Binding Settings_MinimizeToTray, Source={x:Static strings:Strings.Instance}}"
                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                               IsChecked="{Binding MinimizeToTray}" Margin="0,0,0,8"/>
-                    <CheckBox x:Name="CloseToTrayCheckBox"
-                              Content="{Binding Settings_CloseToTray, Source={x:Static strings:Strings.Instance}}"
-                              ToolTip="{Binding Settings_CloseToTrayTip, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding CloseToTray}" Margin="0,0,0,8"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <CheckBox x:Name="CloseToTrayCheckBox"
+                                  Content="{Binding Settings_CloseToTray, Source={x:Static strings:Strings.Instance}}"
+                                  ToolTip="{Binding Settings_CloseToTrayTip, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding CloseToTray}" VerticalAlignment="Center"/>
+                        <ui:Button x:Name="CloseToTrayReset" Command="{Binding ResetCloseToTrayCommand}" Style="{StaticResource EmberIconButton}" VerticalAlignment="Center"
+                                   ToolTip="{Binding Common_ResetToOff, Source={x:Static strings:Strings.Instance}}">
+                            <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </ui:Button>
+                    </StackPanel>
                     <CheckBox Content="{Binding Settings_StartMinimized, Source={x:Static strings:Strings.Instance}}"
                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                               IsChecked="{Binding StartMinimized}" Margin="0,0,0,8"/>

@@ -4391,6 +4391,15 @@ namespace PadForge.ViewModels
         private ICommand _resetSteeringAngleRumbleCommand;
         public ICommand ResetSteeringAngleRumbleCommand => _resetSteeringAngleRumbleCommand ??= new RelayCommand(ResetSteeringAngleRumble);
 
+        private ICommand _resetSteeringAngleRumbleEnabledCommand;
+        public ICommand ResetSteeringAngleRumbleEnabledCommand => _resetSteeringAngleRumbleEnabledCommand ??= new RelayCommand(() => SteeringAngleRumbleEnabled = false);
+        private ICommand _resetSteeringAngleRumbleAxisCommand;
+        public ICommand ResetSteeringAngleRumbleAxisCommand => _resetSteeringAngleRumbleAxisCommand ??= new RelayCommand(() => SteeringAngleRumbleAxis = 0);
+        private ICommand _resetSteeringAngleRumbleStrengthCommand;
+        public ICommand ResetSteeringAngleRumbleStrengthCommand => _resetSteeringAngleRumbleStrengthCommand ??= new RelayCommand(() => SteeringAngleRumbleStrength = 50);
+        private ICommand _resetSteeringAngleRumbleDeadzoneCommand;
+        public ICommand ResetSteeringAngleRumbleDeadzoneCommand => _resetSteeringAngleRumbleDeadzoneCommand ??= new RelayCommand(() => SteeringAngleRumbleDeadzone = 2);
+
         private void ResetSteeringAngleRumble()
         {
             SteeringAngleRumbleEnabled = false;

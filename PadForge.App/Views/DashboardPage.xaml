@@ -1793,16 +1793,28 @@
                 <StackPanel>
                     <TextBlock Text="{Binding Dashboard_HeadTrackingDesc, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
-                    <CheckBox Content="{Binding Dashboard_HeadTrackingEnable, Source={x:Static strings:Strings.Instance}}"
-                              x:Name="HeadTrackingUdpCheckBox"
-                              ToolTip="{Binding Dashboard_HeadTrackingEnable_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding HeadTrackingEnabled}" Margin="0,0,0,8"/>
-                    <CheckBox Content="{Binding Dashboard_HeadTrackingFreeTrack, Source={x:Static strings:Strings.Instance}}"
-                              x:Name="HeadTrackingFreeTrackCheckBox"
-                              ToolTip="{Binding Dashboard_HeadTrackingFreeTrack_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding HeadTrackingFreeTrack}" Margin="0,0,0,8"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <CheckBox Content="{Binding Dashboard_HeadTrackingEnable, Source={x:Static strings:Strings.Instance}}"
+                                  x:Name="HeadTrackingUdpCheckBox"
+                                  ToolTip="{Binding Dashboard_HeadTrackingEnable_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding HeadTrackingEnabled}" VerticalAlignment="Center"/>
+                        <ui:Button x:Name="HeadTrackingEnabledReset" Command="{Binding ResetHeadTrackingEnabledCommand}" Style="{StaticResource EmberIconButton}" VerticalAlignment="Center"
+                                   ToolTip="{Binding Common_ResetToOff, Source={x:Static strings:Strings.Instance}}">
+                            <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </ui:Button>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <CheckBox Content="{Binding Dashboard_HeadTrackingFreeTrack, Source={x:Static strings:Strings.Instance}}"
+                                  x:Name="HeadTrackingFreeTrackCheckBox"
+                                  ToolTip="{Binding Dashboard_HeadTrackingFreeTrack_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding HeadTrackingFreeTrack}" VerticalAlignment="Center"/>
+                        <ui:Button x:Name="HeadTrackingFreeTrackReset" Command="{Binding ResetHeadTrackingFreeTrackCommand}" Style="{StaticResource EmberIconButton}" VerticalAlignment="Center"
+                                   ToolTip="{Binding Common_ResetToOff, Source={x:Static strings:Strings.Instance}}">
+                            <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        </ui:Button>
+                    </StackPanel>
                     <!-- One grid so the three boxes line up under labels of
                          different widths. Each row is the Motion Server port
                          row: label, box, reset. -->

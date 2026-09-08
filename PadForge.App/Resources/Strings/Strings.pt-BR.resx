@@ -3570,4 +3570,9 @@ Você pode tentar novamente mais tarde em Configurações.</value></data>
   <data name="Pad_SteeringAngleRumble_RX" xml:space="preserve"><value>Analógico direito X</value></data>
   <data name="Pad_SteeringAngleRumble_RY" xml:space="preserve"><value>Analógico direito Y</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Zona morta central</value></data>
+  <data name="Common_ResetToOff" xml:space="preserve"><value>Redefinir para desativado</value></data>
+  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Redefinir para analógico esquerdo X</value></data>
+  <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Redefinir intensidade (50%)</value></data>
+  <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Redefinir zona morta central (2%)</value></data>
+  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Redefinir vibração por ângulo de direção</value></data>
 </root>

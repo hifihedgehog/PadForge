@@ -3625,4 +3625,9 @@ You can retry later from Settings.</value></data>
   <data name="Pad_SteeringAngleRumble_RX" xml:space="preserve"><value>Right Stick X</value></data>
   <data name="Pad_SteeringAngleRumble_RY" xml:space="preserve"><value>Right Stick Y</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Center Deadzone</value></data>
+  <data name="Common_ResetToOff" xml:space="preserve"><value>Reset to Off</value></data>
+  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Reset to Left Stick X</value></data>
+  <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Reset Strength (50%)</value></data>
+  <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Reset Center Deadzone (2%)</value></data>
+  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Reset Steering Angle Rumble</value></data>
 </root>

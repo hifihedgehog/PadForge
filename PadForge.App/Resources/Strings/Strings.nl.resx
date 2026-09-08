@@ -3596,4 +3596,9 @@ Je kunt het later opnieuw proberen via Instellingen.</value></data>
   <data name="Pad_SteeringAngleRumble_RX" xml:space="preserve"><value>Rechterstick X</value></data>
   <data name="Pad_SteeringAngleRumble_RY" xml:space="preserve"><value>Rechterstick Y</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Dode zone rond midden</value></data>
+  <data name="Common_ResetToOff" xml:space="preserve"><value>Terugzetten naar Uit</value></data>
+  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Terugzetten naar Linkerstick X</value></data>
+  <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Sterkte terugzetten (50%)</value></data>
+  <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Dode zone rond midden terugzetten (2%)</value></data>
+  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Stuurhoektrilling terugzetten</value></data>
 </root>

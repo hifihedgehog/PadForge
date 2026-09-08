@@ -3576,4 +3576,9 @@
   <data name="Pad_SteeringAngleRumble_RX" xml:space="preserve"><value>右摇杆X</value></data>
   <data name="Pad_SteeringAngleRumble_RY" xml:space="preserve"><value>右摇杆Y</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>中心死区</value></data>
+  <data name="Common_ResetToOff" xml:space="preserve"><value>重置为关闭</value></data>
+  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>重置为左摇杆X</value></data>
+  <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>重置强度（50%）</value></data>
+  <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>重置中心死区（2%）</value></data>
+  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>重置转向角度振动</value></data>
 </root>

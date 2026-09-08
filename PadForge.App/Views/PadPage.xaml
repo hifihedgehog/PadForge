@@ -7355,36 +7355,55 @@
                         <Border x:Name="SteeringAngleRumbleCard" Style="{StaticResource CardBorder}">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <Viewbox Width="18" Height="18" VerticalAlignment="Center" Margin="0,0,8,0">
+                                        <Canvas Width="24" Height="24">
+                                            <Path Stroke="{DynamicResource EmberBrush}" StrokeThickness="1.7"
+                                                  StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"
+                                                  Data="M5,12 A7,7 0 1 1 19,12 A7,7 0 1 1 5,12 Z M10.1,12 A1.9,1.9 0 1 1 13.9,12 A1.9,1.9 0 1 1 10.1,12 Z M10.1,12 L5,12 M13.9,12 L19,12 M12,13.9 L12,19 M3.7,9.8 A2.9,2.9 0 0 0 3.7,14.2 M2,8.5 A4.6,4.6 0 0 0 2,15.5 M20.3,9.8 A2.9,2.9 0 0 1 20.3,14.2 M22,8.5 A4.6,4.6 0 0 1 22,15.5"/>
+                                        </Canvas>
+                                    </Viewbox>
                                     <TextBlock Text="{Binding Pad_SteeringAngleRumble_Header, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardTitle}"/>
                                     <ui:Button Command="{Binding ResetSteeringAngleRumbleCommand}" Style="{StaticResource ResetAllButton}"
-                                               Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"/>
+                                               Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                               ToolTip="{Binding Pad_SteeringAngleRumble_ResetAll, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <TextBlock Text="{Binding Pad_SteeringAngleRumble_Description, Source={x:Static strings:Strings.Instance}}"
                                            Style="{StaticResource CardDescription}" TextWrapping="Wrap" Margin="0,0,0,12"/>
-                                <CheckBox x:Name="SteeringAngleRumbleToggle" IsChecked="{Binding SteeringAngleRumbleEnabled, Mode=TwoWay}"
-                                          Content="{Binding Pad_SteeringAngleRumble_Enable, Source={x:Static strings:Strings.Instance}}"
-                                          Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,12"/>
-                                <StackPanel IsEnabled="{Binding SteeringAngleRumbleEnabled}">
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                    <CheckBox x:Name="SteeringAngleRumbleToggle" IsChecked="{Binding SteeringAngleRumbleEnabled, Mode=TwoWay}"
+                                              Content="{Binding Pad_SteeringAngleRumble_Enable, Source={x:Static strings:Strings.Instance}}"
+                                              Foreground="{DynamicResource TextFillColorSecondaryBrush}" VerticalAlignment="Center"/>
+                                    <ui:Button x:Name="SteeringAngleRumbleEnabledReset" Command="{Binding ResetSteeringAngleRumbleEnabledCommand}" Style="{StaticResource ResetButton}"
+                                               ToolTip="{Binding Common_ResetToOff, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                         <TextBlock Text="{Binding Pad_SteeringAngleRumble_Axis, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                        <ComboBox x:Name="SteeringAngleRumbleAxisPicker" SelectedIndex="{Binding SteeringAngleRumbleAxis, Mode=TwoWay}" MinWidth="220">
+                                        <ComboBox x:Name="SteeringAngleRumbleAxisPicker" SelectedIndex="{Binding SteeringAngleRumbleAxis, Mode=TwoWay}" MinWidth="220"
+                                                  IsEnabled="{Binding SteeringAngleRumbleEnabled}">
                                             <ComboBoxItem Content="{Binding Pad_SteeringAngleRumble_LX, Source={x:Static strings:Strings.Instance}}"/>
                                             <ComboBoxItem Content="{Binding Pad_SteeringAngleRumble_LY, Source={x:Static strings:Strings.Instance}}"/>
                                             <ComboBoxItem Content="{Binding Pad_SteeringAngleRumble_RX, Source={x:Static strings:Strings.Instance}}"/>
                                             <ComboBoxItem Content="{Binding Pad_SteeringAngleRumble_RY, Source={x:Static strings:Strings.Instance}}"/>
                                         </ComboBox>
+                                        <ui:Button x:Name="SteeringAngleRumbleAxisReset" Command="{Binding ResetSteeringAngleRumbleAxisCommand}" Style="{StaticResource ResetButton}"
+                                                   ToolTip="{Binding Pad_SteeringAngleRumble_ResetAxis, Source={x:Static strings:Strings.Instance}}"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                         <TextBlock Text="{Binding Pad_AT_Strength, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                        <Slider Value="{Binding SteeringAngleRumbleStrength, Mode=TwoWay}" Minimum="0" Maximum="100" Style="{StaticResource DzSlider}"/>
-                                        <TextBox Text="{Binding SteeringAngleRumbleStrength, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                        <Slider Value="{Binding SteeringAngleRumbleStrength, Mode=TwoWay}" Minimum="0" Maximum="100" Style="{StaticResource DzSlider}" IsEnabled="{Binding SteeringAngleRumbleEnabled}"/>
+                                        <TextBox Text="{Binding SteeringAngleRumbleStrength, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}" IsEnabled="{Binding SteeringAngleRumbleEnabled}"/>
                                         <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                        <ui:Button x:Name="SteeringAngleRumbleStrengthReset" Command="{Binding ResetSteeringAngleRumbleStrengthCommand}" Style="{StaticResource ResetButton}"
+                                                   ToolTip="{Binding Pad_SteeringAngleRumble_ResetStrength, Source={x:Static strings:Strings.Instance}}"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{Binding Pad_SteeringAngleRumble_Deadzone, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource DzLabel}"/>
-                                        <Slider Value="{Binding SteeringAngleRumbleDeadzone, Mode=TwoWay}" Minimum="0" Maximum="25" Style="{StaticResource DzSlider}"/>
-                                        <TextBox Text="{Binding SteeringAngleRumbleDeadzone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
+                                        <Slider Value="{Binding SteeringAngleRumbleDeadzone, Mode=TwoWay}" Minimum="0" Maximum="25" Style="{StaticResource DzSlider}" IsEnabled="{Binding SteeringAngleRumbleEnabled}"/>
+                                        <TextBox Text="{Binding SteeringAngleRumbleDeadzone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}" IsEnabled="{Binding SteeringAngleRumbleEnabled}"/>
                                         <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                        <ui:Button x:Name="SteeringAngleRumbleDeadzoneReset" Command="{Binding ResetSteeringAngleRumbleDeadzoneCommand}" Style="{StaticResource ResetButton}"
+                                                   ToolTip="{Binding Pad_SteeringAngleRumble_ResetDeadzone, Source={x:Static strings:Strings.Instance}}"/>
                                     </StackPanel>
                                 </StackPanel>
                             </StackPanel>

@@ -655,6 +655,10 @@ namespace PadForge.ViewModels
 
         private bool _closeToTray;
 
+        private RelayCommand _resetCloseToTrayCommand;
+        public RelayCommand ResetCloseToTrayCommand =>
+            _resetCloseToTrayCommand ??= new RelayCommand(() => CloseToTray = false);
+
         /// <summary>Whether closing the window keeps PadForge running in the system tray.</summary>
         public bool CloseToTray
         {

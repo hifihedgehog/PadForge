@@ -3576,4 +3576,9 @@
   <data name="Pad_SteeringAngleRumble_RX" xml:space="preserve"><value>右スティックX</value></data>
   <data name="Pad_SteeringAngleRumble_RY" xml:space="preserve"><value>右スティックY</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>中央のデッドゾーン</value></data>
+  <data name="Common_ResetToOff" xml:space="preserve"><value>オフに戻す</value></data>
+  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>左スティックXに戻す</value></data>
+  <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>強度を戻す（50%）</value></data>
+  <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>中央のデッドゾーンを戻す（2%）</value></data>
+  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>ステアリング角度による振動をリセット</value></data>
 </root>

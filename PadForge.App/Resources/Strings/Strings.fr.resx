@@ -3576,4 +3576,9 @@ Vous pouvez réessayer plus tard depuis les Paramètres.</value></data>
   <data name="Pad_SteeringAngleRumble_RX" xml:space="preserve"><value>Stick droit X</value></data>
   <data name="Pad_SteeringAngleRumble_RY" xml:space="preserve"><value>Stick droit Y</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Zone morte centrale</value></data>
+  <data name="Common_ResetToOff" xml:space="preserve"><value>Réinitialiser sur Désactivé</value></data>
+  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Réinitialiser sur Stick gauche X</value></data>
+  <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Réinitialiser l’intensité (50%)</value></data>
+  <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Réinitialiser la zone morte centrale (2%)</value></data>
+  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Réinitialiser la vibration selon l’angle de braquage</value></data>
 </root>

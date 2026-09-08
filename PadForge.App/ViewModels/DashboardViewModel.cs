@@ -296,6 +296,13 @@ namespace PadForge.ViewModels
 
         private int _headTrackingUdpPort = PadForge.Common.Input.HeadTrackingRuntime.DefaultUdpPort;
 
+        private RelayCommand _resetHeadTrackingEnabledCommand;
+        public RelayCommand ResetHeadTrackingEnabledCommand =>
+            _resetHeadTrackingEnabledCommand ??= new RelayCommand(() => HeadTrackingEnabled = false);
+        private RelayCommand _resetHeadTrackingFreeTrackCommand;
+        public RelayCommand ResetHeadTrackingFreeTrackCommand =>
+            _resetHeadTrackingFreeTrackCommand ??= new RelayCommand(() => HeadTrackingFreeTrack = false);
+
         /// <summary>UDP port OpenTrack's "UDP over network" output sends to.</summary>
         public int HeadTrackingUdpPort
         {

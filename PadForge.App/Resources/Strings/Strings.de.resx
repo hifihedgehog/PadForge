@@ -3576,4 +3576,9 @@ Du kannst es später in den Einstellungen erneut versuchen.</value></data>
   <data name="Pad_SteeringAngleRumble_RX" xml:space="preserve"><value>Rechter Stick X</value></data>
   <data name="Pad_SteeringAngleRumble_RY" xml:space="preserve"><value>Rechter Stick Y</value></data>
   <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Mittlere Totzone</value></data>
+  <data name="Common_ResetToOff" xml:space="preserve"><value>Auf Aus zurücksetzen</value></data>
+  <data name="Pad_SteeringAngleRumble_ResetAxis" xml:space="preserve"><value>Auf linken Stick X zurücksetzen</value></data>
+  <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Stärke zurücksetzen (50%)</value></data>
+  <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Mittlere Totzone zurücksetzen (2%)</value></data>
+  <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Lenkwinkel-Vibration zurücksetzen</value></data>
 </root>

@@ -3567,4 +3567,13 @@
   <data name="Tablet_InRange" xml:space="preserve"><value>ペンが検出範囲内</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>FreeTrack共有メモリのデータを待機中。</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack共有メモリを利用できません。</value></data>
+  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>ステアリング角度による振動</value></data>
+  <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>選択した仮想スティック軸が中央から離れるほど、継続的な振動が強くなります。割り当てたすべての入力をマッピングした出力を使用します。負方向で左モーター、正方向で右モーターが振動します。振動対応デバイスを使うXboxおよびPlayStation出力向けです。ハンドルのネイティブフォースフィードバックは対象外です。</value></data>
+  <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>ステアリング角度による振動を有効化</value></data>
+  <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>仮想軸</value></data>
+  <data name="Pad_SteeringAngleRumble_LX" xml:space="preserve"><value>左スティックX</value></data>
+  <data name="Pad_SteeringAngleRumble_LY" xml:space="preserve"><value>左スティックY</value></data>
+  <data name="Pad_SteeringAngleRumble_RX" xml:space="preserve"><value>右スティックX</value></data>
+  <data name="Pad_SteeringAngleRumble_RY" xml:space="preserve"><value>右スティックY</value></data>
+  <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>中央のデッドゾーン</value></data>
 </root>

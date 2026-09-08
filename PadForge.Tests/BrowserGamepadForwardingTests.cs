@@ -328,7 +328,9 @@ namespace PadForge.Tests
             string step2 = File.ReadAllText(Path.Combine(RepoRoot(), "PadForge.App", "Common", "Input", "InputManager.Step2.UpdateInputStates.cs"));
             int at = step2.IndexOf("if (slotCount == 0)", StringComparison.Ordinal);
             Assert.True(at > 0);
-            string block = step2.Substring(at, 2400);
+            int end = step2.IndexOf("// Per-(device, slot) PadSetting", at, StringComparison.Ordinal);
+            Assert.True(end > at);
+            string block = step2.Substring(at, end - at);
             Assert.Contains("ud.ForceFeedbackState.StopDeviceForces(web);", block);
             Assert.Contains("is PadForge.Engine.WebControllerDevice web", block);          // web pads only
             Assert.Contains("!RemoteLinkOutputRouter.IsClaimedByPeer(ud.DevicePath)", block); // a peer's output stays

@@ -4121,6 +4121,7 @@ namespace PadForge.ViewModels
         public ICommand ResetForceAllCommand => _resetForceAllCommand ??= new RelayCommand(() =>
         {
             ForceOverallGain = 100;
+            ResetSteeringAngleRumble();
             LeftMotorStrength = 100;
             RightMotorStrength = 100;
             SwapMotors = false;
@@ -4378,6 +4379,26 @@ namespace PadForge.ViewModels
         public bool ConstantForceEnabled { get => _constantForceEnabled; set => SetProperty(ref _constantForceEnabled, value); }
 
         // ── Steering at-lock feedback (#94), per slot ──
+        private bool _steeringAngleRumbleEnabled = false;
+        public bool SteeringAngleRumbleEnabled { get => _steeringAngleRumbleEnabled; set => SetProperty(ref _steeringAngleRumbleEnabled, value); }
+        private int _steeringAngleRumbleAxis = 0;
+        public int SteeringAngleRumbleAxis { get => _steeringAngleRumbleAxis; set => SetProperty(ref _steeringAngleRumbleAxis, Math.Clamp(value, 0, 3)); }
+        private int _steeringAngleRumbleStrength = 50;
+        public int SteeringAngleRumbleStrength { get => _steeringAngleRumbleStrength; set => SetProperty(ref _steeringAngleRumbleStrength, Math.Clamp(value, 0, 100)); }
+        private int _steeringAngleRumbleDeadzone = 2;
+        public int SteeringAngleRumbleDeadzone { get => _steeringAngleRumbleDeadzone; set => SetProperty(ref _steeringAngleRumbleDeadzone, Math.Clamp(value, 0, 25)); }
+
+        private ICommand _resetSteeringAngleRumbleCommand;
+        public ICommand ResetSteeringAngleRumbleCommand => _resetSteeringAngleRumbleCommand ??= new RelayCommand(ResetSteeringAngleRumble);
+
+        private void ResetSteeringAngleRumble()
+        {
+            SteeringAngleRumbleEnabled = false;
+            SteeringAngleRumbleAxis = 0;
+            SteeringAngleRumbleStrength = 50;
+            SteeringAngleRumbleDeadzone = 2;
+        }
+
         private bool _steeringLockRumbleEnabled;
         public bool SteeringLockRumbleEnabled { get => _steeringLockRumbleEnabled; set => SetProperty(ref _steeringLockRumbleEnabled, value); }
         private bool _steeringLockTriggerVibEnabled;
@@ -4667,6 +4688,7 @@ namespace PadForge.ViewModels
             LeftTriggerSensitivityCurve = "0,0;1,1";
             RightTriggerSensitivityCurve = "0,0;1,1";
             ForceOverallGain = 100;
+            ResetSteeringAngleRumble();
             LeftMotorStrength = 100;
             RightMotorStrength = 100;
             ImpulseOverallGain = 100;

@@ -3567,4 +3567,13 @@
   <data name="Tablet_InRange" xml:space="preserve"><value>笔在感应范围内</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>正在等待 FreeTrack 共享内存数据。</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack 共享内存不可用。</value></data>
+  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>转向角度振动</value></data>
+  <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>所选虚拟摇杆轴离中心越远，持续振动就越强。使用所有已分配来源映射后的输出。负方向驱动左马达，正方向驱动右马达。适用于使用振动设备的Xbox和PlayStation输出，不用于方向盘的原生力反馈。</value></data>
+  <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>启用转向角度振动</value></data>
+  <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>虚拟轴</value></data>
+  <data name="Pad_SteeringAngleRumble_LX" xml:space="preserve"><value>左摇杆X</value></data>
+  <data name="Pad_SteeringAngleRumble_LY" xml:space="preserve"><value>左摇杆Y</value></data>
+  <data name="Pad_SteeringAngleRumble_RX" xml:space="preserve"><value>右摇杆X</value></data>
+  <data name="Pad_SteeringAngleRumble_RY" xml:space="preserve"><value>右摇杆Y</value></data>
+  <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>中心死区</value></data>
 </root>

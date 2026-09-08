@@ -3616,4 +3616,13 @@ You can retry later from Settings.</value></data>
   <data name="Tablet_InRange" xml:space="preserve"><value>Pen In Range</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Waiting for FreeTrack shared memory data.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack shared memory is unavailable.</value></data>
+  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Steering Angle Rumble</value></data>
+  <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Adds continuous rumble as the selected virtual stick axis moves away from center. Uses the mapped output from all assigned sources. Negative movement drives the left motor, positive movement the right. For Xbox and PlayStation output with rumble devices. Native wheel force feedback is excluded.</value></data>
+  <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Enable Steering Angle Rumble</value></data>
+  <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Virtual Axis</value></data>
+  <data name="Pad_SteeringAngleRumble_LX" xml:space="preserve"><value>Left Stick X</value></data>
+  <data name="Pad_SteeringAngleRumble_LY" xml:space="preserve"><value>Left Stick Y</value></data>
+  <data name="Pad_SteeringAngleRumble_RX" xml:space="preserve"><value>Right Stick X</value></data>
+  <data name="Pad_SteeringAngleRumble_RY" xml:space="preserve"><value>Right Stick Y</value></data>
+  <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Center Deadzone</value></data>
 </root>

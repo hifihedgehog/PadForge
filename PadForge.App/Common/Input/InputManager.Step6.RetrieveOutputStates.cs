@@ -33,6 +33,7 @@ namespace PadForge.Common.Input
             {
                 try
                 {
+                    PublishSteeringAngleFrame(padIndex);
                     var vc = _virtualControllers[padIndex];
                     if (vc != null && vc.IsConnected)
                     {
@@ -58,6 +59,7 @@ namespace PadForge.Common.Input
                 }
                 catch (Exception ex)
                 {
+                    System.Threading.Volatile.Write(ref _steeringAngleFrames[padIndex], 0);
                     RaiseError($"Error retrieving state for pad {padIndex}", ex);
                     RetrievedOutputStates[padIndex].Clear();
                 }

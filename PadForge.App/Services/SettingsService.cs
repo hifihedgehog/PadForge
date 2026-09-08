@@ -3314,6 +3314,10 @@ namespace PadForge.Services
                 padVm.ConstantForceY = TryParseDouble(ps.ConstantForceY, 0.0);
 
                 // Steering at-lock feedback (#94).
+                padVm.SteeringAngleRumbleEnabled = ps.SteeringAngleRumbleEnabled == "1";
+                padVm.SteeringAngleRumbleAxis = TryParseInt(ps.SteeringAngleRumbleAxis, 0);
+                padVm.SteeringAngleRumbleStrength = TryParseInt(ps.SteeringAngleRumbleStrength, 50);
+                padVm.SteeringAngleRumbleDeadzone = TryParseInt(ps.SteeringAngleRumbleDeadzone, 2);
                 padVm.SteeringLockRumbleEnabled = ps.SteeringLockRumbleEnabled == "1";
                 padVm.SteeringLockTriggerVibEnabled = ps.SteeringLockTriggerVibEnabled == "1";
                 padVm.SteeringLockLightbarEnabled = ps.SteeringLockLightbarEnabled == "1";
@@ -5084,6 +5088,10 @@ namespace PadForge.Services
                     ps.ConstantForceY = padVm.ConstantForceY.ToString("F4", ic);
 
                     // Steering at-lock feedback (#94).
+                    ps.SteeringAngleRumbleEnabled = padVm.SteeringAngleRumbleEnabled ? "1" : "0";
+                    ps.SteeringAngleRumbleAxis = padVm.SteeringAngleRumbleAxis.ToString(System.Globalization.CultureInfo.InvariantCulture);
+                    ps.SteeringAngleRumbleStrength = padVm.SteeringAngleRumbleStrength.ToString(System.Globalization.CultureInfo.InvariantCulture);
+                    ps.SteeringAngleRumbleDeadzone = padVm.SteeringAngleRumbleDeadzone.ToString(System.Globalization.CultureInfo.InvariantCulture);
                     ps.SteeringLockRumbleEnabled = padVm.SteeringLockRumbleEnabled ? "1" : "0";
                     ps.SteeringLockTriggerVibEnabled = padVm.SteeringLockTriggerVibEnabled ? "1" : "0";
                     ps.SteeringLockLightbarEnabled = padVm.SteeringLockLightbarEnabled ? "1" : "0";

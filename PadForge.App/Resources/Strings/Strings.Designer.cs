@@ -3376,4 +3376,13 @@ public class Strings : INotifyPropertyChanged
     public string Tablet_Eraser => Get("Tablet_Eraser");
     public string Tablet_Inverted => Get("Tablet_Inverted");
     public string Tablet_InRange => Get("Tablet_InRange");
+    public string Pad_SteeringAngleRumble_Header => Get("Pad_SteeringAngleRumble_Header");
+    public string Pad_SteeringAngleRumble_Description => Get("Pad_SteeringAngleRumble_Description");
+    public string Pad_SteeringAngleRumble_Enable => Get("Pad_SteeringAngleRumble_Enable");
+    public string Pad_SteeringAngleRumble_Axis => Get("Pad_SteeringAngleRumble_Axis");
+    public string Pad_SteeringAngleRumble_LX => Get("Pad_SteeringAngleRumble_LX");
+    public string Pad_SteeringAngleRumble_LY => Get("Pad_SteeringAngleRumble_LY");
+    public string Pad_SteeringAngleRumble_RX => Get("Pad_SteeringAngleRumble_RX");
+    public string Pad_SteeringAngleRumble_RY => Get("Pad_SteeringAngleRumble_RY");
+    public string Pad_SteeringAngleRumble_Deadzone => Get("Pad_SteeringAngleRumble_Deadzone");
 }

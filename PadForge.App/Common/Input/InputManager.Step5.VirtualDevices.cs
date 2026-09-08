@@ -3138,6 +3138,7 @@ namespace PadForge.Common.Input
         /// </summary>
         private void DestroyVirtualController(int padIndex, bool asyncDispose)
         {
+            System.Threading.Volatile.Write(ref _steeringAngleFrames[padIndex], 0);
             var vc = _virtualControllers[padIndex];
             var personaFeed = _personaAudioFeeds[padIndex];
             _personaAudioFeeds[padIndex] = null;

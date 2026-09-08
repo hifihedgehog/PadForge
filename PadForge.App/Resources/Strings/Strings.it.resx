@@ -3589,4 +3589,13 @@ Puoi riprovare più tardi dalle Impostazioni.</value></data>
   <data name="Tablet_InRange" xml:space="preserve"><value>Penna nel raggio di rilevamento</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>In attesa di dati dalla memoria condivisa FreeTrack.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>La memoria condivisa FreeTrack non è disponibile.</value></data>
+  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Vibrazione in base all’angolo di sterzata</value></data>
+  <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Aggiunge una vibrazione continua quando l’asse virtuale scelto si allontana dal centro. Usa l’uscita mappata di tutte le sorgenti assegnate. Il movimento negativo attiva il motore sinistro, quello positivo il destro. Per uscite Xbox e PlayStation con dispositivi con vibrazione. Il force feedback nativo dei volanti è escluso.</value></data>
+  <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Attiva vibrazione in base all’angolo di sterzata</value></data>
+  <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Asse virtuale</value></data>
+  <data name="Pad_SteeringAngleRumble_LX" xml:space="preserve"><value>Stick sinistro X</value></data>
+  <data name="Pad_SteeringAngleRumble_LY" xml:space="preserve"><value>Stick sinistro Y</value></data>
+  <data name="Pad_SteeringAngleRumble_RX" xml:space="preserve"><value>Stick destro X</value></data>
+  <data name="Pad_SteeringAngleRumble_RY" xml:space="preserve"><value>Stick destro Y</value></data>
+  <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Zona morta centrale</value></data>
 </root>

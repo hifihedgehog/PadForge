@@ -259,6 +259,9 @@ namespace PadForge.Common.Input
                 // per-tick lock + Items walk + string compares + parses ran
                 // per created slot at ~1 kHz. An edit lands within a
                 // quarter second, matching the sibling snapshots' contract.
+                if (!hasGameRumble && _sonySteeringAngleEnabled[padIndex]
+                    && ReadSteeringAngleFrame(padIndex) != 0)
+                    hasGameRumble = true;
                 var poke = _sonyPokeCfg[padIndex];
                 bool hasAudioRumbleEnabled = poke.audio;
                 if (!hasGameRumble && poke.cfPoke) hasGameRumble = true;
@@ -296,10 +299,12 @@ namespace PadForge.Common.Input
         private readonly System.Collections.Generic.HashSet<Guid> _sonyGuidScratch = new();
         private readonly System.Collections.Generic.Dictionary<Guid, int> _sonyGuidSlotMask = new();
         private long _sonyPokeCfgRefreshTick;
+        private readonly bool[] _sonySteeringAngleEnabled = new bool[MaxPads];
 
         private void RefreshSonyPokeCfg(SettingsCollection settings)
         {
             for (int slot = 0; slot < MaxPads; slot++) _sonyPokeCfg[slot] = default;
+            Array.Clear(_sonySteeringAngleEnabled);
             if (settings == null) return;
 
             // Share-group prep (owner facts, 2026-07-20): a Sony pad
@@ -333,6 +338,8 @@ namespace PadForge.Common.Input
                     if (us == null || us.MapTo < 0 || us.MapTo >= MaxPads) continue;
                     var ps = us.GetPadSetting();
                     if (ps == null) continue;
+                    if (ps.SteeringAngleRumbleEnabled == "1")
+                        _sonySteeringAngleEnabled[us.MapTo] = true;
                     var cur = _sonyPokeCfg[us.MapTo];
                     if (!cur.audio
                         && (ps.AudioRumbleEnabled == "1" || ps.AudioRumbleTriggersEnabled == "1"))
@@ -757,6 +764,27 @@ namespace PadForge.Common.Input
                             ud.ForceFeedbackState.StopDeviceForces(web);
                     }
                 }
+                else if (!isVendorFfb && ud.Device != null && ud.ForceFeedbackState.IsActive
+                    && System.Threading.Monitor.TryEnter(ud.OutputSync))
+                {
+                    // A native rumble device also needs a final zero after its
+                    // last assignment leaves. Retry next poll if a peer owns
+                    // the write gate, without waiting for that device's I/O.
+                    try
+                    {
+                        if (!RemoteLinkOutputRouter.IsClaimedByPeer(ud.DevicePath)
+                            && !RemoteLinkOutputRouter.PeerWroteLast(ud.DevicePath))
+                        {
+                            if (isXboxImpulse)
+                            {
+                                XboxImpulseHidWriter.Write(ud, 0, 0, 0, 0);
+                                ud.ForceFeedbackState.TryRecordXboxImpulseSnapshot(0, 0, 0, 0);
+                            }
+                            else ud.ForceFeedbackState.StopDeviceForces(ud.Device);
+                        }
+                    }
+                    finally { System.Threading.Monitor.Exit(ud.OutputSync); }
+                }
                 return;
             }
 
@@ -798,7 +826,8 @@ namespace PadForge.Common.Input
                 // producing force this tick, the constant force stays
                 // dormant; the moment both go silent it kicks back in.
                 if (_macroRumbleScratch == null) _macroRumbleScratch = new Vibration();
-                var withMacro = MacroRumbleOverride.Merge(raw, MacroRumbleOverrides[padIndex], _macroRumbleScratch);
+                var withMacro = ResolveUserRumble(padIndex, devicePs, raw, _macroRumbleScratch,
+                    devicePs?.SteeringAngleRumbleEnabled == "1" && SupportsSteeringAngleRumble(ud));
 
                 if (_constantForceScratch == null) _constantForceScratch = new Vibration();
                 var effective = ConstantForceEvaluator.Resolve(withMacro, devicePs, _constantForceScratch);
@@ -1494,6 +1523,11 @@ namespace PadForge.Common.Input
                     var us = _instanceGuidBuffer[i];
                     if (us == null) continue;
                     var devicePs = us.GetPadSetting();
+                    // Rebuild from the baseline for each device. The previous device
+                    // can have a different axis, strength, or enabled state.
+                    withMacro = ResolveUserRumble(padIndex, devicePs, raw, _macroRumbleScratch,
+                        devicePs?.SteeringAngleRumbleEnabled == "1"
+                        && SupportsSteeringAngleRumble(FindOnlineDeviceByInstanceGuid(us.InstanceGuid)));
 
                     if (_constantForceScratch == null) _constantForceScratch = new Vibration();
                     var effective = ConstantForceEvaluator.Resolve(withMacro, devicePs, _constantForceScratch);

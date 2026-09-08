@@ -1303,6 +1303,7 @@ namespace PadForge.Common.Input
             _ptpReader.Start();
             StartTabletReader();
 
+            Array.Clear(_steeringAngleFrames);
             _running = true;
             _enumerationTimer.Restart();
             _frequencyTimer.Restart();
@@ -1366,6 +1367,7 @@ namespace PadForge.Common.Input
                 return;
 
             _running = false;
+            Array.Clear(_steeringAngleFrames);
             AudioPassthroughService.ClosePersonaOwner(_personaAudioOwner);
 
             // Macro sounds die with the engine. Releases the WASAPI clients.
@@ -2349,7 +2351,7 @@ namespace PadForge.Common.Input
             Vibration macroScratch, Vibration cfScratch, ref ushort triggerL, ref ushort triggerR)
         {
             if (slot < 0 || slot >= MaxPads || raw == null) return;
-            var withMacro = MacroRumbleOverride.Merge(raw, MacroRumbleOverrides[slot], macroScratch);
+            var withMacro = ResolveUserRumble(slot, devicePs, raw, macroScratch);
             var eff = ConstantForceEvaluator.Resolve(withMacro, devicePs, cfScratch);
             ScaleRumbleForDevice(eff.LeftMotorSpeed, eff.RightMotorSpeed, devicePs,
                 out ushort mainL, out ushort mainR);
@@ -3108,6 +3110,7 @@ namespace PadForge.Common.Input
         internal bool BeginIdlePoll()
         {
             if (!_idle) return false;
+            Array.Clear(_steeringAngleFrames);
             var server = DsuServer;
             if (server == null) return true;
 
@@ -3189,6 +3192,7 @@ namespace PadForge.Common.Input
         /// the arrays and break Step 5's readers.</para></summary>
         private void NeutralizeCombinedOutputs()
         {
+            FlushSteeringAngleRumble();
             for (int i = 0; i < MaxPads; i++)
             {
                 CombinedOutputStates[i] = default;

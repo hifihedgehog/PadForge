@@ -988,9 +988,8 @@ namespace PadForge.Services
                             if (slotRaw == null) continue;
                             var rowPs = us.GetPadSetting();
 
-                            var withMacro = MacroRumbleOverride.Merge(slotRaw,
-                                _inputManager.MacroRumbleOverrides[slot],
-                                _macroRumbleScratchSony);
+                            var withMacro = _inputManager.ResolveUserRumble(slot, rowPs,
+                                slotRaw, _macroRumbleScratchSony);
                             var effective = ConstantForceEvaluator.Resolve(
                                 withMacro, rowPs, _constantForceScratchSony);
                             _inputManager.ScaleRumbleForDevice(
@@ -6096,6 +6095,10 @@ namespace PadForge.Services
             // Steering at-lock feedback (#94) — per assigned device (VM-prop pattern, like
             // wheel/gyro): safe in every sync because these VM fields survive a
             // RebuildStickConfigs (unlike the StickConfigs steering below).
+            ps.SteeringAngleRumbleEnabled = padVm.SteeringAngleRumbleEnabled ? "1" : "0";
+            ps.SteeringAngleRumbleAxis = padVm.SteeringAngleRumbleAxis.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            ps.SteeringAngleRumbleStrength = padVm.SteeringAngleRumbleStrength.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            ps.SteeringAngleRumbleDeadzone = padVm.SteeringAngleRumbleDeadzone.ToString(System.Globalization.CultureInfo.InvariantCulture);
             ps.SteeringLockRumbleEnabled = padVm.SteeringLockRumbleEnabled ? "1" : "0";
             ps.SteeringLockTriggerVibEnabled = padVm.SteeringLockTriggerVibEnabled ? "1" : "0";
             ps.SteeringLockLightbarEnabled = padVm.SteeringLockLightbarEnabled ? "1" : "0";
@@ -6455,6 +6458,10 @@ namespace PadForge.Services
 
             // Steering at-lock feedback (#94) — per assigned device (VM-prop pattern, like
             // wheel/gyro): reload the selected device's values on dropdown swap.
+            padVm.SteeringAngleRumbleEnabled = ps.SteeringAngleRumbleEnabled == "1";
+            padVm.SteeringAngleRumbleAxis = TryParseInt(ps.SteeringAngleRumbleAxis, 0);
+            padVm.SteeringAngleRumbleStrength = TryParseInt(ps.SteeringAngleRumbleStrength, 50);
+            padVm.SteeringAngleRumbleDeadzone = TryParseInt(ps.SteeringAngleRumbleDeadzone, 2);
             padVm.SteeringLockRumbleEnabled = ps.SteeringLockRumbleEnabled == "1";
             padVm.SteeringLockTriggerVibEnabled = ps.SteeringLockTriggerVibEnabled == "1";
             padVm.SteeringLockLightbarEnabled = ps.SteeringLockLightbarEnabled == "1";

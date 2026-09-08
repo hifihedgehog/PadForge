@@ -303,6 +303,12 @@ namespace PadForge.Engine.Data
         // ─── Steering at-lock feedback (v3.4 #94) ───
         // Per-slot, opt-in haptic feedback when a steering source (winding / 2D
         // angle-to-axis / motion-lean) saturates at full lock. All off by default.
+        // Continuous mapped steering rumble, per assigned device.
+        [XmlElement] public string SteeringAngleRumbleEnabled { get; set; } = "0";
+        [XmlElement] public string SteeringAngleRumbleAxis { get; set; } = "0";
+        [XmlElement] public string SteeringAngleRumbleStrength { get; set; } = "50";
+        [XmlElement] public string SteeringAngleRumbleDeadzone { get; set; } = "2";
+
         /// <summary>Rumble pulse on steering lock entry. "0"/"1".</summary>
         [XmlElement] public string SteeringLockRumbleEnabled       { get; set; } = "0";
         /// <summary>Impulse-trigger pulse on steering lock entry. "0"/"1".</summary>
@@ -1498,6 +1504,10 @@ namespace PadForge.Engine.Data
             sb.Append(RotationRange); sb.Append('|');
             sb.Append(AutoCenterStrength); sb.Append('|');
             sb.Append(WheelRpmLeds); sb.Append('|');
+            sb.Append(SteeringAngleRumbleEnabled); sb.Append('|');
+            sb.Append(SteeringAngleRumbleAxis); sb.Append('|');
+            sb.Append(SteeringAngleRumbleStrength); sb.Append('|');
+            sb.Append(SteeringAngleRumbleDeadzone); sb.Append('|');
             sb.Append(SteeringLockRumbleEnabled); sb.Append('|');
             sb.Append(SteeringLockTriggerVibEnabled); sb.Append('|');
             sb.Append(SteeringLockLightbarEnabled); sb.Append('|');
@@ -2165,6 +2175,7 @@ namespace PadForge.Engine.Data
             nameof(TriggerRumbleFold),
             nameof(LeftMotorStrength), nameof(RightMotorStrength),
             nameof(RotationRange), nameof(AutoCenterStrength), nameof(WheelRpmLeds),
+            nameof(SteeringAngleRumbleEnabled), nameof(SteeringAngleRumbleAxis), nameof(SteeringAngleRumbleStrength), nameof(SteeringAngleRumbleDeadzone),
             // Steering at-lock feedback (#94)
             nameof(SteeringLockRumbleEnabled), nameof(SteeringLockTriggerVibEnabled),
             nameof(SteeringLockLightbarEnabled), nameof(SteeringLockATResistanceEnabled),

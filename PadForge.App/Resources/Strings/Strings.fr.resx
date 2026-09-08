@@ -3567,4 +3567,13 @@ Vous pouvez réessayer plus tard depuis les Paramètres.</value></data>
   <data name="Tablet_InRange" xml:space="preserve"><value>Stylet à portée</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>En attente de données dans la mémoire partagée FreeTrack.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>La mémoire partagée FreeTrack n'est pas disponible.</value></data>
+  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Vibration selon l’angle de braquage</value></data>
+  <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Ajoute une vibration continue lorsque l’axe virtuel choisi s’éloigne du centre. Utilise la sortie mappée de toutes les sources assignées. Un mouvement négatif active le moteur gauche, un mouvement positif le droit. Pour les sorties Xbox et PlayStation avec des périphériques vibrants. Le retour de force natif des volants est exclu.</value></data>
+  <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Activer la vibration selon l’angle de braquage</value></data>
+  <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Axe virtuel</value></data>
+  <data name="Pad_SteeringAngleRumble_LX" xml:space="preserve"><value>Stick gauche X</value></data>
+  <data name="Pad_SteeringAngleRumble_LY" xml:space="preserve"><value>Stick gauche Y</value></data>
+  <data name="Pad_SteeringAngleRumble_RX" xml:space="preserve"><value>Stick droit X</value></data>
+  <data name="Pad_SteeringAngleRumble_RY" xml:space="preserve"><value>Stick droit Y</value></data>
+  <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Zone morte centrale</value></data>
 </root>

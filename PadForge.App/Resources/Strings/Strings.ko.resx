@@ -3567,4 +3567,13 @@
   <data name="Tablet_InRange" xml:space="preserve"><value>펜 감지 범위 내</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>FreeTrack 공유 메모리 데이터를 기다리는 중입니다.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack 공유 메모리를 사용할 수 없습니다.</value></data>
+  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>조향 각도 진동</value></data>
+  <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>선택한 가상 스틱 축이 중앙에서 멀어질수록 지속적인 진동이 강해집니다. 할당된 모든 소스의 매핑된 출력을 사용합니다. 음의 방향은 왼쪽 모터를, 양의 방향은 오른쪽 모터를 구동합니다. 진동 장치를 사용하는 Xbox 및 PlayStation 출력용입니다. 휠의 네이티브 포스 피드백은 제외됩니다.</value></data>
+  <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>조향 각도 진동 사용</value></data>
+  <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>가상 축</value></data>
+  <data name="Pad_SteeringAngleRumble_LX" xml:space="preserve"><value>왼쪽 스틱 X</value></data>
+  <data name="Pad_SteeringAngleRumble_LY" xml:space="preserve"><value>왼쪽 스틱 Y</value></data>
+  <data name="Pad_SteeringAngleRumble_RX" xml:space="preserve"><value>오른쪽 스틱 X</value></data>
+  <data name="Pad_SteeringAngleRumble_RY" xml:space="preserve"><value>오른쪽 스틱 Y</value></data>
+  <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>중앙 데드존</value></data>
 </root>

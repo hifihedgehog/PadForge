@@ -3567,4 +3567,13 @@ Du kannst es später in den Einstellungen erneut versuchen.</value></data>
   <data name="Tablet_InRange" xml:space="preserve"><value>Stift in Reichweite</value></data>
   <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Warten auf Daten im gemeinsamen FreeTrack-Speicher.</value></data>
   <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>Der gemeinsame FreeTrack-Speicher ist nicht verfügbar.</value></data>
+  <data name="Pad_SteeringAngleRumble_Header" xml:space="preserve"><value>Lenkwinkel-Vibration</value></data>
+  <data name="Pad_SteeringAngleRumble_Description" xml:space="preserve"><value>Erzeugt eine dauerhafte Vibration, je weiter sich die gewählte virtuelle Stickachse von der Mitte entfernt. Verwendet die zugeordnete Ausgabe aller Quellen. Negative Bewegung steuert den linken Motor, positive den rechten. Für Xbox- und PlayStation-Ausgaben mit Vibrationsgeräten. Natives Lenkrad-Force-Feedback ist ausgeschlossen.</value></data>
+  <data name="Pad_SteeringAngleRumble_Enable" xml:space="preserve"><value>Lenkwinkel-Vibration aktivieren</value></data>
+  <data name="Pad_SteeringAngleRumble_Axis" xml:space="preserve"><value>Virtuelle Achse</value></data>
+  <data name="Pad_SteeringAngleRumble_LX" xml:space="preserve"><value>Linker Stick X</value></data>
+  <data name="Pad_SteeringAngleRumble_LY" xml:space="preserve"><value>Linker Stick Y</value></data>
+  <data name="Pad_SteeringAngleRumble_RX" xml:space="preserve"><value>Rechter Stick X</value></data>
+  <data name="Pad_SteeringAngleRumble_RY" xml:space="preserve"><value>Rechter Stick Y</value></data>
+  <data name="Pad_SteeringAngleRumble_Deadzone" xml:space="preserve"><value>Mittlere Totzone</value></data>
 </root>

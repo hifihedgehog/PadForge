@@ -1382,6 +1382,10 @@ namespace PadForge
                         nameof(PadViewModel.GyroCompassYaw) or
                         nameof(PadViewModel.GyroApplyTuningToPassthrough) or
                         // Steering at-lock feedback (#94) — per-slot toggles + tunables.
+                        nameof(PadViewModel.SteeringAngleRumbleEnabled) or
+                        nameof(PadViewModel.SteeringAngleRumbleAxis) or
+                        nameof(PadViewModel.SteeringAngleRumbleStrength) or
+                        nameof(PadViewModel.SteeringAngleRumbleDeadzone) or
                         nameof(PadViewModel.SteeringLockRumbleEnabled) or
                         nameof(PadViewModel.SteeringLockTriggerVibEnabled) or
                         nameof(PadViewModel.SteeringLockLightbarEnabled) or

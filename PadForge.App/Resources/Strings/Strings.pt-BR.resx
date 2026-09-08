@@ -2346,6 +2346,8 @@
   <data name="WiiPair_NothingYet" xml:space="preserve"><value>Nenhum controle encontrado ainda. Verifique se as luzes azuis estão piscando.</value></data>
   <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>{0} pareado. Ele vai aparecer na sua lista de dispositivos.</value></data>
   <data name="WiiPair_NoBluetooth" xml:space="preserve"><value>Nenhum rádio Bluetooth encontrado. Conecte um adaptador Bluetooth e tente novamente.</value></data>
+  <data name="WiiPair_PsmUnavailable" xml:space="preserve"><value>O pareamento do Wii não conseguiu manter o suporte Bluetooth do PS3 pausado. Feche os outros programas de controle e tente novamente.</value></data>
+  <data name="WiiPair_Failed" xml:space="preserve"><value>Não foi possível concluir o pareamento do Wii. Tente novamente.</value></data>
   <data name="WiiPair_Done" xml:space="preserve"><value>Concluído</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Fechar</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>Tags NFC</value></data>

@@ -2352,6 +2352,8 @@
   <data name="WiiPair_NothingYet" xml:space="preserve"><value>まだコントローラーが見つかりません。青いランプが点滅していることを確認してください。</value></data>
   <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>{0} をペアリングしました。デバイス一覧に表示されます。</value></data>
   <data name="WiiPair_NoBluetooth" xml:space="preserve"><value>Bluetoothアダプターが見つかりません。Bluetoothアダプターを接続してから再試行してください。</value></data>
+  <data name="WiiPair_PsmUnavailable" xml:space="preserve"><value>Wiiのペアリング中にPS3のBluetoothサポートを一時停止した状態に維持できませんでした。他のコントローラーツールを終了してから再試行してください。</value></data>
+  <data name="WiiPair_Failed" xml:space="preserve"><value>Wiiのペアリングを完了できませんでした。再試行してください。</value></data>
   <data name="WiiPair_Done" xml:space="preserve"><value>完了</value></data>
   <data name="Common_Close" xml:space="preserve"><value>閉じる</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>NFCタグ</value></data>

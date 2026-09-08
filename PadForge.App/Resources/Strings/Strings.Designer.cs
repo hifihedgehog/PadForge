@@ -820,6 +820,8 @@ public class Strings : INotifyPropertyChanged
     public string WiiPair_NothingYet => Get("WiiPair_NothingYet");
     public string WiiPair_SuccessFormat => Get("WiiPair_SuccessFormat");
     public string WiiPair_NoBluetooth => Get("WiiPair_NoBluetooth");
+    public string WiiPair_PsmUnavailable => Get("WiiPair_PsmUnavailable");
+    public string WiiPair_Failed => Get("WiiPair_Failed");
     public string WiiPair_Done => Get("WiiPair_Done");
     public string WiiPair_FamilyDs3 => Get("WiiPair_FamilyDs3");
     public string About_OpenVR => Get("About_OpenVR");

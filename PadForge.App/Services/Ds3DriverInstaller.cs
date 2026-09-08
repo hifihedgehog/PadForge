@@ -51,6 +51,23 @@ namespace PadForge.Services
         private const int ERROR_NO_SUCH_DEVICE = 433;
         private const string PsmControlPath = @"\\.\BthPS3PSMControl";
 
+        private static readonly PsmPatchCoordinator PsmCoordinator = new(
+            ReadPsmPatchSnapshot,
+            () => SetPsmPatchingCore(false, null, 0),
+            PsmStackIsAbsent,
+            () => Ds3PairingService.ReconcilePsmPatchForCrashSafety("wii-scan-end"));
+
+        internal static PsmPatchCoordinator.Suspension SuspendPsmEnablingForWii() => PsmCoordinator.Suspend();
+
+        private static bool PsmStackIsAbsent()
+        {
+            // A missing endpoint is expected on an inbox-only Bluetooth stack.
+            // Registry failures propagate to verification as an unknown state.
+            using var profile = Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Services\BthPS3");
+            using var filter = Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Services\BthPS3PSM");
+            return profile == null && filter == null;
+        }
+
         // ── public entry points used by Ds3PairingService ────────────────────────
 
         /// <summary><para>Installs + arms the BthPS3 stack if it isn't already
@@ -735,33 +752,34 @@ namespace PadForge.Services
         /// <summary>Reads the LIVE armed state of every BthPS3PSM filter
         /// instance via the GET ioctl (contract pinned by
         /// BthPs3PsmIoctlTests: 408-byte struct, IsEnabled at offset 4).
-        /// Returns false when the control device is unreachable. The
+        /// Returns false when the control device is unreachable or any radio
+        /// query is incomplete. The
         /// post-ceremony watcher uses this to catch a filter that lost its
         /// arming between the ceremony and the PS press, which the toggle
         /// sweep's count alone cannot see.</summary>
         internal static bool TryGetPsmPatchState(out int radios, out int armed)
         {
-            radios = 0; armed = 0;
+            var snapshot = ReadPsmPatchSnapshot();
+            radios = snapshot.Radios.Count;
+            armed = snapshot.ArmedCount;
+            return snapshot.Complete;
+        }
+
+        internal static PsmPatchSnapshot ReadPsmPatchSnapshot()
+        {
             IntPtr h = CreateFile(PsmControlPath, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_RW,
                 IntPtr.Zero, OPEN_EXISTING, FILE_FLAG_NO_BUFFERING | FILE_FLAG_WRITE_THROUGH, IntPtr.Zero);
-            if (h == INVALID_HANDLE) return false;
+            if (h == INVALID_HANDLE) return PsmPatchSnapshot.Unavailable(Marshal.GetLastWin32Error());
             try
             {
-                for (int index = 0; index < 32; index++)
+                return PsmPatchSnapshot.Read(buffer =>
                 {
-                    byte[] buf = new byte[408]; // { ULONG DeviceIndex; ULONG IsEnabled; WCHAR[200] }
-                    BitConverter.GetBytes(index).CopyTo(buf, 0);
-                    if (!DeviceIoControl(h, IOCTL_BTHPS3PSM_GET_PSM_PATCHING, buf, buf.Length, buf, buf.Length, out _, IntPtr.Zero))
-                    {
-                        if (Marshal.GetLastWin32Error() == ERROR_NO_SUCH_DEVICE) break;
-                        continue;
-                    }
-                    radios++;
-                    if (BitConverter.ToUInt32(buf, 4) != 0) armed++;
-                }
-                return true;
+                    bool success = DeviceIoControl(h, IOCTL_BTHPS3PSM_GET_PSM_PATCHING,
+                        buffer, buffer.Length, buffer, buffer.Length, out int returned, IntPtr.Zero);
+                    return new PsmQueryResult(success, returned, success ? 0 : Marshal.GetLastWin32Error());
+                });
             }
-            catch { return false; }
+            catch { return PsmPatchSnapshot.Unavailable(PsmPatchSnapshot.InvalidData); }
             finally { CloseHandle(h); }
         }
 
@@ -1832,15 +1850,13 @@ namespace PadForge.Services
             catch { /* best effort; SetPsmPatching still governs the live state */ }
         }
 
-        /// <summary>Asserts AutoEnableFilter=0 on the BthPS3 Parameters key so
-        /// BthPS3 stops auto-arming PSM patching on its own (issue #199): it
-        /// otherwise arms patching at radio power-up and re-arms it ~10 s after
-        /// denying a foreign device (BthPS3 L2CAP.Connect.c:242, the exact
-        /// re-arm in the 2026-07-10 crash log). With it off, PadForge's
-        /// SetPsmPatching is the sole enabler, so a disable actually sticks.
-        /// Takes effect on the next BthPS3 load (the running driver cached the
-        /// value at init); SetPsmPatching drives the immediate state. Idempotent,
-        /// only writes when the value isn't already 0, never creates the key.</summary>
+        /// <summary>Sets AutoEnableFilter=0 for the next BthPS3 load. The
+        /// running driver caches this setting at initialization, so changing
+        /// the registry does not stop its current auto-arming behavior
+        /// (Bluetooth.Context.c:279, L2CAP.Connect.c:242). Other consumers can
+        /// also request patching. SetPsmPatching controls the immediate state.
+        /// Writes only when the value is not already 0 and never creates the
+        /// Parameters key.</summary>
         public static void EnsurePadForgeOwnsPsmPatch()
         {
             try
@@ -1852,22 +1868,6 @@ namespace PadForge.Services
             catch { /* best effort; SetPsmPatching still governs the live state */ }
         }
 
-        /// <summary>Enables or disables BthPS3 PSM patching on EVERY attached
-        /// radio (issue #199 crash mitigation). Patching rewrites incoming HID
-        /// L2CAP PSMs (0x11/0x13) to BthPS3's DS3 PSMs so the connection routes
-        /// to BthPS3 (BthPS3PSM Filter.c:157-205). Disabled, the PSMs pass
-        /// through untouched to the inbox Bluetooth HID stack, so BthPS3's
-        /// profile driver sees no incoming connection and its racy
-        /// connect/identify/disconnect/destroy path cannot run. The filter
-        /// persists the state per radio devnode and restores it on attach, and
-        /// with AutoEnableFilter=0 (EnsureConsumerParams) BthPS3 never flips it
-        /// back, so a disable sticks across radio cycles and reboots until
-        /// PadForge re-enables it.
-        ///
-        /// <para>Idempotent and safe when the filter is absent (logs and
-        /// returns). Enumerates radios by DeviceIndex 0..N via GET until
-        /// ERROR_NO_SUCH_DEVICE rather than assuming a single radio at index
-        /// 0.</para></summary>
         /// <summary><para>Waits for the PSM filter's control device to be
         /// open-able. A radio cycle detaches and re-attaches the filter, and
         /// the device is absent for the seconds in between, so anything that
@@ -1885,10 +1885,28 @@ namespace PadForge.Services
         public static bool WaitForPsmControlDevice(int timeoutMs) =>
             WaitForCondition(IsPsmFilterPresent, timeoutMs, 500);
 
-        /// <summary>Enables or disables PSM patching, returning how many
-        /// radios accepted the toggle. Zero means it did NOT take, which the
-        /// caller must treat as failure rather than silence.</summary>
+        /// <summary>Requests PSM patching on all filter instances. The filter
+        /// rewrites new L2CAP HID connection requests (Filter.c:157-205), not
+        /// existing channels. Returns the number of accepted toggles, or zero
+        /// when unavailable or deferred by a Wii scan. Callers that need the
+        /// distinction use RequestPsmPatching. Readback verifies actual state.</summary>
         public static int SetPsmPatching(bool enable, Action<string> log, int waitForFilterMs = 0)
+            => RequestPsmPatching(enable, log, waitForFilterMs).AppliedRadios;
+
+        internal static PsmPatchRequestResult RequestPsmPatching(bool enable, Action<string> log, int waitForFilterMs = 0)
+        {
+            var messages = new System.Collections.Generic.List<string>();
+            var result = PsmCoordinator.Apply(enable,
+                () => SetPsmPatchingCore(enable, messages.Add, waitForFilterMs));
+            if (result.Deferred)
+                messages.Add("PSM enabling deferred until Wii pairing finishes.");
+            // Callers can forward these messages to UI code. Do that after the
+            // native operation has released the coordinator lock.
+            foreach (string message in messages) log?.Invoke(message);
+            return result;
+        }
+
+        private static int SetPsmPatchingCore(bool enable, Action<string> log, int waitForFilterMs)
         {
             if (waitForFilterMs > 0 && !IsPsmFilterPresent())
                 WaitForPsmControlDevice(waitForFilterMs);

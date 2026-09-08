@@ -2352,6 +2352,8 @@
   <data name="WiiPair_NothingYet" xml:space="preserve"><value>Aún no se encontraron mandos. Asegúrate de que las luces azules parpadeen.</value></data>
   <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>{0} vinculado. Aparecerá en tu lista de dispositivos.</value></data>
   <data name="WiiPair_NoBluetooth" xml:space="preserve"><value>No se encontró ninguna radio Bluetooth. Conecta un adaptador Bluetooth e inténtalo de nuevo.</value></data>
+  <data name="WiiPair_PsmUnavailable" xml:space="preserve"><value>El emparejamiento de Wii no pudo mantener en pausa la compatibilidad Bluetooth de PS3. Cierra las otras herramientas de mando e inténtalo de nuevo.</value></data>
+  <data name="WiiPair_Failed" xml:space="preserve"><value>No se pudo completar el emparejamiento de Wii. Inténtalo de nuevo.</value></data>
   <data name="WiiPair_Done" xml:space="preserve"><value>Listo</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Cerrar</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>Etiquetas NFC</value></data>

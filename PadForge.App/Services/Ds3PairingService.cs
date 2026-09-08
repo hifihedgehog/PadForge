@@ -143,12 +143,11 @@ namespace PadForge.Services
         /// PadForge). Policy now: never own, always armed, and the caller
         /// repairs any earlier ownership grab.</para>
         ///
-        /// <para>Without DsHidMini, the crash-safety policy stands: PadForge
-        /// owns arming, on only while this machine actually has a DS3. Patching
-        /// off makes BthPS3's use-after-free-on-disconnect path (upstream
-        /// nefarius/BthPS3 #48, unfixed at the bundled v2.10.470.0)
-        /// unreachable, which is what turned a stray Wii Remote connect
-        /// into a 0x50 bugcheck on 2026-07-10.</para>
+        /// <para>Without DsHidMini, PadForge owns arming for paired or known
+        /// PS3-family devices. PSM-off reduces exposure to new connections but
+        /// does not drain existing channels or callbacks. Issue #204 tracks
+        /// the remaining disconnect investigation. Wii scan scopes temporarily
+        /// defer this process's enable requests without changing this policy.</para>
         ///
         /// <para>The second argument is "does a DS3 live here", NOT "did
         /// PadForge pair one" (#265). Those differ, and the difference is a
@@ -202,9 +201,10 @@ namespace PadForge.Services
                 // no-op and leave the pad to be refused on the very first
                 // pairing of a clean machine. Disarming needs no wait: a
                 // filter that is not attached is already not patching.
-                int patched = Ds3DriverInstaller.SetPsmPatching(
+                var request = Ds3DriverInstaller.RequestPsmPatching(
                     wantPatching, LogLine, wantPatching ? 20000 : 0);
-                if (wantPatching && patched == 0)
+                if (request.Deferred) return false;
+                if (wantPatching && request.AppliedRadios == 0)
                 {
                     LogLine("WARNING: PSM patching is not armed; the pad will be refused over Bluetooth.");
                     return false;
@@ -562,11 +562,14 @@ namespace PadForge.Services
                             && Ds3DriverInstaller.TryGetPsmPatchState(out int radios, out int armed)
                             && radios > 0 && armed == 0)
                         {
-                            loggedDisarm = true;
-                            LogLine($"PSM filter DISARMED {sw.Elapsed.TotalSeconds:0}s after the ceremony "
-                                + $"({radios} radio(s), 0 armed). A connection arriving now would bypass "
-                                + "BthPS3 entirely. Re-arming.");
-                            Ds3DriverInstaller.SetPsmPatching(true, LogLine, 5000);
+                            var request = Ds3DriverInstaller.RequestPsmPatching(true, LogLine, 5000);
+                            if (!request.Deferred)
+                            {
+                                loggedDisarm = request.AppliedRadios > 0;
+                                LogLine($"PSM filter was disarmed {sw.Elapsed.TotalSeconds:0}s after the ceremony "
+                                    + $"({radios} radio(s), 0 armed). Enable requests accepted by "
+                                    + $"{request.AppliedRadios} radio(s).");
+                            }
                         }
 
                         // Station 2: did the pad's page reach the radio at all?

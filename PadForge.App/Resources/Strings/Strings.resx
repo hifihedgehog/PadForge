@@ -2735,6 +2735,8 @@
   <data name="WiiPair_NothingYet" xml:space="preserve"><value>No controllers found yet. Make sure the blue lights are blinking.</value></data>
   <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>Paired {0}. It will show up in your device list.</value></data>
   <data name="WiiPair_NoBluetooth" xml:space="preserve"><value>No Bluetooth radio found. Connect a Bluetooth adapter and try again.</value></data>
+  <data name="WiiPair_PsmUnavailable" xml:space="preserve"><value>Wii pairing could not keep PS3 Bluetooth support paused. Close other controller tools and try again.</value></data>
+  <data name="WiiPair_Failed" xml:space="preserve"><value>Wii pairing could not be completed. Try again.</value></data>
   <data name="WiiPair_Done" xml:space="preserve"><value>Done</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
   <data name="About_OpenVR" xml:space="preserve"><value>OpenVR API</value></data>

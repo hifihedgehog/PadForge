@@ -2352,6 +2352,8 @@
   <data name="WiiPair_NothingYet" xml:space="preserve"><value>Noch keine Controller gefunden. Stellen Sie sicher, dass die blauen Lichter blinken.</value></data>
   <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>{0} gekoppelt. Der Controller erscheint in Ihrer Geräteliste.</value></data>
   <data name="WiiPair_NoBluetooth" xml:space="preserve"><value>Kein Bluetooth-Funkmodul gefunden. Schließen Sie einen Bluetooth-Adapter an und versuchen Sie es erneut.</value></data>
+  <data name="WiiPair_PsmUnavailable" xml:space="preserve"><value>Die PS3-Bluetooth-Unterstützung konnte während der Wii-Kopplung nicht durchgehend pausiert werden. Schließen Sie andere Controller-Programme und versuchen Sie es erneut.</value></data>
+  <data name="WiiPair_Failed" xml:space="preserve"><value>Die Wii-Kopplung konnte nicht abgeschlossen werden. Versuchen Sie es erneut.</value></data>
   <data name="WiiPair_Done" xml:space="preserve"><value>Fertig</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Schließen</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>NFC-Tags</value></data>

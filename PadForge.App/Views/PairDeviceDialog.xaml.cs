@@ -153,44 +153,60 @@ namespace PadForge.Views
             var token = _cts.Token;
             bool temporary = TemporaryCheck.IsChecked == true;
             var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            var scanCancellation = _cts;
+            WiiPairingService.PairPassResult shown = null;
 
+            void ShowPass(WiiPairingService.PairPassResult pass)
+            {
+                if (token.IsCancellationRequested || ReferenceEquals(shown, pass)) return;
+                shown = pass;
+                if (pass.Error == "no-radio" || pass.Error == "no-bluetooth-stack")
+                {
+                    SetStatus(Strings.Instance.WiiPair_NoBluetooth, error: true);
+                    return;
+                }
+                if (pass.Error != null)
+                {
+                    SetStatus(pass.Error == WiiPairingService.PsmVerificationFailed
+                        ? Strings.Instance.WiiPair_PsmUnavailable : Strings.Instance.WiiPair_Failed, error: true);
+                    return;
+                }
+
+                foreach (string name in pass.Found)
+                {
+                    if (seen.Add(name))
+                    {
+                        FoundList.Items.Add(name);
+                        FoundPanel.Visibility = Visibility.Visible;
+                    }
+                }
+                if (pass.Paired.Count > 0)
+                {
+                    _pairedAny = true;
+                    SetStatus(string.Format(Strings.Instance.WiiPair_SuccessFormat,
+                        string.Join(", ", pass.Paired)), success: true);
+                }
+                else
+                    SetStatus(seen.Count > 0 ? Strings.Instance.WiiPair_Searching
+                        : Strings.Instance.WiiPair_NothingYet, secondary: true);
+            }
+
+            var progress = new Progress<WiiPairingService.PairPassResult>(pass =>
+            {
+                if (_scanning && ReferenceEquals(_cts, scanCancellation)) ShowPass(pass);
+            });
             try
             {
-                while (!token.IsCancellationRequested)
-                {
-                    WiiPairingService.PairPassResult pass =
-                        await Task.Run(() => _service.RunPairingPass(temporary, token));
-
-                    if (token.IsCancellationRequested) break;
-
-                    if (pass.Error == "no-radio" || pass.Error == "no-bluetooth-stack")
-                    {
-                        SetStatus(Strings.Instance.WiiPair_NoBluetooth, error: true);
-                        break;
-                    }
-
-                    foreach (string name in pass.Found)
-                    {
-                        if (seen.Add(name))
-                        {
-                            FoundList.Items.Add(name);
-                            FoundPanel.Visibility = Visibility.Visible;
-                        }
-                    }
-
-                    if (pass.Paired.Count > 0)
-                    {
-                        _pairedAny = true;
-                        SetStatus(string.Format(Strings.Instance.WiiPair_SuccessFormat,
-                            string.Join(", ", pass.Paired)), success: true);
-                        break;
-                    }
-
-                    if (seen.Count > 0)
-                        SetStatus(Strings.Instance.WiiPair_Searching, secondary: true);
-                    else
-                        SetStatus(Strings.Instance.WiiPair_NothingYet, secondary: true);
-                }
+                var result = await Task.Run(() => _service.RunPairingScan(temporary, token, progress));
+                // A very short scan can finish before queued progress is shown.
+                ShowPass(result);
+            }
+            catch (Exception ex)
+            {
+                PadForge.Engine.SdlDiagLog.WriteLine("WIIPAIR scan failed: " + ex);
+                _pairedAny = false;
+                if (!token.IsCancellationRequested)
+                    SetStatus(Strings.Instance.WiiPair_Failed, error: true);
             }
             finally
             {
@@ -199,8 +215,6 @@ namespace PadForge.Views
 
                 if (_pairedAny)
                 {
-                    // Pairing done. Turn the dismiss button into a confirming
-                    // close and hide the redundant Pair button.
                     PairButton.Visibility = Visibility.Collapsed;
                     DismissButton.Content = Strings.Instance.WiiPair_Done;
                 }

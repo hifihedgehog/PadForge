@@ -2372,6 +2372,8 @@
   <data name="WiiPair_NothingYet" xml:space="preserve"><value>Nog geen controllers gevonden. Controleer of de blauwe lampjes knipperen.</value></data>
   <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>{0} gekoppeld. Het verschijnt in je apparatenlijst.</value></data>
   <data name="WiiPair_NoBluetooth" xml:space="preserve"><value>Geen Bluetooth-radio gevonden. Sluit een Bluetooth-adapter aan en probeer het opnieuw.</value></data>
+  <data name="WiiPair_PsmUnavailable" xml:space="preserve"><value>Tijdens het koppelen van de Wii kon de Bluetooth-ondersteuning voor PS3 niet gepauzeerd blijven. Sluit andere controllerprogramma's en probeer het opnieuw.</value></data>
+  <data name="WiiPair_Failed" xml:space="preserve"><value>Het koppelen van de Wii kon niet worden voltooid. Probeer het opnieuw.</value></data>
   <data name="WiiPair_Done" xml:space="preserve"><value>Klaar</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Sluiten</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>NFC-tags</value></data>

@@ -2352,6 +2352,8 @@
   <data name="WiiPair_NothingYet" xml:space="preserve"><value>Aucune manette trouvée pour l'instant. Vérifiez que les voyants bleus clignotent.</value></data>
   <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>{0} associée. Elle apparaîtra dans votre liste d'appareils.</value></data>
   <data name="WiiPair_NoBluetooth" xml:space="preserve"><value>Aucune radio Bluetooth détectée. Connectez un adaptateur Bluetooth et réessayez.</value></data>
+  <data name="WiiPair_PsmUnavailable" xml:space="preserve"><value>L'association Wii n'a pas pu maintenir la prise en charge Bluetooth PS3 en pause. Fermez les autres outils de manette et réessayez.</value></data>
+  <data name="WiiPair_Failed" xml:space="preserve"><value>L'association Wii n'a pas pu être effectuée. Réessayez.</value></data>
   <data name="WiiPair_Done" xml:space="preserve"><value>Terminé</value></data>
   <data name="Common_Close" xml:space="preserve"><value>Fermer</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>Étiquettes NFC</value></data>

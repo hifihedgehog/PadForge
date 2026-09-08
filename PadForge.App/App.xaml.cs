@@ -288,13 +288,10 @@ namespace PadForge
                     "ORPHANSWEEP devnodes still present after 5 s; proceeding");
             });
 
-            // Reconcile BthPS3 PSM patching to the crash-safe state once per
-            // launch (issue #199): armed only if a DS3 is actually paired, off
-            // otherwise, so a machine with BthPS3 installed but no DS3 in use
-            // keeps the profile driver dormant and out of the upstream
-            // use-after-free path. Also (re)asserts AutoEnableFilter=0 via the
-            // reconcile's SetPsmPatching ownership. No-op when BthPS3 isn't
-            // installed; runs on a background thread so it never blocks startup.
+            // Apply the normal PS3-family filter policy in the background.
+            // This preserves DsHidMini and externally paired devices. A Wii
+            // scan can defer enabling. PSM-off affects new connections only,
+            // so this is exposure reduction, not a kernel teardown guarantee.
             System.Threading.Tasks.Task.Run(() =>
             {
                 try { PadForge.Services.Ds3PairingService.ReconcilePsmPatchForCrashSafety("startup"); }

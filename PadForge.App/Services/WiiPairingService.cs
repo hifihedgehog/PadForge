@@ -41,6 +41,7 @@ namespace PadForge.Services
     /// </summary>
     public sealed class WiiPairingService
     {
+        internal const string PsmVerificationFailed = "psm-verification-failed";
         /// <summary>Name prefix every Wii peripheral advertises over Bluetooth
         /// ("Nintendo RVL-CNT-01", "-TR", "-UC", and so on). A fresh inquiry
         /// often returns an empty name, so this is the preferred match but not
@@ -68,8 +69,8 @@ namespace PadForge.Services
             /// Wii or not. Zero means the inquiry itself saw nothing.</summary>
             public int DiscoveredCount { get; set; }
 
-            /// <summary>Set when the radio could not be opened or queried. Null
-            /// on success even when no controllers were found.</summary>
+            /// <summary>Set when the scan must stop, including radio and PSM
+            /// verification failures. Null when no controllers were found.</summary>
             public string Error { get; set; }
         }
 
@@ -86,7 +87,35 @@ namespace PadForge.Services
         /// host address) which bonds persistently.</param>
         public PairPassResult RunPairingPass(bool temporary, CancellationToken ct)
         {
+            using var suspension = Ds3DriverInstaller.SuspendPsmEnablingForWii();
+            return RunPairingPass(temporary, ct, suspension);
+        }
+
+        internal PairPassResult RunPairingScan(bool temporary, CancellationToken ct, IProgress<PairPassResult> progress)
+            => RunPairingScan(Ds3DriverInstaller.SuspendPsmEnablingForWii,
+                suspension => RunPairingPass(temporary, ct, suspension), ct, progress);
+
+        /// <summary>The background scan owns restoration independently of UI progress delivery.</summary>
+        internal static PairPassResult RunPairingScan(Func<PsmPatchCoordinator.Suspension> suspend,
+            Func<PsmPatchCoordinator.Suspension, PairPassResult> runPass,
+            CancellationToken ct, IProgress<PairPassResult> progress)
+        {
+            if (ct.IsCancellationRequested) return new PairPassResult();
+            using var suspension = suspend();
+            while (!ct.IsCancellationRequested)
+            {
+                var pass = runPass(suspension);
+                progress?.Report(pass);
+                if (pass.Error != null || pass.Paired.Count != 0) return pass;
+            }
+            return new PairPassResult();
+        }
+
+        internal PairPassResult RunPairingPass(bool temporary, CancellationToken ct,
+            PsmPatchCoordinator.Suspension suspension)
+        {
             var result = new PairPassResult();
+            if (ct.IsCancellationRequested) return result;
 
             IntPtr hRadio = IntPtr.Zero;
             IntPtr hRadioFind = IntPtr.Zero;
@@ -118,19 +147,10 @@ namespace PadForge.Services
 
                 Log($"=== pass start (temporary={temporary}) host={FormatAddr(radioInfo.address)} radio='{radioInfo.szName}' ===");
 
-                // Force BthPS3 PSM patching off for the whole pass (issue #199).
-                // A Wii Remote's incoming HID connection must not enter BthPS3's
-                // identify/deny/destroy path, which is where the upstream
-                // use-after-free lives (a stray Wii connect through that path
-                // bugchecked the box on 2026-07-10). With patching off the Wii's
-                // standard HID PSMs pass through to the inbox Bluetooth stack,
-                // which is where a Wii Remote belongs anyway. Restored to policy
-                // in the outer finally, on every exit path.
-                if (Ds3DriverInstaller.IsBthPs3Installed())
-                {
-                    Log("PSM patching forced off for the Wii pass (issue #199).");
-                    Ds3DriverInstaller.SetPsmPatching(false, Log);
-                }
+                // The scan scope blocks PadForge's own enable requests. Check
+                // actual filter state as well: a driver or another consumer can
+                // still change it, and PSM-off does not drain existing channels.
+                if (!CanContinuePairing(suspension, result, ct)) return result;
 
                 var search = new BLUETOOTH_DEVICE_SEARCH_PARAMS
                 {
@@ -156,7 +176,9 @@ namespace PadForge.Services
                 IntPtr hDevFind = BluetoothFindFirstDevice(ref search, ref deviceInfo);
                 if (hDevFind == IntPtr.Zero)
                 {
-                    Log($"inquiry returned 0 devices (win32={Marshal.GetLastWin32Error()}). Close Windows' own 'Add a device' panel so the radio is free for this inquiry.");
+                    int inquiryError = Marshal.GetLastWin32Error();
+                    if (!CanContinuePairing(suspension, result, ct)) return result;
+                    Log($"inquiry returned 0 devices (win32={inquiryError}). Close Windows' own 'Add a device' panel so the radio is free for this inquiry.");
                     return result;
                 }
 
@@ -164,7 +186,7 @@ namespace PadForge.Services
                 {
                     do
                     {
-                        if (ct.IsCancellationRequested) break;
+                        if (!CanContinuePairing(suspension, result, ct)) return result;
 
                         result.DiscoveredCount++;
                         string name = deviceInfo.szName ?? string.Empty;
@@ -197,6 +219,7 @@ namespace PadForge.Services
                         // it and let the next pass rediscover it fresh.
                         if (deviceInfo.fRemembered != 0 && deviceInfo.fAuthenticated == 0)
                         {
+                            if (!CanContinuePairing(suspension, result, ct)) return result;
                             uint rmRc = BluetoothRemoveDevice(ref deviceInfo.Address);
                             Log($"  {label} unusable remembered record, BluetoothRemoveDevice rc={rmRc} (rediscover next pass)");
                             continue;
@@ -205,13 +228,14 @@ namespace PadForge.Services
                         result.Found.Add(label);
 
                         ulong pinSource = temporary ? deviceInfo.Address.ullLong : radioInfo.address.ullLong;
-                        if (TryPairDevice(hRadio, ref deviceInfo, pinSource, label))
+                        if (TryPairDevice(hRadio, ref deviceInfo, pinSource, label, suspension, result, ct))
                         {
                             Log($"  PAIRED {label}");
                             result.Paired.Add(label);
                         }
                         else
                         {
+                            if (result.Error != null || ct.IsCancellationRequested) return result;
                             Log($"  pair FAILED for {label}");
                         }
                     }
@@ -222,6 +246,7 @@ namespace PadForge.Services
                     BluetoothFindDeviceClose(hDevFind);
                 }
 
+                if (!CanContinuePairing(suspension, result, ct)) return result;
                 Log($"=== pass end: discovered={result.DiscoveredCount} wiiFound={result.Found.Count} paired={result.Paired.Count} ===");
             }
             catch (DllNotFoundException ex)
@@ -238,14 +263,21 @@ namespace PadForge.Services
             {
                 if (hRadio != IntPtr.Zero) CloseHandle(hRadio);
                 if (hRadioFind != IntPtr.Zero) BluetoothFindRadioClose(hRadioFind);
-                // Restore PSM patching to its policy state (issue #199): armed
-                // only if a DS3 is actually paired, off otherwise. Runs on every
-                // exit path, including the no-radio / exception early returns
-                // that never forced it off (a harmless no-op there).
-                Ds3PairingService.ReconcilePsmPatchForCrashSafety("wii-pass-end");
+                // The caller restores policy when the complete scan ends, so
+                // there is no re-arming gap between inquiry passes.
             }
 
             return result;
+        }
+
+        private static bool CanContinuePairing(PsmPatchCoordinator.Suspension suspension,
+            PairPassResult result, CancellationToken ct)
+        {
+            if (ct.IsCancellationRequested) return false;
+            if (suspension.VerifyDisabled(out string reason)) return true;
+            result.Error = PsmVerificationFailed;
+            Log("Wii pairing stopped: " + reason);
+            return false;
         }
 
         /// <summary>
@@ -310,8 +342,10 @@ namespace PadForge.Services
         /// enumerates installed services so the remote remembers the pairing,
         /// then enables the HID service.
         /// </summary>
-        private bool TryPairDevice(IntPtr hRadio, ref BLUETOOTH_DEVICE_INFO device, ulong pinSource, string label)
+        private bool TryPairDevice(IntPtr hRadio, ref BLUETOOTH_DEVICE_INFO device, ulong pinSource, string label,
+            PsmPatchCoordinator.Suspension suspension, PairPassResult result, CancellationToken ct)
         {
+            if (!CanContinuePairing(suspension, result, ct)) return false;
             if (device.fAuthenticated == 0)
             {
                 // The PIN is the six Bluetooth-address bytes (low byte first),
@@ -327,6 +361,8 @@ namespace PadForge.Services
                 if (authRc != 0)
                     return false;
 
+                if (!CanContinuePairing(suspension, result, ct)) return false;
+
                 // "Apparently must be done to make the remote remember the
                 // pairing." (Dolphin). Count-only query, null service array.
                 uint pcServices = 0;
@@ -336,10 +372,11 @@ namespace PadForge.Services
                     return false;
             }
 
+            if (!CanContinuePairing(suspension, result, ct)) return false;
             var hidGuid = HumanInterfaceDeviceServiceClass_UUID;
             uint rc = BluetoothSetServiceState(hRadio, ref device, ref hidGuid, BLUETOOTH_SERVICE_ENABLE);
             Log($"    BluetoothSetServiceState(HID, ENABLE) rc={rc}" + (rc != 0 ? $" ({DescribeError(rc)})" : ""));
-            return rc == 0;
+            return rc == 0 && CanContinuePairing(suspension, result, ct);
         }
 
         private static string FormatAddr(BLUETOOTH_ADDRESS a) => FormatAddr(a.ullLong);

@@ -2352,6 +2352,8 @@
   <data name="WiiPair_NothingYet" xml:space="preserve"><value>尚未找到控制器。请确认蓝色指示灯正在闪烁。</value></data>
   <data name="WiiPair_SuccessFormat" xml:space="preserve"><value>已配对 {0}。它将出现在您的设备列表中。</value></data>
   <data name="WiiPair_NoBluetooth" xml:space="preserve"><value>未找到蓝牙适配器。请连接蓝牙适配器后重试。</value></data>
+  <data name="WiiPair_PsmUnavailable" xml:space="preserve"><value>Wii 配对无法保持 PS3 蓝牙支持处于暂停状态。请关闭其他控制器工具，然后重试。</value></data>
+  <data name="WiiPair_Failed" xml:space="preserve"><value>无法完成 Wii 配对。请重试。</value></data>
   <data name="WiiPair_Done" xml:space="preserve"><value>完成</value></data>
   <data name="Common_Close" xml:space="preserve"><value>关闭</value></data>
   <data name="Nfc_Title" xml:space="preserve"><value>NFC 标签</value></data>

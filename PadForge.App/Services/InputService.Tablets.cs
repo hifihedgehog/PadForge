@@ -110,7 +110,7 @@ public partial class InputService
                 ud.HidHideEnabled = false;
                 if (row != null) row.HidHideEnabled = false;
                 _settingsService?.MarkDirty();
-                ApplyDeviceHiding();
+                ApplyAutomaticDeviceHiding();
             }
         }));
     }

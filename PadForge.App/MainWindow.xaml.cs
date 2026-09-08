@@ -506,7 +506,7 @@ namespace PadForge
                 if (SettingsManager.ActiveProfileId == null)
                     _inputService.RefreshDefaultSnapshot();
                 // Recalculate input suppression sets after save pushes ViewModel mappings to PadSettings.
-                _inputService.ApplyDeviceHiding();
+                _inputService.ApplyAutomaticDeviceHiding();
             };
             _viewModel.Settings.ReloadRequested += (s, e) => _settingsService.Reload();
             _viewModel.Settings.ResetRequested += (s, e) =>
@@ -6040,7 +6040,7 @@ namespace PadForge
             // only the diff, so a burst of arrivals costs one registry write.
             if (msg == WM_DEVICECHANGE && (int)wParam == DBT_DEVICEARRIVAL)
             {
-                try { _inputService?.ApplyDeviceHiding(); }
+                try { _inputService?.ApplyAutomaticDeviceHiding(); }
                 catch { /* a notification must never take the window down */ }
             }
             return IntPtr.Zero;

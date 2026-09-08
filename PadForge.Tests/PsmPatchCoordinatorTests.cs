@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Stopwatch = System.Diagnostics.Stopwatch;
 using System.Threading;
 using System.Threading.Tasks;
 using PadForge.Services;
@@ -396,6 +397,90 @@ namespace PadForge.Tests
                     throw new InvalidOperationException("progress failed"))));
             Assert.Equal(1, rig.RestoreCalls);
             Assert.False(rig.Coordinator.IsSuspended);
+        }
+
+        [Fact]
+        public void FastEmptyWiiPassesArePacedWhileSuppressionStaysHeld()
+        {
+            var rig = new Rig();
+            var starts = new List<long>();
+            var result = WiiPairingService.RunPairingScan(rig.Coordinator.Suspend, scope =>
+            {
+                starts.Add(Stopwatch.GetTimestamp());
+                Assert.True(scope.VerifyDisabled(out _));
+                var pass = new WiiPairingService.PairPassResult();
+                if (starts.Count == 3) pass.Paired.Add("Wii");
+                return pass;
+            }, CancellationToken.None, new ImmediateProgress<WiiPairingService.PairPassResult>(_ =>
+                Assert.True(rig.Enable().Deferred)));
+
+            Assert.Single(result.Paired);
+            Assert.Equal(3, starts.Count);
+            Assert.True(Stopwatch.GetElapsedTime(starts[0], starts[1]).TotalMilliseconds >= 90);
+            Assert.True(Stopwatch.GetElapsedTime(starts[1], starts[2]).TotalMilliseconds >= 90);
+            Assert.Equal(1, rig.RestoreCalls);
+            Assert.Equal(1, rig.EnableCalls);
+        }
+
+        [Fact]
+        public async Task CancelingDuringTheWiiRetryWaitRestoresWithoutAnotherPass()
+        {
+            var rig = new Rig();
+            using var cancellation = new CancellationTokenSource();
+            using var firstPass = new ManualResetEventSlim();
+            var finished = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+            int passes = 0;
+            var worker = new Thread(() =>
+            {
+                try
+                {
+                    WiiPairingService.RunPairingScan(rig.Coordinator.Suspend, scope =>
+                    {
+                        Assert.True(scope.VerifyDisabled(out _));
+                        if (Interlocked.Increment(ref passes) == 2) cancellation.Cancel();
+                        firstPass.Set();
+                        return new WiiPairingService.PairPassResult();
+                    }, cancellation.Token, null);
+                    finished.SetResult();
+                }
+                catch (Exception error) { finished.SetException(error); }
+            }) { IsBackground = true };
+            worker.Start();
+            try
+            {
+                Assert.True(firstPass.Wait(TimeSpan.FromSeconds(2)));
+                Assert.True(SpinWait.SpinUntil(() => finished.Task.IsCompleted
+                    || (worker.ThreadState & ThreadState.WaitSleepJoin) != 0, TimeSpan.FromSeconds(2)));
+                Assert.False(finished.Task.IsCompleted);
+                Assert.Equal(1, Volatile.Read(ref passes));
+                Assert.True(rig.Coordinator.IsSuspended);
+                cancellation.Cancel();
+                await finished.Task.WaitAsync(TimeSpan.FromSeconds(2));
+                Assert.Equal(1, passes);
+                Assert.Equal(1, rig.RestoreCalls);
+                Assert.False(rig.Coordinator.IsSuspended);
+            }
+            finally
+            {
+                cancellation.Cancel();
+                await finished.Task.WaitAsync(TimeSpan.FromSeconds(5));
+            }
+        }
+
+        [Fact]
+        public void ASlowWiiPassDoesNotProduceAnInvalidRetryDelay()
+        {
+            var rig = new Rig();
+            int passes = 0;
+            var result = WiiPairingService.RunPairingScan(rig.Coordinator.Suspend, scope =>
+            {
+                Assert.True(scope.VerifyDisabled(out _));
+                Thread.Sleep(120);
+                return new WiiPairingService.PairPassResult { Error = ++passes == 2 ? "finished" : null };
+            }, CancellationToken.None, null);
+            Assert.Equal("finished", result.Error);
+            Assert.Equal(2, passes);
+            Assert.Equal(1, rig.RestoreCalls);
         }
 
         [Fact]

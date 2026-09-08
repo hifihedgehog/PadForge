@@ -25,7 +25,7 @@ public sealed class WindowsTabletDevice : ISdlInputDevice
     private readonly Func<bool> isStarted;
     private Task operation = Task.CompletedTask;
     private int generation;
-    private bool closed, captureWanted, attemptedCapture, requestInvalidated;
+    private bool closed, captureWanted, attemptedCapture, requestInvalidated, captureRetiring;
     private TabletCaptureState captureState;
     private string captureError = "";
     private PooledInputStatePair statePool;
@@ -133,12 +133,17 @@ public sealed class WindowsTabletDevice : ISdlInputDevice
     }
 
     public void PrepareForUnhide()
+        => PrepareForUnhide(retireCapture: false);
+
+    /// <summary>Retirement prevents this wrapper from accepting another capture request.</summary>
+    public void PrepareForUnhide(bool retireCapture)
     {
         CancellationTokenSource cancel;
         CaptureInput close;
         int version;
         lock (gate)
         {
+            captureRetiring |= retireCapture;
             if (closed || !captureWanted) return;
             version = ++generation;
             requestInvalidated = true;
@@ -163,7 +168,7 @@ public sealed class WindowsTabletDevice : ISdlInputDevice
         bool restore;
         lock (gate)
         {
-            if (closed || !retry && wanted == captureWanted && !requestInvalidated) return;
+            if (closed || wanted && captureRetiring || !retry && wanted == captureWanted && !requestInvalidated) return;
             restore = attemptedCapture && !wanted;
             captureWanted = wanted;
             requestInvalidated = false;

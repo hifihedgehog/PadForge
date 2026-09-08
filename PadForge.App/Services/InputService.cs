@@ -8666,7 +8666,7 @@ namespace PadForge.Services
                 catch { /* picker refresh is cosmetic */ }
                 try { if (_mainVm.Devices?.IsHandheldDevice == true) _mainVm.Devices.RebuildHandheldButtons(); }
                 catch { }
-                try { ApplyDeviceHiding(); } catch { }
+                try { ApplyAutomaticDeviceHiding(); } catch { }
                 try { _settingsService?.Save(); } catch { /* persisted on next save regardless */ }
             }));
         }
@@ -8679,7 +8679,7 @@ namespace PadForge.Services
         {
             _dispatcher.BeginInvoke(new Action(() =>
             {
-                try { ApplyDeviceHiding(); } catch { }
+                try { ApplyAutomaticDeviceHiding(); } catch { }
             }));
         }
 
@@ -8755,6 +8755,7 @@ namespace PadForge.Services
         {
             _dispatcher.BeginInvoke(new Action(() =>
             {
+                if (!ReferenceEquals(sender, _inputManager)) return;
                 SyncDevicesList();
                 RefreshVoiceObjects();
                 UpdatePadDeviceInfo();
@@ -8786,7 +8787,7 @@ namespace PadForge.Services
 
                 // Re-apply device hiding so newly-connected devices get blacklisted
                 // and their instance IDs get cached for future sessions.
-                ApplyDeviceHiding();
+                ApplyAutomaticDeviceHiding();
 
                 // Player-identity idle floor (#191): freshly connected or
                 // re-assigned pads pick up their controller number. Sony
@@ -11960,6 +11961,26 @@ namespace PadForge.Services
             catch { /* best effort */ }
         }
 
+        /// <summary>
+        /// Checks lifetime when queued policy work reaches the UI thread.
+        /// Explicit settings changes continue to use ApplyDeviceHiding.
+        /// </summary>
+        internal void ApplyAutomaticDeviceHiding(Action apply = null)
+        {
+            if (!_dispatcher.CheckAccess())
+            {
+                _dispatcher.BeginInvoke(new Action(() => ApplyAutomaticDeviceHiding(apply)));
+                return;
+            }
+            if (System.Threading.Volatile.Read(ref _disposed) != 0) return;
+            // Stop publishes this flag before its UI barrier and retains the
+            // manager until teardown finishes. A later stopped-state edit has
+            // no retiring manager and keeps the existing hiding behavior.
+            if (System.Threading.Volatile.Read(ref _stopped) != 0 && _inputManager != null) return;
+            // The policy action is injectable so lifecycle tests avoid driver writes.
+            (apply ?? ApplyDeviceHiding)();
+        }
+
         public void ApplyDeviceHiding()
         {
             if (!_mainVm.Settings.EnableInputHiding)
@@ -12457,7 +12478,8 @@ namespace PadForge.Services
         public void RemoveDeviceHiding(bool keepCloaks = false)
         {
             var tabletInputs = _inputManager?.GetTabletDevices() ?? Array.Empty<PadForge.Engine.Tablets.WindowsTabletDevice>();
-            foreach (var tablet in tabletInputs) tablet.PrepareForUnhide();
+            bool retiring = System.Threading.Volatile.Read(ref _stopped) != 0;
+            foreach (var tablet in tabletInputs) tablet.PrepareForUnhide(retireCapture: retiring);
             // ── HidHide ──
             if (!keepCloaks)
             {

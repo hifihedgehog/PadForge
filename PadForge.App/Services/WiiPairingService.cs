@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace PadForge.Services
 {
@@ -104,9 +106,17 @@ namespace PadForge.Services
             using var suspension = suspend();
             while (!ct.IsCancellationRequested)
             {
+                long started = Stopwatch.GetTimestamp();
                 var pass = runPass(suspension);
                 progress?.Report(pass);
                 if (pass.Error != null || pass.Paired.Count != 0) return pass;
+
+                // An inquiry can fail immediately. Pace retries without adding
+                // delay to a normal inquiry or releasing PSM suppression.
+                TimeSpan remaining = TimeSpan.FromMilliseconds(100) - Stopwatch.GetElapsedTime(started);
+                if (remaining <= TimeSpan.Zero) continue;
+                try { Task.Delay(remaining, ct).GetAwaiter().GetResult(); }
+                catch (OperationCanceledException) when (ct.IsCancellationRequested) { break; }
             }
             return new PairPassResult();
         }

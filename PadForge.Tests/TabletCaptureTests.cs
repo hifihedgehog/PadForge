@@ -241,6 +241,64 @@ public class TabletCaptureTests
     [Theory]
     [InlineData(false)]
     [InlineData(true)]
+    public async Task RetirementRejectsRecaptureWithoutCancelingThePendingRestore(bool retireAfterRestoreRequest)
+    {
+        string identity = Guid.NewGuid().ToString("N");
+        using var oldFixture = new TabletReportStateTests.Fixture(identity: identity);
+        using var newFixture = new TabletReportStateTests.Fixture(identity: identity);
+        using var releaseOpen = new ManualResetEventSlim();
+        var opening = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var feedback = new ConcurrentQueue<Action>();
+        bool releasing = false;
+        int opens = 0, restarts = 0, replacementSawRestarts = 0;
+        var oldInput = new Input();
+        var newInput = new Input();
+        WindowsTabletDevice oldDevice = null;
+        using (oldDevice = new WindowsTabletDevice(oldFixture.Decoder,
+            (device, _, _, _) =>
+            {
+                if (Volatile.Read(ref releasing)) feedback.Enqueue(() => device.SetCapture(true, retry: true));
+            }, () =>
+            {
+                if (Interlocked.Increment(ref opens) == 1) throw new IOException("collection is busy");
+                opening.TrySetResult();
+                if (!releaseOpen.Wait(TimeSpan.FromSeconds(5))) throw new TimeoutException();
+                return oldInput;
+            }, _ => Interlocked.Increment(ref restarts), () => true))
+        using (var replacement = new WindowsTabletDevice(newFixture.Decoder, null, () =>
+            {
+                replacementSawRestarts = Volatile.Read(ref restarts);
+                return newInput;
+            }))
+        {
+            try
+            {
+                oldDevice.SetCapture(true);
+                await opening.Task.WaitAsync(TimeSpan.FromSeconds(5));
+                Volatile.Write(ref releasing, true);
+                oldDevice.PrepareForUnhide(retireCapture: !retireAfterRestoreRequest);
+                oldDevice.SetCapture(false);
+                if (retireAfterRestoreRequest) oldDevice.PrepareForUnhide(retireCapture: true);
+                Assert.True(feedback.Count >= 2, "The release must have generated real capture callbacks.");
+                // Reproduce the queued policy feedback before disposal, while
+                // the original native open still prevents restoration.
+                foreach (var replay in feedback.ToArray()) replay();
+                oldDevice.Dispose();
+                replacement.SetCapture(true);
+                releaseOpen.Set();
+                await newInput.Reading.Task.WaitAsync(TimeSpan.FromSeconds(5));
+                Assert.Equal(2, restarts);
+                Assert.Equal(2, replacementSawRestarts);
+                Assert.Equal(1, oldInput.DisposeCount);
+                Assert.Equal(TabletCaptureState.Offline, oldDevice.CaptureState);
+            }
+            finally { releaseOpen.Set(); }
+        }
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
     public async Task PendingRestoreSurvivesDisposalAndPrecedesAReplacementReader(bool restoreFails)
     {
         string identity = Guid.NewGuid().ToString("N");

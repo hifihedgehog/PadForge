@@ -2381,10 +2381,10 @@
   <data name="HeadTracker_Z" xml:space="preserve"><value>Cabeza Z</value></data>
   <data name="Dashboard_HeadTracking" xml:space="preserve"><value>Seguimiento de cabeza</value></data>
   <data name="Dashboard_HeadTrackingDesc" xml:space="preserve"><value>Lee la pose de la cabeza desde la salida UDP de OpenTrack o desde la memoria compartida de FreeTrack 2.0 y la expone como seis ejes en un dispositivo Rastreador de cabeza: guiñada, cabeceo, alabeo y las tres traslaciones. Asigna la guiñada a un eje del stick para mirar alrededor con ambos pulgares en los botones.</value></data>
-  <data name="Dashboard_HeadTrackingEnable" xml:space="preserve"><value>Activar la entrada de seguimiento de cabeza</value></data>
-  <data name="Dashboard_HeadTrackingEnable_Tooltip" xml:space="preserve"><value>Añade la fila Rastreador de cabeza en la página Dispositivos. En OpenTrack, elige la salida "UDP over network" y envía a 127.0.0.1 en el puerto de abajo, o elige "freetrack 2.0 Enhanced".</value></data>
-  <data name="Dashboard_HeadTrackingFreeTrack" xml:space="preserve"><value>Leer también la memoria compartida de FreeTrack 2.0</value></data>
-  <data name="Dashboard_HeadTrackingFreeTrack_Tooltip" xml:space="preserve"><value>Lee la asignación FT_SharedMem que escribe la salida "freetrack 2.0 Enhanced" de OpenTrack. Los juegos que leen FreeTrack siguen funcionando a la vez.</value></data>
+  <data name="Dashboard_HeadTrackingEnable" xml:space="preserve"><value>Activar entrada de seguimiento UDP</value></data>
+  <data name="Dashboard_HeadTrackingEnable_Tooltip" xml:space="preserve"><value>Recibe el seguimiento de cabeza por UDP. La entrada de FreeTrack se puede activar por separado.</value></data>
+  <data name="Dashboard_HeadTrackingFreeTrack" xml:space="preserve"><value>Activar entrada de memoria compartida FreeTrack 2.0</value></data>
+  <data name="Dashboard_HeadTrackingFreeTrack_Tooltip" xml:space="preserve"><value>Lee la memoria compartida de FreeTrack 2.0 sin necesitar UDP. Ambas entradas pueden funcionar a la vez.</value></data>
   <data name="Dashboard_HeadTrackingPort" xml:space="preserve"><value>Puerto UDP</value></data>
   <data name="Dashboard_HeadTrackingPort_Tooltip" xml:space="preserve"><value>El puerto al que envía la salida "UDP over network" de OpenTrack. El valor predeterminado de OpenTrack es 4242.</value></data>
   <data name="Dashboard_HeadTrackingRotationRange" xml:space="preserve"><value>Rango de rotación (grados)</value></data>
@@ -3565,4 +3565,6 @@ Puedes volver a intentarlo más tarde desde Configuración.</value></data>
   <data name="Tablet_Eraser" xml:space="preserve"><value>Borrador</value></data>
   <data name="Tablet_Inverted" xml:space="preserve"><value>Lápiz invertido</value></data>
   <data name="Tablet_InRange" xml:space="preserve"><value>Lápiz en alcance</value></data>
+  <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Esperando datos de la memoria compartida de FreeTrack.</value></data>
+  <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>La memoria compartida de FreeTrack no está disponible.</value></data>
 </root>

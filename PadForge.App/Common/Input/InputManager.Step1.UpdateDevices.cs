@@ -2542,8 +2542,8 @@ namespace PadForge.Common.Input
         /// <summary>Called on app shutdown in the same window as the NFC,
         /// microphone and headset teardowns: after Stop(), before
         /// ShutdownSdl().</summary>
-        /// <summary>Phase 1i (issue #355). One row while the Dashboard toggle
-        /// is on, recreated when the user removes it (the NFC recreate
+        /// <summary>Phase 1i (issue #355). One row while either input is on,
+        /// recreated when the user removes it (the NFC recreate
         /// pattern) and reopened when the port or the FreeTrack toggle
         /// changes. Off with nothing to retire: two volatile reads and out.</summary>
         private bool UpdateHeadTrackerDevice()
@@ -2551,7 +2551,7 @@ namespace PadForge.Common.Input
             if (_headTrackerInputsSuppressed)
                 return false;
 
-            bool enabled = HeadTrackingRuntime.Enabled;
+            bool enabled = HeadTrackingRuntime.AnyEnabled;
             if (!enabled && _headTrackerDevice == null)
                 return false;
 

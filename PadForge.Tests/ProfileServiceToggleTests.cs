@@ -25,11 +25,12 @@ namespace PadForge.Tests
     /// the pair MainWindow builds.</para>
     /// </summary>
     [Collection("SettingsManagerStatics")]
-    public class ProfileServiceToggleTests : IDisposable
+    public partial class ProfileServiceToggleTests : IDisposable
     {
         // The head tracking setter mirrors into the static runtime flag the
         // engine sweep reads, so the fixture puts it back.
         private readonly bool _savedHeadTrackingEnabled = HeadTrackingRuntime.Enabled;
+        private readonly bool _savedHeadTrackingFreeTrack = HeadTrackingRuntime.FreeTrackEnabled;
         private readonly SettingsCollection _savedSettings;
         private readonly DeviceCollection _savedDevices;
         private readonly List<ProfileData> _savedProfiles;
@@ -80,6 +81,7 @@ namespace PadForge.Tests
             SettingsManager.MidiSlotOrder = _savedMidiOrder;
             SettingsService.AfterMappingSetsRefreshed = _savedAfterRefresh;
             HeadTrackingRuntime.Enabled = _savedHeadTrackingEnabled;
+            HeadTrackingRuntime.FreeTrackEnabled = _savedHeadTrackingFreeTrack;
         }
 
         private static string RepoText(params string[] parts)
@@ -141,6 +143,7 @@ namespace PadForge.Tests
                 Assert.Null(old.EnableLightsyncLightbar);
                 Assert.Null(old.EnableSensaHaptics);
                 Assert.Null(old.EnableHeadTracking);
+                Assert.Null(old.EnableHeadTrackingFreeTrack);
                 Assert.True(old.EnableWebController);   // the plain-bool sibling still reads
             }
 
@@ -253,6 +256,7 @@ namespace PadForge.Tests
             Assert.False(p1.EnableSensaHaptics);
 
             Assert.Null(p1.EnableHeadTracking);
+            Assert.Null(p1.EnableHeadTrackingFreeTrack);
             vm.Dashboard.HeadTrackingEnabled = true;
             Assert.True(p1.EnableHeadTracking);
             vm.Dashboard.HeadTrackingEnabled = false;
@@ -278,6 +282,7 @@ namespace PadForge.Tests
             Assert.Null(p1.EnableLightsyncLightbar);
             Assert.Null(p1.EnableSensaHaptics);
             Assert.Null(p1.EnableHeadTracking);
+            Assert.Null(p1.EnableHeadTrackingFreeTrack);
         }
 
         /// <summary>The apply leg's own VM writes must not author: without
@@ -305,6 +310,7 @@ namespace PadForge.Tests
             Assert.Null(p1.EnableChromaLightbar);               // and authored nothing
             Assert.Null(p1.EnableSensaHaptics);
             Assert.Null(p1.EnableHeadTracking);
+            Assert.Null(p1.EnableHeadTrackingFreeTrack);
 
             string ss_src = RepoText("PadForge.App", "Services", "SettingsService.cs");
             foreach (var line in new[]
@@ -342,6 +348,7 @@ namespace PadForge.Tests
             Assert.Null(p1.EnableLightsyncLightbar);
             Assert.Null(p1.EnableSensaHaptics);
             Assert.Null(p1.EnableHeadTracking);
+            Assert.Null(p1.EnableHeadTrackingFreeTrack);
 
             // A stale opinion is refreshed from the live value.
             p1.EnableChromaLightbar = false;

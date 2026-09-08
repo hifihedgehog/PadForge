@@ -278,15 +278,12 @@ namespace PadForge.ViewModels
         // memory reader, surfaced as the Head Tracker device row. The
         // setters mirror into the static HeadTrackingRuntime the poll
         // thread's device sweep reads, so a change lands whoever writes it
-        // (global load, profile apply, the user). The enable rides profiles
-        // as a nullable leg (ProfileData.EnableHeadTracking). The port,
-        // the FreeTrack toggle and the two ranges are global.
+        // (global load, profile apply, the user). Each input has an authored
+        // nullable profile opinion. The port and the two ranges are global.
 
         private bool _headTrackingEnabled;
 
-        /// <summary>Head tracking (issue #355): adds the Head Tracker row fed
-        /// by OpenTrack's UDP output and the FreeTrack 2.0 shared memory. Off
-        /// by default. The engine sweep reads the runtime flag this mirrors.</summary>
+        /// <summary>Enables OpenTrack UDP input independently of FreeTrack.</summary>
         public bool HeadTrackingEnabled
         {
             get => _headTrackingEnabled;
@@ -316,9 +313,9 @@ namespace PadForge.ViewModels
             _resetHeadTrackingPortCommand ??= new RelayCommand(() =>
                 HeadTrackingUdpPort = PadForge.Common.Input.HeadTrackingRuntime.DefaultUdpPort);
 
-        private bool _headTrackingFreeTrack = true;
+        private bool _headTrackingFreeTrack;
 
-        /// <summary>Whether the FreeTrack 2.0 shared memory is read as well.</summary>
+        /// <summary>Enables FreeTrack 2.0 shared memory input independently of UDP.</summary>
         public bool HeadTrackingFreeTrack
         {
             get => _headTrackingFreeTrack;

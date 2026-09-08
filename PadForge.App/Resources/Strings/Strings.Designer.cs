@@ -2641,6 +2641,8 @@ public class Strings : INotifyPropertyChanged
     public string Dashboard_HeadTrackingEnable => Get("Dashboard_HeadTrackingEnable");
     public string Dashboard_HeadTrackingEnable_Tooltip => Get("Dashboard_HeadTrackingEnable_Tooltip");
     public string Dashboard_HeadTrackingFreeTrack => Get("Dashboard_HeadTrackingFreeTrack");
+    public string HeadTracker_StatusFreeTrackUnavailable => Get("HeadTracker_StatusFreeTrackUnavailable");
+    public string HeadTracker_StatusFreeTrackWaiting => Get("HeadTracker_StatusFreeTrackWaiting");
     public string Dashboard_HeadTrackingFreeTrack_Tooltip => Get("Dashboard_HeadTrackingFreeTrack_Tooltip");
     public string Dashboard_HeadTrackingPort => Get("Dashboard_HeadTrackingPort");
     public string Dashboard_HeadTrackingPort_Tooltip => Get("Dashboard_HeadTrackingPort_Tooltip");

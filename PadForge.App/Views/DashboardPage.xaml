@@ -1794,10 +1794,12 @@
                     <TextBlock Text="{Binding Dashboard_HeadTrackingDesc, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
                     <CheckBox Content="{Binding Dashboard_HeadTrackingEnable, Source={x:Static strings:Strings.Instance}}"
+                              x:Name="HeadTrackingUdpCheckBox"
                               ToolTip="{Binding Dashboard_HeadTrackingEnable_Tooltip, Source={x:Static strings:Strings.Instance}}"
                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                               IsChecked="{Binding HeadTrackingEnabled}" Margin="0,0,0,8"/>
                     <CheckBox Content="{Binding Dashboard_HeadTrackingFreeTrack, Source={x:Static strings:Strings.Instance}}"
+                              x:Name="HeadTrackingFreeTrackCheckBox"
                               ToolTip="{Binding Dashboard_HeadTrackingFreeTrack_Tooltip, Source={x:Static strings:Strings.Instance}}"
                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                               IsChecked="{Binding HeadTrackingFreeTrack}" Margin="0,0,0,8"/>
@@ -1815,8 +1817,10 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <TextBlock Text="{Binding Dashboard_HeadTrackingPort, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
+                                   IsEnabled="{Binding HeadTrackingEnabled}"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,8"/>
-                        <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,8">
+                        <StackPanel x:Name="HeadTrackingUdpPortControls" Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,8"
+                                    IsEnabled="{Binding HeadTrackingEnabled}">
                             <ui:NumberBox Value="{Binding HeadTrackingUdpPort, Mode=TwoWay}"
                                           Minimum="1" Maximum="65535"
                                           SpinButtonPlacementMode="Inline" Width="200"

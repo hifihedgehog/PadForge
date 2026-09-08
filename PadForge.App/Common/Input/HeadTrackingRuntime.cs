@@ -9,7 +9,7 @@ namespace PadForge.Common.Input
     /// the poll thread's device sweep and by the device on every read.
     ///
     /// <para><see cref="Version"/> bumps on a change that needs the row
-    /// reopened (the UDP port, the FreeTrack toggle). The two ranges are
+    /// reopened (either input toggle or an active UDP port). The two ranges are
     /// read live on every poll, so a range edit takes effect at once.</para>
     /// </summary>
     internal static class HeadTrackingRuntime
@@ -20,18 +20,24 @@ namespace PadForge.Common.Input
 
         private static volatile bool _enabled;
         private static volatile int _udpPort = DefaultUdpPort;
-        private static volatile bool _freeTrackEnabled = true;
+        private static volatile bool _freeTrackEnabled;
         private static volatile int _rotationRangeDeg = DefaultRotationRangeDeg;
         private static volatile int _translationRangeCm = DefaultTranslationRangeCm;
         private static volatile int _version;
 
-        /// <summary>The Dashboard toggle. Off by default: no device row, no
-        /// socket, no file mapping, no thread.</summary>
+        /// <summary>The UDP input toggle. FreeTrack is enabled independently.</summary>
         public static bool Enabled
         {
             get => _enabled;
-            set => _enabled = value;
+            set
+            {
+                if (_enabled == value) return;
+                _enabled = value;
+                _version++;
+            }
         }
+
+        public static bool AnyEnabled => _enabled || _freeTrackEnabled;
 
         /// <summary>UDP port OpenTrack's "UDP over network" output sends to.</summary>
         public static int UdpPort
@@ -42,11 +48,11 @@ namespace PadForge.Common.Input
                 int v = Math.Clamp(value, 1, 65535);
                 if (_udpPort == v) return;
                 _udpPort = v;
-                _version++;
+                if (_enabled) _version++;
             }
         }
 
-        /// <summary>Whether the FreeTrack 2.0 shared memory is read as well.</summary>
+        /// <summary>Whether FreeTrack 2.0 shared memory input is enabled.</summary>
         public static bool FreeTrackEnabled
         {
             get => _freeTrackEnabled;

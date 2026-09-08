@@ -22,15 +22,15 @@ namespace PadForge.Common.Input
     /// The Head Tracker device row (issue #355): a synthetic
     /// <see cref="ISdlInputDevice"/> with six absolute axes fed by OpenTrack's
     /// "UDP over network" output and by the FreeTrack 2.0 shared memory,
-    /// both at once. The <see cref="SystemMotionDevice"/> shape: a source
+    /// individually or together. The <see cref="SystemMotionDevice"/> shape: a source
     /// publishes under a lock and the poll reads a pooled clone.
     ///
     /// <para>UDP: a socket on every interface at the configured port, one
     /// receive thread, 48-byte datagrams decoded by
     /// <see cref="HeadPose.TryDecodeOpenTrackUdp"/>. FreeTrack: the
     /// <c>FT_SharedMem</c> mapping polled from the read path, a new pose
-    /// recognized by its DataID changing. The two carry the same pose from
-    /// the same tracker, so interleaving them is harmless.</para>
+    /// recognized by its DataID changing. The most recent pose supplies
+    /// the shared six-axis state.</para>
     ///
     /// <para>Silence. A tracker that stops (OpenTrack closed, the camera lost
     /// the face) must not leave a stick pinned: after <see cref="SilenceMs"/>
@@ -66,7 +66,10 @@ namespace PadForge.Common.Input
         private long _samples;
 
         private readonly int _port;
+        private readonly bool _udpEnabled;
         private readonly bool _freeTrackEnabled;
+        private readonly Func<FreeTrackReader> _freeTrackFactory;
+        private readonly Action<int> _configureFirewall;
         private Socket _socket;
         private Thread _thread;
         private volatile bool _running;
@@ -93,13 +96,25 @@ namespace PadForge.Common.Input
         public static HeadTrackerDevice FromCurrentSettings()
         {
             int version = HeadTrackingRuntime.Version;
-            return new HeadTrackerDevice(HeadTrackingRuntime.UdpPort, HeadTrackingRuntime.FreeTrackEnabled, version, null);
+            return new HeadTrackerDevice(HeadTrackingRuntime.Enabled, HeadTrackingRuntime.UdpPort,
+                HeadTrackingRuntime.FreeTrackEnabled, version, null);
         }
 
         internal HeadTrackerDevice(int port, bool freeTrack, int configVersion, Func<long> now)
+            : this(true, port, freeTrack, configVersion, now) { }
+
+        internal HeadTrackerDevice(bool udp, int port, bool freeTrack, int configVersion, Func<long> now,
+            Func<FreeTrackReader> freeTrackFactory = null, Action<int> configureFirewall = null)
         {
             _port = port;
+            _udpEnabled = udp;
             _freeTrackEnabled = freeTrack;
+            _freeTrackFactory = freeTrackFactory ?? (() => new FreeTrackReader());
+            _configureFirewall = configureFirewall ?? (p =>
+            {
+                System.Threading.Tasks.Task.Run(() =>
+                    PadForge.Services.WebControllerServer.EnsureInboundFirewallRule(FirewallRuleName, "UDP", p));
+            });
             ConfigVersion = configVersion;
             _now = now ?? (() => Environment.TickCount64);
             Name = "Head Tracker (OpenTrack)";
@@ -161,6 +176,8 @@ namespace PadForge.Common.Input
         // ─── Status, for the Devices page ───
 
         public int UdpPort => _port;
+        public bool UdpEnabled => _udpEnabled;
+        internal int BoundUdpPort => (_socket?.LocalEndPoint as IPEndPoint)?.Port ?? 0;
         public bool UdpBindFailed => _udpBindFailed;
         public bool FreeTrackEnabled => _freeTrackEnabled;
 
@@ -187,47 +204,48 @@ namespace PadForge.Common.Input
 
         // ─── Lifecycle ───
 
-        /// <summary>Binds the UDP socket and opens the FreeTrack mapping.
-        /// Neither blocks. The row opens even when both fail, so the status
+        /// <summary>Opens each enabled input. The row opens even when both
+        /// fail, so the status
         /// line can say why nothing arrives.</summary>
         public bool Open()
         {
             if (_disposed) return false;
-            try
+            if (_udpEnabled)
             {
-                var s = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-                // Suppress ICMP port-unreachable surfacing as a SocketException
-                // on the next receive (the DSU server's rule).
-                try { s.IOControl(SIO_UDP_CONNRESET, new byte[4], null); } catch { }
-                // Exclusive: a second listener (OpenTrack's own UDP tracker
-                // on the same port) must surface as a conflict, not steal
-                // half the datagrams.
-                s.ExclusiveAddressUse = true;
-                s.Bind(new IPEndPoint(IPAddress.Any, _port));
-                _socket = s;
-                _running = true;
-                _thread = new Thread(ReceiveLoop)
+                try
                 {
-                    Name = "PadForge.HeadTrackerUdp",
-                    IsBackground = true,
-                };
-                _thread.Start();
-                SdlDiagLog.WriteLine($"Head tracker: listening on UDP port {_port}");
-                // Best effort, off-thread: netsh can block for seconds.
-                System.Threading.Tasks.Task.Run(() =>
-                    PadForge.Services.WebControllerServer.EnsureInboundFirewallRule(FirewallRuleName, "UDP", _port));
-            }
-            catch (Exception ex)
-            {
-                _udpBindFailed = true;
-                try { _socket?.Dispose(); } catch { }
-                _socket = null;
-                SdlDiagLog.WriteLine($"Head tracker: UDP port {_port} bind failed: {ex.Message}");
+                    var s = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+                    _socket = s;
+                    // Suppress ICMP port-unreachable surfacing as a SocketException
+                    // on the next receive (the DSU server's rule).
+                    try { s.IOControl(SIO_UDP_CONNRESET, new byte[4], null); } catch { }
+                    // Exclusive: a second listener (OpenTrack's own UDP tracker
+                    // on the same port) must surface as a conflict, not steal
+                    // half the datagrams.
+                    s.ExclusiveAddressUse = true;
+                    s.Bind(new IPEndPoint(IPAddress.Any, _port));
+                    _running = true;
+                    _thread = new Thread(ReceiveLoop)
+                    {
+                        Name = "PadForge.HeadTrackerUdp",
+                        IsBackground = true,
+                    };
+                    _thread.Start();
+                    SdlDiagLog.WriteLine($"Head tracker: listening on UDP port {_port}");
+                    _configureFirewall(_port);
+                }
+                catch (Exception ex)
+                {
+                    _udpBindFailed = true;
+                    try { _socket?.Dispose(); } catch { }
+                    _socket = null;
+                    SdlDiagLog.WriteLine($"Head tracker: UDP port {_port} bind failed: {ex.Message}");
+                }
             }
 
             if (_freeTrackEnabled)
             {
-                var ft = new FreeTrackReader();
+                var ft = _freeTrackFactory();
                 if (ft.Open())
                 {
                     _freeTrack = ft;
@@ -412,12 +430,20 @@ namespace PadForge.Common.Input
         private MemoryMappedFile _mmf;
         private MemoryMappedViewAccessor _view;
         private Mutex _mutex;
+        private readonly string _heapName;
+        private readonly string _mutexName;
+
+        internal FreeTrackReader(string heapName = HeapName, string mutexName = MutexName)
+        {
+            _heapName = heapName;
+            _mutexName = mutexName;
+        }
 
         public bool Open()
         {
             try
             {
-                _mmf = MemoryMappedFile.CreateOrOpen(HeapName, HeadPose.FreeTrackHeapBytes, MemoryMappedFileAccess.ReadWrite);
+                _mmf = MemoryMappedFile.CreateOrOpen(_heapName, HeadPose.FreeTrackHeapBytes, MemoryMappedFileAccess.ReadWrite);
                 _view = _mmf.CreateViewAccessor(0, HeadPose.FreeTrackHeapBytes, MemoryMappedFileAccess.Read);
             }
             catch (Exception ex)
@@ -426,7 +452,7 @@ namespace PadForge.Common.Input
                 Dispose();
                 return false;
             }
-            try { _mutex = new Mutex(false, MutexName); }
+            try { _mutex = new Mutex(false, _mutexName); }
             catch { _mutex = null; }
             return true;
         }

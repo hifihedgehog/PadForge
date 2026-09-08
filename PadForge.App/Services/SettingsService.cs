@@ -160,7 +160,7 @@ namespace PadForge.Services
             // See AfterMappingSetsRefreshed for context.
             AfterMappingSetsRefreshed = EnsureMotionRowsForAllSlots;
 
-            // The four service toggles author themselves into the active
+            // The service toggles author themselves into the active
             // profile on a user change: the three mirrors plus head tracking.
             // See OnDashboardServiceToggleChanged.
             _mainVm.Dashboard.PropertyChanged += OnDashboardServiceToggleChanged;
@@ -1928,7 +1928,13 @@ namespace PadForge.Services
 
                     var key = (er.Target ?? "", er.LayerMask ?? "Base");
                     bool preserveMotionSources = MappingSetMigrator.PreservesMotionSources(er);
-                    if (preserveMotionSources) consumedRebuilt.Add(key);
+                    bool preserveAnyDeviceSources = er.Sources?.Any(source => source != null
+                        && (string.IsNullOrEmpty(source.Kind) || string.Equals(source.Kind, "Direct", StringComparison.Ordinal))
+                        && string.IsNullOrEmpty(source.DeviceGuid)
+                        && !string.IsNullOrWhiteSpace(source.Descriptor)) == true;
+                    // Any Device already covers newly assigned devices. Keep the
+                    // authored row instead of adding their legacy default sources.
+                    if (preserveMotionSources || preserveAnyDeviceSources) consumedRebuilt.Add(key);
 
                     // An authoritative set (Workshop import) owns its rows
                     // completely: the rebuilt-from-legacy set contributes
@@ -1939,7 +1945,7 @@ namespace PadForge.Services
                     //
                     // Only Base-layer rows merge with rebuilt; non-Base
                     // (Shift) rows carry forward intact.
-                    if (!current.Authoritative && !preserveMotionSources
+                    if (!current.Authoritative && !preserveMotionSources && !preserveAnyDeviceSources
                         && string.Equals(er.LayerMask ?? "Base", "Base", StringComparison.Ordinal)
                         && rebuiltByKey.TryGetValue(key, out var rrow))
                     {
@@ -2255,7 +2261,6 @@ namespace PadForge.Services
             // saved port.
             _mainVm.Dashboard.HeadTrackingUdpPort = appSettings.HeadTrackingUdpPort > 0
                 ? appSettings.HeadTrackingUdpPort : PadForge.Common.Input.HeadTrackingRuntime.DefaultUdpPort;
-            _mainVm.Dashboard.HeadTrackingFreeTrack = appSettings.HeadTrackingFreeTrack;
             _mainVm.Dashboard.HeadTrackingRotationRange = appSettings.HeadTrackingRotationRange > 0
                 ? appSettings.HeadTrackingRotationRange : PadForge.Common.Input.HeadTrackingRuntime.DefaultRotationRangeDeg;
             _mainVm.Dashboard.HeadTrackingTranslationRange = appSettings.HeadTrackingTranslationRange > 0
@@ -2264,7 +2269,7 @@ namespace PadForge.Services
             // Load web controller server settings.
             PadForge.Services.WebCustomLayoutStore.LoadFrom(appSettings.WebCustomLayoutsJson);
             _mainVm.Dashboard.EnableWebController = appSettings.EnableWebController;
-            // The four service toggles' GLOBAL legs (three mirrors plus the
+            // The service toggles' GLOBAL legs (three mirrors plus the
             // head tracking enable), the value that stands when the active
             // profile has no opinion. Under the guard, or the
             // record-on-change hook would write these into the active
@@ -2277,6 +2282,9 @@ namespace PadForge.Services
                 _mainVm.Dashboard.EnableLightsyncLightbar = appSettings.EnableLightsyncLightbar;
                 _mainVm.Dashboard.EnableSensaHaptics = appSettings.EnableSensaHaptics;
                 _mainVm.Dashboard.HeadTrackingEnabled = appSettings.HeadTrackingEnabled;
+                _mainVm.Dashboard.HeadTrackingFreeTrack = appSettings.HeadTrackingIndependentInputs
+                    ? appSettings.HeadTrackingFreeTrack
+                    : appSettings.HeadTrackingEnabled && appSettings.HeadTrackingFreeTrack;
             }
             finally { _applyingServiceToggles = false; }
             _mainVm.Dashboard.WebControllerPort = appSettings.WebControllerPort > 0
@@ -3645,6 +3653,9 @@ namespace PadForge.Services
         /// </summary>
         internal void LoadProfiles(ProfileData[] profiles, AppSettingsData appSettings)
         {
+            // Read the old FreeTrack preference before its master gate is applied.
+            bool legacyFreeTrack = appSettings?.HeadTrackingFreeTrack ?? _mainVm.Dashboard.HeadTrackingFreeTrack;
+            appSettings?.DefaultProfileSnapshot?.MigrateHeadTrackingInputs(legacyFreeTrack);
             SettingsManager.Profiles.Clear();
             _mainVm.Settings.ProfileItems.Clear();
 
@@ -3665,6 +3676,7 @@ namespace PadForge.Services
                 bool anyProfileCompacted = false;
                 foreach (var p in profiles)
                 {
+                    p?.MigrateHeadTrackingInputs(legacyFreeTrack);
                     SlotAppearancePersistence.ResolveProfile(p, _mainVm.Pads);
                     // Compact gappy profile snapshots in place so the file
                     // heals itself. Profiles saved before compaction-on-delete
@@ -3841,19 +3853,19 @@ namespace PadForge.Services
                     ? active.TouchpadOverlayWidth : 500;
                 _mainVm.Dashboard.TouchpadOverlayHeight = active.TouchpadOverlayHeight > 0
                     ? active.TouchpadOverlayHeight : 250;
-                // The four service toggles ride profiles too, as nullable
+                // The service toggles ride profiles too, as nullable
                 // legs: only a profile with an opinion moves the toggle.
                 ApplyProfileServiceToggles(active);
             }
         }
 
-        /// <summary>True while this service itself writes the four service
+        /// <summary>True while this service itself writes the service
         /// toggles on the Dashboard VM (global load, profile apply), so
         /// <see cref="OnDashboardServiceToggleChanged"/> records only what
         /// the USER changed.</summary>
         private bool _applyingServiceToggles;
 
-        /// <summary>Applies a profile's opinion on the four service toggles
+        /// <summary>Applies a profile's opinion on the service toggles
         /// (Razer Chroma #373, Logitech LIGHTSYNC #382, Razer Sensa #374,
         /// head tracking #355) to the Dashboard VM, whose PropertyChanged
         /// starts or stops the service (the head tracking setter writes the
@@ -3871,6 +3883,9 @@ namespace PadForge.Services
         internal void ApplyProfileServiceToggles(ProfileData profile)
         {
             if (profile == null) return;
+            // Old standalone imports use the current FreeTrack preference.
+            // File loading converts all stored profiles using the original preference.
+            profile.MigrateHeadTrackingInputs(_mainVm.Dashboard.HeadTrackingFreeTrack);
             _applyingServiceToggles = true;
             try
             {
@@ -3882,11 +3897,13 @@ namespace PadForge.Services
                     _mainVm.Dashboard.EnableSensaHaptics = sensa;
                 if (profile.EnableHeadTracking is bool headTracking)
                     _mainVm.Dashboard.HeadTrackingEnabled = headTracking;
+                if (profile.EnableHeadTrackingFreeTrack is bool freeTrack)
+                    _mainVm.Dashboard.HeadTrackingFreeTrack = freeTrack;
             }
             finally { _applyingServiceToggles = false; }
         }
 
-        /// <summary>The AUTHORING leg: a user change of one of the four
+        /// <summary>The AUTHORING leg: a user change of one of the
         /// service toggles while a named profile is active becomes that
         /// profile's opinion, in memory at once (so a foreground switch
         /// inside the autosave window still carries it) and on disk at the
@@ -3914,7 +3931,12 @@ namespace PadForge.Services
                     profile.EnableSensaHaptics = _mainVm.Dashboard.EnableSensaHaptics;
                     break;
                 case nameof(DashboardViewModel.HeadTrackingEnabled):
+                    profile.HeadTrackingIndependentInputs = true;
                     profile.EnableHeadTracking = _mainVm.Dashboard.HeadTrackingEnabled;
+                    break;
+                case nameof(DashboardViewModel.HeadTrackingFreeTrack):
+                    profile.HeadTrackingIndependentInputs = true;
+                    profile.EnableHeadTrackingFreeTrack = _mainVm.Dashboard.HeadTrackingFreeTrack;
                     break;
             }
         }
@@ -4007,7 +4029,7 @@ namespace PadForge.Services
             profile.EnableMenuOverlay = _mainVm.Dashboard.EnableMenuOverlay;
             profile.EnableShiftLayerFlyout = _mainVm.Dashboard.EnableShiftLayerFlyout;
             profile.EnableProfileOverlay = _mainVm.Dashboard.EnableProfileOverlay;
-            // The four service toggles are AUTHORED nullable legs (see
+            // The service toggles are AUTHORED nullable legs (see
             // ProfileData.EnableChromaLightbar): refresh a recorded opinion
             // from the live value, never invent one here. The live value
             // already equals the opinion after apply or record-on-change,
@@ -4020,6 +4042,8 @@ namespace PadForge.Services
                 profile.EnableSensaHaptics = _mainVm.Dashboard.EnableSensaHaptics;
             if (profile.EnableHeadTracking != null)
                 profile.EnableHeadTracking = _mainVm.Dashboard.HeadTrackingEnabled;
+            if (profile.EnableHeadTrackingFreeTrack != null)
+                profile.EnableHeadTrackingFreeTrack = _mainVm.Dashboard.HeadTrackingFreeTrack;
             profile.TouchpadOverlayOpacity = _mainVm.Dashboard.TouchpadOverlayOpacity;
             profile.TouchpadOverlayMonitor = _mainVm.Dashboard.TouchpadOverlayMonitor;
             profile.TouchpadOverlayLeft = _mainVm.Dashboard.TouchpadOverlayLeft;
@@ -4425,6 +4449,7 @@ namespace PadForge.Services
                 EnableLightsyncLightbar = _mainVm.Dashboard.EnableLightsyncLightbar,
                 EnableSensaHaptics = _mainVm.Dashboard.EnableSensaHaptics,
                 HeadTrackingEnabled = _mainVm.Dashboard.HeadTrackingEnabled,
+                HeadTrackingIndependentInputs = true,
                 HeadTrackingUdpPort = _mainVm.Dashboard.HeadTrackingUdpPort,
                 HeadTrackingFreeTrack = _mainVm.Dashboard.HeadTrackingFreeTrack,
                 HeadTrackingRotationRange = _mainVm.Dashboard.HeadTrackingRotationRange,
@@ -5903,20 +5928,22 @@ namespace PadForge.Services
         [XmlElement]
         public bool HandheldButtonsEnabled { get; set; }
 
-        /// <summary>Head tracking (issue #355) master switch, the GLOBAL leg.
-        /// Off by default: no device row, no UDP socket, no FreeTrack
-        /// mapping. This is the value that stands when the active profile
-        /// has no opinion. The per-profile leg is the nullable
-        /// <see cref="ProfileData.EnableHeadTracking"/>. The port, the
-        /// FreeTrack toggle and the two ranges below are global only.</summary>
+        /// <summary>UDP head-tracking input. Older files use this as the master
+        /// switch until HeadTrackingIndependentInputs is written. A profile's
+        /// authored EnableHeadTracking value overrides this input only after migration.</summary>
         [XmlElement]
         public bool HeadTrackingEnabled { get; set; }
+
+        /// <summary>Distinguishes independent inputs from the old master switch.</summary>
+        [XmlElement]
+        public bool HeadTrackingIndependentInputs { get; set; }
 
         /// <summary>UDP port OpenTrack's "UDP over network" output sends to.</summary>
         [XmlElement]
         public int HeadTrackingUdpPort { get; set; } = 4242;
 
-        /// <summary>Whether the FreeTrack 2.0 shared memory is read as well.</summary>
+        /// <summary>FreeTrack input. The initializer preserves the old file default.
+        /// Legacy load applies the old master gate. New saves write the independent value.</summary>
         [XmlElement]
         public bool HeadTrackingFreeTrack { get; set; } = true;
 
@@ -7072,15 +7099,25 @@ namespace PadForge.Services
         [XmlElement]
         public bool? EnableSensaHaptics { get; set; }
 
-        /// <summary>Head tracking (#355), the profile's leg. Same nullable,
-        /// authored contract as <see cref="EnableChromaLightbar"/>: a game
-        /// profile turns the listener on or off, every profile saved before
-        /// the field reads as no opinion, and the global
-        /// AppSettings.HeadTrackingEnabled stands when no profile opines.
-        /// Only the enable rides profiles: the port, the FreeTrack toggle and
-        /// the two ranges stay global.</summary>
+        /// <summary>The authored UDP input opinion. Null leaves the current value alone.
+        /// Older profiles used this as a master switch and are converted once.</summary>
         [XmlElement]
         public bool? EnableHeadTracking { get; set; }
+
+        /// <summary>The authored FreeTrack input opinion. Null leaves it unchanged.</summary>
+        [XmlElement]
+        public bool? EnableHeadTrackingFreeTrack { get; set; }
+
+        [XmlElement]
+        public bool HeadTrackingIndependentInputs { get; set; }
+
+        internal void MigrateHeadTrackingInputs(bool legacyFreeTrack)
+        {
+            if (HeadTrackingIndependentInputs) return;
+            if (EnableHeadTrackingFreeTrack == null && EnableHeadTracking is bool enabled)
+                EnableHeadTrackingFreeTrack = enabled && legacyFreeTrack;
+            HeadTrackingIndependentInputs = true;
+        }
 
         [XmlElement]
         public double TouchpadOverlayOpacity { get; set; } = 0.25;

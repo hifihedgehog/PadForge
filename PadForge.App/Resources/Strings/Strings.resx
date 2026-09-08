@@ -2781,10 +2781,10 @@
   <data name="HeadTracker_Z" xml:space="preserve"><value>Head Z</value></data>
   <data name="Dashboard_HeadTracking" xml:space="preserve"><value>Head Tracking</value></data>
   <data name="Dashboard_HeadTrackingDesc" xml:space="preserve"><value>Reads a head pose from OpenTrack's UDP output or from the FreeTrack 2.0 shared memory and exposes it as six axes on a Head Tracker device: yaw, pitch, roll, and the three translations. Map head yaw to a stick axis to look around while both thumbs stay on the buttons.</value></data>
-  <data name="Dashboard_HeadTrackingEnable" xml:space="preserve"><value>Enable Head Tracking Input</value></data>
-  <data name="Dashboard_HeadTrackingEnable_Tooltip" xml:space="preserve"><value>Adds the Head Tracker row on the Devices page. In OpenTrack, choose the "UDP over network" output and send to 127.0.0.1 on the port below, or choose "freetrack 2.0 Enhanced".</value></data>
-  <data name="Dashboard_HeadTrackingFreeTrack" xml:space="preserve"><value>Also Read FreeTrack 2.0 Shared Memory</value></data>
-  <data name="Dashboard_HeadTrackingFreeTrack_Tooltip" xml:space="preserve"><value>Reads the FT_SharedMem mapping OpenTrack's "freetrack 2.0 Enhanced" output writes. Games that read FreeTrack keep working alongside.</value></data>
+  <data name="Dashboard_HeadTrackingEnable" xml:space="preserve"><value>Enable UDP Tracking Input</value></data>
+  <data name="Dashboard_HeadTrackingEnable_Tooltip" xml:space="preserve"><value>Receive head tracking over UDP. FreeTrack input can be enabled separately.</value></data>
+  <data name="Dashboard_HeadTrackingFreeTrack" xml:space="preserve"><value>Enable FreeTrack 2.0 Shared Memory Input</value></data>
+  <data name="Dashboard_HeadTrackingFreeTrack_Tooltip" xml:space="preserve"><value>Read FreeTrack 2.0 shared memory without requiring UDP. Both inputs can run together.</value></data>
   <data name="Dashboard_HeadTrackingPort" xml:space="preserve"><value>UDP Port</value></data>
   <data name="Dashboard_HeadTrackingPort_Tooltip" xml:space="preserve"><value>The port OpenTrack's "UDP over network" output sends to. OpenTrack's default is 4242.</value></data>
   <data name="Dashboard_HeadTrackingRotationRange" xml:space="preserve"><value>Rotation Range (Degrees)</value></data>
@@ -3614,4 +3614,6 @@ You can retry later from Settings.</value></data>
   <data name="Tablet_Eraser" xml:space="preserve"><value>Pen Eraser</value></data>
   <data name="Tablet_Inverted" xml:space="preserve"><value>Pen Inverted</value></data>
   <data name="Tablet_InRange" xml:space="preserve"><value>Pen In Range</value></data>
+  <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>Waiting for FreeTrack shared memory data.</value></data>
+  <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack shared memory is unavailable.</value></data>
 </root>

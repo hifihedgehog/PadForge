@@ -239,13 +239,19 @@ namespace PadForge.Tests
         public void AConfigChangeBumpsTheVersionSoTheSweepReopens()
         {
             int savedPort = HeadTrackingRuntime.UdpPort;
+            bool savedUdp = HeadTrackingRuntime.Enabled;
             try
             {
+                HeadTrackingRuntime.Enabled = true;
                 using var before = HeadTrackerDevice.FromCurrentSettings();
                 HeadTrackingRuntime.UdpPort = savedPort == 4242 ? 4244 : 4242;
                 Assert.NotEqual(before.ConfigVersion, HeadTrackingRuntime.Version);
             }
-            finally { HeadTrackingRuntime.UdpPort = savedPort; }
+            finally
+            {
+                HeadTrackingRuntime.UdpPort = savedPort;
+                HeadTrackingRuntime.Enabled = savedUdp;
+            }
         }
 
         [Fact]

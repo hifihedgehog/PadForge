@@ -2381,10 +2381,10 @@
   <data name="HeadTracker_Z" xml:space="preserve"><value>頭 Z</value></data>
   <data name="Dashboard_HeadTracking" xml:space="preserve"><value>ヘッド トラッキング</value></data>
   <data name="Dashboard_HeadTrackingDesc" xml:space="preserve"><value>OpenTrack の UDP 出力または FreeTrack 2.0 の共有メモリから頭の姿勢を読み取り、ヘッド トラッカー デバイスの 6 軸（ヨー、ピッチ、ロール、3 方向の移動）として公開します。頭のヨーをスティック軸に割り当てると、両方の親指をボタンに置いたまま周囲を見回せます。</value></data>
-  <data name="Dashboard_HeadTrackingEnable" xml:space="preserve"><value>ヘッド トラッキング入力を有効にする</value></data>
-  <data name="Dashboard_HeadTrackingEnable_Tooltip" xml:space="preserve"><value>デバイス ページにヘッド トラッカーの行を追加します。OpenTrack で「UDP over network」出力を選び、下のポートで 127.0.0.1 に送信するか、「freetrack 2.0 Enhanced」を選んでください。</value></data>
-  <data name="Dashboard_HeadTrackingFreeTrack" xml:space="preserve"><value>FreeTrack 2.0 の共有メモリも読み取る</value></data>
-  <data name="Dashboard_HeadTrackingFreeTrack_Tooltip" xml:space="preserve"><value>OpenTrack の「freetrack 2.0 Enhanced」出力が書き込む FT_SharedMem マッピングを読み取ります。FreeTrack を読むゲームは併用できます。</value></data>
+  <data name="Dashboard_HeadTrackingEnable" xml:space="preserve"><value>UDPトラッキング入力を有効にする</value></data>
+  <data name="Dashboard_HeadTrackingEnable_Tooltip" xml:space="preserve"><value>UDPでヘッドトラッキングを受信します。FreeTrack入力は個別に有効にできます。</value></data>
+  <data name="Dashboard_HeadTrackingFreeTrack" xml:space="preserve"><value>FreeTrack 2.0共有メモリ入力を有効にする</value></data>
+  <data name="Dashboard_HeadTrackingFreeTrack_Tooltip" xml:space="preserve"><value>UDPを使わずにFreeTrack 2.0の共有メモリを読み取ります。両方の入力を同時に使用できます。</value></data>
   <data name="Dashboard_HeadTrackingPort" xml:space="preserve"><value>UDP ポート</value></data>
   <data name="Dashboard_HeadTrackingPort_Tooltip" xml:space="preserve"><value>OpenTrack の「UDP over network」出力の送信先ポート。OpenTrack の既定値は 4242 です。</value></data>
   <data name="Dashboard_HeadTrackingRotationRange" xml:space="preserve"><value>回転範囲（度）</value></data>
@@ -3565,4 +3565,6 @@
   <data name="Tablet_Eraser" xml:space="preserve"><value>ペンの消しゴム</value></data>
   <data name="Tablet_Inverted" xml:space="preserve"><value>ペンを反転</value></data>
   <data name="Tablet_InRange" xml:space="preserve"><value>ペンが検出範囲内</value></data>
+  <data name="HeadTracker_StatusFreeTrackWaiting" xml:space="preserve"><value>FreeTrack共有メモリのデータを待機中。</value></data>
+  <data name="HeadTracker_StatusFreeTrackUnavailable" xml:space="preserve"><value>FreeTrack共有メモリを利用できません。</value></data>
 </root>

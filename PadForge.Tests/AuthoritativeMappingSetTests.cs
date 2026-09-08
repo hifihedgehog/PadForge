@@ -127,12 +127,10 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void LegacyMerge_UnflaggedSet_StillGetsAutomapMerge()
+        public void LegacyMerge_UnflaggedSet_PreservesAnyDeviceAndStillAddsUnconfiguredRows()
         {
-            // Same-window positive control: the identical set without the
-            // flag DOES pick up the device's auto-mapped legacy descriptors
-            // (this is the double-mapping behavior the flag suppresses, and
-            // the proof the merge machinery ran in the test above).
+            // Without set-wide authority, a new target still receives its
+            // default. The authored Any Device row has its own preservation rule.
             ArrangeGamepadOnSlot0();
             SettingsManager.SlotMappingSets[0] = BuildImportedStyleSet(authoritative: false);
 
@@ -141,18 +139,36 @@ namespace PadForge.Tests
             var merged = SettingsManager.SlotMappingSets[0];
             Assert.False(merged.Authoritative);
 
-            // The imported-style row gained the device's automap source ...
             var rowA = merged.Rows.Single(r => r.Target == "ButtonA");
-            Assert.Equal(2, rowA.Sources.Count);
-            Assert.Contains(rowA.Sources, s => s.Descriptor == "Gamepad ButtonA");
-            Assert.Contains(rowA.Sources, s =>
-                s.Descriptor == "Button 0"
-                && string.Equals(s.DeviceGuid, PadGuid.ToString(),
-                    StringComparison.OrdinalIgnoreCase));
+            var any = Assert.Single(rowA.Sources);
+            Assert.Equal("Gamepad ButtonA", any.Descriptor);
+            Assert.True(string.IsNullOrEmpty(any.DeviceGuid));
 
-            // ... and the automap-only target arrived as an appended row.
+            // The automatic-only target is the positive control for the merge.
             var rowB = merged.Rows.Single(r => r.Target == "ButtonB");
             Assert.Contains(rowB.Sources, s => s.Descriptor == "Button 1");
+        }
+
+        [Fact]
+        public void LegacyMerge_NamedSourceStillAllowsANewDevicesDefault()
+        {
+            ArrangeGamepadOnSlot0();
+            SettingsManager.UserDevices.Items.Add(new UserDevice
+            {
+                InstanceGuid = DepartedGuid, ProductName = "Other Gamepad",
+                CapType = InputDeviceType.Gamepad, IsOnline = true,
+            });
+            var other = new UserSetting { InstanceGuid = DepartedGuid, MapTo = 0 };
+            other.SetPadSetting(new PadSetting());
+            SettingsManager.UserSettings.Items.Add(other);
+            var set = BuildImportedStyleSet(authoritative: false);
+            set.Rows[0].Sources[0].DeviceGuid = DepartedGuid.ToString();
+            SettingsManager.SlotMappingSets[0] = set;
+            SettingsService.RefreshMappingSetsFromLegacy();
+            var row = SettingsManager.SlotMappingSets[0].Rows.Single(r => r.Target == "ButtonA");
+            Assert.Equal(2, row.Sources.Count);
+            Assert.Contains(row.Sources, s => s.DeviceGuid == DepartedGuid.ToString());
+            Assert.Contains(row.Sources, s => s.DeviceGuid == PadGuid.ToString() && s.Descriptor == "Button 0");
         }
 
         [Fact]

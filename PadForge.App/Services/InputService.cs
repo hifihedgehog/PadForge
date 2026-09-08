@@ -4815,10 +4815,16 @@ namespace PadForge.Services
             switch (ht.Source)
             {
                 case PadForge.Common.Input.HeadTrackerSource.Udp:
-                    return string.Format(s.HeadTracker_StatusUdp_Format, ht.UdpPeer);
+                    return string.Format(s.HeadTracker_StatusUdp_Format, ht.UdpPeer)
+                        + (ht.FreeTrackFailed ? " " + s.HeadTracker_StatusFreeTrackUnavailable : string.Empty);
                 case PadForge.Common.Input.HeadTrackerSource.FreeTrack:
-                    return s.HeadTracker_StatusFreeTrack;
+                    return s.HeadTracker_StatusFreeTrack
+                        + (ht.UdpEnabled && ht.UdpBindFailed
+                            ? " " + string.Format(s.HeadTracker_StatusPortInUse_Format, ht.UdpPort) : string.Empty);
                 default:
+                    if (!ht.UdpEnabled)
+                        return ht.FreeTrackFailed ? s.HeadTracker_StatusFreeTrackUnavailable
+                            : ht.FreeTrackEnabled ? s.HeadTracker_StatusFreeTrackWaiting : s.Common_Stopped;
                     // Both can fail at once, and hearing about only the port
                     // sends the user looking in the wrong place.
                     if (ht.UdpBindFailed)
@@ -4849,7 +4855,7 @@ namespace PadForge.Services
         {
             var dash = _mainVm.Dashboard;
             var im = _inputManager;
-            var ht = im != null && im.IsRunning && dash.HeadTrackingEnabled ? im.HeadTracker : null;
+            var ht = im != null && im.IsRunning && (dash.HeadTrackingEnabled || dash.HeadTrackingFreeTrack) ? im.HeadTracker : null;
             if (ht == null)
             {
                 if (_headTrackingStatusVersion == HeadTrackingStatusStopped)

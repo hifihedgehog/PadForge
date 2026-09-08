@@ -653,6 +653,15 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _minimizeToTray, value);
         }
 
+        private bool _closeToTray;
+
+        /// <summary>Whether closing the window keeps PadForge running in the system tray.</summary>
+        public bool CloseToTray
+        {
+            get => _closeToTray;
+            set => SetProperty(ref _closeToTray, value);
+        }
+
         private bool _batteryNotifyEnabled = true;
 
         /// <summary>Low-battery notification master toggle (#293), default on.</summary>

@@ -281,6 +281,8 @@
   <data name="Settings_Window" xml:space="preserve"><value>Ventana</value></data>
   <data name="Settings_WindowDesc" xml:space="preserve"><value>Comportamiento de inicio y minimización.</value></data>
   <data name="Settings_MinimizeToTray" xml:space="preserve"><value>Minimizar a la bandeja del sistema</value></data>
+  <data name="Settings_CloseToTray" xml:space="preserve"><value>Cerrar a la bandeja del sistema</value></data>
+  <data name="Settings_CloseToTrayTip" xml:space="preserve"><value>PadForge sigue funcionando al hacer clic en Cerrar o pulsar Alt+F4. Para cerrar el programa, selecciona Salir en el menú de la bandeja del sistema.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Iniciar minimizado</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Ejecutar al iniciar sesión</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>Controlador HidHide</value></data>

@@ -573,6 +573,7 @@ namespace PadForge
                 if (e.PropertyName is nameof(SettingsViewModel.SelectedThemeIndex)
                      or nameof(SettingsViewModel.AutoStartEngine)
                      or nameof(SettingsViewModel.MinimizeToTray)
+                     or nameof(SettingsViewModel.CloseToTray)
                      or nameof(SettingsViewModel.StartMinimized)
                      or nameof(SettingsViewModel.DiagnosticsLoggingEnabled)
                      or nameof(SettingsViewModel.StartAtLogin)
@@ -2527,87 +2528,112 @@ namespace PadForge
         }
 
         private bool _shutdownComplete;
+        private bool _shutdownStarted;
+        private bool _exitRequested;
+
+        internal void PrepareForExit() => _exitRequested = true;
 
         private async void OnClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (_shutdownComplete)
                 return; // Second close call after async shutdown. Let it through.
 
-            // Stop HID arrival notifications first. Shutdown tears down the
-            // virtual controllers, which is itself a burst of device removals
-            // and arrivals, and re-applying the cloak partway through that is
-            // pointless work against state that is being dismantled.
-            if (_hidNotify != IntPtr.Zero)
-            {
-                try { UnregisterDeviceNotification(_hidNotify); } catch { }
-                _hidNotify = IntPtr.Zero;
-            }
-
-            // Cancel the close so the window stays visible during shutdown.
             e.Cancel = true;
+            if (_shutdownStarted) return;
 
-            // Show shutdown overlay and ensure window is visible.
-            ShutdownOverlay.Visibility = System.Windows.Visibility.Visible;
-            if (WindowState == WindowState.Minimized || !IsVisible)
+            if (!_exitRequested && _notifyIcon?.Icon != null && _viewModel.Settings.CloseToTray)
             {
-                try { Show(); } catch (InvalidOperationException) { }
-                WindowState = WindowState.Normal;
+                // Preserve a pending text edit while keeping the engine and timers alive.
+                if (System.Windows.Input.Keyboard.FocusedElement is TextBox trayTextBox)
+                    trayTextBox.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
+                if (_settingsService.IsDirty) _settingsService.Save();
+                _notifyIcon.Visible = true;
+                Hide();
+                return;
             }
 
-            // Commit an in-progress TextBox edit before the dirty check:
-            // closing from the title bar never moves focus, so an
-            // UpdateSourceTrigger=LostFocus Text binding still holds the
-            // typed value and the save below would drop it (the
-            // DevicesPage.IdleDisconnect_LostFocus force-commit pattern).
-            if (System.Windows.Input.Keyboard.FocusedElement is TextBox focusedTb)
-                focusedTb.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
+            _shutdownStarted = true;
 
-            // Save settings synchronously (fast, UI-bound data).
-            if (_settingsService.IsDirty)
-                _settingsService.Save();
-
-            // Stop driver status polling.
-            _driverStatusTimer?.Stop();
-            _driverStatusTimer = null;
-
-            // Cancel any in-flight Workshop update check.
-            _workshopUpdateCts?.Cancel();
-
-            // Stop the SDL event pump BEFORE the disposal Task.Run below reaches
-            // SDL_Quit: the 100ms pump fires SDL_PumpEvents/SDL_UpdateJoysticks on
-            // the UI thread, and left running it races SDL teardown on the worker
-            // thread (undefined SDL concurrency -> intermittent crash-on-exit).
-            _sdlPumpTimer?.Stop();
-            _sdlPumpTimer = null;
-
-            // Dispose tray icon and helper window.
-            if (_notifyIcon != null)
+            try
             {
-                _notifyIcon.Visible = false;
-                _notifyIcon.Dispose();
-                _notifyIcon = null;
+                // Stop HID arrival notifications first. Shutdown tears down the
+                // virtual controllers, which is itself a burst of device removals
+                // and arrivals, and re-applying the cloak partway through that is
+                // pointless work against state that is being dismantled.
+                if (_hidNotify != IntPtr.Zero)
+                {
+                    try { UnregisterDeviceNotification(_hidNotify); } catch { }
+                    _hidNotify = IntPtr.Zero;
+                }
+
+                // Show shutdown overlay and ensure window is visible.
+                ShutdownOverlay.Visibility = System.Windows.Visibility.Visible;
+                if (WindowState == WindowState.Minimized || !IsVisible)
+                {
+                    try { Show(); } catch (InvalidOperationException) { }
+                    WindowState = WindowState.Normal;
+                }
+
+                // Commit an in-progress TextBox edit before the dirty check:
+                // closing from the title bar never moves focus, so an
+                // UpdateSourceTrigger=LostFocus Text binding still holds the
+                // typed value and the save below would drop it (the
+                // DevicesPage.IdleDisconnect_LostFocus force-commit pattern).
+                if (System.Windows.Input.Keyboard.FocusedElement is TextBox focusedTb)
+                    focusedTb.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
+
+                // Save settings synchronously (fast, UI-bound data).
+                if (_settingsService.IsDirty)
+                    _settingsService.Save();
+
+                // Stop driver status polling.
+                _driverStatusTimer?.Stop();
+                _driverStatusTimer = null;
+
+                // Cancel any in-flight Workshop update check.
+                _workshopUpdateCts?.Cancel();
+
+                // Stop the SDL event pump BEFORE the disposal Task.Run below reaches
+                // SDL_Quit: the 100ms pump fires SDL_PumpEvents/SDL_UpdateJoysticks on
+                // the UI thread, and left running it races SDL teardown on the worker
+                // thread (undefined SDL concurrency -> intermittent crash-on-exit).
+                _sdlPumpTimer?.Stop();
+                _sdlPumpTimer = null;
+
+                // Dispose tray icon and helper window.
+                if (_notifyIcon != null)
+                {
+                    _notifyIcon.Visible = false;
+                    _notifyIcon.Dispose();
+                    _notifyIcon = null;
+                }
+                if (_trayMenuHost != null)
+                {
+                    _trayMenuHost.Close();
+                    _trayMenuHost = null;
+                }
+
+                // Unwire device service.
+                _deviceService?.UnwireEvents();
+
+                // Run the slow shutdown work (controller disposal, Extended node removal) off the UI thread.
+                await System.Threading.Tasks.Task.Run(() =>
+                {
+                    _recorderService?.Dispose();
+                    _inputService?.Dispose();
+                    Common.Input.MidiInputRuntime.Shutdown();
+                    Common.Input.MidiVirtualController.Shutdown();
+                });
+
+                // All done — close for real.
+                _shutdownComplete = true;
+                Close();
             }
-            if (_trayMenuHost != null)
+            catch
             {
-                _trayMenuHost.Close();
-                _trayMenuHost = null;
+                _shutdownStarted = false;
+                throw;
             }
-
-            // Unwire device service.
-            _deviceService?.UnwireEvents();
-
-            // Run the slow shutdown work (controller disposal, Extended node removal) off the UI thread.
-            await System.Threading.Tasks.Task.Run(() =>
-            {
-                _recorderService?.Dispose();
-                _inputService?.Dispose();
-                Common.Input.MidiInputRuntime.Shutdown();
-                Common.Input.MidiVirtualController.Shutdown();
-            });
-
-            // All done — close for real.
-            _shutdownComplete = true;
-            Close();
         }
 
         // ─────────────────────────────────────────────
@@ -7363,7 +7389,12 @@ namespace PadForge
             {
                 Header = Strings.Instance.Tray_Exit,
             };
-            exitItem.Click += (s, e) => { _notifyIcon.Visible = false; Close(); };
+            exitItem.Click += (s, e) =>
+            {
+                PrepareForExit();
+                if (_notifyIcon != null) _notifyIcon.Visible = false;
+                Close();
+            };
             menu.Items.Add(exitItem);
 
             menu.IsOpen = true;

@@ -281,6 +281,8 @@
   <data name="Settings_Window" xml:space="preserve"><value>Janela</value></data>
   <data name="Settings_WindowDesc" xml:space="preserve"><value>Comportamento de inicialização e minimização.</value></data>
   <data name="Settings_MinimizeToTray" xml:space="preserve"><value>Minimizar para a Bandeja do Sistema</value></data>
+  <data name="Settings_CloseToTray" xml:space="preserve"><value>Fechar para a Bandeja do Sistema</value></data>
+  <data name="Settings_CloseToTrayTip" xml:space="preserve"><value>O PadForge continua em execução ao clicar em Fechar ou pressionar Alt+F4. Para encerrar o programa, selecione Sair no menu da bandeja do sistema.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Iniciar Minimizado</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Iniciar com o Windows</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>Driver HidHide</value></data>

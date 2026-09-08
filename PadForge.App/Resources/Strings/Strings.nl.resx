@@ -281,6 +281,8 @@
   <data name="Settings_Window" xml:space="preserve"><value>Venster</value></data>
   <data name="Settings_WindowDesc" xml:space="preserve"><value>Opstart- en minimaliseergedrag.</value></data>
   <data name="Settings_MinimizeToTray" xml:space="preserve"><value>Minimaliseren naar systeemvak</value></data>
+  <data name="Settings_CloseToTray" xml:space="preserve"><value>Bij sluiten naar systeemvak</value></data>
+  <data name="Settings_CloseToTrayTip" xml:space="preserve"><value>PadForge blijft actief als u op Sluiten klikt of Alt+F4 indrukt. Kies Afsluiten in het systeemvakmenu om het programma af te sluiten.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Geminimaliseerd starten</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Starten bij aanmelding</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide-stuurprogramma</value></data>

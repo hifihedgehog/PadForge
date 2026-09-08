@@ -485,6 +485,8 @@ public class Strings : INotifyPropertyChanged
     public string Settings_Window => Get("Settings_Window");
     public string Settings_WindowDesc => Get("Settings_WindowDesc");
     public string Settings_MinimizeToTray => Get("Settings_MinimizeToTray");
+    public string Settings_CloseToTray => Get("Settings_CloseToTray");
+    public string Settings_CloseToTrayTip => Get("Settings_CloseToTrayTip");
     public string Settings_StartMinimized => Get("Settings_StartMinimized");
     public string Settings_StartAtLogin => Get("Settings_StartAtLogin");
     public string Settings_HidHide => Get("Settings_HidHide");

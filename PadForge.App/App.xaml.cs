@@ -600,7 +600,7 @@ namespace PadForge
             {
                 _suppressedErrorCount++;
                 if (!_startupUiReady)
-                    Shutdown(1);
+                    ShutdownAfterStartupError();
                 return;
             }
 
@@ -612,7 +612,7 @@ namespace PadForge
             {
                 _suppressedErrorCount++;
                 if (!_startupUiReady)
-                    Shutdown(1);
+                    ShutdownAfterStartupError();
                 return;
             }
 
@@ -635,7 +635,21 @@ namespace PadForge
             // running until the user finds it in Task Manager (v4.0.0
             // light-theme launch crash). Nothing to keep alive. Exit.
             if (!_startupUiReady)
-                Shutdown(1);
+                ShutdownAfterStartupError();
+        }
+
+        private void ShutdownAfterStartupError()
+        {
+            (MainWindow as PadForge.MainWindow)?.PrepareForExit();
+            Shutdown(1);
+        }
+
+        protected override void OnSessionEnding(SessionEndingCancelEventArgs e)
+        {
+            base.OnSessionEnding(e);
+            // WPF shuts down after an accepted session-ending request.
+            if (!e.Cancel)
+                (MainWindow as PadForge.MainWindow)?.PrepareForExit();
         }
 
         private static bool IsGpuLostException(Exception ex)

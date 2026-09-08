@@ -281,6 +281,8 @@
   <data name="Settings_Window" xml:space="preserve"><value>Fenster</value></data>
   <data name="Settings_WindowDesc" xml:space="preserve"><value>Start- und Minimierungsverhalten.</value></data>
   <data name="Settings_MinimizeToTray" xml:space="preserve"><value>In den Infobereich minimieren</value></data>
+  <data name="Settings_CloseToTray" xml:space="preserve"><value>Beim Schließen in den Infobereich minimieren</value></data>
+  <data name="Settings_CloseToTrayTip" xml:space="preserve"><value>PadForge läuft weiter, wenn Sie auf Schließen klicken oder Alt+F4 drücken. Wählen Sie Beenden im Infobereich-Menü, um das Programm zu beenden.</value></data>
   <data name="Settings_StartMinimized" xml:space="preserve"><value>Minimiert starten</value></data>
   <data name="Settings_StartAtLogin" xml:space="preserve"><value>Bei Anmeldung starten</value></data>
   <data name="Settings_HidHide" xml:space="preserve"><value>HidHide-Treiber</value></data>

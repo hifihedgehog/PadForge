@@ -2101,6 +2101,7 @@ namespace PadForge.Services
             vm.RefreshTrustedPeers(RemoteLink.Trust?.Peers);
             vm.AutoStartEngine = appSettings.AutoStartEngine;
             vm.MinimizeToTray = appSettings.MinimizeToTray;
+            vm.CloseToTray = appSettings.CloseToTray;
             vm.BatteryNotifyEnabled = appSettings.BatteryNotifyEnabled;
             vm.BatteryNotifyThreshold = appSettings.BatteryNotifyThreshold;
             vm.BatteryNotifyVibrate = appSettings.BatteryNotifyVibrate;
@@ -4385,6 +4386,7 @@ namespace PadForge.Services
                 RemoteLinkPeers = RemoteLink?.Trust?.Peers?.ToArray(),
                 AutoStartEngine = vm.AutoStartEngine,
                 MinimizeToTray = vm.MinimizeToTray,
+                CloseToTray = vm.CloseToTray,
                 BatteryNotifyEnabled = vm.BatteryNotifyEnabled,
                 BatteryNotifyThreshold = vm.BatteryNotifyThreshold,
                 BatteryNotifyVibrate = vm.BatteryNotifyVibrate,
@@ -5978,6 +5980,9 @@ namespace PadForge.Services
 
         [XmlElement]
         public bool MinimizeToTray { get; set; }
+
+        [XmlElement]
+        public bool CloseToTray { get; set; }
 
         /// <summary>Low-battery notification (#293): edge-triggered balloon +
         /// status line, optional identify buzz on the device.</summary>

@@ -130,8 +130,8 @@ namespace PadForge.Services
 
         /// <summary>The pure PSM-patch policy (issue #199 crash safety +
         /// the 2026-07-24 DsHidMini coexistence audit). Returns whether
-        /// PadForge takes sole ownership of arming (AutoEnableFilter=0)
-        /// and whether patching should be on.
+        /// PadForge disables driver auto-arming (AutoEnableFilter=0)
+        /// and whether the normal policy requests patching.
         ///
         /// <para>With DsHidMini installed, that stack IS the system's DS3
         /// story and its pads connect only while BthPS3 patching is armed.
@@ -257,10 +257,8 @@ namespace PadForge.Services
             finally
             {
                 PadForge.Common.Input.Ds3DirectService.AllowReconnect();
-                // Reconcile PSM patching to the post-ceremony reality (issue
-                // #199). Install armed patching for the ceremony; on success a
-                // DS3 is now paired so it stays armed, and on any failure exit
-                // with no DS3 paired it disarms so BthPS3 doesn't sit exposed.
+                // Reconcile after every outcome using the current paired
+                // records, durable PS3-family nodes, and DsHidMini policy.
                 ReconcilePsmPatchForCrashSafety("ds3-pair-end");
             }
         }
@@ -710,16 +708,12 @@ namespace PadForge.Services
                     byte[] radio = ReadRadioMac();
                     if (radio != null) Ds3DriverInstaller.DeleteRememberedDeviceRecord(radio, ds3Mac, _log);
                 }
-                // Do NOT force-remove the BthPS3 PDO node. dev.Remove() frees the driver's
-                // per-connection context out of band; the radio cycle then drops the link
-                // and BthPS3's remote-disconnect callback dereferences the freed context
-                // -> BSOD 0xD1 (2026-07-09, confirmed in the crash dump). The cycle alone
-                // drives BthPS3's normal in-order disconnect against a VALID context, the
-                // same path a real power-off takes, and the transient PDO self-destroys.
+                // Avoid forced PDO removal during unpairing. Leave teardown
+                // to the driver's disconnect path. The July crash analysis
+                // does not establish that a radio cycle protects all callbacks.
                 CycleRadio();
                 _log("Pairing cleared.");
-                // A DS3 was just forgotten. If none remain, disarm PSM patching
-                // so BthPS3 goes dormant (issue #199 crash mitigation).
+                // Recheck all PS3-family policy inputs after removing the record.
                 ReconcilePsmPatchForCrashSafety("ds3-unpair");
             }
         }
@@ -730,8 +724,8 @@ namespace PadForge.Services
         /// device-list Remove action, where only the pad's VID/PID is known (the SDL
         /// virtual joystick carries no serial/MAC). Enumerates BTHPORT's device list for
         /// records with the DS3 VID/PID and drops each one's record + link-key anchor,
-        /// then cycles the radio once (which drives BthPS3's own in-order disconnect of a
-        /// still-connected pad). A machine with two DS3s clears both; that is acceptable
+        /// then cycles the radio once to disconnect a still-connected pad.
+        /// A machine with two DS3s clears both; that is acceptable
         /// for a "forget" action and is logged.
         /// </summary>
         public int UnpairAllDs3()
@@ -784,14 +778,11 @@ namespace PadForge.Services
             if (radio != null)
                 foreach (string mac in macs)
                     Ds3DriverInstaller.DeleteRememberedDeviceRecord(radio, mac, _log);
-            // No forced PDO node removal: dev.Remove() frees BthPS3's per-connection
-            // context, and the cycle's HCI disconnect then faults on it (BSOD 0xD1,
-            // 2026-07-09). The cycle alone disconnects the live pad through BthPS3's
-            // normal path against a VALID context.
+            // Leave PDO teardown to the driver's disconnect path. Avoid the
+            // extra forced-removal operation from the July crash investigation.
             CycleRadio();
             _log($"Unpaired {macs.Count} DualShock 3 controller(s).");
-            // With these records gone, reconcile PSM patching: disarm it if
-            // no DS3 remains paired (issue #199 crash mitigation).
+            // Reconcile the remaining records, durable nodes, and DsHidMini policy.
             ReconcilePsmPatchForCrashSafety("ds3-unpair-all");
             return macs.Count;
           }

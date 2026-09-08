@@ -1351,12 +1351,10 @@ namespace PadForge.Services
                 return true;
             }, timeoutMs, 500);
 
-        // NOTE: there is deliberately no "remove the BthPS3 PDO node" helper. Forcibly
-        // removing the raw PDO with PnP (dev.Remove()) frees BthPS3's per-connection
-        // context out from under BTHport, and the next HCI disconnect faults on it
-        // (BSOD 0xD1, BthPS3.sys, 2026-07-09). The PDO is transient: it self-destroys
-        // when the pad disconnects, which the radio cycle triggers through BthPS3's own
-        // in-order path against a valid context.
+        // Leave the transient PDO's removal to BthPS3's disconnect path.
+        // Forced removal adds teardown churn to the operation investigated
+        // after the July 9 crash. A radio cycle does not establish lifetime
+        // protection for outstanding callbacks (#204).
 
         // ── BR/EDR link-key anchor (remembered-device persistence) ────────────────
 
@@ -1733,16 +1731,11 @@ namespace PadForge.Services
                 key.SetValue("RawPDO", 1, RegistryValueKind.DWord);       // enumerate with no function driver
                 key.SetValue("ExclusivePDO", 0, RegistryValueKind.DWord); // allow our shared open
             }
-            // AutoEnableFilter=0 hands PadForge sole ownership of PSM patching
-            // (issue #199 crash mitigation). BthPS3's default (1) auto-arms
-            // patching at radio power-up AND re-arms it ~10 s after it denies a
-            // foreign device (BthPS3 L2CAP.Connect.c:242, the exact re-arm seen
-            // in the 2026-07-10 crash log at 12:29:04). With it off, the filter
-            // only patches when PadForge's SetPsmPatching enables it, so BthPS3
-            // receives zero incoming connections whenever no DS3 is in play and
-            // its use-after-free-on-disconnect path (upstream #48, unfixed at
-            // v2.10.470.0) is unreachable. AutoDisableFilter stays default (1):
-            // deny-then-off is a fail-safe we keep.
+            // AutoEnableFilter=0 disables BthPS3's automatic arming on its
+            // next load (Bluetooth.Context.c:279-311). The running driver
+            // keeps its cached setting, and another consumer can still arm
+            // the filter. PSM-off affects new requests, not existing channels
+            // or callbacks. AutoDisableFilter keeps its default value.
             //
             // NOT on a DsHidMini system (audit 2026-07-24, lens 1r): the
             // coexistence policy says PadForge never owns arming there,
@@ -1773,10 +1766,11 @@ namespace PadForge.Services
         /// a UMDF driver (its INF's AddService entries are the generic WUDFRd /
         /// mshidumdf reflector, dshidmini.inf), so there is no "dshidmini"
         /// service key to probe. Gates the PSM-patch crash policy: a DsHidMini
-        /// system's DS3s connect through BthPS3 patching, so PadForge must never
-        /// disarm it there (the 2026-07-24 coexistence audit: the startup disarm
+        /// system's DS3s connect through BthPS3 patching, so the normal policy
+        /// keeps it armed there. Wii pairing can temporarily pause it.
+        /// The 2026-07-24 coexistence audit found that startup disarming
         /// was breaking foreign DsHidMini setups whose pads leave no BTHPORT
-        /// VID/PID record for AnyDs3Paired to find).</para>
+        /// VID/PID record for AnyDs3Paired to find.</para>
         ///
         /// <para>What is NOT a marker, and used to be: the driver's config root
         /// at %ProgramData%\DsHidMini. That directory is created by the driver

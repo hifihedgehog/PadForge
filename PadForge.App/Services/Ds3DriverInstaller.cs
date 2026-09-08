@@ -1086,11 +1086,10 @@ namespace PadForge.Services
         private static extern bool UpdateDriverForPlugAndPlayDevices(
             IntPtr hwndParent, string hardwareId, string fullInfPath, uint installFlags, out bool rebootRequired);
 
-        // Two radio cycles overlapping is a path into the BthPS3 freed-context BSOD
-        // (0xD1, 2026-07-09). Ds3PairingService._radioGate serializes the pair/unpair
-        // SEQUENCES; this lock serializes the cycle PRIMITIVE itself, so a caller
-        // outside the gate (e.g. the one-time driver install) can't overlap a gated
-        // cycle either.
+        // Serialize the radio-cycle operation, including calls made outside
+        // Ds3PairingService._radioGate during driver installation. This gate
+        // is part of the July 9 mitigation. It does not control BthPS3's
+        // callback lifetimes.
         private static readonly object _cycleLock = new object();
 
         /// <summary><para>Every setup class a docked DS3 can occupy. A device node's

@@ -48,10 +48,9 @@ namespace PadForge.Services
         public Ds3PairingService(Action<string> log = null)
             => _log = msg => { LogLine(msg); log?.Invoke(msg); };
 
-        // Serializes every operation that touches the Bluetooth radio (pair, unpair).
-        // Two radio cycles overlapping, or a cycle racing another teardown, is a path
-        // into the same freed-context crash the forced PDO removal caused
-        // (BthPS3.sys BSOD 0xD1, 2026-07-09). One radio op at a time, always.
+        // Serialize pairing and unpairing sequences that cycle the radio.
+        // This gate is part of the mitigation added after the July 9 crash.
+        // The dump does not establish the allocation/free sequence.
         private static readonly object _radioGate = new();
 
         /// <summary>Pairing narration goes to the in-memory diagnostics

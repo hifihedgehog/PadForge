@@ -3582,17 +3582,12 @@ Puedes volver a intentarlo más tarde desde Configuración.</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Restablecer zona muerta central (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Restablecer vibración por ángulo de dirección</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Perfil</value></data>
-  <data name="ResetLabel_Key" xml:space="preserve"><value>Tecla</value></data>
-  <data name="ResetLabel_Label" xml:space="preserve"><value>Etiqueta</value></data>
-  <data name="ResetLabel_GainPercent" xml:space="preserve"><value>Ganancia (%)</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Superficies de entrada</value></data>
   <data name="ResetLabel_OutputChannel" xml:space="preserve"><value>Canal de salida</value></data>
   <data name="ResetLabel_Formula" xml:space="preserve"><value>Fórmula</value></data>
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>Entrada de subida</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>Entrada de bajada</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>Entrada modificadora</value></data>
-  <data name="ResetLabel_RangeStart" xml:space="preserve"><value>Inicio del rango</value></data>
-  <data name="ResetLabel_RangeEnd" xml:space="preserve"><value>Fin del rango</value></data>
   <data name="ResetLabel_SourceType" xml:space="preserve"><value>Tipo de fuente</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>Color de nivel bajo</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>Color de nivel medio</value></data>

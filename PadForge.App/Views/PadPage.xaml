@@ -7238,13 +7238,11 @@
                                                     Width="200" VerticalAlignment="Center"/>
                                                 <TextBox Text="{Binding DeadZone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzValueEdit}"/>
-                                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="DeadZone" SettingLabel="{Binding ResetLabel_RangeStart, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_TriggerConfigItem_DeadZone_7049" Margin="4,0,8,0"/>
                                                 <TextBlock Text="—" VerticalAlignment="Center" Margin="2,0"
                                                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                                 <TextBox Text="{Binding MaxRange, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzValueEdit}"/>
                                                 <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="MaxRange" SettingLabel="{Binding ResetLabel_RangeEnd, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_TriggerConfigItem_MaxRange_7053" Margin="4,0,8,0"/>
                                                 <TextBox Text="{Binding DeadZoneDigit, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzDigitEdit}"/>
                                                 <TextBlock Text="—" VerticalAlignment="Center" Margin="2,0"
@@ -8185,10 +8183,8 @@
                                         Minimum="0" Maximum="255"
                                         Width="200" VerticalAlignment="Center"/>
                                     <TextBox Text="{Binding DeviceConfig.LeftStartPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
-                                    <reset:SettingResetButton Command="{Binding DeviceConfig.ResetSettingCommand}" CommandParameter="LeftStartPosition" SettingLabel="{Binding ResetLabel_RangeStart, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DeviceSlotConfig_LeftStartPosition_7985" Margin="4,0,8,0"/>
                                     <TextBlock Text="—" VerticalAlignment="Center" Margin="2,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                     <TextBox Text="{Binding DeviceConfig.LeftEndPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
-                                    <reset:SettingResetButton Command="{Binding DeviceConfig.ResetSettingCommand}" CommandParameter="LeftEndPosition" SettingLabel="{Binding ResetLabel_RangeEnd, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DeviceSlotConfig_LeftEndPosition_7987" Margin="4,0,8,0"/>
                                     <ui:Button Command="{Binding DeviceConfig.ResetLeftRangeCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetRange, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <!-- Strength -->
@@ -8390,10 +8386,8 @@
                                         Minimum="0" Maximum="255"
                                         Width="200" VerticalAlignment="Center"/>
                                     <TextBox Text="{Binding DeviceConfig.RightStartPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
-                                    <reset:SettingResetButton Command="{Binding DeviceConfig.ResetSettingCommand}" CommandParameter="RightStartPosition" SettingLabel="{Binding ResetLabel_RangeStart, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DeviceSlotConfig_RightStartPosition_8188" Margin="4,0,8,0"/>
                                     <TextBlock Text="—" VerticalAlignment="Center" Margin="2,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                     <TextBox Text="{Binding DeviceConfig.RightEndPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource DzValueEdit}"/>
-                                    <reset:SettingResetButton Command="{Binding DeviceConfig.ResetSettingCommand}" CommandParameter="RightEndPosition" SettingLabel="{Binding ResetLabel_RangeEnd, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DeviceSlotConfig_RightEndPosition_8190" Margin="4,0,8,0"/>
                                     <ui:Button Command="{Binding DeviceConfig.ResetRightRangeCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Pad_ResetRange, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                                 <!-- Strength -->
@@ -11679,7 +11673,6 @@
                                               Content="{Binding Pad_Audio_Mirror, Source={x:Static strings:Strings.Instance}}"
                                               ToolTip="{Binding Pad_Audio_Mirror_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                               VerticalAlignment="Center"/>
-                                    <reset:SettingResetButton Command="{Binding DeviceConfig.ResetSettingCommand}" CommandParameter="AudioPassthroughEnabled" SettingLabel="{Binding Pad_Audio_Mirror, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DeviceSlotConfig_AudioPassthroughEnabled_11459" Margin="4,0,8,0"/>
                                     <ui:Button Command="{Binding ResetAudioMirrorCommand}" Style="{StaticResource ResetButton}"
                                             ToolTip="{Binding Pad_ResetAudioMirror, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
@@ -12103,7 +12096,6 @@
                                                   Content="{Binding Pad_Audio_Eq, Source={x:Static strings:Strings.Instance}}"
                                                   ToolTip="{Binding Pad_Audio_Eq_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                                   IsChecked="{Binding DeviceConfig.AudioEqEnabled, Mode=TwoWay}"/>
-                                        <reset:SettingResetButton Command="{Binding DeviceConfig.ResetSettingCommand}" CommandParameter="AudioEqEnabled" SettingLabel="{Binding Pad_Audio_Eq, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DeviceSlotConfig_AudioEqEnabled_11882" Margin="4,0,8,0"/>
                                         <ui:Button Command="{Binding ResetEqCommand}" Style="{StaticResource ResetButton}"
                                                    ToolTip="{Binding Pad_Audio_Reset_Eq, Source={x:Static strings:Strings.Instance}}"/>
                                     </StackPanel>
@@ -12237,7 +12229,6 @@
                                                   Content="{Binding Pad_Audio_Limiter, Source={x:Static strings:Strings.Instance}}"
                                                   ToolTip="{Binding Pad_Audio_Limiter_Tooltip, Source={x:Static strings:Strings.Instance}}"
                                                   IsChecked="{Binding DeviceConfig.AudioLimiterEnabled, Mode=TwoWay}"/>
-                                        <reset:SettingResetButton Command="{Binding DeviceConfig.ResetSettingCommand}" CommandParameter="AudioLimiterEnabled" SettingLabel="{Binding Pad_Audio_Limiter, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DeviceSlotConfig_AudioLimiterEnabled_12000" Margin="4,0,8,0"/>
                                         <ui:Button Command="{Binding ResetLimiterCommand}" Style="{StaticResource ResetButton}"
                                                    ToolTip="{Binding Pad_Audio_Reset_Limiter, Source={x:Static strings:Strings.Instance}}"/>
                                     </StackPanel>
@@ -12518,26 +12509,20 @@
                                         <WrapPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                                             <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Mouse_LeftClick, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,2,10,2"
                                                       IsChecked="{Binding MouseGestureButtonLeft, Mode=TwoWay}" IsEnabled="{Binding DataContext.MouseGesturesEnabled, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
-                                            <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="MouseGestureButtonLeft" SettingLabel="{Binding Mouse_LeftClick, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_MouseGestureButtonLeft_12280" Margin="4,0,8,0"/>
                                             <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Mouse_MiddleClick, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,2,10,2"
                                                       IsChecked="{Binding MouseGestureButtonMiddle, Mode=TwoWay}" IsEnabled="{Binding DataContext.MouseGesturesEnabled, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
-                                            <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="MouseGestureButtonMiddle" SettingLabel="{Binding Mouse_MiddleClick, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_MouseGestureButtonMiddle_12282" Margin="4,0,8,0"/>
                                             <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Mouse_RightClick, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,2,10,2"
                                                       IsChecked="{Binding MouseGestureButtonRight, Mode=TwoWay}" IsEnabled="{Binding DataContext.MouseGesturesEnabled, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
-                                            <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="MouseGestureButtonRight" SettingLabel="{Binding Mouse_RightClick, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_MouseGestureButtonRight_12284" Margin="4,0,8,0"/>
                                             <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="X1" VerticalAlignment="Center" Margin="0,2,10,2"
                                                       IsChecked="{Binding MouseGestureButtonX1, Mode=TwoWay}" IsEnabled="{Binding DataContext.MouseGesturesEnabled, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
-                                            <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="MouseGestureButtonX1" SettingLabel="X1" AutomationProperties.AutomationId="Reset_PadViewModel_MouseGestureButtonX1_12286" Margin="4,0,8,0"/>
                                             <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="X2" VerticalAlignment="Center" Margin="0,2,10,2"
                                                       IsChecked="{Binding MouseGestureButtonX2, Mode=TwoWay}" IsEnabled="{Binding DataContext.MouseGesturesEnabled, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
-                                            <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="MouseGestureButtonX2" SettingLabel="X2" AutomationProperties.AutomationId="Reset_PadViewModel_MouseGestureButtonX2_12288" Margin="4,0,8,0"/>
                                             <!-- Custom activation (discussion #216): a sixth gesture
                                                  button armed by a recorded input from ANY device
                                                  (key, gamepad button, pedal) instead of the mouse. -->
                                             <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Mapping_MouseGestureCustom, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,2,10,2"
                                                       IsChecked="{Binding MouseGestureButtonCustom, Mode=TwoWay}"
                                                       ToolTip="{Binding Pad_MouseGestures_Custom_Tooltip, Source={x:Static strings:Strings.Instance}}" IsEnabled="{Binding DataContext.MouseGesturesEnabled, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
-                                            <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="MouseGestureButtonCustom" SettingLabel="{Binding Mapping_MouseGestureCustom, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_PadViewModel_MouseGestureButtonCustom_12294"/>
                                         </WrapPanel>
                                         <ui:Button Grid.Column="2" Command="{Binding ResetMouseGestureButtonCommand}" Style="{StaticResource ResetButton}"
                                                 VerticalAlignment="Center"
@@ -13127,12 +13112,10 @@
                                     <ui:NumberBox Width="200" Minimum="1" Maximum="20" SmallChange="1"
                                                   ToolTip="{Binding Menu_Cells_Tip, Source={x:Static strings:Strings.Instance}}"
                                                   Value="{Binding CellCount, Mode=TwoWay}"/>
-                                    <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="CellCount" SettingLabel="{Binding Menu_Cells, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MenuEditorItem_CellCount_12882" Margin="4,0,8,0"/>
                                     <CheckBox Content="{Binding Menu_HasCenter, Source={x:Static strings:Strings.Instance}}"
                                               ToolTip="{Binding Menu_HasCenter_Tip, Source={x:Static strings:Strings.Instance}}"
                                               IsChecked="{Binding HasCenter}" Margin="12,0,0,0" VerticalAlignment="Center"
                                               Visibility="{Binding IsRadial, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                                    <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="HasCenter" SettingLabel="{Binding Menu_HasCenter, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MenuEditorItem_HasCenter_12886" Margin="4,0,8,0"/>
                                     <ui:Button Command="{Binding ResetCellsCommand}" Style="{StaticResource ResetButton}" Margin="6,0,0,0" ToolTip="{Binding Menu_Reset_Cells, Source={x:Static strings:Strings.Instance}}"/>
                                 </StackPanel>
                             </Grid>
@@ -13297,7 +13280,6 @@
                                                 <TextBox Text="{Binding Label, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Width="160"
                                                          ToolTip="{Binding Menu_CellLabel_Tip, Source={x:Static strings:Strings.Instance}}"/>
-                                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="Label" SettingLabel="{Binding ResetLabel_Label, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MenuCellItem_Label_13042" Margin="4,0,8,0"/>
                                                 <ComboBox MinWidth="140" Margin="8,0,0,0"
                                                           common:ComboBoxWidthBehavior.SizeToItems="True"
                                                           common:ComboBoxWidthBehavior.WidthGroup="MenuCellKindCombos"
@@ -13305,7 +13287,6 @@
                                                           ItemsSource="{Binding BindingKindOptions}"
                                                           DisplayMemberPath="Label" SelectedValuePath="Value"
                                                           SelectedValue="{Binding BindingKind, Mode=TwoWay}"/>
-                                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="BindingKind" SettingLabel="{Binding Macro_ActionType, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MenuCellItem_BindingKind_13049" Margin="4,0,8,0"/>
                                                 <ComboBox MinWidth="140" Margin="8,0,0,0"
                                                           common:ComboBoxWidthBehavior.SizeToItems="True"
                                                           common:ComboBoxWidthBehavior.WidthGroup="MenuCellKeyCombos"
@@ -13313,7 +13294,6 @@
                                                           DisplayMemberPath="Label" SelectedValuePath="Vk"
                                                           SelectedValue="{Binding SelectedKeyVk, Mode=TwoWay}"
                                                           Visibility="{Binding ShowKeyPicker, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="SelectedKeyVk" SettingLabel="{Binding ResetLabel_Key, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MenuCellItem_SelectedKeyVk_13056" Margin="4,0,8,0"/>
                                                 <ComboBox MinWidth="140" Margin="8,0,0,0"
                                                           common:ComboBoxWidthBehavior.SizeToItems="True"
                                                           common:ComboBoxWidthBehavior.WidthGroup="MenuCellButtonCombos"
@@ -13321,7 +13301,6 @@
                                                           DisplayMemberPath="Label" SelectedValuePath="Value"
                                                           SelectedValue="{Binding SelectedButtonFlag, Mode=TwoWay}"
                                                           Visibility="{Binding ShowButtonPicker, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="SelectedButtonFlag" SettingLabel="{Binding Pad_Shift_KindButton, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MenuCellItem_SelectedButtonFlag_13063" Margin="4,0,8,0"/>
                                                 <!-- #390 macro cells: the slot's macros, with the
                                                      stale-name marked entry per the never-lie rule. -->
                                                 <ComboBox MinWidth="140" Margin="8,0,0,0"
@@ -13332,7 +13311,6 @@
                                                           DisplayMemberPath="Label" SelectedValuePath="Descriptor"
                                                           SelectedValue="{Binding SelectedMacroName, Mode=TwoWay}"
                                                           Visibility="{Binding ShowMacroPicker, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="SelectedMacroName" SettingLabel="{Binding Menu_Binding_Macro, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MenuCellItem_SelectedMacroName_13073" Margin="4,0,8,0"/>
                                                 <!-- #390 custom icons: pack entries, image files,
                                                      or clear, via the shared picker dialog. -->
                                                 <ui:Button Click="MenuCellChooseIcon_Click" Margin="6,0,0,0"
@@ -13506,7 +13484,6 @@
                                                               Width="270" VerticalAlignment="Center"
                                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                                               ToolTip="{Binding Pad_RumbleAudio_VoiceEnable_Tooltip, Source={x:Static strings:Strings.Instance}}" IsEnabled="{Binding DataContext.RumbleAudioEnabled, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
-                                                    <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="Enabled" SettingLabel="{Binding Common_Enabled, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_RumbleAudioVoiceItem_Enabled_13246" Margin="4,0,8,0"/>
                                                     <Slider Value="{Binding FrequencyHz, Mode=TwoWay}" Minimum="20" Maximum="120"
                                                             Width="140" VerticalAlignment="Center"
                                                             IsSnapToTickEnabled="True" TickFrequency="1"
@@ -13515,7 +13492,6 @@
                                                              Style="{StaticResource DzValueEdit}"
                                                              ToolTip="{Binding Pad_RumbleAudio_Frequency_Tooltip, Source={x:Static strings:Strings.Instance}}" IsEnabled="{Binding DataContext.RumbleAudioEnabled, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
                                                     <TextBlock Text="Hz" Style="{StaticResource DzPercent}"/>
-                                                    <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="FrequencyHz" SettingLabel="{Binding Pad_AT_Frequency, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_RumbleAudioVoiceItem_FrequencyHz_13250" Margin="4,0,8,0"/>
                                                     <Slider Value="{Binding GainPercent, Mode=TwoWay}" Minimum="0" Maximum="100"
                                                             Width="140" VerticalAlignment="Center" Margin="12,0,0,0"
                                                             IsSnapToTickEnabled="True" TickFrequency="1"
@@ -13524,7 +13500,6 @@
                                                              Style="{StaticResource DzValueEdit}"
                                                              ToolTip="{Binding Pad_RumbleAudio_Gain_Tooltip, Source={x:Static strings:Strings.Instance}}" IsEnabled="{Binding DataContext.RumbleAudioEnabled, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
                                                     <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
-                                                    <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="GainPercent" SettingLabel="{Binding ResetLabel_GainPercent, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_RumbleAudioVoiceItem_GainPercent_13258" Margin="4,0,8,0"/>
                                                     <ProgressBar Value="{Binding MeterLevel, Mode=OneWay}"
                                                                  Minimum="0" Maximum="100"
                                                                  Width="80" Height="8" VerticalAlignment="Center" Margin="12,0,0,0"

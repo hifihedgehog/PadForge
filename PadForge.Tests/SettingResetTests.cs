@@ -22,6 +22,98 @@ public class SettingResetTests
 {
     private sealed record ResetBinding(string File, string Id, string Owner, string Property);
 
+    [Theory]
+    [InlineData("ResetAudioMirrorCommand", "DeviceConfig.AudioPassthroughEnabled")]
+    [InlineData("ResetEqCommand", "DeviceConfig.AudioEqEnabled")]
+    [InlineData("ResetLimiterCommand", "DeviceConfig.AudioLimiterEnabled")]
+    [InlineData("ResetRangeCommand", "DeadZone")]
+    [InlineData("DeviceConfig.ResetLeftRangeCommand", "DeviceConfig.LeftStartPosition")]
+    [InlineData("DeviceConfig.ResetRightRangeCommand", "DeviceConfig.RightStartPosition")]
+    [InlineData("ResetCellsCommand", "CellCount")]
+    [InlineData("ResetCellCommand", "BindingKind")]
+    [InlineData("ResetMouseGestureButtonCommand", "MouseGestureButtonLeft")]
+    [InlineData("ResetCommand", "FrequencyHz")]
+    public void ExistingResetRowsKeepOneResetAction(string command, string input)
+    {
+        var root = new DirectoryInfo(AppContext.BaseDirectory);
+        while (root != null && !Directory.Exists(Path.Combine(root.FullName, "PadForge.App"))) root = root.Parent;
+        Assert.NotNull(root);
+        var document = XDocument.Load(Path.Combine(root.FullName, "PadForge.App", "Views", "PadPage.xaml"));
+        var reset = Assert.Single(document.Descendants(), n => (string)n.Attribute("Command") == "{Binding " + command + "}");
+        var row = reset.Parent;
+        Assert.Contains(row.Descendants().Attributes(), a => a.Value.StartsWith("{Binding " + input + ",", StringComparison.Ordinal)
+            || a.Value == "{Binding " + input + "}");
+        Assert.Single(row.Descendants(), n => n.Name.LocalName == "SettingResetButton"
+            || ((string)n.Attribute("Style"))?.Contains("ResetButton", StringComparison.Ordinal) == true);
+        Assert.False(string.IsNullOrWhiteSpace((string)reset.Attribute("ToolTip")));
+    }
+
+    [Fact]
+    public void AudioRowResetsUseTheSelectedConfigurationAndKeepTheirScope()
+    {
+        var vm = new PadViewModel(0);
+        var previous = vm.DeviceConfig;
+        previous.AudioPassthroughEnabled = true;
+        previous.AudioLimiterEnabled = false;
+        previous.AudioEqEnabled = true;
+        var mirrorReset = vm.ResetAudioMirrorCommand;
+        var limiterReset = vm.ResetLimiterCommand;
+        var eqReset = vm.ResetEqCommand;
+        var cfg = new DeviceSlotConfig();
+        vm.DeviceConfig = cfg;
+        cfg.AudioPassthroughEnabled = true;
+        cfg.AudioLimiterEnabled = false;
+        cfg.AudioLimiterCeiling = 75;
+        cfg.AudioEqEnabled = true;
+        cfg.AudioEqPreampDb = 6;
+        vm.AddEqBandCommand.Execute(null);
+        Assert.NotEmpty(vm.EqBands);
+        Assert.NotEmpty(cfg.AudioEqBands);
+
+        mirrorReset.Execute(null);
+        Assert.False(cfg.AudioPassthroughEnabled);
+        Assert.False(cfg.AudioLimiterEnabled);
+        Assert.True(cfg.AudioEqEnabled);
+        limiterReset.Execute(null);
+        Assert.True(cfg.AudioLimiterEnabled);
+        Assert.Equal(75, cfg.AudioLimiterCeiling);
+        Assert.True(cfg.AudioEqEnabled);
+        eqReset.Execute(null);
+        Assert.False(cfg.AudioEqEnabled);
+        Assert.Equal(0, cfg.AudioEqPreampDb);
+        Assert.Empty(vm.EqBands);
+        Assert.Empty(cfg.AudioEqBands);
+        Assert.Equal(75, cfg.AudioLimiterCeiling);
+        Assert.True(previous.AudioPassthroughEnabled);
+        Assert.False(previous.AudioLimiterEnabled);
+        Assert.True(previous.AudioEqEnabled);
+    }
+
+    [Fact]
+    public void RangeRowResetsCoverBothRepresentationsAndPreserveOtherSettings()
+    {
+        var trigger = new TriggerConfigItem(0, "Left Trigger") { DeadZone = 18, MaxRange = 80, AntiDeadZone = 7 };
+        trigger.ResetRangeCommand.Execute(null);
+        Assert.Equal(0, trigger.DeadZone);
+        Assert.Equal(0, trigger.DeadZoneDigit);
+        Assert.Equal(100, trigger.MaxRange);
+        Assert.Equal(65535, trigger.MaxRangeDigit);
+        Assert.Equal(7, trigger.AntiDeadZone);
+
+        var cfg = new DeviceSlotConfig { LeftStartPosition = 40, LeftEndPosition = 90,
+            RightStartPosition = 50, RightEndPosition = 100, LeftStrength = 150, RightStrength = 160 };
+        cfg.ResetLeftRangeCommand.Execute(null);
+        Assert.Equal(0, cfg.LeftStartPosition);
+        Assert.Equal(255, cfg.LeftEndPosition);
+        Assert.Equal(50, cfg.RightStartPosition);
+        Assert.Equal(100, cfg.RightEndPosition);
+        cfg.ResetRightRangeCommand.Execute(null);
+        Assert.Equal(0, cfg.RightStartPosition);
+        Assert.Equal(255, cfg.RightEndPosition);
+        Assert.Equal(150, cfg.LeftStrength);
+        Assert.Equal(160, cfg.RightStrength);
+    }
+
     [Fact]
     public void EveryGenericResetBindingUsesItsOwnersWhitelist()
     {

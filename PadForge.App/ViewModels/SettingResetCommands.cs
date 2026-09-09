@@ -329,13 +329,7 @@ namespace PadForge.ViewModels
             nameof(ImpulseSwapTriggers) or
             nameof(AtVibrationToImpulse) or
             nameof(ConstantTriggerForceEnabled) or
-            nameof(AudioRumbleTriggersEnabled) or
-            nameof(MouseGestureButtonLeft) or
-            nameof(MouseGestureButtonMiddle) or
-            nameof(MouseGestureButtonRight) or
-            nameof(MouseGestureButtonX1) or
-            nameof(MouseGestureButtonX2) or
-            nameof(MouseGestureButtonCustom);
+            nameof(AudioRumbleTriggersEnabled);
 
         private void ResetSetting(string name)
         {
@@ -401,36 +395,6 @@ namespace PadForge.ViewModels
                     AudioRumbleTriggersEnabled = false;
                     break;
                 }
-                case nameof(MouseGestureButtonLeft):
-                {
-                    MouseGestureButtonLeft = false;
-                    break;
-                }
-                case nameof(MouseGestureButtonMiddle):
-                {
-                    MouseGestureButtonMiddle = false;
-                    break;
-                }
-                case nameof(MouseGestureButtonRight):
-                {
-                    MouseGestureButtonRight = false;
-                    break;
-                }
-                case nameof(MouseGestureButtonX1):
-                {
-                    MouseGestureButtonX1 = true;
-                    break;
-                }
-                case nameof(MouseGestureButtonX2):
-                {
-                    MouseGestureButtonX2 = false;
-                    break;
-                }
-                case nameof(MouseGestureButtonCustom):
-                {
-                    MouseGestureButtonCustom = false;
-                    break;
-                }
                 default: return;
             }
             // Refresh pending editor text even when the stored value was already the default.
@@ -445,57 +409,15 @@ namespace PadForge.ViewModels
             _resetSettingCommand ??= new RelayCommand<string>(ResetSetting, CanResetSetting);
 
         internal static bool CanResetSetting(string name) => name is
-            nameof(LeftStartPosition) or
-            nameof(LeftEndPosition) or
-            nameof(RightStartPosition) or
-            nameof(RightEndPosition) or
-            nameof(MicLedFollowDeviceId) or
-            nameof(AudioPassthroughEnabled) or
-            nameof(AudioEqEnabled) or
-            nameof(AudioLimiterEnabled);
+            nameof(MicLedFollowDeviceId);
 
         private void ResetSetting(string name)
         {
             switch (name)
             {
-                case nameof(LeftStartPosition):
-                {
-                    LeftStartPosition = 0;
-                    break;
-                }
-                case nameof(LeftEndPosition):
-                {
-                    LeftEndPosition = 255;
-                    break;
-                }
-                case nameof(RightStartPosition):
-                {
-                    RightStartPosition = 0;
-                    break;
-                }
-                case nameof(RightEndPosition):
-                {
-                    RightEndPosition = 255;
-                    break;
-                }
                 case nameof(MicLedFollowDeviceId):
                 {
                     MicLedFollowDeviceId = string.Empty;
-                    break;
-                }
-                case nameof(AudioPassthroughEnabled):
-                {
-                    AudioPassthroughEnabled = false;
-                    break;
-                }
-                case nameof(AudioEqEnabled):
-                {
-                    AudioEqEnabled = false;
-                    break;
-                }
-                case nameof(AudioLimiterEnabled):
-                {
-                    AudioLimiterEnabled = true;
                     break;
                 }
                 default: return;
@@ -852,9 +774,7 @@ namespace PadForge.ViewModels
             nameof(PosXPercent) or
             nameof(PosYPercent) or
             nameof(ScalePercent) or
-            nameof(OpacityPercent) or
-            nameof(CellCount) or
-            nameof(HasCenter);
+            nameof(OpacityPercent);
 
         private void ResetSetting(string name)
         {
@@ -890,16 +810,6 @@ namespace PadForge.ViewModels
                     OpacityPercent = 90;
                     break;
                 }
-                case nameof(CellCount):
-                {
-                    CellCount = 4;
-                    break;
-                }
-                case nameof(HasCenter):
-                {
-                    HasCenter = false;
-                    break;
-                }
                 default: return;
             }
             // Refresh pending editor text even when the stored value was already the default.
@@ -914,12 +824,7 @@ namespace PadForge.ViewModels
             _resetSettingCommand ??= new RelayCommand<string>(ResetSetting, CanResetSetting);
 
         internal static bool CanResetSetting(string name) => name is
-            nameof(IconScalePercent) or
-            nameof(Label) or
-            nameof(BindingKind) or
-            nameof(SelectedKeyVk) or
-            nameof(SelectedButtonFlag) or
-            nameof(SelectedMacroName);
+            nameof(IconScalePercent);
 
         private void ResetSetting(string name)
         {
@@ -930,75 +835,10 @@ namespace PadForge.ViewModels
                     IconScalePercent = 100;
                     break;
                 }
-                case nameof(Label):
-                {
-                    Label = "";
-                    break;
-                }
-                case nameof(BindingKind):
-                {
-                    BindingKind = 0;
-                    break;
-                }
-                case nameof(SelectedKeyVk):
-                {
-                    SelectedKeyVk = 0;
-                    break;
-                }
-                case nameof(SelectedButtonFlag):
-                {
-                    SelectedButtonFlag = 0;
-                    break;
-                }
-                case nameof(SelectedMacroName):
-                {
-                    SelectedMacroName = "";
-                    break;
-                }
                 default: return;
             }
             // Refresh pending editor text even when the stored value was already the default.
             OnPropertyChanged(name);
-        }
-    }
-
-    public partial class PadViewModel
-    {
-        public partial class RumbleAudioVoiceItem
-        {
-            private RelayCommand<string> _resetSettingCommand;
-            public RelayCommand<string> ResetSettingCommand =>
-                _resetSettingCommand ??= new RelayCommand<string>(ResetSetting, CanResetSetting);
-
-            internal static bool CanResetSetting(string name) => name is
-                nameof(Enabled) or
-                nameof(FrequencyHz) or
-                nameof(GainPercent);
-
-            private void ResetSetting(string name)
-            {
-                switch (name)
-                {
-                    case nameof(Enabled):
-                    {
-                        Enabled = true;
-                        break;
-                    }
-                    case nameof(FrequencyHz):
-                    {
-                        FrequencyHz = PadForge.Engine.Data.RumbleAudioConfig.DefaultFrequencyHz[_index];
-                        break;
-                    }
-                    case nameof(GainPercent):
-                    {
-                        GainPercent = 100;
-                        break;
-                    }
-                    default: return;
-                }
-                // Refresh pending editor text even when the stored value was already the default.
-                OnPropertyChanged(name);
-            }
         }
     }
 
@@ -1107,37 +947,6 @@ namespace PadForge.ViewModels
                 // Refresh pending editor text even when the stored value was already the default.
                 OnPropertyChanged(name);
             }
-        }
-    }
-
-    public partial class TriggerConfigItem
-    {
-        private RelayCommand<string> _resetSettingCommand;
-        public RelayCommand<string> ResetSettingCommand =>
-            _resetSettingCommand ??= new RelayCommand<string>(ResetSetting, CanResetSetting);
-
-        internal static bool CanResetSetting(string name) => name is
-            nameof(DeadZone) or
-            nameof(MaxRange);
-
-        private void ResetSetting(string name)
-        {
-            switch (name)
-            {
-                case nameof(DeadZone):
-                {
-                    DeadZone = 0;
-                    break;
-                }
-                case nameof(MaxRange):
-                {
-                    MaxRange = 100;
-                    break;
-                }
-                default: return;
-            }
-            // Refresh pending editor text even when the stored value was already the default.
-            OnPropertyChanged(name);
         }
     }
 

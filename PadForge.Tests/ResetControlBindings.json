@@ -847,18 +847,6 @@
   },
   {
     "File": "PadForge.App/Views/PadPage.xaml",
-    "Id": "Reset_TriggerConfigItem_DeadZone_7049",
-    "Owner": "PadForge.ViewModels.TriggerConfigItem",
-    "Property": "DeadZone"
-  },
-  {
-    "File": "PadForge.App/Views/PadPage.xaml",
-    "Id": "Reset_TriggerConfigItem_MaxRange_7053",
-    "Owner": "PadForge.ViewModels.TriggerConfigItem",
-    "Property": "MaxRange"
-  },
-  {
-    "File": "PadForge.App/Views/PadPage.xaml",
     "Id": "Reset_PadViewModel_TriggerRumbleFold_7249",
     "Owner": "PadForge.ViewModels.PadViewModel",
     "Property": "TriggerRumbleFold"
@@ -880,30 +868,6 @@
     "Id": "Reset_PadViewModel_AudioRumbleEnabled_7522",
     "Owner": "PadForge.ViewModels.PadViewModel",
     "Property": "AudioRumbleEnabled"
-  },
-  {
-    "File": "PadForge.App/Views/PadPage.xaml",
-    "Id": "Reset_DeviceSlotConfig_LeftStartPosition_7985",
-    "Owner": "PadForge.ViewModels.DeviceSlotConfig",
-    "Property": "LeftStartPosition"
-  },
-  {
-    "File": "PadForge.App/Views/PadPage.xaml",
-    "Id": "Reset_DeviceSlotConfig_LeftEndPosition_7987",
-    "Owner": "PadForge.ViewModels.DeviceSlotConfig",
-    "Property": "LeftEndPosition"
-  },
-  {
-    "File": "PadForge.App/Views/PadPage.xaml",
-    "Id": "Reset_DeviceSlotConfig_RightStartPosition_8188",
-    "Owner": "PadForge.ViewModels.DeviceSlotConfig",
-    "Property": "RightStartPosition"
-  },
-  {
-    "File": "PadForge.App/Views/PadPage.xaml",
-    "Id": "Reset_DeviceSlotConfig_RightEndPosition_8190",
-    "Owner": "PadForge.ViewModels.DeviceSlotConfig",
-    "Property": "RightEndPosition"
   },
   {
     "File": "PadForge.App/Views/PadPage.xaml",
@@ -937,18 +901,6 @@
   },
   {
     "File": "PadForge.App/Views/PadPage.xaml",
-    "Id": "Reset_DeviceSlotConfig_AudioPassthroughEnabled_11459",
-    "Owner": "PadForge.ViewModels.DeviceSlotConfig",
-    "Property": "AudioPassthroughEnabled"
-  },
-  {
-    "File": "PadForge.App/Views/PadPage.xaml",
-    "Id": "Reset_DeviceSlotConfig_AudioEqEnabled_11882",
-    "Owner": "PadForge.ViewModels.DeviceSlotConfig",
-    "Property": "AudioEqEnabled"
-  },
-  {
-    "File": "PadForge.App/Views/PadPage.xaml",
     "Id": "Reset_EqBandVm_Enabled_11933",
     "Owner": "PadForge.ViewModels.EqBandVm",
     "Property": "Enabled"
@@ -979,63 +931,9 @@
   },
   {
     "File": "PadForge.App/Views/PadPage.xaml",
-    "Id": "Reset_DeviceSlotConfig_AudioLimiterEnabled_12000",
-    "Owner": "PadForge.ViewModels.DeviceSlotConfig",
-    "Property": "AudioLimiterEnabled"
-  },
-  {
-    "File": "PadForge.App/Views/PadPage.xaml",
-    "Id": "Reset_PadViewModel_MouseGestureButtonLeft_12280",
-    "Owner": "PadForge.ViewModels.PadViewModel",
-    "Property": "MouseGestureButtonLeft"
-  },
-  {
-    "File": "PadForge.App/Views/PadPage.xaml",
-    "Id": "Reset_PadViewModel_MouseGestureButtonMiddle_12282",
-    "Owner": "PadForge.ViewModels.PadViewModel",
-    "Property": "MouseGestureButtonMiddle"
-  },
-  {
-    "File": "PadForge.App/Views/PadPage.xaml",
-    "Id": "Reset_PadViewModel_MouseGestureButtonRight_12284",
-    "Owner": "PadForge.ViewModels.PadViewModel",
-    "Property": "MouseGestureButtonRight"
-  },
-  {
-    "File": "PadForge.App/Views/PadPage.xaml",
-    "Id": "Reset_PadViewModel_MouseGestureButtonX1_12286",
-    "Owner": "PadForge.ViewModels.PadViewModel",
-    "Property": "MouseGestureButtonX1"
-  },
-  {
-    "File": "PadForge.App/Views/PadPage.xaml",
-    "Id": "Reset_PadViewModel_MouseGestureButtonX2_12288",
-    "Owner": "PadForge.ViewModels.PadViewModel",
-    "Property": "MouseGestureButtonX2"
-  },
-  {
-    "File": "PadForge.App/Views/PadPage.xaml",
-    "Id": "Reset_PadViewModel_MouseGestureButtonCustom_12294",
-    "Owner": "PadForge.ViewModels.PadViewModel",
-    "Property": "MouseGestureButtonCustom"
-  },
-  {
-    "File": "PadForge.App/Views/PadPage.xaml",
     "Id": "Reset_MenuEditorItem_Enabled_12483",
     "Owner": "PadForge.ViewModels.MenuEditorItem",
     "Property": "Enabled"
-  },
-  {
-    "File": "PadForge.App/Views/PadPage.xaml",
-    "Id": "Reset_MenuEditorItem_CellCount_12882",
-    "Owner": "PadForge.ViewModels.MenuEditorItem",
-    "Property": "CellCount"
-  },
-  {
-    "File": "PadForge.App/Views/PadPage.xaml",
-    "Id": "Reset_MenuEditorItem_HasCenter_12886",
-    "Owner": "PadForge.ViewModels.MenuEditorItem",
-    "Property": "HasCenter"
   },
   {
     "File": "PadForge.App/Views/PadPage.xaml",
@@ -1072,54 +970,6 @@
     "Id": "Reset_MenuCellItem_IconScalePercent_13029",
     "Owner": "PadForge.ViewModels.MenuCellItem",
     "Property": "IconScalePercent"
-  },
-  {
-    "File": "PadForge.App/Views/PadPage.xaml",
-    "Id": "Reset_MenuCellItem_Label_13042",
-    "Owner": "PadForge.ViewModels.MenuCellItem",
-    "Property": "Label"
-  },
-  {
-    "File": "PadForge.App/Views/PadPage.xaml",
-    "Id": "Reset_MenuCellItem_BindingKind_13049",
-    "Owner": "PadForge.ViewModels.MenuCellItem",
-    "Property": "BindingKind"
-  },
-  {
-    "File": "PadForge.App/Views/PadPage.xaml",
-    "Id": "Reset_MenuCellItem_SelectedKeyVk_13056",
-    "Owner": "PadForge.ViewModels.MenuCellItem",
-    "Property": "SelectedKeyVk"
-  },
-  {
-    "File": "PadForge.App/Views/PadPage.xaml",
-    "Id": "Reset_MenuCellItem_SelectedButtonFlag_13063",
-    "Owner": "PadForge.ViewModels.MenuCellItem",
-    "Property": "SelectedButtonFlag"
-  },
-  {
-    "File": "PadForge.App/Views/PadPage.xaml",
-    "Id": "Reset_MenuCellItem_SelectedMacroName_13073",
-    "Owner": "PadForge.ViewModels.MenuCellItem",
-    "Property": "SelectedMacroName"
-  },
-  {
-    "File": "PadForge.App/Views/PadPage.xaml",
-    "Id": "Reset_RumbleAudioVoiceItem_Enabled_13246",
-    "Owner": "PadForge.ViewModels.PadViewModel+RumbleAudioVoiceItem",
-    "Property": "Enabled"
-  },
-  {
-    "File": "PadForge.App/Views/PadPage.xaml",
-    "Id": "Reset_RumbleAudioVoiceItem_FrequencyHz_13250",
-    "Owner": "PadForge.ViewModels.PadViewModel+RumbleAudioVoiceItem",
-    "Property": "FrequencyHz"
-  },
-  {
-    "File": "PadForge.App/Views/PadPage.xaml",
-    "Id": "Reset_RumbleAudioVoiceItem_GainPercent_13258",
-    "Owner": "PadForge.ViewModels.PadViewModel+RumbleAudioVoiceItem",
-    "Property": "GainPercent"
   },
   {
     "File": "PadForge.App/Views/ProfilesPage.xaml",

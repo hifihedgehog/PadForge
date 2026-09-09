@@ -3582,17 +3582,12 @@
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>中央のデッドゾーンを戻す（2%）</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>ステアリング角度による振動をリセット</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>プロファイル</value></data>
-  <data name="ResetLabel_Key" xml:space="preserve"><value>キー</value></data>
-  <data name="ResetLabel_Label" xml:space="preserve"><value>ラベル</value></data>
-  <data name="ResetLabel_GainPercent" xml:space="preserve"><value>ゲイン（%）</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>入力サーフェス</value></data>
   <data name="ResetLabel_OutputChannel" xml:space="preserve"><value>出力チャンネル</value></data>
   <data name="ResetLabel_Formula" xml:space="preserve"><value>数式</value></data>
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>増加入力</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>減少入力</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>修飾入力</value></data>
-  <data name="ResetLabel_RangeStart" xml:space="preserve"><value>範囲の開始</value></data>
-  <data name="ResetLabel_RangeEnd" xml:space="preserve"><value>範囲の終了</value></data>
   <data name="ResetLabel_SourceType" xml:space="preserve"><value>ソースの種類</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>低レベルの色</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>中レベルの色</value></data>

@@ -3582,17 +3582,12 @@ Vous pouvez réessayer plus tard depuis les Paramètres.</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Réinitialiser la zone morte centrale (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Réinitialiser la vibration selon l’angle de braquage</value></data>
   <data name="ResetLabel_Profile" xml:space="preserve"><value>Profil</value></data>
-  <data name="ResetLabel_Key" xml:space="preserve"><value>Touche</value></data>
-  <data name="ResetLabel_Label" xml:space="preserve"><value>Libellé</value></data>
-  <data name="ResetLabel_GainPercent" xml:space="preserve"><value>Gain (%)</value></data>
   <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Surfaces d’entrée</value></data>
   <data name="ResetLabel_OutputChannel" xml:space="preserve"><value>Canal de sortie</value></data>
   <data name="ResetLabel_Formula" xml:space="preserve"><value>Formule</value></data>
   <data name="ResetLabel_UpInput" xml:space="preserve"><value>Entrée de hausse</value></data>
   <data name="ResetLabel_DownInput" xml:space="preserve"><value>Entrée de baisse</value></data>
   <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>Entrée modificatrice</value></data>
-  <data name="ResetLabel_RangeStart" xml:space="preserve"><value>Début de plage</value></data>
-  <data name="ResetLabel_RangeEnd" xml:space="preserve"><value>Fin de plage</value></data>
   <data name="ResetLabel_SourceType" xml:space="preserve"><value>Type de source</value></data>
   <data name="ResetLabel_LowColor" xml:space="preserve"><value>Couleur du niveau bas</value></data>
   <data name="ResetLabel_MidColor" xml:space="preserve"><value>Couleur du niveau moyen</value></data>

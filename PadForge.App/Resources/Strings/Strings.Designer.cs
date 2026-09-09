@@ -3391,17 +3391,12 @@ public class Strings : INotifyPropertyChanged
     public string Pad_SteeringAngleRumble_ResetDeadzone => Get("Pad_SteeringAngleRumble_ResetDeadzone");
     public string Pad_SteeringAngleRumble_ResetAll => Get("Pad_SteeringAngleRumble_ResetAll");
     public string ResetLabel_Profile => Get("ResetLabel_Profile");
-    public string ResetLabel_Key => Get("ResetLabel_Key");
-    public string ResetLabel_Label => Get("ResetLabel_Label");
-    public string ResetLabel_GainPercent => Get("ResetLabel_GainPercent");
     public string ResetLabel_InputSurfaces => Get("ResetLabel_InputSurfaces");
     public string ResetLabel_OutputChannel => Get("ResetLabel_OutputChannel");
     public string ResetLabel_Formula => Get("ResetLabel_Formula");
     public string ResetLabel_UpInput => Get("ResetLabel_UpInput");
     public string ResetLabel_DownInput => Get("ResetLabel_DownInput");
     public string ResetLabel_ModifierInput => Get("ResetLabel_ModifierInput");
-    public string ResetLabel_RangeStart => Get("ResetLabel_RangeStart");
-    public string ResetLabel_RangeEnd => Get("ResetLabel_RangeEnd");
     public string ResetLabel_SourceType => Get("ResetLabel_SourceType");
     public string ResetLabel_LowColor => Get("ResetLabel_LowColor");
     public string ResetLabel_MidColor => Get("ResetLabel_MidColor");

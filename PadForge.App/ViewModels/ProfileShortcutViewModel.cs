@@ -10,7 +10,7 @@ using PadForge.Services;
 
 namespace PadForge.ViewModels
 {
-    public class ProfileShortcutViewModel : ObservableObject
+    public partial class ProfileShortcutViewModel : ObservableObject
     {
         private readonly Action<ProfileShortcutViewModel> _deleteCallback;
         private readonly Action<ProfileShortcutViewModel> _saveCallback;

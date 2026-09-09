@@ -7,7 +7,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:helix="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Core.Wpf"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-             xmlns:strings="clr-namespace:PadForge.Resources.Strings">
+             xmlns:strings="clr-namespace:PadForge.Resources.Strings"
+             xmlns:reset="clr-namespace:PadForge.Controls">
 
     <Grid>
         <helix:HelixViewport3D x:Name="ModelViewPort"
@@ -63,6 +64,7 @@
                       Visibility="Collapsed"
                       ToolTip="{Binding Pad_Colorway, Source={x:Static strings:Strings.Instance}}"
                       SelectionChanged="AppearancePicker_SelectionChanged" />
+            <reset:SettingResetButton Click="ResetAppearance_Click" Tag="" Visibility="{Binding Visibility, ElementName=AppearancePicker}" IsEnabled="{Binding IsEnabled, ElementName=AppearancePicker}" SettingLabel="{Binding Pad_Colorway, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_AppearancePicker_65" Margin="4,0,8,0"/>
             <ui:Button x:Name="AnnotationToggleButton"
                        AutomationProperties.AutomationId="AnnotationToggle"
                        Style="{StaticResource EmberIconButton}"

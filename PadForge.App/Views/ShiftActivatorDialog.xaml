@@ -9,7 +9,8 @@
         Title="{Binding Pad_Shift_DialogTitle, Source={x:Static strings:Strings.Instance}}"
         Height="760" Width="600"
         WindowStartupLocation="CenterOwner"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize"
+             xmlns:reset="clr-namespace:PadForge.Controls">
 
     <ui:FluentWindow.Resources>
         <ResourceDictionary>
@@ -219,22 +220,25 @@
                 <TextBlock Grid.Row="2" x:Name="KindLabel"
                            Text="{Binding Pad_Shift_Kind, Source={x:Static strings:Strings.Instance}}"
                            Margin="0,0,0,4"/>
-                <ComboBox Grid.Row="3" x:Name="KindCombo" Margin="0,0,0,12"
-                          ScrollViewer.VerticalScrollBarVisibility="Visible"
-                          SelectedValuePath="Value"
-                          SelectionChanged="KindCombo_SelectionChanged">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Vertical" Margin="0,2,0,2">
-                                <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="12"/>
-                                <TextBlock Text="{Binding Description}"
-                                           FontSize="10"
-                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                           TextWrapping="Wrap"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
+                <DockPanel LastChildFill="True" Visibility="{Binding Visibility, ElementName=KindCombo}" Grid.Row="3" Margin="0,0,0,12">
+                    <reset:SettingResetButton DockPanel.Dock="Right" Click="ResetSetting_Click" Tag="Kind" Visibility="{Binding Visibility, ElementName=KindCombo}" IsEnabled="{Binding IsEnabled, ElementName=KindCombo}" SettingLabel="{Binding Pad_Shift_Kind, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_KindCombo_225"/>
+                    <ComboBox x:Name="KindCombo"
+                              ScrollViewer.VerticalScrollBarVisibility="Visible"
+                              SelectedValuePath="Value"
+                              SelectionChanged="KindCombo_SelectionChanged">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Vertical" Margin="0,2,0,2">
+                                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="12"/>
+                                    <TextBlock Text="{Binding Description}"
+                                               FontSize="10"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                               TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </DockPanel>
 
                 <!-- Activator input. Sub-label below the dropdown mirrors the
                      Mappings tab Source column: shows the picked input's owning
@@ -385,28 +389,32 @@
                     <TextBox Text="{Binding ElementName=AxisThresholdSlider, Path=Value, StringFormat={}{0:F2}, UpdateSourceTrigger=LostFocus}"
                              Width="56" Margin="8,0,0,0" VerticalAlignment="Center"
                              HorizontalContentAlignment="Right"/>
+                    <reset:SettingResetButton Click="ResetSetting_Click" Tag="AxisThreshold" Visibility="{Binding Visibility, ElementName=AxisThresholdSlider}" IsEnabled="{Binding IsEnabled, ElementName=AxisThresholdSlider}" SettingLabel="{Binding Pad_Shift_AxisThreshold, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_AxisThresholdSlider_384"/>
                 </StackPanel>
 
                 <!-- Mode -->
                 <TextBlock Grid.Row="10" x:Name="ModeLabel"
                            Text="{Binding Pad_Shift_Mode, Source={x:Static strings:Strings.Instance}}"
                            Margin="0,0,0,4"/>
-                <ComboBox Grid.Row="11" x:Name="ModeCombo" Margin="0,0,0,12"
-                          ScrollViewer.VerticalScrollBarVisibility="Visible"
-                          SelectedValuePath="Value"
-                          SelectionChanged="ModeCombo_SelectionChanged">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Vertical" Margin="0,2,0,2">
-                                <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="12"/>
-                                <TextBlock Text="{Binding Description}"
-                                           FontSize="10"
-                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                           TextWrapping="Wrap"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
+                <DockPanel LastChildFill="True" Visibility="{Binding Visibility, ElementName=ModeCombo}" Grid.Row="11" Margin="0,0,0,12">
+                    <reset:SettingResetButton DockPanel.Dock="Right" Click="ResetSetting_Click" Tag="Mode" Visibility="{Binding Visibility, ElementName=ModeCombo}" IsEnabled="{Binding IsEnabled, ElementName=ModeCombo}" SettingLabel="{Binding Pad_Shift_Mode, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_ModeCombo_397"/>
+                    <ComboBox x:Name="ModeCombo"
+                              ScrollViewer.VerticalScrollBarVisibility="Visible"
+                              SelectedValuePath="Value"
+                              SelectionChanged="ModeCombo_SelectionChanged">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Vertical" Margin="0,2,0,2">
+                                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="12"/>
+                                    <TextBlock Text="{Binding Description}"
+                                               FontSize="10"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                               TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </DockPanel>
 
                 <!-- Two activator-behavior checkboxes stacked together. Both
                      are toggles on the activator itself (not on the rows). -->
@@ -420,33 +428,43 @@
                     <StackPanel x:Name="HostLayerRow" Margin="0,0,0,8">
                         <TextBlock Text="{Binding Pad_Shift_HostLayer, Source={x:Static strings:Strings.Instance}}"
                                    Margin="0,0,0,4"/>
-                        <ComboBox x:Name="HostLayerCombo" Width="320" HorizontalAlignment="Left"
-                                  DisplayMemberPath="DisplayName" SelectedValuePath="LayerMask"
-                                  ToolTip="{Binding Pad_Shift_HostLayer_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                        <DockPanel LastChildFill="True" Visibility="{Binding Visibility, ElementName=HostLayerCombo}" HorizontalAlignment="Left">
+                            <reset:SettingResetButton DockPanel.Dock="Right" Click="ResetSetting_Click" Tag="HostLayer" Visibility="{Binding Visibility, ElementName=HostLayerCombo}" IsEnabled="{Binding IsEnabled, ElementName=HostLayerCombo}" SettingLabel="{Binding Pad_Shift_HostLayer, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_HostLayerCombo_425"/>
+                            <ComboBox x:Name="HostLayerCombo" Width="320"
+                                      DisplayMemberPath="DisplayName" SelectedValuePath="LayerMask"
+                                      ToolTip="{Binding Pad_Shift_HostLayer_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                        </DockPanel>
                     </StackPanel>
                     <!-- Inherit unmapped targets from Base. Off by default —
                          shift layer REPLACES Base entirely; targets the layer
                          doesn't map output zero. Check to fall through to Base. -->
-                    <CheckBox x:Name="InheritUnmappedBox"
-                              Content="{Binding Pad_Shift_InheritUnmapped, Source={x:Static strings:Strings.Instance}}"
-                              ToolTip="{Binding Pad_Shift_InheritUnmapped_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                              Margin="0,0,0,4"/>
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding Visibility, ElementName=InheritUnmappedBox}" Margin="0,0,0,4">
+                        <CheckBox VerticalAlignment="Center" x:Name="InheritUnmappedBox"
+                                  Content="{Binding Pad_Shift_InheritUnmapped, Source={x:Static strings:Strings.Instance}}"
+                                  ToolTip="{Binding Pad_Shift_InheritUnmapped_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                        <reset:SettingResetButton Click="ResetSetting_Click" Tag="InheritUnmapped" Visibility="{Binding Visibility, ElementName=InheritUnmappedBox}" IsEnabled="{Binding IsEnabled, ElementName=InheritUnmappedBox}" SettingLabel="{Binding Pad_Shift_InheritUnmapped, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_InheritUnmappedBox_433"/>
+                    </StackPanel>
                     <!-- Fire on Release: the edge modes fire when the input is
                          let go instead of pressed (Steam's release-hosted
                          activators). Hidden for Hold (level-driven, both edges
                          already) and Passive (no button); see ApplyModeVisibility. -->
-                    <CheckBox x:Name="FireOnReleaseBox"
-                              Content="{Binding Pad_Shift_FireOnRelease, Source={x:Static strings:Strings.Instance}}"
-                              ToolTip="{Binding Pad_Shift_FireOnRelease_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                              Margin="0,0,0,4"/>
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding Visibility, ElementName=FireOnReleaseBox}" Margin="0,0,0,4">
+                        <CheckBox VerticalAlignment="Center" x:Name="FireOnReleaseBox"
+                                  Content="{Binding Pad_Shift_FireOnRelease, Source={x:Static strings:Strings.Instance}}"
+                                  ToolTip="{Binding Pad_Shift_FireOnRelease_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                        <reset:SettingResetButton Click="ResetSetting_Click" Tag="FireOnRelease" Visibility="{Binding Visibility, ElementName=FireOnReleaseBox}" IsEnabled="{Binding IsEnabled, ElementName=FireOnReleaseBox}" SettingLabel="{Binding Pad_Shift_FireOnRelease, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_FireOnReleaseBox_441"/>
+                    </StackPanel>
                     <!-- v2 PostponeMapping: when checked, the activator's own
                          descriptor still drives any row that uses it as a
                          source — so a single button can both change layer AND
                          fire its own existing mapping. Off by default (the
                          activator press is consumed by the layer change only). -->
-                    <CheckBox x:Name="PostponeMappingBox"
-                              Content="{Binding Pad_Shift_PostponeMapping, Source={x:Static strings:Strings.Instance}}"
-                              ToolTip="{Binding Pad_Shift_PostponeMapping_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding Visibility, ElementName=PostponeMappingBox}">
+                        <CheckBox VerticalAlignment="Center" x:Name="PostponeMappingBox"
+                                  Content="{Binding Pad_Shift_PostponeMapping, Source={x:Static strings:Strings.Instance}}"
+                                  ToolTip="{Binding Pad_Shift_PostponeMapping_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                        <reset:SettingResetButton Click="ResetSetting_Click" Tag="PostponeMapping" Visibility="{Binding Visibility, ElementName=PostponeMappingBox}" IsEnabled="{Binding IsEnabled, ElementName=PostponeMappingBox}" SettingLabel="{Binding Pad_Shift_PostponeMapping, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_PostponeMappingBox_449"/>
+                    </StackPanel>
                 </StackPanel>
 
                 <!-- Rows 13-14 (the old Custom jump-to-layer picker) were removed
@@ -456,8 +474,11 @@
                      layers; check the ones to include in the rotation. Order
                      follows the source list. -->
                 <StackPanel Grid.Row="13" x:Name="CycleHeaderRow" Margin="0,0,0,4">
-                    <TextBlock VerticalAlignment="Center"
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center"
                                Text="{Binding Pad_Shift_CycleLayers, Source={x:Static strings:Strings.Instance}}"/>
+                        <reset:SettingResetButton Click="ResetSetting_Click" Tag="CycleLayers" SettingLabel="{Binding Pad_Shift_CycleLayers, Source={x:Static strings:Strings.Instance}}" IsEnabled="{Binding IsEnabled, ElementName=CycleLayersList}"/>
+                    </StackPanel>
                     <!-- Cycle wrap + Base inclusion (#119). Wrap loops the ends together,
                          Include Base puts the unshifted state back in the rotation.
                          Next/Previous are the two button pickers above (one control). -->
@@ -465,9 +486,11 @@
                         <CheckBox x:Name="CycleWrapBox" IsChecked="True"
                                   Content="{Binding Pad_Shift_CycleWrap, Source={x:Static strings:Strings.Instance}}"
                                   ToolTip="{Binding Pad_Shift_CycleWrap_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                        <reset:SettingResetButton Click="ResetSetting_Click" Tag="CycleWrap" Visibility="{Binding Visibility, ElementName=CycleWrapBox}" IsEnabled="{Binding IsEnabled, ElementName=CycleWrapBox}" SettingLabel="{Binding Pad_Shift_CycleWrap, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_CycleWrapBox_467" Margin="4,0,8,0"/>
                         <CheckBox x:Name="CycleIncludeBaseBox" Margin="20,0,0,0"
                                   Content="{Binding Pad_Shift_CycleIncludeBase, Source={x:Static strings:Strings.Instance}}"
                                   ToolTip="{Binding Pad_Shift_CycleIncludeBase_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                        <reset:SettingResetButton Click="ResetSetting_Click" Tag="CycleIncludeBase" Visibility="{Binding Visibility, ElementName=CycleIncludeBaseBox}" IsEnabled="{Binding IsEnabled, ElementName=CycleIncludeBaseBox}" SettingLabel="{Binding Pad_Shift_CycleIncludeBase, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_CycleIncludeBaseBox_470"/>
                     </StackPanel>
                 </StackPanel>
                 <ListBox Grid.Row="14" x:Name="CycleLayersList" Margin="0,0,0,12"

@@ -21,7 +21,7 @@ namespace PadForge.ViewModels
     /// is handled separately by the <c>DualSensePassthroughDispatcher</c>
     /// and doesn't read from this config.</para>
     /// </summary>
-    public class DeviceSlotConfig : ObservableObject
+    public partial class DeviceSlotConfig : ObservableObject
     {
         public DeviceSlotConfig()
         {

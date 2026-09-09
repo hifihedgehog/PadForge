@@ -12,7 +12,7 @@ namespace PadForge.ViewModels
     /// For gamepad presets (Xbox / PlayStation): index 0 = Left, index 1 = Right.
     /// For custom Extended: index 0..N based on TriggerCount.
     /// </summary>
-    public class TriggerConfigItem : ObservableObject
+    public partial class TriggerConfigItem : ObservableObject
     {
         public static string[] CurvePresetNames { get; private set; } =
             Common.CurveLut.BuildPresetDisplayNames();

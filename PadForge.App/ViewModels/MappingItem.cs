@@ -18,7 +18,7 @@ namespace PadForge.ViewModels
     /// Displayed in the mapping grid on the Pad page. Supports input
     /// recording to auto-detect the source.
     /// </summary>
-    public class MappingItem : ObservableObject
+    public partial class MappingItem : ObservableObject
     {
         /// <summary>
         /// Creates a mapping item.

@@ -9,7 +9,8 @@
         Title="{Binding WiiPair_Title, Source={x:Static strings:Strings.Instance}}"
         Width="460" SizeToContent="Height"
         WindowStartupLocation="CenterOwner"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize"
+             xmlns:reset="clr-namespace:PadForge.Controls">
 
     <ui:FluentWindow.Resources>
         <ResourceDictionary>
@@ -71,12 +72,15 @@
                 <TextBlock Text="{Binding WiiPair_Family, Source={x:Static strings:Strings.Instance}}"
                            Margin="0,0,0,4"
                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                <ComboBox x:Name="FamilyCombo" SelectedIndex="0" HorizontalAlignment="Stretch"
-                          SelectionChanged="Family_SelectionChanged">
-                    <ComboBoxItem Content="{Binding WiiPair_FamilyWii, Source={x:Static strings:Strings.Instance}}"/>
-                    <ComboBoxItem Content="{Binding WiiPair_FamilyDs3, Source={x:Static strings:Strings.Instance}}"/>
-                    <ComboBoxItem Content="{Binding MovePair_Family, Source={x:Static strings:Strings.Instance}}"/>
-                </ComboBox>
+                <DockPanel LastChildFill="True" Visibility="{Binding Visibility, ElementName=FamilyCombo}" HorizontalAlignment="Stretch">
+                    <reset:SettingResetButton DockPanel.Dock="Right" Click="ResetSetting_Click" Tag="Family" Visibility="{Binding Visibility, ElementName=FamilyCombo}" IsEnabled="{Binding IsEnabled, ElementName=FamilyCombo}" SettingLabel="{Binding WiiPair_Family, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_FamilyCombo_75"/>
+                    <ComboBox x:Name="FamilyCombo" SelectedIndex="0"
+                              SelectionChanged="Family_SelectionChanged">
+                        <ComboBoxItem Content="{Binding WiiPair_FamilyWii, Source={x:Static strings:Strings.Instance}}"/>
+                        <ComboBoxItem Content="{Binding WiiPair_FamilyDs3, Source={x:Static strings:Strings.Instance}}"/>
+                        <ComboBoxItem Content="{Binding MovePair_Family, Source={x:Static strings:Strings.Instance}}"/>
+                    </ComboBox>
+                </DockPanel>
             </StackPanel>
 
             <TextBlock Grid.Row="1" x:Name="InstructionsText"
@@ -84,8 +88,11 @@
                        TextWrapping="Wrap" Margin="0,0,0,12"
                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
 
-            <CheckBox Grid.Row="2" x:Name="TemporaryCheck" Margin="0,0,0,12"
-                      Content="{Binding WiiPair_Temporary, Source={x:Static strings:Strings.Instance}}"/>
+            <StackPanel Orientation="Horizontal" Visibility="{Binding Visibility, ElementName=TemporaryCheck}" Grid.Row="2" Margin="0,0,0,12">
+                <CheckBox VerticalAlignment="Center" x:Name="TemporaryCheck"
+                          Content="{Binding WiiPair_Temporary, Source={x:Static strings:Strings.Instance}}"/>
+                <reset:SettingResetButton Click="ResetSetting_Click" Tag="Temporary" Visibility="{Binding Visibility, ElementName=TemporaryCheck}" IsEnabled="{Binding IsEnabled, ElementName=TemporaryCheck}" SettingLabel="{Binding WiiPair_Temporary, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_TemporaryCheck_88"/>
+            </StackPanel>
 
             <!-- Live status while an inquiry pass runs -->
             <Grid Grid.Row="3" Margin="0,0,0,12">

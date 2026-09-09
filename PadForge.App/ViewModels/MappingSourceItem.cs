@@ -11,7 +11,7 @@ namespace PadForge.ViewModels
     /// the Mappings UI. Bound by the (forthcoming) RowDetailsTemplate
     /// inside the Mappings DataGrid.
     /// </summary>
-    public class MappingSourceItem : ObservableObject
+    public partial class MappingSourceItem : ObservableObject
     {
         private string _kind = "Direct";
         private string _deviceGuid = "";

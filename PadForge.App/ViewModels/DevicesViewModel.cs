@@ -52,6 +52,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(HasSelectedDevice));
                     _assignToSlotCommand?.NotifyCanExecuteChanged();
                     _removeDeviceCommand?.NotifyCanExecuteChanged();
+                    _resetSelectedDeviceSettingCommand?.NotifyCanExecuteChanged();
                     RefreshSlotButtons();
                 }
             }

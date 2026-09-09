@@ -8,7 +8,8 @@
         Title="{Binding RemoteLink_PairTitle, Source={x:Static strings:Strings.Instance}}"
         Width="460" SizeToContent="Height"
         WindowStartupLocation="CenterOwner"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize"
+             xmlns:reset="clr-namespace:PadForge.Controls">
 
     <ui:FluentWindow.Resources>
         <ResourceDictionary>
@@ -89,10 +90,16 @@
                         Message="{Binding RemoteLink_ConsentWarning, Source={x:Static strings:Strings.Instance}}"/>
 
             <StackPanel Grid.Row="4">
-                <CheckBox x:Name="GamepadOnlyCheck"
-                          Content="{Binding RemoteLink_GamepadOnly, Source={x:Static strings:Strings.Instance}}"/>
-                <CheckBox x:Name="AssignmentsCheck" Margin="0,8,0,0"
-                          Content="{Binding RemoteLink_AllowAssignments, Source={x:Static strings:Strings.Instance}}"/>
+                <StackPanel Orientation="Horizontal" Visibility="{Binding Visibility, ElementName=GamepadOnlyCheck}">
+                    <CheckBox VerticalAlignment="Center" x:Name="GamepadOnlyCheck"
+                              Content="{Binding RemoteLink_GamepadOnly, Source={x:Static strings:Strings.Instance}}"/>
+                    <reset:SettingResetButton Click="ResetSetting_Click" Tag="GamepadOnly" Visibility="{Binding Visibility, ElementName=GamepadOnlyCheck}" IsEnabled="{Binding IsEnabled, ElementName=GamepadOnlyCheck}" SettingLabel="{Binding RemoteLink_GamepadOnly, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_GamepadOnlyCheck_93"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Visibility="{Binding Visibility, ElementName=AssignmentsCheck}" Margin="0,8,0,0">
+                    <CheckBox VerticalAlignment="Center" x:Name="AssignmentsCheck"
+                              Content="{Binding RemoteLink_AllowAssignments, Source={x:Static strings:Strings.Instance}}"/>
+                    <reset:SettingResetButton Click="ResetSetting_Click" Tag="AllowAssignments" Visibility="{Binding Visibility, ElementName=AssignmentsCheck}" IsEnabled="{Binding IsEnabled, ElementName=AssignmentsCheck}" SettingLabel="{Binding RemoteLink_AllowAssignments, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_AssignmentsCheck_95"/>
+                </StackPanel>
                 <TextBlock Text="{Binding RemoteLink_AssignmentPermissionDescription, Source={x:Static strings:Strings.Instance}}"
                            TextWrapping="Wrap" FontSize="12" Margin="0,4,0,0"
                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>

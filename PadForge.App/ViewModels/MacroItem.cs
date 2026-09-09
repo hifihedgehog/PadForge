@@ -24,7 +24,7 @@ namespace PadForge.ViewModels
     /// Step 4 (combining). When the trigger condition is met, the macro's
     /// actions are injected into the Gamepad state.
     /// </summary>
-    public class MacroItem : ObservableObject
+    public partial class MacroItem : ObservableObject
     {
         // ─────────────────────────────────────────────
         //  Identity
@@ -641,7 +641,7 @@ namespace PadForge.ViewModels
         /// mapping system uses on its axis-to-button sources — no per-axis
         /// classification (the engine treats any axis index uniformly with
         /// these three knobs).</summary>
-        public sealed class TriggerInputEntry : ObservableObject
+        public sealed partial class TriggerInputEntry : ObservableObject
         {
             private Guid _deviceGuid;
             public Guid DeviceGuid
@@ -2703,7 +2703,7 @@ namespace PadForge.ViewModels
     /// <summary>
     /// A single action within a macro's action sequence.
     /// </summary>
-    public class MacroAction : ObservableObject
+    public partial class MacroAction : ObservableObject
     {
         static MacroAction()
         {
@@ -6606,7 +6606,7 @@ namespace PadForge.ViewModels
     /// (raw button / POV / axis) or to a channel on the slot's combined
     /// virtual controller output. Serialized as a compact tagged string so
     /// the XML stays one element per variable rather than a nested block.</summary>
-    public sealed class MacroExpressionVariable : ObservableObject
+    public sealed partial class MacroExpressionVariable : ObservableObject
     {
         private MacroTriggerSource _source = MacroTriggerSource.InputDevice;
         public MacroTriggerSource Source
@@ -7378,6 +7378,7 @@ namespace PadForge.ViewModels
     /// culture change reflows without a rebuild.</summary>
     public class PointerModeCycleOption : ObservableObject
     {
+        internal void RefreshCheckedState() => OnPropertyChanged(nameof(IsChecked));
         private readonly MacroAction _parent;
         public string ModeName { get; }
 
@@ -7413,6 +7414,7 @@ namespace PadForge.ViewModels
 
     public class LightbarModeCycleOption : ObservableObject
     {
+        internal void RefreshCheckedState() => OnPropertyChanged(nameof(IsChecked));
         private readonly MacroAction _parent;
         public LightbarMode Mode { get; }
 

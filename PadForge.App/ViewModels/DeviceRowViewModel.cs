@@ -10,7 +10,7 @@ namespace PadForge.ViewModels
     /// ViewModel for a single device row in the Devices page grid.
     /// Displays device identification, status, and basic capability info.
     /// </summary>
-    public class DeviceRowViewModel : ObservableObject
+    public partial class DeviceRowViewModel : ObservableObject
     {
         public DeviceRowViewModel()
         {

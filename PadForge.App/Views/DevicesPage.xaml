@@ -7,7 +7,8 @@
              xmlns:strings="clr-namespace:PadForge.Resources.Strings"
              xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="po">
+             mc:Ignorable="po"
+             xmlns:reset="clr-namespace:PadForge.Controls">
 
     <UserControl.Resources>
         <!-- Ember (#175): list-row meta segments render cold mono. Liveness
@@ -997,14 +998,16 @@
                             <TextBlock Text="{Binding Devices_InputMode, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"
                                        Style="{StaticResource SectionEyebrow}" Margin="0,0,0,6"/>
 
-                            <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                      IsChecked="{Binding SelectedDevice.ForceRawJoystickMode, Mode=TwoWay}"
-                                      Click="HidingToggle_Click"
-                                      ToolTip="{Binding Devices_ForceRawTooltip, Source={x:Static strings:Strings.Instance}}"
-                                      Margin="0,0,0,4">
-                                <TextBlock Text="{Binding Devices_ForceRaw, Source={x:Static strings:Strings.Instance}}"
-                                           TextWrapping="Wrap"/>
-                            </CheckBox>
+                            <DockPanel LastChildFill="True" Margin="0,0,0,4">
+                                <reset:SettingResetButton DockPanel.Dock="Right" Command="{Binding ResetSelectedDeviceSettingCommand}" CommandParameter="ForceRawJoystickMode" SettingLabel="{Binding Devices_ForceRaw, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DeviceRowViewModel_ForceRawJoystickMode_1004"/>
+                                <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                          IsChecked="{Binding SelectedDevice.ForceRawJoystickMode, Mode=TwoWay}"
+                                          Click="HidingToggle_Click"
+                                          ToolTip="{Binding Devices_ForceRawTooltip, Source={x:Static strings:Strings.Instance}}">
+                                    <TextBlock Text="{Binding Devices_ForceRaw, Source={x:Static strings:Strings.Instance}}"
+                                               TextWrapping="Wrap"/>
+                                </CheckBox>
+                            </DockPanel>
 
                             <Separator Margin="0,2,0,8"/>
                         </StackPanel>
@@ -1014,55 +1017,58 @@
                                    Style="{StaticResource SectionEyebrow}" Margin="0,0,0,6"
                                    Visibility="{Binding SelectedDevice.ShowInputHidingSection, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
-                        <CheckBox Content="{Binding Devices_HideFromGames, Source={x:Static strings:Strings.Instance}}"
-                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                  IsChecked="{Binding SelectedDevice.HidHideEnabled, Mode=TwoWay}"
-                                  IsEnabled="{Binding SelectedDevice.IsHidHideAvailable}"
-                                  Visibility="{Binding SelectedDevice.IsInternalVirtual, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"
-                                  Click="HidingToggle_Click"
-                                  ToolTipService.ShowOnDisabled="True"
-                                  Margin="0,0,0,4">
-                            <CheckBox.ToolTip>
-                                <TextBlock>
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="Text" Value="{Binding Devices_HideTooltip, Source={x:Static strings:Strings.Instance}}"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding SelectedDevice.IsTabletDevice}" Value="True">
-                                                    <Setter Property="Text" Value="{Binding Tablet_HideHelp, Source={x:Static strings:Strings.Instance}}"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding SelectedDevice.IsHidHideAvailable}" Value="False">
-                                                    <Setter Property="Text" Value="{Binding Devices_HideTooltipInstall, Source={x:Static strings:Strings.Instance}}"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                            </CheckBox.ToolTip>
-                        </CheckBox>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4" Visibility="{Binding SelectedDevice.IsInternalVirtual, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}">
+                            <CheckBox VerticalAlignment="Center" Content="{Binding Devices_HideFromGames, Source={x:Static strings:Strings.Instance}}"
+                                      Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                      IsChecked="{Binding SelectedDevice.HidHideEnabled, Mode=TwoWay}"
+                                      IsEnabled="{Binding SelectedDevice.IsHidHideAvailable}"
+                                      Click="HidingToggle_Click"
+                                      ToolTipService.ShowOnDisabled="True">
+                                <CheckBox.ToolTip>
+                                    <TextBlock>
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Text" Value="{Binding Devices_HideTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding SelectedDevice.IsTabletDevice}" Value="True">
+                                                        <Setter Property="Text" Value="{Binding Tablet_HideHelp, Source={x:Static strings:Strings.Instance}}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding SelectedDevice.IsHidHideAvailable}" Value="False">
+                                                        <Setter Property="Text" Value="{Binding Devices_HideTooltipInstall, Source={x:Static strings:Strings.Instance}}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
+                            <reset:SettingResetButton Command="{Binding ResetSelectedDeviceSettingCommand}" CommandParameter="HidHideEnabled" IsEnabled="{Binding SelectedDevice.IsHidHideAvailable}" SettingLabel="{Binding Devices_HideFromGames, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DeviceRowViewModel_HidHideEnabled_1024"/>
+                        </StackPanel>
 
                         <TextBlock Text="{Binding SelectedDevice.TabletInputStatus}"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                    TextWrapping="Wrap" Margin="0,0,0,8"
                                    Visibility="{Binding SelectedDevice.ShowTabletCaptureStatus, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
-                        <CheckBox Content="{Binding Devices_ConsumeMapped, Source={x:Static strings:Strings.Instance}}"
-                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                  IsChecked="{Binding SelectedDevice.ConsumeInputEnabled, Mode=TwoWay}"
-                                  Click="HidingToggle_Click"
-                                  ToolTip="{Binding Devices_ConsumeTooltip, Source={x:Static strings:Strings.Instance}}"
-                                  Margin="0,0,0,4">
-                            <CheckBox.Style>
-                                <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding SelectedDevice.ShowConsumeToggle}" Value="True">
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </CheckBox.Style>
-                        </CheckBox>
+                        <StackPanel Orientation="Horizontal" Visibility="{Binding Visibility, ElementName=ResetInput1054}" Margin="0,0,0,4">
+                            <CheckBox VerticalAlignment="Center" x:Name="ResetInput1054" Content="{Binding Devices_ConsumeMapped, Source={x:Static strings:Strings.Instance}}"
+                                      Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                      IsChecked="{Binding SelectedDevice.ConsumeInputEnabled, Mode=TwoWay}"
+                                      Click="HidingToggle_Click"
+                                      ToolTip="{Binding Devices_ConsumeTooltip, Source={x:Static strings:Strings.Instance}}">
+                                <CheckBox.Style>
+                                    <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding SelectedDevice.ShowConsumeToggle}" Value="True">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </CheckBox.Style>
+                            </CheckBox>
+                            <reset:SettingResetButton Command="{Binding ResetSelectedDeviceSettingCommand}" CommandParameter="ConsumeInputEnabled" SettingLabel="{Binding Devices_ConsumeMapped, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DeviceRowViewModel_ConsumeInputEnabled_1054" Visibility="{Binding Visibility, ElementName=ResetInput1054}"/>
+                        </StackPanel>
 
                         <!-- Follows the section it divides. A bare separator sat
                              visible on devices where every control above it was
@@ -1092,6 +1098,7 @@
                                 <TextBox Text="{Binding SelectedDevice.IdleDisconnectMinutes, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                          Width="60" VerticalAlignment="Center"
                                          LostFocus="IdleDisconnect_LostFocus"/>
+                                <reset:SettingResetButton Command="{Binding ResetSelectedDeviceSettingCommand}" CommandParameter="IdleDisconnectMinutes" SettingLabel="{Binding Devices_IdleDisconnect, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DeviceRowViewModel_IdleDisconnectMinutes_1094" Margin="4,0,8,0"/>
                                 <TextBlock Text="{Binding Devices_IdleDisconnectMinutes, Source={x:Static strings:Strings.Instance}}"
                                            VerticalAlignment="Center" Margin="8,0,0,0" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                             </StackPanel>
@@ -1102,16 +1109,19 @@
                                  fires on the binding-driven refresh when the
                                  selection changes (the #161 lesson). -->
                             <StackPanel Visibility="{Binding SelectedDevice.ShowQuickCharge, Converter={StaticResource BoolToVisibilityConverter}}">
-                                <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                          IsChecked="{Binding SelectedDevice.QuickChargeEnabled, Mode=TwoWay}"
-                                          Click="QuickCharge_Click" Margin="0,0,0,4"
-                                          ToolTip="{Binding Devices_QuickChargeTooltip, Source={x:Static strings:Strings.Instance}}">
-                                    <!-- Wrapped content, not a bare string: the label
-                                         is longer than the panel and the default
-                                         single-line presenter clipped it mid-word. -->
-                                    <TextBlock Text="{Binding Devices_QuickCharge, Source={x:Static strings:Strings.Instance}}"
-                                               TextWrapping="Wrap"/>
-                                </CheckBox>
+                                <DockPanel LastChildFill="True" Margin="0,0,0,4">
+                                    <reset:SettingResetButton DockPanel.Dock="Right" Command="{Binding ResetSelectedDeviceSettingCommand}" CommandParameter="QuickChargeEnabled" SettingLabel="{Binding Devices_QuickCharge, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DeviceRowViewModel_QuickChargeEnabled_1108"/>
+                                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                              IsChecked="{Binding SelectedDevice.QuickChargeEnabled, Mode=TwoWay}"
+                                              Click="QuickCharge_Click"
+                                              ToolTip="{Binding Devices_QuickChargeTooltip, Source={x:Static strings:Strings.Instance}}">
+                                        <!-- Wrapped content, not a bare string: the label
+                                             is longer than the panel and the default
+                                             single-line presenter clipped it mid-word. -->
+                                        <TextBlock Text="{Binding Devices_QuickCharge, Source={x:Static strings:Strings.Instance}}"
+                                                   TextWrapping="Wrap"/>
+                                    </CheckBox>
+                                </DockPanel>
                             </StackPanel>
 
                         </StackPanel>

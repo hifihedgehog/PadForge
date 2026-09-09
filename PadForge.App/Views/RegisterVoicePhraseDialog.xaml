@@ -8,7 +8,8 @@
         Title="{Binding Voice_Title, Source={x:Static strings:Strings.Instance}}"
         Height="620" Width="640"
         WindowStartupLocation="CenterOwner"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize"
+             xmlns:reset="clr-namespace:PadForge.Controls">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -62,12 +63,14 @@
                 <CheckBox x:Name="EnabledBox" Content="{Binding Voice_EnableLabel, Source={x:Static strings:Strings.Instance}}"
                           ToolTip="{Binding Voice_EnableTooltip, Source={x:Static strings:Strings.Instance}}"
                           Checked="Setting_Changed" Unchecked="Setting_Changed" Margin="0,0,16,0"/>
+                <reset:SettingResetButton Click="ResetSetting_Click" Tag="Enabled" Visibility="{Binding Visibility, ElementName=EnabledBox}" IsEnabled="{Binding IsEnabled, ElementName=EnabledBox}" SettingLabel="{Binding Voice_EnableLabel, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_EnabledBox_64" Margin="4,0,8,0"/>
                 <TextBlock Text="{Binding Voice_ModeLabel, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,8,0"/>
                 <ComboBox x:Name="ModeBox" MinWidth="150" SelectionChanged="Setting_Changed"
                           ToolTip="{Binding Voice_ModeTooltip, Source={x:Static strings:Strings.Instance}}">
                     <ComboBoxItem Content="{Binding Voice_ModeAlways, Source={x:Static strings:Strings.Instance}}"/>
                     <ComboBoxItem Content="{Binding Voice_ModePushToTalk, Source={x:Static strings:Strings.Instance}}"/>
                 </ComboBox>
+                <reset:SettingResetButton Click="ResetSetting_Click" Tag="Mode" Visibility="{Binding Visibility, ElementName=ModeBox}" IsEnabled="{Binding IsEnabled, ElementName=ModeBox}" SettingLabel="{Binding Voice_ModeLabel, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_ModeBox_67"/>
             </StackPanel>
 
             <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,10">
@@ -76,6 +79,7 @@
                         SmallChange="0.01" LargeChange="0.05" VerticalAlignment="Center"
                         ValueChanged="Setting_Changed"
                         ToolTip="{Binding Voice_ConfidenceTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                <reset:SettingResetButton Click="ResetSetting_Click" Tag="Confidence" Visibility="{Binding Visibility, ElementName=ConfidenceSlider}" IsEnabled="{Binding IsEnabled, ElementName=ConfidenceSlider}" SettingLabel="{Binding Voice_ConfidenceLabel, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_ConfidenceSlider_78" Margin="4,0,8,0"/>
                 <TextBlock x:Name="ConfidenceText" VerticalAlignment="Center" Margin="8,0,0,0"
                            FontFamily="{StaticResource TelemetryFontFamily}"/>
             </StackPanel>

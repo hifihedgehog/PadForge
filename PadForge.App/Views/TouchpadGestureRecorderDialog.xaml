@@ -8,7 +8,8 @@
         Title="{Binding Recorder_Title, Source={x:Static strings:Strings.Instance}}"
         Height="660" Width="640"
         WindowStartupLocation="CenterOwner"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize"
+             xmlns:reset="clr-namespace:PadForge.Controls">
 
     <!-- No local ThemesDictionary. The App.xaml's ThemesDictionary is
          theme-aware (ApplicationThemeManager.Apply mutates it on theme
@@ -134,6 +135,7 @@
                     <ComboBoxItem Content="3"/>
                     <ComboBoxItem Content="5"/>
                 </ComboBox>
+                <reset:SettingResetButton Click="ResetSampleCount_Click" Tag="" Visibility="{Binding Visibility, ElementName=SampleCountBox}" IsEnabled="{Binding IsEnabled, ElementName=SampleCountBox}" SettingLabel="{Binding Recorder_SampleCount_Label, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_SampleCountBox_132" Margin="4,0,8,0"/>
                 <TextBlock Text="{Binding Recorder_SampleCount_Hint, Source={x:Static strings:Strings.Instance}}"
                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                            FontSize="12" VerticalAlignment="Center" Margin="12,0,0,0"

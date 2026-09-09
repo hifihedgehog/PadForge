@@ -5,7 +5,8 @@
              xmlns:strings="clr-namespace:PadForge.Resources.Strings"
              xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="po">
+             mc:Ignorable="po"
+             xmlns:reset="clr-namespace:PadForge.Controls">
 
     <UserControl.Resources>
         <!-- Hover glow (#175): hover color changes carry a hue-matched
@@ -74,10 +75,12 @@
                     </StackPanel>
                     <TextBlock Text="{Binding Settings_LanguageDesc, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
-                    <ComboBox ItemsSource="{Binding AvailableLanguages}"
-                              SelectedItem="{Binding SelectedLanguage}"
-                              DisplayMemberPath="NativeName" Width="250"
-                              HorizontalAlignment="Left"/>
+                    <DockPanel LastChildFill="True" HorizontalAlignment="Left">
+                        <reset:SettingResetButton DockPanel.Dock="Right" Command="{Binding ResetSettingCommand}" CommandParameter="SelectedLanguage" SettingLabel="{Binding Settings_LanguageDesc, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_SettingsViewModel_SelectedLanguage_80"/>
+                        <ComboBox ItemsSource="{Binding AvailableLanguages}"
+                                  SelectedItem="{Binding SelectedLanguage}"
+                                  DisplayMemberPath="NativeName" Width="250"/>
+                    </DockPanel>
                 </StackPanel>
             </Border>
 
@@ -92,12 +95,14 @@
                     <TextBlock Text="{Binding Settings_AppearanceDesc, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
                     <TextBlock Text="{Binding Settings_Theme, Source={x:Static strings:Strings.Instance}}" FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,6"/>
-                    <ComboBox SelectedIndex="{Binding SelectedThemeIndex}" Width="200"
-                              HorizontalAlignment="Left">
-                        <ComboBoxItem Content="{Binding Settings_ThemeSystem, Source={x:Static strings:Strings.Instance}}"/>
-                        <ComboBoxItem Content="{Binding Settings_ThemeLight, Source={x:Static strings:Strings.Instance}}"/>
-                        <ComboBoxItem Content="{Binding Settings_ThemeDark, Source={x:Static strings:Strings.Instance}}"/>
-                    </ComboBox>
+                    <DockPanel LastChildFill="True" HorizontalAlignment="Left">
+                        <reset:SettingResetButton DockPanel.Dock="Right" Command="{Binding ResetSettingCommand}" CommandParameter="SelectedThemeIndex" SettingLabel="{Binding Settings_Theme, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_SettingsViewModel_SelectedThemeIndex_96"/>
+                        <ComboBox SelectedIndex="{Binding SelectedThemeIndex}" Width="200">
+                            <ComboBoxItem Content="{Binding Settings_ThemeSystem, Source={x:Static strings:Strings.Instance}}"/>
+                            <ComboBoxItem Content="{Binding Settings_ThemeLight, Source={x:Static strings:Strings.Instance}}"/>
+                            <ComboBoxItem Content="{Binding Settings_ThemeDark, Source={x:Static strings:Strings.Instance}}"/>
+                        </ComboBox>
+                    </DockPanel>
                     <Button Content="{Binding Settings_ShowTour, Source={x:Static strings:Strings.Instance}}"
                             Click="ShowTour_Click" Margin="0,12,0,0" HorizontalAlignment="Left"/>
                 </StackPanel>
@@ -113,9 +118,12 @@
                     </StackPanel>
                     <TextBlock Text="{Binding Settings_WindowDesc, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
-                    <CheckBox Content="{Binding Settings_MinimizeToTray, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding MinimizeToTray}" Margin="0,0,0,8"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <CheckBox VerticalAlignment="Center" Content="{Binding Settings_MinimizeToTray, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding MinimizeToTray}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="MinimizeToTray" SettingLabel="{Binding Settings_MinimizeToTray, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_SettingsViewModel_MinimizeToTray_118"/>
+                    </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                         <CheckBox x:Name="CloseToTrayCheckBox"
                                   Content="{Binding Settings_CloseToTray, Source={x:Static strings:Strings.Instance}}"
@@ -127,12 +135,18 @@
                             <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                         </ui:Button>
                     </StackPanel>
-                    <CheckBox Content="{Binding Settings_StartMinimized, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding StartMinimized}" Margin="0,0,0,8"/>
-                    <CheckBox Content="{Binding Settings_StartAtLogin, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding StartAtLogin}"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <CheckBox VerticalAlignment="Center" Content="{Binding Settings_StartMinimized, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding StartMinimized}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="StartMinimized" SettingLabel="{Binding Settings_StartMinimized, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_SettingsViewModel_StartMinimized_132"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox VerticalAlignment="Center" Content="{Binding Settings_StartAtLogin, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding StartAtLogin}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="StartAtLogin" SettingLabel="{Binding Settings_StartAtLogin, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_SettingsViewModel_StartAtLogin_135"/>
+                    </StackPanel>
                 </StackPanel>
             </Border>
 
@@ -146,16 +160,25 @@
                     </StackPanel>
                     <TextBlock Text="{Binding Settings_InputEngineDesc, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
-                    <CheckBox Content="{Binding Settings_AutoStart, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding AutoStartEngine}" Margin="0,0,0,8"/>
-                    <CheckBox Content="{Binding Settings_BackgroundPolling, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding EnablePollingOnFocusLoss}" Margin="0,0,0,8"/>
-                    <CheckBox Content="{Binding Settings_FlydigiEnhanced, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              ToolTip="{Binding Settings_FlydigiEnhancedTooltip, Source={x:Static strings:Strings.Instance}}"
-                              IsChecked="{Binding FlydigiEnhancedProtocol}" Margin="0,0,0,8"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <CheckBox VerticalAlignment="Center" Content="{Binding Settings_AutoStart, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding AutoStartEngine}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="AutoStartEngine" SettingLabel="{Binding Settings_AutoStart, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_SettingsViewModel_AutoStartEngine_151"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <CheckBox VerticalAlignment="Center" Content="{Binding Settings_BackgroundPolling, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding EnablePollingOnFocusLoss}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="EnablePollingOnFocusLoss" SettingLabel="{Binding Settings_BackgroundPolling, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_SettingsViewModel_EnablePollingOnFocusLoss_154"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <CheckBox VerticalAlignment="Center" Content="{Binding Settings_FlydigiEnhanced, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  ToolTip="{Binding Settings_FlydigiEnhancedTooltip, Source={x:Static strings:Strings.Instance}}"
+                                  IsChecked="{Binding FlydigiEnhancedProtocol}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="FlydigiEnhancedProtocol" SettingLabel="{Binding Settings_FlydigiEnhanced, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_SettingsViewModel_FlydigiEnhancedProtocol_158"/>
+                    </StackPanel>
                     <!-- Shared label column (#175 typography): both rows sit
                          in one Grid so the NumberBoxes align to one left
                          edge regardless of label length. -->
@@ -173,10 +196,13 @@
                         <TextBlock Text="{Binding Settings_PollingInterval, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                    Margin="0,0,8,8"/>
-                        <ui:NumberBox Grid.Column="1" Value="{Binding PollingRateMs, Mode=TwoWay}"
-                                      Minimum="1" Maximum="16"
-                                      SpinButtonPlacementMode="Inline" Width="200" Margin="0,0,0,8"
-                                      ToolTip="{Binding Settings_PollingIntervalTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                        <DockPanel LastChildFill="True" Grid.Column="1" Margin="0,0,0,8">
+                            <reset:SettingResetButton DockPanel.Dock="Right" Command="{Binding ResetSettingCommand}" CommandParameter="PollingRateMs" SettingLabel="{Binding Settings_PollingInterval, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_SettingsViewModel_PollingRateMs_179"/>
+                            <ui:NumberBox Value="{Binding PollingRateMs, Mode=TwoWay}"
+                                          Minimum="1" Maximum="16"
+                                          SpinButtonPlacementMode="Inline" Width="200"
+                                          ToolTip="{Binding Settings_PollingIntervalTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                        </DockPanel>
                         <TextBlock Grid.Column="2" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="6,0,0,8" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                         <!-- Who is in charge of the knob (#365): while the
                              active profile carries a polling override, the
@@ -191,10 +217,13 @@
                         <TextBlock Grid.Row="2" Text="{Binding Settings_HmInactivityTimeout, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                    Margin="0,0,8,0"/>
-                        <ui:NumberBox Grid.Row="2" Grid.Column="1" Value="{Binding HmInactivityDestroyTimeoutSeconds, Mode=TwoWay}"
-                                      Minimum="0" Maximum="3600"
-                                      SpinButtonPlacementMode="Inline" Width="200"
-                                      ToolTip="{Binding Settings_HmInactivityTimeoutTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                        <DockPanel LastChildFill="True" Grid.Row="2" Grid.Column="1">
+                            <reset:SettingResetButton DockPanel.Dock="Right" Command="{Binding ResetSettingCommand}" CommandParameter="HmInactivityDestroyTimeoutSeconds" SettingLabel="{Binding Settings_HmInactivityTimeout, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_SettingsViewModel_HmInactivityDestroyTimeoutSeconds_197"/>
+                            <ui:NumberBox Value="{Binding HmInactivityDestroyTimeoutSeconds, Mode=TwoWay}"
+                                          Minimum="0" Maximum="3600"
+                                          SpinButtonPlacementMode="Inline" Width="200"
+                                          ToolTip="{Binding Settings_HmInactivityTimeoutTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                        </DockPanel>
                         <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding Settings_SecondsZeroNever, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="6,0,0,0" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                     </Grid>
                 </StackPanel>
@@ -215,14 +244,20 @@
                     </StackPanel>
                     <TextBlock Text="{Binding Settings_AssignOfferDesc, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
-                    <CheckBox Content="{Binding Settings_AssignOfferNew, Source={x:Static strings:Strings.Instance}}"
-                              ToolTip="{Binding Settings_AssignOfferNew_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding AssignOfferNewDevice}" Margin="0,0,0,8"/>
-                    <CheckBox Content="{Binding Settings_AssignOfferEmpty, Source={x:Static strings:Strings.Instance}}"
-                              ToolTip="{Binding Settings_AssignOfferEmpty_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding AssignOfferEmptySlot}"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <CheckBox VerticalAlignment="Center" Content="{Binding Settings_AssignOfferNew, Source={x:Static strings:Strings.Instance}}"
+                                  ToolTip="{Binding Settings_AssignOfferNew_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding AssignOfferNewDevice}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="AssignOfferNewDevice" SettingLabel="{Binding Settings_AssignOfferNew, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_SettingsViewModel_AssignOfferNewDevice_221"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox VerticalAlignment="Center" Content="{Binding Settings_AssignOfferEmpty, Source={x:Static strings:Strings.Instance}}"
+                                  ToolTip="{Binding Settings_AssignOfferEmpty_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding AssignOfferEmptySlot}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="AssignOfferEmptySlot" SettingLabel="{Binding Settings_AssignOfferEmpty, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_SettingsViewModel_AssignOfferEmptySlot_225"/>
+                    </StackPanel>
                 </StackPanel>
             </Border>
 
@@ -239,10 +274,13 @@
                     </StackPanel>
                     <TextBlock Text="{Binding Settings_HandheldDesc, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
-                    <CheckBox Content="{Binding Settings_HandheldEnable, Source={x:Static strings:Strings.Instance}}"
-                              ToolTip="{Binding Settings_HandheldEnable_Tooltip, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding HandheldButtonsEnabled}"/>
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox VerticalAlignment="Center" Content="{Binding Settings_HandheldEnable, Source={x:Static strings:Strings.Instance}}"
+                                  ToolTip="{Binding Settings_HandheldEnable_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding HandheldButtonsEnabled}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="HandheldButtonsEnabled" SettingLabel="{Binding Settings_HandheldEnable, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_SettingsViewModel_HandheldButtonsEnabled_245"/>
+                    </StackPanel>
                 </StackPanel>
             </Border>
 
@@ -256,24 +294,30 @@
                     </StackPanel>
                     <TextBlock Text="{Binding Settings_BatteryNotifyDesc, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
-                    <CheckBox Content="{Binding Settings_BatteryNotifyEnable, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding BatteryNotifyEnabled}" Margin="0,0,0,8"/>
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8"
-                                IsEnabled="{Binding BatteryNotifyEnabled}">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <CheckBox VerticalAlignment="Center" Content="{Binding Settings_BatteryNotifyEnable, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding BatteryNotifyEnabled}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="BatteryNotifyEnabled" SettingLabel="{Binding Settings_BatteryNotifyEnable, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_SettingsViewModel_BatteryNotifyEnabled_261"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                         <TextBlock Text="{Binding Settings_BatteryNotifyThreshold, Source={x:Static strings:Strings.Instance}}"
                                    VerticalAlignment="Center"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,8,0"/>
                         <ui:NumberBox Value="{Binding BatteryNotifyThreshold, Mode=TwoWay}"
                                       Minimum="5" Maximum="50"
-                                      SpinButtonPlacementMode="Inline" Width="160"/>
+                                      SpinButtonPlacementMode="Inline" Width="160" IsEnabled="{Binding DataContext.BatteryNotifyEnabled, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
                         <TextBlock Text="%" VerticalAlignment="Center" Margin="6,0,0,0"
                                    Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="BatteryNotifyThreshold" SettingLabel="{Binding Settings_BatteryNotifyThreshold, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_SettingsViewModel_BatteryNotifyThreshold_269"/>
                     </StackPanel>
-                    <CheckBox Content="{Binding Settings_BatteryNotifyVibrate, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding BatteryNotifyVibrate}"
-                              IsEnabled="{Binding BatteryNotifyEnabled}"/>
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox VerticalAlignment="Center" Content="{Binding Settings_BatteryNotifyVibrate, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding BatteryNotifyVibrate}"
+                                  IsEnabled="{Binding BatteryNotifyEnabled}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="BatteryNotifyVibrate" SettingLabel="{Binding Settings_BatteryNotifyVibrate, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_SettingsViewModel_BatteryNotifyVibrate_276"/>
+                    </StackPanel>
                     <Button Content="{Binding Settings_BatteryNotifyTest, Source={x:Static strings:Strings.Instance}}"
                             Click="TestBatteryNotify_Click" Margin="0,12,0,0" HorizontalAlignment="Left"
                             IsEnabled="{Binding BatteryNotifyEnabled}"/>
@@ -340,19 +384,21 @@
                         </StackPanel>
                     </Grid>
 
-                    <CheckBox Content="{Binding Settings_HideDevices, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding EnableInputHiding}"
-                              ToolTip="{Binding Settings_HideDevicesTooltip, Source={x:Static strings:Strings.Instance}}"
-                              Visibility="{Binding IsHidHideInstalled, Converter={StaticResource BoolToVisibilityConverter}}"
-                              Margin="0,12,0,0"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,12,0,0" Visibility="{Binding IsHidHideInstalled, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <CheckBox VerticalAlignment="Center" Content="{Binding Settings_HideDevices, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding EnableInputHiding}"
+                                  ToolTip="{Binding Settings_HideDevicesTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="EnableInputHiding" SettingLabel="{Binding Settings_HideDevices, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_SettingsViewModel_EnableInputHiding_348"/>
+                    </StackPanel>
 
-                    <CheckBox Content="{Binding Settings_KeepCloaksBetweenLaunches, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding KeepHidHideCloaksBetweenLaunches}"
-                              ToolTip="{Binding Settings_KeepCloaksBetweenLaunchesTooltip, Source={x:Static strings:Strings.Instance}}"
-                              Visibility="{Binding IsHidHideInstalled, Converter={StaticResource BoolToVisibilityConverter}}"
-                              Margin="0,8,0,0"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0" Visibility="{Binding IsHidHideInstalled, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <CheckBox VerticalAlignment="Center" Content="{Binding Settings_KeepCloaksBetweenLaunches, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding KeepHidHideCloaksBetweenLaunches}"
+                                  ToolTip="{Binding Settings_KeepCloaksBetweenLaunchesTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="KeepHidHideCloaksBetweenLaunches" SettingLabel="{Binding Settings_KeepCloaksBetweenLaunches, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_SettingsViewModel_KeepHidHideCloaksBetweenLaunches_355"/>
+                    </StackPanel>
 
                     <!-- Whitelist section (only when installed) -->
                     <StackPanel Visibility="{Binding IsHidHideInstalled, Converter={StaticResource BoolToVisibilityConverter}}"
@@ -533,6 +579,7 @@
                                            VerticalAlignment="Center" Margin="0,0,8,0"/>
                                 <TextBox Text="{Binding SteamVrInstallDir, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                          MinWidth="240" VerticalContentAlignment="Center"/>
+                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="SteamVrInstallDir" SettingLabel="{Binding Settings_SteamVRInstallDir, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_SettingsViewModel_SteamVrInstallDir_535" Margin="4,0,8,0"/>
                                 <Button Content="{Binding Common_Browse, Source={x:Static strings:Strings.Instance}}"
                                         Click="SteamVrBrowse_Click" Margin="6,0,0,0"/>
                             </StackPanel>
@@ -568,17 +615,21 @@
                     </StackPanel>
                     <TextBlock Text="{Binding Settings_CommunityConfigsDesc, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
-                    <CheckBox Content="{Binding Settings_EnableCommunityConfigs, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding EnableCommunityConfigLookup}" Margin="0,0,0,8"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <CheckBox VerticalAlignment="Center" Content="{Binding Settings_EnableCommunityConfigs, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding EnableCommunityConfigLookup}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="EnableCommunityConfigLookup" SettingLabel="{Binding Settings_EnableCommunityConfigs, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_SettingsViewModel_EnableCommunityConfigLookup_573"/>
+                    </StackPanel>
                     <!-- Dependent options follow the HidHide card's Visibility
                          gating: they appear once the master opt-in is on. -->
-                    <CheckBox Content="{Binding Settings_ShowLegacyConfigs, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding ShowLegacyWorkshopConfigs}"
-                              ToolTip="{Binding Settings_ShowLegacyConfigsTooltip, Source={x:Static strings:Strings.Instance}}"
-                              Visibility="{Binding EnableCommunityConfigLookup, Converter={StaticResource BoolToVisibilityConverter}}"
-                              Margin="0,0,0,8"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8" Visibility="{Binding EnableCommunityConfigLookup, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <CheckBox VerticalAlignment="Center" Content="{Binding Settings_ShowLegacyConfigs, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding ShowLegacyWorkshopConfigs}"
+                                  ToolTip="{Binding Settings_ShowLegacyConfigsTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="ShowLegacyWorkshopConfigs" SettingLabel="{Binding Settings_ShowLegacyConfigs, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_SettingsViewModel_ShowLegacyWorkshopConfigs_581"/>
+                    </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
                         <Button Content="{Binding Settings_ClearWorkshopCache, Source={x:Static strings:Strings.Instance}}"
                                 Command="{Binding ClearWorkshopCacheCommand}"
@@ -668,10 +719,13 @@
                          sessions log too; the snapshot works even with
                          logging off, because the engine always keeps its
                          recent events in memory. -->
-                    <CheckBox Content="{Binding Settings_DiagnosticsLogging, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding DiagnosticsLoggingEnabled}" Margin="0,14,0,4"
-                              ToolTip="{Binding Settings_DiagnosticsLoggingTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,14,0,4">
+                        <CheckBox VerticalAlignment="Center" Content="{Binding Settings_DiagnosticsLogging, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding DiagnosticsLoggingEnabled}"
+                                  ToolTip="{Binding Settings_DiagnosticsLoggingTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="DiagnosticsLoggingEnabled" SettingLabel="{Binding Settings_DiagnosticsLogging, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_SettingsViewModel_DiagnosticsLoggingEnabled_674"/>
+                    </StackPanel>
                     <TextBlock Text="{Binding DiagnosticsFolderPath}" FontSize="12"
                                FontFamily="{StaticResource TelemetryFontFamily}"
                                Foreground="{DynamicResource TextFillColorTertiaryBrush}"

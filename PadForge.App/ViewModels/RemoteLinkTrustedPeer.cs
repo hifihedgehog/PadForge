@@ -8,7 +8,7 @@ namespace PadForge.ViewModels
     /// <summary>One trusted peer in the Settings paired-peer manager (issue #138). The
     /// name is editable (committed on focus loss → persisted to the trust store), and the
     /// online dot reflects a live session, refreshed in place so editing isn't disrupted.</summary>
-    public sealed class RemoteLinkTrustedPeer : ObservableObject
+    public sealed partial class RemoteLinkTrustedPeer : ObservableObject
     {
         private readonly Action<string, string> _onRename;
         private readonly string _hostName;

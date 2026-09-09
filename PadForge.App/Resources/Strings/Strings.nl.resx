@@ -3601,4 +3601,23 @@ Je kunt het later opnieuw proberen via Instellingen.</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Sterkte terugzetten (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Dode zone rond midden terugzetten (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Stuurhoektrilling terugzetten</value></data>
+  <data name="ResetLabel_Profile" xml:space="preserve"><value>Profiel</value></data>
+  <data name="ResetLabel_Key" xml:space="preserve"><value>Toets</value></data>
+  <data name="ResetLabel_Label" xml:space="preserve"><value>Label</value></data>
+  <data name="ResetLabel_GainPercent" xml:space="preserve"><value>Versterking (%)</value></data>
+  <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Invoeroppervlakken</value></data>
+  <data name="ResetLabel_OutputChannel" xml:space="preserve"><value>Uitvoerkanaal</value></data>
+  <data name="ResetLabel_Formula" xml:space="preserve"><value>Formule</value></data>
+  <data name="ResetLabel_UpInput" xml:space="preserve"><value>Invoer voor verhogen</value></data>
+  <data name="ResetLabel_DownInput" xml:space="preserve"><value>Invoer voor verlagen</value></data>
+  <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>Modificatietoets</value></data>
+  <data name="ResetLabel_RangeStart" xml:space="preserve"><value>Begin van bereik</value></data>
+  <data name="ResetLabel_RangeEnd" xml:space="preserve"><value>Einde van bereik</value></data>
+  <data name="ResetLabel_SourceType" xml:space="preserve"><value>Brontype</value></data>
+  <data name="ResetLabel_LowColor" xml:space="preserve"><value>Kleur voor laag niveau</value></data>
+  <data name="ResetLabel_MidColor" xml:space="preserve"><value>Kleur voor middenniveau</value></data>
+  <data name="ResetLabel_HighColor" xml:space="preserve"><value>Kleur voor hoog niveau</value></data>
+  <data name="ResetLabel_HoldMode" xml:space="preserve"><value>Vasthoudmodus</value></data>
+  <data name="ResetLabel_PositionX" xml:space="preserve"><value>Schermpositie X</value></data>
+  <data name="ResetLabel_PositionY" xml:space="preserve"><value>Schermpositie Y</value></data>
 </root>

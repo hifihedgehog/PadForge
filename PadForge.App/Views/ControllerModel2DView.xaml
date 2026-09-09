@@ -7,7 +7,8 @@
              xmlns:strings="clr-namespace:PadForge.Resources.Strings"
              mc:Ignorable="d"
              d:DesignHeight="400" d:DesignWidth="600"
-             Background="Transparent">
+             Background="Transparent"
+             xmlns:reset="clr-namespace:PadForge.Controls">
 
     <Grid>
         <Viewbox Stretch="Uniform">
@@ -36,6 +37,7 @@
                       Visibility="Collapsed"
                       ToolTip="{Binding Pad_Colorway, Source={x:Static strings:Strings.Instance}}"
                       SelectionChanged="AppearancePicker_SelectionChanged" />
+            <reset:SettingResetButton Click="ResetAppearance_Click" Tag="" Visibility="{Binding Visibility, ElementName=AppearancePicker}" IsEnabled="{Binding IsEnabled, ElementName=AppearancePicker}" SettingLabel="{Binding Pad_Colorway, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_AppearancePicker_38" Margin="4,0,8,0"/>
             <ui:Button x:Name="AnnotationToggleButton"
                        AutomationProperties.AutomationId="AnnotationToggle2D"
                        Style="{StaticResource EmberIconButton}"

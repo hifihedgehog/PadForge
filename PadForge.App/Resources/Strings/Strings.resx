@@ -3630,4 +3630,23 @@ You can retry later from Settings.</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Reset Strength (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Reset Center Deadzone (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Reset Steering Angle Rumble</value></data>
+  <data name="ResetLabel_Profile" xml:space="preserve"><value>Profile</value></data>
+  <data name="ResetLabel_Key" xml:space="preserve"><value>Key</value></data>
+  <data name="ResetLabel_Label" xml:space="preserve"><value>Label</value></data>
+  <data name="ResetLabel_GainPercent" xml:space="preserve"><value>Gain (%)</value></data>
+  <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Input Surfaces</value></data>
+  <data name="ResetLabel_OutputChannel" xml:space="preserve"><value>Output Channel</value></data>
+  <data name="ResetLabel_Formula" xml:space="preserve"><value>Formula</value></data>
+  <data name="ResetLabel_UpInput" xml:space="preserve"><value>Up Input</value></data>
+  <data name="ResetLabel_DownInput" xml:space="preserve"><value>Down Input</value></data>
+  <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>Modifier Input</value></data>
+  <data name="ResetLabel_RangeStart" xml:space="preserve"><value>Range Start</value></data>
+  <data name="ResetLabel_RangeEnd" xml:space="preserve"><value>Range End</value></data>
+  <data name="ResetLabel_SourceType" xml:space="preserve"><value>Source Type</value></data>
+  <data name="ResetLabel_LowColor" xml:space="preserve"><value>Low Color</value></data>
+  <data name="ResetLabel_MidColor" xml:space="preserve"><value>Mid Color</value></data>
+  <data name="ResetLabel_HighColor" xml:space="preserve"><value>High Color</value></data>
+  <data name="ResetLabel_HoldMode" xml:space="preserve"><value>Hold Mode</value></data>
+  <data name="ResetLabel_PositionX" xml:space="preserve"><value>Screen Position X</value></data>
+  <data name="ResetLabel_PositionY" xml:space="preserve"><value>Screen Position Y</value></data>
 </root>

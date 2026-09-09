@@ -45,7 +45,7 @@ namespace PadForge.ViewModels
     /// entry exists in <see cref="MenuDefinitionEntry.Items"/> only once
     /// it carries a label or a binding.
     /// </summary>
-    public class MenuEditorItem : ObservableObject
+    public partial class MenuEditorItem : ObservableObject
     {
         internal readonly MenuDefinitionEntry Entry;
 
@@ -1309,7 +1309,7 @@ namespace PadForge.ViewModels
 
     /// <summary>One cell row in the menu editor: label + one direct
     /// binding (none / keyboard key / virtual-controller button).</summary>
-    public class MenuCellItem : ObservableObject
+    public partial class MenuCellItem : ObservableObject
     {
         private readonly MenuEditorItem _owner;
         private MenuItemDefinition _item; // null until the cell has content

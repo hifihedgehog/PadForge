@@ -7,7 +7,8 @@
              xmlns:strings="clr-namespace:PadForge.Resources.Strings"
              xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="po">
+             mc:Ignorable="po"
+             xmlns:reset="clr-namespace:PadForge.Controls">
 
     <UserControl.Resources>
         <!-- Hover glow (#175): every hover color change carries a glow in
@@ -1482,10 +1483,13 @@
                 <StackPanel>
                     <TextBlock Text="{Binding Dashboard_WebDescription, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
-                    <CheckBox AutomationProperties.AutomationId="EnableWebControllerCheckBox"
-                              Content="{Binding Dashboard_EnableWeb, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding EnableWebController}" Margin="0,0,0,8"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <CheckBox VerticalAlignment="Center" AutomationProperties.AutomationId="EnableWebControllerCheckBox"
+                                  Content="{Binding Dashboard_EnableWeb, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding EnableWebController}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="EnableWebController" SettingLabel="{Binding Dashboard_EnableWeb, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_EnableWebController_1488"/>
+                    </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                         <TextBlock Text="{Binding Dashboard_Port, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
@@ -1572,13 +1576,19 @@
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
 
                     <!-- On / off + port + live status -->
-                    <CheckBox AutomationProperties.AutomationId="EnableRemoteLinkCheckBox"
-                              Content="{Binding Dashboard_EnableRemoteLink, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding EnableRemoteLink}" Margin="0,0,0,8"/>
-                    <CheckBox Content="{Binding RemoteLink_AutoReconnect, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding AutoReconnect}" Margin="0,0,0,10"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <CheckBox VerticalAlignment="Center" AutomationProperties.AutomationId="EnableRemoteLinkCheckBox"
+                                  Content="{Binding Dashboard_EnableRemoteLink, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding EnableRemoteLink}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="EnableRemoteLink" SettingLabel="{Binding Dashboard_EnableRemoteLink, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_EnableRemoteLink_1578"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                        <CheckBox VerticalAlignment="Center" Content="{Binding RemoteLink_AutoReconnect, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding AutoReconnect}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="AutoReconnect" SettingLabel="{Binding RemoteLink_AutoReconnect, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_AutoReconnect_1581"/>
+                    </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                         <TextBlock Text="{Binding Dashboard_Port, Source={x:Static strings:Strings.Instance}}"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
@@ -1633,9 +1643,12 @@
                     <TextBlock Text="{Binding RemoteLink_IdentityTitle, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardSectionTitle}" FontSize="14" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,6"/>
                     <TextBlock Text="{Binding RemoteLink_IdentityDescription, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}"/>
-                    <ComboBox Margin="0,10,0,8" Width="320" HorizontalAlignment="Left"
-                              ItemsSource="{Binding RemoteLink.IdentityProtectionModes}"
-                              SelectedIndex="{Binding RemoteLink.IdentityProtectionModeIndex, Mode=TwoWay}"/>
+                    <DockPanel LastChildFill="True" Margin="0,10,0,8" HorizontalAlignment="Left">
+                        <reset:SettingResetButton DockPanel.Dock="Right" Command="{Binding RemoteLink.ResetSettingCommand}" CommandParameter="IdentityProtectionModeIndex" SettingLabel="{Binding RemoteLink_IdentityDescription, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_SettingsViewModel_IdentityProtectionModeIndex_1638"/>
+                        <ComboBox Width="320"
+                                  ItemsSource="{Binding RemoteLink.IdentityProtectionModes}"
+                                  SelectedIndex="{Binding RemoteLink.IdentityProtectionModeIndex, Mode=TwoWay}"/>
+                    </DockPanel>
                     <TextBlock Text="{Binding RemoteLink.IdentityProtectionHint}" TextWrapping="Wrap"
                                Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="12"/>
 
@@ -1673,16 +1686,21 @@
                                         </Path.Style>
                                     </Path>
                                     <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                        <ui:TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                                    PlaceholderText="{Binding RemoteLink_PeerNamePlaceholder, Source={x:Static strings:Strings.Instance}}" MaxLength="40"
-                                                    HorizontalAlignment="Left" MinWidth="240"/>
+                                        <DockPanel LastChildFill="True" HorizontalAlignment="Left">
+                                            <reset:SettingResetButton DockPanel.Dock="Right" Command="{Binding ResetSettingCommand}" CommandParameter="Name" SettingLabel="{Binding Macro_Name, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_RemoteLinkTrustedPeer_Name_1678"/>
+                                            <ui:TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                        PlaceholderText="{Binding RemoteLink_PeerNamePlaceholder, Source={x:Static strings:Strings.Instance}}" MaxLength="40" MinWidth="240"/>
+                                        </DockPanel>
                                         <TextBlock FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="2,3,0,0" TextTrimming="CharacterEllipsis">
                                             <Run Text="{Binding HostName, Mode=OneWay}" FontWeight="SemiBold"/>
                                             <Run Text="{Binding FingerprintDisplay, Mode=OneWay, StringFormat='  ·  {0}'}" FontFamily="{StaticResource TelemetryFontFamily}"/>
                                         </TextBlock>
-                                        <CheckBox IsChecked="{Binding AllowRemoteAssignments, Mode=TwoWay}" Margin="0,6,8,0"
-                                                  Content="{Binding RemoteLink_AllowAssignments, Source={x:Static strings:Strings.Instance}}"
-                                                  ToolTip="{Binding RemoteLink_AssignmentPermissionDescription, Source={x:Static strings:Strings.Instance}}"/>
+                                        <StackPanel Orientation="Horizontal" Margin="0,6,8,0">
+                                            <CheckBox VerticalAlignment="Center" IsChecked="{Binding AllowRemoteAssignments, Mode=TwoWay}"
+                                                      Content="{Binding RemoteLink_AllowAssignments, Source={x:Static strings:Strings.Instance}}"
+                                                      ToolTip="{Binding RemoteLink_AssignmentPermissionDescription, Source={x:Static strings:Strings.Instance}}"/>
+                                            <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="AllowRemoteAssignments" SettingLabel="{Binding RemoteLink_AllowAssignments, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_RemoteLinkTrustedPeer_AllowRemoteAssignments_1685"/>
+                                        </StackPanel>
                                     </StackPanel>
                                     <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
                                         <!-- No Appearance=Primary (dark text on the accent
@@ -1891,9 +1909,12 @@
                 <StackPanel>
                     <TextBlock Text="{Binding Dashboard_DsuDescription, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
-                    <CheckBox Content="{Binding Dashboard_EnableDsu, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding EnableDsuMotionServer}" Margin="0,0,0,8"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <CheckBox VerticalAlignment="Center" Content="{Binding Dashboard_EnableDsu, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding EnableDsuMotionServer}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="EnableDsuMotionServer" SettingLabel="{Binding Dashboard_EnableDsu, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_EnableDsuMotionServer_1896"/>
+                    </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                         <TextBlock Text="{Binding Dashboard_Port, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
@@ -1959,9 +1980,12 @@
                     <TextBlock Text="{Binding Dashboard_Chroma, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardSectionTitle}" FontSize="14" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,6"/>
                     <TextBlock Text="{Binding Dashboard_ChromaDescription, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
-                    <CheckBox Content="{Binding Dashboard_EnableChroma, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding EnableChromaLightbar}" Margin="0,0,0,8"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <CheckBox VerticalAlignment="Center" Content="{Binding Dashboard_EnableChroma, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding EnableChromaLightbar}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="EnableChromaLightbar" SettingLabel="{Binding Dashboard_EnableChroma, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_EnableChromaLightbar_1964"/>
+                    </StackPanel>
                     <TextBlock Text="{Binding ChromaStatus}" FontSize="12"
                                FontFamily="{StaticResource TelemetryFontFamily}"
                                Foreground="{DynamicResource ColdBrush}" Margin="0,0,0,4"/>
@@ -1974,9 +1998,12 @@
                     <TextBlock Text="{Binding Dashboard_Lightsync, Source={x:Static strings:Strings.Instance}}" Style="{StaticResource CardSectionTitle}" FontSize="14" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,6"/>
                     <TextBlock Text="{Binding Dashboard_LightsyncDescription, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
-                    <CheckBox Content="{Binding Dashboard_EnableLightsync, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding EnableLightsyncLightbar}" Margin="0,0,0,8"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <CheckBox VerticalAlignment="Center" Content="{Binding Dashboard_EnableLightsync, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding EnableLightsyncLightbar}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="EnableLightsyncLightbar" SettingLabel="{Binding Dashboard_EnableLightsync, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_EnableLightsyncLightbar_1979"/>
+                    </StackPanel>
                     <TextBlock Text="{Binding LightsyncStatus}" FontSize="12"
                                FontFamily="{StaticResource TelemetryFontFamily}"
                                Foreground="{DynamicResource ColdBrush}" Margin="0,0,0,4"/>
@@ -1995,9 +2022,12 @@
                 <StackPanel>
                     <TextBlock Text="{Binding Dashboard_SensaDescription, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
-                    <CheckBox Content="{Binding Dashboard_EnableSensa, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding EnableSensaHaptics}" Margin="0,0,0,8"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <CheckBox VerticalAlignment="Center" Content="{Binding Dashboard_EnableSensa, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding EnableSensaHaptics}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="EnableSensaHaptics" SettingLabel="{Binding Dashboard_EnableSensa, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_EnableSensaHaptics_2000"/>
+                    </StackPanel>
                     <TextBlock Text="{Binding SensaStatus}" FontSize="12"
                                FontFamily="{StaticResource TelemetryFontFamily}"
                                Foreground="{DynamicResource ColdBrush}" Margin="0,0,0,4"/>
@@ -2017,16 +2047,25 @@
                 <StackPanel>
                     <TextBlock Text="{Binding Dashboard_OverlaysDescription, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
-                    <CheckBox Content="{Binding Dashboard_MenuOverlay, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              ToolTip="{Binding Dashboard_MenuOverlayDescription, Source={x:Static strings:Strings.Instance}}"
-                              IsChecked="{Binding EnableMenuOverlay}" Margin="0,0,0,6"/>
-                    <CheckBox Content="{Binding Dashboard_ShiftLayerFlyout, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding EnableShiftLayerFlyout}" Margin="0,0,0,6"/>
-                    <CheckBox Content="{Binding Dashboard_ProfileOverlay, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding EnableProfileOverlay}"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                        <CheckBox VerticalAlignment="Center" Content="{Binding Dashboard_MenuOverlay, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  ToolTip="{Binding Dashboard_MenuOverlayDescription, Source={x:Static strings:Strings.Instance}}"
+                                  IsChecked="{Binding EnableMenuOverlay}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="EnableMenuOverlay" SettingLabel="{Binding Dashboard_MenuOverlay, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_EnableMenuOverlay_2023"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                        <CheckBox VerticalAlignment="Center" Content="{Binding Dashboard_ShiftLayerFlyout, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding EnableShiftLayerFlyout}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="EnableShiftLayerFlyout" SettingLabel="{Binding Dashboard_ShiftLayerFlyout, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_EnableShiftLayerFlyout_2026"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox VerticalAlignment="Center" Content="{Binding Dashboard_ProfileOverlay, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding EnableProfileOverlay}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="EnableProfileOverlay" SettingLabel="{Binding Dashboard_ProfileOverlay, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_EnableProfileOverlay_2029"/>
+                    </StackPanel>
                 </StackPanel>
             </Border>
 
@@ -2040,9 +2079,12 @@
                 <StackPanel>
                     <TextBlock Text="{Binding Dashboard_TouchpadOverlayDescription, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
-                    <CheckBox Content="{Binding Dashboard_EnableTouchpadOverlay, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding EnableTouchpadOverlay}" Margin="0,0,0,8"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <CheckBox VerticalAlignment="Center" Content="{Binding Dashboard_EnableTouchpadOverlay, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding EnableTouchpadOverlay}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="EnableTouchpadOverlay" SettingLabel="{Binding Dashboard_EnableTouchpadOverlay, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DashboardViewModel_EnableTouchpadOverlay_2045"/>
+                    </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                         <TextBlock Text="{Binding Dashboard_TouchpadOverlayOpacity, Source={x:Static strings:Strings.Instance}}"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"

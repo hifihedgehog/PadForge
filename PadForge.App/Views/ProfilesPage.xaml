@@ -6,7 +6,8 @@
              xmlns:common="clr-namespace:PadForge.Common"
              xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="po">
+             mc:Ignorable="po"
+             xmlns:reset="clr-namespace:PadForge.Controls">
 
     <UserControl.Resources>
         <!-- Hover glow (#175): hover color changes carry a hue-matched
@@ -70,9 +71,12 @@
                     </StackPanel>
                     <TextBlock Text="{Binding Profiles_Description, Source={x:Static strings:Strings.Instance}}"
                                Style="{StaticResource CardDescription}" Margin="0,0,0,12"/>
-                    <CheckBox Content="{Binding Profiles_AutoSwitch, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding EnableAutoProfileSwitching}" Margin="0,0,0,8"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <CheckBox VerticalAlignment="Center" Content="{Binding Profiles_AutoSwitch, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding EnableAutoProfileSwitching}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="EnableAutoProfileSwitching" SettingLabel="{Binding Profiles_AutoSwitch, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_SettingsViewModel_EnableAutoProfileSwitching_75"/>
+                    </StackPanel>
 
                     <!-- Live foreground readout (#175 item 8): what the
                          monitor currently sees, fed at 1 s from the UI
@@ -127,10 +131,13 @@
                          activate, beside the shortcut combo and the foreground
                          match. Sits with them because it is profile activation,
                          not a global engine service. Off by default. -->
-                    <CheckBox Content="{Binding Profiles_ExternalControl, Source={x:Static strings:Strings.Instance}}"
-                              Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                              IsChecked="{Binding EnableExternalControl}" Margin="0,8,0,8"
-                              ToolTip="{Binding Profiles_ExternalControlTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,8">
+                        <CheckBox VerticalAlignment="Center" Content="{Binding Profiles_ExternalControl, Source={x:Static strings:Strings.Instance}}"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  IsChecked="{Binding EnableExternalControl}"
+                                  ToolTip="{Binding Profiles_ExternalControlTooltip, Source={x:Static strings:Strings.Instance}}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="EnableExternalControl" SettingLabel="{Binding Profiles_ExternalControl, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_SettingsViewModel_EnableExternalControl_133"/>
+                    </StackPanel>
 
                     <!-- Profile card grid (#175 item 8): the text list became
                          steel cards on a wrap grid. Same ListBox contract as
@@ -801,38 +808,46 @@
                                          Controllers Disabled"). Longer Romance-language locales
                                          (Spanish/French ~45 chars) truncate via the ItemTemplate's
                                          TextTrimming with the full name on hover. -->
-                                    <ComboBox Grid.Column="0"
-                                              ItemsSource="{Binding SwitchModes}"
-                                              SelectedValue="{Binding SwitchMode}"
-                                              SelectedValuePath="Mode"
-                                              Width="290" Margin="0,0,6,0">
-                                        <ComboBox.ItemTemplate>
-                                            <DataTemplate>
-                                                <TextBlock Text="{Binding DisplayName}"
-                                                           TextTrimming="CharacterEllipsis"
-                                                           ToolTip="{Binding DisplayName}"/>
-                                            </DataTemplate>
-                                        </ComboBox.ItemTemplate>
-                                    </ComboBox>
+                                    <DockPanel LastChildFill="True" Grid.Column="0" Margin="0,0,6,0">
+                                        <reset:SettingResetButton DockPanel.Dock="Right" Command="{Binding ResetSettingCommand}" CommandParameter="SwitchMode" SettingLabel="{Binding Macro_RepeatMode, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_ProfileShortcutViewModel_SwitchMode_808"/>
+                                        <ComboBox
+                                                  ItemsSource="{Binding SwitchModes}"
+                                                  SelectedValue="{Binding SwitchMode}"
+                                                  SelectedValuePath="Mode"
+                                                  Width="290">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding DisplayName}"
+                                                               TextTrimming="CharacterEllipsis"
+                                                               ToolTip="{Binding DisplayName}"/>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                    </DockPanel>
 
                                     <!-- Profile dropdown (Specific only) -->
-                                    <ComboBox Grid.Column="1"
-                                              ItemsSource="{Binding ProfileChoices}"
-                                              SelectedValue="{Binding TargetProfileId}"
-                                              SelectedValuePath="ProfileId"
-                                              DisplayMemberPath="DisplayName"
-                                              DropDownOpened="ProfileChoices_DropDownOpened"
-                                              Width="140" Margin="0,0,6,0"
-                                              Visibility="{Binding IsSpecificMode, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    <DockPanel LastChildFill="True" Grid.Column="1" Margin="0,0,6,0" Visibility="{Binding IsSpecificMode, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <reset:SettingResetButton DockPanel.Dock="Right" Command="{Binding ResetSettingCommand}" CommandParameter="TargetProfileId" SettingLabel="{Binding ResetLabel_Profile, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_ProfileShortcutViewModel_TargetProfileId_826"/>
+                                        <ComboBox
+                                                  ItemsSource="{Binding ProfileChoices}"
+                                                  SelectedValue="{Binding TargetProfileId}"
+                                                  SelectedValuePath="ProfileId"
+                                                  DisplayMemberPath="DisplayName"
+                                                  DropDownOpened="ProfileChoices_DropDownOpened"
+                                                  Width="140"/>
+                                    </DockPanel>
 
                                     <!-- Device dropdown — matches the SwitchMode dropdown width. -->
-                                    <ComboBox Grid.Column="2"
-                                              ItemsSource="{Binding DeviceChoices}"
-                                              SelectedValue="{Binding TriggerDeviceGuid}"
-                                              SelectedValuePath="DeviceGuid"
-                                              DisplayMemberPath="DisplayName"
-                                              DropDownOpened="DeviceChoices_DropDownOpened"
-                                              Width="290" Margin="0,0,6,0"/>
+                                    <DockPanel LastChildFill="True" Grid.Column="2" Margin="0,0,6,0">
+                                        <reset:SettingResetButton DockPanel.Dock="Right" Command="{Binding ResetSettingCommand}" CommandParameter="TriggerDeviceGuid" SettingLabel="{Binding Pad_ScopeDevice, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_ProfileShortcutViewModel_TriggerDeviceGuid_835"/>
+                                        <ComboBox
+                                                  ItemsSource="{Binding DeviceChoices}"
+                                                  SelectedValue="{Binding TriggerDeviceGuid}"
+                                                  SelectedValuePath="DeviceGuid"
+                                                  DisplayMemberPath="DisplayName"
+                                                  DropDownOpened="DeviceChoices_DropDownOpened"
+                                                  Width="290"/>
+                                    </DockPanel>
 
                                     <!-- Button combo display (fills remaining space, marquee scrolls if too long) -->
                                     <Border Grid.Column="3" ClipToBounds="True" Margin="0,0,6,0">

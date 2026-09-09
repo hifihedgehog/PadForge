@@ -405,14 +405,17 @@ namespace PadForge.ViewModels
         /// the Extended card's Reset uses it instead of keeping a third,
         /// cruder copy of the same derivation (#395).</remarks>
         internal void SyncExtendedConfigFromProfile()
+            => SeedExtendedConfigFromProfile(_extendedConfig);
+
+        internal void SeedExtendedConfigFromProfile(ExtendedSlotConfig target)
         {
             var profile = AvailableProfiles?.FirstOrDefault(p =>
                 string.Equals(p.Id, _profileId, System.StringComparison.OrdinalIgnoreCase));
             if (profile == null) return;
 
-            _extendedConfig.ThumbstickCount = profile.StickCount;
-            _extendedConfig.TriggerCount = profile.TriggerCount;
-            _extendedConfig.PovCount = profile.HasHat ? 1 : 0;
+            target.ThumbstickCount = profile.StickCount;
+            target.TriggerCount = profile.TriggerCount;
+            target.PovCount = profile.HasHat ? 1 : 0;
             int buttons = profile.ButtonCount;
             // switch-pro descriptors declare 18 buttons, but 15-18 are
             // the Joy-Con rail SL/SR bits with no role in the profile
@@ -442,12 +445,12 @@ namespace PadForge.ViewModels
             // authority for these, the same way it is for Nintendo.
             if (MacroButtonNames.IsValveLetteredProfile(profile.Id))
             {
-                _extendedConfig.ThumbstickCount = Models2D.NintendoPreviewMap.StickCount(profile.Id);
-                _extendedConfig.TriggerCount = Models2D.NintendoPreviewMap.TriggerCount(profile.Id);
-                _extendedConfig.PovCount = Models2D.NintendoPreviewMap.DPadIsHat(profile.Id) ? 1 : 0;
+                target.ThumbstickCount = Models2D.NintendoPreviewMap.StickCount(profile.Id);
+                target.TriggerCount = Models2D.NintendoPreviewMap.TriggerCount(profile.Id);
+                target.PovCount = Models2D.NintendoPreviewMap.DPadIsHat(profile.Id) ? 1 : 0;
                 buttons = Models2D.NintendoPreviewMap.ButtonCount(profile.Id);
             }
-            _extendedConfig.ButtonCount = buttons;
+            target.ButtonCount = buttons;
         }
 
         /// <summary>
@@ -7339,7 +7342,7 @@ namespace PadForge.ViewModels
         /// index into <see cref="RumbleAudioConfig.SourceOrder"/>. Edits
         /// route through the owner so the row never holds a reference to
         /// a DTO the profile-apply path may have replaced.</summary>
-        public sealed class RumbleAudioVoiceItem : ObservableObject
+        public sealed partial class RumbleAudioVoiceItem : ObservableObject
         {
             private readonly PadViewModel _owner;
             private readonly int _index;

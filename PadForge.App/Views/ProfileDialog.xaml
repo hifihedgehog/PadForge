@@ -9,7 +9,8 @@
         Title="{Binding ProfileDialog_SaveAs, Source={x:Static strings:Strings.Instance}}"
         Height="470" Width="500"
         WindowStartupLocation="CenterOwner"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize"
+             xmlns:reset="clr-namespace:PadForge.Controls">
 
     <ui:FluentWindow.Resources>
         <ResourceDictionary>
@@ -107,6 +108,7 @@
                 <TextBlock Text="{Binding ProfileDialog_PollingRate, Source={x:Static strings:Strings.Instance}}"
                            VerticalAlignment="Center" Margin="0,0,8,0"/>
                 <ComboBox x:Name="PollingRateBox" MinWidth="200" SelectedIndex="0"/>
+                <reset:SettingResetButton Click="ResetPollingRate_Click" Tag="" Visibility="{Binding Visibility, ElementName=PollingRateBox}" IsEnabled="{Binding IsEnabled, ElementName=PollingRateBox}" SettingLabel="{Binding ProfileDialog_PollingRate, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_PollingRateBox_109"/>
             </StackPanel>
 
             <!-- Footer band (#175 dialog language): Save is the dialog's

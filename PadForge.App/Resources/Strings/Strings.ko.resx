@@ -3581,4 +3581,23 @@
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>강도 초기화 (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>중앙 데드존 초기화 (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>조향 각도 진동 초기화</value></data>
+  <data name="ResetLabel_Profile" xml:space="preserve"><value>프로필</value></data>
+  <data name="ResetLabel_Key" xml:space="preserve"><value>키</value></data>
+  <data name="ResetLabel_Label" xml:space="preserve"><value>레이블</value></data>
+  <data name="ResetLabel_GainPercent" xml:space="preserve"><value>게인 (%)</value></data>
+  <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>입력 표면</value></data>
+  <data name="ResetLabel_OutputChannel" xml:space="preserve"><value>출력 채널</value></data>
+  <data name="ResetLabel_Formula" xml:space="preserve"><value>수식</value></data>
+  <data name="ResetLabel_UpInput" xml:space="preserve"><value>증가 입력</value></data>
+  <data name="ResetLabel_DownInput" xml:space="preserve"><value>감소 입력</value></data>
+  <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>수식키 입력</value></data>
+  <data name="ResetLabel_RangeStart" xml:space="preserve"><value>범위 시작</value></data>
+  <data name="ResetLabel_RangeEnd" xml:space="preserve"><value>범위 끝</value></data>
+  <data name="ResetLabel_SourceType" xml:space="preserve"><value>소스 유형</value></data>
+  <data name="ResetLabel_LowColor" xml:space="preserve"><value>낮은 레벨 색상</value></data>
+  <data name="ResetLabel_MidColor" xml:space="preserve"><value>중간 레벨 색상</value></data>
+  <data name="ResetLabel_HighColor" xml:space="preserve"><value>높은 레벨 색상</value></data>
+  <data name="ResetLabel_HoldMode" xml:space="preserve"><value>유지 모드</value></data>
+  <data name="ResetLabel_PositionX" xml:space="preserve"><value>화면 위치 X</value></data>
+  <data name="ResetLabel_PositionY" xml:space="preserve"><value>화면 위치 Y</value></data>
 </root>

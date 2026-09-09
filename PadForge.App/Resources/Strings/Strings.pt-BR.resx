@@ -3575,4 +3575,23 @@ Você pode tentar novamente mais tarde em Configurações.</value></data>
   <data name="Pad_SteeringAngleRumble_ResetStrength" xml:space="preserve"><value>Redefinir intensidade (50%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetDeadzone" xml:space="preserve"><value>Redefinir zona morta central (2%)</value></data>
   <data name="Pad_SteeringAngleRumble_ResetAll" xml:space="preserve"><value>Redefinir vibração por ângulo de direção</value></data>
+  <data name="ResetLabel_Profile" xml:space="preserve"><value>Perfil</value></data>
+  <data name="ResetLabel_Key" xml:space="preserve"><value>Tecla</value></data>
+  <data name="ResetLabel_Label" xml:space="preserve"><value>Rótulo</value></data>
+  <data name="ResetLabel_GainPercent" xml:space="preserve"><value>Ganho (%)</value></data>
+  <data name="ResetLabel_InputSurfaces" xml:space="preserve"><value>Superfícies de entrada</value></data>
+  <data name="ResetLabel_OutputChannel" xml:space="preserve"><value>Canal de saída</value></data>
+  <data name="ResetLabel_Formula" xml:space="preserve"><value>Fórmula</value></data>
+  <data name="ResetLabel_UpInput" xml:space="preserve"><value>Entrada de aumento</value></data>
+  <data name="ResetLabel_DownInput" xml:space="preserve"><value>Entrada de redução</value></data>
+  <data name="ResetLabel_ModifierInput" xml:space="preserve"><value>Entrada modificadora</value></data>
+  <data name="ResetLabel_RangeStart" xml:space="preserve"><value>Início do intervalo</value></data>
+  <data name="ResetLabel_RangeEnd" xml:space="preserve"><value>Fim do intervalo</value></data>
+  <data name="ResetLabel_SourceType" xml:space="preserve"><value>Tipo de fonte</value></data>
+  <data name="ResetLabel_LowColor" xml:space="preserve"><value>Cor do nível baixo</value></data>
+  <data name="ResetLabel_MidColor" xml:space="preserve"><value>Cor do nível médio</value></data>
+  <data name="ResetLabel_HighColor" xml:space="preserve"><value>Cor do nível alto</value></data>
+  <data name="ResetLabel_HoldMode" xml:space="preserve"><value>Modo de sustentação</value></data>
+  <data name="ResetLabel_PositionX" xml:space="preserve"><value>Posição na tela X</value></data>
+  <data name="ResetLabel_PositionY" xml:space="preserve"><value>Posição na tela Y</value></data>
 </root>

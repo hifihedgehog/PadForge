@@ -1,0 +1,1286 @@
+[
+  {
+    "File": "PadForge.App/Views/DashboardPage.xaml",
+    "Id": "Reset_DashboardViewModel_EnableWebController_1488",
+    "Owner": "PadForge.ViewModels.DashboardViewModel",
+    "Property": "EnableWebController"
+  },
+  {
+    "File": "PadForge.App/Views/DashboardPage.xaml",
+    "Id": "Reset_DashboardViewModel_EnableRemoteLink_1578",
+    "Owner": "PadForge.ViewModels.DashboardViewModel",
+    "Property": "EnableRemoteLink"
+  },
+  {
+    "File": "PadForge.App/Views/DashboardPage.xaml",
+    "Id": "Reset_DashboardViewModel_AutoReconnect_1581",
+    "Owner": "PadForge.ViewModels.DashboardViewModel",
+    "Property": "AutoReconnect"
+  },
+  {
+    "File": "PadForge.App/Views/DashboardPage.xaml",
+    "Id": "Reset_SettingsViewModel_IdentityProtectionModeIndex_1638",
+    "Owner": "PadForge.ViewModels.SettingsViewModel",
+    "Property": "IdentityProtectionModeIndex"
+  },
+  {
+    "File": "PadForge.App/Views/DashboardPage.xaml",
+    "Id": "Reset_RemoteLinkTrustedPeer_Name_1678",
+    "Owner": "PadForge.ViewModels.RemoteLinkTrustedPeer",
+    "Property": "Name"
+  },
+  {
+    "File": "PadForge.App/Views/DashboardPage.xaml",
+    "Id": "Reset_RemoteLinkTrustedPeer_AllowRemoteAssignments_1685",
+    "Owner": "PadForge.ViewModels.RemoteLinkTrustedPeer",
+    "Property": "AllowRemoteAssignments"
+  },
+  {
+    "File": "PadForge.App/Views/DashboardPage.xaml",
+    "Id": "Reset_DashboardViewModel_EnableDsuMotionServer_1896",
+    "Owner": "PadForge.ViewModels.DashboardViewModel",
+    "Property": "EnableDsuMotionServer"
+  },
+  {
+    "File": "PadForge.App/Views/DashboardPage.xaml",
+    "Id": "Reset_DashboardViewModel_EnableChromaLightbar_1964",
+    "Owner": "PadForge.ViewModels.DashboardViewModel",
+    "Property": "EnableChromaLightbar"
+  },
+  {
+    "File": "PadForge.App/Views/DashboardPage.xaml",
+    "Id": "Reset_DashboardViewModel_EnableLightsyncLightbar_1979",
+    "Owner": "PadForge.ViewModels.DashboardViewModel",
+    "Property": "EnableLightsyncLightbar"
+  },
+  {
+    "File": "PadForge.App/Views/DashboardPage.xaml",
+    "Id": "Reset_DashboardViewModel_EnableSensaHaptics_2000",
+    "Owner": "PadForge.ViewModels.DashboardViewModel",
+    "Property": "EnableSensaHaptics"
+  },
+  {
+    "File": "PadForge.App/Views/DashboardPage.xaml",
+    "Id": "Reset_DashboardViewModel_EnableMenuOverlay_2023",
+    "Owner": "PadForge.ViewModels.DashboardViewModel",
+    "Property": "EnableMenuOverlay"
+  },
+  {
+    "File": "PadForge.App/Views/DashboardPage.xaml",
+    "Id": "Reset_DashboardViewModel_EnableShiftLayerFlyout_2026",
+    "Owner": "PadForge.ViewModels.DashboardViewModel",
+    "Property": "EnableShiftLayerFlyout"
+  },
+  {
+    "File": "PadForge.App/Views/DashboardPage.xaml",
+    "Id": "Reset_DashboardViewModel_EnableProfileOverlay_2029",
+    "Owner": "PadForge.ViewModels.DashboardViewModel",
+    "Property": "EnableProfileOverlay"
+  },
+  {
+    "File": "PadForge.App/Views/DashboardPage.xaml",
+    "Id": "Reset_DashboardViewModel_EnableTouchpadOverlay_2045",
+    "Owner": "PadForge.ViewModels.DashboardViewModel",
+    "Property": "EnableTouchpadOverlay"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_PadViewModel_ProfileId_490",
+    "Owner": "PadForge.ViewModels.PadViewModel",
+    "Property": "ProfileId"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_PadViewModel_KbmSurfaces_531",
+    "Owner": "PadForge.ViewModels.PadViewModel",
+    "Property": "KbmSurfaces"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_PadViewModel_ProfileId_845",
+    "Owner": "PadForge.ViewModels.PadViewModel",
+    "Property": "ProfileId"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroItem_IsEnabled_1284",
+    "Owner": "PadForge.ViewModels.MacroItem",
+    "Property": "IsEnabled"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroItem_TriggerMode_1297",
+    "Owner": "PadForge.ViewModels.MacroItem",
+    "Property": "TriggerMode"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroItem_LayerMask_1350",
+    "Owner": "PadForge.ViewModels.MacroItem",
+    "Property": "LayerMask"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroItem_TriggerExpression_1419",
+    "Owner": "PadForge.ViewModels.MacroItem",
+    "Property": "TriggerExpression"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroExpressionVariable_Source_1644",
+    "Owner": "PadForge.ViewModels.MacroExpressionVariable",
+    "Property": "Source"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroExpressionVariable_OutputChannel_1658",
+    "Owner": "PadForge.ViewModels.MacroExpressionVariable",
+    "Property": "OutputChannel"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroItem_TriggerSource_1724",
+    "Owner": "PadForge.ViewModels.MacroItem",
+    "Property": "TriggerSource"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_TriggerInputEntry_Invert_1825",
+    "Owner": "PadForge.ViewModels.MacroItem+TriggerInputEntry",
+    "Property": "Invert"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_TriggerInputEntry_HalfAxis_1828",
+    "Owner": "PadForge.ViewModels.MacroItem+TriggerInputEntry",
+    "Property": "HalfAxis"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_TriggerInputEntry_Bidirectional_1833",
+    "Owner": "PadForge.ViewModels.MacroItem+TriggerInputEntry",
+    "Property": "Bidirectional"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroItem_TriggerAxisThreshold_1873",
+    "Owner": "PadForge.ViewModels.MacroItem",
+    "Property": "TriggerAxisThreshold"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroItem_TriggerAxisDirectionIndex_1884",
+    "Owner": "PadForge.ViewModels.MacroItem",
+    "Property": "TriggerAxisDirectionIndex"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroItem_ConsumeTriggerButtons_1894",
+    "Owner": "PadForge.ViewModels.MacroItem",
+    "Property": "ConsumeTriggerButtons"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_Type_1980",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "Type"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_DisconnectTarget_2024",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "DisconnectTarget"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_DisconnectDeviceGuid_2038",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "DisconnectDeviceGuid"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_ProgramPath_2054",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "ProgramPath"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_ProgramArgs_2062",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "ProgramArgs"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_ProgramWorkingDir_2070",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "ProgramWorkingDir"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_TextContent_2091",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "TextContent"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_TextPerCharDelayMs_2103",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "TextPerCharDelayMs"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_SetGyroEngagedMode_2116",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "SetGyroEngagedMode"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_CursorRecenterMode_2159",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "CursorRecenterMode"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_CursorPinMode_2175",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "CursorPinMode"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_CursorPinX_2185",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "CursorPinX"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_CursorPinY_2191",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "CursorPinY"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_CursorClampMode_2207",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "CursorClampMode"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_MouseX_2239",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "MouseX"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_MouseY_2245",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "MouseY"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_NudgeDx_2264",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "NudgeDx"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_NudgeDy_2270",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "NudgeDy"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_CycleStepsCsv_2286",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "CycleStepsCsv"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_CycleWrap_2289",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "CycleWrap"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_PulseWhileLatched_2301",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "PulseWhileLatched"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_PressureScaledRate_2326",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "PressureScaledRate"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_TurboRateCurve_2344",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "TurboRateCurve"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_SourceDeviceGuid_2373",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "SourceDeviceGuid"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_SourceDeviceAxisIndex_2383",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "SourceDeviceAxisIndex"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_KeyString_2436",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "KeyString"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_DurationMs_2459",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "DurationMs"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_LightbarHoldMode_2473",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "LightbarHoldMode"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_LightbarColorSource_2484",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "LightbarColorSource"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_LightbarHoldMs_2559",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "LightbarHoldMs"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_LightbarFadeMs_2570",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "LightbarFadeMs"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_LightbarTargetMode_2599",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "LightbarTargetMode"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_PointerSetMode_2687",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "PointerSetMode"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_SwitchLayerMask_2712",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "SwitchLayerMask"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_GuideLedPercent_2729",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "GuideLedPercent"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_RumbleHoldMode_2749",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "RumbleHoldMode"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_RumbleStrengthLeft_2760",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "RumbleStrengthLeft"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_RumbleStrengthRight_2770",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "RumbleStrengthRight"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_RumbleHoldMs_2781",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "RumbleHoldMs"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_RumbleFadeMs_2792",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "RumbleFadeMs"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_SoundFilePath_2824",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "SoundFilePath"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_SoundVolume_2834",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "SoundVolume"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_SoundLoop_2841",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "SoundLoop"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_AxisTarget_2866",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "AxisTarget"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_AxisValuePercent_2882",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "AxisValuePercent"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_AxisTarget_2915",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "AxisTarget"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_AxisYieldToPhysical_2933",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "AxisYieldToPhysical"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_AxisValue_2943",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "AxisValue"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_WheelHorizontal_2946",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "WheelHorizontal"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_AxisSource_2957",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "AxisSource"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_AxisTarget_2968",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "AxisTarget"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_SourceDeviceGuid_2988",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "SourceDeviceGuid"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_SourceDeviceAxisIndex_2998",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "SourceDeviceAxisIndex"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_VolumeLimit_3024",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "VolumeLimit"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_InvertAxis_3031",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "InvertAxis"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_ShowVolumeOsd_3033",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "ShowVolumeOsd"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_ProcessName_3051",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "ProcessName"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_AxisSource_3058",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "AxisSource"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_AxisTarget_3069",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "AxisTarget"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_SourceDeviceGuid_3089",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "SourceDeviceGuid"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_SourceDeviceAxisIndex_3099",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "SourceDeviceAxisIndex"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_VolumeLimit_3125",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "VolumeLimit"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_InvertAxis_3132",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "InvertAxis"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_AxisSource_3146",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "AxisSource"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_AxisTarget_3157",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "AxisTarget"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_SourceDeviceGuid_3177",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "SourceDeviceGuid"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_SourceDeviceAxisIndex_3187",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "SourceDeviceAxisIndex"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_MouseSensitivity_3214",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "MouseSensitivity"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_InvertAxis_3219",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "InvertAxis"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_MouseButton_3233",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "MouseButton"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroItem_RepeatMode_3262",
+    "Owner": "PadForge.ViewModels.MacroItem",
+    "Property": "RepeatMode"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroItem_RepeatCount_3273",
+    "Owner": "PadForge.ViewModels.MacroItem",
+    "Property": "RepeatCount"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingSourceItem_Kind_4282",
+    "Owner": "PadForge.ViewModels.MappingSourceItem",
+    "Property": "Kind"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingSourceItem_ParamAttackTime_4288",
+    "Owner": "PadForge.ViewModels.MappingSourceItem",
+    "Property": "ParamAttackTime"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingSourceItem_ParamReleaseTime_4292",
+    "Owner": "PadForge.ViewModels.MappingSourceItem",
+    "Property": "ParamReleaseTime"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingSourceItem_ParamReverseMultiplier_4296",
+    "Owner": "PadForge.ViewModels.MappingSourceItem",
+    "Property": "ParamReverseMultiplier"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingSourceItem_ParamAutocenter_4299",
+    "Owner": "PadForge.ViewModels.MappingSourceItem",
+    "Property": "ParamAutocenter"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingSourceItem_ParamRate_4305",
+    "Owner": "PadForge.ViewModels.MappingSourceItem",
+    "Property": "ParamRate"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingSourceItem_ParamSticky_4308",
+    "Owner": "PadForge.ViewModels.MappingSourceItem",
+    "Property": "ParamSticky"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingSourceItem_ParamMin_4311",
+    "Owner": "PadForge.ViewModels.MappingSourceItem",
+    "Property": "ParamMin"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingSourceItem_ParamMax_4314",
+    "Owner": "PadForge.ViewModels.MappingSourceItem",
+    "Property": "ParamMax"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingItem_CombineMode_4340",
+    "Owner": "PadForge.ViewModels.MappingItem",
+    "Property": "CombineMode"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingItem_CombineExpression_4415",
+    "Owner": "PadForge.ViewModels.MappingItem",
+    "Property": "CombineExpression"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingSourceItem_Kind_4734",
+    "Owner": "PadForge.ViewModels.MappingSourceItem",
+    "Property": "Kind"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingSourceItem_ParamModifierInputChoice_4848",
+    "Owner": "PadForge.ViewModels.MappingSourceItem",
+    "Property": "ParamModifierInputChoice"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingSourceItem_Invert_4926",
+    "Owner": "PadForge.ViewModels.MappingSourceItem",
+    "Property": "Invert"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingSourceItem_HalfAxis_4931",
+    "Owner": "PadForge.ViewModels.MappingSourceItem",
+    "Property": "HalfAxis"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingSourceItem_Bidirectional_4937",
+    "Owner": "PadForge.ViewModels.MappingSourceItem",
+    "Property": "Bidirectional"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingSourceItem_InvertOutput_4943",
+    "Owner": "PadForge.ViewModels.MappingSourceItem",
+    "Property": "InvertOutput"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingSourceItem_ParamUpInputChoice_5090",
+    "Owner": "PadForge.ViewModels.MappingSourceItem",
+    "Property": "ParamUpInputChoice"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingSourceItem_ParamDownInputChoice_5149",
+    "Owner": "PadForge.ViewModels.MappingSourceItem",
+    "Property": "ParamDownInputChoice"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingSourceItem_ParamRate_5200",
+    "Owner": "PadForge.ViewModels.MappingSourceItem",
+    "Property": "ParamRate"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingSourceItem_ParamSticky_5207",
+    "Owner": "PadForge.ViewModels.MappingSourceItem",
+    "Property": "ParamSticky"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingSourceItem_ParamMin_5213",
+    "Owner": "PadForge.ViewModels.MappingSourceItem",
+    "Property": "ParamMin"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingSourceItem_ParamMax_5219",
+    "Owner": "PadForge.ViewModels.MappingSourceItem",
+    "Property": "ParamMax"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingSourceItem_ParamUpInputChoice_5240",
+    "Owner": "PadForge.ViewModels.MappingSourceItem",
+    "Property": "ParamUpInputChoice"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingSourceItem_ParamDownInputChoice_5299",
+    "Owner": "PadForge.ViewModels.MappingSourceItem",
+    "Property": "ParamDownInputChoice"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingSourceItem_ParamAttackTime_5350",
+    "Owner": "PadForge.ViewModels.MappingSourceItem",
+    "Property": "ParamAttackTime"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingSourceItem_ParamReleaseTime_5359",
+    "Owner": "PadForge.ViewModels.MappingSourceItem",
+    "Property": "ParamReleaseTime"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingSourceItem_ParamReverseMultiplier_5368",
+    "Owner": "PadForge.ViewModels.MappingSourceItem",
+    "Property": "ParamReverseMultiplier"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingSourceItem_ParamAutocenter_5375",
+    "Owner": "PadForge.ViewModels.MappingSourceItem",
+    "Property": "ParamAutocenter"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingSourceItem_ParamUpInputChoice_5577",
+    "Owner": "PadForge.ViewModels.MappingSourceItem",
+    "Property": "ParamUpInputChoice"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingSourceItem_ParamDownInputChoice_5618",
+    "Owner": "PadForge.ViewModels.MappingSourceItem",
+    "Property": "ParamDownInputChoice"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingSourceItem_ParamModifierInputChoice_5659",
+    "Owner": "PadForge.ViewModels.MappingSourceItem",
+    "Property": "ParamModifierInputChoice"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingItem_IsInverted_5758",
+    "Owner": "PadForge.ViewModels.MappingItem",
+    "Property": "IsInverted"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingItem_IsHalfAxis_5762",
+    "Owner": "PadForge.ViewModels.MappingItem",
+    "Property": "IsHalfAxis"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingItem_IsBidirectional_5769",
+    "Owner": "PadForge.ViewModels.MappingItem",
+    "Property": "IsBidirectional"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingItem_InvertOutput_5776",
+    "Owner": "PadForge.ViewModels.MappingItem",
+    "Property": "InvertOutput"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingItem_NoInherit_5788",
+    "Owner": "PadForge.ViewModels.MappingItem",
+    "Property": "NoInherit"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_PadViewModel_SteeringLockLightbarColorSource_6735",
+    "Owner": "PadForge.ViewModels.PadViewModel",
+    "Property": "SteeringLockLightbarColorSource"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_PadViewModel_SteeringLockLightbarColor_6775",
+    "Owner": "PadForge.ViewModels.PadViewModel",
+    "Property": "SteeringLockLightbarColor"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_TriggerConfigItem_DeadZone_7049",
+    "Owner": "PadForge.ViewModels.TriggerConfigItem",
+    "Property": "DeadZone"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_TriggerConfigItem_MaxRange_7053",
+    "Owner": "PadForge.ViewModels.TriggerConfigItem",
+    "Property": "MaxRange"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_PadViewModel_TriggerRumbleFold_7249",
+    "Owner": "PadForge.ViewModels.PadViewModel",
+    "Property": "TriggerRumbleFold"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_PadViewModel_SwapMotors_7252",
+    "Owner": "PadForge.ViewModels.PadViewModel",
+    "Property": "SwapMotors"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_PadViewModel_ConstantForceEnabled_7429",
+    "Owner": "PadForge.ViewModels.PadViewModel",
+    "Property": "ConstantForceEnabled"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_PadViewModel_AudioRumbleEnabled_7522",
+    "Owner": "PadForge.ViewModels.PadViewModel",
+    "Property": "AudioRumbleEnabled"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_DeviceSlotConfig_LeftStartPosition_7985",
+    "Owner": "PadForge.ViewModels.DeviceSlotConfig",
+    "Property": "LeftStartPosition"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_DeviceSlotConfig_LeftEndPosition_7987",
+    "Owner": "PadForge.ViewModels.DeviceSlotConfig",
+    "Property": "LeftEndPosition"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_DeviceSlotConfig_RightStartPosition_8188",
+    "Owner": "PadForge.ViewModels.DeviceSlotConfig",
+    "Property": "RightStartPosition"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_DeviceSlotConfig_RightEndPosition_8190",
+    "Owner": "PadForge.ViewModels.DeviceSlotConfig",
+    "Property": "RightEndPosition"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_DeviceSlotConfig_MicLedFollowDeviceId_9489",
+    "Owner": "PadForge.ViewModels.DeviceSlotConfig",
+    "Property": "MicLedFollowDeviceId"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_PadViewModel_ImpulseSwapTriggers_10319",
+    "Owner": "PadForge.ViewModels.PadViewModel",
+    "Property": "ImpulseSwapTriggers"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_PadViewModel_AtVibrationToImpulse_10325",
+    "Owner": "PadForge.ViewModels.PadViewModel",
+    "Property": "AtVibrationToImpulse"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_PadViewModel_ConstantTriggerForceEnabled_10404",
+    "Owner": "PadForge.ViewModels.PadViewModel",
+    "Property": "ConstantTriggerForceEnabled"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_PadViewModel_AudioRumbleTriggersEnabled_10447",
+    "Owner": "PadForge.ViewModels.PadViewModel",
+    "Property": "AudioRumbleTriggersEnabled"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_DeviceSlotConfig_AudioPassthroughEnabled_11459",
+    "Owner": "PadForge.ViewModels.DeviceSlotConfig",
+    "Property": "AudioPassthroughEnabled"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_DeviceSlotConfig_AudioEqEnabled_11882",
+    "Owner": "PadForge.ViewModels.DeviceSlotConfig",
+    "Property": "AudioEqEnabled"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_EqBandVm_Enabled_11933",
+    "Owner": "PadForge.ViewModels.EqBandVm",
+    "Property": "Enabled"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_EqBandVm_Type_11940",
+    "Owner": "PadForge.ViewModels.EqBandVm",
+    "Property": "Type"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_EqBandVm_FrequencyHz_11948",
+    "Owner": "PadForge.ViewModels.EqBandVm",
+    "Property": "FrequencyHz"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_EqBandVm_GainDb_11950",
+    "Owner": "PadForge.ViewModels.EqBandVm",
+    "Property": "GainDb"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_EqBandVm_Q_11952",
+    "Owner": "PadForge.ViewModels.EqBandVm",
+    "Property": "Q"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_DeviceSlotConfig_AudioLimiterEnabled_12000",
+    "Owner": "PadForge.ViewModels.DeviceSlotConfig",
+    "Property": "AudioLimiterEnabled"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_PadViewModel_MouseGestureButtonLeft_12280",
+    "Owner": "PadForge.ViewModels.PadViewModel",
+    "Property": "MouseGestureButtonLeft"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_PadViewModel_MouseGestureButtonMiddle_12282",
+    "Owner": "PadForge.ViewModels.PadViewModel",
+    "Property": "MouseGestureButtonMiddle"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_PadViewModel_MouseGestureButtonRight_12284",
+    "Owner": "PadForge.ViewModels.PadViewModel",
+    "Property": "MouseGestureButtonRight"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_PadViewModel_MouseGestureButtonX1_12286",
+    "Owner": "PadForge.ViewModels.PadViewModel",
+    "Property": "MouseGestureButtonX1"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_PadViewModel_MouseGestureButtonX2_12288",
+    "Owner": "PadForge.ViewModels.PadViewModel",
+    "Property": "MouseGestureButtonX2"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_PadViewModel_MouseGestureButtonCustom_12294",
+    "Owner": "PadForge.ViewModels.PadViewModel",
+    "Property": "MouseGestureButtonCustom"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MenuEditorItem_Enabled_12483",
+    "Owner": "PadForge.ViewModels.MenuEditorItem",
+    "Property": "Enabled"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MenuEditorItem_CellCount_12882",
+    "Owner": "PadForge.ViewModels.MenuEditorItem",
+    "Property": "CellCount"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MenuEditorItem_HasCenter_12886",
+    "Owner": "PadForge.ViewModels.MenuEditorItem",
+    "Property": "HasCenter"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MenuEditorItem_ShowLabels_12924",
+    "Owner": "PadForge.ViewModels.MenuEditorItem",
+    "Property": "ShowLabels"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MenuEditorItem_PosXPercent_12937",
+    "Owner": "PadForge.ViewModels.MenuEditorItem",
+    "Property": "PosXPercent"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MenuEditorItem_PosYPercent_12939",
+    "Owner": "PadForge.ViewModels.MenuEditorItem",
+    "Property": "PosYPercent"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MenuEditorItem_ScalePercent_12954",
+    "Owner": "PadForge.ViewModels.MenuEditorItem",
+    "Property": "ScalePercent"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MenuEditorItem_OpacityPercent_12971",
+    "Owner": "PadForge.ViewModels.MenuEditorItem",
+    "Property": "OpacityPercent"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MenuCellItem_IconScalePercent_13029",
+    "Owner": "PadForge.ViewModels.MenuCellItem",
+    "Property": "IconScalePercent"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MenuCellItem_Label_13042",
+    "Owner": "PadForge.ViewModels.MenuCellItem",
+    "Property": "Label"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MenuCellItem_BindingKind_13049",
+    "Owner": "PadForge.ViewModels.MenuCellItem",
+    "Property": "BindingKind"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MenuCellItem_SelectedKeyVk_13056",
+    "Owner": "PadForge.ViewModels.MenuCellItem",
+    "Property": "SelectedKeyVk"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MenuCellItem_SelectedButtonFlag_13063",
+    "Owner": "PadForge.ViewModels.MenuCellItem",
+    "Property": "SelectedButtonFlag"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MenuCellItem_SelectedMacroName_13073",
+    "Owner": "PadForge.ViewModels.MenuCellItem",
+    "Property": "SelectedMacroName"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_RumbleAudioVoiceItem_Enabled_13246",
+    "Owner": "PadForge.ViewModels.PadViewModel+RumbleAudioVoiceItem",
+    "Property": "Enabled"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_RumbleAudioVoiceItem_FrequencyHz_13250",
+    "Owner": "PadForge.ViewModels.PadViewModel+RumbleAudioVoiceItem",
+    "Property": "FrequencyHz"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_RumbleAudioVoiceItem_GainPercent_13258",
+    "Owner": "PadForge.ViewModels.PadViewModel+RumbleAudioVoiceItem",
+    "Property": "GainPercent"
+  },
+  {
+    "File": "PadForge.App/Views/ProfilesPage.xaml",
+    "Id": "Reset_SettingsViewModel_EnableAutoProfileSwitching_75",
+    "Owner": "PadForge.ViewModels.SettingsViewModel",
+    "Property": "EnableAutoProfileSwitching"
+  },
+  {
+    "File": "PadForge.App/Views/ProfilesPage.xaml",
+    "Id": "Reset_SettingsViewModel_EnableExternalControl_133",
+    "Owner": "PadForge.ViewModels.SettingsViewModel",
+    "Property": "EnableExternalControl"
+  },
+  {
+    "File": "PadForge.App/Views/ProfilesPage.xaml",
+    "Id": "Reset_ProfileShortcutViewModel_SwitchMode_808",
+    "Owner": "PadForge.ViewModels.ProfileShortcutViewModel",
+    "Property": "SwitchMode"
+  },
+  {
+    "File": "PadForge.App/Views/ProfilesPage.xaml",
+    "Id": "Reset_ProfileShortcutViewModel_TargetProfileId_826",
+    "Owner": "PadForge.ViewModels.ProfileShortcutViewModel",
+    "Property": "TargetProfileId"
+  },
+  {
+    "File": "PadForge.App/Views/ProfilesPage.xaml",
+    "Id": "Reset_ProfileShortcutViewModel_TriggerDeviceGuid_835",
+    "Owner": "PadForge.ViewModels.ProfileShortcutViewModel",
+    "Property": "TriggerDeviceGuid"
+  },
+  {
+    "File": "PadForge.App/Views/SettingsPage.xaml",
+    "Id": "Reset_SettingsViewModel_SelectedLanguage_80",
+    "Owner": "PadForge.ViewModels.SettingsViewModel",
+    "Property": "SelectedLanguage"
+  },
+  {
+    "File": "PadForge.App/Views/SettingsPage.xaml",
+    "Id": "Reset_SettingsViewModel_SelectedThemeIndex_96",
+    "Owner": "PadForge.ViewModels.SettingsViewModel",
+    "Property": "SelectedThemeIndex"
+  },
+  {
+    "File": "PadForge.App/Views/SettingsPage.xaml",
+    "Id": "Reset_SettingsViewModel_MinimizeToTray_118",
+    "Owner": "PadForge.ViewModels.SettingsViewModel",
+    "Property": "MinimizeToTray"
+  },
+  {
+    "File": "PadForge.App/Views/SettingsPage.xaml",
+    "Id": "Reset_SettingsViewModel_StartMinimized_132",
+    "Owner": "PadForge.ViewModels.SettingsViewModel",
+    "Property": "StartMinimized"
+  },
+  {
+    "File": "PadForge.App/Views/SettingsPage.xaml",
+    "Id": "Reset_SettingsViewModel_StartAtLogin_135",
+    "Owner": "PadForge.ViewModels.SettingsViewModel",
+    "Property": "StartAtLogin"
+  },
+  {
+    "File": "PadForge.App/Views/SettingsPage.xaml",
+    "Id": "Reset_SettingsViewModel_AutoStartEngine_151",
+    "Owner": "PadForge.ViewModels.SettingsViewModel",
+    "Property": "AutoStartEngine"
+  },
+  {
+    "File": "PadForge.App/Views/SettingsPage.xaml",
+    "Id": "Reset_SettingsViewModel_EnablePollingOnFocusLoss_154",
+    "Owner": "PadForge.ViewModels.SettingsViewModel",
+    "Property": "EnablePollingOnFocusLoss"
+  },
+  {
+    "File": "PadForge.App/Views/SettingsPage.xaml",
+    "Id": "Reset_SettingsViewModel_FlydigiEnhancedProtocol_158",
+    "Owner": "PadForge.ViewModels.SettingsViewModel",
+    "Property": "FlydigiEnhancedProtocol"
+  },
+  {
+    "File": "PadForge.App/Views/SettingsPage.xaml",
+    "Id": "Reset_SettingsViewModel_PollingRateMs_179",
+    "Owner": "PadForge.ViewModels.SettingsViewModel",
+    "Property": "PollingRateMs"
+  },
+  {
+    "File": "PadForge.App/Views/SettingsPage.xaml",
+    "Id": "Reset_SettingsViewModel_HmInactivityDestroyTimeoutSeconds_197",
+    "Owner": "PadForge.ViewModels.SettingsViewModel",
+    "Property": "HmInactivityDestroyTimeoutSeconds"
+  },
+  {
+    "File": "PadForge.App/Views/SettingsPage.xaml",
+    "Id": "Reset_SettingsViewModel_AssignOfferNewDevice_221",
+    "Owner": "PadForge.ViewModels.SettingsViewModel",
+    "Property": "AssignOfferNewDevice"
+  },
+  {
+    "File": "PadForge.App/Views/SettingsPage.xaml",
+    "Id": "Reset_SettingsViewModel_AssignOfferEmptySlot_225",
+    "Owner": "PadForge.ViewModels.SettingsViewModel",
+    "Property": "AssignOfferEmptySlot"
+  },
+  {
+    "File": "PadForge.App/Views/SettingsPage.xaml",
+    "Id": "Reset_SettingsViewModel_HandheldButtonsEnabled_245",
+    "Owner": "PadForge.ViewModels.SettingsViewModel",
+    "Property": "HandheldButtonsEnabled"
+  },
+  {
+    "File": "PadForge.App/Views/SettingsPage.xaml",
+    "Id": "Reset_SettingsViewModel_BatteryNotifyEnabled_261",
+    "Owner": "PadForge.ViewModels.SettingsViewModel",
+    "Property": "BatteryNotifyEnabled"
+  },
+  {
+    "File": "PadForge.App/Views/SettingsPage.xaml",
+    "Id": "Reset_SettingsViewModel_BatteryNotifyThreshold_269",
+    "Owner": "PadForge.ViewModels.SettingsViewModel",
+    "Property": "BatteryNotifyThreshold"
+  },
+  {
+    "File": "PadForge.App/Views/SettingsPage.xaml",
+    "Id": "Reset_SettingsViewModel_BatteryNotifyVibrate_276",
+    "Owner": "PadForge.ViewModels.SettingsViewModel",
+    "Property": "BatteryNotifyVibrate"
+  },
+  {
+    "File": "PadForge.App/Views/SettingsPage.xaml",
+    "Id": "Reset_SettingsViewModel_EnableInputHiding_348",
+    "Owner": "PadForge.ViewModels.SettingsViewModel",
+    "Property": "EnableInputHiding"
+  },
+  {
+    "File": "PadForge.App/Views/SettingsPage.xaml",
+    "Id": "Reset_SettingsViewModel_KeepHidHideCloaksBetweenLaunches_355",
+    "Owner": "PadForge.ViewModels.SettingsViewModel",
+    "Property": "KeepHidHideCloaksBetweenLaunches"
+  },
+  {
+    "File": "PadForge.App/Views/SettingsPage.xaml",
+    "Id": "Reset_SettingsViewModel_SteamVrInstallDir_535",
+    "Owner": "PadForge.ViewModels.SettingsViewModel",
+    "Property": "SteamVrInstallDir"
+  },
+  {
+    "File": "PadForge.App/Views/SettingsPage.xaml",
+    "Id": "Reset_SettingsViewModel_EnableCommunityConfigLookup_573",
+    "Owner": "PadForge.ViewModels.SettingsViewModel",
+    "Property": "EnableCommunityConfigLookup"
+  },
+  {
+    "File": "PadForge.App/Views/SettingsPage.xaml",
+    "Id": "Reset_SettingsViewModel_ShowLegacyWorkshopConfigs_581",
+    "Owner": "PadForge.ViewModels.SettingsViewModel",
+    "Property": "ShowLegacyWorkshopConfigs"
+  },
+  {
+    "File": "PadForge.App/Views/SettingsPage.xaml",
+    "Id": "Reset_SettingsViewModel_DiagnosticsLoggingEnabled_674",
+    "Owner": "PadForge.ViewModels.SettingsViewModel",
+    "Property": "DiagnosticsLoggingEnabled"
+  }
+]

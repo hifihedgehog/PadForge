@@ -684,10 +684,6 @@ namespace PadForge.Common.Input
             {
                 // Set hints before initialization.
                 SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
-                // Read independent paddles through GameInput. SDL preserves other backend
-                // owners and falls back when the GameInput runtime cannot initialize.
-                SDL_SetHint(SDL_HINT_JOYSTICK_GAMEINPUT, "1");
-                SdlDiagLog.WriteLine($"SDL GameInput hint={SDL_GetHint(SDL_HINT_JOYSTICK_GAMEINPUT)}");
 
                 // Allow SDL3 to enumerate XInput controllers (Xbox, etc.).
                 // Do NOT set SDL_HINT_JOYSTICK_RAWINPUT. It conflicts with

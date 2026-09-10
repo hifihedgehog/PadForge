@@ -544,6 +544,8 @@ Flat schematic of the same controller, same live state. Useful on small monitors
 ![Mappings](screenshots/mappings.jpg)
 Record a binding by pressing a button. Pick from a dropdown of every available input (including raw HID buttons past the standard 11). Set Invert, Half-axis, or a per-mapping threshold for axis-to-button activation. A Primary Mode dropdown picks how the source reads: Direct, Incremental, Invert On Hold, or Ramp. Ramp turns an Up key and a Down key into a smooth axis, tuned by Attack, Release, Reverse, and Autocenter.
 
+PadForge enables Microsoft GameInput automatically to read independent Xbox Elite paddle inputs reported by that API. Detected paddles use the same mappings, macros, and shift layers as other button sources. SDL coordinates device ownership with its other backends. GameInput 3.3 or newer must be installed. If its runtime cannot initialize, SDL retains the existing input backends. Physical Elite USB, Bluetooth, and Xbox Wireless validation is tracked in [SDL issue 28](https://github.com/hifihedgehog/SDL/issues/28).
+
 ### Stick deadzones
 ![Sticks](screenshots/sticks.jpg)
 Six deadzone shapes (Scaled Radial, Radial, Axial, Hybrid, Sloped Scaled Axial, Sloped Axial). Per-axis deadzone, anti-deadzone, linear response, center calibration, and a custom sensitivity-curve editor with unlimited draggable points.
@@ -792,6 +794,7 @@ PadForge stands on these projects. Please consider supporting them directly.
 |---|---|---|
 | [x360ce](https://github.com/x360ce/x360ce) | Original codebase this fork started from | MIT |
 | [SDL3](https://github.com/libsdl-org/SDL) | Controller input: joystick, gamepad, and sensor enumeration | zlib |
+| [Microsoft GameInput](https://www.nuget.org/packages/Microsoft.GameInput/3.5.270) | Windows controller input, including Xbox Elite paddles. The SDK loader is linked into SDL | MIT (SDK loader) |
 | [OpenVR](https://github.com/ValveSoftware/openvr) | VR headset pose and motion controllers as input sources (C# binding only, the native runtime comes from your SteamVR) | BSD 3-Clause |
 | [HIDMaestro](https://github.com/hifihedgehog/HIDMaestro) | User-mode UMDF2 virtual HID controller engine with 231 device profiles | MIT |
 | [OpenXInput](https://github.com/hifihedgehog/OpenXinput) | Drop-in `xinput1_4.dll` replacement that filters PadForge's own virtual controllers from its own XInput view | upstream trademark disclaimer |
@@ -872,6 +875,7 @@ This project is licensed under **CC BY-NC-SA 4.0** (Creative Commons Attribution
 - **2D controller assets** from [Gamepad-Asset-Pack](https://github.com/AL2009man/Gamepad-Asset-Pack) (MIT), by AL2009man.
 - **Original codebase** forked from [x360ce](https://github.com/x360ce/x360ce) (MIT).
 - **SDL3** is licensed under the [zlib License](https://github.com/libsdl-org/SDL/blob/main/LICENSE.txt).
+- **Microsoft GameInput's SDK loader** is licensed under MIT. Copyright (c) Microsoft Corporation. The SDL fork links the loader from Microsoft.GameInput 3.5.270. The Microsoft runtime is installed separately. Its binaries are not bundled with PadForge. Full loader notice in [LICENSE](LICENSE).
 - **HIDMaestro** is licensed under the MIT License.
 - **WPF UI** is licensed under the MIT License.
 - **HelixToolkit** is licensed under the MIT License.

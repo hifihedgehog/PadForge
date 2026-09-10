@@ -241,6 +241,11 @@ namespace PadForge.Engine
         /// <summary>Device file system path (may be empty on some platforms).</summary>
         public string DevicePath { get; private set; } = string.Empty;
 
+        /// <summary>The original SDL identity path, before native-path enrichment.</summary>
+        public string SdlDevicePath { get; private set; } = string.Empty;
+
+        public GameInputDeviceMetadata GameInputInfo { get; private set; }
+
         /// <summary>SDL joystick type classification.</summary>
         public SDL_JoystickType JoystickType { get; private set; } = SDL_JoystickType.SDL_JOYSTICK_TYPE_UNKNOWN;
 
@@ -256,7 +261,7 @@ namespace PadForge.Engine
         /// 'h' HIDAPI, 'r' RawInput, 'w' WGI, and DirectInput leaves it zero.
         /// The name cannot tell a pad's views apart (#395: one Vader 5 Pro
         /// arrives as three or four joysticks, two of them named alike).</summary>
-        public string Backend => BackendFromGuid(SdlGuid);
+        public string Backend => GameInputInfo != null ? "gameinput" : BackendFromGuid(SdlGuid);
 
         public static string BackendFromGuid(string sdlGuid)
         {
@@ -269,6 +274,7 @@ namespace PadForge.Engine
                 'h' => "hidapi",
                 'r' => "rawinput",
                 'w' => "wgi",
+                'g' => "gameinput",
                 0 => "dinput",
                 _ => $"0x{sig:X2}",
             };
@@ -335,6 +341,8 @@ namespace PadForge.Engine
 
             // Close any previously opened device on this wrapper.
             CloseInternal();
+            GameInputInfo = null;
+            SdlDevicePath = string.Empty;
 
             // Try Gamepad first for better mapping support.
             if (SDL_IsGamepad(instanceId))
@@ -362,9 +370,18 @@ namespace PadForge.Engine
             VendorId = SDL_GetJoystickVendor(Joystick);
             ProductId = SDL_GetJoystickProduct(Joystick);
             JoystickType = SDL_GetJoystickType(Joystick);
-            DevicePath = SDL_GetJoystickPath(Joystick);
+            SdlDevicePath = SDL_GetJoystickPath(Joystick);
+            DevicePath = SdlDevicePath;
             SerialNumber = SDL_GetJoystickSerial(Joystick) ?? string.Empty;
             SdlGuid = GetJoystickGUIDString(Joystick);
+
+            uint props = SDL_GetJoystickProperties(Joystick);
+            GameInputInfo = GameInputDeviceMetadata.Read(props);
+            if (GameInputInfo != null)
+            {
+                DevicePath = GameInputInfo.HardwarePath(SdlDevicePath);
+                SdlDiagLog.WriteLine(GameInputInfo.DiagnosticText);
+            }
 
             // Always capture the raw joystick button/axis counts before any gamepad
             // override pins NumAxes/NumButtons to the standardized layout.
@@ -410,7 +427,6 @@ namespace PadForge.Engine
             }
 
             // Check rumble support via properties system (replaces SDL_JoystickHasRumble).
-            uint props = SDL_GetJoystickProperties(Joystick);
             HasRumble = props != 0 && SDL_GetBooleanProperty(props, SDL_PROP_JOYSTICK_CAP_RUMBLE_BOOLEAN, false);
             // HAPTICDIAG (2026-07-24 rumble regression): ForceFeedbackState
             // .SetDeviceForces drops every rumble when HasRumble and
@@ -597,7 +613,7 @@ namespace PadForge.Engine
 
             // Build stable GUIDs for settings matching.
             ProductGuid = BuildProductGuid(VendorId, ProductId);
-            InstanceGuid = BuildInstanceGuid(DevicePath, VendorId, ProductId, instanceId, SerialNumber, SdlGuid);
+            InstanceGuid = BuildInstanceGuid(SdlDevicePath, VendorId, ProductId, instanceId, SerialNumber, SdlGuid);
 
             // Some bridged devices (the DS3 over BthPS3 / WinUSB) expose no SDL path
             // because they are virtual joysticks, but they DO connect over a real

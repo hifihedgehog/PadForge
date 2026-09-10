@@ -44,6 +44,7 @@ namespace SDL3
 
         public const string SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS = "SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS";
         public const string SDL_HINT_JOYSTICK_RAWINPUT = "SDL_JOYSTICK_RAWINPUT";
+        public const string SDL_HINT_JOYSTICK_GAMEINPUT = "SDL_JOYSTICK_GAMEINPUT";
         public const string SDL_HINT_JOYSTICK_XINPUT = "SDL_JOYSTICK_XINPUT"; // was SDL_HINT_XINPUT_ENABLED
         public const string SDL_HINT_HIDAPI_IGNORE_DEVICES = "SDL_HIDAPI_IGNORE_DEVICES";
         public const string SDL_HINT_JOYSTICK_BLACKLIST_DEVICES = "SDL_JOYSTICK_BLACKLIST_DEVICES";
@@ -146,6 +147,15 @@ namespace SDL3
             [MarshalAs(UnmanagedType.LPUTF8Str)] string value);
 
         public static bool SDL_SetHint(string name, string value) => _SDL_SetHint(name, value);
+
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetHint")]
+        private static extern IntPtr _SDL_GetHint([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
+
+        public static string SDL_GetHint(string name)
+        {
+            IntPtr value = _SDL_GetHint(name);
+            return value == IntPtr.Zero ? null : Marshal.PtrToStringUTF8(value);
+        }
 
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
         public static extern void SDL_free(IntPtr mem);
@@ -488,6 +498,12 @@ namespace SDL3
         public static bool SDL_GetBooleanProperty(uint props, string name, bool defaultValue) =>
             _SDL_GetBooleanProperty(props, name, defaultValue);
 
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
+        public static extern long SDL_GetNumberProperty(
+            uint props,
+            [MarshalAs(UnmanagedType.LPUTF8Str)] string name,
+            long defaultValue);
+
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetStringProperty")]
         private static extern IntPtr _SDL_GetStringProperty(
             uint props,
@@ -499,7 +515,8 @@ namespace SDL3
         /// Returns <paramref name="defaultValue"/> when the property is unset.</summary>
         public static string SDL_GetStringProperty(uint props, string name, string defaultValue)
         {
-            IntPtr ptr = _SDL_GetStringProperty(props, name, defaultValue);
+            // SDL can return its default argument. Keep that fallback in managed memory.
+            IntPtr ptr = _SDL_GetStringProperty(props, name, null);
             return ptr != IntPtr.Zero ? (Marshal.PtrToStringUTF8(ptr) ?? defaultValue) : defaultValue;
         }
 

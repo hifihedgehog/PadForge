@@ -110,6 +110,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <EmbeddedResource Include="gamecontrollerdb_padforge.txt" />
+    <EmbeddedResource Include="..\LICENSE" LogicalName="PadForge.ThirdPartyNotices.txt" />
     <EmbeddedResource Include="Resources\HidHide_1.5.230_x64.exe" />
     <!-- 3D controller model assets (adapted from Handheld Companion, CC BY-NC-SA 4.0;
          Switch2Pro set split from the purchased hado CGTrader model) -->

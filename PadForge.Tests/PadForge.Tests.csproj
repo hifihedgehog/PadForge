@@ -33,6 +33,7 @@
 
   <ItemGroup>
     <Using Include="Xunit" />
+    <None Update="TestData\GyroTiltReference.csv" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

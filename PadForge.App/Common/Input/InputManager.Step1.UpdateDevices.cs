@@ -1153,6 +1153,7 @@ namespace PadForge.Common.Input
         private void MarkDeviceOffline(UserDevice ud)
         {
             if (ud == null) return;
+            DisconnectGyroTiltGravity(ud.InstanceGuid);
 
             Engine.SdlDiagLog.WriteLine($"DEV - {ud.InstanceName}");
 

@@ -62,6 +62,7 @@ namespace PadForge.Common.Input
             int snapshotCount;
             lock (SettingsManager.UserDevices.SyncRoot)
             {
+                PruneGyroTiltGravity(devices);
                 if (_deviceSnapshotBuffer.Length < devices.Count)
                     _deviceSnapshotBuffer = new UserDevice[devices.Count];
 
@@ -75,11 +76,13 @@ namespace PadForge.Common.Input
                 }
             }
 
+            long gyroTiltTimestamp = System.Diagnostics.Stopwatch.GetTimestamp();
             for (int si = 0; si < snapshotCount; si++)
             {
                 var ud = _deviceSnapshotBuffer[si];
                 try
                 {
+                    var inputDevice = ud.Device;
                     // Save previous state for change detection.
                     ud.OldInputState = ud.InputState;
 
@@ -101,15 +104,16 @@ namespace PadForge.Common.Input
                                 _ptpReader.ReadInto(ptpHandle, newState);
                         }
                     }
-                    else if (ud.Device != null)
+                    else if (inputDevice != null)
                     {
                         // SDL device — read via wrapper.
-                        newState = ud.Device.GetCurrentState(ud.ForceRawJoystickMode);
+                        newState = inputDevice.GetCurrentState(ud.ForceRawJoystickMode);
                     }
                     else
                     {
                         // Device handle lost — mark offline.
                         ud.IsOnline = false;
+                        InvalidateGyroTiltGravity(ud.InstanceGuid);
                         continue;
                     }
 
@@ -117,6 +121,7 @@ namespace PadForge.Common.Input
                     {
                         // Read failed — device may have been disconnected.
                         ud.IsOnline = false;
+                        InvalidateGyroTiltGravity(ud.InstanceGuid);
                         continue;
                     }
 
@@ -130,6 +135,7 @@ namespace PadForge.Common.Input
                     // Atomic reference swap — safe for cross-thread reading.
                     ud.InputState = newState;
                     ud.InputStateSeq++;
+                    UpdateGyroTiltGravity(ud, inputDevice, newState, gyroTiltTimestamp);
 
                     // Idle disconnect countdown (#162). Tracks last activity at
                     // poll rate, checks the countdown ~1 Hz, and hands the
@@ -158,6 +164,7 @@ namespace PadForge.Common.Input
                 }
                 catch (Exception ex)
                 {
+                    InvalidateGyroTiltGravity(ud.InstanceGuid);
                     RaiseError($"Error reading state for device {ud.ResolvedName}", ex);
                 }
             }

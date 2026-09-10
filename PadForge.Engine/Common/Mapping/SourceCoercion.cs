@@ -412,6 +412,11 @@ namespace PadForge.Engine.Common.Mapping
         /// face-up) for unknown devices.</summary>
         public static Func<string, (float gx, float gy, float gz)> GravityProvider { get; set; }
 
+        /// <summary>Polling-thread estimate for Gyro Tilt only. Null selects the
+        /// existing accelerometer-only path. A zero sample means the gyro-capable
+        /// device has not supplied a usable pose yet.</summary>
+        public static Func<string, int, GyroTiltGravitySample?> GyroTiltGravityProvider { get; set; }
+
         /// <summary>Twin of <see cref="GravityProvider"/> for the auxiliary
         /// (left-side) accelerometer (issue #199): the Nunchuk's own sensor on
         /// a Nunchuk-attached Wii Remote, or the left half of a combined
@@ -2542,6 +2547,43 @@ namespace PadForge.Engine.Common.Mapping
         /// dropped on read when the hold changes (#392).</summary>
         private static readonly ConcurrentDictionary<string, (double x, double y, double z, string grip)> _gyroLeanNeutral = new();
 
+        private sealed class GyroTiltNeutral
+        {
+            public readonly object Sync = new();
+            public long Generation;
+            public string Grip;
+            public (double x, double y, double z) Direction;
+            public bool Captured;
+        }
+
+        private static readonly ConcurrentDictionary<string, GyroTiltNeutral> _gyroTiltNeutral = new();
+
+        private static bool TryCaptureGyroTiltNeutral(string key, string grip, long generation,
+            (double x, double y, double z) current, out (double x, double y, double z) neutral)
+        {
+            var latch = _gyroTiltNeutral.GetOrAdd(key, static _ => new GyroTiltNeutral());
+            lock (latch.Sync)
+            {
+                // A read that crossed an explicit reset cannot overwrite the
+                // newer generation's captured pose. Sample gaps keep their generation.
+                if (latch.Captured && generation < latch.Generation)
+                {
+                    neutral = default;
+                    return false;
+                }
+                if (!latch.Captured || generation != latch.Generation
+                    || !string.Equals(grip, latch.Grip, StringComparison.Ordinal))
+                {
+                    latch.Generation = generation;
+                    latch.Grip = grip;
+                    latch.Direction = current;
+                    latch.Captured = true;
+                }
+                neutral = latch.Direction;
+                return true;
+            }
+        }
+
         /// <summary>The hold a lean neutral is latched under (#392): the
         /// body read's grip, or the empty string for the aux sensor, which
         /// never rotates. Every neutral latch stores this beside the vector
@@ -2582,6 +2624,7 @@ namespace PadForge.Engine.Common.Mapping
         public static void ResetGyroLeanNeutral()
         {
             _gyroLeanNeutral.Clear();
+            _gyroTiltNeutral.Clear();
             _motionLeanNeutralStatic.Clear();
         }
 
@@ -2600,6 +2643,9 @@ namespace PadForge.Engine.Common.Mapping
             foreach (var key in _gyroLeanNeutral.Keys)
                 if (key.StartsWith(prefix, StringComparison.Ordinal))
                     _gyroLeanNeutral.TryRemove(key, out _);
+            foreach (var key in _gyroTiltNeutral.Keys)
+                if (key.StartsWith(prefix, StringComparison.Ordinal))
+                    _gyroTiltNeutral.TryRemove(key, out _);
             // The static lean-on-button latch (#364) re-zeroes with it, or a
             // per-slot Gyro Recenter leaves the button read on the old grip.
             foreach (var key in _motionLeanNeutralStatic.Keys)
@@ -2712,23 +2758,33 @@ namespace PadForge.Engine.Common.Mapping
         internal static float ReadGyroLean(MappingSource src, string canonical, string deviceGuid, int slotIndex = -1)
         {
             string c = canonical.Trim();
+            bool isTilt = IsGyroTiltDescriptor(c);
             bool isX = string.Equals(c, GyroLeanXDescriptor, StringComparison.OrdinalIgnoreCase)
                 || string.Equals(c, GyroTiltXDescriptor, StringComparison.OrdinalIgnoreCase);
-            var grav = ReadGravity(deviceGuid, slotIndex, aux: false);
+            var tiltGravity = isTilt ? GyroTiltGravityProvider?.Invoke(deviceGuid ?? "", slotIndex) : null;
+            (float gx, float gy, float gz) grav = tiltGravity.HasValue
+                ? RotateForGrip(GetGrip(deviceGuid, slotIndex), tiltGravity.Value.X, tiltGravity.Value.Y, tiltGravity.Value.Z)
+                : ReadGravity(deviceGuid, slotIndex, aux: false);
             // Reaction force → gravity-down, the TickMotionLean convention.
             double gx = -grav.gx, gy = -grav.gy, gz = -grav.gz;
             double gLen = Math.Sqrt(gx * gx + gy * gy + gz * gz);
             // No real accel yet (sentinel or dead sensor): no lean. Real
             // gravity is ~9.8 m/s²; the unit-length fallback must not
             // produce a full-scale Y at rest.
-            if (gLen < 4.0) return 0f;
+            if (!double.IsFinite(gLen) || gLen < 4.0) return 0f;
 
             // The latch carries the hold it was captured under (#392): a
             // grip change drops it and this sample re-latches in the new
             // frame. Body sensor only, so the aux flag is false.
             string gid = LeanNeutralKey(deviceGuid, slotIndex);
             string grip = LatchGrip(deviceGuid, slotIndex, aux: false);
-            if (!TryGetLeanNeutral(_gyroLeanNeutral, gid, grip, out var n))
+            (double x, double y, double z) n;
+            if (tiltGravity.HasValue)
+            {
+                if (!TryCaptureGyroTiltNeutral(gid, grip, tiltGravity.Value.Generation,
+                    (gx / gLen, gy / gLen, gz / gLen), out n)) return 0f;
+            }
+            else if (!TryGetLeanNeutral(_gyroLeanNeutral, gid, grip, out n))
             {
                 n = (gx / gLen, gy / gLen, gz / gLen);
                 _gyroLeanNeutral[gid] = (n.x, n.y, n.z, grip);
@@ -2740,7 +2796,7 @@ namespace PadForge.Engine.Common.Mapping
             double comp = isX ? gx : gz;
             double leanDeg = Math.Asin(Math.Clamp(comp / gLen, -1.0, 1.0)) * 180.0 / Math.PI;
 
-            if (IsGyroTiltDescriptor(c))
+            if (isTilt)
             {
                 double range = src.ParamTiltRangeDeg;
                 if (range < 1.0 || range > 180.0) range = GyroTiltDefaultRangeDeg;

@@ -1456,6 +1456,9 @@ namespace PadForge.Services
                 }
             };
 
+            PadForge.Engine.Common.Mapping.SourceCoercion.GyroTiltGravityProvider =
+                _inputManager.ReadGyroTiltGravity;
+
             // Aux gravity twin (#199): same filter over AccelAux (the Nunchuk /
             // left Joy-Con), read by the "Motion Lean L" family.
             PadForge.Engine.Common.Mapping.SourceCoercion.GravityProviderAux = deviceGuid =>
@@ -2516,6 +2519,7 @@ namespace PadForge.Services
                 PadForge.Engine.Common.Mapping.SourceCoercion.GyroTuningProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.SlotStickDeflectionProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.GravityProvider = null;
+                PadForge.Engine.Common.Mapping.SourceCoercion.GyroTiltGravityProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.GravityProviderAux = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.ShakeEnvelopeProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.ShakeEnvelopeProviderAux = null;
@@ -6272,6 +6276,7 @@ namespace PadForge.Services
         private void RecenterMotionState(System.Collections.Generic.List<Guid> guids)
         {
             if (guids == null || guids.Count == 0) return;
+            foreach (Guid guid in guids) _inputManager?.ResetGyroTiltGravity(guid);
             lock (_gravityStateLock)
             {
                 for (int i = 0; i < guids.Count; i++)
@@ -16976,6 +16981,7 @@ namespace PadForge.Services
             _inputManager?.ResetGyroEngageStates();
             _inputManager?.ResetTriggerRouteEngageStates();
             _inputManager?.ResetGestureContexts();
+            _inputManager?.ResetGyroTiltGravity();
         }
 
         /// <summary>

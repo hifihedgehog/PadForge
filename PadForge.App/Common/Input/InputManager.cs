@@ -3396,6 +3396,7 @@ namespace PadForge.Common.Input
             ShutdownHandheldInputs();
             ShutdownHeadTrackerInputs();
             ShutdownSdl();
+            _gyroTiltStates.Clear();
             _disposed = true;
 
             GC.SuppressFinalize(this);

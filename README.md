@@ -831,7 +831,7 @@ PadForge stands on these projects. Please consider supporting them directly.
 | [Zacksly Icon Pack](https://zacksly.itch.io/) | Stick and trigger tab icon artwork PadForge's icon geometry derives from, by Zacksly | CC BY 3.0 |
 | [xbledctl](https://github.com/Leclowndu93150/xbledctl) | Xbox Guide button LED brightness: the `\\.\XboxGIP` interface research and LED packet layout PadForge's writer derives from | MIT |
 | [JoyShockMapper](https://github.com/Electronicks/JoyShockMapper) | Winding-angle steering and lean math, ported to C# for the 2D-steering sources, by JibbSmart and Electronicks | MIT |
-| [GamepadMotionHelpers](https://github.com/JibbSmart/GamepadMotionHelpers) | Player-space and world-space gyro conversion PadForge's gyro aim ports, by JibbSmart | MIT |
+| [GamepadMotionHelpers](https://github.com/JibbSmart/GamepadMotionHelpers) | Player/world-space gyro conversion and the Gyro Tilt gravity estimate, by JibbSmart | MIT |
 | [SteamControllerSinger](https://github.com/Roboron3042/SteamControllerSinger) | Steam Controller (2015) haptic feature-report layout and note-period math, by Pila and Roboron3042 | BSD 3-Clause |
 | [SteamHapticsSinger](https://github.com/CrazyCritic89/SteamHapticsSinger) | Steam Controller 2026 and Steam Deck LFO-tone haptic report layout and gain tables | BSD 3-Clause |
 | [hitboxer](https://github.com/valignatev/hitboxer) | SOCD-cleaning semantics reference for the Keyboard & Mouse Snap Tap modes, by valignatev | MIT |
@@ -909,7 +909,7 @@ This project is licensed under **CC BY-NC-SA 4.0** (Creative Commons Attribution
 - **SDL_GameControllerDB** is licensed under the zlib License. PadForge's bundled `gamecontrollerdb_padforge.txt` extends it and keeps the source citation in its header.
 - **Zacksly Icon Pack** is licensed under CC BY 3.0. By Zacksly ([zacksly.itch.io](https://zacksly.itch.io/)). PadForge's stick and trigger tab icon geometry derives from it.
 - **xbledctl** is licensed under the MIT License. By Leclowndu93150. PadForge's Xbox Guide LED writer derives its `\\.\XboxGIP` packet layout and device-discovery sequence from it.
-- **JoyShockMapper** and **GamepadMotionHelpers** are licensed under the MIT License. By JibbSmart (Julian Smart) and Electronicks. PadForge's winding-angle steering and player/world-space gyro conversions are C# ports.
+- **JoyShockMapper** and **GamepadMotionHelpers** are licensed under the MIT License. By JibbSmart (Julian Smart) and Electronicks. PadForge's winding-angle steering and player/world-space gyro conversions are C# ports. The Gyro Tilt gravity update is adapted from GamepadMotionHelpers.
 - **SteamControllerSinger** (by Pila, Roboron3042) and **SteamHapticsSinger** (by Pila, Crazy, AAGaming) are licensed under the BSD 3-Clause License. PadForge's Steam Controller haptic tone encoder reproduces their report layouts and timing math in original C#.
 - **hitboxer** is licensed under the MIT License. By valignatev. The SOCD-cleaning mode semantics reference. PadForge's state machine is original C#.
 - **libinput** is licensed under the MIT License. Copyright (c) Simon Thum, Kristian Høgsberg, Intel Corporation, Benjamin Franzke, Collabora, Ltd., Jonas Ådahl, Red Hat, Inc. PadForge's trackpad pointer acceleration curve is an original C# re-derivation of `touchpad_accel_profile_linear` from `src/filter-touchpad.c`. No libinput code ships.

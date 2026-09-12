@@ -132,9 +132,11 @@ namespace PadForge.Common.Input
                         DevicesUpdated?.Invoke(this, EventArgs.Empty);
                     }
 
-                    // Atomic reference swap — safe for cross-thread reading.
+                    // Atomic reference swap, safe for cross-thread reading.
                     ud.InputState = newState;
                     ud.InputStateSeq++;
+                    if (Ds5WriteTrace.Enabled && ud.VendorId == 0x054C && newState.Accel != null)
+                        Ds5WriteTrace.Sample(ud.InstanceGuid, ud.InstanceName, newState.Accel);
                     UpdateGyroTiltGravity(ud, inputDevice, newState, gyroTiltTimestamp);
 
                     // Idle disconnect countdown (#162). Tracks last activity at

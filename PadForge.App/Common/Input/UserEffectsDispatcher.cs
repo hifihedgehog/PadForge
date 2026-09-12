@@ -391,6 +391,12 @@ namespace PadForge.Common.Input
             public long RumbleTick;
             public byte RumbleRight;
             public byte RumbleLeft;
+            /// <summary>The writer's own rumble mode bits: valid_flag0
+            /// bits 0 and 1, and valid_flag2 bit 2. Mirrored with the motor
+            /// bytes so PadForge's pass keeps the pad in the writer's mode
+            /// instead of its own (#434).</summary>
+            public byte RumbleFlag0Bits;
+            public byte RumbleFlag2Bits;
 
             public long RightTrigTick;
             public byte[] RightTrig;     // 11 bytes (mode + 10 params)
@@ -570,6 +576,16 @@ namespace PadForge.Common.Input
         {
             public byte? RumbleRight;
             public byte? RumbleLeft;
+            /// <summary>The external writer's rumble mode bits, valid only
+            /// while <see cref="RumbleRight"/> and <see cref="RumbleLeft"/>
+            /// carry values: valid_flag0 bits 0 and 1 in
+            /// <see cref="RumbleFlag0Bits"/>, valid_flag2 bit 2 in
+            /// <see cref="RumbleFlag2Bits"/>. The synthesizer asserts these
+            /// bits verbatim and none of its own, so a game selecting the
+            /// original emulation is not flipped into the improved one by
+            /// the 30 Hz pass (#434).</summary>
+            public byte RumbleFlag0Bits;
+            public byte RumbleFlag2Bits;
             public byte[] RightTriggerEffect;   // 11 bytes when present
             public byte[] LeftTriggerEffect;
             public byte? MuteLed;
@@ -630,7 +646,9 @@ namespace PadForge.Common.Input
             if (effectPayload.Length < 47) return;
             byte vf0 = effectPayload[0];
             byte vf1 = effectPayload[1];
+            byte rumbleVf2 = effectPayload[38];
             long now = Environment.TickCount64;
+            string rumbleTransition = null;
 
             lock (s_externalStateLock)
             {
@@ -645,11 +663,46 @@ namespace PadForge.Common.Input
                 // log: vf0=0x02 with rumble=(127,127)). Capturing only
                 // bit 0 missed Steam entirely. Motor bytes at payload[2]
                 // (right) and payload[3] (left).
-                if ((vf0 & 0x03) != 0)
+                // valid_flag2 bit 2 is the improved emulation that firmware
+                // 2.24 added (Linux DS_OUTPUT_VALID_FLAG2_COMPATIBLE_VIBRATION2,
+                // SDL3 ucEnableBits3 0x04). A writer on new firmware can
+                // select rumble through that bit alone, so it counts as a
+                // rumble claim too. The bits are captured with the motor
+                // bytes and re-asserted verbatim by the synthesizer (#434).
+                //
+                // A frame with every rumble bit clear, after a claim, is
+                // the writer's release: the firmware drops emulated rumble
+                // when the bits go away (SDL3 SDL_hidapi_ps5.c,
+                // HIDAPI_DriverPS5_UpdateEffects: "Leaving emulated rumble
+                // bits off will restore audio haptics", and that is how
+                // SDL3 itself stops rumble). Mirror the stop as zero bits
+                // and zero motors for the grace window. Capturing claims
+                // alone left the last nonzero motors in the mirror, and
+                // the 30 Hz pass re-asserted them for the whole window
+                // after the game had already stopped the pad (#434).
+                bool rumbleClaimed = (vf0 & 0x03) != 0 || (rumbleVf2 & 0x04) != 0;
+                bool rumbleHeld = st.RumbleFlag0Bits != 0 || st.RumbleFlag2Bits != 0;
+                if (rumbleClaimed)
                 {
+                    bool wasZero = st.RumbleRight == 0 && st.RumbleLeft == 0;
+                    bool isZero = effectPayload[2] == 0 && effectPayload[3] == 0;
+                    if (!rumbleHeld) rumbleTransition = "claim";
+                    else if (!wasZero && isZero) rumbleTransition = "zero";
+                    else if (wasZero && !isZero) rumbleTransition = "resume";
                     st.RumbleTick = now;
                     st.RumbleRight = effectPayload[2];
                     st.RumbleLeft = effectPayload[3];
+                    st.RumbleFlag0Bits = (byte)(vf0 & 0x03);
+                    st.RumbleFlag2Bits = (byte)(rumbleVf2 & 0x04);
+                }
+                else if (rumbleHeld)
+                {
+                    rumbleTransition = "release";
+                    st.RumbleTick = now;
+                    st.RumbleRight = 0;
+                    st.RumbleLeft = 0;
+                    st.RumbleFlag0Bits = 0;
+                    st.RumbleFlag2Bits = 0;
                 }
                 // validFlag0 bit 2: right trigger effect. 11 bytes at
                 // payload[10..20].
@@ -710,6 +763,29 @@ namespace PadForge.Common.Input
 
                 s_externalState[padIndex] = st;
             }
+
+            if (rumbleTransition != null)
+                LogRumbleTransition(padIndex, rumbleTransition, vf0, vf1, rumbleVf2,
+                    effectPayload[2], effectPayload[3]);
+        }
+
+        private const int MirrorLogPerSecond = 200;
+
+        /// <summary>One diagnostics line per rumble transition seen by the
+        /// mirror: a claim, a release by clearing the bits, a flagged zero
+        /// and a resume from zero. Capped per second with the overflow
+        /// reported as a count by the trace queue's own thread, so a trace
+        /// shows the exact shape of a game's stop frame (#434 could not be
+        /// read from the reporter's trace because only the first packet
+        /// was logged). Runs on the virtual pad's output callback, outside
+        /// the state lock, and hands the line to the trace queue so the
+        /// callback never waits on the diagnostics file.</summary>
+        private static void LogRumbleTransition(int padIndex, string transition,
+            byte vf0, byte vf1, byte vf2, byte right, byte left)
+        {
+            Ds5WriteTrace.EnqueueDiag("DS5MIRROR",
+                $"DS5MIRROR pad={padIndex} rumble={transition} vf0={vf0:X2} vf1={vf1:X2} vf2={vf2:X2} mR={right} mL={left}",
+                MirrorLogPerSecond);
         }
 
         /// <summary>Copies the last game-written 11-byte trigger-effect
@@ -798,6 +874,8 @@ namespace PadForge.Common.Input
                 {
                     ov.RumbleRight = st.RumbleRight;
                     ov.RumbleLeft  = st.RumbleLeft;
+                    ov.RumbleFlag0Bits = st.RumbleFlag0Bits;
+                    ov.RumbleFlag2Bits = st.RumbleFlag2Bits;
                 }
                 // Copy, don't alias. st.RightTrig / st.LeftTrig are reused
                 // buffers that OnOutputPacket rewrites IN PLACE under this same
@@ -828,6 +906,11 @@ namespace PadForge.Common.Input
             }
             return ov;
         }
+
+        /// <summary>The overrides a dispatch frame would honor right now,
+        /// for tests of the mirror's capture and grace rules.</summary>
+        internal static ExternalSubsystemOverrides PeekExternalOverrides(int padIndex)
+            => GetActiveOverrides(padIndex);
 
         private DeviceState GetOrCreateDeviceState(Guid deviceGuid)
             => _deviceStates.GetOrAdd(deviceGuid, _ => new DeviceState());
@@ -1637,19 +1720,6 @@ namespace PadForge.Common.Input
             // the same filter via InputManager.TestRumbleTargetGuid.
             Guid testTarget = TestRumbleTargetGuidProvider?.Invoke(_padIndex) ?? Guid.Empty;
 
-            // Per-subsystem override snapshot for this dispatch. Subsystems
-            // the external writer recently touched are mirrored from their
-            // captured bytes; subsystems they didn't touch keep flowing
-            // PadForge's own animated / configured values. Test rumble
-            // (user-initiated inside PadForge) bypasses external rumble
-            // mirroring so the user's test always wins.
-            var overrides = GetActiveOverrides(_padIndex);
-            if (testTarget != Guid.Empty)
-            {
-                overrides.RumbleRight = null;
-                overrides.RumbleLeft  = null;
-            }
-
             // Per-(slot, device) lighting configs — each Sony device on
             // the slot synthesizes from its own LightbarMode / colors /
             // palette / decay so two DualSenses can light up
@@ -1706,6 +1776,28 @@ namespace PadForge.Common.Input
 
             lock (devices.SyncRoot)
             {
+                // Per-subsystem override snapshot for this dispatch. Subsystems
+                // the external writer recently touched are mirrored from their
+                // captured bytes; subsystems they didn't touch keep flowing
+                // PadForge's own animated / configured values. Test rumble
+                // (user-initiated inside PadForge) bypasses external rumble
+                // mirroring so the user's test always wins.
+                //
+                // Captured UNDER the device lock, the same hold that stamps
+                // every payload's sequence below, so capture order is
+                // sequence order. Captured before the lock, a dispatch could
+                // snapshot a nonzero mirror, wait on the lock while a
+                // release and the polling thread's final snapshot went
+                // through, then stamp a HIGHER sequence and write the stale
+                // pair after the stop with no timer left to correct it
+                // (#434).
+                var overrides = GetActiveOverrides(_padIndex);
+                if (testTarget != Guid.Empty)
+                {
+                    overrides.RumbleRight = null;
+                    overrides.RumbleLeft  = null;
+                }
+
                 foreach (var ud in devices.Items)
                 {
                     if (ud == null) continue;

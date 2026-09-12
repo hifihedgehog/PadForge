@@ -986,11 +986,15 @@ namespace PadForge.Common.Input
 
                 try
                 {
-                    SDL_SendGamepadEffect(target.GamepadHandle, buf, 0, forwardLen);
+                    bool queued = SDL_SendGamepadEffect(target.GamepadHandle, buf, 0, forwardLen);
+                    // Logged after the call with its result. SDL queues the
+                    // report for its rumble thread, so "lane" marks
+                    // acceptance into that queue, not the physical write.
+                    Ds5WriteTrace.Log(queued ? "lane" : "lane-fail", buf, 0, forwardLen);
                 }
                 catch
                 {
-                    // Per-packet error — DualSense disconnected mid-write,
+                    // Per-packet error. DualSense disconnected mid-write,
                     // SDL handle gone stale, etc.  Drop and continue.
                 }
             }

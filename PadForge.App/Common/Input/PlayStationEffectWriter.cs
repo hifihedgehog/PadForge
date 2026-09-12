@@ -156,7 +156,20 @@ namespace PadForge.Common.Input
             // writer. Report success so the pipeline doesn't treat the skip as a failure.
             if (RemoteLinkOutputRouter.IsClaimedByPeer(devicePath)) return true;
 
-            return WriteRaw(devicePath, packet);
+            if (!Ds5WriteTrace.Enabled || packet.Length <= 3)
+                return WriteRaw(devicePath, packet);
+
+            // USB report 0x02 carries the payload at byte 1. The BT
+            // report 0x31 has the sequence tag at byte 1 and the 0x10
+            // framing byte at 2, so its valid_flag0 sits at byte 3
+            // (HIDMaestro profiles/sony/dualsense-bt.json, SDL3
+            // SDL_hidapi_ps5.c InternalSendJoystickEffect). Logged after
+            // the write with its result, so a failed physical stop shows
+            // as one.
+            bool written = WriteRaw(devicePath, packet);
+            int start = packet[0] == 0x31 ? 3 : 1;
+            Ds5WriteTrace.Log(written ? "pass" : "pass-fail", packet, start, packet.Length - start);
+            return written;
         }
 
         /// <summary>The DS5 audio_flags2 byte (speaker pre-gain in bits 0-2,

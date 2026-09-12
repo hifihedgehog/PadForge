@@ -148,15 +148,16 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void ValidFlag2_AlwaysCarriesImprovedRumble()
+        public void ValidFlag2_ImprovedRumble_FollowsRumbleOwnership()
         {
-            // The old 0xFF set this bit too. Rumble behavior is not in
-            // scope for the lightbar fix, so it stays unconditional.
+            // The old 0xFF set this bit on every frame. It now rides with
+            // rumble ownership (#434): asserted while PadForge authors
+            // rumble in the improved mode, clear on an idle frame.
             Assert.Equal(EnableImprovedRumbleEmulation,
                 Vf2(Ds5EffectSynthesizer.BuildFields(IdleConfig(), playerNumber: 3))
                     & EnableImprovedRumbleEmulation);
-            Assert.Equal(EnableImprovedRumbleEmulation,
-                Vf2(Ds5EffectSynthesizer.BuildFields(IdleConfig(), playerNumber: 0))
+            Assert.Equal(0,
+                Vf2(Ds5EffectSynthesizer.BuildFields(IdleConfig(), assertRumbleEnable: false, playerNumber: 0))
                     & EnableImprovedRumbleEmulation);
         }
 

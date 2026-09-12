@@ -29,24 +29,47 @@ namespace PadForge.Common.Input
     /// an asynchronously-sampled audio peak (<see cref="AudioBassDetector"/>)
     /// produced the v3.1.x audio-rumble + animated-lightbar regression.
     /// One writer cannot race with itself.</para>
-    /// <para>Therefore: the rumble bytes (rightMotor / leftMotor) and bit
-    /// 0 of validFlag0 are written UNCONDITIONALLY in every dispatch. The
+    /// <para>Therefore: the rumble bytes (rightMotor / leftMotor) are
+    /// written in every dispatch, and the rumble mode bits follow one
+    /// rule. While PadForge authors rumble, the frame asserts haptics
+    /// select, the original emulation and the improved emulation
+    /// together, the set DS4Windows ships (DualSenseDevice.cs: "Accurate
+    /// rumble emulation mode requires 2.24 firmware or newer. On official
+    /// hardware it takes priority over normal/legacy rumble"), and it
+    /// keeps asserting them for
+    /// one frame after the motors drop to zero so the firmware sees the
+    /// stop. While a game drives rumble through the pass-through lane,
+    /// the frame carries the game's last rumble bits and motor bytes
+    /// verbatim, including a frame that cleared every rumble bit, which
+    /// the firmware treats as a stop (SDL3 SDL_hidapi_ps5.c
+    /// HIDAPI_DriverPS5_UpdateEffects: "Leaving emulated rumble bits off
+    /// will restore audio haptics", and that is how SDL3 stops rumble).
+    /// PadForge adds none of its own bits there, so the pad never
+    /// alternates between the game's mode and PadForge's, and a release
+    /// the game signaled by clearing the bits is not undone by the next
+    /// pass frame (#434). An idle frame claims no rumble at all. The
     /// dispatcher computes audio-mix + per-device gain in
     /// <c>InputService.SlotRumbleForDeviceProvider</c> and feeds those
-    /// bytes here. Do NOT add conditional gating "for safety" — there is
-    /// no second writer to coordinate with, and conditional bytes would
-    /// just leave gaps in the rumble stream during silent audio frames.</para>
+    /// bytes here.</para>
     /// <para>See memory: sony-rumble-sole-writer-architecture.md.</para>
     /// </summary>
     internal static class Ds5EffectSynthesizer
     {
         // EnableBits1 (low byte of the u16 LE header; HM field "validFlag0").
-        // Bits 0 + 1 both engage motor rumble per Linux's hid-playstation
-        // (bit 0 = COMPATIBLE_VIBRATION, bit 1 = HAPTICS_SELECT). Steam
-        // Input asserts bit 1 on its DS5 effect writes; OpenRGB sets all
-        // 8 bits (0xFF). Setting both is defensive — whichever bit any
-        // host firmware actually keys on, the rumble bytes apply.
-        private const ushort EnableRumbleEmulation  = 0x0003;  // bits 0 + 1
+        // Bit 0 is the original DualShock 4 motor emulation (Linux
+        // COMPATIBLE_VIBRATION, SDL3 "Enable rumble emulation"). Bit 1
+        // selects emulated rumble over audio haptics (Linux HAPTICS_SELECT,
+        // SDL3 "Disable audio haptics", duaLib UseRumbleNotHaptics). The
+        // improved emulation firmware 2.24 added lives in validFlag2 bit 2
+        // (EnableImprovedRumbleEmulation below). Linux, SDL3 and duaLib
+        // select bit 1 plus one emulation by firmware version. DS4Windows
+        // asserts bit 0, bit 1 and the improved bit together, and PadForge
+        // has always done the same for rumble it authors. The defect
+        // (#434) was asserting that set on frames that MIRROR a game's
+        // rumble, which rewrote the mode of a game driving the pad with
+        // bit 0 alone thirty times a second.
+        private const ushort LegacyRumbleEmulation  = 0x0001;  // bit 0
+        private const ushort HapticsSelect          = 0x0002;  // bit 1
         private const ushort EnableRightTrigger     = 0x0004;
         private const ushort EnableLeftTrigger      = 0x0008;
         // validFlag0 bit 4 = AllowHeadphoneVolume, "Enable setting
@@ -238,18 +261,33 @@ namespace PadForge.Common.Input
             // animation lightbar (or any other unaffected subsystem)
             // continues running while rumble / triggers / mic stay under
             // the external writer's control. Each PadForge packet always
-            // carries a complete validFlag bitset and field dict — this
+            // carries a complete validFlag bitset and field dict. This
             // is just about which value goes in for each owned subsystem.
 
-            // Rumble: when external owns it, mirror their bytes and assert
-            // bit 0 so the firmware applies the mirrored values. When
-            // PadForge owns it, gate bit 0 on PadForge's own rumble state
-            // (drop-frame already handled by the caller).
+            // Rumble: when external owns it, mirror their bytes AND their
+            // mode bits, and add none of PadForge's own. The pass-through
+            // lane is already forwarding the game's frames, so the pad
+            // sees one state from both writers, and a game's release by
+            // clearing the bits arrives here as zero bits with zero motors.
+            // When PadForge owns it, assert its established set (haptics
+            // select, the original emulation and the improved emulation)
+            // while rumble is on plus one drop frame (the caller's
+            // assertRumbleEnable). Idle frames claim nothing.
             bool rumbleExternal = overrides.RumbleRight.HasValue && overrides.RumbleLeft.HasValue;
             byte effectiveRumbleR = rumbleExternal ? overrides.RumbleRight.Value : rumbleRight;
             byte effectiveRumbleL = rumbleExternal ? overrides.RumbleLeft.Value  : rumbleLeft;
-            if (rumbleExternal || assertRumbleEnable)
-                enableBits |= EnableRumbleEmulation;
+            byte rumbleFlag0Bits = 0, rumbleFlag2Bits = 0;
+            if (rumbleExternal)
+            {
+                rumbleFlag0Bits = (byte)(overrides.RumbleFlag0Bits & 0x03);
+                rumbleFlag2Bits = (byte)(overrides.RumbleFlag2Bits & EnableImprovedRumbleEmulation);
+            }
+            else if (assertRumbleEnable)
+            {
+                rumbleFlag0Bits = (byte)(HapticsSelect | LegacyRumbleEmulation);
+                rumbleFlag2Bits = EnableImprovedRumbleEmulation;
+            }
+            enableBits |= rumbleFlag0Bits;
 
             // Snapshot the override window once so the rest of the function
             // sees a single time-of-check. Intensity is 1.0 for Sticky,
@@ -618,10 +656,12 @@ namespace PadForge.Common.Input
             // fade of its own, so assert it only when an external writer
             // explicitly asked for one.
             //
-            // The improved-rumble bit was already set by the old 0xFF and
-            // stays unconditional. Rumble behavior is not in scope here.
+            // The improved-rumble bit rides with the rumble ownership
+            // decided above: the game's own bit while mirrored, set while
+            // PadForge authors rumble, clear when idle. It used to be
+            // unconditional (#434).
             bool lightbarAuthored = (enableBits & EnableLightbar) != 0;
-            byte validFlag2 = EnableImprovedRumbleEmulation;
+            byte validFlag2 = rumbleFlag2Bits;
             if (lightbarAuthored || overrides.LedBrightness.HasValue)
                 validFlag2 |= AllowLightBrightnessChange;
             if (overrides.LightbarSetup.HasValue || btConnectRelease)

@@ -1067,6 +1067,50 @@ namespace PadForge.Common.Input
 
                 int declaredSize = _profile.ExtendedOutputReport?.Size ?? -1;
 
+                // Order (#434): the pass-through forward and the
+                // per-subsystem mirror run BEFORE the motor gate below
+                // writes VibrationStates. The polling thread reads that
+                // array, and when a release zeroes it the thread stops the
+                // Sony timer and takes one final snapshot. That snapshot
+                // has to see the release already in the mirror, or it
+                // re-asserts the last nonzero pair with no timer left to
+                // correct it.
+                // Integrity gate on the passthrough forward (2026-07-25
+                // audit): a full-length BT report with a corrupt CRC
+                // decodes every field with CrcValid=false, and forwarding
+                // it re-frames corrupt bytes into a fresh PHYSICAL write
+                // plus poisons the grace-window subsystem mirror. The
+                // length leg covers the CrcValid-true-on-absent-footer
+                // trap exactly as the motor gate below documents. USB
+                // profiles declare no CRC, so CrcValid is trivially true
+                // there and only the length leg bites.
+                if (_ds5Dispatcher != null
+                    && _profile.VendorId == SonyVid
+                    // AT LEAST, not exactly, and > 0 so a profile with no
+                    // declared report fails closed. See SonyMotorsValid: an
+                    // equality here was unsatisfiable on every Bluetooth Sony
+                    // profile, because Windows sizes the host write to the
+                    // LARGEST declared output report (547) and the driver caps
+                    // its slot at 256, so RawBytes never equaled the 78-byte
+                    // declared size and every effect frame was dropped.
+                    && declaredSize > 0
+                    && e.RawBytes.Length >= declaredSize
+                    && e.CrcValid
+                    && e.Fields.TryGetValue("effectPayload", out var epObj)
+                    && epObj is byte[] effectPayload
+                    && effectPayload.Length > 0)
+                {
+                    _ds5Dispatcher.Enqueue(0x02, effectPayload);
+                    // Capture per-subsystem state from the external write.
+                    // The user-effects dispatcher mirrors each touched
+                    // subsystem (rumble / triggers / mic / lightbar /
+                    // player) verbatim for the grace window, while still
+                    // animating subsystems the writer didn't touch.
+                    // For a remote DualSense this merged output is forwarded at the
+                    // PlayStationEffectWriter chokepoint (issue #138), not here.
+                    UserEffectsDispatcher.NotifyExternalSubsystems(idx, effectPayload);
+                }
+
                 if (e.Fields.TryGetValue("leftMotor", out var lmObj2) && lmObj2 is byte left
                  && e.Fields.TryGetValue("rightMotor", out var rmObj) && rmObj is byte right)
                 {
@@ -1095,25 +1139,45 @@ namespace PadForge.Common.Input
                     // rumble on every non-Sony device on the slot). Flag
                     // asserted with both bytes zero IS a real stop.
                     // Sony pads have no trigger motors; those voices stay 0.
+                    // The DualSense is the exception on the flag leg: a
+                    // trusted frame with the rumble flags CLEAR is a stop,
+                    // not an ignore. See sonyRelease below (#434).
                     byte motorMask = IsDualSenseVirtual ? (byte)0x03 : (byte)0x01;
                     e.Fields.TryGetValue("validFlag0", out var vfObj);
-                    bool sonyMotorsValid = SonyMotorsValid(
-                        e.RawBytes.Length, declaredSize, e.CrcValid, vfObj, motorMask);
+                    object vf2Obj = null;
+                    if (IsDualSenseVirtual) e.Fields.TryGetValue("validFlag2", out vf2Obj);
+                    bool sonyFrameValid = SonyFrameValid(e.RawBytes.Length, declaredSize, e.CrcValid);
+                    bool sonyMotorsValid = sonyFrameValid && SonyRumbleClaimed(vfObj, motorMask, vf2Obj);
+
+                    // DualSense release (#434): a trusted frame with every
+                    // rumble bit clear (validFlag0 bits 0 and 1, validFlag2
+                    // bit 2) is the firmware's stop, and the way SDL3 stops
+                    // rumble (SDL_hidapi_ps5.c HIDAPI_DriverPS5_UpdateEffects:
+                    // "Leaving emulated rumble bits off will restore audio
+                    // haptics"). Preserving the previous motors here left a
+                    // stale nonzero pair for every consumer after a game
+                    // released that way, and the Sony pass re-authored it
+                    // to the pad once the mirror's grace lapsed. The
+                    // DualShock 4 keeps the preserve rule: no reference
+                    // pins its firmware the same way.
+                    bool sonyRelease = IsDualSenseVirtual && sonyFrameValid && !sonyMotorsValid;
+                    byte motorLeft  = sonyRelease ? (byte)0 : left;
+                    byte motorRight = sonyRelease ? (byte)0 : right;
 
                     // Non-Sony producers (Switch Pro's synthesized decode,
                     // any future flag-less profile) keep the original
                     // unconditional trust: the flag semantics are Sony's.
-                    if (MotorWriteAllowed(_profile.VendorId, sonyMotorsValid))
+                    if (MotorWriteAllowed(_profile.VendorId, sonyMotorsValid || sonyRelease))
                     {
-                        vibrationStates[idx].LeftMotorSpeed  = (ushort)(left  * 257);
-                        vibrationStates[idx].RightMotorSpeed = (ushort)(right * 257);
+                        vibrationStates[idx].LeftMotorSpeed  = (ushort)(motorLeft  * 257);
+                        vibrationStates[idx].RightMotorSpeed = (ushort)(motorRight * 257);
                     }
 
-                    if (sonyMotorsValid)
+                    if (sonyMotorsValid || sonyRelease)
                     {
                         System.Threading.Volatile.Write(ref _inboundRumblePack,
                             Engine.Common.LfeOutputState.Pack(
-                                (ushort)(left * 257), (ushort)(right * 257), 0, 0));
+                                (ushort)(motorLeft * 257), (ushort)(motorRight * 257), 0, 0));
                     }
                     else if (_profile.VendorId == NintendoVid)
                     {
@@ -1127,42 +1191,6 @@ namespace PadForge.Common.Input
                             Engine.Common.LfeOutputState.Pack(
                                 (ushort)(left * 257), (ushort)(right * 257), 0, 0));
                     }
-                }
-
-                // Integrity gate on the passthrough forward (2026-07-25
-                // audit): a full-length BT report with a corrupt CRC
-                // decodes every field with CrcValid=false, and forwarding
-                // it re-frames corrupt bytes into a fresh PHYSICAL write
-                // plus poisons the grace-window subsystem mirror. The
-                // length leg covers the CrcValid-true-on-absent-footer
-                // trap exactly as the motor gate above documents. USB
-                // profiles declare no CRC, so CrcValid is trivially true
-                // there and only the length leg bites.
-                if (_ds5Dispatcher != null
-                    && _profile.VendorId == SonyVid
-                    // AT LEAST, not exactly, and > 0 so a profile with no
-                    // declared report fails closed. See SonyMotorsValid: an
-                    // equality here was unsatisfiable on every Bluetooth Sony
-                    // profile, because Windows sizes the host write to the
-                    // LARGEST declared output report (547) and the driver caps
-                    // its slot at 256, so RawBytes never equaled the 78-byte
-                    // declared size and every effect frame was dropped.
-                    && declaredSize > 0
-                    && e.RawBytes.Length >= declaredSize
-                    && e.CrcValid
-                    && e.Fields.TryGetValue("effectPayload", out var epObj)
-                    && epObj is byte[] effectPayload
-                    && effectPayload.Length > 0)
-                {
-                    _ds5Dispatcher.Enqueue(0x02, effectPayload);
-                    // Capture per-subsystem state from the external write.
-                    // The user-effects dispatcher mirrors each touched
-                    // subsystem (rumble / triggers / mic / lightbar /
-                    // player) verbatim for the grace window, while still
-                    // animating subsystems the writer didn't touch.
-                    // For a remote DualSense this merged output is forwarded at the
-                    // PlayStationEffectWriter chokepoint (issue #138), not here.
-                    UserEffectsDispatcher.NotifyExternalSubsystems(idx, effectPayload);
                 }
             };
 
@@ -1507,11 +1535,26 @@ namespace PadForge.Common.Input
         /// report to validate against.</para>
         internal static bool SonyMotorsValid(
             int rawByteCount, int declaredSize, bool crcValid, object validFlag0, byte motorMask)
+            => SonyFrameValid(rawByteCount, declaredSize, crcValid)
+            && SonyRumbleClaimed(validFlag0, motorMask, null);
+
+        /// <summary>The trust legs that do not depend on the flags: a
+        /// declared report, at least that many bytes, and a valid CRC.</summary>
+        internal static bool SonyFrameValid(int rawByteCount, int declaredSize, bool crcValid)
             => declaredSize > 0
             && rawByteCount >= declaredSize
-            && crcValid
-            && validFlag0 is byte vf
-            && (vf & motorMask) != 0;
+            && crcValid;
+
+        /// <summary>Whether a Sony output frame claims the motors: the
+        /// motor mask in validFlag0 (DS4 bit 0, DS5 bits 0 and 1), or on
+        /// the DualSense the improved emulation bit, validFlag2 bit 2,
+        /// which a writer on firmware 2.24 or newer can select alone
+        /// (SDL3 SDL_hidapi_ps5.c ucEnableBits3 0x04, Linux
+        /// DS_OUTPUT_VALID_FLAG2_COMPATIBLE_VIBRATION2). Pass null for
+        /// validFlag2 on profiles that do not decode it.</summary>
+        internal static bool SonyRumbleClaimed(object validFlag0, byte motorMask, object validFlag2)
+            => (validFlag0 is byte vf && (vf & motorMask) != 0)
+            || (validFlag2 is byte vf2 && (vf2 & 0x04) != 0);
 
         /// <summary>Whether a decoded motor pair may land in
         /// VibrationStates: Sony profiles require the full trust gate; any

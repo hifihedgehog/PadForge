@@ -66,6 +66,13 @@ SDL3
   https://github.com/libsdl-org/SDL
   Licensed under the zlib License
 
+Microsoft Visual C++ Runtime
+  https://learn.microsoft.com/en-us/visualstudio/releases/2026/redistribution
+  Copyright (c) Microsoft Corporation.
+  The x64 msvcp140.dll, vcruntime140.dll, and vcruntime140_1.dll files
+  (version 14.51.36247.0) are redistributed unmodified under the Microsoft
+  Visual Studio license terms. They are bundled inside PadForge.exe.
+
 Microsoft GameInput SDK loader
   https://www.nuget.org/packages/Microsoft.GameInput/3.5.270
   Copyright (c) Microsoft Corporation.

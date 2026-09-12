@@ -78,6 +78,17 @@
     <Content Include="Resources\SDL3\x64\libusb-1.0.dll" Link="libusb-1.0.dll" Condition="Exists('Resources\SDL3\x64\libusb-1.0.dll')">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <!-- SDL's C++ runtime dependencies share the native extraction directory.
+         Bundle the redistributable files so no separate runtime install is needed. -->
+    <Content Include="Resources\VisualCpp\x64\msvcp140.dll" Link="msvcp140.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\VisualCpp\x64\vcruntime140.dll" Link="vcruntime140.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\VisualCpp\x64\vcruntime140_1.dll" Link="vcruntime140_1.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <!--
       OpenXInput-derived xinput1_4.dll replaces the system one via DLL search order
       (application directory before System32 for non-KnownDLLs).  When SDL3 calls

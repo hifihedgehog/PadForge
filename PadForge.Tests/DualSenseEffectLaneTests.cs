@@ -57,56 +57,169 @@ namespace PadForge.Tests
             Assert.Equal(2, second);   // 3 was swallowed, never delivered
         }
 
-        // ── A repeat yields to a pending payload, and nothing more ──
+        // ── Two reports, one state: a waiting frame merges by valid flags ──
         //
-        // Measured (#300), both halves. A burst is around 19,000 packets a
-        // second repeating this lane's last write, carrying roughly 90 real
-        // changes among them.
+        // GTA V Enhanced (#434) writes its state as two reports back to back
+        // every 10 ms: a rumble frame (valid_flag0 0x03 with the motor bytes)
+        // and a trigger frame (0x0E with both trigger blocks, motors zero and
+        // unflagged). The pad applies each report's flagged fields only, so
+        // the two are one state and direct USB delivers both. A latch that
+        // kept only the newest frame dropped one of every pair, and when the
+        // dropped one was the game's final zero-motor rumble frame the pad
+        // never received its stop. The latch now merges: the newer frame's
+        // fields win, the older frame's flagged fields the newer did not carry
+        // survive with their bits, and the written frame is the state the pad
+        // would hold after applying both in order.
         //
-        // Filtering repeats at the SAMPLER lost every change: the spam
-        // overwrote a change microseconds after it landed and the next sample
-        // saw only a repeat. The trace read writes of ZERO for seconds.
-        //
-        // Dropping repeats OUTRIGHT broke the opposite way, because this lane
-        // is not the pad's only writer: UserEffectsDispatcher writes the same
-        // report to the same device at 30 Hz while mirroring a subsystem the
-        // game drives. A repeat re-asserts the game's payload over that pass,
-        // so suppressing repeats left the game winning only as often as it
-        // changed state, 6 times a second inside a burst against a writer
-        // running at 30.
-        //
-        // Hence the rule under test: drop a repeat only while something is
-        // already waiting.
+        // The two #300 lessons hold under merging. A burst of repeats cannot
+        // evict a waiting change, because a repeat carries the fields the pad
+        // already holds and merging it leaves the change's fields in place.
+        // A repeat with nothing waiting is still latched and written, so it
+        // keeps re-asserting the game's state over the 30 Hz pass.
 
-        [Fact]
-        public void ARepeatYieldsToAPendingPayload_SoASpamBurstCannotEvictAChange()
+        private static byte[] RumbleFrame(byte left, byte right = 0)
         {
-            var lastSent = new byte[] { 0x02, 0x11, 0x22, 0x33 };
-            var repeat = new byte[] { 0x02, 0x11, 0x22, 0x33 };
-            Assert.True(DualSensePassthroughDispatcher.ShouldDropAtDoor(
-                repeat, lastSent, lastSent.Length, somethingPending: true));
+            var p = new byte[47];
+            p[0] = 0x03; p[1] = 0x40; p[2] = right; p[3] = left;
+            return p;
+        }
+
+        private static byte[] TriggerFrame()
+        {
+            var p = new byte[47];
+            p[0] = 0x0E; p[1] = 0x40;
+            p[10] = 0x02; p[11] = 0x20; p[12] = 0x60; p[13] = 0x80;
+            p[21] = 0x02; p[22] = 0x20; p[23] = 0x60; p[24] = 0x80;
+            return p;
+        }
+
+        private static byte[] Merge(byte[] older, byte[] newer)
+        {
+            var dest = new byte[Math.Max(older.Length, newer.Length)];
+            int n = DualSensePassthroughDispatcher.MergeEffectPayload(older, newer, dest);
+            Assert.Equal(dest.Length, n);
+            return dest;
         }
 
         [Fact]
-        public void ARepeatWithNothingWaiting_IsKept_BecauseItReassertsAgainstTheOtherWriter()
+        public void TriggerFrameAfterRumbleFrame_KeepsTheMotors()
         {
-            // The regression this pins. Dropping this packet is what let the
-            // 30 Hz pass hold the pad between the game's real changes.
-            var lastSent = new byte[] { 0x02, 0x11, 0x22, 0x33 };
-            var repeat = new byte[] { 0x02, 0x11, 0x22, 0x33 };
-            Assert.False(DualSensePassthroughDispatcher.ShouldDropAtDoor(
-                repeat, lastSent, lastSent.Length, somethingPending: false));
+            var m = Merge(RumbleFrame(145), TriggerFrame());
+            Assert.Equal(0x0F, m[0]);
+            Assert.Equal(145, m[3]);
+            Assert.Equal(0x02, m[10]);
+            Assert.Equal(0x80, m[24]);
         }
 
-        [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
-        public void AGenuineChange_IsNeverDroppedAtTheDoor(bool somethingPending)
+        [Fact]
+        public void RumbleFrameAfterTriggerFrame_KeepsTheTriggers()
         {
-            var lastSent = new byte[] { 0x02, 0x11, 0x22, 0x33 };
-            var changed = new byte[] { 0x02, 0x11, 0x22, 0x34 };
-            Assert.False(DualSensePassthroughDispatcher.ShouldDropAtDoor(
-                changed, lastSent, lastSent.Length, somethingPending));
+            var m = Merge(TriggerFrame(), RumbleFrame(120));
+            Assert.Equal(0x0F, m[0]);
+            Assert.Equal(120, m[3]);
+            Assert.Equal(0x02, m[10]);
+            Assert.Equal(0x02, m[21]);
+        }
+
+        [Fact]
+        public void TheFinalZeroMotorFrame_SurvivesTheTriggerFrameBehindIt()
+        {
+            // The #434 stop. Dropping this frame left the pad at its last
+            // nonzero value with nothing left to clear it.
+            var m = Merge(RumbleFrame(0), TriggerFrame());
+            Assert.Equal(0x01, m[0] & 0x01);
+            Assert.Equal(0, m[2]);
+            Assert.Equal(0, m[3]);
+        }
+
+        [Fact]
+        public void TheNewerFrameWins_WhereBothCarryAField()
+        {
+            var m = Merge(RumbleFrame(145), RumbleFrame(120));
+            Assert.Equal(0x03, m[0]);
+            Assert.Equal(120, m[3]);
+        }
+
+        [Fact]
+        public void ARepeatMergedIntoAChange_LeavesTheChangeInPlace()
+        {
+            // The #300 eviction guard in its new form: the pad holds the
+            // trigger frame, the rumble change waits, and a repeat of the
+            // trigger frame arrives. The change's motors survive the merge.
+            var m = Merge(RumbleFrame(145), TriggerFrame());
+            Assert.Equal(145, m[3]);
+            Assert.Equal(0x01, m[0] & 0x01);
+        }
+
+        [Fact]
+        public void AFrameWithoutHapticsSelect_EndsRumbleAndDropsTheOlderMotors()
+        {
+            // The stop as SDL3 sends it and as the bench measured it: a
+            // frame that does not select rumble puts the pad on audio
+            // haptics. Restoring the older motors into it would keep the
+            // pad rumbling past the game's stop.
+            var stop = new byte[47];
+            stop[0] = 0x0C; stop[10] = 0x02; stop[21] = 0x02;
+            var m = Merge(RumbleFrame(145), stop);
+            Assert.Equal(0x0C, m[0]);
+            Assert.Equal(0, m[3]);
+            var full = new byte[47];   // SDL3's own stop, every bit clear
+            var m2 = Merge(RumbleFrame(145), full);
+            Assert.Equal(0x00, m2[0]);
+            var improvedOlder = new byte[47];
+            improvedOlder[0] = 0x02; improvedOlder[38] = 0x04; improvedOlder[3] = 50;
+            var m3 = Merge(improvedOlder, full);
+            Assert.Equal(0x00, m3[0]);
+            Assert.Equal(0x00, m3[38] & 0x04);
+        }
+
+        [Fact]
+        public void ImprovedRumbleMotors_SurviveAFrameWithoutThem()
+        {
+            var older = new byte[47];
+            older[0] = 0x02; older[38] = 0x04; older[3] = 50;
+            var m = Merge(older, TriggerFrame());
+            Assert.Equal(0x04, m[38] & 0x04);
+            Assert.Equal(50, m[3]);
+        }
+
+        [Fact]
+        public void ALightbarAndPlayerLeds_SurviveARumbleFrame()
+        {
+            var older = new byte[47];
+            older[1] = 0x14; older[43] = 0x1F; older[44] = 1; older[45] = 2; older[46] = 3;
+            var m = Merge(older, RumbleFrame(10));
+            Assert.Equal(0x40 | 0x14, m[1]);
+            Assert.Equal(0x1F, m[43]);
+            Assert.Equal(1, m[44]);
+            Assert.Equal(3, m[46]);
+        }
+
+        [Fact]
+        public void MotorPowerByte_FollowsItsFlag()
+        {
+            var older = new byte[47];
+            older[1] = 0x40; older[36] = 0x33;
+            var newer = new byte[47];
+            newer[0] = 0x0C; newer[10] = 0x02;
+            var m = Merge(older, newer);
+            Assert.Equal(0x40, m[1] & 0x40);
+            Assert.Equal(0x33, m[36]);
+        }
+
+        [Fact]
+        public void AnEdgeTail_ComesFromWhicheverFrameHasIt()
+        {
+            var older = new byte[63];
+            older[0] = 0x03; older[3] = 9; older[62] = 0xAB;
+            var m = Merge(older, TriggerFrame());
+            Assert.Equal(63, m.Length);
+            Assert.Equal(0xAB, m[62]);
+            Assert.Equal(9, m[3]);
+            var m2 = Merge(TriggerFrame(), older);
+            Assert.Equal(63, m2.Length);
+            Assert.Equal(0xAB, m2[62]);
+            Assert.Equal(0x02, m2[10]);
         }
 
         [Fact]

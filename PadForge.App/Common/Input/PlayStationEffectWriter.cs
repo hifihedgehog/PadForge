@@ -189,20 +189,31 @@ namespace PadForge.Common.Input
             else if (packet[0] == 0x31 && packet.Length >= 78)
             {
                 packet[40] = value;
-                uint crc = 0xFFFFFFFFu;
-                crc ^= 0xA2;
-                for (int b = 0; b < 8; b++) crc = (crc >> 1) ^ (0xEDB88320u & (uint)(-(crc & 1)));
-                for (int i = 0; i <= 73; i++)
-                {
-                    crc ^= packet[i];
-                    for (int b = 0; b < 8; b++) crc = (crc >> 1) ^ (0xEDB88320u & (uint)(-(crc & 1)));
-                }
-                crc = ~crc;
-                packet[74] = (byte)(crc & 0xFF);
-                packet[75] = (byte)((crc >> 8) & 0xFF);
-                packet[76] = (byte)((crc >> 16) & 0xFF);
-                packet[77] = (byte)((crc >> 24) & 0xFF);
+                StampSonyBtOutputCrc(packet);
             }
+        }
+
+        /// <summary>Stamps the Bluetooth output report CRC32 the DualSense
+        /// firmware checks: CRC32 of the 0xA2 header byte followed by report
+        /// bytes 0..73, stored little-endian at 74..77 (SDL3 SDL_hidapi_ps5.c
+        /// HIDAPI_DriverPS5_InternalSendJoystickEffect, Linux hid-playstation
+        /// dualsense_output_worker). The buffer is the 78-byte report 0x31.</summary>
+        internal static void StampSonyBtOutputCrc(byte[] packet)
+        {
+            if (packet == null || packet.Length < 78) return;
+            uint crc = 0xFFFFFFFFu;
+            crc ^= 0xA2;
+            for (int b = 0; b < 8; b++) crc = (crc >> 1) ^ (0xEDB88320u & (uint)(-(crc & 1)));
+            for (int i = 0; i <= 73; i++)
+            {
+                crc ^= packet[i];
+                for (int b = 0; b < 8; b++) crc = (crc >> 1) ^ (0xEDB88320u & (uint)(-(crc & 1)));
+            }
+            crc = ~crc;
+            packet[74] = (byte)(crc & 0xFF);
+            packet[75] = (byte)((crc >> 8) & 0xFF);
+            packet[76] = (byte)((crc >> 16) & 0xFF);
+            packet[77] = (byte)((crc >> 24) & 0xFF);
         }
 
         private static bool WriteRaw(string devicePath, byte[] buf)

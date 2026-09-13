@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using PadForge.Common;
 using PadForge.Engine;
 using PadForge.Engine.Data;
-using static SDL3.SDL;
 
 namespace PadForge.Common.Input
 {
@@ -17,9 +16,20 @@ namespace PadForge.Common.Input
     /// <c>OutputReceived</c> callback runs on the polling thread and must
     /// not block; it rents a buffer from <see cref="ArrayPool{T}"/>,
     /// copies the payload, and writes a single channel record. A
-    /// dedicated worker Task drains the channel and forwards each packet
-    /// via <c>SDL_SendGamepadEffect</c> to every assigned physical
-    /// DualSense / DualSense Edge.
+    /// dedicated worker Task drains the channel and writes each packet to
+    /// every assigned physical DualSense / DualSense Edge over PadForge's
+    /// own HID handle, framed for the pad's transport the way SDL3 frames
+    /// it (USB report 0x02, Bluetooth report 0x31 with the CRC32 footer).
+    ///
+    /// <para>It used to hand the packet to <c>SDL_SendGamepadEffect</c>.
+    /// SDL's rumble thread sleeps 10 ms after every write
+    /// (SDL_hidapi_rumble.c) and merges a new request only into the newest
+    /// pending one when the two flag bytes match. GTA V Enhanced writes a
+    /// rumble frame (valid_flag0 0x03) and a trigger frame (0x0E) every
+    /// 10 ms, so nothing merged, every lane write queued, and the queue
+    /// grew by the difference between the lane's 118 writes a second and
+    /// the thread's 90. The pad replayed that backlog for seconds after
+    /// the game stopped (#434, both transports, direct USB unaffected).</para>
     ///
     /// <para>Why decoupled: games drive adaptive trigger output reports at
     /// 30-60 Hz during sustained input (Returnal sustained-fire is the
@@ -36,9 +46,10 @@ namespace PadForge.Common.Input
     /// <para>Edge ↔ Standard size routing: when the captured payload comes
     /// from an Edge virtual (63 bytes for USB) and the assigned physical
     /// is a standard DualSense (47-byte report), the Edge tail bytes are
-    /// truncated. SDL accepts short messages. When the captured payload
-    /// is from a standard virtual (47 bytes) and the assigned physical is
-    /// Edge, the message is forwarded as-is — Edge's report descriptor
+    /// truncated. The frame carries 47 payload bytes on USB and up to 75
+    /// on Bluetooth, the cut SDL3 makes. When the captured payload is
+    /// from a standard virtual (47 bytes) and the assigned physical is
+    /// Edge, the message is forwarded as-is. Edge's report descriptor
     /// declares 63 bytes but tolerates short writes.</para>
     /// </summary>
     internal sealed class DualSensePassthroughDispatcher : IDisposable
@@ -49,10 +60,9 @@ namespace PadForge.Common.Input
         private const ushort PidEdge = 0x0DF2;
         private const int StandardPayloadSize = 47;
 
-        /// <summary>Report ID of the USB effect report. Carried on the
-        /// release frame for completeness only: the state lane reaches the pad
-        /// through SDL_SendGamepadEffect, which frames the report itself and
-        /// ignores this. The feature lane is where the ID is load bearing.</summary>
+        /// <summary>Report ID of the USB effect report, the first byte of
+        /// the USB frame <see cref="BuildEffectReport"/> writes. The Bluetooth
+        /// frame is report 0x31 and is framed there too.</summary>
         private const byte ReportIdUsbState = 0x02;
 
         // Feature commands only. They are EVENTS (audio test start and stop,
@@ -187,6 +197,8 @@ namespace PadForge.Common.Input
         //             pad still moves, the writer is somewhere else entirely
         //             (UserEffectsDispatcher's own 30 Hz effect pass), which is
         //             a different bug from this lane.
+        //   coal      packets merged into a frame that was already waiting.
+        //   dup       of those, packets that repeated this lane's last write.
         private long _hbEnq, _hbDrop, _hbWr, _hbLastLog, _hbLastEnqTicks, _hbCoalesced, _hbDup;
         private double _hbWorstWriteMs;
 
@@ -217,7 +229,15 @@ namespace PadForge.Common.Input
         /// <summary>Bluetooth floor. A DualSense BT link delivers on its
         /// connection interval, so writing faster than this does not reach the
         /// pad sooner, it queues below us. That queue is what produced the
-        /// original runaway delay, so this stays.</summary>
+        /// original runaway delay, so this stays.
+        ///
+        /// <para>Measured on the bench (#434, 2026-09-12, a DualSense over
+        /// Bluetooth driven with GTA V Enhanced's two-frame pattern): the
+        /// lane wrote 117 frames a second at this floor for 8 s and the pad
+        /// stopped within 100 ms of the game's zero-motor frame, so the link
+        /// carried that rate without a queue forming below. A 16 ms floor
+        /// changed nothing about the tail, which came from the frames
+        /// themselves, not their rate.</para></summary>
         private const long MinWriteIntervalBtMs = 8;    // 125 Hz
 
         /// <summary>USB floor. Same as Bluetooth, and the reasoning is the
@@ -232,7 +252,10 @@ namespace PadForge.Common.Input
         /// the unbounded growing delay Jobima1st kept reporting on USB and
         /// never on Bluetooth (#300). Every lane PadForge instruments read
         /// clean while he watched it get worse: depth 1, wmax 0.1, poll 1000
-        /// Hz.</para>
+        /// Hz. Since #434 the lane writes the pad over its own handle and
+        /// waits for the completion, so wmax is the physical write, and the
+        /// SDL rumble queue that hid a backlog of its own is out of the
+        /// path. The floor stays for the link's sake.</para>
         ///
         /// <para>The reference settles the rate. DualSenseY-v2 drives adaptive
         /// triggers, haptics and the lightbar on a physical DualSense from a
@@ -382,9 +405,10 @@ namespace PadForge.Common.Input
             ? MinWriteIntervalBtMs : MinWriteIntervalUsbMs;
 
         /// <summary>The payload most recently written by THIS lane. Used only
-        /// to recognize a repeat, and a repeat is dropped only when a genuine
-        /// change is already waiting. See <see cref="Enqueue"/> for why it
-        /// must not be dropped otherwise.</summary>
+        /// to recognize a repeat. A repeat is merged into a waiting frame like
+        /// any other packet and latched on its own otherwise, so it still
+        /// re-asserts the game's state over the 30 Hz pass. See
+        /// <see cref="Enqueue"/>.</summary>
         private byte[] _lastSent;
         private int _lastSentLength;
 
@@ -403,28 +427,102 @@ namespace PadForge.Common.Input
                && lastSentLength == incoming.Length
                && incoming.SequenceEqual(lastSent.AsSpan(0, lastSentLength));
 
-        /// <summary>Whether an arriving payload should be dropped at the door.
+        /// <summary>Merges two effect payloads the way the pad would apply
+        /// them in order, older first, into <paramref name="dest"/>, and
+        /// returns the merged length.
         ///
-        /// <para>Only when it repeats our last write AND a payload is already
-        /// waiting to go out. Two cases, one rule. If what waits is a genuine
-        /// change, a repeat must not be allowed to displace it, which is the
-        /// eviction that made a burst deliver nothing. If what waits is itself
-        /// a repeat, the two are byte-identical and keeping either is the same
-        /// thing, so the cheaper move is to drop the newcomer.</para>
-        ///
-        /// <para>When nothing is waiting, a repeat is KEPT and sent. It is not
-        /// redundant: it re-asserts the game's own payload over the 30 Hz pass
-        /// that writes the same report to the same pad. Suppressing repeats
-        /// outright left the game's state as the most recent write only at the
-        /// rate the game changed it, measured at 6 times a second inside a
-        /// burst against a competing writer running at 30, and the pad spent
-        /// most of its time holding the other one. That is the skipping
-        /// reported on USB (#300).</para></summary>
-        internal static bool ShouldDropAtDoor(
-            ReadOnlySpan<byte> incoming, byte[] lastSent, int lastSentLength, bool somethingPending)
-            => somethingPending
-               && IsRepeatOfLastSent(incoming, lastSent, lastSentLength);
+        /// <para>A DS5 output report updates only the subsystems its valid
+        /// flags name (valid_flag0 at 0, valid_flag1 at 1, valid_flag2 at 38).
+        /// GTA V Enhanced writes its state as two reports back to back every
+        /// 10 ms, a rumble frame (0x03 with the motor bytes) and a trigger
+        /// frame (0x0E with both trigger blocks and unflagged zero motors),
+        /// and direct USB delivers both. A latch that kept only the newest
+        /// frame dropped one of the pair, and when the dropped one was the
+        /// game's final zero-motor rumble frame the pad never received its
+        /// stop (#434). So the newer frame's bytes win everywhere, and every
+        /// field the older frame flagged that the newer did not is restored
+        /// with its bit, which is the state the pad holds after applying
+        /// both. One flag is a mode, not a field: valid_flag0 bit 1
+        /// (haptics select) chooses the emulated rumble as the haptic
+        /// source for the frame, and a frame without it puts the pad back
+        /// on audio haptics, which is how SDL3 stops rumble. Measured on the
+        /// bench (#434): a pad left on a frame with bit 0 and a motor value
+        /// rumbled for 2.5 s of silence and stopped within 100 ms of the
+        /// first frame without bit 1. So bit 1 is the newer frame's, never a
+        /// union, and the older frame's motor flag and bytes are restored
+        /// only into a frame that still selects rumble. Field map per SDL3
+        /// DS5EffectsState_t and Linux hid-playstation
+        /// dualsense_output_report_common: valid_flag0 bit 0 motors [2..3]
+        /// (valid_flag2 bit 2 gates the same bytes), bit 1 haptics select
+        /// (no bytes), bits 2 and 3 the trigger blocks [10..20] and
+        /// [21..31], bits 4 to 7 the audio bytes [4..7];
+        /// valid_flag1 bit 0 mic LED [8], bit 1 power save [9], bit 2
+        /// lightbar [44..46], bit 3 release LEDs (no bytes), bit 4 player
+        /// LEDs [43], bit 6 motor power [36] (DS4Windows DualSenseDevice.cs
+        /// outputReport[37]), bit 7 audio_flags2 [37]; valid_flag2 bit 0 LED
+        /// brightness [42], bit 1 lightbar setup [41]. The Edge tail beyond
+        /// byte 46 comes from whichever frame carries it, the newer first.
+        /// Pure, so the rule is testable without a controller.</para></summary>
+        internal static int MergeEffectPayload(ReadOnlySpan<byte> older, ReadOnlySpan<byte> newer, Span<byte> dest)
+        {
+            int len = Math.Max(older.Length, newer.Length);
+            var d = dest.Slice(0, len);
+            d.Clear();
+            older.CopyTo(d);
+            newer.CopyTo(d);
+            if (older.Length == 0 || newer.Length == 0) return len;
 
+            byte o0 = older[0], n0 = newer[0];
+            byte keep0 = (byte)(o0 & ~n0);
+            bool newerRumbleMode = (n0 & 0x02) != 0;
+            bool newerHasMotors = (n0 & 0x01) != 0 || (newer.Length > 38 && (newer[38] & 0x04) != 0);
+            bool restoreMotors = newerRumbleMode && !newerHasMotors;
+            if ((keep0 & 0x01) != 0 && restoreMotors) Restore(older, d, 2, 2);
+            if ((keep0 & 0x04) != 0) Restore(older, d, 10, 11);
+            if ((keep0 & 0x08) != 0) Restore(older, d, 21, 11);
+            if ((keep0 & 0x10) != 0) Restore(older, d, 4, 1);
+            if ((keep0 & 0x20) != 0) Restore(older, d, 5, 1);
+            if ((keep0 & 0x40) != 0) Restore(older, d, 6, 1);
+            if ((keep0 & 0x80) != 0) Restore(older, d, 7, 1);
+            byte merged0 = (byte)(o0 | n0);
+            if (!newerRumbleMode) merged0 &= unchecked((byte)~0x02);
+            if (!restoreMotors && (n0 & 0x01) == 0) merged0 &= unchecked((byte)~0x01);
+            d[0] = merged0;
+
+            if (older.Length > 1 && newer.Length > 1)
+            {
+                byte o1 = older[1], n1 = newer[1];
+                byte keep1 = (byte)(o1 & ~n1);
+                if ((keep1 & 0x01) != 0) Restore(older, d, 8, 1);
+                if ((keep1 & 0x02) != 0) Restore(older, d, 9, 1);
+                if ((keep1 & 0x04) != 0) Restore(older, d, 44, 3);
+                if ((keep1 & 0x10) != 0) Restore(older, d, 43, 1);
+                if ((keep1 & 0x40) != 0) Restore(older, d, 36, 1);
+                if ((keep1 & 0x80) != 0) Restore(older, d, 37, 1);
+                d[1] = (byte)(o1 | n1);
+            }
+
+            if (older.Length > 38 && newer.Length > 38)
+            {
+                byte o2 = older[38], n2 = newer[38];
+                byte keep2 = (byte)(o2 & ~n2);
+                if ((keep2 & 0x01) != 0) Restore(older, d, 42, 1);
+                if ((keep2 & 0x02) != 0) Restore(older, d, 41, 1);
+                if ((keep2 & 0x04) != 0 && restoreMotors) Restore(older, d, 2, 2);
+                byte merged2 = (byte)(o2 | n2);
+                if (!restoreMotors && (n2 & 0x04) == 0) merged2 &= unchecked((byte)~0x04);
+                d[38] = merged2;
+            }
+            return len;
+        }
+
+        private static void Restore(ReadOnlySpan<byte> older, Span<byte> dest, int offset, int count)
+        {
+            if (older.Length < offset + count) return;
+            older.Slice(offset, count).CopyTo(dest.Slice(offset, count));
+        }
+
+        /// <summary>Forwards one packet and records the write cost.</summary>
         /// <summary>Forwards one packet and records the write cost.</summary>
         private void WriteOne(in Ds5Effect effect)
         {
@@ -525,57 +623,61 @@ namespace PadForge.Common.Input
             var effect = new Ds5Effect(buf, payload.Length, reportId, IsFeature: false);
             Ds5Effect superseded = default;
             bool hadSuperseded;
+            bool repeat;
             lock (_latchLock)
             {
-                // A repeat yields to a pending payload, and nothing more.
+                // Two reports, one state (#434). GTA V Enhanced writes a
+                // rumble frame and a trigger frame back to back every 10 ms,
+                // and the pad applies each report's flagged fields only, so
+                // the two are one state and direct USB delivers both. This
+                // latch used to keep the newest frame alone, which dropped
+                // one of every pair and, when the dropped one was the final
+                // zero-motor rumble frame, left the pad rumbling with no stop
+                // ever sent. A frame that arrives while one waits is now
+                // MERGED into it, newer fields winning, older flagged fields
+                // surviving, so the written frame is what the pad would hold
+                // after both.
                 //
-                // Both halves of this rule were paid for in the field (#300).
-                //
-                // The burst from the reporting title is about 19,000 packets a
-                // second that repeat our last write, carrying roughly 90 real
-                // changes among them. Checking on the SAMPLING side lost every
-                // one of those changes: a change landed in the slot, the spam
-                // overwrote it microseconds later, and the sample two
-                // milliseconds on saw only a repeat and sent nothing. The trace
-                // showed it exactly, writes of ZERO for seconds together.
-                //
-                // Dropping repeats OUTRIGHT then broke the other half, because
-                // this lane is not the pad's only writer. UserEffectsDispatcher
-                // writes the same report to the same device at 30 Hz while it
-                // mirrors a subsystem the game is driving. A repeat of ours is
-                // therefore not redundant, it re-asserts the game's own payload
-                // over that pass. With repeats suppressed the game's state was
-                // the most recent write only as often as the game changed it,
-                // measured at 6 times a second inside a burst against a writer
-                // running at 30, and the pad spent most of its time holding the
-                // other one. That is the skipping reported on USB, worse than
-                // the Bluetooth session where the same lane wrote 118 times a
-                // second and won.
-                //
-                // So a repeat is dropped only while something is already
-                // waiting, which is the whole of what the first fix needed: a
-                // change cannot be displaced by spam, and an idle slot still
-                // takes repeats and keeps re-asserting at the pacing floor.
-                if (ShouldDropAtDoor(buf.AsSpan(0, payload.Length), _lastSent, _lastSentLength, _hasLatest))
-                {
-                    ArrayPool<byte>.Shared.Return(buf);
-                    if (SdlDiagLog.IsMirroring) Interlocked.Increment(ref _hbDup);
-                    HeartbeatNoteEnqueue(accepted: true);
-                    return;
-                }
-
+                // The two lessons of #300 still hold under merging. A burst of
+                // 19,000 repeats a second cannot evict a waiting change: a
+                // repeat carries the fields the pad already holds, and merging
+                // it into the change leaves the change's fields in place. And
+                // a repeat with nothing waiting is latched and written, because
+                // this lane is not the pad's only writer: UserEffectsDispatcher
+                // writes the same report at 30 Hz while mirroring, and the
+                // repeat re-asserts the game's state over it.
+                repeat = IsRepeatOfLastSent(buf.AsSpan(0, payload.Length), _lastSent, _lastSentLength);
                 hadSuperseded = _hasLatest;
-                if (hadSuperseded) superseded = _latest;
-                _latest = effect;
-                _hasLatest = true;
+                if (hadSuperseded)
+                {
+                    superseded = _latest;
+                    int mergedLen = Math.Max(_latest.Length, payload.Length);
+                    byte[] merged = ArrayPool<byte>.Shared.Rent(mergedLen);
+                    MergeEffectPayload(
+                        _latest.Buffer.AsSpan(0, _latest.Length),
+                        buf.AsSpan(0, payload.Length),
+                        merged.AsSpan(0, mergedLen));
+                    _latest = new Ds5Effect(merged, mergedLen, reportId, IsFeature: false);
+                }
+                else
+                {
+                    _latest = effect;
+                    _hasLatest = true;
+                }
             }
             if (hadSuperseded)
             {
-                // Returned HERE, the instant it is displaced. This is the step
-                // the channel could never perform, because a silently dropped
-                // item is never handed back to anyone.
+                // Both inputs of the merge go back to the pool here, the
+                // instant they are folded in. A silently dropped item is never
+                // handed back to anyone, which is why the channel could not do
+                // this.
                 ArrayPool<byte>.Shared.Return(superseded.Buffer);
-                if (SdlDiagLog.IsMirroring) Interlocked.Increment(ref _hbCoalesced);
+                ArrayPool<byte>.Shared.Return(buf);
+                if (SdlDiagLog.IsMirroring)
+                {
+                    Interlocked.Increment(ref _hbCoalesced);
+                    if (repeat) Interlocked.Increment(ref _hbDup);
+                }
             }
             // A producer that passed the _disposed check and then latched
             // while Dispose was draining would leak its one rental; drain
@@ -652,7 +754,10 @@ namespace PadForge.Common.Input
             try { _channel.Writer.TryComplete(); } catch { }
             try { _cts.Cancel(); } catch { }
             try { _signal.Release(); } catch (SemaphoreFullException) { } catch (ObjectDisposedException) { }
-            try { _worker?.Wait(TimeSpan.FromMilliseconds(500)); } catch { }
+            // The worker may be inside a physical write, which waits up to
+            // LaneWriteTimeoutMs for the completion, so give it that plus the
+            // pacing delay before the release frame goes out behind it.
+            try { _worker?.Wait(TimeSpan.FromMilliseconds(1500)); } catch { }
 
             // The release itself. The idle release needs fifteen seconds of
             // silence to fire, and PadForge closing is the one case where
@@ -898,7 +1003,7 @@ namespace PadForge.Common.Input
                                 replay[7] = stash[5];   // audio_flags
                                 replay[37] = stash[6];  // audio_flags2
                             }
-                            try { SDL_SendGamepadEffect(t.GamepadHandle, replay, 0, StandardPayloadSize); }
+                            try { WriteEffectReport(t, replay, StandardPayloadSize); }
                             catch { }
                         }
                     }
@@ -986,18 +1091,66 @@ namespace PadForge.Common.Input
 
                 try
                 {
-                    bool queued = SDL_SendGamepadEffect(target.GamepadHandle, buf, 0, forwardLen);
-                    // Logged after the call with its result. SDL queues the
-                    // report for its rumble thread, so "lane" marks
-                    // acceptance into that queue, not the physical write.
-                    Ds5WriteTrace.Log(queued ? "lane" : "lane-fail", buf, 0, forwardLen);
+                    bool written = WriteEffectReport(target, buf, forwardLen);
+                    // Logged after the physical write with its result.
+                    Ds5WriteTrace.Log(written ? "lane" : "lane-fail", buf, 0, forwardLen);
                 }
                 catch
                 {
                     // Per-packet error. DualSense disconnected mid-write,
-                    // SDL handle gone stale, etc.  Drop and continue.
+                    // path gone stale, etc. Drop and continue.
                 }
             }
+        }
+
+        internal const int UsbEffectReportSize = 48;
+        internal const int BtEffectReportSize = 78;
+
+        /// <summary>Writes one report-ID-stripped effect payload to a physical
+        /// pad over PadForge's own HID handle, framed for the pad's transport.
+        /// Open-per-write: the shape PlayStationEffectWriter.WriteRaw kept
+        /// after a held-open Bluetooth handle made rumble discontinuous on
+        /// hardware.</summary>
+        private static bool WriteEffectReport(in DualSenseTarget target, byte[] payload, int length)
+        {
+            if (string.IsNullOrEmpty(target.DevicePath) || payload == null) return false;
+            if (length > payload.Length) length = payload.Length;
+            byte[] report = BuildEffectReport(target.IsBt, payload.AsSpan(0, length));
+            return RawHidOutput.WriteOnce(target.DevicePath, report, LaneWriteTimeoutMs);
+        }
+
+        /// <summary>How long one physical write may wait for its completion.
+        /// A DualSense completes an output report within a few milliseconds
+        /// on USB and within its connection interval on Bluetooth. A stalled
+        /// device must not hold the worker, and Dispose, for the writer's
+        /// default second.</summary>
+        private const int LaneWriteTimeoutMs = 250;
+
+        /// <summary>Frames a DS5 effect payload the way SDL3 does
+        /// (SDL_hidapi_ps5.c HIDAPI_DriverPS5_InternalSendJoystickEffect): USB
+        /// report 0x02 with 47 payload bytes; Bluetooth report 0x31, tag and
+        /// sequence byte 0x00, magic 0x10, up to 75 payload bytes, and the
+        /// CRC32 of the 0xA2 header byte plus bytes 0..73 little-endian at
+        /// 74..77. A longer payload (the Edge form) is cut where SDL3 cuts
+        /// it.</summary>
+        internal static byte[] BuildEffectReport(bool bluetooth, ReadOnlySpan<byte> payload)
+        {
+            if (bluetooth)
+            {
+                var report = new byte[BtEffectReportSize];
+                report[0] = 0x31;
+                report[1] = 0x00;
+                report[2] = 0x10;
+                int n = Math.Min(payload.Length, BtEffectReportSize - 3);
+                payload.Slice(0, n).CopyTo(report.AsSpan(3));
+                PlayStationEffectWriter.StampSonyBtOutputCrc(report);
+                return report;
+            }
+            var usb = new byte[UsbEffectReportSize];
+            usb[0] = ReportIdUsbState;
+            int m = Math.Min(payload.Length, UsbEffectReportSize - 1);
+            payload.Slice(0, m).CopyTo(usb.AsSpan(1));
+            return usb;
         }
 
         /// <summary>Clears the audio-control surface of a report-ID-stripped

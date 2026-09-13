@@ -87,6 +87,39 @@ namespace PadForge.Common.Input
             }
         }
 
+        /// <summary>Writes one output report over a handle opened for this
+        /// write alone, sized to the collection's OutputReportByteLength like
+        /// <see cref="Write"/>, and closed again. The DualSense effect lane
+        /// uses it: a held-open Bluetooth handle made DualSense rumble
+        /// discontinuous on hardware (PlayStationEffectWriter.WriteRaw), and
+        /// SDL3's hidapi pads to the same length.</summary>
+        public static bool WriteOnce(string devicePath, byte[] buf, int timeoutMs = 1000)
+        {
+            if (string.IsNullOrEmpty(devicePath) || buf == null || buf.Length == 0)
+                return false;
+
+            IntPtr handle = CreateFileW(
+                devicePath,
+                GENERIC_READ | GENERIC_WRITE,
+                FILE_SHARE_READ | FILE_SHARE_WRITE,
+                IntPtr.Zero,
+                OPEN_EXISTING,
+                FILE_FLAG_OVERLAPPED,
+                IntPtr.Zero);
+
+            if (handle == IntPtr.Zero || handle == INVALID_HANDLE_VALUE) return false;
+
+            try
+            {
+                byte[] outBuf = ResizeForDevice(devicePath, handle, buf);
+                IntPtr ev = CreateEventW(IntPtr.Zero, true, false, null);
+                if (ev == IntPtr.Zero) return false;
+                try { return WriteOnHandle(handle, ev, outBuf, timeoutMs); }
+                finally { CloseHandle(ev); }
+            }
+            finally { CloseHandle(handle); }
+        }
+
         /// <summary>Pads <paramref name="buf"/> to the cached path's known
         /// OutputReportByteLength using the per-path scratch, zeroing the
         /// pad tail each call (same zero-pad contract as ResizeForDevice).
@@ -103,7 +136,7 @@ namespace PadForge.Common.Input
             return io.Sized;
         }
 
-        private static bool WriteOnHandle(IntPtr handle, IntPtr ev, byte[] outBuf)
+        private static bool WriteOnHandle(IntPtr handle, IntPtr ev, byte[] outBuf, int timeoutMs = 1000)
         {
             // Manual-reset event: clear before reuse.
             ResetEvent(ev);
@@ -120,7 +153,7 @@ namespace PadForge.Common.Input
                 {
                     int err = Marshal.GetLastWin32Error();
                     if (err != ERROR_IO_PENDING) return false;
-                    if (WaitForSingleObject(ev, 1000) != WAIT_OBJECT_0)
+                    if (WaitForSingleObject(ev, (uint)timeoutMs) != WAIT_OBJECT_0)
                     {
                         // CancelIo only REQUESTS abort; `ol` is a stack local
                         // and `outBuf` unpins in the finally, so block until

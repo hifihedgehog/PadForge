@@ -69,6 +69,9 @@ namespace SDL3
         public const string SDL_HINT_JOYSTICK_HIDAPI_DREAMCHEEKY = "SDL_JOYSTICK_HIDAPI_DREAMCHEEKY";
         public const string SDL_HINT_JOYSTICK_ICADE_RAWINPUT = "SDL_JOYSTICK_ICADE_RAWINPUT";
         public const string SDL_HINT_JOYSTICK_SERIAL = "SDL_JOYSTICK_SERIAL";
+        // Konami's ACIO boards. InputManager.ApplySerialControllers sets it
+        // with the serial list.
+        public const string SDL_HINT_JOYSTICK_KONAMI_ACIO = "SDL_JOYSTICK_KONAMI_ACIO";
         // The Ring-Con on a right Joy-Con's rail. InputService sets it only while
         // a "Ring-Con Squeeze" or "Ring-Con Pull" source is read.
         public const string SDL_HINT_JOYSTICK_HIDAPI_JOYCON_RINGCON = "SDL_JOYSTICK_HIDAPI_JOYCON_RINGCON";

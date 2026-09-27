@@ -913,9 +913,15 @@ namespace PadForge.Common.Input
 
                 // The serial controllers the user added in the pairing
                 // dialog. SDL_Quit drops every hint, so each start replays
-                // the list, as the Flydigi switch is replayed above.
+                // the list, as the Flydigi switch is replayed above. Konami's
+                // ACIO boards run only while the list names one: otherwise
+                // the fork would open a plugged-in BIO2's port and hold it
+                // with no joystick (SerialControllers.AcioHintValue).
                 lock (_serialHintLock)
+                {
+                    SDL_SetHint(SDL_HINT_JOYSTICK_KONAMI_ACIO, SerialControllers.AcioHintValue(_serialHintValue));
                     SDL_SetHint(SDL_HINT_JOYSTICK_SERIAL, _serialHintValue);
+                }
 
                 // Allow screensaver/sleep even while SDL video is active.
                 SDL_SetHint(SDL_HINT_VIDEO_ALLOW_SCREENSAVER, "1");
@@ -1392,13 +1398,15 @@ namespace PadForge.Common.Input
         public static void ApplySerialControllers(IEnumerable<SerialControllerEntry> entries)
         {
             string value = SerialControllers.HintValue(entries);
+            string acio = SerialControllers.AcioHintValue(value);
             bool accepted;
             lock (_serialHintLock)
             {
                 _serialHintValue = value;
+                WriteHintUnderJoystickLock(SDL_HINT_JOYSTICK_KONAMI_ACIO, acio);
                 accepted = WriteHintUnderJoystickLock(SDL_HINT_JOYSTICK_SERIAL, value);
             }
-            Engine.SdlDiagLog.WriteLine($"SERIAL hint {SDL_HINT_JOYSTICK_SERIAL}=\"{value}\" accepted={accepted}");
+            Engine.SdlDiagLog.WriteLine($"SERIAL hint {SDL_HINT_JOYSTICK_SERIAL}=\"{value}\" accepted={accepted} {SDL_HINT_JOYSTICK_KONAMI_ACIO}={acio}");
         }
 
         private static readonly object _serialHintLock = new object();

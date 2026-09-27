@@ -95,6 +95,39 @@ namespace PadForge.Tests
             Assert.Equal(string.Empty, SerialControllers.HintValue(Array.Empty<SerialControllerEntry>()));
         }
 
+        /// <summary>Konami's ACIO boards run only while the list names one
+        /// (SDL_JOYSTICK_KONAMI_ACIO), so the fork leaves the port of a BIO2
+        /// the user has not added closed, free for a game.</summary>
+        [Fact]
+        public void TheAcioHint_IsOnOnlyWhileTheListNamesAKonamiBoard()
+        {
+            Assert.Equal("0", SerialControllers.AcioHintValue(null));
+            Assert.Equal("0", SerialControllers.AcioHintValue(string.Empty));
+            Assert.Equal("0", SerialControllers.AcioHintValue("COM3=spaceball,COM5=dji"));
+            foreach (string token in SerialControllers.AcioProtocols)
+                Assert.Equal("1", SerialControllers.AcioHintValue("COM3=spaceball,COM9=" + token));
+            Assert.Equal("1", SerialControllers.AcioHintValue("COM4=BIO2SDVX"));
+
+            // From the dialog's entries through the value SDL gets: an entry
+            // the serial hint leaves out does not turn ACIO on either.
+            var added = new[] { new SerialControllerEntry { Port = "COM4", PortName = "COM4", Protocol = "bio2iidx" } };
+            Assert.Equal("1", SerialControllers.AcioHintValue(SerialControllers.HintValue(added)));
+            var unusable = new[] { new SerialControllerEntry { Port = "COM 5", PortName = "COM 5", Protocol = "kfca" } };
+            Assert.Equal("0", SerialControllers.AcioHintValue(SerialControllers.HintValue(unusable)));
+        }
+
+        /// <summary>The ACIO set is exactly the offered Konami boards, the
+        /// fork's serial_acio_modules without bio2.</summary>
+        [Fact]
+        public void TheAcioProtocols_AreTheOfferedKonamiBoards()
+        {
+            Assert.Equal(new[] { "bio2iidx", "bio2sdvx", "kfca", "panb", "rvol", "mdxf" }, SerialControllers.AcioProtocols);
+            var konami = SerialControllers.Protocols
+                .Where(p => p.Name.StartsWith("Konami ", StringComparison.Ordinal))
+                .Select(p => p.Token);
+            Assert.Equal(konami.OrderBy(t => t), SerialControllers.AcioProtocols.OrderBy(t => t));
+        }
+
         [Fact]
         public void TheHint_StopsAtTheSixteenPortsSdlHolds()
         {

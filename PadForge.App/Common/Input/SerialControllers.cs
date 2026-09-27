@@ -121,6 +121,33 @@ namespace PadForge.Common.Input
             return IsValidPort(port.PortName) ? port.PortName : null;
         }
 
+        /// <summary>The offered protocols of Konami's ACIO boards, the fork's
+        /// ACIO modules but bio2 (SDL_serialjoystick.c,
+        /// serial_acio_modules).</summary>
+        public static readonly string[] AcioProtocols = { "bio2iidx", "bio2sdvx", "kfca", "panb", "rvol", "mdxf" };
+
+        /// <summary>SDL_JOYSTICK_KONAMI_ACIO's value for a SDL_JOYSTICK_SERIAL
+        /// value: "1" while it names an ACIO board, "0" otherwise. The fork
+        /// opens a BIO2's COM port on sight, and with no cabinet named it
+        /// resets the board's bus and shows no joystick, which keeps the
+        /// board from a game for nothing. With the hint off it runs no ACIO
+        /// protocol and leaves the port closed (SERIAL_ResolveModule), and a
+        /// BIO2 added here names its cabinet.</summary>
+        public static string AcioHintValue(string serialHint)
+        {
+            if (string.IsNullOrEmpty(serialHint)) return "0";
+            foreach (string entry in serialHint.Split(','))
+            {
+                int eq = entry.IndexOf('=');
+                if (eq < 0) continue;
+                string token = entry.Substring(eq + 1);
+                foreach (string acio in AcioProtocols)
+                    if (string.Equals(token, acio, StringComparison.OrdinalIgnoreCase))
+                        return "1";
+            }
+            return "0";
+        }
+
         /// <summary>SDL_JOYSTICK_SERIAL's value: PORT=PROTOCOL for each
         /// usable entry, the first 16 in order. An entry with an unusable
         /// port or an unknown protocol is left out, not passed on for SDL to

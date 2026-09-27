@@ -236,16 +236,17 @@ namespace PadForge.Engine.Data
         [XmlElement]
         public bool HasGyroAux { get; set; }
 
-        /// <summary>Whether the device is an IR-camera-capable Wii Remote (issue
-        /// #146). Identity-derived from VID + name, so it is correct whether the
-        /// remote is online or offline: a Wii Remote has the camera built in, with
-        /// or without a Nunchuk / Classic Controller. Excludes the Wii U Pro and the
-        /// Balance Board (their names do not start with "Nintendo Wii Remote").
-        /// Computed, not stored, so a stale persisted value can never linger. Gates
-        /// whether the "IR Pointer X/Y" mapping sources are offered for this device.</summary>
+        /// <summary>Whether the device is a Wii Remote configuration that carries
+        /// the IR camera (issue #146): the bare remote, or the remote with a
+        /// Nunchuk or a Classic Controller. Identity-derived from VID + name
+        /// (<see cref="WiiRemoteIdentity.CarriesIrCamera"/>), so it is correct
+        /// whether the remote is online or offline. The Wii U Pro, the Balance
+        /// Board, and a remote with a guitar, drum kit, turntable, Taiko drum,
+        /// tablet or Shinkansen controller have no IR axes. Computed, not
+        /// stored, so a stale persisted value can never linger. Gates whether
+        /// the "IR Pointer X/Y" mapping sources are offered for this device.</summary>
         [XmlIgnore]
-        public bool HasIrCamera => VendorId == 0x057E
-            && (ProductName ?? string.Empty).StartsWith("Nintendo Wii Remote", StringComparison.OrdinalIgnoreCase);
+        public bool HasIrCamera => WiiRemoteIdentity.CarriesIrCamera(VendorId, ProductName);
 
         /// <summary>Whether the device is a Wii Balance Board, whose four corner
         /// load cells drive the derived "Balance Total Weight / Lean X / Lean Y"

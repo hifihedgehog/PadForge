@@ -556,12 +556,16 @@ namespace PadForge.Engine
             bool isWiiVendor = VendorId == 0x057E;
             IsBalanceBoard = isWiiVendor && !string.IsNullOrEmpty(Name)
                 && Name.IndexOf("Balance Board", StringComparison.OrdinalIgnoreCase) >= 0;
-            // A camera-capable Wii Remote is the one the driver gives the four extra
-            // IR axes (raw joystick axis count 10), regardless of extension. Wii U
-            // Pro and Balance Board stay at 6 axes and are excluded. Reading the raw
-            // joystick axis count (not NumAxes, which is pinned to 6 for a
-            // gamepad-opened device) is the stable signal the SDL contract defines.
-            HasIrCamera = isWiiVendor && !IsBalanceBoard
+            // A camera-capable Wii Remote is a configuration the driver gives the
+            // four extra IR axes (raw joystick axis count 10): the bare remote, or
+            // the remote with a Nunchuk or Classic Controller. Wii U Pro and Balance
+            // Board stay at 6 axes. A decoded extension spends axes 6 and up on its
+            // own controls, and the drum kit reports 13 axes with its pads' hit
+            // velocities on 6-11, so the count alone would read those as IR dots
+            // and hide them from the generic axes (WiiRemoteIdentity). Reading the
+            // raw joystick axis count (not NumAxes, which is pinned to 6 for a
+            // gamepad-opened device) confirms the DLL posts the IR axes.
+            HasIrCamera = WiiRemoteIdentity.CarriesIrCamera(VendorId, Name) && !IsBalanceBoard
                 && Joystick != IntPtr.Zero && SDL_GetNumJoystickAxes(Joystick) >= 10;
 
             // Right Joy-Con NIR camera (issue #151). The SDL fork's hidapi_switch

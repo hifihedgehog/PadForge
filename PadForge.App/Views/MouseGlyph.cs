@@ -16,7 +16,7 @@ namespace PadForge.Views
     ///
     /// <para>The shell is gaming-mouse vector art from Zergatul.Obs.InputOverlay
     /// (MIT, (c) 2021 Igor Budzhak), vendored at <c>2DModels/MOUSE/mouse.svg</c>
-    /// with its licence beside it and rendered into layers by
+    /// with its license beside it and rendered into layers by
     /// <c>tools/gen_mouse_art.py</c>.</para>
     ///
     /// <para>NOTHING HERE REDRAWS THE ART. An earlier version traced each

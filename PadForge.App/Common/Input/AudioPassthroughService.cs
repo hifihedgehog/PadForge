@@ -2285,7 +2285,7 @@ namespace PadForge.Common.Input
             // Cancel only once the close is on the wire. CancelPersonaReader
             // arms a loop that repeats its cancel until the reader thread
             // exits, and that thread cannot exit while this method holds the
-            // lane lock, so cancelling first aborted the very close write this
+            // lane lock, so canceling first aborted the very close write this
             // block exists to deliver and left the pad's mic session latched.
             CancelPersonaReader(reader);
             feed.BtMicThread = null;

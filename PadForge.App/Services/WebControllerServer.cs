@@ -257,7 +257,7 @@ namespace PadForge.Services
                 _accessCode = normalized;
                 revoked = _clients.Values.Where(s => s.ViaPlain).ToList();
             }
-            // Cancelled outside the lock: each receive loop then runs its
+            // Canceled outside the lock: each receive loop then runs its
             // normal teardown, which takes the lock itself.
             foreach (var session in revoked)
             {

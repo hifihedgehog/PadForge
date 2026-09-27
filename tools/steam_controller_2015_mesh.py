@@ -547,7 +547,7 @@ def main():
             # and the stick had a 2 mm gap where its stem should be.
             meshes.setdefault("LeftStickClick.obj", []).append((v, nrm, f))
         elif target == "BUMPER":
-            # One solid spanning both sides; split on the centreline so
+            # One solid spanning both sides; split on the centerline so
             # each shoulder is its own highlight target.
             cx = v[f][:, :, 0].mean(axis=1)
             for side, sel in (("L1.obj", cx < 0), ("R1.obj", cx >= 0)):

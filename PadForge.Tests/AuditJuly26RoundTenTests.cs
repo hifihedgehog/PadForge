@@ -319,8 +319,8 @@ namespace PadForge.Tests
 
             using var cts = new CancellationTokenSource();
             cts.Cancel();
-            bool cancelledRun = await svc.RecalibrateAsync(ud, ps, 250, cts.Token);
-            Assert.False(cancelledRun);
+            bool canceledRun = await svc.RecalibrateAsync(ud, ps, 250, cts.Token);
+            Assert.False(canceledRun);
             Assert.False(GyroCalibratorService.IsSampling(ps));
 
             // The profile is still usable.

@@ -62,7 +62,7 @@ namespace PadForge.Engine.Common.OpenXr
         private volatile bool _running;
         // Set by Stop and never cleared. The create path cannot be
         // interrupted, so it checks this the moment it returns.
-        private volatile bool _cancelled;
+        private volatile bool _canceled;
         private volatile OpenXrSourceState _state = OpenXrSourceState.Stopped;
         private volatile string _runtimeName = string.Empty;
         private long _samples;
@@ -107,7 +107,7 @@ namespace PadForge.Engine.Common.OpenXr
         public void Stop()
         {
             _running = false;
-            _cancelled = true;
+            _canceled = true;
             var t = _thread;
             _thread = null;
             // Bounded: every native call in the loop is a locate or a poll,
@@ -134,7 +134,7 @@ namespace PadForge.Engine.Common.OpenXr
                 // feature was switched off while that ran, tear the session
                 // down here rather than leaving a live one behind on a
                 // machine whose owner just said no.
-                if (_cancelled)
+                if (_canceled)
                 {
                     _log("OpenXR: session created after the feature was turned off, closing it");
                     return;

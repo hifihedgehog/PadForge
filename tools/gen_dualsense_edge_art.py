@@ -68,7 +68,7 @@ def font(size):
     raise SystemExit("no usable font")
 
 
-def centred_text(draw, box, text, fnt, fill):
+def centered_text(draw, box, text, fnt, fill):
     x0, y0, x1, y1 = box
     bb = draw.textbbox((0, 0), text, font=fnt)
     tw, th = bb[2] - bb[0], bb[3] - bb[1]
@@ -88,7 +88,7 @@ def draw_tile(img, x0, y0, label):
     inset = 5 * SS
     d.rounded_rectangle((X0 + inset, Y0 + inset, X1 - inset, Y1 - inset),
                         radius=r - inset * 0.55, fill=CAP)
-    centred_text(d, (X0 + inset, Y0 + inset, X1 - inset, Y1 - inset),
+    centered_text(d, (X0 + inset, Y0 + inset, X1 - inset, Y1 - inset),
                  label, font(int(38 * SS)), GLYPH)
     img.alpha_composite(lay.resize((img.width, img.height), Image.LANCZOS))
 

@@ -64,7 +64,7 @@ def font(size):
     raise SystemExit("no usable font")
 
 
-def centred_text(draw, box, text, fnt, fill):
+def centered_text(draw, box, text, fnt, fill):
     """Draw text optically centered in box (x0,y0,x1,y1) by its ink bbox."""
     x0, y0, x1, y1 = box
     bb = draw.textbbox((0, 0), text, font=fnt)
@@ -89,7 +89,7 @@ def draw_c_button(img, cx, cy):
     inset = 6 * SS
     rounded(d, (x0 + inset, y0 + inset, x1 - inset, y1 - inset),
             r - inset * 0.55, fill=CAP)                            # gray cap
-    centred_text(d, (x0 + inset, y0 + inset, x1 - inset, y1 - inset),
+    centered_text(d, (x0 + inset, y0 + inset, x1 - inset, y1 - inset),
                  "C", font(int(34 * SS)), GLYPH)
     lay = lay.resize((img.width, img.height), Image.LANCZOS)
     img.alpha_composite(lay)
@@ -106,7 +106,7 @@ def draw_tile(img, x0, y0, label):
     inset = 5 * SS
     rounded(d, (X0 + inset, Y0 + inset, X1 - inset, Y1 - inset),
             r - inset * 0.55, fill=CAP)
-    centred_text(d, (X0 + inset, Y0 + inset, X1 - inset, Y1 - inset),
+    centered_text(d, (X0 + inset, Y0 + inset, X1 - inset, Y1 - inset),
                  label, font(int(52 * SS)), GLYPH)
     lay = lay.resize((img.width, img.height), Image.LANCZOS)
     img.alpha_composite(lay)

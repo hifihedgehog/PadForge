@@ -882,9 +882,15 @@ namespace PadForge.Engine
                 ReadRingCon(state);
 
             // GunCon 2 beam counts, scaled to the screen over the raw axes
-            // they arrived on.
+            // they arrived on, by this gun's calibration. The trigger is
+            // button 0 (docs/README-guncon.md in the fork).
             if (IsGunCon2 && state != null)
-                ApplyGunCon2(state, SDL_GetJoystickAxis(Joystick, 0), SDL_GetJoystickAxis(Joystick, 1));
+            {
+                short gunX = SDL_GetJoystickAxis(Joystick, 0);
+                short gunY = SDL_GetJoystickAxis(Joystick, 1);
+                RecordGunCon2Trigger(gunX, gunY, state.Buttons[0]);
+                ApplyGunCon2(state, gunX, gunY, GunCon2Calibration);
+            }
 
             // Joy-Con 2 optical mouse counters ride dedicated joystick axes 6/7
             // (SDL#8), read joystick-direct the same way.
@@ -1179,26 +1185,70 @@ namespace PadForge.Engine
             return v > 1f ? 1f : v < -1f ? -1f : v;
         }
 
-        /// <summary>The GunCon 2 beam counts that meet the screen's edges: X 175
-        /// to 720 and Y 20 to 240, the default calibration of beardypig's
-        /// guncon2 driver (guncon2.c), which the fork's doc names as where the
-        /// PC tools start. The usable window depends on the CRT, the video mode
-        /// and the game.</summary>
-        internal const int GunCon2MinX = 175, GunCon2MaxX = 720;
-        internal const int GunCon2MinY = 20, GunCon2MaxY = 240;
+        /// <summary>The window this gun's beam counts scale by: the calibration
+        /// its device record carries (UserDevice.GunCalibration), or the PC
+        /// tools' starting window until one is set. The UI thread replaces it
+        /// and the poll thread reads it, and the object is immutable.</summary>
+        public GunCon2Calibration GunCon2Calibration
+        {
+            get => System.Threading.Volatile.Read(ref _gunCon2Calibration);
+            set => System.Threading.Volatile.Write(ref _gunCon2Calibration, value ?? GunCon2Calibration.Default);
+        }
+        private GunCon2Calibration _gunCon2Calibration = GunCon2Calibration.Default;
+
+        // The latest trigger pull, for the calibration screen: the raw counts
+        // read in the poll that saw the trigger go down, in bits 0-15 and
+        // 16-31, and a pull count in bits 32-47 so the screen can tell a new
+        // pull from the one it already took. 0 until the first pull. The
+        // screen samples at display rate, and a quick pull could fall
+        // between two of its samples, so the poll thread latches it.
+        private long _gunCon2Pull;
+        private ushort _gunCon2Pulls;
+        private bool _gunCon2TriggerWasDown;
+
+        /// <summary>Latches a trigger pull with the counts read in the same
+        /// poll. Poll-thread only.</summary>
+        internal void RecordGunCon2Trigger(short rawX, short rawY, bool triggerDown)
+        {
+            if (triggerDown && !_gunCon2TriggerWasDown)
+            {
+                _gunCon2Pulls++;
+                long packed = (ushort)rawX | ((long)(ushort)rawY << 16) | ((long)_gunCon2Pulls << 32);
+                System.Threading.Volatile.Write(ref _gunCon2Pull, packed);
+            }
+            _gunCon2TriggerWasDown = triggerDown;
+        }
+
+        /// <summary>The latest trigger pull: the raw counts at the pull and a
+        /// count that changes with each one. False before the first.</summary>
+        public bool TryGetGunCon2Pull(out short rawX, out short rawY, out int pull)
+        {
+            long packed = System.Threading.Volatile.Read(ref _gunCon2Pull);
+            rawX = (short)(packed & 0xFFFF);
+            rawY = (short)((packed >> 16) & 0xFFFF);
+            pull = (int)((packed >> 32) & 0xFFFF);
+            return packed != 0;
+        }
+
+        /// <summary>Whether raw counts land on the picture. Off screen when X
+        /// is 10 or less or Y is 5 or less: GunconUSB counts a reading as on
+        /// the screen only past those values and reads X 0 as off screen, and
+        /// an idle gun with no CRT reports X 1 and Y 5
+        /// (docs/README-guncon.md).</summary>
+        public static bool GunCon2OnScreen(short rawX, short rawY) => rawX > 10 && rawY > 5;
 
         /// <summary>The GunCon 2's aim from its beam counts: -1..+1 per axis with
         /// X -1 at the left edge and Y -1 at the top, the IR pointer's
-        /// convention. Off screen when X is 10 or less or Y is 5 or less.
-        /// GunconUSB counts a reading as on the screen only past those values
-        /// and reads X 0 as off screen, and an idle gun with no CRT reports X 1
-        /// and Y 5 (docs/README-guncon.md).</summary>
-        internal static (float X, float Y, bool OnScreen) GunCon2Aim(short rawX, short rawY)
+        /// convention, over the calibration's window (the PC tools' starting
+        /// window when none is given).</summary>
+        internal static (float X, float Y, bool OnScreen) GunCon2Aim(short rawX, short rawY,
+            GunCon2Calibration calibration = null)
         {
-            if (rawX <= 10 || rawY <= 5)
+            if (!GunCon2OnScreen(rawX, rawY))
                 return (0f, 0f, false);
-            float x = (rawX - GunCon2MinX) / (float)(GunCon2MaxX - GunCon2MinX) * 2f - 1f;
-            float y = (rawY - GunCon2MinY) / (float)(GunCon2MaxY - GunCon2MinY) * 2f - 1f;
+            var c = calibration ?? GunCon2Calibration.Default;
+            float x = (rawX - c.MinX) / (float)(c.MaxX - c.MinX) * 2f - 1f;
+            float y = (rawY - c.MinY) / (float)(c.MaxY - c.MinY) * 2f - 1f;
             return (Math.Clamp(x, -1f, 1f), Math.Clamp(y, -1f, 1f), true);
         }
 
@@ -1211,9 +1261,10 @@ namespace PadForge.Engine
         /// because a Wii Remote's tracked aim cannot reach the screen edge. The
         /// gun's aim already spans the screen, so it is stored divided by the
         /// stretch and the read restores it.</summary>
-        internal static void ApplyGunCon2(CustomInputState state, short rawX, short rawY)
+        internal static void ApplyGunCon2(CustomInputState state, short rawX, short rawY,
+            GunCon2Calibration calibration = null)
         {
-            var (x, y, onScreen) = GunCon2Aim(rawX, rawY);
+            var (x, y, onScreen) = GunCon2Aim(rawX, rawY, calibration);
             short sx = (short)Math.Round(x * 32767f);
             short sy = (short)Math.Round(y * 32767f);
             state.Axis[0] = (ushort)(sx - short.MinValue);

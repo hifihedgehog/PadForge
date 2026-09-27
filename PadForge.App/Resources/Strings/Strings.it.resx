@@ -2596,6 +2596,18 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minuti (0 = mai)</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Disconnetti il Bluetooth quando collegato via USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Quick Charge. Quando questo controller segnala che è in carica mentre è connesso via Bluetooth, il collegamento Bluetooth viene interrotto così si carica senza alimentare la radio. Vale qualsiasi fonte di alimentazione USB, caricatori da parete inclusi. Se riattivi il Bluetooth con il cavo inserito, resta com’è fino al prossimo scollegamento.</value></data>
+  <data name="Devices_LightGun" xml:space="preserve"><value>Pistola ottica</value></data>
+  <data name="Devices_GunWindowDefault" xml:space="preserve"><value>Intervallo di mira predefinito: X da {0} a {1}, Y da {2} a {3}</value></data>
+  <data name="Devices_GunWindowCalibrated" xml:space="preserve"><value>Intervallo di mira calibrato: X da {0} a {1}, Y da {2} a {3}</value></data>
+  <data name="Devices_GunCalibration" xml:space="preserve"><value>Calibrazione della pistola</value></data>
+  <data name="Devices_GunCalibrate" xml:space="preserve"><value>Calibra</value></data>
+  <data name="Devices_GunCalibrateTooltip" xml:space="preserve"><value>Rende bianco ogni schermo e mostra quattro bersagli uno alla volta. Punta la pistola su ogni bersaglio sul suo schermo CRT e premi il grilletto. La pistola deve essere collegata a questo PC.</value></data>
+  <data name="GunCalibration_Title" xml:space="preserve"><value>Calibrazione della pistola</value></data>
+  <data name="GunCalibration_Instruction" xml:space="preserve"><value>Punta la pistola sul bersaglio e premi il grilletto.</value></data>
+  <data name="GunCalibration_Progress" xml:space="preserve"><value>Bersaglio {0} di {1}</value></data>
+  <data name="GunCalibration_OffScreen" xml:space="preserve"><value>La pistola non ha visto lo schermo. Punta il bersaglio e premi di nuovo il grilletto.</value></data>
+  <data name="GunCalibration_TooClose" xml:space="preserve"><value>I colpi sono troppo vicini per misurare lo schermo. Ricomincia dal primo bersaglio.</value></data>
+  <data name="GunCalibration_Cancel" xml:space="preserve"><value>Esc, A o B annulla.</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Disconnette questo controller Bluetooth dopo questi minuti senza input, così entra in sospensione e risparmia batteria. Non si attiva mai via USB.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Accensione</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>Menu</value></data>

@@ -332,6 +332,24 @@ namespace PadForge.Views
             vm.NotifyDeviceHidingChanged(dev.InstanceGuid);
         }
 
+        /// <summary>GunCon 2 calibration (hifihedgehog/SDL#33 Part 9): runs
+        /// the four-target screen against the gun's live wrapper, then stores
+        /// the fitted window on the row and flushes it through the same lane
+        /// as the checkboxes above, which also hands it to the wrapper.</summary>
+        private async void GunCalibrate_Click(object sender, RoutedEventArgs e)
+        {
+            var vm = DataContext as ViewModels.DevicesViewModel;
+            var dev = vm?.SelectedDevice;
+            if (dev == null || !dev.CanCalibrateGun) return;
+            var ud = PadForge.Common.Input.SettingsManager.FindDeviceByInstanceGuid(dev.InstanceGuid);
+            if (ud?.Device is not PadForge.Engine.SdlDeviceWrapper { IsGunCon2: true } gun) return;
+
+            var calibration = await GunCalibrationScreen.RunAsync(ud, gun, Window.GetWindow(this));
+            if (calibration == null) return;
+            dev.GunCalibration = calibration.IsDefault ? string.Empty : calibration.ToString();
+            vm.NotifyDeviceHidingChanged(dev.InstanceGuid);
+        }
+
         private void IdleDisconnect_LostFocus(object sender, RoutedEventArgs e)
         {
             var vm = DataContext as ViewModels.DevicesViewModel;

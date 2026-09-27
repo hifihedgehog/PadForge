@@ -2574,6 +2574,18 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minutes (0 = jamais)</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Déconnecter le Bluetooth lors du branchement USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Quick Charge. Lorsque cette manette signale qu’elle charge alors qu’elle est connectée en Bluetooth, la liaison Bluetooth est coupée pour qu’elle charge sans alimenter la radio. Toute source d’alimentation USB compte, chargeurs muraux compris. Si vous réactivez le Bluetooth avec le câble branché, il est laissé tranquille jusqu’au prochain débranchement.</value></data>
+  <data name="Devices_LightGun" xml:space="preserve"><value>Pistolet optique</value></data>
+  <data name="Devices_GunWindowDefault" xml:space="preserve"><value>Plage de visée par défaut : X {0} à {1}, Y {2} à {3}</value></data>
+  <data name="Devices_GunWindowCalibrated" xml:space="preserve"><value>Plage de visée calibrée : X {0} à {1}, Y {2} à {3}</value></data>
+  <data name="Devices_GunCalibration" xml:space="preserve"><value>Calibrage du pistolet</value></data>
+  <data name="Devices_GunCalibrate" xml:space="preserve"><value>Calibrer</value></data>
+  <data name="Devices_GunCalibrateTooltip" xml:space="preserve"><value>Passe chaque écran en blanc et affiche quatre cibles l'une après l'autre. Visez chaque cible avec le pistolet sur son écran cathodique et appuyez sur la détente. Le pistolet doit être branché sur ce PC.</value></data>
+  <data name="GunCalibration_Title" xml:space="preserve"><value>Calibrage du pistolet</value></data>
+  <data name="GunCalibration_Instruction" xml:space="preserve"><value>Visez la cible avec le pistolet et appuyez sur la détente.</value></data>
+  <data name="GunCalibration_Progress" xml:space="preserve"><value>Cible {0} sur {1}</value></data>
+  <data name="GunCalibration_OffScreen" xml:space="preserve"><value>Le pistolet n'a pas vu l'écran. Visez la cible et appuyez de nouveau sur la détente.</value></data>
+  <data name="GunCalibration_TooClose" xml:space="preserve"><value>Les tirs sont trop rapprochés pour mesurer l'écran. Recommencez à la première cible.</value></data>
+  <data name="GunCalibration_Cancel" xml:space="preserve"><value>Échap, A ou B annule.</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Déconnecte cette manette Bluetooth après ce nombre de minutes sans entrée, pour qu'elle se mette en veille et économise la batterie. Ne se déclenche jamais en USB.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Alimentation</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>Menu</value></data>

@@ -1154,6 +1154,33 @@
 
                         </StackPanel>
 
+                        <!-- ─── Light Gun (GunCon 2 only, hifihedgehog/SDL#33 Part 9) ───
+                             The gun's aim window: the beam counts at the
+                             picture's edges, kept per device. Calibrate runs
+                             the four-target screen, which needs the gun
+                             connected to this PC. The divider above follows
+                             the same rule as the one above Raw Input State:
+                             drawn when Power drew right above, or when
+                             nothing above did. -->
+                        <StackPanel Visibility="{Binding SelectedDevice.ShowGunCalibration, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Separator Margin="0,2,0,8"
+                                       Visibility="{Binding SelectedDevice.ShowGunCalibrationDivider, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                            <TextBlock Text="{Binding Devices_LightGun, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"
+                                       Style="{StaticResource SectionEyebrow}" Margin="0,0,0,6"/>
+                            <TextBlock Text="{Binding SelectedDevice.GunCalibrationStatus}"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <DockPanel LastChildFill="False" Margin="0,0,0,4">
+                                <reset:SettingResetButton DockPanel.Dock="Right" Command="{Binding ResetSelectedDeviceSettingCommand}" CommandParameter="GunCalibration" SettingLabel="{Binding Devices_GunCalibration, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DeviceRowViewModel_GunCalibration"/>
+                                <ui:Button DockPanel.Dock="Left"
+                                           Content="{Binding Devices_GunCalibrate, Source={x:Static strings:Strings.Instance}}"
+                                           IsEnabled="{Binding SelectedDevice.CanCalibrateGun}"
+                                           ToolTip="{Binding Devices_GunCalibrateTooltip, Source={x:Static strings:Strings.Instance}}"
+                                           ToolTipService.ShowOnDisabled="True"
+                                           Click="GunCalibrate_Click"/>
+                            </DockPanel>
+                        </StackPanel>
+
                         <!-- The divider before the Raw Input State header sits
                              OUTSIDE the Power panel above, deliberately: that
                              panel is gated on ShowPowerSection, and a divider

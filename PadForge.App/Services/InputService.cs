@@ -13606,6 +13606,13 @@ namespace PadForge.Services
             // fires on (DeviceRowViewModel.ComputeShowQuickCharge).
             row.ShowQuickCharge = DeviceRowViewModel.ComputeShowQuickCharge(ud.DevicePath, ud.VendorId, ud.ProdId, ud.SerialNumber);
 
+            // GunCon 2 calibration (hifihedgehog/SDL#33 Part 9): shown for the
+            // gun online or off, and the screen runs only while the gun is
+            // connected to this PC.
+            row.GunCalibration = ud.GunCalibration ?? string.Empty;
+            row.ShowGunCalibration = ud.IsGunCon2;
+            row.GunConnectedHere = ud.Device is PadForge.Engine.SdlDeviceWrapper { IsGunCon2: true };
+
             // Battery indicator (#167): seed through the same effective-battery
             // path the 5 s tick uses (#187). Seeding raw SDL battery here blinked
             // the Devices page for Xbox pads: every list refresh stamped -1 and

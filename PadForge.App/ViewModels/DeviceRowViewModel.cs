@@ -169,6 +169,7 @@ namespace PadForge.ViewModels
                 {
                     OnPropertyChanged(nameof(StatusText));
                     OnPropertyChanged(nameof(TabletInputStatus));
+                    OnPropertyChanged(nameof(CanCalibrateGun));
                 }
             }
         }
@@ -252,6 +253,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(ShowInputHidingSection));
                     OnPropertyChanged(nameof(ShowInputModeOrHidingSection));
                     OnPropertyChanged(nameof(ShowRawInputDivider));
+                    OnPropertyChanged(nameof(ShowGunCalibrationDivider));
                     OnPropertyChanged(nameof(IsMidiDevice));
                     OnPropertyChanged(nameof(IsHeadsetMotionDevice));
                     OnPropertyChanged(nameof(ShowTouchpadCapability));
@@ -499,6 +501,7 @@ namespace PadForge.ViewModels
                 {
                     OnPropertyChanged(nameof(ShowPowerSection));
                     OnPropertyChanged(nameof(ShowRawInputDivider));
+                    OnPropertyChanged(nameof(ShowGunCalibrationDivider));
                 }
             }
         }
@@ -522,6 +525,7 @@ namespace PadForge.ViewModels
                 {
                     OnPropertyChanged(nameof(ShowPowerSection));
                     OnPropertyChanged(nameof(ShowRawInputDivider));
+                    OnPropertyChanged(nameof(ShowGunCalibrationDivider));
                 }
             }
         }
@@ -802,7 +806,83 @@ namespace PadForge.ViewModels
         /// Power drew when either of its controls did
         /// (<see cref="ShowPowerSection"/>), so a wired-rebound Sony pad
         /// showing only the Quick Charge checkbox still gets its rule.</para></summary>
-        public bool ShowRawInputDivider => ShowPowerSection || !ShowInputModeOrHidingSection;
+        public bool ShowRawInputDivider => ShowPowerSection || ShowGunCalibration || !ShowInputModeOrHidingSection;
+
+        // ─────────────────────────────────────────────
+        //  Light gun (GunCon 2 calibration)
+        // ─────────────────────────────────────────────
+
+        private string _gunCalibration = string.Empty;
+
+        /// <summary>A GunCon 2's calibration as UserDevice.GunCalibration keeps
+        /// it, "minX,maxX,minY,maxY", empty for the PC tools' starting window.
+        /// Persisted through the same channel as the hiding toggles.</summary>
+        public string GunCalibration
+        {
+            get => _gunCalibration;
+            set
+            {
+                if (SetProperty(ref _gunCalibration, value ?? string.Empty))
+                    OnPropertyChanged(nameof(GunCalibrationStatus));
+            }
+        }
+
+        private bool _showGunCalibration;
+
+        /// <summary>Whether the Light Gun section draws: the row is a GunCon 2
+        /// (hifihedgehog/SDL#33 Part 9).</summary>
+        public bool ShowGunCalibration
+        {
+            get => _showGunCalibration;
+            set
+            {
+                if (SetProperty(ref _showGunCalibration, value))
+                {
+                    OnPropertyChanged(nameof(ShowGunCalibrationDivider));
+                    OnPropertyChanged(nameof(ShowRawInputDivider));
+                }
+            }
+        }
+
+        private bool _gunConnectedHere;
+
+        /// <summary>Whether the gun's live device is this PC's own SDL device.
+        /// A gun relayed from another PC is calibrated on that PC, which
+        /// scales its aim before relaying it.</summary>
+        public bool GunConnectedHere
+        {
+            get => _gunConnectedHere;
+            set
+            {
+                if (SetProperty(ref _gunConnectedHere, value))
+                    OnPropertyChanged(nameof(CanCalibrateGun));
+            }
+        }
+
+        /// <summary>Whether the calibration screen can read the gun: it is
+        /// connected to this PC and online.</summary>
+        public bool CanCalibrateGun => GunConnectedHere && IsOnline;
+
+        /// <summary>The divider above the Light Gun section. The section sits
+        /// between Power and Raw Input State, so the rule above it draws when
+        /// Power drew right above it or when nothing above did, the same rule
+        /// <see cref="ShowRawInputDivider"/> follows.</summary>
+        public bool ShowGunCalibrationDivider =>
+            ShowGunCalibration && (ShowPowerSection || !ShowInputModeOrHidingSection);
+
+        /// <summary>The beam-count window the gun's aim scales by.</summary>
+        public string GunCalibrationStatus
+        {
+            get
+            {
+                var c = PadForge.Engine.GunCon2Calibration.Parse(_gunCalibration);
+                string format = c.IsDefault
+                    ? Strings.Instance.Devices_GunWindowDefault
+                    : Strings.Instance.Devices_GunWindowCalibrated;
+                return string.Format(System.Globalization.CultureInfo.CurrentCulture, format,
+                    c.MinX, c.MaxX, c.MinY, c.MaxY);
+            }
+        }
 
         // ─────────────────────────────────────────────
         //  Device path
@@ -830,6 +910,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(ShowConsumeToggle));
                     OnPropertyChanged(nameof(ShowInputModeOrHidingSection));
                     OnPropertyChanged(nameof(ShowRawInputDivider));
+                    OnPropertyChanged(nameof(ShowGunCalibrationDivider));
                     OnPropertyChanged(nameof(IsBluetoothLink));
                     // ShowRegisterNfcTag's controller branch now gates on
                     // IsBluetoothLink, which is path-derived, so a link

@@ -2594,6 +2594,18 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minuten (0 = nooit)</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Bluetooth loskoppelen bij aansluiten via USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Quick Charge. Wanneer deze controller meldt dat hij oplaadt terwijl hij via Bluetooth is verbonden, wordt de Bluetooth-verbinding verbroken zodat hij oplaadt zonder de radio te voeden. Elke USB-voedingsbron telt, ook wandladers. Zet je Bluetooth weer aan terwijl de kabel erin zit, dan blijft het met rust tot de volgende keer dat je de kabel lostrekt.</value></data>
+  <data name="Devices_LightGun" xml:space="preserve"><value>Lichtpistool</value></data>
+  <data name="Devices_GunWindowDefault" xml:space="preserve"><value>Standaard richtbereik: X {0} tot {1}, Y {2} tot {3}</value></data>
+  <data name="Devices_GunWindowCalibrated" xml:space="preserve"><value>Gekalibreerd richtbereik: X {0} tot {1}, Y {2} tot {3}</value></data>
+  <data name="Devices_GunCalibration" xml:space="preserve"><value>Pistoolkalibratie</value></data>
+  <data name="Devices_GunCalibrate" xml:space="preserve"><value>Kalibreren</value></data>
+  <data name="Devices_GunCalibrateTooltip" xml:space="preserve"><value>Maakt elk scherm wit en toont om de beurt vier doelen. Richt het pistool op elk doel op zijn CRT-scherm en haal de trekker over. Het pistool moet op deze pc zijn aangesloten.</value></data>
+  <data name="GunCalibration_Title" xml:space="preserve"><value>Pistoolkalibratie</value></data>
+  <data name="GunCalibration_Instruction" xml:space="preserve"><value>Richt het pistool op het doel en haal de trekker over.</value></data>
+  <data name="GunCalibration_Progress" xml:space="preserve"><value>Doel {0} van {1}</value></data>
+  <data name="GunCalibration_OffScreen" xml:space="preserve"><value>Het pistool zag het scherm niet. Richt op het doel en haal de trekker opnieuw over.</value></data>
+  <data name="GunCalibration_TooClose" xml:space="preserve"><value>De schoten lagen te dicht bij elkaar om het scherm te meten. Begin opnieuw bij het eerste doel.</value></data>
+  <data name="GunCalibration_Cancel" xml:space="preserve"><value>Esc, A of B annuleert.</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Koppelt deze Bluetooth-controller los na dit aantal minuten zonder invoer, zodat deze in slaapstand gaat en batterij bespaart. Wordt nooit geactiveerd via USB.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Aan/uit</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>Menu</value></data>

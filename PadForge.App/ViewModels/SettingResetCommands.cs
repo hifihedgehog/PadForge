@@ -316,7 +316,8 @@ namespace PadForge.ViewModels
             nameof(HidHideEnabled) or
             nameof(ConsumeInputEnabled) or
             nameof(IdleDisconnectMinutes) or
-            nameof(QuickChargeEnabled);
+            nameof(QuickChargeEnabled) or
+            nameof(GunCalibration);
 
         private void ResetSetting(string name)
         {
@@ -345,6 +346,11 @@ namespace PadForge.ViewModels
                 case nameof(QuickChargeEnabled):
                 {
                     QuickChargeEnabled = false;
+                    break;
+                }
+                case nameof(GunCalibration):
+                {
+                    GunCalibration = string.Empty;
                     break;
                 }
                 default: return;

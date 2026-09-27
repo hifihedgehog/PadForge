@@ -2574,6 +2574,18 @@
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>분 (0 = 안 함)</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>USB 연결 시 Bluetooth 연결 해제</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>퀵 차지. 이 컨트롤러가 Bluetooth로 연결된 상태에서 충전 중이라고 보고하면 Bluetooth 링크를 끊어 무선에 전력을 쓰지 않고 충전합니다. 벽 충전기를 포함한 모든 USB 전원이 해당됩니다. 케이블을 꽂은 채 Bluetooth를 다시 연결하면 다음에 케이블을 뽑을 때까지 그대로 둡니다.</value></data>
+  <data name="Devices_LightGun" xml:space="preserve"><value>라이트 건</value></data>
+  <data name="Devices_GunWindowDefault" xml:space="preserve"><value>기본 조준 범위: X {0}~{1}, Y {2}~{3}</value></data>
+  <data name="Devices_GunWindowCalibrated" xml:space="preserve"><value>보정된 조준 범위: X {0}~{1}, Y {2}~{3}</value></data>
+  <data name="Devices_GunCalibration" xml:space="preserve"><value>건 보정</value></data>
+  <data name="Devices_GunCalibrate" xml:space="preserve"><value>보정</value></data>
+  <data name="Devices_GunCalibrateTooltip" xml:space="preserve"><value>모든 화면을 흰색으로 바꾸고 표적 네 개를 차례로 표시합니다. CRT 화면의 각 표적을 건으로 조준하고 트리거를 당기세요. 건이 이 PC에 연결되어 있어야 합니다.</value></data>
+  <data name="GunCalibration_Title" xml:space="preserve"><value>건 보정</value></data>
+  <data name="GunCalibration_Instruction" xml:space="preserve"><value>건으로 표적을 조준하고 트리거를 당기세요.</value></data>
+  <data name="GunCalibration_Progress" xml:space="preserve"><value>표적 {0} / {1}</value></data>
+  <data name="GunCalibration_OffScreen" xml:space="preserve"><value>건이 화면을 인식하지 못했습니다. 표적을 조준하고 트리거를 다시 당기세요.</value></data>
+  <data name="GunCalibration_TooClose" xml:space="preserve"><value>탄착점이 너무 가까워 화면을 측정할 수 없습니다. 첫 번째 표적부터 다시 시작하세요.</value></data>
+  <data name="GunCalibration_Cancel" xml:space="preserve"><value>Esc, A 또는 B로 취소</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>입력이 없는 상태로 설정한 분이 지나면 이 Bluetooth 컨트롤러의 연결을 끊어 절전 상태로 전환하고 배터리를 절약합니다. USB 연결 시에는 작동하지 않습니다.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>전원</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>메뉴</value></data>

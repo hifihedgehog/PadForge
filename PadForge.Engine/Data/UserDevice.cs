@@ -459,6 +459,15 @@ namespace PadForge.Engine.Data
         [XmlElement]
         public bool QuickChargeEnabled { get; set; }
 
+        /// <summary>A GunCon 2's calibration (hifihedgehog/SDL#33 Part 9): the
+        /// beam counts at the picture's edges as "minX,maxX,minY,maxY", set by
+        /// the Devices page's calibration screen. Empty means the PC tools'
+        /// starting window (<see cref="GunCon2Calibration.Default"/>). It
+        /// belongs to the gun and the CRT it aims at, so it is kept per
+        /// device, and the gun's wrapper takes it on every connect.</summary>
+        [XmlElement]
+        public string GunCalibration { get; set; } = string.Empty;
+
         /// <summary>Quick Charge edge memory (#372): the last charging read,
         /// so the drop fires only on the false-to-true edge. Deliberately
         /// NOT reset on a fresh connection: a user who re-links Bluetooth
@@ -680,6 +689,10 @@ namespace PadForge.Engine.Data
                 throw new ArgumentNullException(nameof(wrapper));
 
             LoadFromDevice(wrapper);
+
+            // The gun scales its aim by the calibration this record keeps.
+            if (wrapper.IsGunCon2)
+                wrapper.GunCon2Calibration = GunCon2Calibration.Parse(GunCalibration);
         }
 
         /// <summary>

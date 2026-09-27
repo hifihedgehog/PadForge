@@ -2574,6 +2574,18 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minutos (0 = nunca)</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Desconectar Bluetooth al conectar por USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Quick Charge. Cuando este mando informa de que está cargando mientras está conectado por Bluetooth, el enlace Bluetooth se corta para que cargue sin alimentar la radio. Cuenta cualquier fuente de alimentación USB, incluidos los cargadores de pared. Si vuelves a activar Bluetooth con el cable puesto, se deja en paz hasta el siguiente desenchufe.</value></data>
+  <data name="Devices_LightGun" xml:space="preserve"><value>Pistola de luz</value></data>
+  <data name="Devices_GunWindowDefault" xml:space="preserve"><value>Rango de puntería predeterminado: X {0} a {1}, Y {2} a {3}</value></data>
+  <data name="Devices_GunWindowCalibrated" xml:space="preserve"><value>Rango de puntería calibrado: X {0} a {1}, Y {2} a {3}</value></data>
+  <data name="Devices_GunCalibration" xml:space="preserve"><value>Calibración de la pistola</value></data>
+  <data name="Devices_GunCalibrate" xml:space="preserve"><value>Calibrar</value></data>
+  <data name="Devices_GunCalibrateTooltip" xml:space="preserve"><value>Pone todas las pantallas en blanco y muestra cuatro objetivos por turno. Apunta la pistola a cada objetivo en su monitor CRT y aprieta el gatillo. La pistola tiene que estar conectada a este PC.</value></data>
+  <data name="GunCalibration_Title" xml:space="preserve"><value>Calibración de la pistola</value></data>
+  <data name="GunCalibration_Instruction" xml:space="preserve"><value>Apunta la pistola al objetivo y aprieta el gatillo.</value></data>
+  <data name="GunCalibration_Progress" xml:space="preserve"><value>Objetivo {0} de {1}</value></data>
+  <data name="GunCalibration_OffScreen" xml:space="preserve"><value>La pistola no vio la pantalla. Apunta al objetivo y aprieta el gatillo otra vez.</value></data>
+  <data name="GunCalibration_TooClose" xml:space="preserve"><value>Los disparos quedaron demasiado juntos para medir la pantalla. Empieza de nuevo por el primer objetivo.</value></data>
+  <data name="GunCalibration_Cancel" xml:space="preserve"><value>Esc, A o B cancela.</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Desconecta este mando Bluetooth tras esos minutos sin entrada, para que entre en reposo y ahorre batería. Nunca se activa por USB.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Encendido</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>Menú</value></data>

@@ -544,6 +544,18 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minutes (0 = never)</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Disconnect Bluetooth When Plugged In over USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Quick Charge. When this controller reports it is charging while connected over Bluetooth, the Bluetooth link is dropped so it charges without powering the radio. Any USB power source counts, including wall chargers. If you turn Bluetooth back on while the cable stays in, it is left alone until the next unplug.</value></data>
+  <data name="Devices_LightGun" xml:space="preserve"><value>Light Gun</value></data>
+  <data name="Devices_GunWindowDefault" xml:space="preserve"><value>Default aim range: X {0} to {1}, Y {2} to {3}</value></data>
+  <data name="Devices_GunWindowCalibrated" xml:space="preserve"><value>Calibrated aim range: X {0} to {1}, Y {2} to {3}</value></data>
+  <data name="Devices_GunCalibration" xml:space="preserve"><value>Gun Calibration</value></data>
+  <data name="Devices_GunCalibrate" xml:space="preserve"><value>Calibrate</value></data>
+  <data name="Devices_GunCalibrateTooltip" xml:space="preserve"><value>Turns every screen white and shows four targets in turn. Aim the gun at each target on its CRT and pull the trigger. The gun has to be connected to this PC.</value></data>
+  <data name="GunCalibration_Title" xml:space="preserve"><value>Gun Calibration</value></data>
+  <data name="GunCalibration_Instruction" xml:space="preserve"><value>Aim the gun at the target and pull the trigger.</value></data>
+  <data name="GunCalibration_Progress" xml:space="preserve"><value>Target {0} of {1}</value></data>
+  <data name="GunCalibration_OffScreen" xml:space="preserve"><value>The gun did not see the screen. Aim at the target and pull the trigger again.</value></data>
+  <data name="GunCalibration_TooClose" xml:space="preserve"><value>The shots landed too close together to measure the screen. Start again at the first target.</value></data>
+  <data name="GunCalibration_Cancel" xml:space="preserve"><value>Esc, A or B cancels.</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Disconnects this Bluetooth controller after this many minutes without input, so it sleeps and saves battery. Never fires over USB.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Power</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>Menu</value></data>

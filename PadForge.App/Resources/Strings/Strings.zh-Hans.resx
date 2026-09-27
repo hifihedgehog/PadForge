@@ -2574,6 +2574,18 @@
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>分钟（0 = 从不）</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>通过USB连接时断开蓝牙</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>快速充电。当此控制器在蓝牙连接期间报告正在充电时，将断开蓝牙链接，使其充电时不再为无线模块供电。任何USB电源都有效，包括墙充。若在插着线时重新开启蓝牙，将保持不动，直到下次拔线。</value></data>
+  <data name="Devices_LightGun" xml:space="preserve"><value>光枪</value></data>
+  <data name="Devices_GunWindowDefault" xml:space="preserve"><value>默认瞄准范围：X {0} 至 {1}，Y {2} 至 {3}</value></data>
+  <data name="Devices_GunWindowCalibrated" xml:space="preserve"><value>已校准的瞄准范围：X {0} 至 {1}，Y {2} 至 {3}</value></data>
+  <data name="Devices_GunCalibration" xml:space="preserve"><value>光枪校准</value></data>
+  <data name="Devices_GunCalibrate" xml:space="preserve"><value>校准</value></data>
+  <data name="Devices_GunCalibrateTooltip" xml:space="preserve"><value>将所有屏幕变为白色，并依次显示四个目标。用光枪瞄准其 CRT 显示器上的每个目标并扣动扳机。光枪必须连接到这台电脑。</value></data>
+  <data name="GunCalibration_Title" xml:space="preserve"><value>光枪校准</value></data>
+  <data name="GunCalibration_Instruction" xml:space="preserve"><value>用光枪瞄准目标并扣动扳机。</value></data>
+  <data name="GunCalibration_Progress" xml:space="preserve"><value>目标 {0} / {1}</value></data>
+  <data name="GunCalibration_OffScreen" xml:space="preserve"><value>光枪没有检测到屏幕。请瞄准目标并再次扣动扳机。</value></data>
+  <data name="GunCalibration_TooClose" xml:space="preserve"><value>射击点过于接近，无法测量屏幕。请从第一个目标重新开始。</value></data>
+  <data name="GunCalibration_Cancel" xml:space="preserve"><value>按 Esc、A 或 B 取消</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>在无输入达到设定分钟数后断开此蓝牙控制器，使其休眠以节省电量。USB 连接时不会触发。</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>电源</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>菜单</value></data>

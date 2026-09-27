@@ -2574,6 +2574,18 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>Minuten (0 = nie)</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Bluetooth trennen, wenn per USB angeschlossen</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Quick Charge. Meldet dieser Controller während einer Bluetooth-Verbindung, dass er lädt, wird die Bluetooth-Verbindung getrennt, damit er lädt, ohne das Funkmodul zu versorgen. Jede USB-Stromquelle zählt, auch Ladegeräte. Wird Bluetooth bei eingestecktem Kabel wieder aktiviert, bleibt es bis zum nächsten Abstecken unangetastet.</value></data>
+  <data name="Devices_LightGun" xml:space="preserve"><value>Lightgun</value></data>
+  <data name="Devices_GunWindowDefault" xml:space="preserve"><value>Standard-Zielbereich: X {0} bis {1}, Y {2} bis {3}</value></data>
+  <data name="Devices_GunWindowCalibrated" xml:space="preserve"><value>Kalibrierter Zielbereich: X {0} bis {1}, Y {2} bis {3}</value></data>
+  <data name="Devices_GunCalibration" xml:space="preserve"><value>Lightgun-Kalibrierung</value></data>
+  <data name="Devices_GunCalibrate" xml:space="preserve"><value>Kalibrieren</value></data>
+  <data name="Devices_GunCalibrateTooltip" xml:space="preserve"><value>Färbt jeden Bildschirm weiß und zeigt nacheinander vier Ziele. Richten Sie die Lightgun auf jedes Ziel auf ihrem Röhrenbildschirm und drücken Sie den Abzug. Die Lightgun muss an diesen PC angeschlossen sein.</value></data>
+  <data name="GunCalibration_Title" xml:space="preserve"><value>Lightgun-Kalibrierung</value></data>
+  <data name="GunCalibration_Instruction" xml:space="preserve"><value>Richten Sie die Lightgun auf das Ziel und drücken Sie den Abzug.</value></data>
+  <data name="GunCalibration_Progress" xml:space="preserve"><value>Ziel {0} von {1}</value></data>
+  <data name="GunCalibration_OffScreen" xml:space="preserve"><value>Die Lightgun hat den Bildschirm nicht erfasst. Richten Sie sie auf das Ziel und drücken Sie den Abzug erneut.</value></data>
+  <data name="GunCalibration_TooClose" xml:space="preserve"><value>Die Schüsse lagen zu dicht beieinander, um den Bildschirm zu vermessen. Beginnen Sie erneut beim ersten Ziel.</value></data>
+  <data name="GunCalibration_Cancel" xml:space="preserve"><value>Esc, A oder B bricht ab.</value></data>
   <data name="Devices_IdleDisconnectTooltip" xml:space="preserve"><value>Trennt diesen Bluetooth-Controller nach so vielen Minuten ohne Eingabe, sodass er in den Ruhezustand wechselt und Akku spart. Löst nie über USB aus.</value></data>
   <data name="DevObj_ConsumerPower" xml:space="preserve"><value>Ein/Aus</value></data>
   <data name="DevObj_ConsumerMenu" xml:space="preserve"><value>Menü</value></data>

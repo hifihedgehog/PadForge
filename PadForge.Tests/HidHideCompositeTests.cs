@@ -207,9 +207,10 @@ namespace PadForge.Tests
         /// <para>CORRECTION, 2026-09-03. An earlier version of this comment
         /// said the keyboard interface shows as no row and stays hidden
         /// with the pad. That is wrong, and the reporter said so.
-        /// RawInputListener.EnumerateKeyboards filters on nothing but
-        /// RIM_TYPEKEYBOARD, so EVERY raw-input keyboard becomes its own
-        /// row, a composite gamepad's keyboard interface included, and
+        /// RawInputListener.EnumerateKeyboards leaves out only the keyboards
+        /// SDL's iCade driver decodes, so every other raw-input keyboard
+        /// becomes its own row, a composite gamepad's keyboard interface
+        /// included, and
         /// with Hide from Games off by default the keep-out set protects
         /// it exactly as it protects the touchpad. The VENDOR interface
         /// genuinely has no row, because it is neither keyboard, mouse,

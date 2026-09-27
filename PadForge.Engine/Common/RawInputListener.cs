@@ -314,6 +314,22 @@ namespace PadForge.Engine
         /// runtime, matching the dictionary's own lifetime.</summary>
         private static volatile bool[][] _keyboardStatesValues = Array.Empty<bool[]>();
 
+        // ── iCade host feed (hifihedgehog/SDL#33 Part 16) ──
+
+        /// <summary>SDL's iCade driver turns the ION iCade, a Bluetooth
+        /// keyboard that types one letter when a control is pressed and
+        /// another when it is released, into a joystick. Windows gives a
+        /// device class's Raw Input to one window per process, and this
+        /// listener's window holds the keyboard class, so InputManager turns
+        /// SDL's own registration off and every keyboard record reaches the
+        /// driver through here. Tests swap the call.</summary>
+        internal static Func<IntPtr, ushort, ushort, bool> ICadeFeed = SDL3.SDL.SDL_ICadeProcessRawKeyboard;
+
+        /// <summary>Keyboards whose records the iCade driver claimed, keyed by
+        /// hDevice. Written on the pump thread only, and concurrent so Stop
+        /// can clear it with the other handle maps.</summary>
+        private static readonly ConcurrentDictionary<IntPtr, byte> _iCadeKeyboards = new();
+
         /// <summary>Per-mouse state, keyed by hDevice.</summary>
         private static readonly ConcurrentDictionary<IntPtr, MouseDeviceState> _mouseStates = new();
 
@@ -407,6 +423,7 @@ namespace PadForge.Engine
 
             _keyboardStates.Clear();
             _keyboardStatesValues = Array.Empty<bool[]>();
+            _iCadeKeyboards.Clear();
             _mouseStates.Clear();
             _mouseStatesValues = Array.Empty<MouseDeviceState>();
             _consumerStates.Clear();
@@ -593,6 +610,14 @@ namespace PadForge.Engine
                     continue;
 
                 IntPtr hDevice = deviceList[i].hDevice;
+
+                // A keyboard SDL decodes as an iCade is the iCade joystick's
+                // device, and none of its records reach the keyboard state
+                // (ClaimedByICade), so it gets no keyboard row. The query
+                // record, make code 0 with RI_KEY_BREAK, moves no control.
+                if (targetType == RIM_TYPEKEYBOARD && ICadeFeed(hDevice, 0, RI_KEY_BREAK))
+                    continue;
+
                 string devicePath = GetDeviceName(hDevice);
                 string friendlyName = ExtractFriendlyName(devicePath, targetType);
 
@@ -1301,34 +1326,7 @@ namespace PadForge.Engine
                 if (header.dwType == RIM_TYPEKEYBOARD)
                 {
                     var kb = Marshal.PtrToStructure<RAWKEYBOARD>(dataPtr);
-                    int vk = kb.VKey;
-                    if (vk >= 0 && vk < 256)
-                    {
-                        bool isDown = (kb.Flags & RI_KEY_BREAK) == 0;
-                        bool isE0 = (kb.Flags & RI_KEY_E0) != 0;
-                        bool[] state = _keyboardStates.GetOrAdd(hDevice, _ => new bool[256]);
-                        if (_keyboardStatesValues.Length != _keyboardStates.Count)
-                            _keyboardStatesValues = System.Linq.Enumerable.ToArray(_keyboardStates.Values);
-
-                        // Translate generic modifier VKeys to left/right specific
-                        // codes using hardcoded scan code + E0 flag lookup.
-                        // MapVirtualKey is unreliable for this across Windows versions.
-                        int specific = (vk, kb.MakeCode, isE0) switch
-                        {
-                            (0x10, 0x2A, _) => 0xA0,   // LShift (scan 0x2A)
-                            (0x10, 0x36, _) => 0xA1,   // RShift (scan 0x36)
-                            (0x11, _, false) => 0xA2,   // LCtrl  (scan 0x1D, no E0)
-                            (0x11, _, true)  => 0xA3,   // RCtrl  (scan 0x1D + E0)
-                            (0x12, _, false) => 0xA4,   // LAlt   (scan 0x38, no E0)
-                            (0x12, _, true)  => 0xA5,   // RAlt   (scan 0x38 + E0)
-                            (0x0D, _, true)  => 0x88,   // Numpad Enter (VK_RETURN + E0)
-                            _ => -1
-                        };
-                        if (specific >= 0)
-                            state[specific] = isDown;
-                        else
-                            state[vk] = isDown;
-                    }
+                    ApplyKeyboardRecord(hDevice, kb.MakeCode, kb.Flags, kb.VKey);
                 }
                 else if (header.dwType == RIM_TYPEMOUSE)
                 {
@@ -1401,6 +1399,65 @@ namespace PadForge.Engine
             {
                 handle.Free();
             }
+        }
+
+        /// <summary>One keyboard record into its device's key state, unless the
+        /// record belongs to an iCade. Pump thread only.</summary>
+        internal static void ApplyKeyboardRecord(IntPtr hDevice, ushort makeCode, ushort flags, ushort vKey)
+        {
+            if (ClaimedByICade(hDevice, makeCode, flags))
+                return;
+
+            int vk = vKey;
+            if (vk >= 0 && vk < 256)
+            {
+                bool isDown = (flags & RI_KEY_BREAK) == 0;
+                bool isE0 = (flags & RI_KEY_E0) != 0;
+                bool[] state = _keyboardStates.GetOrAdd(hDevice, _ => new bool[256]);
+                if (_keyboardStatesValues.Length != _keyboardStates.Count)
+                    _keyboardStatesValues = System.Linq.Enumerable.ToArray(_keyboardStates.Values);
+
+                // Translate generic modifier VKeys to left/right specific
+                // codes using hardcoded scan code + E0 flag lookup.
+                // MapVirtualKey is unreliable for this across Windows versions.
+                int specific = (vk, makeCode, isE0) switch
+                {
+                    (0x10, 0x2A, _) => 0xA0,   // LShift (scan 0x2A)
+                    (0x10, 0x36, _) => 0xA1,   // RShift (scan 0x36)
+                    (0x11, _, false) => 0xA2,   // LCtrl  (scan 0x1D, no E0)
+                    (0x11, _, true)  => 0xA3,   // RCtrl  (scan 0x1D + E0)
+                    (0x12, _, false) => 0xA4,   // LAlt   (scan 0x38, no E0)
+                    (0x12, _, true)  => 0xA5,   // RAlt   (scan 0x38 + E0)
+                    (0x0D, _, true)  => 0x88,   // Numpad Enter (VK_RETURN + E0)
+                    _ => -1
+                };
+                if (specific >= 0)
+                    state[specific] = isDown;
+                else
+                    state[vk] = isDown;
+            }
+        }
+
+        /// <summary>True when SDL's iCade driver decodes the keyboard, which
+        /// makes the record the iCade joystick's. The driver identifies a new
+        /// keyboard 300 ms and 2 s after it arrives, so a letter pressed
+        /// before that and released after would stay down here: the first
+        /// claim for a handle clears what the handle holds. A handle the
+        /// driver stops claiming, because the device left its list or a hint
+        /// turned it off, is an ordinary keyboard again from that record on.
+        /// Injected input arrives with handle 0 and is never an iCade.</summary>
+        private static bool ClaimedByICade(IntPtr hDevice, ushort makeCode, ushort flags)
+        {
+            if (hDevice == IntPtr.Zero)
+                return false;
+            if (!ICadeFeed(hDevice, makeCode, flags))
+            {
+                _iCadeKeyboards.TryRemove(hDevice, out _);
+                return false;
+            }
+            if (_iCadeKeyboards.TryAdd(hDevice, 0) && _keyboardStates.TryGetValue(hDevice, out bool[] held))
+                Array.Clear(held, 0, held.Length);
+            return true;
         }
 
         // ─────────────────────────────────────────────

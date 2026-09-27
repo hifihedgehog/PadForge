@@ -63,6 +63,11 @@ namespace SDL3
         public const string SDL_HINT_JOYSTICK_HIDAPI_SWITCH_NFC = "SDL_JOYSTICK_HIDAPI_SWITCH_NFC";
         public const string SDL_HINT_JOYSTICK_HIDAPI_PS3_SIXAXIS_DRIVER = "SDL_JOYSTICK_HIDAPI_PS3_SIXAXIS_DRIVER";
         public const string SDL_HINT_JOYSTICK_HIDAPI_FLYDIGI = "SDL_JOYSTICK_HIDAPI_FLYDIGI";
+        // Fork additions (hifihedgehog/SDL#33). InputManager.InitializeSdl
+        // says what each one turns on and why PadForge sets it.
+        public const string SDL_HINT_JOYSTICK_BLE = "SDL_JOYSTICK_BLE";
+        public const string SDL_HINT_JOYSTICK_HIDAPI_DREAMCHEEKY = "SDL_JOYSTICK_HIDAPI_DREAMCHEEKY";
+        public const string SDL_HINT_JOYSTICK_ICADE_RAWINPUT = "SDL_JOYSTICK_ICADE_RAWINPUT";
         public const string SDL_HINT_VIDEO_ALLOW_SCREENSAVER = "SDL_VIDEO_ALLOW_SCREENSAVER";
 
         // ─────────────────────────────────────────────
@@ -687,6 +692,36 @@ namespace SDL3
             catch (EntryPointNotFoundException)
             {
                 s_nfcProbe = -1;
+                return false;
+            }
+        }
+
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_ICadeProcessRawKeyboard")]
+        [return: MarshalAs(UnmanagedType.U1)]
+        private static extern bool _SDL_ICadeProcessRawKeyboard(IntPtr device_handle, ushort make_code, ushort flags);
+
+        // Cleared by the first call into an SDL3.dll without the export, so
+        // an older DLL costs one exception rather than one per keystroke.
+        private static volatile bool s_icadeExport = true;
+
+        /// <summary>Hands one Raw Input keyboard record to the fork's iCade
+        /// driver (hifihedgehog/SDL#33 Part 16). True when the driver decodes
+        /// that keyboard as an iCade, which makes the record the iCade
+        /// joystick's. A record with make code 0 and RI_KEY_BREAK set only
+        /// asks whether the handle is an iCade and moves no control. False
+        /// before SDL_Init, after SDL_Quit, and on a DLL without the export.
+        /// The call takes only the driver's own lock, so any thread may make
+        /// it.</summary>
+        public static bool SDL_ICadeProcessRawKeyboard(IntPtr deviceHandle, ushort makeCode, ushort flags)
+        {
+            if (!s_icadeExport) return false;
+            try
+            {
+                return _SDL_ICadeProcessRawKeyboard(deviceHandle, makeCode, flags);
+            }
+            catch (Exception ex) when (ex is EntryPointNotFoundException || ex is DllNotFoundException)
+            {
+                s_icadeExport = false;
                 return false;
             }
         }

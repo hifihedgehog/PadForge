@@ -63,8 +63,10 @@ namespace PadForge.Common.Input
         /// itself (PsMoveDirectService / the DS3 service's navigation
         /// profile) and feeds SDL VIRTUAL joysticks, which are exempt: the
         /// virtual backend never calls SDL_ShouldIgnoreJoystick
-        /// (SDL_joystick.c:3601's callers are the dinput/rawinput/WGI/
-        /// xinput/hidapi backends only).
+        /// (SDL_joystick.c:3845). On Windows its callers are the DirectInput,
+        /// RawInput, WGI, XInput, GameInput and HIDAPI backends and the
+        /// fork's Bluetooth LE, RFCOMM, serial, DJI network and iCade drivers
+        /// (hifihedgehog/SDL#33).
         ///   0x054c/0x03d5: PS Move (ZCM1), 0x054c/0x0c5e: PS Move (ZCM2),
         ///   0x054c/0x042f: Navigation controller.</summary>
         internal const string JoystickBlacklistDevices =
@@ -870,6 +872,39 @@ namespace PadForge.Common.Input
                 // driver outranks sixaxis in SDL's driver table and its init
                 // writes at the device.
                 SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_PS3_SIXAXIS_DRIVER, "1");
+
+                // Of the fork's switches for the controllers Windows leaves
+                // unusable (hifihedgehog/SDL#33), PadForge moves these three
+                // off SDL's defaults.
+                //
+                // Bluetooth LE controllers that send their input over a vendor
+                // GATT service: the Poke Ball Plus, the Daydream, Gear VR and
+                // Oculus Go controllers, the iOS Guitar Hero Live guitar, the
+                // Zwift Play and Click, and the Myo. The fork leaves them off so
+                // no app scans unasked. PadForge scans for Switch 2 controllers
+                // already, and both drivers share the one advertisement
+                // watcher. The driver connects to every matching controller in
+                // range that advertises, not only to ones paired with this PC.
+                // SDL_JOYSTICK_BLE_PAIRING stays off: a Daydream or Oculus Go
+                // controller appears once the user pairs it in Windows
+                // Settings, and SDL never writes or removes a bond (pairing an
+                // Oculus Go controller with a PC can end its pairing with its
+                // headset). SDL_Quit waits up to 3 s for open links to close.
+                SDL_SetHint(SDL_HINT_JOYSTICK_BLE, "1");
+
+                // The Dream Cheeky roll-up drum kit, 1941:8021. A weather
+                // station and a missile launcher share that ID, which is why
+                // the fork leaves this driver off, and either one reads here as
+                // a drum kit with six pads. It reaches a game only if the user
+                // assigns it to a slot.
+                SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_DREAMCHEEKY, "1");
+
+                // The iCade feed. RawInputListener's window holds the keyboard
+                // Raw Input class, and Windows gives a class to one window per
+                // process. With this hint off from the start SDL never
+                // registers for keyboards, and RawInputListener hands each
+                // keyboard record to SDL_ICadeProcessRawKeyboard.
+                SDL_SetHint(SDL_HINT_JOYSTICK_ICADE_RAWINPUT, "0");
 
                 // Allow screensaver/sleep even while SDL video is active.
                 SDL_SetHint(SDL_HINT_VIDEO_ALLOW_SCREENSAVER, "1");

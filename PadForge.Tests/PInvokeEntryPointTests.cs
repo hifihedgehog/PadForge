@@ -20,12 +20,14 @@ namespace PadForge.Tests
     /// (explicit EntryPoint override, CharSet name suffixing, ExactSpelling),
     /// so a bad name fails here exactly as it would in production, minus the
     /// crash. Only types whose native libraries are present on the test host
-    /// are prelinked; hid.dll / user32.dll / kernel32.dll always are on Windows.
+    /// are prelinked. hid.dll, user32.dll and kernel32.dll always are on
+    /// Windows, and the build copies the shipped SDL3.dll beside the tests.
     /// </summary>
     public class PInvokeEntryPointTests
     {
         [Theory]
         [InlineData(typeof(PadForge.Engine.RawInputListener))]
+        [InlineData(typeof(SDL3.SDL))]
         public void AllDeclaredEntryPointsResolve(Type type)
         {
             // Throws EntryPointNotFoundException (or DllNotFoundException) if any

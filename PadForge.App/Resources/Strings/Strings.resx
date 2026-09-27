@@ -2818,6 +2818,14 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>Running, driver connected</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>Running, controllers live</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
+  <data name="SerialPair_Family" xml:space="preserve"><value>Serial Controller (COM Port)</value></data>
+  <data name="SerialPair_Instructions" xml:space="preserve"><value>Windows cannot tell which controller is on a COM port. Pick the port and the controller, then add it. PadForge opens that port from then on.</value></data>
+  <data name="SerialPair_Port" xml:space="preserve"><value>Port</value></data>
+  <data name="SerialPair_Controller" xml:space="preserve"><value>Controller</value></data>
+  <data name="SerialPair_Added" xml:space="preserve"><value>Added Controllers</value></data>
+  <data name="SerialPair_AddedFormat" xml:space="preserve"><value>Added {0} on {1}.</value></data>
+  <data name="SerialPair_NoPorts" xml:space="preserve"><value>No COM port is present.</value></data>
+  <data name="SerialPair_Full" xml:space="preserve"><value>PadForge reads up to 16 serial controllers. Remove one to add another.</value></data>
   <data name="MovePair_Instructions" xml:space="preserve"><value>Connect the PlayStation Move or Navigation controller with a USB cable, then click Pair. PadForge writes this PC into the controller, saves the Move's motion calibration, and registers it. When it finishes, unplug the controller and press its PS button to connect over Bluetooth.</value></data>
   <data name="MovePair_NoUsb" xml:space="preserve"><value>No PlayStation Move or Navigation controller found on USB. Connect it with a USB cable and try again.</value></data>
   <data name="Ds3Pair_Instructions" xml:space="preserve"><value>Connect the DualShock 3 with a USB cable, then click Pair. PadForge writes this PC into the controller and registers it. When it finishes, unplug the controller and press the PS button to connect over Bluetooth.</value></data>

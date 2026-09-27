@@ -2667,6 +2667,14 @@
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>実行中、ドライバー接続済み</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>実行中、コントローラー動作中</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / ナビゲーション</value></data>
+  <data name="SerialPair_Family" xml:space="preserve"><value>シリアルコントローラー（COM ポート）</value></data>
+  <data name="SerialPair_Instructions" xml:space="preserve"><value>Windows は COM ポートにどのコントローラーがつながっているかを判別できません。ポートとコントローラーを選んで追加してください。以後、PadForge がそのポートを開きます。</value></data>
+  <data name="SerialPair_Port" xml:space="preserve"><value>ポート</value></data>
+  <data name="SerialPair_Controller" xml:space="preserve"><value>コントローラー</value></data>
+  <data name="SerialPair_Added" xml:space="preserve"><value>追加したコントローラー</value></data>
+  <data name="SerialPair_AddedFormat" xml:space="preserve"><value>{1} に {0} を追加しました。</value></data>
+  <data name="SerialPair_NoPorts" xml:space="preserve"><value>COM ポートがありません。</value></data>
+  <data name="SerialPair_Full" xml:space="preserve"><value>PadForge が読み取れるシリアルコントローラーは 16 台までです。追加するには 1 台削除してください。</value></data>
   <data name="MovePair_Instructions" xml:space="preserve"><value>PlayStation Move またはナビゲーションコントローラーを USB ケーブルで接続し、ペアリングをクリックしてください。PadForge がこの PC をコントローラーに書き込み、Move のモーションキャリブレーションを保存して登録します。完了したらコントローラーを外し、PS ボタンを押して Bluetooth で接続してください。</value></data>
   <data name="MovePair_NoUsb" xml:space="preserve"><value>USB で PlayStation Move またはナビゲーションコントローラーが見つかりません。USB ケーブルで接続してからもう一度お試しください。</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>デバイスを1:1で複製</value></data>

@@ -2661,6 +2661,14 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>Em execução, driver conectado</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>Em execução, controles ativos</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
+  <data name="SerialPair_Family" xml:space="preserve"><value>Controle Serial (Porta COM)</value></data>
+  <data name="SerialPair_Instructions" xml:space="preserve"><value>O Windows não consegue saber qual controle está em uma porta COM. Escolha a porta e o controle e adicione-o. O PadForge abre essa porta a partir de então.</value></data>
+  <data name="SerialPair_Port" xml:space="preserve"><value>Porta</value></data>
+  <data name="SerialPair_Controller" xml:space="preserve"><value>Controle</value></data>
+  <data name="SerialPair_Added" xml:space="preserve"><value>Controles Adicionados</value></data>
+  <data name="SerialPair_AddedFormat" xml:space="preserve"><value>{0} adicionado em {1}.</value></data>
+  <data name="SerialPair_NoPorts" xml:space="preserve"><value>Nenhuma porta COM presente.</value></data>
+  <data name="SerialPair_Full" xml:space="preserve"><value>O PadForge lê até 16 controles seriais. Remova um para adicionar outro.</value></data>
   <data name="MovePair_Instructions" xml:space="preserve"><value>Conecte o controle PlayStation Move ou Navigation com um cabo USB e clique em Parear. O PadForge grava este PC no controle, salva a calibração de movimento do Move e o registra. Ao terminar, desconecte o controle e pressione o botão PS para conectar via Bluetooth.</value></data>
   <data name="MovePair_NoUsb" xml:space="preserve"><value>Nenhum controle PlayStation Move ou Navigation encontrado no USB. Conecte-o com um cabo USB e tente novamente.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Clonar Dispositivo 1:1</value></data>

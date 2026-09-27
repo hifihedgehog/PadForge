@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -31,9 +32,18 @@ namespace PadForge.Views
         /// touch that driver, must not pay for it.</summary>
         public bool PairedWii { get; private set; }
 
-        public PairDeviceDialog()
+        /// <summary>Where the serial family's adds and removes land. The
+        /// settings view model owns the list, persists it and hands it to
+        /// SDL through its changed event.</summary>
+        private readonly ViewModels.SettingsViewModel _settings;
+
+        public PairDeviceDialog(ViewModels.SettingsViewModel settings)
         {
+            _settings = settings;
             InitializeComponent();
+            ControllerCombo.ItemsSource = Common.Input.SerialControllers.Protocols.Select(p => p.Name).ToList();
+            ControllerCombo.SelectedIndex = 0;
+            SerialAddedList.ItemsSource = _settings?.SerialControllers;
             // FluentWindow sets ExtendsContentIntoTitleBar, which zeroes
             // WindowChrome.CaptionHeight, and this dialog declares no
             // <ui:TitleBar>, so no point in the window was non-client and it
@@ -47,27 +57,39 @@ namespace PadForge.Views
         }
 
         /// <summary>0 = Wii (inquiry scan), 1 = DualShock 3 (guided USB ceremony),
-        /// 2 = PS Move / Navigation (guided USB ceremony, #277).</summary>
+        /// 2 = PS Move / Navigation (guided USB ceremony, #277), 3 = a
+        /// controller on a COM port (#33).</summary>
         private bool IsDs3Family => FamilyCombo.SelectedIndex == 1;
         private bool IsMoveFamily => FamilyCombo.SelectedIndex == 2;
+        private bool IsSerialFamily => FamilyCombo.SelectedIndex == 3;
 
         private void Family_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             if (InstructionsText == null) return; // fires once during InitializeComponent
             bool ds3 = IsDs3Family;
             bool move = IsMoveFamily;
-            InstructionsText.Text = move ? Strings.Instance.MovePair_Instructions
+            bool serial = IsSerialFamily;
+            InstructionsText.Text = serial ? Strings.Instance.SerialPair_Instructions
+                                  : move ? Strings.Instance.MovePair_Instructions
                                   : ds3 ? Strings.Instance.Ds3Pair_Instructions
                                         : Strings.Instance.WiiPair_Instructions;
             // The "temporary pairing" and live found-list are Wii-only concepts.
-            TemporaryCheck.Visibility = (ds3 || move) ? Visibility.Collapsed : Visibility.Visible;
+            TemporaryCheck.Visibility = (ds3 || move || serial) ? Visibility.Collapsed : Visibility.Visible;
             FoundPanel.Visibility = Visibility.Collapsed;
+            SerialPickers.Visibility = serial ? Visibility.Visible : Visibility.Collapsed;
+            PairButton.Content = serial ? Strings.Instance.Common_Add : Strings.Instance.WiiPair_Pair;
             SetStatus(string.Empty);
+            // The serial family disables Add while no port is present, and
+            // the pairing families always start enabled.
+            if (serial) RefreshPorts();
+            else PairButton.IsEnabled = true;
+            UpdateSerialAddedPanel();
         }
 
         private void Pair_Click(object sender, RoutedEventArgs e)
         {
             if (_scanning) return;
+            if (IsSerialFamily) { AddSerial(); return; }
             if (IsDs3Family) { _ = PairDs3(); return; }
             if (IsMoveFamily) { _ = PairDs3(moveFamily: true); return; }
             _ = PairWii();
@@ -234,6 +256,68 @@ namespace PadForge.Views
                 }
             }
         }
+
+        // ── Serial controllers (#33) ─────────────────────────────────────
+
+        /// <summary>Lists the present COM ports that SDL's hint can name,
+        /// keeping the selection when its port is still there. A port Windows
+        /// numbers after the dialog opens appears when the list is opened
+        /// again.</summary>
+        private void RefreshPorts()
+        {
+            string keep = (PortCombo.SelectedItem as Common.Input.ComPort)?.InstanceId;
+            var ports = Common.Input.SerialControllers.ListComPorts()
+                .Where(p => Common.Input.SerialControllers.PortKey(p) != null)
+                .ToList();
+            PortCombo.ItemsSource = ports;
+            PortCombo.SelectedItem = ports.FirstOrDefault(p => p.InstanceId == keep) ?? ports.FirstOrDefault();
+            PairButton.IsEnabled = ports.Count > 0 && _settings != null;
+            if (ports.Count == 0) SetStatus(Strings.Instance.SerialPair_NoPorts, secondary: true);
+            else if (StatusText.Text == Strings.Instance.SerialPair_NoPorts) SetStatus(string.Empty);
+        }
+
+        private void PortCombo_DropDownOpened(object sender, EventArgs e) => RefreshPorts();
+
+        private void AddSerial()
+        {
+            if (_settings == null || PortCombo.SelectedItem is not Common.Input.ComPort port) return;
+            int pick = ControllerCombo.SelectedIndex;
+            if (pick < 0 || pick >= Common.Input.SerialControllers.Protocols.Length) return;
+            var (token, name) = Common.Input.SerialControllers.Protocols[pick];
+            string key = Common.Input.SerialControllers.PortKey(port);
+            if (key == null) return;
+
+            // A port carries one controller. Naming it again replaces the
+            // entry, which is also how SDL reads a port named twice: the last
+            // entry wins.
+            var list = _settings.SerialControllers;
+            var same = list.FirstOrDefault(s => string.Equals(s.Port, key, StringComparison.OrdinalIgnoreCase));
+            if (same == null && list.Count >= Common.Input.SerialControllers.MaxEntries)
+            {
+                SetStatus(Strings.Instance.SerialPair_Full, error: true);
+                return;
+            }
+            var entry = new Common.Input.SerialControllerEntry { Port = key, PortName = port.PortName, Protocol = token };
+            if (same != null) list[list.IndexOf(same)] = entry;
+            else list.Add(entry);
+            _settings.RaiseSerialControllersChanged();
+            UpdateSerialAddedPanel();
+            SetStatus(string.Format(Strings.Instance.SerialPair_AddedFormat, name, port.PortName), success: true);
+        }
+
+        private void SerialRemove_Click(object sender, RoutedEventArgs e)
+        {
+            if (_settings == null || sender is not FrameworkElement { Tag: Common.Input.SerialControllerEntry entry }) return;
+            if (_settings.SerialControllers.Remove(entry))
+                _settings.RaiseSerialControllersChanged();
+            UpdateSerialAddedPanel();
+            SetStatus(string.Empty);
+        }
+
+        private void UpdateSerialAddedPanel()
+            => SerialAddedPanel.Visibility = IsSerialFamily && _settings?.SerialControllers.Count > 0
+                ? Visibility.Visible
+                : Visibility.Collapsed;
 
         private void Dismiss_Click(object sender, RoutedEventArgs e)
         {

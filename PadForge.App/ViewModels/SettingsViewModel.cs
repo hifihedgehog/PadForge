@@ -263,6 +263,16 @@ namespace PadForge.ViewModels
         /// <summary>Application paths whitelisted in HidHide (user-visible paths, not DOS device paths).</summary>
         public ObservableCollection<string> HidHideWhitelistPaths { get; } = new();
 
+        /// <summary>Controllers on COM ports the user added in the pairing
+        /// dialog (hifihedgehog/SDL#33). SDL opens each named port.</summary>
+        public ObservableCollection<SerialControllerEntry> SerialControllers { get; } = new();
+
+        /// <summary>Raised on each add or remove in the dialog, never by the
+        /// load, so reading the file cannot mark it dirty.</summary>
+        public event EventHandler SerialControllersChanged;
+
+        internal void RaiseSerialControllersChanged() => SerialControllersChanged?.Invoke(this, EventArgs.Empty);
+
         private string _selectedWhitelistPath;
 
         /// <summary>Currently selected whitelist path in the list.</summary>

@@ -725,6 +725,15 @@ namespace PadForge
                 _settingsService?.MarkDirty();
             };
 
+            // Wire serial controller adds and removes (#33) -> SDL's serial
+            // hint, then persist. The load path applies the list itself and
+            // raises nothing, as the whitelist's does.
+            _viewModel.Settings.SerialControllersChanged += (s, e) =>
+            {
+                Common.Input.InputManager.ApplySerialControllers(_viewModel.Settings.SerialControllers);
+                _settingsService?.MarkDirty();
+            };
+
             // Wire MIDI Services install/uninstall commands.
             _viewModel.Settings.InstallMidiServicesRequested += async (s, e) =>
             {
@@ -866,7 +875,7 @@ namespace PadForge
             // Wire devices page Bluetooth pairing (Wii controllers, issue #116).
             _viewModel.Devices.PairRequested += (s, e) =>
             {
-                var dialog = new Views.PairDeviceDialog { Owner = this };
+                var dialog = new Views.PairDeviceDialog(_viewModel.Settings) { Owner = this };
                 dialog.ShowDialog();
                 // A just-paired Wii controller is grabbed by SDL mid-pairing and
                 // dropped. Force SDL to cleanly re-open it so it appears without

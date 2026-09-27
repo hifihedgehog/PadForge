@@ -79,6 +79,7 @@
                         <ComboBoxItem Content="{Binding WiiPair_FamilyWii, Source={x:Static strings:Strings.Instance}}"/>
                         <ComboBoxItem Content="{Binding WiiPair_FamilyDs3, Source={x:Static strings:Strings.Instance}}"/>
                         <ComboBoxItem Content="{Binding MovePair_Family, Source={x:Static strings:Strings.Instance}}"/>
+                        <ComboBoxItem Content="{Binding SerialPair_Family, Source={x:Static strings:Strings.Instance}}"/>
                     </ComboBox>
                 </DockPanel>
             </StackPanel>
@@ -92,6 +93,27 @@
                 <CheckBox VerticalAlignment="Center" x:Name="TemporaryCheck"
                           Content="{Binding WiiPair_Temporary, Source={x:Static strings:Strings.Instance}}"/>
                 <reset:SettingResetButton Click="ResetSetting_Click" Tag="Temporary" Visibility="{Binding Visibility, ElementName=TemporaryCheck}" IsEnabled="{Binding IsEnabled, ElementName=TemporaryCheck}" SettingLabel="{Binding WiiPair_Temporary, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_TemporaryCheck_88"/>
+            </StackPanel>
+
+            <!-- Serial controllers (#33): an adapter says nothing about the
+                 device behind it, so the user names the port and the
+                 controller. It shares row 2 with the Wii-only checkbox, and
+                 the two are never shown together. -->
+            <StackPanel Grid.Row="2" x:Name="SerialPickers" Visibility="Collapsed" Margin="0,0,0,12">
+                <TextBlock Text="{Binding SerialPair_Port, Source={x:Static strings:Strings.Instance}}"
+                           Margin="0,0,0,4"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                <DockPanel LastChildFill="True" Margin="0,0,0,10">
+                    <reset:SettingResetButton DockPanel.Dock="Right" Click="ResetSetting_Click" Tag="SerialPort" IsEnabled="{Binding IsEnabled, ElementName=PortCombo}" SettingLabel="{Binding SerialPair_Port, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_PortCombo"/>
+                    <ComboBox x:Name="PortCombo" DropDownOpened="PortCombo_DropDownOpened"/>
+                </DockPanel>
+                <TextBlock Text="{Binding SerialPair_Controller, Source={x:Static strings:Strings.Instance}}"
+                           Margin="0,0,0,4"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                <DockPanel LastChildFill="True">
+                    <reset:SettingResetButton DockPanel.Dock="Right" Click="ResetSetting_Click" Tag="SerialController" IsEnabled="{Binding IsEnabled, ElementName=ControllerCombo}" SettingLabel="{Binding SerialPair_Controller, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_ControllerCombo"/>
+                    <ComboBox x:Name="ControllerCombo" SelectedIndex="0"/>
+                </DockPanel>
             </StackPanel>
 
             <!-- Live status while an inquiry pass runs -->
@@ -124,6 +146,29 @@
                 <ListBox x:Name="FoundList" MaxHeight="120"
                          ItemContainerStyle="{StaticResource EmberSelectListItem}"
                          Background="{DynamicResource ControlFillColorDefaultBrush}"/>
+            </StackPanel>
+
+            <!-- The serial controllers added so far, each with its remove
+                 button. Removing one closes its port. -->
+            <StackPanel Grid.Row="5" x:Name="SerialAddedPanel" Margin="0,0,0,12" Visibility="Collapsed">
+                <TextBlock Text="{Binding SerialPair_Added, Source={x:Static strings:Strings.Instance}}"
+                           Margin="0,0,0,4"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                <ItemsControl x:Name="SerialAddedList">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <DockPanel Margin="0,2">
+                                <ui:Button DockPanel.Dock="Right" Style="{StaticResource EmberIconButton}"
+                                           VerticalAlignment="Center" Click="SerialRemove_Click" Tag="{Binding}"
+                                           ToolTip="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}">
+                                    <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="11"/>
+                                </ui:Button>
+                                <TextBlock Text="{Binding Display}" VerticalAlignment="Center"
+                                           TextTrimming="CharacterEllipsis" Margin="0,0,8,0"/>
+                            </DockPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </StackPanel>
 
             <!-- Footer band (#175 dialog language): Pair is the dialog's

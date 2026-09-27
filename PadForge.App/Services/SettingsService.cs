@@ -2264,6 +2264,15 @@ namespace PadForge.Services
                     if (!string.IsNullOrWhiteSpace(p))
                         vm.HidHideWhitelistPaths.Add(p);
             }
+            vm.SerialControllers.Clear();
+            if (appSettings.SerialControllers != null)
+            {
+                foreach (var s in appSettings.SerialControllers)
+                    if (s != null && !string.IsNullOrWhiteSpace(s.Port) && !string.IsNullOrWhiteSpace(s.Protocol))
+                        vm.SerialControllers.Add(s);
+            }
+            // Applied at load, before SDL_Init, as the Flydigi switch is (#33).
+            PadForge.Common.Input.InputManager.ApplySerialControllers(vm.SerialControllers);
             vm.SetLanguageFromCode(appSettings.Language);
             vm.EnableAutoProfileSwitching = appSettings.EnableAutoProfileSwitching;
             SettingsManager.EnableAutoProfileSwitching = appSettings.EnableAutoProfileSwitching;
@@ -4701,6 +4710,9 @@ namespace PadForge.Services
                 HidHideWhitelistPaths = vm.HidHideWhitelistPaths.Count > 0
                     ? vm.HidHideWhitelistPaths.ToArray()
                     : null,
+                SerialControllers = vm.SerialControllers.Count > 0
+                    ? vm.SerialControllers.ToArray()
+                    : null,
                 ExtendedConfigs = isDefault ? extendedConfigs.ToArray() : defaultSnap.ExtendedConfigs,
                 DeviceSlotConfigs = isDefault ? deviceSlotConfigs.ToArray() : defaultSnap.DeviceSlotConfigs,
                 UserProfiles = _userProfiles.Count > 0 ? _userProfiles.ToArray() : null,
@@ -6613,6 +6625,13 @@ namespace PadForge.Services
         [XmlArray("HidHideWhitelistPaths")]
         [XmlArrayItem("Path")]
         public string[] HidHideWhitelistPaths { get; set; }
+
+        /// <summary>Controllers on COM ports the user added in the pairing
+        /// dialog (hifihedgehog/SDL#33), handed to SDL as SDL_JOYSTICK_SERIAL.
+        /// Null when there are none.</summary>
+        [XmlArray("SerialControllers")]
+        [XmlArrayItem("Controller")]
+        public PadForge.Common.Input.SerialControllerEntry[] SerialControllers { get; set; }
 
         /// <summary>
         /// Per-slot Extended configuration (preset, axis/button counts).

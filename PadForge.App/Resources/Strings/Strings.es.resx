@@ -2667,6 +2667,14 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>En ejecución, controlador conectado</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>En ejecución, mandos activos</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
+  <data name="SerialPair_Family" xml:space="preserve"><value>Mando serie (puerto COM)</value></data>
+  <data name="SerialPair_Instructions" xml:space="preserve"><value>Windows no puede saber qué mando hay en un puerto COM. Elige el puerto y el mando y agrégalo. PadForge abrirá ese puerto a partir de entonces.</value></data>
+  <data name="SerialPair_Port" xml:space="preserve"><value>Puerto</value></data>
+  <data name="SerialPair_Controller" xml:space="preserve"><value>Mando</value></data>
+  <data name="SerialPair_Added" xml:space="preserve"><value>Mandos agregados</value></data>
+  <data name="SerialPair_AddedFormat" xml:space="preserve"><value>Se agregó {0} en {1}.</value></data>
+  <data name="SerialPair_NoPorts" xml:space="preserve"><value>No hay ningún puerto COM.</value></data>
+  <data name="SerialPair_Full" xml:space="preserve"><value>PadForge lee hasta 16 mandos serie. Quita uno para agregar otro.</value></data>
   <data name="MovePair_Instructions" xml:space="preserve"><value>Conecta el mando PlayStation Move o Navigation con un cable USB y pulsa Emparejar. PadForge escribe este PC en el mando, guarda la calibración de movimiento del Move y lo registra. Al terminar, desconecta el mando y pulsa su botón PS para conectarlo por Bluetooth.</value></data>
   <data name="MovePair_NoUsb" xml:space="preserve"><value>No se encontró ningún mando PlayStation Move o Navigation por USB. Conéctalo con un cable USB e inténtalo de nuevo.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Clonar dispositivo 1:1</value></data>

@@ -2687,6 +2687,14 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>Actief, stuurprogramma verbonden</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>Actief, controllers live</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
+  <data name="SerialPair_Family" xml:space="preserve"><value>Seriële controller (COM-poort)</value></data>
+  <data name="SerialPair_Instructions" xml:space="preserve"><value>Windows kan niet zien welke controller op een COM-poort zit. Kies de poort en de controller en voeg hem toe. PadForge opent die poort vanaf dan.</value></data>
+  <data name="SerialPair_Port" xml:space="preserve"><value>Poort</value></data>
+  <data name="SerialPair_Controller" xml:space="preserve"><value>Controller</value></data>
+  <data name="SerialPair_Added" xml:space="preserve"><value>Toegevoegde controllers</value></data>
+  <data name="SerialPair_AddedFormat" xml:space="preserve"><value>{0} op {1} toegevoegd.</value></data>
+  <data name="SerialPair_NoPorts" xml:space="preserve"><value>Er is geen COM-poort aanwezig.</value></data>
+  <data name="SerialPair_Full" xml:space="preserve"><value>PadForge leest maximaal 16 seriële controllers. Verwijder er een om een andere toe te voegen.</value></data>
   <data name="MovePair_Instructions" xml:space="preserve"><value>Sluit de PlayStation Move- of Navigation-controller aan met een USB-kabel en klik op Koppelen. PadForge schrijft deze pc in de controller, slaat de bewegingskalibratie van de Move op en registreert hem. Koppel daarna de controller los en druk op de PS-knop om via Bluetooth te verbinden.</value></data>
   <data name="MovePair_NoUsb" xml:space="preserve"><value>Geen PlayStation Move- of Navigation-controller gevonden via USB. Sluit hem aan met een USB-kabel en probeer het opnieuw.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Apparaat 1:1 klonen</value></data>

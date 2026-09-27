@@ -49,6 +49,8 @@ namespace PadForge.Views
             if (sender is not FrameworkElement { Tag: string field }) return;
             if (field == "Family" && FamilyCombo.IsEnabled) FamilyCombo.SelectedIndex = 0;
             if (field == "Temporary" && TemporaryCheck.IsEnabled) TemporaryCheck.IsChecked = false;
+            if (field == "SerialPort" && PortCombo.IsEnabled && PortCombo.Items.Count > 0) PortCombo.SelectedIndex = 0;
+            if (field == "SerialController" && ControllerCombo.IsEnabled) ControllerCombo.SelectedIndex = 0;
         }
     }
 

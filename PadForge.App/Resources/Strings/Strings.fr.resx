@@ -2667,6 +2667,14 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>En cours d’exécution, pilote connecté</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>En cours d’exécution, manettes actives</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
+  <data name="SerialPair_Family" xml:space="preserve"><value>Manette série (port COM)</value></data>
+  <data name="SerialPair_Instructions" xml:space="preserve"><value>Windows ne peut pas savoir quelle manette est branchée sur un port COM. Choisissez le port et la manette, puis ajoutez-la. PadForge ouvrira ce port par la suite.</value></data>
+  <data name="SerialPair_Port" xml:space="preserve"><value>Port</value></data>
+  <data name="SerialPair_Controller" xml:space="preserve"><value>Manette</value></data>
+  <data name="SerialPair_Added" xml:space="preserve"><value>Manettes ajoutées</value></data>
+  <data name="SerialPair_AddedFormat" xml:space="preserve"><value>Ajouté : {0} sur {1}.</value></data>
+  <data name="SerialPair_NoPorts" xml:space="preserve"><value>Aucun port COM n'est présent.</value></data>
+  <data name="SerialPair_Full" xml:space="preserve"><value>PadForge lit jusqu'à 16 manettes série. Retirez-en une pour en ajouter une autre.</value></data>
   <data name="MovePair_Instructions" xml:space="preserve"><value>Connectez la manette PlayStation Move ou Navigation avec un câble USB, puis cliquez sur Appairer. PadForge inscrit ce PC dans la manette, enregistre l’étalonnage de mouvement du Move et l’enregistre. Une fois terminé, débranchez la manette et appuyez sur son bouton PS pour la connecter en Bluetooth.</value></data>
   <data name="MovePair_NoUsb" xml:space="preserve"><value>Aucune manette PlayStation Move ou Navigation trouvée en USB. Connectez-la avec un câble USB et réessayez.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Cloner l'appareil 1:1</value></data>

@@ -2667,6 +2667,14 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>Wird ausgeführt, Treiber verbunden</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>Wird ausgeführt, Controller aktiv</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
+  <data name="SerialPair_Family" xml:space="preserve"><value>Serieller Controller (COM-Port)</value></data>
+  <data name="SerialPair_Instructions" xml:space="preserve"><value>Windows erkennt nicht, welcher Controller an einem COM-Port hängt. Wählen Sie den Port und den Controller und fügen Sie ihn hinzu. PadForge öffnet diesen Port von da an.</value></data>
+  <data name="SerialPair_Port" xml:space="preserve"><value>Port</value></data>
+  <data name="SerialPair_Controller" xml:space="preserve"><value>Controller</value></data>
+  <data name="SerialPair_Added" xml:space="preserve"><value>Hinzugefügte Controller</value></data>
+  <data name="SerialPair_AddedFormat" xml:space="preserve"><value>{0} an {1} hinzugefügt.</value></data>
+  <data name="SerialPair_NoPorts" xml:space="preserve"><value>Kein COM-Port vorhanden.</value></data>
+  <data name="SerialPair_Full" xml:space="preserve"><value>PadForge liest bis zu 16 serielle Controller. Entfernen Sie einen, um einen weiteren hinzuzufügen.</value></data>
   <data name="MovePair_Instructions" xml:space="preserve"><value>Verbinden Sie den PlayStation Move- oder Navigation-Controller mit einem USB-Kabel und klicken Sie dann auf Koppeln. PadForge schreibt diesen PC in den Controller, speichert die Bewegungskalibrierung des Move und registriert ihn. Trennen Sie danach den Controller und drücken Sie seine PS-Taste, um sich über Bluetooth zu verbinden.</value></data>
   <data name="MovePair_NoUsb" xml:space="preserve"><value>Kein PlayStation Move- oder Navigation-Controller am USB gefunden. Verbinden Sie ihn mit einem USB-Kabel und versuchen Sie es erneut.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Gerät 1:1 klonen</value></data>

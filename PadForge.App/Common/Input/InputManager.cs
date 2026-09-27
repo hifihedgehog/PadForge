@@ -906,6 +906,12 @@ namespace PadForge.Common.Input
                 // keyboard record to SDL_ICadeProcessRawKeyboard.
                 SDL_SetHint(SDL_HINT_JOYSTICK_ICADE_RAWINPUT, "0");
 
+                // The serial controllers the user added in the pairing
+                // dialog. SDL_Quit drops every hint, so each start replays
+                // the list, as the Flydigi switch is replayed above.
+                lock (_serialHintLock)
+                    SDL_SetHint(SDL_HINT_JOYSTICK_SERIAL, _serialHintValue);
+
                 // Allow screensaver/sleep even while SDL video is active.
                 SDL_SetHint(SDL_HINT_VIDEO_ALLOW_SCREENSAVER, "1");
 
@@ -1368,6 +1374,37 @@ namespace PadForge.Common.Input
             {
                 SDL_LockJoysticks();
                 try { return SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_FLYDIGI, value); }
+                finally { SDL_UnlockJoysticks(); }
+            }
+            catch { return false; }
+        }
+
+        /// <summary>Hands SDL the serial controllers the user added
+        /// (hifihedgehog/SDL#33): SDL_JOYSTICK_SERIAL, which the fork's
+        /// serial driver reads at any time, opening the ports that join the
+        /// list and closing the ones that leave it. Written under the
+        /// joystick lock, as the Flydigi hint is.</summary>
+        public static void ApplySerialControllers(IEnumerable<SerialControllerEntry> entries)
+        {
+            string value = SerialControllers.HintValue(entries);
+            bool accepted;
+            lock (_serialHintLock)
+            {
+                _serialHintValue = value;
+                accepted = WriteHintUnderJoystickLock(SDL_HINT_JOYSTICK_SERIAL, value);
+            }
+            Engine.SdlDiagLog.WriteLine($"SERIAL hint {SDL_HINT_JOYSTICK_SERIAL}=\"{value}\" accepted={accepted}");
+        }
+
+        private static readonly object _serialHintLock = new object();
+        private static string _serialHintValue = string.Empty;
+
+        private static bool WriteHintUnderJoystickLock(string name, string value)
+        {
+            try
+            {
+                SDL_LockJoysticks();
+                try { return SDL_SetHint(name, value); }
                 finally { SDL_UnlockJoysticks(); }
             }
             catch { return false; }

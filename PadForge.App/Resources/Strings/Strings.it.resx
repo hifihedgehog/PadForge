@@ -2689,6 +2689,14 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>In esecuzione, driver connesso</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>In esecuzione, controller attivi</value></data>
   <data name="MovePair_Family" xml:space="preserve"><value>PlayStation Move / Navigation</value></data>
+  <data name="SerialPair_Family" xml:space="preserve"><value>Controller seriale (porta COM)</value></data>
+  <data name="SerialPair_Instructions" xml:space="preserve"><value>Windows non può sapere quale controller si trova su una porta COM. Scegli la porta e il controller, poi aggiungilo. Da quel momento PadForge apre quella porta.</value></data>
+  <data name="SerialPair_Port" xml:space="preserve"><value>Porta</value></data>
+  <data name="SerialPair_Controller" xml:space="preserve"><value>Controller</value></data>
+  <data name="SerialPair_Added" xml:space="preserve"><value>Controller aggiunti</value></data>
+  <data name="SerialPair_AddedFormat" xml:space="preserve"><value>Aggiunto {0} su {1}.</value></data>
+  <data name="SerialPair_NoPorts" xml:space="preserve"><value>Nessuna porta COM presente.</value></data>
+  <data name="SerialPair_Full" xml:space="preserve"><value>PadForge legge fino a 16 controller seriali. Rimuovine uno per aggiungerne un altro.</value></data>
   <data name="MovePair_Instructions" xml:space="preserve"><value>Collega il controller PlayStation Move o Navigation con un cavo USB, poi fai clic su Associa. PadForge scrive questo PC nel controller, salva la calibrazione di movimento del Move e lo registra. Al termine, scollega il controller e premi il suo pulsante PS per connetterlo via Bluetooth.</value></data>
   <data name="MovePair_NoUsb" xml:space="preserve"><value>Nessun controller PlayStation Move o Navigation trovato su USB. Collegalo con un cavo USB e riprova.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Clona dispositivo 1:1</value></data>

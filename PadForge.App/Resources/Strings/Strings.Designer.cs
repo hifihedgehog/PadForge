@@ -903,6 +903,14 @@ public class Strings : INotifyPropertyChanged
     public string Vr_Status_DriverConnected => Get("Vr_Status_DriverConnected");
     public string Vr_Status_ControllersLive => Get("Vr_Status_ControllersLive");
     public string MovePair_Family => Get("MovePair_Family");
+    public string SerialPair_Family => Get("SerialPair_Family");
+    public string SerialPair_Instructions => Get("SerialPair_Instructions");
+    public string SerialPair_Port => Get("SerialPair_Port");
+    public string SerialPair_Controller => Get("SerialPair_Controller");
+    public string SerialPair_Added => Get("SerialPair_Added");
+    public string SerialPair_AddedFormat => Get("SerialPair_AddedFormat");
+    public string SerialPair_NoPorts => Get("SerialPair_NoPorts");
+    public string SerialPair_Full => Get("SerialPair_Full");
     public string MovePair_Instructions => Get("MovePair_Instructions");
     public string MovePair_NoUsb => Get("MovePair_NoUsb");
     public string Ds3Pair_Instructions => Get("Ds3Pair_Instructions");

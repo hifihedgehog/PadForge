@@ -2714,6 +2714,13 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="SerialPair_AddedFormat" xml:space="preserve"><value>{0} an {1} hinzugefügt.</value></data>
   <data name="SerialPair_NoPorts" xml:space="preserve"><value>Kein COM-Port vorhanden.</value></data>
   <data name="SerialPair_Full" xml:space="preserve"><value>PadForge liest bis zu 16 serielle Controller. Entfernen Sie einen, um einen weiteren hinzuzufügen.</value></data>
+  <data name="DjiPair_Family" xml:space="preserve"><value>DJI RC oder RC 2 (Netzwerk)</value></data>
+  <data name="DjiPair_Instructions" xml:space="preserve"><value>Verbinden Sie die Fernsteuerung und diesen PC mit demselben Netzwerk und fügen Sie dann die IPv4-Adresse der Fernsteuerung hinzu. Ihre Sticks liefert die Fernsteuerung auf Port 40007 nur mit Firmware aus der Zeit, bevor DJI diesen Port geschlossen hat.</value></data>
+  <data name="DjiPair_Address" xml:space="preserve"><value>Adresse</value></data>
+  <data name="DjiPair_Added" xml:space="preserve"><value>Hinzugefügte Fernsteuerungen</value></data>
+  <data name="DjiPair_AddedFormat" xml:space="preserve"><value>Fernsteuerung unter {0} hinzugefügt.</value></data>
+  <data name="DjiPair_Invalid" xml:space="preserve"><value>Geben Sie eine IPv4-Adresse wie 192.168.1.20 ein, mit dem Port nach einem Doppelpunkt, wenn er nicht 40007 ist.</value></data>
+  <data name="DjiPair_Full" xml:space="preserve"><value>PadForge liest bis zu 8 Fernsteuerungen über das Netzwerk. Entfernen Sie eine, um eine weitere hinzuzufügen.</value></data>
   <data name="MovePair_Instructions" xml:space="preserve"><value>Verbinden Sie den PlayStation Move- oder Navigation-Controller mit einem USB-Kabel und klicken Sie dann auf Koppeln. PadForge schreibt diesen PC in den Controller, speichert die Bewegungskalibrierung des Move und registriert ihn. Trennen Sie danach den Controller und drücken Sie seine PS-Taste, um sich über Bluetooth zu verbinden.</value></data>
   <data name="MovePair_NoUsb" xml:space="preserve"><value>Kein PlayStation Move- oder Navigation-Controller am USB gefunden. Verbinden Sie ihn mit einem USB-Kabel und versuchen Sie es erneut.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Gerät 1:1 klonen</value></data>

@@ -2714,6 +2714,13 @@
   <data name="SerialPair_AddedFormat" xml:space="preserve"><value>{1}에 {0}을(를) 추가했습니다.</value></data>
   <data name="SerialPair_NoPorts" xml:space="preserve"><value>COM 포트가 없습니다.</value></data>
   <data name="SerialPair_Full" xml:space="preserve"><value>PadForge는 시리얼 컨트롤러를 최대 16개까지 읽습니다. 다른 컨트롤러를 추가하려면 하나를 제거하세요.</value></data>
+  <data name="DjiPair_Family" xml:space="preserve"><value>DJI RC 또는 RC 2(네트워크)</value></data>
+  <data name="DjiPair_Instructions" xml:space="preserve"><value>조종기와 이 PC를 같은 네트워크에 연결한 다음 조종기의 IPv4 주소를 추가하세요. 조종기는 DJI가 해당 포트를 닫기 전의 펌웨어에서만 포트 40007로 스틱 값을 제공합니다.</value></data>
+  <data name="DjiPair_Address" xml:space="preserve"><value>주소</value></data>
+  <data name="DjiPair_Added" xml:space="preserve"><value>추가한 조종기</value></data>
+  <data name="DjiPair_AddedFormat" xml:space="preserve"><value>{0}의 조종기를 추가했습니다.</value></data>
+  <data name="DjiPair_Invalid" xml:space="preserve"><value>192.168.1.20 같은 IPv4 주소를 입력하세요. 포트가 40007이 아니면 콜론 뒤에 입력합니다.</value></data>
+  <data name="DjiPair_Full" xml:space="preserve"><value>PadForge는 네트워크를 통해 조종기를 최대 8개까지 읽습니다. 다른 조종기를 추가하려면 하나를 제거하세요.</value></data>
   <data name="MovePair_Instructions" xml:space="preserve"><value>PlayStation Move 또는 네비게이션 컨트롤러를 USB 케이블로 연결한 다음 페어링을 클릭하세요. PadForge가 이 PC를 컨트롤러에 기록하고 Move의 모션 보정을 저장한 뒤 등록합니다. 완료되면 컨트롤러를 분리하고 PS 버튼을 눌러 Bluetooth로 연결하세요.</value></data>
   <data name="MovePair_NoUsb" xml:space="preserve"><value>USB에서 PlayStation Move 또는 네비게이션 컨트롤러를 찾지 못했습니다. USB 케이블로 연결한 후 다시 시도하세요.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>장치 1:1 복제</value></data>

@@ -80,6 +80,7 @@
                         <ComboBoxItem Content="{Binding WiiPair_FamilyDs3, Source={x:Static strings:Strings.Instance}}"/>
                         <ComboBoxItem Content="{Binding MovePair_Family, Source={x:Static strings:Strings.Instance}}"/>
                         <ComboBoxItem Content="{Binding SerialPair_Family, Source={x:Static strings:Strings.Instance}}"/>
+                        <ComboBoxItem Content="{Binding DjiPair_Family, Source={x:Static strings:Strings.Instance}}"/>
                     </ComboBox>
                 </DockPanel>
             </StackPanel>
@@ -113,6 +114,19 @@
                 <DockPanel LastChildFill="True">
                     <reset:SettingResetButton DockPanel.Dock="Right" Click="ResetSetting_Click" Tag="SerialController" IsEnabled="{Binding IsEnabled, ElementName=ControllerCombo}" SettingLabel="{Binding SerialPair_Controller, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_ControllerCombo"/>
                     <ComboBox x:Name="ControllerCombo" SelectedIndex="0"/>
+                </DockPanel>
+            </StackPanel>
+
+            <!-- DJI RC and RC 2 over the network (#33 Part 6): the remote
+                 serves its sticks on a TCP port, so the user names its
+                 address. Row 2 again, never shown with the others. -->
+            <StackPanel Grid.Row="2" x:Name="DjiPickers" Visibility="Collapsed" Margin="0,0,0,12">
+                <TextBlock Text="{Binding DjiPair_Address, Source={x:Static strings:Strings.Instance}}"
+                           Margin="0,0,0,4"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                <DockPanel LastChildFill="True">
+                    <reset:SettingResetButton DockPanel.Dock="Right" Click="ResetSetting_Click" Tag="DjiAddress" IsEnabled="{Binding IsEnabled, ElementName=DjiAddressBox}" SettingLabel="{Binding DjiPair_Address, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_DjiAddressBox"/>
+                    <TextBox x:Name="DjiAddressBox"/>
                 </DockPanel>
             </StackPanel>
 
@@ -164,6 +178,29 @@
                                     <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="11"/>
                                 </ui:Button>
                                 <TextBlock Text="{Binding Display}" VerticalAlignment="Center"
+                                           TextTrimming="CharacterEllipsis" Margin="0,0,8,0"/>
+                            </DockPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+
+            <!-- The DJI remotes added so far, each with its remove button.
+                 Removing one closes its link. -->
+            <StackPanel Grid.Row="5" x:Name="DjiAddedPanel" Margin="0,0,0,12" Visibility="Collapsed">
+                <TextBlock Text="{Binding DjiPair_Added, Source={x:Static strings:Strings.Instance}}"
+                           Margin="0,0,0,4"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                <ItemsControl x:Name="DjiAddedList">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <DockPanel Margin="0,2">
+                                <ui:Button DockPanel.Dock="Right" Style="{StaticResource EmberIconButton}"
+                                           VerticalAlignment="Center" Click="DjiRemove_Click" Tag="{Binding}"
+                                           ToolTip="{Binding Common_Remove, Source={x:Static strings:Strings.Instance}}">
+                                    <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="11"/>
+                                </ui:Button>
+                                <TextBlock Text="{Binding}" VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis" Margin="0,0,8,0"/>
                             </DockPanel>
                         </DataTemplate>

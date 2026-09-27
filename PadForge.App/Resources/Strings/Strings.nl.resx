@@ -2734,6 +2734,13 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="SerialPair_AddedFormat" xml:space="preserve"><value>{0} op {1} toegevoegd.</value></data>
   <data name="SerialPair_NoPorts" xml:space="preserve"><value>Er is geen COM-poort aanwezig.</value></data>
   <data name="SerialPair_Full" xml:space="preserve"><value>PadForge leest maximaal 16 seriële controllers. Verwijder er een om een andere toe te voegen.</value></data>
+  <data name="DjiPair_Family" xml:space="preserve"><value>DJI RC of RC 2 (netwerk)</value></data>
+  <data name="DjiPair_Instructions" xml:space="preserve"><value>Verbind de afstandsbediening en deze pc met hetzelfde netwerk en voeg dan het IPv4-adres van de afstandsbediening toe. De afstandsbediening levert haar sticks op poort 40007 alleen met firmware van voordat DJI die poort sloot.</value></data>
+  <data name="DjiPair_Address" xml:space="preserve"><value>Adres</value></data>
+  <data name="DjiPair_Added" xml:space="preserve"><value>Toegevoegde afstandsbedieningen</value></data>
+  <data name="DjiPair_AddedFormat" xml:space="preserve"><value>Afstandsbediening op {0} toegevoegd.</value></data>
+  <data name="DjiPair_Invalid" xml:space="preserve"><value>Voer een IPv4-adres in zoals 192.168.1.20, met de poort na een dubbele punt als die niet 40007 is.</value></data>
+  <data name="DjiPair_Full" xml:space="preserve"><value>PadForge leest maximaal 8 afstandsbedieningen via het netwerk. Verwijder er een om een andere toe te voegen.</value></data>
   <data name="MovePair_Instructions" xml:space="preserve"><value>Sluit de PlayStation Move- of Navigation-controller aan met een USB-kabel en klik op Koppelen. PadForge schrijft deze pc in de controller, slaat de bewegingskalibratie van de Move op en registreert hem. Koppel daarna de controller los en druk op de PS-knop om via Bluetooth te verbinden.</value></data>
   <data name="MovePair_NoUsb" xml:space="preserve"><value>Geen PlayStation Move- of Navigation-controller gevonden via USB. Sluit hem aan met een USB-kabel en probeer het opnieuw.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Apparaat 1:1 klonen</value></data>

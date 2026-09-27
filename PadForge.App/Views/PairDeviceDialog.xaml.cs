@@ -44,6 +44,7 @@ namespace PadForge.Views
             ControllerCombo.ItemsSource = Common.Input.SerialControllers.Protocols.Select(p => p.Name).ToList();
             ControllerCombo.SelectedIndex = 0;
             SerialAddedList.ItemsSource = _settings?.SerialControllers;
+            DjiAddedList.ItemsSource = _settings?.DjiRemoteHosts;
             // FluentWindow sets ExtendsContentIntoTitleBar, which zeroes
             // WindowChrome.CaptionHeight, and this dialog declares no
             // <ui:TitleBar>, so no point in the window was non-client and it
@@ -58,10 +59,12 @@ namespace PadForge.Views
 
         /// <summary>0 = Wii (inquiry scan), 1 = DualShock 3 (guided USB ceremony),
         /// 2 = PS Move / Navigation (guided USB ceremony, #277), 3 = a
-        /// controller on a COM port (#33).</summary>
+        /// controller on a COM port (#33), 4 = a DJI RC or RC 2 by its
+        /// network address (#33 Part 6).</summary>
         private bool IsDs3Family => FamilyCombo.SelectedIndex == 1;
         private bool IsMoveFamily => FamilyCombo.SelectedIndex == 2;
         private bool IsSerialFamily => FamilyCombo.SelectedIndex == 3;
+        private bool IsDjiFamily => FamilyCombo.SelectedIndex == 4;
 
         private void Family_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
@@ -69,27 +72,33 @@ namespace PadForge.Views
             bool ds3 = IsDs3Family;
             bool move = IsMoveFamily;
             bool serial = IsSerialFamily;
-            InstructionsText.Text = serial ? Strings.Instance.SerialPair_Instructions
+            bool dji = IsDjiFamily;
+            InstructionsText.Text = dji ? Strings.Instance.DjiPair_Instructions
+                                  : serial ? Strings.Instance.SerialPair_Instructions
                                   : move ? Strings.Instance.MovePair_Instructions
                                   : ds3 ? Strings.Instance.Ds3Pair_Instructions
                                         : Strings.Instance.WiiPair_Instructions;
             // The "temporary pairing" and live found-list are Wii-only concepts.
-            TemporaryCheck.Visibility = (ds3 || move || serial) ? Visibility.Collapsed : Visibility.Visible;
+            TemporaryCheck.Visibility = (ds3 || move || serial || dji) ? Visibility.Collapsed : Visibility.Visible;
             FoundPanel.Visibility = Visibility.Collapsed;
             SerialPickers.Visibility = serial ? Visibility.Visible : Visibility.Collapsed;
-            PairButton.Content = serial ? Strings.Instance.Common_Add : Strings.Instance.WiiPair_Pair;
+            DjiPickers.Visibility = dji ? Visibility.Visible : Visibility.Collapsed;
+            PairButton.Content = (serial || dji) ? Strings.Instance.Common_Add : Strings.Instance.WiiPair_Pair;
             SetStatus(string.Empty);
-            // The serial family disables Add while no port is present, and
-            // the pairing families always start enabled.
+            // The serial family disables Add while no port is present, the
+            // network family while there is no list to add to, and the
+            // pairing families always start enabled.
             if (serial) RefreshPorts();
-            else PairButton.IsEnabled = true;
+            else PairButton.IsEnabled = !dji || _settings != null;
             UpdateSerialAddedPanel();
+            UpdateDjiAddedPanel();
         }
 
         private void Pair_Click(object sender, RoutedEventArgs e)
         {
             if (_scanning) return;
             if (IsSerialFamily) { AddSerial(); return; }
+            if (IsDjiFamily) { AddDji(); return; }
             if (IsDs3Family) { _ = PairDs3(); return; }
             if (IsMoveFamily) { _ = PairDs3(moveFamily: true); return; }
             _ = PairWii();
@@ -316,6 +325,50 @@ namespace PadForge.Views
 
         private void UpdateSerialAddedPanel()
             => SerialAddedPanel.Visibility = IsSerialFamily && _settings?.SerialControllers.Count > 0
+                ? Visibility.Visible
+                : Visibility.Collapsed;
+
+        // ── DJI remotes over the network (#33 Part 6) ────────────────────
+
+        /// <summary>Adds the typed address in the fork's own key form, so the
+        /// same remote named with and without its default port is one entry.
+        /// SDL connects to it at once, and a remote on firmware that closed
+        /// the port never answers.</summary>
+        private void AddDji()
+        {
+            if (_settings == null) return;
+            if (!Common.Input.DjiRemoteHosts.TryNormalize(DjiAddressBox.Text, out string key))
+            {
+                SetStatus(Strings.Instance.DjiPair_Invalid, error: true);
+                return;
+            }
+            var list = _settings.DjiRemoteHosts;
+            if (!list.Contains(key))
+            {
+                if (list.Count >= Common.Input.DjiRemoteHosts.MaxHosts)
+                {
+                    SetStatus(Strings.Instance.DjiPair_Full, error: true);
+                    return;
+                }
+                list.Add(key);
+                _settings.RaiseDjiRemoteHostsChanged();
+            }
+            DjiAddressBox.Text = string.Empty;
+            UpdateDjiAddedPanel();
+            SetStatus(string.Format(Strings.Instance.DjiPair_AddedFormat, key), success: true);
+        }
+
+        private void DjiRemove_Click(object sender, RoutedEventArgs e)
+        {
+            if (_settings == null || sender is not FrameworkElement { Tag: string key }) return;
+            if (_settings.DjiRemoteHosts.Remove(key))
+                _settings.RaiseDjiRemoteHostsChanged();
+            UpdateDjiAddedPanel();
+            SetStatus(string.Empty);
+        }
+
+        private void UpdateDjiAddedPanel()
+            => DjiAddedPanel.Visibility = IsDjiFamily && _settings?.DjiRemoteHosts.Count > 0
                 ? Visibility.Visible
                 : Visibility.Collapsed;
 

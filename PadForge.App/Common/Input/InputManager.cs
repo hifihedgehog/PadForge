@@ -928,6 +928,11 @@ namespace PadForge.Common.Input
                 lock (_iCadeHintLock)
                     SDL_SetHint(SDL_HINT_JOYSTICK_ICADE_DEVICES, _iCadeHintValue);
 
+                // The DJI remotes the user added by address in the pairing
+                // dialog, replayed for the same reason.
+                lock (_djiHostsHintLock)
+                    SDL_SetHint(SDL_HINT_JOYSTICK_DJI_REMOTE_TCP_HOSTS, _djiHostsHintValue);
+
                 // Allow screensaver/sleep even while SDL video is active.
                 SDL_SetHint(SDL_HINT_VIDEO_ALLOW_SCREENSAVER, "1");
 
@@ -1437,6 +1442,27 @@ namespace PadForge.Common.Input
 
         private static readonly object _iCadeHintLock = new object();
         private static string _iCadeHintValue = string.Empty;
+
+        /// <summary>Hands SDL the DJI remotes the user added by address
+        /// (hifihedgehog/SDL#33 Part 6): SDL_JOYSTICK_DJI_REMOTE_TCP_HOSTS,
+        /// which the fork's network driver reads at any time, connecting to
+        /// the hosts that join the list and closing the links to the ones
+        /// that leave it. Written under the joystick lock, as the serial
+        /// hint is.</summary>
+        public static void ApplyDjiRemoteHosts(IEnumerable<string> entries)
+        {
+            string value = DjiRemoteHosts.HintValue(entries);
+            bool accepted;
+            lock (_djiHostsHintLock)
+            {
+                _djiHostsHintValue = value;
+                accepted = WriteHintUnderJoystickLock(SDL_HINT_JOYSTICK_DJI_REMOTE_TCP_HOSTS, value);
+            }
+            Engine.SdlDiagLog.WriteLine($"DJITCP hint {SDL_HINT_JOYSTICK_DJI_REMOTE_TCP_HOSTS}=\"{value}\" accepted={accepted}");
+        }
+
+        private static readonly object _djiHostsHintLock = new object();
+        private static string _djiHostsHintValue = string.Empty;
 
         private static bool WriteHintUnderJoystickLock(string name, string value)
         {

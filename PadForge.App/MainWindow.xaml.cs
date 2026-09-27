@@ -734,6 +734,13 @@ namespace PadForge
                 _settingsService?.MarkDirty();
             };
 
+            // The same for DJI remotes added by address (#33 Part 6).
+            _viewModel.Settings.DjiRemoteHostsChanged += (s, e) =>
+            {
+                Common.Input.InputManager.ApplyDjiRemoteHosts(_viewModel.Settings.DjiRemoteHosts);
+                _settingsService?.MarkDirty();
+            };
+
             // Wire MIDI Services install/uninstall commands.
             _viewModel.Settings.InstallMidiServicesRequested += async (s, e) =>
             {

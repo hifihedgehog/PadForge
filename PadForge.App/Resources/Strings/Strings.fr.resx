@@ -2714,6 +2714,13 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="SerialPair_AddedFormat" xml:space="preserve"><value>Ajouté : {0} sur {1}.</value></data>
   <data name="SerialPair_NoPorts" xml:space="preserve"><value>Aucun port COM n'est présent.</value></data>
   <data name="SerialPair_Full" xml:space="preserve"><value>PadForge lit jusqu'à 16 manettes série. Retirez-en une pour en ajouter une autre.</value></data>
+  <data name="DjiPair_Family" xml:space="preserve"><value>DJI RC ou RC 2 (réseau)</value></data>
+  <data name="DjiPair_Instructions" xml:space="preserve"><value>Connectez la radiocommande et ce PC au même réseau, puis ajoutez l'adresse IPv4 de la radiocommande. Elle ne fournit ses manches sur le port 40007 qu'avec un firmware antérieur à la fermeture de ce port par DJI.</value></data>
+  <data name="DjiPair_Address" xml:space="preserve"><value>Adresse</value></data>
+  <data name="DjiPair_Added" xml:space="preserve"><value>Radiocommandes ajoutées</value></data>
+  <data name="DjiPair_AddedFormat" xml:space="preserve"><value>Ajoutée : radiocommande à l'adresse {0}.</value></data>
+  <data name="DjiPair_Invalid" xml:space="preserve"><value>Saisissez une adresse IPv4 comme 192.168.1.20, avec le port après un deux-points s'il ne s'agit pas de 40007.</value></data>
+  <data name="DjiPair_Full" xml:space="preserve"><value>PadForge lit jusqu'à 8 radiocommandes par le réseau. Retirez-en une pour en ajouter une autre.</value></data>
   <data name="MovePair_Instructions" xml:space="preserve"><value>Connectez la manette PlayStation Move ou Navigation avec un câble USB, puis cliquez sur Appairer. PadForge inscrit ce PC dans la manette, enregistre l’étalonnage de mouvement du Move et l’enregistre. Une fois terminé, débranchez la manette et appuyez sur son bouton PS pour la connecter en Bluetooth.</value></data>
   <data name="MovePair_NoUsb" xml:space="preserve"><value>Aucune manette PlayStation Move ou Navigation trouvée en USB. Connectez-la avec un câble USB et réessayez.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Cloner l'appareil 1:1</value></data>

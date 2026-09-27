@@ -282,6 +282,17 @@ namespace PadForge.ViewModels
         /// SDL_JOYSTICK_ICADE_DEVICES.</summary>
         public ObservableCollection<string> ICadePads { get; } = new();
 
+        /// <summary>DJI RC and RC 2 remotes the user added by address in the
+        /// pairing dialog (hifihedgehog/SDL#33 Part 6), as "a.b.c.d:port" for
+        /// SDL_JOYSTICK_DJI_REMOTE_TCP_HOSTS.</summary>
+        public ObservableCollection<string> DjiRemoteHosts { get; } = new();
+
+        /// <summary>Raised on each add or remove in the dialog, never by the
+        /// load, so reading the file cannot mark it dirty.</summary>
+        public event EventHandler DjiRemoteHostsChanged;
+
+        internal void RaiseDjiRemoteHostsChanged() => DjiRemoteHostsChanged?.Invoke(this, EventArgs.Empty);
+
         private string _selectedWhitelistPath;
 
         /// <summary>Currently selected whitelist path in the list.</summary>

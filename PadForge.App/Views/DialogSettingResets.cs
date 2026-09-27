@@ -51,6 +51,7 @@ namespace PadForge.Views
             if (field == "Temporary" && TemporaryCheck.IsEnabled) TemporaryCheck.IsChecked = false;
             if (field == "SerialPort" && PortCombo.IsEnabled && PortCombo.Items.Count > 0) PortCombo.SelectedIndex = 0;
             if (field == "SerialController" && ControllerCombo.IsEnabled) ControllerCombo.SelectedIndex = 0;
+            if (field == "DjiAddress" && DjiAddressBox.IsEnabled) DjiAddressBox.Text = string.Empty;
         }
     }
 

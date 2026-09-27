@@ -2289,6 +2289,15 @@ namespace PadForge.Services
             }
             // Applied at load, before SDL_Init, as the serial list is.
             PadForge.Common.Input.InputManager.ApplyICadePads(vm.ICadePads);
+            vm.DjiRemoteHosts.Clear();
+            if (appSettings.DjiRemoteHosts != null)
+            {
+                foreach (var host in appSettings.DjiRemoteHosts)
+                    if (PadForge.Common.Input.DjiRemoteHosts.TryNormalize(host, out string key)
+                        && !vm.DjiRemoteHosts.Contains(key))
+                        vm.DjiRemoteHosts.Add(key);
+            }
+            PadForge.Common.Input.InputManager.ApplyDjiRemoteHosts(vm.DjiRemoteHosts);
             vm.SetLanguageFromCode(appSettings.Language);
             vm.EnableAutoProfileSwitching = appSettings.EnableAutoProfileSwitching;
             SettingsManager.EnableAutoProfileSwitching = appSettings.EnableAutoProfileSwitching;
@@ -4735,6 +4744,9 @@ namespace PadForge.Services
                 ICadePads = vm.ICadePads.Count > 0
                     ? vm.ICadePads.ToArray()
                     : null,
+                DjiRemoteHosts = vm.DjiRemoteHosts.Count > 0
+                    ? vm.DjiRemoteHosts.ToArray()
+                    : null,
                 ExtendedConfigs = isDefault ? extendedConfigs.ToArray() : defaultSnap.ExtendedConfigs,
                 DeviceSlotConfigs = isDefault ? deviceSlotConfigs.ToArray() : defaultSnap.DeviceSlotConfigs,
                 UserProfiles = _userProfiles.Count > 0 ? _userProfiles.ToArray() : null,
@@ -6669,6 +6681,13 @@ namespace PadForge.Services
         [XmlArray("ICadePads")]
         [XmlArrayItem("Pair")]
         public string[] ICadePads { get; set; }
+
+        /// <summary>DJI RC and RC 2 remotes the user added by address in the
+        /// pairing dialog (hifihedgehog/SDL#33 Part 6), handed to SDL as
+        /// SDL_JOYSTICK_DJI_REMOTE_TCP_HOSTS. Null when there are none.</summary>
+        [XmlArray("DjiRemoteHosts")]
+        [XmlArrayItem("Host")]
+        public string[] DjiRemoteHosts { get; set; }
 
         /// <summary>
         /// Per-slot Extended configuration (preset, axis/button counts).

@@ -2714,6 +2714,13 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="SerialPair_AddedFormat" xml:space="preserve"><value>Se agregó {0} en {1}.</value></data>
   <data name="SerialPair_NoPorts" xml:space="preserve"><value>No hay ningún puerto COM.</value></data>
   <data name="SerialPair_Full" xml:space="preserve"><value>PadForge lee hasta 16 mandos serie. Quita uno para agregar otro.</value></data>
+  <data name="DjiPair_Family" xml:space="preserve"><value>DJI RC o RC 2 (red)</value></data>
+  <data name="DjiPair_Instructions" xml:space="preserve"><value>Conecta el control remoto y este PC a la misma red y agrega la dirección IPv4 del control remoto. El control remoto solo envía sus sticks por el puerto 40007 con un firmware anterior al cierre de ese puerto por parte de DJI.</value></data>
+  <data name="DjiPair_Address" xml:space="preserve"><value>Dirección</value></data>
+  <data name="DjiPair_Added" xml:space="preserve"><value>Controles remotos agregados</value></data>
+  <data name="DjiPair_AddedFormat" xml:space="preserve"><value>Se agregó el control remoto en {0}.</value></data>
+  <data name="DjiPair_Invalid" xml:space="preserve"><value>Escribe una dirección IPv4 como 192.168.1.20, con el puerto tras dos puntos si no es 40007.</value></data>
+  <data name="DjiPair_Full" xml:space="preserve"><value>PadForge lee hasta 8 controles remotos por la red. Quita uno para agregar otro.</value></data>
   <data name="MovePair_Instructions" xml:space="preserve"><value>Conecta el mando PlayStation Move o Navigation con un cable USB y pulsa Emparejar. PadForge escribe este PC en el mando, guarda la calibración de movimiento del Move y lo registra. Al terminar, desconecta el mando y pulsa su botón PS para conectarlo por Bluetooth.</value></data>
   <data name="MovePair_NoUsb" xml:space="preserve"><value>No se encontró ningún mando PlayStation Move o Navigation por USB. Conéctalo con un cable USB e inténtalo de nuevo.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Clonar dispositivo 1:1</value></data>

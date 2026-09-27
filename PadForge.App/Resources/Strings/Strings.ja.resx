@@ -2714,6 +2714,13 @@
   <data name="SerialPair_AddedFormat" xml:space="preserve"><value>{1} に {0} を追加しました。</value></data>
   <data name="SerialPair_NoPorts" xml:space="preserve"><value>COM ポートがありません。</value></data>
   <data name="SerialPair_Full" xml:space="preserve"><value>PadForge が読み取れるシリアルコントローラーは 16 台までです。追加するには 1 台削除してください。</value></data>
+  <data name="DjiPair_Family" xml:space="preserve"><value>DJI RC / RC 2（ネットワーク）</value></data>
+  <data name="DjiPair_Instructions" xml:space="preserve"><value>送信機とこの PC を同じネットワークに接続し、送信機の IPv4 アドレスを追加してください。送信機がポート 40007 でスティックを送るのは、DJI がこのポートを閉じる前のファームウェアだけです。</value></data>
+  <data name="DjiPair_Address" xml:space="preserve"><value>アドレス</value></data>
+  <data name="DjiPair_Added" xml:space="preserve"><value>追加した送信機</value></data>
+  <data name="DjiPair_AddedFormat" xml:space="preserve"><value>{0} の送信機を追加しました。</value></data>
+  <data name="DjiPair_Invalid" xml:space="preserve"><value>192.168.1.20 のような IPv4 アドレスを入力してください。ポートが 40007 以外の場合は、コロンの後に指定します。</value></data>
+  <data name="DjiPair_Full" xml:space="preserve"><value>PadForge がネットワーク経由で読み取れる送信機は 8 台までです。追加するには 1 台削除してください。</value></data>
   <data name="MovePair_Instructions" xml:space="preserve"><value>PlayStation Move またはナビゲーションコントローラーを USB ケーブルで接続し、ペアリングをクリックしてください。PadForge がこの PC をコントローラーに書き込み、Move のモーションキャリブレーションを保存して登録します。完了したらコントローラーを外し、PS ボタンを押して Bluetooth で接続してください。</value></data>
   <data name="MovePair_NoUsb" xml:space="preserve"><value>USB で PlayStation Move またはナビゲーションコントローラーが見つかりません。USB ケーブルで接続してからもう一度お試しください。</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>デバイスを1:1で複製</value></data>

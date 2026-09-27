@@ -2708,6 +2708,13 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="SerialPair_AddedFormat" xml:space="preserve"><value>{0} adicionado em {1}.</value></data>
   <data name="SerialPair_NoPorts" xml:space="preserve"><value>Nenhuma porta COM presente.</value></data>
   <data name="SerialPair_Full" xml:space="preserve"><value>O PadForge lê até 16 controles seriais. Remova um para adicionar outro.</value></data>
+  <data name="DjiPair_Family" xml:space="preserve"><value>DJI RC ou RC 2 (Rede)</value></data>
+  <data name="DjiPair_Instructions" xml:space="preserve"><value>Conecte o controle remoto e este PC à mesma rede e adicione o endereço IPv4 do controle remoto. O controle remoto só envia os sticks pela porta 40007 com firmware anterior ao fechamento dessa porta pela DJI.</value></data>
+  <data name="DjiPair_Address" xml:space="preserve"><value>Endereço</value></data>
+  <data name="DjiPair_Added" xml:space="preserve"><value>Controles Remotos Adicionados</value></data>
+  <data name="DjiPair_AddedFormat" xml:space="preserve"><value>Controle remoto em {0} adicionado.</value></data>
+  <data name="DjiPair_Invalid" xml:space="preserve"><value>Digite um endereço IPv4 como 192.168.1.20, com a porta após dois-pontos quando não for 40007.</value></data>
+  <data name="DjiPair_Full" xml:space="preserve"><value>O PadForge lê até 8 controles remotos pela rede. Remova um para adicionar outro.</value></data>
   <data name="MovePair_Instructions" xml:space="preserve"><value>Conecte o controle PlayStation Move ou Navigation com um cabo USB e clique em Parear. O PadForge grava este PC no controle, salva a calibração de movimento do Move e o registra. Ao terminar, desconecte o controle e pressione o botão PS para conectar via Bluetooth.</value></data>
   <data name="MovePair_NoUsb" xml:space="preserve"><value>Nenhum controle PlayStation Move ou Navigation encontrado no USB. Conecte-o com um cabo USB e tente novamente.</value></data>
   <data name="Pad_ExtendedCloneDevice" xml:space="preserve"><value>Clonar Dispositivo 1:1</value></data>

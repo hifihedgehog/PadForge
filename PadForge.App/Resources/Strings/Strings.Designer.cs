@@ -945,6 +945,13 @@ public class Strings : INotifyPropertyChanged
     public string SerialPair_AddedFormat => Get("SerialPair_AddedFormat");
     public string SerialPair_NoPorts => Get("SerialPair_NoPorts");
     public string SerialPair_Full => Get("SerialPair_Full");
+    public string DjiPair_Family => Get("DjiPair_Family");
+    public string DjiPair_Instructions => Get("DjiPair_Instructions");
+    public string DjiPair_Address => Get("DjiPair_Address");
+    public string DjiPair_Added => Get("DjiPair_Added");
+    public string DjiPair_AddedFormat => Get("DjiPair_AddedFormat");
+    public string DjiPair_Invalid => Get("DjiPair_Invalid");
+    public string DjiPair_Full => Get("DjiPair_Full");
     public string MovePair_Instructions => Get("MovePair_Instructions");
     public string MovePair_NoUsb => Get("MovePair_NoUsb");
     public string Ds3Pair_Instructions => Get("Ds3Pair_Instructions");

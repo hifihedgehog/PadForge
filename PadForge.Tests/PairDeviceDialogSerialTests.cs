@@ -78,7 +78,7 @@ namespace PadForge.Tests
                     var pair = (ButtonBase)dialog.FindName("PairButton");
                     var temporary = (FrameworkElement)dialog.FindName("TemporaryCheck");
 
-                    Assert.Equal(4, family.Items.Count);
+                    Assert.Equal(5, family.Items.Count);
                     Assert.Equal(Visibility.Collapsed, pickers.Visibility);
                     Assert.Equal(SerialControllers.Protocols.Length, controller.Items.Count);
 
@@ -129,6 +129,79 @@ namespace PadForge.Tests
                     Assert.Equal(Visibility.Collapsed, pickers.Visibility);
                     Assert.Equal(Visibility.Visible, temporary.Visibility);
                     Assert.True(pair.IsEnabled);
+                    Assert.Equal(Strings.Instance.WiiPair_Pair, pair.Content);
+                }
+                finally
+                {
+                    dialog.Close();
+                }
+            });
+        }
+
+        /// <summary>The DJI network family (hifihedgehog/SDL#33 Part 6): an
+        /// address in the fork's form is added in its key form, an address
+        /// the fork would refuse is not added, and the row's button removes
+        /// it again.</summary>
+        [Fact]
+        public void TheDjiFamily_AddsAndRemovesARemoteByAddress()
+        {
+            RunWithApp(() =>
+            {
+                var settings = new SettingsViewModel();
+                int changes = 0;
+                settings.DjiRemoteHostsChanged += (_, _) => changes++;
+                var dialog = new PairDeviceDialog(settings) { ShowInTaskbar = false };
+                try
+                {
+                    var family = (ComboBox)dialog.FindName("FamilyCombo");
+                    var pickers = (FrameworkElement)dialog.FindName("DjiPickers");
+                    var serial = (FrameworkElement)dialog.FindName("SerialPickers");
+                    var added = (FrameworkElement)dialog.FindName("DjiAddedPanel");
+                    var address = (TextBox)dialog.FindName("DjiAddressBox");
+                    var pair = (ButtonBase)dialog.FindName("PairButton");
+                    var status = (TextBlock)dialog.FindName("StatusText");
+                    var temporary = (FrameworkElement)dialog.FindName("TemporaryCheck");
+
+                    Assert.Equal(Visibility.Collapsed, pickers.Visibility);
+                    family.SelectedIndex = 4;
+                    Assert.Equal(Visibility.Visible, pickers.Visibility);
+                    Assert.Equal(Visibility.Collapsed, serial.Visibility);
+                    Assert.Equal(Visibility.Collapsed, temporary.Visibility);
+                    Assert.Equal(Visibility.Collapsed, added.Visibility);
+                    Assert.Equal(Strings.Instance.Common_Add, pair.Content);
+                    Assert.True(pair.IsEnabled);
+
+                    address.Text = "192.168.01.20";
+                    pair.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                    Assert.Empty(settings.DjiRemoteHosts);
+                    Assert.Equal(0, changes);
+                    Assert.Equal(Strings.Instance.DjiPair_Invalid, status.Text);
+
+                    address.Text = " 192.168.7.251 ";
+                    pair.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                    Assert.Equal("192.168.7.251:40007", Assert.Single(settings.DjiRemoteHosts));
+                    Assert.Equal(1, changes);
+                    Assert.Equal(string.Empty, address.Text);
+                    Assert.Equal(Visibility.Visible, added.Visibility);
+
+                    // The same remote with its port named is the same entry.
+                    address.Text = "192.168.7.251:40007";
+                    pair.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                    Assert.Single(settings.DjiRemoteHosts);
+                    Assert.Equal(1, changes);
+
+                    var root = (FrameworkElement)dialog.Content;
+                    root.Measure(new Size(460, 900));
+                    root.Arrange(new Rect(0, 0, 460, 900));
+                    var remove = Descendants(root).OfType<ButtonBase>()
+                        .Single(b => b.Tag is string key && key == "192.168.7.251:40007");
+                    remove.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                    Assert.Empty(settings.DjiRemoteHosts);
+                    Assert.Equal(2, changes);
+                    Assert.Equal(Visibility.Collapsed, added.Visibility);
+
+                    family.SelectedIndex = 0;
+                    Assert.Equal(Visibility.Collapsed, pickers.Visibility);
                     Assert.Equal(Strings.Instance.WiiPair_Pair, pair.Content);
                 }
                 finally

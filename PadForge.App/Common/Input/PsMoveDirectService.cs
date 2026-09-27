@@ -161,9 +161,9 @@ namespace PadForge.Common.Input
             (1u << SDL.SDL_GAMEPAD_AXIS_LEFT_TRIGGER) | (1u << SDL.SDL_GAMEPAD_AXIS_RIGHT_TRIGGER);
 
         /// <summary>The throttle rides joystick axis 6, past the six gamepad
-        /// axes, where PadForge reads a device's own analogs as Axis 7 and on
-        /// (HasExtraGenericAxes, the DS3 pressure buttons' path). Axes 2 to 5
-        /// carry nothing.</summary>
+        /// axes, where PadForge reads a device's own analogs, so it maps as
+        /// Axis 6 (HasExtraGenericAxes, the path the DS3 pressure buttons take
+        /// as Axis 6 to 15). Axes 2 to 5 carry nothing.</summary>
         internal const int WheelThrottleAxis = 6;
 
         /// <summary>Sharp Shooter: Reload on West, the reload button of most

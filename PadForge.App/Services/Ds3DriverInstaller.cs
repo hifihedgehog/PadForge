@@ -361,6 +361,13 @@ namespace PadForge.Services
         /// it. That is the same shape as the shipped-catalog bug this replaced,
         /// one layer in.</summary>
         internal static bool SignWinUsbPackage(string dir, Action<string> log)
+            => SignDriverPackage(dir, "ds3_winusb.cat", log);
+
+        /// <summary>Generates and signs the catalog a staged INF names, with
+        /// this machine's certificate. The DS3 package and every package
+        /// VendorUsbDriverInstaller writes go through here, one at a time,
+        /// under the one certificate.</summary>
+        internal static bool SignDriverPackage(string dir, string catalogName, Action<string> log)
         {
             lock (_signLock)
             try
@@ -382,20 +389,16 @@ namespace PadForge.Services
                 // doing the install, not the architecture this process was
                 // built for: an x64 PadForge running emulated on ARM64 Windows
                 // still installs an ARM64 driver. OSArchitecture reports the
-                // real machine under emulation. Same test, same two values as
-                // HIDMaestro.Internal.DriverBuilder, whose toolchain this
-                // borrows. Inf2Cat itself is one x64 program on either
-                // machine (its PE header says so, whatever the WDK folder it
-                // ships in is called), and ARM64 Windows runs it emulated.
-                // Only the /os value it is handed changes.
-                string catalogOs = RuntimeInformation.OSArchitecture == Architecture.Arm64
-                    ? "10_ARM64"
-                    : "10_X64";
+                // real machine under emulation. Inf2Cat itself is one x64
+                // program on either machine (its PE header says so, whatever
+                // the WDK folder it ships in is called), and ARM64 Windows
+                // runs it emulated. Only the /os value it is handed changes.
+                string catalogOs = CatalogOs(RuntimeInformation.OSArchitecture);
                 var (rc, output) = RunTool(inf2cat, $"/driver:\"{dir}\" /os:{catalogOs}", dir);
                 if (rc != 0) { log("Catalog generation failed: " + output); return false; }
 
-                string cat = Path.Combine(dir, "ds3_winusb.cat");
-                if (!File.Exists(cat)) { log("Catalog generation produced no ds3_winusb.cat."); return false; }
+                string cat = Path.Combine(dir, catalogName);
+                if (!File.Exists(cat)) { log($"Catalog generation produced no {catalogName}."); return false; }
 
                 // /sha1 rather than /n: the thumbprint names exactly the cert
                 // we just ensured, on a machine that may hold several
@@ -411,6 +414,16 @@ namespace PadForge.Services
             }
             catch (Exception ex) { log("Preparing the USB driver failed: " + ex.Message); return false; }
         }
+
+        /// <summary>Inf2Cat's /os value for the machine. Inf2Cat has no
+        /// "10_ARM64": its ARM64 values name a Windows release, starting at
+        /// 10_RS3_ARM64, version 1709, the first Windows 10 on ARM64. Handed
+        /// 10_ARM64, the Inf2Cat HIDMaestro carries prints "Operating systems
+        /// parameter invalid." and exits -1, so no ARM64 catalog was ever
+        /// generated (run on 2026-09-26). 10_X64 is valid as it
+        /// stands.</summary>
+        internal static string CatalogOs(Architecture machine)
+            => machine == Architecture.Arm64 ? "10_RS3_ARM64" : "10_X64";
 
         /// <summary>Runs a build tool and returns its exit code plus merged
         /// output. Async-drain, because a synchronous ReadToEnd on one stream
@@ -456,9 +469,16 @@ namespace PadForge.Services
         public static bool IsWinUsbPackageTrusted(out string signer)
         {
             signer = null;
+            try { return IsCatalogTrusted(Path.Combine(ExtractDrivers(), "WinUSB", "ds3_winusb.cat"), out signer); }
+            catch { return false; }
+        }
+
+        /// <summary>As above for any catalog this machine signed.</summary>
+        internal static bool IsCatalogTrusted(string cat, out string signer)
+        {
+            signer = null;
             try
             {
-                string cat = Path.Combine(ExtractDrivers(), "WinUSB", "ds3_winusb.cat");
                 if (!File.Exists(cat)) return false;
                 // X509CertificateLoader, the SYSLIB0057 replacement, loads a
                 // certificate FILE. Reading the signer out of a signed file

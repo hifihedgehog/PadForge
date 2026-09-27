@@ -21,6 +21,9 @@ namespace PadForge.Tests
     /// </summary>
     public class Ds3WinUsbSigningTests
     {
+        private readonly Xunit.Abstractions.ITestOutputHelper _output;
+        public Ds3WinUsbSigningTests(Xunit.Abstractions.ITestOutputHelper output) => _output = output;
+
         private static bool Elevated
         {
             get
@@ -61,6 +64,19 @@ namespace PadForge.Tests
                 "BthPS3", "WinUSB", "ds3_winusb.inf");
             string text = File.ReadAllText(inf);
             Assert.Contains("CatalogFile = ds3_winusb.cat", text, StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>The shipped INF catalogs with the /os value each
+        /// architecture gets. Handed 10_ARM64, which Inf2Cat does not know,
+        /// the ARM64 catalog was never generated, so a docked DualShock 3 or
+        /// Navigation controller could not leave HidUsb on ARM64
+        /// Windows.</summary>
+        [Fact]
+        public void Inf_CatalogsOnBothArchitectures()
+        {
+            string inf = Path.Combine(RepoRoot(), "PadForge.App", "Resources",
+                "BthPS3", "WinUSB", "ds3_winusb.inf");
+            Inf2Cat.AssertCatalogs("ds3_winusb.inf", File.ReadAllText(inf), "ds3_winusb.cat", _output);
         }
 
         /// <summary>End to end on this machine: generate the certificate,

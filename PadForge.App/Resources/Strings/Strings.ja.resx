@@ -416,6 +416,23 @@
   <data name="Devices_AllMiceMerged" xml:space="preserve"><value>すべてのマウス (統合)</value></data>
   <data name="Devices_AllTouchpadsMerged" xml:space="preserve"><value>すべてのタッチパッド (統合)</value></data>
   <data name="Devices_Title" xml:space="preserve"><value>デバイス</value></data>
+  <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>チャットパッドを読み取る</value></data>
+  <data name="Devices_DriverBind_Xbox360Receiver" xml:space="preserve"><value>チャットパッドと uDraw タブレットを読み取る</value></data>
+  <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>ゲームパッドを読み取る</value></data>
+  <data name="Devices_DriverBind_Prodikeys" xml:space="preserve"><value>音楽キーを読み取る</value></data>
+  <data name="Devices_DriverRestore" xml:space="preserve"><value>Windows のドライバーに戻す</value></data>
+  <data name="Devices_DriverConfirmTitle" xml:space="preserve"><value>PadForge のドライバーに切り替える</value></data>
+  <data name="Devices_DriverConfirm_Xbox360Pad" xml:space="preserve"><value>PadForge はチャットパッドを読み取るため、このコントローラーを Windows の WinUSB ドライバーに切り替えます。その後、コントローラーは PadForge の実行中だけ動作し、ゲームには PadForge の仮想コントローラーを通して見えます。接続中の同じモデルのコントローラーもすべて切り替わり、それぞれスロットへの割り当てをやり直す必要があります。Windows のドライバーには、このページからいつでも戻せます。</value></data>
+  <data name="Devices_DriverConfirm_Xbox360Receiver" xml:space="preserve"><value>PadForge はチャットパッドと uDraw タブレットを読み取るため、このレシーバーを Windows の WinUSB ドライバーに切り替えます。レシーバー上のコントローラーとヘッドセットはすべて一緒に切り替わり、PadForge の実行中だけ動作し、スロットへの割り当てをやり直す必要があります。Windows のドライバーには、このページからいつでも戻せます。</value></data>
+  <data name="Devices_DriverConfirm_IntelBaseStation" xml:space="preserve"><value>PadForge はゲームパッドを読み取るため、ベースステーションを Windows の WinUSB ドライバーに切り替えます。その後、接続している Intel ワイヤレスキーボードは Windows で入力できなくなります。Windows のドライバーには、このページからいつでも戻せます。</value></data>
+  <data name="Devices_DriverConfirm_Prodikeys" xml:space="preserve"><value>PadForge は音楽キーを読み取るため、Windows の WinUSB ドライバーに切り替えます。その後、キーボードのメディアキーとスリープキーは Windows で使えなくなり、文字入力キーは引き続き使えます。Windows のドライバーには、このページからいつでも戻せます。</value></data>
+  <data name="Devices_DriverSwitch" xml:space="preserve"><value>ドライバーを切り替える</value></data>
+  <data name="Status_DriverSwitching_Format" xml:space="preserve"><value>{0} のドライバーを切り替えています…</value></data>
+  <data name="Status_DriverBound_Format" xml:space="preserve"><value>{0} は PadForge のドライバーを使用しています。</value></data>
+  <data name="Status_DriverBindFailed_Format" xml:space="preserve"><value>{0} を PadForge のドライバーに切り替えられませんでした。</value></data>
+  <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} は Windows のドライバーに戻りました。</value></data>
+  <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>{0} の Windows ドライバーを復元できませんでした。</value></data>
+  <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows が {0} を元のドライバーに戻しました。もう一度切り替えるには、デバイスページで選択してください。</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> 台がオンライン / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> 台</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>このデバイスとその設定を削除します</value></data>

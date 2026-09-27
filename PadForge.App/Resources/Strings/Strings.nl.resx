@@ -416,6 +416,23 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Devices_AllMiceMerged" xml:space="preserve"><value>Alle muizen (samengevoegd)</value></data>
   <data name="Devices_AllTouchpadsMerged" xml:space="preserve"><value>Alle touchpads (samengevoegd)</value></data>
   <data name="Devices_Title" xml:space="preserve"><value>Apparaten</value></data>
+  <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>Chatpad uitlezen</value></data>
+  <data name="Devices_DriverBind_Xbox360Receiver" xml:space="preserve"><value>Chatpads en uDraw-tablets uitlezen</value></data>
+  <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>Gamepads uitlezen</value></data>
+  <data name="Devices_DriverBind_Prodikeys" xml:space="preserve"><value>Muziektoetsen uitlezen</value></data>
+  <data name="Devices_DriverRestore" xml:space="preserve"><value>Windows-stuurprogramma herstellen</value></data>
+  <data name="Devices_DriverConfirmTitle" xml:space="preserve"><value>Overschakelen naar het PadForge-stuurprogramma</value></data>
+  <data name="Devices_DriverConfirm_Xbox360Pad" xml:space="preserve"><value>PadForge zet deze controller over op het WinUSB-stuurprogramma van Windows om de chatpad uit te lezen. De controller werkt daarna alleen zolang PadForge draait, en games zien hem via de virtuele controller van PadForge. Elke aangesloten controller van dit model gaat mee over, en elke controller moet opnieuw aan zijn slot worden toegewezen. Je kunt het Windows-stuurprogramma op elk moment op deze pagina herstellen.</value></data>
+  <data name="Devices_DriverConfirm_Xbox360Receiver" xml:space="preserve"><value>PadForge zet deze ontvanger over op het WinUSB-stuurprogramma van Windows om chatpads en uDraw-tablets uit te lezen. Elke controller en headset op de ontvanger gaat mee over, werkt alleen zolang PadForge draait en moet opnieuw aan zijn slot worden toegewezen. Je kunt het Windows-stuurprogramma op elk moment op deze pagina herstellen.</value></data>
+  <data name="Devices_DriverConfirm_IntelBaseStation" xml:space="preserve"><value>PadForge zet het basisstation over op het WinUSB-stuurprogramma van Windows om de gamepads uit te lezen. Het draadloze Intel-toetsenbord erop typt daarna niet meer in Windows. Je kunt het Windows-stuurprogramma op elk moment op deze pagina herstellen.</value></data>
+  <data name="Devices_DriverConfirm_Prodikeys" xml:space="preserve"><value>PadForge zet de muziektoetsen over op het WinUSB-stuurprogramma van Windows om ze uit te lezen. De media- en slaaptoetsen van het toetsenbord werken daarna niet meer in Windows, de typtoetsen blijven werken. Je kunt het Windows-stuurprogramma op elk moment op deze pagina herstellen.</value></data>
+  <data name="Devices_DriverSwitch" xml:space="preserve"><value>Stuurprogramma wisselen</value></data>
+  <data name="Status_DriverSwitching_Format" xml:space="preserve"><value>Stuurprogramma voor {0} wordt gewijzigd…</value></data>
+  <data name="Status_DriverBound_Format" xml:space="preserve"><value>{0} gebruikt nu het PadForge-stuurprogramma.</value></data>
+  <data name="Status_DriverBindFailed_Format" xml:space="preserve"><value>{0} kon niet overschakelen naar het PadForge-stuurprogramma.</value></data>
+  <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} gebruikt weer het Windows-stuurprogramma.</value></data>
+  <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Het Windows-stuurprogramma voor {0} kon niet worden hersteld.</value></data>
+  <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows heeft {0} teruggezet op het eigen stuurprogramma. Selecteer het op de pagina Apparaten om opnieuw over te schakelen.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> online / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> totaal</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Dit apparaat en de bijbehorende instellingen verwijderen</value></data>

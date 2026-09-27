@@ -273,6 +273,10 @@ namespace PadForge.ViewModels
 
         internal void RaiseSerialControllersChanged() => SerialControllersChanged?.Invoke(this, EventArgs.Empty);
 
+        /// <summary>IDs of the devices the user moved to PadForge's WinUSB
+        /// driver from the Devices page (hifihedgehog/SDL#33 Part 15).</summary>
+        public ObservableCollection<string> WinUsbOptIns { get; } = new();
+
         private string _selectedWhitelistPath;
 
         /// <summary>Currently selected whitelist path in the list.</summary>

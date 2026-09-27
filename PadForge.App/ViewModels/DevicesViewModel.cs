@@ -23,6 +23,7 @@ namespace PadForge.ViewModels
         protected override void OnCultureChanged()
         {
             Title = Strings.Instance.Devices_Title;
+            OnPropertyChanged(nameof(DriverBindText));
         }
 
         // ─────────────────────────────────────────────
@@ -54,12 +55,76 @@ namespace PadForge.ViewModels
                     _removeDeviceCommand?.NotifyCanExecuteChanged();
                     _resetSelectedDeviceSettingCommand?.NotifyCanExecuteChanged();
                     RefreshSlotButtons();
+                    RefreshDriverOffer();
                 }
             }
         }
 
         /// <summary>Whether a device is currently selected.</summary>
         public bool HasSelectedDevice => _selectedDevice != null;
+
+        // ─────────────────────────────────────────────
+        //  Opt-in driver switch (hifihedgehog/SDL#33 Part 15)
+        // ─────────────────────────────────────────────
+
+        private Services.VendorUsbDriverInstaller.OptInOffer _driverOffer;
+        private bool _driverBusy;
+
+        /// <summary>What the selected device's row offers: a move to
+        /// PadForge's WinUSB driver, a restore of Windows' driver, or
+        /// nothing.</summary>
+        internal Services.VendorUsbDriverInstaller.OptInOffer DriverOffer => _driverOffer;
+
+        public bool ShowDriverBind => _driverOffer?.Bind != null && !_driverBusy;
+        public bool ShowDriverRestore => _driverOffer?.Restore == true && !_driverBusy;
+
+        public string DriverBindText => _driverOffer?.Kind switch
+        {
+            Services.VendorUsbDriverInstaller.OptInKind.Xbox360Pad => Strings.Instance.Devices_DriverBind_Xbox360Pad,
+            Services.VendorUsbDriverInstaller.OptInKind.Xbox360Receiver => Strings.Instance.Devices_DriverBind_Xbox360Receiver,
+            Services.VendorUsbDriverInstaller.OptInKind.IntelBaseStation => Strings.Instance.Devices_DriverBind_IntelBaseStation,
+            Services.VendorUsbDriverInstaller.OptInKind.Prodikeys => Strings.Instance.Devices_DriverBind_Prodikeys,
+            _ => null,
+        };
+
+        /// <summary>True while a switch runs, which hides both buttons.</summary>
+        public bool DriverBusy
+        {
+            get => _driverBusy;
+            set
+            {
+                if (SetProperty(ref _driverBusy, value))
+                    NotifyDriverOffer();
+            }
+        }
+
+        /// <summary>Raised by the page's buttons. MainWindow states the cost,
+        /// runs the switch and persists it, as it does for pairing.</summary>
+        public event EventHandler DriverBindRequested;
+        public event EventHandler DriverRestoreRequested;
+        public void RequestDriverBind() => DriverBindRequested?.Invoke(this, EventArgs.Empty);
+        public void RequestDriverRestore() => DriverRestoreRequested?.Invoke(this, EventArgs.Empty);
+
+        /// <summary>Reads the offer for the selected device. Only a row whose
+        /// IDs belong to an opt-in device costs a sweep of the USB
+        /// nodes.</summary>
+        public void RefreshDriverOffer()
+        {
+            var device = _selectedDevice;
+            _driverOffer = device != null
+                && Services.VendorUsbDriverInstaller.IsOptInRow(device.VendorId, device.ProductId)
+                ? Services.VendorUsbDriverInstaller.QueryOptIn(device.VendorId, device.ProductId,
+                    Services.VendorUsbDriverInstaller.ListPresentUsbNodes())
+                : null;
+            NotifyDriverOffer();
+        }
+
+        private void NotifyDriverOffer()
+        {
+            OnPropertyChanged(nameof(ShowDriverBind));
+            OnPropertyChanged(nameof(ShowDriverRestore));
+            OnPropertyChanged(nameof(DriverBindText));
+        }
 
         // ─────────────────────────────────────────────
         //  Device counts

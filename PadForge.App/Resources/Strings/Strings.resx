@@ -585,6 +585,23 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Devices_AllKeyboardsMerged" xml:space="preserve"><value>All Keyboards (Merged)</value></data>
   <data name="Devices_AllMiceMerged" xml:space="preserve"><value>All Mice (Merged)</value></data>
   <data name="Devices_Title" xml:space="preserve"><value>Devices</value></data>
+  <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>Read the Chatpad</value></data>
+  <data name="Devices_DriverBind_Xbox360Receiver" xml:space="preserve"><value>Read Chatpads and uDraw Tablets</value></data>
+  <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>Read the Gamepads</value></data>
+  <data name="Devices_DriverBind_Prodikeys" xml:space="preserve"><value>Read the Music Keys</value></data>
+  <data name="Devices_DriverRestore" xml:space="preserve"><value>Restore the Windows Driver</value></data>
+  <data name="Devices_DriverConfirmTitle" xml:space="preserve"><value>Switch to PadForge's Driver</value></data>
+  <data name="Devices_DriverConfirm_Xbox360Pad" xml:space="preserve"><value>PadForge moves this controller to Windows' WinUSB driver so it can read the chatpad. The controller then works only while PadForge runs, and games see it through PadForge's virtual controller. Every plugged-in controller of this model moves with it, and each needs assigning to its slot again. Restore the Windows driver from this page at any time.</value></data>
+  <data name="Devices_DriverConfirm_Xbox360Receiver" xml:space="preserve"><value>PadForge moves this receiver to Windows' WinUSB driver so it can read chatpads and uDraw tablets. Every controller and headset on the receiver moves with it, works only while PadForge runs, and needs assigning to its slot again. Restore the Windows driver from this page at any time.</value></data>
+  <data name="Devices_DriverConfirm_IntelBaseStation" xml:space="preserve"><value>PadForge moves the base station to Windows' WinUSB driver so it can read the gamepads. The Intel wireless keyboard on it then stops typing in Windows. Restore the Windows driver from this page at any time.</value></data>
+  <data name="Devices_DriverConfirm_Prodikeys" xml:space="preserve"><value>PadForge moves the music keys to Windows' WinUSB driver so it can read them. The keyboard's media and sleep keys then stop working in Windows, and its typing keys keep working. Restore the Windows driver from this page at any time.</value></data>
+  <data name="Devices_DriverSwitch" xml:space="preserve"><value>Switch Driver</value></data>
+  <data name="Status_DriverSwitching_Format" xml:space="preserve"><value>Changing the driver for {0}…</value></data>
+  <data name="Status_DriverBound_Format" xml:space="preserve"><value>{0} is on PadForge's driver.</value></data>
+  <data name="Status_DriverBindFailed_Format" xml:space="preserve"><value>{0} could not move to PadForge's driver.</value></data>
+  <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} is back on its Windows driver.</value></data>
+  <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>The Windows driver for {0} could not be restored.</value></data>
+  <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows put {0} back on its own driver. Select it on the Devices page to switch it again.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> online / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> total</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Remove this device and its settings</value></data>

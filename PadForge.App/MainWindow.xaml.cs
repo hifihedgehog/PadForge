@@ -872,6 +872,11 @@ namespace PadForge
                 _viewModel.StatusText = Strings.Instance.Status_DeviceListRefreshed;
             };
 
+            // Opt-in driver switch (hifihedgehog/SDL#33 Part 15). The cost is
+            // stated before a move and nothing is asked before a restore.
+            _viewModel.Devices.DriverBindRequested += async (s, e) => await SwitchDriverAsync(bind: true);
+            _viewModel.Devices.DriverRestoreRequested += async (s, e) => await SwitchDriverAsync(bind: false);
+
             // Wire devices page Bluetooth pairing (Wii controllers, issue #116).
             _viewModel.Devices.PairRequested += (s, e) =>
             {
@@ -2411,6 +2416,8 @@ namespace PadForge
             if (_viewModel.Settings.AutoStartEngine)
                 _inputService.Start();
 
+            CheckOptedInDrivers();
+
             // If the App.OnStartup orphan-sweep task is still running, show
             // a startup overlay so the user sees "Cleaning up previous
             // session…" rather than a blank-looking window. Hide the
@@ -2443,6 +2450,88 @@ namespace PadForge
         {
             PrepareForExit();
             Close();
+        }
+
+        // ─────────────────────────────────────────────
+        //  Opt-in driver switch (hifihedgehog/SDL#33 Part 15)
+        // ─────────────────────────────────────────────
+
+        /// <summary>Moves the selected device to PadForge's WinUSB driver, or
+        /// gives Windows its driver back, and records the opted-in IDs for the
+        /// start-up check.</summary>
+        private async System.Threading.Tasks.Task SwitchDriverAsync(bool bind)
+        {
+            var devices = _viewModel.Devices;
+            var offer = devices.DriverOffer;
+            if (offer == null || devices.DriverBusy || (bind ? offer.Bind == null : !offer.Restore)) return;
+            string name = Services.VendorUsbDriverInstaller.NameOf(offer.Kind);
+            if (bind && !Views.ConfirmDialog.Show(this, Strings.Instance.Devices_DriverConfirmTitle,
+                    DriverCost(offer.Kind), Strings.Instance.Devices_DriverSwitch))
+                return;
+
+            devices.DriverBusy = true;
+            _viewModel.SetStatus(string.Format(Strings.Instance.Status_DriverSwitching_Format, name));
+            Action<string> log = m => PadForge.Engine.SdlDiagLog.WriteLine("VendorUSB: " + m);
+            var nodes = await System.Threading.Tasks.Task.Run(Services.VendorUsbDriverInstaller.ListPresentUsbNodes);
+            bool ok = await System.Threading.Tasks.Task.Run(() => bind
+                ? Services.VendorUsbDriverInstaller.Bind(offer.Bind.Value, offer.NodeId, nodes, log, default, offer.From)
+                : Services.VendorUsbDriverInstaller.Restore(offer.NodeId, log, default));
+            devices.DriverBusy = false;
+
+            if (ok)
+            {
+                var ids = _viewModel.Settings.WinUsbOptIns;
+                if (bind)
+                {
+                    if (!ids.Contains(offer.Bind.Value.BindId, StringComparer.OrdinalIgnoreCase))
+                        ids.Add(offer.Bind.Value.BindId);
+                }
+                else
+                {
+                    // Every opted-in ID that names the restored node leaves
+                    // the list, so the start-up check stops watching it.
+                    var node = nodes.FirstOrDefault(n => string.Equals(n.InstanceId, offer.NodeId, StringComparison.OrdinalIgnoreCase));
+                    foreach (var id in ids.Where(i => node.InstanceId != null && Services.VendorUsbDriverInstaller.Names(node, i)).ToList())
+                        ids.Remove(id);
+                }
+                _settingsService?.MarkDirty();
+            }
+            string format = bind
+                ? (ok ? Strings.Instance.Status_DriverBound_Format : Strings.Instance.Status_DriverBindFailed_Format)
+                : (ok ? Strings.Instance.Status_DriverRestored_Format : Strings.Instance.Status_DriverRestoreFailed_Format);
+            _viewModel.SetStatus(string.Format(format, name), persist: !ok);
+            devices.RefreshDriverOffer();
+        }
+
+        private static string DriverCost(Services.VendorUsbDriverInstaller.OptInKind kind) => kind switch
+        {
+            Services.VendorUsbDriverInstaller.OptInKind.Xbox360Pad => Strings.Instance.Devices_DriverConfirm_Xbox360Pad,
+            Services.VendorUsbDriverInstaller.OptInKind.Xbox360Receiver => Strings.Instance.Devices_DriverConfirm_Xbox360Receiver,
+            Services.VendorUsbDriverInstaller.OptInKind.IntelBaseStation => Strings.Instance.Devices_DriverConfirm_IntelBaseStation,
+            _ => Strings.Instance.Devices_DriverConfirm_Prodikeys,
+        };
+
+        /// <summary>Part 15's rule 4: Windows can hand an opted-in device its
+        /// own driver again, from its INF directory or Windows Update, so a
+        /// few seconds into each start PadForge says which ones it
+        /// did.</summary>
+        private void CheckOptedInDrivers()
+        {
+            var ids = _viewModel.Settings.WinUsbOptIns.ToList();
+            if (ids.Count == 0) return;
+            _ = System.Threading.Tasks.Task.Run(async () =>
+            {
+                await System.Threading.Tasks.Task.Delay(8000);
+                var moved = Services.VendorUsbDriverInstaller.MovedBack(ids, Services.VendorUsbDriverInstaller.ListPresentUsbNodes());
+                if (moved.Count == 0) return;
+                string names = string.Join(", ", moved
+                    .Select(Services.VendorUsbDriverInstaller.KindOfId)
+                    .Where(k => k != null)
+                    .Select(k => Services.VendorUsbDriverInstaller.NameOf(k.Value))
+                    .Distinct());
+                _ = Dispatcher.BeginInvoke(new Action(() =>
+                    _viewModel.SetStatus(string.Format(Strings.Instance.Status_DriverMovedBack_Format, names), persist: true)));
+            });
         }
 
         /// <summary>Whether the app should start minimized (to taskbar).</summary>

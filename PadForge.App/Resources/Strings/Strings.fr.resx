@@ -416,6 +416,23 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Devices_AllMiceMerged" xml:space="preserve"><value>Toutes les souris (fusionnées)</value></data>
   <data name="Devices_AllTouchpadsMerged" xml:space="preserve"><value>Tous les pavés tactiles (fusionnés)</value></data>
   <data name="Devices_Title" xml:space="preserve"><value>Appareils</value></data>
+  <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>Lire le chatpad</value></data>
+  <data name="Devices_DriverBind_Xbox360Receiver" xml:space="preserve"><value>Lire les chatpads et les tablettes uDraw</value></data>
+  <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>Lire les manettes</value></data>
+  <data name="Devices_DriverBind_Prodikeys" xml:space="preserve"><value>Lire les touches musicales</value></data>
+  <data name="Devices_DriverRestore" xml:space="preserve"><value>Restaurer le pilote Windows</value></data>
+  <data name="Devices_DriverConfirmTitle" xml:space="preserve"><value>Passer au pilote de PadForge</value></data>
+  <data name="Devices_DriverConfirm_Xbox360Pad" xml:space="preserve"><value>PadForge passe cette manette sur le pilote WinUSB de Windows pour lire le chatpad. La manette ne fonctionne alors que lorsque PadForge est ouvert, et les jeux la voient à travers la manette virtuelle de PadForge. Toutes les manettes de ce modèle branchées changent avec elle, et chacune doit être réassignée à son emplacement. Vous pouvez restaurer le pilote Windows depuis cette page à tout moment.</value></data>
+  <data name="Devices_DriverConfirm_Xbox360Receiver" xml:space="preserve"><value>PadForge passe ce récepteur sur le pilote WinUSB de Windows pour lire les chatpads et les tablettes uDraw. Chaque manette et chaque casque du récepteur change avec lui, ne fonctionne que lorsque PadForge est ouvert et doit être réassigné à son emplacement. Vous pouvez restaurer le pilote Windows depuis cette page à tout moment.</value></data>
+  <data name="Devices_DriverConfirm_IntelBaseStation" xml:space="preserve"><value>PadForge passe la station de base sur le pilote WinUSB de Windows pour lire les manettes. Le clavier sans fil Intel qui y est relié cesse alors de taper dans Windows. Vous pouvez restaurer le pilote Windows depuis cette page à tout moment.</value></data>
+  <data name="Devices_DriverConfirm_Prodikeys" xml:space="preserve"><value>PadForge passe les touches musicales sur le pilote WinUSB de Windows pour les lire. Les touches multimédia et de mise en veille du clavier cessent alors de fonctionner dans Windows, et ses touches de saisie continuent de fonctionner. Vous pouvez restaurer le pilote Windows depuis cette page à tout moment.</value></data>
+  <data name="Devices_DriverSwitch" xml:space="preserve"><value>Changer de pilote</value></data>
+  <data name="Status_DriverSwitching_Format" xml:space="preserve"><value>Changement du pilote de {0}…</value></data>
+  <data name="Status_DriverBound_Format" xml:space="preserve"><value>{0} utilise maintenant le pilote de PadForge.</value></data>
+  <data name="Status_DriverBindFailed_Format" xml:space="preserve"><value>{0} n'a pas pu passer au pilote de PadForge.</value></data>
+  <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} utilise de nouveau le pilote Windows.</value></data>
+  <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Le pilote Windows de {0} n'a pas pu être restauré.</value></data>
+  <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows a remis {0} sur son propre pilote. Sélectionnez-le sur la page Appareils pour le changer à nouveau.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> en ligne / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> total</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Supprimer cet appareil et ses paramètres</value></data>

@@ -416,6 +416,23 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Devices_AllMiceMerged" xml:space="preserve"><value>Alle Mäuse (zusammengeführt)</value></data>
   <data name="Devices_AllTouchpadsMerged" xml:space="preserve"><value>Alle Touchpads (zusammengeführt)</value></data>
   <data name="Devices_Title" xml:space="preserve"><value>Geräte</value></data>
+  <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>Chatpad auslesen</value></data>
+  <data name="Devices_DriverBind_Xbox360Receiver" xml:space="preserve"><value>Chatpads und uDraw-Tablets auslesen</value></data>
+  <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>Gamepads auslesen</value></data>
+  <data name="Devices_DriverBind_Prodikeys" xml:space="preserve"><value>Musiktasten auslesen</value></data>
+  <data name="Devices_DriverRestore" xml:space="preserve"><value>Windows-Treiber wiederherstellen</value></data>
+  <data name="Devices_DriverConfirmTitle" xml:space="preserve"><value>Zum PadForge-Treiber wechseln</value></data>
+  <data name="Devices_DriverConfirm_Xbox360Pad" xml:space="preserve"><value>PadForge verschiebt diesen Controller auf den WinUSB-Treiber von Windows, damit es das Chatpad auslesen kann. Der Controller funktioniert dann nur, solange PadForge läuft, und Spiele sehen ihn über den virtuellen Controller von PadForge. Jeder angeschlossene Controller dieses Modells wechselt mit, und jeder muss seinem Slot neu zugewiesen werden. Den Windows-Treiber können Sie jederzeit auf dieser Seite wiederherstellen.</value></data>
+  <data name="Devices_DriverConfirm_Xbox360Receiver" xml:space="preserve"><value>PadForge verschiebt diesen Empfänger auf den WinUSB-Treiber von Windows, damit es Chatpads und uDraw-Tablets auslesen kann. Jeder Controller und jedes Headset am Empfänger wechselt mit, funktioniert nur, solange PadForge läuft, und muss seinem Slot neu zugewiesen werden. Den Windows-Treiber können Sie jederzeit auf dieser Seite wiederherstellen.</value></data>
+  <data name="Devices_DriverConfirm_IntelBaseStation" xml:space="preserve"><value>PadForge verschiebt die Basisstation auf den WinUSB-Treiber von Windows, damit es die Gamepads auslesen kann. Die kabellose Intel-Tastatur daran tippt danach in Windows nicht mehr. Den Windows-Treiber können Sie jederzeit auf dieser Seite wiederherstellen.</value></data>
+  <data name="Devices_DriverConfirm_Prodikeys" xml:space="preserve"><value>PadForge verschiebt die Musiktasten auf den WinUSB-Treiber von Windows, damit es sie auslesen kann. Die Medien- und Standbytasten der Tastatur funktionieren danach in Windows nicht mehr, die Schreibtasten weiterhin. Den Windows-Treiber können Sie jederzeit auf dieser Seite wiederherstellen.</value></data>
+  <data name="Devices_DriverSwitch" xml:space="preserve"><value>Treiber wechseln</value></data>
+  <data name="Status_DriverSwitching_Format" xml:space="preserve"><value>Treiber für {0} wird gewechselt…</value></data>
+  <data name="Status_DriverBound_Format" xml:space="preserve"><value>{0} nutzt jetzt den PadForge-Treiber.</value></data>
+  <data name="Status_DriverBindFailed_Format" xml:space="preserve"><value>{0} konnte nicht auf den PadForge-Treiber wechseln.</value></data>
+  <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} nutzt wieder den Windows-Treiber.</value></data>
+  <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Der Windows-Treiber für {0} konnte nicht wiederhergestellt werden.</value></data>
+  <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows hat {0} wieder auf den eigenen Treiber gesetzt. Wählen Sie es auf der Seite Geräte aus, um erneut zu wechseln.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> online / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> gesamt</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Dieses Gerät und seine Einstellungen entfernen</value></data>

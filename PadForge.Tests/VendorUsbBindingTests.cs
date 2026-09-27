@@ -211,6 +211,109 @@ namespace PadForge.Tests
             }
         }
 
+        // ── Opt-in bindings (#33 Part 15's Decision) ──
+
+        private static Node Pad360(string revision, string service)
+            => new($@"USB\VID_045E&PID_028E\6&1&0&{revision}", 0x045E, 0x028E, -1, service,
+                new[] { $@"USB\VID_045E&PID_028E&REV_{revision}", @"USB\VID_045E&PID_028E" },
+                new[] { @"USB\MS_COMP_XUSB10", @"USB\Class_FF&SubClass_5D&Prot_01" });
+
+        [Fact]
+        public void AWiredXbox360Pad_IsOfferedFromXusb22_ForTheRevisionsWithAChatpad()
+        {
+            var offer = VendorUsbDriverInstaller.QueryOptIn(0x045E, 0x028E, new[] { Pad360("0114", "xusb22") }, _ => false);
+            Assert.NotNull(offer);
+            Assert.Equal(VendorUsbDriverInstaller.OptInKind.Xbox360Pad, offer.Kind);
+            Assert.Equal(@"USB\VID_045E&PID_028E&REV_0114", offer.Bind?.BindId);
+            Assert.Equal(new[] { "xusb22" }, offer.From);
+            Assert.False(offer.Restore);
+
+            Assert.Equal(@"USB\VID_045E&PID_028E&REV_0110",
+                VendorUsbDriverInstaller.QueryOptIn(0x045E, 0x028E, new[] { Pad360("0110", "xusb22") }, _ => false)?.Bind?.BindId);
+            // Another revision, or another driver, gets nothing.
+            Assert.Null(VendorUsbDriverInstaller.QueryOptIn(0x045E, 0x028E, new[] { Pad360("0105", "xusb22") }, _ => false));
+            Assert.Null(VendorUsbDriverInstaller.QueryOptIn(0x045E, 0x028E, new[] { Pad360("0114", "HidUsb") }, _ => false));
+        }
+
+        [Fact]
+        public void APadOnPadForgesWinUsb_IsOfferedTheRestore_AndOneOnAnotherWinUsbIsNot()
+        {
+            var ours = VendorUsbDriverInstaller.QueryOptIn(0x045E, 0x028E, new[] { Pad360("0114", "WINUSB") }, _ => true);
+            Assert.NotNull(ours);
+            Assert.True(ours.Restore);
+            Assert.Null(ours.Bind);
+            Assert.Null(VendorUsbDriverInstaller.QueryOptIn(0x045E, 0x028E, new[] { Pad360("0114", "WINUSB") }, _ => false));
+        }
+
+        [Fact]
+        public void AWirelessPad_OffersItsReceiver()
+        {
+            var receiver = new Node(@"USB\VID_045E&PID_0719\5&1&0&2", 0x045E, 0x0719, -1, "xusb22",
+                new[] { @"USB\VID_045E&PID_0719&REV_0100", @"USB\VID_045E&PID_0719" }, Array.Empty<string>());
+            foreach (ushort rowPid in new ushort[] { 0x02A1, 0x0719 })
+            {
+                var offer = VendorUsbDriverInstaller.QueryOptIn(0x045E, rowPid, new[] { receiver }, _ => false);
+                Assert.Equal(VendorUsbDriverInstaller.OptInKind.Xbox360Receiver, offer?.Kind);
+                Assert.Equal(@"USB\VID_045E&PID_0719&REV_0100", offer?.Bind?.BindId);
+            }
+        }
+
+        [Fact]
+        public void TheIntelBaseStation_IsOfferedByTheNodeThatCarriesInterface0()
+        {
+            var parent = DeviceNode(0x8086, 0xC013, "usbccgp");
+            var keyboard = InterfaceNode(0x8086, 0xC013, 0, "HidUsb");
+            var mouse = InterfaceNode(0x8086, 0xC013, 1, "HidUsb");
+            Assert.Equal(@"USB\VID_8086&PID_C013&MI_00",
+                VendorUsbDriverInstaller.QueryOptIn(0x8086, 0xC013, new[] { parent, mouse, keyboard }, _ => false)?.Bind?.BindId);
+            // Listed as one device, the device itself.
+            Assert.Equal(@"USB\VID_8086&PID_C013",
+                VendorUsbDriverInstaller.QueryOptIn(0x8086, 0xC013, new[] { DeviceNode(0x8086, 0xC013, "HidUsb") }, _ => false)?.Bind?.BindId);
+        }
+
+        [Fact]
+        public void TheProdikeys_IsOfferedByItsMusicKeysOnly()
+        {
+            Assert.Equal(@"USB\VID_041E&PID_2801&MI_01", VendorUsbDriverInstaller.QueryOptIn(0x041E, 0x2801,
+                new[] { InterfaceNode(0x041E, 0x2801, 0, "HidUsb"), InterfaceNode(0x041E, 0x2801, 1, "HidUsb") }, _ => false)?.Bind?.BindId);
+            Assert.Null(VendorUsbDriverInstaller.QueryOptIn(0x041E, 0x2801,
+                new[] { InterfaceNode(0x041E, 0x2801, 0, "HidUsb") }, _ => false));
+        }
+
+        [Fact]
+        public void OnlyTheOptInDevices_CarryAnOffer()
+        {
+            Assert.True(VendorUsbDriverInstaller.IsOptInRow(0x045E, 0x028E));
+            Assert.True(VendorUsbDriverInstaller.IsOptInRow(0x045E, 0x02A1));
+            Assert.True(VendorUsbDriverInstaller.IsOptInRow(0x8086, 0xC013));
+            Assert.True(VendorUsbDriverInstaller.IsOptInRow(0x041E, 0x2801));
+            Assert.False(VendorUsbDriverInstaller.IsOptInRow(0x045E, 0x0B12));
+            Assert.False(VendorUsbDriverInstaller.IsOptInRow(0x057E, 0x0337));
+            Assert.Equal(VendorUsbDriverInstaller.OptInKind.Prodikeys, VendorUsbDriverInstaller.KindOfId(@"USB\VID_041E&PID_2801&MI_01"));
+            Assert.Null(VendorUsbDriverInstaller.KindOfId(@"USB\VID_057E&PID_0337"));
+        }
+
+        [Fact]
+        public void TheStartCheck_NamesTheOptInsWindowsPutBack()
+        {
+            string[] optedIn = { @"USB\VID_045E&PID_028E&REV_0114", @"USB\VID_041E&PID_2801&MI_01" };
+            var moved = VendorUsbDriverInstaller.MovedBack(optedIn, new[]
+            {
+                Pad360("0114", "xusb22"),                              // put back
+                InterfaceNode(0x041E, 0x2801, 1, "WINUSB"),            // still PadForge's
+            });
+            Assert.Equal(new[] { @"USB\VID_045E&PID_028E&REV_0114" }, moved);
+            Assert.Empty(VendorUsbDriverInstaller.MovedBack(optedIn, Array.Empty<Node>()));   // unplugged
+            Assert.Empty(VendorUsbDriverInstaller.MovedBack(null, new[] { Pad360("0114", "xusb22") }));
+        }
+
+        [Fact]
+        public void Inf2Cat_AcceptsARevisionPackage()
+            => Inf2Cat.AssertCatalogs(VendorUsbDriverInstaller.InfName,
+                VendorUsbDriverInstaller.BuildInf(@"USB\VID_045E&PID_028E&REV_0114",
+                    VendorUsbDriverInstaller.NameOf(VendorUsbDriverInstaller.OptInKind.Xbox360Pad)),
+                VendorUsbDriverInstaller.CatalogName, _output);
+
         /// <summary>The bind's proof reads interfaces with PadForge's GUID.
         /// A node that has none, here one that does not exist, is never
         /// counted as bound.</summary>

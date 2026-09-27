@@ -874,6 +874,26 @@
                                 <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"/>
                             </Button.Style>
                         </Button>
+                        <!-- Opt-in driver switch (hifihedgehog/SDL#33 Part 15): the
+                             Xbox 360 pads and receiver, the Intel base station and
+                             the Prodikeys, whose WinUSB binding takes something
+                             from Windows, move only on request, and move back. -->
+                        <Button Content="{Binding DriverBindText}" Margin="0,6,0,8"
+                                Padding="8,4" HorizontalAlignment="Left"
+                                Click="DriverBind_Click"
+                                Visibility="{Binding ShowDriverBind, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"/>
+                            </Button.Style>
+                        </Button>
+                        <Button Content="{Binding Devices_DriverRestore, Source={x:Static strings:Strings.Instance}}" Margin="0,6,0,8"
+                                Padding="8,4" HorizontalAlignment="Left"
+                                Click="DriverRestore_Click"
+                                Visibility="{Binding ShowDriverRestore, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"/>
+                            </Button.Style>
+                        </Button>
                         <!-- Vendor daemon notice (#343): the vendor's own tool keeps
                              reacting to these buttons until it is stopped. -->
                         <TextBlock Text="{Binding SelectedDevice.HandheldDaemonWarning}" TextWrapping="Wrap"

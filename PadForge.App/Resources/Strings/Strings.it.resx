@@ -416,6 +416,23 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Devices_AllMiceMerged" xml:space="preserve"><value>Tutti i mouse (uniti)</value></data>
   <data name="Devices_AllTouchpadsMerged" xml:space="preserve"><value>Tutti i touchpad (uniti)</value></data>
   <data name="Devices_Title" xml:space="preserve"><value>Dispositivi</value></data>
+  <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>Leggi il chatpad</value></data>
+  <data name="Devices_DriverBind_Xbox360Receiver" xml:space="preserve"><value>Leggi chatpad e tavolette uDraw</value></data>
+  <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>Leggi i gamepad</value></data>
+  <data name="Devices_DriverBind_Prodikeys" xml:space="preserve"><value>Leggi i tasti musicali</value></data>
+  <data name="Devices_DriverRestore" xml:space="preserve"><value>Ripristina il driver di Windows</value></data>
+  <data name="Devices_DriverConfirmTitle" xml:space="preserve"><value>Passa al driver di PadForge</value></data>
+  <data name="Devices_DriverConfirm_Xbox360Pad" xml:space="preserve"><value>PadForge sposta questo controller sul driver WinUSB di Windows per leggere il chatpad. Il controller funziona poi solo mentre PadForge è in esecuzione, e i giochi lo vedono tramite il controller virtuale di PadForge. Tutti i controller collegati di questo modello si spostano con lui, e ognuno va riassegnato al proprio slot. Puoi ripristinare il driver di Windows da questa pagina in qualsiasi momento.</value></data>
+  <data name="Devices_DriverConfirm_Xbox360Receiver" xml:space="preserve"><value>PadForge sposta questo ricevitore sul driver WinUSB di Windows per leggere chatpad e tavolette uDraw. Ogni controller e ogni cuffia sul ricevitore si sposta con lui, funziona solo mentre PadForge è in esecuzione e va riassegnato al proprio slot. Puoi ripristinare il driver di Windows da questa pagina in qualsiasi momento.</value></data>
+  <data name="Devices_DriverConfirm_IntelBaseStation" xml:space="preserve"><value>PadForge sposta la base sul driver WinUSB di Windows per leggere i gamepad. La tastiera wireless Intel collegata smette allora di scrivere in Windows. Puoi ripristinare il driver di Windows da questa pagina in qualsiasi momento.</value></data>
+  <data name="Devices_DriverConfirm_Prodikeys" xml:space="preserve"><value>PadForge sposta i tasti musicali sul driver WinUSB di Windows per leggerli. I tasti multimediali e di sospensione della tastiera smettono allora di funzionare in Windows, mentre i tasti di scrittura continuano a funzionare. Puoi ripristinare il driver di Windows da questa pagina in qualsiasi momento.</value></data>
+  <data name="Devices_DriverSwitch" xml:space="preserve"><value>Cambia driver</value></data>
+  <data name="Status_DriverSwitching_Format" xml:space="preserve"><value>Cambio del driver di {0} in corso…</value></data>
+  <data name="Status_DriverBound_Format" xml:space="preserve"><value>{0} ora usa il driver di PadForge.</value></data>
+  <data name="Status_DriverBindFailed_Format" xml:space="preserve"><value>{0} non è riuscito a passare al driver di PadForge.</value></data>
+  <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} usa di nuovo il driver di Windows.</value></data>
+  <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>Impossibile ripristinare il driver di Windows per {0}.</value></data>
+  <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows ha riportato {0} sul proprio driver. Selezionalo nella pagina Dispositivi per cambiarlo di nuovo.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> online / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> totale</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Rimuovi questo dispositivo e le sue impostazioni</value></data>

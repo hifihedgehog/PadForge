@@ -160,6 +160,24 @@ namespace PadForge.Tests
 
     public partial class ProfileServiceToggleTests
     {
+        /// <summary>The IDs moved to PadForge's WinUSB driver ride the
+        /// machine settings (#33 Part 15, rule 4).</summary>
+        [Fact]
+        public void WinUsbOptInsSurviveTheActualSaveAndLoad()
+        {
+            var (vm, settings) = Arrange();
+            vm.Settings.WinUsbOptIns.Add(@"USB\VID_045E&PID_028E&REV_0114");
+            var built = BuildApp(settings);
+            Assert.Equal(new[] { @"USB\VID_045E&PID_028E&REV_0114" }, built.WinUsbOptIns);
+
+            var (vm2, settings2) = Arrange();
+            LoadApp(settings2, RoundTripApp(built));
+            Assert.Equal(new[] { @"USB\VID_045E&PID_028E&REV_0114" }, vm2.Settings.WinUsbOptIns);
+
+            vm2.Settings.WinUsbOptIns.Clear();
+            Assert.Null(BuildApp(settings2).WinUsbOptIns);
+        }
+
         /// <summary>The list is a machine setting: it rides PadForge.xml
         /// through the real save and load, and the load hands it to SDL
         /// without marking anything changed.</summary>

@@ -479,6 +479,14 @@ namespace PadForge.Views
         }
 
 
+        // ── Opt-in driver switch (hifihedgehog/SDL#33 Part 15) ──
+
+        private void DriverBind_Click(object sender, RoutedEventArgs e)
+            => (DataContext as ViewModels.DevicesViewModel)?.RequestDriverBind();
+
+        private void DriverRestore_Click(object sender, RoutedEventArgs e)
+            => (DataContext as ViewModels.DevicesViewModel)?.RequestDriverRestore();
+
         // ── Handheld hidden buttons (issue #343) ──
 
         private void LearnHandheldButton_Click(object sender, RoutedEventArgs e)

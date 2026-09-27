@@ -181,14 +181,171 @@ namespace PadForge.Services
             return null;
         }
 
-        private static bool Matches(in Target t, in UsbNode node) => t.Match switch
+        private static bool Matches(in Target t, in UsbNode node) => NodeMatches(t.Match, t.Interface, t.CompatibleId, node);
+
+        private static bool NodeMatches(Match match, int iface, string compatibleId, in UsbNode node) => match switch
         {
             Match.Device => node.Interface < 0,
-            Match.Interface => node.Interface == t.Interface,
+            Match.Interface => node.Interface == iface,
             Match.AnyInterface => node.Interface >= 0,
-            Match.InterfaceClass => node.Interface >= 0 && HasCompatibleId(node, t.CompatibleId),
+            Match.InterfaceClass => node.Interface >= 0 && HasCompatibleId(node, compatibleId),
             _ => false,
         };
+
+        // ── Opt-in bindings ──────────────────────────────────────────────
+        //
+        // WinUSB takes something from these that PadForge does not give back,
+        // so each is bound only when the user asks, from its row on the
+        // Devices page, and one click gives Windows its driver back. Rules 1
+        // to 5 of #33 Part 15's Decision: opt-in with the cost stated, the
+        // binding persistent on the device node, owned through PadForge's
+        // interface GUID, checked at every start, and reversed through
+        // DiUninstallDriver.
+
+        internal enum OptInKind { Xbox360Pad, Xbox360Receiver, IntelBaseStation, Prodikeys }
+
+        /// <summary>One opt-in device. Revision names the bcdDevice a whole
+        /// device must carry, and From the drivers it is bound from.</summary>
+        internal readonly record struct OptInTarget(
+            ushort Vid, ushort Pid, Match Match, int Interface, string Revision, OptInKind Kind, string[] From);
+
+        internal static readonly OptInTarget[] OptIns =
+        {
+            // The wired pads whose chatpad the fork reads, bcdDevice 1.10 and
+            // 1.14 (#33 Part 15, xboxdrv's check), and the wireless receiver,
+            // each from xusb22.
+            new(0x045E, 0x028E, Match.Device, -1, "0110", OptInKind.Xbox360Pad, new[] { "xusb22" }),
+            new(0x045E, 0x028E, Match.Device, -1, "0114", OptInKind.Xbox360Pad, new[] { "xusb22" }),
+            new(0x045E, 0x0719, Match.Device, -1, "0100", OptInKind.Xbox360Receiver, new[] { "xusb22" }),
+            // The Intel base station's interface 0 is also its keyboard (#33
+            // Part 1), whether Windows lists the station as composite or not.
+            new(0x8086, 0xC013, Match.Interface, 0, null, OptInKind.IntelBaseStation, new[] { "", "HidUsb" }),
+            new(0x8086, 0xC013, Match.Device, -1, null, OptInKind.IntelBaseStation, new[] { "", "HidUsb" }),
+            // The Prodikeys' interface 1 carries its media and sleep keys (#33 Part 7).
+            new(0x041E, 0x2801, Match.Interface, 1, null, OptInKind.Prodikeys, new[] { "", "HidUsb" }),
+        };
+
+        /// <summary>What the Devices page offers for a device: to bind it,
+        /// to restore Windows' driver, or nothing (null).</summary>
+        internal sealed record OptInOffer(OptInKind Kind, BindPlan? Bind, string[] From, string NodeId, bool Restore);
+
+        /// <summary>The device name an opt-in package gives Device Manager.</summary>
+        internal static string NameOf(OptInKind kind) => kind switch
+        {
+            OptInKind.Xbox360Pad => "Xbox 360 Controller",
+            OptInKind.Xbox360Receiver => "Xbox 360 Wireless Receiver",
+            OptInKind.IntelBaseStation => "Intel Wireless Series base station",
+            _ => "Creative Prodikeys PC-MIDI",
+        };
+
+        /// <summary>Whether a Devices-page row with these IDs is the target's
+        /// device. A pad on the wireless receiver reports the wireless
+        /// controller's 045E:02A1 through XInput, not the receiver's
+        /// 0719.</summary>
+        private static bool RowIsTarget(in OptInTarget t, ushort vid, ushort pid)
+            => t.Vid == vid && (t.Pid == pid || (t.Kind == OptInKind.Xbox360Receiver && pid == 0x02A1));
+
+        /// <summary>The offer for a device row with these IDs, from the
+        /// present USB nodes: a bind when a node sits on a driver the target
+        /// is bound from, a restore when a node is on WinUSB with PadForge's
+        /// interface active. A node on anything else is not PadForge's to
+        /// touch.</summary>
+        internal static OptInOffer QueryOptIn(ushort vid, ushort pid, IReadOnlyList<UsbNode> nodes,
+            Func<string, bool> ours = null)
+        {
+            ours ??= HasActiveInterface;
+            foreach (var t in OptIns)
+            {
+                if (!RowIsTarget(t, vid, pid)) continue;
+                foreach (var n in nodes)
+                {
+                    if (n.Vid != t.Vid || n.Pid != t.Pid || !NodeMatches(t.Match, t.Interface, null, n)) continue;
+                    string revisionId = t.Revision == null ? null : $@"USB\VID_{t.Vid:X4}&PID_{t.Pid:X4}&REV_{t.Revision}";
+                    if (revisionId != null && !Names(n, revisionId)) continue;
+
+                    string service = n.Service ?? string.Empty;
+                    if (t.From.Any(f => f.Equals(service, StringComparison.OrdinalIgnoreCase)))
+                        return new OptInOffer(t.Kind, new BindPlan(revisionId ?? BindId(n), NameOf(t.Kind)), t.From, n.InstanceId, false);
+                    if (service.Equals("WINUSB", StringComparison.OrdinalIgnoreCase) && ours(n.InstanceId))
+                        return new OptInOffer(t.Kind, null, t.From, n.InstanceId, true);
+                }
+            }
+            return null;
+        }
+
+        /// <summary>Whether a Devices-page row can carry an opt-in offer at
+        /// all, checked before any USB node is read.</summary>
+        internal static bool IsOptInRow(ushort vid, ushort pid)
+            => OptIns.Any(t => RowIsTarget(t, vid, pid));
+
+        /// <summary>The kind an opted-in ID belongs to, or null.</summary>
+        internal static OptInKind? KindOfId(string id)
+        {
+            if (string.IsNullOrEmpty(id)) return null;
+            foreach (var t in OptIns)
+                if (id.StartsWith($@"USB\VID_{t.Vid:X4}&PID_{t.Pid:X4}", StringComparison.OrdinalIgnoreCase))
+                    return t.Kind;
+            return null;
+        }
+
+        /// <summary>The opted-in IDs whose devices Windows has put back on
+        /// the driver they were taken from, for Part 15's rule 4: PadForge
+        /// says so at start. A node on another port is a new node, and
+        /// Windows gives it its own driver too.</summary>
+        internal static List<string> MovedBack(IEnumerable<string> optedIn, IReadOnlyList<UsbNode> nodes)
+        {
+            var moved = new List<string>();
+            if (optedIn == null) return moved;
+            foreach (string id in optedIn.Where(i => !string.IsNullOrWhiteSpace(i)).Distinct(StringComparer.OrdinalIgnoreCase))
+            {
+                var target = OptIns.FirstOrDefault(t => id.StartsWith($@"USB\VID_{t.Vid:X4}&PID_{t.Pid:X4}", StringComparison.OrdinalIgnoreCase));
+                if (target.From == null) continue;
+                if (nodes.Any(n => Names(n, id)
+                        && target.From.Any(f => f.Equals(n.Service ?? string.Empty, StringComparison.OrdinalIgnoreCase))))
+                    moved.Add(id);
+            }
+            return moved;
+        }
+
+        /// <summary>Gives the node back to Windows: DiUninstallDriver on the
+        /// package bound to it installs the best remaining driver on every
+        /// device that package serves, xusb22 or HidUsb here, and the package
+        /// leaves the driver store (Nefarius Devcon.DeleteDriver). Only a
+        /// package PadForge wrote is removed.</summary>
+        internal static bool Restore(string instanceId, Action<string> log, CancellationToken ct)
+        {
+            try
+            {
+                var dev = PnPDevice.GetDeviceByInstanceId(instanceId, DeviceLocationFlags.Normal);
+                string inf = dev.GetProperty<string>(DevicePropertyKey.Device_DriverInfPath);
+                string provider = dev.GetProperty<string>(DevicePropertyKey.Device_DriverProvider);
+                if (string.IsNullOrEmpty(inf) || !string.Equals(provider, "PadForge", StringComparison.Ordinal))
+                {
+                    log($"{instanceId}: its driver is {inf ?? "(none)"} from {provider ?? "(unknown)"}, not PadForge's, so it stays.");
+                    return false;
+                }
+                string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "INF", inf);
+                Devcon.DeleteDriver(inf, path, forceDelete: true);
+
+                for (int i = 0; i < 20 && !ct.IsCancellationRequested; i++)
+                {
+                    string service = ServiceOf(instanceId);
+                    if (service != null && !service.Equals("WINUSB", StringComparison.OrdinalIgnoreCase))
+                    {
+                        log($"{instanceId} is back on {(service.Length == 0 ? "no driver" : service)}.");
+                        return true;
+                    }
+                    Thread.Sleep(250);
+                }
+                log($"{instanceId}: {inf} was removed, and the node still reports {ServiceOf(instanceId) ?? "(unknown)"}.");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                log($"{instanceId}: restoring the Windows driver failed: {ex.Message}");
+                return false;
+            }
+        }
 
         internal static bool HasCompatibleId(in UsbNode node, string id)
             => node.CompatibleIds != null
@@ -298,10 +455,13 @@ namespace PadForge.Services
 
         /// <summary>Binds WinUSB to the nodes the plan's ID names, and says
         /// whether the planned node is on WinUSB with PadForge's interface
-        /// active afterward.</summary>
+        /// active afterward. <paramref name="from"/> names the drivers a node
+        /// may be taken from: no driver and HidUsb unless an opt-in says
+        /// otherwise.</summary>
         internal static bool Bind(BindPlan plan, string instanceId, IReadOnlyList<UsbNode> nodes,
-            Action<string> log, CancellationToken ct)
+            Action<string> log, CancellationToken ct, string[] from = null)
         {
+            from ??= new[] { "", "HidUsb" };
             try
             {
                 // The forced update below takes EVERY present node the ID
@@ -312,7 +472,7 @@ namespace PadForge.Services
                 {
                     if (!Names(n, plan.BindId)) continue;
                     string s = n.Service ?? string.Empty;
-                    if (s.Length != 0 && !s.Equals("HidUsb", StringComparison.OrdinalIgnoreCase)
+                    if (!from.Any(f => f.Equals(s, StringComparison.OrdinalIgnoreCase))
                         && !s.Equals("WINUSB", StringComparison.OrdinalIgnoreCase))
                     {
                         log($"{plan.Name}: {n.InstanceId} is on {s}, so {plan.BindId} stays as it is.");
@@ -416,7 +576,10 @@ namespace PadForge.Services
             }
         }
 
-        private static bool Names(in UsbNode node, string id)
+        /// <summary>Whether one of the node's hardware or compatible IDs is
+        /// exactly <paramref name="id"/>, the match
+        /// UpdateDriverForPlugAndPlayDevices makes.</summary>
+        internal static bool Names(in UsbNode node, string id)
             => (node.HardwareIds != null && node.HardwareIds.Any(h => h.Equals(id, StringComparison.OrdinalIgnoreCase)))
                || HasCompatibleId(node, id);
 

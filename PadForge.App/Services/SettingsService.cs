@@ -2273,6 +2273,13 @@ namespace PadForge.Services
             }
             // Applied at load, before SDL_Init, as the Flydigi switch is (#33).
             PadForge.Common.Input.InputManager.ApplySerialControllers(vm.SerialControllers);
+            vm.WinUsbOptIns.Clear();
+            if (appSettings.WinUsbOptIns != null)
+            {
+                foreach (var id in appSettings.WinUsbOptIns)
+                    if (!string.IsNullOrWhiteSpace(id))
+                        vm.WinUsbOptIns.Add(id);
+            }
             vm.SetLanguageFromCode(appSettings.Language);
             vm.EnableAutoProfileSwitching = appSettings.EnableAutoProfileSwitching;
             SettingsManager.EnableAutoProfileSwitching = appSettings.EnableAutoProfileSwitching;
@@ -4713,6 +4720,9 @@ namespace PadForge.Services
                 SerialControllers = vm.SerialControllers.Count > 0
                     ? vm.SerialControllers.ToArray()
                     : null,
+                WinUsbOptIns = vm.WinUsbOptIns.Count > 0
+                    ? vm.WinUsbOptIns.ToArray()
+                    : null,
                 ExtendedConfigs = isDefault ? extendedConfigs.ToArray() : defaultSnap.ExtendedConfigs,
                 DeviceSlotConfigs = isDefault ? deviceSlotConfigs.ToArray() : defaultSnap.DeviceSlotConfigs,
                 UserProfiles = _userProfiles.Count > 0 ? _userProfiles.ToArray() : null,
@@ -6632,6 +6642,14 @@ namespace PadForge.Services
         [XmlArray("SerialControllers")]
         [XmlArrayItem("Controller")]
         public PadForge.Common.Input.SerialControllerEntry[] SerialControllers { get; set; }
+
+        /// <summary>IDs of the devices the user moved to PadForge's WinUSB
+        /// driver from the Devices page (hifihedgehog/SDL#33 Part 15), so
+        /// each start can say when Windows put one back. Null when there are
+        /// none.</summary>
+        [XmlArray("WinUsbOptIns")]
+        [XmlArrayItem("Id")]
+        public string[] WinUsbOptIns { get; set; }
 
         /// <summary>
         /// Per-slot Extended configuration (preset, axis/button counts).

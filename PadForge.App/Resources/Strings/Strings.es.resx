@@ -416,6 +416,23 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Devices_AllMiceMerged" xml:space="preserve"><value>Todos los ratones (combinados)</value></data>
   <data name="Devices_AllTouchpadsMerged" xml:space="preserve"><value>Todos los touchpads (combinados)</value></data>
   <data name="Devices_Title" xml:space="preserve"><value>Dispositivos</value></data>
+  <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>Leer el chatpad</value></data>
+  <data name="Devices_DriverBind_Xbox360Receiver" xml:space="preserve"><value>Leer chatpads y tabletas uDraw</value></data>
+  <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>Leer los mandos</value></data>
+  <data name="Devices_DriverBind_Prodikeys" xml:space="preserve"><value>Leer las teclas musicales</value></data>
+  <data name="Devices_DriverRestore" xml:space="preserve"><value>Restaurar el controlador de Windows</value></data>
+  <data name="Devices_DriverConfirmTitle" xml:space="preserve"><value>Cambiar al controlador de PadForge</value></data>
+  <data name="Devices_DriverConfirm_Xbox360Pad" xml:space="preserve"><value>PadForge pasa este mando al controlador WinUSB de Windows para poder leer el chatpad. A partir de entonces el mando solo funciona mientras PadForge está abierto, y los juegos lo ven a través del mando virtual de PadForge. Todos los mandos conectados de este modelo cambian con él, y cada uno debe volver a asignarse a su ranura. Puedes restaurar el controlador de Windows desde esta página cuando quieras.</value></data>
+  <data name="Devices_DriverConfirm_Xbox360Receiver" xml:space="preserve"><value>PadForge pasa este receptor al controlador WinUSB de Windows para poder leer chatpads y tabletas uDraw. Cada mando y auricular del receptor cambia con él, solo funciona mientras PadForge está abierto y debe volver a asignarse a su ranura. Puedes restaurar el controlador de Windows desde esta página cuando quieras.</value></data>
+  <data name="Devices_DriverConfirm_IntelBaseStation" xml:space="preserve"><value>PadForge pasa la base al controlador WinUSB de Windows para poder leer los mandos. El teclado inalámbrico Intel conectado a ella deja entonces de escribir en Windows. Puedes restaurar el controlador de Windows desde esta página cuando quieras.</value></data>
+  <data name="Devices_DriverConfirm_Prodikeys" xml:space="preserve"><value>PadForge pasa las teclas musicales al controlador WinUSB de Windows para poder leerlas. Las teclas multimedia y de suspensión del teclado dejan entonces de funcionar en Windows, y las teclas de escritura siguen funcionando. Puedes restaurar el controlador de Windows desde esta página cuando quieras.</value></data>
+  <data name="Devices_DriverSwitch" xml:space="preserve"><value>Cambiar controlador</value></data>
+  <data name="Status_DriverSwitching_Format" xml:space="preserve"><value>Cambiando el controlador de {0}…</value></data>
+  <data name="Status_DriverBound_Format" xml:space="preserve"><value>{0} usa ahora el controlador de PadForge.</value></data>
+  <data name="Status_DriverBindFailed_Format" xml:space="preserve"><value>{0} no pudo pasar al controlador de PadForge.</value></data>
+  <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} vuelve a usar el controlador de Windows.</value></data>
+  <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>No se pudo restaurar el controlador de Windows de {0}.</value></data>
+  <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows devolvió {0} a su propio controlador. Selecciónalo en la página Dispositivos para volver a cambiarlo.</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> en línea / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> total</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>Quitar este dispositivo y su configuración</value></data>

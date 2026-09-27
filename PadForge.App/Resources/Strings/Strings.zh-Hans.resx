@@ -416,6 +416,23 @@
   <data name="Devices_AllMiceMerged" xml:space="preserve"><value>所有鼠标（合并）</value></data>
   <data name="Devices_AllTouchpadsMerged" xml:space="preserve"><value>所有触控板（合并）</value></data>
   <data name="Devices_Title" xml:space="preserve"><value>设备</value></data>
+  <data name="Devices_DriverBind_Xbox360Pad" xml:space="preserve"><value>读取聊天键盘</value></data>
+  <data name="Devices_DriverBind_Xbox360Receiver" xml:space="preserve"><value>读取聊天键盘和 uDraw 绘图板</value></data>
+  <data name="Devices_DriverBind_IntelBaseStation" xml:space="preserve"><value>读取手柄</value></data>
+  <data name="Devices_DriverBind_Prodikeys" xml:space="preserve"><value>读取音乐键</value></data>
+  <data name="Devices_DriverRestore" xml:space="preserve"><value>恢复 Windows 驱动程序</value></data>
+  <data name="Devices_DriverConfirmTitle" xml:space="preserve"><value>切换到 PadForge 驱动程序</value></data>
+  <data name="Devices_DriverConfirm_Xbox360Pad" xml:space="preserve"><value>PadForge 会将此控制器切换到 Windows 的 WinUSB 驱动程序，以便读取聊天键盘。之后该控制器仅在 PadForge 运行时工作，游戏通过 PadForge 的虚拟控制器看到它。已连接的同型号控制器都会一起切换，并且每个都需要重新分配到其插槽。您可以随时在此页面恢复 Windows 驱动程序。</value></data>
+  <data name="Devices_DriverConfirm_Xbox360Receiver" xml:space="preserve"><value>PadForge 会将此接收器切换到 Windows 的 WinUSB 驱动程序，以便读取聊天键盘和 uDraw 绘图板。接收器上的所有控制器和耳机都会一起切换，仅在 PadForge 运行时工作，并需要重新分配到其插槽。您可以随时在此页面恢复 Windows 驱动程序。</value></data>
+  <data name="Devices_DriverConfirm_IntelBaseStation" xml:space="preserve"><value>PadForge 会将基座切换到 Windows 的 WinUSB 驱动程序，以便读取手柄。之后基座上的 Intel 无线键盘将无法在 Windows 中输入。您可以随时在此页面恢复 Windows 驱动程序。</value></data>
+  <data name="Devices_DriverConfirm_Prodikeys" xml:space="preserve"><value>PadForge 会将音乐键切换到 Windows 的 WinUSB 驱动程序，以便读取它们。之后键盘的媒体键和睡眠键在 Windows 中将无法使用，打字键仍可使用。您可以随时在此页面恢复 Windows 驱动程序。</value></data>
+  <data name="Devices_DriverSwitch" xml:space="preserve"><value>切换驱动程序</value></data>
+  <data name="Status_DriverSwitching_Format" xml:space="preserve"><value>正在更改 {0} 的驱动程序…</value></data>
+  <data name="Status_DriverBound_Format" xml:space="preserve"><value>{0} 已在使用 PadForge 驱动程序。</value></data>
+  <data name="Status_DriverBindFailed_Format" xml:space="preserve"><value>{0} 无法切换到 PadForge 驱动程序。</value></data>
+  <data name="Status_DriverRestored_Format" xml:space="preserve"><value>{0} 已恢复为 Windows 驱动程序。</value></data>
+  <data name="Status_DriverRestoreFailed_Format" xml:space="preserve"><value>无法恢复 {0} 的 Windows 驱动程序。</value></data>
+  <data name="Status_DriverMovedBack_Format" xml:space="preserve"><value>Windows 已将 {0} 恢复为其自带驱动程序。请在设备页面中选择它以再次切换。</value></data>
   <data name="Devices_OnlineTotal" xml:space="preserve"><value> 在线 / </value></data>
   <data name="Devices_Total" xml:space="preserve"><value> 总计</value></data>
   <data name="Devices_RemoveTooltip" xml:space="preserve"><value>移除此设备及其设置</value></data>

@@ -2571,6 +2571,11 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Ler como Controle iCade</value></data>
   <data name="Devices_ReadAsICadeTooltip" xml:space="preserve"><value>Para um controle no modo iCade, que pareia como teclado Bluetooth e digita uma letra a cada toque e a cada soltura. O PadForge o lê como controle, e as letras continuam chegando ao programa em primeiro plano.</value></data>
   <data name="Devices_ReadAsKeyboard" xml:space="preserve"><value>Ler como Teclado</value></data>
+  <data name="Devices_UsioTekken" xml:space="preserve"><value>Ler como Sticks de Tekken</value></data>
+  <data name="Devices_UsioTaiko" xml:space="preserve"><value>Ler como Tambores de Taiko</value></data>
+  <data name="Devices_UsioLayoutTooltip" xml:space="preserve"><value>Os gabinetes de Taiko no Tatsujin e de Tekken usam esta placa com o mesmo ID, cada um com seu próprio layout. A placa é aberta de novo no layout escolhido.</value></data>
+  <data name="Status_UsioTekken" xml:space="preserve"><value>Lendo a Namco USIO como quatro sticks de Tekken.</value></data>
+  <data name="Status_UsioTaiko" xml:space="preserve"><value>Lendo a Namco USIO como dois tambores de Taiko.</value></data>
   <data name="Status_ICadeOn_Format" xml:space="preserve"><value>Lendo {0} como controle iCade.</value></data>
   <data name="Status_ICadeOff_Format" xml:space="preserve"><value>Lendo {0} como teclado de novo.</value></data>
   <data name="Devices_LightGun" xml:space="preserve"><value>Pistola de Luz</value></data>

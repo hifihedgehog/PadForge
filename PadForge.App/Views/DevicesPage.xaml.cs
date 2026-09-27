@@ -511,6 +511,12 @@ namespace PadForge.Views
         private void ReadAsKeyboard_Click(object sender, RoutedEventArgs e)
             => (DataContext as ViewModels.DevicesViewModel)?.RequestICadeMode(false);
 
+        private void UsioTekken_Click(object sender, RoutedEventArgs e)
+            => (DataContext as ViewModels.DevicesViewModel)?.RequestUsioLayout(PadForge.Common.Input.InputManager.UsioTekken);
+
+        private void UsioTaiko_Click(object sender, RoutedEventArgs e)
+            => (DataContext as ViewModels.DevicesViewModel)?.RequestUsioLayout(PadForge.Common.Input.InputManager.UsioTaiko);
+
         // ── Handheld hidden buttons (issue #343) ──
 
         private void LearnHandheldButton_Click(object sender, RoutedEventArgs e)

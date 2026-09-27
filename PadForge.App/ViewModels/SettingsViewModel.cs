@@ -287,6 +287,11 @@ namespace PadForge.ViewModels
         /// SDL_JOYSTICK_DJI_REMOTE_TCP_HOSTS.</summary>
         public ObservableCollection<string> DjiRemoteHosts { get; } = new();
 
+        /// <summary>The Namco USIO's layout, "taiko" or "tekken", chosen from
+        /// the board's rows on the Devices page (hifihedgehog/SDL#33
+        /// Part 14).</summary>
+        public string UsioLayout { get; set; } = PadForge.Common.Input.InputManager.UsioTaiko;
+
         /// <summary>Raised on each add or remove in the dialog, never by the
         /// load, so reading the file cannot mark it dirty.</summary>
         public event EventHandler DjiRemoteHostsChanged;

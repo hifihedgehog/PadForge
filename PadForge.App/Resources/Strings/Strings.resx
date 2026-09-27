@@ -547,6 +547,11 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Read as iCade Controller</value></data>
   <data name="Devices_ReadAsICadeTooltip" xml:space="preserve"><value>For a pad in iCade mode, which pairs as a Bluetooth keyboard and types a letter for each press and each release. PadForge reads it as a controller, and its letters still reach the program in the foreground.</value></data>
   <data name="Devices_ReadAsKeyboard" xml:space="preserve"><value>Read as Keyboard</value></data>
+  <data name="Devices_UsioTekken" xml:space="preserve"><value>Read as Tekken Sticks</value></data>
+  <data name="Devices_UsioTaiko" xml:space="preserve"><value>Read as Taiko Drums</value></data>
+  <data name="Devices_UsioLayoutTooltip" xml:space="preserve"><value>Taiko no Tatsujin and Tekken cabinets use this board under one ID, each with its own layout. The board opens again in the layout you pick.</value></data>
+  <data name="Status_UsioTekken" xml:space="preserve"><value>Reading the Namco USIO as four Tekken sticks.</value></data>
+  <data name="Status_UsioTaiko" xml:space="preserve"><value>Reading the Namco USIO as two Taiko drums.</value></data>
   <data name="Status_ICadeOn_Format" xml:space="preserve"><value>Reading {0} as an iCade controller.</value></data>
   <data name="Status_ICadeOff_Format" xml:space="preserve"><value>Reading {0} as a keyboard again.</value></data>
   <data name="Devices_LightGun" xml:space="preserve"><value>Light Gun</value></data>

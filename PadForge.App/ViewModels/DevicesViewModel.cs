@@ -111,6 +111,12 @@ namespace PadForge.ViewModels
         public event EventHandler<bool> ICadeModeRequested;
         public void RequestICadeMode(bool asPad) => ICadeModeRequested?.Invoke(this, asPad);
 
+        /// <summary>Raised by the Namco USIO rows' layout buttons with
+        /// "tekken" or "taiko". MainWindow keeps the choice and has the board
+        /// opened again in it (hifihedgehog/SDL#33 Part 14).</summary>
+        public event EventHandler<string> UsioLayoutRequested;
+        public void RequestUsioLayout(string layout) => UsioLayoutRequested?.Invoke(this, layout);
+
         /// <summary>Reads the offer for the selected device. Only a row whose
         /// IDs belong to an opt-in device costs a sweep of the USB
         /// nodes.</summary>

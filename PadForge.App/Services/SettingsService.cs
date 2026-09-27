@@ -2298,6 +2298,8 @@ namespace PadForge.Services
                         vm.DjiRemoteHosts.Add(key);
             }
             PadForge.Common.Input.InputManager.ApplyDjiRemoteHosts(vm.DjiRemoteHosts);
+            vm.UsioLayout = PadForge.Common.Input.InputManager.NormalizeUsioLayout(appSettings.UsioLayout);
+            PadForge.Common.Input.InputManager.ApplyUsioLayout(vm.UsioLayout, reopen: false);
             vm.SetLanguageFromCode(appSettings.Language);
             vm.EnableAutoProfileSwitching = appSettings.EnableAutoProfileSwitching;
             SettingsManager.EnableAutoProfileSwitching = appSettings.EnableAutoProfileSwitching;
@@ -4747,6 +4749,9 @@ namespace PadForge.Services
                 DjiRemoteHosts = vm.DjiRemoteHosts.Count > 0
                     ? vm.DjiRemoteHosts.ToArray()
                     : null,
+                UsioLayout = vm.UsioLayout == PadForge.Common.Input.InputManager.UsioTekken
+                    ? PadForge.Common.Input.InputManager.UsioTekken
+                    : null,
                 ExtendedConfigs = isDefault ? extendedConfigs.ToArray() : defaultSnap.ExtendedConfigs,
                 DeviceSlotConfigs = isDefault ? deviceSlotConfigs.ToArray() : defaultSnap.DeviceSlotConfigs,
                 UserProfiles = _userProfiles.Count > 0 ? _userProfiles.ToArray() : null,
@@ -6688,6 +6693,11 @@ namespace PadForge.Services
         [XmlArray("DjiRemoteHosts")]
         [XmlArrayItem("Host")]
         public string[] DjiRemoteHosts { get; set; }
+
+        /// <summary>The Namco USIO's layout (hifihedgehog/SDL#33 Part 14):
+        /// "tekken", or null for the fork's default, Taiko.</summary>
+        [XmlElement]
+        public string UsioLayout { get; set; }
 
         /// <summary>
         /// Per-slot Extended configuration (preset, axis/button counts).

@@ -933,6 +933,10 @@ namespace PadForge.Common.Input
                 lock (_djiHostsHintLock)
                     SDL_SetHint(SDL_HINT_JOYSTICK_DJI_REMOTE_TCP_HOSTS, _djiHostsHintValue);
 
+                // The Namco USIO's layout, which the board reads when it
+                // opens, so it goes in before SDL_Init.
+                SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_USIO_LAYOUT, _usioLayout);
+
                 // Allow screensaver/sleep even while SDL video is active.
                 SDL_SetHint(SDL_HINT_VIDEO_ALLOW_SCREENSAVER, "1");
 
@@ -1463,6 +1467,40 @@ namespace PadForge.Common.Input
 
         private static readonly object _djiHostsHintLock = new object();
         private static string _djiHostsHintValue = string.Empty;
+
+        /// <summary>The Namco USIO's two layouts (hifihedgehog/SDL#33
+        /// Part 14): Taiko no Tatsujin's two drums, the fork's default, or
+        /// Tekken's four arcade sticks. One board ID serves both cabinets.</summary>
+        public const string UsioTaiko = "taiko";
+        public const string UsioTekken = "tekken";
+
+        private static volatile string _usioLayout = UsioTaiko;
+
+        /// <summary>The layout the setting names: Tekken for "tekken" in any
+        /// case, Taiko for anything else, as the fork reads the hint.</summary>
+        public static string NormalizeUsioLayout(string layout) =>
+            string.Equals(layout?.Trim(), UsioTekken, StringComparison.OrdinalIgnoreCase) ? UsioTekken : UsioTaiko;
+
+        /// <summary>Hands SDL the USIO layout. The board reads it when it
+        /// opens, so a change reaches a connected board only when it opens
+        /// again, and the fork opens it again when the USIO driver's hint
+        /// goes off and on (docs/README-arcade-io.md). reopen does that, off
+        /// long enough for the poll loop's update to close the board, as
+        /// RescanWiiControllers does for the Wii driver.</summary>
+        public static void ApplyUsioLayout(string layout, bool reopen)
+        {
+            string value = NormalizeUsioLayout(layout);
+            _usioLayout = value;
+            bool accepted = WriteHintUnderJoystickLock(SDL_HINT_JOYSTICK_HIDAPI_USIO_LAYOUT, value);
+            Engine.SdlDiagLog.WriteLine($"USIO hint {SDL_HINT_JOYSTICK_HIDAPI_USIO_LAYOUT}={value} accepted={accepted} reopen={reopen}");
+            if (!reopen) return;
+            Task.Run(() =>
+            {
+                WriteHintUnderJoystickLock(SDL_HINT_JOYSTICK_HIDAPI_USIO, "0");
+                Thread.Sleep(200);
+                WriteHintUnderJoystickLock(SDL_HINT_JOYSTICK_HIDAPI_USIO, "1");
+            });
+        }
 
         private static bool WriteHintUnderJoystickLock(string name, string value)
         {

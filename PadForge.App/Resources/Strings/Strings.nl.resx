@@ -2597,6 +2597,11 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Lezen als iCade-controller</value></data>
   <data name="Devices_ReadAsICadeTooltip" xml:space="preserve"><value>Voor een controller in iCade-modus, die koppelt als Bluetooth-toetsenbord en bij elke druk en elke loslating een letter typt. PadForge leest hem als controller, en zijn letters bereiken nog steeds het programma op de voorgrond.</value></data>
   <data name="Devices_ReadAsKeyboard" xml:space="preserve"><value>Lezen als toetsenbord</value></data>
+  <data name="Devices_UsioTekken" xml:space="preserve"><value>Lezen als Tekken-sticks</value></data>
+  <data name="Devices_UsioTaiko" xml:space="preserve"><value>Lezen als Taiko-trommels</value></data>
+  <data name="Devices_UsioLayoutTooltip" xml:space="preserve"><value>Kasten van Taiko no Tatsujin en Tekken gebruiken dit bord onder één ID, elk met een eigen indeling. Het bord wordt opnieuw geopend in de gekozen indeling.</value></data>
+  <data name="Status_UsioTekken" xml:space="preserve"><value>De Namco USIO wordt gelezen als vier Tekken-sticks.</value></data>
+  <data name="Status_UsioTaiko" xml:space="preserve"><value>De Namco USIO wordt gelezen als twee Taiko-trommels.</value></data>
   <data name="Status_ICadeOn_Format" xml:space="preserve"><value>{0} wordt gelezen als iCade-controller.</value></data>
   <data name="Status_ICadeOff_Format" xml:space="preserve"><value>{0} wordt weer gelezen als toetsenbord.</value></data>
   <data name="Devices_LightGun" xml:space="preserve"><value>Lichtpistool</value></data>

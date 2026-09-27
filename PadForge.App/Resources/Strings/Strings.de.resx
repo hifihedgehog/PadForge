@@ -2577,6 +2577,11 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Als iCade-Controller lesen</value></data>
   <data name="Devices_ReadAsICadeTooltip" xml:space="preserve"><value>Für ein Gamepad im iCade-Modus, das sich als Bluetooth-Tastatur koppelt und bei jedem Drücken und Loslassen einen Buchstaben tippt. PadForge liest es als Controller, und seine Buchstaben erreichen weiterhin das Programm im Vordergrund.</value></data>
   <data name="Devices_ReadAsKeyboard" xml:space="preserve"><value>Als Tastatur lesen</value></data>
+  <data name="Devices_UsioTekken" xml:space="preserve"><value>Als Tekken-Sticks lesen</value></data>
+  <data name="Devices_UsioTaiko" xml:space="preserve"><value>Als Taiko-Trommeln lesen</value></data>
+  <data name="Devices_UsioLayoutTooltip" xml:space="preserve"><value>Taiko-no-Tatsujin- und Tekken-Automaten nutzen diese Platine unter einer ID, jeweils mit eigener Belegung. Die Platine wird in der gewählten Belegung neu geöffnet.</value></data>
+  <data name="Status_UsioTekken" xml:space="preserve"><value>Die Namco USIO wird als vier Tekken-Sticks gelesen.</value></data>
+  <data name="Status_UsioTaiko" xml:space="preserve"><value>Die Namco USIO wird als zwei Taiko-Trommeln gelesen.</value></data>
   <data name="Status_ICadeOn_Format" xml:space="preserve"><value>{0} wird als iCade-Controller gelesen.</value></data>
   <data name="Status_ICadeOff_Format" xml:space="preserve"><value>{0} wird wieder als Tastatur gelesen.</value></data>
   <data name="Devices_LightGun" xml:space="preserve"><value>Lightgun</value></data>

@@ -892,6 +892,27 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _showReadAsKeyboard, value);
         }
 
+        private bool _showUsioTekken;
+
+        /// <summary>Whether the row offers "Read as Tekken Sticks": a Namco
+        /// USIO drum, the board read in its Taiko layout
+        /// (hifihedgehog/SDL#33 Part 14).</summary>
+        public bool ShowUsioTekken
+        {
+            get => _showUsioTekken;
+            set => SetProperty(ref _showUsioTekken, value);
+        }
+
+        private bool _showUsioTaiko;
+
+        /// <summary>Whether the row offers "Read as Taiko Drums": a Namco
+        /// USIO stick, the board read in its Tekken layout.</summary>
+        public bool ShowUsioTaiko
+        {
+            get => _showUsioTaiko;
+            set => SetProperty(ref _showUsioTaiko, value);
+        }
+
         /// <summary>The beam-count window the gun's aim scales by.</summary>
         public string GunCalibrationStatus
         {

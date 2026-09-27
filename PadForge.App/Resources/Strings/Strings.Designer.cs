@@ -842,6 +842,11 @@ public class Strings : INotifyPropertyChanged
     public string Devices_ReadAsICade => Get("Devices_ReadAsICade");
     public string Devices_ReadAsICadeTooltip => Get("Devices_ReadAsICadeTooltip");
     public string Devices_ReadAsKeyboard => Get("Devices_ReadAsKeyboard");
+    public string Devices_UsioTekken => Get("Devices_UsioTekken");
+    public string Devices_UsioTaiko => Get("Devices_UsioTaiko");
+    public string Devices_UsioLayoutTooltip => Get("Devices_UsioLayoutTooltip");
+    public string Status_UsioTekken => Get("Status_UsioTekken");
+    public string Status_UsioTaiko => Get("Status_UsioTaiko");
     public string Status_ICadeOn_Format => Get("Status_ICadeOn_Format");
     public string Status_ICadeOff_Format => Get("Status_ICadeOff_Format");
     public string Devices_LightGun => Get("Devices_LightGun");

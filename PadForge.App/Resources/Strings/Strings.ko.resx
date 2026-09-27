@@ -2577,6 +2577,11 @@
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>iCade 컨트롤러로 읽기</value></data>
   <data name="Devices_ReadAsICadeTooltip" xml:space="preserve"><value>iCade 모드의 컨트롤러용입니다. Bluetooth 키보드로 페어링되며 누를 때와 뗄 때마다 글자를 입력합니다. PadForge는 컨트롤러로 읽으며, 글자는 계속 앞에 있는 프로그램에 전달됩니다.</value></data>
   <data name="Devices_ReadAsKeyboard" xml:space="preserve"><value>키보드로 읽기</value></data>
+  <data name="Devices_UsioTekken" xml:space="preserve"><value>철권 스틱으로 읽기</value></data>
+  <data name="Devices_UsioTaiko" xml:space="preserve"><value>태고의 달인 북으로 읽기</value></data>
+  <data name="Devices_UsioLayoutTooltip" xml:space="preserve"><value>태고의 달인과 철권 기체는 같은 ID의 이 보드를 사용하며 배치가 서로 다릅니다. 선택한 배치로 보드를 다시 엽니다.</value></data>
+  <data name="Status_UsioTekken" xml:space="preserve"><value>Namco USIO를 철권 스틱 4개로 읽는 중입니다.</value></data>
+  <data name="Status_UsioTaiko" xml:space="preserve"><value>Namco USIO를 태고의 달인 북 2개로 읽는 중입니다.</value></data>
   <data name="Status_ICadeOn_Format" xml:space="preserve"><value>{0}을(를) iCade 컨트롤러로 읽는 중입니다.</value></data>
   <data name="Status_ICadeOff_Format" xml:space="preserve"><value>{0}을(를) 다시 키보드로 읽는 중입니다.</value></data>
   <data name="Devices_LightGun" xml:space="preserve"><value>라이트 건</value></data>

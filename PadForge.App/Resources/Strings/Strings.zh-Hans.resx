@@ -2577,6 +2577,11 @@
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>作为 iCade 控制器读取</value></data>
   <data name="Devices_ReadAsICadeTooltip" xml:space="preserve"><value>用于 iCade 模式的控制器。它以蓝牙键盘的身份配对，每次按下和松开都会输入一个字母。PadForge 会把它读取为控制器，其字母仍会送达前台程序。</value></data>
   <data name="Devices_ReadAsKeyboard" xml:space="preserve"><value>作为键盘读取</value></data>
+  <data name="Devices_UsioTekken" xml:space="preserve"><value>作为铁拳摇杆读取</value></data>
+  <data name="Devices_UsioTaiko" xml:space="preserve"><value>作为太鼓达人鼓读取</value></data>
+  <data name="Devices_UsioLayoutTooltip" xml:space="preserve"><value>太鼓达人和铁拳的机台以同一 ID 使用这块板，各自布局不同。板子会以所选布局重新打开。</value></data>
+  <data name="Status_UsioTekken" xml:space="preserve"><value>正在将 Namco USIO 作为四个铁拳摇杆读取。</value></data>
+  <data name="Status_UsioTaiko" xml:space="preserve"><value>正在将 Namco USIO 作为两个太鼓达人鼓读取。</value></data>
   <data name="Status_ICadeOn_Format" xml:space="preserve"><value>正在将 {0} 作为 iCade 控制器读取。</value></data>
   <data name="Status_ICadeOff_Format" xml:space="preserve"><value>已重新将 {0} 作为键盘读取。</value></data>
   <data name="Devices_LightGun" xml:space="preserve"><value>光枪</value></data>

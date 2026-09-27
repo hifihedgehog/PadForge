@@ -13624,6 +13624,13 @@ namespace PadForge.Services
             row.ShowReadAsKeyboard = iCadeListed && (ud.IsKeyboard
                 || (ud.ProductName ?? string.Empty).StartsWith(ICadePads.JoystickNamePrefix, StringComparison.Ordinal));
 
+            // The Namco USIO (hifihedgehog/SDL#33 Part 14): one board ID
+            // serves Taiko and Tekken cabinets, and the joysticks' names say
+            // which layout the board is read in (docs/README-arcade-io.md).
+            string boardName = ud.ProductName ?? string.Empty;
+            row.ShowUsioTekken = boardName.StartsWith("Namco USIO Taiko Drum", StringComparison.Ordinal);
+            row.ShowUsioTaiko = boardName.StartsWith("Namco USIO Tekken", StringComparison.Ordinal);
+
             // Battery indicator (#167): seed through the same effective-battery
             // path the 5 s tick uses (#187). Seeding raw SDL battery here blinked
             // the Devices page for Xbox pads: every list refresh stamped -1 and

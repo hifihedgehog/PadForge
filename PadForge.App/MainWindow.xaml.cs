@@ -883,6 +883,7 @@ namespace PadForge
             // stated before a move and nothing is asked before a restore.
             _viewModel.Devices.DriverBindRequested += async (s, e) => await SwitchDriverAsync(bind: true);
             _viewModel.Devices.ICadeModeRequested += (s, asPad) => SetICadeMode(asPad);
+            _viewModel.Devices.UsioLayoutRequested += (s, layout) => SetUsioLayout(layout);
             _viewModel.Devices.DriverRestoreRequested += async (s, e) => await SwitchDriverAsync(bind: false);
 
             // Wire devices page Bluetooth pairing (Wii controllers, issue #116).
@@ -2540,6 +2541,20 @@ namespace PadForge
             _viewModel.SetStatus(string.Format(asPad
                 ? Strings.Instance.Status_ICadeOn_Format
                 : Strings.Instance.Status_ICadeOff_Format, row.DeviceName));
+        }
+
+        /// <summary>Reads the Namco USIO in the chosen layout from now on
+        /// (hifihedgehog/SDL#33 Part 14). The board opens again in it: its
+        /// joysticks leave and the other layout's arrive.</summary>
+        private void SetUsioLayout(string layout)
+        {
+            string value = Common.Input.InputManager.NormalizeUsioLayout(layout);
+            _viewModel.Settings.UsioLayout = value;
+            Common.Input.InputManager.ApplyUsioLayout(value, reopen: true);
+            _settingsService?.MarkDirty();
+            _viewModel.SetStatus(value == Common.Input.InputManager.UsioTekken
+                ? Strings.Instance.Status_UsioTekken
+                : Strings.Instance.Status_UsioTaiko);
         }
 
         private static string DriverCost(Services.VendorUsbDriverInstaller.OptInKind kind) => kind switch

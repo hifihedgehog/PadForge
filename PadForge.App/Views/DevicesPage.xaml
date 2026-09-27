@@ -916,6 +916,27 @@
                                 <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"/>
                             </Button.Style>
                         </Button>
+                        <!-- Namco USIO layout (hifihedgehog/SDL#33 Part 14): one board
+                             ID serves Taiko no Tatsujin and Tekken cabinets, so
+                             the board's rows switch it between the two. -->
+                        <Button Content="{Binding Devices_UsioTekken, Source={x:Static strings:Strings.Instance}}" Margin="0,6,0,8"
+                                Padding="8,4" HorizontalAlignment="Left"
+                                Click="UsioTekken_Click"
+                                ToolTip="{Binding Devices_UsioLayoutTooltip, Source={x:Static strings:Strings.Instance}}"
+                                Visibility="{Binding SelectedDevice.ShowUsioTekken, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"/>
+                            </Button.Style>
+                        </Button>
+                        <Button Content="{Binding Devices_UsioTaiko, Source={x:Static strings:Strings.Instance}}" Margin="0,6,0,8"
+                                Padding="8,4" HorizontalAlignment="Left"
+                                Click="UsioTaiko_Click"
+                                ToolTip="{Binding Devices_UsioLayoutTooltip, Source={x:Static strings:Strings.Instance}}"
+                                Visibility="{Binding SelectedDevice.ShowUsioTaiko, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"/>
+                            </Button.Style>
+                        </Button>
                         <!-- Vendor daemon notice (#343): the vendor's own tool keeps
                              reacting to these buttons until it is stopped. -->
                         <TextBlock Text="{Binding SelectedDevice.HandheldDaemonWarning}" TextWrapping="Wrap"

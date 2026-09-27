@@ -2577,6 +2577,11 @@
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>iCade コントローラーとして読み取る</value></data>
   <data name="Devices_ReadAsICadeTooltip" xml:space="preserve"><value>iCade モードのコントローラー向けです。Bluetooth キーボードとしてペアリングされ、押すたびと離すたびに文字を入力します。PadForge はコントローラーとして読み取りますが、文字は前面のプログラムにも届きます。</value></data>
   <data name="Devices_ReadAsKeyboard" xml:space="preserve"><value>キーボードとして読み取る</value></data>
+  <data name="Devices_UsioTekken" xml:space="preserve"><value>鉄拳のスティックとして読み取る</value></data>
+  <data name="Devices_UsioTaiko" xml:space="preserve"><value>太鼓の達人の太鼓として読み取る</value></data>
+  <data name="Devices_UsioLayoutTooltip" xml:space="preserve"><value>太鼓の達人と鉄拳の筐体は同じ ID のこの基板を使い、それぞれ配置が異なります。選んだ配置で基板を開き直します。</value></data>
+  <data name="Status_UsioTekken" xml:space="preserve"><value>Namco USIO を鉄拳のスティック 4 本として読み取っています。</value></data>
+  <data name="Status_UsioTaiko" xml:space="preserve"><value>Namco USIO を太鼓の達人の太鼓 2 台として読み取っています。</value></data>
   <data name="Status_ICadeOn_Format" xml:space="preserve"><value>{0} を iCade コントローラーとして読み取っています。</value></data>
   <data name="Status_ICadeOff_Format" xml:space="preserve"><value>{0} を再びキーボードとして読み取っています。</value></data>
   <data name="Devices_LightGun" xml:space="preserve"><value>ライトガン</value></data>

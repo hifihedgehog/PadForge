@@ -2577,6 +2577,11 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Devices_ReadAsICade" xml:space="preserve"><value>Lire comme manette iCade</value></data>
   <data name="Devices_ReadAsICadeTooltip" xml:space="preserve"><value>Pour une manette en mode iCade, qui s'appaire comme un clavier Bluetooth et tape une lettre à chaque appui et à chaque relâchement. PadForge la lit comme une manette, et ses lettres atteignent toujours le programme au premier plan.</value></data>
   <data name="Devices_ReadAsKeyboard" xml:space="preserve"><value>Lire comme clavier</value></data>
+  <data name="Devices_UsioTekken" xml:space="preserve"><value>Lire comme sticks Tekken</value></data>
+  <data name="Devices_UsioTaiko" xml:space="preserve"><value>Lire comme tambours Taiko</value></data>
+  <data name="Devices_UsioLayoutTooltip" xml:space="preserve"><value>Les bornes Taiko no Tatsujin et Tekken utilisent cette carte sous un même ID, chacune avec sa propre disposition. La carte est rouverte dans la disposition choisie.</value></data>
+  <data name="Status_UsioTekken" xml:space="preserve"><value>La Namco USIO est lue comme quatre sticks Tekken.</value></data>
+  <data name="Status_UsioTaiko" xml:space="preserve"><value>La Namco USIO est lue comme deux tambours Taiko.</value></data>
   <data name="Status_ICadeOn_Format" xml:space="preserve"><value>{0} est lu comme une manette iCade.</value></data>
   <data name="Status_ICadeOff_Format" xml:space="preserve"><value>{0} est de nouveau lu comme un clavier.</value></data>
   <data name="Devices_LightGun" xml:space="preserve"><value>Pistolet optique</value></data>

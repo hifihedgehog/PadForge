@@ -115,6 +115,12 @@ namespace PadForge.Common.Input
         private const uint IOCTL_HID_INTERRUPT_READ  = 0x2A680C;
         private const uint IOCTL_HID_INTERRUPT_WRITE = 0x2AA810;
 
+        // The HID control channel, where the EXT port's feature report 0xE0
+        // travels (BthPS3.h:375 and :380, IOCTL_BTHPS3_BASE 0x801 plus 0x200
+        // and 0x201). The DS3 lane sends its SET_REPORTs with the same write.
+        private const uint IOCTL_HID_CONTROL_READ  = 0x2A6804;
+        private const uint IOCTL_HID_CONTROL_WRITE = 0x2AA808;
+
         private const ushort MOVE_VID = 0x054C;
         private const ushort MOVE_PID = 0x03D5;   // BTHPS3_MOTION_PID (BthPS3.h:51); the BT PDO advertises this for both models
 
@@ -130,6 +136,71 @@ namespace PadForge.Common.Input
         // timeout and also serves as the rumble keepalive.
         private const int OUTPUT_MIN_INTERVAL_MS = 120;
         private const int OUTPUT_KEEPALIVE_MS = 2000;
+
+        // ── EXT port accessories (hifihedgehog/SDL#33 item 34) ──────────────
+        // A ZCM1 Move on Bluetooth reads a Sharp Shooter or a Racing Wheel
+        // through its EXT socket and merges the accessory's controls into its
+        // own input report, as the accessory's config tells it to (moveonpc
+        // wiki, Extension devices). Each accessory surfaces as its own virtual
+        // gamepad while attached, so a bare Move keeps its shape.
+        internal const ushort ExtSharpShooterId = 0x8081;   // psmoveapi test_extension.c:37
+        internal const ushort ExtRacingWheelId = 0x8101;    // test_extension.c:38
+        internal enum ExtAccessory { None, Unknown, SharpShooter, RacingWheel }
+
+        /// <summary>Racing Wheel: L1 and R1 on the shoulders, the D-pad, and
+        /// the paddles, which SDL names left and right paddle 1.</summary>
+        internal const uint WheelButtonMask =
+            (1u << SDL.SDL_GAMEPAD_BUTTON_LEFT_SHOULDER) | (1u << SDL.SDL_GAMEPAD_BUTTON_RIGHT_SHOULDER)
+            | (1u << SDL.SDL_GAMEPAD_BUTTON_DPAD_UP) | (1u << SDL.SDL_GAMEPAD_BUTTON_DPAD_DOWN)
+            | (1u << SDL.SDL_GAMEPAD_BUTTON_DPAD_LEFT) | (1u << SDL.SDL_GAMEPAD_BUTTON_DPAD_RIGHT)
+            | (1u << SDL.SDL_GAMEPAD_BUTTON_RIGHT_PADDLE1) | (1u << SDL.SDL_GAMEPAD_BUTTON_LEFT_PADDLE1);
+
+        /// <summary>Racing Wheel: L2 and R2 on the triggers, joystick axes 0
+        /// and 1.</summary>
+        internal const uint WheelAxisMask =
+            (1u << SDL.SDL_GAMEPAD_AXIS_LEFT_TRIGGER) | (1u << SDL.SDL_GAMEPAD_AXIS_RIGHT_TRIGGER);
+
+        /// <summary>The throttle rides joystick axis 6, past the six gamepad
+        /// axes, where PadForge reads a device's own analogs as Axis 7 and on
+        /// (HasExtraGenericAxes, the DS3 pressure buttons' path). Axes 2 to 5
+        /// carry nothing.</summary>
+        internal const int WheelThrottleAxis = 6;
+
+        /// <summary>Sharp Shooter: Reload on West, the reload button of most
+        /// shooters, and the three weapon positions on Misc 2 to 4. The
+        /// trigger's own fire bit is the right trigger. The pump pulls the
+        /// Move's T without that bit, so it reaches only the Move.</summary>
+        internal const uint ShooterButtonMask =
+            (1u << SDL.SDL_GAMEPAD_BUTTON_WEST) | (1u << SDL.SDL_GAMEPAD_BUTTON_MISC2)
+            | (1u << SDL.SDL_GAMEPAD_BUTTON_MISC3) | (1u << SDL.SDL_GAMEPAD_BUTTON_MISC4);
+        internal const uint ShooterAxisMask = 1u << SDL.SDL_GAMEPAD_AXIS_RIGHT_TRIGGER;
+
+        /// <summary>How long the control-channel exchange for the accessory's
+        /// ID may take before its read is canceled.</summary>
+        private const int ExtReplyTimeoutMs = 600;
+
+        /// <summary>How long after the EXT bit rises the accessory is read.
+        /// The Move polls an accessory's features every 11 to 13 ms (moveonpc
+        /// wiki, Sharp Shooter and Racing Wheel), so its bytes are in the
+        /// report well before this.</summary>
+        private const int ExtSettleMs = 100;
+
+        // Written by the read thread, served by the writer thread.
+        private volatile bool _extSeen;
+        private long _extSeenAtMs;
+        private volatile bool _extAttachPending;
+        private volatile bool _extDetachPending;
+        private volatile byte _extLastPaddleByte;
+        // Written by the writer thread under SDL's joystick lock, read by the
+        // read thread under the same lock.
+        private volatile ExtAccessory _extKind = ExtAccessory.None;
+        private uint _extInstanceId;
+        private IntPtr _extJoystick = IntPtr.Zero;
+        private SDL.VJRumble _extRumbleCb;
+        // The Racing Wheel's handle motors, under _outLock.
+        private byte _wheelLeft, _wheelRight;
+        private bool _wheelDirty;
+        private long _wheelLastWrite;
 
         private readonly Action<string> _log;
         private Thread _readThread;
@@ -819,6 +890,8 @@ namespace PadForge.Common.Input
                     WriteOutputReport();
                     lastWrite = now;
                 }
+
+                ServiceExtAccessory(now);
             }
         }
 
@@ -1107,6 +1180,10 @@ namespace PadForge.Common.Input
                 if (_instanceId != 0) { PowerByInstance.TryRemove(_instanceId, out _); _lastBattery = 0xFF; }
                 if (_sdlJoystick != IntPtr.Zero) { SDL.SDL_CloseJoystick(_sdlJoystick); _sdlJoystick = IntPtr.Zero; }
                 if (_instanceId != 0) { SDL.SDL_DetachVirtualJoystick(_instanceId); _instanceId = 0; }
+                DetachAccessory();
+                _extSeen = false;
+                _extAttachPending = false;
+                _extDetachPending = false;
 
                 lock (_ioLock)
                 lock (_outLock)
@@ -1245,10 +1322,378 @@ namespace PadForge.Common.Input
                 {
                     calLine = TraceCalibrationMissing();
                 }
+
+                // The EXT socket is powered only over Bluetooth, and only the
+                // ZCM1 has one (psmove_get_ext_data, psmove.c:1492-1494).
+                if (!_modelZcm2 && len >= Zcm1BtReportSize && _transport == MoveTransport.Bluetooth)
+                    TrackExtAccessory(b, buttons);
             }
             finally { SDL.SDL_UnlockJoysticks(); }
             if (magLine != null) _log(magLine);
             if (calLine != null) _log(calLine);
+        }
+
+        // ─── EXT accessories ────────────────────────────────────────────────────
+        //
+        // BT frame offsets: report offset N lands at buf[N+1]. The EXT bit is
+        // report byte 4, the accessory data report bytes 0x2C-0x30 (buf[45..49]).
+
+        internal const uint BtnL1    = 1u << 2;    // psmove.h Btn_L1, the DS3 bits the Racing Wheel merges
+        internal const uint BtnR1    = 1u << 3;
+        internal const uint BtnUp    = 1u << 12;
+        internal const uint BtnRight = 1u << 13;
+        internal const uint BtnDown  = 1u << 14;
+        internal const uint BtnLeft  = 1u << 15;
+
+        /// <summary>True while an accessory is attached: report byte 4 bit 0x10
+        /// (psmove_is_ext_connected, psmove.c:1583), which the Move sets once
+        /// the accessory has sent its config (the wiki's EXT bit 0x1000 of the
+        /// field at 0x03). Pure.</summary>
+        internal static bool ExtAttached(byte[] frame) => frame != null && frame.Length > 5 && (frame[5] & 0x10) != 0;
+
+        /// <summary>SET_REPORT(FEATURE) 0xE0 that has the Move read the
+        /// accessory's config: read flag 1, I2C address 0xA0, offset 0, 0xFF
+        /// bytes (psmove_get_ext_device_info, psmove.c:1606-1610), a 49-byte
+        /// report behind the 0x53 header the DS3 lane sends 0xF4 with. Pure.</summary>
+        internal static byte[] BuildExtInfoReadSetup()
+        {
+            var o = new byte[1 + 49];
+            o[0] = 0x53;
+            o[1] = 0xE0;
+            o[2] = 0x01;
+            o[3] = 0xA0;
+            o[4] = 0x00;
+            o[5] = 0xFF;
+            return o;
+        }
+
+        /// <summary>GET_REPORT(FEATURE) 0xE0: the header bluepad32 builds as
+        /// (HID_MESSAGE_TYPE_GET_REPORT &lt;&lt; 4) | HID_REPORT_TYPE_FEATURE
+        /// (uni_hid_parser_ds4.c:676), then the report ID.</summary>
+        internal static byte[] BuildExtInfoGetReport() => new byte[] { 0x43, 0xE0 };
+
+        /// <summary>The accessory's ID from a control-channel reply: DATA |
+        /// FEATURE 0xA3 (the byte bluepad32 skips, uni_bt_bredr.c:511), report
+        /// 0xE0, and the ID at report bytes 9 and 10 (psmove.c:1631), frame
+        /// bytes 10 and 11. -1 for anything else, handshakes included. Pure.</summary>
+        internal static int ParseExtInfoReply(byte[] frame, int length)
+        {
+            if (frame == null || length < 12 || length > frame.Length) return -1;
+            if (frame[0] != 0xA3 || frame[1] != 0xE0) return -1;
+            return (frame[10] << 8) | frame[11];
+        }
+
+        internal static ExtAccessory AccessoryFromId(int id) => id switch
+        {
+            ExtSharpShooterId => ExtAccessory.SharpShooter,
+            ExtRacingWheelId => ExtAccessory.RacingWheel,
+            _ => ExtAccessory.Unknown,
+        };
+
+        /// <summary>The accessory from its data, for when the ID read fails.
+        /// The Racing Wheel's config copies its paddle byte to report offset
+        /// 0x2F with bits 0x3C always set, and the Sharp Shooter's config writes
+        /// only offset 0x2C (moveonpc wiki, Racing Wheel and Sharp Shooter).
+        /// Pure.</summary>
+        internal static ExtAccessory AccessoryFromData(byte paddleByte)
+            => (paddleByte & 0x3C) == 0x3C ? ExtAccessory.RacingWheel : ExtAccessory.SharpShooter;
+
+        /// <summary>SET_REPORT(FEATURE) 0xE0 that runs the Racing Wheel's handle
+        /// motors: write flag 0, address 0xA0, control byte 0x20, payload length
+        /// 2, then right and left from report byte 9 (psmove_send_ext_data,
+        /// psmove.c:1662-1666, and the wiki's Racing Wheel "Sending values"). Pure.</summary>
+        internal static byte[] BuildWheelRumble(byte left, byte right)
+        {
+            var o = new byte[1 + 49];
+            o[0] = 0x53;
+            o[1] = 0xE0;
+            o[2] = 0x00;
+            o[3] = 0xA0;
+            o[4] = 0x20;
+            o[5] = 0x02;
+            o[10] = right;
+            o[11] = left;
+            return o;
+        }
+
+        /// <summary>The joystick index SDL gives a gamepad button on a virtual
+        /// joystick: its place among the mask's bits in enum order
+        /// (VIRTUAL_JoystickGetGamepadMapping assigns current_button++ from
+        /// SOUTH to MISC6). Pure.</summary>
+        internal static int VirtualButtonIndex(uint mask, int sdlButton)
+            => System.Numerics.BitOperations.PopCount(mask & ((1u << sdlButton) - 1));
+
+        /// <summary>The Racing Wheel's controls from a BT frame. L1, R1 and the
+        /// D-pad arrive merged into the Move's own button bytes, report offsets
+        /// 0x01 and 0x02 (the Move's decoded word carries them), and the
+        /// throttle, L2, R2 and the paddle byte are copied to report offsets
+        /// 0x2C to 0x2F (the wheel's config, moveonpc wiki). Pure.</summary>
+        internal static (bool L1, bool R1, bool Up, bool Down, bool Left, bool Right,
+            bool LeftPaddle, bool RightPaddle, byte L2, byte R2, byte Throttle) DecodeRacingWheel(byte[] b, uint buttons)
+            => ((buttons & BtnL1) != 0, (buttons & BtnR1) != 0,
+                (buttons & BtnUp) != 0, (buttons & BtnDown) != 0,
+                (buttons & BtnLeft) != 0, (buttons & BtnRight) != 0,
+                (b[48] & 0x01) != 0, (b[48] & 0x02) != 0,
+                b[46], b[47], b[45]);
+
+        /// <summary>The Sharp Shooter's controls from a BT frame: one byte at
+        /// report offset 0x2C with weapon 0x01, 0x02 or 0x04, fire 0x40 and
+        /// reload 0x80 (moveonpc wiki, Sharp Shooter, and psmoveapi
+        /// test_extension.c handle_sharp_shooter). Pure.</summary>
+        internal static (bool Reload, bool Weapon1, bool Weapon2, bool Weapon3, bool Fire) DecodeSharpShooter(byte[] b)
+        {
+            byte e = b[45];
+            return ((e & 0x80) != 0, (e & 0x01) != 0, (e & 0x02) != 0, (e & 0x04) != 0, (e & 0x40) != 0);
+        }
+
+        private static void SetAccessoryButton(IntPtr j, uint mask, int sdlButton, bool down)
+            => SDL.SDL_SetJoystickVirtualButton(j, VirtualButtonIndex(mask, sdlButton), down);
+
+        /// <summary>Called on the read thread inside SDL's joystick lock. Hands
+        /// attach and detach to the writer, which owns the control channel, and
+        /// posts the attached accessory's controls.</summary>
+        private void TrackExtAccessory(byte[] b, uint buttons)
+        {
+            bool ext = ExtAttached(b);
+            _extLastPaddleByte = b[48];
+            if (ext != _extSeen)
+            {
+                _extSeen = ext;
+                if (ext)
+                {
+                    Volatile.Write(ref _extSeenAtMs, Environment.TickCount64);
+                    _extAttachPending = true;
+                }
+                else _extDetachPending = true;
+                _writeSignal.Set();
+            }
+            IntPtr xj = _extJoystick;
+            if (!ext || xj == IntPtr.Zero) return;
+            if (_extKind == ExtAccessory.RacingWheel)
+            {
+                var w = DecodeRacingWheel(b, buttons);
+                SetAccessoryButton(xj, WheelButtonMask, SDL.SDL_GAMEPAD_BUTTON_LEFT_SHOULDER, w.L1);
+                SetAccessoryButton(xj, WheelButtonMask, SDL.SDL_GAMEPAD_BUTTON_RIGHT_SHOULDER, w.R1);
+                SetAccessoryButton(xj, WheelButtonMask, SDL.SDL_GAMEPAD_BUTTON_DPAD_UP, w.Up);
+                SetAccessoryButton(xj, WheelButtonMask, SDL.SDL_GAMEPAD_BUTTON_DPAD_DOWN, w.Down);
+                SetAccessoryButton(xj, WheelButtonMask, SDL.SDL_GAMEPAD_BUTTON_DPAD_LEFT, w.Left);
+                SetAccessoryButton(xj, WheelButtonMask, SDL.SDL_GAMEPAD_BUTTON_DPAD_RIGHT, w.Right);
+                SetAccessoryButton(xj, WheelButtonMask, SDL.SDL_GAMEPAD_BUTTON_LEFT_PADDLE1, w.LeftPaddle);
+                SetAccessoryButton(xj, WheelButtonMask, SDL.SDL_GAMEPAD_BUTTON_RIGHT_PADDLE1, w.RightPaddle);
+                // 0-255 to SDL's trigger range, the Move T's scaling above.
+                SDL.SDL_SetJoystickVirtualAxis(xj, 0, (short)(w.L2 * 257 - 32768));
+                SDL.SDL_SetJoystickVirtualAxis(xj, 1, (short)(w.R2 * 257 - 32768));
+                SDL.SDL_SetJoystickVirtualAxis(xj, WheelThrottleAxis, (short)(w.Throttle * 257 - 32768));
+            }
+            else if (_extKind == ExtAccessory.SharpShooter)
+            {
+                var g = DecodeSharpShooter(b);
+                SetAccessoryButton(xj, ShooterButtonMask, SDL.SDL_GAMEPAD_BUTTON_WEST, g.Reload);
+                SetAccessoryButton(xj, ShooterButtonMask, SDL.SDL_GAMEPAD_BUTTON_MISC2, g.Weapon1);
+                SetAccessoryButton(xj, ShooterButtonMask, SDL.SDL_GAMEPAD_BUTTON_MISC3, g.Weapon2);
+                SetAccessoryButton(xj, ShooterButtonMask, SDL.SDL_GAMEPAD_BUTTON_MISC4, g.Weapon3);
+                SDL.SDL_SetJoystickVirtualAxis(xj, 0, g.Fire ? short.MaxValue : short.MinValue);
+            }
+        }
+
+        /// <summary>Writer thread: attach the accessory the read thread saw,
+        /// drop the one it lost, and keep the Racing Wheel's motors fed.</summary>
+        private void ServiceExtAccessory(long now)
+        {
+            if (_extDetachPending)
+            {
+                _extDetachPending = false;
+                if (_extKind != ExtAccessory.None)
+                {
+                    _log($"{Tag}: EXT accessory removed ({_extKind}).");
+                    DetachAccessory();
+                }
+            }
+            if (_extAttachPending && now - Volatile.Read(ref _extSeenAtMs) >= ExtSettleMs)
+            {
+                _extAttachPending = false;
+                if (_extSeen && _extKind == ExtAccessory.None)
+                {
+                    int id = ReadExtDeviceId();
+                    // A teardown cancels the read. Its session attaches nothing.
+                    if (!_writerRun) return;
+                    var kind = id >= 0 ? AccessoryFromId(id) : AccessoryFromData(_extLastPaddleByte);
+                    _log($"{Tag}: EXT accessory attached, "
+                        + (id >= 0 ? $"ID 0x{id:X4}" : "ID read failed, judged from its data")
+                        + $" -> {kind}.");
+                    if (kind == ExtAccessory.Unknown) _extKind = kind;
+                    else AttachAccessory(kind);
+                }
+            }
+            if (_extKind == ExtAccessory.RacingWheel) WriteWheelRumble(now);
+        }
+
+        /// <summary>Reads the accessory's ID the way psmove_get_ext_device_info
+        /// does: SET_REPORT 0xE0 so the Move reads the config, then GET_REPORT
+        /// 0xE0, one transaction at a time on the control channel. Replies
+        /// queue in the L2CAP channel (BthPS3 opens it with IncomingQueueDepth
+        /// 10, L2CAP.Connect.c:358), so the SET's one-byte handshake is read
+        /// before the GET goes out, and any other packet is skipped. A read
+        /// that gets no reply is canceled at the deadline. -1 when no ID
+        /// arrives.</summary>
+        private int ReadExtDeviceId()
+        {
+            lock (_ioLock)
+            {
+                IntPtr h;
+                lock (_outLock) h = _writePdo;
+                if (h == IntPtr.Zero || h == INVALID_HANDLE) return -1;
+                var cancel = new Timer(_ => CancelIoEx(h, IntPtr.Zero), null, ExtReplyTimeoutMs, Timeout.Infinite);
+                try
+                {
+                    byte[] setup = BuildExtInfoReadSetup();
+                    if (!DeviceIoControl(h, IOCTL_HID_CONTROL_WRITE, setup, setup.Length, null, 0, out _, IntPtr.Zero))
+                        return -1;
+                    var buf = new byte[64];
+                    bool handshake = false;
+                    for (int i = 0; i < 4 && !handshake; i++)
+                    {
+                        if (!DeviceIoControl(h, IOCTL_HID_CONTROL_READ, null, 0, buf, buf.Length, out int got, IntPtr.Zero))
+                            return -1;
+                        // HANDSHAKE: one byte, result code 0 on success.
+                        if (got == 1)
+                        {
+                            if (buf[0] != 0x00) return -1;
+                            handshake = true;
+                        }
+                    }
+                    if (!handshake) return -1;
+                    byte[] get = BuildExtInfoGetReport();
+                    if (!DeviceIoControl(h, IOCTL_HID_CONTROL_WRITE, get, get.Length, null, 0, out _, IntPtr.Zero))
+                        return -1;
+                    // Handshakes from earlier writes the channel still holds
+                    // (up to its queue depth of 10) come before the reply.
+                    for (int i = 0; i < 12; i++)
+                    {
+                        if (!DeviceIoControl(h, IOCTL_HID_CONTROL_READ, null, 0, buf, buf.Length, out int got, IntPtr.Zero))
+                            return -1;
+                        int id = ParseExtInfoReply(buf, got);
+                        if (id >= 0) return id;
+                    }
+                    return -1;
+                }
+                finally
+                {
+                    // Wait out a callback already running, so a late cancel
+                    // cannot land on the next output write.
+                    using var done = new ManualResetEvent(false);
+                    if (cancel.Dispose(done)) done.WaitOne();
+                }
+            }
+        }
+
+        /// <summary>Writer thread. Attaches the accessory's virtual gamepad
+        /// under SDL's joystick lock, the lock the read thread posts under.</summary>
+        private void AttachAccessory(ExtAccessory kind)
+        {
+            bool wheel = kind == ExtAccessory.RacingWheel;
+            uint buttonMask = wheel ? WheelButtonMask : ShooterButtonMask;
+            var namePtr = Marshal.StringToHGlobalAnsi(wheel ? "PlayStation Move Racing Wheel" : "PlayStation Move Sharp Shooter");
+            try
+            {
+                if (wheel) _extRumbleCb = OnWheelRumble;
+                var desc = new SDL.SDL_VirtualJoystickDesc
+                {
+                    type = (ushort)SDL.SDL_JoystickType.SDL_JOYSTICK_TYPE_GAMEPAD,
+                    vendor_id = MOVE_VID,
+                    // Sony's ID for the accessory, so each gets its own
+                    // identity and no Move-specific path takes it.
+                    product_id = wheel ? ExtRacingWheelId : ExtSharpShooterId,
+                    naxes = (ushort)(wheel ? WheelThrottleAxis + 1 : 1),
+                    nbuttons = (ushort)System.Numerics.BitOperations.PopCount(buttonMask),
+                    button_mask = buttonMask,
+                    axis_mask = wheel ? WheelAxisMask : ShooterAxisMask,
+                    name = namePtr,
+                    Rumble = wheel ? Marshal.GetFunctionPointerForDelegate(_extRumbleCb) : IntPtr.Zero,
+                };
+                desc.version = (uint)Marshal.SizeOf<SDL.SDL_VirtualJoystickDesc>();
+                SDL.SDL_LockJoysticks();
+                try
+                {
+                    uint id = SDL.SDL_AttachVirtualJoystick(ref desc);
+                    IntPtr j = id != 0 ? SDL.SDL_OpenJoystick(id) : IntPtr.Zero;
+                    if (id != 0 && j == IntPtr.Zero) SDL.SDL_DetachVirtualJoystick(id);
+                    if (j == IntPtr.Zero)
+                    {
+                        _log($"{Tag}: the {kind} could not attach as a virtual gamepad.");
+                        return;
+                    }
+                    _extInstanceId = id;
+                    _extJoystick = j;
+                    _extKind = kind;
+                }
+                finally { SDL.SDL_UnlockJoysticks(); }
+            }
+            finally { Marshal.FreeHGlobal(namePtr); }
+        }
+
+        /// <summary>Drops the accessory's virtual gamepad. The writer thread
+        /// and the teardown call it, under SDL's joystick lock.</summary>
+        private void DetachAccessory()
+        {
+            SDL.SDL_LockJoysticks();
+            try
+            {
+                IntPtr j = _extJoystick;
+                uint id = _extInstanceId;
+                _extJoystick = IntPtr.Zero;
+                _extInstanceId = 0;
+                _extKind = ExtAccessory.None;
+                if (j != IntPtr.Zero) SDL.SDL_CloseJoystick(j);
+                if (id != 0) SDL.SDL_DetachVirtualJoystick(id);
+            }
+            finally { SDL.SDL_UnlockJoysticks(); }
+            lock (_outLock) { _wheelLeft = _wheelRight = 0; _wheelDirty = false; }
+        }
+
+        /// <summary>SDL rumble on the Racing Wheel: low frequency to the left
+        /// handle and high to the right, the side each sits on for a two-motor
+        /// pad. Store and signal only.</summary>
+        private bool OnWheelRumble(IntPtr userdata, ushort low, ushort high)
+        {
+            byte l = (byte)(low >> 8), r = (byte)(high >> 8);
+            lock (_outLock)
+            {
+                if (_wheelLeft != l || _wheelRight != r)
+                {
+                    _wheelLeft = l;
+                    _wheelRight = r;
+                    _wheelDirty = true;
+                }
+            }
+            _writeSignal.Set();
+            return true;
+        }
+
+        /// <summary>The wheel's motors stop on their own after a while, as the
+        /// Move's do (moveonpc wiki, Racing Wheel), so a running motor is
+        /// written again at the Move's own keepalive and a change at most once
+        /// per output interval.</summary>
+        private void WriteWheelRumble(long now)
+        {
+            byte l, r;
+            lock (_outLock)
+            {
+                l = _wheelLeft;
+                r = _wheelRight;
+                bool due = _wheelDirty || ((l | r) != 0 && now - _wheelLastWrite >= OUTPUT_KEEPALIVE_MS);
+                if (!due || now - _wheelLastWrite < OUTPUT_MIN_INTERVAL_MS) return;
+                _wheelDirty = false;
+                _wheelLastWrite = now;
+            }
+            lock (_ioLock)
+            {
+                IntPtr h;
+                lock (_outLock) h = _writePdo;
+                if (h == IntPtr.Zero || h == INVALID_HANDLE) return;
+                byte[] o = BuildWheelRumble(l, r);
+                DeviceIoControl(h, IOCTL_HID_CONTROL_WRITE, o, o.Length, null, 0, out _, IntPtr.Zero);
+            }
         }
 
         /// <summary>Decodes one accel+gyro half-frame at the given BT offsets,

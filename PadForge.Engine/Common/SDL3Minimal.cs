@@ -69,6 +69,9 @@ namespace SDL3
         public const string SDL_HINT_JOYSTICK_HIDAPI_DREAMCHEEKY = "SDL_JOYSTICK_HIDAPI_DREAMCHEEKY";
         public const string SDL_HINT_JOYSTICK_ICADE_RAWINPUT = "SDL_JOYSTICK_ICADE_RAWINPUT";
         public const string SDL_HINT_JOYSTICK_SERIAL = "SDL_JOYSTICK_SERIAL";
+        // The Ring-Con on a right Joy-Con's rail. InputService sets it only while
+        // a "Ring-Con Squeeze" or "Ring-Con Pull" source is read.
+        public const string SDL_HINT_JOYSTICK_HIDAPI_JOYCON_RINGCON = "SDL_JOYSTICK_HIDAPI_JOYCON_RINGCON";
         public const string SDL_HINT_VIDEO_ALLOW_SCREENSAVER = "SDL_VIDEO_ALLOW_SCREENSAVER";
 
         // ─────────────────────────────────────────────
@@ -77,6 +80,11 @@ namespace SDL3
 
         public const string SDL_PROP_JOYSTICK_CAP_RUMBLE_BOOLEAN = "SDL.joystick.cap.rumble";
         public const string SDL_PROP_JOYSTICK_CAP_TRIGGER_RUMBLE_BOOLEAN = "SDL.joystick.cap.trigger_rumble";
+
+        // Set by the fork's Switch driver on a right Joy-Con: the Ring-Con's
+        // first nonzero strain after polling starts, 0 while none polls
+        // (docs/README-ringcon.md).
+        public const string SDL_PROP_JOYSTICK_SWITCH_RINGCON_REST_NUMBER = "SDL.joystick.switch.ringcon_rest";
 
         // ─────────────────────────────────────────────
         //  Enums

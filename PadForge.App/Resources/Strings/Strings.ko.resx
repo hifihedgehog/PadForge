@@ -1309,6 +1309,8 @@
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR 포인터 X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR 포인터 Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR 밝기</value></data>
+  <data name="Mapping_RingConSqueeze" xml:space="preserve"><value>Ring-Con 누르기</value></data>
+  <data name="Mapping_RingConPull" xml:space="preserve"><value>Ring-Con 당기기</value></data>
   <data name="Mapping_MouseMotionX" xml:space="preserve"><value>마우스 이동 X</value></data>
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>마우스 이동 Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>감도</value></data>

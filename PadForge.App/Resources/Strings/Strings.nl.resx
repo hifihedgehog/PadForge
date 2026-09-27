@@ -1329,6 +1329,8 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IR-aanwijzer X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IR-aanwijzer Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR-helderheid</value></data>
+  <data name="Mapping_RingConSqueeze" xml:space="preserve"><value>Ring-Con indrukken</value></data>
+  <data name="Mapping_RingConPull" xml:space="preserve"><value>Ring-Con uit elkaar trekken</value></data>
   <data name="Mapping_MouseMotionX" xml:space="preserve"><value>Muisbeweging X</value></data>
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Muisbeweging Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Gevoeligheid</value></data>

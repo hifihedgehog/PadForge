@@ -24,6 +24,13 @@ namespace PadForge.Engine.Common
         /// <summary>Axis-delta slop for the generic (unknown-layout) test.</summary>
         public const int DeltaSlop = 1024;
 
+        /// <summary>Ring-Con flex that counts as use: two steps of the strain's
+        /// high byte out of the eight that read full scale, where
+        /// Ringcon-Driver's light press begins (Main.cpp, 0x0C over a rest of
+        /// 0x0A). A player exercising with the ring alone presses no button
+        /// for minutes, so the flex must keep the Joy-Con connected.</summary>
+        public const float RingConSlop = 0.25f;
+
         /// <summary>Absolute idle test for gamepad-typed devices, whose axis
         /// layout is the auto-map convention: sticks on axes 0/1/3/4
         /// (centered 32767), triggers on axes 2/5 (rest 0). Extra axes past 5
@@ -61,6 +68,8 @@ namespace PadForge.Engine.Common
 
             if (PointerOrMouseActive(s)) return false;
 
+            if (RingConFlexed(s)) return false;
+
             // An NFC tag held on the reader is a deliberate user action, so
             // it keeps a Bluetooth controller alive rather than letting it
             // idle-disconnect mid-tap.
@@ -97,6 +106,8 @@ namespace PadForge.Engine.Common
             if (AnyFingerDown(current)) return false;
 
             if (PointerOrMouseActive(current)) return false;
+
+            if (RingConFlexed(current)) return false;
 
             return true;
         }
@@ -145,6 +156,12 @@ namespace PadForge.Engine.Common
         private static bool PointerOrMouseActive(CustomInputState s) =>
             s.Ir.Detected || s.JoyCon2MouseDX != 0f || s.JoyCon2MouseDY != 0f
             || s.MouseRawDX != 0 || s.MouseRawDY != 0;
+
+        /// <summary>A squeeze or pull past <see cref="RingConSlop"/>. The flex
+        /// is measured from the ring's own rest, so unlike the NIR scalar it
+        /// settles at 0 when the ring is let go.</summary>
+        private static bool RingConFlexed(CustomInputState s) =>
+            System.Math.Abs(s.RingConStrain) > RingConSlop;
 
         // DS4Windows treats LX <= 127-slop or LX >= 128+slop as active
         // (strictly outside the band is centered), scaled to 16-bit.

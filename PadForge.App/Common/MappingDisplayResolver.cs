@@ -1925,6 +1925,17 @@ namespace PadForge.Common
             if (ud.HasJoyConIr)
                 list.Add(new InputChoice { Descriptor = "IR Brightness", DisplayName = si.Mapping_JoyConIrBrightness });
 
+            // Ring-Con on the right Joy-Con's rail (hifihedgehog/SDL#33 Part
+            // 13): one source per direction, so a squeeze and a pull map to
+            // separate buttons or triggers as they are. Mapping either one
+            // powers the MCU that reads the ring (InputService), and relayed
+            // rows arm the owner's the same way.
+            if (ud.HasRingCon)
+            {
+                list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.RingConSqueezeDescriptor, DisplayName = si.Mapping_RingConSqueeze });
+                list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.RingConPullDescriptor, DisplayName = si.Mapping_RingConPull });
+            }
+
             // NFC tag reader (#241): the right Joy-Con / Pro Controller reads
             // NFC tags (amiibo UIDs). "Any NFC Tag" fires on any tag; each
             // registered tag (NfcTagRegistry) is its own bindable source,

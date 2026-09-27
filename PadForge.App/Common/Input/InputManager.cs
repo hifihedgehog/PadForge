@@ -906,6 +906,11 @@ namespace PadForge.Common.Input
                 // keyboard record to SDL_ICadeProcessRawKeyboard.
                 SDL_SetHint(SDL_HINT_JOYSTICK_ICADE_RAWINPUT, "0");
 
+                // The Ring-Con hint stays off here, like the camera's. It powers
+                // a right Joy-Con's MCU, which the camera and NFC share, so
+                // InputService.RefreshSwitchNfcArming sets it only while a
+                // "Ring-Con Squeeze" or "Ring-Con Pull" source is read.
+
                 // The serial controllers the user added in the pairing
                 // dialog. SDL_Quit drops every hint, so each start replays
                 // the list, as the Flydigi switch is replayed above.

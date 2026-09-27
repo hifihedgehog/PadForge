@@ -2620,9 +2620,11 @@ namespace PadForge.Services
                 // family: left set, a restart within the demand window
                 // re-arms the MCU once with no live peer wanting it.
                 _remoteNfcDemandMs.Clear();
+                _remoteRingConDemandMs.Clear();
                 PadForge.Common.Input.NfcTagRegistry.SwitchNfcArmed = false;
                 PadForge.Common.Input.NfcTagRegistry.JoyConIrHintOn = false;
                 _joyConIrHintOn = false;
+                _ringConHintOn = false;
                 if (System.Threading.Volatile.Read(ref _switchNfcArmed))
                 {
                     System.Threading.Volatile.Write(ref _switchNfcArmed, false);
@@ -3431,6 +3433,58 @@ namespace PadForge.Services
                                 try { w.BounceMotionSensors(); } catch { }
                         });
                 }
+            }
+
+            RefreshRingConArming(nowTick);
+        }
+
+        private bool _ringConHintOn;
+
+        /// <summary>The Ring-Con hint (hifihedgehog/SDL#33 Part 13), on the same
+        /// demand contract as the camera's: set only while a "Ring-Con
+        /// Squeeze" or "Ring-Con Pull" read is fresh and a right Joy-Con of
+        /// this machine is online, because every look for a ring holds the
+        /// MCU up for seconds. The fork needs no more from PadForge: it gives
+        /// the MCU to the camera and NFC first, stops the ring while either
+        /// wants it, reads the hint at every update and looks for a ring when
+        /// the hint turns on (docs/README-ringcon.md). A peer's live mapping
+        /// on a shared right Joy-Con arms it here, the NFC relay's shape.</summary>
+        private void RefreshRingConArming(long nowTick)
+        {
+            long ringReq = PadForge.Engine.Common.Mapping.SourceCoercion.LastRingConReadRequestTick;
+            bool localWanted = ringReq != 0 && nowTick - ringReq < McuDemandWindowMs;
+            bool capable = false;
+            bool remoteWanted = false;
+            var devices = SettingsManager.UserDevices;
+            if (devices != null)
+            {
+                lock (devices.SyncRoot)
+                {
+                    foreach (var ud in devices.Items)
+                    {
+                        // 0x2007 standalone right, 0x2008 gen-1 pair: the
+                        // fork reads the ring through either (UserDevice.HasRingCon).
+                        if (ud == null || !ud.IsOnline || ud.VendorId != 0x057E
+                            || (ud.ProdId != 0x2007 && ud.ProdId != 0x2008)) continue;
+                        if (RemoteLinkOutputRouter.IsPeerPath(ud.DevicePath))
+                        {
+                            // Consumer half: our demand reaches the owner of a
+                            // relayed right Joy-Con, rate-bounded in the router.
+                            if (localWanted) RemoteLinkOutputRouter.ShipRingConDemand(ud.DevicePath);
+                            continue;
+                        }
+                        capable = true;
+                        if (HasFreshRemoteRingConDemand(ud.InstanceGuid)) remoteWanted = true;
+                    }
+                }
+            }
+
+            bool wanted = capable && (localWanted || remoteWanted);
+            if (wanted == _ringConHintOn) return;
+            if (SDL3.SDL.SDL_SetHint(SDL3.SDL.SDL_HINT_JOYSTICK_HIDAPI_JOYCON_RINGCON, wanted ? "1" : "0"))
+            {
+                _ringConHintOn = wanted;
+                PadForge.Engine.SdlDiagLog.WriteLine($"Ring-Con hint -> {(wanted ? "ON" : "off")}");
             }
         }
 
@@ -11337,6 +11391,15 @@ namespace PadForge.Services
             && _remoteNfcDemandMs.TryGetValue(deviceGuid, out long ms)
             && Environment.TickCount64 - ms < McuDemandWindowMs;
 
+        /// <summary>Per-device stamp of the most recent peer Ring-Con demand,
+        /// the NFC stamps' twin.</summary>
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, long> _remoteRingConDemandMs = new();
+
+        private bool HasFreshRemoteRingConDemand(Guid deviceGuid)
+            => deviceGuid != Guid.Empty
+            && _remoteRingConDemandMs.TryGetValue(deviceGuid, out long ms)
+            && Environment.TickCount64 - ms < McuDemandWindowMs;
+
         /// <summary>Apply authenticated effects, speaker audio, and NFC demand to a
         /// currently shared source. OutputSync precedes the connection commit gate.</summary>
         private void OnRemoteFrameReceived(LinkServer origin, LinkIncomingFrame frame)
@@ -11365,6 +11428,9 @@ namespace PadForge.Services
                     else if (frame.Type == LinkMessageType.SourceDemand && frame.Payload.Length > 0
                         && frame.Payload[0] == RemoteLinkOutputRouter.DemandKindNfc)
                         _remoteNfcDemandMs[device.InstanceGuid] = Environment.TickCount64;
+                    else if (frame.Type == LinkMessageType.SourceDemand && frame.Payload.Length > 0
+                        && frame.Payload[0] == RemoteLinkOutputRouter.DemandKindRingCon)
+                        _remoteRingConDemandMs[device.InstanceGuid] = Environment.TickCount64;
                 });
             }
         }

@@ -1309,6 +1309,8 @@
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>红外指针 X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>红外指针 Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>红外亮度</value></data>
+  <data name="Mapping_RingConSqueeze" xml:space="preserve"><value>Ring-Con 按压</value></data>
+  <data name="Mapping_RingConPull" xml:space="preserve"><value>Ring-Con 拉开</value></data>
   <data name="Mapping_MouseMotionX" xml:space="preserve"><value>鼠标移动 X</value></data>
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>鼠标移动 Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>灵敏度</value></data>

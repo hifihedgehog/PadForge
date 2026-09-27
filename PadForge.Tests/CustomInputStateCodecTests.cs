@@ -533,6 +533,10 @@ namespace PadForge.Tests
                 // wired into Encode (Block.Nfc span + bitmask), DecodeInto,
                 // ResetToNeutral, and Clone.
                 "NfcTag",
+                // hifihedgehog/SDL#33 Part 13 Ring-Con flex: the extension
+                // tail after GyroAux (BlockExt.RingCon), DecodeInto,
+                // ResetToNeutral, and Clone.
+                "RingConStrain",
             };
             var actual = typeof(CustomInputState)
                 .GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance)

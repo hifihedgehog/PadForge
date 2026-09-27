@@ -139,6 +139,14 @@ namespace PadForge.Engine
         /// the camera is off. Populated by SdlDeviceWrapper.</summary>
         public float JoyConIrIntensity;
 
+        /// <summary>Ring-Con flex (hifihedgehog/SDL#33 Part 13), bipolar -1..+1:
+        /// positive while the ring is squeezed, negative while it is pulled, 0 at
+        /// rest and while no Ring-Con polls. The fork posts the raw strain on a
+        /// right Joy-Con's joystick axis 7 and its first reading after polling
+        /// starts as the rest property. SdlDeviceWrapper subtracts the rest and
+        /// scales by <see cref="SdlDeviceWrapper.RingConFullScale"/>.</summary>
+        public float RingConStrain;
+
         /// <summary>Joy-Con 2 optical mouse sensor motion, in raw sensor counts
         /// accumulated since the previous poll (issue #154). The SDL fork's BLE
         /// Switch 2 driver posts the sensor's absolute 16-bit X/Y counters on
@@ -292,6 +300,7 @@ namespace PadForge.Engine
             }
             dst.Ir = Ir; // value type copy (X/Y/Detected)
             dst.JoyConIrIntensity = JoyConIrIntensity;
+            dst.RingConStrain = RingConStrain;
             dst.JoyCon2MouseDX = JoyCon2MouseDX;
             dst.JoyCon2MouseDY = JoyCon2MouseDY;
             dst.MouseRawDX = MouseRawDX;
@@ -330,6 +339,7 @@ namespace PadForge.Engine
             Midi?.ResetForReuse();
             Ir = default;
             JoyConIrIntensity = 0f;
+            RingConStrain = 0f;
             JoyCon2MouseDX = 0f;
             JoyCon2MouseDY = 0f;
             MouseRawDX = 0;

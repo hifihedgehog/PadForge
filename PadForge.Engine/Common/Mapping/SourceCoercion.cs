@@ -171,6 +171,11 @@ namespace PadForge.Engine.Common.Mapping
                              // any phrase, N = the phrase's stable
                              // VoicePhraseRegistry button). Leading 'A'/'V'
                              // keeps it clear of the I/H prefix grammar.
+            RingCon,         // "Ring-Con Squeeze" / "Ring-Con Pull"
+                             // (hifihedgehog/SDL#33 Part 13). The ring's flex,
+                             // unipolar [0..1] per direction, read PER DEVICE
+                             // from CustomInputState.RingConStrain. Leading
+                             // 'R' keeps it clear of the I/H prefix grammar.
         }
 
         /// <summary>Sensitivity constant for gyro bipolar coercion.
@@ -1260,6 +1265,8 @@ namespace PadForge.Engine.Common.Mapping
                 return SourceType.IrOffscreen;
             if (s.Equals("IR Brightness", StringComparison.Ordinal))
                 return SourceType.JoyConIr;
+            if (IsRingConDescriptor(s))
+                return SourceType.RingCon;
             if (s.StartsWith("Balance ", StringComparison.Ordinal))
                 return SourceType.BalanceBoard;
             if (s.StartsWith("Midi ", StringComparison.Ordinal))
@@ -2282,10 +2289,10 @@ namespace PadForge.Engine.Common.Mapping
         /// <summary>Source families whose button read thresholds on the
         /// per-source DeadZone and that no older family test in the two grid
         /// view models admits: the stick and touchpad rings (the radius), the
-        /// Motion Shake and Motion Lean pairs, MIDI pitch bend, and inbound
-        /// rumble. MappingItem and MappingSourceItem show the deadzone slider
-        /// for these on a button row, or the threshold the read uses has no
-        /// control.</summary>
+        /// Motion Shake and Motion Lean pairs, MIDI pitch bend, inbound
+        /// rumble, and the Ring-Con squeeze and pull. MappingItem and
+        /// MappingSourceItem show the deadzone slider for these on a button
+        /// row, or the threshold the read uses has no control.</summary>
         public static bool IsThresholdedButtonFamily(string descriptor)
         {
             if (string.IsNullOrEmpty(descriptor)) return false;
@@ -2294,7 +2301,8 @@ namespace PadForge.Engine.Common.Mapping
                 || IsMotionShakeDescriptor(descriptor) || IsMotionShakeAuxDescriptor(descriptor)
                 || IsMotionLeanDescriptor(descriptor) || IsMotionLeanAuxDescriptor(descriptor)
                 || string.Equals(descriptor.Trim(), "Midi Pitch Bend", StringComparison.Ordinal)
-                || IsRumbleDescriptor(descriptor);
+                || IsRumbleDescriptor(descriptor)
+                || IsRingConDescriptor(descriptor);
         }
 
         /// <summary>True for either stick-ring descriptor.</summary>
@@ -2958,20 +2966,22 @@ namespace PadForge.Engine.Common.Mapping
         /// wrapper's per-frame fill. Null array (device without an NFC
         /// reader, or NFC not armed) reads false.</summary>
         // ── MCU demand latches (#248 audit round 2) ──
-        // The Switch NFC reader and the right Joy-Con NIR camera are
-        // demand-armed (the MCU costs real CPU and the two features share
-        // it), and enumerating every configuration surface that can name
-        // their descriptors proved unwinnable: the audit found missed
-        // surfaces twice (params/gates/menus, then four engage families on
-        // providers). These latches instrument the READ choke points
-        // instead: every consumer, present and future, funnels through
-        // ReadNfcTagBool or the "IR Brightness" branches, and configured
-        // inputs are read every tick, so "a read was requested recently"
-        // IS "the configuration uses this family, enabled and active".
+        // The Switch NFC reader, the right Joy-Con NIR camera and the
+        // Ring-Con are demand-armed (the MCU costs real CPU and the three
+        // features share it), and enumerating every configuration surface
+        // that can name their descriptors proved unwinnable: the audit
+        // found missed surfaces twice (params/gates/menus, then four engage
+        // families on providers). These latches instrument the READ choke
+        // points instead: every consumer, present and future, funnels
+        // through ReadNfcTagBool, the "IR Brightness" branches or
+        // ReadRingCon, and configured inputs are read every tick, so "a
+        // read was requested recently" IS "the configuration uses this
+        // family, enabled and active".
         // Disabled macros/menus never evaluate, so they never latch.
         // InputService's arming cadence reads these to drive the SDL hints.
         private static long s_lastNfcReadRequestTick;
         private static long s_lastJoyConIrReadRequestTick;
+        private static long s_lastRingConReadRequestTick;
 
         /// <summary>TickCount64 of the most recent NFC-descriptor read
         /// request from ANY evaluator, 0 = never. The read fires whether
@@ -2985,12 +2995,18 @@ namespace PadForge.Engine.Common.Mapping
         public static long LastJoyConIrReadRequestTick
             => System.Threading.Volatile.Read(ref s_lastJoyConIrReadRequestTick);
 
-        /// <summary>Engine Stop clears both latches so a restarted engine
+        /// <summary>TickCount64 of the most recent "Ring-Con Squeeze" or
+        /// "Ring-Con Pull" read request, 0 = never.</summary>
+        public static long LastRingConReadRequestTick
+            => System.Threading.Volatile.Read(ref s_lastRingConReadRequestTick);
+
+        /// <summary>Engine Stop clears every latch so a restarted engine
         /// re-derives demand from fresh reads.</summary>
         public static void ResetMcuDemandLatches()
         {
             System.Threading.Volatile.Write(ref s_lastNfcReadRequestTick, 0);
             System.Threading.Volatile.Write(ref s_lastJoyConIrReadRequestTick, 0);
+            System.Threading.Volatile.Write(ref s_lastRingConReadRequestTick, 0);
         }
 
         private static void NoteNfcReadRequest()
@@ -3000,6 +3016,45 @@ namespace PadForge.Engine.Common.Mapping
         private static void NoteJoyConIrReadRequest()
             => System.Threading.Volatile.Write(ref s_lastJoyConIrReadRequestTick,
                 Environment.TickCount64);
+
+        private static void NoteRingConReadRequest()
+            => System.Threading.Volatile.Write(ref s_lastRingConReadRequestTick,
+                Environment.TickCount64);
+
+        // ─── Ring-Con family (hifihedgehog/SDL#33 Part 13) ─────────────
+        //
+        // The Ring-Con reports one strain through the right Joy-Con on its
+        // rail. The wrapper turns it into CustomInputState.RingConStrain,
+        // positive for a squeeze and negative for a pull, and these two
+        // descriptors split it into one unipolar source per direction, so a
+        // squeeze and a pull map to separate buttons or triggers with no
+        // direction settings. Reading either one latches the demand that
+        // powers the Joy-Con's MCU for the ring (InputService).
+
+        public const string RingConSqueezeDescriptor = "Ring-Con Squeeze";
+        public const string RingConPullDescriptor = "Ring-Con Pull";
+
+        /// <summary>True for "Ring-Con Squeeze" or "Ring-Con Pull".</summary>
+        public static bool IsRingConDescriptor(string descriptor)
+        {
+            if (string.IsNullOrEmpty(descriptor)) return false;
+            string s = descriptor.Trim();
+            return s.Equals(RingConSqueezeDescriptor, StringComparison.Ordinal)
+                || s.Equals(RingConPullDescriptor, StringComparison.Ordinal);
+        }
+
+        /// <summary>The flex in the descriptor's direction, 0..1: the squeeze
+        /// half of RingConStrain for "Ring-Con Squeeze", the pull half for
+        /// "Ring-Con Pull". Clamped here as well, because a relayed frame
+        /// carries whatever value the peer sent.</summary>
+        private static float ReadRingCon(CustomInputState state, string canonical)
+        {
+            NoteRingConReadRequest();
+            float v = state?.RingConStrain ?? 0f;
+            if (canonical.Trim().Equals(RingConPullDescriptor, StringComparison.Ordinal))
+                v = -v;
+            return v <= 0f ? 0f : v >= 1f ? 1f : v;
+        }
 
         /// <summary>Descriptor-only read for the plain hardware-bool
         /// families (capsense touch, NFC tag, touchpad contact): the
@@ -3021,6 +3076,10 @@ namespace PadForge.Engine.Common.Mapping
                 NoteJoyConIrReadRequest();
                 return state.JoyConIrIntensity > 0.5f;
             }
+            // The Ring-Con at the same fixed midpoint: half of full scale is
+            // the 0x0400 press radius the WebHID Ring-Con demo fires at.
+            if (IsRingConDescriptor(canonical))
+                return ReadRingCon(state, canonical) > 0.5f;
             return ReadTouchpadBool(state, canonical);
         }
 
@@ -5087,6 +5146,15 @@ namespace PadForge.Engine.Common.Mapping
                 return state.JoyConIrIntensity > Math.Max(cdz, 1) / 100f;
             }
 
+            if (IsRingConDescriptor(s))
+            {
+                // Squeeze or pull as a button: pressed past the threshold in
+                // the descriptor's direction, with the same per-row DeadZone
+                // override and global fallback as IR Brightness.
+                int cdz = EffectiveThresholdPercent(src, globalThresholdPercent);
+                return ReadRingCon(state, s) > Math.Max(cdz, 1) / 100f;
+            }
+
             if (s.StartsWith("Mouse Motion ", StringComparison.Ordinal))
             {
                 // Motion-as-button (issue #154, the "invisible weapon wheel").
@@ -5383,6 +5451,9 @@ namespace PadForge.Engine.Common.Mapping
                 return state.JoyConIrIntensity;
             }
 
+            if (IsRingConDescriptor(s))
+                return ReadRingCon(state, s);
+
             if (s.StartsWith("Mouse Motion ", StringComparison.Ordinal))
             {
                 float mv = ReadJoyCon2MouseMotion(state, src, deviceGuid);
@@ -5658,6 +5729,9 @@ namespace PadForge.Engine.Common.Mapping
                 NoteJoyConIrReadRequest();
                 return state.JoyConIrIntensity; // already unipolar 0..1
             }
+
+            if (IsRingConDescriptor(s))
+                return ReadRingCon(state, s); // unipolar 0..1 per direction
 
             if (s.StartsWith("Mouse Motion ", StringComparison.Ordinal))
             {

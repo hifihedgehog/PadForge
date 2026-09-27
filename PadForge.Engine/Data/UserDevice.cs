@@ -278,6 +278,14 @@ namespace PadForge.Engine.Data
                 // with a mouse instead of a camera) can discriminate.
                 || ProdId == 0x2008);
 
+        /// <summary>Whether a Ring-Con can ride this device's rail and drive the
+        /// "Ring-Con Squeeze" and "Ring-Con Pull" sources (hifihedgehog/SDL#33
+        /// Part 13). The fork reads the ring through a right Joy-Con, standalone
+        /// or as the right half of a gen-1 pair, which is the camera identity
+        /// above. Computed, not stored. Gates the picker offering.</summary>
+        [XmlIgnore]
+        public bool HasRingCon => HasJoyConIr;
+
         /// <summary>Whether the device is a Joy-Con 2 (L or R), whose optical
         /// mouse sensor drives the "Mouse Motion X/Y" sources (issue #154).
         /// Identity-derived like the gates above, exact-equality against the

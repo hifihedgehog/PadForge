@@ -49,6 +49,8 @@ namespace PadForge.Tests
         [InlineData("Mouse Position Y")]
         [InlineData("Mouse Motion X")]
         [InlineData("Mouse Motion Y")]
+        [InlineData("Ring-Con Squeeze")]
+        [InlineData("Ring-Con Pull")]
         public void BuildFromLegacy_KeepsExemptDescriptorsIntact_NoPhantomInvert(string descriptor)
         {
             var ps = new PadSetting { LeftThumbAxisX = descriptor };

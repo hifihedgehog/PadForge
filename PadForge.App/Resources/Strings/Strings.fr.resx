@@ -1309,6 +1309,8 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>Pointeur IR X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>Pointeur IR Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>Luminosité IR</value></data>
+  <data name="Mapping_RingConSqueeze" xml:space="preserve"><value>Presser le Ring-Con</value></data>
+  <data name="Mapping_RingConPull" xml:space="preserve"><value>Tirer le Ring-Con</value></data>
   <data name="Mapping_MouseMotionX" xml:space="preserve"><value>Mouvement de la souris X</value></data>
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>Mouvement de la souris Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>Sensibilité</value></data>

@@ -1309,6 +1309,8 @@
   <data name="Mapping_IrPointerX" xml:space="preserve"><value>IRポインター X</value></data>
   <data name="Mapping_IrPointerY" xml:space="preserve"><value>IRポインター Y</value></data>
   <data name="Mapping_JoyConIrBrightness" xml:space="preserve"><value>IR輝度</value></data>
+  <data name="Mapping_RingConSqueeze" xml:space="preserve"><value>Ring-Con 押し込み</value></data>
+  <data name="Mapping_RingConPull" xml:space="preserve"><value>Ring-Con 引っぱり</value></data>
   <data name="Mapping_MouseMotionX" xml:space="preserve"><value>マウス移動 X</value></data>
   <data name="Mapping_MouseMotionY" xml:space="preserve"><value>マウス移動 Y</value></data>
   <data name="Mapping_IrPointerSensitivity" xml:space="preserve"><value>感度</value></data>

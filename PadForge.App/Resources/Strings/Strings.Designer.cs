@@ -2669,6 +2669,8 @@ public class Strings : INotifyPropertyChanged
     public string Mapping_IrPointerX => Get("Mapping_IrPointerX");
     public string Mapping_IrPointerY => Get("Mapping_IrPointerY");
     public string Mapping_JoyConIrBrightness => Get("Mapping_JoyConIrBrightness");
+    public string Mapping_RingConSqueeze => Get("Mapping_RingConSqueeze");
+    public string Mapping_RingConPull => Get("Mapping_RingConPull");
     public string Mapping_AnyNfcTag => Get("Mapping_AnyNfcTag");
     public string Mapping_NfcTagNamed => Get("Mapping_NfcTagNamed");
     public string Mapping_FilterSearch_Placeholder => Get("Mapping_FilterSearch_Placeholder");

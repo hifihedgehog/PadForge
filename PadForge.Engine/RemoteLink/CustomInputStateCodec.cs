@@ -88,6 +88,12 @@ namespace PadForge.Engine.RemoteLink
             /// Accel / AccelAux, because a zeroed array is a legitimate
             /// reading (a still controller), not "absent".</summary>
             GyroAux = 1 << 0,
+            /// <summary>Ring-Con flex (hifihedgehog/SDL#33 Part 13), one
+            /// float. Presence inferred from the state like JoyConIr: 0 is
+            /// rest or no Ring-Con, the neutral an omitted block decodes
+            /// to. Written after GyroAux, so a decoder that knows only
+            /// GyroAux reads its block and leaves this one in the tail.</summary>
+            RingCon = 1 << 1,
         }
 
         /// <summary>Capsense channels carried on the wire (one byte,
@@ -350,6 +356,7 @@ namespace PadForge.Engine.RemoteLink
             // ── Extension tail (the presence mask above is full) ──
             BlockExt ext = BlockExt.None;
             if (caps.GyroAux) ext |= BlockExt.GyroAux;
+            if (state.RingConStrain != 0f) ext |= BlockExt.RingCon;
             if (ext != BlockExt.None)
             {
                 destination[o++] = ExtMagic;
@@ -357,6 +364,10 @@ namespace PadForge.Engine.RemoteLink
                 o += 2; // ext mask backfilled below
                 if ((ext & BlockExt.GyroAux) != 0)
                     for (int i = 0; i < 3; i++) { BinaryPrimitives.WriteSingleLittleEndian(destination.Slice(o, 4), state.GyroAux[i]); o += 4; }
+                if ((ext & BlockExt.RingCon) != 0)
+                {
+                    BinaryPrimitives.WriteSingleLittleEndian(destination.Slice(o, 4), state.RingConStrain); o += 4;
+                }
                 BinaryPrimitives.WriteUInt16LittleEndian(destination.Slice(extAt, 2), (ushort)ext);
             }
 
@@ -384,6 +395,7 @@ namespace PadForge.Engine.RemoteLink
             if (caps.Accel) size += 12;
             if (caps.AccelAux) size += 12;
             if (caps.GyroAux) size += 3 + 12; // ext magic + ext mask + 3 floats
+            size += 3 + 4; // Ring-Con flex (1 float) with its own ext header: 3 bytes over when GyroAux opened the tail
             size += 2; // battery
             if (state?.Touchpads != null)
             {
@@ -625,6 +637,12 @@ namespace PadForge.Engine.RemoteLink
                             if (!float.IsFinite(v)) { ResetToNeutral(target); return false; }
                             target.GyroAux[i] = v;
                         }
+                    if ((ext & BlockExt.RingCon) != 0)
+                    {
+                        float v = BinaryPrimitives.ReadSingleLittleEndian(payload.Slice(o, 4)); o += 4;
+                        if (!float.IsFinite(v)) { ResetToNeutral(target); return false; }
+                        target.RingConStrain = v;
+                    }
                 }
 
                 return o <= payload.Length;
@@ -655,6 +673,7 @@ namespace PadForge.Engine.RemoteLink
             s.BatteryCharging = false;
             s.Ir = default;
             s.JoyConIrIntensity = 0f;
+            s.RingConStrain = 0f;
             s.JoyCon2MouseDX = 0f;
             s.JoyCon2MouseDY = 0f;
             s.MouseRawDX = 0;

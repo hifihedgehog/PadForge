@@ -123,6 +123,12 @@ namespace PadForge.Engine
         /// (issue #151).</summary>
         public bool HasJoyConIr { get; private set; }
 
+        /// <summary>Whether a Ring-Con on this right Joy-Con's rail can drive the
+        /// "Ring-Con Squeeze" and "Ring-Con Pull" sources (hifihedgehog/SDL#33
+        /// Part 13): the Joy-Con identity above plus the strain axis the fork
+        /// adds as axis 7.</summary>
+        public bool HasRingCon { get; private set; }
+
         /// <summary>Switch 2 magnetometer stream (#271 item 5). Raw wire
         /// units on wrapper-local fields rather than CustomInputState, so
         /// the Remote Link codec (whose Block enum is full) is untouched:
@@ -556,6 +562,12 @@ namespace PadForge.Engine
                 && (ProductId == 0x2007 || ProductId == 0x2008)
                 && Joystick != IntPtr.Zero && SDL_GetNumJoystickAxes(Joystick) >= 7;
 
+            // Ring-Con strain (hifihedgehog/SDL#33 Part 13): the fork gives
+            // every right Joy-Con, alone or as the right half of a gen-1
+            // pair, an eighth axis for it (SDL_RingCon_AxisCount), so a DLL
+            // without the Ring-Con leaves the source unoffered.
+            HasRingCon = HasJoyConIr && RawAxisCount >= 8;
+
             // Joy-Con 2 optical mouse sensor (issue #154). The fork's BLE Switch 2
             // driver posts the sensor's absolute 16-bit counters on joystick axes
             // 6/7 for a Joy-Con 2 L (PID 0x2067) or R (PID 0x2066) when its mouse
@@ -825,6 +837,11 @@ namespace PadForge.Engine
             if (HasJoyConIr && state != null)
                 ReadJoyConIr(state);
 
+            // Ring-Con strain rides joystick axis 7, outside the gamepad
+            // mapping as well.
+            if (HasRingCon && state != null)
+                ReadRingCon(state);
+
             // Joy-Con 2 optical mouse counters ride dedicated joystick axes 6/7
             // (SDL#8), read joystick-direct the same way.
             if (HasJoyCon2Mouse && state != null)
@@ -1045,6 +1062,46 @@ namespace PadForge.Engine
         {
             short raw = SDL_GetJoystickAxis(Joystick, 6);
             state.JoyConIrIntensity = raw <= 0 ? 0f : raw / 32767f;
+        }
+
+        /// <summary>Strain distance from rest that reads as a full squeeze or a
+        /// full pull: eight steps of the strain's high byte, which is the byte
+        /// Ringcon-Driver and osc-ringcon read. osc-ringcon spreads its fully
+        /// squeezed and fully pulled output over 7..24 around 15 (main.rs), and
+        /// Ringcon-Driver calls 7 steps from its rest of 10 a heavy press or
+        /// pull (Main.cpp). No source decodes a calibration from the ring, so
+        /// one scale serves every ring.</summary>
+        internal const int RingConFullScale = 0x0800;
+
+        // The fork posts the Ring-Con's signed 16-bit strain (bytes 39-40 of
+        // report 0x30) on joystick axis 7 and its first nonzero value after
+        // polling starts as SDL_PROP_JOYSTICK_SWITCH_RINGCON_REST_NUMBER. Both
+        // read 0 while no Ring-Con polls (docs/README-ringcon.md).
+        private void ReadRingCon(CustomInputState state)
+        {
+            short raw = SDL_GetJoystickAxis(Joystick, 7);
+            if (raw == 0)
+                return;
+            uint props = SDL_GetJoystickProperties(Joystick);
+            long rest = props != 0
+                ? SDL_GetNumberProperty(props, SDL_PROP_JOYSTICK_SWITCH_RINGCON_REST_NUMBER, 0)
+                : 0;
+            state.RingConStrain = NormalizeRingConStrain(raw, rest);
+        }
+
+        /// <summary>Ring-Con flex from a raw strain and the rest the fork
+        /// captured: (raw - rest) / <see cref="RingConFullScale"/>, clamped to
+        /// -1..+1. A strain whose high byte is 0 reads 0: osc-ringcon reports
+        /// no Ring-Con and sends its idle value on one (joycon.rs), and the
+        /// fork's doc names that byte as what a ring leaving the rail may
+        /// show. The fork already holds the axis through all-zero samples. A
+        /// rest of 0, or one with a zero high byte, is none yet and reads 0.</summary>
+        internal static float NormalizeRingConStrain(short raw, long rest)
+        {
+            if ((raw & 0xFF00) == 0 || (rest >= 0 && rest <= 0xFF))
+                return 0f;
+            float v = (raw - rest) / (float)RingConFullScale;
+            return v > 1f ? 1f : v < -1f ? -1f : v;
         }
 
         // The SDL hidapi_wii driver posts the two IR dots on DEDICATED joystick

@@ -290,8 +290,9 @@ namespace PadForge.Tests
         }
 
         /// <summary>A consumer's live mapping reaches the owner of a relayed
-        /// right Joy-Con as demand kind 2, at most once a second, on its own
-        /// clock apart from the NFC demand's.</summary>
+        /// right Joy-Con as demand kind 2, and an "IR Brightness" mapping as
+        /// kind 3, each at most once a second on its own clock apart from
+        /// the NFC demand's.</summary>
         [Fact]
         public void TheDemand_ShipsAsItsOwnKind()
         {
@@ -316,10 +317,14 @@ namespace PadForge.Tests
                 RemoteLinkOutputRouter.ShipNfcDemand(path);
                 RemoteLinkOutputRouter.ShipRingConDemand(path);
                 RemoteLinkOutputRouter.ShipRingConDemand(path); // inside the second: dropped
-                Assert.Equal(2, sent.Count);
+                RemoteLinkOutputRouter.ShipIrDemand(path);
+                RemoteLinkOutputRouter.ShipIrDemand(path);      // inside the second: dropped
+                Assert.Equal(3, sent.Count);
                 Assert.Equal(new[] { RemoteLinkOutputRouter.DemandKindNfc }, sent[0]);
                 Assert.Equal(new[] { RemoteLinkOutputRouter.DemandKindRingCon }, sent[1]);
+                Assert.Equal(new[] { RemoteLinkOutputRouter.DemandKindIr }, sent[2]);
                 Assert.Equal((byte)2, RemoteLinkOutputRouter.DemandKindRingCon);
+                Assert.Equal((byte)3, RemoteLinkOutputRouter.DemandKindIr);
             }
             finally
             {

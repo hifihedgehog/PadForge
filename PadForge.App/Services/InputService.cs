@@ -2621,6 +2621,7 @@ namespace PadForge.Services
                 // re-arms the MCU once with no live peer wanting it.
                 _remoteNfcDemandMs.Clear();
                 _remoteRingConDemandMs.Clear();
+                _remoteIrDemandMs.Clear();
                 PadForge.Common.Input.NfcTagRegistry.SwitchNfcArmed = false;
                 PadForge.Common.Input.NfcTagRegistry.JoyConIrHintOn = false;
                 _joyConIrHintOn = false;
@@ -3387,14 +3388,15 @@ namespace PadForge.Services
             // mapping choice. Hint changes take effect on the fork's next
             // sensors-enable edge, worst case a device reconnect.
             long irReq = PadForge.Engine.Common.Mapping.SourceCoercion.LastJoyConIrReadRequestTick;
+            bool irLocal = irReq != 0 && nowTick - irReq < McuDemandWindowMs;
             // Registration preempts the camera (#248 audit round 3): the
             // NFC reader and the camera share the MCU, and a registration
             // capture with the camera streaming would wait forever for a
             // UID. The camera resumes when the dialog closes and IR demand
-            // re-latches.
-            bool irWanted = irReq != 0 && nowTick - irReq < McuDemandWindowMs
-                && !PadForge.Common.Input.NfcTagRegistry.RegistrationCaptureActive
-                && AnyIrJoyConOnline();
+            // re-latches. The relay to other owners runs either way, since
+            // their MCUs are not this capture's.
+            bool irWanted = IrJoyConWanted(irLocal)
+                && !PadForge.Common.Input.NfcTagRegistry.RegistrationCaptureActive;
             if (irWanted != _joyConIrHintOn)
             {
                 if (SDL3.SDL.SDL_SetHint(SDL3.SDL.SDL_HINT_JOYSTICK_HIDAPI_JOYCON_IR_SENSOR,
@@ -3496,25 +3498,41 @@ namespace PadForge.Services
 
         private bool _joyConIrHintOn;
 
-        /// <summary>Known residual, named: the IR hint is process-global,
-        /// so with TWO standalone right Joy-Cons online, one bound to
-        /// "IR Brightness" and the other to NFC, both cameras start and
-        /// the fork suppresses NFC on both (camera-first arbitration).
-        /// Splitting per-device needs a fork-side per-device property.</summary>
-        private bool AnyIrJoyConOnline()
+        /// <summary>Whether this machine's camera hint should be on: one of
+        /// its own right Joy-Cons is online, and either this machine reads
+        /// "IR Brightness" or a peer's live mapping asked for that Joy-Con's
+        /// camera (source demand kind 3, the NFC relay's shape). A local read
+        /// also reaches the owner of each relayed right Joy-Con, which is
+        /// the only way a mapping on a shared Joy-Con can power its camera.
+        /// Known residual, named: the IR hint is process-global, so with TWO
+        /// standalone right Joy-Cons online, one bound to "IR Brightness"
+        /// and the other to NFC, both cameras start and the fork suppresses
+        /// NFC on both (camera-first arbitration). Splitting per-device needs
+        /// a fork-side per-device property.</summary>
+        private bool IrJoyConWanted(bool localWanted)
         {
-            // 0x2007 standalone right, 0x2008 combined gen-1 pair (#275,
-            // SDL#26: the pair's right half runs the same camera machine).
+            bool capable = false;
+            bool remoteWanted = false;
             var devices = SettingsManager.UserDevices;
             if (devices == null) return false;
             lock (devices.SyncRoot)
             {
                 foreach (var ud in devices.Items)
-                    if (ud != null && ud.IsOnline && ud.VendorId == 0x057E
-                        && (ud.ProdId == 0x2007 || ud.ProdId == 0x2008))
-                        return true;
+                {
+                    // 0x2007 standalone right, 0x2008 combined gen-1 pair (#275,
+                    // SDL#26: the pair's right half runs the same camera machine).
+                    if (ud == null || !ud.IsOnline || ud.VendorId != 0x057E
+                        || (ud.ProdId != 0x2007 && ud.ProdId != 0x2008)) continue;
+                    if (RemoteLinkOutputRouter.IsPeerPath(ud.DevicePath))
+                    {
+                        if (localWanted) RemoteLinkOutputRouter.ShipIrDemand(ud.DevicePath);
+                        continue;
+                    }
+                    capable = true;
+                    if (HasFreshRemoteIrDemand(ud.InstanceGuid)) remoteWanted = true;
+                }
             }
-            return false;
+            return capable && (localWanted || remoteWanted);
         }
 
         // The former AnyConfiguredDescriptor surface scanner was replaced
@@ -11400,6 +11418,15 @@ namespace PadForge.Services
             && _remoteRingConDemandMs.TryGetValue(deviceGuid, out long ms)
             && Environment.TickCount64 - ms < McuDemandWindowMs;
 
+        /// <summary>Per-device stamp of the most recent peer "IR Brightness"
+        /// demand, the NFC stamps' twin.</summary>
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<Guid, long> _remoteIrDemandMs = new();
+
+        private bool HasFreshRemoteIrDemand(Guid deviceGuid)
+            => deviceGuid != Guid.Empty
+            && _remoteIrDemandMs.TryGetValue(deviceGuid, out long ms)
+            && Environment.TickCount64 - ms < McuDemandWindowMs;
+
         /// <summary>Apply authenticated effects, speaker audio, and NFC demand to a
         /// currently shared source. OutputSync precedes the connection commit gate.</summary>
         private void OnRemoteFrameReceived(LinkServer origin, LinkIncomingFrame frame)
@@ -11431,6 +11458,9 @@ namespace PadForge.Services
                     else if (frame.Type == LinkMessageType.SourceDemand && frame.Payload.Length > 0
                         && frame.Payload[0] == RemoteLinkOutputRouter.DemandKindRingCon)
                         _remoteRingConDemandMs[device.InstanceGuid] = Environment.TickCount64;
+                    else if (frame.Type == LinkMessageType.SourceDemand && frame.Payload.Length > 0
+                        && frame.Payload[0] == RemoteLinkOutputRouter.DemandKindIr)
+                        _remoteIrDemandMs[device.InstanceGuid] = Environment.TickCount64;
                 });
             }
         }

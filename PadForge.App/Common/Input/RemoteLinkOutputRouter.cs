@@ -24,6 +24,7 @@ namespace PadForge.Common.Input
             internal int? Guide;
             internal long NfcDemandMs;
             internal long RingConDemandMs;
+            internal long IrDemandMs;
             internal Target(string fingerprint, byte slot, LinkConnectionLifetime connection, RemotePeerDevice owner)
             {
                 Fingerprint = fingerprint;
@@ -46,6 +47,10 @@ namespace PadForge.Common.Input
         /// consumer (hifihedgehog/SDL#33 Part 13). An owner that predates it
         /// ignores the kind.</summary>
         public const byte DemandKindRingCon = 2;
+        /// <summary>A live "IR Brightness" mapping on the consumer, the right
+        /// Joy-Con camera's demand. An owner that predates it ignores the
+        /// kind.</summary>
+        public const byte DemandKindIr = 3;
         public static int DeviceCount => _byPath.Count;
         public static bool IsPeerPath(string path) => !string.IsNullOrEmpty(path) && path.StartsWith("peer://", StringComparison.Ordinal);
 
@@ -57,6 +62,17 @@ namespace PadForge.Common.Input
                 long now = Environment.TickCount64;
                 if (now - target.NfcDemandMs < 1000) return;
                 if (Dispatch(target, LinkMessageType.SourceDemand, new[] { DemandKindNfc })) target.NfcDemandMs = now;
+            }
+        }
+
+        public static void ShipIrDemand(string path)
+        {
+            if (!_byPath.TryGetValue(path, out var target)) return;
+            lock (target.Gate)
+            {
+                long now = Environment.TickCount64;
+                if (now - target.IrDemandMs < 1000) return;
+                if (Dispatch(target, LinkMessageType.SourceDemand, new[] { DemandKindIr })) target.IrDemandMs = now;
             }
         }
 

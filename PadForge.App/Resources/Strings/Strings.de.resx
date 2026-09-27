@@ -2112,6 +2112,9 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Pad_ResetPointerMode" xml:space="preserve"><value>Zeigermodus zurücksetzen</value></data>
   <data name="Pad_ResetPointerFpsSpeed" xml:space="preserve"><value>FPS-Geschwindigkeit zurücksetzen</value></data>
   <data name="Mapping_IrOffscreen" xml:space="preserve"><value>IR außerhalb</value></data>
+  <data name="Mapping_GunAimX" xml:space="preserve"><value>Lightgun-Ziel X</value></data>
+  <data name="Mapping_GunAimY" xml:space="preserve"><value>Lightgun-Ziel Y</value></data>
+  <data name="Mapping_GunOffscreen" xml:space="preserve"><value>Lightgun außerhalb</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>Zeigermodi durchschalten</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>Durch {0} Zeigermodi schalten</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Schaltet den Wii-Zeigermodus für jede IR-fähige Remote des Slots durch die unten gewählten Modi. Jede Auslösung springt zum nächsten angehakten Modus. Die Position ist pro Aktion und wird beim Neustart zurückgesetzt.</value></data>

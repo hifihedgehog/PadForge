@@ -2134,6 +2134,9 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Pad_ResetPointerMode" xml:space="preserve"><value>Ripristina modalità puntatore</value></data>
   <data name="Pad_ResetPointerFpsSpeed" xml:space="preserve"><value>Ripristina velocità FPS</value></data>
   <data name="Mapping_IrOffscreen" xml:space="preserve"><value>IR fuori schermo</value></data>
+  <data name="Mapping_GunAimX" xml:space="preserve"><value>Mira della pistola X</value></data>
+  <data name="Mapping_GunAimY" xml:space="preserve"><value>Mira della pistola Y</value></data>
+  <data name="Mapping_GunOffscreen" xml:space="preserve"><value>Pistola fuori schermo</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>Cicla modalità puntatore</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>Cicla tra {0} modalità puntatore</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Avanza la modalità puntatore Wii tra le modalità selezionate sotto per ogni telecomando IR dello slot. Ogni attivazione passa alla modalità successiva selezionata. La posizione è per azione e si azzera al riavvio.</value></data>

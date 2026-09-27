@@ -2132,6 +2132,9 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_ResetPointerMode" xml:space="preserve"><value>Aanwijzermodus resetten</value></data>
   <data name="Pad_ResetPointerFpsSpeed" xml:space="preserve"><value>FPS-snelheid resetten</value></data>
   <data name="Mapping_IrOffscreen" xml:space="preserve"><value>IR buiten beeld</value></data>
+  <data name="Mapping_GunAimX" xml:space="preserve"><value>Pistooldoel X</value></data>
+  <data name="Mapping_GunAimY" xml:space="preserve"><value>Pistooldoel Y</value></data>
+  <data name="Mapping_GunOffscreen" xml:space="preserve"><value>Pistool buiten beeld</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>Aanwijzermodi doorlopen</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>{0} aanwijzermodi doorlopen</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Schakelt de Wii-aanwijzermodus door de hieronder aangevinkte modi voor elke IR-remote op het slot. Elke activering springt naar de volgende aangevinkte modus. De positie is per actie en reset bij herstart.</value></data>

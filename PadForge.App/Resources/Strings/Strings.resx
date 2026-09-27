@@ -2550,6 +2550,9 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_ResetPointerMode" xml:space="preserve"><value>Reset Pointer Mode</value></data>
   <data name="Pad_ResetPointerFpsSpeed" xml:space="preserve"><value>Reset FPS Speed</value></data>
   <data name="Mapping_IrOffscreen" xml:space="preserve"><value>IR Offscreen</value></data>
+  <data name="Mapping_GunAimX" xml:space="preserve"><value>Gun Aim X</value></data>
+  <data name="Mapping_GunAimY" xml:space="preserve"><value>Gun Aim Y</value></data>
+  <data name="Mapping_GunOffscreen" xml:space="preserve"><value>Gun Offscreen</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>Cycle Pointer Modes</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>Cycle through {0} pointer modes</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Advances the Wii pointer mode through the modes selected below for every IR-capable remote on the slot. Each fire moves to the next checked mode. The cycle position is per-action and resets on app restart.</value></data>

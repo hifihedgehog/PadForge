@@ -286,6 +286,13 @@ namespace PadForge.Engine.Data
         [XmlIgnore]
         public bool HasRingCon => HasJoyConIr;
 
+        /// <summary>Whether the device is a Namco GunCon 2, 0B9A:016A
+        /// (hifihedgehog/SDL#33 Part 9), whose aim feeds the IR pointer
+        /// sources the picker offers under the gun's own names. Keyed by ID,
+        /// so a relayed gun answers too. Computed, not stored.</summary>
+        [XmlIgnore]
+        public bool IsGunCon2 => VendorId == 0x0B9A && ProdId == 0x016A;
+
         /// <summary>Whether the device is a Joy-Con 2 (L or R), whose optical
         /// mouse sensor drives the "Mouse Motion X/Y" sources (issue #154).
         /// Identity-derived like the gates above, exact-equality against the

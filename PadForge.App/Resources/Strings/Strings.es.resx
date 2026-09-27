@@ -2112,6 +2112,9 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Pad_ResetPointerMode" xml:space="preserve"><value>Restablecer modo de puntero</value></data>
   <data name="Pad_ResetPointerFpsSpeed" xml:space="preserve"><value>Restablecer velocidad FPS</value></data>
   <data name="Mapping_IrOffscreen" xml:space="preserve"><value>IR fuera de pantalla</value></data>
+  <data name="Mapping_GunAimX" xml:space="preserve"><value>Puntería de pistola X</value></data>
+  <data name="Mapping_GunAimY" xml:space="preserve"><value>Puntería de pistola Y</value></data>
+  <data name="Mapping_GunOffscreen" xml:space="preserve"><value>Pistola fuera de pantalla</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>Ciclar modos de puntero</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>Ciclar entre {0} modos de puntero</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Avanza el modo de puntero Wii por los modos marcados abajo para cada mando con IR del slot. Cada disparo pasa al siguiente modo marcado. La posición es por acción y se restablece al reiniciar.</value></data>

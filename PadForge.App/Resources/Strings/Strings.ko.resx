@@ -2112,6 +2112,9 @@
   <data name="Pad_ResetPointerMode" xml:space="preserve"><value>포인터 모드 재설정</value></data>
   <data name="Pad_ResetPointerFpsSpeed" xml:space="preserve"><value>FPS 속도 재설정</value></data>
   <data name="Mapping_IrOffscreen" xml:space="preserve"><value>IR 화면 밖</value></data>
+  <data name="Mapping_GunAimX" xml:space="preserve"><value>건 조준 X</value></data>
+  <data name="Mapping_GunAimY" xml:space="preserve"><value>건 조준 Y</value></data>
+  <data name="Mapping_GunOffscreen" xml:space="preserve"><value>건 화면 밖</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>포인터 모드 순환</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>{0}개 포인터 모드 순환</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>슬롯의 IR 지원 리모컨 전체에서 아래에 선택한 모드 사이를 순환합니다. 실행할 때마다 다음 체크된 모드로 넘어갑니다. 위치는 동작별이며 재시작 시 초기화됩니다.</value></data>

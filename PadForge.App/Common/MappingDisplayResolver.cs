@@ -1907,6 +1907,16 @@ namespace PadForge.Common
                 // activator dialog offers it automatically.
                 list.Add(new InputChoice { Descriptor = "IR Offscreen", DisplayName = si.Mapping_IrOffscreen });
             }
+            // The GunCon 2 (hifihedgehog/SDL#33 Part 9) aims at a CRT by beam
+            // timing, not with a camera, but the wrapper hands its aim to the
+            // same state, so the same three sources carry it under the gun's
+            // names: absolute cursor on Mouse X/Y, the stick, and the reload.
+            else if (ud.IsGunCon2)
+            {
+                list.Add(new InputChoice { Descriptor = "IR Pointer X", DisplayName = si.Mapping_GunAimX });
+                list.Add(new InputChoice { Descriptor = "IR Pointer Y", DisplayName = si.Mapping_GunAimY });
+                list.Add(new InputChoice { Descriptor = "IR Offscreen", DisplayName = si.Mapping_GunOffscreen });
+            }
 
             // Wii Balance Board derived sources (#146). The four corner load cells
             // also arrive raw on the stick axes; these are the friendly derived

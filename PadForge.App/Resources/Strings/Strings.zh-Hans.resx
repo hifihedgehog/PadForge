@@ -2128,6 +2128,9 @@
   <data name="Pad_ResetPointerMode" xml:space="preserve"><value>重置指针模式</value></data>
   <data name="Pad_ResetPointerFpsSpeed" xml:space="preserve"><value>重置FPS速度</value></data>
   <data name="Mapping_IrOffscreen" xml:space="preserve"><value>IR屏幕外</value></data>
+  <data name="Mapping_GunAimX" xml:space="preserve"><value>光枪瞄准 X</value></data>
+  <data name="Mapping_GunAimY" xml:space="preserve"><value>光枪瞄准 Y</value></data>
+  <data name="Mapping_GunOffscreen" xml:space="preserve"><value>光枪屏幕外</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>循环指针模式</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>循环{0}个指针模式</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>在下方勾选的模式之间循环该插槽所有IR遥控器的Wii指针模式。每次触发前进到下一个勾选的模式。位置按动作独立，重启后重置。</value></data>

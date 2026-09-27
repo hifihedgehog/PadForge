@@ -129,6 +129,11 @@ namespace PadForge.Engine
         /// adds as axis 7.</summary>
         public bool HasRingCon { get; private set; }
 
+        /// <summary>Whether this is a Namco GunCon 2, 0B9A:016A (hifihedgehog/SDL#33
+        /// Part 9). The fork reads it as a joystick whose axes 0 and 1 are the
+        /// raw beam counts, which PadForge scales to the screen.</summary>
+        public bool IsGunCon2 { get; private set; }
+
         /// <summary>Switch 2 magnetometer stream (#271 item 5). Raw wire
         /// units on wrapper-local fields rather than CustomInputState, so
         /// the Remote Link codec (whose Block enum is full) is untouched:
@@ -568,6 +573,12 @@ namespace PadForge.Engine
             // without the Ring-Con leaves the source unoffered.
             HasRingCon = HasJoyConIr && RawAxisCount >= 8;
 
+            // GunCon 2 (hifihedgehog/SDL#33 Part 9): X and Y on axes 0 and 1.
+            // The EMS LCD TopGun shares the ID and, when SDL reads it, the
+            // same layout (docs/README-guncon.md).
+            IsGunCon2 = VendorId == 0x0B9A && ProductId == 0x016A
+                && Joystick != IntPtr.Zero && RawAxisCount >= 2;
+
             // Joy-Con 2 optical mouse sensor (issue #154). The fork's BLE Switch 2
             // driver posts the sensor's absolute 16-bit counters on joystick axes
             // 6/7 for a Joy-Con 2 L (PID 0x2067) or R (PID 0x2066) when its mouse
@@ -842,6 +853,11 @@ namespace PadForge.Engine
             if (HasRingCon && state != null)
                 ReadRingCon(state);
 
+            // GunCon 2 beam counts, scaled to the screen over the raw axes
+            // they arrived on.
+            if (IsGunCon2 && state != null)
+                ApplyGunCon2(state, SDL_GetJoystickAxis(Joystick, 0), SDL_GetJoystickAxis(Joystick, 1));
+
             // Joy-Con 2 optical mouse counters ride dedicated joystick axes 6/7
             // (SDL#8), read joystick-direct the same way.
             if (HasJoyCon2Mouse && state != null)
@@ -1102,6 +1118,50 @@ namespace PadForge.Engine
                 return 0f;
             float v = (raw - rest) / (float)RingConFullScale;
             return v > 1f ? 1f : v < -1f ? -1f : v;
+        }
+
+        /// <summary>The GunCon 2 beam counts that meet the screen's edges: X 175
+        /// to 720 and Y 20 to 240, the default calibration of beardypig's
+        /// guncon2 driver (guncon2.c), which the fork's doc names as where the
+        /// PC tools start. The usable window depends on the CRT, the video mode
+        /// and the game.</summary>
+        internal const int GunCon2MinX = 175, GunCon2MaxX = 720;
+        internal const int GunCon2MinY = 20, GunCon2MaxY = 240;
+
+        /// <summary>The GunCon 2's aim from its beam counts: -1..+1 per axis with
+        /// X -1 at the left edge and Y -1 at the top, the IR pointer's
+        /// convention. Off screen when X is 10 or less or Y is 5 or less.
+        /// GunconUSB counts a reading as on the screen only past those values
+        /// and reads X 0 as off screen, and an idle gun with no CRT reports X 1
+        /// and Y 5 (docs/README-guncon.md).</summary>
+        internal static (float X, float Y, bool OnScreen) GunCon2Aim(short rawX, short rawY)
+        {
+            if (rawX <= 10 || rawY <= 5)
+                return (0f, 0f, false);
+            float x = (rawX - GunCon2MinX) / (float)(GunCon2MaxX - GunCon2MinX) * 2f - 1f;
+            float y = (rawY - GunCon2MinY) / (float)(GunCon2MaxY - GunCon2MinY) * 2f - 1f;
+            return (Math.Clamp(x, -1f, 1f), Math.Clamp(y, -1f, 1f), true);
+        }
+
+        /// <summary>Writes the GunCon 2's aim into the state twice. Axes 0 and 1
+        /// carry it across the whole stick range, centered while the gun sees
+        /// no screen, so a stick mapping aims with no setup. WiiIrState carries
+        /// it for the IR pointer sources the picker offers as the gun's aim and
+        /// off-screen inputs, which drive the absolute cursor and the reload
+        /// read. The IR pointer read stretches its input by IrMarginStretch,
+        /// because a Wii Remote's tracked aim cannot reach the screen edge. The
+        /// gun's aim already spans the screen, so it is stored divided by the
+        /// stretch and the read restores it.</summary>
+        internal static void ApplyGunCon2(CustomInputState state, short rawX, short rawY)
+        {
+            var (x, y, onScreen) = GunCon2Aim(rawX, rawY);
+            short sx = (short)Math.Round(x * 32767f);
+            short sy = (short)Math.Round(y * 32767f);
+            state.Axis[0] = (ushort)(sx - short.MinValue);
+            state.Axis[1] = (ushort)(sy - short.MinValue);
+            state.Ir.X = x / PadForge.Engine.Common.Mapping.SourceCoercion.IrMarginStretchX;
+            state.Ir.Y = y / PadForge.Engine.Common.Mapping.SourceCoercion.IrMarginStretchY;
+            state.Ir.Detected = onScreen;
         }
 
         // The SDL hidapi_wii driver posts the two IR dots on DEDICATED joystick

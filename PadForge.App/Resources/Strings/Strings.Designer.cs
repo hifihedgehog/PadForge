@@ -2363,6 +2363,9 @@ public class Strings : INotifyPropertyChanged
     public string Pad_ResetPointerMode => Get("Pad_ResetPointerMode");
     public string Pad_ResetPointerFpsSpeed => Get("Pad_ResetPointerFpsSpeed");
     public string Mapping_IrOffscreen => Get("Mapping_IrOffscreen");
+    public string Mapping_GunAimX => Get("Mapping_GunAimX");
+    public string Mapping_GunAimY => Get("Mapping_GunAimY");
+    public string Mapping_GunOffscreen => Get("Mapping_GunOffscreen");
     public string MacroAction_Type_PointerModeCycle => Get("MacroAction_Type_PointerModeCycle");
     public string MacroAction_PointerModeCycle_Format => Get("MacroAction_PointerModeCycle_Format");
     public string MacroAction_PointerModeCycle_Tooltip => Get("MacroAction_PointerModeCycle_Tooltip");

@@ -2112,6 +2112,9 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_ResetPointerMode" xml:space="preserve"><value>Réinitialiser le mode du pointeur</value></data>
   <data name="Pad_ResetPointerFpsSpeed" xml:space="preserve"><value>Réinitialiser la vitesse FPS</value></data>
   <data name="Mapping_IrOffscreen" xml:space="preserve"><value>IR hors écran</value></data>
+  <data name="Mapping_GunAimX" xml:space="preserve"><value>Visée du pistolet X</value></data>
+  <data name="Mapping_GunAimY" xml:space="preserve"><value>Visée du pistolet Y</value></data>
+  <data name="Mapping_GunOffscreen" xml:space="preserve"><value>Pistolet hors écran</value></data>
   <data name="MacroAction_Type_PointerModeCycle" xml:space="preserve"><value>Faire défiler les modes du pointeur</value></data>
   <data name="MacroAction_PointerModeCycle_Format" xml:space="preserve"><value>Faire défiler {0} modes de pointeur</value></data>
   <data name="MacroAction_PointerModeCycle_Tooltip" xml:space="preserve"><value>Fait avancer le mode du pointeur Wii parmi les modes cochés ci-dessous pour chaque télécommande IR du slot. Chaque déclenchement passe au mode coché suivant. La position est propre à l'action et se réinitialise au redémarrage.</value></data>

@@ -68,6 +68,7 @@ namespace SDL3
         public const string SDL_HINT_JOYSTICK_BLE = "SDL_JOYSTICK_BLE";
         public const string SDL_HINT_JOYSTICK_HIDAPI_DREAMCHEEKY = "SDL_JOYSTICK_HIDAPI_DREAMCHEEKY";
         public const string SDL_HINT_JOYSTICK_ICADE_RAWINPUT = "SDL_JOYSTICK_ICADE_RAWINPUT";
+        public const string SDL_HINT_JOYSTICK_ICADE_DEVICES = "SDL_JOYSTICK_ICADE_DEVICES";
         public const string SDL_HINT_JOYSTICK_SERIAL = "SDL_JOYSTICK_SERIAL";
         // Konami's ACIO boards. InputManager.ApplySerialControllers sets it
         // with the serial list.

@@ -875,6 +875,7 @@ namespace PadForge
             // Opt-in driver switch (hifihedgehog/SDL#33 Part 15). The cost is
             // stated before a move and nothing is asked before a restore.
             _viewModel.Devices.DriverBindRequested += async (s, e) => await SwitchDriverAsync(bind: true);
+            _viewModel.Devices.ICadeModeRequested += (s, asPad) => SetICadeMode(asPad);
             _viewModel.Devices.DriverRestoreRequested += async (s, e) => await SwitchDriverAsync(bind: false);
 
             // Wire devices page Bluetooth pairing (Wii controllers, issue #116).
@@ -2501,6 +2502,37 @@ namespace PadForge
                 : (ok ? Strings.Instance.Status_DriverRestored_Format : Strings.Instance.Status_DriverRestoreFailed_Format);
             _viewModel.SetStatus(string.Format(format, name), persist: !ok);
             devices.RefreshDriverOffer();
+        }
+
+        /// <summary>Marks the selected keyboard as a pad in iCade mode, or
+        /// turns a marked pad back into a keyboard (hifihedgehog/SDL#33
+        /// Part 16). The fork re-reads SDL_JOYSTICK_ICADE_DEVICES at once:
+        /// the keyboard leaves PadForge's keyboard list and the pad's
+        /// joystick arrives, or the other way around. The letters keep
+        /// reaching the program in front either way.</summary>
+        private void SetICadeMode(bool asPad)
+        {
+            var row = _viewModel.Devices.SelectedDevice;
+            if (row == null || row.VendorId == 0) return;
+            var pads = _viewModel.Settings.ICadePads;
+            if (asPad)
+            {
+                if (!Common.Input.ICadePads.Lists(pads, row.VendorId, row.ProductId))
+                    pads.Add(Common.Input.ICadePads.Entry(row.VendorId, row.ProductId));
+            }
+            else
+            {
+                foreach (var pair in pads.Where(p => Common.Input.ICadePads.TryParse(p, out ushort v, out ushort d)
+                             && v == row.VendorId && d == row.ProductId).ToList())
+                    pads.Remove(pair);
+            }
+            Common.Input.InputManager.ApplyICadePads(pads);
+            _settingsService?.MarkDirty();
+            row.ShowReadAsICade = !asPad;
+            row.ShowReadAsKeyboard = asPad;
+            _viewModel.SetStatus(string.Format(asPad
+                ? Strings.Instance.Status_ICadeOn_Format
+                : Strings.Instance.Status_ICadeOff_Format, row.DeviceName));
         }
 
         private static string DriverCost(Services.VendorUsbDriverInstaller.OptInKind kind) => kind switch

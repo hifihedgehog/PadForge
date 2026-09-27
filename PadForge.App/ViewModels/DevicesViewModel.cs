@@ -105,6 +105,12 @@ namespace PadForge.ViewModels
         public void RequestDriverBind() => DriverBindRequested?.Invoke(this, EventArgs.Empty);
         public void RequestDriverRestore() => DriverRestoreRequested?.Invoke(this, EventArgs.Empty);
 
+        /// <summary>Raised by "Read as iCade Controller" (true) and "Read as
+        /// Keyboard" (false). MainWindow keeps the list and writes the hint
+        /// (hifihedgehog/SDL#33 Part 16).</summary>
+        public event EventHandler<bool> ICadeModeRequested;
+        public void RequestICadeMode(bool asPad) => ICadeModeRequested?.Invoke(this, asPad);
+
         /// <summary>Reads the offer for the selected device. Only a row whose
         /// IDs belong to an opt-in device costs a sweep of the USB
         /// nodes.</summary>

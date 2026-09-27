@@ -2574,6 +2574,11 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minutes (0 = jamais)</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Déconnecter le Bluetooth lors du branchement USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Quick Charge. Lorsque cette manette signale qu’elle charge alors qu’elle est connectée en Bluetooth, la liaison Bluetooth est coupée pour qu’elle charge sans alimenter la radio. Toute source d’alimentation USB compte, chargeurs muraux compris. Si vous réactivez le Bluetooth avec le câble branché, il est laissé tranquille jusqu’au prochain débranchement.</value></data>
+  <data name="Devices_ReadAsICade" xml:space="preserve"><value>Lire comme manette iCade</value></data>
+  <data name="Devices_ReadAsICadeTooltip" xml:space="preserve"><value>Pour une manette en mode iCade, qui s'appaire comme un clavier Bluetooth et tape une lettre à chaque appui et à chaque relâchement. PadForge la lit comme une manette, et ses lettres atteignent toujours le programme au premier plan.</value></data>
+  <data name="Devices_ReadAsKeyboard" xml:space="preserve"><value>Lire comme clavier</value></data>
+  <data name="Status_ICadeOn_Format" xml:space="preserve"><value>{0} est lu comme une manette iCade.</value></data>
+  <data name="Status_ICadeOff_Format" xml:space="preserve"><value>{0} est de nouveau lu comme un clavier.</value></data>
   <data name="Devices_LightGun" xml:space="preserve"><value>Pistolet optique</value></data>
   <data name="Devices_GunWindowDefault" xml:space="preserve"><value>Plage de visée par défaut : X {0} à {1}, Y {2} à {3}</value></data>
   <data name="Devices_GunWindowCalibrated" xml:space="preserve"><value>Plage de visée calibrée : X {0} à {1}, Y {2} à {3}</value></data>

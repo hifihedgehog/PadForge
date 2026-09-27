@@ -839,6 +839,11 @@ public class Strings : INotifyPropertyChanged
     public string Devices_IdleDisconnectMinutes => Get("Devices_IdleDisconnectMinutes");
     public string Devices_QuickCharge => Get("Devices_QuickCharge");
     public string Devices_QuickChargeTooltip => Get("Devices_QuickChargeTooltip");
+    public string Devices_ReadAsICade => Get("Devices_ReadAsICade");
+    public string Devices_ReadAsICadeTooltip => Get("Devices_ReadAsICadeTooltip");
+    public string Devices_ReadAsKeyboard => Get("Devices_ReadAsKeyboard");
+    public string Status_ICadeOn_Format => Get("Status_ICadeOn_Format");
+    public string Status_ICadeOff_Format => Get("Status_ICadeOff_Format");
     public string Devices_LightGun => Get("Devices_LightGun");
     public string Devices_GunWindowDefault => Get("Devices_GunWindowDefault");
     public string Devices_GunWindowCalibrated => Get("Devices_GunWindowCalibrated");

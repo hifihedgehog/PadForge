@@ -870,6 +870,28 @@ namespace PadForge.ViewModels
         public bool ShowGunCalibrationDivider =>
             ShowGunCalibration && (ShowPowerSection || !ShowInputModeOrHidingSection);
 
+        private bool _showReadAsICade;
+
+        /// <summary>Whether the row offers "Read as iCade Controller": a
+        /// Bluetooth keyboard with IDs that the user has not marked, and not
+        /// the ION iCade cabinet, which the fork reads already
+        /// (hifihedgehog/SDL#33 Part 16, ICadePads.CanMark).</summary>
+        public bool ShowReadAsICade
+        {
+            get => _showReadAsICade;
+            set => SetProperty(ref _showReadAsICade, value);
+        }
+
+        private bool _showReadAsKeyboard;
+
+        /// <summary>Whether the row offers "Read as Keyboard": a marked pad's
+        /// joystick, or its keyboard record while the pad is away.</summary>
+        public bool ShowReadAsKeyboard
+        {
+            get => _showReadAsKeyboard;
+            set => SetProperty(ref _showReadAsKeyboard, value);
+        }
+
         /// <summary>The beam-count window the gun's aim scales by.</summary>
         public string GunCalibrationStatus
         {

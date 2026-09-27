@@ -505,6 +505,12 @@ namespace PadForge.Views
         private void DriverRestore_Click(object sender, RoutedEventArgs e)
             => (DataContext as ViewModels.DevicesViewModel)?.RequestDriverRestore();
 
+        private void ReadAsICade_Click(object sender, RoutedEventArgs e)
+            => (DataContext as ViewModels.DevicesViewModel)?.RequestICadeMode(true);
+
+        private void ReadAsKeyboard_Click(object sender, RoutedEventArgs e)
+            => (DataContext as ViewModels.DevicesViewModel)?.RequestICadeMode(false);
+
         // ── Handheld hidden buttons (issue #343) ──
 
         private void LearnHandheldButton_Click(object sender, RoutedEventArgs e)

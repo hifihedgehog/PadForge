@@ -2280,6 +2280,15 @@ namespace PadForge.Services
                     if (!string.IsNullOrWhiteSpace(id))
                         vm.WinUsbOptIns.Add(id);
             }
+            vm.ICadePads.Clear();
+            if (appSettings.ICadePads != null)
+            {
+                foreach (var pair in appSettings.ICadePads)
+                    if (PadForge.Common.Input.ICadePads.TryParse(pair, out _, out _))
+                        vm.ICadePads.Add(pair);
+            }
+            // Applied at load, before SDL_Init, as the serial list is.
+            PadForge.Common.Input.InputManager.ApplyICadePads(vm.ICadePads);
             vm.SetLanguageFromCode(appSettings.Language);
             vm.EnableAutoProfileSwitching = appSettings.EnableAutoProfileSwitching;
             SettingsManager.EnableAutoProfileSwitching = appSettings.EnableAutoProfileSwitching;
@@ -4723,6 +4732,9 @@ namespace PadForge.Services
                 WinUsbOptIns = vm.WinUsbOptIns.Count > 0
                     ? vm.WinUsbOptIns.ToArray()
                     : null,
+                ICadePads = vm.ICadePads.Count > 0
+                    ? vm.ICadePads.ToArray()
+                    : null,
                 ExtendedConfigs = isDefault ? extendedConfigs.ToArray() : defaultSnap.ExtendedConfigs,
                 DeviceSlotConfigs = isDefault ? deviceSlotConfigs.ToArray() : defaultSnap.DeviceSlotConfigs,
                 UserProfiles = _userProfiles.Count > 0 ? _userProfiles.ToArray() : null,
@@ -6650,6 +6662,13 @@ namespace PadForge.Services
         [XmlArray("WinUsbOptIns")]
         [XmlArrayItem("Id")]
         public string[] WinUsbOptIns { get; set; }
+
+        /// <summary>Pads in iCade mode the user marked on the Devices page
+        /// (hifihedgehog/SDL#33 Part 16), handed to SDL as
+        /// SDL_JOYSTICK_ICADE_DEVICES. Null when there are none.</summary>
+        [XmlArray("ICadePads")]
+        [XmlArrayItem("Pair")]
+        public string[] ICadePads { get; set; }
 
         /// <summary>
         /// Per-slot Extended configuration (preset, axis/button counts).

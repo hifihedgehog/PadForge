@@ -2574,6 +2574,11 @@
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>분 (0 = 안 함)</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>USB 연결 시 Bluetooth 연결 해제</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>퀵 차지. 이 컨트롤러가 Bluetooth로 연결된 상태에서 충전 중이라고 보고하면 Bluetooth 링크를 끊어 무선에 전력을 쓰지 않고 충전합니다. 벽 충전기를 포함한 모든 USB 전원이 해당됩니다. 케이블을 꽂은 채 Bluetooth를 다시 연결하면 다음에 케이블을 뽑을 때까지 그대로 둡니다.</value></data>
+  <data name="Devices_ReadAsICade" xml:space="preserve"><value>iCade 컨트롤러로 읽기</value></data>
+  <data name="Devices_ReadAsICadeTooltip" xml:space="preserve"><value>iCade 모드의 컨트롤러용입니다. Bluetooth 키보드로 페어링되며 누를 때와 뗄 때마다 글자를 입력합니다. PadForge는 컨트롤러로 읽으며, 글자는 계속 앞에 있는 프로그램에 전달됩니다.</value></data>
+  <data name="Devices_ReadAsKeyboard" xml:space="preserve"><value>키보드로 읽기</value></data>
+  <data name="Status_ICadeOn_Format" xml:space="preserve"><value>{0}을(를) iCade 컨트롤러로 읽는 중입니다.</value></data>
+  <data name="Status_ICadeOff_Format" xml:space="preserve"><value>{0}을(를) 다시 키보드로 읽는 중입니다.</value></data>
   <data name="Devices_LightGun" xml:space="preserve"><value>라이트 건</value></data>
   <data name="Devices_GunWindowDefault" xml:space="preserve"><value>기본 조준 범위: X {0}~{1}, Y {2}~{3}</value></data>
   <data name="Devices_GunWindowCalibrated" xml:space="preserve"><value>보정된 조준 범위: X {0}~{1}, Y {2}~{3}</value></data>

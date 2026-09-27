@@ -2574,6 +2574,11 @@
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>分钟（0 = 从不）</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>通过USB连接时断开蓝牙</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>快速充电。当此控制器在蓝牙连接期间报告正在充电时，将断开蓝牙链接，使其充电时不再为无线模块供电。任何USB电源都有效，包括墙充。若在插着线时重新开启蓝牙，将保持不动，直到下次拔线。</value></data>
+  <data name="Devices_ReadAsICade" xml:space="preserve"><value>作为 iCade 控制器读取</value></data>
+  <data name="Devices_ReadAsICadeTooltip" xml:space="preserve"><value>用于 iCade 模式的控制器。它以蓝牙键盘的身份配对，每次按下和松开都会输入一个字母。PadForge 会把它读取为控制器，其字母仍会送达前台程序。</value></data>
+  <data name="Devices_ReadAsKeyboard" xml:space="preserve"><value>作为键盘读取</value></data>
+  <data name="Status_ICadeOn_Format" xml:space="preserve"><value>正在将 {0} 作为 iCade 控制器读取。</value></data>
+  <data name="Status_ICadeOff_Format" xml:space="preserve"><value>已重新将 {0} 作为键盘读取。</value></data>
   <data name="Devices_LightGun" xml:space="preserve"><value>光枪</value></data>
   <data name="Devices_GunWindowDefault" xml:space="preserve"><value>默认瞄准范围：X {0} 至 {1}，Y {2} 至 {3}</value></data>
   <data name="Devices_GunWindowCalibrated" xml:space="preserve"><value>已校准的瞄准范围：X {0} 至 {1}，Y {2} 至 {3}</value></data>

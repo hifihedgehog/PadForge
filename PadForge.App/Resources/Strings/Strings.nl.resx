@@ -2594,6 +2594,11 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minuten (0 = nooit)</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Bluetooth loskoppelen bij aansluiten via USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Quick Charge. Wanneer deze controller meldt dat hij oplaadt terwijl hij via Bluetooth is verbonden, wordt de Bluetooth-verbinding verbroken zodat hij oplaadt zonder de radio te voeden. Elke USB-voedingsbron telt, ook wandladers. Zet je Bluetooth weer aan terwijl de kabel erin zit, dan blijft het met rust tot de volgende keer dat je de kabel lostrekt.</value></data>
+  <data name="Devices_ReadAsICade" xml:space="preserve"><value>Lezen als iCade-controller</value></data>
+  <data name="Devices_ReadAsICadeTooltip" xml:space="preserve"><value>Voor een controller in iCade-modus, die koppelt als Bluetooth-toetsenbord en bij elke druk en elke loslating een letter typt. PadForge leest hem als controller, en zijn letters bereiken nog steeds het programma op de voorgrond.</value></data>
+  <data name="Devices_ReadAsKeyboard" xml:space="preserve"><value>Lezen als toetsenbord</value></data>
+  <data name="Status_ICadeOn_Format" xml:space="preserve"><value>{0} wordt gelezen als iCade-controller.</value></data>
+  <data name="Status_ICadeOff_Format" xml:space="preserve"><value>{0} wordt weer gelezen als toetsenbord.</value></data>
   <data name="Devices_LightGun" xml:space="preserve"><value>Lichtpistool</value></data>
   <data name="Devices_GunWindowDefault" xml:space="preserve"><value>Standaard richtbereik: X {0} tot {1}, Y {2} tot {3}</value></data>
   <data name="Devices_GunWindowCalibrated" xml:space="preserve"><value>Gekalibreerd richtbereik: X {0} tot {1}, Y {2} tot {3}</value></data>

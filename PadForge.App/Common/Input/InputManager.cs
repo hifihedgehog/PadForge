@@ -923,6 +923,11 @@ namespace PadForge.Common.Input
                     SDL_SetHint(SDL_HINT_JOYSTICK_SERIAL, _serialHintValue);
                 }
 
+                // The pads in iCade mode the user marked on the Devices page,
+                // replayed for the same reason.
+                lock (_iCadeHintLock)
+                    SDL_SetHint(SDL_HINT_JOYSTICK_ICADE_DEVICES, _iCadeHintValue);
+
                 // Allow screensaver/sleep even while SDL video is active.
                 SDL_SetHint(SDL_HINT_VIDEO_ALLOW_SCREENSAVER, "1");
 
@@ -1411,6 +1416,27 @@ namespace PadForge.Common.Input
 
         private static readonly object _serialHintLock = new object();
         private static string _serialHintValue = string.Empty;
+
+        /// <summary>Hands SDL the pads in iCade mode the user marked
+        /// (hifihedgehog/SDL#33 Part 16): SDL_JOYSTICK_ICADE_DEVICES, which
+        /// the fork's iCade driver reads at any time. A keyboard that joins
+        /// the list becomes the pad's joystick, and one that leaves it turns
+        /// back into a keyboard. Written under the joystick lock, as the
+        /// serial hint is.</summary>
+        public static void ApplyICadePads(IEnumerable<string> entries)
+        {
+            string value = ICadePads.HintValue(entries);
+            bool accepted;
+            lock (_iCadeHintLock)
+            {
+                _iCadeHintValue = value;
+                accepted = WriteHintUnderJoystickLock(SDL_HINT_JOYSTICK_ICADE_DEVICES, value);
+            }
+            Engine.SdlDiagLog.WriteLine($"ICADE hint {SDL_HINT_JOYSTICK_ICADE_DEVICES}=\"{value}\" accepted={accepted}");
+        }
+
+        private static readonly object _iCadeHintLock = new object();
+        private static string _iCadeHintValue = string.Empty;
 
         private static bool WriteHintUnderJoystickLock(string name, string value)
         {

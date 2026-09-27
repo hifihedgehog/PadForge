@@ -13613,6 +13613,17 @@ namespace PadForge.Services
             row.ShowGunCalibration = ud.IsGunCon2;
             row.GunConnectedHere = ud.Device is PadForge.Engine.SdlDeviceWrapper { IsGunCon2: true };
 
+            // Pads in iCade mode (hifihedgehog/SDL#33 Part 16): a Bluetooth
+            // keyboard can be marked as one, and a marked pair turns back
+            // into a keyboard from the pad's row, or from the keyboard's
+            // while the pad is away.
+            var iCadePads = _mainVm.Settings.ICadePads;
+            bool iCadeListed = ICadePads.Lists(iCadePads, ud.VendorId, ud.ProdId);
+            row.ShowReadAsICade = !iCadeListed && ICadePads.CanMark(ud.IsKeyboard,
+                PadForge.Common.DeviceTransport.IsBluetooth(ud.DevicePath, ud.VendorId, ud.ProdId), ud.VendorId, ud.ProdId);
+            row.ShowReadAsKeyboard = iCadeListed && (ud.IsKeyboard
+                || (ud.ProductName ?? string.Empty).StartsWith(ICadePads.JoystickNamePrefix, StringComparison.Ordinal));
+
             // Battery indicator (#167): seed through the same effective-battery
             // path the 5 s tick uses (#187). Seeding raw SDL battery here blinked
             // the Devices page for Xbox pads: every list refresh stamped -1 and

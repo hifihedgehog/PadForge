@@ -2574,6 +2574,11 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minutos (0 = nunca)</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Desconectar Bluetooth al conectar por USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Quick Charge. Cuando este mando informa de que está cargando mientras está conectado por Bluetooth, el enlace Bluetooth se corta para que cargue sin alimentar la radio. Cuenta cualquier fuente de alimentación USB, incluidos los cargadores de pared. Si vuelves a activar Bluetooth con el cable puesto, se deja en paz hasta el siguiente desenchufe.</value></data>
+  <data name="Devices_ReadAsICade" xml:space="preserve"><value>Leer como mando iCade</value></data>
+  <data name="Devices_ReadAsICadeTooltip" xml:space="preserve"><value>Para un mando en modo iCade, que se empareja como teclado Bluetooth y escribe una letra con cada pulsación y cada liberación. PadForge lo lee como mando, y sus letras siguen llegando al programa en primer plano.</value></data>
+  <data name="Devices_ReadAsKeyboard" xml:space="preserve"><value>Leer como teclado</value></data>
+  <data name="Status_ICadeOn_Format" xml:space="preserve"><value>Leyendo {0} como mando iCade.</value></data>
+  <data name="Status_ICadeOff_Format" xml:space="preserve"><value>Leyendo {0} como teclado de nuevo.</value></data>
   <data name="Devices_LightGun" xml:space="preserve"><value>Pistola de luz</value></data>
   <data name="Devices_GunWindowDefault" xml:space="preserve"><value>Rango de puntería predeterminado: X {0} a {1}, Y {2} a {3}</value></data>
   <data name="Devices_GunWindowCalibrated" xml:space="preserve"><value>Rango de puntería calibrado: X {0} a {1}, Y {2} a {3}</value></data>

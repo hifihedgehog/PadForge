@@ -2568,6 +2568,11 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minutos (0 = nunca)</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Desconectar Bluetooth ao Conectar por USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Quick Charge. Quando este controle informa que está carregando enquanto conectado por Bluetooth, o link Bluetooth é desligado para que ele carregue sem alimentar o rádio. Qualquer fonte de energia USB conta, incluindo carregadores de parede. Se você reativar o Bluetooth com o cabo conectado, ele fica como está até o próximo desligamento do cabo.</value></data>
+  <data name="Devices_ReadAsICade" xml:space="preserve"><value>Ler como Controle iCade</value></data>
+  <data name="Devices_ReadAsICadeTooltip" xml:space="preserve"><value>Para um controle no modo iCade, que pareia como teclado Bluetooth e digita uma letra a cada toque e a cada soltura. O PadForge o lê como controle, e as letras continuam chegando ao programa em primeiro plano.</value></data>
+  <data name="Devices_ReadAsKeyboard" xml:space="preserve"><value>Ler como Teclado</value></data>
+  <data name="Status_ICadeOn_Format" xml:space="preserve"><value>Lendo {0} como controle iCade.</value></data>
+  <data name="Status_ICadeOff_Format" xml:space="preserve"><value>Lendo {0} como teclado de novo.</value></data>
   <data name="Devices_LightGun" xml:space="preserve"><value>Pistola de Luz</value></data>
   <data name="Devices_GunWindowDefault" xml:space="preserve"><value>Faixa de mira padrão: X {0} a {1}, Y {2} a {3}</value></data>
   <data name="Devices_GunWindowCalibrated" xml:space="preserve"><value>Faixa de mira calibrada: X {0} a {1}, Y {2} a {3}</value></data>

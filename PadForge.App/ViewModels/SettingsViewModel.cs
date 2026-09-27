@@ -277,6 +277,11 @@ namespace PadForge.ViewModels
         /// driver from the Devices page (hifihedgehog/SDL#33 Part 15).</summary>
         public ObservableCollection<string> WinUsbOptIns { get; } = new();
 
+        /// <summary>Pads in iCade mode the user marked on the Devices page
+        /// (hifihedgehog/SDL#33 Part 16), as "0xVVVV/0xPPPP" pairs for
+        /// SDL_JOYSTICK_ICADE_DEVICES.</summary>
+        public ObservableCollection<string> ICadePads { get; } = new();
+
         private string _selectedWhitelistPath;
 
         /// <summary>Currently selected whitelist path in the list.</summary>

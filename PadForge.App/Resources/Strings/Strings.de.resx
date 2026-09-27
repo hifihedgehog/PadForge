@@ -2574,6 +2574,11 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>Minuten (0 = nie)</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Bluetooth trennen, wenn per USB angeschlossen</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Quick Charge. Meldet dieser Controller während einer Bluetooth-Verbindung, dass er lädt, wird die Bluetooth-Verbindung getrennt, damit er lädt, ohne das Funkmodul zu versorgen. Jede USB-Stromquelle zählt, auch Ladegeräte. Wird Bluetooth bei eingestecktem Kabel wieder aktiviert, bleibt es bis zum nächsten Abstecken unangetastet.</value></data>
+  <data name="Devices_ReadAsICade" xml:space="preserve"><value>Als iCade-Controller lesen</value></data>
+  <data name="Devices_ReadAsICadeTooltip" xml:space="preserve"><value>Für ein Gamepad im iCade-Modus, das sich als Bluetooth-Tastatur koppelt und bei jedem Drücken und Loslassen einen Buchstaben tippt. PadForge liest es als Controller, und seine Buchstaben erreichen weiterhin das Programm im Vordergrund.</value></data>
+  <data name="Devices_ReadAsKeyboard" xml:space="preserve"><value>Als Tastatur lesen</value></data>
+  <data name="Status_ICadeOn_Format" xml:space="preserve"><value>{0} wird als iCade-Controller gelesen.</value></data>
+  <data name="Status_ICadeOff_Format" xml:space="preserve"><value>{0} wird wieder als Tastatur gelesen.</value></data>
   <data name="Devices_LightGun" xml:space="preserve"><value>Lightgun</value></data>
   <data name="Devices_GunWindowDefault" xml:space="preserve"><value>Standard-Zielbereich: X {0} bis {1}, Y {2} bis {3}</value></data>
   <data name="Devices_GunWindowCalibrated" xml:space="preserve"><value>Kalibrierter Zielbereich: X {0} bis {1}, Y {2} bis {3}</value></data>

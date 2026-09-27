@@ -894,6 +894,28 @@
                                 <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"/>
                             </Button.Style>
                         </Button>
+                        <!-- Pads in iCade mode (hifihedgehog/SDL#33 Part 16): such a
+                             pad pairs as a Bluetooth keyboard under IDs no source
+                             publishes. Marking the keyboard lists its IDs for the
+                             fork's iCade driver, and the pad's row, or the
+                             keyboard's while the pad is away, turns it back. -->
+                        <Button Content="{Binding Devices_ReadAsICade, Source={x:Static strings:Strings.Instance}}" Margin="0,6,0,8"
+                                Padding="8,4" HorizontalAlignment="Left"
+                                Click="ReadAsICade_Click"
+                                ToolTip="{Binding Devices_ReadAsICadeTooltip, Source={x:Static strings:Strings.Instance}}"
+                                Visibility="{Binding SelectedDevice.ShowReadAsICade, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"/>
+                            </Button.Style>
+                        </Button>
+                        <Button Content="{Binding Devices_ReadAsKeyboard, Source={x:Static strings:Strings.Instance}}" Margin="0,6,0,8"
+                                Padding="8,4" HorizontalAlignment="Left"
+                                Click="ReadAsKeyboard_Click"
+                                Visibility="{Binding SelectedDevice.ShowReadAsKeyboard, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"/>
+                            </Button.Style>
+                        </Button>
                         <!-- Vendor daemon notice (#343): the vendor's own tool keeps
                              reacting to these buttons until it is stopped. -->
                         <TextBlock Text="{Binding SelectedDevice.HandheldDaemonWarning}" TextWrapping="Wrap"

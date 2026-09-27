@@ -544,6 +544,11 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Devices_IdleDisconnectMinutes" xml:space="preserve"><value>minutes (0 = never)</value></data>
   <data name="Devices_QuickCharge" xml:space="preserve"><value>Disconnect Bluetooth When Plugged In over USB</value></data>
   <data name="Devices_QuickChargeTooltip" xml:space="preserve"><value>Quick Charge. When this controller reports it is charging while connected over Bluetooth, the Bluetooth link is dropped so it charges without powering the radio. Any USB power source counts, including wall chargers. If you turn Bluetooth back on while the cable stays in, it is left alone until the next unplug.</value></data>
+  <data name="Devices_ReadAsICade" xml:space="preserve"><value>Read as iCade Controller</value></data>
+  <data name="Devices_ReadAsICadeTooltip" xml:space="preserve"><value>For a pad in iCade mode, which pairs as a Bluetooth keyboard and types a letter for each press and each release. PadForge reads it as a controller, and its letters still reach the program in the foreground.</value></data>
+  <data name="Devices_ReadAsKeyboard" xml:space="preserve"><value>Read as Keyboard</value></data>
+  <data name="Status_ICadeOn_Format" xml:space="preserve"><value>Reading {0} as an iCade controller.</value></data>
+  <data name="Status_ICadeOff_Format" xml:space="preserve"><value>Reading {0} as a keyboard again.</value></data>
   <data name="Devices_LightGun" xml:space="preserve"><value>Light Gun</value></data>
   <data name="Devices_GunWindowDefault" xml:space="preserve"><value>Default aim range: X {0} to {1}, Y {2} to {3}</value></data>
   <data name="Devices_GunWindowCalibrated" xml:space="preserve"><value>Calibrated aim range: X {0} to {1}, Y {2} to {3}</value></data>

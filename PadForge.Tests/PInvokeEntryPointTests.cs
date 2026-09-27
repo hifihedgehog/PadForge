@@ -28,6 +28,7 @@ namespace PadForge.Tests
         [Theory]
         [InlineData(typeof(PadForge.Engine.RawInputListener))]
         [InlineData(typeof(SDL3.SDL))]
+        [InlineData(typeof(PadForge.Services.VendorUsbDriverInstaller))]
         public void AllDeclaredEntryPointsResolve(Type type)
         {
             // Throws EntryPointNotFoundException (or DllNotFoundException) if any

@@ -988,6 +988,17 @@ namespace PadForge.Common.Input
                 }
                 catch (Exception ex) { Engine.SdlDiagLog.WriteLine("SpaceMouse service start failed: " + ex.Message); }
 
+                // Bind WinUSB to the controllers Windows leaves unusable that
+                // SDL reads through libusb (hifihedgehog/SDL#33), as each one
+                // appears. Cheap when absent: a 3 s sweep of the present USB
+                // nodes.
+                try
+                {
+                    _vendorUsb = new VendorUsbBindingService(msg => Engine.SdlDiagLog.WriteLine("VendorUSB: " + msg));
+                    _vendorUsb.Start();
+                }
+                catch (Exception ex) { Engine.SdlDiagLog.WriteLine("Vendor USB binder start failed: " + ex.Message); }
+
                 // Real VR hardware as input sources (#287): headset pose and
                 // tracked controllers through a background OpenVR client.
                 // Cheap when absent: a 5 s registry-file poll until SteamVR
@@ -1034,6 +1045,9 @@ namespace PadForge.Common.Input
             try { _spaceMouse?.Stop(); } catch { }
             _spaceMouse = null;
 
+            try { _vendorUsb?.Stop(); } catch { }
+            _vendorUsb = null;
+
             try { _openVrConsumer?.Stop(); } catch { }
             _openVrConsumer = null;
 
@@ -1052,6 +1066,9 @@ namespace PadForge.Common.Input
 
         /// <summary>3Dconnexion SpaceMouse -> SDL virtual joystick bridge (#288).</summary>
         private SpaceMouseService _spaceMouse;
+
+        /// <summary>WinUSB binder for the controllers SDL reads through libusb (SDL#33).</summary>
+        private VendorUsbBindingService _vendorUsb;
 
         /// <summary>Real VR devices -> SDL virtual joystick bridge (#287).</summary>
         private OpenVrConsumerService _openVrConsumer;

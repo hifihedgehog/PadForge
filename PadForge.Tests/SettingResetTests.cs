@@ -269,15 +269,31 @@ public class SettingResetTests
         Assert.Equal(120, action.DurationMs);
     }
 
+    /// <summary>Slot 0's wire is stamped first, as every path that installs a
+    /// profile stamps it, so the setters read a restore. A wire an earlier
+    /// test left stamped on slot 0 made them read a live change, whose merge
+    /// locks SettingsManager.UserSettings, null in a test process where
+    /// nothing assigned it. Run with every test named for Reset, this failed
+    /// on each run with a NullReferenceException in
+    /// MergeMappingSetsFromLegacy, back to 73395ba6 at least.</summary>
     [Fact]
     public void ADefaultLayoutCanBeComputedWithoutMutatingTheLiveConfiguration()
     {
-        var vm = new PadViewModel(0) { OutputType = VirtualControllerType.Nintendo, ProfileId = InputManager.DefaultNintendoProfileId };
-        vm.ExtendedConfig.ButtonCount = 30;
-        var target = new ExtendedSlotConfig { TriggerCount = 0, ThumbstickCount = 0 };
-        vm.SeedExtendedConfigFromProfile(target);
-        Assert.Equal(MacroButtonNames.NintendoLetteredCountFor(InputManager.DefaultNintendoProfileId), target.ButtonCount);
-        Assert.Equal(30, vm.ExtendedConfig.ButtonCount);
+        string stamp = SettingsManager.GetWireStamp(0);
+        SettingsManager.StampNintendoWire(0, InputManager.DefaultNintendoProfileId);
+        try
+        {
+            var vm = new PadViewModel(0) { OutputType = VirtualControllerType.Nintendo, ProfileId = InputManager.DefaultNintendoProfileId };
+            vm.ExtendedConfig.ButtonCount = 30;
+            var target = new ExtendedSlotConfig { TriggerCount = 0, ThumbstickCount = 0 };
+            vm.SeedExtendedConfigFromProfile(target);
+            Assert.Equal(MacroButtonNames.NintendoLetteredCountFor(InputManager.DefaultNintendoProfileId), target.ButtonCount);
+            Assert.Equal(30, vm.ExtendedConfig.ButtonCount);
+        }
+        finally
+        {
+            SettingsManager.StampNintendoWire(0, stamp);
+        }
     }
 
     [Theory]

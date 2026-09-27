@@ -2005,6 +2005,12 @@ namespace PadForge.Common
                 list.Add(new InputChoice { Descriptor = "Mouse Motion X", DisplayName = si.Mapping_MouseMotionX });
                 list.Add(new InputChoice { Descriptor = "Mouse Motion Y", DisplayName = si.Mapping_MouseMotionY });
             }
+            // The WingMan Warrior's spin dial (hifihedgehog/SDL#33 Part 5)
+            // rides the same lane and turns on one axis only.
+            else if (ud.HasSpinDial)
+            {
+                list.Add(new InputChoice { Descriptor = "Mouse Motion X", DisplayName = si.Mapping_MouseMotionX });
+            }
 
             // Gravity-lean input: tilt the controller like a wheel and the lean
             // angle drives whatever axis the user maps it to. A normal input

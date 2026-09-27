@@ -438,6 +438,16 @@ namespace SDL3
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
         public static extern int SDL_GetNumJoystickHats(IntPtr joystick);
 
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
+        public static extern int SDL_GetNumJoystickBalls(IntPtr joystick);
+
+        /// <summary>A trackball's relative motion since the previous call:
+        /// SDL sums each ball's motion and zeroes it on every read
+        /// (SDL_joystick.c).</summary>
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool SDL_GetJoystickBall(IntPtr joystick, int ball, out int dx, out int dy);
+
         // ─────────────────────────────────────────────
         //  Joystick properties (from opened instance)
         // ─────────────────────────────────────────────

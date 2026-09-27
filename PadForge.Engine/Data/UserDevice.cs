@@ -306,6 +306,14 @@ namespace PadForge.Engine.Data
             && (string.Equals(ProductName, "Nintendo Switch 2 Joy-Con (L)", StringComparison.OrdinalIgnoreCase)
                 || string.Equals(ProductName, "Nintendo Switch 2 Joy-Con (R)", StringComparison.OrdinalIgnoreCase));
 
+        /// <summary>Whether the device is a Logitech WingMan Warrior, whose
+        /// spin dial drives the "Mouse Motion X" source
+        /// (hifihedgehog/SDL#33 Part 5). Identity-derived like the gates
+        /// above (<see cref="SpinDialIdentity"/>). Computed, not stored.
+        /// Gates the picker offering.</summary>
+        [XmlIgnore]
+        public bool HasSpinDial => SpinDialIdentity.HasSpinDial(ProductName);
+
         /// <summary>Whether the device has an NFC reader the SDL fork can
         /// drive (issue #241/#248, SDL#15): the classic Switch right
         /// Joy-Con (PID 0x2007), the Pro Controller (PID 0x2009), and the

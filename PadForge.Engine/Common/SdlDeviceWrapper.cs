@@ -134,6 +134,12 @@ namespace PadForge.Engine
         /// raw beam counts, which PadForge scales to the screen.</summary>
         public bool IsGunCon2 { get; private set; }
 
+        /// <summary>Whether this is a Logitech WingMan Warrior whose spin dial
+        /// the fork reports as ball 0's horizontal motion
+        /// (hifihedgehog/SDL#33 Part 5). The dial drives the "Mouse Motion X"
+        /// source.</summary>
+        public bool HasSpinDial { get; private set; }
+
         /// <summary>Switch 2 magnetometer stream (#271 item 5). Raw wire
         /// units on wrapper-local fields rather than CustomInputState, so
         /// the Remote Link codec (whose Block enum is full) is untouched:
@@ -599,6 +605,8 @@ namespace PadForge.Engine
             IsGunCon2 = VendorId == 0x0B9A && ProductId == 0x016A
                 && Joystick != IntPtr.Zero && RawAxisCount >= 2;
 
+            UpdateSpinDialCapability(Joystick != IntPtr.Zero ? SDL_GetNumJoystickBalls(Joystick) : 0);
+
             // Joy-Con 2 optical mouse sensor (issue #154). The fork's BLE Switch 2
             // driver posts the sensor's absolute 16-bit counters on joystick axes
             // 6/7 for a Joy-Con 2 L (PID 0x2067) or R (PID 0x2066) when its mouse
@@ -883,6 +891,10 @@ namespace PadForge.Engine
             if (HasJoyCon2Mouse && state != null)
                 ReadJoyCon2Mouse(state);
 
+            // WingMan Warrior spin dial, the same lane.
+            if (HasSpinDial && state != null)
+                ReadSpinDial(state);
+
             // Switch 2 magnetometer (#271 item 5): raw int16 sample on the
             // three axes after the mouse pair, read joystick-direct into
             // the wrapper-local fields (never CustomInputState, see the
@@ -1028,6 +1040,15 @@ namespace PadForge.Engine
             HasSwitch2Magnetometer = supported && RawAxisCount >= (HasJoyCon2Mouse ? 11 : 9);
         }
 
+        /// <summary>WingMan Warrior spin dial (hifihedgehog/SDL#33 Part 5):
+        /// ball 0, which a DLL without the fork's serial driver never
+        /// reports.</summary>
+        internal void UpdateSpinDialCapability(int ballCount)
+        {
+            HasSpinDial = SpinDialIdentity.HasSpinDial(Name)
+                && Joystick != IntPtr.Zero && ballCount > 0;
+        }
+
         internal void UpdateExtraAxisCapabilities()
         {
             HasExtraGenericAxes = GameController != IntPtr.Zero && RawAxisCount > 6
@@ -1086,6 +1107,24 @@ namespace PadForge.Engine
             state.JoyCon2MouseDY = (short)(curY - _jc2MousePrevY);
             _jc2MousePrevX = curX;
             _jc2MousePrevY = curY;
+        }
+
+        // The WingMan Warrior's dial is relative: each packet carries the
+        // counts turned since the last one, -256 to 255 (Linux warrior.c
+        // reports them as REL_DIAL). The fork posts them as ball 0's
+        // horizontal motion (SDL_serial_warrior_proto.c), SDL sums the
+        // motion until SDL_GetJoystickBall reads and clears it
+        // (SDL_joystick.c), and this is the only read, so every count lands
+        // in exactly one poll. Logitech's driver turned the spinner the way
+        // a mouse's horizontal motion turns, so the counts ride the mouse
+        // lane unscaled. Poll-thread only, like the mouse read above.
+        private void ReadSpinDial(CustomInputState state)
+        {
+            if (SDL_GetJoystickBall(Joystick, 0, out int dx, out int dy))
+            {
+                state.JoyCon2MouseDX = dx;
+                state.JoyCon2MouseDY = dy;
+            }
         }
 
         // The SDL fork posts the right Joy-Con MCU's average-intensity byte

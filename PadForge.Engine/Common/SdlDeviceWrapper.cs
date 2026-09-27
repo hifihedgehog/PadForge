@@ -1669,20 +1669,19 @@ namespace PadForge.Engine
                 state.Buttons[i] = SDL_GetJoystickButton(Joystick, i);
             }
 
-            // --- Sensors on a joystick-only device ---
-            // A device opened as a gamepad reads its sensors in
-            // GetGamepadState.
-            if (GameController == IntPtr.Zero)
-            {
-                if (HasGyro)
-                    SDL_GetJoystickSensorData(Joystick, SDL_SENSOR_GYRO, state.Gyro, 3);
-                if (HasAccel)
-                    SDL_GetJoystickSensorData(Joystick, SDL_SENSOR_ACCEL, state.Accel, 3);
-                if (HasAccelAux)
-                    SDL_GetJoystickSensorData(Joystick, SDL_SENSOR_ACCEL_L, state.AccelAux, 3);
-                if (HasGyroAux)
-                    SDL_GetJoystickSensorData(Joystick, SDL_SENSOR_GYRO_L, state.GyroAux, 3);
-            }
+            // --- Sensors ---
+            // A device opened as a joystick only, and a gamepad read raw
+            // through ForceRaw, whose Gyro tab stays live. Joystick is the
+            // gamepad's own joystick for the latter, and the gamepad sensor
+            // calls are these calls on it (SDL_gamepad.c).
+            if (HasGyro)
+                SDL_GetJoystickSensorData(Joystick, SDL_SENSOR_GYRO, state.Gyro, 3);
+            if (HasAccel)
+                SDL_GetJoystickSensorData(Joystick, SDL_SENSOR_ACCEL, state.Accel, 3);
+            if (HasAccelAux)
+                SDL_GetJoystickSensorData(Joystick, SDL_SENSOR_ACCEL_L, state.AccelAux, 3);
+            if (HasGyroAux)
+                SDL_GetJoystickSensorData(Joystick, SDL_SENSOR_GYRO_L, state.GyroAux, 3);
 
             return state;
         }

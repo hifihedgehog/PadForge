@@ -116,6 +116,37 @@ namespace PadForge.Tests
             Assert.Equal("0", SerialControllers.AcioHintValue(SerialControllers.HintValue(unusable)));
         }
 
+        /// <summary>What SDL receives: ApplySerialControllers writes both hints
+        /// together. Hints need no SDL_Init, and the joystick lock is a no-op
+        /// before it (SDL_LockJoysticks takes SDL_event_lock, null until
+        /// then), so this runs against the shipped SDL3.dll without starting
+        /// a joystick driver.</summary>
+        [Fact]
+        public void ApplyingTheList_WritesTheSerialAndAcioHintsTogether()
+        {
+            try
+            {
+                InputManager.ApplySerialControllers(new[]
+                {
+                    new SerialControllerEntry { Port = "COM4", PortName = "COM4", Protocol = "bio2sdvx" },
+                    new SerialControllerEntry { Port = "COM7", PortName = "COM7", Protocol = "stinger" },
+                });
+                Assert.Equal("COM4=bio2sdvx,COM7=stinger", SDL3.SDL.SDL_GetHint(SDL3.SDL.SDL_HINT_JOYSTICK_SERIAL));
+                Assert.Equal("1", SDL3.SDL.SDL_GetHint(SDL3.SDL.SDL_HINT_JOYSTICK_KONAMI_ACIO));
+
+                InputManager.ApplySerialControllers(new[]
+                {
+                    new SerialControllerEntry { Port = "COM7", PortName = "COM7", Protocol = "stinger" },
+                });
+                Assert.Equal("0", SDL3.SDL.SDL_GetHint(SDL3.SDL.SDL_HINT_JOYSTICK_KONAMI_ACIO));
+            }
+            finally
+            {
+                InputManager.ApplySerialControllers(Array.Empty<SerialControllerEntry>());
+            }
+            Assert.Equal("0", SDL3.SDL.SDL_GetHint(SDL3.SDL.SDL_HINT_JOYSTICK_KONAMI_ACIO));
+        }
+
         /// <summary>The ACIO set is exactly the offered Konami boards, the
         /// fork's serial_acio_modules without bio2.</summary>
         [Fact]

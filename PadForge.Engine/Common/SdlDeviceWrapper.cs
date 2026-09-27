@@ -529,6 +529,22 @@ namespace PadForge.Engine
                     }
                 }
             }
+            else
+            {
+                // A device SDL opens as a joystick only, with no gamepad
+                // mapping, can carry motion too: the Myo's IMU, the Rift
+                // DK1's and the Windows Mixed Reality controllers'
+                // (hifihedgehog/SDL#33 Parts 7 and 12). The joystick calls
+                // reach the sensors the gamepad calls above wrap.
+                HasGyro = SDL_JoystickHasSensor(Joystick, SDL_SENSOR_GYRO);
+                HasAccel = SDL_JoystickHasSensor(Joystick, SDL_SENSOR_ACCEL);
+                HasAccelAux = SDL_JoystickHasSensor(Joystick, SDL_SENSOR_ACCEL_L);
+                HasGyroAux = SDL_JoystickHasSensor(Joystick, SDL_SENSOR_GYRO_L);
+                if (HasGyro) SDL_SetJoystickSensorEnabled(Joystick, SDL_SENSOR_GYRO, true);
+                if (HasAccel) SDL_SetJoystickSensorEnabled(Joystick, SDL_SENSOR_ACCEL, true);
+                if (HasAccelAux) SDL_SetJoystickSensorEnabled(Joystick, SDL_SENSOR_ACCEL_L, true);
+                if (HasGyroAux) SDL_SetJoystickSensorEnabled(Joystick, SDL_SENSOR_GYRO_L, true);
+            }
 
             // Wii Remote IR camera + Wii Balance Board (issue #146). Both are
             // Nintendo VID 0x057E, and the board enumerates as a Wii Remote
@@ -1647,6 +1663,21 @@ namespace PadForge.Engine
             for (int i = 0; i < btnCount; i++)
             {
                 state.Buttons[i] = SDL_GetJoystickButton(Joystick, i);
+            }
+
+            // --- Sensors on a joystick-only device ---
+            // A device opened as a gamepad reads its sensors in
+            // GetGamepadState.
+            if (GameController == IntPtr.Zero)
+            {
+                if (HasGyro)
+                    SDL_GetJoystickSensorData(Joystick, SDL_SENSOR_GYRO, state.Gyro, 3);
+                if (HasAccel)
+                    SDL_GetJoystickSensorData(Joystick, SDL_SENSOR_ACCEL, state.Accel, 3);
+                if (HasAccelAux)
+                    SDL_GetJoystickSensorData(Joystick, SDL_SENSOR_ACCEL_L, state.AccelAux, 3);
+                if (HasGyroAux)
+                    SDL_GetJoystickSensorData(Joystick, SDL_SENSOR_GYRO_L, state.GyroAux, 3);
             }
 
             return state;

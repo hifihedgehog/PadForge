@@ -599,6 +599,41 @@ namespace SDL3
             _SDL_GetGamepadSensorData(gamepad, type, data, num_values);
 
         // ─────────────────────────────────────────────
+        //  Joystick sensors (SDL 3.6)
+        // ─────────────────────────────────────────────
+        //
+        // The same sensors on a device SDL opens as a joystick only, with no
+        // gamepad mapping. SDL_GetGamepadSensorData reads through
+        // SDL_GetJoystickSensorData on the gamepad's joystick (SDL_gamepad.c).
+
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_JoystickHasSensor")]
+        [return: MarshalAs(UnmanagedType.U1)]
+        private static extern bool _SDL_JoystickHasSensor(IntPtr joystick, int type);
+
+        /// <summary>Returns true if the joystick has the specified sensor type.</summary>
+        public static bool SDL_JoystickHasSensor(IntPtr joystick, int type) =>
+            _SDL_JoystickHasSensor(joystick, type);
+
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_SetJoystickSensorEnabled")]
+        [return: MarshalAs(UnmanagedType.U1)]
+        private static extern bool _SDL_SetJoystickSensorEnabled(IntPtr joystick, int type,
+            [MarshalAs(UnmanagedType.U1)] bool enabled);
+
+        /// <summary>Enables or disables data reporting for the specified joystick sensor.</summary>
+        public static bool SDL_SetJoystickSensorEnabled(IntPtr joystick, int type, bool enabled) =>
+            _SDL_SetJoystickSensorEnabled(joystick, type, enabled);
+
+        [DllImport(lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_GetJoystickSensorData")]
+        [return: MarshalAs(UnmanagedType.U1)]
+        private static extern bool _SDL_GetJoystickSensorData(IntPtr joystick, int type,
+            [Out] float[] data, int num_values);
+
+        /// <summary>Reads joystick sensor data, in the units
+        /// <see cref="SDL_GetGamepadSensorData"/> uses.</summary>
+        public static bool SDL_GetJoystickSensorData(IntPtr joystick, int type, float[] data, int num_values) =>
+            _SDL_GetJoystickSensorData(joystick, type, data, num_values);
+
+        // ─────────────────────────────────────────────
         //  Gamepad capsense (stick-top / grip touch)
         // ─────────────────────────────────────────────
 

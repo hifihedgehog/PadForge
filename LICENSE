@@ -292,11 +292,11 @@ libinput
 libusb
   https://github.com/libusb/libusb
   USB access library used by the bundled SDL3 fork for the Switch 2 Pro
-  wired driver. Ships unmodified inside the executable as libusb-1.0.dll,
-  extracted on startup and loaded dynamically by the SDL3 fork. Source
-  code for the shipped binary is available at the project page above, and
-  PadForge's own source is public, so the executable can be rebuilt
-  against a modified libusb.
+  wired driver and the controllers PadForge binds to WinUSB. Ships
+  unmodified inside the executable as libusb-1.0.dll, extracted on startup
+  and loaded dynamically by the SDL3 fork. Source code for the shipped
+  binary is available at the project page above, and PadForge's own source
+  is public, so the executable can be rebuilt against a modified libusb.
   Licensed under the GNU Lesser General Public License v2.1 or later
   (full text below)
 
@@ -327,6 +327,16 @@ MinGW-w64 runtime
   libgcc and libstdc++ are licensed under the GNU General Public License
   v3 with the GCC Runtime Library Exception v3.1. libwinpthread is
   licensed under the mingw-w64 winpthreads license (MIT-style terms).
+
+Monado
+  https://gitlab.freedesktop.org/monado/monado
+  Copyright 2021 Jan Schmidt
+  The SDL fork's Windows Mixed Reality configuration key
+  (SDL_hidapi_wmr_key.c) comes from Monado's
+  src/xrt/drivers/wmr/wmr_config_key.h at commit 6b41c5b. Ships as object
+  code inside SDL3.dll.
+  Licensed under the Boost Software License 1.0 (full text at the end of
+  this file)
 
 NAudio
   https://github.com/naudio/NAudio
@@ -362,6 +372,15 @@ nipplejs
   Copyright (c) 2014 Yoann Moinet. The Web Controller's touch joystick
   widget, embedded as nipplejs.min.js.
   Licensed under the MIT License
+
+OpenHMD
+  https://github.com/OpenHMD/OpenHMD
+  Copyright 2013 Fredrik Hultin, Copyright 2013 Jakob Bornecrantz
+  The SDL fork's Rift DK1 sensor fusion (SDL_hidapi_riftdk1_fusion.c) is
+  a port of OpenHMD's src/fusion.c and the parts of src/omath.c it uses,
+  at commit 85075b0. Ships as object code inside SDL3.dll.
+  Licensed under the Boost Software License 1.0 (full text at the end of
+  this file)
 
 OpenVR API
   https://github.com/ValveSoftware/openvr
@@ -402,6 +421,19 @@ Protocol documentation references (no code from these projects ships)
   AntiMicroX (https://github.com/AntiMicroX/antimicrox, GPL-3.0): the
   strategy and desktop layouts behind the starter profiles, and the turbo
   behavior the pressure-scaled turbo avoids.
+  Arcade I/O references: the protocols behind the SDL fork's drivers for
+  Namco and Konami arcade I/O boards and JVS boards, read from arcade-docs
+  (https://github.com/shizmob/arcade-docs, WTFPL), bemanitools
+  (https://github.com/djhackersdev/bemanitools, Unlicense), Dolphin
+  (https://github.com/dolphin-emu/dolphin, GPL-2.0-or-later),
+  ITAIKO-firmware (https://github.com/itaiko-project/ITAIKO-firmware, MIT),
+  JoypadOS (https://github.com/joypad-ai/joypad-os, Apache-2.0), jvsio
+  (https://github.com/toyoshim/jvsio, BSD-3-Clause), MAME
+  (https://github.com/mamedev/mame, BSD-3-Clause), OpenITG
+  (https://github.com/openitg/openitg, MIT-style StepMania license),
+  p4io-mdxfdrv (https://github.com/KokoseiJ/p4io-mdxfdrv, GPL-3.0), RPCS3
+  (https://github.com/RPCS3/rpcs3, GPL-2.0) and TaikoZucchini
+  (https://github.com/LucaSilva-r/TaikoZucchini, MIT).
   Artemis.Plugins (https://github.com/Artemis-RGB/Artemis.Plugins, PolyForm
   Noncommercial 1.0.0), Aurora (https://github.com/Aurora-RGB/Aurora, MIT),
   LogiLed2Corsair (https://github.com/VRocker/LogiLed2Corsair, MIT),
@@ -421,6 +453,62 @@ Protocol documentation references (no code from these projects ships)
   text typing through SendInput and its batch limit, the Win-key mask key,
   and tagged injected input, behind Text Block macros and the keyboard chord
   hook.
+  Bluepad32 (https://github.com/ricardoquesada/bluepad32, Apache-2.0): the
+  Bluetooth HID feature-report request that identifies a PS Move accessory.
+  Bluetooth LE controller references: the protocols behind the SDL fork's
+  Bluetooth LE drivers for the Poke Ball Plus, Daydream, Gear VR, Oculus Go,
+  Guitar Hero Live iOS, Zwift and Myo controllers, read from
+  Access-GearVR-Controller-from-PC
+  (https://github.com/gb2111/Access-GearVR-Controller-from-PC, Apache-2.0),
+  daydream-catcher (https://github.com/nullstalgia/daydream-catcher, no
+  license published), daydream-controller.js
+  (https://github.com/mrdoob/daydream-controller.js, MIT), daydream2hid
+  (https://github.com/ryukoposting/daydream2hid, Apache-2.0), dl-myo
+  (https://github.com/iomz/dl-myo, GPL-3.0), find-a-cig
+  (https://github.com/jCOTINEAU/find-a-cig, MIT per its readme),
+  gear_vr_controller (https://github.com/Tinnci/gear_vr_controller, MIT),
+  gearVRC (https://github.com/uutzinger/gearVRC, MIT), gearvr-controller
+  (https://github.com/dennisonbertram/gearvr-controller, MIT),
+  gearvr-controller-webbluetooth
+  (https://github.com/jsyang/gearvr-controller-webbluetooth, GPL-3.0),
+  GHLtarUtility (https://github.com/ghlre/GHLtarUtility, GPL-3.0), ghlioscon
+  (https://github.com/tomyun/ghlioscon, MIT), hardfault.life
+  (https://hardfault.life/p/daydream-controller, no license published),
+  jsyang.ca (http://jsyang.ca/hacks/gear-vr-rev-eng/, no license published),
+  makinolo.com
+  (https://www.makinolo.com/blog/2023/10/08/connecting-to-zwift-play-controllers/,
+  no license published), myo-bluetooth
+  (https://github.com/thalmiclabs/myo-bluetooth, Apache-2.0), myo-raw
+  (https://github.com/dzhu/myo-raw, MIT), OculusGo-Air-Mouse-4-macOS
+  (https://github.com/volkanger/OculusGo-Air-Mouse-4-macOS, MIT),
+  PlasticBand (https://github.com/TheNathannator/PlasticBand, CC BY-SA 4.0
+  documentation), pokeball-plus-4-windows
+  (https://github.com/rna0/pokeball-plus-4-windows, no license file, MIT
+  claimed in its readme), pokeball-plus-mouse
+  (https://github.com/TwinPeaksTownie/pokeball-plus-mouse, Apache-2.0),
+  PokeBall-Plus-Controller-Driver-App-Mac
+  (https://github.com/bmyhny/PokeBall-Plus-Controller-Driver-App-Mac, no
+  license published), PokeballPlus-4-PC
+  (https://github.com/nfsking2/PokeballPlus-4-PC, MIT), pyomyo
+  (https://github.com/PerlinWarp/pyomyo, MIT), qdomyos-zwift
+  (https://github.com/cagnulein/qdomyos-zwift, GPL-3.0), Santroller
+  (https://github.com/Santroller/Santroller, GPL-3.0), SwiftControl
+  (https://github.com/jonasbark/swiftcontrol, noncommercial license, GPL-3.0
+  before its gpl3 tag), Zephyr
+  (https://github.com/zephyrproject-rtos/zephyr, Apache-2.0) and zwiftplay
+  (https://github.com/ajchellew/zwiftplay, no license published).
+  Bluetooth RFCOMM and iCade references: the protocols behind the SDL fork's
+  drivers for the MOGA, Zeemote, BGP100 and Phonejoy pads and the ION iCade,
+  read from android-bluez-ime
+  (https://github.com/kenkendk/android-bluez-ime, LGPL-2.1), flatlib.jp
+  (https://wlog.flatlib.jp/2011/12/02/n1540/, no license published),
+  iCade-iOS (https://github.com/scarnie/iCade-iOS, MIT), Linux kernel
+  (https://github.com/torvalds/linux, GPL-2.0), MogaSerial
+  (https://github.com/Zel-os/MogaSerial, MIT), moga-uinput
+  (https://github.com/jakobend/moga-uinput, MIT), ZeeClient
+  (https://github.com/AlexEmashev/ZeeClient, MIT), zeemoted
+  (https://github.com/dafugg/zeemoted, GPL-3.0) and zeemouse
+  (https://github.com/bitbank2/zeemouse, no license published).
   cemuhook-protocol (https://github.com/v1993/cemuhook-protocol, Unlicense):
   the DSU protocol the motion server speaks.
   chiaki-ng (https://github.com/streetpea/chiaki-ng, AGPL-3.0): the
@@ -428,6 +516,30 @@ Protocol documentation references (no code from these projects ships)
   signed-8-bit Bluetooth haptics encoding.
   Colore (https://github.com/chroma-sdk/Colore, MIT): corroboration of
   the Razer Chroma REST API request and effect framing.
+  DJI remote references: the DUML messages behind the SDL fork's drivers for
+  DJI's drone remotes, read from dji-firmware-tools
+  (https://github.com/o-gs/dji-firmware-tools, GPL-3.0), dji-rc-joystick by
+  gregszero (https://github.com/gregszero/dji-rc-joystick, GPL-3.0),
+  dji-rc-joystick by voluminor
+  (https://github.com/voluminor/dji-rc-joystick, LGPL-2.1), dji-rc-linux
+  (https://github.com/stiad/dji-rc-linux, MIT), dji-rc-windows
+  (https://github.com/jdenicola/dji-rc-windows, no license published),
+  DJI_RC-N1_SIMULATOR_FLY_DCL
+  (https://github.com/IvanYaky/DJI_RC-N1_SIMULATOR_FLY_DCL, Apache-2.0),
+  DJI_RC_Motion_Bridge (https://github.com/v1kr4m-ai/DJI_RC_Motion_Bridge,
+  MIT), DJI_RCN1_for_drone_simulators
+  (https://github.com/pverhaert/DJI_RCN1_for_drone_simulators, no license
+  published), DJI_RCNx_for_drone_simulators
+  (https://github.com/pverhaert/DJI_RCNx_for_drone_simulators, no license
+  published), DJI-RC-Emulator (https://github.com/deviverr/DJI-RC-Emulator,
+  MIT), DjiMini2RCasJoystick
+  (https://github.com/usatenko/DjiMini2RCasJoystick, Apache-2.0),
+  mDjiController by Matsemann (https://github.com/Matsemann/mDjiController,
+  Apache-2.0), mDjiController by mishavoloshchuk
+  (https://github.com/mishavoloshchuk/mDjiController, Apache-2.0),
+  mDjiController by slaterbbx (https://github.com/slaterbbx/mDjiController,
+  Apache-2.0) and miniDjiController
+  (https://github.com/hjstn/miniDjiController, Apache-2.0).
   Dolphin (https://github.com/dolphin-emu/dolphin, GPL-2.0): the Wii
   controller Bluetooth pairing ceremony's Win32 API call order, the Wii
   Remote speaker's Yamaha ADPCM constants, the emulated Wii Remote's
@@ -462,9 +574,92 @@ Protocol documentation references (no code from these projects ships)
   DualShock 4 encoder in testing.
   Gamepad Battery Monitor (https://github.com/fruel/GamepadBatteryMonitor,
   MIT): the low-battery notification rule and the Identify rumble pattern.
+  GunCon references: the GunCon 2 reports behind the SDL fork's driver and
+  PadForge's screen scaling, read from guncon2 by beardypig
+  (https://github.com/beardypig/guncon2, GPL-2.0), guncon2 by psakhis
+  (https://github.com/psakhis/guncon2, no top-level license, GPL-2.0 in its
+  linux folder), GunconUSB (https://github.com/sonik-br/GunconUSB, GPL-2.0),
+  IR-Light-Gun (https://github.com/88hcsif/IR-Light-Gun, LGPL-2.1-or-later),
+  PCSX2 (https://github.com/PCSX2/pcsx2, GPL-3.0-or-later) and
+  topgun-linux-driver (https://github.com/Ansa89/topgun-linux-driver,
+  GPL-3.0-or-later).
+  HID device references: the reports behind the SDL fork's drivers for the
+  Speed Force Wireless, PhoenixRC adapter, SideWinder Game Voice, P5 Glove,
+  Dream Cheeky drum kit, OCZ NIA, Gametrak, Rift DK1, Windows Mixed Reality
+  controllers, SteelSeries Nimbus and Prodikeys, read from
+  acassis.wordpress.com
+  (https://acassis.wordpress.com/2023/05/04/khobby-phoenixrc-flight-controller-usb-adapter-clone/,
+  no license published), drwho.virtadpt.net
+  (https://drwho.virtadpt.net/archive/2009-03-18/ocz-neural-impulse-actuator-notes-and-roll-up-post/,
+  no license published), Foculus Rift Tracker
+  (https://github.com/michael-betz/Foculus_Rift_Tracker_STM32F3DISCOVERY, no
+  license published), GameTrak-Liberation
+  (https://github.com/CreativeInquiry/GameTrak-Liberation, MIT), libgametrak
+  (https://github.com/casiez/libgametrak, GPL-2.0-or-later), libp5glove
+  (https://github.com/ezrec/libp5glove, LGPL-2.1-or-later), Linux kernel
+  (https://github.com/torvalds/linux, GPL-2.0), Linux VR Adventures wiki
+  (https://vronlinux.org/docs/fossvr/envision/wmr_controllers_on_arch/, no
+  license published), marcusfolkesson.se
+  (https://www.marcusfolkesson.se/blog/hid-report-descriptors/, no license
+  published), MFIGamepadFeeder (https://github.com/Axadiw/MFIGamepadFeeder,
+  MIT), ml-driver (https://github.com/mavam/ml-driver, GPL-2.0), Monado
+  (https://gitlab.freedesktop.org/monado/monado, BSL-1.0), new-lg4ff
+  (https://github.com/berarma/new-lg4ff, GPL-2.0-or-later), nia_reaction_lab
+  (https://github.com/zeittresor/nia_reaction_lab, no license published),
+  nia4linux (https://sourceforge.net/projects/nia4linux/, GPL-2.0), Oculus
+  SDK (https://github.com/jherico/OculusSDK, Oculus VR SDK License 2.0, read
+  in the jherico mirror), OpenHMD (https://github.com/OpenHMD/OpenHMD,
+  BSL-1.0), P5 Glove USB Packet Format
+  (https://web.archive.org/web/20051215112447/http://zzz.com.ru/zzz_original_site/roid/USB%20Packet%20Format.doc,
+  no license published), PCSX2 (https://github.com/PCSX2/pcsx2,
+  GPL-3.0-or-later), pynia (https://github.com/kevinmershon/pynia, MIT),
+  Scratchpad wiki
+  (https://web.archive.org/web/20210729185426/https://scratchpad.fandom.com/wiki/P5_Glove:Specs,
+  CC BY-SA), seewald.at
+  (https://www.seewald.at/en/2009/07/ocz_neural_impulse_actuator__linux_driver,
+  no license published), VRPN (https://github.com/vrpn/vrpn, BSL-1.0), weewx
+  (https://github.com/weewx/weewx, GPL-3.0) and WiiBrew
+  (https://wiibrew.org/, no license published). The OpenHMD and Monado code
+  in the fork has its own entries above.
+  I-Force references: the I-Force commands and reports behind the SDL fork's
+  driver for USB and serial I-Force wheels and joysticks, read from forcers
+  (https://github.com/jeffintheusa/forcers, no license published),
+  iforce-binary-driver (https://github.com/timschumi/iforce-binary-driver,
+  no license published), iforce-feedback-wheel-driver-port
+  (https://github.com/jsmolina/iforce-feedback-wheel-driver-port, MIT
+  license file, GPL-2.0-or-later source headers), JUa9Win11Driver
+  (https://github.com/spenc302/JUa9Win11Driver, no license published),
+  linuxconsole (https://sourceforge.net/p/linuxconsole/code/,
+  GPL-2.0-or-later) and Linux kernel (https://github.com/torvalds/linux,
+  GPL-2.0-or-later).
   InputPlumber (https://github.com/ShadowBlip/InputPlumber, GPL-3.0):
   handheld PC identity strings and vendor-report notes cross-checked for
   the hidden-button learner.
+  Instrument and Wii extension references: the protocols behind the SDL
+  fork's drivers for Wii Remote instrument and tablet extensions, Guitar
+  Hero Live dongles, Rock Band 3 Pro instruments and PS3 peripherals, read
+  from AutoCalibrationRB (https://github.com/dynamix1337/AutoCalibrationRB,
+  no license published), brandonw.net (https://brandonw.net/udraw/, no
+  license published), Dolphin (https://github.com/dolphin-emu/dolphin,
+  GPL-2.0-or-later), GHLtarUtility (https://github.com/ghlre/GHLtarUtility,
+  GPL-3.0), GHLtarUtility by Sera486
+  (https://github.com/Sera486/GHLtarUtility, GPL-3.0), hid-ghlive-dkms
+  (https://github.com/evilynux/hid-ghlive-dkms, GPL-3.0), JoypadOS
+  (https://github.com/joypad-ai/joypad-os, Apache-2.0), Linux kernel
+  (https://github.com/torvalds/linux, GPL-2.0), NintendoExtensionCtrl
+  (https://github.com/dmadison/NintendoExtensionCtrl, LGPL-3.0), PlasticBand
+  (https://github.com/TheNathannator/PlasticBand, CC BY-SA 4.0
+  documentation), raphnet.net
+  (https://www.raphnet.net/divers/wii_graphics_tablets/index_en.php, no
+  license published), rb3_keytar (https://github.com/nthmost/rb3_keytar,
+  MIT), RB4InstrumentMapper
+  (https://github.com/TheNathannator/RB4InstrumentMapper, MIT), RPCS3
+  (https://github.com/RPCS3/rpcs3, GPL-2.0), Santroller
+  (https://github.com/Santroller/Santroller, GPL-3.0), uDrawTablet
+  (https://github.com/brandonlw/uDrawTablet, no license published), WiiBrew
+  (https://wiibrew.org/, no license published), WiitarThing
+  (https://github.com/Meowmaritus/WiitarThing, MIT) and xpad by paroj
+  (https://github.com/paroj/xpad, GPL-2.0-or-later).
   iroh (https://github.com/n0-computer/iroh, MIT OR Apache-2.0) and
   FlexInput (https://github.com/x-iso/FlexInput, MIT): the relay protocol
   behind Remote Link's fallback lane, spoken to n0.computer's free public
@@ -481,6 +676,9 @@ Protocol documentation references (no code from these projects ships)
   GPL-3.0): the Lenovo WMI utility-event class the handheld hidden-button
   learner subscribes to, and the elevated IPC server pattern behind
   external profile control.
+  libwdi (https://github.com/pbatard/libwdi, LGPL-3.0-or-later): the
+  one-INF-per-device packaging and device listing behind the automatic
+  WinUSB binding.
   Linux kernel (https://github.com/torvalds/linux, GPL-2.0): the hid-sony,
   hid-playstation, hid-steam and hid-pidff report and force-feedback facts,
   and the ACPI WMI _WDG block layout in drivers/platform/x86/wmi.c.
@@ -530,6 +728,44 @@ Protocol documentation references (no code from these projects ships)
   (https://github.com/Spacefreak18/simapi, LGPL-3.0). The Assetto Corsa
   layout comes from assettocorsasharedmemory, credited in its own entry
   above.
+  Ring-Con references: the Ring-Con start and stop sequences behind the SDL
+  fork's Switch driver and the strain scale PadForge reads, read from
+  demo-of-ring-con-with-web-hid
+  (https://github.com/mascii/demo-of-ring-con-with-web-hid, no license
+  published), Eden (https://git.eden-emu.dev/eden-emu/eden,
+  GPL-3.0-or-later), joy by Yamakaky (https://github.com/Yamakaky/joy, MIT),
+  joy-con-webhid (https://github.com/tomayac/joy-con-webhid, Apache-2.0),
+  Nintendo_Switch_Reverse_Engineering
+  (https://github.com/dekuNukem/Nintendo_Switch_Reverse_Engineering, no
+  license published), osc-ringcon (https://github.com/nil-vr/osc-ringcon,
+  MIT), Ringcon-Driver (https://github.com/ringrunnermg/Ringcon-Driver, MIT)
+  and RingconProtocolDebug
+  (https://github.com/nobu-e758/RingconProtocolDebug, Apache-2.0).
+  Serial controller references: the protocols behind the SDL fork's serial
+  drivers for six-axis controllers, gamepads, flight sticks, RC
+  transmitters, flight panels and ergometers, read from Async.fi
+  (https://past.async.fi/2012/03/kettler-ergometer-serial-protocol/, no
+  license published), hidsporb (https://sourceforge.net/projects/hidsporb/,
+  no license published), JoypadOS (https://github.com/joypad-ai/joypad-os,
+  Apache-2.0), KettlerBLE (https://github.com/hb9tvk/KettlerBLE, MIT per its
+  readme, no license file), kettlerUSB2BLE
+  (https://github.com/bbashinskiy/kettlerUSB2BLE, MIT), libsball by John E.
+  Stone (https://github.com/aughey/mpv, 4-clause BSD-style license, read in
+  the copy aughey/mpv carries), linuxconsole
+  (https://sourceforge.net/p/linuxconsole/code/, GPL-2.0-or-later), Linux
+  kernel (https://github.com/torvalds/linux, GPL-2.0), spacenavd
+  (https://github.com/FreeSpacenav/spacenavd, GPL-3.0-or-later),
+  vJoySerialFeeder (https://github.com/Cleric-K/vJoySerialFeeder, GPL-3.0),
+  VRInsight-Xplane-Interface
+  (https://github.com/jmpEA31/VRInsight-Xplane-Interface, MIT),
+  vrinsight-cdu-ii-msfs-driver
+  (https://github.com/callebstrom/vrinsight-cdu-ii-msfs-driver, MIT), VRPN
+  (https://github.com/vrpn/vrpn, BSL-1.0), xf86-input-magellan
+  (https://github.com/freedesktop-unofficial-mirror/xorg__driver__xf86-input-magellan,
+  MIT/X11), xf86-input-spaceorb
+  (https://github.com/freedesktop-unofficial-mirror/xorg__driver__xf86-input-spaceorb,
+  MIT/X11) and XPComboTest (https://github.com/xprezzo-marco/XPComboTest,
+  MIT).
   SpaceMouse references: the 3Dconnexion report layout, device table and
   axis scale, read from hid.spacemouse
   (https://github.com/microdee/hid.spacemouse, MIT), PySpaceMouse
@@ -539,6 +775,21 @@ Protocol documentation references (no code from these projects ships)
   Special K (https://github.com/SpecialKO/SpecialK, GPL-3.0): the Bluetooth
   link drop by host IOCTL, the hidden XInput power-off and capabilities
   ordinals, and DualSense trigger-vibration defaults.
+  Specialty USB device references: the protocols behind the SDL fork's
+  drivers for the Intel Wireless Series base station, the Xbox 360 Big
+  Button receiver, the CH Products Multi-Function Panel, the Ergodex DX1,
+  the TrackIR 2 and 3 and Tacx trainer head units, read from antifier
+  (https://github.com/john-38787364/antifier, MIT), chmfp
+  (https://sourceforge.net/projects/chmfp/, GPL-3.0), dx1-studio
+  (https://github.com/TempestTpot/dx1-studio, GPL-3.0), ergodex-dx1-linux
+  (https://github.com/sheppoor/ergodex-dx1-linux, GPL-3.0), FortiusANT
+  (https://github.com/WouterJD/FortiusANT, GPL-3.0), intel-wings
+  (http://intel-wings.sourceforge.net/, GPL-2.0), JoypadOS
+  (https://github.com/joypad-ai/joypad-os, Apache-2.0), Linux kernel
+  (https://github.com/torvalds/linux, GPL-2.0), linuxtrack
+  (https://github.com/uglyDwarf/linuxtrack, MIT), t19xx_usb
+  (https://github.com/switchabl/t19xx_usb, GPL-3.0) and xbox360bb
+  (https://github.com/micolous/xbox360bb, GPL-2.0-or-later).
   Steam Controller protocol references: swipe-haptic ticks, report 0x42
   button bits, the power-off command and the dongle relay, read from
   OpenPuck (https://github.com/safijari/OpenPuck, AGPL-3.0), sc2-research
@@ -554,6 +805,21 @@ Protocol documentation references (no code from these projects ships)
   https://github.com/Trihy/Touchmote, all GPL-3.0): the Wii Remote IR
   pointer's dot-pair midpoint, margins, sensor-bar offset, smoothing and FPS
   Mouse curve.
+  Train controller references: the protocols behind the SDL fork's drivers
+  for Densha de GO!, Multi Train, Train Mascon and Master Controller train
+  controllers, read from amy.hi-ho.ne.jp by Takatani
+  (http://www.amy.hi-ho.ne.jp/takatani/shop/keikyu/keikyu_pwm.htm, no
+  license published), bvets.net by Mackoy (http://bvets.net/, no license
+  published), ConToJREts (https://github.com/cracrayol/ConToJREts, no
+  license published), ddgo-pnp-controller
+  (https://github.com/marcriera/ddgo-pnp-controller, GPL-3.0), OpenBVE
+  (https://github.com/leezer3/OpenBVE, BSD-2-Clause, MIT for SanYingInput),
+  PCSX2 (https://github.com/PCSX2/pcsx2, GPL-3.0-or-later), Qiita by
+  kazuhidet (https://qiita.com/kazuhidet/items/849c259f57e51ab32ab6, no
+  license published), RPCS3 (https://github.com/RPCS3/rpcs3, GPL-2.0),
+  Scrapbox by p4ken (https://scrapbox.io/p4ken/, no license published) and
+  Train Controller Database
+  (https://github.com/marcriera/train-controller-db, no license published).
   TritonLib and SteamHapticsPlayer (https://github.com/Pixel1011/TritonLib,
   https://github.com/Pixel1011/SteamHapticsPlayer, Apache-2.0),
   steam-controller-live-haptics
@@ -584,6 +850,42 @@ Protocol documentation references (no code from these projects ships)
   camera and Balance Board behavior.
   X1nput (https://github.com/araghon007/X1nput, MIT): the Xbox
   impulse-trigger 9-byte report and its write path.
+  Xbox controller references: the protocols behind the SDL fork's original
+  Xbox, Steel Battalion, Xbox 360 chatpad and Xbox 360 uDraw drivers, and
+  the Xbox 360 receivers PadForge binds to Windows' own driver, read from
+  brandonw.net (https://brandonw.net/udraw/, no license published), Chatpad
+  Super Driver (https://github.com/GAFBlizzard/chatpad-super-driver, MIT),
+  Cxbx-Reloaded (https://github.com/Cxbx-Reloaded/Cxbx-Reloaded,
+  GPL-2.0-or-later), euc.jp by ITO Takayuki
+  (http://euc.jp/periphs/xbox-controller.en.html, all rights reserved, read
+  through the Wayback Machine), JoypadOS
+  (https://github.com/joypad-ai/joypad-os, Apache-2.0), libSteelBattalion
+  (https://github.com/faha223/libSteelBattalion, no license published),
+  libsteelbat (https://github.com/qdot/libsteelbat, no license published),
+  Linux kernel (https://github.com/torvalds/linux, GPL-2.0), ogx360
+  (https://github.com/Ryzee119/ogx360, GPL-3.0-or-later), s-config.com
+  (https://www.s-config.com/, no license published), SBC
+  (https://github.com/SantiagoSaldana/SBC, MIT in its license file and
+  headers, LGPL-2.1-or-later in its readme), Spivey's Corner
+  (https://spivey.oriel.ox.ac.uk/corner/Notes_on_the_XBox360_chatpad, no
+  license published), steel-battalion-net
+  (https://github.com/jcoutch/steel-battalion-net, LGPL-3.0 text,
+  GPL-3.0-or-later file headers), SteelBattalionController
+  (https://github.com/faha223/SteelBattalionController, Apache-2.0),
+  SteelBattalionDriver (https://github.com/caosdoar/SteelBattalionDriver,
+  GPL-3.0), SteelBattalionMapper
+  (https://github.com/Shopcreeper/SteelBattalionMapper, GPL-3.0-or-later),
+  tusb_xinput (https://github.com/Ryzee119/tusb_xinput, MIT, with its
+  JoypadOS fork at https://github.com/joypad-ai/tusb_xinput, MIT),
+  uDrawTablet (https://github.com/brandonlw/uDrawTablet, no license
+  published), Xb2XInput (https://github.com/emoose/Xb2XInput, GPL-3.0),
+  xb360ChatpadToKM (https://github.com/jackdarker/xb360ChatpadToKM,
+  GPL-3.0), xbox360wirelesschatpad
+  (https://github.com/Kytech/xbox360wirelesschatpad, a warranty disclaimer,
+  no license grant), xboxdevwiki
+  (https://xboxdevwiki.net/Xbox_Input_Devices, no license published),
+  xboxdrv (https://github.com/xboxdrv/xboxdrv, GPL-3.0-or-later) and xemu
+  (https://github.com/xemu-project/xemu, LGPL-2.0-or-later).
   xone and xow (https://github.com/medusalix/xone,
   https://github.com/medusalix/xow, GPL-2.0): GIP LED command
   documentation corroborating xbledctl.
@@ -594,7 +896,8 @@ psmoveapi
   https://github.com/thp/psmoveapi
   Copyright (c) 2011, 2012 Thomas Perl
   PlayStation Move report layouts, sensor calibration decode, LED pacing
-  and the read-over-USB, cache-for-Bluetooth calibration design,
+  and the read-over-USB, cache-for-Bluetooth calibration design, plus the
+  EXT accessory handshake behind the Sharp Shooter and Racing Wheel,
   cross-checked against the moveonpc wiki
   (https://github.com/nitsch/moveonpc/wiki, no license published).
   PadForge's implementation is original C#.
@@ -952,6 +1255,36 @@ protobuf-net and Vosk, redistributed in binary form)
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+
+--------------------------------------------------------------------------------
+
+Boost Software License 1.0 (OpenHMD's sensor fusion and Monado's Windows
+Mixed Reality configuration key inside SDL3.dll, redistributed in binary form)
+==============================================================================
+
+Boost Software License - Version 1.0 - August 17th, 2003
+
+Permission is hereby granted, free of charge, to any person or organization
+obtaining a copy of the software and accompanying documentation covered by
+this license (the "Software") to use, reproduce, display, distribute,
+execute, and transmit the Software, and to prepare derivative works of the
+Software, and to permit third-parties to whom the Software is furnished to
+do so, all subject to the following:
+
+The copyright notices in the Software and this entire statement, including
+the above license grant, this restriction and the following disclaimer,
+must be included in all copies of the Software, in whole or in part, and
+all derivative works of the Software, unless such copies or derivative
+works are solely in the form of machine-executable object code generated by
+a source language processor.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE, TITLE AND NON-INFRINGEMENT. IN NO EVENT
+SHALL THE COPYRIGHT HOLDERS OR ANYONE DISTRIBUTING THE SOFTWARE BE LIABLE
+FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
 
 --------------------------------------------------------------------------------
 

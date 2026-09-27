@@ -10,8 +10,8 @@ namespace PadForge.Common.Input
     /// Watches for the controllers <see cref="VendorUsbDriverInstaller"/>
     /// binds and binds each one when it appears (hifihedgehog/SDL#33), with no
     /// prompt, as the DualShock 3 is bound on plug-in (Ds3DirectService's
-    /// OpenUsb). SDL opens a device at its next device change once WinUSB
-    /// serves it, so nothing here talks to SDL. The monitor loop is
+    /// OpenUsb). SDL opens a device at its next device change once WinUSB or
+    /// xusb22 serves it, so nothing here talks to SDL. The monitor loop is
     /// SpaceMouseService's.
     /// </summary>
     public sealed class VendorUsbBindingService
@@ -81,11 +81,12 @@ namespace PadForge.Common.Input
 
             // Said when it changes, so a 3 s sweep cannot flood the ring.
             string verdict = wanted.Count == 0 ? null : string.Join(", ", wanted.Select(w =>
-                $"{w.Plan.Name} {w.Node.InstanceId} on {(string.IsNullOrEmpty(w.Node.Service) ? "(no driver)" : w.Node.Service)}"));
+                $"{w.Plan.Name} {w.Node.InstanceId} on {(string.IsNullOrEmpty(w.Node.Service) ? "(no driver)" : w.Node.Service)}"
+                + $" for {(w.Plan.Driver == VendorUsbDriverInstaller.BindDriver.Xusb22 ? "xusb22" : "WinUSB")}"));
             if (verdict != _lastVerdict)
             {
                 _lastVerdict = verdict;
-                if (verdict != null) _log("needs WinUSB: " + verdict);
+                if (verdict != null) _log("needs a driver: " + verdict);
             }
 
             // One bind covers every node its ID names.

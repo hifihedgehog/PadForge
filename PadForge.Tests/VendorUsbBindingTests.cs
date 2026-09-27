@@ -191,6 +191,76 @@ namespace PadForge.Tests
                 VendorUsbDriverInstaller.BuildInf(@"USB\VID_8086&PID_C013&MI_00", "Test interface"),
                 VendorUsbDriverInstaller.CatalogName, _output);
 
+        // ── xusb22 for the Xbox 360 devices xusb22.inf does not name ──
+
+        [Theory]
+        [InlineData(0x045E, 0x0291)]
+        [InlineData(0x045E, 0x02A9)]
+        [InlineData(0x05C6, 0x9244)]
+        [InlineData(0x1430, 0x070B)]
+        public void ACloneReceiverOrTheGhlDongle_TakesXusb22FromNoDriver(int vid, int pid)
+        {
+            var node = DeviceNode((ushort)vid, (ushort)pid, "");
+            var plan = VendorUsbDriverInstaller.Plan(node);
+            Assert.NotNull(plan);
+            Assert.Equal(VendorUsbDriverInstaller.BindDriver.Xusb22, plan.Value.Driver);
+            Assert.Equal($@"USB\VID_{vid:X4}&PID_{pid:X4}", plan.Value.BindId);
+
+            // Any driver at all keeps it where it is, xusb22 itself included,
+            // and an interface child is never the target.
+            foreach (string service in new[] { "xusb22", "WINUSB", "HidUsb", "usbccgp", "xusb21" })
+                Assert.Null(VendorUsbDriverInstaller.Plan(DeviceNode((ushort)vid, (ushort)pid, service)));
+            Assert.Null(VendorUsbDriverInstaller.Plan(InterfaceNode((ushort)vid, (ushort)pid, 0, "")));
+        }
+
+        /// <summary>Microsoft's own receiver and pad stay on the xusb22.inf
+        /// Windows gives them. Only the opt-in moves those.</summary>
+        [Fact]
+        public void MicrosoftsOwnReceiverAndPad_AreNeverXusb22Targets()
+        {
+            Assert.DoesNotContain(VendorUsbDriverInstaller.Xusb22Targets, t => t.Vid == 0x045E && (t.Pid == 0x0719 || t.Pid == 0x028E));
+            Assert.Null(VendorUsbDriverInstaller.Plan(DeviceNode(0x045E, 0x0719, "")));
+        }
+
+        [Fact]
+        public void TheXusb22Package_BorrowsXusb22InfsSections()
+        {
+            string inf = VendorUsbDriverInstaller.BuildXusbInf(@"USB\VID_1430&PID_070B", "Guitar Hero Live Xbox 360 dongle");
+            Assert.Contains("Class       = XnaComposite\r\nClassGUID   = {D61CA365-5AF4-4486-998B-9DB4734C6CA3}", inf);
+            Assert.Contains("[Standard.NTamd64]\r\n%DeviceName% = Xusb_Install, USB\\VID_1430&PID_070B\r\n", inf);
+            Assert.Contains("[Standard.NTarm64]\r\n%DeviceName% = Xusb_Install, USB\\VID_1430&PID_070B\r\n", inf);
+            Assert.Contains("[Xusb_Install]\r\nInclude = xusb22.inf\r\nNeeds   = CC_Install\r\n", inf);
+            Assert.Contains("[Xusb_Install.Services]\r\nInclude = xusb22.inf\r\nNeeds   = CC_Install.Services\r\n", inf);
+            Assert.Contains("CatalogFile = " + VendorUsbDriverInstaller.XusbCatalogName, inf);
+            Assert.DoesNotContain("SourceDisksFiles", inf);   // no file of Microsoft's is carried
+            Assert.All(inf, c => Assert.True(c < 0x80, "non-ASCII character in the INF"));
+            Assert.DoesNotContain("\n", inf.Replace("\r\n", ""));
+            Assert.Contains("DeviceName   = \"A B\"", VendorUsbDriverInstaller.BuildXusbInf(@"USB\VID_0001&PID_0002", "A \"%B"));
+        }
+
+        [Fact]
+        public void Inf2Cat_AcceptsTheXusb22PackageOnBothArchitectures()
+            => Inf2Cat.AssertCatalogs(VendorUsbDriverInstaller.XusbInfName,
+                VendorUsbDriverInstaller.BuildXusbInf(@"USB\VID_045E&PID_02A9", "Xbox 360 Wireless Receiver for Windows"),
+                VendorUsbDriverInstaller.XusbCatalogName, _output);
+
+        /// <summary>This PC's xusb22.inf still installs through the two sections
+        /// the package names, and names none of the four IDs, which is why
+        /// they need the package.</summary>
+        [Fact]
+        public void ThisPcsXusb22Inf_HasTheSectionsAndLacksTheIds()
+        {
+            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "INF", "xusb22.inf");
+            Assert.True(File.Exists(path), path);
+            string text = File.ReadAllText(path);   // UTF-16 with its byte order mark
+            _output.WriteLine(text.Split('\n').FirstOrDefault(l => l.StartsWith("DriverVer", StringComparison.OrdinalIgnoreCase)));
+            Assert.Contains("[CC_Install]", text);
+            Assert.Contains("[CC_Install.Services]", text);
+            Assert.Contains("Class=XnaComposite", text);
+            foreach (var t in VendorUsbDriverInstaller.Xusb22Targets)
+                Assert.DoesNotContain($"Vid_{t.Vid:X4}&Pid_{t.Pid:X4}", text, StringComparison.OrdinalIgnoreCase);
+        }
+
         /// <summary>The sweep on this machine: every present USB node, read
         /// only. Whatever it finds is written out, and a node it would bind is
         /// named, so a bench run shows the verdicts.</summary>

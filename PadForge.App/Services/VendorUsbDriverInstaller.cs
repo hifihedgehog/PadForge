@@ -47,6 +47,37 @@ namespace PadForge.Services
         internal const string InfName = "padforge_vendorusb.inf";
         internal const string CatalogName = "padforge_vendorusb.cat";
 
+        internal const string XusbInfName = "padforge_xusb22.inf";
+        internal const string XusbCatalogName = "padforge_xusb22.cat";
+
+        /// <summary>The device interface xusb22 registers on each pad or
+        /// receiver it serves, the one XInput walks (OpenXInput's
+        /// XUSB_INTERFACE_CLASS_GUID, OpenXinput.cpp:518 and :1103).</summary>
+        internal static readonly Guid XusbInterfaceGuid = new Guid("EC87F1E3-C13B-4100-B5F7-8B84D54260CB");
+
+        /// <summary>The driver a package binds.</summary>
+        internal enum BindDriver { WinUsb, Xusb22 }
+
+        /// <summary>Clone Xbox 360 wireless receivers and the Guitar Hero Live
+        /// Xbox 360 dongle, which Windows' own Xbox 360 driver serves once an
+        /// INF names them (#33's PadForge list). xusb22.inf names only
+        /// Microsoft's receiver, pad and Play and Charge cable, so each of
+        /// these sits with no driver. xpad lists 045E:0291 and 045E:02A9 as
+        /// Xbox 360 wireless receivers (xpad.c:184-185), s-config's receiver
+        /// guide finds 05C6:9244 on the same Chinese receiver under Windows 10,
+        /// and SDL lists 1430:070B as an Xbox 360 controller
+        /// (controller_list.h:270). Users bound each one by picking the Xbox
+        /// 360 driver by hand, which Windows 10 version 2004 stopped allowing
+        /// for an ID the INF does not name, and then by adding the ID to a copy
+        /// of the INF, which is what this package does without the copy.</summary>
+        internal static readonly (ushort Vid, ushort Pid, string Name)[] Xusb22Targets =
+        {
+            (0x045E, 0x0291, "Xbox 360 Wireless Receiver for Windows"),
+            (0x045E, 0x02A9, "Xbox 360 Wireless Receiver for Windows"),
+            (0x05C6, 0x9244, "Xbox 360 Wireless Receiver for Windows"),
+            (0x1430, 0x070B, "Guitar Hero Live Xbox 360 dongle"),
+        };
+
         /// <summary>The compatible ID Windows builds from an original Xbox XID
         /// interface, class 0x58, subclass 0x42 (the fork's
         /// docs/README-xid.md).</summary>
@@ -149,7 +180,7 @@ namespace PadForge.Services
 
         /// <summary>What to bind: the hardware or compatible ID the package
         /// names and UpdateDriverForPlugAndPlayDevices matches.</summary>
-        internal readonly record struct BindPlan(string BindId, string Name);
+        internal readonly record struct BindPlan(string BindId, string Name, BindDriver Driver = BindDriver.WinUsb);
 
         /// <summary>The binding a node needs, or null. A node qualifies only
         /// with no driver or on HidUsb, the allowlist of
@@ -159,6 +190,16 @@ namespace PadForge.Services
         {
             string service = node.Service ?? string.Empty;
             bool noDriver = service.Length == 0;
+
+            // Windows' own Xbox 360 driver for the devices only an INF keeps
+            // from it. The device node, as xusb22.inf binds Microsoft's
+            // receiver, and from no driver alone.
+            if (noDriver && node.Interface < 0)
+            {
+                foreach (var x in Xusb22Targets)
+                    if (x.Vid == node.Vid && x.Pid == node.Pid)
+                        return new BindPlan(BindId(node), x.Name, BindDriver.Xusb22);
+            }
 
             // Windows has no driver for an XID interface, whatever its IDs, so
             // a class 0x58 node is bound from the no-driver state alone. The
@@ -444,6 +485,66 @@ namespace PadForge.Services
             return string.Join("\r\n", lines) + "\r\n";
         }
 
+        /// <summary>The package's INF for an xusb22 target: Windows' own Xbox
+        /// 360 driver for the one ID, its install and service sections taken
+        /// from xusb22.inf by Include and Needs, as the WinUSB package takes
+        /// winusb.inf's. xusb22.inf installs every device it names through
+        /// CC_Install and CC_Install.Services, and its class is XnaComposite.
+        /// The class entry repeats xusb22.inf's for a PC that never installed
+        /// it. ASCII with CRLF line ends.</summary>
+        internal static string BuildXusbInf(string bindId, string name)
+        {
+            string device = new string(name
+                .Where(c => c >= 0x20 && c < 0x7F && c != '"' && c != '%').ToArray());
+            var lines = new[]
+            {
+                "; " + XusbInfName,
+                "; Binds Windows' own Xbox 360 driver, xusb22, to one receiver or controller",
+                "; that xusb22.inf does not name. PadForge wrote this INF and signed its",
+                "; catalog on this PC.",
+                "",
+                "[Version]",
+                "Signature   = \"$Windows NT$\"",
+                "Class       = XnaComposite",
+                "ClassGUID   = {D61CA365-5AF4-4486-998B-9DB4734C6CA3}",
+                "Provider    = %ProviderName%",
+                "CatalogFile = " + XusbCatalogName,
+                "DriverVer   = 09/27/2026,1.0.0.0",
+                "PnpLockdown = 1",
+                "",
+                "[ClassInstall32]",
+                "AddReg = Class_AddReg",
+                "",
+                "[Class_AddReg]",
+                "HKR,,,,%ClassName%",
+                "HKR,,NoInstallClass,,1",
+                "HKR,,IconPath,0x10000,\"%%SystemRoot%%\\System32\\setupapi.dll,-40\"",
+                "",
+                "[Manufacturer]",
+                "%ProviderName% = Standard,NTamd64,NTarm64",
+                "",
+                "[Standard.NTamd64]",
+                "%DeviceName% = Xusb_Install, " + bindId,
+                "",
+                "[Standard.NTarm64]",
+                "%DeviceName% = Xusb_Install, " + bindId,
+                "",
+                "[Xusb_Install]",
+                "Include = xusb22.inf",
+                "Needs   = CC_Install",
+                "",
+                "[Xusb_Install.Services]",
+                "Include = xusb22.inf",
+                "Needs   = CC_Install.Services",
+                "",
+                "[Strings]",
+                "ProviderName = \"PadForge\"",
+                "ClassName    = \"Xbox 360 Peripherals\"",
+                "DeviceName   = \"" + device + "\"",
+            };
+            return string.Join("\r\n", lines) + "\r\n";
+        }
+
         /// <summary>Where a package is staged: its own folder under the temp
         /// directory, named for the ID.</summary>
         internal static string StagingDirectory(string bindId)
@@ -461,7 +562,10 @@ namespace PadForge.Services
         internal static bool Bind(BindPlan plan, string instanceId, IReadOnlyList<UsbNode> nodes,
             Action<string> log, CancellationToken ct, string[] from = null)
         {
-            from ??= new[] { "", "HidUsb" };
+            bool xusb = plan.Driver == BindDriver.Xusb22;
+            string service = xusb ? "xusb22" : "WINUSB";
+            string driverName = xusb ? "xusb22" : "WinUSB";
+            from ??= xusb ? new[] { "" } : new[] { "", "HidUsb" };
             try
             {
                 // The forced update below takes EVERY present node the ID
@@ -473,23 +577,27 @@ namespace PadForge.Services
                     if (!Names(n, plan.BindId)) continue;
                     string s = n.Service ?? string.Empty;
                     if (!from.Any(f => f.Equals(s, StringComparison.OrdinalIgnoreCase))
-                        && !s.Equals("WINUSB", StringComparison.OrdinalIgnoreCase))
+                        && !s.Equals(service, StringComparison.OrdinalIgnoreCase))
                     {
                         log($"{plan.Name}: {n.InstanceId} is on {s}, so {plan.BindId} stays as it is.");
                         return false;
                     }
                 }
 
-                string dir = StagingDirectory(plan.BindId);
+                // Each driver's package in its own folder, since Inf2Cat
+                // catalogs every INF it finds in one.
+                string dir = StagingDirectory(xusb ? plan.BindId + "_xusb22" : plan.BindId);
                 Directory.CreateDirectory(dir);
-                string inf = Path.Combine(dir, InfName);
-                File.WriteAllText(inf, BuildInf(plan.BindId, plan.Name), Encoding.ASCII);
+                string catalog = xusb ? XusbCatalogName : CatalogName;
+                string inf = Path.Combine(dir, xusb ? XusbInfName : InfName);
+                File.WriteAllText(inf, xusb ? BuildXusbInf(plan.BindId, plan.Name) : BuildInf(plan.BindId, plan.Name),
+                    Encoding.ASCII);
 
                 // Signed fresh on every bind, as the DS3 package is, so a
                 // catalog left from an earlier INF never covers this one.
-                if (!Ds3DriverInstaller.SignDriverPackage(dir, CatalogName, log))
+                if (!Ds3DriverInstaller.SignDriverPackage(dir, catalog, log))
                     return false;
-                if (!Ds3DriverInstaller.IsCatalogTrusted(Path.Combine(dir, CatalogName), out string signer))
+                if (!Ds3DriverInstaller.IsCatalogTrusted(Path.Combine(dir, catalog), out string signer))
                 {
                     log($"{plan.Name}: the package is still untrusted (signer: {signer ?? "unknown"}), "
                         + "so Windows would refuse it.");
@@ -507,16 +615,19 @@ namespace PadForge.Services
                     log($"{plan.Name}: Windows asked for a restart after the install.");
                 if (!UpdateDriverForPlugAndPlayDevices(IntPtr.Zero, plan.BindId, inf,
                         INSTALLFLAG_FORCE | INSTALLFLAG_NONINTERACTIVE, out _))
-                    log($"{plan.Name}: forced WinUSB bind for {plan.BindId} returned err={Marshal.GetLastWin32Error()}.");
+                    log($"{plan.Name}: forced {driverName} bind for {plan.BindId} returned err={Marshal.GetLastWin32Error()}.");
 
-                // Done means the node itself is on WinUSB and PadForge's
-                // interface on it is active, not that a call returned true.
+                // Done means the node itself is on the driver and the
+                // driver's interface on it is active, not that a call returned
+                // true: PadForge's for WinUSB, the XUSB one XInput walks for
+                // xusb22.
+                var active = xusb ? XusbInterfaceGuid : InterfaceGuid;
                 for (int i = 0; i < 20 && !ct.IsCancellationRequested; i++)
                 {
-                    if (string.Equals(ServiceOf(instanceId), "WINUSB", StringComparison.OrdinalIgnoreCase)
-                        && HasActiveInterface(instanceId))
+                    if (string.Equals(ServiceOf(instanceId), service, StringComparison.OrdinalIgnoreCase)
+                        && HasActiveInterface(instanceId, active))
                     {
-                        log($"{plan.Name} ({instanceId}) is on WinUSB.");
+                        log($"{plan.Name} ({instanceId}) is on {driverName}.");
                         return true;
                     }
                     Thread.Sleep(250);
@@ -526,7 +637,7 @@ namespace PadForge.Services
             }
             catch (Exception ex)
             {
-                log($"{plan.Name}: WinUSB bind failed: {ex.Message}");
+                log($"{plan.Name}: {driverName} bind failed: {ex.Message}");
                 return false;
             }
         }
@@ -537,10 +648,12 @@ namespace PadForge.Services
         /// (Ds3DriverInstaller.HasActiveWinUsbInterface), matched to the node
         /// by its instance ID, which the interface path carries with # for
         /// each backslash.</summary>
-        internal static bool HasActiveInterface(string instanceId)
+        internal static bool HasActiveInterface(string instanceId) => HasActiveInterface(instanceId, InterfaceGuid);
+
+        internal static bool HasActiveInterface(string instanceId, Guid interfaceGuid)
         {
             string token = instanceId.Replace('\\', '#');
-            var guid = InterfaceGuid;
+            var guid = interfaceGuid;
             IntPtr set = SetupDiGetClassDevsGuid(ref guid, IntPtr.Zero, IntPtr.Zero, DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
             if (set == IntPtr.Zero || set == new IntPtr(-1)) return false;
             try

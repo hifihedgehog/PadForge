@@ -286,7 +286,10 @@ namespace PadForge.Engine.Common.AnalogKeyboard
     /// <para>Start runs what HallJoy runs before the first depth poll. For
     /// the O3C that is the configuration read: the model, then each key's
     /// binding, whose failures never remove the keyboard (:202-251). For any
-    /// other PID it is the depth probe that admits it (:269-303).</para>
+    /// other PID it is the depth probe that admits it (:269-303). HallJoy's
+    /// backend reads one Sayo device, so it probes other PIDs only when no
+    /// O3C is present (:604-631). Each Sayo device here gets a row of its
+    /// own, so every one is probed, with the same read-only request.</para>
     ///
     /// <para>A pass polls at most every 8 ms and waits 25 ms for a report.
     /// Any valid depth frame counts, whichever request produced it, and

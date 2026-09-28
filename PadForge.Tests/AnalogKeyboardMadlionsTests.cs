@@ -489,6 +489,27 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void Mad68_AnyKeyDownInWindows_DelaysA8()
+        {
+            // HallJoy's AnyKeyboardKeyDown (mad68pr_backend.cpp:662-677) also
+            // sweeps every virtual key, so a key held through Fn, a remapped
+            // key or another keyboard's key holds off the rebaseline, though
+            // none of this keyboard's 67 keys reads as held.
+            var (session, io, _) = Mad68();
+            ScriptActivation(io, hid => hid == W || hid == Q ? 800 : 0);
+            Assert.True(session.Start(io));
+            var output = Keys();
+            bool holdAny = true;
+            Func<int, bool> held = code => code == AnalogKeyCodes.AnyKey && holdAny;
+            PassUntil(session, io, output, held, () => io.Inner.Writes("out").Count == 1);
+            for (int i = 0; i < 200; i++) session.Pass(io, output, held);
+            Assert.Single(io.Inner.Writes("out"));
+            holdAny = false;
+            PassUntil(session, io, output, held, () => io.Inner.Writes("out").Count == 2);
+            Assert.Equal(Normal(0xA8), io.Inner.Writes("out")[1].Skip(1).Take(8).ToArray());
+        }
+
+        [Fact]
         public void Mad68_HeldKeys_DelayA8_AndGateTheirOwnership()
         {
             // WaitForAllReleased (mad68pr_backend.cpp:1412-1447) waits for
@@ -1252,6 +1273,32 @@ namespace PadForge.Tests
             long q = quietClock.Now;
             Assert.False(quiet.Start(quietIo));
             Assert.InRange(quietClock.Now - q, 1200, 1300);
+        }
+
+        [Fact]
+        public void M484_AProvenIdentity_KeepsTheBoard_WhenALaterStepFails()
+        {
+            // An NA87 or AJAZZ identity makes the board this route's, so a
+            // slow capability or map reply retries this route instead of
+            // letting KeyAxis arm the board (irok_na87_backend.cpp:884-919).
+            var (cap, capIo, _) = M484(Na87Id, nominal: 30);
+            Assert.False(cap.Start(capIo));
+            Assert.True(cap.Recognized);
+            Assert.False(cap.NoStartRetry);
+
+            var (ajazz, ajazzIo, _) = M484(AjazzId, nominal: 30);
+            Assert.False(ajazz.Start(ajazzIo));
+            Assert.True(ajazz.Recognized);
+
+            // Another firmware, or no answer at all, leaves the board to the
+            // routes after this one.
+            var (other, otherIo, _) = M484("M484,01,KB,ABT,X86HERGB,V1.00.09");
+            Assert.False(other.Start(otherIo));
+            Assert.False(other.Recognized);
+            var (quiet, quietIo, _) = M484(Na87Id);
+            quietIo.Inner.OnSend = _ => Array.Empty<byte[]>();
+            Assert.False(quiet.Start(quietIo));
+            Assert.False(quiet.Recognized);
         }
 
         [Fact]

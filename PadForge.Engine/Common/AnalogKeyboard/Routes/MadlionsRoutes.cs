@@ -53,9 +53,17 @@ namespace PadForge.Engine.Common.AnalogKeyboard
                 Writable = true,
                 Exclusive = false,
                 InputBuffers = 256,
-                // The worker tries again every second (kReconnectWaitMs,
-                // mad68pr_backend.cpp:59, 2179).
-                StartRetryMs = 1000,
+                // HallJoy proves a collection once, when routing is prepared
+                // (mad68pr_backend.cpp:2257-2295), and its worker reopens only
+                // the collections it claimed, 250 ms after every attempt
+                // (EnumerateCandidates(true), :567-574, 2169, 2201).
+                ProbeOnce = true,
+                StartRetryMs = 250,
+                ReconnectMs = 250,
+                // Stop's closing A9 writes get the time HallJoy's stop gives
+                // its worker (kStopJoinTimeoutMs, :60, 2395), plus the write
+                // timeouts of up to three A9 writes and the pass in flight.
+                StopTimeoutMs = 4500,
                 Name = info => Mad68ProRProtocol.ModelNameFor(info.ProductId),
                 Keys = _ => Mad68ProRProtocol.KeyOrder(),
             },
@@ -69,10 +77,15 @@ namespace PadForge.Engine.Common.AnalogKeyboard
                 Writable = true,
                 Exclusive = false,
                 InputBuffers = 128,
-                // Writes wait 40 ms (hex80_backend.cpp:37, 374-381) and the
-                // worker tries again after 1.5 s (kReconnectWaitMs, :40, 622).
+                // Writes wait 40 ms (hex80_backend.cpp:37, 374-381). HallJoy
+                // proves a collection once, when routing is prepared
+                // (:694-728), and its worker reopens only the collections it
+                // claimed, 250 ms after every attempt (EnumerateCandidates(true),
+                // :242-260, 613, 643).
                 WriteTimeoutMs = 40,
-                StartRetryMs = 1500,
+                ProbeOnce = true,
+                StartRetryMs = 250,
+                ReconnectMs = 250,
                 Name = _ => AtkHex80Protocol.ModelName,
                 Keys = _ => AtkHex80Protocol.KeyOrder(),
             },
@@ -87,10 +100,14 @@ namespace PadForge.Engine.Common.AnalogKeyboard
                 Writable = true,
                 Exclusive = false,
                 InputBuffers = 256,
-                // Writes wait 120 ms (irok_na87_backend.cpp:47, 274-291) and
-                // the worker tries again every second (kReconnectMs, :49, 918).
+                // Writes wait 120 ms (irok_na87_backend.cpp:47, 274-291). The
+                // worker tries again 200 ms after a session and 1 s after an
+                // attempt that ran none (kReconnectMs, :49, 918). A handshake
+                // that proved the NA87 or AJAZZ identity keeps the keyboard
+                // for this route, so KeyAxis never arms it after a slow reply.
                 WriteTimeoutMs = 120,
                 StartRetryMs = 1000,
+                ReconnectMs = 200,
                 // The metadata cannot tell the NA87 from the AJAZZ, so the row
                 // keeps the product string until the handshake names the model.
                 Name = _ => null,

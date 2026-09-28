@@ -1529,9 +1529,39 @@ namespace PadForge.Common.Input
         // another make never sees a route's handshake twice.
         private readonly HashSet<string> _analogNotSupported =
             new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        // The route that opened each collection, or proved it its own, kept
+        // while the collection stays present. A reopen runs only that route,
+        // the way a reference reconnects to a keyboard it claimed.
+        private readonly Dictionary<string, string> _analogClaims =
+            new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        // After a timed retry, the routes that asked for it. The retry runs
+        // only those, so a route that refused the keyboard does not hear it
+        // again.
+        private readonly Dictionary<string, string[]> _analogRetryRoutes =
+            new Dictionary<string, string[]>(StringComparer.OrdinalIgnoreCase);
+        // Collections due for a reopen on a route's timer, with the candidate
+        // each was found as, so the reopen needs no enumeration: a route's
+        // timer can be shorter than the sweep's.
+        private readonly Dictionary<string, AnalogKeyboardCandidate> _analogReopen =
+            new Dictionary<string, AnalogKeyboardCandidate>(StringComparer.OrdinalIgnoreCase);
+        // Earliest due reopen, read by the poll thread without the lock.
+        private long _analogNextReopenTicks = long.MaxValue;
+        // Failed reopens in a row of a claimed collection, for a route whose
+        // reference stops retrying after a few (ReconnectTries).
+        private readonly Dictionary<string, int> _analogReopenFailures =
+            new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+        // Rows being stopped on the thread pool. Their route may still be
+        // putting the keyboard back, so no new session opens that keyboard
+        // until the stop ends, and shutdown waits for every stop.
+        private readonly Dictionary<AnalogKeyboardDevice, Task> _analogDisposing =
+            new Dictionary<AnalogKeyboardDevice, Task>();
+        // The sweep or reopen worker, which shutdown lets finish an open in
+        // flight before the teardowns.
+        private volatile Task _analogWorker;
         private const int _analogSweepIntervalMs = 3000;
         // A collection that would not open, or whose reader gave up (a polled
-        // keyboard that never answers), waits this long before another try.
+        // keyboard that never answers), waits this long before another try,
+        // unless its route reconnects on a timer of its own.
         private const int _analogOpenRetryMs = 60000;
 
         /// <summary>The open analog keyboard rows, a snapshot for the
@@ -2839,16 +2869,27 @@ namespace PadForge.Common.Input
                 return false;
 
             long now = Environment.TickCount64;
-            if (enabled && !_analogSweepRunning && now >= _analogNextSweepTicks)
+            if (enabled && !_analogSweepRunning)
             {
-                _analogSweepRunning = true;
-                _analogNextSweepTicks = now + _analogSweepIntervalMs;
-                Task.Run(() =>
+                // A full sweep every 3 s. Between sweeps, a reopen that a
+                // route's timer made due runs on its own, with the candidate
+                // it was found as.
+                bool full = now >= _analogNextSweepTicks;
+                if (full || now >= Volatile.Read(ref _analogNextReopenTicks))
                 {
-                    try { AnalogKeyboardSweep(); }
-                    catch { }
-                    finally { _analogSweepRunning = false; }
-                });
+                    _analogSweepRunning = true;
+                    if (full) _analogNextSweepTicks = now + _analogSweepIntervalMs;
+                    _analogWorker = Task.Run(() =>
+                    {
+                        try
+                        {
+                            if (full) AnalogKeyboardSweep();
+                            else AnalogKeyboardReopenDue();
+                        }
+                        catch { }
+                        finally { _analogSweepRunning = false; }
+                    });
+                }
             }
 
             bool changed = false;
@@ -2869,17 +2910,31 @@ namespace PadForge.Common.Input
                     }
                     // A route that recognizes its keyboards by their reports
                     // registers the row at the first key set. Until then the
-                    // collection is only listened to.
+                    // collection is only listened to, and it gives way as soon
+                    // as a route of its own reads the keyboard through another
+                    // collection: a listener never writes, so stopping it
+                    // costs nothing.
                     if (dev.RegistersOnFirstReport && dev.ReportCount == 0)
                     {
                         bool vanished = present != null && !present.Contains(dev.HidPath);
-                        if (dev.IsAttached && !vanished)
+                        bool readElsewhere = false;
+                        foreach (var open in _openedAnalogKeyboards.Values)
+                            if (string.Equals(open.IdentityKey, dev.IdentityKey, StringComparison.OrdinalIgnoreCase))
+                            { readElsewhere = true; break; }
+                        for (int j = 0; j < _analogPendingRegister.Count && !readElsewhere; j++)
+                        {
+                            var other = _analogPendingRegister[j];
+                            if (other != dev && !(other.RegistersOnFirstReport && other.ReportCount == 0)
+                                && string.Equals(other.IdentityKey, dev.IdentityKey, StringComparison.OrdinalIgnoreCase))
+                                readElsewhere = true;
+                        }
+                        if (dev.IsAttached && !vanished && !readElsewhere)
                         {
                             (listening ??= new List<AnalogKeyboardDevice>()).Add(dev);
                         }
                         else
                         {
-                            if (!vanished) _analogRetryAt[dev.HidPath] = now + _analogOpenRetryMs;
+                            if (!vanished && !readElsewhere) _analogRetryAt[dev.HidPath] = now + _analogOpenRetryMs;
                             DisposeAnalogKeyboardAsync(dev);
                         }
                         continue;
@@ -2902,7 +2957,7 @@ namespace PadForge.Common.Input
                         UserDevice ud = FindOrCreateUserDevice(dev.InstanceGuid, dev.ProductGuid);
                         ud.LoadFromExternalDevice(dev);
                         ud.IsOnline = true;
-                        AnalogKeyboardRuntime.SetKeyOrder(dev.InstanceGuid, dev.KeyOrder);
+                        dev.PublishKeyOrder();
                         _openedAnalogKeyboards[dev.HidPath] = dev;
                         MarkChanged(ref changed, "analogkb", $"+ {dev.Name} ({dev.Protocol})");
                     }
@@ -2924,10 +2979,18 @@ namespace PadForge.Common.Input
                     if (!enabled || vanished || dead || removedByUser)
                         (gone ??= new List<string>()).Add(kvp.Key);
                     // A reader that stopped on a collection that is still
-                    // there (a polled keyboard that never answers) waits out
-                    // the cooldown instead of reopening every sweep.
+                    // there reopens on its route's reconnect timer, the wait
+                    // its reference takes after a session. A route without
+                    // one waits out the cooldown (a polled keyboard that never
+                    // answers) instead of reopening every sweep.
                     if (enabled && dead && !vanished)
-                        _analogRetryAt[kvp.Key] = now + _analogOpenRetryMs;
+                    {
+                        int reconnect = kvp.Value.ReconnectMs;
+                        if (reconnect > 0)
+                            ScheduleAnalogReopen(kvp.Value.Candidate, now + reconnect);
+                        else
+                            _analogRetryAt[kvp.Key] = now + _analogOpenRetryMs;
+                    }
                 }
                 if (gone != null)
                 {
@@ -2956,10 +3019,30 @@ namespace PadForge.Common.Input
                     List<string> stale = null;
                     foreach (var key in _analogRetryAt.Keys)
                         if (!present.Contains(key)) (stale ??= new List<string>()).Add(key);
-                    if (stale != null) foreach (var key in stale) _analogRetryAt.Remove(key);
+                    if (stale != null)
+                        foreach (var key in stale)
+                        {
+                            _analogRetryAt.Remove(key);
+                            _analogReopen.Remove(key);
+                            _analogRetryRoutes.Remove(key);
+                            _analogReopenFailures.Remove(key);
+                        }
                 }
                 if (present != null && _analogNotSupported.Count > 0)
                     _analogNotSupported.RemoveWhere(key => !present.Contains(key));
+                // A claim lasts while its collection is plugged in.
+                if (present != null && _analogClaims.Count > 0)
+                {
+                    List<string> unplugged = null;
+                    foreach (var key in _analogClaims.Keys)
+                        if (!present.Contains(key)) (unplugged ??= new List<string>()).Add(key);
+                    if (unplugged != null)
+                        foreach (var key in unplugged)
+                        {
+                            _analogClaims.Remove(key);
+                            _analogReopenFailures.Remove(key);
+                        }
+                }
 
                 _analogAnyRows = _openedAnalogKeyboards.Count > 0 || _analogPendingRegister.Count > 0;
             }
@@ -2973,43 +3056,104 @@ namespace PadForge.Common.Input
         {
             var candidates = AnalogKeyboardHidRuntime.Enumerate();
             if (candidates == null)
-                return; // enumeration failed; keep the previous snapshot
+                return; // enumeration failed, so the previous snapshot stays
             var present = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             foreach (var c in candidates) present.Add(c.Path);
             _analogPresentPaths = present;
 
-            long now = Environment.TickCount64;
-            foreach (var candidate in candidates)
+            try
             {
-                lock (_analogLock)
-                {
-                    if (_analogInputsSuppressed || !AnalogKeyboardRuntime.Enabled) return;
-                    if (_openedAnalogKeyboards.ContainsKey(candidate.Path)) continue;
-                    if (_analogNotSupported.Contains(candidate.Path)) continue;
-                    // One row per keyboard: a keyboard already read through
-                    // another collection (a Wooting's v1 interface beside its
-                    // v2) is not opened twice.
-                    // A collection an open row reads as its companion belongs
-                    // to that row too.
-                    bool taken = false;
-                    foreach (var open in _openedAnalogKeyboards.Values)
-                        if (string.Equals(open.IdentityKey, candidate.IdentityKey, StringComparison.OrdinalIgnoreCase)
-                            || string.Equals(open.CompanionPath, candidate.Path, StringComparison.OrdinalIgnoreCase))
-                        { taken = true; break; }
-                    for (int i = 0; i < _analogPendingRegister.Count && !taken; i++)
-                        if (string.Equals(_analogPendingRegister[i].HidPath, candidate.Path, StringComparison.OrdinalIgnoreCase)
-                            || string.Equals(_analogPendingRegister[i].CompanionPath, candidate.Path, StringComparison.OrdinalIgnoreCase)
-                            || string.Equals(_analogPendingRegister[i].IdentityKey, candidate.IdentityKey, StringComparison.OrdinalIgnoreCase))
-                            taken = true;
-                    if (taken) continue;
-                    if (_analogRetryAt.TryGetValue(candidate.Path, out long retryAt) && now < retryAt)
-                        continue;
-                }
+                foreach (var candidate in candidates)
+                    if (!TryOpenAnalogCandidate(candidate)) return;
+            }
+            finally
+            {
+                lock (_analogLock) RecomputeAnalogNextReopen();
+            }
+        }
 
-                var dev = new AnalogKeyboardDevice(candidate);
-                var result = AnalogKeyboardOpenResult.Busy;
-                try { result = dev.Open(); }
-                catch { }
+        /// <summary>Worker for the reopens a route's timer made due between
+        /// sweeps: each runs with the candidate it was found as, while the
+        /// last sweep still saw its collection.</summary>
+        private void AnalogKeyboardReopenDue()
+        {
+            List<AnalogKeyboardCandidate> due = null;
+            lock (_analogLock)
+            {
+                long now = Environment.TickCount64;
+                var present = _analogPresentPaths;
+                List<string> gone = null;
+                foreach (var kvp in _analogReopen)
+                {
+                    if (present != null && !present.Contains(kvp.Key))
+                    {
+                        (gone ??= new List<string>()).Add(kvp.Key);
+                        continue;
+                    }
+                    if (_analogRetryAt.TryGetValue(kvp.Key, out long at) && now < at) continue;
+                    (due ??= new List<AnalogKeyboardCandidate>()).Add(kvp.Value);
+                }
+                if (gone != null) foreach (var key in gone) _analogReopen.Remove(key);
+                RecomputeAnalogNextReopen();
+            }
+            if (due == null) return;
+            try
+            {
+                foreach (var candidate in due)
+                    if (!TryOpenAnalogCandidate(candidate)) return;
+            }
+            finally
+            {
+                lock (_analogLock) RecomputeAnalogNextReopen();
+            }
+        }
+
+        /// <summary>Opens one collection unless a row has it, a stop is still
+        /// putting its keyboard back, or its wait has not run out, and files
+        /// the result. False once the feature is off or the app is closing,
+        /// which ends the worker.</summary>
+        private bool TryOpenAnalogCandidate(AnalogKeyboardCandidate candidate)
+        {
+            string claimed;
+            string[] retryRoutes;
+            bool retrying;
+            lock (_analogLock)
+            {
+                if (_analogInputsSuppressed || !AnalogKeyboardRuntime.Enabled) return false;
+                string path = candidate.Path;
+                if (_openedAnalogKeyboards.ContainsKey(path) || _analogNotSupported.Contains(path)
+                    || AnalogCandidateTaken(candidate))
+                {
+                    _analogReopen.Remove(path);
+                    return true;
+                }
+                // A stop still running on this keyboard owns it until the
+                // route has put the keyboard back: a new session reading the
+                // keyboard's state now would record the old session's change
+                // as the keyboard's own. Try again shortly.
+                if (AnalogCandidateStopping(candidate))
+                {
+                    ScheduleAnalogReopen(candidate, Environment.TickCount64 + _analogStoppingRetryMs);
+                    return true;
+                }
+                if (_analogRetryAt.TryGetValue(path, out long retryAt) && Environment.TickCount64 < retryAt)
+                    return true;
+                _analogReopen.Remove(path);
+                _analogClaims.TryGetValue(path, out claimed);
+                _analogRetryRoutes.TryGetValue(path, out retryRoutes);
+                retrying = retryRoutes != null || _analogReopenFailures.ContainsKey(path);
+            }
+
+            var dev = new AnalogKeyboardDevice(candidate);
+            var result = AnalogKeyboardOpenResult.Busy;
+            try { result = dev.Open(claimed, claimed == null ? retryRoutes : null); }
+            catch { }
+            // The handshakes can take seconds, so the waits count from here.
+            long now = Environment.TickCount64;
+            // A route's timer can retry ten times a second, so a retry that
+            // fails like the last one is not logged again.
+            if (!(retrying && result == AnalogKeyboardOpenResult.RetryLater))
+            {
                 PadForge.Engine.SdlDiagLog.WriteLine(result switch
                 {
                     AnalogKeyboardOpenResult.Opened =>
@@ -3020,29 +3164,125 @@ namespace PadForge.Common.Input
                         $"Analog keyboard: '{candidate.Name}' did not complete a handshake, retry in {dev.RetryAfterMs} ms",
                     _ => $"Analog keyboard: open failed for '{candidate.Name}', retry in {_analogOpenRetryMs / 1000} s",
                 });
-                lock (_analogLock)
+            }
+            lock (_analogLock)
+            {
+                if (_analogInputsSuppressed || !AnalogKeyboardRuntime.Enabled)
                 {
-                    if (_analogInputsSuppressed || !AnalogKeyboardRuntime.Enabled) { DisposeAnalogKeyboardAsync(dev); return; }
-                    if (result != AnalogKeyboardOpenResult.Opened)
-                    {
-                        dev.Dispose();
-                        if (result == AnalogKeyboardOpenResult.NotSupported) _analogNotSupported.Add(candidate.Path);
-                        else if (result == AnalogKeyboardOpenResult.RetryLater) _analogRetryAt[candidate.Path] = now + dev.RetryAfterMs;
-                        else _analogRetryAt[candidate.Path] = now + _analogOpenRetryMs;
-                        continue;
-                    }
-                    _analogRetryAt.Remove(candidate.Path);
+                    DisposeAnalogKeyboardAsync(dev);
+                    return false;
+                }
+                string path = candidate.Path;
+                _analogRetryRoutes.Remove(path);
+                if (dev.ClaimRouteId != null) _analogClaims[path] = dev.ClaimRouteId;
+                if (result == AnalogKeyboardOpenResult.Opened)
+                {
+                    _analogRetryAt.Remove(path);
+                    _analogReopenFailures.Remove(path);
                     _analogPendingRegister.Add(dev);
                     _analogAnyRows = true;
+                    return true;
+                }
+                dev.Dispose();
+                // A route whose reference gives up after a few reopens leaves
+                // the keyboard alone once they are spent.
+                if (claimed != null)
+                {
+                    _analogReopenFailures.TryGetValue(path, out int failures);
+                    _analogReopenFailures[path] = ++failures;
+                    int limit = PadForge.Engine.Common.AnalogKeyboard.AnalogKeyboardRoutes.Find(claimed)?.ReconnectTries ?? 0;
+                    if (limit > 0 && failures >= limit) result = AnalogKeyboardOpenResult.NotSupported;
+                }
+                if (result == AnalogKeyboardOpenResult.NotSupported)
+                {
+                    _analogNotSupported.Add(path);
+                }
+                else if (result == AnalogKeyboardOpenResult.RetryLater)
+                {
+                    if (dev.ClaimRouteId == null && claimed == null && dev.RetryRouteIds != null)
+                        _analogRetryRoutes[path] = dev.RetryRouteIds;
+                    ScheduleAnalogReopen(candidate, now + dev.RetryAfterMs);
+                }
+                else
+                {
+                    _analogRetryAt[path] = now + _analogOpenRetryMs;
                 }
             }
+            return true;
+        }
+
+        /// <summary>A row open or waiting to register already reads this
+        /// keyboard: the same collection, the collection a row reads as its
+        /// companion, or another collection of the same keyboard. A row that
+        /// only listens for its first report claims its own collection and
+        /// nothing else, so a route of the keyboard's own can still open it
+        /// through another collection. Caller holds <c>_analogLock</c>.</summary>
+        private bool AnalogCandidateTaken(AnalogKeyboardCandidate candidate)
+        {
+            foreach (var open in _openedAnalogKeyboards.Values)
+                if (string.Equals(open.IdentityKey, candidate.IdentityKey, StringComparison.OrdinalIgnoreCase)
+                    || string.Equals(open.CompanionPath, candidate.Path, StringComparison.OrdinalIgnoreCase))
+                    return true;
+            foreach (var pending in _analogPendingRegister)
+            {
+                if (string.Equals(pending.HidPath, candidate.Path, StringComparison.OrdinalIgnoreCase)
+                    || string.Equals(pending.CompanionPath, candidate.Path, StringComparison.OrdinalIgnoreCase))
+                    return true;
+                bool listening = pending.RegistersOnFirstReport && pending.ReportCount == 0;
+                if (!listening && string.Equals(pending.IdentityKey, candidate.IdentityKey, StringComparison.OrdinalIgnoreCase))
+                    return true;
+            }
+            return false;
+        }
+
+        /// <summary>A row of this keyboard is still stopping. Caller holds
+        /// <c>_analogLock</c>.</summary>
+        private bool AnalogCandidateStopping(AnalogKeyboardCandidate candidate)
+        {
+            foreach (var stopping in _analogDisposing.Keys)
+                if (string.Equals(stopping.HidPath, candidate.Path, StringComparison.OrdinalIgnoreCase)
+                    || string.Equals(stopping.CompanionPath, candidate.Path, StringComparison.OrdinalIgnoreCase)
+                    || string.Equals(stopping.IdentityKey, candidate.IdentityKey, StringComparison.OrdinalIgnoreCase))
+                    return true;
+            return false;
+        }
+
+        // How soon a collection whose keyboard is still stopping is tried again.
+        private const int _analogStoppingRetryMs = 100;
+
+        /// <summary>Reopens <paramref name="candidate"/> at
+        /// <paramref name="at"/>, from the candidate it was found as. Caller
+        /// holds <c>_analogLock</c>.</summary>
+        private void ScheduleAnalogReopen(AnalogKeyboardCandidate candidate, long at)
+        {
+            if (candidate == null) return;
+            _analogRetryAt[candidate.Path] = at;
+            _analogReopen[candidate.Path] = candidate;
+            if (at < Volatile.Read(ref _analogNextReopenTicks)) Volatile.Write(ref _analogNextReopenTicks, at);
+        }
+
+        /// <summary>The earliest reopen still waiting. Caller holds
+        /// <c>_analogLock</c>.</summary>
+        private void RecomputeAnalogNextReopen()
+        {
+            long next = long.MaxValue;
+            foreach (var key in _analogReopen.Keys)
+                if (_analogRetryAt.TryGetValue(key, out long at) && at < next) next = at;
+            Volatile.Write(ref _analogNextReopenTicks, next);
         }
 
         /// <summary>Tears down every analog keyboard row and suppresses Phase
-        /// 1k. Called on app shutdown beside the G-keys teardown.</summary>
+        /// 1k. Called on app shutdown beside the G-keys teardown. An open in
+        /// flight finishes first, and every stop already running, from the
+        /// switch turned off or a removed row, runs to its end: each is a
+        /// route putting its keyboard back.</summary>
         public void ShutdownAnalogKeyboardInputs()
         {
             _analogInputsSuppressed = true;
+            int longestStop = AnalogKeyboardDevice.LongestStopMs;
+            // The worker sees the suppression when its open returns and hands
+            // that device to a stop of its own.
+            try { _analogWorker?.Wait(longestStop + 5000); } catch { }
             var stopping = new List<AnalogKeyboardDevice>();
             lock (_analogLock)
             {
@@ -3060,6 +3300,8 @@ namespace PadForge.Common.Input
                 _openedAnalogKeyboards.Clear();
                 stopping.AddRange(_analogPendingRegister);
                 _analogPendingRegister.Clear();
+                _analogReopen.Clear();
+                Volatile.Write(ref _analogNextReopenTicks, long.MaxValue);
                 _analogAnyRows = false;
             }
             // Every keyboard gets its route's teardown before the app exits,
@@ -3069,18 +3311,37 @@ namespace PadForge.Common.Input
                 {
                     try { dev.Dispose(); } catch { }
                 });
+            Task[] retiring;
+            lock (_analogLock)
+            {
+                retiring = new Task[_analogDisposing.Count];
+                _analogDisposing.Values.CopyTo(retiring, 0);
+            }
+            if (retiring.Length > 0)
+            {
+                try { Task.WaitAll(retiring, longestStop + 1000); } catch { }
+            }
         }
 
         /// <summary>Stops a retired analog keyboard on the thread pool: its
         /// route may need a pass to finish and a few writes to put the
-        /// keyboard back, and neither belongs on the poll thread.</summary>
-        private static void DisposeAnalogKeyboardAsync(AnalogKeyboardDevice dev)
+        /// keyboard back, and neither belongs on the poll thread. The stop is
+        /// tracked until it ends, so the sweep leaves that keyboard alone
+        /// meanwhile and shutdown can wait for it.</summary>
+        private void DisposeAnalogKeyboardAsync(AnalogKeyboardDevice dev)
         {
             if (dev == null) return;
-            System.Threading.ThreadPool.QueueUserWorkItem(_ =>
+            lock (_analogLock)
             {
-                try { dev.Dispose(); } catch { }
-            });
+                if (_analogDisposing.ContainsKey(dev)) return;
+                var stop = new Task(() =>
+                {
+                    try { dev.Dispose(); } catch { }
+                    lock (_analogLock) _analogDisposing.Remove(dev);
+                });
+                _analogDisposing[dev] = stop;
+                stop.Start(TaskScheduler.Default);
+            }
         }
 
         public void ShutdownHandheldInputs()

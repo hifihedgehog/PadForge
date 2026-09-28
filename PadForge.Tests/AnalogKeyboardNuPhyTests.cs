@@ -561,6 +561,25 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void NuPhyStop_AFailedWrite_IsRetried_AndEveryModeStillGoesBack()
+        {
+            // Only a read that reports the device gone ends an exchange. A
+            // write that fails, as one that times out does, is one failed try:
+            // the SetFunc goes out again and the modes after it go back too.
+            var kb = NuPhyKeyboard();
+            var before = (byte[])kb.Func.Clone();
+            var session = new NuPhyHeSession(NuPhy(0x6120));
+            Assert.True(session.Start(kb.Io));
+            int setFuncs = 0;
+            kb.Io.FailSend = r => r[2] == NuPhyProtocol.SetFunc && setFuncs++ == 0;
+            session.Stop(kb.Io);
+            Assert.Equal(before, kb.Func);
+            Assert.Equal(4, setFuncs);
+            for (int mode = 0; mode < NuPhyProtocol.ModeCount; mode++)
+                Assert.False(session.ModeChanged(mode));
+        }
+
+        [Fact]
         public void NuPhyStart_NoAnswer_WritesNothing()
         {
             // Four tries of the first GetFunc (NuPhyIO maxRetries 3, raw offset
@@ -914,15 +933,20 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void MadlionsStart_UnansweredWrite_IsUndone()
+        public void MadlionsStart_UnansweredWrite_StillStarts_WithOneWrite()
         {
-            // The SetFunc lands but its reply never comes: Start fails and the
-            // bit is cleared again, as device.py:113-122 would on exit.
+            // The SetFunc lands but its reply never comes. AnalogKeys writes
+            // the block once and never reads a reply (device.py:149-152), so
+            // Start goes on, sends no second SetFunc, and Stop clears the bit.
             var kb = NanoKeyboard();
             var before = (byte[])kb.Func.Clone();
             kb.Silent = r => r[2] == NuPhyProtocol.SetFunc;
             var session = new MadlionsA0Session(Nano68Pro);
-            Assert.False(session.Start(kb.Io));
+            Assert.True(session.Start(kb.Io));
+            Assert.Single(kb.Writes, w => w[2] == NuPhyProtocol.SetFunc);
+            Assert.NotEqual(0, kb.Func[7] & 0x08);
+            kb.Silent = _ => false;
+            session.Stop(kb.Io);
             Assert.Equal(before, kb.Func);
         }
 

@@ -56,6 +56,18 @@ namespace PadForge.Engine.Common.AnalogKeyboard
             Protocol = AnalogKeyboardProtocol.KeyAxis,
             Matches = Matches,
             CreateSession = _ => new KeyAxisSession(),
+            // The stream reports only changes, so a dropped release would
+            // hold a key: KeyAxis reads through hidapi, which opens with 64
+            // input buffers (hidapi windows/hid.c:1029).
+            InputBuffers = 64,
+            // KeyAxis heals a dropped pipe by reopening and arming again, up to
+            // six tries 150 ms apart, then gives up (_recover_stream,
+            // app.py:1174-1194). It retries nothing else, so a board that
+            // fails its first arm is left alone until plugged in again.
+            ProbeOnce = true,
+            StartRetryMs = 150,
+            ReconnectMs = 150,
+            ReconnectTries = 6,
             // KeyAxis's name for the board when its product string is empty.
             Name = info => string.IsNullOrWhiteSpace(info.ProductString) ? "Redragon M68 / E-YOOSO HZ-68" : null,
         };

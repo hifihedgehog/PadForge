@@ -45,6 +45,7 @@ namespace PadForge.Engine.Common.AnalogKeyboard
                 // route reconnects every 2 s (kSparkReconnectIntervalMs, :18).
                 WriteTimeoutMs = 250,
                 StartRetryMs = 2000,
+                ReconnectMs = 2000,
                 Name = info => SparkLinkProtocol.ModelName(info.ProductId),
                 // The key map comes from the keyboard's base layer at Start.
                 Keys = null,
@@ -66,6 +67,7 @@ namespace PadForge.Engine.Common.AnalogKeyboard
                 WriteTimeoutMs = 30,
                 StaleAfterMs = 160,
                 StartRetryMs = 2000,
+                ReconnectMs = 2000,
                 Name = info => SayoDepthProtocol.ModelName(info.ProductId),
                 // Manual layout Z, X and C until Start reads the configuration.
                 Keys = info => (int[])SayoDepthProtocol.Factory.Clone(),

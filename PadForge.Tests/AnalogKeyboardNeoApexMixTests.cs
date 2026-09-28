@@ -1766,10 +1766,13 @@ namespace PadForge.Tests
             var a = Mix87(kbA, ioA);
             Assert.True(a.Start(ioA));
 
+            // HallJoy runs no session beside another (mchose_mix87_backend.cpp:250-252),
+            // and the default refuses the second at once rather than holding
+            // the sweep that opens it.
+            Assert.Equal(0, MchoseMix87Session.DefaultSlotWaitMs);
             var kbB = new Mix87Keyboard(flagOn: true);
             var ioB = Mix87Transport(kbB);
             var b = Mix87(kbB, ioB);
-            b.SlotWaitMs = 0;
             Assert.False(b.Start(ioB));
             Assert.Empty(ioB.Log);
 

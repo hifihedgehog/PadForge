@@ -82,6 +82,44 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void AFullState_KeepsTheDeepestKeys()
+        {
+            // The routes that read a whole matrix report every key above
+            // rest, so a full state trades its shallowest key for a deeper
+            // one, and a pressed key is never hidden behind resting ones.
+            var k = new AnalogKeyInputState();
+            for (int i = 0; i < AnalogKeyInputState.MaxKeys; i++) Assert.True(k.Set(i + 1, 0.01f + i * 0.001f));
+            Assert.True(k.Set(AnalogKeyCodes.PositionBase, 0.9f));
+            Assert.Equal(AnalogKeyInputState.MaxKeys, k.Count);
+            Assert.Equal(0.9f, k.Get(AnalogKeyCodes.PositionBase));
+            Assert.Equal(0f, k.Get(1));
+            Assert.Equal(0.011f, k.Get(2), 5);
+            Assert.False(k.Set(AnalogKeyCodes.PositionBase + 1, 0.005f));
+            Assert.Equal(0f, k.Get(AnalogKeyCodes.PositionBase + 1));
+        }
+
+        [Fact]
+        public void AMappingRead_MarksTheKey_OnTheRowAndEveryCopy()
+        {
+            using var dev = new AnalogKeyboardDevice(Candidate());
+            dev.InjectForTest(AnalogKeyCodes.W, 0.75f);
+            dev.AttachForTest();
+            var s = dev.GetCurrentState();
+            Assert.False(dev.IsMappedForTest(AnalogKeyCodes.W));
+            Assert.True(SourceCoercion.EvaluateForButtonTarget(s, Src(W, 60), 50));
+            Assert.True(dev.IsMappedForTest(AnalogKeyCodes.W));
+            Assert.False(dev.IsMappedForTest(AnalogKeyCodes.S));
+
+            // A copy of the row's state reads for the same row.
+            var copy = s.Clone();
+            SourceCoercion.EvaluateForTriggerTarget(copy, Src(SourceCoercion.AnalogKeyDescriptor(AnalogKeyCodes.S)));
+            Assert.True(dev.IsMappedForTest(AnalogKeyCodes.S));
+
+            // A state of no row reads without stamping anything.
+            Assert.Equal(0.5f, SourceCoercion.EvaluateForTriggerTarget(Depth(0.5f), Src(W)));
+        }
+
+        [Fact]
         public void Remove_KeepsTheOthersInOrder()
         {
             var k = new AnalogKeyInputState();

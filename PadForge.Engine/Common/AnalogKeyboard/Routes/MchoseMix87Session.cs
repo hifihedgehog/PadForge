@@ -415,11 +415,13 @@ namespace PadForge.Engine.Common.AnalogKeyboard
         public const int StreamWaitMs = 50;
 
         /// <summary>How long a handshake waits for another Mix87 session to
-        /// finish its teardown. HallJoy's one worker never starts a session
-        /// before the last one's cleanup returned
-        /// (mchose_mix87_backend.cpp:247-255), and the app gives a stopping
-        /// reader 1.5 s plus 1 s after cancelling its I/O.</summary>
-        public const int DefaultSlotWaitMs = 3000;
+        /// end: not at all. HallJoy's one worker never starts a session before
+        /// the last one's cleanup returned, and runs none while two Mix87
+        /// collections are present (mchose_mix87_backend.cpp:247-255). The
+        /// sweep does not reopen a keyboard whose last row is still stopping,
+        /// so a held slot means a second Mix87, which is refused at once
+        /// instead of holding the sweep.</summary>
+        public const int DefaultSlotWaitMs = 0;
 
         private static readonly object s_lock = new();
         private static bool s_autoAttempted;

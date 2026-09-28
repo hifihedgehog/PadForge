@@ -788,6 +788,25 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void IpiPass_TheKeysAMappingReads_AreBound_EvenAtRest()
+        {
+            // HallJoy's bound keys are the ones its gamepad bindings use
+            // (Bindings_IsHidBound, addressed_analog_backend.cpp:1227-1236),
+            // polled at the top rate even at rest. The row's IsBound says which
+            // keys a mapping reads, and it wins over the held-key cue.
+            long now = 5_000_000;
+            var (session, io, _) = StartedIpi(() => now);
+            session.IsBound = code => code == AnalogKeyCodes.W;
+            var output = new AnalogKeyInputState();
+            session.Pass(io, output, _ => false);
+            Assert.Equal(AddressedPollClass.Bound, session.Scheduler.ClassOf(30, (ulong)now));
+            now += 30_000;
+            session.Pass(io, output, code => code == AnalogKeyCodes.A);
+            Assert.Equal(AddressedPollClass.Bound, session.Scheduler.ClassOf(30, (ulong)now));
+            Assert.NotEqual(AddressedPollClass.Bound, session.Scheduler.ClassOf(31, (ulong)now));
+        }
+
+        [Fact]
         public void IpiPass_NoAnswerForASecond_EndsTheSession()
         {
             // kMaxNoResponseUs (addressed_analog_backend.cpp:54, 1422-1432).
@@ -991,6 +1010,37 @@ namespace PadForge.Tests
             // W, A, S, D sit at key IDs 23, 1, 19 and 4 in this map.
             Assert.Equal(new ushort[] { 23, 1, 19, 4 }, kb.Requests[2].Ids);
             Assert.Equal(2, kb.Requests.Count(r => r.Command == 0x83));
+        }
+
+        [Fact]
+        public void GenericStart_OnAulasVendor_NeedsAnIpiUuid_BeforeAnyProbe()
+        {
+            // 98 02 turns an Addressed keyboard's last-key mode off (HallJoy
+            // D-085) but is the HERO firmware's calibration-distance flow
+            // (AULA_HERO84HE_FIRMWARE_2026-08-31.md:51), and a HERO answers
+            // the W, A, S and D probe. So an AULA-vendor keyboard names an IPI
+            // model first, and nothing past 82 01 reaches one that does not.
+            var hero = Hero();
+            var heroIo = Transport(hero);
+            var heroSession = new AddressedGenericSession(AddressedRoutes.AulaVendorId);
+            Assert.False(heroSession.Start(heroIo));
+            Assert.True(heroSession.NoStartRetry);
+            Assert.All(hero.Requests, r => Assert.Equal(0x82, r.Command));
+
+            var silent = new NineKeyboard(0, AddressedRoutes.CanonicalTable) { AnswerUuid = false };
+            var silentSession = new AddressedGenericSession(AddressedRoutes.AulaVendorId);
+            Assert.False(silentSession.Start(Transport(silent)));
+            Assert.DoesNotContain(silent.Requests, r => r.Command != 0x82);
+
+            var ipi = new NineKeyboard(Qbz65, AddressedRoutes.CanonicalTable);
+            Assert.True(new AddressedGenericSession(AddressedRoutes.AulaVendorId).Start(Transport(ipi)));
+            Assert.Equal(0x82, ipi.Requests[0].Command);
+            Assert.Contains(ipi.Requests, r => r.Command == 0x98);
+
+            // Other vendors get HallJoy's probe as it is, no identity read.
+            var other = new NineKeyboard(0, AddressedRoutes.CanonicalTable);
+            Assert.True(new AddressedGenericSession(0x1234).Start(Transport(other)));
+            Assert.DoesNotContain(other.Requests, r => r.Command == 0x82);
         }
 
         [Fact]

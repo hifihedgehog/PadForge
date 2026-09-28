@@ -17,6 +17,11 @@ namespace PadForge.Engine.Common.AnalogKeyboard
     public static class AnalogKeyCodes
     {
         public const int None = 0;
+
+        /// <summary>Not a key: a session's <c>isHeld</c> asked with it answers
+        /// whether any keyboard key is down.</summary>
+        public const int AnyKey = -1;
+
         public const int A = 0x04, B = 0x05, C = 0x06, D = 0x07, E = 0x08, F = 0x09, G = 0x0A,
             H = 0x0B, I = 0x0C, J = 0x0D, K = 0x0E, L = 0x0F, M = 0x10, N = 0x11, O = 0x12,
             P = 0x13, Q = 0x14, R = 0x15, S = 0x16, T = 0x17, U = 0x18, V = 0x19, W = 0x1A,

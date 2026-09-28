@@ -90,9 +90,17 @@ namespace PadForge.Engine.Common.AnalogKeyboard
 
         /// <summary>Runs one pass. <paramref name="isHeld"/> answers whether
         /// Windows sees a key down right now, which the routes that read a
-        /// few keys per request use to read the pressed keys first.</summary>
+        /// few keys per request use to read the pressed keys first.
+        /// <c>isHeld(AnalogKeyCodes.AnyKey)</c> answers whether any keyboard
+        /// key is down.</summary>
         public abstract AnalogPollResult Pass(IAnalogKeyboardTransport io, AnalogKeyInputState output,
             Func<int, bool> isHeld);
+
+        /// <summary>Whether a mapping reads the key, set by the device row
+        /// before the first pass. The routes that poll some keys more often
+        /// than others poll these at the top rate, as HallJoy polls the keys
+        /// bound to its gamepad. Null until the row sets it.</summary>
+        public Func<int, bool> IsBound { get; set; }
 
         /// <summary>Undoes what <see cref="Start"/> changed on the keyboard,
         /// while the handle is still open. Best effort: the keyboard may
@@ -115,11 +123,19 @@ namespace PadForge.Engine.Common.AnalogKeyboard
         /// given up and the sweep's retry cooldown takes over.</summary>
         public virtual int MissLimit => 20;
 
-        /// <summary>Set by a Start that failed after it wrote to the keyboard.
-        /// The route's timed retry (<see cref="AnalogKeyboardRoute.StartRetryMs"/>)
-        /// then does not apply, so a handshake that keeps failing never turns
-        /// into a loop of writes.</summary>
+        /// <summary>Set by a Start whose failure the reference does not retry
+        /// until the device changes, such as a proof that the keyboard is not
+        /// the route's, or by a Start that failed after writing to a keyboard
+        /// whose reference writes nothing on a timer. The route's timed retry
+        /// (<see cref="AnalogKeyboardRoute.StartRetryMs"/>) then does not
+        /// apply.</summary>
         public bool NoStartRetry { get; protected set; }
+
+        /// <summary>Set by a Start that proved the keyboard is this route's
+        /// before a later step failed. The device then offers the keyboard to
+        /// no later route and retries this one on its timer, as the reference
+        /// keeps its claim on a keyboard it identified.</summary>
+        public bool Recognized { get; protected set; }
 
         /// <summary>Reads until an answer whose first two data bytes are
         /// <paramref name="b0"/> and <paramref name="b1"/> arrives, skipping

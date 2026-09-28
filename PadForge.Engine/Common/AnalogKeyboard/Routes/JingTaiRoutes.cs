@@ -37,10 +37,14 @@ namespace PadForge.Engine.Common.AnalogKeyboard.Routes
             Writable = true,
             Exclusive = true,
             InputBuffers = 64,
-            // A proof that failed on its transfers is tried again after a
-            // second (kReconnectWaitMs, aula_win60he_backend.cpp:47, 1913).
-            // A refused one is not (AulaRmSession).
-            StartRetryMs = 1000,
+            // A proof that failed on a transfer or a decode is tried again
+            // after 100 ms, and so is a session that ended
+            // (WaitForReconnect(100), aula_win60he_backend.cpp:1960-1963,
+            // 2300-2306). A proof refused on its content waits for the device
+            // to change (IsDeterministicSemanticFailure, :1819-1834), which
+            // AulaRmSession marks with NoStartRetry.
+            StartRetryMs = 100,
+            ReconnectMs = 100,
             Name = AulaRmName,
         };
 
@@ -60,11 +64,12 @@ namespace PadForge.Engine.Common.AnalogKeyboard.Routes
             Exclusive = true,
             InputBuffers = 64,
             // Writes wait 50 ms (mg75_pro_backend.cpp:235-260), a value reads
-            // 0 150 ms after its read (:34), and the worker tries again every
-            // second (:440).
+            // 0 150 ms after its read (:34), and the worker runs admission
+            // again every second whether or not a session ran (:425-440).
             WriteTimeoutMs = 50,
             StaleAfterMs = 150,
             StartRetryMs = 1000,
+            ReconnectMs = 1000,
             Name = info => FindJingTaiModel(info.VendorId, info.ProductId, Product(info))?.Name,
             Keys = info =>
             {
@@ -88,6 +93,7 @@ namespace PadForge.Engine.Common.AnalogKeyboard.Routes
             WriteTimeoutMs = 50,
             StaleAfterMs = 150,
             StartRetryMs = 1000,
+            ReconnectMs = 1000,
             Name = _ => Slice75Model.Name,
             Keys = _ => AnalogKeyboardData.KeysOf(Slice75Model.Table),
         };

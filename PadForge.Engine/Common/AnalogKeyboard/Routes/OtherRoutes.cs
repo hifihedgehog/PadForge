@@ -30,6 +30,11 @@ namespace PadForge.Engine.Common.AnalogKeyboard
                 Protocol = AnalogKeyboardProtocol.FinalmouseCenterpiecePro,
                 Matches = CenterpieceProProtocol.Matches,
                 CreateSession = _ => new CenterpieceProSession(),
+                // The fork reads through the Soup plugin host, which finds
+                // keyboards again every second (universal-analog-plugin
+                // main.cpp:288-299).
+                StartRetryMs = 1000,
+                ReconnectMs = 1000,
                 Name = _ => CenterpieceProProtocol.ModelName,
                 Keys = _ => AnalogKeyboardData.KeysOf(CenterpieceProProtocol.Table()),
             },
@@ -46,6 +51,11 @@ namespace PadForge.Engine.Common.AnalogKeyboard
                 Matches = LibhmkProtocol.Matches,
                 CreateSession = _ => new LibhmkSession(),
                 Exclusive = true,
+                // hmkconf reconnects only when its user asks. Every command
+                // here is a read, so a keyboard that fails is tried again each
+                // second, the Soup plugin host's cadence.
+                StartRetryMs = 1000,
+                ReconnectMs = 1000,
             },
 
             // rog_azoth96he_diagnostic_backend.cpp:28-35 and 132-211: the
@@ -72,6 +82,9 @@ namespace PadForge.Engine.Common.AnalogKeyboard
                 Matches = LogitechRapidProtocol.Matches,
                 CreateSession = _ => new LogitechRapidSession(),
                 Writable = false,
+                // It only listens, so a row that stops is reopened after a
+                // second, the Soup plugin host's cadence.
+                ReconnectMs = 1000,
                 Name = _ => LogitechRapidProtocol.ModelName,
                 Keys = _ => AnalogKeyboardData.KeysOf(LogitechRapidProtocol.Table()),
             },

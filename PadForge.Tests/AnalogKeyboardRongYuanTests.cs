@@ -1494,7 +1494,63 @@ namespace PadForge.Tests
             Assert.Equal(writes, io.Log.Count); // nothing to restore
         }
 
+        [Fact]
+        public void Snapshot_KeysPublish_UnderTheKeyboardsOwnAssignments()
+        {
+            // HallJoy binds each slot to its factory key and its assignment and
+            // reads the assignments while its automatic layout remaps, its
+            // default (rongyuan_snapshot_backend.cpp:41-43, 253-265, 457-465):
+            // a remapped key moves the key it now types, and a slot assigned
+            // nothing decodable publishes nothing.
+            var time = new FakeTime();
+            var codes = (int[])RongYuanCatalog.FindSnapshot(2819).Codes.Clone();
+            int w = Array.IndexOf(codes, AnalogKeyCodes.W), space = Array.IndexOf(codes, AnalogKeyCodes.Space);
+            Assert.True(w >= 0 && space >= 0);
+            codes[w] = AnalogKeyCodes.Q;
+            codes[space] = 0;
+            var board = new RyBoard { Board = 2819, Codes = codes };
+            board.Pages[w / 32][w % 32] = 150;
+            board.Pages[space / 32][space % 32] = 150;
+            var io = board.Transport();
+            var session = new RongYuanSnapshotSession(time.Clock, time.Wait);
+            Assert.True(session.Start(io));
+            Assert.Equal(AnalogKeyCodes.Q, session.PublishedCodes[w]);
+            Assert.Equal(0, session.PublishedCodes[space]);
+            Assert.DoesNotContain(AnalogKeyCodes.Space, session.KeyOrder);
+            var output = new AnalogKeyInputState();
+            for (int page = 0; page < 4; page++)
+                Assert.Equal(AnalogPollResult.Ok, session.Pass(io, output, null));
+            Assert.True(output.Get(AnalogKeyCodes.Q) > 0f);
+            Assert.Equal(0f, output.Get(AnalogKeyCodes.W));
+            Assert.Equal(0f, output.Get(AnalogKeyCodes.Space));
+        }
+
         // ── Stream session ──
+
+        [Fact]
+        public void Stream_KeysPublish_UnderTheKeyboardsOwnAssignments()
+        {
+            // The stream route reads the same assignment pages and publishes
+            // them the same way (rongyuan_stream_backend.cpp:302-319, 511-519).
+            var time = new FakeTime();
+            var codes = (int[])RongYuanCatalog.FindStream(3590, Vid, 0x5030).Codes.Clone();
+            int w = Array.IndexOf(codes, AnalogKeyCodes.W), space = Array.IndexOf(codes, AnalogKeyCodes.Space);
+            Assert.True(w >= 0 && space >= 0);
+            codes[w] = AnalogKeyCodes.Q;
+            codes[space] = 0;
+            var board = new RyBoard { Board = 3590, Version = 0x0409, Radio = 0, Precision = 0, Codes = codes };
+            var session = StartedStream(board, time, Vid, 0x5030, out var io);
+            Assert.Equal(AnalogKeyCodes.Q, session.PublishedCodes[w]);
+            Assert.Equal(0, session.PublishedCodes[space]);
+            var output = new AnalogKeyInputState();
+            io.QueueInput(StreamEvent(w, 150));
+            Assert.Equal(AnalogPollResult.Ok, session.Pass(io, output, null));
+            Assert.True(output.Get(AnalogKeyCodes.Q) > 0f);
+            Assert.Equal(0f, output.Get(AnalogKeyCodes.W));
+            io.QueueInput(StreamEvent(space, 150));
+            session.Pass(io, output, null);
+            Assert.Equal(0f, output.Get(AnalogKeyCodes.Space));
+        }
 
         [Fact]
         public void Stream_Start_ProofMapFlushThenEnable_ByteForByte()

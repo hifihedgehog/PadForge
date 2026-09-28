@@ -38,12 +38,13 @@ namespace PadForge.Engine.Common.AnalogKeyboard.Routes
     /// wait between passes. HallJoy's matrix has no freshness window: each
     /// matrix replaces the last.</para>
     ///
-    /// <para>Which map names the keys follows HallJoy's choice when its
-    /// automatic layout is not remapping (aula_win60he_backend.cpp:2204-2210):
-    /// a board with a layout token (every known board) publishes its factory
-    /// map, the keyboard's own default map read with 2B, 01 read as Fn. An
-    /// unlisted sibling has no token and publishes the active Fn0 map, which
-    /// follows the keyboard's remaps.</para>
+    /// <para>The keys are named by the active Fn0 map, which follows the
+    /// keyboard's own remaps: HallJoy publishes it whenever its automatic
+    /// layout remaps, its default, and for every board without a layout
+    /// token, and publishes the factory map only while that layout is off
+    /// (aula_win60he_backend.cpp:2204-2210, native_layout_state.h:30-33,
+    /// keyboard_layout.cpp:1786-1787). PadForge has no layout presets, so the
+    /// active map names the keys on every board.</para>
     /// </summary>
     public sealed class AulaRmSession : AnalogKeyboardSession
     {
@@ -71,14 +72,12 @@ namespace PadForge.Engine.Common.AnalogKeyboard.Routes
         private readonly byte[] _defaultMap = new byte[AulaRmProtocol.Positions];
         private readonly ushort[] _functions = new ushort[AulaRmProtocol.Positions];
         private readonly int[] _activeMap = new int[AulaRmProtocol.Positions];
-        private readonly int[] _factoryMap = new int[AulaRmProtocol.Positions];
         private readonly ushort[] _travel = new ushort[AulaRmProtocol.Positions];
         private readonly ushort[] _nextFunctions = new ushort[AulaRmProtocol.Positions];
         private readonly int[] _nextActiveMap = new int[AulaRmProtocol.Positions];
         private readonly ushort[] _checkFunctions = new ushort[AulaRmProtocol.Positions];
         private readonly int[] _checkActiveMap = new int[AulaRmProtocol.Positions];
         private int _mappedKeys;
-        private bool _factoryPublication;
         private bool _started;
         private bool _poisoned;
         private long _passes;
@@ -118,10 +117,6 @@ namespace PadForge.Engine.Common.AnalogKeyboard.Routes
         /// <summary>The proven full travel every value is normalized against.</summary>
         public int MaximumTravelUm { get; private set; }
 
-        /// <summary>True when the keys are named by the factory map, false
-        /// when by the active Fn0 map.</summary>
-        public bool FactoryPublication => _factoryPublication;
-
         /// <summary>Distinct key codes of the active Fn0 map.</summary>
         public int MappedKeys => _mappedKeys;
 
@@ -130,22 +125,25 @@ namespace PadForge.Engine.Common.AnalogKeyboard.Routes
         /// <summary>The factory identifiers the keyboard reported, row-major.</summary>
         public ReadOnlySpan<byte> DefaultMap => _defaultMap;
 
-        /// <summary>The key code each position publishes.</summary>
-        public ReadOnlySpan<int> PublicationMap => _factoryPublication ? _factoryMap : _activeMap;
+        /// <summary>The key code each position publishes: the active Fn0 map.</summary>
+        public ReadOnlySpan<int> PublicationMap => _activeMap;
 
         public override bool Start(IAnalogKeyboardTransport io)
         {
             // Sync. A known board must return its own board ID. Any other
             // keyboard must show the AULA platform bytes C0 01 00
             // (ProbePolicyForSession, aula_win60he_backend.cpp:1522-1539).
-            // A transfer that fails may pass and is tried again on the route's
-            // timer. An answer with the wrong content is a deterministic
-            // refusal, which HallJoy does not retry until the device changes
-            // (aula_win60he_backend.cpp:1819-1860, 1960-1963).
+            // HallJoy sorts a failed proof by its stage: a transfer or a
+            // decode that fails is tried again 100 ms later, and a proof that
+            // decoded but names the wrong firmware, precision, default map,
+            // an unstable active map or implausible travel waits for the
+            // device to change (IsDeterministicSemanticFailure,
+            // aula_win60he_backend.cpp:1819-1834, 1956-1963, and the stages
+            // of Client::Probe, aula_win60he_client.cpp:275-375, 436, 570).
             if (!Transact(io, AulaRmProtocol.SyncRequest(), AulaRmProtocol.CommandSync, 1, 0, 0, out int length))
                 return Poison();
             if (!AulaRmProtocol.DecodeSync(_stream[2], Payload(length), out uint board))
-                return Refuse();
+                return Poison();
             Payload(length).CopyTo(_sync);
             BoardId = board;
             bool firmware = _board != null
@@ -153,13 +151,15 @@ namespace PadForge.Engine.Common.AnalogKeyboard.Routes
                 : AulaRmProtocol.IsFamilyFirmware(_sync, board);
             if (!firmware) return Refuse();
 
-            // Precision and stroke.
+            // Precision and stroke. HallJoy's decode already holds the family
+            // range (DecodePrecisionStroke, aula_win60he_protocol.cpp:244-261),
+            // so a precision out of range fails as a decode and is retried.
             if (!Transact(io, AulaRmProtocol.PrecisionRequest(), AulaRmProtocol.CommandApi, 1,
                     AulaRmProtocol.OrderPrecisionStroke, 0, out length))
                 return Poison();
             if (!AulaRmProtocol.DecodePrecision(_stream[2], Payload(length),
                     out int precision, out int minimum, out int maximum))
-                return Refuse();
+                return Poison();
             PrecisionUm = precision;
             MinimumTravelUm = minimum;
             MaximumTravelUm = maximum;
@@ -183,39 +183,16 @@ namespace PadForge.Engine.Common.AnalogKeyboard.Routes
             // (IsKnownUsbIdentityBoardCompatible, aula_win60he_protocol.h:55-62).
             if (_board != null && board != _board.BoardId) return Refuse();
 
-            // The layout token: WIN 60 HE PRO by the exact product string, a
-            // known board by its board ID, none for a sibling
+            // The model: WIN 60 HE PRO by the exact product string, a known
+            // board by its board ID, none for a sibling
             // (aula_win60he_backend.cpp:1570-1571, 1593-1601, sparkplayjoy_layout.h:8-22).
             bool win60Pro = _vendorId == 0x1CA2 && _productId == 0x1902
                 && string.Equals(_product, AulaRmProtocol.Win60ProProduct, StringComparison.Ordinal);
-            for (int i = 0; i < AulaRmProtocol.Positions; i++)
-                _factoryMap[i] = AulaRmProtocol.FactoryKeyCode(_defaultMap[i]);
-            _factoryPublication = (win60Pro || _board != null) && FactoryMapPublishable(_factoryMap);
             _modelName = win60Pro ? AulaRmProtocol.Win60ProName : _board?.Name;
-            _keyOrder = AnalogKeyboardData.KeysOf(_factoryPublication ? _factoryMap : _activeMap);
+            _keyOrder = AnalogKeyboardData.KeysOf(_activeMap);
             _nextRefresh = _clock() + ActiveMapRefreshMs;
             _started = true;
             return true;
-        }
-
-        /// <summary>native_layout::Publish's checks of the factory list
-        /// (sparkplayjoy_layout.h:31-39, native_layout_state.h:34-43): at least
-        /// one key and no code twice. The default-map check already
-        /// guarantees both, and a failure would fall back to the active map as
-        /// HallJoy's does.</summary>
-        private static bool FactoryMapPublishable(ReadOnlySpan<int> factoryMap)
-        {
-            Span<bool> seen = stackalloc bool[AnalogKeyInputState.CodeCount];
-            seen.Clear();
-            int count = 0;
-            foreach (int code in factoryMap)
-            {
-                if (code == 0) continue;
-                if (code < 0 || code >= AnalogKeyInputState.CodeCount || seen[code]) return false;
-                seen[code] = true;
-                count++;
-            }
-            return count > 0;
         }
 
         public override AnalogPollResult Pass(IAnalogKeyboardTransport io, AnalogKeyInputState output,
@@ -235,7 +212,7 @@ namespace PadForge.Engine.Common.AnalogKeyboard.Routes
                     _nextFunctions.CopyTo(_functions, 0);
                     _nextActiveMap.CopyTo(_activeMap, 0);
                     _mappedKeys = AulaRmProtocol.CountMappedKeyCodes(_activeMap);
-                    if (!_factoryPublication) _keyOrder = AnalogKeyboardData.KeysOf(_activeMap);
+                    _keyOrder = AnalogKeyboardData.KeysOf(_activeMap);
                 }
                 _nextRefresh = _clock() + ActiveMapRefreshMs;
             }
@@ -265,9 +242,13 @@ namespace PadForge.Engine.Common.AnalogKeyboard.Routes
             if (!ReadActiveMapGeneration(io, _checkFunctions, _checkActiveMap)) return false;
             if (!ReadActiveMapGeneration(io, functions, keyMap)) return false;
             // Equal functions give equal key maps and counts, which HallJoy
-            // compares as well.
-            return _checkFunctions.AsSpan().SequenceEqual(functions)
-                && _checkActiveMap.AsSpan().SequenceEqual(keyMap);
+            // compares as well. Two generations that differ are an unstable
+            // map, which waits for the device to change
+            // (aula_win60he_client.cpp:425-440).
+            if (_checkFunctions.AsSpan().SequenceEqual(functions)
+                && _checkActiveMap.AsSpan().SequenceEqual(keyMap))
+                return true;
+            return Refuse();
         }
 
         /// <summary>One Fn0 generation (ReadActiveMapGeneration,
@@ -312,10 +293,13 @@ namespace PadForge.Engine.Common.AnalogKeyboard.Routes
             {
                 if (!Transact(io, AulaRmProtocol.TravelRequest(h), AulaRmProtocol.CommandMatrix,
                         AulaRmProtocol.MaxResponseReports, AulaRmProtocol.SelectorTravel, (byte)h, out int length)
-                    || !AulaRmProtocol.DecodeTravelHalf(_stream[2], Payload(length), half)
-                    || !AulaRmProtocol.TravelPlausible(half, _defaultMap, h == 1 ? 0 : AulaRmProtocol.RowsPerHalf,
-                        PrecisionUm, MinimumTravelUm, MaximumTravelUm))
+                    || !AulaRmProtocol.DecodeTravelHalf(_stream[2], Payload(length), half))
                     return Poison();
+                // Travel that decodes but is implausible waits for the device
+                // to change (aula_win60he_client.cpp:561-574).
+                if (!AulaRmProtocol.TravelPlausible(half, _defaultMap, h == 1 ? 0 : AulaRmProtocol.RowsPerHalf,
+                        PrecisionUm, MinimumTravelUm, MaximumTravelUm))
+                    return Refuse();
                 half.CopyTo(travel.AsSpan((h - 1) * AulaRmProtocol.ValuesPerHalf));
             }
             return true;

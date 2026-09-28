@@ -1543,10 +1543,11 @@ namespace PadForge.Engine.Common.Mapping
 
         /// <summary>Press depth of an analog key source on
         /// <paramref name="state"/>, 0..1. 0 when the device publishes no
-        /// analog keys or the key is up.</summary>
+        /// analog keys or the key is up. The read marks the key as mapped, so
+        /// the routes that poll mapped keys first learn which keys those are.</summary>
         private static float ReadAnalogKey(CustomInputState state, string canonical)
             => state.AnalogKeys != null && TryParseAnalogKey(canonical, out int code)
-                ? state.AnalogKeys.Get(code)
+                ? state.AnalogKeys.Read(code)
                 : 0f;
 
         /// <summary>An analog key as a button (#468): down at or past the

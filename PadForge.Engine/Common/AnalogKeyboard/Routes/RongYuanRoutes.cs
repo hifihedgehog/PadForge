@@ -43,8 +43,12 @@ namespace PadForge.Engine.Common.AnalogKeyboard
         /// (attackshark_pro_diagnostic.cpp:228), then on a sharing or access
         /// error a shared handle, then one with no access rights (lines
         /// 232-235): the R85 HE needed that ladder. A page expires 150 ms
-        /// after its last read (attackshark_pro_native_model.h:164), so the
-        /// keys drop when a pass stalls that long.</summary>
+        /// after its last read at the 1 ms exchange delay and 300 ms at the
+        /// 10 ms delay (attackshark_pro_native_model.h:164, 171), which the
+        /// session enforces page by page, so the row's backstop is the
+        /// longest of those budgets. HallJoy's supervisor starts the worker
+        /// again 3 s after an identity failure or a session's end
+        /// (attackshark_pro_diagnostic.cpp:363-364, 503).</summary>
         public static readonly AnalogKeyboardRoute AttackShark = new()
         {
             Id = "attackshark-pro",
@@ -54,13 +58,17 @@ namespace PadForge.Engine.Common.AnalogKeyboard
             Writable = true,
             Exclusive = true,
             OpenFallback = true,
-            StaleAfterMs = AttackSharkSession.FreshMs,
+            StaleAfterMs = AttackSharkSession.FreshBudget(10),
+            StartRetryMs = 3000,
+            ReconnectMs = 3000,
         };
 
         /// <summary>MonsGeek M1 V5 HE and EPOMAKER G84 HE, HallJoy's
         /// "rongyuan-snapshot" descriptor (rongyuan_snapshot_backend.cpp:501-518),
         /// opened for reading and writing with no sharing
-        /// (rongyuan_snapshot_backend.cpp:166-169).</summary>
+        /// (rongyuan_snapshot_backend.cpp:166-169). Its worker runs admission
+        /// again every second whether or not a session ran
+        /// (rongyuan_snapshot_backend.cpp:354-373).</summary>
         public static readonly AnalogKeyboardRoute Snapshot = new()
         {
             Id = "rongyuan-snapshot",
@@ -73,6 +81,8 @@ namespace PadForge.Engine.Common.AnalogKeyboard
             // and a page expires 150 ms after its read (line 32).
             TransferTimeoutMs = RongYuanCommandChannel.QueryWindowMs,
             StaleAfterMs = RongYuanSnapshotSession.FreshMs,
+            StartRetryMs = 1000,
+            ReconnectMs = 1000,
         };
 
         /// <summary>The RongYuan event stream, HallJoy's "rongyuan-stream"
@@ -80,7 +90,9 @@ namespace PadForge.Engine.Common.AnalogKeyboard
         /// collection opens for reading and writing with no sharing
         /// (rongyuan_stream_backend.cpp:189-192) and the paired input
         /// collection read-only and shared, with 128 input buffers
-        /// (rongyuan_stream_backend.cpp:228-231).</summary>
+        /// (rongyuan_stream_backend.cpp:228-231). Its worker runs admission
+        /// again every second whether or not a session ran
+        /// (rongyuan_stream_backend.cpp:407-426), the stream enable included.</summary>
         public static readonly AnalogKeyboardRoute Stream = new()
         {
             Id = "rongyuan-stream",
@@ -92,6 +104,8 @@ namespace PadForge.Engine.Common.AnalogKeyboard
             InputBuffers = 128,
             Companion = StreamInput,
             TransferTimeoutMs = RongYuanCommandChannel.QueryWindowMs,
+            StartRetryMs = 1000,
+            ReconnectMs = 1000,
         };
 
         /// <summary>The three routes in HallJoy's relative order: ATTACK

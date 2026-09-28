@@ -48,7 +48,11 @@ namespace PadForge.Engine.Common.AnalogKeyboard
         /// value's high byte. The value is 10-bit. Replaces
         /// <paramref name="target"/>. On the boards with split keys the
         /// matrix position also publishes the key's physical alias
-        /// (<see cref="WootingSplitKey"/>).</summary>
+        /// (<see cref="WootingSplitKey"/>). Two records with one code, the
+        /// halves of a split Space, publish the deeper value, as HallJoy's
+        /// plugin host merges them (update_from_keyboard,
+        /// UniversalAnalogPluginFixed main.cpp:685-704). The Wooting SDK keeps
+        /// the later record instead.</summary>
         public static bool ParseWootingV2(ReadOnlySpan<byte> raw, AnalogKeyInputState target, ushort productId = 0)
         {
             var data = StripZeroReportId(raw);
@@ -60,11 +64,12 @@ namespace PadForge.Engine.Common.AnalogKeyboard
                 int ns = (packed >> 2) & 0x0F;
                 int value = (data[i + 3] << 2) | ((packed >> 6) & 0x03);
                 if (value == 0) continue;
+                float depth = value / 1023f;
                 int split = WootingSplitKey(productId, data[i]);
-                if (split != 0) target.Set(split, value / 1023f);
+                if (split != 0 && depth > target.Get(split)) target.Set(split, depth);
                 int code = (ns << 8) | key;
                 if (code == 0) continue;
-                target.Set(code, value / 1023f);
+                if (depth > target.Get(code)) target.Set(code, depth);
             }
             return true;
         }

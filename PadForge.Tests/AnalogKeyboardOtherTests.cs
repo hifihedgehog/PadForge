@@ -718,6 +718,80 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void Libhmk_ALateAnswer_IsWaitedOut_BeforeTheNextRequest()
+        {
+            // An answer names only its command (commands.c:479-480), so after a
+            // request times out the next exchange first reads until the late
+            // answer arrives, or hmkconf's 4 s timeout from the request runs
+            // out (commander.ts:48), before it sends. The late answer cannot
+            // pass for the next request's.
+            var (io, kb) = LibhmkDevice();
+            var session = new LibhmkSession();
+            Assert.True(session.Start(io));
+            kb.Distance[18] = 255;   // W, in offset 0's group
+            kb.Silent = r => r[1] == LibhmkProtocol.CommandAnalogInfo && r[2] == 42;
+            Assert.Equal(AnalogPollResult.NoAnswer, session.Pass(io, Keys(), null));
+
+            kb.Silent = _ => false;
+            var late = new byte[65];
+            late[1] = LibhmkProtocol.CommandAnalogInfo;
+            late[4] = 200;           // the first entry's distance
+            io.QueueInput(late);
+            var ordered = new OrderedTransport(io);
+            var output = Keys();
+            Assert.Equal(AnalogPollResult.Ok, session.Pass(ordered, output, null));
+            Assert.Equal("recv", ordered.Ops[0]);
+            Assert.Equal(0, io.PendingInput);
+            Assert.Equal(1f, output.Get(AnalogKeyCodes.W));
+            Assert.Equal(1, output.Count);
+
+            // With nothing late, a pass starts with its own request.
+            var next = new OrderedTransport(io);
+            Assert.Equal(AnalogPollResult.Ok, session.Pass(next, Keys(), null));
+            Assert.Equal("discard", next.Ops[0]);
+        }
+
+        /// <summary>Forwards to the scripted transport and logs the order of
+        /// reads, writes and discards.</summary>
+        private sealed class OrderedTransport : IAnalogKeyboardTransport
+        {
+            private readonly AnalogKeyboardTestTransport _inner;
+            public readonly List<string> Ops = new();
+
+            public OrderedTransport(AnalogKeyboardTestTransport inner) => _inner = inner;
+
+            public bool Send(byte[] report)
+            {
+                Ops.Add("send");
+                return _inner.Send(report);
+            }
+
+            public bool SendOutputReport(byte[] report)
+            {
+                Ops.Add("send");
+                return _inner.SendOutputReport(report);
+            }
+
+            public int Receive(byte[] buffer, int timeoutMs)
+            {
+                Ops.Add("recv");
+                return _inner.Receive(buffer, timeoutMs);
+            }
+
+            public void DiscardStale()
+            {
+                Ops.Add("discard");
+                _inner.DiscardStale();
+            }
+
+            public bool SetFeature(byte[] report) => _inner.SetFeature(report);
+            public int GetFeature(byte[] buffer) => _inner.GetFeature(buffer);
+            public int InputLength => _inner.InputLength;
+            public int OutputLength => _inner.OutputLength;
+            public int FeatureLength => _inner.FeatureLength;
+        }
+
+        [Fact]
         public void Libhmk_Pass_SkipsAnswersToOtherCommands()
         {
             // hmkconf's Commander drops answers whose byte 0 is not the

@@ -438,15 +438,20 @@ namespace PadForge.Engine.Common.AnalogKeyboard.Routes
         /// <summary>
         /// HallJoy's bound flag, refreshed every 25 ms
         /// (RefreshBindings, addressed_analog_backend.cpp:1227-1236), gives a
-        /// key the shortest poll interval. HallJoy sets it for the keys its
-        /// gamepad bindings use. A session here cannot see the user's
-        /// mappings, so it sets it for the keys Windows sees held, the cue the
-        /// framework gives polled routes.
+        /// key the shortest poll interval even at rest. HallJoy sets it for
+        /// the keys its gamepad bindings use (Bindings_IsHidBound), and the
+        /// device row answers the same question through
+        /// <see cref="AnalogKeyboardSession.IsBound"/>: the keys a mapping
+        /// reads. Without a row, the keys Windows sees held stand in.
         /// </summary>
         private void RefreshBindings(Func<int, bool> isHeld)
         {
+            var isBound = IsBound;
             foreach (var (keyId, hid) in _profile)
-                _scheduler.SetPhysicalBound(keyId, hid != 0 && isHeld != null && isHeld(hid));
+            {
+                bool bound = hid != 0 && (isBound != null ? isBound(hid) : isHeld != null && isHeld(hid));
+                _scheduler.SetPhysicalBound(keyId, bound);
+            }
         }
 
         /// <summary>PublishResponse's checks and, when they pass, its stores
@@ -493,6 +498,32 @@ namespace PadForge.Engine.Common.AnalogKeyboard.Routes
         public override void Stop(IAnalogKeyboardTransport io) { }
     }
 
+    /// <summary>The identity read both UUID-checking sessions share.</summary>
+    public abstract class AddressedIdentitySession : AddressedPollingSession
+    {
+        /// <summary>Two attempts, each reading for 40 ms and skipping answers
+        /// that are not the UUID (addressed_analog_backend.cpp:487-500). A
+        /// failed send ends the attempts. 0 when no UUID arrived.</summary>
+        protected ulong ReadUuid(IAnalogKeyboardTransport io)
+        {
+            for (int attempt = 0; attempt < AddressedIpiProtocol.SetupAttempts; attempt++)
+            {
+                if (!SendFrame(io, AddressedFrame.IdentityRequest())) return 0;
+                long deadline = Environment.TickCount64 + AddressedIpiProtocol.SetupWindowMs;
+                while (true)
+                {
+                    int at = ReadFrame(io, deadline);
+                    if (at == Gone) return 0;
+                    if (at == TimedOut) break;
+                    if (at == NoFrame) continue;
+                    ulong uuid = AddressedFrame.ParseUuid(Buffer.AsSpan(at, AddressedFrame.Length));
+                    if (uuid != 0) return uuid;
+                }
+            }
+            return 0;
+        }
+    }
+
     /// <summary>
     /// IPI keyboards on the Addressed protocol, admitted by UUID
     /// (ReadIpiProfile, addressed_analog_backend.cpp:479-563, then the probe
@@ -503,7 +534,7 @@ namespace PadForge.Engine.Common.AnalogKeyboard.Routes
     /// batch, probes with <c>94 02</c>, and sends <c>98 02</c>. Samples are
     /// normalized against the stored calibration.
     /// </summary>
-    public sealed class AddressedIpiSession : AddressedPollingSession
+    public sealed class AddressedIpiSession : AddressedIdentitySession
     {
         private AddressedModel _model;
         private readonly int[] _live = new int[256];
@@ -549,28 +580,6 @@ namespace PadForge.Engine.Common.AnalogKeyboard.Routes
             return Begin(io, profile);
         }
 
-        /// <summary>Two attempts, each reading for 40 ms and skipping answers
-        /// that are not the UUID (addressed_analog_backend.cpp:487-500). A
-        /// failed send ends the attempts.</summary>
-        private ulong ReadUuid(IAnalogKeyboardTransport io)
-        {
-            for (int attempt = 0; attempt < AddressedIpiProtocol.SetupAttempts; attempt++)
-            {
-                if (!SendFrame(io, AddressedFrame.IdentityRequest())) return 0;
-                long deadline = Environment.TickCount64 + AddressedIpiProtocol.SetupWindowMs;
-                while (true)
-                {
-                    int at = ReadFrame(io, deadline);
-                    if (at == Gone) return 0;
-                    if (at == TimedOut) break;
-                    if (at == NoFrame) continue;
-                    ulong uuid = AddressedFrame.ParseUuid(Buffer.AsSpan(at, AddressedFrame.Length));
-                    if (uuid != 0) return uuid;
-                }
-            }
-            return 0;
-        }
-
         /// <summary>One map or calibration batch, two attempts of 40 ms,
         /// skipping answers the parser refuses (addressed_analog_backend.cpp:518-545).</summary>
         private bool ReadBatch(IAnalogKeyboardTransport io, byte[] ids, int start, int count, bool calibration)
@@ -612,11 +621,27 @@ namespace PadForge.Engine.Common.AnalogKeyboard.Routes
     /// <c>94 02</c> for W, A, S and D, builds the profile, and sends
     /// <c>98 02</c>. HallJoy names no model here. Samples are normalized
     /// with endpoints learned during the session.
+    ///
+    /// <para>One addition to HallJoy's probe. <c>98 02</c> turns an
+    /// Addressed keyboard's legacy last-key mode off (HallJoy decision D-085,
+    /// docs/v1.4/DECISIONS.md:1844-1858), but AULA's HERO firmware reads
+    /// <c>98 00</c> to <c>98 02</c> as its calibration-distance flow
+    /// (docs/research/AULA_HERO84HE_FIRMWARE_2026-08-31.md:44-51), and a HERO
+    /// answers the W, A, S and D probe the way an Addressed keyboard does. So
+    /// on AULA's vendor ID a keyboard must first name an IPI model's UUID with
+    /// <c>82 01</c>, the identity read both families answer. A keyboard of
+    /// that vendor that names none is not probed further.</para>
     /// </summary>
-    public sealed class AddressedGenericSession : AddressedPollingSession
+    public sealed class AddressedGenericSession : AddressedIdentitySession
     {
+        private readonly ushort _vendorId;
         private readonly ushort[] _released = new ushort[256];
         private readonly ushort[] _bottom = new ushort[256];
+
+        public AddressedGenericSession(ushort vendorId = 0)
+        {
+            _vendorId = vendorId;
+        }
 
         /// <summary>Map changes counted during discovery.</summary>
         public int MapEntries { get; private set; }
@@ -627,6 +652,12 @@ namespace PadForge.Engine.Common.AnalogKeyboard.Routes
 
         public override bool Start(IAnalogKeyboardTransport io)
         {
+            if (_vendorId == AddressedRoutes.AulaVendorId
+                && AddressedRoutes.FindIpiModel(ReadUuid(io)) == null)
+            {
+                NoStartRetry = true;
+                return false;
+            }
             var map = new ushort[256];
             int entries = 0;
             for (int attempt = 0; attempt < AddressedGenericProtocol.MapAttempts; attempt++)

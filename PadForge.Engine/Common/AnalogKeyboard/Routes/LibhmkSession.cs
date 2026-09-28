@@ -380,28 +380,72 @@ namespace PadForge.Engine.Common.AnalogKeyboard
             return LibhmkProtocol.TryParseMetadata(compressed.ToArray(), out metadata);
         }
 
+        /// <summary>hmkconf's command timeout, the longest an answer is
+        /// waited for (sendCommand's default, commander.ts:48).</summary>
+        public const int CommandTimeoutMs = 4000;
+
+        private bool _lateAnswer;
+        private byte _lateCommand;
+        private long _lateUntil;
+
         /// <summary>Sends one request and waits for the answer that echoes
         /// its command, skipping any other report, the way hmkconf's
         /// Commander matches byte 0 (commander.ts:69-77). An answer of 255 is
         /// a refusal. The answer is left in <see cref="AnalogKeyboardSession.Buffer"/>
-        /// with the report ID in byte 0 and the echo in byte 1.</summary>
+        /// with the report ID in byte 0 and the echo in byte 1.
+        ///
+        /// <para>An answer names only its command (commands.c:479-480), so the
+        /// answer to a request that timed out could pass for the next
+        /// request's, the next offset's depths landing on this offset's keys.
+        /// After a timeout the next exchange first waits out that answer,
+        /// until hmkconf's timeout from the late request runs out. The pass
+        /// that timed out returns at once, so its keys release while the
+        /// keyboard is stalled.</para></summary>
         private Reply Exchange(IAnalogKeyboardTransport io, byte[] request, byte command)
         {
+            if (_lateAnswer && !AwaitLateAnswer(io)) return Reply.Failed;
             io.DiscardStale();
             if (!io.Send(request)) return Reply.Failed;
-            long deadline = Environment.TickCount64 + AnswerTimeoutMs;
+            long sent = Environment.TickCount64;
+            long deadline = sent + AnswerTimeoutMs;
             while (true)
             {
                 int remaining = (int)(deadline - Environment.TickCount64);
-                if (remaining <= 0) return Reply.TimedOut;
+                if (remaining <= 0) return Late(command, sent);
                 int n = io.Receive(Buffer, remaining);
                 if (n < 0) return Reply.Failed;
-                if (n == 0) return Reply.TimedOut;
+                if (n == 0) return Late(command, sent);
                 // hmkconf takes only 64-byte answers (commander.ts:27-33).
                 if (n < LibhmkProtocol.ReportLength || Buffer[0] != 0) continue;
                 if (Buffer[1] == command) return Reply.Answered;
                 if (Buffer[1] == LibhmkProtocol.CommandUnknown) return Reply.Refused;
             }
+        }
+
+        private Reply Late(byte command, long sent)
+        {
+            _lateAnswer = true;
+            _lateCommand = command;
+            _lateUntil = sent + CommandTimeoutMs;
+            return Reply.TimedOut;
+        }
+
+        /// <summary>Reads until the late answer arrives, or a refusal, or the
+        /// timeout. False when the device is gone.</summary>
+        private bool AwaitLateAnswer(IAnalogKeyboardTransport io)
+        {
+            while (true)
+            {
+                int remaining = (int)(_lateUntil - Environment.TickCount64);
+                if (remaining <= 0) break;
+                int n = io.Receive(Buffer, remaining);
+                if (n < 0) return false;
+                if (n == 0) break;
+                if (n < LibhmkProtocol.ReportLength || Buffer[0] != 0) continue;
+                if (Buffer[1] == _lateCommand || Buffer[1] == LibhmkProtocol.CommandUnknown) break;
+            }
+            _lateAnswer = false;
+            return true;
         }
     }
 }

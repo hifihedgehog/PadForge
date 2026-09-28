@@ -667,6 +667,33 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void JingTai_KeysPublish_UnderTheKeyboardsOwnAssignments()
+        {
+            // HallJoy reads the assigned channel while its automatic layout
+            // remaps, its default (mg75_pro_backend.cpp:291-315, 527-535): a
+            // key remapped on the keyboard moves the key it now types, and a
+            // key assigned nothing publishes nothing. NA87 Pro's range is
+            // 4000, so W's slot (44, half 1) at 2000 is 500.
+            var model = JingTaiRoutes.JingTaiModels.First(m => m.Identity == "JT1-K");
+            var (session, io, _, _) = StartedJingTai(model, k =>
+            {
+                k.Actions[JingTaiFrames.Selector(model.Table[44])] = AnalogKeyCodes.Q;
+                k.Actions[JingTaiFrames.Selector(model.Table[111])] = 0;
+                k.Travel[44] = 2000;
+                k.Travel[111] = 4000;
+            });
+            Assert.Equal(AnalogKeyCodes.Q, session.PublicationMap[44]);
+            Assert.Equal(0, session.PublicationMap[111]);
+            Assert.DoesNotContain(AnalogKeyCodes.Space, session.KeyOrder);
+            var output = new AnalogKeyInputState();
+            Assert.Equal(AnalogPollResult.Ok, session.Pass(io, output, null));
+            Assert.Equal(AnalogPollResult.Ok, session.Pass(io, output, null));
+            Assert.Equal(0.5f, output.Get(AnalogKeyCodes.Q));
+            Assert.Equal(0f, output.Get(AnalogKeyCodes.W));
+            Assert.Equal(0f, output.Get(AnalogKeyCodes.Space));
+        }
+
+        [Fact]
         public void JingTai_PinnedMapModels_SkipTheFactoryReads()
         {
             // mg75_pro_backend.cpp:276-282: only the MG75 Pro reads 0x2B. Read
@@ -1111,7 +1138,7 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void AulaRm_Win60HeMax_ProvesWithTheOracle_AndPublishesTheFactoryMap()
+        public void AulaRm_Win60HeMax_ProvesWithTheOracle_AndPublishesTheActiveMap()
         {
             // Client::Probe (aula_win60he_client.cpp:255-400) on the oracle:
             // 17 transactions, each after a flush (aula_win60he_client.cpp:234-242).
@@ -1137,26 +1164,31 @@ namespace PadForge.Tests
             Assert.Equal("Aula WIN 60 HE MAX", session.ModelName);
             // kOracleActiveMappedKeyCodes (aula_win60he_oracle_fixtures.h:16).
             Assert.Equal(60, session.MappedKeys);
-            // A known board publishes its factory map, 01 read as Fn
-            // (aula_win60he_backend.cpp:2204-2206): 60 usages and Fn.
-            Assert.True(session.FactoryPublication);
-            Assert.Equal(61, session.KeyOrder.Length);
-            Assert.Equal(AnalogKeyCodes.Escape, session.KeyOrder[0]);
+            // The active Fn0 map names the keys, HallJoy's publication while
+            // its automatic layout remaps (aula_win60he_backend.cpp:2204-2206,
+            // tests/aula_win60he_end_to_end_test.cpp:629): its 60 codes, Fn
+            // among them. The oracle's active map assigns Esc's position the
+            // Up arrow (kResponseActiveBatch0, aula_win60he_oracle_fixtures.h:160-161),
+            // assigns Esc nowhere, and disables A.
+            Assert.Equal(60, session.KeyOrder.Length);
+            Assert.Equal(AnalogKeyCodes.ArrowUp, session.KeyOrder[0]);
             Assert.Contains(AnalogKeyCodes.Fn, session.KeyOrder);
+            Assert.DoesNotContain(AnalogKeyCodes.Escape, session.KeyOrder);
+            Assert.DoesNotContain(AnalogKeyCodes.A, session.KeyOrder);
 
-            // One pass reads both halves. Esc (row 1, column 0, half 1 value
-            // 21) travels 1120 um of 3400: 329. A (row 3, column 1, half 2
-            // value 1) travels 60: 18, published under its factory code
-            // although the active map disables it. Fn (row 5, column 12, half
-            // 2 value 54) travels 2869: 844. Esc is not reported as Up.
+            // One pass reads both halves. Esc's position (row 1, column 0,
+            // half 1 value 21) travels 1120 um of 3400: 329, published as Up.
+            // A (row 3, column 1, half 2 value 1) travels 60, and its position
+            // publishes nothing because the active map disables it. Fn (row 5,
+            // column 12, half 2 value 54) travels 2869: 844.
             var output = Keys();
             Assert.Equal(AnalogPollResult.Ok, session.Pass(io, output, null));
             Assert.Equal(new[] { Oracle(OracleRequestTravel1), Oracle(OracleRequestTravel2) }, io.Writes("out").Skip(17));
-            Assert.Equal(0.329f, output.Get(AnalogKeyCodes.Escape));
-            Assert.Equal(0.018f, output.Get(AnalogKeyCodes.A));
+            Assert.Equal(0.329f, output.Get(AnalogKeyCodes.ArrowUp));
+            Assert.Equal(0f, output.Get(AnalogKeyCodes.Escape));
+            Assert.Equal(0f, output.Get(AnalogKeyCodes.A));
             Assert.Equal(0.844f, output.Get(AnalogKeyCodes.Fn));
-            Assert.Equal(0f, output.Get(AnalogKeyCodes.ArrowUp));
-            Assert.Equal(61, output.Count);
+            Assert.Equal(60, output.Count);
         }
 
         [Fact]
@@ -1167,7 +1199,6 @@ namespace PadForge.Tests
             var pro = new AulaRmSession(0x1CA2, 0x1902, "WIN 60 HE PRO", new FakeClock().Read, _ => { });
             Assert.True(pro.Start(OracleKeyboard()));
             Assert.Equal("Aula WIN 60 HE PRO", pro.ModelName);
-            Assert.True(pro.FactoryPublication);
             var lower = new AulaRmSession(0x1CA2, 0x1902, "win 60 he pro", new FakeClock().Read, _ => { });
             Assert.True(lower.Start(OracleKeyboard()));
             Assert.Equal("Aula WIN 60 HE MAX", lower.ModelName);
@@ -1407,7 +1438,6 @@ namespace PadForge.Tests
             // 84 identifiers: six Fn0 reads per generation, 19 transactions.
             Assert.Equal(19, io.Writes("out").Count);
             Assert.Null(session.ModelName);
-            Assert.False(session.FactoryPublication);
             Assert.Equal(0x05771234u, session.BoardId);
             // Fn first (position 0), then usages 4 to 84.
             Assert.Equal(82, session.KeyOrder.Length);
@@ -1492,6 +1522,33 @@ namespace PadForge.Tests
                     return Split(frame);
                 });
             Assert.False(padding.Start(io2));
+        }
+
+        [Fact]
+        public void AulaRm_AFailedProof_IsRetried_OnlyWhereHallJoyRetriesIt()
+        {
+            // IsDeterministicSemanticFailure (aula_win60he_backend.cpp:1819-1834):
+            // a failed transfer or decode is tried again 100 ms later, while a
+            // decoded proof that names the wrong board or default map, an
+            // unstable active map or implausible travel waits for the device
+            // to change.
+            bool NoRetry(ushort pid, Action<RmKeyboard> setup)
+            {
+                var (session, io, _, _) = RmSession(0x1CA2, pid, setup);
+                Assert.False(session.Start(io));
+                return session.NoStartRetry;
+            }
+            Assert.False(NoRetry(0x1902, k => k.Precision = 0));
+            Assert.False(NoRetry(0x1902, k => k.Maximum = 499));
+            Assert.False(NoRetry(0x1902, k => k.Override = r => r[3] == 0x01 ? new List<byte[]>() : null));
+            Assert.True(NoRetry(0x1901, null));
+            Assert.True(NoRetry(0x1902, k => k.FunctionFilter = (read, key, f) => read == 5 && key == 0x29 ? 0x52 : f));
+            Assert.True(NoRetry(0x1902, k => k.Travel[21] = 3601));
+            Assert.True(NoRetry(0x1902, k =>
+            {
+                k.DefaultMap = new byte[126];
+                k.DefaultMap[21] = 0x29;
+            }));
         }
 
         [Fact]

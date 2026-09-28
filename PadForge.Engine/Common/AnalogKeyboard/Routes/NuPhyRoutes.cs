@@ -67,7 +67,11 @@ namespace PadForge.Engine.Common.AnalogKeyboard.Routes
             InputBuffers = InputBufferCount,
             // A keyboard that did not answer (a WH80 dongle whose keyboard
             // sleeps) is asked again. One that failed after a write is not.
+            // Every Start and Stop writes the keyboard's function data, and
+            // NuPhyIO reconnects only when its page asks, so a row that stops
+            // waits the default minute rather than a short timer.
             StartRetryMs = 5000,
+            StopTimeoutMs = NuPhyStreamSession.StopTimeoutMs,
             Name = info => NuPhyHeModel.Find(info.ProductId)?.Name,
         };
 
@@ -85,7 +89,10 @@ namespace PadForge.Engine.Common.AnalogKeyboard.Routes
             CreateSession = info => MadlionsA0Model.Find(info.ProductId) is { } model ? new MadlionsA0Session(model) : null,
             Writable = true,
             InputBuffers = InputBufferCount,
+            // As NuPhyHe: AnalogKeys writes the settings block at every
+            // connect and exit, so a row that stops waits the default minute.
             StartRetryMs = 5000,
+            StopTimeoutMs = NuPhyStreamSession.StopTimeoutMs,
             Name = info => MadlionsA0Model.Find(info.ProductId)?.Name,
             Keys = info => (int[])MadlionsA0Model.Find(info.ProductId)?.KeyOrder.Clone(),
         };
@@ -465,10 +472,16 @@ namespace PadForge.Engine.Common.AnalogKeyboard.Routes
         /// the reader sees a stop request.</summary>
         public const int WaitMs = PushedReportSession.WaitMs;
 
-        /// <summary>How long Stop may take in all. The device row gives a
-        /// stopping reader 1.5 s before it cancels the I/O, and a pass may
-        /// still hold 250 ms of that.</summary>
-        public const int StopBudgetMs = 1000;
+        /// <summary>How long Stop's reads and retries may take in all: three
+        /// modes of NuPhyHe's read and write, four tries of 200 ms each, is
+        /// 4.8 s when every reply is lost. A write still owed when the budget
+        /// runs out is sent once anyway, since it is the undo.</summary>
+        public const int StopBudgetMs = 5000;
+
+        /// <summary>The route's stop budget: <see cref="StopBudgetMs"/>, a
+        /// last write of up to 1 s for each of the three modes, and the pass
+        /// in flight.</summary>
+        public const int StopTimeoutMs = StopBudgetMs + 3 * 1000 + 1000;
 
         /// <summary>Most reports one drain reads before it gives up, so a
         /// stream that never pauses cannot hold a command back forever.</summary>
@@ -522,11 +535,13 @@ namespace PadForge.Engine.Common.AnalogKeyboard.Routes
         /// command in flight at a time: the firmware holds one receive buffer
         /// and no queue (HallJoy MAD68_PRO_R_FIRMWARE_FINAL_AUDIT.md:66-70).
         /// Before each try the reports already queued are read, their events
-        /// kept, so a stale reply cannot answer the new command. A try that
-        /// gets no reply within <paramref name="replyMs"/>, or a checksum
-        /// error, is retried up to <paramref name="attempts"/> tries in all.
-        /// The first try is always sent. Later tries stop at
-        /// <paramref name="deadline"/>. The reply lands in
+        /// kept, so a stale reply cannot answer the new command. A try whose
+        /// write fails, that gets no reply within <paramref name="replyMs"/>
+        /// of the write, or that gets a checksum error is retried, up to
+        /// <paramref name="attempts"/> tries in all. The first try is always
+        /// sent. Later tries stop at <paramref name="deadline"/>, and so does
+        /// the wait for a reply. Only a read that reports the device gone is
+        /// <see cref="Outcome.Gone"/>. The reply lands in
         /// <paramref name="reply"/> (64 bytes).
         /// </summary>
         protected Outcome Exchange(IAnalogKeyboardTransport io, byte[] request, int attempts, int replyMs,
@@ -536,10 +551,10 @@ namespace PadForge.Engine.Common.AnalogKeyboard.Routes
             int offset = request[6] | (request[7] << 8);
             for (int attempt = 0; attempt < attempts; attempt++)
             {
-                long now = Environment.TickCount64;
-                if (attempt > 0 && now >= deadline) break;
-                if (!Drain(io) || !io.Send(request)) return Outcome.Gone;
-                long until = Math.Min(deadline, now + replyMs);
+                if (attempt > 0 && Environment.TickCount64 >= deadline) break;
+                if (!Drain(io)) return Outcome.Gone;
+                if (!io.Send(request)) continue;
+                long until = Math.Min(deadline, Environment.TickCount64 + replyMs);
                 while (true)
                 {
                     int remaining = (int)Math.Max(0, until - Environment.TickCount64);
@@ -732,15 +747,19 @@ namespace PadForge.Engine.Common.AnalogKeyboard.Routes
     /// GetFunc reads the 56-byte settings block at address 0, with up to three
     /// tries of 500 ms (device.py:129-147), and nothing is written when it
     /// cannot be read. SetFunc writes the whole block back with only the
-    /// debugMode bit set (protocol.py:111-129). Stop clears the bit, as
-    /// AnalogKeys does on exit whatever the bit was before.
+    /// debugMode bit set, once (protocol.py:111-129, device.py:149-152). Stop
+    /// clears the bit, as AnalogKeys does on exit whatever the bit was
+    /// before: a process killed mid-stream leaves the bit set, and the next
+    /// clean run clears it (device.py:76-80). AnalogKeys enables every board
+    /// its product list names, the unverified ones included.
     ///
     /// <para>Two corrections to AnalogKeys, whose own rule is to read the
     /// block before writing it (docs/protocol.md:85-90). Stop reads the block
     /// again rather than writing back the one read at start, which would undo
     /// every lighting or lock change made on the keyboard meanwhile. It falls
     /// back to the start block only when that read goes unanswered. And the
-    /// SetFunc reply is awaited, one command in flight at a time.</para>
+    /// SetFunc reply is waited for, one command in flight at a time, though a
+    /// missing reply does not fail Start, as AnalogKeys never reads one.</para>
     /// </summary>
     public sealed class MadlionsA0Session : NuPhyStreamSession
     {
@@ -794,7 +813,9 @@ namespace PadForge.Engine.Common.AnalogKeyboard.Routes
 
             var enabled = (byte[])_block.Clone();
             enabled[NuPhyProtocol.FlagsIndex] |= NuPhyProtocol.DebugModeBit;
-            if (Exchange(io, WriteBlockRequest(enabled), Attempts, ReplyWaitMs, long.MaxValue, _reply) != Outcome.Answered)
+            // One write, as AnalogKeys sends it. Only a keyboard that is gone
+            // fails Start here.
+            if (Exchange(io, WriteBlockRequest(enabled), 1, ReplyWaitMs, long.MaxValue, _reply) == Outcome.Gone)
             {
                 NoStartRetry = true;
                 Restore(io);

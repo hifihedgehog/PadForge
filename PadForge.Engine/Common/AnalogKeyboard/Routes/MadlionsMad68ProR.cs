@@ -495,7 +495,9 @@ namespace PadForge.Engine.Common.AnalogKeyboard
     /// keyboard into this gate (app.cpp:1726-1728). Here the edges come from
     /// <c>isHeld</c> for this keyboard's own 67 keys only, polled at the start
     /// of every pass. Windows merges key state across keyboards, so a key
-    /// held on another keyboard still reads as held.</para>
+    /// held on another keyboard still reads as held. The all-keys-up check
+    /// before A8 also asks <c>isHeld(AnalogKeyCodes.AnyKey)</c>, HallJoy's
+    /// sweep over every virtual key.</para>
     /// </summary>
     public sealed class Mad68ProRSession : AnalogKeyboardSession
     {
@@ -574,6 +576,7 @@ namespace PadForge.Engine.Common.AnalogKeyboard
         // The digital side (g_physicalDown, g_digitalSeq, g_digitalMs,
         // g_digitalDown, g_sampleSeqAtDigitalEvent, g_rawAtDigitalEvent).
         private readonly bool[] _physicalDown = new bool[256];
+        private bool _anyKeyDown;
         private readonly uint[] _digitalSeq = new uint[256];
         private readonly long[] _digitalMs = new long[256];
         private readonly bool[] _digitalDown = new bool[256];
@@ -1354,6 +1357,10 @@ namespace PadForge.Engine.Common.AnalogKeyboard
 
         // ─── The digital side ───
 
+        /// <summary>HallJoy's AnyKeyboardKeyDown (mad68pr_backend.cpp:662-677):
+        /// a key of this keyboard seen down, or any virtual key from 0x08 to
+        /// 0xFE down in Windows, so a key held through Fn, a remapped key or
+        /// a key of another keyboard still holds off the A8 rebaseline.</summary>
         private bool AnyKeyDown()
         {
             for (int k = 0; k < KeyCount; k++)
@@ -1361,7 +1368,7 @@ namespace PadForge.Engine.Common.AnalogKeyboard
                 int hid = _hidByKey[k];
                 if (hid != 0 && _physicalDown[hid]) return true;
             }
-            return false;
+            return _anyKeyDown;
         }
 
         /// <summary>Turns this keyboard's held keys into the edges HallJoy's
@@ -1369,6 +1376,8 @@ namespace PadForge.Engine.Common.AnalogKeyboard
         private void PollHeldKeys(Func<int, bool> isHeld, long now)
         {
             if (isHeld == null) return;
+            try { _anyKeyDown = isHeld(AnalogKeyCodes.AnyKey); }
+            catch { _anyKeyDown = false; }
             for (int k = 0; k < KeyCount; k++)
             {
                 int hid = _hidByKey[k];

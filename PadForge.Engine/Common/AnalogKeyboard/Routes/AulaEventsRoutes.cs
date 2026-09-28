@@ -40,11 +40,12 @@ namespace PadForge.Engine.Common.AnalogKeyboard
                 Writable = true,
                 Exclusive = false,
                 InputBuffers = AulaMini60Protocol.InputBuffers,
-                // Writes wait 250 ms (aula_mini60_diagnostic.cpp:124-127),
-                // and a keyboard that fails its connection is tried again
-                // every 3 s, HallJoy's reconnect cadence.
+                // Writes wait 250 ms (aula_mini60_diagnostic.cpp:124-127).
+                // HallJoy's supervisor starts the session again 3 s after it
+                // ends or fails (aula_mini60_diagnostic.cpp:459-470).
                 WriteTimeoutMs = 250,
                 StartRetryMs = 3000,
+                ReconnectMs = 3000,
                 Name = info => AulaMini60Protocol.Model(info.ProductId)?.Name,
                 Keys = info => AnalogKeyboardData.KeysOf(AulaMini60Protocol.FactoryTable),
             },
@@ -61,9 +62,15 @@ namespace PadForge.Engine.Common.AnalogKeyboard
                 Exclusive = false,
                 InputBuffers = AulaW669Protocol.InputBuffers,
                 // WriteFile waits 120 ms (kIoTimeoutMs, aula_w669_backend.cpp:40).
-                // HallJoy looks for these keyboards once per run, so a failed
-                // proof is not retried while the keyboard stays plugged in.
+                // HallJoy proves a keyboard once, when routing is prepared,
+                // and its worker afterward reopens only the keyboards it
+                // claimed (Enumerate(true, ...), aula_w669_backend.cpp:178-197,
+                // 610): 200 ms after a session, 1 s after an attempt that ran
+                // none (kReconnectMs, :43, 614).
                 WriteTimeoutMs = 120,
+                ProbeOnce = true,
+                StartRetryMs = 1000,
+                ReconnectMs = 200,
             },
         };
     }

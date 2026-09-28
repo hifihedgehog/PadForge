@@ -134,8 +134,10 @@ namespace PadForge.Tests
             Assert.True(AnalogKeyboardParsers.ParseWootingV2(raw, k, 0x1340));
             Assert.Equal(1f, k.Get(AnalogKeyCodes.LeftSpace));
             Assert.Equal(512 / 1023f, k.Get(AnalogKeyCodes.RightSpace), 5);
-            // The ordinary code keeps the later entry, as before.
-            Assert.Equal(512 / 1023f, k.Get(AnalogKeyCodes.Space), 5);
+            // The ordinary code takes the deeper half, as HallJoy's plugin
+            // host merges records of one code (UniversalAnalogPluginFixed
+            // main.cpp:685-704).
+            Assert.Equal(1f, k.Get(AnalogKeyCodes.Space));
 
             var other = Keys();
             AnalogKeyboardParsers.ParseWootingV2(raw, other, 0x1230);
@@ -508,37 +510,82 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void Madlions_UnansweredGroup_IsZeroed_AndEightFailuresEndTheSession()
+        public void Madlions_UnansweredGroup_IsZeroed_TheGroupsBeforeItPublish_AndEightFailuresEndTheSession()
         {
-            // MAD60HE: W is index 16. It reads at full travel, then its group
-            // stops answering.
+            // MAD60HE: W is index 16. A held key in the group before W's and
+            // one in the group after read at full travel with W, then W's
+            // group stops answering. HallJoy's overlay (AnalogueKeyboard.cpp:1312-1347)
+            // zeroes the group, publishes the keys it collected before it,
+            // not those after, and ends the device at the eighth failure.
+            var keys = AnalogKeyCodes.MadlionsMad60He.Keys;
+            int early = FirstKeyIn(keys, 12), late = FirstKeyIn(keys, 20);
+            Assert.True(early >= 0 && late >= 0);
             bool answer = true;
             var io = new AnalogKeyboardTestTransport();
             io.OnSend = req =>
             {
-                if (req[7] == 16 && !answer) return Array.Empty<byte[]>();
-                return new[] { req[7] == 16 ? MadlionsAnswer((0, 350)) : MadlionsAnswer() };
+                int offset = req[7];
+                if (offset == 16 && !answer) return Array.Empty<byte[]>();
+                if (offset == 12) return new[] { MadlionsAnswer((early - 12, 350)) };
+                if (offset == 16) return new[] { MadlionsAnswer((0, 350)) };
+                if (offset == 20) return new[] { MadlionsAnswer((late - 20, 350)) };
+                return new[] { MadlionsAnswer() };
             };
+            Func<int, bool> held = code => code == AnalogKeyCodes.W || code == keys[early] || code == keys[late];
             var poller = new MadlionsPoller(AnalogKeyCodes.MadlionsMad60He);
             var output = Keys();
-            Assert.Equal(AnalogPollResult.Ok, poller.Pass(io, output, code => code == AnalogKeyCodes.W));
+            Assert.Equal(AnalogPollResult.Ok, poller.Pass(io, output, held));
             Assert.Equal(1f, output.Get(AnalogKeyCodes.W));
+            Assert.Equal(1f, output.Get(keys[early]));
+            Assert.Equal(1f, output.Get(keys[late]));
 
             answer = false;
             for (int i = 1; i < MadlionsPoller.FailuresTolerated; i++)
-                Assert.Equal(AnalogPollResult.NoAnswer, poller.Pass(io, output, code => code == AnalogKeyCodes.W));
-            Assert.Equal(AnalogPollResult.Failed, poller.Pass(io, output, code => code == AnalogKeyCodes.W));
+            {
+                Assert.Equal(AnalogPollResult.Ok, poller.Pass(io, output, held));
+                Assert.Equal(0f, output.Get(AnalogKeyCodes.W));
+                Assert.Equal(1f, output.Get(keys[early]));
+                Assert.Equal(0f, output.Get(keys[late]));
+            }
+            Assert.Equal(AnalogPollResult.Failed, poller.Pass(io, output, held));
 
             // One good answer clears the count.
-            answer = true;
             var again = new MadlionsPoller(AnalogKeyCodes.MadlionsMad60He);
+            for (int i = 1; i < MadlionsPoller.FailuresTolerated; i++)
+                again.Pass(io, Keys(), held);
+            answer = true;
+            Assert.Equal(AnalogPollResult.Ok, again.Pass(io, Keys(), held));
             answer = false;
             for (int i = 1; i < MadlionsPoller.FailuresTolerated; i++)
-                again.Pass(io, Keys(), code => code == AnalogKeyCodes.W);
-            answer = true;
-            Assert.Equal(AnalogPollResult.Ok, again.Pass(io, Keys(), code => code == AnalogKeyCodes.W));
-            answer = false;
-            Assert.Equal(AnalogPollResult.NoAnswer, again.Pass(io, Keys(), code => code == AnalogKeyCodes.W));
+                Assert.Equal(AnalogPollResult.Ok, again.Pass(io, Keys(), held));
+            Assert.Equal(AnalogPollResult.Failed, again.Pass(io, Keys(), held));
+        }
+
+        [Fact]
+        public void Madlions_FailedWrite_IsAGroupFailure_ButAGoneDeviceEndsThePass()
+        {
+            // HallJoy's transactReport returns nothing for a failed write, so
+            // it counts against the group (AnalogueKeyboard.cpp:1308-1345).
+            var io = new AnalogKeyboardTestTransport();
+            io.OnSend = req => new[] { MadlionsAnswer() };
+            io.FailSend = req => req[7] == 16;
+            var poller = new MadlionsPoller(AnalogKeyCodes.MadlionsMad60He);
+            Func<int, bool> held = code => code == AnalogKeyCodes.W;
+            for (int i = 1; i < MadlionsPoller.FailuresTolerated; i++)
+                Assert.Equal(AnalogPollResult.Ok, poller.Pass(io, Keys(), held));
+            Assert.Equal(AnalogPollResult.Failed, poller.Pass(io, Keys(), held));
+
+            var gone = new AnalogKeyboardTestTransport { Gone = true };
+            Assert.Equal(AnalogPollResult.Failed, new MadlionsPoller(AnalogKeyCodes.MadlionsMad60He).Pass(gone, Keys(), held));
+        }
+
+        /// <summary>The first index of the four from <paramref name="offset"/>
+        /// that holds a key, or -1.</summary>
+        private static int FirstKeyIn(int[] keys, int offset)
+        {
+            for (int i = offset; i < offset + 4 && i < keys.Length; i++)
+                if (keys[i] != AnalogKeyCodes.None) return i;
+            return -1;
         }
 
         [Fact]
@@ -742,6 +789,96 @@ namespace PadForge.Tests
         }
 
         // ── The registry ──
+
+        [Fact]
+        public void NamedMutexes_CarrySoupsNames_AndExcludeAnotherThread()
+        {
+            // Soup's getActiveKeys* take these unprefixed names
+            // (AnalogueKeyboard.cpp:765, 902, 1128).
+            Assert.Equal("DrunkDeerMtx", AnalogKeyboardNamedMutex.DrunkDeer);
+            Assert.Equal("KeychronMtx", AnalogKeyboardNamedMutex.Keychron);
+            Assert.Equal("MadlionsMtx", AnalogKeyboardNamedMutex.Madlions);
+
+            // A name of this test's own, so no poller running beside it waits.
+            string name = "PadForgeTestMtx-" + Guid.NewGuid().ToString("N");
+            var mutex = AnalogKeyboardNamedMutex.Get(name);
+            Assert.NotNull(mutex);
+            Assert.Same(mutex, AnalogKeyboardNamedMutex.Get(name));
+            Assert.True(mutex.Wait());
+            bool other = true;
+            var t = new System.Threading.Thread(() => other = mutex.Wait(50));
+            t.Start();
+            t.Join();
+            Assert.False(other);
+            mutex.Release();
+            t = new System.Threading.Thread(() =>
+            {
+                other = mutex.Wait(50);
+                if (other) mutex.Release();
+            });
+            t.Start();
+            t.Join();
+            Assert.True(other);
+        }
+
+        [Fact]
+        public void EveryRoute_RetriesAndReconnects_OnItsReferencesTimers()
+        {
+            // Each timer is the wait its reference's worker takes: after an
+            // attempt that ran no session (retry) and after a session
+            // (reconnect). A probe-once route admits a new keyboard once per
+            // plug-in and retries only a keyboard it opened before.
+            var expected = new (string Id, int Retry, int Reconnect, bool ProbeOnce, int Tries)[]
+            {
+                ("attackshark-pro", 3000, 3000, false, 0),            // attackshark_pro_diagnostic.cpp:363-364, 503
+                ("halljoy-aula-mini60", 3000, 3000, false, 0),        // aula_mini60_diagnostic.cpp:459-470
+                ("halljoy-mad68-a0", 250, 250, true, 0),              // mad68pr_backend.cpp:2169, 2201
+                ("halljoy-hex80-0x96", 250, 250, true, 0),            // hex80_backend.cpp:613, 643
+                ("halljoy-aula-hero", 1000, 1000, true, 0),           // aula_hero84he_backend.cpp:474-497
+                ("halljoy-addressed-ipi", 5000, 500, true, 0),        // addressed_analog_backend.cpp:1510-1533
+                ("halljoy-addressed-generic", 5000, 500, true, 0),
+                ("halljoy-aula-sparkplayjoy-6x21", 100, 100, false, 0), // aula_win60he_backend.cpp:1960-1963, 2300-2306
+                ("halljoy-irok-na87-m484", 1000, 200, false, 0),      // irok_na87_backend.cpp:918
+                (KeyAxisRoute.Id, 150, 150, true, 6),                 // KeyAxis app.py:1174-1194
+                ("halljoy-aula-w669", 1000, 200, true, 0),            // aula_w669_backend.cpp:610-614
+                ("halljoy-irok-mg75-pro", 1000, 1000, false, 0),      // mg75_pro_backend.cpp:425-440
+                ("halljoy-chilkey-slice75", 1000, 1000, false, 0),    // slice75_backend.cpp:421
+                ("rongyuan-snapshot", 1000, 1000, false, 0),          // rongyuan_snapshot_backend.cpp:354-373
+                ("rongyuan-stream", 1000, 1000, false, 0),            // rongyuan_stream_backend.cpp:407-426
+                ("halljoy-neo65", 1000, 1000, false, 0),              // neo65_backend.cpp:145-154
+                ("halljoy-steelseries-apex", 1000, 1000, false, 0),   // steelseries_apex_backend.cpp:194-203
+                ("halljoy-mchose-mix87", 5000, 5000, false, 0),       // mchose_mix87_backend.cpp:245-254
+                ("halljoy-sparklink", 2000, 2000, false, 0),          // backend_sparklink.inc:18
+                ("halljoy-sayo-depth", 2000, 2000, false, 0),         // backend_sayo.inc:17
+                ("finalmouse-centerpiece-pro", 1000, 1000, false, 0), // universal-analog-plugin main.cpp:288-299
+                ("libhmk", 1000, 1000, false, 0),
+                ("halljoy-rog-azoth-96-he", 0, 0, false, 0),
+                ("logitech-pro-x-tkl-rapid", 0, 1000, false, 0),
+                ("nuphy-he", 5000, 0, false, 0),
+                ("madlions-a0", 5000, 0, false, 0),
+                ("soup-wooting-v2", 0, 1000, false, 0),               // universal-analog-plugin main.cpp:180-199, 288-299
+                ("soup-wooting-v1", 0, 1000, false, 0),
+                ("soup-razer-huntsman-v2", 0, 1000, false, 0),
+                ("soup-razer-huntsman-v3", 0, 1000, false, 0),
+                ("soup-razer-tartarus-pro", 0, 1000, false, 0),
+                ("soup-drunkdeer", 1000, 1000, false, 0),
+                ("soup-keychron", 1000, 1000, false, 0),
+                ("soup-madlions", 1000, 1000, false, 0),
+                ("soup-bytech", 1000, 1000, false, 0),
+                (A0ListenRoute.Id, 0, 0, false, 0),
+            };
+            var routes = AnalogKeyboardRoutes.All;
+            Assert.Equal(expected.Length, routes.Count);
+            foreach (var (id, retry, reconnect, probeOnce, tries) in expected)
+            {
+                var route = AnalogKeyboardRoutes.Find(id);
+                Assert.NotNull(route);
+                Assert.True(retry == route.StartRetryMs, id + " retry");
+                Assert.True(reconnect == route.ReconnectMs, id + " reconnect");
+                Assert.True(probeOnce == route.ProbeOnce, id + " probe once");
+                Assert.True(tries == route.ReconnectTries, id + " tries");
+            }
+        }
 
         [Fact]
         public void Registry_HoldsEveryRouteOnce_InHallJoysOrder_WithTheListenerLast()

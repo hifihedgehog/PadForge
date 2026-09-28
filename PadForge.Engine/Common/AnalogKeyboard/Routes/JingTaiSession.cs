@@ -51,11 +51,15 @@ namespace PadForge.Engine.Common.AnalogKeyboard.Routes
     /// pass reports the fresh half it read and the other half while it is
     /// still fresh.</para>
     ///
-    /// <para>Keys are published under the model table's factory codes, the
-    /// publication HallJoy reads whenever its automatic layout is not
-    /// remapping with the model's layout token (mg75_pro_backend.cpp:42-44,
-    /// 527-535). PadForge has no automatic layout, so the base-layer
-    /// assignments serve only as part of the identity proof.</para>
+    /// <para>Each key is published under the code its base-layer assignment
+    /// decodes to, so a key remapped on the keyboard moves the key it now
+    /// types, and a slot assigned nothing HallJoy can publish is not
+    /// published. HallJoy binds every slot to its factory code and to its
+    /// assignment and reads the assignments whenever its automatic layout
+    /// remaps, its default (InstallMap and Get, mg75_pro_backend.cpp:42-44,
+    /// 291-315, 527-535, native_layout_state.h:30-33,
+    /// keyboard_layout.cpp:1786-1787). PadForge has no layout presets, so
+    /// the assignments name the keys on every model.</para>
     /// </summary>
     public sealed class JingTaiSession : AnalogKeyboardSession
     {
@@ -81,6 +85,7 @@ namespace PadForge.Engine.Common.AnalogKeyboard.Routes
         private readonly JingTaiFrame _frame = new();
         private readonly ushort[] _values = new ushort[JingTaiFrames.ValuesPerHalf];
         private readonly int[] _assigned = new int[JingTaiFrames.Slots];
+        private readonly int[] _publish = new int[JingTaiFrames.Slots];
         private readonly int[] _milli = new int[JingTaiFrames.Slots];
         private readonly long[] _stamps = new long[JingTaiFrames.Slots];
         private bool _started;
@@ -105,7 +110,7 @@ namespace PadForge.Engine.Common.AnalogKeyboard.Routes
 
         public override string ModelName => _model.Name;
 
-        public override int[] KeyOrder => AnalogKeyboardData.KeysOf(_model.Table);
+        public override int[] KeyOrder => AnalogKeyboardData.KeysOf(_started ? _publish : _model.Table);
 
         /// <summary>True once an exchange failed. Every later exchange fails
         /// without touching the keyboard (mg75_pro_backend.cpp:236-237).</summary>
@@ -114,6 +119,10 @@ namespace PadForge.Engine.Common.AnalogKeyboard.Routes
         /// <summary>The key each slot's base layer assigns, from the 0x23
         /// reads, 0 where nothing HallJoy can publish is assigned.</summary>
         public ReadOnlySpan<int> Assigned => _assigned;
+
+        /// <summary>The key code each slot publishes: its assignment on a slot
+        /// the model's table fills, else 0.</summary>
+        public ReadOnlySpan<int> PublicationMap => _publish;
 
         /// <summary>The travel half the next pass reads.</summary>
         public int NextHalf => _half;
@@ -142,6 +151,9 @@ namespace PadForge.Engine.Common.AnalogKeyboard.Routes
                     return Poison();
             }
             if (!ReadMap(io)) return Poison();
+            var table = _model.Table;
+            for (int slot = 0; slot < JingTaiFrames.Slots; slot++)
+                _publish[slot] = table[slot] != 0 ? _assigned[slot] : 0;
             _started = true;
             return true;
         }
@@ -221,7 +233,7 @@ namespace PadForge.Engine.Common.AnalogKeyboard.Routes
                 long stamp = _stamps[slot];
                 fresh[slot] = stamp >= 0 && now >= stamp && now - stamp <= FreshMs ? _milli[slot] : 0;
             }
-            JingTaiFrames.WriteDepths(_model.Table, fresh, output);
+            JingTaiFrames.WriteDepths(_publish, fresh, output);
         }
 
         /// <summary>One request and its answer (Session::Exchange,

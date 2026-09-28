@@ -35,6 +35,7 @@ namespace PadForge.Engine.Common.AnalogKeyboard
                 WriteTimeoutMs = 100,
                 StaleAfterMs = 100,
                 StartRetryMs = 1000,
+                ReconnectMs = 1000,
                 Name = _ => Neo65Protocol.ModelName,
                 Keys = info => AnalogKeyboardData.KeysOf(Neo65Protocol.Table(info.ProductId)),
             },
@@ -54,6 +55,7 @@ namespace PadForge.Engine.Common.AnalogKeyboard
                 WriteTimeoutMs = 100,
                 StaleAfterMs = 100,
                 StartRetryMs = 1000,
+                ReconnectMs = 1000,
                 Name = info => SteelSeriesApexProtocol.ModelName(info.ProductId),
                 Keys = _ => AnalogKeyboardData.KeysOf(SteelSeriesApexProtocol.BindableTable()),
             },
@@ -70,10 +72,12 @@ namespace PadForge.Engine.Common.AnalogKeyboard
                 Matches = MchoseMix87Protocol.Matches,
                 CreateSession = _ => new MchoseMix87Session(),
                 // A write waits 300 ms (mchose_mix87_backend.cpp:101), the
-                // worker retries every 5 s (:254), and a stop waits up to 25 s
-                // so the flag's cleanup write can finish (:267).
+                // worker runs again every 5 s whether or not a session ran
+                // (:245-254), and a stop waits up to 25 s so the flag's
+                // cleanup write can finish (:267).
                 WriteTimeoutMs = MchoseMix87Session.WriteTimeoutMs,
                 StartRetryMs = 5000,
+                ReconnectMs = 5000,
                 StopTimeoutMs = 25000,
                 Name = _ => MchoseMix87Protocol.ModelName,
             },

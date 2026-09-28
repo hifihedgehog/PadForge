@@ -522,6 +522,13 @@ namespace PadForge.Engine.Common.AnalogKeyboard
         {
             if (!ReceiveIdentity(io, out var identity)) return false;
             Identity = identity;
+            // The identity names the NA87 or the AJAZZ, so the board is this
+            // route's. HallJoy, which has no KeyAxis route, proves it again a
+            // second later when a later step fails (EnsureClaim and the
+            // worker, irok_na87_backend.cpp:417-430, 884-919). Marking it
+            // recognized does the same here and keeps a slow capability or
+            // map reply from handing the board to KeyAxis.
+            Recognized = true;
             bool na87 = IrokM484Protocol.IsNa87(identity);
             if (!ReceiveCapability(io, out int sensitivity) || sensitivity != IrokM484Protocol.NominalTravelMaximum)
                 return false;

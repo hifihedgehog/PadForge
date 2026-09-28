@@ -33,6 +33,10 @@ namespace PadForge.Tests
         /// <summary>Replies to a WriteFile output report, queued as input.</summary>
         public Func<byte[], IEnumerable<byte[]>> OnSend { get; set; } = _ => Array.Empty<byte[]>();
 
+        /// <summary>WriteFile fails for the reports this accepts, as a write
+        /// that times out does, while the device stays.</summary>
+        public Func<byte[], bool> FailSend { get; set; }
+
         /// <summary>Replies to a control-transfer output report, queued as input.</summary>
         public Func<byte[], IEnumerable<byte[]>> OnSendOutputReport { get; set; }
 
@@ -64,6 +68,7 @@ namespace PadForge.Tests
         {
             if (Gone) return false;
             Log.Add(("out", (byte[])report.Clone()));
+            if (FailSend != null && FailSend(report)) return false;
             foreach (var r in OnSend(report)) _input.Enqueue(r);
             return true;
         }

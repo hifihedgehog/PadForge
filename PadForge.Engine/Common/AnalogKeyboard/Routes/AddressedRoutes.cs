@@ -76,12 +76,16 @@ namespace PadForge.Engine.Common.AnalogKeyboard.Routes
                 Matches = MatchesAulaHero,
                 CreateSession = _ => new AulaHeroSession(),
                 InputBuffers = AulaHeroInputBuffers,
-                // A write waits 50 ms (kSliceMs, aula_hero84he_backend.cpp:124-155),
-                // a key expires 750 ms after its last sample (kFreshMs, :39),
-                // and the worker tries again every second (:492).
+                // A write waits 50 ms (kSliceMs, aula_hero84he_backend.cpp:124-155)
+                // and a key expires 750 ms after its last sample (kFreshMs,
+                // :39). HallJoy proves the identity once, when routing is
+                // prepared (:501-522), and its worker reopens only the claimed
+                // collection, every second (:474-497).
                 WriteTimeoutMs = 50,
                 StaleAfterMs = 750,
+                ProbeOnce = true,
                 StartRetryMs = 1000,
+                ReconnectMs = 1000,
             },
             new AnalogKeyboardRoute
             {
@@ -91,20 +95,26 @@ namespace PadForge.Engine.Common.AnalogKeyboard.Routes
                 CreateSession = _ => new AddressedIpiSession(),
                 InputBuffers = AddressedInputBuffers,
                 // A key expires 500 ms after its last answer (kFreshMs,
-                // addressed_analog_backend.cpp:57), and the worker rescans
-                // every 5 s while nothing is claimed (:1522).
+                // addressed_analog_backend.cpp:57). After routing is prepared
+                // HallJoy reopens only a collection it proved before
+                // (TryClaimCandidate, :745-756): 500 ms after a session, and
+                // every 5 s while the claim fails (:1510-1533).
                 StaleAfterMs = 500,
+                ProbeOnce = true,
                 StartRetryMs = 5000,
+                ReconnectMs = 500,
             },
             new AnalogKeyboardRoute
             {
                 Id = AddressedGenericId,
                 Protocol = AnalogKeyboardProtocol.AddressedGeneric,
                 Matches = MatchesAddressedGeneric,
-                CreateSession = _ => new AddressedGenericSession(),
+                CreateSession = info => new AddressedGenericSession(info.VendorId),
                 InputBuffers = AddressedInputBuffers,
                 StaleAfterMs = 500,
+                ProbeOnce = true,
                 StartRetryMs = 5000,
+                ReconnectMs = 500,
             },
         };
 

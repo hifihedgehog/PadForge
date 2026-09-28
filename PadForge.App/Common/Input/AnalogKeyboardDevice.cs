@@ -52,9 +52,16 @@ namespace PadForge.Common.Input
         /// it cancels the I/O outright.</summary>
         private const int GracefulStopMs = 1500;
 
+        /// <summary>A key a mapping read within this long counts as mapped.
+        /// Mappings read every poll cycle, so a mapped key is stamped each
+        /// millisecond while its slot runs.</summary>
+        private const int MappedWindowMs = 1000;
+
         private readonly AnalogKeyboardCandidate _candidate;
         private readonly object _stateLock = new();
+        private readonly object _keyOrderLock = new();
         private readonly AnalogKeyInputState _live = new();
+        private readonly int[] _readStamps = new int[AnalogKeyInputState.CodeCount];
         private readonly Dictionary<int, int> _heldVirtualKeys = new();
         private AnalogKeyboardHidChannel _channel;
         private AnalogKeyboardSession _session;
@@ -119,6 +126,37 @@ namespace PadForge.Common.Input
         /// how long the sweep waits before trying again.</summary>
         public int RetryAfterMs { get; private set; }
 
+        /// <summary>After <see cref="AnalogKeyboardOpenResult.RetryLater"/>,
+        /// the routes that asked for the retry. The retry runs only these, so a
+        /// route that refused the keyboard does not hear it again.</summary>
+        public string[] RetryRouteIds { get; private set; }
+
+        /// <summary>The route that opened the keyboard, or that proved the
+        /// keyboard its own before its handshake failed, or null. The sweep
+        /// keeps this route's claim while the collection stays present.</summary>
+        public string ClaimRouteId { get; private set; }
+
+        /// <summary>The collection this row was opened from, for a reopen that
+        /// needs no enumeration.</summary>
+        public AnalogKeyboardCandidate Candidate => _candidate;
+
+        /// <summary>How long after this row's reader stops the sweep reopens
+        /// the collection, 0 for the default minute.</summary>
+        public int ReconnectMs => _route?.ReconnectMs ?? 0;
+
+        /// <summary>The longest stop any route may take, for a shutdown that
+        /// waits out every teardown.</summary>
+        public static int LongestStopMs
+        {
+            get
+            {
+                int longest = GracefulStopMs;
+                foreach (var route in AnalogKeyboardRoutes.All)
+                    if (route.StopTimeoutMs > longest) longest = route.StopTimeoutMs;
+                return longest;
+            }
+        }
+
         // ─── ISdlInputDevice identity / capabilities ───
         // The keys live on CustomInputState.AnalogKeys, not in the numbered
         // arrays, so the row reports none of those. Its picker entries come
@@ -160,15 +198,30 @@ namespace PadForge.Common.Input
 
         /// <summary>Tries each matching route: opens the collection its way,
         /// runs its handshake, and on the first success starts the reader.
-        /// Blocking I/O, so the sweep's worker calls it, never the poll
-        /// thread.</summary>
-        public AnalogKeyboardOpenResult Open()
+        /// With <paramref name="claimedRouteId"/> only that route runs, the
+        /// reference's reconnect to a keyboard it claimed. With
+        /// <paramref name="retryRouteIds"/> only the routes that asked for a
+        /// timed retry run. Blocking I/O, so the sweep's worker calls it,
+        /// never the poll thread.</summary>
+        public AnalogKeyboardOpenResult Open(string claimedRouteId = null, IReadOnlyCollection<string> retryRouteIds = null)
         {
             if (_disposed) return AnalogKeyboardOpenResult.Busy;
-            bool busy = false;
+            List<string> busyRoutes = null;
             int retryMs = 0;
+            List<string> retryRoutes = null;
+            RetryRouteIds = null;
+            ClaimRouteId = null;
             foreach (var route in _candidate.Routes)
             {
+                if (claimedRouteId != null)
+                {
+                    if (route.Id != claimedRouteId) continue;
+                }
+                else if (retryRouteIds != null && !Contains(retryRouteIds, route.Id))
+                {
+                    continue;
+                }
+                bool claimed = route.Id == claimedRouteId;
                 var info = _candidate.Info;
                 AnalogKeyboardDeviceInfo companion = null;
                 if (route.Companion != null)
@@ -181,12 +234,20 @@ namespace PadForge.Common.Input
                 var channel = AnalogKeyboardHidChannel.Open(info, route, companion);
                 if (channel == null)
                 {
-                    busy = true;
+                    // A route whose reference retries on a timer tries the
+                    // open again on that timer, as its worker does when the
+                    // open fails. Nothing was sent, so a probe-once route's
+                    // one probe is still to come and it waits the minute.
+                    if (route.StartRetryMs > 0 && (!route.ProbeOnce || claimed))
+                        AddRetry(route, ref retryMs, ref retryRoutes);
+                    else
+                        (busyRoutes ??= new List<string>()).Add(route.Id);
                     continue;
                 }
 
                 AnalogKeyboardSession session = null;
                 bool started = false;
+                bool threw = false;
                 try
                 {
                     session = route.CreateSession(info);
@@ -195,32 +256,41 @@ namespace PadForge.Common.Input
                 catch
                 {
                     started = false;
+                    threw = true;
                 }
                 if (!started)
                 {
                     channel.Close();
-                    if (route.StartRetryMs > 0 && session?.NoStartRetry != true
-                        && (retryMs == 0 || route.StartRetryMs < retryMs))
-                        retryMs = route.StartRetryMs;
+                    bool recognized = !threw && session?.Recognized == true;
+                    if (recognized) ClaimRouteId = route.Id;
+                    // A handshake that threw is not retried: nothing says it
+                    // would end differently.
+                    bool retry = route.StartRetryMs > 0 && !threw && session?.NoStartRetry != true
+                        && (!route.ProbeOnce || claimed || recognized);
+                    if (retry) AddRetry(route, ref retryMs, ref retryRoutes);
+                    // The keyboard is this route's, so no later route hears it.
+                    if (recognized) break;
                     continue;
                 }
 
-                _route = route;
-                _session = session;
-                _channel = channel;
-                CompanionPath = companion?.Path;
-                _staleAfterMs = Math.Max(0, route.StaleAfterMs);
-                Name = session.ModelName ?? AnalogKeyboardHidRuntime.NameFor(info, route);
-                _keyOrder = session.KeyOrder ?? SafeKeys(route, info);
-                _knownKeys = new HashSet<int>(KeyOrder);
-                foreach (int code in KeyOrder)
-                {
-                    int vk = VirtualKeyForCode(code);
-                    if (vk != 0) _heldVirtualKeys[code] = vk;
-                }
-                _attached = true;
                 try
                 {
+                    _route = route;
+                    _session = session;
+                    _channel = channel;
+                    CompanionPath = companion?.Path;
+                    _staleAfterMs = Math.Max(0, route.StaleAfterMs);
+                    Name = session.ModelName ?? AnalogKeyboardHidRuntime.NameFor(info, route);
+                    _keyOrder = session.KeyOrder ?? SafeKeys(route, info);
+                    _knownKeys = new HashSet<int>(KeyOrder);
+                    foreach (int code in KeyOrder)
+                    {
+                        int vk = VirtualKeyForCode(code);
+                        if (vk != 0) _heldVirtualKeys[code] = vk;
+                    }
+                    session.IsBound = IsMapped;
+                    ClaimRouteId = route.Id;
+                    _attached = true;
                     _reader = new Thread(ReaderLoop) { IsBackground = true, Name = "PadForge.AnalogKeyboard" };
                     _reader.Start();
                     return AnalogKeyboardOpenResult.Opened;
@@ -230,19 +300,40 @@ namespace PadForge.Common.Input
                     // The session started, so it may have changed the
                     // keyboard: undo that before the handle closes.
                     _attached = false;
+                    _reader = null;
                     _channel = null;
+                    _route = null;
+                    _session = null;
+                    ClaimRouteId = null;
                     try { session.Stop(channel); } catch { }
                     channel.Close();
                     return AnalogKeyboardOpenResult.Busy;
                 }
             }
-            if (busy) return AnalogKeyboardOpenResult.Busy;
             if (retryMs > 0)
             {
+                // The routes that could not open the collection this time
+                // never heard the keyboard, so the retry runs them too.
+                if (busyRoutes != null) retryRoutes.AddRange(busyRoutes);
                 RetryAfterMs = retryMs;
+                RetryRouteIds = retryRoutes.ToArray();
                 return AnalogKeyboardOpenResult.RetryLater;
             }
+            if (busyRoutes != null) return AnalogKeyboardOpenResult.Busy;
             return AnalogKeyboardOpenResult.NotSupported;
+        }
+
+        private static void AddRetry(AnalogKeyboardRoute route, ref int retryMs, ref List<string> retryRoutes)
+        {
+            if (retryMs == 0 || route.StartRetryMs < retryMs) retryMs = route.StartRetryMs;
+            (retryRoutes ??= new List<string>()).Add(route.Id);
+        }
+
+        private static bool Contains(IReadOnlyCollection<string> ids, string id)
+        {
+            foreach (var candidate in ids)
+                if (candidate == id) return true;
+            return false;
         }
 
         private static int[] SafeKeys(AnalogKeyboardRoute route, AnalogKeyboardDeviceInfo info)
@@ -372,12 +463,32 @@ namespace PadForge.Common.Input
                 if (_knownKeys.Add(pass.Codes[i])) (added ??= new List<int>()).Add(pass.Codes[i]);
             if (added == null) return;
             added.Sort();
-            var current = KeyOrder;
-            var order = new int[current.Length + added.Count];
-            current.CopyTo(order, 0);
-            added.CopyTo(order, current.Length);
-            _keyOrder = order;
-            AnalogKeyboardRuntime.SetKeyOrder(InstanceGuid, order);
+            lock (_keyOrderLock)
+            {
+                var current = KeyOrder;
+                var order = new int[current.Length + added.Count];
+                current.CopyTo(order, 0);
+                added.CopyTo(order, current.Length);
+                _keyOrder = order;
+                AnalogKeyboardRuntime.SetKeyOrder(InstanceGuid, order);
+            }
+        }
+
+        /// <summary>Hands the row's key list to the input picker. The reader
+        /// publishes under the same lock as it learns keys, so whichever runs
+        /// last publishes the newest list.</summary>
+        public void PublishKeyOrder()
+        {
+            lock (_keyOrderLock) AnalogKeyboardRuntime.SetKeyOrder(InstanceGuid, KeyOrder);
+        }
+
+        /// <summary>Whether a mapping read the key within the last second,
+        /// the session's <see cref="AnalogKeyboardSession.IsBound"/>.</summary>
+        private bool IsMapped(int code)
+        {
+            if (code <= 0 || code >= _readStamps.Length) return false;
+            int stamp = Volatile.Read(ref _readStamps[code]);
+            return stamp != 0 && unchecked(Environment.TickCount - stamp) < MappedWindowMs;
         }
 
         /// <summary>Shortest time between the starts of two passes of a Soup
@@ -389,9 +500,19 @@ namespace PadForge.Common.Input
         /// <summary>Whether Windows sees the key down, the polled routes' cue
         /// to read it this pass. Soup asks DirectInput for the same fact
         /// (DigitalKeyboard), here through the virtual key the current layout
-        /// gives the key's scan code.</summary>
+        /// gives the key's scan code. <see cref="AnalogKeyCodes.AnyKey"/>
+        /// asks whether any key is down: every virtual key from 0x08 to 0xFE,
+        /// HallJoy's AnyKeyboardKeyDown sweep (mad68pr_backend.cpp:662-677).</summary>
         private bool IsHeldByWindows(int code)
-            => _heldVirtualKeys.TryGetValue(code, out int vk) && (GetAsyncKeyState(vk) & 0x8000) != 0;
+        {
+            if (code == AnalogKeyCodes.AnyKey)
+            {
+                for (int vk = 0x08; vk <= 0xFE; vk++)
+                    if ((GetAsyncKeyState(vk) & 0x8000) != 0) return true;
+                return false;
+            }
+            return _heldVirtualKeys.TryGetValue(code, out int key) && (GetAsyncKeyState(key) & 0x8000) != 0;
+        }
 
         private static int VirtualKeyForCode(int code)
         {
@@ -416,6 +537,8 @@ namespace PadForge.Common.Input
                     s.AnalogKeys.ResetForReuse();
                 else
                     _live.CopyInto(s.AnalogKeys);
+                // Mapping reads of any copy stamp this row's keys.
+                s.AnalogKeys.ReadStamps = _readStamps;
             }
             return s;
         }
@@ -446,6 +569,9 @@ namespace PadForge.Common.Input
 
         /// <summary>Test seam: a pass's keys as the reader notes them.</summary>
         internal void NoteKeysForTest(AnalogKeyInputState pass) => NoteNewKeys(pass);
+
+        /// <summary>Test seam: the session's <see cref="AnalogKeyboardSession.IsBound"/>.</summary>
+        internal bool IsMappedForTest(int code) => IsMapped(code);
 
         private static Guid Md5Guid(string identifier)
         {

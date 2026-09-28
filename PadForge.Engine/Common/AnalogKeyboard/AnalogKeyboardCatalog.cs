@@ -187,9 +187,12 @@ namespace PadForge.Engine.Common.AnalogKeyboard
         /// AnalogSense.js's. The rest are the 8KHz models whose Synapse Web
         /// device configs set <c>analogKeyboardV3</c> and
         /// <c>is8kAnalogDevice</c> (synapse.razer.com/products/719, 720, 721,
-        /// 728, 740, 741, 742 and 746). OpenRazer's descriptor dumps for
-        /// 0x02CF, 0x02D0 and 0x02E6 match the V3 Pro's interface 1 byte for
-        /// byte, report 11 included.</summary>
+        /// 728, 740, 741, 742 and 746). The usbhid-dump descriptors posted in
+        /// OpenRazer's tracker for 0x02CF (#2633, #2712), 0x02D0 (#2670) and
+        /// 0x02E6 (#2922) match the V3 Pro's interface 1 byte for byte, report
+        /// 11 included. The one public capture of an 8KHz model under Synapse
+        /// shows report 11 frames with no key down, and no key-down frame from
+        /// any 8KHz model is public.</summary>
         public static bool IsRazerHuntsmanV3(ushort productId) => productId is
             0x02A6 or 0x02A7 or 0x02B0
             or 0x02CF or 0x02D0 or 0x02D1 or 0x02D8 or 0x02E4 or 0x02E5 or 0x02E6 or 0x02EA;

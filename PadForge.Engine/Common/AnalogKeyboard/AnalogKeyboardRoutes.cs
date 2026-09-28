@@ -72,9 +72,30 @@ namespace PadForge.Engine.Common.AnalogKeyboard
 
         /// <summary>When the route's handshake fails and no other route
         /// recognizes the keyboard, try again after this long instead of
-        /// leaving the keyboard alone while it stays plugged in, for the
-        /// routes whose reference reconnects on a timer. 0 for never.</summary>
+        /// leaving the keyboard alone while it stays plugged in: the wait the
+        /// reference's worker takes after an attempt that ran no session. 0
+        /// for never. Only the routes that asked for the retry run again, and
+        /// a session that set <see cref="AnalogKeyboardSession.NoStartRetry"/>
+        /// cancels its route's.</summary>
         public int StartRetryMs { get; init; }
+
+        /// <summary>For the routes whose reference probes a keyboard once and
+        /// afterward reopens only the keyboards it has claimed: a keyboard
+        /// this route never opened gets one handshake per plug-in, and
+        /// <see cref="StartRetryMs"/> applies only to a keyboard it opened or
+        /// recognized before.</summary>
+        public bool ProbeOnce { get; init; }
+
+        /// <summary>After a session that ran ends while the collection is
+        /// still present, reopen it after this long: the wait the reference's
+        /// worker takes after a session. The reopen tries only this route. 0
+        /// for the default minute.</summary>
+        public int ReconnectMs { get; init; }
+
+        /// <summary>How many failed reopens in a row a keyboard this route
+        /// claimed gets before it is left alone until plugged in again, for a
+        /// reference that stops retrying. 0 for no limit.</summary>
+        public int ReconnectTries { get; init; }
 
         /// <summary>For the routes that command one collection and read
         /// another of the same keyboard: picks the collection to read from
@@ -189,6 +210,11 @@ namespace PadForge.Engine.Common.AnalogKeyboard
             return null;
         }
 
+        /// <summary>The Soup and AnalogSense families. Soup's plugin host finds
+        /// keyboards again every second, and a keyboard whose reader marked
+        /// it disconnected is found again there (universal-analog-plugin
+        /// main.cpp:180-199, 288-299), so a failed handshake and an ended
+        /// session are both tried again after a second.</summary>
         private static IEnumerable<AnalogKeyboardRoute> SoupFamilies()
         {
             AnalogKeyboardRoute Pushed(string id, AnalogKeyboardProtocol protocol) => new()
@@ -198,6 +224,7 @@ namespace PadForge.Engine.Common.AnalogKeyboard
                 Matches = info => Identify(info) == protocol,
                 CreateSession = info => new PushedReportSession(protocol, info.VendorId, info.ProductId),
                 Writable = false,
+                ReconnectMs = 1000,
                 Name = info => AnalogKeyboardCatalog.ModelName(protocol, info.VendorId, info.ProductId),
                 Keys = info => AnalogKeyboardCatalog.KeysFor(info.VendorId, info.ProductId),
             };
@@ -207,6 +234,8 @@ namespace PadForge.Engine.Common.AnalogKeyboard
                 Protocol = protocol,
                 Matches = info => Identify(info) == protocol,
                 CreateSession = info => AnalogKeyboardPoller.Create(protocol, info.VendorId, info.ProductId),
+                StartRetryMs = 1000,
+                ReconnectMs = 1000,
                 Name = info => AnalogKeyboardCatalog.ModelName(protocol, info.VendorId, info.ProductId),
                 Keys = info => AnalogKeyboardCatalog.KeysFor(info.VendorId, info.ProductId),
             };

@@ -173,6 +173,23 @@ namespace PadForge.Engine.Common.AnalogKeyboard
         public override bool Start(IAnalogKeyboardTransport io)
         {
             if (!AsksIdentity(_productId)) return true;
+            // HallJoy asks only under DrunkDeerMtx, taken within 100 ms, and
+            // otherwise reads the keyboard with the generic table
+            // (UniversalAnalogPluginFixed main.cpp:414-431).
+            var mutex = AnalogKeyboardNamedMutex.Get(AnalogKeyboardNamedMutex.DrunkDeer);
+            if (mutex != null && !mutex.Wait()) return true;
+            try
+            {
+                return AskIdentity(io);
+            }
+            finally
+            {
+                mutex?.Release();
+            }
+        }
+
+        private bool AskIdentity(IAnalogKeyboardTransport io)
+        {
             io.DiscardStale();
             if (!io.Send(IdentityRequest())) return true;
             int n = io.Receive(Buffer, AnswerTimeoutMs);
@@ -215,8 +232,25 @@ namespace PadForge.Engine.Common.AnalogKeyboard
             }
         }
 
+        /// <summary>One pass under DrunkDeerMtx, as Soup takes it around
+        /// the request and its three answers (AnalogueKeyboard.cpp:765-766).
+        /// A pass that cannot take it in time is a quiet pass.</summary>
         public override AnalogPollResult Pass(IAnalogKeyboardTransport io, AnalogKeyInputState output,
             Func<int, bool> isHeld)
+        {
+            var mutex = AnalogKeyboardNamedMutex.Get(AnalogKeyboardNamedMutex.DrunkDeer);
+            if (mutex != null && !mutex.Wait()) return AnalogPollResult.Idle;
+            try
+            {
+                return LockedPass(io, output);
+            }
+            finally
+            {
+                mutex?.Release();
+            }
+        }
+
+        private AnalogPollResult LockedPass(IAnalogKeyboardTransport io, AnalogKeyInputState output)
         {
             io.DiscardStale();
             if (!io.Send(Request())) return AnalogPollResult.Failed;
@@ -299,7 +333,22 @@ namespace PadForge.Engine.Common.AnalogKeyboard
         /// <summary>Depth for a Keychron travel byte.</summary>
         public static float Depth(int travel) => travel >= 5 ? Math.Min(travel / 235f, 1f) : 0f;
 
-        public override bool Start(IAnalogKeyboardTransport io) => AskVersion(io) == AnalogPollResult.Ok;
+        /// <summary>The version exchange under KeychronMtx, as Soup asks it
+        /// inside its locked pass (AnalogueKeyboard.cpp:902-903). A Start
+        /// that cannot take the mutex fails and is tried again.</summary>
+        public override bool Start(IAnalogKeyboardTransport io)
+        {
+            var mutex = AnalogKeyboardNamedMutex.Get(AnalogKeyboardNamedMutex.Keychron);
+            if (mutex != null && !mutex.Wait()) return false;
+            try
+            {
+                return AskVersion(io) == AnalogPollResult.Ok;
+            }
+            finally
+            {
+                mutex?.Release();
+            }
+        }
 
         /// <summary>The <c>A9 01</c> exchange: Ok with the version read,
         /// NoAnswer when no answer of at least three bytes came, Failed when
@@ -316,15 +365,26 @@ namespace PadForge.Engine.Common.AnalogKeyboard
             return AnalogPollResult.Ok;
         }
 
+        /// <summary>One pass under KeychronMtx (AnalogueKeyboard.cpp:902-903).
+        /// A pass that cannot take it in time is a quiet pass.</summary>
         public override AnalogPollResult Pass(IAnalogKeyboardTransport io, AnalogKeyInputState output,
             Func<int, bool> isHeld)
         {
-            if (_amVersion < 0)
+            var mutex = AnalogKeyboardNamedMutex.Get(AnalogKeyboardNamedMutex.Keychron);
+            if (mutex != null && !mutex.Wait()) return AnalogPollResult.Idle;
+            try
             {
-                var asked = AskVersion(io);
-                if (asked != AnalogPollResult.Ok) return asked;
+                if (_amVersion < 0)
+                {
+                    var asked = AskVersion(io);
+                    if (asked != AnalogPollResult.Ok) return asked;
+                }
+                return _fullReports ? FullPass(io, output) : StockPass(io, output, isHeld);
             }
-            return _fullReports ? FullPass(io, output) : StockPass(io, output, isHeld);
+            finally
+            {
+                mutex?.Release();
+            }
         }
 
         private AnalogPollResult FullPass(IAnalogKeyboardTransport io, AnalogKeyInputState output)
@@ -448,12 +508,39 @@ namespace PadForge.Engine.Common.AnalogKeyboard
             return true;
         }
 
+        /// <summary>One pass under MadlionsMtx (<see cref="AnalogKeyboardNamedMutex"/>).
+        /// A pass that cannot take it in time is a quiet pass: another reader
+        /// is mid-exchange with the keyboard.</summary>
         public override AnalogPollResult Pass(IAnalogKeyboardTransport io, AnalogKeyInputState output,
+            Func<int, bool> isHeld)
+        {
+            var mutex = AnalogKeyboardNamedMutex.Get(AnalogKeyboardNamedMutex.Madlions);
+            if (mutex != null && !mutex.Wait()) return AnalogPollResult.Idle;
+            try
+            {
+                return LockedPass(io, output, isHeld);
+            }
+            finally
+            {
+                mutex?.Release();
+            }
+        }
+
+        /// <summary>
+        /// A failed group ends the pass the way HallJoy's does
+        /// (AnalogueKeyboard.cpp:1312-1347 of its overlay): its keys read 0,
+        /// the keys collected before it are published and the ones after it
+        /// are not, and only eight failures in a row of one group end the
+        /// session. A write that fails counts as that group's failure, as
+        /// HallJoy's transactReport returns nothing for it.
+        /// </summary>
+        private AnalogPollResult LockedPass(IAnalogKeyboardTransport io, AnalogKeyInputState output,
             Func<int, bool> isHeld)
         {
             var keys = _layout.Keys;
             Span<ushort> answer = stackalloc ushort[4];
-            var result = AnalogPollResult.Ok;
+            bool failed = false;
+            int publishedKeys = keys.Length;
             for (int offset = 0; offset < keys.Length; offset += 4)
             {
                 bool wanted = (offset >> 4) == _state;
@@ -466,14 +553,18 @@ namespace PadForge.Engine.Common.AnalogKeyboard
                 if (!wanted) continue;
 
                 io.DiscardStale();
-                if (!io.Send(Request(offset))) return AnalogPollResult.Failed;
-                int n = io.Receive(Buffer, AnswerTimeoutMs);
+                // A write that fails is this group's failure, unless the read
+                // behind it shows the device gone.
+                int n = io.Send(Request(offset))
+                    ? io.Receive(Buffer, AnswerTimeoutMs)
+                    : io.Receive(Buffer, 0) < 0 ? -1 : 0;
                 if (n < 0) return AnalogPollResult.Failed;
                 int group = offset >> 2;
                 if (n == 0 || !ReadAnswer(Buffer.AsSpan(0, n), answer))
                 {
                     for (int i = 0; i < 4 && offset + i < keys.Length; i++) _travel[offset + i] = 0;
-                    result = ++_failures[group] >= FailuresTolerated ? AnalogPollResult.Failed : AnalogPollResult.NoAnswer;
+                    failed = ++_failures[group] >= FailuresTolerated;
+                    publishedKeys = offset;
                     break;
                 }
                 _failures[group] = 0;
@@ -482,10 +573,10 @@ namespace PadForge.Engine.Common.AnalogKeyboard
             // HallJoy advances the rotation after a failed pass too.
             int blocks = (keys.Length + 15) / 16;
             if (blocks != 0 && ++_state >= blocks) _state = 0;
-            if (result != AnalogPollResult.Ok) return result;
+            if (failed) return AnalogPollResult.Failed;
 
             output.ResetForReuse();
-            for (int i = 0; i < keys.Length; i++)
+            for (int i = 0; i < publishedKeys; i++)
                 if (keys[i] != AnalogKeyCodes.None && _travel[i] != 0)
                     output.Set(keys[i], _travel[i] / (float)FullTravel);
             return AnalogPollResult.Ok;

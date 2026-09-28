@@ -46,6 +46,17 @@ namespace PadForge.Engine.Common.AnalogKeyboard
             return 0;
         }
 
+        /// <summary>The code each slot publishes: its assignment on a slot the
+        /// board's table fills, 0 elsewhere and where the assignment decodes
+        /// to nothing (Map, rongyuan_snapshot_backend.cpp:253-265).</summary>
+        public static void Publication(IReadOnlyList<int> factory, IReadOnlyList<int> assigned, int[] publish)
+        {
+            for (int slot = 0; slot < publish.Length; slot++)
+                publish[slot] = slot < factory.Count && factory[slot] != 0 && slot < assigned.Count
+                    ? assigned[slot]
+                    : 0;
+        }
+
         /// <summary>The board ID of an 8F answer, little-endian at bytes 2 to
         /// 5, or 0 when the buffer is not one (rongyuan_snapshot_protocol.h:116-121).</summary>
         public static uint Board(ReadOnlySpan<byte> reply)
@@ -210,12 +221,16 @@ namespace PadForge.Engine.Common.AnalogKeyboard
         /// rongyuan_stream_backend.cpp:288-325): 84 FF answers the active
         /// profile (0 to 7), then 8A profile FF page answers sixteen 4-byte
         /// codes per page for pages 0 to 7. Any failed page fails admission.
-        /// HallJoy binds these only for its layout remapping, which reads the
-        /// factory keys unless a user layout activates it. PadForge publishes
-        /// the factory keys, as that default does. The layout list HallJoy
-        /// publishes here would reject a key map with a repeated factory key,
-        /// and none of the admitted boards that publish one has such a
-        /// repeat, so reading the pages is the whole check.</summary>
+        /// HallJoy binds each slot to its factory key and to this assignment
+        /// and reads the assignments whenever its automatic layout remaps,
+        /// its default (Get, rongyuan_snapshot_backend.cpp:41-43, 457-465,
+        /// native_layout_state.h:30-33, keyboard_layout.cpp:1786-1787).
+        /// PadForge has no layout presets, so the assignments name the keys
+        /// on every board, and a slot assigned nothing decodable is not
+        /// published. The layout list HallJoy publishes here would reject a
+        /// key map with a repeated factory key, and none of the admitted
+        /// boards that publish one has such a repeat, so reading the pages is
+        /// the whole check.</summary>
         public bool ReadAssignments(IAnalogKeyboardTransport io, int[] assigned)
         {
             var reply = new byte[ReportLength];
@@ -260,6 +275,7 @@ namespace PadForge.Engine.Common.AnalogKeyboard
         private readonly bool[] _seen = new bool[4];
         private readonly long[] _stamp = new long[4];
         private readonly int[] _assigned = new int[128];
+        private readonly int[] _publish = new int[128];
         private RongYuanSnapshotModel _model;
         private int[] _keyOrder;
         private int _version;
@@ -294,6 +310,9 @@ namespace PadForge.Engine.Common.AnalogKeyboard
         /// profile, from the 8A pages.</summary>
         public IReadOnlyList<int> AssignedCodes => _assigned;
 
+        /// <summary>The key code each slot publishes.</summary>
+        public IReadOnlyList<int> PublishedCodes => _publish;
+
         public override string ModelName => _model?.Name;
         public override int[] KeyOrder => _keyOrder;
 
@@ -304,7 +323,8 @@ namespace PadForge.Engine.Common.AnalogKeyboard
                 _precise?.Dispose();
                 return false;
             }
-            _keyOrder = AnalogKeyboardData.KeysOf(_model.Codes);
+            RongYuanProtocol.Publication(_model.Codes, _assigned, _publish);
+            _keyOrder = AnalogKeyboardData.KeysOf(_publish);
             return true;
         }
 
@@ -359,7 +379,7 @@ namespace PadForge.Engine.Common.AnalogKeyboard
         private void Compose(AnalogKeyInputState output, long now)
         {
             output.ResetForReuse();
-            var codes = _model.Codes;
+            var codes = _publish;
             for (int slot = 0; slot < 128; slot++)
             {
                 int code = codes[slot];
@@ -407,6 +427,7 @@ namespace PadForge.Engine.Common.AnalogKeyboard
         private readonly byte[] _reply = new byte[RongYuanProtocol.ReportLength];
         private readonly int[] _milli = new int[128];
         private readonly int[] _assigned = new int[128];
+        private readonly int[] _publish = new int[128];
         private RongYuanStreamModel _model;
         private int[] _keyOrder;
         private int _usbVersion;
@@ -449,6 +470,9 @@ namespace PadForge.Engine.Common.AnalogKeyboard
         public bool Poisoned => _channel.Poisoned;
         public IReadOnlyList<int> AssignedCodes => _assigned;
 
+        /// <summary>The key code each slot publishes.</summary>
+        public IReadOnlyList<int> PublishedCodes => _publish;
+
         public override string ModelName => _model?.Name;
         public override int[] KeyOrder => _keyOrder;
 
@@ -459,7 +483,8 @@ namespace PadForge.Engine.Common.AnalogKeyboard
                 _precise?.Dispose();
                 return false;
             }
-            _keyOrder = AnalogKeyboardData.KeysOf(_model.Codes);
+            RongYuanProtocol.Publication(_model.Codes, _assigned, _publish);
+            _keyOrder = AnalogKeyboardData.KeysOf(_publish);
             // HallJoy opens the input collection, sets its 128 buffers and
             // flushes its queue right before the enable (lines 228-231, 342).
             io.DiscardStale();
@@ -535,7 +560,7 @@ namespace PadForge.Engine.Common.AnalogKeyboard
         private void Compose(AnalogKeyInputState output)
         {
             output.ResetForReuse();
-            var codes = _model.Codes;
+            var codes = _publish;
             for (int slot = 0; slot < 128; slot++)
             {
                 int code = codes[slot];

@@ -24,9 +24,10 @@ namespace PadForge.Engine
     /// </summary>
     public sealed class AnalogKeyInputState
     {
-        /// <summary>Most keys one state carries. Past it, further keys in the
-        /// same report are dropped, which no reference protocol reaches: the
-        /// largest report any of them sends holds 16 keys.</summary>
+        /// <summary>Most keys one state carries. A pushed report holds at most
+        /// 16 keys, but the routes that read the whole matrix report every
+        /// key above rest, so a full state keeps the deepest keys: a new key
+        /// deeper than the shallowest entry takes its place.</summary>
         public const int MaxKeys = 64;
 
         /// <summary>Upper bound of the key code space: Wooting's namespace
@@ -43,6 +44,12 @@ namespace PadForge.Engine
         /// <see cref="Count"/>.</summary>
         public float[] Depths;
 
+        /// <summary>When a mapping last read each key, Environment.TickCount
+        /// by key code (0 for never), or null. The device row owns the array
+        /// and every copy of its state carries it, so a mapping read on any
+        /// copy marks the key as one a mapping uses.</summary>
+        public int[] ReadStamps;
+
         public AnalogKeyInputState()
         {
             Codes = new int[MaxKeys];
@@ -57,9 +64,22 @@ namespace PadForge.Engine
             return 0f;
         }
 
+        /// <summary><see cref="Get"/> for a mapping: also stamps the key in
+        /// <see cref="ReadStamps"/> when the state carries them.</summary>
+        public float Read(int code)
+        {
+            var stamps = ReadStamps;
+            if (stamps != null && code > 0 && code < stamps.Length)
+                stamps[code] = Environment.TickCount | 1;
+            return Get(code);
+        }
+
         /// <summary>Records a key's depth, replacing an earlier entry for the
         /// same code. A depth at or below 0 removes the key, and a depth past 1
-        /// is clamped. Returns false only when the state is full.</summary>
+        /// is clamped. In a full state the key takes the place of the
+        /// shallowest entry when it is deeper. Returns false only when the key
+        /// was dropped for being no deeper than every entry of a full
+        /// state.</summary>
         public bool Set(int code, float depth)
         {
             if (code <= 0 || code >= CodeCount) return true;
@@ -75,7 +95,16 @@ namespace PadForge.Engine
                 Depths[i] = depth;
                 return true;
             }
-            if (Count >= MaxKeys) return false;
+            if (Count >= MaxKeys)
+            {
+                int shallowest = 0;
+                for (int i = 1; i < Count; i++)
+                    if (Depths[i] < Depths[shallowest]) shallowest = i;
+                if (depth <= Depths[shallowest]) return false;
+                Codes[shallowest] = code;
+                Depths[shallowest] = depth;
+                return true;
+            }
             Codes[Count] = code;
             Depths[Count] = depth;
             Count++;
@@ -110,20 +139,25 @@ namespace PadForge.Engine
 
         /// <summary>Deep copy into <paramref name="dst"/>. The whole arrays
         /// travel, not only the used part, so a copy equals its source field
-        /// for field.</summary>
+        /// for field. <see cref="ReadStamps"/> travels by reference: it is the
+        /// device's.</summary>
         public void CopyInto(AnalogKeyInputState dst)
         {
             dst.Count = Count;
             Array.Copy(Codes, dst.Codes, MaxKeys);
             Array.Copy(Depths, dst.Depths, MaxKeys);
+            dst.ReadStamps = ReadStamps;
         }
 
-        /// <summary>Fresh-constructed state without dropping the arrays.</summary>
+        /// <summary>Fresh-constructed state without dropping the arrays. The
+        /// read stamps detach too: the device row attaches its own to every
+        /// state it hands out.</summary>
         public void ResetForReuse()
         {
             Count = 0;
             Array.Clear(Codes, 0, MaxKeys);
             Array.Clear(Depths, 0, MaxKeys);
+            ReadStamps = null;
         }
 
         /// <summary>True when both states hold the same keys at the same depths,

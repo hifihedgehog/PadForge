@@ -331,6 +331,10 @@ namespace PadForge.ViewModels
         {
             _suppressPrimaryKindGate = false;
             EnforcePrimaryKindGate();
+            // A stored row whose primary kind opens the Combine picker can
+            // carry no mode of its own. Give it the default, as the first
+            // extra source's add does.
+            if (IsMultiSource) EnsureCombineModeDefault();
         }
 
         private void EnforcePrimaryKindGate()
@@ -358,6 +362,11 @@ namespace PadForge.ViewModels
                 // A primary set (or loaded) as InvertOnHold with no contributing
                 // secondary is inert; revert it to Direct (#111 audit C).
                 EnforcePrimaryKindGate();
+                // Incremental or Ramp on a lone source opens the Combine
+                // picker. Give it the default then, as a second source does,
+                // so the picker never reads blank. A load sets it once the
+                // whole row is in (EndLoadRow).
+                if (!_suppressPrimaryKindGate && IsMultiSource) EnsureCombineModeDefault();
             }
             if (string.Equals(e.PropertyName, nameof(MappingSourceItem.DeviceGuid), StringComparison.Ordinal)
                 && sender is MappingSourceItem msi)
@@ -2289,7 +2298,9 @@ namespace PadForge.ViewModels
                 || t.StartsWith("KbmMouse", StringComparison.Ordinal)
                 || t.StartsWith("KbmScroll", StringComparison.Ordinal)
                 || t.StartsWith("MidiCC", StringComparison.Ordinal)
-                || t.StartsWith("Touchpad", StringComparison.Ordinal)
+                // Only the finger positions: Touchpad Click and the contact
+                // rows are buttons to the engine (EvalTouchpadButton).
+                || IsTouchpadAxisTarget
                 || IsVrAxisTarget(t)
                 || Engine.Data.MappingSetMigrator.IsMotionTarget(t);
             CombineMode = isAxis ? "MaxAbs" : "OR";

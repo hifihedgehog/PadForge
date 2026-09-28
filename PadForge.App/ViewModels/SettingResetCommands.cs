@@ -722,7 +722,12 @@ namespace PadForge.ViewModels
             {
                 case nameof(CombineMode):
                 {
+                    // Back to the row's default, the one a second source
+                    // picks: Strongest on an axis, Either on a button. The
+                    // bare "" means the same to the engine, but no picker
+                    // entry carries it, so the dropdown read blank.
                     CombineMode = "";
+                    if (IsMultiSource) EnsureCombineModeDefault();
                     break;
                 }
                 case nameof(CombineExpression):

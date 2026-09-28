@@ -68,7 +68,7 @@ namespace PadForge.Common
             }
 
             // Bundled motion-passthrough descriptors don't depend on
-            // device-objects metadata — they are protocol-level markers
+            // device-objects metadata. They are protocol-level markers
             // that always resolve to a fixed localized name.
             {
                 string md = mapping.SourceDescriptor;
@@ -92,8 +92,8 @@ namespace PadForge.Common
             // descriptor while their own dropdown shows the localized picker
             // entry. With no device context there is no single-pad case to
             // shorten for, so the any-device naming carries the 1-based pad
-            // prefix everywhere, mirroring BuildDeviceAgnosticChoices;
-            // concrete-device rows keep the per-device shortening (bare
+            // prefix everywhere, mirroring BuildDeviceAgnosticChoices.
+            // Concrete-device rows keep the per-device shortening (bare
             // pad-0 click).
             {
                 string t = mapping.SourceDescriptor;
@@ -109,7 +109,7 @@ namespace PadForge.Common
                     || t.StartsWith("Gyro ", System.StringComparison.Ordinal)
                     || t.StartsWith("Menu ", System.StringComparison.Ordinal)
                     || t.StartsWith("Mouse Gesture ", System.StringComparison.Ordinal)
-                    // #241: route NFC to the friendly resolver; the numeric
+                    // #241: route NFC to the friendly resolver. The numeric
                     // token-2 path below would leave the raw descriptor on the
                     // chip.
                     || PadForge.Engine.Common.Mapping.SourceCoercion.IsNfcTagDescriptor(t)
@@ -243,7 +243,7 @@ namespace PadForge.Common
                     || t.StartsWith("Gyro ", System.StringComparison.Ordinal)
                     || t.StartsWith("Menu ", System.StringComparison.Ordinal)
                     || t.StartsWith("Mouse Gesture ", System.StringComparison.Ordinal)
-                    // #241: route NFC to the friendly resolver; the numeric
+                    // #241: route NFC to the friendly resolver. The numeric
                     // token-2 path below would leave the raw descriptor on the
                     // chip.
                     || PadForge.Engine.Common.Mapping.SourceCoercion.IsNfcTagDescriptor(t)
@@ -291,7 +291,7 @@ namespace PadForge.Common
         /// Returns null if no match found. <paramref name="padPrefixAlways"/>
         /// selects the any-device naming for the touchpad families (every
         /// label carries the 1-based pad prefix, matching
-        /// BuildDeviceAgnosticChoices); false keeps the per-device
+        /// BuildDeviceAgnosticChoices). False keeps the per-device
         /// shortening (bare pad-0 click, noun-wrapped pad-0 stick channels).
         /// </summary>
         internal static string ResolveDescriptorText(string descriptor, DeviceObjectItem[] objects, bool padPrefixAlways = false)
@@ -309,7 +309,7 @@ namespace PadForge.Common
             // "Menu {id} Item {k}" (#9 B-17): a radial / touch menu cell's
             // hover-commit fire. The label keeps the RAW cell index (the
             // serialized touch_menu_button_{k} identity, matching the
-            // Menus-tab editor); renumbering for display would re-create
+            // Menus-tab editor). Renumbering for display would re-create
             // the #196 off-by-one trap.
             if (PadForge.Engine.Common.Mapping.SourceCoercion.TryParseMenuItem(
                     s, out int chipMenuId, out int chipMenuItem))
@@ -325,7 +325,7 @@ namespace PadForge.Common
             // Touchpad descriptors → localized display names. Mirrors the
             // picker (AddTouchpadRawChoices): per-finger axes spell out pad
             // and finger explicitly ("Touchpad 1 Finger 1 X", 1-based for
-            // display, 0-based in the descriptor); the click is a single
+            // display, 0-based in the descriptor). The click is a single
             // SDL button with no numbering.
             if (s.StartsWith("Touchpad", System.StringComparison.Ordinal))
             {
@@ -345,7 +345,7 @@ namespace PadForge.Common
                     return prefix + clickLabel;
                 }
                 // "Touchpad {pad} Click" → the pad-0 click is the single SDL
-                // click button and stays unnumbered on a concrete device; a
+                // click button and stays unnumbered on a concrete device. A
                 // pad-1+ click (Steam Controller era imports) and any click
                 // in the any-device context carry the 1-based pad prefix so
                 // the chip reads exactly like its picker entry. Exactly 3
@@ -371,7 +371,7 @@ namespace PadForge.Common
                     && int.TryParse(tp[3], out int fingerIdx))
                 {
                     // Finger ring (v26): the edge-ring pair read, whole-pad
-                    // or windowed to a half; windows render as the standard
+                    // or windowed to a half. Windows render as the standard
                     // parenthetical.
                     if (tp[4].Equals("Ring", System.StringComparison.OrdinalIgnoreCase))
                     {
@@ -448,7 +448,7 @@ namespace PadForge.Common
                 }
                 // "Touchpad {pad} Pointer {X|Y}[ Left|Right]" → the absolute
                 // pointer (#9 B-15). Same 1-based pad numbering and half-
-                // window formats as the Finger family; MUST run before the
+                // window formats as the Finger family. MUST run before the
                 // gesture fallback below or "Pointer" would parse as a
                 // gesture name and resolve to null.
                 if (tp.Length >= 4 && tp.Length <= 5 && int.TryParse(tp[1], out int ptrPad)
@@ -494,7 +494,7 @@ namespace PadForge.Common
                 // "Touchpad {pad} {GestureName}" → localized gesture label.
                 // Same naming the picker builds via AddTouchpadGestureChoices.
                 // padPrefixAlways (the any-device context) wraps pad 0 too,
-                // matching BuildDeviceAgnosticChoices; the per-device context
+                // matching BuildDeviceAgnosticChoices. The per-device context
                 // has no pad count on this reverse path, so pad 0 stays
                 // unwrapped and pads past the first always carry the prefix.
                 if (tp.Length >= 3 && int.TryParse(tp[1], out int gPadIdx))
@@ -558,7 +558,7 @@ namespace PadForge.Common
 
             // Flick stick descriptors (#225) → localized display names. The
             // leading 'F' never enters the I/H prefix grammar, so the prefix
-            // here is always empty; kept for shape consistency. Touch-surface
+            // here is always empty. Kept for shape consistency. Touch-surface
             // forms (v26) MUST resolve before the stick-name tail test: their
             // half suffix also ends with "Left".
             if (PadForge.Engine.Common.Mapping.SourceCoercion.IsFlickStickDescriptor(s))
@@ -582,7 +582,7 @@ namespace PadForge.Common
 
             // NFC tag descriptors (#241): "Any NFC Tag" and "NFC Tag N".
             // The numbered form resolves its registry button back to the
-            // user's tag name; an unregistered/removed button falls back to
+            // user's tag name. An unregistered/removed button falls back to
             // the generic label so a stale binding still reads sensibly.
             if (PadForge.Engine.Common.Mapping.SourceCoercion.TryGetNfcTagButton(s, out int nfcButton))
             {
@@ -869,7 +869,7 @@ namespace PadForge.Common
             // Two touchpad surfaces: the translator's trackpad resolvers
             // emit pad indices 0 (LEFT) and 1 (RIGHT, Steam Controller /
             // Deck era configs). Descriptor spellings match the resolver
-            // output exactly; display strings reuse the per-device picker's
+            // output exactly. Display strings reuse the per-device picker's
             // keys so the two lists read the same.
             for (int p = 0; p < 2; p++)
             {
@@ -1227,7 +1227,7 @@ namespace PadForge.Common
         /// <summary>Contextual display label for the "Motion Lean L" aux-accel
         /// descriptor (#199). The sensor is the Nunchuk on Wii remotes
         /// (RVL-CNT-01 0x0306 / -TR 0x0330) and the left Joy-Con on combined
-        /// Nintendo pairs; anything else (or no device context) gets the
+        /// Nintendo pairs. Anything else (or no device context) gets the
         /// neutral label.</summary>
         internal static string ResolveMotionLeanAuxName(PadForge.Engine.Data.UserDevice ud)
         {
@@ -1355,8 +1355,8 @@ namespace PadForge.Common
         ///
         /// <para>When <paramref name="touchpadSettingsForPad"/> is
         /// supplied, gesture entries are gated by the per-pad
-        /// <see cref="PadForge.Engine.Touchpad.TouchpadGestureSettings"/>
-        /// — disabled pads + disabled gesture categories + Mode
+        /// <see cref="PadForge.Engine.Touchpad.TouchpadGestureSettings"/>.
+        /// Disabled pads + disabled gesture categories + Mode
         /// (InBoxOnly / CustomOnly / Both) all hide the matching
         /// dropdown entries. Null = no gating, shows everything the
         /// device's hardware could support (the legacy behavior).</para>
@@ -1711,7 +1711,7 @@ namespace PadForge.Common
                 }
 
                 // Flick stick (#225): whole-stick mouse-turn inputs. Map one
-                // to Mouse X on a keyboard/mouse slot; the engine resolves
+                // to Mouse X on a keyboard/mouse slot. The engine resolves
                 // the stick axes per device through the Gamepad alias table
                 // and the tuning rides the Flick Stick card on the Sticks
                 // tab. Same gamepad gate as the alias family: the read is
@@ -1737,7 +1737,7 @@ namespace PadForge.Common
 
             // Touchpad raw sources (per-finger axes + click) for devices
             // with HasTouchpad or Touchpad type. Distinct from the
-            // higher-level gesture entries below — these are direct
+            // higher-level gesture entries below. These are direct
             // hardware reads (X / Y / Down per finger, Click). Gesture
             // entries are HARDWARE ABSTRACTIONS that live after the
             // gyro/motion block at the bottom of the picker, since
@@ -1747,7 +1747,7 @@ namespace PadForge.Common
             // Click is dropped only for PTP system touchpads (laptop
             // trackpads enumerated via Raw Input) which have no click
             // button. They're uniquely identified by IsTouchpad &&
-            // Device == null — PrecisionTouchpadReader handles them
+            // Device == null. PrecisionTouchpadReader handles them
             // directly without attaching an ISdlInputDevice wrapper.
             // Every other touchpad-capable device (DualSense, DS4,
             // web touchpad, overlay) has a wrapper and a click.
@@ -1755,11 +1755,11 @@ namespace PadForge.Common
             {
                 // One raw-axis block per touchpad surface the device exposes.
                 // Descriptors stay 0-based internally ("Touchpad 0 Finger 0 X",
-                // "Touchpad 1 Finger 0 X" for a second pad); the display names
+                // "Touchpad 1 Finger 0 X" for a second pad). The display names
                 // built below are 1-based. Multi-touchpad devices (Steam
                 // Controller 2026 / Steam Deck / original Steam Controller) get
                 // a block per pad. Pad count comes from the live device
-                // snapshot, mirroring AddTouchpadGestureChoices; absent a
+                // snapshot, mirroring AddTouchpadGestureChoices. Absent a
                 // wrapper it stays a single pad.
                 // Pad + finger counts come from the live snapshot when the
                 // device is online (authoritative), else from the persisted
@@ -1769,8 +1769,8 @@ namespace PadForge.Common
                 // the Steam Controller 2026 reports 1 finger per pad, DualSense 2.
                 // Emitting a fixed two-finger block produced a dead "finger 2" on
                 // single-finger pads, so gate each finger on the actual count.
-                // Published snapshot (see the sole-reader pooling contract);
-                // persisted Cap* counts remain the fallback.
+                // Published snapshot (see the sole-reader pooling contract).
+                // Persisted Cap* counts remain the fallback.
                 CustomInputState tpState = ud.InputState;
 
                 int numPads = (tpState?.Touchpads != null && tpState.Touchpads.Length > 0)
@@ -1835,7 +1835,7 @@ namespace PadForge.Common
                         // Region-windowed halves (#9 B-1): only single-pad
                         // devices (DS4 / DualSense) offer them. Their one
                         // physical pad is what Steam splits into left/right
-                        // halves; a multi-pad device has a real pad per
+                        // halves. A multi-pad device has a real pad per
                         // half, so the windowed variants would be noise.
                         if (numPads == 1)
                         {
@@ -1913,7 +1913,7 @@ namespace PadForge.Common
             // not HasGyro, because they read the accelerometer's gravity
             // direction: a bare Wii Remote has accel and no gyro and still
             // tilts. Listed here beside the rate family so the "Gyro ..."
-            // names sort together in a device's own group; the (Any device)
+            // names sort together in a device's own group. The (Any device)
             // group carries them too, like the rest of the gyro family.
             if (ud.HasAccel)
             {
@@ -2002,7 +2002,7 @@ namespace PadForge.Common
             }
 
             // Wii Balance Board derived sources (#146). The four corner load cells
-            // also arrive raw on the stick axes; these are the friendly derived
+            // also arrive raw on the stick axes. These are the friendly derived
             // channels (total weight + center-of-gravity lean).
             if (ud.IsBalanceBoard)
             {
@@ -2030,7 +2030,7 @@ namespace PadForge.Common
             }
 
             // NFC tag reader (#241): the right Joy-Con / Pro Controller reads
-            // NFC tags (amiibo UIDs). "Any NFC Tag" fires on any tag; each
+            // NFC tags (amiibo UIDs). "Any NFC Tag" fires on any tag. Each
             // registered tag (NfcTagRegistry) is its own bindable source,
             // stable button, display name from the registry. Map to a macro
             // trigger for "tap tag -> action", or to a virtual button. The
@@ -2097,7 +2097,7 @@ namespace PadForge.Common
 
             // Gravity-lean input: tilt the controller like a wheel and the lean
             // angle drives whatever axis the user maps it to. A normal input
-            // descriptor — it does NOT override the target's other sources.
+            // descriptor. It does NOT override the target's other sources.
             // Tuning (tilt deadzones / grip orientation) lives on the Gyro
             // tab's Motion Steering card, per assigned device.
             if (ud.HasAccel)
@@ -2122,9 +2122,9 @@ namespace PadForge.Common
 
             // Touchpad gesture descriptors come LAST in the per-device
             // section so they appear after raw hardware (touchpad axes,
-            // gyro, motion-passthrough) — they're abstractions that
+            // gyro, motion-passthrough). They're abstractions that
             // sit on top of the raw input. Surfacing is per actual pad
-            // index (multi-pad devices get per-pad listings); per-pad
+            // index (multi-pad devices get per-pad listings). Per-pad
             // enable + category gating runs in
             // InputService.PopulateAvailableInputs against
             // _inputManager.TouchpadGestureSettingsProvider so disabled
@@ -2135,8 +2135,8 @@ namespace PadForge.Common
             // Mouse gestures (issue #200): each SELECTED gesture button
             // carries its own five one-shot pulses, so different buttons can
             // drive different mapping combos. Buttons come from the slot's
-            // Mouse-tab selection (default X1 when the engine is stopped);
-            // the Enabled toggle governs firing, not visibility, so a
+            // Mouse-tab selection (default X1 when the engine is stopped).
+            // The Enabled toggle governs firing, not visibility, so a
             // disabled setup stays discoverable.
             if (ud.IsMouse)
             {
@@ -2179,14 +2179,14 @@ namespace PadForge.Common
             (ud.CapType != InputDeviceType.Gamepad &&
              ud.CapType != InputDeviceType.Mouse &&
              ud.CapType != InputDeviceType.Keyboard &&
-             // NFC readers carry one named button ("Any NFC Tag"); show the
+             // NFC readers carry one named button ("Any NFC Tag"). Show the
              // friendly name from GetDeviceObjects, not "Button 0" (#150).
              ud.CapType != InputDeviceType.Nfc &&
              // Consumer Control buttons are named from the canonical usage
              // table ("Play/Pause", "Voice Command"), not "Button 0" (#168).
              ud.CapType != InputDeviceType.ConsumerControl &&
              // Microphone rows' entire surface is named phrases ("Any
-             // Phrase", the user's own names); numbered labels would hide
+             // Phrase", the user's own names). Numbered labels would hide
              // every one of them (#317, the #150 shape again).
              ud.CapType != InputDeviceType.Microphone &&
              // Handheld hidden buttons are named by the user at learn time
@@ -2211,7 +2211,7 @@ namespace PadForge.Common
         /// ≥2 fingers, 3-finger only on ≥3, etc. Shape gestures
         /// (Circle / Square / ...) are always available since they're
         /// single-finger. Custom user-recorded gestures intentionally
-        /// don't surface here — they appear in the picker only after
+        /// don't surface here. They appear in the picker only after
         /// the user records them through the Touchpad tab, gated by
         /// the per-gesture DeviceClass / TouchpadIndex filter.</summary>
         private static void AddTouchpadGestureChoices(
@@ -2221,15 +2221,15 @@ namespace PadForge.Common
             System.Func<int, PadForge.Engine.Touchpad.TouchpadGestureSettings> settingsForPad = null)
         {
             // Best-effort pad / finger counts. Live device snapshot
-            // gives the authoritative numbers; absent that, fall back
+            // gives the authoritative numbers. Absent that, fall back
             // per device type. PTP system touchpads (ud.IsTouchpad with
-            // ud.Device == null — data flows through PrecisionTouchpadReader
+            // ud.Device == null, because data flows through PrecisionTouchpadReader
             // rather than an ISdlInputDevice wrapper) always support
             // PtpMaxFingers (5) per the HID PTP spec, so the fallback
             // must reflect that or 3/4/5-finger gestures never surface
             // in the picker.
             // Persisted CapTouchpadCount keeps both pads' gesture descriptors
-            // available when the device is offline (no live wrapper); the live
+            // available when the device is offline (no live wrapper). The live
             // snapshot overrides with authoritative pad + finger counts.
             int numPads = ud.CapTouchpadCount > 0 ? ud.CapTouchpadCount : 1;
             int fallbackFingers = ud.IsTouchpad
@@ -2274,11 +2274,11 @@ namespace PadForge.Common
                     ? string.Format(si.Mapping_TouchpadGesture_PadPrefix_Format, p + 1, label)
                     : label;
 
-                // Gating — when the App layer passes a per-pad settings
+                // Gating. When the App layer passes a per-pad settings
                 // provider, surface only the gesture categories the
-                // user has enabled. Disabled pads contribute nothing;
+                // user has enabled. Disabled pads contribute nothing.
                 // "InBoxOnly" suppresses custom (custom is surfaced by
-                // a different code path in InputService); each category
+                // a different code path in InputService). Each category
                 // toggle hides its descriptors when off. Provider==null
                 // defaults to "show everything" so callers without
                 // profile context (legacy / future device-only picker)
@@ -2286,8 +2286,8 @@ namespace PadForge.Common
                 var s = settingsForPad?.Invoke(p);
 
                 // Stick / D-pad output is independent of the gesture
-                // master toggle and the In-box / Custom mode picker —
-                // it's a separate channel the user opts into via its
+                // master toggle and the In-box / Custom mode picker.
+                // It's a separate channel the user opts into via its
                 // own EnableJoystickOutput. Surface its descriptors
                 // first so a user who only wants stick/D-pad output (and
                 // has gestures fully disabled) still sees these in the
@@ -2295,10 +2295,10 @@ namespace PadForge.Common
                 //
                 // Display names ALWAYS include the word "Touchpad" so
                 // the user can tell these apart from a gamepad's own
-                // physical sticks and D-pad — picking "Stick X" out of
+                // physical sticks and D-pad. Picking "Stick X" out of
                 // a flat list when your DualSense is also on the slot
                 // would be ambiguous otherwise. For single-pad devices
-                // the wrap is plain "Touchpad Stick X"; multi-pad uses
+                // the wrap is plain "Touchpad Stick X". Multi-pad uses
                 // the pad-prefix format "Touchpad 1: Stick X" (1-based,
                 // matching the per-finger axes and Devices previews).
                 if (s?.EnableJoystickOutput == true)
@@ -2390,7 +2390,7 @@ namespace PadForge.Common
                 }
                 if (gateLongPress)
                     AddGesture(list, p, "LongPress", PadWrap(si.Mapping_TouchpadGesture_LongPress));
-                // Radial zones — only the currently-active count
+                // Radial zones. Only the currently-active count
                 // appears in the picker (matching the recipe semantics:
                 // "Settings_side toggle gates which count fires").
                 // Append the degree-from-top angle so the user can tell
@@ -2509,8 +2509,8 @@ namespace PadForge.Common
         /// by the reverse descriptor path (mapping-row neg sources, the
         /// macro trigger chip) so gesture descriptors stop rendering as
         /// raw internal names. In-box names look up their
-        /// Mapping_TouchpadGesture_* key; custom gestures show their
-        /// user-given name; radial zones reuse the picker's count/index
+        /// Mapping_TouchpadGesture_* key. Custom gestures show their
+        /// user-given name. Radial zones reuse the picker's count/index
         /// + angle format. Returns null for names that resolve to no
         /// known gesture so callers can fall back to raw text.</summary>
         internal static string ResolveTouchpadGestureLabel(Strings si, string gestureName)
@@ -2563,8 +2563,8 @@ namespace PadForge.Common
         /// label ("0°" = up, "90°" = right, "180°" = down, "270°" = left).
         /// Matches the engine math: zone 0 anchors at 0° (top), zones
         /// increase clockwise in 360/N steps. Degrees-from-top is the
-        /// most culture-neutral notation for compass-style directions —
-        /// the analog-clock convention (e.g. "3 o'clock" = right)
+        /// most culture-neutral notation for compass-style directions.
+        /// The analog-clock convention (e.g. "3 o'clock" = right)
         /// doesn't read the same everywhere, but mathematics degrees do.</summary>
         private static string RadialZoneAngleLabel(int zoneCount, int zoneIdx)
         {

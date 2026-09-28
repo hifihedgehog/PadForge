@@ -9,8 +9,8 @@ namespace PadForge.Engine.Common.AnalogKeyboard
     /// (docs/research/ROG_AZOTH_96_HE_M901_FIRMWARE_RECON_2026-09-06.md),
     /// checked against ASUS Gear Link, the keyboard's WebHID configurator, and
     /// the M901 firmware 7.00.30 it downloads (analog-keyboard-references
-    /// asus-gear-link; chunk BJ-_oHSK.js is "BJ" and dDfc5LWq.js "dD" below,
-    /// offsets in characters). HallJoy keeps its route out of ordinary builds
+    /// asus-gear-link). Chunk BJ-_oHSK.js is "BJ" and dDfc5LWq.js "dD" below,
+    /// offsets in characters. HallJoy keeps its route out of ordinary builds
     /// because no one has traced the keyboard (recon:92-101).
     ///
     /// <para>Two collections of one keyboard take part. The control

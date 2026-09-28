@@ -27,7 +27,7 @@ namespace PadForge.Common.Input
         /// <summary>
         /// SDL instance IDs that we have already opened (joysticks), each with
         /// the wrapper opened for it. Used to detect new vs. already-known
-        /// devices; the wrapper reference lets the disconnect sweep dispose an
+        /// devices. The wrapper reference lets the disconnect sweep dispose an
         /// orphan whose UserDevice no longer points at it (UI Remove, or a
         /// replug rebind that swapped ud.Device to a fresh wrapper) instead of
         /// leaving its SDL handles to the GC finalizer racing the poll loop.
@@ -36,17 +36,17 @@ namespace PadForge.Common.Input
         private readonly Dictionary<uint, SdlDeviceWrapper> _openedSdlInstanceIds = new Dictionary<uint, SdlDeviceWrapper>();
 
         // SDL instance IDs identified as OUR OWN HM virtuals and rejected
-        // by the self-readback guard; kept so each enumeration pass skips
+        // by the self-readback guard. Kept so each enumeration pass skips
         // them instead of re-opening and re-probing every 2 s. Cleared
-        // implicitly on process restart; SDL instance IDs are unique per
+        // implicitly on process restart. SDL instance IDs are unique per
         // connection so a REAL device never inherits a suppressed id.
         private readonly HashSet<uint> _suppressedSelfVirtualIds = new();
 
         /// <summary>
         /// First-observed tick (UTC) per SDL instance ID for which the
         /// device has either vanished from SDL_GetJoysticks or reported
-        /// IsAttached=false. Used by Phase 2 to debounce transient drops —
-        /// xinputhid's slot-assignment pass during virtual creation can
+        /// IsAttached=false. Used by Phase 2 to debounce transient drops.
+        /// The xinputhid slot-assignment pass during virtual creation can
         /// briefly make a physical controller look disconnected on one
         /// poll cycle. Calling MarkDeviceOffline on that first cycle nulls
         /// out ud.Device and freezes the Devices-page preview (S2 violation).
@@ -97,7 +97,7 @@ namespace PadForge.Common.Input
             if (!_sdlInitialized)
                 return;
 
-            // No wait for App.OrphanSweepTask — the SDL3 fork filters
+            // No wait for App.OrphanSweepTask. The SDL3 fork filters
             // HIDMaestro HIDs out of enumeration whether or not the prior
             // session's kernel cleanup has finished, so we can enumerate
             // immediately. Blocking the polling thread on the sweep was
@@ -155,7 +155,7 @@ namespace PadForge.Common.Input
                     // interface paths carry no HIDMAESTRO marker (the fork
                     // filter reads DEVPKEY hardware IDs for that reason).
                     // So this guard catches failed-handshake and
-                    // serial-preserving cases only; the fork enumeration
+                    // serial-preserving cases only. The fork enumeration
                     // filter remains the primary defense, and the XInput
                     // backend leak (no serial, no path marker) is out of
                     // scope here entirely.
@@ -276,7 +276,7 @@ namespace PadForge.Common.Input
                             _rawInputEnumPending = true;
                         }
                     }
-                    catch { /* best effort — next cycle will retry */ }
+                    catch { /* best effort: the next cycle retries */ }
                     finally { _rawInputEnumRunning = false; }
                 });
             }
@@ -348,7 +348,7 @@ namespace PadForge.Common.Input
                 foreach (var h in disconnected)
                     _openedPtpHandles.Remove(h);
 
-                // "All Touchpads (Merged)" aggregate device — always present when PTP is available.
+                // "All Touchpads (Merged)" aggregate device. Always present when PTP is available.
                 // Reset flag if the user removed the merged device from the Devices page.
                 if (_ptpMergedCreated && FindOnlineDeviceByInstanceGuid(PtpMergedGuid) == null)
                     _ptpMergedCreated = false;
@@ -855,12 +855,12 @@ namespace PadForge.Common.Input
                 // disposes the stale one right there
                 // (UserDevice.LoadFromDevice), the same flow every
                 // exact-guid rebind has used since 54b572b9.
-                // DeviceLiveUnderNewWrapper does NOT shield that dispose;
-                // it is consulted only in the orphan sweep, which this
+                // DeviceLiveUnderNewWrapper does NOT shield that dispose.
+                // It is consulted only in the orphan sweep, which this
                 // precedes. The two 2026-07-11 commits embody opposing
                 // policies (dispose-at-rebind to keep handles off the
                 // finalizer thread vs leave-to-finalizer to protect
-                // shared fork HIDAPI contexts); dispose-at-rebind is the
+                // shared fork HIDAPI contexts). Dispose-at-rebind is the
                 // long-established behavior, including the
                 // hardware-validated Wii re-identify, so it stands.
                 // WATCHED RESIDUAL: if fork-driver re-identify churn ever
@@ -873,7 +873,7 @@ namespace PadForge.Common.Input
                 // flapped LIVE twin with no anchor, no zombie match, and
                 // a freshly minted row that orphaned its own. The
                 // wrapper's serial is the quantity the constraint always
-                // meant; exact.SerialNumber was only ever a proxy for it.
+                // meant, and exact.SerialNumber was only ever a proxy for it.
                 // Empty serials still compare equal to each other, which
                 // keeps path-derived identities inside the drawer policy
                 // for indistinguishable shells.
@@ -967,7 +967,7 @@ namespace PadForge.Common.Input
                         // contract. The adopted row's existing GUID is what
                         // its UserSettings and every other GUID-keyed store
                         // already reference, so identity is NOT restamped
-                        // and nothing is migrated; the caller pushes the
+                        // and nothing is migrated. The caller pushes the
                         // row's GUID onto the wrapper instead. Ordinary
                         // non-collision adoption keeps restamping, because
                         // there the incoming GUID is the device's true
@@ -991,12 +991,12 @@ namespace PadForge.Common.Input
                     // hardware with NO usable product identity (VID/PID
                     // 0000) cannot take (a)/(b), because an Empty-product
                     // scan would match across device classes, so it
-                    // re-mints per launch; accepted degenerate-hardware
+                    // re-mints per launch. Accepted degenerate-hardware
                     // limitation. WATCHED RESIDUAL: if SDL ever listed a
                     // re-identifying device's old and new instance ids in
                     // ONE snapshot, the collision predicate above would
                     // read it as a live sibling and (a) would not match.
-                    // No evidence SDL produces that shape; if
+                    // No evidence SDL produces that shape. If
                     // single-device duplicate rows ever appear, this gate
                     // is the first suspect.
                     // ProductGuid stamped at creation (round eight, R11):
@@ -1084,8 +1084,8 @@ namespace PadForge.Common.Input
         /// <summary>Adoption re-keys queued by the poll thread for the UI
         /// thread to drain (round eight, R13). InputService's
         /// UpdatePadDeviceInfo rewrites the device-pinned mapping-row /
-        /// activator / menu guids and moves the per-pad slot configs;
-        /// those structures are UI-owned and must never be walked from
+        /// activator / menu guids and moves the per-pad slot configs.
+        /// Those structures are UI-owned and must never be walked from
         /// here.</summary>
         internal static readonly System.Collections.Generic.List<(Guid Old, Guid New)>
             PendingDeviceGuidMigrations = new();
@@ -1188,7 +1188,7 @@ namespace PadForge.Common.Input
             // designs: enroll its reset HERE, or self-heal by asserting its
             // state on every packet (Fanatec's writer is stateless and the
             // DS4 encoder sends its full flag byte each frame, so neither
-            // needs an entry — those are deliberate N/As, not omissions).
+            // needs an entry). Those are deliberate N/As, not omissions.
             // A per-process latch over per-connection firmware state is how
             // a DualSense on Bluetooth sat on firmware-default blue from
             // v4.2.0 until 4.3.1 (#334 second half): connect-time device
@@ -1431,7 +1431,7 @@ namespace PadForge.Common.Input
         }
 
         // MIDI input endpoints (Phase 1e, issue #128). The WinRT device
-        // query runs on a background task; the polling thread consumes the
+        // query runs on a background task. The polling thread consumes the
         // latest cached snapshot, mirroring the Raw Input keyboard/mouse
         // enumeration above.
         private readonly Dictionary<string, MidiInputDevice> _openedMidiInputs =
@@ -1442,7 +1442,7 @@ namespace PadForge.Common.Input
         private volatile bool _midiInputsSuppressed;
 
         // NFC PC/SC readers (Phase 1f, issue #150). The monitor service owns
-        // the PC/SC context + its own event thread; this sweep just mirrors
+        // the PC/SC context + its own event thread. This sweep just mirrors
         // the visible reader set into UserDevices, like the MIDI sweep above.
         private readonly Dictionary<string, NfcReaderDevice> _openedNfcReaders =
             new Dictionary<string, NfcReaderDevice>(StringComparer.OrdinalIgnoreCase);
@@ -1463,7 +1463,7 @@ namespace PadForge.Common.Input
         private const int _nfcStartRetryMs = 5000;
 
         // Handheld PC hidden buttons and system motion (Phase 1h, issue
-        // #343). The button row itself opens without I/O; the vendor HID
+        // #343). The button row itself opens without I/O. The vendor HID
         // enumeration and opens, the sensor query, and the daemon scan are
         // blocking, so a worker does them on the sweep cadence and the poll
         // thread only registers and retires rows (the headset split).
@@ -1598,7 +1598,7 @@ namespace PadForge.Common.Input
         private readonly object _headsetLock = new object();
         private volatile bool _headsetSweepRunning;
         private volatile bool _headsetInputsSuppressed;
-        // Latest sweep's present qualified paths; null until the first
+        // Latest sweep's present qualified paths. Null until the first
         // sweep completes so nothing is retired on a cold cache.
         private volatile HashSet<string> _headsetPresentPaths;
         private long _headsetNextSweepTicks;
@@ -1612,7 +1612,7 @@ namespace PadForge.Common.Input
         // Unattended rebind of a failed-start head-tracker node (worker
         // thread). Detection runs EVERY sweep (one cheap SetupDi pass), so
         // a node that appears right after a Bluetooth connect is fixed
-        // within one sweep interval; the backoff is per node instance, so
+        // within one sweep interval. The backoff is per node instance, so
         // only a node that refuses to start under the inbox driver is
         // left alone between retries. A blanket 30 s cooldown here was
         // the owner-reported 10-20 s connect-to-row latency.
@@ -1623,10 +1623,10 @@ namespace PadForge.Common.Input
         private volatile bool _headsetMinedPnpTree;
         // Trackers that qualified this session, by paired-device address.
         // When one's HID node vanishes (the XM5 drops the sensor channel
-        // spontaneously; hardware-observed Win32 1167 + node removal,
+        // spontaneously: hardware-observed Win32 1167 + node removal,
         // 2026-08-07) the sweep re-requests its HID service. The absence
         // check and the connection probe are cheap cached reads, so they
-        // run EVERY sweep; only an ISSUED service request carries a
+        // run EVERY sweep. Only an ISSUED service request carries a
         // per-address cooldown. A blanket 20 s gate here made a headset
         // that reconnected right after an attempt wait out the window
         // (owner-measured 25-30 s to reappear).
@@ -1671,7 +1671,7 @@ namespace PadForge.Common.Input
         /// <summary>
         /// Phase 1e: registers MIDI input endpoints as input devices and
         /// marks vanished ones offline. PadForge's own MIDI virtual
-        /// controller endpoints are deliberately included — assigning one
+        /// controller endpoints are deliberately included. Assigning one
         /// as an input to another slot is the no-hardware loopback path.
         /// </summary>
         private readonly Dictionary<string, long> _midiOpenFailedAt = new(StringComparer.OrdinalIgnoreCase);
@@ -1889,7 +1889,7 @@ namespace PadForge.Common.Input
             // costs 5-20 ms and this is the 1000 Hz poll loop, so running it
             // inline read as periodic ~920 Hz dips (owner report,
             // 2026-08-16). A worker enumerates on the sweep cadence and
-            // publishes a snapshot; this phase only consumes it, the same
+            // publishes a snapshot. This phase only consumes it, the same
             // split the headset sweep uses for its Bluetooth I/O.
             if (!_micSweepRunning && now >= _micNextSweepTicks)
             {
@@ -1913,14 +1913,14 @@ namespace PadForge.Common.Input
                         _micEndpointSnapshot = snap;
                         System.Threading.Interlocked.Increment(ref _micSnapshotVersion);
                     }
-                    catch { /* audio stack unavailable; next sweep retries */ }
+                    catch { /* audio stack unavailable: the next sweep retries */ }
                     finally { _micSweepRunning = false; }
                 });
             }
 
             // Consume each snapshot ONCE. The reconcile below takes the
             // mic lock and resolves every endpoint's row, which has no
-            // business running per poll on the 1000 Hz thread; row changes
+            // business running per poll on the 1000 Hz thread. Row changes
             // between sweeps simply wait for the next publish (4 s), the
             // sweep's own cadence.
             int ver = System.Threading.Volatile.Read(ref _micSnapshotVersion);
@@ -2035,7 +2035,7 @@ namespace PadForge.Common.Input
         /// <summary>
         /// Phase 1f: registers each visible PC/SC reader as an input device
         /// and marks vanished ones offline, mirroring UpdateMidiInputDevices.
-        /// The shared monitor (NfcReaderService) is started once, lazily; when
+        /// The shared monitor (NfcReaderService) is started once, lazily. When
         /// the Smart Card service is unavailable Start() fails and the monitor
         /// stays absent, but the start is retried periodically so a service or
         /// reader that appears later in the session is still picked up (the MIDI
@@ -2059,7 +2059,7 @@ namespace PadForge.Common.Input
                     return false;
                 _nfcNextStartTicks = now + _nfcStartRetryMs;
                 svc = PadForge.Services.NfcReaderService.Start();
-                if (svc == null) return false; // no Smart Card service yet; retry later
+                if (svc == null) return false; // no Smart Card service yet, so retry later
             }
 
             var readers = svc.GetReaders();
@@ -2136,7 +2136,7 @@ namespace PadForge.Common.Input
         /// Phase 1g: registers Sony headset head trackers (issue #188),
         /// mirroring the MIDI sweep shape. Discovery, the marker probe and
         /// the enable-sequence feature writes are Bluetooth I/O, so a
-        /// worker performs the entire enumerate-and-open; this poll-thread
+        /// worker performs the entire enumerate-and-open. This poll-thread
         /// phase only registers finished devices and retires ones whose
         /// HID node vanished or whose reader thread died.
         /// </summary>
@@ -2242,7 +2242,7 @@ namespace PadForge.Common.Input
             // head-tracker child at CM_PROB_FAILED_START under its sensor
             // class driver (hardware-confirmed 2026-08-07 on a WH-1000XM5),
             // and a failed node never qualifies, so no row exists exactly
-            // when the repair is needed. Detection runs every sweep; the
+            // when the repair is needed. Detection runs every sweep. The
             // rebind acts only on exactly one matching node (the
             // reference's own gate) with a per-node retry backoff.
             long repairTick = Environment.TickCount64;
@@ -2272,7 +2272,7 @@ namespace PadForge.Common.Input
 
             var candidates = SonyHeadsetMotionRuntime.Enumerate();
             if (candidates == null)
-                return; // enumeration failed; keep the previous snapshot
+                return; // enumeration failed, so keep the previous snapshot
             var present = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             foreach (var c in candidates) present.Add(c.Path);
             _headsetPresentPaths = present;
@@ -2328,7 +2328,7 @@ namespace PadForge.Common.Input
                         if (c.BluetoothAddress == address) { covered = true; break; }
                     if (covered) continue;
                     // The per-address cooldown applies to ISSUED requests
-                    // only; a disconnected headset is probed again next
+                    // only. A disconnected headset is probed again next
                     // sweep so a reconnect is caught within ~3 s.
                     if (_headsetServiceRequestAt.TryGetValue(address, out long at)
                         && svcTick - at < _headsetServiceRequestIntervalMs)
@@ -2347,8 +2347,8 @@ namespace PadForge.Common.Input
                         if (outcome == PadForge.Services.HeadsetTrackerRepair.Outcome.ServiceRequested
                             || outcome == PadForge.Services.HeadsetTrackerRepair.Outcome.Failed)
                         {
-                            // Both outcomes touched BluetoothSetServiceState;
-                            // pace further attempts for this address.
+                            // Both outcomes touched BluetoothSetServiceState.
+                            // Pace further attempts for this address.
                             lock (_headsetLock)
                                 _headsetServiceRequestAt[address] = svcTick;
                         }
@@ -2413,7 +2413,7 @@ namespace PadForge.Common.Input
         /// <summary>
         /// Phase 1h: the handheld hidden-buttons row and the system motion
         /// row (issue #343). Both exist only while the Settings toggle is
-        /// on. The button row registers at once (no I/O in Open); the
+        /// on. The button row registers at once (no I/O in Open). The
         /// worker enumerates vendor collections and syncs the device's
         /// readers, probes the sensor stack once and opens the motion row
         /// off the poll thread, and refreshes the vendor daemon scan.
@@ -3539,7 +3539,7 @@ namespace PadForge.Common.Input
         {
             // Fired on the WS receive thread. Re-load every web UserDevice's
             // caps from its live device (cheap, a handful of pads) and raise
-            // DevicesUpdated; the App layer marshals the UI refresh.
+            // DevicesUpdated. The App layer marshals the UI refresh.
             try
             {
                 // Under SyncRoot: this runs on the WS receive thread while the
@@ -3577,9 +3577,9 @@ namespace PadForge.Common.Input
 
         // ── Gamepad-only restriction (issue #138) ───────────────────────────
         // A peer paired with the "gamepad only" option may drive gamepad output
-        // but never keyboard/mouse/scroll — neither via a KBM virtual controller
+        // but never keyboard/mouse/scroll: neither via a KBM virtual controller
         // nor via a macro. The set holds the InstanceGuids of restricted peer
-        // devices; the SendInput chokepoints consult IsSlotRestricted.
+        // devices. The SendInput chokepoints consult IsSlotRestricted.
         private readonly HashSet<Guid> _restrictedDevices = new();
         private readonly object _restrictedLock = new();
 
@@ -3808,7 +3808,7 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Returns all UserSettings assigned to a specific pad slot (0–15).
-        /// Allocates a new List — use <see cref="FindByPadIndex(int, UserSetting[], out int)"/>
+        /// Allocates a new List. Use <see cref="FindByPadIndex(int, UserSetting[], out int)"/>
         /// in the hot path to avoid allocations.
         /// </summary>
         public List<UserSetting> FindByPadIndex(int padIndex)

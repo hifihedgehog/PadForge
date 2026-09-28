@@ -43,7 +43,7 @@ public class Strings : INotifyPropertyChanged
     /// <summary>
     /// Raised after <see cref="ChangeCulture"/> so ViewModels can refresh their own
     /// culture-dependent computed properties (status text, titles, etc.).
-    /// Instance-method handlers are held weakly — subscribers do NOT need to
+    /// Instance-method handlers are held weakly. Subscribers do NOT need to
     /// unsubscribe to avoid leaking.
     /// </summary>
     public static event Action CultureChanged
@@ -78,7 +78,7 @@ public class Strings : INotifyPropertyChanged
             {
                 if (value.Target == null)
                     _staticCultureHandlers.Remove(value);
-                // Weak entries are auto-pruned on raise; explicit remove is best-effort.
+                // Weak entries are auto-pruned on raise. Explicit remove is best-effort.
             }
         }
     }
@@ -102,7 +102,7 @@ public class Strings : INotifyPropertyChanged
         // Per-handler isolation: one throwing subscriber must not abort the
         // refresh of every later subscriber, nor crash the language picker
         // that called ChangeCulture. (Surfaced by a test where a leftover
-        // service's handler hit a null manager; production handlers can be
+        // service's handler hit a null manager. Production handlers can be
         // equally unlucky during early startup.)
         foreach (var handler in snapshot)
         {

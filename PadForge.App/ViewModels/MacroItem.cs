@@ -743,8 +743,36 @@ namespace PadForge.ViewModels
             public int DescriptorDeadZone
             {
                 get => _descriptorDeadZone;
-                set { if (SetProperty(ref _descriptorDeadZone, Math.Clamp(value, 0, 100))) _descriptorSource = null; }
+                set
+                {
+                    if (SetProperty(ref _descriptorDeadZone, Math.Clamp(value, 0, 100)))
+                    {
+                        _descriptorSource = null;
+                        OnPropertyChanged(nameof(DescriptorThresholdPercent));
+                    }
+                }
             }
+
+            /// <summary>The threshold a thresholded descriptor entry fires at,
+            /// in percent (#468), for the trigger row's Deadzone slider. An
+            /// unstamped entry shows the 50 percent it reads at, the
+            /// evaluator's descriptor fallback, and moving the slider stamps
+            /// <see cref="DescriptorDeadZone"/>. On an analog key this is the
+            /// press depth that fires the macro, so two entries on one key at
+            /// two thresholds are a soft press and a full press.</summary>
+            [System.Xml.Serialization.XmlIgnore]
+            public int DescriptorThresholdPercent
+            {
+                get => _descriptorDeadZone > 0 ? _descriptorDeadZone : 50;
+                set => DescriptorDeadZone = Math.Clamp(value, 1, 100);
+            }
+
+            private CommunityToolkit.Mvvm.Input.RelayCommand _resetDescriptorDeadZoneCommand;
+            /// <summary>Returns a descriptor entry to its unstamped threshold,
+            /// the trigger row's twin of <see cref="ResetDeadZoneCommand"/>.</summary>
+            [System.Xml.Serialization.XmlIgnore]
+            public CommunityToolkit.Mvvm.Input.RelayCommand ResetDescriptorDeadZoneCommand =>
+                _resetDescriptorDeadZoneCommand ??= new CommunityToolkit.Mvvm.Input.RelayCommand(() => DescriptorDeadZone = 0);
 
             /// <summary>Cached <see cref="PadForge.Engine.Data.MappingSource"/>
             /// wrapper for <see cref="SourceDescriptor"/>, so the 1 kHz trigger
@@ -1265,6 +1293,16 @@ namespace PadForge.ViewModels
                 return true;
             }
 
+            // Analog keys (#468): the engine's button read answers them
+            // against the entry's threshold, so a key fires a macro at the
+            // depth the entry names, and two entries on one key at two
+            // thresholds are a soft press and a full press.
+            if (PadForge.Engine.Common.Mapping.SourceCoercion.IsAnalogKeyDescriptor(d))
+            {
+                entry = new TriggerInputEntry { DeviceGuid = g, SourceDescriptor = d };
+                return true;
+            }
+
             // Mouse gestures (issue #200): every family member is a one-shot
             // bool in the recognizer's fired set, so the whole family rides
             // GestureDescriptor. Evaluated by CheckGestureTrigger's mouse
@@ -1465,7 +1503,10 @@ namespace PadForge.ViewModels
                     yield return new MacroTriggerInputItem(
                         FormatTriggerEntryLabel(captured),
                         new RelayCommand(() => RemoveTriggerEntry(captured)),
-                        captured.AxisTarget != MacroAxisTarget.None ? captured : null);
+                        captured.AxisTarget != MacroAxisTarget.None ? captured : null,
+                        captured.AxisTarget == MacroAxisTarget.None
+                            && PadForge.Engine.Common.Mapping.SourceCoercion.IsThresholdedButtonFamily(captured.SourceDescriptor)
+                                ? captured : null);
                 }
 
                 // Legacy slot-combined buttons (OutputController source). One row
@@ -2721,15 +2762,18 @@ namespace PadForge.ViewModels
     /// <see cref="RemoveCommand"/> drops just this one input from the trigger.
     /// <see cref="AxisEntry"/> is set only for a per-device axis input, so its
     /// row can show the Invert / Half / Either / Deadzone controls inline
-    /// instead of in a second, duplicated list.</summary>
+    /// instead of in a second, duplicated list. <see cref="ThresholdEntry"/>
+    /// is set for a descriptor input whose button read takes a threshold,
+    /// the families the mapping grid gives a deadzone slider on a button row.</summary>
     public sealed class MacroTriggerInputItem
     {
         public MacroTriggerInputItem(string label, System.Windows.Input.ICommand removeCommand,
-            MacroItem.TriggerInputEntry axisEntry = null)
+            MacroItem.TriggerInputEntry axisEntry = null, MacroItem.TriggerInputEntry thresholdEntry = null)
         {
             Label = label;
             RemoveCommand = removeCommand;
             AxisEntry = axisEntry;
+            ThresholdEntry = thresholdEntry;
         }
 
         public string Label { get; }
@@ -2742,6 +2786,14 @@ namespace PadForge.ViewModels
         /// <summary>True when this row carries an axis input and should show the
         /// Invert / Half / Either / Deadzone controls.</summary>
         public bool IsAxis => AxisEntry != null;
+
+        /// <summary>The underlying descriptor entry when its read takes a
+        /// threshold (an analog key, a stick ring, a Ring-Con squeeze), else
+        /// null. Drives the inline Deadzone control (#468).</summary>
+        public MacroItem.TriggerInputEntry ThresholdEntry { get; }
+
+        /// <summary>True when this row should show the Deadzone control.</summary>
+        public bool HasThreshold => ThresholdEntry != null;
     }
 
     /// <summary>
@@ -2827,6 +2879,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsPointerModeCycleType));
                     OnPropertyChanged(nameof(IsPointerModeSetType));
                     OnPropertyChanged(nameof(IsSwitchLayerType));
+                    OnPropertyChanged(nameof(IsSetChromaColorType));
                     OnPropertyChanged(nameof(IsGuideLedBrightnessType));
                     OnPropertyChanged(nameof(IsAnyLightbarType));
                     OnPropertyChanged(nameof(IsLightbarReactiveHold));
@@ -2924,7 +2977,7 @@ namespace PadForge.ViewModels
         /// instead so the hold and fade sliders can be scaled and labeled
         /// separately from the generic ms field.</summary>
         [System.Xml.Serialization.XmlIgnore]
-        public bool IsDurationType => _type == MacroActionType.ButtonPress || _type == MacroActionType.KeyPress || _type == MacroActionType.Delay || _type == MacroActionType.MouseButtonPress || _type == MacroActionType.AxisHold || _type == MacroActionType.AxisAdd || _type == MacroActionType.AxisScale;
+        public bool IsDurationType => _type == MacroActionType.ButtonPress || _type == MacroActionType.KeyPress || _type == MacroActionType.Delay || _type == MacroActionType.MouseButtonPress || _type == MacroActionType.AxisHold || _type == MacroActionType.AxisAdd || _type == MacroActionType.AxisScale || _type == MacroActionType.SetChromaColor;
 
         /// <summary>True when Type is AxisSet or AxisHold (both edit the
         /// axis target + value pair; AxisHold adds the duration knob via
@@ -3257,6 +3310,11 @@ namespace PadForge.ViewModels
         /// <summary>True when Type is SwitchLayer (#377).</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool IsSwitchLayerType => _type == MacroActionType.SwitchLayer;
+
+        /// <summary>True when Type is SetChromaColor (#468). Surfaces the
+        /// color card. The hold rides the generic duration row.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsSetChromaColorType => _type == MacroActionType.SetChromaColor;
 
         /// <summary>True when Type is PointerModeSet (issue #203 follow-up).</summary>
         [System.Xml.Serialization.XmlIgnore]
@@ -5548,6 +5606,9 @@ namespace PadForge.ViewModels
                     MacroActionType.SwitchLayer => string.Format(
                         Strings.Instance.MacroAction_SwitchLayer_Format,
                         _switchLayerMask),
+                    MacroActionType.SetChromaColor => string.Format(
+                        Strings.Instance.MacroAction_SetChromaColor_Format,
+                        $"#{_lightbarR:X2}{_lightbarG:X2}{_lightbarB:X2}", _durationMs),
                     MacroActionType.GuideLedBrightness => string.Format(
                         Strings.Instance.MacroAction_GuideLedBrightness_Format,
                         _guideLedPercent),
@@ -6444,7 +6505,19 @@ namespace PadForge.ViewModels
         /// Combined with the #254 per-layer macro scope, the same physical
         /// button can jump to a different layer per engaged layer, which is
         /// the Steam Input action-set-layer graph shape.</summary>
-        SwitchLayer = 55
+        SwitchLayer = 55,
+
+        /// <summary>Paints every Razer Chroma device the action's color
+        /// (<see cref="MacroAction.LightbarR"/>, G, B) while the action is
+        /// current (issue #468, asked in discussion #463), the
+        /// <see cref="AxisHold"/> duration shape: asserted every frame, so
+        /// the color leaves when the action ends. Several macros asserting in
+        /// one frame resolve to the last one evaluated, which is how a
+        /// full-press macro listed below a soft-press one wins at the bottom
+        /// of the press. The Chroma service hands the lighting back to Synapse
+        /// once nothing asserts and the lightbar mirror is off. At the tail;
+        /// ordinal pinned.</summary>
+        SetChromaColor = 56
     }
 
     /// <summary>One parsed part of a <see cref="MacroActionType.CycleTapList"/>

@@ -2699,6 +2699,12 @@ namespace PadForge.Common.Input
             return action.RepeatVcPulseOn;
         }
 
+        /// <summary>Where Set Chroma Color sends its color (#468): the Chroma
+        /// service's per-frame assertion. A seam so a test can watch both
+        /// dispatch loops without the service's process-wide state, which
+        /// the Chroma service tests reset from their own collection.</summary>
+        internal static Action<byte, byte, byte> MacroChromaSink = PadForge.Services.ChromaLightbarService.AssertMacroColor;
+
         /// <summary>Executes a sequential (non-continuous) action with advance logic.</summary>
         private void ExecuteSequentialAction(ref Gamepad gp, MacroItem macro, MacroAction action)
         {
@@ -2788,6 +2794,16 @@ namespace PadForge.Common.Input
                     // duration shape. No yield gate: relative IS the
                     // compose-with-physical mode.
                     ApplyAxisAddAction(ref gp, action);
+                    if (actionElapsed >= action.DurationMs)
+                        AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.SetChromaColor:
+                    // Chroma color (#468): asserted every frame while
+                    // current, the AxisHold duration shape, so the color
+                    // leaves when the action ends. No slot is involved:
+                    // Chroma paints the machine's devices.
+                    MacroChromaSink(action.LightbarR, action.LightbarG, action.LightbarB);
                     if (actionElapsed >= action.DurationMs)
                         AdvanceAction(macro);
                     break;
@@ -5106,6 +5122,14 @@ namespace PadForge.Common.Input
                     // the AxisHold duration shape.
                     if (raw.Axes != null)
                         ApplyAxisAddActionRaw(ref raw, action);
+                    if (actionElapsed >= action.DurationMs)
+                        AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.SetChromaColor:
+                    // Extended twin (#468): the Chroma color does not touch
+                    // the slot's surface, so it is the gamepad arm verbatim.
+                    MacroChromaSink(action.LightbarR, action.LightbarG, action.LightbarB);
                     if (actionElapsed >= action.DurationMs)
                         AdvanceAction(macro);
                     break;

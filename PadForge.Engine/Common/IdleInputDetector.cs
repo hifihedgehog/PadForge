@@ -103,6 +103,11 @@ namespace PadForge.Engine.Common
 
             if (MidiChanged(current.Midi, previous.Midi)) return false;
 
+            // Analog keys (#468) are a real input family on this path for the
+            // MIDI reason: a keyboard driven only through key depth has no
+            // buttons or axes that move. Same documented limit as a held axis.
+            if (current.AnalogKeys != null && !current.AnalogKeys.SameAs(previous.AnalogKeys)) return false;
+
             if (AnyFingerDown(current)) return false;
 
             if (PointerOrMouseActive(current)) return false;

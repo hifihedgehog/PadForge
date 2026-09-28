@@ -301,6 +301,7 @@ namespace PadForge.ViewModels
             "HeadTracker" => Strings.Instance.DeviceType_HeadTracker,
             "VrController" => Strings.Instance.DeviceType_VrController,
             "LogitechGKeys" => Strings.Instance.DeviceType_LogitechGKeys,
+            "AnalogKeyboard" => Strings.Instance.DeviceType_AnalogKeyboard,
             _ => Strings.Instance.DeviceType_Device
         };
 
@@ -733,7 +734,12 @@ namespace PadForge.ViewModels
              // instance to cloak. Missing here, they rendered the Input Hiding
              // section with toggles that could never do anything.
              || _devicePath.StartsWith("openxr://", StringComparison.Ordinal)
-             || _devicePath.StartsWith("logigkeys://", StringComparison.Ordinal));
+             || _devicePath.StartsWith("logigkeys://", StringComparison.Ordinal)
+             // An analog keyboard row (#468) reads the keyboard's vendor
+             // collection. Cloaking it would hide the keyboard's analog
+             // interface from its own vendor software, which Razer's needs
+             // to make the keyboard report at all.
+             || _devicePath.StartsWith("analogkb://", StringComparison.Ordinal));
 
         /// <summary>True for a merged row (All Keyboards, All Mice, All
         /// Touchpads, All Consumer Controls). It stands for every device of
@@ -1016,7 +1022,7 @@ namespace PadForge.ViewModels
         /// a row has nothing to submit. A device on a linked PC is hardware
         /// and keeps the button: its row carries the remote device's own
         /// vendor id, product id and SDL GUID.</summary>
-        public bool ShowSubmitMapping => DeviceTypeKey != "Gamepad" && DeviceTypeKey != "Mouse" && DeviceTypeKey != "Keyboard" && DeviceTypeKey != "Touchpad" && DeviceTypeKey != "Tablet" && DeviceTypeKey != "Midi" && DeviceTypeKey != "Nfc" && DeviceTypeKey != "HeadsetMotion" && DeviceTypeKey != "Microphone" && DeviceTypeKey != "HandheldButtons" && DeviceTypeKey != "ConsumerControl" && DeviceTypeKey != "SystemMotion" && DeviceTypeKey != "HeadTracker" && DeviceTypeKey != "VrController" && DeviceTypeKey != "LogitechGKeys";
+        public bool ShowSubmitMapping => DeviceTypeKey != "Gamepad" && DeviceTypeKey != "Mouse" && DeviceTypeKey != "Keyboard" && DeviceTypeKey != "Touchpad" && DeviceTypeKey != "Tablet" && DeviceTypeKey != "Midi" && DeviceTypeKey != "Nfc" && DeviceTypeKey != "HeadsetMotion" && DeviceTypeKey != "Microphone" && DeviceTypeKey != "HandheldButtons" && DeviceTypeKey != "ConsumerControl" && DeviceTypeKey != "SystemMotion" && DeviceTypeKey != "HeadTracker" && DeviceTypeKey != "VrController" && DeviceTypeKey != "LogitechGKeys" && DeviceTypeKey != "AnalogKeyboard";
 
         /// <summary>True for an NFC reader (issue #150): shows the "Register/Manage
         /// NFC Tags" button, which opens the tap-to-name registration flow.

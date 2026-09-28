@@ -1136,7 +1136,7 @@ namespace PadForge.Common.Input
         /// <summary>
         /// Engine-evaluated source families ("IR Pointer X/Y", "IR Brightness",
         /// "Ring-Con Squeeze/Pull", "Balance ...", "Mouse Position X/Y",
-        /// "Midi ...") are owned by
+        /// "Midi ...", "Analog Key N") are owned by
         /// SourceCoercion and are not part of the legacy Axis/Button/Slider/POV
         /// grammar, so ParseDescriptor silently drops them. Found on first Wii IR
         /// hardware contact (2026-07-01): "IR Pointer X" assigned to KbmMouseX
@@ -1159,7 +1159,8 @@ namespace PadForge.Common.Input
             s.StartsWith("Balance ", StringComparison.Ordinal) ||
             s.StartsWith("Mouse Position ", StringComparison.Ordinal) ||
             s.StartsWith("Mouse Motion ", StringComparison.Ordinal) ||
-            s.StartsWith("Midi ", StringComparison.Ordinal);
+            s.StartsWith("Midi ", StringComparison.Ordinal) ||
+            PadForge.Engine.Common.Mapping.SourceCoercion.IsAnalogKeyDescriptor(s);
 
         /// <summary>
         /// Recognizes an engine-owned descriptor including its legacy I/IH/H

@@ -97,7 +97,7 @@ namespace PadForge.Common.Input
             return result;
         }
 
-        private static string GetInterfacePath(IntPtr set, ref SonyHeadsetHid.SP_DEVICE_INTERFACE_DATA iface)
+        internal static string GetInterfacePath(IntPtr set, ref SonyHeadsetHid.SP_DEVICE_INTERFACE_DATA iface)
         {
             SonyHeadsetHid.SetupDiGetDeviceInterfaceDetail(set, ref iface, IntPtr.Zero, 0, out uint needed, IntPtr.Zero);
             if (needed == 0 || needed > 4096) return null;
@@ -165,7 +165,7 @@ namespace PadForge.Common.Input
             }
         }
 
-        private static string ReadProductString(SafeFileHandle handle)
+        internal static string ReadProductString(SafeFileHandle handle)
         {
             var buffer = new byte[512];
             if (!SonyHeadsetHid.HidD_GetProductString(handle, buffer, (uint)buffer.Length)) return null;

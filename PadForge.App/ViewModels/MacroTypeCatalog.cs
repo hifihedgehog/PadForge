@@ -141,6 +141,7 @@ namespace PadForge.ViewModels
                 Add(MacroActionType.LightbarModeSet, S.MacroAction_Type_LightbarModeSet, S.Macro_Cat_Leds, S.MacroAction_LightbarModeSet_Tooltip);
                 Add(MacroActionType.LightbarModeCycle, S.MacroAction_Type_LightbarModeCycle, S.Macro_Cat_Leds, S.MacroAction_LightbarModeCycle_Tooltip);
                 Add(MacroActionType.GuideLedBrightness, S.MacroAction_Type_GuideLedBrightness, S.Macro_Cat_Leds, S.MacroAction_GuideLedBrightness_Tooltip);
+                Add(MacroActionType.SetChromaColor, S.MacroAction_Type_SetChromaColor, S.Macro_Cat_Leds, S.MacroAction_SetChromaColor_Tooltip);
                 Add(MacroActionType.PlaySound, S.MacroAction_Type_PlaySound, S.Macro_Cat_Sound, S.MacroAction_PlaySound_Tooltip);
                 Add(MacroActionType.SoundStop, S.MacroAction_Type_SoundStop, S.Macro_Cat_Sound, S.MacroAction_SoundStop_Tooltip);
                 Add(MacroActionType.SystemVolume, S.Macro_SystemVolume, S.Macro_Cat_Sound, null);

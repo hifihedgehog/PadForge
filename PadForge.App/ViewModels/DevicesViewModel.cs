@@ -312,6 +312,63 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _isMidiDevice, value);
         }
 
+        private bool _isAnalogKeyboardDevice;
+        /// <summary>Whether the selected device is an analog keyboard (issue
+        /// #468), which previews key depths instead of axes and buttons.</summary>
+        public bool IsAnalogKeyboardDevice
+        {
+            get => _isAnalogKeyboardDevice;
+            set => SetProperty(ref _isAnalogKeyboardDevice, value);
+        }
+
+        private bool _hasAnalogKeys;
+        /// <summary>True once a key on the selected analog keyboard has moved,
+        /// which swaps the "press a key" hint for the key chips.</summary>
+        public bool HasAnalogKeys
+        {
+            get => _hasAnalogKeys;
+            set => SetProperty(ref _hasAnalogKeys, value);
+        }
+
+        /// <summary>One chip per key the selected analog keyboard has reported
+        /// since it was selected, in keyboard order, each with its live depth.
+        /// A keyboard lists only the keys it has shown, so the preview is not a
+        /// wall of a hundred idle keys.</summary>
+        public ObservableCollection<AnalogKeyDisplayItem> AnalogKeys { get; } = new();
+
+        private int[] _analogKeyOrder = System.Array.Empty<int>();
+
+        /// <summary>Folds one poll's key depths into the chips: a key seen for
+        /// the first time joins in keyboard order, and every chip takes its
+        /// key's depth, 0 when the key is up.</summary>
+        internal void UpdateAnalogKeys(PadForge.Engine.AnalogKeyInputState keys)
+        {
+            if (keys != null)
+            {
+                for (int i = 0; i < keys.Count; i++)
+                {
+                    int code = keys.Codes[i];
+                    bool known = false;
+                    foreach (var item in AnalogKeys)
+                        if (item.Code == code) { known = true; break; }
+                    if (known) continue;
+                    int rank = System.Array.IndexOf(_analogKeyOrder, code);
+                    if (rank < 0) rank = int.MaxValue;
+                    int at = 0;
+                    while (at < AnalogKeys.Count && AnalogKeys[at].Rank <= rank) at++;
+                    AnalogKeys.Insert(at, new AnalogKeyDisplayItem
+                    {
+                        Code = code,
+                        Rank = rank,
+                        Name = PadForge.Common.MappingDisplayResolver.AnalogKeyDisplayName(code),
+                    });
+                }
+            }
+            foreach (var item in AnalogKeys)
+                item.Depth = keys?.Get(item.Code) ?? 0f;
+            HasAnalogKeys = AnalogKeys.Count > 0;
+        }
+
         private bool _isNfcDevice;
         /// <summary>Whether the selected device is an NFC reader (issue #150):
         /// drives the named tag preview list in place of the numbered button grid.</summary>
@@ -690,8 +747,13 @@ namespace PadForge.ViewModels
             };
         }
 
-        internal void RebuildRawStateCollections(IReadOnlyList<int> axisIndices, IReadOnlyList<int> buttonIndices, int povCount, bool isKeyboard = false, bool isMouse = false, bool isTouchpad = false, bool isMidi = false, bool isNfc = false, IReadOnlyList<ConsumerButtonDisplayItem> consumerButtons = null, bool isHeadsetMotion = false, int voiceButtonBase = -1, bool isMicrophone = false, bool isHandheld = false, bool isSystemMotion = false, bool isHeadTracker = false, IReadOnlyList<PadForge.Engine.DeviceObjectItem> namedObjects = null)
+        internal void RebuildRawStateCollections(IReadOnlyList<int> axisIndices, IReadOnlyList<int> buttonIndices, int povCount, bool isKeyboard = false, bool isMouse = false, bool isTouchpad = false, bool isMidi = false, bool isNfc = false, IReadOnlyList<ConsumerButtonDisplayItem> consumerButtons = null, bool isHeadsetMotion = false, int voiceButtonBase = -1, bool isMicrophone = false, bool isHandheld = false, bool isSystemMotion = false, bool isHeadTracker = false, IReadOnlyList<PadForge.Engine.DeviceObjectItem> namedObjects = null, int[] analogKeyOrder = null)
         {
+            // Analog keyboards (#468): key chips, gathered as keys move.
+            IsAnalogKeyboardDevice = analogKeyOrder != null;
+            _analogKeyOrder = analogKeyOrder ?? System.Array.Empty<int>();
+            AnalogKeys.Clear();
+            HasAnalogKeys = false;
             IsNfcDevice = isNfc;
             IsHeadsetMotionDevice = isHeadsetMotion;
             if (isNfc) RebuildNfcTags(); else NfcTags.Clear();
@@ -803,6 +865,9 @@ namespace PadForge.ViewModels
             IsMouseDevice = false;
             IsTouchpadDevice = false;
             IsMidiDevice = false;
+            IsAnalogKeyboardDevice = false;
+            HasAnalogKeys = false;
+            AnalogKeys.Clear();
             IsNfcDevice = false;
             NfcTags.Clear();
             IsMicrophoneDevice = false;
@@ -1193,6 +1258,39 @@ namespace PadForge.ViewModels
             get => _isPressed;
             set => SetProperty(ref _isPressed, value);
         }
+    }
+
+    /// <summary>One key chip in an analog keyboard's live preview (issue
+    /// #468): the key's name and how far it is pressed.</summary>
+    public class AnalogKeyDisplayItem : ObservableObject
+    {
+        public int Code { get; set; }
+
+        /// <summary>Position in the keyboard's key order, for insertion.</summary>
+        public int Rank { get; set; }
+
+        public string Name { get; set; } = string.Empty;
+
+        private double _depth;
+        /// <summary>0 at rest, 1 at the bottom of the press.</summary>
+        public double Depth
+        {
+            get => _depth;
+            set
+            {
+                if (SetProperty(ref _depth, value))
+                {
+                    OnPropertyChanged(nameof(IsPressed));
+                    OnPropertyChanged(nameof(DepthText));
+                }
+            }
+        }
+
+        /// <summary>Lights the chip, the raw cell's pressed contract.</summary>
+        public bool IsPressed => _depth > 0;
+
+        /// <summary>The depth as the culture writes a whole percent.</summary>
+        public string DepthText => _depth.ToString("P0", System.Globalization.CultureInfo.CurrentCulture);
     }
 
     /// <summary>One named chip in the Consumer Control live preview

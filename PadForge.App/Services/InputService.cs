@@ -3570,6 +3570,10 @@ namespace PadForge.Services
             UpdateHeadTrackingStatus();
             // G-Keys card (#454): same cadence, same shape.
             UpdateGKeysStatus();
+            // Analog keyboards (#468): same cadence, same shape.
+            UpdateAnalogKeyboardsStatus();
+            // Set Chroma Color (#468): the first action starts the service.
+            EnsureChromaForMacros();
 
             // Snapshot devices under lock to avoid cross-thread collection-modified
             // exceptions when the engine's UpdateDevices runs concurrently.
@@ -4393,7 +4397,10 @@ namespace PadForge.Services
                     // whose mapping picker names all of them.
                     namedObjects: ud.CapType == InputDeviceType.VrController
                                || ud.CapType == InputDeviceType.LogitechGKeys
-                                  ? ud.DeviceObjects : null);
+                                  ? ud.DeviceObjects : null,
+                    analogKeyOrder: ud.CapType == InputDeviceType.AnalogKeyboard
+                        ? PadForge.Engine.Common.AnalogKeyboard.AnalogKeyboardCatalog.KeysFor(ud.VendorId, ud.ProdId)
+                        : null);
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
                 devVm.HasAccelAuxData = ud.HasAccelAux;
@@ -5175,6 +5182,53 @@ namespace PadForge.Services
             settings.GKeysStatus = status;
         }
 
+        private string _analogKeyboardsStatusLast;
+
+        /// <summary>
+        /// The analog keyboard line under the Settings switch (issue #468):
+        /// which keyboards are being read, and which Razer ones wait for
+        /// Synapse, the one reason a found keyboard stays quiet. Empty while
+        /// the feature is off, which collapses the line, the G-keys shape.
+        /// </summary>
+        private void UpdateAnalogKeyboardsStatus()
+        {
+            var settings = _mainVm.Settings;
+            var im = _inputManager;
+            string status = string.Empty;
+            if (im != null && im.IsRunning && settings.AnalogKeyboardsEnabled)
+            {
+                var s = Strings.Instance;
+                var rows = im.AnalogKeyboards;
+                if (rows.Length == 0)
+                {
+                    status = s.Settings_AnalogKeyboardsStatus_None;
+                }
+                else
+                {
+                    var reading = new List<string>(rows.Length);
+                    var waiting = new List<string>();
+                    foreach (var row in rows)
+                    {
+                        if (row.NeedsSynapse && !row.SynapseRunning) waiting.Add(row.Name);
+                        else reading.Add(row.Name);
+                    }
+                    var culture = System.Globalization.CultureInfo.CurrentCulture;
+                    if (reading.Count > 0)
+                        status = string.Format(culture, s.Settings_AnalogKeyboardsStatus_Reading_Format,
+                            string.Join(", ", reading));
+                    if (waiting.Count > 0)
+                    {
+                        string line = string.Format(culture, s.Settings_AnalogKeyboardsStatus_Synapse_Format,
+                            string.Join(", ", waiting));
+                        status = status.Length == 0 ? line : status + " " + line;
+                    }
+                }
+            }
+            if (string.Equals(_analogKeyboardsStatusLast, status, StringComparison.Ordinal)) return;
+            _analogKeyboardsStatusLast = status;
+            settings.AnalogKeyboardsStatus = status;
+        }
+
         private void UpdateDevicesRawState()
         {
             var devVm = _mainVm.Devices;
@@ -5215,7 +5269,10 @@ namespace PadForge.Services
                     isHeadTracker: ud.CapType == InputDeviceType.HeadTracker,
                     namedObjects: ud.CapType == InputDeviceType.VrController
                                || ud.CapType == InputDeviceType.LogitechGKeys
-                                  ? ud.DeviceObjects : null);
+                                  ? ud.DeviceObjects : null,
+                    analogKeyOrder: ud.CapType == InputDeviceType.AnalogKeyboard
+                        ? PadForge.Engine.Common.AnalogKeyboard.AnalogKeyboardCatalog.KeysFor(ud.VendorId, ud.ProdId)
+                        : null);
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
                 devVm.HasAccelAuxData = ud.HasAccelAux;
@@ -5318,6 +5375,10 @@ namespace PadForge.Services
             // message arrives.
             if (devVm.IsMidiDevice)
                 devVm.LiveMidi = state.Midi;
+
+            // Analog keyboard preview (#468): key chips with live depths.
+            if (devVm.IsAnalogKeyboardDevice)
+                devVm.UpdateAnalogKeys(state.AnalogKeys);
 
             // NFC tag preview (issue #150): light the tapped tag's named row.
             // The button pulse is only ~175 ms, so latch IsActive for a longer
@@ -9591,6 +9652,13 @@ namespace PadForge.Services
             {
                 if (_mainVm.Dashboard.EnableChromaLightbar)
                     StartChromaIfEnabled();
+                else if (ChromaLightbarService.MacroColorRequested && _chromaService != null)
+                {
+                    // Set Chroma Color actions (#468) still use the service:
+                    // switch the mirror off and keep painting their colors.
+                    _chromaService.MirrorEnabled = false;
+                    _mainVm.Dashboard.ChromaStatus = Strings.Instance.Common_Stopped;
+                }
                 else
                     StopChromaService();
             }
@@ -9791,20 +9859,35 @@ namespace PadForge.Services
 
         // ── Razer Chroma lightbar mirror (#373) ──
 
+        /// <summary>Runs the Chroma service while the lightbar mirror is on,
+        /// or once a Set Chroma Color action has run (#468). The service holds
+        /// a Synapse session only while it has something to paint, so running
+        /// it for macros costs an idle loop between presses.</summary>
         private void StartChromaIfEnabled()
         {
+            bool mirror = _mainVm.Dashboard.EnableChromaLightbar;
             PadForge.Engine.SdlDiagLog.WriteLine(
-                $"CHROMA start? enabled={_mainVm.Dashboard.EnableChromaLightbar} engine={_inputManager != null} live={_chromaService != null}");
-            if (!_mainVm.Dashboard.EnableChromaLightbar || _inputManager == null)
+                $"CHROMA start? enabled={mirror} macros={ChromaLightbarService.MacroColorRequested} engine={_inputManager != null} live={_chromaService != null}");
+            if ((!mirror && !ChromaLightbarService.MacroColorRequested) || _inputManager == null)
                 return;
             if (_chromaService != null)
+            {
+                _chromaService.MirrorEnabled = mirror;
                 return; // Already running.
+            }
 
-            _chromaService = new ChromaLightbarService();
+            _chromaService = new ChromaLightbarService { MirrorEnabled = mirror };
             _chromaService.StateChanged += state =>
             {
                 _dispatcher.BeginInvoke(() =>
                 {
+                    // The Dashboard line describes the mirror. A service that
+                    // runs for macro colors alone reads Stopped there.
+                    if (!_mainVm.Dashboard.EnableChromaLightbar)
+                    {
+                        _mainVm.Dashboard.ChromaStatus = Strings.Instance.Common_Stopped;
+                        return;
+                    }
                     _mainVm.Dashboard.ChromaStatus = state switch
                     {
                         ChromaServiceState.Connected => Strings.Instance.Dashboard_ChromaConnected,
@@ -9814,6 +9897,16 @@ namespace PadForge.Services
                 });
             };
             _chromaService.Start();
+        }
+
+        /// <summary>Starts the Chroma service the first time a Set Chroma
+        /// Color action runs with the mirror off (#468). On the dashboard
+        /// cadence: one volatile read while nothing has asked.</summary>
+        private void EnsureChromaForMacros()
+        {
+            if (_chromaService != null || !ChromaLightbarService.MacroColorRequested) return;
+            if (_inputManager == null || !_inputManager.IsRunning) return;
+            StartChromaIfEnabled();
         }
 
         private void StopChromaService()
@@ -13662,6 +13755,7 @@ namespace PadForge.Services
                 InputDeviceType.HeadTracker => "HeadTracker",
                 InputDeviceType.VrController => "VrController",
                 InputDeviceType.LogitechGKeys => "LogitechGKeys",
+                InputDeviceType.AnalogKeyboard => "AnalogKeyboard",
                 _ => "Device"
             };
             // Vendor daemon notice (#343): the sweep scans on its cadence;
@@ -16160,6 +16254,25 @@ namespace PadForge.Services
                                         SourceDescriptor = PadForge.Engine.Common.Mapping.SourceCoercion
                                             .VoicePhraseDescriptorForButton(bestVoice - vBase),
                                     });
+                            }
+                        }
+
+                        // Analog keys (#468) live on their own sub-state,
+                        // so the button scan above never sees them. A key
+                        // past half press records the descriptor entry the
+                        // trigger dropdown adds.
+                        var analogKeys = ud.InputState.AnalogKeys;
+                        if (analogKeys != null)
+                        {
+                            for (int k = 0; k < analogKeys.Count; k++)
+                            {
+                                if (analogKeys.Depths[k] < 0.5f) continue;
+                                currentEntries.Add(new MacroItem.TriggerInputEntry
+                                {
+                                    DeviceGuid = ud.InstanceGuid,
+                                    SourceDescriptor = PadForge.Engine.Common.Mapping.SourceCoercion
+                                        .AnalogKeyDescriptor(analogKeys.Codes[k]),
+                                });
                             }
                         }
 

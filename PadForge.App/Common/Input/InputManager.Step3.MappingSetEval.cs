@@ -2124,6 +2124,9 @@ namespace PadForge.Common.Input
             if (string.IsNullOrEmpty(descriptor)) return false;
             string canonical = SourceCoercion.ResolveGamepadAlias(descriptor) ?? descriptor.Trim();
             if (canonical.StartsWith("Slider ", System.StringComparison.Ordinal)) return true;
+            // An analog key (#468) rests at 0 and travels one way, a trigger's
+            // shape on any device.
+            if (SourceCoercion.IsAnalogKeyDescriptor(canonical)) return true;
             return CanonicalAxisRestsAtZero(canonical, descriptor, LookupUserDevice(deviceGuid));
         }
 
@@ -2138,6 +2141,7 @@ namespace PadForge.Common.Input
             if (string.IsNullOrEmpty(descriptor)) return false;
             string canonical = SourceCoercion.ResolveGamepadAlias(descriptor) ?? descriptor.Trim();
             if (canonical.StartsWith("Slider ", System.StringComparison.Ordinal)) return true;
+            if (SourceCoercion.IsAnalogKeyDescriptor(canonical)) return true;
             return CanonicalAxisRestsAtZero(canonical, descriptor, dev);
         }
 

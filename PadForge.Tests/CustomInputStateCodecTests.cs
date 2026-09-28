@@ -537,6 +537,10 @@ namespace PadForge.Tests
                 // tail after GyroAux (BlockExt.RingCon), DecodeInto,
                 // ResetToNeutral, and Clone.
                 "RingConStrain",
+                // #468 analog key depths: the extension tail after RingCon
+                // (BlockExt.AnalogKeys), DecodeInto, ResetToNeutral, and
+                // CopyInto.
+                "AnalogKeys",
             };
             var actual = typeof(CustomInputState)
                 .GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance)

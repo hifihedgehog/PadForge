@@ -2246,6 +2246,7 @@ namespace PadForge.Services
             vm.KeepHidHideCloaksBetweenLaunches = appSettings.KeepHidHideCloaksBetweenLaunches;
             vm.FlydigiEnhancedProtocol = appSettings.FlydigiEnhancedProtocol;
             vm.GKeysEnabled = appSettings.GKeysEnabled;
+            vm.AnalogKeyboardsEnabled = appSettings.AnalogKeyboardsEnabled;
             // The hint must be in place before SDL_Init, and a hint set early
             // persists, so the load applies it (#395).
             PadForge.Common.Input.InputManager.ApplyFlydigiEnhancedProtocol(appSettings.FlydigiEnhancedProtocol);
@@ -4731,6 +4732,7 @@ namespace PadForge.Services
                 KeepHidHideCloaksBetweenLaunches = vm.KeepHidHideCloaksBetweenLaunches,
                 FlydigiEnhancedProtocol = vm.FlydigiEnhancedProtocol,
                 GKeysEnabled = vm.GKeysEnabled,
+                AnalogKeyboardsEnabled = vm.AnalogKeyboardsEnabled,
                 // Default profile's custom gestures. When a named profile is
                 // active, defaultSnap.TouchpadGestures carries the gestures
                 // recorded on the default; when default is active, pull
@@ -6231,6 +6233,12 @@ namespace PadForge.Services
         /// the Logitech software.</summary>
         [XmlElement]
         public bool GKeysEnabled { get; set; }
+
+        /// <summary>Analog keyboards read over their vendor HID interface
+        /// (issue #468). Off by default: the polled families share their
+        /// configurator's channel.</summary>
+        [XmlElement]
+        public bool AnalogKeyboardsEnabled { get; set; }
 
         /// <summary>Per-axis ranges in HeadPose's order (yaw, pitch, roll, X,
         /// Y, Z). Zero means the axis follows its family's shared range, which

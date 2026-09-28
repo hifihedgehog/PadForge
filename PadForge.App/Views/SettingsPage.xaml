@@ -276,6 +276,21 @@
                                Visibility="{Binding GKeysStatus, Converter={StaticResource StringToVisibility}}"
                                TextWrapping="Wrap" Margin="0,0,0,8"
                                Foreground="{DynamicResource EmberBrush}"/>
+                    <!-- Analog keyboards (#468), the G-keys row's shape. -->
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <CheckBox VerticalAlignment="Center" Content="{Binding Settings_AnalogKeyboards, Source={x:Static strings:Strings.Instance}}"
+                                  x:Name="AnalogKeyboardsEnableCheckBox"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  ToolTip="{Binding Settings_AnalogKeyboardsTooltip, Source={x:Static strings:Strings.Instance}}"
+                                  IsChecked="{Binding AnalogKeyboardsEnabled}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="AnalogKeyboardsEnabled" SettingLabel="{Binding Settings_AnalogKeyboards, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_SettingsViewModel_AnalogKeyboardsEnabled_188"/>
+                    </StackPanel>
+                    <!-- Which keyboards are being read, and which wait for
+                         Razer Synapse. Empty while the feature is off. -->
+                    <TextBlock Text="{Binding AnalogKeyboardsStatus}"
+                               Visibility="{Binding AnalogKeyboardsStatus, Converter={StaticResource StringToVisibility}}"
+                               TextWrapping="Wrap" Margin="0,0,0,8"
+                               Foreground="{DynamicResource EmberBrush}"/>
                     <!-- Shared label column (#175 typography): both rows sit
                          in one Grid so the NumberBoxes align to one left
                          edge regardless of label length. -->

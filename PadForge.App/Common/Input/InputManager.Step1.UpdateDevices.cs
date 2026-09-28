@@ -441,6 +441,9 @@ namespace PadForge.Common.Input
             changed |= UpdateHeadTrackerDevice();
             changed |= UpdateLogitechGKeysDevice();
 
+            // --- Phase 1k: analog keyboards (issue #468) ---
+            changed |= UpdateAnalogKeyboardDevices();
+
             // --- Phase 2: Detect disconnected SDL devices (debounced) ---
             //
             // Signals that indicate the device might be gone:
@@ -1498,6 +1501,46 @@ namespace PadForge.Common.Input
         /// <summary>The live G-Keys row, null while the feature is off. Read
         /// by the Dashboard status lane.</summary>
         internal LogitechGKeysDevice LogitechGKeys => _logitechGKeysDevice;
+
+        // Analog keyboards (Phase 1k, issue #468). Discovery and the open are
+        // blocking HID I/O, so a worker performs them and the poll thread
+        // only registers finished rows and retires vanished or dead ones, the
+        // headset sweep's shape (Phase 1g), gated by the Settings switch like
+        // the G-keys row.
+        private readonly Dictionary<string, AnalogKeyboardDevice> _openedAnalogKeyboards =
+            new Dictionary<string, AnalogKeyboardDevice>(StringComparer.OrdinalIgnoreCase);
+        private readonly List<AnalogKeyboardDevice> _analogPendingRegister = new List<AnalogKeyboardDevice>();
+        private readonly object _analogLock = new object();
+        private volatile bool _analogSweepRunning;
+        private volatile bool _analogInputsSuppressed;
+        // Rows open or waiting to register, so the switched-off steady state
+        // costs two volatile reads.
+        private volatile bool _analogAnyRows;
+        // Latest sweep's present paths. Null until the first sweep completes,
+        // so nothing is retired on a cold cache.
+        private volatile HashSet<string> _analogPresentPaths;
+        private long _analogNextSweepTicks;
+        private readonly Dictionary<string, long> _analogOpenFailedAt =
+            new Dictionary<string, long>(StringComparer.OrdinalIgnoreCase);
+        private const int _analogSweepIntervalMs = 3000;
+        // A collection that would not open, or whose reader gave up (a polled
+        // keyboard that never answers), waits this long before another try.
+        private const int _analogOpenRetryMs = 60000;
+
+        /// <summary>The open analog keyboard rows, a snapshot for the
+        /// Settings status line.</summary>
+        internal AnalogKeyboardDevice[] AnalogKeyboards
+        {
+            get
+            {
+                lock (_analogLock)
+                {
+                    var rows = new AnalogKeyboardDevice[_openedAnalogKeyboards.Count];
+                    _openedAnalogKeyboards.Values.CopyTo(rows, 0);
+                    return rows;
+                }
+            }
+        }
 
         /// <summary>The live Head Tracker row, null while the feature is off
         /// or the row is retired. Read by the Dashboard status lane
@@ -2767,6 +2810,205 @@ namespace PadForge.Common.Input
             lock (_logitechGKeysLock)
             {
                 RetireLogitechGKeysRow();
+            }
+        }
+
+        /// <summary>
+        /// Phase 1k (issue #468): one row per analog keyboard while the
+        /// Settings switch is on. A worker enumerates and opens, and this
+        /// poll-thread phase registers finished rows and retires rows whose
+        /// collection vanished, whose reader stopped, or that the user removed
+        /// from the Devices page (the headset sweep's legs). Switching the
+        /// setting off retires every row. Off with nothing to retire: two
+        /// volatile reads and out.
+        /// </summary>
+        private bool UpdateAnalogKeyboardDevices()
+        {
+            if (_analogInputsSuppressed)
+                return false;
+
+            bool enabled = AnalogKeyboardRuntime.Enabled;
+            if (!enabled && !_analogAnyRows)
+                return false;
+
+            long now = Environment.TickCount64;
+            if (enabled && !_analogSweepRunning && now >= _analogNextSweepTicks)
+            {
+                _analogSweepRunning = true;
+                _analogNextSweepTicks = now + _analogSweepIntervalMs;
+                Task.Run(() =>
+                {
+                    try { AnalogKeyboardSweep(); }
+                    catch { }
+                    finally { _analogSweepRunning = false; }
+                });
+            }
+
+            bool changed = false;
+            var present = _analogPresentPaths;
+            lock (_analogLock)
+            {
+                if (_analogInputsSuppressed)
+                    return false;
+
+                for (int i = 0; i < _analogPendingRegister.Count; i++)
+                {
+                    var dev = _analogPendingRegister[i];
+                    if (!enabled)
+                    {
+                        dev.Dispose();
+                        continue;
+                    }
+                    // Two collections of one keyboard, or two keyboards that
+                    // report one serial, would share a row. The first keeps it.
+                    bool duplicate = false;
+                    foreach (var open in _openedAnalogKeyboards.Values)
+                        if (open.InstanceGuid == dev.InstanceGuid) { duplicate = true; break; }
+                    if (duplicate)
+                    {
+                        // Wait out the cooldown, or the sweep reopens the
+                        // collection and starts its reader every pass.
+                        _analogOpenFailedAt[dev.HidPath] = now;
+                        dev.Dispose();
+                        continue;
+                    }
+                    try
+                    {
+                        UserDevice ud = FindOrCreateUserDevice(dev.InstanceGuid, dev.ProductGuid);
+                        ud.LoadFromExternalDevice(dev);
+                        ud.IsOnline = true;
+                        _openedAnalogKeyboards[dev.HidPath] = dev;
+                        MarkChanged(ref changed, "analogkb", $"+ {dev.Name} ({dev.Protocol})");
+                    }
+                    catch (Exception ex)
+                    {
+                        dev.Dispose();
+                        RaiseError($"Error registering analog keyboard '{dev.Name}'", ex);
+                    }
+                }
+                _analogPendingRegister.Clear();
+
+                List<string> gone = null;
+                foreach (var kvp in _openedAnalogKeyboards)
+                {
+                    bool vanished = present != null && !present.Contains(kvp.Key);
+                    bool dead = !kvp.Value.IsAttached;
+                    bool removedByUser = FindOnlineDeviceByInstanceGuid(kvp.Value.InstanceGuid) == null;
+                    if (!enabled || vanished || dead || removedByUser)
+                        (gone ??= new List<string>()).Add(kvp.Key);
+                    // A reader that stopped on a collection that is still
+                    // there (a polled keyboard that never answers) waits out
+                    // the cooldown instead of reopening every sweep.
+                    if (enabled && dead && !vanished)
+                        _analogOpenFailedAt[kvp.Key] = now;
+                }
+                if (gone != null)
+                {
+                    foreach (var path in gone)
+                    {
+                        var dev = _openedAnalogKeyboards[path];
+                        var ud = FindOnlineDeviceByInstanceGuid(dev.InstanceGuid);
+                        if (ud != null)
+                        {
+                            ud.IsOnline = false;
+                            ud.Device = null;
+                            // A key held at retire time would stay stamped on
+                            // the slot's output, the MIDI/NFC/headset reason.
+                            NeutralizeMappedOutputsFor(ud);
+                        }
+                        dev.Dispose();
+                        _openedAnalogKeyboards.Remove(path);
+                        MarkChanged(ref changed, "analogkb", $"- {path}");
+                    }
+                }
+
+                if (present != null && _analogOpenFailedAt.Count > 0)
+                {
+                    List<string> stale = null;
+                    foreach (var key in _analogOpenFailedAt.Keys)
+                        if (!present.Contains(key)) (stale ??= new List<string>()).Add(key);
+                    if (stale != null) foreach (var key in stale) _analogOpenFailedAt.Remove(key);
+                }
+
+                _analogAnyRows = _openedAnalogKeyboards.Count > 0 || _analogPendingRegister.Count > 0;
+            }
+            return changed;
+        }
+
+        /// <summary>Worker half of Phase 1k: enumerate analog keyboards, open
+        /// the new ones, queue them for poll-thread registration. All blocking
+        /// I/O lives here.</summary>
+        private void AnalogKeyboardSweep()
+        {
+            var candidates = AnalogKeyboardHidRuntime.Enumerate();
+            if (candidates == null)
+                return; // enumeration failed; keep the previous snapshot
+            var present = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var c in candidates) present.Add(c.Path);
+            _analogPresentPaths = present;
+
+            long now = Environment.TickCount64;
+            foreach (var candidate in candidates)
+            {
+                lock (_analogLock)
+                {
+                    if (_analogInputsSuppressed || !AnalogKeyboardRuntime.Enabled) return;
+                    if (_openedAnalogKeyboards.ContainsKey(candidate.Path)) continue;
+                    bool pending = false;
+                    for (int i = 0; i < _analogPendingRegister.Count; i++)
+                        if (string.Equals(_analogPendingRegister[i].HidPath, candidate.Path,
+                                StringComparison.OrdinalIgnoreCase)) { pending = true; break; }
+                    if (pending) continue;
+                    if (_analogOpenFailedAt.TryGetValue(candidate.Path, out long failedAt)
+                        && now - failedAt < _analogOpenRetryMs)
+                        continue;
+                }
+
+                var dev = new AnalogKeyboardDevice(candidate);
+                bool ok = false;
+                try { ok = dev.Open(); }
+                catch { }
+                PadForge.Engine.SdlDiagLog.WriteLine(ok
+                    ? $"Analog keyboard: opened '{candidate.Name}' ({candidate.Protocol}, {candidate.VendorId:X4}:{candidate.ProductId:X4})"
+                    : $"Analog keyboard: open failed for '{candidate.Name}', retry in {_analogOpenRetryMs / 1000} s");
+                lock (_analogLock)
+                {
+                    if (_analogInputsSuppressed || !AnalogKeyboardRuntime.Enabled) { dev.Dispose(); return; }
+                    if (!ok)
+                    {
+                        dev.Dispose();
+                        _analogOpenFailedAt[candidate.Path] = now;
+                        continue;
+                    }
+                    _analogOpenFailedAt.Remove(candidate.Path);
+                    _analogPendingRegister.Add(dev);
+                    _analogAnyRows = true;
+                }
+            }
+        }
+
+        /// <summary>Tears down every analog keyboard row and suppresses Phase
+        /// 1k. Called on app shutdown beside the G-keys teardown.</summary>
+        public void ShutdownAnalogKeyboardInputs()
+        {
+            _analogInputsSuppressed = true;
+            lock (_analogLock)
+            {
+                foreach (var kvp in _openedAnalogKeyboards)
+                {
+                    var ud = FindOnlineDeviceByInstanceGuid(kvp.Value.InstanceGuid);
+                    if (ud != null)
+                    {
+                        ud.IsOnline = false;
+                        ud.Device = null;
+                        NeutralizeMappedOutputsFor(ud);
+                    }
+                    kvp.Value.Dispose();
+                }
+                _openedAnalogKeyboards.Clear();
+                foreach (var dev in _analogPendingRegister) dev.Dispose();
+                _analogPendingRegister.Clear();
+                _analogAnyRows = false;
             }
         }
 

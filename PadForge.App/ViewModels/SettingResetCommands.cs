@@ -28,6 +28,7 @@ namespace PadForge.ViewModels
             nameof(EnablePollingOnFocusLoss) or
             nameof(FlydigiEnhancedProtocol) or
             nameof(GKeysEnabled) or
+            nameof(AnalogKeyboardsEnabled) or
             nameof(PollingRateMs) or
             nameof(HmInactivityDestroyTimeoutSeconds) or
             nameof(AssignOfferNewDevice) or
@@ -114,6 +115,13 @@ namespace PadForge.ViewModels
                 {
                     // Off is the default: it loads a third-party library.
                     GKeysEnabled = false;
+                    break;
+                }
+                case nameof(AnalogKeyboardsEnabled):
+                {
+                    // Off is the default: the polled keyboards share their
+                    // configurator's channel.
+                    AnalogKeyboardsEnabled = false;
                     break;
                 }
                 case nameof(PollingRateMs):

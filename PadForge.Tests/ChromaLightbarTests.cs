@@ -198,11 +198,115 @@ namespace PadForge.Tests
         public ChromaLightbarTests()
         {
             ChromaLightbarService.ResetPublishedForTest();
+            ChromaLightbarService.ResetMacroColorForTest();
         }
 
         public void Dispose()
         {
             ChromaLightbarService.ResetPublishedForTest();
+            ChromaLightbarService.ResetMacroColorForTest();
+        }
+
+        /// <summary>Asserts a macro color every 10 ms on its own thread,
+        /// the Set Chroma Color action's per-frame assertion at a slower
+        /// cadence that still sits well inside the assertion window.</summary>
+        private sealed class MacroAsserter : IDisposable
+        {
+            private volatile bool _stop;
+            private readonly Thread _thread;
+
+            public MacroAsserter(byte r, byte g, byte b)
+            {
+                _thread = new Thread(() =>
+                {
+                    while (!_stop)
+                    {
+                        ChromaLightbarService.AssertMacroColor(r, g, b);
+                        Thread.Sleep(10);
+                    }
+                }) { IsBackground = true };
+                _thread.Start();
+            }
+
+            public void Dispose()
+            {
+                _stop = true;
+                _thread.Join(1000);
+            }
+        }
+
+        private static int Pushes(FakeChromaServer server, int bgr)
+            => server.Requests.Count(r => r.Body == "{\"effect\":\"CHROMA_STATIC\",\"param\":{\"color\":" + bgr + "}}");
+
+        /// <summary>Set Chroma Color with the mirror off (#468): nothing is
+        /// held while no macro paints, so Synapse keeps the lighting. A
+        /// macro color opens a session and paints every category, and the
+        /// session ends when the color does, which hands the lighting back.</summary>
+        [Fact]
+        public void MacroColor_WithTheMirrorOff_PaintsOnlyWhileAsserted()
+        {
+            using var server = new FakeChromaServer();
+            using var svc = new ChromaLightbarService(
+                server.Endpoint, heartbeatMs: 200, retryMs: 100, pollMs: 25) { MirrorEnabled = false };
+            svc.Start();
+
+            Thread.Sleep(300);
+            Assert.Empty(server.Requests);
+            Assert.False(ChromaLightbarService.MacroColorRequested);
+
+            using (new MacroAsserter(0, 255, 0))
+            {
+                Assert.True(server.WaitFor(() => Pushes(server, 65280) >= 6), "the macro color was never painted");
+                Assert.True(ChromaLightbarService.MacroColorRequested);
+                Assert.DoesNotContain(server.Requests, r => r.Method == "DELETE");
+            }
+
+            Assert.True(server.WaitFor(() => server.Requests.Any(r => r.Method == "DELETE" && r.Path == "/chromasdk")),
+                "the session outlived the macro color");
+            int inits = server.Requests.Count(r => r.Path == "/razer/chromasdk");
+            Thread.Sleep(300);
+            Assert.Equal(inits, server.Requests.Count(r => r.Path == "/razer/chromasdk"));
+        }
+
+        /// <summary>With the mirror on, a macro color takes priority over the
+        /// published lightbar color, and the lightbar color returns in the
+        /// same session when the macro ends.</summary>
+        [Fact]
+        public void MacroColor_OverridesTheMirror_ThenTheMirrorReturns()
+        {
+            using var server = new FakeChromaServer();
+            using var svc = new ChromaLightbarService(
+                server.Endpoint, heartbeatMs: 200, retryMs: 100, pollMs: 25);
+            svc.Start();
+            ChromaLightbarService.Publish(255, 0, 0);
+            Assert.True(server.WaitFor(() => Pushes(server, 255) >= 6));
+
+            using (new MacroAsserter(0, 0, 255))
+                Assert.True(server.WaitFor(() => Pushes(server, 16711680) >= 6), "the macro color did not win");
+
+            Assert.True(server.WaitFor(() => Pushes(server, 255) >= 12), "the mirror color never came back");
+            Assert.DoesNotContain(server.Requests, r => r.Method == "DELETE");
+            Assert.Equal(1, server.Requests.Count(r => r.Path == "/razer/chromasdk"));
+        }
+
+        /// <summary>With the mirror on but no lightbar color published yet, a
+        /// finished macro color has nothing to fall back to, so the session
+        /// is handed back and the mirror opens a fresh one.</summary>
+        [Fact]
+        public void MacroColor_WithNothingToFallBackTo_HandsBackAndReopens()
+        {
+            using var server = new FakeChromaServer();
+            using var svc = new ChromaLightbarService(
+                server.Endpoint, heartbeatMs: 200, retryMs: 100, pollMs: 25);
+            svc.Start();
+            Assert.True(server.WaitFor(() => server.Requests.Any(r => r.Path == "/razer/chromasdk")));
+
+            using (new MacroAsserter(0, 255, 0))
+                Assert.True(server.WaitFor(() => Pushes(server, 65280) >= 6));
+
+            Assert.True(server.WaitFor(() => server.Requests.Any(r => r.Method == "DELETE" && r.Path == "/chromasdk")));
+            Assert.True(server.WaitFor(() => server.Requests.Count(r => r.Path == "/razer/chromasdk") >= 2),
+                "the mirror did not reopen a session");
         }
 
         /// <summary>BGR packing, the official docs' "Color value in BGR

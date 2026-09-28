@@ -98,10 +98,11 @@ namespace PadForge.Tests
         /// the tail (55). Sibling of MacroWave1bTests' pin, which this
         /// extends rather than replaces.</summary>
         [Fact]
-        public void SwitchLayer_IsTheTailAt55()
+        public void SwitchLayer_StaysAt55()
         {
+            // No longer the tail: Set Chroma Color appended 56 (#468).
             var values = Enum.GetValues<MacroActionType>();
-            Assert.Equal(MacroActionType.SwitchLayer, values[^1]);
+            Assert.Equal(MacroActionType.SwitchLayer, values[^2]);
             Assert.Equal(55, (int)MacroActionType.SwitchLayer);
             Assert.Equal(54, (int)MacroActionType.VoiceListenWhileHeld);
         }

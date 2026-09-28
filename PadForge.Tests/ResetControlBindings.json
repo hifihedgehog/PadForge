@@ -1093,6 +1093,12 @@
   },
   {
     "File": "PadForge.App/Views/SettingsPage.xaml",
+    "Id": "Reset_SettingsViewModel_AnalogKeyboardsEnabled_188",
+    "Owner": "PadForge.ViewModels.SettingsViewModel",
+    "Property": "AnalogKeyboardsEnabled"
+  },
+  {
+    "File": "PadForge.App/Views/SettingsPage.xaml",
     "Id": "Reset_SettingsViewModel_PollingRateMs_179",
     "Owner": "PadForge.ViewModels.SettingsViewModel",
     "Property": "PollingRateMs"

@@ -176,6 +176,11 @@ namespace PadForge.Engine.Common.Mapping
                              // unipolar [0..1] per direction, read PER DEVICE
                              // from CustomInputState.RingConStrain. Leading
                              // 'R' keeps it clear of the I/H prefix grammar.
+            AnalogKey,       // "Analog Key N" (issue #468). One key's press
+                             // depth on an analog keyboard, unipolar [0..1],
+                             // read PER DEVICE from CustomInputState.AnalogKeys.
+                             // Leading 'A' keeps it clear of the I/H prefix
+                             // grammar.
         }
 
         /// <summary>Sensitivity constant for gyro bipolar coercion.
@@ -1271,6 +1276,8 @@ namespace PadForge.Engine.Common.Mapping
                 return SourceType.BalanceBoard;
             if (s.StartsWith("Midi ", StringComparison.Ordinal))
                 return SourceType.Midi;
+            if (IsAnalogKeyDescriptor(s))
+                return SourceType.AnalogKey;
             if (IsFlickStickDescriptor(s))
                 return SourceType.FlickStick;
             if (IsStickRingDescriptor(s))
@@ -1507,6 +1514,48 @@ namespace PadForge.Engine.Common.Mapping
         public static bool IsMidiDescriptor(string descriptor)
             => !string.IsNullOrEmpty(descriptor)
             && descriptor.StartsWith("Midi ", StringComparison.Ordinal);
+
+        /// <summary>Prefix of the analog keyboard family (issue #468):
+        /// <c>"Analog Key N"</c>, N the decimal key code of
+        /// <see cref="AnalogKeyInputState"/>.</summary>
+        public const string AnalogKeyPrefix = "Analog Key ";
+
+        /// <summary>The descriptor for one analog key code.</summary>
+        public static string AnalogKeyDescriptor(int code)
+            => AnalogKeyPrefix + code.ToString(System.Globalization.CultureInfo.InvariantCulture);
+
+        /// <summary>True for any analog key descriptor.</summary>
+        public static bool IsAnalogKeyDescriptor(string descriptor)
+            => TryParseAnalogKey(descriptor, out _);
+
+        /// <summary>Parses <c>"Analog Key N"</c> without allocating: it runs
+        /// on every read of the family at the poll rate.</summary>
+        public static bool TryParseAnalogKey(string descriptor, out int code)
+        {
+            code = 0;
+            if (string.IsNullOrEmpty(descriptor)) return false;
+            var s = descriptor.AsSpan().Trim();
+            if (!s.StartsWith(AnalogKeyPrefix, StringComparison.Ordinal)) return false;
+            return int.TryParse(s.Slice(AnalogKeyPrefix.Length), System.Globalization.NumberStyles.None,
+                    System.Globalization.CultureInfo.InvariantCulture, out code)
+                && code > 0 && code < AnalogKeyInputState.CodeCount;
+        }
+
+        /// <summary>Press depth of an analog key source on
+        /// <paramref name="state"/>, 0..1. 0 when the device publishes no
+        /// analog keys or the key is up.</summary>
+        private static float ReadAnalogKey(CustomInputState state, string canonical)
+            => state.AnalogKeys != null && TryParseAnalogKey(canonical, out int code)
+                ? state.AnalogKeys.Get(code)
+                : 0f;
+
+        /// <summary>An analog key as a button (#468): down at or past the
+        /// source's threshold percent, which is the actuation point. At or
+        /// past, so a 100 percent threshold is the bottom of the press rather
+        /// than a depth no key can exceed, and a key at rest never fires,
+        /// even on a trigger-click target whose threshold is 0.</summary>
+        internal static bool AnalogKeyPressed(float depth, int thresholdPercent)
+            => depth > 0f && depth * 100f >= thresholdPercent;
 
         /// <summary>Parses a MIDI descriptor into a kind and index.
         /// kind: 'N' note, 'C' cc absolute, 'U' cc encoder-up pulse,
@@ -2290,7 +2339,8 @@ namespace PadForge.Engine.Common.Mapping
         /// per-source DeadZone and that no older family test in the two grid
         /// view models admits: the stick and touchpad rings (the radius), the
         /// Motion Shake and Motion Lean pairs, MIDI pitch bend, inbound
-        /// rumble, and the Ring-Con squeeze and pull. MappingItem and
+        /// rumble, the Ring-Con squeeze and pull, and analog keys, whose
+        /// deadzone is the actuation point (#468). MappingItem and
         /// MappingSourceItem show the deadzone slider for these on a button
         /// row, or the threshold the read uses has no control.</summary>
         public static bool IsThresholdedButtonFamily(string descriptor)
@@ -2302,7 +2352,8 @@ namespace PadForge.Engine.Common.Mapping
                 || IsMotionLeanDescriptor(descriptor) || IsMotionLeanAuxDescriptor(descriptor)
                 || string.Equals(descriptor.Trim(), "Midi Pitch Bend", StringComparison.Ordinal)
                 || IsRumbleDescriptor(descriptor)
-                || IsRingConDescriptor(descriptor);
+                || IsRingConDescriptor(descriptor)
+                || IsAnalogKeyDescriptor(descriptor);
         }
 
         /// <summary>True for either stick-ring descriptor.</summary>
@@ -3080,6 +3131,9 @@ namespace PadForge.Engine.Common.Mapping
             // the 0x0400 press radius the WebHID Ring-Con demo fires at.
             if (IsRingConDescriptor(canonical))
                 return ReadRingCon(state, canonical) > 0.5f;
+            // An analog key (#468) at the same fixed half press.
+            if (canonical.StartsWith(AnalogKeyPrefix, StringComparison.Ordinal))
+                return AnalogKeyPressed(ReadAnalogKey(state, canonical), 50);
             return ReadTouchpadBool(state, canonical);
         }
 
@@ -5043,6 +5097,13 @@ namespace PadForge.Engine.Common.Mapping
                 return false;
             }
 
+            // Analog key (#468): the row's deadzone is the actuation point, so
+            // two rows on one key at two deadzones are a soft press and a full
+            // press.
+            if (s.StartsWith(AnalogKeyPrefix, StringComparison.Ordinal))
+                return AnalogKeyPressed(ReadAnalogKey(state, s),
+                    EffectiveThresholdPercent(src, globalThresholdPercent));
+
             // Gravity-lean pair (v26): a POSITION read, so the wedge grammar
             // mirrors the generic Axis bool contract exactly (threshold on
             // the per-source DeadZone, HalfAxis + Invert as the direction
@@ -5392,6 +5453,15 @@ namespace PadForge.Engine.Common.Mapping
                 return 0f;
             }
 
+            // Analog key (#468) as a stick contribution: deflection toward one
+            // side, NONNEGATIVE 0..1 with rest at center, the way a button and
+            // the rumble channels read here. Never depth * 2 - 1, which would
+            // hold the stick at full negative while the key rests. The
+            // evaluator's Invert sends it the other way, so a pair of keys
+            // drives one axis like a pair of buttons.
+            if (s.StartsWith(AnalogKeyPrefix, StringComparison.Ordinal))
+                return ReadAnalogKey(state, s);
+
             // Gravity-lean pair (v26): already bipolar [-1..+1]. The
             // HalfAxis wedge shape mirrors the generic Axis contract
             // (selected direction ranges [0, +1], other reads 0, Invert
@@ -5665,6 +5735,10 @@ namespace PadForge.Engine.Common.Mapping
                 }
                 return 0f;
             }
+
+            // Analog key (#468) as a trigger pull: the press depth itself.
+            if (s.StartsWith(AnalogKeyPrefix, StringComparison.Ordinal))
+                return ReadAnalogKey(state, s);
 
             // Gravity-lean pair (v26) as a trigger pull: HalfAxis selects
             // one tilt direction (Invert picks which), direction-blind

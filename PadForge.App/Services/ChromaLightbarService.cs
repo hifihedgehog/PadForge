@@ -85,6 +85,33 @@ namespace PadForge.Services
         /// every report. The Lightsync mirror's shape, leg for leg.</summary>
         private static int s_generation;
 
+        /// <summary>The color a Set Chroma Color macro action asserts (#468),
+        /// 0x00RRGGBB, and the tick of its latest assertion. The action writes
+        /// both on every frame it is current, from the poll thread, and the
+        /// worker reads them. A color counts while its latest assertion is
+        /// younger than <see cref="MacroAssertWindowMs"/>, so the lighting
+        /// follows the action ending within that window. Several macros
+        /// asserting in one frame resolve to the last write, which is the
+        /// last one evaluated.</summary>
+        private static int s_macroRgb;
+        private static long s_macroAssertTicks;
+
+        /// <summary>Set by the first macro assertion of the process, the
+        /// owner's cue to run the service for macros with the mirror off.</summary>
+        private static volatile bool s_macroRequested;
+
+        /// <summary>Wakes the worker when a macro color starts or changes, so
+        /// a press repaints without waiting out a poll.</summary>
+        private static readonly SemaphoreSlim s_wake = new(0, 1);
+
+        /// <summary>How long a macro color outlives its latest assertion. The
+        /// action asserts every poll, 1 ms apart, and an idle engine still
+        /// polls several times a second, so this only ever measures the gap
+        /// after the action ends.</summary>
+        internal const int MacroAssertWindowMs = 120;
+
+        private volatile bool _mirrorEnabled = true;
+
         private readonly string _endpoint;
         private readonly int _heartbeatMs;
         private readonly int _retryMs;
@@ -129,6 +156,67 @@ namespace PadForge.Services
         /// <summary>Test seam: returns the store to its no-color-yet state.</summary>
         internal static void ResetPublishedForTest()
             => Volatile.Write(ref s_publishedRgb, -1);
+
+        /// <summary>Whether the lightbar mirror (#373) is on. While it is off
+        /// the service paints only macro colors and holds a Synapse session
+        /// only while one is live.</summary>
+        public bool MirrorEnabled
+        {
+            get => _mirrorEnabled;
+            set
+            {
+                _mirrorEnabled = value;
+                Wake();
+            }
+        }
+
+        /// <summary>True once any Set Chroma Color action has run.</summary>
+        public static bool MacroColorRequested => s_macroRequested;
+
+        /// <summary>Asserts a macro color for this frame (#468). Called by
+        /// the Set Chroma Color action on every frame it is current.</summary>
+        public static void AssertMacroColor(byte r, byte g, byte b)
+        {
+            int rgb = (r << 16) | (g << 8) | b;
+            long now = Environment.TickCount64;
+            bool fresh = Volatile.Read(ref s_macroRgb) != rgb
+                || now - Volatile.Read(ref s_macroAssertTicks) > MacroAssertWindowMs;
+            Volatile.Write(ref s_macroRgb, rgb);
+            Volatile.Write(ref s_macroAssertTicks, now);
+            s_macroRequested = true;
+            if (fresh) Wake();
+        }
+
+        /// <summary>The live macro color, if one was asserted within the
+        /// window.</summary>
+        internal static bool TryGetMacroColor(long now, out int rgb)
+        {
+            rgb = Volatile.Read(ref s_macroRgb);
+            long at = Volatile.Read(ref s_macroAssertTicks);
+            return at != 0 && now - at <= MacroAssertWindowMs;
+        }
+
+        /// <summary>Test seam: forgets every macro assertion.</summary>
+        internal static void ResetMacroColorForTest()
+        {
+            Volatile.Write(ref s_macroAssertTicks, 0);
+            Volatile.Write(ref s_macroRgb, 0);
+            s_macroRequested = false;
+        }
+
+        private static void Wake()
+        {
+            try { if (s_wake.CurrentCount == 0) s_wake.Release(); }
+            catch (SemaphoreFullException) { }
+        }
+
+        /// <summary>Whether a Synapse session is wanted right now: the mirror
+        /// is on, or a macro color is live.</summary>
+        private bool Wanted(long now) => _mirrorEnabled || TryGetMacroColor(now, out _);
+
+        /// <summary>Waits a poll interval or until a macro color wakes the
+        /// worker, whichever comes first.</summary>
+        private Task WaitPollAsync(CancellationToken ct) => s_wake.WaitAsync(_pollMs, ct);
 
         /// <summary>0x00RRGGBB to the Chroma BGR integer,
         /// R + (G &lt;&lt; 8) + (B &lt;&lt; 16).</summary>
@@ -183,6 +271,16 @@ namespace PadForge.Services
         {
             while (!ct.IsCancellationRequested)
             {
+                // Nothing to paint: hold no session, so Synapse keeps the
+                // lighting (#468). The mirror alone keeps the old contract of
+                // a session for as long as it is on.
+                if (!Wanted(Environment.TickCount64))
+                {
+                    try { await WaitPollAsync(ct).ConfigureAwait(false); }
+                    catch (OperationCanceledException) { break; }
+                    continue;
+                }
+
                 string session = null;
                 // HttpClient signals its own timeout as TaskCanceledException,
                 // an OperationCanceledException subclass, so the filter is
@@ -204,12 +302,27 @@ namespace PadForge.Services
 
                 Report(ChromaServiceState.Connected, generation);
                 int lastSent = -1;
+                bool paintedByMacro = false;
+                bool handBack = false;
                 long lastHeartbeat = Environment.TickCount64;
                 try
                 {
                     while (!ct.IsCancellationRequested)
                     {
                         long now = Environment.TickCount64;
+                        bool macroLive = TryGetMacroColor(now, out int macroRgb);
+                        int published = Volatile.Read(ref s_publishedRgb);
+                        bool mirror = _mirrorEnabled;
+
+                        // Hand the lighting back to Synapse when nothing wants
+                        // painting, or when a macro color ended with no mirror
+                        // color to replace it. Only ending the session restores
+                        // Synapse's own effect: CHROMA_NONE would blank
+                        // PadForge's layer instead. A mirror that is still on
+                        // opens a fresh session on the next pass.
+                        if (!mirror && !macroLive) { handBack = true; break; }
+                        if (paintedByMacro && !macroLive && !(mirror && published >= 0)) { handBack = true; break; }
+
                         if (now - lastHeartbeat >= _heartbeatMs)
                         {
                             lastHeartbeat = now;
@@ -222,7 +335,8 @@ namespace PadForge.Services
                                 break; // Session died on the server: re-init.
                         }
 
-                        int rgb = Volatile.Read(ref s_publishedRgb);
+                        // A macro color takes priority over the mirror's.
+                        int rgb = macroLive ? macroRgb : (mirror ? published : -1);
                         if (rgb >= 0 && rgb != lastSent)
                         {
                             // lastSent advances only when every category
@@ -232,10 +346,19 @@ namespace PadForge.Services
                             // of holding the previous one until the game
                             // writes a new color.
                             if (await SendStaticAsync(session, ToBgr(rgb), ct).ConfigureAwait(false))
+                            {
                                 lastSent = rgb;
+                                paintedByMacro = macroLive;
+                            }
+                        }
+                        else if (rgb >= 0)
+                        {
+                            // Same color from the other source: whoever
+                            // asserts it now owns what the keys show.
+                            paintedByMacro = macroLive;
                         }
 
-                        await Task.Delay(_pollMs, ct).ConfigureAwait(false);
+                        await WaitPollAsync(ct).ConfigureAwait(false);
                     }
                 }
                 catch (OperationCanceledException) { /* stopping, or a call timed out: the token check below tells them apart */ }
@@ -251,6 +374,13 @@ namespace PadForge.Services
                 catch { /* best effort */ }
 
                 if (ct.IsCancellationRequested) break;
+                // A deliberate hand-back is not a failure: go straight back to
+                // waiting for something to paint, with no retry delay.
+                if (handBack)
+                {
+                    Report(ChromaServiceState.Stopped, generation);
+                    continue;
+                }
                 Report(ChromaServiceState.WaitingForSynapse, generation);
                 try { await Task.Delay(_retryMs, ct).ConfigureAwait(false); }
                 catch (OperationCanceledException) { break; }

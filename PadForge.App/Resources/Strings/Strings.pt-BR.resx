@@ -266,6 +266,11 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>O SDK G-key não iniciou. Normalmente o Logitech Gaming Software não está em execução.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Conectado, nenhuma tecla vista ainda. No Logitech Gaming Software, torne o PadForge o perfil persistente.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>Em execução, {0} eventos de tecla</value></data>
+  <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Ler Teclados Analógicos</value></data>
+  <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Lê o quanto cada tecla está pressionada nos teclados Wooting, Razer Huntsman analógicos, NuPhy HE, DrunkDeer, Keychron HE, Lemokey HE, Madlions HE e Redragon K709 HE e no Razer Tartarus Pro, cada um como sua própria linha de dispositivo. Dispositivos Razer exigem o Razer Synapse em execução. Os teclados DrunkDeer, Keychron, Lemokey, Madlions e Redragon são lidos por consultas no canal que o próprio configurador deles usa, então feche o configurador enquanto isto estiver ligado.</value></data>
+  <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>Nenhum teclado analógico compatível encontrado.</value></data>
+  <data name="Settings_AnalogKeyboardsStatus_Reading_Format" xml:space="preserve"><value>Lendo {0}.</value></data>
+  <data name="Settings_AnalogKeyboardsStatus_Synapse_Format" xml:space="preserve"><value>Inicie o Razer Synapse para ler {0}.</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Controle Web</value></data>
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>Sirva uma interface de gamepad para navegadores na sua rede local.</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Ativar Servidor de Controle Web</value></data>
@@ -457,6 +462,8 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Devices_Axes" xml:space="preserve"><value>Eixos</value></data>
   <data name="Devices_Buttons" xml:space="preserve"><value>Botões</value></data>
   <data name="Devices_Keyboard" xml:space="preserve"><value>Teclado</value></data>
+  <data name="Devices_AnalogKeys" xml:space="preserve"><value>Profundidade das Teclas</value></data>
+  <data name="Devices_AnalogKeysHint" xml:space="preserve"><value>Pressione uma tecla para ver até onde ela desce.</value></data>
   <data name="Devices_Mouse" xml:space="preserve"><value>Mouse</value></data>
   <data name="Devices_DPadPOV" xml:space="preserve"><value>D-Pad / POV</value></data>
   <data name="Devices_POV" xml:space="preserve"><value>POV </value></data>
@@ -1234,6 +1241,10 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Key_Sleep" xml:space="preserve"><value>Suspensão</value></data>
   <!-- Numpad -->
   <data name="Key_Numpad" xml:space="preserve"><value>Teclado numérico {0}</value></data>
+  <data name="AnalogKey_IntlHash" xml:space="preserve"><value>Intl #</value></data>
+  <data name="AnalogKey_IntlBackslash" xml:space="preserve"><value>Intl \</value></data>
+  <data name="AnalogKey_Extra_Format" xml:space="preserve"><value>Tecla Extra {0}</value></data>
+  <data name="AnalogKey_Code_Format" xml:space="preserve"><value>Tecla {0}</value></data>
   <data name="Key_Separator" xml:space="preserve"><value>Separador</value></data>
   <!-- Lock keys -->
   <data name="Key_NumLock" xml:space="preserve"><value>Num Lock</value></data>
@@ -2453,6 +2464,7 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="DeviceType_HeadTracker" xml:space="preserve"><value>Rastreador de Cabeça</value></data>
   <data name="DeviceType_VrController" xml:space="preserve"><value>Controle de RV</value></data>
   <data name="DeviceType_LogitechGKeys" xml:space="preserve"><value>Teclas G da Logitech</value></data>
+  <data name="DeviceType_AnalogKeyboard" xml:space="preserve"><value>Teclado Analógico</value></data>
   <data name="HeadTracker_Yaw" xml:space="preserve"><value>Guinada da Cabeça</value></data>
   <data name="HeadTracker_Pitch" xml:space="preserve"><value>Inclinação da Cabeça</value></data>
   <data name="HeadTracker_Roll" xml:space="preserve"><value>Rolagem da Cabeça</value></data>
@@ -2779,6 +2791,10 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Macro_SwitchLayerName" xml:space="preserve"><value>Camada de Shift</value></data>
   <data name="Macro_GuideLedBrightnessName" xml:space="preserve"><value>Brilho do LED Guide</value></data>
   <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>Trocar de Camada</value></data>
+  <data name="MacroAction_Type_SetChromaColor" xml:space="preserve"><value>Definir Cor do Chroma</value></data>
+  <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>Pinta todos os dispositivos Razer Chroma de uma cor enquanto a ação é executada.</value></data>
+  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>Pinta todos os dispositivos Razer Chroma desta cor pela duração acima e depois devolve a iluminação ao Razer Synapse. Para manter a cor enquanto o gatilho estiver pressionado, use “Enquanto Segurar” com “Até Soltar”. Quando duas macros pintam ao mesmo tempo, vence a que está mais abaixo na lista, então coloque a macro de pressão total abaixo da de pressão leve. Exige o Razer Synapse em execução.</value></data>
+  <data name="MacroAction_SetChromaColor_Format" xml:space="preserve"><value>Chroma {0} por {1} ms</value></data>
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>Trocar para a camada {0}</value></data>
   <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>Leva este slot à camada shift escolhida. A camada permanece ativa até outra troca, um ativador Latch ou Cycle, ou uma troca de perfil. Base retorna à camada base. Limite este macro a uma camada acima para que o mesmo botão salte diferente por camada.</value></data>
   <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Restaurar Modo do Ponteiro</value></data>
@@ -3638,6 +3654,8 @@ Deseja que o PadForge os desinstale agora? Isso exige elevação e pode levar um
   <data name="About_OpenXrRefsDesc" xml:space="preserve"><value>A interface de tempo de execução, o layout das estruturas e as chaves de registro por trás da entrada do headset e dos controles de movimento, lidos dos cabeçalhos do OpenXR-SDK da Khronos (Apache-2.0) e conferidos com o VirtualDesktop-OpenXR (MIT). O PadForge fala com o tempo de execução instalado na sua máquina e não distribui código da Khronos.</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Referências do SDK G-key da Logitech</value></data>
   <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>O layout da palavra de evento por trás da entrada das teclas G vem do LogitechGkeyLib.h no SDK. A ordem de busca e o encerramento da biblioteca seguem o GKey.cpp do Mumble (BSD 3-Clause). O PadForge carrega a biblioteca que estiver na máquina e não distribui código da Logitech.</value></data>
+  <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>Soup e AnalogSense</value></data>
+  <data name="About_AnalogKeyboardRefsDesc" xml:space="preserve"><value>Os formatos de relatório e as tabelas de teclas da entrada de teclados analógicos seguem o Soup e o AnalogSense JavaScript SDK (MIT, Calamity, Inc.), conferidos com o Wooting Analog SDK (MPL-2.0). O formato do Razer Tartarus Pro segue o commit do Tartarus Pro no fork do Soup de DenkiSuki (MIT).</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
   <data name="About_UsbipWin2Desc" xml:space="preserve"><value>Transporte USB de Vadym Hrynchyshyn para os controles USB compostos do HIDMaestro. O instalador assinado vem dentro do HIDMaestro e é executado na primeira vez que um controle composto é criado. BSD 2-Clause.</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">

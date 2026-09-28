@@ -385,6 +385,11 @@ public class Strings : INotifyPropertyChanged
     public string Settings_GKeysStatus_InitRefused => Get("Settings_GKeysStatus_InitRefused");
     public string Settings_GKeysStatus_NoKeysYet => Get("Settings_GKeysStatus_NoKeysYet");
     public string Settings_GKeysStatus_Running_Format => Get("Settings_GKeysStatus_Running_Format");
+    public string Settings_AnalogKeyboards => Get("Settings_AnalogKeyboards");
+    public string Settings_AnalogKeyboardsTooltip => Get("Settings_AnalogKeyboardsTooltip");
+    public string Settings_AnalogKeyboardsStatus_None => Get("Settings_AnalogKeyboardsStatus_None");
+    public string Settings_AnalogKeyboardsStatus_Reading_Format => Get("Settings_AnalogKeyboardsStatus_Reading_Format");
+    public string Settings_AnalogKeyboardsStatus_Synapse_Format => Get("Settings_AnalogKeyboardsStatus_Synapse_Format");
     public string Dashboard_WebController => Get("Dashboard_WebController");
     public string Dashboard_WebDescription => Get("Dashboard_WebDescription");
     public string Dashboard_EnableWeb => Get("Dashboard_EnableWeb");
@@ -689,6 +694,8 @@ public class Strings : INotifyPropertyChanged
     public string About_OpenXrRefsDesc => Get("About_OpenXrRefsDesc");
     public string About_LogitechGKeyRefs => Get("About_LogitechGKeyRefs");
     public string About_LogitechGKeyRefsDesc => Get("About_LogitechGKeyRefsDesc");
+    public string About_AnalogKeyboardRefs => Get("About_AnalogKeyboardRefs");
+    public string About_AnalogKeyboardRefsDesc => Get("About_AnalogKeyboardRefsDesc");
     public string About_UsbipWin2 => Get("About_UsbipWin2");
     public string About_UsbipWin2Desc => Get("About_UsbipWin2Desc");
     public string About_Concentus => Get("About_Concentus");
@@ -992,6 +999,8 @@ public class Strings : INotifyPropertyChanged
     public string Devices_Axes => Get("Devices_Axes");
     public string Devices_Buttons => Get("Devices_Buttons");
     public string Devices_Keyboard => Get("Devices_Keyboard");
+    public string Devices_AnalogKeys => Get("Devices_AnalogKeys");
+    public string Devices_AnalogKeysHint => Get("Devices_AnalogKeysHint");
     public string Devices_Mouse => Get("Devices_Mouse");
     public string Devices_DPadPOV => Get("Devices_DPadPOV");
     public string Devices_POV => Get("Devices_POV");
@@ -2408,6 +2417,10 @@ public class Strings : INotifyPropertyChanged
     public string Macro_SwitchLayerName => Get("Macro_SwitchLayerName");
     public string Macro_GuideLedBrightnessName => Get("Macro_GuideLedBrightnessName");
     public string MacroAction_Type_SwitchLayer => Get("MacroAction_Type_SwitchLayer");
+    public string MacroAction_Type_SetChromaColor => Get("MacroAction_Type_SetChromaColor");
+    public string MacroAction_SetChromaColor_Tooltip => Get("MacroAction_SetChromaColor_Tooltip");
+    public string MacroAction_SetChromaColor_Hint => Get("MacroAction_SetChromaColor_Hint");
+    public string MacroAction_SetChromaColor_Format => Get("MacroAction_SetChromaColor_Format");
     public string MacroAction_SwitchLayer_Format => Get("MacroAction_SwitchLayer_Format");
     public string Macro_SwitchLayer_Hint => Get("Macro_SwitchLayer_Hint");
     public string Pad_Lighting_GuideLed => Get("Pad_Lighting_GuideLed");
@@ -2766,6 +2779,7 @@ public class Strings : INotifyPropertyChanged
     public string DeviceType_HeadTracker => Get("DeviceType_HeadTracker");
     public string DeviceType_VrController => Get("DeviceType_VrController");
     public string DeviceType_LogitechGKeys => Get("DeviceType_LogitechGKeys");
+    public string DeviceType_AnalogKeyboard => Get("DeviceType_AnalogKeyboard");
     public string HeadTracker_Yaw => Get("HeadTracker_Yaw");
     public string HeadTracker_Pitch => Get("HeadTracker_Pitch");
     public string HeadTracker_Roll => Get("HeadTracker_Roll");
@@ -3050,6 +3064,10 @@ public class Strings : INotifyPropertyChanged
     public string Key_Sleep => Get("Key_Sleep");
     // Numpad
     public string Key_Numpad => Get("Key_Numpad");
+    public string AnalogKey_IntlHash => Get("AnalogKey_IntlHash");
+    public string AnalogKey_IntlBackslash => Get("AnalogKey_IntlBackslash");
+    public string AnalogKey_Extra_Format => Get("AnalogKey_Extra_Format");
+    public string AnalogKey_Code_Format => Get("AnalogKey_Code_Format");
     public string Key_Separator => Get("Key_Separator");
     // Lock keys
     public string Key_NumLock => Get("Key_NumLock");

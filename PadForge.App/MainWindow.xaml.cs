@@ -625,6 +625,7 @@ namespace PadForge
                      or nameof(SettingsViewModel.KeepHidHideCloaksBetweenLaunches)
                      or nameof(SettingsViewModel.FlydigiEnhancedProtocol)
                      or nameof(SettingsViewModel.GKeysEnabled)
+                     or nameof(SettingsViewModel.AnalogKeyboardsEnabled)
                      or nameof(SettingsViewModel.Use2DControllerView)
                      or nameof(SettingsViewModel.EnableAutoProfileSwitching)
                      or nameof(SettingsViewModel.EnableCommunityConfigLookup)

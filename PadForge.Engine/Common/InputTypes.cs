@@ -121,6 +121,11 @@ namespace PadForge.Engine
         // so a G-key binds without first being programmed to send a real key.
         public const int LogitechGKeys = 37;
 
+        // An analog keyboard read over its vendor HID interface (issue #468):
+        // every key's press depth, published through
+        // CustomInputState.AnalogKeys rather than the numbered arrays.
+        public const int AnalogKeyboard = 38;
+
         /// <summary>True when a row of this type answers a source whose
         /// DeviceGuid is empty, the "(Any Device)" wildcard that means
         /// whichever controller is assigned to the slot. Controllers,
@@ -133,11 +138,14 @@ namespace PadForge.Engine
         /// wildcard they impersonate the gamepad layout (#431: a resting
         /// tracker held both triggers at half pull). These are the same
         /// six rows the Mappings tab names instead of numbering. A named
-        /// source on any of them still reads.</summary>
+        /// source on any of them still reads. An analog keyboard leaves its
+        /// numbered arrays at zero and publishes its keys on their own
+        /// sub-state, and a zeroed trigger axis reads as half pull through
+        /// the wildcard, so it stays out for the #431 reason.</summary>
         public static bool AnswersAnyDeviceSources(int capType) => capType switch
         {
             HeadTracker or Nfc or Microphone or HandheldButtons or ConsumerControl or Tablet
-                or VrController or LogitechGKeys => false,
+                or VrController or LogitechGKeys or AnalogKeyboard => false,
             _ => true,
         };
     }

@@ -94,6 +94,13 @@ namespace PadForge.Engine.RemoteLink
             /// to. Written after GyroAux, so a decoder that knows only
             /// GyroAux reads its block and leaves this one in the tail.</summary>
             RingCon = 1 << 1,
+            /// <summary>Analog keyboard key depths (issue #468): a count
+            /// byte, then a u16 key code and a u16 depth (0..65535) per key
+            /// that is down. Presence inferred from the state: no key down
+            /// omits the block, and an omitted block decodes to no key down,
+            /// the neutral the encoder skipped. Written after RingCon under
+            /// the same tail rule.</summary>
+            AnalogKeys = 1 << 2,
         }
 
         /// <summary>Capsense channels carried on the wire (one byte,
@@ -357,6 +364,8 @@ namespace PadForge.Engine.RemoteLink
             BlockExt ext = BlockExt.None;
             if (caps.GyroAux) ext |= BlockExt.GyroAux;
             if (state.RingConStrain != 0f) ext |= BlockExt.RingCon;
+            var analogKeys = state.AnalogKeys;
+            if (analogKeys != null && analogKeys.Count > 0) ext |= BlockExt.AnalogKeys;
             if (ext != BlockExt.None)
             {
                 destination[o++] = ExtMagic;
@@ -367,6 +376,16 @@ namespace PadForge.Engine.RemoteLink
                 if ((ext & BlockExt.RingCon) != 0)
                 {
                     BinaryPrimitives.WriteSingleLittleEndian(destination.Slice(o, 4), state.RingConStrain); o += 4;
+                }
+                if ((ext & BlockExt.AnalogKeys) != 0)
+                {
+                    int count = Math.Min(analogKeys.Count, AnalogKeyInputState.MaxKeys);
+                    destination[o++] = (byte)count;
+                    for (int i = 0; i < count; i++)
+                    {
+                        BinaryPrimitives.WriteUInt16LittleEndian(destination.Slice(o, 2), (ushort)analogKeys.Codes[i]); o += 2;
+                        o += WriteU16(destination, o, (int)MathF.Round(Math.Clamp(analogKeys.Depths[i], 0f, 1f) * 65535f));
+                    }
                 }
                 BinaryPrimitives.WriteUInt16LittleEndian(destination.Slice(extAt, 2), (ushort)ext);
             }
@@ -403,6 +422,9 @@ namespace PadForge.Engine.RemoteLink
                 foreach (var pad in state.Touchpads) size += 2 + (pad?.MaxFingers ?? 0) * 9;
             }
             if (state?.Midi != null) size += 48 + 1 + MidiInputState.CcCount * 2 + 2;
+            // Analog keys (#468) ride the ext tail: its 3-byte header when no
+            // earlier ext block opened it, the count byte, 4 bytes a key.
+            if (state?.AnalogKeys != null) size += 3 + 1 + Math.Min(state.AnalogKeys.Count, AnalogKeyInputState.MaxKeys) * 4;
             size += 8 + 4 + 8 + 8 + 1; // Ir (2 floats) + JoyConIr (1 float) + JoyCon2Mouse (2 floats) + MouseRaw (2 int32) + CapSense (1 byte)
             size += 1 + (255 / 8 + 1); // NFC: span byte + up to 32 bitmask bytes
             return size;
@@ -643,6 +665,21 @@ namespace PadForge.Engine.RemoteLink
                         if (!float.IsFinite(v)) { ResetToNeutral(target); return false; }
                         target.RingConStrain = v;
                     }
+                    if ((ext & BlockExt.AnalogKeys) != 0)
+                    {
+                        int count = payload[o++];
+                        // A count past the state's capacity is a hostile or
+                        // corrupt frame, not a keyboard: fail closed.
+                        if (count > AnalogKeyInputState.MaxKeys) { ResetToNeutral(target); return false; }
+                        target.AnalogKeys ??= new AnalogKeyInputState();
+                        target.AnalogKeys.ResetForReuse();
+                        for (int i = 0; i < count; i++)
+                        {
+                            int code = BinaryPrimitives.ReadUInt16LittleEndian(payload.Slice(o, 2)); o += 2;
+                            int depth = ReadU16(payload, ref o);
+                            target.AnalogKeys.Set(code, depth / 65535f);
+                        }
+                    }
                 }
 
                 return o <= payload.Length;
@@ -680,6 +717,7 @@ namespace PadForge.Engine.RemoteLink
             s.MouseRawDY = 0;
             if (s.CapSense != null) Array.Clear(s.CapSense);
             if (s.NfcTag != null) Array.Clear(s.NfcTag);
+            s.AnalogKeys?.ResetForReuse();
             if (s.Midi != null)
             {
                 // The decode contract promises "reset-to-neutral rather than

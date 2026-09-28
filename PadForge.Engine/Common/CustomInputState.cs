@@ -122,6 +122,11 @@ namespace PadForge.Engine
         /// </summary>
         public MidiInputState Midi;
 
+        /// <summary>Press depth of the keys an analog keyboard reports as down
+        /// (issue #468). Null when the device is not an analog keyboard, the
+        /// <see cref="Midi"/> cost model.</summary>
+        public AnalogKeyInputState AnalogKeys;
+
         /// <summary>Wii Remote IR-camera pointer (issue #146), normalized to the
         /// [-1..+1] stick range per screen axis from the two sensor-bar dots, plus
         /// a <see cref="WiiIrState.Detected"/> flag. A value type, so it is always
@@ -238,8 +243,8 @@ namespace PadForge.Engine
         }
 
         /// <summary>Deep-copies this state into <paramref name="dst"/>,
-        /// reallocating nested Touchpads/CapSense/Midi only on a shape
-        /// change. Clone delegates here so the class has exactly ONE
+        /// reallocating nested Touchpads/CapSense/Midi/AnalogKeys only on a
+        /// shape change. Clone delegates here so the class has exactly ONE
         /// full-field mirror (guarded by a reflection round-trip test:
         /// a field added to the class without joining this copy fails
         /// CustomInputStateMirrorTests the day it lands).</summary>
@@ -298,6 +303,15 @@ namespace PadForge.Engine
                 dst.Midi ??= new MidiInputState();
                 Midi.CopyInto(dst.Midi);
             }
+            if (AnalogKeys == null)
+            {
+                dst.AnalogKeys = null;
+            }
+            else
+            {
+                dst.AnalogKeys ??= new AnalogKeyInputState();
+                AnalogKeys.CopyInto(dst.AnalogKeys);
+            }
             dst.Ir = Ir; // value type copy (X/Y/Detected)
             dst.JoyConIrIntensity = JoyConIrIntensity;
             dst.RingConStrain = RingConStrain;
@@ -337,6 +351,7 @@ namespace PadForge.Engine
             if (NfcTag != null)
                 Array.Clear(NfcTag, 0, NfcTag.Length);
             Midi?.ResetForReuse();
+            AnalogKeys?.ResetForReuse();
             Ir = default;
             JoyConIrIntensity = 0f;
             RingConStrain = 0f;

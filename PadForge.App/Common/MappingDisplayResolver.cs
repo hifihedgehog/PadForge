@@ -114,7 +114,9 @@ namespace PadForge.Common
                     // chip.
                     || PadForge.Engine.Common.Mapping.SourceCoercion.IsNfcTagDescriptor(t)
                     || PadForge.Engine.Common.Mapping.SourceCoercion.IsVoicePhraseDescriptor(t)
-                    || PadForge.Engine.Common.Mapping.SourceCoercion.IsFlickStickDescriptor(t))
+                    || PadForge.Engine.Common.Mapping.SourceCoercion.IsFlickStickDescriptor(t)
+                    // Analog keys (#468) resolve by code, no device objects.
+                    || PadForge.Engine.Common.Mapping.SourceCoercion.IsAnalogKeyDescriptor(t))
                 {
                     string fam = ResolveDescriptorText(t, null, padPrefixAlways: ud == null);
                     if (fam != null)
@@ -246,7 +248,9 @@ namespace PadForge.Common
                     // chip.
                     || PadForge.Engine.Common.Mapping.SourceCoercion.IsNfcTagDescriptor(t)
                     || PadForge.Engine.Common.Mapping.SourceCoercion.IsVoicePhraseDescriptor(t)
-                    || PadForge.Engine.Common.Mapping.SourceCoercion.IsFlickStickDescriptor(t))
+                    || PadForge.Engine.Common.Mapping.SourceCoercion.IsFlickStickDescriptor(t)
+                    // Analog keys (#468) resolve by code, no device objects.
+                    || PadForge.Engine.Common.Mapping.SourceCoercion.IsAnalogKeyDescriptor(t))
                 {
                     string fam = ResolveDescriptorText(t, null, padPrefixAlways: ud == null);
                     if (fam != null)
@@ -313,6 +317,10 @@ namespace PadForge.Common
                 return prefix + string.Format(
                     Strings.Instance.Mapping_MenuItem_Format, chipMenuId, chipMenuItem);
             }
+
+            // "Analog Key N" (#468): the key's name, the picker's label.
+            if (PadForge.Engine.Common.Mapping.SourceCoercion.TryParseAnalogKey(s, out int analogCode))
+                return prefix + AnalogKeyDisplayName(analogCode);
 
             // Touchpad descriptors → localized display names. Mirrors the
             // picker (AddTouchpadRawChoices): per-finger axes spell out pad
@@ -1392,6 +1400,46 @@ namespace PadForge.Common
             list.Add(new InputChoice { Descriptor = "Midi Pitch Bend", DisplayName = si.Mapping_MidiPitchBend });
         }
 
+        /// <summary>Emits every key an analog keyboard can report (#468): its
+        /// layout's keys for the polled families and the keypad, the full
+        /// keyboard for the families that report by key code.</summary>
+        private static void AddAnalogKeyChoices(System.Collections.Generic.List<InputChoice> list, UserDevice ud)
+        {
+            foreach (int code in PadForge.Engine.Common.AnalogKeyboard.AnalogKeyboardCatalog.KeysFor(ud.VendorId, ud.ProdId))
+            {
+                list.Add(new InputChoice
+                {
+                    Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.AnalogKeyDescriptor(code),
+                    DisplayName = AnalogKeyDisplayName(code),
+                });
+            }
+        }
+
+        /// <summary>The name of an analog key code (#468): the key's US
+        /// legend through the macro editor's localized virtual key names, the
+        /// references' positional convention, with the keys that have no
+        /// virtual key named here.</summary>
+        internal static string AnalogKeyDisplayName(int code)
+        {
+            var s = Strings.Instance;
+            int vk = PadForge.Engine.Common.AnalogKeyboard.AnalogKeyCodes.UsVirtualKey(code);
+            if (vk != 0 && System.Enum.IsDefined(typeof(PadForge.Common.VirtualKey), vk))
+                return ViewModels.MacroAction.VirtualKeyDisplayName((PadForge.Common.VirtualKey)vk);
+            if (code == PadForge.Engine.Common.AnalogKeyboard.AnalogKeyCodes.NumpadEnter)
+                return string.Format(s.Key_Numpad, s.Key_Enter);
+            if (code == PadForge.Engine.Common.AnalogKeyboard.AnalogKeyCodes.Fn)
+                return "Fn";
+            if (code == PadForge.Engine.Common.AnalogKeyboard.AnalogKeyCodes.IntlHash)
+                return s.AnalogKey_IntlHash;
+            if (code == PadForge.Engine.Common.AnalogKeyboard.AnalogKeyCodes.IntlBackslash)
+                return s.AnalogKey_IntlBackslash;
+            int oem = PadForge.Engine.Common.AnalogKeyboard.AnalogKeyCodes.OemNumber(code);
+            if (oem > 0)
+                return string.Format(s.AnalogKey_Extra_Format, oem);
+            return string.Format(s.AnalogKey_Code_Format,
+                "0x" + code.ToString("X3", System.Globalization.CultureInfo.InvariantCulture));
+        }
+
         internal static InputChoice[] BuildInputChoices(UserDevice ud,
             System.Func<int, PadForge.Engine.Touchpad.TouchpadGestureSettings> touchpadSettingsForPad = null,
             System.Func<PadForge.Engine.Mouse.MouseGestureSettings> mouseGestureSettings = null)
@@ -1410,6 +1458,16 @@ namespace PadForge.Common
             if (ud.CapType == PadForge.Engine.InputDeviceType.Midi)
             {
                 AddMidiChoices(list, si);
+                return list.ToArray();
+            }
+
+            // Analog keyboards (#468) publish their keys on their own
+            // sub-state, the MIDI pattern: every key the keyboard can report,
+            // named for its legend, resolving through the "Analog Key N"
+            // family in SourceCoercion.
+            if (ud.CapType == PadForge.Engine.InputDeviceType.AnalogKeyboard)
+            {
+                AddAnalogKeyChoices(list, ud);
                 return list.ToArray();
             }
 
@@ -2118,6 +2176,8 @@ namespace PadForge.Common
              // G-keys carry the Logitech software's own names, and the
              // fallback still says which key in which mode (#454).
              ud.CapType != InputDeviceType.LogitechGKeys &&
+             // Analog keys are named for their legends (#468).
+             ud.CapType != InputDeviceType.AnalogKeyboard &&
              ud.CapType != InputDeviceType.Tablet);
 
         /// <summary>Surfaces touchpad gesture descriptors in the input

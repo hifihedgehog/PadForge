@@ -1060,6 +1060,32 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _gKeysStatus, value);
         }
 
+        private bool _analogKeyboardsEnabled;
+
+        /// <summary>Analog keyboards read over their vendor HID interface
+        /// (issue #468), the G-keys switch's neighbor and shape: a vendor
+        /// input path this engine can read, off until asked for because the
+        /// polled families share their configurator's channel.</summary>
+        public bool AnalogKeyboardsEnabled
+        {
+            get => _analogKeyboardsEnabled;
+            set
+            {
+                if (SetProperty(ref _analogKeyboardsEnabled, value))
+                    PadForge.Common.Input.AnalogKeyboardRuntime.Enabled = value;
+            }
+        }
+
+        private string _analogKeyboardsStatus = string.Empty;
+
+        /// <summary>Which keyboards are being read, pushed by InputService.
+        /// Empty while the feature is off, which collapses the line.</summary>
+        public string AnalogKeyboardsStatus
+        {
+            get => _analogKeyboardsStatus;
+            set => SetProperty(ref _analogKeyboardsStatus, value);
+        }
+
         // ─────────────────────────────────────────────
         //  Community Configs (Steam Workshop, issue #9)
         // ─────────────────────────────────────────────

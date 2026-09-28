@@ -302,6 +302,11 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>The G-key SDK refused to start. Logitech Gaming Software is usually not running.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Connected, no key seen yet. In Logitech Gaming Software, make PadForge the persistent profile.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>Running, {0} key events</value></data>
+  <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Read Analog Keyboards</value></data>
+  <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Reads how far every key is pressed on Wooting, Razer Huntsman analog, NuPhy HE, DrunkDeer, Keychron HE, Lemokey HE, Madlions HE and Redragon K709 HE keyboards and on the Razer Tartarus Pro, each as its own device row. Razer devices need Razer Synapse running. DrunkDeer, Keychron, Lemokey, Madlions and Redragon keyboards are read by asking over the channel their own configurator uses, so close the configurator while this is on.</value></data>
+  <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>No supported analog keyboard found.</value></data>
+  <data name="Settings_AnalogKeyboardsStatus_Reading_Format" xml:space="preserve"><value>Reading {0}.</value></data>
+  <data name="Settings_AnalogKeyboardsStatus_Synapse_Format" xml:space="preserve"><value>Start Razer Synapse to read {0}.</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Web Controller</value></data>
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>Serve a gamepad UI to browsers on your local network.</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Enable Web Controller Server</value></data>
@@ -649,6 +654,8 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Devices_Axes" xml:space="preserve"><value>Axes</value></data>
   <data name="Devices_Buttons" xml:space="preserve"><value>Buttons</value></data>
   <data name="Devices_Keyboard" xml:space="preserve"><value>Keyboard</value></data>
+  <data name="Devices_AnalogKeys" xml:space="preserve"><value>Key Depth</value></data>
+  <data name="Devices_AnalogKeysHint" xml:space="preserve"><value>Press a key to see how far down it goes.</value></data>
   <data name="Devices_Mouse" xml:space="preserve"><value>Mouse</value></data>
   <data name="Devices_DPadPOV" xml:space="preserve"><value>D-Pad / POV</value></data>
   <data name="Devices_POV" xml:space="preserve"><value>POV </value></data>
@@ -2306,6 +2313,10 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Key_Sleep" xml:space="preserve"><value>Sleep</value></data>
   <!-- Numpad -->
   <data name="Key_Numpad" xml:space="preserve"><value>Numpad {0}</value></data>
+  <data name="AnalogKey_IntlHash" xml:space="preserve"><value>Intl #</value></data>
+  <data name="AnalogKey_IntlBackslash" xml:space="preserve"><value>Intl \</value></data>
+  <data name="AnalogKey_Extra_Format" xml:space="preserve"><value>Extra Key {0}</value></data>
+  <data name="AnalogKey_Code_Format" xml:space="preserve"><value>Key {0}</value></data>
   <data name="Key_Separator" xml:space="preserve"><value>Separator</value></data>
   <!-- Lock keys -->
   <data name="Key_NumLock" xml:space="preserve"><value>Num Lock</value></data>
@@ -2906,6 +2917,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="DeviceType_HeadTracker" xml:space="preserve"><value>Head Tracker</value></data>
   <data name="DeviceType_VrController" xml:space="preserve"><value>VR Controller</value></data>
   <data name="DeviceType_LogitechGKeys" xml:space="preserve"><value>Logitech G-Keys</value></data>
+  <data name="DeviceType_AnalogKeyboard" xml:space="preserve"><value>Analog Keyboard</value></data>
   <data name="HeadTracker_Yaw" xml:space="preserve"><value>Head Yaw</value></data>
   <data name="HeadTracker_Pitch" xml:space="preserve"><value>Head Pitch</value></data>
   <data name="HeadTracker_Roll" xml:space="preserve"><value>Head Roll</value></data>
@@ -3031,6 +3043,10 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Macro_SwitchLayerName" xml:space="preserve"><value>Shift Layer</value></data>
   <data name="Macro_GuideLedBrightnessName" xml:space="preserve"><value>Guide LED Brightness</value></data>
   <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>Switch Layer</value></data>
+  <data name="MacroAction_Type_SetChromaColor" xml:space="preserve"><value>Set Chroma Color</value></data>
+  <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>Paints every Razer Chroma device one color while the action runs.</value></data>
+  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>Paints every Razer Chroma device this color for the duration above, then hands the lighting back to Razer Synapse. To hold the color for as long as the trigger is held, use While Held with Until Release. When two macros paint at once, the one lower in the list wins, so put a full-press macro below its soft-press twin. Needs Razer Synapse running.</value></data>
+  <data name="MacroAction_SetChromaColor_Format" xml:space="preserve"><value>Chroma {0} for {1} ms</value></data>
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>Switch to layer {0}</value></data>
   <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>Jumps this slot to the chosen shift layer. The layer stays engaged until another switch, a Latch or Cycle activator, or a profile switch. Base returns to the base layer. Scope this macro to a layer above to make the same button jump differently per layer.</value></data>
   <data name="Pad_Lighting_GuideLed" xml:space="preserve"><value>Guide Button LED</value></data>
@@ -3693,6 +3709,8 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="About_OpenXrRefsDesc" xml:space="preserve"><value>The runtime interface, structure layout and registry keys behind headset and motion controller input, read from the Khronos OpenXR-SDK headers (Apache-2.0) and cross-checked against VirtualDesktop-OpenXR (MIT). PadForge talks to your own installed runtime and ships no Khronos code.</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Logitech G-key SDK references</value></data>
   <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>The event word layout behind G-key input comes from LogitechGkeyLib.h in the SDK. The library search order and shutdown follow Mumble’s GKey.cpp (BSD 3-Clause). PadForge loads whichever copy of the library is on the machine and ships no Logitech code.</value></data>
+  <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>Soup and AnalogSense</value></data>
+  <data name="About_AnalogKeyboardRefsDesc" xml:space="preserve"><value>The report formats and key tables behind analog keyboard input follow Soup and the AnalogSense JavaScript SDK (MIT, Calamity, Inc.), checked against the Wooting Analog SDK (MPL-2.0). The Razer Tartarus Pro format follows the Tartarus Pro commit on DenkiSuki’s Soup fork (MIT).</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
   <data name="About_UsbipWin2Desc" xml:space="preserve"><value>USB transport by Vadym Hrynchyshyn for HIDMaestro's composite USB controllers. Its signed installer ships inside HIDMaestro and runs the first time a composite controller is created. BSD 2-Clause.</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">

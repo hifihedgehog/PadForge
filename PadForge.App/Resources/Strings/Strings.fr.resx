@@ -266,6 +266,11 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>Le SDK G-key n'a pas démarré. En général Logitech Gaming Software n'est pas lancé.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Connecté, aucune touche détectée. Dans Logitech Gaming Software, faites de PadForge le profil persistant.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>En cours, {0} événements de touche</value></data>
+  <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Lire les claviers analogiques</value></data>
+  <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Lit l’enfoncement de chaque touche sur les claviers Wooting, Razer Huntsman analogiques, NuPhy HE, DrunkDeer, Keychron HE, Lemokey HE, Madlions HE et Redragon K709 HE, ainsi que sur le Razer Tartarus Pro, chacun comme sa propre ligne d’appareil. Les appareils Razer nécessitent Razer Synapse en cours d’exécution. Les claviers DrunkDeer, Keychron, Lemokey, Madlions et Redragon sont interrogés par le canal qu’utilise leur propre logiciel de configuration, fermez donc ce logiciel tant que cette option est activée.</value></data>
+  <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>Aucun clavier analogique pris en charge n’a été trouvé.</value></data>
+  <data name="Settings_AnalogKeyboardsStatus_Reading_Format" xml:space="preserve"><value>Lecture de {0}.</value></data>
+  <data name="Settings_AnalogKeyboardsStatus_Synapse_Format" xml:space="preserve"><value>Lancez Razer Synapse pour lire {0}.</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Contrôleur Web</value></data>
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>Diffuser une interface manette vers les navigateurs de votre réseau local.</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Activer le serveur de contrôleur web</value></data>
@@ -457,6 +462,8 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Devices_Axes" xml:space="preserve"><value>Axes</value></data>
   <data name="Devices_Buttons" xml:space="preserve"><value>Boutons</value></data>
   <data name="Devices_Keyboard" xml:space="preserve"><value>Clavier</value></data>
+  <data name="Devices_AnalogKeys" xml:space="preserve"><value>Enfoncement des touches</value></data>
+  <data name="Devices_AnalogKeysHint" xml:space="preserve"><value>Appuyez sur une touche pour voir jusqu’où elle s’enfonce.</value></data>
   <data name="Devices_Mouse" xml:space="preserve"><value>Souris</value></data>
   <data name="Devices_DPadPOV" xml:space="preserve"><value>Croix directionnelle / POV</value></data>
   <data name="Devices_POV" xml:space="preserve"><value>POV </value></data>
@@ -1234,6 +1241,10 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Key_Sleep" xml:space="preserve"><value>Veille</value></data>
   <!-- Numpad -->
   <data name="Key_Numpad" xml:space="preserve"><value>Pavé numérique {0}</value></data>
+  <data name="AnalogKey_IntlHash" xml:space="preserve"><value>Intl #</value></data>
+  <data name="AnalogKey_IntlBackslash" xml:space="preserve"><value>Intl \</value></data>
+  <data name="AnalogKey_Extra_Format" xml:space="preserve"><value>Touche supplémentaire {0}</value></data>
+  <data name="AnalogKey_Code_Format" xml:space="preserve"><value>Touche {0}</value></data>
   <data name="Key_Separator" xml:space="preserve"><value>Séparateur</value></data>
   <!-- Lock keys -->
   <data name="Key_NumLock" xml:space="preserve"><value>Verr Num</value></data>
@@ -2459,6 +2470,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="DeviceType_HeadTracker" xml:space="preserve"><value>Suivi de tête</value></data>
   <data name="DeviceType_VrController" xml:space="preserve"><value>Manette VR</value></data>
   <data name="DeviceType_LogitechGKeys" xml:space="preserve"><value>Touches G Logitech</value></data>
+  <data name="DeviceType_AnalogKeyboard" xml:space="preserve"><value>Clavier analogique</value></data>
   <data name="HeadTracker_Yaw" xml:space="preserve"><value>Lacet de la tête</value></data>
   <data name="HeadTracker_Pitch" xml:space="preserve"><value>Tangage de la tête</value></data>
   <data name="HeadTracker_Roll" xml:space="preserve"><value>Roulis de la tête</value></data>
@@ -2785,6 +2797,10 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Macro_SwitchLayerName" xml:space="preserve"><value>Couche de décalage</value></data>
   <data name="Macro_GuideLedBrightnessName" xml:space="preserve"><value>Luminosité de la LED Guide</value></data>
   <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>Changer de calque</value></data>
+  <data name="MacroAction_Type_SetChromaColor" xml:space="preserve"><value>Définir la couleur Chroma</value></data>
+  <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>Colore tous les appareils Razer Chroma d’une même couleur pendant l’exécution de l’action.</value></data>
+  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>Colore tous les appareils Razer Chroma de cette couleur pendant la durée indiquée ci-dessus, puis rend l’éclairage à Razer Synapse. Pour garder la couleur tant que le déclencheur est maintenu, utilisez « Tant que maintenu » avec « Jusqu’au relâchement ». Quand deux macros colorent en même temps, celle placée plus bas dans la liste l’emporte. Placez donc la macro d’appui complet sous celle d’appui léger. Nécessite Razer Synapse en cours d’exécution.</value></data>
+  <data name="MacroAction_SetChromaColor_Format" xml:space="preserve"><value>Chroma {0} pendant {1} ms</value></data>
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>Passer au calque {0}</value></data>
   <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>Fait passer ce slot au calque shift choisi. Le calque reste actif jusqu’à un autre changement, un activateur Latch ou Cycle, ou un changement de profil. Base revient au calque de base. Limitez cette macro à un calque ci-dessus pour qu’un même bouton saute différemment selon le calque.</value></data>
   <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Réinitialiser le mode du pointeur</value></data>
@@ -3644,6 +3660,8 @@ Voulez-vous que PadForge les désinstalle maintenant ? Cette opération nécessi
   <data name="About_OpenXrRefsDesc" xml:space="preserve"><value>L’interface d’exécution, la disposition des structures et les clés de registre derrière l’entrée du casque et des manettes de mouvement, lues dans les en-têtes du SDK OpenXR de Khronos (Apache-2.0) et recoupées avec VirtualDesktop-OpenXR (MIT). PadForge dialogue avec votre propre runtime installé et ne distribue aucun code Khronos.</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Références du SDK G-key de Logitech</value></data>
   <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>La disposition du mot d’événement derrière l’entrée des touches G provient de LogitechGkeyLib.h du SDK. L’ordre de recherche et l’arrêt de la bibliothèque suivent GKey.cpp de Mumble (BSD 3-Clause). PadForge charge la bibliothèque présente sur la machine et ne distribue aucun code Logitech.</value></data>
+  <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>Soup et AnalogSense</value></data>
+  <data name="About_AnalogKeyboardRefsDesc" xml:space="preserve"><value>Les formats de rapport et les tables de touches de l’entrée des claviers analogiques suivent Soup et l’AnalogSense JavaScript SDK (MIT, Calamity, Inc.), vérifiés avec le Wooting Analog SDK (MPL-2.0). Le format du Razer Tartarus Pro suit le commit Tartarus Pro du fork de Soup de DenkiSuki (MIT).</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
   <data name="About_UsbipWin2Desc" xml:space="preserve"><value>Transport USB de Vadym Hrynchyshyn pour les contrôleurs USB composites de HIDMaestro. Son programme d'installation signé est intégré à HIDMaestro et s'exécute à la première création d'un contrôleur composite. BSD 2-Clause.</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">

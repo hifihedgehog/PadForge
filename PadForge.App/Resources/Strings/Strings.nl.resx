@@ -266,6 +266,11 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>De G-key SDK startte niet. Meestal draait Logitech Gaming Software niet.</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Verbonden, nog geen toets gezien. Maak PadForge in Logitech Gaming Software het permanente profiel.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>Actief, {0} toetsgebeurtenissen</value></data>
+  <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Analoge toetsenborden lezen</value></data>
+  <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Leest hoe ver elke toets is ingedrukt op Wooting-, Razer Huntsman-analoog-, NuPhy HE-, DrunkDeer-, Keychron HE-, Lemokey HE-, Madlions HE- en Redragon K709 HE-toetsenborden en op de Razer Tartarus Pro, elk als eigen apparaatregel. Razer-apparaten vereisen dat Razer Synapse draait. DrunkDeer-, Keychron-, Lemokey-, Madlions- en Redragon-toetsenborden worden uitgelezen via het kanaal dat hun eigen configuratiesoftware gebruikt, dus sluit die software zolang dit aan staat.</value></data>
+  <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>Geen ondersteund analoog toetsenbord gevonden.</value></data>
+  <data name="Settings_AnalogKeyboardsStatus_Reading_Format" xml:space="preserve"><value>Leest {0}.</value></data>
+  <data name="Settings_AnalogKeyboardsStatus_Synapse_Format" xml:space="preserve"><value>Start Razer Synapse om {0} te lezen.</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Webcontroller</value></data>
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>Bied een gamepad-interface aan voor browsers op uw lokale netwerk.</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Webcontroller-server inschakelen</value></data>
@@ -457,6 +462,8 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Devices_Axes" xml:space="preserve"><value>Assen</value></data>
   <data name="Devices_Buttons" xml:space="preserve"><value>Knoppen</value></data>
   <data name="Devices_Keyboard" xml:space="preserve"><value>Toetsenbord</value></data>
+  <data name="Devices_AnalogKeys" xml:space="preserve"><value>Toetsdiepte</value></data>
+  <data name="Devices_AnalogKeysHint" xml:space="preserve"><value>Druk op een toets om te zien hoe ver hij omlaag gaat.</value></data>
   <data name="Devices_Mouse" xml:space="preserve"><value>Muis</value></data>
   <data name="Devices_DPadPOV" xml:space="preserve"><value>D-Pad / POV</value></data>
   <data name="Devices_POV" xml:space="preserve"><value>POV </value></data>
@@ -1239,6 +1246,10 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Key_Sleep" xml:space="preserve"><value>Slaapstand</value></data>
   <!-- Numpad -->
   <data name="Key_Numpad" xml:space="preserve"><value>Numeriek toetsenbord {0}</value></data>
+  <data name="AnalogKey_IntlHash" xml:space="preserve"><value>Intl #</value></data>
+  <data name="AnalogKey_IntlBackslash" xml:space="preserve"><value>Intl \</value></data>
+  <data name="AnalogKey_Extra_Format" xml:space="preserve"><value>Extra toets {0}</value></data>
+  <data name="AnalogKey_Code_Format" xml:space="preserve"><value>Toets {0}</value></data>
   <data name="Key_Separator" xml:space="preserve"><value>Scheidingsteken</value></data>
   <!-- Lock keys -->
   <data name="Key_NumLock" xml:space="preserve"><value>Num Lock</value></data>
@@ -2479,6 +2490,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="DeviceType_HeadTracker" xml:space="preserve"><value>Hoofdtracker</value></data>
   <data name="DeviceType_VrController" xml:space="preserve"><value>VR-controller</value></data>
   <data name="DeviceType_LogitechGKeys" xml:space="preserve"><value>Logitech G-toetsen</value></data>
+  <data name="DeviceType_AnalogKeyboard" xml:space="preserve"><value>Analoog toetsenbord</value></data>
   <data name="HeadTracker_Yaw" xml:space="preserve"><value>Hoofd gieren</value></data>
   <data name="HeadTracker_Pitch" xml:space="preserve"><value>Hoofd stampen</value></data>
   <data name="HeadTracker_Roll" xml:space="preserve"><value>Hoofd rollen</value></data>
@@ -2805,6 +2817,10 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Macro_SwitchLayerName" xml:space="preserve"><value>Shiftlaag</value></data>
   <data name="Macro_GuideLedBrightnessName" xml:space="preserve"><value>Helderheid van Guide-led</value></data>
   <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>Van laag wisselen</value></data>
+  <data name="MacroAction_Type_SetChromaColor" xml:space="preserve"><value>Chroma-kleur instellen</value></data>
+  <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>Kleurt alle Razer Chroma-apparaten in één kleur zolang de actie loopt.</value></data>
+  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>Kleurt alle Razer Chroma-apparaten in deze kleur gedurende de tijd hierboven en geeft de verlichting daarna terug aan Razer Synapse. Gebruik ‘Tijdens ingedrukt houden’ met ‘Tot loslaten’ om de kleur vast te houden zolang de trigger ingedrukt blijft. Als twee macro’s tegelijk kleuren, wint de onderste in de lijst, dus zet een macro voor volledig indrukken onder zijn tegenhanger voor licht indrukken. Vereist dat Razer Synapse draait.</value></data>
+  <data name="MacroAction_SetChromaColor_Format" xml:space="preserve"><value>Chroma {0} gedurende {1} ms</value></data>
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>Naar laag {0} wisselen</value></data>
   <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>Springt dit slot naar de gekozen shift-laag. De laag blijft actief tot een volgende wissel, een Latch- of Cycle-activator, of een profielwissel. Base keert terug naar de basislaag. Beperk deze macro hierboven tot een laag zodat dezelfde knop per laag anders springt.</value></data>
   <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>Aanwijzermodus resetten</value></data>
@@ -3664,6 +3680,8 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="About_OpenXrRefsDesc" xml:space="preserve"><value>De runtime-interface, de structuurindeling en de registersleutels achter invoer van headset en motioncontrollers, gelezen uit de Khronos OpenXR-SDK-headers (Apache-2.0) en getoetst aan VirtualDesktop-OpenXR (MIT). PadForge praat met je eigen geïnstalleerde runtime en levert geen Khronos-code mee.</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Referenties voor de Logitech G-key SDK</value></data>
   <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>De indeling van het gebeurteniswoord achter G-toetsinvoer komt uit LogitechGkeyLib.h in de SDK. De zoekvolgorde en het afsluiten van de bibliotheek volgen GKey.cpp van Mumble (BSD 3-Clause). PadForge laadt de bibliotheek die op de machine staat en levert geen Logitech-code mee.</value></data>
+  <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>Soup en AnalogSense</value></data>
+  <data name="About_AnalogKeyboardRefsDesc" xml:space="preserve"><value>De rapportformaten en toetstabellen achter de invoer van analoge toetsenborden volgen Soup en de AnalogSense JavaScript SDK (MIT, Calamity, Inc.), gecontroleerd tegen de Wooting Analog SDK (MPL-2.0). Het formaat van de Razer Tartarus Pro volgt de Tartarus Pro-commit in DenkiSuki’s fork van Soup (MIT).</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
   <data name="About_UsbipWin2Desc" xml:space="preserve"><value>USB-transport van Vadym Hrynchyshyn voor de samengestelde USB-controllers van HIDMaestro. Het ondertekende installatieprogramma zit in HIDMaestro en wordt uitgevoerd wanneer voor het eerst een samengestelde controller wordt gemaakt. BSD 2-Clause.</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">

@@ -266,6 +266,11 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK を開始できませんでした。通常は Logitech Gaming Software が実行されていません。</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>接続済み、キーはまだ検出されていません。Logitech Gaming Software で PadForge を常設プロファイルに設定してください。</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>実行中、キーイベント {0} 件</value></data>
+  <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>アナログキーボードを読み取る</value></data>
+  <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Wooting、Razer Huntsman アナログ、NuPhy HE、DrunkDeer、Keychron HE、Lemokey HE、Madlions HE、Redragon K709 HE の各キーボードと Razer Tartarus Pro で、各キーの押し込み量を読み取り、それぞれを独立したデバイス行にします。Razer 製デバイスには Razer Synapse の実行が必要です。DrunkDeer、Keychron、Lemokey、Madlions、Redragon のキーボードは、各社の設定ソフトが使う経路で問い合わせて読み取るため、この設定がオンの間は設定ソフトを閉じてください。</value></data>
+  <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>対応するアナログキーボードが見つかりません。</value></data>
+  <data name="Settings_AnalogKeyboardsStatus_Reading_Format" xml:space="preserve"><value>{0} を読み取り中。</value></data>
+  <data name="Settings_AnalogKeyboardsStatus_Synapse_Format" xml:space="preserve"><value>{0} を読み取るには Razer Synapse を起動してください。</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Web コントローラー</value></data>
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>ローカルネットワーク上のブラウザにゲームパッド UI を提供します。</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Web コントローラーサーバーを有効にする</value></data>
@@ -457,6 +462,8 @@
   <data name="Devices_Axes" xml:space="preserve"><value>軸</value></data>
   <data name="Devices_Buttons" xml:space="preserve"><value>ボタン</value></data>
   <data name="Devices_Keyboard" xml:space="preserve"><value>キーボード</value></data>
+  <data name="Devices_AnalogKeys" xml:space="preserve"><value>キーの押し込み量</value></data>
+  <data name="Devices_AnalogKeysHint" xml:space="preserve"><value>キーを押すと、どこまで押し込まれたかが表示されます。</value></data>
   <data name="Devices_Mouse" xml:space="preserve"><value>マウス</value></data>
   <data name="Devices_DPadPOV" xml:space="preserve"><value>十字キー / POV</value></data>
   <data name="Devices_POV" xml:space="preserve"><value>POV </value></data>
@@ -1234,6 +1241,10 @@
   <data name="Key_Sleep" xml:space="preserve"><value>スリープ</value></data>
   <!-- Numpad -->
   <data name="Key_Numpad" xml:space="preserve"><value>テンキー {0}</value></data>
+  <data name="AnalogKey_IntlHash" xml:space="preserve"><value>Intl #</value></data>
+  <data name="AnalogKey_IntlBackslash" xml:space="preserve"><value>Intl \</value></data>
+  <data name="AnalogKey_Extra_Format" xml:space="preserve"><value>追加キー {0}</value></data>
+  <data name="AnalogKey_Code_Format" xml:space="preserve"><value>キー {0}</value></data>
   <data name="Key_Separator" xml:space="preserve"><value>区切り</value></data>
   <!-- Lock keys -->
   <data name="Key_NumLock" xml:space="preserve"><value>Num Lock</value></data>
@@ -2459,6 +2470,7 @@
   <data name="DeviceType_HeadTracker" xml:space="preserve"><value>ヘッド トラッカー</value></data>
   <data name="DeviceType_VrController" xml:space="preserve"><value>VR コントローラー</value></data>
   <data name="DeviceType_LogitechGKeys" xml:space="preserve"><value>Logitech G キー</value></data>
+  <data name="DeviceType_AnalogKeyboard" xml:space="preserve"><value>アナログキーボード</value></data>
   <data name="HeadTracker_Yaw" xml:space="preserve"><value>頭のヨー</value></data>
   <data name="HeadTracker_Pitch" xml:space="preserve"><value>頭のピッチ</value></data>
   <data name="HeadTracker_Roll" xml:space="preserve"><value>頭のロール</value></data>
@@ -2785,6 +2797,10 @@
   <data name="Macro_SwitchLayerName" xml:space="preserve"><value>シフト レイヤー</value></data>
   <data name="Macro_GuideLedBrightnessName" xml:space="preserve"><value>Guide LED の明るさ</value></data>
   <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>レイヤー切替</value></data>
+  <data name="MacroAction_Type_SetChromaColor" xml:space="preserve"><value>Chroma の色を設定</value></data>
+  <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>アクションの実行中、すべての Razer Chroma デバイスを 1 色で点灯させます。</value></data>
+  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>上で設定した時間のあいだ、すべての Razer Chroma デバイスをこの色で点灯させ、その後ライティングを Razer Synapse に戻します。トリガーを押している間ずっと色を保つには、「押している間」と「離すまで」を組み合わせてください。2 つのマクロが同時に色を付けた場合はリストで下にあるほうが優先されるため、深押し用のマクロを浅押し用のマクロの下に置いてください。Razer Synapse の実行が必要です。</value></data>
+  <data name="MacroAction_SetChromaColor_Format" xml:space="preserve"><value>Chroma {0}（{1} ms）</value></data>
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>レイヤー{0}に切替</value></data>
   <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>このスロットを選択したシフトレイヤーに切り替えます。レイヤーは次の切替、Latch/Cycleアクティベーター、またはプロファイル切替まで維持されます。Baseで基本レイヤーに戻ります。上のレイヤー限定と組み合わせると、同じボタンでレイヤーごとに異なるジャンプができます。</value></data>
   <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>ポインターモードをリセット</value></data>
@@ -3644,6 +3660,8 @@
   <data name="About_OpenXrRefsDesc" xml:space="preserve"><value>ヘッドセットとモーションコントローラー入力を支えるランタイムインターフェイス、構造体レイアウト、レジストリキーは、Khronos の OpenXR-SDK ヘッダー (Apache-2.0) から読み取り、VirtualDesktop-OpenXR (MIT) と照合しました。PadForge はお使いの環境に入っているランタイムと通信し、Khronos のコードは同梱しません。</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Logitech G-key SDK の参照元</value></data>
   <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>G キー入力を支えるイベントワードのレイアウトは、SDK の LogitechGkeyLib.h に基づきます。ライブラリの検索順序と終了処理は Mumble の GKey.cpp (BSD 3-Clause) に従います。PadForge はマシン上にあるライブラリを読み込み、Logitech のコードは同梱しません。</value></data>
+  <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>Soup と AnalogSense</value></data>
+  <data name="About_AnalogKeyboardRefsDesc" xml:space="preserve"><value>アナログキーボード入力のレポート形式とキー表は、Soup と AnalogSense JavaScript SDK（MIT、Calamity, Inc.）に従い、Wooting Analog SDK（MPL-2.0）と照合しています。Razer Tartarus Pro の形式は、DenkiSuki による Soup のフォーク（MIT）にある Tartarus Pro のコミットに従っています。</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
   <data name="About_UsbipWin2Desc" xml:space="preserve"><value>HIDMaestro の複合 USB コントローラー用の USB トランスポート (Vadym Hrynchyshyn 作)。署名済みインストーラーは HIDMaestro に同梱され、複合コントローラーを初めて作成するときに実行されます。BSD 2-Clause。</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">

@@ -54,6 +54,12 @@ namespace PadForge.Tests
                     Populate(midi, seed);
                     f.SetValue(obj, midi);
                 }
+                else if (t == typeof(AnalogKeyInputState))
+                {
+                    var keys = new AnalogKeyInputState();
+                    Populate(keys, seed);
+                    f.SetValue(obj, keys);
+                }
                 else if (t.IsClass && val != null)
                 {
                     Populate(val, seed);
@@ -124,6 +130,7 @@ namespace PadForge.Tests
                 CapSense = new bool[3],
                 NfcTag = new bool[3],
                 Midi = new MidiInputState(),
+                AnalogKeys = new AnalogKeyInputState(),
             };
             pooled.ResetForReuse();
             AssertDeepEqual(fresh, pooled, "state");

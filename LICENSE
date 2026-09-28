@@ -418,6 +418,15 @@ protobuf-net
   Licensed under the Apache License 2.0 (full text below)
 
 Protocol documentation references (no code from these projects ships)
+  Analog keyboard references: the reports, requests and key tables behind
+  analog keyboard input, read from the AnalogSense JavaScript SDK
+  (https://github.com/AnalogSense/JavaScript-SDK, MIT, Calamity, Inc.), Soup
+  (https://github.com/calamity-inc/Soup, MIT, Calamity, Inc.), the Tartarus
+  Pro commit on DenkiSuki's Soup fork (https://github.com/DenkiSuki/Soup,
+  MIT) and the Wooting Analog SDK
+  (https://github.com/WootingKb/wooting-analog-sdk, MPL-2.0). HallJoy
+  (https://github.com/PashOK7/HallJoy, AGPL-3.0) was a fact check for the
+  Tartarus Pro key order.
   AntiMicroX (https://github.com/AntiMicroX/antimicrox, GPL-3.0): the
   strategy and desktop layouts behind the starter profiles, and the turbo
   behavior the pressure-scaled turbo avoids.

@@ -59,6 +59,11 @@ namespace PadForge.Services
         /// Matches MidiInputDevice.RelativeMax.</summary>
         private const int MidiRelativeBand = 16;
 
+        /// <summary>How deep an analog key must go before the recorder takes
+        /// it (#468): half the travel, the half-pull every threshold read
+        /// defaults to, so resting fingers and a light brush do not record.</summary>
+        private const float AnalogKeyRecordDepth = 0.5f;
+
         // ─────────────────────────────────────────────
         //  State
         // ─────────────────────────────────────────────
@@ -612,6 +617,12 @@ namespace PadForge.Services
                     if (!anyHeld && current.Midi?.Notes != null)
                         for (int i = 0; i < current.Midi.Notes.Length && !anyHeld; i++)
                             anyHeld = current.Midi.Notes[i];
+                    // Analog keys (#468) pressed past the recording
+                    // threshold at record start must clear too, the same
+                    // release-wait.
+                    if (!anyHeld && current.AnalogKeys != null)
+                        for (int i = 0; i < current.AnalogKeys.Count && !anyHeld; i++)
+                            anyHeld = current.AnalogKeys.Depths[i] >= AnalogKeyRecordDepth;
 
                     if (anyHeld) { anyDeviceStillHeld = true; continue; }
 
@@ -718,6 +729,35 @@ namespace PadForge.Services
                             PadForge.Engine.Common.Mapping.SourceCoercion.GripPov(
                                 dg.ToString(), _activePadIndex, current.Povs[i]));
                         CompleteRecording(MapType.POV, i, direction, axisPositive: false, winningDevice: dg);
+                        return;
+                    }
+                }
+
+                // ── Analog keys (#468): the key that crossed the recording
+                //     depth since the baseline, the deepest when several
+                //     did. They live on their own sub-state, so the button
+                //     sweep above never sees them. Above the param gate on
+                //     purpose: a param reads an analog key at half press
+                //     (SourceCoercion.ReadHardwareBoolDescriptor), so it can
+                //     hold one. ──
+                if (current.AnalogKeys != null)
+                {
+                    int bestCode = 0;
+                    float bestDepth = AnalogKeyRecordDepth;
+                    var keys = current.AnalogKeys;
+                    for (int i = 0; i < keys.Count; i++)
+                    {
+                        float depth = keys.Depths[i];
+                        if (depth < bestDepth) continue;
+                        float before = baseline.AnalogKeys?.Get(keys.Codes[i]) ?? 0f;
+                        if (before >= AnalogKeyRecordDepth) continue;
+                        bestDepth = depth;
+                        bestCode = keys.Codes[i];
+                    }
+                    if (bestCode != 0)
+                    {
+                        CompleteRecordingWithDescriptor(
+                            PadForge.Engine.Common.Mapping.SourceCoercion.AnalogKeyDescriptor(bestCode), dg);
                         return;
                     }
                 }

@@ -1259,6 +1259,9 @@
                                         <DataTrigger Binding="{Binding IsMidiDevice}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsAnalogKeyboardDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
                                         <DataTrigger Binding="{Binding IsNfcDevice}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
@@ -1296,6 +1299,9 @@
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding IsMidiDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsAnalogKeyboardDevice}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding IsNfcDevice}" Value="True">
@@ -1364,6 +1370,9 @@
                                         <DataTrigger Binding="{Binding IsMidiDevice}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsAnalogKeyboardDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
                                         <DataTrigger Binding="{Binding IsNfcDevice}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
@@ -1400,6 +1409,9 @@
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding IsMidiDevice}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsAnalogKeyboardDevice}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding IsNfcDevice}" Value="True">
@@ -1514,6 +1526,50 @@
                                             <TextBlock Text="{Binding Name}" FontSize="11"
                                                        Style="{StaticResource RawCellLabel}"
                                                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+
+                        <!-- Analog keyboard (issue #468): a chip per key the keyboard has
+                             reported since it was selected, lit while down, with its
+                             depth as a bar and a percent. Replaces the axes and the
+                             numbered grid, which an analog keyboard does not use. -->
+                        <StackPanel Visibility="{Binding IsAnalogKeyboardDevice, Converter={StaticResource BoolToVisibilityConverter}}"
+                                    Margin="0,0,0,8">
+                            <TextBlock Text="{Binding Devices_AnalogKeys, Source={x:Static strings:Strings.Instance}}"
+                                       FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,3"/>
+                            <TextBlock Text="{Binding Devices_AnalogKeysHint, Source={x:Static strings:Strings.Instance}}"
+                                       FontSize="11" TextWrapping="Wrap" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                       Visibility="{Binding HasAnalogKeys, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
+                            <ItemsControl ItemsSource="{Binding AnalogKeys}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border CornerRadius="4" Margin="2" Padding="6,4" Width="84"
+                                                Style="{StaticResource RawCellBorder}">
+                                            <StackPanel>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="{Binding Name}" FontSize="11" TextTrimming="CharacterEllipsis"
+                                                               Style="{StaticResource RawCellLabel}" VerticalAlignment="Center"/>
+                                                    <TextBlock Grid.Column="1" Text="{Binding DepthText}" FontSize="9" Margin="4,0,0,0"
+                                                               FontFamily="{StaticResource TelemetryFontFamily}" VerticalAlignment="Center"
+                                                               Foreground="{DynamicResource ColdBrush}"/>
+                                                </Grid>
+                                                <ProgressBar Minimum="0" Maximum="1" Height="3" Margin="0,3,0,0"
+                                                             Value="{Binding Depth, Mode=OneWay}"
+                                                             Style="{StaticResource InstrumentBarRaw}"
+                                                             Foreground="{DynamicResource ColdBrush}"/>
+                                            </StackPanel>
                                         </Border>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>

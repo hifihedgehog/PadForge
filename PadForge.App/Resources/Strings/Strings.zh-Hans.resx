@@ -266,6 +266,11 @@
   <data name="Settings_GKeysStatus_InitRefused" xml:space="preserve"><value>G-key SDK 未能启动。通常是 Logitech Gaming Software 未运行。</value></data>
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>已连接，尚未检测到按键。请在 Logitech Gaming Software 中将 PadForge 设为常驻配置文件。</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>运行中，{0} 个按键事件</value></data>
+  <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>读取模拟键盘</value></data>
+  <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>读取 Wooting、Razer Huntsman 模拟、NuPhy HE、DrunkDeer、Keychron HE、Lemokey HE、Madlions HE 和 Redragon K709 HE 键盘以及 Razer Tartarus Pro 上每个键的按下深度，每个设备单独成行。Razer 设备需要运行 Razer Synapse。DrunkDeer、Keychron、Lemokey、Madlions 和 Redragon 键盘通过其配置软件使用的通道询问读取，因此开启此项时请关闭配置软件。</value></data>
+  <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>未找到受支持的模拟键盘。</value></data>
+  <data name="Settings_AnalogKeyboardsStatus_Reading_Format" xml:space="preserve"><value>正在读取 {0}。</value></data>
+  <data name="Settings_AnalogKeyboardsStatus_Synapse_Format" xml:space="preserve"><value>请启动 Razer Synapse 以读取 {0}。</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>网页控制器</value></data>
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>在局域网中为浏览器提供手柄界面。</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>启用网页控制器服务器</value></data>
@@ -457,6 +462,8 @@
   <data name="Devices_Axes" xml:space="preserve"><value>轴</value></data>
   <data name="Devices_Buttons" xml:space="preserve"><value>按钮</value></data>
   <data name="Devices_Keyboard" xml:space="preserve"><value>键盘</value></data>
+  <data name="Devices_AnalogKeys" xml:space="preserve"><value>按键深度</value></data>
+  <data name="Devices_AnalogKeysHint" xml:space="preserve"><value>按下一个键即可查看它按下的深度。</value></data>
   <data name="Devices_Mouse" xml:space="preserve"><value>鼠标</value></data>
   <data name="Devices_DPadPOV" xml:space="preserve"><value>十字键 / POV</value></data>
   <data name="Devices_POV" xml:space="preserve"><value>POV </value></data>
@@ -1234,6 +1241,10 @@
   <data name="Key_Sleep" xml:space="preserve"><value>睡眠</value></data>
   <!-- Numpad -->
   <data name="Key_Numpad" xml:space="preserve"><value>小键盘 {0}</value></data>
+  <data name="AnalogKey_IntlHash" xml:space="preserve"><value>Intl #</value></data>
+  <data name="AnalogKey_IntlBackslash" xml:space="preserve"><value>Intl \</value></data>
+  <data name="AnalogKey_Extra_Format" xml:space="preserve"><value>附加键 {0}</value></data>
+  <data name="AnalogKey_Code_Format" xml:space="preserve"><value>按键 {0}</value></data>
   <data name="Key_Separator" xml:space="preserve"><value>分隔符</value></data>
   <!-- Lock keys -->
   <data name="Key_NumLock" xml:space="preserve"><value>Num Lock</value></data>
@@ -2459,6 +2470,7 @@
   <data name="DeviceType_HeadTracker" xml:space="preserve"><value>头部追踪器</value></data>
   <data name="DeviceType_VrController" xml:space="preserve"><value>VR 控制器</value></data>
   <data name="DeviceType_LogitechGKeys" xml:space="preserve"><value>罗技 G 键</value></data>
+  <data name="DeviceType_AnalogKeyboard" xml:space="preserve"><value>模拟键盘</value></data>
   <data name="HeadTracker_Yaw" xml:space="preserve"><value>头部偏航</value></data>
   <data name="HeadTracker_Pitch" xml:space="preserve"><value>头部俯仰</value></data>
   <data name="HeadTracker_Roll" xml:space="preserve"><value>头部翻滚</value></data>
@@ -2785,6 +2797,10 @@
   <data name="Macro_SwitchLayerName" xml:space="preserve"><value>切换层</value></data>
   <data name="Macro_GuideLedBrightnessName" xml:space="preserve"><value>Guide 指示灯亮度</value></data>
   <data name="MacroAction_Type_SwitchLayer" xml:space="preserve"><value>切换层</value></data>
+  <data name="MacroAction_Type_SetChromaColor" xml:space="preserve"><value>设置 Chroma 颜色</value></data>
+  <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>在动作运行期间，将所有 Razer Chroma 设备点亮为同一种颜色。</value></data>
+  <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>在上方设定的时长内将所有 Razer Chroma 设备点亮为此颜色，之后将灯效交还给 Razer Synapse。若要在按住触发器期间一直保持该颜色，请将“按住时”与“直到释放”一起使用。两个宏同时着色时，列表中靠下的宏优先，因此请把完全按下的宏放在轻按宏的下方。需要运行 Razer Synapse。</value></data>
+  <data name="MacroAction_SetChromaColor_Format" xml:space="preserve"><value>Chroma {0}，持续 {1} 毫秒</value></data>
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>切换到层{0}</value></data>
   <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>将此插槽切换到所选的Shift层。该层保持激活，直到下一次切换、Latch或Cycle激活器或配置文件切换。Base返回基础层。配合上方的层限定，同一按钮可在不同层上执行不同跳转。</value></data>
   <data name="Pad_ResetPointerModeCard" xml:space="preserve"><value>重置指针模式</value></data>
@@ -3644,6 +3660,8 @@
   <data name="About_OpenXrRefsDesc" xml:space="preserve"><value>头显和体感手柄输入背后的运行时接口、结构布局和注册表项，读自 Khronos OpenXR-SDK 头文件（Apache-2.0），并与 VirtualDesktop-OpenXR（MIT）比对。PadForge 与你自己安装的运行时通信，不随附 Khronos 代码。</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Logitech G-key SDK 参考来源</value></data>
   <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>G 键输入背后的事件字布局来自 SDK 中的 LogitechGkeyLib.h。库的搜索顺序和关闭流程遵循 Mumble 的 GKey.cpp（BSD 3-Clause）。PadForge 加载本机上的库，不随附 Logitech 代码。</value></data>
+  <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>Soup 与 AnalogSense</value></data>
+  <data name="About_AnalogKeyboardRefsDesc" xml:space="preserve"><value>模拟键盘输入所用的报告格式和按键表遵循 Soup 与 AnalogSense JavaScript SDK（MIT，Calamity, Inc.），并与 Wooting Analog SDK（MPL-2.0）核对。Razer Tartarus Pro 的格式遵循 DenkiSuki 的 Soup 分支（MIT）中的 Tartarus Pro 提交。</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
   <data name="About_UsbipWin2Desc" xml:space="preserve"><value>Vadym Hrynchyshyn 开发的 USB 传输层，用于 HIDMaestro 的复合 USB 控制器。其已签名的安装程序随 HIDMaestro 提供，并在首次创建复合控制器时运行。BSD 2-Clause。</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">

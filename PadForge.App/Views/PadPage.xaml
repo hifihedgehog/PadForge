@@ -1886,6 +1886,23 @@
                                                                     <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
                                                                     <ui:Button Command="{Binding AxisEntry.ResetDeadZoneCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Common_Reset_DeadZone, Source={x:Static strings:Strings.Instance}}"/>
                                                                 </WrapPanel>
+                                                                <!-- Thresholded descriptor rows (#468): the depth or
+                                                                     radius the input fires at, the mapping grid's
+                                                                     button-row Deadzone. On an analog key it is the
+                                                                     actuation point, so two entries at two values are
+                                                                     a soft press and a full press. -->
+                                                                <WrapPanel Orientation="Horizontal" Margin="0,3,0,1"
+                                                                           Visibility="{Binding HasThreshold, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Sticks_Section_DeadZone, Source={x:Static strings:Strings.Instance}}"
+                                                                               VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                                                    <Slider Style="{StaticResource DzSlider}" Width="120" Minimum="1"
+                                                                            Value="{Binding ThresholdEntry.DescriptorThresholdPercent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                            TickFrequency="1"/>
+                                                                    <TextBox Text="{Binding ThresholdEntry.DescriptorThresholdPercent, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                                             Style="{StaticResource DzValueEdit}"/>
+                                                                    <TextBlock Text="%" Style="{StaticResource DzPercent}"/>
+                                                                    <ui:Button Command="{Binding ThresholdEntry.ResetDescriptorDeadZoneCommand}" Style="{StaticResource ResetButton}" ToolTip="{Binding Common_Reset_DeadZone, Source={x:Static strings:Strings.Instance}}"/>
+                                                                </WrapPanel>
                                                             </StackPanel>
                                                             <ui:Button Grid.Column="1" Command="{Binding RemoveCommand}"
                                                                        Style="{StaticResource EmberIconButtonHot}"
@@ -2542,6 +2559,34 @@
                                         <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="DurationMs" SettingLabel="{Binding Macro_Duration, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_DurationMs_2459" Margin="4,0,8,0"/>
                                         <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
                                     </StackPanel>
+
+                                    <!-- Set Chroma Color card (#468): the color, painted on
+                                         every Razer Chroma device while the action runs. The
+                                         hold is the Duration row above. -->
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
+                                            Visibility="{Binding IsSetChromaColorType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding MacroAction_Type_SetChromaColor, Source={x:Static strings:Strings.Instance}}"
+                                                       FontWeight="SemiBold" Margin="0,0,0,6"/>
+                                            <views:ColorPickerControl HorizontalAlignment="Left" Margin="0,0,0,4"
+                                                                      Red="{Binding LightbarR, Mode=TwoWay}"
+                                                                      Green="{Binding LightbarG, Mode=TwoWay}"
+                                                                      Blue="{Binding LightbarB, Mode=TwoWay}"/>
+                                            <Border Width="80" Height="20" HorizontalAlignment="Left" CornerRadius="3" Margin="0,0,0,6"
+                                                    BorderBrush="{DynamicResource TextFillColorDisabledBrush}" BorderThickness="1">
+                                                <Border.Background>
+                                                    <MultiBinding Converter="{StaticResource RgbToBrushConverter}">
+                                                        <Binding Path="LightbarR"/>
+                                                        <Binding Path="LightbarG"/>
+                                                        <Binding Path="LightbarB"/>
+                                                    </MultiBinding>
+                                                </Border.Background>
+                                            </Border>
+                                            <TextBlock Text="{Binding MacroAction_SetChromaColor_Hint, Source={x:Static strings:Strings.Instance}}"
+                                                       FontSize="11" TextWrapping="Wrap"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                        </StackPanel>
+                                    </Border>
 
                                     <!-- Lightbar Color card (Reactive | Sticky) -->
                                     <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"

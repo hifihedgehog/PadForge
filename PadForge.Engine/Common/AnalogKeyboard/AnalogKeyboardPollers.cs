@@ -3,59 +3,13 @@ using System;
 namespace PadForge.Engine.Common.AnalogKeyboard
 {
     /// <summary>
-    /// The HID channel a polled analog keyboard is driven over (issue #468).
-    /// The app implements it over an overlapped handle, and tests over a
-    /// scripted fake, so the request logic below runs the same either way.
+    /// The Soup and AnalogSense families that answer requests instead of
+    /// pushing reports, a pass at a time. A pass sends the family's requests,
+    /// reads the answers and writes the complete key set into the output. The
+    /// caller owns pacing and failure counting.
     /// </summary>
-    public interface IAnalogKeyboardTransport
+    public abstract class AnalogKeyboardPoller : AnalogKeyboardSession
     {
-        /// <summary>Writes one output report, report ID first. The transport
-        /// pads it to the collection's output report length, as Soup's
-        /// sendReport does on Windows. False when the write failed.</summary>
-        bool Send(byte[] report);
-
-        /// <summary>Reads one input report into <paramref name="buffer"/>,
-        /// report ID first (0 when the collection has none), waiting up to
-        /// <paramref name="timeoutMs"/>. Returns the byte count, 0 on a
-        /// timeout, or -1 when the device is gone.</summary>
-        int Receive(byte[] buffer, int timeoutMs);
-
-        /// <summary>Throws away reports that arrived before the next request,
-        /// Soup's discardStaleReports.</summary>
-        void DiscardStale();
-    }
-
-    /// <summary>Outcome of one polling pass.</summary>
-    public enum AnalogPollResult
-    {
-        /// <summary>The pass produced a complete key set.</summary>
-        Ok,
-        /// <summary>The keyboard did not answer in time.</summary>
-        NoAnswer,
-        /// <summary>The device is gone.</summary>
-        Failed,
-    }
-
-    /// <summary>
-    /// One polled family's request loop, a pass at a time. A pass sends the
-    /// family's requests, reads the answers and writes the complete key set
-    /// into the output. The caller owns pacing and failure counting.
-    /// </summary>
-    public abstract class AnalogKeyboardPoller
-    {
-        /// <summary>How long one answer may take. A USB keyboard answers
-        /// within a few milliseconds, so this only matters when it does not
-        /// answer at all.</summary>
-        public const int AnswerTimeoutMs = 100;
-
-        protected readonly byte[] Buffer = new byte[256];
-
-        /// <summary>Runs one pass. <paramref name="isHeld"/> answers whether
-        /// Windows sees a key down right now, which the families that read a
-        /// few keys per request use to read the pressed keys first.</summary>
-        public abstract AnalogPollResult Pass(IAnalogKeyboardTransport io, AnalogKeyInputState output,
-            Func<int, bool> isHeld);
-
         public static AnalogKeyboardPoller Create(AnalogKeyboardProtocol protocol, ushort vendorId, ushort productId)
         {
             switch (protocol)
@@ -72,27 +26,6 @@ namespace PadForge.Engine.Common.AnalogKeyboard
                     return new BytechPoller();
             }
             return null;
-        }
-
-        /// <summary>Reads until an answer whose first two data bytes are
-        /// <paramref name="b0"/> and <paramref name="b1"/> arrives, skipping
-        /// anything else, Soup's safeReceiveReport. Returns the data offset
-        /// (1 past a leading zero report ID) or -1 on timeout, -2 when the
-        /// device is gone.</summary>
-        protected int ReceiveMatching(IAnalogKeyboardTransport io, byte b0, byte b1, out int length)
-        {
-            long deadline = Environment.TickCount64 + AnswerTimeoutMs;
-            while (true)
-            {
-                int remaining = (int)Math.Max(1, deadline - Environment.TickCount64);
-                int n = io.Receive(Buffer, remaining);
-                length = n;
-                if (n < 0) return -2;
-                if (n == 0) return -1;
-                int off = n > 0 && Buffer[0] == 0 ? 1 : 0;
-                if (n >= off + 2 && Buffer[off] == b0 && Buffer[off + 1] == b1) return off;
-                if (Environment.TickCount64 >= deadline) return -1;
-            }
         }
     }
 

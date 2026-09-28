@@ -336,6 +336,13 @@ namespace PadForge.Tests
             }
 
             public void DiscardStale() => Discards++;
+
+            public bool SendOutputReport(byte[] report) => Send(report);
+            public bool SetFeature(byte[] report) => !Gone;
+            public int GetFeature(byte[] buffer) => -1;
+            public int InputLength => 65;
+            public int OutputLength => 65;
+            public int FeatureLength => 0;
         }
 
         [Fact]

@@ -1405,7 +1405,7 @@ namespace PadForge.Common
         /// keyboard for the families that report by key code.</summary>
         private static void AddAnalogKeyChoices(System.Collections.Generic.List<InputChoice> list, UserDevice ud)
         {
-            foreach (int code in PadForge.Engine.Common.AnalogKeyboard.AnalogKeyboardCatalog.KeysFor(ud.VendorId, ud.ProdId))
+            foreach (int code in PadForge.Common.Input.AnalogKeyboardRuntime.KeysFor(ud))
             {
                 list.Add(new InputChoice
                 {

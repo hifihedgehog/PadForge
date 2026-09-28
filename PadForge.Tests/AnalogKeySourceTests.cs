@@ -257,21 +257,34 @@ namespace PadForge.Tests
             Assert.False(InputDeviceType.AnswersAnyDeviceSources(InputDeviceType.AnalogKeyboard));
         }
 
-        private static AnalogKeyboardCandidate Candidate(ushort vid = 0x31E3, ushort pid = 0x1232,
-            AnalogKeyboardProtocol protocol = AnalogKeyboardProtocol.WootingV2, string serial = "A1B2C3")
-            => new()
+        private static AnalogKeyboardCandidate Candidate(ushort vid = 0x31E3, ushort pid = 0x1232, string serial = "A1B2C3")
+        {
+            var info = new AnalogKeyboardDeviceInfo
             {
                 Path = @"\\?\hid#vid_31e3&pid_1232&mi_03#test",
-                Protocol = protocol,
                 VendorId = vid,
                 ProductId = pid,
                 UsagePage = 0xFF53,
                 InputReportLength = 65,
-                OutputReportLength = 0,
-                Name = "Wooting 60HE",
-                Serial = serial,
-                IdentityKey = $"{vid:X4}:{AnalogKeyboardCatalog.IdentityProductId(vid, pid):X4}:{serial}",
+                ProductString = "Wooting 60HE",
+                SerialNumber = serial,
             };
+            return new AnalogKeyboardCandidate
+            {
+                Info = info,
+                Routes = AnalogKeyboardRoutes.Candidates(info),
+                Name = "Wooting 60HE",
+                IdentityKey = AnalogKeyboardHidRuntime.IdentityKeyFor(info),
+            };
+        }
+
+        [Fact]
+        public void TheWootingV2Interface_MatchesItsRoute()
+        {
+            var routes = Candidate().Routes;
+            Assert.Equal("soup-wooting-v2", Assert.Single(routes).Id);
+            Assert.False(routes[0].Writable);
+        }
 
         [Fact]
         public void TheRow_IsAKeyboardWithNoNumberedInputs()

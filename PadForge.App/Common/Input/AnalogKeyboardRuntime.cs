@@ -21,5 +21,26 @@ namespace PadForge.Common.Input
             get => _enabled;
             set => _enabled = value;
         }
+
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<System.Guid, int[]> _keyOrders = new();
+
+        /// <summary>Records the keys a registered row reports, in keyboard
+        /// order. Many routes learn the exact model in their handshake, so the
+        /// list is the row's rather than one the VID and PID alone could give.</summary>
+        public static void SetKeyOrder(System.Guid instanceGuid, int[] keys)
+        {
+            if (keys != null) _keyOrders[instanceGuid] = keys;
+        }
+
+        /// <summary>The keys the input picker lists for an analog keyboard
+        /// row: the ones its route reported when it last opened, else the
+        /// catalog's list for its VID and PID.</summary>
+        public static int[] KeysFor(PadForge.Engine.Data.UserDevice ud)
+        {
+            if (ud == null) return PadForge.Engine.Common.AnalogKeyboard.AnalogKeyCodes.FullKeyboard;
+            return _keyOrders.TryGetValue(ud.InstanceGuid, out var keys)
+                ? keys
+                : PadForge.Engine.Common.AnalogKeyboard.AnalogKeyboardCatalog.KeysFor(ud.VendorId, ud.ProdId);
+        }
     }
 }

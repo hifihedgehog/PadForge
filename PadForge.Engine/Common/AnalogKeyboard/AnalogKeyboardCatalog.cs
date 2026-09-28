@@ -26,6 +26,51 @@ namespace PadForge.Engine.Common.AnalogKeyboard
         Madlions,
         /// <summary>Bytech chips (Redragon K709 HE), polled with report 9.</summary>
         Bytech,
+
+        // HallJoy's native routes, read from its source (AGPL-3.0).
+
+        /// <summary>ATTACK SHARK RY5088 boards, feature-report polling.</summary>
+        AttackShark,
+        /// <summary>AULA MINI 60 HE, HE Pro and HE MAX, the HFD command and stream protocol.</summary>
+        AulaMini60,
+        /// <summary>AULA HERO family (GEEHY), report 9 selected-key polling.</summary>
+        AulaHero,
+        /// <summary>IPI keyboards on the Addressed 09 frame protocol, admitted by UUID.</summary>
+        AddressedIpi,
+        /// <summary>Other keyboards on the Addressed 09 frame protocol, admitted by a probe.</summary>
+        AddressedGeneric,
+        /// <summary>IROK MG75 Pro and the JingTai V1 family, 5C frames.</summary>
+        JingTaiV1,
+        /// <summary>Chilkey Slice75 HE, JingTai V1 framing.</summary>
+        ChilkeySlice75,
+        /// <summary>AULA WIN 60 HE MAX and the SparkPlayJoy RM 6x21 family.</summary>
+        AulaRm,
+        /// <summary>AULA WIN 60 HE, WIN 68 HE, KP-TE153 and Redragon K673/K617, the W669 event protocol.</summary>
+        AulaW669,
+        /// <summary>MADLIONS MAD 68 Pro R, the A0 stream.</summary>
+        Mad68ProR,
+        /// <summary>ATK Hex80, 02 96 1C matrix polling.</summary>
+        AtkHex80,
+        /// <summary>IROK NA87 Mag, M484 events.</summary>
+        IrokNa87,
+        /// <summary>AJAZZ AK820 MAX RGB, M484 raw rows.</summary>
+        AjazzAk820,
+        /// <summary>MonsGeek and EPOMAKER RY5088 boards, feature-report snapshots.</summary>
+        RongYuanSnapshot,
+        /// <summary>RY5088 boards of many brands, the report 5 event stream.</summary>
+        RongYuanStream,
+        /// <summary>Neo65 SONIC HE+.</summary>
+        Neo65,
+        /// <summary>SteelSeries Apex Pro family.</summary>
+        SteelSeriesApex,
+        /// <summary>MCHOSE Mix 87 III.</summary>
+        MchoseMix87,
+        /// <summary>IROK and EWEADN boards on SparkLink (JingTai V2 rows).</summary>
+        SparkLink,
+        /// <summary>SayoDevice O3C.</summary>
+        Sayo,
+        /// <summary>Keychron K4 HE running HallJoy's onboard firmware.</summary>
+        KeychronOnboard,
     }
 
     /// <summary>

@@ -10,6 +10,19 @@ using PadForge.Engine.Common.AnalogKeyboard;
 
 namespace PadForge.Common.Input
 {
+    /// <summary>What <see cref="AnalogKeyboardDevice.Open"/> found.</summary>
+    internal enum AnalogKeyboardOpenResult
+    {
+        /// <summary>A route's handshake succeeded and the reader runs.</summary>
+        Opened,
+        /// <summary>The collection could not be opened or did not answer,
+        /// likely held by the vendor's software: retry after the cooldown.</summary>
+        Busy,
+        /// <summary>Every matching route talked to the keyboard and none
+        /// recognized it: leave it alone while it stays plugged in.</summary>
+        NotSupported,
+    }
+
     /// <summary>
     /// One analog keyboard as a mappable device row (issue #468, asked for in
     /// discussion #463). Every key's press depth lands in
@@ -17,45 +30,39 @@ namespace PadForge.Common.Input
     /// <c>"Analog Key N"</c> descriptor, the way a MIDI endpoint publishes its
     /// namespace on its own sub-state (<see cref="MidiInputDevice"/>).
     ///
-    /// <para>A reader thread owns the HID channel. Families that push their
-    /// state get a blocking read and a parse per report. Families that answer
-    /// requests get their poller's passes back to back. Either way the thread
-    /// writes the live key set under a lock and the poll thread copies it
-    /// out, the <see cref="LogitechGKeysDevice"/> discipline.</para>
+    /// <para>Opening tries each route that accepted the collection's metadata,
+    /// in priority order, and keeps the first whose handshake succeeds. Then a
+    /// reader thread owns the channel and runs the route's passes back to
+    /// back: a blocking read for the families that push their state, a round
+    /// of requests for the ones that answer. It writes the live key set under
+    /// a lock and the poll thread copies it out, the
+    /// <see cref="LogitechGKeysDevice"/> discipline.</para>
     /// </summary>
     internal sealed class AnalogKeyboardDevice : ISdlInputDevice
     {
-        /// <summary>Consecutive failed reads a Razer collection may have
-        /// before the row is given up. Soup counts ten empty reports before
-        /// it marks a Razer keyboard disconnected, because Synapse switching
-        /// the keyboard's mode can fail a read without the keyboard leaving.
-        /// Every other family stops at the first.</summary>
-        private const int RazerReadErrorsTolerated = 10;
-
-        /// <summary>Passes in a row that go unanswered before a polled
-        /// keyboard is given up, and the sweep's retry cooldown takes over.</summary>
-        private const int PollMissesTolerated = 20;
-
-        /// <summary>Shortest time between the starts of two polling passes.
-        /// A keyboard answers in a few milliseconds, and the vendor's own
-        /// configurator shares this channel.</summary>
-        private const int PollPeriodMs = 2;
-
         /// <summary>How often a Razer row checks that Synapse still runs.</summary>
         private const int SynapseCheckIntervalMs = 2000;
+
+        /// <summary>How long a normal stop waits for the reader to finish its
+        /// pass and let the route undo what it changed on the keyboard, before
+        /// it cancels the I/O outright.</summary>
+        private const int GracefulStopMs = 1500;
 
         private readonly AnalogKeyboardCandidate _candidate;
         private readonly object _stateLock = new();
         private readonly AnalogKeyInputState _live = new();
-        private readonly AnalogKeyboardPoller _poller;
         private readonly Dictionary<int, int> _heldVirtualKeys = new();
         private AnalogKeyboardHidChannel _channel;
+        private AnalogKeyboardSession _session;
+        private AnalogKeyboardRoute _route;
         private Thread _reader;
         private volatile bool _attached;
         private volatile bool _disposed;
+        private volatile bool _stopRequested;
         private volatile bool _synapseRunning = true;
         private long _reports;
         private PooledInputStatePair _statePool;
+        private int[] _keyOrder;
 
         public AnalogKeyboardDevice(AnalogKeyboardCandidate candidate)
         {
@@ -67,38 +74,37 @@ namespace PadForge.Common.Input
             ushort identityPid = AnalogKeyboardCatalog.IdentityProductId(candidate.VendorId, candidate.ProductId);
             ProductGuid = Md5Guid($"pfanalogkb-product:{candidate.VendorId:X4}:{identityPid:X4}");
             SdlInstanceId = SyntheticInstanceId.From(DevicePath);
-            _poller = AnalogKeyboardPoller.Create(candidate.Protocol, candidate.VendorId, candidate.ProductId);
-            if (_poller != null)
-            {
-                foreach (int code in AnalogKeyboardCatalog.KeysFor(candidate.VendorId, candidate.ProductId))
-                {
-                    int vk = VirtualKeyForCode(code);
-                    if (vk != 0) _heldVirtualKeys[code] = vk;
-                }
-            }
         }
 
         /// <summary>The HID collection this row reads, the sweep's key.</summary>
         public string HidPath { get; }
 
-        public AnalogKeyboardProtocol Protocol => _candidate.Protocol;
+        /// <summary>The identity every collection of this keyboard shares.</summary>
+        public string IdentityKey => _candidate.IdentityKey;
+
+        /// <summary>The route that won the handshake, or the first candidate
+        /// before <see cref="Open"/>.</summary>
+        public AnalogKeyboardProtocol Protocol => _route?.Protocol ?? _candidate.Protocol;
 
         /// <summary>False while a Razer row waits for Synapse, which is the
         /// only thing that makes its keyboard send analog reports.</summary>
         public bool SynapseRunning => _synapseRunning;
 
-        public bool NeedsSynapse => AnalogKeyboardCatalog.NeedsSynapse(_candidate.Protocol);
+        public bool NeedsSynapse => _session?.NeedsSynapse ?? false;
 
         /// <summary>Reports parsed or passes answered, which tells a user
         /// "found" from "found and reading".</summary>
         public long ReportCount => Interlocked.Read(ref _reports);
+
+        /// <summary>The keys the input picker lists for this keyboard.</summary>
+        public int[] KeyOrder => _keyOrder ?? AnalogKeyCodes.FullKeyboard;
 
         // ─── ISdlInputDevice identity / capabilities ───
         // The keys live on CustomInputState.AnalogKeys, not in the numbered
         // arrays, so the row reports none of those. Its picker entries come
         // from MappingDisplayResolver's analog key block, the MIDI pattern.
         public uint SdlInstanceId { get; }
-        public string Name { get; }
+        public string Name { get; private set; }
         public int NumAxes => 0;
         public int NumButtons => 0;
         public int RawButtonCount => 0;
@@ -132,51 +138,114 @@ namespace PadForge.Common.Input
 
         // ─── Lifecycle ───
 
-        /// <summary>Opens the collection and starts the reader. Blocking I/O,
-        /// so the sweep worker calls it, never the poll thread.</summary>
-        public bool Open()
+        /// <summary>Tries each matching route: opens the collection its way,
+        /// runs its handshake, and on the first success starts the reader.
+        /// Blocking I/O, so the sweep's worker calls it, never the poll
+        /// thread.</summary>
+        public AnalogKeyboardOpenResult Open()
         {
-            if (_disposed) return false;
-            var channel = AnalogKeyboardHidChannel.Open(_candidate, writable: _poller != null);
-            if (channel == null) return false;
-            _channel = channel;
-            _attached = true;
-            try
+            if (_disposed) return AnalogKeyboardOpenResult.Busy;
+            bool busy = false;
+            foreach (var route in _candidate.Routes)
             {
-                _reader = new Thread(ReaderLoop) { IsBackground = true, Name = "PadForge.AnalogKeyboard" };
-                _reader.Start();
-                return true;
+                var info = _candidate.Info;
+                AnalogKeyboardDeviceInfo companion = null;
+                if (route.Companion != null)
+                {
+                    try { companion = route.Companion(info); }
+                    catch { companion = null; }
+                    if (companion == null) continue;
+                }
+
+                var channel = AnalogKeyboardHidChannel.Open(info, route, companion);
+                if (channel == null)
+                {
+                    busy = true;
+                    continue;
+                }
+
+                AnalogKeyboardSession session = null;
+                bool started = false;
+                try
+                {
+                    session = route.CreateSession(info);
+                    started = session != null && session.Start(channel);
+                }
+                catch
+                {
+                    started = false;
+                }
+                if (!started)
+                {
+                    channel.Close();
+                    continue;
+                }
+
+                _route = route;
+                _session = session;
+                _channel = channel;
+                Name = session.ModelName ?? AnalogKeyboardHidRuntime.NameFor(info, route);
+                _keyOrder = session.KeyOrder ?? SafeKeys(route, info);
+                foreach (int code in KeyOrder)
+                {
+                    int vk = VirtualKeyForCode(code);
+                    if (vk != 0) _heldVirtualKeys[code] = vk;
+                }
+                _attached = true;
+                try
+                {
+                    _reader = new Thread(ReaderLoop) { IsBackground = true, Name = "PadForge.AnalogKeyboard" };
+                    _reader.Start();
+                    return AnalogKeyboardOpenResult.Opened;
+                }
+                catch
+                {
+                    _attached = false;
+                    _channel = null;
+                    channel.Close();
+                    return AnalogKeyboardOpenResult.Busy;
+                }
             }
-            catch
-            {
-                _attached = false;
-                _channel = null;
-                channel.Close();
-                return false;
-            }
+            return busy ? AnalogKeyboardOpenResult.Busy : AnalogKeyboardOpenResult.NotSupported;
         }
 
+        private static int[] SafeKeys(AnalogKeyboardRoute route, AnalogKeyboardDeviceInfo info)
+        {
+            try { return route.Keys?.Invoke(info); }
+            catch { return null; }
+        }
+
+        /// <summary>Stops the reader. It finishes its pass and lets the route
+        /// undo what it changed on the keyboard; a reader that does not finish
+        /// in time has its I/O canceled. A reader still stuck in a native call
+        /// owns the channel's buffers, so they leak rather than being freed
+        /// under it (the headset rule).</summary>
         public void Dispose()
         {
             if (_disposed) return;
             _disposed = true;
+            _stopRequested = true;
             _attached = false;
             var reader = _reader;
             _reader = null;
-            _channel?.Abort();
-            // The reader closes the channel on its way out. A reader still
-            // stuck in a native call owns the channel's buffers, so they leak
-            // rather than being freed under it (the headset rule).
-            reader?.Join(2000);
+            if (reader != null && !reader.Join(GracefulStopMs))
+            {
+                _channel?.Abort();
+                reader.Join(1000);
+            }
+            else if (reader == null)
+            {
+                _channel?.Close();
+            }
         }
 
         private void ReaderLoop()
         {
             var channel = _channel;
+            var session = _session;
             try
             {
-                if (_poller == null) PushedLoop(channel);
-                else PolledLoop(channel);
+                RunPasses(channel, session);
             }
             catch
             {
@@ -187,19 +256,21 @@ namespace PadForge.Common.Input
             {
                 _attached = false;
                 lock (_stateLock) _live.ResetForReuse();
+                try { session.Stop(channel); } catch { }
                 try { channel.Close(); } catch { }
             }
         }
 
-        private void PushedLoop(AnalogKeyboardHidChannel channel)
+        private void RunPasses(AnalogKeyboardHidChannel channel, AnalogKeyboardSession session)
         {
-            var buffer = new byte[Math.Max(_candidate.InputReportLength, (ushort)1)];
-            int tolerated = NeedsSynapse ? RazerReadErrorsTolerated : 1;
-            int errors = 0;
+            var pass = new AnalogKeyInputState();
+            Func<int, bool> isHeld = IsHeldByWindows;
+            int misses = 0;
             long nextSynapseCheck = 0;
-            while (!_disposed)
+            int minInterval = session is AnalogKeyboardPoller ? PollPeriodMs : 0;
+            while (!_stopRequested)
             {
-                if (NeedsSynapse)
+                if (session.NeedsSynapse)
                 {
                     long now = Environment.TickCount64;
                     if (now >= nextSynapseCheck)
@@ -209,59 +280,48 @@ namespace PadForge.Common.Input
                         _synapseRunning = running;
                         // Without Synapse the keyboard stops reporting, and a
                         // key held at that moment would stay down forever.
-                        if (!running) lock (_stateLock) _live.ResetForReuse();
+                        if (!running)
+                        {
+                            pass.ResetForReuse();
+                            lock (_stateLock) _live.ResetForReuse();
+                        }
                     }
                 }
 
-                int n = channel.Receive(buffer, 250);
-                if (_disposed) break;
-                if (n < 0)
-                {
-                    if (++errors >= tolerated) break;
-                    Thread.Sleep(50);
-                    continue;
-                }
-                if (n == 0) continue;
-                errors = 0;
-                lock (_stateLock)
-                {
-                    if (AnalogKeyboardParsers.ParsePushed(_candidate.Protocol, buffer.AsSpan(0, n), _live,
-                            _candidate.VendorId, _candidate.ProductId))
-                        Interlocked.Increment(ref _reports);
-                }
-            }
-        }
-
-        private void PolledLoop(AnalogKeyboardHidChannel channel)
-        {
-            var pass = new AnalogKeyInputState();
-            Func<int, bool> isHeld = IsHeldByWindows;
-            int misses = 0;
-            while (!_disposed)
-            {
                 long started = Environment.TickCount64;
-                var result = _poller.Pass(channel, pass, isHeld);
-                if (_disposed) break;
-                if (result == AnalogPollResult.Failed) break;
-                if (result == AnalogPollResult.NoAnswer)
+                var result = session.Pass(channel, pass, isHeld);
+                if (_stopRequested) break;
+                switch (result)
                 {
-                    // An unanswered pass releases every key, as Soup's reader
-                    // does, so a key held when the keyboard stops answering
-                    // does not stay down while the misses add up.
-                    lock (_stateLock) _live.ResetForReuse();
-                    if (++misses >= PollMissesTolerated) break;
-                    continue;
+                    case AnalogPollResult.Failed:
+                        return;
+                    case AnalogPollResult.NoAnswer:
+                        // An unanswered pass releases every key, as Soup's
+                        // reader does, so a key held when the keyboard stops
+                        // answering does not stay down while the misses add up.
+                        pass.ResetForReuse();
+                        lock (_stateLock) _live.ResetForReuse();
+                        if (++misses >= session.MissLimit) return;
+                        continue;
+                    case AnalogPollResult.Idle:
+                        continue;
                 }
                 misses = 0;
                 lock (_stateLock) pass.CopyInto(_live);
                 Interlocked.Increment(ref _reports);
                 long spent = Environment.TickCount64 - started;
-                if (spent < PollPeriodMs) Thread.Sleep((int)(PollPeriodMs - spent));
+                if (spent < minInterval) Thread.Sleep((int)(minInterval - spent));
             }
         }
 
-        /// <summary>Whether Windows sees the key down, the polled families'
-        /// cue to read it this pass. Soup asks DirectInput for the same fact
+        /// <summary>Shortest time between the starts of two passes of a Soup
+        /// or AnalogSense polled family. A keyboard answers in a few
+        /// milliseconds, and the vendor's own configurator shares this
+        /// channel. The HallJoy routes pace themselves.</summary>
+        private const int PollPeriodMs = 2;
+
+        /// <summary>Whether Windows sees the key down, the polled routes' cue
+        /// to read it this pass. Soup asks DirectInput for the same fact
         /// (DigitalKeyboard), here through the virtual key the current layout
         /// gives the key's scan code.</summary>
         private bool IsHeldByWindows(int code)

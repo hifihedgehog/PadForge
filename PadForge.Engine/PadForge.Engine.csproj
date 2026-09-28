@@ -40,4 +40,11 @@
     <Compile Include="..\SharedVersion.cs" Link="Properties\SharedVersion.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- Analog keyboard key tables and model catalogs (#468), read by
+         AnalogKeyboardData under PadForge.Engine.Common.AnalogKeyboard.Data. -->
+    <EmbeddedResource Include="Common\AnalogKeyboard\Data\*.json"
+                      LogicalName="PadForge.Engine.Common.AnalogKeyboard.Data.%(Filename)%(Extension)" />
+  </ItemGroup>
+
 </Project>

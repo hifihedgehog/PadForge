@@ -4399,7 +4399,7 @@ namespace PadForge.Services
                                || ud.CapType == InputDeviceType.LogitechGKeys
                                   ? ud.DeviceObjects : null,
                     analogKeyOrder: ud.CapType == InputDeviceType.AnalogKeyboard
-                        ? PadForge.Engine.Common.AnalogKeyboard.AnalogKeyboardCatalog.KeysFor(ud.VendorId, ud.ProdId)
+                        ? PadForge.Common.Input.AnalogKeyboardRuntime.KeysFor(ud)
                         : null);
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;
@@ -5271,7 +5271,7 @@ namespace PadForge.Services
                                || ud.CapType == InputDeviceType.LogitechGKeys
                                   ? ud.DeviceObjects : null,
                     analogKeyOrder: ud.CapType == InputDeviceType.AnalogKeyboard
-                        ? PadForge.Engine.Common.AnalogKeyboard.AnalogKeyboardCatalog.KeysFor(ud.VendorId, ud.ProdId)
+                        ? PadForge.Common.Input.AnalogKeyboardRuntime.KeysFor(ud)
                         : null);
                 devVm.HasGyroData = ud.HasGyro;
                 devVm.HasAccelData = ud.HasAccel;

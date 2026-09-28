@@ -979,9 +979,9 @@ TriggerEffectGenerator
 usbip-win2
   https://github.com/vadimgrn/usbip-win2
   Copyright (c) 2021-2026, Vadym Hrynchyshyn
-  HIDMaestro.Core.dll carries the upstream 0.9.7.5 release installers for
-  x64 and ARM64, unmodified and Microsoft-signed, and installs the one
-  matching the machine the first time a composite USB controller is
+  HIDMaestro.Core.dll carries the upstream 0.9.8.1 installers for x64
+  and ARM64, unmodified, with drivers Microsoft signed, and installs the
+  one matching the machine the first time a composite USB controller is
   created. It is the USB transport for those controllers. Any other
   controller type installs nothing from it.
   Licensed under the BSD 2-Clause License (full text at the end of this file)

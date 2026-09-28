@@ -245,10 +245,28 @@
          unstable in-progress work from the HIDMaestro repo. Update by
          copying the Release build of HIDMaestro.Core.dll from the
          HIDMaestro repo into Resources\HIDMaestro\ after tagging a
-         release there. Current: v1.9.0, which builds and embeds an
-         ARM64 driver payload beside the x64 one and pins the USB/IP
-         transport to usbip-win2 0.9.7.5, the last release with an ARM64
-         build.
+         release there. Current: v1.9.2, which moves the USB/IP
+         transport to usbip-win2 0.9.8.1, the first release with the fix
+         for the attach work item that blocked driver unload. The x64
+         installer is the release asset, and the ARM64 one is the same
+         tag's build from the project's signing service. A machine on
+         0.9.7.7 or 0.9.7.5 moves to 0.9.8.1 by one driver update, only
+         in a Windows session where the host controller has carried no
+         device yet, and a usbip-win2 another program installed is left
+         alone. The client now speaks the 0.9.7.x, 0.9.8.0 and 0.9.8.1
+         request formats and asks the driver which it has, so a 0.9.8.0
+         that Handheld Companion installed gets an attach request in its
+         own format. HIDMaestro checked those two formats against each
+         version's compiled header, not yet against a live driver.
+         v1.9.1 before it catalogs the ARM64 driver with 10_RS3_ARM64
+         (HM#63): v1.9.0 asked Inf2Cat for 10_ARM64, which Inf2Cat
+         refuses, so the ARM64 install stopped before the driver reached
+         the store. It also
+         answers the Steam Controller (2026) persona's firmware build
+         with the one Steam's own updater names, so Steam stops offering
+         it an update it can never take (HM#62).
+         v1.9.0 before that built and embedded an ARM64 driver payload
+         beside the x64 one.
          v1.8.1 before it corrected the XUSB battery reply, which packed
          its fields one byte early, so every virtual Xbox pad read as the
          lowest battery level (HM#61, PadForge #447).

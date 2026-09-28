@@ -433,9 +433,10 @@ namespace PadForge.Tests
         [Fact]
         public void Keychron_StockFirmware_ReadsHeldKeysAndARotatingGroup()
         {
-            // am_version 4 puts the travel at data byte 6, and no 0x45 marks
-            // stock firmware. The first pass reads group 0 (layout indices 0
-            // to 3) plus any key Windows sees down.
+            // am_version 4 echoes the row and column at data bytes 3 and 4 and
+            // puts the travel at byte 6 (analog_matrix.c:786-807), and no 0x45
+            // marks stock firmware. The first pass reads group 0 (layout
+            // indices 0 to 3) plus any key Windows sees down.
             var asked = new List<(int row, int col)>();
             var io = new FakeTransport(req =>
             {
@@ -444,7 +445,7 @@ namespace PadForge.Tests
                 {
                     asked.Add((req[3], req[4]));
                     byte travel = req[3] == 2 && req[4] == 2 ? (byte)200 : (byte)0;
-                    return new[] { KeychronAnswer(0x30, (6, travel)) };
+                    return new[] { KeychronAnswer(0x30, (3, req[3]), (4, req[4]), (6, travel)) };
                 }
                 return Array.Empty<byte[]>();
             });
@@ -462,18 +463,124 @@ namespace PadForge.Tests
             Assert.Equal(new[] { (0, 4), (0, 5), (0, 6), (0, 7), (2, 2) }, asked.ToArray());
         }
 
-        [Fact]
-        public void Keychron_OldFirmwareVersion_ReadsTheTravelAtByte3()
-        {
-            var io = new FakeTransport(req =>
+        /// <summary>A stock <c>A9 30</c> answer for W (row 2, column 2 of the
+        /// Q1 HE) in each version's layout, and an empty one for any other key.</summary>
+        private static FakeTransport KeychronVersion(int version, Func<byte[], byte[]> w,
+            byte features = 0, Func<byte[], byte[]> other = null)
+            => new(req =>
             {
-                if (req[2] == 0x01) return new[] { KeychronAnswer(0x01, (2, 3)) };
-                if (req[2] == 0x30 && req[3] == 2 && req[4] == 2)
-                    return new[] { KeychronAnswer(0x30, (3, 235)) };
-                return new[] { KeychronAnswer(0x30) };
+                if (req[2] == 0x01) return new[] { KeychronAnswer(0x01, (2, (byte)version), (4, features)) };
+                if (req[2] == 0x30)
+                {
+                    if (req[3] == 2 && req[4] == 2) return new[] { w(req) };
+                    return new[] { version >= 3 ? KeychronAnswer(0x30, (3, req[3]), (4, req[4])) : KeychronAnswer(0x30) };
+                }
+                return other == null ? Array.Empty<byte[]>() : new[] { other(req) };
             });
+
+        [Fact]
+        public void Keychron_Version2_ReadsTheTravelAtByte3()
+        {
+            // hall_effect_playground a576a0b47b analog_matrix.c:768-787:
+            // travel / 6 at data byte 2, the travel at byte 3.
+            var io = KeychronVersion(2, _ => KeychronAnswer(0x30, (2, 39), (3, 235)));
             var output = Keys();
             new KeychronPoller(Q1He).Pass(io, output, code => code == AnalogKeyCodes.W);
+            Assert.Equal(1f, output.Get(AnalogKeyCodes.W));
+        }
+
+        [Fact]
+        public void Keychron_Version1_ReadsTenthsOfAMillimeterAtByte2()
+        {
+            // The Q1 HE ANSI's first releases: 0 to 40 at data byte 2, read
+            // over 40 whenever it is not 0 (Soup b48da365).
+            var io = KeychronVersion(1, _ => KeychronAnswer(0x30, (2, 20), (3, 0x7F)));
+            var output = Keys();
+            new KeychronPoller(Q1He).Pass(io, output, code => code == AnalogKeyCodes.W);
+            Assert.Equal(0.5f, output.Get(AnalogKeyCodes.W));
+            Assert.Equal(1, output.Count);
+        }
+
+        [Fact]
+        public void Keychron_Version3_ReadsByte6_OnlyFromAnAnswerThatEchoesTheKey()
+        {
+            // The K2 HE ISO's first release: row and column echoed at data
+            // bytes 3 and 4, the travel at byte 6, as the Launcher reads it
+            // (main.be11320b2a72b61b.js offset 1721671). An answer that echoes
+            // another key is not taken for W's.
+            bool stray = true;
+            var io = KeychronVersion(3, req =>
+            {
+                if (stray)
+                {
+                    stray = false;
+                    return KeychronAnswer(0x30, (3, 2), (4, 3), (6, 235));
+                }
+                return KeychronAnswer(0x30, (3, 2), (4, 2), (6, 120));
+            });
+            var output = Keys();
+            Assert.Equal(AnalogPollResult.NoAnswer,
+                new KeychronPoller(Q1He).Pass(io, output, code => code == AnalogKeyCodes.W));
+            var poller = new KeychronPoller(Q1He);
+            Assert.Equal(AnalogPollResult.Ok, poller.Pass(io, output, code => code == AnalogKeyCodes.W));
+            Assert.Equal(3, poller.Version);
+            Assert.Equal(120 / 235f, output.Get(AnalogKeyCodes.W), 5);
+        }
+
+        [Fact]
+        public void Keychron_K3He_ReachesTheBottomAtItsOwnFullPress()
+        {
+            // The K3 HE's firmware unit is 29, so a full press reads 174, not
+            // 240. Less Soup's 5-count margin, 169 is the bottom.
+            var io = KeychronVersion(4, _ => KeychronAnswer(0x30, (3, 2), (4, 2), (6, 169)));
+            var output = Keys();
+            new KeychronPoller(Q1He, 174).Pass(io, output, code => code == AnalogKeyCodes.W);
+            Assert.Equal(1f, output.Get(AnalogKeyCodes.W));
+            Assert.Equal(169 / 235f, KeychronPoller.Depth(169), 5);
+            var k3 = AnalogKeyboardCatalog.KeychronModel(0x3434, 0x0E30);
+            Assert.Equal(174, k3.FullPress);
+            Assert.Equal(240, AnalogKeyboardCatalog.KeychronModel(0x3434, 0x0E40).FullPress);
+        }
+
+        [Fact]
+        public void Keychron_Version5_ReadsAU16InTheBoardsUnit_OverItsTravel()
+        {
+            // The 8K boards: a little-endian u16 at data bytes 5 and 6 after
+            // the echo (Launcher offset 1745815), in the unit A9 10 names at
+            // byte 8 (2 is 0.01 mm, offset 1741198), over the Launcher's
+            // 3.35 mm definition travel. 335 counts is the bottom, 167 half way.
+            var io = KeychronVersion(5, _ => KeychronAnswer(0x30, (3, 2), (4, 2), (5, 167), (6, 0)),
+                other: req => req[2] == 0x10 ? KeychronAnswer(0x10, (8, 2)) : KeychronAnswer(req[2]));
+            var poller = new KeychronPoller(Q1He, travelMm: 3.35f);
+            Assert.True(poller.Start(io));
+            Assert.Equal(5, poller.Version);
+            Assert.Equal(0.01f, poller.UnitMm);
+            Assert.Equal(3.35f, poller.TravelMm);
+            Assert.DoesNotContain(io.Sent, r => r[2] == 0x50);
+            var output = Keys();
+            Assert.Equal(AnalogPollResult.Ok, poller.Pass(io, output, code => code == AnalogKeyCodes.W));
+            Assert.Equal(1.67f / 3.35f, output.Get(AnalogKeyCodes.W), 4);
+            Assert.Equal(3.35f, AnalogKeyboardCatalog.KeychronModel(0x3434, 0x1010).TravelMm);
+        }
+
+        [Fact]
+        public void Keychron_Version5_TakesTheAxisMaximum_WhenTheFeatureBitSaysSo()
+        {
+            // Feature bit 0 of the version answer's byte 4 (switchAxis) makes
+            // the Launcher ask A9 50, whose bytes 3 and 4 are the maximum in
+            // the board's unit (getAxisType, offset 1750860): 300 of 0.01 mm.
+            var io = KeychronVersion(5, _ => KeychronAnswer(0x30, (3, 2), (4, 2), (5, 0x2C), (6, 0x01)), features: 1,
+                other: req => req[2] switch
+                {
+                    0x10 => KeychronAnswer(0x10, (8, 2)),
+                    0x50 => KeychronAnswer(0x50, (2, 0), (3, 0x2C), (4, 0x01)),
+                    _ => KeychronAnswer(req[2]),
+                });
+            var poller = new KeychronPoller(Q1He, travelMm: 3.35f);
+            Assert.True(poller.Start(io));
+            Assert.Equal(3.0f, poller.TravelMm, 4);
+            var output = Keys();
+            poller.Pass(io, output, code => code == AnalogKeyCodes.W);
             Assert.Equal(1f, output.Get(AnalogKeyCodes.W));
         }
 

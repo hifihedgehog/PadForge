@@ -17,8 +17,8 @@ namespace PadForge.Engine.Common.AnalogKeyboard
                 case AnalogKeyboardProtocol.DrunkDeer:
                     return new DrunkDeerPoller(productId);
                 case AnalogKeyboardProtocol.Keychron:
-                    var keychron = AnalogKeyboardCatalog.KeychronLayout(vendorId, productId);
-                    return keychron == null ? null : new KeychronPoller(keychron);
+                    var keychron = AnalogKeyboardCatalog.KeychronModel(vendorId, productId);
+                    return keychron == null ? null : new KeychronPoller(keychron.Layout, keychron.FullPress, keychron.TravelMm);
                 case AnalogKeyboardProtocol.Madlions:
                     var madlions = AnalogKeyboardCatalog.MadlionsLayout(productId);
                     return madlions == null ? null : new MadlionsPoller(madlions);
@@ -276,39 +276,87 @@ namespace PadForge.Engine.Common.AnalogKeyboard
 
     /// <summary>
     /// Keychron and Lemokey HE boards over the VIA raw HID channel. Start asks
-    /// for the version (<c>A9 01</c>), and a keyboard that does not answer
-    /// with at least three bytes is not read, as in HallJoy's UAP overlay.
-    /// A last byte of 0x45 marks AnalogSense's FAR firmware, which answers
-    /// <c>A9 31</c> with every key's travel, 30 bytes per 32-byte answer,
-    /// row-major, in <c>slots / 30 + 1</c> answers (its
+    /// for the analog matrix version (<c>A9 01</c>), and a keyboard that does
+    /// not answer with at least three bytes is not read, as in HallJoy's UAP
+    /// overlay. A last byte of 0x45 marks AnalogSense's FAR firmware, which
+    /// answers <c>A9 31</c> with every key's travel, 30 bytes per 32-byte
+    /// answer, row-major, in <c>slots / 30 + 1</c> answers (its
     /// get_realtime_travel_all sends a report each time 30 bytes fill and
     /// then always one more). Stock firmware answers <c>A9 30 row col</c>
     /// one key at a time, so a pass reads the keys that are down or moving
     /// plus a rotating group of four, Soup's getActiveKeysKeychron pass
-    /// order. Travel under 5 is rest, and 235 is the bottom.
+    /// order.
     ///
-    /// <para>HallJoy reads its K6, Q2 and Q4 additions only on FAR firmware.
-    /// Here stock firmware is read on every board: <c>A9 30</c> is
-    /// AMC_GET_REALTIME_TRAVEL, Keychron's own command in the analog matrix
-    /// code its HE boards share (keyboards/keychron/common/analog_matrix,
-    /// the file FAR extends), and the version answer already picks the
-    /// travel byte's place.</para>
+    /// <para>Where the stock answer carries the travel depends on the version,
+    /// as Keychron's firmware writes it and its Launcher reads it (the
+    /// Launcher's per-version readers, main.be11320b2a72b61b.js offsets
+    /// 1700453, 1710613, 1721671, 1733365 and 1745815). Version 1 (the Q1 HE
+    /// ANSI's first releases) holds 0 to 40 at byte 2, read over 40 whenever
+    /// it is not 0, Soup's first reading (Soup b48da365). Version 2 holds the
+    /// travel byte at byte 3 (analog_matrix.c:768-787 of hall_effect_playground
+    /// a576a0b47b), versions 3 and 4 at byte 6 after the row and column echo
+    /// (2025q3 analog_matrix.c:786-807), and on these a travel under 5 is
+    /// rest and the full press less 5 is the bottom, Soup's 235 of 240.
+    /// Version 5, the 8K boards' firmware, holds a little-endian u16 at bytes
+    /// 5 and 6 after the echo, in the unit <c>A9 10</c> names in its byte 8
+    /// (2 for 0.01 mm, 3 for 0.001 mm, else 0.1 mm). Its full scale is the
+    /// axis maximum <c>A9 50</c> answers when the version answer's feature
+    /// byte sets bit 0, else the Launcher's device-definition travel
+    /// (getHeVersion and getAxisType, offsets 1752789 and 1750860). From
+    /// version 3 on, an answer must echo the row and column it answers, as
+    /// the Launcher checks.</para>
+    ///
+    /// <para>HallJoy reads its K6, Q2 and Q4 additions only on FAR firmware,
+    /// a latency choice: its own stock test read correct values
+    /// (docs/v1.4/VALIDATION_MATRIX.md:2309-2364). Here stock firmware is
+    /// read on every board. Every stock image of these boards answers
+    /// <c>A9 30</c> in one of the layouts above.</para>
     /// </summary>
     public sealed class KeychronPoller : AnalogKeyboardPoller
     {
         public const int AnswerDataLength = 32;
         public const int TravelBytesPerAnswer = 30;
+
+        /// <summary>The travel byte at the bottom of a standard board's press
+        /// (analog_matrix.h:26, 78).</summary>
+        public const int StandardFullPress = 240;
+
+        /// <summary>The Launcher's axis maximum when neither the board nor its
+        /// definition names one (axis {min 0.2, max 3.8}).</summary>
+        public const float DefaultTravelMm = 3.8f;
+
+        /// <summary>Tries at a matching answer when the echo names another
+        /// key, each within the answer timeout.</summary>
+        private const int EchoTries = 4;
+
         private readonly AnalogKeyCodes.Layout _layout;
-        private readonly byte[] _travel;
+        private readonly int _fullPress;
+        private readonly float _catalogTravelMm;
+        private readonly ushort[] _travel;
         private int _amVersion = -1;
+        private int _features;
         private bool _fullReports;
+        private float _unitMm = 0.1f;
+        private float _travelMm;
         private int _state = 1;
 
-        public KeychronPoller(AnalogKeyCodes.Layout layout)
+        /// <param name="fullPress">The travel byte at the bottom of a press.</param>
+        /// <param name="travelMm">A version-5 board's travel when it does not
+        /// report one, 0 for the Launcher's default.</param>
+        public KeychronPoller(AnalogKeyCodes.Layout layout, int fullPress = StandardFullPress, float travelMm = 0f)
         {
             _layout = layout;
-            _travel = new byte[layout.Size];
+            _fullPress = fullPress > 5 ? fullPress : StandardFullPress;
+            _catalogTravelMm = travelMm;
+            _travel = new ushort[layout.Size];
         }
+
+        /// <summary>The analog matrix version the board answered, -1 before.</summary>
+        public int Version => _amVersion;
+
+        /// <summary>A version-5 board's unit and full travel, in millimeters.</summary>
+        public float UnitMm => _unitMm;
+        public float TravelMm => _travelMm;
 
         /// <summary>True once the version answer said the firmware reports
         /// every key at once.</summary>
@@ -330,8 +378,23 @@ namespace PadForge.Engine.Common.AnalogKeyboard
             return r;
         }
 
-        /// <summary>Depth for a Keychron travel byte.</summary>
-        public static float Depth(int travel) => travel >= 5 ? Math.Min(travel / 235f, 1f) : 0f;
+        /// <summary>Depth for a Keychron travel byte: under 5 is rest, and
+        /// the full press less 5 is the bottom (Soup's 235 of 240).</summary>
+        public static float Depth(int travel, int fullPress = StandardFullPress)
+            => travel >= 5 ? Math.Min(travel / (float)(fullPress - 5), 1f) : 0f;
+
+        /// <summary>Depth for this board's travel as its version reports it.</summary>
+        public float DepthOf(int travel)
+        {
+            if (_amVersion == 1) return travel > 0 ? Math.Min(travel / 40f, 1f) : 0f;
+            if (_amVersion == 5)
+            {
+                float depth = travel * _unitMm / _travelMm;
+                // The same rest band as the byte versions, 5 of 240.
+                return depth >= 5f / StandardFullPress ? Math.Min(depth, 1f) : 0f;
+            }
+            return Depth(travel, _fullPress);
+        }
 
         /// <summary>The version exchange under KeychronMtx, as Soup asks it
         /// inside its locked pass (AnalogueKeyboard.cpp:902-903). A Start
@@ -342,12 +405,38 @@ namespace PadForge.Engine.Common.AnalogKeyboard
             if (mutex != null && !mutex.Wait()) return false;
             try
             {
-                return AskVersion(io) == AnalogPollResult.Ok;
+                return AskVersion(io) == AnalogPollResult.Ok
+                    && (_amVersion != 5 || AskScale(io) == AnalogPollResult.Ok);
             }
             finally
             {
                 mutex?.Release();
             }
+        }
+
+        /// <summary>A version-5 board's unit from <c>A9 10</c> (answer byte
+        /// 8) and its axis maximum from <c>A9 50</c> (bytes 3 and 4 in that
+        /// unit) when the version answer's feature bit 0 says it has one, as
+        /// the Launcher reads them (getProfileInfo and getAxisType).</summary>
+        private AnalogPollResult AskScale(IAnalogKeyboardTransport io)
+        {
+            io.DiscardStale();
+            if (!io.Send(Request(0x10))) return AnalogPollResult.Failed;
+            int off = ReceiveMatching(io, 0xA9, 0x10, out int len);
+            if (off == -2) return AnalogPollResult.Failed;
+            if (off < 0 || len < off + 9) return AnalogPollResult.NoAnswer;
+            _unitMm = Buffer[off + 8] switch { 2 => 0.01f, 3 => 0.001f, _ => 0.1f };
+            _travelMm = _catalogTravelMm > 0f ? _catalogTravelMm : DefaultTravelMm;
+            if ((_features & 1) == 0) return AnalogPollResult.Ok;
+
+            io.DiscardStale();
+            if (!io.Send(Request(0x50))) return AnalogPollResult.Failed;
+            off = ReceiveMatching(io, 0xA9, 0x50, out len);
+            if (off == -2) return AnalogPollResult.Failed;
+            if (off < 0 || len < off + 5) return AnalogPollResult.NoAnswer;
+            float axis = ((Buffer[off + 4] << 8) | Buffer[off + 3]) * _unitMm;
+            if (axis > 0f) _travelMm = axis;
+            return AnalogPollResult.Ok;
         }
 
         /// <summary>The <c>A9 01</c> exchange: Ok with the version read,
@@ -361,6 +450,7 @@ namespace PadForge.Engine.Common.AnalogKeyboard
             if (off == -2) return AnalogPollResult.Failed;
             if (off < 0 || len < off + 3) return AnalogPollResult.NoAnswer;
             _amVersion = Buffer[off + 2];
+            _features = len > off + 4 ? Buffer[off + 4] : 0;
             _fullReports = Buffer[len - 1] == 0x45;
             return AnalogPollResult.Ok;
         }
@@ -378,6 +468,7 @@ namespace PadForge.Engine.Common.AnalogKeyboard
                 {
                     var asked = AskVersion(io);
                     if (asked != AnalogPollResult.Ok) return asked;
+                    if (_amVersion == 5 && (asked = AskScale(io)) != AnalogPollResult.Ok) return asked;
                 }
                 return _fullReports ? FullPass(io, output) : StockPass(io, output, isHeld);
             }
@@ -408,26 +499,48 @@ namespace PadForge.Engine.Common.AnalogKeyboard
             return AnalogPollResult.Ok;
         }
 
+        /// <summary>The first data byte of the travel in a stock answer, by
+        /// version: 2, 3, then 6, and 5 for version 5's u16.</summary>
+        public static int TravelOffset(int version) => version switch
+        {
+            1 => 2,
+            2 => 3,
+            5 => 5,
+            _ => version >= 3 ? 6 : 3,
+        };
+
         private AnalogPollResult StockPass(IAnalogKeyboardTransport io, AnalogKeyInputState output,
             Func<int, bool> isHeld)
         {
             var keys = _layout.Keys;
-            int valueAt = _amVersion >= 4 ? 6 : 3;
+            int valueAt = TravelOffset(_amVersion);
+            bool wide = _amVersion == 5;
+            bool echo = _amVersion >= 3;
             for (int i = 0; i < keys.Length; i++)
             {
                 int code = keys[i];
                 if (code == AnalogKeyCodes.None) continue;
                 bool held = isHeld != null && isHeld(code);
                 if (!held && _travel[i] == 0 && _state != (i >> 2) + 1) continue;
+                byte row = (byte)(i / _layout.Columns), col = (byte)(i % _layout.Columns);
                 io.DiscardStale();
-                if (!io.Send(Request(0x30, (byte)(i / _layout.Columns), (byte)(i % _layout.Columns))))
-                    return AnalogPollResult.Failed;
-                int off = ReceiveMatching(io, 0xA9, 0x30, out int len);
+                if (!io.Send(Request(0x30, row, col))) return AnalogPollResult.Failed;
+                int off = -1, len = 0;
+                for (int tries = 0; tries < EchoTries; tries++)
+                {
+                    off = ReceiveMatching(io, 0xA9, 0x30, out len);
+                    if (off < 0 || !echo || len < off + 5
+                        || (Buffer[off + 3] == row && Buffer[off + 4] == col)) break;
+                    off = -1;
+                }
                 if (off == -2) return AnalogPollResult.Failed;
-                // An answer too short to reach the travel byte fails the pass
+                // An answer too short to reach the travel fails the pass
                 // (HallJoy's bounds check) instead of reading as rest.
-                if (off < 0 || len <= off + valueAt) return AnalogPollResult.NoAnswer;
-                _travel[i] = Buffer[off + valueAt];
+                int last = valueAt + (wide ? 1 : 0);
+                if (off < 0 || len <= off + last) return AnalogPollResult.NoAnswer;
+                _travel[i] = wide
+                    ? (ushort)(Buffer[off + valueAt] | (Buffer[off + valueAt + 1] << 8))
+                    : Buffer[off + valueAt];
             }
             // Soup advances the rotation after every pass and wraps past the
             // last group.
@@ -443,7 +556,7 @@ namespace PadForge.Engine.Common.AnalogKeyboard
             for (int i = 0; i < keys.Length; i++)
             {
                 if (keys[i] == AnalogKeyCodes.None) continue;
-                float depth = Depth(_travel[i]);
+                float depth = _fullReports ? Depth(_travel[i], _fullPress) : DepthOf(_travel[i]);
                 if (depth > 0f) output.Set(keys[i], depth);
             }
         }

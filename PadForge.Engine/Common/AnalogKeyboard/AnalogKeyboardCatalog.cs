@@ -274,6 +274,19 @@ namespace PadForge.Engine.Common.AnalogKeyboard
             public ushort ProductId { get; init; }
             public string Name { get; init; }
             public AnalogKeyCodes.Layout Layout { get; init; }
+
+            /// <summary>The travel byte at the bottom of a press: FULL_TRAVEL_UNIT
+            /// 40 times TRAVEL_SCALE 6 in Keychron's analog matrix code
+            /// (analog_matrix.h:26, 78), 240. The K3 HE's firmware uses a unit
+            /// of 29, so its bottom is 174 (its stock images, unit 29.0 and a
+            /// clamp of 179).</summary>
+            public int FullPress { get; init; } = KeychronPoller.StandardFullPress;
+
+            /// <summary>The travel in millimeters a version-5 board's axis spans
+            /// when the board does not report it: the Launcher's device
+            /// definition (extra.he.distance.max, 3.35 on every 8K board), else
+            /// 0 for the Launcher's default.</summary>
+            public float TravelMm { get; init; }
         }
 
         private static KeychronBoard[] _keychronBoards;
@@ -316,6 +329,10 @@ namespace PadForge.Engine.Common.AnalogKeyboard
                         ProductId = (ushort)model.GetProperty("pid").GetInt32(),
                         Name = model.GetProperty("name").GetString(),
                         Layout = new AnalogKeyCodes.Layout(rows, cols, table),
+                        FullPress = model.TryGetProperty("fullPress", out var full)
+                            ? full.GetInt32()
+                            : KeychronPoller.StandardFullPress,
+                        TravelMm = model.TryGetProperty("travelMm", out var travel) ? travel.GetSingle() : 0f,
                     });
                 }
                 boards = list.ToArray();

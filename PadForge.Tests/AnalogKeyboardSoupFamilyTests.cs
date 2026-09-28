@@ -458,12 +458,18 @@ namespace PadForge.Tests
         public void KeychronStock_ReadsEveryBoard_AndAShortAnswerIsAMiss()
         {
             // Stock firmware (no 0x45) on a K6, which HallJoy reads only on
-            // FAR firmware: A9 30 row col answers with the travel at byte 6.
+            // FAR firmware: A9 30 row col answers with the row and column
+            // echoed and the travel at byte 6 (analog_matrix.c:786-807).
             var io = new AnalogKeyboardTestTransport();
             io.OnSend = req => req[2] switch
             {
                 0x01 => new[] { KeychronAnswer(0x01, (2, 4)) },
-                0x30 => new[] { req[3] == 1 && req[4] == 2 ? KeychronAnswer(0x30, (6, 235)) : KeychronAnswer(0x30) },
+                0x30 => new[]
+                {
+                    req[3] == 1 && req[4] == 2
+                        ? KeychronAnswer(0x30, (3, 1), (4, 2), (6, 235))
+                        : KeychronAnswer(0x30, (3, req[3]), (4, req[4])),
+                },
                 _ => Array.Empty<byte[]>(),
             };
             var poller = new KeychronPoller(AnalogKeyboardCatalog.KeychronLayout(0x3434, 0x0E60));

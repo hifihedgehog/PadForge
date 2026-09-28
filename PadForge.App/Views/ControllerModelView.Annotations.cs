@@ -378,6 +378,10 @@ namespace PadForge.Views
             string primary = (row.SourceDisplayText ?? string.Empty).Trim();
             if (row.IsMapped && primary.Length > 0)
             {
+                // A Toggle primary (#461) says so, the way Inv. and Half
+                // mark an inverted or half-axis source.
+                if (row.PrimaryKindSource?.IsToggleKind == true)
+                    primary = PadForge.Resources.Strings.Strings.Instance.Pad_Mapping_Kind_Toggle + " " + primary;
                 ResolveAnnotationDevice(row.PrimarySourceDeviceGuid,
                     (row.PrimarySourceDeviceLabel ?? string.Empty).Trim(),
                     out string dn, out string dg);
@@ -389,7 +393,7 @@ namespace PadForge.Views
                     SourceName = primary,
                 });
             }
-            else if (!row.IsPrimaryDirect)
+            else if (!row.IsPrimaryDescriptor)
             {
                 // Stateful primary (Ramp / Incremental / InvertOnHold): its
                 // feeds are the Up/Down/Modifier keys on PrimaryKindSource,
@@ -427,6 +431,7 @@ namespace PadForge.Views
                 if (src.Invert && src.HalfAxis) name = s.Mapping_InvHalf + " " + name;
                 else if (src.Invert) name = s.Mapping_Inv + " " + name;
                 else if (src.HalfAxis) name = s.Mapping_Half + " " + name;
+                if (src.IsToggleKind) name = s.Pad_Mapping_Kind_Toggle + " " + name;
                 AppendAnnotationWire(rows, src.DeviceGuid,
                     src.DisplayDeviceLabel, name);
             }

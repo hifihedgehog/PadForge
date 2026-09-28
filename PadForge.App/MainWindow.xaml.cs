@@ -7201,7 +7201,7 @@ namespace PadForge
                     // single modifier. The per-direction pickers stay for manual
                     // edits, but there is only ever one Record button on the row.
                     var pk = mi.PrimaryKindSource;
-                    if (pk != null && !mi.IsPrimaryDirect)
+                    if (pk != null && !mi.IsPrimaryDescriptor)
                     {
                         var firstTarget = pk.UsesUpDownKeys
                             ? RecorderService.ParamTarget.Up

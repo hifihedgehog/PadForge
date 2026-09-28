@@ -5,7 +5,8 @@ using PadForge.Engine.Data;
 namespace PadForge.Engine.Common.Mapping
 {
     /// <summary>
-    /// Per-VC runtime state for stateful source kinds (Incremental).
+    /// Per-VC runtime state for stateful source kinds (Incremental, Ramp,
+    /// Toggle, and the steering and flick kinds).
     /// Lives on the polling-thread side of Step 3; cleared on profile
     /// switch and on app restart.
     ///
@@ -30,6 +31,20 @@ namespace PadForge.Engine.Common.Mapping
         // (slot, target, srcIdx) key as Incremental so two ramped sources on one
         // row keep independent state.
         private Dictionary<(int slot, string target, int srcIdx), double> _rampedAccum
+            = new();
+
+        // Toggle latch (#461), same (slot, target, srcIdx) key, so two
+        // toggles on one row keep their own state.
+        private sealed class ToggleState
+        {
+            public long Seq = -1;            // frame of the last read
+            public bool PrevPressed;         // previous frame's press, the OR of its reads
+            public bool CurPressed;          // this frame's press so far
+            public bool FlippedThisFrame;    // one flip per frame, however many devices read
+            public bool Latched;
+            public double Level;             // output while latched, signed on an axis
+        }
+        private Dictionary<(int slot, string target, int srcIdx), ToggleState> _toggleState
             = new();
 
         // ── Steering kinds (v3.4 #94) ──
@@ -121,6 +136,7 @@ namespace PadForge.Engine.Common.Mapping
             _flickState = new();
             _incrementalReplay = new();
             _rampedReplay = new();
+            _toggleState = new();
         }
 
         /// <summary>Drops all steering + flick state for a slot. Called on profile switch.</summary>
@@ -138,6 +154,7 @@ namespace PadForge.Engine.Common.Mapping
             _rampedAccum = Without(_rampedAccum, slot, null);
             _incrementalReplay = Without(_incrementalReplay, slot, null);
             _rampedReplay = Without(_rampedReplay, slot, null);
+            _toggleState = Without(_toggleState, slot, null);
         }
 
         /// <summary>Drops steering state for one (slot, target). The
@@ -154,6 +171,7 @@ namespace PadForge.Engine.Common.Mapping
             _rampedAccum = Without(_rampedAccum, slot, target ?? "");
             _incrementalReplay = Without(_incrementalReplay, slot, target ?? "");
             _rampedReplay = Without(_rampedReplay, slot, target ?? "");
+            _toggleState = Without(_toggleState, slot, target ?? "");
         }
 
         /// <summary>Drops the captured MotionLean neutral orientations (the
@@ -345,6 +363,47 @@ namespace PadForge.Engine.Common.Mapping
             _rampedAccum[key] = v;
             replay.Output = v;
             return v;
+        }
+
+        /// <summary>
+        /// Advances the Toggle latch (#461) with one read of its input and
+        /// returns the output: the <paramref name="level"/> captured by the
+        /// press that latched it, or 0 while released. A press flips the
+        /// latch on its rising edge. The press is the OR of every read in one
+        /// frame, because an any-device source is read once per device on the
+        /// slot: the first device's read must not hide a press on the second,
+        /// and two devices pressing together flip it once. A frame with no
+        /// read at all (the row's shift layer closed, its input suppressed,
+        /// its device offline) releases the latch, the way a macro Toggle
+        /// releases when its layer closes, and a press already down when
+        /// reads resume does not flip it back on.
+        /// </summary>
+        public double TickToggle(int slotIndex, string target, int sourceIndex,
+            bool pressed, double level)
+        {
+            var key = (slotIndex, target ?? "", sourceIndex);
+            if (!_toggleState.TryGetValue(key, out var st))
+                _toggleState[key] = st = new ToggleState();
+            if (st.Seq != FrameSeq)
+            {
+                bool resumed = st.Seq < 0 || FrameSeq - st.Seq > 1;
+                if (resumed) st.Latched = false;
+                st.PrevPressed = resumed || st.CurPressed;
+                st.CurPressed = false;
+                st.FlippedThisFrame = false;
+                st.Seq = FrameSeq;
+            }
+            if (pressed)
+            {
+                if (!st.PrevPressed && !st.FlippedThisFrame)
+                {
+                    st.Latched = !st.Latched;
+                    st.FlippedThisFrame = true;
+                    st.Level = level;
+                }
+                st.CurPressed = true;
+            }
+            return st.Latched ? st.Level : 0;
         }
 
         // ── Steering kind ticks (v3.4 #94) ──

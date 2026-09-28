@@ -23,6 +23,7 @@ namespace PadForge.Engine.Data
     public class MappingSource
     {
         /// <summary>Source kind discriminator. <c>"Direct"</c> (default),
+        /// <c>"Toggle"</c> (#461, the Direct read latched by each press),
         /// <c>"Incremental"</c>, <c>"InvertOnHold"</c>, <c>"Ramped"</c>, plus the
         /// steering kinds. Forward-compatible: unknown values treated as Direct.</summary>
         [XmlAttribute] public string Kind { get; set; } = "Direct";

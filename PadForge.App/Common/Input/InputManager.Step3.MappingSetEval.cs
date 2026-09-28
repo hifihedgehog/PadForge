@@ -3300,6 +3300,10 @@ namespace PadForge.Common.Input
                     if (slotStates == null)
                         slotStates = GetSlotDeviceStates(slotIndex, currentState, currentDeviceGuid, out slotOwners);
                     bool any = false;
+                    // A Toggle read advances its latch, so every device is read:
+                    // while the latch is on, the first device answers true, and
+                    // stopping there would hide a press on the others.
+                    bool readAll = SourceEvaluator.IsToggleKind(src);
                     for (int d = 0; d < slotStates.Count; d++)
                     {
                         // Each device read under its own identity, so per-device
@@ -3307,7 +3311,11 @@ namespace PadForge.Common.Input
                         if (SourceEvaluator.EvaluateForButtonTarget(
                             slotStates[d], src, globalAxisToButtonThreshold,
                             slotIndex, row.Target, i, slotRuntime, dt,
-                            evaluatedDeviceGuid: slotOwners[d])) { any = true; break; }
+                            evaluatedDeviceGuid: slotOwners[d]))
+                        {
+                            any = true;
+                            if (!readAll) break;
+                        }
                     }
                     list.Add(any ? 1f : 0f);
                     continue;

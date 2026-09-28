@@ -1038,8 +1038,11 @@ namespace PadForge.Services
                     // descriptor into a device's PadSetting), so the
                     // filter here is no longer needed.
                     string primaryDesc = mapping.SourceDescriptor ?? "";
+                    // A Toggle primary (#461) keeps its input in the descriptor
+                    // like Direct, so it saves through the descriptor branch
+                    // below, carrying its kind.
                     bool primaryIsKind = mapping.PrimaryKindSource != null
-                        && !string.Equals(mapping.PrimaryKindSource.Kind ?? "Direct", "Direct", StringComparison.Ordinal);
+                        && !PadForge.Engine.Common.Mapping.SourceEvaluator.IsDescriptorKind(mapping.PrimaryKindSource.Kind);
                     if (primaryIsKind)
                     {
                         // Non-Direct primary kind (Incremental / Ramped / InvertOnHold,
@@ -1078,7 +1081,7 @@ namespace PadForge.Services
 
                         rebuiltSources.Add(new MappingSource
                         {
-                            Kind = "Direct",
+                            Kind = mapping.PrimaryKindSource?.IsToggleKind == true ? "Toggle" : "Direct",
                             DeviceGuid = mapping.PrimarySourceDeviceGuid ?? "",
                             Descriptor = clean,
                             Invert = inv,
@@ -2037,8 +2040,10 @@ namespace PadForge.Services
 
                     var key = (er.Target ?? "", er.LayerMask ?? "Base");
                     bool preserveMotionSources = MappingSetMigrator.PreservesMotionSources(er);
+                    // A Toggle reads its own input on every device just as
+                    // Direct does, so an any-device Toggle covers them too.
                     bool preserveAnyDeviceSources = er.Sources?.Any(source => source != null
-                        && (string.IsNullOrEmpty(source.Kind) || string.Equals(source.Kind, "Direct", StringComparison.Ordinal))
+                        && PadForge.Engine.Common.Mapping.SourceEvaluator.IsDescriptorKind(source.Kind)
                         && string.IsNullOrEmpty(source.DeviceGuid)
                         && !string.IsNullOrWhiteSpace(source.Descriptor)) == true;
                     // Any Device already covers newly assigned devices. Keep the

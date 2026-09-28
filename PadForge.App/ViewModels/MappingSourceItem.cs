@@ -46,6 +46,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsIncrementalKind));
                     OnPropertyChanged(nameof(IsInvertOnHoldKind));
                     OnPropertyChanged(nameof(IsRampedKind));
+                    OnPropertyChanged(nameof(IsToggleKind));
                     OnPropertyChanged(nameof(UsesUpDownKeys));
                     OnPropertyChanged(nameof(IsKindDescriptorless));
                     OnPropertyChanged(nameof(ParamUpInputChoice));
@@ -58,6 +59,7 @@ namespace PadForge.ViewModels
         public bool IsIncrementalKind => string.Equals(_kind, "Incremental", StringComparison.Ordinal);
         public bool IsInvertOnHoldKind => string.Equals(_kind, "InvertOnHold", StringComparison.Ordinal);
         public bool IsRampedKind => string.Equals(_kind, "Ramped", StringComparison.Ordinal);
+        public bool IsToggleKind => string.Equals(_kind, "Toggle", StringComparison.Ordinal);
 
         /// <summary>True for the kinds authored via a positive (Up) and negative
         /// (Down) key pair: Incremental and Ramped. Drives the inline Up/Down
@@ -117,6 +119,7 @@ namespace PadForge.ViewModels
                 var arr = new[]
                 {
                     new KindChoice { Value = "Direct",       Name = Strings.Instance.Pad_Mapping_Kind_Direct },
+                    new KindChoice { Value = "Toggle",       Name = Strings.Instance.Pad_Mapping_Kind_Toggle },
                     new KindChoice { Value = "Incremental",  Name = Strings.Instance.Pad_Mapping_Kind_Incremental },
                     new KindChoice { Value = "InvertOnHold", Name = Strings.Instance.Pad_Mapping_Kind_InvertOnHold },
                     new KindChoice { Value = "Ramped",       Name = Strings.Instance.Pad_Mapping_Kind_Ramped },

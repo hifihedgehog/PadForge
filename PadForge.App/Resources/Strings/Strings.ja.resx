@@ -570,9 +570,10 @@
   <data name="Pad_Half" xml:space="preserve"><value>半分</value></data>
   <!-- Merge-mapping UI (Issue #61): per-source Kind dropdown + Incremental / InvertOnHold controls. English placeholders pending translation. -->
   <data name="Pad_Mapping_Kind_Direct" xml:space="preserve"><value>ダイレクト</value></data>
+  <data name="Pad_Mapping_Kind_Toggle" xml:space="preserve"><value>トグル</value></data>
   <data name="Pad_Mapping_Kind_Incremental" xml:space="preserve"><value>インクリメンタル</value></data>
   <data name="Pad_Mapping_Kind_InvertOnHold" xml:space="preserve"><value>ホールド反転</value></data>
-  <data name="Pad_Mapping_Kind_Tooltip" xml:space="preserve"><value>ダイレクト - ソースのデスクリプターをそのまま読み取る。インクリメンタル - 上/下ボタンでアキュムレーターを増減する。ホールド反転 - モディファイアーボタンを押している間、行の出力を反転する。ランプ - 上/下方向キーで駆動する時間ベースの軸エンベロープ（アタックとリリース）。</value></data>
+  <data name="Pad_Mapping_Kind_Tooltip" xml:space="preserve"><value>ダイレクト - ソースのデスクリプターをそのまま読み取る。トグル - 1 回押すと出力を保持し、もう一度押すと解除する。インクリメンタル - 上/下ボタンでアキュムレーターを増減する。ホールド反転 - モディファイアーボタンを押している間、行の出力を反転する。ランプ - 上/下方向キーで駆動する時間ベースの軸エンベロープ（アタックとリリース）。</value></data>
   <data name="Pad_Mapping_Up_IconTooltip" xml:space="preserve"><value>押している間、アキュムレーターを上方向に増加させるボタン</value></data>
   <data name="Pad_Mapping_Up_PickerTooltip" xml:space="preserve"><value>上: 押している間、アキュムレーターを上方向に増加させるボタン。</value></data>
   <data name="Pad_Mapping_Down_IconTooltip" xml:space="preserve"><value>押している間、アキュムレーターを下方向に減少させるボタン</value></data>

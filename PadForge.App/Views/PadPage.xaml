@@ -5671,7 +5671,7 @@
                                                  tags the row with the picked DeviceGuid + DeviceLabel. -->
                                             <ComboBox ItemsSource="{Binding AvailableInputsView}"
                                                       SelectedItem="{Binding SelectedInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                      Visibility="{Binding IsPrimaryDirect, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                      Visibility="{Binding IsPrimaryDescriptor, Converter={StaticResource BoolToVisibilityConverter}}"
                                                       DisplayMemberPath="DisplayName"
                                                       Margin="0" Padding="4,2"
                                                       MinHeight="28"
@@ -5710,7 +5710,7 @@
                                                        Foreground="{DynamicResource ColdMutedBrush}"
                                                        Margin="4,1,0,0"
                                                        TextTrimming="CharacterEllipsis"
-                                                       Visibility="{Binding IsPrimaryDirect, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                       Visibility="{Binding IsPrimaryDescriptor, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <TextBlock.Style>
                                                     <Style TargetType="TextBlock">
                                                         <Setter Property="Text" Value="{Binding PrimarySourceDeviceLabel}"/>
@@ -5752,7 +5752,7 @@
                                                  row's PrimaryKindSource. The pickers bind the row's
                                                  AvailableInputsView via the DataGridRow ancestor. -->
                                             <StackPanel DataContext="{Binding PrimaryKindSource}"
-                                                        Visibility="{Binding DataContext.IsPrimaryDirect, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}">
+                                                        Visibility="{Binding DataContext.IsPrimaryDescriptor, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}">
                                                 <StackPanel Orientation="Horizontal" Margin="0,2,0,0"
                                                             Visibility="{Binding UsesUpDownKeys, Converter={StaticResource BoolToVisibilityConverter}}">
                                                     <TextBlock Text="↥" FontSize="13" VerticalAlignment="Center" Margin="0,0,2,0"

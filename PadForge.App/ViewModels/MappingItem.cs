@@ -249,11 +249,20 @@ namespace PadForge.ViewModels
             private set => SetProperty(ref _primaryKindSource, value);
         }
 
-        /// <summary>True when the primary uses the plain Direct descriptor (the
-        /// default). Gates the Source-column picker (shown) vs the kind cards
-        /// (hidden) in the row-detail strip.</summary>
+        /// <summary>True when the primary is plain Direct (the default). A
+        /// Toggle primary reads the same descriptor but is not Direct, so it
+        /// keeps the full editing row (<see cref="IsTrivialDirect"/>).</summary>
         public bool IsPrimaryDirect =>
             string.Equals(PrimaryKindSource?.Kind ?? "Direct", "Direct", StringComparison.Ordinal);
+
+        /// <summary>True when the primary's input lives in the row's own
+        /// <see cref="SourceDescriptor"/>, so the Source picker and the Record
+        /// button drive it: Direct, and Toggle (#461), which latches that same
+        /// input. False for the kinds authored on <see cref="PrimaryKindSource"/>'s
+        /// own keys (Incremental, Ramp, Invert On Hold). Gates the Source-column
+        /// picker (shown) vs the kind cards (hidden) in the row-detail strip.</summary>
+        public bool IsPrimaryDescriptor =>
+            PadForge.Engine.Common.Mapping.SourceEvaluator.IsDescriptorKind(PrimaryKindSource?.Kind);
 
         /// <summary>Friendly name of the primary's current Kind (e.g. "Ramp"), for
         /// any compact display when the primary is non-Direct.</summary>
@@ -340,6 +349,7 @@ namespace PadForge.ViewModels
             if (e.PropertyName == nameof(MappingSourceItem.Kind))
             {
                 OnPropertyChanged(nameof(IsPrimaryDirect));
+                OnPropertyChanged(nameof(IsPrimaryDescriptor));
                 OnPropertyChanged(nameof(IsMultiSource));
                 OnPropertyChanged(nameof(PrimaryKindLabel));
                 OnPropertyChanged(nameof(IsTrivialDirect));
@@ -373,18 +383,21 @@ namespace PadForge.ViewModels
         /// <see cref="Engine.Data.MappingSource"/> on load. Copies into the existing
         /// object so its PropertyChanged wiring (recording, dirty, picker refresh)
         /// survives. A null or Direct source resets it to a plain Direct holder so the
-        /// row falls back to its <see cref="SourceDescriptor"/> primary.</summary>
+        /// row falls back to its <see cref="SourceDescriptor"/> primary. A Toggle
+        /// source resets it the same way and keeps the kind, since Toggle reads
+        /// that descriptor too.</summary>
         public void LoadPrimaryKind(Engine.Data.MappingSource src)
         {
             var p = PrimaryKindSource;
             if (p == null) return;
-            if (src == null || string.Equals(src.Kind ?? "Direct", "Direct", StringComparison.Ordinal))
+            if (src == null || PadForge.Engine.Common.Mapping.SourceEvaluator.IsDescriptorKind(src.Kind))
             {
                 p.Invert = false;
                 p.ParamUp = "";
                 p.ParamDown = "";
                 p.ParamModifier = "";
-                p.Kind = "Direct";
+                p.Kind = string.Equals(src?.Kind, "Toggle", StringComparison.Ordinal)
+                    ? "Toggle" : "Direct";
                 return;
             }
             p.DeviceGuid = src.DeviceGuid ?? "";
@@ -642,7 +655,7 @@ namespace PadForge.ViewModels
             get
             {
                 if (IsMapped) return true;
-                if (!IsPrimaryDirect && PrimaryKindSource != null && PrimaryKindSource.HasAnyBoundFeed)
+                if (!IsPrimaryDescriptor && PrimaryKindSource != null && PrimaryKindSource.HasAnyBoundFeed)
                     return true;
                 foreach (var s in ExtraSources)
                     if (s != null && s.HasAnyBoundFeed)
@@ -1769,7 +1782,7 @@ namespace PadForge.ViewModels
                 {
                     if (!_suppressPrimaryKindGate && !IsCustomCombine)
                     {
-                        PrimarySourceExists = !string.IsNullOrEmpty(_sourceDescriptor) || !IsPrimaryDirect;
+                        PrimarySourceExists = !string.IsNullOrEmpty(_sourceDescriptor) || !IsPrimaryDescriptor;
                         SuppressBipolarPair = false;
                     }
                     RefreshVariableAliases();
@@ -1802,7 +1815,7 @@ namespace PadForge.ViewModels
             }
         }
 
-        public bool IsMultiSource => ExtraSources.Count > 0 || !IsPrimaryDirect;
+        public bool IsMultiSource => ExtraSources.Count > 0 || !IsPrimaryDescriptor;
 
         /// <summary>Number of positions supplied to the combine formula.</summary>
         public int VariableCount => PositionalSourceCount;
@@ -2124,7 +2137,7 @@ namespace PadForge.ViewModels
             MappingSourceItem hit = null;
             bool primaryIsModifier = string.Equals(
                 PrimaryKindSource?.Kind ?? "Direct", "InvertOnHold", StringComparison.Ordinal);
-            bool primaryExists = !string.IsNullOrEmpty(_sourceDescriptor) || !IsPrimaryDirect
+            bool primaryExists = !string.IsNullOrEmpty(_sourceDescriptor) || !IsPrimaryDescriptor
                 || (IsCustomCombine && PrimarySourceExists);
             if (primaryExists && !primaryIsModifier)
             {
@@ -2146,7 +2159,7 @@ namespace PadForge.ViewModels
                 PadForge.Engine.Common.Mapping.SourceCoercion.StripLegacyPrefix(
                     _sourceDescriptor, out bool primaryInvert, out _);
                 string primaryGuid = PrimarySourceDeviceGuid;
-                if (!IsPrimaryDirect)
+                if (!IsPrimaryDescriptor)
                 {
                     primaryGuid = PrimaryKindSource?.DeviceGuid;
                     primaryInvert = PrimaryKindSource?.Invert ?? false;
@@ -2190,12 +2203,12 @@ namespace PadForge.ViewModels
             // A modifier takes no slot, so the first contributing extra is a.
             bool primaryIsModifier = string.Equals(
                 PrimaryKindSource?.Kind ?? "Direct", "InvertOnHold", StringComparison.Ordinal);
-            bool primaryOwnsSlotZero = (!string.IsNullOrEmpty(_sourceDescriptor) || !IsPrimaryDirect
+            bool primaryOwnsSlotZero = (!string.IsNullOrEmpty(_sourceDescriptor) || !IsPrimaryDescriptor
                 || (IsCustomCombine && PrimarySourceExists)) && !primaryIsModifier;
 
             if (index == 0 && primaryOwnsSlotZero)
             {
-                if (IsPrimaryDirect && string.IsNullOrEmpty(_sourceDescriptor)) return "";
+                if (IsPrimaryDescriptor && string.IsNullOrEmpty(_sourceDescriptor)) return "";
                 string name = _selectedInput?.DisplayName ?? _resolvedSourceText ?? _sourceDescriptor;
                 return string.IsNullOrEmpty(_primarySourceDeviceLabel)
                     ? name : _primarySourceDeviceLabel + " · " + name;

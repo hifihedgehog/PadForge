@@ -6940,8 +6940,8 @@ namespace PadForge.Services
                 mapping.NoInherit = msRowsByTarget.TryGetValue(target, out var preCheck)
                                     && preCheck != null && preCheck.NoInherit;
 
-                // Sources[0] is the row's primary. A Direct first source feeds the
-                // descriptor-based primary (the usual case). A stateful first source
+                // Sources[0] is the row's primary. A Direct or Toggle first source
+                // feeds the descriptor-based primary (the usual case). A stateful first source
                 // (Incremental / Ramped / InvertOnHold) feeds the reused
                 // PrimaryKindSource so the primary can carry a kind, not only Direct
                 // (#111 follow-up). Either way the extras start at index 1.
@@ -6949,7 +6949,7 @@ namespace PadForge.Services
                 var primarySrc = (msRow?.Sources != null && msRow.Sources.Count > 0) ? msRow.Sources[0] : null;
                 mapping.PrimarySourceExists = msRow?.Sources?.Count > 0;
                 bool primaryIsKind = primarySrc != null
-                    && !string.Equals(primarySrc.Kind ?? "Direct", "Direct", StringComparison.Ordinal);
+                    && !PadForge.Engine.Common.Mapping.SourceEvaluator.IsDescriptorKind(primarySrc.Kind);
 
                 if (primarySrc != null && !primaryIsKind)
                 {
@@ -6975,7 +6975,7 @@ namespace PadForge.Services
                     mapping.Sensitivity = primary.Sensitivity > 0 ? primary.Sensitivity : 1.0;
                     mapping.PrimarySourceDeviceGuid = primary.DeviceGuid ?? "";
                     mapping.PrimarySourceDeviceLabel = ResolveDeviceLabel(primary.DeviceGuid);
-                    mapping.LoadPrimaryKind(null); // Direct primary, reset the kind holder
+                    mapping.LoadPrimaryKind(primary); // Direct or Toggle: the holder keeps only the kind
 
                     if (!string.IsNullOrEmpty(primary.DeviceGuid)
                         && Guid.TryParse(primary.DeviceGuid, out var primaryGuid))
@@ -13238,7 +13238,7 @@ namespace PadForge.Services
                                         AddDescriptor(src.Descriptor);
                                         AddDescriptor(src.ParamYDescriptor);
                                         break;
-                                    default: // Direct + unknown kinds
+                                    default: // Direct, Toggle (the same input, latched), unknown kinds
                                         AddDescriptor(src.Descriptor);
                                         break;
                                 }

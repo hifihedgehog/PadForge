@@ -16,14 +16,39 @@ namespace PadForge.Engine.Common.Mapping
     /// InvertOnHold: reads the inner descriptor via SourceCoercion with
     /// <see cref="MappingSource.Invert"/> XOR'd with the modifier
     /// button's current state.
+    /// Toggle: latches the Direct read of the same input through
+    /// <see cref="SourceKindRuntime.TickToggle"/>. Each press flips it.
     /// </para>
     /// </summary>
     public static class SourceEvaluator
     {
-        /// <summary>A blank Direct source occupies a position but reads no input.</summary>
+        /// <summary>A blank Direct source occupies a position but reads no input.
+        /// So does a blank Toggle, which latches that same read.</summary>
         public static bool IsUnmappedDirect(MappingSource source)
             => source != null && string.IsNullOrEmpty(source.Descriptor)
-                && string.Equals(source.Kind ?? "Direct", "Direct", StringComparison.Ordinal);
+                && IsDescriptorKind(source.Kind);
+
+        /// <summary>True for the kinds that read the source's own descriptor
+        /// as a plain input: Direct (also a null or empty kind) and Toggle
+        /// (#461), which latches that same read. The other kinds read their
+        /// own parameter keys, or modify the row instead.</summary>
+        public static bool IsDescriptorKind(string kind)
+            => string.IsNullOrEmpty(kind)
+            || string.Equals(kind, "Direct", StringComparison.Ordinal)
+            || string.Equals(kind, "Toggle", StringComparison.Ordinal);
+
+        /// <summary>True for the Toggle kind (#461). Its read advances a
+        /// latch, so a caller walking the slot's devices must read them
+        /// all rather than stop at the first one that answers.</summary>
+        public static bool IsToggleKind(MappingSource source)
+            => source != null && string.Equals(source.Kind, "Toggle", StringComparison.Ordinal);
+
+        /// <summary>How far a trigger or axis read must travel to count as a
+        /// Toggle press, as a fraction of full scale: the source's own
+        /// activation threshold, 50 percent unless the row sets another. The
+        /// button lane reaches the same rule through SourceCoercion.</summary>
+        private static float TogglePressLevel(MappingSource src)
+            => SourceCoercion.EffectiveThresholdPercent(src, 50) / 100f;
 
         /// <summary>Per-source AND gate (v18): when
         /// <see cref="MappingSource.GateDescriptor"/> is set, the source
@@ -109,6 +134,15 @@ namespace PadForge.Engine.Common.Mapping
                     bool result = v > 0.5;
                     return src.Invert ? !result : result;
                 }
+                case "Toggle":
+                {
+                    // The Direct read of the same input, latched: each
+                    // press flips the button, which holds between presses.
+                    if (runtime == null) return false;
+                    bool pressed = SourceCoercion.EvaluateForButtonTarget(state, src,
+                        globalThresholdPercent, slotIndex, evaluatedDeviceGuid);
+                    return runtime.TickToggle(slotIndex, target, sourceIndex, pressed, 1.0) != 0;
+                }
                 case "Ramped":
                     // A ramped axis envelope has no defensible boolean reading; a
                     // button target gets nothing (issue #111). Picking a threshold
@@ -135,6 +169,26 @@ namespace PadForge.Engine.Common.Mapping
             if (src == null || IsUnmappedDirect(src)) return 0f;
             if (!GateHeld(state, src, slotIndex, evaluatedDeviceGuid)) return 0f;
 
+            string kind = src.Kind ?? "Direct";
+            if (kind != "Toggle")
+                return EvaluateBipolarKind(kind, state, src, slotIndex, target, sourceIndex,
+                    runtime, frameDeltaSeconds, evaluatedDeviceGuid);
+
+            // Toggle latches the Direct read of the same input at full
+            // scale, in the direction the latching press pointed.
+            if (runtime == null) return 0f;
+            float direct = EvaluateBipolarKind("Direct", state, src, slotIndex, target, sourceIndex,
+                runtime, frameDeltaSeconds, evaluatedDeviceGuid);
+            return (float)runtime.TickToggle(slotIndex, target, sourceIndex,
+                Math.Abs(direct) >= TogglePressLevel(src), direct < 0 ? -1.0 : 1.0);
+        }
+
+        private static float EvaluateBipolarKind(string kind,
+            CustomInputState state, MappingSource src,
+            int slotIndex, string target, int sourceIndex,
+            SourceKindRuntime runtime, double frameDeltaSeconds,
+            string evaluatedDeviceGuid)
+        {
             // Touchpad source readings differ between relative-motion
             // targets (KBM mouse / scroll consume per-frame deltas) and
             // absolute-position targets (touchpad-output passthrough,
@@ -148,7 +202,6 @@ namespace PadForge.Engine.Common.Mapping
             // a target. A plain Direct source carrying it routes into the same
             // lean math as Kind="MotionLeanX"; the row's target is whatever axis
             // the user mapped it to, and nothing overrides the stick's own input.
-            string kind = src.Kind ?? "Direct";
             if (kind == "Direct" && SourceCoercion.IsMotionLeanDescriptor(src.Descriptor))
                 kind = "MotionLeanX";
             else if (kind == "Direct" && SourceCoercion.IsMotionLeanAuxDescriptor(src.Descriptor))
@@ -343,6 +396,15 @@ namespace PadForge.Engine.Common.Mapping
                     if (v < 0) v = 0;
                     if (v > 1) v = 1;
                     return src.Invert ? 1f - (float)v : (float)v;
+                }
+                case "Toggle":
+                {
+                    // The Direct pull of the same input, latched at full.
+                    if (runtime == null) return 0f;
+                    float pull = SourceCoercion.EvaluateForTriggerTarget(state, src,
+                        slotIndex, evaluatedDeviceGuid);
+                    return (float)runtime.TickToggle(slotIndex, target, sourceIndex,
+                        pull >= TogglePressLevel(src), 1.0);
                 }
                 case "Ramped":
                 {

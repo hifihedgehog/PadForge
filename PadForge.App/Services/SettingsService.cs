@@ -479,12 +479,22 @@ namespace PadForge.Services
                 if (data.PadSettings != null)
                     LoadPadSettings(data.Settings, data.PadSettings);
 
-                // Load macros into pad ViewModels.
-                if (data.Macros != null)
-                    LoadMacros(data.Macros);
-
                 // Load profiles.
                 LoadProfiles(data.Profiles, data.AppSettings);
+
+                // Load macros into pad ViewModels. MUST run after
+                // LoadProfiles, for the reason the ghost guard below does.
+                // LoadMacros drops every macro on an uncreated slot, and
+                // until LoadProfiles applies the ACTIVE profile's topology,
+                // SlotCreated holds the DEFAULT profile's. With a named
+                // profile active at shutdown, the file's macros are that
+                // profile's, so each one on a slot only the active profile
+                // owns was dropped, and the next save wrote the emptied list
+                // over the stored profile's copy (discussion #467).
+                // ApplyProfile loads a profile's macros after its topology
+                // for the same reason.
+                if (data.Macros != null)
+                    LoadMacros(data.Macros);
 
                 // Ghost-mapping guard: saves written before DeleteSlot
                 // dropped the slot's MappingSet can carry authored sets for
@@ -3682,9 +3692,13 @@ namespace PadForge.Services
                 // Ghost guard, sibling of MaskMappingSetsForUncreatedSlots:
                 // a save from before delete-time macro clearing can carry a
                 // deleted slot's macros, and loading them parks them on the
-                // pad VM for the next same-index VC to inherit. Both call
-                // sites (startup load, profile apply) run after SlotCreated
-                // reflects the incoming state, so the gate is current.
+                // pad VM for the next same-index VC to inherit. The gate is
+                // only as current as SlotCreated, so every caller must run
+                // after SlotCreated reflects the incoming state: the startup
+                // load after LoadProfiles, and ApplyProfile after it applies
+                // the profile's topology. The startup call once ran before
+                // LoadProfiles and judged the active profile's macros against
+                // the Default's topology (discussion #467).
                 if (md.PadIndex < SettingsManager.SlotCreated.Length
                     && !SettingsManager.SlotCreated[md.PadIndex])
                     continue;

@@ -3,29 +3,44 @@ using System;
 namespace PadForge.Engine.Common.AnalogKeyboard
 {
     /// <summary>
-    /// ASUS ROG Azoth 96 HE (M901), wired, read the way HallJoy's M901
-    /// diagnostic backend reads it (rog_azoth96he_diagnostic_backend.cpp,
-    /// HallJoy commit 378f9fe) with the protocol facts of HallJoy's firmware
-    /// reconnaissance (docs/research/ROG_AZOTH_96_HE_M901_FIRMWARE_RECON_2026-09-06.md).
-    /// HallJoy keeps this route out of its ordinary builds because no one has
-    /// traced the keyboard yet (recon:92-101, SUPPORTED_HARDWARE.md:166).
+    /// ASUS ROG Azoth 96 HE (M901), wired, read with the protocol of HallJoy's
+    /// M901 diagnostic backend (rog_azoth96he_diagnostic_backend.cpp, HallJoy
+    /// commit 378f9fe) and its firmware reconnaissance
+    /// (docs/research/ROG_AZOTH_96_HE_M901_FIRMWARE_RECON_2026-09-06.md),
+    /// checked against ASUS Gear Link, the keyboard's WebHID configurator, and
+    /// the M901 firmware 7.00.30 it downloads (analog-keyboard-references
+    /// asus-gear-link; chunk BJ-_oHSK.js is "BJ" and dDfc5LWq.js "dD" below,
+    /// offsets in characters). HallJoy keeps its route out of ordinary builds
+    /// because no one has traced the keyboard (recon:92-101).
     ///
     /// <para>Two collections of one keyboard take part. The control
-    /// collection, usage page 0xFF00 usage 1 with no report ID, takes
-    /// <c>51 61 00 00</c> and zeros, which ASUS Gear Link names
-    /// setKeyTravelNotify and sends to turn on travel events for every key
-    /// (recon:64-85, backend:213-221). The events arrive on the usage page
-    /// 0xFFC0 usage 1 collection as input report 3, 20 bytes after the ID:
-    /// <c>7E</c>, the firmware key as a little-endian u16, and the travel as
-    /// a little-endian u16 (recon:57-85, backend:223-229). Gear Link gives
-    /// the switch range as 0.10 to 3.50 mm in 0.01 mm steps (recon:42-45),
-    /// so 350 is the bottom of the press. <c>80 26</c> is switch
-    /// calibration and is never sent (recon:87-90, backend:216).</para>
+    /// collection, usage page 0xFF00 usage 1, declares no report ID (its
+    /// descriptor at firmware file offset 0x5CD17), and takes
+    /// <c>51 61 00 00</c> and zeros, Gear Link's setKeyTravelNotify for every
+    /// key (BJ 436220, recon:64-85). The firmware runs commands only from its
+    /// interrupt OUT endpoint, which WriteFile reaches. A SET_REPORT control
+    /// transfer, which HidD_SetOutputReport sends, returns success and does
+    /// nothing (radio core 0x0E09050C against 0x0E090658), so the enable goes
+    /// out as an output report write. The enable is a lease of 60 that runs
+    /// out in about a minute, with no command that ends it (radio core
+    /// 0x0E07C3C0, 0x0E07DE76, 0x0E08FEAA), and Gear Link sends it again every
+    /// 30 s (dD 253281).</para>
     ///
-    /// <para>No source maps the firmware key to a key (recon:92-101), so a
-    /// key is published as PadForge's vendor code 0x600 plus the firmware
-    /// key. A firmware key above 0xFF has no code in that range and is
-    /// dropped.</para>
+    /// <para>The events arrive on the usage page 0xFFC0 usage 1 collection as
+    /// input report 3, 20 bytes after the ID: <c>7E</c>, the firmware key as
+    /// a little-endian u16 and the travel as a little-endian u16 in 0.01 mm
+    /// (BJ 455992, recon:57-85). Gear Link draws the travel on a gauge of 350
+    /// (dD 212695), so 350 is the bottom of the press. The firmware tracks
+    /// one key at a time: the first key past 0.10 mm, streamed while it is
+    /// held and closed with one travel of 0 (radio core 0x0E093272 to
+    /// 0x0E09336A, 0x0E0953DC). <c>80 26</c> is switch calibration and is
+    /// never sent (recon:87-90).</para>
+    ///
+    /// <para>The firmware key is the IBM key-position number (W is 18, Esc
+    /// 110). The key table is the firmware's own map from those numbers to
+    /// HID usages (radio core 0x0E0C1188), which agrees with Gear Link's key
+    /// tables on 105 of 106 keys. A key the map has no usage for, Fn among
+    /// them, is published by its position, 0x600 plus the key.</para>
     /// </summary>
     public static class RogAzoth96HeProtocol
     {
@@ -115,11 +130,10 @@ namespace PadForge.Engine.Common.AnalogKeyboard
 
         /// <summary>The travel notification enable for all keys, report ID 0
         /// first: <c>51 61 00 00</c>, key 0 in bytes 4 and 5 meaning every
-        /// key (recon:67-74). HallJoy's frame puts 0x51 where Windows expects
-        /// the report ID (backend:215-219), which Windows refuses for a
-        /// collection without report IDs or strips before the device sees it.
-        /// Here the report ID comes first and the command follows. The
-        /// transport pads it to the collection's output length.</summary>
+        /// key (recon:67-74, Gear Link's makeCommand at BJ 330165). HallJoy's
+        /// frame puts 0x51 where Windows expects the report ID (backend:215-219),
+        /// the Linux hidraw form. Windows takes the report ID first, and the
+        /// transport pads the frame to the collection's 65 bytes.</summary>
         public static byte[] EnableTravelRequest() => new byte[] { 0x00, 0x51, 0x61, 0x00, 0x00 };
 
         /// <summary>RecordTravel's decoder (backend:223-229): report 3, event
@@ -134,9 +148,14 @@ namespace PadForge.Engine.Common.AnalogKeyboard
             return true;
         }
 
-        /// <summary>The code for a firmware key, 0 when it has none.</summary>
+        /// <summary>The code for a firmware key: its HID usage from the
+        /// firmware's map, else its position, 0 for a key past 0xFF.</summary>
         public static int CodeFor(int[] table, int key)
-            => table != null && key >= 0 && key < table.Length ? table[key] : 0;
+        {
+            int code = table != null && key >= 0 && key < table.Length ? table[key] : 0;
+            if (code != 0) return code;
+            return key > 0 && key <= 0xFF ? AnalogKeyCodes.PositionBase + key : 0;
+        }
 
         /// <summary>Depth for a travel in 0.01 mm, 3.50 mm at the bottom.</summary>
         public static float Depth(int travel)
@@ -144,28 +163,45 @@ namespace PadForge.Engine.Common.AnalogKeyboard
     }
 
     /// <summary>
-    /// An Azoth 96 HE conversation: the enable once at the start, then one
-    /// travel event per pass from the event collection. HallJoy sends the
-    /// enable with HidD_SetOutputReport and keeps reading when it fails
-    /// (backend:280-289), so a failed enable does not end the session: the
-    /// events may already be on. No source documents a command that turns
-    /// the events off. HallJoy's stop only cancels its reads and closes its
-    /// handles (backend:339-360), so <see cref="AnalogKeyboardSession.Stop"/>
-    /// sends nothing.
+    /// An Azoth 96 HE conversation: the enable at the start and again every
+    /// 30 s while it runs, as Gear Link keeps its lease (dD 253281), then one
+    /// travel event per pass from the event collection. A failed enable does
+    /// not end the session, as HallJoy keeps reading (backend:280-289): the
+    /// next renewal tries again. No command turns the events off, so
+    /// <see cref="AnalogKeyboardSession.Stop"/> sends nothing and the lease
+    /// runs out on its own within a minute.
+    ///
+    /// <para>Each event replaces the key set, since the firmware tracks one
+    /// key at a time. The firmware streams a held key without pause, so half a
+    /// second without an event releases it, Gear Link's own timeout for its
+    /// travel preview (dD 253586). That also releases a key whose closing 0
+    /// was lost when a lease ran out under it.</para>
     /// </summary>
     public sealed class RogAzoth96HeSession : AnalogKeyboardSession
     {
         /// <summary>HallJoy's read slice (kReadSliceMs, backend:37).</summary>
         public const int WaitMs = 100;
 
-        private readonly int[] _table;
+        /// <summary>How often the enable goes out again (dD 253281).</summary>
+        public const int RenewMs = 30000;
 
-        public RogAzoth96HeSession()
+        /// <summary>How long a held key may go without an event (dD 253586).</summary>
+        public const int ReleaseMs = 500;
+
+        private readonly int[] _table;
+        private readonly Func<long> _clock;
+        private long _nextRenew;
+        private long _lastEvent;
+
+        /// <param name="clock">Milliseconds, Environment.TickCount64 unless a
+        /// test supplies its own.</param>
+        public RogAzoth96HeSession(Func<long> clock = null)
         {
             _table = RogAzoth96HeProtocol.Table();
+            _clock = clock ?? (() => Environment.TickCount64);
         }
 
-        /// <summary>Whether the enable write succeeded.</summary>
+        /// <summary>Whether the last enable write succeeded.</summary>
         public bool EnableSent { get; private set; }
 
         public override string ModelName => RogAzoth96HeProtocol.ModelName;
@@ -174,8 +210,16 @@ namespace PadForge.Engine.Common.AnalogKeyboard
 
         public override bool Start(IAnalogKeyboardTransport io)
         {
-            EnableSent = io.SendOutputReport(RogAzoth96HeProtocol.EnableTravelRequest());
+            Enable(io);
             return true;
+        }
+
+        /// <summary>The enable, written to the interrupt OUT endpoint, the only
+        /// path the firmware runs commands from.</summary>
+        private void Enable(IAnalogKeyboardTransport io)
+        {
+            EnableSent = io.Send(RogAzoth96HeProtocol.EnableTravelRequest());
+            _nextRenew = _clock() + RenewMs;
         }
 
         /// <summary>A read error ends the session (HallJoy leaves its loop,
@@ -184,15 +228,27 @@ namespace PadForge.Engine.Common.AnalogKeyboard
         public override AnalogPollResult Pass(IAnalogKeyboardTransport io, AnalogKeyInputState output,
             Func<int, bool> isHeld)
         {
+            if (_clock() >= _nextRenew) Enable(io);
             int n = io.Receive(Buffer, WaitMs);
             if (n < 0) return AnalogPollResult.Failed;
-            if (n != RogAzoth96HeProtocol.EventReportLength) return AnalogPollResult.Idle;
-            if (!RogAzoth96HeProtocol.TryDecode(Buffer.AsSpan(0, n), out int key, out int travel))
-                return AnalogPollResult.Idle;
-            int code = RogAzoth96HeProtocol.CodeFor(_table, key);
-            if (code == 0) return AnalogPollResult.Idle;
-            output.Set(code, RogAzoth96HeProtocol.Depth(travel));
-            return AnalogPollResult.Ok;
+            if (n == RogAzoth96HeProtocol.EventReportLength
+                && RogAzoth96HeProtocol.TryDecode(Buffer.AsSpan(0, n), out int key, out int travel))
+            {
+                int code = RogAzoth96HeProtocol.CodeFor(_table, key);
+                if (code != 0)
+                {
+                    _lastEvent = _clock();
+                    output.ResetForReuse();
+                    output.Set(code, RogAzoth96HeProtocol.Depth(travel));
+                    return AnalogPollResult.Ok;
+                }
+            }
+            if (output.Count > 0 && _clock() - _lastEvent > ReleaseMs)
+            {
+                output.ResetForReuse();
+                return AnalogPollResult.Ok;
+            }
+            return AnalogPollResult.Idle;
         }
     }
 }

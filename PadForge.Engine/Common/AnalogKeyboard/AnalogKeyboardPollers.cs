@@ -288,15 +288,17 @@ namespace PadForge.Engine.Common.AnalogKeyboard
     /// order.
     ///
     /// <para>Where the stock answer carries the travel depends on the version,
-    /// as Keychron's firmware writes it and its Launcher reads it (the
-    /// Launcher's per-version readers, main.be11320b2a72b61b.js offsets
-    /// 1700453, 1710613, 1721671, 1733365 and 1745815). Version 1 (the Q1 HE
-    /// ANSI's first releases) holds 0 to 40 at byte 2, read over 40 whenever
-    /// it is not 0, Soup's first reading (Soup b48da365). Version 2 holds the
-    /// travel byte at byte 3 (analog_matrix.c:768-787 of hall_effect_playground
-    /// a576a0b47b), versions 3 and 4 at byte 6 after the row and column echo
-    /// (2025q3 analog_matrix.c:786-807), and on these a travel under 5 is
-    /// rest and the full press less 5 is the bottom, Soup's 235 of 240.
+    /// as Keychron's firmware writes it. Its Launcher picks a reader per
+    /// version (main.be11320b2a72b61b.js offsets 1700453, 1710613, 1721671,
+    /// 1733365 and 1745815) and reads the coarse travel / 6 byte, which the
+    /// firmware writes just before the full travel byte read here, as Soup
+    /// reads it. Version 1 (the Q1 HE ANSI's first releases) holds 0 to 40
+    /// at byte 2, read over 40 whenever it is not 0, Soup's first reading
+    /// (Soup b48da365). Version 2 holds the travel byte at byte 3
+    /// (analog_matrix.c:768-787 of hall_effect_playground a576a0b47b),
+    /// versions 3 and 4 at byte 6 after the row and column echo (2025q3
+    /// analog_matrix.c:786-807), and on these a travel under 5 is rest and
+    /// the full press less 5 is the bottom, Soup's 235 of 240.
     /// Version 5, the 8K boards' firmware, holds a little-endian u16 at bytes
     /// 5 and 6 after the echo, in the unit <c>A9 10</c> names in its byte 8
     /// (2 for 0.01 mm, 3 for 0.001 mm, else 0.1 mm). Its full scale is the

@@ -961,19 +961,40 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void Azoth_Start_SendsTheEnableAsAnOutputReport()
+        public void Azoth_Start_WritesTheEnableToTheInterruptEndpoint()
         {
-            // SendEnableTravel: HidD_SetOutputReport with 51 61 00 00
-            // (backend:213-221, recon:67-74), report ID 0 first. Never 80 26
-            // (recon:87-90).
+            // 51 61 00 00, report ID 0 first (recon:67-74, Gear Link's
+            // makeCommand). WriteFile, not HidD_SetOutputReport: the firmware
+            // runs commands only from its interrupt OUT endpoint and returns
+            // success on a SET_REPORT without acting on it (radio core
+            // 0x0E09050C). Never 80 26 (recon:87-90).
             var io = new AnalogKeyboardTestTransport();
             var session = new RogAzoth96HeSession();
             Assert.True(session.Start(io));
             Assert.True(session.EnableSent);
             Assert.Single(io.Log);
-            Assert.Equal(new byte[] { 0x00, 0x51, 0x61, 0x00, 0x00 }, io.Writes("ctl")[0]);
+            Assert.Equal(new byte[] { 0x00, 0x51, 0x61, 0x00, 0x00 }, io.Writes("out")[0]);
+            Assert.Empty(io.Writes("ctl"));
             Assert.DoesNotContain(io.Log, w => w.Data.Length > 2 && w.Data[1] == 0x80 && w.Data[2] == 0x26);
             Assert.Equal("ROG Azoth 96 HE", session.ModelName);
+        }
+
+        [Fact]
+        public void Azoth_TheEnable_IsRenewedEvery30Seconds()
+        {
+            // The enable is a 60 s lease with no command that ends it, and
+            // Gear Link sends it again every 30 s (dD 253281).
+            long now = 1000;
+            var io = new AnalogKeyboardTestTransport();
+            var session = new RogAzoth96HeSession(() => now);
+            session.Start(io);
+            now += RogAzoth96HeSession.RenewMs - 1;
+            session.Pass(io, Keys(), null);
+            Assert.Single(io.Writes("out"));
+            now += 1;
+            session.Pass(io, Keys(), null);
+            Assert.Equal(2, io.Writes("out").Count);
+            Assert.All(io.Writes("out"), w => Assert.Equal(new byte[] { 0x00, 0x51, 0x61, 0x00, 0x00 }, w));
         }
 
         [Fact]
@@ -988,32 +1009,63 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void Azoth_Pass_ReadsTravelEvents()
+        public void Azoth_Pass_ReadsTravelEvents_OneKeyAtATime()
         {
-            // RecordTravel (backend:223-229). Travel in 0.01 mm, 3.50 mm deep
-            // (recon:42-45). No key map exists, so firmware key 0x23 is 0x623.
+            // The 7E event (Gear Link BJ 455992, backend:223-229): travel in
+            // 0.01 mm, 350 at the bottom (dD 212695). The firmware key is the
+            // IBM key position, mapped through the firmware's own HID table
+            // (W is 18, A 31). The firmware tracks one key at a time, so each
+            // event replaces the set.
+            long now = 0;
             var io = new AnalogKeyboardTestTransport();
-            var session = new RogAzoth96HeSession();
+            var session = new RogAzoth96HeSession(() => now);
             session.Start(io);
             var output = Keys();
 
-            io.QueueInput(AzothTravel(0x23, 175));
+            io.QueueInput(AzothTravel(18, 175));
             Assert.Equal(AnalogPollResult.Ok, session.Pass(io, output, null));
-            Assert.Equal(0.5f, output.Get(0x623));
+            Assert.Equal(0.5f, output.Get(AnalogKeyCodes.W));
 
-            io.QueueInput(AzothTravel(0x05, 350));
+            io.QueueInput(AzothTravel(31, 350));
             Assert.Equal(AnalogPollResult.Ok, session.Pass(io, output, null));
-            Assert.Equal(1f, output.Get(0x605));
-            Assert.Equal(0.5f, output.Get(0x623));
+            Assert.Equal(1f, output.Get(AnalogKeyCodes.A));
+            Assert.Equal(0f, output.Get(AnalogKeyCodes.W));
 
-            io.QueueInput(AzothTravel(0x05, 400));
+            io.QueueInput(AzothTravel(31, 400));
             session.Pass(io, output, null);
-            Assert.Equal(1f, output.Get(0x605));
+            Assert.Equal(1f, output.Get(AnalogKeyCodes.A));
 
-            io.QueueInput(AzothTravel(0x23, 0));
+            io.QueueInput(AzothTravel(31, 0));
             Assert.Equal(AnalogPollResult.Ok, session.Pass(io, output, null));
-            Assert.Equal(0f, output.Get(0x623));
+            Assert.Equal(0, output.Count);
+
+            // Fn (159) has no HID usage in the firmware's table, so it is
+            // published by position. Esc is 110.
+            io.QueueInput(AzothTravel(159, 70));
+            session.Pass(io, output, null);
+            Assert.Equal(0.2f, output.Get(AnalogKeyCodes.PositionBase + 159), 5);
+            Assert.Equal(AnalogKeyCodes.Escape, RogAzoth96HeProtocol.CodeFor(RogAzoth96HeProtocol.Table(), 110));
+        }
+
+        [Fact]
+        public void Azoth_AHeldKeyWithoutEvents_ReleasesAfterHalfASecond()
+        {
+            // The firmware streams a held key without pause, and Gear Link's
+            // preview drops a key after 500 ms without an event (dD 253586).
+            long now = 0;
+            var io = new AnalogKeyboardTestTransport();
+            var session = new RogAzoth96HeSession(() => now);
+            session.Start(io);
+            var output = Keys();
+            io.QueueInput(AzothTravel(18, 200));
+            session.Pass(io, output, null);
+            now += RogAzoth96HeSession.ReleaseMs;
+            Assert.Equal(AnalogPollResult.Idle, session.Pass(io, output, null));
             Assert.Equal(1, output.Count);
+            now += 1;
+            Assert.Equal(AnalogPollResult.Ok, session.Pass(io, output, null));
+            Assert.Equal(0, output.Count);
+            Assert.Equal(AnalogPollResult.Idle, session.Pass(io, output, null));
         }
 
         [Fact]
@@ -1023,7 +1075,7 @@ namespace PadForge.Tests
             // is another report ID or event (backend:225). A firmware key
             // past 0xFF has no vendor code.
             var io = new AnalogKeyboardTestTransport();
-            var session = new RogAzoth96HeSession();
+            var session = new RogAzoth96HeSession(() => 0);
             session.Start(io);
             var output = Keys();
             output.Set(0x610, 0.25f);
@@ -1067,15 +1119,23 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void Azoth_Table_IsTheVendorRange()
+        public void Azoth_Table_IsTheFirmwaresOwnHidMap()
         {
-            // No key map exists (recon:92-101): 0x600 plus the firmware key.
+            // The firmware's table from key position to HID usage (radio core
+            // 0x0E0C1188, 106 keys): W at 18, A at 31, Esc at 110, F12 at 123.
+            // Any other key is published by its position, and one past 0xFF
+            // has no code.
             var table = RogAzoth96HeProtocol.Table();
             Assert.Equal(256, table.Length);
-            Assert.Equal(0x600, table[0]);
-            Assert.Equal(0x6FF, table[0xFF]);
+            Assert.Equal(106, table.Count(code => code != 0));
+            Assert.Equal(AnalogKeyCodes.W, table[18]);
+            Assert.Equal(AnalogKeyCodes.A, table[31]);
+            Assert.Equal(AnalogKeyCodes.Escape, table[110]);
+            Assert.Equal(AnalogKeyCodes.F12, table[123]);
+            Assert.Equal(AnalogKeyCodes.PositionBase + 14, RogAzoth96HeProtocol.CodeFor(table, 14));
+            Assert.Equal(0, RogAzoth96HeProtocol.CodeFor(table, 0));
             Assert.Equal(0, RogAzoth96HeProtocol.CodeFor(table, 0x100));
-            Assert.Equal(256, new RogAzoth96HeSession().KeyOrder.Length);
+            Assert.Equal(106, new RogAzoth96HeSession().KeyOrder.Length);
         }
 
         // ── Logitech PRO X TKL RAPID ───────────────────────────────────────

@@ -203,6 +203,7 @@ namespace PadForge.Tests
         [InlineData("GyroSensitivity = oldGyroSensitivity,")]
         [InlineData("MouseCursorSensitivity = oldMouseCursorSensitivity,")]
         [InlineData("IrPointerSensitivity = oldIrPointerSensitivity,")]
+        [InlineData("Kind = oldKind,")]
         public void ADisplacedPrimaryKeepsWhatItCarried(string assignment)
         {
             Assert.Contains(assignment, CodeBehind());

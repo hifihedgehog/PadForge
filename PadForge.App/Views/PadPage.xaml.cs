@@ -4012,6 +4012,9 @@ namespace PadForge.Views
                 double oldGyroSensitivity = mi.GyroSensitivity;
                 double oldMouseCursorSensitivity = mi.MouseCursorSensitivity;
                 double oldIrPointerSensitivity = mi.IrPointerSensitivity;
+                // A Toggle primary (#461) reads the same descriptor, latched,
+                // so it moves over as a Toggle rather than a plain Direct read.
+                string oldKind = mi.PrimaryKindSource?.IsToggleKind == true ? "Toggle" : "Direct";
                 bool demote = !primaryIsCloneDevice && !string.IsNullOrEmpty(oldDesc)
                     && !string.IsNullOrEmpty(oldGuid);
 
@@ -4049,7 +4052,7 @@ namespace PadForge.Views
                     {
                         mi.ExtraSources.Add(new MappingSourceItem
                         {
-                            Kind = "Direct",
+                            Kind = oldKind,
                             DeviceGuid = oldGuid,
                             DeviceLabel = oldLabel,
                             Descriptor = clean,

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace PadForge.Engine.Common.AnalogKeyboard
 {
@@ -16,9 +17,10 @@ namespace PadForge.Engine.Common.AnalogKeyboard
         RazerHuntsmanV3,
         /// <summary>Razer Tartarus Pro keypad, input report 6.</summary>
         RazerTartarusPro,
-        /// <summary>NuPhy HE line, one key per report.</summary>
+        /// <summary>NuPhy HE line and the Madlions boards on its protocol, the
+        /// 0xA0 event stream NuPhyIO switches on with its debugMode bit.</summary>
         NuPhy,
-        /// <summary>DrunkDeer, polled with report 4.</summary>
+        /// <summary>DrunkDeer, polled with report 4, the model read with <c>04 A0 02</c>.</summary>
         DrunkDeer,
         /// <summary>Keychron and Lemokey HE boards over the VIA raw HID channel.</summary>
         Keychron,
@@ -69,8 +71,26 @@ namespace PadForge.Engine.Common.AnalogKeyboard
         SparkLink,
         /// <summary>SayoDevice O3C.</summary>
         Sayo,
-        /// <summary>Keychron K4 HE running HallJoy's onboard firmware.</summary>
-        KeychronOnboard,
+
+        /// <summary>Keyboards that push the 0xA0 key event unasked (the
+        /// MCHOSE Jet 75), found by listening, HallEffectAnalogMapper's reader.</summary>
+        A0Listen,
+
+        /// <summary>Redragon M68, E-YOOSO HZ-68 and Redragon K712 RGB-M on
+        /// 0416:7372, KeyAxis's arm and disarm commands.</summary>
+        KeyAxis,
+
+        /// <summary>Finalmouse Centerpiece Pro, LeiterConsulting's Soup fork.</summary>
+        FinalmouseCenterpiecePro,
+
+        /// <summary>Keyboards on the libhmk open firmware, hmkconf's analog info.</summary>
+        Libhmk,
+
+        /// <summary>ASUS ROG Azoth 96 HE, HallJoy's firmware reconnaissance.</summary>
+        RogAzoth96He,
+
+        /// <summary>Logitech PRO X TKL RAPID, the furthest-pressed key only.</summary>
+        LogitechRapid,
     }
 
     /// <summary>
@@ -132,17 +152,11 @@ namespace PadForge.Engine.Common.AnalogKeyboard
                     if (hasInputReport == null) return AnalogKeyboardProtocol.None;
                     if ((productId == 0x0266 || productId == 0x0282) && hasInputReport(RazerHuntsmanV2ReportId))
                         return AnalogKeyboardProtocol.RazerHuntsmanV2;
-                    if ((productId == 0x02A6 || productId == 0x02A7 || productId == 0x02B0)
-                        && hasInputReport(RazerHuntsmanV3ReportId))
+                    if (IsRazerHuntsmanV3(productId) && hasInputReport(RazerHuntsmanV3ReportId))
                         return AnalogKeyboardProtocol.RazerHuntsmanV3;
                     if (productId == 0x0244 && hasInputReport(RazerTartarusProReportId))
                         return AnalogKeyboardProtocol.RazerTartarusPro;
                     return AnalogKeyboardProtocol.None;
-
-                case NuPhyVendorId:
-                    return usagePage == 1 && usage == 0
-                        ? AnalogKeyboardProtocol.NuPhy
-                        : AnalogKeyboardProtocol.None;
 
                 case DrunkDeerVendorId:
                     return hasInputReport != null && hasInputReport(DrunkDeerReportId)
@@ -168,6 +182,23 @@ namespace PadForge.Engine.Common.AnalogKeyboard
             return AnalogKeyboardProtocol.None;
         }
 
+        /// <summary>The Huntsman models that carry analog depth in input
+        /// report 11. The V3 Pro, Tenkeyless and Mini are Soup's and
+        /// AnalogSense.js's. The rest are the 8KHz models whose Synapse Web
+        /// device configs set <c>analogKeyboardV3</c> and
+        /// <c>is8kAnalogDevice</c> (synapse.razer.com/products/719, 720, 721,
+        /// 728, 740, 741, 742 and 746). OpenRazer's descriptor dumps for
+        /// 0x02CF, 0x02D0 and 0x02E6 match the V3 Pro's interface 1 byte for
+        /// byte, report 11 included.</summary>
+        public static bool IsRazerHuntsmanV3(ushort productId) => productId is
+            0x02A6 or 0x02A7 or 0x02B0
+            or 0x02CF or 0x02D0 or 0x02D1 or 0x02D8 or 0x02E4 or 0x02E5 or 0x02E6 or 0x02EA;
+
+        /// <summary>The travel count at the bottom of a Huntsman V3 key: the
+        /// <c>eventDataSize</c> of the model's Synapse Web config, 45864 on
+        /// the Low-profile Tenkeyless 8KHz (0x02E6) and 65535 on the rest.</summary>
+        public static float RazerFullScale(ushort productId) => productId == 0x02E6 ? 45864f : 65535f;
+
         /// <summary>The product ID a keyboard's identity is filed under:
         /// masked for Wooting, whose product ID moves with its gamepad mode.</summary>
         public static ushort IdentityProductId(ushort vendorId, ushort productId)
@@ -175,8 +206,8 @@ namespace PadForge.Engine.Common.AnalogKeyboard
 
         /// <summary>The model name the references give a product, or null
         /// when the product string the device reports is the better name
-        /// (Wooting and NuPhy name themselves, and a DrunkDeer the references
-        /// do not list does too).</summary>
+        /// (Wooting names itself, and a DrunkDeer the references do not list
+        /// does too).</summary>
         public static string ModelName(AnalogKeyboardProtocol protocol, ushort vendorId, ushort productId)
         {
             switch (protocol)
@@ -188,34 +219,38 @@ namespace PadForge.Engine.Common.AnalogKeyboard
                 case AnalogKeyboardProtocol.RazerHuntsmanV2:
                     return productId == 0x0266 ? "Razer Huntsman V2 Analog" : "Razer Huntsman Mini Analog";
                 case AnalogKeyboardProtocol.RazerHuntsmanV3:
+                    // The 8KHz names are the deviceName of each Synapse Web config.
                     return productId switch
                     {
                         0x02A6 => "Razer Huntsman V3 Pro",
                         0x02A7 => "Razer Huntsman V3 Pro Tenkeyless",
+                        0x02CF => "Razer Huntsman V3 Pro 8KHz",
+                        0x02D0 => "Razer Huntsman V3 Pro Tenkeyless 8KHz",
+                        0x02D1 => "Razer Huntsman V3 Pro Mini 8KHz",
+                        0x02D8 => "Razer Huntsman Signature Edition",
+                        0x02E4 => "Razer Huntsman V3 HE Magnetic Mini 65% 8KHz",
+                        0x02E5 => "Razer Huntsman V3 Tenkeyless 8KHz",
+                        0x02E6 => "Razer Huntsman V3 Pro Low-profile Tenkeyless 8KHz",
+                        0x02EA => "Razer Huntsman V3 HE Magnetic Tenkeyless 8KHz",
                         _ => "Razer Huntsman V3 Pro Mini",
                     };
                 case AnalogKeyboardProtocol.RazerTartarusPro:
                     return "Razer Tartarus Pro";
                 case AnalogKeyboardProtocol.DrunkDeer:
+                    // The exact model comes from the identity answer once the
+                    // row opens (DrunkDeerPoller.ModelName).
                     return productId switch
                     {
                         0x2382 => "DrunkDeer G65",
                         // Also used by the A75 Pro and the ISO A75 (Soup).
                         0x2383 => "DrunkDeer A75",
                         0x2384 => "DrunkDeer G60",
-                        0x2386 or 0x2391 => "DrunkDeer G75",
+                        0x2386 => "DrunkDeer G75",
+                        0x2391 => "DrunkDeer G75 JIS",
                         _ => null,
                     };
                 case AnalogKeyboardProtocol.Keychron:
-                    if (vendorId == LemokeyVendorId)
-                        return productId == 0x0611 ? "Lemokey P1 HE ISO" : "Lemokey P1 HE";
-                    return productId switch
-                    {
-                        0x0B10 or 0x0B11 or 0x0B12 => "Keychron Q1 HE",
-                        0x0B30 => "Keychron Q3 HE",
-                        0x0B50 => "Keychron Q5 HE",
-                        _ => "Keychron K2 HE",
-                    };
+                    return KeychronModel(vendorId, productId)?.Name;
                 case AnalogKeyboardProtocol.Madlions:
                     return productId switch
                     {
@@ -229,26 +264,75 @@ namespace PadForge.Engine.Common.AnalogKeyboard
             return null;
         }
 
-        /// <summary>The Keychron or Lemokey layout for a product, or null when
-        /// the references have none for it.</summary>
-        public static AnalogKeyCodes.Layout KeychronLayout(ushort vendorId, ushort productId)
+        /// <summary>A Keychron or Lemokey HE board: its name and key matrix.</summary>
+        public sealed class KeychronBoard
         {
-            if (vendorId == LemokeyVendorId)
-            {
-                if (productId == 0x0610) return AnalogKeyCodes.LemokeyP1HeAnsi;
-                if (productId == 0x0611) return AnalogKeyCodes.LemokeyP1HeIso;
-                return null;
-            }
-            if (vendorId != KeychronVendorId) return null;
-            return productId switch
-            {
-                0x0B10 or 0x0B11 or 0x0B12 => AnalogKeyCodes.KeychronQ1He,
-                0x0B30 => AnalogKeyCodes.KeychronQ3He,
-                0x0B50 => AnalogKeyCodes.KeychronQ5He,
-                0x0E20 or 0x0E21 or 0x0E22 => AnalogKeyCodes.KeychronK2He,
-                _ => null,
-            };
+            public ushort VendorId { get; init; }
+            public ushort ProductId { get; init; }
+            public string Name { get; init; }
+            public AnalogKeyCodes.Layout Layout { get; init; }
         }
+
+        private static KeychronBoard[] _keychronBoards;
+
+        /// <summary>Every Keychron and Lemokey HE board PadForge reads, from
+        /// Data/keychron.json. The 39 Keychron identities and their matrix
+        /// sizes are HallJoy's keychron_layout_identities.h. Each matrix is
+        /// HallJoy's reviewed catalog matrix for that product (its
+        /// docs/exports/keychron-he review files, built from Keychron's
+        /// Launcher JSON, Keychron's QMK source and the factory keymaps of
+        /// Keychron's firmware images), except the K4 HE ANSI, which is the
+        /// matrix HallJoy's UAP route reads it with. The K6 HE ISO and JIS
+        /// (0x0E61, 0x0E62) come from paysdelest's Soup fork, which reads them
+        /// with the ANSI table: Keychron's QMK tree has only the ANSI K6 HE
+        /// matrix, so they read through it. The Lemokey matrices are Soup's.
+        ///
+        /// <para>Soup reads only the Q1, Q3, Q5, K2 and Lemokey P1 boards and
+        /// decodes the Q1 and K2 ISO and JIS boards with their ANSI tables.
+        /// The catalog matrices give those boards their regional keys, put
+        /// the Q3's Slash at row 4 column 11 where Keychron's matrix has it
+        /// (Soup's table has it one column right, where no key sits), and
+        /// read the Q1 and Q5 key at row 5 column 9 as Right Alt, Keychron's
+        /// own assignment, where Soup reads Right GUI.</para></summary>
+        public static IReadOnlyList<KeychronBoard> KeychronBoards
+        {
+            get
+            {
+                var boards = _keychronBoards;
+                if (boards != null) return boards;
+                var list = new List<KeychronBoard>();
+                foreach (var model in AnalogKeyboardData.File("keychron.json").GetProperty("models").EnumerateArray())
+                {
+                    int rows = model.GetProperty("rows").GetInt32();
+                    int cols = model.GetProperty("cols").GetInt32();
+                    var table = AnalogKeyboardData.Table("keychron.json", model.GetProperty("table").GetString());
+                    if (table == null || table.Length != rows * cols) continue;
+                    list.Add(new KeychronBoard
+                    {
+                        VendorId = (ushort)model.GetProperty("vid").GetInt32(),
+                        ProductId = (ushort)model.GetProperty("pid").GetInt32(),
+                        Name = model.GetProperty("name").GetString(),
+                        Layout = new AnalogKeyCodes.Layout(rows, cols, table),
+                    });
+                }
+                boards = list.ToArray();
+                _keychronBoards = boards;
+                return boards;
+            }
+        }
+
+        /// <summary>The Keychron or Lemokey board for a product, or null.</summary>
+        public static KeychronBoard KeychronModel(ushort vendorId, ushort productId)
+        {
+            foreach (var board in KeychronBoards)
+                if (board.VendorId == vendorId && board.ProductId == productId) return board;
+            return null;
+        }
+
+        /// <summary>The Keychron or Lemokey layout for a product, or null when
+        /// the catalog has none for it.</summary>
+        public static AnalogKeyCodes.Layout KeychronLayout(ushort vendorId, ushort productId)
+            => KeychronModel(vendorId, productId)?.Layout;
 
         /// <summary>The Madlions layout for a product, or null when the
         /// references have none. PID 0x1054 is a MAD60HE (Soup, after
@@ -268,6 +352,15 @@ namespace PadForge.Engine.Common.AnalogKeyboard
         {
             if (vendorId == RazerVendorId && productId == 0x0244)
                 return (int[])AnalogKeyCodes.TartarusPro.Clone();
+            if (vendorId == WootingVendorId && AnalogKeyboardParsers.WootingSplitKey(productId, (5 << 5) | 4) != 0)
+            {
+                var keys = new List<int>(AnalogKeyCodes.FullKeyboard)
+                {
+                    AnalogKeyCodes.LeftSpace, AnalogKeyCodes.RightSpace,
+                    AnalogKeyCodes.CenterFn, AnalogKeyCodes.RightFn,
+                };
+                return keys.ToArray();
+            }
             var layout = vendorId == MadlionsVendorId
                 ? MadlionsLayout(productId)
                 : KeychronLayout(vendorId, productId);

@@ -267,7 +267,7 @@
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Verbunden, noch keine Taste erkannt. Machen Sie in der Logitech Gaming Software PadForge zum dauerhaften Profil.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>Läuft, {0} Tastenereignisse</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Analoge Tastaturen lesen</value></data>
-  <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Liest, wie tief jede Taste gedrückt ist, auf Tastaturen von Wooting, Razer Huntsman Analog, NuPhy HE, DrunkDeer, Keychron HE, Lemokey HE, Madlions HE und Redragon K709 HE sowie auf dem Razer Tartarus Pro, jeweils als eigene Gerätezeile. Razer-Geräte erfordern ein laufendes Razer Synapse. DrunkDeer-, Keychron-, Lemokey-, Madlions- und Redragon-Tastaturen werden über den Kanal abgefragt, den ihre eigene Konfigurationssoftware nutzt. Schließen Sie diese Software, solange diese Option aktiv ist.</value></data>
+  <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Liest, wie tief jede Taste gedrückt ist, auf analogen Tastaturen von Wooting, Razer, SteelSeries, Keychron, NuPhy, DrunkDeer, AULA und weiteren Herstellern, jeweils als eigene Gerätezeile. Die Dokumentation listet jedes unterstützte Modell auf. Razer-Tastaturen erfordern ein laufendes Razer Synapse. Die meisten anderen werden über den Kanal abgefragt, den ihre eigene Konfigurationssoftware nutzt. Schließen Sie diese Software, solange diese Option aktiv ist.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>Keine unterstützte analoge Tastatur gefunden.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_Reading_Format" xml:space="preserve"><value>Liest {0}.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_Synapse_Format" xml:space="preserve"><value>Starten Sie Razer Synapse, um {0} zu lesen.</value></data>
@@ -1245,6 +1245,18 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="AnalogKey_IntlBackslash" xml:space="preserve"><value>Intl \</value></data>
   <data name="AnalogKey_Extra_Format" xml:space="preserve"><value>Zusatztaste {0}</value></data>
   <data name="AnalogKey_Code_Format" xml:space="preserve"><value>Taste {0}</value></data>
+  <data name="AnalogKey_IntlRo" xml:space="preserve"><value>Intl Ro</value></data>
+  <data name="AnalogKey_IntlYen" xml:space="preserve"><value>Intl ¥</value></data>
+  <data name="AnalogKey_KatakanaHiragana" xml:space="preserve"><value>Katakana/Hiragana</value></data>
+  <data name="AnalogKey_Henkan" xml:space="preserve"><value>Henkan</value></data>
+  <data name="AnalogKey_Muhenkan" xml:space="preserve"><value>Muhenkan</value></data>
+  <data name="AnalogKey_Hangul" xml:space="preserve"><value>Hangul</value></data>
+  <data name="AnalogKey_Hanja" xml:space="preserve"><value>Hanja</value></data>
+  <data name="AnalogKey_LeftSpace" xml:space="preserve"><value>Leertaste links</value></data>
+  <data name="AnalogKey_RightSpace" xml:space="preserve"><value>Leertaste rechts</value></data>
+  <data name="AnalogKey_CenterFn" xml:space="preserve"><value>Fn Mitte</value></data>
+  <data name="AnalogKey_RightFn" xml:space="preserve"><value>Fn rechts</value></data>
+  <data name="AnalogKey_Position_Format" xml:space="preserve"><value>Tastenposition {0}</value></data>
   <data name="Key_Separator" xml:space="preserve"><value>Trennzeichen</value></data>
   <!-- Lock keys -->
   <data name="Key_NumLock" xml:space="preserve"><value>Num</value></data>
@@ -3660,8 +3672,8 @@ Sollen sie jetzt deinstalliert werden? Dies erfordert erhöhte Rechte und kann e
   <data name="About_OpenXrRefsDesc" xml:space="preserve"><value>Die Laufzeitschnittstelle, das Strukturlayout und die Registrierungsschlüssel hinter der Eingabe von Headset und Motion-Controllern, gelesen aus den Khronos-OpenXR-SDK-Headern (Apache-2.0) und gegen VirtualDesktop-OpenXR (MIT) geprüft. PadForge spricht mit Ihrer eigenen installierten Laufzeit und liefert keinen Khronos-Code aus.</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Referenzen zum Logitech G-key SDK</value></data>
   <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>Das Layout des Ereigniswortes hinter der G-Tasten-Eingabe stammt aus LogitechGkeyLib.h im SDK. Suchreihenfolge und Herunterfahren der Bibliothek folgen Mumbles GKey.cpp (BSD 3-Clause). PadForge lädt die auf dem Rechner vorhandene Bibliothek und liefert keinen Logitech-Code aus.</value></data>
-  <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>Soup und AnalogSense</value></data>
-  <data name="About_AnalogKeyboardRefsDesc" xml:space="preserve"><value>Die Berichtsformate und Tastentabellen hinter der Eingabe analoger Tastaturen folgen Soup und dem AnalogSense JavaScript SDK (MIT, Calamity, Inc.), abgeglichen mit dem Wooting Analog SDK (MPL-2.0). Das Format des Razer Tartarus Pro folgt dem Tartarus-Pro-Commit in DenkiSukis Soup-Fork (MIT).</value></data>
+  <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>HallJoy, Soup und AnalogSense</value></data>
+  <data name="About_AnalogKeyboardRefsDesc" xml:space="preserve"><value>Die Eingabe analoger Tastaturen portiert die Tastaturrouten, Tastentabellen und Modellkataloge von HallJoy nach C# (AGPL-3.0, PashOK7) und folgt Soup und dem AnalogSense JavaScript SDK (MIT, Calamity, Inc.), abgeglichen mit dem Wooting Analog SDK (MPL-2.0). Weitere Tastaturen folgen AnalogKeys (MIT, Nisayera), KeyAxis (MIT, RigZeeel), HallEffectAnalogMapper (MIT, Ricards Mironovs), libhmk und hmkconf (GPL-3.0, peppapighs) sowie den Soup-Forks von DenkiSuki, LeiterConsulting und paysdelest (MIT). Berichtsformate und Tastentabellen stammen außerdem aus den Konfigurationsprogrammen Synapse Web von Razer und NuPhyIO von NuPhy, aus OpenRazer (GPL-2.0), razer-analog-keyboard von Abbytech, TinyUSB (MIT) und den Mitschnittnotizen von Sainan.</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
   <data name="About_UsbipWin2Desc" xml:space="preserve"><value>USB-Transport von Vadym Hrynchyshyn für die zusammengesetzten USB-Controller von HIDMaestro. Das signierte Installationsprogramm ist in HIDMaestro enthalten und wird ausgeführt, wenn zum ersten Mal ein zusammengesetzter Controller erstellt wird. BSD 2-Clause.</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">

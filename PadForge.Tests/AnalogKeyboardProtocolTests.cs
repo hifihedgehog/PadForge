@@ -20,6 +20,8 @@ namespace PadForge.Tests
     {
         private static AnalogKeyInputState Keys() => new AnalogKeyInputState();
 
+        private static AnalogKeyCodes.Layout Q1He => AnalogKeyboardCatalog.KeychronLayout(0x3434, 0x0B10);
+
         private static byte[] Report(int length, params byte[] head)
         {
             var r = new byte[length];
@@ -105,14 +107,17 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void RazerV3_Report11_ReadsTriples()
+        public void RazerV3_Report11_ReadsKeyAndBigEndianTravel()
         {
-            // A (0x1F) at 64 with its unused third byte, S (0x20) at 255.
-            var raw = Report(64, 0x0B, 0x1F, 64, 0x99, 0x20, 255, 0x00);
+            // Synapse Web's parseAnalogADCNotificationEvents: key, then a
+            // big-endian u16 over the next two bytes. A (0x1F) at 0x4099, S
+            // (0x20) at the bottom, 0 ends the list.
+            var raw = Report(48, 0x0B, 0x1F, 0x40, 0x99, 0x20, 0xFF, 0xFF, 0x00, 0x2E, 0x40, 0x00);
             var k = Keys();
-            Assert.True(AnalogKeyboardParsers.ParseRazerHuntsmanV3(raw, k));
-            Assert.Equal(64 / 255f, k.Get(AnalogKeyCodes.A), 5);
+            Assert.True(AnalogKeyboardParsers.ParseRazerHuntsmanV3(raw, k, 0x02A6));
+            Assert.Equal(0x4099 / 65535f, k.Get(AnalogKeyCodes.A), 5);
             Assert.Equal(1f, k.Get(AnalogKeyCodes.S));
+            Assert.Equal(0f, k.Get(AnalogKeyCodes.Z));
             Assert.Equal(2, k.Count);
         }
 
@@ -131,42 +136,6 @@ namespace PadForge.Tests
             Assert.Equal(128 / 255f, k.Get(AnalogKeyCodes.A), 5);
         }
 
-        // ── NuPhy ──
-
-        [Fact]
-        public void NuPhy_OneKeyPerReport_UpdatesThatKey_AndZeroReleasesIt()
-        {
-            var k = Keys();
-            k.Set(AnalogKeyCodes.A, 0.3f);
-            // 0 (no report ID), type 0xA0, one unknown byte, W, value 400.
-            var press = Report(9, 0x00, 0xA0, 0x10, 0x00, 0x1A, 0x01, 0x90);
-            Assert.True(AnalogKeyboardParsers.ParseNuPhy(press, k, productId: 0x6130));
-            Assert.Equal(0.5f, k.Get(AnalogKeyCodes.W), 5);
-            Assert.Equal(0.3f, k.Get(AnalogKeyCodes.A)); // other keys persist
-
-            var release = Report(9, 0x00, 0xA0, 0x10, 0x00, 0x1A, 0x00, 0x00);
-            AnalogKeyboardParsers.ParseNuPhy(release, k, productId: 0x6130);
-            Assert.Equal(0f, k.Get(AnalogKeyCodes.W));
-        }
-
-        [Fact]
-        public void NuPhy_Air75AndAir60_UseTheLongerScale_AndModifierBits()
-        {
-            var k = Keys();
-            var shift = Report(9, 0x00, 0xA0, 0x10, 0x02, 0x00, 0x01, 0x90);
-            AnalogKeyboardParsers.ParseNuPhy(shift, k, productId: 0x6120);
-            Assert.Equal(400 / 1600f, k.Get(AnalogKeyCodes.LShift), 5);
-            Assert.Equal(AnalogKeyCodes.Fn, AnalogKeyCodes.NuPhyToCode(0xFF05));
-        }
-
-        [Fact]
-        public void NuPhy_OtherReportTypes_AreNotKeys()
-        {
-            var k = Keys();
-            Assert.False(AnalogKeyboardParsers.ParseNuPhy(Report(9, 0x00, 0x01, 0x02), k, 0x6130));
-            Assert.Equal(0, k.Count);
-        }
-
         // ── Code tables ──
 
         [Theory]
@@ -178,7 +147,17 @@ namespace PadForge.Tests
         [InlineData(0x81, AnalogKeyCodes.ContextMenu)]
         [InlineData(0x2D, AnalogKeyCodes.IntlBackslash)]
         [InlineData(0x3B, AnalogKeyCodes.Fn)]
-        [InlineData(0x0E, AnalogKeyCodes.None)]
+        // Razer's own table where Soup and AnalogSense.js differ.
+        [InlineData(0x1D, AnalogKeyCodes.Backslash)]
+        [InlineData(0x2A, AnalogKeyCodes.IntlHash)]
+        [InlineData(0x7D, AnalogKeyCodes.ScrollLock)]
+        [InlineData(0x7E, AnalogKeyCodes.Pause)]
+        // Keys only Razer's table names.
+        [InlineData(0x0E, AnalogKeyCodes.IntlYen)]
+        [InlineData(0x38, AnalogKeyCodes.IntlRo)]
+        [InlineData(0x6B, AnalogKeyCodes.NumpadEqual)]
+        [InlineData(0x9A, AnalogKeyCodes.Henkan)]
+        [InlineData(0x3F, AnalogKeyCodes.None)]
         public void RazerTable_MatchesTheReferences(int razer, int code)
         {
             Assert.Equal(code, AnalogKeyCodes.RazerToCode(razer));
@@ -194,9 +173,11 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void DrunkDeerMenuKey_IsTheContextMenuKey()
+        public void DrunkDeerMenuKey_IsFn2_TheFirstVendorKey()
         {
-            Assert.Equal(AnalogKeyCodes.ContextMenu, AnalogKeyCodes.DrunkDeerToCode(5 * 21 + 12));
+            // Antler's factory keymap assigns the Menu-legend key Fn2, which
+            // Soup and HallJoy read as 0x403.
+            Assert.Equal(AnalogKeyCodes.Oem1, AnalogKeyCodes.DrunkDeerToCode(5 * 21 + 12));
             Assert.Equal(AnalogKeyCodes.W, AnalogKeyCodes.DrunkDeerToCode(2 * 21 + 2));
             Assert.Equal(AnalogKeyCodes.None, AnalogKeyCodes.DrunkDeerToCode(0 * 21 + 1));
         }
@@ -229,18 +210,18 @@ namespace PadForge.Tests
         [Fact]
         public void Layouts_HaveTheReferenceShapes()
         {
-            Assert.Equal(6 * 15, AnalogKeyCodes.KeychronQ1He.Size);
-            Assert.Equal(6 * 16, AnalogKeyCodes.KeychronQ3He.Size);
-            Assert.Equal(6 * 19, AnalogKeyCodes.KeychronQ5He.Size);
-            Assert.Equal(6 * 16, AnalogKeyCodes.KeychronK2He.Size);
-            Assert.Equal(6 * 15, AnalogKeyCodes.LemokeyP1HeAnsi.Size);
-            Assert.Equal(6 * 15, AnalogKeyCodes.LemokeyP1HeIso.Size);
+            Assert.Equal(6 * 15, Q1He.Size);
+            Assert.Equal(6 * 16, AnalogKeyboardCatalog.KeychronLayout(0x3434, 0x0B30).Size);
+            Assert.Equal(6 * 19, AnalogKeyboardCatalog.KeychronLayout(0x3434, 0x0B50).Size);
+            Assert.Equal(6 * 16, AnalogKeyboardCatalog.KeychronLayout(0x3434, 0x0E20).Size);
+            Assert.Equal(6 * 15, AnalogKeyboardCatalog.KeychronLayout(0x362D, 0x0610).Size);
+            Assert.Equal(6 * 15, AnalogKeyboardCatalog.KeychronLayout(0x362D, 0x0611).Size);
             Assert.Equal(5 * 14, AnalogKeyCodes.MadlionsMad60He.Size);
             Assert.Equal(5 * 15, AnalogKeyCodes.MadlionsMad68He.Size);
             // Spot keys at their row and column.
-            Assert.Equal(AnalogKeyCodes.W, AnalogKeyCodes.KeychronQ1He.Keys[2 * 15 + 2]);
-            Assert.Equal(AnalogKeyCodes.Fn, AnalogKeyCodes.KeychronQ5He.Keys[5 * 19 + 10]);
-            Assert.Equal(AnalogKeyCodes.IntlBackslash, AnalogKeyCodes.LemokeyP1HeIso.Keys[4 * 15 + 1]);
+            Assert.Equal(AnalogKeyCodes.W, Q1He.Keys[2 * 15 + 2]);
+            Assert.Equal(AnalogKeyCodes.Fn, AnalogKeyboardCatalog.KeychronLayout(0x3434, 0x0B50).Keys[5 * 19 + 10]);
+            Assert.Equal(AnalogKeyCodes.IntlBackslash, AnalogKeyboardCatalog.KeychronLayout(0x362D, 0x0611).Keys[4 * 15 + 1]);
             Assert.Equal(AnalogKeyCodes.ContextMenu, AnalogKeyCodes.MadlionsMad60He.Keys[4 * 14 + 11]);
         }
 
@@ -265,10 +246,11 @@ namespace PadForge.Tests
             Assert.Equal(AnalogKeyboardProtocol.None, AnalogKeyboardCatalog.Identify(0x1532, 0x0266, 0xFF00, 1, Id11));
             Assert.Equal(AnalogKeyboardProtocol.RazerHuntsmanV3, AnalogKeyboardCatalog.Identify(0x1532, 0x02B0, 0xFF00, 1, Id11));
             Assert.Equal(AnalogKeyboardProtocol.RazerTartarusPro, AnalogKeyboardCatalog.Identify(0x1532, 0x0244, 0xFF00, 1, Id6));
-            Assert.Equal(AnalogKeyboardProtocol.None, AnalogKeyboardCatalog.Identify(0x1532, 0x02CF, 0xFF00, 1, Id11));
+            Assert.Equal(AnalogKeyboardProtocol.RazerHuntsmanV3, AnalogKeyboardCatalog.Identify(0x1532, 0x02CF, 0xFF00, 1, Id11));
+            Assert.Equal(AnalogKeyboardProtocol.None, AnalogKeyboardCatalog.Identify(0x1532, 0x02CF, 0xFF00, 1, Id7));
 
-            Assert.Equal(AnalogKeyboardProtocol.NuPhy, AnalogKeyboardCatalog.Identify(0x19F5, 0x6130, 1, 0, None));
-            Assert.Equal(AnalogKeyboardProtocol.None, AnalogKeyboardCatalog.Identify(0x19F5, 0x6130, 1, 6, None));
+            // NuPhy has a route of its own (NuPhyRoutes), not a Soup family.
+            Assert.Equal(AnalogKeyboardProtocol.None, AnalogKeyboardCatalog.Identify(0x19F5, 0x6130, 1, 0, None));
             Assert.Equal(AnalogKeyboardProtocol.DrunkDeer, AnalogKeyboardCatalog.Identify(0x352D, 0x2383, 0xFF00, 1, Id4));
             Assert.Equal(AnalogKeyboardProtocol.Keychron, AnalogKeyboardCatalog.Identify(0x3434, 0x0B10, 0xFF60, 0x61, None));
             Assert.Equal(AnalogKeyboardProtocol.None, AnalogKeyboardCatalog.Identify(0x3434, 0x0B99, 0xFF60, 0x61, None));
@@ -352,6 +334,7 @@ namespace PadForge.Tests
             {
                 var a = new byte[64];
                 a[0] = 0x04;
+                a[1] = 0xB7;
                 a[4] = (byte)index;
                 foreach (var (at, value) in keys) a[5 + at] = value;
                 return a;
@@ -383,6 +366,7 @@ namespace PadForge.Tests
             // Answer 0 arrives, answers 1 and 2 never do.
             var answer = new byte[64];
             answer[0] = 0x04;
+            answer[1] = 0xB7;
             var io = new FakeTransport(req => new[] { answer });
             Assert.Equal(AnalogPollResult.NoAnswer, new DrunkDeerPoller().Pass(io, Keys(), null));
         }
@@ -392,7 +376,7 @@ namespace PadForge.Tests
         {
             var pollers = new AnalogKeyboardPoller[]
             {
-                new DrunkDeerPoller(), new KeychronPoller(AnalogKeyCodes.KeychronQ1He),
+                new DrunkDeerPoller(), new KeychronPoller(Q1He),
                 new MadlionsPoller(AnalogKeyCodes.MadlionsMad60He), new BytechPoller(),
             };
             foreach (var poller in pollers)
@@ -434,7 +418,7 @@ namespace PadForge.Tests
                     };
                 return Array.Empty<byte[]>();
             });
-            var poller = new KeychronPoller(AnalogKeyCodes.KeychronQ1He);
+            var poller = new KeychronPoller(Q1He);
             var output = Keys();
             Assert.Equal(AnalogPollResult.Ok, poller.Pass(io, output, null));
             Assert.True(poller.FullReports);
@@ -464,7 +448,7 @@ namespace PadForge.Tests
                 }
                 return Array.Empty<byte[]>();
             });
-            var poller = new KeychronPoller(AnalogKeyCodes.KeychronQ1He);
+            var poller = new KeychronPoller(Q1He);
             var output = Keys();
             Assert.Equal(AnalogPollResult.Ok, poller.Pass(io, output, code => code == AnalogKeyCodes.W));
             Assert.False(poller.FullReports);
@@ -489,7 +473,7 @@ namespace PadForge.Tests
                 return new[] { KeychronAnswer(0x30) };
             });
             var output = Keys();
-            new KeychronPoller(AnalogKeyCodes.KeychronQ1He).Pass(io, output, code => code == AnalogKeyCodes.W);
+            new KeychronPoller(Q1He).Pass(io, output, code => code == AnalogKeyCodes.W);
             Assert.Equal(1f, output.Get(AnalogKeyCodes.W));
         }
 

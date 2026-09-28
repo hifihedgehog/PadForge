@@ -267,7 +267,7 @@
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Conectado, aún sin teclas detectadas. En Logitech Gaming Software, haz de PadForge el perfil persistente.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>En ejecución, {0} eventos de tecla</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Leer teclados analógicos</value></data>
-  <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Lee cuánto se presiona cada tecla en los teclados Wooting, Razer Huntsman analógicos, NuPhy HE, DrunkDeer, Keychron HE, Lemokey HE, Madlions HE y Redragon K709 HE, y en el Razer Tartarus Pro, cada uno como su propia fila de dispositivo. Los dispositivos Razer requieren Razer Synapse en ejecución. Los teclados DrunkDeer, Keychron, Lemokey, Madlions y Redragon se leen consultando por el canal que usa su propio configurador, así que cierra el configurador mientras esto esté activado.</value></data>
+  <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Lee cuánto se presiona cada tecla en los teclados analógicos de Wooting, Razer, SteelSeries, Keychron, NuPhy, DrunkDeer, AULA y otros fabricantes, cada uno como su propia fila de dispositivo. La documentación enumera todos los modelos compatibles. Los teclados Razer requieren Razer Synapse en ejecución. La mayoría de los demás se leen por el canal que usa su propio configurador, así que cierra el configurador mientras esto esté activado.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>No se encontró ningún teclado analógico compatible.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_Reading_Format" xml:space="preserve"><value>Leyendo {0}.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_Synapse_Format" xml:space="preserve"><value>Inicia Razer Synapse para leer {0}.</value></data>
@@ -1245,6 +1245,18 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="AnalogKey_IntlBackslash" xml:space="preserve"><value>Intl \</value></data>
   <data name="AnalogKey_Extra_Format" xml:space="preserve"><value>Tecla adicional {0}</value></data>
   <data name="AnalogKey_Code_Format" xml:space="preserve"><value>Tecla {0}</value></data>
+  <data name="AnalogKey_IntlRo" xml:space="preserve"><value>Intl Ro</value></data>
+  <data name="AnalogKey_IntlYen" xml:space="preserve"><value>Intl ¥</value></data>
+  <data name="AnalogKey_KatakanaHiragana" xml:space="preserve"><value>Katakana/Hiragana</value></data>
+  <data name="AnalogKey_Henkan" xml:space="preserve"><value>Henkan</value></data>
+  <data name="AnalogKey_Muhenkan" xml:space="preserve"><value>Muhenkan</value></data>
+  <data name="AnalogKey_Hangul" xml:space="preserve"><value>Hangul</value></data>
+  <data name="AnalogKey_Hanja" xml:space="preserve"><value>Hanja</value></data>
+  <data name="AnalogKey_LeftSpace" xml:space="preserve"><value>Espacio izquierdo</value></data>
+  <data name="AnalogKey_RightSpace" xml:space="preserve"><value>Espacio derecho</value></data>
+  <data name="AnalogKey_CenterFn" xml:space="preserve"><value>Fn central</value></data>
+  <data name="AnalogKey_RightFn" xml:space="preserve"><value>Fn derecho</value></data>
+  <data name="AnalogKey_Position_Format" xml:space="preserve"><value>Posición de tecla {0}</value></data>
   <data name="Key_Separator" xml:space="preserve"><value>Separador</value></data>
   <!-- Lock keys -->
   <data name="Key_NumLock" xml:space="preserve"><value>Bloq Num</value></data>
@@ -3660,8 +3672,8 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="About_OpenXrRefsDesc" xml:space="preserve"><value>La interfaz de tiempo de ejecución, la disposición de estructuras y las claves del registro detrás de la entrada del visor y de los mandos de movimiento, leídas de las cabeceras del SDK OpenXR de Khronos (Apache-2.0) y contrastadas con VirtualDesktop-OpenXR (MIT). PadForge habla con tu propio tiempo de ejecución instalado y no distribuye código de Khronos.</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Referencias del SDK G-key de Logitech</value></data>
   <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>La disposición de la palabra de evento detrás de la entrada de teclas G proviene de LogitechGkeyLib.h en el SDK. El orden de búsqueda y el cierre de la biblioteca siguen GKey.cpp de Mumble (BSD 3-Clause). PadForge carga la biblioteca que haya en el equipo y no distribuye código de Logitech.</value></data>
-  <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>Soup y AnalogSense</value></data>
-  <data name="About_AnalogKeyboardRefsDesc" xml:space="preserve"><value>Los formatos de informe y las tablas de teclas de la entrada de teclados analógicos siguen a Soup y al AnalogSense JavaScript SDK (MIT, Calamity, Inc.), contrastados con el Wooting Analog SDK (MPL-2.0). El formato del Razer Tartarus Pro sigue el commit de Tartarus Pro en la bifurcación de Soup de DenkiSuki (MIT).</value></data>
+  <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>HallJoy, Soup y AnalogSense</value></data>
+  <data name="About_AnalogKeyboardRefsDesc" xml:space="preserve"><value>La entrada de teclados analógicos porta a C# las rutas de teclado, las tablas de teclas y los catálogos de modelos de HallJoy (AGPL-3.0, PashOK7) y sigue a Soup y al AnalogSense JavaScript SDK (MIT, Calamity, Inc.), contrastados con el Wooting Analog SDK (MPL-2.0). Otros teclados siguen a AnalogKeys (MIT, Nisayera), KeyAxis (MIT, RigZeeel), HallEffectAnalogMapper (MIT, Ricards Mironovs), libhmk y hmkconf (GPL-3.0, peppapighs) y las bifurcaciones de Soup de DenkiSuki, LeiterConsulting y paysdelest (MIT). Los formatos de informe y las tablas de teclas también proceden de los configuradores Synapse Web de Razer y NuPhyIO de NuPhy, OpenRazer (GPL-2.0), razer-analog-keyboard de Abbytech, TinyUSB (MIT) y las notas de capturas de Sainan.</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
   <data name="About_UsbipWin2Desc" xml:space="preserve"><value>Transporte USB de Vadym Hrynchyshyn para los controles USB compuestos de HIDMaestro. Su instalador firmado viene dentro de HIDMaestro y se ejecuta la primera vez que se crea un control compuesto. BSD 2-Clause.</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">

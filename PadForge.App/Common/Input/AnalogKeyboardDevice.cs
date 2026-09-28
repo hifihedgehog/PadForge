@@ -21,6 +21,10 @@ namespace PadForge.Common.Input
         /// <summary>Every matching route talked to the keyboard and none
         /// recognized it: leave it alone while it stays plugged in.</summary>
         NotSupported,
+        /// <summary>No route recognized the keyboard, and one of them asks for
+        /// another try after <see cref="AnalogKeyboardDevice.RetryAfterMs"/>,
+        /// as its reference reconnects on a timer.</summary>
+        RetryLater,
     }
 
     /// <summary>
@@ -61,8 +65,11 @@ namespace PadForge.Common.Input
         private volatile bool _stopRequested;
         private volatile bool _synapseRunning = true;
         private long _reports;
+        private long _lastSetTick;
+        private int _staleAfterMs;
         private PooledInputStatePair _statePool;
         private int[] _keyOrder;
+        private HashSet<int> _knownKeys;
 
         public AnalogKeyboardDevice(AnalogKeyboardCandidate candidate)
         {
@@ -78,6 +85,11 @@ namespace PadForge.Common.Input
 
         /// <summary>The HID collection this row reads, the sweep's key.</summary>
         public string HidPath { get; }
+
+        /// <summary>The second collection the route reads from, when it
+        /// commands one collection and reads another, or null. The sweep leaves
+        /// it alone while this row owns it.</summary>
+        public string CompanionPath { get; private set; }
 
         /// <summary>The identity every collection of this keyboard shares.</summary>
         public string IdentityKey => _candidate.IdentityKey;
@@ -98,6 +110,14 @@ namespace PadForge.Common.Input
 
         /// <summary>The keys the input picker lists for this keyboard.</summary>
         public int[] KeyOrder => _keyOrder ?? AnalogKeyCodes.FullKeyboard;
+
+        /// <summary>True for a row that waits for its first key set before it
+        /// registers, a route that recognizes its keyboards by their reports.</summary>
+        public bool RegistersOnFirstReport => _route?.RegisterOnFirstReport == true;
+
+        /// <summary>After <see cref="AnalogKeyboardOpenResult.RetryLater"/>,
+        /// how long the sweep waits before trying again.</summary>
+        public int RetryAfterMs { get; private set; }
 
         // ─── ISdlInputDevice identity / capabilities ───
         // The keys live on CustomInputState.AnalogKeys, not in the numbered
@@ -146,6 +166,7 @@ namespace PadForge.Common.Input
         {
             if (_disposed) return AnalogKeyboardOpenResult.Busy;
             bool busy = false;
+            int retryMs = 0;
             foreach (var route in _candidate.Routes)
             {
                 var info = _candidate.Info;
@@ -178,14 +199,20 @@ namespace PadForge.Common.Input
                 if (!started)
                 {
                     channel.Close();
+                    if (route.StartRetryMs > 0 && session?.NoStartRetry != true
+                        && (retryMs == 0 || route.StartRetryMs < retryMs))
+                        retryMs = route.StartRetryMs;
                     continue;
                 }
 
                 _route = route;
                 _session = session;
                 _channel = channel;
+                CompanionPath = companion?.Path;
+                _staleAfterMs = Math.Max(0, route.StaleAfterMs);
                 Name = session.ModelName ?? AnalogKeyboardHidRuntime.NameFor(info, route);
                 _keyOrder = session.KeyOrder ?? SafeKeys(route, info);
+                _knownKeys = new HashSet<int>(KeyOrder);
                 foreach (int code in KeyOrder)
                 {
                     int vk = VirtualKeyForCode(code);
@@ -200,13 +227,22 @@ namespace PadForge.Common.Input
                 }
                 catch
                 {
+                    // The session started, so it may have changed the
+                    // keyboard: undo that before the handle closes.
                     _attached = false;
                     _channel = null;
+                    try { session.Stop(channel); } catch { }
                     channel.Close();
                     return AnalogKeyboardOpenResult.Busy;
                 }
             }
-            return busy ? AnalogKeyboardOpenResult.Busy : AnalogKeyboardOpenResult.NotSupported;
+            if (busy) return AnalogKeyboardOpenResult.Busy;
+            if (retryMs > 0)
+            {
+                RetryAfterMs = retryMs;
+                return AnalogKeyboardOpenResult.RetryLater;
+            }
+            return AnalogKeyboardOpenResult.NotSupported;
         }
 
         private static int[] SafeKeys(AnalogKeyboardRoute route, AnalogKeyboardDeviceInfo info)
@@ -216,7 +252,7 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>Stops the reader. It finishes its pass and lets the route
-        /// undo what it changed on the keyboard; a reader that does not finish
+        /// undo what it changed on the keyboard. A reader that does not finish
         /// in time has its I/O canceled. A reader still stuck in a native call
         /// owns the channel's buffers, so they leak rather than being freed
         /// under it (the headset rule).</summary>
@@ -228,7 +264,8 @@ namespace PadForge.Common.Input
             _attached = false;
             var reader = _reader;
             _reader = null;
-            if (reader != null && !reader.Join(GracefulStopMs))
+            int graceful = _route != null && _route.StopTimeoutMs > 0 ? _route.StopTimeoutMs : GracefulStopMs;
+            if (reader != null && !reader.Join(graceful))
             {
                 _channel?.Abort();
                 reader.Join(1000);
@@ -299,19 +336,48 @@ namespace PadForge.Common.Input
                         // An unanswered pass releases every key, as Soup's
                         // reader does, so a key held when the keyboard stops
                         // answering does not stay down while the misses add up.
-                        pass.ResetForReuse();
-                        lock (_stateLock) _live.ResetForReuse();
+                        // A route with a staleness window keeps the last set
+                        // until the window runs out, as its reference does.
+                        if (_staleAfterMs == 0)
+                        {
+                            pass.ResetForReuse();
+                            lock (_stateLock) _live.ResetForReuse();
+                        }
                         if (++misses >= session.MissLimit) return;
                         continue;
                     case AnalogPollResult.Idle:
                         continue;
                 }
                 misses = 0;
-                lock (_stateLock) pass.CopyInto(_live);
+                lock (_stateLock)
+                {
+                    pass.CopyInto(_live);
+                    _lastSetTick = Environment.TickCount64;
+                }
+                NoteNewKeys(pass);
                 Interlocked.Increment(ref _reports);
                 long spent = Environment.TickCount64 - started;
                 if (spent < minInterval) Thread.Sleep((int)(minInterval - spent));
             }
+        }
+
+        /// <summary>Adds the keys a pass reported that the row's list lacks,
+        /// so the input picker offers them too: the routes that know their
+        /// keyboards' keys only by position learn them as they are pressed,
+        /// and a key a table missed still shows up.</summary>
+        private void NoteNewKeys(AnalogKeyInputState pass)
+        {
+            List<int> added = null;
+            for (int i = 0; i < pass.Count; i++)
+                if (_knownKeys.Add(pass.Codes[i])) (added ??= new List<int>()).Add(pass.Codes[i]);
+            if (added == null) return;
+            added.Sort();
+            var current = KeyOrder;
+            var order = new int[current.Length + added.Count];
+            current.CopyTo(order, 0);
+            added.CopyTo(order, current.Length);
+            _keyOrder = order;
+            AnalogKeyboardRuntime.SetKeyOrder(InstanceGuid, order);
         }
 
         /// <summary>Shortest time between the starts of two passes of a Soup
@@ -341,7 +407,16 @@ namespace PadForge.Common.Input
             if (_disposed || !_attached) return null;
             var s = _statePool.Next();
             s.AnalogKeys ??= new AnalogKeyInputState();
-            lock (_stateLock) _live.CopyInto(s.AnalogKeys);
+            lock (_stateLock)
+            {
+                // A route whose depths expire by wall clock publishes nothing
+                // while a pass has been stuck past its limit.
+                if (_staleAfterMs > 0 && _live.Count > 0
+                    && Environment.TickCount64 - _lastSetTick > _staleAfterMs)
+                    s.AnalogKeys.ResetForReuse();
+                else
+                    _live.CopyInto(s.AnalogKeys);
+            }
             return s;
         }
 
@@ -353,6 +428,24 @@ namespace PadForge.Common.Input
 
         /// <summary>Test seam: mark live without opening a device.</summary>
         internal void AttachForTest() => _attached = true;
+
+        /// <summary>Test seam: take a route's row settings as Open does.</summary>
+        internal void UseRouteForTest(AnalogKeyboardRoute route)
+        {
+            _route = route;
+            _staleAfterMs = Math.Max(0, route.StaleAfterMs);
+            _knownKeys = new HashSet<int>(KeyOrder);
+            _lastSetTick = Environment.TickCount64;
+        }
+
+        /// <summary>Test seam: when the last key set arrived.</summary>
+        internal void SetLastReportTickForTest(long tick)
+        {
+            lock (_stateLock) _lastSetTick = tick;
+        }
+
+        /// <summary>Test seam: a pass's keys as the reader notes them.</summary>
+        internal void NoteKeysForTest(AnalogKeyInputState pass) => NoteNewKeys(pass);
 
         private static Guid Md5Guid(string identifier)
         {

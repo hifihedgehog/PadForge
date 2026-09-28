@@ -194,6 +194,16 @@ GestureSign
   only, and PadForge's implementation is original C# with no GPL code.
   Licensed under the GNU General Public License v2.0
 
+HallJoy
+  https://github.com/PashOK7/HallJoy
+  By PashOK7. The analog keyboard routes for ATTACK SHARK, AULA, MADLIONS
+  MAD 68 Pro R, ATK Hex80, IROK, Chilkey Slice75, the RongYuan RY5088
+  boards, Neo65, SteelSeries Apex Pro, MCHOSE Mix 87, SayoDevice O3C and
+  the ASUS ROG Azoth 96 HE are ported to C# from HallJoy's source, with its
+  fixes to the DrunkDeer, Keychron and Madlions readers, its DrunkDeer and
+  Keychron model catalogs and its Wooting split-key aliases.
+  Licensed under the GNU Affero General Public License v3.0
+
 HelixToolkit
   https://github.com/helix-toolkit/helix-toolkit
   Copyright (c) 2022 Helix Toolkit contributors
@@ -419,14 +429,26 @@ protobuf-net
 
 Protocol documentation references (no code from these projects ships)
   Analog keyboard references: the reports, requests and key tables behind
-  analog keyboard input, read from the AnalogSense JavaScript SDK
-  (https://github.com/AnalogSense/JavaScript-SDK, MIT, Calamity, Inc.), Soup
-  (https://github.com/calamity-inc/Soup, MIT, Calamity, Inc.), the Tartarus
-  Pro commit on DenkiSuki's Soup fork (https://github.com/DenkiSuki/Soup,
-  MIT) and the Wooting Analog SDK
-  (https://github.com/WootingKb/wooting-analog-sdk, MPL-2.0). HallJoy
-  (https://github.com/PashOK7/HallJoy, AGPL-3.0) was a fact check for the
-  Tartarus Pro key order.
+  analog keyboard input beside the HallJoy port above, read from the
+  AnalogSense JavaScript SDK (https://github.com/AnalogSense/JavaScript-SDK,
+  MIT, Calamity, Inc.), Soup (https://github.com/calamity-inc/Soup, MIT,
+  Calamity, Inc.), the Soup forks of DenkiSuki
+  (https://github.com/DenkiSuki/Soup, MIT), LeiterConsulting
+  (https://github.com/LeiterConsulting/Soup, MIT) and paysdelest
+  (https://github.com/paysdelest/Soup, MIT), the Wooting Analog SDK
+  (https://github.com/WootingKb/wooting-analog-sdk, MPL-2.0), AnalogKeys
+  (https://github.com/nisayera/AnalogKeys, MIT, Nisayera), KeyAxis
+  (https://github.com/RigZeeel/KeyAxis, MIT, RigZeeel),
+  HallEffectAnalogMapper
+  (https://github.com/Richard121292/HallEffectAnalogMapper, MIT, Ricards
+  Mironovs), libhmk (https://github.com/peppapighs/libhmk, GPL-3.0) and
+  hmkconf (https://github.com/peppapighs/hmkconf, GPL-3.0), TinyUSB
+  (https://github.com/hathach/tinyusb, MIT), OpenRazer
+  (https://github.com/openrazer/openrazer, GPL-2.0), razer-analog-keyboard
+  (https://github.com/Abbytech/razer-analog-keyboard, no license published)
+  and Sainan's capture gists (no license published), with Razer's Synapse
+  Web (https://synapse.razer.com) and NuPhy's NuPhyIO
+  (https://drive.nuphy.io) configurators.
   AntiMicroX (https://github.com/AntiMicroX/antimicrox, GPL-3.0): the
   strategy and desktop layouts behind the starter profiles, and the turbo
   behavior the pressure-scaled turbo avoids.

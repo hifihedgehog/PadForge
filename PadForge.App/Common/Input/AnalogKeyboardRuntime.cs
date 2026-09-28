@@ -15,11 +15,18 @@ namespace PadForge.Common.Input
     {
         private static volatile bool _enabled;
 
-        /// <summary>Whether analog keyboards are read.</summary>
+        /// <summary>Whether analog keyboards are read. Turning reading back
+        /// on starts a new MCHOSE Mix 87 generation, which allows its one
+        /// automatic enable again, HallJoy's resume after a pause.</summary>
         public static bool Enabled
         {
             get => _enabled;
-            set => _enabled = value;
+            set
+            {
+                if (value && !_enabled)
+                    PadForge.Engine.Common.AnalogKeyboard.MchoseMix87Session.BeginGeneration();
+                _enabled = value;
+            }
         }
 
         private static readonly System.Collections.Concurrent.ConcurrentDictionary<System.Guid, int[]> _keyOrders = new();

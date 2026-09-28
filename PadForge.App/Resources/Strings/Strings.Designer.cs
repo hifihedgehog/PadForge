@@ -3068,6 +3068,18 @@ public class Strings : INotifyPropertyChanged
     public string AnalogKey_IntlBackslash => Get("AnalogKey_IntlBackslash");
     public string AnalogKey_Extra_Format => Get("AnalogKey_Extra_Format");
     public string AnalogKey_Code_Format => Get("AnalogKey_Code_Format");
+    public string AnalogKey_IntlRo => Get("AnalogKey_IntlRo");
+    public string AnalogKey_IntlYen => Get("AnalogKey_IntlYen");
+    public string AnalogKey_KatakanaHiragana => Get("AnalogKey_KatakanaHiragana");
+    public string AnalogKey_Henkan => Get("AnalogKey_Henkan");
+    public string AnalogKey_Muhenkan => Get("AnalogKey_Muhenkan");
+    public string AnalogKey_Hangul => Get("AnalogKey_Hangul");
+    public string AnalogKey_Hanja => Get("AnalogKey_Hanja");
+    public string AnalogKey_LeftSpace => Get("AnalogKey_LeftSpace");
+    public string AnalogKey_RightSpace => Get("AnalogKey_RightSpace");
+    public string AnalogKey_CenterFn => Get("AnalogKey_CenterFn");
+    public string AnalogKey_RightFn => Get("AnalogKey_RightFn");
+    public string AnalogKey_Position_Format => Get("AnalogKey_Position_Format");
     public string Key_Separator => Get("Key_Separator");
     // Lock keys
     public string Key_NumLock => Get("Key_NumLock");

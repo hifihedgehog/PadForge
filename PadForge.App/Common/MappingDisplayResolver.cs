@@ -1433,6 +1433,31 @@ namespace PadForge.Common
                 return s.AnalogKey_IntlHash;
             if (code == PadForge.Engine.Common.AnalogKeyboard.AnalogKeyCodes.IntlBackslash)
                 return s.AnalogKey_IntlBackslash;
+            switch (code)
+            {
+                case PadForge.Engine.Common.AnalogKeyboard.AnalogKeyCodes.NumpadEqual:
+                    return string.Format(s.Key_Numpad, "=");
+                case PadForge.Engine.Common.AnalogKeyboard.AnalogKeyCodes.IntlRo: return s.AnalogKey_IntlRo;
+                case PadForge.Engine.Common.AnalogKeyboard.AnalogKeyCodes.IntlYen: return s.AnalogKey_IntlYen;
+                case PadForge.Engine.Common.AnalogKeyboard.AnalogKeyCodes.KatakanaHiragana: return s.AnalogKey_KatakanaHiragana;
+                case PadForge.Engine.Common.AnalogKeyboard.AnalogKeyCodes.Henkan: return s.AnalogKey_Henkan;
+                case PadForge.Engine.Common.AnalogKeyboard.AnalogKeyCodes.Muhenkan: return s.AnalogKey_Muhenkan;
+                case PadForge.Engine.Common.AnalogKeyboard.AnalogKeyCodes.Hangul: return s.AnalogKey_Hangul;
+                case PadForge.Engine.Common.AnalogKeyboard.AnalogKeyCodes.Hanja: return s.AnalogKey_Hanja;
+                case PadForge.Engine.Common.AnalogKeyboard.AnalogKeyCodes.LeftSpace: return s.AnalogKey_LeftSpace;
+                case PadForge.Engine.Common.AnalogKeyboard.AnalogKeyCodes.RightSpace: return s.AnalogKey_RightSpace;
+                case PadForge.Engine.Common.AnalogKeyboard.AnalogKeyCodes.CenterFn: return s.AnalogKey_CenterFn;
+                case PadForge.Engine.Common.AnalogKeyboard.AnalogKeyCodes.RightFn: return s.AnalogKey_RightFn;
+            }
+            // The SayoDevice O3C's three unlabeled keys, "Key 1" to "Key 3" as
+            // HallJoy labels them.
+            if (code >= PadForge.Engine.Common.AnalogKeyboard.AnalogKeyCodes.PadKey1
+                && code <= PadForge.Engine.Common.AnalogKeyboard.AnalogKeyCodes.PadKey3)
+                return string.Format(s.AnalogKey_Code_Format,
+                    code - PadForge.Engine.Common.AnalogKeyboard.AnalogKeyCodes.PadKey1 + 1);
+            int position = PadForge.Engine.Common.AnalogKeyboard.AnalogKeyCodes.PositionNumber(code);
+            if (position >= 0)
+                return string.Format(s.AnalogKey_Position_Format, position);
             int oem = PadForge.Engine.Common.AnalogKeyboard.AnalogKeyCodes.OemNumber(code);
             if (oem > 0)
                 return string.Format(s.AnalogKey_Extra_Format, oem);

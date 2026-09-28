@@ -1520,7 +1520,9 @@ namespace PadForge.Common.Input
         // so nothing is retired on a cold cache.
         private volatile HashSet<string> _analogPresentPaths;
         private long _analogNextSweepTicks;
-        private readonly Dictionary<string, long> _analogOpenFailedAt =
+        // When each collection that failed to open, or whose reader gave up,
+        // may be tried again.
+        private readonly Dictionary<string, long> _analogRetryAt =
             new Dictionary<string, long>(StringComparer.OrdinalIgnoreCase);
         // Collections every matching route talked to and none recognized.
         // They are left alone while they stay plugged in, so a keyboard of
@@ -2856,12 +2858,30 @@ namespace PadForge.Common.Input
                 if (_analogInputsSuppressed)
                     return false;
 
+                List<AnalogKeyboardDevice> listening = null;
                 for (int i = 0; i < _analogPendingRegister.Count; i++)
                 {
                     var dev = _analogPendingRegister[i];
                     if (!enabled)
                     {
                         DisposeAnalogKeyboardAsync(dev);
+                        continue;
+                    }
+                    // A route that recognizes its keyboards by their reports
+                    // registers the row at the first key set. Until then the
+                    // collection is only listened to.
+                    if (dev.RegistersOnFirstReport && dev.ReportCount == 0)
+                    {
+                        bool vanished = present != null && !present.Contains(dev.HidPath);
+                        if (dev.IsAttached && !vanished)
+                        {
+                            (listening ??= new List<AnalogKeyboardDevice>()).Add(dev);
+                        }
+                        else
+                        {
+                            if (!vanished) _analogRetryAt[dev.HidPath] = now + _analogOpenRetryMs;
+                            DisposeAnalogKeyboardAsync(dev);
+                        }
                         continue;
                     }
                     // Two collections of one keyboard, or two keyboards that
@@ -2873,7 +2893,7 @@ namespace PadForge.Common.Input
                     {
                         // Wait out the cooldown, or the sweep reopens the
                         // collection and starts its reader every pass.
-                        _analogOpenFailedAt[dev.HidPath] = now;
+                        _analogRetryAt[dev.HidPath] = now + _analogOpenRetryMs;
                         DisposeAnalogKeyboardAsync(dev);
                         continue;
                     }
@@ -2893,6 +2913,7 @@ namespace PadForge.Common.Input
                     }
                 }
                 _analogPendingRegister.Clear();
+                if (listening != null) _analogPendingRegister.AddRange(listening);
 
                 List<string> gone = null;
                 foreach (var kvp in _openedAnalogKeyboards)
@@ -2906,7 +2927,7 @@ namespace PadForge.Common.Input
                     // there (a polled keyboard that never answers) waits out
                     // the cooldown instead of reopening every sweep.
                     if (enabled && dead && !vanished)
-                        _analogOpenFailedAt[kvp.Key] = now;
+                        _analogRetryAt[kvp.Key] = now + _analogOpenRetryMs;
                 }
                 if (gone != null)
                 {
@@ -2930,12 +2951,12 @@ namespace PadForge.Common.Input
                     }
                 }
 
-                if (present != null && _analogOpenFailedAt.Count > 0)
+                if (present != null && _analogRetryAt.Count > 0)
                 {
                     List<string> stale = null;
-                    foreach (var key in _analogOpenFailedAt.Keys)
+                    foreach (var key in _analogRetryAt.Keys)
                         if (!present.Contains(key)) (stale ??= new List<string>()).Add(key);
-                    if (stale != null) foreach (var key in stale) _analogOpenFailedAt.Remove(key);
+                    if (stale != null) foreach (var key in stale) _analogRetryAt.Remove(key);
                 }
                 if (present != null && _analogNotSupported.Count > 0)
                     _analogNotSupported.RemoveWhere(key => !present.Contains(key));
@@ -2968,17 +2989,20 @@ namespace PadForge.Common.Input
                     // One row per keyboard: a keyboard already read through
                     // another collection (a Wooting's v1 interface beside its
                     // v2) is not opened twice.
+                    // A collection an open row reads as its companion belongs
+                    // to that row too.
                     bool taken = false;
                     foreach (var open in _openedAnalogKeyboards.Values)
-                        if (string.Equals(open.IdentityKey, candidate.IdentityKey, StringComparison.OrdinalIgnoreCase))
+                        if (string.Equals(open.IdentityKey, candidate.IdentityKey, StringComparison.OrdinalIgnoreCase)
+                            || string.Equals(open.CompanionPath, candidate.Path, StringComparison.OrdinalIgnoreCase))
                         { taken = true; break; }
                     for (int i = 0; i < _analogPendingRegister.Count && !taken; i++)
                         if (string.Equals(_analogPendingRegister[i].HidPath, candidate.Path, StringComparison.OrdinalIgnoreCase)
+                            || string.Equals(_analogPendingRegister[i].CompanionPath, candidate.Path, StringComparison.OrdinalIgnoreCase)
                             || string.Equals(_analogPendingRegister[i].IdentityKey, candidate.IdentityKey, StringComparison.OrdinalIgnoreCase))
                             taken = true;
                     if (taken) continue;
-                    if (_analogOpenFailedAt.TryGetValue(candidate.Path, out long failedAt)
-                        && now - failedAt < _analogOpenRetryMs)
+                    if (_analogRetryAt.TryGetValue(candidate.Path, out long retryAt) && now < retryAt)
                         continue;
                 }
 
@@ -2992,6 +3016,8 @@ namespace PadForge.Common.Input
                         $"Analog keyboard: opened '{dev.Name}' ({dev.Protocol}, {candidate.VendorId:X4}:{candidate.ProductId:X4})",
                     AnalogKeyboardOpenResult.NotSupported =>
                         $"Analog keyboard: no route recognized '{candidate.Name}' ({candidate.VendorId:X4}:{candidate.ProductId:X4}), left alone while plugged in",
+                    AnalogKeyboardOpenResult.RetryLater =>
+                        $"Analog keyboard: '{candidate.Name}' did not complete a handshake, retry in {dev.RetryAfterMs} ms",
                     _ => $"Analog keyboard: open failed for '{candidate.Name}', retry in {_analogOpenRetryMs / 1000} s",
                 });
                 lock (_analogLock)
@@ -3001,10 +3027,11 @@ namespace PadForge.Common.Input
                     {
                         dev.Dispose();
                         if (result == AnalogKeyboardOpenResult.NotSupported) _analogNotSupported.Add(candidate.Path);
-                        else _analogOpenFailedAt[candidate.Path] = now;
+                        else if (result == AnalogKeyboardOpenResult.RetryLater) _analogRetryAt[candidate.Path] = now + dev.RetryAfterMs;
+                        else _analogRetryAt[candidate.Path] = now + _analogOpenRetryMs;
                         continue;
                     }
-                    _analogOpenFailedAt.Remove(candidate.Path);
+                    _analogRetryAt.Remove(candidate.Path);
                     _analogPendingRegister.Add(dev);
                     _analogAnyRows = true;
                 }

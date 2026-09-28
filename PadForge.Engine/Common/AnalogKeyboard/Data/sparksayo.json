@@ -1,0 +1,43 @@
+{
+  "sparklink_models": [
+    {"pid": 1321, "name": "IROK MG75 Max"},
+    {"pid": 1320, "name": "IROK RA68"},
+    {"pid": 1322, "name": "IROK MG68 Plus"},
+    {"pid": 1323, "name": "IROK Mars75 / Mars75 Pro"},
+    {"pid": 1325, "name": "IROK Mercury68 Max"},
+    {"pid": 1324, "name": "IROK ND68 Pro"},
+    {"pid": 1344, "name": "IROK Mercury68 SE (JingTai V2)"},
+    {"pid": 1329, "name": "IROK ND63 Ultra"},
+    {"pid": 7178, "name": "EWEADN X87HE"},
+    {"pid": 7180, "name": "EWEADN DEEP80 Max HE (magnetic version)"},
+    {"pid": 7186, "name": "EWEADN DK68 HE"},
+    {"pid": 7188, "name": "EWEADN DEEP68 Pro HE"},
+    {"pid": 7194, "name": "EWEADN DK68 V2 HE"},
+    {"pid": 7199, "name": "EWEADN DK68 HE"},
+    {"pid": 7203, "name": "EWEADN DK68 Pro HE"},
+    {"pid": 7204, "name": "EWEADN ES68"},
+    {"pid": 7211, "name": "EWEADN DK68 Star HE / DK63 Star HE"},
+    {"pid": 7212, "name": "EWEADN DK68 Pro HE"},
+    {"pid": 7215, "name": "EWEADN ES68 EVO"},
+    {"pid": 7223, "name": "EWEADN Gamma75 HE (EXX collaboration)"},
+    {"pid": 7228, "name": "EWEADN DK68 V2 HE"},
+    {"pid": 7229, "name": "EWEADN DK80 HE"},
+    {"pid": 7237, "name": "EWEADN Gamma75 HE (EXX collaboration)"},
+    {"pid": 7242, "name": "EWEADN ES68 Lite"},
+    {"pid": 7244, "name": "EWEADN ES68 EVO"},
+    {"pid": 9992, "name": "EWEADN DK75 E HE"},
+    {"pid": 9993, "name": "EWEADN DK75 Pro HE"},
+    {"pid": 9994, "name": "EWEADN DK75 HE"},
+    {"pid": 24065, "name": "EWEADN DK63 HE"}
+  ],
+  "sparkplayjoy_6x21_identities": [
+    {"vid": 7330, "pid": 6402},
+    {"vid": 7330, "pid": 6401},
+    {"vid": 7333, "pid": 1033},
+    {"vid": 7333, "pid": 8705},
+    {"vid": 7333, "pid": 8706},
+    {"vid": 7330, "pid": 8705}
+  ],
+  "sayo_o3c_factory": [29, 27, 6],
+  "sayo_o3c_channels": [1136, 1137, 1138]
+}

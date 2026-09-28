@@ -248,7 +248,7 @@
   <data name="Dashboard_EnableLightsync" xml:space="preserve"><value>Refléter la barre lumineuse sur Logitech LIGHTSYNC</value></data>
   <data name="Dashboard_LightsyncWaiting" xml:space="preserve"><value>Logitech G HUB introuvable. Nouvelle tentative.</value></data>
   <data name="Dashboard_LightsyncConnected" xml:space="preserve"><value>Connecté à Logitech LIGHTSYNC</value></data>
-  <data name="Dashboard_LightsyncFooter" xml:space="preserve"><value>Nécessite Logitech G HUB (ou Logitech Gaming Software). Fonctionne avec toute manette physique : la couleur vient de la manette virtuelle que le jeu peint.</value></data>
+  <data name="Dashboard_LightsyncFooter" xml:space="preserve"><value>Nécessite Logitech G HUB (ou Logitech Gaming Software). Fonctionne avec toute manette physique : la couleur vient de la manette virtuelle que le jeu peint.</value></data>
   <data name="Dashboard_LightbarMirrors" xml:space="preserve"><value>Reflets de la barre lumineuse</value></data>
   <data name="Dashboard_EnableDsu" xml:space="preserve"><value>Activer le serveur de mouvement DSU (CemuHook Motion Provider protocol)</value></data>
   <data name="Dashboard_Port" xml:space="preserve"><value>Port</value></data>
@@ -267,7 +267,7 @@
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Connecté, aucune touche détectée. Dans Logitech Gaming Software, faites de PadForge le profil persistant.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>En cours, {0} événements de touche</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Lire les claviers analogiques</value></data>
-  <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Lit l’enfoncement de chaque touche sur les claviers Wooting, Razer Huntsman analogiques, NuPhy HE, DrunkDeer, Keychron HE, Lemokey HE, Madlions HE et Redragon K709 HE, ainsi que sur le Razer Tartarus Pro, chacun comme sa propre ligne d’appareil. Les appareils Razer nécessitent Razer Synapse en cours d’exécution. Les claviers DrunkDeer, Keychron, Lemokey, Madlions et Redragon sont interrogés par le canal qu’utilise leur propre logiciel de configuration, fermez donc ce logiciel tant que cette option est activée.</value></data>
+  <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Lit l’enfoncement de chaque touche sur les claviers analogiques de Wooting, Razer, SteelSeries, Keychron, NuPhy, DrunkDeer, AULA et d’autres fabricants, chacun comme sa propre ligne d’appareil. La documentation liste chaque modèle pris en charge. Les claviers Razer nécessitent Razer Synapse en cours d’exécution. La plupart des autres sont interrogés par le canal qu’utilise leur propre logiciel de configuration, fermez donc ce logiciel tant que cette option est activée.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>Aucun clavier analogique pris en charge n’a été trouvé.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_Reading_Format" xml:space="preserve"><value>Lecture de {0}.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_Synapse_Format" xml:space="preserve"><value>Lancez Razer Synapse pour lire {0}.</value></data>
@@ -1245,6 +1245,18 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="AnalogKey_IntlBackslash" xml:space="preserve"><value>Intl \</value></data>
   <data name="AnalogKey_Extra_Format" xml:space="preserve"><value>Touche supplémentaire {0}</value></data>
   <data name="AnalogKey_Code_Format" xml:space="preserve"><value>Touche {0}</value></data>
+  <data name="AnalogKey_IntlRo" xml:space="preserve"><value>Intl Ro</value></data>
+  <data name="AnalogKey_IntlYen" xml:space="preserve"><value>Intl ¥</value></data>
+  <data name="AnalogKey_KatakanaHiragana" xml:space="preserve"><value>Katakana/Hiragana</value></data>
+  <data name="AnalogKey_Henkan" xml:space="preserve"><value>Henkan</value></data>
+  <data name="AnalogKey_Muhenkan" xml:space="preserve"><value>Muhenkan</value></data>
+  <data name="AnalogKey_Hangul" xml:space="preserve"><value>Hangul</value></data>
+  <data name="AnalogKey_Hanja" xml:space="preserve"><value>Hanja</value></data>
+  <data name="AnalogKey_LeftSpace" xml:space="preserve"><value>Espace gauche</value></data>
+  <data name="AnalogKey_RightSpace" xml:space="preserve"><value>Espace droit</value></data>
+  <data name="AnalogKey_CenterFn" xml:space="preserve"><value>Fn central</value></data>
+  <data name="AnalogKey_RightFn" xml:space="preserve"><value>Fn droit</value></data>
+  <data name="AnalogKey_Position_Format" xml:space="preserve"><value>Position de touche {0}</value></data>
   <data name="Key_Separator" xml:space="preserve"><value>Séparateur</value></data>
   <!-- Lock keys -->
   <data name="Key_NumLock" xml:space="preserve"><value>Verr Num</value></data>
@@ -2719,7 +2731,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Tour_Status_Title" xml:space="preserve"><value>Barre d'instruments</value></data>
   <data name="WiiPair_FamilyDs3" xml:space="preserve"><value>Sony DualShock 3</value></data>
   <data name="About_OpenVR" xml:space="preserve"><value>OpenVR API</value></data>
-  <data name="About_OpenVRDesc" xml:space="preserve"><value>API client OpenVR de Valve (BSD 3-Clause) : casques et manettes de mouvement VR comme sources d’entrée. Le runtime natif est chargé depuis votre installation SteamVR.</value></data>
+  <data name="About_OpenVRDesc" xml:space="preserve"><value>API client OpenVR de Valve (BSD 3-Clause) : casques et manettes de mouvement VR comme sources d’entrée. Le runtime natif est chargé depuis votre installation SteamVR.</value></data>
   <data name="Vr_Status_Running" xml:space="preserve"><value>En cours d’exécution</value></data>
   <data name="Vr_Status_DriverConnected" xml:space="preserve"><value>En cours d’exécution, pilote connecté</value></data>
   <data name="Vr_Status_ControllersLive" xml:space="preserve"><value>En cours d’exécution, manettes actives</value></data>
@@ -2790,7 +2802,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Mapping_MouseGestureClick" xml:space="preserve"><value>Clic</value></data>
   <data name="Mapping_MouseGesture_Format" xml:space="preserve"><value>Geste souris : {0} + {1}</value></data>
   <data name="MacroAction_Type_PointerModeSet" xml:space="preserve"><value>Définir le mode du pointeur</value></data>
-  <data name="MacroAction_PointerModeSet_Format" xml:space="preserve"><value>Définir le mode du pointeur : {0}</value></data>
+  <data name="MacroAction_PointerModeSet_Format" xml:space="preserve"><value>Définir le mode du pointeur : {0}</value></data>
   <data name="MacroAction_PointerModeSet_Tooltip" xml:space="preserve"><value>Définit le mode du pointeur Wii sur celui sélectionné ci-dessous pour chaque télécommande IR du slot.</value></data>
   <data name="Macro_PointerSetMode_Hint" xml:space="preserve"><value>Choisissez le mode de pointeur que cette action applique.</value></data>
   <data name="Macro_PointerSetModeName" xml:space="preserve"><value>Mode de pointeur</value></data>
@@ -3365,7 +3377,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_RumbleAudio_StopTest" xml:space="preserve"><value>Arrêter</value></data>
   <data name="Pad_RumbleAudio_StopTest_Tooltip" xml:space="preserve"><value>Arrête le son de test ou le balayage.</value></data>
   <data name="Mapping_AnyNfcTag" xml:space="preserve"><value>N'importe quel tag NFC</value></data>
-  <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>Tag NFC : {0}</value></data>
+  <data name="Mapping_NfcTagNamed" xml:space="preserve"><value>Tag NFC : {0}</value></data>
   <data name="Mapping_FilterSearch_Placeholder" xml:space="preserve"><value>Filtrer les entrées (Ctrl+F)</value></data>
   <data name="Mapping_FilterDevices_Tooltip" xml:space="preserve"><value>Choisir les entrées d’appareils proposées par les sélecteurs</value></data>
   <data name="Mapping_FilterDevices_Header" xml:space="preserve"><value>Visible dans le sélecteur</value></data>
@@ -3421,7 +3433,7 @@ Voulez-vous que PadForge les désinstalle maintenant ? Cette opération nécessi
   <data name="Starter_DialogTitle" xml:space="preserve"><value>Profils de départ</value></data>
   <data name="Starter_Intro" xml:space="preserve"><value>Des profils prêts à l’emploi pour tout un genre. Choisissez-en un, affectez n’importe quelle manette et jouez. L’enregistrement crée un profil ordinaire, modifiable.</value></data>
   <data name="Starter_Save" xml:space="preserve"><value>Enregistrer le profil</value></data>
-  <data name="Status_StarterImported_Format" xml:space="preserve"><value>Profil de départ « {0} » ajouté.</value></data>
+  <data name="Status_StarterImported_Format" xml:space="preserve"><value>Profil de départ « {0} » ajouté.</value></data>
   <data name="Starter_PointClick_Name" xml:space="preserve"><value>Pointer et cliquer</value></data>
   <data name="Starter_PointClick_Description" xml:space="preserve"><value>Jeux d’aventure et tout ce qui se joue avec un curseur et deux verbes.</value></data>
   <data name="Starter_Strategy_Name" xml:space="preserve"><value>Stratégie</value></data>
@@ -3660,8 +3672,8 @@ Voulez-vous que PadForge les désinstalle maintenant ? Cette opération nécessi
   <data name="About_OpenXrRefsDesc" xml:space="preserve"><value>L’interface d’exécution, la disposition des structures et les clés de registre derrière l’entrée du casque et des manettes de mouvement, lues dans les en-têtes du SDK OpenXR de Khronos (Apache-2.0) et recoupées avec VirtualDesktop-OpenXR (MIT). PadForge dialogue avec votre propre runtime installé et ne distribue aucun code Khronos.</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Références du SDK G-key de Logitech</value></data>
   <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>La disposition du mot d’événement derrière l’entrée des touches G provient de LogitechGkeyLib.h du SDK. L’ordre de recherche et l’arrêt de la bibliothèque suivent GKey.cpp de Mumble (BSD 3-Clause). PadForge charge la bibliothèque présente sur la machine et ne distribue aucun code Logitech.</value></data>
-  <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>Soup et AnalogSense</value></data>
-  <data name="About_AnalogKeyboardRefsDesc" xml:space="preserve"><value>Les formats de rapport et les tables de touches de l’entrée des claviers analogiques suivent Soup et l’AnalogSense JavaScript SDK (MIT, Calamity, Inc.), vérifiés avec le Wooting Analog SDK (MPL-2.0). Le format du Razer Tartarus Pro suit le commit Tartarus Pro du fork de Soup de DenkiSuki (MIT).</value></data>
+  <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>HallJoy, Soup et AnalogSense</value></data>
+  <data name="About_AnalogKeyboardRefsDesc" xml:space="preserve"><value>L’entrée des claviers analogiques porte en C# les routes de clavier, les tables de touches et les catalogues de modèles de HallJoy (AGPL-3.0, PashOK7) et suit Soup et l’AnalogSense JavaScript SDK (MIT, Calamity, Inc.), vérifiés avec le Wooting Analog SDK (MPL-2.0). D’autres claviers suivent AnalogKeys (MIT, Nisayera), KeyAxis (MIT, RigZeeel), HallEffectAnalogMapper (MIT, Ricards Mironovs), libhmk et hmkconf (GPL-3.0, peppapighs) ainsi que les forks de Soup de DenkiSuki, LeiterConsulting et paysdelest (MIT). Les formats de rapport et les tables de touches viennent aussi des logiciels de configuration Synapse Web de Razer et NuPhyIO de NuPhy, d’OpenRazer (GPL-2.0), de razer-analog-keyboard d’Abbytech, de TinyUSB (MIT) et des notes de captures de Sainan.</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
   <data name="About_UsbipWin2Desc" xml:space="preserve"><value>Transport USB de Vadym Hrynchyshyn pour les contrôleurs USB composites de HIDMaestro. Son programme d'installation signé est intégré à HIDMaestro et s'exécute à la première création d'un contrôleur composite. BSD 2-Clause.</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">

@@ -46,8 +46,10 @@ namespace PadForge.Engine.Common.AnalogKeyboard
         /// position, key code low byte, a packed byte (bit 0 actuated, bits 2
         /// to 5 the key namespace, bits 6 and 7 the value's low bits) and the
         /// value's high byte. The value is 10-bit. Replaces
-        /// <paramref name="target"/>.</summary>
-        public static bool ParseWootingV2(ReadOnlySpan<byte> raw, AnalogKeyInputState target)
+        /// <paramref name="target"/>. On the boards with split keys the
+        /// matrix position also publishes the key's physical alias
+        /// (<see cref="WootingSplitKey"/>).</summary>
+        public static bool ParseWootingV2(ReadOnlySpan<byte> raw, AnalogKeyInputState target, ushort productId = 0)
         {
             var data = StripZeroReportId(raw);
             target.ResetForReuse();
@@ -57,11 +59,39 @@ namespace PadForge.Engine.Common.AnalogKeyboard
                 int packed = data[i + 2];
                 int ns = (packed >> 2) & 0x0F;
                 int value = (data[i + 3] << 2) | ((packed >> 6) & 0x03);
+                if (value == 0) continue;
+                int split = WootingSplitKey(productId, data[i]);
+                if (split != 0) target.Set(split, value / 1023f);
                 int code = (ns << 8) | key;
-                if (code == 0 || value == 0) continue;
+                if (code == 0) continue;
                 target.Set(code, value / 1023f);
             }
             return true;
+        }
+
+        /// <summary>The physical alias a Wooting v2 matrix position carries,
+        /// or 0. HallJoy's halljoy_wooting_physical.h: on the 60HE v2 (0x1340)
+        /// and the 80HE+ (0x1410), row 5 column 4 is the left Space half,
+        /// column 8 the right half, column 6 the center Fn key, and column 13
+        /// on the 60HE v2 or column 12 on the 80HE+ the right Fn key. The
+        /// position byte is row in bits 5 to 7 and column in bits 0 to 4.
+        /// HallJoy matches the exact product ID. This matches it under the
+        /// gamepad-mode mask, because the mode changes the product ID's low
+        /// nibble and not the key matrix.</summary>
+        public static int WootingSplitKey(ushort productId, int matrixPosition)
+        {
+            int model = productId & AnalogKeyboardCatalog.WootingPidModeMask;
+            if (model != 0x1340 && model != 0x1410) return 0;
+            if ((matrixPosition >> 5) != 5) return 0;
+            return (matrixPosition & 0x1F) switch
+            {
+                4 => AnalogKeyCodes.LeftSpace,
+                8 => AnalogKeyCodes.RightSpace,
+                6 => AnalogKeyCodes.CenterFn,
+                12 when model == 0x1410 => AnalogKeyCodes.RightFn,
+                13 when model == 0x1340 => AnalogKeyCodes.RightFn,
+                _ => 0,
+            };
         }
 
         /// <summary>Razer Huntsman V2 Analog and Mini Analog, input report 7:
@@ -83,20 +113,28 @@ namespace PadForge.Engine.Common.AnalogKeyboard
             return true;
         }
 
-        /// <summary>Razer Huntsman V3 Pro family, input report 11: triples of
-        /// Razer key number, u8 value and one byte both references skip.
-        /// Replaces <paramref name="target"/>.</summary>
-        public static bool ParseRazerHuntsmanV3(ReadOnlySpan<byte> raw, AnalogKeyInputState target)
+        /// <summary>Razer Huntsman V3 family, input report 11: triples of
+        /// Razer key number and a big-endian u16 travel, ended by key 0.
+        /// Razer's own parser in Synapse Web (parseAnalogADCNotificationEvents,
+        /// <c>getUint16</c> over bytes 2 and 3 of the report) reads the value
+        /// this way, and its device configs give the full scale as
+        /// <c>eventDataSize</c> (<see cref="AnalogKeyboardCatalog.RazerFullScale"/>).
+        /// Abbytech's reader decodes the same (key, u16) list. Soup and
+        /// AnalogSense.js read the high byte over 255, the same depth with 8
+        /// bits of it. Replaces <paramref name="target"/>.</summary>
+        public static bool ParseRazerHuntsmanV3(ReadOnlySpan<byte> raw, AnalogKeyInputState target, ushort productId)
         {
             if (raw.Length < 1 || raw[0] != AnalogKeyboardCatalog.RazerHuntsmanV3ReportId) return false;
             var data = raw.Slice(1);
+            float fullScale = AnalogKeyboardCatalog.RazerFullScale(productId);
             target.ResetForReuse();
             for (int i = 0; i + 3 <= data.Length; i += 3)
             {
                 int razer = data[i];
                 if (razer == 0) break;
                 int code = AnalogKeyCodes.RazerToCode(razer);
-                if (code != 0) target.Set(code, data[i + 1] / 255f);
+                int travel = (data[i + 1] << 8) | data[i + 2];
+                if (code != 0 && travel != 0) target.Set(code, Math.Min(travel / fullScale, 1f));
             }
             return true;
         }
@@ -116,28 +154,6 @@ namespace PadForge.Engine.Common.AnalogKeyboard
             return true;
         }
 
-        /// <summary>The full-scale travel value of a NuPhy board: 1600 on the
-        /// Air75 HE and Air60 HE, 800 on the others (Soup).</summary>
-        public static float NuPhyFullScale(ushort productId)
-            => productId == 0x6120 || productId == 0xFEE0 ? 1600f : 800f;
-
-        /// <summary>NuPhy HE line: a report of type 0xA0 carries ONE key, a
-        /// big-endian u16 key number at byte 2 and a big-endian u16 value at
-        /// byte 4, so it updates that key and leaves the others. A value of 0
-        /// is the key's release. Soup's reading, the one HallJoy validated on
-        /// hardware. AnalogSense.js reads a u8 at byte 7 instead.</summary>
-        public static bool ParseNuPhy(ReadOnlySpan<byte> raw, AnalogKeyInputState target, ushort productId)
-        {
-            var data = StripZeroReportId(raw);
-            if (data.Length < 6 || data[0] != 0xA0) return false;
-            int nuphy = (data[2] << 8) | data[3];
-            int value = (data[4] << 8) | data[5];
-            int code = AnalogKeyCodes.NuPhyToCode(nuphy);
-            if (code == 0) return true;
-            target.Set(code, value / NuPhyFullScale(productId));
-            return true;
-        }
-
         /// <summary>Dispatch for the pushed families.</summary>
         public static bool ParsePushed(AnalogKeyboardProtocol protocol, ReadOnlySpan<byte> raw,
             AnalogKeyInputState target, ushort vendorId, ushort productId)
@@ -147,15 +163,13 @@ namespace PadForge.Engine.Common.AnalogKeyboard
                 case AnalogKeyboardProtocol.WootingV1:
                     return ParseWootingV1(raw, target, vendorId == AnalogKeyboardCatalog.LegacyWootingVendorId);
                 case AnalogKeyboardProtocol.WootingV2:
-                    return ParseWootingV2(raw, target);
+                    return ParseWootingV2(raw, target, productId);
                 case AnalogKeyboardProtocol.RazerHuntsmanV2:
                     return ParseRazerHuntsmanV2(raw, target);
                 case AnalogKeyboardProtocol.RazerHuntsmanV3:
-                    return ParseRazerHuntsmanV3(raw, target);
+                    return ParseRazerHuntsmanV3(raw, target, productId);
                 case AnalogKeyboardProtocol.RazerTartarusPro:
                     return ParseRazerTartarusPro(raw, target);
-                case AnalogKeyboardProtocol.NuPhy:
-                    return ParseNuPhy(raw, target, productId);
             }
             return false;
         }

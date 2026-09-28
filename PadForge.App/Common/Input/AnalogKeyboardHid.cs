@@ -286,6 +286,10 @@ namespace PadForge.Common.Input
                     OutputReportLength = caps.OutputReportByteLength,
                     FeatureReportLength = caps.FeatureReportByteLength,
                     ProductString = VendorHidRuntime.ReadProductString(handle) ?? string.Empty,
+                    RawProductString = ReadRawString(handle, SonyHeadsetHid.HidD_GetProductString),
+                    SetupManufacturer = DevNodeString(devInst, DeviceManufacturer),
+                    SetupFriendlyName = DevNodeString(devInst, DeviceFriendlyName),
+                    SetupDescription = DevNodeString(devInst, DeviceDescription),
                     ManufacturerString = ReadString(handle, HidD_GetManufacturerString),
                     SerialNumber = ReadString(handle, HidD_GetSerialNumberString),
                     ContainerId = ContainerId(devInst),
@@ -335,12 +339,34 @@ namespace PadForge.Common.Input
         private delegate bool StringGetter(SafeFileHandle handle, byte[] buffer, uint bufferLength);
 
         private static string ReadString(SafeFileHandle handle, StringGetter getter)
+            => ReadRawString(handle, getter).Trim();
+
+        private static string ReadRawString(SafeFileHandle handle, StringGetter getter)
         {
             var buffer = new byte[512];
             if (!getter(handle, buffer, (uint)buffer.Length)) return string.Empty;
             string s = System.Text.Encoding.Unicode.GetString(buffer);
             int nul = s.IndexOf('\0');
-            return (nul >= 0 ? s.Substring(0, nul) : s).Trim();
+            return nul >= 0 ? s.Substring(0, nul) : s;
+        }
+
+        // DEVPKEY_Device_DeviceDesc, _Manufacturer and _FriendlyName.
+        private const uint DeviceDescription = 2, DeviceManufacturer = 13, DeviceFriendlyName = 14;
+        private static readonly Guid DeviceProperties = new("a45c254e-df1c-4efd-8020-67d146a850e0");
+        private const uint DEVPROP_TYPE_STRING = 0x00000012;
+
+        /// <summary>A string property of the collection's devnode, or empty.</summary>
+        private static string DevNodeString(uint devInst, uint pid)
+        {
+            if (devInst == 0) return string.Empty;
+            var key = new DEVPROPKEY { fmtid = DeviceProperties, pid = pid };
+            var buffer = new byte[1024];
+            uint size = (uint)buffer.Length;
+            if (CM_Get_DevNode_PropertyW(devInst, ref key, out uint type, buffer, ref size, 0) != 0) return string.Empty;
+            if (type != DEVPROP_TYPE_STRING || size < 2) return string.Empty;
+            string s = System.Text.Encoding.Unicode.GetString(buffer, 0, (int)Math.Min(size, (uint)buffer.Length));
+            int nul = s.IndexOf('\0');
+            return nul >= 0 ? s.Substring(0, nul) : s;
         }
 
         /// <summary>DEVPKEY_Device_ContainerId of the collection's devnode, as
@@ -429,8 +455,10 @@ namespace PadForge.Common.Input
     /// </summary>
     internal sealed class AnalogKeyboardHidChannel : IAnalogKeyboardTransport
     {
-        private const int WriteTimeoutMs = 1000;
-        private const int IoctlTimeoutMs = 500;
+        private const int DefaultWriteTimeoutMs = 1000;
+        private const int DefaultIoctlTimeoutMs = 500;
+        private const int ErrorAccessDenied = 5;
+        private const int ErrorSharingViolation = 32;
 
         private const uint IOCTL_HID_SET_FEATURE = 0x000B0191;
         private const uint IOCTL_HID_GET_FEATURE = 0x000B0192;
@@ -456,10 +484,14 @@ namespace PadForge.Common.Input
         private readonly ManualResetEvent _ioctlEvent = new(false);
         private volatile bool _aborted;
         private bool _closed;
+        private readonly int _writeTimeoutMs;
+        private readonly int _ioctlTimeoutMs;
 
         private AnalogKeyboardHidChannel(SafeFileHandle handle, SafeFileHandle readHandle,
-            int inputLength, int outputLength, int featureLength)
+            int inputLength, int outputLength, int featureLength, int writeTimeoutMs, int transferTimeoutMs)
         {
+            _writeTimeoutMs = writeTimeoutMs > 0 ? writeTimeoutMs : DefaultWriteTimeoutMs;
+            _ioctlTimeoutMs = transferTimeoutMs > 0 ? transferTimeoutMs : DefaultIoctlTimeoutMs;
             _handle = handle;
             _readHandle = readHandle ?? handle;
             _inputLength = inputLength;
@@ -493,12 +525,25 @@ namespace PadForge.Common.Input
         {
             LastOpenError = 0;
             uint access = SonyHeadsetHid.GENERIC_READ | (route.Writable ? SonyHeadsetHid.GENERIC_WRITE : 0);
-            uint share = route.Exclusive ? 0u : SonyHeadsetHid.FILE_SHARE_READ | SonyHeadsetHid.FILE_SHARE_WRITE;
-            var handle = SonyHeadsetHid.CreateFile(info.Path, access, share,
-                IntPtr.Zero, SonyHeadsetHid.OPEN_EXISTING, SonyHeadsetHid.FILE_FLAG_OVERLAPPED, IntPtr.Zero);
+            const uint shared = SonyHeadsetHid.FILE_SHARE_READ | SonyHeadsetHid.FILE_SHARE_WRITE;
+            uint share = route.Exclusive ? 0u : shared;
+            var handle = CreateOverlapped(info.Path, access, share);
+            // The route's fallback ladder: shared, then no access rights,
+            // which still carries feature reports (HallJoy's ATTACK SHARK open).
+            if (handle.IsInvalid && route.Exclusive && route.OpenFallback
+                && (LastOpenError == ErrorSharingViolation || LastOpenError == ErrorAccessDenied))
+            {
+                handle.Dispose();
+                handle = CreateOverlapped(info.Path, access, shared);
+                if (handle.IsInvalid
+                    && (LastOpenError == ErrorSharingViolation || LastOpenError == ErrorAccessDenied))
+                {
+                    handle.Dispose();
+                    handle = CreateOverlapped(info.Path, 0, shared);
+                }
+            }
             if (handle.IsInvalid)
             {
-                LastOpenError = Marshal.GetLastWin32Error();
                 handle.Dispose();
                 return null;
             }
@@ -524,7 +569,17 @@ namespace PadForge.Common.Input
                 AnalogKeyboardHidRuntime.HidD_SetNumInputBuffers(readHandle ?? handle, (uint)route.InputBuffers);
             AnalogKeyboardHidRuntime.HidD_FlushQueue(readHandle ?? handle);
             return new AnalogKeyboardHidChannel(handle, readHandle, inputLength,
-                info.OutputReportLength, info.FeatureReportLength);
+                info.OutputReportLength, info.FeatureReportLength, route.WriteTimeoutMs, route.TransferTimeoutMs);
+        }
+
+        /// <summary>CreateFile for overlapped I/O, recording the error of a
+        /// failed open in <see cref="LastOpenError"/>.</summary>
+        private static SafeFileHandle CreateOverlapped(string path, uint access, uint share)
+        {
+            var handle = SonyHeadsetHid.CreateFile(path, access, share,
+                IntPtr.Zero, SonyHeadsetHid.OPEN_EXISTING, SonyHeadsetHid.FILE_FLAG_OVERLAPPED, IntPtr.Zero);
+            if (handle.IsInvalid) LastOpenError = Marshal.GetLastWin32Error();
+            return handle;
         }
 
         public int Receive(byte[] buffer, int timeoutMs)
@@ -594,19 +649,23 @@ namespace PadForge.Common.Input
             {
                 EventHandle = _writeEvent.SafeWaitHandle.DangerousGetHandle()
             }, _writeOverlapped, false);
-            if (WriteFile(_handle, _writePin.AddrOfPinnedObject(), (uint)length, IntPtr.Zero, _writeOverlapped))
-                return true;
-            if (Marshal.GetLastWin32Error() != SonyHeadsetHid.ERROR_IO_PENDING) return false;
-            if (!_writeEvent.WaitOne(WriteTimeoutMs))
+            if (!WriteFile(_handle, _writePin.AddrOfPinnedObject(), (uint)length, IntPtr.Zero, _writeOverlapped))
             {
-                // Cancel only requests the abort. The buffer and OVERLAPPED
-                // belong to the kernel until the write completes, so block on
-                // that before returning (the RawHidOutput drain).
-                SonyHeadsetHid.CancelIoEx(_handle, _writeOverlapped);
-                SonyHeadsetHid.GetOverlappedResult(_handle, _writeOverlapped, out _, true);
-                return false;
+                if (Marshal.GetLastWin32Error() != SonyHeadsetHid.ERROR_IO_PENDING) return false;
+                if (!_writeEvent.WaitOne(_writeTimeoutMs))
+                {
+                    // Cancel only requests the abort. The buffer and OVERLAPPED
+                    // belong to the kernel until the write completes, so block on
+                    // that before returning (the RawHidOutput drain).
+                    SonyHeadsetHid.CancelIoEx(_handle, _writeOverlapped);
+                    SonyHeadsetHid.GetOverlappedResult(_handle, _writeOverlapped, out _, true);
+                    return false;
+                }
             }
-            return SonyHeadsetHid.GetOverlappedResult(_handle, _writeOverlapped, out _, false);
+            // A write counts only when the whole report went out, the check
+            // HallJoy's routes make on every write.
+            return SonyHeadsetHid.GetOverlappedResult(_handle, _writeOverlapped, out uint written, false)
+                   && written == (uint)length;
         }
 
         public bool SendOutputReport(byte[] report)
@@ -648,7 +707,7 @@ namespace PadForge.Common.Input
             bool done = DeviceIoControl(_handle, code, buffer, (uint)length,
                 output ? buffer : IntPtr.Zero, output ? (uint)length : 0, IntPtr.Zero, _ioctlOverlapped);
             if (!done && Marshal.GetLastWin32Error() != SonyHeadsetHid.ERROR_IO_PENDING) return false;
-            if (!done && !_ioctlEvent.WaitOne(IoctlTimeoutMs))
+            if (!done && !_ioctlEvent.WaitOne(_ioctlTimeoutMs))
             {
                 SonyHeadsetHid.CancelIoEx(_handle, _ioctlOverlapped);
                 SonyHeadsetHid.GetOverlappedResult(_handle, _ioctlOverlapped, out _, true);

@@ -37,6 +37,19 @@ namespace PadForge.Engine.Common.AnalogKeyboard
         public string ManufacturerString = string.Empty;
         public string SerialNumber = string.Empty;
 
+        /// <summary>The product string as the device returns it, cut at its
+        /// first NUL and not trimmed, for the routes that compare it the way
+        /// their reference does.</summary>
+        public string RawProductString = string.Empty;
+
+        /// <summary>The collection devnode's manufacturer, friendly name and
+        /// description (DEVPKEY_Device_Manufacturer, FriendlyName and
+        /// DeviceDesc), the strings SetupAPI returns for SPDRP_MFG,
+        /// SPDRP_FRIENDLYNAME and SPDRP_DEVICEDESC. Empty when Windows has none.</summary>
+        public string SetupManufacturer = string.Empty;
+        public string SetupFriendlyName = string.Empty;
+        public string SetupDescription = string.Empty;
+
         /// <summary>DEVPKEY_Device_ContainerId: every collection of one
         /// physical device shares it. Empty when Windows reports none.</summary>
         public string ContainerId = string.Empty;

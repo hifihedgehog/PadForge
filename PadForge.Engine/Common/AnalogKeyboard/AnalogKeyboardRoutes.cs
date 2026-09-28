@@ -32,9 +32,49 @@ namespace PadForge.Engine.Common.AnalogKeyboard
         /// carry no tag and would interleave with another program's.</summary>
         public bool Exclusive { get; init; }
 
+        /// <summary>For an exclusive route: when the open fails because another
+        /// handle holds the collection (error 32) or access is denied (error
+        /// 5), open it shared for reading and writing, then with no access
+        /// rights, which still carries feature reports. HallJoy's ATTACK SHARK
+        /// open ladder (attackshark_pro_diagnostic.cpp:228-235).</summary>
+        public bool OpenFallback { get; init; }
+
+        /// <summary>Longest wait for one WriteFile, 0 for the channel's
+        /// default of 1000 ms.</summary>
+        public int WriteTimeoutMs { get; init; }
+
+        /// <summary>Longest wait for one feature or control transfer, 0 for
+        /// the channel's default of 500 ms.</summary>
+        public int TransferTimeoutMs { get; init; }
+
+        /// <summary>Keys read 0 once no pass has produced a key set for this
+        /// long, 0 for never. For the routes whose depths expire by wall clock,
+        /// so a pass stuck on a slow transfer does not hold the last depths.
+        /// On these routes an unanswered pass keeps the last key set until
+        /// this runs out, as their references keep a key until it goes stale,
+        /// instead of releasing every key at once.</summary>
+        public int StaleAfterMs { get; init; }
+
+        /// <summary>How long a stop waits for the route's teardown before the
+        /// I/O is canceled, 0 for the device's default of 1500 ms. For the
+        /// routes whose teardown takes many exchanges.</summary>
+        public int StopTimeoutMs { get; init; }
+
         /// <summary>HidD_SetNumInputBuffers after opening, 0 to leave the
         /// Windows default.</summary>
         public int InputBuffers { get; init; }
+
+        /// <summary>For a route that recognizes its keyboards by their
+        /// reports alone and sends nothing: the row appears once a pass first
+        /// produces a key set, and until then the collection is only listened
+        /// to.</summary>
+        public bool RegisterOnFirstReport { get; init; }
+
+        /// <summary>When the route's handshake fails and no other route
+        /// recognizes the keyboard, try again after this long instead of
+        /// leaving the keyboard alone while it stays plugged in, for the
+        /// routes whose reference reconnects on a timer. 0 for never.</summary>
+        public int StartRetryMs { get; init; }
 
         /// <summary>For the routes that command one collection and read
         /// another of the same keyboard: picks the collection to read from
@@ -67,7 +107,40 @@ namespace PadForge.Engine.Common.AnalogKeyboard
 
         static AnalogKeyboardRoutes()
         {
+            // HallJoy's native routes in its catalog order
+            // (native_analog_backends.def), then the Soup and AnalogSense
+            // families, then the listener that claims only what nothing else
+            // applies to.
+            _routes.Add(RongYuanRoutes.AttackShark);
+            _routes.Add(Take(AulaEventsRoutes.All, AulaEventsRoutes.Mini60Id));
+            _routes.Add(Take(MadlionsRoutes.All, "halljoy-mad68-a0"));
+            _routes.Add(Take(MadlionsRoutes.All, "halljoy-hex80-0x96"));
+            foreach (var route in Routes.AddressedRoutes.All) _routes.Add(route);
+            _routes.Add(Routes.JingTaiRoutes.AulaRm);
+            _routes.Add(Take(MadlionsRoutes.All, "halljoy-irok-na87-m484"));
+            // The same controller on boards whose identity the NA87 route
+            // turns down (KeyAxis).
+            _routes.Add(KeyAxisRoute.Route);
+            _routes.Add(Take(AulaEventsRoutes.All, AulaEventsRoutes.W669Id));
+            _routes.Add(Routes.JingTaiRoutes.JingTaiV1);
+            _routes.Add(Routes.JingTaiRoutes.ChilkeySlice75);
+            _routes.Add(RongYuanRoutes.Snapshot);
+            _routes.Add(RongYuanRoutes.Stream);
+            foreach (var route in NeoApexMixRoutes.All) _routes.Add(route);
+            foreach (var route in SparkSayoRoutes.All) _routes.Add(route);
+            // Families no HallJoy route covers, each on its own identity.
+            foreach (var route in OtherRoutes.All) _routes.Add(route);
+            // The NuPhy protocol family, where Soup's NuPhy reader stood.
+            foreach (var route in Routes.NuPhyRoutes.All) _routes.Add(route);
             foreach (var route in SoupFamilies()) _routes.Add(route);
+            _routes.Add(A0ListenRoute.Route);
+        }
+
+        private static AnalogKeyboardRoute Take(IReadOnlyList<AnalogKeyboardRoute> group, string id)
+        {
+            foreach (var route in group)
+                if (route.Id == id) return route;
+            throw new InvalidOperationException("Analog keyboard route missing: " + id);
         }
 
         /// <summary>Every route in priority order.</summary>
@@ -143,7 +216,6 @@ namespace PadForge.Engine.Common.AnalogKeyboard
             yield return Pushed("soup-razer-huntsman-v2", AnalogKeyboardProtocol.RazerHuntsmanV2);
             yield return Pushed("soup-razer-huntsman-v3", AnalogKeyboardProtocol.RazerHuntsmanV3);
             yield return Pushed("soup-razer-tartarus-pro", AnalogKeyboardProtocol.RazerTartarusPro);
-            yield return Pushed("soup-nuphy", AnalogKeyboardProtocol.NuPhy);
             yield return Polled("soup-drunkdeer", AnalogKeyboardProtocol.DrunkDeer);
             yield return Polled("soup-keychron", AnalogKeyboardProtocol.Keychron);
             yield return Polled("soup-madlions", AnalogKeyboardProtocol.Madlions);

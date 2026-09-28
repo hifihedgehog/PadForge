@@ -267,7 +267,7 @@
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Verbonden, nog geen toets gezien. Maak PadForge in Logitech Gaming Software het permanente profiel.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>Actief, {0} toetsgebeurtenissen</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Analoge toetsenborden lezen</value></data>
-  <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Leest hoe ver elke toets is ingedrukt op Wooting-, Razer Huntsman-analoog-, NuPhy HE-, DrunkDeer-, Keychron HE-, Lemokey HE-, Madlions HE- en Redragon K709 HE-toetsenborden en op de Razer Tartarus Pro, elk als eigen apparaatregel. Razer-apparaten vereisen dat Razer Synapse draait. DrunkDeer-, Keychron-, Lemokey-, Madlions- en Redragon-toetsenborden worden uitgelezen via het kanaal dat hun eigen configuratiesoftware gebruikt, dus sluit die software zolang dit aan staat.</value></data>
+  <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Leest hoe ver elke toets is ingedrukt op analoge toetsenborden van Wooting, Razer, SteelSeries, Keychron, NuPhy, DrunkDeer, AULA en andere fabrikanten, elk als eigen apparaatregel. De documentatie noemt elk ondersteund model. Razer-toetsenborden vereisen dat Razer Synapse draait. De meeste andere worden uitgelezen via het kanaal dat hun eigen configuratiesoftware gebruikt, dus sluit die software zolang dit aan staat.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>Geen ondersteund analoog toetsenbord gevonden.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_Reading_Format" xml:space="preserve"><value>Leest {0}.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_Synapse_Format" xml:space="preserve"><value>Start Razer Synapse om {0} te lezen.</value></data>
@@ -1250,6 +1250,18 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="AnalogKey_IntlBackslash" xml:space="preserve"><value>Intl \</value></data>
   <data name="AnalogKey_Extra_Format" xml:space="preserve"><value>Extra toets {0}</value></data>
   <data name="AnalogKey_Code_Format" xml:space="preserve"><value>Toets {0}</value></data>
+  <data name="AnalogKey_IntlRo" xml:space="preserve"><value>Intl Ro</value></data>
+  <data name="AnalogKey_IntlYen" xml:space="preserve"><value>Intl ¥</value></data>
+  <data name="AnalogKey_KatakanaHiragana" xml:space="preserve"><value>Katakana/Hiragana</value></data>
+  <data name="AnalogKey_Henkan" xml:space="preserve"><value>Henkan</value></data>
+  <data name="AnalogKey_Muhenkan" xml:space="preserve"><value>Muhenkan</value></data>
+  <data name="AnalogKey_Hangul" xml:space="preserve"><value>Hangul</value></data>
+  <data name="AnalogKey_Hanja" xml:space="preserve"><value>Hanja</value></data>
+  <data name="AnalogKey_LeftSpace" xml:space="preserve"><value>Linker spatie</value></data>
+  <data name="AnalogKey_RightSpace" xml:space="preserve"><value>Rechter spatie</value></data>
+  <data name="AnalogKey_CenterFn" xml:space="preserve"><value>Middelste Fn</value></data>
+  <data name="AnalogKey_RightFn" xml:space="preserve"><value>Rechter Fn</value></data>
+  <data name="AnalogKey_Position_Format" xml:space="preserve"><value>Toetspositie {0}</value></data>
   <data name="Key_Separator" xml:space="preserve"><value>Scheidingsteken</value></data>
   <!-- Lock keys -->
   <data name="Key_NumLock" xml:space="preserve"><value>Num Lock</value></data>
@@ -3680,8 +3692,8 @@ Wil je dat PadForge ze nu verwijdert? Hiervoor zijn verhoogde rechten nodig en h
   <data name="About_OpenXrRefsDesc" xml:space="preserve"><value>De runtime-interface, de structuurindeling en de registersleutels achter invoer van headset en motioncontrollers, gelezen uit de Khronos OpenXR-SDK-headers (Apache-2.0) en getoetst aan VirtualDesktop-OpenXR (MIT). PadForge praat met je eigen geïnstalleerde runtime en levert geen Khronos-code mee.</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Referenties voor de Logitech G-key SDK</value></data>
   <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>De indeling van het gebeurteniswoord achter G-toetsinvoer komt uit LogitechGkeyLib.h in de SDK. De zoekvolgorde en het afsluiten van de bibliotheek volgen GKey.cpp van Mumble (BSD 3-Clause). PadForge laadt de bibliotheek die op de machine staat en levert geen Logitech-code mee.</value></data>
-  <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>Soup en AnalogSense</value></data>
-  <data name="About_AnalogKeyboardRefsDesc" xml:space="preserve"><value>De rapportformaten en toetstabellen achter de invoer van analoge toetsenborden volgen Soup en de AnalogSense JavaScript SDK (MIT, Calamity, Inc.), gecontroleerd tegen de Wooting Analog SDK (MPL-2.0). Het formaat van de Razer Tartarus Pro volgt de Tartarus Pro-commit in DenkiSuki’s fork van Soup (MIT).</value></data>
+  <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>HallJoy, Soup en AnalogSense</value></data>
+  <data name="About_AnalogKeyboardRefsDesc" xml:space="preserve"><value>De invoer van analoge toetsenborden port de toetsenbordroutes, toetstabellen en modelcatalogi van HallJoy naar C# (AGPL-3.0, PashOK7) en volgt Soup en de AnalogSense JavaScript SDK (MIT, Calamity, Inc.), gecontroleerd tegen de Wooting Analog SDK (MPL-2.0). Andere toetsenborden volgen AnalogKeys (MIT, Nisayera), KeyAxis (MIT, RigZeeel), HallEffectAnalogMapper (MIT, Ricards Mironovs), libhmk en hmkconf (GPL-3.0, peppapighs) en de Soup-forks van DenkiSuki, LeiterConsulting en paysdelest (MIT). Rapportformaten en toetstabellen komen ook uit de configuratoren Synapse Web van Razer en NuPhyIO van NuPhy, OpenRazer (GPL-2.0), razer-analog-keyboard van Abbytech, TinyUSB (MIT) en de opnamenotities van Sainan.</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
   <data name="About_UsbipWin2Desc" xml:space="preserve"><value>USB-transport van Vadym Hrynchyshyn voor de samengestelde USB-controllers van HIDMaestro. Het ondertekende installatieprogramma zit in HIDMaestro en wordt uitgevoerd wanneer voor het eerst een samengestelde controller wordt gemaakt. BSD 2-Clause.</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">

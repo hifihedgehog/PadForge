@@ -303,7 +303,7 @@
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>Connected, no key seen yet. In Logitech Gaming Software, make PadForge the persistent profile.</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>Running, {0} key events</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>Read Analog Keyboards</value></data>
-  <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Reads how far every key is pressed on Wooting, Razer Huntsman analog, NuPhy HE, DrunkDeer, Keychron HE, Lemokey HE, Madlions HE and Redragon K709 HE keyboards and on the Razer Tartarus Pro, each as its own device row. Razer devices need Razer Synapse running. DrunkDeer, Keychron, Lemokey, Madlions and Redragon keyboards are read by asking over the channel their own configurator uses, so close the configurator while this is on.</value></data>
+  <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Reads how far every key is pressed on analog keyboards from Wooting, Razer, SteelSeries, Keychron, NuPhy, DrunkDeer, AULA and other makers, each as its own device row. The documentation lists every supported model. Razer keyboards need Razer Synapse running. Most of the others are read over the channel their own configurator uses, so close the configurator while this is on.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>No supported analog keyboard found.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_Reading_Format" xml:space="preserve"><value>Reading {0}.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_Synapse_Format" xml:space="preserve"><value>Start Razer Synapse to read {0}.</value></data>
@@ -2317,6 +2317,18 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="AnalogKey_IntlBackslash" xml:space="preserve"><value>Intl \</value></data>
   <data name="AnalogKey_Extra_Format" xml:space="preserve"><value>Extra Key {0}</value></data>
   <data name="AnalogKey_Code_Format" xml:space="preserve"><value>Key {0}</value></data>
+  <data name="AnalogKey_IntlRo" xml:space="preserve"><value>Intl Ro</value></data>
+  <data name="AnalogKey_IntlYen" xml:space="preserve"><value>Intl ¥</value></data>
+  <data name="AnalogKey_KatakanaHiragana" xml:space="preserve"><value>Katakana/Hiragana</value></data>
+  <data name="AnalogKey_Henkan" xml:space="preserve"><value>Henkan</value></data>
+  <data name="AnalogKey_Muhenkan" xml:space="preserve"><value>Muhenkan</value></data>
+  <data name="AnalogKey_Hangul" xml:space="preserve"><value>Hangul</value></data>
+  <data name="AnalogKey_Hanja" xml:space="preserve"><value>Hanja</value></data>
+  <data name="AnalogKey_LeftSpace" xml:space="preserve"><value>Left Space</value></data>
+  <data name="AnalogKey_RightSpace" xml:space="preserve"><value>Right Space</value></data>
+  <data name="AnalogKey_CenterFn" xml:space="preserve"><value>Center Fn</value></data>
+  <data name="AnalogKey_RightFn" xml:space="preserve"><value>Right Fn</value></data>
+  <data name="AnalogKey_Position_Format" xml:space="preserve"><value>Key Position {0}</value></data>
   <data name="Key_Separator" xml:space="preserve"><value>Separator</value></data>
   <!-- Lock keys -->
   <data name="Key_NumLock" xml:space="preserve"><value>Num Lock</value></data>
@@ -3709,8 +3721,8 @@ Would you like PadForge to uninstall them now? This requires elevation and may t
   <data name="About_OpenXrRefsDesc" xml:space="preserve"><value>The runtime interface, structure layout and registry keys behind headset and motion controller input, read from the Khronos OpenXR-SDK headers (Apache-2.0) and cross-checked against VirtualDesktop-OpenXR (MIT). PadForge talks to your own installed runtime and ships no Khronos code.</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Logitech G-key SDK references</value></data>
   <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>The event word layout behind G-key input comes from LogitechGkeyLib.h in the SDK. The library search order and shutdown follow Mumble’s GKey.cpp (BSD 3-Clause). PadForge loads whichever copy of the library is on the machine and ships no Logitech code.</value></data>
-  <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>Soup and AnalogSense</value></data>
-  <data name="About_AnalogKeyboardRefsDesc" xml:space="preserve"><value>The report formats and key tables behind analog keyboard input follow Soup and the AnalogSense JavaScript SDK (MIT, Calamity, Inc.), checked against the Wooting Analog SDK (MPL-2.0). The Razer Tartarus Pro format follows the Tartarus Pro commit on DenkiSuki’s Soup fork (MIT).</value></data>
+  <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>HallJoy, Soup and AnalogSense</value></data>
+  <data name="About_AnalogKeyboardRefsDesc" xml:space="preserve"><value>Analog keyboard input ports HallJoy’s keyboard routes, key tables and model catalogs to C# (AGPL-3.0, PashOK7) and follows Soup and the AnalogSense JavaScript SDK (MIT, Calamity, Inc.), checked against the Wooting Analog SDK (MPL-2.0). Other keyboards follow AnalogKeys (MIT, Nisayera), KeyAxis (MIT, RigZeeel), HallEffectAnalogMapper (MIT, Ricards Mironovs), libhmk and hmkconf (GPL-3.0, peppapighs) and the Soup forks of DenkiSuki, LeiterConsulting and paysdelest (MIT). Report formats and key tables also come from Razer’s Synapse Web and NuPhy’s NuPhyIO configurators, OpenRazer (GPL-2.0), Abbytech’s razer-analog-keyboard, TinyUSB (MIT) and Sainan’s capture notes.</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
   <data name="About_UsbipWin2Desc" xml:space="preserve"><value>USB transport by Vadym Hrynchyshyn for HIDMaestro's composite USB controllers. Its signed installer ships inside HIDMaestro and runs the first time a composite controller is created. BSD 2-Clause.</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">

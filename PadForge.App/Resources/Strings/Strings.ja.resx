@@ -267,7 +267,7 @@
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>接続済み、キーはまだ検出されていません。Logitech Gaming Software で PadForge を常設プロファイルに設定してください。</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>実行中、キーイベント {0} 件</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>アナログキーボードを読み取る</value></data>
-  <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Wooting、Razer Huntsman アナログ、NuPhy HE、DrunkDeer、Keychron HE、Lemokey HE、Madlions HE、Redragon K709 HE の各キーボードと Razer Tartarus Pro で、各キーの押し込み量を読み取り、それぞれを独立したデバイス行にします。Razer 製デバイスには Razer Synapse の実行が必要です。DrunkDeer、Keychron、Lemokey、Madlions、Redragon のキーボードは、各社の設定ソフトが使う経路で問い合わせて読み取るため、この設定がオンの間は設定ソフトを閉じてください。</value></data>
+  <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>Wooting、Razer、SteelSeries、Keychron、NuPhy、DrunkDeer、AULA などのアナログキーボードで、各キーの押し込み量を読み取り、それぞれを独立したデバイス行にします。対応モデルの一覧はドキュメントにあります。Razer 製キーボードには Razer Synapse の実行が必要です。その他の多くは各社の設定ソフトが使う経路で問い合わせて読み取るため、この設定がオンの間は設定ソフトを閉じてください。</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>対応するアナログキーボードが見つかりません。</value></data>
   <data name="Settings_AnalogKeyboardsStatus_Reading_Format" xml:space="preserve"><value>{0} を読み取り中。</value></data>
   <data name="Settings_AnalogKeyboardsStatus_Synapse_Format" xml:space="preserve"><value>{0} を読み取るには Razer Synapse を起動してください。</value></data>
@@ -1245,6 +1245,18 @@
   <data name="AnalogKey_IntlBackslash" xml:space="preserve"><value>Intl \</value></data>
   <data name="AnalogKey_Extra_Format" xml:space="preserve"><value>追加キー {0}</value></data>
   <data name="AnalogKey_Code_Format" xml:space="preserve"><value>キー {0}</value></data>
+  <data name="AnalogKey_IntlRo" xml:space="preserve"><value>ろ</value></data>
+  <data name="AnalogKey_IntlYen" xml:space="preserve"><value>¥</value></data>
+  <data name="AnalogKey_KatakanaHiragana" xml:space="preserve"><value>カタカナ/ひらがな</value></data>
+  <data name="AnalogKey_Henkan" xml:space="preserve"><value>変換</value></data>
+  <data name="AnalogKey_Muhenkan" xml:space="preserve"><value>無変換</value></data>
+  <data name="AnalogKey_Hangul" xml:space="preserve"><value>Hangul</value></data>
+  <data name="AnalogKey_Hanja" xml:space="preserve"><value>Hanja</value></data>
+  <data name="AnalogKey_LeftSpace" xml:space="preserve"><value>左スペース</value></data>
+  <data name="AnalogKey_RightSpace" xml:space="preserve"><value>右スペース</value></data>
+  <data name="AnalogKey_CenterFn" xml:space="preserve"><value>中央 Fn</value></data>
+  <data name="AnalogKey_RightFn" xml:space="preserve"><value>右 Fn</value></data>
+  <data name="AnalogKey_Position_Format" xml:space="preserve"><value>キー位置 {0}</value></data>
   <data name="Key_Separator" xml:space="preserve"><value>区切り</value></data>
   <!-- Lock keys -->
   <data name="Key_NumLock" xml:space="preserve"><value>Num Lock</value></data>
@@ -3660,8 +3672,8 @@
   <data name="About_OpenXrRefsDesc" xml:space="preserve"><value>ヘッドセットとモーションコントローラー入力を支えるランタイムインターフェイス、構造体レイアウト、レジストリキーは、Khronos の OpenXR-SDK ヘッダー (Apache-2.0) から読み取り、VirtualDesktop-OpenXR (MIT) と照合しました。PadForge はお使いの環境に入っているランタイムと通信し、Khronos のコードは同梱しません。</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Logitech G-key SDK の参照元</value></data>
   <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>G キー入力を支えるイベントワードのレイアウトは、SDK の LogitechGkeyLib.h に基づきます。ライブラリの検索順序と終了処理は Mumble の GKey.cpp (BSD 3-Clause) に従います。PadForge はマシン上にあるライブラリを読み込み、Logitech のコードは同梱しません。</value></data>
-  <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>Soup と AnalogSense</value></data>
-  <data name="About_AnalogKeyboardRefsDesc" xml:space="preserve"><value>アナログキーボード入力のレポート形式とキー表は、Soup と AnalogSense JavaScript SDK（MIT、Calamity, Inc.）に従い、Wooting Analog SDK（MPL-2.0）と照合しています。Razer Tartarus Pro の形式は、DenkiSuki による Soup のフォーク（MIT）にある Tartarus Pro のコミットに従っています。</value></data>
+  <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>HallJoy、Soup と AnalogSense</value></data>
+  <data name="About_AnalogKeyboardRefsDesc" xml:space="preserve"><value>アナログキーボード入力は、HallJoy のキーボードルート、キー表、モデルカタログを C# に移植し（AGPL-3.0、PashOK7）、Soup と AnalogSense JavaScript SDK（MIT、Calamity, Inc.）に従い、Wooting Analog SDK（MPL-2.0）と照合しています。その他のキーボードは AnalogKeys（MIT、Nisayera）、KeyAxis（MIT、RigZeeel）、HallEffectAnalogMapper（MIT、Ricards Mironovs）、libhmk と hmkconf（GPL-3.0、peppapighs）、および DenkiSuki、LeiterConsulting、paysdelest による Soup のフォーク（MIT）に従っています。レポート形式とキー表は、Razer の Synapse Web と NuPhy の NuPhyIO の設定ソフト、OpenRazer（GPL-2.0）、Abbytech の razer-analog-keyboard、TinyUSB（MIT）、Sainan のキャプチャメモにも基づいています。</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
   <data name="About_UsbipWin2Desc" xml:space="preserve"><value>HIDMaestro の複合 USB コントローラー用の USB トランスポート (Vadym Hrynchyshyn 作)。署名済みインストーラーは HIDMaestro に同梱され、複合コントローラーを初めて作成するときに実行されます。BSD 2-Clause。</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">

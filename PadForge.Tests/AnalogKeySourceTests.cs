@@ -349,6 +349,60 @@ namespace PadForge.Tests
             Assert.Equal(string.Format(s.AnalogKey_Extra_Format, 4), MappingDisplayResolver.AnalogKeyDisplayName(AnalogKeyCodes.Oem4));
             Assert.Equal(string.Format(s.AnalogKey_Code_Format, "0x3FF"), MappingDisplayResolver.AnalogKeyDisplayName(0x3FF));
             Assert.Equal(string.Format(s.Key_Numpad, s.Key_Enter), MappingDisplayResolver.AnalogKeyDisplayName(AnalogKeyCodes.NumpadEnter));
+            Assert.Equal(string.Format(s.Key_Numpad, "="), MappingDisplayResolver.AnalogKeyDisplayName(AnalogKeyCodes.NumpadEqual));
+            Assert.Equal(s.AnalogKey_IntlYen, MappingDisplayResolver.AnalogKeyDisplayName(AnalogKeyCodes.IntlYen));
+            Assert.Equal(s.AnalogKey_IntlRo, MappingDisplayResolver.AnalogKeyDisplayName(AnalogKeyCodes.IntlRo));
+            Assert.Equal(s.AnalogKey_Henkan, MappingDisplayResolver.AnalogKeyDisplayName(AnalogKeyCodes.Henkan));
+            Assert.Equal(s.AnalogKey_Hangul, MappingDisplayResolver.AnalogKeyDisplayName(AnalogKeyCodes.Hangul));
+            Assert.Equal(s.AnalogKey_LeftSpace, MappingDisplayResolver.AnalogKeyDisplayName(AnalogKeyCodes.LeftSpace));
+            Assert.Equal(s.AnalogKey_RightFn, MappingDisplayResolver.AnalogKeyDisplayName(AnalogKeyCodes.RightFn));
+            // The SayoDevice O3C's unlabeled keys, and keys known by position.
+            Assert.Equal(string.Format(s.AnalogKey_Code_Format, 1), MappingDisplayResolver.AnalogKeyDisplayName(AnalogKeyCodes.PadKey1));
+            Assert.Equal(string.Format(s.AnalogKey_Code_Format, 3), MappingDisplayResolver.AnalogKeyDisplayName(AnalogKeyCodes.PadKey3));
+            Assert.Equal(string.Format(s.AnalogKey_Position_Format, 37),
+                MappingDisplayResolver.AnalogKeyDisplayName(AnalogKeyCodes.PositionBase + 37));
+        }
+
+        [Fact]
+        public void ARouteWithAStalenessWindow_DropsTheKeys_WhenPassesStall()
+        {
+            // The HallJoy routes whose depths expire by wall clock.
+            using var dev = new AnalogKeyboardDevice(Candidate());
+            dev.UseRouteForTest(new AnalogKeyboardRoute { Id = "test", StaleAfterMs = 150 });
+            dev.AttachForTest();
+            dev.InjectForTest(AnalogKeyCodes.W, 0.5f);
+            dev.SetLastReportTickForTest(Environment.TickCount64);
+            Assert.Equal(0.5f, dev.GetCurrentState().AnalogKeys.Get(AnalogKeyCodes.W));
+            dev.SetLastReportTickForTest(Environment.TickCount64 - 1000);
+            Assert.Equal(0f, dev.GetCurrentState().AnalogKeys.Get(AnalogKeyCodes.W));
+
+            // A route without one keeps a held key however long it is quiet.
+            using var quiet = new AnalogKeyboardDevice(Candidate());
+            quiet.UseRouteForTest(new AnalogKeyboardRoute { Id = "test" });
+            quiet.AttachForTest();
+            quiet.InjectForTest(AnalogKeyCodes.W, 0.5f);
+            quiet.SetLastReportTickForTest(Environment.TickCount64 - 60000);
+            Assert.Equal(0.5f, quiet.GetCurrentState().AnalogKeys.Get(AnalogKeyCodes.W));
+        }
+
+        [Fact]
+        public void KeysAKeyboardReports_JoinItsPickerList()
+        {
+            // Keys known only by position, and any code a table missed.
+            using var dev = new AnalogKeyboardDevice(Candidate());
+            dev.UseRouteForTest(new AnalogKeyboardRoute { Id = "test" });
+            int before = dev.KeyOrder.Length;
+            var pass = new AnalogKeyInputState();
+            pass.Set(AnalogKeyCodes.PositionBase + 12, 0.4f);
+            pass.Set(AnalogKeyCodes.W, 0.4f);
+            dev.NoteKeysForTest(pass);
+            Assert.Equal(before + 1, dev.KeyOrder.Length);
+            Assert.Equal(AnalogKeyCodes.PositionBase + 12, dev.KeyOrder[^1]);
+            var ud = new UserDevice { CapType = InputDeviceType.AnalogKeyboard, VendorId = 0x31E3, ProdId = 0x1232 };
+            ud.InstanceGuid = dev.InstanceGuid;
+            Assert.Contains(AnalogKeyCodes.PositionBase + 12, AnalogKeyboardRuntime.KeysFor(ud));
+            dev.NoteKeysForTest(pass);
+            Assert.Equal(before + 1, dev.KeyOrder.Length);
         }
 
         // ── Macro triggers ──

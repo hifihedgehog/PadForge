@@ -267,7 +267,7 @@
   <data name="Settings_GKeysStatus_NoKeysYet" xml:space="preserve"><value>已连接，尚未检测到按键。请在 Logitech Gaming Software 中将 PadForge 设为常驻配置文件。</value></data>
   <data name="Settings_GKeysStatus_Running_Format" xml:space="preserve"><value>运行中，{0} 个按键事件</value></data>
   <data name="Settings_AnalogKeyboards" xml:space="preserve"><value>读取模拟键盘</value></data>
-  <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>读取 Wooting、Razer Huntsman 模拟、NuPhy HE、DrunkDeer、Keychron HE、Lemokey HE、Madlions HE 和 Redragon K709 HE 键盘以及 Razer Tartarus Pro 上每个键的按下深度，每个设备单独成行。Razer 设备需要运行 Razer Synapse。DrunkDeer、Keychron、Lemokey、Madlions 和 Redragon 键盘通过其配置软件使用的通道询问读取，因此开启此项时请关闭配置软件。</value></data>
+  <data name="Settings_AnalogKeyboardsTooltip" xml:space="preserve"><value>读取 Wooting、Razer、SteelSeries、Keychron、NuPhy、DrunkDeer、AULA 等厂商的模拟键盘上每个键的按下深度，每个设备单独成行。文档列出了所有支持的型号。Razer 键盘需要运行 Razer Synapse。其他大多数键盘通过其配置软件使用的通道询问读取，因此开启此项时请关闭配置软件。</value></data>
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>未找到受支持的模拟键盘。</value></data>
   <data name="Settings_AnalogKeyboardsStatus_Reading_Format" xml:space="preserve"><value>正在读取 {0}。</value></data>
   <data name="Settings_AnalogKeyboardsStatus_Synapse_Format" xml:space="preserve"><value>请启动 Razer Synapse 以读取 {0}。</value></data>
@@ -1245,6 +1245,18 @@
   <data name="AnalogKey_IntlBackslash" xml:space="preserve"><value>Intl \</value></data>
   <data name="AnalogKey_Extra_Format" xml:space="preserve"><value>附加键 {0}</value></data>
   <data name="AnalogKey_Code_Format" xml:space="preserve"><value>按键 {0}</value></data>
+  <data name="AnalogKey_IntlRo" xml:space="preserve"><value>Intl Ro</value></data>
+  <data name="AnalogKey_IntlYen" xml:space="preserve"><value>Intl ¥</value></data>
+  <data name="AnalogKey_KatakanaHiragana" xml:space="preserve"><value>片假名/平假名</value></data>
+  <data name="AnalogKey_Henkan" xml:space="preserve"><value>Henkan</value></data>
+  <data name="AnalogKey_Muhenkan" xml:space="preserve"><value>Muhenkan</value></data>
+  <data name="AnalogKey_Hangul" xml:space="preserve"><value>Hangul</value></data>
+  <data name="AnalogKey_Hanja" xml:space="preserve"><value>Hanja</value></data>
+  <data name="AnalogKey_LeftSpace" xml:space="preserve"><value>左空格</value></data>
+  <data name="AnalogKey_RightSpace" xml:space="preserve"><value>右空格</value></data>
+  <data name="AnalogKey_CenterFn" xml:space="preserve"><value>中间 Fn</value></data>
+  <data name="AnalogKey_RightFn" xml:space="preserve"><value>右 Fn</value></data>
+  <data name="AnalogKey_Position_Format" xml:space="preserve"><value>按键位置 {0}</value></data>
   <data name="Key_Separator" xml:space="preserve"><value>分隔符</value></data>
   <!-- Lock keys -->
   <data name="Key_NumLock" xml:space="preserve"><value>Num Lock</value></data>
@@ -3660,8 +3672,8 @@
   <data name="About_OpenXrRefsDesc" xml:space="preserve"><value>头显和体感手柄输入背后的运行时接口、结构布局和注册表项，读自 Khronos OpenXR-SDK 头文件（Apache-2.0），并与 VirtualDesktop-OpenXR（MIT）比对。PadForge 与你自己安装的运行时通信，不随附 Khronos 代码。</value></data>
   <data name="About_LogitechGKeyRefs" xml:space="preserve"><value>Logitech G-key SDK 参考来源</value></data>
   <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>G 键输入背后的事件字布局来自 SDK 中的 LogitechGkeyLib.h。库的搜索顺序和关闭流程遵循 Mumble 的 GKey.cpp（BSD 3-Clause）。PadForge 加载本机上的库，不随附 Logitech 代码。</value></data>
-  <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>Soup 与 AnalogSense</value></data>
-  <data name="About_AnalogKeyboardRefsDesc" xml:space="preserve"><value>模拟键盘输入所用的报告格式和按键表遵循 Soup 与 AnalogSense JavaScript SDK（MIT，Calamity, Inc.），并与 Wooting Analog SDK（MPL-2.0）核对。Razer Tartarus Pro 的格式遵循 DenkiSuki 的 Soup 分支（MIT）中的 Tartarus Pro 提交。</value></data>
+  <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>HallJoy、Soup 和 AnalogSense</value></data>
+  <data name="About_AnalogKeyboardRefsDesc" xml:space="preserve"><value>模拟键盘输入将 HallJoy 的键盘路由、按键表和型号目录移植到 C#（AGPL-3.0，PashOK7），并遵循 Soup 和 AnalogSense JavaScript SDK（MIT，Calamity, Inc.），与 Wooting Analog SDK（MPL-2.0）核对。其他键盘遵循 AnalogKeys（MIT，Nisayera）、KeyAxis（MIT，RigZeeel）、HallEffectAnalogMapper（MIT，Ricards Mironovs）、libhmk 和 hmkconf（GPL-3.0，peppapighs），以及 DenkiSuki、LeiterConsulting 和 paysdelest 的 Soup 分支（MIT）。报告格式和按键表还来自 Razer 的 Synapse Web 与 NuPhy 的 NuPhyIO 配置工具、OpenRazer（GPL-2.0）、Abbytech 的 razer-analog-keyboard、TinyUSB（MIT）以及 Sainan 的抓包笔记。</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
   <data name="About_UsbipWin2Desc" xml:space="preserve"><value>Vadym Hrynchyshyn 开发的 USB 传输层，用于 HIDMaestro 的复合 USB 控制器。其已签名的安装程序随 HIDMaestro 提供，并在首次创建复合控制器时运行。BSD 2-Clause。</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">

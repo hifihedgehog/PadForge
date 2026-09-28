@@ -115,6 +115,12 @@ namespace PadForge.Engine.Common.AnalogKeyboard
         /// given up and the sweep's retry cooldown takes over.</summary>
         public virtual int MissLimit => 20;
 
+        /// <summary>Set by a Start that failed after it wrote to the keyboard.
+        /// The route's timed retry (<see cref="AnalogKeyboardRoute.StartRetryMs"/>)
+        /// then does not apply, so a handshake that keeps failing never turns
+        /// into a loop of writes.</summary>
+        public bool NoStartRetry { get; protected set; }
+
         /// <summary>Reads until an answer whose first two data bytes are
         /// <paramref name="b0"/> and <paramref name="b1"/> arrives, skipping
         /// anything else, Soup's safeReceiveReport. Returns the data offset
@@ -138,7 +144,7 @@ namespace PadForge.Engine.Common.AnalogKeyboard
     }
 
     /// <summary>
-    /// The families that push their state (Wooting, Razer, NuPhy): one pass
+    /// The Soup families that push their state (Wooting, Razer): one pass
     /// waits for one input report and parses it. A keyboard at rest sends
     /// nothing, so a quiet wait is an ordinary pass, not a miss. A Razer
     /// collection may fail a read while Synapse switches the keyboard's mode

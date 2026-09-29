@@ -2467,10 +2467,6 @@ namespace PadForge.Services
                     _uiTimer = null;
                 }
 
-                // The Bliss-Box ports close with the engine (#469), and the
-                // screen service's shows and requests go with them.
-                _dreamcastScreen?.Reset();
-
                 // The pipeline heat chips (#175 item 10) ride the timer
                 // just torn down, so nothing would ever clear the last
                 // tick's rowfire flags. Drop every row's IsInputActive
@@ -2653,6 +2649,12 @@ namespace PadForge.Services
             // without WPF cross-thread errors.
             _dispatcher.Invoke(() =>
             {
+                // The Bliss-Box ports have closed with the engine (#469) and
+                // the poll thread that queues shows has stopped, so the screen
+                // service's shows and requests go now. Earlier, a macro could
+                // queue a show behind the reset for the next start's ports.
+                _dreamcastScreen?.Reset();
+
                 _mainVm.IsEngineRunning = false;
                 _mainVm.Dashboard.EngineStateKey = "Stopped";
                 _mainVm.Dashboard.EngineStatus = Strings.Instance.Common_Stopped;
@@ -15402,8 +15404,10 @@ namespace PadForge.Services
         /// TestRumbleTargetGuid filter), exactly like Test Rumble; a direct
         /// SetRumble there would race the dispatcher and lose. An UNMAPPED
         /// device has no owner, so the direct train is safe and is the only
-        /// lane that exists. Remote Link peers ride free either way, since
-        /// their SetRumble relays to the owning machine.</summary>
+        /// lane that exists. A Remote Link peer's row buzzes only on the
+        /// mapped lane, whose slot relays its rumble to the PC the pad is on:
+        /// its own device's SetRumble raises RumbleRequested, which nothing
+        /// subscribes to, so an unmapped peer row buzzes nothing.</summary>
         public void IdentifyDevice(Guid instanceGuid)
         {
             if (instanceGuid == Guid.Empty) return;
@@ -15462,10 +15466,10 @@ namespace PadForge.Services
                         // twice, then a 500 ms tail.
                         var dev = ud.Device;
                         // A Remote Link peer's row carries the owner's VID and
-                        // PID, but its own device relays the pulses to the PC
-                        // the pad is on, whose writer handles the family. The
-                        // direct lanes below would write a path that only
-                        // exists there.
+                        // PID, but the pad is on the other PC, so the direct
+                        // lanes below would write a path that exists only
+                        // there. Its own device's SetRumble raises an event
+                        // nothing subscribes to, so the train buzzes nothing.
                         bool peer = PadForge.Common.Input.RemoteLinkOutputRouter.IsPeerPath(ud.DevicePath);
                         // A Padix PSX/USB converter's motors sit behind the 9-byte
                         // report PadForge writes itself, and every SDL rumble call

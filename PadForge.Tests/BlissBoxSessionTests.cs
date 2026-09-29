@@ -1412,6 +1412,162 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void A3xStopIsNotHeldBackByAPulseTheMotorAlreadyRan()
+        {
+            // A pulse at the running strength left the peak equal to what was
+            // sent, so no write was owed and the stop waited for the hold a
+            // second later, with a 3.0 N64, GameCube or PlayStation motor
+            // running about 4 s more.
+            var adapter = new ScriptedAdapter { Type = BlissBoxControllers.TypeNintendo64, Major = 3 };
+            var session = Session(adapter);
+            session.SetRumble(40000, 0);
+            session.Step();
+            _now = 10; session.SetRumble(0, 0);
+            _now = 20; session.SetRumble(40000, 0);
+            _now = 30; session.SetRumble(0, 0);
+            Assert.Equal(70, session.Step());
+            _now = 100; session.Step();
+            var levels = adapter.Motor(BlissBoxProtocol.CommandLargeMotor).Select(r => r[5]).ToList();
+            Assert.Equal(new byte[] { BlissBoxSession.Strength(40000), 0 }, levels);
+        }
+
+        [Fact]
+        public void TheCrashStopDropsAPulseNotYetSent()
+        {
+            // The crash path's zero left a pulse asked for since the last 3.x
+            // write in place, so the motors read at rest while the worker still
+            // owed a type-1 command with its loop of 0xFF, which a dying
+            // process could leave running.
+            var adapter = new ScriptedAdapter { Type = BlissBoxControllers.TypeNintendo64, Major = 3 };
+            var session = Session(adapter);
+            session.Step();
+            _now = 120; session.SetRumble(50000, 0);
+            _now = 150; session.SetRumble(0, 0);
+            Assert.False(session.MotorsAtRest);
+            _now = 160; session.StopRumble();
+            Assert.True(session.MotorsAtRest);
+            _now = 200; session.Step();
+            var levels = adapter.Motor(BlissBoxProtocol.CommandLargeMotor).Select(r => r[5]).ToList();
+            Assert.Equal(new byte[] { 0 }, levels);
+        }
+
+        [Fact]
+        public void APulseAskedForBeforeAControllerChangeIsNotSentToIt()
+        {
+            // A level asked for while a pad without motors was in the port,
+            // during a search or while the channel was closed went out to the
+            // next controller at full strength with the next 3.x write.
+            var adapter = new ScriptedAdapter { Type = 27, Major = 3 };
+            var session = Session(adapter);
+            session.Step();
+            session.SetRumble(65535, 65535);
+            _now = 10; session.Step();
+            session.SetRumble(0, 0);
+            adapter.Type = BlissBoxControllers.TypeDualShock2;
+            _now = 500; session.Step();
+            var writes = adapter.Sent.Where(r => r[0] == BlissBoxProtocol.ReportCommand
+                && (r[1] == BlissBoxProtocol.CommandLargeMotor || r[1] == BlissBoxProtocol.CommandSmallMotor)).ToList();
+            Assert.Equal(2, writes.Count);
+            Assert.All(writes, r => Assert.Equal(0, r[4]));
+        }
+
+        [Fact]
+        public void ARefused3xWriteCarriesItsPulseAgain()
+        {
+            // The peaks were taken before a write the adapter refused, so the
+            // pulse it carried was lost.
+            var adapter = new ScriptedAdapter { Type = BlissBoxControllers.TypeNintendo64, Major = 3 };
+            var session = Session(adapter);
+            session.Step();
+            adapter.RefuseWhen = r => _now == 100 && r[0] == BlissBoxProtocol.ReportCommand;
+            _now = 50; session.SetRumble(50000, 0);
+            _now = 60; session.SetRumble(0, 0);
+            _now = 100; session.Step();
+            _now = 200; session.Step();
+            _now = 300; session.Step();
+            byte pulse = BlissBoxSession.Strength(50000);
+            var levels = adapter.Motor(BlissBoxProtocol.CommandLargeMotor).Select(r => r[5]).ToList();
+            Assert.Equal(new byte[] { 0, pulse, pulse, 0 }, levels);
+        }
+
+        [Fact]
+        public void ARefused3xRefreshIsTriedAgainAtTheNextPacedWrite()
+        {
+            // A refused 3.x write was timed as a delivered one, so a refused
+            // refresh waited a whole second, and three in a row outlast the
+            // firmware's loop of about 4 s.
+            var adapter = new ScriptedAdapter { Type = BlissBoxControllers.TypeNintendo64, Major = 3 };
+            var session = Session(adapter);
+            session.SetRumble(40000, 0);
+            session.Step();
+            adapter.RefuseWhen = r => _now == 1000 && r[0] == BlissBoxProtocol.ReportCommand;
+            for (int t = 100; t < 1000; t += 100)
+            {
+                _now = t;
+                session.Step();
+            }
+            _now = 1000;
+            Assert.Equal(100, session.Step());
+            _now = 1100; session.Step();
+            Assert.Equal(3, adapter.Motor(BlissBoxProtocol.CommandLargeMotor).Count);
+        }
+
+        [Fact]
+        public void AGpaReadsAtRestOnceItsStopIsOut()
+        {
+            // Only a 3.x write takes the peaks, so a GPA would keep every level
+            // ever asked of it there and never read at rest.
+            var adapter = new ScriptedAdapter { Type = BlissBoxControllers.TypeNintendo64 };
+            var session = Session(adapter);
+            session.Step();
+            _now = 10; session.SetRumble(40000, 0); session.Step();
+            _now = 20; session.SetRumble(0, 0); session.Step();
+            Assert.True(session.MotorsAtRest);
+        }
+
+        [Fact]
+        public async System.Threading.Tasks.Task APakJobOnAClosingPortEndsAsClosed()
+        {
+            // Talk answers null once the port starts closing, which the pak
+            // check, a block's last read and a restore at its error limit took
+            // for no answer or a bad block. A 3.x answer takes one wait each:
+            // the status and the check's read are the first two.
+            Assert.Equal(BlissBoxJobError.Closed, await CloseDuringWait(new BlissBoxPakBackupJob(), new Pak(), 1));
+            Assert.Equal(BlissBoxJobError.Closed, await CloseDuringWait(new BlissBoxPakBackupJob(), new Pak(), 2));
+            // The check's read and the block's first two fail their CRC, and
+            // the port closes during the block's third and last.
+            Assert.Equal(BlissBoxJobError.Closed, await CloseDuringWait(new BlissBoxPakBackupJob(), new Pak { BadReads = 3 }, 5));
+            // Sixteen rejected writes, and the port closes during the next,
+            // which would be one error past the limit.
+            Assert.Equal(BlissBoxJobError.Closed, await CloseDuringWait(
+                new BlissBoxPakRestoreJob(new byte[BlissBoxControllerPak.PakBytes]), new Pak { RejectedWrites = 16 }, 2 + 17));
+        }
+
+        /// <summary>Runs a pak job on a 3.x adapter whose port starts closing
+        /// in the given wait between reads, after which no answer comes back
+        /// ready.</summary>
+        private async System.Threading.Tasks.Task<BlissBoxJobError> CloseDuringWait(BlissBoxJob job, Pak pak, int wait)
+        {
+            var adapter = new ScriptedAdapter
+            {
+                Type = BlissBoxControllers.TypeNintendo64, Major = 3, Minor = 34, Controller = pak.Answer,
+            };
+            int waits = 0;
+            BlissBoxSession session = null;
+            session = new BlissBoxSession(adapter, adapter.Player, () => _now, ms =>
+            {
+                _now += ms;
+                if (++waits != wait) return;
+                adapter.NeverReady = true;
+                session.RequestStop();
+            });
+            session.Step();
+            session.Enqueue(job);
+            session.Step();
+            return (await job.Completion).Error;
+        }
+
+        [Fact]
         public void StopMotorsSendsTypeZeroToBoth()
         {
             var adapter = new ScriptedAdapter();

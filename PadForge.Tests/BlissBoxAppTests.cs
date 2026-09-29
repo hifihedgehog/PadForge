@@ -67,8 +67,16 @@ namespace PadForge.Tests
             Assert.Null(BlissBoxControllers.ButtonName(200, 4, 0));
             Assert.Equal("D-Pad", BlissBoxControllers.HatName(121, 4));
             Assert.Null(BlissBoxControllers.HatName(6, 4));
-            Assert.Equal("Type 200", BlissBoxControllers.Name(200));
-            Assert.Equal("DualShock 2", BlissBoxControllers.Name(121));
+            Assert.Equal("Type 200", BlissBoxControllers.Name(200, 4));
+            Assert.Equal("DualShock 2", BlissBoxControllers.Name(121, 3));
+            // Two codes name different controllers on each generation: GPA
+            // 4.86's DE-9 driver types an Atari driving controller 12 (0x2436)
+            // and returns 66 (0x22D7), and 3.0 returns 66 for a Wii extension
+            // (0x23A9 to 0x23BB).
+            Assert.Equal("Atari driving controller", BlissBoxControllers.Name(12, 4));
+            Assert.Equal("PlayStation wheel", BlissBoxControllers.Name(12, 3));
+            Assert.Equal("FM Towns pad", BlissBoxControllers.Name(66, 4));
+            Assert.Equal("Wii drums", BlissBoxControllers.Name(66, 3));
         }
 
         [Fact]
@@ -488,7 +496,12 @@ namespace PadForge.Tests
             Assert.Contains("() => _settingsService?.SaveNow() ?? true,", wiring);
             string settings = Repo("PadForge.App", "Services", "SettingsService.cs");
             Assert.Contains("() => _settingsService?.SaveCount ?? 0);", wiring);
-            Assert.Contains("System.Threading.Interlocked.Increment(ref _saveCount);", settings);
+            // Counted once the file is written and only then, so a failed save
+            // never releases the hold.
+            int written = settings.IndexOf("File.WriteAllBytes(filePath, serializedBytes);", StringComparison.Ordinal);
+            int counted = settings.IndexOf("System.Threading.Interlocked.Increment(ref _saveCount);", StringComparison.Ordinal);
+            Assert.True(written > 0 && counted > written);
+            Assert.Equal(counted, settings.LastIndexOf("Increment(ref _saveCount)", StringComparison.Ordinal) - "System.Threading.Interlocked.".Length);
             Assert.Contains("            if (!Save()) return false;\n            AutoSaved?.Invoke(this, EventArgs.Empty);", settings);
             Assert.Contains("public bool Save() => SaveToFile(_settingsFilePath);", settings);
             string tick = Repo("PadForge.App", "Services", "DreamcastScreenService.cs");
@@ -980,11 +993,10 @@ namespace PadForge.Tests
 
             string code = Repo("PadForge.App", "Common", "Input", "InputManager.BlissBox.cs");
             Assert.Contains("BlissBoxRuntime.TakeMotors(ud.DevicePath, state.LeftMotorSpeed, state.RightMotorSpeed);", code);
-            Assert.Contains("try { ud.ForceFeedbackState.ResendScalar(ud.Device); } catch { }", code);
+            Assert.Contains("try { return ud.ForceFeedbackState.ResendScalar(ud.Device); }", code);
             // A switch that went off and on again between two passes hands
             // every open port its level again.
             Assert.Contains("            if (toggled)\n                foreach (var port in BlissBoxRuntime.Ports) _blissBoxHandoffs.Add(port.InstanceGuid);", code);
-            Assert.Contains("try { state.StopHapticEffect(wrapper); } catch { }", code);
             Assert.Contains("bool changed = (enabled || wasOn || toggled) && ReopenBlissBoxRows(enabled);", code);
         }
 
@@ -1011,43 +1023,40 @@ namespace PadForge.Tests
             state.SetDeviceForces(null, device, new PadSetting(), new Vibration(30000, 1000));
             recorder.Accept = true;
             recorder.Sent.Clear();
-            state.ResendScalar(device);
-            Assert.Equal((30000, 1000), Assert.Single(recorder.Sent));
+            Assert.True(state.ResendScalar(device));
+            // A stop goes first: SDL skips a write that repeats the levels it
+            // last took (SDL_joystick.c:2287-2290), and a GPA's final stop from
+            // the retired port can end a level SDL took while it retired.
+            Assert.Equal(new[] { (0, 0), (30000, 1000) }, recorder.Sent);
             // The cache now matches, so the same level is not written twice.
             state.SetDeviceForces(null, device, new PadSetting(), new Vibration(30000, 1000));
-            Assert.Single(recorder.Sent);
-            // A resend SDL refuses is written again by the next frame.
+            Assert.Equal(2, recorder.Sent.Count);
+            // A resend SDL refuses says so, so the row is tried again, and the
+            // next frame writes it too.
             recorder.Accept = false;
             state.TryRecordMotorSnapshot(20000, 2000);
-            state.ResendScalar(device);
+            Assert.False(state.ResendScalar(device));
             recorder.Accept = true;
             recorder.Sent.Clear();
             state.SetDeviceForces(null, device, new PadSetting(), new Vibration(20000, 2000));
             Assert.Equal((20000, 2000), Assert.Single(recorder.Sent));
             state.TryRecordMotorSnapshot(0, 0);
-            state.ResendScalar(device);
-            Assert.Equal((0, 0), recorder.Sent[^1]);
+            recorder.Sent.Clear();
+            Assert.True(state.ResendScalar(device));
+            Assert.Equal((0, 0), Assert.Single(recorder.Sent));
             // A port SDL found no motors on takes no level, and none is kept
             // for the next switch-on to hand the port.
             recorder.Rumble = false;
             recorder.Sent.Clear();
             state.TryRecordMotorSnapshot(30000, 1000);
-            state.ResendScalar(device);
+            Assert.True(state.ResendScalar(device));
             Assert.Empty(recorder.Sent);
             Assert.Equal(0, state.LeftMotorSpeed);
             Assert.Equal(0, state.RightMotorSpeed);
-            // A port with SDL motors is also a haptic device (a DirectInput
-            // joystick with force feedback), whose level goes through a
-            // haptic effect. It was dropped, and a peer's steady level with
-            // it. Here the effect cannot start, so the level is kept for the
-            // next frame to write.
-            recorder.Rumble = true;
-            recorder.Haptic = true;
-            state.TryRecordMotorSnapshot(30000, 1000);
-            state.ResendScalar(device);
-            Assert.Empty(recorder.Sent);
-            Assert.Equal(30000, state.LeftMotorSpeed);
-            Assert.Equal(1000, state.RightMotorSpeed);
+            // A refused resend waits 100 ms, not a cycle, for its next try.
+            string phase = Repo("PadForge.App", "Common", "Input", "InputManager.BlissBox.cs");
+            Assert.Contains("else if (_blissBoxCacheResets.Count > 0 && Environment.TickCount64 >= _blissBoxResendsDue)", phase);
+            Assert.Contains("_blissBoxResendsDue = Environment.TickCount64 + BlissBoxResendRetryMs;", phase);
         }
 
         [Fact]
@@ -1073,14 +1082,11 @@ namespace PadForge.Tests
             public bool Accept = true;
             /// <summary>Whether SDL found motors on the device.</summary>
             public bool Rumble = true;
-            /// <summary>Whether SDL opened the device as a haptic device.</summary>
-            public bool Haptic;
             protected override object Invoke(MethodInfo method, object[] args)
             {
                 if (method.Name == "SetRumble") { Sent.Add(((ushort)args[0], (ushort)args[1])); return Accept; }
                 if (method.Name == "StopRumble") { Sent.Add((0, 0)); return Accept; }
                 if (method.Name == "get_HasRumble") return Rumble;
-                if (method.Name == "get_HasHaptic") return Haptic;
                 if (method.ReturnType == typeof(void)) return null;
                 return method.ReturnType.IsValueType ? Activator.CreateInstance(method.ReturnType) : null;
             }
@@ -1135,33 +1141,37 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void APeersCopyOfAPortKeepsTheRestRule()
+        public void APeersCopyOfAPortKeepsThePressureRule()
         {
-            // A Remote Link peer's row has no port on this PC, so it takes
-            // the owner's shape and names: its pressure axes and triggers
-            // rest at 0 while the owner reads the port raw.
-            var objects = new[]
+            // A Remote Link peer's row has no port on this PC, so it takes the
+            // owner's shape: its pressure axes rest at 0 while the owner reads
+            // the port raw. The owner sends no object list for a joystick, so
+            // the peer's names for axes 2 and 5 are a gamepad's triggers
+            // whatever the pad is, and a DualShock's axes there are centered on
+            // the owner. The peer counts them centered too, as it does for
+            // every raw joystick.
+            UserDevice Row(int type)
             {
-                new DeviceObjectItem { InputIndex = 2, ObjectTypeGuid = ObjectGuid.ZAxis, Name = "Left Trigger", ObjectType = DeviceObjectTypeFlags.AbsoluteAxis },
-                new DeviceObjectItem { InputIndex = 0, ObjectTypeGuid = ObjectGuid.XAxis, Name = "Stick X", ObjectType = DeviceObjectTypeFlags.AbsoluteAxis },
-            };
-            UserDevice Row(int type) => new UserDevice
-            {
-                VendorId = 0x16D0,
-                ProdId = 0x0D04,
-                Device = new PadForge.Engine.RemoteLink.RemotePeerDevice(new PadForge.Engine.RemoteLink.RemotePeerDeviceInfo
+                var device = new PadForge.Engine.RemoteLink.RemotePeerDevice(new PadForge.Engine.RemoteLink.RemotePeerDeviceInfo
                 {
                     VendorId = 0x16D0,
                     ProductId = 0x0D04,
                     InputDeviceType = type,
                     NumAxes = 8,
-                    DeviceObjects = objects,
-                }),
-                DeviceObjects = objects,
-            };
+                });
+                return new UserDevice
+                {
+                    VendorId = 0x16D0,
+                    ProdId = 0x0D04,
+                    CapType = type,
+                    Device = device,
+                    DeviceObjects = device.GetDeviceObjects(),
+                };
+            }
             var raw = Row(InputDeviceType.Joystick);
+            Assert.Contains(raw.DeviceObjects, item => item.InputIndex == 2 && item.Name == "Left Trigger");
             Assert.True(InputManager.AxisRestsAtZero("Axis 8", raw));
-            Assert.True(InputManager.AxisRestsAtZero("Axis 2", raw));
+            Assert.False(InputManager.AxisRestsAtZero("Axis 2", raw));
             Assert.False(InputManager.AxisRestsAtZero("Axis 0", raw));
             Assert.False(InputManager.AxisRestsAtZero("Axis 8", Row(InputDeviceType.Gamepad)));
         }
@@ -1171,7 +1181,7 @@ namespace PadForge.Tests
         {
             // A row that reconnects gets a new port in the same pass, so the
             // open ports never empty and a show keyed by the device carried
-            // over. The engine's stop drops what is left.
+            // over. A reset drops what is left.
             var service = new DreamcastScreenService(new SettingsViewModel(), null);
             var device = Guid.NewGuid();
             var first = new BlissBoxPort(@"\\?\hid#vid_16d0&pid_0d04#first", 0x0D04, device, 11);
@@ -1193,6 +1203,36 @@ namespace PadForge.Tests
                 first.Dispose();
                 second.Dispose();
             }
+        }
+
+        [Fact]
+        public void TheEnginesStopDropsTheShowsOnceThePortsHaveClosed()
+        {
+            // The reset ran in the stop's first step, while the poll thread
+            // still ran macros and the ports stayed open, so a show queued
+            // after it played on the next start's ports.
+            string code = Repo("PadForge.App", "Services", "InputService.cs");
+            int stop = code.IndexOf("                _inputManager.Stop();", StringComparison.Ordinal);
+            int reset = code.IndexOf("_dreamcastScreen?.Reset();", StringComparison.Ordinal);
+            Assert.True(stop > 0 && reset > stop);
+            Assert.Equal(reset, code.LastIndexOf("_dreamcastScreen?.Reset();", StringComparison.Ordinal));
+            const string path = @"\\?\hid#padforge-test-no-such-device-reset";
+            try
+            {
+                BlissBoxRuntime.Sync(new[] { new BlissBoxRuntime.Row(path, 0x0D04, Guid.NewGuid(), 7) });
+                DreamcastScreenService.RequestShow(0, Convert.ToBase64String(new byte[192]), 1000, 1);
+                Assert.Equal(1, DreamcastScreenService.PendingShows);
+                new DreamcastScreenService(new SettingsViewModel(), null).Reset();
+                Assert.Equal(0, DreamcastScreenService.PendingShows);
+            }
+            finally { BlissBoxRuntime.Shutdown(); }
+        }
+
+        [Fact]
+        public void TheCrashPathDropsAPulseNotYetSent()
+        {
+            string runtime = Repo("PadForge.App", "Common", "Input", "BlissBoxRuntime.cs");
+            Assert.Contains("                port.Session.StopRumble();\n                port.Wake();", runtime);
         }
 
         [Fact]
@@ -1222,7 +1262,7 @@ namespace PadForge.Tests
             // which on a GPA reaches the routines SDL's effect drives.
             string phase = Repo("PadForge.App", "Common", "Input", "InputManager.BlissBox.cs");
             int retiring = phase.IndexOf("if (BlissBoxRuntime.IsRetiring(ud.DevicePath)) return false;", StringComparison.Ordinal);
-            int resend = phase.IndexOf("try { ud.ForceFeedbackState.ResendScalar(ud.Device); } catch { }", StringComparison.Ordinal);
+            int resend = phase.IndexOf("try { return ud.ForceFeedbackState.ResendScalar(ud.Device); }", StringComparison.Ordinal);
             Assert.True(retiring > 0 && resend > retiring);
             int sync = phase.IndexOf("var opened = BlissBoxRuntime.Sync(rows);", StringComparison.Ordinal);
             int queue = phase.IndexOf("if (wasOn || toggled) QueueBlissBoxCacheResets();", StringComparison.Ordinal);
@@ -1318,7 +1358,7 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void IdentifyOnAPeerRowRelaysThroughItsOwnDevice()
+        public void IdentifyNeverWritesAPeerRowsPathDirectly()
         {
             // A peer row carries the owner's VID and PID, and the direct lanes
             // would write a path that exists only on the other PC.

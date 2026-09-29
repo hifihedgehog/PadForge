@@ -113,6 +113,40 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public async Task ADeviceWhoseTypeChangesRegistersAgain()
+        {
+            // The consumer refreshed the owner's type in place, but its row
+            // kept the type it registered with, so a Bliss-Box port the owner's
+            // switch reopened kept the other shape's rest rule.
+            using var consumer = new LinkServer(PeerIdentity.Generate(), new PeerTrustStore(), _ => true);
+            using var owner = new LinkServer(PeerIdentity.Generate(), new PeerTrustStore(), _ => true);
+            RemotePeerDevice device = null;
+            int registrations = 0;
+            consumer.DeviceConnected += d =>
+            {
+                Volatile.Write(ref device, d);
+                Interlocked.Increment(ref registrations);
+            };
+            var current = SingleInventory(1, "a");
+            owner.ExposeProvider = () => Volatile.Read(ref current);
+            var status = TraceStatus(("consumer", consumer), ("owner", owner));
+            int port = StartOnFreePort(consumer);
+            StartOnFreePort(owner, port);
+            Assert.True(await owner.ConnectAsync("127.0.0.1", port, current), Why(owner, status));
+            Assert.True(await WaitUntil(() => Volatile.Read(ref registrations) == 1, 5000));
+            // The same type again registers nothing, and a new one registers.
+            current = SingleInventory(2, "a");
+            owner.PushDeviceList(current);
+            var joystick = LinkLifetimeFixtures.Info("a");
+            joystick.InputDeviceType = InputDeviceType.Joystick;
+            current = new LinkDeviceInventory(3, new[] { joystick });
+            owner.PushDeviceList(current);
+            Assert.True(await WaitUntil(() => Volatile.Read(ref registrations) >= 2
+                && Volatile.Read(ref device).Info.InputDeviceType == InputDeviceType.Joystick, 5000));
+            Assert.Equal(2, Volatile.Read(ref registrations));
+        }
+
+        [Fact]
         public async Task ExhaustionRekeysAndReplaysCurrentInventoryWithAutoReconnectDisabled()
         {
             var ownerIdentity = PeerIdentity.Generate();

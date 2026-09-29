@@ -104,11 +104,12 @@ namespace PadForge.Services
     /// <summary>
     /// The VMU screens of the Dreamcast pads in Bliss-Box ports (issue #469),
     /// and the ports' other choices. Ticked on the UI thread, where WPF draws
-    /// the text, from the UI timer whether or not PadForge has focus, and for
-    /// as long as it exists, so a show dies with the port instance it played
-    /// on and a request queued as the last port closed is dropped, rather
-    /// than playing on the next port for the same device. The engine's stop
-    /// resets it (<see cref="Reset"/>).
+    /// the text, from the UI timer while the engine runs, whether or not
+    /// PadForge has focus and whether or not a port is open, so a show dies
+    /// with the port instance it played on and a request queued as the last
+    /// port closed is dropped, rather than playing on the next port for the
+    /// same device. The engine's stop resets it once the poll thread and the
+    /// ports have stopped (<see cref="Reset"/>).
     /// Each tick decides the picture a port should show and hands it to the
     /// port's session, which writes it only when it differs from the one the
     /// adapter holds and no sooner than a second after the last write (the
@@ -326,9 +327,10 @@ namespace PadForge.Services
 
         internal bool HasShow(BlissBoxPort port) => _shows.ContainsKey(port);
 
-        /// <summary>The engine stopped: its ports are gone, and a show or a
-        /// request from before would otherwise play on the next start's
-        /// ports. The copies of the adapters' pictures stay held.</summary>
+        /// <summary>The engine stopped: its poll thread and ports are gone,
+        /// and a show or a request from before would otherwise play on the
+        /// next start's ports. The copies of the adapters' pictures stay
+        /// held.</summary>
         public void Reset()
         {
             _shows.Clear();

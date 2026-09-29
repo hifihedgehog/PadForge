@@ -2158,6 +2158,12 @@ namespace PadForge.Engine.RemoteLink
                 if (byId.TryGetValue(id, out var existing))
                 {
                     bool slotChanged = existing.LinkSlot != info.Slot;
+                    // The row's type is registration state on this PC (the
+                    // device row's CapType), which the rest rule and the
+                    // gamepad naming read, so a type the owner changed (a
+                    // Bliss-Box port its switch reopens, #469) registers
+                    // again rather than refreshing in place alone.
+                    bool typeChanged = existing.Info.InputDeviceType != info.InputDeviceType;
                     bool touchCapabilitiesChanged = info.NumTouchpads > 0 &&
                         (existing.Info.TouchpadPressureSupported != info.TouchpadPressureSupported
                         || existing.Info.TouchpadClickSupported != info.TouchpadClickSupported);
@@ -2210,8 +2216,9 @@ namespace PadForge.Engine.RemoteLink
                     existing.Info.HasExtraGenericAxes = info.HasExtraGenericAxes;
                     existing.Info.InputDeviceType = info.InputDeviceType;
                     next[info.Slot] = existing;
-                    // Re-register only when the slot moved, so the slot-stamped output route refreshes.
-                    if (slotChanged || touchCapabilitiesChanged) notifications.Add(() => DeviceConnected?.Invoke(existing));
+                    // Re-register only when the slot moved, so the slot-stamped output route refreshes,
+                    // or when what registration recorded changed.
+                    if (slotChanged || typeChanged || touchCapabilitiesChanged) notifications.Add(() => DeviceConnected?.Invoke(existing));
                 }
                 else
                 {

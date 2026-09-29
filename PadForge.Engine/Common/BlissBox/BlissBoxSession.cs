@@ -67,16 +67,20 @@ namespace PadForge.Engine.Common.BlissBox
         /// <summary>A picture write gets this long to finish. Both firmwares
         /// store it in EEPROM before they end the transfer: GPA 4.86 inside
         /// its handler (0x2D58 calling 0x290B), 3.0 as each 8-byte piece
-        /// arrives. The ATmega32U4 erases and writes a byte in 3.4 ms (its
-        /// datasheet's Table 5-2), so a picture that changes all 192 bytes
-        /// takes about 650 ms, past the channel's 500 ms. The API Tool waits
-        /// on hidapi's hid_send_feature_report with no limit.</summary>
+        /// arrives (0x0B8F calling 0x36A5). Both chips erase and write a
+        /// changed byte in 3.4 ms: the GPA's ATmega32U4 (its datasheet's Table
+        /// 5-2) and the 3.0 firmware's ATmega328P, whose 26-entry vector table
+        /// and stack at 0x08FF (0x02B8 to 0x02BB) the image carries (its
+        /// datasheet's Table 7-1, the atomic mode 0x36AF selects). A picture
+        /// that changes all 192 bytes takes about 650 ms, past the channel's
+        /// 500 ms. The API Tool waits on hidapi's hid_send_feature_report with
+        /// no limit.</summary>
         public const int ScreenWriteTimeoutMs = 2000;
 
         /// <summary>The VMU picture is rewritten at most once a second. Each
         /// write lands in the adapter's EEPROM (GPA 4.86 report 20 at 0x2D58
         /// runs eeprom_update_byte over 0x00A0 to 0x015F, and 3.0 writes the
-        /// same range from command 0x24), which the ATmega32U4 rates at
+        /// same range from command 0x24), which both chips' datasheets rate at
         /// 100,000 writes a cell.</summary>
         public const int ScreenIntervalMs = 1000;
 
@@ -106,9 +110,12 @@ namespace PadForge.Engine.Common.BlissBox
         private volatile byte _sentLarge, _sentSmall;
         private long _lastLarge, _lastSmall;
         private long _lastMotorBurst = long.MinValue / 2;
-        // The strongest levels asked for since the last 3.x motor write.
+        // The strongest levels asked for since the last 3.x motor write that
+        // went out.
         private int _peakLarge, _peakSmall;
-        private volatile bool _motorWriting;
+        // Odd while the worker's motor pass runs, so a reader can tell a pass
+        // started or ended while it read the motor fields.
+        private int _motorPasses;
         private bool _resendLarge, _resendSmall;
         private bool _largeFailed, _smallFailed;
         private long _nextInfo, _nextPressure, _nextArrows;
@@ -200,12 +207,13 @@ namespace PadForge.Engine.Common.BlissBox
         /// always shows it.</summary>
         public bool Busy => !_jobs.IsEmpty || _jobRunning;
 
-        /// <summary>Nothing is left to send the motors: both were last told
-        /// to stop or never started and no write is in flight, the controller
-        /// in the port has none, or the adapter is searching, with no
-        /// controller in the port to stop. A resend's flag clears as its write
-        /// starts, so the write in flight is what holds the crash path's wait
-        /// until the stop is out.
+        /// <summary>Nothing is left to send the motors. Either both were last
+        /// told to stop or never started, no resend and no level asked for
+        /// since the last write is owed, and no motor pass is running, or the
+        /// controller in the port has none, or the adapter is searching, with
+        /// no controller in the port to stop. The fields are read between two
+        /// reads of the pass count, so a pass that starts or ends meanwhile
+        /// never reads as rest: a resend's flag clears as its write starts.
         /// Until report 17 is read again after a reopen, a motor that ran
         /// before the channel dropped is not at rest: the adapter may still
         /// run it, and neither firmware ends every rumble on its own. The 3.0
@@ -214,13 +222,20 @@ namespace PadForge.Engine.Common.BlissBox
         /// timer stops only the command that last took it (0x29F7 to
         /// 0x2A14).</summary>
         public bool MotorsAtRest
-            => _info switch
+        {
+            get
             {
-                { Searching: true } => true,
-                { } info when BlissBoxControllers.MotorCount(info.Type) == 0 => true,
-                _ => _sentLarge == 0 && _sentSmall == 0 && !_motorWriting
-                     && !Volatile.Read(ref _resendLarge) && !Volatile.Read(ref _resendSmall),
-            };
+                var info = _info;
+                if (info is { Searching: true }) return true;
+                if (info != null && BlissBoxControllers.MotorCount(info.Type) == 0) return true;
+                int passes = Volatile.Read(ref _motorPasses);
+                if ((passes & 1) != 0) return false;
+                bool rest = _sentLarge == 0 && _sentSmall == 0
+                            && !Volatile.Read(ref _resendLarge) && !Volatile.Read(ref _resendSmall)
+                            && Volatile.Read(ref _peakLarge) == 0 && Volatile.Read(ref _peakSmall) == 0;
+                return rest && Volatile.Read(ref _motorPasses) == passes;
+            }
+        }
 
         /// <summary>The levels the motors should run at, PadForge's 0 to
         /// 65535: large is the low-frequency channel, small the high. True
@@ -233,6 +248,23 @@ namespace PadForge.Engine.Common.BlissBox
             RaisePeak(ref _peakLarge, large);
             RaisePeak(ref _peakSmall, small);
             return oldLarge != large || oldSmall != small;
+        }
+
+        /// <summary>From any thread: both motors stop, and no level asked for
+        /// before is owed any more, so the next 3.x write carries no pulse
+        /// that ended before the stop. For the crash path, whose wait for
+        /// <see cref="MotorsAtRest"/> would otherwise end while such a pulse
+        /// was still to go out.</summary>
+        public void StopRumble()
+        {
+            SetRumble(0, 0);
+            ClearPeaks();
+        }
+
+        private void ClearPeaks()
+        {
+            Interlocked.Exchange(ref _peakLarge, 0);
+            Interlocked.Exchange(ref _peakSmall, 0);
         }
 
         private static void RaisePeak(ref int peak, int level)
@@ -348,27 +380,25 @@ namespace PadForge.Engine.Common.BlissBox
             // level at once. On 3.x a change waits for the next paced write and
             // a running motor for its refresh a second after its last write.
             bool resendLarge = Volatile.Read(ref _resendLarge), resendSmall = Volatile.Read(ref _resendSmall);
+            var (wantLarge, wantSmall, motors) = WantedStrengths();
             if (_info is { IsAdvanced: true })
             {
-                var (wantLarge, wantSmall, motors) = WantedStrengths();
                 if (motors > 0)
                     next = Math.Min(next, MotorWake(wantLarge, _sentLarge, _lastLarge, _largeFailed, resendLarge, now));
                 if (motors == 2)
                     next = Math.Min(next, MotorWake(wantSmall, _sentSmall, _lastSmall, _smallFailed, resendSmall, now));
             }
-            else
+            else if (motors > 0)
             {
-                var (peakLarge, peakSmall, motors) = WantedStrengths(peaks: true);
+                var (carryLarge, carrySmall) = Carried3x(Volatile.Read(ref _peakLarge), Volatile.Read(ref _peakSmall), motors);
                 long due = long.MaxValue;
-                if (motors > 0)
+                if (resendLarge || _largeFailed || carryLarge != _sentLarge
+                    || (motors == 2 && (resendSmall || _smallFailed || carrySmall != _sentSmall)))
+                    due = now;
+                else
                 {
-                    if (resendLarge || peakLarge != _sentLarge || (motors == 2 && (resendSmall || peakSmall != _sentSmall)))
-                        due = now;
-                    else
-                    {
-                        if (peakLarge != 0) due = Math.Min(due, _lastLarge + RumbleHold3xMs);
-                        if (motors == 2 && peakSmall != 0) due = Math.Min(due, _lastSmall + RumbleHold3xMs);
-                    }
+                    if (carryLarge != 0) due = _lastLarge + RumbleHold3xMs;
+                    if (motors == 2 && carrySmall != 0) due = Math.Min(due, _lastSmall + RumbleHold3xMs);
                 }
                 if (due != long.MaxValue)
                     next = Math.Min(next, Math.Max(Math.Max(now, due), _lastMotorBurst + RumbleRefreshMs));
@@ -386,7 +416,7 @@ namespace PadForge.Engine.Common.BlissBox
         /// last write before the port closes.</summary>
         public void StopMotors()
         {
-            SetRumble(0, 0);
+            StopRumble();
             _transport.SetFeature(BlissBoxProtocol.Rumble(true, 0));
             _transport.SetFeature(BlissBoxProtocol.Rumble(false, 0));
             _sentLarge = _sentSmall = 0;
@@ -511,7 +541,11 @@ namespace PadForge.Engine.Common.BlissBox
                 _arrows = -1;
                 _arrowsLatched = false;
                 // Another controller, or the same one back: its motors are
-                // told their level again, a stop included, as after a reopen.
+                // told their level again, a stop included, as after a reopen,
+                // and a level asked for before, during a search, while the
+                // channel was closed or for a pad without motors, is not owed
+                // to it.
+                ClearPeaks();
                 Volatile.Write(ref _resendLarge, true);
                 Volatile.Write(ref _resendSmall, true);
             }
@@ -574,21 +608,32 @@ namespace PadForge.Engine.Common.BlissBox
         /// (<see cref="BlissBoxControllers.MotorCount"/>): each level on its
         /// own motor for a pad with two, the stronger level on command 4 for
         /// a pad with one, nothing for a pad with none or no pad.</summary>
-        private (byte Large, byte Small, int Motors) WantedStrengths(bool peaks = false)
+        private (byte Large, byte Small, int Motors) WantedStrengths()
         {
             int motors = LiveInfo is { } info ? BlissBoxControllers.MotorCount(info.Type) : 0;
-            int large = Volatile.Read(ref _wantedLarge), small = Volatile.Read(ref _wantedSmall);
-            if (peaks)
+            var (large, small) = Strengths(Volatile.Read(ref _wantedLarge), Volatile.Read(ref _wantedSmall), motors);
+            return (large, small, motors);
+        }
+
+        private static (byte Large, byte Small) Strengths(int large, int small, int motors)
+            => motors switch
             {
-                large = Math.Max(large, Volatile.Read(ref _peakLarge));
-                small = Math.Max(small, Volatile.Read(ref _peakSmall));
-            }
-            return motors switch
-            {
-                2 => (Strength(large), Strength(small), 2),
-                1 => (Strength(Math.Max(large, small)), (byte)0, 1),
-                _ => ((byte)0, (byte)0, 0),
+                2 => (Strength(large), Strength(small)),
+                1 => (Strength(Math.Max(large, small)), (byte)0),
+                _ => ((byte)0, (byte)0),
             };
+
+        /// <summary>What the next 3.x write carries on each motor: the
+        /// strongest level asked for since the last write that went out when
+        /// it is above what the motor already runs, and the level asked for
+        /// now otherwise. A pulse the running motor already covered never holds
+        /// back a lower level or a stop.</summary>
+        private (byte Large, byte Small) Carried3x(int peakLarge, int peakSmall, int motors)
+        {
+            int wantLarge = Volatile.Read(ref _wantedLarge), wantSmall = Volatile.Read(ref _wantedSmall);
+            var (topLarge, topSmall) = Strengths(Math.Max(wantLarge, peakLarge), Math.Max(wantSmall, peakSmall), motors);
+            var (nowLarge, nowSmall) = Strengths(wantLarge, wantSmall, motors);
+            return (topLarge > _sentLarge ? topLarge : nowLarge, topSmall > _sentSmall ? topSmall : nowSmall);
         }
 
         /// <summary>A motor whose level changed is told, type 0 when it
@@ -613,60 +658,69 @@ namespace PadForge.Engine.Common.BlissBox
         /// between two writes is still felt, and writes in one pass cost the
         /// pad one poll between them (the flag is set, not counted), so a
         /// running motor rides along with the other's. A steady level is told
-        /// again once a second (<see cref="RumbleHold3xMs"/>). GPA 4.86
-        /// handles the write in its USB control path and polls on, so it gets
-        /// a change at once.</para></summary>
+        /// again once a second (<see cref="RumbleHold3xMs"/>), and a refused
+        /// write at the next. GPA 4.86 handles the write in its USB control
+        /// path and polls on, so it gets a change at once.</para></summary>
         private void WriteMotors(long now)
         {
             var (large, small, motors) = WantedStrengths();
             if (motors == 0) return;
             bool advanced = _info is { IsAdvanced: true };
+            if (!advanced && now - _lastMotorBurst < RumbleRefreshMs) return;
             bool resendLarge = Volatile.Read(ref _resendLarge), resendSmall = Volatile.Read(ref _resendSmall);
-            if (!advanced)
+            Interlocked.Increment(ref _motorPasses);
+            try
             {
-                if (now - _lastMotorBurst < RumbleRefreshMs) return;
-                var (peakLarge, peakSmall, _) = WantedStrengths(peaks: true);
-                bool largeOwed = MotorOwed(peakLarge, _sentLarge, resendLarge, _lastLarge, now);
-                bool smallOwed = motors == 2 && MotorOwed(peakSmall, _sentSmall, resendSmall, _lastSmall, now);
-                if (largeOwed || smallOwed)
+                if (!advanced) WriteMotors3x(motors, resendLarge, resendSmall, now);
+                else
                 {
-                    // Taken before the writes, so a level asked for during
-                    // them counts toward the next.
-                    Interlocked.Exchange(ref _peakLarge, 0);
-                    Interlocked.Exchange(ref _peakSmall, 0);
-                    if (largeOwed || peakLarge != 0) WriteLarge(peakLarge, motors, advanced, now);
-                    if (motors == 2 && (smallOwed || peakSmall != 0)) WriteSmall(peakSmall, now);
-                    _lastMotorBurst = now;
+                    // The peaks serve 3.x alone.
+                    ClearPeaks();
+                    if (MotorDue(large, _sentLarge, _lastLarge, _largeFailed, resendLarge, now))
+                        WriteLarge(large, motors, advanced, now);
+                    if (motors == 2 && MotorDue(small, _sentSmall, _lastSmall, _smallFailed, resendSmall, now))
+                        WriteSmall(small, now);
+                }
+                if (motors == 1)
+                {
+                    // Command 5 never carries a level to a one-motor pad, only
+                    // a GPA's stop, so there is no second level to keep.
+                    _sentSmall = 0;
+                    _smallFailed = false;
+                    Volatile.Write(ref _resendSmall, false);
                 }
             }
-            else
+            finally { Interlocked.Increment(ref _motorPasses); }
+        }
+
+        /// <summary>A 3.x write of both motors. The peaks are taken before the
+        /// decision, so a level asked for during it counts toward the next
+        /// write, and go back unless a write delivered them, so a refused
+        /// write's pulse is carried again.</summary>
+        private void WriteMotors3x(int motors, bool resendLarge, bool resendSmall, long now)
+        {
+            int peakLarge = Interlocked.Exchange(ref _peakLarge, 0);
+            int peakSmall = Interlocked.Exchange(ref _peakSmall, 0);
+            var (carryLarge, carrySmall) = Carried3x(peakLarge, peakSmall, motors);
+            bool largeOwed = MotorOwed(carryLarge, _sentLarge, resendLarge, _largeFailed, _lastLarge, now);
+            bool smallOwed = motors == 2 && MotorOwed(carrySmall, _sentSmall, resendSmall, _smallFailed, _lastSmall, now);
+            bool largeOut = false, smallOut = false;
+            if (largeOwed || smallOwed)
             {
-                if (MotorDue(large, _sentLarge, _lastLarge, _largeFailed, resendLarge, now))
-                    WriteLarge(large, motors, advanced, now);
-                if (motors == 2 && MotorDue(small, _sentSmall, _lastSmall, _smallFailed, resendSmall, now))
-                    WriteSmall(small, now);
+                if (largeOwed || carryLarge != 0) largeOut = WriteLarge(carryLarge, motors, advanced: false, now);
+                if (motors == 2 && (smallOwed || carrySmall != 0)) smallOut = WriteSmall(carrySmall, now);
+                _lastMotorBurst = now;
             }
-            if (motors == 1)
-            {
-                // Command 5 never carries a level to a one-motor pad, only a
-                // GPA's stop, so there is no second level to keep.
-                _sentSmall = 0;
-                _smallFailed = false;
-                Volatile.Write(ref _resendSmall, false);
-            }
+            // A one-motor pad's command 4 carried both levels.
+            if (!largeOut) RaisePeak(ref _peakLarge, peakLarge);
+            if (motors == 1 ? !largeOut : !smallOut) RaisePeak(ref _peakSmall, peakSmall);
         }
 
         /// <summary>Command 4. A resend request is cleared before the write,
         /// so one the hand-off makes while it is in flight is kept, and set
-        /// again when the write fails.</summary>
-        private void WriteLarge(byte level, int motors, bool advanced, long now)
-        {
-            _motorWriting = true;
-            try { WriteLargeNow(level, motors, advanced, now); }
-            finally { _motorWriting = false; }
-        }
-
-        private void WriteLargeNow(byte level, int motors, bool advanced, long now)
+        /// again when the write fails. True when the level was
+        /// delivered.</summary>
+        private bool WriteLarge(byte level, int motors, bool advanced, long now)
         {
             bool resend = Volatile.Read(ref _resendLarge);
             if (resend) Volatile.Write(ref _resendLarge, false);
@@ -689,17 +743,11 @@ namespace PadForge.Engine.Common.BlissBox
             if (sent) _sentLarge = level;
             _largeFailed = !(sent && cleared);
             if (_largeFailed && resend) Volatile.Write(ref _resendLarge, true);
+            return !_largeFailed;
         }
 
         /// <summary>Command 5, with the same resend rule as command 4.</summary>
-        private void WriteSmall(byte level, long now)
-        {
-            _motorWriting = true;
-            try { WriteSmallNow(level, now); }
-            finally { _motorWriting = false; }
-        }
-
-        private void WriteSmallNow(byte level, long now)
+        private bool WriteSmall(byte level, long now)
         {
             bool resend = Volatile.Read(ref _resendSmall);
             if (resend) Volatile.Write(ref _resendSmall, false);
@@ -708,6 +756,7 @@ namespace PadForge.Engine.Common.BlissBox
             if (sent) _sentSmall = level;
             _smallFailed = !sent;
             if (!sent && resend) Volatile.Write(ref _resendSmall, true);
+            return sent;
         }
 
         /// <summary>When a GPA motor next needs the worker: at once for a
@@ -729,10 +778,10 @@ namespace PadForge.Engine.Common.BlissBox
         }
 
         /// <summary>A 3.x motor that goes into the next write: its level
-        /// changed or is owed again, or it is running and due its
+        /// changed, is owed again or was refused, or it is running and due its
         /// refresh.</summary>
-        private static bool MotorOwed(byte wanted, byte sent, bool resend, long last, long now)
-            => resend || wanted != sent || (wanted != 0 && now - last >= RumbleHold3xMs);
+        private static bool MotorOwed(byte carried, byte sent, bool resend, bool failed, long last, long now)
+            => resend || failed || carried != sent || (carried != 0 && now - last >= RumbleHold3xMs);
 
         private void PollArrows()
         {
@@ -915,10 +964,12 @@ namespace PadForge.Engine.Common.BlissBox
             if (info.Major < BlissBoxControllers.NativeChannelMajor) return BlissBoxJobError.OldFirmware;
             if (session.StopRequested) return BlissBoxJobError.Closed;
             var status = session.Talk(BlissBoxControllerPak.StatusMessage());
-            if (status == null) return BlissBoxJobError.NoReply;
+            // Talk answers null once the port starts closing.
+            if (status == null) return session.StopRequested ? BlissBoxJobError.Closed : BlissBoxJobError.NoReply;
             if (!BlissBoxControllerPak.IsPakPresent(status)) return BlissBoxJobError.NoPak;
             if (session.StopRequested) return BlissBoxJobError.Closed;
             var first = session.Talk(BlissBoxControllerPak.ReadMessage(0));
+            if (first == null && session.StopRequested) return BlissBoxJobError.Closed;
             if (first == null || first.Length < BlissBoxControllerPak.BlockBytes + 1) return BlissBoxJobError.NoReply;
             return BlissBoxControllerPak.IsRumblePak(first) ? BlissBoxJobError.RumblePak : BlissBoxJobError.None;
         }
@@ -944,7 +995,11 @@ namespace PadForge.Engine.Common.BlissBox
                 {
                     if (session.StopRequested) return BlissBoxJobResult.Fail(BlissBoxJobError.Closed, block);
                     var reply = session.Talk(BlissBoxControllerPak.ReadMessage(block));
-                    if (reply == null) continue;
+                    if (reply == null)
+                    {
+                        if (session.StopRequested) return BlissBoxJobResult.Fail(BlissBoxJobError.Closed, block);
+                        continue;
+                    }
                     result = BlissBoxControllerPak.ParseRead(reply,
                         image.AsSpan(block * BlissBoxControllerPak.BlockBytes, BlissBoxControllerPak.BlockBytes));
                     if (result != BlissBoxControllerPak.BlockResult.Short) answered = true;
@@ -992,6 +1047,7 @@ namespace PadForge.Engine.Common.BlissBox
                         : BlissBoxControllerPak.ParseWrite(reply, data);
                     if (result == BlissBoxControllerPak.BlockResult.Ok) break;
                     if (result == BlissBoxControllerPak.BlockResult.NoPak) return BlissBoxJobResult.Fail(BlissBoxJobError.NoPak, block);
+                    if (reply == null && session.StopRequested) return BlissBoxJobResult.Fail(BlissBoxJobError.Closed, block);
                     if (++errors > BlissBoxControllerPak.WriteErrorLimit)
                         return BlissBoxJobResult.Fail(
                             reply == null ? BlissBoxJobError.NoReply : BlissBoxJobError.TooManyErrors, block);

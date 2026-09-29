@@ -222,35 +222,31 @@ namespace PadForge.Engine
             if (rightTrigger > right) right = rightTrigger;
         }
 
-        /// <summary>Sends the levels last asked of this device through SDL
-        /// again and records them as delivered, for a device whose motors
-        /// spent a time under another writer: a Bliss-Box port the switch
-        /// hands back to SDL. A Remote Link peer sends a steady level once, so
-        /// waiting for the next change would leave the motors stopped. On the
-        /// haptic path, which SDL gives a DirectInput joystick with force
-        /// feedback, a fresh effect carries them, since the one from before
-        /// the hand-off no longer reflects the motors. A device with no SDL
-        /// motors takes no level, so the recorded ones are dropped: kept, they
-        /// would go back to the port at the next switch-on however long ago a
-        /// game or a peer ended them.</summary>
-        public void ResendScalar(ISdlInputDevice device)
+        /// <summary>Sends the levels last asked of this device through SDL's
+        /// joystick rumble again and records them as delivered, for a
+        /// Bliss-Box port the switch hands back to SDL, which SDL never opens
+        /// as a haptic device (the fork maps all four port IDs as a gamepad,
+        /// SDL_gamepad_db_community.h:289-292, and SDL_IsJoystickHaptic
+        /// refuses a gamepad, SDL_haptic.c:310-311). A Remote Link peer sends
+        /// a steady level once, so waiting for the next change would leave the
+        /// motors stopped. A level goes out after a stop: SDL skips a write
+        /// that repeats the levels it last took (SDL_joystick.c:2287-2290),
+        /// and a GPA's final stop from the retired port can end a level SDL
+        /// took while the port was retiring. A device with no SDL motors takes
+        /// no level, so the recorded ones are dropped: kept, they would go
+        /// back to the port at the next switch-on however long ago a game or a
+        /// peer ended them. False when SDL refused the write.</summary>
+        public bool ResendScalar(ISdlInputDevice device)
         {
-            if (device == null) return;
-            if (!device.HasRumble && !device.HasHaptic)
+            if (device == null) return true;
+            if (!device.HasRumble)
             {
                 ForgetForces();
-                return;
+                return true;
             }
             ushort left = LeftMotorSpeed, right = RightMotorSpeed;
-            bool delivered;
-            if (device.HasHaptic)
-            {
-                StopAndDestroyHapticEffect(device);
-                delivered = SetHapticForces(device, left, right);
-            }
-            else delivered = left == 0 && right == 0
-                ? device.StopRumble()
-                : device.SetRumble(left, right, uint.MaxValue);
+            bool delivered = device.StopRumble();
+            if (left != 0 || right != 0) delivered = device.SetRumble(left, right, uint.MaxValue);
             if (delivered)
             {
                 _cachedLeftMotorSpeed = left;
@@ -258,16 +254,7 @@ namespace PadForge.Engine
                 _scalarNeedsWrite = false;
             }
             else _scalarNeedsWrite = true;
-        }
-
-        /// <summary>Stops the effect PadForge runs on the device's haptic
-        /// path and keeps the recorded levels, for a device whose motors pass
-        /// to a writer that takes those levels: a Bliss-Box port the switch
-        /// hands to the adapter's commands. SDL's joystick rumble stop does
-        /// not reach that effect.</summary>
-        public void StopHapticEffect(ISdlInputDevice device)
-        {
-            if (device?.HasHaptic == true) StopAndDestroyHapticEffect(device);
+            return delivered;
         }
 
         /// <summary>

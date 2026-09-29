@@ -28,8 +28,18 @@ namespace PadForge.Common.Input
 
         /// <summary>Rows that give SDL their motor levels back on a later
         /// cycle after the switch went off: their retired port has not sent
-        /// its final stop yet, or another writer holds the output gate.</summary>
+        /// its final stop yet, another writer holds the output gate, or SDL
+        /// refused the write.</summary>
         private readonly HashSet<Guid> _blissBoxCacheResets = new();
+
+        /// <summary>The pending SDL resends are tried again this often, so a
+        /// device whose SDL rumble keeps failing costs a call every 100 ms
+        /// rather than one a cycle.</summary>
+        private const int BlissBoxResendRetryMs = 100;
+
+        /// <summary>When the pending SDL resends are next tried, in
+        /// <see cref="Environment.TickCount64"/> time. Poll thread only.</summary>
+        private long _blissBoxResendsDue;
 
         /// <summary>
         /// Phase 1l (issue #469): one API sidecar per online Bliss-Box row
@@ -115,17 +125,22 @@ namespace PadForge.Common.Input
             return true;
         }
 
-        /// <summary>Every poll cycle: the hand-offs and SDL resends Phase 1l
-        /// could not finish, so a contested output gate or a port still
-        /// sending its final stop delays them by a cycle, not an enumeration
-        /// interval. Nothing to do costs two counts.</summary>
+        /// <summary>Every poll cycle: the hand-offs Phase 1l could not
+        /// finish, so a contested output gate delays one by a cycle, not an
+        /// enumeration interval, and every 100 ms the SDL resends, which wait
+        /// on a retired port's final stop or on SDL. Nothing to do costs two
+        /// counts.</summary>
         private void RetryPendingBlissBoxRows()
         {
             if (_blissBoxRowsReadRaw)
             {
                 if (_blissBoxHandoffs.Count > 0) RetryBlissBoxRows(_blissBoxHandoffs, handOff: true);
             }
-            else if (_blissBoxCacheResets.Count > 0) RetryBlissBoxRows(_blissBoxCacheResets, handOff: false);
+            else if (_blissBoxCacheResets.Count > 0 && Environment.TickCount64 >= _blissBoxResendsDue)
+            {
+                _blissBoxResendsDue = Environment.TickCount64 + BlissBoxResendRetryMs;
+                RetryBlissBoxRows(_blissBoxCacheResets, handOff: false);
+            }
         }
 
         /// <summary>Runs the hand-off or the cache reset for each pending row,
@@ -223,11 +238,14 @@ namespace PadForge.Common.Input
             => openedAsGamepad == readRaw;
 
         /// <summary>The moment a port's motors pass to the adapter's commands:
-        /// SDL's rumble and the effect its haptic path ran stop, and the port
-        /// takes the levels the row last recorded, whichever writer recorded
-        /// them (Step 2, a relayed frame, or SDL's path before the switch),
-        /// and tells both motors again
-        /// (<see cref="BlissBoxRuntime.TakeMotors"/>). The row keeps its
+        /// SDL's rumble stops, and the port takes the levels the row last
+        /// recorded, whichever writer recorded them (Step 2, a relayed frame,
+        /// or SDL's path before the switch), and tells both motors again
+        /// (<see cref="BlissBoxRuntime.TakeMotors"/>). SDL's rumble is its
+        /// only effect on a port: SDL opens no haptic device for one, since
+        /// the fork's community database maps all four port IDs as a gamepad
+        /// (SDL_gamepad_db_community.h:289-292) and SDL_IsJoystickHaptic
+        /// refuses a gamepad (SDL_haptic.c:310-311). The row keeps its
         /// motor state through the switch's reopen, which is the same SDL
         /// connection (<see cref="UserDevice.SameConnection"/>), so a level a
         /// Remote Link peer sent once is still there. The port and the row's
@@ -248,10 +266,6 @@ namespace PadForge.Common.Input
             try
             {
                 var state = ud.ForceFeedbackState ??= new ForceFeedbackState();
-                // The effect SDL's haptic path ran, which a port with SDL
-                // motors has, stops too. SDL's joystick stop does not reach
-                // it, and the recorded levels pass to the port.
-                try { state.StopHapticEffect(wrapper); } catch { }
                 BlissBoxRuntime.TakeMotors(ud.DevicePath, state.LeftMotorSpeed, state.RightMotorSpeed);
             }
             finally { System.Threading.Monitor.Exit(ud.OutputSync); }
@@ -259,24 +273,24 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>The motors back to SDL after the switch went off: SDL is
-        /// told the levels the row last recorded, through its haptic path
-        /// where the port has one, and the cache records them as sent
-        /// (<see cref="ForceFeedbackState.ResendScalar"/>). A Remote Link peer
-        /// sends a steady level once, and SDL's effect was stopped when the
-        /// port took the motors, so waiting for the next change would leave
-        /// them stopped. It waits until the row's retired port's worker has
-        /// exited after its final stop, which on a GPA reaches the routines
-        /// SDL's DirectInput effect drives (0x2E8C to 0x2EC3) and would end
-        /// the level SDL was just given. False while that stop is pending or
-        /// another writer holds the output gate.</summary>
+        /// told the levels the row last recorded, and the cache records them
+        /// as sent (<see cref="ForceFeedbackState.ResendScalar"/>). A Remote
+        /// Link peer sends a steady level once, and SDL's rumble was stopped
+        /// when the port took the motors, so waiting for the next change would
+        /// leave them stopped. It waits until the row's retired port's worker
+        /// has exited after its final stop, which on a GPA reaches the
+        /// routines SDL's DirectInput effect drives (0x2E8C to 0x2EC3) and
+        /// would end the level SDL was just given. False while that stop is
+        /// pending, another writer holds the output gate, or SDL refused the
+        /// write, so the row is tried again.</summary>
         private static bool ResetBlissBoxRumbleCache(UserDevice ud)
         {
             if (ud.ForceFeedbackState == null || ud.Device == null) return true;
             if (BlissBoxRuntime.IsRetiring(ud.DevicePath)) return false;
             if (!System.Threading.Monitor.TryEnter(ud.OutputSync)) return false;
-            try { ud.ForceFeedbackState.ResendScalar(ud.Device); } catch { }
+            try { return ud.ForceFeedbackState.ResendScalar(ud.Device); }
+            catch { return true; }
             finally { System.Threading.Monitor.Exit(ud.OutputSync); }
-            return true;
         }
     }
 }

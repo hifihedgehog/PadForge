@@ -304,17 +304,18 @@ namespace PadForge.Common.Input
             port.Wake();
         }
 
-        /// <summary>Crash path: every port stops its motors, and the caller
-        /// waits up to <paramref name="timeoutMs"/> for the workers to send
-        /// it, since a dying process may not outlive an asynchronous
-        /// stop.</summary>
+        /// <summary>Crash path: every port stops its motors, with no pulse
+        /// asked for before still owed (<see cref="BlissBoxSession.StopRumble"/>),
+        /// and the caller waits up to <paramref name="timeoutMs"/> for the
+        /// workers to send it, since a dying process may not outlive an
+        /// asynchronous stop.</summary>
         public static void StopMotorsNow(int timeoutMs)
         {
             var ports = Ports;
             if (ports.Length == 0) return;
             foreach (var port in ports)
             {
-                port.Session.SetRumble(0, 0);
+                port.Session.StopRumble();
                 port.Wake();
             }
             long end = Environment.TickCount64 + timeoutMs;
@@ -350,29 +351,24 @@ namespace PadForge.Common.Input
         /// adapter searches (<see cref="BlissBoxSession.KnownInfo"/>), and the
         /// merge puts those axes at rest while it searches, so a trigger at
         /// rest never reads as pressed there. The rule follows the row's
-        /// shape, not the switch, so it holds until Step 1 reopens the
-        /// row.</summary>
+        /// shape, not the switch, so it holds until Step 1 reopens the row.
+        ///
+        /// <para>A Remote Link peer's copy of a port keeps the pressure half
+        /// alone, since its row finds no port on this PC. The device list
+        /// carries a joystick row's axis count and type but not the
+        /// controller in the owner's port, and the owner sends no object list
+        /// for a joystick (InputService's BuildExposedDevices), so the peer
+        /// names axes 2 and 5 as a gamepad's triggers whatever the pad is.
+        /// There they count as centered, as every raw joystick a peer exposes
+        /// does.</para></summary>
         public static bool RestsAtZero(UserDevice ud, int axis)
         {
             if (ud == null || !BlissBoxProtocol.IsPort(ud.VendorId, ud.ProdId) || !OpenedRaw(ud.Device)) return false;
             int first = PressureAxisBase(ud.Device);
             if (first >= 0 && axis >= first && axis < first + BlissBoxProtocol.PressureCount) return true;
-            // A peer's row has no port here, and carries the owner's names.
-            if (ud.Device is RemotePeerDevice) return NamedTrigger(ud.DeviceObjects, axis);
             var session = Find(ud)?.Session;
             return (session?.LiveInfo ?? session?.KnownInfo) is { } info
                    && BlissBoxControllers.IsTriggerAxis(info.Type, info.Major, axis);
-        }
-
-        /// <summary>True when the object list names this axis a trigger, as a
-        /// port's own list does (<see cref="NameObjects"/>).</summary>
-        internal static bool NamedTrigger(DeviceObjectItem[] objects, int axis)
-        {
-            if (objects == null) return false;
-            foreach (var item in objects)
-                if (item.IsAxis && !item.IsSlider && item.InputIndex == axis)
-                    return item.Name is "Left Trigger" or "Right Trigger";
-            return false;
         }
 
         /// <summary>

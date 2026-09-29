@@ -66,7 +66,7 @@ namespace PadForge.Services
         {
             if (!port.IsOpen || port.Session.Info == null) return Strings.Instance.BlissBox_Connecting;
             var info = port.Session.LiveInfo;
-            return info == null ? Strings.Instance.BlissBox_NoController : BlissBoxControllers.Name(info.Type);
+            return info == null ? Strings.Instance.BlissBox_NoController : BlissBoxControllers.Name(info.Type, info.Major);
         }
 
         /// <summary>The firmware as the tools write it, major.minor.</summary>
@@ -98,7 +98,7 @@ namespace PadForge.Services
             row.BlissBoxLine = !port.IsOpen || info == null
                 ? string.Format(culture, s.Devices_BlissBoxLineConnecting_Format, port.Session.Player)
                 : string.Format(culture, s.Devices_BlissBoxLine_Format, port.Session.Player,
-                    live == null ? s.BlissBox_NoController : BlissBoxControllers.Name(live.Type), FirmwareText(info));
+                    live == null ? s.BlissBox_NoController : BlissBoxControllers.Name(live.Type, live.Major), FirmwareText(info));
             row.ShowBlissBoxPlayer = port.IsOpen && info != null;
             row.ShowDreamcastScreen = live != null && BlissBoxControllers.HasScreen(live.Type);
             // The pak rides the native channel, which PadForge frames the way

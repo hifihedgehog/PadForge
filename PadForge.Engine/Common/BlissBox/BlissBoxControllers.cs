@@ -13,9 +13,14 @@ namespace PadForge.Engine.Common.BlissBox
     /// compatibility list naming the ones the tools only abbreviate (HPD is
     /// the Master System's HPD-200 paddle, HAMMERHEAD InterAct's HammerheadFX,
     /// GRAVIS_EX the Gravis Xterminator, ZXSINC the ZX Spectrum's Sinclair
-    /// joystick). Where the tools disagree, DeviceBuddy, the newer, wins: 66
-    /// is the FM Towns pad. SAC and SPEEK appear in no source beyond their
-    /// codes, and keep them.</para>
+    /// joystick). The two generations number two controllers differently,
+    /// and each tool names its own generation's: GPA 4.86 types an Atari
+    /// driving controller 12 in its DE-9 driver (0x2436) and returns 66 from
+    /// the same driver (0x22D7), which DeviceBuddy calls drivingcontroller
+    /// and TOWNS, while the 3.0 firmware returns 66 for a Wii extension
+    /// (0x23A9 to 0x23BB), which the API Tool calls WII_DRUM, and the API
+    /// Tool calls 12 PSX_WHEEL (<see cref="Name"/>). SAC and SPEEK appear in
+    /// no source beyond their codes, and keep them.</para>
     ///
     /// <para>Button and axis names differ between firmware generations, so
     /// each comes from the source written for that generation: RetroArch's
@@ -64,18 +69,29 @@ namespace PadForge.Engine.Common.BlissBox
         /// <item>The 3.0 firmware ORs them into the second button byte,
         /// buttons 10 to 13 (0x3295 to 0x32A9), for every controller but the
         /// NES Zapper, which skips the D-pad code (0x321E). It clears its
-        /// latch (0x0354) at power-up (0x2FAB) and when it starts a search
-        /// after a controller its search found (0x3163), so a latch can
-        /// outlast a pad found at power-up. PadForge's native poll uses the
-        /// same four buttons.</item>
+        /// latch (0x0354) at power-up (0x2FAB), on the path that restarts its
+        /// main loop (0x3671, back to 0x2FD8), and when it starts a search
+        /// after a controller its search found (0x3163, gated on 0x0356,
+        /// which only the search loop sets at 0x31AE). A pad found at
+        /// power-up is found outside that loop (0x3096), so a latch it set
+        /// holds for the next controller. PadForge's native poll uses the same
+        /// four buttons.</item>
         /// <item>GPA 4.86 writes them into the third, buttons 20 to 23 (0x34A1
-        /// to 0x34B9). Its latch (0x055E) lives in RAM and starts at power-up
-        /// from a stored setting only a settings command writes (0x373A,
-        /// 0x2CFB), and it is never set by the Genesis 3-button pad or the FM
-        /// Towns pad (0x349B to 0x34A0). Once it is on, the arrows go out for
-        /// every controller (0x34BC), those two included, and the PC-FX pad's
-        /// own inputs share two of those bits (0x16AA to 0x16BD), so none of
-        /// the three gets the names.</item>
+        /// to 0x34B9). Its latch (0x055E) lives in RAM, starts at power-up from
+        /// EEPROM 0x3D (0x373A), which a settings command writes (0x2CFB to
+        /// 0x2D02), and is never set by the Genesis 3-button pad or the FM
+        /// Towns pad (0x349B to 0x34A0). Once it is on, the arrows go out on
+        /// every poll (0x34BC), those two pads included, until power-off or
+        /// until something clears it. Every poll of a ColecoVision
+        /// controller, Super Action Controller or ColecoVision wheel (types 1,
+        /// 34 and 79) clears it (0x23DD), and that path writes the third byte
+        /// itself (0x23E5). The Atari driver clears it when it retypes a
+        /// joystick as a Trak-Ball (0x2408 to 0x241B), and the two routines
+        /// that restore the defaults clear it and store 0 at EEPROM 0x3D
+        /// (0x2C6A and 0x2C6F, 0x36A0 and 0x36A5). The PC-FX pad's own inputs
+        /// share two of those bits (0x16AA to 0x16BD). None of those six gets
+        /// the names, and no GPA layout exists for the ColecoVision
+        /// three.</item>
         /// </list>
         /// Only a controller whose layout names a D-pad gets them. One
         /// without a D-pad cannot press opposite directions, and the keypads
@@ -159,7 +175,7 @@ namespace PadForge.Engine.Common.BlissBox
             [9] = "GameCube controller",
             [10] = "Pippin AtMark controller",
             [11] = "Jaguar controller",
-            [12] = "PlayStation wheel",
+            [12] = "Atari driving controller",
             [13] = "Wii Nunchuk",
             [14] = "Intellivision controller",
             [15] = "Dreamcast ASCII pad",
@@ -234,10 +250,21 @@ namespace PadForge.Engine.Common.BlissBox
             [255] = "Atari joystick",
         };
 
-        /// <summary>The controller's name, or its type number when no source
-        /// names it.</summary>
-        public static string Name(byte type)
-            => Names.TryGetValue(type, out var name) ? name : $"Type {type}";
+        /// <summary>The two codes 3.x firmware numbers differently from GPA's
+        /// (see the class notes).</summary>
+        private static readonly Dictionary<byte, string> Names3x = new()
+        {
+            [12] = "PlayStation wheel",
+            [66] = "Wii drums",
+        };
+
+        /// <summary>The controller's name on this firmware generation, or its
+        /// type number when no source names it.</summary>
+        public static string Name(byte type, byte major)
+        {
+            if (major < 4 && Names3x.TryGetValue(type, out var name)) return name;
+            return Names.TryGetValue(type, out name) ? name : $"Type {type}";
+        }
 
         /// <summary>A DualShock 2 answers report 21 with its twelve pressure
         /// bytes. The API Tool polls it for PSX_DS2 alone (BBAPI.cs

@@ -89,6 +89,20 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void ARefusedWriteRetriesOnceAndThenDedupsAgain()
+        {
+            // The retry flag once stayed set after its retry, so every later
+            // identical frame wrote again at polling cadence.
+            var ffb = new ForceFeedbackState();
+            Assert.True(ffb.TryRecordMotorSnapshot(40000, 0));
+            Assert.False(ffb.TryRecordMotorSnapshot(40000, 0));
+            ffb.MarkDirectWriteFailed();
+            Assert.True(ffb.TryRecordMotorSnapshot(40000, 0));
+            Assert.False(ffb.TryRecordMotorSnapshot(40000, 0));
+            Assert.False(ffb.TryRecordMotorSnapshot(40000, 0));
+        }
+
+        [Fact]
         public void WriteRefusesAnEmptyPathInsteadOfOpeningNothing()
         {
             Assert.False(PadixConverterRawHidWriter.Write(null, 65535, 65535));

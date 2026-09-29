@@ -164,6 +164,10 @@ namespace PadForge.Engine
                         || rightMotor != _cachedRightMotorSpeed
                         || leftTrigger != _cachedLeftTriggerMotorSpeed
                         || rightTrigger != _cachedRightTriggerMotorSpeed;
+            // One retry per failure. The caller marks the write it is about to
+            // make again if that one fails too, and a flag left set would have
+            // every later identical frame write again at polling cadence.
+            _directWriteNeedsRetry = false;
 
             _cachedLeftMotorSpeed = leftMotor;
             _cachedRightMotorSpeed = rightMotor;

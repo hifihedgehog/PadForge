@@ -140,7 +140,11 @@ namespace PadForge.Common.Input
                     // The join waits out a transfer in flight, never the poll
                     // thread's time.
                     var closing = port;
-                    Task.Run(closing.Dispose);
+                    Task.Run(() =>
+                    {
+                        closing.Dispose();
+                        HandOverToSuccessor(closing);
+                    });
                     lock (_lock)
                     {
                         // Pruned here too, so ports that retire while the
@@ -154,6 +158,24 @@ namespace PadForge.Common.Input
             if (opened != null)
                 foreach (var port in opened) RaiseChanged(port);
             return opened;
+        }
+
+        /// <summary>Longest a retired port's successor waits for the old
+        /// worker to exit, past Dispose's 3 s join.</summary>
+        private const int SuccessorWaitMs = 10000;
+
+        /// <summary>A retired worker's final stop can land after a port that
+        /// took over its path has written its first levels, when the switch
+        /// went off and on again during a long transfer. That port tells both
+        /// motors their levels again once the old worker has exited.</summary>
+        private static void HandOverToSuccessor(BlissBoxPort retired)
+        {
+            SpinWait.SpinUntil(() => retired.Exited, SuccessorWaitMs);
+            if (Find(retired.Path) is { } successor && !ReferenceEquals(successor, retired))
+            {
+                successor.Session.ResendMotors();
+                successor.Wake();
+            }
         }
 
         /// <summary>Engine stop and app exit: every port stops its motors and
@@ -289,6 +311,17 @@ namespace PadForge.Common.Input
             if (port == null) return false;
             if (port.Session.SetRumble(large, small)) port.Wake();
             return true;
+        }
+
+        /// <summary>Both motors stop, with no pulse asked for before still owed
+        /// (<see cref="BlissBoxSession.StopRumble"/>), for the engine's stop
+        /// and the crash path.</summary>
+        public static void StopRumble(string path)
+        {
+            var port = Find(path);
+            if (port == null) return;
+            port.Session.StopRumble();
+            port.Wake();
         }
 
         /// <summary>The hand-off from SDL: the port takes the row's recorded

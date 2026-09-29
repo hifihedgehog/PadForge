@@ -66,8 +66,14 @@ namespace PadForge.Services
         {
             if (!port.IsOpen || port.Session.Info == null) return Strings.Instance.BlissBox_Connecting;
             var info = port.Session.LiveInfo;
-            return info == null ? Strings.Instance.BlissBox_NoController : BlissBoxControllers.Name(info.Type, info.Major);
+            return info == null ? Strings.Instance.BlissBox_NoController : ControllerName(info);
         }
+
+        /// <summary>The controller's name on the adapter's firmware, or its
+        /// type number when no source names it.</summary>
+        internal static string ControllerName(BlissBoxInfo info)
+            => BlissBoxControllers.Name(info.Type, info.Major)
+               ?? string.Format(CultureInfo.CurrentCulture, Strings.Instance.BlissBox_TypeNumber_Format, info.Type);
 
         /// <summary>The firmware as the tools write it, major.minor.</summary>
         internal static string FirmwareText(BlissBoxInfo info)
@@ -98,7 +104,7 @@ namespace PadForge.Services
             row.BlissBoxLine = !port.IsOpen || info == null
                 ? string.Format(culture, s.Devices_BlissBoxLineConnecting_Format, port.Session.Player)
                 : string.Format(culture, s.Devices_BlissBoxLine_Format, port.Session.Player,
-                    live == null ? s.BlissBox_NoController : BlissBoxControllers.Name(live.Type, live.Major), FirmwareText(info));
+                    live == null ? s.BlissBox_NoController : ControllerName(live), FirmwareText(info));
             row.ShowBlissBoxPlayer = port.IsOpen && info != null;
             row.ShowDreamcastScreen = live != null && BlissBoxControllers.HasScreen(live.Type);
             // The pak rides the native channel, which PadForge frames the way

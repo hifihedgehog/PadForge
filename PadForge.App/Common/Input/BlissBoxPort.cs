@@ -117,6 +117,14 @@ namespace PadForge.Common.Input
                 _wake.WaitOne(Math.Max(1, wait));
             }
 
+            // A port that closes while its channel is down opens it once more
+            // for the stop: an adapter that stayed up may still run the last
+            // level, and 3.0's Dreamcast driver never counts one down
+            // (0x2858).
+            if (_transport.Channel == null)
+            {
+                try { _transport.Channel = AnalogKeyboardHidChannel.OpenShared(Path); } catch { }
+            }
             try { if (_transport.Channel != null) Session.StopMotors(); } catch { }
             // Closing the channel also ends the jobs still queued.
             CloseChannel();

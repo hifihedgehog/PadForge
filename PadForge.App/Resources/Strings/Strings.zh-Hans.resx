@@ -278,6 +278,7 @@
   <data name="Settings_BlissBoxStatus_Port_Format" xml:space="preserve"><value>端口 {0}（{1}）</value></data>
   <data name="BlissBox_Connecting" xml:space="preserve"><value>正在连接</value></data>
   <data name="BlissBox_NoController" xml:space="preserve"><value>无控制器</value></data>
+  <data name="BlissBox_TypeNumber_Format" xml:space="preserve"><value>类型 {0}</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>网页控制器</value></data>
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>在局域网中为浏览器提供手柄界面。</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>启用网页控制器服务器</value></data>

@@ -278,6 +278,7 @@
   <data name="Settings_BlissBoxStatus_Port_Format" xml:space="preserve"><value>porta {0} ({1})</value></data>
   <data name="BlissBox_Connecting" xml:space="preserve"><value>connessione</value></data>
   <data name="BlissBox_NoController" xml:space="preserve"><value>nessun controller</value></data>
+  <data name="BlissBox_TypeNumber_Format" xml:space="preserve"><value>Tipo {0}</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Controller Web</value></data>
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>Fornisce un'interfaccia gamepad ai browser nella rete locale.</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Attiva server controller web</value></data>

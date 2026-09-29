@@ -229,11 +229,19 @@ namespace PadForge.Engine.Common.BlissBox
 
         /// <summary>Report 17, parsed: controller type, mode flags, firmware
         /// major and minor. Null when the player byte (byte 3) does not match,
-        /// the check BBAPI.cs getInfo makes, or the read is short.</summary>
+        /// the check BBAPI.cs getInfo makes, or the read is short.
+        ///
+        /// <para>The 2.0 firmware sends a PlayStation pad's ID as its type
+        /// (0x219B to 0x21B1), where 3.0 and GPA 4.86 first turn the neGcon's
+        /// 0x23 into 0x33 and the JogCon's 0xE3 into 0x7F (0x253A to 0x2546,
+        /// 0x0A18 to 0x0A2B), since 0x23 is their Dreamcast Twin Stick (0x2824,
+        /// 0x0E91). Firmware before 3 gets the same two here.</para></summary>
         public static BlissBoxInfo ParseInfo(ReadOnlySpan<byte> data, int player)
         {
             if (data.Length < 5 || data[3] != PlayerByte(player)) return null;
-            return new BlissBoxInfo(data[0], data[1], data[2], data[4], player);
+            byte type = data[0];
+            if (data[2] < 3) type = type switch { 0x23 => (byte)0x33, 0xE3 => (byte)0x7F, _ => type };
+            return new BlissBoxInfo(type, data[1], data[2], data[4], player);
         }
 
         /// <summary>Report 21: the player byte, then twelve pressure bytes in

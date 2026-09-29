@@ -19,8 +19,10 @@ namespace PadForge.Engine.Common.BlissBox
     /// the same driver (0x22D7), which DeviceBuddy calls drivingcontroller
     /// and TOWNS, while the 3.0 firmware returns 66 for a Wii extension
     /// (0x23A9 to 0x23BB), which the API Tool calls WII_DRUM, and the API
-    /// Tool calls 12 PSX_WHEEL (<see cref="Name"/>). SAC and SPEEK appear in
-    /// no source beyond their codes, and keep them.</para>
+    /// Tool calls 12 PSX_WHEEL (<see cref="Name"/>). The 2.0 firmware's
+    /// PlayStation codes are brought in line when report 17 is parsed
+    /// (<see cref="BlissBoxProtocol.ParseInfo"/>). SPEEK appears in no source
+    /// beyond its code, and keeps it.</para>
     ///
     /// <para>Button and axis names differ between firmware generations, so
     /// each comes from the source written for that generation: RetroArch's
@@ -197,7 +199,7 @@ namespace PadForge.Engine.Common.BlissBox
             [31] = "Wii Classic Controller",
             [32] = "Wii MotionPlus",
             [33] = "CD-i controller",
-            [34] = "SAC",
+            [34] = "Super Action Controller",
             [35] = "Dreamcast Twin Stick",
             [36] = "NES Power Pad",
             [37] = "3DO analog controller",
@@ -258,12 +260,13 @@ namespace PadForge.Engine.Common.BlissBox
             [66] = "Wii drums",
         };
 
-        /// <summary>The controller's name on this firmware generation, or its
-        /// type number when no source names it.</summary>
+        /// <summary>The controller's name on this firmware generation, or
+        /// null when no source names it, for the App's type-number
+        /// fallback.</summary>
         public static string Name(byte type, byte major)
         {
             if (major < 4 && Names3x.TryGetValue(type, out var name)) return name;
-            return Names.TryGetValue(type, out name) ? name : $"Type {type}";
+            return Names.TryGetValue(type, out name) ? name : null;
         }
 
         /// <summary>A DualShock 2 answers report 21 with its twelve pressure

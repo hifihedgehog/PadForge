@@ -571,5 +571,20 @@ namespace PadForge.Tests
             Assert.False(BlissBoxPsx.TryDecodeArrows(new byte[] { 0xFF, 0x73, 0x5A, 0x0F, 0xFF }, out _));
             Assert.False(BlissBoxPsx.TryDecodeArrows(new byte[] { 0xFF, 0x41 }, out _));
         }
+
+        [Fact]
+        public void A2xPlayStationCodeReadsAsTheNewerFirmwaresGiveIt()
+        {
+            // 2.0 sends a PlayStation pad's ID as its type (0x219B to 0x21B1),
+            // so its neGcon read as 35, the Dreamcast Twin Stick on 3.0 and
+            // GPA 4.86 (0x2824, 0x0E91), which give the neGcon 51 and the
+            // JogCon 127 (0x253A to 0x2546, 0x0A18 to 0x0A2B).
+            byte player = BlissBoxProtocol.PlayerByte(1);
+            Assert.Equal((byte)51, BlissBoxProtocol.ParseInfo(new byte[] { 0x23, 0, 2, player, 30 }, 1).Type);
+            Assert.Equal((byte)127, BlissBoxProtocol.ParseInfo(new byte[] { 0xE3, 0, 2, player, 30 }, 1).Type);
+            Assert.Equal((byte)0x41, BlissBoxProtocol.ParseInfo(new byte[] { 0x41, 0, 2, player, 30 }, 1).Type);
+            Assert.Equal((byte)35, BlissBoxProtocol.ParseInfo(new byte[] { 0x23, 0, 3, player, 34 }, 1).Type);
+            Assert.Equal((byte)35, BlissBoxProtocol.ParseInfo(new byte[] { 0x23, 0, 4, player, 86 }, 1).Type);
+        }
     }
 }

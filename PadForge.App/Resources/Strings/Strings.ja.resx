@@ -278,6 +278,7 @@
   <data name="Settings_BlissBoxStatus_Port_Format" xml:space="preserve"><value>ポート {0} ({1})</value></data>
   <data name="BlissBox_Connecting" xml:space="preserve"><value>接続中</value></data>
   <data name="BlissBox_NoController" xml:space="preserve"><value>コントローラーなし</value></data>
+  <data name="BlissBox_TypeNumber_Format" xml:space="preserve"><value>タイプ {0}</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Web コントローラー</value></data>
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>ローカルネットワーク上のブラウザにゲームパッド UI を提供します。</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Web コントローラーサーバーを有効にする</value></data>

@@ -1164,11 +1164,11 @@ namespace PadForge.Common.Input
             if (isBlissBox)
             {
                 // Bliss-Box sole-writer path (#469). The port's worker sends
-                // the large motor (command 4) the low-frequency level and the
-                // small motor (command 5) the high-frequency one, and holds a
-                // running motor on with a fresh command every 100 ms, so only a
-                // change comes through here. A port still opening refuses, and
-                // the snapshot re-arms for the next frame.
+                // the levels as the controller in the port takes them, each on
+                // its own motor or the stronger on command 4 alone, and holds a
+                // running motor on itself (BlissBoxSession.WriteMotors), so
+                // only a change comes through here. A path no port serves yet
+                // refuses, and the snapshot re-arms for the next frame.
                 ushort blissL = combinedL, blissR = combinedR;
                 ForceFeedbackState.FoldTriggersForDirectWriter(firstPadSetting, combinedLT, combinedRT, ref blissL, ref blissR);
                 if (ud.ForceFeedbackState.TryRecordMotorSnapshot(blissL, blissR))

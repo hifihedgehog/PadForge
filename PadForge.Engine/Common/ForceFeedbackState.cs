@@ -235,7 +235,10 @@ namespace PadForge.Engine
         /// took while the port was retiring. A device with no SDL motors takes
         /// no level, so the recorded ones are dropped: kept, they would go
         /// back to the port at the next switch-on however long ago a game or a
-        /// peer ended them. False when SDL refused the write.</summary>
+        /// peer ended them. False when SDL refused the stop or the level: a
+        /// refused stop leaves SDL's record at a level the port's final stop
+        /// may have ended, which the level's write then skips as
+        /// unchanged.</summary>
         public bool ResendScalar(ISdlInputDevice device)
         {
             if (device == null) return true;
@@ -246,7 +249,7 @@ namespace PadForge.Engine
             }
             ushort left = LeftMotorSpeed, right = RightMotorSpeed;
             bool delivered = device.StopRumble();
-            if (left != 0 || right != 0) delivered = device.SetRumble(left, right, uint.MaxValue);
+            if (delivered && (left != 0 || right != 0)) delivered = device.SetRumble(left, right, uint.MaxValue);
             if (delivered)
             {
                 _cachedLeftMotorSpeed = left;
@@ -256,6 +259,10 @@ namespace PadForge.Engine
             else _scalarNeedsWrite = true;
             return delivered;
         }
+
+        /// <summary>True while a level this state holds has not reached SDL:
+        /// a write or a resend SDL refused. The next write clears it.</summary>
+        public bool ScalarWritePending => _scalarNeedsWrite;
 
         /// <summary>
         /// Stops all rumble on the device and resets cached state.

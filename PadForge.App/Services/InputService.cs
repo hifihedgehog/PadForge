@@ -2574,10 +2574,21 @@ namespace PadForge.Services
                 _inputManager = null;
                 _inputManagerStatic = null;
                 // The dashboard tick stops with the engine, so the head
-                // tracking card settles to Stopped here. Queued after the
-                // null above, so a tick that raced the teardown cannot
-                // rewrite a live line behind it.
-                _dispatcher.BeginInvoke(() => UpdateHeadTrackingStatus());
+                // tracking card settles to Stopped here, and the G-Keys,
+                // analog keyboards and Bliss-Box lines and a port's Devices
+                // line and actions collapse (#469). Queued after the null
+                // above, so a tick that raced the teardown cannot rewrite a
+                // live line behind it.
+                _dispatcher.BeginInvoke(() =>
+                {
+                    UpdateHeadTrackingStatus();
+                    UpdateGKeysStatus();
+                    UpdateAnalogKeyboardsStatus();
+                    UpdateBlissBoxStatus();
+                    if (_mainVm.Devices.SelectedDevice is { } selected
+                        && FindUserDevice(selected.InstanceGuid) is { } selectedDevice)
+                        UpdateBlissBoxDeviceRow(selected, selectedDevice);
+                });
                 UserEffectsDispatcher.SlotButtonsProvider = null;
                 UserEffectsDispatcher.SlotRumbleForDeviceProvider = null;
                 UserEffectsDispatcher.SlotRawRumbleProvider = null;
@@ -11635,6 +11646,9 @@ namespace PadForge.Services
         private void ApplyRemoteOutput(OutputEffectCodec.OutputEffect effect, ISdlInputDevice source, UserDevice ud,
             string peerFingerprint, LinkEffectTicket toneTicket = null)
         {
+            // The crash path's quiesce stops every output for good (#469), and
+            // a peer game's next frame would start a motor again behind it.
+            if (_inputManager?.OutputsQuiesced == true) return;
             // Sole-writer guard (#138): this frame means a remote game is driving the
             // shared device. Refresh the output lease so the owner's LOCAL output pipeline
             // yields. The apply below is the sole hardware writer (no two-writer stutter).

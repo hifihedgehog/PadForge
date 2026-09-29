@@ -314,6 +314,7 @@
   <data name="Settings_BlissBoxStatus_Port_Format" xml:space="preserve"><value>port {0} ({1})</value></data>
   <data name="BlissBox_Connecting" xml:space="preserve"><value>connecting</value></data>
   <data name="BlissBox_NoController" xml:space="preserve"><value>no controller</value></data>
+  <data name="BlissBox_TypeNumber_Format" xml:space="preserve"><value>Type {0}</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Web Controller</value></data>
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>Serve a gamepad UI to browsers on your local network.</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Enable Web Controller Server</value></data>

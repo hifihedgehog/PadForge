@@ -116,6 +116,9 @@ namespace PadForge.Engine.Common.BlissBox
         // Odd while the worker's motor pass runs, so a reader can tell a pass
         // started or ended while it read the motor fields.
         private int _motorPasses;
+        // Counts StopRumble, so a 3.x pass that took the peaks before a stop
+        // neither carries nor puts back what the stop dropped.
+        private int _stops;
         private bool _resendLarge, _resendSmall;
         private bool _largeFailed, _smallFailed;
         private long _nextInfo, _nextPressure, _nextArrows;
@@ -259,6 +262,7 @@ namespace PadForge.Engine.Common.BlissBox
         {
             SetRumble(0, 0);
             ClearPeaks();
+            Interlocked.Increment(ref _stops);
         }
 
         private void ClearPeaks()
@@ -493,12 +497,14 @@ namespace PadForge.Engine.Common.BlissBox
             _storedScreen = null;
             _arrows = -1;
             _arrowsLatched = false;
-            _sentLarge = _sentSmall = 0;
             // What the motors are doing is unknown once the channel dropped:
             // an adapter that stayed up may still run the last level. Both
             // are told their level again when it reopens, a stop included.
+            // The flags go first, so the crash path never reads the zeroed
+            // levels without them.
             Volatile.Write(ref _resendLarge, true);
             Volatile.Write(ref _resendSmall, true);
+            _sentLarge = _sentSmall = 0;
             _nextInfo = _nextPressure = _nextArrows = 0;
             _failedInfoReads = 0;
             CancelJobs();
@@ -548,6 +554,9 @@ namespace PadForge.Engine.Common.BlissBox
                 ClearPeaks();
                 Volatile.Write(ref _resendLarge, true);
                 Volatile.Write(ref _resendSmall, true);
+                // Its motors run nothing the old controller was sent, so a
+                // pulse at or below that level still goes out to it.
+                _sentLarge = _sentSmall = 0;
             }
             InfoChanged?.Invoke(this);
         }
@@ -696,11 +705,15 @@ namespace PadForge.Engine.Common.BlissBox
         /// <summary>A 3.x write of both motors. The peaks are taken before the
         /// decision, so a level asked for during it counts toward the next
         /// write, and go back unless a write delivered them, so a refused
-        /// write's pulse is carried again.</summary>
+        /// write's pulse is carried again. A stop that lands meanwhile drops
+        /// them: taken before its count moved, they are neither carried nor
+        /// put back.</summary>
         private void WriteMotors3x(int motors, bool resendLarge, bool resendSmall, long now)
         {
+            int stops = Volatile.Read(ref _stops);
             int peakLarge = Interlocked.Exchange(ref _peakLarge, 0);
             int peakSmall = Interlocked.Exchange(ref _peakSmall, 0);
+            if (Volatile.Read(ref _stops) != stops) peakLarge = peakSmall = 0;
             var (carryLarge, carrySmall) = Carried3x(peakLarge, peakSmall, motors);
             bool largeOwed = MotorOwed(carryLarge, _sentLarge, resendLarge, _largeFailed, _lastLarge, now);
             bool smallOwed = motors == 2 && MotorOwed(carrySmall, _sentSmall, resendSmall, _smallFailed, _lastSmall, now);
@@ -711,6 +724,7 @@ namespace PadForge.Engine.Common.BlissBox
                 if (motors == 2 && (smallOwed || carrySmall != 0)) smallOut = WriteSmall(carrySmall, now);
                 _lastMotorBurst = now;
             }
+            if (Volatile.Read(ref _stops) != stops) return;
             // A one-motor pad's command 4 carried both levels.
             if (!largeOut) RaisePeak(ref _peakLarge, peakLarge);
             if (motors == 1 ? !largeOut : !smallOut) RaisePeak(ref _peakSmall, peakSmall);

@@ -2134,11 +2134,13 @@ namespace PadForge.Common.Input
                         }
                         // A Bliss-Box port's SDL rumble is inert while the
                         // adapter's commands own its motors (#469). The port's
-                        // worker sends both motors type 0 on its next step,
-                        // which QuiesceOutputs waits for.
+                        // worker sends the stop with its next motor write, at
+                        // once on a GPA and at the next paced write on 3.x,
+                        // and a pulse asked for before is dropped rather than
+                        // sent ahead of it. QuiesceOutputs waits for it.
                         if (PadForge.Engine.Common.BlissBox.BlissBoxApi.OwnsRumble(ud.VendorId, ud.ProdId))
                         {
-                            try { BlissBoxRuntime.SetRumble(ud.DevicePath, 0, 0); }
+                            try { BlissBoxRuntime.StopRumble(ud.DevicePath); }
                             catch { /* best effort */ }
                         }
                         try { ud.ForceFeedbackState.StopDeviceForces(ud.Device); }

@@ -32,14 +32,21 @@ namespace PadForge.Common.Input
         /// refused the write.</summary>
         private readonly HashSet<Guid> _blissBoxCacheResets = new();
 
-        /// <summary>The pending SDL resends are tried again this often, so a
+        /// <summary>Rows whose resend SDL refused. A later write can deliver
+        /// the level first (Step 2 writes a mapped row's owed level), and a
+        /// retry after that would stop and restart a motor already at it.
+        /// Poll thread only.</summary>
+        private readonly HashSet<Guid> _blissBoxResendsRefused = new();
+
+        /// <summary>The pending hand-offs and SDL resends are tried again this
+        /// often: a contested output gate delays one by at most 100 ms, and a
         /// device whose SDL rumble keeps failing costs a call every 100 ms
         /// rather than one a cycle.</summary>
-        private const int BlissBoxResendRetryMs = 100;
+        private const int BlissBoxRetryMs = 100;
 
-        /// <summary>When the pending SDL resends are next tried, in
+        /// <summary>When the pending rows are next tried, in
         /// <see cref="Environment.TickCount64"/> time. Poll thread only.</summary>
-        private long _blissBoxResendsDue;
+        private long _blissBoxRetriesDue;
 
         /// <summary>
         /// Phase 1l (issue #469): one API sidecar per online Bliss-Box row
@@ -103,6 +110,7 @@ namespace PadForge.Common.Input
                 return changed;
             }
             _blissBoxCacheResets.Clear();
+            _blissBoxResendsRefused.Clear();
             if (opened != null)
                 foreach (var port in opened) _blissBoxHandoffs.Add(port.InstanceGuid);
             // A switch that went off and on again since the last pass may
@@ -125,22 +133,17 @@ namespace PadForge.Common.Input
             return true;
         }
 
-        /// <summary>Every poll cycle: the hand-offs Phase 1l could not
-        /// finish, so a contested output gate delays one by a cycle, not an
-        /// enumeration interval, and every 100 ms the SDL resends, which wait
-        /// on a retired port's final stop or on SDL. Nothing to do costs two
-        /// counts.</summary>
+        /// <summary>Every poll cycle, the hand-offs and SDL resends Phase 1l
+        /// could not finish, tried again every 100 ms rather than at the next
+        /// enumeration interval: a contested output gate, a retired port's
+        /// final stop still pending, or SDL refusing a write. Nothing to do
+        /// costs two counts.</summary>
         private void RetryPendingBlissBoxRows()
         {
-            if (_blissBoxRowsReadRaw)
-            {
-                if (_blissBoxHandoffs.Count > 0) RetryBlissBoxRows(_blissBoxHandoffs, handOff: true);
-            }
-            else if (_blissBoxCacheResets.Count > 0 && Environment.TickCount64 >= _blissBoxResendsDue)
-            {
-                _blissBoxResendsDue = Environment.TickCount64 + BlissBoxResendRetryMs;
-                RetryBlissBoxRows(_blissBoxCacheResets, handOff: false);
-            }
+            var pending = _blissBoxRowsReadRaw ? _blissBoxHandoffs : _blissBoxCacheResets;
+            if (pending.Count == 0 || Environment.TickCount64 < _blissBoxRetriesDue) return;
+            _blissBoxRetriesDue = Environment.TickCount64 + BlissBoxRetryMs;
+            RetryBlissBoxRows(pending, handOff: _blissBoxRowsReadRaw);
         }
 
         /// <summary>Runs the hand-off or the cache reset for each pending row,
@@ -163,6 +166,9 @@ namespace PadForge.Common.Input
         /// levels it last recorded (<see cref="ResetBlissBoxRumbleCache"/>).</summary>
         private void QueueBlissBoxCacheResets()
         {
+            // Every row's first resend of this switch-off goes out, whatever
+            // an earlier one's refusal left behind.
+            _blissBoxResendsRefused.Clear();
             var devices = SettingsManager.UserDevices;
             if (devices == null) return;
             lock (devices.SyncRoot)
@@ -259,9 +265,13 @@ namespace PadForge.Common.Input
         {
             if (ud?.Device is not SdlDeviceWrapper wrapper) return true;
             // SDL's own stop needs no gate: nothing else drives SDL's rumble
-            // for the port any more. The port's resend follows it in its
-            // first step with report 17 read.
-            try { wrapper.StopSdlRumble(); } catch { }
+            // for the port any more. A stop SDL refused leaves its effect
+            // running beside the adapter's commands, so the hand-off waits for
+            // a later pass. The port's resend follows it in its first step
+            // with report 17 read.
+            bool stopped;
+            try { stopped = wrapper.StopSdlRumble(); } catch { stopped = true; }
+            if (!stopped) return false;
             if (!System.Threading.Monitor.TryEnter(ud.OutputSync)) return false;
             try
             {
@@ -282,14 +292,28 @@ namespace PadForge.Common.Input
         /// routines SDL's DirectInput effect drives (0x2E8C to 0x2EC3) and
         /// would end the level SDL was just given. False while that stop is
         /// pending, another writer holds the output gate, or SDL refused the
-        /// write, so the row is tried again.</summary>
-        private static bool ResetBlissBoxRumbleCache(UserDevice ud)
+        /// write, so the row is tried again, unless a later write has
+        /// delivered the level by then.</summary>
+        private bool ResetBlissBoxRumbleCache(UserDevice ud)
         {
-            if (ud.ForceFeedbackState == null || ud.Device == null) return true;
+            var state = ud.ForceFeedbackState;
+            if (state == null || ud.Device == null) return true;
             if (BlissBoxRuntime.IsRetiring(ud.DevicePath)) return false;
             if (!System.Threading.Monitor.TryEnter(ud.OutputSync)) return false;
-            try { return ud.ForceFeedbackState.ResendScalar(ud.Device); }
-            catch { return true; }
+            try
+            {
+                if (_blissBoxResendsRefused.Contains(ud.InstanceGuid) && !state.ScalarWritePending)
+                {
+                    _blissBoxResendsRefused.Remove(ud.InstanceGuid);
+                    return true;
+                }
+                bool delivered;
+                try { delivered = state.ResendScalar(ud.Device); }
+                catch { delivered = true; }
+                if (delivered) _blissBoxResendsRefused.Remove(ud.InstanceGuid);
+                else _blissBoxResendsRefused.Add(ud.InstanceGuid);
+                return delivered;
+            }
             finally { System.Threading.Monitor.Exit(ud.OutputSync); }
         }
     }

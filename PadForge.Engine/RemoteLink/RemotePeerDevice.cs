@@ -155,8 +155,10 @@ namespace PadForge.Engine.RemoteLink
         private volatile bool _connected;
         private volatile bool _disposed;
 
-        private readonly int[] _supportedButtonIndices;
-        private readonly int[] _supportedAxisIndices;
+        // Swapped whole by RefreshSupportedSets, so a reader holding one keeps
+        // a consistent array.
+        private volatile int[] _supportedButtonIndices;
+        private volatile int[] _supportedAxisIndices;
 
         public RemotePeerDeviceInfo Info { get; }
         public LinkConnectionLifetime Connection { get; internal set; }
@@ -203,25 +205,8 @@ namespace PadForge.Engine.RemoteLink
             // that does not gate), and only then is a dense range synthesized.
             // An EMPTY set is the owner saying the device has none, which the
             // v8 tail carries precisely so it stops arriving here as dense.
-            if (info.SupportedButtonIndices != null)
-            {
-                _supportedButtonIndices = (int[])info.SupportedButtonIndices.Clone();
-            }
-            else
-            {
-                _supportedButtonIndices = new int[Math.Max(0, _rawButtonCount)];
-                for (int i = 0; i < _supportedButtonIndices.Length; i++) _supportedButtonIndices[i] = i;
-            }
-            if (info.SupportedAxisIndices != null)
-            {
-                _supportedAxisIndices = (int[])info.SupportedAxisIndices.Clone();
-            }
-            else
-            {
-                int denseAxes = Math.Max(0, Math.Max(info.NumAxes, info.RawAxisCount));
-                _supportedAxisIndices = new int[denseAxes];
-                for (int i = 0; i < denseAxes; i++) _supportedAxisIndices[i] = i;
-            }
+            _supportedButtonIndices = ButtonSet(info, _rawButtonCount);
+            _supportedAxisIndices = AxisSet(info);
 
             // Start centered (codec neutral) and live, so registration doesn't blip
             // offline before the first frame; the stale window then governs liveness.
@@ -229,6 +214,33 @@ namespace PadForge.Engine.RemoteLink
             _back = CustomInputStateCodec.CreateNeutral();
             _lastFrameTicks = _nowTicks();
             _connected = true;
+        }
+
+        private static int[] ButtonSet(RemotePeerDeviceInfo info, int rawButtons)
+        {
+            if (info.SupportedButtonIndices != null) return (int[])info.SupportedButtonIndices.Clone();
+            var dense = new int[Math.Max(0, rawButtons)];
+            for (int i = 0; i < dense.Length; i++) dense[i] = i;
+            return dense;
+        }
+
+        private static int[] AxisSet(RemotePeerDeviceInfo info)
+        {
+            if (info.SupportedAxisIndices != null) return (int[])info.SupportedAxisIndices.Clone();
+            var dense = new int[Math.Max(0, Math.Max(info.NumAxes, info.RawAxisCount))];
+            for (int i = 0; i < dense.Length; i++) dense[i] = i;
+            return dense;
+        }
+
+        /// <summary>The device-list reconcile's refresh of the owner's button
+        /// and axis sets, which move with the counts when the owner's device
+        /// changes shape: a Bliss-Box port its switch reopens raw or through
+        /// SDL's mapping (#469). A registration after it reads the new
+        /// sets.</summary>
+        internal void RefreshSupportedSets()
+        {
+            _supportedButtonIndices = ButtonSet(Info, RawButtonCount);
+            _supportedAxisIndices = AxisSet(Info);
         }
 
         // ── ISdlInputDevice identity / capabilities ─────────────────────────

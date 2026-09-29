@@ -397,6 +397,7 @@ public class Strings : INotifyPropertyChanged
     public string Settings_BlissBoxStatus_Port_Format => Get("Settings_BlissBoxStatus_Port_Format");
     public string BlissBox_Connecting => Get("BlissBox_Connecting");
     public string BlissBox_NoController => Get("BlissBox_NoController");
+    public string BlissBox_TypeNumber_Format => Get("BlissBox_TypeNumber_Format");
     public string Dashboard_WebController => Get("Dashboard_WebController");
     public string Dashboard_WebDescription => Get("Dashboard_WebDescription");
     public string Dashboard_EnableWeb => Get("Dashboard_EnableWeb");

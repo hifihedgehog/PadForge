@@ -1980,12 +1980,10 @@ namespace PadForge.Engine
         /// effect SDL started before is not left running (#469). On a GPA the
         /// stop itself can reach a one-motor pad's command-5 routine, which
         /// the port's session clears in its first step with report 17 read
-        /// (BlissBoxRuntime.TakeMotors).</summary>
-        public void StopSdlRumble()
-        {
-            if (Joystick != IntPtr.Zero && _hasRumble)
-                SDL_RumbleJoystick(Joystick, 0, 0, 0);
-        }
+        /// (BlissBoxRuntime.TakeMotors). False when SDL refused the stop, true
+        /// when it took it or there was nothing to stop.</summary>
+        public bool StopSdlRumble()
+            => Joystick == IntPtr.Zero || !_hasRumble || SDL_RumbleJoystick(Joystick, 0, 0, 0);
 
         // ─────────────────────────────────────────────
         //  GUID construction

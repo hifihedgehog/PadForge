@@ -137,13 +137,19 @@ namespace PadForge.Tests
             // The same type again registers nothing, and a new one registers.
             current = SingleInventory(2, "a");
             owner.PushDeviceList(current);
+            Assert.Equal(17, Volatile.Read(ref device).SupportedButtonIndices.Length);
             var joystick = LinkLifetimeFixtures.Info("a");
             joystick.InputDeviceType = InputDeviceType.Joystick;
+            joystick.NumButtons = 24;
+            joystick.SupportedButtonIndices = Enumerable.Range(0, 24).ToArray();
             current = new LinkDeviceInventory(3, new[] { joystick });
             owner.PushDeviceList(current);
             Assert.True(await WaitUntil(() => Volatile.Read(ref registrations) >= 2
                 && Volatile.Read(ref device).Info.InputDeviceType == InputDeviceType.Joystick, 5000));
             Assert.Equal(2, Volatile.Read(ref registrations));
+            // The registration reads the owner's new button set, not the one
+            // the device was built with.
+            Assert.Equal(24, Volatile.Read(ref device).SupportedButtonIndices.Length);
         }
 
         [Fact]

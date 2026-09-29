@@ -1254,8 +1254,12 @@ namespace PadForge.Tests
             _now = 170; session.SetRumble(0, 0); session.Step();
             _now = 200; session.Step();
             _now = 300; session.Step();
+            // A delivered pulse is not carried again.
+            _now = 400; session.Step();
+            _now = 500; session.Step();
             var levels = adapter.Motor(BlissBoxProtocol.CommandLargeMotor).Select(r => r[5]).ToList();
             Assert.Equal(new byte[] { BlissBoxSession.Strength(30000), 0, BlissBoxSession.Strength(50000), 0 }, levels);
+            Assert.True(session.MotorsAtRest);
         }
 
         [Fact]
@@ -1449,6 +1453,69 @@ namespace PadForge.Tests
             _now = 200; session.Step();
             var levels = adapter.Motor(BlissBoxProtocol.CommandLargeMotor).Select(r => r[5]).ToList();
             Assert.Equal(new byte[] { 0 }, levels);
+        }
+
+        [Fact]
+        public void TheCrashStopDropsAPulseARefusedWriteWouldPutBack()
+        {
+            // A stop that landed while a refused write carried a pulse found
+            // the peak already taken, and the refusal put it back, so the next
+            // write sent the pulse after the stop.
+            BlissBoxSession session = null;
+            var adapter = new ScriptedAdapter
+            {
+                Type = BlissBoxControllers.TypeNintendo64,
+                Major = 3,
+                DuringWrite = r =>
+                {
+                    if (_now == 100 && r[0] == BlissBoxProtocol.ReportCommand) session.StopRumble();
+                },
+                RefuseWhen = r => _now == 100 && r[0] == BlissBoxProtocol.ReportCommand,
+            };
+            session = Session(adapter);
+            session.Step();
+            _now = 50; session.SetRumble(50000, 0);
+            _now = 60; session.SetRumble(0, 0);
+            _now = 100; session.Step();
+            _now = 200; session.Step();
+            _now = 300; session.Step();
+            byte pulse = BlissBoxSession.Strength(50000);
+            var levels = adapter.Motor(BlissBoxProtocol.CommandLargeMotor).Select(r => r[5]).ToList();
+            Assert.Equal(new byte[] { 0, pulse, 0 }, levels);
+            Assert.True(session.MotorsAtRest);
+        }
+
+        [Fact]
+        public void TheCrashStopWaitsForAPulseOwedToEitherMotor()
+        {
+            var adapter = new ScriptedAdapter { Type = BlissBoxControllers.TypeDualShock2, Major = 3 };
+            var session = Session(adapter);
+            session.Step();
+            _now = 120; session.SetRumble(0, 50000);
+            _now = 150; session.SetRumble(0, 0);
+            Assert.False(session.MotorsAtRest);
+            session.StopRumble();
+            Assert.True(session.MotorsAtRest);
+        }
+
+        [Fact]
+        public void APulseOnANewlyFoundControllerIsSent()
+        {
+            // A controller change kept the old controller's sent level, so a
+            // pulse at or below it on the new controller, whose motor never
+            // ran, was taken as covered and never sent.
+            var adapter = new ScriptedAdapter { Type = BlissBoxControllers.TypeNintendo64, Major = 3 };
+            var session = Session(adapter);
+            session.Step();
+            _now = 450; session.SetRumble(45000, 0); session.Step();
+            adapter.Type = 9;
+            _now = 500; session.Step();
+            _now = 510; session.SetRumble(30000, 0);
+            _now = 520; session.SetRumble(0, 0);
+            _now = 550; session.Step();
+            _now = 650; session.Step();
+            var levels = adapter.Motor(BlissBoxProtocol.CommandLargeMotor).Select(r => r[5]).ToList();
+            Assert.Equal(new byte[] { 0, BlissBoxSession.Strength(45000), BlissBoxSession.Strength(30000), 0 }, levels);
         }
 
         [Fact]

@@ -2214,6 +2214,9 @@ namespace PadForge.Engine.RemoteLink
                     existing.Info.RawButtonCount = info.RawButtonCount;
                     existing.Info.RawAxisCount = info.RawAxisCount;
                     existing.Info.HasExtraGenericAxes = info.HasExtraGenericAxes;
+                    existing.Info.SupportedButtonIndices = info.SupportedButtonIndices;
+                    existing.Info.SupportedAxisIndices = info.SupportedAxisIndices;
+                    existing.RefreshSupportedSets();
                     existing.Info.InputDeviceType = info.InputDeviceType;
                     next[info.Slot] = existing;
                     // Re-register only when the slot moved, so the slot-stamped output route refreshes,

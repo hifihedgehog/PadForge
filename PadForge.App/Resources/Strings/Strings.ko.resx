@@ -278,6 +278,7 @@
   <data name="Settings_BlissBoxStatus_Port_Format" xml:space="preserve"><value>포트 {0}({1})</value></data>
   <data name="BlissBox_Connecting" xml:space="preserve"><value>연결 중</value></data>
   <data name="BlissBox_NoController" xml:space="preserve"><value>컨트롤러 없음</value></data>
+  <data name="BlissBox_TypeNumber_Format" xml:space="preserve"><value>유형 {0}</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>웹 컨트롤러</value></data>
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>로컬 네트워크의 브라우저에 게임패드 UI를 제공합니다.</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>웹 컨트롤러 서버 활성화</value></data>

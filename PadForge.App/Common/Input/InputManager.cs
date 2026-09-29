@@ -1559,6 +1559,9 @@ namespace PadForge.Common.Input
             _ptpReader.Start();
             StartTabletReader();
 
+            // The last stop closed the Bliss-Box runtime (#469).
+            BlissBoxRuntime.Open();
+
             Array.Clear(_steeringAngleFrames);
             _running = true;
             _enumerationTimer.Restart();
@@ -1684,8 +1687,10 @@ namespace PadForge.Common.Input
 
             StopAllForceFeedback();
             // The SDL rows close below, so their Bliss-Box ports close first,
-            // each stopping its motors (#469). The next start pairs them again.
-            BlissBoxRuntime.Shutdown();
+            // each stopping its motors (#469). The next start pairs them
+            // again, and until then no port opens, even from a poll pass that
+            // outlived the join.
+            BlissBoxRuntime.Close();
 
             // Wait for any in-flight HM lifecycle tasks (Pass 2 connects
             // and Pass 1 async-dispose teardowns) to complete before we
@@ -2142,6 +2147,15 @@ namespace PadForge.Common.Input
                         {
                             try { BlissBoxRuntime.StopRumble(ud.DevicePath); }
                             catch { /* best effort */ }
+                            // SDL's gate refuses the stop below on these rows,
+                            // and a level SDL took before the switch went on
+                            // runs until the hand-off stops it, which may not
+                            // have happened yet.
+                            if (ud.Device is SdlDeviceWrapper wrapper)
+                            {
+                                try { wrapper.StopSdlRumble(); }
+                                catch { /* best effort */ }
+                            }
                         }
                         try { ud.ForceFeedbackState.StopDeviceForces(ud.Device); }
                         catch { /* best effort */ }

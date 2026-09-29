@@ -135,7 +135,7 @@ namespace PadForge.Tests
             Assert.Contains("BlissBoxRuntime.SetRumble(ud.DevicePath, left, right);", body);
 
             // The SDL calls survive for every other family.
-            Assert.Contains("else if (left != 0 || right != 0) dev.SetRumble(left, right);", body);
+            Assert.Contains("if (left != 0 || right != 0) dev.SetRumble(left, right);", body);
             Assert.Contains("else dev.StopRumble();", body);
         }
 

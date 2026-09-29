@@ -27,10 +27,15 @@ namespace PadForge.Services
         /// service holds itself to four passes a second, and runs one at once
         /// after a port's choices change. Once it exists it ticks with no port
         /// open too, which drops the shows and requests of the ports that
-        /// closed.</summary>
+        /// closed. Before it exists, a request whose port closed is dropped
+        /// here, since it has no pad to play on.</summary>
         private void TickBlissBox()
         {
-            if (BlissBoxRuntime.Ports.Length == 0 && _dreamcastScreen == null) return;
+            if (BlissBoxRuntime.Ports.Length == 0 && _dreamcastScreen == null)
+            {
+                DreamcastScreenService.DropRequests();
+                return;
+            }
             try { DreamcastScreen.Tick(); }
             catch { /* a failed pass is retried on the next tick */ }
         }
@@ -114,8 +119,9 @@ namespace PadForge.Services
             row.ShowNativeArrows = live != null && live.Major == 3 && BlissBoxControllers.IsPlayStationDigital(live.Type);
             row.BlissBoxNativeArrows = DreamcastScreen.Get(port.InstanceGuid)?.NativeArrows == true;
             // A player change or a Controller Pak transfer holds the channel
-            // until it ends, so their buttons wait for it.
-            row.BlissBoxIdle = !port.Session.Busy;
+            // until it ends, so the port's buttons wait for it, and a port a
+            // player change replaced acts no more.
+            row.BlissBoxIdle = !port.Session.Busy && !port.Replaced;
             devVm.UpdateBlissBoxPressure(
                 live != null && BlissBoxControllers.HasPressure(live.Type) ? port.Session.Pressure : null);
         }

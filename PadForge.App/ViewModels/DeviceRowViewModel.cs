@@ -975,7 +975,8 @@ namespace PadForge.ViewModels
 
         private bool _blissBoxIdle = true;
         /// <summary>No player change or Controller Pak transfer holds the
-        /// port's channel, so their buttons can start one.</summary>
+        /// port's channel, and no player change has replaced the port, so its
+        /// buttons can act.</summary>
         public bool BlissBoxIdle
         {
             get => _blissBoxIdle;

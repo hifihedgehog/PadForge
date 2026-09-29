@@ -26,7 +26,7 @@ namespace PadForge
             var row = _viewModel.Devices.SelectedDevice;
             if (row == null) return;
             var port = BlissBoxRuntime.Find(FindUserDeviceForBlissBox(row.InstanceGuid));
-            if (port == null) return;
+            if (port == null || port.Replaced) return;
             var s = Strings.Instance;
             var culture = CultureInfo.CurrentCulture;
 
@@ -48,6 +48,7 @@ namespace PadForge
                     var result = await job.Completion;
                     if (result.Ok)
                     {
+                        port.Replaced = true;
                         service.Remove(port.InstanceGuid);
                         _viewModel.SetStatus(string.Format(culture, s.Status_BlissBoxPlayer_Format, player));
                     }

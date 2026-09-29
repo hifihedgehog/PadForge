@@ -28,6 +28,9 @@ namespace PadForge.Common.Input
         // Set by the crash path for the rest of the process: a port opened
         // after it is quiesced before its worker starts.
         private static volatile bool _quiescedAll;
+        // Set by the engine's stop, under _lock, until the next start: a poll
+        // pass that outlived the stop's join opens no port.
+        private static bool _closed;
         private static int _generation;
         // Ports retired from Sync whose workers may still be sending their
         // final stop. Under _lock.
@@ -106,6 +109,7 @@ namespace PadForge.Common.Input
             List<BlissBoxPort> retired = null;
             lock (_lock)
             {
+                if (_closed) return null;
                 var current = _ports;
                 var next = new List<BlissBoxPort>(rows.Count);
                 foreach (var port in current)
@@ -185,8 +189,25 @@ namespace PadForge.Common.Input
             }
         }
 
-        /// <summary>Engine stop and app exit: every port stops its motors and
-        /// closes, all at once.</summary>
+        /// <summary>Engine start: ports open again.</summary>
+        public static void Open()
+        {
+            lock (_lock) _closed = false;
+        }
+
+        /// <summary>Engine stop: every port closes (<see cref="Shutdown"/>),
+        /// and none opens again until the next start, so a poll pass that
+        /// outlived the stop's join cannot open one behind it.</summary>
+        public static void Close()
+        {
+            lock (_lock) _closed = true;
+            Shutdown();
+        }
+
+        /// <summary>Every port stops its motors and closes, all at once. A
+        /// worker still in a transfer past Dispose's join is retired as Sync
+        /// retires one, so a port a quick restart opens for the same path
+        /// tells its motors again once that worker's final stop is out.</summary>
         public static void Shutdown()
         {
             BlissBoxPort[] closing;
@@ -198,6 +219,17 @@ namespace PadForge.Common.Input
             if (closing.Length == 0) return;
             foreach (var port in closing) port.Changed -= OnPortChanged;
             Parallel.ForEach(closing, port => { try { port.Dispose(); } catch { } });
+            foreach (var port in closing)
+            {
+                if (port.Exited) continue;
+                lock (_lock)
+                {
+                    _retiring.RemoveAll(p => p.Exited);
+                    _retiring.Add(port);
+                }
+                var closed = port;
+                Task.Run(() => HandOverToSuccessor(closed));
+            }
             foreach (var port in closing) RaiseChanged(port);
         }
 
@@ -366,25 +398,39 @@ namespace PadForge.Common.Input
         /// asynchronous stop. Each port is quiesced
         /// (<see cref="BlissBoxSession.Quiesce"/>), so a writer that had
         /// already passed the quiesce check cannot hand it a level after the
-        /// stop, and the stop is asked again on each look. The ports are read
-        /// again on each look, and a port opened after the loop ends is
-        /// quiesced as it opens, since the poll thread can run on behind a
-        /// crash dialog.</summary>
+        /// stop, and the stop is asked again on each look. The latch is set
+        /// under the lock Sync opens ports under, so a port opening at that
+        /// moment is quiesced as it opens or found by the first look, and a
+        /// port opened after the loop ends is quiesced as it opens, since the
+        /// poll thread can run on behind a crash dialog. Each look reads the
+        /// ports again and keeps every port it has seen in the wait, retired
+        /// ones included.</summary>
         public static void StopMotorsNow(int timeoutMs)
         {
-            _quiescedAll = true;
+            var waiting = new List<BlissBoxPort>();
+            // Bounded, so a crash while a stalled thread holds the lock
+            // cannot hang here.
+            bool taken = false;
+            try
+            {
+                Monitor.TryEnter(_lock, 100, ref taken);
+                _quiescedAll = true;
+                if (taken) waiting.AddRange(_retiring);
+            }
+            finally { if (taken) Monitor.Exit(_lock); }
             long end = Environment.TickCount64 + timeoutMs;
             while (true)
             {
-                var ports = Ports;
-                if (ports.Length == 0) return;
-                foreach (var port in ports)
+                foreach (var port in Ports)
+                    if (!waiting.Contains(port)) waiting.Add(port);
+                if (waiting.Count == 0) return;
+                foreach (var port in waiting)
                 {
                     port.Session.Quiesce();
                     port.Wake();
                 }
                 bool rest = true;
-                foreach (var port in ports)
+                foreach (var port in waiting)
                     if (port.IsOpen && !port.Session.MotorsAtRest) { rest = false; break; }
                 if (rest || Environment.TickCount64 >= end) return;
                 Thread.Sleep(5);

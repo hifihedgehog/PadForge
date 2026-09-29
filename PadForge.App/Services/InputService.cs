@@ -15538,8 +15538,16 @@ namespace PadForge.Services
                             {
                                 PadForge.Common.Input.BlissBoxRuntime.SetRumble(ud.DevicePath, left, right);
                             }
-                            else if (left != 0 || right != 0) dev.SetRumble(left, right);
-                            else dev.StopRumble();
+                            else
+                            {
+                                // Under the row's gate, which the switch's
+                                // hand-off takes for its SDL stop.
+                                lock (ud.OutputSync)
+                                {
+                                    if (left != 0 || right != 0) dev.SetRumble(left, right);
+                                    else dev.StopRumble();
+                                }
+                            }
                         }
                         void Restore()
                         {

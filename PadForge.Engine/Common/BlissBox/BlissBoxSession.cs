@@ -128,7 +128,7 @@ namespace PadForge.Engine.Common.BlissBox
         // the stop landed before its check.
         private int _stops;
         // Set by the crash path's Quiesce, under _peakGate: no level asked for
-        // after it is taken, and no picture goes out.
+        // after it is taken, and no picture write starts.
         private volatile bool _quiesced;
         private bool _resendLarge, _resendSmall;
         // A refused write leaves its motor in doubt: the channel reports a
@@ -298,9 +298,11 @@ namespace PadForge.Engine.Common.BlissBox
         /// <summary>The crash path's stop: both motors stop, and no level
         /// asked for after it is taken, so a writer that passed the quiesce
         /// check before the crash path set it cannot leave a level behind the
-        /// stop. No picture goes out after it either, since a GPA runs the
+        /// stop. No picture write starts after it either, since a GPA runs the
         /// Dreamcast driver's command-5 routine at full power before every
-        /// picture write (0x2BEF to 0x2BF9).</summary>
+        /// picture write (0x2BEF to 0x2BF9). A write already past its check
+        /// still goes out, and its pulse of about 10 ms ends on its own timer
+        /// (0x29F7 to 0x2A14).</summary>
         public void Quiesce()
         {
             lock (_peakGate)
@@ -396,9 +398,12 @@ namespace PadForge.Engine.Common.BlissBox
             if (info != null && BlissBoxControllers.HasScreen(info.Type))
             {
                 // The crash path wakes a quiesced port every 5 ms, and on 3.x
-                // each read costs a controller poll.
+                // each read costs three controller polls (0x0803 to 0x0806).
                 if (_storedScreen == null && !_quiesced) ReadScreen();
-                if (WriteScreen(now)) WriteMotors(now);
+                // The clock again: a 3.x pass stamped with the step's start,
+                // before a picture transfer of up to about 650 ms, would let
+                // the next step's pass take the 100 ms pacing as long past.
+                if (WriteScreen(now)) WriteMotors(_clock());
             }
 
             if (!_jobs.IsEmpty)
@@ -457,7 +462,9 @@ namespace PadForge.Engine.Common.BlissBox
             if (NativeArrowsActive) next = Math.Min(next, _nextArrows);
             // Only a port whose pad draws the picture writes one, so only
             // then is a pending picture a reason to wake.
-            if (info != null && BlissBoxControllers.HasScreen(info.Type) && ScreenWritePending)
+            // A quiesced port writes none, so a pending one would wake it at
+            // once on every step.
+            if (info != null && BlissBoxControllers.HasScreen(info.Type) && ScreenWritePending && !_quiesced)
                 next = Math.Min(next, Math.Max(now, _lastScreenWrite + ScreenIntervalMs));
             if (!_jobs.IsEmpty) next = now;
             return (int)Math.Clamp(next - now, 0, InfoIntervalMs);
@@ -727,16 +734,19 @@ namespace PadForge.Engine.Common.BlissBox
             Interlocked.Increment(ref _motorPasses);
             try
             {
+                bool advanced = _info is { IsAdvanced: true };
+                // The peaks serve 3.x alone. A GPA's are cleared before its
+                // levels are read, so one that a level asked for during the
+                // pass raised holds the motors out of rest until a pass
+                // writes that level.
+                if (advanced) ClearPeaks();
                 var (large, small, motors) = WantedStrengths();
                 if (motors == 0) return;
-                bool advanced = _info is { IsAdvanced: true };
                 if (!advanced && now - _lastMotorBurst < RumbleRefreshMs) return;
                 bool resendLarge = Volatile.Read(ref _resendLarge), resendSmall = Volatile.Read(ref _resendSmall);
                 if (!advanced) WriteMotors3x(motors, resendLarge, resendSmall, now);
                 else
                 {
-                    // The peaks serve 3.x alone.
-                    ClearPeaks();
                     if (MotorDue(large, _sentLarge, _lastLarge, _largeFailed, resendLarge, now))
                         WriteLarge(large, motors, advanced, now);
                     if (motors == 2 && MotorDue(small, _sentSmall, _lastSmall, _smallFailed, resendSmall, now))

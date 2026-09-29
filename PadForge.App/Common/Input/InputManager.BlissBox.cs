@@ -256,17 +256,19 @@ namespace PadForge.Common.Input
         private static bool HandMotorsToBlissBox(UserDevice ud)
         {
             if (ud?.Device is not SdlDeviceWrapper wrapper) return true;
-            // SDL's own stop needs no gate: nothing else drives SDL's rumble
-            // for the port any more. A stop SDL refused leaves its effect
-            // running beside the adapter's commands, so the hand-off waits for
-            // a later pass. The port's resend follows it in its first step
-            // with report 17 read.
-            bool stopped;
-            try { stopped = wrapper.StopSdlRumble(); } catch { stopped = true; }
-            if (!stopped) return false;
+            // SDL's stop runs under the row's gate too, which an Identify
+            // train started while the switch was off holds for its SDL
+            // writes, so none of its pulses lands after the stop, where SDL's
+            // gate would keep it from ever being ended. A stop SDL refused
+            // leaves its effect running beside the adapter's commands, so the
+            // hand-off waits for a later pass. The port's resend follows it in
+            // its first step with report 17 read.
             if (!System.Threading.Monitor.TryEnter(ud.OutputSync)) return false;
             try
             {
+                bool stopped;
+                try { stopped = wrapper.StopSdlRumble(); } catch { stopped = true; }
+                if (!stopped) return false;
                 var state = ud.ForceFeedbackState ??= new ForceFeedbackState();
                 BlissBoxRuntime.TakeMotors(ud.DevicePath, state.LeftMotorSpeed, state.RightMotorSpeed);
             }

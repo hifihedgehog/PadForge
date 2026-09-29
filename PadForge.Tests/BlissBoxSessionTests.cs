@@ -1648,7 +1648,9 @@ namespace PadForge.Tests
             session.Step();
             session.Quiesce();
             session.SetScreen(Enumerable.Range(0, 192).Select(i => (byte)i).ToArray());
-            _now = 2000; session.Step();
+            _now = 2000;
+            // The picture it will not write is no reason to wake at once.
+            Assert.True(session.Step() > 0);
             Assert.Equal(0, adapter.ScreenWrites);
             Assert.False(session.WriteScreenNow(new byte[192]));
             Assert.Equal(0, adapter.ScreenWrites);
@@ -1658,7 +1660,7 @@ namespace PadForge.Tests
         public void AQuiescedPortReadsNoPicture()
         {
             // The crash path wakes a quiesced port every 5 ms, and on 3.x each
-            // picture read costs a controller poll.
+            // picture read costs three controller polls.
             var adapter = new ScriptedAdapter { Type = BlissBoxControllers.TypeDreamcast, Major = 3 };
             var session = Session(adapter);
             session.Quiesce();

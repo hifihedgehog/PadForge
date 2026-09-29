@@ -72,6 +72,12 @@ namespace PadForge.Common.Input
         /// and this stays false past that until the worker is done.</summary>
         public bool Exited => _exited;
 
+        /// <summary>Set on the UI thread once a player change on this port
+        /// went through. The adapter comes back as a new device, so this
+        /// port's actions end, and none writes back the row's choices the
+        /// change dropped.</summary>
+        public bool Replaced { get; set; }
+
         /// <summary>Raised on the worker when the channel opens or closes, or
         /// report 17 changes.</summary>
         public event Action<BlissBoxPort> Changed;

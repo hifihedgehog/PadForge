@@ -1085,7 +1085,14 @@ namespace PadForge.Tests
             Assert.Contains("_blissBoxRetriesDue = Environment.TickCount64 + BlissBoxRetryMs;", phase);
             // A stop SDL refused at the hand-off leaves its effect running
             // beside the adapter's commands, so the hand-off waits.
-            Assert.Contains("try { stopped = wrapper.StopSdlRumble(); } catch { stopped = true; }\n            if (!stopped) return false;", phase);
+            Assert.Contains("try { stopped = wrapper.StopSdlRumble(); } catch { stopped = true; }\n                if (!stopped) return false;", phase);
+            // The stop runs under the row's gate, which Identify's SDL lane
+            // holds for its writes, so no pulse lands after it.
+            int gate = phase.IndexOf("if (!System.Threading.Monitor.TryEnter(ud.OutputSync)) return false;", StringComparison.Ordinal);
+            int stop = phase.IndexOf("try { stopped = wrapper.StopSdlRumble(); }", StringComparison.Ordinal);
+            Assert.True(gate > 0 && stop > gate);
+            Assert.Contains("lock (ud.OutputSync)\n                                {\n                                    if (left != 0 || right != 0) dev.SetRumble(left, right);",
+                Repo("PadForge.App", "Services", "InputService.cs"));
         }
 
         [Fact]
@@ -1281,6 +1288,46 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void NoPortOpensAfterTheEnginesStop()
+        {
+            // A poll pass that outlived the stop's 3 s join opened a port
+            // behind the shutdown, which nothing closed until the next start.
+            const string path = @"\\?\hid#padforge-test-no-such-device-closed";
+            try
+            {
+                BlissBoxRuntime.Close();
+                Assert.Null(BlissBoxRuntime.Sync(new[] { new BlissBoxRuntime.Row(path, 0x0D04, Guid.NewGuid(), 7) }));
+                Assert.Empty(BlissBoxRuntime.Ports);
+                BlissBoxRuntime.Open();
+                Assert.Single(BlissBoxRuntime.Sync(new[] { new BlissBoxRuntime.Row(path, 0x0D04, Guid.NewGuid(), 7) }));
+            }
+            finally
+            {
+                BlissBoxRuntime.Open();
+                BlissBoxRuntime.Shutdown();
+            }
+            string manager = Repo("PadForge.App", "Common", "Input", "InputManager.cs");
+            Assert.Contains("            BlissBoxRuntime.Open();\n\n            Array.Clear(_steeringAngleFrames);\n            _running = true;", manager);
+            Assert.Contains("            BlissBoxRuntime.Close();", manager);
+            // The engine's stop and the quiesce also stop SDL's own rumble on a
+            // port row the switch owns, which SDL's gate refuses otherwise.
+            Assert.Contains("if (ud.Device is SdlDeviceWrapper wrapper)\n                            {\n                                try { wrapper.StopSdlRumble(); }", manager);
+        }
+
+        [Fact]
+        public void AReplacedPortsActionsEnd()
+        {
+            // After a player change the old port answers until its channel
+            // closes, and a Dreamcast Screen save or a Native Arrows change in
+            // that time wrote back the choices the change dropped.
+            string window = Repo("PadForge.App", "MainWindow.BlissBox.cs");
+            Assert.Contains("if (port == null || port.Replaced) return;", window);
+            Assert.Contains("                    if (result.Ok)\n                    {\n                        port.Replaced = true;\n                        service.Remove(port.InstanceGuid);", window);
+            Assert.Contains("row.BlissBoxIdle = !port.Session.Busy && !port.Replaced;",
+                Repo("PadForge.App", "Services", "InputService.BlissBox.cs"));
+        }
+
+        [Fact]
         public void TheScreenDialogWaitsForAJob()
         {
             // A player change's end drops the old device's choices, and a
@@ -1305,6 +1352,12 @@ namespace PadForge.Tests
             int count = session.IndexOf("Interlocked.Increment(ref _motorPasses);", pass, StringComparison.Ordinal);
             int read = session.IndexOf("WantedStrengths();", pass, StringComparison.Ordinal);
             Assert.True(pass > 0 && count > pass && read > count);
+            // A GPA's peaks clear before the read, so a level asked for during
+            // the pass keeps the motors out of rest.
+            int clear = session.IndexOf("if (advanced) ClearPeaks();", pass, StringComparison.Ordinal);
+            Assert.True(clear > count && read > clear);
+            // The pass after a picture write takes the clock again.
+            Assert.Contains("if (WriteScreen(now)) WriteMotors(_clock());", session);
             // A switch-off resend or a hand-off writes nothing once the
             // outputs are quiesced.
             Assert.Contains("if (pending.Count == 0 || OutputsQuiesced) return;",
@@ -1312,7 +1365,10 @@ namespace PadForge.Tests
             // The crash stop reads the ports again on each look, and a port
             // opened after it is quiesced before its worker starts.
             string runtime = Repo("PadForge.App", "Common", "Input", "BlissBoxRuntime.cs");
-            Assert.Contains("            while (true)\n            {\n                var ports = Ports;", runtime);
+            Assert.Contains("                foreach (var port in Ports)\n                    if (!waiting.Contains(port)) waiting.Add(port);", runtime);
+            // The latch is set under the lock Sync opens ports under, and the
+            // wait takes in the ports still retiring.
+            Assert.Contains("                Monitor.TryEnter(_lock, 100, ref taken);\n                _quiescedAll = true;\n                if (taken) waiting.AddRange(_retiring);", runtime);
             Assert.Contains("if (_quiescedAll) created.Session.Quiesce();\n                    created.Changed += OnPortChanged;\n                    created.Start();", runtime);
             // A quiesced port reads no picture on the crash path's wakes.
             Assert.Contains("if (_storedScreen == null && !_quiesced) ReadScreen();", session);
@@ -1324,7 +1380,7 @@ namespace PadForge.Tests
             string runtime = Repo("PadForge.App", "Common", "Input", "BlissBoxRuntime.cs");
             // Each port is quiesced on each look, so a writer that had passed
             // the engine's quiesce check cannot hand it a level after its stop.
-            Assert.Contains("                if (ports.Length == 0) return;\n                foreach (var port in ports)\n                {\n                    port.Session.Quiesce();\n                    port.Wake();", runtime);
+            Assert.Contains("                if (waiting.Count == 0) return;\n                foreach (var port in waiting)\n                {\n                    port.Session.Quiesce();\n                    port.Wake();", runtime);
             // A row that goes offline drops its port's levels, which the SDL
             // stop there never reaches.
             Assert.Contains("try { BlissBoxRuntime.StopRumble(ud.DevicePath); }",
@@ -1503,9 +1559,10 @@ namespace PadForge.Tests
         {
             // A show playing or queued when the last port closed resumed on
             // the next port for the same device, since nothing ticked the
-            // service while no port was open.
+            // service while no port was open. Before the service exists, a
+            // request whose port closed is dropped there.
             string code = Repo("PadForge.App", "Services", "InputService.BlissBox.cs");
-            Assert.Contains("if (BlissBoxRuntime.Ports.Length == 0 && _dreamcastScreen == null) return;", code);
+            Assert.Contains("            if (BlissBoxRuntime.Ports.Length == 0 && _dreamcastScreen == null)\n            {\n                DreamcastScreenService.DropRequests();\n                return;\n            }", code);
         }
 
         [Fact]

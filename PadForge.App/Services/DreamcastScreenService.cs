@@ -75,6 +75,20 @@ namespace PadForge.Services
             }
             return list;
         }
+
+        /// <summary>For Reset to Defaults: each port's copy of the adapter's
+        /// own picture, with every choice back at its default. The picture
+        /// is the adapter's, not a setting, and Adapter mode writes it back
+        /// the next time the switch is on. Null when no port kept one.</summary>
+        internal static BlissBoxPortData[] KeepAdapterPictures(IEnumerable<BlissBoxPortData> ports)
+        {
+            var kept = new List<BlissBoxPortData>();
+            if (ports != null)
+                foreach (var port in ports)
+                    if (port != null && !string.IsNullOrEmpty(port.AdapterPicture))
+                        kept.Add(new BlissBoxPortData { Device = port.Device, AdapterPicture = port.AdapterPicture });
+            return kept.Count > 0 ? kept.ToArray() : null;
+        }
     }
 
     /// <summary>
@@ -105,8 +119,10 @@ namespace PadForge.Services
 
         private readonly ViewModels.SettingsViewModel _settings;
         private readonly Action _markDirty;
-        private readonly Dictionary<Guid, long> _attached = new();
-        private readonly Dictionary<Guid, Show> _shows = new();
+        // By port instance, so a pad whose port closed and opened again
+        // counts its play time from the new port.
+        private readonly Dictionary<BlissBoxPort, long> _attached = new();
+        private readonly Dictionary<Guid, DreamcastShow> _shows = new();
         private readonly Dictionary<string, byte[]> _textCache = new(StringComparer.Ordinal);
         private long _nextTick;
 
@@ -118,19 +134,12 @@ namespace PadForge.Services
 
         private readonly record struct ShowRequest(int PadIndex, string Frames, int FrameMs, int Repeat);
 
-        private sealed class Show
-        {
-            public List<byte[]> Frames;
-            public int FrameMs;
-            public int Repeat;
-            public long Start;
-        }
+        /// <summary>Shows waiting for the next tick.</summary>
+        internal static int PendingShows => _requests.Count;
 
         /// <summary>The macro loops' Show Dreamcast Screen, from the poll
         /// thread: queued, and started on the next tick for the Dreamcast pads
         /// that feed the slot.</summary>
-        internal static int PendingShows => _requests.Count;
-
         public static void RequestShow(int padIndex, string frames, int frameMs, int repeat)
         {
             // Nothing drains the queue while no port is open, so a show with
@@ -164,6 +173,16 @@ namespace PadForge.Services
             _markDirty();
         }
 
+        /// <summary>Drops a port's choices: its player number changed, so it
+        /// returns as a new device and they would never be read again.</summary>
+        public void Remove(Guid device)
+        {
+            var port = Get(device);
+            if (port == null) return;
+            _settings.BlissBoxPorts.Remove(port);
+            _markDirty();
+        }
+
         public void Tick()
         {
             long now = Environment.TickCount64;
@@ -172,7 +191,9 @@ namespace PadForge.Services
 
             while (_requests.TryDequeue(out var request)) StartShow(request, now);
 
-            foreach (var port in BlissBoxRuntime.Ports)
+            var ports = BlissBoxRuntime.Ports;
+            Prune(ports);
+            foreach (var port in ports)
             {
                 var session = port.Session;
                 var data = Get(port.InstanceGuid);
@@ -181,18 +202,18 @@ namespace PadForge.Services
                 var info = session.LiveInfo;
                 if (info == null || !BlissBoxControllers.HasScreen(info.Type))
                 {
-                    _attached.Remove(port.InstanceGuid);
+                    _attached.Remove(port);
                     _shows.Remove(port.InstanceGuid);
                     session.SetScreen(null);
                     continue;
                 }
-                if (!_attached.ContainsKey(port.InstanceGuid)) _attached[port.InstanceGuid] = now;
+                if (!_attached.ContainsKey(port)) _attached[port] = now;
 
                 // Nothing is written before the adapter's own picture is known.
                 var stored = session.StoredScreen;
                 if (stored == null) continue;
 
-                byte[] image = ShowFrame(port.InstanceGuid, now) ?? Compose(data, port.InstanceGuid, now);
+                byte[] image = ShowFrame(port, stored, now) ?? Compose(data, port, now);
                 if (image == null)
                 {
                     RestoreAdapterPicture(port, data, stored);
@@ -202,8 +223,23 @@ namespace PadForge.Services
                 var wire = BlissBoxScreen.ToWire(image);
                 if (!wire.AsSpan().SequenceEqual(stored) && string.IsNullOrEmpty(data?.AdapterPicture))
                     Update(port.InstanceGuid, d => d.AdapterPicture = Convert.ToBase64String(stored));
-                session.SetScreen(wire);
+                if (session.SetScreen(wire)) port.Wake();
             }
+        }
+
+        /// <summary>Drops the play-time starts and shows of ports that have
+        /// closed.</summary>
+        private void Prune(BlissBoxPort[] ports)
+        {
+            List<BlissBoxPort> gone = null;
+            foreach (var port in _attached.Keys)
+                if (Array.IndexOf(ports, port) < 0) (gone ??= new List<BlissBoxPort>()).Add(port);
+            if (gone != null) foreach (var port in gone) _attached.Remove(port);
+
+            List<Guid> ended = null;
+            foreach (var device in _shows.Keys)
+                if (Array.FindIndex(ports, p => p.InstanceGuid == device) < 0) (ended ??= new List<Guid>()).Add(device);
+            if (ended != null) foreach (var device in ended) _shows.Remove(device);
         }
 
         /// <summary>Adapter mode: writes back the picture PadForge found, then
@@ -217,7 +253,7 @@ namespace PadForge.Services
                     Update(port.InstanceGuid, d => d.AdapterPicture = null);
                     port.Session.SetScreen(null);
                 }
-                else port.Session.SetScreen(original);
+                else if (port.Session.SetScreen(original)) port.Wake();
                 return;
             }
             port.Session.SetScreen(null);
@@ -240,34 +276,23 @@ namespace PadForge.Services
                 if (!devices.Contains(port.InstanceGuid)) continue;
                 var info = port.Session.LiveInfo;
                 if (info == null || !BlissBoxControllers.HasScreen(info.Type)) continue;
-                _shows[port.InstanceGuid] = new Show
-                {
-                    Frames = frames,
-                    FrameMs = Math.Max(MinFrameMs, request.FrameMs),
-                    Repeat = Math.Max(1, request.Repeat),
-                    Start = now,
-                };
+                _shows[port.InstanceGuid] = new DreamcastShow(frames, request.FrameMs, request.Repeat, now);
             }
         }
 
         /// <summary>The frame a macro show puts on this port now, or null once
-        /// it has played its repeats.</summary>
-        private byte[] ShowFrame(Guid device, long now)
+        /// it has played every frame.</summary>
+        private byte[] ShowFrame(BlissBoxPort port, byte[] stored, long now)
         {
-            if (!_shows.TryGetValue(device, out var show)) return null;
-            long elapsed = now - show.Start;
-            long total = (long)show.FrameMs * show.Frames.Count * show.Repeat;
-            if (elapsed >= total)
-            {
-                _shows.Remove(device);
-                return null;
-            }
-            return show.Frames[(int)(elapsed / show.FrameMs % show.Frames.Count)];
+            if (!_shows.TryGetValue(port.InstanceGuid, out var show)) return null;
+            var frame = show.Frame(stored, now);
+            if (frame == null) _shows.Remove(port.InstanceGuid);
+            return frame;
         }
 
         /// <summary>The picture a port's mode shows now, in image order, or
         /// null for the adapter's own.</summary>
-        internal byte[] Compose(BlissBoxPortData data, Guid device, long now)
+        internal byte[] Compose(BlissBoxPortData data, BlissBoxPort port, long now)
         {
             var mode = data?.ScreenMode ?? DreamcastScreenMode.Adapter;
             switch (mode)
@@ -282,7 +307,7 @@ namespace PadForge.Services
                     return Text(DateTime.Now.ToString("HH:mm", CultureInfo.InvariantCulture));
                 case DreamcastScreenMode.PlayTime:
                 {
-                    long since = _attached.TryGetValue(device, out var start) ? start : now;
+                    long since = port != null && _attached.TryGetValue(port, out var start) ? start : now;
                     var played = TimeSpan.FromMilliseconds(Math.Max(0, now - since));
                     return Text(FormatPlayTime(played));
                 }
@@ -337,7 +362,7 @@ namespace PadForge.Services
         internal byte[] Preview(BlissBoxPort port, BlissBoxPortData data)
         {
             long now = Environment.TickCount64;
-            var image = Compose(data, port?.InstanceGuid ?? Guid.Empty, now);
+            var image = Compose(data, port, now);
             if (image != null) return image;
             if (data != null && TryDecode(data.AdapterPicture, out var original)) return BlissBoxScreen.FromWire(original);
             var stored = port?.Session.StoredScreen;
@@ -385,8 +410,9 @@ namespace PadForge.Services
 
         /// <summary>A picture from a file: a VMU Animator .lcd, an
         /// ICONDATA_VMS .vms, or any image WPF decodes (BMP, PNG), fitted to
-        /// 48 by 32 and cut to one bit a pixel. Null when the file holds no
-        /// picture.</summary>
+        /// 48 by 32 and cut to one bit a pixel. Null when an .lcd or .vms file
+        /// holds no picture. Throws when the file cannot be read, or holds an
+        /// image WPF cannot decode, which the callers report the same way.</summary>
         public static byte[] ImportPicture(string path)
         {
             byte[] file = File.ReadAllBytes(path);
@@ -485,6 +511,58 @@ namespace PadForge.Services
                 PixelFormats.Bgra32, null, pixels, BlissBoxScreen.Width * 4);
             bitmap.Freeze();
             return bitmap;
+        }
+    }
+
+    /// <summary>
+    /// A Show Dreamcast Screen action playing on one port (#469). Each frame
+    /// lasts its frame time from the moment the adapter holds it, not from a
+    /// fixed schedule: the EEPROM guard can hold a write back past a frame's
+    /// start, and a schedule would then drop frames. A frame that has not
+    /// reached the adapter after <see cref="DeliveryLimitMs"/> counts from
+    /// when it became current, so a port that refuses writes cannot hold a
+    /// show forever.
+    /// </summary>
+    internal sealed class DreamcastShow
+    {
+        public const int DeliveryLimitMs = 5000;
+
+        private readonly List<byte[]> _frames;
+        private readonly List<byte[]> _wires;
+        private readonly int _frameMs;
+        private readonly int _total;
+        private int _index;
+        private long _current;
+        private long _shownAt = -1;
+
+        public DreamcastShow(List<byte[]> frames, int frameMs, int repeat, long now)
+        {
+            _frames = frames ?? throw new ArgumentNullException(nameof(frames));
+            if (frames.Count == 0) throw new ArgumentException("A show needs a picture.", nameof(frames));
+            _wires = frames.ConvertAll(frame => BlissBoxScreen.ToWire(frame));
+            _frameMs = Math.Max(DreamcastScreenService.MinFrameMs, frameMs);
+            _total = frames.Count * Math.Max(1, repeat);
+            _current = now;
+        }
+
+        /// <summary>The picture to show, in image order, given the one the
+        /// adapter holds now, or null once every frame has had its time.</summary>
+        public byte[] Frame(ReadOnlySpan<byte> stored, long now)
+        {
+            int frame = _index % _frames.Count;
+            if (_shownAt < 0)
+            {
+                if (stored.SequenceEqual(_wires[frame])) _shownAt = now;
+                else if (now - _current >= DeliveryLimitMs) _shownAt = _current;
+                else return _frames[frame];
+            }
+            if (now - _shownAt < _frameMs) return _frames[frame];
+            if (++_index >= _total) return null;
+            _current = now;
+            _shownAt = -1;
+            frame = _index % _frames.Count;
+            if (stored.SequenceEqual(_wires[frame])) _shownAt = now;
+            return _frames[frame];
         }
     }
 }

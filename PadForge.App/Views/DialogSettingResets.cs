@@ -42,6 +42,13 @@ namespace PadForge.Views
         private void ResetPollingRate_Click(object sender, RoutedEventArgs e) => PollingRateBox.SelectedIndex = 0;
     }
 
+    public partial class DreamcastScreenDialog
+    {
+        /// <summary>Back to the adapter's own picture, the default (#469).</summary>
+        private void ResetMode_Click(object sender, RoutedEventArgs e)
+            => ModeBox.SelectedIndex = (int)PadForge.Services.DreamcastScreenMode.Adapter;
+    }
+
     public partial class PairDeviceDialog
     {
         private void ResetSetting_Click(object sender, RoutedEventArgs e)

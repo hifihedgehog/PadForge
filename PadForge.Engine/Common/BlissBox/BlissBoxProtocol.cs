@@ -147,17 +147,28 @@ namespace PadForge.Engine.Common.BlissBox
         /// first two bytes. Five-byte chunks carry the rest, each at its
         /// position, and the last is marked 0xFF.
         ///
-        /// <para>The 3.0 firmware places a 0xFF chunk at the previous chunk's
+        /// <para>The two firmware generations place the 0xFF chunk
+        /// differently. The 3.0 firmware puts it at the previous chunk's
         /// position plus five, from RAM it never resets between messages
-        /// (0x0967 to 0x0983), so a 0xFF chunk must follow a positioned one.
-        /// GPA 4.86 places a lone 0xFF chunk at position 2 (0x2D9F). BBAPI.cs
-        /// always ends with a 0xFF chunk after a positioned one, which suits
-        /// both, and this does the same: when all the data fits one positioned
-        /// chunk an empty 0xFF chunk follows it, as BBAPI.cs sends for the
-        /// three- and five-byte messages. Unlike BBAPI.cs's count, which drops
-        /// the last byte of a 28 to 30 byte message, every byte is sent.</para>
+        /// (0x0967 to 0x0983), and copies five bytes, so a 0xFF chunk must
+        /// follow a positioned one. GPA 4.86 puts a 0xFF chunk that follows
+        /// the header at position 2, and one that follows a positioned chunk
+        /// at that chunk's position plus five, and copies the message size
+        /// minus that position (0x2D47 to 0x2DAF). After a positioned chunk
+        /// at 2, a message of 3 to 6 bytes makes that count negative, and the
+        /// copy runs over the adapter's RAM. So a message whose data after the
+        /// header fits one chunk goes to a GPA as a lone 0xFF chunk, as
+        /// DeviceBuddy sends it (bliss_box_api.js), and to a 3.x adapter as a
+        /// positioned chunk and an empty 0xFF one, as BBAPI.cs sends it. A
+        /// longer message ends with its last data in a 0xFF chunk after the
+        /// positioned ones, which both generations read alike. BBAPI.cs's
+        /// count sends a chunk too few for messages of 28 to 30 bytes and
+        /// every 25 bytes after, and a chunk too many for some others, which a
+        /// GPA reads as a negative count. The count here is exact.</para>
         /// </summary>
-        public static List<byte[]> NativeReports(ReadOnlySpan<byte> message, byte use = NativeUse)
+        /// <param name="advanced">A GPA, firmware 4 and up
+        /// (<see cref="BlissBoxInfo.IsAdvanced"/>).</param>
+        public static List<byte[]> NativeReports(ReadOnlySpan<byte> message, bool advanced, byte use = NativeUse)
         {
             if (message.Length == 0 || message.Length > 255)
                 throw new ArgumentException("A native message is 1 to 255 bytes.", nameof(message));
@@ -178,9 +189,12 @@ namespace PadForge.Engine.Common.BlissBox
 
             int remaining = length - 2;
             int chunks = (remaining + NativeChunkBytes - 1) / NativeChunkBytes;
+            // One chunk: a GPA takes it alone as the 0xFF chunk, a 3.x
+            // adapter positioned and then closed by an empty 0xFF chunk.
+            bool lone = chunks == 1 && advanced;
             for (int i = 0; i < chunks; i++)
             {
-                bool last = i == chunks - 1 && chunks > 1;
+                bool last = i == chunks - 1 && (chunks > 1 || lone);
                 int start = 2 + i * NativeChunkBytes;
                 var chunk = new byte[CommandReportLength];
                 chunk[0] = ReportCommand;
@@ -190,7 +204,7 @@ namespace PadForge.Engine.Common.BlissBox
                     chunk[3 + b] = message[start + b];
                 reports.Add(chunk);
             }
-            if (chunks == 1)
+            if (chunks == 1 && !lone)
             {
                 var terminator = new byte[CommandReportLength];
                 terminator[0] = ReportCommand;

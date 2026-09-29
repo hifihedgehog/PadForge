@@ -70,31 +70,29 @@ namespace PadForge.Engine.Common.BlissBox
         /// port's joystick declares.</summary>
         public const int FirstPressureAxis = 8;
 
-        /// <summary>Report 21's twelve bytes in the DualShock 2's own order,
-        /// as the API Tool draws them for firmware 3 and up (Form1.cs: Cross
-        /// from pressure 6, Circle 5, Square 7, Triangle 4, up 2, down 3,
-        /// left 1, right 0, and 8 to 11 on L1, R1, L2, R2).</summary>
-        private static readonly string[] PressureNamesCurrent =
+        /// <summary>The name of each of report 21's twelve bytes: the
+        /// pressures a DualShock 2 sends after its sticks, in the pad's own
+        /// order (psx-spx, "Controllers - Analog Buttons (Dualshock2)"). Every
+        /// firmware copies them through unchanged: 2.0 stores the pad's reply
+        /// in order (0x21F7 to 0x2204) and copies the pressures to report 21
+        /// (0x2313 to 0x231C), and 3.0 does the same (0x2646 to 0x2651). The
+        /// API Tool draws them this way for firmware 3 and up (Form1.cs:
+        /// Cross from pressure 6, Circle 5, Square 7, Triangle 4). Its branch
+        /// for 2.x takes the face buttons from other bytes, which the 2.0
+        /// firmware's straight copy does not bear out.</summary>
+        public static readonly IReadOnlyList<string> PressureNames = new[]
         {
             "D-Pad Right Pressure", "D-Pad Left Pressure", "D-Pad Up Pressure", "D-Pad Down Pressure",
             "Triangle Pressure", "Circle Pressure", "Cross Pressure", "Square Pressure",
             "L1 Pressure", "R1 Pressure", "L2 Pressure", "R2 Pressure",
         };
 
-        /// <summary>The 2.x order, the API Tool's other branch: Cross from
-        /// pressure 7, Circle 6, Square 4, Triangle 5 (Form1.cs picks it when
-        /// the firmware major is 2 or less).</summary>
-        private static readonly string[] PressureNamesV2 =
-        {
-            "D-Pad Right Pressure", "D-Pad Left Pressure", "D-Pad Up Pressure", "D-Pad Down Pressure",
-            "Square Pressure", "Triangle Pressure", "Circle Pressure", "Cross Pressure",
-            "L1 Pressure", "R1 Pressure", "L2 Pressure", "R2 Pressure",
-        };
-
-        /// <summary>The name of each of report 21's twelve bytes for a
-        /// firmware major version.</summary>
-        public static IReadOnlyList<string> PressureNames(byte major)
-            => major > 2 ? PressureNamesCurrent : PressureNamesV2;
+        /// <summary>The native channel as PadForge frames it needs firmware 3
+        /// or later. The API Tool's memory manager refuses anything older
+        /// (memManager.cs: "3.0 is required for this feature!"), and 2.0
+        /// frames the channel differently: three message bytes in the header
+        /// and no use byte (0x0832 to 0x0862).</summary>
+        public const byte NativeChannelMajor = 3;
 
         private static readonly Dictionary<byte, string> Names = new()
         {

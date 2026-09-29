@@ -484,6 +484,19 @@ Protocol documentation references (no code from these projects ships)
   text typing through SendInput and its batch limit, the Win-key mask key,
   and tagged injected input, behind Text Block macros and the keyboard chord
   hook.
+  Bliss-Box references: the Bliss-Box API behind Read Bliss-Box Adapters,
+  read from Bliss-Box LLC's API Tool
+  (https://sourceforge.net/p/bliss-box-api/code/HEAD/tree/, BSD-style with
+  redistribution free of charge, Copyright (c) 2023 Bliss-Box LLC) and
+  DeviceBuddy (https://github.com/ulao/DeviceBuddy, source available,
+  Copyright (c) 2026 Bliss-Box LLC), with button names from the Bliss-Box
+  files in SteveFox1620's retroarch-joypad-autoconfig fork
+  (https://github.com/SteveFox1620/retroarch-joypad-autoconfig, no license
+  published), Controller Pak checksums checked against libdragon
+  (https://github.com/DragonMinded/libdragon, public domain), and the
+  PlayStation pad reply from psx-spx (https://psx-spx.consoledev.net, no
+  license published) and Linux's psxpad-spi driver
+  (https://github.com/torvalds/linux, GPL-2.0).
   Bluepad32 (https://github.com/ricardoquesada/bluepad32, Apache-2.0): the
   Bluetooth HID feature-report request that identifies a PS Move accessory.
   Bluetooth LE controller references: the protocols behind the SDL fork's

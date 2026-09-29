@@ -123,44 +123,77 @@ namespace PadForge.Tests
         [Fact]
         public void ShortMessagesAreTheHeaderAlone()
         {
-            var reports = BlissBoxProtocol.NativeReports(new byte[] { 0x00 });
-            var header = Assert.Single(reports);
-            // [18][0x25][0][size hi][size lo][use][m0][m1][0]
-            Assert.Equal(new byte[] { 18, 0x25, 0, 0, 1, 1, 0x00, 0, 0 }, header);
-            Assert.Single(BlissBoxProtocol.NativeReports(new byte[] { 7, 8 }));
+            foreach (bool advanced in new[] { false, true })
+            {
+                var reports = BlissBoxProtocol.NativeReports(new byte[] { 0x00 }, advanced);
+                var header = Assert.Single(reports);
+                // [18][0x25][0][size hi][size lo][use][m0][m1][0]
+                Assert.Equal(new byte[] { 18, 0x25, 0, 0, 1, 1, 0x00, 0, 0 }, header);
+                Assert.Single(BlissBoxProtocol.NativeReports(new byte[] { 7, 8 }, advanced));
+            }
         }
 
-        /// <summary>The 3.0 firmware places a final chunk five bytes past the
-        /// last positioned one, from RAM a header never resets (handler at
-        /// 0x0902). GPA 4.86 places a lone final chunk at position 2 (0x2D9F).
-        /// Every message must come through both whole, including right after
-        /// another message left the 3.0 position somewhere else.</summary>
+        /// <summary>Every length comes through whole on the generation it is
+        /// framed for: on a GPA with no copy count out of range, and on a 3.x
+        /// adapter right after another message left its stale position
+        /// somewhere else.</summary>
         [Fact]
-        public void EveryLengthAssemblesWholeUnderBothFirmwareRules()
+        public void EveryLengthAssemblesWholeOnTheFirmwareItIsFramedFor()
         {
             var rng = new Random(469);
-            var threeZero = new FirmwareModel(gpa: false);
-            var gpa = new FirmwareModel(gpa: true);
+            var threeZero = new ThreeZeroModel();
+            var gpa = new GpaModel();
             for (int length = 1; length <= 255; length++)
             {
                 var message = new byte[length];
                 rng.NextBytes(message);
-                var reports = BlissBoxProtocol.NativeReports(message);
-                Assert.Equal(message, threeZero.Feed(reports));
-                Assert.Equal(message, gpa.Feed(reports));
+                Assert.Equal(message, threeZero.Feed(BlissBoxProtocol.NativeReports(message, advanced: false)));
+                Assert.Equal(message, gpa.Feed(BlissBoxProtocol.NativeReports(message, advanced: true)));
+                Assert.False(gpa.Overrun, $"length {length}");
             }
         }
 
-        /// <summary>BBAPI.cs sendData's chunk count, transcribed, leaves the
-        /// last byte of a 28-byte message off the wire. The count here does
-        /// not.</summary>
+        /// <summary>Why the framing depends on the firmware. A GPA reads a 0xFF
+        /// chunk after a positioned one at that position plus five and copies
+        /// the size minus that position, so the 3.x framing of a 3 to 6 byte
+        /// message, a Controller Pak read among them, sends it a negative count
+        /// (0x2D47). A 3.x adapter places a lone 0xFF chunk at its stale
+        /// position plus five, so the GPA framing lands its data there.</summary>
         [Fact]
-        public void TheChunkCountCoversWhatBbapiDrops()
+        public void EachFramingBreaksTheOtherGeneration()
+        {
+            for (int length = 3; length <= 6; length++)
+            {
+                var message = Enumerable.Range(1, length).Select(i => (byte)i).ToArray();
+                var gpa = new GpaModel();
+                gpa.Feed(BlissBoxProtocol.NativeReports(message, advanced: false));
+                Assert.True(gpa.Overrun, $"length {length}");
+                Assert.NotEqual(message, new ThreeZeroModel().Feed(BlissBoxProtocol.NativeReports(message, advanced: true)));
+            }
+            // From 8 bytes on, where the data takes two chunks, the framings agree.
+            var seven = Enumerable.Range(1, 8).Select(i => (byte)i).ToArray();
+            Assert.Equal(BlissBoxProtocol.NativeReports(seven, advanced: false),
+                BlissBoxProtocol.NativeReports(seven, advanced: true));
+        }
+
+        /// <summary>BBAPI.cs sendData's chunk count, transcribed, leaves the
+        /// last byte of a 28-byte message off the wire, and sends an 11-byte
+        /// message a chunk too many, which a GPA reads as a negative count.
+        /// The count here does neither.</summary>
+        [Fact]
+        public void TheChunkCountCoversWhatBbapiGetsWrong()
         {
             var message = Enumerable.Range(1, 28).Select(i => (byte)i).ToArray();
-            var model = new FirmwareModel(gpa: true);
-            Assert.NotEqual(message, model.Feed(BbapiSendData(message)));
-            Assert.Equal(message, model.Feed(BlissBoxProtocol.NativeReports(message)));
+            Assert.NotEqual(message, new ThreeZeroModel().Feed(BbapiSendData(message)));
+            Assert.Equal(message, new ThreeZeroModel().Feed(BlissBoxProtocol.NativeReports(message, advanced: false)));
+
+            var eleven = Enumerable.Range(1, 11).Select(i => (byte)i).ToArray();
+            var gpa = new GpaModel();
+            gpa.Feed(BbapiSendData(eleven));
+            Assert.True(gpa.Overrun);
+            var ours = new GpaModel();
+            Assert.Equal(eleven, ours.Feed(BlissBoxProtocol.NativeReports(eleven, advanced: true)));
+            Assert.False(ours.Overrun);
         }
 
         private static List<byte[]> BbapiSendData(byte[] message)
@@ -190,44 +223,93 @@ namespace PadForge.Tests
             return reports;
         }
 
-        /// <summary>The native channel's assembly as the firmware listings
-        /// show it.</summary>
-        private sealed class FirmwareModel
+        /// <summary>A report as the adapter receives it: padded with zeros to
+        /// the collection's feature length.</summary>
+        private static byte[] Padded(byte[] report)
         {
-            private readonly bool _gpa;
-            private int _lastPosition = 40; // stale RAM from an earlier message
-            private byte[] _buffer;
-            private int _size;
-            private bool _positioned;
+            var padded = new byte[197];
+            Array.Copy(report, padded, report.Length);
+            return padded;
+        }
 
-            public FirmwareModel(bool gpa) => _gpa = gpa;
+        /// <summary>GPA 4.86's native channel, as its listing shows it. The
+        /// header resets the last position (0x2D30). A positioned chunk copies
+        /// five bytes and becomes the last position. A 0xFF chunk goes to
+        /// position 2 after the header (0x2DA5) or to the last position plus
+        /// five (0x2D47), and copies the size minus that position.</summary>
+        private sealed class GpaModel
+        {
+            private byte[] _buffer;
+            private int _size, _last;
+
+            /// <summary>A copy count went negative, which on the adapter runs
+            /// the copy over its RAM.</summary>
+            public bool Overrun;
 
             public byte[] Feed(IEnumerable<byte[]> reports)
             {
                 byte[] done = null;
-                foreach (var r in reports)
+                foreach (var report in reports)
                 {
+                    var r = Padded(report);
                     Assert.Equal(18, r[0]);
                     Assert.Equal(0x25, r[1]);
                     if (r[2] == 0)
                     {
                         _size = (r[3] << 8) | r[4];
-                        _buffer = new byte[Math.Max(_size, 2) + 300];
+                        _buffer = new byte[300];
                         _buffer[0] = r[6];
                         _buffer[1] = r[7];
-                        _positioned = false;
+                        _last = 0;
                         if (_size <= 2) done = _buffer[.._size];
                         continue;
                     }
-                    int at;
-                    if (r[2] == 0xFF)
-                        at = _gpa && !_positioned ? 2 : _lastPosition + 5;
-                    else
+                    int at, count;
+                    if (r[2] != 0xFF) { at = r[2]; count = 5; }
+                    else if (_last == 0) { at = 2; count = _size - 2; }
+                    else { at = _last + 5; count = _size - at; }
+                    if (count < 0)
                     {
-                        at = r[2];
-                        _lastPosition = at;
-                        _positioned = true;
+                        Overrun = true;
+                        return null;
                     }
+                    Array.Copy(r, 3, _buffer, at, count);
+                    _last = at;
+                    if (r[2] == 0xFF) done = _buffer[.._size];
+                }
+                return done;
+            }
+        }
+
+        /// <summary>The 3.0 firmware's native channel (handler at 0x0902): the
+        /// last position lives in RAM a header never resets (0x0967 to
+        /// 0x0983), a 0xFF chunk goes five past it, and every chunk copies
+        /// five bytes.</summary>
+        private sealed class ThreeZeroModel
+        {
+            private int _last = 40; // stale RAM from an earlier message
+            private byte[] _buffer;
+            private int _size;
+
+            public byte[] Feed(IEnumerable<byte[]> reports)
+            {
+                byte[] done = null;
+                foreach (var report in reports)
+                {
+                    var r = Padded(report);
+                    Assert.Equal(18, r[0]);
+                    Assert.Equal(0x25, r[1]);
+                    if (r[2] == 0)
+                    {
+                        _size = (r[3] << 8) | r[4];
+                        _buffer = new byte[300];
+                        _buffer[0] = r[6];
+                        _buffer[1] = r[7];
+                        if (_size <= 2) done = _buffer[.._size];
+                        continue;
+                    }
+                    int at = r[2] == 0xFF ? _last + 5 : r[2];
+                    if (r[2] != 0xFF) _last = at;
                     Array.Copy(r, 3, _buffer, at, 5);
                     if (r[2] == 0xFF) done = _buffer[.._size];
                 }
@@ -338,6 +420,17 @@ namespace PadForge.Tests
             Assert.Null(BlissBoxScreen.FromVms(bad));
             BitConverter.GetBytes(150u).CopyTo(bad, 16); // icon would run past the end
             Assert.Null(BlissBoxScreen.FromVms(bad));
+        }
+
+        [Fact]
+        public void AVmsFileTooShortForAnIconHoldsNoPicture()
+        {
+            // Under 128 bytes the bounds check used to wrap around and let a
+            // slice past the end throw.
+            var small = new byte[100];
+            BitConverter.GetBytes(16u).CopyTo(small, 16);
+            Assert.Null(BlissBoxScreen.FromVms(small));
+            Assert.Null(BlissBoxScreen.FromVms(new byte[20]));
         }
 
         // ── The Controller Pak ──

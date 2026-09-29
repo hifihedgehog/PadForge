@@ -359,6 +359,12 @@ namespace PadForge.Engine
         //  Open / Close
         // ─────────────────────────────────────────────
 
+        /// <summary>Whether a device opens through SDL's gamepad mapping:
+        /// whenever SDL has one, except for a Bliss-Box port that PadForge
+        /// reads raw (<see cref="BlissBoxApi.ReadsRaw"/>, #469).</summary>
+        internal static bool OpensAsGamepad(bool sdlMapsIt, ushort vendorId, ushort productId)
+            => sdlMapsIt && !BlissBoxApi.ReadsRaw(vendorId, productId);
+
         /// <summary>
         /// Opens the SDL device with the given instance ID.
         /// Attempts to open as a Gamepad first (if SDL recognizes it);
@@ -366,12 +372,6 @@ namespace PadForge.Engine
         /// </summary>
         /// <param name="instanceId">SDL instance ID from SDL_GetJoysticks().</param>
         /// <returns>True if the device was opened successfully.</returns>
-        /// <summary>Whether a device opens through SDL's gamepad mapping:
-        /// whenever SDL has one, except for a Bliss-Box port that PadForge
-        /// reads raw (<see cref="BlissBoxApi.ReadsRaw"/>, #469).</summary>
-        internal static bool OpensAsGamepad(bool sdlMapsIt, ushort vendorId, ushort productId)
-            => sdlMapsIt && !BlissBoxApi.ReadsRaw(vendorId, productId);
-
         public bool Open(uint instanceId)
         {
             if (_disposed)

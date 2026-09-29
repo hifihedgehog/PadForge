@@ -2131,10 +2131,11 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>True when the axis <paramref name="descriptor"/> names on
-        /// <paramref name="dev"/> rests at 0 and moves one way: a slider, a VR
-        /// controller's trigger or grip, or axis 2 or 5 of an SDL gamepad (its
-        /// triggers) that is not forced into raw joystick mode. Every other axis
-        /// rests at the middle of its range. The #443 rule, shared with the
+        /// <paramref name="dev"/> rests at 0 and moves one way: a slider, an
+        /// analog key, a VR controller's trigger or grip, a Bliss-Box port's
+        /// pressure axis, or axis 2 or 5 of an SDL gamepad (its triggers) that
+        /// is not forced into raw joystick mode. Every other axis rests at the
+        /// middle of its range. The #443 rule, shared with the
         /// recorders, which take the device they already hold.</summary>
         internal static bool AxisRestsAtZero(string descriptor, UserDevice dev)
         {
@@ -2150,6 +2151,13 @@ namespace PadForge.Common.Input
             if (dev != null && dev.CapType == InputDeviceType.VrController)
                 return canonical == "Axis " + PadForge.Common.Input.OpenXrHandDevice.AxisTrigger
                     || canonical == "Axis " + PadForge.Common.Input.OpenXrHandDevice.AxisSqueeze;
+
+            // A Bliss-Box port's DualShock 2 pressure axes (#469) rest at 0
+            // and travel one way.
+            if (dev != null && canonical.StartsWith("Axis ", System.StringComparison.Ordinal)
+                && int.TryParse(canonical.AsSpan(5), out int axis)
+                && PadForge.Common.Input.BlissBoxRuntime.IsPressureAxis(dev, axis))
+                return true;
 
             if (canonical != "Axis 2" && canonical != "Axis 5") return false;
             if (SourceCoercion.IsGamepadAliasDescriptor(descriptor)) return true;

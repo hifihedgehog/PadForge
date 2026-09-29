@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:strings="clr-namespace:PadForge.Resources.Strings"
+        xmlns:reset="clr-namespace:PadForge.Controls"
         ExtendsContentIntoTitleBar="True"
         WindowBackdropType="Mica"
         Width="480" SizeToContent="Height"
@@ -45,6 +46,7 @@
                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                        Text="{Binding DreamcastScreen_Mode_Label, Source={x:Static strings:Strings.Instance}}"/>
             <ComboBox x:Name="ModeBox" MinWidth="220" SelectionChanged="ModeBox_SelectionChanged"/>
+            <reset:SettingResetButton Click="ResetMode_Click" Tag="" Visibility="{Binding Visibility, ElementName=ModeBox}" IsEnabled="{Binding IsEnabled, ElementName=ModeBox}" SettingLabel="{Binding DreamcastScreen_Mode_Label, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_ModeBox_49"/>
         </StackPanel>
 
         <!-- The VMU's 48 by 32 pixels, four screen pixels each. -->
@@ -61,7 +63,7 @@
             <Button x:Name="ChoosePictureButton" Padding="8,4" Margin="0,0,8,6"
                     Content="{Binding DreamcastScreen_ChoosePicture, Source={x:Static strings:Strings.Instance}}"
                     Click="ChoosePicture_Click"/>
-            <Button x:Name="ChooseProfilePictureButton" Padding="8,4" Margin="0,0,8,6"
+            <Button x:Name="ChooseProfilePictureButton" Padding="8,4" Margin="0,0,8,6" MaxWidth="420"
                     Click="ChooseProfilePicture_Click"/>
             <Button x:Name="RemoveProfilePictureButton" Padding="8,4" Margin="0,0,8,6"
                     Content="{Binding DreamcastScreen_RemoveProfilePicture, Source={x:Static strings:Strings.Instance}}"

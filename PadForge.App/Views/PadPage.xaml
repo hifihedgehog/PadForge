@@ -2599,7 +2599,7 @@
                                                        FontWeight="SemiBold" Margin="0,0,0,6"/>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                                 <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Dreamcast_Pictures, Source={x:Static strings:Strings.Instance}}"
-                                                           VerticalAlignment="Center" Width="80" Margin="0,0,8,0"/>
+                                                           VerticalAlignment="Center" Width="80" Margin="0,0,8,0" TextWrapping="Wrap"/>
                                                 <Button Content="{Binding Macro_Dreamcast_AddPicture, Source={x:Static strings:Strings.Instance}}"
                                                         Click="AddDreamcastFrame_Click" Padding="8,2" VerticalAlignment="Center"
                                                         IsEnabled="{Binding CanAddDreamcastFrame}"/>
@@ -2623,7 +2623,7 @@
                                             </ItemsControl>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                                 <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Dreamcast_FrameTime, Source={x:Static strings:Strings.Instance}}"
-                                                           VerticalAlignment="Center" Width="80" Margin="0,0,8,0"/>
+                                                           VerticalAlignment="Center" Width="80" Margin="0,0,8,0" TextWrapping="Wrap"/>
                                                 <TextBox Text="{Binding DreamcastFrameMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzValueEdit}"/>
                                                 <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
@@ -2631,7 +2631,7 @@
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
                                                 <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Dreamcast_Repeat, Source={x:Static strings:Strings.Instance}}"
-                                                           VerticalAlignment="Center" Width="80" Margin="0,0,8,0"/>
+                                                           VerticalAlignment="Center" Width="80" Margin="0,0,8,0" TextWrapping="Wrap"/>
                                                 <TextBox Text="{Binding DreamcastRepeat, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                          Style="{StaticResource DzValueEdit}"/>
                                                 <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="DreamcastRepeat" SettingLabel="{Binding Macro_Dreamcast_Repeat, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_DreamcastRepeat_3303" Margin="4,0,0,0"/>

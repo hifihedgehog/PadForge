@@ -2663,8 +2663,8 @@
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>ビジュアルメモリにアクティブなプロファイルの名前を表示し、プロファイルの切り替えに追従します。</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>ビジュアルメモリにプロファイル一覧でのアクティブなプロファイルの位置を表示します。既定のプロファイルは 0 です。</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>ビジュアルメモリにアクティブなプロファイル自身の画像を表示し、画像がない場合は名前を表示します。画像はプロファイルごとに保存されます。</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>ビジュアルメモリに時刻を表示し、1 分に 1 回書き換えます。</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>ビジュアルメモリにコントローラーを接続してからの時間と分を表示し、1 分に 1 回書き換えます。</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>ビジュアルメモリに時刻を表示し、1 分に 1 回書き換えます。アダプターは各画像を書き込み 10 万回の定格のメモリに保存します。24 時間表示し続けると、約 10 週間でこの回数に達します。</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>ビジュアルメモリにコントローラーを接続してからの時間と分を表示し、1 分に 1 回書き換えます。アダプターは各画像を書き込み 10 万回の定格のメモリに保存します。24 時間表示し続けると、約 10 週間でこの回数に達します。</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>ビジュアルメモリに選んだ画像を表示します。BMP、PNG、VMU Animator の .lcd ファイル、Dreamcast の .vms アイコンが使えます。画像は 48×32 の白黒ピクセルに変換されます。</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>画像を選択…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>{0} の画像を選択…</value></data>
@@ -2683,6 +2683,7 @@
   <data name="BlissBoxJob_BadBlock_Format" xml:space="preserve"><value>ブロック {0} のチェックサムが繰り返し一致しませんでした。パックを挿し直してもう一度お試しください。</value></data>
   <data name="BlissBoxJob_TooManyErrors_Format" xml:space="preserve"><value>パックが書き込みを何度も拒否しました (最後はブロック {0})。パックを挿し直してもう一度お試しください。</value></data>
   <data name="BlissBoxJob_NoReply" xml:space="preserve"><value>アダプターから応答がありませんでした。コントローラーが接続されているか確認して、もう一度お試しください。</value></data>
+  <data name="BlissBoxJob_OldFirmware" xml:space="preserve"><value>コントローラパックの転送には、アダプターのファームウェア 3.0 以降が必要です。</value></data>
   <data name="Status_BlissBoxPlayer_Format" xml:space="preserve"><value>ポートはプレイヤー {0} になりました。新しいデバイスとして再接続されます。</value></data>
   <data name="Status_DreamcastScreen_Format" xml:space="preserve"><value>Dreamcast 画面を {0} に設定しました。</value></data>
   <data name="Status_PakReading_Format" xml:space="preserve"><value>コントローラパックを読み取り中: {0:P0}</value></data>

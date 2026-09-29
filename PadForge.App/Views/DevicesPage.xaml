@@ -945,6 +945,7 @@
                         <Button Content="{Binding Devices_BlissBoxPlayer, Source={x:Static strings:Strings.Instance}}" Margin="0,6,0,8"
                                 Padding="8,4" HorizontalAlignment="Left"
                                 Click="BlissBoxPlayer_Click"
+                                IsEnabled="{Binding SelectedDevice.BlissBoxIdle}"
                                 ToolTip="{Binding Devices_BlissBoxPlayerTooltip, Source={x:Static strings:Strings.Instance}}"
                                 Visibility="{Binding SelectedDevice.ShowBlissBoxPlayer, Converter={StaticResource BoolToVisibilityConverter}}">
                             <Button.Style>
@@ -963,6 +964,7 @@
                         <Button Content="{Binding Devices_PakBackup, Source={x:Static strings:Strings.Instance}}" Margin="0,6,0,8"
                                 Padding="8,4" HorizontalAlignment="Left"
                                 Click="PakBackup_Click"
+                                IsEnabled="{Binding SelectedDevice.BlissBoxIdle}"
                                 ToolTip="{Binding Devices_PakBackupTooltip, Source={x:Static strings:Strings.Instance}}"
                                 Visibility="{Binding SelectedDevice.ShowControllerPak, Converter={StaticResource BoolToVisibilityConverter}}">
                             <Button.Style>
@@ -972,6 +974,7 @@
                         <Button Content="{Binding Devices_PakRestore, Source={x:Static strings:Strings.Instance}}" Margin="0,6,0,8"
                                 Padding="8,4" HorizontalAlignment="Left"
                                 Click="PakRestore_Click"
+                                IsEnabled="{Binding SelectedDevice.BlissBoxIdle}"
                                 ToolTip="{Binding Devices_PakRestoreTooltip, Source={x:Static strings:Strings.Instance}}"
                                 Visibility="{Binding SelectedDevice.ShowControllerPak, Converter={StaticResource BoolToVisibilityConverter}}">
                             <Button.Style>

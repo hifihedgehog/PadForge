@@ -11,6 +11,7 @@ using PadForge.Common;
 using PadForge.Common.Input;
 using PadForge.Engine;
 using PadForge.Engine.Common.BlissBox;
+using PadForge.Engine.Data;
 using PadForge.Resources.Strings;
 using PadForge.Services;
 using PadForge.ViewModels;
@@ -62,17 +63,19 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void PressureNamesFollowTheFirmwaresOrder()
+        public void PressureNamesFollowThePadsOwnOrder()
         {
-            var current = BlissBoxControllers.PressureNames(4);
-            Assert.Equal(12, current.Count);
-            Assert.Equal("Cross Pressure", current[6]);
-            Assert.Equal("Triangle Pressure", current[4]);
-            Assert.Equal("D-Pad Right Pressure", current[0]);
-            Assert.Equal(current, BlissBoxControllers.PressureNames(3));
-            var old = BlissBoxControllers.PressureNames(2);
-            Assert.Equal("Cross Pressure", old[7]);
-            Assert.Equal("Square Pressure", old[4]);
+            // psx-spx's reply order, which every firmware copies straight into
+            // report 21, 2.0 included (0x2313 to 0x231C).
+            var names = BlissBoxControllers.PressureNames;
+            Assert.Equal(12, names.Count);
+            Assert.Equal("D-Pad Right Pressure", names[0]);
+            Assert.Equal("D-Pad Down Pressure", names[3]);
+            Assert.Equal("Triangle Pressure", names[4]);
+            Assert.Equal("Circle Pressure", names[5]);
+            Assert.Equal("Cross Pressure", names[6]);
+            Assert.Equal("Square Pressure", names[7]);
+            Assert.Equal("R2 Pressure", names[11]);
         }
 
         [Fact]
@@ -80,9 +83,8 @@ namespace PadForge.Tests
         {
             // The chips sit under a pressure heading and are 118 px wide, so a
             // chip reads "Triangle", not "Triangle Pressure" cut short.
-            foreach (byte major in new byte[] { 2, 3, 4 })
-                foreach (var name in BlissBoxControllers.PressureNames(major))
-                    Assert.Equal(name, DevicesViewModel.PressureButton(name) + " Pressure");
+            foreach (var name in BlissBoxControllers.PressureNames)
+                Assert.Equal(name, DevicesViewModel.PressureButton(name) + " Pressure");
             Assert.Equal("D-Pad Right", DevicesViewModel.PressureButton("D-Pad Right Pressure"));
             Assert.Equal("L1", DevicesViewModel.PressureButton("L1"));
         }
@@ -185,7 +187,7 @@ namespace PadForge.Tests
                     }
                 }
             names.UnionWith(BlissBoxControllers.ArrowNames);
-            names.UnionWith(BlissBoxControllers.PressureNames(4));
+            names.UnionWith(BlissBoxControllers.PressureNames);
             names.Add("D-Pad");
 
             // Japanese translates every word the tables use, so a name that
@@ -607,6 +609,120 @@ namespace PadForge.Tests
 
             action.ResetSettingCommand.Execute(nameof(MacroAction.DreamcastFrames));
             Assert.Equal(0, action.DreamcastFrameCount);
+        }
+
+        // ── Review round three ──
+
+        [Fact]
+        public void PressureAxesRestAtZero_WhicheverControllerIsInThePort()
+        {
+            // The #443 rule: an axis activator reads a centered axis as -1 at
+            // rest, so a pressure axis, 0 at rest, must count as one-way.
+            bool saved = BlissBoxApi.Enabled;
+            try
+            {
+                var port = new UserDevice { VendorId = 0x16D0, ProdId = 0x0D04 };
+                BlissBoxApi.Enabled = true;
+                Assert.True(InputManager.AxisRestsAtZero("Axis 8", port));
+                Assert.True(InputManager.AxisRestsAtZero("Axis 19", port));
+                Assert.False(InputManager.AxisRestsAtZero("Axis 7", port));
+                Assert.False(InputManager.AxisRestsAtZero("Axis 20", port));
+                // Another device's axis 8 is untouched.
+                Assert.False(InputManager.AxisRestsAtZero("Axis 8", new UserDevice { VendorId = 0x054C, ProdId = 0x0268 }));
+                // With the switch off the port reads through SDL's mapping.
+                BlissBoxApi.Enabled = false;
+                Assert.False(InputManager.AxisRestsAtZero("Axis 8", port));
+            }
+            finally { BlissBoxApi.Enabled = saved; }
+        }
+
+        [Fact]
+        public void AShowGivesEachFrameItsTimeOnceTheAdapterHoldsIt()
+        {
+            // Frames once followed a fixed schedule, and the EEPROM guard's
+            // second between writes then dropped some.
+            var a = new byte[192]; a[0] = 0x80;
+            var b = new byte[192]; b[1] = 0x80;
+            var show = new DreamcastShow(new List<byte[]> { a, b }, 1000, 1, now: 0);
+            var other = new byte[192];
+            Assert.Equal(a, show.Frame(other, 0));
+            Assert.Equal(a, show.Frame(other, 1500));
+            Assert.Equal(a, show.Frame(BlissBoxScreen.ToWire(a), 1600));
+            Assert.Equal(a, show.Frame(BlissBoxScreen.ToWire(a), 2599));
+            Assert.Equal(b, show.Frame(BlissBoxScreen.ToWire(a), 2600));
+            Assert.Equal(b, show.Frame(BlissBoxScreen.ToWire(b), 2700));
+            Assert.Null(show.Frame(BlissBoxScreen.ToWire(b), 3700));
+        }
+
+        [Fact]
+        public void AFrameThatNeverArrivesCountsFromWhenItBecameCurrent()
+        {
+            var a = new byte[192]; a[0] = 0x80;
+            var show = new DreamcastShow(new List<byte[]> { a }, 200, 1, now: 0);
+            var other = new byte[192];
+            Assert.Equal(a, show.Frame(other, DreamcastShow.DeliveryLimitMs - 1));
+            // Frame times hold to the guard's second whatever the action says.
+            Assert.Null(show.Frame(other, DreamcastShow.DeliveryLimitMs));
+        }
+
+        [Fact]
+        public void AResetKeepsEachPortsCopyOfTheAdaptersPicture()
+        {
+            string picture = Convert.ToBase64String(new byte[192]);
+            var ports = new[]
+            {
+                new BlissBoxPortData { Device = Guid.NewGuid().ToString("D"), ScreenMode = DreamcastScreenMode.Clock, AdapterPicture = picture, NativeArrows = true },
+                new BlissBoxPortData { Device = Guid.NewGuid().ToString("D"), ScreenMode = DreamcastScreenMode.Clock },
+            };
+            var kept = Assert.Single(BlissBoxPortData.KeepAdapterPictures(ports));
+            Assert.Equal(ports[0].Device, kept.Device);
+            Assert.Equal(picture, kept.AdapterPicture);
+            Assert.Equal(DreamcastScreenMode.Adapter, kept.ScreenMode);
+            Assert.False(kept.NativeArrows);
+            Assert.Null(BlissBoxPortData.KeepAdapterPictures(new[] { ports[1] }));
+
+            string reset = Repo("PadForge.App", "Services", "SettingsService.cs");
+            Assert.Contains("BlissBoxPorts = BlissBoxPortData.KeepAdapterPictures(_mainVm.Settings.BlissBoxPorts),", reset);
+        }
+
+        [Fact]
+        public void ExportingTheDefaultProfileCarriesItsPicture()
+        {
+            // The Default profile's picture lives in the settings file, not on
+            // the snapshot the export writes.
+            string code = Repo("PadForge.App", "MainWindow.xaml.cs");
+            Assert.Contains("profile.DreamcastPicture = _viewModel.Settings.DefaultProfileDreamcastPicture;", code);
+            Assert.Contains("profile.DreamcastPicture = priorPicture;", code);
+        }
+
+        [Fact]
+        public void ThePreviewRebuildsWhenTheRowIsOpenedAgain()
+        {
+            // A reopen keeps the row's guid, and the preview once rebuilt only
+            // when the guid changed.
+            string code = Repo("PadForge.App", "Services", "InputService.cs");
+            Assert.Contains("|| !ReferenceEquals(ud.Device, _lastRawStateDevice))", code);
+        }
+
+        [Fact]
+        public void TheSessionReportsOnlyChanges_SoTheWorkerWakesOnlyForThem()
+        {
+            var session = new BlissBoxSession(new NullTransport(), 1);
+            Assert.True(session.SetRumble(1000, 0));
+            Assert.False(session.SetRumble(1000, 0));
+            Assert.True(session.SetRumble(0, 0));
+            var wire = new byte[192];
+            Assert.True(session.SetScreen(wire));
+            Assert.False(session.SetScreen((byte[])wire.Clone()));
+            Assert.True(session.SetScreen(null));
+            Assert.False(session.SetScreen(null));
+        }
+
+        private sealed class NullTransport : IBlissBoxTransport
+        {
+            public bool SetFeature(byte[] report) => false;
+            public int GetFeature(byte[] buffer) => -1;
+            public int FeatureLength => 0;
         }
 
         // ── Helpers ──

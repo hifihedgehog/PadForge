@@ -12,10 +12,11 @@ namespace PadForge.Common.Input
     /// writes for what the joystick cannot carry.
     ///
     /// <para>The worker owns the channel. It opens it, runs the session's
-    /// steps until the port is disposed, reopens it once a second while it
-    /// will not open or after three info reads in a row fail, and stops both
-    /// motors before it lets go. Other threads set what they want on the
-    /// <see cref="Session"/> and wake the worker.</para>
+    /// steps until the port is disposed, and reopens it once a second while
+    /// it will not open or after three info reads in a row fail, telling both
+    /// motors their level again once it is back. When the port is disposed
+    /// it stops both motors before it lets go. Other threads set what they
+    /// want on the <see cref="Session"/> and wake the worker.</para>
     /// </summary>
     internal sealed class BlissBoxPort : IDisposable
     {
@@ -120,12 +121,16 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>Stops the worker, which stops the motors and closes the
-        /// channel. A job in progress ends before its next transfer.</summary>
+        /// channel. A job in progress ends before its next message to the
+        /// controller, and one queued from now on ends at once.</summary>
         public void Dispose()
         {
             if (_stop) return;
-            _stop = true;
+            // The stop request goes first: a job queued once the worker has
+            // seen the stop and ended the queue finds the request and ends
+            // itself (BlissBoxSession.Enqueue).
             Session.RequestStop();
+            _stop = true;
             Wake();
             if (_thread.ThreadState == ThreadState.Unstarted)
             {

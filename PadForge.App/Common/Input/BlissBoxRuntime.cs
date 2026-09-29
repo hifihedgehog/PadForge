@@ -25,10 +25,37 @@ namespace PadForge.Common.Input
         private static readonly object _lock = new();
         private static BlissBoxPort[] _ports = Array.Empty<BlissBoxPort>();
 
+        /// <summary>The switch. The ports themselves open and close on Step
+        /// 1's next pass, so the motors change hands at once here: switched
+        /// on, an effect SDL started on a port stops, since SDL's rumble no
+        /// longer reaches the port to stop it. Switched off, each open port
+        /// stops its motors, since the game's next zero goes to SDL.</summary>
         public static bool Enabled
         {
             get => BlissBoxApi.Enabled;
-            set => BlissBoxApi.Enabled = value;
+            set
+            {
+                bool was = BlissBoxApi.Enabled;
+                BlissBoxApi.Enabled = value;
+                if (value == was) return;
+                if (value) StopSdlRumbleOnPorts();
+                else
+                    foreach (var port in Ports)
+                        if (port.Session.SetRumble(0, 0)) port.Wake();
+            }
+        }
+
+        private static void StopSdlRumbleOnPorts()
+        {
+            var devices = SettingsManager.UserDevices;
+            if (devices == null) return;
+            var wrappers = new List<SdlDeviceWrapper>();
+            lock (devices.SyncRoot)
+                foreach (var ud in devices.Items)
+                    if (ud?.Device is SdlDeviceWrapper wrapper && BlissBoxProtocol.IsPort(ud.VendorId, ud.ProdId))
+                        wrappers.Add(wrapper);
+            foreach (var wrapper in wrappers)
+                try { wrapper.StopSdlRumble(); } catch { }
         }
 
         /// <summary>The open ports, a snapshot safe to walk on any thread.</summary>
@@ -175,21 +202,58 @@ namespace PadForge.Common.Input
                         state.Buttons[BlissBoxControllers.FirstArrowButton + i] = true;
         }
 
-        /// <summary>The motor levels for a port, PadForge's 0 to 65535. False
-        /// when no open port serves the path yet, so the caller retries.</summary>
+        /// <summary>The motor levels for a port, PadForge's 0 to 65535. The
+        /// session keeps them and sends them once its channel is open, so the
+        /// worker is woken only for a change. False when no port serves the
+        /// path yet, so the caller tries again next frame, until Step 1
+        /// opens one.</summary>
         public static bool SetRumble(string path, ushort large, ushort small)
         {
             var port = Find(path);
             if (port == null) return false;
-            port.Session.SetRumble(large, small);
-            port.Wake();
-            return port.IsOpen;
+            if (port.Session.SetRumble(large, small)) port.Wake();
+            return true;
+        }
+
+        /// <summary>Crash path: every port stops its motors, and the caller
+        /// waits up to <paramref name="timeoutMs"/> for the workers to send
+        /// it, since a dying process may not outlive an asynchronous
+        /// stop.</summary>
+        public static void StopMotorsNow(int timeoutMs)
+        {
+            var ports = Ports;
+            if (ports.Length == 0) return;
+            foreach (var port in ports)
+            {
+                port.Session.SetRumble(0, 0);
+                port.Wake();
+            }
+            long end = Environment.TickCount64 + timeoutMs;
+            while (Environment.TickCount64 < end)
+            {
+                bool rest = true;
+                foreach (var port in ports)
+                    if (port.IsOpen && !port.Session.MotorsAtRest) { rest = false; break; }
+                if (rest) return;
+                Thread.Sleep(5);
+            }
         }
 
         /// <summary>True when a port names this row's objects, so the picker
         /// shows its names rather than numbers.</summary>
         public static bool NamesObjects(UserDevice ud)
             => Enabled && Find(ud)?.Session.LiveInfo != null;
+
+        /// <summary>True for a port's pressure axes, which rest at 0 and
+        /// travel one way, a trigger's shape (the #443 rule). The merge leaves
+        /// them at 0 whenever no DualShock 2 is in the port, so the answer
+        /// does not depend on which controller is.</summary>
+        public static bool IsPressureAxis(UserDevice ud, int axis)
+        {
+            if (ud == null || !Enabled || !BlissBoxProtocol.IsPort(ud.VendorId, ud.ProdId)) return false;
+            int first = PressureAxisBase(ud.Device);
+            return first >= 0 && axis >= first && axis < first + BlissBoxProtocol.PressureCount;
+        }
 
         /// <summary>
         /// The wrapper's object list for a port, renamed for the controller in
@@ -251,7 +315,7 @@ namespace PadForge.Common.Input
             int first = PressureAxisBase(declaredAxes);
             if (BlissBoxControllers.HasPressure(info.Type) && first >= 0)
             {
-                var names = BlissBoxControllers.PressureNames(info.Major);
+                var names = BlissBoxControllers.PressureNames;
                 for (int i = 0; i < names.Count; i++)
                 {
                     list.Add(new DeviceObjectItem

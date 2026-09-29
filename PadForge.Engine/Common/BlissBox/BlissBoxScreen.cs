@@ -88,7 +88,10 @@ namespace PadForge.Engine.Common.BlissBox
         /// byte.</summary>
         public static byte[] FromVms(ReadOnlySpan<byte> file)
         {
-            if (file.Length < VmsIconOffsetField + 4) return null;
+            // Too short for the offset field or for an icon anywhere: the
+            // check below would otherwise wrap around on a file under 128
+            // bytes.
+            if (file.Length < VmsIconOffsetField + 4 || file.Length < VmsIconBytes) return null;
             uint offset = BinaryPrimitives.ReadUInt32LittleEndian(file.Slice(VmsIconOffsetField, 4));
             if (offset == 0 || offset > (uint)(file.Length - VmsIconBytes)) return null;
             var image = new byte[Bytes];

@@ -34,13 +34,23 @@ namespace PadForge
             {
                 case BlissBoxAction.Player:
                 {
+                    if (port.Session.Busy) return;
                     int player = BlissBoxPlayerDialog.Show(this, port.Session.Player, row.BlissBoxLine);
                     if (player == 0 || player == port.Session.Player) return;
-                    var job = new BlissBoxPlayerJob(player);
+                    // The port returns as a new device. A picture PadForge put
+                    // on the VMU goes back first, and the old device's choices
+                    // are dropped, since nothing would read them again.
+                    var service = _inputService.DreamcastScreen;
+                    DreamcastScreenService.TryDecode(service.Get(port.InstanceGuid)?.AdapterPicture, out var original);
+                    var job = new BlissBoxPlayerJob(player, original);
                     port.Session.Enqueue(job);
                     port.Wake();
                     var result = await job.Completion;
-                    if (result.Ok) _viewModel.SetStatus(string.Format(culture, s.Status_BlissBoxPlayer_Format, player));
+                    if (result.Ok)
+                    {
+                        service.Remove(port.InstanceGuid);
+                        _viewModel.SetStatus(string.Format(culture, s.Status_BlissBoxPlayer_Format, player));
+                    }
                     else _viewModel.SetStatus(JobErrorText(result), persist: true);
                     break;
                 }
@@ -68,6 +78,7 @@ namespace PadForge
 
                 case BlissBoxAction.PakBackup:
                 {
+                    if (port.Session.Busy) return;
                     var dialog = new SaveFileDialog
                     {
                         Filter = s.BlissBoxPak_FileFilter,
@@ -99,6 +110,7 @@ namespace PadForge
 
                 case BlissBoxAction.PakRestore:
                 {
+                    if (port.Session.Busy) return;
                     var dialog = new OpenFileDialog { Filter = s.BlissBoxPak_FileFilter };
                     if (dialog.ShowDialog(this) != true) return;
                     byte[] image;
@@ -163,6 +175,7 @@ namespace PadForge
                 BlissBoxJobError.RumblePak => s.BlissBoxJob_RumblePak,
                 BlissBoxJobError.BadBlock => string.Format(culture, s.BlissBoxJob_BadBlock_Format, result.Block),
                 BlissBoxJobError.TooManyErrors => string.Format(culture, s.BlissBoxJob_TooManyErrors_Format, result.Block),
+                BlissBoxJobError.OldFirmware => s.BlissBoxJob_OldFirmware,
                 _ => s.BlissBoxJob_NoReply,
             };
         }

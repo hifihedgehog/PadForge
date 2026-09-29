@@ -592,8 +592,8 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>The VMU shows the active profile's name and follows each profile switch.</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>The VMU shows the active profile's place in the profile list. The Default profile is 0.</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>The VMU shows the active profile's own picture, or its name when it has none. Each profile keeps its own picture.</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>The VMU shows the time of day, rewritten once a minute.</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>The VMU shows the hours and minutes since the pad was plugged in, rewritten once a minute.</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>The VMU shows the time of day, rewritten once a minute. The adapter keeps each picture in memory rated for 100,000 writes, which this reaches after about ten weeks of display around the clock.</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>The VMU shows the hours and minutes since the pad was plugged in, rewritten once a minute. The adapter keeps each picture in memory rated for 100,000 writes, which this reaches after about ten weeks of display around the clock.</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>The VMU shows a picture you choose: a BMP or PNG, a VMU Animator .lcd file or a Dreamcast .vms icon. Pictures are cut to 48 by 32 black and white pixels.</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>Choose Picture…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>Choose Picture for {0}…</value></data>
@@ -612,6 +612,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="BlissBoxJob_BadBlock_Format" xml:space="preserve"><value>Block {0} kept failing its checksum. Reseat the pak and try again.</value></data>
   <data name="BlissBoxJob_TooManyErrors_Format" xml:space="preserve"><value>The pak rejected too many writes, the last at block {0}. Reseat the pak and try again.</value></data>
   <data name="BlissBoxJob_NoReply" xml:space="preserve"><value>The adapter did not answer. Check that the controller is plugged in and try again.</value></data>
+  <data name="BlissBoxJob_OldFirmware" xml:space="preserve"><value>Controller Pak transfers need adapter firmware 3.0 or later.</value></data>
   <data name="Status_BlissBoxPlayer_Format" xml:space="preserve"><value>The port is now player {0}. It reconnects as a new device.</value></data>
   <data name="Status_DreamcastScreen_Format" xml:space="preserve"><value>Dreamcast screen set to {0}.</value></data>
   <data name="Status_PakReading_Format" xml:space="preserve"><value>Reading the Controller Pak: {0:P0}</value></data>

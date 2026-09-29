@@ -2663,8 +2663,8 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>La VMU muestra el nombre del perfil activo y sigue cada cambio de perfil.</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>La VMU muestra la posición del perfil activo en la lista de perfiles. El perfil predeterminado es el 0.</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>La VMU muestra la imagen propia del perfil activo, o su nombre si no tiene ninguna. Cada perfil guarda su propia imagen.</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>La VMU muestra la hora del día, que se reescribe una vez por minuto.</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>La VMU muestra las horas y los minutos desde que se conectó el mando, y se reescribe una vez por minuto.</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>La VMU muestra la hora del día, que se reescribe una vez por minuto. El adaptador guarda cada imagen en una memoria prevista para 100.000 escrituras, que esto alcanza tras unas diez semanas de uso ininterrumpido.</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>La VMU muestra las horas y los minutos desde que se conectó el mando, y se reescribe una vez por minuto. El adaptador guarda cada imagen en una memoria prevista para 100.000 escrituras, que esto alcanza tras unas diez semanas de uso ininterrumpido.</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>La VMU muestra una imagen que elijas: un BMP o PNG, un archivo .lcd de VMU Animator o un icono .vms de Dreamcast. Las imágenes se reducen a 48 por 32 píxeles en blanco y negro.</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>Elegir imagen…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>Elegir imagen para {0}…</value></data>
@@ -2683,6 +2683,7 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="BlissBoxJob_BadBlock_Format" xml:space="preserve"><value>El bloque {0} falló su suma de comprobación una y otra vez. Vuelve a insertar el pak e inténtalo de nuevo.</value></data>
   <data name="BlissBoxJob_TooManyErrors_Format" xml:space="preserve"><value>El pak rechazó demasiadas escrituras, la última en el bloque {0}. Vuelve a insertar el pak e inténtalo de nuevo.</value></data>
   <data name="BlissBoxJob_NoReply" xml:space="preserve"><value>El adaptador no respondió. Comprueba que el mando esté conectado e inténtalo de nuevo.</value></data>
+  <data name="BlissBoxJob_OldFirmware" xml:space="preserve"><value>Las transferencias del Controller Pak necesitan el firmware 3.0 o posterior en el adaptador.</value></data>
   <data name="Status_BlissBoxPlayer_Format" xml:space="preserve"><value>El puerto es ahora el jugador {0}. Se vuelve a conectar como un dispositivo nuevo.</value></data>
   <data name="Status_DreamcastScreen_Format" xml:space="preserve"><value>Pantalla de Dreamcast establecida en {0}.</value></data>
   <data name="Status_PakReading_Format" xml:space="preserve"><value>Leyendo el Controller Pak: {0:P0}</value></data>

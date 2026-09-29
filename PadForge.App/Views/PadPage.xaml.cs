@@ -1139,10 +1139,6 @@ namespace PadForge.Views
             }
         }
 
-        /// <summary>Choose a sound for the Play Sound action card. When packages
-        /// are added, the sounds inside them are offered directly — a filesystem
-        /// browse is only needed for a package or loose file that hasn't been
-        /// added yet (issue #83). The button's DataContext is the MacroAction.</summary>
         /// <summary>Show Dreamcast Screen (#469): a picture from a file joins
         /// the end of the set, eight at most.</summary>
         private void AddDreamcastFrame_Click(object sender, RoutedEventArgs e)
@@ -1183,6 +1179,10 @@ namespace PadForge.Views
             action.RemoveDreamcastFrame(index);
         }
 
+        /// <summary>Choose a sound for the Play Sound action card. When packages
+        /// are added, the sounds inside them are offered directly. A filesystem
+        /// browse is only needed for a package or loose file that hasn't been
+        /// added yet (issue #83). The button's DataContext is the MacroAction.</summary>
         private void BrowseSoundFile_Click(object sender, RoutedEventArgs e)
         {
             if ((sender as FrameworkElement)?.DataContext is not PadForge.ViewModels.MacroAction action)

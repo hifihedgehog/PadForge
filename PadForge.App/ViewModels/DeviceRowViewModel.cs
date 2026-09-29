@@ -972,6 +972,15 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _blissBoxNativeArrows, value);
         }
 
+        private bool _blissBoxIdle = true;
+        /// <summary>No player change or Controller Pak transfer holds the
+        /// port's channel, so their buttons can start one.</summary>
+        public bool BlissBoxIdle
+        {
+            get => _blissBoxIdle;
+            set => SetProperty(ref _blissBoxIdle, value);
+        }
+
         /// <summary>The beam-count window the gun's aim scales by.</summary>
         public string GunCalibrationStatus
         {

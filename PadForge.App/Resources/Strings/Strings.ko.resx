@@ -2663,8 +2663,8 @@
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>VMU에 활성 프로필의 이름이 표시되며 프로필을 바꿀 때마다 따라 바뀝니다.</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>VMU에 프로필 목록에서 활성 프로필의 순서가 표시됩니다. 기본 프로필은 0입니다.</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>VMU에 활성 프로필 자체의 그림이 표시되며, 그림이 없으면 이름이 표시됩니다. 프로필마다 자기 그림을 따로 보관합니다.</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU에 현재 시각이 표시되며 1분에 한 번 다시 씁니다.</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU에 컨트롤러를 연결한 뒤 지난 시간과 분이 표시되며 1분에 한 번 다시 씁니다.</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU에 현재 시각이 표시되며 1분에 한 번 다시 씁니다. 어댑터는 각 그림을 10만 회 쓰기 수명의 메모리에 저장하며, 24시간 계속 표시하면 약 10주 만에 그 수명에 도달합니다.</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU에 컨트롤러를 연결한 뒤 지난 시간과 분이 표시되며 1분에 한 번 다시 씁니다. 어댑터는 각 그림을 10만 회 쓰기 수명의 메모리에 저장하며, 24시간 계속 표시하면 약 10주 만에 그 수명에 도달합니다.</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>VMU에 직접 고른 그림이 표시됩니다. BMP나 PNG, VMU Animator .lcd 파일, Dreamcast .vms 아이콘을 쓸 수 있습니다. 그림은 48×32 흑백 픽셀로 변환됩니다.</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>그림 선택…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>{0}의 그림 선택…</value></data>
@@ -2683,6 +2683,7 @@
   <data name="BlissBoxJob_BadBlock_Format" xml:space="preserve"><value>블록 {0}의 체크섬이 계속 맞지 않았습니다. 팩을 다시 끼우고 다시 시도하세요.</value></data>
   <data name="BlissBoxJob_TooManyErrors_Format" xml:space="preserve"><value>팩이 쓰기를 너무 많이 거부했습니다(마지막은 블록 {0}). 팩을 다시 끼우고 다시 시도하세요.</value></data>
   <data name="BlissBoxJob_NoReply" xml:space="preserve"><value>어댑터가 응답하지 않았습니다. 컨트롤러가 연결되어 있는지 확인하고 다시 시도하세요.</value></data>
+  <data name="BlissBoxJob_OldFirmware" xml:space="preserve"><value>컨트롤러 팩 전송에는 어댑터 펌웨어 3.0 이상이 필요합니다.</value></data>
   <data name="Status_BlissBoxPlayer_Format" xml:space="preserve"><value>이제 포트는 플레이어 {0}입니다. 새 장치로 다시 연결됩니다.</value></data>
   <data name="Status_DreamcastScreen_Format" xml:space="preserve"><value>Dreamcast 화면을 {0}(으)로 설정했습니다.</value></data>
   <data name="Status_PakReading_Format" xml:space="preserve"><value>컨트롤러 팩 읽는 중: {0:P0}</value></data>

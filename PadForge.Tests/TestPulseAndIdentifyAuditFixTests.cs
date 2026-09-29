@@ -126,7 +126,12 @@ namespace PadForge.Tests
 
             Assert.Contains("PadixConverterIdentity", body);
             Assert.Contains("PadixConverterRawHidWriter.Write(", body);
-            Assert.Contains("ud.ForceFeedbackState?.TryRecordMotorSnapshot(level, level);", body);
+            // The unowned lane leaves the motor snapshot alone. Recording each
+            // buzz marked the row active, and Step 2 sends a row with no slot
+            // its final zero on the next poll, which cut every pulse to about
+            // a millisecond, a Bliss-Box port's (#469) included.
+            Assert.DoesNotContain("TryRecordMotorSnapshot(level, level)", body);
+            Assert.Contains("BlissBoxRuntime.SetRumble(ud.DevicePath, level, level);", body);
 
             // The SDL calls survive for every other family.
             Assert.Contains("else if (level != 0) dev.SetRumble(level, level);", body);

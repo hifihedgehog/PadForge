@@ -5241,6 +5241,10 @@ namespace PadForge.Services
             settings.AnalogKeyboardsStatus = status;
         }
 
+        /// <summary>The device object the Devices page preview was last built
+        /// from, beside the row it belongs to (LastRawStateDeviceGuid).</summary>
+        private PadForge.Engine.ISdlInputDevice _lastRawStateDevice;
+
         private void UpdateDevicesRawState()
         {
             var devVm = _mainVm.Devices;
@@ -5259,10 +5263,15 @@ namespace PadForge.Services
             // A Bliss-Box port's line, actions and pressure chips (#469).
             UpdateBlissBoxDeviceRow(selected, ud);
 
-            // Rebuild collections when the selected device changes.
-            if (selected.InstanceGuid != devVm.LastRawStateDeviceGuid)
+            // Rebuild collections when the selected device changes, or when
+            // the same row was opened again: a Bliss-Box port the switch moved
+            // between SDL's mapping and its raw layout (#469), or a replug that
+            // rebound the row, can carry another set of axes and buttons.
+            if (selected.InstanceGuid != devVm.LastRawStateDeviceGuid
+                || !ReferenceEquals(ud.Device, _lastRawStateDevice))
             {
                 devVm.LastRawStateDeviceGuid = selected.InstanceGuid;
+                _lastRawStateDevice = ud.Device;
                 int[] axisIndices = ResolveAxisIndices(ud);
                 int povCount = Math.Min(ud.CapPovCount, CustomInputState.MaxPovs);
                 bool isKb = ud.CapType == InputDeviceType.Keyboard;
@@ -15454,24 +15463,22 @@ namespace PadForge.Services
                             .OwnsRumble(ud.VendorId, ud.ProdId);
                         void Buzz(ushort level)
                         {
+                            // Identify is a one-shot user action, not the poll
+                            // lane, so the write is unconditional and leaves the
+                            // row's motor snapshot alone. Recording the buzz
+                            // there marked the row active, and Step 2 sends a
+                            // row with no slot its final zero the next poll, so
+                            // every pulse was stopped about a millisecond after
+                            // it started. The train ends at zero, where the
+                            // untouched snapshot already is, so the mapped lane
+                            // never skips a zero it needs.
                             if (padix)
                             {
-                                // Identify is a one-shot user action, not the poll
-                                // lane, so the write is unconditional: a snapshot
-                                // that already matched would otherwise dedup the
-                                // buzz away and Identify would stay silent. The
-                                // snapshot still moves, or the mapped lane's change
-                                // detection would later skip a zero and strand the
-                                // motors.
-                                ud.ForceFeedbackState?.TryRecordMotorSnapshot(level, level);
                                 PadForge.Common.Input.PadixConverterRawHidWriter.Write(
                                     ud.DevicePath, level, level);
                             }
                             else if (blissBox)
                             {
-                                // Unconditional for the same reason, and the
-                                // snapshot moves for the same reason.
-                                ud.ForceFeedbackState?.TryRecordMotorSnapshot(level, level);
                                 PadForge.Common.Input.BlissBoxRuntime.SetRumble(ud.DevicePath, level, level);
                             }
                             else if (level != 0) dev.SetRumble(level, level);

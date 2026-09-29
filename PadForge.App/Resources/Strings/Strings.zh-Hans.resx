@@ -2663,8 +2663,8 @@
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>VMU 显示当前配置文件的名称，并随每次配置文件切换更新。</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>VMU 显示当前配置文件在配置文件列表中的位置。默认配置文件为 0。</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>VMU 显示当前配置文件自己的图片，没有图片时显示其名称。每个配置文件保存各自的图片。</value></data>
-  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU 显示当前时间，每分钟重写一次。</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU 显示手柄插入后经过的小时和分钟，每分钟重写一次。</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU 显示当前时间，每分钟重写一次。适配器把每幅图片存入额定 10 万次写入的存储器，全天候显示约十周即达到该次数。</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU 显示手柄插入后经过的小时和分钟，每分钟重写一次。适配器把每幅图片存入额定 10 万次写入的存储器，全天候显示约十周即达到该次数。</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>VMU 显示您选择的图片：BMP 或 PNG、VMU Animator 的 .lcd 文件或 Dreamcast 的 .vms 图标。图片会转为 48×32 的黑白像素。</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>选择图片…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>为 {0} 选择图片…</value></data>
@@ -2683,6 +2683,7 @@
   <data name="BlissBoxJob_BadBlock_Format" xml:space="preserve"><value>块 {0} 的校验和多次不匹配。请重新插好记忆卡后再试。</value></data>
   <data name="BlissBoxJob_TooManyErrors_Format" xml:space="preserve"><value>记忆卡拒绝了过多写入，最后一次在块 {0}。请重新插好记忆卡后再试。</value></data>
   <data name="BlissBoxJob_NoReply" xml:space="preserve"><value>适配器没有响应。请检查手柄是否已插好，然后重试。</value></data>
+  <data name="BlissBoxJob_OldFirmware" xml:space="preserve"><value>控制器记忆卡传输需要适配器固件 3.0 或更高版本。</value></data>
   <data name="Status_BlissBoxPlayer_Format" xml:space="preserve"><value>此端口现在是玩家 {0}。它会以新设备身份重新连接。</value></data>
   <data name="Status_DreamcastScreen_Format" xml:space="preserve"><value>Dreamcast 屏幕已设为{0}。</value></data>
   <data name="Status_PakReading_Format" xml:space="preserve"><value>正在读取控制器记忆卡：{0:P0}</value></data>

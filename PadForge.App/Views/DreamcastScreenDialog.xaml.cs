@@ -41,8 +41,12 @@ namespace PadForge.Views
             var s = Strings.Instance;
             Title = s.DreamcastScreen_Title;
             DetailText.Text = detail ?? string.Empty;
-            ChooseProfilePictureButton.Content = string.Format(System.Globalization.CultureInfo.CurrentCulture,
+            // A long profile name is cut short in the button and read whole
+            // in its tooltip.
+            string choose = string.Format(System.Globalization.CultureInfo.CurrentCulture,
                 s.DreamcastScreen_ChooseProfilePicture_Format, _profileName);
+            ChooseProfilePictureButton.Content = new TextBlock { Text = choose, TextTrimming = TextTrimming.CharacterEllipsis };
+            ChooseProfilePictureButton.ToolTip = choose;
 
             foreach (DreamcastScreenMode mode in Enum.GetValues(typeof(DreamcastScreenMode)))
                 ModeBox.Items.Add(new ComboBoxItem { Content = ModeName(mode), Tag = mode });

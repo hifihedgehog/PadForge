@@ -6823,9 +6823,15 @@ namespace PadForge
             // Stamping the display name into it permanently would persist a
             // localized name into the saved snapshot.
             string priorName = profile.Name;
+            string priorPicture = profile.DreamcastPicture;
             try
             {
                 profile.Name = exportName;
+                // The Default profile's Dreamcast screen picture lives in the
+                // settings file (#469), not on its snapshot, so it rides the
+                // export the same way the name does, for the write only.
+                if (selected.IsDefault)
+                    profile.DreamcastPicture = _viewModel.Settings.DefaultProfileDreamcastPicture;
                 PadForge.Common.ProfileTransfer.Export(profile, dlg.FileName);
                 _viewModel.StatusText = string.Format(Strings.Instance.Status_ProfileExported_Format, exportName);
             }
@@ -6836,6 +6842,7 @@ namespace PadForge
             finally
             {
                 profile.Name = priorName;
+                profile.DreamcastPicture = priorPicture;
             }
         }
 

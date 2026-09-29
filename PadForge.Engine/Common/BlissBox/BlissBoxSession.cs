@@ -32,11 +32,12 @@ namespace PadForge.Engine.Common.BlissBox
     /// control transfer behind its CT_IO flag. Other threads only set what
     /// they want and read what was last seen.
     ///
-    /// <para>Nothing polls faster than DeviceBuddy does (report 17 every
-    /// 500 ms, report 21 every 50 ms for a DualShock 2), because BBAPI.cs
-    /// warns that the adapter skips a controller poll for each control
-    /// transfer. The pressure poll runs only while a DualShock 2 is in the
-    /// port.</para>
+    /// <para>The info and pressure polls run no faster than DeviceBuddy's
+    /// (report 17 every 500 ms, report 21 every 50 ms for a DualShock 2),
+    /// because BBAPI.cs warns that the adapter skips a controller poll for
+    /// each control transfer. The pressure poll runs only while a DualShock 2
+    /// is in the port. The native arrow poll is faster, and runs only while
+    /// the port's choice asks for it.</para>
     /// </summary>
     public sealed class BlissBoxSession
     {
@@ -75,12 +76,15 @@ namespace PadForge.Engine.Common.BlissBox
         private volatile bool _nativeArrows;
         private volatile int _arrows = -1;
         private int _wantedLarge, _wantedSmall;
-        private byte _sentLarge, _sentSmall;
+        private volatile byte _sentLarge, _sentSmall;
         private long _lastLarge, _lastSmall;
+        private bool _resendMotors;
+        private bool _largeFailed, _smallFailed;
         private long _nextInfo, _nextPressure, _nextArrows;
         private long _lastScreenWrite = long.MinValue / 2;
         private int _failedInfoReads;
         private volatile bool _stopRequested;
+        private volatile bool _jobRunning;
 
         public BlissBoxSession(IBlissBoxTransport transport, int player, Func<long> clock = null, Action<int> sleep = null)
         {
@@ -128,29 +132,51 @@ namespace PadForge.Engine.Common.BlissBox
 
         /// <summary>True while the native poll runs: asked for, and a 3.x
         /// adapter reads a PlayStation digital pad. GPA publishes the four
-        /// directions itself, and 2.x has no native channel (memManager.cs:
-        /// "3.0 is required for this feature!").</summary>
+        /// directions itself, and 2.x frames its native channel differently
+        /// (<see cref="BlissBoxControllers.NativeChannelMajor"/>).</summary>
         public bool NativeArrowsActive
             => _nativeArrows && LiveInfo is { Major: 3 } info && BlissBoxControllers.IsPlayStationDigital(info.Type);
 
+        /// <summary>A job is queued or running, so the port's channel is
+        /// spoken for until it ends.</summary>
+        public bool Busy => _jobRunning || !_jobs.IsEmpty;
+
+        /// <summary>Both motors were last told to stop, or never started.</summary>
+        public bool MotorsAtRest => _sentLarge == 0 && _sentSmall == 0 && !Volatile.Read(ref _resendMotors);
+
         /// <summary>The levels the motors should run at, PadForge's 0 to
-        /// 65535: large is the low-frequency channel, small the high.</summary>
-        public void SetRumble(ushort large, ushort small)
+        /// 65535: large is the low-frequency channel, small the high. True
+        /// when either level changed, so the caller wakes the worker only
+        /// then.</summary>
+        public bool SetRumble(ushort large, ushort small)
         {
-            Volatile.Write(ref _wantedLarge, large);
-            Volatile.Write(ref _wantedSmall, small);
+            int oldLarge = Interlocked.Exchange(ref _wantedLarge, large);
+            int oldSmall = Interlocked.Exchange(ref _wantedSmall, small);
+            return oldLarge != large || oldSmall != small;
         }
 
         /// <summary>The picture to show, in wire order, or null to leave the
-        /// adapter's own.</summary>
-        public void SetScreen(byte[] wire)
+        /// adapter's own. True when it differs from the one asked for before,
+        /// so the caller wakes the worker only then.</summary>
+        public bool SetScreen(byte[] wire)
         {
             if (wire != null && wire.Length != BlissBoxProtocol.ScreenBytes)
                 throw new ArgumentException($"A VMU picture is {BlissBoxProtocol.ScreenBytes} bytes.", nameof(wire));
-            _wantedScreen = wire == null ? null : (byte[])wire.Clone();
+            var old = _wantedScreen;
+            bool changed = wire == null ? old != null : old == null || !wire.AsSpan().SequenceEqual(old);
+            if (changed) _wantedScreen = wire == null ? null : (byte[])wire.Clone();
+            return changed;
         }
 
-        public void Enqueue(BlissBoxJob job) => _jobs.Enqueue(job ?? throw new ArgumentNullException(nameof(job)));
+        /// <summary>Queues a job for the worker. A session whose port is
+        /// closing ends it as closed at once: the worker ends the jobs it
+        /// finds as it leaves, and one queued after that would never
+        /// finish.</summary>
+        public void Enqueue(BlissBoxJob job)
+        {
+            _jobs.Enqueue(job ?? throw new ArgumentNullException(nameof(job)));
+            if (_stopRequested) CancelJobs();
+        }
 
         /// <summary>The motor strength byte for a level: 0 off, else 1 to
         /// 255. Type 1 reads a strength of 0 as full, so a small nonzero level
@@ -188,7 +214,12 @@ namespace PadForge.Engine.Common.BlissBox
                 WriteScreen(now);
             }
 
-            if (_jobs.TryDequeue(out var job)) job.Run(this);
+            if (_jobs.TryDequeue(out var job))
+            {
+                _jobRunning = true;
+                try { job.Run(this); }
+                finally { _jobRunning = false; }
+            }
 
             if (NativeArrowsActive)
             {
@@ -203,10 +234,15 @@ namespace PadForge.Engine.Common.BlissBox
             now = _clock();
             long next = _nextInfo;
             if (info != null && BlissBoxControllers.HasPressure(info.Type)) next = Math.Min(next, _nextPressure);
-            if (_sentLarge != 0) next = Math.Min(next, _lastLarge + RumbleRefreshMs);
-            if (_sentSmall != 0) next = Math.Min(next, _lastSmall + RumbleRefreshMs);
+            // A running motor is due its refresh, and a level not yet
+            // delivered its retry, 100 ms after the last attempt.
+            if (_sentLarge != 0 || MotorPending(true)) next = Math.Min(next, _lastLarge + RumbleRefreshMs);
+            if (_sentSmall != 0 || MotorPending(false)) next = Math.Min(next, _lastSmall + RumbleRefreshMs);
             if (NativeArrowsActive) next = Math.Min(next, _nextArrows);
-            if (ScreenWritePending) next = Math.Min(next, Math.Max(now, _lastScreenWrite + ScreenIntervalMs));
+            // Only a port whose pad draws the picture writes one, so only
+            // then is a pending picture a reason to wake.
+            if (info != null && BlissBoxControllers.HasScreen(info.Type) && ScreenWritePending)
+                next = Math.Min(next, Math.Max(now, _lastScreenWrite + ScreenIntervalMs));
             if (!_jobs.IsEmpty) next = now;
             return (int)Math.Clamp(next - now, 0, InfoIntervalMs);
         }
@@ -219,12 +255,26 @@ namespace PadForge.Engine.Common.BlissBox
             _transport.SetFeature(BlissBoxProtocol.Rumble(true, 0));
             _transport.SetFeature(BlissBoxProtocol.Rumble(false, 0));
             _sentLarge = _sentSmall = 0;
+            _largeFailed = _smallFailed = false;
+            Volatile.Write(ref _resendMotors, false);
         }
 
         /// <summary>From any thread: a running job stops before its next
-        /// transfer, so a closing port never waits out a Controller Pak's
-        /// retries.</summary>
+        /// message to the controller, so a closing port never waits out a
+        /// Controller Pak's retries.</summary>
         public void RequestStop() => _stopRequested = true;
+
+        /// <summary>For a job: writes a picture now, once the EEPROM guard's
+        /// second since the last write has passed, whether or not a pad that
+        /// draws it is in the port.</summary>
+        internal void WriteScreenNow(byte[] wire)
+        {
+            if (_storedScreen is { } stored && stored.AsSpan().SequenceEqual(wire)) return;
+            long wait = _lastScreenWrite + ScreenIntervalMs - _clock();
+            if (wait > 0) _sleep((int)Math.Min(wait, ScreenIntervalMs));
+            _lastScreenWrite = _clock();
+            if (_transport.SetFeature(BlissBoxProtocol.Screen(wire))) _storedScreen = (byte[])wire.Clone();
+        }
 
         public bool StopRequested => _stopRequested;
 
@@ -245,6 +295,10 @@ namespace PadForge.Engine.Common.BlissBox
             _storedScreen = null;
             _arrows = -1;
             _sentLarge = _sentSmall = 0;
+            // What the motors are doing is unknown once the channel dropped:
+            // an adapter that stayed up may still run the last level. Both
+            // are told their level again when it reopens, a stop included.
+            Volatile.Write(ref _resendMotors, true);
             _nextInfo = _nextPressure = _nextArrows = 0;
             _failedInfoReads = 0;
             CancelJobs();
@@ -322,26 +376,45 @@ namespace PadForge.Engine.Common.BlissBox
 
         /// <summary>A motor whose level changed is told at once, type 0 when
         /// it stops. A running one is told again every 100 ms.</summary>
+        /// <summary>A motor's level differs from the one last delivered, or
+        /// the channel reopened and the adapter must be told again.</summary>
+        private bool MotorPending(bool largeMotor)
+        {
+            if (Volatile.Read(ref _resendMotors)) return true;
+            return largeMotor
+                ? Strength(Volatile.Read(ref _wantedLarge)) != _sentLarge
+                : Strength(Volatile.Read(ref _wantedSmall)) != _sentSmall;
+        }
+
+        /// <summary>A motor whose level changed is told at once, type 0 when
+        /// it stops, and a running one again every 100 ms. An attempt that
+        /// failed waits those 100 ms before the next, so an adapter that
+        /// refuses writes is not asked again on every step.</summary>
         private void WriteMotors(long now)
         {
+            bool resend = Volatile.Read(ref _resendMotors);
             byte large = Strength(Volatile.Read(ref _wantedLarge));
             byte small = Strength(Volatile.Read(ref _wantedSmall));
-            if (large != _sentLarge || (large != 0 && now - _lastLarge >= RumbleRefreshMs))
+            if (MotorDue(large, _sentLarge, _lastLarge, _largeFailed, resend, now))
             {
-                if (_transport.SetFeature(BlissBoxProtocol.Rumble(true, large)))
-                {
-                    _sentLarge = large;
-                    _lastLarge = now;
-                }
+                _lastLarge = now;
+                _largeFailed = !_transport.SetFeature(BlissBoxProtocol.Rumble(true, large));
+                if (!_largeFailed) _sentLarge = large;
             }
-            if (small != _sentSmall || (small != 0 && now - _lastSmall >= RumbleRefreshMs))
+            if (MotorDue(small, _sentSmall, _lastSmall, _smallFailed, resend, now))
             {
-                if (_transport.SetFeature(BlissBoxProtocol.Rumble(false, small)))
-                {
-                    _sentSmall = small;
-                    _lastSmall = now;
-                }
+                _lastSmall = now;
+                _smallFailed = !_transport.SetFeature(BlissBoxProtocol.Rumble(false, small));
+                if (!_smallFailed) _sentSmall = small;
             }
+            if (resend && !_largeFailed && !_smallFailed) Volatile.Write(ref _resendMotors, false);
+        }
+
+        private static bool MotorDue(byte wanted, byte sent, long last, bool failed, bool resend, long now)
+        {
+            bool elapsed = now - last >= RumbleRefreshMs;
+            if (wanted != sent || resend) return !failed || elapsed;
+            return wanted != 0 && elapsed;
         }
 
         private void PollArrows()
@@ -351,10 +424,14 @@ namespace PadForge.Engine.Common.BlissBox
         }
 
         /// <summary>Sends a message down the native channel and returns the
-        /// controller's answer, or null when there was none.</summary>
+        /// controller's answer, or null when there was none. The framing
+        /// follows the firmware generation report 17 gave, so nothing is sent
+        /// before it is known.</summary>
         public byte[] Talk(byte[] message)
         {
-            foreach (var report in BlissBoxProtocol.NativeReports(message))
+            var info = _info;
+            if (info == null) return null;
+            foreach (var report in BlissBoxProtocol.NativeReports(message, info.IsAdvanced))
                 if (!_transport.SetFeature(report)) return null;
             for (int attempt = 0; attempt < ReplyAttempts; attempt++)
             {
@@ -389,6 +466,9 @@ namespace PadForge.Engine.Common.BlissBox
         /// <summary>A restore met more rejected writes than the API Tool
         /// allows.</summary>
         TooManyErrors,
+        /// <summary>The adapter's firmware frames the native channel
+        /// another way (<see cref="BlissBoxControllers.NativeChannelMajor"/>).</summary>
+        OldFirmware,
     }
 
     public sealed class BlissBoxJobResult
@@ -438,25 +518,44 @@ namespace PadForge.Engine.Common.BlissBox
     /// <summary>Makes the port another player. The adapter stores the
     /// number, resets and comes back under that player's product ID
     /// (BBAPI.cs setPlayer, sent with reset 1 as the API Tool's player
-    /// wizard sends it).</summary>
+    /// wizard sends it).
+    ///
+    /// <para>Both firmwares reset from inside the command's handler, before
+    /// the transfer completes (3.0 detaches USB at 0x08EB, GPA 4.86 jumps to
+    /// its reset at 0x2CE2), so a write Windows reports as failed can still
+    /// have taken. BBAPI.cs sends it without checking, and so does this.</para>
+    ///
+    /// <para>The port returns as a new device, with none of the old one's
+    /// choices. A picture PadForge put on the VMU in place of the adapter's
+    /// own goes back first, so the adapter never keeps PadForge's picture
+    /// with no record left of its own.</para></summary>
     public sealed class BlissBoxPlayerJob : BlissBoxJob
     {
-        public BlissBoxPlayerJob(int player)
+        public BlissBoxPlayerJob(int player, byte[] restoreScreen = null)
         {
             if (player < 1 || player > BlissBoxProtocol.MaxPlayer) throw new ArgumentOutOfRangeException(nameof(player));
             Player = player;
+            if (restoreScreen != null && restoreScreen.Length == BlissBoxProtocol.ScreenBytes)
+                RestoreScreen = (byte[])restoreScreen.Clone();
         }
 
         public int Player { get; }
 
+        /// <summary>The adapter's own picture to write back first, in wire
+        /// order, or null.</summary>
+        public byte[] RestoreScreen { get; }
+
         protected override BlissBoxJobResult Execute(BlissBoxSession session)
-            => session.Send(BlissBoxProtocol.SetPlayer(Player))
-                ? BlissBoxJobResult.Done()
-                : BlissBoxJobResult.Fail(BlissBoxJobError.NoReply);
+        {
+            if (RestoreScreen != null) session.WriteScreenNow(RestoreScreen);
+            session.Send(BlissBoxProtocol.SetPlayer(Player));
+            return BlissBoxJobResult.Done();
+        }
     }
 
-    /// <summary>Shared by the Controller Pak jobs: an N64 controller, a pak
-    /// in it, and not a Rumble Pak.</summary>
+    /// <summary>Shared by the Controller Pak jobs: firmware that frames the
+    /// native channel as PadForge does, an N64 controller, a pak in it, and
+    /// not a Rumble Pak.</summary>
     public abstract class BlissBoxPakJob : BlissBoxJob
     {
         private readonly IProgress<double> _progress;
@@ -469,9 +568,12 @@ namespace PadForge.Engine.Common.BlissBox
         {
             if (session.LiveInfo is not { } info || !BlissBoxControllers.HasControllerPak(info.Type))
                 return BlissBoxJobError.WrongController;
+            if (info.Major < BlissBoxControllers.NativeChannelMajor) return BlissBoxJobError.OldFirmware;
+            if (session.StopRequested) return BlissBoxJobError.Closed;
             var status = session.Talk(BlissBoxControllerPak.StatusMessage());
             if (status == null) return BlissBoxJobError.NoReply;
             if (!BlissBoxControllerPak.IsPakPresent(status)) return BlissBoxJobError.NoPak;
+            if (session.StopRequested) return BlissBoxJobError.Closed;
             var first = session.Talk(BlissBoxControllerPak.ReadMessage(0));
             if (first == null) return BlissBoxJobError.NoReply;
             return BlissBoxControllerPak.IsRumblePak(first) ? BlissBoxJobError.RumblePak : BlissBoxJobError.None;
@@ -479,8 +581,8 @@ namespace PadForge.Engine.Common.BlissBox
     }
 
     /// <summary>Reads the whole pak, 1024 blocks of 32 bytes, each block
-    /// retried up to three times on a bad CRC. A block that drew no answer
-    /// at all fails as no reply, not as a bad block.</summary>
+    /// read up to three times while its CRC fails. A block that drew no
+    /// answer at all fails as no reply, not as a bad block.</summary>
     public sealed class BlissBoxPakBackupJob : BlissBoxPakJob
     {
         public BlissBoxPakBackupJob(IProgress<double> progress = null) : base(progress) { }

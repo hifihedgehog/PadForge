@@ -2103,6 +2103,9 @@ namespace PadForge.Common.Input
         {
             OutputsQuiesced = true;
             try { StopAllForceFeedback(); } catch { }
+            // A Bliss-Box port's stop is its worker's to send (#469), and a
+            // dying process may not outlive that, so wait a moment for it.
+            try { BlissBoxRuntime.StopMotorsNow(250); } catch { }
         }
 
         private void StopAllForceFeedback()
@@ -2126,7 +2129,8 @@ namespace PadForge.Common.Input
                         }
                         // A Bliss-Box port's SDL rumble is inert while the
                         // adapter's commands own its motors (#469). The port's
-                        // worker sends both motors type 0 on its next step.
+                        // worker sends both motors type 0 on its next step,
+                        // which QuiesceOutputs waits for.
                         if (PadForge.Engine.Common.BlissBox.BlissBoxApi.OwnsRumble(ud.VendorId, ud.ProdId))
                         {
                             try { BlissBoxRuntime.SetRumble(ud.DevicePath, 0, 0); }

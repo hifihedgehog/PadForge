@@ -5610,6 +5610,11 @@ namespace PadForge.Services
             LoadAppSettings(new AppSettingsData
             {
                 SlotModel3DAppearances = SlotAppearancePersistence.Empty(),
+                // The Bliss-Box adapters' own Dreamcast pictures (#469) are
+                // the adapters' state, not settings: each is the only copy of
+                // a picture PadForge replaced, and the next time the switch is
+                // on, the port's default Adapter mode writes it back.
+                BlissBoxPorts = BlissBoxPortData.KeepAdapterPictures(_mainVm.Settings.BlissBoxPorts),
             });
             // LoadAppSettings can't reset the language: a fresh
             // AppSettingsData carries Language = "" and

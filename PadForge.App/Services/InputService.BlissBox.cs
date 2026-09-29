@@ -80,7 +80,8 @@ namespace PadForge.Services
             {
                 row.BlissBoxLine = string.Empty;
                 row.ShowBlissBoxPlayer = row.ShowDreamcastScreen = row.ShowControllerPak = row.ShowNativeArrows = false;
-                devVm.UpdateBlissBoxPressure(null, 0);
+                row.BlissBoxIdle = true;
+                devVm.UpdateBlissBoxPressure(null);
                 return;
             }
 
@@ -94,12 +95,17 @@ namespace PadForge.Services
                     live == null ? s.BlissBox_NoController : BlissBoxControllers.Name(live.Type), FirmwareText(info));
             row.ShowBlissBoxPlayer = port.IsOpen && info != null;
             row.ShowDreamcastScreen = live != null && BlissBoxControllers.HasScreen(live.Type);
-            row.ShowControllerPak = live != null && BlissBoxControllers.HasControllerPak(live.Type);
+            // The pak rides the native channel, which PadForge frames the way
+            // firmware 3.0 and later read it.
+            row.ShowControllerPak = live != null && live.Major >= BlissBoxControllers.NativeChannelMajor
+                && BlissBoxControllers.HasControllerPak(live.Type);
             row.ShowNativeArrows = live != null && live.Major == 3 && BlissBoxControllers.IsPlayStationDigital(live.Type);
             row.BlissBoxNativeArrows = DreamcastScreen.Get(port.InstanceGuid)?.NativeArrows == true;
+            // A player change or a Controller Pak transfer holds the channel
+            // until it ends, so their buttons wait for it.
+            row.BlissBoxIdle = !port.Session.Busy;
             devVm.UpdateBlissBoxPressure(
-                live != null && BlissBoxControllers.HasPressure(live.Type) ? port.Session.Pressure : null,
-                live?.Major ?? 0);
+                live != null && BlissBoxControllers.HasPressure(live.Type) ? port.Session.Pressure : null);
         }
     }
 }

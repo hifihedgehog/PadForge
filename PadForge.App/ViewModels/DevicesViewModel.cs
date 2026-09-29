@@ -386,13 +386,11 @@ namespace PadForge.ViewModels
         /// <summary>One chip per pressure button, each with its live depth.</summary>
         public ObservableCollection<AnalogKeyDisplayItem> BlissBoxPressure { get; } = new();
 
-        private byte _blissBoxPressureMajor;
-
         /// <summary>Folds report 21's twelve bytes into the chips, or clears
         /// them when no DualShock 2 is in the port. The names follow the
-        /// firmware's order, each chip carrying its button's name alone,
+        /// pad's own order, each chip carrying its button's name alone,
         /// since the heading above them already says pressure.</summary>
-        internal void UpdateBlissBoxPressure(byte[] pressure, byte major)
+        internal void UpdateBlissBoxPressure(byte[] pressure)
         {
             if (pressure == null)
             {
@@ -400,10 +398,10 @@ namespace PadForge.ViewModels
                 HasBlissBoxPressure = false;
                 return;
             }
-            if (BlissBoxPressure.Count != pressure.Length || _blissBoxPressureMajor != major)
+            if (BlissBoxPressure.Count != pressure.Length)
             {
                 BlissBoxPressure.Clear();
-                var names = PadForge.Engine.Common.BlissBox.BlissBoxControllers.PressureNames(major);
+                var names = PadForge.Engine.Common.BlissBox.BlissBoxControllers.PressureNames;
                 for (int i = 0; i < pressure.Length && i < names.Count; i++)
                     BlissBoxPressure.Add(new AnalogKeyDisplayItem
                     {
@@ -412,7 +410,6 @@ namespace PadForge.ViewModels
                         Name = PadForge.Common.MappingDisplayResolver.LocalizeObjectName(
                             PressureButton(names[i])),
                     });
-                _blissBoxPressureMajor = major;
             }
             for (int i = 0; i < BlissBoxPressure.Count; i++)
                 BlissBoxPressure[i].Depth = pressure[i] / 255.0;
@@ -1319,8 +1316,6 @@ namespace PadForge.ViewModels
         }
     }
 
-    /// <summary>One key chip in an analog keyboard's live preview (issue
-    /// #468): the key's name and how far it is pressed.</summary>
     /// <summary>The actions a Bliss-Box port's row offers (issue #469).</summary>
     public enum BlissBoxAction
     {
@@ -1331,6 +1326,8 @@ namespace PadForge.ViewModels
         NativeArrows,
     }
 
+    /// <summary>One key chip in an analog keyboard's live preview (issue
+    /// #468): the key's name and how far it is pressed.</summary>
     public class AnalogKeyDisplayItem : ObservableObject
     {
         public int Code { get; set; }

@@ -26,7 +26,7 @@ namespace PadForge.Engine.Common.BlissBox
         public const byte CommandRead = 0x02;
         public const byte CommandWrite = 0x03;
 
-        /// <summary>A block read retries this many times before the backup
+        /// <summary>A backup reads a block this many times at most before it
         /// gives up. The API Tool reads once and colors a bad block red.</summary>
         public const int ReadAttempts = 3;
 

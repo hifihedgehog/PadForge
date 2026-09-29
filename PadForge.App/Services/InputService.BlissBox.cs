@@ -20,7 +20,7 @@ namespace PadForge.Services
             => _dreamcastScreen ??= new DreamcastScreenService(_mainVm.Settings,
                 () => _settingsService?.MarkDirty(),
                 () => _settingsService?.SaveNow() ?? true,
-                () => _settingsService?.IsDirty != true);
+                () => _settingsService?.SaveCount ?? 0);
 
         /// <summary>Every UI tick, ungated by focus: a clock or a macro show
         /// on a VMU keeps running while PadForge sits behind a game. The

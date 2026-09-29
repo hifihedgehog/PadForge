@@ -63,14 +63,19 @@ namespace PadForge.Engine.Common.BlissBox
         /// <list type="bullet">
         /// <item>The 3.0 firmware ORs them into the second button byte,
         /// buttons 10 to 13 (0x3295 to 0x32A9), for every controller but the
-        /// NES Zapper, which skips the D-pad code (0x321E), until another
-        /// controller is detected (0x3163). PadForge's native poll uses the
+        /// NES Zapper, which skips the D-pad code (0x321E). It clears its
+        /// latch (0x0354) at power-up (0x2FAB) and when it starts a search
+        /// after a controller its search found (0x3163), so a latch can
+        /// outlast a pad found at power-up. PadForge's native poll uses the
         /// same four buttons.</item>
         /// <item>GPA 4.86 writes them into the third, buttons 20 to 23 (0x34A1
-        /// to 0x34B9), for every controller but the Genesis 3-button pad and
-        /// the FM Towns pad, and keeps its latch (0x055E) as a setting it
-        /// reads back at power-up (0x373A). The PC-FX pad sets two of those
-        /// bits for its own inputs (0x1684).</item>
+        /// to 0x34B9). Its latch (0x055E) lives in RAM and starts at power-up
+        /// from a stored setting only a settings command writes (0x373A,
+        /// 0x2CFB), and it is never set by the Genesis 3-button pad or the FM
+        /// Towns pad (0x349B to 0x34A0). Once it is on, the arrows go out for
+        /// every controller (0x34BC), those two included, and the PC-FX pad's
+        /// own inputs share two of those bits (0x16AA to 0x16BD), so none of
+        /// the three gets the names.</item>
         /// </list>
         /// Only a controller whose layout names a D-pad gets them. One
         /// without a D-pad cannot press opposite directions, and the keypads

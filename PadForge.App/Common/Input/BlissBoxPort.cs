@@ -30,6 +30,7 @@ namespace PadForge.Common.Input
         private readonly AutoResetEvent _wake = new(false);
         private readonly HidTransport _transport = new();
         private volatile bool _stop;
+        private volatile bool _exited;
 
         public BlissBoxPort(string path, ushort productId, Guid instanceGuid, uint sdlInstanceId)
         {
@@ -65,6 +66,11 @@ namespace PadForge.Common.Input
         public BlissBoxSession Session { get; }
 
         public bool IsOpen => _transport.Channel != null;
+
+        /// <summary>The worker has sent its last write and closed the channel,
+        /// or never started. <see cref="Dispose"/> waits for it up to 3 s,
+        /// and this stays false past that until the worker is done.</summary>
+        public bool Exited => _exited;
 
         /// <summary>Raised on the worker when the channel opens or closes, or
         /// report 17 changes.</summary>
@@ -115,6 +121,7 @@ namespace PadForge.Common.Input
             // Closing the channel also ends the jobs still queued.
             CloseChannel();
             _wake.Dispose();
+            _exited = true;
         }
 
         private void CloseChannel()
@@ -147,6 +154,7 @@ namespace PadForge.Common.Input
             {
                 Session.CancelJobs();
                 _wake.Dispose();
+                _exited = true;
                 return;
             }
             if (Thread.CurrentThread != _thread) _thread.Join(JoinMs);
@@ -165,6 +173,9 @@ namespace PadForge.Common.Input
             }
 
             public bool SetFeature(byte[] report) => _channel is { } channel && channel.SetFeature(report);
+
+            public bool SetFeature(byte[] report, int timeoutMs)
+                => _channel is { } channel && channel.SetFeature(report, timeoutMs);
 
             public int GetFeature(byte[] buffer) => _channel is { } channel ? channel.GetFeature(buffer) : -1;
 

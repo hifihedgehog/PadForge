@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using PadForge.Engine;
 using PadForge.Engine.Common.BlissBox;
 using PadForge.Engine.Data;
+using PadForge.Engine.RemoteLink;
 
 namespace PadForge.Common.Input
 {
@@ -26,8 +27,8 @@ namespace PadForge.Common.Input
         private static BlissBoxPort[] _ports = Array.Empty<BlissBoxPort>();
         private static int _generation;
         // Ports retired from Sync whose workers may still be sending their
-        // final stop, by path. Under _lock.
-        private static readonly List<(string Path, Task Done)> _retiring = new();
+        // final stop. Under _lock.
+        private static readonly List<BlissBoxPort> _retiring = new();
 
         /// <summary>The switch. A change counts in <see cref="Generation"/>,
         /// which brings Step 1's next pass forward to the poll thread's next
@@ -50,7 +51,9 @@ namespace PadForge.Common.Input
         public static int Generation => Volatile.Read(ref _generation);
 
         /// <summary>True while a port retired for this path may still send
-        /// its final stop: its worker has not let go of the channel. The
+        /// its final stop: its worker has not exited
+        /// (<see cref="BlissBoxPort.Exited"/>), which holds past Dispose's 3 s
+        /// wait, and a closing session stops asking within one transfer. The
         /// motors go back to SDL only after, or that stop would end the level
         /// SDL was just given.</summary>
         public static bool IsRetiring(string path)
@@ -58,9 +61,9 @@ namespace PadForge.Common.Input
             if (string.IsNullOrEmpty(path)) return false;
             lock (_lock)
             {
-                _retiring.RemoveAll(r => r.Done.IsCompleted);
-                foreach (var r in _retiring)
-                    if (string.Equals(r.Path, path, StringComparison.OrdinalIgnoreCase)) return true;
+                _retiring.RemoveAll(port => port.Exited);
+                foreach (var port in _retiring)
+                    if (string.Equals(port.Path, path, StringComparison.OrdinalIgnoreCase)) return true;
             }
             return false;
         }
@@ -137,8 +140,14 @@ namespace PadForge.Common.Input
                     // The join waits out a transfer in flight, never the poll
                     // thread's time.
                     var closing = port;
-                    var done = Task.Run(closing.Dispose);
-                    lock (_lock) _retiring.Add((closing.Path, done));
+                    Task.Run(closing.Dispose);
+                    lock (_lock)
+                    {
+                        // Pruned here too, so ports that retire while the
+                        // switch stays on do not pile up.
+                        _retiring.RemoveAll(p => p.Exited);
+                        _retiring.Add(closing);
+                    }
                     RaiseChanged(closing);
                 }
             }
@@ -246,9 +255,16 @@ namespace PadForge.Common.Input
         /// the port's names, merge and rest rule describe. The switch changes
         /// the shape on Step 1's next pass, so a row keeps the port's rules
         /// until then, and a row read through SDL's gamepad mapping never
-        /// takes them.</summary>
+        /// takes them. A Remote Link peer's copy of a port takes the owner's
+        /// shape, which the owner types a joystick while it reads the port
+        /// raw.</summary>
         private static bool OpenedRaw(ISdlInputDevice device)
-            => device is SdlDeviceWrapper wrapper && wrapper.GameController == IntPtr.Zero;
+            => device switch
+            {
+                SdlDeviceWrapper wrapper => wrapper.GameController == IntPtr.Zero,
+                RemotePeerDevice peer => peer.GetInputDeviceType() == InputDeviceType.Joystick,
+                _ => false,
+            };
 
         internal static void MergeInto(CustomInputState state, byte[] pressure, int arrows, int firstPressureAxis, int firstArrowButton)
         {
@@ -341,9 +357,22 @@ namespace PadForge.Common.Input
             if (ud == null || !BlissBoxProtocol.IsPort(ud.VendorId, ud.ProdId) || !OpenedRaw(ud.Device)) return false;
             int first = PressureAxisBase(ud.Device);
             if (first >= 0 && axis >= first && axis < first + BlissBoxProtocol.PressureCount) return true;
+            // A peer's row has no port here, and carries the owner's names.
+            if (ud.Device is RemotePeerDevice) return NamedTrigger(ud.DeviceObjects, axis);
             var session = Find(ud)?.Session;
             return (session?.LiveInfo ?? session?.KnownInfo) is { } info
                    && BlissBoxControllers.IsTriggerAxis(info.Type, info.Major, axis);
+        }
+
+        /// <summary>True when the object list names this axis a trigger, as a
+        /// port's own list does (<see cref="NameObjects"/>).</summary>
+        internal static bool NamedTrigger(DeviceObjectItem[] objects, int axis)
+        {
+            if (objects == null) return false;
+            foreach (var item in objects)
+                if (item.IsAxis && !item.IsSlider && item.InputIndex == axis)
+                    return item.Name is "Left Trigger" or "Right Trigger";
+            return false;
         }
 
         /// <summary>

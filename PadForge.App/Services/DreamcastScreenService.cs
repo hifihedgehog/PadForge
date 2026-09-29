@@ -105,8 +105,10 @@ namespace PadForge.Services
     /// The VMU screens of the Dreamcast pads in Bliss-Box ports (issue #469),
     /// and the ports' other choices. Ticked on the UI thread, where WPF draws
     /// the text, from the UI timer whether or not PadForge has focus, and for
-    /// as long as it exists, so the shows and requests of ports that closed
-    /// are dropped rather than kept for the next port on the same device.
+    /// as long as it exists, so a show dies with the port instance it played
+    /// on and a request queued as the last port closed is dropped, rather
+    /// than playing on the next port for the same device. The engine's stop
+    /// resets it (<see cref="Reset"/>).
     /// Each tick decides the picture a port should show and hands it to the
     /// port's session, which writes it only when it differs from the one the
     /// adapter holds and no sooner than a second after the last write (the
@@ -139,29 +141,32 @@ namespace PadForge.Services
         private readonly ViewModels.SettingsViewModel _settings;
         private readonly Action _markDirty;
         private readonly Func<bool> _saveNow;
-        private readonly Func<bool> _saved;
+        private readonly Func<int> _saves;
         // Devices whose copy of the adapter's own picture no save has carried
-        // to disk yet.
-        private readonly HashSet<Guid> _unsavedCopies = new();
+        // to disk yet, with the settings' save count when it was made.
+        private readonly Dictionary<Guid, int> _unsavedCopies = new();
         // When each port's pad started its play time and when it was last
         // seen, by port instance, so a pad whose port closed and opened
         // again counts from the new port.
         private readonly Dictionary<BlissBoxPort, (long Start, long Seen)> _attached = new();
-        private readonly Dictionary<Guid, DreamcastShow> _shows = new();
+        // Macro shows by port instance, as play time is kept.
+        private readonly Dictionary<BlissBoxPort, DreamcastShow> _shows = new();
         private readonly Dictionary<string, byte[]> _textCache = new(StringComparer.Ordinal);
         private long _nextTick;
 
         /// <param name="saveNow">Saves the settings file at once, for the
         /// copy of an adapter's own picture. True when it was written.</param>
-        /// <param name="saved">True when no change waits to be saved, so a
-        /// copy made earlier has reached disk.</param>
+        /// <param name="saves">How many times the settings file has been
+        /// written, so a copy made before a later write has reached disk. A
+        /// reload that finds no file clears the unsaved flag without writing,
+        /// so the flag cannot stand in for it.</param>
         public DreamcastScreenService(ViewModels.SettingsViewModel settings, Action markDirty,
-            Func<bool> saveNow = null, Func<bool> saved = null)
+            Func<bool> saveNow = null, Func<int> saves = null)
         {
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));
             _markDirty = markDirty ?? (() => { });
             _saveNow = saveNow ?? (() => true);
-            _saved = saved ?? (() => true);
+            _saves = saves ?? (() => 0);
         }
 
         private readonly record struct ShowRequest(int PadIndex, string Frames, int FrameMs, int Repeat);
@@ -233,7 +238,7 @@ namespace PadForge.Services
 
                 if (!TrackPad(port, session.LiveInfo, now))
                 {
-                    _shows.Remove(port.InstanceGuid);
+                    _shows.Remove(port);
                     session.SetScreen(null);
                     continue;
                 }
@@ -285,12 +290,12 @@ namespace PadForge.Services
             {
                 Update(device, d => d.AdapterPicture = Convert.ToBase64String(stored));
                 // Held before the save, so a save that throws leaves the hold.
-                _unsavedCopies.Add(device);
+                _unsavedCopies[device] = _saves();
                 if (_saveNow()) _unsavedCopies.Remove(device);
             }
-            if (!_unsavedCopies.Contains(device)) return true;
+            if (!_unsavedCopies.TryGetValue(device, out int saves)) return true;
             // A later save, the autosave's own retry among them, carries it.
-            if (!_saved()) return false;
+            if (_saves() == saves) return false;
             _unsavedCopies.Remove(device);
             return true;
         }
@@ -301,19 +306,34 @@ namespace PadForge.Services
         internal static long PlayStart((long Start, long Seen)? record, long now)
             => record is { } r && now - r.Seen <= PlayTimeGraceMs ? r.Start : now;
 
-        /// <summary>Drops the play-time starts and shows of ports that have
-        /// closed, all of them once the last port has.</summary>
-        private void Prune(BlissBoxPort[] ports)
+        /// <summary>Drops the play-time starts and shows of port instances
+        /// that have closed, a row that reconnected included.</summary>
+        internal void Prune(BlissBoxPort[] ports)
         {
             List<BlissBoxPort> gone = null;
             foreach (var port in _attached.Keys)
                 if (Array.IndexOf(ports, port) < 0) (gone ??= new List<BlissBoxPort>()).Add(port);
             if (gone != null) foreach (var port in gone) _attached.Remove(port);
 
-            List<Guid> ended = null;
-            foreach (var device in _shows.Keys)
-                if (Array.FindIndex(ports, p => p.InstanceGuid == device) < 0) (ended ??= new List<Guid>()).Add(device);
-            if (ended != null) foreach (var device in ended) _shows.Remove(device);
+            List<BlissBoxPort> ended = null;
+            foreach (var port in _shows.Keys)
+                if (Array.IndexOf(ports, port) < 0) (ended ??= new List<BlissBoxPort>()).Add(port);
+            if (ended != null) foreach (var port in ended) _shows.Remove(port);
+        }
+
+        /// <summary>Plays a show on this port instance.</summary>
+        internal void ShowOn(BlissBoxPort port, DreamcastShow show) => _shows[port] = show;
+
+        internal bool HasShow(BlissBoxPort port) => _shows.ContainsKey(port);
+
+        /// <summary>The engine stopped: its ports are gone, and a show or a
+        /// request from before would otherwise play on the next start's
+        /// ports. The copies of the adapters' pictures stay held.</summary>
+        public void Reset()
+        {
+            _shows.Clear();
+            _attached.Clear();
+            while (_requests.TryDequeue(out _)) { }
         }
 
         /// <summary>Adapter mode: writes back the picture PadForge found, then
@@ -350,7 +370,7 @@ namespace PadForge.Services
                 if (!devices.Contains(port.InstanceGuid)) continue;
                 var info = port.Session.LiveInfo;
                 if (info == null || !BlissBoxControllers.HasScreen(info.Type)) continue;
-                _shows[port.InstanceGuid] = new DreamcastShow(frames, request.FrameMs, request.Repeat, now);
+                ShowOn(port, new DreamcastShow(frames, request.FrameMs, request.Repeat, now));
             }
         }
 
@@ -358,9 +378,9 @@ namespace PadForge.Services
         /// it has played every frame.</summary>
         private byte[] ShowFrame(BlissBoxPort port, byte[] stored, long now)
         {
-            if (!_shows.TryGetValue(port.InstanceGuid, out var show)) return null;
+            if (!_shows.TryGetValue(port, out var show)) return null;
             var frame = show.Frame(stored, now);
-            if (frame == null) _shows.Remove(port.InstanceGuid);
+            if (frame == null) _shows.Remove(port);
             return frame;
         }
 

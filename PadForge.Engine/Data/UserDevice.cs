@@ -845,11 +845,13 @@ namespace PadForge.Engine.Data
         /// SDL instance, as the Bliss-Box switch reopens a port the other way
         /// (#469). SDL counts the opens of one joystick, so its motors run on
         /// whatever they were last told. Phase 1 opens only instances it does
-        /// not hold, so a replug always arrives as a new one.</summary>
+        /// not hold, so a replug always arrives as a new one. The old wrapper
+        /// may already be disposed, as the Remote Link exposure's is after the
+        /// reopen, so it is matched by the instance it was opened on.</summary>
         public static bool SameConnection(ISdlInputDevice current, ISdlInputDevice next)
             => ReferenceEquals(current, next)
                || (current is SdlDeviceWrapper old && next is SdlDeviceWrapper fresh
-                   && old.SdlInstanceId != 0 && old.SdlInstanceId == fresh.SdlInstanceId);
+                   && old.ConnectionId != 0 && old.ConnectionId == fresh.SdlInstanceId);
 
         /// <summary>
         /// Populates the device identity and capabilities from a <see cref="SdlKeyboardWrapper"/>.

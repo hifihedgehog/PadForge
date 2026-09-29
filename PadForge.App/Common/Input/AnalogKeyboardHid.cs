@@ -713,9 +713,14 @@ namespace PadForge.Common.Input
             => report != null && report.Length > 0 && report.Length <= Math.Max(_outputLength, 1)
                && Ioctl(IOCTL_HID_SET_OUTPUT_REPORT, report, _outputLength, false, out _);
 
-        public bool SetFeature(byte[] report)
+        public bool SetFeature(byte[] report) => SetFeature(report, 0);
+
+        /// <summary>A feature write given longer than the channel's transfer
+        /// timeout, 0 keeping that timeout: a Bliss-Box picture, which the
+        /// adapter stores in EEPROM before it ends the transfer (#469).</summary>
+        public bool SetFeature(byte[] report, int timeoutMs)
             => report != null && report.Length > 0 && report.Length <= Math.Max(_featureLength, 1)
-               && Ioctl(IOCTL_HID_SET_FEATURE, report, _featureLength, false, out _);
+               && Ioctl(IOCTL_HID_SET_FEATURE, report, _featureLength, false, out _, timeoutMs);
 
         public int GetFeature(byte[] buffer)
         {
@@ -731,9 +736,10 @@ namespace PadForge.Common.Input
         /// <summary>One overlapped HID IOCTL on the command handle with the
         /// report padded to <paramref name="length"/>. The same buffer goes
         /// in and, for a GET, comes back out, as HallJoy passes it. A request
-        /// that outlives the timeout is canceled and drained, so the kernel
-        /// never writes into a buffer the next call is filling.</summary>
-        private bool Ioctl(uint code, byte[] report, int length, bool output, out int transferred)
+        /// that outlives the timeout, the channel's own unless
+        /// <paramref name="timeoutMs"/> is set, is canceled and drained, so
+        /// the kernel never writes into a buffer the next call is filling.</summary>
+        private bool Ioctl(uint code, byte[] report, int length, bool output, out int transferred, int timeoutMs = 0)
         {
             transferred = 0;
             if (_aborted || _closed || length <= 0 || length > _ioctlBuffer.Length) return false;
@@ -748,7 +754,7 @@ namespace PadForge.Common.Input
             bool done = DeviceIoControl(_handle, code, buffer, (uint)length,
                 output ? buffer : IntPtr.Zero, output ? (uint)length : 0, IntPtr.Zero, _ioctlOverlapped);
             if (!done && Marshal.GetLastWin32Error() != SonyHeadsetHid.ERROR_IO_PENDING) return false;
-            if (!done && !_ioctlEvent.WaitOne(_ioctlTimeoutMs))
+            if (!done && !_ioctlEvent.WaitOne(timeoutMs > 0 ? timeoutMs : _ioctlTimeoutMs))
             {
                 SonyHeadsetHid.CancelIoEx(_handle, _ioctlOverlapped);
                 SonyHeadsetHid.GetOverlappedResult(_handle, _ioctlOverlapped, out _, true);

@@ -2467,6 +2467,10 @@ namespace PadForge.Services
                     _uiTimer = null;
                 }
 
+                // The Bliss-Box ports close with the engine (#469), and the
+                // screen service's shows and requests go with them.
+                _dreamcastScreen?.Reset();
+
                 // The pipeline heat chips (#175 item 10) ride the timer
                 // just torn down, so nothing would ever clear the last
                 // tick's rowfire flags. Drop every row's IsInputActive

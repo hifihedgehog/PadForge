@@ -16,6 +16,11 @@ namespace PadForge.Common.Input
         /// the last pass.</summary>
         private int _blissBoxGeneration;
 
+        /// <summary>The generation the poll loop last ran Phase 1 for, kept
+        /// apart from <see cref="_blissBoxGeneration"/> so a phase before 1l
+        /// that throws costs one extra sweep, not one every cycle.</summary>
+        private int _blissBoxSweepGeneration;
+
         /// <summary>Rows whose motors pass to their port on a later cycle: the
         /// hand-off met another writer holding the row's output gate, which
         /// the poll thread never waits on. Poll thread only.</summary>
@@ -33,9 +38,9 @@ namespace PadForge.Common.Input
         /// beside a row that appeared, and one closes when its row left,
         /// reconnected or the switch went off. A change of the switch brings
         /// this pass forward to the poll thread's next cycle
-        /// (<see cref="BlissBoxSwitchChanged"/>), so the rows, the ports and
-        /// the motors move together. Off and unchanged with no ports: three
-        /// reads and out.
+        /// (<see cref="ConsumeBlissBoxSwitchChange"/>), so the rows, the ports
+        /// and the motors move together. Off and unchanged with no ports:
+        /// three reads and out.
         /// </summary>
         private bool UpdateBlissBoxPorts()
         {
@@ -45,6 +50,7 @@ namespace PadForge.Common.Input
             bool enabled = BlissBoxRuntime.Enabled;
             bool toggled = generation != _blissBoxGeneration;
             _blissBoxGeneration = generation;
+            _blissBoxSweepGeneration = generation;
             bool wasOn = _blissBoxRowsReadRaw;
             // Every cycle while on, since a row can open between the switch
             // and this phase, once more after it goes off, and after a switch
@@ -98,10 +104,16 @@ namespace PadForge.Common.Input
             return changed;
         }
 
-        /// <summary>True when the switch changed since Phase 1l last ran, so
-        /// the poll loop runs Phase 1 on this cycle rather than on its
-        /// enumeration interval. Poll thread only.</summary>
-        private bool BlissBoxSwitchChanged => BlissBoxRuntime.Generation != _blissBoxGeneration;
+        /// <summary>True once for each change of the switch Phase 1 has not
+        /// seen, so the poll loop runs Phase 1 on this cycle rather than on
+        /// its enumeration interval. Poll thread only.</summary>
+        private bool ConsumeBlissBoxSwitchChange()
+        {
+            int generation = BlissBoxRuntime.Generation;
+            if (generation == _blissBoxSweepGeneration) return false;
+            _blissBoxSweepGeneration = generation;
+            return true;
+        }
 
         /// <summary>Every poll cycle: the hand-offs and SDL resends Phase 1l
         /// could not finish, so a contested output gate or a port still
@@ -211,10 +223,11 @@ namespace PadForge.Common.Input
             => openedAsGamepad == readRaw;
 
         /// <summary>The moment a port's motors pass to the adapter's commands:
-        /// an effect SDL started stops, and the port takes the levels the row
-        /// last recorded, whichever writer recorded them (Step 2, a relayed
-        /// frame, or SDL's path before the switch), and tells both motors
-        /// again (<see cref="BlissBoxRuntime.TakeMotors"/>). The row keeps its
+        /// SDL's rumble and the effect its haptic path ran stop, and the port
+        /// takes the levels the row last recorded, whichever writer recorded
+        /// them (Step 2, a relayed frame, or SDL's path before the switch),
+        /// and tells both motors again
+        /// (<see cref="BlissBoxRuntime.TakeMotors"/>). The row keeps its
         /// motor state through the switch's reopen, which is the same SDL
         /// connection (<see cref="UserDevice.SameConnection"/>), so a level a
         /// Remote Link peer sent once is still there. The port and the row's
@@ -235,6 +248,10 @@ namespace PadForge.Common.Input
             try
             {
                 var state = ud.ForceFeedbackState ??= new ForceFeedbackState();
+                // The effect SDL's haptic path ran, which a port with SDL
+                // motors has, stops too. SDL's joystick stop does not reach
+                // it, and the recorded levels pass to the port.
+                try { state.StopHapticEffect(wrapper); } catch { }
                 BlissBoxRuntime.TakeMotors(ud.DevicePath, state.LeftMotorSpeed, state.RightMotorSpeed);
             }
             finally { System.Threading.Monitor.Exit(ud.OutputSync); }
@@ -242,14 +259,15 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>The motors back to SDL after the switch went off: SDL is
-        /// told the levels the row last recorded and the cache records them as
-        /// sent (<see cref="ForceFeedbackState.ResendScalar"/>). A Remote Link
-        /// peer sends a steady level once, and SDL's rumble was stopped when
-        /// the port took the motors, so waiting for the next change would
-        /// leave them stopped. It waits until the row's retired port has sent
-        /// its final stop, which on a GPA reaches the routines SDL's
-        /// DirectInput effect drives (0x2E8E to 0x2EC3) and would end the
-        /// level SDL was just given. False while that stop is pending or
+        /// told the levels the row last recorded, through its haptic path
+        /// where the port has one, and the cache records them as sent
+        /// (<see cref="ForceFeedbackState.ResendScalar"/>). A Remote Link peer
+        /// sends a steady level once, and SDL's effect was stopped when the
+        /// port took the motors, so waiting for the next change would leave
+        /// them stopped. It waits until the row's retired port's worker has
+        /// exited after its final stop, which on a GPA reaches the routines
+        /// SDL's DirectInput effect drives (0x2E8C to 0x2EC3) and would end
+        /// the level SDL was just given. False while that stop is pending or
         /// another writer holds the output gate.</summary>
         private static bool ResetBlissBoxRumbleCache(UserDevice ud)
         {

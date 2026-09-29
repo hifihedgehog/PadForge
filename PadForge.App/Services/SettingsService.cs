@@ -4384,6 +4384,13 @@ namespace PadForge.Services
         /// </summary>
         public bool Save() => SaveToFile(_settingsFilePath);
 
+        private int _saveCount;
+
+        /// <summary>How many times a save has written a settings file, so a
+        /// caller can tell a later write from its own (the Bliss-Box picture
+        /// copy, #469). A reload clears <see cref="IsDirty"/> without one.</summary>
+        public int SaveCount => System.Threading.Volatile.Read(ref _saveCount);
+
         /// <summary>The autosave's full persist now rather than after its
         /// quiet time, with the same follow-up: <see cref="AutoSaved"/>, which
         /// a direct <see cref="Save"/> would have kept the timer from raising
@@ -4514,6 +4521,7 @@ namespace PadForge.Services
                 File.WriteAllBytes(filePath, serializedBytes);
 
                 IsDirty = false;
+                System.Threading.Interlocked.Increment(ref _saveCount);
                 _mainVm.Settings.HasUnsavedChanges = false;
                 _mainVm.StatusText = string.Format(Strings.Instance.Status_SettingsSaved_Format, Path.GetFileName(filePath));
                 return true;

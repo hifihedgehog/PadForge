@@ -29,10 +29,27 @@ namespace PadForge.Engine
         /// <summary>SDL Gamepad handle. May be IntPtr.Zero if the device is not recognized as a gamepad.</summary>
         public IntPtr GameController { get; private set; } = IntPtr.Zero;
 
+        private uint _sdlInstanceId;
+
         /// <summary>SDL instance ID (unique per device connection session). 0 = invalid.
         /// Internal setter so identity tests can fabricate a claimant wrapper
         /// without opening a native device.</summary>
-        public uint SdlInstanceId { get; internal set; }
+        public uint SdlInstanceId
+        {
+            get => _sdlInstanceId;
+            internal set
+            {
+                _sdlInstanceId = value;
+                if (value != 0) ConnectionId = value;
+            }
+        }
+
+        /// <summary>The SDL instance the wrapper was last opened on, kept after
+        /// Dispose clears <see cref="SdlInstanceId"/>, so a holder of the
+        /// disposed wrapper can still match it to a fresh wrapper on the same
+        /// connection (<see cref="Data.UserDevice.SameConnection"/>). SDL never
+        /// reuses an instance ID (SDL_GetNextObjectID counts up).</summary>
+        public uint ConnectionId { get; private set; }
 
         /// <summary>Number of axes reported by SDL.</summary>
         public int NumAxes { get; private set; }

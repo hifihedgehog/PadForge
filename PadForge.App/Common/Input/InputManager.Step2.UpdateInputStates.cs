@@ -110,9 +110,10 @@ namespace PadForge.Common.Input
                         newState = inputDevice.GetCurrentState(ud.ForceRawJoystickMode);
                         // A Bliss-Box port's pressure and native arrows ride
                         // its own state, ahead of the idle detector and every
-                        // consumer after it (#469).
-                        if (newState != null && PadForge.Engine.Common.BlissBox.BlissBoxApi.Enabled
-                            && PadForge.Engine.Common.BlissBox.BlissBoxProtocol.IsPort(ud.VendorId, ud.ProdId))
+                        // consumer after it (#469). The merge follows the
+                        // row's shape rather than the switch, which changes
+                        // the shape a cycle later.
+                        if (newState != null && PadForge.Engine.Common.BlissBox.BlissBoxProtocol.IsPort(ud.VendorId, ud.ProdId))
                             BlissBoxRuntime.Merge(ud, newState);
                     }
                     else

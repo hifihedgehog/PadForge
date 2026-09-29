@@ -486,8 +486,9 @@ namespace PadForge.Tests
             // timer from raising.
             string wiring = Repo("PadForge.App", "Services", "InputService.BlissBox.cs");
             Assert.Contains("() => _settingsService?.SaveNow() ?? true,", wiring);
-            Assert.Contains("() => _settingsService?.IsDirty != true);", wiring);
             string settings = Repo("PadForge.App", "Services", "SettingsService.cs");
+            Assert.Contains("() => _settingsService?.SaveCount ?? 0);", wiring);
+            Assert.Contains("System.Threading.Interlocked.Increment(ref _saveCount);", settings);
             Assert.Contains("            if (!Save()) return false;\n            AutoSaved?.Invoke(this, EventArgs.Empty);", settings);
             Assert.Contains("public bool Save() => SaveToFile(_settingsFilePath);", settings);
             string tick = Repo("PadForge.App", "Services", "DreamcastScreenService.cs");
@@ -525,19 +526,21 @@ namespace PadForge.Tests
         {
             // The copy is the only one once the adapter's picture is
             // replaced, and a save that failed leaves it in memory alone.
-            bool saves = false, clean = false;
-            var service = new DreamcastScreenService(new SettingsViewModel(), null, () => saves, () => clean);
+            bool saves = false;
+            int written = 0;
+            var service = new DreamcastScreenService(new SettingsViewModel(), null, () => saves, () => written);
             var device = Guid.NewGuid();
             var stored = new byte[192];
             var wire = Enumerable.Repeat((byte)0xFF, 192).ToArray();
             Assert.False(service.MayReplace(device, null, stored, wire));
             Assert.Equal(Convert.ToBase64String(stored), service.Get(device).AdapterPicture);
+            // A reload that finds no file clears the unsaved flag without a
+            // write, so only a later write lets the picture through.
             Assert.False(service.MayReplace(device, service.Get(device), stored, wire));
-            clean = true;
+            written++;
             Assert.True(service.MayReplace(device, service.Get(device), stored, wire));
             // A save that works lets the first picture through at once.
             saves = true;
-            clean = false;
             Assert.True(service.MayReplace(Guid.NewGuid(), null, stored, wire));
             // Nothing to replace, nothing to copy.
             var same = Guid.NewGuid();
@@ -933,6 +936,13 @@ namespace PadForge.Tests
                 Assert.False(UserDevice.SameConnection(a, c));
                 Assert.False(UserDevice.SameConnection(null, a));
                 Assert.False(UserDevice.SameConnection(new SdlDeviceWrapper(), new SdlDeviceWrapper()));
+                // The Remote Link exposure holds the old wrapper, which the
+                // reopen disposes, clearing its instance ID.
+                var old = new SdlDeviceWrapper { SdlInstanceId = 7 };
+                old.Dispose();
+                Assert.Equal(0u, old.SdlInstanceId);
+                Assert.True(UserDevice.SameConnection(old, b));
+                Assert.False(UserDevice.SameConnection(old, c));
             }
             finally
             {
@@ -974,6 +984,7 @@ namespace PadForge.Tests
             // A switch that went off and on again between two passes hands
             // every open port its level again.
             Assert.Contains("            if (toggled)\n                foreach (var port in BlissBoxRuntime.Ports) _blissBoxHandoffs.Add(port.InstanceGuid);", code);
+            Assert.Contains("try { state.StopHapticEffect(wrapper); } catch { }", code);
             Assert.Contains("bool changed = (enabled || wasOn || toggled) && ReopenBlissBoxRows(enabled);", code);
         }
 
@@ -1025,6 +1036,18 @@ namespace PadForge.Tests
             Assert.Empty(recorder.Sent);
             Assert.Equal(0, state.LeftMotorSpeed);
             Assert.Equal(0, state.RightMotorSpeed);
+            // A port with SDL motors is also a haptic device (a DirectInput
+            // joystick with force feedback), whose level goes through a
+            // haptic effect. It was dropped, and a peer's steady level with
+            // it. Here the effect cannot start, so the level is kept for the
+            // next frame to write.
+            recorder.Rumble = true;
+            recorder.Haptic = true;
+            state.TryRecordMotorSnapshot(30000, 1000);
+            state.ResendScalar(device);
+            Assert.Empty(recorder.Sent);
+            Assert.Equal(30000, state.LeftMotorSpeed);
+            Assert.Equal(1000, state.RightMotorSpeed);
         }
 
         [Fact]
@@ -1050,11 +1073,14 @@ namespace PadForge.Tests
             public bool Accept = true;
             /// <summary>Whether SDL found motors on the device.</summary>
             public bool Rumble = true;
+            /// <summary>Whether SDL opened the device as a haptic device.</summary>
+            public bool Haptic;
             protected override object Invoke(MethodInfo method, object[] args)
             {
                 if (method.Name == "SetRumble") { Sent.Add(((ushort)args[0], (ushort)args[1])); return Accept; }
                 if (method.Name == "StopRumble") { Sent.Add((0, 0)); return Accept; }
                 if (method.Name == "get_HasRumble") return Rumble;
+                if (method.Name == "get_HasHaptic") return Haptic;
                 if (method.ReturnType == typeof(void)) return null;
                 return method.ReturnType.IsValueType ? Activator.CreateInstance(method.ReturnType) : null;
             }
@@ -1102,6 +1128,71 @@ namespace PadForge.Tests
             Assert.True(BlissBoxRuntime.NamesObjectsFor(new BlissBoxInfo(19, 0, 4, 86, 1)));
             Assert.False(BlissBoxRuntime.NamesObjectsFor(new BlissBoxInfo(19, 0, 2, 30, 1)));
             Assert.True(BlissBoxRuntime.NamesObjectsFor(new BlissBoxInfo(BlissBoxControllers.TypeDualShock2, 0, 2, 30, 1)));
+            string runtime = Repo("PadForge.App", "Common", "Input", "BlissBoxRuntime.cs");
+            Assert.Contains("=> ud != null && OpenedRaw(ud.Device) && Find(ud)?.Session.LiveInfo is { } info\n               && NamesObjectsFor(info);", runtime);
+            Assert.Contains("!PadForge.Common.Input.BlissBoxRuntime.NamesObjects(ud) &&",
+                Repo("PadForge.App", "Common", "MappingDisplayResolver.cs"));
+        }
+
+        [Fact]
+        public void APeersCopyOfAPortKeepsTheRestRule()
+        {
+            // A Remote Link peer's row has no port on this PC, so it takes
+            // the owner's shape and names: its pressure axes and triggers
+            // rest at 0 while the owner reads the port raw.
+            var objects = new[]
+            {
+                new DeviceObjectItem { InputIndex = 2, ObjectTypeGuid = ObjectGuid.ZAxis, Name = "Left Trigger", ObjectType = DeviceObjectTypeFlags.AbsoluteAxis },
+                new DeviceObjectItem { InputIndex = 0, ObjectTypeGuid = ObjectGuid.XAxis, Name = "Stick X", ObjectType = DeviceObjectTypeFlags.AbsoluteAxis },
+            };
+            UserDevice Row(int type) => new UserDevice
+            {
+                VendorId = 0x16D0,
+                ProdId = 0x0D04,
+                Device = new PadForge.Engine.RemoteLink.RemotePeerDevice(new PadForge.Engine.RemoteLink.RemotePeerDeviceInfo
+                {
+                    VendorId = 0x16D0,
+                    ProductId = 0x0D04,
+                    InputDeviceType = type,
+                    NumAxes = 8,
+                    DeviceObjects = objects,
+                }),
+                DeviceObjects = objects,
+            };
+            var raw = Row(InputDeviceType.Joystick);
+            Assert.True(InputManager.AxisRestsAtZero("Axis 8", raw));
+            Assert.True(InputManager.AxisRestsAtZero("Axis 2", raw));
+            Assert.False(InputManager.AxisRestsAtZero("Axis 0", raw));
+            Assert.False(InputManager.AxisRestsAtZero("Axis 8", Row(InputDeviceType.Gamepad)));
+        }
+
+        [Fact]
+        public void AShowDiesWithThePortItPlayedOn()
+        {
+            // A row that reconnects gets a new port in the same pass, so the
+            // open ports never empty and a show keyed by the device carried
+            // over. The engine's stop drops what is left.
+            var service = new DreamcastScreenService(new SettingsViewModel(), null);
+            var device = Guid.NewGuid();
+            var first = new BlissBoxPort(@"\\?\hid#vid_16d0&pid_0d04#first", 0x0D04, device, 11);
+            var second = new BlissBoxPort(@"\\?\hid#vid_16d0&pid_0d04#first", 0x0D04, device, 12);
+            try
+            {
+                var show = new DreamcastShow(new List<byte[]> { new byte[192] }, 1000, 1, now: 0);
+                service.ShowOn(first, show);
+                service.Prune(new[] { first });
+                Assert.True(service.HasShow(first));
+                service.Prune(new[] { second });
+                Assert.False(service.HasShow(first));
+                service.ShowOn(second, show);
+                service.Reset();
+                Assert.False(service.HasShow(second));
+            }
+            finally
+            {
+                first.Dispose();
+                second.Dispose();
+            }
         }
 
         [Fact]
@@ -1113,11 +1204,20 @@ namespace PadForge.Tests
             string runtime = Repo("PadForge.App", "Common", "Input", "BlissBoxRuntime.cs");
             Assert.Contains("if (value != was) Interlocked.Increment(ref _generation);", runtime);
             Assert.DoesNotContain("StopSdlRumbleOnPorts", runtime);
-            Assert.Contains("lock (_lock) _retiring.Add((closing.Path, done));", runtime);
+            // A retired port counts until its worker has exited, past
+            // Dispose's 3 s wait, and the list is pruned as ports retire.
+            Assert.Contains("_retiring.RemoveAll(port => port.Exited);", runtime);
+            Assert.Contains("_retiring.RemoveAll(p => p.Exited);\n                        _retiring.Add(closing);", runtime);
             string loop = Repo("PadForge.App", "Common", "Input", "InputManager.cs");
-            Assert.Contains("if (_enumerationTimer.ElapsedMilliseconds >= 5000 || BlissBoxSwitchChanged)", loop);
-            Assert.Contains("if (firstCycle || _enumerationTimer.ElapsedMilliseconds >= EnumerationIntervalMs || BlissBoxSwitchChanged)", loop);
-            Assert.Equal(2, loop.Split("RetryPendingBlissBoxRows();").Length - 1);
+            Assert.Contains("if (_enumerationTimer.ElapsedMilliseconds >= 5000 || ConsumeBlissBoxSwitchChange())", loop);
+            Assert.Contains("if (firstCycle || _enumerationTimer.ElapsedMilliseconds >= EnumerationIntervalMs || ConsumeBlissBoxSwitchChange())", loop);
+            // Every cycle, right after the sweep, in both loops.
+            Assert.Contains("                                UpdateDevices();\n                            }\n                            RetryPendingBlissBoxRows();", loop);
+            Assert.Contains("                            enumMs = (Stopwatch.GetTimestamp() - tsEnum) * 1000 / Stopwatch.Frequency;\n                        }\n                        RetryPendingBlissBoxRows();", loop);
+            // Phase 1l catches the sweep's generation up, so a phase before it
+            // that throws costs one extra sweep, not one a cycle.
+            string sweep = Repo("PadForge.App", "Common", "Input", "InputManager.BlissBox.cs");
+            Assert.Contains("            _blissBoxGeneration = generation;\n            _blissBoxSweepGeneration = generation;", sweep);
             // SDL gets its level back only after the retired port's final stop,
             // which on a GPA reaches the routines SDL's effect drives.
             string phase = Repo("PadForge.App", "Common", "Input", "InputManager.BlissBox.cs");
@@ -1138,6 +1238,15 @@ namespace PadForge.Tests
             string code = Repo("PadForge.App", "Services", "InputService.cs");
             Assert.Contains("|| !UserDevice.SameConnection(source, live)) return;", code);
             Assert.Contains("ApplyRemoteOutput(effect, live, device, frame.PeerFingerprint,", code);
+            // The exposure's wrapper is disposed by the time the frame lands.
+            var exposed = new SdlDeviceWrapper { SdlInstanceId = 21 };
+            var reopened = new SdlDeviceWrapper { SdlInstanceId = 21 };
+            try
+            {
+                exposed.Dispose();
+                Assert.True(UserDevice.SameConnection(exposed, reopened));
+            }
+            finally { reopened.Dispose(); }
         }
 
         [Fact]
@@ -1148,7 +1257,7 @@ namespace PadForge.Tests
             // in memory alone.
             bool fail = true;
             var service = new DreamcastScreenService(new SettingsViewModel(), null,
-                () => fail ? throw new InvalidOperationException() : true, () => false);
+                () => fail ? throw new InvalidOperationException() : true, () => 0);
             var device = Guid.NewGuid();
             var stored = new byte[192];
             var wire = Enumerable.Repeat((byte)0xFF, 192).ToArray();
@@ -1262,6 +1371,7 @@ namespace PadForge.Tests
 
         private sealed class NullTransport : IBlissBoxTransport
         {
+            public bool SetFeature(byte[] report, int timeoutMs) => SetFeature(report);
             public bool SetFeature(byte[] report) => false;
             public int GetFeature(byte[] buffer) => -1;
             public int FeatureLength => 0;

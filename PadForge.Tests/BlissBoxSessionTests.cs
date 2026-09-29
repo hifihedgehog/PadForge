@@ -45,6 +45,12 @@ namespace PadForge.Tests
             public Action<byte[]> DuringWrite;
             /// <summary>The session's clock, for the Dreamcast motor timer.</summary>
             public Func<long> Clock = () => 0;
+            /// <summary>The timeout each picture write was given.</summary>
+            public readonly List<int> ScreenTimeouts = new();
+            /// <summary>Report 22 never comes back ready, as while 3.0's main
+            /// loop has not run the exchange.</summary>
+            public bool NeverReady;
+            public int NativeReads;
             /// <summary>GPA 4.86's Dreamcast motor state ("GPA 4.86_2.asm"):
             /// the strength both commands share (0x031A), each command's loop
             /// (0x031E for command 4, 0x0320 for command 5), and the owner of
@@ -58,6 +64,12 @@ namespace PadForge.Tests
             private bool _answering;
 
             public int FeatureLength => 200;
+
+            public bool SetFeature(byte[] report, int timeoutMs)
+            {
+                if (report[0] == BlissBoxProtocol.ReportScreen) ScreenTimeouts.Add(timeoutMs);
+                return SetFeature(report);
+            }
 
             public bool SetFeature(byte[] report)
             {
@@ -167,6 +179,12 @@ namespace PadForge.Tests
                         break;
                     case BlissBoxProtocol.ReportNative:
                         buffer[0] = player;
+                        NativeReads++;
+                        if (NeverReady)
+                        {
+                            buffer[1] = BlissBoxProtocol.NativeUse;
+                            break;
+                        }
                         if (Major < 4 && !_answering)
                         {
                             // Not ready: the use byte, no size.
@@ -557,8 +575,8 @@ namespace PadForge.Tests
         {
             // Each request costs a 3.0 adapter polls of its own (0x090B,
             // 0x07D6, 0x30D9), so the poll runs only until the adapter's latch
-            // sends the arrows itself, and again once a new controller clears
-            // that latch (0x3163).
+            // sends the arrows itself, and again once report 17 shows a search
+            // or another controller.
             var adapter = new ScriptedAdapter
             {
                 Type = BlissBoxControllers.TypePlayStationDigital,
@@ -1087,26 +1105,27 @@ namespace PadForge.Tests
         public async System.Threading.Tasks.Task AMotorLevelAJobQueuesGoesOutWithoutWaiting()
         {
             // A job's picture write on a GPA owes the motors their level again
-            // (AfterScreenWrite), and the worker sends it at once rather than
-            // at the next refresh. The job is a player change whose picture
-            // restore the adapter refuses, in the step that also refreshes the
-            // running motor, so it neither waits out the EEPROM guard nor
-            // sleeps between report 17 reads.
+            // (AfterScreenWrite), and it goes out right after the write, inside
+            // the job, rather than after it: a player change that keeps its
+            // number sleeps between its reads of report 17 while the pulse's
+            // timer lapses and leaves a running rumble at full strength. The
+            // job here is a player change whose picture restore the adapter
+            // refuses, so it neither waits out the EEPROM guard nor sleeps.
             var adapter = new ScriptedAdapter { Type = BlissBoxControllers.TypeDreamcast, RefuseScreen = true };
             var session = Session(adapter);
             session.SetRumble(40000, 0);
             session.Step();
             var job = new BlissBoxPlayerJob(3, Enumerable.Repeat((byte)0x55, 192).ToArray());
             session.Enqueue(job);
-            _now = BlissBoxSession.RumbleRefreshMs;
-            int wait = session.Step();
-            Assert.Equal(BlissBoxJobError.PlayerUnchanged, (await job.Completion).Error);
-            Assert.Equal(0, wait);
             int before = adapter.Sent.Count;
+            _now = BlissBoxSession.RumbleRefreshMs;
             session.Step();
+            Assert.Equal(BlissBoxJobError.PlayerUnchanged, (await job.Completion).Error);
             var after = adapter.Sent.Skip(before).ToList();
-            Assert.Equal(new byte[] { 18, 5, 0, 0, 0, 0, 0, 0, 0 }, after[0]);
-            Assert.Equal(BlissBoxProtocol.Rumble(true, BlissBoxSession.Strength(40000)), after[1]);
+            int picture = after.FindIndex(r => r[0] == BlissBoxProtocol.ReportScreen);
+            Assert.True(picture >= 0);
+            Assert.Equal(new byte[] { 18, 5, 0, 0, 0, 0, 0, 0, 0 }, after[picture + 1]);
+            Assert.Equal(BlissBoxProtocol.Rumble(true, BlissBoxSession.Strength(40000)), after[picture + 2]);
         }
 
         [Fact]
@@ -1139,20 +1158,24 @@ namespace PadForge.Tests
             // no timer to end it, and the pack keeps a weak buzz after the game
             // stops (0x0E0A to 0x0E24), so the level counts as delivered only
             // once the stop went through too.
-            bool refused = false;
+            // The first stop on command 5 is the one the first report 17 owes,
+            // before any picture. The second follows the picture's pulse.
+            int stops = 0;
             var adapter = new ScriptedAdapter
             {
                 Type = BlissBoxControllers.TypeDreamcast,
                 Clock = () => _now,
-                RefuseWhen = r => !refused && r[0] == BlissBoxProtocol.ReportCommand
-                                  && r[1] == BlissBoxProtocol.CommandSmallMotor && (refused = true),
+                RefuseWhen = r => r[0] == BlissBoxProtocol.ReportCommand
+                                  && r[1] == BlissBoxProtocol.CommandSmallMotor && ++stops == 2,
             };
             var session = Session(adapter);
             session.SetRumble(40000, 0);
             session.Step();
             session.SetScreen(Enumerable.Repeat((byte)0x33, 192).ToArray());
             _now = 10; session.Step();
-            Assert.True(refused);
+            Assert.Equal(2, stops);
+            // Command 4 took the timer, so nothing ends the pulse's loop.
+            Assert.Equal(4, adapter.DcTimerOwner);
             Assert.NotEqual(0, adapter.DcLoop5);
             _now = 10 + BlissBoxSession.RumbleRefreshMs; session.Step();
             Assert.Equal(0, adapter.DcLoop5);
@@ -1214,6 +1237,117 @@ namespace PadForge.Tests
                 // 3.x: at 0, 100, 200 and 300 ms, both motors each time.
                 Assert.Equal(major == 3 ? 8 : 62, writes.Count);
             }
+        }
+
+        [Fact]
+        public void A3xPulseBetweenTwoWritesIsStillFelt()
+        {
+            // Each 3.x write carries the strongest level asked for since the
+            // last, so a hit that starts and ends between two writes reaches
+            // the motor at the next one instead of never.
+            var adapter = new ScriptedAdapter { Type = BlissBoxControllers.TypeNintendo64, Major = 3 };
+            var session = Session(adapter);
+            session.SetRumble(30000, 0);
+            session.Step();
+            _now = 100; session.SetRumble(0, 0); session.Step();
+            _now = 120; session.SetRumble(50000, 0); session.Step();
+            _now = 170; session.SetRumble(0, 0); session.Step();
+            _now = 200; session.Step();
+            _now = 300; session.Step();
+            var levels = adapter.Motor(BlissBoxProtocol.CommandLargeMotor).Select(r => r[5]).ToList();
+            Assert.Equal(new byte[] { BlissBoxSession.Strength(30000), 0, BlissBoxSession.Strength(50000), 0 }, levels);
+        }
+
+        [Fact]
+        public void A3xSteadyLevelIsToldAgainOnceASecond()
+        {
+            // 3.0 counts a loop of 255 down once a poll, about 4 s (0x2500,
+            // 0x0FF5, 0x29FD), so a refresh a second holds the rumble for a
+            // tenth of the polls. A GPA's loop is a 255 ms timer (0x2A16), so
+            // it is told every 100 ms.
+            foreach (byte major in new byte[] { 3, 4 })
+            {
+                _now = 0;
+                var adapter = new ScriptedAdapter { Type = BlissBoxControllers.TypeNintendo64, Major = major };
+                var session = Session(adapter);
+                session.SetRumble(40000, 0);
+                for (int t = 0; t <= 2000; t += 100)
+                {
+                    _now = t;
+                    session.Step();
+                }
+                Assert.Equal(major == 3 ? 3 : 21, adapter.Motor(BlissBoxProtocol.CommandLargeMotor).Count);
+            }
+        }
+
+        [Fact]
+        public void AStopInFlightIsNotRest()
+        {
+            // A resend's flag clears as its write starts, so the crash path's
+            // wait read the motors at rest while command 5's stop was still on
+            // its way, and the dying process could cancel it.
+            BlissBoxSession session = null;
+            var seen = new List<bool>();
+            var adapter = new ScriptedAdapter
+            {
+                Type = BlissBoxControllers.TypeDualShock2,
+                DuringWrite = r =>
+                {
+                    if (r[0] == BlissBoxProtocol.ReportCommand && r[1] == BlissBoxProtocol.CommandSmallMotor)
+                        seen.Add(session.MotorsAtRest);
+                },
+            };
+            session = Session(adapter);
+            session.SetRumble(40000, 40000);
+            session.Step();
+            session.Forget();
+            session.SetRumble(0, 0);
+            seen.Clear();
+            _now = 10; session.Step();
+            Assert.Equal(new[] { false }, seen);
+            Assert.True(session.MotorsAtRest);
+        }
+
+        [Fact]
+        public async System.Threading.Tasks.Task APictureWriteGetsTimeToReachTheEeprom()
+        {
+            // Both firmwares store the picture before they end the transfer,
+            // up to about 650 ms at 3.4 ms a byte, past the channel's 500 ms.
+            var adapter = new ScriptedAdapter { Type = BlissBoxControllers.TypeDreamcast };
+            var session = Session(adapter);
+            session.Step();
+            session.SetScreen(Enumerable.Repeat((byte)0x33, 192).ToArray());
+            _now = 10; session.Step();
+            var job = new BlissBoxPlayerJob(3, Enumerable.Repeat((byte)0xFF, 192).ToArray());
+            session.Enqueue(job);
+            _now = 2000; session.Step();
+            await job.Completion;
+            Assert.Equal(new[] { BlissBoxSession.ScreenWriteTimeoutMs, BlissBoxSession.ScreenWriteTimeoutMs }, adapter.ScreenTimeouts);
+            Assert.True(BlissBoxSession.ScreenWriteTimeoutMs >= 192 * 34 / 10 * 2);
+        }
+
+        [Fact]
+        public void AClosingPortStopsWaitingForAnAnswer()
+        {
+            // The native poll's reads ran all twenty on a closing port, so its
+            // worker held the channel for up to twenty transfers.
+            var adapter = new ScriptedAdapter
+            {
+                Type = BlissBoxControllers.TypePlayStationDigital,
+                Major = 3,
+                Minor = 34,
+                NeverReady = true,
+                Controller = m => new byte[] { 0xFF, 0x41, 0x5A, 0xFF, 0xFF },
+            };
+            BlissBoxSession session = null;
+            session = new BlissBoxSession(adapter, adapter.Player, () => _now, ms =>
+            {
+                _now += ms;
+                session.RequestStop();
+            });
+            session.NativeArrows = true;
+            session.Step();
+            Assert.Equal(2, adapter.NativeReads);
         }
 
         [Fact]

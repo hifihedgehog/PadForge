@@ -16,6 +16,10 @@ namespace PadForge.Engine.Common.BlissBox
         /// collection's feature report length. False when the write failed.</summary>
         bool SetFeature(byte[] report);
 
+        /// <summary>The same, given <paramref name="timeoutMs"/> to finish
+        /// instead of the channel's own transfer timeout.</summary>
+        bool SetFeature(byte[] report, int timeoutMs);
+
         /// <summary>Reads the feature report whose ID is in byte 0 of
         /// <paramref name="buffer"/> into it. The byte count, or -1.</summary>
         int GetFeature(byte[] buffer);
@@ -46,8 +50,28 @@ namespace PadForge.Engine.Common.BlissBox
         public const int PressureIntervalMs = 50;
 
         /// <summary>A running motor is told again this often, the API Tool's
-        /// own way of holding rumble on (rumble.cs, its 100 ms timer).</summary>
+        /// own way of holding rumble on (rumble.cs, its 100 ms timer). GPA
+        /// 4.86 ends a command's rumble on a timer its loop sets, 255 ms for
+        /// the 255 a type-1 command carries (0x2A16). On 3.x it is also the
+        /// least time between two motor writes.</summary>
         public const int RumbleRefreshMs = 100;
+
+        /// <summary>How often a 3.x adapter's running motor is told again. Its
+        /// PlayStation, GameCube and N64 drivers count a loop down once a poll
+        /// and stop at 0 (0x2500, 0x0FF5, 0x29FD), 255 polls for a type-1
+        /// command, about 4 s, and its Dreamcast driver never counts one down
+        /// (0x2858), so a refresh a second holds rumble for a tenth of the
+        /// polls a 100 ms one costs.</summary>
+        public const int RumbleHold3xMs = 1000;
+
+        /// <summary>A picture write gets this long to finish. Both firmwares
+        /// store it in EEPROM before they end the transfer: GPA 4.86 inside
+        /// its handler (0x2D58 calling 0x290B), 3.0 as each 8-byte piece
+        /// arrives. The ATmega32U4 erases and writes a byte in 3.4 ms (its
+        /// datasheet's Table 5-2), so a picture that changes all 192 bytes
+        /// takes about 650 ms, past the channel's 500 ms. The API Tool waits
+        /// on hidapi's hid_send_feature_report with no limit.</summary>
+        public const int ScreenWriteTimeoutMs = 2000;
 
         /// <summary>The VMU picture is rewritten at most once a second. Each
         /// write lands in the adapter's EEPROM (GPA 4.86 report 20 at 0x2D58
@@ -82,6 +106,9 @@ namespace PadForge.Engine.Common.BlissBox
         private volatile byte _sentLarge, _sentSmall;
         private long _lastLarge, _lastSmall;
         private long _lastMotorBurst = long.MinValue / 2;
+        // The strongest levels asked for since the last 3.x motor write.
+        private int _peakLarge, _peakSmall;
+        private volatile bool _motorWriting;
         private bool _resendLarge, _resendSmall;
         private bool _largeFailed, _smallFailed;
         private long _nextInfo, _nextPressure, _nextArrows;
@@ -156,9 +183,11 @@ namespace PadForge.Engine.Common.BlissBox
         /// answer set the flag that skips one (0x090B, 0x07D6), and the
         /// exchange waits for a pass without it (0x30D9). Set by the merge,
         /// which sees the latch's buttons in the port's report, and cleared
-        /// when report 17 shows another controller or a search, since the
-        /// firmware clears the latch when it detects a controller (0x3163),
-        /// or when the channel drops.</summary>
+        /// when report 17 shows another controller or a search, or when the
+        /// channel drops. The 3.0 firmware clears its latch at power-up
+        /// (0x2FAB) and when it starts a search after a controller its search
+        /// found (0x3163), so it can keep one past a pad found at power-up.
+        /// Then the merge sees the arrows again and sets this flag again.</summary>
         public bool ArrowsLatched
         {
             get => _arrowsLatched;
@@ -172,8 +201,11 @@ namespace PadForge.Engine.Common.BlissBox
         public bool Busy => !_jobs.IsEmpty || _jobRunning;
 
         /// <summary>Nothing is left to send the motors: both were last told
-        /// to stop or never started, the controller in the port has none, or
-        /// the adapter is searching, with no controller in the port to stop.
+        /// to stop or never started and no write is in flight, the controller
+        /// in the port has none, or the adapter is searching, with no
+        /// controller in the port to stop. A resend's flag clears as its write
+        /// starts, so the write in flight is what holds the crash path's wait
+        /// until the stop is out.
         /// Until report 17 is read again after a reopen, a motor that ran
         /// before the channel dropped is not at rest: the adapter may still
         /// run it, and neither firmware ends every rumble on its own. The 3.0
@@ -186,7 +218,7 @@ namespace PadForge.Engine.Common.BlissBox
             {
                 { Searching: true } => true,
                 { } info when BlissBoxControllers.MotorCount(info.Type) == 0 => true,
-                _ => _sentLarge == 0 && _sentSmall == 0
+                _ => _sentLarge == 0 && _sentSmall == 0 && !_motorWriting
                      && !Volatile.Read(ref _resendLarge) && !Volatile.Read(ref _resendSmall),
             };
 
@@ -198,7 +230,20 @@ namespace PadForge.Engine.Common.BlissBox
         {
             int oldLarge = Interlocked.Exchange(ref _wantedLarge, large);
             int oldSmall = Interlocked.Exchange(ref _wantedSmall, small);
+            RaisePeak(ref _peakLarge, large);
+            RaisePeak(ref _peakSmall, small);
             return oldLarge != large || oldSmall != small;
+        }
+
+        private static void RaisePeak(ref int peak, int level)
+        {
+            int seen = Volatile.Read(ref peak);
+            while (level > seen)
+            {
+                int was = Interlocked.CompareExchange(ref peak, level, seen);
+                if (was == seen) return;
+                seen = was;
+            }
         }
 
         /// <summary>The picture to show, in wire order, or null to leave the
@@ -299,21 +344,35 @@ namespace PadForge.Engine.Common.BlissBox
             long next = _nextInfo;
             if (info != null && BlissBoxControllers.HasPressure(info.Type)) next = Math.Min(next, _nextPressure);
             // On a GPA a running motor is due its refresh, and a level not yet
-            // delivered its retry, 100 ms after the last attempt, and a level
-            // queued during this step, by a job's picture write, goes out at
-            // once unless its last attempt failed. On 3.x the motors wait for
-            // the next of their paced writes.
-            var (wantLarge, wantSmall, motors) = WantedStrengths();
+            // delivered its retry, 100 ms after the last attempt, and any other
+            // level at once. On 3.x a change waits for the next paced write and
+            // a running motor for its refresh a second after its last write.
             bool resendLarge = Volatile.Read(ref _resendLarge), resendSmall = Volatile.Read(ref _resendSmall);
-            if (motors > 0 && _info is { IsAdvanced: true })
+            if (_info is { IsAdvanced: true })
             {
-                next = Math.Min(next, MotorWake(wantLarge, _sentLarge, _lastLarge, _largeFailed, resendLarge, now));
+                var (wantLarge, wantSmall, motors) = WantedStrengths();
+                if (motors > 0)
+                    next = Math.Min(next, MotorWake(wantLarge, _sentLarge, _lastLarge, _largeFailed, resendLarge, now));
                 if (motors == 2)
                     next = Math.Min(next, MotorWake(wantSmall, _sentSmall, _lastSmall, _smallFailed, resendSmall, now));
             }
-            else if (motors > 0 && (MotorOwed(wantLarge, _sentLarge, resendLarge)
-                                    || (motors == 2 && MotorOwed(wantSmall, _sentSmall, resendSmall))))
-                next = Math.Min(next, Math.Max(now, _lastMotorBurst + RumbleRefreshMs));
+            else
+            {
+                var (peakLarge, peakSmall, motors) = WantedStrengths(peaks: true);
+                long due = long.MaxValue;
+                if (motors > 0)
+                {
+                    if (resendLarge || peakLarge != _sentLarge || (motors == 2 && (resendSmall || peakSmall != _sentSmall)))
+                        due = now;
+                    else
+                    {
+                        if (peakLarge != 0) due = Math.Min(due, _lastLarge + RumbleHold3xMs);
+                        if (motors == 2 && peakSmall != 0) due = Math.Min(due, _lastSmall + RumbleHold3xMs);
+                    }
+                }
+                if (due != long.MaxValue)
+                    next = Math.Min(next, Math.Max(Math.Max(now, due), _lastMotorBurst + RumbleRefreshMs));
+            }
             if (NativeArrowsActive) next = Math.Min(next, _nextArrows);
             // Only a port whose pad draws the picture writes one, so only
             // then is a pending picture a reason to wake.
@@ -352,11 +411,14 @@ namespace PadForge.Engine.Common.BlissBox
             // A port that started closing during the wait sends nothing more.
             if (_stopRequested) return false;
             _lastScreenWrite = _clock();
-            bool written = _transport.SetFeature(BlissBoxProtocol.Screen(wire));
+            bool written = _transport.SetFeature(BlissBoxProtocol.Screen(wire), ScreenWriteTimeoutMs);
+            if (written) _storedScreen = (byte[])wire.Clone();
             AfterScreenWrite();
-            if (!written) return false;
-            _storedScreen = (byte[])wire.Clone();
-            return true;
+            // At once rather than after the job, which may sleep between its
+            // reads of report 17 while the pulse's timer lapses and leaves a
+            // running rumble at full strength.
+            WriteMotors(_clock());
+            return written;
         }
 
         /// <summary>How long the player job waits after its command before it
@@ -486,7 +548,7 @@ namespace PadForge.Engine.Common.BlissBox
             if (wanted == null) return false;
             if (now - _lastScreenWrite < ScreenIntervalMs) return false;
             _lastScreenWrite = now;
-            if (_transport.SetFeature(BlissBoxProtocol.Screen(wanted))) _storedScreen = wanted;
+            if (_transport.SetFeature(BlissBoxProtocol.Screen(wanted), ScreenWriteTimeoutMs)) _storedScreen = wanted;
             AfterScreenWrite();
             return true;
         }
@@ -497,11 +559,11 @@ namespace PadForge.Engine.Common.BlissBox
         /// pad that routine also forces the strength command 4 runs at, and
         /// takes the adapter's one timer from command 4's rumble (0x0C2A,
         /// 0x2A16), which would then run at full power with nothing to stop
-        /// it. Both motors are told their level again in the same step, a
-        /// one-motor pad's starting with a stop on command 5, which ends the
-        /// pulse and gives command 4 its strength and its timer back. The 3.0
-        /// firmware's screen command calls no motor routine (0x091E to
-        /// 0x0935).</summary>
+        /// it. Both motors are told their level again right after the write,
+        /// in the step or the job that wrote it, a one-motor pad's starting
+        /// with a stop on command 5, which ends the pulse and gives command 4
+        /// its strength and its timer back. The 3.0 firmware's screen command
+        /// calls no motor routine (0x091E to 0x0935).</summary>
         private void AfterScreenWrite()
         {
             if (_info is { IsAdvanced: true }) ResendMotors();
@@ -512,10 +574,15 @@ namespace PadForge.Engine.Common.BlissBox
         /// (<see cref="BlissBoxControllers.MotorCount"/>): each level on its
         /// own motor for a pad with two, the stronger level on command 4 for
         /// a pad with one, nothing for a pad with none or no pad.</summary>
-        private (byte Large, byte Small, int Motors) WantedStrengths()
+        private (byte Large, byte Small, int Motors) WantedStrengths(bool peaks = false)
         {
             int motors = LiveInfo is { } info ? BlissBoxControllers.MotorCount(info.Type) : 0;
             int large = Volatile.Read(ref _wantedLarge), small = Volatile.Read(ref _wantedSmall);
+            if (peaks)
+            {
+                large = Math.Max(large, Volatile.Read(ref _peakLarge));
+                small = Math.Max(small, Volatile.Read(ref _peakSmall));
+            }
             return motors switch
             {
                 2 => (Strength(large), Strength(small), 2),
@@ -541,8 +608,14 @@ namespace PadForge.Engine.Common.BlissBox
         /// changes its rumble every frame would hold the pad's input still.
         /// There the motors are written together, no more than once every
         /// 100 ms, the rate the API Tool writes them at, and a change waits
-        /// for the next of those writes. GPA 4.86 handles the write in its USB
-        /// control path and polls on, so it gets a change at once.</para></summary>
+        /// for the next of those writes. Each write carries the strongest
+        /// level asked for since the last, so a pulse that starts and ends
+        /// between two writes is still felt, and writes in one pass cost the
+        /// pad one poll between them (the flag is set, not counted), so a
+        /// running motor rides along with the other's. A steady level is told
+        /// again once a second (<see cref="RumbleHold3xMs"/>). GPA 4.86
+        /// handles the write in its USB control path and polls on, so it gets
+        /// a change at once.</para></summary>
         private void WriteMotors(long now)
         {
             var (large, small, motors) = WantedStrengths();
@@ -552,18 +625,19 @@ namespace PadForge.Engine.Common.BlissBox
             if (!advanced)
             {
                 if (now - _lastMotorBurst < RumbleRefreshMs) return;
-                bool wrote = false;
-                if (MotorOwed(large, _sentLarge, resendLarge))
+                var (peakLarge, peakSmall, _) = WantedStrengths(peaks: true);
+                bool largeOwed = MotorOwed(peakLarge, _sentLarge, resendLarge, _lastLarge, now);
+                bool smallOwed = motors == 2 && MotorOwed(peakSmall, _sentSmall, resendSmall, _lastSmall, now);
+                if (largeOwed || smallOwed)
                 {
-                    WriteLarge(large, motors, advanced, now);
-                    wrote = true;
+                    // Taken before the writes, so a level asked for during
+                    // them counts toward the next.
+                    Interlocked.Exchange(ref _peakLarge, 0);
+                    Interlocked.Exchange(ref _peakSmall, 0);
+                    if (largeOwed || peakLarge != 0) WriteLarge(peakLarge, motors, advanced, now);
+                    if (motors == 2 && (smallOwed || peakSmall != 0)) WriteSmall(peakSmall, now);
+                    _lastMotorBurst = now;
                 }
-                if (motors == 2 && MotorOwed(small, _sentSmall, resendSmall))
-                {
-                    WriteSmall(small, now);
-                    wrote = true;
-                }
-                if (wrote) _lastMotorBurst = now;
             }
             else
             {
@@ -586,6 +660,13 @@ namespace PadForge.Engine.Common.BlissBox
         /// so one the hand-off makes while it is in flight is kept, and set
         /// again when the write fails.</summary>
         private void WriteLarge(byte level, int motors, bool advanced, long now)
+        {
+            _motorWriting = true;
+            try { WriteLargeNow(level, motors, advanced, now); }
+            finally { _motorWriting = false; }
+        }
+
+        private void WriteLargeNow(byte level, int motors, bool advanced, long now)
         {
             bool resend = Volatile.Read(ref _resendLarge);
             if (resend) Volatile.Write(ref _resendLarge, false);
@@ -612,6 +693,13 @@ namespace PadForge.Engine.Common.BlissBox
 
         /// <summary>Command 5, with the same resend rule as command 4.</summary>
         private void WriteSmall(byte level, long now)
+        {
+            _motorWriting = true;
+            try { WriteSmallNow(level, now); }
+            finally { _motorWriting = false; }
+        }
+
+        private void WriteSmallNow(byte level, long now)
         {
             bool resend = Volatile.Read(ref _resendSmall);
             if (resend) Volatile.Write(ref _resendSmall, false);
@@ -643,8 +731,8 @@ namespace PadForge.Engine.Common.BlissBox
         /// <summary>A 3.x motor that goes into the next write: its level
         /// changed or is owed again, or it is running and due its
         /// refresh.</summary>
-        private static bool MotorOwed(byte wanted, byte sent, bool resend)
-            => resend || wanted != sent || wanted != 0;
+        private static bool MotorOwed(byte wanted, byte sent, bool resend, long last, long now)
+            => resend || wanted != sent || (wanted != 0 && now - last >= RumbleHold3xMs);
 
         private void PollArrows()
         {
@@ -659,11 +747,14 @@ namespace PadForge.Engine.Common.BlissBox
         public byte[] Talk(byte[] message)
         {
             var info = _info;
-            if (info == null) return null;
+            if (info == null || _stopRequested) return null;
             foreach (var report in BlissBoxProtocol.NativeReports(message, info.IsAdvanced))
                 if (!_transport.SetFeature(report)) return null;
             for (int attempt = 0; attempt < ReplyAttempts; attempt++)
             {
+                // A closing port stops asking, so its worker lets go within a
+                // read rather than after all twenty.
+                if (_stopRequested) return null;
                 if (attempt > 0) _sleep(ReplyDelayMs);
                 var data = Get(BlissBoxProtocol.ReportNative);
                 if (data.IsEmpty) continue;

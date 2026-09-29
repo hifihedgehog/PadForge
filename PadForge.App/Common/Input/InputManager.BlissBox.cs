@@ -23,7 +23,8 @@ namespace PadForge.Common.Input
 
         /// <summary>Rows whose motors pass to their port on a later cycle: the
         /// hand-off met another writer holding the row's output gate, which
-        /// the poll thread never waits on. Poll thread only.</summary>
+        /// the poll thread never waits on, or SDL refused its stop. Poll
+        /// thread only.</summary>
         private readonly HashSet<Guid> _blissBoxHandoffs = new();
 
         /// <summary>Rows that give SDL their motor levels back on a later
@@ -31,12 +32,6 @@ namespace PadForge.Common.Input
         /// its final stop yet, another writer holds the output gate, or SDL
         /// refused the write.</summary>
         private readonly HashSet<Guid> _blissBoxCacheResets = new();
-
-        /// <summary>Rows whose resend SDL refused. A later write can deliver
-        /// the level first (Step 2 writes a mapped row's owed level), and a
-        /// retry after that would stop and restart a motor already at it.
-        /// Poll thread only.</summary>
-        private readonly HashSet<Guid> _blissBoxResendsRefused = new();
 
         /// <summary>The pending hand-offs and SDL resends are tried again this
         /// often: a contested output gate delays one by at most 100 ms, and a
@@ -110,7 +105,6 @@ namespace PadForge.Common.Input
                 return changed;
             }
             _blissBoxCacheResets.Clear();
-            _blissBoxResendsRefused.Clear();
             if (opened != null)
                 foreach (var port in opened) _blissBoxHandoffs.Add(port.InstanceGuid);
             // A switch that went off and on again since the last pass may
@@ -166,9 +160,6 @@ namespace PadForge.Common.Input
         /// levels it last recorded (<see cref="ResetBlissBoxRumbleCache"/>).</summary>
         private void QueueBlissBoxCacheResets()
         {
-            // Every row's first resend of this switch-off goes out, whatever
-            // an earlier one's refusal left behind.
-            _blissBoxResendsRefused.Clear();
             var devices = SettingsManager.UserDevices;
             if (devices == null) return;
             lock (devices.SyncRoot)
@@ -292,28 +283,20 @@ namespace PadForge.Common.Input
         /// routines SDL's DirectInput effect drives (0x2E8C to 0x2EC3) and
         /// would end the level SDL was just given. False while that stop is
         /// pending, another writer holds the output gate, or SDL refused the
-        /// write, so the row is tried again, unless a later write has
-        /// delivered the level by then.</summary>
-        private bool ResetBlissBoxRumbleCache(UserDevice ud)
+        /// stop or the level, so the row is tried again until SDL takes both.
+        /// Nothing short of that shows the motors run the level: SDL skips a
+        /// write that repeats its record (SDL_joystick.c:2287-2290), and a
+        /// refused stop leaves that record at a level the final stop ended, so
+        /// a later frame's write of the same level reports success with
+        /// nothing sent.</summary>
+        private static bool ResetBlissBoxRumbleCache(UserDevice ud)
         {
             var state = ud.ForceFeedbackState;
             if (state == null || ud.Device == null) return true;
             if (BlissBoxRuntime.IsRetiring(ud.DevicePath)) return false;
             if (!System.Threading.Monitor.TryEnter(ud.OutputSync)) return false;
-            try
-            {
-                if (_blissBoxResendsRefused.Contains(ud.InstanceGuid) && !state.ScalarWritePending)
-                {
-                    _blissBoxResendsRefused.Remove(ud.InstanceGuid);
-                    return true;
-                }
-                bool delivered;
-                try { delivered = state.ResendScalar(ud.Device); }
-                catch { delivered = true; }
-                if (delivered) _blissBoxResendsRefused.Remove(ud.InstanceGuid);
-                else _blissBoxResendsRefused.Add(ud.InstanceGuid);
-                return delivered;
-            }
+            try { return state.ResendScalar(ud.Device); }
+            catch { return true; }
             finally { System.Threading.Monitor.Exit(ud.OutputSync); }
         }
     }

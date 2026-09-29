@@ -122,7 +122,8 @@ namespace PadForge.Tests
             string src = InputService();
             int i = src.IndexOf("public void IdentifyDevice(Guid instanceGuid)", StringComparison.Ordinal);
             Assert.True(i > 0, "IdentifyDevice is gone");
-            string body = src.Substring(i, Math.Min(6000, src.Length - i));
+            int next = src.IndexOf("\n        public ", i + 1, StringComparison.Ordinal);
+            string body = src.Substring(i, (next > i ? next : src.Length) - i);
 
             Assert.Contains("PadixConverterIdentity", body);
             Assert.Contains("PadixConverterRawHidWriter.Write(", body);
@@ -130,11 +131,11 @@ namespace PadForge.Tests
             // buzz marked the row active, and Step 2 sends a row with no slot
             // its final zero on the next poll, which cut every pulse to about
             // a millisecond, a Bliss-Box port's (#469) included.
-            Assert.DoesNotContain("TryRecordMotorSnapshot(level, level)", body);
-            Assert.Contains("BlissBoxRuntime.SetRumble(ud.DevicePath, level, level);", body);
+            Assert.DoesNotContain("TryRecordMotorSnapshot(left, right)", body);
+            Assert.Contains("BlissBoxRuntime.SetRumble(ud.DevicePath, left, right);", body);
 
             // The SDL calls survive for every other family.
-            Assert.Contains("else if (level != 0) dev.SetRumble(level, level);", body);
+            Assert.Contains("else if (left != 0 || right != 0) dev.SetRumble(left, right);", body);
             Assert.Contains("else dev.StopRumble();", body);
         }
 
@@ -176,18 +177,22 @@ namespace PadForge.Tests
             Assert.Contains("if (cur == null || !cur.IsOnline || ResolvePad() != pad) return;", body);
 
             // Unowned lane: a device that gained a slot now has a sole writer,
-            // so this lane stops writing it directly.
-            Assert.Contains("if (cur == null || !cur.IsOnline || ResolvePad() >= 0) return;", body);
+            // so this lane stops writing it directly, once it has handed back
+            // the level that writer's snapshot holds (#469).
+            Assert.Contains("if (cur == null || !cur.IsOnline) return;", body);
+            Assert.Contains("if (ResolvePad() >= 0)", body);
         }
 
         /// <summary>The unowned lane's bail sits where the motors are already at
-        /// zero, so stopping the train can never strand one spinning.</summary>
+        /// zero, so stopping the train can never strand one spinning, and a
+        /// device that gained a slot gets back the level its writer's snapshot
+        /// holds (#469).</summary>
         [Fact]
         public void TheUnownedLaneOnlyBailsWithTheMotorsAtRest()
         {
             string src = InputService();
             var m = Regex.Match(src,
-                @"Buzz\(0\);\s*\r?\n\s*await [^\r\n]+Delay\(200\)[^\r\n]+\r?\n(\s*//[^\r\n]*\r?\n)*\s*var cur = FindUserDevice\(instanceGuid\);\s*\r?\n\s*if \(cur == null \|\| !cur\.IsOnline \|\| ResolvePad\(\) >= 0\) return;");
+                @"Buzz\(0, 0\);\s*\r?\n\s*await [^\r\n]+Delay\(200\)[^\r\n]+\r?\n(\s*//[^\r\n]*\r?\n)*\s*var cur = FindUserDevice\(instanceGuid\);\s*\r?\n\s*if \(cur == null \|\| !cur\.IsOnline\) return;\s*\r?\n\s*if \(ResolvePad\(\) >= 0\)\s*\r?\n\s*\{\s*\r?\n\s*Restore\(\);");
             Assert.True(m.Success,
                 "the unowned lane's revalidation no longer follows a zero write");
         }

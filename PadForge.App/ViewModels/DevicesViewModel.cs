@@ -24,6 +24,15 @@ namespace PadForge.ViewModels
         {
             Title = Strings.Instance.Devices_Title;
             OnPropertyChanged(nameof(DriverBindText));
+            // The chips keep their items through a language change, so their
+            // names follow it here.
+            foreach (var item in AnalogKeys)
+                item.Relocalize(PadForge.Common.MappingDisplayResolver.AnalogKeyDisplayName(item.Code));
+            var pressureNames = PadForge.Engine.Common.BlissBox.BlissBoxControllers.PressureNames;
+            foreach (var item in BlissBoxPressure)
+                if (item.Code >= 0 && item.Code < pressureNames.Count)
+                    item.Relocalize(PadForge.Common.MappingDisplayResolver.LocalizeObjectName(
+                        PressureButton(pressureNames[item.Code])));
         }
 
         // ─────────────────────────────────────────────
@@ -1335,7 +1344,20 @@ namespace PadForge.ViewModels
         /// <summary>Position in the keyboard's key order, for insertion.</summary>
         public int Rank { get; set; }
 
-        public string Name { get; set; } = string.Empty;
+        private string _name = string.Empty;
+        public string Name
+        {
+            get => _name;
+            set => SetProperty(ref _name, value);
+        }
+
+        /// <summary>The name in the new language, and the depth in its
+        /// number format.</summary>
+        internal void Relocalize(string name)
+        {
+            Name = name;
+            OnPropertyChanged(nameof(DepthText));
+        }
 
         private double _depth;
         /// <summary>0 at rest, 1 at the bottom of the press.</summary>

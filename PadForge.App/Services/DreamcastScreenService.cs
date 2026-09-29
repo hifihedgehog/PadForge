@@ -335,6 +335,13 @@ namespace PadForge.Services
         {
             _shows.Clear();
             _attached.Clear();
+            DropRequests();
+        }
+
+        /// <summary>Drops every queued show, for an engine stop before any
+        /// tick made the service.</summary>
+        internal static void DropRequests()
+        {
             while (_requests.TryDequeue(out _)) { }
         }
 

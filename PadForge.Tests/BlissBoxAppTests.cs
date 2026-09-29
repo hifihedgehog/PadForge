@@ -71,8 +71,10 @@ namespace PadForge.Tests
             // the user's language.
             Assert.Null(BlissBoxControllers.Name(200, 4));
             Assert.Equal("Super Action Controller", BlissBoxControllers.Name(34, 4));
-            Assert.Contains("?? string.Format(CultureInfo.CurrentCulture, Strings.Instance.BlissBox_TypeNumber_Format, info.Type);",
-                Repo("PadForge.App", "Services", "InputService.BlissBox.cs"));
+            string names = Repo("PadForge.App", "Services", "InputService.BlissBox.cs");
+            Assert.Contains("?? string.Format(CultureInfo.CurrentCulture, Strings.Instance.BlissBox_TypeNumber_Format, info.Type);", names);
+            Assert.Contains("return info == null ? Strings.Instance.BlissBox_NoController : ControllerName(info);", names);
+            Assert.Contains("live == null ? s.BlissBox_NoController : ControllerName(live), FirmwareText(info));", names);
             Assert.Equal("DualShock 2", BlissBoxControllers.Name(121, 3));
             // Two codes name different controllers on each generation: GPA
             // 4.86's DE-9 driver types an Atari driving controller 12 (0x2436)
@@ -336,7 +338,7 @@ namespace PadForge.Tests
             Assert.Contains("BlissBoxRuntime.StopRumble(ud.DevicePath);", Repo("PadForge.App", "Common", "Input", "InputManager.cs"));
             string service = Repo("PadForge.App", "Services", "InputService.cs");
             Assert.Contains("PadForge.Common.Input.BlissBoxRuntime.SetRumble(\n                                    ud.DevicePath, bvib.LeftMotorSpeed, bvib.RightMotorSpeed);", service);
-            Assert.Contains("PadForge.Common.Input.BlissBoxRuntime.SetRumble(ud.DevicePath, level, level);", service);
+            Assert.Contains("PadForge.Common.Input.BlissBoxRuntime.SetRumble(ud.DevicePath, left, right);", service);
         }
 
         [Fact]
@@ -999,7 +1001,7 @@ namespace PadForge.Tests
 
             string code = Repo("PadForge.App", "Common", "Input", "InputManager.BlissBox.cs");
             Assert.Contains("BlissBoxRuntime.TakeMotors(ud.DevicePath, state.LeftMotorSpeed, state.RightMotorSpeed);", code);
-            Assert.Contains("try { delivered = state.ResendScalar(ud.Device); }", code);
+            Assert.Contains("try { return state.ResendScalar(ud.Device); }", code);
             // A switch that went off and on again between two passes hands
             // every open port its level again.
             Assert.Contains("            if (toggled)\n                foreach (var port in BlissBoxRuntime.Ports) _blissBoxHandoffs.Add(port.InstanceGuid);", code);
@@ -1058,10 +1060,13 @@ namespace PadForge.Tests
             state.TryRecordMotorSnapshot(30000, 1000);
             Assert.False(state.ResendScalar(device));
             Assert.Equal((0, 0), Assert.Single(recorder.Sent));
-            Assert.True(state.ScalarWritePending);
+            // The row is tried again until SDL takes both, since a later
+            // frame's write of the same level can report success with nothing
+            // sent while SDL's record still holds it.
             recorder.RefuseStop = false;
-            state.SetDeviceForces(null, device, new PadSetting(), new Vibration(30000, 1000));
-            Assert.False(state.ScalarWritePending);
+            recorder.Sent.Clear();
+            Assert.True(state.ResendScalar(device));
+            Assert.Equal(new[] { (0, 0), (30000, 1000) }, recorder.Sent);
             // A port SDL found no motors on takes no level, and none is kept
             // for the next switch-on to hand the port.
             recorder.Rumble = false;
@@ -1076,7 +1081,6 @@ namespace PadForge.Tests
             string phase = Repo("PadForge.App", "Common", "Input", "InputManager.BlissBox.cs");
             Assert.Contains("if (pending.Count == 0 || Environment.TickCount64 < _blissBoxRetriesDue) return;", phase);
             Assert.Contains("_blissBoxRetriesDue = Environment.TickCount64 + BlissBoxRetryMs;", phase);
-            Assert.Contains("if (_blissBoxResendsRefused.Contains(ud.InstanceGuid) && !state.ScalarWritePending)", phase);
             // A stop SDL refused at the hand-off leaves its effect running
             // beside the adapter's commands, so the hand-off waits.
             Assert.Contains("try { stopped = wrapper.StopSdlRumble(); } catch { stopped = true; }\n            if (!stopped) return false;", phase);
@@ -1238,9 +1242,9 @@ namespace PadForge.Tests
             // after it played on the next start's ports.
             string code = Repo("PadForge.App", "Services", "InputService.cs");
             int stop = code.IndexOf("                _inputManager.Stop();", StringComparison.Ordinal);
-            int reset = code.IndexOf("_dreamcastScreen?.Reset();", StringComparison.Ordinal);
+            int reset = code.IndexOf("if (_dreamcastScreen != null) _dreamcastScreen.Reset();\n                else DreamcastScreenService.DropRequests();", StringComparison.Ordinal);
             Assert.True(stop > 0 && reset > stop);
-            Assert.Equal(reset, code.LastIndexOf("_dreamcastScreen?.Reset();", StringComparison.Ordinal));
+            Assert.Equal(reset, code.LastIndexOf("_dreamcastScreen.Reset();", StringComparison.Ordinal) - "if (_dreamcastScreen != null) ".Length);
             const string path = @"\\?\hid#padforge-test-no-such-device-reset";
             try
             {
@@ -1257,7 +1261,13 @@ namespace PadForge.Tests
         public void TheCrashPathDropsAPulseNotYetSent()
         {
             string runtime = Repo("PadForge.App", "Common", "Input", "BlissBoxRuntime.cs");
-            Assert.Contains("                port.Session.StopRumble();\n                port.Wake();", runtime);
+            // Asked again on each look, so a level a writer that had passed
+            // the quiesce check sets after the first stop is stopped too.
+            Assert.Contains("            while (true)\n            {\n                foreach (var port in ports)\n                {\n                    port.Session.StopRumble();\n                    port.Wake();", runtime);
+            // A row that goes offline drops its port's levels, which the SDL
+            // stop there never reaches.
+            Assert.Contains("try { BlissBoxRuntime.StopRumble(ud.DevicePath); }",
+                Repo("PadForge.App", "Common", "Input", "InputManager.Step1.UpdateDevices.cs"));
             // The engine's stop and the quiesce's first sweep drop it too, and
             // a relayed frame cannot start a motor again behind the quiesce.
             Assert.Contains("try { BlissBoxRuntime.StopRumble(ud.DevicePath); }",
@@ -1278,8 +1288,56 @@ namespace PadForge.Tests
             // The UI timer stops with the engine, so the Settings lines and a
             // port's Devices line and actions kept their last running state.
             string code = Repo("PadForge.App", "Services", "InputService.cs");
-            Assert.Contains("                    UpdateHeadTrackingStatus();\n                    UpdateGKeysStatus();\n                    UpdateAnalogKeyboardsStatus();\n                    UpdateBlissBoxStatus();", code);
+            int stop = code.IndexOf("                _inputManager.Stop();", StringComparison.Ordinal);
+            int refresh = code.IndexOf("                    UpdateHeadTrackingStatus();\n                    UpdateGKeysStatus();\n                    UpdateAnalogKeyboardsStatus();\n                    UpdateBlissBoxStatus();", StringComparison.Ordinal);
+            Assert.True(stop > 0 && refresh > stop);
             Assert.Contains("UpdateBlissBoxDeviceRow(selected, selectedDevice);", code);
+            // A row selected while the engine is stopped clears the line and
+            // actions it kept from when the engine ran.
+            Assert.Contains("            UpdateBlissBoxDeviceRow(selected, ud);\n\n            // Build the structural layout from cached capabilities.", code);
+            // Identify hands back the level the row's snapshot holds, which a
+            // Remote Link peer's steady level would otherwise lose.
+            Assert.Contains("                        Buzz(65535, 65535);\n                        await System.Threading.Tasks.Task.Delay(500).ConfigureAwait(false);\n                        Restore();", code);
+        }
+
+        [Fact]
+        public async System.Threading.Tasks.Task ASuccessorWaitsForTheOldWorkerBeforeItsResend()
+        {
+            var guid = Guid.NewGuid();
+            const string path = @"\\?\hid#padforge-test-no-such-device-successor-wait";
+            using var exited = new System.Threading.ManualResetEventSlim(false);
+            try
+            {
+                var successor = Assert.Single(BlissBoxRuntime.Sync(new[] { new BlissBoxRuntime.Row(path, 0x0D04, guid, 9) }));
+                var handOver = System.Threading.Tasks.Task.Run(() => BlissBoxRuntime.HandOverToSuccessor(path, () => exited.IsSet, null));
+                await System.Threading.Tasks.Task.Delay(200);
+                Assert.False(handOver.IsCompleted);
+                Assert.True(successor.Session.MotorsAtRest);
+                exited.Set();
+                await handOver.WaitAsync(TimeSpan.FromSeconds(5));
+                Assert.False(successor.Session.MotorsAtRest);
+            }
+            finally { BlissBoxRuntime.Shutdown(); }
+        }
+
+        [Fact]
+        public void TheChipsFollowALanguageChange()
+        {
+            // The pressure chips were rebuilt only when their count changed and
+            // an analog key's only when it first showed, so both kept the old
+            // language's names.
+            var vm = new DevicesViewModel();
+            vm.UpdateBlissBoxPressure(new byte[12]);
+            var keys = new PadForge.Engine.AnalogKeyInputState();
+            keys.Set(4, 0.5f);
+            vm.UpdateAnalogKeys(keys);
+            var pressure = vm.BlissBoxPressure[6];
+            var key = Assert.Single(vm.AnalogKeys);
+            string pressureName = pressure.Name, keyName = key.Name;
+            pressure.Name = key.Name = "stale";
+            typeof(DevicesViewModel).GetMethod("OnCultureChanged", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(vm, null);
+            Assert.Equal(pressureName, pressure.Name);
+            Assert.Equal(keyName, key.Name);
         }
 
         [Fact]
@@ -1325,7 +1383,7 @@ namespace PadForge.Tests
             // which on a GPA reaches the routines SDL's effect drives.
             string phase = Repo("PadForge.App", "Common", "Input", "InputManager.BlissBox.cs");
             int retiring = phase.IndexOf("if (BlissBoxRuntime.IsRetiring(ud.DevicePath)) return false;", StringComparison.Ordinal);
-            int resend = phase.IndexOf("try { delivered = state.ResendScalar(ud.Device); }", StringComparison.Ordinal);
+            int resend = phase.IndexOf("try { return state.ResendScalar(ud.Device); }", StringComparison.Ordinal);
             Assert.True(retiring > 0 && resend > retiring);
             int sync = phase.IndexOf("var opened = BlissBoxRuntime.Sync(rows);", StringComparison.Ordinal);
             int queue = phase.IndexOf("if (wasOn || toggled) QueueBlissBoxCacheResets();", StringComparison.Ordinal);

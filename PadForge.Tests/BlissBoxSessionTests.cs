@@ -1486,6 +1486,44 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void ARefusedWriteKeepsTheMotorsFromRest()
+        {
+            // The channel reports a transfer that outlived its wait as failed
+            // although the adapter may have taken it, so the crash path read
+            // rest over a refused write of 196 with a loop of 0xFF.
+            var adapter = new ScriptedAdapter { Type = BlissBoxControllers.TypeNintendo64, Major = 3 };
+            var session = Session(adapter);
+            session.Step();
+            adapter.RefuseWhen = r => _now == 100 && r[0] == BlissBoxProtocol.ReportCommand;
+            _now = 50; session.SetRumble(50000, 0);
+            _now = 100; session.Step();
+            _now = 150; session.StopRumble();
+            Assert.False(session.MotorsAtRest);
+            _now = 200; session.Step();
+            Assert.True(session.MotorsAtRest);
+            Assert.Equal(0, adapter.Motor(BlissBoxProtocol.CommandLargeMotor)[^1][5]);
+        }
+
+        [Fact]
+        public void AGpaTriesARefusedWriteAgainAtTheLevelItWanted()
+        {
+            // A GPA scheduled nothing once the wanted level matched what was
+            // sent, so a refused write stayed in doubt for good.
+            var adapter = new ScriptedAdapter { Type = BlissBoxControllers.TypeNintendo64 };
+            var session = Session(adapter);
+            session.Step();
+            adapter.RefuseWhen = r => _now == 10 && r[0] == BlissBoxProtocol.ReportCommand;
+            _now = 10; session.SetRumble(40000, 0); session.Step();
+            _now = 20; session.SetRumble(0, 0); session.Step();
+            Assert.False(session.MotorsAtRest);
+            Assert.Equal(90, session.Step());
+            _now = 110; session.Step();
+            Assert.True(session.MotorsAtRest);
+            var levels = adapter.Motor(BlissBoxProtocol.CommandLargeMotor).Select(r => r[5]).ToList();
+            Assert.Equal(new byte[] { 0, BlissBoxSession.Strength(40000), 0 }, levels);
+        }
+
+        [Fact]
         public void TheCrashStopWaitsForAPulseOwedToEitherMotor()
         {
             var adapter = new ScriptedAdapter { Type = BlissBoxControllers.TypeDualShock2, Major = 3 };

@@ -188,8 +188,9 @@ namespace PadForge.Engine.RemoteLink
             ProductId = info.ProductId;
             // Never below the standardized count: a zero (an older peer) or a
             // device with no extras falls back to it. Snapshotted, unlike the
-            // public property, because it sizes the dense fallback array once
-            // and that array's length must not move under readers.
+            // public property, to size the dense fallback array at
+            // registration. RefreshSupportedSets sizes a new array from the
+            // live count, and a reader holding the old one keeps its length.
             _rawButtonCount = Math.Max(info.NumButtons, info.RawButtonCount);
 
             DevicePath = $"peer://{Short(info.PeerFingerprintHex)}/{info.PeerLocalDeviceId}";
@@ -254,7 +255,9 @@ namespace PadForge.Engine.RemoteLink
         /// snapshot never saw any of it, so the raw axis count moved while the
         /// standardized one stayed at the value the device was born with. One
         /// capability, two answers. The private field below stays a snapshot,
-        /// because the dense button fallback is sized once, at registration.</summary>
+        /// which sizes the dense button fallback at registration
+        /// (<see cref="RefreshSupportedSets"/> sizes later ones from the live
+        /// count).</summary>
         public int NumAxes => Info.NumAxes;
         public int NumButtons => Info.NumButtons;
         private readonly int _rawButtonCount;

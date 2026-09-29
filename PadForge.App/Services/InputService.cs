@@ -2663,8 +2663,11 @@ namespace PadForge.Services
                 // The Bliss-Box ports have closed with the engine (#469) and
                 // the poll thread that queues shows has stopped, so the screen
                 // service's shows and requests go now. Earlier, a macro could
-                // queue a show behind the reset for the next start's ports.
-                _dreamcastScreen?.Reset();
+                // queue a show behind the reset for the next start's ports. A
+                // request queued before the first tick made the service goes
+                // too.
+                if (_dreamcastScreen != null) _dreamcastScreen.Reset();
+                else DreamcastScreenService.DropRequests();
 
                 _mainVm.IsEngineRunning = false;
                 _mainVm.Dashboard.EngineStateKey = "Stopped";
@@ -4392,6 +4395,10 @@ namespace PadForge.Services
                 devVm.HasRawData = false;
                 return;
             }
+
+            // A port row keeps the Bliss-Box line and actions it showed while
+            // the engine ran, and no port is open now, so this clears them.
+            UpdateBlissBoxDeviceRow(selected, ud);
 
             // Build the structural layout from cached capabilities.
             if (selected.InstanceGuid != devVm.LastRawStateDeviceGuid)
@@ -11646,7 +11653,7 @@ namespace PadForge.Services
         private void ApplyRemoteOutput(OutputEffectCodec.OutputEffect effect, ISdlInputDevice source, UserDevice ud,
             string peerFingerprint, LinkEffectTicket toneTicket = null)
         {
-            // The crash path's quiesce stops every output for good (#469), and
+            // The crash path's quiesce stops every effect for good (#469), and
             // a peer game's next frame would start a motor again behind it.
             if (_inputManager?.OutputsQuiesced == true) return;
             // Sole-writer guard (#138): this frame means a remote game is driving the
@@ -15497,7 +15504,7 @@ namespace PadForge.Services
                         // inert for it the same way (#469).
                         bool blissBox = !peer && PadForge.Engine.Common.BlissBox.BlissBoxApi
                             .OwnsRumble(ud.VendorId, ud.ProdId);
-                        void Buzz(ushort level)
+                        void Buzz(ushort left, ushort right)
                         {
                             // Identify is a one-shot user action, not the poll
                             // lane, so the write is unconditional and leaves the
@@ -15505,37 +15512,50 @@ namespace PadForge.Services
                             // there marked the row active, and Step 2 sends a
                             // row with no slot its final zero the next poll, so
                             // every pulse was stopped about a millisecond after
-                            // it started. The train ends at zero, where the
-                            // untouched snapshot already is, so the mapped lane
-                            // never skips a zero it needs.
+                            // it started. The train ends at the levels the
+                            // snapshot holds, zero unless a Remote Link peer
+                            // drives this row, whose steady level a zero would
+                            // end for good: the peer sends only changes, and
+                            // the snapshot would take a repeat as unchanged.
                             if (padix)
                             {
                                 PadForge.Common.Input.PadixConverterRawHidWriter.Write(
-                                    ud.DevicePath, level, level);
+                                    ud.DevicePath, left, right);
                             }
                             else if (blissBox)
                             {
-                                PadForge.Common.Input.BlissBoxRuntime.SetRumble(ud.DevicePath, level, level);
+                                PadForge.Common.Input.BlissBoxRuntime.SetRumble(ud.DevicePath, left, right);
                             }
-                            else if (level != 0) dev.SetRumble(level, level);
+                            else if (left != 0 || right != 0) dev.SetRumble(left, right);
                             else dev.StopRumble();
+                        }
+                        void Restore()
+                        {
+                            var fs = FindUserDevice(instanceGuid)?.ForceFeedbackState;
+                            Buzz(fs?.LeftMotorSpeed ?? 0, fs?.RightMotorSpeed ?? 0);
                         }
                         for (int i = 0; i < 2; i++)
                         {
-                            Buzz(65535);
+                            Buzz(65535, 65535);
                             await System.Threading.Tasks.Task.Delay(200).ConfigureAwait(false);
-                            Buzz(0);
+                            Buzz(0, 0);
                             await System.Threading.Tasks.Task.Delay(200).ConfigureAwait(false);
                             // Checked while the motors are already at zero, so
                             // bailing here can never strand one spinning. A device
                             // that gained a slot mid-train now has a sole writer,
-                            // and this lane must stop writing it directly.
+                            // and this lane must stop writing it directly, after
+                            // handing back the level that writer's snapshot holds.
                             var cur = FindUserDevice(instanceGuid);
-                            if (cur == null || !cur.IsOnline || ResolvePad() >= 0) return;
+                            if (cur == null || !cur.IsOnline) return;
+                            if (ResolvePad() >= 0)
+                            {
+                                Restore();
+                                return;
+                            }
                         }
-                        Buzz(65535);
+                        Buzz(65535, 65535);
                         await System.Threading.Tasks.Task.Delay(500).ConfigureAwait(false);
-                        Buzz(0);
+                        Restore();
                     }
                 }
                 catch { /* identify is best-effort */ }

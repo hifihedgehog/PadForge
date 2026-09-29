@@ -1172,6 +1172,15 @@ namespace PadForge.Common.Input
                 try { ud.ForceFeedbackState.StopDeviceForces(ud.Device); }
                 catch { /* best effort */ }
             }
+            // A Bliss-Box port's motors take the adapter's commands, which the
+            // SDL stop above never reaches (#469). Its port drops the levels
+            // now, so an adapter back on the same path before the next device
+            // pass retires the port is not handed them again.
+            if (PadForge.Engine.Common.BlissBox.BlissBoxProtocol.IsPort(ud.VendorId, ud.ProdId))
+            {
+                try { BlissBoxRuntime.StopRumble(ud.DevicePath); }
+                catch { /* best effort */ }
+            }
 
             // Dispose SDL handle.
             if (ud.Device != null)

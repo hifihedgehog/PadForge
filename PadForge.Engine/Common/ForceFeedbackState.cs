@@ -260,10 +260,6 @@ namespace PadForge.Engine
             return delivered;
         }
 
-        /// <summary>True while a level this state holds has not reached SDL:
-        /// a write or a resend SDL refused. The next write clears it.</summary>
-        public bool ScalarWritePending => _scalarNeedsWrite;
-
         /// <summary>
         /// Stops all rumble on the device and resets cached state.
         /// </summary>

@@ -169,9 +169,12 @@ namespace PadForge.Common.Input
         /// went off and on again during a long transfer. That port tells both
         /// motors their levels again once the old worker has exited.</summary>
         private static void HandOverToSuccessor(BlissBoxPort retired)
+            => HandOverToSuccessor(retired.Path, () => retired.Exited, retired);
+
+        internal static void HandOverToSuccessor(string path, Func<bool> exited, BlissBoxPort retired)
         {
-            SpinWait.SpinUntil(() => retired.Exited, SuccessorWaitMs);
-            if (Find(retired.Path) is { } successor && !ReferenceEquals(successor, retired))
+            SpinWait.SpinUntil(exited, SuccessorWaitMs);
+            if (Find(path) is { } successor && !ReferenceEquals(successor, retired))
             {
                 successor.Session.ResendMotors();
                 successor.Wake();
@@ -341,23 +344,25 @@ namespace PadForge.Common.Input
         /// asked for before still owed (<see cref="BlissBoxSession.StopRumble"/>),
         /// and the caller waits up to <paramref name="timeoutMs"/> for the
         /// workers to send it, since a dying process may not outlive an
-        /// asynchronous stop.</summary>
+        /// asynchronous stop. The stop is asked again on each look, so a level
+        /// a writer that had already passed the quiesce check sets after the
+        /// first one is stopped too.</summary>
         public static void StopMotorsNow(int timeoutMs)
         {
             var ports = Ports;
             if (ports.Length == 0) return;
-            foreach (var port in ports)
-            {
-                port.Session.StopRumble();
-                port.Wake();
-            }
             long end = Environment.TickCount64 + timeoutMs;
-            while (Environment.TickCount64 < end)
+            while (true)
             {
+                foreach (var port in ports)
+                {
+                    port.Session.StopRumble();
+                    port.Wake();
+                }
                 bool rest = true;
                 foreach (var port in ports)
                     if (port.IsOpen && !port.Session.MotorsAtRest) { rest = false; break; }
-                if (rest) return;
+                if (rest || Environment.TickCount64 >= end) return;
                 Thread.Sleep(5);
             }
         }

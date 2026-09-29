@@ -186,9 +186,9 @@ namespace PadForge.Tests
                 Assert.NotEqual(message, new ThreeZeroModel().Feed(BlissBoxProtocol.NativeReports(message, advanced: true)));
             }
             // From 8 bytes on, where the data takes two chunks, the framings agree.
-            var seven = Enumerable.Range(1, 8).Select(i => (byte)i).ToArray();
-            Assert.Equal(BlissBoxProtocol.NativeReports(seven, advanced: false),
-                BlissBoxProtocol.NativeReports(seven, advanced: true));
+            var eight = Enumerable.Range(1, 8).Select(i => (byte)i).ToArray();
+            Assert.Equal(BlissBoxProtocol.NativeReports(eight, advanced: false),
+                BlissBoxProtocol.NativeReports(eight, advanced: true));
         }
 
         /// <summary>BBAPI.cs sendData's chunk count, transcribed, leaves the

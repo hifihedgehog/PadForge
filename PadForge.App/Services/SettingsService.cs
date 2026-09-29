@@ -4386,6 +4386,20 @@ namespace PadForge.Services
             SaveToFile(_settingsFilePath);
         }
 
+        /// <summary>The autosave's full persist now rather than after its
+        /// quiet time, with the same follow-up: <see cref="AutoSaved"/>, which
+        /// a direct <see cref="Save"/> would have kept the timer from raising
+        /// for edits made just before. True when the file was written. For
+        /// state that must not wait: the only copy of a Bliss-Box adapter's
+        /// own picture (#469).</summary>
+        public bool SaveNow()
+        {
+            Save();
+            if (IsDirty) return false;
+            AutoSaved?.Invoke(this, EventArgs.Empty);
+            return true;
+        }
+
         /// <summary>
         /// Saves all settings to the specified XML file.
         /// </summary>

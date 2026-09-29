@@ -1960,7 +1960,9 @@ namespace PadForge.Engine
         /// <summary>Stops a rumble SDL started, past the gate that keeps SDL
         /// off a port whose motors PadForge writes itself. For the moment a
         /// Bliss-Box port's motors pass to the adapter's commands, so an
-        /// effect SDL started before is not left running (#469).</summary>
+        /// effect SDL started before is not left running (#469). On a GPA the
+        /// stop itself can reach a one-motor pad's command-5 routine, which
+        /// the port's session clears right after (BlissBoxRuntime.TakeMotors).</summary>
         public void StopSdlRumble()
         {
             if (Joystick != IntPtr.Zero && _hasRumble)

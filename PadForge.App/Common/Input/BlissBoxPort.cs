@@ -141,7 +141,9 @@ namespace PadForge.Common.Input
             Session.RequestStop();
             _stop = true;
             Wake();
-            if (_thread.ThreadState == ThreadState.Unstarted)
+            // A background thread that never started reports Background as
+            // well, so the flag is tested, not the whole state.
+            if ((_thread.ThreadState & ThreadState.Unstarted) != 0)
             {
                 Session.CancelJobs();
                 _wake.Dispose();

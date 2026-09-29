@@ -209,6 +209,47 @@ namespace PadForge.Engine
             if (v.RightTriggerMotorSpeed > right) right = v.RightTriggerMotorSpeed;
         }
 
+        /// <summary>The same fold for a direct writer without trigger motors
+        /// (the Padix converter, a Bliss-Box port), when the device's setting
+        /// asks for it, as <see cref="SetDeviceForces"/> applies it on SDL's
+        /// path. Those writers take only the two body levels, so without it
+        /// the setting did nothing there.</summary>
+        public static void FoldTriggersForDirectWriter(PadSetting ps, ushort leftTrigger, ushort rightTrigger,
+            ref ushort left, ref ushort right)
+        {
+            if (!TryParseBool(ps?.TriggerRumbleFold)) return;
+            if (leftTrigger > left) left = leftTrigger;
+            if (rightTrigger > right) right = rightTrigger;
+        }
+
+        /// <summary>Sends the levels last asked of this device through SDL
+        /// again and records them as delivered, for a device whose motors
+        /// spent a time under another writer: a Bliss-Box port the switch
+        /// hands back to SDL. A Remote Link peer sends a steady level once, so
+        /// waiting for the next change would leave the motors stopped. A
+        /// device on the haptic path, or with no SDL motors, gets the plain
+        /// stop and a cleared cache instead, so its next frame writes.</summary>
+        public void ResendScalar(ISdlInputDevice device)
+        {
+            if (device == null) return;
+            if (device.HasHaptic || !device.HasRumble)
+            {
+                StopDeviceForces(device);
+                return;
+            }
+            ushort left = LeftMotorSpeed, right = RightMotorSpeed;
+            bool delivered = left == 0 && right == 0
+                ? device.StopRumble()
+                : device.SetRumble(left, right, uint.MaxValue);
+            if (delivered)
+            {
+                _cachedLeftMotorSpeed = left;
+                _cachedRightMotorSpeed = right;
+                _scalarNeedsWrite = false;
+            }
+            else _scalarNeedsWrite = true;
+        }
+
         /// <summary>
         /// Stops all rumble on the device and resets cached state.
         /// </summary>

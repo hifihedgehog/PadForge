@@ -56,24 +56,30 @@ namespace PadForge.Engine.Common.BlissBox
         public const byte TypeUnflashed = 255;
 
         /// <summary>
-        /// The first of the four arrow buttons, or -1 when the firmware sends
-        /// none for this controller. Both generations send the four
-        /// directions as buttons of their own once opposite directions have
-        /// been pressed, which a D-pad cannot do and a dance mat does, and
-        /// keep doing so until another controller is detected:
+        /// The first of the four arrow buttons, or -1 when this controller has
+        /// none. Both generations send the four directions as buttons of their
+        /// own once opposite directions have been pressed, which a D-pad
+        /// cannot do and a dance mat does:
         /// <list type="bullet">
         /// <item>The 3.0 firmware ORs them into the second button byte,
-        /// buttons 10 to 13 (0x3295 to 0x32A9, cleared at 0x3163), for every
-        /// controller but the NES Zapper, which skips the D-pad code
-        /// (0x321E). PadForge's native poll uses the same four buttons.</item>
+        /// buttons 10 to 13 (0x3295 to 0x32A9), for every controller but the
+        /// NES Zapper, which skips the D-pad code (0x321E), until another
+        /// controller is detected (0x3163). PadForge's native poll uses the
+        /// same four buttons.</item>
         /// <item>GPA 4.86 writes them into the third, buttons 20 to 23 (0x34A1
         /// to 0x34B9), for every controller but the Genesis 3-button pad and
-        /// the FM Towns pad. The PC-FX pad sets two of those bits for its own
-        /// inputs (0x1684), so it keeps numbered names.</item>
+        /// the FM Towns pad, and keeps its latch (0x055E) as a setting it
+        /// reads back at power-up (0x373A). The PC-FX pad sets two of those
+        /// bits for its own inputs (0x1684).</item>
         /// </list>
+        /// Only a controller whose layout has a D-pad gets them. One without
+        /// cannot press opposite directions, and a keypad controller with no
+        /// 3.x layout, the Jaguar or the Atari 5200, carries keys on buttons
+        /// 10 to 13 (3.0 0x2099, 0x1BDA).
         /// </summary>
         public static int FirstArrowButton(byte type, byte major)
         {
+            if (HatName(type, major) == null) return -1;
             if (major == 3) return type == 28 ? -1 : 10;
             if (major >= 4) return type is 20 or 26 or 66 ? -1 : 20;
             return -1;
@@ -89,14 +95,14 @@ namespace PadForge.Engine.Common.BlissBox
 
         /// <summary>How many motors the adapter drives on this controller, as
         /// the API Tool offers them (rumble.cs): one, command 4, for the
-        /// GameCube, Dreamcast and N64 controllers and the Dreamcast fishing
-        /// rod (whose second motor the tool's own comment leaves unworked),
-        /// and two, commands 4 and 5, for the DualShock, DualShock 2, neGcon
-        /// and JogCon. Any other controller has none and is sent nothing: the
-        /// 3.0 firmware skips a controller poll after every write (0x090B,
-        /// 0x31C6). A one-motor pad takes command 4 alone because GPA 4.86's
-        /// Dreamcast driver runs command 5 at full power whatever strength it
-        /// is given (0x0C2A).</summary>
+        /// GameCube, Dreamcast and N64 controllers, and two, commands 4 and 5,
+        /// for the DualShock, DualShock 2, neGcon and JogCon. The tool shows
+        /// the Dreamcast fishing rod both motor controls, with a note that its
+        /// second motor is not worked out, and GPA 4.86 reads the rod through
+        /// its Dreamcast driver (0x0DE1), whose command 5 runs at full power
+        /// whatever strength it is given (0x0C2A), so it takes one. Any other
+        /// controller has none and is sent nothing: the 3.0 firmware skips a
+        /// controller poll after every write (0x090B, 0x31C6).</summary>
         public static int MotorCount(byte type) => type switch
         {
             9 or 16 or 19 or 73 => 1,
@@ -327,8 +333,9 @@ namespace PadForge.Engine.Common.BlissBox
         /// reports itself as 3.34 and copies them into Z and Rz, axes 2 and 5,
         /// as they come from the pad (GameCube 0x1042 to 0x104A, Saturn 0x19A4
         /// to 0x19DC). RetroArch's GameCube file binds its shoulders to
-        /// unsigned axes 6 and 7, which RetroArch ignores, and the Slider and
-        /// Dial those would be stay at their center there (0x311B).</summary>
+        /// unsigned axes 6 and 7, which RetroArch ignores. They would be the
+        /// Slider and Dial, which the GameCube driver never writes, so they
+        /// keep the center each report starts from (0x311B).</summary>
         private static readonly Dictionary<byte, Layout> Generation3 = new()
         {
             [0] = AtariJoystick,

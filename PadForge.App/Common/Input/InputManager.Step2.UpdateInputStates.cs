@@ -1145,12 +1145,16 @@ namespace PadForge.Common.Input
                 // and SetDeviceForces (SDL, and through it Buffalo's DirectInput
                 // effect plug-in when installed) is never reached. Change
                 // detection keeps the write off the polling cadence.
-                if (ud.ForceFeedbackState.TryRecordMotorSnapshot(combinedL, combinedR))
+                // Trigger Rumble Fold, as SDL's path applies it: the converter
+                // has no trigger motors.
+                ushort padixL = combinedL, padixR = combinedR;
+                ForceFeedbackState.FoldTriggersForDirectWriter(firstPadSetting, combinedLT, combinedRT, ref padixL, ref padixR);
+                if (ud.ForceFeedbackState.TryRecordMotorSnapshot(padixL, padixR))
                 {
                     // Same rule as the impulse path above: the snapshot records
                     // intent, not delivery, so a refused write must re-arm or
                     // the identical next frame never retries.
-                    if (!PadixConverterRawHidWriter.Write(ud.DevicePath, combinedL, combinedR))
+                    if (!PadixConverterRawHidWriter.Write(ud.DevicePath, padixL, padixR))
                         ud.ForceFeedbackState.MarkDirectWriteFailed();
                 }
                 return;
@@ -1164,9 +1168,11 @@ namespace PadForge.Common.Input
                 // running motor on with a fresh command every 100 ms, so only a
                 // change comes through here. A port still opening refuses, and
                 // the snapshot re-arms for the next frame.
-                if (ud.ForceFeedbackState.TryRecordMotorSnapshot(combinedL, combinedR))
+                ushort blissL = combinedL, blissR = combinedR;
+                ForceFeedbackState.FoldTriggersForDirectWriter(firstPadSetting, combinedLT, combinedRT, ref blissL, ref blissR);
+                if (ud.ForceFeedbackState.TryRecordMotorSnapshot(blissL, blissR))
                 {
-                    if (!BlissBoxRuntime.SetRumble(ud.DevicePath, combinedL, combinedR))
+                    if (!BlissBoxRuntime.SetRumble(ud.DevicePath, blissL, blissR))
                         ud.ForceFeedbackState.MarkDirectWriteFailed();
                 }
                 return;

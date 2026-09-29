@@ -1632,12 +1632,14 @@
                         </StackPanel>
 
                         <!-- DualShock 2 in a Bliss-Box port (issue #469): its twelve
-                             pressure buttons as chips, the key depth chips' shape,
-                             each with its pressure as a bar and a percent. The width
-                             fits the longest name in every language, German
-                             "Steuerkreuz Rechts" (116 DIP in Cascadia Code at 11 px),
-                             beside "100 %" (26.4 DIP at 9 px): at 118 all four German
-                             D-pad chips trimmed to the same "Steuerkreuz …". -->
+                             pressure buttons as chips, the key depth chips' parts,
+                             each with its pressure as a bar and a percent. The name
+                             has the chip's first line to itself: German "Steuerkreuz
+                             Rechts" is 116 DIP in Cascadia Code at 11 px, and at 118
+                             DIP with the percent beside it all four German D-pad
+                             chips trimmed to the same "Steuerkreuz …". At 136 DIP two
+                             chips fit the 284 DIP the detail column leaves, as two
+                             118 DIP chips did. -->
                         <StackPanel Visibility="{Binding HasBlissBoxPressure, Converter={StaticResource BoolToVisibilityConverter}}"
                                     Margin="0,0,0,8">
                             <TextBlock Text="{Binding Devices_BlissBoxPressure, Source={x:Static strings:Strings.Instance}}"
@@ -1650,24 +1652,24 @@
                                 </ItemsControl.ItemsPanel>
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Border CornerRadius="4" Margin="2" Padding="6,4" Width="164"
+                                        <Border CornerRadius="4" Margin="2" Padding="6,4" Width="136"
                                                 Style="{StaticResource RawCellBorder}">
                                             <StackPanel>
-                                                <Grid>
+                                                <TextBlock Text="{Binding Name}" FontSize="11" TextTrimming="CharacterEllipsis"
+                                                           Style="{StaticResource RawCellLabel}"/>
+                                                <Grid Margin="0,2,0,0">
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="*"/>
                                                         <ColumnDefinition Width="Auto"/>
                                                     </Grid.ColumnDefinitions>
-                                                    <TextBlock Text="{Binding Name}" FontSize="11" TextTrimming="CharacterEllipsis"
-                                                               Style="{StaticResource RawCellLabel}" VerticalAlignment="Center"/>
-                                                    <TextBlock Grid.Column="1" Text="{Binding DepthText}" FontSize="9" Margin="4,0,0,0"
+                                                    <ProgressBar Minimum="0" Maximum="1" Height="3" VerticalAlignment="Center"
+                                                                 Value="{Binding Depth, Mode=OneWay}"
+                                                                 Style="{StaticResource InstrumentBarRaw}"
+                                                                 Foreground="{DynamicResource ColdBrush}"/>
+                                                    <TextBlock Grid.Column="1" Text="{Binding DepthText}" FontSize="9" Margin="6,0,0,0"
                                                                FontFamily="{StaticResource TelemetryFontFamily}" VerticalAlignment="Center"
                                                                Foreground="{DynamicResource ColdBrush}"/>
                                                 </Grid>
-                                                <ProgressBar Minimum="0" Maximum="1" Height="3" Margin="0,3,0,0"
-                                                             Value="{Binding Depth, Mode=OneWay}"
-                                                             Style="{StaticResource InstrumentBarRaw}"
-                                                             Foreground="{DynamicResource ColdBrush}"/>
                                             </StackPanel>
                                         </Border>
                                     </DataTemplate>

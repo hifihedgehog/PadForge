@@ -2666,7 +2666,7 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Devices_PakRestore" xml:space="preserve"><value>Ripristina Controller Pak…</value></data>
   <data name="Devices_PakRestoreTooltip" xml:space="preserve"><value>Scrive un file .mpk da 32 KB sul Controller Pak di questo controller N64, sostituendo ogni salvataggio presente.</value></data>
   <data name="Devices_NativeArrows" xml:space="preserve"><value>Leggi le frecce una per una</value></data>
-  <data name="Devices_NativeArrowsTooltip" xml:space="preserve"><value>Chiede le direzioni direttamente a questo controller PlayStation, così sinistra e destra, o su e giù, vengono registrate insieme su un tappeto da ballo fin dal primo passo. Arrivano come i pulsanti Freccia su, giù, sinistra e destra, che il firmware 3.34 invia anche da solo dopo che sono state premute direzioni opposte. L'adattatore salta una delle proprie letture per ogni richiesta.</value></data>
+  <data name="Devices_NativeArrowsTooltip" xml:space="preserve"><value>Chiede le direzioni direttamente a questo controller PlayStation, così sinistra e destra, o su e giù, vengono registrate insieme su un tappeto da ballo fin dal primo passo. Arrivano come i pulsanti Freccia Su, Freccia Giù, Freccia Sinistra e Freccia Destra, che il firmware 3.34 invia anche da solo dopo che sono state premute direzioni opposte. L'adattatore salta una delle proprie letture per ogni richiesta.</value></data>
   <data name="Devices_BlissBoxPressure" xml:space="preserve"><value>Pressione del DualShock 2</value></data>
   <data name="BlissBoxPlayer_Title" xml:space="preserve"><value>Numero giocatore</value></data>
   <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>L'adattatore memorizza il numero e si ricollega come quel giocatore. Windows vede quindi un nuovo dispositivo, perciò riassegna la porta quando ricompare.</value></data>
@@ -2706,7 +2706,7 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="BlissBoxJob_TooManyErrors_Format" xml:space="preserve"><value>Il pak ha rifiutato troppe scritture, l'ultima al blocco {0}. Reinserisci il pak e riprova.</value></data>
   <data name="BlissBoxJob_NoReply" xml:space="preserve"><value>L'adattatore non ha risposto. Controlla che il controller sia collegato e riprova.</value></data>
   <data name="BlissBoxJob_OldFirmware" xml:space="preserve"><value>I trasferimenti del Controller Pak richiedono il firmware 3.0 o successivo sull'adattatore.</value></data>
-  <data name="BlissBoxJob_PlayerUnchanged" xml:space="preserve"><value>L'adattatore ha mantenuto il suo numero di giocatore. Riprova.</value></data>
+  <data name="BlissBoxJob_PlayerUnchanged" xml:space="preserve"><value>L'adattatore ha mantenuto il suo numero giocatore. Riprova.</value></data>
   <data name="Status_BlissBoxPlayer_Format" xml:space="preserve"><value>La porta ora è il giocatore {0}. Si ricollega come nuovo dispositivo.</value></data>
   <data name="Status_DreamcastScreen_Format" xml:space="preserve"><value>Schermo Dreamcast impostato su {0}.</value></data>
   <data name="Status_PakReading_Format" xml:space="preserve"><value>Lettura del Controller Pak: {0:P0}</value></data>

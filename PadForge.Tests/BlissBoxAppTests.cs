@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Windows;
@@ -154,6 +155,15 @@ namespace PadForge.Tests
             Assert.Equal(-1, BlissBoxControllers.FirstArrowButton(26, 4));
             Assert.Equal(-1, BlissBoxControllers.FirstArrowButton(66, 4));
             Assert.Equal(-1, BlissBoxControllers.FirstArrowButton(BlissBoxControllers.TypeDualShock2, 2));
+            // Only a pad with a D-pad can press opposite directions. The
+            // Jaguar and the Atari 5200 carry keypad keys on buttons 10 to 13
+            // on 3.x (3.0 0x2099, 0x1BDA), and the Zapper has no D-pad.
+            Assert.Equal(-1, BlissBoxControllers.FirstArrowButton(11, 3));
+            Assert.Equal(-1, BlissBoxControllers.FirstArrowButton(6, 3));
+            Assert.Equal(-1, BlissBoxControllers.FirstArrowButton(28, 4));
+            Assert.Equal(-1, BlissBoxControllers.FirstArrowButton(1, 3));
+            var jaguar = BlissBoxRuntime.NameObjects(new BlissBoxInfo(11, 0, 3, 34, 1), 8, RawJoystick(8, 24));
+            Assert.Equal("Button 10", jaguar.Single(o => o.IsButton && o.InputIndex == 10).Name);
 
             var ds2 = BlissBoxRuntime.NameObjects(new BlissBoxInfo(BlissBoxControllers.TypeDualShock2, 0, 3, 34, 1), 8, RawJoystick(8, 24));
             Assert.Equal("Up Arrow", ds2.Single(o => o.IsButton && o.InputIndex == 10).Name);
@@ -190,7 +200,8 @@ namespace PadForge.Tests
             Assert.False(BlissBoxControllers.IsTriggerAxis(19, 4, 2));
             Assert.False(BlissBoxControllers.IsTriggerAxis(9, 3, 6));
             string runtime = Repo("PadForge.App", "Common", "Input", "BlissBoxRuntime.cs");
-            Assert.Contains("return Find(ud)?.Session.LiveInfo is { } info && BlissBoxControllers.IsTriggerAxis(info.Type, info.Major, axis);", runtime);
+            Assert.Contains("return (session?.LiveInfo ?? session?.KnownInfo) is { } info", runtime);
+            Assert.Contains("&& BlissBoxControllers.IsTriggerAxis(info.Type, info.Major, axis);", runtime);
             Assert.Contains("PadForge.Common.Input.BlissBoxRuntime.RestsAtZero(dev, axis)",
                 Repo("PadForge.App", "Common", "Input", "InputManager.Step3.MappingSetEval.cs"));
         }
@@ -296,8 +307,8 @@ namespace PadForge.Tests
             Assert.Contains("if (!isXboxImpulse && !isVendorFfb && !isPadixConverter && !isBlissBox)", step2);
             Assert.Contains("else if ((isXboxImpulse || isPadixConverter || isBlissBox) && ud.Device == null)", step2);
             Assert.Contains("BlissBoxRuntime.SetRumble(ud.DevicePath, 0, 0);", step2);
-            Assert.Contains("if (!BlissBoxRuntime.SetRumble(ud.DevicePath, combinedL, combinedR))", step2);
-            int dispatch = step2.IndexOf("if (!BlissBoxRuntime.SetRumble(ud.DevicePath, combinedL, combinedR))", StringComparison.Ordinal);
+            Assert.Contains("if (!BlissBoxRuntime.SetRumble(ud.DevicePath, blissL, blissR))", step2);
+            int dispatch = step2.IndexOf("if (!BlissBoxRuntime.SetRumble(ud.DevicePath, blissL, blissR))", StringComparison.Ordinal);
             int sdl = step2.IndexOf("ud.ForceFeedbackState.SetDeviceForces(ud, ud.Device, firstPadSetting, _combinedVibration);", StringComparison.Ordinal);
             Assert.True(dispatch > 0 && sdl > dispatch, "the Bliss-Box dispatch must precede the SDL write");
 
@@ -470,24 +481,81 @@ namespace PadForge.Tests
         public void TheFirstCopyOfAnAdaptersPictureIsSavedAtOnce()
         {
             // Saved before the port writes over the original, not after the
-            // autosave's quiet time, which a crash, a kill or a reload beats.
-            string code = Repo("PadForge.App", "Services", "DreamcastScreenService.cs");
-            int copy = code.IndexOf("Update(port.InstanceGuid, d => d.AdapterPicture = Convert.ToBase64String(stored));", StringComparison.Ordinal);
-            int save = code.IndexOf("_saveNow();", copy, StringComparison.Ordinal);
-            int write = code.IndexOf("if (session.SetScreen(wire)) port.Wake();", copy, StringComparison.Ordinal);
-            Assert.True(copy > 0 && save > copy && write > save, "the copy is saved before the new picture reaches the port");
-            Assert.Contains("() => _settingsService?.MarkDirty(), () => _settingsService?.Save());",
-                Repo("PadForge.App", "Services", "InputService.BlissBox.cs"));
+            // autosave's quiet time, which a crash, a kill or a reload beats,
+            // and with the autosave's follow-ups, which a direct Save kept the
+            // timer from raising.
+            string wiring = Repo("PadForge.App", "Services", "InputService.BlissBox.cs");
+            Assert.Contains("() => _settingsService?.SaveNow() ?? true,", wiring);
+            Assert.Contains("() => _settingsService?.IsDirty != true);", wiring);
+            string settings = Repo("PadForge.App", "Services", "SettingsService.cs");
+            Assert.Contains("            Save();\n            if (IsDirty) return false;\n            AutoSaved?.Invoke(this, EventArgs.Empty);", settings);
+            string tick = Repo("PadForge.App", "Services", "DreamcastScreenService.cs");
+            int check = tick.IndexOf("if (!MayReplace(port.InstanceGuid, data, stored, wire)) continue;", StringComparison.Ordinal);
+            int write = tick.IndexOf("if (session.SetScreen(wire)) port.Wake();", check, StringComparison.Ordinal);
+            Assert.True(check > 0 && write > check);
         }
 
         [Fact]
         public void PlayTimeSurvivesAMomentOutOfThePort()
         {
             // The adapter searching for a moment, or the channel reopening, is
-            // not a new session. A pad gone for longer starts again.
-            Assert.Equal(500, DreamcastScreenService.PlayStart(null, 500));
-            Assert.Equal(1000, DreamcastScreenService.PlayStart((1000, 5000), 5000 + DreamcastScreenService.PlayTimeGraceMs));
-            Assert.Equal(20000, DreamcastScreenService.PlayStart((1000, 5000), 20000));
+            // not a new session. A pad gone for longer starts again. The port
+            // is never started, so no worker runs.
+            var service = new DreamcastScreenService(new SettingsViewModel(), null);
+            var port = new BlissBoxPort(@"\\?\hid#padforge-play-time-test", 0x0D04, Guid.NewGuid(), 1);
+            try
+            {
+                var pad = new BlissBoxInfo(BlissBoxControllers.TypeDreamcast, 0, 4, 86, 1);
+                Assert.True(service.TrackPad(port, pad, 0));
+                Assert.False(service.TrackPad(port, null, 5000));
+                Assert.False(service.TrackPad(port, new BlissBoxInfo(BlissBoxControllers.TypeNintendo64, 0, 4, 86, 1), 6000));
+                Assert.True(service.TrackPad(port, pad, 9000));
+                Assert.Equal(0, service.PlayTimeStart(port, 9000));
+                Assert.False(service.TrackPad(port, null, 9500));
+                long back = 9000 + DreamcastScreenService.PlayTimeGraceMs + 1;
+                Assert.True(service.TrackPad(port, pad, back));
+                Assert.Equal(back, service.PlayTimeStart(port, back));
+            }
+            finally { port.Dispose(); }
+        }
+
+        [Fact]
+        public void TheAdaptersPictureIsKeptUntilItsCopyIsOnDisk()
+        {
+            // The copy is the only one once the adapter's picture is
+            // replaced, and a save that failed leaves it in memory alone.
+            bool saves = false, clean = false;
+            var service = new DreamcastScreenService(new SettingsViewModel(), null, () => saves, () => clean);
+            var device = Guid.NewGuid();
+            var stored = new byte[192];
+            var wire = Enumerable.Repeat((byte)0xFF, 192).ToArray();
+            Assert.False(service.MayReplace(device, null, stored, wire));
+            Assert.Equal(Convert.ToBase64String(stored), service.Get(device).AdapterPicture);
+            Assert.False(service.MayReplace(device, service.Get(device), stored, wire));
+            clean = true;
+            Assert.True(service.MayReplace(device, service.Get(device), stored, wire));
+            // A save that works lets the first picture through at once.
+            saves = true;
+            clean = false;
+            Assert.True(service.MayReplace(Guid.NewGuid(), null, stored, wire));
+            // Nothing to replace, nothing to copy.
+            var same = Guid.NewGuid();
+            Assert.True(service.MayReplace(same, null, stored, (byte[])stored.Clone()));
+            Assert.Null(service.Get(same));
+        }
+
+        [Fact]
+        public void AnEmptyEntryNeverHidesARealOneForTheSameDevice()
+        {
+            var guid = Guid.NewGuid();
+            var loaded = BlissBoxPortData.Normalize(new[]
+            {
+                new BlissBoxPortData { Device = guid.ToString(), AdapterPicture = "broken" },
+                new BlissBoxPortData { Device = guid.ToString(), ScreenMode = DreamcastScreenMode.Clock, AdapterPicture = Convert.ToBase64String(new byte[192]) },
+            });
+            var kept = Assert.Single(loaded);
+            Assert.Equal(DreamcastScreenMode.Clock, kept.ScreenMode);
+            Assert.NotNull(kept.AdapterPicture);
         }
 
         [Fact]
@@ -780,11 +848,22 @@ namespace PadForge.Tests
         public void AFrameThatNeverArrivesCountsFromWhenItBecameCurrent()
         {
             var a = new byte[192]; a[0] = 0x80;
-            var show = new DreamcastShow(new List<byte[]> { a }, 200, 1, now: 0);
+            var show = new DreamcastShow(new List<byte[]> { a }, 1000, 1, now: 0);
             var other = new byte[192];
             Assert.Equal(a, show.Frame(other, DreamcastShow.DeliveryLimitMs - 1));
-            // Frame times hold to the guard's second whatever the action says.
             Assert.Null(show.Frame(other, DreamcastShow.DeliveryLimitMs));
+        }
+
+        [Fact]
+        public void AFrameHoldsTheGuardsSecondWhateverTheActionSays()
+        {
+            var a = new byte[192]; a[0] = 0x80;
+            var wire = BlissBoxScreen.ToWire(a);
+            var show = new DreamcastShow(new List<byte[]> { a }, 200, 1, now: 0);
+            Assert.Equal(a, show.Frame(wire, 0));
+            // 200 ms would have ended it here.
+            Assert.Equal(a, show.Frame(wire, 500));
+            Assert.Null(show.Frame(wire, DreamcastScreenService.MinFrameMs));
         }
 
         [Fact]
@@ -827,18 +906,84 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void TheHandOffGivesThePortTheRowsRecordedLevels()
+        public void TheSwitchsReopenKeepsTheRowsMotorState()
         {
-            // Zeroing the row's snapshot instead left a port running a level a
-            // relayed frame set while the snapshot called it stopped, so the
-            // peer's next zero never reached it.
+            // The reopen is the same SDL connection, so the levels a game or a
+            // Remote Link peer last asked for are still owed. A fresh state
+            // handed the new port zero, and a peer sends a steady level once.
+            var a = new SdlDeviceWrapper { SdlInstanceId = 7 };
+            var b = new SdlDeviceWrapper { SdlInstanceId = 7 };
+            var c = new SdlDeviceWrapper { SdlInstanceId = 8 };
+            try
+            {
+                Assert.True(UserDevice.SameConnection(a, a));
+                Assert.True(UserDevice.SameConnection(a, b));
+                Assert.False(UserDevice.SameConnection(a, c));
+                Assert.False(UserDevice.SameConnection(null, a));
+                Assert.False(UserDevice.SameConnection(new SdlDeviceWrapper(), new SdlDeviceWrapper()));
+            }
+            finally
+            {
+                a.Dispose();
+                b.Dispose();
+                c.Dispose();
+            }
+
             string code = Repo("PadForge.App", "Common", "Input", "InputManager.BlissBox.cs");
-            Assert.Contains("BlissBoxRuntime.SetRumble(ud.DevicePath, state.LeftMotorSpeed, state.RightMotorSpeed);", code);
-            Assert.DoesNotContain("StopDeviceForces(wrapper)", code);
+            Assert.Contains("BlissBoxRuntime.TakeMotors(ud.DevicePath, state.LeftMotorSpeed, state.RightMotorSpeed);", code);
+            Assert.Contains("try { ud.ForceFeedbackState.ResendScalar(ud.Device); } catch { }", code);
             // A switch that went off and on again between two passes hands
-            // every open port its row's level again.
+            // every open port its level again.
             Assert.Contains("if (enabled && toggled)", code);
             Assert.Contains("bool changed = (enabled || wasOn || toggled) && ReopenBlissBoxRows(enabled);", code);
+        }
+
+        [Fact]
+        public void SdlGetsTheRecordedLevelsBackAtOnce()
+        {
+            // Switched off, SDL takes the port with the level a game or a peer
+            // last asked for, not the next change, which a peer holding a
+            // steady level never sends.
+            var device = DispatchProxy.Create<ISdlInputDevice, RumbleRecorder>();
+            var recorder = (RumbleRecorder)(object)device;
+            var state = new ForceFeedbackState();
+            state.TryRecordMotorSnapshot(30000, 1000);
+            state.ResendScalar(device);
+            Assert.Equal((30000, 1000), Assert.Single(recorder.Sent));
+            // The cache now matches, so the same level is not written twice.
+            state.SetDeviceForces(null, device, new PadSetting(), new Vibration(30000, 1000));
+            Assert.Single(recorder.Sent);
+            state.TryRecordMotorSnapshot(0, 0);
+            state.ResendScalar(device);
+            Assert.Equal((0, 0), recorder.Sent[^1]);
+        }
+
+        [Fact]
+        public void TheTriggerFoldReachesTheDirectWriters()
+        {
+            // The Padix converter and a Bliss-Box port take only their body
+            // levels, so Trigger Rumble Fold did nothing there.
+            ushort left = 1000, right = 2000;
+            ForceFeedbackState.FoldTriggersForDirectWriter(new PadSetting { TriggerRumbleFold = "1" }, 5000, 500, ref left, ref right);
+            Assert.Equal((5000, 2000), (left, right));
+            ForceFeedbackState.FoldTriggersForDirectWriter(new PadSetting(), 9000, 9000, ref left, ref right);
+            Assert.Equal((5000, 2000), (left, right));
+            string step2 = Repo("PadForge.App", "Common", "Input", "InputManager.Step2.UpdateInputStates.cs");
+            Assert.Contains("ForceFeedbackState.FoldTriggersForDirectWriter(firstPadSetting, combinedLT, combinedRT, ref padixL, ref padixR);", step2);
+            Assert.Contains("ForceFeedbackState.FoldTriggersForDirectWriter(firstPadSetting, combinedLT, combinedRT, ref blissL, ref blissR);", step2);
+        }
+
+        public class RumbleRecorder : DispatchProxy
+        {
+            public readonly List<(int, int)> Sent = new();
+            protected override object Invoke(MethodInfo method, object[] args)
+            {
+                if (method.Name == "SetRumble") { Sent.Add(((ushort)args[0], (ushort)args[1])); return true; }
+                if (method.Name == "StopRumble") { Sent.Add((0, 0)); return true; }
+                if (method.Name == "get_HasRumble") return true;
+                if (method.ReturnType == typeof(void)) return null;
+                return method.ReturnType.IsValueType ? Activator.CreateInstance(method.ReturnType) : null;
+            }
         }
 
         [Fact]

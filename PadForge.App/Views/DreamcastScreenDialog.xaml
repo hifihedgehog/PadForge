@@ -46,7 +46,7 @@
                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                        Text="{Binding DreamcastScreen_Mode_Label, Source={x:Static strings:Strings.Instance}}"/>
             <ComboBox x:Name="ModeBox" MinWidth="220" SelectionChanged="ModeBox_SelectionChanged"/>
-            <reset:SettingResetButton Click="ResetMode_Click" Tag="" Visibility="{Binding Visibility, ElementName=ModeBox}" IsEnabled="{Binding IsEnabled, ElementName=ModeBox}" SettingLabel="{Binding DreamcastScreen_Mode_Label, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_ModeBox_49"/>
+            <reset:SettingResetButton Click="ResetMode_Click" Tag="" Visibility="{Binding Visibility, ElementName=ModeBox}" IsEnabled="{Binding IsEnabled, ElementName=ModeBox}" SettingLabel="{Binding DreamcastScreen_Mode_Label, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_ModeBox_48"/>
         </StackPanel>
 
         <!-- The VMU's 48 by 32 pixels, four screen pixels each. -->

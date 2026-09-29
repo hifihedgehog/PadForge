@@ -29,8 +29,10 @@ namespace PadForge.Common.Input
         /// <summary>The switch. The ports themselves open and close on Step
         /// 1's next pass, so the motors change hands at once here: switched
         /// on, an effect SDL started on a port stops, since SDL's rumble no
-        /// longer reaches the port to stop it. Switched off, each open port
-        /// stops its motors, since the game's next zero goes to SDL.</summary>
+        /// longer reaches the port to stop it, and the port's hand-off then
+        /// clears whatever that stop left on a GPA
+        /// (<see cref="TakeMotors"/>). Switched off, each open port stops its
+        /// motors, since the game's next zero goes to SDL.</summary>
         public static bool Enabled
         {
             get => BlissBoxApi.Enabled;
@@ -227,6 +229,19 @@ namespace PadForge.Common.Input
             return true;
         }
 
+        /// <summary>The hand-off from SDL: the port takes the row's recorded
+        /// levels and tells both motors again, which on a GPA clears a
+        /// one-motor pad's command-5 rumble that SDL's DirectInput effect can
+        /// start there (<see cref="BlissBoxSession.ResendMotors"/>).</summary>
+        public static void TakeMotors(string path, ushort large, ushort small)
+        {
+            var port = Find(path);
+            if (port == null) return;
+            port.Session.SetRumble(large, small);
+            port.Session.ResendMotors();
+            port.Wake();
+        }
+
         /// <summary>Crash path: every port stops its motors, and the caller
         /// waits up to <paramref name="timeoutMs"/> for the workers to send
         /// it, since a dying process may not outlive an asynchronous
@@ -261,13 +276,18 @@ namespace PadForge.Common.Input
         /// merge leaves at 0 whenever no DualShock 2 is in the port, and the
         /// axes the controller in the port names as its triggers
         /// (<see cref="BlissBoxControllers.IsTriggerAxis"/>). Read raw, the
-        /// port is a joystick, whose axes otherwise count as centered.</summary>
+        /// port is a joystick, whose axes otherwise count as centered. The
+        /// last controller identified answers through a reopen or a moment of
+        /// searching (<see cref="BlissBoxSession.KnownInfo"/>), so a trigger
+        /// at rest never reads as pressed there.</summary>
         public static bool RestsAtZero(UserDevice ud, int axis)
         {
             if (ud == null || !Enabled || !BlissBoxProtocol.IsPort(ud.VendorId, ud.ProdId)) return false;
             int first = PressureAxisBase(ud.Device);
             if (first >= 0 && axis >= first && axis < first + BlissBoxProtocol.PressureCount) return true;
-            return Find(ud)?.Session.LiveInfo is { } info && BlissBoxControllers.IsTriggerAxis(info.Type, info.Major, axis);
+            var session = Find(ud)?.Session;
+            return (session?.LiveInfo ?? session?.KnownInfo) is { } info
+                   && BlissBoxControllers.IsTriggerAxis(info.Type, info.Major, axis);
         }
 
         /// <summary>

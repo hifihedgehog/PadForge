@@ -2907,7 +2907,7 @@
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>画像</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>画像を追加…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>画像を削除</value></data>
-  <data name="Macro_Dreamcast_FrameTime" xml:space="preserve"><value>1 枚の表示時間</value></data>
+  <data name="Macro_Dreamcast_FrameTime" xml:space="preserve"><value>表示時間</value></data>
   <data name="Macro_Dreamcast_Repeat" xml:space="preserve"><value>繰り返し回数</value></data>
   <data name="MacroAction_SetChromaColor_Format" xml:space="preserve"><value>Chroma {0}（{1} ms）</value></data>
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>レイヤー{0}に切替</value></data>

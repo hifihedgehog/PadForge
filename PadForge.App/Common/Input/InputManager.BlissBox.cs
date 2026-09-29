@@ -183,15 +183,17 @@ namespace PadForge.Common.Input
         /// <summary>The moment a port's motors pass to the adapter's commands:
         /// an effect SDL started stops, and the port takes the levels the row
         /// last recorded, whichever writer recorded them (Step 2, a relayed
-        /// frame, or SDL's path before the switch). The port and the row's
-        /// motor snapshot then agree, so the change detection that gates
-        /// every later write holds for both. Zeroing the snapshot instead left
-        /// a port running a level its snapshot called stopped, and the next
-        /// zero never reached it. A row opened while the switch was off, on a
-        /// port SDL found no motors on, gets its motor cache here, since Step
-        /// 2 writes only rows that have one. False when another writer holds
-        /// the row's output gate, so the hand-off waits for a later pass, as
-        /// Step 2 skips a contested write.</summary>
+        /// frame, or SDL's path before the switch), and tells both motors
+        /// again (<see cref="BlissBoxRuntime.TakeMotors"/>). The row keeps its
+        /// motor state through the switch's reopen, which is the same SDL
+        /// connection (<see cref="UserDevice.SameConnection"/>), so a level a
+        /// Remote Link peer sent once is still there. The port and the row's
+        /// motor snapshot then agree, so the change detection that gates every
+        /// later write holds for both. A row opened while the switch was off,
+        /// on a port SDL found no motors on, gets its motor cache here, since
+        /// Step 2 writes only rows that have one. False when another writer
+        /// holds the row's output gate, so the hand-off waits for a later
+        /// pass, as Step 2 skips a contested write.</summary>
         private static bool HandMotorsToBlissBox(UserDevice ud)
         {
             if (ud?.Device is not SdlDeviceWrapper wrapper) return true;
@@ -202,19 +204,23 @@ namespace PadForge.Common.Input
             try
             {
                 var state = ud.ForceFeedbackState ??= new ForceFeedbackState();
-                BlissBoxRuntime.SetRumble(ud.DevicePath, state.LeftMotorSpeed, state.RightMotorSpeed);
+                BlissBoxRuntime.TakeMotors(ud.DevicePath, state.LeftMotorSpeed, state.RightMotorSpeed);
             }
             finally { System.Threading.Monitor.Exit(ud.OutputSync); }
             return true;
         }
 
-        /// <summary>Puts a row's motor cache back to rest after the switch
-        /// went off. False when another writer holds its output gate.</summary>
+        /// <summary>The motors back to SDL after the switch went off: SDL is
+        /// told the levels the row last recorded and the cache records them as
+        /// sent (<see cref="ForceFeedbackState.ResendScalar"/>). A Remote Link
+        /// peer sends a steady level once, and SDL's rumble was stopped when
+        /// the switch went on, so waiting for the next change would leave the
+        /// motors stopped. False when another writer holds the output gate.</summary>
         private static bool ResetBlissBoxRumbleCache(UserDevice ud)
         {
             if (ud.ForceFeedbackState == null || ud.Device == null) return true;
             if (!System.Threading.Monitor.TryEnter(ud.OutputSync)) return false;
-            try { ud.ForceFeedbackState.StopDeviceForces(ud.Device); } catch { }
+            try { ud.ForceFeedbackState.ResendScalar(ud.Device); } catch { }
             finally { System.Threading.Monitor.Exit(ud.OutputSync); }
             return true;
         }

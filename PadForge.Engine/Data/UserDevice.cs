@@ -816,15 +816,14 @@ namespace PadForge.Engine.Data
             ActuatorCount = actuatorCount;
 
             // Initialize force feedback state for devices with rumble or haptic
-            // FFB. A reload of the SAME device object (a web pad's capability
-            // refresh) keeps its cache: a fresh one forgets the rumble last
-            // sent, so a game's next zero looks like no change and the pad, or
-            // its page, rumbles on (#402). Decided here, before anything is
-            // published, so no disposable cache is ever visible to the polling
-            // thread. A different object is a new connection and starts clean.
+            // FFB. A reload of the SAME connection keeps its cache: a fresh one
+            // forgets the rumble last sent, so a game's next zero looks like no
+            // change and the pad, or its page, rumbles on (#402). Decided here,
+            // before anything is published, so no disposable cache is ever
+            // visible to the polling thread. A new connection starts clean.
             if (wrapper.HasRumble || wrapper.HasHaptic)
             {
-                if (ForceFeedbackState == null || !ReferenceEquals(Device, wrapper))
+                if (ForceFeedbackState == null || !SameConnection(Device, wrapper))
                     ForceFeedbackState = new ForceFeedbackState();
             }
 
@@ -840,6 +839,17 @@ namespace PadForge.Engine.Data
             }
             Device = wrapper;
         }
+
+        /// <summary>The same connection: the same device object, as a web
+        /// pad's capability refresh reloads it, or a fresh wrapper on the same
+        /// SDL instance, as the Bliss-Box switch reopens a port the other way
+        /// (#469). SDL counts the opens of one joystick, so its motors run on
+        /// whatever they were last told. Phase 1 opens only instances it does
+        /// not hold, so a replug always arrives as a new one.</summary>
+        internal static bool SameConnection(ISdlInputDevice current, ISdlInputDevice next)
+            => ReferenceEquals(current, next)
+               || (current is SdlDeviceWrapper old && next is SdlDeviceWrapper fresh
+                   && old.SdlInstanceId != 0 && old.SdlInstanceId == fresh.SdlInstanceId);
 
         /// <summary>
         /// Populates the device identity and capabilities from a <see cref="SdlKeyboardWrapper"/>.

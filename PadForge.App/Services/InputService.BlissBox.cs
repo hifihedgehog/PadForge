@@ -18,11 +18,14 @@ namespace PadForge.Services
         /// <summary>The Dreamcast screens and the ports' other choices (#469).</summary>
         internal DreamcastScreenService DreamcastScreen
             => _dreamcastScreen ??= new DreamcastScreenService(_mainVm.Settings,
-                () => _settingsService?.MarkDirty(), () => _settingsService?.Save());
+                () => _settingsService?.MarkDirty(),
+                () => _settingsService?.SaveNow() ?? true,
+                () => _settingsService?.IsDirty != true);
 
         /// <summary>Every UI tick, ungated by focus: a clock or a macro show
         /// on a VMU keeps running while PadForge sits behind a game. The
-        /// service holds itself to four passes a second.</summary>
+        /// service holds itself to four passes a second, and runs one at once
+        /// after a port's choices change.</summary>
         private void TickBlissBox()
         {
             if (BlissBoxRuntime.Ports.Length == 0) return;

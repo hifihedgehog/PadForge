@@ -2638,7 +2638,7 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Restaurar Controller Pak…</value></data>
   <data name="Devices_PakRestoreTooltip" xml:space="preserve"><value>Grava um arquivo .mpk de 32 KB no Controller Pak deste controle de N64, substituindo todos os saves dele.</value></data>
   <data name="Devices_NativeArrows" xml:space="preserve"><value>Ler as Setas Uma a Uma</value></data>
-  <data name="Devices_NativeArrowsTooltip" xml:space="preserve"><value>Pede as direções diretamente a este controle de PlayStation, para que esquerda e direita, ou cima e baixo, sejam registradas juntas em um tapete de dança desde o primeiro passo. Elas chegam como os botões Seta para Cima, Baixo, Esquerda e Direita, que o firmware 3.34 também envia por conta própria depois que direções opostas são pressionadas. O adaptador pula uma das próprias leituras a cada pedido.</value></data>
+  <data name="Devices_NativeArrowsTooltip" xml:space="preserve"><value>Pede as direções diretamente a este controle de PlayStation, para que esquerda e direita, ou cima e baixo, sejam registradas juntas em um tapete de dança desde o primeiro passo. Elas chegam como os botões Seta Cima, Seta Baixo, Seta Esquerda e Seta Direita, que o firmware 3.34 também envia por conta própria depois que direções opostas são pressionadas. O adaptador pula uma das próprias leituras a cada pedido.</value></data>
   <data name="Devices_BlissBoxPressure" xml:space="preserve"><value>Pressão do DualShock 2</value></data>
   <data name="BlissBoxPlayer_Title" xml:space="preserve"><value>Número do Jogador</value></data>
   <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>O adaptador guarda o número e se reconecta como esse jogador. O Windows então vê um dispositivo novo, então atribua a porta de novo quando ela voltar.</value></data>
@@ -2678,7 +2678,7 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="BlissBoxJob_TooManyErrors_Format" xml:space="preserve"><value>O pak recusou gravações demais, a última no bloco {0}. Encaixe o pak de novo e tente outra vez.</value></data>
   <data name="BlissBoxJob_NoReply" xml:space="preserve"><value>O adaptador não respondeu. Verifique se o controle está conectado e tente outra vez.</value></data>
   <data name="BlissBoxJob_OldFirmware" xml:space="preserve"><value>As transferências do Controller Pak precisam do firmware 3.0 ou posterior no adaptador.</value></data>
-  <data name="BlissBoxJob_PlayerUnchanged" xml:space="preserve"><value>O adaptador manteve o número de jogador. Tente outra vez.</value></data>
+  <data name="BlissBoxJob_PlayerUnchanged" xml:space="preserve"><value>O adaptador manteve o número do jogador. Tente outra vez.</value></data>
   <data name="Status_BlissBoxPlayer_Format" xml:space="preserve"><value>A porta agora é o jogador {0}. Ela se reconecta como um dispositivo novo.</value></data>
   <data name="Status_DreamcastScreen_Format" xml:space="preserve"><value>Tela do Dreamcast definida como {0}.</value></data>
   <data name="Status_PakReading_Format" xml:space="preserve"><value>Lendo o Controller Pak: {0:P0}</value></data>

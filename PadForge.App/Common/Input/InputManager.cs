@@ -1815,11 +1815,13 @@ namespace PadForge.Common.Input
 
                             // Keep device enumeration at a reduced rate so the
                             // Devices page still discovers newly connected controllers.
-                            if (_enumerationTimer.ElapsedMilliseconds >= 5000)
+                            // A change of the Bliss-Box switch runs it now (#469).
+                            if (_enumerationTimer.ElapsedMilliseconds >= 5000 || BlissBoxSwitchChanged)
                             {
                                 _enumerationTimer.Restart();
                                 UpdateDevices();
                             }
+                            RetryPendingBlissBoxRows();
                             FlydigiReprobeTick();
 
                             // Read input states even in idle mode so the Devices
@@ -1901,7 +1903,9 @@ namespace PadForge.Common.Input
                         Engine.Common.Mapping.SourceCoercion.BeginPollFrame();
 
                         long enumMs = 0;
-                        if (firstCycle || _enumerationTimer.ElapsedMilliseconds >= EnumerationIntervalMs)
+                        // A change of the Bliss-Box switch runs the sweep now,
+                        // so its rows, ports and motors move together (#469).
+                        if (firstCycle || _enumerationTimer.ElapsedMilliseconds >= EnumerationIntervalMs || BlissBoxSwitchChanged)
                         {
                             firstCycle = false;
                             _enumerationTimer.Restart();
@@ -1909,6 +1913,7 @@ namespace PadForge.Common.Input
                             UpdateDevices();
                             enumMs = (Stopwatch.GetTimestamp() - tsEnum) * 1000 / Stopwatch.Frequency;
                         }
+                        RetryPendingBlissBoxRows();
                         FlydigiReprobeTick();
 
                         using (EnterMenuPublication())

@@ -25,10 +25,12 @@ namespace PadForge.Services
         /// <summary>Every UI tick, ungated by focus: a clock or a macro show
         /// on a VMU keeps running while PadForge sits behind a game. The
         /// service holds itself to four passes a second, and runs one at once
-        /// after a port's choices change.</summary>
+        /// after a port's choices change. Once it exists it ticks with no port
+        /// open too, which drops the shows and requests of the ports that
+        /// closed.</summary>
         private void TickBlissBox()
         {
-            if (BlissBoxRuntime.Ports.Length == 0) return;
+            if (BlissBoxRuntime.Ports.Length == 0 && _dreamcastScreen == null) return;
             try { DreamcastScreen.Tick(); }
             catch { /* a failed pass is retried on the next tick */ }
         }

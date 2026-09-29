@@ -1637,9 +1637,9 @@
                              has the chip's first line to itself: German "Steuerkreuz
                              Rechts" is 116 DIP in Cascadia Code at 11 px, and at 118
                              DIP with the percent beside it all four German D-pad
-                             chips trimmed to the same "Steuerkreuz …". At 136 DIP two
-                             chips fit the 284 DIP the detail column leaves, as two
-                             118 DIP chips did. -->
+                             chips trimmed to the same "Steuerkreuz …". At 136 DIP, 140
+                             with the margins, two chips still fit a row of the detail
+                             column, as two 118 DIP chips did. -->
                         <StackPanel Visibility="{Binding HasBlissBoxPressure, Converter={StaticResource BoolToVisibilityConverter}}"
                                     Margin="0,0,0,8">
                             <TextBlock Text="{Binding Devices_BlissBoxPressure, Source={x:Static strings:Strings.Instance}}"

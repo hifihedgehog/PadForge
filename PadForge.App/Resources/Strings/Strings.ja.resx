@@ -2644,7 +2644,7 @@
   <data name="Devices_PakRestore" xml:space="preserve"><value>コントローラパックを復元…</value></data>
   <data name="Devices_PakRestoreTooltip" xml:space="preserve"><value>32 KB の .mpk ファイルをこの N64 コントローラーのコントローラパックに書き込み、中のセーブデータをすべて置き換えます。</value></data>
   <data name="Devices_NativeArrows" xml:space="preserve"><value>矢印を個別に読み取る</value></data>
-  <data name="Devices_NativeArrowsTooltip" xml:space="preserve"><value>この PlayStation コントローラーに方向を直接問い合わせ、ダンスマットで左右や上下の同時押しを最初のステップから検出できるようにします。方向は上・下・左・右矢印ボタンとして届きます。ファームウェア 3.34 は、逆方向が同時に押されたあとは同じボタンを自分でも送ります。アダプターは問い合わせのたびに自身の読み取りを 1 回省きます。</value></data>
+  <data name="Devices_NativeArrowsTooltip" xml:space="preserve"><value>この PlayStation コントローラーに方向を直接問い合わせ、ダンスマットで左右や上下の同時押しを最初のステップから検出できるようにします。方向は上・下・左・右矢印ボタンとして届きます。ファームウェア 3.34 は、逆方向が同時に押されたあとは同じボタンを自分でも送り、PadForge はそこで問い合わせをやめます。それまでアダプターは、自身によるコントローラーの読み取りの大半を省きます。</value></data>
   <data name="Devices_BlissBoxPressure" xml:space="preserve"><value>DualShock 2 の感圧</value></data>
   <data name="BlissBoxPlayer_Title" xml:space="preserve"><value>プレイヤー番号</value></data>
   <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>アダプターは番号を保存し、そのプレイヤーとして再接続します。Windows からは新しいデバイスに見えるため、ポートが戻ったら割り当てをやり直してください。</value></data>
@@ -2661,7 +2661,7 @@
   <data name="DreamcastScreen_Mode_Picture" xml:space="preserve"><value>選んだ画像</value></data>
   <data name="DreamcastScreen_Hint_Adapter" xml:space="preserve"><value>ビジュアルメモリにはアダプターが保存している画像が表示されます。PadForge は何も書き込まず、その後に画像を書き込んでいた場合は元の画像に戻します。</value></data>
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>ビジュアルメモリにアクティブなプロファイルの名前を表示し、プロファイルの切り替えに追従します。</value></data>
-  <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>ビジュアルメモリにプロファイル一覧でのアクティブなプロファイルの位置を表示します。既定のプロファイルは 0 です。</value></data>
+  <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>ビジュアルメモリにプロファイル一覧でのアクティブなプロファイルの位置を表示します。デフォルト プロファイルは 0 です。</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>ビジュアルメモリにアクティブなプロファイル自身の画像を表示し、画像がない場合は名前を表示します。画像はプロファイルごとに保存されます。</value></data>
   <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>ビジュアルメモリに時刻を表示し、1 分に 1 回書き換えます。アダプターは各画像を書き込み 10 万回の定格のメモリに保存します。24 時間表示し続けると、約 10 週間でこの回数に達します。</value></data>
   <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>PadForge がコントローラーを見つけてからの時間と分をビジュアルメモリに表示し、1 分に 1 回書き換えます。コントローラーがポートから 10 秒を超えて外れると、0 から数え直します。アダプターは各画像を書き込み 10 万回の定格のメモリに保存します。24 時間表示し続けると、約 10 週間でこの回数に達します。</value></data>

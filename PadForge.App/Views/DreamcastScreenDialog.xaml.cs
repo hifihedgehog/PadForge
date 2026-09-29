@@ -12,7 +12,7 @@ namespace PadForge.Views
     /// What a Dreamcast pad's VMU shows in a Bliss-Box port (issue #469).
     /// Works on a copy: nothing reaches the port or the profile until Save.
     /// The preview is drawn from the same composition the screen service
-    /// writes, so what it shows is what the VMU shows.
+    /// writes, so it shows what the chosen mode puts on the VMU.
     /// </summary>
     public partial class DreamcastScreenDialog : Wpf.Ui.Controls.FluentWindow
     {

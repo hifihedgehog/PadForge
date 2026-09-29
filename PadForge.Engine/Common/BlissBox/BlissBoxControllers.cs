@@ -72,10 +72,12 @@ namespace PadForge.Engine.Common.BlissBox
         /// reads back at power-up (0x373A). The PC-FX pad sets two of those
         /// bits for its own inputs (0x1684).</item>
         /// </list>
-        /// Only a controller whose layout has a D-pad gets them. One without
-        /// cannot press opposite directions, and a keypad controller with no
-        /// 3.x layout, the Jaguar or the Atari 5200, carries keys on buttons
-        /// 10 to 13 (3.0 0x2099, 0x1BDA).
+        /// Only a controller whose layout names a D-pad gets them. One
+        /// without a D-pad cannot press opposite directions, and the keypads
+        /// of the Jaguar and the Atari 5200 sit on buttons 10 to 13 on 3.0
+        /// (0x2099, 0x1BDA). A controller with a D-pad that no source lays
+        /// out keeps numbered names, and the firmware's arrows arrive on those
+        /// numbered buttons.
         /// </summary>
         public static int FirstArrowButton(byte type, byte major)
         {

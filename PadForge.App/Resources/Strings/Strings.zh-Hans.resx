@@ -2644,7 +2644,7 @@
   <data name="Devices_PakRestore" xml:space="preserve"><value>恢复控制器记忆卡…</value></data>
   <data name="Devices_PakRestoreTooltip" xml:space="preserve"><value>将 32 KB 的 .mpk 文件写入此 N64 手柄的控制器记忆卡，替换其中的所有存档。</value></data>
   <data name="Devices_NativeArrows" xml:space="preserve"><value>逐个读取方向箭头</value></data>
-  <data name="Devices_NativeArrowsTooltip" xml:space="preserve"><value>直接向此 PlayStation 手柄询问方向，使跳舞毯上的左和右、上和下从第一步起就可以同时识别。方向以上、下、左、右箭头按键传入。按过相反方向后，固件 3.34 也会自行发送这些按键。适配器每处理一次询问就会跳过一次自身的读取。</value></data>
+  <data name="Devices_NativeArrowsTooltip" xml:space="preserve"><value>直接向此 PlayStation 手柄询问方向，使跳舞毯上的左和右、上和下从第一步起就可以同时识别。方向以上、下、左、右箭头按键传入。按过相反方向后，固件 3.34 也会自行发送这些按键，PadForge 随即停止询问。在此之前，适配器会跳过自身对手柄的大部分读取。</value></data>
   <data name="Devices_BlissBoxPressure" xml:space="preserve"><value>DualShock 2 压力</value></data>
   <data name="BlissBoxPlayer_Title" xml:space="preserve"><value>玩家编号</value></data>
   <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>适配器会保存编号并以该玩家身份重新连接。Windows 随后会将其视为新设备，因此端口重新出现后请重新分配。</value></data>

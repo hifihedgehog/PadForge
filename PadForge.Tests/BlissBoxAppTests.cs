@@ -488,7 +488,8 @@ namespace PadForge.Tests
             Assert.Contains("() => _settingsService?.SaveNow() ?? true,", wiring);
             Assert.Contains("() => _settingsService?.IsDirty != true);", wiring);
             string settings = Repo("PadForge.App", "Services", "SettingsService.cs");
-            Assert.Contains("            Save();\n            if (IsDirty) return false;\n            AutoSaved?.Invoke(this, EventArgs.Empty);", settings);
+            Assert.Contains("            if (!Save()) return false;\n            AutoSaved?.Invoke(this, EventArgs.Empty);", settings);
+            Assert.Contains("public bool Save() => SaveToFile(_settingsFilePath);", settings);
             string tick = Repo("PadForge.App", "Services", "DreamcastScreenService.cs");
             int check = tick.IndexOf("if (!MayReplace(port.InstanceGuid, data, stored, wire)) continue;", StringComparison.Ordinal);
             int write = tick.IndexOf("if (session.SetScreen(wire)) port.Wake();", check, StringComparison.Ordinal);
@@ -807,23 +808,34 @@ namespace PadForge.Tests
         public void PressureAxesRestAtZero_WhicheverControllerIsInThePort()
         {
             // The #443 rule: an axis activator reads a centered axis as -1 at
-            // rest, so a pressure axis, 0 at rest, must count as one-way.
+            // rest, so a pressure axis, 0 at rest, must count as one-way. The
+            // rule follows the row's shape: a row read raw keeps it until Step
+            // 1 reopens the row through SDL's gamepad mapping, whatever the
+            // switch says meanwhile.
             bool saved = BlissBoxApi.Enabled;
+            var raw = new SdlDeviceWrapper();
             try
             {
-                var port = new UserDevice { VendorId = 0x16D0, ProdId = 0x0D04 };
+                var port = new UserDevice { VendorId = 0x16D0, ProdId = 0x0D04, Device = raw };
                 BlissBoxApi.Enabled = true;
                 Assert.True(InputManager.AxisRestsAtZero("Axis 8", port));
                 Assert.True(InputManager.AxisRestsAtZero("Axis 19", port));
                 Assert.False(InputManager.AxisRestsAtZero("Axis 7", port));
                 Assert.False(InputManager.AxisRestsAtZero("Axis 20", port));
                 // Another device's axis 8 is untouched.
-                Assert.False(InputManager.AxisRestsAtZero("Axis 8", new UserDevice { VendorId = 0x054C, ProdId = 0x0268 }));
-                // With the switch off the port reads through SDL's mapping.
+                Assert.False(InputManager.AxisRestsAtZero("Axis 8", new UserDevice { VendorId = 0x054C, ProdId = 0x0268, Device = raw }));
+                // Switched off, the row is still raw until the reopen.
                 BlissBoxApi.Enabled = false;
+                Assert.True(InputManager.AxisRestsAtZero("Axis 8", port));
+                // A row that is not an SDL joystick read raw never takes it.
+                port.Device = DispatchProxy.Create<ISdlInputDevice, RumbleRecorder>();
                 Assert.False(InputManager.AxisRestsAtZero("Axis 8", port));
             }
-            finally { BlissBoxApi.Enabled = saved; }
+            finally
+            {
+                BlissBoxApi.Enabled = saved;
+                raw.Dispose();
+            }
         }
 
         [Fact]
@@ -929,13 +941,49 @@ namespace PadForge.Tests
                 c.Dispose();
             }
 
+            // LoadFromSdlDevice keeps the row's motor state for the same
+            // connection and starts a new one for another. With the switch on
+            // a port owns its rumble, so it has a state at all.
+            bool savedSwitch = BlissBoxApi.Enabled;
+            var first = PortWrapper(7);
+            var second = PortWrapper(7);
+            var other = PortWrapper(8);
+            try
+            {
+                BlissBoxApi.Enabled = true;
+                var ud = new UserDevice();
+                ud.LoadFromSdlDevice(first);
+                var state = ud.ForceFeedbackState;
+                Assert.NotNull(state);
+                ud.LoadFromSdlDevice(second);
+                Assert.Same(state, ud.ForceFeedbackState);
+                ud.LoadFromSdlDevice(other);
+                Assert.NotSame(state, ud.ForceFeedbackState);
+            }
+            finally
+            {
+                BlissBoxApi.Enabled = savedSwitch;
+                first.Dispose();
+                second.Dispose();
+                other.Dispose();
+            }
+
             string code = Repo("PadForge.App", "Common", "Input", "InputManager.BlissBox.cs");
             Assert.Contains("BlissBoxRuntime.TakeMotors(ud.DevicePath, state.LeftMotorSpeed, state.RightMotorSpeed);", code);
             Assert.Contains("try { ud.ForceFeedbackState.ResendScalar(ud.Device); } catch { }", code);
             // A switch that went off and on again between two passes hands
             // every open port its level again.
-            Assert.Contains("if (enabled && toggled)", code);
+            Assert.Contains("            if (toggled)\n                foreach (var port in BlissBoxRuntime.Ports) _blissBoxHandoffs.Add(port.InstanceGuid);", code);
             Assert.Contains("bool changed = (enabled || wasOn || toggled) && ReopenBlissBoxRows(enabled);", code);
+        }
+
+        /// <summary>An unopened wrapper that reads as a Bliss-Box port.</summary>
+        private static SdlDeviceWrapper PortWrapper(uint instance)
+        {
+            var wrapper = new SdlDeviceWrapper { SdlInstanceId = instance };
+            typeof(SdlDeviceWrapper).GetProperty(nameof(SdlDeviceWrapper.VendorId)).SetValue(wrapper, (ushort)0x16D0);
+            typeof(SdlDeviceWrapper).GetProperty(nameof(SdlDeviceWrapper.ProductId)).SetValue(wrapper, (ushort)0x0D04);
+            return wrapper;
         }
 
         [Fact]
@@ -947,15 +995,36 @@ namespace PadForge.Tests
             var device = DispatchProxy.Create<ISdlInputDevice, RumbleRecorder>();
             var recorder = (RumbleRecorder)(object)device;
             var state = new ForceFeedbackState();
-            state.TryRecordMotorSnapshot(30000, 1000);
+            // A write SDL refused leaves the cache behind the level asked for.
+            recorder.Accept = false;
+            state.SetDeviceForces(null, device, new PadSetting(), new Vibration(30000, 1000));
+            recorder.Accept = true;
+            recorder.Sent.Clear();
             state.ResendScalar(device);
             Assert.Equal((30000, 1000), Assert.Single(recorder.Sent));
             // The cache now matches, so the same level is not written twice.
             state.SetDeviceForces(null, device, new PadSetting(), new Vibration(30000, 1000));
             Assert.Single(recorder.Sent);
+            // A resend SDL refuses is written again by the next frame.
+            recorder.Accept = false;
+            state.TryRecordMotorSnapshot(20000, 2000);
+            state.ResendScalar(device);
+            recorder.Accept = true;
+            recorder.Sent.Clear();
+            state.SetDeviceForces(null, device, new PadSetting(), new Vibration(20000, 2000));
+            Assert.Equal((20000, 2000), Assert.Single(recorder.Sent));
             state.TryRecordMotorSnapshot(0, 0);
             state.ResendScalar(device);
             Assert.Equal((0, 0), recorder.Sent[^1]);
+            // A port SDL found no motors on takes no level, and none is kept
+            // for the next switch-on to hand the port.
+            recorder.Rumble = false;
+            recorder.Sent.Clear();
+            state.TryRecordMotorSnapshot(30000, 1000);
+            state.ResendScalar(device);
+            Assert.Empty(recorder.Sent);
+            Assert.Equal(0, state.LeftMotorSpeed);
+            Assert.Equal(0, state.RightMotorSpeed);
         }
 
         [Fact]
@@ -971,19 +1040,131 @@ namespace PadForge.Tests
             string step2 = Repo("PadForge.App", "Common", "Input", "InputManager.Step2.UpdateInputStates.cs");
             Assert.Contains("ForceFeedbackState.FoldTriggersForDirectWriter(firstPadSetting, combinedLT, combinedRT, ref padixL, ref padixR);", step2);
             Assert.Contains("ForceFeedbackState.FoldTriggersForDirectWriter(firstPadSetting, combinedLT, combinedRT, ref blissL, ref blissR);", step2);
+            Assert.Contains("if (ud.ForceFeedbackState.TryRecordMotorSnapshot(blissL, blissR))", step2);
         }
 
         public class RumbleRecorder : DispatchProxy
         {
             public readonly List<(int, int)> Sent = new();
+            /// <summary>Whether SDL takes the writes.</summary>
+            public bool Accept = true;
+            /// <summary>Whether SDL found motors on the device.</summary>
+            public bool Rumble = true;
             protected override object Invoke(MethodInfo method, object[] args)
             {
-                if (method.Name == "SetRumble") { Sent.Add(((ushort)args[0], (ushort)args[1])); return true; }
-                if (method.Name == "StopRumble") { Sent.Add((0, 0)); return true; }
-                if (method.Name == "get_HasRumble") return true;
+                if (method.Name == "SetRumble") { Sent.Add(((ushort)args[0], (ushort)args[1])); return Accept; }
+                if (method.Name == "StopRumble") { Sent.Add((0, 0)); return Accept; }
+                if (method.Name == "get_HasRumble") return Rumble;
                 if (method.ReturnType == typeof(void)) return null;
                 return method.ReturnType.IsValueType ? Activator.CreateInstance(method.ReturnType) : null;
             }
+        }
+
+        [Fact]
+        public void TheLastControllersTriggersRestWhileTheAdapterSearches()
+        {
+            // A searching adapter's report holds 0x80 on its axes (3.0 0x3103
+            // to 0x3117, GPA 0x28B9), and the rest rule still reads the last
+            // controller's triggers there, which read 0x80 as half pressed.
+            var state = new CustomInputState();
+            for (int i = 0; i < 8; i++) state.Axis[i] = 0x80 * 257;
+            BlissBoxRuntime.RestTriggers(state, new BlissBoxInfo(9, 0, 3, 34, 1));
+            Assert.Equal(0, state.Axis[2]);
+            Assert.Equal(0, state.Axis[5]);
+            Assert.Equal(0x80 * 257, state.Axis[0]);
+            Assert.Equal(0x80 * 257, state.Axis[3]);
+            string runtime = Repo("PadForge.App", "Common", "Input", "BlissBoxRuntime.cs");
+            Assert.Contains("if (session.Info is { Searching: true } && session.KnownInfo is { } known)", runtime);
+            Assert.Contains("RestTriggers(state, known);", runtime);
+        }
+
+        [Fact]
+        public void TheAdaptersOwnArrowsStopTheNativePoll()
+        {
+            // Read from the report before the merge adds the poll's own, so
+            // the poll's arrows never count as the adapter's.
+            var state = new CustomInputState();
+            Assert.False(BlissBoxRuntime.ArrowsSent(state, 10));
+            state.Buttons[12] = true;
+            Assert.True(BlissBoxRuntime.ArrowsSent(state, 10));
+            Assert.False(BlissBoxRuntime.ArrowsSent(state, -1));
+            string runtime = Repo("PadForge.App", "Common", "Input", "BlissBoxRuntime.cs");
+            int check = runtime.IndexOf("if (session.NativeArrowsActive && ArrowsSent(state, firstArrow)) session.ArrowsLatched = true;", StringComparison.Ordinal);
+            int merge = runtime.IndexOf("MergeInto(state, session.Pressure, session.Arrows, PressureAxisBase(ud.Device), firstArrow);", StringComparison.Ordinal);
+            Assert.True(check > 0 && merge > check);
+        }
+
+        [Fact]
+        public void OnlyALaidOutControllerOrADualShock2NamesItsObjects()
+        {
+            // Any other controller keeps numbered names, as a raw joystick
+            // does, rather than the joystick's own axis names.
+            Assert.True(BlissBoxRuntime.NamesObjectsFor(new BlissBoxInfo(19, 0, 4, 86, 1)));
+            Assert.False(BlissBoxRuntime.NamesObjectsFor(new BlissBoxInfo(19, 0, 2, 30, 1)));
+            Assert.True(BlissBoxRuntime.NamesObjectsFor(new BlissBoxInfo(BlissBoxControllers.TypeDualShock2, 0, 2, 30, 1)));
+        }
+
+        [Fact]
+        public void TheSwitchMovesTheMotorsOnThePollThreadsNextCycle()
+        {
+            // The switch's own effects once ran on the UI thread at once while
+            // the rows and ports changed up to five seconds later, so a port
+            // sat silent or kept a level nothing could stop in between.
+            string runtime = Repo("PadForge.App", "Common", "Input", "BlissBoxRuntime.cs");
+            Assert.Contains("if (value != was) Interlocked.Increment(ref _generation);", runtime);
+            Assert.DoesNotContain("StopSdlRumbleOnPorts", runtime);
+            Assert.Contains("lock (_lock) _retiring.Add((closing.Path, done));", runtime);
+            string loop = Repo("PadForge.App", "Common", "Input", "InputManager.cs");
+            Assert.Contains("if (_enumerationTimer.ElapsedMilliseconds >= 5000 || BlissBoxSwitchChanged)", loop);
+            Assert.Contains("if (firstCycle || _enumerationTimer.ElapsedMilliseconds >= EnumerationIntervalMs || BlissBoxSwitchChanged)", loop);
+            Assert.Equal(2, loop.Split("RetryPendingBlissBoxRows();").Length - 1);
+            // SDL gets its level back only after the retired port's final stop,
+            // which on a GPA reaches the routines SDL's effect drives.
+            string phase = Repo("PadForge.App", "Common", "Input", "InputManager.BlissBox.cs");
+            int retiring = phase.IndexOf("if (BlissBoxRuntime.IsRetiring(ud.DevicePath)) return false;", StringComparison.Ordinal);
+            int resend = phase.IndexOf("try { ud.ForceFeedbackState.ResendScalar(ud.Device); } catch { }", StringComparison.Ordinal);
+            Assert.True(retiring > 0 && resend > retiring);
+            int sync = phase.IndexOf("var opened = BlissBoxRuntime.Sync(rows);", StringComparison.Ordinal);
+            int queue = phase.IndexOf("if (wasOn || toggled) QueueBlissBoxCacheResets();", StringComparison.Ordinal);
+            Assert.True(sync > 0 && queue > sync);
+        }
+
+        [Fact]
+        public void ARelayedFrameReachesTheRowsReopenedWrapper()
+        {
+            // The exposure keeps the wrapper it was built with for up to 2 s,
+            // and the switch's reopen swaps it, so a peer's stop sent then was
+            // dropped with the port still running its level.
+            string code = Repo("PadForge.App", "Services", "InputService.cs");
+            Assert.Contains("|| !UserDevice.SameConnection(source, live)) return;", code);
+            Assert.Contains("ApplyRemoteOutput(effect, live, device, frame.PeerFingerprint,", code);
+        }
+
+        [Fact]
+        public void ACopyStaysHeldWhenItsSaveThrows()
+        {
+            // The hold was recorded only after the save returned, so a save
+            // that threw let the next pass replace the picture with the copy
+            // in memory alone.
+            bool fail = true;
+            var service = new DreamcastScreenService(new SettingsViewModel(), null,
+                () => fail ? throw new InvalidOperationException() : true, () => false);
+            var device = Guid.NewGuid();
+            var stored = new byte[192];
+            var wire = Enumerable.Repeat((byte)0xFF, 192).ToArray();
+            Assert.Throws<InvalidOperationException>(() => service.MayReplace(device, null, stored, wire));
+            fail = false;
+            Assert.False(service.MayReplace(device, service.Get(device), stored, wire));
+        }
+
+        [Fact]
+        public void TheScreenServiceTicksWithNoPortOpen()
+        {
+            // A show playing or queued when the last port closed resumed on
+            // the next port for the same device, since nothing ticked the
+            // service while no port was open.
+            string code = Repo("PadForge.App", "Services", "InputService.BlissBox.cs");
+            Assert.Contains("if (BlissBoxRuntime.Ports.Length == 0 && _dreamcastScreen == null) return;", code);
         }
 
         [Fact]

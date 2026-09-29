@@ -2644,7 +2644,7 @@
   <data name="Devices_PakRestore" xml:space="preserve"><value>컨트롤러 팩 복원…</value></data>
   <data name="Devices_PakRestoreTooltip" xml:space="preserve"><value>32KB .mpk 파일을 이 N64 컨트롤러의 컨트롤러 팩에 쓰고, 팩의 모든 저장 데이터를 바꿉니다.</value></data>
   <data name="Devices_NativeArrows" xml:space="preserve"><value>화살표를 하나씩 읽기</value></data>
-  <data name="Devices_NativeArrowsTooltip" xml:space="preserve"><value>이 PlayStation 컨트롤러에 방향을 직접 요청해 댄스 매트에서 왼쪽과 오른쪽, 또는 위와 아래를 첫 스텝부터 함께 인식하게 합니다. 방향은 위·아래·왼쪽·오른쪽 화살표 버튼으로 들어오며, 펌웨어 3.34는 반대 방향이 함께 눌린 뒤에는 같은 버튼을 스스로도 보냅니다. 어댑터는 요청마다 자체 읽기를 한 번 건너뜁니다.</value></data>
+  <data name="Devices_NativeArrowsTooltip" xml:space="preserve"><value>이 PlayStation 컨트롤러에 방향을 직접 요청해 댄스 매트에서 왼쪽과 오른쪽, 또는 위와 아래를 첫 스텝부터 함께 인식하게 합니다. 방향은 위·아래·왼쪽·오른쪽 화살표 버튼으로 들어오며, 펌웨어 3.34는 반대 방향이 함께 눌린 뒤에는 같은 버튼을 스스로도 보내고, PadForge는 그때 요청을 멈춥니다. 그때까지 어댑터는 컨트롤러를 직접 읽는 작업의 대부분을 건너뜁니다.</value></data>
   <data name="Devices_BlissBoxPressure" xml:space="preserve"><value>DualShock 2 압력</value></data>
   <data name="BlissBoxPlayer_Title" xml:space="preserve"><value>플레이어 번호</value></data>
   <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>어댑터가 번호를 저장하고 해당 플레이어로 다시 연결됩니다. 그러면 Windows에는 새 장치로 보이므로, 포트가 다시 나타나면 다시 할당하세요.</value></data>
@@ -2661,7 +2661,7 @@
   <data name="DreamcastScreen_Mode_Picture" xml:space="preserve"><value>고른 그림</value></data>
   <data name="DreamcastScreen_Hint_Adapter" xml:space="preserve"><value>VMU에 어댑터가 저장한 그림이 표시됩니다. PadForge는 아무것도 쓰지 않으며, 그 사이에 그림을 쓴 적이 있으면 처음 있던 그림으로 되돌립니다.</value></data>
   <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>VMU에 활성 프로필의 이름이 표시되며 프로필을 바꿀 때마다 따라 바뀝니다.</value></data>
-  <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>VMU에 프로필 목록에서 활성 프로필의 순서가 표시됩니다. 기본 프로필은 0입니다.</value></data>
+  <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>VMU에 프로필 목록에서 활성 프로필의 순서가 표시됩니다. 기본값 프로필은 0입니다.</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>VMU에 활성 프로필 자체의 그림이 표시되며, 그림이 없으면 이름이 표시됩니다. 프로필마다 자기 그림을 따로 보관합니다.</value></data>
   <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU에 현재 시각이 표시되며 1분에 한 번 다시 씁니다. 어댑터는 각 그림을 10만 회 쓰기 수명의 메모리에 저장하며, 24시간 계속 표시하면 약 10주 만에 그 수명에 도달합니다.</value></data>
   <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>PadForge가 컨트롤러를 찾은 뒤 지난 시간과 분이 VMU에 표시되며 1분에 한 번 다시 씁니다. 컨트롤러가 10초 넘게 포트에서 빠지면 0부터 다시 셉니다. 어댑터는 각 그림을 10만 회 쓰기 수명의 메모리에 저장하며, 24시간 계속 표시하면 약 10주 만에 그 수명에 도달합니다.</value></data>

@@ -103,11 +103,14 @@ namespace PadForge.Services
 
     /// <summary>
     /// The VMU screens of the Dreamcast pads in Bliss-Box ports (issue #469),
-    /// and the ports' other choices. Ticked from the dashboard cadence on the
-    /// UI thread, where WPF draws the text. Each tick decides the picture a
-    /// port should show and hands it to the port's session, which writes it
-    /// only when it differs from the one the adapter holds and no sooner than
-    /// a second after the last write (the EEPROM guard).
+    /// and the ports' other choices. Ticked on the UI thread, where WPF draws
+    /// the text, from the UI timer whether or not PadForge has focus, and for
+    /// as long as it exists, so the shows and requests of ports that closed
+    /// are dropped rather than kept for the next port on the same device.
+    /// Each tick decides the picture a port should show and hands it to the
+    /// port's session, which writes it only when it differs from the one the
+    /// adapter holds and no sooner than a second after the last write (the
+    /// EEPROM guard).
     ///
     /// <para>Before PadForge first replaces a picture, the adapter's own is
     /// kept, so Adapter mode can write it back, and the settings are saved
@@ -168,11 +171,11 @@ namespace PadForge.Services
 
         /// <summary>The macro loops' Show Dreamcast Screen, from the poll
         /// thread: queued, and started on the next tick for the Dreamcast pads
-        /// that feed the slot.</summary>
+        /// that feed the slot. A request no port is open for has no pad to
+        /// play on, and one queued as the last port closes is dropped by the
+        /// next tick.</summary>
         public static void RequestShow(int padIndex, string frames, int frameMs, int repeat)
         {
-            // Nothing drains the queue while no port is open, so a show with
-            // no Dreamcast pad to play on is dropped rather than kept.
             if (BlissBoxRuntime.Ports.Length == 0) return;
             if (_requests.Count >= MaxQueuedShows) _requests.TryDequeue(out _);
             _requests.Enqueue(new ShowRequest(padIndex, frames, frameMs, repeat));
@@ -281,7 +284,9 @@ namespace PadForge.Services
             if (string.IsNullOrEmpty(data?.AdapterPicture))
             {
                 Update(device, d => d.AdapterPicture = Convert.ToBase64String(stored));
-                if (!_saveNow()) _unsavedCopies.Add(device);
+                // Held before the save, so a save that throws leaves the hold.
+                _unsavedCopies.Add(device);
+                if (_saveNow()) _unsavedCopies.Remove(device);
             }
             if (!_unsavedCopies.Contains(device)) return true;
             // A later save, the autosave's own retry among them, carries it.
@@ -297,7 +302,7 @@ namespace PadForge.Services
             => record is { } r && now - r.Seen <= PlayTimeGraceMs ? r.Start : now;
 
         /// <summary>Drops the play-time starts and shows of ports that have
-        /// closed.</summary>
+        /// closed, all of them once the last port has.</summary>
         private void Prune(BlissBoxPort[] ports)
         {
             List<BlissBoxPort> gone = null;

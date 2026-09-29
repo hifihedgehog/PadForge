@@ -846,7 +846,7 @@ namespace PadForge.Engine.Data
         /// (#469). SDL counts the opens of one joystick, so its motors run on
         /// whatever they were last told. Phase 1 opens only instances it does
         /// not hold, so a replug always arrives as a new one.</summary>
-        internal static bool SameConnection(ISdlInputDevice current, ISdlInputDevice next)
+        public static bool SameConnection(ISdlInputDevice current, ISdlInputDevice next)
             => ReferenceEquals(current, next)
                || (current is SdlDeviceWrapper old && next is SdlDeviceWrapper fresh
                    && old.SdlInstanceId != 0 && old.SdlInstanceId == fresh.SdlInstanceId);

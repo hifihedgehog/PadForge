@@ -1962,7 +1962,8 @@ namespace PadForge.Engine
         /// Bliss-Box port's motors pass to the adapter's commands, so an
         /// effect SDL started before is not left running (#469). On a GPA the
         /// stop itself can reach a one-motor pad's command-5 routine, which
-        /// the port's session clears right after (BlissBoxRuntime.TakeMotors).</summary>
+        /// the port's session clears in its first step with report 17 read
+        /// (BlissBoxRuntime.TakeMotors).</summary>
         public void StopSdlRumble()
         {
             if (Joystick != IntPtr.Zero && _hasRumble)

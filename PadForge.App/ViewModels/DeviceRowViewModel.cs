@@ -947,7 +947,8 @@ namespace PadForge.ViewModels
         }
 
         private bool _showControllerPak;
-        /// <summary>An N64 controller is in the port.</summary>
+        /// <summary>An N64 controller is in the port, on an adapter with
+        /// firmware 3.0 or later, whose native channel the pak rides.</summary>
         public bool ShowControllerPak
         {
             get => _showControllerPak;

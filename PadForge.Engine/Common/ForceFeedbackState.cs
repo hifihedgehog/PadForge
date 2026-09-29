@@ -227,14 +227,22 @@ namespace PadForge.Engine
         /// spent a time under another writer: a Bliss-Box port the switch
         /// hands back to SDL. A Remote Link peer sends a steady level once, so
         /// waiting for the next change would leave the motors stopped. A
-        /// device on the haptic path, or with no SDL motors, gets the plain
-        /// stop and a cleared cache instead, so its next frame writes.</summary>
+        /// device on the haptic path gets the plain stop and a cleared cache
+        /// instead, so its next frame writes. A device with no SDL motors
+        /// takes no level, so the recorded ones are dropped: kept, they would
+        /// go back to the port at the next switch-on however long ago a game
+        /// or a peer ended them.</summary>
         public void ResendScalar(ISdlInputDevice device)
         {
             if (device == null) return;
-            if (device.HasHaptic || !device.HasRumble)
+            if (device.HasHaptic)
             {
                 StopDeviceForces(device);
+                return;
+            }
+            if (!device.HasRumble)
+            {
+                ForgetForces();
                 return;
             }
             ushort left = LeftMotorSpeed, right = RightMotorSpeed;
@@ -272,13 +280,20 @@ namespace PadForge.Engine
                 return;
             }
 
-            // Impulse triggers stop in parallel — different SDL handle
-            // (gamepad vs joystick) but the same "kill all motors" semantic.
+            // Impulse triggers stop in parallel, through the gamepad handle
+            // rather than the joystick's.
             if (device.HasRumbleTriggers && device.GamepadHandle != IntPtr.Zero)
             {
                 SDL_RumbleGamepadTriggers(device.GamepadHandle, 0, 0, 0);
             }
 
+            ForgetForces();
+        }
+
+        /// <summary>Every recorded level and cache back to rest, with no
+        /// write to the device.</summary>
+        private void ForgetForces()
+        {
             _cachedLeftMotorSpeed = 0;
             _cachedRightMotorSpeed = 0;
             _cachedLeftTriggerMotorSpeed = 0;

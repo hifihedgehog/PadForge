@@ -25,14 +25,15 @@ namespace PadForge.Common.Input
         private static readonly object _lock = new();
         private static BlissBoxPort[] _ports = Array.Empty<BlissBoxPort>();
         private static int _generation;
+        // Ports retired from Sync whose workers may still be sending their
+        // final stop, by path. Under _lock.
+        private static readonly List<(string Path, Task Done)> _retiring = new();
 
-        /// <summary>The switch. The ports themselves open and close on Step
-        /// 1's next pass, so the motors change hands at once here: switched
-        /// on, an effect SDL started on a port stops, since SDL's rumble no
-        /// longer reaches the port to stop it, and the port's hand-off then
-        /// clears whatever that stop left on a GPA
-        /// (<see cref="TakeMotors"/>). Switched off, each open port stops its
-        /// motors, since the game's next zero goes to SDL.</summary>
+        /// <summary>The switch. A change counts in <see cref="Generation"/>,
+        /// which brings Step 1's next pass forward to the poll thread's next
+        /// cycle, and the motors change hands there, in order: the rows
+        /// reopen, the ports open or retire, and the levels move
+        /// (<c>InputManager.UpdateBlissBoxPorts</c>).</summary>
         public static bool Enabled
         {
             get => BlissBoxApi.Enabled;
@@ -40,31 +41,29 @@ namespace PadForge.Common.Input
             {
                 bool was = BlissBoxApi.Enabled;
                 BlissBoxApi.Enabled = value;
-                if (value == was) return;
-                Interlocked.Increment(ref _generation);
-                if (value) StopSdlRumbleOnPorts();
-                else
-                    foreach (var port in Ports)
-                        if (port.Session.SetRumble(0, 0)) port.Wake();
+                if (value != was) Interlocked.Increment(ref _generation);
             }
-        }
-
-        private static void StopSdlRumbleOnPorts()
-        {
-            var devices = SettingsManager.UserDevices;
-            if (devices == null) return;
-            var wrappers = new List<SdlDeviceWrapper>();
-            lock (devices.SyncRoot)
-                foreach (var ud in devices.Items)
-                    if (ud?.Device is SdlDeviceWrapper wrapper && BlissBoxProtocol.IsPort(ud.VendorId, ud.ProdId))
-                        wrappers.Add(wrapper);
-            foreach (var wrapper in wrappers)
-                try { wrapper.StopSdlRumble(); } catch { }
         }
 
         /// <summary>Counts the switch's changes, so Step 1 sees one that went
         /// off and on again between two of its passes.</summary>
         public static int Generation => Volatile.Read(ref _generation);
+
+        /// <summary>True while a port retired for this path may still send
+        /// its final stop: its worker has not let go of the channel. The
+        /// motors go back to SDL only after, or that stop would end the level
+        /// SDL was just given.</summary>
+        public static bool IsRetiring(string path)
+        {
+            if (string.IsNullOrEmpty(path)) return false;
+            lock (_lock)
+            {
+                _retiring.RemoveAll(r => r.Done.IsCompleted);
+                foreach (var r in _retiring)
+                    if (string.Equals(r.Path, path, StringComparison.OrdinalIgnoreCase)) return true;
+            }
+            return false;
+        }
 
         /// <summary>The open ports, a snapshot safe to walk on any thread.</summary>
         public static BlissBoxPort[] Ports => Volatile.Read(ref _ports);
@@ -138,7 +137,8 @@ namespace PadForge.Common.Input
                     // The join waits out a transfer in flight, never the poll
                     // thread's time.
                     var closing = port;
-                    Task.Run(closing.Dispose);
+                    var done = Task.Run(closing.Dispose);
+                    lock (_lock) _retiring.Add((closing.Path, done));
                     RaiseChanged(closing);
                 }
             }
@@ -193,16 +193,62 @@ namespace PadForge.Common.Input
         /// whatever the report already holds there. The state is a fresh
         /// pooled one each read, so a port that stops publishing leaves them
         /// at rest.
+        ///
+        /// <para>While the adapter searches, the last controller's trigger
+        /// axes are put at rest. Its report then holds the idle values, 0x80
+        /// on the axes (3.0 0x3103 to 0x3117, GPA 0x28B9 from RAM 0x02F0), or
+        /// 0 on Z and Rz in the modes that clear them (3.0 0x310C, GPA
+        /// 0x28C4), and the rest rule still reads those axes as the last
+        /// controller's triggers (<see cref="RestsAtZero"/>), which would read
+        /// 0x80 as half pressed.</para>
         /// </summary>
         public static void Merge(UserDevice ud, CustomInputState state)
         {
+            if (state == null || ud == null || !OpenedRaw(ud.Device)) return;
             var port = Find(ud);
-            if (port == null || state == null) return;
+            if (port == null) return;
             var session = port.Session;
-            if (session.LiveInfo is not { } info) return;
-            MergeInto(state, session.Pressure, session.Arrows, PressureAxisBase(ud.Device),
-                BlissBoxControllers.FirstArrowButton(info.Type, info.Major));
+            if (session.LiveInfo is { } info)
+            {
+                int firstArrow = BlissBoxControllers.FirstArrowButton(info.Type, info.Major);
+                // Arrows in the report itself, read before the poll's are
+                // added, mean the adapter's latch sends them, and the native
+                // poll can stop (BlissBoxSession.ArrowsLatched).
+                if (session.NativeArrowsActive && ArrowsSent(state, firstArrow)) session.ArrowsLatched = true;
+                MergeInto(state, session.Pressure, session.Arrows, PressureAxisBase(ud.Device), firstArrow);
+                return;
+            }
+            if (session.Info is { Searching: true } && session.KnownInfo is { } known)
+                RestTriggers(state, known);
         }
+
+        /// <summary>True when any of the four arrow buttons is down in the
+        /// state. For a 3.x PlayStation digital pad, whose layout leaves
+        /// buttons 10 to 13 unnamed, only the firmware's latch sets them
+        /// (0x3295 to 0x32A9).</summary>
+        internal static bool ArrowsSent(CustomInputState state, int firstArrowButton)
+        {
+            if (firstArrowButton < 0) return false;
+            for (int i = 0; i < BlissBoxControllers.ArrowNames.Length; i++)
+                if (state.Buttons[firstArrowButton + i]) return true;
+            return false;
+        }
+
+        /// <summary>Puts the axes this controller names as triggers at their
+        /// rest, 0.</summary>
+        internal static void RestTriggers(CustomInputState state, BlissBoxInfo known)
+        {
+            for (int axis = 0; axis < state.Axis.Length; axis++)
+                if (BlissBoxControllers.IsTriggerAxis(known.Type, known.Major, axis)) state.Axis[axis] = 0;
+        }
+
+        /// <summary>A port's row as the switch left it: read raw, the shape
+        /// the port's names, merge and rest rule describe. The switch changes
+        /// the shape on Step 1's next pass, so a row keeps the port's rules
+        /// until then, and a row read through SDL's gamepad mapping never
+        /// takes them.</summary>
+        private static bool OpenedRaw(ISdlInputDevice device)
+            => device is SdlDeviceWrapper wrapper && wrapper.GameController == IntPtr.Zero;
 
         internal static void MergeInto(CustomInputState state, byte[] pressure, int arrows, int firstPressureAxis, int firstArrowButton)
         {
@@ -267,9 +313,16 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>True when a port names this row's objects, so the picker
-        /// shows its names rather than numbers.</summary>
+        /// shows its names rather than numbers: a controller a source lays
+        /// out, or a DualShock 2, whose pressure axes carry names on every
+        /// firmware. Any other controller keeps numbered names, as a raw
+        /// joystick does.</summary>
         public static bool NamesObjects(UserDevice ud)
-            => Enabled && Find(ud)?.Session.LiveInfo != null;
+            => ud != null && OpenedRaw(ud.Device) && Find(ud)?.Session.LiveInfo is { } info
+               && NamesObjectsFor(info);
+
+        internal static bool NamesObjectsFor(BlissBoxInfo info)
+            => BlissBoxControllers.HasLayout(info.Type, info.Major) || BlissBoxControllers.HasPressure(info.Type);
 
         /// <summary>True for a port's axes that rest at 0 and travel one way,
         /// a trigger's shape (the #443 rule): the pressure axes, which the
@@ -277,12 +330,15 @@ namespace PadForge.Common.Input
         /// axes the controller in the port names as its triggers
         /// (<see cref="BlissBoxControllers.IsTriggerAxis"/>). Read raw, the
         /// port is a joystick, whose axes otherwise count as centered. The
-        /// last controller identified answers through a reopen or a moment of
-        /// searching (<see cref="BlissBoxSession.KnownInfo"/>), so a trigger
-        /// at rest never reads as pressed there.</summary>
+        /// last controller identified answers through a reopen and while the
+        /// adapter searches (<see cref="BlissBoxSession.KnownInfo"/>), and the
+        /// merge puts those axes at rest while it searches, so a trigger at
+        /// rest never reads as pressed there. The rule follows the row's
+        /// shape, not the switch, so it holds until Step 1 reopens the
+        /// row.</summary>
         public static bool RestsAtZero(UserDevice ud, int axis)
         {
-            if (ud == null || !Enabled || !BlissBoxProtocol.IsPort(ud.VendorId, ud.ProdId)) return false;
+            if (ud == null || !BlissBoxProtocol.IsPort(ud.VendorId, ud.ProdId) || !OpenedRaw(ud.Device)) return false;
             int first = PressureAxisBase(ud.Device);
             if (first >= 0 && axis >= first && axis < first + BlissBoxProtocol.PressureCount) return true;
             var session = Find(ud)?.Session;
@@ -296,11 +352,11 @@ namespace PadForge.Common.Input
         /// the four arrows on the buttons the firmware sends them on where the
         /// controller's own layout leaves those unnamed, and the twelve
         /// pressure axes appended for a DualShock 2. Unchanged when no port
-        /// has identified a controller.
+        /// has identified a controller, or the row is not read raw.
         /// </summary>
         public static DeviceObjectItem[] ProvideObjects(ISdlInputDevice device, DeviceObjectItem[] items)
         {
-            if (device == null || items == null || !Enabled) return items;
+            if (device == null || items == null || !OpenedRaw(device)) return items;
             var info = Find(device.DevicePath)?.Session.LiveInfo;
             return info == null ? items : NameObjects(info, DeclaredAxes(device), items);
         }

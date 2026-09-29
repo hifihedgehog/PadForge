@@ -267,8 +267,10 @@ namespace PadForge.Tests
             int setAt = helperBody.IndexOf("SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_FLYDIGI, value)", System.StringComparison.Ordinal);
             int unlockAt = helperBody.IndexOf("finally { SDL_UnlockJoysticks(); }", System.StringComparison.Ordinal);
             Assert.True(lockAt > 0 && setAt > lockAt && unlockAt > setAt, "lock, write, unlock in finally");
-            int idle = im.IndexOf("if (_enumerationTimer.ElapsedMilliseconds >= 5000)", System.StringComparison.Ordinal);
-            int normal = im.IndexOf("if (firstCycle || _enumerationTimer.ElapsedMilliseconds >= EnumerationIntervalMs)", System.StringComparison.Ordinal);
+            // Prefixes: a change of the Bliss-Box switch also runs the sweep
+            // (#469), which adds a condition to both.
+            int idle = im.IndexOf("if (_enumerationTimer.ElapsedMilliseconds >= 5000", System.StringComparison.Ordinal);
+            int normal = im.IndexOf("if (firstCycle || _enumerationTimer.ElapsedMilliseconds >= EnumerationIntervalMs", System.StringComparison.Ordinal);
             Assert.True(idle > 0 && normal > 0);
             Assert.Contains("FlydigiReprobeTick();", im.Substring(idle, 400));
             Assert.Contains("FlydigiReprobeTick();", im.Substring(normal, 600));

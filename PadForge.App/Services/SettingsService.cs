@@ -4379,12 +4379,10 @@ namespace PadForge.Services
         // ─────────────────────────────────────────────
 
         /// <summary>
-        /// Saves current settings to the active settings file.
+        /// Saves current settings to the active settings file. True when the
+        /// file was written.
         /// </summary>
-        public void Save()
-        {
-            SaveToFile(_settingsFilePath);
-        }
+        public bool Save() => SaveToFile(_settingsFilePath);
 
         /// <summary>The autosave's full persist now rather than after its
         /// quiet time, with the same follow-up: <see cref="AutoSaved"/>, which
@@ -4394,17 +4392,17 @@ namespace PadForge.Services
         /// own picture (#469).</summary>
         public bool SaveNow()
         {
-            Save();
-            if (IsDirty) return false;
+            if (!Save()) return false;
             AutoSaved?.Invoke(this, EventArgs.Empty);
             return true;
         }
 
         /// <summary>
-        /// Saves all settings to the specified XML file.
+        /// Saves all settings to the specified XML file. True when it was
+        /// written. A failure shows in the status line.
         /// </summary>
         /// <param name="filePath">Output file path.</param>
-        public void SaveToFile(string filePath)
+        public bool SaveToFile(string filePath)
         {
             try
             {
@@ -4518,10 +4516,12 @@ namespace PadForge.Services
                 IsDirty = false;
                 _mainVm.Settings.HasUnsavedChanges = false;
                 _mainVm.StatusText = string.Format(Strings.Instance.Status_SettingsSaved_Format, Path.GetFileName(filePath));
+                return true;
             }
             catch (Exception ex)
             {
                 _mainVm.SetStatus(string.Format(Strings.Instance.Status_ErrorSavingSettings_Format, ex.Message), persist: true);
+                return false;
             }
         }
 

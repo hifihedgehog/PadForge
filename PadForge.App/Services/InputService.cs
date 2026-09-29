@@ -11593,12 +11593,20 @@ namespace PadForge.Services
             {
                 frame.TryCommit(family, () =>
                 {
+                    // The row may hold a fresh wrapper on the same connection
+                    // since the exposure was built: the Bliss-Box switch
+                    // reopens a port the other way (#469), and the exposure
+                    // catches up only on its 2 s refresh. The frame goes to
+                    // the row's live wrapper, or a peer's stop sent in that
+                    // window would be lost with the port still running.
+                    var live = device?.Device;
                     if (!ReferenceEquals(Volatile.Read(ref _linkServer), origin)
                         || !ResolveExposed(frame.DeviceId, out var currentSource, out var currentDevice)
                         || !ReferenceEquals(currentSource, source) || !ReferenceEquals(currentDevice, device)
-                        || device?.IsOnline != true || !ReferenceEquals(device.Device, source)) return;
+                        || device?.IsOnline != true || live == null
+                        || !UserDevice.SameConnection(source, live)) return;
                     if (frame.Type == LinkMessageType.Output)
-                        ApplyRemoteOutput(effect, source, device, frame.PeerFingerprint,
+                        ApplyRemoteOutput(effect, live, device, frame.PeerFingerprint,
                             family == (int)OutputEffectCodec.Kind.HapticTone ? frame.Ticket(family) : null);
                     else if (frame.Type == LinkMessageType.Audio)
                         AudioPassthroughService.FeedRemoteAudio(device.InstanceGuid, frame.Payload);

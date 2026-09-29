@@ -16,13 +16,14 @@ namespace PadForge.Common.Input
         /// the last pass.</summary>
         private int _blissBoxGeneration;
 
-        /// <summary>Rows whose motors pass to their port on a later pass: the
+        /// <summary>Rows whose motors pass to their port on a later cycle: the
         /// hand-off met another writer holding the row's output gate, which
         /// the poll thread never waits on. Poll thread only.</summary>
         private readonly HashSet<Guid> _blissBoxHandoffs = new();
 
-        /// <summary>Rows whose motor caches go back to rest on a later pass
-        /// after the switch went off, for the same reason.</summary>
+        /// <summary>Rows that give SDL their motor levels back on a later
+        /// cycle after the switch went off: their retired port has not sent
+        /// its final stop yet, or another writer holds the output gate.</summary>
         private readonly HashSet<Guid> _blissBoxCacheResets = new();
 
         /// <summary>
@@ -30,8 +31,11 @@ namespace PadForge.Common.Input
         /// while Read Bliss-Box Adapters is on. The rows are SDL's: a row open
         /// the other way from the switch gets a fresh wrapper, a port opens
         /// beside a row that appeared, and one closes when its row left,
-        /// reconnected or the switch went off. Off and unchanged with no
-        /// ports: two volatile reads and out.
+        /// reconnected or the switch went off. A change of the switch brings
+        /// this pass forward to the poll thread's next cycle
+        /// (<see cref="BlissBoxSwitchChanged"/>), so the rows, the ports and
+        /// the motors move together. Off and unchanged with no ports: three
+        /// reads and out.
         /// </summary>
         private bool UpdateBlissBoxPorts()
         {
@@ -48,16 +52,11 @@ namespace PadForge.Common.Input
             // may have opened a row raw in between.
             bool changed = (enabled || wasOn || toggled) && ReopenBlissBoxRows(enabled);
             _blissBoxRowsReadRaw = enabled;
-            if (!enabled)
+            if (!enabled && !wasOn && !toggled && BlissBoxRuntime.Ports.Length == 0)
             {
-                _blissBoxHandoffs.Clear();
-                // The switch-on stopped SDL's effect, which a stale motor
-                // cache would never restart.
-                if (wasOn || toggled) QueueBlissBoxCacheResets();
                 RetryBlissBoxRows(_blissBoxCacheResets, handOff: false);
-                if (BlissBoxRuntime.Ports.Length == 0) return changed;
+                return changed;
             }
-            else _blissBoxCacheResets.Clear();
 
             var rows = new List<BlissBoxRuntime.Row>();
             var devices = SettingsManager.UserDevices;
@@ -74,20 +73,51 @@ namespace PadForge.Common.Input
                 }
             }
 
+            // Switched off, this retires every port, and each worker sends its
+            // final stop as it leaves.
             var opened = BlissBoxRuntime.Sync(rows);
+            if (!enabled)
+            {
+                _blissBoxHandoffs.Clear();
+                // SDL's rumble was stopped when the port took the motors, so
+                // each row gives SDL its level back, once its port's final
+                // stop has gone out (ResetBlissBoxRumbleCache).
+                if (wasOn || toggled) QueueBlissBoxCacheResets();
+                RetryBlissBoxRows(_blissBoxCacheResets, handOff: false);
+                return changed;
+            }
+            _blissBoxCacheResets.Clear();
             if (opened != null)
                 foreach (var port in opened) _blissBoxHandoffs.Add(port.InstanceGuid);
-            // A switch that went off and on again since the last pass stopped
-            // the ports it kept while the game's level stayed, so each one
-            // takes its row's level again.
-            if (enabled && toggled)
+            // A switch that went off and on again since the last pass may
+            // have let SDL's path drive a port it kept, so each one takes its
+            // row's level again.
+            if (toggled)
                 foreach (var port in BlissBoxRuntime.Ports) _blissBoxHandoffs.Add(port.InstanceGuid);
-            if (enabled) RetryBlissBoxRows(_blissBoxHandoffs, handOff: true);
+            RetryBlissBoxRows(_blissBoxHandoffs, handOff: true);
             return changed;
         }
 
+        /// <summary>True when the switch changed since Phase 1l last ran, so
+        /// the poll loop runs Phase 1 on this cycle rather than on its
+        /// enumeration interval. Poll thread only.</summary>
+        private bool BlissBoxSwitchChanged => BlissBoxRuntime.Generation != _blissBoxGeneration;
+
+        /// <summary>Every poll cycle: the hand-offs and SDL resends Phase 1l
+        /// could not finish, so a contested output gate or a port still
+        /// sending its final stop delays them by a cycle, not an enumeration
+        /// interval. Nothing to do costs two counts.</summary>
+        private void RetryPendingBlissBoxRows()
+        {
+            if (_blissBoxRowsReadRaw)
+            {
+                if (_blissBoxHandoffs.Count > 0) RetryBlissBoxRows(_blissBoxHandoffs, handOff: true);
+            }
+            else if (_blissBoxCacheResets.Count > 0) RetryBlissBoxRows(_blissBoxCacheResets, handOff: false);
+        }
+
         /// <summary>Runs the hand-off or the cache reset for each pending row,
-        /// keeping the rows whose output gate was taken for the next pass.</summary>
+        /// keeping the rows it could not finish for a later cycle.</summary>
         private void RetryBlissBoxRows(HashSet<Guid> pending, bool handOff)
         {
             if (pending.Count == 0) return;
@@ -102,8 +132,8 @@ namespace PadForge.Common.Input
                 foreach (var guid in done) pending.Remove(guid);
         }
 
-        /// <summary>The switch went off: every port row's motor cache goes
-        /// back to rest, so SDL's path takes the next level the game sends.</summary>
+        /// <summary>The switch went off: every port row gives SDL the motor
+        /// levels it last recorded (<see cref="ResetBlissBoxRumbleCache"/>).</summary>
         private void QueueBlissBoxCacheResets()
         {
             var devices = SettingsManager.UserDevices;
@@ -198,7 +228,8 @@ namespace PadForge.Common.Input
         {
             if (ud?.Device is not SdlDeviceWrapper wrapper) return true;
             // SDL's own stop needs no gate: nothing else drives SDL's rumble
-            // for the port any more.
+            // for the port any more. The port's resend follows it in its
+            // first step with report 17 read.
             try { wrapper.StopSdlRumble(); } catch { }
             if (!System.Threading.Monitor.TryEnter(ud.OutputSync)) return false;
             try
@@ -214,11 +245,16 @@ namespace PadForge.Common.Input
         /// told the levels the row last recorded and the cache records them as
         /// sent (<see cref="ForceFeedbackState.ResendScalar"/>). A Remote Link
         /// peer sends a steady level once, and SDL's rumble was stopped when
-        /// the switch went on, so waiting for the next change would leave the
-        /// motors stopped. False when another writer holds the output gate.</summary>
+        /// the port took the motors, so waiting for the next change would
+        /// leave them stopped. It waits until the row's retired port has sent
+        /// its final stop, which on a GPA reaches the routines SDL's
+        /// DirectInput effect drives (0x2E8E to 0x2EC3) and would end the
+        /// level SDL was just given. False while that stop is pending or
+        /// another writer holds the output gate.</summary>
         private static bool ResetBlissBoxRumbleCache(UserDevice ud)
         {
             if (ud.ForceFeedbackState == null || ud.Device == null) return true;
+            if (BlissBoxRuntime.IsRetiring(ud.DevicePath)) return false;
             if (!System.Threading.Monitor.TryEnter(ud.OutputSync)) return false;
             try { ud.ForceFeedbackState.ResendScalar(ud.Device); } catch { }
             finally { System.Threading.Monitor.Exit(ud.OutputSync); }

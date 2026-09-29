@@ -272,7 +272,7 @@
   <data name="Settings_AnalogKeyboardsStatus_Reading_Format" xml:space="preserve"><value>{0} 읽는 중.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_Synapse_Format" xml:space="preserve"><value>{0}을(를) 읽으려면 Razer Synapse를 실행하세요.</value></data>
   <data name="Settings_BlissBox" xml:space="preserve"><value>Bliss-Box 어댑터 읽기</value></data>
-  <data name="Settings_BlissBoxTooltip" xml:space="preserve"><value>API를 통해 Bliss-Box 어댑터와 통신합니다. 각 포트의 행에 연결된 컨트롤러와 버튼 이름이 표시되고, DualShock 2의 압력을 읽으며, 어댑터 자체의 모터 명령으로 진동시키고, Dreamcast 화면, 컨트롤러 팩, 플레이어 번호 작업을 제공합니다. Bliss-Box API Tool과 DeviceBuddy는 같은 채널로 어댑터와 통신하므로 이 옵션이 켜져 있는 동안에는 닫으세요.</value></data>
+  <data name="Settings_BlissBoxTooltip" xml:space="preserve"><value>API를 통해 Bliss-Box 어댑터와 통신합니다. 각 포트의 행에 연결된 컨트롤러와 버튼 이름이 표시되고, DualShock 2의 압력을 읽으며, 어댑터 자체의 모터 명령으로 진동시키고, Dreamcast 화면, 컨트롤러 팩, 플레이어 번호 작업을 제공합니다. Bliss-Box API Tool과 DeviceBuddy는 같은 채널로 어댑터와 통신하므로 이 옵션이 켜져 있는 동안에는 닫으세요. 이 옵션이 켜져 있는 동안 PadForge는 각 포트를 SDL의 게임패드 매핑 대신 어댑터 자체의 레이아웃으로 읽으므로, 켜거나 끈 뒤에는 포트를 다시 매핑하세요.</value></data>
   <data name="Settings_BlissBoxStatus_None" xml:space="preserve"><value>Bliss-Box 포트를 찾지 못했습니다.</value></data>
   <data name="Settings_BlissBoxStatus_Reading_Format" xml:space="preserve"><value>{0} 읽는 중.</value></data>
   <data name="Settings_BlissBoxStatus_Port_Format" xml:space="preserve"><value>포트 {0}({1})</value></data>

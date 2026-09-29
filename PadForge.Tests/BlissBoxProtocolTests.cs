@@ -340,15 +340,6 @@ namespace PadForge.Tests
             Assert.Null(BlissBoxScreen.FromVms(bad));
         }
 
-        [Fact]
-        public void AnErasedEepromIsEveryByteSet()
-        {
-            Assert.True(BlissBoxScreen.IsErased(Enumerable.Repeat((byte)0xFF, 192).ToArray()));
-            var one = Enumerable.Repeat((byte)0xFF, 192).ToArray();
-            one[10] = 0;
-            Assert.False(BlissBoxScreen.IsErased(one));
-        }
-
         // ── The Controller Pak ──
 
         /// <summary>libdragon's joybus_accessory_calculate_addr_checksum

@@ -102,7 +102,7 @@ namespace PadForge.Common.Input
             }
 
             try { if (_transport.Channel != null) Session.StopMotors(); } catch { }
-            Session.CancelJobs();
+            // Closing the channel also ends the jobs still queued.
             CloseChannel();
             _wake.Dispose();
         }
@@ -120,7 +120,7 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>Stops the worker, which stops the motors and closes the
-        /// channel. A job in progress ends at its next block.</summary>
+        /// channel. A job in progress ends before its next transfer.</summary>
         public void Dispose()
         {
             if (_stop) return;

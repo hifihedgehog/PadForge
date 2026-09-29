@@ -390,7 +390,8 @@ namespace PadForge.ViewModels
 
         /// <summary>Folds report 21's twelve bytes into the chips, or clears
         /// them when no DualShock 2 is in the port. The names follow the
-        /// firmware's order.</summary>
+        /// firmware's order, each chip carrying its button's name alone,
+        /// since the heading above them already says pressure.</summary>
         internal void UpdateBlissBoxPressure(byte[] pressure, byte major)
         {
             if (pressure == null)
@@ -408,13 +409,23 @@ namespace PadForge.ViewModels
                     {
                         Code = i,
                         Rank = i,
-                        Name = PadForge.Common.MappingDisplayResolver.LocalizeObjectName(names[i]),
+                        Name = PadForge.Common.MappingDisplayResolver.LocalizeObjectName(
+                            PressureButton(names[i])),
                     });
                 _blissBoxPressureMajor = major;
             }
             for (int i = 0; i < BlissBoxPressure.Count; i++)
                 BlissBoxPressure[i].Depth = pressure[i] / 255.0;
             HasBlissBoxPressure = true;
+        }
+
+        /// <summary>"Triangle Pressure" as "Triangle".</summary>
+        internal static string PressureButton(string pressureName)
+        {
+            const string suffix = " Pressure";
+            return pressureName != null && pressureName.EndsWith(suffix, StringComparison.Ordinal)
+                ? pressureName.Substring(0, pressureName.Length - suffix.Length)
+                : pressureName;
         }
 
         private bool _isNfcDevice;

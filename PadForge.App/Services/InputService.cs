@@ -9150,11 +9150,6 @@ namespace PadForge.Services
             }));
         }
 
-        /// <summary>Handheld hidden buttons registry changed (#343): the NFC
-        /// fan-out (re-read the row's objects and button span, rebuild the
-        /// pickers, refresh the preview, persist) plus a hook re-evaluation,
-        /// since the first chord learned is what makes the hooks necessary
-        /// and the last one removed is what lets them go.</summary>
         private int _blissBoxRefreshQueued;
 
         /// <summary>A Bliss-Box port opened, closed or identified another
@@ -9188,6 +9183,11 @@ namespace PadForge.Services
             }));
         }
 
+        /// <summary>Handheld hidden buttons registry changed (#343): the NFC
+        /// fan-out (re-read the row's objects and button span, rebuild the
+        /// pickers, refresh the preview, persist) plus a hook re-evaluation,
+        /// since the first chord learned is what makes the hooks necessary
+        /// and the last one removed is what lets them go.</summary>
         private void OnHandheldRegistryChanged(object sender, EventArgs e)
         {
             _dispatcher.BeginInvoke(new Action(() =>

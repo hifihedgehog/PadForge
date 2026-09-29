@@ -16,7 +16,8 @@ using PadForge.Resources.Strings;
 namespace PadForge.Services
 {
     /// <summary>What a Bliss-Box port's Dreamcast screen shows (issue #469).
-    /// Values are persisted, so they stay as numbered.</summary>
+    /// The settings file stores the names, so none is renamed, and the
+    /// dialog lists the values in order, so they stay as numbered.</summary>
     public enum DreamcastScreenMode
     {
         /// <summary>The picture the adapter holds. PadForge writes nothing, and
@@ -96,6 +97,10 @@ namespace PadForge.Services
         private const int TickMs = 250;
         private const int TextCacheLimit = 64;
 
+        /// <summary>Shows waiting for the next tick. A macro on turbo can
+        /// fire faster than the ticks run, and only the latest show matters.</summary>
+        private const int MaxQueuedShows = 16;
+
         private static readonly ConcurrentQueue<ShowRequest> _requests = new();
 
         private readonly ViewModels.SettingsViewModel _settings;
@@ -124,8 +129,16 @@ namespace PadForge.Services
         /// <summary>The macro loops' Show Dreamcast Screen, from the poll
         /// thread: queued, and started on the next tick for the Dreamcast pads
         /// that feed the slot.</summary>
+        internal static int PendingShows => _requests.Count;
+
         public static void RequestShow(int padIndex, string frames, int frameMs, int repeat)
-            => _requests.Enqueue(new ShowRequest(padIndex, frames, frameMs, repeat));
+        {
+            // Nothing drains the queue while no port is open, so a show with
+            // no Dreamcast pad to play on is dropped rather than kept.
+            if (BlissBoxRuntime.Ports.Length == 0) return;
+            if (_requests.Count >= MaxQueuedShows) _requests.TryDequeue(out _);
+            _requests.Enqueue(new ShowRequest(padIndex, frames, frameMs, repeat));
+        }
 
         public BlissBoxPortData Get(Guid device)
         {

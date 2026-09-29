@@ -221,8 +221,9 @@ namespace PadForge.Engine.Common.BlissBox
             _sentLarge = _sentSmall = 0;
         }
 
-        /// <summary>From any thread: a running job stops at its next block,
-        /// so a closing port never waits out a whole Controller Pak.</summary>
+        /// <summary>From any thread: a running job stops before its next
+        /// transfer, so a closing port never waits out a Controller Pak's
+        /// retries.</summary>
         public void RequestStop() => _stopRequested = true;
 
         public bool StopRequested => _stopRequested;
@@ -234,7 +235,8 @@ namespace PadForge.Engine.Common.BlissBox
         }
 
         /// <summary>Forgets everything read from the adapter, for a closed
-        /// channel.</summary>
+        /// channel. A job still queued ends as closed, since it was asked of
+        /// the controller that was in the port before the channel dropped.</summary>
         public void Forget()
         {
             bool had = _info != null;
@@ -244,6 +246,8 @@ namespace PadForge.Engine.Common.BlissBox
             _arrows = -1;
             _sentLarge = _sentSmall = 0;
             _nextInfo = _nextPressure = _nextArrows = 0;
+            _failedInfoReads = 0;
+            CancelJobs();
             if (had) InfoChanged?.Invoke(this);
         }
 
@@ -475,7 +479,8 @@ namespace PadForge.Engine.Common.BlissBox
     }
 
     /// <summary>Reads the whole pak, 1024 blocks of 32 bytes, each block
-    /// retried up to three times on a bad CRC.</summary>
+    /// retried up to three times on a bad CRC. A block that drew no answer
+    /// at all fails as no reply, not as a bad block.</summary>
     public sealed class BlissBoxPakBackupJob : BlissBoxPakJob
     {
         public BlissBoxPakBackupJob(IProgress<double> progress = null) : base(progress) { }
@@ -487,17 +492,20 @@ namespace PadForge.Engine.Common.BlissBox
             var image = new byte[BlissBoxControllerPak.PakBytes];
             for (int block = 0; block < BlissBoxControllerPak.Blocks; block++)
             {
-                if (session.StopRequested) return BlissBoxJobResult.Fail(BlissBoxJobError.Closed, block);
                 var result = BlissBoxControllerPak.BlockResult.Short;
+                bool answered = false;
                 for (int attempt = 0; attempt < BlissBoxControllerPak.ReadAttempts; attempt++)
                 {
+                    if (session.StopRequested) return BlissBoxJobResult.Fail(BlissBoxJobError.Closed, block);
                     var reply = session.Talk(BlissBoxControllerPak.ReadMessage(block));
                     if (reply == null) continue;
+                    answered = true;
                     result = BlissBoxControllerPak.ParseRead(reply,
                         image.AsSpan(block * BlissBoxControllerPak.BlockBytes, BlissBoxControllerPak.BlockBytes));
                     if (result is BlissBoxControllerPak.BlockResult.Ok or BlissBoxControllerPak.BlockResult.NoPak) break;
                 }
                 if (result == BlissBoxControllerPak.BlockResult.NoPak) return BlissBoxJobResult.Fail(BlissBoxJobError.NoPak, block);
+                if (!answered) return BlissBoxJobResult.Fail(BlissBoxJobError.NoReply, block);
                 if (result != BlissBoxControllerPak.BlockResult.Ok) return BlissBoxJobResult.Fail(BlissBoxJobError.BadBlock, block);
                 Report(block + 1);
             }
@@ -507,7 +515,9 @@ namespace PadForge.Engine.Common.BlissBox
 
     /// <summary>Writes a whole pak image, block by block, each checked by
     /// the CRC the pak answers with. Rejected writes are retried until more
-    /// than 16 have failed, the API Tool's limit.</summary>
+    /// than 16 have failed, the API Tool's limit. A write that drew no answer
+    /// counts toward the limit too, and when it is the one that reaches it,
+    /// the job fails as no reply.</summary>
     public sealed class BlissBoxPakRestoreJob : BlissBoxPakJob
     {
         private readonly byte[] _image;
@@ -526,10 +536,10 @@ namespace PadForge.Engine.Common.BlissBox
             int errors = 0;
             for (int block = 0; block < BlissBoxControllerPak.Blocks; block++)
             {
-                if (session.StopRequested) return BlissBoxJobResult.Fail(BlissBoxJobError.Closed, block);
                 var data = _image.AsSpan(block * BlissBoxControllerPak.BlockBytes, BlissBoxControllerPak.BlockBytes);
                 while (true)
                 {
+                    if (session.StopRequested) return BlissBoxJobResult.Fail(BlissBoxJobError.Closed, block);
                     var reply = session.Talk(BlissBoxControllerPak.WriteMessage(block, data));
                     var result = reply == null
                         ? BlissBoxControllerPak.BlockResult.Short
@@ -537,7 +547,8 @@ namespace PadForge.Engine.Common.BlissBox
                     if (result == BlissBoxControllerPak.BlockResult.Ok) break;
                     if (result == BlissBoxControllerPak.BlockResult.NoPak) return BlissBoxJobResult.Fail(BlissBoxJobError.NoPak, block);
                     if (++errors > BlissBoxControllerPak.WriteErrorLimit)
-                        return BlissBoxJobResult.Fail(BlissBoxJobError.TooManyErrors, block);
+                        return BlissBoxJobResult.Fail(
+                            reply == null ? BlissBoxJobError.NoReply : BlissBoxJobError.TooManyErrors, block);
                 }
                 Report(block + 1);
             }

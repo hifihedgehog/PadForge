@@ -272,7 +272,7 @@
   <data name="Settings_AnalogKeyboardsStatus_Reading_Format" xml:space="preserve"><value>{0} を読み取り中。</value></data>
   <data name="Settings_AnalogKeyboardsStatus_Synapse_Format" xml:space="preserve"><value>{0} を読み取るには Razer Synapse を起動してください。</value></data>
   <data name="Settings_BlissBox" xml:space="preserve"><value>Bliss-Box アダプターを読み取る</value></data>
-  <data name="Settings_BlissBoxTooltip" xml:space="preserve"><value>Bliss-Box アダプターと API で通信します。各ポートの行には接続中のコントローラーとボタン名が表示され、DualShock 2 の感圧値を読み取り、アダプター自身のモーターコマンドで振動させ、Dreamcast 画面、コントローラパック、プレイヤー番号の操作を提供します。Bliss-Box API Tool と DeviceBuddy は同じ経路でアダプターと通信するため、この設定がオンの間は閉じてください。</value></data>
+  <data name="Settings_BlissBoxTooltip" xml:space="preserve"><value>Bliss-Box アダプターと API で通信します。各ポートの行には接続中のコントローラーとボタン名が表示され、DualShock 2 の感圧値を読み取り、アダプター自身のモーターコマンドで振動させ、Dreamcast 画面、コントローラパック、プレイヤー番号の操作を提供します。Bliss-Box API Tool と DeviceBuddy は同じ経路でアダプターと通信するため、この設定がオンの間は閉じてください。この設定がオンの間、PadForge は各ポートを SDL のゲームパッドマッピングではなくアダプター自身のレイアウトで読み取るため、オン・オフを切り替えた後はポートを再度マッピングしてください。</value></data>
   <data name="Settings_BlissBoxStatus_None" xml:space="preserve"><value>Bliss-Box のポートが見つかりません。</value></data>
   <data name="Settings_BlissBoxStatus_Reading_Format" xml:space="preserve"><value>{0} を読み取り中。</value></data>
   <data name="Settings_BlissBoxStatus_Port_Format" xml:space="preserve"><value>ポート {0} ({1})</value></data>

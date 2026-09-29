@@ -75,6 +75,18 @@ namespace PadForge.Tests
             Assert.Equal("Square Pressure", old[4]);
         }
 
+        [Fact]
+        public void PressureChipsCarryTheButtonNameAlone()
+        {
+            // The chips sit under a pressure heading and are 118 px wide, so a
+            // chip reads "Triangle", not "Triangle Pressure" cut short.
+            foreach (byte major in new byte[] { 2, 3, 4 })
+                foreach (var name in BlissBoxControllers.PressureNames(major))
+                    Assert.Equal(name, DevicesViewModel.PressureButton(name) + " Pressure");
+            Assert.Equal("D-Pad Right", DevicesViewModel.PressureButton("D-Pad Right Pressure"));
+            Assert.Equal("L1", DevicesViewModel.PressureButton("L1"));
+        }
+
         private static DeviceObjectItem[] RawJoystick(int axes, int buttons)
         {
             var items = new List<DeviceObjectItem>();
@@ -237,6 +249,63 @@ namespace PadForge.Tests
                 Assert.True(BlissBoxRuntime.Enabled);
             }
             finally { BlissBoxApi.Enabled = saved; }
+        }
+
+        // ── Reading a port raw ──
+
+        [Fact]
+        public void APortOpensRawWhileTheSwitchIsOn()
+        {
+            // SDL maps all four port IDs as a "4Play Adapter" gamepad through
+            // the fork's community table, so the switch has to turn that off
+            // for the port's names, pressures and arrows to reach the picker.
+            bool saved = BlissBoxApi.Enabled;
+            try
+            {
+                BlissBoxApi.Enabled = false;
+                Assert.True(SdlDeviceWrapper.OpensAsGamepad(true, 0x16D0, 0x0D04));
+                BlissBoxApi.Enabled = true;
+                foreach (ushort pid in new ushort[] { 0x0D04, 0x0D05, 0x0D06, 0x0D07 })
+                    Assert.False(SdlDeviceWrapper.OpensAsGamepad(true, 0x16D0, pid));
+                // Any other mapped device still opens as a gamepad, and an
+                // unmapped one never does.
+                Assert.True(SdlDeviceWrapper.OpensAsGamepad(true, 0x054C, 0x0CE6));
+                Assert.False(SdlDeviceWrapper.OpensAsGamepad(false, 0x16D0, 0x0D04));
+                Assert.True(BlissBoxApi.ReadsRaw(0x16D0, 0x0D04));
+                Assert.False(BlissBoxApi.ReadsRaw(0x16D0, 0x0A60));
+            }
+            finally { BlissBoxApi.Enabled = saved; }
+        }
+
+        [Fact]
+        public void ARawPortIsAJoystick_NotTheGamepadSdlTypesIt()
+        {
+            var gamepad = SDL3.SDL.SDL_JoystickType.SDL_JOYSTICK_TYPE_GAMEPAD;
+            Assert.Equal(InputDeviceType.Joystick, SdlDeviceWrapper.InputDeviceTypeFor(gamepad, false, 0x16D0, 0x0D04));
+            Assert.Equal(InputDeviceType.Gamepad, SdlDeviceWrapper.InputDeviceTypeFor(gamepad, true, 0x16D0, 0x0D04));
+            // Nothing changes for any other device.
+            Assert.Equal(InputDeviceType.Gamepad, SdlDeviceWrapper.InputDeviceTypeFor(gamepad, false, 0x054C, 0x0CE6));
+            Assert.Equal(InputDeviceType.Driving,
+                SdlDeviceWrapper.InputDeviceTypeFor(SDL3.SDL.SDL_JoystickType.SDL_JOYSTICK_TYPE_WHEEL, false, 0x046D, 0xC24F));
+        }
+
+        [Fact]
+        public void ARowOpenTheOtherWayFromTheSwitchIsReopened()
+        {
+            Assert.True(InputManager.BlissBoxRowNeedsReopen(openedAsGamepad: true, readRaw: true));
+            Assert.True(InputManager.BlissBoxRowNeedsReopen(openedAsGamepad: false, readRaw: false));
+            Assert.False(InputManager.BlissBoxRowNeedsReopen(openedAsGamepad: false, readRaw: true));
+            Assert.False(InputManager.BlissBoxRowNeedsReopen(openedAsGamepad: true, readRaw: false));
+
+            // The reopen runs in Phase 1l before the ports are paired, so a
+            // port opened on the switch's first cycle meets a raw row.
+            string code = Repo("PadForge.App", "Common", "Input", "InputManager.BlissBox.cs");
+            int reopen = code.IndexOf("ReopenBlissBoxRows(enabled)", StringComparison.Ordinal);
+            int sync = code.IndexOf("BlissBoxRuntime.Sync(rows)", StringComparison.Ordinal);
+            Assert.True(reopen > 0 && sync > reopen);
+            // The wrapper decides at open, from SDL's answer and the port IDs.
+            string wrapper = Repo("PadForge.Engine", "Common", "SdlDeviceWrapper.cs");
+            Assert.Contains("if (OpensAsGamepad(SDL_IsGamepad(instanceId),", wrapper);
         }
 
         [Fact]
@@ -488,6 +557,15 @@ namespace PadForge.Tests
                 im.EvaluateSlotMacrosExtended(ref state, new[] { raw });
             });
             Assert.Equal(1, Assert.Single(extended).Pad);
+        }
+
+        [Fact]
+        public void AShowWithNoPortOpenIsDropped_NotQueued()
+        {
+            Assert.Empty(BlissBoxRuntime.Ports);
+            for (int i = 0; i < 100; i++)
+                DreamcastScreenService.RequestShow(0, Convert.ToBase64String(new byte[192]), 1000, 1);
+            Assert.Equal(0, DreamcastScreenService.PendingShows);
         }
 
         [Fact]

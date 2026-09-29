@@ -24,6 +24,14 @@ namespace PadForge.Engine.Common.BlissBox
         public static bool OwnsRumble(ushort vendorId, ushort productId)
             => _enabled && BlissBoxProtocol.IsPort(vendorId, productId);
 
+        /// <summary>True when PadForge reads this port through SDL's joystick
+        /// calls rather than its gamepad mapping. The adapter's report follows
+        /// whichever controller is plugged in, and the API names that
+        /// controller's buttons, while the community mapping SDL carries for
+        /// the adapter ("4Play Adapter") describes one fixed layout.</summary>
+        public static bool ReadsRaw(ushort vendorId, ushort productId)
+            => _enabled && BlissBoxProtocol.IsPort(vendorId, productId);
+
         /// <summary>Renames a port's objects for the controller in it and
         /// appends the pressure axes and arrow buttons. Takes the port's
         /// wrapper and its own list, returns the list to publish. App-wired,

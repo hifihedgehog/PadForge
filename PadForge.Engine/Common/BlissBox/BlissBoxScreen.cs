@@ -69,17 +69,6 @@ namespace PadForge.Engine.Common.BlissBox
             else image[index] &= (byte)~mask;
         }
 
-        /// <summary>A picture the adapter's EEPROM holds before anything was
-        /// written: every byte 0xFF, the case dLCD.cs answers with its default
-        /// image.</summary>
-        public static bool IsErased(ReadOnlySpan<byte> wire)
-        {
-            if (wire.Length != Bytes) return false;
-            foreach (byte b in wire)
-                if (b != 0xFF) return false;
-            return true;
-        }
-
         /// <summary>The first frame of a VMU Animator .lcd file, in image
         /// order, or null when the file is too short to hold one.</summary>
         public static byte[] FromLcd(ReadOnlySpan<byte> file)

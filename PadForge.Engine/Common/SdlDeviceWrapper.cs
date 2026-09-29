@@ -366,6 +366,12 @@ namespace PadForge.Engine
         /// </summary>
         /// <param name="instanceId">SDL instance ID from SDL_GetJoysticks().</param>
         /// <returns>True if the device was opened successfully.</returns>
+        /// <summary>Whether a device opens through SDL's gamepad mapping:
+        /// whenever SDL has one, except for a Bliss-Box port that PadForge
+        /// reads raw (<see cref="BlissBoxApi.ReadsRaw"/>, #469).</summary>
+        internal static bool OpensAsGamepad(bool sdlMapsIt, ushort vendorId, ushort productId)
+            => sdlMapsIt && !BlissBoxApi.ReadsRaw(vendorId, productId);
+
         public bool Open(uint instanceId)
         {
             if (_disposed)
@@ -376,8 +382,10 @@ namespace PadForge.Engine
             GameInputInfo = null;
             SdlDevicePath = string.Empty;
 
-            // Try Gamepad first for better mapping support.
-            if (SDL_IsGamepad(instanceId))
+            // Try Gamepad first for better mapping support. A Bliss-Box port
+            // opens raw while Read Bliss-Box Adapters is on (#469).
+            if (OpensAsGamepad(SDL_IsGamepad(instanceId),
+                    SDL_GetJoystickVendorForID(instanceId), SDL_GetJoystickProductForID(instanceId)))
             {
                 GameController = SDL_OpenGamepad(instanceId);
                 if (GameController != IntPtr.Zero)
@@ -2326,8 +2334,19 @@ namespace PadForge.Engine
         /// for device classification in the settings and UI.
         /// </summary>
         public int GetInputDeviceType()
+            => InputDeviceTypeFor(JoystickType, GameController != IntPtr.Zero, VendorId, ProductId);
+
+        /// <summary>The device class for SDL's joystick type. SDL types a
+        /// Bliss-Box port a gamepad by its community mapping even when
+        /// PadForge opens it raw (#469), and read raw it is a joystick: the
+        /// gamepad auto-map and the trigger rest rule would misread its
+        /// axes and buttons.</summary>
+        internal static int InputDeviceTypeFor(SDL_JoystickType type, bool openedAsGamepad, ushort vendorId, ushort productId)
         {
-            return JoystickType switch
+            if (!openedAsGamepad && type == SDL_JoystickType.SDL_JOYSTICK_TYPE_GAMEPAD
+                && BlissBoxProtocol.IsPort(vendorId, productId))
+                return InputDeviceType.Joystick;
+            return type switch
             {
                 SDL_JoystickType.SDL_JOYSTICK_TYPE_GAMEPAD => InputDeviceType.Gamepad,
                 SDL_JoystickType.SDL_JOYSTICK_TYPE_WHEEL => InputDeviceType.Driving,

@@ -18,6 +18,7 @@ namespace PadForge.Tests
         private sealed class ScriptedAdapter : IBlissBoxTransport
         {
             public int Player = 1;
+            public bool Gone;
             public byte Type = 19, Flags, Major = 4, Minor = 86;
             public byte[] Pressure = new byte[12];
             public byte[] Stored = Enumerable.Repeat((byte)0xFF, 192).ToArray();
@@ -62,6 +63,7 @@ namespace PadForge.Tests
 
             public int GetFeature(byte[] buffer)
             {
+                if (Gone) return -1;
                 byte id = buffer[0];
                 Array.Clear(buffer);
                 byte player = (byte)(Player + 3);
@@ -167,6 +169,24 @@ namespace PadForge.Tests
             _now = 1000; session.Step();
             Assert.NotNull(session.Info);
             Assert.Null(session.LiveInfo);
+        }
+
+        [Fact]
+        public void FailedReadsCountUntilTheChannelIsForgotten()
+        {
+            var adapter = new ScriptedAdapter { Gone = true };
+            var session = Session(adapter);
+            for (int i = 0; i < 3; i++)
+            {
+                _now = i * BlissBoxSession.InfoIntervalMs;
+                session.Step();
+            }
+            Assert.Equal(3, session.FailedInfoReads);
+            session.Forget();
+            Assert.Equal(0, session.FailedInfoReads);
+            adapter.Gone = false;
+            _now = 5000; session.Step();
+            Assert.NotNull(session.Info);
         }
 
         [Fact]
@@ -412,6 +432,67 @@ namespace PadForge.Tests
             session.Enqueue(queued);
             session.CancelJobs();
             Assert.Equal(BlissBoxJobError.Closed, (await queued.Completion).Error);
+        }
+
+        [Fact]
+        public async System.Threading.Tasks.Task AClosingPortEndsARestoreBetweenRetries()
+        {
+            var (adapter, pak, session) = PakPort();
+            pak.RejectedWrites = 10;
+            int writes = 0;
+            adapter.Controller = m =>
+            {
+                if (m[0] == BlissBoxControllerPak.CommandWrite && ++writes == 1) session.RequestStop();
+                return pak.Answer(m);
+            };
+            var job = new BlissBoxPakRestoreJob(new byte[BlissBoxControllerPak.PakBytes]);
+            session.Enqueue(job);
+            session.Step();
+            var result = await job.Completion;
+            Assert.Equal(BlissBoxJobError.Closed, result.Error);
+            Assert.Equal(0, result.Block);
+            Assert.Equal(1, writes);
+        }
+
+        [Fact]
+        public async System.Threading.Tasks.Task AJobStillQueuedEndsWhenTheChannelDrops()
+        {
+            var (_, _, session) = PakPort();
+            var queued = new BlissBoxPakRestoreJob(new byte[BlissBoxControllerPak.PakBytes]);
+            session.Enqueue(queued);
+            session.Forget();
+            Assert.Equal(BlissBoxJobError.Closed, (await queued.Completion).Error);
+        }
+
+        [Fact]
+        public async System.Threading.Tasks.Task ABackupThatLosesTheAdapterFailsAsNoReply()
+        {
+            var (adapter, pak, session) = PakPort();
+            int reads = 0;
+            // The probe read and blocks 0 to 3 answer, then nothing does.
+            adapter.Controller = m => m[0] == BlissBoxControllerPak.CommandRead && ++reads > 5 ? null : pak.Answer(m);
+            var job = new BlissBoxPakBackupJob();
+            session.Enqueue(job);
+            session.Step();
+            var result = await job.Completion;
+            Assert.Equal(BlissBoxJobError.NoReply, result.Error);
+            Assert.Equal(4, result.Block);
+        }
+
+        [Fact]
+        public async System.Threading.Tasks.Task ARestoreThatLosesTheAdapterFailsAsNoReply()
+        {
+            var (adapter, pak, session) = PakPort();
+            int writes = 0;
+            // Blocks 0 to 2 are written, then nothing answers.
+            adapter.Controller = m => m[0] == BlissBoxControllerPak.CommandWrite && ++writes > 3 ? null : pak.Answer(m);
+            var job = new BlissBoxPakRestoreJob(new byte[BlissBoxControllerPak.PakBytes]);
+            session.Enqueue(job);
+            session.Step();
+            var result = await job.Completion;
+            Assert.Equal(BlissBoxJobError.NoReply, result.Error);
+            Assert.Equal(3, result.Block);
+            Assert.Equal(3 + BlissBoxControllerPak.WriteErrorLimit + 1, writes);
         }
 
         [Fact]

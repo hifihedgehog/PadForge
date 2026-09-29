@@ -272,7 +272,7 @@
   <data name="Settings_AnalogKeyboardsStatus_Reading_Format" xml:space="preserve"><value>正在读取 {0}。</value></data>
   <data name="Settings_AnalogKeyboardsStatus_Synapse_Format" xml:space="preserve"><value>请启动 Razer Synapse 以读取 {0}。</value></data>
   <data name="Settings_BlissBox" xml:space="preserve"><value>读取 Bliss-Box 适配器</value></data>
-  <data name="Settings_BlissBoxTooltip" xml:space="preserve"><value>通过 API 与 Bliss-Box 适配器通信。每个端口的行会显示所插控制器及其按键名称，读取 DualShock 2 的压力，用适配器自身的马达命令振动，并提供 Dreamcast 屏幕、控制器记忆卡和玩家编号操作。开启此项时请关闭 Bliss-Box API Tool 和 DeviceBuddy，因为它们通过同一通道与适配器通信。</value></data>
+  <data name="Settings_BlissBoxTooltip" xml:space="preserve"><value>通过 API 与 Bliss-Box 适配器通信。每个端口的行会显示所插控制器及其按键名称，读取 DualShock 2 的压力，用适配器自身的马达命令振动，并提供 Dreamcast 屏幕、控制器记忆卡和玩家编号操作。开启此项时请关闭 Bliss-Box API Tool 和 DeviceBuddy，因为它们通过同一通道与适配器通信。开启此项时，PadForge 按适配器自身的布局读取每个端口，而非通过 SDL 的手柄映射，因此开关此项后请重新映射端口。</value></data>
   <data name="Settings_BlissBoxStatus_None" xml:space="preserve"><value>未找到 Bliss-Box 端口。</value></data>
   <data name="Settings_BlissBoxStatus_Reading_Format" xml:space="preserve"><value>正在读取 {0}。</value></data>
   <data name="Settings_BlissBoxStatus_Port_Format" xml:space="preserve"><value>端口 {0}（{1}）</value></data>

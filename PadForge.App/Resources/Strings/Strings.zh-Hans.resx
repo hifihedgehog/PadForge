@@ -271,6 +271,13 @@
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>未找到受支持的模拟键盘。</value></data>
   <data name="Settings_AnalogKeyboardsStatus_Reading_Format" xml:space="preserve"><value>正在读取 {0}。</value></data>
   <data name="Settings_AnalogKeyboardsStatus_Synapse_Format" xml:space="preserve"><value>请启动 Razer Synapse 以读取 {0}。</value></data>
+  <data name="Settings_BlissBox" xml:space="preserve"><value>读取 Bliss-Box 适配器</value></data>
+  <data name="Settings_BlissBoxTooltip" xml:space="preserve"><value>通过 API 与 Bliss-Box 适配器通信。每个端口的行会显示所插控制器及其按键名称，读取 DualShock 2 的压力，用适配器自身的马达命令振动，并提供 Dreamcast 屏幕、控制器记忆卡和玩家编号操作。开启此项时请关闭 Bliss-Box API Tool 和 DeviceBuddy，因为它们通过同一通道与适配器通信。</value></data>
+  <data name="Settings_BlissBoxStatus_None" xml:space="preserve"><value>未找到 Bliss-Box 端口。</value></data>
+  <data name="Settings_BlissBoxStatus_Reading_Format" xml:space="preserve"><value>正在读取 {0}。</value></data>
+  <data name="Settings_BlissBoxStatus_Port_Format" xml:space="preserve"><value>端口 {0}（{1}）</value></data>
+  <data name="BlissBox_Connecting" xml:space="preserve"><value>正在连接</value></data>
+  <data name="BlissBox_NoController" xml:space="preserve"><value>无控制器</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>网页控制器</value></data>
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>在局域网中为浏览器提供手柄界面。</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>启用网页控制器服务器</value></data>
@@ -1319,6 +1326,27 @@
   <data name="DevObj_Back" xml:space="preserve"><value>返回</value></data>
   <data name="DevObj_Start" xml:space="preserve"><value>开始</value></data>
   <data name="DevObj_Guide" xml:space="preserve"><value>指南</value></data>
+  <data name="DevObj_Select" xml:space="preserve"><value>选择</value></data>
+  <data name="DevObj_Mode" xml:space="preserve"><value>模式</value></data>
+  <data name="DevObj_Run" xml:space="preserve"><value>RUN</value></data>
+  <data name="DevObj_Reset" xml:space="preserve"><value>重置</value></data>
+  <data name="DevObj_HomeButton" xml:space="preserve"><value>HOME 键</value></data>
+  <data name="DevObj_Fire" xml:space="preserve"><value>开火</value></data>
+  <data name="DevObj_Fire_Format" xml:space="preserve"><value>开火 {0}</value></data>
+  <data name="DevObj_LeftFire" xml:space="preserve"><value>左开火</value></data>
+  <data name="DevObj_RightFire" xml:space="preserve"><value>右开火</value></data>
+  <data name="DevObj_ZTrigger" xml:space="preserve"><value>Z 扳机</value></data>
+  <data name="DevObj_StickX" xml:space="preserve"><value>摇杆 X</value></data>
+  <data name="DevObj_StickY" xml:space="preserve"><value>摇杆 Y</value></data>
+  <data name="DevObj_CStickX" xml:space="preserve"><value>C 摇杆 X</value></data>
+  <data name="DevObj_CStickY" xml:space="preserve"><value>C 摇杆 Y</value></data>
+  <data name="DevObj_Dial" xml:space="preserve"><value>旋钮</value></data>
+  <data name="DevObj_Dial_Format" xml:space="preserve"><value>旋钮 {0}</value></data>
+  <data name="DevObj_RightDPad" xml:space="preserve"><value>右十字键</value></data>
+  <data name="DevObj_Pressure_Format" xml:space="preserve"><value>{0} 压力</value></data>
+  <data name="DevObj_Arrow_Format" xml:space="preserve"><value>{0}箭头</value></data>
+  <data name="DevObj_CButton_Format" xml:space="preserve"><value>C{0}</value></data>
+  <data name="DevObj_Keypad_Format" xml:space="preserve"><value>小键盘 {0}</value></data>
   <data name="DevObj_XAxis" xml:space="preserve"><value>X 轴</value></data>
   <data name="DevObj_YAxis" xml:space="preserve"><value>Y 轴</value></data>
   <data name="DevObj_ZAxis" xml:space="preserve"><value>Z 轴</value></data>
@@ -2605,6 +2633,64 @@
   <data name="Devices_UsioTekken" xml:space="preserve"><value>作为铁拳摇杆读取</value></data>
   <data name="Devices_UsioTaiko" xml:space="preserve"><value>作为太鼓达人鼓读取</value></data>
   <data name="Devices_UsioLayoutTooltip" xml:space="preserve"><value>太鼓达人和铁拳的机台以同一 ID 使用这块板，各自布局不同。板子会以所选布局重新打开。</value></data>
+  <data name="Devices_BlissBoxLine_Format" xml:space="preserve"><value>Bliss-Box 端口 {0} · {1} · 固件 {2}</value></data>
+  <data name="Devices_BlissBoxLineConnecting_Format" xml:space="preserve"><value>Bliss-Box 端口 {0} · 正在连接</value></data>
+  <data name="Devices_BlissBoxPlayer" xml:space="preserve"><value>玩家编号…</value></data>
+  <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>设置此端口的玩家编号（1 到 4）。适配器会保存编号并以该玩家身份重新连接。</value></data>
+  <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Dreamcast 屏幕…</value></data>
+  <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>设置 Dreamcast 手柄 VMU 显示的内容：适配器自己的图片、当前配置文件的名称、编号或图片、时钟、游戏时间，或您选择的图片。</value></data>
+  <data name="Devices_PakBackup" xml:space="preserve"><value>备份控制器记忆卡…</value></data>
+  <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>将此 N64 手柄中的控制器记忆卡保存为 32 KB 的 .mpk 文件，即 N64 模拟器读取的格式。</value></data>
+  <data name="Devices_PakRestore" xml:space="preserve"><value>恢复控制器记忆卡…</value></data>
+  <data name="Devices_PakRestoreTooltip" xml:space="preserve"><value>将 32 KB 的 .mpk 文件写入此 N64 手柄的控制器记忆卡，替换其中的所有存档。</value></data>
+  <data name="Devices_NativeArrows" xml:space="preserve"><value>逐个读取方向箭头</value></data>
+  <data name="Devices_NativeArrowsTooltip" xml:space="preserve"><value>直接向此 PlayStation 手柄询问方向，使跳舞毯上的左和右、上和下可以同时识别。方向以上、下、左、右箭头按键传入。适配器每处理一次询问就会跳过一次自身的读取。</value></data>
+  <data name="Devices_BlissBoxPressure" xml:space="preserve"><value>DualShock 2 压力</value></data>
+  <data name="BlissBoxPlayer_Title" xml:space="preserve"><value>玩家编号</value></data>
+  <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>适配器会保存编号并以该玩家身份重新连接。Windows 随后会将其视为新设备，因此端口重新出现后请重新分配。</value></data>
+  <data name="BlissBoxPlayer_Label" xml:space="preserve"><value>玩家</value></data>
+  <data name="BlissBoxPlayer_Action" xml:space="preserve"><value>设置玩家</value></data>
+  <data name="DreamcastScreen_Title" xml:space="preserve"><value>Dreamcast 屏幕</value></data>
+  <data name="DreamcastScreen_Mode_Label" xml:space="preserve"><value>显示</value></data>
+  <data name="DreamcastScreen_Mode_Adapter" xml:space="preserve"><value>适配器的图片</value></data>
+  <data name="DreamcastScreen_Mode_ProfileName" xml:space="preserve"><value>配置文件名称</value></data>
+  <data name="DreamcastScreen_Mode_ProfileNumber" xml:space="preserve"><value>配置文件编号</value></data>
+  <data name="DreamcastScreen_Mode_ProfilePicture" xml:space="preserve"><value>配置文件图片</value></data>
+  <data name="DreamcastScreen_Mode_Clock" xml:space="preserve"><value>时钟</value></data>
+  <data name="DreamcastScreen_Mode_PlayTime" xml:space="preserve"><value>游戏时间</value></data>
+  <data name="DreamcastScreen_Mode_Picture" xml:space="preserve"><value>所选图片</value></data>
+  <data name="DreamcastScreen_Hint_Adapter" xml:space="preserve"><value>VMU 显示适配器保存的图片。PadForge 不写入任何内容，如果之后写入过图片，则会恢复原来的图片。</value></data>
+  <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>VMU 显示当前配置文件的名称，并随每次配置文件切换更新。</value></data>
+  <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>VMU 显示当前配置文件在配置文件列表中的位置。默认配置文件为 0。</value></data>
+  <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>VMU 显示当前配置文件自己的图片，没有图片时显示其名称。每个配置文件保存各自的图片。</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU 显示当前时间，每分钟重写一次。</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU 显示手柄插入后经过的小时和分钟，每分钟重写一次。</value></data>
+  <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>VMU 显示您选择的图片：BMP 或 PNG、VMU Animator 的 .lcd 文件或 Dreamcast 的 .vms 图标。图片会转为 48×32 的黑白像素。</value></data>
+  <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>选择图片…</value></data>
+  <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>为 {0} 选择图片…</value></data>
+  <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>移除配置文件图片</value></data>
+  <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>图片 (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|所有文件 (*.*)|*.*</value></data>
+  <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>该文件中没有 PadForge 可以读取的图片。</value></data>
+  <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>控制器记忆卡文件 (*.mpk)|*.mpk|所有文件 (*.*)|*.*</value></data>
+  <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>控制器记忆卡 端口 {0}.mpk</value></data>
+  <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>恢复控制器记忆卡</value></data>
+  <data name="BlissBoxPak_RestoreMessage_Format" xml:space="preserve"><value>端口 {0} 的控制器记忆卡上的所有存档都会被文件内容替换。</value></data>
+  <data name="BlissBoxPak_RestoreAction" xml:space="preserve"><value>恢复</value></data>
+  <data name="BlissBoxJob_Closed" xml:space="preserve"><value>传输完成前端口已关闭。</value></data>
+  <data name="BlissBoxJob_WrongController" xml:space="preserve"><value>端口中需要插入 N64 手柄。</value></data>
+  <data name="BlissBoxJob_NoPak" xml:space="preserve"><value>手柄中没有控制器记忆卡。</value></data>
+  <data name="BlissBoxJob_RumblePak" xml:space="preserve"><value>这是振动包，不保存存档。</value></data>
+  <data name="BlissBoxJob_BadBlock_Format" xml:space="preserve"><value>块 {0} 的校验和多次不匹配。请重新插好记忆卡后再试。</value></data>
+  <data name="BlissBoxJob_TooManyErrors_Format" xml:space="preserve"><value>记忆卡拒绝了过多写入，最后一次在块 {0}。请重新插好记忆卡后再试。</value></data>
+  <data name="BlissBoxJob_NoReply" xml:space="preserve"><value>适配器没有响应。请检查手柄是否已插好，然后重试。</value></data>
+  <data name="Status_BlissBoxPlayer_Format" xml:space="preserve"><value>此端口现在是玩家 {0}。它会以新设备身份重新连接。</value></data>
+  <data name="Status_DreamcastScreen_Format" xml:space="preserve"><value>Dreamcast 屏幕已设为{0}。</value></data>
+  <data name="Status_PakReading_Format" xml:space="preserve"><value>正在读取控制器记忆卡：{0:P0}</value></data>
+  <data name="Status_PakWriting_Format" xml:space="preserve"><value>正在写入控制器记忆卡：{0:P0}</value></data>
+  <data name="Status_PakSaved_Format" xml:space="preserve"><value>已将控制器记忆卡保存到 {0}。</value></data>
+  <data name="Status_PakRestored_Format" xml:space="preserve"><value>已从 {0} 恢复控制器记忆卡。</value></data>
+  <data name="Status_PakFileFailed_Format" xml:space="preserve"><value>无法使用该文件：{0}</value></data>
+  <data name="Status_PakWrongSize_Format" xml:space="preserve"><value>控制器记忆卡文件为 32,768 字节。此文件为 {0:N0} 字节。</value></data>
   <data name="Status_UsioTekken" xml:space="preserve"><value>正在将 Namco USIO 作为四个铁拳摇杆读取。</value></data>
   <data name="Status_UsioTaiko" xml:space="preserve"><value>正在将 Namco USIO 作为两个太鼓达人鼓读取。</value></data>
   <data name="Status_ICadeOn_Format" xml:space="preserve"><value>正在将 {0} 作为 iCade 控制器读取。</value></data>
@@ -2812,6 +2898,15 @@
   <data name="MacroAction_Type_SetChromaColor" xml:space="preserve"><value>设置 Chroma 颜色</value></data>
   <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>在动作运行期间，将所有 Razer Chroma 设备点亮为同一种颜色。</value></data>
   <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>在上方设定的时长内将所有 Razer Chroma 设备点亮为此颜色，之后将灯效交还给 Razer Synapse。若要在按住触发器期间一直保持该颜色，请将“按住时”与“直到释放”一起使用。两个宏同时着色时，列表中靠下的宏优先，因此请把完全按下的宏放在轻按宏的下方。需要运行 Razer Synapse。</value></data>
+  <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>显示 Dreamcast 屏幕</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>在为此槽位提供输入的 Bliss-Box 端口中，每个 Dreamcast 手柄的 VMU 上播放图片，然后将各端口恢复为其自己的屏幕设置。</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>显示 {0} 张 Dreamcast 图片，每张 {1} 毫秒，共 {2} 次</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>由于适配器会把收到的每张图片写入其存储器，每张图片至少显示一秒。图片为 48×32 的黑白像素，可来自 BMP 或 PNG、VMU Animator 的 .lcd 文件或 Dreamcast 的 .vms 图标。</value></data>
+  <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>图片</value></data>
+  <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>添加图片…</value></data>
+  <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>移除图片</value></data>
+  <data name="Macro_Dreamcast_FrameTime" xml:space="preserve"><value>每张时长</value></data>
+  <data name="Macro_Dreamcast_Repeat" xml:space="preserve"><value>重复次数</value></data>
   <data name="MacroAction_SetChromaColor_Format" xml:space="preserve"><value>Chroma {0}，持续 {1} 毫秒</value></data>
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>切换到层{0}</value></data>
   <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>将此插槽切换到所选的Shift层。该层保持激活，直到下一次切换、Latch或Cycle激活器或配置文件切换。Base返回基础层。配合上方的层限定，同一按钮可在不同层上执行不同跳转。</value></data>
@@ -3674,6 +3769,8 @@
   <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>G 键输入背后的事件字布局来自 SDK 中的 LogitechGkeyLib.h。库的搜索顺序和关闭流程遵循 Mumble 的 GKey.cpp（BSD 3-Clause）。PadForge 加载本机上的库，不随附 Logitech 代码。</value></data>
   <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>HallJoy、Soup 和 AnalogSense</value></data>
   <data name="About_AnalogKeyboardRefsDesc" xml:space="preserve"><value>模拟键盘输入将 HallJoy 的键盘路由、按键表和型号目录移植到 C#（AGPL-3.0，PashOK7），并遵循 Soup 和 AnalogSense JavaScript SDK（MIT，Calamity, Inc.），与 Wooting Analog SDK（MPL-2.0）核对。其他键盘遵循 AnalogKeys（MIT，Nisayera）、KeyAxis（MIT，RigZeeel）、HallEffectAnalogMapper（MIT，Ricards Mironovs）、libhmk 和 hmkconf（GPL-3.0，peppapighs），以及 DenkiSuki、LeiterConsulting 和 paysdelest 的 Soup 分支（MIT）。报告格式和按键表还来自 Razer 的 Synapse Web 与 NuPhy 的 NuPhyIO 配置工具、OpenRazer（GPL-2.0）、Abbytech 的 razer-analog-keyboard、TinyUSB（MIT）以及 Sainan 的抓包笔记。</value></data>
+  <data name="About_BlissBoxRefs" xml:space="preserve"><value>Bliss-Box 参考来源</value></data>
+  <data name="About_BlissBoxRefsDesc" xml:space="preserve"><value>“读取 Bliss-Box 适配器”所用的 Bliss-Box API 取自 Bliss-Box LLC 的 API Tool（BSD 类许可，免费再分发）和 DeviceBuddy（源码可见，Bliss-Box LLC），按键名称取自 SteveFox1620 的 retroarch-joypad-autoconfig 分支中的 Bliss-Box 文件，控制器记忆卡校验和与 libdragon（公有领域）核对，PlayStation 手柄应答取自 psx-spx 和 Linux 的 psxpad-spi 驱动（GPL-2.0）。仅为文档参考，不含任何代码。</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
   <data name="About_UsbipWin2Desc" xml:space="preserve"><value>Vadym Hrynchyshyn 开发的 USB 传输层，用于 HIDMaestro 的复合 USB 控制器。其已签名的安装程序随 HIDMaestro 提供，并在首次创建复合控制器时运行。BSD 2-Clause。</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">

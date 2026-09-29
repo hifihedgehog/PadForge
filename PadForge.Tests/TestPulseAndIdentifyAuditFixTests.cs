@@ -158,7 +158,11 @@ namespace PadForge.Tests
             string src = InputService();
             int i = src.IndexOf("public void IdentifyDevice(Guid instanceGuid)", StringComparison.Ordinal);
             Assert.True(i > 0, "IdentifyDevice is gone");
-            string body = src.Substring(i, Math.Min(6000, src.Length - i));
+            // To the next member, not a fixed window: a fixed length lost the
+            // unowned lane's check once the Bliss-Box branch (#469) grew the
+            // method past it.
+            int next = src.IndexOf("\n        public ", i + 1, StringComparison.Ordinal);
+            string body = src.Substring(i, (next > i ? next : src.Length) - i);
 
             Assert.Contains("int ResolvePad()", body);
             Assert.Contains("int pad = ResolvePad();", body);

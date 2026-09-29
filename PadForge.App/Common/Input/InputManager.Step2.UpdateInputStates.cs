@@ -108,6 +108,12 @@ namespace PadForge.Common.Input
                     {
                         // SDL device — read via wrapper.
                         newState = inputDevice.GetCurrentState(ud.ForceRawJoystickMode);
+                        // A Bliss-Box port's pressure and native arrows ride
+                        // its own state, ahead of the idle detector and every
+                        // consumer after it (#469).
+                        if (newState != null && PadForge.Engine.Common.BlissBox.BlissBoxApi.Enabled
+                            && PadForge.Engine.Common.BlissBox.BlissBoxProtocol.IsPort(ud.VendorId, ud.ProdId))
+                            BlissBoxRuntime.Merge(ud, newState);
                     }
                     else
                     {
@@ -691,12 +697,16 @@ namespace PadForge.Common.Input
             // it only says whether Buffalo's effect plug-in is installed, and
             // that plug-in is never driven (#440).
             bool isPadixConverter = PadForge.Engine.PadixConverterIdentity.IsPlayStationConverter(ud.VendorId, ud.ProdId);
-            if (!isXboxImpulse && !isVendorFfb && !isPadixConverter)
+            // A Bliss-Box port's motors take the adapter's own commands while
+            // Read Bliss-Box Adapters is on (#469), the converter's shape: SDL's
+            // DirectInput path averages both motors into one sine effect.
+            bool isBlissBox = PadForge.Engine.Common.BlissBox.BlissBoxApi.OwnsRumble(ud.VendorId, ud.ProdId);
+            if (!isXboxImpulse && !isVendorFfb && !isPadixConverter && !isBlissBox)
             {
                 if (ud.Device == null || (!ud.Device.HasRumble && !ud.Device.HasHaptic))
                     return;
             }
-            else if ((isXboxImpulse || isPadixConverter) && ud.Device == null)
+            else if ((isXboxImpulse || isPadixConverter || isBlissBox) && ud.Device == null)
             {
                 return;
             }
@@ -796,6 +806,11 @@ namespace PadForge.Common.Input
                             else if (isPadixConverter)
                             {
                                 PadixConverterRawHidWriter.Write(ud.DevicePath, 0, 0);
+                                ud.ForceFeedbackState.TryRecordMotorSnapshot(0, 0);
+                            }
+                            else if (isBlissBox)
+                            {
+                                BlissBoxRuntime.SetRumble(ud.DevicePath, 0, 0);
                                 ud.ForceFeedbackState.TryRecordMotorSnapshot(0, 0);
                             }
                             else ud.ForceFeedbackState.StopDeviceForces(ud.Device);
@@ -1136,6 +1151,22 @@ namespace PadForge.Common.Input
                     // intent, not delivery, so a refused write must re-arm or
                     // the identical next frame never retries.
                     if (!PadixConverterRawHidWriter.Write(ud.DevicePath, combinedL, combinedR))
+                        ud.ForceFeedbackState.MarkDirectWriteFailed();
+                }
+                return;
+            }
+
+            if (isBlissBox)
+            {
+                // Bliss-Box sole-writer path (#469). The port's worker sends
+                // the large motor (command 4) the low-frequency level and the
+                // small motor (command 5) the high-frequency one, and holds a
+                // running motor on with a fresh command every 100 ms, so only a
+                // change comes through here. A port still opening refuses, and
+                // the snapshot re-arms for the next frame.
+                if (ud.ForceFeedbackState.TryRecordMotorSnapshot(combinedL, combinedR))
+                {
+                    if (!BlissBoxRuntime.SetRumble(ud.DevicePath, combinedL, combinedR))
                         ud.ForceFeedbackState.MarkDirectWriteFailed();
                 }
                 return;

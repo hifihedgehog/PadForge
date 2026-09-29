@@ -937,6 +937,58 @@
                                 <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"/>
                             </Button.Style>
                         </Button>
+                        <!-- Bliss-Box port (#469): the controller in the port and the
+                             adapter's firmware, then the port's actions. -->
+                        <TextBlock Text="{Binding SelectedDevice.BlissBoxLine}" TextWrapping="Wrap"
+                                   FontSize="11" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,8"
+                                   Visibility="{Binding SelectedDevice.BlissBoxLine, Converter={StaticResource StringToVisibility}}"/>
+                        <Button Content="{Binding Devices_BlissBoxPlayer, Source={x:Static strings:Strings.Instance}}" Margin="0,6,0,8"
+                                Padding="8,4" HorizontalAlignment="Left"
+                                Click="BlissBoxPlayer_Click"
+                                ToolTip="{Binding Devices_BlissBoxPlayerTooltip, Source={x:Static strings:Strings.Instance}}"
+                                Visibility="{Binding SelectedDevice.ShowBlissBoxPlayer, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"/>
+                            </Button.Style>
+                        </Button>
+                        <Button Content="{Binding Devices_DreamcastScreen, Source={x:Static strings:Strings.Instance}}" Margin="0,6,0,8"
+                                Padding="8,4" HorizontalAlignment="Left"
+                                Click="DreamcastScreen_Click"
+                                ToolTip="{Binding Devices_DreamcastScreenTooltip, Source={x:Static strings:Strings.Instance}}"
+                                Visibility="{Binding SelectedDevice.ShowDreamcastScreen, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"/>
+                            </Button.Style>
+                        </Button>
+                        <Button Content="{Binding Devices_PakBackup, Source={x:Static strings:Strings.Instance}}" Margin="0,6,0,8"
+                                Padding="8,4" HorizontalAlignment="Left"
+                                Click="PakBackup_Click"
+                                ToolTip="{Binding Devices_PakBackupTooltip, Source={x:Static strings:Strings.Instance}}"
+                                Visibility="{Binding SelectedDevice.ShowControllerPak, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"/>
+                            </Button.Style>
+                        </Button>
+                        <Button Content="{Binding Devices_PakRestore, Source={x:Static strings:Strings.Instance}}" Margin="0,6,0,8"
+                                Padding="8,4" HorizontalAlignment="Left"
+                                Click="PakRestore_Click"
+                                ToolTip="{Binding Devices_PakRestoreTooltip, Source={x:Static strings:Strings.Instance}}"
+                                Visibility="{Binding SelectedDevice.ShowControllerPak, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"/>
+                            </Button.Style>
+                        </Button>
+                        <DockPanel LastChildFill="True" Margin="0,6,0,8"
+                                   Visibility="{Binding SelectedDevice.ShowNativeArrows, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <reset:SettingResetButton DockPanel.Dock="Right" Command="{Binding ResetSelectedDeviceSettingCommand}" CommandParameter="BlissBoxNativeArrows" SettingLabel="{Binding Devices_NativeArrows, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_DeviceRowViewModel_BlissBoxNativeArrows_1005"/>
+                            <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                      IsChecked="{Binding SelectedDevice.BlissBoxNativeArrows, Mode=TwoWay}"
+                                      Click="NativeArrows_Click"
+                                      ToolTip="{Binding Devices_NativeArrowsTooltip, Source={x:Static strings:Strings.Instance}}">
+                                <TextBlock Text="{Binding Devices_NativeArrows, Source={x:Static strings:Strings.Instance}}"
+                                           TextWrapping="Wrap"/>
+                            </CheckBox>
+                        </DockPanel>
                         <!-- Vendor daemon notice (#343): the vendor's own tool keeps
                              reacting to these buttons until it is stopped. -->
                         <TextBlock Text="{Binding SelectedDevice.HandheldDaemonWarning}" TextWrapping="Wrap"
@@ -1552,6 +1604,46 @@
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <Border CornerRadius="4" Margin="2" Padding="6,4" Width="84"
+                                                Style="{StaticResource RawCellBorder}">
+                                            <StackPanel>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="{Binding Name}" FontSize="11" TextTrimming="CharacterEllipsis"
+                                                               Style="{StaticResource RawCellLabel}" VerticalAlignment="Center"/>
+                                                    <TextBlock Grid.Column="1" Text="{Binding DepthText}" FontSize="9" Margin="4,0,0,0"
+                                                               FontFamily="{StaticResource TelemetryFontFamily}" VerticalAlignment="Center"
+                                                               Foreground="{DynamicResource ColdBrush}"/>
+                                                </Grid>
+                                                <ProgressBar Minimum="0" Maximum="1" Height="3" Margin="0,3,0,0"
+                                                             Value="{Binding Depth, Mode=OneWay}"
+                                                             Style="{StaticResource InstrumentBarRaw}"
+                                                             Foreground="{DynamicResource ColdBrush}"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+
+                        <!-- DualShock 2 in a Bliss-Box port (issue #469): its twelve
+                             pressure buttons as chips, the key depth chips' shape,
+                             each with its pressure as a bar and a percent. -->
+                        <StackPanel Visibility="{Binding HasBlissBoxPressure, Converter={StaticResource BoolToVisibilityConverter}}"
+                                    Margin="0,0,0,8">
+                            <TextBlock Text="{Binding Devices_BlissBoxPressure, Source={x:Static strings:Strings.Instance}}"
+                                       FontFamily="{StaticResource TelemetryFontFamily}" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,3"/>
+                            <ItemsControl ItemsSource="{Binding BlissBoxPressure}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border CornerRadius="4" Margin="2" Padding="6,4" Width="118"
                                                 Style="{StaticResource RawCellBorder}">
                                             <StackPanel>
                                                 <Grid>

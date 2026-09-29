@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
+using PadForge.Engine.Common.BlissBox;
 using SDL3;
 using static SDL3.SDL;
 
@@ -42,8 +43,19 @@ namespace PadForge.Engine
         /// <summary>Number of hat switches reported by SDL.</summary>
         public int NumHats { get; private set; }
 
-        /// <summary>Whether the device supports rumble vibration.</summary>
-        public bool HasRumble { get; private set; }
+        /// <summary>Whether the device supports rumble vibration. A
+        /// Bliss-Box port has it while Read Bliss-Box Adapters is on, whatever
+        /// SDL found (#469): the adapter's own motor commands drive it, and
+        /// which controller is plugged in changes without a reopen. With the
+        /// switch off it is SDL's answer again, so a port without an SDL
+        /// motor path is not written every poll.</summary>
+        public bool HasRumble
+        {
+            get => _hasRumble || BlissBoxApi.OwnsRumble(VendorId, ProductId);
+            private set => _hasRumble = value;
+        }
+
+        private bool _hasRumble;
 
         /// <summary>Whether the device exposes per-trigger ("impulse") rumble motors
         /// (Xbox One / Elite / Series).</summary>
@@ -1841,6 +1853,12 @@ namespace PadForge.Engine
             if (PadixConverterIdentity.IsPlayStationConverter(VendorId, ProductId))
                 return false;
 
+            // A Bliss-Box port's motors belong to the adapter's own commands
+            // while Read Bliss-Box Adapters is on (#469). SDL's DirectInput
+            // path would average both motors into one sine effect beside them.
+            if (BlissBoxApi.OwnsRumble(VendorId, ProductId))
+                return false;
+
             if (IsSteamDeck)
             {
                 lowFreq = (ushort)(lowFreq * DeckRumbleHeadroom);
@@ -1929,6 +1947,16 @@ namespace PadForge.Engine
         public bool StopRumble()
         {
             return SetRumble(0, 0, 0);
+        }
+
+        /// <summary>Stops a rumble SDL started, past the gate that keeps SDL
+        /// off a port whose motors PadForge writes itself. For the moment a
+        /// Bliss-Box port's motors pass to the adapter's commands, so an
+        /// effect SDL started before is not left running (#469).</summary>
+        public void StopSdlRumble()
+        {
+            if (Joystick != IntPtr.Zero && _hasRumble)
+                SDL_RumbleJoystick(Joystick, 0, 0, 0);
         }
 
         // ─────────────────────────────────────────────
@@ -2102,6 +2130,23 @@ namespace PadForge.Engine
         /// Hats get PovController GUIDs. Buttons get Button GUIDs.
         /// </summary>
         public DeviceObjectItem[] GetDeviceObjects()
+        {
+            var items = BuildDeviceObjects();
+            // A Bliss-Box port read raw carries the names of the controller
+            // plugged into it, and its pressure axes and arrow buttons, from
+            // the App's API sidecar (issue #469). One seam here keeps every
+            // place that fills DeviceObjects in step.
+            if (GameController == IntPtr.Zero
+                && BlissBoxProtocol.IsPort(VendorId, ProductId)
+                && BlissBoxApi.DeviceObjectsProvider is { } provide)
+            {
+                try { items = provide(this, items) ?? items; }
+                catch { /* the joystick's own names stand */ }
+            }
+            return items;
+        }
+
+        private DeviceObjectItem[] BuildDeviceObjects()
         {
             int btnCount = Math.Max(NumButtons, RawButtonCount);
             // Extra generic axes (issue #193): raw joystick axes beyond the six

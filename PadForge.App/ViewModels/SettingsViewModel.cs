@@ -1086,6 +1086,42 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _analogKeyboardsStatus, value);
         }
 
+        private bool _blissBoxEnabled;
+
+        /// <summary>Bliss-Box adapters driven through their API (issue #469),
+        /// the analog keyboards switch's neighbor and shape: off until asked
+        /// for, because it talks to the adapter over the channel the Bliss-Box
+        /// API Tool and DeviceBuddy use.</summary>
+        public bool BlissBoxEnabled
+        {
+            get => _blissBoxEnabled;
+            set
+            {
+                if (SetProperty(ref _blissBoxEnabled, value))
+                    PadForge.Common.Input.BlissBoxRuntime.Enabled = value;
+            }
+        }
+
+        private string _blissBoxStatus = string.Empty;
+
+        /// <summary>Which ports are being read and what is in them, pushed by
+        /// InputService. Empty while the feature is off, which collapses the
+        /// line.</summary>
+        public string BlissBoxStatus
+        {
+            get => _blissBoxStatus;
+            set => SetProperty(ref _blissBoxStatus, value);
+        }
+
+        /// <summary>Each Bliss-Box port's own choices (#469): its Dreamcast
+        /// screen, its native arrow poll. Kept by the port's device and
+        /// changed on the UI thread only.</summary>
+        public List<PadForge.Services.BlissBoxPortData> BlissBoxPorts { get; set; } = new();
+
+        /// <summary>The Default profile's Dreamcast screen picture (#469),
+        /// base64 in image order, or null.</summary>
+        public string DefaultProfileDreamcastPicture { get; set; }
+
         // ─────────────────────────────────────────────
         //  Community Configs (Steam Workshop, issue #9)
         // ─────────────────────────────────────────────

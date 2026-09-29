@@ -115,8 +115,9 @@ namespace PadForge.Tests
             string code = RepoText("PadForge.App", "Common", "Input", "InputManager.Step2.UpdateInputStates.cs")
                 .Replace("\r\n", "\n");
             Assert.Contains("bool isPadixConverter = PadForge.Engine.PadixConverterIdentity.IsPlayStationConverter(ud.VendorId, ud.ProdId);", code);
-            Assert.Contains("if (!isXboxImpulse && !isVendorFfb && !isPadixConverter)", code);
-            Assert.Contains("else if ((isXboxImpulse || isPadixConverter) && ud.Device == null)", code);
+            // A Bliss-Box port (#469) joined the same gate after the converter.
+            Assert.Contains("if (!isXboxImpulse && !isVendorFfb && !isPadixConverter && !isBlissBox)", code);
+            Assert.Contains("else if ((isXboxImpulse || isPadixConverter || isBlissBox) && ud.Device == null)", code);
             // The unassign final zero goes through the writer, not StopDeviceForces.
             Assert.Contains("else if (isPadixConverter)\n                            {\n                                PadixConverterRawHidWriter.Write(ud.DevicePath, 0, 0);", code);
             // The dispatch returns before SetDeviceForces.

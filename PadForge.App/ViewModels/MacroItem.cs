@@ -2880,6 +2880,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsPointerModeSetType));
                     OnPropertyChanged(nameof(IsSwitchLayerType));
                     OnPropertyChanged(nameof(IsSetChromaColorType));
+                    OnPropertyChanged(nameof(IsShowDreamcastScreenType));
                     OnPropertyChanged(nameof(IsGuideLedBrightnessType));
                     OnPropertyChanged(nameof(IsAnyLightbarType));
                     OnPropertyChanged(nameof(IsLightbarReactiveHold));
@@ -3315,6 +3316,11 @@ namespace PadForge.ViewModels
         /// color card. The hold rides the generic duration row.</summary>
         [System.Xml.Serialization.XmlIgnore]
         public bool IsSetChromaColorType => _type == MacroActionType.SetChromaColor;
+
+        /// <summary>True when Type is ShowDreamcastScreen (#469). Surfaces the
+        /// picture card.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public bool IsShowDreamcastScreenType => _type == MacroActionType.ShowDreamcastScreen;
 
         /// <summary>True when Type is PointerModeSet (issue #203 follow-up).</summary>
         [System.Xml.Serialization.XmlIgnore]
@@ -4443,6 +4449,87 @@ namespace PadForge.ViewModels
         {
             get => _textPerCharDelayMs;
             set => SetProperty(ref _textPerCharDelayMs, Math.Clamp(value, 0, 1000));
+        }
+
+        private string _dreamcastFrames = string.Empty;
+        /// <summary>Show Dreamcast Screen (#469): the pictures in the order
+        /// they show, each 192 bytes in image order as base64, joined by
+        /// commas, eight at most.</summary>
+        public string DreamcastFrames
+        {
+            get => _dreamcastFrames;
+            set
+            {
+                if (!SetProperty(ref _dreamcastFrames, value ?? string.Empty)) return;
+                OnPropertyChanged(nameof(DreamcastFrameImages));
+                OnPropertyChanged(nameof(DreamcastFrameCount));
+                OnPropertyChanged(nameof(CanAddDreamcastFrame));
+                OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        private int _dreamcastFrameMs = PadForge.Services.DreamcastScreenService.MinFrameMs;
+        /// <summary>How long each picture shows, ms: a second at least, the
+        /// adapter's EEPROM guard, and ten minutes at most.</summary>
+        public int DreamcastFrameMs
+        {
+            get => _dreamcastFrameMs;
+            set
+            {
+                if (SetProperty(ref _dreamcastFrameMs,
+                        Math.Clamp(value, PadForge.Services.DreamcastScreenService.MinFrameMs, 600000)))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        private int _dreamcastRepeat = 1;
+        /// <summary>How many times the pictures play before the port returns
+        /// to its own setting.</summary>
+        public int DreamcastRepeat
+        {
+            get => _dreamcastRepeat;
+            set
+            {
+                if (SetProperty(ref _dreamcastRepeat, Math.Clamp(value, 1, 1000)))
+                    OnPropertyChanged(nameof(DisplayText));
+            }
+        }
+
+        /// <summary>The pictures as the VMU shows them, for the editor.</summary>
+        [System.Xml.Serialization.XmlIgnore]
+        public IReadOnlyList<System.Windows.Media.ImageSource> DreamcastFrameImages
+        {
+            get
+            {
+                var images = new List<System.Windows.Media.ImageSource>();
+                foreach (var frame in PadForge.Services.DreamcastScreenService.DecodeFrames(_dreamcastFrames))
+                    images.Add(PadForge.Services.DreamcastScreenService.ToBitmap(frame));
+                return images;
+            }
+        }
+
+        [System.Xml.Serialization.XmlIgnore]
+        public int DreamcastFrameCount => PadForge.Services.DreamcastScreenService.DecodeFrames(_dreamcastFrames).Count;
+
+        [System.Xml.Serialization.XmlIgnore]
+        public bool CanAddDreamcastFrame => DreamcastFrameCount < PadForge.Services.DreamcastScreenService.MaxFrames;
+
+        /// <summary>Appends a picture, while fewer than eight are set.</summary>
+        internal void AddDreamcastFrame(byte[] image)
+        {
+            var frames = PadForge.Services.DreamcastScreenService.DecodeFrames(_dreamcastFrames);
+            if (image == null || frames.Count >= PadForge.Services.DreamcastScreenService.MaxFrames) return;
+            frames.Add(image);
+            DreamcastFrames = PadForge.Services.DreamcastScreenService.EncodeFrames(frames);
+        }
+
+        /// <summary>Removes the picture at <paramref name="index"/>.</summary>
+        internal void RemoveDreamcastFrame(int index)
+        {
+            var frames = PadForge.Services.DreamcastScreenService.DecodeFrames(_dreamcastFrames);
+            if (index < 0 || index >= frames.Count) return;
+            frames.RemoveAt(index);
+            DreamcastFrames = PadForge.Services.DreamcastScreenService.EncodeFrames(frames);
         }
 
         /// <summary>Runtime emission cursor for TextBlock pacing: how many UTF-16
@@ -5609,6 +5696,9 @@ namespace PadForge.ViewModels
                     MacroActionType.SetChromaColor => string.Format(
                         Strings.Instance.MacroAction_SetChromaColor_Format,
                         $"#{_lightbarR:X2}{_lightbarG:X2}{_lightbarB:X2}", _durationMs),
+                    MacroActionType.ShowDreamcastScreen => string.Format(
+                        Strings.Instance.MacroAction_ShowDreamcastScreen_Format,
+                        DreamcastFrameCount, _dreamcastFrameMs, _dreamcastRepeat),
                     MacroActionType.GuideLedBrightness => string.Format(
                         Strings.Instance.MacroAction_GuideLedBrightness_Format,
                         _guideLedPercent),
@@ -6517,7 +6607,16 @@ namespace PadForge.ViewModels
         /// of the press. The Chroma service hands the lighting back to Synapse
         /// once nothing asserts and the lightbar mirror is off. At the tail;
         /// ordinal pinned.</summary>
-        SetChromaColor = 56
+        SetChromaColor = 56,
+
+        /// <summary>Plays one to eight pictures on the VMU of each Dreamcast
+        /// pad in a Bliss-Box port that feeds the slot (issue #469, asked in
+        /// discussion #460): each for <see cref="MacroAction.DreamcastFrameMs"/>,
+        /// the whole set <see cref="MacroAction.DreamcastRepeat"/> times, after
+        /// which each port returns to its own screen setting. One-shot, the
+        /// <see cref="PlaySound"/> shape: the screen service plays it, and the
+        /// macro moves on. At the tail, and its ordinal is pinned.</summary>
+        ShowDreamcastScreen = 57
     }
 
     /// <summary>One parsed part of a <see cref="MacroActionType.CycleTapList"/>

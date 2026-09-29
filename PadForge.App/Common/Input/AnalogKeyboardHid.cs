@@ -572,6 +572,47 @@ namespace PadForge.Common.Input
                 info.OutputReportLength, info.FeatureReportLength, route.WriteTimeoutMs, route.TransferTimeoutMs);
         }
 
+        /// <summary>Opens a collection another reader owns, for its feature
+        /// reports alone: a Bliss-Box port, whose joystick SDL reads through
+        /// its own handle (issue #469). Shared read and write, as hidapi opens
+        /// for the API Tool, else no access rights, which still carries
+        /// feature reports. The input queue is held to its minimum, since
+        /// nothing reads it. Null when the collection cannot be opened.</summary>
+        internal static AnalogKeyboardHidChannel OpenShared(string path)
+        {
+            LastOpenError = 0;
+            if (string.IsNullOrEmpty(path)) return null;
+            const uint shared = SonyHeadsetHid.FILE_SHARE_READ | SonyHeadsetHid.FILE_SHARE_WRITE;
+            var handle = CreateOverlapped(path, SonyHeadsetHid.GENERIC_READ | SonyHeadsetHid.GENERIC_WRITE, shared);
+            if (handle.IsInvalid && (LastOpenError == ErrorAccessDenied || LastOpenError == ErrorSharingViolation))
+            {
+                handle.Dispose();
+                handle = CreateOverlapped(path, 0, shared);
+            }
+            if (handle.IsInvalid)
+            {
+                handle.Dispose();
+                return null;
+            }
+            IntPtr preparsed = IntPtr.Zero;
+            try
+            {
+                if (!SonyHeadsetHid.HidD_GetPreparsedData(handle, out preparsed)
+                    || SonyHeadsetHid.HidP_GetCaps(preparsed, out var caps) != SonyHeadsetHid.HIDP_STATUS_SUCCESS)
+                {
+                    handle.Dispose();
+                    return null;
+                }
+                AnalogKeyboardHidRuntime.HidD_SetNumInputBuffers(handle, 2);
+                return new AnalogKeyboardHidChannel(handle, null, caps.InputReportByteLength,
+                    caps.OutputReportByteLength, caps.FeatureReportByteLength, 0, 0);
+            }
+            finally
+            {
+                if (preparsed != IntPtr.Zero) SonyHeadsetHid.HidD_FreePreparsedData(preparsed);
+            }
+        }
+
         /// <summary>CreateFile for overlapped I/O, recording the error of a
         /// failed open in <see cref="LastOpenError"/>.</summary>
         private static SafeFileHandle CreateOverlapped(string path, uint access, uint share)

@@ -291,6 +291,21 @@
                                Visibility="{Binding AnalogKeyboardsStatus, Converter={StaticResource StringToVisibility}}"
                                TextWrapping="Wrap" Margin="0,0,0,8"
                                Foreground="{DynamicResource EmberBrush}"/>
+                    <!-- Bliss-Box adapters (#469), the analog keyboards row's shape. -->
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <CheckBox VerticalAlignment="Center" Content="{Binding Settings_BlissBox, Source={x:Static strings:Strings.Instance}}"
+                                  x:Name="BlissBoxEnableCheckBox"
+                                  Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                  ToolTip="{Binding Settings_BlissBoxTooltip, Source={x:Static strings:Strings.Instance}}"
+                                  IsChecked="{Binding BlissBoxEnabled}"/>
+                        <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="BlissBoxEnabled" SettingLabel="{Binding Settings_BlissBox, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_SettingsViewModel_BlissBoxEnabled_189"/>
+                    </StackPanel>
+                    <!-- Each port and the controller in it. Empty while the
+                         feature is off. -->
+                    <TextBlock Text="{Binding BlissBoxStatus}"
+                               Visibility="{Binding BlissBoxStatus, Converter={StaticResource StringToVisibility}}"
+                               TextWrapping="Wrap" Margin="0,0,0,8"
+                               Foreground="{DynamicResource EmberBrush}"/>
                     <!-- Shared label column (#175 typography): both rows sit
                          in one Grid so the NumberBoxes align to one left
                          edge regardless of label length. -->

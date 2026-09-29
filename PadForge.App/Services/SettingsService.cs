@@ -2257,6 +2257,9 @@ namespace PadForge.Services
             vm.FlydigiEnhancedProtocol = appSettings.FlydigiEnhancedProtocol;
             vm.GKeysEnabled = appSettings.GKeysEnabled;
             vm.AnalogKeyboardsEnabled = appSettings.AnalogKeyboardsEnabled;
+            vm.BlissBoxEnabled = appSettings.BlissBoxEnabled;
+            vm.BlissBoxPorts = BlissBoxPortData.Normalize(appSettings.BlissBoxPorts);
+            vm.DefaultProfileDreamcastPicture = appSettings.DefaultProfileDreamcastPicture;
             // The hint must be in place before SDL_Init, and a hint set early
             // persists, so the load applies it (#395).
             PadForge.Common.Input.InputManager.ApplyFlydigiEnhancedProtocol(appSettings.FlydigiEnhancedProtocol);
@@ -3847,7 +3850,10 @@ namespace PadForge.Services
                 ProgramArgs = ad.ProgramArgs ?? "",
                 ProgramWorkingDir = ad.ProgramWorkingDir ?? "",
                 TextContent = ad.TextContent ?? "",
-                TextPerCharDelayMs = ad.TextPerCharDelayMs
+                TextPerCharDelayMs = ad.TextPerCharDelayMs,
+                DreamcastFrames = ad.DreamcastFrames ?? "",
+                DreamcastFrameMs = ad.DreamcastFrameMs,
+                DreamcastRepeat = ad.DreamcastRepeat
             };
         }
 
@@ -4747,6 +4753,10 @@ namespace PadForge.Services
                 FlydigiEnhancedProtocol = vm.FlydigiEnhancedProtocol,
                 GKeysEnabled = vm.GKeysEnabled,
                 AnalogKeyboardsEnabled = vm.AnalogKeyboardsEnabled,
+                BlissBoxEnabled = vm.BlissBoxEnabled,
+                BlissBoxPorts = vm.BlissBoxPorts.Count > 0 ? vm.BlissBoxPorts.ToArray() : null,
+                DefaultProfileDreamcastPicture = string.IsNullOrEmpty(vm.DefaultProfileDreamcastPicture)
+                    ? null : vm.DefaultProfileDreamcastPicture,
                 // Default profile's custom gestures. When a named profile is
                 // active, defaultSnap.TouchpadGestures carries the gestures
                 // recorded on the default; when default is active, pull
@@ -5186,7 +5196,10 @@ namespace PadForge.Services
                 ProgramArgs = string.IsNullOrEmpty(a.ProgramArgs) ? null : a.ProgramArgs,
                 ProgramWorkingDir = string.IsNullOrEmpty(a.ProgramWorkingDir) ? null : a.ProgramWorkingDir,
                 TextContent = string.IsNullOrEmpty(a.TextContent) ? null : a.TextContent,
-                TextPerCharDelayMs = a.TextPerCharDelayMs
+                TextPerCharDelayMs = a.TextPerCharDelayMs,
+                DreamcastFrames = string.IsNullOrEmpty(a.DreamcastFrames) ? null : a.DreamcastFrames,
+                DreamcastFrameMs = a.DreamcastFrameMs,
+                DreamcastRepeat = a.DreamcastRepeat
             };
         }
 
@@ -6254,6 +6267,24 @@ namespace PadForge.Services
         [XmlElement]
         public bool AnalogKeyboardsEnabled { get; set; }
 
+        /// <summary>Bliss-Box adapters driven through their API (issue #469).
+        /// Off by default: it talks to the adapter over the channel the
+        /// Bliss-Box API Tool and DeviceBuddy use.</summary>
+        [XmlElement]
+        public bool BlissBoxEnabled { get; set; }
+
+        /// <summary>Each Bliss-Box port's own choices (#469), by the port's
+        /// device. Null when there are none.</summary>
+        [XmlArray("BlissBoxPorts")]
+        [XmlArrayItem("Port")]
+        public BlissBoxPortData[] BlissBoxPorts { get; set; }
+
+        /// <summary>The Default profile's Dreamcast screen picture (#469),
+        /// 192 bytes in image order as base64. Named profiles keep theirs on
+        /// <see cref="ProfileData.DreamcastPicture"/>.</summary>
+        [XmlElement]
+        public string DefaultProfileDreamcastPicture { get; set; }
+
         /// <summary>Per-axis ranges in HeadPose's order (yaw, pitch, roll, X,
         /// Y, Z). Zero means the axis follows its family's shared range, which
         /// is what every axis does until a user pins one, so an older file
@@ -7199,6 +7230,16 @@ namespace PadForge.Services
         /// <summary>Milliseconds between typed characters for a TextBlock
         /// action. 0 = the whole text in one batched call.</summary>
         [XmlElement] public int TextPerCharDelayMs { get; set; }
+
+        /// <summary>Show Dreamcast Screen (#469): the pictures in the order
+        /// they show, each 192 bytes in image order as base64, joined by
+        /// commas.</summary>
+        [XmlElement] public string DreamcastFrames { get; set; }
+        /// <summary>How long each picture shows, ms. The action holds it to
+        /// a second at least, the adapter's EEPROM guard.</summary>
+        [XmlElement] public int DreamcastFrameMs { get; set; } = 1000;
+        /// <summary>How many times the pictures play, 1 at least.</summary>
+        [XmlElement] public int DreamcastRepeat { get; set; } = 1;
     }
 
     /// <summary>
@@ -7276,6 +7317,12 @@ namespace PadForge.Services
         /// the default profile IS the global setting's home.</summary>
         [XmlElement]
         public int PollingRateOverrideMs { get; set; }
+
+        /// <summary>The profile's Dreamcast screen picture (#469), 192 bytes
+        /// in image order as base64, shown by a Bliss-Box port set to Profile
+        /// Picture. AUTHORED like the name: no state save copies it.</summary>
+        [XmlElement]
+        public string DreamcastPicture { get; set; }
 
         [XmlArray("Entries")]
         [XmlArrayItem("Entry")]

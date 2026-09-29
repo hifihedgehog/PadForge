@@ -1116,9 +1116,32 @@ namespace PadForge.Common
                 "Browser Stop" => s.DevObj_ConsumerBrowserStop,
                 "Browser Refresh" => s.DevObj_ConsumerBrowserRefresh,
                 "Browser Bookmarks" => s.DevObj_ConsumerBrowserBookmarks,
+                // The controllers in Bliss-Box ports (#469). Letter and numeral
+                // legends (A, II, L1) pass through as printed.
+                "Select" => s.DevObj_Select,
+                "Mode" => s.DevObj_Mode,
+                "Run" => s.DevObj_Run,
+                "Reset" => s.DevObj_Reset,
+                "Home Button" => s.DevObj_HomeButton,
+                "Fire" => s.DevObj_Fire,
+                "Left Fire" => s.DevObj_LeftFire,
+                "Right Fire" => s.DevObj_RightFire,
+                "Z Trigger" => s.DevObj_ZTrigger,
+                "Stick X" => s.DevObj_StickX,
+                "Stick Y" => s.DevObj_StickY,
+                "C-Stick X" => s.DevObj_CStickX,
+                "C-Stick Y" => s.DevObj_CStickY,
+                "Dial" => s.DevObj_Dial,
+                "Cross" => s.Btn_Cross,
+                "Circle" => s.Btn_Circle,
+                "Square" => s.Btn_Square,
+                "Triangle" => s.Btn_Triangle,
                 _ => null
             };
             if (localized != null) return localized;
+
+            string blissBox = LocalizeBlissBoxName(name);
+            if (blissBox != null) return blissBox;
 
             // Keyboard key names (invariant Engine names → localized display).
             var keyLocalized = name switch
@@ -1215,6 +1238,38 @@ namespace PadForge.Common
 
             return name;
         }
+
+        /// <summary>The composed names of the controllers in Bliss-Box ports
+        /// (#469): a direction after a D-pad, an arrow or a C button, a key
+        /// on a keypad, a numbered fire button or dial, and a pressure, which
+        /// names the button it belongs to. Null for any other name.</summary>
+        private static string LocalizeBlissBoxName(string name)
+        {
+            if (name == null) return null;
+            var s = Strings.Instance;
+            var culture = System.Globalization.CultureInfo.CurrentCulture;
+            const string pressure = " Pressure";
+            if (name.EndsWith(pressure, System.StringComparison.Ordinal) && name.Length > pressure.Length)
+                return string.Format(culture, s.DevObj_Pressure_Format,
+                    LocalizeObjectName(name.Substring(0, name.Length - pressure.Length)));
+            if (name.StartsWith("Right D-Pad ", System.StringComparison.Ordinal) && IsDirection(name.Substring(12)))
+                return $"{s.DevObj_RightDPad} {ResolvePovDirection(name.Substring(12))}";
+            if (name.StartsWith("D-Pad ", System.StringComparison.Ordinal) && IsDirection(name.Substring(6)))
+                return $"{s.DevObj_DPad} {ResolvePovDirection(name.Substring(6))}";
+            if (name.EndsWith(" Arrow", System.StringComparison.Ordinal) && IsDirection(name.Substring(0, name.Length - 6)))
+                return string.Format(culture, s.DevObj_Arrow_Format, ResolvePovDirection(name.Substring(0, name.Length - 6)));
+            if (name.StartsWith("C-", System.StringComparison.Ordinal) && IsDirection(name.Substring(2)))
+                return string.Format(culture, s.DevObj_CButton_Format, ResolvePovDirection(name.Substring(2)));
+            if (name.StartsWith("Keypad ", System.StringComparison.Ordinal) && name.Length == 8)
+                return string.Format(culture, s.DevObj_Keypad_Format, name.Substring(7));
+            if (name.StartsWith("Fire ", System.StringComparison.Ordinal) && int.TryParse(name.AsSpan(5), out int fire))
+                return string.Format(culture, s.DevObj_Fire_Format, fire);
+            if (name.StartsWith("Dial ", System.StringComparison.Ordinal) && int.TryParse(name.AsSpan(5), out int dial))
+                return string.Format(culture, s.DevObj_Dial_Format, dial);
+            return null;
+        }
+
+        private static bool IsDirection(string dir) => dir is "Up" or "Down" or "Left" or "Right";
 
         internal static string ResolvePrefixLabel(string prefix) => prefix.ToUpperInvariant() switch
         {
@@ -2175,7 +2230,10 @@ namespace PadForge.Common
         /// on the Mappings tab.
         /// </summary>
         internal static bool UseRawNumberedNaming(UserDevice ud) =>
-            ud.ForceRawJoystickMode ||
+            // A Bliss-Box port names its objects for the controller plugged
+            // into it (#469), whatever joystick type SDL gives the port.
+            !PadForge.Common.Input.BlissBoxRuntime.NamesObjects(ud) &&
+            (ud.ForceRawJoystickMode ||
             (ud.CapType != InputDeviceType.Gamepad &&
              ud.CapType != InputDeviceType.Mouse &&
              ud.CapType != InputDeviceType.Keyboard &&
@@ -2203,7 +2261,7 @@ namespace PadForge.Common
              ud.CapType != InputDeviceType.LogitechGKeys &&
              // Analog keys are named for their legends (#468).
              ud.CapType != InputDeviceType.AnalogKeyboard &&
-             ud.CapType != InputDeviceType.Tablet);
+             ud.CapType != InputDeviceType.Tablet));
 
         /// <summary>Surfaces touchpad gesture descriptors in the input
         /// picker, one block per touchpad surface the device exposes.

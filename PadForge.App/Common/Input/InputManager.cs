@@ -1683,6 +1683,9 @@ namespace PadForge.Common.Input
             StopTabletReader();
 
             StopAllForceFeedback();
+            // The SDL rows close below, so their Bliss-Box ports close first,
+            // each stopping its motors (#469). The next start pairs them again.
+            BlissBoxRuntime.Shutdown();
 
             // Wait for any in-flight HM lifecycle tasks (Pass 2 connects
             // and Pass 1 async-dispose teardowns) to complete before we
@@ -2119,6 +2122,14 @@ namespace PadForge.Common.Input
                         if (PadForge.Engine.PadixConverterIdentity.IsPlayStationConverter(ud.VendorId, ud.ProdId))
                         {
                             try { PadixConverterRawHidWriter.Write(ud.DevicePath, 0, 0); }
+                            catch { /* best effort */ }
+                        }
+                        // A Bliss-Box port's SDL rumble is inert while the
+                        // adapter's commands own its motors (#469). The port's
+                        // worker sends both motors type 0 on its next step.
+                        if (PadForge.Engine.Common.BlissBox.BlissBoxApi.OwnsRumble(ud.VendorId, ud.ProdId))
+                        {
+                            try { BlissBoxRuntime.SetRumble(ud.DevicePath, 0, 0); }
                             catch { /* best effort */ }
                         }
                         try { ud.ForceFeedbackState.StopDeviceForces(ud.Device); }

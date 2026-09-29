@@ -444,6 +444,9 @@ namespace PadForge.Common.Input
             // --- Phase 1k: analog keyboards (issue #468) ---
             changed |= UpdateAnalogKeyboardDevices();
 
+            // --- Phase 1l: Bliss-Box ports beside their SDL rows (issue #469) ---
+            changed |= UpdateBlissBoxPorts();
+
             // --- Phase 2: Detect disconnected SDL devices (debounced) ---
             //
             // Signals that indicate the device might be gone:

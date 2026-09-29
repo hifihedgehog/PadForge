@@ -117,6 +117,11 @@ namespace PadForge.ViewModels
         public event EventHandler<string> UsioLayoutRequested;
         public void RequestUsioLayout(string layout) => UsioLayoutRequested?.Invoke(this, layout);
 
+        /// <summary>Raised by a Bliss-Box port row's actions (issue #469).
+        /// MainWindow owns the dialogs and the transfers.</summary>
+        public event EventHandler<BlissBoxAction> BlissBoxActionRequested;
+        public void RequestBlissBox(BlissBoxAction action) => BlissBoxActionRequested?.Invoke(this, action);
+
         /// <summary>Reads the offer for the selected device. Only a row whose
         /// IDs belong to an opt-in device costs a sweep of the USB
         /// nodes.</summary>
@@ -367,6 +372,49 @@ namespace PadForge.ViewModels
             foreach (var item in AnalogKeys)
                 item.Depth = keys?.Get(item.Code) ?? 0f;
             HasAnalogKeys = AnalogKeys.Count > 0;
+        }
+
+        private bool _hasBlissBoxPressure;
+        /// <summary>A DualShock 2 is in the selected Bliss-Box port, so its
+        /// twelve pressures show as chips (issue #469).</summary>
+        public bool HasBlissBoxPressure
+        {
+            get => _hasBlissBoxPressure;
+            set => SetProperty(ref _hasBlissBoxPressure, value);
+        }
+
+        /// <summary>One chip per pressure button, each with its live depth.</summary>
+        public ObservableCollection<AnalogKeyDisplayItem> BlissBoxPressure { get; } = new();
+
+        private byte _blissBoxPressureMajor;
+
+        /// <summary>Folds report 21's twelve bytes into the chips, or clears
+        /// them when no DualShock 2 is in the port. The names follow the
+        /// firmware's order.</summary>
+        internal void UpdateBlissBoxPressure(byte[] pressure, byte major)
+        {
+            if (pressure == null)
+            {
+                if (BlissBoxPressure.Count > 0) BlissBoxPressure.Clear();
+                HasBlissBoxPressure = false;
+                return;
+            }
+            if (BlissBoxPressure.Count != pressure.Length || _blissBoxPressureMajor != major)
+            {
+                BlissBoxPressure.Clear();
+                var names = PadForge.Engine.Common.BlissBox.BlissBoxControllers.PressureNames(major);
+                for (int i = 0; i < pressure.Length && i < names.Count; i++)
+                    BlissBoxPressure.Add(new AnalogKeyDisplayItem
+                    {
+                        Code = i,
+                        Rank = i,
+                        Name = PadForge.Common.MappingDisplayResolver.LocalizeObjectName(names[i]),
+                    });
+                _blissBoxPressureMajor = major;
+            }
+            for (int i = 0; i < BlissBoxPressure.Count; i++)
+                BlissBoxPressure[i].Depth = pressure[i] / 255.0;
+            HasBlissBoxPressure = true;
         }
 
         private bool _isNfcDevice;
@@ -1262,6 +1310,16 @@ namespace PadForge.ViewModels
 
     /// <summary>One key chip in an analog keyboard's live preview (issue
     /// #468): the key's name and how far it is pressed.</summary>
+    /// <summary>The actions a Bliss-Box port's row offers (issue #469).</summary>
+    public enum BlissBoxAction
+    {
+        Player,
+        DreamcastScreen,
+        PakBackup,
+        PakRestore,
+        NativeArrows,
+    }
+
     public class AnalogKeyDisplayItem : ObservableObject
     {
         public int Code { get; set; }

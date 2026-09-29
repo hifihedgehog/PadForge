@@ -626,6 +626,7 @@ namespace PadForge
                      or nameof(SettingsViewModel.FlydigiEnhancedProtocol)
                      or nameof(SettingsViewModel.GKeysEnabled)
                      or nameof(SettingsViewModel.AnalogKeyboardsEnabled)
+                     or nameof(SettingsViewModel.BlissBoxEnabled)
                      or nameof(SettingsViewModel.Use2DControllerView)
                      or nameof(SettingsViewModel.EnableAutoProfileSwitching)
                      or nameof(SettingsViewModel.EnableCommunityConfigLookup)
@@ -885,6 +886,7 @@ namespace PadForge
             _viewModel.Devices.DriverBindRequested += async (s, e) => await SwitchDriverAsync(bind: true);
             _viewModel.Devices.ICadeModeRequested += (s, asPad) => SetICadeMode(asPad);
             _viewModel.Devices.UsioLayoutRequested += (s, layout) => SetUsioLayout(layout);
+            _viewModel.Devices.BlissBoxActionRequested += async (s, action) => await OnBlissBoxActionAsync(action);
             _viewModel.Devices.DriverRestoreRequested += async (s, e) => await SwitchDriverAsync(bind: false);
 
             // Wire devices page Bluetooth pairing (Wii controllers, issue #116).

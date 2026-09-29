@@ -517,6 +517,23 @@ namespace PadForge.Views
         private void UsioTaiko_Click(object sender, RoutedEventArgs e)
             => (DataContext as ViewModels.DevicesViewModel)?.RequestUsioLayout(PadForge.Common.Input.InputManager.UsioTaiko);
 
+        // Bliss-Box port actions (issue #469). MainWindow owns the dialogs
+        // and the transfers.
+        private void BlissBoxPlayer_Click(object sender, RoutedEventArgs e)
+            => (DataContext as ViewModels.DevicesViewModel)?.RequestBlissBox(ViewModels.BlissBoxAction.Player);
+
+        private void DreamcastScreen_Click(object sender, RoutedEventArgs e)
+            => (DataContext as ViewModels.DevicesViewModel)?.RequestBlissBox(ViewModels.BlissBoxAction.DreamcastScreen);
+
+        private void PakBackup_Click(object sender, RoutedEventArgs e)
+            => (DataContext as ViewModels.DevicesViewModel)?.RequestBlissBox(ViewModels.BlissBoxAction.PakBackup);
+
+        private void PakRestore_Click(object sender, RoutedEventArgs e)
+            => (DataContext as ViewModels.DevicesViewModel)?.RequestBlissBox(ViewModels.BlissBoxAction.PakRestore);
+
+        private void NativeArrows_Click(object sender, RoutedEventArgs e)
+            => (DataContext as ViewModels.DevicesViewModel)?.RequestBlissBox(ViewModels.BlissBoxAction.NativeArrows);
+
         // ── Handheld hidden buttons (issue #343) ──
 
         private void LearnHandheldButton_Click(object sender, RoutedEventArgs e)

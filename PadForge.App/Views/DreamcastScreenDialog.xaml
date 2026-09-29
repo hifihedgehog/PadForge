@@ -1,0 +1,81 @@
+<ui:FluentWindow x:Class="PadForge.Views.DreamcastScreenDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        xmlns:strings="clr-namespace:PadForge.Resources.Strings"
+        ExtendsContentIntoTitleBar="True"
+        WindowBackdropType="Mica"
+        Width="480" SizeToContent="Height"
+        MinHeight="200"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False">
+
+    <!-- What a Dreamcast pad's VMU shows in a Bliss-Box port (issue #469):
+         the mode, a preview drawn the way the VMU draws it, and the picture
+         choices the mode takes. -->
+    <Grid Margin="20,18,20,18">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+            <Rectangle Width="3" Height="14" RadiusX="1.5" RadiusY="1.5"
+                       Fill="{DynamicResource EmberBrush}"
+                       VerticalAlignment="Center" Margin="0,0,8,0"/>
+            <TextBlock FontFamily="{StaticResource DisplayFontFamily}"
+                       FontWeight="SemiBold" FontSize="15"
+                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                       VerticalAlignment="Center"
+                       Text="{Binding DreamcastScreen_Title, Source={x:Static strings:Strings.Instance}}"/>
+        </StackPanel>
+
+        <TextBlock Grid.Row="1" x:Name="DetailText" Margin="0,0,0,10" TextWrapping="Wrap"
+                   FontFamily="{StaticResource TelemetryFontFamily}" FontSize="12"
+                   Foreground="{DynamicResource ColdBrush}"/>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,10">
+            <TextBlock VerticalAlignment="Center" Margin="0,0,8,0" MinWidth="60"
+                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                       Text="{Binding DreamcastScreen_Mode_Label, Source={x:Static strings:Strings.Instance}}"/>
+            <ComboBox x:Name="ModeBox" MinWidth="220" SelectionChanged="ModeBox_SelectionChanged"/>
+        </StackPanel>
+
+        <!-- The VMU's 48 by 32 pixels, four screen pixels each. -->
+        <Border Grid.Row="3" HorizontalAlignment="Left" Padding="6" CornerRadius="4" Margin="0,0,0,10"
+                Background="#FFBFD0B4" BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1">
+            <Image x:Name="PreviewImage" Width="192" Height="128"
+                   RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+        </Border>
+
+        <TextBlock Grid.Row="4" x:Name="HintText" TextWrapping="Wrap" FontSize="11" Margin="0,0,0,10"
+                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+
+        <WrapPanel Grid.Row="5" Orientation="Horizontal">
+            <Button x:Name="ChoosePictureButton" Padding="8,4" Margin="0,0,8,6"
+                    Content="{Binding DreamcastScreen_ChoosePicture, Source={x:Static strings:Strings.Instance}}"
+                    Click="ChoosePicture_Click"/>
+            <Button x:Name="ChooseProfilePictureButton" Padding="8,4" Margin="0,0,8,6"
+                    Click="ChooseProfilePicture_Click"/>
+            <Button x:Name="RemoveProfilePictureButton" Padding="8,4" Margin="0,0,8,6"
+                    Content="{Binding DreamcastScreen_RemoveProfilePicture, Source={x:Static strings:Strings.Instance}}"
+                    Click="RemoveProfilePicture_Click"/>
+        </WrapPanel>
+
+        <!-- Footer band (#175 dialog language): Save is the dialog's primary
+             affirmative and wears the ember accent. -->
+        <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+            <Button Content="{Binding Common_Save, Source={x:Static strings:Strings.Instance}}" MinWidth="90" Margin="0,0,8,0"
+                    IsDefault="True" Click="SaveButton_Click"
+                    Style="{StaticResource EmberAccentButton}"/>
+            <Button Content="{Binding Common_Cancel, Source={x:Static strings:Strings.Instance}}" MinWidth="90"
+                    IsCancel="True"/>
+        </StackPanel>
+    </Grid>
+</ui:FluentWindow>

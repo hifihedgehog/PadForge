@@ -919,6 +919,59 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _showUsioTaiko, value);
         }
 
+        private string _blissBoxLine = string.Empty;
+        /// <summary>A Bliss-Box port's line (issue #469): its player number,
+        /// the controller in it and the adapter's firmware. Empty for every
+        /// other row, and while Read Bliss-Box Adapters is off.</summary>
+        public string BlissBoxLine
+        {
+            get => _blissBoxLine;
+            set => SetProperty(ref _blissBoxLine, value ?? string.Empty);
+        }
+
+        private bool _showBlissBoxPlayer;
+        /// <summary>The port's API channel is open, so its player number can
+        /// be set.</summary>
+        public bool ShowBlissBoxPlayer
+        {
+            get => _showBlissBoxPlayer;
+            set => SetProperty(ref _showBlissBoxPlayer, value);
+        }
+
+        private bool _showDreamcastScreen;
+        /// <summary>A Dreamcast pad is in the port.</summary>
+        public bool ShowDreamcastScreen
+        {
+            get => _showDreamcastScreen;
+            set => SetProperty(ref _showDreamcastScreen, value);
+        }
+
+        private bool _showControllerPak;
+        /// <summary>An N64 controller is in the port.</summary>
+        public bool ShowControllerPak
+        {
+            get => _showControllerPak;
+            set => SetProperty(ref _showControllerPak, value);
+        }
+
+        private bool _showNativeArrows;
+        /// <summary>A PlayStation digital pad is in a 3.x adapter's port,
+        /// whose hat cannot carry opposite directions together.</summary>
+        public bool ShowNativeArrows
+        {
+            get => _showNativeArrows;
+            set => SetProperty(ref _showNativeArrows, value);
+        }
+
+        private bool _blissBoxNativeArrows;
+        /// <summary>The port polls its pad through the native channel for the
+        /// four directions.</summary>
+        public bool BlissBoxNativeArrows
+        {
+            get => _blissBoxNativeArrows;
+            set => SetProperty(ref _blissBoxNativeArrows, value);
+        }
+
         /// <summary>The beam-count window the gun's aim scales by.</summary>
         public string GunCalibrationStatus
         {

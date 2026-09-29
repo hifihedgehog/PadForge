@@ -2588,6 +2588,60 @@
                                         </StackPanel>
                                     </Border>
 
+                                    <!-- Show Dreamcast Screen card (#469): the pictures in the
+                                         order they show, each drawn as the VMU draws it (click
+                                         one to remove it), how long each shows and how many
+                                         times the set plays. -->
+                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
+                                            Visibility="{Binding IsShowDreamcastScreenType, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding MacroAction_Type_ShowDreamcastScreen, Source={x:Static strings:Strings.Instance}}"
+                                                       FontWeight="SemiBold" Margin="0,0,0,6"/>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Dreamcast_Pictures, Source={x:Static strings:Strings.Instance}}"
+                                                           VerticalAlignment="Center" Width="80" Margin="0,0,8,0"/>
+                                                <Button Content="{Binding Macro_Dreamcast_AddPicture, Source={x:Static strings:Strings.Instance}}"
+                                                        Click="AddDreamcastFrame_Click" Padding="8,2" VerticalAlignment="Center"
+                                                        IsEnabled="{Binding CanAddDreamcastFrame}"/>
+                                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="DreamcastFrames" SettingLabel="{Binding Macro_Dreamcast_Pictures, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_DreamcastFrames_3301" Margin="4,0,0,0"/>
+                                            </StackPanel>
+                                            <ItemsControl ItemsSource="{Binding DreamcastFrameImages}" Margin="88,0,0,6">
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <WrapPanel/>
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Button Margin="0,0,6,6" Padding="2" Click="RemoveDreamcastFrame_Click"
+                                                                ToolTip="{Binding Macro_Dreamcast_RemoveTooltip, Source={x:Static strings:Strings.Instance}}">
+                                                            <Image Source="{Binding}" Width="96" Height="64"
+                                                                   RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                                                        </Button>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Dreamcast_FrameTime, Source={x:Static strings:Strings.Instance}}"
+                                                           VerticalAlignment="Center" Width="80" Margin="0,0,8,0"/>
+                                                <TextBox Text="{Binding DreamcastFrameMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzValueEdit}"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorTertiaryBrush}" Text="{Binding Common_Ms, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="DreamcastFrameMs" SettingLabel="{Binding Macro_Dreamcast_FrameTime, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_DreamcastFrameMs_3302"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Macro_Dreamcast_Repeat, Source={x:Static strings:Strings.Instance}}"
+                                                           VerticalAlignment="Center" Width="80" Margin="0,0,8,0"/>
+                                                <TextBox Text="{Binding DreamcastRepeat, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                         Style="{StaticResource DzValueEdit}"/>
+                                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="DreamcastRepeat" SettingLabel="{Binding Macro_Dreamcast_Repeat, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MacroAction_DreamcastRepeat_3303" Margin="4,0,0,0"/>
+                                            </StackPanel>
+                                            <TextBlock Text="{Binding MacroAction_ShowDreamcastScreen_Hint, Source={x:Static strings:Strings.Instance}}"
+                                                       FontSize="11" TextWrapping="Wrap"
+                                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                        </StackPanel>
+                                    </Border>
+
                                     <!-- Lightbar Color card (Reactive | Sticky) -->
                                     <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6"
                                             Visibility="{Binding IsLightbarType, Converter={StaticResource BoolToVisibilityConverter}}">

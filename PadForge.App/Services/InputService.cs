@@ -912,6 +912,11 @@ namespace PadForge.Services
             // Voice phrases on mic-bearing pads (issue #317): the engine
             // stamps pulses into the pad's state through this hook.
             PadForge.Engine.SdlDeviceWrapper.ExternalVoiceAugment = PadForge.Common.Input.VoicePulse.Apply;
+            // Bliss-Box ports (#469): the wrapper asks the runtime for a
+            // port's names, and a port that opens, closes or finds another
+            // controller refreshes its row.
+            PadForge.Engine.Common.BlissBox.BlissBoxApi.DeviceObjectsProvider = PadForge.Common.Input.BlissBoxRuntime.ProvideObjects;
+            PadForge.Common.Input.BlissBoxRuntime.PortChanged += OnBlissBoxPortChanged;
 
             // Subscribe to engine events (raised on background thread).
             _inputManager.DevicesUpdated += OnDevicesUpdated;
@@ -2549,6 +2554,7 @@ namespace PadForge.Services
             try { PadForge.Common.Input.VoicePhraseRegistry.RegistryChanged -= OnVoicePhraseRegistryChanged; } catch { }
             try { PadForge.Common.Input.HandheldButtonRegistry.RegistryChanged -= OnHandheldRegistryChanged; } catch { }
             try { PadForge.Common.Input.HandheldButtonRegistry.ActivityChanged -= OnHandheldActivityChanged; } catch { }
+            try { PadForge.Common.Input.BlissBoxRuntime.PortChanged -= OnBlissBoxPortChanged; } catch { }
             if (_inputManager != null)
             {
                 _inputManager.DevicesUpdated -= OnDevicesUpdated;
@@ -2767,6 +2773,10 @@ namespace PadForge.Services
                 _inputManager.ToggleTouchpadOverlayRequested = false;
                 ToggleTouchpadOverlay();
             }
+
+            // ── Bliss-Box Dreamcast screens (#469): ungated, like the
+            //    macro requests above ──
+            TickBlissBox();
 
             // ── Handle macro-requested profile switch ──
             string pendingSwitch = _inputManager.PendingProfileSwitchId;
@@ -3572,6 +3582,8 @@ namespace PadForge.Services
             UpdateGKeysStatus();
             // Analog keyboards (#468): same cadence, same shape.
             UpdateAnalogKeyboardsStatus();
+            // Bliss-Box ports (#469): same cadence, same shape.
+            UpdateBlissBoxStatus();
             // Set Chroma Color (#468): the first action starts the service.
             EnsureChromaForMacros();
 
@@ -5243,6 +5255,9 @@ namespace PadForge.Services
                 devVm.HasRawData = false;
                 return;
             }
+
+            // A Bliss-Box port's line, actions and pressure chips (#469).
+            UpdateBlissBoxDeviceRow(selected, ud);
 
             // Rebuild collections when the selected device changes.
             if (selected.InstanceGuid != devVm.LastRawStateDeviceGuid)
@@ -9140,6 +9155,39 @@ namespace PadForge.Services
         /// pickers, refresh the preview, persist) plus a hook re-evaluation,
         /// since the first chord learned is what makes the hooks necessary
         /// and the last one removed is what lets them go.</summary>
+        private int _blissBoxRefreshQueued;
+
+        /// <summary>A Bliss-Box port opened, closed or identified another
+        /// controller (#469): its row's objects take the new names and the
+        /// pickers follow. The Devices page line follows on its own tick.
+        /// Changes that land together are refreshed once.</summary>
+        private void OnBlissBoxPortChanged(PadForge.Common.Input.BlissBoxPort port)
+        {
+            if (System.Threading.Interlocked.Exchange(ref _blissBoxRefreshQueued, 1) == 1) return;
+            _dispatcher.BeginInvoke(new Action(() =>
+            {
+                System.Threading.Interlocked.Exchange(ref _blissBoxRefreshQueued, 0);
+                try
+                {
+                    lock (SettingsManager.UserDevices.SyncRoot)
+                    {
+                        foreach (var ud in SettingsManager.UserDevices.Items)
+                            if (ud?.Device is PadForge.Engine.SdlDeviceWrapper wrapper
+                                && PadForge.Engine.Common.BlissBox.BlissBoxProtocol.IsPort(ud.VendorId, ud.ProdId))
+                                ud.DeviceObjects = wrapper.GetDeviceObjects();
+                    }
+                }
+                catch { /* refresh is best-effort */ }
+
+                try
+                {
+                    foreach (var padVm in _mainVm.Pads)
+                        if (padVm != null) RefreshAvailableInputsForSlot(padVm);
+                }
+                catch { /* picker refresh is cosmetic */ }
+            }));
+        }
+
         private void OnHandheldRegistryChanged(object sender, EventArgs e)
         {
             _dispatcher.BeginInvoke(new Action(() =>
@@ -11615,6 +11663,22 @@ namespace PadForge.Services
                             {
                                 PadForge.Common.Input.PadixConverterRawHidWriter.Write(
                                     ud.DevicePath, pvib.LeftMotorSpeed, pvib.RightMotorSpeed);
+                            }
+                        }
+                        else if (ud != null
+                            && PadForge.Engine.Common.BlissBox.BlissBoxApi.OwnsRumble(ud.VendorId, ud.ProdId))
+                        {
+                            // Bliss-Box sole-writer path (mirrors InputManager.Step2's
+                            // isBlissBox gate): the relayed motors go to the adapter's
+                            // own motor commands, never to SDL rumble, which is inert
+                            // for these ports while the switch is on (#469).
+                            var bvib = effect.Vibration;
+                            if (ud.ForceFeedbackState != null
+                                && ud.ForceFeedbackState.TryRecordMotorSnapshot(
+                                    bvib.LeftMotorSpeed, bvib.RightMotorSpeed))
+                            {
+                                PadForge.Common.Input.BlissBoxRuntime.SetRumble(
+                                    ud.DevicePath, bvib.LeftMotorSpeed, bvib.RightMotorSpeed);
                             }
                         }
                         else if (ud != null
@@ -15383,6 +15447,11 @@ namespace PadForge.Services
                         // raw lane the sole-writer paths use.
                         bool padix = PadForge.Engine.PadixConverterIdentity
                             .IsPlayStationConverter(ud.VendorId, ud.ProdId);
+                        // A Bliss-Box port's motors take the adapter's own
+                        // commands while the switch is on, and SDL rumble is
+                        // inert for it the same way (#469).
+                        bool blissBox = PadForge.Engine.Common.BlissBox.BlissBoxApi
+                            .OwnsRumble(ud.VendorId, ud.ProdId);
                         void Buzz(ushort level)
                         {
                             if (padix)
@@ -15397,6 +15466,13 @@ namespace PadForge.Services
                                 ud.ForceFeedbackState?.TryRecordMotorSnapshot(level, level);
                                 PadForge.Common.Input.PadixConverterRawHidWriter.Write(
                                     ud.DevicePath, level, level);
+                            }
+                            else if (blissBox)
+                            {
+                                // Unconditional for the same reason, and the
+                                // snapshot moves for the same reason.
+                                ud.ForceFeedbackState?.TryRecordMotorSnapshot(level, level);
+                                PadForge.Common.Input.BlissBoxRuntime.SetRumble(ud.DevicePath, level, level);
                             }
                             else if (level != 0) dev.SetRumble(level, level);
                             else dev.StopRumble();

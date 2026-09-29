@@ -18,6 +18,13 @@ namespace PadForge.ViewModels
             var device = SelectedDevice;
             if (name == nameof(DeviceRowViewModel.HidHideEnabled) && !device.IsHidHideAvailable) return;
             device.ResetSettingCommand.Execute(name);
+            // A Bliss-Box port's choices persist through the port's own
+            // settings, which the action request writes (#469).
+            if (name == nameof(DeviceRowViewModel.BlissBoxNativeArrows))
+            {
+                RequestBlissBox(BlissBoxAction.NativeArrows);
+                return;
+            }
             LastRawStateDeviceGuid = Guid.Empty;
             // Device options persist through this explicit notification, just
             // as the checkbox Click and idle-disconnect LostFocus handlers do.

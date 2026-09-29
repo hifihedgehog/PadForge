@@ -445,6 +445,24 @@
   },
   {
     "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_DreamcastFrames_3301",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "DreamcastFrames"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_DreamcastFrameMs_3302",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "DreamcastFrameMs"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MacroAction_DreamcastRepeat_3303",
+    "Owner": "PadForge.ViewModels.MacroAction",
+    "Property": "DreamcastRepeat"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
     "Id": "Reset_MacroAction_SoundLoop_2841",
     "Owner": "PadForge.ViewModels.MacroAction",
     "Property": "SoundLoop"
@@ -1096,6 +1114,12 @@
     "Id": "Reset_SettingsViewModel_AnalogKeyboardsEnabled_188",
     "Owner": "PadForge.ViewModels.SettingsViewModel",
     "Property": "AnalogKeyboardsEnabled"
+  },
+  {
+    "File": "PadForge.App/Views/SettingsPage.xaml",
+    "Id": "Reset_SettingsViewModel_BlissBoxEnabled_189",
+    "Owner": "PadForge.ViewModels.SettingsViewModel",
+    "Property": "BlissBoxEnabled"
   },
   {
     "File": "PadForge.App/Views/SettingsPage.xaml",

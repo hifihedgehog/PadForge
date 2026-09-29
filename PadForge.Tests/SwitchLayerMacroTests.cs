@@ -100,9 +100,10 @@ namespace PadForge.Tests
         [Fact]
         public void SwitchLayer_StaysAt55()
         {
-            // No longer the tail: Set Chroma Color appended 56 (#468).
+            // No longer the tail: Set Chroma Color appended 56 (#468) and
+            // Show Dreamcast Screen 57 (#469).
             var values = Enum.GetValues<MacroActionType>();
-            Assert.Equal(MacroActionType.SwitchLayer, values[^2]);
+            Assert.Equal(MacroActionType.SwitchLayer, values[^3]);
             Assert.Equal(55, (int)MacroActionType.SwitchLayer);
             Assert.Equal(54, (int)MacroActionType.VoiceListenWhileHeld);
         }

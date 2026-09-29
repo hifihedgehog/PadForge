@@ -2705,6 +2705,12 @@ namespace PadForge.Common.Input
         /// the Chroma service tests reset from their own collection.</summary>
         internal static Action<byte, byte, byte> MacroChromaSink = PadForge.Services.ChromaLightbarService.AssertMacroColor;
 
+        /// <summary>Where Show Dreamcast Screen sends its pictures (#469): the
+        /// screen service's queue, taking the slot, the pictures, the frame
+        /// time and the repeat count. A seam so a test can watch both dispatch
+        /// loops.</summary>
+        internal static Action<int, string, int, int> MacroDreamcastSink = PadForge.Services.DreamcastScreenService.RequestShow;
+
         /// <summary>Executes a sequential (non-continuous) action with advance logic.</summary>
         private void ExecuteSequentialAction(ref Gamepad gp, MacroItem macro, MacroAction action)
         {
@@ -2806,6 +2812,16 @@ namespace PadForge.Common.Input
                     MacroChromaSink(action.LightbarR, action.LightbarG, action.LightbarB);
                     if (actionElapsed >= action.DurationMs)
                         AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.ShowDreamcastScreen:
+                    // Dreamcast screen (#469): a single-frame fire like Play
+                    // Sound. The screen service plays the pictures on the
+                    // Dreamcast pads in Bliss-Box ports that feed this slot,
+                    // then hands each port back to its own setting.
+                    MacroDreamcastSink(macro.PadIndex, action.DreamcastFrames,
+                        action.DreamcastFrameMs, action.DreamcastRepeat);
+                    AdvanceAction(macro);
                     break;
 
                 case MacroActionType.AxisScale:
@@ -5132,6 +5148,14 @@ namespace PadForge.Common.Input
                     MacroChromaSink(action.LightbarR, action.LightbarG, action.LightbarB);
                     if (actionElapsed >= action.DurationMs)
                         AdvanceAction(macro);
+                    break;
+
+                case MacroActionType.ShowDreamcastScreen:
+                    // Extended twin (#469): the pictures do not touch the
+                    // slot's surface either, so it is the gamepad arm verbatim.
+                    MacroDreamcastSink(macro.PadIndex, action.DreamcastFrames,
+                        action.DreamcastFrameMs, action.DreamcastRepeat);
+                    AdvanceAction(macro);
                     break;
 
                 case MacroActionType.AxisScale:

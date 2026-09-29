@@ -1143,6 +1143,46 @@ namespace PadForge.Views
         /// are added, the sounds inside them are offered directly — a filesystem
         /// browse is only needed for a package or loose file that hasn't been
         /// added yet (issue #83). The button's DataContext is the MacroAction.</summary>
+        /// <summary>Show Dreamcast Screen (#469): a picture from a file joins
+        /// the end of the set, eight at most.</summary>
+        private void AddDreamcastFrame_Click(object sender, RoutedEventArgs e)
+        {
+            if ((sender as FrameworkElement)?.DataContext is not PadForge.ViewModels.MacroAction action)
+                return;
+            var dialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Filter = PadForge.Resources.Strings.Strings.Instance.DreamcastScreen_PictureFilter,
+                Multiselect = true,
+            };
+            if (dialog.ShowDialog(Window.GetWindow(this)) != true) return;
+            bool failed = false;
+            foreach (var file in dialog.FileNames)
+            {
+                if (!action.CanAddDreamcastFrame) break;
+                byte[] image = null;
+                try { image = PadForge.Services.DreamcastScreenService.ImportPicture(file); }
+                catch { image = null; }
+                if (image == null) failed = true;
+                else action.AddDreamcastFrame(image);
+            }
+            if (failed && Window.GetWindow(this)?.DataContext is PadForge.ViewModels.MainViewModel main)
+                main.SetStatus(PadForge.Resources.Strings.Strings.Instance.DreamcastScreen_ImportFailed, persist: true);
+        }
+
+        /// <summary>Removes the clicked picture from its action's set.</summary>
+        private void RemoveDreamcastFrame_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is not DependencyObject element) return;
+            DependencyObject parent = element;
+            while (parent != null && parent is not ItemsControl)
+                parent = System.Windows.Media.VisualTreeHelper.GetParent(parent);
+            if (parent is not ItemsControl items || items.DataContext is not PadForge.ViewModels.MacroAction action)
+                return;
+            var container = ItemsControl.ContainerFromElement(items, element);
+            int index = container == null ? -1 : items.ItemContainerGenerator.IndexFromContainer(container);
+            action.RemoveDreamcastFrame(index);
+        }
+
         private void BrowseSoundFile_Click(object sender, RoutedEventArgs e)
         {
             if ((sender as FrameworkElement)?.DataContext is not PadForge.ViewModels.MacroAction action)

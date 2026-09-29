@@ -271,6 +271,13 @@
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>対応するアナログキーボードが見つかりません。</value></data>
   <data name="Settings_AnalogKeyboardsStatus_Reading_Format" xml:space="preserve"><value>{0} を読み取り中。</value></data>
   <data name="Settings_AnalogKeyboardsStatus_Synapse_Format" xml:space="preserve"><value>{0} を読み取るには Razer Synapse を起動してください。</value></data>
+  <data name="Settings_BlissBox" xml:space="preserve"><value>Bliss-Box アダプターを読み取る</value></data>
+  <data name="Settings_BlissBoxTooltip" xml:space="preserve"><value>Bliss-Box アダプターと API で通信します。各ポートの行には接続中のコントローラーとボタン名が表示され、DualShock 2 の感圧値を読み取り、アダプター自身のモーターコマンドで振動させ、Dreamcast 画面、コントローラパック、プレイヤー番号の操作を提供します。Bliss-Box API Tool と DeviceBuddy は同じ経路でアダプターと通信するため、この設定がオンの間は閉じてください。</value></data>
+  <data name="Settings_BlissBoxStatus_None" xml:space="preserve"><value>Bliss-Box のポートが見つかりません。</value></data>
+  <data name="Settings_BlissBoxStatus_Reading_Format" xml:space="preserve"><value>{0} を読み取り中。</value></data>
+  <data name="Settings_BlissBoxStatus_Port_Format" xml:space="preserve"><value>ポート {0} ({1})</value></data>
+  <data name="BlissBox_Connecting" xml:space="preserve"><value>接続中</value></data>
+  <data name="BlissBox_NoController" xml:space="preserve"><value>コントローラーなし</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Web コントローラー</value></data>
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>ローカルネットワーク上のブラウザにゲームパッド UI を提供します。</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Web コントローラーサーバーを有効にする</value></data>
@@ -1319,6 +1326,27 @@
   <data name="DevObj_Back" xml:space="preserve"><value>戻る</value></data>
   <data name="DevObj_Start" xml:space="preserve"><value>スタート</value></data>
   <data name="DevObj_Guide" xml:space="preserve"><value>ガイド</value></data>
+  <data name="DevObj_Select" xml:space="preserve"><value>セレクト</value></data>
+  <data name="DevObj_Mode" xml:space="preserve"><value>モード</value></data>
+  <data name="DevObj_Run" xml:space="preserve"><value>RUN</value></data>
+  <data name="DevObj_Reset" xml:space="preserve"><value>リセット</value></data>
+  <data name="DevObj_HomeButton" xml:space="preserve"><value>HOME ボタン</value></data>
+  <data name="DevObj_Fire" xml:space="preserve"><value>発射</value></data>
+  <data name="DevObj_Fire_Format" xml:space="preserve"><value>発射 {0}</value></data>
+  <data name="DevObj_LeftFire" xml:space="preserve"><value>左発射</value></data>
+  <data name="DevObj_RightFire" xml:space="preserve"><value>右発射</value></data>
+  <data name="DevObj_ZTrigger" xml:space="preserve"><value>Z トリガー</value></data>
+  <data name="DevObj_StickX" xml:space="preserve"><value>スティック X</value></data>
+  <data name="DevObj_StickY" xml:space="preserve"><value>スティック Y</value></data>
+  <data name="DevObj_CStickX" xml:space="preserve"><value>C スティック X</value></data>
+  <data name="DevObj_CStickY" xml:space="preserve"><value>C スティック Y</value></data>
+  <data name="DevObj_Dial" xml:space="preserve"><value>ダイヤル</value></data>
+  <data name="DevObj_Dial_Format" xml:space="preserve"><value>ダイヤル {0}</value></data>
+  <data name="DevObj_RightDPad" xml:space="preserve"><value>右十字キー</value></data>
+  <data name="DevObj_Pressure_Format" xml:space="preserve"><value>{0} の感圧</value></data>
+  <data name="DevObj_Arrow_Format" xml:space="preserve"><value>{0}矢印</value></data>
+  <data name="DevObj_CButton_Format" xml:space="preserve"><value>C{0}</value></data>
+  <data name="DevObj_Keypad_Format" xml:space="preserve"><value>キーパッド {0}</value></data>
   <data name="DevObj_XAxis" xml:space="preserve"><value>X 軸</value></data>
   <data name="DevObj_YAxis" xml:space="preserve"><value>Y 軸</value></data>
   <data name="DevObj_ZAxis" xml:space="preserve"><value>Z 軸</value></data>
@@ -2605,6 +2633,64 @@
   <data name="Devices_UsioTekken" xml:space="preserve"><value>鉄拳のスティックとして読み取る</value></data>
   <data name="Devices_UsioTaiko" xml:space="preserve"><value>太鼓の達人の太鼓として読み取る</value></data>
   <data name="Devices_UsioLayoutTooltip" xml:space="preserve"><value>太鼓の達人と鉄拳の筐体は同じ ID のこの基板を使い、それぞれ配置が異なります。選んだ配置で基板を開き直します。</value></data>
+  <data name="Devices_BlissBoxLine_Format" xml:space="preserve"><value>Bliss-Box ポート {0} · {1} · ファームウェア {2}</value></data>
+  <data name="Devices_BlissBoxLineConnecting_Format" xml:space="preserve"><value>Bliss-Box ポート {0} · 接続中</value></data>
+  <data name="Devices_BlissBoxPlayer" xml:space="preserve"><value>プレイヤー番号…</value></data>
+  <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>このポートのプレイヤー番号 (1～4) を設定します。アダプターはそれを保存し、そのプレイヤーとして再接続します。</value></data>
+  <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Dreamcast 画面…</value></data>
+  <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Dreamcast コントローラーのビジュアルメモリに表示する内容を設定します。アダプター自身の画像、アクティブなプロファイルの名前・番号・画像、時計、プレイ時間、または選んだ画像です。</value></data>
+  <data name="Devices_PakBackup" xml:space="preserve"><value>コントローラパックをバックアップ…</value></data>
+  <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>この N64 コントローラーのコントローラパックを、N64 エミュレーターが読み込める 32 KB の .mpk ファイルに保存します。</value></data>
+  <data name="Devices_PakRestore" xml:space="preserve"><value>コントローラパックを復元…</value></data>
+  <data name="Devices_PakRestoreTooltip" xml:space="preserve"><value>32 KB の .mpk ファイルをこの N64 コントローラーのコントローラパックに書き込み、中のセーブデータをすべて置き換えます。</value></data>
+  <data name="Devices_NativeArrows" xml:space="preserve"><value>矢印を個別に読み取る</value></data>
+  <data name="Devices_NativeArrowsTooltip" xml:space="preserve"><value>この PlayStation コントローラーに方向を直接問い合わせ、ダンスマットで左右や上下の同時押しを検出できるようにします。方向は上・下・左・右矢印ボタンとして届きます。アダプターは問い合わせのたびに自身の読み取りを 1 回省きます。</value></data>
+  <data name="Devices_BlissBoxPressure" xml:space="preserve"><value>DualShock 2 の感圧</value></data>
+  <data name="BlissBoxPlayer_Title" xml:space="preserve"><value>プレイヤー番号</value></data>
+  <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>アダプターは番号を保存し、そのプレイヤーとして再接続します。Windows からは新しいデバイスに見えるため、ポートが戻ったら割り当てをやり直してください。</value></data>
+  <data name="BlissBoxPlayer_Label" xml:space="preserve"><value>プレイヤー</value></data>
+  <data name="BlissBoxPlayer_Action" xml:space="preserve"><value>プレイヤーを設定</value></data>
+  <data name="DreamcastScreen_Title" xml:space="preserve"><value>Dreamcast 画面</value></data>
+  <data name="DreamcastScreen_Mode_Label" xml:space="preserve"><value>表示</value></data>
+  <data name="DreamcastScreen_Mode_Adapter" xml:space="preserve"><value>アダプターの画像</value></data>
+  <data name="DreamcastScreen_Mode_ProfileName" xml:space="preserve"><value>プロファイル名</value></data>
+  <data name="DreamcastScreen_Mode_ProfileNumber" xml:space="preserve"><value>プロファイル番号</value></data>
+  <data name="DreamcastScreen_Mode_ProfilePicture" xml:space="preserve"><value>プロファイルの画像</value></data>
+  <data name="DreamcastScreen_Mode_Clock" xml:space="preserve"><value>時計</value></data>
+  <data name="DreamcastScreen_Mode_PlayTime" xml:space="preserve"><value>プレイ時間</value></data>
+  <data name="DreamcastScreen_Mode_Picture" xml:space="preserve"><value>選んだ画像</value></data>
+  <data name="DreamcastScreen_Hint_Adapter" xml:space="preserve"><value>ビジュアルメモリにはアダプターが保存している画像が表示されます。PadForge は何も書き込まず、その後に画像を書き込んでいた場合は元の画像に戻します。</value></data>
+  <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>ビジュアルメモリにアクティブなプロファイルの名前を表示し、プロファイルの切り替えに追従します。</value></data>
+  <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>ビジュアルメモリにプロファイル一覧でのアクティブなプロファイルの位置を表示します。既定のプロファイルは 0 です。</value></data>
+  <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>ビジュアルメモリにアクティブなプロファイル自身の画像を表示し、画像がない場合は名前を表示します。画像はプロファイルごとに保存されます。</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>ビジュアルメモリに時刻を表示し、1 分に 1 回書き換えます。</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>ビジュアルメモリにコントローラーを接続してからの時間と分を表示し、1 分に 1 回書き換えます。</value></data>
+  <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>ビジュアルメモリに選んだ画像を表示します。BMP、PNG、VMU Animator の .lcd ファイル、Dreamcast の .vms アイコンが使えます。画像は 48×32 の白黒ピクセルに変換されます。</value></data>
+  <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>画像を選択…</value></data>
+  <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>{0} の画像を選択…</value></data>
+  <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>プロファイルの画像を削除</value></data>
+  <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>画像 (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|すべてのファイル (*.*)|*.*</value></data>
+  <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>そのファイルには PadForge が読み取れる画像がありません。</value></data>
+  <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>コントローラパックのファイル (*.mpk)|*.mpk|すべてのファイル (*.*)|*.*</value></data>
+  <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>コントローラパック ポート {0}.mpk</value></data>
+  <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>コントローラパックを復元</value></data>
+  <data name="BlissBoxPak_RestoreMessage_Format" xml:space="preserve"><value>ポート {0} のコントローラパックにあるセーブデータは、すべてファイルの内容に置き換えられます。</value></data>
+  <data name="BlissBoxPak_RestoreAction" xml:space="preserve"><value>復元</value></data>
+  <data name="BlissBoxJob_Closed" xml:space="preserve"><value>転送が終わる前にポートが閉じられました。</value></data>
+  <data name="BlissBoxJob_WrongController" xml:space="preserve"><value>ポートに N64 コントローラーが必要です。</value></data>
+  <data name="BlissBoxJob_NoPak" xml:space="preserve"><value>コントローラーにコントローラパックが挿さっていません。</value></data>
+  <data name="BlissBoxJob_RumblePak" xml:space="preserve"><value>それは振動パックで、セーブデータは保存できません。</value></data>
+  <data name="BlissBoxJob_BadBlock_Format" xml:space="preserve"><value>ブロック {0} のチェックサムが繰り返し一致しませんでした。パックを挿し直してもう一度お試しください。</value></data>
+  <data name="BlissBoxJob_TooManyErrors_Format" xml:space="preserve"><value>パックが書き込みを何度も拒否しました (最後はブロック {0})。パックを挿し直してもう一度お試しください。</value></data>
+  <data name="BlissBoxJob_NoReply" xml:space="preserve"><value>アダプターから応答がありませんでした。コントローラーが接続されているか確認して、もう一度お試しください。</value></data>
+  <data name="Status_BlissBoxPlayer_Format" xml:space="preserve"><value>ポートはプレイヤー {0} になりました。新しいデバイスとして再接続されます。</value></data>
+  <data name="Status_DreamcastScreen_Format" xml:space="preserve"><value>Dreamcast 画面を {0} に設定しました。</value></data>
+  <data name="Status_PakReading_Format" xml:space="preserve"><value>コントローラパックを読み取り中: {0:P0}</value></data>
+  <data name="Status_PakWriting_Format" xml:space="preserve"><value>コントローラパックに書き込み中: {0:P0}</value></data>
+  <data name="Status_PakSaved_Format" xml:space="preserve"><value>コントローラパックを {0} に保存しました。</value></data>
+  <data name="Status_PakRestored_Format" xml:space="preserve"><value>{0} からコントローラパックを復元しました。</value></data>
+  <data name="Status_PakFileFailed_Format" xml:space="preserve"><value>ファイルを使用できませんでした: {0}</value></data>
+  <data name="Status_PakWrongSize_Format" xml:space="preserve"><value>コントローラパックのファイルは 32,768 バイトです。このファイルは {0:N0} バイトです。</value></data>
   <data name="Status_UsioTekken" xml:space="preserve"><value>Namco USIO を鉄拳のスティック 4 本として読み取っています。</value></data>
   <data name="Status_UsioTaiko" xml:space="preserve"><value>Namco USIO を太鼓の達人の太鼓 2 台として読み取っています。</value></data>
   <data name="Status_ICadeOn_Format" xml:space="preserve"><value>{0} を iCade コントローラーとして読み取っています。</value></data>
@@ -2812,6 +2898,15 @@
   <data name="MacroAction_Type_SetChromaColor" xml:space="preserve"><value>Chroma の色を設定</value></data>
   <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>アクションの実行中、すべての Razer Chroma デバイスを 1 色で点灯させます。</value></data>
   <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>上で設定した時間のあいだ、すべての Razer Chroma デバイスをこの色で点灯させ、その後ライティングを Razer Synapse に戻します。トリガーを押している間ずっと色を保つには、「押している間」と「離すまで」を組み合わせてください。2 つのマクロが同時に色を付けた場合はリストで下にあるほうが優先されるため、深押し用のマクロを浅押し用のマクロの下に置いてください。Razer Synapse の実行が必要です。</value></data>
+  <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Dreamcast 画面を表示</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>このスロットに入力する Bliss-Box ポートの各 Dreamcast コントローラーのビジュアルメモリで画像を再生し、その後、各ポートを本来の画面設定に戻します。</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Dreamcast の画像 {0} 枚を各 {1} ms で {2} 回表示</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>アダプターは送られた画像をすべてメモリに書き込むため、各画像は最低 1 秒表示されます。画像は 48×32 の白黒ピクセルで、BMP、PNG、VMU Animator の .lcd ファイル、Dreamcast の .vms アイコンから読み込めます。</value></data>
+  <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>画像</value></data>
+  <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>画像を追加…</value></data>
+  <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>画像を削除</value></data>
+  <data name="Macro_Dreamcast_FrameTime" xml:space="preserve"><value>1 枚の表示時間</value></data>
+  <data name="Macro_Dreamcast_Repeat" xml:space="preserve"><value>繰り返し回数</value></data>
   <data name="MacroAction_SetChromaColor_Format" xml:space="preserve"><value>Chroma {0}（{1} ms）</value></data>
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>レイヤー{0}に切替</value></data>
   <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>このスロットを選択したシフトレイヤーに切り替えます。レイヤーは次の切替、Latch/Cycleアクティベーター、またはプロファイル切替まで維持されます。Baseで基本レイヤーに戻ります。上のレイヤー限定と組み合わせると、同じボタンでレイヤーごとに異なるジャンプができます。</value></data>
@@ -3674,6 +3769,8 @@
   <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>G キー入力を支えるイベントワードのレイアウトは、SDK の LogitechGkeyLib.h に基づきます。ライブラリの検索順序と終了処理は Mumble の GKey.cpp (BSD 3-Clause) に従います。PadForge はマシン上にあるライブラリを読み込み、Logitech のコードは同梱しません。</value></data>
   <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>HallJoy、Soup と AnalogSense</value></data>
   <data name="About_AnalogKeyboardRefsDesc" xml:space="preserve"><value>アナログキーボード入力は、HallJoy のキーボードルート、キー表、モデルカタログを C# に移植し（AGPL-3.0、PashOK7）、Soup と AnalogSense JavaScript SDK（MIT、Calamity, Inc.）に従い、Wooting Analog SDK（MPL-2.0）と照合しています。その他のキーボードは AnalogKeys（MIT、Nisayera）、KeyAxis（MIT、RigZeeel）、HallEffectAnalogMapper（MIT、Ricards Mironovs）、libhmk と hmkconf（GPL-3.0、peppapighs）、および DenkiSuki、LeiterConsulting、paysdelest による Soup のフォーク（MIT）に従っています。レポート形式とキー表は、Razer の Synapse Web と NuPhy の NuPhyIO の設定ソフト、OpenRazer（GPL-2.0）、Abbytech の razer-analog-keyboard、TinyUSB（MIT）、Sainan のキャプチャメモにも基づいています。</value></data>
+  <data name="About_BlissBoxRefs" xml:space="preserve"><value>Bliss-Box の参照元</value></data>
+  <data name="About_BlissBoxRefsDesc" xml:space="preserve"><value>「Bliss-Box アダプターを読み取る」の Bliss-Box API は、Bliss-Box LLC の API Tool（BSD 形式、再配布は無償）と DeviceBuddy（ソース公開、Bliss-Box LLC）から読み取り、ボタン名は SteveFox1620 による retroarch-joypad-autoconfig のフォークにある Bliss-Box 用ファイル、コントローラパックのチェックサムは libdragon（パブリックドメイン）と照合し、PlayStation コントローラーの応答は psx-spx と Linux の psxpad-spi ドライバー（GPL-2.0）に基づいています。資料のみで、コードは同梱していません。</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
   <data name="About_UsbipWin2Desc" xml:space="preserve"><value>HIDMaestro の複合 USB コントローラー用の USB トランスポート (Vadym Hrynchyshyn 作)。署名済みインストーラーは HIDMaestro に同梱され、複合コントローラーを初めて作成するときに実行されます。BSD 2-Clause。</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">

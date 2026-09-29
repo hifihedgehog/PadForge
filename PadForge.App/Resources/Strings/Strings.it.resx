@@ -271,6 +271,13 @@
   <data name="Settings_AnalogKeyboardsStatus_None" xml:space="preserve"><value>Nessuna tastiera analogica supportata trovata.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_Reading_Format" xml:space="preserve"><value>Lettura di {0}.</value></data>
   <data name="Settings_AnalogKeyboardsStatus_Synapse_Format" xml:space="preserve"><value>Avvia Razer Synapse per leggere {0}.</value></data>
+  <data name="Settings_BlissBox" xml:space="preserve"><value>Leggi gli adattatori Bliss-Box</value></data>
+  <data name="Settings_BlissBoxTooltip" xml:space="preserve"><value>Comunica con gli adattatori Bliss-Box tramite la loro API. La riga di ogni porta indica il controller collegato e i suoi pulsanti, legge la pressione di un DualShock 2, fa vibrare con i comandi motore dell'adattatore stesso e offre le azioni per lo schermo Dreamcast, il Controller Pak e il numero del giocatore. Chiudi Bliss-Box API Tool e DeviceBuddy mentre questa opzione è attiva, perché comunicano con l'adattatore sullo stesso canale.</value></data>
+  <data name="Settings_BlissBoxStatus_None" xml:space="preserve"><value>Nessuna porta Bliss-Box trovata.</value></data>
+  <data name="Settings_BlissBoxStatus_Reading_Format" xml:space="preserve"><value>Lettura di {0}.</value></data>
+  <data name="Settings_BlissBoxStatus_Port_Format" xml:space="preserve"><value>porta {0} ({1})</value></data>
+  <data name="BlissBox_Connecting" xml:space="preserve"><value>connessione</value></data>
+  <data name="BlissBox_NoController" xml:space="preserve"><value>nessun controller</value></data>
   <data name="Dashboard_WebController" xml:space="preserve"><value>Controller Web</value></data>
   <data name="Dashboard_WebDescription" xml:space="preserve"><value>Fornisce un'interfaccia gamepad ai browser nella rete locale.</value></data>
   <data name="Dashboard_EnableWeb" xml:space="preserve"><value>Attiva server controller web</value></data>
@@ -1339,6 +1346,27 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="DevObj_Back" xml:space="preserve"><value>Indietro</value></data>
   <data name="DevObj_Start" xml:space="preserve"><value>Avvio</value></data>
   <data name="DevObj_Guide" xml:space="preserve"><value>Guida</value></data>
+  <data name="DevObj_Select" xml:space="preserve"><value>Seleziona</value></data>
+  <data name="DevObj_Mode" xml:space="preserve"><value>Modalità</value></data>
+  <data name="DevObj_Run" xml:space="preserve"><value>Run</value></data>
+  <data name="DevObj_Reset" xml:space="preserve"><value>Reset</value></data>
+  <data name="DevObj_HomeButton" xml:space="preserve"><value>Pulsante HOME</value></data>
+  <data name="DevObj_Fire" xml:space="preserve"><value>Fuoco</value></data>
+  <data name="DevObj_Fire_Format" xml:space="preserve"><value>Fuoco {0}</value></data>
+  <data name="DevObj_LeftFire" xml:space="preserve"><value>Fuoco sinistro</value></data>
+  <data name="DevObj_RightFire" xml:space="preserve"><value>Fuoco destro</value></data>
+  <data name="DevObj_ZTrigger" xml:space="preserve"><value>Grilletto Z</value></data>
+  <data name="DevObj_StickX" xml:space="preserve"><value>Levetta X</value></data>
+  <data name="DevObj_StickY" xml:space="preserve"><value>Levetta Y</value></data>
+  <data name="DevObj_CStickX" xml:space="preserve"><value>Levetta C X</value></data>
+  <data name="DevObj_CStickY" xml:space="preserve"><value>Levetta C Y</value></data>
+  <data name="DevObj_Dial" xml:space="preserve"><value>Manopola</value></data>
+  <data name="DevObj_Dial_Format" xml:space="preserve"><value>Manopola {0}</value></data>
+  <data name="DevObj_RightDPad" xml:space="preserve"><value>D-Pad destro</value></data>
+  <data name="DevObj_Pressure_Format" xml:space="preserve"><value>Pressione di {0}</value></data>
+  <data name="DevObj_Arrow_Format" xml:space="preserve"><value>Freccia {0}</value></data>
+  <data name="DevObj_CButton_Format" xml:space="preserve"><value>C-{0}</value></data>
+  <data name="DevObj_Keypad_Format" xml:space="preserve"><value>Tastierino {0}</value></data>
   <data name="DevObj_XAxis" xml:space="preserve"><value>Asse X</value></data>
   <data name="DevObj_YAxis" xml:space="preserve"><value>Asse Y</value></data>
   <data name="DevObj_ZAxis" xml:space="preserve"><value>Asse Z</value></data>
@@ -2627,6 +2655,64 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Devices_UsioTekken" xml:space="preserve"><value>Leggi come stick di Tekken</value></data>
   <data name="Devices_UsioTaiko" xml:space="preserve"><value>Leggi come tamburi di Taiko</value></data>
   <data name="Devices_UsioLayoutTooltip" xml:space="preserve"><value>I cabinati di Taiko no Tatsujin e di Tekken usano questa scheda con un unico ID, ciascuno con la propria disposizione. La scheda viene riaperta nella disposizione scelta.</value></data>
+  <data name="Devices_BlissBoxLine_Format" xml:space="preserve"><value>Porta Bliss-Box {0} · {1} · firmware {2}</value></data>
+  <data name="Devices_BlissBoxLineConnecting_Format" xml:space="preserve"><value>Porta Bliss-Box {0} · connessione</value></data>
+  <data name="Devices_BlissBoxPlayer" xml:space="preserve"><value>Numero giocatore…</value></data>
+  <data name="Devices_BlissBoxPlayerTooltip" xml:space="preserve"><value>Imposta il numero giocatore di questa porta, da 1 a 4. L'adattatore lo memorizza e si ricollega come quel giocatore.</value></data>
+  <data name="Devices_DreamcastScreen" xml:space="preserve"><value>Schermo Dreamcast…</value></data>
+  <data name="Devices_DreamcastScreenTooltip" xml:space="preserve"><value>Imposta cosa mostra la VMU del controller Dreamcast: l'immagine dell'adattatore stesso, il nome, il numero o l'immagine del profilo attivo, l'orologio, il tempo di gioco o un'immagine a tua scelta.</value></data>
+  <data name="Devices_PakBackup" xml:space="preserve"><value>Esegui backup del Controller Pak…</value></data>
+  <data name="Devices_PakBackupTooltip" xml:space="preserve"><value>Salva il Controller Pak di questo controller N64 in un file .mpk da 32 KB, il formato letto dagli emulatori N64.</value></data>
+  <data name="Devices_PakRestore" xml:space="preserve"><value>Ripristina Controller Pak…</value></data>
+  <data name="Devices_PakRestoreTooltip" xml:space="preserve"><value>Scrive un file .mpk da 32 KB sul Controller Pak di questo controller N64, sostituendo ogni salvataggio presente.</value></data>
+  <data name="Devices_NativeArrows" xml:space="preserve"><value>Leggi le frecce una per una</value></data>
+  <data name="Devices_NativeArrowsTooltip" xml:space="preserve"><value>Chiede le direzioni direttamente a questo controller PlayStation, così sinistra e destra, o su e giù, vengono registrate insieme su un tappeto da ballo. Arrivano come i pulsanti Freccia su, giù, sinistra e destra. L'adattatore salta una delle proprie letture per ogni richiesta.</value></data>
+  <data name="Devices_BlissBoxPressure" xml:space="preserve"><value>Pressione del DualShock 2</value></data>
+  <data name="BlissBoxPlayer_Title" xml:space="preserve"><value>Numero giocatore</value></data>
+  <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>L'adattatore memorizza il numero e si ricollega come quel giocatore. Windows vede quindi un nuovo dispositivo, perciò riassegna la porta quando ricompare.</value></data>
+  <data name="BlissBoxPlayer_Label" xml:space="preserve"><value>Giocatore</value></data>
+  <data name="BlissBoxPlayer_Action" xml:space="preserve"><value>Imposta giocatore</value></data>
+  <data name="DreamcastScreen_Title" xml:space="preserve"><value>Schermo Dreamcast</value></data>
+  <data name="DreamcastScreen_Mode_Label" xml:space="preserve"><value>Mostra</value></data>
+  <data name="DreamcastScreen_Mode_Adapter" xml:space="preserve"><value>Immagine dell'adattatore</value></data>
+  <data name="DreamcastScreen_Mode_ProfileName" xml:space="preserve"><value>Nome del profilo</value></data>
+  <data name="DreamcastScreen_Mode_ProfileNumber" xml:space="preserve"><value>Numero del profilo</value></data>
+  <data name="DreamcastScreen_Mode_ProfilePicture" xml:space="preserve"><value>Immagine del profilo</value></data>
+  <data name="DreamcastScreen_Mode_Clock" xml:space="preserve"><value>Orologio</value></data>
+  <data name="DreamcastScreen_Mode_PlayTime" xml:space="preserve"><value>Tempo di gioco</value></data>
+  <data name="DreamcastScreen_Mode_Picture" xml:space="preserve"><value>Immagine scelta</value></data>
+  <data name="DreamcastScreen_Hint_Adapter" xml:space="preserve"><value>La VMU mostra l'immagine conservata dall'adattatore. PadForge non scrive nulla e rimette l'immagine trovata se da allora ne ha scritta un'altra.</value></data>
+  <data name="DreamcastScreen_Hint_ProfileName" xml:space="preserve"><value>La VMU mostra il nome del profilo attivo e segue ogni cambio di profilo.</value></data>
+  <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>La VMU mostra la posizione del profilo attivo nell'elenco dei profili. Il profilo predefinito è lo 0.</value></data>
+  <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>La VMU mostra l'immagine del profilo attivo, o il suo nome se non ne ha una. Ogni profilo conserva la propria immagine.</value></data>
+  <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>La VMU mostra l'ora del giorno, riscritta una volta al minuto.</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>La VMU mostra le ore e i minuti trascorsi da quando il controller è stato collegato, riscritti una volta al minuto.</value></data>
+  <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>La VMU mostra un'immagine a tua scelta: un BMP o PNG, un file .lcd di VMU Animator o un'icona .vms del Dreamcast. Le immagini vengono ridotte a 48 per 32 pixel in bianco e nero.</value></data>
+  <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>Scegli immagine…</value></data>
+  <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>Scegli immagine per {0}…</value></data>
+  <data name="DreamcastScreen_RemoveProfilePicture" xml:space="preserve"><value>Rimuovi immagine del profilo</value></data>
+  <data name="DreamcastScreen_PictureFilter" xml:space="preserve"><value>Immagini (*.png, *.bmp, *.lcd, *.vms)|*.png;*.bmp;*.lcd;*.vms|Tutti i file (*.*)|*.*</value></data>
+  <data name="DreamcastScreen_ImportFailed" xml:space="preserve"><value>Quel file non contiene un'immagine che PadForge possa leggere.</value></data>
+  <data name="BlissBoxPak_FileFilter" xml:space="preserve"><value>File del Controller Pak (*.mpk)|*.mpk|Tutti i file (*.*)|*.*</value></data>
+  <data name="BlissBoxPak_DefaultFileName_Format" xml:space="preserve"><value>Controller Pak porta {0}.mpk</value></data>
+  <data name="BlissBoxPak_RestoreTitle" xml:space="preserve"><value>Ripristina Controller Pak</value></data>
+  <data name="BlissBoxPak_RestoreMessage_Format" xml:space="preserve"><value>Ogni salvataggio sul Controller Pak della porta {0} viene sostituito dal contenuto del file.</value></data>
+  <data name="BlissBoxPak_RestoreAction" xml:space="preserve"><value>Ripristina</value></data>
+  <data name="BlissBoxJob_Closed" xml:space="preserve"><value>La porta si è chiusa prima della fine del trasferimento.</value></data>
+  <data name="BlissBoxJob_WrongController" xml:space="preserve"><value>Serve un controller N64 nella porta.</value></data>
+  <data name="BlissBoxJob_NoPak" xml:space="preserve"><value>Nel controller non c'è nessun Controller Pak.</value></data>
+  <data name="BlissBoxJob_RumblePak" xml:space="preserve"><value>Quello è un Rumble Pak, che non contiene salvataggi.</value></data>
+  <data name="BlissBoxJob_BadBlock_Format" xml:space="preserve"><value>Il blocco {0} ha fallito più volte il checksum. Reinserisci il pak e riprova.</value></data>
+  <data name="BlissBoxJob_TooManyErrors_Format" xml:space="preserve"><value>Il pak ha rifiutato troppe scritture, l'ultima al blocco {0}. Reinserisci il pak e riprova.</value></data>
+  <data name="BlissBoxJob_NoReply" xml:space="preserve"><value>L'adattatore non ha risposto. Controlla che il controller sia collegato e riprova.</value></data>
+  <data name="Status_BlissBoxPlayer_Format" xml:space="preserve"><value>La porta ora è il giocatore {0}. Si ricollega come nuovo dispositivo.</value></data>
+  <data name="Status_DreamcastScreen_Format" xml:space="preserve"><value>Schermo Dreamcast impostato su {0}.</value></data>
+  <data name="Status_PakReading_Format" xml:space="preserve"><value>Lettura del Controller Pak: {0:P0}</value></data>
+  <data name="Status_PakWriting_Format" xml:space="preserve"><value>Scrittura del Controller Pak: {0:P0}</value></data>
+  <data name="Status_PakSaved_Format" xml:space="preserve"><value>Controller Pak salvato in {0}.</value></data>
+  <data name="Status_PakRestored_Format" xml:space="preserve"><value>Controller Pak ripristinato da {0}.</value></data>
+  <data name="Status_PakFileFailed_Format" xml:space="preserve"><value>Impossibile usare il file: {0}</value></data>
+  <data name="Status_PakWrongSize_Format" xml:space="preserve"><value>Un file del Controller Pak è di 32.768 byte. Questo è di {0:N0}.</value></data>
   <data name="Status_UsioTekken" xml:space="preserve"><value>La Namco USIO viene letta come quattro stick di Tekken.</value></data>
   <data name="Status_UsioTaiko" xml:space="preserve"><value>La Namco USIO viene letta come due tamburi di Taiko.</value></data>
   <data name="Status_ICadeOn_Format" xml:space="preserve"><value>{0} viene letto come controller iCade.</value></data>
@@ -2834,6 +2920,15 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="MacroAction_Type_SetChromaColor" xml:space="preserve"><value>Imposta colore Chroma</value></data>
   <data name="MacroAction_SetChromaColor_Tooltip" xml:space="preserve"><value>Colora tutti i dispositivi Razer Chroma di un solo colore mentre l’azione è in esecuzione.</value></data>
   <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>Colora tutti i dispositivi Razer Chroma di questo colore per la durata indicata sopra, poi restituisce l’illuminazione a Razer Synapse. Per mantenere il colore finché l’attivatore resta premuto, usa «Mentre tenuto» con «Fino al rilascio». Quando due macro colorano insieme, vince quella più in basso nell’elenco, quindi metti la macro della pressione completa sotto quella della pressione leggera. Richiede Razer Synapse in esecuzione.</value></data>
+  <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Mostra schermo Dreamcast</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Mostra immagini sulla VMU di ogni controller Dreamcast in una porta Bliss-Box che alimenta questo slot, poi riporta ogni porta alla propria impostazione dello schermo.</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Mostra {0} immagini Dreamcast, {1} ms ciascuna, {2} volte</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Ogni immagine resta visibile almeno un secondo, perché l'adattatore conserva in memoria ogni immagine ricevuta. Le immagini sono di 48 per 32 pixel in bianco e nero, da un BMP o PNG, un file .lcd di VMU Animator o un'icona .vms del Dreamcast.</value></data>
+  <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>Immagini</value></data>
+  <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>Aggiungi immagine…</value></data>
+  <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>Rimuovi immagine</value></data>
+  <data name="Macro_Dreamcast_FrameTime" xml:space="preserve"><value>Durata per immagine</value></data>
+  <data name="Macro_Dreamcast_Repeat" xml:space="preserve"><value>Ripetizioni</value></data>
   <data name="MacroAction_SetChromaColor_Format" xml:space="preserve"><value>Chroma {0} per {1} ms</value></data>
   <data name="MacroAction_SwitchLayer_Format" xml:space="preserve"><value>Passa al livello {0}</value></data>
   <data name="Macro_SwitchLayer_Hint" xml:space="preserve"><value>Porta questo slot al livello shift scelto. Il livello resta attivo fino a un altro cambio, un attivatore Latch o Cycle, o un cambio profilo. Base torna al livello base. Limita questa macro a un livello sopra per far saltare lo stesso pulsante in modo diverso per livello.</value></data>
@@ -3696,6 +3791,8 @@ Vuoi che PadForge li disinstalli ora? L'operazione richiede privilegi elevati e 
   <data name="About_LogitechGKeyRefsDesc" xml:space="preserve"><value>La disposizione della parola di evento dietro l’input dei tasti G proviene da LogitechGkeyLib.h nell’SDK. L’ordine di ricerca e la chiusura della libreria seguono GKey.cpp di Mumble (BSD 3-Clause). PadForge carica la libreria presente sulla macchina e non distribuisce codice Logitech.</value></data>
   <data name="About_AnalogKeyboardRefs" xml:space="preserve"><value>HallJoy, Soup e AnalogSense</value></data>
   <data name="About_AnalogKeyboardRefsDesc" xml:space="preserve"><value>L’input delle tastiere analogiche porta in C# le route delle tastiere, le tabelle dei tasti e i cataloghi dei modelli di HallJoy (AGPL-3.0, PashOK7) e segue Soup e l’AnalogSense JavaScript SDK (MIT, Calamity, Inc.), verificati con il Wooting Analog SDK (MPL-2.0). Altre tastiere seguono AnalogKeys (MIT, Nisayera), KeyAxis (MIT, RigZeeel), HallEffectAnalogMapper (MIT, Ricards Mironovs), libhmk e hmkconf (GPL-3.0, peppapighs) e i fork di Soup di DenkiSuki, LeiterConsulting e paysdelest (MIT). Formati dei report e tabelle dei tasti provengono anche dai configuratori Synapse Web di Razer e NuPhyIO di NuPhy, da OpenRazer (GPL-2.0), da razer-analog-keyboard di Abbytech, da TinyUSB (MIT) e dalle note di acquisizione di Sainan.</value></data>
+  <data name="About_BlissBoxRefs" xml:space="preserve"><value>Riferimenti Bliss-Box</value></data>
+  <data name="About_BlissBoxRefsDesc" xml:space="preserve"><value>L’API Bliss-Box alla base di Leggi gli adattatori Bliss-Box, letta dall’API Tool di Bliss-Box LLC (tipo BSD, ridistribuzione gratuita) e da DeviceBuddy (sorgente consultabile, Bliss-Box LLC), con i nomi dei pulsanti dai file Bliss-Box del fork di retroarch-joypad-autoconfig di SteveFox1620, i checksum del Controller Pak verificati con libdragon (pubblico dominio) e la risposta del controller PlayStation da psx-spx e dal driver Linux psxpad-spi (GPL-2.0). Solo documentazione, nessun codice incluso.</value></data>
   <data name="About_UsbipWin2" xml:space="preserve"><value>usbip-win2</value></data>
   <data name="About_UsbipWin2Desc" xml:space="preserve"><value>Trasporto USB di Vadym Hrynchyshyn per i controller USB compositi di HIDMaestro. Il programma di installazione firmato è incluso in HIDMaestro e viene eseguito la prima volta che si crea un controller composito. BSD 2-Clause.</value></data>
   <data name="Pad_Kbm_Surfaces_Tooltip" xml:space="preserve">

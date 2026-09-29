@@ -29,6 +29,7 @@ namespace PadForge.ViewModels
             nameof(FlydigiEnhancedProtocol) or
             nameof(GKeysEnabled) or
             nameof(AnalogKeyboardsEnabled) or
+            nameof(BlissBoxEnabled) or
             nameof(PollingRateMs) or
             nameof(HmInactivityDestroyTimeoutSeconds) or
             nameof(AssignOfferNewDevice) or
@@ -122,6 +123,13 @@ namespace PadForge.ViewModels
                     // Off is the default: the polled keyboards share their
                     // configurator's channel.
                     AnalogKeyboardsEnabled = false;
+                    break;
+                }
+                case nameof(BlissBoxEnabled):
+                {
+                    // Off is the default: the API shares the channel the
+                    // Bliss-Box API Tool and DeviceBuddy use.
+                    BlissBoxEnabled = false;
                     break;
                 }
                 case nameof(PollingRateMs):
@@ -325,7 +333,8 @@ namespace PadForge.ViewModels
             nameof(ConsumeInputEnabled) or
             nameof(IdleDisconnectMinutes) or
             nameof(QuickChargeEnabled) or
-            nameof(GunCalibration);
+            nameof(GunCalibration) or
+            nameof(BlissBoxNativeArrows);
 
         private void ResetSetting(string name)
         {
@@ -359,6 +368,11 @@ namespace PadForge.ViewModels
                 case nameof(GunCalibration):
                 {
                     GunCalibration = string.Empty;
+                    break;
+                }
+                case nameof(BlissBoxNativeArrows):
+                {
+                    BlissBoxNativeArrows = false;
                     break;
                 }
                 default: return;
@@ -1070,6 +1084,9 @@ namespace PadForge.ViewModels
             nameof(SwitchLayerMask) or
             nameof(TextContent) or
             nameof(TextPerCharDelayMs) or
+            nameof(DreamcastFrames) or
+            nameof(DreamcastFrameMs) or
+            nameof(DreamcastRepeat) or
             nameof(TurboRateCurve) or
             nameof(Type) or
             nameof(VolumeLimit) or
@@ -1332,6 +1349,21 @@ namespace PadForge.ViewModels
                 case nameof(TextPerCharDelayMs):
                 {
                     TextPerCharDelayMs = 0;
+                    break;
+                }
+                case nameof(DreamcastFrames):
+                {
+                    DreamcastFrames = string.Empty;
+                    break;
+                }
+                case nameof(DreamcastFrameMs):
+                {
+                    DreamcastFrameMs = PadForge.Services.DreamcastScreenService.MinFrameMs;
+                    break;
+                }
+                case nameof(DreamcastRepeat):
+                {
+                    DreamcastRepeat = 1;
                     break;
                 }
                 case nameof(TurboRateCurve):

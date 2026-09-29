@@ -15449,17 +15449,23 @@ namespace PadForge.Services
                         // No owner: GBM's exact cadence, 200 on / 200 off
                         // twice, then a 500 ms tail.
                         var dev = ud.Device;
+                        // A Remote Link peer's row carries the owner's VID and
+                        // PID, but its own device relays the pulses to the PC
+                        // the pad is on, whose writer handles the family. The
+                        // direct lanes below would write a path that only
+                        // exists there.
+                        bool peer = PadForge.Common.Input.RemoteLinkOutputRouter.IsPeerPath(ud.DevicePath);
                         // A Padix PSX/USB converter's motors sit behind the 9-byte
                         // report PadForge writes itself, and every SDL rumble call
                         // for that family is inert by design (#440), so this train
                         // buzzed nothing and Identify had no writer at all. Same
                         // raw lane the sole-writer paths use.
-                        bool padix = PadForge.Engine.PadixConverterIdentity
+                        bool padix = !peer && PadForge.Engine.PadixConverterIdentity
                             .IsPlayStationConverter(ud.VendorId, ud.ProdId);
                         // A Bliss-Box port's motors take the adapter's own
                         // commands while the switch is on, and SDL rumble is
                         // inert for it the same way (#469).
-                        bool blissBox = PadForge.Engine.Common.BlissBox.BlissBoxApi
+                        bool blissBox = !peer && PadForge.Engine.Common.BlissBox.BlissBoxApi
                             .OwnsRumble(ud.VendorId, ud.ProdId);
                         void Buzz(ushort level)
                         {

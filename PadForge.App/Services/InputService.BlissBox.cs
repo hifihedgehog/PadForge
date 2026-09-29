@@ -17,7 +17,8 @@ namespace PadForge.Services
 
         /// <summary>The Dreamcast screens and the ports' other choices (#469).</summary>
         internal DreamcastScreenService DreamcastScreen
-            => _dreamcastScreen ??= new DreamcastScreenService(_mainVm.Settings, () => _settingsService?.MarkDirty());
+            => _dreamcastScreen ??= new DreamcastScreenService(_mainVm.Settings,
+                () => _settingsService?.MarkDirty(), () => _settingsService?.Save());
 
         /// <summary>Every UI tick, ungated by focus: a clock or a macro show
         /// on a VMU keeps running while PadForge sits behind a game. The

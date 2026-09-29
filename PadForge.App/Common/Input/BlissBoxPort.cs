@@ -14,9 +14,11 @@ namespace PadForge.Common.Input
     /// <para>The worker owns the channel. It opens it, runs the session's
     /// steps until the port is disposed, and reopens it once a second while
     /// it will not open or after three info reads in a row fail, telling both
-    /// motors their level again once it is back. When the port is disposed
-    /// it stops both motors before it lets go. Other threads set what they
-    /// want on the <see cref="Session"/> and wake the worker.</para>
+    /// motors their level again once it is back. A job queued while the
+    /// channel is closed ends as closed, since no controller is there to
+    /// answer it. When the port is disposed with its channel open, it stops
+    /// both motors before it lets go. Other threads set what they want on the
+    /// <see cref="Session"/> and wake the worker.</para>
     /// </summary>
     internal sealed class BlissBoxPort : IDisposable
     {
@@ -29,11 +31,12 @@ namespace PadForge.Common.Input
         private readonly HidTransport _transport = new();
         private volatile bool _stop;
 
-        public BlissBoxPort(string path, ushort productId, Guid instanceGuid)
+        public BlissBoxPort(string path, ushort productId, Guid instanceGuid, uint sdlInstanceId)
         {
             Path = path;
             ProductId = productId;
             InstanceGuid = instanceGuid;
+            SdlInstanceId = sdlInstanceId;
             Session = new BlissBoxSession(_transport, BlissBoxProtocol.PlayerOf(productId));
             Session.InfoChanged += _ => Changed?.Invoke(this);
             _thread = new Thread(Run)
@@ -53,6 +56,11 @@ namespace PadForge.Common.Input
 
         /// <summary>The SDL row this port rides beside.</summary>
         public Guid InstanceGuid { get; }
+
+        /// <summary>The SDL connection the row read when the port opened. A
+        /// row that reconnects gets a new port, which starts with its motors
+        /// at rest, as the adapter does.</summary>
+        public uint SdlInstanceId { get; }
 
         public BlissBoxSession Session { get; }
 
@@ -86,6 +94,7 @@ namespace PadForge.Common.Input
                     }
                     if (_transport.Channel == null)
                     {
+                        Session.CancelJobs();
                         _wake.WaitOne(ReopenIntervalMs);
                         continue;
                     }
@@ -121,8 +130,8 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>Stops the worker, which stops the motors and closes the
-        /// channel. A job in progress ends before its next message to the
-        /// controller, and one queued from now on ends at once.</summary>
+        /// channel. A job in progress ends at its next step, and one queued
+        /// from now on ends at once.</summary>
         public void Dispose()
         {
             if (_stop) return;

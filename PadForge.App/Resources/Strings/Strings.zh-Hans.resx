@@ -2644,7 +2644,7 @@
   <data name="Devices_PakRestore" xml:space="preserve"><value>恢复控制器记忆卡…</value></data>
   <data name="Devices_PakRestoreTooltip" xml:space="preserve"><value>将 32 KB 的 .mpk 文件写入此 N64 手柄的控制器记忆卡，替换其中的所有存档。</value></data>
   <data name="Devices_NativeArrows" xml:space="preserve"><value>逐个读取方向箭头</value></data>
-  <data name="Devices_NativeArrowsTooltip" xml:space="preserve"><value>直接向此 PlayStation 手柄询问方向，使跳舞毯上的左和右、上和下可以同时识别。方向以上、下、左、右箭头按键传入。适配器每处理一次询问就会跳过一次自身的读取。</value></data>
+  <data name="Devices_NativeArrowsTooltip" xml:space="preserve"><value>直接向此 PlayStation 手柄询问方向，使跳舞毯上的左和右、上和下从第一步起就可以同时识别。方向以上、下、左、右箭头按键传入。按过相反方向后，固件 3.34 也会自行发送这些按键。适配器每处理一次询问就会跳过一次自身的读取。</value></data>
   <data name="Devices_BlissBoxPressure" xml:space="preserve"><value>DualShock 2 压力</value></data>
   <data name="BlissBoxPlayer_Title" xml:space="preserve"><value>玩家编号</value></data>
   <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>适配器会保存编号并以该玩家身份重新连接。Windows 随后会将其视为新设备，因此端口重新出现后请重新分配。</value></data>
@@ -2664,7 +2664,7 @@
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>VMU 显示当前配置文件在配置文件列表中的位置。默认配置文件为 0。</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>VMU 显示当前配置文件自己的图片，没有图片时显示其名称。每个配置文件保存各自的图片。</value></data>
   <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU 显示当前时间，每分钟重写一次。适配器把每幅图片存入额定 10 万次写入的存储器，全天候显示约十周即达到该次数。</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU 显示手柄插入后经过的小时和分钟，每分钟重写一次。适配器把每幅图片存入额定 10 万次写入的存储器，全天候显示约十周即达到该次数。</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU 显示 PadForge 找到手柄后经过的小时和分钟，每分钟重写一次。手柄离开端口超过十秒后，计时从零重新开始。适配器把每幅图片存入额定 10 万次写入的存储器，全天候显示约十周即达到该次数。</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>VMU 显示您选择的图片：BMP 或 PNG、VMU Animator 的 .lcd 文件或 Dreamcast 的 .vms 图标。图片会转为 48×32 的黑白像素。</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>选择图片…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>为 {0} 选择图片…</value></data>
@@ -2684,6 +2684,7 @@
   <data name="BlissBoxJob_TooManyErrors_Format" xml:space="preserve"><value>记忆卡拒绝了过多写入，最后一次在块 {0}。请重新插好记忆卡后再试。</value></data>
   <data name="BlissBoxJob_NoReply" xml:space="preserve"><value>适配器没有响应。请检查手柄是否已插好，然后重试。</value></data>
   <data name="BlissBoxJob_OldFirmware" xml:space="preserve"><value>控制器记忆卡传输需要适配器固件 3.0 或更高版本。</value></data>
+  <data name="BlissBoxJob_PlayerUnchanged" xml:space="preserve"><value>适配器的玩家编号没有改变。请重试。</value></data>
   <data name="Status_BlissBoxPlayer_Format" xml:space="preserve"><value>此端口现在是玩家 {0}。它会以新设备身份重新连接。</value></data>
   <data name="Status_DreamcastScreen_Format" xml:space="preserve"><value>Dreamcast 屏幕已设为{0}。</value></data>
   <data name="Status_PakReading_Format" xml:space="preserve"><value>正在读取控制器记忆卡：{0:P0}</value></data>
@@ -2902,7 +2903,7 @@
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>显示 Dreamcast 屏幕</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>在为此槽位提供输入的 Bliss-Box 端口中，每个 Dreamcast 手柄的 VMU 上播放图片，然后将各端口恢复为其自己的屏幕设置。</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>显示 {0} 张 Dreamcast 图片，每张 {1} 毫秒，共 {2} 次</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>由于适配器会把收到的每张图片写入其存储器，每张图片至少显示一秒。图片为 48×32 的黑白像素，可来自 BMP 或 PNG、VMU Animator 的 .lcd 文件或 Dreamcast 的 .vms 图标。</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>由于适配器会把收到的每张图片写入额定 10 万次写入的存储器，每张图片至少显示一秒。每秒换一张图片，约一天即达到该次数。图片为 48×32 的黑白像素，可来自 BMP 或 PNG、VMU Animator 的 .lcd 文件或 Dreamcast 的 .vms 图标。</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>图片</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>添加图片…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>移除图片</value></data>

@@ -912,6 +912,7 @@ public class Strings : INotifyPropertyChanged
     public string BlissBoxJob_TooManyErrors_Format => Get("BlissBoxJob_TooManyErrors_Format");
     public string BlissBoxJob_NoReply => Get("BlissBoxJob_NoReply");
     public string BlissBoxJob_OldFirmware => Get("BlissBoxJob_OldFirmware");
+    public string BlissBoxJob_PlayerUnchanged => Get("BlissBoxJob_PlayerUnchanged");
     public string Status_BlissBoxPlayer_Format => Get("Status_BlissBoxPlayer_Format");
     public string Status_DreamcastScreen_Format => Get("Status_DreamcastScreen_Format");
     public string Status_PakReading_Format => Get("Status_PakReading_Format");

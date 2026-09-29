@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:strings="clr-namespace:PadForge.Resources.Strings"
+        xmlns:reset="clr-namespace:PadForge.Controls"
         ExtendsContentIntoTitleBar="True"
         WindowBackdropType="Mica"
         Width="440" SizeToContent="Height"
@@ -51,6 +52,7 @@
                 <ComboBoxItem Content="3" Tag="3"/>
                 <ComboBoxItem Content="4" Tag="4"/>
             </ComboBox>
+            <reset:SettingResetButton Click="ResetPlayer_Click" SettingLabel="{Binding BlissBoxPlayer_Label, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_PlayerBox_49"/>
         </StackPanel>
 
         <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,18,0,0">

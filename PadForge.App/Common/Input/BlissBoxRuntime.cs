@@ -24,6 +24,7 @@ namespace PadForge.Common.Input
     {
         private static readonly object _lock = new();
         private static BlissBoxPort[] _ports = Array.Empty<BlissBoxPort>();
+        private static int _generation;
 
         /// <summary>The switch. The ports themselves open and close on Step
         /// 1's next pass, so the motors change hands at once here: switched
@@ -38,6 +39,7 @@ namespace PadForge.Common.Input
                 bool was = BlissBoxApi.Enabled;
                 BlissBoxApi.Enabled = value;
                 if (value == was) return;
+                Interlocked.Increment(ref _generation);
                 if (value) StopSdlRumbleOnPorts();
                 else
                     foreach (var port in Ports)
@@ -58,11 +60,16 @@ namespace PadForge.Common.Input
                 try { wrapper.StopSdlRumble(); } catch { }
         }
 
+        /// <summary>Counts the switch's changes, so Step 1 sees one that went
+        /// off and on again between two of its passes.</summary>
+        public static int Generation => Volatile.Read(ref _generation);
+
         /// <summary>The open ports, a snapshot safe to walk on any thread.</summary>
         public static BlissBoxPort[] Ports => Volatile.Read(ref _ports);
 
-        /// <summary>Raised on a port's worker, or on the poll thread when a
-        /// port opens or retires. Handlers marshal to the UI themselves.</summary>
+        /// <summary>Raised on a port's worker, on the poll thread when a port
+        /// opens or retires, and on the stopping thread at shutdown. Handlers
+        /// marshal to the UI themselves.</summary>
         public static event Action<BlissBoxPort> PortChanged;
 
         public static BlissBoxPort Find(string path)
@@ -77,13 +84,14 @@ namespace PadForge.Common.Input
             => ud != null && BlissBoxProtocol.IsPort(ud.VendorId, ud.ProdId) ? Find(ud.DevicePath) : null;
 
         /// <summary>A row a port is open for, identified.</summary>
-        public readonly record struct Row(string Path, ushort ProductId, Guid InstanceGuid);
+        public readonly record struct Row(string Path, ushort ProductId, Guid InstanceGuid, uint SdlInstanceId);
 
         /// <summary>
         /// Poll thread: opens a port for every row in <paramref name="rows"/>
-        /// that has none, and retires the ports whose row left. The list is
-        /// empty while the switch is off, which retires them all. Returns the
-        /// ports opened, so the caller can hand their motors over from SDL.
+        /// that has none, and retires the ports whose row left or reconnected.
+        /// The list is empty while the switch is off, which retires them all.
+        /// Returns the ports opened, so the caller can hand their motors over
+        /// from SDL.
         /// </summary>
         public static List<BlissBoxPort> Sync(IReadOnlyList<Row> rows)
         {
@@ -98,7 +106,7 @@ namespace PadForge.Common.Input
                     bool kept = false;
                     foreach (var row in rows)
                         if (string.Equals(row.Path, port.Path, StringComparison.OrdinalIgnoreCase)
-                            && row.InstanceGuid == port.InstanceGuid)
+                            && row.InstanceGuid == port.InstanceGuid && row.SdlInstanceId == port.SdlInstanceId)
                         {
                             kept = true;
                             break;
@@ -112,7 +120,7 @@ namespace PadForge.Common.Input
                     foreach (var port in next)
                         if (string.Equals(row.Path, port.Path, StringComparison.OrdinalIgnoreCase)) { open = true; break; }
                     if (open) continue;
-                    var created = new BlissBoxPort(row.Path, row.ProductId, row.InstanceGuid);
+                    var created = new BlissBoxPort(row.Path, row.ProductId, row.InstanceGuid, row.SdlInstanceId);
                     created.Changed += OnPortChanged;
                     created.Start();
                     next.Add(created);
@@ -178,28 +186,32 @@ namespace PadForge.Common.Input
         /// <summary>
         /// Step 2, right after SDL's read: the pressure bytes as axes, 0 at
         /// rest and 65535 at the bottom of the press, and the native poll's
-        /// four directions as buttons 20 to 23. The state is a fresh pooled
-        /// one each read, so a port that stops publishing leaves them at rest.
+        /// four directions on the buttons the firmware sends its own arrows
+        /// on (<see cref="BlissBoxControllers.FirstArrowButton"/>), added to
+        /// whatever the report already holds there. The state is a fresh
+        /// pooled one each read, so a port that stops publishing leaves them
+        /// at rest.
         /// </summary>
         public static void Merge(UserDevice ud, CustomInputState state)
         {
             var port = Find(ud);
             if (port == null || state == null) return;
             var session = port.Session;
-            if (session.LiveInfo == null) return;
-            MergeInto(state, session.Pressure, session.Arrows, PressureAxisBase(ud.Device));
+            if (session.LiveInfo is not { } info) return;
+            MergeInto(state, session.Pressure, session.Arrows, PressureAxisBase(ud.Device),
+                BlissBoxControllers.FirstArrowButton(info.Type, info.Major));
         }
 
-        internal static void MergeInto(CustomInputState state, byte[] pressure, int arrows, int firstPressureAxis)
+        internal static void MergeInto(CustomInputState state, byte[] pressure, int arrows, int firstPressureAxis, int firstArrowButton)
         {
             if (pressure != null && firstPressureAxis >= 0)
                 for (int i = 0; i < pressure.Length; i++)
                     state.Axis[firstPressureAxis + i] = pressure[i] * 257;
 
-            if (arrows > 0)
+            if (arrows > 0 && firstArrowButton >= 0)
                 for (int i = 0; i < BlissBoxControllers.ArrowNames.Length; i++)
                     if ((arrows & (1 << i)) != 0)
-                        state.Buttons[BlissBoxControllers.FirstArrowButton + i] = true;
+                        state.Buttons[firstArrowButton + i] = true;
         }
 
         /// <summary>The motor levels for a port, PadForge's 0 to 65535. The
@@ -244,21 +256,25 @@ namespace PadForge.Common.Input
         public static bool NamesObjects(UserDevice ud)
             => Enabled && Find(ud)?.Session.LiveInfo != null;
 
-        /// <summary>True for a port's pressure axes, which rest at 0 and
-        /// travel one way, a trigger's shape (the #443 rule). The merge leaves
-        /// them at 0 whenever no DualShock 2 is in the port, so the answer
-        /// does not depend on which controller is.</summary>
-        public static bool IsPressureAxis(UserDevice ud, int axis)
+        /// <summary>True for a port's axes that rest at 0 and travel one way,
+        /// a trigger's shape (the #443 rule): the pressure axes, which the
+        /// merge leaves at 0 whenever no DualShock 2 is in the port, and the
+        /// axes the controller in the port names as its triggers
+        /// (<see cref="BlissBoxControllers.IsTriggerAxis"/>). Read raw, the
+        /// port is a joystick, whose axes otherwise count as centered.</summary>
+        public static bool RestsAtZero(UserDevice ud, int axis)
         {
             if (ud == null || !Enabled || !BlissBoxProtocol.IsPort(ud.VendorId, ud.ProdId)) return false;
             int first = PressureAxisBase(ud.Device);
-            return first >= 0 && axis >= first && axis < first + BlissBoxProtocol.PressureCount;
+            if (first >= 0 && axis >= first && axis < first + BlissBoxProtocol.PressureCount) return true;
+            return Find(ud)?.Session.LiveInfo is { } info && BlissBoxControllers.IsTriggerAxis(info.Type, info.Major, axis);
         }
 
         /// <summary>
         /// The wrapper's object list for a port, renamed for the controller in
         /// it: its buttons, sticks and hat per <see cref="BlissBoxControllers"/>,
-        /// buttons 20 to 23 as the four arrows on every port, and the twelve
+        /// the four arrows on the buttons the firmware sends them on where the
+        /// controller's own layout leaves those unnamed, and the twelve
         /// pressure axes appended for a DualShock 2. Unchanged when no port
         /// has identified a controller.
         /// </summary>
@@ -272,7 +288,14 @@ namespace PadForge.Common.Input
         internal static DeviceObjectItem[] NameObjects(BlissBoxInfo info, int declaredAxes, DeviceObjectItem[] items)
         {
             var list = new List<DeviceObjectItem>(items.Length + BlissBoxProtocol.PressureCount + 4);
+            int firstArrow = BlissBoxControllers.FirstArrowButton(info.Type, info.Major);
+            // Arrows the joystick does not declare are appended only where
+            // PadForge's native poll fills them, a 3.x PlayStation digital
+            // pad. The firmware writes only the buttons it declares, 24 on
+            // both generations, and one that sends no arrows has none.
             var arrowSeen = new bool[BlissBoxControllers.ArrowNames.Length];
+            if (firstArrow < 0 || info.Major != 3 || !BlissBoxControllers.IsPlayStationDigital(info.Type))
+                Array.Fill(arrowSeen, true);
             foreach (var item in items)
             {
                 string name = null;
@@ -282,13 +305,15 @@ namespace PadForge.Common.Input
                 }
                 else if (item.IsButton)
                 {
-                    int arrow = item.InputIndex - BlissBoxControllers.FirstArrowButton;
+                    // A button the controller's layout names keeps that name:
+                    // the ColecoVision's keypad sits on buttons 10 to 13.
+                    name = BlissBoxControllers.ButtonName(info.Type, info.Major, item.InputIndex);
+                    int arrow = firstArrow < 0 ? -1 : item.InputIndex - firstArrow;
                     if (arrow >= 0 && arrow < arrowSeen.Length)
                     {
-                        name = BlissBoxControllers.ArrowNames[arrow];
+                        name ??= BlissBoxControllers.ArrowNames[arrow];
                         arrowSeen[arrow] = true;
                     }
-                    else name = BlissBoxControllers.ButtonName(info.Type, info.Major, item.InputIndex);
                 }
                 else if (item.IsAxis && !item.IsSlider)
                 {
@@ -301,7 +326,7 @@ namespace PadForge.Common.Input
             for (int arrow = 0; arrow < arrowSeen.Length; arrow++)
             {
                 if (arrowSeen[arrow]) continue;
-                int index = BlissBoxControllers.FirstArrowButton + arrow;
+                int index = firstArrow + arrow;
                 list.Add(new DeviceObjectItem
                 {
                     InputIndex = index,

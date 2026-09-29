@@ -2644,7 +2644,7 @@
   <data name="Devices_PakRestore" xml:space="preserve"><value>컨트롤러 팩 복원…</value></data>
   <data name="Devices_PakRestoreTooltip" xml:space="preserve"><value>32KB .mpk 파일을 이 N64 컨트롤러의 컨트롤러 팩에 쓰고, 팩의 모든 저장 데이터를 바꿉니다.</value></data>
   <data name="Devices_NativeArrows" xml:space="preserve"><value>화살표를 하나씩 읽기</value></data>
-  <data name="Devices_NativeArrowsTooltip" xml:space="preserve"><value>이 PlayStation 컨트롤러에 방향을 직접 요청해 댄스 매트에서 왼쪽과 오른쪽, 또는 위와 아래를 함께 인식하게 합니다. 방향은 위·아래·왼쪽·오른쪽 화살표 버튼으로 들어옵니다. 어댑터는 요청마다 자체 읽기를 한 번 건너뜁니다.</value></data>
+  <data name="Devices_NativeArrowsTooltip" xml:space="preserve"><value>이 PlayStation 컨트롤러에 방향을 직접 요청해 댄스 매트에서 왼쪽과 오른쪽, 또는 위와 아래를 첫 스텝부터 함께 인식하게 합니다. 방향은 위·아래·왼쪽·오른쪽 화살표 버튼으로 들어오며, 펌웨어 3.34는 반대 방향이 함께 눌린 뒤에는 같은 버튼을 스스로도 보냅니다. 어댑터는 요청마다 자체 읽기를 한 번 건너뜁니다.</value></data>
   <data name="Devices_BlissBoxPressure" xml:space="preserve"><value>DualShock 2 압력</value></data>
   <data name="BlissBoxPlayer_Title" xml:space="preserve"><value>플레이어 번호</value></data>
   <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>어댑터가 번호를 저장하고 해당 플레이어로 다시 연결됩니다. 그러면 Windows에는 새 장치로 보이므로, 포트가 다시 나타나면 다시 할당하세요.</value></data>
@@ -2664,7 +2664,7 @@
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>VMU에 프로필 목록에서 활성 프로필의 순서가 표시됩니다. 기본 프로필은 0입니다.</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>VMU에 활성 프로필 자체의 그림이 표시되며, 그림이 없으면 이름이 표시됩니다. 프로필마다 자기 그림을 따로 보관합니다.</value></data>
   <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>VMU에 현재 시각이 표시되며 1분에 한 번 다시 씁니다. 어댑터는 각 그림을 10만 회 쓰기 수명의 메모리에 저장하며, 24시간 계속 표시하면 약 10주 만에 그 수명에 도달합니다.</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>VMU에 컨트롤러를 연결한 뒤 지난 시간과 분이 표시되며 1분에 한 번 다시 씁니다. 어댑터는 각 그림을 10만 회 쓰기 수명의 메모리에 저장하며, 24시간 계속 표시하면 약 10주 만에 그 수명에 도달합니다.</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>PadForge가 컨트롤러를 찾은 뒤 지난 시간과 분이 VMU에 표시되며 1분에 한 번 다시 씁니다. 컨트롤러가 10초 넘게 포트에서 빠지면 0부터 다시 셉니다. 어댑터는 각 그림을 10만 회 쓰기 수명의 메모리에 저장하며, 24시간 계속 표시하면 약 10주 만에 그 수명에 도달합니다.</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>VMU에 직접 고른 그림이 표시됩니다. BMP나 PNG, VMU Animator .lcd 파일, Dreamcast .vms 아이콘을 쓸 수 있습니다. 그림은 48×32 흑백 픽셀로 변환됩니다.</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>그림 선택…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>{0}의 그림 선택…</value></data>
@@ -2684,6 +2684,7 @@
   <data name="BlissBoxJob_TooManyErrors_Format" xml:space="preserve"><value>팩이 쓰기를 너무 많이 거부했습니다(마지막은 블록 {0}). 팩을 다시 끼우고 다시 시도하세요.</value></data>
   <data name="BlissBoxJob_NoReply" xml:space="preserve"><value>어댑터가 응답하지 않았습니다. 컨트롤러가 연결되어 있는지 확인하고 다시 시도하세요.</value></data>
   <data name="BlissBoxJob_OldFirmware" xml:space="preserve"><value>컨트롤러 팩 전송에는 어댑터 펌웨어 3.0 이상이 필요합니다.</value></data>
+  <data name="BlissBoxJob_PlayerUnchanged" xml:space="preserve"><value>어댑터의 플레이어 번호가 바뀌지 않았습니다. 다시 시도하세요.</value></data>
   <data name="Status_BlissBoxPlayer_Format" xml:space="preserve"><value>이제 포트는 플레이어 {0}입니다. 새 장치로 다시 연결됩니다.</value></data>
   <data name="Status_DreamcastScreen_Format" xml:space="preserve"><value>Dreamcast 화면을 {0}(으)로 설정했습니다.</value></data>
   <data name="Status_PakReading_Format" xml:space="preserve"><value>컨트롤러 팩 읽는 중: {0:P0}</value></data>
@@ -2902,7 +2903,7 @@
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Dreamcast 화면 표시</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>이 슬롯에 입력되는 Bliss-Box 포트의 각 Dreamcast 컨트롤러 VMU에서 그림을 재생한 뒤, 각 포트를 원래 화면 설정으로 되돌립니다.</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Dreamcast 그림 {0}장을 각 {1}ms씩 {2}회 표시</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>어댑터가 받은 그림을 모두 메모리에 저장하므로 각 그림은 최소 1초 동안 표시됩니다. 그림은 48×32 흑백 픽셀이며 BMP나 PNG, VMU Animator .lcd 파일, Dreamcast .vms 아이콘에서 가져옵니다.</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>어댑터가 받은 그림을 모두 10만 회 쓰기 수명의 메모리에 저장하므로 각 그림은 최소 1초 동안 표시됩니다. 매초 새 그림을 보내면 약 하루 만에 그 수명에 도달합니다. 그림은 48×32 흑백 픽셀이며 BMP나 PNG, VMU Animator .lcd 파일, Dreamcast .vms 아이콘에서 가져옵니다.</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>그림</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>그림 추가…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>그림 제거</value></data>

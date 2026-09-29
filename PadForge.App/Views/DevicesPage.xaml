@@ -1633,7 +1633,11 @@
 
                         <!-- DualShock 2 in a Bliss-Box port (issue #469): its twelve
                              pressure buttons as chips, the key depth chips' shape,
-                             each with its pressure as a bar and a percent. -->
+                             each with its pressure as a bar and a percent. The width
+                             fits the longest name in every language, German
+                             "Steuerkreuz Rechts" (116 DIP in Cascadia Code at 11 px),
+                             beside "100 %" (26.4 DIP at 9 px): at 118 all four German
+                             D-pad chips trimmed to the same "Steuerkreuz …". -->
                         <StackPanel Visibility="{Binding HasBlissBoxPressure, Converter={StaticResource BoolToVisibilityConverter}}"
                                     Margin="0,0,0,8">
                             <TextBlock Text="{Binding Devices_BlissBoxPressure, Source={x:Static strings:Strings.Instance}}"
@@ -1646,7 +1650,7 @@
                                 </ItemsControl.ItemsPanel>
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Border CornerRadius="4" Margin="2" Padding="6,4" Width="118"
+                                        <Border CornerRadius="4" Margin="2" Padding="6,4" Width="164"
                                                 Style="{StaticResource RawCellBorder}">
                                             <StackPanel>
                                                 <Grid>

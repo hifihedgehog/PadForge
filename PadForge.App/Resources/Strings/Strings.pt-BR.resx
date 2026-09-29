@@ -2638,7 +2638,7 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Restaurar Controller Pak…</value></data>
   <data name="Devices_PakRestoreTooltip" xml:space="preserve"><value>Grava um arquivo .mpk de 32 KB no Controller Pak deste controle de N64, substituindo todos os saves dele.</value></data>
   <data name="Devices_NativeArrows" xml:space="preserve"><value>Ler as Setas Uma a Uma</value></data>
-  <data name="Devices_NativeArrowsTooltip" xml:space="preserve"><value>Pede as direções diretamente a este controle de PlayStation, para que esquerda e direita, ou cima e baixo, sejam registradas juntas em um tapete de dança. Elas chegam como os botões Seta para Cima, Baixo, Esquerda e Direita. O adaptador pula uma das próprias leituras a cada pedido.</value></data>
+  <data name="Devices_NativeArrowsTooltip" xml:space="preserve"><value>Pede as direções diretamente a este controle de PlayStation, para que esquerda e direita, ou cima e baixo, sejam registradas juntas em um tapete de dança desde o primeiro passo. Elas chegam como os botões Seta para Cima, Baixo, Esquerda e Direita, que o firmware 3.34 também envia por conta própria depois que direções opostas são pressionadas. O adaptador pula uma das próprias leituras a cada pedido.</value></data>
   <data name="Devices_BlissBoxPressure" xml:space="preserve"><value>Pressão do DualShock 2</value></data>
   <data name="BlissBoxPlayer_Title" xml:space="preserve"><value>Número do Jogador</value></data>
   <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>O adaptador guarda o número e se reconecta como esse jogador. O Windows então vê um dispositivo novo, então atribua a porta de novo quando ela voltar.</value></data>
@@ -2658,7 +2658,7 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>A VMU mostra a posição do perfil ativo na lista de perfis. O perfil Padrão é o 0.</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>A VMU mostra a imagem do próprio perfil ativo, ou o nome dele quando não tem nenhuma. Cada perfil guarda a própria imagem.</value></data>
   <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>A VMU mostra a hora do dia, regravada uma vez por minuto. O adaptador guarda cada imagem em uma memória especificada para 100.000 gravações, que este modo atinge após cerca de dez semanas de exibição contínua.</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>A VMU mostra as horas e os minutos desde que o controle foi conectado, regravados uma vez por minuto. O adaptador guarda cada imagem em uma memória especificada para 100.000 gravações, que este modo atinge após cerca de dez semanas de exibição contínua.</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>A VMU mostra as horas e os minutos desde que o PadForge encontrou o controle, regravados uma vez por minuto. Um controle fora da porta por mais de dez segundos recomeça do zero. O adaptador guarda cada imagem em uma memória especificada para 100.000 gravações, que este modo atinge após cerca de dez semanas de exibição contínua.</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>A VMU mostra uma imagem escolhida por você: um BMP ou PNG, um arquivo .lcd do VMU Animator ou um ícone .vms do Dreamcast. As imagens são reduzidas a 48 por 32 pixels em preto e branco.</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>Escolher Imagem…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>Escolher Imagem para {0}…</value></data>
@@ -2678,6 +2678,7 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="BlissBoxJob_TooManyErrors_Format" xml:space="preserve"><value>O pak recusou gravações demais, a última no bloco {0}. Encaixe o pak de novo e tente outra vez.</value></data>
   <data name="BlissBoxJob_NoReply" xml:space="preserve"><value>O adaptador não respondeu. Verifique se o controle está conectado e tente outra vez.</value></data>
   <data name="BlissBoxJob_OldFirmware" xml:space="preserve"><value>As transferências do Controller Pak precisam do firmware 3.0 ou posterior no adaptador.</value></data>
+  <data name="BlissBoxJob_PlayerUnchanged" xml:space="preserve"><value>O adaptador manteve o número de jogador. Tente outra vez.</value></data>
   <data name="Status_BlissBoxPlayer_Format" xml:space="preserve"><value>A porta agora é o jogador {0}. Ela se reconecta como um dispositivo novo.</value></data>
   <data name="Status_DreamcastScreen_Format" xml:space="preserve"><value>Tela do Dreamcast definida como {0}.</value></data>
   <data name="Status_PakReading_Format" xml:space="preserve"><value>Lendo o Controller Pak: {0:P0}</value></data>
@@ -2895,8 +2896,8 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>Pinta todos os dispositivos Razer Chroma desta cor pela duração acima e depois devolve a iluminação ao Razer Synapse. Para manter a cor enquanto o gatilho estiver pressionado, use “Enquanto Segurar” com “Até Soltar”. Quando duas macros pintam ao mesmo tempo, vence a que está mais abaixo na lista, então coloque a macro de pressão total abaixo da de pressão leve. Exige o Razer Synapse em execução.</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Mostrar Tela do Dreamcast</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Reproduz imagens na VMU de cada controle do Dreamcast em uma porta Bliss-Box que alimenta este slot e depois devolve cada porta à própria configuração de tela.</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Mostrar {0} imagens do Dreamcast, {1} ms cada, {2} vezes</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Cada imagem fica pelo menos um segundo na tela, pois o adaptador grava na memória cada imagem que recebe. As imagens têm 48 por 32 pixels em preto e branco, de um BMP ou PNG, um arquivo .lcd do VMU Animator ou um ícone .vms do Dreamcast.</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Mostrar imagens do Dreamcast: {0} × {1} ms, repetições {2}</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Cada imagem fica pelo menos um segundo na tela, pois o adaptador grava cada imagem que recebe em uma memória especificada para 100.000 gravações, que uma imagem nova por segundo atinge em cerca de um dia. As imagens têm 48 por 32 pixels em preto e branco, de um BMP ou PNG, um arquivo .lcd do VMU Animator ou um ícone .vms do Dreamcast.</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>Imagens</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>Adicionar Imagem…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>Remover Imagem</value></data>

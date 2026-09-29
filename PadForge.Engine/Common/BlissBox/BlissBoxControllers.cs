@@ -29,9 +29,11 @@ namespace PadForge.Engine.Common.BlissBox
     /// Jaguar's A and C. The Jaguar keeps the joystick's names on 3.x, since
     /// nothing else settles which of its sources is right there. Only
     /// DeviceBuddy's layouts for the adapter's stream count (hat at byte 11),
-    /// matched to a type by its name in BlissBox_lookUpName. A controller
-    /// neither source lays out, or a button a source leaves unlabeled, keeps
-    /// the joystick's own name.</para>
+    /// matched to a type by its name in BlissBox_lookUpName. That function
+    /// names 27, 49 and 54 "SNES", "NEO" and "PCEngine", which no layout file
+    /// carries, so those three are matched here by hand to supernintendo,
+    /// neogeo and pce. A controller neither source lays out, or a button a
+    /// source leaves unlabeled, keeps the joystick's own name.</para>
     ///
     /// <para>The names follow each adapter's default map. The GPA's
     /// alternate maps (one swaps Z with C and L with R), its custom maps and
@@ -53,17 +55,53 @@ namespace PadForge.Engine.Common.BlissBox
         public const byte TypeDualShock2 = 121;
         public const byte TypeUnflashed = 255;
 
-        /// <summary>The first of the four arrow buttons GPA 4.86 publishes
-        /// once opposite directions are pressed (firmware 0x34A1 to 0x34B9),
-        /// and where PadForge's native poll puts them on a 3.x adapter.</summary>
-        public const int FirstArrowButton = 20;
+        /// <summary>
+        /// The first of the four arrow buttons, or -1 when the firmware sends
+        /// none for this controller. Both generations send the four
+        /// directions as buttons of their own once opposite directions have
+        /// been pressed, which a D-pad cannot do and a dance mat does, and
+        /// keep doing so until another controller is detected:
+        /// <list type="bullet">
+        /// <item>The 3.0 firmware ORs them into the second button byte,
+        /// buttons 10 to 13 (0x3295 to 0x32A9, cleared at 0x3163), for every
+        /// controller but the NES Zapper, which skips the D-pad code
+        /// (0x321E). PadForge's native poll uses the same four buttons.</item>
+        /// <item>GPA 4.86 writes them into the third, buttons 20 to 23 (0x34A1
+        /// to 0x34B9), for every controller but the Genesis 3-button pad and
+        /// the FM Towns pad. The PC-FX pad sets two of those bits for its own
+        /// inputs (0x1684), so it keeps numbered names.</item>
+        /// </list>
+        /// </summary>
+        public static int FirstArrowButton(byte type, byte major)
+        {
+            if (major == 3) return type == 28 ? -1 : 10;
+            if (major >= 4) return type is 20 or 26 or 66 ? -1 : 20;
+            return -1;
+        }
 
         /// <summary>The arrow buttons, in the firmware's order: up, down,
-        /// left, right (0x0556's bits 0x04, 0x08, 0x10, 0x20 shifted up by
-        /// two).</summary>
+        /// left, right (the D-pad bits 0x04, 0x08, 0x10 and 0x20 both
+        /// firmwares move up the button byte).</summary>
         public static readonly string[] ArrowNames =
         {
             "Up Arrow", "Down Arrow", "Left Arrow", "Right Arrow",
+        };
+
+        /// <summary>How many motors the adapter drives on this controller, as
+        /// the API Tool offers them (rumble.cs): one, command 4, for the
+        /// GameCube, Dreamcast and N64 controllers and the Dreamcast fishing
+        /// rod (whose second motor the tool's own comment leaves unworked),
+        /// and two, commands 4 and 5, for the DualShock, DualShock 2, neGcon
+        /// and JogCon. Any other controller has none and is sent nothing: the
+        /// 3.0 firmware skips a controller poll after every write (0x090B,
+        /// 0x31C6). A one-motor pad takes command 4 alone because GPA 4.86's
+        /// Dreamcast driver runs command 5 at full power whatever strength it
+        /// is given (0x0C2A).</summary>
+        public static int MotorCount(byte type) => type switch
+        {
+            9 or 16 or 19 or 73 => 1,
+            51 or 115 or 121 or 127 => 2,
+            _ => 0,
         };
 
         /// <summary>The axis the first pressure lands on: after the eight a
@@ -235,6 +273,13 @@ namespace PadForge.Engine.Common.BlissBox
             [0] = "Stick X", [1] = "Stick Y",
         };
 
+        /// <summary>A stick and two analog triggers in Z and Rz, which both
+        /// firmwares fill for the Dreamcast pad and the Saturn 3D pad.</summary>
+        private static readonly Dictionary<int, string> OneStickAndTriggers = new()
+        {
+            [0] = "Stick X", [1] = "Stick Y", [2] = "Left Trigger", [5] = "Right Trigger",
+        };
+
         private static readonly Dictionary<int, string> Nintendo64Buttons = new()
         {
             [0] = "B", [1] = "A", [2] = "C-Left", [3] = "C-Down", [4] = "Z Trigger", [5] = "Start",
@@ -277,7 +322,13 @@ namespace PadForge.Engine.Common.BlissBox
 
         /// <summary>Firmware 3.x: RetroArch's "Bliss-Box 4-Play TYPE Port
         /// 1.cfg" files (dinput, firmware 3.24). Button N is 0-based as there,
-        /// and "h0" is the hat.</summary>
+        /// and "h0" is the hat. The GameCube's and the Saturn 3D pad's
+        /// triggers follow the 3.0 firmware Bliss-Box distributes, which
+        /// reports itself as 3.34 and copies them into Z and Rz, axes 2 and 5,
+        /// as they come from the pad (GameCube 0x1042 to 0x104A, Saturn 0x19A4
+        /// to 0x19DC). RetroArch's GameCube file binds its shoulders to
+        /// unsigned axes 6 and 7, which RetroArch ignores, and the Slider and
+        /// Dial those would be stay at their center there (0x311B).</summary>
         private static readonly Dictionary<byte, Layout> Generation3 = new()
         {
             [0] = AtariJoystick,
@@ -297,7 +348,7 @@ namespace PadForge.Engine.Common.BlissBox
             [16] = new()
             {
                 Buttons = new() { [0] = "A", [1] = "B", [2] = "X", [3] = "Y", [5] = "Start" },
-                Axes = new() { [0] = "Stick X", [1] = "Stick Y", [2] = "Left Trigger", [5] = "Right Trigger" },
+                Axes = OneStickAndTriggers,
             },
             [9] = new()
             {
@@ -305,7 +356,7 @@ namespace PadForge.Engine.Common.BlissBox
                 Axes = new()
                 {
                     [0] = "Left Stick X", [1] = "Left Stick Y", [3] = "C-Stick X", [4] = "C-Stick Y",
-                    [6] = "Left Trigger", [7] = "Right Trigger",
+                    [2] = "Left Trigger", [5] = "Right Trigger",
                 },
             },
             [20] = new() { Buttons = new() { [0] = "A", [1] = "B", [7] = "C", [5] = "Start" } },
@@ -326,7 +377,7 @@ namespace PadForge.Engine.Common.BlissBox
             [115] = PlayStation,
             [121] = PlayStation,
             [3] = new() { Buttons = SaturnButtons },
-            [8] = new() { Buttons = SaturnButtons, Axes = OneStick },
+            [8] = new() { Buttons = SaturnButtons, Axes = OneStickAndTriggers },
             [27] = new()
             {
                 Buttons = new()
@@ -341,7 +392,10 @@ namespace PadForge.Engine.Common.BlissBox
 
         /// <summary>Firmware 4 and up: DeviceBuddy's controllers/*.layout.
         /// Template labels on pads whose shoulders are L and R (DeviceBuddy's
-        /// L1 and R1 shapes) take the pad's own names.</summary>
+        /// L1 and R1 shapes) take the pad's own names. The Dreamcast pad's
+        /// analog triggers, which its layout leaves undrawn, follow the
+        /// firmware: GPA 4.86 copies them into Z and Rz as they come (0x0DEA
+        /// to 0x0DEC), beside the digital L and R it sets past 0xC8 (0x0DB2).</summary>
         private static readonly Dictionary<byte, Layout> Generation4 = new()
         {
             [0] = AtariJoystick,
@@ -377,7 +431,7 @@ namespace PadForge.Engine.Common.BlissBox
             [16] = new()
             {
                 Buttons = new() { [0] = "A", [1] = "B", [2] = "X", [3] = "Y", [5] = "Start", [6] = "L", [7] = "R" },
-                Axes = OneStick,
+                Axes = OneStickAndTriggers,
             },
             [9] = new()
             {
@@ -431,11 +485,7 @@ namespace PadForge.Engine.Common.BlissBox
             [119] = PlayStation,
             [121] = PlayStation,
             [3] = new() { Buttons = SaturnButtons },
-            [8] = new()
-            {
-                Buttons = SaturnButtons,
-                Axes = new() { [0] = "Stick X", [1] = "Stick Y", [2] = "Left Trigger", [5] = "Right Trigger" },
-            },
+            [8] = new() { Buttons = SaturnButtons, Axes = OneStickAndTriggers },
             [27] = new()
             {
                 Buttons = new()
@@ -487,6 +537,14 @@ namespace PadForge.Engine.Common.BlissBox
         /// controller, or null to keep the joystick's own.</summary>
         public static string AxisName(byte type, byte major, int index)
             => LayoutFor(type, major) is { } layout && layout.Axes.TryGetValue(index, out var name) ? name : null;
+
+        /// <summary>True for an axis this controller's layout names as a
+        /// trigger. Every firmware copies an analog trigger from the pad as it
+        /// comes, 0 released, so the axis rests at its low end and travels
+        /// one way (the #443 rule). The GPA's own XInput mode copies the same
+        /// bytes straight into the triggers (0x298F to 0x29C7).</summary>
+        public static bool IsTriggerAxis(byte type, byte major, int index)
+            => AxisName(type, major, index) is "Left Trigger" or "Right Trigger";
 
         /// <summary>"D-Pad" when the controller's hat is its D-pad, else null
         /// to keep the joystick's own name.</summary>

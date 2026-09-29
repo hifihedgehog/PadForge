@@ -10,15 +10,17 @@ namespace PadForge.Views
     public partial class BlissBoxPlayerDialog : Wpf.Ui.Controls.FluentWindow
     {
         private int _player;
+        private readonly int _current;
 
         private BlissBoxPlayerDialog(int current, string detail)
         {
+            _current = System.Math.Clamp(current, 1, 4);
             InitializeComponent();
             MouseLeftButtonDown += (_, __) => { try { DragMove(); } catch { } };
             Title = PadForge.Resources.Strings.Strings.Instance.BlissBoxPlayer_Title;
             DetailText.Text = detail ?? string.Empty;
             DetailText.Visibility = string.IsNullOrEmpty(detail) ? Visibility.Collapsed : Visibility.Visible;
-            PlayerBox.SelectedIndex = System.Math.Clamp(current, 1, 4) - 1;
+            PlayerBox.SelectedIndex = _current - 1;
             Loaded += (_, _) => CancelButton.Focus();
         }
 

@@ -78,7 +78,7 @@ namespace PadForge.Engine.Common.BlissBox
         private int _wantedLarge, _wantedSmall;
         private volatile byte _sentLarge, _sentSmall;
         private long _lastLarge, _lastSmall;
-        private bool _resendMotors;
+        private bool _resendLarge, _resendSmall;
         private bool _largeFailed, _smallFailed;
         private long _nextInfo, _nextPressure, _nextArrows;
         private long _lastScreenWrite = long.MinValue / 2;
@@ -141,8 +141,13 @@ namespace PadForge.Engine.Common.BlissBox
         /// spoken for until it ends.</summary>
         public bool Busy => _jobRunning || !_jobs.IsEmpty;
 
-        /// <summary>Both motors were last told to stop, or never started.</summary>
-        public bool MotorsAtRest => _sentLarge == 0 && _sentSmall == 0 && !Volatile.Read(ref _resendMotors);
+        /// <summary>Nothing is left to send the motors: both were last told
+        /// to stop, or never started, or the controller in the port has
+        /// none.</summary>
+        public bool MotorsAtRest
+            => (LiveInfo is { } info && BlissBoxControllers.MotorCount(info.Type) == 0)
+               || (_sentLarge == 0 && _sentSmall == 0
+                   && !Volatile.Read(ref _resendLarge) && !Volatile.Read(ref _resendSmall));
 
         /// <summary>The levels the motors should run at, PadForge's 0 to
         /// 65535: large is the low-frequency channel, small the high. True
@@ -214,10 +219,15 @@ namespace PadForge.Engine.Common.BlissBox
                 WriteScreen(now);
             }
 
-            if (_jobs.TryDequeue(out var job))
+            if (!_jobs.IsEmpty)
             {
+                // Running before the job leaves the queue, so Busy never
+                // reads false between the two.
                 _jobRunning = true;
-                try { job.Run(this); }
+                try
+                {
+                    if (_jobs.TryDequeue(out var job)) job.Run(this);
+                }
                 finally { _jobRunning = false; }
             }
 
@@ -236,8 +246,11 @@ namespace PadForge.Engine.Common.BlissBox
             if (info != null && BlissBoxControllers.HasPressure(info.Type)) next = Math.Min(next, _nextPressure);
             // A running motor is due its refresh, and a level not yet
             // delivered its retry, 100 ms after the last attempt.
-            if (_sentLarge != 0 || MotorPending(true)) next = Math.Min(next, _lastLarge + RumbleRefreshMs);
-            if (_sentSmall != 0 || MotorPending(false)) next = Math.Min(next, _lastSmall + RumbleRefreshMs);
+            var (wantLarge, wantSmall, motors) = WantedStrengths();
+            if (motors > 0 && (_sentLarge != 0 || Volatile.Read(ref _resendLarge) || wantLarge != _sentLarge))
+                next = Math.Min(next, _lastLarge + RumbleRefreshMs);
+            if (motors == 2 && (_sentSmall != 0 || Volatile.Read(ref _resendSmall) || wantSmall != _sentSmall))
+                next = Math.Min(next, _lastSmall + RumbleRefreshMs);
             if (NativeArrowsActive) next = Math.Min(next, _nextArrows);
             // Only a port whose pad draws the picture writes one, so only
             // then is a pending picture a reason to wake.
@@ -256,7 +269,8 @@ namespace PadForge.Engine.Common.BlissBox
             _transport.SetFeature(BlissBoxProtocol.Rumble(false, 0));
             _sentLarge = _sentSmall = 0;
             _largeFailed = _smallFailed = false;
-            Volatile.Write(ref _resendMotors, false);
+            Volatile.Write(ref _resendLarge, false);
+            Volatile.Write(ref _resendSmall, false);
         }
 
         /// <summary>From any thread: a running job stops before its next
@@ -266,14 +280,30 @@ namespace PadForge.Engine.Common.BlissBox
 
         /// <summary>For a job: writes a picture now, once the EEPROM guard's
         /// second since the last write has passed, whether or not a pad that
-        /// draws it is in the port.</summary>
-        internal void WriteScreenNow(byte[] wire)
+        /// draws it is in the port. False when the adapter refused it.</summary>
+        internal bool WriteScreenNow(byte[] wire)
         {
-            if (_storedScreen is { } stored && stored.AsSpan().SequenceEqual(wire)) return;
+            if (_storedScreen is { } stored && stored.AsSpan().SequenceEqual(wire)) return true;
             long wait = _lastScreenWrite + ScreenIntervalMs - _clock();
             if (wait > 0) _sleep((int)Math.Min(wait, ScreenIntervalMs));
             _lastScreenWrite = _clock();
-            if (_transport.SetFeature(BlissBoxProtocol.Screen(wire))) _storedScreen = (byte[])wire.Clone();
+            if (!_transport.SetFeature(BlissBoxProtocol.Screen(wire))) return false;
+            _storedScreen = (byte[])wire.Clone();
+            return true;
+        }
+
+        /// <summary>How long the player job waits after its command before it
+        /// asks whether the adapter is still there.</summary>
+        internal const int PlayerSettleMs = 100;
+
+        /// <summary>For the player job: true when the adapter still answers
+        /// report 17 as this port's player a moment after the command. Both
+        /// firmwares reset from inside the command's handler, so an adapter
+        /// that took it never answers on this handle again.</summary>
+        internal bool StillAnswers()
+        {
+            _sleep(PlayerSettleMs);
+            return BlissBoxProtocol.ParseInfo(Get(BlissBoxProtocol.ReportInfo), Player) != null;
         }
 
         public bool StopRequested => _stopRequested;
@@ -298,7 +328,8 @@ namespace PadForge.Engine.Common.BlissBox
             // What the motors are doing is unknown once the channel dropped:
             // an adapter that stayed up may still run the last level. Both
             // are told their level again when it reopens, a stop included.
-            Volatile.Write(ref _resendMotors, true);
+            Volatile.Write(ref _resendLarge, true);
+            Volatile.Write(ref _resendSmall, true);
             _nextInfo = _nextPressure = _nextArrows = 0;
             _failedInfoReads = 0;
             CancelJobs();
@@ -338,6 +369,10 @@ namespace PadForge.Engine.Common.BlissBox
             {
                 _pressure = null;
                 _arrows = -1;
+                // Another controller, or the same one back: its motors are
+                // told their level again, a stop included, as after a reopen.
+                Volatile.Write(ref _resendLarge, true);
+                Volatile.Write(ref _resendSmall, true);
             }
             InfoChanged?.Invoke(this);
         }
@@ -374,40 +409,63 @@ namespace PadForge.Engine.Common.BlissBox
             if (_transport.SetFeature(BlissBoxProtocol.Screen(wanted))) _storedScreen = wanted;
         }
 
-        /// <summary>A motor whose level changed is told at once, type 0 when
-        /// it stops. A running one is told again every 100 ms.</summary>
-        /// <summary>A motor's level differs from the one last delivered, or
-        /// the channel reopened and the adapter must be told again.</summary>
-        private bool MotorPending(bool largeMotor)
+        /// <summary>The strength each motor of the controller in the port
+        /// should run at, and how many it has
+        /// (<see cref="BlissBoxControllers.MotorCount"/>): each level on its
+        /// own motor for a pad with two, the stronger level on command 4 for
+        /// a pad with one, nothing for a pad with none or no pad.</summary>
+        private (byte Large, byte Small, int Motors) WantedStrengths()
         {
-            if (Volatile.Read(ref _resendMotors)) return true;
-            return largeMotor
-                ? Strength(Volatile.Read(ref _wantedLarge)) != _sentLarge
-                : Strength(Volatile.Read(ref _wantedSmall)) != _sentSmall;
+            int motors = LiveInfo is { } info ? BlissBoxControllers.MotorCount(info.Type) : 0;
+            int large = Volatile.Read(ref _wantedLarge), small = Volatile.Read(ref _wantedSmall);
+            return motors switch
+            {
+                2 => (Strength(large), Strength(small), 2),
+                1 => (Strength(Math.Max(large, small)), (byte)0, 1),
+                _ => ((byte)0, (byte)0, 0),
+            };
         }
 
         /// <summary>A motor whose level changed is told at once, type 0 when
         /// it stops, and a running one again every 100 ms. An attempt that
         /// failed waits those 100 ms before the next, so an adapter that
-        /// refuses writes is not asked again on every step.</summary>
+        /// refuses writes is not asked again on every step. After a reopen or
+        /// a controller change each motor is told its level once, whatever
+        /// the other's write does. A controller with no motors is sent
+        /// nothing, and the levels wait for one that has them.</summary>
         private void WriteMotors(long now)
         {
-            bool resend = Volatile.Read(ref _resendMotors);
-            byte large = Strength(Volatile.Read(ref _wantedLarge));
-            byte small = Strength(Volatile.Read(ref _wantedSmall));
-            if (MotorDue(large, _sentLarge, _lastLarge, _largeFailed, resend, now))
+            var (large, small, motors) = WantedStrengths();
+            if (motors == 0) return;
+            if (MotorDue(large, _sentLarge, _lastLarge, _largeFailed, Volatile.Read(ref _resendLarge), now))
             {
                 _lastLarge = now;
                 _largeFailed = !_transport.SetFeature(BlissBoxProtocol.Rumble(true, large));
-                if (!_largeFailed) _sentLarge = large;
+                if (!_largeFailed)
+                {
+                    _sentLarge = large;
+                    Volatile.Write(ref _resendLarge, false);
+                }
             }
-            if (MotorDue(small, _sentSmall, _lastSmall, _smallFailed, resend, now))
+            if (motors == 1)
+            {
+                // Command 5 is never sent to a one-motor pad, so nothing runs
+                // on it to keep in step.
+                _sentSmall = 0;
+                _smallFailed = false;
+                Volatile.Write(ref _resendSmall, false);
+                return;
+            }
+            if (MotorDue(small, _sentSmall, _lastSmall, _smallFailed, Volatile.Read(ref _resendSmall), now))
             {
                 _lastSmall = now;
                 _smallFailed = !_transport.SetFeature(BlissBoxProtocol.Rumble(false, small));
-                if (!_smallFailed) _sentSmall = small;
+                if (!_smallFailed)
+                {
+                    _sentSmall = small;
+                    Volatile.Write(ref _resendSmall, false);
+                }
             }
-            if (resend && !_largeFailed && !_smallFailed) Volatile.Write(ref _resendMotors, false);
         }
 
         private static bool MotorDue(byte wanted, byte sent, long last, bool failed, bool resend, long now)
@@ -469,6 +527,9 @@ namespace PadForge.Engine.Common.BlissBox
         /// <summary>The adapter's firmware frames the native channel
         /// another way (<see cref="BlissBoxControllers.NativeChannelMajor"/>).</summary>
         OldFirmware,
+        /// <summary>A player change did not take: the adapter refused its own
+        /// picture back, or still answers as the old player.</summary>
+        PlayerUnchanged,
     }
 
     public sealed class BlissBoxJobResult
@@ -523,12 +584,16 @@ namespace PadForge.Engine.Common.BlissBox
     /// <para>Both firmwares reset from inside the command's handler, before
     /// the transfer completes (3.0 detaches USB at 0x08EB, GPA 4.86 jumps to
     /// its reset at 0x2CE2), so a write Windows reports as failed can still
-    /// have taken. BBAPI.cs sends it without checking, and so does this.</para>
+    /// have taken. BBAPI.cs sends it without checking. This asks report 17 a
+    /// moment later instead: an adapter that reset answers nothing on the old
+    /// handle, and one that still answers as this port's player never got
+    /// the command.</para>
     ///
     /// <para>The port returns as a new device, with none of the old one's
     /// choices. A picture PadForge put on the VMU in place of the adapter's
     /// own goes back first, so the adapter never keeps PadForge's picture
-    /// with no record left of its own.</para></summary>
+    /// with no record left of its own. When that write is refused, the
+    /// command is never sent. A closing port sends neither.</para></summary>
     public sealed class BlissBoxPlayerJob : BlissBoxJob
     {
         public BlissBoxPlayerJob(int player, byte[] restoreScreen = null)
@@ -547,15 +612,28 @@ namespace PadForge.Engine.Common.BlissBox
 
         protected override BlissBoxJobResult Execute(BlissBoxSession session)
         {
-            if (RestoreScreen != null) session.WriteScreenNow(RestoreScreen);
+            if (session.StopRequested) return BlissBoxJobResult.Fail(BlissBoxJobError.Closed);
+            if (RestoreScreen != null && !session.WriteScreenNow(RestoreScreen))
+                return BlissBoxJobResult.Fail(BlissBoxJobError.PlayerUnchanged);
+            if (session.StopRequested) return BlissBoxJobResult.Fail(BlissBoxJobError.Closed);
             session.Send(BlissBoxProtocol.SetPlayer(Player));
-            return BlissBoxJobResult.Done();
+            return session.StillAnswers()
+                ? BlissBoxJobResult.Fail(BlissBoxJobError.PlayerUnchanged)
+                : BlissBoxJobResult.Done();
         }
     }
 
     /// <summary>Shared by the Controller Pak jobs: firmware that frames the
     /// native channel as PadForge does, an N64 controller, a pak in it, and
-    /// not a Rumble Pak.</summary>
+    /// not a Rumble Pak.
+    ///
+    /// <para>A read the controller leaves unanswered comes back short, not
+    /// empty, from a 3.x adapter: its Joybus routine returns early for a read
+    /// whose reply is not 33 bytes (0x0FA8), leaving the message in the
+    /// buffer, and report 22 reads its command byte, 2, as the size and
+    /// answers with the two address bytes after it (0x07D3). A GPA answers
+    /// with no bytes (0x2874). Either way a read without its 33 bytes counts
+    /// as no answer.</para></summary>
     public abstract class BlissBoxPakJob : BlissBoxJob
     {
         private readonly IProgress<double> _progress;
@@ -575,13 +653,13 @@ namespace PadForge.Engine.Common.BlissBox
             if (!BlissBoxControllerPak.IsPakPresent(status)) return BlissBoxJobError.NoPak;
             if (session.StopRequested) return BlissBoxJobError.Closed;
             var first = session.Talk(BlissBoxControllerPak.ReadMessage(0));
-            if (first == null) return BlissBoxJobError.NoReply;
+            if (first == null || first.Length < BlissBoxControllerPak.BlockBytes + 1) return BlissBoxJobError.NoReply;
             return BlissBoxControllerPak.IsRumblePak(first) ? BlissBoxJobError.RumblePak : BlissBoxJobError.None;
         }
     }
 
     /// <summary>Reads the whole pak, 1024 blocks of 32 bytes, each block
-    /// read up to three times while its CRC fails. A block that drew no
+    /// read up to three times while its CRC fails. A block that drew no full
     /// answer at all fails as no reply, not as a bad block.</summary>
     public sealed class BlissBoxPakBackupJob : BlissBoxPakJob
     {
@@ -601,9 +679,9 @@ namespace PadForge.Engine.Common.BlissBox
                     if (session.StopRequested) return BlissBoxJobResult.Fail(BlissBoxJobError.Closed, block);
                     var reply = session.Talk(BlissBoxControllerPak.ReadMessage(block));
                     if (reply == null) continue;
-                    answered = true;
                     result = BlissBoxControllerPak.ParseRead(reply,
                         image.AsSpan(block * BlissBoxControllerPak.BlockBytes, BlissBoxControllerPak.BlockBytes));
+                    if (result != BlissBoxControllerPak.BlockResult.Short) answered = true;
                     if (result is BlissBoxControllerPak.BlockResult.Ok or BlissBoxControllerPak.BlockResult.NoPak) break;
                 }
                 if (result == BlissBoxControllerPak.BlockResult.NoPak) return BlissBoxJobResult.Fail(BlissBoxJobError.NoPak, block);

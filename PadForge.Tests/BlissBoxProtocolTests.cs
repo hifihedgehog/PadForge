@@ -143,14 +143,29 @@ namespace PadForge.Tests
             var rng = new Random(469);
             var threeZero = new ThreeZeroModel();
             var gpa = new GpaModel();
-            for (int length = 1; length <= 255; length++)
+            for (int length = 1; length <= BlissBoxProtocol.MaxNativeMessage; length++)
             {
                 var message = new byte[length];
                 rng.NextBytes(message);
                 Assert.Equal(message, threeZero.Feed(BlissBoxProtocol.NativeReports(message, advanced: false)));
                 Assert.Equal(message, gpa.Feed(BlissBoxProtocol.NativeReports(message, advanced: true)));
                 Assert.False(gpa.Overrun, $"length {length}");
+                Assert.True(threeZero.Highest < 256, $"length {length}");
             }
+        }
+
+        /// <summary>A 3.0 adapter copies five bytes for every chunk, the last
+        /// included, so a longer message would write past the first 256
+        /// bytes of its buffer.</summary>
+        [Fact]
+        public void ALongerMessageThanTheLimitIsRefused()
+        {
+            Assert.Throws<ArgumentException>(() =>
+                BlissBoxProtocol.NativeReports(new byte[BlissBoxProtocol.MaxNativeMessage + 1], advanced: false));
+            Assert.Throws<ArgumentException>(() => BlissBoxProtocol.NativeReports(Array.Empty<byte>(), advanced: true));
+            var model = new ThreeZeroModel();
+            model.Feed(BlissBoxProtocol.NativeReports(new byte[BlissBoxProtocol.MaxNativeMessage], advanced: false));
+            Assert.Equal(251, model.Highest);
         }
 
         /// <summary>Why the framing depends on the firmware. A GPA reads a 0xFF
@@ -233,10 +248,11 @@ namespace PadForge.Tests
         }
 
         /// <summary>GPA 4.86's native channel, as its listing shows it. The
-        /// header resets the last position (0x2D30). A positioned chunk copies
-        /// five bytes and becomes the last position. A 0xFF chunk goes to
-        /// position 2 after the header (0x2DA5) or to the last position plus
-        /// five (0x2D47), and copies the size minus that position.</summary>
+        /// header keeps the size's low byte (0x2D20) and resets the last
+        /// position (0x2D30). A positioned chunk copies five bytes. A 0xFF
+        /// chunk goes to position 2 after the header (0x2DA5) or to the last
+        /// position plus five (0x2D47), and copies the size minus that
+        /// position. Either becomes the last position (0x2DC1).</summary>
         private sealed class GpaModel
         {
             private byte[] _buffer;
@@ -256,7 +272,7 @@ namespace PadForge.Tests
                     Assert.Equal(0x25, r[1]);
                     if (r[2] == 0)
                     {
-                        _size = (r[3] << 8) | r[4];
+                        _size = r[4];
                         _buffer = new byte[300];
                         _buffer[0] = r[6];
                         _buffer[1] = r[7];
@@ -282,14 +298,19 @@ namespace PadForge.Tests
         }
 
         /// <summary>The 3.0 firmware's native channel (handler at 0x0902): the
-        /// last position lives in RAM a header never resets (0x0967 to
-        /// 0x0983), a 0xFF chunk goes five past it, and every chunk copies
-        /// five bytes.</summary>
+        /// header keeps the size's low byte (0x0954), the last position lives
+        /// in RAM a header never resets, a 0xFF chunk goes five past it
+        /// (0x0967 to 0x096B), every chunk copies five bytes, and every
+        /// chunk's position becomes the last one, the 0xFF chunk's included
+        /// (0x0983).</summary>
         private sealed class ThreeZeroModel
         {
             private int _last = 40; // stale RAM from an earlier message
             private byte[] _buffer;
             private int _size;
+
+            /// <summary>The highest buffer index any chunk has written.</summary>
+            public int Highest;
 
             public byte[] Feed(IEnumerable<byte[]> reports)
             {
@@ -301,16 +322,17 @@ namespace PadForge.Tests
                     Assert.Equal(0x25, r[1]);
                     if (r[2] == 0)
                     {
-                        _size = (r[3] << 8) | r[4];
+                        _size = r[4];
                         _buffer = new byte[300];
                         _buffer[0] = r[6];
                         _buffer[1] = r[7];
                         if (_size <= 2) done = _buffer[.._size];
                         continue;
                     }
-                    int at = r[2] == 0xFF ? _last + 5 : r[2];
-                    if (r[2] != 0xFF) _last = at;
+                    int at = (r[2] == 0xFF ? _last + 5 : r[2]) & 0xFF;
+                    _last = at;
                     Array.Copy(r, 3, _buffer, at, 5);
+                    Highest = Math.Max(Highest, at + 4);
                     if (r[2] == 0xFF) done = _buffer[.._size];
                 }
                 return done;

@@ -23,16 +23,21 @@ namespace PadForge.Tests
             public byte[] Pressure = new byte[12];
             public byte[] Stored = Enumerable.Repeat((byte)0xFF, 192).ToArray();
             public readonly List<byte[]> Sent = new();
-            public int InfoReads, PressureReads, ScreenReads;
+            public int InfoReads, PressureReads, ScreenReads, NotReadyReads;
             public Func<byte[], byte[]> Controller;
-            /// <summary>A report 18 command the adapter refuses, or null.</summary>
+            /// <summary>A report 18 command the adapter refuses, or null. A
+            /// refused player command never reaches the firmware, so the
+            /// adapter stays as it is.</summary>
             public byte? RefuseCommand;
+            /// <summary>The screen report is refused.</summary>
+            public bool RefuseScreen;
             /// <summary>Native chunks whose copy count went negative, which on a
             /// GPA runs the copy over its RAM (0x2D47).</summary>
             public int Overruns;
             private byte[] _buffer;
             private int _size, _last = 40; // stale RAM on a 3.x adapter
             private byte[] _reply;
+            private bool _answering;
 
             public int FeatureLength => 200;
 
@@ -42,14 +47,24 @@ namespace PadForge.Tests
                 if (report[0] == BlissBoxProtocol.ReportCommand && report[1] == RefuseCommand) return false;
                 if (report[0] == BlissBoxProtocol.ReportScreen)
                 {
+                    if (RefuseScreen) return false;
                     Array.Copy(report, 4, Stored, 0, 192);
                     return true;
+                }
+                if (report[0] == BlissBoxProtocol.ReportCommand && report[1] == BlissBoxProtocol.CommandPlayer)
+                {
+                    // Both firmwares reset from inside the handler, before the
+                    // status stage (3.0 0x08EB, GPA 0x2CE2): the write fails
+                    // and the handle never answers again.
+                    Gone = true;
+                    return false;
                 }
                 if (report[0] != BlissBoxProtocol.ReportCommand || report[1] != BlissBoxProtocol.CommandNative)
                     return true;
                 if (report[2] == 0)
                 {
-                    _size = (report[3] << 8) | report[4];
+                    // Only the size's low byte counts (GPA 0x2D20, 3.0 0x0954).
+                    _size = report[4];
                     _buffer = new byte[300];
                     _buffer[0] = report[6];
                     _buffer[1] = report[7];
@@ -60,10 +75,12 @@ namespace PadForge.Tests
                     return true;
                 }
                 // Each generation's placement and copy count, as in
-                // BlissBoxProtocolTests' firmware models.
+                // BlissBoxProtocolTests' firmware models. Every chunk's
+                // position becomes the last one on both (3.0 0x0983, GPA
+                // 0x2DC1).
                 int at, count = 5;
                 if (report[2] != 0xFF) at = report[2];
-                else if (Major < 4) at = _last + 5;
+                else if (Major < 4) at = (_last + 5) & 0xFF;
                 else if (_last == 0) { at = 2; count = _size - 2; }
                 else { at = _last + 5; count = _size - at; }
                 if (count < 0)
@@ -74,12 +91,27 @@ namespace PadForge.Tests
                 var padded = new byte[FeatureLength];
                 Array.Copy(report, padded, report.Length);
                 Array.Copy(padded, 3, _buffer, at, count);
-                if (report[2] != 0xFF || Major >= 4) _last = at;
+                _last = at;
                 if (report[2] == 0xFF) Complete();
                 return true;
             }
 
-            private void Complete() => _reply = Controller?.Invoke(_buffer[.._size]);
+            /// <summary>The message is whole. The first report 22 read after it
+            /// finds the exchange not yet run: 3.0 runs it from its main loop
+            /// once a counter every SET resets has run out (0x090B), and a GPA
+            /// answers not ready first.</summary>
+            private void Complete()
+            {
+                var message = _buffer[.._size];
+                _reply = Controller?.Invoke(message);
+                // A 3.x adapter's Joybus routine returns early for a read
+                // whose reply is not 33 bytes, leaving the message in the
+                // buffer, and report 22 reads its command byte as the size:
+                // the two address bytes come back (0x0FA8, 0x07D3).
+                if (Major < 4 && message.Length >= 3 && message[0] == BlissBoxControllerPak.CommandRead && _reply?.Length != 33)
+                    _reply = new[] { message[1], message[2] };
+                _answering = false;
+            }
 
             public int GetFeature(byte[] buffer)
             {
@@ -105,6 +137,14 @@ namespace PadForge.Tests
                         break;
                     case BlissBoxProtocol.ReportNative:
                         buffer[0] = player;
+                        if (!_answering)
+                        {
+                            // Not ready: the use byte, no size.
+                            _answering = true;
+                            NotReadyReads++;
+                            buffer[1] = BlissBoxProtocol.NativeUse;
+                            break;
+                        }
                         if (_reply != null)
                         {
                             buffer[1] = BlissBoxProtocol.NativeUse;
@@ -263,6 +303,73 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void AOneMotorPadTakesTheStrongerLevelOnCommand4Alone()
+        {
+            // The API Tool drives one motor on an N64, GameCube or Dreamcast
+            // controller, and GPA 4.86 runs command 5 on a Dreamcast pad at
+            // full power whatever the strength (0x0C2A).
+            foreach (byte type in new[] { BlissBoxControllers.TypeNintendo64, BlissBoxControllers.TypeDreamcast, (byte)9 })
+            {
+                _now = 0;
+                var adapter = new ScriptedAdapter { Type = type };
+                var session = Session(adapter);
+                session.SetRumble(1000, 50000);
+                session.Step();
+                Assert.Equal(BlissBoxSession.Strength(50000), Assert.Single(adapter.Motor(BlissBoxProtocol.CommandLargeMotor))[5]);
+                Assert.Empty(adapter.Motor(BlissBoxProtocol.CommandSmallMotor));
+                session.SetRumble(0, 0);
+                _now = 10; session.Step();
+                Assert.Equal(new byte[] { 18, 4, 0, 0, 0, 0, 0, 0, 0 }, adapter.Motor(BlissBoxProtocol.CommandLargeMotor)[^1]);
+                Assert.Empty(adapter.Motor(BlissBoxProtocol.CommandSmallMotor));
+                Assert.True(session.MotorsAtRest);
+            }
+        }
+
+        [Fact]
+        public void APadWithoutMotorsIsSentNothing()
+        {
+            // Every write costs a 3.x adapter a controller poll (0x090B).
+            var adapter = new ScriptedAdapter { Type = 3, Major = 3, Minor = 34 };
+            var session = Session(adapter);
+            session.SetRumble(40000, 40000);
+            session.Step();
+            _now = 300; session.Step();
+            Assert.Empty(adapter.Motor(BlissBoxProtocol.CommandLargeMotor));
+            Assert.Empty(adapter.Motor(BlissBoxProtocol.CommandSmallMotor));
+            Assert.True(session.MotorsAtRest);
+            // A DualShock 2 plugged in takes the levels waiting for it.
+            adapter.Type = BlissBoxControllers.TypeDualShock2;
+            _now = 500; session.Step();
+            Assert.Single(adapter.Motor(BlissBoxProtocol.CommandLargeMotor));
+            Assert.Single(adapter.Motor(BlissBoxProtocol.CommandSmallMotor));
+        }
+
+        [Fact]
+        public void AControllerChangeTellsTheMotorsTheirLevelAgain()
+        {
+            // The new pad's motors are the adapter's to say, so even a stop
+            // that matches what was last sent goes out once.
+            var adapter = new ScriptedAdapter { Type = BlissBoxControllers.TypeDualShock2 };
+            var session = Session(adapter);
+            // The first pad found is told too: a new port knows nothing of
+            // what the adapter's motors run.
+            session.Step();
+            Assert.Single(adapter.Motor(BlissBoxProtocol.CommandLargeMotor));
+            _now = 500; session.Step();
+            Assert.Single(adapter.Motor(BlissBoxProtocol.CommandLargeMotor));
+            adapter.Type = BlissBoxControllers.TypeDualShock;
+            _now = 1000; session.Step();
+            var large = adapter.Motor(BlissBoxProtocol.CommandLargeMotor);
+            var small = adapter.Motor(BlissBoxProtocol.CommandSmallMotor);
+            Assert.Equal(2, large.Count);
+            Assert.Equal(2, small.Count);
+            Assert.Equal(new byte[] { 18, 4, 0, 0, 0, 0, 0, 0, 0 }, large[^1]);
+            Assert.Equal(new byte[] { 18, 5, 0, 0, 0, 0, 0, 0, 0 }, small[^1]);
+            _now = 1500; session.Step();
+            Assert.Equal(2, adapter.Motor(BlissBoxProtocol.CommandLargeMotor).Count);
+        }
+
+        [Fact]
         public void ASmallLevelNeverBecomesStrengthZero_WhichTypeOneReadsAsFull()
         {
             Assert.Equal(0, BlissBoxSession.Strength(0));
@@ -350,6 +457,53 @@ namespace PadForge.Tests
             session.Step();
             Assert.True((await job.Completion).Ok);
             Assert.Contains(adapter.Sent, r => r.SequenceEqual(BlissBoxProtocol.SetPlayer(3)));
+            Assert.True(adapter.Gone);
+        }
+
+        [Fact]
+        public async System.Threading.Tasks.Task APlayerChangeTheAdapterNeverGotLeavesThePlayer()
+        {
+            // The write failed and the adapter still answers as this port's
+            // player a moment later, so it never reset.
+            var adapter = new ScriptedAdapter { RefuseCommand = BlissBoxProtocol.CommandPlayer };
+            var session = Session(adapter);
+            session.Step();
+            var job = new BlissBoxPlayerJob(2);
+            session.Enqueue(job);
+            session.Step();
+            Assert.Equal(BlissBoxJobError.PlayerUnchanged, (await job.Completion).Error);
+            Assert.False(adapter.Gone);
+        }
+
+        [Fact]
+        public async System.Threading.Tasks.Task ARefusedPictureRestoreSendsNoPlayerChange()
+        {
+            // The adapter would come back still holding PadForge's picture, and
+            // the port's copy of its own would be dropped with the old device.
+            var adapter = new ScriptedAdapter { Type = BlissBoxControllers.TypeDreamcast, RefuseScreen = true };
+            var session = Session(adapter);
+            session.Step();
+            var job = new BlissBoxPlayerJob(3, Enumerable.Repeat((byte)0x33, 192).ToArray());
+            session.Enqueue(job);
+            _now = 10; session.Step();
+            Assert.Equal(BlissBoxJobError.PlayerUnchanged, (await job.Completion).Error);
+            Assert.DoesNotContain(adapter.Sent, r => r.SequenceEqual(BlissBoxProtocol.SetPlayer(3)));
+            Assert.False(adapter.Gone);
+        }
+
+        [Fact]
+        public async System.Threading.Tasks.Task APlayerChangeOnAClosingPortSendsNothing()
+        {
+            var adapter = new ScriptedAdapter();
+            var session = Session(adapter);
+            session.Step();
+            var job = new BlissBoxPlayerJob(2, new byte[192]);
+            session.Enqueue(job);
+            session.RequestStop();
+            _now = 10; session.Step();
+            Assert.Equal(BlissBoxJobError.Closed, (await job.Completion).Error);
+            Assert.DoesNotContain(adapter.Sent, r => r[0] == BlissBoxProtocol.ReportScreen
+                || (r[0] == BlissBoxProtocol.ReportCommand && r[1] == BlissBoxProtocol.CommandPlayer));
         }
 
         private (ScriptedAdapter, Pak, BlissBoxSession) PakPort()
@@ -519,6 +673,39 @@ namespace PadForge.Tests
         [Theory]
         [InlineData(3)]
         [InlineData(4)]
+        public async System.Threading.Tasks.Task AReadTheControllerNeverAnsweredFailsAsNoReply_OnBothGenerations(byte major)
+        {
+            // A 3.x adapter answers such a read with the two address bytes it
+            // was sent, which once counted as an answer and failed the block
+            // as a bad checksum.
+            var pak = new Pak();
+            int reads = 0;
+            var adapter = new ScriptedAdapter
+            {
+                Type = BlissBoxControllers.TypeNintendo64,
+                Major = major,
+                Controller = m => m[0] == BlissBoxControllerPak.CommandRead && ++reads > 5 ? null : pak.Answer(m),
+            };
+            var session = Session(adapter);
+            session.Step();
+            var job = new BlissBoxPakBackupJob();
+            session.Enqueue(job);
+            session.Step();
+            var result = await job.Completion;
+            Assert.Equal(BlissBoxJobError.NoReply, result.Error);
+            Assert.Equal(4, result.Block);
+
+            // The probe read of block 0 alike.
+            adapter.Controller = m => m[0] == BlissBoxControllerPak.CommandRead ? null : pak.Answer(m);
+            var probe = new BlissBoxPakBackupJob();
+            session.Enqueue(probe);
+            session.Step();
+            Assert.Equal(BlissBoxJobError.NoReply, (await probe.Completion).Error);
+        }
+
+        [Theory]
+        [InlineData(3)]
+        [InlineData(4)]
         public async System.Threading.Tasks.Task APakRoundTripsOnBothFirmwareGenerations_WithNoOverrun(byte major)
         {
             // Every block read is a 3-byte message, the length the framing has
@@ -597,7 +784,7 @@ namespace PadForge.Tests
         {
             // The adapter may have kept the last level through the drop, and a
             // stop that happened meanwhile must still reach it.
-            var adapter = new ScriptedAdapter();
+            var adapter = new ScriptedAdapter { Type = BlissBoxControllers.TypeDualShock2 };
             var session = Session(adapter);
             session.SetRumble(40000, 40000);
             session.Step();
@@ -611,6 +798,47 @@ namespace PadForge.Tests
             Assert.Equal(new byte[] { 18, 5, 0, 0, 0, 0, 0, 0, 0 }, adapter.Motor(BlissBoxProtocol.CommandSmallMotor)[^1]);
             Assert.True(adapter.Sent.Count > before);
             Assert.True(session.MotorsAtRest);
+        }
+
+        [Fact]
+        public void ADeliveredMotorIsNotSentAgainWhileTheOtherKeepsFailing()
+        {
+            // After a reopen each motor is told its level once. The large one
+            // was sent again on every step while the small one's write kept
+            // failing, well above the 100 ms refresh.
+            var adapter = new ScriptedAdapter { Type = BlissBoxControllers.TypeDualShock2 };
+            var session = Session(adapter);
+            session.SetRumble(40000, 40000);
+            session.Step();
+            session.Forget();
+            adapter.RefuseCommand = BlissBoxProtocol.CommandSmallMotor;
+            _now = 10; session.Step();
+            int large = adapter.Motor(BlissBoxProtocol.CommandLargeMotor).Count;
+            int small = adapter.Motor(BlissBoxProtocol.CommandSmallMotor).Count;
+            _now = 20; session.Step();
+            _now = 60; session.Step();
+            Assert.Equal(large, adapter.Motor(BlissBoxProtocol.CommandLargeMotor).Count);
+            Assert.Equal(small, adapter.Motor(BlissBoxProtocol.CommandSmallMotor).Count);
+            Assert.False(session.MotorsAtRest);
+            // The running motor's refresh and the refused one's retry, both
+            // 100 ms after the reopen's writes.
+            _now = 110; session.Step();
+            Assert.Equal(large + 1, adapter.Motor(BlissBoxProtocol.CommandLargeMotor).Count);
+            Assert.Equal(small + 1, adapter.Motor(BlissBoxProtocol.CommandSmallMotor).Count);
+        }
+
+        [Fact]
+        public async System.Threading.Tasks.Task EveryTalkMeetsANotReadyReplyFirst_AndReadsAgain()
+        {
+            // The scripted adapter answers not ready on the first read after
+            // each message, as both firmwares do, so the retry path runs.
+            var (adapter, pak, session) = PakPort();
+            var job = new BlissBoxPakBackupJob();
+            session.Enqueue(job);
+            session.Step();
+            Assert.True((await job.Completion).Ok);
+            // The status, the probe read and 1024 block reads.
+            Assert.Equal(2 + BlissBoxControllerPak.Blocks, adapter.NotReadyReads);
         }
 
         [Fact]
@@ -635,9 +863,10 @@ namespace PadForge.Tests
         [Fact]
         public async System.Threading.Tasks.Task APlayerChangeThatResetsBeforeAnsweringIsDone()
         {
-            // Both firmwares reset inside the command's handler, so Windows can
-            // report the write as failed although it took.
-            var adapter = new ScriptedAdapter { RefuseCommand = BlissBoxProtocol.CommandPlayer };
+            // Both firmwares reset inside the command's handler, so Windows
+            // reports the write as failed although it took. The scripted
+            // adapter does the same.
+            var adapter = new ScriptedAdapter();
             var session = Session(adapter);
             session.Step();
             var job = new BlissBoxPlayerJob(2);
@@ -645,6 +874,7 @@ namespace PadForge.Tests
             session.Step();
             Assert.True((await job.Completion).Ok);
             Assert.Contains(adapter.Sent, r => r.SequenceEqual(BlissBoxProtocol.SetPlayer(2)));
+            Assert.True(adapter.Gone);
         }
 
         [Fact]

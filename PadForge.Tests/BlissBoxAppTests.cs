@@ -42,9 +42,17 @@ namespace PadForge.Tests
             // Genesis C and Z.
             Assert.Equal("C", BlissBoxControllers.ButtonName(21, 3, 7));
             Assert.Equal("Z", BlissBoxControllers.ButtonName(21, 4, 7));
-            // The GameCube's analog triggers ride axes 6 and 7, then 2 and 5.
-            Assert.Equal("Left Trigger", BlissBoxControllers.AxisName(9, 3, 6));
+            // The GameCube's analog triggers ride Z and Rz on both: the 3.0
+            // firmware Bliss-Box distributes writes them there (0x1042), and
+            // leaves the Slider and Dial RetroArch's file names at center.
+            Assert.Equal("Left Trigger", BlissBoxControllers.AxisName(9, 3, 2));
+            Assert.Equal("Right Trigger", BlissBoxControllers.AxisName(9, 3, 5));
+            Assert.Null(BlissBoxControllers.AxisName(9, 3, 6));
             Assert.Equal("Left Trigger", BlissBoxControllers.AxisName(9, 4, 2));
+            // The Saturn 3D pad's and the Dreamcast pad's triggers too, which
+            // the firmware copies there whatever the layouts draw.
+            Assert.Equal("Right Trigger", BlissBoxControllers.AxisName(8, 3, 5));
+            Assert.Equal("Left Trigger", BlissBoxControllers.AxisName(16, 4, 2));
             // The sources agree on the PlayStation and the N64.
             Assert.Equal("Cross", BlissBoxControllers.ButtonName(121, 3, 0));
             Assert.Equal("Cross", BlissBoxControllers.ButtonName(121, 4, 0));
@@ -81,8 +89,8 @@ namespace PadForge.Tests
         [Fact]
         public void PressureChipsCarryTheButtonNameAlone()
         {
-            // The chips sit under a pressure heading and are 118 px wide, so a
-            // chip reads "Triangle", not "Triangle Pressure" cut short.
+            // The chips sit under a pressure heading, so a chip reads
+            // "Triangle", not "Triangle Pressure" cut short.
             foreach (var name in BlissBoxControllers.PressureNames)
                 Assert.Equal(name, DevicesViewModel.PressureButton(name) + " Pressure");
             Assert.Equal("D-Pad Right", DevicesViewModel.PressureButton("D-Pad Right Pressure"));
@@ -119,10 +127,72 @@ namespace PadForge.Tests
             // An unnamed button keeps the joystick's name.
             Assert.Equal("Button 10", named.Single(o => o.IsButton && o.InputIndex == 10).Name);
 
-            // A 16-button joystick gets its arrow buttons appended.
+            // A GPA sends arrows only on buttons it declares, so a joystick
+            // short of them gets none appended.
             var n64 = BlissBoxRuntime.NameObjects(new BlissBoxInfo(19, 0, 4, 86, 1), 8, RawJoystick(8, 16));
-            Assert.Equal(4, n64.Count(o => o.IsButton && o.Name.EndsWith(" Arrow", StringComparison.Ordinal)));
+            Assert.DoesNotContain(n64, o => o.IsButton && o.Name.EndsWith(" Arrow", StringComparison.Ordinal));
             Assert.DoesNotContain(n64, o => o.IsAxis && o.InputIndex >= 8);
+            // PadForge's native poll fills them on a 3.x PlayStation digital
+            // pad, so there they are appended.
+            var mat = BlissBoxRuntime.NameObjects(new BlissBoxInfo(BlissBoxControllers.TypePlayStationDigital, 0, 3, 34, 1), 8, RawJoystick(8, 8));
+            Assert.Equal(new[] { 10, 11, 12, 13 },
+                mat.Where(o => o.IsButton && o.Name.EndsWith(" Arrow", StringComparison.Ordinal)).Select(o => o.InputIndex).OrderBy(i => i));
+        }
+
+        [Fact]
+        public void TheArrowsSitWhereEachFirmwareSendsThem()
+        {
+            // 3.0 ORs them into buttons 10 to 13 (0x3295) for every pad but
+            // the Zapper, GPA 4.86 into 20 to 23 (0x34A1) for every pad but the
+            // Genesis 3-button and FM Towns pads, with the PC-FX's own bits
+            // there too. 2.x names nothing.
+            Assert.Equal(10, BlissBoxControllers.FirstArrowButton(BlissBoxControllers.TypePlayStationDigital, 3));
+            Assert.Equal(10, BlissBoxControllers.FirstArrowButton(BlissBoxControllers.TypeNintendo64, 3));
+            Assert.Equal(-1, BlissBoxControllers.FirstArrowButton(28, 3));
+            Assert.Equal(20, BlissBoxControllers.FirstArrowButton(BlissBoxControllers.TypeDualShock2, 4));
+            Assert.Equal(-1, BlissBoxControllers.FirstArrowButton(20, 4));
+            Assert.Equal(-1, BlissBoxControllers.FirstArrowButton(26, 4));
+            Assert.Equal(-1, BlissBoxControllers.FirstArrowButton(66, 4));
+            Assert.Equal(-1, BlissBoxControllers.FirstArrowButton(BlissBoxControllers.TypeDualShock2, 2));
+
+            var ds2 = BlissBoxRuntime.NameObjects(new BlissBoxInfo(BlissBoxControllers.TypeDualShock2, 0, 3, 34, 1), 8, RawJoystick(8, 24));
+            Assert.Equal("Up Arrow", ds2.Single(o => o.IsButton && o.InputIndex == 10).Name);
+            Assert.Equal("Right Arrow", ds2.Single(o => o.IsButton && o.InputIndex == 13).Name);
+            Assert.Equal("L3", ds2.Single(o => o.IsButton && o.InputIndex == 14).Name);
+            Assert.Equal("Button 20", ds2.Single(o => o.IsButton && o.InputIndex == 20).Name);
+            // A button the pad's own layout names keeps its name.
+            var coleco = BlissBoxRuntime.NameObjects(new BlissBoxInfo(1, 0, 3, 34, 1), 8, RawJoystick(8, 24));
+            Assert.Equal("Keypad 4", coleco.Single(o => o.IsButton && o.InputIndex == 10).Name);
+            Assert.Equal("Keypad 5", coleco.Single(o => o.IsButton && o.InputIndex == 13).Name);
+            var towns = BlissBoxRuntime.NameObjects(new BlissBoxInfo(66, 0, 4, 86, 1), 8, RawJoystick(8, 24));
+            Assert.DoesNotContain(towns, o => o.Name.EndsWith(" Arrow", StringComparison.Ordinal));
+        }
+
+        [Fact]
+        public void MotorsFollowTheApiTool()
+        {
+            // rumble.cs: one motor on the GameCube, Dreamcast and N64 pads
+            // and the fishing rod, two on the PlayStation pads with motors.
+            foreach (byte one in new byte[] { 9, 16, 19, 73 }) Assert.Equal(1, BlissBoxControllers.MotorCount(one));
+            foreach (byte two in new byte[] { 51, 115, 121, 127 }) Assert.Equal(2, BlissBoxControllers.MotorCount(two));
+            foreach (byte none in new byte[] { 0, 3, 8, 17, 65, 83 }) Assert.Equal(0, BlissBoxControllers.MotorCount(none));
+        }
+
+        [Fact]
+        public void TheTriggerAxesRestAtZeroOnARawPort()
+        {
+            // Read raw, a port is a joystick, and a joystick's axes count as
+            // centered, so a released trigger read as full deflection.
+            Assert.True(BlissBoxControllers.IsTriggerAxis(9, 3, 2));
+            Assert.True(BlissBoxControllers.IsTriggerAxis(9, 4, 5));
+            Assert.True(BlissBoxControllers.IsTriggerAxis(16, 3, 5));
+            Assert.True(BlissBoxControllers.IsTriggerAxis(8, 4, 2));
+            Assert.False(BlissBoxControllers.IsTriggerAxis(19, 4, 2));
+            Assert.False(BlissBoxControllers.IsTriggerAxis(9, 3, 6));
+            string runtime = Repo("PadForge.App", "Common", "Input", "BlissBoxRuntime.cs");
+            Assert.Contains("return Find(ud)?.Session.LiveInfo is { } info && BlissBoxControllers.IsTriggerAxis(info.Type, info.Major, axis);", runtime);
+            Assert.Contains("PadForge.Common.Input.BlissBoxRuntime.RestsAtZero(dev, axis)",
+                Repo("PadForge.App", "Common", "Input", "InputManager.Step3.MappingSetEval.cs"));
         }
 
         [Fact]
@@ -132,7 +202,7 @@ namespace PadForge.Tests
             var pressure = new byte[12];
             pressure[6] = 255;
             pressure[0] = 128;
-            BlissBoxRuntime.MergeInto(state, pressure, 0x01 | 0x08, BlissBoxRuntime.PressureAxisBase(8));
+            BlissBoxRuntime.MergeInto(state, pressure, 0x01 | 0x08, BlissBoxRuntime.PressureAxisBase(8), 20);
             Assert.Equal(65535, state.Axis[8 + 6]);
             Assert.Equal(128 * 257, state.Axis[8]);
             Assert.Equal(0, state.Axis[8 + 11]);
@@ -144,9 +214,16 @@ namespace PadForge.Tests
             Assert.Equal(12, BlissBoxRuntime.PressureAxisBase(12));
             Assert.Equal(-1, BlissBoxRuntime.PressureAxisBase(13));
             var untouched = new CustomInputState();
-            BlissBoxRuntime.MergeInto(untouched, pressure, -1, -1);
+            BlissBoxRuntime.MergeInto(untouched, pressure, -1, -1, 20);
             Assert.All(untouched.Axis, a => Assert.Equal(0, a));
             Assert.All(untouched.Buttons, b => Assert.False(b));
+
+            // On a 3.x adapter the native poll lands where the firmware's own
+            // arrows do.
+            var threeX = new CustomInputState();
+            BlissBoxRuntime.MergeInto(threeX, null, 0x02, -1, 10);
+            Assert.True(threeX.Buttons[11]);
+            Assert.False(threeX.Buttons[21]);
         }
 
         [Fact]
@@ -359,6 +436,8 @@ namespace PadForge.Tests
                 new BlissBoxPortData { Device = guid.ToString("D"), ScreenMode = DreamcastScreenMode.Picture },
                 new BlissBoxPortData { Device = "not a guid" },
                 null,
+                new BlissBoxPortData { Device = Guid.NewGuid().ToString(), ScreenMode = (DreamcastScreenMode)99, NativeArrows = true },
+                // Every value at its default once the mode is read back.
                 new BlissBoxPortData { Device = Guid.NewGuid().ToString(), ScreenMode = (DreamcastScreenMode)99 },
             });
             Assert.Equal(2, loaded.Count);
@@ -366,6 +445,49 @@ namespace PadForge.Tests
             Assert.Equal(guid.ToString("D"), loaded[0].Device);
             Assert.Equal(DreamcastScreenMode.Adapter, loaded[1].ScreenMode);
             Assert.Empty(BlissBoxPortData.Normalize(null));
+        }
+
+        [Fact]
+        public void APictureThatDoesNotDecodeIsDroppedOnLoad()
+        {
+            // A copy of the adapter's own picture that never decodes would
+            // block a new copy, the restore and the entry's cleanup for good.
+            string good = Convert.ToBase64String(new byte[192]);
+            var loaded = BlissBoxPortData.Normalize(new[]
+            {
+                new BlissBoxPortData { Device = Guid.NewGuid().ToString(), ScreenMode = DreamcastScreenMode.Clock, AdapterPicture = "AAAA" },
+                new BlissBoxPortData { Device = Guid.NewGuid().ToString(), ScreenMode = DreamcastScreenMode.Picture, Picture = "not base64!", AdapterPicture = good },
+                new BlissBoxPortData { Device = Guid.NewGuid().ToString(), AdapterPicture = Convert.ToBase64String(new byte[191]) },
+            });
+            Assert.Equal(2, loaded.Count);
+            Assert.Null(loaded[0].AdapterPicture);
+            Assert.Equal(DreamcastScreenMode.Clock, loaded[0].ScreenMode);
+            Assert.Null(loaded[1].Picture);
+            Assert.Equal(good, loaded[1].AdapterPicture);
+        }
+
+        [Fact]
+        public void TheFirstCopyOfAnAdaptersPictureIsSavedAtOnce()
+        {
+            // Saved before the port writes over the original, not after the
+            // autosave's quiet time, which a crash, a kill or a reload beats.
+            string code = Repo("PadForge.App", "Services", "DreamcastScreenService.cs");
+            int copy = code.IndexOf("Update(port.InstanceGuid, d => d.AdapterPicture = Convert.ToBase64String(stored));", StringComparison.Ordinal);
+            int save = code.IndexOf("_saveNow();", copy, StringComparison.Ordinal);
+            int write = code.IndexOf("if (session.SetScreen(wire)) port.Wake();", copy, StringComparison.Ordinal);
+            Assert.True(copy > 0 && save > copy && write > save, "the copy is saved before the new picture reaches the port");
+            Assert.Contains("() => _settingsService?.MarkDirty(), () => _settingsService?.Save());",
+                Repo("PadForge.App", "Services", "InputService.BlissBox.cs"));
+        }
+
+        [Fact]
+        public void PlayTimeSurvivesAMomentOutOfThePort()
+        {
+            // The adapter searching for a moment, or the channel reopening, is
+            // not a new session. A pad gone for longer starts again.
+            Assert.Equal(500, DreamcastScreenService.PlayStart(null, 500));
+            Assert.Equal(1000, DreamcastScreenService.PlayStart((1000, 5000), 5000 + DreamcastScreenService.PlayTimeGraceMs));
+            Assert.Equal(20000, DreamcastScreenService.PlayStart((1000, 5000), 20000));
         }
 
         [Fact]
@@ -702,6 +824,100 @@ namespace PadForge.Tests
             // when the guid changed.
             string code = Repo("PadForge.App", "Services", "InputService.cs");
             Assert.Contains("|| !ReferenceEquals(ud.Device, _lastRawStateDevice))", code);
+        }
+
+        [Fact]
+        public void TheHandOffGivesThePortTheRowsRecordedLevels()
+        {
+            // Zeroing the row's snapshot instead left a port running a level a
+            // relayed frame set while the snapshot called it stopped, so the
+            // peer's next zero never reached it.
+            string code = Repo("PadForge.App", "Common", "Input", "InputManager.BlissBox.cs");
+            Assert.Contains("BlissBoxRuntime.SetRumble(ud.DevicePath, state.LeftMotorSpeed, state.RightMotorSpeed);", code);
+            Assert.DoesNotContain("StopDeviceForces(wrapper)", code);
+            // A switch that went off and on again between two passes hands
+            // every open port its row's level again.
+            Assert.Contains("if (enabled && toggled)", code);
+            Assert.Contains("bool changed = (enabled || wasOn || toggled) && ReopenBlissBoxRows(enabled);", code);
+        }
+
+        [Fact]
+        public void EverySwitchChangeCountsOnce()
+        {
+            bool saved = BlissBoxApi.Enabled;
+            try
+            {
+                BlissBoxRuntime.Enabled = false;
+                int start = BlissBoxRuntime.Generation;
+                BlissBoxRuntime.Enabled = false;
+                Assert.Equal(start, BlissBoxRuntime.Generation);
+                BlissBoxRuntime.Enabled = true;
+                BlissBoxRuntime.Enabled = true;
+                BlissBoxRuntime.Enabled = false;
+                Assert.Equal(start + 2, BlissBoxRuntime.Generation);
+            }
+            finally { BlissBoxRuntime.Enabled = saved; }
+        }
+
+        [Fact]
+        public void ARowThatReconnectsGetsANewPort()
+        {
+            // The old port's session kept the levels it last held and sent
+            // them to the new connection, while the row's new motor snapshot
+            // started at rest, so the game's next zero never reached them.
+            var guid = Guid.NewGuid();
+            const string path = @"\\?\hid#padforge-test-no-such-device";
+            try
+            {
+                var opened = BlissBoxRuntime.Sync(new[] { new BlissBoxRuntime.Row(path, 0x0D04, guid, 7) });
+                var first = Assert.Single(opened);
+                Assert.Null(BlissBoxRuntime.Sync(new[] { new BlissBoxRuntime.Row(path, 0x0D04, guid, 7) }));
+                Assert.Same(first, Assert.Single(BlissBoxRuntime.Ports));
+                var again = Assert.Single(BlissBoxRuntime.Sync(new[] { new BlissBoxRuntime.Row(path, 0x0D04, guid, 8) }));
+                Assert.NotSame(first, again);
+                Assert.Same(again, Assert.Single(BlissBoxRuntime.Ports));
+                Assert.Equal(8u, again.SdlInstanceId);
+            }
+            finally { BlissBoxRuntime.Shutdown(); }
+            Assert.Empty(BlissBoxRuntime.Ports);
+        }
+
+        [Fact]
+        public void IdentifyOnAPeerRowRelaysThroughItsOwnDevice()
+        {
+            // A peer row carries the owner's VID and PID, and the direct lanes
+            // would write a path that exists only on the other PC.
+            string code = Repo("PadForge.App", "Services", "InputService.cs");
+            Assert.Contains("bool peer = PadForge.Common.Input.RemoteLinkOutputRouter.IsPeerPath(ud.DevicePath);", code);
+            Assert.Contains("bool padix = !peer && PadForge.Engine.PadixConverterIdentity", code);
+            Assert.Contains("bool blissBox = !peer && PadForge.Engine.Common.BlissBox.BlissBoxApi", code);
+        }
+
+        [Fact]
+        public void EveryJobErrorHasItsOwnStatusText()
+        {
+            // A refused player change once read "Check that the controller is
+            // plugged in", the no-reply text, which the command never needs.
+            var texts = Enum.GetValues<BlissBoxJobError>()
+                .Where(error => error != BlissBoxJobError.None)
+                .Select(error => MainWindow.JobErrorText(BlissBoxJobResult.Fail(error, 7)))
+                .ToList();
+            Assert.All(texts, text => Assert.False(string.IsNullOrWhiteSpace(text)));
+            Assert.Equal(texts.Count, texts.Distinct().Count());
+            Assert.Equal(Strings.Instance.BlissBoxJob_PlayerUnchanged,
+                MainWindow.JobErrorText(BlissBoxJobResult.Fail(BlissBoxJobError.PlayerUnchanged)));
+        }
+
+        [Fact]
+        public void TheChosenPictureAndThePlayerNumberEachHaveAReset()
+        {
+            string screen = Repo("PadForge.App", "Views", "DreamcastScreenDialog.xaml");
+            Assert.Contains("Click=\"ResetPicture_Click\"", screen);
+            string player = Repo("PadForge.App", "Views", "BlissBoxPlayerDialog.xaml");
+            Assert.Contains("Click=\"ResetPlayer_Click\"", player);
+            string resets = Repo("PadForge.App", "Views", "DialogSettingResets.cs");
+            Assert.Contains("_picture = null;", resets);
+            Assert.Contains("=> PlayerBox.SelectedIndex = _current - 1;", resets);
         }
 
         [Fact]

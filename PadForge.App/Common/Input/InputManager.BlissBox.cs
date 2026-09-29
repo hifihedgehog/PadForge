@@ -12,6 +12,10 @@ namespace PadForge.Common.Input
         /// <summary>The switch the rows were last put in step with.</summary>
         private bool _blissBoxRowsReadRaw;
 
+        /// <summary>The switch's <see cref="BlissBoxRuntime.Generation"/> at
+        /// the last pass.</summary>
+        private int _blissBoxGeneration;
+
         /// <summary>Rows whose motors pass to their port on a later pass: the
         /// hand-off met another writer holding the row's output gate, which
         /// the poll thread never waits on. Poll thread only.</summary>
@@ -23,23 +27,33 @@ namespace PadForge.Common.Input
 
         /// <summary>
         /// Phase 1l (issue #469): one API sidecar per online Bliss-Box row
-        /// while Read Bliss-Box Adapters is on. The rows are SDL's, so nothing
-        /// is created or retired here beyond the ports themselves: a port
-        /// opens beside a row that appeared and closes when its row left or
-        /// the switch went off. Off with no ports: one volatile read and out.
+        /// while Read Bliss-Box Adapters is on. The rows are SDL's: a row open
+        /// the other way from the switch gets a fresh wrapper, a port opens
+        /// beside a row that appeared, and one closes when its row left,
+        /// reconnected or the switch went off. Off and unchanged with no
+        /// ports: two volatile reads and out.
         /// </summary>
         private bool UpdateBlissBoxPorts()
         {
+            // The generation first: a change that lands between the two reads
+            // shows as a change on the next pass, never as none.
+            int generation = BlissBoxRuntime.Generation;
             bool enabled = BlissBoxRuntime.Enabled;
+            bool toggled = generation != _blissBoxGeneration;
+            _blissBoxGeneration = generation;
             bool wasOn = _blissBoxRowsReadRaw;
             // Every cycle while on, since a row can open between the switch
-            // and this phase, and once more after it goes off.
-            bool changed = (enabled || wasOn) && ReopenBlissBoxRows(enabled);
+            // and this phase, once more after it goes off, and after a switch
+            // that went on and off again between two passes, since Phase 1
+            // may have opened a row raw in between.
+            bool changed = (enabled || wasOn || toggled) && ReopenBlissBoxRows(enabled);
             _blissBoxRowsReadRaw = enabled;
             if (!enabled)
             {
                 _blissBoxHandoffs.Clear();
-                if (wasOn) QueueBlissBoxCacheResets();
+                // The switch-on stopped SDL's effect, which a stale motor
+                // cache would never restart.
+                if (wasOn || toggled) QueueBlissBoxCacheResets();
                 RetryBlissBoxRows(_blissBoxCacheResets, handOff: false);
                 if (BlissBoxRuntime.Ports.Length == 0) return changed;
             }
@@ -53,9 +67,9 @@ namespace PadForge.Common.Input
                 {
                     foreach (var ud in devices.Items)
                     {
-                        if (ud == null || !ud.IsOnline || ud.Device is not SdlDeviceWrapper) continue;
+                        if (ud == null || !ud.IsOnline || ud.Device is not SdlDeviceWrapper wrapper) continue;
                         if (!BlissBoxProtocol.IsPort(ud.VendorId, ud.ProdId) || string.IsNullOrEmpty(ud.DevicePath)) continue;
-                        rows.Add(new BlissBoxRuntime.Row(ud.DevicePath, ud.ProdId, ud.InstanceGuid));
+                        rows.Add(new BlissBoxRuntime.Row(ud.DevicePath, ud.ProdId, ud.InstanceGuid, wrapper.SdlInstanceId));
                     }
                 }
             }
@@ -63,6 +77,11 @@ namespace PadForge.Common.Input
             var opened = BlissBoxRuntime.Sync(rows);
             if (opened != null)
                 foreach (var port in opened) _blissBoxHandoffs.Add(port.InstanceGuid);
+            // A switch that went off and on again since the last pass stopped
+            // the ports it kept while the game's level stayed, so each one
+            // takes its row's level again.
+            if (enabled && toggled)
+                foreach (var port in BlissBoxRuntime.Ports) _blissBoxHandoffs.Add(port.InstanceGuid);
             if (enabled) RetryBlissBoxRows(_blissBoxHandoffs, handOff: true);
             return changed;
         }
@@ -162,12 +181,17 @@ namespace PadForge.Common.Input
             => openedAsGamepad == readRaw;
 
         /// <summary>The moment a port's motors pass to the adapter's commands:
-        /// an effect SDL started stops, and the row's motor cache starts from
-        /// rest, so the next frame's levels reach the port. A row opened while
-        /// the switch was off, on a port SDL found no motors on, gets its
-        /// motor cache here, since Step 2 writes only rows that have one.
-        /// False when another writer holds the row's output gate, so the
-        /// cache waits for a later pass, as Step 2 skips a contested write.</summary>
+        /// an effect SDL started stops, and the port takes the levels the row
+        /// last recorded, whichever writer recorded them (Step 2, a relayed
+        /// frame, or SDL's path before the switch). The port and the row's
+        /// motor snapshot then agree, so the change detection that gates
+        /// every later write holds for both. Zeroing the snapshot instead left
+        /// a port running a level its snapshot called stopped, and the next
+        /// zero never reached it. A row opened while the switch was off, on a
+        /// port SDL found no motors on, gets its motor cache here, since Step
+        /// 2 writes only rows that have one. False when another writer holds
+        /// the row's output gate, so the hand-off waits for a later pass, as
+        /// Step 2 skips a contested write.</summary>
         private static bool HandMotorsToBlissBox(UserDevice ud)
         {
             if (ud?.Device is not SdlDeviceWrapper wrapper) return true;
@@ -177,8 +201,8 @@ namespace PadForge.Common.Input
             if (!System.Threading.Monitor.TryEnter(ud.OutputSync)) return false;
             try
             {
-                ud.ForceFeedbackState ??= new ForceFeedbackState();
-                try { ud.ForceFeedbackState.StopDeviceForces(wrapper); } catch { }
+                var state = ud.ForceFeedbackState ??= new ForceFeedbackState();
+                BlissBoxRuntime.SetRumble(ud.DevicePath, state.LeftMotorSpeed, state.RightMotorSpeed);
             }
             finally { System.Threading.Monitor.Exit(ud.OutputSync); }
             return true;

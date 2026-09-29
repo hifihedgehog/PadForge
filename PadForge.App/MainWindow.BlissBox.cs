@@ -176,6 +176,7 @@ namespace PadForge
                 BlissBoxJobError.BadBlock => string.Format(culture, s.BlissBoxJob_BadBlock_Format, result.Block),
                 BlissBoxJobError.TooManyErrors => string.Format(culture, s.BlissBoxJob_TooManyErrors_Format, result.Block),
                 BlissBoxJobError.OldFirmware => s.BlissBoxJob_OldFirmware,
+                BlissBoxJobError.PlayerUnchanged => s.BlissBoxJob_PlayerUnchanged,
                 _ => s.BlissBoxJob_NoReply,
             };
         }

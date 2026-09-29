@@ -573,7 +573,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Devices_PakRestore" xml:space="preserve"><value>Restore Controller Pak…</value></data>
   <data name="Devices_PakRestoreTooltip" xml:space="preserve"><value>Writes a 32 KB .mpk file to the Controller Pak in this N64 controller, replacing every save on it.</value></data>
   <data name="Devices_NativeArrows" xml:space="preserve"><value>Read Arrows One by One</value></data>
-  <data name="Devices_NativeArrowsTooltip" xml:space="preserve"><value>Asks this PlayStation pad for its directions directly, so left and right, or up and down, register together on a dance mat. They arrive as the Up, Down, Left and Right Arrow buttons. The adapter skips one of its own reads for each request.</value></data>
+  <data name="Devices_NativeArrowsTooltip" xml:space="preserve"><value>Asks this PlayStation pad for its directions directly, so left and right, or up and down, register together on a dance mat from the first step. They arrive as the Up, Down, Left and Right Arrow buttons, which firmware 3.34 also sends on its own once opposite directions have been pressed. The adapter skips one of its own reads for each request.</value></data>
   <data name="Devices_BlissBoxPressure" xml:space="preserve"><value>DualShock 2 Pressure</value></data>
   <data name="BlissBoxPlayer_Title" xml:space="preserve"><value>Player Number</value></data>
   <data name="BlissBoxPlayer_Message" xml:space="preserve"><value>The adapter stores the number and reconnects as that player. Windows then sees a new device, so map the port again once it returns.</value></data>
@@ -593,7 +593,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="DreamcastScreen_Hint_ProfileNumber" xml:space="preserve"><value>The VMU shows the active profile's place in the profile list. The Default profile is 0.</value></data>
   <data name="DreamcastScreen_Hint_ProfilePicture" xml:space="preserve"><value>The VMU shows the active profile's own picture, or its name when it has none. Each profile keeps its own picture.</value></data>
   <data name="DreamcastScreen_Hint_Clock" xml:space="preserve"><value>The VMU shows the time of day, rewritten once a minute. The adapter keeps each picture in memory rated for 100,000 writes, which this reaches after about ten weeks of display around the clock.</value></data>
-  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>The VMU shows the hours and minutes since the pad was plugged in, rewritten once a minute. The adapter keeps each picture in memory rated for 100,000 writes, which this reaches after about ten weeks of display around the clock.</value></data>
+  <data name="DreamcastScreen_Hint_PlayTime" xml:space="preserve"><value>The VMU shows the hours and minutes since PadForge found the pad, rewritten once a minute. A pad out of its port for more than ten seconds starts again from zero. The adapter keeps each picture in memory rated for 100,000 writes, which this reaches after about ten weeks of display around the clock.</value></data>
   <data name="DreamcastScreen_Hint_Picture" xml:space="preserve"><value>The VMU shows a picture you choose: a BMP or PNG, a VMU Animator .lcd file or a Dreamcast .vms icon. Pictures are cut to 48 by 32 black and white pixels.</value></data>
   <data name="DreamcastScreen_ChoosePicture" xml:space="preserve"><value>Choose Picture…</value></data>
   <data name="DreamcastScreen_ChooseProfilePicture_Format" xml:space="preserve"><value>Choose Picture for {0}…</value></data>
@@ -613,6 +613,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="BlissBoxJob_TooManyErrors_Format" xml:space="preserve"><value>The pak rejected too many writes, the last at block {0}. Reseat the pak and try again.</value></data>
   <data name="BlissBoxJob_NoReply" xml:space="preserve"><value>The adapter did not answer. Check that the controller is plugged in and try again.</value></data>
   <data name="BlissBoxJob_OldFirmware" xml:space="preserve"><value>Controller Pak transfers need adapter firmware 3.0 or later.</value></data>
+  <data name="BlissBoxJob_PlayerUnchanged" xml:space="preserve"><value>The adapter kept its player number. Try again.</value></data>
   <data name="Status_BlissBoxPlayer_Format" xml:space="preserve"><value>The port is now player {0}. It reconnects as a new device.</value></data>
   <data name="Status_DreamcastScreen_Format" xml:space="preserve"><value>Dreamcast screen set to {0}.</value></data>
   <data name="Status_PakReading_Format" xml:space="preserve"><value>Reading the Controller Pak: {0:P0}</value></data>
@@ -3147,8 +3148,8 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="MacroAction_SetChromaColor_Hint" xml:space="preserve"><value>Paints every Razer Chroma device this color for the duration above, then hands the lighting back to Razer Synapse. To hold the color for as long as the trigger is held, use While Held with Until Release. When two macros paint at once, the one lower in the list wins, so put a full-press macro below its soft-press twin. Needs Razer Synapse running.</value></data>
   <data name="MacroAction_Type_ShowDreamcastScreen" xml:space="preserve"><value>Show Dreamcast Screen</value></data>
   <data name="MacroAction_ShowDreamcastScreen_Tooltip" xml:space="preserve"><value>Plays pictures on the VMU of each Dreamcast pad in a Bliss-Box port that feeds this slot, then returns each port to its own screen setting.</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Show {0} Dreamcast pictures, {1} ms each, {2} times</value></data>
-  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Each picture shows for a second at least, since the adapter keeps every picture it is sent in its memory. Pictures are 48 by 32 black and white pixels from a BMP or PNG, a VMU Animator .lcd file or a Dreamcast .vms icon.</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Format" xml:space="preserve"><value>Show Dreamcast pictures: {0} × {1} ms, repeat count {2}</value></data>
+  <data name="MacroAction_ShowDreamcastScreen_Hint" xml:space="preserve"><value>Each picture shows for a second at least, since the adapter keeps every picture it is sent in memory rated for 100,000 writes, which a new picture every second reaches in about a day. Pictures are 48 by 32 black and white pixels from a BMP or PNG, a VMU Animator .lcd file or a Dreamcast .vms icon.</value></data>
   <data name="Macro_Dreamcast_Pictures" xml:space="preserve"><value>Pictures</value></data>
   <data name="Macro_Dreamcast_AddPicture" xml:space="preserve"><value>Add Picture…</value></data>
   <data name="Macro_Dreamcast_RemoveTooltip" xml:space="preserve"><value>Remove Picture</value></data>

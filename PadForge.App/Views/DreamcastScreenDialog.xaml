@@ -63,6 +63,7 @@
             <Button x:Name="ChoosePictureButton" Padding="8,4" Margin="0,0,8,6"
                     Content="{Binding DreamcastScreen_ChoosePicture, Source={x:Static strings:Strings.Instance}}"
                     Click="ChoosePicture_Click"/>
+            <reset:SettingResetButton Click="ResetPicture_Click" Margin="0,0,8,6" Visibility="{Binding Visibility, ElementName=ChoosePictureButton}" SettingLabel="{Binding DreamcastScreen_Mode_Picture, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_?dialog_ChoosePictureButton_63"/>
             <Button x:Name="ChooseProfilePictureButton" Padding="8,4" Margin="0,0,8,6" MaxWidth="420"
                     Click="ChooseProfilePicture_Click"/>
             <Button x:Name="RemoveProfilePictureButton" Padding="8,4" Margin="0,0,8,6"

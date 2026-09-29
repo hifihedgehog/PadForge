@@ -29,7 +29,7 @@ namespace PadForge.Services
         ProfilePicture = 3,
         /// <summary>The time of day, HH:MM.</summary>
         Clock = 4,
-        /// <summary>Hours and minutes since the pad attached.</summary>
+        /// <summary>Hours and minutes since PadForge found the pad.</summary>
         PlayTime = 5,
         /// <summary>A picture chosen for the port.</summary>
         Picture = 6,
@@ -60,7 +60,10 @@ namespace PadForge.Services
                                  && !NativeArrows && string.IsNullOrEmpty(AdapterPicture);
 
         /// <summary>The loaded list with unreadable and repeated devices
-        /// dropped, the first entry for a device kept.</summary>
+        /// dropped, the first entry for a device kept. A picture that does not
+        /// decode is dropped too: a copy of the adapter's own that could never
+        /// be written back would block a new copy, the restore and the entry's
+        /// cleanup for good.</summary>
         internal static List<BlissBoxPortData> Normalize(BlissBoxPortData[] ports)
         {
             var list = new List<BlissBoxPortData>();
@@ -70,6 +73,11 @@ namespace PadForge.Services
             {
                 if (port == null || !Guid.TryParse(port.Device, out var guid) || !seen.Add(guid)) continue;
                 if (!Enum.IsDefined(typeof(DreamcastScreenMode), port.ScreenMode)) port.ScreenMode = DreamcastScreenMode.Adapter;
+                if (!string.IsNullOrEmpty(port.AdapterPicture) && !DreamcastScreenService.TryDecode(port.AdapterPicture, out _))
+                    port.AdapterPicture = null;
+                if (!string.IsNullOrEmpty(port.Picture) && !DreamcastScreenService.TryDecode(port.Picture, out _))
+                    port.Picture = null;
+                if (port.IsEmpty) continue;
                 port.Device = guid.ToString("D");
                 list.Add(port);
             }
@@ -100,9 +108,10 @@ namespace PadForge.Services
     /// a second after the last write (the EEPROM guard).
     ///
     /// <para>Before PadForge first replaces a picture, the adapter's own is
-    /// kept, so Adapter mode can write it back. A Show Dreamcast Screen macro
-    /// plays over whatever the mode shows and hands the screen back when it
-    /// ends.</para>
+    /// kept, so Adapter mode can write it back, and the settings are saved
+    /// at once, so the only copy is on disk before the adapter loses the
+    /// original. A Show Dreamcast Screen macro plays over whatever the mode
+    /// shows and hands the screen back when it ends.</para>
     /// </summary>
     public sealed class DreamcastScreenService
     {
@@ -110,6 +119,11 @@ namespace PadForge.Services
         public const int MinFrameMs = BlissBoxSession.ScreenIntervalMs;
         private const int TickMs = 250;
         private const int TextCacheLimit = 64;
+
+        /// <summary>A pad back in its port within this long keeps its play
+        /// time: the adapter searching for a moment, or the port's channel
+        /// reopening, is not a new session.</summary>
+        internal const int PlayTimeGraceMs = 10000;
 
         /// <summary>Shows waiting for the next tick. A macro on turbo can
         /// fire faster than the ticks run, and only the latest show matters.</summary>
@@ -119,17 +133,22 @@ namespace PadForge.Services
 
         private readonly ViewModels.SettingsViewModel _settings;
         private readonly Action _markDirty;
-        // By port instance, so a pad whose port closed and opened again
-        // counts its play time from the new port.
-        private readonly Dictionary<BlissBoxPort, long> _attached = new();
+        private readonly Action _saveNow;
+        // When each port's pad started its play time and when it was last
+        // seen, by port instance, so a pad whose port closed and opened
+        // again counts from the new port.
+        private readonly Dictionary<BlissBoxPort, (long Start, long Seen)> _attached = new();
         private readonly Dictionary<Guid, DreamcastShow> _shows = new();
         private readonly Dictionary<string, byte[]> _textCache = new(StringComparer.Ordinal);
         private long _nextTick;
 
-        public DreamcastScreenService(ViewModels.SettingsViewModel settings, Action markDirty)
+        /// <param name="saveNow">Saves the settings file at once, for the
+        /// copy of an adapter's own picture.</param>
+        public DreamcastScreenService(ViewModels.SettingsViewModel settings, Action markDirty, Action saveNow = null)
         {
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));
             _markDirty = markDirty ?? (() => { });
+            _saveNow = saveNow ?? (() => { });
         }
 
         private readonly record struct ShowRequest(int PadIndex, string Frames, int FrameMs, int Repeat);
@@ -202,12 +221,11 @@ namespace PadForge.Services
                 var info = session.LiveInfo;
                 if (info == null || !BlissBoxControllers.HasScreen(info.Type))
                 {
-                    _attached.Remove(port);
                     _shows.Remove(port.InstanceGuid);
                     session.SetScreen(null);
                     continue;
                 }
-                if (!_attached.ContainsKey(port)) _attached[port] = now;
+                _attached[port] = (PlayStart(_attached.TryGetValue(port, out var record) ? record : null, now), now);
 
                 // Nothing is written before the adapter's own picture is known.
                 var stored = session.StoredScreen;
@@ -222,10 +240,23 @@ namespace PadForge.Services
 
                 var wire = BlissBoxScreen.ToWire(image);
                 if (!wire.AsSpan().SequenceEqual(stored) && string.IsNullOrEmpty(data?.AdapterPicture))
+                {
+                    // The copy is the only one once the adapter's is
+                    // replaced, so it goes to disk now rather than after the
+                    // autosave's quiet time, which a crash, a kill or a reload
+                    // could beat.
                     Update(port.InstanceGuid, d => d.AdapterPicture = Convert.ToBase64String(stored));
+                    _saveNow();
+                }
                 if (session.SetScreen(wire)) port.Wake();
             }
         }
+
+        /// <summary>The start of a pad's play time when it is seen now: the
+        /// start on record when the pad was last seen within
+        /// <see cref="PlayTimeGraceMs"/>, else now.</summary>
+        internal static long PlayStart((long Start, long Seen)? record, long now)
+            => record is { } r && now - r.Seen <= PlayTimeGraceMs ? r.Start : now;
 
         /// <summary>Drops the play-time starts and shows of ports that have
         /// closed.</summary>
@@ -307,7 +338,7 @@ namespace PadForge.Services
                     return Text(DateTime.Now.ToString("HH:mm", CultureInfo.InvariantCulture));
                 case DreamcastScreenMode.PlayTime:
                 {
-                    long since = port != null && _attached.TryGetValue(port, out var start) ? start : now;
+                    long since = port != null && _attached.TryGetValue(port, out var record) ? record.Start : now;
                     var played = TimeSpan.FromMilliseconds(Math.Max(0, now - since));
                     return Text(FormatPlayTime(played));
                 }

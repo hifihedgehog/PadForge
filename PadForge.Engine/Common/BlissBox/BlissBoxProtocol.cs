@@ -84,6 +84,10 @@ namespace PadForge.Engine.Common.BlissBox
         /// <summary>Data bytes one native chunk carries.</summary>
         public const int NativeChunkBytes = 5;
 
+        /// <summary>The longest native message: two bytes in the header and
+        /// fifty chunks, the last ending at byte 251.</summary>
+        public const int MaxNativeMessage = 252;
+
         /// <summary>Report 17's mode byte: set while the port looks for a
         /// controller (main-original.c "Searching...", Form1.cs populateInfo).</summary>
         public const byte FlagSearching = 0x01;
@@ -157,21 +161,29 @@ namespace PadForge.Engine.Common.BlissBox
         /// minus that position (0x2D47 to 0x2DAF). After a positioned chunk
         /// at 2, a message of 3 to 6 bytes makes that count negative, and the
         /// copy runs over the adapter's RAM. So a message whose data after the
-        /// header fits one chunk goes to a GPA as a lone 0xFF chunk, as
-        /// DeviceBuddy sends it (bliss_box_api.js), and to a 3.x adapter as a
-        /// positioned chunk and an empty 0xFF one, as BBAPI.cs sends it. A
-        /// longer message ends with its last data in a 0xFF chunk after the
-        /// positioned ones, which both generations read alike. BBAPI.cs's
-        /// count sends a chunk too few for messages of 28 to 30 bytes and
-        /// every 25 bytes after, and a chunk too many for some others, which a
-        /// GPA reads as a negative count. The count here is exact.</para>
+        /// header fits one chunk goes to a GPA as a lone 0xFF chunk, the shape
+        /// DeviceBuddy (bliss_box_api.js) gives messages of 3 to 6 bytes, and
+        /// to a 3.x adapter as a positioned chunk and an empty 0xFF one, as
+        /// BBAPI.cs sends it. A longer message ends with its last data in a
+        /// 0xFF chunk after the positioned ones, which both generations read
+        /// alike. BBAPI.cs's count sends a chunk too few for messages of 28 to
+        /// 30 bytes and every 25 bytes after, and a chunk too many for some
+        /// others, which a GPA reads as a negative count. The count here is
+        /// exact.</para>
+        ///
+        /// <para>Both firmwares keep only the size's low byte (GPA 0x2D20,
+        /// 3.0 0x0954). The 3.0 firmware copies five bytes for every chunk,
+        /// the last one included, from RAM 0x0681, and
+        /// <see cref="MaxNativeMessage"/> keeps that copy inside the first 256
+        /// bytes from there. PadForge's longest message is a Controller Pak
+        /// write, 35 bytes.</para>
         /// </summary>
         /// <param name="advanced">A GPA, firmware 4 and up
         /// (<see cref="BlissBoxInfo.IsAdvanced"/>).</param>
         public static List<byte[]> NativeReports(ReadOnlySpan<byte> message, bool advanced, byte use = NativeUse)
         {
-            if (message.Length == 0 || message.Length > 255)
-                throw new ArgumentException("A native message is 1 to 255 bytes.", nameof(message));
+            if (message.Length == 0 || message.Length > MaxNativeMessage)
+                throw new ArgumentException($"A native message is 1 to {MaxNativeMessage} bytes.", nameof(message));
             int length = message.Length;
             var reports = new List<byte[]>();
 

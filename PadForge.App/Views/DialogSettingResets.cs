@@ -47,6 +47,22 @@ namespace PadForge.Views
         /// <summary>Back to the adapter's own picture, the default (#469).</summary>
         private void ResetMode_Click(object sender, RoutedEventArgs e)
             => ModeBox.SelectedIndex = (int)PadForge.Services.DreamcastScreenMode.Adapter;
+
+        /// <summary>No chosen picture, the default (#469). The mode then shows
+        /// the adapter's own, and the port's entry can empty once the mode
+        /// changes.</summary>
+        private void ResetPicture_Click(object sender, RoutedEventArgs e)
+        {
+            _picture = null;
+            Refresh();
+        }
+    }
+
+    public partial class BlissBoxPlayerDialog
+    {
+        /// <summary>Back to the port's own player number (#469).</summary>
+        private void ResetPlayer_Click(object sender, RoutedEventArgs e)
+            => PlayerBox.SelectedIndex = _current - 1;
     }
 
     public partial class PairDeviceDialog

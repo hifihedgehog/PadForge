@@ -115,8 +115,9 @@ namespace PadForge.Engine.Common.BlissBox
         // The strongest levels asked for since the last 3.x motor write that
         // went out.
         private int _peakLarge, _peakSmall;
-        // Odd while the worker's motor pass runs, so a reader can tell a pass
-        // started or ended while it read the motor fields.
+        // Odd from before the worker's motor pass reads the levels until the
+        // pass ends, so a reader can tell a pass started or ended while it
+        // read the motor fields.
         private int _motorPasses;
         // Holds a level asked for and a stop apart from a 3.x pass's take and
         // return of the peaks, so a stop never lands between a refused pass's
@@ -127,7 +128,7 @@ namespace PadForge.Engine.Common.BlissBox
         // the stop landed before its check.
         private int _stops;
         // Set by the crash path's Quiesce, under _peakGate: no level asked for
-        // after it is taken.
+        // after it is taken, and no picture goes out.
         private volatile bool _quiesced;
         private bool _resendLarge, _resendSmall;
         // A refused write leaves its motor in doubt: the channel reports a
@@ -233,6 +234,8 @@ namespace PadForge.Engine.Common.BlissBox
         /// since the adapter may have taken it. The fields are read between
         /// two reads of the pass count, so a pass that starts or ends meanwhile
         /// never reads as rest: a resend's flag clears as its write starts.
+        /// A pass counts from before it reads the levels, so a level it read
+        /// before a stop is never left to go out after a read of rest.
         /// Until report 17 is read again after a reopen, a motor that ran
         /// before the channel dropped is not at rest: the adapter may still
         /// run it, and no firmware ends every rumble on its own. The 3.0
@@ -278,9 +281,9 @@ namespace PadForge.Engine.Common.BlissBox
         /// before is owed any more. A 3.x write already decided when the stop
         /// lands still goes out, and the stop follows at the next paced write,
         /// but no pulse from before the stop is carried after that. For the
-        /// engine's stop and the crash path, whose wait for
-        /// <see cref="MotorsAtRest"/> would otherwise end while such a pulse
-        /// was still to go out.</summary>
+        /// engine's stop, a row that went offline and the crash path, whose
+        /// wait for <see cref="MotorsAtRest"/> would otherwise end while such
+        /// a pulse was still to go out.</summary>
         public void StopRumble()
         {
             lock (_peakGate)
@@ -295,7 +298,9 @@ namespace PadForge.Engine.Common.BlissBox
         /// <summary>The crash path's stop: both motors stop, and no level
         /// asked for after it is taken, so a writer that passed the quiesce
         /// check before the crash path set it cannot leave a level behind the
-        /// stop.</summary>
+        /// stop. No picture goes out after it either, since a GPA runs the
+        /// Dreamcast driver's command-5 routine at full power before every
+        /// picture write (0x2BEF to 0x2BF9).</summary>
         public void Quiesce()
         {
             lock (_peakGate)
@@ -390,7 +395,9 @@ namespace PadForge.Engine.Common.BlissBox
             // which a second pass puts right in the same step.
             if (info != null && BlissBoxControllers.HasScreen(info.Type))
             {
-                if (_storedScreen == null) ReadScreen();
+                // The crash path wakes a quiesced port every 5 ms, and on 3.x
+                // each read costs a controller poll.
+                if (_storedScreen == null && !_quiesced) ReadScreen();
                 if (WriteScreen(now)) WriteMotors(now);
             }
 
@@ -479,11 +486,13 @@ namespace PadForge.Engine.Common.BlissBox
         /// draws it is in the port. False when the adapter refused it.</summary>
         internal bool WriteScreenNow(byte[] wire)
         {
+            if (_quiesced) return false;
             if (_storedScreen is { } stored && stored.AsSpan().SequenceEqual(wire)) return true;
             long wait = _lastScreenWrite + ScreenIntervalMs - _clock();
             if (wait > 0) _sleep((int)Math.Min(wait, ScreenIntervalMs));
-            // A port that started closing during the wait sends nothing more.
-            if (_stopRequested) return false;
+            // A port that started closing or was quiesced during the wait
+            // sends nothing more.
+            if (_stopRequested || _quiesced) return false;
             _lastScreenWrite = _clock();
             bool written = _transport.SetFeature(BlissBoxProtocol.Screen(wire), ScreenWriteTimeoutMs);
             if (written) _storedScreen = (byte[])wire.Clone();
@@ -626,7 +635,7 @@ namespace PadForge.Engine.Common.BlissBox
         /// went out.</summary>
         private bool WriteScreen(long now)
         {
-            if (!ScreenWritePending) return false;
+            if (!ScreenWritePending || _quiesced) return false;
             var wanted = _wantedScreen;
             if (wanted == null) return false;
             if (now - _lastScreenWrite < ScreenIntervalMs) return false;
@@ -712,14 +721,17 @@ namespace PadForge.Engine.Common.BlissBox
         /// path and polls on, so it gets a change at once.</para></summary>
         private void WriteMotors(long now)
         {
-            var (large, small, motors) = WantedStrengths();
-            if (motors == 0) return;
-            bool advanced = _info is { IsAdvanced: true };
-            if (!advanced && now - _lastMotorBurst < RumbleRefreshMs) return;
-            bool resendLarge = Volatile.Read(ref _resendLarge), resendSmall = Volatile.Read(ref _resendSmall);
+            // The pass counts as running before it reads the levels. Counted
+            // after, a GPA pass that read a level before the crash path's
+            // quiesce could write it after MotorsAtRest had read rest.
             Interlocked.Increment(ref _motorPasses);
             try
             {
+                var (large, small, motors) = WantedStrengths();
+                if (motors == 0) return;
+                bool advanced = _info is { IsAdvanced: true };
+                if (!advanced && now - _lastMotorBurst < RumbleRefreshMs) return;
+                bool resendLarge = Volatile.Read(ref _resendLarge), resendSmall = Volatile.Read(ref _resendSmall);
                 if (!advanced) WriteMotors3x(motors, resendLarge, resendSmall, now);
                 else
                 {

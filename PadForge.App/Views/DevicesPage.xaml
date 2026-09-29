@@ -955,6 +955,7 @@
                         <Button Content="{Binding Devices_DreamcastScreen, Source={x:Static strings:Strings.Instance}}" Margin="0,6,0,8"
                                 Padding="8,4" HorizontalAlignment="Left"
                                 Click="DreamcastScreen_Click"
+                                IsEnabled="{Binding SelectedDevice.BlissBoxIdle}"
                                 ToolTip="{Binding Devices_DreamcastScreenTooltip, Source={x:Static strings:Strings.Instance}}"
                                 Visibility="{Binding SelectedDevice.ShowDreamcastScreen, Converter={StaticResource BoolToVisibilityConverter}}">
                             <Button.Style>

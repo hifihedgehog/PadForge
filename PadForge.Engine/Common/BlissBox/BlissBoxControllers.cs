@@ -122,8 +122,9 @@ namespace PadForge.Engine.Common.BlissBox
         /// command 4, for the GameCube, Dreamcast and N64 controllers and the
         /// Dreamcast fishing rod, and two, commands 4 and 5, for the DualShock
         /// and DualShock 2. The API Tool's rumble form shows two motor
-        /// controls for every PlayStation type (rumble.cs), but the neGcon has
-        /// no motor (psx-spx, "Controllers - Racing Controllers") and the
+        /// controls for the DualShock, DualShock 2, neGcon and JogCon
+        /// (rumble.cs:185), but psx-spx's list of pads with motors leaves out
+        /// the neGcon ("Controllers - Vibration/Rumble Control") and the
         /// compatibility list gives the JogCon "no force feed back support"
         /// on 3.31 and 4.71, so both take none. The form's note that the rod's second
         /// motor is not worked out stands: GPA 4.86 drives the rod's second

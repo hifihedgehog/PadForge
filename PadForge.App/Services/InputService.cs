@@ -15426,8 +15426,9 @@ namespace PadForge.Services
         /// SetRumble there would race the dispatcher and lose. An UNMAPPED
         /// device has no slot writer, so the direct train is the only lane
         /// that exists. It ends at the level the row's snapshot holds, zero
-        /// unless a Remote Link consumer drives the device, and an Xbox One+
-        /// pad takes that level through its raw writer. A Remote Link peer's
+        /// unless a Remote Link consumer drives the device, or with a stop
+        /// when the row is gone, and an Xbox One+ pad takes that level
+        /// through its raw writer. A Remote Link peer's
         /// row buzzes only on the
         /// mapped lane, whose slot relays its rumble to the PC the pad is on:
         /// its own device's SetRumble raises RumbleRequested, which nothing
@@ -15543,7 +15544,9 @@ namespace PadForge.Services
                         void Restore()
                         {
                             var row = FindUserDevice(instanceGuid);
-                            if (row == null) return;
+                            // A row removed during the last pulse would leave
+                            // that pulse running.
+                            if (row == null) { Buzz(0, 0); return; }
                             // Under the row's gate, so a writer's level cannot
                             // land between the read and the write.
                             lock (row.OutputSync)

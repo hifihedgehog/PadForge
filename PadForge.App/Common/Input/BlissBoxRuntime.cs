@@ -25,6 +25,9 @@ namespace PadForge.Common.Input
     {
         private static readonly object _lock = new();
         private static BlissBoxPort[] _ports = Array.Empty<BlissBoxPort>();
+        // Set by the crash path for the rest of the process: a port opened
+        // after it is quiesced before its worker starts.
+        private static volatile bool _quiescedAll;
         private static int _generation;
         // Ports retired from Sync whose workers may still be sending their
         // final stop. Under _lock.
@@ -125,6 +128,7 @@ namespace PadForge.Common.Input
                         if (string.Equals(row.Path, port.Path, StringComparison.OrdinalIgnoreCase)) { open = true; break; }
                     if (open) continue;
                     var created = new BlissBoxPort(row.Path, row.ProductId, row.InstanceGuid, row.SdlInstanceId);
+                    if (_quiescedAll) created.Session.Quiesce();
                     created.Changed += OnPortChanged;
                     created.Start();
                     next.Add(created);
@@ -362,14 +366,18 @@ namespace PadForge.Common.Input
         /// asynchronous stop. Each port is quiesced
         /// (<see cref="BlissBoxSession.Quiesce"/>), so a writer that had
         /// already passed the quiesce check cannot hand it a level after the
-        /// stop, and the stop is asked again on each look.</summary>
+        /// stop, and the stop is asked again on each look. The ports are read
+        /// again on each look, and a port opened after the loop ends is
+        /// quiesced as it opens, since the poll thread can run on behind a
+        /// crash dialog.</summary>
         public static void StopMotorsNow(int timeoutMs)
         {
-            var ports = Ports;
-            if (ports.Length == 0) return;
+            _quiescedAll = true;
             long end = Environment.TickCount64 + timeoutMs;
             while (true)
             {
+                var ports = Ports;
+                if (ports.Length == 0) return;
                 foreach (var port in ports)
                 {
                     port.Session.Quiesce();

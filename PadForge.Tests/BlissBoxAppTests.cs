@@ -194,7 +194,7 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void MotorsFollowTheApiTool()
+        public void MotorsGoToTheControllersThatHaveThem()
         {
             // One motor on the GameCube, Dreamcast and N64 pads and the fishing
             // rod, two on the DualShock and DualShock 2. The neGcon has no
@@ -544,7 +544,7 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void TheAdaptersPictureIsKeptUntilItsCopyIsOnDisk()
+        public void TheAdaptersPictureIsKeptUntilItsCopyIsSaved()
         {
             // The copy is the only one once the adapter's picture is
             // replaced, and a save that failed leaves it in memory alone.
@@ -1281,12 +1281,50 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void TheScreenDialogWaitsForAJob()
+        {
+            // A player change's end drops the old device's choices, and a
+            // Dreamcast Screen dialog opened during the change and saved
+            // after it brought them back, as the other actions do not.
+            string page = Repo("PadForge.App", "Views", "DevicesPage.xaml");
+            int button = page.IndexOf("Click=\"DreamcastScreen_Click\"", StringComparison.Ordinal);
+            Assert.True(button > 0);
+            Assert.Contains("IsEnabled=\"{Binding SelectedDevice.BlissBoxIdle}\"", page.Substring(button, 200));
+            string window = Repo("PadForge.App", "MainWindow.BlissBox.cs");
+            Assert.Contains("case BlissBoxAction.DreamcastScreen:\n                {\n                    // A player change's end drops the old device's choices,\n                    // which a dialog saved after it would bring back.\n                    if (port.Session.Busy) return;", window);
+        }
+
+        [Fact]
+        public void APassCountsAsRunningBeforeItReadsTheLevels()
+        {
+            // A GPA pass read the levels before it marked itself running, so
+            // the crash path could read rest between that read and a write of
+            // a level from before its quiesce.
+            string session = Repo("PadForge.Engine", "Common", "BlissBox", "BlissBoxSession.cs");
+            int pass = session.IndexOf("private void WriteMotors(long now)", StringComparison.Ordinal);
+            int count = session.IndexOf("Interlocked.Increment(ref _motorPasses);", pass, StringComparison.Ordinal);
+            int read = session.IndexOf("WantedStrengths();", pass, StringComparison.Ordinal);
+            Assert.True(pass > 0 && count > pass && read > count);
+            // A switch-off resend or a hand-off writes nothing once the
+            // outputs are quiesced.
+            Assert.Contains("if (pending.Count == 0 || OutputsQuiesced) return;",
+                Repo("PadForge.App", "Common", "Input", "InputManager.BlissBox.cs"));
+            // The crash stop reads the ports again on each look, and a port
+            // opened after it is quiesced before its worker starts.
+            string runtime = Repo("PadForge.App", "Common", "Input", "BlissBoxRuntime.cs");
+            Assert.Contains("            while (true)\n            {\n                var ports = Ports;", runtime);
+            Assert.Contains("if (_quiescedAll) created.Session.Quiesce();\n                    created.Changed += OnPortChanged;\n                    created.Start();", runtime);
+            // A quiesced port reads no picture on the crash path's wakes.
+            Assert.Contains("if (_storedScreen == null && !_quiesced) ReadScreen();", session);
+        }
+
+        [Fact]
         public void TheCrashPathDropsAPulseNotYetSent()
         {
             string runtime = Repo("PadForge.App", "Common", "Input", "BlissBoxRuntime.cs");
             // Each port is quiesced on each look, so a writer that had passed
             // the engine's quiesce check cannot hand it a level after its stop.
-            Assert.Contains("            while (true)\n            {\n                foreach (var port in ports)\n                {\n                    port.Session.Quiesce();\n                    port.Wake();", runtime);
+            Assert.Contains("                if (ports.Length == 0) return;\n                foreach (var port in ports)\n                {\n                    port.Session.Quiesce();\n                    port.Wake();", runtime);
             // A row that goes offline drops its port's levels, which the SDL
             // stop there never reaches.
             Assert.Contains("try { BlissBoxRuntime.StopRumble(ud.DevicePath); }",
@@ -1327,6 +1365,8 @@ namespace PadForge.Tests
             Assert.Contains("bool impulse = !peer && !padix && !blissBox", code);
             Assert.Contains("lock (row.OutputSync)", code);
             Assert.Contains("Buzz(0, 0);\n                                if (_inputManager?.OutputsQuiesced == true) return;\n                                PadForge.Common.Input.XboxImpulseHidWriter.Write(row, left, right,", code);
+            // A row removed during the last pulse gets a stop.
+            Assert.Contains("if (row == null) { Buzz(0, 0); return; }", code);
             // The crash path's quiesce ends a train in flight.
             Assert.Contains("// good, a train in flight included.\n                            if (_inputManager?.OutputsQuiesced == true) return;", code);
         }

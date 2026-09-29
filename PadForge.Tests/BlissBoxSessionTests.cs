@@ -1638,6 +1638,35 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void AQuiescedPortWritesNoPicture()
+        {
+            // A GPA runs the Dreamcast driver's command-5 routine at full power
+            // before every picture write (0x2BEF to 0x2BF9), so a picture
+            // written after the crash path's quiesce could start the pack again.
+            var adapter = new ScriptedAdapter { Type = BlissBoxControllers.TypeDreamcast };
+            var session = Session(adapter);
+            session.Step();
+            session.Quiesce();
+            session.SetScreen(Enumerable.Range(0, 192).Select(i => (byte)i).ToArray());
+            _now = 2000; session.Step();
+            Assert.Equal(0, adapter.ScreenWrites);
+            Assert.False(session.WriteScreenNow(new byte[192]));
+            Assert.Equal(0, adapter.ScreenWrites);
+        }
+
+        [Fact]
+        public void AQuiescedPortReadsNoPicture()
+        {
+            // The crash path wakes a quiesced port every 5 ms, and on 3.x each
+            // picture read costs a controller poll.
+            var adapter = new ScriptedAdapter { Type = BlissBoxControllers.TypeDreamcast, Major = 3 };
+            var session = Session(adapter);
+            session.Quiesce();
+            session.Step();
+            Assert.Equal(0, adapter.ScreenReads);
+        }
+
+        [Fact]
         public void AGpaReadsAtRestOnceItsStopIsOut()
         {
             // Only a 3.x write takes the peaks, so a GPA would keep every level

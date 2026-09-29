@@ -57,6 +57,9 @@ namespace PadForge
 
                 case BlissBoxAction.DreamcastScreen:
                 {
+                    // A player change's end drops the old device's choices,
+                    // which a dialog saved after it would bring back.
+                    if (port.Session.Busy) return;
                     var service = _inputService.DreamcastScreen;
                     string profileId = SettingsManager.ActiveProfileId;
                     var profile = string.IsNullOrEmpty(profileId) ? null : SettingsManager.Profiles.Find(p => p.Id == profileId);

@@ -144,7 +144,8 @@ namespace PadForge.Common.Input
         /// keeping the rows it could not finish for a later cycle.</summary>
         private void RetryBlissBoxRows(HashSet<Guid> pending, bool handOff)
         {
-            if (pending.Count == 0) return;
+            // Nothing is written once the crash path has quiesced the outputs.
+            if (pending.Count == 0 || OutputsQuiesced) return;
             List<Guid> done = null;
             foreach (var guid in pending)
             {

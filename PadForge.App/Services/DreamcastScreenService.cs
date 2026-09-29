@@ -117,8 +117,8 @@ namespace PadForge.Services
     ///
     /// <para>Before PadForge first replaces a picture, the adapter's own is
     /// kept, so Adapter mode can write it back, and the settings are saved
-    /// at once. Until a save has carried that copy to disk, the port keeps
-    /// its own picture. A Show Dreamcast Screen macro plays over whatever the
+    /// at once. Until a save has written that copy to the settings file, the
+    /// port keeps its own picture. A Show Dreamcast Screen macro plays over whatever the
     /// mode shows and hands the screen back when it ends.</para>
     /// </summary>
     public sealed class DreamcastScreenService
@@ -143,8 +143,9 @@ namespace PadForge.Services
         private readonly Action _markDirty;
         private readonly Func<bool> _saveNow;
         private readonly Func<int> _saves;
-        // Devices whose copy of the adapter's own picture no save has carried
-        // to disk yet, with the settings' save count when it was made.
+        // Devices whose copy of the adapter's own picture no save has written
+        // to the settings file yet, with the settings' save count when it was
+        // made.
         private readonly Dictionary<Guid, int> _unsavedCopies = new();
         // When each port's pad started its play time and when it was last
         // seen, by port instance, so a pad whose port closed and opened
@@ -158,7 +159,7 @@ namespace PadForge.Services
         /// <param name="saveNow">Saves the settings file at once, for the
         /// copy of an adapter's own picture. True when it was written.</param>
         /// <param name="saves">How many times the settings file has been
-        /// written, so a copy made before a later write has reached disk. A
+        /// written, so a copy made before a later write is in the file. A
         /// reload that finds no file clears the unsaved flag without writing,
         /// so the flag cannot stand in for it.</param>
         public DreamcastScreenService(ViewModels.SettingsViewModel settings, Action markDirty,
@@ -282,8 +283,9 @@ namespace PadForge.Services
         /// place of the picture it holds. Before the first such picture the
         /// adapter's own is copied into the port's settings and saved at once,
         /// not after the autosave's quiet time, which a crash, a kill or a
-        /// reload could beat. Until a save has carried the copy to disk, the
-        /// port keeps its own picture: the copy would be the only one.</summary>
+        /// reload could beat. Until a save has written the copy to the settings
+        /// file, the port keeps its own picture: the copy would be the only
+        /// one.</summary>
         internal bool MayReplace(Guid device, BlissBoxPortData data, byte[] stored, byte[] wire)
         {
             if (wire.AsSpan().SequenceEqual(stored)) return true;

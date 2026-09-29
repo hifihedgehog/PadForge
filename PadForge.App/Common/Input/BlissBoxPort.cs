@@ -16,8 +16,8 @@ namespace PadForge.Common.Input
     /// it will not open or after three info reads in a row fail, telling both
     /// motors their level again once it is back. A job queued while the
     /// channel is closed ends as closed, since no controller is there to
-    /// answer it. When the port is disposed with its channel open, it stops
-    /// both motors before it lets go. Other threads set what they want on the
+    /// answer it. When the port is disposed, it stops both motors before it
+    /// lets go, opening the channel once more if it is down. Other threads set what they want on the
     /// <see cref="Session"/> and wake the worker.</para>
     /// </summary>
     internal sealed class BlissBoxPort : IDisposable

@@ -196,11 +196,12 @@ namespace PadForge.Tests
         [Fact]
         public void MotorsFollowTheApiTool()
         {
-            // rumble.cs: one motor on the GameCube, Dreamcast and N64 pads
-            // and the fishing rod, two on the PlayStation pads with motors.
+            // One motor on the GameCube, Dreamcast and N64 pads and the fishing
+            // rod, two on the DualShock and DualShock 2. The neGcon has no
+            // motor (psx-spx), and the adapter drives no JogCon force feedback.
             foreach (byte one in new byte[] { 9, 16, 19, 73 }) Assert.Equal(1, BlissBoxControllers.MotorCount(one));
-            foreach (byte two in new byte[] { 51, 115, 121, 127 }) Assert.Equal(2, BlissBoxControllers.MotorCount(two));
-            foreach (byte none in new byte[] { 0, 3, 8, 17, 65, 83 }) Assert.Equal(0, BlissBoxControllers.MotorCount(none));
+            foreach (byte two in new byte[] { 115, 121 }) Assert.Equal(2, BlissBoxControllers.MotorCount(two));
+            foreach (byte none in new byte[] { 0, 3, 8, 17, 51, 65, 83, 127 }) Assert.Equal(0, BlissBoxControllers.MotorCount(none));
         }
 
         [Fact]
@@ -1076,9 +1077,10 @@ namespace PadForge.Tests
             Assert.Empty(recorder.Sent);
             Assert.Equal(0, state.LeftMotorSpeed);
             Assert.Equal(0, state.RightMotorSpeed);
-            // A pending row is tried again every 100 ms, not every cycle, and a
-            // refused resend a later write has delivered is not sent again.
+            // A pending row is tried again every 100 ms, not every cycle, and
+            // each retry runs the resend itself.
             string phase = Repo("PadForge.App", "Common", "Input", "InputManager.BlissBox.cs");
+            Assert.Contains("if (ud == null || (handOff ? HandMotorsToBlissBox(ud) : ResetBlissBoxRumbleCache(ud)))", phase);
             Assert.Contains("if (pending.Count == 0 || Environment.TickCount64 < _blissBoxRetriesDue) return;", phase);
             Assert.Contains("_blissBoxRetriesDue = Environment.TickCount64 + BlissBoxRetryMs;", phase);
             // A stop SDL refused at the hand-off leaves its effect running
@@ -1135,8 +1137,25 @@ namespace PadForge.Tests
             Assert.Equal(0x80 * 257, state.Axis[0]);
             Assert.Equal(0x80 * 257, state.Axis[3]);
             string runtime = Repo("PadForge.App", "Common", "Input", "BlissBoxRuntime.cs");
-            Assert.Contains("if (session.Info is { Searching: true } && session.KnownInfo is { } known)", runtime);
-            Assert.Contains("RestTriggers(state, known);", runtime);
+            Assert.Contains("if (session.Info is { Searching: true } searching)", runtime);
+            Assert.Contains("if (session.KnownInfo is { } known) RestTriggers(state, known);", runtime);
+        }
+
+        [Fact]
+        public void A3xAdaptersArrowsRestWhileItSearches()
+        {
+            // A searching 3.0 adapter sets its direction byte to 0xFF (0x3121
+            // to 0x3129), and a latch it kept ORs that into buttons 10 to 13
+            // (0x32A0 to 0x32A9), so all four arrows read pressed with no
+            // controller in the port.
+            var state = new CustomInputState();
+            for (int i = 9; i < 15; i++) state.Buttons[i] = true;
+            BlissBoxRuntime.ClearArrows(state, 10);
+            Assert.True(state.Buttons[9]);
+            for (int i = 10; i < 14; i++) Assert.False(state.Buttons[i]);
+            Assert.True(state.Buttons[14]);
+            string runtime = Repo("PadForge.App", "Common", "Input", "BlissBoxRuntime.cs");
+            Assert.Contains("if (searching.Major == 3) ClearArrows(state, 10);", runtime);
         }
 
         [Fact]
@@ -1253,6 +1272,10 @@ namespace PadForge.Tests
                 Assert.Equal(1, DreamcastScreenService.PendingShows);
                 new DreamcastScreenService(new SettingsViewModel(), null).Reset();
                 Assert.Equal(0, DreamcastScreenService.PendingShows);
+                // The engine's stop before any tick made the service.
+                DreamcastScreenService.RequestShow(0, Convert.ToBase64String(new byte[192]), 1000, 1);
+                DreamcastScreenService.DropRequests();
+                Assert.Equal(0, DreamcastScreenService.PendingShows);
             }
             finally { BlissBoxRuntime.Shutdown(); }
         }
@@ -1261,9 +1284,9 @@ namespace PadForge.Tests
         public void TheCrashPathDropsAPulseNotYetSent()
         {
             string runtime = Repo("PadForge.App", "Common", "Input", "BlissBoxRuntime.cs");
-            // Asked again on each look, so a level a writer that had passed
-            // the quiesce check sets after the first stop is stopped too.
-            Assert.Contains("            while (true)\n            {\n                foreach (var port in ports)\n                {\n                    port.Session.StopRumble();\n                    port.Wake();", runtime);
+            // Each port is quiesced on each look, so a writer that had passed
+            // the engine's quiesce check cannot hand it a level after its stop.
+            Assert.Contains("            while (true)\n            {\n                foreach (var port in ports)\n                {\n                    port.Session.Quiesce();\n                    port.Wake();", runtime);
             // A row that goes offline drops its port's levels, which the SDL
             // stop there never reaches.
             Assert.Contains("try { BlissBoxRuntime.StopRumble(ud.DevicePath); }",
@@ -1298,6 +1321,14 @@ namespace PadForge.Tests
             // Identify hands back the level the row's snapshot holds, which a
             // Remote Link peer's steady level would otherwise lose.
             Assert.Contains("                        Buzz(65535, 65535);\n                        await System.Threading.Tasks.Task.Delay(500).ConfigureAwait(false);\n                        Restore();", code);
+            // SDL resends its last level every 2 s (SDL_joystick.c), so on an
+            // Xbox One+ pad the level goes through the raw writer after an SDL
+            // stop, under the gate relayed frames take.
+            Assert.Contains("bool impulse = !peer && !padix && !blissBox", code);
+            Assert.Contains("lock (row.OutputSync)", code);
+            Assert.Contains("Buzz(0, 0);\n                                if (_inputManager?.OutputsQuiesced == true) return;\n                                PadForge.Common.Input.XboxImpulseHidWriter.Write(row, left, right,", code);
+            // The crash path's quiesce ends a train in flight.
+            Assert.Contains("// good, a train in flight included.\n                            if (_inputManager?.OutputsQuiesced == true) return;", code);
         }
 
         [Fact]

@@ -15424,8 +15424,11 @@ namespace PadForge.Services
         /// SendTestRumble lane (slot vibration state + the per-device
         /// TestRumbleTargetGuid filter), exactly like Test Rumble; a direct
         /// SetRumble there would race the dispatcher and lose. An UNMAPPED
-        /// device has no owner, so the direct train is safe and is the only
-        /// lane that exists. A Remote Link peer's row buzzes only on the
+        /// device has no slot writer, so the direct train is the only lane
+        /// that exists. It ends at the level the row's snapshot holds, zero
+        /// unless a Remote Link consumer drives the device, and an Xbox One+
+        /// pad takes that level through its raw writer. A Remote Link peer's
+        /// row buzzes only on the
         /// mapped lane, whose slot relays its rumble to the PC the pad is on:
         /// its own device's SetRumble raises RumbleRequested, which nothing
         /// subscribes to, so an unmapped peer row buzzes nothing.</summary>
@@ -15504,8 +15507,16 @@ namespace PadForge.Services
                         // inert for it the same way (#469).
                         bool blissBox = !peer && PadForge.Engine.Common.BlissBox.BlissBoxApi
                             .OwnsRumble(ud.VendorId, ud.ProdId);
+                        // An Xbox One+ pad's level belongs to its raw writer
+                        // (XboxImpulseHidWriter), which the train hands it back
+                        // through.
+                        bool impulse = !peer && !padix && !blissBox
+                            && PadForge.Engine.XboxControllerIdentity.IsImpulseTriggerDevice(ud.VendorId, ud.ProdId);
                         void Buzz(ushort left, ushort right)
                         {
+                            // The crash path's quiesce stops every output for
+                            // good, a train in flight included.
+                            if (_inputManager?.OutputsQuiesced == true) return;
                             // Identify is a one-shot user action, not the poll
                             // lane, so the write is unconditional and leaves the
                             // row's motor snapshot alone. Recording the buzz
@@ -15531,8 +15542,28 @@ namespace PadForge.Services
                         }
                         void Restore()
                         {
-                            var fs = FindUserDevice(instanceGuid)?.ForceFeedbackState;
-                            Buzz(fs?.LeftMotorSpeed ?? 0, fs?.RightMotorSpeed ?? 0);
+                            var row = FindUserDevice(instanceGuid);
+                            if (row == null) return;
+                            // Under the row's gate, so a writer's level cannot
+                            // land between the read and the write.
+                            lock (row.OutputSync)
+                            {
+                                var fs = row.ForceFeedbackState;
+                                ushort left = fs?.LeftMotorSpeed ?? 0, right = fs?.RightMotorSpeed ?? 0;
+                                if (!impulse)
+                                {
+                                    Buzz(left, right);
+                                    return;
+                                }
+                                // SDL's record of a level would be resent every
+                                // 2 s (SDL_joystick.c:3067-3072) over whatever the
+                                // raw writer holds, so SDL stops and the raw
+                                // report takes the level.
+                                Buzz(0, 0);
+                                if (_inputManager?.OutputsQuiesced == true) return;
+                                PadForge.Common.Input.XboxImpulseHidWriter.Write(row, left, right,
+                                    fs?.LeftTriggerMotorSpeed ?? 0, fs?.RightTriggerMotorSpeed ?? 0);
+                            }
                         }
                         for (int i = 0; i < 2; i++)
                         {

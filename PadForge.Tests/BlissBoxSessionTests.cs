@@ -1618,6 +1618,26 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void TheQuiesceTakesNoLevelAfterIt()
+        {
+            // A writer that passed the engine's quiesce check before the crash
+            // path set it could hand the port a level after the port's stop,
+            // and the wait for rest could end before the worker sent it.
+            var adapter = new ScriptedAdapter { Type = BlissBoxControllers.TypeNintendo64 };
+            var session = Session(adapter);
+            session.Step();
+            _now = 10; session.SetRumble(40000, 0); session.Step();
+            _now = 20; session.Quiesce();
+            Assert.False(session.SetRumble(50000, 0));
+            Assert.False(session.MotorsAtRest);
+            _now = 30; session.Step();
+            Assert.True(session.MotorsAtRest);
+            var levels = adapter.Motor(BlissBoxProtocol.CommandLargeMotor).Select(r => r[5]).ToList();
+            Assert.Equal((byte)0, levels[^1]);
+            Assert.DoesNotContain(BlissBoxSession.Strength(50000), levels);
+        }
+
+        [Fact]
         public void AGpaReadsAtRestOnceItsStopIsOut()
         {
             // Only a 3.x write takes the peaks, so a GPA would keep every level

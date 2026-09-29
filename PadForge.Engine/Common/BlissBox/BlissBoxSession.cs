@@ -118,12 +118,17 @@ namespace PadForge.Engine.Common.BlissBox
         // Odd while the worker's motor pass runs, so a reader can tell a pass
         // started or ended while it read the motor fields.
         private int _motorPasses;
-        // Holds a stop apart from a 3.x pass's take and return of the peaks,
-        // so a stop never lands between a refused pass's check and its return.
+        // Holds a level asked for and a stop apart from a 3.x pass's take and
+        // return of the peaks, so a stop never lands between a refused pass's
+        // check and its return.
         private readonly object _peakGate = new();
-        // Counts StopRumble, under _peakGate, so a pass that took the peaks
-        // before a stop neither carries nor puts back what the stop dropped.
+        // Counts StopRumble, under _peakGate. A pass that took the peaks
+        // before a stop never puts them back, and does not carry them when
+        // the stop landed before its check.
         private int _stops;
+        // Set by the crash path's Quiesce, under _peakGate: no level asked for
+        // after it is taken.
+        private volatile bool _quiesced;
         private bool _resendLarge, _resendSmall;
         // A refused write leaves its motor in doubt: the channel reports a
         // transfer that outlived its wait as failed although the adapter may
@@ -258,25 +263,45 @@ namespace PadForge.Engine.Common.BlissBox
         /// then.</summary>
         public bool SetRumble(ushort large, ushort small)
         {
-            int oldLarge = Interlocked.Exchange(ref _wantedLarge, large);
-            int oldSmall = Interlocked.Exchange(ref _wantedSmall, small);
-            RaisePeak(ref _peakLarge, large);
-            RaisePeak(ref _peakSmall, small);
-            return oldLarge != large || oldSmall != small;
+            lock (_peakGate)
+            {
+                if (_quiesced) return false;
+                int oldLarge = Interlocked.Exchange(ref _wantedLarge, large);
+                int oldSmall = Interlocked.Exchange(ref _wantedSmall, small);
+                RaisePeak(ref _peakLarge, large);
+                RaisePeak(ref _peakSmall, small);
+                return oldLarge != large || oldSmall != small;
+            }
         }
 
         /// <summary>From any thread: both motors stop, and no level asked for
-        /// before is owed any more, so the next 3.x write carries no pulse
-        /// that ended before the stop. For the crash path, whose wait for
+        /// before is owed any more. A 3.x write already decided when the stop
+        /// lands still goes out, and the stop follows at the next paced write,
+        /// but no pulse from before the stop is carried after that. For the
+        /// engine's stop and the crash path, whose wait for
         /// <see cref="MotorsAtRest"/> would otherwise end while such a pulse
         /// was still to go out.</summary>
         public void StopRumble()
         {
             lock (_peakGate)
             {
-                SetRumble(0, 0);
+                Interlocked.Exchange(ref _wantedLarge, 0);
+                Interlocked.Exchange(ref _wantedSmall, 0);
                 ClearPeaks();
                 _stops++;
+            }
+        }
+
+        /// <summary>The crash path's stop: both motors stop, and no level
+        /// asked for after it is taken, so a writer that passed the quiesce
+        /// check before the crash path set it cannot leave a level behind the
+        /// stop.</summary>
+        public void Quiesce()
+        {
+            lock (_peakGate)
+            {
+                _quiesced = true;
+                StopRumble();
             }
         }
 
@@ -771,7 +796,8 @@ namespace PadForge.Engine.Common.BlissBox
             // (0x0C2A), which keeps power on the pack at every poll once
             // command 4 has taken the timer (0x0E0A to 0x0E24). A stop on
             // command 5 clears it, and command 4 right after sets the strength
-            // that stop forced to full again (0x0C2C, 0x0E3D), so the level
+            // that stop forced to full again (0x0C2C, read for the pack at
+            // 0x0E1B), so the level
             // counts as delivered only when both went through. On 3.x command
             // 5 is command 4's alias for these pads (0x10BC, 0x2942, 0x270A),
             // so it needs no clearing.

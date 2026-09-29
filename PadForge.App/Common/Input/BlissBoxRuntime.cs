@@ -252,8 +252,23 @@ namespace PadForge.Common.Input
                 MergeInto(state, session.Pressure, session.Arrows, PressureAxisBase(ud.Device), firstArrow);
                 return;
             }
-            if (session.Info is { Searching: true } && session.KnownInfo is { } known)
-                RestTriggers(state, known);
+            if (session.Info is { Searching: true } searching)
+            {
+                if (session.KnownInfo is { } known) RestTriggers(state, known);
+                // A searching 3.0 adapter holds 0xFF in its direction byte
+                // (0x3121 to 0x3129), which a latch it kept ORs into buttons 10
+                // to 13 (0x32A0 to 0x32A9), so all four arrows read pressed with
+                // no controller in the port.
+                if (searching.Major == 3) ClearArrows(state, 10);
+            }
+        }
+
+        /// <summary>Puts the four arrow buttons from
+        /// <paramref name="firstArrowButton"/> at rest.</summary>
+        internal static void ClearArrows(CustomInputState state, int firstArrowButton)
+        {
+            for (int i = 0; i < BlissBoxControllers.ArrowNames.Length; i++)
+                state.Buttons[firstArrowButton + i] = false;
         }
 
         /// <summary>True when any of the four arrow buttons is down in the
@@ -317,8 +332,8 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>Both motors stop, with no pulse asked for before still owed
-        /// (<see cref="BlissBoxSession.StopRumble"/>), for the engine's stop
-        /// and the crash path.</summary>
+        /// (<see cref="BlissBoxSession.StopRumble"/>), for the engine's stop,
+        /// the crash path's first sweep and a row that went offline.</summary>
         public static void StopRumble(string path)
         {
             var port = Find(path);
@@ -344,9 +359,10 @@ namespace PadForge.Common.Input
         /// asked for before still owed (<see cref="BlissBoxSession.StopRumble"/>),
         /// and the caller waits up to <paramref name="timeoutMs"/> for the
         /// workers to send it, since a dying process may not outlive an
-        /// asynchronous stop. The stop is asked again on each look, so a level
-        /// a writer that had already passed the quiesce check sets after the
-        /// first one is stopped too.</summary>
+        /// asynchronous stop. Each port is quiesced
+        /// (<see cref="BlissBoxSession.Quiesce"/>), so a writer that had
+        /// already passed the quiesce check cannot hand it a level after the
+        /// stop, and the stop is asked again on each look.</summary>
         public static void StopMotorsNow(int timeoutMs)
         {
             var ports = Ports;
@@ -356,7 +372,7 @@ namespace PadForge.Common.Input
             {
                 foreach (var port in ports)
                 {
-                    port.Session.StopRumble();
+                    port.Session.Quiesce();
                     port.Wake();
                 }
                 bool rest = true;

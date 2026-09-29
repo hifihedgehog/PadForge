@@ -118,20 +118,24 @@ namespace PadForge.Engine.Common.BlissBox
             "Up Arrow", "Down Arrow", "Left Arrow", "Right Arrow",
         };
 
-        /// <summary>How many motors the adapter drives on this controller, as
-        /// the API Tool offers them (rumble.cs): one, command 4, for the
-        /// GameCube, Dreamcast and N64 controllers, and two, commands 4 and 5,
-        /// for the DualShock, DualShock 2, neGcon and JogCon. The tool shows
-        /// the Dreamcast fishing rod both motor controls, with a note that its
-        /// second motor is not worked out, and GPA 4.86 reads the rod through
-        /// its Dreamcast driver (0x0DE1), whose command 5 runs at full power
-        /// whatever strength it is given (0x0C2A), so it takes one. Any other
-        /// controller has none and is sent nothing: the 3.0 firmware skips a
-        /// controller poll after every write (0x090B, 0x31C6).</summary>
+        /// <summary>How many motors the adapter drives on this controller: one,
+        /// command 4, for the GameCube, Dreamcast and N64 controllers and the
+        /// Dreamcast fishing rod, and two, commands 4 and 5, for the DualShock
+        /// and DualShock 2. The API Tool's rumble form shows two motor
+        /// controls for every PlayStation type (rumble.cs), but the neGcon has
+        /// no motor (psx-spx, "Controllers - Racing Controllers") and the
+        /// compatibility list gives the JogCon "no force feed back support"
+        /// on 3.31 and 4.71, so both take none. The form's note that the rod's second
+        /// motor is not worked out stands: GPA 4.86 drives the rod's second
+        /// source only at full power from command 5 (0x0E25 to 0x0E31) and
+        /// the first at its strength from command 4 (0x0E32 to 0x0E3F), so
+        /// the rod takes command 4 alone. Any other controller has none and is
+        /// sent nothing: the 3.0 firmware skips a controller poll after every
+        /// write (0x090B, 0x31C6).</summary>
         public static int MotorCount(byte type) => type switch
         {
             9 or 16 or 19 or 73 => 1,
-            51 or 115 or 121 or 127 => 2,
+            115 or 121 => 2,
             _ => 0,
         };
 

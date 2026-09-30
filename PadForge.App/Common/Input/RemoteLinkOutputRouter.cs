@@ -174,6 +174,24 @@ namespace PadForge.Common.Input
             }
         }
 
+        /// <summary>One pulse of Identify's train to a peer row with no slot
+        /// (#293), sent past the record of what this lane last sent. The poll
+        /// sends such a row a stop whenever that record shows a level
+        /// (InputManager.Step2), so a recorded pulse ended about a
+        /// millisecond after it went out. A zero drops the record, so a slot
+        /// the row gained during the train sends its level again instead of
+        /// taking it as already sent.</summary>
+        public static bool ShipIdentify(string path, ushort left, ushort right)
+        {
+            if (!_byPath.TryGetValue(path, out var target)) return false;
+            lock (target.Gate)
+            {
+                if (left == 0 && right == 0) target.Vibration = default;
+                return Dispatch(target, LinkMessageType.Output, OutputEffectCodec.EncodeVibration(
+                    new Vibration { LeftMotorSpeed = left, RightMotorSpeed = right }));
+            }
+        }
+
         public static bool ShipWheel(string path, bool hasCond, bool dir, short force, short peak,
             int ac, uint effect, int period, short pc, short nc, short off, int db, int ps, int ns,
             int condGain, ushort rangeDeg, ushort ledMask, bool ledValid)

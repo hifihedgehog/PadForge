@@ -1100,6 +1100,19 @@ namespace PadForge.Common.Input
                         }
                     }
                 }
+                // Trigger Rumble Fold is this PC's setting, and the owner replays
+                // the frame with a neutral one, so a device without trigger
+                // motors gets the fold here or not at all, as SetDeviceForces
+                // and the direct writers below apply it.
+                if (ud.Device?.HasRumbleTriggers != true)
+                {
+                    ushort foldL = _combinedVibration.LeftMotorSpeed, foldR = _combinedVibration.RightMotorSpeed;
+                    ForceFeedbackState.FoldTriggersForDirectWriter(firstPadSetting,
+                        _combinedVibration.LeftTriggerMotorSpeed, _combinedVibration.RightTriggerMotorSpeed,
+                        ref foldL, ref foldR);
+                    _combinedVibration.LeftMotorSpeed = foldL;
+                    _combinedVibration.RightMotorSpeed = foldR;
+                }
                 RemoteLinkOutputRouter.ShipVibration(ud.DevicePath, _combinedVibration);
                 return;
             }

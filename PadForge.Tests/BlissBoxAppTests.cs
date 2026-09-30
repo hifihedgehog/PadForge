@@ -1490,8 +1490,9 @@ namespace PadForge.Tests
             Assert.Contains("bool impulse = !peer && !padix && !blissBox", code);
             Assert.Contains("lock (row.OutputSync)", code);
             Assert.Contains("Buzz(0, 0);\n                                ushort lt = fs?.LeftTriggerMotorSpeed ?? 0, rt = fs?.RightTriggerMotorSpeed ?? 0;\n                                if (_inputManager?.OutputsQuiesced == true && (left | right | lt | rt) != 0) return;\n                                PadForge.Common.Input.XboxImpulseHidWriter.Write(row, left, right, lt, rt);", code);
-            // A row removed during the last pulse gets a stop.
-            Assert.Contains("if (row == null) { Buzz(0, 0); return; }", code);
+            // A row removed during the last pulse gets a stop, as does a peer
+            // row, whose level belongs to the relay.
+            Assert.Contains("if (row == null || peer) { Buzz(0, 0); return; }", code);
             // The crash path's quiesce ends a train in flight.
             // A stop still goes out, since a pulse that reached the device just
             // after the crash sweep has no other writer left to end it.
@@ -1701,6 +1702,10 @@ namespace PadForge.Tests
             Assert.Contains("bool peer = PadForge.Common.Input.RemoteLinkOutputRouter.IsPeerPath(ud.DevicePath);", code);
             Assert.Contains("bool padix = !peer && PadForge.Engine.PadixConverterIdentity", code);
             Assert.Contains("bool blissBox = !peer && PadForge.Engine.Common.BlissBox.BlissBoxApi", code);
+            // The train goes through the relay instead, and ends with a stop
+            // that drops the relay's record.
+            Assert.Contains("if (peer)\n                            {\n                                PadForge.Common.Input.RemoteLinkOutputRouter.ShipIdentify(\n                                    ud.DevicePath, left, right);", code);
+            Assert.Contains("if (row == null || peer) { Buzz(0, 0); return; }", code);
         }
 
         [Fact]

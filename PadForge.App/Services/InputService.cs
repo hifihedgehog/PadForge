@@ -15446,11 +15446,9 @@ namespace PadForge.Services
         /// that exists. It ends at the level the row's snapshot holds, zero
         /// unless a Remote Link consumer drives the device, or with a stop
         /// when the row is gone, and an Xbox One+ pad takes that level
-        /// through its raw writer. A Remote Link peer's
-        /// row buzzes only on the
-        /// mapped lane, whose slot relays its rumble to the PC the pad is on:
-        /// its own device's SetRumble raises RumbleRequested, which nothing
-        /// subscribes to, so an unmapped peer row buzzes nothing.</summary>
+        /// through its raw writer. A Remote Link peer's row buzzes the pad on
+        /// the PC it is on: a mapped row's slot relays its rumble there, and
+        /// an unmapped row's train goes through the relay itself.</summary>
         public void IdentifyDevice(Guid instanceGuid)
         {
             if (instanceGuid == Guid.Empty) return;
@@ -15511,8 +15509,7 @@ namespace PadForge.Services
                         // A Remote Link peer's row carries the owner's VID and
                         // PID, but the pad is on the other PC, so the direct
                         // lanes below would write a path that exists only
-                        // there. Its own device's SetRumble raises an event
-                        // nothing subscribes to, so the train buzzes nothing.
+                        // there. The train goes through the relay instead.
                         bool peer = PadForge.Common.Input.RemoteLinkOutputRouter.IsPeerPath(ud.DevicePath);
                         // A Padix PSX/USB converter's motors sit behind the 9-byte
                         // report PadForge writes itself, and every SDL rumble call
@@ -15550,7 +15547,12 @@ namespace PadForge.Services
                             // drives this row, whose steady level a zero would
                             // end for good: the peer sends only changes, and
                             // the snapshot would take a repeat as unchanged.
-                            if (padix)
+                            if (peer)
+                            {
+                                PadForge.Common.Input.RemoteLinkOutputRouter.ShipIdentify(
+                                    ud.DevicePath, left, right);
+                            }
+                            else if (padix)
                             {
                                 PadForge.Common.Input.PadixConverterRawHidWriter.Write(
                                     ud.DevicePath, left, right);
@@ -15577,8 +15579,11 @@ namespace PadForge.Services
                         {
                             var row = FindUserDevice(instanceGuid);
                             // A row removed during the last pulse would leave
-                            // that pulse running.
-                            if (row == null) { Buzz(0, 0); return; }
+                            // that pulse running. A peer row's level belongs to
+                            // the relay, whose record the stop drops, so a slot
+                            // the row gained sends its level again at the next
+                            // poll.
+                            if (row == null || peer) { Buzz(0, 0); return; }
                             // Under the row's gate, so a writer's level cannot
                             // land between the read and the write.
                             lock (row.OutputSync)

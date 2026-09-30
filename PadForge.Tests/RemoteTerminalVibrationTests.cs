@@ -105,6 +105,119 @@ namespace PadForge.Tests
             }
         }
 
+        [Fact]
+        public void AnIdentifyPulseOutlivesThePollOfAPeerRowWithNoSlot()
+        {
+            // The poll sends a peer row with no slot a stop whenever the
+            // relay's record shows a level, so a pulse recorded there ended
+            // about a millisecond after it went out.
+            var savedSettings = SettingsManager.UserSettings;
+            var savedSend = RemoteLinkOutputRouter.SendOutput;
+            var peer = NewPeer(triggerMotors: false);
+            var remote = new UserDevice();
+            remote.LoadFromExternalDevice(peer);
+            var frames = new List<Vibration>();
+            RemoteLinkOutputRouter.Register(peer.DevicePath, "owner", 0);
+            RemoteLinkOutputRouter.SendOutput = (_, _, bytes) =>
+            {
+                Assert.True(OutputEffectCodec.TryDecode(bytes, out var effect));
+                frames.Add(effect.Vibration);
+            };
+            try
+            {
+                SettingsManager.UserSettings = new SettingsCollection();
+                var manager = new InputManager();
+                Assert.True(RemoteLinkOutputRouter.ShipIdentify(peer.DevicePath, 65535, 65535));
+                PollFeedback(manager, remote);
+                PollFeedback(manager, remote);
+                Assert.Equal(65535, Assert.Single(frames).LeftMotorSpeed);
+                Assert.True(RemoteLinkOutputRouter.ShipIdentify(peer.DevicePath, 0, 0));
+                PollFeedback(manager, remote);
+                Assert.Equal(2, frames.Count);
+                Assert.Equal(0, frames[1].LeftMotorSpeed);
+            }
+            finally
+            {
+                SettingsManager.UserSettings = savedSettings;
+                RemoteLinkOutputRouter.SendOutput = savedSend;
+                RemoteLinkOutputRouter.Unregister(peer.DevicePath);
+            }
+        }
+
+        [Fact]
+        public void AnIdentifyStopLetsASlotWriterSendItsLevelAgain()
+        {
+            // A slot the peer row gained during the train sends its level, and
+            // the train's stop then ends it at the owner. Kept, the record
+            // would take the writer's next frame as already sent.
+            string path = "peer://owner/identify-" + Guid.NewGuid().ToString("N");
+            var saved = RemoteLinkOutputRouter.SendOutput;
+            int sent = 0;
+            RemoteLinkOutputRouter.SendOutput = (_, _, _) => sent++;
+            RemoteLinkOutputRouter.Register(path, "owner", 0);
+            try
+            {
+                Assert.True(RemoteLinkOutputRouter.ShipVibration(path, new Vibration(30000, 0)));
+                Assert.True(RemoteLinkOutputRouter.ShipIdentify(path, 0, 0));
+                Assert.True(RemoteLinkOutputRouter.ShipVibration(path, new Vibration(30000, 0)));
+                Assert.Equal(3, sent);
+            }
+            finally
+            {
+                RemoteLinkOutputRouter.SendOutput = saved;
+                RemoteLinkOutputRouter.Unregister(path);
+            }
+        }
+
+        [Theory]
+        [InlineData(false, "1", true)]
+        [InlineData(true, "1", false)]
+        [InlineData(false, "0", false)]
+        public void TheConsumersTriggerFoldGoesIntoTheRelayedFrame(bool triggerMotors, string fold, bool folded)
+        {
+            // The owner replays a relayed frame with a neutral setting, so this
+            // PC's Trigger Rumble Fold reaches a pad without trigger motors only
+            // in the frame itself.
+            var savedSettings = SettingsManager.UserSettings;
+            var savedSend = RemoteLinkOutputRouter.SendOutput;
+            var peer = NewPeer(triggerMotors);
+            var remote = new UserDevice();
+            remote.LoadFromExternalDevice(peer);
+            var frames = new List<Vibration>();
+            RemoteLinkOutputRouter.Register(peer.DevicePath, "owner", 0);
+            RemoteLinkOutputRouter.SendOutput = (_, _, bytes) =>
+            {
+                Assert.True(OutputEffectCodec.TryDecode(bytes, out var effect));
+                frames.Add(effect.Vibration);
+            };
+            try
+            {
+                SettingsManager.UserSettings = new SettingsCollection();
+                var setting = new UserSetting { InstanceGuid = remote.InstanceGuid, MapTo = 0 };
+                setting.SetPadSetting(new PadSetting { ForceOverall = "100", TriggerRumbleFold = fold });
+                SettingsManager.UserSettings.Items.Add(setting);
+                var manager = new InputManager();
+                manager.VibrationStates[0].LeftTriggerMotorSpeed = 40000;
+                PollFeedback(manager, remote);
+                var frame = Assert.Single(frames);
+                Assert.Equal(40000, frame.LeftTriggerMotorSpeed);
+                Assert.Equal(folded ? 40000 : 0, frame.LeftMotorSpeed);
+            }
+            finally
+            {
+                SettingsManager.UserSettings = savedSettings;
+                RemoteLinkOutputRouter.SendOutput = savedSend;
+                RemoteLinkOutputRouter.Unregister(peer.DevicePath);
+            }
+        }
+
+        private static RemotePeerDevice NewPeer(bool triggerMotors) => new(new RemotePeerDeviceInfo
+        {
+            PeerFingerprintHex = "owner", PeerLocalDeviceId = Guid.NewGuid().ToString("N"),
+            HasRumble = true, HasRumbleTriggers = triggerMotors, VendorId = 0x1234, ProductId = 0x5678,
+            NumAxes = 6, NumButtons = 17, NumHats = 1, InputDeviceType = InputDeviceType.Gamepad
+        });
+
         private static void PollFeedback(InputManager manager, UserDevice device)
             => typeof(InputManager).GetMethod("ApplyForceFeedback", BindingFlags.Instance | BindingFlags.NonPublic)
                 .Invoke(manager, new object[] { device });

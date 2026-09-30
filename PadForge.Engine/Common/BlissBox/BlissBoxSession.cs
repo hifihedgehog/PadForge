@@ -318,8 +318,9 @@ namespace PadForge.Engine.Common.BlissBox
         /// write (0x2BEF to 0x2BF9), at full power on a Dreamcast pad. The
         /// check and the in-flight mark share this lock, so a write already
         /// past its check shows as in flight, and with a jump pack running its
-        /// pulse leaves full power until the pass after the write, which the
-        /// crash stop waits for (<see cref="PictureInFlight"/>).</summary>
+        /// pulse leaves full power until a motor pass after the write goes
+        /// through, which the crash stop waits for
+        /// (<see cref="PictureInFlight"/>).</summary>
         public void Quiesce()
         {
             lock (_peakGate)
@@ -685,8 +686,8 @@ namespace PadForge.Engine.Common.BlissBox
             long at = _clock();
             if (at - _lastScreenWrite < ScreenIntervalMs) return false;
             // Checked and marked under the quiesce's lock, so the crash stop
-            // either stops this write or sees it in flight. Step clears the
-            // mark once the pass after the write is done.
+            // either stops this write or sees it in flight. A motor pass that
+            // leaves no write refused clears the mark.
             lock (_peakGate)
             {
                 // A closing port's last write is its motors' stop.

@@ -1824,6 +1824,52 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void AJobsPictureStaysInFlightUntilAPassAfterItGoesThrough()
+        {
+            bool refuse = false, pictureSent = false;
+            var adapter = new ScriptedAdapter
+            {
+                Type = BlissBoxControllers.TypeDreamcast,
+                DuringWrite = r => { if (r[0] == BlissBoxProtocol.ReportScreen) pictureSent = true; },
+                RefuseWhen = r => refuse && pictureSent
+                    && r[0] == BlissBoxProtocol.ReportCommand && r[1] == BlissBoxProtocol.CommandLargeMotor,
+            };
+            var session = Session(adapter);
+            session.Step();
+            _now = 10; session.SetRumble(40000, 0); session.Step();
+            refuse = true;
+            _now = 2000;
+            Assert.True(session.WriteScreenNow(Enumerable.Range(0, 192).Select(i => (byte)i).ToArray()));
+            Assert.True(session.PictureInFlight);
+        }
+
+        [Fact]
+        public void APassWithNoScreenClearsAPictureLeftInFlight()
+        {
+            // A controller with motors and no screen that replaces the
+            // Dreamcast pad only clears the mark through its own motor pass.
+            bool refuse = false, pictureSent = false;
+            var adapter = new ScriptedAdapter
+            {
+                Type = BlissBoxControllers.TypeDreamcast,
+                DuringWrite = r => { if (r[0] == BlissBoxProtocol.ReportScreen) pictureSent = true; },
+                RefuseWhen = r => refuse && pictureSent
+                    && r[0] == BlissBoxProtocol.ReportCommand && r[1] == BlissBoxProtocol.CommandLargeMotor,
+            };
+            var session = Session(adapter);
+            session.Step();
+            _now = 10; session.SetRumble(40000, 0); session.Step();
+            refuse = true;
+            session.SetScreen(Enumerable.Range(0, 192).Select(i => (byte)i).ToArray());
+            _now = 2000; session.Step();
+            Assert.True(session.PictureInFlight);
+            refuse = false;
+            adapter.Type = BlissBoxControllers.TypeNintendo64;
+            _now = 3000; session.Step();
+            Assert.False(session.PictureInFlight);
+        }
+
+        [Fact]
         public void AClosingPortStartsNoPictureWrite()
         {
             // Its last write is its motors' stop, which a picture of up to 2 s

@@ -1437,7 +1437,7 @@ namespace PadForge.Tests
             Assert.Contains("                foreach (var port in Ports)\n                    if (!waiting.Contains(port)) waiting.Add(port);", runtime);
             // The latch is set under the lock Sync opens ports under, and the
             // wait takes in the ports still retiring.
-            Assert.Contains("                Monitor.TryEnter(_lock, 100, ref taken);\n                _quiescedAll = true;\n                if (taken) waiting.AddRange(_retiring);", runtime);
+            Assert.Contains("                Monitor.TryEnter(_lock, 100, ref taken);\n                _quiescedAll = true;", runtime);
             Assert.Contains("if (_quiescedAll) created.Session.Quiesce();\n                    created.Changed += OnPortChanged;\n                    created.Start();", runtime);
             // A quiesced port reads no picture on the crash path's wakes.
             Assert.Contains("if (_storedScreen == null && !_quiesced) ReadScreen();", session);
@@ -1555,6 +1555,13 @@ namespace PadForge.Tests
             string runtime = Repo("PadForge.App", "Common", "Input", "BlissBoxRuntime.cs");
             Assert.Contains("                        closing.Dispose();\n                        HandOverToSuccessor(closing);", runtime);
             Assert.Contains("                Task.Run(() => HandOverToSuccessor(closed));", runtime);
+            // The crash stop reads the open and the retiring ports in one hold
+            // of the lock Sync and Shutdown move ports under, and Shutdown
+            // counts its ports as retiring as they leave the list.
+            Assert.Contains("                if (taken)\n                {\n                    waiting.AddRange(_retiring);\n                    waiting.AddRange(_ports);\n                }", runtime);
+            Assert.Contains("                Volatile.Write(ref _ports, Array.Empty<BlissBoxPort>());\n                // Retiring from the moment they leave the list, so a crash\n                // stop during the joins below still finds them.\n                _retiring.RemoveAll(p => p.Exited);\n                _retiring.AddRange(closing);", runtime);
+            // A picture counts only on a port not at rest.
+            Assert.Contains("                    if (!port.IsOpen || port.Session.MotorsAtRest) continue;\n                    rest = false;", runtime);
             // A retired port counts as retiring before Sync lets go of the
             // lock the crash stop reads the lists under.
             int ports = runtime.IndexOf("if (opened != null || retired != null) Volatile.Write(ref _ports, next.ToArray());", StringComparison.Ordinal);

@@ -218,6 +218,10 @@ namespace PadForge.Common.Input
             {
                 closing = _ports;
                 Volatile.Write(ref _ports, Array.Empty<BlissBoxPort>());
+                // Retiring from the moment they leave the list, so a crash
+                // stop during the joins below still finds them.
+                _retiring.RemoveAll(p => p.Exited);
+                _retiring.AddRange(closing);
             }
             if (closing.Length == 0) return;
             foreach (var port in closing) port.Changed -= OnPortChanged;
@@ -225,11 +229,6 @@ namespace PadForge.Common.Input
             foreach (var port in closing)
             {
                 if (port.Exited) continue;
-                lock (_lock)
-                {
-                    _retiring.RemoveAll(p => p.Exited);
-                    _retiring.Add(port);
-                }
                 var closed = port;
                 Task.Run(() => HandOverToSuccessor(closed));
             }
@@ -436,7 +435,13 @@ namespace PadForge.Common.Input
             {
                 Monitor.TryEnter(_lock, 100, ref taken);
                 _quiescedAll = true;
-                if (taken) waiting.AddRange(_retiring);
+                // Both lists in one hold of the lock Sync and Shutdown move
+                // ports under, so a port retiring at this moment is in one.
+                if (taken)
+                {
+                    waiting.AddRange(_retiring);
+                    waiting.AddRange(_ports);
+                }
             }
             finally { if (taken) Monitor.Exit(_lock); }
             long start = Environment.TickCount64;
@@ -456,8 +461,11 @@ namespace PadForge.Common.Input
                 bool rest = true, picture = false;
                 foreach (var port in waiting)
                 {
-                    if (!port.IsOpen) continue;
-                    if (!port.Session.MotorsAtRest) rest = false;
+                    if (!port.IsOpen || port.Session.MotorsAtRest) continue;
+                    rest = false;
+                    // A picture counts only on a port not at rest: one its
+                    // pulse left a jump pack running on has a level or a
+                    // refused write owed.
                     if (port.Session.PictureInFlight) picture = true;
                 }
                 if (CrashWaitOver(rest, picture, ref sawPicture, Environment.TickCount64, end, pictureEnd)) return;

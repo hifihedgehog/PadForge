@@ -11,6 +11,11 @@ namespace PadForge.Tests
     /// near-duplicates cannot collide the way GAVPI's exact-string dispatch
     /// lets them. Tests share the static registry, so each resets it first.
     /// </summary>
+    // A settings load (SettingsService.LoadFromFile, ResetToDefaults) resets
+    // this registry, so these tests share the collection of the tests that
+    // load settings (named 2026-09-30: a load cleared the registry between a
+    // Register and the Export that read it).
+    [Collection("SettingsManagerStatics")]
     public class VoicePhraseRegistryTests
     {
         private static void Reset() => VoicePhraseRegistry.LoadRegistry(null);

@@ -11,6 +11,11 @@ namespace PadForge.Tests
     /// lesson as the touchpad contact-ID fix and the #128 MIDI note binding.)
     /// Tests share the static registry, so each resets it first.
     /// </summary>
+    // A settings load (SettingsService.LoadFromFile, ResetToDefaults) resets
+    // this registry, so these tests share the collection of the tests that
+    // load settings (named 2026-09-30: a load cleared the registry between a
+    // Register and the Export that read it).
+    [Collection("SettingsManagerStatics")]
     public class NfcTagRegistryTests
     {
         private static void Reset() => NfcTagRegistry.LoadRegistry(null);

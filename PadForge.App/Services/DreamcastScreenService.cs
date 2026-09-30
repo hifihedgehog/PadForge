@@ -235,6 +235,10 @@ namespace PadForge.Services
             foreach (var port in ports)
             {
                 var session = port.Session;
+                // A player change reads the copy of the adapter's own picture
+                // when it is queued, so a port with a job queued or running
+                // gets no new copy and no new picture until the job ends.
+                if (session.Busy) continue;
                 var data = Get(port.InstanceGuid);
                 session.NativeArrows = data?.NativeArrows == true;
 

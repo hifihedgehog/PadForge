@@ -1328,6 +1328,17 @@ namespace PadForge.Tests
             // A restore checks again after its file read, which leaves the page
             // live.
             Assert.Contains("if (port.Replaced || port.Session.Busy) return;\n                    var job = new BlissBoxPakRestoreJob(", window);
+            // So do a player change and a backup after their dialogs.
+            Assert.Contains("if (port.Replaced || port.Session.Busy) return;\n                    DreamcastScreenService.TryDecode(", window);
+            Assert.Contains("if (port.Replaced || port.Session.Busy) return;\n                    var job = new BlissBoxPakBackupJob(", window);
+            // No new copy or picture while a job waits, since a player change
+            // reads the copy when it is queued.
+            Assert.Contains("                if (session.Busy) continue;\n                var data = Get(port.InstanceGuid);",
+                Repo("PadForge.App", "Services", "DreamcastScreenService.cs"));
+            // The poll thread checks the quiesce again under the gate the
+            // crash sweep takes.
+            Assert.Contains("            if (!System.Threading.Monitor.TryEnter(ud.OutputSync)) return;\n            try\n            {\n            // Again under the gate the crash sweep takes (#469), so a pass that\n            // cleared the check above before the sweep writes nothing after it.\n            if (OutputsQuiesced) return;",
+                Repo("PadForge.App", "Common", "Input", "InputManager.Step2.UpdateInputStates.cs"));
             Assert.Contains("                    if (result.Ok)\n                    {\n                        port.Replaced = true;\n                        service.Remove(port.InstanceGuid);", window);
             Assert.Contains("row.BlissBoxIdle = !port.Session.Busy && !port.Replaced;",
                 Repo("PadForge.App", "Services", "InputService.BlissBox.cs"));
@@ -1536,16 +1547,19 @@ namespace PadForge.Tests
         public void ASuccessorTellsTheMotorsAgainOnceTheOldWorkerExits()
         {
             // The retired worker's final stop could land after the port that
-            // took over its path had written its first levels.
-            var guid = Guid.NewGuid();
-            const string path = @"\\?\hid#padforge-test-no-such-device-successor";
-            try
-            {
-                Assert.Single(BlissBoxRuntime.Sync(new[] { new BlissBoxRuntime.Row(path, 0x0D04, guid, 7) }));
-                var successor = Assert.Single(BlissBoxRuntime.Sync(new[] { new BlissBoxRuntime.Row(path, 0x0D04, guid, 8) }));
-                Assert.True(System.Threading.SpinWait.SpinUntil(() => !successor.Session.MotorsAtRest, 5000));
-            }
-            finally { BlissBoxRuntime.Shutdown(); }
+            // took over its path had written its first levels. The wait and
+            // the resend run through the internal overload, which
+            // ASuccessorWaitsForTheOldWorkerBeforeItsResend drives. A port
+            // that never opens owes its motors a stop from the start, so its
+            // state cannot show the resend here.
+            string runtime = Repo("PadForge.App", "Common", "Input", "BlissBoxRuntime.cs");
+            Assert.Contains("                        closing.Dispose();\n                        HandOverToSuccessor(closing);", runtime);
+            Assert.Contains("                Task.Run(() => HandOverToSuccessor(closed));", runtime);
+            // A retired port counts as retiring before Sync lets go of the
+            // lock the crash stop reads the lists under.
+            int ports = runtime.IndexOf("if (opened != null || retired != null) Volatile.Write(ref _ports, next.ToArray());", StringComparison.Ordinal);
+            int retiring = runtime.IndexOf("_retiring.AddRange(retired);", StringComparison.Ordinal);
+            Assert.True(ports > 0 && retiring > ports);
         }
 
         [Fact]
@@ -1560,7 +1574,7 @@ namespace PadForge.Tests
             // A retired port counts until its worker has exited, past
             // Dispose's 3 s wait, and the list is pruned as ports retire.
             Assert.Contains("_retiring.RemoveAll(port => port.Exited);", runtime);
-            Assert.Contains("_retiring.RemoveAll(p => p.Exited);\n                        _retiring.Add(closing);", runtime);
+            Assert.Contains("_retiring.RemoveAll(p => p.Exited);\n                    _retiring.AddRange(retired);", runtime);
             string loop = Repo("PadForge.App", "Common", "Input", "InputManager.cs");
             Assert.Contains("if (_enumerationTimer.ElapsedMilliseconds >= 5000 || ConsumeBlissBoxSwitchChange())", loop);
             Assert.Contains("if (firstCycle || _enumerationTimer.ElapsedMilliseconds >= EnumerationIntervalMs || ConsumeBlissBoxSwitchChange())", loop);

@@ -1797,6 +1797,47 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void APictureStaysInFlightUntilAPassAfterItGoesThrough()
+        {
+            // A crash just after a refused pass after the picture found no
+            // picture in flight and waited only 250 ms, while a jump pack ran
+            // at full power until the retry.
+            bool refuse = false, pictureSent = false;
+            var adapter = new ScriptedAdapter
+            {
+                Type = BlissBoxControllers.TypeDreamcast,
+                DuringWrite = r => { if (r[0] == BlissBoxProtocol.ReportScreen) pictureSent = true; },
+                RefuseWhen = r => refuse && pictureSent
+                    && r[0] == BlissBoxProtocol.ReportCommand && r[1] == BlissBoxProtocol.CommandLargeMotor,
+            };
+            var session = Session(adapter);
+            session.Step();
+            _now = 10; session.SetRumble(40000, 0); session.Step();
+            refuse = true;
+            session.SetScreen(Enumerable.Range(0, 192).Select(i => (byte)i).ToArray());
+            _now = 2000; session.Step();
+            Assert.True(pictureSent);
+            Assert.True(session.PictureInFlight);
+            refuse = false;
+            _now = 2200; session.Step();
+            Assert.False(session.PictureInFlight);
+        }
+
+        [Fact]
+        public void AClosingPortStartsNoPictureWrite()
+        {
+            // Its last write is its motors' stop, which a picture of up to 2 s
+            // would hold back.
+            var adapter = new ScriptedAdapter { Type = BlissBoxControllers.TypeDreamcast };
+            var session = Session(adapter);
+            session.Step();
+            session.SetScreen(Enumerable.Range(0, 192).Select(i => (byte)i).ToArray());
+            session.RequestStop();
+            _now = 2000; session.Step();
+            Assert.Equal(0, adapter.ScreenWrites);
+        }
+
+        [Fact]
         public void AQuiescedPortReadsNoPicture()
         {
             // The crash path wakes a quiesced port every 5 ms, and on 3.x each

@@ -139,6 +139,15 @@ namespace PadForge.Common.Input
                     (opened ??= new List<BlissBoxPort>()).Add(created);
                 }
                 if (opened != null || retired != null) Volatile.Write(ref _ports, next.ToArray());
+                // Counted as retiring before the lock is let go, so the crash
+                // stop never finds a retired port in neither list. Pruned here
+                // too, so ports that retire while the switch stays on do not
+                // pile up.
+                if (retired != null)
+                {
+                    _retiring.RemoveAll(p => p.Exited);
+                    _retiring.AddRange(retired);
+                }
             }
             if (retired != null)
             {
@@ -153,13 +162,6 @@ namespace PadForge.Common.Input
                         closing.Dispose();
                         HandOverToSuccessor(closing);
                     });
-                    lock (_lock)
-                    {
-                        // Pruned here too, so ports that retire while the
-                        // switch stays on do not pile up.
-                        _retiring.RemoveAll(p => p.Exited);
-                        _retiring.Add(closing);
-                    }
                     RaiseChanged(closing);
                 }
             }

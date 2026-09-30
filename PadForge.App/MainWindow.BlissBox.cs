@@ -41,6 +41,9 @@ namespace PadForge
                     // on the VMU goes back first, and the old device's choices
                     // are dropped, since nothing would read them again.
                     var service = _inputService.DreamcastScreen;
+                    // The dialog above runs a nested loop, in which another
+                    // action may have queued a job or replaced the port.
+                    if (port.Replaced || port.Session.Busy) return;
                     DreamcastScreenService.TryDecode(service.Get(port.InstanceGuid)?.AdapterPicture, out var original);
                     var job = new BlissBoxPlayerJob(player, original);
                     port.Session.Enqueue(job);
@@ -90,6 +93,9 @@ namespace PadForge
                         FileName = string.Format(culture, s.BlissBoxPak_DefaultFileName_Format, port.Session.Player),
                     };
                     if (dialog.ShowDialog(this) != true) return;
+                    // The dialog above runs a nested loop, in which another
+                    // action may have queued a job or replaced the port.
+                    if (port.Replaced || port.Session.Busy) return;
                     var job = new BlissBoxPakBackupJob(new Progress<double>(p =>
                         _viewModel.SetStatus(string.Format(culture, s.Status_PakReading_Format, p))));
                     port.Session.Enqueue(job);

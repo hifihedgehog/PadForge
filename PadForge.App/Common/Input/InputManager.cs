@@ -2130,10 +2130,11 @@ namespace PadForge.Common.Input
                     if (ud?.ForceFeedbackState != null && ud.Device != null)
                     {
                         // Under the row's output gate when it comes free within
-                        // 50 ms: the relay and Identify write under it, so a
-                        // level one of them had already decided lands before
-                        // this stop, not after it (#469). Bounded, so a writer
-                        // stalled holding it cannot hold up the stop.
+                        // 50 ms: the poll thread, the relay and Identify's SDL
+                        // lane write under it, so a level one of them had
+                        // already decided lands before this stop, not after
+                        // it (#469). Bounded, so a writer stalled holding it
+                        // cannot hold up the stop.
                         bool gated = false;
                         try
                         {

@@ -1108,6 +1108,9 @@ namespace PadForge.Common.Input
             if (!System.Threading.Monitor.TryEnter(ud.OutputSync)) return;
             try
             {
+            // Again under the gate the crash sweep takes (#469), so a pass that
+            // cleared the check above before the sweep writes nothing after it.
+            if (OutputsQuiesced) return;
             // Sole-writer guard (#138): this LOCAL device is also shared out and a remote
             // game is actively driving it (a relayed frame holds the output lease). Skip
             // the owner's local write so the inbound relay is the sole hardware writer.

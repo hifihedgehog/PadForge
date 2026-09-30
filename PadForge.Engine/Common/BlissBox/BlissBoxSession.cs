@@ -130,7 +130,8 @@ namespace PadForge.Engine.Common.BlissBox
         // Set by the crash path's Quiesce, under _peakGate: no level asked for
         // after it is taken, and no picture write starts.
         private volatile bool _quiesced;
-        // From just before a picture transfer until the motor pass after it.
+        // From just before a picture transfer until a motor pass after it
+        // leaves no write refused.
         private volatile bool _pictureInFlight;
         // True from the start: a port's first identification tells both
         // motors their levels, and until then a port that opened during the
@@ -230,10 +231,9 @@ namespace PadForge.Engine.Common.BlissBox
         /// always shows it.</summary>
         public bool Busy => !_jobs.IsEmpty || _jobRunning;
 
-        /// <summary>Nothing is left to send the motors. Either both were last
-        /// told to stop or never started, no write since was refused, no
-        /// resend and no level asked for since the last write is owed, and no
-        /// motor pass is running, or the controller in the port has none, or
+        /// <summary>Nothing is left to send the motors. Both were last told to
+        /// stop, no write since was refused, no resend and no level asked for
+        /// since the last write is owed, and no motor pass is running, or the controller in the port has none, or
         /// the adapter is searching, with no controller in the port to stop.
         /// A refused write keeps its motor out of rest until one goes through,
         /// since the adapter may have taken it. The fields are read between
@@ -282,8 +282,8 @@ namespace PadForge.Engine.Common.BlissBox
             }
         }
 
-        /// <summary>True from just before a picture transfer until the motor
-        /// pass after it. On a GPA the transfer first runs the port's
+        /// <summary>True from just before a picture transfer until a motor
+        /// pass after it leaves no write refused. On a GPA the transfer first runs the port's
         /// controller driver's command-5 routine (0x2BEF to 0x2BF9), which on
         /// a Dreamcast pad takes a running motor's timer and forces full power
         /// (0x0C2A, 0x2A16), and the transfer holds the worker for up to
@@ -426,7 +426,7 @@ namespace PadForge.Engine.Common.BlissBox
                 {
                     if (WriteScreen(now)) WriteMotors(_clock());
                 }
-                finally { _pictureInFlight = false; }
+                finally { if (!_largeFailed && !_smallFailed) _pictureInFlight = false; }
             }
 
             if (!_jobs.IsEmpty)
@@ -543,7 +543,7 @@ namespace PadForge.Engine.Common.BlissBox
                 WriteMotors(_clock());
                 return written;
             }
-            finally { _pictureInFlight = false; }
+            finally { if (!_largeFailed && !_smallFailed) _pictureInFlight = false; }
         }
 
         /// <summary>How long the player job waits after its command before it
@@ -689,7 +689,8 @@ namespace PadForge.Engine.Common.BlissBox
             // mark once the pass after the write is done.
             lock (_peakGate)
             {
-                if (_quiesced) return false;
+                // A closing port's last write is its motors' stop.
+                if (_quiesced || _stopRequested) return false;
                 _pictureInFlight = true;
             }
             _lastScreenWrite = at;
@@ -810,7 +811,14 @@ namespace PadForge.Engine.Common.BlissBox
                     Volatile.Write(ref _resendSmall, false);
                 }
             }
-            finally { Interlocked.Increment(ref _motorPasses); }
+            finally
+            {
+                // A refused write after a picture keeps it in flight: on a GPA
+                // the picture's pulse left a running jump pack at full power,
+                // and only a write that goes through ends that.
+                if (!_largeFailed && !_smallFailed) _pictureInFlight = false;
+                Interlocked.Increment(ref _motorPasses);
+            }
         }
 
         /// <summary>A 3.x write of both motors. The peaks are taken before the

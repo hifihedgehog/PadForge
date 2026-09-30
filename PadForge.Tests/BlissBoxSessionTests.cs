@@ -24,6 +24,11 @@ namespace PadForge.Tests
             public byte[] Stored = Enumerable.Repeat((byte)0xFF, 192).ToArray();
             public readonly List<byte[]> Sent = new();
             public int InfoReads, PressureReads, ScreenReads, NotReadyReads;
+            /// <summary>Report 21 reads that fail, and ones answered for another
+            /// player, before this port's own answers come back.</summary>
+            public int FailPressureReads, ForeignPressureReads;
+            /// <summary>Runs on each report 21 read: a slow adapter.</summary>
+            public Action OnPressureRead;
             public Func<byte[], byte[]> Controller;
             /// <summary>A report 18 command the adapter refuses, or null. A
             /// refused player command never reaches the firmware, so the
@@ -172,7 +177,18 @@ namespace PadForge.Tests
                         break;
                     case BlissBoxProtocol.ReportPressure:
                         PressureReads++;
-                        buffer[0] = player;
+                        OnPressureRead?.Invoke();
+                        if (FailPressureReads > 0)
+                        {
+                            FailPressureReads--;
+                            return -1;
+                        }
+                        if (ForeignPressureReads > 0)
+                        {
+                            ForeignPressureReads--;
+                            buffer[0] = (byte)(player + 1);
+                        }
+                        else buffer[0] = player;
                         Array.Copy(Pressure, 0, buffer, 1, 12);
                         break;
                     case BlissBoxProtocol.ReportScreenRead:
@@ -385,6 +401,68 @@ namespace PadForge.Tests
             Assert.Null(session.Pressure);
             _now = 600; session.Step();
             Assert.Equal(2, adapter.PressureReads);
+        }
+
+        [Fact]
+        public void AFailedPressureRead_PutsThePressureAtRest()
+        {
+            // BBAPI.cs getPressure hands back zeros when no read is this
+            // port's, and they replace pData (729). A kept sample held a
+            // pressed button pressed while report 17 went on answering.
+            var adapter = new ScriptedAdapter { Type = BlissBoxControllers.TypeDualShock2 };
+            adapter.Pressure[6] = 200;
+            var session = Session(adapter);
+            session.Step();
+            Assert.Equal(200, session.Pressure[6]);
+
+            adapter.FailPressureReads = 1;
+            _now = 50; session.Step();
+            Assert.NotNull(session.LiveInfo);
+            Assert.Equal(new byte[12], session.Pressure);
+            // A failed read ends the poll: no second try in the same poll.
+            Assert.Equal(2, adapter.PressureReads);
+
+            _now = 100; session.Step();
+            Assert.Equal(200, session.Pressure[6]);
+        }
+
+        [Fact]
+        public void APressureReadForAnotherPlayer_IsReadAgain_UpToTwentyTimes()
+        {
+            var adapter = new ScriptedAdapter { Type = BlissBoxControllers.TypeDualShock2 };
+            adapter.Pressure[6] = 200;
+            adapter.ForeignPressureReads = 3;
+            var session = Session(adapter);
+            session.Step();
+            Assert.Equal(4, adapter.PressureReads);
+            Assert.Equal(200, session.Pressure[6]);
+
+            // Twenty answers for another player: the poll ends at rest.
+            adapter.ForeignPressureReads = BlissBoxSession.PressureTries;
+            _now = 50; session.Step();
+            Assert.Equal(4 + BlissBoxSession.PressureTries, adapter.PressureReads);
+            Assert.Equal(new byte[12], session.Pressure);
+        }
+
+        [Fact]
+        public void APressurePollGivesUpAfterOneInfoInterval()
+        {
+            // A slow adapter answering for another port: twenty reads of 100 ms
+            // would hold the motors' next write back two seconds. The tries end
+            // once an info interval has gone by, at rest.
+            var adapter = new ScriptedAdapter { Type = BlissBoxControllers.TypeDualShock2 };
+            adapter.Pressure[6] = 200;
+            var session = Session(adapter);
+            session.Step();
+            Assert.Equal(200, session.Pressure[6]);
+
+            adapter.ForeignPressureReads = BlissBoxSession.PressureTries;
+            adapter.OnPressureRead = () => _now += 100;
+            _now = 50;
+            int before = adapter.PressureReads;
+            session.Step();
+            Assert.Equal(BlissBoxSession.InfoIntervalMs / 100, adapter.PressureReads - before);
+            Assert.Equal(new byte[12], session.Pressure);
         }
 
         [Fact]

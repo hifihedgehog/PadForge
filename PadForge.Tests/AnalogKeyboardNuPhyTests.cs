@@ -548,16 +548,29 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void NuPhyStop_WritesTheStartBytes_WhenTheReadGoesUnanswered()
+        public void NuPhyStop_WritesNothing_WhenTheReadGoesUnanswered()
         {
-            // The literal undo when the keyboard stops answering reads.
+            // setPartialKeyboardFunc returns its failure before any write when
+            // getKeyboardFunc fails. Writing the bytes Start read would put
+            // back a report rate changed meanwhile, so the modes keep their
+            // debug bit and everything else as the keyboard has it.
+            // Mode 2 already streams, so Start's last exchange is its GetFunc,
+            // a reply with the bit set: a restore that read on past an
+            // unanswered request would take that reply for the mode's own.
             var kb = NuPhyKeyboard();
-            var before = (byte[])kb.Func.Clone();
+            kb.Func[128 + 7] |= NuPhyProtocol.DebugModeBit;
             var session = new NuPhyHeSession(NuPhy(0x6120));
             Assert.True(session.Start(kb.Io));
+            Assert.False(session.ModeChanged(2));
+            kb.Func[64 + 4] = 0x04;
+            var during = (byte[])kb.Func.Clone();
+            int started = kb.Writes.Count;
             kb.Silent = r => r[2] == NuPhyProtocol.GetFunc;
             session.Stop(kb.Io);
-            Assert.Equal(before, kb.Func);
+            Assert.Equal(during, kb.Func);
+            Assert.DoesNotContain(kb.Writes.Skip(started), w => w[2] == NuPhyProtocol.SetFunc);
+            for (int mode = 0; mode < NuPhyProtocol.ModeCount; mode++)
+                Assert.False(session.ModeChanged(mode));
         }
 
         [Fact]

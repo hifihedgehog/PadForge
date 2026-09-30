@@ -29,8 +29,9 @@ namespace PadForge.Common.Input
     /// list: every present HID interface whose top-level usage page is in
     /// the vendor range is a candidate, which is what lets a handheld
     /// released tomorrow be learned. Per-path verdicts are cached the way
-    /// the headset runtime caches its marker probe, so the descriptor read
-    /// runs once per appearance. Blocking device I/O: sweep worker only.
+    /// the headset runtime caches its marker probe, so a descriptor read that
+    /// succeeds runs once per appearance and one that fails runs again on the
+    /// next sweep (<see cref="Lookup"/>). Blocking device I/O: sweep worker only.
     /// </summary>
     internal static class VendorHidRuntime
     {
@@ -45,6 +46,24 @@ namespace PadForge.Common.Input
         internal static void InvalidateCache()
         {
             lock (_verdicts) _verdicts.Clear();
+        }
+
+        /// <summary>The verdict for a present path: kept from its first probe
+        /// that could read the collection, a "not a vendor collection" null
+        /// included, else probed now. A probe that could not open or read the
+        /// collection is not kept, so the path is probed again on the next
+        /// sweep. An earlier version kept those as null too, and a collection
+        /// that failed its first probe while Windows was still starting it went
+        /// unread until it was unplugged.</summary>
+        internal static VendorHidCollection Lookup(string path,
+            Func<(VendorHidCollection Verdict, bool Unreadable)> probe)
+        {
+            lock (_verdicts)
+                if (_verdicts.TryGetValue(path, out var known)) return known;
+            var (verdict, unreadable) = probe();
+            if (!unreadable)
+                lock (_verdicts) _verdicts[path] = verdict;
+            return verdict;
         }
 
         /// <summary>Present vendor collections, or null when enumeration
@@ -71,14 +90,11 @@ namespace PadForge.Common.Input
                     if (string.IsNullOrEmpty(path)) continue;
                     present.Add(path);
 
-                    VendorHidCollection verdict;
-                    bool known;
-                    lock (_verdicts) known = _verdicts.TryGetValue(path, out verdict);
-                    if (!known)
+                    var verdict = Lookup(path, () =>
                     {
-                        verdict = Probe(path);
-                        lock (_verdicts) _verdicts[path] = verdict;
-                    }
+                        var probed = Probe(path, out bool unreadable);
+                        return (probed, unreadable);
+                    });
                     if (verdict != null) result.Add(verdict);
                 }
             }
@@ -117,9 +133,12 @@ namespace PadForge.Common.Input
 
         /// <summary>Query-only open (no read access needed for the
         /// descriptor), so a collection another program holds exclusively
-        /// is still listed and named. Returns null for a non-vendor page.</summary>
-        private static VendorHidCollection Probe(string path)
+        /// is still listed and named. Returns null for a non-vendor page, and
+        /// null with <paramref name="unreadable"/> set when the collection
+        /// could not be opened or read, which says nothing about its page.</summary>
+        private static VendorHidCollection Probe(string path, out bool unreadable)
         {
+            unreadable = true;
             var handle = SonyHeadsetHid.CreateFile(path, 0,
                 SonyHeadsetHid.FILE_SHARE_READ | SonyHeadsetHid.FILE_SHARE_WRITE,
                 IntPtr.Zero, SonyHeadsetHid.OPEN_EXISTING, 0, IntPtr.Zero);
@@ -130,6 +149,7 @@ namespace PadForge.Common.Input
                 if (!SonyHeadsetHid.HidD_GetPreparsedData(handle, out preparsed)) return null;
                 if (SonyHeadsetHid.HidP_GetCaps(preparsed, out var caps) != SonyHeadsetHid.HIDP_STATUS_SUCCESS)
                     return null;
+                unreadable = false;
                 if (caps.UsagePage < VendorPageMin) return null;
                 // A collection with no input report carries no button.
                 if (caps.InputReportByteLength == 0) return null;
@@ -138,7 +158,14 @@ namespace PadForge.Common.Input
                 {
                     Size = Marshal.SizeOf<SonyHeadsetHid.HIDD_ATTRIBUTES>()
                 };
-                SonyHeadsetHid.HidD_GetAttributes(handle, ref attributes);
+                // The key a definition is filed under is built from these, so
+                // a failed read is one to try again, never a collection kept
+                // under VID and PID 0.
+                if (!SonyHeadsetHid.HidD_GetAttributes(handle, ref attributes))
+                {
+                    unreadable = true;
+                    return null;
+                }
                 string name = ReadProductString(handle);
                 if (string.IsNullOrWhiteSpace(name))
                     name = $"HID {attributes.VendorID:X4}:{attributes.ProductID:X4}";
@@ -156,6 +183,7 @@ namespace PadForge.Common.Input
             }
             catch
             {
+                unreadable = true;
                 return null;
             }
             finally

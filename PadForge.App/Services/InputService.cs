@@ -917,6 +917,9 @@ namespace PadForge.Services
             // dialog arms a capture.
             PadForge.Common.Input.HandheldButtonRegistry.RegistryChanged += OnHandheldRegistryChanged;
             PadForge.Common.Input.HandheldButtonRegistry.ActivityChanged += OnHandheldActivityChanged;
+            // Analog keyboards (#468): a key list that grows rebuilds the
+            // pickers and the preview's order, the handheld fan-out.
+            PadForge.Common.Input.AnalogKeyboardRuntime.KeyOrdersChanged += OnAnalogKeyOrdersChanged;
             // Voice phrases on mic-bearing pads (issue #317): the engine
             // stamps pulses into the pad's state through this hook.
             PadForge.Engine.SdlDeviceWrapper.ExternalVoiceAugment = PadForge.Common.Input.VoicePulse.Apply;
@@ -2562,6 +2565,7 @@ namespace PadForge.Services
             try { PadForge.Common.Input.VoicePhraseRegistry.RegistryChanged -= OnVoicePhraseRegistryChanged; } catch { }
             try { PadForge.Common.Input.HandheldButtonRegistry.RegistryChanged -= OnHandheldRegistryChanged; } catch { }
             try { PadForge.Common.Input.HandheldButtonRegistry.ActivityChanged -= OnHandheldActivityChanged; } catch { }
+            try { PadForge.Common.Input.AnalogKeyboardRuntime.KeyOrdersChanged -= OnAnalogKeyOrdersChanged; } catch { }
             try { PadForge.Common.Input.BlissBoxRuntime.PortChanged -= OnBlissBoxPortChanged; } catch { }
             if (_inputManager != null)
             {
@@ -5238,9 +5242,11 @@ namespace PadForge.Services
 
         /// <summary>
         /// The analog keyboard line under the Settings switch (issue #468):
-        /// which keyboards are being read, and which Razer ones wait for
-        /// Synapse, the one reason a found keyboard stays quiet. Empty while
-        /// the feature is off, which collapses the line, the G-keys shape.
+        /// the keyboards with an open row, and the Razer ones among them that
+        /// wait for Synapse. An open row is not proof of depths: a MAD68 Pro R
+        /// whose recovery has used its two cycles for the minute also stays
+        /// quiet, and the line does not say so. Empty while the feature is
+        /// off, which collapses the line, the G-keys shape.
         /// </summary>
         private void UpdateAnalogKeyboardsStatus()
         {
@@ -9271,6 +9277,38 @@ namespace PadForge.Services
             }));
         }
 
+        private int _analogKeyRefreshQueued;
+
+        /// <summary>An analog keyboard's key list changed (#468): its route
+        /// published it at open, it reported a key the list lacked, or a
+        /// Remote Link owner's list for a peer's copy changed. The pickers and
+        /// the Devices preview's order are built from the list, so they
+        /// rebuild, the handheld registry's fan-out, once per burst of changes:
+        /// a keyboard's first presses can report many new keys in a second.</summary>
+        private void OnAnalogKeyOrdersChanged(object sender, EventArgs e)
+        {
+            if (System.Threading.Interlocked.Exchange(ref _analogKeyRefreshQueued, 1) != 0) return;
+            _dispatcher.BeginInvoke(new Action(() =>
+            {
+                System.Threading.Volatile.Write(ref _analogKeyRefreshQueued, 0);
+                try
+                {
+                    foreach (var padVm in _mainVm.Pads)
+                        if (padVm != null) RefreshAvailableInputsForSlot(padVm);
+                }
+                catch { /* picker refresh is cosmetic */ }
+                try
+                {
+                    var devVm = _mainVm.Devices;
+                    var selected = devVm?.SelectedDevice;
+                    if (devVm != null && devVm.IsAnalogKeyboardDevice && selected != null
+                        && FindUserDevice(selected.InstanceGuid) is { CapType: InputDeviceType.AnalogKeyboard } ud)
+                        devVm.SetAnalogKeyOrder(PadForge.Common.Input.AnalogKeyboardRuntime.KeysFor(ud));
+                }
+                catch { /* preview refresh is cosmetic */ }
+            }), System.Windows.Threading.DispatcherPriority.Background);
+        }
+
         /// <summary>A Learn dialog armed or disarmed a capture, or the
         /// feature toggle flipped (#343): the hooks must exist for a capture
         /// to see anything, so re-run the hook decision now rather than at
@@ -10523,6 +10561,9 @@ namespace PadForge.Services
                 });
                 OnLinkPeersChanged(); // refresh Nearby PCs so this peer reads "Connected"
             };
+            // A peer's analog keyboard reported a key its owner's list lacked
+            // (#468): the same rebuild a local one gets.
+            _linkServer.DeviceKeyOrderChanged += _ => OnAnalogKeyOrdersChanged(null, EventArgs.Empty);
             _linkServer.DeviceDisconnected += device =>
             {
                 lock (_remotePeerRegistrationLock)
@@ -11468,6 +11509,14 @@ namespace PadForge.Services
                                 // tag buttons). The periodic device-list push refreshes
                                 // this as dynamic slots appear.
                                 DeviceObjects = objects,
+                                // What the peer cannot work out from its own PC: an
+                                // analog keyboard's keys as its route and its reports
+                                // name them, and which of a raw Bliss-Box port's axes
+                                // are the triggers of the controller in it.
+                                AnalogKeyOrder = devType == InputDeviceType.AnalogKeyboard
+                                    ? PadForge.Common.Input.AnalogKeyboardRuntime.KeysFor(ud)
+                                    : null,
+                                BlissBoxRestMask = PadForge.Common.Input.BlissBoxRuntime.NativeRestMask(ud),
                             };
                             list.Add(info);
                             // Reuse the device's delta accumulator across

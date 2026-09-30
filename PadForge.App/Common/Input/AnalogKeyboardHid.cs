@@ -48,8 +48,9 @@ namespace PadForge.Common.Input
     /// caps, strings, declared report IDs and container, the facts the routes
     /// decide on (<see cref="AnalogKeyboardRoutes.Candidates"/>). Nothing is
     /// written here. Per-path metadata is cached the way
-    /// <see cref="VendorHidRuntime"/> caches its verdicts, so the probe runs
-    /// once per appearance. Blocking device I/O: sweep worker only.
+    /// <see cref="VendorHidRuntime"/> caches its verdicts, so a probe that
+    /// succeeds runs once per appearance and one that fails runs again on the
+    /// next sweep (<see cref="Lookup"/>). Blocking device I/O: sweep worker only.
     ///
     /// <para>The probe is Soup's hwHid::getAll on Windows (HidD_GetAttributes,
     /// HidP_GetCaps, HidP_InitializeReportForID for hwHid::hasReportId), with
@@ -59,15 +60,27 @@ namespace PadForge.Common.Input
     {
         private static readonly Dictionary<string, AnalogKeyboardDeviceInfo> _probed =
             new(StringComparer.OrdinalIgnoreCase);
-        private static readonly HashSet<string> _unreadable = new(StringComparer.OrdinalIgnoreCase);
 
         internal static void InvalidateCache()
         {
+            lock (_probed) _probed.Clear();
+        }
+
+        /// <summary>The metadata for a present path: kept from its first good
+        /// probe, else probed now. A failed probe is not kept, so the path is
+        /// probed again on the next sweep. An earlier version kept failures
+        /// too, and a collection that failed its first probe while Windows was
+        /// still starting it went unread until it was unplugged. The probe
+        /// opens for query only and writes nothing, so trying again costs one
+        /// CreateFile per sweep.</summary>
+        internal static AnalogKeyboardDeviceInfo Lookup(string path, Func<AnalogKeyboardDeviceInfo> probe)
+        {
             lock (_probed)
-            {
-                _probed.Clear();
-                _unreadable.Clear();
-            }
+                if (_probed.TryGetValue(path, out var known)) return known;
+            var info = probe();
+            if (info != null)
+                lock (_probed) _probed[path] = info;
+            return info;
         }
 
         /// <summary>Present analog keyboard collections in route priority
@@ -94,23 +107,7 @@ namespace PadForge.Common.Input
                     if (string.IsNullOrEmpty(path)) continue;
                     present.Add(path);
 
-                    AnalogKeyboardDeviceInfo info;
-                    bool known, unreadable;
-                    lock (_probed)
-                    {
-                        known = _probed.TryGetValue(path, out info);
-                        unreadable = _unreadable.Contains(path);
-                    }
-                    if (unreadable) continue;
-                    if (!known)
-                    {
-                        info = Probe(path, devInst);
-                        lock (_probed)
-                        {
-                            if (info == null) _unreadable.Add(path);
-                            else _probed[path] = info;
-                        }
-                    }
+                    var info = Lookup(path, () => Probe(path, devInst));
                     if (info != null) infos.Add(info);
                 }
             }
@@ -120,10 +117,7 @@ namespace PadForge.Common.Input
             }
 
             lock (_probed)
-            {
                 Forget(_probed.Keys, present, key => _probed.Remove(key));
-                Forget(_unreadable, present, key => _unreadable.Remove(key));
-            }
 
             LinkSiblings(infos);
             var candidates = new List<AnalogKeyboardCandidate>();
@@ -272,6 +266,12 @@ namespace PadForge.Common.Input
                 var input = ReportIds(HidP_Input, preparsed, caps.InputReportByteLength);
                 var output = ReportIds(HidP_Output, preparsed, caps.OutputReportByteLength);
                 var feature = ReportIds(HidP_Feature, preparsed, caps.FeatureReportByteLength);
+                // Declared value caps that could not be read fail the probe,
+                // so the next sweep tries again: kept as an empty list, they
+                // hid the collection from the routes that match on them
+                // (RongYuan's stream collection) for as long as it stayed.
+                var valueCaps = ValueCaps(preparsed, caps.NumberInputValueCaps);
+                if (valueCaps == null) return null;
 
                 return new AnalogKeyboardDeviceInfo
                 {
@@ -296,7 +296,7 @@ namespace PadForge.Common.Input
                     HasInputReport = id => input.Contains(id),
                     HasOutputReport = id => output.Contains(id),
                     HasFeatureReport = id => feature.Contains(id),
-                    InputValueCaps = ValueCaps(preparsed, caps.NumberInputValueCaps),
+                    InputValueCaps = valueCaps,
                 };
             }
             catch
@@ -323,13 +323,15 @@ namespace PadForge.Common.Input
             return ids;
         }
 
+        /// <summary>The input value caps, empty when the collection declares
+        /// none, null when it declares some and they could not be read.</summary>
         private static IReadOnlyList<AnalogKeyboardValueCap> ValueCaps(IntPtr preparsed, ushort count)
         {
             if (count == 0) return Array.Empty<AnalogKeyboardValueCap>();
             var caps = new SonyHeadsetHid.HIDP_VALUE_CAPS[count];
             ushort n = count;
             if (SonyHeadsetHid.HidP_GetValueCaps(HidP_Input, caps, ref n, preparsed) != SonyHeadsetHid.HIDP_STATUS_SUCCESS)
-                return Array.Empty<AnalogKeyboardValueCap>();
+                return null;
             var result = new AnalogKeyboardValueCap[n];
             for (int i = 0; i < n; i++)
                 result[i] = new AnalogKeyboardValueCap(caps[i].ReportID, caps[i].UsagePage, caps[i].BitSize, caps[i].ReportCount);

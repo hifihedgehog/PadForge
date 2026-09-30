@@ -583,9 +583,13 @@ namespace PadForge.Tests
         {
             string src = System.IO.File.ReadAllText(System.IO.Path.Combine(
                 RepoRoot(), "PadForge.App", "Common", "MenuIconResolver.cs"));
-            Assert.Contains("private const int IconDecodePixelWidth = 256;", src);
-            Assert.Equal(3, Count(src, "img.DecodePixelWidth = IconDecodePixelWidth;"));
-            Assert.DoesNotContain("DecodePixelWidth = 96", src);
+            // One square box, through BoundedBitmap, which bounds the height
+            // as well as the width (a width bound alone let a tall picture
+            // decode to gigabytes).
+            Assert.Contains("private const int IconDecodeSize = 256;", src);
+            Assert.Equal(3, Count(src, "IconDecodeSize, IconDecodeSize)"));
+            Assert.Equal(3, Count(src, "BoundedBitmap.FromBytes("));
+            Assert.DoesNotContain("DecodePixelWidth", src);
         }
 
         [Fact]

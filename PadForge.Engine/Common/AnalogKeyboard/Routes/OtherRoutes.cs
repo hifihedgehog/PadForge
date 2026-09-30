@@ -69,6 +69,10 @@ namespace PadForge.Engine.Common.AnalogKeyboard
                 Matches = RogAzoth96HeProtocol.Matches,
                 CreateSession = _ => new RogAzoth96HeSession(),
                 Companion = RogAzoth96HeProtocol.FindEvents,
+                // The session's own release rule, held by wall clock: its
+                // lease renewal writes before the release check, and a write
+                // that stalls to its timeout would otherwise hold the last key.
+                StaleAfterMs = RogAzoth96HeSession.ReleaseMs,
                 Name = _ => RogAzoth96HeProtocol.ModelName,
                 Keys = _ => AnalogKeyboardData.KeysOf(RogAzoth96HeProtocol.Table()),
             },

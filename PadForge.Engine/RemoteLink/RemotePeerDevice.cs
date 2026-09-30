@@ -118,6 +118,20 @@ namespace PadForge.Engine.RemoteLink
         /// be reported upstream with a complete dossier.</summary>
         public string SdlGuid { get; set; }
 
+        /// <summary>The keys the owner's input picker lists for an analog
+        /// keyboard (#468), in its order: the route's own list and every key
+        /// the row has reported since. Null for every other device and from a
+        /// peer that predates the v9 tail, where the catalog's list for the VID
+        /// and PID stands in.</summary>
+        public int[] AnalogKeyOrder { get; set; }
+
+        /// <summary>For a Bliss-Box port the owner reads raw (#469): bit N set
+        /// when native axis N rests at 0 and travels one way, because the
+        /// controller in the owner's port names it a trigger. Null for every
+        /// other device and from a peer that predates the v10 tail, where the
+        /// port's native axes count as centered.</summary>
+        public byte? BlissBoxRestMask { get; set; }
+
         internal RemotePeerDeviceInfo CloneForSlot(byte slot)
         {
             var copy = (RemotePeerDeviceInfo)MemberwiseClone();

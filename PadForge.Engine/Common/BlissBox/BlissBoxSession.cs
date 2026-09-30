@@ -653,11 +653,35 @@ namespace PadForge.Engine.Common.BlissBox
             InfoChanged?.Invoke(this);
         }
 
+        /// <summary>Reads of report 21 one pressure poll makes while the
+        /// answers are another player's, BBAPI.cs getPressure's tries.</summary>
+        internal const int PressureTries = 20;
+
+        /// <summary>
+        /// BBAPI.cs getPressure (620-637): report 21 is read until the answer
+        /// is this port's, up to 20 times, and a poll that gets none returns
+        /// zeros, which replace the pressure (729). Kept instead, a pressed
+        /// sample stayed pressed for as long as report 21 failed while report
+        /// 17 answered, since only a failed report 17 closes the channel. A
+        /// read that fails ends the poll without another try: each can take up
+        /// to 500 ms, and PollInfo's failure count notices a channel that
+        /// stopped. PollArrows clears a failed poll the same way. The tries
+        /// also end once one info interval has gone by, so a slow adapter
+        /// answering for another port cannot hold the motors' next write back
+        /// for twenty reads, and a stop ends them at once. The next poll comes
+        /// 50 ms later either way.
+        /// </summary>
         private void PollPressure()
         {
-            var data = Get(BlissBoxProtocol.ReportPressure);
             var pressure = new byte[BlissBoxProtocol.PressureCount];
-            if (BlissBoxProtocol.TryParsePressure(data, Player, pressure)) _pressure = pressure;
+            long giveUp = _clock() + InfoIntervalMs;
+            for (int attempt = 0; attempt < PressureTries && !_stopRequested; attempt++)
+            {
+                if (attempt > 0 && _clock() >= giveUp) break;
+                var data = Get(BlissBoxProtocol.ReportPressure);
+                if (data.IsEmpty || BlissBoxProtocol.TryParsePressure(data, Player, pressure)) break;
+            }
+            _pressure = pressure;
         }
 
         private void ReadScreen()

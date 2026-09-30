@@ -1203,9 +1203,10 @@ namespace PadForge.Tests
             // the port raw. The owner sends no object list for a joystick, so
             // the peer's names for axes 2 and 5 are a gamepad's triggers
             // whatever the pad is, and a DualShock's axes there are centered on
-            // the owner. The peer counts them centered too, as it does for
-            // every raw joystick.
-            UserDevice Row(int type)
+            // the owner. From an owner that sends no rest mask (the device
+            // list's v10 tail), the peer counts them centered too, as it does
+            // for every raw joystick.
+            UserDevice Row(int type, byte? mask = null)
             {
                 var device = new PadForge.Engine.RemoteLink.RemotePeerDevice(new PadForge.Engine.RemoteLink.RemotePeerDeviceInfo
                 {
@@ -1213,6 +1214,7 @@ namespace PadForge.Tests
                     ProductId = 0x0D04,
                     InputDeviceType = type,
                     NumAxes = 8,
+                    BlissBoxRestMask = mask,
                 });
                 return new UserDevice
                 {
@@ -1229,6 +1231,20 @@ namespace PadForge.Tests
             Assert.False(InputManager.AxisRestsAtZero("Axis 2", raw));
             Assert.False(InputManager.AxisRestsAtZero("Axis 0", raw));
             Assert.False(InputManager.AxisRestsAtZero("Axis 8", Row(InputDeviceType.Gamepad)));
+
+            // The owner's mask answers for the native axes: a GameCube pad in
+            // the owner's port names axes 2 and 5 its triggers.
+            byte gameCube = BlissBoxRuntime.RestMaskFor(new BlissBoxInfo(9, 0, 3, 0, 1));
+            Assert.Equal((1 << 2) | (1 << 5), gameCube);
+            Assert.Equal(0, BlissBoxRuntime.RestMaskFor(new BlissBoxInfo(19, 0, 4, 0, 1)));
+            var masked = Row(InputDeviceType.Joystick, gameCube);
+            Assert.True(InputManager.AxisRestsAtZero("Axis 2", masked));
+            Assert.True(InputManager.AxisRestsAtZero("Axis 5", masked));
+            Assert.False(InputManager.AxisRestsAtZero("Axis 0", masked));
+            Assert.True(InputManager.AxisRestsAtZero("Axis 8", masked));
+            // A peer's copy is never asked for a mask to send on.
+            Assert.Null(BlissBoxRuntime.NativeRestMask(masked));
+            Assert.Null(BlissBoxRuntime.NativeRestMask(new UserDevice { VendorId = 0x054C, ProdId = 0x0268 }));
         }
 
         [Fact]

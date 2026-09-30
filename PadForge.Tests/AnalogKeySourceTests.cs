@@ -424,6 +424,26 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void TheAzothRoute_DropsAHeldKey_WhenAPassStallsPastTheReleaseTime()
+        {
+            // The session renews its lease before its release check, so a
+            // renewal write that stalls to its timeout would hold the last key.
+            // The route's window is the session's own release time.
+            var azoth = OtherRoutes.All
+                .Single(r => r.Id == "halljoy-rog-azoth-96-he");
+            Assert.Equal(RogAzoth96HeSession.ReleaseMs, azoth.StaleAfterMs);
+
+            using var dev = new AnalogKeyboardDevice(Candidate());
+            dev.UseRouteForTest(azoth);
+            dev.AttachForTest();
+            dev.InjectForTest(AnalogKeyCodes.W, 0.5f);
+            dev.SetLastReportTickForTest(Environment.TickCount64);
+            Assert.Equal(0.5f, dev.GetCurrentState().AnalogKeys.Get(AnalogKeyCodes.W));
+            dev.SetLastReportTickForTest(Environment.TickCount64 - 1000);
+            Assert.Equal(0f, dev.GetCurrentState().AnalogKeys.Get(AnalogKeyCodes.W));
+        }
+
+        [Fact]
         public void KeysAKeyboardReports_JoinItsPickerList()
         {
             // Keys known only by position, and any code a table missed.

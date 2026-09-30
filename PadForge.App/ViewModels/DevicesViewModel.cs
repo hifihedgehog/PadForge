@@ -383,6 +383,28 @@ namespace PadForge.ViewModels
             HasAnalogKeys = AnalogKeys.Count > 0;
         }
 
+        /// <summary>A new key order for the selected analog keyboard, after it
+        /// reported a key its list lacked or its owner's list over Remote Link
+        /// changed: the chips shown take their rank in it and move to their
+        /// place, and chips still to come are placed by it.</summary>
+        internal void SetAnalogKeyOrder(int[] order)
+        {
+            _analogKeyOrder = order ?? System.Array.Empty<int>();
+            foreach (var item in AnalogKeys)
+            {
+                int rank = System.Array.IndexOf(_analogKeyOrder, item.Code);
+                item.Rank = rank < 0 ? int.MaxValue : rank;
+            }
+            // Insertion sort by rank with Move, so the chips keep their
+            // instances and equal ranks keep their order.
+            for (int i = 1; i < AnalogKeys.Count; i++)
+            {
+                int at = i;
+                while (at > 0 && AnalogKeys[at - 1].Rank > AnalogKeys[i].Rank) at--;
+                if (at != i) AnalogKeys.Move(i, at);
+            }
+        }
+
         private bool _hasBlissBoxPressure;
         /// <summary>A DualShock 2 is in the selected Bliss-Box port, so its
         /// twelve pressures show as chips (issue #469).</summary>

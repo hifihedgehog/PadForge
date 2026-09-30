@@ -123,6 +123,68 @@ namespace PadForge.Common.Input
         // documented as poll-thread only. A loop runs only while its own stamp
         // is current.
         private int _runGeneration;
+
+        // Serializes a retiring loop's release of the macro latches against
+        // Start's new stamp, so the release runs before the next loop exists
+        // or sees the newer stamp and leaves the latches to it
+        // (ReleaseLatchesOnExit).
+        private readonly object _runHandoffLock = new();
+
+        /// <summary>Test seam: the current run stamp.</summary>
+        internal int RunGenerationForTest
+        {
+            get => System.Threading.Volatile.Read(ref _runGeneration);
+            set => System.Threading.Volatile.Write(ref _runGeneration, value);
+        }
+
+        /// <summary>The poll loop's exit release for the run stamped
+        /// <paramref name="generation"/>, only while no newer run has started.
+        /// Stop stamps generation + 1, and a higher stamp is Start's, whose
+        /// loop owns the latch sets (poll thread only) and releases what this
+        /// run left when it begins (<see cref="ReleaseInheritedLatches"/>). A
+        /// loop that outlived Stop's join released them anyway, racing the new
+        /// loop and sending ups for the keys it holds. The lock orders this
+        /// against Start's stamp.</summary>
+        internal void ReleaseLatchesOnExit(int generation)
+        {
+            lock (_runHandoffLock)
+            {
+                if (System.Threading.Volatile.Read(ref _runGeneration) <= generation + 1)
+                {
+                    ExitReleaseCheckedForTest?.Invoke();
+                    try { ReleaseAllLatchedMacroKeys(); } catch { }
+                }
+            }
+        }
+
+        /// <summary>Test seam: runs inside the exit release, after its check.</summary>
+        internal Action ExitReleaseCheckedForTest;
+
+        /// <summary>Start's new run stamp, taken under the handoff lock so a
+        /// retiring loop's exit release finishes first or sees it.</summary>
+        internal int StampRun()
+        {
+            lock (_runHandoffLock)
+                return System.Threading.Interlocked.Increment(ref _runGeneration);
+        }
+
+        /// <summary>A new poll loop's first act: releases what a retired run's
+        /// skipped exit release left (<see cref="ReleaseLatchesOnExit"/>), as a
+        /// stop and start releases it, before the first reconcile presses the
+        /// latches still wanted again. Nothing held: nothing sent. Only while
+        /// the run stamped <paramref name="generation"/> is still the current
+        /// one, which also means no Stop has come since (Stop moves the stamp):
+        /// a thread that was slow to start after its run had already stopped,
+        /// and another had begun, would otherwise release that run's latches.</summary>
+        internal void ReleaseInheritedLatches(int generation)
+        {
+            lock (_runHandoffLock)
+            {
+                if (System.Threading.Volatile.Read(ref _runGeneration) == generation)
+                    try { ReleaseAllLatchedMacroKeys(); } catch { }
+            }
+        }
+
         private volatile bool _idle;
 
         /// <summary>The engine half of "Continue polling when window loses
@@ -934,8 +996,10 @@ namespace PadForge.Common.Input
                     SDL_SetHint(SDL_HINT_JOYSTICK_DJI_REMOTE_TCP_HOSTS, _djiHostsHintValue);
 
                 // The Namco USIO's layout, which the board reads when it
-                // opens, so it goes in before SDL_Init.
+                // opens, so it goes in before SDL_Init, and a reopen left over
+                // from the last engine ends here (ResetUsioReopenAtInit).
                 SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_USIO_LAYOUT, _usioLayout);
+                ResetUsioReopenAtInit(value => SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_USIO, value));
 
                 // Allow screensaver/sleep even while SDL video is active.
                 SDL_SetHint(SDL_HINT_VIDEO_ALLOW_SCREENSAVER, "1");
@@ -1484,22 +1548,131 @@ namespace PadForge.Common.Input
         /// <summary>Hands SDL the USIO layout. The board reads it when it
         /// opens, so a change reaches a connected board only when it opens
         /// again, and the fork opens it again when the USIO driver's hint
-        /// goes off and on (docs/README-arcade-io.md). reopen does that, off
-        /// long enough for the poll loop's update to close the board, as
-        /// RescanWiiControllers does for the Wii driver.</summary>
+        /// goes off and on (docs/README-arcade-io.md). reopen asks the poll
+        /// thread for that (<see cref="AdvanceUsioReopen"/>).</summary>
         public static void ApplyUsioLayout(string layout, bool reopen)
         {
             string value = NormalizeUsioLayout(layout);
             _usioLayout = value;
             bool accepted = WriteHintUnderJoystickLock(SDL_HINT_JOYSTICK_HIDAPI_USIO_LAYOUT, value);
             Engine.SdlDiagLog.WriteLine($"USIO hint {SDL_HINT_JOYSTICK_HIDAPI_USIO_LAYOUT}={value} accepted={accepted} reopen={reopen}");
-            if (!reopen) return;
-            Task.Run(() =>
+            if (reopen) RequestUsioReopen();
+        }
+
+        /// <summary>Where the USIO reopen stands: 0 nothing asked, 1 asked,
+        /// or the driver off and the token of the loop run that turned it off,
+        /// shifted left 2 bits with 2 in the low bits (<see cref="UsioOffBy"/>).</summary>
+        private static long _usioReopenState;
+
+        private const long UsioIdle = 0, UsioAsked = 1, UsioOff = 2;
+
+        /// <summary>The source of each poll loop run's USIO owner token. The
+        /// state is static and outlives an engine instance, and a new
+        /// InputManager counts its run stamps from 1 again, so a stamp alone
+        /// could name two loops at once: a retired loop of the last instance
+        /// and the first loop of the next.</summary>
+        private static long s_usioOwners;
+
+        internal static long NewUsioOwner() => System.Threading.Interlocked.Increment(ref s_usioOwners);
+
+        /// <summary>The state value for the driver turned off by the loop run
+        /// holding <paramref name="owner"/>.</summary>
+        internal static long UsioOffBy(long owner) => (owner << 2) | UsioOff;
+
+        internal static long UsioReopenStateForTest
+        {
+            get => System.Threading.Volatile.Read(ref _usioReopenState);
+            set => System.Threading.Volatile.Write(ref _usioReopenState, value);
+        }
+
+        internal static void RequestUsioReopen()
+            => System.Threading.Interlocked.Exchange(ref _usioReopenState, UsioAsked);
+
+        /// <summary>
+        /// Poll thread, right before each of its SDL updates: the USIO reopen's
+        /// next step, the driver's hint off on one call and on again on the
+        /// next. SDL's hint callback only marks the drivers for a change, and
+        /// the next HIDAPI detect applies it (the fork's
+        /// SDL_HIDAPIDriverHintChanged and HIDAPI_UpdateDeviceList), so an off
+        /// and an on with no update between them close nothing. The two used to
+        /// go out 200 ms apart from a worker, which the poll loop's own updates
+        /// covered, but not a stopped or background-suspended engine's: there
+        /// only the interface's joystick update runs, every 500 ms, and the
+        /// board kept its old layout. Here this thread's own update always runs
+        /// between the two writes: SDL takes HIDAPI's update gate only under
+        /// its joystick lock (SDL_UpdateJoysticks), so that update is never
+        /// skipped for another thread's. A request made in between runs another
+        /// cycle. One made while the engine is stopped or suspended finishes
+        /// when the loop runs again, and the board stays closed meanwhile,
+        /// which nothing reads then. SDL's own initialization clears it
+        /// (<see cref="InitializeSdl"/>): the layout goes in before the board
+        /// first opens.
+        ///
+        /// <para>The loop that turns the driver off is the one that turns it
+        /// back on, after its own update. A loop that outlived Stop's join can
+        /// still be finishing its last iteration beside the next run's loop,
+        /// and it passed its stamp check before the new run began: taking the
+        /// other loop's off for its own, it wrote the on before any update saw
+        /// the off. So a loop that finds the driver off under another loop's
+        /// token (<see cref="NewUsioOwner"/>) takes the cycle over and writes
+        /// nothing until its own update has run.</para>
+        ///
+        /// <para>An off that SDL refuses (an environment variable outranks
+        /// the hint) ends the cycle with nothing changed. An on it refuses is
+        /// written again before the next update, since the driver must not
+        /// stay off.</para>
+        /// </summary>
+        internal static void AdvanceUsioReopen(long owner) => AdvanceUsioReopen(owner,
+            value => WriteHintUnderJoystickLock(SDL_HINT_JOYSTICK_HIDAPI_USIO, value));
+
+        internal static void AdvanceUsioReopen(long owner, Func<string, bool> writeDriverHint)
+        {
+            if (System.Threading.Interlocked.Read(ref _usioReopenState) == UsioIdle) return;
+            // Held from reading the state through its hint write to the state
+            // that write leaves. A retired loop that read "asked" and then
+            // stalled before writing could otherwise land its off after the
+            // current loop had written the on, leaving the driver off with the
+            // state idle. The only lock taken inside is SDL's joystick lock,
+            // and nothing takes this one under that one. A request made
+            // meanwhile is kept: each state change is a compare-exchange.
+            lock (s_usioLock)
             {
-                WriteHintUnderJoystickLock(SDL_HINT_JOYSTICK_HIDAPI_USIO, "0");
-                Thread.Sleep(200);
-                WriteHintUnderJoystickLock(SDL_HINT_JOYSTICK_HIDAPI_USIO, "1");
-            });
+                long state = System.Threading.Interlocked.Read(ref _usioReopenState);
+                if (state == UsioIdle) return;
+                if (state == UsioAsked)
+                {
+                    bool off = writeDriverHint("0");
+                    System.Threading.Interlocked.CompareExchange(ref _usioReopenState,
+                        off ? UsioOffBy(owner) : UsioIdle, UsioAsked);
+                    return;
+                }
+                if (state != UsioOffBy(owner))
+                {
+                    System.Threading.Interlocked.CompareExchange(ref _usioReopenState, UsioOffBy(owner), state);
+                    return;
+                }
+                if (writeDriverHint("1"))
+                    System.Threading.Interlocked.CompareExchange(ref _usioReopenState, UsioIdle, state);
+            }
+        }
+
+        private static readonly object s_usioLock = new();
+
+        /// <summary>SDL's initialization, before SDL_Init: a reopen still
+        /// pending is moot, since the board opens in the layout just set, and
+        /// a cycle left with the driver off gets it back on. SDL_Quit drops the
+        /// hints, but a loop that outlived its engine can write its off after
+        /// that, and a hint set before SDL_Init holds. Under the transition's
+        /// lock, so a step in the middle of its write finishes first and its
+        /// off is seen here, rather than landing after this reset with nothing
+        /// left to turn the driver back on.</summary>
+        internal static void ResetUsioReopenAtInit(Func<string, bool> writeDriverHint)
+        {
+            lock (s_usioLock)
+            {
+                long pending = System.Threading.Interlocked.Exchange(ref _usioReopenState, UsioIdle);
+                if ((pending & 3) == UsioOff) writeDriverHint("1");
+            }
         }
 
         private static bool WriteHintUnderJoystickLock(string name, string value)
@@ -1568,7 +1741,7 @@ namespace PadForge.Common.Input
             _frequencyTimer.Restart();
             _frequencyCounter = 0;
 
-            int generation = System.Threading.Interlocked.Increment(ref _runGeneration);
+            int generation = StampRun();
             _pollingThread = new Thread(() => PollingLoop(generation))
             {
                 Name = "PadForge.InputManager",
@@ -1776,6 +1949,9 @@ namespace PadForge.Common.Input
 
             try
             {
+                ReleaseInheritedLatches(generation);
+                long usioOwner = NewUsioOwner();
+
                 var cycleTimer = new Stopwatch();
                 cycleTimer.Start();
 
@@ -1812,6 +1988,7 @@ namespace PadForge.Common.Input
                             // (16 volatile writes at 20 Hz); without this
                             // the last nonzero pack would sound forever.
                             RumbleAudioService.SilenceAll();
+                            if (System.Threading.Volatile.Read(ref _runGeneration) == generation) AdvanceUsioReopen(usioOwner);
                             long tsIdleSdl = Stopwatch.GetTimestamp();
                             SDL_UpdateJoysticks();
                             long idleSdlMs = (Stopwatch.GetTimestamp() - tsIdleSdl) * 1000 / Stopwatch.Frequency;
@@ -1896,6 +2073,7 @@ namespace PadForge.Common.Input
                         // hiccup to the segment that ate it. SDL_UpdateJoysticks
                         // is where driver-side sync I/O would stall; the
                         // enumeration sweep is where device opens would.
+                        if (System.Threading.Volatile.Read(ref _runGeneration) == generation) AdvanceUsioReopen(usioOwner);
                         long tsSdl = Stopwatch.GetTimestamp();
                         SDL_UpdateJoysticks();
                         long sdlMs = (Stopwatch.GetTimestamp() - tsSdl) * 1000 / Stopwatch.Frequency;
@@ -2078,7 +2256,7 @@ namespace PadForge.Common.Input
                 // logically down between polls; the loop's exit must release
                 // whatever is still latched or the key stays pressed in the
                 // OS after the engine stops.
-                try { ReleaseAllLatchedMacroKeys(); } catch { }
+                ReleaseLatchesOnExit(generation);
 
                 if (hTimer != IntPtr.Zero)
                     CloseHandle(hTimer);

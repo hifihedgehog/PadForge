@@ -14,7 +14,12 @@ namespace PadForge.Tests
     /// not, so a re-authored row could inherit the previous trim level
     /// whenever Reset on Release was off. The keys carry the slot, so only the
     /// named slot's entries retire and the neighbors keep theirs.</para>
+    ///
+    /// <para>In the SettingsManagerStatics collection: a profile switch
+    /// there (RevertToDefaultProfile) clears every slot's trim levels, and
+    /// run beside it this test lost its neighbor entry mid-test.</para>
     /// </summary>
+    [Collection("SettingsManagerStatics")]
     public sealed class StickTrimSlotResetTests
     {
         private static IDictionary TrimStates()

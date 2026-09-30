@@ -122,6 +122,11 @@ namespace PadForge.Engine.RemoteLink
 
         public event Action<RemotePeerDevice> DeviceConnected;
         public event Action<RemotePeerDevice> DeviceDisconnected;
+        /// <summary>A registered peer device's analog key list changed (the
+        /// device list's v9 tail): the owner's keyboard reported a key its list
+        /// lacked. Registration does not run again for that, so the pickers
+        /// built from the list rebuild on this.</summary>
+        public event Action<RemotePeerDevice> DeviceKeyOrderChanged;
         /// <summary>A peer's LAST session dropped (timeout, revocation, stop), by
         /// fingerprint. The owner releases any output ownership that peer held
         /// on local shared devices (#402): a peer that leaves mid-rumble sent
@@ -2138,6 +2143,11 @@ namespace PadForge.Engine.RemoteLink
         /// appeared, drop ones that vanished, and update active/inactive on the rest. Fires
         /// DeviceConnected / DeviceDisconnected so InputService registers/unregisters them
         /// exactly as it does for the handshake set. Runs on the UDP receive thread.</summary>
+        /// <summary>Two analog key lists alike, nulls included: the same codes
+        /// in the same order.</summary>
+        private static bool SameKeys(int[] a, int[] b)
+            => a == null ? b == null : b != null && a.AsSpan().SequenceEqual(b);
+
         private void ReconcileRemoteDevices(LinkPeerConnection c, List<RemotePeerDeviceInfo> infos, List<Action> notifications)
         {
             // Reconcile by the device's STABLE id (PeerLocalDeviceId), not its link slot. Keying
@@ -2218,6 +2228,13 @@ namespace PadForge.Engine.RemoteLink
                     existing.Info.SupportedAxisIndices = info.SupportedAxisIndices;
                     existing.RefreshSupportedSets();
                     existing.Info.InputDeviceType = info.InputDeviceType;
+                    // Read live by the picker and the rest rule: an analog
+                    // keyboard's list grows as it reports new keys, and a port's
+                    // mask moves with the controller in it.
+                    bool keysChanged = !SameKeys(existing.Info.AnalogKeyOrder, info.AnalogKeyOrder);
+                    existing.Info.AnalogKeyOrder = info.AnalogKeyOrder;
+                    existing.Info.BlissBoxRestMask = info.BlissBoxRestMask;
+                    if (keysChanged) notifications.Add(() => DeviceKeyOrderChanged?.Invoke(existing));
                     next[info.Slot] = existing;
                     // Re-register only when the slot moved, so the slot-stamped output route refreshes,
                     // or when what registration recorded changed.

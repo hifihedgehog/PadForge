@@ -13,7 +13,7 @@ namespace PadForge.Common
     /// (MenuItemDefinition.Icon, e.g. "ghost_050_menu_0030.png"). The
     /// files themselves are the local Steam client's own art and are
     /// never copied or shipped. This resolves a name to a frozen, cached
-    /// BitmapImage from beneath the Steam install, and returns null when
+    /// bitmap from beneath the Steam install, and returns null when
     /// Steam is absent, the file is absent, or the name fails the shared
     /// shape gate, in which case callers keep the text-label rendering.
     ///
@@ -27,17 +27,19 @@ namespace PadForge.Common
     {
         private static readonly object Sync = new();
 
-        /// <summary>Decode width for every icon source (#413). Steam ships its
-        /// binding icons at 256, and a cell can now ask for up to 200% of the
-        /// menu's icon box, which at 400% menu scale is 240 DIP. 96 was picked
-        /// when the overlay only ever drew a glyph-sized box, and scaling that
-        /// decode up softened visibly. One constant, so the three loaders
-        /// cannot drift apart.</summary>
-        private const int IconDecodePixelWidth = 256;
+        /// <summary>Decode box for every icon source (#413), square: a cell's
+        /// icon box is square. Steam ships its binding icons at 256, and a cell
+        /// can now ask for up to 200% of the menu's icon box, which at 400%
+        /// menu scale is 240 DIP. 96 was picked when the overlay only ever drew
+        /// a glyph-sized box, and scaling that decode up softened visibly. The
+        /// box bounds the height too (<see cref="BoundedBitmap"/>), since a
+        /// width bound alone let a tall picture decode to gigabytes. One
+        /// constant, so the three loaders cannot drift apart.</summary>
+        private const int IconDecodeSize = 256;
 
         /// <summary>Name -> frozen image, misses cached as null so a menu
         /// rebuild never re-probes the disk for a known-absent file.</summary>
-        private static readonly Dictionary<string, BitmapImage> Cache =
+        private static readonly Dictionary<string, BitmapSource> Cache =
             new(StringComparer.OrdinalIgnoreCase);
 
         static MenuIconResolver()
@@ -185,102 +187,79 @@ namespace PadForge.Common
             }
             catch (Exception ex) when (ex is IOException or UnauthorizedAccessException
                 or NotSupportedException or ArgumentException or System.Security.SecurityException
-                or PathTooLongException)
+                or PathTooLongException or OutOfMemoryException)
             {
             }
             return null;
         }
 
+        /// <summary>A file's bytes, or null when it is empty, past
+        /// <see cref="MaxIconFileBytes"/>, or not there. One open handle gives
+        /// both the length and the bytes, so a file replaced after its size was
+        /// looked at cannot bring a larger one in, and a file that grows while
+        /// it is read is read to the length the handle gave.</summary>
         private static byte[] ReadCapped(string path)
         {
             if (string.IsNullOrEmpty(path)) return null;
-            var info = new FileInfo(path);
-            if (!info.Exists || info.Length == 0 || info.Length > MaxIconFileBytes) return null;
-            return File.ReadAllBytes(info.FullName);
+            using var file = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
+            long length = file.Length;
+            if (length == 0 || length > MaxIconFileBytes) return null;
+            var bytes = new byte[length];
+            int read = 0;
+            while (read < bytes.Length)
+            {
+                int got = file.Read(bytes, read, bytes.Length - read);
+                if (got <= 0) return null;
+                read += got;
+            }
+            return bytes;
         }
 
-        private static BitmapImage LoadFromPack(string iconRef)
-        {
-            byte[] bytes = IconPackageManager.TryReadIcon(iconRef);
-            if (bytes == null || bytes.Length == 0) return null;
-            try
-            {
-                var img = new BitmapImage();
-                img.BeginInit();
-                img.StreamSource = new MemoryStream(bytes, writable: false);
-                img.CacheOption = BitmapCacheOption.OnLoad;
-                img.DecodePixelWidth = IconDecodePixelWidth;
-                img.EndInit();
-                img.Freeze();
-                return img;
-            }
-            catch (Exception ex) when (ex is IOException or NotSupportedException
-                or ArgumentException or InvalidOperationException
-                or System.IO.FileFormatException)
-            {
-                return null;
-            }
-        }
+        private static BitmapSource LoadFromPack(string iconRef)
+            => BoundedBitmap.FromBytes(IconPackageManager.TryReadIcon(iconRef), IconDecodeSize, IconDecodeSize);
 
-        private static BitmapImage LoadFromFile(string path)
+        /// <summary>A loose image file, read through the same 16 MB bound as a
+        /// package entry and the Web Menus page, so the three agree on which
+        /// files are icons.</summary>
+        private static BitmapSource LoadFromFile(string path)
         {
             try
             {
-                if (!File.Exists(path)) return null;
-                var img = new BitmapImage();
-                img.BeginInit();
-                img.UriSource = new Uri(Path.GetFullPath(path), UriKind.Absolute);
-                img.CacheOption = BitmapCacheOption.OnLoad;
-                img.DecodePixelWidth = IconDecodePixelWidth;
-                img.EndInit();
-                img.Freeze();
-                return img;
+                return BoundedBitmap.FromBytes(ReadCapped(path), IconDecodeSize, IconDecodeSize);
             }
             catch (Exception ex) when (ex is IOException or UnauthorizedAccessException
-                or NotSupportedException or ArgumentException or UriFormatException
-                or InvalidOperationException or System.Security.SecurityException
-                or System.IO.FileFormatException or PathTooLongException)
+                or NotSupportedException or ArgumentException or System.Security.SecurityException
+                or PathTooLongException or OutOfMemoryException)
             {
                 return null;
             }
         }
 
-        private static BitmapImage Load(string iconName)
+        private static BitmapSource Load(string iconName)
         {
             string root = SteamRoot();
             if (string.IsNullOrEmpty(root)) return null;
             foreach (var subdir in IconSubdirs)
             {
-                string path = Path.Combine(root, subdir, iconName);
                 try
                 {
-                    if (!File.Exists(path)) continue;
-                    var img = new BitmapImage();
-                    img.BeginInit();
-                    img.UriSource = new Uri(path, UriKind.Absolute);
-                    img.CacheOption = BitmapCacheOption.OnLoad;
                     // The source art is 256px, so decoding at its native
                     // size covers a 200% cell at 400% menu scale (240 DIP)
                     // up to 100% display scaling without upsampling (#413).
                     // Past that the decode is the art's ceiling either way.
-                    img.DecodePixelWidth = IconDecodePixelWidth;
-                    img.EndInit();
-                    img.Freeze();
-                    return img;
+                    var img = BoundedBitmap.FromBytes(ReadCapped(Path.Combine(root, subdir, iconName)),
+                        IconDecodeSize, IconDecodeSize);
+                    if (img != null) return img;
                 }
-                // FileFormatException is the one WPF's own decoder raises for a
-                // truncated or corrupt image, which is exactly the case this
-                // catch exists for, and it was the one type the filter did not
-                // list. Since this method's contract is "never throws" and it
-                // runs on the 30 Hz UI tick, the omission turned one bad PNG in
-                // a Steam icon directory into an aborted tick.
+                // This method's contract is "never throws" and it runs on the
+                // 30 Hz UI tick. BoundedBitmap turns a corrupt picture into
+                // null, so what is left here is a file that cannot be read.
                 catch (Exception ex) when (ex is IOException or UnauthorizedAccessException
-                    or NotSupportedException or ArgumentException or UriFormatException
-                    or InvalidOperationException or System.Security.SecurityException
-                    or System.IO.FileFormatException)
+                    or NotSupportedException or ArgumentException or System.Security.SecurityException
+                    or PathTooLongException or OutOfMemoryException)
                 {
-                    // Unreadable or undecodable file: fall through to the
-                    // next directory, then cache the miss.
+                    // Unreadable file: fall through to the next directory,
+                    // then cache the miss.
                 }
             }
             return null;

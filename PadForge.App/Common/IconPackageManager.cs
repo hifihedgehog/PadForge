@@ -189,75 +189,115 @@ namespace PadForge.Common
             catch { return null; }
         }
 
-        /// <summary>Every image entry of a registered pack with its bytes, from
-        /// one read of the archive, for the icon picker's thumbnails (#471).
-        /// Each entry has <see cref="TryReadIcon"/>'s bound, and one past it
-        /// is left out.</summary>
-        public static List<(string Entry, byte[] Bytes)> ReadIcons(string packageName)
+        /// <summary>Most image entries the icon picker reads from one package:
+        /// its first ones in the archive's order, the order
+        /// <see cref="ListIcons"/> lists them in.</summary>
+        public const int MaxPickerIcons = 2048;
+
+        /// <summary>Most entry bytes the icon picker reads from one package.</summary>
+        public const long MaxPickerBytes = 128L * 1024 * 1024;
+
+        /// <summary>Hands the icon picker a registered pack's image entries
+        /// with their bytes, one at a time, from one read of the archive (#471).
+        /// Each entry has <see cref="TryReadIcon"/>'s bound, and one past it is
+        /// left out. The read ends after <see cref="MaxPickerIcons"/> entries,
+        /// or once <see cref="MaxPickerBytes"/> bytes have been decompressed,
+        /// those of entries left out for size included, or when
+        /// <paramref name="visit"/> returns false. An earlier version gathered
+        /// every entry into one list, so a package of many large entries held
+        /// all of them in memory at once, whatever each one's own bound.
+        /// True when the archive was read, to its end or to a stop. False when
+        /// it could not be: missing, locked by another program, or with a
+        /// damaged central directory, so the caller can try it again later. A
+        /// damaged entry is left out, and the entries after it are still read.</summary>
+        public static bool ReadIcons(string packageName, Func<string, byte[], bool> visit)
         {
-            var result = new List<(string Entry, byte[] Bytes)>();
+            if (visit == null) return false;
             string file = ResolvePackageFile(packageName);
-            if (file == null || !File.Exists(file)) return result;
+            if (file == null || !File.Exists(file)) return false;
             try
             {
                 using var zip = ZipFile.OpenRead(file);
+                int entries = 0;
+                long total = 0;
                 foreach (var e in zip.Entries)
                 {
                     if (!ImageExtensions.Contains(System.IO.Path.GetExtension(e.Name), StringComparer.OrdinalIgnoreCase))
                         continue;
-                    var bytes = ReadBounded(e);
-                    if (bytes != null) result.Add((e.FullName, bytes));
+                    if (++entries > MaxPickerIcons || total >= MaxPickerBytes) break;
+                    var bytes = ReadBounded(e, Math.Min(MaxIconBytes, MaxPickerBytes - total), out long read);
+                    total += read;
+                    if (bytes != null && !visit(e.FullName, bytes)) break;
                 }
+                return true;
             }
-            catch { }
-            return result;
+            catch { return false; }
         }
 
+        /// <summary>Largest icon entry read. Pre-size from the DECLARED length
+        /// only up to a sane icon size, and bound the actual copy: both numbers
+        /// are archive metadata a crafted pack controls (the sound layer's
+        /// audit G2 bound, sized for images).</summary>
+        private const long MaxIconBytes = 16L * 1024 * 1024;
+
         /// <summary>An entry's bytes, or null past the per-icon bound.</summary>
-        private static byte[] ReadBounded(ZipArchiveEntry e)
+        private static byte[] ReadBounded(ZipArchiveEntry e) => ReadBounded(e, MaxIconBytes, out _);
+
+        /// <summary>An entry's bytes, or null once more than
+        /// <paramref name="limit"/> bytes come out of it, or when the entry is
+        /// damaged or packed by a method ZipArchive cannot open.
+        /// <paramref name="read"/> is how many were decompressed either way.</summary>
+        private static byte[] ReadBounded(ZipArchiveEntry e, long limit, out long read)
         {
-            // Pre-size from the DECLARED length only up to a sane icon
-            // size, and bound the actual copy: both numbers are archive
-            // metadata a crafted pack controls (the sound layer's
-            // audit G2 bound, sized for images).
-            const long MaxIconBytes = 16L * 1024 * 1024;
+            read = 0;
             using var ms = new MemoryStream((int)Math.Clamp(e.Length, 0, 1024 * 1024));
-            using (var s = e.Open())
+            try
             {
+                using var s = e.Open();
                 var chunk = new byte[81920];
-                long total = 0;
                 int got;
                 while ((got = s.Read(chunk, 0, chunk.Length)) > 0)
                 {
-                    total += got;
-                    if (total > MaxIconBytes) return null;
+                    read += got;
+                    if (read > limit) return null;
                     ms.Write(chunk, 0, got);
                 }
+            }
+            catch (InvalidDataException)
+            {
+                // A damaged entry is absent, as one that does not decode is,
+                // and the picker's read goes on to the entries after it.
+                return null;
             }
             return ms.ToArray();
         }
 
         /// <summary>Lists the image entry names inside a registered pack
-        /// (empty when missing/unreadable).</summary>
-        public static List<string> ListIcons(string packageName)
+        /// (empty when missing/unreadable), the first <paramref name="max"/>
+        /// of them in the archive's order.</summary>
+        public static List<string> ListIcons(string packageName, int max = int.MaxValue)
         {
             var result = new List<string>();
             string file = ResolvePackageFile(packageName);
             if (file == null) return result;
-            result.AddRange(ListIconsInFile(file));
+            result.AddRange(ListIconsInFile(file, max));
             return result;
         }
 
-        /// <summary>Lists image entries inside any pack file on disk.</summary>
-        public static List<string> ListIconsInFile(string filePath)
+        /// <summary>Lists image entries inside any pack file on disk, the
+        /// first <paramref name="max"/> of them in the archive's order.</summary>
+        public static List<string> ListIconsInFile(string filePath, int max = int.MaxValue)
         {
             var result = new List<string>();
             try
             {
                 using var zip = ZipFile.OpenRead(filePath);
                 foreach (var e in zip.Entries)
+                {
+                    if (result.Count >= max) break;
                     if (ImageExtensions.Contains(System.IO.Path.GetExtension(e.Name), StringComparer.OrdinalIgnoreCase))
                         result.Add(e.FullName);
+                }
             }
             catch { }
             return result;

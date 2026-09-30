@@ -90,20 +90,45 @@ namespace PadForge.Views
 
         // ── Thumbnails ────────────────────────────────────────────────────
 
-        /// <summary>Decode width for a thumbnail: twice the 40-pixel button,
-        /// so a high-DPI screen stays sharp.</summary>
-        private const int ThumbnailPixelWidth = 80;
+        /// <summary>Decode box for a thumbnail, square as the button is: twice
+        /// the 40-pixel button, so a high-DPI screen stays sharp.</summary>
+        private const int ThumbnailPixelSize = 80;
 
-        /// <summary>Thumbnails by reference, misses kept as null. Apart from
-        /// the resolver's full-size images, which a 40-pixel button does not
-        /// need, and dropped whenever the package registry changes.</summary>
+        /// <summary>Thumbnails by reference, pictures only. Apart from the
+        /// resolver's full-size images, which a 40-pixel button does not need,
+        /// and dropped whenever the package registry changes.</summary>
         private static readonly Dictionary<string, ImageSource> Thumbnails = new(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>The packages read since the registry last changed, so the
+        /// next opening reads none of them again. An entry that did not decode,
+        /// or that a bound left out, is simply absent: one name per package is
+        /// kept, where an earlier version kept a miss per entry, which no bound
+        /// held.</summary>
+        private static readonly HashSet<string> ReadPackages = new(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>Most thumbnails the picker holds across every package, at
+        /// most 80 by 80 pixels each: about 100 MB. Each package's own read is
+        /// bounded (<see cref="IconPackageManager.MaxPickerIcons"/>), and this
+        /// bounds a picker that opens on many of them, since a profile import
+        /// registers every package it carries. The read that reaches it stops
+        /// there, and later packages are not read until the registry changes.</summary>
+        internal const int MaxThumbnails = 4096;
+
+        /// <summary>Test seam: how many thumbnails the picker holds.</summary>
+        internal static int CachedThumbnailsForTest
+        {
+            get { lock (Thumbnails) return Thumbnails.Count; }
+        }
 
         static IconPicker()
         {
             IconPackageManager.RegistryChanged += (_, __) =>
             {
-                lock (Thumbnails) Thumbnails.Clear();
+                lock (Thumbnails)
+                {
+                    Thumbnails.Clear();
+                    ReadPackages.Clear();
+                }
             };
         }
 
@@ -112,30 +137,46 @@ namespace PadForge.Views
             var groups = new List<IconGroup>();
             foreach (var p in IconPackageManager.Packages)
             {
-                var entries = IconPackageManager.ListIcons(p.Name);
-                bool missing;
+                bool read;
                 lock (Thumbnails)
-                    missing = entries.Any(e => !Thumbnails.ContainsKey(IconPackageManager.MakeRef(p.Name, e)));
-                // One read of the archive decodes every thumbnail not yet made.
-                if (missing)
+                    read = ReadPackages.Contains(p.Name) || Thumbnails.Count >= MaxThumbnails;
+                // One read of the archive decodes every thumbnail, an entry at
+                // a time, so only one entry's bytes are held, until the picker
+                // holds MaxThumbnails.
+                if (!read)
                 {
-                    foreach (var (entry, bytes) in IconPackageManager.ReadIcons(p.Name))
+                    bool done = IconPackageManager.ReadIcons(p.Name, (entry, bytes) =>
                     {
                         string reference = IconPackageManager.MakeRef(p.Name, entry);
                         lock (Thumbnails)
-                            if (Thumbnails.ContainsKey(reference)) continue;
+                        {
+                            if (Thumbnails.Count >= MaxThumbnails) return false;
+                            if (Thumbnails.ContainsKey(reference)) return true;
+                        }
                         var thumb = DecodeThumbnail(bytes);
-                        lock (Thumbnails) Thumbnails[reference] = thumb;
-                    }
+                        lock (Thumbnails)
+                        {
+                            if (thumb != null && Thumbnails.Count < MaxThumbnails) Thumbnails.TryAdd(reference, thumb);
+                            // The last slot filled ends the read here, not one
+                            // entry later.
+                            return Thumbnails.Count < MaxThumbnails;
+                        }
+                    });
+                    // A package that could not be read (another program had it
+                    // locked) is tried again at the next opening.
+                    if (done)
+                        lock (Thumbnails) ReadPackages.Add(p.Name);
                 }
 
+                // The entries the read reaches: the first ones in the archive's
+                // order, which is ReadIcons' order too.
                 var icons = new List<IconChoice>();
-                foreach (var entry in entries)
+                foreach (var entry in IconPackageManager.ListIcons(p.Name, IconPackageManager.MaxPickerIcons))
                 {
                     string reference = IconPackageManager.MakeRef(p.Name, entry);
                     ImageSource thumb;
                     lock (Thumbnails) Thumbnails.TryGetValue(reference, out thumb);
-                    // An entry that does not decode offers nothing to click.
+                    // An entry with no thumbnail offers nothing to click.
                     if (thumb != null)
                         icons.Add(new IconChoice(reference, Path.GetFileName(entry), thumb,
                             string.Equals(reference, currentIcon, StringComparison.OrdinalIgnoreCase)));
@@ -145,26 +186,11 @@ namespace PadForge.Views
             return groups;
         }
 
+        /// <summary>A thumbnail in the button's square, so a tall picture
+        /// cannot decode tall (<see cref="BoundedBitmap"/>). Null when the
+        /// bytes hold no picture.</summary>
         private static ImageSource DecodeThumbnail(byte[] bytes)
-        {
-            if (bytes == null || bytes.Length == 0) return null;
-            try
-            {
-                var img = new BitmapImage();
-                img.BeginInit();
-                img.StreamSource = new MemoryStream(bytes, writable: false);
-                img.CacheOption = BitmapCacheOption.OnLoad;
-                img.DecodePixelWidth = ThumbnailPixelWidth;
-                img.EndInit();
-                img.Freeze();
-                return img;
-            }
-            catch (Exception ex) when (ex is IOException or NotSupportedException
-                or ArgumentException or InvalidOperationException or FileFormatException)
-            {
-                return null;
-            }
-        }
+            => BoundedBitmap.FromBytes(bytes, ThumbnailPixelSize, ThumbnailPixelSize);
 
         // ── Tabs and choices ──────────────────────────────────────────────
 

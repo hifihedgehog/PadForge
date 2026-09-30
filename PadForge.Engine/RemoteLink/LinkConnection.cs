@@ -303,6 +303,27 @@ namespace PadForge.Engine.RemoteLink
         // peer, which stops before it, is unaffected.
         private const byte DeviceListExtV8Magic = 0xE9;
 
+        // Ninth extension tail (#468 over the wire): the owner's analog key
+        // order, for the rows that carry one. The peer's copy of an analog
+        // keyboard otherwise listed the catalog's keys for the VID and PID,
+        // the whole keyboard for most families, and never the keys the row
+        // learned: a position-coded key, a handshake's own list. Written only
+        // when some row carries one, so a list without an analog keyboard is
+        // byte for byte what it was before the tail, and only while the list
+        // with it fits the old peers' budget (EncodeDeviceList). Encoding:
+        // [magic][records], then per record [record index][u16 count][u16
+        // code]*, codes 1 to 0x6FF, each once.
+        private const byte DeviceListExtV9Magic = 0xEA;
+
+        // Tenth extension tail (#469 over the wire): which native axes of a
+        // Bliss-Box port read raw rest at 0, the triggers of the controller in
+        // the owner's port. The peer finds no port on its own PC to ask, so its
+        // copy counted them as centered. Written only when some row carries a
+        // mask and the list with it fits the old peers' budget. Encoding:
+        // [magic][records], then per record [record index][mask], bit N for
+        // native axis N.
+        private const byte DeviceListExtV10Magic = 0xEB;
+
         // Shared by the handshake exchange AND the post-connect DeviceList sync (#138).
         // Each entry leads with the owner's STABLE slot, and caps now carry HasHaptic +
         // Online so a remote wheel's FFB pipeline runs and active/inactive propagates.
@@ -337,6 +358,33 @@ namespace PadForge.Engine.RemoteLink
                 WriteU16(buf, (ushort)d.InputDeviceType);
             }
 
+            const int PayloadBudget = 3800;
+
+            // Every tail after the metadata extension, encoded first so the
+            // named objects below can leave room for it.
+            var tail = EncodeTails(devices, count, localMachineName);
+
+            // What each device's metadata section needs whatever its objects
+            // get: the serial, the touchpad shape and the object count.
+            // after[i] is that sum over the devices written after device i.
+            var after = new int[count];
+            for (int i = count - 2; i >= 0; i--)
+                after[i] = after[i + 1] + MandatoryMetadataBytes(devices[i + 1]);
+
+            // The v9 and v10 tails are metadata, as the names are, and ride
+            // only while the list with them fits the budget without a single
+            // name: they must never push a list an older peer could read past
+            // what it can. The rest masks go first, since they change how a
+            // trigger reads, where a key list changes only what the picker
+            // offers.
+            var keyOrders = EncodeKeyOrderTail(devices, count);
+            var restMasks = EncodeRestMaskTail(devices, count);
+            int required = buf.Count + 1 + tail.Count + (count > 0 ? after[0] + MandatoryMetadataBytes(devices[0]) : 0);
+            bool masksFit = restMasks.Count > 0 && required + restMasks.Count <= PayloadBudget;
+            if (masksFit) required += restMasks.Count;
+            if (keyOrders.Count > 0 && required + keyOrders.Count <= PayloadBudget) tail.AddRange(keyOrders);
+            if (masksFit) tail.AddRange(restMasks);
+
             // Metadata extension (one section per v1 record, same order), so
             // a remote device's mapping picker and Devices-page preview show
             // the SAME named inputs the owner sees locally. Budgeted: the
@@ -344,8 +392,11 @@ namespace PadForge.Engine.RemoteLink
             // into a 4 KB buffer, so once the payload nears that floor the
             // remaining devices get empty object sections (the consumer falls
             // back to synthesized names for them) rather than the whole list
-            // becoming undeliverable.
-            const int PayloadBudget = 3800;
+            // becoming undeliverable. The budget covers the whole payload: the
+            // room for a device's objects leaves out what the devices after it
+            // and every tail still need. It counted only what was already
+            // written, so a list whose objects filled the budget went past it
+            // by every later section and tail.
             buf.Add(DeviceListExtMagic);
             for (int i = 0; i < count; i++)
             {
@@ -371,7 +422,7 @@ namespace PadForge.Engine.RemoteLink
                 // "Axis 0" through "Axis 5".
                 if (objCount > 0)
                 {
-                    int room = Math.Min(PayloadBudget - buf.Count - 2, PayloadBudget / 2);
+                    int room = Math.Min(PayloadBudget - buf.Count - 2 - after[i] - tail.Count, PayloadBudget / 2);
                     int used = 0;
                     int fits = 0;
                     for (int j = 0; j < objCount; j++)
@@ -395,15 +446,26 @@ namespace PadForge.Engine.RemoteLink
                 }
             }
 
+            buf.AddRange(tail);
+            return buf.ToArray();
+        }
+
+        /// <summary>The device-list tails v2 to v8, in order. Every one of
+        /// them follows the metadata extension, whose named objects are
+        /// budgeted around their size.</summary>
+        private static List<byte> EncodeTails(IReadOnlyList<RemotePeerDeviceInfo> devices, int count,
+            string localMachineName)
+        {
+            var tail = new List<byte>();
             // v2 tail: raw HID button count per device (one byte, always fits
             // the datagram budget). Lets the consumer offer the extra native
             // buttons past the 22 standardized gamepad slots in its picker.
-            buf.Add(DeviceListExtV2Magic);
+            tail.Add(DeviceListExtV2Magic);
             for (int i = 0; i < count; i++)
-                buf.Add((byte)Math.Clamp(devices[i].RawButtonCount, 0, 255));
+                tail.Add((byte)Math.Clamp(devices[i].RawButtonCount, 0, 255));
 
             // v3 tail: the post-exhaustion capability byte (one per device).
-            buf.Add(DeviceListExtV3Magic);
+            tail.Add(DeviceListExtV3Magic);
             for (int i = 0; i < count; i++)
             {
                 byte caps2 = 0;
@@ -420,35 +482,35 @@ namespace PadForge.Engine.RemoteLink
                 if (devices[i].TouchpadPressureSupported == true) caps2 |= 16;
                 if (devices[i].TouchpadClickSupported.HasValue) caps2 |= 32;
                 if (devices[i].TouchpadClickSupported == true) caps2 |= 64;
-                buf.Add(caps2);
+                tail.Add(caps2);
             }
 
             // v4 tail: raw HID axis count per device. Twin of the v2 tail.
-            buf.Add(DeviceListExtV4Magic);
+            tail.Add(DeviceListExtV4Magic);
             for (int i = 0; i < count; i++)
-                buf.Add((byte)Math.Clamp(devices[i].RawAxisCount, 0, 255));
+                tail.Add((byte)Math.Clamp(devices[i].RawAxisCount, 0, 255));
 
             // v5 tail: this machine's name, so the peer can label our devices
             // no matter how it found us.
-            buf.Add(DeviceListExtV5Magic);
-            WriteString(buf, localMachineName ?? SafeMachineName());
+            tail.Add(DeviceListExtV5Magic);
+            WriteString(tail, localMachineName ?? SafeMachineName());
 
             // v6 tail: the real supported-button set per device.
-            buf.Add(DeviceListExtV6Magic);
+            tail.Add(DeviceListExtV6Magic);
             for (int i = 0; i < count; i++)
-                WriteButtonMask(buf, devices[i]);
+                WriteButtonMask(tail, devices[i]);
 
             // v7 tail: supported axes + SDL GUID.
-            buf.Add(DeviceListExtV7Magic);
+            tail.Add(DeviceListExtV7Magic);
             for (int i = 0; i < count; i++)
             {
-                WriteIndexMask(buf, devices[i].SupportedAxisIndices,
+                WriteIndexMask(tail, devices[i].SupportedAxisIndices,
                     Math.Max(devices[i].RawAxisCount, devices[i].NumAxes));
-                WriteString(buf, devices[i].SdlGuid ?? "");
+                WriteString(tail, devices[i].SdlGuid ?? "");
             }
 
             // v8 tail: which of those sets were empty on purpose.
-            buf.Add(DeviceListExtV8Magic);
+            tail.Add(DeviceListExtV8Magic);
             for (int i = 0; i < count; i++)
             {
                 byte empties = 0;
@@ -458,9 +520,73 @@ namespace PadForge.Engine.RemoteLink
                 if (IsExplicitlyEmpty(devices[i].SupportedAxisIndices,
                         Math.Max(devices[i].RawAxisCount, devices[i].NumAxes)))
                     empties |= 2;
-                buf.Add(empties);
+                tail.Add(empties);
             }
-            return buf.ToArray();
+
+            return tail;
+        }
+
+        /// <summary>The v9 tail, the owner's analog key order for the rows
+        /// that carry one, or nothing when none does.</summary>
+        private static List<byte> EncodeKeyOrderTail(IReadOnlyList<RemotePeerDeviceInfo> devices, int count)
+        {
+            var tail = new List<byte>();
+            int orders = 0;
+            for (int i = 0; i < count; i++)
+                if (devices[i].AnalogKeyOrder != null) orders++;
+            if (orders == 0) return tail;
+            tail.Add(DeviceListExtV9Magic);
+            tail.Add((byte)orders);
+            for (int i = 0; i < count; i++)
+            {
+                if (devices[i].AnalogKeyOrder == null) continue;
+                var codes = WireKeyOrder(devices[i].AnalogKeyOrder);
+                tail.Add((byte)i);
+                WriteU16(tail, (ushort)codes.Count);
+                foreach (int code in codes) WriteU16(tail, (ushort)code);
+            }
+            return tail;
+        }
+
+        /// <summary>The v10 tail, the rest mask of each Bliss-Box port read
+        /// raw, or nothing when no row carries one.</summary>
+        private static List<byte> EncodeRestMaskTail(IReadOnlyList<RemotePeerDeviceInfo> devices, int count)
+        {
+            var tail = new List<byte>();
+            int masks = 0;
+            for (int i = 0; i < count; i++)
+                if (devices[i].BlissBoxRestMask.HasValue) masks++;
+            if (masks == 0) return tail;
+            tail.Add(DeviceListExtV10Magic);
+            tail.Add((byte)masks);
+            for (int i = 0; i < count; i++)
+            {
+                if (devices[i].BlissBoxRestMask is not byte mask) continue;
+                tail.Add((byte)i);
+                tail.Add(mask);
+            }
+            return tail;
+        }
+
+        /// <summary>A device's metadata section without its objects: the
+        /// serial string, the touchpad count, one finger count per touchpad,
+        /// and the object count.</summary>
+        private static int MandatoryMetadataBytes(RemotePeerDeviceInfo d)
+            => 2 + Math.Min(Encoding.UTF8.GetByteCount(d.SerialNumber ?? ""), ushort.MaxValue)
+               + 1 + Math.Clamp(d.NumTouchpads, 0, 255) + 2;
+
+        /// <summary>An analog key order as the v9 tail carries it: the codes
+        /// an AnalogKeyInputState can hold, each once, in the owner's order.
+        /// The decoder refuses the whole tail over one code outside that range
+        /// or one repeated.</summary>
+        private static List<int> WireKeyOrder(int[] order)
+        {
+            var codes = new List<int>(order.Length);
+            var seen = new HashSet<int>();
+            foreach (int code in order)
+                if (code > 0 && code < AnalogKeyInputState.CodeCount && seen.Add(code))
+                    codes.Add(code);
+            return codes;
         }
 
         internal static List<RemotePeerDeviceInfo> DecodeDeviceList(byte[] data)
@@ -746,6 +872,76 @@ namespace PadForge.Engine.RemoteLink
                         if (info.SupportedAxisIndices is { Length: 0 })
                             info.SupportedAxisIndices = null;
                     }
+                    v1ExtOk = false; // cursor unreliable: do not read v9
+                }
+            }
+
+            // v9 tail: analog key orders. Parsed whole before any row takes
+            // one, so a malformed record costs every order and nothing else,
+            // and a peer that stops earlier leaves them null (the catalog).
+            if (v1ExtOk)
+            {
+                try
+                {
+                    if (o < data.Length && data[o] == DeviceListExtV9Magic)
+                    {
+                        o++;
+                        int records = data[o++];
+                        var orders = new int[count][];
+                        for (int r = 0; r < records; r++)
+                        {
+                            int index = data[o++];
+                            if (index >= count || orders[index] != null)
+                                throw new InvalidOperationException("analog key order record");
+                            int keys = ReadU16(data, ref o);
+                            if (keys >= AnalogKeyInputState.CodeCount || keys * 2 > data.Length - o)
+                                throw new InvalidOperationException("analog key order length");
+                            var order = new int[keys];
+                            var seen = new HashSet<int>();
+                            for (int k = 0; k < keys; k++)
+                            {
+                                int code = ReadU16(data, ref o);
+                                if (code <= 0 || code >= AnalogKeyInputState.CodeCount || !seen.Add(code))
+                                    throw new InvalidOperationException("analog key code");
+                                order[k] = code;
+                            }
+                            orders[index] = order;
+                        }
+                        for (int i = 0; i < count; i++)
+                            if (orders[i] != null) list[i].AnalogKeyOrder = orders[i];
+                    }
+                }
+                catch
+                {
+                    foreach (var info in list) info.AnalogKeyOrder = null;
+                    v1ExtOk = false; // cursor unreliable: do not read v10
+                }
+            }
+
+            // v10 tail: Bliss-Box rest masks. Same guarantees as v9.
+            if (v1ExtOk)
+            {
+                try
+                {
+                    if (o < data.Length && data[o] == DeviceListExtV10Magic)
+                    {
+                        o++;
+                        int records = data[o++];
+                        var masks = new byte?[count];
+                        for (int r = 0; r < records; r++)
+                        {
+                            int index = data[o++];
+                            if (index >= count || masks[index] != null)
+                                throw new InvalidOperationException("rest mask record");
+                            masks[index] = data[o++];
+                        }
+                        for (int i = 0; i < count; i++)
+                            if (masks[i] != null) list[i].BlissBoxRestMask = masks[i];
+                    }
+                }
+                catch
+                {
+                    foreach (var info in list) info.BlissBoxRestMask = null;
                 }
             }
             return list;

@@ -179,6 +179,10 @@ namespace PadForge.Common.Input
         /// ID may take before its read is canceled.</summary>
         private const int ExtReplyTimeoutMs = 600;
 
+        /// <summary>How often the cancel repeats past that deadline, the DS3
+        /// lane's second-cancel delay (Ds3DirectService's five-kick detach).</summary>
+        private const int ExtCancelRepeatMs = 250;
+
         /// <summary>How long after the EXT bit rises the accessory is read.
         /// The Move polls an accessory's features every 11 to 13 ms (moveonpc
         /// wiki, Sharp Shooter and Racing Wheel), so its bytes are in the
@@ -1533,9 +1537,16 @@ namespace PadForge.Common.Input
         /// 0xE0, one transaction at a time on the control channel. Replies
         /// queue in the L2CAP channel (BthPS3 opens it with IncomingQueueDepth
         /// 10, L2CAP.Connect.c:358), so the SET's one-byte handshake is read
-        /// before the GET goes out, and any other packet is skipped. A read
-        /// that gets no reply is canceled at the deadline. -1 when no ID
-        /// arrives.</summary>
+        /// before the GET goes out, and any other packet is skipped. -1 when no
+        /// ID arrives.
+        ///
+        /// <para>CancelIoEx aborts only I/O already pending, so one cancel at
+        /// the deadline missed a read issued just after it, which then waited
+        /// with no deadline at all and held _ioLock, the lock Teardown takes.
+        /// The DS3 lane learned the same (Ds3DirectService's five-kick detach):
+        /// no transfer starts past the deadline or after a teardown, and the
+        /// cancel repeats every <see cref="ExtCancelRepeatMs"/> until the
+        /// exchange ends, which catches one that started just before.</para></summary>
         private int ReadExtDeviceId()
         {
             lock (_ioLock)
@@ -1543,39 +1554,14 @@ namespace PadForge.Common.Input
                 IntPtr h;
                 lock (_outLock) h = _writePdo;
                 if (h == IntPtr.Zero || h == INVALID_HANDLE) return -1;
-                var cancel = new Timer(_ => CancelIoEx(h, IntPtr.Zero), null, ExtReplyTimeoutMs, Timeout.Infinite);
+                long deadline = Environment.TickCount64 + ExtReplyTimeoutMs;
+                var cancel = new Timer(_ => CancelIoEx(h, IntPtr.Zero), null, ExtReplyTimeoutMs, ExtCancelRepeatMs);
                 try
                 {
-                    byte[] setup = BuildExtInfoReadSetup();
-                    if (!DeviceIoControl(h, IOCTL_HID_CONTROL_WRITE, setup, setup.Length, null, 0, out _, IntPtr.Zero))
-                        return -1;
-                    var buf = new byte[64];
-                    bool handshake = false;
-                    for (int i = 0; i < 4 && !handshake; i++)
-                    {
-                        if (!DeviceIoControl(h, IOCTL_HID_CONTROL_READ, null, 0, buf, buf.Length, out int got, IntPtr.Zero))
-                            return -1;
-                        // HANDSHAKE: one byte, result code 0 on success.
-                        if (got == 1)
-                        {
-                            if (buf[0] != 0x00) return -1;
-                            handshake = true;
-                        }
-                    }
-                    if (!handshake) return -1;
-                    byte[] get = BuildExtInfoGetReport();
-                    if (!DeviceIoControl(h, IOCTL_HID_CONTROL_WRITE, get, get.Length, null, 0, out _, IntPtr.Zero))
-                        return -1;
-                    // Handshakes from earlier writes the channel still holds
-                    // (up to its queue depth of 10) come before the reply.
-                    for (int i = 0; i < 12; i++)
-                    {
-                        if (!DeviceIoControl(h, IOCTL_HID_CONTROL_READ, null, 0, buf, buf.Length, out int got, IntPtr.Zero))
-                            return -1;
-                        int id = ParseExtInfoReply(buf, got);
-                        if (id >= 0) return id;
-                    }
-                    return -1;
+                    return ExchangeExtDeviceId(
+                        report => DeviceIoControl(h, IOCTL_HID_CONTROL_WRITE, report, report.Length, null, 0, out _, IntPtr.Zero),
+                        buf => DeviceIoControl(h, IOCTL_HID_CONTROL_READ, null, 0, buf, buf.Length, out int got, IntPtr.Zero) ? got : -1,
+                        () => !_writerRun || Environment.TickCount64 >= deadline);
                 }
                 finally
                 {
@@ -1585,6 +1571,40 @@ namespace PadForge.Common.Input
                     if (cancel.Dispose(done)) done.WaitOne();
                 }
             }
+        }
+
+        /// <summary>The ID exchange itself, with the control channel's write and
+        /// read passed in: a write returns whether it went out, a read the bytes
+        /// it got or -1. <paramref name="expired"/> is asked before every
+        /// transfer, and once it answers true no transfer starts.</summary>
+        internal static int ExchangeExtDeviceId(Func<byte[], bool> write, Func<byte[], int> read, Func<bool> expired)
+        {
+            if (expired() || !write(BuildExtInfoReadSetup())) return -1;
+            var buf = new byte[64];
+            bool handshake = false;
+            for (int i = 0; i < 4 && !handshake; i++)
+            {
+                int got = expired() ? -1 : read(buf);
+                if (got < 0) return -1;
+                // HANDSHAKE: one byte, result code 0 on success.
+                if (got == 1)
+                {
+                    if (buf[0] != 0x00) return -1;
+                    handshake = true;
+                }
+            }
+            if (!handshake) return -1;
+            if (expired() || !write(BuildExtInfoGetReport())) return -1;
+            // Handshakes from earlier writes the channel still holds
+            // (up to its queue depth of 10) come before the reply.
+            for (int i = 0; i < 12; i++)
+            {
+                int got = expired() ? -1 : read(buf);
+                if (got < 0) return -1;
+                int id = ParseExtInfoReply(buf, got);
+                if (id >= 0) return id;
+            }
+            return -1;
         }
 
         /// <summary>Writer thread. Attaches the accessory's virtual gamepad

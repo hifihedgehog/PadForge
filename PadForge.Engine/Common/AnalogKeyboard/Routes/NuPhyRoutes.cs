@@ -700,8 +700,11 @@ namespace PadForge.Engine.Common.AnalogKeyboard.Routes
         /// Puts each changed mode's debugMode bit back as Start found it. The
         /// mode is read again first, as NuPhyIO's setPartialKeyboardFunc
         /// always reads before it writes, so a setting changed meanwhile keeps
-        /// its new value. When the read goes unanswered, the bytes Start read
-        /// are written back instead, the literal undo.
+        /// its new value. When the read goes unanswered, nothing is written
+        /// for that mode: setPartialKeyboardFunc returns its failure before
+        /// any write, and bytes 4 to 7 as Start read them would put back a
+        /// report rate, sleep time or key lock changed since. The bit left
+        /// set only keeps the 0xA0 stream on.
         /// </summary>
         private void Restore(IAnalogKeyboardTransport io)
         {
@@ -716,18 +719,11 @@ namespace PadForge.Engine.Common.AnalogKeyboard.Routes
                     ? Exchange(io, ReadFuncRequest(mode), Attempts, ReplyWaitMs, deadline, _reply)
                     : Outcome.Unanswered;
                 if (read == Outcome.Gone) return;
+                if (read != Outcome.Answered) continue;
 
-                byte[] flags;
-                if (read == Outcome.Answered)
-                {
-                    flags = FlagsOf(_reply);
-                    if ((flags[3] & NuPhyProtocol.DebugModeBit) == wanted) continue;
-                    flags[3] = (byte)((flags[3] & ~NuPhyProtocol.DebugModeBit) | wanted);
-                }
-                else
-                {
-                    flags = (byte[])_original[mode].Clone();
-                }
+                var flags = FlagsOf(_reply);
+                if ((flags[3] & NuPhyProtocol.DebugModeBit) == wanted) continue;
+                flags[3] = (byte)((flags[3] & ~NuPhyProtocol.DebugModeBit) | wanted);
                 if (Exchange(io, WriteFlagsRequest(mode, flags), Attempts, ReplyWaitMs, deadline, _reply) == Outcome.Gone)
                     return;
             }

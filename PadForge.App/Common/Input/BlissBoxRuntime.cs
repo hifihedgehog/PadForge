@@ -514,22 +514,49 @@ namespace PadForge.Common.Input
         /// rest never reads as pressed there. The rule follows the row's
         /// shape, not the switch, so it holds until Step 1 reopens the row.
         ///
-        /// <para>A Remote Link peer's copy of a port keeps the pressure half
-        /// alone, since its row finds no port on this PC. The device list
-        /// carries a joystick row's axis count and type but not the
-        /// controller in the owner's port, and the owner sends no object list
-        /// for a joystick (InputService's BuildExposedDevices), so the peer
-        /// names axes 2 and 5 as a gamepad's triggers whatever the pad is.
-        /// There they count as centered, as every raw joystick a peer exposes
-        /// does.</para></summary>
+        /// <para>A Remote Link peer's copy of a port finds no port on its own
+        /// PC, so the owner answers for the native axes: the device list's
+        /// v10 tail carries <see cref="NativeRestMask"/>, and the pressure
+        /// range follows from the axis count as it does here. A copy from a
+        /// peer that predates the tail counts its native axes as centered, as
+        /// every raw joystick a peer exposes does.</para></summary>
         public static bool RestsAtZero(UserDevice ud, int axis)
         {
             if (ud == null || !BlissBoxProtocol.IsPort(ud.VendorId, ud.ProdId) || !OpenedRaw(ud.Device)) return false;
             int first = PressureAxisBase(ud.Device);
             if (first >= 0 && axis >= first && axis < first + BlissBoxProtocol.PressureCount) return true;
+            if (ud.Device is RemotePeerDevice peer)
+                return peer.Info.BlissBoxRestMask is byte mask
+                       && axis >= 0 && axis < BlissBoxControllers.FirstPressureAxis
+                       && (mask & (1 << axis)) != 0;
             var session = Find(ud)?.Session;
             return (session?.LiveInfo ?? session?.KnownInfo) is { } info
                    && BlissBoxControllers.IsTriggerAxis(info.Type, info.Major, axis);
+        }
+
+        /// <summary>For the Remote Link device list (its v10 tail): the native
+        /// axes of a port this PC reads raw that rest at 0, bit N for axis N,
+        /// from the controller <see cref="RestsAtZero"/> asks, 0 while no
+        /// controller has been identified. Null for anything else, a peer's
+        /// copy included, since its owner answers for it.</summary>
+        public static byte? NativeRestMask(UserDevice ud)
+        {
+            if (ud == null || !BlissBoxProtocol.IsPort(ud.VendorId, ud.ProdId)
+                || ud.Device is RemotePeerDevice || !OpenedRaw(ud.Device)) return null;
+            var session = Find(ud)?.Session;
+            return (session?.LiveInfo ?? session?.KnownInfo) is { } info ? RestMaskFor(info) : (byte)0;
+        }
+
+        /// <summary>Bit N set for each native axis the controller names as a
+        /// trigger (<see cref="BlissBoxControllers.IsTriggerAxis"/>), axes 0 to
+        /// 7, the ones below the pressure axes.</summary>
+        internal static byte RestMaskFor(BlissBoxInfo info)
+        {
+            byte mask = 0;
+            for (int axis = 0; axis < BlissBoxControllers.FirstPressureAxis; axis++)
+                if (BlissBoxControllers.IsTriggerAxis(info.Type, info.Major, axis))
+                    mask |= (byte)(1 << axis);
+            return mask;
         }
 
         /// <summary>

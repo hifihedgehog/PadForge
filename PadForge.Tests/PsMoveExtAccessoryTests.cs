@@ -77,6 +77,68 @@ namespace PadForge.Tests
             Assert.Equal(-1, PsMoveDirectService.ParseExtInfoReply(reply, 51));
         }
 
+        /// <summary>A control channel: the SET's handshake, then a queued
+        /// handshake and the reply, as BthPS3's L2CAP queue hands them back.</summary>
+        private sealed class ControlChannel
+        {
+            public int Writes, Reads;
+            private int _reply;
+
+            public bool Write(byte[] report)
+            {
+                Writes++;
+                return true;
+            }
+
+            public int Read(byte[] buf)
+            {
+                Reads++;
+                Array.Clear(buf);
+                if (Writes == 1) return 1; // the SET's handshake, result 0
+                if (_reply++ == 0) return 1; // a handshake still queued
+                buf[0] = 0xA3;
+                buf[1] = 0xE0;
+                buf[10] = 0x81;
+                buf[11] = 0x01;
+                return 50;
+            }
+        }
+
+        [Fact]
+        public void TheIdExchange_ReturnsTheId_SkippingQueuedHandshakes()
+        {
+            var channel = new ControlChannel();
+            int id = PsMoveDirectService.ExchangeExtDeviceId(channel.Write, channel.Read, () => false);
+            Assert.Equal(0x8101, id);
+            Assert.Equal(2, channel.Writes);
+            Assert.Equal(3, channel.Reads);
+        }
+
+        [Fact]
+        public void TheIdExchange_StartsNoTransferOnceItsDeadlinePasses()
+        {
+            // CancelIoEx aborts only I/O already pending, so a read that
+            // started after the one cancel waited with nothing to end it.
+            // Past the deadline, or once a teardown lowered the run flag, the
+            // exchange starts nothing: here the deadline passes after the SET.
+            var channel = new ControlChannel();
+            int id = PsMoveDirectService.ExchangeExtDeviceId(channel.Write, channel.Read, () => channel.Writes >= 1);
+            Assert.Equal(-1, id);
+            Assert.Equal(1, channel.Writes);
+            Assert.Equal(0, channel.Reads);
+
+            // Expired from the start: not even the SET goes out.
+            var idle = new ControlChannel();
+            Assert.Equal(-1, PsMoveDirectService.ExchangeExtDeviceId(idle.Write, idle.Read, () => true));
+            Assert.Equal(0, idle.Writes);
+
+            // Past the deadline between the GET and its reply: no read.
+            var late = new ControlChannel();
+            Assert.Equal(-1, PsMoveDirectService.ExchangeExtDeviceId(late.Write, late.Read, () => late.Writes >= 2));
+            Assert.Equal(2, late.Writes);
+            Assert.Equal(1, late.Reads);
+        }
+
         [Fact]
         public void TheIds_NameTheTwoAccessories()
         {

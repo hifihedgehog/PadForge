@@ -2155,6 +2155,8 @@ namespace PadForge.Common.Input
                             {
                                 try { wrapper.StopSdlRumble(); }
                                 catch { /* best effort */ }
+                                // As after the hand-off's stop.
+                                BlissBoxRuntime.ResendMotors(ud.DevicePath);
                             }
                         }
                         try { ud.ForceFeedbackState.StopDeviceForces(ud.Device); }

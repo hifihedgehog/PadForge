@@ -32,8 +32,8 @@ namespace PadForge.Common.Input
         // pass that outlived the stop's join opens no port.
         private static bool _closed;
         private static int _generation;
-        // Ports retired from Sync whose workers may still be sending their
-        // final stop. Under _lock.
+        // Ports retired by Sync or closed by Shutdown whose workers may still
+        // be sending their final stop. Under _lock.
         private static readonly List<BlissBoxPort> _retiring = new();
 
         /// <summary>The switch. A change counts in <see cref="Generation"/>,
@@ -174,8 +174,9 @@ namespace PadForge.Common.Input
 
         /// <summary>A retired worker's final stop can land after a port that
         /// took over its path has written its first levels, when the switch
-        /// went off and on again during a long transfer. That port tells both
-        /// motors their levels again once the old worker has exited.</summary>
+        /// went off and on again, or the engine stopped and started again,
+        /// during a long transfer. That port tells both motors their levels
+        /// again once the old worker has exited.</summary>
         private static void HandOverToSuccessor(BlissBoxPort retired)
             => HandOverToSuccessor(retired.Path, () => retired.Exited, retired);
 
@@ -378,6 +379,18 @@ namespace PadForge.Common.Input
             port.Wake();
         }
 
+        /// <summary>After SDL's own stop on a port row: both motors are told
+        /// their levels again, since on a GPA that stop can reach a one-motor
+        /// pad's command-5 routine through DirectInput's effect block (0x2E8C
+        /// to 0x2EC3), which the resend clears with a stop on command 5.</summary>
+        public static void ResendMotors(string path)
+        {
+            var port = Find(path);
+            if (port == null) return;
+            port.Session.ResendMotors();
+            port.Wake();
+        }
+
         /// <summary>The hand-off from SDL: the port takes the row's recorded
         /// levels and tells both motors again, which on a GPA clears a
         /// one-motor pad's command-5 rumble that SDL's DirectInput effect can
@@ -404,7 +417,11 @@ namespace PadForge.Common.Input
         /// port opened after the loop ends is quiesced as it opens, since the
         /// poll thread can run on behind a crash dialog. Each look reads the
         /// ports again and keeps every port it has seen in the wait, retired
-        /// ones included.</summary>
+        /// ones included. While a picture write and the motor pass after it
+        /// are in flight on a port, the wait runs on to the write's own limit
+        /// (<see cref="BlissBoxSession.PictureInFlight"/>): on a GPA the
+        /// write's pulse leaves a running jump pack at full power until that
+        /// pass.</summary>
         public static void StopMotorsNow(int timeoutMs)
         {
             var waiting = new List<BlissBoxPort>();
@@ -418,7 +435,9 @@ namespace PadForge.Common.Input
                 if (taken) waiting.AddRange(_retiring);
             }
             finally { if (taken) Monitor.Exit(_lock); }
-            long end = Environment.TickCount64 + timeoutMs;
+            long start = Environment.TickCount64;
+            long end = start + timeoutMs;
+            long pictureEnd = Math.Max(end, start + BlissBoxSession.ScreenWriteTimeoutMs + 500);
             while (true)
             {
                 foreach (var port in Ports)
@@ -429,10 +448,15 @@ namespace PadForge.Common.Input
                     port.Session.Quiesce();
                     port.Wake();
                 }
-                bool rest = true;
+                bool rest = true, picture = false;
                 foreach (var port in waiting)
-                    if (port.IsOpen && !port.Session.MotorsAtRest) { rest = false; break; }
-                if (rest || Environment.TickCount64 >= end) return;
+                {
+                    if (!port.IsOpen) continue;
+                    if (!port.Session.MotorsAtRest) rest = false;
+                    if (port.Session.PictureInFlight) picture = true;
+                }
+                long now = Environment.TickCount64;
+                if (rest || now >= (picture ? pictureEnd : end)) return;
                 Thread.Sleep(5);
             }
         }

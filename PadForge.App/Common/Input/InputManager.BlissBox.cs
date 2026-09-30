@@ -258,8 +258,10 @@ namespace PadForge.Common.Input
             if (ud?.Device is not SdlDeviceWrapper wrapper) return true;
             // SDL's stop runs under the row's gate too, which an Identify
             // train started while the switch was off holds for its SDL
-            // writes, so none of its pulses lands after the stop, where SDL's
-            // gate would keep it from ever being ended. A stop SDL refused
+            // writes, so none of its pulses lands after the stop. SDL's gate
+            // would refuse the train's own stop for it, and SDL would run it
+            // until the switch went off, the engine stopped or its 65.5 s
+            // expiration (SDL_joystick.c:2307-2308). A stop SDL refused
             // leaves its effect running beside the adapter's commands, so the
             // hand-off waits for a later pass. The port's resend follows it in
             // its first step with report 17 read.

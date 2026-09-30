@@ -1657,6 +1657,34 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void APictureWriteCountsAsInFlightUntilThePassAfterIt()
+        {
+            // On a GPA a picture write's pulse leaves a running jump pack at
+            // full power until the pass after the write, so the crash stop
+            // waits for both.
+            BlissBoxSession session = null;
+            bool duringPicture = false, duringResend = false;
+            var adapter = new ScriptedAdapter
+            {
+                Type = BlissBoxControllers.TypeDreamcast,
+                DuringWrite = r =>
+                {
+                    if (r[0] == BlissBoxProtocol.ReportScreen) duringPicture = session.PictureInFlight;
+                    else if (duringPicture && r[0] == BlissBoxProtocol.ReportCommand && r[1] == BlissBoxProtocol.CommandLargeMotor)
+                        duringResend = session.PictureInFlight;
+                },
+            };
+            session = Session(adapter);
+            session.Step();
+            _now = 10; session.SetRumble(40000, 0); session.Step();
+            session.SetScreen(Enumerable.Range(0, 192).Select(i => (byte)i).ToArray());
+            _now = 2000; session.Step();
+            Assert.True(duringPicture);
+            Assert.True(duringResend);
+            Assert.False(session.PictureInFlight);
+        }
+
+        [Fact]
         public void AQuiescedPortReadsNoPicture()
         {
             // The crash path wakes a quiesced port every 5 ms, and on 3.x each

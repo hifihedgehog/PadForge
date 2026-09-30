@@ -238,7 +238,10 @@ namespace PadForge.Services
                 var data = Get(port.InstanceGuid);
                 session.NativeArrows = data?.NativeArrows == true;
 
-                if (!TrackPad(port, session.LiveInfo, now))
+                // A port a player change replaced answers until its channel
+                // closes, and a show on it would copy the adapter's picture
+                // into the entry the change dropped.
+                if (port.Replaced || !TrackPad(port, session.LiveInfo, now))
                 {
                     _shows.Remove(port);
                     session.SetScreen(null);

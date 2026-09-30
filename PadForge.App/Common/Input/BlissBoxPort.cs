@@ -74,8 +74,8 @@ namespace PadForge.Common.Input
 
         /// <summary>Set on the UI thread once a player change on this port
         /// went through. The adapter comes back as a new device, so this
-        /// port's actions end, and none writes back the row's choices the
-        /// change dropped.</summary>
+        /// port's actions and any show on it end, and none writes back the
+        /// row's choices the change dropped.</summary>
         public bool Replaced { get; set; }
 
         /// <summary>Raised on the worker when the channel opens or closes, or

@@ -1091,7 +1091,7 @@ namespace PadForge.Tests
             int gate = phase.IndexOf("if (!System.Threading.Monitor.TryEnter(ud.OutputSync)) return false;", StringComparison.Ordinal);
             int stop = phase.IndexOf("try { stopped = wrapper.StopSdlRumble(); }", StringComparison.Ordinal);
             Assert.True(gate > 0 && stop > gate);
-            Assert.Contains("lock (ud.OutputSync)\n                                {\n                                    if (left != 0 || right != 0) dev.SetRumble(left, right);",
+            Assert.Contains("lock (ud.OutputSync)\n                                {\n                                    // Again under the gate, which a relayed\n                                    // frame may have held past the quiesce.\n                                    if (_inputManager?.OutputsQuiesced == true) return;\n                                    if (left != 0 || right != 0) dev.SetRumble(left, right);",
                 Repo("PadForge.App", "Services", "InputService.cs"));
         }
 
@@ -1312,6 +1312,9 @@ namespace PadForge.Tests
             // The engine's stop and the quiesce also stop SDL's own rumble on a
             // port row the switch owns, which SDL's gate refuses otherwise.
             Assert.Contains("if (ud.Device is SdlDeviceWrapper wrapper)\n                            {\n                                try { wrapper.StopSdlRumble(); }", manager);
+            // The port's motors are told their levels again after that stop,
+            // as after the hand-off's.
+            Assert.Contains("                                catch { /* best effort */ }\n                                // As after the hand-off's stop.\n                                BlissBoxRuntime.ResendMotors(ud.DevicePath);", manager);
         }
 
         [Fact]
@@ -1325,6 +1328,10 @@ namespace PadForge.Tests
             Assert.Contains("                    if (result.Ok)\n                    {\n                        port.Replaced = true;\n                        service.Remove(port.InstanceGuid);", window);
             Assert.Contains("row.BlissBoxIdle = !port.Session.Busy && !port.Replaced;",
                 Repo("PadForge.App", "Services", "InputService.BlissBox.cs"));
+            // A show on it ends too, or it would copy the adapter's picture
+            // into the entry the change dropped.
+            Assert.Contains("if (port.Replaced || !TrackPad(port, session.LiveInfo, now))",
+                Repo("PadForge.App", "Services", "DreamcastScreenService.cs"));
         }
 
         [Fact]
@@ -1356,8 +1363,14 @@ namespace PadForge.Tests
             // the pass keeps the motors out of rest.
             int clear = session.IndexOf("if (advanced) ClearPeaks();", pass, StringComparison.Ordinal);
             Assert.True(clear > count && read > clear);
-            // The pass after a picture write takes the clock again.
+            // The pass after a picture write takes the clock again, and so
+            // does the step's first, after its reads.
             Assert.Contains("if (WriteScreen(now)) WriteMotors(_clock());", session);
+            Assert.Contains("            // each.\n            WriteMotors(_clock());", session);
+            // The crash stop waits for a picture write in flight and the pass
+            // after it.
+            Assert.Contains("if (rest || now >= (picture ? pictureEnd : end)) return;",
+                Repo("PadForge.App", "Common", "Input", "BlissBoxRuntime.cs"));
             // A switch-off resend or a hand-off writes nothing once the
             // outputs are quiesced.
             Assert.Contains("if (pending.Count == 0 || OutputsQuiesced) return;",

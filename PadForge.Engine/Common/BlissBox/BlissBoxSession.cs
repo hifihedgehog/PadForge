@@ -130,6 +130,8 @@ namespace PadForge.Engine.Common.BlissBox
         // Set by the crash path's Quiesce, under _peakGate: no level asked for
         // after it is taken, and no picture write starts.
         private volatile bool _quiesced;
+        // From just before a picture transfer until the motor pass after it.
+        private volatile bool _pictureInFlight;
         private bool _resendLarge, _resendSmall;
         // A refused write leaves its motor in doubt: the channel reports a
         // transfer that outlived its wait as failed although the adapter may
@@ -277,6 +279,14 @@ namespace PadForge.Engine.Common.BlissBox
             }
         }
 
+        /// <summary>True from just before a picture transfer until the motor
+        /// pass after it. On a GPA the transfer's pulse takes a running
+        /// motor's timer and forces full power (0x0C2A, 0x2A16), and the
+        /// transfer holds the worker for up to <see cref="ScreenWriteTimeoutMs"/>
+        /// while the adapter stores the picture, so only that pass stops the
+        /// motor again. The crash stop waits for it.</summary>
+        public bool PictureInFlight => _pictureInFlight;
+
         /// <summary>From any thread: both motors stop, and no level asked for
         /// before is owed any more. A 3.x write already decided when the stop
         /// lands still goes out, and the stop follows at the next paced write,
@@ -301,8 +311,9 @@ namespace PadForge.Engine.Common.BlissBox
         /// stop. No picture write starts after it either, since a GPA runs the
         /// Dreamcast driver's command-5 routine at full power before every
         /// picture write (0x2BEF to 0x2BF9). A write already past its check
-        /// still goes out, and its pulse of about 10 ms ends on its own timer
-        /// (0x29F7 to 0x2A14).</summary>
+        /// still goes out, and with a jump pack running its pulse leaves full
+        /// power until the pass after the write, which the crash stop waits
+        /// for (<see cref="PictureInFlight"/>).</summary>
         public void Quiesce()
         {
             lock (_peakGate)
@@ -391,7 +402,9 @@ namespace PadForge.Engine.Common.BlissBox
             }
             else _pressure = null;
 
-            WriteMotors(now);
+            // The clock again, since the reads before it can take up to 500 ms
+            // each.
+            WriteMotors(_clock());
 
             // On a GPA a picture write disturbs the motors (AfterScreenWrite),
             // which a second pass puts right in the same step.
@@ -403,7 +416,11 @@ namespace PadForge.Engine.Common.BlissBox
                 // The clock again: a 3.x pass stamped with the step's start,
                 // before a picture transfer of up to about 650 ms, would let
                 // the next step's pass take the 100 ms pacing as long past.
-                if (WriteScreen(now)) WriteMotors(_clock());
+                try
+                {
+                    if (WriteScreen(now)) WriteMotors(_clock());
+                }
+                finally { _pictureInFlight = false; }
             }
 
             if (!_jobs.IsEmpty)
@@ -501,14 +518,19 @@ namespace PadForge.Engine.Common.BlissBox
             // sends nothing more.
             if (_stopRequested || _quiesced) return false;
             _lastScreenWrite = _clock();
-            bool written = _transport.SetFeature(BlissBoxProtocol.Screen(wire), ScreenWriteTimeoutMs);
-            if (written) _storedScreen = (byte[])wire.Clone();
-            AfterScreenWrite();
-            // At once rather than after the job, which may sleep between its
-            // reads of report 17 while the pulse's timer lapses and leaves a
-            // running rumble at full strength.
-            WriteMotors(_clock());
-            return written;
+            _pictureInFlight = true;
+            try
+            {
+                bool written = _transport.SetFeature(BlissBoxProtocol.Screen(wire), ScreenWriteTimeoutMs);
+                if (written) _storedScreen = (byte[])wire.Clone();
+                AfterScreenWrite();
+                // At once rather than after the job, which may sleep between
+                // its reads of report 17 while the pulse's timer lapses and
+                // leaves a running rumble at full strength.
+                WriteMotors(_clock());
+                return written;
+            }
+            finally { _pictureInFlight = false; }
         }
 
         /// <summary>How long the player job waits after its command before it
@@ -647,6 +669,8 @@ namespace PadForge.Engine.Common.BlissBox
             if (wanted == null) return false;
             if (now - _lastScreenWrite < ScreenIntervalMs) return false;
             _lastScreenWrite = now;
+            // Cleared by Step once the pass after the write is done.
+            _pictureInFlight = true;
             if (_transport.SetFeature(BlissBoxProtocol.Screen(wanted), ScreenWriteTimeoutMs)) _storedScreen = wanted;
             AfterScreenWrite();
             return true;

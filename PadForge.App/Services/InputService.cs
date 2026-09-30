@@ -15544,6 +15544,9 @@ namespace PadForge.Services
                                 // hand-off takes for its SDL stop.
                                 lock (ud.OutputSync)
                                 {
+                                    // Again under the gate, which a relayed
+                                    // frame may have held past the quiesce.
+                                    if (_inputManager?.OutputsQuiesced == true) return;
                                     if (left != 0 || right != 0) dev.SetRumble(left, right);
                                     else dev.StopRumble();
                                 }

@@ -30,10 +30,12 @@ namespace PadForge.Engine
     /// Tracks cached settings values for change detection and converts
     /// XInput vibration motor speeds to SDL rumble calls.
     ///
-    /// Uses change-detection to only send rumble when motor values differ,
-    /// with uint.MaxValue duration (~49 days) to mimic XInput's "set and
-    /// forget" behavior. This avoids the brief hardware restart gaps that
-    /// occur when SDL_RumbleJoystick is called redundantly at high frequency.
+    /// Sends rumble only when a motor value changes, with a uint.MaxValue
+    /// duration to mimic XInput's "set and forget" behavior. SDL caps every
+    /// duration at 0xFFFF ms, about 65.5 s, the Linux kernel's limit
+    /// (SDL_MAX_RUMBLE_DURATION_MS, SDL_sysjoystick.h), and its update loop
+    /// stops the motors when that runs out, so a level held unchanged for
+    /// longer than that stops.
     /// </summary>
     public class ForceFeedbackState
     {

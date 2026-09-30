@@ -1091,7 +1091,7 @@ namespace PadForge.Tests
             int gate = phase.IndexOf("if (!System.Threading.Monitor.TryEnter(ud.OutputSync)) return false;", StringComparison.Ordinal);
             int stop = phase.IndexOf("try { stopped = wrapper.StopSdlRumble(); }", StringComparison.Ordinal);
             Assert.True(gate > 0 && stop > gate);
-            Assert.Contains("lock (ud.OutputSync)\n                                {\n                                    // Again under the gate, which a relayed\n                                    // frame may have held past the quiesce.\n                                    if (_inputManager?.OutputsQuiesced == true) return;\n                                    if (left != 0 || right != 0) dev.SetRumble(left, right);",
+            Assert.Contains("lock (ud.OutputSync)\n                                {\n                                    // Again under the gate, which a relayed\n                                    // frame may have held past the quiesce.\n                                    if (_inputManager?.OutputsQuiesced == true && (left != 0 || right != 0)) return;\n                                    if (left != 0 || right != 0) dev.SetRumble(left, right);",
                 Repo("PadForge.App", "Services", "InputService.cs"));
         }
 
@@ -1369,7 +1369,7 @@ namespace PadForge.Tests
             Assert.Contains("            // each.\n            WriteMotors(_clock());", session);
             // The crash stop waits for a picture write in flight and the pass
             // after it.
-            Assert.Contains("if (rest || now >= (picture ? pictureEnd : end)) return;",
+            Assert.Contains("if (rest || now >= (sawPicture ? pictureEnd : end)) return;",
                 Repo("PadForge.App", "Common", "Input", "BlissBoxRuntime.cs"));
             // A switch-off resend or a hand-off writes nothing once the
             // outputs are quiesced.
@@ -1404,7 +1404,7 @@ namespace PadForge.Tests
                 Repo("PadForge.App", "Common", "Input", "InputManager.cs"));
             string service = Repo("PadForge.App", "Services", "InputService.cs");
             int apply = service.IndexOf("private void ApplyRemoteOutput(", StringComparison.Ordinal);
-            int quiesced = service.IndexOf("if (_inputManager?.OutputsQuiesced == true) return;", apply, StringComparison.Ordinal);
+            int quiesced = service.IndexOf("if (_inputManager?.OutputsQuiesced == true && !IsVibrationStop(effect)) return;", apply, StringComparison.Ordinal);
             int claim = service.IndexOf("RemoteLinkOutputRouter.ClaimOutput(", apply, StringComparison.Ordinal);
             Assert.True(apply > 0 && quiesced > apply && claim > quiesced);
             // A port whose channel is down opens it once more for its stop.
@@ -1433,11 +1433,14 @@ namespace PadForge.Tests
             // stop, under the gate relayed frames take.
             Assert.Contains("bool impulse = !peer && !padix && !blissBox", code);
             Assert.Contains("lock (row.OutputSync)", code);
-            Assert.Contains("Buzz(0, 0);\n                                if (_inputManager?.OutputsQuiesced == true) return;\n                                PadForge.Common.Input.XboxImpulseHidWriter.Write(row, left, right,", code);
+            Assert.Contains("Buzz(0, 0);\n                                ushort lt = fs?.LeftTriggerMotorSpeed ?? 0, rt = fs?.RightTriggerMotorSpeed ?? 0;\n                                if (_inputManager?.OutputsQuiesced == true && (left | right | lt | rt) != 0) return;\n                                PadForge.Common.Input.XboxImpulseHidWriter.Write(row, left, right, lt, rt);", code);
             // A row removed during the last pulse gets a stop.
             Assert.Contains("if (row == null) { Buzz(0, 0); return; }", code);
             // The crash path's quiesce ends a train in flight.
-            Assert.Contains("// good, a train in flight included.\n                            if (_inputManager?.OutputsQuiesced == true) return;", code);
+            // A stop still goes out, since a pulse that reached the device just
+            // after the crash sweep has no other writer left to end it.
+            Assert.Contains("// writer left to end it.\n                            if (_inputManager?.OutputsQuiesced == true && (left != 0 || right != 0)) return;", code);
+            Assert.Contains("private static bool IsVibrationStop(OutputEffectCodec.OutputEffect effect)", code);
         }
 
         [Fact]

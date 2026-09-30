@@ -380,9 +380,10 @@ namespace PadForge.Common.Input
         }
 
         /// <summary>After SDL's own stop on a port row: both motors are told
-        /// their levels again, since on a GPA that stop can reach a one-motor
-        /// pad's command-5 routine through DirectInput's effect block (0x2E8C
-        /// to 0x2EC3), which the resend clears with a stop on command 5.</summary>
+        /// their levels again. On a GPA that stop can call a one-motor pad's
+        /// command-5 routine through DirectInput's effect block (0x2E8C to
+        /// 0x2EC3), which on a Dreamcast pad forces full power (0x0C2C), and
+        /// the resend's command 4 sets the strength again (0x0C39).</summary>
         public static void ResendMotors(string path)
         {
             var port = Find(path);
@@ -417,11 +418,12 @@ namespace PadForge.Common.Input
         /// port opened after the loop ends is quiesced as it opens, since the
         /// poll thread can run on behind a crash dialog. Each look reads the
         /// ports again and keeps every port it has seen in the wait, retired
-        /// ones included. While a picture write and the motor pass after it
-        /// are in flight on a port, the wait runs on to the write's own limit
-        /// (<see cref="BlissBoxSession.PictureInFlight"/>): on a GPA the
-        /// write's pulse leaves a running jump pack at full power until that
-        /// pass.</summary>
+        /// ones included. Once a picture write has been seen in flight on a
+        /// port, the wait runs on to the write's own limit and two motor
+        /// transfers more (<see cref="BlissBoxSession.PictureInFlight"/>): on a
+        /// GPA the write's pulse leaves a running jump pack at full power until
+        /// the pass after it, whose command-5 stop and command 4 take up to
+        /// 500 ms each, and a stop that pass had refused goes again.</summary>
         public static void StopMotorsNow(int timeoutMs)
         {
             var waiting = new List<BlissBoxPort>();
@@ -437,7 +439,8 @@ namespace PadForge.Common.Input
             finally { if (taken) Monitor.Exit(_lock); }
             long start = Environment.TickCount64;
             long end = start + timeoutMs;
-            long pictureEnd = Math.Max(end, start + BlissBoxSession.ScreenWriteTimeoutMs + 500);
+            long pictureEnd = Math.Max(end, start + BlissBoxSession.ScreenWriteTimeoutMs + 1100);
+            bool sawPicture = false;
             while (true)
             {
                 foreach (var port in Ports)
@@ -448,15 +451,15 @@ namespace PadForge.Common.Input
                     port.Session.Quiesce();
                     port.Wake();
                 }
-                bool rest = true, picture = false;
+                bool rest = true;
                 foreach (var port in waiting)
                 {
                     if (!port.IsOpen) continue;
                     if (!port.Session.MotorsAtRest) rest = false;
-                    if (port.Session.PictureInFlight) picture = true;
+                    if (port.Session.PictureInFlight) sawPicture = true;
                 }
                 long now = Environment.TickCount64;
-                if (rest || now >= (picture ? pictureEnd : end)) return;
+                if (rest || now >= (sawPicture ? pictureEnd : end)) return;
                 Thread.Sleep(5);
             }
         }

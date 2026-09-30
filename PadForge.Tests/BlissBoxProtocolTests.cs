@@ -31,7 +31,7 @@ namespace PadForge.Tests
         }
 
         [Fact]
-        public void RumbleIsBbapiSendRumble_TypeOneWithLoopOff()
+        public void RumbleIsBbapiSendRumble_TypeOneWithFullLoop()
         {
             // sendRumble(type, state, amount, loop): [18][type][0][0][state][amount][loop].
             Assert.Equal(new byte[] { 18, 4, 0, 0, 1, 200, 0xFF, 0, 0 }, BlissBoxProtocol.Rumble(true, 200));

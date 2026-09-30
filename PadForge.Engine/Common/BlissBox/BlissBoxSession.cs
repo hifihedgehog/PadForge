@@ -280,11 +280,13 @@ namespace PadForge.Engine.Common.BlissBox
         }
 
         /// <summary>True from just before a picture transfer until the motor
-        /// pass after it. On a GPA the transfer's pulse takes a running
-        /// motor's timer and forces full power (0x0C2A, 0x2A16), and the
-        /// transfer holds the worker for up to <see cref="ScreenWriteTimeoutMs"/>
-        /// while the adapter stores the picture, so only that pass stops the
-        /// motor again. The crash stop waits for it.</summary>
+        /// pass after it. On a GPA the transfer first runs the port's
+        /// controller driver's command-5 routine (0x2BEF to 0x2BF9), which on
+        /// a Dreamcast pad takes a running motor's timer and forces full power
+        /// (0x0C2A, 0x2A16), and the transfer holds the worker for up to
+        /// <see cref="ScreenWriteTimeoutMs"/> while the adapter stores the
+        /// picture, so only that pass stops the motor again. The crash stop
+        /// waits for it.</summary>
         public bool PictureInFlight => _pictureInFlight;
 
         /// <summary>From any thread: both motors stop, and no level asked for
@@ -309,11 +311,12 @@ namespace PadForge.Engine.Common.BlissBox
         /// asked for after it is taken, so a writer that passed the quiesce
         /// check before the crash path set it cannot leave a level behind the
         /// stop. No picture write starts after it either, since a GPA runs the
-        /// Dreamcast driver's command-5 routine at full power before every
-        /// picture write (0x2BEF to 0x2BF9). A write already past its check
-        /// still goes out, and with a jump pack running its pulse leaves full
-        /// power until the pass after the write, which the crash stop waits
-        /// for (<see cref="PictureInFlight"/>).</summary>
+        /// port's controller driver's command-5 routine before every picture
+        /// write (0x2BEF to 0x2BF9), at full power on a Dreamcast pad. The
+        /// check and the in-flight mark share this lock, so a write already
+        /// past its check shows as in flight, and with a jump pack running its
+        /// pulse leaves full power until the pass after the write, which the
+        /// crash stop waits for (<see cref="PictureInFlight"/>).</summary>
         public void Quiesce()
         {
             lock (_peakGate)
@@ -515,14 +518,21 @@ namespace PadForge.Engine.Common.BlissBox
             long wait = _lastScreenWrite + ScreenIntervalMs - _clock();
             if (wait > 0) _sleep((int)Math.Min(wait, ScreenIntervalMs));
             // A port that started closing or was quiesced during the wait
-            // sends nothing more.
-            if (_stopRequested || _quiesced) return false;
+            // sends nothing more. Checked and marked under the quiesce's lock,
+            // so the crash stop either stops this write or sees it in flight.
+            lock (_peakGate)
+            {
+                if (_stopRequested || _quiesced) return false;
+                _pictureInFlight = true;
+            }
             _lastScreenWrite = _clock();
-            _pictureInFlight = true;
             try
             {
                 bool written = _transport.SetFeature(BlissBoxProtocol.Screen(wire), ScreenWriteTimeoutMs);
-                if (written) _storedScreen = (byte[])wire.Clone();
+                // A refused write may have been stored all the same: the
+                // channel reports a transfer that outlived its wait as failed.
+                // The picture is read again before anything compares with it.
+                _storedScreen = written ? (byte[])wire.Clone() : null;
                 AfterScreenWrite();
                 // At once rather than after the job, which may sleep between
                 // its reads of report 17 while the pulse's timer lapses and
@@ -664,14 +674,26 @@ namespace PadForge.Engine.Common.BlissBox
         /// went out.</summary>
         private bool WriteScreen(long now)
         {
-            if (!ScreenWritePending || _quiesced) return false;
+            if (!ScreenWritePending) return false;
             var wanted = _wantedScreen;
             if (wanted == null) return false;
-            if (now - _lastScreenWrite < ScreenIntervalMs) return false;
-            _lastScreenWrite = now;
-            // Cleared by Step once the pass after the write is done.
-            _pictureInFlight = true;
-            if (_transport.SetFeature(BlissBoxProtocol.Screen(wanted), ScreenWriteTimeoutMs)) _storedScreen = wanted;
+            // The clock, not the step's start, which the reads before this
+            // can leave behind.
+            long at = _clock();
+            if (at - _lastScreenWrite < ScreenIntervalMs) return false;
+            // Checked and marked under the quiesce's lock, so the crash stop
+            // either stops this write or sees it in flight. Step clears the
+            // mark once the pass after the write is done.
+            lock (_peakGate)
+            {
+                if (_quiesced) return false;
+                _pictureInFlight = true;
+            }
+            _lastScreenWrite = at;
+            // A refused write may have been stored all the same: the channel
+            // reports a transfer that outlived its wait as failed. The picture
+            // is read again before anything compares with it.
+            _storedScreen = _transport.SetFeature(BlissBoxProtocol.Screen(wanted), ScreenWriteTimeoutMs) ? wanted : null;
             AfterScreenWrite();
             return true;
         }

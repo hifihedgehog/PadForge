@@ -11650,12 +11650,21 @@ namespace PadForge.Services
         /// <summary>Gate for a relayed frame whose device has no UserDevice row.</summary>
         private static readonly object _unresolvedOutputSync = new object();
 
+        /// <summary>A relayed frame that stops every motor.</summary>
+        private static bool IsVibrationStop(OutputEffectCodec.OutputEffect effect)
+            => effect.Kind == OutputEffectCodec.Kind.Vibration
+            && effect.Vibration.LeftMotorSpeed == 0 && effect.Vibration.RightMotorSpeed == 0
+            && effect.Vibration.LeftTriggerMotorSpeed == 0 && effect.Vibration.RightTriggerMotorSpeed == 0;
+
         private void ApplyRemoteOutput(OutputEffectCodec.OutputEffect effect, ISdlInputDevice source, UserDevice ud,
             string peerFingerprint, LinkEffectTicket toneTicket = null)
         {
-            // The crash path's quiesce stops every effect for good (#469), and
-            // a peer game's next frame would start a motor again behind it.
-            if (_inputManager?.OutputsQuiesced == true) return;
+            // The crash path's quiesce ends every effect (#469), and a peer
+            // game's next frame would start a motor again behind it. A stop
+            // still goes through: it starts nothing, and a level that reached
+            // the device just after the crash sweep has no other writer left
+            // to end it.
+            if (_inputManager?.OutputsQuiesced == true && !IsVibrationStop(effect)) return;
             // Sole-writer guard (#138): this frame means a remote game is driving the
             // shared device. Refresh the output lease so the owner's LOCAL output pipeline
             // yields. The apply below is the sole hardware writer (no two-writer stutter).
@@ -15515,9 +15524,12 @@ namespace PadForge.Services
                             && PadForge.Engine.XboxControllerIdentity.IsImpulseTriggerDevice(ud.VendorId, ud.ProdId);
                         void Buzz(ushort left, ushort right)
                         {
-                            // The crash path's quiesce stops every output for
-                            // good, a train in flight included.
-                            if (_inputManager?.OutputsQuiesced == true) return;
+                            // The crash path's quiesce ends every level, a
+                            // train in flight included. A stop still goes out:
+                            // it starts nothing, and a pulse that reached the
+                            // device just after the crash sweep has no other
+                            // writer left to end it.
+                            if (_inputManager?.OutputsQuiesced == true && (left != 0 || right != 0)) return;
                             // Identify is a one-shot user action, not the poll
                             // lane, so the write is unconditional and leaves the
                             // row's motor snapshot alone. Recording the buzz
@@ -15546,7 +15558,7 @@ namespace PadForge.Services
                                 {
                                     // Again under the gate, which a relayed
                                     // frame may have held past the quiesce.
-                                    if (_inputManager?.OutputsQuiesced == true) return;
+                                    if (_inputManager?.OutputsQuiesced == true && (left != 0 || right != 0)) return;
                                     if (left != 0 || right != 0) dev.SetRumble(left, right);
                                     else dev.StopRumble();
                                 }
@@ -15574,9 +15586,9 @@ namespace PadForge.Services
                                 // raw writer holds, so SDL stops and the raw
                                 // report takes the level.
                                 Buzz(0, 0);
-                                if (_inputManager?.OutputsQuiesced == true) return;
-                                PadForge.Common.Input.XboxImpulseHidWriter.Write(row, left, right,
-                                    fs?.LeftTriggerMotorSpeed ?? 0, fs?.RightTriggerMotorSpeed ?? 0);
+                                ushort lt = fs?.LeftTriggerMotorSpeed ?? 0, rt = fs?.RightTriggerMotorSpeed ?? 0;
+                                if (_inputManager?.OutputsQuiesced == true && (left | right | lt | rt) != 0) return;
+                                PadForge.Common.Input.XboxImpulseHidWriter.Write(row, left, right, lt, rt);
                             }
                         }
                         for (int i = 0; i < 2; i++)

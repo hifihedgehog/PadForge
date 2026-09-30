@@ -1685,6 +1685,49 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void AJobsPictureWriteCountsAsInFlightUntilThePassAfterIt()
+        {
+            BlissBoxSession session = null;
+            bool duringPicture = false, duringResend = false;
+            var adapter = new ScriptedAdapter
+            {
+                Type = BlissBoxControllers.TypeDreamcast,
+                DuringWrite = r =>
+                {
+                    if (r[0] == BlissBoxProtocol.ReportScreen) duringPicture = session.PictureInFlight;
+                    else if (duringPicture && r[0] == BlissBoxProtocol.ReportCommand && r[1] == BlissBoxProtocol.CommandLargeMotor)
+                        duringResend = session.PictureInFlight;
+                },
+            };
+            session = Session(adapter);
+            session.Step();
+            _now = 10; session.SetRumble(40000, 0); session.Step();
+            _now = 2000;
+            Assert.True(session.WriteScreenNow(Enumerable.Range(0, 192).Select(i => (byte)i).ToArray()));
+            Assert.True(duringPicture);
+            Assert.True(duringResend);
+            Assert.False(session.PictureInFlight);
+        }
+
+        [Fact]
+        public void ARefusedPictureWriteReadsTheAdaptersPictureAgain()
+        {
+            // The channel reports a transfer that outlived its wait as failed
+            // although the adapter may have stored the picture, so what it
+            // holds is no longer known.
+            var adapter = new ScriptedAdapter { Type = BlissBoxControllers.TypeDreamcast, RefuseScreen = true };
+            var session = Session(adapter);
+            session.Step();
+            Assert.Equal(1, adapter.ScreenReads);
+            session.SetScreen(Enumerable.Range(0, 192).Select(i => (byte)i).ToArray());
+            _now = 2000; session.Step();
+            Assert.Equal(1, adapter.ScreenWrites);
+            Assert.Null(session.StoredScreen);
+            _now = 2100; session.Step();
+            Assert.Equal(2, adapter.ScreenReads);
+        }
+
+        [Fact]
         public void AQuiescedPortReadsNoPicture()
         {
             // The crash path wakes a quiesced port every 5 ms, and on 3.x each

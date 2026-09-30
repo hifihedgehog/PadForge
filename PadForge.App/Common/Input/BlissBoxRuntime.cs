@@ -419,11 +419,11 @@ namespace PadForge.Common.Input
         /// poll thread can run on behind a crash dialog. Each look reads the
         /// ports again and keeps every port it has seen in the wait, retired
         /// ones included. Once a picture write has been seen in flight on a
-        /// port, the wait runs on to the write's own limit and two motor
-        /// transfers more (<see cref="BlissBoxSession.PictureInFlight"/>): on a
-        /// GPA the write's pulse leaves a running jump pack at full power until
-        /// the pass after it, whose command-5 stop and command 4 take up to
-        /// 500 ms each, and a stop that pass had refused goes again.</summary>
+        /// port, the wait runs on to the write's own limit and
+        /// <see cref="PictureWaitExtraMs"/> more
+        /// (<see cref="BlissBoxSession.PictureInFlight"/>): on a GPA the
+        /// write's pulse leaves a running jump pack at full power until the
+        /// pass after it, and a stop that pass had refused goes again.</summary>
         public static void StopMotorsNow(int timeoutMs)
         {
             var waiting = new List<BlissBoxPort>();
@@ -439,7 +439,7 @@ namespace PadForge.Common.Input
             finally { if (taken) Monitor.Exit(_lock); }
             long start = Environment.TickCount64;
             long end = start + timeoutMs;
-            long pictureEnd = Math.Max(end, start + BlissBoxSession.ScreenWriteTimeoutMs + 1100);
+            long pictureEnd = Math.Max(end, start + BlissBoxSession.ScreenWriteTimeoutMs + PictureWaitExtraMs);
             bool sawPicture = false;
             while (true)
             {
@@ -451,17 +451,33 @@ namespace PadForge.Common.Input
                     port.Session.Quiesce();
                     port.Wake();
                 }
-                bool rest = true;
+                bool rest = true, picture = false;
                 foreach (var port in waiting)
                 {
                     if (!port.IsOpen) continue;
                     if (!port.Session.MotorsAtRest) rest = false;
-                    if (port.Session.PictureInFlight) sawPicture = true;
+                    if (port.Session.PictureInFlight) picture = true;
                 }
-                long now = Environment.TickCount64;
-                if (rest || now >= (sawPicture ? pictureEnd : end)) return;
+                if (CrashWaitOver(rest, picture, ref sawPicture, Environment.TickCount64, end, pictureEnd)) return;
                 Thread.Sleep(5);
             }
+        }
+
+        /// <summary>How long past a picture write's own limit the crash stop
+        /// waits once it has seen one in flight: the pass after the write
+        /// sends up to two motor transfers, and a stop it had refused goes
+        /// again after a report 17 read, each transfer at most the channel's
+        /// 500 ms, with 100 ms to spare.</summary>
+        internal const int PictureWaitExtraMs = 2600;
+
+        /// <summary>One look of the crash stop: over once every port is at
+        /// rest or its limit has passed, the longer limit for the rest of the
+        /// wait once any port has been seen with a picture write in
+        /// flight.</summary>
+        internal static bool CrashWaitOver(bool rest, bool picture, ref bool sawPicture, long now, long end, long pictureEnd)
+        {
+            sawPicture |= picture;
+            return rest || now >= (sawPicture ? pictureEnd : end);
         }
 
         /// <summary>True when a port names this row's objects, so the picker

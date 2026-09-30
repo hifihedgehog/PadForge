@@ -31,6 +31,9 @@ namespace PadForge.Tests
             public byte? RefuseCommand;
             /// <summary>The screen report is refused.</summary>
             public bool RefuseScreen;
+            // Stores the picture and then reports the transfer failed, as a
+            // transfer that outlived its wait does.
+            public bool StoreThenRefuseScreen;
             /// <summary>Reads that fail after a refused player command, a
             /// moment's trouble on a port that kept its number.</summary>
             public int FailReadsAfterRefusedPlayer;
@@ -86,7 +89,7 @@ namespace PadForge.Tests
                 if (report[0] == BlissBoxProtocol.ReportScreen)
                 {
                     Array.Copy(report, 4, Stored, 0, 192);
-                    return true;
+                    return !StoreThenRefuseScreen;
                 }
                 if (report[0] == BlissBoxProtocol.ReportCommand && report[1] == BlissBoxProtocol.CommandPlayer)
                 {
@@ -1725,6 +1728,72 @@ namespace PadForge.Tests
             Assert.Null(session.StoredScreen);
             _now = 2100; session.Step();
             Assert.Equal(2, adapter.ScreenReads);
+        }
+
+        [Fact]
+        public void APictureTheAdapterStoredDespiteARefusalIsReadBack()
+        {
+            var adapter = new ScriptedAdapter { Type = BlissBoxControllers.TypeDreamcast, StoreThenRefuseScreen = true };
+            var session = Session(adapter);
+            session.Step();
+            var picture = Enumerable.Range(0, 192).Select(i => (byte)i).ToArray();
+            session.SetScreen(picture);
+            _now = 2000; session.Step();
+            _now = 2100; session.Step();
+            Assert.Equal(picture, session.StoredScreen);
+        }
+
+        [Fact]
+        public void AJobsRefusedPictureWriteReadsTheAdaptersPictureAgain()
+        {
+            var adapter = new ScriptedAdapter { Type = BlissBoxControllers.TypeDreamcast, RefuseScreen = true };
+            var session = Session(adapter);
+            session.Step();
+            _now = 2000;
+            Assert.False(session.WriteScreenNow(Enumerable.Range(0, 192).Select(i => (byte)i).ToArray()));
+            Assert.Null(session.StoredScreen);
+        }
+
+        [Fact]
+        public void ThePictureGuardCountsFromTheWriteItself()
+        {
+            // The step's start comes before its reads and its first motor
+            // pass, so a guard stamped with it let the next write follow
+            // sooner than a second after the last.
+            bool slow = false;
+            var adapter = new ScriptedAdapter { Type = BlissBoxControllers.TypeDreamcast };
+            adapter.DuringWrite = r =>
+            {
+                if (slow && r[0] == BlissBoxProtocol.ReportCommand && r[1] == BlissBoxProtocol.CommandLargeMotor)
+                {
+                    slow = false;
+                    _now += 400;
+                }
+            };
+            var session = Session(adapter);
+            session.Step();
+            session.SetScreen(Enumerable.Range(0, 192).Select(i => (byte)i).ToArray());
+            slow = true;
+            _now = 1000; session.SetRumble(40000, 0); session.Step();
+            Assert.Equal(1, adapter.ScreenWrites);
+            session.SetScreen(Enumerable.Range(0, 192).Select(i => (byte)(i ^ 0x55)).ToArray());
+            _now = 2100; session.Step();
+            Assert.Equal(1, adapter.ScreenWrites);
+            _now = 2450; session.Step();
+            Assert.Equal(2, adapter.ScreenWrites);
+        }
+
+        [Fact]
+        public void AFreshPortIsNotAtRestUntilItsFirstStopIsOut()
+        {
+            // A port that opened during the crash stop's wait read as at rest
+            // before its first report 17, although its first identification
+            // owes both motors their levels.
+            var adapter = new ScriptedAdapter { Type = BlissBoxControllers.TypeNintendo64 };
+            var session = Session(adapter);
+            Assert.False(session.MotorsAtRest);
+            session.Step();
+            Assert.True(session.MotorsAtRest);
         }
 
         [Fact]

@@ -2129,38 +2129,49 @@ namespace PadForge.Common.Input
                 {
                     if (ud?.ForceFeedbackState != null && ud.Device != null)
                     {
-                        // A Padix PSX/USB converter's SDL rumble is inert by
-                        // design (SdlDeviceWrapper.SetRumble), so its final zero
-                        // comes from the direct writer (#440).
-                        if (PadForge.Engine.PadixConverterIdentity.IsPlayStationConverter(ud.VendorId, ud.ProdId))
+                        // Under the row's output gate when it comes free within
+                        // 50 ms: the relay and Identify write under it, so a
+                        // level one of them had already decided lands before
+                        // this stop, not after it (#469). Bounded, so a writer
+                        // stalled holding it cannot hold up the stop.
+                        bool gated = false;
+                        try
                         {
-                            try { PadixConverterRawHidWriter.Write(ud.DevicePath, 0, 0); }
-                            catch { /* best effort */ }
-                        }
-                        // A Bliss-Box port's SDL rumble is inert while the
-                        // adapter's commands own its motors (#469). The port's
-                        // worker sends the stop with its next motor write, at
-                        // once on a GPA and at the next paced write on 3.x,
-                        // and a pulse asked for before is dropped rather than
-                        // sent ahead of it. QuiesceOutputs waits for it.
-                        if (PadForge.Engine.Common.BlissBox.BlissBoxApi.OwnsRumble(ud.VendorId, ud.ProdId))
-                        {
-                            try { BlissBoxRuntime.StopRumble(ud.DevicePath); }
-                            catch { /* best effort */ }
-                            // SDL's gate refuses the stop below on these rows,
-                            // and a level SDL took before the switch went on
-                            // runs until the hand-off stops it, which may not
-                            // have happened yet.
-                            if (ud.Device is SdlDeviceWrapper wrapper)
+                            System.Threading.Monitor.TryEnter(ud.OutputSync, 50, ref gated);
+                            // A Padix PSX/USB converter's SDL rumble is inert by
+                            // design (SdlDeviceWrapper.SetRumble), so its final zero
+                            // comes from the direct writer (#440).
+                            if (PadForge.Engine.PadixConverterIdentity.IsPlayStationConverter(ud.VendorId, ud.ProdId))
                             {
-                                try { wrapper.StopSdlRumble(); }
+                                try { PadixConverterRawHidWriter.Write(ud.DevicePath, 0, 0); }
                                 catch { /* best effort */ }
-                                // As after the hand-off's stop.
-                                BlissBoxRuntime.ResendMotors(ud.DevicePath);
                             }
+                            // A Bliss-Box port's SDL rumble is inert while the
+                            // adapter's commands own its motors (#469). The port's
+                            // worker sends the stop with its next motor write, at
+                            // once on a GPA and at the next paced write on 3.x,
+                            // and a pulse asked for before is dropped rather than
+                            // sent ahead of it. QuiesceOutputs waits for it.
+                            if (PadForge.Engine.Common.BlissBox.BlissBoxApi.OwnsRumble(ud.VendorId, ud.ProdId))
+                            {
+                                try { BlissBoxRuntime.StopRumble(ud.DevicePath); }
+                                catch { /* best effort */ }
+                                // SDL's gate refuses the stop below on these rows,
+                                // and a level SDL took before the switch went on
+                                // runs until the hand-off stops it, which may not
+                                // have happened yet.
+                                if (ud.Device is SdlDeviceWrapper wrapper)
+                                {
+                                    try { wrapper.StopSdlRumble(); }
+                                    catch { /* best effort */ }
+                                    // As after the hand-off's stop.
+                                    BlissBoxRuntime.ResendMotors(ud.DevicePath);
+                                }
+                            }
+                            try { ud.ForceFeedbackState.StopDeviceForces(ud.Device); }
+                            catch { /* best effort */ }
                         }
-                        try { ud.ForceFeedbackState.StopDeviceForces(ud.Device); }
-                        catch { /* best effort */ }
+                        finally { if (gated) System.Threading.Monitor.Exit(ud.OutputSync); }
                     }
                 }
             }

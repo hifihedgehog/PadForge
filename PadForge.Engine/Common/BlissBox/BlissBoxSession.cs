@@ -132,7 +132,10 @@ namespace PadForge.Engine.Common.BlissBox
         private volatile bool _quiesced;
         // From just before a picture transfer until the motor pass after it.
         private volatile bool _pictureInFlight;
-        private bool _resendLarge, _resendSmall;
+        // True from the start: a port's first identification tells both
+        // motors their levels, and until then a port that opened during the
+        // crash stop's wait does not read as at rest.
+        private bool _resendLarge = true, _resendSmall = true;
         // A refused write leaves its motor in doubt: the channel reports a
         // transfer that outlived its wait as failed although the adapter may
         // have taken it. Read by the crash path.

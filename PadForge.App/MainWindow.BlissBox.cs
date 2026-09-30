@@ -133,6 +133,9 @@ namespace PadForge
                             string.Format(culture, s.BlissBoxPak_RestoreMessage_Format, port.Session.Player),
                             s.BlissBoxPak_RestoreAction, Path.GetFileName(dialog.FileName)))
                         return;
+                    // The file read above leaves the page live, so a player
+                    // change or another restore may have started meanwhile.
+                    if (port.Replaced || port.Session.Busy) return;
                     var job = new BlissBoxPakRestoreJob(image, new Progress<double>(p =>
                         _viewModel.SetStatus(string.Format(culture, s.Status_PakWriting_Format, p))));
                     port.Session.Enqueue(job);

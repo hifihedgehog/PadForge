@@ -497,7 +497,7 @@ Protocol documentation references (no code from these projects ships)
   PlayStation pad reply from psx-spx (https://psx-spx.consoledev.net, no
   license published) and Linux's psxpad-spi driver
   (https://github.com/torvalds/linux, GPL-2.0-or-later). Controller names
-  also come from Bliss-Box LLC's compatibility list
+  and support notes also come from Bliss-Box LLC's compatibility list
   (https://docs.google.com/spreadsheets/d/1oMFpFBTok4IsV2DBt48HlUafx2qMWoTxGjpKMFjfSDM/edit#gid=0,
   no license published), and the adapters' behavior was checked against
   their firmware (Bliss-Box LLC, no license published).

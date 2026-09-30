@@ -1311,10 +1311,10 @@ namespace PadForge.Tests
             Assert.Contains("            BlissBoxRuntime.Close();", manager);
             // The engine's stop and the quiesce also stop SDL's own rumble on a
             // port row the switch owns, which SDL's gate refuses otherwise.
-            Assert.Contains("if (ud.Device is SdlDeviceWrapper wrapper)\n                            {\n                                try { wrapper.StopSdlRumble(); }", manager);
+            Assert.Contains("if (ud.Device is SdlDeviceWrapper wrapper)\n                                {\n                                    try { wrapper.StopSdlRumble(); }", manager);
             // The port's motors are told their levels again after that stop,
             // as after the hand-off's.
-            Assert.Contains("                                catch { /* best effort */ }\n                                // As after the hand-off's stop.\n                                BlissBoxRuntime.ResendMotors(ud.DevicePath);", manager);
+            Assert.Contains("                                    catch { /* best effort */ }\n                                    // As after the hand-off's stop.\n                                    BlissBoxRuntime.ResendMotors(ud.DevicePath);", manager);
         }
 
         [Fact]
@@ -1325,6 +1325,9 @@ namespace PadForge.Tests
             // that time wrote back the choices the change dropped.
             string window = Repo("PadForge.App", "MainWindow.BlissBox.cs");
             Assert.Contains("if (port == null || port.Replaced) return;", window);
+            // A restore checks again after its file read, which leaves the page
+            // live.
+            Assert.Contains("if (port.Replaced || port.Session.Busy) return;\n                    var job = new BlissBoxPakRestoreJob(", window);
             Assert.Contains("                    if (result.Ok)\n                    {\n                        port.Replaced = true;\n                        service.Remove(port.InstanceGuid);", window);
             Assert.Contains("row.BlissBoxIdle = !port.Session.Busy && !port.Replaced;",
                 Repo("PadForge.App", "Services", "InputService.BlissBox.cs"));
@@ -1332,6 +1335,47 @@ namespace PadForge.Tests
             // into the entry the change dropped.
             Assert.Contains("if (port.Replaced || !TrackPad(port, session.LiveInfo, now))",
                 Repo("PadForge.App", "Services", "DreamcastScreenService.cs"));
+        }
+
+        [Fact]
+        public void OnlyAStopPassesTheRelaysCrashGate()
+        {
+            // A vibration frame with both motor levels at zero can still carry
+            // a directional or condition force, which would start behind the
+            // crash dialog.
+            static PadForge.Engine.RemoteLink.OutputEffectCodec.OutputEffect Frame(PadForge.Engine.Vibration v)
+                => new(PadForge.Engine.RemoteLink.OutputEffectCodec.Kind.Vibration, null, v, default);
+            static PadForge.Engine.RemoteLink.OutputEffectCodec.OutputEffect Tone(float amp)
+                => new(PadForge.Engine.RemoteLink.OutputEffectCodec.Kind.HapticTone, null, null, default, 160f, amp);
+            Assert.True(InputService.IsRelayedStop(Frame(new PadForge.Engine.Vibration())));
+            Assert.False(InputService.IsRelayedStop(Frame(new PadForge.Engine.Vibration { LeftMotorSpeed = 1 })));
+            Assert.False(InputService.IsRelayedStop(Frame(new PadForge.Engine.Vibration { RightTriggerMotorSpeed = 1 })));
+            Assert.False(InputService.IsRelayedStop(Frame(new PadForge.Engine.Vibration { HasDirectionalData = true })));
+            Assert.False(InputService.IsRelayedStop(Frame(new PadForge.Engine.Vibration { HasConditionData = true })));
+            Assert.True(InputService.IsRelayedStop(Tone(0f)));
+            Assert.False(InputService.IsRelayedStop(Tone(0.5f)));
+            Assert.False(InputService.IsRelayedStop(new PadForge.Engine.RemoteLink.OutputEffectCodec.OutputEffect(
+                PadForge.Engine.RemoteLink.OutputEffectCodec.Kind.PlayerIndex, null, null, default, playerIndex: 1)));
+        }
+
+        [Fact]
+        public void TheCrashStopKeepsItsLongerWaitOnceAPictureWasSeen()
+        {
+            // The longer wait ended with the pass after the picture even when
+            // that pass's stop was refused, so the stop never went again.
+            bool saw = false;
+            Assert.False(BlissBoxRuntime.CrashWaitOver(false, true, ref saw, 300, 250, 4600));
+            Assert.False(BlissBoxRuntime.CrashWaitOver(false, false, ref saw, 3000, 250, 4600));
+            Assert.True(BlissBoxRuntime.CrashWaitOver(false, false, ref saw, 4600, 250, 4600));
+            Assert.True(BlissBoxRuntime.CrashWaitOver(true, false, ref saw, 3000, 250, 4600));
+            bool none = false;
+            Assert.True(BlissBoxRuntime.CrashWaitOver(false, false, ref none, 300, 250, 4600));
+            // Room for the pass after the picture and a retried stop after a
+            // report 17 read, 500 ms a transfer at most.
+            Assert.True(BlissBoxRuntime.PictureWaitExtraMs >= 5 * 500);
+            // Each row's stops run under its output gate, bounded.
+            Assert.Contains("System.Threading.Monitor.TryEnter(ud.OutputSync, 50, ref gated);",
+                Repo("PadForge.App", "Common", "Input", "InputManager.cs"));
         }
 
         [Fact]
@@ -1369,8 +1413,9 @@ namespace PadForge.Tests
             Assert.Contains("            // each.\n            WriteMotors(_clock());", session);
             // The crash stop waits for a picture write in flight and the pass
             // after it.
-            Assert.Contains("if (rest || now >= (sawPicture ? pictureEnd : end)) return;",
-                Repo("PadForge.App", "Common", "Input", "BlissBoxRuntime.cs"));
+            string crash = Repo("PadForge.App", "Common", "Input", "BlissBoxRuntime.cs");
+            Assert.Contains("            bool sawPicture = false;\n            while (true)", crash);
+            Assert.Contains("if (CrashWaitOver(rest, picture, ref sawPicture, Environment.TickCount64, end, pictureEnd)) return;", crash);
             // A switch-off resend or a hand-off writes nothing once the
             // outputs are quiesced.
             Assert.Contains("if (pending.Count == 0 || OutputsQuiesced) return;",
@@ -1404,7 +1449,7 @@ namespace PadForge.Tests
                 Repo("PadForge.App", "Common", "Input", "InputManager.cs"));
             string service = Repo("PadForge.App", "Services", "InputService.cs");
             int apply = service.IndexOf("private void ApplyRemoteOutput(", StringComparison.Ordinal);
-            int quiesced = service.IndexOf("if (_inputManager?.OutputsQuiesced == true && !IsVibrationStop(effect)) return;", apply, StringComparison.Ordinal);
+            int quiesced = service.IndexOf("if (_inputManager?.OutputsQuiesced == true && !IsRelayedStop(effect)) return;", apply, StringComparison.Ordinal);
             int claim = service.IndexOf("RemoteLinkOutputRouter.ClaimOutput(", apply, StringComparison.Ordinal);
             Assert.True(apply > 0 && quiesced > apply && claim > quiesced);
             // A port whose channel is down opens it once more for its stop.
@@ -1440,7 +1485,7 @@ namespace PadForge.Tests
             // A stop still goes out, since a pulse that reached the device just
             // after the crash sweep has no other writer left to end it.
             Assert.Contains("// writer left to end it.\n                            if (_inputManager?.OutputsQuiesced == true && (left != 0 || right != 0)) return;", code);
-            Assert.Contains("private static bool IsVibrationStop(OutputEffectCodec.OutputEffect effect)", code);
+            Assert.Contains("internal static bool IsRelayedStop(OutputEffectCodec.OutputEffect effect)", code);
         }
 
         [Fact]
@@ -1452,6 +1497,10 @@ namespace PadForge.Tests
             try
             {
                 var successor = Assert.Single(BlissBoxRuntime.Sync(new[] { new BlissBoxRuntime.Row(path, 0x0D04, guid, 9) }));
+                // As after the port's first stop, which a port that never
+                // opens does not send: nothing owed.
+                foreach (var name in new[] { "_resendLarge", "_resendSmall" })
+                    typeof(BlissBoxSession).GetField(name, BindingFlags.NonPublic | BindingFlags.Instance).SetValue(successor.Session, false);
                 var handOver = System.Threading.Tasks.Task.Run(() => BlissBoxRuntime.HandOverToSuccessor(path, () => exited.IsSet, null));
                 await System.Threading.Tasks.Task.Delay(200);
                 Assert.False(handOver.IsCompleted);

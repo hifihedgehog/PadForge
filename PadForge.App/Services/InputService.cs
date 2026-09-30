@@ -11650,11 +11650,20 @@ namespace PadForge.Services
         /// <summary>Gate for a relayed frame whose device has no UserDevice row.</summary>
         private static readonly object _unresolvedOutputSync = new object();
 
-        /// <summary>A relayed frame that stops every motor.</summary>
-        private static bool IsVibrationStop(OutputEffectCodec.OutputEffect effect)
-            => effect.Kind == OutputEffectCodec.Kind.Vibration
-            && effect.Vibration.LeftMotorSpeed == 0 && effect.Vibration.RightMotorSpeed == 0
-            && effect.Vibration.LeftTriggerMotorSpeed == 0 && effect.Vibration.RightTriggerMotorSpeed == 0;
+        /// <summary>A relayed frame that starts nothing: a vibration frame
+        /// with every motor at zero and no directional or condition force,
+        /// which a frame with both motor strengths at zero can still carry, or
+        /// a haptic tone at zero amplitude.</summary>
+        internal static bool IsRelayedStop(OutputEffectCodec.OutputEffect effect)
+            => effect.Kind switch
+            {
+                OutputEffectCodec.Kind.Vibration => effect.Vibration is { } v
+                    && v.LeftMotorSpeed == 0 && v.RightMotorSpeed == 0
+                    && v.LeftTriggerMotorSpeed == 0 && v.RightTriggerMotorSpeed == 0
+                    && !v.HasDirectionalData && !v.HasConditionData,
+                OutputEffectCodec.Kind.HapticTone => effect.HapticToneAmp <= 0f,
+                _ => false,
+            };
 
         private void ApplyRemoteOutput(OutputEffectCodec.OutputEffect effect, ISdlInputDevice source, UserDevice ud,
             string peerFingerprint, LinkEffectTicket toneTicket = null)
@@ -11664,7 +11673,7 @@ namespace PadForge.Services
             // still goes through: it starts nothing, and a level that reached
             // the device just after the crash sweep has no other writer left
             // to end it.
-            if (_inputManager?.OutputsQuiesced == true && !IsVibrationStop(effect)) return;
+            if (_inputManager?.OutputsQuiesced == true && !IsRelayedStop(effect)) return;
             // Sole-writer guard (#138): this frame means a remote game is driving the
             // shared device. Refresh the output lease so the owner's LOCAL output pipeline
             // yields. The apply below is the sole hardware writer (no two-writer stutter).

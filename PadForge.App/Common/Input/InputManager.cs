@@ -2147,6 +2147,21 @@ namespace PadForge.Common.Input
                                 try { PadixConverterRawHidWriter.Write(ud.DevicePath, 0, 0); }
                                 catch { /* best effort */ }
                             }
+                            // An Xbox One+ pad's motors take the raw report
+                            // (XboxImpulseHidWriter), never SDL's rumble, so SDL
+                            // holds no level for it and skips the stop below as
+                            // a repeat (SDL_joystick.c:2287-2290). The pad would
+                            // keep the last level for the long pulse the report
+                            // asks for, the 0xFF, 0x00, 0xEB tail that xpadneo's
+                            // rumble.c also sends. Like Step 2's final zero for an
+                            // unassigned pad, this goes only to a pad left at a
+                            // level.
+                            if (ud.ForceFeedbackState.IsActive
+                                && PadForge.Engine.XboxControllerIdentity.IsImpulseTriggerDevice(ud.VendorId, ud.ProdId))
+                            {
+                                try { XboxImpulseHidWriter.Write(ud, 0, 0, 0, 0); }
+                                catch { /* best effort */ }
+                            }
                             // A Bliss-Box port's SDL rumble is inert while the
                             // adapter's commands own its motors (#469). The port's
                             // worker sends the stop with its next motor write, at

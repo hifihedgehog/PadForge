@@ -168,6 +168,10 @@ namespace PadForge.Common.Input
                     // Not gated on touchpads: sticks host menus too.
                     UpdateMenuContexts(ud, newState);
 
+                    // Web Menus (#471): a phone's held tiles fire their cells.
+                    if (ud.Device is WebControllerDevice webMenus && webMenus.IsMenuSurface)
+                        UpdateMenuDirectPresses(ud, webMenus);
+
                     // Apply force feedback (rumble) if applicable.
                     ApplyForceFeedback(ud);
                 }

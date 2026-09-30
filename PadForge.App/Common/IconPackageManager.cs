@@ -184,27 +184,57 @@ namespace PadForge.Common
                     string.Equals(x.FullName, entry, StringComparison.OrdinalIgnoreCase)
                     || string.Equals(x.Name, entry, StringComparison.OrdinalIgnoreCase));
                 if (e == null) return null;
-                // Pre-size from the DECLARED length only up to a sane icon
-                // size, and bound the actual copy: both numbers are archive
-                // metadata a crafted pack controls (the sound layer's
-                // audit G2 bound, sized for images).
-                const long MaxIconBytes = 16L * 1024 * 1024;
-                using var ms = new MemoryStream((int)Math.Clamp(e.Length, 0, 1024 * 1024));
-                using (var s = e.Open())
-                {
-                    var chunk = new byte[81920];
-                    long total = 0;
-                    int got;
-                    while ((got = s.Read(chunk, 0, chunk.Length)) > 0)
-                    {
-                        total += got;
-                        if (total > MaxIconBytes) return null;
-                        ms.Write(chunk, 0, got);
-                    }
-                }
-                return ms.ToArray();
+                return ReadBounded(e);
             }
             catch { return null; }
+        }
+
+        /// <summary>Every image entry of a registered pack with its bytes, from
+        /// one read of the archive, for the icon picker's thumbnails (#471).
+        /// Each entry has <see cref="TryReadIcon"/>'s bound, and one past it
+        /// is left out.</summary>
+        public static List<(string Entry, byte[] Bytes)> ReadIcons(string packageName)
+        {
+            var result = new List<(string Entry, byte[] Bytes)>();
+            string file = ResolvePackageFile(packageName);
+            if (file == null || !File.Exists(file)) return result;
+            try
+            {
+                using var zip = ZipFile.OpenRead(file);
+                foreach (var e in zip.Entries)
+                {
+                    if (!ImageExtensions.Contains(System.IO.Path.GetExtension(e.Name), StringComparer.OrdinalIgnoreCase))
+                        continue;
+                    var bytes = ReadBounded(e);
+                    if (bytes != null) result.Add((e.FullName, bytes));
+                }
+            }
+            catch { }
+            return result;
+        }
+
+        /// <summary>An entry's bytes, or null past the per-icon bound.</summary>
+        private static byte[] ReadBounded(ZipArchiveEntry e)
+        {
+            // Pre-size from the DECLARED length only up to a sane icon
+            // size, and bound the actual copy: both numbers are archive
+            // metadata a crafted pack controls (the sound layer's
+            // audit G2 bound, sized for images).
+            const long MaxIconBytes = 16L * 1024 * 1024;
+            using var ms = new MemoryStream((int)Math.Clamp(e.Length, 0, 1024 * 1024));
+            using (var s = e.Open())
+            {
+                var chunk = new byte[81920];
+                long total = 0;
+                int got;
+                while ((got = s.Read(chunk, 0, chunk.Length)) > 0)
+                {
+                    total += got;
+                    if (total > MaxIconBytes) return null;
+                    ms.Write(chunk, 0, got);
+                }
+            }
+            return ms.ToArray();
         }
 
         /// <summary>Lists the image entry names inside a registered pack

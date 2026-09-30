@@ -1784,7 +1784,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_Shift_Rename" xml:space="preserve"><value>Renommer la couche…</value></data>
   <data name="Pad_Shift_Color" xml:space="preserve"><value>Couleur de la couche</value></data>
   <data name="Pad_ResetLayerColor" xml:space="preserve"><value>Réinitialiser la couleur de la couche</value></data>
-  <data name="Pad_Shift_Icon_Tooltip" xml:space="preserve"><value>Choisis un emoji à afficher sur le flyout lorsque cette couche est active.</value></data>
+  <data name="Pad_Shift_Icon_Tooltip" xml:space="preserve"><value>Choisis un emoji ou une image à afficher sur le flyout lorsque cette couche est active.</value></data>
   <data name="Pad_Shift_Icon_Reset" xml:space="preserve"><value>Réinitialiser (⇧)</value></data>
   <data name="Pad_Shift_Copy" xml:space="preserve"><value>Copier les lignes de la couche</value></data>
   <data name="Pad_Shift_Paste" xml:space="preserve"><value>Coller les lignes dans la couche</value></data>
@@ -2262,10 +2262,20 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_Audio_Packages_PickSounds" xml:space="preserve"><value>Choisissez les fichiers audio du paquet</value></data>
   <data name="Menu_Binding_Macro" xml:space="preserve"><value>Macro</value></data>
   <data name="Menu_MacroPicker_Tip" xml:space="preserve"><value>La macro déclenchée par cette cellule. Le mode de déclenchement de la macro s'applique tant que la cellule est active.</value></data>
-  <data name="Menu_ChooseIcon_Tip" xml:space="preserve"><value>Choisir l'icône de cette cellule : une entrée d'un pack d'icônes ou un fichier image.</value></data>
-  <data name="Menu_Icon_None" xml:space="preserve"><value>(Aucune icône)</value></data>
-  <data name="Menu_Icon_PickFromPackage_Format" xml:space="preserve"><value>Choisir une icône dans {0}</value></data>
+  <data name="Menu_ChooseIcon_Tip" xml:space="preserve"><value>Choisir l'icône de cette cellule : un emoji, une entrée d'un pack d'icônes ou un fichier image.</value></data>
+  <data name="Menu_Icon_None" xml:space="preserve"><value>Aucune icône</value></data>
   <data name="Menu_Icon_PickTitle" xml:space="preserve"><value>Choisir une icône</value></data>
+  <data name="IconPicker_Emoji" xml:space="preserve"><value>Emoji</value></data>
+  <data name="IconPicker_Images" xml:space="preserve"><value>Images</value></data>
+  <data name="IconPicker_NoPackages" xml:space="preserve"><value>Aucun pack d'icônes pour l'instant. Utilisez « Parcourir les fichiers… » pour choisir une image ou un pack d'icônes.</value></data>
+  <data name="Emoji_Category_Smileys" xml:space="preserve"><value>Émoticônes</value></data>
+  <data name="Emoji_Category_Hands" xml:space="preserve"><value>Mains</value></data>
+  <data name="Emoji_Category_Animals" xml:space="preserve"><value>Animaux</value></data>
+  <data name="Emoji_Category_Food" xml:space="preserve"><value>Nourriture</value></data>
+  <data name="Emoji_Category_Activities" xml:space="preserve"><value>Activités</value></data>
+  <data name="Emoji_Category_Travel" xml:space="preserve"><value>Voyages</value></data>
+  <data name="Emoji_Category_Objects" xml:space="preserve"><value>Objets</value></data>
+  <data name="Emoji_Category_Symbols" xml:space="preserve"><value>Symboles</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>Packs d'icônes</value></data>
   <data name="Pad_Menus_IconPackages_Desc" xml:space="preserve"><value>Un pack d'icônes est un fichier zip d'images portant l'extension .pficons. Ajoutez-le ici, puis choisissez ses icônes sur n'importe quelle cellule de menu. PadForge lit directement le fichier et ne le décompresse jamais. Gardez les packs à côté de PadForge.exe pour rester portable.</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>Ajouter un pack…</value></data>
@@ -2512,6 +2522,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="DeviceType_VrController" xml:space="preserve"><value>Manette VR</value></data>
   <data name="DeviceType_LogitechGKeys" xml:space="preserve"><value>Touches G Logitech</value></data>
   <data name="DeviceType_AnalogKeyboard" xml:space="preserve"><value>Clavier analogique</value></data>
+  <data name="DeviceType_WebMenus" xml:space="preserve"><value>Menus Web</value></data>
   <data name="HeadTracker_Yaw" xml:space="preserve"><value>Lacet de la tête</value></data>
   <data name="HeadTracker_Pitch" xml:space="preserve"><value>Tangage de la tête</value></data>
   <data name="HeadTracker_Roll" xml:space="preserve"><value>Roulis de la tête</value></data>
@@ -3404,6 +3415,8 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>Ajoute une cellule centrale, sélectionnée tant que le stick ou le doigt reste dans la zone morte d'activation.</value></data>
   <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>Pour les sticks : la distance à pousser avant que le menu s'ouvre et que les cellules de l'anneau se surlignent. Sur les menus radiaux, c'est aussi la zone centrale pour les sticks et les pavés tactiles : à l'intérieur, la cellule centrale est sélectionnée si elle existe.</value></data>
   <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>Affiche l'étiquette de chaque cellule sur la superposition à l'écran.</value></data>
+  <data name="Menu_ShowOnWebController" xml:space="preserve"><value>Afficher sur le contrôleur Web</value></data>
+  <data name="Menu_ShowOnWebController_Tip" xml:space="preserve"><value>Affiche ce menu comme une page de la disposition « Web Menus » du contrôleur Web. Un appui sur une tuile déclenche sa cellule.</value></data>
   <data name="Menu_Position_Tip" xml:space="preserve"><value>Position du centre de la superposition à l'écran, en pourcentage. 50 et 50 correspond au milieu.</value></data>
   <data name="Menu_Scale_Tip" xml:space="preserve"><value>Taille de la superposition, en pourcentage de sa taille normale.</value></data>
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>Opacité de la superposition. 100 % est entièrement opaque.</value></data>

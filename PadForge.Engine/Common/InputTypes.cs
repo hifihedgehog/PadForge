@@ -126,6 +126,11 @@ namespace PadForge.Engine
         // CustomInputState.AnalogKeys rather than the numbered arrays.
         public const int AnalogKeyboard = 38;
 
+        // A phone showing a slot's Touch Grid menus on the web controller's
+        // Web Menus layout (issue #471). It has no axes or buttons: a tap
+        // fires a menu cell directly.
+        public const int WebMenus = 39;
+
         /// <summary>True when a row of this type answers a source whose
         /// DeviceGuid is empty, the "(Any Device)" wildcard that means
         /// whichever controller is assigned to the slot. Controllers,
@@ -141,11 +146,12 @@ namespace PadForge.Engine
         /// source on any of them still reads. An analog keyboard leaves its
         /// numbered arrays at zero and publishes its keys on their own
         /// sub-state, and a zeroed trigger axis reads as half pull through
-        /// the wildcard, so it stays out for the #431 reason.</summary>
+        /// the wildcard, so it stays out for the #431 reason. A Web Menus
+        /// phone has no inputs at all, so the same zeroed axes keep it out.</summary>
         public static bool AnswersAnyDeviceSources(int capType) => capType switch
         {
             HeadTracker or Nfc or Microphone or HandheldButtons or ConsumerControl or Tablet
-                or VrController or LogitechGKeys or AnalogKeyboard => false,
+                or VrController or LogitechGKeys or AnalogKeyboard or WebMenus => false,
             _ => true,
         };
     }

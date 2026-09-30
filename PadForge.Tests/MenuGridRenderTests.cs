@@ -85,6 +85,67 @@ namespace PadForge.Tests
             }));
         }
 
+        /// <summary>#471: an emoji cell draws its glyph as text in the icon
+        /// box, sizes the grid exactly as an image icon does, stays inside the
+        /// window, and restyles on hover with the label.</summary>
+        [Fact]
+        public void AnEmojiCellDrawsItsGlyphInTheIconBox()
+        {
+            RunSta(() => WithIcon(() =>
+            {
+                var window = new MenuOverlayWindow();
+                try
+                {
+                    var flags = BindingFlags.Instance | BindingFlags.NonPublic;
+                    typeof(MenuOverlayWindow).GetMethod("RefreshThemeBrushes", flags).Invoke(window, null);
+                    MenuDefinitionEntry Menu(string icon)
+                    {
+                        var m = new MenuDefinitionEntry
+                        {
+                            Kind = MenuKind.Grid, CellCount = 1, ShowLabels = true,
+                            ScalePercent = 100, OpacityPercent = 100,
+                        };
+                        // 200% makes the icon, not the label, set the cell's size.
+                        m.Items.Add(new MenuItemDefinition
+                        {
+                            Index = 0, Label = "Menu label", Icon = icon, IconScalePercent = 200,
+                        });
+                        return m;
+                    }
+                    var build = typeof(MenuOverlayWindow).GetMethod("BuildGrid", flags);
+                    var canvas = (Canvas)window.FindName("MenuCanvas");
+                    build.Invoke(window, new object[] { Menu("grid_render_test.png") });
+                    double imageWidth = canvas.Width, imageHeight = canvas.Height;
+                    build.Invoke(window, new object[] { Menu("\U0001F6EC") });
+                    Assert.Equal(imageWidth, canvas.Width);
+                    Assert.Equal(imageHeight, canvas.Height);
+                    Assert.True(canvas.Height > 76);
+
+                    Assert.Empty(canvas.Children.OfType<Image>());
+                    var glyph = Assert.Single(canvas.Children.OfType<TextBlock>(), t => t.Text == "\U0001F6EC");
+                    Assert.StartsWith("Segoe UI Emoji", glyph.FontFamily.Source);
+                    var label = Assert.Single(canvas.Children.OfType<TextBlock>(), t => t.Text == "Menu label");
+                    Assert.True(Canvas.GetTop(glyph) < Canvas.GetTop(label));
+
+                    var client = (FrameworkElement)window.Content;
+                    window.Content = null;
+                    var size = new Size(canvas.Width, canvas.Height);
+                    client.Measure(size);
+                    client.Arrange(new Rect(size));
+                    client.UpdateLayout();
+                    foreach (var t in new[] { glyph, label })
+                        AssertInside(t.TransformToAncestor(client).TransformBounds(new Rect(t.RenderSize)),
+                            size.Width, size.Height);
+
+                    var rest = glyph.Foreground;
+                    typeof(MenuOverlayWindow).GetMethod("SetHovered", flags).Invoke(window, new object[] { 0 });
+                    Assert.NotSame(rest, glyph.Foreground);
+                    Assert.Same(label.Foreground, glyph.Foreground);
+                }
+                finally { window.Close(); }
+            }));
+        }
+
         private static void AssertInside(Rect bounds, double width, double height)
         {
             Assert.True(bounds.Left >= -0.01 && bounds.Top >= -0.01, bounds.ToString());

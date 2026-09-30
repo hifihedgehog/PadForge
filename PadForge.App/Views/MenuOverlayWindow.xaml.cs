@@ -54,6 +54,9 @@ namespace PadForge.Views
         private int _hovered = int.MinValue;
         private readonly Dictionary<int, Shape> _cellShapes = new();
         private readonly Dictionary<int, TextBlock> _cellLabels = new();
+        /// <summary>Emoji icons (#471). Drawn as text in the label brush, so
+        /// they restyle on hover with the labels.</summary>
+        private readonly Dictionary<int, TextBlock> _cellGlyphs = new();
 
         // Theme brushes, refreshed on rebuild.
         private Brush _cellFill, _cellStroke, _hoverFill, _labelBrush, _hoverLabelBrush, _emptyFill;
@@ -201,6 +204,7 @@ namespace PadForge.Views
         {
             _cellShapes.Clear();
             _cellLabels.Clear();
+            _cellGlyphs.Clear();
             MenuCanvas.Children.Clear();
 
             double scale = Math.Clamp(menu.ScalePercent, 10, 400) / 100.0;
@@ -335,6 +339,7 @@ namespace PadForge.Views
         {
             _cellShapes.Clear();
             _cellLabels.Clear();
+            _cellGlyphs.Clear();
             MenuCanvas.Children.Clear();
 
             double scale = Math.Clamp(menu.ScalePercent, 10, 400) / 100.0;
@@ -351,8 +356,7 @@ namespace PadForge.Views
             {
                 if (pair.Key < 0 || pair.Key >= cellCount) continue;
                 var item = pair.Value;
-                bool hasIcon = !string.IsNullOrEmpty(item.Icon)
-                    && Common.MenuIconResolver.Resolve(item.Icon) != null;
+                bool hasIcon = HasDrawnIcon(item);
                 if (hasIcon)
                 {
                     double iconWidth = 30 * Math.Max(scale, 0.7)
@@ -366,8 +370,7 @@ namespace PadForge.Views
             {
                 if (pair.Key < 0 || pair.Key >= cellCount) continue;
                 var item = pair.Value;
-                bool hasIcon = !string.IsNullOrEmpty(item.Icon)
-                    && Common.MenuIconResolver.Resolve(item.Icon) != null;
+                bool hasIcon = HasDrawnIcon(item);
                 double iconSize = 30 * Math.Max(scale, 0.7)
                     * Math.Clamp(item.IconScalePercent, 25, 200) / 100.0;
                 bool labelShown = menu.ShowLabels && !string.IsNullOrEmpty(item.Label);
@@ -415,6 +418,13 @@ namespace PadForge.Views
 
         // ── Shared bits ─────────────────────────────────────────
 
+        /// <summary>True when the cell draws an icon: an emoji (#471), or an
+        /// image reference that resolves on this machine.</summary>
+        private static bool HasDrawnIcon(MenuItemDefinition item)
+            => !string.IsNullOrEmpty(item.Icon)
+               && (Common.MenuIconResolver.IsGlyph(item.Icon)
+                   || Common.MenuIconResolver.Resolve(item.Icon) != null);
+
         private static Dictionary<int, MenuItemDefinition> BoundItems(MenuDefinitionEntry menu)
         {
             var map = new Dictionary<int, MenuItemDefinition>();
@@ -438,8 +448,12 @@ namespace PadForge.Views
         private void PlaceCellContent(MenuItemDefinition item, bool showLabels, int index,
             double cx, double cy, double maxLabelWidth, double fontSize, double scale)
         {
-            ImageSource iconSrc = string.IsNullOrEmpty(item.Icon)
+            // An emoji (#471) is text: it takes the icon box and the label
+            // brush, and never goes through the image resolver.
+            bool glyph = Common.MenuIconResolver.IsGlyph(item.Icon);
+            ImageSource iconSrc = glyph || string.IsNullOrEmpty(item.Icon)
                 ? null : Common.MenuIconResolver.Resolve(item.Icon);
+            bool hasIcon = glyph || iconSrc != null;
             bool labelShown = showLabels && !string.IsNullOrEmpty(item.Label);
             // Per-cell size (#413): the menu's shared icon box times the
             // cell's own percent. 100 is the identity, so every menu authored
@@ -448,7 +462,28 @@ namespace PadForge.Views
             double iconSize = 30 * Math.Max(scale, 0.7)
                 * Math.Clamp(item.IconScalePercent, 25, 200) / 100.0;
 
-            if (iconSrc != null)
+            double iconCy = labelShown ? cy - iconSize * 0.45 : cy;
+            if (glyph)
+            {
+                // Font size 0.8 of the box: an emoji's ink sits inside its em
+                // square with the ascent and descent around it, so this lands
+                // its height on the icon box.
+                var text = new TextBlock
+                {
+                    Text = item.Icon,
+                    Foreground = _labelBrush,
+                    FontSize = iconSize * 0.8,
+                    FontFamily = new FontFamily("Segoe UI Emoji, Segoe UI Symbol, Segoe UI"),
+                    TextAlignment = TextAlignment.Center,
+                    IsHitTestVisible = false,
+                };
+                text.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                Canvas.SetLeft(text, cx - text.DesiredSize.Width / 2);
+                Canvas.SetTop(text, iconCy - text.DesiredSize.Height / 2);
+                MenuCanvas.Children.Add(text);
+                _cellGlyphs[index] = text;
+            }
+            else if (iconSrc != null)
             {
                 var icon = new Image
                 {
@@ -457,7 +492,6 @@ namespace PadForge.Views
                     Height = iconSize,
                     IsHitTestVisible = false,
                 };
-                double iconCy = labelShown ? cy - iconSize * 0.45 : cy;
                 Canvas.SetLeft(icon, cx - iconSize / 2);
                 Canvas.SetTop(icon, iconCy - iconSize / 2);
                 MenuCanvas.Children.Add(icon);
@@ -466,7 +500,7 @@ namespace PadForge.Views
             if (labelShown)
             {
                 var label = MakeLabel(item.Label, maxLabelWidth, fontSize);
-                PlaceLabel(label, cx, iconSrc != null ? cy + iconSize * 0.55 : cy);
+                PlaceLabel(label, cx, hasIcon ? cy + iconSize * 0.55 : cy);
                 _cellLabels[index] = label;
             }
         }
@@ -506,6 +540,8 @@ namespace PadForge.Views
             }
             if (_cellLabels.TryGetValue(_hovered, out var prevLabel))
                 prevLabel.Foreground = _labelBrush;
+            if (_cellGlyphs.TryGetValue(_hovered, out var prevGlyph))
+                prevGlyph.Foreground = _labelBrush;
 
             _hovered = hovered;
 
@@ -513,6 +549,8 @@ namespace PadForge.Views
                 cur.Fill = _hoverFill;
             if (_cellLabels.TryGetValue(hovered, out var curLabel))
                 curLabel.Foreground = _hoverLabelBrush;
+            if (_cellGlyphs.TryGetValue(hovered, out var curGlyph))
+                curGlyph.Foreground = _hoverLabelBrush;
         }
 
         /// <summary>Centers the overlay at the menu's configured work-area

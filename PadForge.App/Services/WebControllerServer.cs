@@ -138,6 +138,10 @@ namespace PadForge.Services
         /// <summary>Raised when a browser client connects and a device is created.</summary>
         public event Action<WebControllerDevice> DeviceConnected;
 
+        /// <summary>Raised when a Web Menus page asks for a profile (#471), on
+        /// the socket's receive thread. The PC checks the id.</summary>
+        public event Action<string> ProfileSwitchRequested;
+
         /// <summary>Raised when a browser client disconnects.</summary>
         public event Action<WebControllerDevice> DeviceDisconnected;
 
@@ -676,6 +680,12 @@ namespace PadForge.Services
                     return;
                 }
 
+                if (path == "/api/menuicon")
+                {
+                    ServeMenuIcon(ctx);
+                    return;
+                }
+
                 // Serve 2D model PNGs from image cache (/img/2DModels/...).
                 if (path.StartsWith("/img/") && _imageCache != null)
                 {
@@ -812,6 +822,30 @@ namespace PadForge.Services
             }
         }
 
+        /// <summary>A Web Menus tile's picture (#471), by the opaque token the
+        /// page's snapshot names. Only an icon a current snapshot references
+        /// has a token, so this reads nothing a menu does not show. 404
+        /// otherwise.</summary>
+        private static void ServeMenuIcon(HttpListenerContext ctx)
+        {
+            try
+            {
+                if (WebMenusService.TryGetIcon(ctx.Request.QueryString["t"], out byte[] bytes, out string contentType))
+                {
+                    ctx.Response.ContentType = contentType;
+                    ctx.Response.Headers["Cache-Control"] = "no-cache";
+                    ctx.Response.ContentLength64 = bytes.Length;
+                    ctx.Response.OutputStream.Write(bytes, 0, bytes.Length);
+                }
+                else ctx.Response.StatusCode = 404;
+                ctx.Response.Close();
+            }
+            catch
+            {
+                try { ctx.Response.Close(); } catch { }
+            }
+        }
+
         /// <summary>Renders a URL to a QR image for the Dashboard card (#296),
         /// so the phone scans instead of typing. Returns a frozen ImageSource,
         /// or null if the URL will not encode.</summary>
@@ -872,6 +906,11 @@ namespace PadForge.Services
                 var clientId = ctx.Request.QueryString["id"] ?? Guid.NewGuid().ToString("N");
                 var clientType = ctx.Request.QueryString["type"] ?? "xbox360";
                 var layoutParam = ctx.Request.QueryString["layout"] ?? "xbox360";
+                // Only a Web Menus socket (#471) makes a menu surface. Another
+                // page naming that layout gets the default one.
+                if (layoutParam.Equals(WebControllerDevice.MenusLayoutKey, StringComparison.OrdinalIgnoreCase)
+                    && !clientType.Equals(WebControllerDevice.MenusLayoutKey, StringComparison.OrdinalIgnoreCase))
+                    layoutParam = "xbox360";
                 // The cheap pre-filter must not reject a client whose id is
                 // already registered: that is a reconnect the locked
                 // registration below retires and replaces (#402 review). It
@@ -879,7 +918,9 @@ namespace PadForge.Services
                 // at the client limit got a 503 while its own stale session
                 // held the slot.
                 bool preIsTouchpad = clientType.Equals("touchpad", StringComparison.OrdinalIgnoreCase);
-                var preKey = (preIsTouchpad ? "touchpad" : layoutParam.ToLowerInvariant()) + ":" + clientId;
+                bool preIsMenus = clientType.Equals(WebControllerDevice.MenusLayoutKey, StringComparison.OrdinalIgnoreCase);
+                var preKey = (preIsTouchpad ? "touchpad" : preIsMenus ? WebControllerDevice.MenusLayoutKey
+                    : layoutParam.ToLowerInvariant()) + ":" + clientId;
                 if (_clients.Count >= MaxClients && !_clients.ContainsKey(preKey))
                 {
                     ctx.Response.StatusCode = 503;
@@ -897,10 +938,15 @@ namespace PadForge.Services
 
                 // Create device — reuse pad number for reconnecting clients.
                 bool isTouchpadClient = clientType.Equals("touchpad", StringComparison.OrdinalIgnoreCase);
+                // A Web Menus page (#471): the slot's Touch Grid menus, no pad.
+                bool isMenusClient = !isTouchpadClient
+                    && clientType.Equals(WebControllerDevice.MenusLayoutKey, StringComparison.OrdinalIgnoreCase);
                 bool hasTouchpad = isTouchpadClient ||
-                    ctx.Request.QueryString["touchpad"] == "1";
+                    (!isMenusClient && ctx.Request.QueryString["touchpad"] == "1");
                 // Per-type pad numbering: each type (xbox360/ds4/touchpad) starts at 1.
-                var typeKey = isTouchpadClient ? "touchpad" : layoutParam.ToLowerInvariant();
+                var typeKey = isTouchpadClient ? "touchpad"
+                    : isMenusClient ? WebControllerDevice.MenusLayoutKey
+                    : layoutParam.ToLowerInvariant();
                 var compositeKey = typeKey + ":" + clientId;
                 int? allocated = AllocateClientNumber(generation, compositeKey, typeKey);
                 if (!allocated.HasValue)
@@ -913,6 +959,8 @@ namespace PadForge.Services
                 string customLayoutJson = null;
                 if (isTouchpadClient)
                     name = $"Web Touchpad {padId}";
+                else if (isMenusClient)
+                    name = $"Web Menus {padId}";
                 else if (typeKey == "gamepad")
                     // A controller paired to the phone, or built into the
                     // handheld, forwarded through the browser's Gamepad API
@@ -952,7 +1000,12 @@ namespace PadForge.Services
                 var device = new WebControllerDevice(compositeKey, name, isTouchpadClient, typeKey);
                 if (hasTouchpad && !isTouchpadClient)
                     device.HasTouchpad = true; // gamepad layout with a touchpad zone
-                if (!isTouchpadClient && customLayoutJson != null)
+                if (isMenusClient)
+                {
+                    // No surface to declare: the device has no inputs, and
+                    // its taps reach the engine as menu cells.
+                }
+                else if (!isTouchpadClient && customLayoutJson != null)
                 {
                     // A custom pad's shape comes from its widgets: extended
                     // button slots from button codes past the standard 11, a
@@ -1044,6 +1097,18 @@ namespace PadForge.Services
                     if (cts.IsCancellationRequested || ws.State != WebSocketState.Open) return;
                     _ = SendJsonAsync(ws, new { type = "player", index = idx }, cts.Token, session.SendGate);
                 };
+                // Web Menus (#471): the page's snapshot, prebuilt JSON, and a
+                // profile the page asked for. Both come off at teardown: the
+                // profile handler holds this server, and an offline row keeps
+                // its device.
+                Action<string> onMenusFeed = json =>
+                {
+                    if (cts.IsCancellationRequested || ws.State != WebSocketState.Open) return;
+                    _ = SendTextAsync(ws, json, cts.Token, session.SendGate);
+                };
+                Action<string> onProfileRequested = id => ProfileSwitchRequested?.Invoke(id);
+                device.MenusFeedChanged += onMenusFeed;
+                device.ProfileRequested += onProfileRequested;
 
                 // Registration is one critical section: the MaxClients check
                 // above is a cheap pre-filter that races (several browsers can
@@ -1121,13 +1186,15 @@ namespace PadForge.Services
                     // A reconnecting client missed any LED/player push that
                     // happened while it was away; replay the current state.
                     device.ResendIdentity();
+                    device.ResendMenusFeed();
                     // A forwarded pad's phone can sleep or lose Wi-Fi mid-hold
                     // (#402): the page heartbeats once a second, and this
                     // neutralizes the device when nothing has arrived for
                     // GamepadInputDeadlineMs, so a button cannot stay latched
                     // on the PC. The 30 s socket keepalive stays the
-                    // connection deadline.
-                    if (typeKey == "gamepad")
+                    // connection deadline. A Web Menus phone (#471) holds
+                    // tiles the same way, so it answers the same ping.
+                    if (UsesInputDeadline(typeKey))
                     {
                         session.Freshness = new GamepadFreshness(Environment.TickCount64);
                         _ = RunInputDeadline(session, cts.Token);
@@ -1260,6 +1327,8 @@ namespace PadForge.Services
                         }
                     }
                     PublishSessionStatus(generation, stillRegistered);
+                    device.MenusFeedChanged -= onMenusFeed;
+                    device.ProfileRequested -= onProfileRequested;
 
                     // Cancel BEFORE the handshake, not after. Disposal does not
                     // cancel, and the forwarded pad's deadline task (#402) waits
@@ -1319,7 +1388,8 @@ namespace PadForge.Services
 
                 if (type == "input")
                 {
-                    if (!acceptInput) return false;
+                    // A Web Menus phone (#471) has no pad input to take.
+                    if (!acceptInput || device.IsMenuSurface) return false;
                     var kind = root.GetProperty("kind").GetString();
                     var code = root.GetProperty("code").GetInt32();
                     var value = root.GetProperty("value").GetInt32();
@@ -1338,7 +1408,7 @@ namespace PadForge.Services
                     // on first arrival, mirroring the touchpad pattern, so the
                     // Devices page and the gyro pipeline discover the source
                     // the moment it streams.
-                    if (!acceptInput) return false;
+                    if (!acceptInput || device.IsMenuSurface) return false;
                     if (!device.HasGyro) device.EnableMotionCaps();
                     float gx = root.TryGetProperty("gx", out var gxp) ? (float)gxp.GetDouble() : 0f;
                     float gy = root.TryGetProperty("gy", out var gyp) ? (float)gyp.GetDouble() : 0f;
@@ -1347,6 +1417,25 @@ namespace PadForge.Services
                     float ay = root.TryGetProperty("ay", out var ayp) ? (float)ayp.GetDouble() : 0f;
                     float az = root.TryGetProperty("az", out var azp) ? (float)azp.GetDouble() : 0f;
                     device.UpdateMotion(gx, gy, gz, ax, ay, az);
+                }
+                else if (type == "cell")
+                {
+                    // A Web Menus tile pressed or released (#471). The engine
+                    // checks the slot, menu and cell before firing anything.
+                    if (!acceptInput) return false;
+                    int slot = root.GetProperty("slot").GetInt32();
+                    int menu = root.GetProperty("menu").GetInt32();
+                    int cell = root.GetProperty("cell").GetInt32();
+                    bool down = root.GetProperty("down").GetBoolean();
+                    device.SetMenuCell(slot, menu, cell, down);
+                }
+                else if (type == "profile")
+                {
+                    // A Web Menus page choosing a profile (#471). An expired
+                    // session's messages are old news, as its taps are.
+                    if (!acceptInput) return false;
+                    if (root.TryGetProperty("id", out var idp) && idp.ValueKind == JsonValueKind.String)
+                        device.RequestProfile(idp.GetString());
                 }
                 else if (type == "hb")
                 {
@@ -1402,7 +1491,7 @@ namespace PadForge.Services
                     // A forwarded pad (#402) has no touch surface: its page never
                     // sends this, and another client on its session must not
                     // leave a finger down that the deadline's release cannot lift.
-                    if (!acceptInput || device.LayoutKey == "gamepad") return false;
+                    if (!acceptInput || device.LayoutKey == "gamepad" || device.IsMenuSurface) return false;
                     device.HasTouchpad = true;
 
                     int finger = root.TryGetProperty("finger", out var fp) ? fp.GetInt32() : 0;
@@ -1419,25 +1508,33 @@ namespace PadForge.Services
             return false;
         }
 
-        private static async Task SendJsonAsync(WebSocket ws, object obj, CancellationToken ct, SemaphoreSlim gate = null)
+        private static Task SendJsonAsync(WebSocket ws, object obj, CancellationToken ct, SemaphoreSlim gate = null)
+            => SendTextAsync(ws, JsonSerializer.Serialize(obj), ct, gate);
+
+        /// <summary>Sends one text message, already JSON. Web Menus snapshots
+        /// (#471) arrive built.</summary>
+        private static async Task SendTextAsync(WebSocket ws, string json, CancellationToken ct, SemaphoreSlim gate = null)
         {
             if (ws.State != WebSocketState.Open) return;
             // Serialize concurrent sends on one socket — a managed WebSocket
             // throws if a second SendAsync starts before the first completes.
+            // No context capture: a send that starts on the UI thread (a Web
+            // Menus snapshot, #471) must not queue its continuation, and the
+            // gate's release, behind the dispatcher, or a UI stall would hold
+            // the gate and delay the #402 ping past its round-trip limit.
             if (gate != null)
             {
-                try { await gate.WaitAsync(ct); }
+                try { await gate.WaitAsync(ct).ConfigureAwait(false); }
                 catch { return; }
             }
             try
             {
-                var json = JsonSerializer.Serialize(obj);
                 var bytes = Encoding.UTF8.GetBytes(json);
                 await ws.SendAsync(
                     new ArraySegment<byte>(bytes),
                     WebSocketMessageType.Text,
                     true,
-                    ct);
+                    ct).ConfigureAwait(false);
             }
             catch { /* best effort */ }
             finally { gate?.Release(); }
@@ -1726,6 +1823,13 @@ namespace PadForge.Services
             /// <summary>True when the session should expire now.</summary>
             public bool ShouldExpire(long nowTicks) => !Expired && nowTicks - FreshTicks > DeadlineMs;
         }
+
+        /// <summary>The sessions that must answer the once-a-second ping
+        /// (#402): a forwarded pad, and a Web Menus phone (#471), whose held
+        /// tile would otherwise stay fired until the 30 s socket keepalive gave
+        /// up on a phone that dropped off Wi-Fi mid-press.</summary>
+        internal static bool UsesInputDeadline(string typeKey)
+            => typeKey == "gamepad" || typeKey == WebControllerDevice.MenusLayoutKey;
 
         private static async Task RunInputDeadline(ClientSession session, CancellationToken ct)
         {

@@ -1784,7 +1784,7 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_Shift_Rename" xml:space="preserve"><value>Renomear Camada…</value></data>
   <data name="Pad_Shift_Color" xml:space="preserve"><value>Cor da Camada</value></data>
   <data name="Pad_ResetLayerColor" xml:space="preserve"><value>Redefinir Cor da Camada</value></data>
-  <data name="Pad_Shift_Icon_Tooltip" xml:space="preserve"><value>Escolha um emoji para aparecer no flyout quando esta camada estiver ativa.</value></data>
+  <data name="Pad_Shift_Icon_Tooltip" xml:space="preserve"><value>Escolha um emoji ou uma imagem para aparecer no flyout quando esta camada estiver ativa.</value></data>
   <data name="Pad_Shift_Icon_Reset" xml:space="preserve"><value>Redefinir (⇧)</value></data>
   <data name="Pad_Shift_Copy" xml:space="preserve"><value>Copiar Linhas da Camada</value></data>
   <data name="Pad_Shift_Paste" xml:space="preserve"><value>Colar Linhas na Camada</value></data>
@@ -2262,10 +2262,20 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_Audio_Packages_PickSounds" xml:space="preserve"><value>Escolha os Arquivos de Som para o Pacote</value></data>
   <data name="Menu_Binding_Macro" xml:space="preserve"><value>Macro</value></data>
   <data name="Menu_MacroPicker_Tip" xml:space="preserve"><value>A macro que esta célula aciona. O modo de acionamento da própria macro se aplica enquanto a célula está ativa.</value></data>
-  <data name="Menu_ChooseIcon_Tip" xml:space="preserve"><value>Escolher o ícone desta célula: um item de um pacote de ícones ou um arquivo de imagem.</value></data>
-  <data name="Menu_Icon_None" xml:space="preserve"><value>(Sem Ícone)</value></data>
-  <data name="Menu_Icon_PickFromPackage_Format" xml:space="preserve"><value>Escolher um ícone de {0}</value></data>
+  <data name="Menu_ChooseIcon_Tip" xml:space="preserve"><value>Escolher o ícone desta célula: um emoji, um item de um pacote de ícones ou um arquivo de imagem.</value></data>
+  <data name="Menu_Icon_None" xml:space="preserve"><value>Sem Ícone</value></data>
   <data name="Menu_Icon_PickTitle" xml:space="preserve"><value>Escolher um Ícone</value></data>
+  <data name="IconPicker_Emoji" xml:space="preserve"><value>Emoji</value></data>
+  <data name="IconPicker_Images" xml:space="preserve"><value>Imagens</value></data>
+  <data name="IconPicker_NoPackages" xml:space="preserve"><value>Nenhum pacote de ícones adicionado ainda. Use “Procurar Arquivos…” para escolher uma imagem ou um pacote de ícones.</value></data>
+  <data name="Emoji_Category_Smileys" xml:space="preserve"><value>Carinhas</value></data>
+  <data name="Emoji_Category_Hands" xml:space="preserve"><value>Mãos</value></data>
+  <data name="Emoji_Category_Animals" xml:space="preserve"><value>Animais</value></data>
+  <data name="Emoji_Category_Food" xml:space="preserve"><value>Comida</value></data>
+  <data name="Emoji_Category_Activities" xml:space="preserve"><value>Atividades</value></data>
+  <data name="Emoji_Category_Travel" xml:space="preserve"><value>Viagem</value></data>
+  <data name="Emoji_Category_Objects" xml:space="preserve"><value>Objetos</value></data>
+  <data name="Emoji_Category_Symbols" xml:space="preserve"><value>Símbolos</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>Pacotes de Ícones</value></data>
   <data name="Pad_Menus_IconPackages_Desc" xml:space="preserve"><value>Um pacote de ícones é um arquivo zip de imagens com a extensão .pficons. Adicione-o aqui e escolha seus ícones em qualquer célula de menu. O PadForge lê diretamente do arquivo e nunca o descompacta. Mantenha os pacotes ao lado do PadForge.exe para continuar portátil.</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>Adicionar Pacote…</value></data>
@@ -2506,6 +2516,7 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="DeviceType_VrController" xml:space="preserve"><value>Controle de RV</value></data>
   <data name="DeviceType_LogitechGKeys" xml:space="preserve"><value>Teclas G da Logitech</value></data>
   <data name="DeviceType_AnalogKeyboard" xml:space="preserve"><value>Teclado Analógico</value></data>
+  <data name="DeviceType_WebMenus" xml:space="preserve"><value>Menus Web</value></data>
   <data name="HeadTracker_Yaw" xml:space="preserve"><value>Guinada da Cabeça</value></data>
   <data name="HeadTracker_Pitch" xml:space="preserve"><value>Inclinação da Cabeça</value></data>
   <data name="HeadTracker_Roll" xml:space="preserve"><value>Rolagem da Cabeça</value></data>
@@ -3398,6 +3409,8 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>Adiciona uma célula central, selecionada enquanto o analógico ou o dedo repousa dentro da zona morta de ativação.</value></data>
   <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>Para analógicos, o quanto empurrar antes de o menu abrir e as células do anel se destacarem. Em menus radiais também é a região central para analógicos e touchpads: dentro dela, a célula central é selecionada, se existir.</value></data>
   <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>Desenha o rótulo de cada célula na sobreposição na tela.</value></data>
+  <data name="Menu_ShowOnWebController" xml:space="preserve"><value>Mostrar no Controle Web</value></data>
+  <data name="Menu_ShowOnWebController_Tip" xml:space="preserve"><value>Mostra este menu como uma página do layout “Web Menus” no Controle Web. Tocar em um bloco aciona a célula dele.</value></data>
   <data name="Menu_Position_Tip" xml:space="preserve"><value>Onde o centro da sobreposição fica na tela, em porcentagem. 50 e 50 é o meio.</value></data>
   <data name="Menu_Scale_Tip" xml:space="preserve"><value>Tamanho da sobreposição, em porcentagem do tamanho normal.</value></data>
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>Opacidade da sobreposição. 100% é totalmente sólida.</value></data>

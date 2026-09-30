@@ -1825,6 +1825,13 @@ namespace PadForge.Common.Input
         private int _slotTriggerDeviceCount;
         private int _slotTriggerDeviceSlot = -1;
 
+        /// <summary>The slot's online Web Menus phones (#471), kept beside the
+        /// devices that answer. A phone reads a device-free menu cell trigger
+        /// only when no device on the slot answers, the mapping side's rule
+        /// (InputManager.PhoneStandsIn).</summary>
+        private Engine.Data.UserDevice[] _slotTriggerPhoneScratch = new Engine.Data.UserDevice[2];
+        private int _slotTriggerPhoneCount;
+
         /// <summary>Fills the scratch with the slot's online devices on
         /// first need per evaluator call (the evaluators reset
         /// <see cref="_slotTriggerDeviceSlot"/> on entry) and returns the
@@ -1834,6 +1841,7 @@ namespace PadForge.Common.Input
             if (_slotTriggerDeviceSlot == slotIndex) return _slotTriggerDeviceCount;
             _slotTriggerDeviceSlot = slotIndex;
             _slotTriggerDeviceCount = 0;
+            _slotTriggerPhoneCount = 0;
 
             var settings = SettingsManager.UserSettings;
             if (settings == null) return 0;
@@ -1856,7 +1864,16 @@ namespace PadForge.Common.Input
                 // (#431) Device-free entries mean whichever controller is on
                 // the slot. Rows that never answer that wildcard stay out of
                 // the scratch. Named entries never come through here.
-                if (!InputDeviceType.AnswersAnyDeviceSources(ud.CapType)) continue;
+                if (!InputDeviceType.AnswersAnyDeviceSources(ud.CapType))
+                {
+                    if (ud.CapType == InputDeviceType.WebMenus)
+                    {
+                        if (_slotTriggerPhoneCount == _slotTriggerPhoneScratch.Length)
+                            Array.Resize(ref _slotTriggerPhoneScratch, _slotTriggerPhoneScratch.Length * 2);
+                        _slotTriggerPhoneScratch[_slotTriggerPhoneCount++] = ud;
+                    }
+                    continue;
+                }
                 if (_slotTriggerDeviceCount == _slotTriggerDeviceScratch.Length)
                     Array.Resize(ref _slotTriggerDeviceScratch, _slotTriggerDeviceScratch.Length * 2);
                 _slotTriggerDeviceScratch[_slotTriggerDeviceCount++] = ud;
@@ -2048,6 +2065,20 @@ namespace PadForge.Common.Input
                         ud.InputState, src, DescriptorTriggerThresholdPercent,
                         slotIndex, ud.InstanceGuidString))
                     return true;
+            }
+            // (#471) A Web Menus phone alone on the slot reads a menu cell
+            // trigger under its own identity, as its mapping pass does.
+            if (n == 0 && _slotTriggerPhoneCount > 0
+                && PadForge.Engine.Common.Mapping.SourceCoercion.IsMenuItemDescriptor(src.Descriptor))
+            {
+                for (int i = 0; i < _slotTriggerPhoneCount; i++)
+                {
+                    var ud = _slotTriggerPhoneScratch[i];
+                    if (PadForge.Engine.Common.Mapping.SourceCoercion.EvaluateForButtonTarget(
+                            ud.InputState, src, DescriptorTriggerThresholdPercent,
+                            slotIndex, ud.InstanceGuidString))
+                        return true;
+                }
             }
             return false;
         }

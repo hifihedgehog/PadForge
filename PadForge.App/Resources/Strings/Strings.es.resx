@@ -1784,7 +1784,7 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Pad_Shift_Rename" xml:space="preserve"><value>Cambiar nombre de la capa…</value></data>
   <data name="Pad_Shift_Color" xml:space="preserve"><value>Color de la capa</value></data>
   <data name="Pad_ResetLayerColor" xml:space="preserve"><value>Restablecer color de capa</value></data>
-  <data name="Pad_Shift_Icon_Tooltip" xml:space="preserve"><value>Elige un emoji que aparecerá en el flyout cuando esta capa esté activa.</value></data>
+  <data name="Pad_Shift_Icon_Tooltip" xml:space="preserve"><value>Elige un emoji o una imagen que aparecerá en el flyout cuando esta capa esté activa.</value></data>
   <data name="Pad_Shift_Icon_Reset" xml:space="preserve"><value>Restablecer (⇧)</value></data>
   <data name="Pad_Shift_Copy" xml:space="preserve"><value>Copiar filas de la capa</value></data>
   <data name="Pad_Shift_Paste" xml:space="preserve"><value>Pegar filas en la capa</value></data>
@@ -2262,10 +2262,20 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Pad_Audio_Packages_PickSounds" xml:space="preserve"><value>Elija los archivos de sonido para el paquete</value></data>
   <data name="Menu_Binding_Macro" xml:space="preserve"><value>Macro</value></data>
   <data name="Menu_MacroPicker_Tip" xml:space="preserve"><value>La macro que activa esta celda. El modo de activación de la propia macro se aplica mientras la celda está activa.</value></data>
-  <data name="Menu_ChooseIcon_Tip" xml:space="preserve"><value>Elegir el icono de esta celda: una entrada de un paquete de iconos o un archivo de imagen.</value></data>
-  <data name="Menu_Icon_None" xml:space="preserve"><value>(Sin icono)</value></data>
-  <data name="Menu_Icon_PickFromPackage_Format" xml:space="preserve"><value>Elegir un icono de {0}</value></data>
+  <data name="Menu_ChooseIcon_Tip" xml:space="preserve"><value>Elegir el icono de esta celda: un emoji, una entrada de un paquete de iconos o un archivo de imagen.</value></data>
+  <data name="Menu_Icon_None" xml:space="preserve"><value>Sin icono</value></data>
   <data name="Menu_Icon_PickTitle" xml:space="preserve"><value>Elegir un icono</value></data>
+  <data name="IconPicker_Emoji" xml:space="preserve"><value>Emoji</value></data>
+  <data name="IconPicker_Images" xml:space="preserve"><value>Imágenes</value></data>
+  <data name="IconPicker_NoPackages" xml:space="preserve"><value>Aún no hay paquetes de iconos. Usa “Buscar archivos…” para elegir una imagen o un paquete de iconos.</value></data>
+  <data name="Emoji_Category_Smileys" xml:space="preserve"><value>Caras</value></data>
+  <data name="Emoji_Category_Hands" xml:space="preserve"><value>Manos</value></data>
+  <data name="Emoji_Category_Animals" xml:space="preserve"><value>Animales</value></data>
+  <data name="Emoji_Category_Food" xml:space="preserve"><value>Comida</value></data>
+  <data name="Emoji_Category_Activities" xml:space="preserve"><value>Actividades</value></data>
+  <data name="Emoji_Category_Travel" xml:space="preserve"><value>Viajes</value></data>
+  <data name="Emoji_Category_Objects" xml:space="preserve"><value>Objetos</value></data>
+  <data name="Emoji_Category_Symbols" xml:space="preserve"><value>Símbolos</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>Paquetes de iconos</value></data>
   <data name="Pad_Menus_IconPackages_Desc" xml:space="preserve"><value>Un paquete de iconos es un archivo zip de imágenes con la extensión .pficons. Añádalo aquí y elija sus iconos en cualquier celda de menú. PadForge lee directamente del archivo y nunca lo descomprime. Mantenga los paquetes junto a PadForge.exe para seguir siendo portátil.</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>Añadir paquete…</value></data>
@@ -2512,6 +2522,7 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="DeviceType_VrController" xml:space="preserve"><value>Mando de RV</value></data>
   <data name="DeviceType_LogitechGKeys" xml:space="preserve"><value>Teclas G de Logitech</value></data>
   <data name="DeviceType_AnalogKeyboard" xml:space="preserve"><value>Teclado analógico</value></data>
+  <data name="DeviceType_WebMenus" xml:space="preserve"><value>Menús web</value></data>
   <data name="HeadTracker_Yaw" xml:space="preserve"><value>Guiñada de la cabeza</value></data>
   <data name="HeadTracker_Pitch" xml:space="preserve"><value>Cabeceo de la cabeza</value></data>
   <data name="HeadTracker_Roll" xml:space="preserve"><value>Alabeo de la cabeza</value></data>
@@ -3404,6 +3415,8 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>Añade una celda central, seleccionada mientras el stick o el dedo descansa dentro de la zona muerta de activación.</value></data>
   <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>En sticks, cuánto hay que empujar antes de que el menú se abra y se resalten las celdas del anillo. En menús radiales también es la región central para sticks y paneles táctiles: dentro de ella se selecciona la celda central, si existe.</value></data>
   <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>Dibuja la etiqueta de cada celda en la superposición en pantalla.</value></data>
+  <data name="Menu_ShowOnWebController" xml:space="preserve"><value>Mostrar en el control web</value></data>
+  <data name="Menu_ShowOnWebController_Tip" xml:space="preserve"><value>Muestra este menú como una página del diseño “Web Menus” en el control web. Tocar una ficha activa su celda.</value></data>
   <data name="Menu_Position_Tip" xml:space="preserve"><value>Dónde queda el centro de la superposición en pantalla, en porcentaje. 50 y 50 es el centro.</value></data>
   <data name="Menu_Scale_Tip" xml:space="preserve"><value>Tamaño de la superposición, en porcentaje de su tamaño normal.</value></data>
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>Opacidad de la superposición. 100 % es totalmente sólida.</value></data>

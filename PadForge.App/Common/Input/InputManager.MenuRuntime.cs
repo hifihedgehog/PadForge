@@ -171,6 +171,7 @@ namespace PadForge.Common.Input
                 if (!IsCurrentMenuOwner(sets, kv.Key.Slot, kv.Key.MenuId)
                     || nowMs - kv.Value.StampMs > 10000)
                     _menuDrivers.TryRemove(kv.Key, out _);
+            RemoveMenuDirectPresses(k => !IsCurrentMenuOwner(sets, k.Slot, k.MenuId));
             var overlay = _activeMenuOverlay;
             if (overlay != null && !IsCurrentMenuOwner(sets, overlay.Slot, overlay.Menu.MenuId, overlay.Menu))
                 _activeMenuOverlay = null;
@@ -189,6 +190,7 @@ namespace PadForge.Common.Input
             MenuContexts.Clear();
             _menuDrivers.Clear();
             InvalidateMenuContextsSnapshot();
+            RemoveMenuDirectPresses(_ => true);
             _activeMenuOverlay = null;
         }
 
@@ -208,6 +210,7 @@ namespace PadForge.Common.Input
             foreach (var kv in _menuDrivers)
                 if (kv.Key.Slot == slot)
                     _menuDrivers.TryRemove(kv.Key, out _);
+            RemoveMenuDirectPresses(k => k.Slot == slot);
             var cur = _activeMenuOverlay;
             if (cur != null && cur.Slot == slot)
                 _activeMenuOverlay = null;
@@ -221,6 +224,7 @@ namespace PadForge.Common.Input
                     removed |= MenuContexts.TryRemove(kv.Key, out _);
             if (removed) InvalidateMenuContextsSnapshot();
             _menuDrivers.TryRemove((slot, menuId), out _);
+            RemoveMenuDirectPresses(k => k.Slot == slot && k.MenuId == menuId);
             var overlay = _activeMenuOverlay;
             if (overlay != null && overlay.Slot == slot && overlay.Menu?.MenuId == menuId)
                 _activeMenuOverlay = null;
@@ -241,6 +245,9 @@ namespace PadForge.Common.Input
             foreach (var kv in _menuDrivers)
                 if (kv.Value.Device == device)
                     _menuDrivers.TryRemove(kv.Key, out _);
+            RemoveMenuDirectPresses(k => k.Device == device);
+            foreach (var kv in _voidedDirectPressSeq)
+                if (kv.Key.Device == device) _voidedDirectPressSeq.TryRemove(kv.Key, out _);
             var cur = _activeMenuOverlay;
             if (cur != null && cur.Device == device)
                 _activeMenuOverlay = null;
@@ -272,6 +279,9 @@ namespace PadForge.Common.Input
         /// too).</summary>
         internal void UpdateMenuContexts(Engine.Data.UserDevice ud, CustomInputState newState)
         {
+            // A Web Menus phone (#471) fires cells by tap and hosts no menu.
+            // Its axes rest at zero, which a stick host reads as a full push.
+            if (ud?.Device is WebControllerDevice { IsMenuSurface: true }) return;
             using var publication = EnterMenuPublication();
             if (ud == null || newState == null) return;
 
@@ -724,6 +734,9 @@ namespace PadForge.Common.Input
                     && nowMs - ctx.LastTickMs <= MenuContextStaleMs
                     && MenuEvaluator.IsItemFired(ctx.State, itemIndex, nowMs))
                     return true;
+                // A Web Menus phone's tap on a menu scoped to that phone (#471).
+                if (IsMenuDirectPressHeld((slotIndex, g, menuId), itemIndex, nowMs))
+                    return true;
 
                 // The reader layer folds an empty (any-device) source guid
                 // onto whichever device is being evaluated, so a
@@ -733,11 +746,22 @@ namespace PadForge.Common.Input
                 // driving device's context is a legitimate match; contexts
                 // only ever exist for devices the definition admits, so
                 // this cannot cross-match a scoped menu.
-                if (!IsMenuDefinitionAnyDevice(slotIndex, menuId)) return false;
+                //
+                // A menu scoped to a Web Menus phone (#471) is the exception:
+                // the phone reads no "(Any Device)" source while a controller
+                // shares its slot, so every pass answers the phone's press. A
+                // press is only ever recorded on a menu its phone may fire,
+                // so a menu scoped to a controller holds none and still
+                // answers that controller's pass alone.
+                if (!IsMenuDefinitionAnyDevice(slotIndex, menuId))
+                    return IsMenuItemPressedOnPhone(slotIndex, menuId, itemIndex, nowMs, null);
             }
 
+            // A Web Menus phone's tap (#471), from any phone on the slot.
+            if (IsMenuItemPressedOnPhone(slotIndex, menuId, itemIndex, nowMs, null)) return true;
+
             // No live contexts (no menus open anywhere): skip the
-            // enumerator allocation — this runs per direct-bound item
+            // enumerator allocation. This runs per direct-bound item
             // per 1 kHz tick.
             var snap = MenuContextsSnapshot();
             if (snap.Length == 0) return false;
@@ -761,9 +785,10 @@ namespace PadForge.Common.Input
         private bool IsMenuItemFiredByUnrestricted(
             int slotIndex, int menuId, int itemIndex, Guid[] restrictedDevices)
         {
+            long nowMs = Environment.TickCount64;
+            if (IsMenuItemPressedOnPhone(slotIndex, menuId, itemIndex, nowMs, restrictedDevices)) return true;
             var snap = MenuContextsSnapshot();
             if (snap.Length == 0) return false;
-            long nowMs = Environment.TickCount64;
             for (int i = 0; i < snap.Length; i++)
             {
                 ref readonly var kv = ref snap[i];
@@ -775,6 +800,219 @@ namespace PadForge.Common.Input
                 if (MenuEvaluator.IsItemFired(ctx.State, itemIndex, nowMs)) return true;
             }
             return false;
+        }
+
+        // ─────────────────────────────────────────────
+        //  Web Menus presses (#471)
+        //
+        //  A phone on the web controller's Web Menus layout fires a cell by
+        //  holding its tile. Each tick Step 2 reads the phone's held tiles
+        //  (UpdateMenuDirectPresses), keeps those whose menu the phone may
+        //  fire, and marks them here per (slot, device, menu). The fired
+        //  checks above read these beside the hover contexts, so direct keys,
+        //  controller buttons, macro cells and "Menu N Cell K" sources all
+        //  answer a tap. Nothing here touches the overlay: a phone press is no
+        //  hover, so the PC overlay stays hidden for it.
+        // ─────────────────────────────────────────────
+
+        /// <summary>One phone's held cells on one menu: bits 0..63, the most
+        /// cells the overlay draws, the tick they were last marked, and the
+        /// number of the newest press marked here.</summary>
+        internal sealed class MenuDirectPress
+        {
+            public ulong Held;
+            public long LastTickMs;
+            public long LastSeq;
+        }
+
+        internal readonly ConcurrentDictionary<(int Slot, Guid Device, int MenuId), MenuDirectPress>
+            MenuDirectPresses = new();
+
+        /// <summary>Per key, the newest press a runtime clear voided. A clear
+        /// means the input it held no longer counts, as a hover needs a fresh
+        /// gesture after one, so a tile held through a profile switch stays
+        /// unfired until the phone presses it again. Press numbers only grow,
+        /// so an entry never blocks a later press.</summary>
+        private readonly ConcurrentDictionary<(int Slot, Guid Device, int MenuId), long> _voidedDirectPressSeq = new();
+
+        private readonly object _directPressSnapshotLock = new();
+        private KeyValuePair<(int Slot, Guid Device, int MenuId), MenuDirectPress>[] _directPressSnapshotCache;
+        private readonly System.Collections.Generic.List<(int Slot, int MenuId, int Cell, long Seq)> _directPressScratch = new();
+        private readonly System.Collections.Generic.List<((int Slot, Guid Device, int MenuId) Key, ulong Bits, long Seq)>
+            _directPressMarks = new();
+
+        /// <summary>Cached array of the press entries, rebuilt only when the
+        /// SET changes, the MenuContextsSnapshot shape: the fired checks run
+        /// per direct-bound item per tick and must not allocate.</summary>
+        private KeyValuePair<(int Slot, Guid Device, int MenuId), MenuDirectPress>[] MenuDirectPressSnapshot()
+        {
+            lock (_directPressSnapshotLock)
+            {
+                var cached = _directPressSnapshotCache;
+                if (cached != null) return cached;
+                var a = new KeyValuePair<(int Slot, Guid Device, int MenuId), MenuDirectPress>[MenuDirectPresses.Count];
+                int n = 0;
+                foreach (var kv in MenuDirectPresses)
+                {
+                    if (n >= a.Length) break;
+                    a[n++] = kv;
+                }
+                if (n != a.Length) Array.Resize(ref a, n);
+                _directPressSnapshotCache = a;
+                return a;
+            }
+        }
+
+        private void InvalidateMenuDirectPressSnapshot()
+        {
+            lock (_directPressSnapshotLock) _directPressSnapshotCache = null;
+        }
+
+        private void RemoveMenuDirectPresses(Func<(int Slot, Guid Device, int MenuId), bool> match)
+        {
+            bool removed = false;
+            foreach (var kv in MenuDirectPresses)
+            {
+                if (!match(kv.Key) || !MenuDirectPresses.TryRemove(kv.Key, out var press)) continue;
+                removed = true;
+                // The phone still reports a tile it holds, and the next tick
+                // would mark it again. Void that press and every older one.
+                long seq = press.LastSeq;
+                if (press.Held != 0 && seq > 0)
+                    _voidedDirectPressSeq.AddOrUpdate(kv.Key, seq, (_, old) => Math.Max(old, seq));
+            }
+            if (removed) InvalidateMenuDirectPressSnapshot();
+        }
+
+        private bool IsMenuDirectPressHeld((int Slot, Guid Device, int MenuId) key, int itemIndex, long nowMs)
+            => itemIndex >= 0 && itemIndex < 64
+               && MenuDirectPresses.TryGetValue(key, out var press)
+               && nowMs - press.LastTickMs <= MenuContextStaleMs
+               && (press.Held & (1UL << itemIndex)) != 0;
+
+        /// <summary>True while any phone on the slot, other than one in
+        /// <paramref name="excluded"/>, holds the cell.</summary>
+        private bool IsMenuItemPressedOnPhone(int slotIndex, int menuId, int itemIndex, long nowMs, Guid[] excluded)
+        {
+            if (itemIndex < 0 || itemIndex >= 64) return false;
+            // The cached array, as the context readers use, never IsEmpty:
+            // ConcurrentDictionary.IsEmpty takes every internal lock when the
+            // dictionary is empty, the usual state on this per-item, per-tick
+            // path.
+            var snap = MenuDirectPressSnapshot();
+            if (snap.Length == 0) return false;
+            ulong bit = 1UL << itemIndex;
+            for (int i = 0; i < snap.Length; i++)
+            {
+                ref readonly var kv = ref snap[i];
+                if (kv.Key.Slot != slotIndex || kv.Key.MenuId != menuId) continue;
+                if (excluded != null && Array.IndexOf(excluded, kv.Key.Device) >= 0) continue;
+                var press = kv.Value;
+                if (nowMs - press.LastTickMs <= MenuContextStaleMs && (press.Held & bit) != 0) return true;
+            }
+            return false;
+        }
+
+        /// <summary>Whether a phone may fire this menu (#471): enabled, a
+        /// Touch Grid marked Show on Web Controller, and scoped to any device
+        /// or to this phone. The Web Menus snapshot offers the same set, so
+        /// the page never shows a tile the engine refuses.</summary>
+        internal static bool IsWebMenuFireable(MenuDefinitionEntry def, string deviceGuid)
+            => def != null && def.Enabled && def.Kind == MenuKind.Grid && def.ShowOnWebController
+               && (string.IsNullOrEmpty(def.DeviceGuid)
+                   || string.Equals(def.DeviceGuid, deviceGuid, StringComparison.OrdinalIgnoreCase));
+
+        /// <summary>The menu layer gate UpdateMenuContexts applies: Any Layer
+        /// and Base always, a named layer only while it is the engaged one.</summary>
+        internal static bool IsMenuLayerOpen(int slot, MappingSet set, MenuDefinitionEntry def)
+        {
+            string mask = def?.LayerMask ?? "";
+            if (mask.Length == 0 || mask == "Base") return true;
+            return string.Equals(GetEngagedLayerMask(slot, set), mask, StringComparison.Ordinal);
+        }
+
+        private static MenuDefinitionEntry FindMenu(MappingSet set, int menuId)
+        {
+            var menus = set?.Menus;
+            if (menus == null) return null;
+            // Defensive index walk: the UI thread edits this list.
+            for (int i = 0; i < menus.Count; i++)
+            {
+                MenuDefinitionEntry def;
+                try { def = menus[i]; } catch { break; }
+                if (def != null && def.MenuId == menuId) return def;
+            }
+            return null;
+        }
+
+        /// <summary>Marks this phone's held tiles for the tick (#471). Runs on
+        /// the poll thread from Step 2, beside UpdateMenuContexts. A tile
+        /// counts when the phone is on the slot, the menu is fireable and its
+        /// layer open, the cell is inside the grid, and no runtime clear voided
+        /// its press. Each of this phone's masks is rebuilt and written once,
+        /// so a release, or a menu that stopped qualifying, stops firing on
+        /// this tick, and a reader on another thread never sees a mask halfway
+        /// rebuilt.</summary>
+        internal void UpdateMenuDirectPresses(Engine.Data.UserDevice ud, WebControllerDevice web)
+        {
+            if (ud == null || web == null) return;
+            long nowMs = Environment.TickCount64;
+            var held = _directPressScratch;
+            held.Clear();
+            web.ReadMenuPresses(nowMs, MenuEvaluator.CommitPulseMs, held);
+
+            Guid device = ud.InstanceGuid;
+            var marks = _directPressMarks;
+            marks.Clear();
+            var sets = SettingsManager.SlotMappingSets;
+            if (held.Count > 0 && sets != null)
+            {
+                int[] assigned = GetAssignedSlotsSnapshot(device);
+                string deviceGuid = ud.InstanceGuidString;
+                for (int i = 0; i < held.Count; i++)
+                {
+                    var (slot, menuId, cell, seq) = held[i];
+                    if (slot < 0 || slot >= sets.Length || Array.IndexOf(assigned, slot) < 0) continue;
+                    var set = sets[slot];
+                    var def = FindMenu(set, menuId);
+                    if (!IsWebMenuFireable(def, deviceGuid)) continue;
+                    if (cell < 0 || cell >= Math.Min(def.CellCount, 64)) continue;
+                    if (!IsMenuLayerOpen(slot, set, def)) continue;
+
+                    var key = (slot, device, menuId);
+                    if (_voidedDirectPressSeq.TryGetValue(key, out long voided) && seq <= voided) continue;
+                    ulong bit = 1UL << cell;
+                    int m = 0;
+                    while (m < marks.Count && marks[m].Key != key) m++;
+                    if (m == marks.Count) marks.Add((key, bit, seq));
+                    else marks[m] = (key, marks[m].Bits | bit, Math.Max(marks[m].Seq, seq));
+                }
+            }
+
+            for (int m = 0; m < marks.Count; m++)
+            {
+                var (key, bits, seq) = marks[m];
+                if (!MenuDirectPresses.TryGetValue(key, out var press))
+                {
+                    press = new MenuDirectPress();
+                    MenuDirectPresses[key] = press;
+                    InvalidateMenuDirectPressSnapshot();
+                }
+                if (seq > press.LastSeq) press.LastSeq = seq;
+                press.LastTickMs = nowMs;
+                press.Held = bits;
+            }
+
+            // This phone's other entries hold nothing now.
+            var snap = MenuDirectPressSnapshot();
+            for (int i = 0; i < snap.Length; i++)
+            {
+                var kv = snap[i];
+                if (kv.Key.Device != device || kv.Value.Held == 0) continue;
+                bool marked = false;
+                for (int m = 0; m < marks.Count && !marked; m++) marked = marks[m].Key == kv.Key;
+                if (!marked) kv.Value.Held = 0;
+            }
         }
 
         /// <summary>True when slot's menu {menuId} exists with an empty

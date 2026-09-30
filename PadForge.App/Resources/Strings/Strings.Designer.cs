@@ -2547,8 +2547,18 @@ public class Strings : INotifyPropertyChanged
     public string Menu_MacroPicker_Tip => Get("Menu_MacroPicker_Tip");
     public string Menu_ChooseIcon_Tip => Get("Menu_ChooseIcon_Tip");
     public string Menu_Icon_None => Get("Menu_Icon_None");
-    public string Menu_Icon_PickFromPackage_Format => Get("Menu_Icon_PickFromPackage_Format");
     public string Menu_Icon_PickTitle => Get("Menu_Icon_PickTitle");
+    public string IconPicker_Emoji => Get("IconPicker_Emoji");
+    public string IconPicker_Images => Get("IconPicker_Images");
+    public string IconPicker_NoPackages => Get("IconPicker_NoPackages");
+    public string Emoji_Category_Smileys => Get("Emoji_Category_Smileys");
+    public string Emoji_Category_Hands => Get("Emoji_Category_Hands");
+    public string Emoji_Category_Animals => Get("Emoji_Category_Animals");
+    public string Emoji_Category_Food => Get("Emoji_Category_Food");
+    public string Emoji_Category_Activities => Get("Emoji_Category_Activities");
+    public string Emoji_Category_Travel => Get("Emoji_Category_Travel");
+    public string Emoji_Category_Objects => Get("Emoji_Category_Objects");
+    public string Emoji_Category_Symbols => Get("Emoji_Category_Symbols");
     public string Pad_Menus_IconPackages_Header => Get("Pad_Menus_IconPackages_Header");
     public string Pad_Menus_IconPackages_Desc => Get("Pad_Menus_IconPackages_Desc");
     public string Pad_Menus_IconPackages_Add => Get("Pad_Menus_IconPackages_Add");
@@ -2880,6 +2890,7 @@ public class Strings : INotifyPropertyChanged
     public string DeviceType_VrController => Get("DeviceType_VrController");
     public string DeviceType_LogitechGKeys => Get("DeviceType_LogitechGKeys");
     public string DeviceType_AnalogKeyboard => Get("DeviceType_AnalogKeyboard");
+    public string DeviceType_WebMenus => Get("DeviceType_WebMenus");
     public string HeadTracker_Yaw => Get("HeadTracker_Yaw");
     public string HeadTracker_Pitch => Get("HeadTracker_Pitch");
     public string HeadTracker_Roll => Get("HeadTracker_Roll");
@@ -3576,6 +3587,8 @@ public class Strings : INotifyPropertyChanged
     public string Menu_HasCenter_Tip => Get("Menu_HasCenter_Tip");
     public string Menu_Deadzone_Tip => Get("Menu_Deadzone_Tip");
     public string Menu_ShowLabels_Tip => Get("Menu_ShowLabels_Tip");
+    public string Menu_ShowOnWebController => Get("Menu_ShowOnWebController");
+    public string Menu_ShowOnWebController_Tip => Get("Menu_ShowOnWebController_Tip");
     public string Menu_Position_Tip => Get("Menu_Position_Tip");
     public string Menu_Scale_Tip => Get("Menu_Scale_Tip");
     public string Menu_Opacity_Tip => Get("Menu_Opacity_Tip");

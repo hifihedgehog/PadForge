@@ -244,6 +244,16 @@ namespace PadForge.ViewModels
 
         public bool IsRadial => Entry.Kind == MenuKind.Radial;
 
+        /// <summary>True for a Touch Grid menu, the only kind the web
+        /// controller's Web Menus layout shows (#471).</summary>
+        public bool IsGrid => Entry.Kind == MenuKind.Grid;
+
+        /// <summary>The Show on Web Controller row: shown on a Touch Grid, and
+        /// while the flag is set on any menu, so a radial menu that keeps it
+        /// from an earlier Touch Grid life can still clear it (the layer-hold
+        /// row's rule).</summary>
+        public bool ShowWebControllerRow => IsGrid || Entry.ShowOnWebController;
+
         /// <summary>0 = Radial, 1 = Grid (combo index = enum value).</summary>
         public int KindIndex
         {
@@ -256,6 +266,8 @@ namespace PadForge.ViewModels
                 if (kind == MenuKind.Grid) Entry.HasCenter = false;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(IsRadial));
+                OnPropertyChanged(nameof(IsGrid));
+                OnPropertyChanged(nameof(ShowWebControllerRow));
                 OnPropertyChanged(nameof(IsButtonPairGrid));
                 OnPropertyChanged(nameof(SelectedFireDescription));
                 RebuildCells();
@@ -1155,6 +1167,21 @@ namespace PadForge.ViewModels
             set { if (Entry.ShowLabels != value) { Entry.ShowLabels = value; OnPropertyChanged(); OnEdited(); } }
         }
 
+        /// <summary>Show this Touch Grid menu on the web controller's Web
+        /// Menus layout (#471).</summary>
+        public bool ShowOnWebController
+        {
+            get => Entry.ShowOnWebController;
+            set
+            {
+                if (Entry.ShowOnWebController == value) return;
+                Entry.ShowOnWebController = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(ShowWebControllerRow));
+                OnEdited();
+            }
+        }
+
         public int PosXPercent
         {
             get => Entry.PosXPercent;
@@ -1368,14 +1395,18 @@ namespace PadForge.ViewModels
         public string IconName => _item?.Icon ?? "";
 
         /// <summary>The locally resolved icon, or null (no icon authored,
-        /// Steam absent, or file absent). Cached and frozen by the shared
-        /// resolver, so per-read cost is a dictionary hit.</summary>
+        /// an emoji, Steam absent, or file absent). Cached and frozen by the
+        /// shared resolver, so per-read cost is a dictionary hit.</summary>
         public System.Windows.Media.ImageSource IconImage
-            => HasIcon ? PadForge.Common.MenuIconResolver.Resolve(_item.Icon) : null;
+            => HasIcon && !IsGlyphIcon ? PadForge.Common.MenuIconResolver.Resolve(_item.Icon) : null;
+
+        /// <summary>True when the cell's icon is an emoji (#471), which the
+        /// row shows as text rather than as a picture.</summary>
+        public bool IsGlyphIcon => HasIcon && PadForge.Common.MenuIconResolver.IsGlyph(_item.Icon);
 
         /// <summary>True when the cell carries an icon the local machine
         /// cannot render (the placeholder-glyph case).</summary>
-        public bool ShowIconGlyph => HasIcon && IconImage == null;
+        public bool ShowIconGlyph => HasIcon && !IsGlyphIcon && IconImage == null;
 
         /// <summary>Per-cell icon size as percent of the menu's normal icon
         /// box (#413). Clamped 25..200 both ways. Reading never rewrites the
@@ -1646,7 +1677,8 @@ namespace PadForge.ViewModels
         }
 
         /// <summary>Sets or clears the cell's icon reference (#390): a
-        /// pficon:// pack entry, a loose image path, or a Steam art name.
+        /// pficon:// pack entry, a loose image path, a Steam art name, or an
+        /// emoji (#471).
         /// The view-layer picker calls this; an empty reference clears
         /// and prunes an otherwise-empty item.</summary>
         internal void SetIcon(string reference)
@@ -1673,6 +1705,7 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(HasIcon));
             OnPropertyChanged(nameof(IconName));
             OnPropertyChanged(nameof(IconImage));
+            OnPropertyChanged(nameof(IsGlyphIcon));
             OnPropertyChanged(nameof(ShowIconGlyph));
             OnPropertyChanged(nameof(IconScalePercent));
             _owner.RaiseChanged();

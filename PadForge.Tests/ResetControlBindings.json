@@ -973,6 +973,12 @@
   },
   {
     "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MenuEditorItem_ShowOnWebController",
+    "Owner": "PadForge.ViewModels.MenuEditorItem",
+    "Property": "ShowOnWebController"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
     "Id": "Reset_MenuEditorItem_PosXPercent_12937",
     "Owner": "PadForge.ViewModels.MenuEditorItem",
     "Property": "PosXPercent"

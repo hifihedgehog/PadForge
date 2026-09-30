@@ -147,11 +147,17 @@ namespace PadForge.Views
         /// timer (so transitioning from one shift layer to another keeps
         /// the flyout on screen for another 2 seconds). An empty
         /// <paramref name="icon"/> falls back to the universal Shift
-        /// glyph <c>⇧</c>.</summary>
+        /// glyph <c>⇧</c>. A picture icon (#471), a package entry or an
+        /// image file, draws scaled into the glyph's spot, and one that no
+        /// longer resolves falls back to ⇧ rather than showing its path.</summary>
         public void ShowLayer(string layerName, string colorHex, string icon)
         {
             ApplyTheme();
-            StatusIcon.Text = string.IsNullOrEmpty(icon) ? "⇧" : icon;
+            var image = Common.MenuIconResolver.ResolveLayerIcon(icon, out string glyph);
+            StatusImage.Source = image;
+            StatusImage.Visibility = image != null ? Visibility.Visible : Visibility.Collapsed;
+            StatusIcon.Visibility = image != null ? Visibility.Collapsed : Visibility.Visible;
+            StatusIcon.Text = glyph;
             LayerNameText.Text = string.IsNullOrEmpty(layerName) ? "" : layerName;
             ColorDot.Fill = ParseColor(colorHex) ?? new SolidColorBrush(Color.FromRgb(0x88, 0x88, 0x88));
 

@@ -2520,7 +2520,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_Shift_Rename" xml:space="preserve"><value>Rename Layer…</value></data>
   <data name="Pad_Shift_Color" xml:space="preserve"><value>Layer Color</value></data>
   <data name="Pad_ResetLayerColor" xml:space="preserve"><value>Reset Layer Color</value></data>
-  <data name="Pad_Shift_Icon_Tooltip" xml:space="preserve"><value>Pick an emoji to show on the flyout when this layer is engaged.</value></data>
+  <data name="Pad_Shift_Icon_Tooltip" xml:space="preserve"><value>Pick an emoji or an image to show on the flyout when this layer is engaged.</value></data>
   <data name="Pad_Shift_Icon_Reset" xml:space="preserve"><value>Reset to Default (⇧)</value></data>
   <data name="Pad_Shift_Copy" xml:space="preserve"><value>Copy Layer Rows</value></data>
   <data name="Pad_Shift_Paste" xml:space="preserve"><value>Paste Rows into Layer</value></data>
@@ -2778,10 +2778,20 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_Audio_Packages_PickSounds" xml:space="preserve"><value>Choose Sound Files for the Package</value></data>
   <data name="Menu_Binding_Macro" xml:space="preserve"><value>Macro</value></data>
   <data name="Menu_MacroPicker_Tip" xml:space="preserve"><value>The macro this cell triggers. The macro's own trigger mode applies while the cell is fired.</value></data>
-  <data name="Menu_ChooseIcon_Tip" xml:space="preserve"><value>Choose this cell's icon: an entry from an icon package or an image file.</value></data>
-  <data name="Menu_Icon_None" xml:space="preserve"><value>(No Icon)</value></data>
-  <data name="Menu_Icon_PickFromPackage_Format" xml:space="preserve"><value>Choose an icon from {0}</value></data>
+  <data name="Menu_ChooseIcon_Tip" xml:space="preserve"><value>Choose this cell's icon: an emoji, an entry from an icon package, or an image file.</value></data>
+  <data name="Menu_Icon_None" xml:space="preserve"><value>No Icon</value></data>
   <data name="Menu_Icon_PickTitle" xml:space="preserve"><value>Pick an Icon</value></data>
+  <data name="IconPicker_Emoji" xml:space="preserve"><value>Emoji</value></data>
+  <data name="IconPicker_Images" xml:space="preserve"><value>Images</value></data>
+  <data name="IconPicker_NoPackages" xml:space="preserve"><value>No icon packages added yet. Use Browse Files for an image or an icon package.</value></data>
+  <data name="Emoji_Category_Smileys" xml:space="preserve"><value>Smileys</value></data>
+  <data name="Emoji_Category_Hands" xml:space="preserve"><value>Hands</value></data>
+  <data name="Emoji_Category_Animals" xml:space="preserve"><value>Animals</value></data>
+  <data name="Emoji_Category_Food" xml:space="preserve"><value>Food</value></data>
+  <data name="Emoji_Category_Activities" xml:space="preserve"><value>Activities</value></data>
+  <data name="Emoji_Category_Travel" xml:space="preserve"><value>Travel</value></data>
+  <data name="Emoji_Category_Objects" xml:space="preserve"><value>Objects</value></data>
+  <data name="Emoji_Category_Symbols" xml:space="preserve"><value>Symbols</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>Icon Packages</value></data>
   <data name="Pad_Menus_IconPackages_Desc" xml:space="preserve"><value>An icon package is one zip file of images with the .pficons extension. Add one here, then pick its icons on any menu cell. PadForge reads straight from the file and never unpacks it. Keep packages next to PadForge.exe to stay portable.</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>Add Package…</value></data>
@@ -3019,6 +3029,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="DeviceType_VrController" xml:space="preserve"><value>VR Controller</value></data>
   <data name="DeviceType_LogitechGKeys" xml:space="preserve"><value>Logitech G-Keys</value></data>
   <data name="DeviceType_AnalogKeyboard" xml:space="preserve"><value>Analog Keyboard</value></data>
+  <data name="DeviceType_WebMenus" xml:space="preserve"><value>Web Menus</value></data>
   <data name="HeadTracker_Yaw" xml:space="preserve"><value>Head Yaw</value></data>
   <data name="HeadTracker_Pitch" xml:space="preserve"><value>Head Pitch</value></data>
   <data name="HeadTracker_Roll" xml:space="preserve"><value>Head Roll</value></data>
@@ -3466,6 +3477,8 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>Adds a center cell, selected while the stick or finger rests inside the Engage Deadzone.</value></data>
   <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>For sticks, how far to push before the menu opens and ring cells highlight. On radial menus it is also the center region for both sticks and touchpads: inside it, the center cell is selected when one exists.</value></data>
   <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>Draw each cell's label on the on-screen overlay.</value></data>
+  <data name="Menu_ShowOnWebController" xml:space="preserve"><value>Show on Web Controller</value></data>
+  <data name="Menu_ShowOnWebController_Tip" xml:space="preserve"><value>Shows this menu as a page of the web controller's Web Menus layout, where a tap on a tile fires its cell.</value></data>
   <data name="Menu_Position_Tip" xml:space="preserve"><value>Where the overlay's center sits on screen, in percent. 50 and 50 is the middle.</value></data>
   <data name="Menu_Scale_Tip" xml:space="preserve"><value>Overlay size, in percent of its normal size.</value></data>
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>Overlay opacity. 100% is fully solid.</value></data>

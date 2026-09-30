@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>PadForge - Web Menus</title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover' name='viewport' />
+    <meta name="mobile-web-app-capable" content="yes">
+    <style>
+        /* Web Menus (#471): the slot's Touch Grid menus as tiles. PadForge's
+           ember and steel tokens (#175). System fonts only: a phone on the
+           LAN may have no internet. */
+        :root {
+            --ground: #0B0E14;
+            --card: #111623;
+            --raised: #1B2333;
+            --line: #253049;
+            --line-soft: #1C2536;
+            --line-hover: #34415F;
+            --text: #E7EBF3;
+            --text-2: #C3CAD8;
+            --muted: #8E9AB2;
+            --ember: #FF6B2C;
+            --ember-hot: #FFA24D;
+            --ember-deep: #C43D0C;
+            --ember-tint: rgba(255, 107, 44, 0.13);
+            --ember-glow: rgba(255, 107, 44, 0.30);
+            --on-ember: #FFFFFF;
+            --font: "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+            --emoji: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        [hidden] { display: none !important; }
+        html, body { height: 100%; }
+        body {
+            background: var(--ground);
+            color: var(--text);
+            font-family: var(--font);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px)
+                     env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+        }
+
+        .bar {
+            display: flex; align-items: center; gap: 10px;
+            padding: 8px 12px; font-size: 13px; color: var(--muted);
+            position: relative;
+        }
+        .bar a { color: var(--muted); text-decoration: none; white-space: nowrap; }
+        .bar a:hover { color: var(--ember-hot); }
+        .who {
+            flex: 1; min-width: 0; display: flex; align-items: center;
+            justify-content: center; justify-content: safe center;
+            gap: 8px; white-space: nowrap; overflow: hidden;
+        }
+        .dev { color: var(--text); font-weight: 600; min-width: 3ch; overflow: hidden; text-overflow: ellipsis; }
+        .pill {
+            font: inherit; font-size: 12px; border: 1px solid var(--line); border-radius: 999px;
+            padding: 2px 10px; background: var(--raised); color: var(--text); white-space: nowrap;
+            min-width: 0; max-width: 45vw; overflow: hidden; text-overflow: ellipsis;
+        }
+        .pill.slot { border-color: var(--ember-deep); color: var(--ember-hot); }
+        .pill.slot.off { border-color: var(--line); color: var(--muted); }
+        button.pill { cursor: pointer; }
+        button.pill:hover { border-color: var(--line-hover); }
+        .status { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+        .status::before {
+            content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--muted);
+        }
+        .status.live { color: var(--ember); }
+        .status.live::before { background: var(--ember); box-shadow: 0 0 6px var(--ember); }
+
+        .profile-list {
+            position: absolute; z-index: 5; top: 42px; left: 50%; transform: translateX(-50%);
+            min-width: 220px; max-width: calc(100vw - 24px); max-height: 60vh; overflow-y: auto;
+            background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+            padding: 4px; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+        }
+        .profile-list button {
+            display: block; width: 100%; text-align: left; font: inherit; font-size: 14px;
+            color: var(--text-2); background: transparent; border: 0; border-radius: 6px;
+            padding: 9px 12px; cursor: pointer;
+        }
+        .profile-list button:hover { background: var(--raised); color: var(--text); }
+        .profile-list button[aria-current="true"] { color: var(--ember-hot); font-weight: 600; }
+
+        .tabs {
+            align-self: center; display: flex; gap: 4px; padding: 3px; margin: 0 12px 8px;
+            border: 1px solid var(--line-soft); border-radius: 999px; background: var(--ground);
+            max-width: calc(100% - 24px); overflow-x: auto; scrollbar-width: none;
+        }
+        .tabs::-webkit-scrollbar { display: none; }
+        .tab {
+            font: inherit; font-size: 14px; font-weight: 600; white-space: nowrap;
+            color: var(--muted); background: transparent; border: 0; border-radius: 999px;
+            padding: 6px 16px; cursor: pointer;
+        }
+        .tab[aria-selected="true"] {
+            color: var(--on-ember); background: linear-gradient(140deg, var(--ember), var(--ember-deep));
+        }
+
+        .grid { flex: 1; display: grid; gap: 8px; padding: 0 12px 12px; min-height: 0; }
+        .tile {
+            font: inherit; position: relative; min-width: 0; min-height: 0; overflow: hidden;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 4px; padding: 6px; border-radius: 10px;
+            border: 1.5px solid var(--line); background: var(--raised); color: var(--text);
+            cursor: pointer; touch-action: none;
+            transition: background-color 0.12s, border-color 0.12s, box-shadow 0.12s;
+        }
+        .tile:hover { border-color: var(--line-hover); }
+        .tile .glyph { font-family: var(--emoji); font-size: clamp(22px, 8vmin, 64px); line-height: 1; }
+        .tile img { max-width: 70%; max-height: 55%; object-fit: contain; pointer-events: none; }
+        .tile .lbl {
+            max-width: 100%; font-size: clamp(11px, 2.6vmin, 18px); font-weight: 600; line-height: 1.15;
+            text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .tile.on {
+            border-color: var(--ember);
+            background: linear-gradient(var(--ember-tint), var(--ember-tint)), var(--raised);
+            box-shadow: 0 0 12px var(--ember-glow);
+        }
+        .tile.on::after {
+            content: ""; position: absolute; top: 7px; right: 7px; width: 7px; height: 7px;
+            border-radius: 50%; background: var(--ember); box-shadow: 0 0 6px var(--ember);
+        }
+        .tile.down {
+            color: var(--on-ember); border-color: var(--ember-hot);
+            background: linear-gradient(140deg, var(--ember), var(--ember-deep));
+        }
+        .tile.empty {
+            cursor: default; border-color: var(--line-soft);
+            background: rgba(27, 35, 51, 0.45);
+        }
+        .tile:focus-visible, .tab:focus-visible, button.pill:focus-visible, .profile-list button:focus-visible {
+            outline: 2px solid var(--ember-hot); outline-offset: 2px;
+        }
+
+        .empty-state {
+            flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 8px; padding: 24px; text-align: center; color: var(--muted); font-size: 14px; line-height: 1.5;
+        }
+        .empty-state strong { color: var(--text); font-size: 18px; }
+        .empty-state span { max-width: 46ch; }
+
+        @media (prefers-reduced-motion: reduce) { .tile { transition: none; } }
+    </style>
+</head>
+<body>
+    <div class="bar">
+        <a href="/">&larr; Layouts</a>
+        <span class="who">
+            <span class="dev" id="dev">Web Menus</span>
+            <span class="pill slot off" id="slots" hidden>No slot</span>
+            <button class="pill" id="profileBtn" type="button" hidden aria-controls="profileList" aria-expanded="false"></button>
+        </span>
+        <span class="status" id="status" role="status">Connecting…</span>
+        <span id="fsMount"></span>
+        <div class="profile-list" id="profileList" hidden></div>
+    </div>
+    <div class="tabs" id="tabs" role="tablist" aria-label="Menus" hidden></div>
+    <div class="grid" id="grid" role="tabpanel" hidden></div>
+    <div class="empty-state" id="empty">
+        <strong id="emptyTitle">Connecting</strong>
+        <span id="emptyText">Waiting for PadForge.</span>
+    </div>
+
+    <script src="/js/fullscreen.js"></script>
+    <script>
+    // iOS Safari: WebSocket upgrades fail after page navigation but work
+    // after reload. Reload once on first navigation, as every page does.
+    (function () {
+        var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+        if (nav && nav.type === 'navigate' && !sessionStorage.getItem('_menus_reloaded')) {
+            sessionStorage.setItem('_menus_reloaded', '1');
+            location.reload();
+            return;
+        }
+        sessionStorage.removeItem('_menus_reloaded');
+    })();
+    (function () {
+        var ws = null, connectTimer = null, reconnectTimer = null;
+        var $ = function (id) { return document.getElementById(id); };
+        var statusEl = $('status'), devEl = $('dev'), slotsEl = $('slots');
+        var profileBtn = $('profileBtn'), profileList = $('profileList');
+        var tabsEl = $('tabs'), gridEl = $('grid'), emptyEl = $('empty');
+        var emptyTitle = $('emptyTitle'), emptyText = $('emptyText');
+
+        var feed = null;          // the last snapshot
+        var pageKey = null;       // "slot:menu" of the page on screen
+        var renderedSig = null;   // what the grid was built from, states aside
+        var held = {};            // "slot:menu:cell" -> { release, msg }
+        var BUFFER_LIMIT_BYTES = 64 * 1024;   // gamepad_client.js's limit
+
+        // Per-tab identity, as every layout keeps it.
+        var clientId = sessionStorage.getItem('padforge_client_id_menus');
+        if (!clientId) {
+            clientId = crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2);
+            sessionStorage.setItem('padforge_client_id_menus', clientId);
+        }
+
+        function connect() {
+            if (ws && (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING)) return;
+            clearTimeout(reconnectTimer); reconnectTimer = null;
+            clearTimeout(connectTimer); connectTimer = null;
+            if (ws) { var retiring = ws; ws = null; try { retiring.close(); } catch (e) { } }
+            var proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            var socket = new WebSocket(proto + '//' + location.host + '/ws?type=menus&id=' + encodeURIComponent(clientId));
+            ws = socket;
+            connectTimer = setTimeout(function () {
+                if (ws !== socket) return;
+                connectTimer = null;
+                if (socket.readyState !== WebSocket.OPEN) {
+                    ws = null;
+                    try { socket.close(); } catch (e) { }
+                    connect();
+                }
+            }, 3000);
+            socket.onopen = function () {
+                if (ws !== socket) { try { socket.close(); } catch (e) { } return; }
+                clearTimeout(connectTimer); connectTimer = null;
+                statusEl.textContent = 'Connected';
+                statusEl.className = 'status live';
+            };
+            socket.onmessage = function (ev) {
+                if (ws !== socket) return;
+                var msg;
+                try { msg = JSON.parse(ev.data); } catch (e) { return; }
+                if (msg.type === 'connected' && msg.name) devEl.textContent = msg.name;
+                else if (msg.type === 'menus') { feed = msg; render(); }
+                else if (msg.type === 'ping') onPing(socket, msg);
+                else if (msg.type === 'resync') resendHeld();
+            };
+            socket.onclose = function () {
+                if (ws !== socket) return;
+                ws = null;
+                // The PC lets go of every held tile when the socket drops.
+                releaseAll(false);
+                clearTimeout(connectTimer); connectTimer = null;
+                statusEl.textContent = 'Reconnecting…';
+                statusEl.className = 'status';
+                clearTimeout(reconnectTimer);
+                reconnectTimer = setTimeout(function () { reconnectTimer = null; connect(); }, 500);
+            };
+            socket.onerror = function () {
+                if (ws !== socket) return;
+                try { socket.close(); } catch (e) { }
+            };
+        }
+
+        function send(msg) {
+            if (ws && ws.readyState === 1) ws.send(JSON.stringify(msg));
+        }
+
+        // The PC's once-a-second ping (#402). The echo says this page is on
+        // screen and its socket is keeping up. When the echoes stop, the PC
+        // lets go of every tile three seconds on, so a phone that sleeps or
+        // drops off Wi-Fi mid-press cannot leave a cell fired.
+        function onPing(socket, msg) {
+            if (document.hidden || socket.bufferedAmount > BUFFER_LIMIT_BYTES) return;
+            send({ type: 'hb', n: msg.n });
+        }
+
+        // After a lapse the PC has let go of everything, and a finger may
+        // still rest on a tile. Tell it again.
+        function resendHeld() {
+            for (var k in held) { if (held.hasOwnProperty(k)) send(held[k].msg); }
+        }
+
+        // Lets go of every held tile, telling the PC unless it already knows.
+        function releaseAll(tell) {
+            for (var k in held) { if (held.hasOwnProperty(k)) held[k].release(tell); }
+            held = {};
+        }
+
+        function gridShape(n) {
+            // MenuSelectionMath.GridShape: near-square, wider than tall.
+            if (n <= 0) return [0, 0];
+            var cols = Math.ceil(Math.sqrt(n));
+            return [cols, Math.ceil(n / cols)];
+        }
+
+        function showEmpty(title, text) {
+            tabsEl.hidden = true;
+            gridEl.hidden = true;
+            emptyEl.hidden = false;
+            emptyTitle.textContent = title;
+            emptyText.textContent = text;
+        }
+
+        function render() {
+            if (!feed) return;
+            if (feed.device) devEl.textContent = feed.device;
+            renderProfile();
+
+            var pages = feed.pages || [];
+            var slots = feed.slots || [];
+
+            if (feed.state === 'unassigned') {
+                slotsEl.hidden = false;
+                slotsEl.textContent = 'No slot';
+                slotsEl.className = 'pill slot off';
+                releaseAll(true);
+                renderedSig = null;
+                showEmpty('Not on a slot', 'Assign ' + (feed.device || 'this device') +
+                    ' to a slot on the Devices page in PadForge. That slot’s Touch Grid menus appear here.');
+                return;
+            }
+            slotsEl.hidden = slots.length === 0;
+            slotsEl.className = 'pill slot';
+            slotsEl.textContent = (slots.length > 1 ? 'Slots ' : 'Slot ') +
+                slots.map(function (s) { return s + 1; }).join(', ');
+
+            if (!pages.length) {
+                releaseAll(true);
+                renderedSig = null;
+                var where = slots.length
+                    ? 'slot ' + slots.map(function (s) { return s + 1; }).join(' or ')
+                    : 'this slot';
+                showEmpty('No menus to show', 'On the Menus tab for ' + where +
+                    ', turn on Show on Web Controller for an enabled Touch Grid menu. ' +
+                    'A menu on a shift layer shows while that layer is on.');
+                return;
+            }
+
+            // Keep the page on screen when it is still offered.
+            var page = null;
+            for (var i = 0; i < pages.length; i++)
+                if (pages[i].slot + ':' + pages[i].menu === pageKey) { page = pages[i]; break; }
+            if (!page) { page = pages[0]; pageKey = page.slot + ':' + page.menu; }
+
+            renderTabs(pages, slots.length > 1);
+            emptyEl.hidden = true;
+            tabsEl.hidden = pages.length < 2;
+            gridEl.hidden = false;
+            renderGrid(page);
+        }
+
+        function renderProfile() {
+            var p = feed.profile;
+            profileBtn.hidden = !p;
+            if (!p) return;
+            profileBtn.textContent = p.name || 'Profile';
+            var list = feed.profiles || [];
+            profileList.textContent = '';
+            list.forEach(function (item) {
+                var b = document.createElement('button');
+                b.type = 'button';
+                b.textContent = item.name;
+                if (item.id === p.id) b.setAttribute('aria-current', 'true');
+                b.addEventListener('click', function () {
+                    closeProfiles();
+                    if (item.id !== p.id) send({ type: 'profile', id: item.id });
+                });
+                profileList.appendChild(b);
+            });
+        }
+
+        function closeProfiles() {
+            profileList.hidden = true;
+            profileBtn.setAttribute('aria-expanded', 'false');
+        }
+
+        profileBtn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            var open = profileList.hidden;
+            profileList.hidden = !open;
+            profileBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        document.addEventListener('click', function (e) {
+            if (!profileList.hidden && !profileList.contains(e.target)) closeProfiles();
+        });
+        profileList.addEventListener('keydown', function (e) {
+            if (e.key !== 'Escape') return;
+            e.preventDefault();
+            closeProfiles();
+            profileBtn.focus();
+        });
+
+        function renderTabs(pages, showSlot) {
+            tabsEl.textContent = '';
+            pages.forEach(function (p) {
+                var key = p.slot + ':' + p.menu;
+                var t = document.createElement('button');
+                t.type = 'button';
+                t.className = 'tab';
+                t.id = 'tab-' + p.slot + '-' + p.menu;
+                t.setAttribute('role', 'tab');
+                t.setAttribute('aria-controls', 'grid');
+                t.setAttribute('aria-selected', key === pageKey ? 'true' : 'false');
+                t.tabIndex = key === pageKey ? 0 : -1;
+                if (key === pageKey) gridEl.setAttribute('aria-labelledby', t.id);
+                var name = p.name || ('Menu ' + p.menu);
+                t.textContent = showSlot ? ('Slot ' + (p.slot + 1) + ' · ' + name) : name;
+                t.addEventListener('click', function () {
+                    if (pageKey === key) return;
+                    pageKey = key;
+                    render();
+                });
+                tabsEl.appendChild(t);
+            });
+        }
+
+        tabsEl.addEventListener('keydown', function (e) {
+            var keys = { ArrowLeft: -1, ArrowRight: 1, Home: 'first', End: 'last' };
+            if (!(e.key in keys)) return;
+            var tabs = Array.prototype.slice.call(tabsEl.querySelectorAll('.tab'));
+            var at = tabs.indexOf(document.activeElement);
+            if (at < 0 || !tabs.length) return;
+            e.preventDefault();
+            var step = keys[e.key];
+            var next = step === 'first' ? 0 : step === 'last' ? tabs.length - 1
+                : (at + step + tabs.length) % tabs.length;
+            tabs[next].click();
+            var moved = document.getElementById(tabs[next].id);
+            if (moved) moved.focus();
+        });
+
+        // The grid is rebuilt only when what it draws changes. A Toggle
+        // turning on or off only restyles its tile, so a tile held under a
+        // finger keeps its element and its release.
+        function renderGrid(page) {
+            var sig = JSON.stringify([page.slot, page.menu, page.count, page.labels,
+                (page.cells || []).map(function (c) { return [c.i, c.label, c.glyph, c.img, c.on != null]; })]);
+            if (sig !== renderedSig) {
+                releaseAll(true);
+                buildGrid(page);
+                renderedSig = sig;
+            }
+            (page.cells || []).forEach(function (c) {
+                var tile = gridEl.querySelector('[data-cell="' + c.i + '"]');
+                if (!tile) return;
+                var on = c.on === true;
+                tile.classList.toggle('on', on);
+                if (c.on != null) tile.setAttribute('aria-pressed', on ? 'true' : 'false');
+            });
+        }
+
+        function buildGrid(page) {
+            var shape = gridShape(page.count);
+            gridEl.style.gridTemplateColumns = 'repeat(' + shape[0] + ', minmax(0, 1fr))';
+            gridEl.style.gridTemplateRows = 'repeat(' + shape[1] + ', minmax(0, 1fr))';
+            gridEl.textContent = '';
+            var cells = {};
+            (page.cells || []).forEach(function (c) { cells[c.i] = c; });
+            for (var i = 0; i < page.count; i++) {
+                var c = cells[i];
+                if (!c) {
+                    var empty = document.createElement('div');
+                    empty.className = 'tile empty';
+                    empty.setAttribute('aria-hidden', 'true');
+                    gridEl.appendChild(empty);
+                    continue;
+                }
+                gridEl.appendChild(makeTile(page, c));
+            }
+        }
+
+        function makeTile(page, c) {
+            var tile = document.createElement('button');
+            tile.type = 'button';
+            tile.className = 'tile';
+            tile.setAttribute('data-cell', String(c.i));
+            if (c.glyph) {
+                var g = document.createElement('span');
+                g.className = 'glyph';
+                g.setAttribute('aria-hidden', 'true');
+                g.textContent = c.glyph;
+                tile.appendChild(g);
+            } else if (c.img) {
+                var img = document.createElement('img');
+                img.src = c.img;
+                img.alt = '';
+                img.draggable = false;
+                tile.appendChild(img);
+            }
+            if (page.labels && c.label) {
+                var l = document.createElement('span');
+                l.className = 'lbl';
+                l.textContent = c.label;
+                tile.appendChild(l);
+            }
+            tile.setAttribute('aria-label', c.label || ('Cell ' + (c.i + 1)));
+
+            var key = page.slot + ':' + page.menu + ':' + c.i;
+            var downMsg = { type: 'cell', slot: page.slot, menu: page.menu, cell: c.i, down: true };
+            var down = false;
+            function press() {
+                if (down) return;
+                down = true;
+                tile.classList.add('down');
+                held[key] = { release: release, msg: downMsg };
+                send(downMsg);
+            }
+            function release(tell) {
+                if (!down) return;
+                down = false;
+                tile.classList.remove('down');
+                delete held[key];
+                if (tell !== false) send({ type: 'cell', slot: page.slot, menu: page.menu, cell: c.i, down: false });
+            }
+            tile.addEventListener('pointerdown', function (e) {
+                if (e.pointerType === 'mouse' && e.button !== 0) return;
+                e.preventDefault();
+                try { tile.setPointerCapture(e.pointerId); } catch (err) { }
+                press();
+            });
+            tile.addEventListener('pointerup', function () { release(true); });
+            tile.addEventListener('pointercancel', function () { release(true); });
+            tile.addEventListener('lostpointercapture', function () { release(true); });
+            tile.addEventListener('keydown', function (e) {
+                if ((e.key === ' ' || e.key === 'Enter') && !e.repeat) { e.preventDefault(); press(); }
+            });
+            tile.addEventListener('keyup', function (e) {
+                if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); release(true); }
+            });
+            tile.addEventListener('blur', function () { release(true); });
+            tile.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+            return tile;
+        }
+
+        // A page that goes to the background lets go of what it held.
+        document.addEventListener('visibilitychange', function () {
+            if (document.visibilityState !== 'visible') releaseAll(true);
+        });
+        window.addEventListener('pagehide', function () { releaseAll(true); });
+        window.addEventListener('blur', function () { releaseAll(true); });
+
+        connect();
+    })();
+    </script>
+</body>
+</html>

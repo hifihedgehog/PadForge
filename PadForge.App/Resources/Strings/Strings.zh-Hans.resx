@@ -1783,7 +1783,7 @@
   <data name="Pad_Shift_Rename" xml:space="preserve"><value>重命名层…</value></data>
   <data name="Pad_Shift_Color" xml:space="preserve"><value>层颜色</value></data>
   <data name="Pad_ResetLayerColor" xml:space="preserve"><value>重置层颜色</value></data>
-  <data name="Pad_Shift_Icon_Tooltip" xml:space="preserve"><value>选择一个表情符号,在此层激活时显示在弹出窗口中。</value></data>
+  <data name="Pad_Shift_Icon_Tooltip" xml:space="preserve"><value>选择一个表情符号或图像,在此层激活时显示在弹出窗口中。</value></data>
   <data name="Pad_Shift_Icon_Reset" xml:space="preserve"><value>重置为默认 (⇧)</value></data>
   <data name="Pad_Shift_Copy" xml:space="preserve"><value>复制层行</value></data>
   <data name="Pad_Shift_Paste" xml:space="preserve"><value>粘贴行到层</value></data>
@@ -2262,10 +2262,20 @@
   <data name="Pad_Audio_Packages_PickSounds" xml:space="preserve"><value>选择要放入声音包的声音文件</value></data>
   <data name="Menu_Binding_Macro" xml:space="preserve"><value>宏</value></data>
   <data name="Menu_MacroPicker_Tip" xml:space="preserve"><value>此单元格触发的宏。单元格触发期间应用宏自身的触发模式。</value></data>
-  <data name="Menu_ChooseIcon_Tip" xml:space="preserve"><value>选择此单元格的图标：图标包中的条目或图像文件。</value></data>
-  <data name="Menu_Icon_None" xml:space="preserve"><value>（无图标）</value></data>
-  <data name="Menu_Icon_PickFromPackage_Format" xml:space="preserve"><value>从 {0} 中选择图标</value></data>
+  <data name="Menu_ChooseIcon_Tip" xml:space="preserve"><value>选择此单元格的图标：表情符号、图标包中的条目或图像文件。</value></data>
+  <data name="Menu_Icon_None" xml:space="preserve"><value>无图标</value></data>
   <data name="Menu_Icon_PickTitle" xml:space="preserve"><value>选择图标</value></data>
+  <data name="IconPicker_Emoji" xml:space="preserve"><value>表情符号</value></data>
+  <data name="IconPicker_Images" xml:space="preserve"><value>图片</value></data>
+  <data name="IconPicker_NoPackages" xml:space="preserve"><value>尚未添加图标包。可通过“浏览文件…”选择图像或图标包。</value></data>
+  <data name="Emoji_Category_Smileys" xml:space="preserve"><value>笑脸</value></data>
+  <data name="Emoji_Category_Hands" xml:space="preserve"><value>手势</value></data>
+  <data name="Emoji_Category_Animals" xml:space="preserve"><value>动物</value></data>
+  <data name="Emoji_Category_Food" xml:space="preserve"><value>食物</value></data>
+  <data name="Emoji_Category_Activities" xml:space="preserve"><value>活动</value></data>
+  <data name="Emoji_Category_Travel" xml:space="preserve"><value>旅行</value></data>
+  <data name="Emoji_Category_Objects" xml:space="preserve"><value>物品</value></data>
+  <data name="Emoji_Category_Symbols" xml:space="preserve"><value>符号</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>图标包</value></data>
   <data name="Pad_Menus_IconPackages_Desc" xml:space="preserve"><value>图标包是一个扩展名为 .pficons 的图像 zip 文件。在此添加后，即可在任何菜单单元格中选择其中的图标。PadForge 直接从文件读取，绝不解压。将图标包放在 PadForge.exe 旁边即可保持便携。</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>添加图标包…</value></data>
@@ -2512,6 +2522,7 @@
   <data name="DeviceType_VrController" xml:space="preserve"><value>VR 控制器</value></data>
   <data name="DeviceType_LogitechGKeys" xml:space="preserve"><value>罗技 G 键</value></data>
   <data name="DeviceType_AnalogKeyboard" xml:space="preserve"><value>模拟键盘</value></data>
+  <data name="DeviceType_WebMenus" xml:space="preserve"><value>网页菜单</value></data>
   <data name="HeadTracker_Yaw" xml:space="preserve"><value>头部偏航</value></data>
   <data name="HeadTracker_Pitch" xml:space="preserve"><value>头部俯仰</value></data>
   <data name="HeadTracker_Roll" xml:space="preserve"><value>头部翻滚</value></data>
@@ -3404,6 +3415,8 @@
   <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>添加一个中心单元格,摇杆或手指停在触发死区内时选中它。</value></data>
   <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>对摇杆而言,决定推动多远后菜单打开并高亮环上的单元格。在径向菜单中,它同时也是摇杆和触摸板的中心区域:在其内部,若存在中心单元格则选中它。</value></data>
   <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>在屏幕悬浮层上绘制每个单元格的标签。</value></data>
+  <data name="Menu_ShowOnWebController" xml:space="preserve"><value>在网页控制器上显示</value></data>
+  <data name="Menu_ShowOnWebController_Tip" xml:space="preserve"><value>将此菜单显示为网页控制器“Web Menus”布局中的一页。点按图块即可触发其单元格。</value></data>
   <data name="Menu_Position_Tip" xml:space="preserve"><value>悬浮层中心在屏幕上的位置(百分比)。50 和 50 为正中。</value></data>
   <data name="Menu_Scale_Tip" xml:space="preserve"><value>悬浮层大小(相对正常大小的百分比)。</value></data>
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>悬浮层不透明度。100% 为完全不透明。</value></data>

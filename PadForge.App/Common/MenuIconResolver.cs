@@ -102,6 +102,43 @@ namespace PadForge.Common
             }
         }
 
+        /// <summary>An emoji or other single character stored as the icon
+        /// itself (#471), the form shift layer icons have always used. One
+        /// text element under <see cref="System.Globalization.StringInfo"/>,
+        /// so a flag, a skin tone or a ZWJ sequence counts as one while a
+        /// package reference, a path or a Steam art name (a dozen elements or
+        /// more) never does. Whitespace and control characters never count.
+        /// Drawn as text: WPF's text stack has no color glyph path, so it
+        /// draws in the brush it is given, while the phone's browser draws
+        /// it in color.</summary>
+        public static bool IsGlyph(string reference)
+        {
+            if (string.IsNullOrEmpty(reference) || reference.Length > 32) return false;
+            if (char.IsWhiteSpace(reference[0]) || char.IsControl(reference[0])) return false;
+            return new System.Globalization.StringInfo(reference).LengthInTextElements == 1;
+        }
+
+        /// <summary>A reference that names a picture rather than a glyph: a
+        /// package entry or a loose image path. A layer icon of this form that
+        /// no longer resolves falls back to the default glyph instead of
+        /// showing its path as text.</summary>
+        public static bool IsImageReference(string reference)
+            => !string.IsNullOrEmpty(reference)
+               && (IconPackageManager.IsPackageRef(reference) || IsLooseImagePath(reference));
+
+        /// <summary>How a shift layer icon draws (#471): the picture when the
+        /// reference names one that resolves, else the glyph. Anything that is
+        /// neither an emoji nor a picture that resolves, an empty reference
+        /// included, draws the default ⇧, so a path never shows as text. The
+        /// layer flyout and the layer dialog both draw through this.</summary>
+        public static ImageSource ResolveLayerIcon(string icon, out string glyph)
+        {
+            icon ??= "";
+            bool isGlyph = IsGlyph(icon);
+            glyph = isGlyph ? icon : "\u21E7";
+            return isGlyph ? null : Resolve(icon);
+        }
+
         /// <summary>A loose image path: carries a directory separator or
         /// a drive colon (which the Steam-name gate rejects) and one of
         /// the pack image extensions. Purely a shape test; existence is
@@ -117,6 +154,49 @@ namespace PadForge.Common
             foreach (var e in IconPackageManager.ImageExtensions)
                 if (string.Equals(ext, e, StringComparison.OrdinalIgnoreCase)) return true;
             return false;
+        }
+
+        /// <summary>Largest icon file read for the Web Menus page, the package
+        /// reader's own per-icon bound.</summary>
+        private const long MaxIconFileBytes = 16L * 1024 * 1024;
+
+        /// <summary>The icon's own file bytes, for the Web Menus page (#471):
+        /// a package entry, a loose image file or a Steam art name, found the
+        /// way <see cref="Resolve"/> finds each one. Null when the reference
+        /// is none of those or nothing readable is there. Never throws.</summary>
+        internal static byte[] TryReadIconBytes(string reference)
+        {
+            if (string.IsNullOrEmpty(reference) || IsGlyph(reference)) return null;
+            try
+            {
+                if (IconPackageManager.IsPackageRef(reference))
+                    return IconPackageManager.TryReadIcon(reference);
+                if (IsLooseImagePath(reference))
+                    return ReadCapped(IconPackageManager.ResolvePath(reference));
+                if (!MenuItemDefinition.IsValidIconName(reference)) return null;
+                string root;
+                lock (Sync) root = SteamRoot();
+                if (string.IsNullOrEmpty(root)) return null;
+                foreach (var subdir in IconSubdirs)
+                {
+                    var bytes = ReadCapped(Path.Combine(root, subdir, reference));
+                    if (bytes != null) return bytes;
+                }
+            }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException
+                or NotSupportedException or ArgumentException or System.Security.SecurityException
+                or PathTooLongException)
+            {
+            }
+            return null;
+        }
+
+        private static byte[] ReadCapped(string path)
+        {
+            if (string.IsNullOrEmpty(path)) return null;
+            var info = new FileInfo(path);
+            if (!info.Exists || info.Length == 0 || info.Length > MaxIconFileBytes) return null;
+            return File.ReadAllBytes(info.FullName);
         }
 
         private static BitmapImage LoadFromPack(string iconRef)

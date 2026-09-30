@@ -847,6 +847,7 @@ namespace PadForge.ViewModels
         internal static bool CanResetSetting(string name) => name is
             nameof(Enabled) or
             nameof(ShowLabels) or
+            nameof(ShowOnWebController) or
             nameof(PosXPercent) or
             nameof(PosYPercent) or
             nameof(ScalePercent) or
@@ -864,6 +865,11 @@ namespace PadForge.ViewModels
                 case nameof(ShowLabels):
                 {
                     ShowLabels = true;
+                    break;
+                }
+                case nameof(ShowOnWebController):
+                {
+                    ShowOnWebController = false;
                     break;
                 }
                 case nameof(PosXPercent):

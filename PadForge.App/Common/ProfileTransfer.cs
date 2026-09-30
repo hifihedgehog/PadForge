@@ -407,51 +407,83 @@ namespace PadForge.Common
             return target;
         }
 
-        /// <summary>Rewrites every menu cell icon ref pointing at
-        /// <paramref name="fromPackage"/> to <paramref name="toPackage"/>
-        /// (#390), the sound rewrite's discipline: each item moves at
-        /// most once per import.</summary>
+        /// <summary>Rewrites every icon ref pointing at
+        /// <paramref name="fromPackage"/> to <paramref name="toPackage"/>:
+        /// menu cells (#390), shift layers and each slot's Base layer
+        /// (#471). The sound rewrite's discipline: each icon moves at most
+        /// once per import.</summary>
         private static void RewriteIconPackageRefs(ProfileData profile, string fromPackage, string toPackage,
             HashSet<object> alreadyRewritten = null)
         {
             if (profile.SlotMappingSets == null) return;
+
+            bool TryRewrite(object key, string icon, out string rewritten)
+            {
+                rewritten = null;
+                if (alreadyRewritten != null && alreadyRewritten.Contains(key)) return false;
+                if (!IconPackageManager.TryParseRef(icon, out string pkg, out string entry)
+                    || !string.Equals(pkg, fromPackage, StringComparison.OrdinalIgnoreCase)) return false;
+                rewritten = IconPackageManager.MakeRef(toPackage, entry);
+                alreadyRewritten?.Add(key);
+                return true;
+            }
+
             foreach (var ms in profile.SlotMappingSets)
             {
-                if (ms?.Menus == null) continue;
-                foreach (var def in ms.Menus)
+                if (ms == null) continue;
+                if (ms.Menus != null)
                 {
-                    if (def?.Items == null) continue;
-                    foreach (var it in def.Items)
+                    foreach (var def in ms.Menus)
                     {
-                        if (it == null) continue;
-                        if (alreadyRewritten != null && alreadyRewritten.Contains(it)) continue;
-                        if (IconPackageManager.TryParseRef(it.Icon, out string pkg, out string entry)
-                            && string.Equals(pkg, fromPackage, StringComparison.OrdinalIgnoreCase))
-                        {
-                            it.Icon = IconPackageManager.MakeRef(toPackage, entry);
-                            alreadyRewritten?.Add(it);
-                        }
+                        if (def?.Items == null) continue;
+                        foreach (var it in def.Items)
+                            if (it != null && TryRewrite(it, it.Icon, out string icon))
+                                it.Icon = icon;
                     }
                 }
+                if (ms.ShiftActivators != null)
+                {
+                    foreach (var act in ms.ShiftActivators)
+                        if (act != null && TryRewrite(act, act.Icon, out string icon))
+                            act.Icon = icon;
+                }
+                // The Base layer's icon lives on the set itself, so the set is
+                // its key. The import's guard compares by reference, and the
+                // set is never a cell or an activator, so the keys stay apart.
+                if (TryRewrite(ms, ms.BaseIcon, out string baseIcon))
+                    ms.BaseIcon = baseIcon;
             }
         }
 
         /// <summary>Distinct icon-pack names referenced by the profile's
-        /// menu cells (#390).</summary>
+        /// menu cells (#390), shift layers and Base layers (#471).</summary>
         private static IEnumerable<string> ReferencedIconPackages(ProfileData profile)
         {
             var names = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             if (profile.SlotMappingSets == null) return names;
+
+            void Note(string icon)
+            {
+                if (IconPackageManager.TryParseRef(icon, out string pkg, out _))
+                    names.Add(pkg);
+            }
+
             foreach (var ms in profile.SlotMappingSets)
             {
-                if (ms?.Menus == null) continue;
-                foreach (var def in ms.Menus)
+                if (ms == null) continue;
+                if (ms.Menus != null)
                 {
-                    if (def?.Items == null) continue;
-                    foreach (var it in def.Items)
-                        if (it != null && IconPackageManager.TryParseRef(it.Icon, out string pkg, out _))
-                            names.Add(pkg);
+                    foreach (var def in ms.Menus)
+                    {
+                        if (def?.Items == null) continue;
+                        foreach (var it in def.Items)
+                            if (it != null) Note(it.Icon);
+                    }
                 }
+                if (ms.ShiftActivators != null)
+                    foreach (var act in ms.ShiftActivators)
+                        if (act != null) Note(act.Icon);
+                Note(ms.BaseIcon);
             }
             return names;
         }

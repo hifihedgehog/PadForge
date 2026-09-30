@@ -198,7 +198,8 @@ namespace PadForge.Tests
         /// <summary>
         /// Submitting a mapping opens a pre-filled GitHub issue about a piece of
         /// hardware, so a row backed by a runtime or an SDK has nothing to
-        /// submit. VrController and LogitechGKeys missed this list in 4.5.0.
+        /// submit. VrController and LogitechGKeys missed this list in 4.5.0, and
+        /// the list's AnalogKeyboard entry had no case here.
         /// </summary>
         [Theory]
         [InlineData("Gamepad")]
@@ -216,6 +217,8 @@ namespace PadForge.Tests
         [InlineData("HeadTracker")]
         [InlineData("VrController")]
         [InlineData("LogitechGKeys")]
+        [InlineData("AnalogKeyboard")]
+        [InlineData("WebMenus")]
         public void RowsWithNoHardwareToDescribe_DoNotOfferSubmitMapping(string typeKey)
         {
             var vm = new DeviceRowViewModel { DeviceTypeKey = typeKey };

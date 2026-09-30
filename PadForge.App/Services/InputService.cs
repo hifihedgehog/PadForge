@@ -158,6 +158,14 @@ namespace PadForge.Services
         private readonly List<PadForge.Engine.Touchpad.TouchpadCustomGesture> _activeTouchpadGestures = new();
         private DsuMotionServer _dsuServer;
         private WebControllerServer _webServer;
+
+        /// <summary>The Web Menus phones' snapshots (#471), built on the UI
+        /// timer while the web controller serves.</summary>
+        private readonly WebMenusService _webMenus = new();
+
+        /// <summary>The newest profile a Web Menus phone asked for, waiting for
+        /// the dispatcher (#471).</summary>
+        private string _pendingWebMenusProfile;
         private LinkServer _linkServer;
         private LinkDiscovery _linkDiscovery;
         private bool _remoteLinkConnectWired;
@@ -2797,6 +2805,14 @@ namespace PadForge.Services
             // ── Bliss-Box Dreamcast screens (#469): ungated, like the
             //    macro requests above ──
             TickBlissBox();
+
+            // ── Web Menus phones (#471): ungated too, since the phone is the
+            //    point while a game holds the focus ──
+            if (_webServer != null)
+            {
+                try { _webMenus.Tick(_inputManager, _mainVm.Settings.ProfileItems); }
+                catch { /* a failed pass is rebuilt on the next tick */ }
+            }
 
             // ── Handle macro-requested profile switch ──
             string pendingSwitch = _inputManager.PendingProfileSwitchId;
@@ -10289,6 +10305,13 @@ namespace PadForge.Services
             {
                 _inputManager.UnregisterExternalDevice(device.InstanceGuid);
             };
+            _webServer.ProfileSwitchRequested += id =>
+            {
+                // The latest request wins, and a burst takes one dispatch.
+                if (System.Threading.Interlocked.Exchange(ref _pendingWebMenusProfile, id) == null)
+                    _dispatcher.BeginInvoke(new Action(() => RequestProfileFromWebMenus(
+                        System.Threading.Interlocked.Exchange(ref _pendingWebMenusProfile, null))));
+            };
 
             int port = _mainVm.Dashboard.WebControllerPort;
             if (port < 1024 || port > 65535)
@@ -10329,6 +10352,23 @@ namespace PadForge.Services
                     }
                 });
             });
+        }
+
+        /// <summary>A Web Menus phone chose a profile (#471). Only an entry of
+        /// the profile list counts. It goes through the pending switch the
+        /// profile shortcuts use, so the UI timer applies it as a manual
+        /// switch, with the switch overlay when that is on. Default is the
+        /// null id that path already takes for the built-in profile.</summary>
+        private void RequestProfileFromWebMenus(string id)
+        {
+            if (_inputManager == null || !_inputManager.IsRunning || string.IsNullOrEmpty(id)) return;
+            bool known = false;
+            foreach (var p in _mainVm.Settings.ProfileItems)
+                if (p != null && p.Id == id) { known = true; break; }
+            if (!known) return;
+            _inputManager.PendingProfileSwitchIsManual = true;
+            _inputManager.PendingProfileSwitchId =
+                id == ViewModels.ProfileListItem.DefaultProfileId ? null : id;
         }
 
         private void OnWebServerStatusChanged(object sender, WebControllerServer.Status status)
@@ -11476,6 +11516,9 @@ namespace PadForge.Services
         /// that is itself a remote peer's (peer://): re-sharing it would loop / relay.</summary>
         private static bool IsShareableDevice(ISdlInputDevice dev)
         {
+            // A Web Menus phone (#471) fires only this PC's menus, so another
+            // PC would get a device that does nothing.
+            if (dev is WebControllerDevice web && web.IsMenuSurface) return false;
             string path = dev.DevicePath ?? "";
             return !path.StartsWith("peer://", StringComparison.Ordinal);
         }
@@ -13882,6 +13925,7 @@ namespace PadForge.Services
                 InputDeviceType.VrController => "VrController",
                 InputDeviceType.LogitechGKeys => "LogitechGKeys",
                 InputDeviceType.AnalogKeyboard => "AnalogKeyboard",
+                InputDeviceType.WebMenus => "WebMenus",
                 _ => "Device"
             };
             // Vendor daemon notice (#343): the sweep scans on its cadence;

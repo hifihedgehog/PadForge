@@ -1784,7 +1784,7 @@
   <data name="Pad_Shift_Rename" xml:space="preserve"><value>レイヤー名を変更…</value></data>
   <data name="Pad_Shift_Color" xml:space="preserve"><value>レイヤーの色</value></data>
   <data name="Pad_ResetLayerColor" xml:space="preserve"><value>レイヤーの色をリセット</value></data>
-  <data name="Pad_Shift_Icon_Tooltip" xml:space="preserve"><value>このレイヤーが有効なときにフライアウトに表示する絵文字を選択します。</value></data>
+  <data name="Pad_Shift_Icon_Tooltip" xml:space="preserve"><value>このレイヤーが有効なときにフライアウトに表示する絵文字または画像を選択します。</value></data>
   <data name="Pad_Shift_Icon_Reset" xml:space="preserve"><value>デフォルトに戻す (⇧)</value></data>
   <data name="Pad_Shift_Copy" xml:space="preserve"><value>レイヤー行をコピー</value></data>
   <data name="Pad_Shift_Paste" xml:space="preserve"><value>レイヤーに行を貼り付け</value></data>
@@ -2262,10 +2262,20 @@
   <data name="Pad_Audio_Packages_PickSounds" xml:space="preserve"><value>パッケージに入れるサウンドファイルを選択</value></data>
   <data name="Menu_Binding_Macro" xml:space="preserve"><value>マクロ</value></data>
   <data name="Menu_MacroPicker_Tip" xml:space="preserve"><value>このセルが起動するマクロです。セルが作動している間、マクロ自身のトリガーモードが適用されます。</value></data>
-  <data name="Menu_ChooseIcon_Tip" xml:space="preserve"><value>このセルのアイコンを選択します。アイコンパックの項目または画像ファイルを指定できます。</value></data>
-  <data name="Menu_Icon_None" xml:space="preserve"><value>（アイコンなし）</value></data>
-  <data name="Menu_Icon_PickFromPackage_Format" xml:space="preserve"><value>{0} からアイコンを選択</value></data>
+  <data name="Menu_ChooseIcon_Tip" xml:space="preserve"><value>このセルのアイコンを選択します。絵文字、アイコンパックの項目、または画像ファイルを指定できます。</value></data>
+  <data name="Menu_Icon_None" xml:space="preserve"><value>アイコンなし</value></data>
   <data name="Menu_Icon_PickTitle" xml:space="preserve"><value>アイコンを選択</value></data>
+  <data name="IconPicker_Emoji" xml:space="preserve"><value>絵文字</value></data>
+  <data name="IconPicker_Images" xml:space="preserve"><value>画像</value></data>
+  <data name="IconPicker_NoPackages" xml:space="preserve"><value>アイコンパックはまだ追加されていません。「ファイルを参照…」から画像またはアイコンパックを選択できます。</value></data>
+  <data name="Emoji_Category_Smileys" xml:space="preserve"><value>顔</value></data>
+  <data name="Emoji_Category_Hands" xml:space="preserve"><value>手</value></data>
+  <data name="Emoji_Category_Animals" xml:space="preserve"><value>動物</value></data>
+  <data name="Emoji_Category_Food" xml:space="preserve"><value>食べ物</value></data>
+  <data name="Emoji_Category_Activities" xml:space="preserve"><value>アクティビティ</value></data>
+  <data name="Emoji_Category_Travel" xml:space="preserve"><value>旅行</value></data>
+  <data name="Emoji_Category_Objects" xml:space="preserve"><value>物</value></data>
+  <data name="Emoji_Category_Symbols" xml:space="preserve"><value>記号</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>アイコンパック</value></data>
   <data name="Pad_Menus_IconPackages_Desc" xml:space="preserve"><value>アイコンパックは拡張子 .pficons の画像入り zip ファイルです。ここに追加すると、任意のメニューセルでそのアイコンを選択できます。PadForge はファイルから直接読み取り、展開することはありません。ポータブルに保つには、パックを PadForge.exe の隣に置いてください。</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>パックを追加…</value></data>
@@ -2512,6 +2522,7 @@
   <data name="DeviceType_VrController" xml:space="preserve"><value>VR コントローラー</value></data>
   <data name="DeviceType_LogitechGKeys" xml:space="preserve"><value>Logitech G キー</value></data>
   <data name="DeviceType_AnalogKeyboard" xml:space="preserve"><value>アナログキーボード</value></data>
+  <data name="DeviceType_WebMenus" xml:space="preserve"><value>Web メニュー</value></data>
   <data name="HeadTracker_Yaw" xml:space="preserve"><value>頭のヨー</value></data>
   <data name="HeadTracker_Pitch" xml:space="preserve"><value>頭のピッチ</value></data>
   <data name="HeadTracker_Roll" xml:space="preserve"><value>頭のロール</value></data>
@@ -3404,6 +3415,8 @@
   <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>中央セルを追加します。スティックまたは指が作動デッドゾーン内にある間、中央セルが選択されます。</value></data>
   <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>スティックでは、どれだけ倒すとメニューが開いてリングのセルがハイライトされるかを決めます。放射メニューでは、スティックとタッチパッドの両方で中央領域にもなります。その内側では、中央セルがあればそれが選択されます。</value></data>
   <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>画面オーバーレイに各セルのラベルを描画します。</value></data>
+  <data name="Menu_ShowOnWebController" xml:space="preserve"><value>Web コントローラーに表示</value></data>
+  <data name="Menu_ShowOnWebController_Tip" xml:space="preserve"><value>このメニューを Web コントローラーの「Web Menus」レイアウトのページとして表示します。タイルをタップするとそのセルが実行されます。</value></data>
   <data name="Menu_Position_Tip" xml:space="preserve"><value>オーバーレイの中心が画面のどこに置かれるか(パーセント)。50と50で中央です。</value></data>
   <data name="Menu_Scale_Tip" xml:space="preserve"><value>オーバーレイの大きさ(通常サイズに対するパーセント)。</value></data>
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>オーバーレイの不透明度。100%で完全に不透明です。</value></data>

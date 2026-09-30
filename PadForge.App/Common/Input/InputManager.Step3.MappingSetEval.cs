@@ -163,6 +163,14 @@ namespace PadForge.Common.Input
                     // the slot, each device read under its own identity.
                     if (trimSlotStates == null)
                         trimSlotStates = GetSlotDeviceStates(slotIndex, currentState, currentDeviceGuid, out trimSlotOwners);
+                    if (TryPhoneForEmptySpan(trimSlotStates, src, slotIndex, out var phoneState, out var phoneGuid))
+                    {
+                        float pv = SourceEvaluator.EvaluateForTriggerTarget(
+                            phoneState, src, slotIndex, row.Target, i, slotRuntime, dt,
+                            evaluatedDeviceGuid: phoneGuid);
+                        if (pv > gate) gate = pv;
+                        continue;
+                    }
                     for (int d = 0; d < trimSlotStates.Count; d++)
                     {
                         float av = SourceEvaluator.EvaluateForTriggerTarget(
@@ -209,6 +217,10 @@ namespace PadForge.Common.Input
                                 evaluatedDeviceGuid: trimSlotOwners[d]);
                             if (System.Math.Abs(tv) > System.Math.Abs(v)) v = tv;
                         }
+                        if (TryPhoneForEmptySpan(trimSlotStates, trimSrc, slotIndex, out var phoneState, out var phoneGuid))
+                            v = SourceEvaluator.EvaluateForBipolarAxisTarget(
+                                phoneState, trimSrc, slotIndex, row.Target, trimIdx, slotRuntime, dt,
+                                evaluatedDeviceGuid: phoneGuid);
                     }
                     else
                     {
@@ -1097,6 +1109,22 @@ namespace PadForge.Common.Input
                     AddConsumedKey(slot, ud.InstanceGuidString, desc);
                     AddConsumedKey(slot, "", desc);
                 }
+                // (#471) A Web Menus phone alone on the slot reads a menu cell
+                // trigger under its own identity, as the trigger check does.
+                if (n == 0 && SourceCoercion.IsMenuItemDescriptor(src.Descriptor))
+                {
+                    for (int d = 0; d < _slotTriggerPhoneCount; d++)
+                    {
+                        var ud = _slotTriggerPhoneScratch[d];
+                        if (ud?.InputState == null) continue;
+                        if (!SourceCoercion.EvaluateForButtonTarget(
+                                ud.InputState, src, DescriptorTriggerThresholdPercent,
+                                slot, ud.InstanceGuidString))
+                            continue;
+                        AddConsumedKey(slot, ud.InstanceGuidString, desc);
+                        AddConsumedKey(slot, "", desc);
+                    }
+                }
                 return;
             }
             var udc = FindSlotDeviceByInstanceGuid(deviceGuid, slot);
@@ -1377,8 +1405,11 @@ namespace PadForge.Common.Input
                 }
                 // (#431) An empty guid means whichever controller is on the
                 // slot. A pass for a row that never answers that wildcard
-                // leaves the activator state to the passes that do.
-                if (string.IsNullOrEmpty(act.DeviceGuid) && !AnswersAnyDevice(thisDeviceGuid))
+                // leaves the activator state to the passes that do. A Web
+                // Menus phone alone on the slot reads a menu cell activator
+                // itself (#471).
+                if (string.IsNullOrEmpty(act.DeviceGuid) && !AnswersAnyDevice(thisDeviceGuid)
+                    && !PhoneStandsIn(act.Descriptor, thisDeviceGuid, slotIndex))
                     continue;
 
                 if (string.IsNullOrEmpty(act.DeviceGuid))
@@ -2413,7 +2444,7 @@ namespace PadForge.Common.Input
                     {
                         var src = rowSources[i];
                         if (IsRowModifierSource(src)) continue;
-                        if (!SourceMatchesDevice(src, thisDeviceGuid)) continue;
+                        if (!SourceMatchesDevice(src, thisDeviceGuid, slotIndex)) continue;
                         if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor)) continue;
                         boolContribs.Add(SourceEvaluator.EvaluateForButtonTarget(
                             state, src, globalAxisToButtonThreshold,
@@ -2444,7 +2475,7 @@ namespace PadForge.Common.Input
                     {
                         var src = rowSources[i];
                         if (IsRowModifierSource(src)) continue;
-                        if (!SourceMatchesDevice(src, thisDeviceGuid)) continue;
+                        if (!SourceMatchesDevice(src, thisDeviceGuid, slotIndex)) continue;
                         if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor)) continue;
                         axisContribs.Add(SourceEvaluator.EvaluateForBipolarAxisTarget(
                             state, src, slotIndex, row.Target, i, runtime, dt,
@@ -2486,7 +2517,7 @@ namespace PadForge.Common.Input
                     {
                         var src = rowSources[i];
                         if (IsRowModifierSource(src)) continue;
-                        if (!SourceMatchesDevice(src, thisDeviceGuid)) continue;
+                        if (!SourceMatchesDevice(src, thisDeviceGuid, slotIndex)) continue;
                         if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor)) continue;
                         axisContribs.Add(SourceEvaluator.EvaluateForTriggerTarget(
                             state, src, slotIndex, row.Target, i, runtime, dt,
@@ -2527,15 +2558,20 @@ namespace PadForge.Common.Input
                     continue;
                 if (string.IsNullOrEmpty(src.ParamModifier)) continue;
                 // (#431) The pass device stands in for an empty guid only
-                // when it answers the wildcard at all.
-                if (string.IsNullOrEmpty(src.DeviceGuid) && !AnswersAnyDevice(fallbackDeviceGuid))
+                // when it answers the wildcard at all. A menu cell modifier on
+                // a slot no device answers for is read by the slot's Web Menus
+                // phone (#471), whichever pass is running, since a row read
+                // once per frame runs on one pass only.
+                string modifierDeviceGuid = string.IsNullOrEmpty(src.DeviceGuid) ? fallbackDeviceGuid : src.DeviceGuid;
+                CustomInputState phoneModifierState = null;
+                if (string.IsNullOrEmpty(src.DeviceGuid) && !AnswersAnyDevice(fallbackDeviceGuid)
+                    && !TryPhoneForMenuCell(src.ParamModifier, slotIndex, out phoneModifierState, out modifierDeviceGuid))
                     continue;
-                // PostponeMapping suppression — when an activator with
+                // PostponeMapping suppression. When an activator with
                 // PostponeMapping=false names this same modifier descriptor,
                 // its press is "consumed" by the layer change and shouldn't
                 // also flip the row sign. Consistent with the source-eval
                 // suppression check in BuildCustomContribsFor*.
-                string modifierDeviceGuid = string.IsNullOrEmpty(src.DeviceGuid) ? fallbackDeviceGuid : src.DeviceGuid;
                 if (IsSourceSuppressedPostpone(slotIndex, modifierDeviceGuid, src.ParamModifier))
                     continue;
                 // A pinned modifier whose device is offline reads RELEASED.
@@ -2544,9 +2580,10 @@ namespace PadForge.Common.Input
                 // device being processed, and silently invert the row. The
                 // cycle and chord companions above already use this sentinel;
                 // this was the twin that kept the old fallback.
-                CustomInputState s = string.IsNullOrEmpty(src.DeviceGuid)
-                    ? fallbackState
-                    : (LookupDeviceState(src.DeviceGuid) ?? OfflinePinnedRestState);
+                CustomInputState s = phoneModifierState
+                    ?? (string.IsNullOrEmpty(src.DeviceGuid)
+                        ? fallbackState
+                        : (LookupDeviceState(src.DeviceGuid) ?? OfflinePinnedRestState));
                 // Both keys ride along, same as all five sibling call sites.
                 // Dropping them collapsed every stateful modifier family (IR
                 // Offscreen's debounce store, the IR EMA keys, menu fires,
@@ -2712,10 +2749,12 @@ namespace PadForge.Common.Input
         private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<MappingSet, BaseRowCache>
             s_baseRowCaches = new();
 
-        private static bool SourceMatchesDevice(MappingSource src, string thisDeviceGuid)
+        private static bool SourceMatchesDevice(MappingSource src, string thisDeviceGuid, int slotIndex)
         {
             if (src == null) return false;
-            if (string.IsNullOrEmpty(src.DeviceGuid)) return AnswersAnyDevice(thisDeviceGuid); // "any device" (#431)
+            // "any device" (#431), and a phone's own menu cells (#471).
+            if (string.IsNullOrEmpty(src.DeviceGuid))
+                return AnswersAnyDevice(thisDeviceGuid) || PhoneStandsIn(src.Descriptor, thisDeviceGuid, slotIndex);
             return string.Equals(src.DeviceGuid, thisDeviceGuid, System.StringComparison.OrdinalIgnoreCase);
         }
 
@@ -2801,7 +2840,7 @@ namespace PadForge.Common.Input
                     {
                         var src = rowSources[i];
                         if (IsRowModifierSource(src)) continue;
-                        if (!SourceMatchesDevice(src, deviceGuid)) continue;
+                        if (!SourceMatchesDevice(src, deviceGuid, slotIndex)) continue;
                         // Preview truthfulness (audit 2026-07-25, C12): the
                         // live dispatch suppresses consumed/postponed
                         // sources, so the preview must too or the Pad page
@@ -2956,6 +2995,7 @@ namespace PadForge.Common.Input
             memo.Clear();
             _devStateMemoActive = true;
             _anyDeviceCacheGuid = null;
+            if (_slotScanMemo != null) System.Array.Clear(_slotScanMemo);
         }
 
         /// <summary>Disarms the memo at the end of a Step-3 pass so any code
@@ -2966,6 +3006,7 @@ namespace PadForge.Common.Input
         {
             _devStateMemoActive = false;
             _anyDeviceCacheGuid = null;
+            if (_slotScanMemo != null) System.Array.Clear(_slotScanMemo);
         }
 
         // All-rest state for offline-pinned BOOL-LIKE reads (buttons read
@@ -3045,6 +3086,125 @@ namespace PadForge.Common.Input
                 _anyDeviceCacheAnswers = answers;
             }
             return answers;
+        }
+
+        // ── Web Menus phones (#471) ──────────────────────────────────────
+        // A phone never answers "(Any Device)", because its input arrays
+        // hold no gamepad layout (#431). A menu cell source is the exception:
+        // its read asks the menu runtime which cells fired and never looks at
+        // the pass device's inputs. So on a slot where no online device
+        // answers the wildcard, the slot's phone reads its "(Any Device)" menu
+        // cell sources, and a slot with a controller on it evaluates exactly
+        // as it did before phones existed. A row read on every pass reads the
+        // cell on the phone's own pass. A row read once per frame (the
+        // multi-source builders, a stick trim) runs on whichever pass comes
+        // first, so it reads the cell as the phone, whichever pass that is.
+
+        [System.ThreadStatic] private static List<string> _standInGuidsBuf;
+
+        /// <summary>One slot's devices as the wildcard sees them: whether an
+        /// online device answers it, and else the first online Web Menus
+        /// phone.</summary>
+        private struct SlotWildcardScan
+        {
+            public bool Known;
+            public bool Answers;
+            public string PhoneGuid;
+        }
+
+        // Per-pass scans, by slot. Armed and cleared with the device-state
+        // memo, so a pass walks a slot's devices once per frame rather than
+        // once per menu cell source.
+        [System.ThreadStatic] private static SlotWildcardScan[] _slotScanMemo;
+
+        private static SlotWildcardScan ScanSlot(int slotIndex)
+        {
+            bool useMemo = _devStateMemoActive && slotIndex >= 0 && slotIndex < MaxPads;
+            if (useMemo)
+            {
+                var memo = _slotScanMemo ??= new SlotWildcardScan[MaxPads];
+                if (memo[slotIndex].Known) return memo[slotIndex];
+            }
+            var scan = ScanSlotLive(slotIndex);
+            if (useMemo) _slotScanMemo[slotIndex] = scan;
+            return scan;
+        }
+
+        /// <summary>The live read behind <see cref="ScanSlot"/>. GUIDs are
+        /// collected under UserSettings.SyncRoot and resolved after it is
+        /// released, <see cref="GetSlotDeviceStates"/>'s lock order.</summary>
+        private static SlotWildcardScan ScanSlotLive(int slotIndex)
+        {
+            var scan = new SlotWildcardScan { Known = true };
+            var guids = _standInGuidsBuf ??= new List<string>(4);
+            guids.Clear();
+            var settings = SettingsManager.UserSettings;
+            if (settings?.Items == null) return scan;
+            lock (settings.SyncRoot)
+            {
+                for (int i = 0; i < settings.Items.Count; i++)
+                {
+                    var us = settings.Items[i];
+                    if (us != null && us.MapTo == slotIndex) guids.Add(us.InstanceGuidString);
+                }
+            }
+            for (int i = 0; i < guids.Count; i++)
+            {
+                string g = guids[i];
+                if (AnswersAnyDevice(g))
+                {
+                    if (LookupDeviceState(g) != null) { scan.Answers = true; return scan; }
+                    continue;
+                }
+                if (scan.PhoneGuid == null
+                    && LookupUserDevice(g)?.CapType == InputDeviceType.WebMenus
+                    && LookupDeviceState(g) != null)
+                    scan.PhoneGuid = g;
+            }
+            return scan;
+        }
+
+        /// <summary>Whether an online device on the slot answers "(Any
+        /// Device)", the set <see cref="GetSlotDeviceStates"/> spans.</summary>
+        private static bool SlotHasAnsweringDevice(int slotIndex) => ScanSlot(slotIndex).Answers;
+
+        private static bool IsPhoneMenuCellDescriptor(string descriptor, string deviceGuid)
+            => SourceCoercion.IsMenuItemDescriptor(descriptor)
+               && LookupUserDevice(deviceGuid)?.CapType == InputDeviceType.WebMenus;
+
+        /// <summary>For a read on every pass: true on the phone's own pass
+        /// when the descriptor is a menu cell and no online device on the slot
+        /// answers "(Any Device)", so nothing else would read the cell.</summary>
+        private static bool PhoneStandsIn(string descriptor, string deviceGuid, int slotIndex)
+            => slotIndex >= 0 && IsPhoneMenuCellDescriptor(descriptor, deviceGuid)
+               && !SlotHasAnsweringDevice(slotIndex);
+
+        /// <summary>For a read made once whatever the pass: the slot's phone
+        /// and its state when <paramref name="descriptor"/> is an "(Any
+        /// Device)" menu cell and no online device on the slot answers.</summary>
+        private static bool TryPhoneForMenuCell(string descriptor, int slotIndex,
+            out CustomInputState phoneState, out string phoneGuid)
+        {
+            phoneState = null;
+            phoneGuid = null;
+            if (slotIndex < 0 || !SourceCoercion.IsMenuItemDescriptor(descriptor)) return false;
+            var scan = ScanSlot(slotIndex);
+            if (scan.Answers || scan.PhoneGuid == null) return false;
+            phoneState = LookupDeviceState(scan.PhoneGuid);
+            if (phoneState == null) return false;
+            phoneGuid = scan.PhoneGuid;
+            return true;
+        }
+
+        /// <summary>The same for a row read once per frame, whose span
+        /// (<see cref="GetSlotDeviceStates"/>) came back empty.</summary>
+        private static bool TryPhoneForEmptySpan(List<CustomInputState> span, MappingSource src, int slotIndex,
+            out CustomInputState phoneState, out string phoneGuid)
+        {
+            phoneState = null;
+            phoneGuid = null;
+            return span.Count == 0 && src != null && string.IsNullOrEmpty(src.DeviceGuid)
+                   && TryPhoneForMenuCell(src.Descriptor, slotIndex, out phoneState, out phoneGuid);
         }
 
         /// <summary>Memoized lookup for concrete-source sites. The captured
@@ -3194,6 +3354,31 @@ namespace PadForge.Common.Input
                     // device with the strongest deflection.
                     if (slotStates == null)
                         slotStates = GetSlotDeviceStates(slotIndex, currentState, currentDeviceGuid, out slotOwners);
+                    if (slotStates.Count == 0)
+                    {
+                        // (#471) The slot's Web Menus phone reads the menu cell
+                        // sides, whichever pass claimed the row. A pair's sides
+                        // share one guid, and a side that is no menu cell has
+                        // no device to read, so it stays at rest.
+                        bool posPhone = TryPhoneForEmptySpan(slotStates, src, slotIndex, out var posState, out var posGuid);
+                        CustomInputState negState = null;
+                        string negGuid = null;
+                        bool negPhone = useNeg && TryPhoneForEmptySpan(slotStates, negSrc, slotIndex, out negState, out negGuid);
+                        if (posPhone || negPhone)
+                        {
+                            float pv = posPhone
+                                ? SourceEvaluator.EvaluateForBipolarAxisTarget(
+                                    posState, src, slotIndex, row.Target, i, slotRuntime, dt,
+                                    evaluatedDeviceGuid: posGuid)
+                                : 0f;
+                            if (negPhone)
+                                pv += SourceEvaluator.EvaluateForBipolarAxisTarget(
+                                    negState, negSrc, slotIndex, row.Target, 1, slotRuntime, dt,
+                                    evaluatedDeviceGuid: negGuid);
+                            list.Add(pv);
+                            continue;
+                        }
+                    }
                     var posFixed = posAny ? null : LookupDeviceStateFast(src.DeviceGuid, currentState, currentDeviceGuid);
                     var negFixed = (useNeg && !negAny) ? LookupDeviceStateFast(negSrc.DeviceGuid, currentState, currentDeviceGuid) : null;
                     float best = 0f;
@@ -3265,6 +3450,14 @@ namespace PadForge.Common.Input
                     // devices, not just the first-evaluated one).
                     if (slotStates == null)
                         slotStates = GetSlotDeviceStates(slotIndex, currentState, currentDeviceGuid, out slotOwners);
+                    if (TryPhoneForEmptySpan(slotStates, src, slotIndex, out var phoneState, out var phoneGuid))
+                    {
+                        // (#471) The slot's phone, whichever pass claimed the row.
+                        list.Add(SourceEvaluator.EvaluateForTriggerTarget(
+                            phoneState, src, slotIndex, row.Target, i, slotRuntime, dt,
+                            evaluatedDeviceGuid: phoneGuid));
+                        continue;
+                    }
                     float mx = 0f;
                     for (int d = 0; d < slotStates.Count; d++)
                     {
@@ -3312,6 +3505,15 @@ namespace PadForge.Common.Input
                     // devices, not just the first-evaluated one).
                     if (slotStates == null)
                         slotStates = GetSlotDeviceStates(slotIndex, currentState, currentDeviceGuid, out slotOwners);
+                    if (TryPhoneForEmptySpan(slotStates, src, slotIndex, out var phoneState, out var phoneGuid))
+                    {
+                        // (#471) The slot's phone, whichever pass claimed the row.
+                        list.Add(SourceEvaluator.EvaluateForButtonTarget(
+                            phoneState, src, globalAxisToButtonThreshold,
+                            slotIndex, row.Target, i, slotRuntime, dt,
+                            evaluatedDeviceGuid: phoneGuid) ? 1f : 0f);
+                        continue;
+                    }
                     bool any = false;
                     // A Toggle read advances its latch, so every device is read:
                     // while the latch is on, the first device answers true, and
@@ -3566,8 +3768,10 @@ namespace PadForge.Common.Input
             if (string.IsNullOrEmpty(src.DeviceGuid))
             {
                 // (#431) A pass device that never answers "(Any Device)"
-                // reads rest, the offline-pinned shape below.
-                if (!AnswersAnyDevice(thisDeviceGuid)) return true;
+                // reads rest, the offline-pinned shape below. A Web Menus
+                // phone alone on the slot still reads its menu cells (#471).
+                if (!AnswersAnyDevice(thisDeviceGuid)
+                    && !PhoneStandsIn(src.Descriptor, thisDeviceGuid, slotIndex)) return true;
                 devState = state;
             }
             else
@@ -3642,8 +3846,10 @@ namespace PadForge.Common.Input
                     if (string.IsNullOrEmpty(src.DeviceGuid))
                     {
                         // (#431) A pass device that never answers "(Any Device)"
-                        // reads rest, the offline-pinned shape below.
-                        if (!AnswersAnyDevice(thisDeviceGuid)) return true;
+                        // reads rest, the offline-pinned shape below. A Web Menus
+                        // phone alone on the slot still reads its menu cells (#471).
+                        if (!AnswersAnyDevice(thisDeviceGuid)
+                            && !PhoneStandsIn(src.Descriptor, thisDeviceGuid, slotIndex)) return true;
                         devState = state;
                     }
                     else
@@ -3736,8 +3942,11 @@ namespace PadForge.Common.Input
                 if (string.IsNullOrEmpty(src.DeviceGuid))
                 {
                     // (#431) A pass device that never answers "(Any Device)"
-                    // reads rest, the offline-pinned shape below.
-                    if (!AnswersAnyDevice(thisDeviceGuid)) { values.Add(0f); flags.Add(0f); continue; }
+                    // reads rest, the offline-pinned shape below. A Web Menus
+                    // phone alone on the slot still reads its menu cells (#471).
+                    if (!AnswersAnyDevice(thisDeviceGuid)
+                        && !PhoneStandsIn(src.Descriptor, thisDeviceGuid, slotIndex))
+                    { values.Add(0f); flags.Add(0f); continue; }
                     devState = state;
                 }
                 else
@@ -3885,8 +4094,10 @@ namespace PadForge.Common.Input
                     if (string.IsNullOrEmpty(src.DeviceGuid))
                     {
                         // (#431) A pass device that never answers "(Any Device)"
-                        // reads rest, the offline-pinned shape below.
-                        if (!AnswersAnyDevice(thisDeviceGuid)) return true;
+                        // reads rest, the offline-pinned shape below. A Web Menus
+                        // phone alone on the slot still reads its menu cells (#471).
+                        if (!AnswersAnyDevice(thisDeviceGuid)
+                            && !PhoneStandsIn(src.Descriptor, thisDeviceGuid, slotIndex)) return true;
                         devState = state;
                     }
                     else
@@ -3989,7 +4200,7 @@ namespace PadForge.Common.Input
             if (dpadSources == null) return;
             foreach (var src in dpadSources)
             {
-                if (!SourceMatchesDevice(src, thisDeviceGuid)) continue;
+                if (!SourceMatchesDevice(src, thisDeviceGuid, slotIndex)) continue;
                 if (string.IsNullOrEmpty(src.Descriptor)) continue;
                 // Suppression parity (audit 2026-07-25, C11): this was the
                 // one row-source evaluator in the dispatch loop without the

@@ -1804,7 +1804,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_Shift_Rename" xml:space="preserve"><value>Laag hernoemen…</value></data>
   <data name="Pad_Shift_Color" xml:space="preserve"><value>Laagkleur</value></data>
   <data name="Pad_ResetLayerColor" xml:space="preserve"><value>Laagkleur resetten</value></data>
-  <data name="Pad_Shift_Icon_Tooltip" xml:space="preserve"><value>Kies een emoji die in de flyout verschijnt wanneer deze laag actief is.</value></data>
+  <data name="Pad_Shift_Icon_Tooltip" xml:space="preserve"><value>Kies een emoji of een afbeelding die in de flyout verschijnt wanneer deze laag actief is.</value></data>
   <data name="Pad_Shift_Icon_Reset" xml:space="preserve"><value>Standaard herstellen (⇧)</value></data>
   <data name="Pad_Shift_Copy" xml:space="preserve"><value>Laagregels kopiëren</value></data>
   <data name="Pad_Shift_Paste" xml:space="preserve"><value>Regels in laag plakken</value></data>
@@ -2282,10 +2282,20 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_Audio_Packages_PickSounds" xml:space="preserve"><value>Kies de geluidsbestanden voor het pakket</value></data>
   <data name="Menu_Binding_Macro" xml:space="preserve"><value>Macro</value></data>
   <data name="Menu_MacroPicker_Tip" xml:space="preserve"><value>De macro die deze cel activeert. De triggermodus van de macro zelf geldt zolang de cel actief is.</value></data>
-  <data name="Menu_ChooseIcon_Tip" xml:space="preserve"><value>Kies het pictogram van deze cel: een item uit een pictogrampakket of een afbeeldingsbestand.</value></data>
-  <data name="Menu_Icon_None" xml:space="preserve"><value>(Geen pictogram)</value></data>
-  <data name="Menu_Icon_PickFromPackage_Format" xml:space="preserve"><value>Kies een pictogram uit {0}</value></data>
+  <data name="Menu_ChooseIcon_Tip" xml:space="preserve"><value>Kies het pictogram van deze cel: een emoji, een item uit een pictogrampakket of een afbeeldingsbestand.</value></data>
+  <data name="Menu_Icon_None" xml:space="preserve"><value>Geen pictogram</value></data>
   <data name="Menu_Icon_PickTitle" xml:space="preserve"><value>Pictogram kiezen</value></data>
+  <data name="IconPicker_Emoji" xml:space="preserve"><value>Emoji</value></data>
+  <data name="IconPicker_Images" xml:space="preserve"><value>Afbeeldingen</value></data>
+  <data name="IconPicker_NoPackages" xml:space="preserve"><value>Nog geen pictogrampakketten toegevoegd. Kies met “Bladeren naar bestanden…” een afbeelding of een pictogrampakket.</value></data>
+  <data name="Emoji_Category_Smileys" xml:space="preserve"><value>Smileys</value></data>
+  <data name="Emoji_Category_Hands" xml:space="preserve"><value>Handen</value></data>
+  <data name="Emoji_Category_Animals" xml:space="preserve"><value>Dieren</value></data>
+  <data name="Emoji_Category_Food" xml:space="preserve"><value>Eten</value></data>
+  <data name="Emoji_Category_Activities" xml:space="preserve"><value>Activiteiten</value></data>
+  <data name="Emoji_Category_Travel" xml:space="preserve"><value>Reizen</value></data>
+  <data name="Emoji_Category_Objects" xml:space="preserve"><value>Objecten</value></data>
+  <data name="Emoji_Category_Symbols" xml:space="preserve"><value>Symbolen</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>Pictogrampakketten</value></data>
   <data name="Pad_Menus_IconPackages_Desc" xml:space="preserve"><value>Een pictogrampakket is één zipbestand met afbeeldingen en de extensie .pficons. Voeg het hier toe en kies de pictogrammen in elke menucel. PadForge leest rechtstreeks uit het bestand en pakt het nooit uit. Houd pakketten naast PadForge.exe om draagbaar te blijven.</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>Pakket toevoegen…</value></data>
@@ -2532,6 +2542,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="DeviceType_VrController" xml:space="preserve"><value>VR-controller</value></data>
   <data name="DeviceType_LogitechGKeys" xml:space="preserve"><value>Logitech G-toetsen</value></data>
   <data name="DeviceType_AnalogKeyboard" xml:space="preserve"><value>Analoog toetsenbord</value></data>
+  <data name="DeviceType_WebMenus" xml:space="preserve"><value>Webmenu's</value></data>
   <data name="HeadTracker_Yaw" xml:space="preserve"><value>Hoofd gieren</value></data>
   <data name="HeadTracker_Pitch" xml:space="preserve"><value>Hoofd stampen</value></data>
   <data name="HeadTracker_Roll" xml:space="preserve"><value>Hoofd rollen</value></data>
@@ -3424,6 +3435,8 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>Voegt een middencel toe, geselecteerd zolang de stick of vinger binnen de activeringsdeadzone rust.</value></data>
   <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>Voor sticks: hoe ver je moet duwen voordat het menu opent en ringcellen oplichten. Bij radiale menu's is het ook het middengebied voor sticks en touchpads: daarbinnen is de middencel geselecteerd, als die bestaat.</value></data>
   <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>Tekent het label van elke cel op de schermoverlay.</value></data>
+  <data name="Menu_ShowOnWebController" xml:space="preserve"><value>Tonen op de webcontroller</value></data>
+  <data name="Menu_ShowOnWebController_Tip" xml:space="preserve"><value>Toont dit menu als pagina van de indeling “Web Menus” op de webcontroller. Een tik op een tegel activeert de cel.</value></data>
   <data name="Menu_Position_Tip" xml:space="preserve"><value>Waar het midden van de overlay op het scherm staat, in procenten. 50 en 50 is het midden.</value></data>
   <data name="Menu_Scale_Tip" xml:space="preserve"><value>Overlaygrootte, in procenten van de normale grootte.</value></data>
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>Overlaydekking. 100% is volledig dekkend.</value></data>

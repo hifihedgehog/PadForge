@@ -1439,81 +1439,17 @@ namespace PadForge.Views
                 PadForge.Common.IconPackageManager.Unregister(pkg.Name);
         }
 
-        /// <summary>Choose a menu cell's icon (#390): registered packs'
-        /// entries offered directly (the sound-pick shape), a (None)
-        /// entry to clear when one is set, and a filesystem browse for a
-        /// loose image or a pack that hasn't been added yet. The
-        /// button's DataContext is the MenuCellItem.</summary>
+        /// <summary>Choose a menu cell's icon in the shared picker (#390,
+        /// #471): an emoji, a registered package's entry drawn as a picture,
+        /// or a browsed image file or package. No Icon clears. The button's
+        /// DataContext is the MenuCellItem.</summary>
         private void MenuCellChooseIcon_Click(object sender, RoutedEventArgs e)
         {
             if ((sender as FrameworkElement)?.DataContext is not PadForge.ViewModels.MenuCellItem cell)
                 return;
-
-            var s = PadForge.Resources.Strings.Strings.Instance;
-            var items = new System.Collections.Generic.List<PickSoundDialog.Item>();
-            if (cell.HasIcon)
-                items.Add(new PickSoundDialog.Item(s.Menu_Icon_None, ""));
-            foreach (var p in PadForge.Common.IconPackageManager.Packages)
-                foreach (var entry in PadForge.Common.IconPackageManager.ListIcons(p.Name))
-                    items.Add(new PickSoundDialog.Item(
-                        $"{System.IO.Path.GetFileName(entry)}  —  {p.Name}",
-                        PadForge.Common.IconPackageManager.MakeRef(p.Name, entry)));
-
-            if (items.Count > 0)
-            {
-                var picker = new PickSoundDialog(s.Menu_Icon_PickTitle, items,
-                    allowBrowse: true, preselectValue: cell.IconName)
-                { Owner = Window.GetWindow(this) };
-                if (picker.ShowDialog() != true) return;
-                if (!picker.BrowseRequested)
-                {
-                    // SelectedSound is "" for the (None) entry: clear.
-                    if (picker.SelectedSound != null)
-                        cell.SetIcon(picker.SelectedSound);
-                    return;
-                }
-                // "Browse files…": fall through to the filesystem dialog.
-            }
-
-            BrowseMenuIconFromDisk(cell);
-        }
-
-        /// <summary>Filesystem browse for a loose image or a
-        /// <c>.pficons</c> pack. Picking a pack registers it and offers
-        /// its icons, so the cell stores <c>pficon://Package/entry</c>
-        /// and a shared profile resolves on any machine carrying the
-        /// pack. A loose image stores exe-relative when it sits under
-        /// the app directory (the portable-kit rule).</summary>
-        private void BrowseMenuIconFromDisk(PadForge.ViewModels.MenuCellItem cell)
-        {
-            var s = PadForge.Resources.Strings.Strings.Instance;
-            var dlg = new Microsoft.Win32.OpenFileDialog
-            {
-                Title = s.Menu_Icon_PickTitle,
-                Filter = "Images and icon packages|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.pficons"
-                       + "|Icon packages (*.pficons)|*.pficons|All files|*.*",
-                CheckFileExists = true,
-            };
-            if (dlg.ShowDialog() != true) return;
-
-            if (dlg.FileName.EndsWith(PadForge.Common.IconPackageManager.FileExtension,
-                    StringComparison.OrdinalIgnoreCase))
-            {
-                string pkg = PadForge.Common.IconPackageManager.Register(dlg.FileName);
-                if (pkg == null) return;
-                var icons = PadForge.Common.IconPackageManager.ListIcons(pkg);
-                if (icons.Count == 0) return;
-                string entry = icons.Count == 1
-                    ? icons[0]
-                    : PromptPickFromList(
-                        string.Format(s.Menu_Icon_PickFromPackage_Format, pkg),
-                        icons);
-                if (entry != null)
-                    cell.SetIcon(PadForge.Common.IconPackageManager.MakeRef(pkg, entry));
-                return;
-            }
-
-            cell.SetIcon(PadForge.Common.IconPackageManager.MakeStoredPath(dlg.FileName));
+            IconPickerHost.Open(sender as UIElement, cell.IconName,
+                PadForge.Resources.Strings.Strings.Instance.Menu_Icon_None,
+                reference => cell.SetIcon(reference));
         }
 
         /// <summary>Preview the action's sound through the pad's configured

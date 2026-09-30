@@ -109,9 +109,9 @@
                     <RowDefinition Height="Auto"/>  <!-- 18 buttons -->
                 </Grid.RowDefinitions>
 
-                <!-- Layer name + icon picker. Icon is a square button on the
-                     left showing the currently-chosen emoji (or ⇧ if unset);
-                     click opens the emoji picker popup. -->
+                <!-- Layer name + icon. The square button on the left shows the
+                     layer's icon (a picture, an emoji, or ⇧ when unset) and
+                     opens the shared icon picker (#471). -->
                 <TextBlock Grid.Row="0"
                            Text="{Binding Pad_Shift_LayerName, Source={x:Static strings:Strings.Instance}}"
                            Margin="0,0,0,4"/>
@@ -126,91 +126,21 @@
                             Margin="0,0,6,0"
                             Click="IconPickerButton_Click"
                             ToolTip="{Binding Pad_Shift_Icon_Tooltip, Source={x:Static strings:Strings.Instance}}">
-                        <TextBlock x:Name="IconPickerGlyph"
-                                   Text="&#x21E7;"
-                                   FontFamily="Segoe UI Emoji, Segoe UI Symbol, Segoe UI"
-                                   FontSize="18"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"/>
+                        <Grid>
+                            <TextBlock x:Name="IconPickerGlyph"
+                                       Text="&#x21E7;"
+                                       FontFamily="Segoe UI Emoji, Segoe UI Symbol, Segoe UI"
+                                       FontSize="18"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                            <Image x:Name="IconPickerImage"
+                                   Width="22" Height="22"
+                                   Stretch="Uniform"
+                                   RenderOptions.BitmapScalingMode="HighQuality"
+                                   Visibility="Collapsed"/>
+                        </Grid>
                     </Button>
                     <TextBox Grid.Column="1" x:Name="LayerNameBox" VerticalContentAlignment="Center"/>
-                    <Popup x:Name="IconPickerPopup"
-                           PlacementTarget="{Binding ElementName=IconPickerButton}"
-                           Placement="Bottom"
-                           AllowsTransparency="True"
-                           PopupAnimation="Fade"
-                           StaysOpen="False">
-                        <Border Background="{DynamicResource SolidBackgroundFillColorBaseBrush}"
-                                BorderBrush="{DynamicResource ControlElevationBorderBrush}"
-                                BorderThickness="1"
-                                CornerRadius="8"
-                                Padding="6"
-                                Width="360">
-                            <Border.Effect>
-                                <DropShadowEffect BlurRadius="12" ShadowDepth="2"
-                                                  Direction="270" Opacity="0.30" Color="Black"/>
-                            </Border.Effect>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <!-- Category bar -->
-                                <ItemsControl Grid.Row="0" x:Name="EmojiCategoryBar" Margin="0,0,0,4">
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <StackPanel Orientation="Horizontal"/>
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <Button Content="{Binding Glyph}"
-                                                    Tag="{Binding}"
-                                                    ToolTip="{Binding Name}"
-                                                    Width="32" Height="32"
-                                                    Padding="0"
-                                                    Margin="0,0,2,0"
-                                                    FontFamily="Segoe UI Emoji, Segoe UI Symbol, Segoe UI"
-                                                    FontSize="16"
-                                                    Click="EmojiCategory_Click"/>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                                <!-- Emoji grid (scrolls when a category overflows) -->
-                                <ScrollViewer Grid.Row="1"
-                                              Height="220"
-                                              VerticalScrollBarVisibility="Visible"
-                                              HorizontalScrollBarVisibility="Disabled">
-                                    <ItemsControl x:Name="EmojiGrid">
-                                        <ItemsControl.ItemsPanel>
-                                            <ItemsPanelTemplate>
-                                                <WrapPanel/>
-                                            </ItemsPanelTemplate>
-                                        </ItemsControl.ItemsPanel>
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate>
-                                                <Button Content="{Binding}"
-                                                        Tag="{Binding}"
-                                                        Width="32" Height="32"
-                                                        Padding="0"
-                                                        Margin="1"
-                                                        FontFamily="Segoe UI Emoji, Segoe UI Symbol, Segoe UI"
-                                                        FontSize="18"
-                                                        Click="Emoji_Click"/>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                    </ItemsControl>
-                                </ScrollViewer>
-                                <!-- Reset row -->
-                                <Button Grid.Row="2" x:Name="EmojiResetButton"
-                                        Content="{Binding Pad_Shift_Icon_Reset, Source={x:Static strings:Strings.Instance}}"
-                                        Margin="0,6,0,0"
-                                        HorizontalAlignment="Stretch"
-                                        Click="EmojiReset_Click"/>
-                            </Grid>
-                        </Border>
-                    </Popup>
                 </Grid>
 
                 <!-- Activator kind. Items show a bold name + small description

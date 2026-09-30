@@ -251,6 +251,13 @@ namespace PadForge.Engine.Menus
         /// before the field existed.</summary>
         [XmlAttribute] public bool LayerHoldsOpen { get; set; }
 
+        /// <summary>Web Menus (#471): a phone assigned to the slot shows this
+        /// menu as a page of the web controller's Web Menus layout, where a
+        /// tap fires a cell. Touch Grid menus only: the phone and the runtime
+        /// both ignore the flag on a radial menu. Schema append-only: absent
+        /// in older files = false.</summary>
+        [XmlAttribute] public bool ShowOnWebController { get; set; }
+
         [XmlElement("Item")] public List<MenuItemDefinition> Items { get; set; } = new();
 
         /// <summary>Deep copy. Every clone site (profile apply, slot copy,
@@ -285,6 +292,7 @@ namespace PadForge.Engine.Menus
                 EngageDeadzonePercent = EngageDeadzonePercent,
                 Enabled = Enabled,
                 LayerHoldsOpen = LayerHoldsOpen,
+                ShowOnWebController = ShowOnWebController,
             };
             if (Items != null)
             {

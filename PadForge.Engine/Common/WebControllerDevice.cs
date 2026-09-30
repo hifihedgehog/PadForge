@@ -61,7 +61,7 @@ namespace PadForge.Engine
 
         public uint SdlInstanceId { get; }
         public string Name { get; }
-        public int NumAxes => _isTouchpadDevice ? 0 : NumGamepadAxes;
+        public int NumAxes => _isTouchpadDevice || _isMenuSurface ? 0 : NumGamepadAxes;
         // NumButtons describes the slot range, not the count of populated
         // slots. The touchpad click rides Buttons[16] (SDL_GAMEPAD_BUTTON_TOUCHPAD's
         // canonical slot), so touchpad-equipped layouts need NumButtons=17
@@ -74,7 +74,8 @@ namespace PadForge.Engine
         // does NOT add slot 16 — the mapping picker keeps the canonical
         // "Touchpad 0 Click" descriptor as the single source-of-truth.
         public int NumButtons =>
-            _isTouchpadDevice ? 17
+            _isMenuSurface ? 0
+            : _isTouchpadDevice ? 17
             : _extendedMax >= 0 ? Math.Max(_extendedMax + 1, HasTouchpad ? 17 : 0)
             : HasTouchpad ? 17
             : NumGamepadButtons;
@@ -83,7 +84,7 @@ namespace PadForge.Engine
         // stock count was reported for every gamepad client, so a pad of one
         // button showed a POV on the Devices page that nothing could move.
         public int NumHats =>
-            _isTouchpadDevice ? 0
+            _isTouchpadDevice || _isMenuSurface ? 0
             : _hasCustomSurface ? (_customHasPov ? 1 : 0)
             : NumGamepadPovs;
 
@@ -95,11 +96,14 @@ namespace PadForge.Engine
         /// it instead of the six slots every gamepad client reserves.
         /// SupportedButtonIndices and GetDeviceObjects already spoke for the
         /// built surface. This was the member that did not.</summary>
-        public int[] SupportedAxisIndices => _hasCustomSurface ? _customAxes : null;
+        public int[] SupportedAxisIndices =>
+            _isMenuSurface ? Array.Empty<int>() : _hasCustomSurface ? _customAxes : null;
         public int[] SupportedButtonIndices
         {
             get
             {
+                if (_isMenuSurface)
+                    return Array.Empty<int>();
                 if (_isTouchpadDevice)
                     return _touchpadOnlyButtons;
                 var list = new System.Collections.Generic.List<int>(NumGamepadButtons + 8);
@@ -184,7 +188,8 @@ namespace PadForge.Engine
         /// capability re-sync.</summary>
         public bool HasRumble
         {
-            get => _hasRumble;
+            // A Web Menus page (#471) has nothing to rumble.
+            get => _hasRumble && !_isMenuSurface;
             set
             {
                 if (_hasRumble == value) return;
@@ -306,10 +311,11 @@ namespace PadForge.Engine
             HasTouchpad = isTouchpad;
             _isTouchpadDevice = isTouchpad;
             LayoutKey = layoutKey ?? "xbox360";
+            _isMenuSurface = string.Equals(LayoutKey, MenusLayoutKey, StringComparison.OrdinalIgnoreCase);
 
             // Center stick axes at midpoint, triggers at 0 (full off).
             var state = new CustomInputState();
-            if (!isTouchpad)
+            if (!isTouchpad && !_isMenuSurface)
             {
                 for (int i = 0; i < NumGamepadAxes; i++)
                     state.Axis[i] = (i == 2 || i == 5) ? 0 : 32767;
@@ -318,6 +324,15 @@ namespace PadForge.Engine
         }
 
         private readonly bool _isTouchpadDevice;
+
+        /// <summary>The layout key of the Web Menus page (#471).</summary>
+        public const string MenusLayoutKey = "menus";
+        private readonly bool _isMenuSurface;
+
+        /// <summary>True for a Web Menus client (#471): a phone that shows a
+        /// slot's Touch Grid menus and fires their cells. It has no axes,
+        /// buttons or hat of its own.</summary>
+        public bool IsMenuSurface => _isMenuSurface;
 
         /// <summary>The layout the browser is drawing, e.g. "dualsense".</summary>
         public string LayoutKey { get; }
@@ -408,7 +423,8 @@ namespace PadForge.Engine
         /// PC, and once at registration for a raw pad. Rest is sticks at center
         /// and triggers at zero unless <see cref="AxesCenterAtRest"/> selects the
         /// sampled raw rest values. Touch fingers and the accelerometer are left alone.
-        /// Gyro rates expire on their own.</summary>
+        /// Gyro rates expire on their own. A Web Menus phone's held tiles
+        /// (#471) are let go as well.</summary>
         public void NeutralizeAll()
         {
             lock (_stateLock)
@@ -420,6 +436,7 @@ namespace PadForge.Engine
                 if (s.Povs.Length > 0) s.Povs[0] = -1;
                 Volatile.Write(ref _currentState, s);
             }
+            ReleaseAllMenuCells();
         }
 
         /// <summary>Updates POV hat value. Called from WebSocket receive thread.</summary>
@@ -510,8 +527,120 @@ namespace PadForge.Engine
             CapabilitiesChanged?.Invoke();
         }
 
-        /// <summary>Sets the connection state.</summary>
-        public void SetConnected(bool connected) => _connected = connected;
+        /// <summary>Sets the connection state. A disconnect lets go of every
+        /// tile the phone held (#471), so a page that vanished mid-press
+        /// cannot keep a cell fired.</summary>
+        public void SetConnected(bool connected)
+        {
+            _connected = connected;
+            if (!connected) ReleaseAllMenuCells();
+        }
+
+        // ── Web Menus (#471) ─────────────────────────────────
+
+        /// <summary>The most tiles one phone can hold at once. A page cannot
+        /// grow the table past it.</summary>
+        public const int MaxHeldMenuCells = 32;
+
+        private struct MenuCellPress { public bool Down; public long DownAtMs; public long Seq; }
+        private readonly object _menuPressLock = new();
+
+        /// <summary>Numbers every press across all phones and reconnects, so
+        /// the engine can tell a press it voided from a later one.</summary>
+        private static long s_menuPressSeq;
+        private readonly System.Collections.Generic.Dictionary<(int Slot, int MenuId, int Cell), MenuCellPress>
+            _menuPresses = new();
+
+        /// <summary>A tile pressed or released on the phone. Called from the
+        /// socket's receive thread. The engine checks each press against the
+        /// slot's menus before it fires anything, so only the shape is
+        /// bounded here.</summary>
+        public void SetMenuCell(int slot, int menuId, int cell, bool down)
+        {
+            if (!_isMenuSurface || slot < 0 || slot >= 64 || cell < 0 || cell >= 64) return;
+            long now = Environment.TickCount64;
+            lock (_menuPressLock)
+            {
+                var key = (slot, menuId, cell);
+                if (down)
+                {
+                    bool known = _menuPresses.TryGetValue(key, out var current);
+                    // A repeated down on a held tile is the same press.
+                    if (known && current.Down) return;
+                    if (!known && _menuPresses.Count >= MaxHeldMenuCells) return;
+                    _menuPresses[key] = new MenuCellPress
+                    {
+                        Down = true,
+                        DownAtMs = now,
+                        Seq = System.Threading.Interlocked.Increment(ref s_menuPressSeq),
+                    };
+                }
+                else if (_menuPresses.TryGetValue(key, out var press))
+                {
+                    press.Down = false;
+                    _menuPresses[key] = press;
+                }
+            }
+        }
+
+        /// <summary>Adds to <paramref name="into"/> every cell to fire this
+        /// tick with its press's number: each held tile, and each released one
+        /// until <paramref name="minPulseMs"/> after its press, so a tap that
+        /// begins and ends between two polls still fires once. A released tile
+        /// past that is forgotten.</summary>
+        public void ReadMenuPresses(long nowMs, int minPulseMs,
+            System.Collections.Generic.List<(int Slot, int MenuId, int Cell, long Seq)> into)
+        {
+            lock (_menuPressLock)
+            {
+                if (_menuPresses.Count == 0) return;
+                System.Collections.Generic.List<(int, int, int)> done = null;
+                foreach (var kv in _menuPresses)
+                {
+                    if (kv.Value.Down || nowMs - kv.Value.DownAtMs < minPulseMs)
+                        into.Add((kv.Key.Slot, kv.Key.MenuId, kv.Key.Cell, kv.Value.Seq));
+                    else (done ??= new()).Add(kv.Key);
+                }
+                if (done != null)
+                    foreach (var key in done) _menuPresses.Remove(key);
+            }
+        }
+
+        /// <summary>Lets go of every held tile.</summary>
+        public void ReleaseAllMenuCells()
+        {
+            lock (_menuPressLock) _menuPresses.Clear();
+        }
+
+        /// <summary>The Web Menus page's content (#471): a JSON snapshot the
+        /// PC builds and the server sends. Change-detected here, so the
+        /// builder can hand it over on every pass without resending an
+        /// unchanged page.</summary>
+        public event Action<string> MenusFeedChanged;
+        private string _menusFeed;
+
+        public void SetMenusFeed(string json)
+        {
+            if (json == null || string.Equals(json, Volatile.Read(ref _menusFeed), StringComparison.Ordinal)) return;
+            Volatile.Write(ref _menusFeed, json);
+            MenusFeedChanged?.Invoke(json);
+        }
+
+        /// <summary>Forgets the last snapshot, so the next build sends a whole
+        /// one even when nothing changed. The builder on the UI timer stays the
+        /// only sender, so a snapshot sent this way cannot overtake a newer
+        /// one.</summary>
+        public void ResendMenusFeed() => Volatile.Write(ref _menusFeed, null);
+
+        /// <summary>The phone asked for a profile (#471). The PC checks the id
+        /// and switches through its manual-switch path.</summary>
+        public event Action<string> ProfileRequested;
+
+        public void RequestProfile(string profileId)
+        {
+            if (_isMenuSurface && profileId != null && profileId.Length <= 128)
+                ProfileRequested?.Invoke(profileId);
+        }
 
         // Pooled per-tick output. The publisher is strict copy-on-write
         // (every mutator clones, edits, swaps), so a single volatile grab
@@ -540,7 +669,7 @@ namespace PadForge.Engine
             // MappingDisplayResolver.BuildInputChoices walks DeviceObjects
             // unconditionally). The touchpad-specific sources come from
             // BuildInputChoices's HasTouchpad block on their own.
-            if (_isTouchpadDevice)
+            if (_isTouchpadDevice || _isMenuSurface)
                 return Array.Empty<DeviceObjectItem>();
 
             // A builder pad lists only what it actually carries.
@@ -646,7 +775,10 @@ namespace PadForge.Engine
             return items;
         }
 
-        public int GetInputDeviceType() => _isTouchpadDevice ? InputDeviceType.Touchpad : InputDeviceType.Gamepad;
+        public int GetInputDeviceType() =>
+            _isMenuSurface ? InputDeviceType.WebMenus
+            : _isTouchpadDevice ? InputDeviceType.Touchpad
+            : InputDeviceType.Gamepad;
 
         public bool SetRumble(ushort low, ushort high, uint durationMs = uint.MaxValue)
         {

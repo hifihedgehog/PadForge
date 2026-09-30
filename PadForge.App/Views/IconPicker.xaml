@@ -1,0 +1,191 @@
+<UserControl x:Class="PadForge.Views.IconPicker"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:strings="clr-namespace:PadForge.Resources.Strings"
+             KeyboardNavigation.TabNavigation="Cycle"
+             PreviewKeyDown="Picker_PreviewKeyDown">
+    <!-- The one icon picker (#471): menu cells and shift layers both open it.
+         Emoji first, the choice shift layers have always offered, then every
+         icon package's pictures. Shaped like the emoji popup it replaces. -->
+    <UserControl.Resources>
+        <!-- Tabs, the Dashboard type segment's shape (TypeSwitchButton): a
+             recessed track with the active tile in the ember gradient. -->
+        <Style x:Key="PickerTab" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="12,3"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                                CornerRadius="4" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background"
+                                        Value="{DynamicResource SubtleFillColorSecondaryBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!-- A choice. The icon held now wears the active tab's ember. -->
+        <Style x:Key="PickerChoice" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsCurrent}" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource EmberSegGradient}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <Border Background="{DynamicResource SolidBackgroundFillColorBaseBrush}"
+            BorderBrush="{DynamicResource ControlElevationBorderBrush}"
+            BorderThickness="1"
+            CornerRadius="8"
+            Padding="6"
+            Width="380">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="12" ShadowDepth="2"
+                              Direction="270" Opacity="0.30" Color="Black"/>
+        </Border.Effect>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" HorizontalAlignment="Left" Margin="0,0,0,6"
+                    Background="{DynamicResource SegTrackBrush}"
+                    BorderBrush="{DynamicResource SegTrackStrokeBrush}"
+                    BorderThickness="1" CornerRadius="6" Padding="1">
+                <StackPanel Orientation="Horizontal">
+                    <Button x:Name="EmojiTabButton" Style="{StaticResource PickerTab}" Click="EmojiTab_Click"
+                            Content="{Binding IconPicker_Emoji, Source={x:Static strings:Strings.Instance}}"/>
+                    <Button x:Name="ImagesTabButton" Style="{StaticResource PickerTab}" Click="ImagesTab_Click"
+                            Content="{Binding IconPicker_Images, Source={x:Static strings:Strings.Instance}}"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Emoji: the shift layer catalog, by category. -->
+            <Grid Grid.Row="1" x:Name="EmojiPanel">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <ItemsControl Grid.Row="0" x:Name="EmojiCategoryBar" Margin="0,0,0,4">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button Content="{Binding Glyph}"
+                                    Tag="{Binding}"
+                                    ToolTip="{Binding DisplayName}"
+                                    AutomationProperties.Name="{Binding DisplayName}"
+                                    Width="32" Height="32"
+                                    Padding="0"
+                                    Margin="0,0,2,0"
+                                    FontFamily="Segoe UI Emoji, Segoe UI Symbol, Segoe UI"
+                                    FontSize="16"
+                                    Click="EmojiCategory_Click"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <ScrollViewer Grid.Row="1"
+                              Height="220"
+                              VerticalScrollBarVisibility="Visible"
+                              HorizontalScrollBarVisibility="Disabled">
+                    <ItemsControl x:Name="EmojiGrid">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Content="{Binding Glyph}"
+                                        Tag="{Binding Glyph}"
+                                        Style="{StaticResource PickerChoice}"
+                                        Width="32" Height="32"
+                                        Padding="0"
+                                        Margin="1"
+                                        FontFamily="Segoe UI Emoji, Segoe UI Symbol, Segoe UI"
+                                        FontSize="18"
+                                        Click="Emoji_Click"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+
+            <!-- Images: every icon package's entries as pictures, by package,
+                 and a browse for an image file or a package not added yet. -->
+            <Grid Grid.Row="1" x:Name="ImagesPanel" Visibility="Collapsed">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <ScrollViewer Grid.Row="0" x:Name="ImagesScroll"
+                              Height="220"
+                              VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel>
+                        <TextBlock x:Name="NoPackagesText" Margin="4" TextWrapping="Wrap"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   Text="{Binding IconPicker_NoPackages, Source={x:Static strings:Strings.Instance}}"/>
+                        <ItemsControl x:Name="PackageGroups">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Margin="0,0,0,6">
+                                        <TextBlock Text="{Binding Name}" FontWeight="SemiBold" Margin="2,2,0,2"
+                                                   TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                        <ItemsControl ItemsSource="{Binding Icons}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Button Tag="{Binding Reference}"
+                                                            Style="{StaticResource PickerChoice}"
+                                                            ToolTip="{Binding Name}"
+                                                            AutomationProperties.Name="{Binding Name}"
+                                                            Width="40" Height="40"
+                                                            Padding="3"
+                                                            Margin="1"
+                                                            Click="Image_Click">
+                                                        <Image Source="{Binding Image}" Stretch="Uniform"
+                                                               RenderOptions.BitmapScalingMode="HighQuality"/>
+                                                    </Button>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </ScrollViewer>
+                <Button Grid.Row="1" Margin="0,6,0,0" HorizontalAlignment="Stretch"
+                        Click="Browse_Click"
+                        Content="{Binding Macro_Sound_BrowseFiles, Source={x:Static strings:Strings.Instance}}"/>
+            </Grid>
+
+            <!-- Clear: No Icon on a menu cell, the default on a layer. -->
+            <Button Grid.Row="2" x:Name="ClearButton"
+                    Margin="0,6,0,0"
+                    HorizontalAlignment="Stretch"
+                    Click="Clear_Click"/>
+        </Grid>
+    </Border>
+</UserControl>

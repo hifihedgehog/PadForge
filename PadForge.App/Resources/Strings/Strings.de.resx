@@ -1784,7 +1784,7 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Pad_Shift_Rename" xml:space="preserve"><value>Ebene umbenennen…</value></data>
   <data name="Pad_Shift_Color" xml:space="preserve"><value>Ebenenfarbe</value></data>
   <data name="Pad_ResetLayerColor" xml:space="preserve"><value>Ebenenfarbe zurücksetzen</value></data>
-  <data name="Pad_Shift_Icon_Tooltip" xml:space="preserve"><value>Wähle ein Emoji, das im Flyout erscheint, wenn diese Ebene aktiv ist.</value></data>
+  <data name="Pad_Shift_Icon_Tooltip" xml:space="preserve"><value>Wähle ein Emoji oder ein Bild, das im Flyout erscheint, wenn diese Ebene aktiv ist.</value></data>
   <data name="Pad_Shift_Icon_Reset" xml:space="preserve"><value>Zurücksetzen (⇧)</value></data>
   <data name="Pad_Shift_Copy" xml:space="preserve"><value>Ebenenzeilen kopieren</value></data>
   <data name="Pad_Shift_Paste" xml:space="preserve"><value>Zeilen in Ebene einfügen</value></data>
@@ -2262,10 +2262,20 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Pad_Audio_Packages_PickSounds" xml:space="preserve"><value>Sounddateien für das Paket auswählen</value></data>
   <data name="Menu_Binding_Macro" xml:space="preserve"><value>Makro</value></data>
   <data name="Menu_MacroPicker_Tip" xml:space="preserve"><value>Das Makro, das diese Zelle auslöst. Der Auslösemodus des Makros gilt, solange die Zelle aktiv ist.</value></data>
-  <data name="Menu_ChooseIcon_Tip" xml:space="preserve"><value>Symbol dieser Zelle wählen: ein Eintrag aus einem Symbolpaket oder eine Bilddatei.</value></data>
-  <data name="Menu_Icon_None" xml:space="preserve"><value>(Kein Symbol)</value></data>
-  <data name="Menu_Icon_PickFromPackage_Format" xml:space="preserve"><value>Symbol aus {0} wählen</value></data>
+  <data name="Menu_ChooseIcon_Tip" xml:space="preserve"><value>Symbol dieser Zelle wählen: ein Emoji, ein Eintrag aus einem Symbolpaket oder eine Bilddatei.</value></data>
+  <data name="Menu_Icon_None" xml:space="preserve"><value>Kein Symbol</value></data>
   <data name="Menu_Icon_PickTitle" xml:space="preserve"><value>Symbol auswählen</value></data>
+  <data name="IconPicker_Emoji" xml:space="preserve"><value>Emoji</value></data>
+  <data name="IconPicker_Images" xml:space="preserve"><value>Bilder</value></data>
+  <data name="IconPicker_NoPackages" xml:space="preserve"><value>Noch keine Symbolpakete hinzugefügt. Über „Dateien durchsuchen…“ lässt sich ein Bild oder ein Symbolpaket wählen.</value></data>
+  <data name="Emoji_Category_Smileys" xml:space="preserve"><value>Smileys</value></data>
+  <data name="Emoji_Category_Hands" xml:space="preserve"><value>Hände</value></data>
+  <data name="Emoji_Category_Animals" xml:space="preserve"><value>Tiere</value></data>
+  <data name="Emoji_Category_Food" xml:space="preserve"><value>Essen</value></data>
+  <data name="Emoji_Category_Activities" xml:space="preserve"><value>Aktivitäten</value></data>
+  <data name="Emoji_Category_Travel" xml:space="preserve"><value>Reisen</value></data>
+  <data name="Emoji_Category_Objects" xml:space="preserve"><value>Objekte</value></data>
+  <data name="Emoji_Category_Symbols" xml:space="preserve"><value>Symbole</value></data>
   <data name="Pad_Menus_IconPackages_Header" xml:space="preserve"><value>Symbolpakete</value></data>
   <data name="Pad_Menus_IconPackages_Desc" xml:space="preserve"><value>Ein Symbolpaket ist eine ZIP-Datei mit Bildern und der Endung .pficons. Hier hinzufügen, dann die Symbole in jeder Menüzelle auswählen. PadForge liest direkt aus der Datei und entpackt sie nie. Pakete neben PadForge.exe halten, um portabel zu bleiben.</value></data>
   <data name="Pad_Menus_IconPackages_Add" xml:space="preserve"><value>Paket hinzufügen…</value></data>
@@ -2512,6 +2522,7 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="DeviceType_VrController" xml:space="preserve"><value>VR-Controller</value></data>
   <data name="DeviceType_LogitechGKeys" xml:space="preserve"><value>Logitech G-Tasten</value></data>
   <data name="DeviceType_AnalogKeyboard" xml:space="preserve"><value>Analoge Tastatur</value></data>
+  <data name="DeviceType_WebMenus" xml:space="preserve"><value>Web-Menüs</value></data>
   <data name="HeadTracker_Yaw" xml:space="preserve"><value>Kopf-Gieren</value></data>
   <data name="HeadTracker_Pitch" xml:space="preserve"><value>Kopf-Nicken</value></data>
   <data name="HeadTracker_Roll" xml:space="preserve"><value>Kopf-Rollen</value></data>
@@ -3404,6 +3415,8 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Menu_HasCenter_Tip" xml:space="preserve"><value>Fügt eine mittlere Zelle hinzu, die ausgewählt ist, solange Stick oder Finger innerhalb der Aktivierungs-Deadzone ruht.</value></data>
   <data name="Menu_Deadzone_Tip" xml:space="preserve"><value>Bei Sticks: wie weit ausgelenkt werden muss, bevor das Menü öffnet und Ringzellen hervorgehoben werden. Bei Radialmenüs ist sie zugleich der Mittelbereich für Sticks und Touchpads: innerhalb davon ist die mittlere Zelle ausgewählt, sofern vorhanden.</value></data>
   <data name="Menu_ShowLabels_Tip" xml:space="preserve"><value>Zeichnet die Beschriftung jeder Zelle auf dem Bildschirm-Overlay.</value></data>
+  <data name="Menu_ShowOnWebController" xml:space="preserve"><value>Im Web-Controller anzeigen</value></data>
+  <data name="Menu_ShowOnWebController_Tip" xml:space="preserve"><value>Zeigt dieses Menü als Seite des Layouts „Web Menus“ im Web-Controller an. Ein Tippen auf eine Kachel löst deren Zelle aus.</value></data>
   <data name="Menu_Position_Tip" xml:space="preserve"><value>Wo die Mitte des Overlays auf dem Bildschirm liegt, in Prozent. 50 und 50 ist die Mitte.</value></data>
   <data name="Menu_Scale_Tip" xml:space="preserve"><value>Overlay-Größe in Prozent der Normalgröße.</value></data>
   <data name="Menu_Opacity_Tip" xml:space="preserve"><value>Overlay-Deckkraft. 100 % ist vollständig deckend.</value></data>

@@ -935,62 +935,51 @@ namespace PadForge.Views
         }
 
         // ─────────────────────────────────────────────
-        //  Emoji icon picker
+        //  Layer icon (the shared icon picker, #471)
         // ─────────────────────────────────────────────
 
-        private class EmojiCategory
+        /// <summary>One category of the emoji catalog the shared icon picker
+        /// offers (#471). Shift layers had it first, so it lives here.</summary>
+        internal sealed class EmojiCategory
         {
             public string Name { get; set; } = "";
+            /// <summary>The category's name in the current language, the
+            /// picker's tooltip (#471).</summary>
+            public string DisplayName => PadForge.Resources.Strings.Strings.Get("Emoji_Category_" + Name);
             public string Glyph { get; set; } = "";
             public string[] Emojis { get; set; } = Array.Empty<string>();
         }
 
         private void InitEmojiPicker(string preset)
         {
-            EmojiCategoryBar.ItemsSource = EmojiCatalog;
-            EmojiGrid.ItemsSource = EmojiCatalog[0].Emojis;
+            _selectedIcon = preset ?? "";
+            ShowSelectedIcon();
+        }
 
-            if (!string.IsNullOrEmpty(preset))
-            {
-                _selectedIcon = preset;
-                IconPickerGlyph.Text = preset;
-            }
-            else
-            {
-                _selectedIcon = "";
-                IconPickerGlyph.Text = "⇧";
-            }
+        /// <summary>The button shows the layer's icon as the flyout will: a
+        /// picture that resolves, else the emoji, else the default ⇧ (a
+        /// picture that no longer resolves also shows ⇧).</summary>
+        private void ShowSelectedIcon()
+        {
+            var image = PadForge.Common.MenuIconResolver.ResolveLayerIcon(_selectedIcon, out string glyph);
+            IconPickerImage.Source = image;
+            IconPickerImage.Visibility = image != null ? Visibility.Visible : Visibility.Collapsed;
+            IconPickerGlyph.Visibility = image != null ? Visibility.Collapsed : Visibility.Visible;
+            IconPickerGlyph.Text = glyph;
         }
 
         private void IconPickerButton_Click(object sender, RoutedEventArgs e)
         {
-            IconPickerPopup.IsOpen = !IconPickerPopup.IsOpen;
+            IconPickerHost.Open(IconPickerButton, _selectedIcon,
+                PadForge.Resources.Strings.Strings.Instance.Pad_Shift_Icon_Reset,
+                reference =>
+                {
+                    _selectedIcon = reference ?? "";
+                    ShowSelectedIcon();
+                });
         }
 
-        private void EmojiCategory_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is System.Windows.Controls.Button b && b.Tag is EmojiCategory cat)
-                EmojiGrid.ItemsSource = cat.Emojis;
-        }
-
-        private void Emoji_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is System.Windows.Controls.Button b && b.Tag is string s && !string.IsNullOrEmpty(s))
-            {
-                _selectedIcon = s;
-                IconPickerGlyph.Text = s;
-            }
-            IconPickerPopup.IsOpen = false;
-        }
-
-        private void EmojiReset_Click(object sender, RoutedEventArgs e)
-        {
-            _selectedIcon = "";
-            IconPickerGlyph.Text = "⇧";
-            IconPickerPopup.IsOpen = false;
-        }
-
-        private static readonly EmojiCategory[] EmojiCatalog = new[]
+        internal static readonly EmojiCategory[] EmojiCatalog = new[]
         {
             new EmojiCategory
             {

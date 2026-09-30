@@ -48,6 +48,15 @@
                                    Margin="0,0,10,0"
                                    Foreground="White"/>
 
+                        <!-- A picture icon (#471), in the glyph's spot and box. -->
+                        <Image x:Name="StatusImage"
+                               Width="20" Height="20"
+                               Stretch="Uniform"
+                               RenderOptions.BitmapScalingMode="HighQuality"
+                               VerticalAlignment="Center"
+                               Margin="0,0,10,0"
+                               Visibility="Collapsed"/>
+
                         <TextBlock x:Name="LayerNameText"
                                    FontSize="14"
                                    FontFamily="{StaticResource BodyFontFamily}"

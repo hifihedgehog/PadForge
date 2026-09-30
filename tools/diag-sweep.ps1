@@ -77,14 +77,23 @@ $TS = [System.Windows.Automation.TreeScope]
 $TC = [System.Windows.Automation.Condition]::TrueCondition
 $CT = [System.Windows.Automation.ControlType]
 $cond = New-Object System.Windows.Automation.PropertyCondition($ae::NameProperty, 'PadForge')
+# The window with the most elements, once it has any. On 2026-09-30 the first
+# top-level element named PadForge had none while the app's window was up
+# (an elevated probe minutes later counted 376), and the walk that followed
+# clicked nothing and still passed.
 $win = $null
-for ($i = 0; $i -lt 10 -and -not $win; $i++) {
-    $win = $root.FindFirst($TS::Children, $cond)
-    if (-not $win) { Start-Sleep 2 }
+$best = 0
+for ($i = 0; $i -lt 15 -and $best -eq 0; $i++) {
+    foreach ($w in $root.FindAll($TS::Children, $cond)) {
+        $n = $w.FindAll($TS::Descendants, $TC).Count
+        if (-not $win -or $n -gt $best) { $win = $w; $best = $n }
+    }
+    if ($best -eq 0) { Start-Sleep 2 }
 }
+$walkSaw = 0
 if (-not $win) { Note 'WINDOW NOT FOUND' }
 else {
-    Note 'window found'
+    Note "window found, elements=$best"
     Add-Type @'
 using System;
 using System.Collections.Generic;
@@ -166,7 +175,8 @@ public static class W {
 
     Note "foreground: $(ForceFG $hwnd)"
     $allDesc = $win.FindAll($TS::Descendants, $TC)
-    Note "descendants=$($allDesc.Count)"
+    $walkSaw = $allDesc.Count
+    Note "descendants=$walkSaw"
 
     foreach ($page in @('Profiles','Devices','Settings','About','Dashboard')) {
         ForceFG $hwnd | Out-Null
@@ -290,6 +300,12 @@ if (Test-Path $diag) {
 }
 else {
     Note "ACCEPTANCE: $verdict. $diag was never written. The mirror did not arm, so this run proves nothing."
+}
+# A clean harvest from a walk that saw no elements realized no page, tab or
+# dialog, so it is no pass.
+if ($walkSaw -eq 0) {
+    $verdict = "BLIND: $verdict, but the walk saw no elements and realized nothing"
+    Note "ACCEPTANCE: $verdict"
 }
 Write-Host "diag-sweep acceptance: $verdict"
 

@@ -981,7 +981,7 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Profiles_AutoSwitchNoRulesHint" xml:space="preserve"><value>Noch hat kein Profil eine ausführbare Datei</value></data>
   <data name="Profiles_BuiltIn" xml:space="preserve"><value>Integriert</value></data>
   <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>Wählen Sie zuerst ein Profil aus.</value></data>
-  <data name="Profiles_DefaultLockedHint" xml:space="preserve"><value>Das integrierte Default-Profil kann nicht bearbeitet oder gelöscht werden.</value></data>
+  <data name="Profiles_DefaultLockedHint" xml:space="preserve"><value>Das integrierte Profil „Standard“ kann nicht bearbeitet oder gelöscht werden.</value></data>
   <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>Profil löschen</value></data>
   <data name="Profiles_DeleteConfirm_Format" xml:space="preserve"><value>„{0}" löschen? Der gespeicherte Snapshot der Slots und Zuordnungen wird unwiderruflich gelöscht.</value></data>
 

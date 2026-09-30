@@ -66,6 +66,20 @@ namespace PadForge.Tests
 
         [Theory]
         [MemberData(nameof(LocaleCases))]
+        public void TheLockedHintNamesTheDefaultProfileAsTheListShowsIt(string locale)
+        {
+            // The Profiles list shows the built-in profile under
+            // Profile_Default, so a hint naming it in English named a row the
+            // list does not show in any other language.
+            var culture = new CultureInfo(locale);
+            string name = Strings.ResourceManager.GetString("Profile_Default", culture);
+            string hint = Strings.ResourceManager.GetString("Profiles_DefaultLockedHint", culture);
+            Assert.False(string.IsNullOrEmpty(name));
+            Assert.Contains(name, hint);
+        }
+
+        [Theory]
+        [MemberData(nameof(LocaleCases))]
         public void Locale_DefinesNoKeyOutsideBase(string locale)
         {
             var baseKeys = KeysFor(CultureInfo.InvariantCulture);

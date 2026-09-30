@@ -981,7 +981,7 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Profiles_AutoSwitchNoRulesHint" xml:space="preserve"><value>Nenhum Perfil Tem um Executável Ainda</value></data>
   <data name="Profiles_BuiltIn" xml:space="preserve"><value>Integrado</value></data>
   <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>Selecione um perfil primeiro.</value></data>
-  <data name="Profiles_DefaultLockedHint" xml:space="preserve"><value>O perfil Default integrado não pode ser editado nem excluído.</value></data>
+  <data name="Profiles_DefaultLockedHint" xml:space="preserve"><value>O perfil integrado “Padrão” não pode ser editado nem excluído.</value></data>
   <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>Excluir Perfil</value></data>
   <data name="Profiles_DeleteConfirm_Format" xml:space="preserve"><value>Excluir "{0}"? O instantâneo salvo de slots e mapeamentos será destruído.</value></data>
 

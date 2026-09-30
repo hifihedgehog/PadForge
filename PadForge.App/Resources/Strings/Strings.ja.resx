@@ -981,7 +981,7 @@
   <data name="Profiles_AutoSwitchNoRulesHint" xml:space="preserve"><value>実行ファイルが設定されたプロファイルはまだありません</value></data>
   <data name="Profiles_BuiltIn" xml:space="preserve"><value>組み込み</value></data>
   <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>先にプロファイルを選択してください。</value></data>
-  <data name="Profiles_DefaultLockedHint" xml:space="preserve"><value>組み込みの Default プロファイルは編集も削除もできません。</value></data>
+  <data name="Profiles_DefaultLockedHint" xml:space="preserve"><value>組み込みのプロファイル「デフォルト」は編集も削除もできません。</value></data>
   <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>プロファイルを削除</value></data>
   <data name="Profiles_DeleteConfirm_Format" xml:space="preserve"><value>「{0}」を削除しますか？保存されたスロットとマッピングのスナップショットは破棄されます。</value></data>
 

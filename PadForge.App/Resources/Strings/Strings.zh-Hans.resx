@@ -981,7 +981,7 @@
   <data name="Profiles_AutoSwitchNoRulesHint" xml:space="preserve"><value>还没有任何配置文件设置了可执行文件</value></data>
   <data name="Profiles_BuiltIn" xml:space="preserve"><value>内置</value></data>
   <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>请先选择一个配置文件。</value></data>
-  <data name="Profiles_DefaultLockedHint" xml:space="preserve"><value>内置的 Default 配置文件无法编辑或删除。</value></data>
+  <data name="Profiles_DefaultLockedHint" xml:space="preserve"><value>内置配置文件“默认”无法编辑或删除。</value></data>
   <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>删除配置文件</value></data>
   <data name="Profiles_DeleteConfirm_Format" xml:space="preserve"><value>删除“{0}”？其保存的插槽和映射快照将被销毁。</value></data>
 

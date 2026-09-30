@@ -981,7 +981,7 @@
   <data name="Profiles_AutoSwitchNoRulesHint" xml:space="preserve"><value>아직 실행 파일이 지정된 프로필이 없습니다</value></data>
   <data name="Profiles_BuiltIn" xml:space="preserve"><value>기본 제공</value></data>
   <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>먼저 프로필을 선택하세요.</value></data>
-  <data name="Profiles_DefaultLockedHint" xml:space="preserve"><value>기본 제공 Default 프로필은 편집하거나 삭제할 수 없습니다.</value></data>
+  <data name="Profiles_DefaultLockedHint" xml:space="preserve"><value>기본 제공 프로필 “기본값”은 편집하거나 삭제할 수 없습니다.</value></data>
   <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>프로필 삭제</value></data>
   <data name="Profiles_DeleteConfirm_Format" xml:space="preserve"><value>"{0}"을(를) 삭제하시겠습니까? 저장된 슬롯 및 매핑 스냅샷이 삭제됩니다.</value></data>
 

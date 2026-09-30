@@ -981,7 +981,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Profiles_AutoSwitchNoRulesHint" xml:space="preserve"><value>Aucun profil n'a encore d'exécutable</value></data>
   <data name="Profiles_BuiltIn" xml:space="preserve"><value>Intégré</value></data>
   <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>Sélectionnez d'abord un profil.</value></data>
-  <data name="Profiles_DefaultLockedHint" xml:space="preserve"><value>Le profil Default intégré ne peut pas être modifié ni supprimé.</value></data>
+  <data name="Profiles_DefaultLockedHint" xml:space="preserve"><value>Le profil intégré « Par défaut » ne peut pas être modifié ni supprimé.</value></data>
   <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>Supprimer le profil</value></data>
   <data name="Profiles_DeleteConfirm_Format" xml:space="preserve"><value>Supprimer « {0} » ? L'instantané enregistré de ses emplacements et affectations sera détruit.</value></data>
 

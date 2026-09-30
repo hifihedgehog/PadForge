@@ -981,7 +981,7 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Profiles_AutoSwitchNoRulesHint" xml:space="preserve"><value>Nessun profilo ha ancora un eseguibile</value></data>
   <data name="Profiles_BuiltIn" xml:space="preserve"><value>Integrato</value></data>
   <data name="Profiles_SelectFirstHint" xml:space="preserve"><value>Seleziona prima un profilo.</value></data>
-  <data name="Profiles_DefaultLockedHint" xml:space="preserve"><value>Il profilo Default integrato non può essere modificato né eliminato.</value></data>
+  <data name="Profiles_DefaultLockedHint" xml:space="preserve"><value>Il profilo integrato “Predefinito” non può essere modificato né eliminato.</value></data>
   <data name="Profiles_DeleteConfirmTitle" xml:space="preserve"><value>Elimina profilo</value></data>
   <data name="Profiles_DeleteConfirm_Format" xml:space="preserve"><value>Eliminare "{0}"? Lo snapshot salvato di slot e mappature verrà eliminato definitivamente.</value></data>
 

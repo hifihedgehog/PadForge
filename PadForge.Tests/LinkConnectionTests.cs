@@ -53,6 +53,10 @@ namespace PadForge.Tests
 
             // B received A's exposed device, salted by A's authenticated identity.
             Assert.Single(rB.RemoteDevices);
+            // Both lists carried the metadata extension, so each side reads
+            // the other's full lists.
+            Assert.True(rA.PeerReadsFullLists);
+            Assert.True(rB.PeerReadsFullLists);
             // Peer devices are suffixed with the owning machine's name so they
             // are distinguishable from local ones. This assertion used to
             // expect the bare "A Pad", which was the unlabeled behavior the

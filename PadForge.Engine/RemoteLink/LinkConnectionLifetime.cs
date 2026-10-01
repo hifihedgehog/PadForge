@@ -96,9 +96,17 @@ namespace PadForge.Engine.RemoteLink
 
         internal bool TryPrepare(IReadOnlyList<RemotePeerDeviceInfo> source,
             out RemotePeerDeviceInfo[] wire, out Dictionary<byte, LinkSourceBinding> active)
+            => TryPrepare(source, out wire, out active, out _);
+
+        /// <param name="added">The ids this call reserved slots for, so a list
+        /// that is never sent can give them back (<see cref="Release"/>).</param>
+        internal bool TryPrepare(IReadOnlyList<RemotePeerDeviceInfo> source,
+            out RemotePeerDeviceInfo[] wire, out Dictionary<byte, LinkSourceBinding> active,
+            out List<string> added)
         {
             wire = null;
             active = null;
+            added = null;
             if (source.Count > 255) return false;
             var ids = new HashSet<string>(StringComparer.Ordinal);
             foreach (var item in source)
@@ -122,6 +130,7 @@ namespace PadForge.Engine.RemoteLink
                     }
                     slot = (byte)free;
                     _reserved.Add(item.PeerLocalDeviceId, slot);
+                    (added ??= new List<string>()).Add(item.PeerLocalDeviceId);
                     used.Add(slot);
                 }
                 wire[i] = item.CloneForSlot(slot);
@@ -133,6 +142,16 @@ namespace PadForge.Engine.RemoteLink
                     ? current : new LinkSourceBinding(item.PeerLocalDeviceId, slot, sourceIdentity));
             }
             return true;
+        }
+
+        /// <summary>Gives back the slots <see cref="TryPrepare"/> reserved for
+        /// a list that was never sent. The peer never saw those ids, and they
+        /// count against the 256 slots, so an oversized list resubmitted with
+        /// new ids exhausted them and forced a rekey.</summary>
+        internal void Release(List<string> added)
+        {
+            if (added == null) return;
+            foreach (string id in added) _reserved.Remove(id);
         }
 
         internal void Publish(Dictionary<byte, LinkSourceBinding> active)
@@ -162,23 +181,31 @@ namespace PadForge.Engine.RemoteLink
         private Dictionary<byte, string> _peerActive = new();
         private readonly Dictionary<byte, uint> _peerInputFloor = new();
         private volatile bool _retired;
+        private readonly bool _peerReadsFullLists;
         private long _localRevision;
         private bool _hasPeerInventory;
         private uint _peerInventorySequence;
         public string PeerFingerprint { get; }
         public bool IsCurrent => !_retired && _isCurrent();
 
+        /// <param name="peerReadsFullLists">The peer runs 3.6.0 or later
+        /// (<see cref="LinkConnectionResult.PeerReadsFullLists"/>). An older one
+        /// gets the basic records within the 4 KB its UDP loop reads.</param>
         internal LinkConnectionLifetime(string fingerprint, LinkExposureSnapshot exposure, Func<bool> isCurrent,
-            Func<LinkMessageType, byte, ulong, byte[], bool> send)
+            Func<LinkMessageType, byte, ulong, byte[], bool> send, bool peerReadsFullLists = true)
         {
             PeerFingerprint = fingerprint;
             _local = exposure.Reservations;
             _localRevision = exposure.Source.Revision;
             _isCurrent = isCurrent;
             _send = send;
+            _peerReadsFullLists = peerReadsFullLists;
         }
 
-        internal enum InventoryResult { Sent, Unavailable, Stale, Exhausted }
+        /// <summary>TooLarge: the list is past what this peer reads, so
+        /// nothing was sent and the peer keeps the list it has. Its bindings
+        /// stay the ones it was told.</summary>
+        internal enum InventoryResult { Sent, Unavailable, Stale, Exhausted, TooLarge }
 
         internal InventoryResult PublishLocalInventory(IReadOnlyList<RemotePeerDeviceInfo> source)
         {
@@ -186,14 +213,27 @@ namespace PadForge.Engine.RemoteLink
             {
                 RemotePeerDeviceInfo[] wire;
                 Dictionary<byte, LinkSourceBinding> active;
+                List<string> added;
                 long revision = (source as LinkDeviceInventory)?.Revision ?? 0;
                 lock (_commitGate)
                 {
                     if (!IsCurrent) return InventoryResult.Unavailable;
                     if (revision != 0 && revision <= _localRevision) return InventoryResult.Stale;
-                    if (!_local.TryPrepare(source, out wire, out active)) return InventoryResult.Exhausted;
+                    if (!_local.TryPrepare(source, out wire, out active, out added)) return InventoryResult.Exhausted;
                 }
-                var payload = LinkConnection.EncodeDeviceList(wire);
+                // A list goes as one UDP datagram. A peer older than 3.6.0
+                // reads 4 KB of it and parses the records alone. A list past
+                // what the peer reads went out anyway, and the peer dropped
+                // every update after connect.
+                var payload = _peerReadsFullLists
+                    ? LinkConnection.EncodeDeviceList(wire)
+                    : LinkConnection.EncodeBasicDeviceList(wire);
+                if (payload.Length > (_peerReadsFullLists
+                        ? LinkConnection.MaxListPayload : LinkConnection.OldPeerPayloadBudget))
+                {
+                    lock (_commitGate) _local.Release(added);
+                    return InventoryResult.TooLarge;
+                }
                 Dictionary<byte, LinkSourceBinding> previous;
                 lock (_commitGate)
                 {

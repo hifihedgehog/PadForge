@@ -46,6 +46,12 @@ namespace PadForge.Engine.RemoteLink
         public byte[] PeerFingerprint { get; init; }
         public string PeerFingerprintHex { get; init; }
         public IReadOnlyList<RemotePeerDevice> RemoteDevices { get; init; }
+
+        /// <summary>The peer's own list carried the metadata extension, so
+        /// it runs 3.6.0 or later and reads a device list datagram up to the
+        /// UDP limit (LinkConnection.MaxListPayload). An older peer reads
+        /// into 4 KB and parses the basic records only.</summary>
+        internal bool PeerReadsFullLists { get; init; }
     }
 
     /// <summary>Raised to abort a connection that failed authentication, approval, or framing.</summary>
@@ -182,7 +188,8 @@ namespace PadForge.Engine.RemoteLink
             string peerFpHex = Convert.ToHexString(result.PeerFingerprint);
             List<RemotePeerDeviceInfo> peerInfos;
             string peerMachineName = null;
-            try { peerInfos = DecodeDeviceList(peerListPayload, out peerMachineName); }
+            bool peerReadsFullLists;
+            try { peerInfos = DecodeDeviceList(peerListPayload, out peerMachineName, out peerReadsFullLists); }
             catch { throw new LinkConnectionException("Malformed device-list payload."); }
             // Persist the peer's machine name so every later surface (device
             // rows, the peer manager, the hot-plug reconcile) labels it too.
@@ -218,6 +225,7 @@ namespace PadForge.Engine.RemoteLink
                 PeerFingerprint = result.PeerFingerprint,
                 PeerFingerprintHex = peerFpHex,
                 RemoteDevices = remoteDevices,
+                PeerReadsFullLists = peerReadsFullLists,
             };
             }
             finally { if (!transferred) admission?.Dispose(); }
@@ -324,41 +332,27 @@ namespace PadForge.Engine.RemoteLink
         // native axis N.
         private const byte DeviceListExtV10Magic = 0xEB;
 
+        /// <summary>The most a device list datagram's payload holds for a peer
+        /// older than 3.6.0, whose UDP loop reads into 4 KB with a 14-byte
+        /// header and a 16-byte tag, less a margin. A full list budgets its
+        /// optional parts to it too.</summary>
+        internal const int OldPeerPayloadBudget = 3800;
+
+        /// <summary>The most a device list datagram's payload holds for a
+        /// 3.6.0 or later peer: the IPv4 UDP payload limit, 65,507 bytes, less
+        /// the seal's header and tag.</summary>
+        internal const int MaxListPayload = 65507 - LinkSession.HeaderSize - PeerCrypto.TagSize;
+
         // Shared by the handshake exchange AND the post-connect DeviceList sync (#138).
         // Each entry leads with the owner's STABLE slot, and caps now carry HasHaptic +
         // Online so a remote wheel's FFB pipeline runs and active/inactive propagates.
         internal static byte[] EncodeDeviceList(IReadOnlyList<RemotePeerDeviceInfo> devices,
             string localMachineName = null)
         {
-            var buf = new List<byte> { (byte)Math.Min(devices.Count, 255) };
-            int count = Math.Min(devices.Count, 255);
-            for (int i = 0; i < count; i++)
-            {
-                var d = devices[i];
-                buf.Add(d.Slot);
-                WriteString(buf, d.PeerLocalDeviceId);
-                WriteString(buf, d.Name);
-                WriteU16(buf, d.VendorId);
-                WriteU16(buf, d.ProductId);
-                buf.Add((byte)Math.Clamp(d.NumAxes, 0, 255));
-                buf.Add((byte)Math.Clamp(d.NumButtons, 0, 255));
-                buf.Add((byte)Math.Clamp(d.NumHats, 0, 255));
-                byte caps = 0;
-                if (d.HasRumble) caps |= 1;
-                if (d.HasRumbleTriggers) caps |= 2;
-                if (d.HasGyro) caps |= 4;
-                if (d.HasAccel) caps |= 8;
-                if (d.HasTouchpad) caps |= 16;
-                if (d.HasHaptic) caps |= 32;
-                if (d.Online) caps |= 64;
-                // Bit 128 (issue #199) EXHAUSTS this byte: the next capability
-                // needs a wire-format extension, not another bit.
-                if (d.HasAccelAux) caps |= 128;
-                buf.Add(caps);
-                WriteU16(buf, (ushort)d.InputDeviceType);
-            }
+            var buf = new List<byte>();
+            int count = WriteBasicRecords(buf, devices);
 
-            const int PayloadBudget = 3800;
+            const int PayloadBudget = OldPeerPayloadBudget;
 
             // Every tail after the metadata extension, encoded first so the
             // named objects below can leave room for it.
@@ -447,6 +441,50 @@ namespace PadForge.Engine.RemoteLink
             }
 
             buf.AddRange(tail);
+            return buf.ToArray();
+        }
+
+        /// <summary>The v1 record for each device, after the count byte.</summary>
+        private static int WriteBasicRecords(List<byte> buf, IReadOnlyList<RemotePeerDeviceInfo> devices)
+        {
+            int count = Math.Min(devices.Count, 255);
+            buf.Add((byte)count);
+            for (int i = 0; i < count; i++)
+            {
+                var d = devices[i];
+                buf.Add(d.Slot);
+                WriteString(buf, d.PeerLocalDeviceId);
+                WriteString(buf, d.Name);
+                WriteU16(buf, d.VendorId);
+                WriteU16(buf, d.ProductId);
+                buf.Add((byte)Math.Clamp(d.NumAxes, 0, 255));
+                buf.Add((byte)Math.Clamp(d.NumButtons, 0, 255));
+                buf.Add((byte)Math.Clamp(d.NumHats, 0, 255));
+                byte caps = 0;
+                if (d.HasRumble) caps |= 1;
+                if (d.HasRumbleTriggers) caps |= 2;
+                if (d.HasGyro) caps |= 4;
+                if (d.HasAccel) caps |= 8;
+                if (d.HasTouchpad) caps |= 16;
+                if (d.HasHaptic) caps |= 32;
+                if (d.Online) caps |= 64;
+                // Bit 128 (issue #199) EXHAUSTS this byte: the next capability
+                // needs a wire-format extension, not another bit.
+                if (d.HasAccelAux) caps |= 128;
+                buf.Add(caps);
+                WriteU16(buf, (ushort)d.InputDeviceType);
+            }
+            return count;
+        }
+
+        /// <summary>The v1 records alone, for a peer older than 3.6.0: the
+        /// metadata extension and every tail came with or after the 64 KB
+        /// receive buffer, and such a peer parses none of them, so the list it
+        /// can read is the records.</summary>
+        internal static byte[] EncodeBasicDeviceList(IReadOnlyList<RemotePeerDeviceInfo> devices)
+        {
+            var buf = new List<byte>();
+            WriteBasicRecords(buf, devices);
             return buf.ToArray();
         }
 
@@ -599,8 +637,17 @@ namespace PadForge.Engine.RemoteLink
         }
 
         internal static List<RemotePeerDeviceInfo> DecodeDeviceList(byte[] data, out string peerMachineName)
+            => DecodeDeviceList(data, out peerMachineName, out _);
+
+        /// <summary>Also reports whether the metadata extension followed the
+        /// v1 records. It and the 64 KB receive buffer both first shipped in
+        /// 3.6.0 (e6ed7b0e, 872a92a7), so a sender that writes it reads a full
+        /// list, and one that does not reads 4 KB and the records alone.</summary>
+        internal static List<RemotePeerDeviceInfo> DecodeDeviceList(byte[] data, out string peerMachineName,
+            out bool readsFullLists)
         {
             peerMachineName = null;
+            readsFullLists = false;
             var list = new List<RemotePeerDeviceInfo>();
             int o = 0;
             int count = data[o++];
@@ -636,9 +683,10 @@ namespace PadForge.Engine.RemoteLink
             // any parse failure falls back to the v1 result (the consumer then
             // synthesizes generic objects exactly as it did before).
             bool v1ExtOk = false;
+            readsFullLists = o < data.Length && data[o] == DeviceListExtMagic;
             try
             {
-                if (o < data.Length && data[o] == DeviceListExtMagic)
+                if (readsFullLists)
                 {
                     o++;
                     for (int i = 0; i < count; i++)

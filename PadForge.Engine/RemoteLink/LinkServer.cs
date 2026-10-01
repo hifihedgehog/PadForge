@@ -1899,7 +1899,8 @@ namespace PadForge.Engine.RemoteLink
                 };
                 conn.Lifetime = new LinkConnectionLifetime(conn.PeerFingerprintHex, exposure,
                     () => { lock (_lock) return _connections.Contains(conn); },
-                    (type, slot, stamp, payload) => SendConnectionFrame(conn, type, slot, stamp, payload));
+                    (type, slot, stamp, payload) => SendConnectionFrame(conn, type, slot, stamp, payload),
+                    result.PeerReadsFullLists);
                 if (!conn.Lifetime.AcceptPeerInventory(result.RemoteDevices.Select(device => device.Info).ToArray(),
                     0, true, out _))
                 {
@@ -1963,6 +1964,7 @@ namespace PadForge.Engine.RemoteLink
                         var publication = conn.Lifetime.PublishLocalInventory(currentInventory);
                         if (publication != LinkConnectionLifetime.InventoryResult.Stale) conn.LatestInventory = currentInventory;
                         if (publication == LinkConnectionLifetime.InventoryResult.Exhausted) QueueRekey(conn);
+                        if (publication == LinkConnectionLifetime.InventoryResult.TooLarge) DiagLastError = ListTooLarge;
                     }
                     conn.Lifetime.Send(LinkMessageType.Keepalive, 0, Array.Empty<byte>());
                 }
@@ -2291,6 +2293,8 @@ namespace PadForge.Engine.RemoteLink
             }
         }
 
+        private const string ListTooLarge = "devlist: the list is larger than this peer's version can read";
+
         /// <summary>Owner: push the current exposed-device set to every connected peer
         /// (issue #138 live device sync). Sent on change and periodically; the consumer
         /// reconciles. Each info carries its stable Slot + Online.</summary>
@@ -2306,6 +2310,7 @@ namespace PadForge.Engine.RemoteLink
                     var result = connection.Lifetime.PublishLocalInventory(devices);
                     if (result != LinkConnectionLifetime.InventoryResult.Stale) connection.LatestInventory = devices;
                     if (result == LinkConnectionLifetime.InventoryResult.Exhausted) QueueRekey(connection);
+                    if (result == LinkConnectionLifetime.InventoryResult.TooLarge) DiagLastError = ListTooLarge;
                 }
                 catch (Exception ex) { DiagLastError = "devlist: " + ex.Message; }
             }
@@ -2412,8 +2417,11 @@ namespace PadForge.Engine.RemoteLink
                             {
                                 var inventory = ExposeProvider?.Invoke() ?? current.LatestInventory;
                                 var result = current.Lifetime.PublishLocalInventory(inventory);
+                                // A list too large for this peer leaves the session sound,
+                                // and the old peer keeps the list it has.
                                 bool ready = result is LinkConnectionLifetime.InventoryResult.Sent
-                                    or LinkConnectionLifetime.InventoryResult.Stale;
+                                    or LinkConnectionLifetime.InventoryResult.Stale
+                                    or LinkConnectionLifetime.InventoryResult.TooLarge;
                                 lock (_lock)
                                 {
                                     if (ready && _connections.Contains(current) && OwnsRekey(fingerprint, work))

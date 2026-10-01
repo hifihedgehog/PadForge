@@ -5010,9 +5010,11 @@ namespace PadForge.Views
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is double d) return d / 100.0;
+            // NaN or infinity typed into the box leaves the source untouched.
+            if (value is double d) return double.IsFinite(d) ? d / 100.0 : Binding.DoNothing;
             return value is string s
                    && double.TryParse(s, NumberStyles.Float, culture, out double p)
+                   && double.IsFinite(p)
                 ? p / 100.0
                 : Binding.DoNothing;
         }

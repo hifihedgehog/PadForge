@@ -1322,7 +1322,7 @@ namespace PadForge.Services
             if (string.IsNullOrEmpty(kind) || kind == "MotionLeanX") kind = "Direct";
             double D(string key, double dflt)
                 => double.TryParse(ps.GetRawMapping(key), System.Globalization.NumberStyles.Float,
-                    System.Globalization.CultureInfo.InvariantCulture, out double v) ? v : dflt;
+                    System.Globalization.CultureInfo.InvariantCulture, out double v) && double.IsFinite(v) ? v : dflt;
             return (kind != "Direct", kind,
                 D($"Stick{stickIdx}SteerWindRange", 900),
                 D($"Stick{stickIdx}SteerWindPower", 1),
@@ -1389,7 +1389,7 @@ namespace PadForge.Services
                 if (ps == null) continue; // keep the source's existing params
                 double D(string key, double dflt)
                     => double.TryParse(ps.GetRawMapping(key), System.Globalization.NumberStyles.Float,
-                        System.Globalization.CultureInfo.InvariantCulture, out double v) ? v : dflt;
+                        System.Globalization.CultureInfo.InvariantCulture, out double v) && double.IsFinite(v) ? v : dflt;
                 string orient = ps.GetRawMapping("MotionSteerOrient");
                 src.ParamMotionInnerDz = D("MotionSteerInner", 15);
                 src.ParamMotionOuterDz = D("MotionSteerOuter", 135);
@@ -1427,7 +1427,7 @@ namespace PadForge.Services
                 if (ps == null) continue; // keep the source's existing params
                 double D(string key, double dflt)
                     => double.TryParse(ps.GetRawMapping(key), System.Globalization.NumberStyles.Float,
-                        System.Globalization.CultureInfo.InvariantCulture, out double v) ? v : dflt;
+                        System.Globalization.CultureInfo.InvariantCulture, out double v) && double.IsFinite(v) ? v : dflt;
                 src.ParamTiltRangeDeg = D("GyroTiltRange", 25);
                 src.ParamTiltInnerDz = D("GyroTiltInner", 0);
             }
@@ -1614,7 +1614,7 @@ namespace PadForge.Services
                     continue; // card never stored for this device: keep import values
                 double D(string key, double dflt)
                     => double.TryParse(ps.GetRawMapping(key), System.Globalization.NumberStyles.Float,
-                        System.Globalization.CultureInfo.InvariantCulture, out double v) ? v : dflt;
+                        System.Globalization.CultureInfo.InvariantCulture, out double v) && double.IsFinite(v) ? v : dflt;
                 string snap = ps.GetRawMapping("FlickStickSnapMode");
                 src.ParamFlickCountsPer360 = D("FlickStickDots", 14400);
                 src.ParamFlickTime = D("FlickStickTime", 0.1);
@@ -1668,7 +1668,7 @@ namespace PadForge.Services
             }
             double D(string key, double dflt)
                 => double.TryParse(ps.GetRawMapping(key), System.Globalization.NumberStyles.Float,
-                    System.Globalization.CultureInfo.InvariantCulture, out double v) ? v : dflt;
+                    System.Globalization.CultureInfo.InvariantCulture, out double v) && double.IsFinite(v) ? v : dflt;
             string snap = ps.GetRawMapping("FlickStickSnapMode");
             padVm.FlickCountsPer360 = D("FlickStickDots", 14400);
             padVm.FlickTime = D("FlickStickTime", 0.1);
@@ -6006,12 +6006,15 @@ namespace PadForge.Services
             return int.TryParse(value, out int result) ? result : defaultValue;
         }
 
+        /// <summary>An invariant parse of a stored setting. NaN and infinity
+        /// read as unreadable, as in InputService.TryParseDouble.</summary>
         private static double TryParseDouble(string value, double defaultValue)
         {
             if (string.IsNullOrEmpty(value))
                 return defaultValue;
             return double.TryParse(value, System.Globalization.NumberStyles.Float,
-                System.Globalization.CultureInfo.InvariantCulture, out double result) ? result : defaultValue;
+                System.Globalization.CultureInfo.InvariantCulture, out double result)
+                && double.IsFinite(result) ? result : defaultValue;
         }
     }
 

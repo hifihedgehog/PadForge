@@ -432,7 +432,7 @@ namespace PadForge.Common.Input
             if (string.IsNullOrEmpty(s)) return 0.0;
             return double.TryParse(s, System.Globalization.NumberStyles.Float,
                 System.Globalization.CultureInfo.InvariantCulture, out double v)
-                ? v : 0.0;
+                && double.IsFinite(v) ? v : 0.0;
         }
 
         /// <summary>Finds the PTP device handle for a given InstanceGuid.</summary>
@@ -1597,7 +1597,8 @@ namespace PadForge.Common.Input
         private static float TryParseFloat(string value, float defaultValue)
         {
             return float.TryParse(value, System.Globalization.NumberStyles.Float,
-                System.Globalization.CultureInfo.InvariantCulture, out float result) ? result : defaultValue;
+                System.Globalization.CultureInfo.InvariantCulture, out float result)
+                && float.IsFinite(result) ? result : defaultValue;
         }
 
         private static bool TryParseBool(string value)

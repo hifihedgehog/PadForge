@@ -2214,7 +2214,7 @@ namespace PadForge.Common.Input
             {
                 parsed = double.TryParse(value, System.Globalization.NumberStyles.Float,
                     System.Globalization.CultureInfo.InvariantCulture, out double result)
-                    ? result : (double?)null;
+                    && double.IsFinite(result) ? result : (double?)null;
                 if (s_doubleParseCache.Count < ParseCacheCap)
                     s_doubleParseCache[value] = parsed;
             }

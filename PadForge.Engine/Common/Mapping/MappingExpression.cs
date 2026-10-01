@@ -248,7 +248,9 @@ namespace PadForge.Engine.Common.Mapping
                     int j = i;
                     while (j < s.Length && (char.IsDigit(s[j]) || s[j] == '.')) j++;
                     string num = s.Substring(i, j - i);
-                    if (!double.TryParse(num, NumberStyles.Float, CultureInfo.InvariantCulture, out double v))
+                    // A digit string past double's range parses to infinity.
+                    if (!double.TryParse(num, NumberStyles.Float, CultureInfo.InvariantCulture, out double v)
+                        || !double.IsFinite(v))
                         throw new ParseException(FormatError(ParseError.InvalidNumber, num, start));
                     tokens.Add(new Token { Kind = TokenKind.Number, Number = v, Text = num, Position = start });
                     i = j;

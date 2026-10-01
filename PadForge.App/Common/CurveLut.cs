@@ -46,8 +46,9 @@ namespace PadForge.Common
                 return new List<(double, double)> { (0, 0), (1, 1) };
 
             // Backward compat: single number → old power curve
+            // NaN or infinity is no curve: a NaN exponent turned every point NaN.
             if (double.TryParse(s, NumberStyles.Float, CultureInfo.InvariantCulture, out double oldCurve))
-                return ConvertPowerCurve(oldCurve);
+                return double.IsFinite(oldCurve) ? ConvertPowerCurve(oldCurve) : new List<(double, double)> { (0, 0), (1, 1) };
 
             var points = new List<(double X, double Y)>();
             foreach (var pair in s.Split(';', StringSplitOptions.RemoveEmptyEntries))
@@ -55,7 +56,8 @@ namespace PadForge.Common
                 var parts = pair.Split(',');
                 if (parts.Length == 2 &&
                     double.TryParse(parts[0], NumberStyles.Float, CultureInfo.InvariantCulture, out double x) &&
-                    double.TryParse(parts[1], NumberStyles.Float, CultureInfo.InvariantCulture, out double y))
+                    double.TryParse(parts[1], NumberStyles.Float, CultureInfo.InvariantCulture, out double y) &&
+                    double.IsFinite(x) && double.IsFinite(y))
                 {
                     points.Add((Math.Clamp(x, 0, 1), Math.Clamp(y, 0, 1)));
                 }

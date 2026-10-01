@@ -2998,9 +2998,9 @@ namespace PadForge.Services
                                 biasMemo.PitchSrc = bpS;
                                 biasMemo.YawSrc = byS;
                                 biasMemo.RollSrc = brS;
-                                biasMemo.Pitch = TryParseFloatPs(bpS, 0f);
-                                biasMemo.Yaw = TryParseFloatPs(byS, 0f);
-                                biasMemo.Roll = TryParseFloatPs(brS, 0f);
+                                biasMemo.Pitch = GyroCalibratorService.ParseBias(bpS);
+                                biasMemo.Yaw = GyroCalibratorService.ParseBias(byS);
+                                biasMemo.Roll = GyroCalibratorService.ParseBias(brS);
                             }
                             float bp = biasMemo.Pitch;
                             float by = biasMemo.Yaw;
@@ -7280,20 +7280,27 @@ namespace PadForge.Services
             return int.TryParse(value, out int result) ? result : defaultValue;
         }
 
+        /// <summary>An invariant parse of a stored setting. NaN and infinity
+        /// read as unreadable, as ConstantForceEvaluator.ParseNorm reads them:
+        /// Math.Clamp passes NaN through, so one hand-edited or imported value
+        /// reached every clamped setter and the engine.</summary>
         private static double TryParseDouble(string value, double defaultValue)
         {
             if (string.IsNullOrEmpty(value)) return defaultValue;
             return double.TryParse(value, System.Globalization.NumberStyles.Float,
-                System.Globalization.CultureInfo.InvariantCulture, out double result) ? result : defaultValue;
+                System.Globalization.CultureInfo.InvariantCulture, out double result)
+                && double.IsFinite(result) ? result : defaultValue;
         }
 
         /// <summary>InvariantCulture float parse used by the gyro tuning
-        /// provider to convert PadSetting's string-typed schema fields.</summary>
+        /// provider to convert PadSetting's string-typed schema fields. NaN
+        /// and infinity read as unreadable, as in TryParseDouble.</summary>
         private static float TryParseFloatPs(string value, float defaultValue)
         {
             if (string.IsNullOrEmpty(value)) return defaultValue;
             return float.TryParse(value, System.Globalization.NumberStyles.Float,
-                System.Globalization.CultureInfo.InvariantCulture, out float result) ? result : defaultValue;
+                System.Globalization.CultureInfo.InvariantCulture, out float result)
+                && float.IsFinite(result) ? result : defaultValue;
         }
 
         private static bool TryParseBoolPs(string value, bool defaultValue)
@@ -7387,9 +7394,9 @@ namespace PadForge.Services
         internal static (float pitch, float yaw, float roll) GyroBiasFromPadSetting(UserDevice ud, PadSetting ps)
         {
             if (ps == null) return (0f, 0f, 0f);
-            float p = TryParseFloatPs(ps.GyroBiasPitch, 0f);
-            float y = TryParseFloatPs(ps.GyroBiasYaw,   0f);
-            float r = TryParseFloatPs(ps.GyroBiasRoll,  0f);
+            float p = GyroCalibratorService.ParseBias(ps.GyroBiasPitch);
+            float y = GyroCalibratorService.ParseBias(ps.GyroBiasYaw);
+            float r = GyroCalibratorService.ParseBias(ps.GyroBiasRoll);
             if (!GyroCalibratorService.CalibrationApplies(ud, ps, p, y, r))
                 return (0f, 0f, 0f);
             return (p, y, r);

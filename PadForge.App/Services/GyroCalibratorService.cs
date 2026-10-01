@@ -203,10 +203,10 @@ namespace PadForge.Services
             => ps != null && CalibrationApplies(ud, ps,
                 ParseBias(ps.GyroBiasPitch), ParseBias(ps.GyroBiasYaw), ParseBias(ps.GyroBiasRoll));
 
-        /// <summary>The parse the funnel and the readout make
-        /// (InputService.TryParseFloatPs): an empty or unreadable value is 0,
-        /// and NaN or infinity comes through for the check above to refuse.</summary>
-        private static float ParseBias(string s)
+        /// <summary>The stored bias as the funnel, the readout and the
+        /// automatic pass all read it: an empty or unreadable value is 0, and
+        /// NaN or infinity comes through for the check above to refuse.</summary>
+        internal static float ParseBias(string s)
             => float.TryParse(s, NumberStyles.Float, CultureInfo.InvariantCulture, out float v) ? v : 0f;
 
         /// <summary>Samples <paramref name="ud"/>'s gyro readings for

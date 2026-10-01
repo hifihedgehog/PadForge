@@ -5401,7 +5401,7 @@ namespace PadForge.ViewModels
 
         private static double ParseSteerDouble(string s, double dflt)
             => double.TryParse(s, System.Globalization.NumberStyles.Float,
-                System.Globalization.CultureInfo.InvariantCulture, out double v) ? v : dflt;
+                System.Globalization.CultureInfo.InvariantCulture, out double v) && double.IsFinite(v) ? v : dflt;
 
         // Persisted stick-config property names. PropertyChanged on any other
         // property (LiveX/LiveY/RawX/RawY/LiveInputX/LiveInputY/IsCalibrating

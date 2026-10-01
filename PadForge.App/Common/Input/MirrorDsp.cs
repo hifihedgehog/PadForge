@@ -545,9 +545,13 @@ namespace PadForge.Common.Input
                 if (f.Length < 4) continue;
                 var t = Type(f[0]);
                 if (t == null) continue;
-                if (!float.TryParse(f[1], NumberStyles.Float, CultureInfo.InvariantCulture, out float fc)) continue;
+                if (!float.TryParse(f[1], NumberStyles.Float, CultureInfo.InvariantCulture, out float fc)
+                    || !float.IsFinite(fc)) continue;
                 float.TryParse(f[2], NumberStyles.Float, CultureInfo.InvariantCulture, out float g);
                 float.TryParse(f[3], NumberStyles.Float, CultureInfo.InvariantCulture, out float q);
+                // A stored NaN would reach the filter coefficients.
+                if (!float.IsFinite(g)) g = 0f;
+                if (!float.IsFinite(q)) q = 0f;
                 list.Add(new EqBand
                 {
                     Type = t.Value,
@@ -664,7 +668,8 @@ namespace PadForge.Common.Input
                 var pm = PreampLine.Match(line);
                 if (pm.Success
                     && float.TryParse(pm.Groups[1].Value, NumberStyles.Float,
-                                      CultureInfo.InvariantCulture, out float pre))
+                                      CultureInfo.InvariantCulture, out float pre)
+                    && float.IsFinite(pre))
                 {
                     preamp = pre;
                     continue;
@@ -677,7 +682,8 @@ namespace PadForge.Common.Input
                 if (type == null) continue;
 
                 if (!float.TryParse(m.Groups[3].Value, NumberStyles.Float,
-                                    CultureInfo.InvariantCulture, out float fc)) continue;
+                                    CultureInfo.InvariantCulture, out float fc)
+                    || !float.IsFinite(fc)) continue;
 
                 float gain = 0f;
                 if (m.Groups[4].Success)
@@ -688,6 +694,9 @@ namespace PadForge.Common.Input
                 if (m.Groups[5].Success)
                     float.TryParse(m.Groups[5].Value, NumberStyles.Float,
                                    CultureInfo.InvariantCulture, out q);
+                // A digit string past float's range parses to infinity.
+                if (!float.IsFinite(gain)) gain = 0f;
+                if (!float.IsFinite(q)) q = 0.707f;
 
                 bands.Add(new EqBand
                 {

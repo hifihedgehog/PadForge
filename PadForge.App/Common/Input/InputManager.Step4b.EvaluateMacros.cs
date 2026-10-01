@@ -3928,6 +3928,10 @@ namespace PadForge.Common.Input
             PadForge.Engine.Common.Mapping.SourceCoercion.ResetGyroAimStateForSlot(slotIndex);
             GetSlotSourceKindRuntime(slotIndex)?.ResetMotionNeutral();
             GyroRecenterApply?.Invoke(slotIndex);
+            // The Motion Pitch, Yaw and Roll rows' turn returns to level, or
+            // to the real controller's attitude when one is mapped (#475).
+            // The motion stage runs after this pass, so it lands this poll.
+            RequestMotionRowsLevel(slotIndex);
         }
 
         /// <summary>Advances the action's cycle position and writes the

@@ -434,6 +434,13 @@ namespace PadForge.Engine.Common.Mapping
         /// device has not supplied a usable pose yet.</summary>
         public static Func<string, int, GyroTiltGravitySample?> GyroTiltGravityProvider { get; set; }
 
+        /// <summary>True when a source rests at zero and travels one way, for
+        /// (descriptor, deviceGuid): a gamepad trigger, a slider, an analog
+        /// key, a VR trigger or grip. The App's activator test (#443). The
+        /// Motion Pitch, Yaw and Roll rows read such a source one way (#475).
+        /// Null reads every source centered.</summary>
+        public static Func<string, string, bool> SourceRestsAtZeroProvider { get; set; }
+
         /// <summary>Simulated gyro rates per (deviceGuid, slotIndex) (#472),
         /// from the polling thread's accelerometer estimator. Null when the
         /// option is off for the pair or the device lacks no axis it can

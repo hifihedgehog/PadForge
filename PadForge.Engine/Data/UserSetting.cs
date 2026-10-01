@@ -186,6 +186,16 @@ namespace PadForge.Engine.Data
         public VrRawState VrRawOutputState { get; set; }
 
         /// <summary>
+        /// The Motion Pitch, Yaw and Roll rows' values for this device
+        /// (#475), computed in Step 3 on slots that carry motion and stamped
+        /// with the pass that computed them. Step 4 combines only the current
+        /// pass's values, so a device that drops mid-turn stops turning the
+        /// slot instead of holding its last deflection.
+        /// </summary>
+        [XmlIgnore]
+        public PadForge.Engine.Common.MotionRowValues MotionRowsOutputState { get; set; }
+
+        /// <summary>
         /// PlayStation touchpad output state for this device.
         /// Written by the background thread, read by Step 4.
         /// </summary>

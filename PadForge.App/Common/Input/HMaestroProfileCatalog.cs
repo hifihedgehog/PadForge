@@ -453,6 +453,18 @@ namespace PadForge.Common.Input
             || string.Equals(p.Id, "switch2-pro-controller", StringComparison.OrdinalIgnoreCase);
 
         /// <summary>
+        /// True for the two presets in the motion-carrying families whose
+        /// input report has no motion field: the DualShock 3 (its HM profile
+        /// declares no extended report, and PadForge has no packer for it)
+        /// and the Switch 2 Pro (its report carries no IMU data, the
+        /// controller-slots page says the same). Their Motion rows still feed
+        /// the motion server.
+        /// </summary>
+        internal static bool ReportCarriesNoMotion(string profileId) =>
+            string.Equals(profileId, "dualshock-3", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(profileId, "switch2-pro-controller", StringComparison.OrdinalIgnoreCase);
+
+        /// <summary>
         /// Resolve a profile id to the 2D + 3D asset folders PadForge should
         /// render for that controller. Profile-id prefixes match HM's catalog
         /// slugs (sony/, microsoft/) so adding a new profile in HM

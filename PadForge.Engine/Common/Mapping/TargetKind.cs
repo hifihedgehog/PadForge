@@ -62,6 +62,12 @@ namespace PadForge.Engine.Common.Mapping
                 case "RightThumbAxisY":
                     return TargetKind.BipolarAxis;
 
+                // The simulated-motion rows (#475) read like stick axes.
+                case PadForge.Engine.Data.MappingSetMigrator.MotionPitchTarget:
+                case PadForge.Engine.Data.MappingSetMigrator.MotionYawTarget:
+                case PadForge.Engine.Data.MappingSetMigrator.MotionRollTarget:
+                    return TargetKind.BipolarAxis;
+
                 case "DPadUp":
                 case "DPadDown":
                 case "DPadLeft":

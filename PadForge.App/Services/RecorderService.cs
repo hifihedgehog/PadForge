@@ -274,6 +274,7 @@ namespace PadForge.Services
             _activePadIndex = padIndex;
             _paramTarget = ParamTarget.None;
             _negRecording = false;
+            _motionKind = 0;
 
             _activeDevices.Clear();
             _baselines.Clear();
@@ -323,6 +324,91 @@ namespace PadForge.Services
             };
             _timer.Tick += PollTick;
             _timer.Start();
+        }
+
+        /// <summary>Which motion a Motion row records (#475): 0 for any other
+        /// recording, 1 for the Motion Gyro row, 2 for the Motion
+        /// Accelerometer row. Those rows read only a controller's own motion,
+        /// so they record the controller that turns or shakes, never a
+        /// button or an axis.</summary>
+        private int _motionKind;
+
+        /// <summary>A deliberate twist, about 86 degrees per second, well
+        /// above a hand's tremor.</summary>
+        internal const float MotionRecordGyroRadPerSec = 1.5f;
+
+        /// <summary>Half a g of change from the reading at the start, a shake
+        /// or a quick tilt.</summary>
+        internal const float MotionRecordAccelMs2 = 0.5f * 9.80665f;
+
+        private static int MotionKindFor(string target) => target switch
+        {
+            PadForge.Engine.Data.MappingSetMigrator.MotionGyroTarget => 1,
+            PadForge.Engine.Data.MappingSetMigrator.MotionAccelTarget => 2,
+            _ => 0,
+        };
+
+        private bool AnyActiveDeviceHasMotionSensor()
+        {
+            foreach (var ud in _activeDevices.Values)
+            {
+                if (ud == null) continue;
+                if (_motionKind == 1 && (ud.HasGyro || ud.HasGyroAux)) return true;
+                if (_motionKind == 2 && (ud.HasAccel || ud.HasAccelAux)) return true;
+            }
+            return false;
+        }
+
+        private static float Magnitude(float[] v)
+            => v == null || v.Length < 3 ? 0f : MathF.Sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+
+        private static float Distance(float[] a, float[] b)
+        {
+            if (a == null || a.Length < 3) return 0f;
+            if (b == null || b.Length < 3) return Magnitude(a);
+            float x = a[0] - b[0], y = a[1] - b[1], z = a[2] - b[2];
+            return MathF.Sqrt(x * x + y * y + z * z);
+        }
+
+        /// <summary>An accelerometer at rest reads 1 g, so one under half a g
+        /// has not reported yet: a device that just connected, or a Nunchuk
+        /// plugged in after recording started.</summary>
+        private static bool HasAccelReading(float[] v) => Magnitude(v) >= MotionRecordAccelMs2;
+
+        /// <summary>True when an accelerometer that had no reading at the
+        /// start has one now. Its first reading becomes the reference
+        /// instead of counting as a shake.</summary>
+        internal static bool AccelReferenceMissing(UserDevice ud, CustomInputState current, CustomInputState baseline)
+            => ud != null && current != null
+            && ((ud.HasAccel && !HasAccelReading(baseline?.Accel) && HasAccelReading(current.Accel))
+                || (ud.HasAccelAux && !HasAccelReading(baseline?.AccelAux) && HasAccelReading(current.AccelAux)));
+
+        /// <summary>The bundled motion source a device's movement records for
+        /// the active Motion row, or null while it has not moved enough. The
+        /// aux sensor (a pair's left Joy-Con, a Wii Remote's Nunchuk) wins
+        /// when it moved more.</summary>
+        internal static string DetectMotion(int kind, UserDevice ud, CustomInputState current, CustomInputState baseline)
+        {
+            if (ud == null || current == null) return null;
+            if (kind == 1)
+            {
+                float body = ud.HasGyro ? Magnitude(current.Gyro) : 0f;
+                float aux = ud.HasGyroAux ? Magnitude(current.GyroAux) : 0f;
+                if (MathF.Max(body, aux) < MotionRecordGyroRadPerSec) return null;
+                return aux > body
+                    ? PadForge.Engine.Data.MappingSetMigrator.MotionGyroAuxSourceDescriptor
+                    : PadForge.Engine.Data.MappingSetMigrator.MotionGyroSourceDescriptor;
+            }
+            if (kind == 2)
+            {
+                float body = ud.HasAccel && HasAccelReading(baseline?.Accel) ? Distance(current.Accel, baseline.Accel) : 0f;
+                float aux = ud.HasAccelAux && HasAccelReading(baseline?.AccelAux) ? Distance(current.AccelAux, baseline.AccelAux) : 0f;
+                if (MathF.Max(body, aux) < MotionRecordAccelMs2) return null;
+                return aux > body
+                    ? PadForge.Engine.Data.MappingSetMigrator.MotionAccelAuxSourceDescriptor
+                    : PadForge.Engine.Data.MappingSetMigrator.MotionAccelSourceDescriptor;
+            }
+            return null;
         }
 
         private void StartRecordingInternal(MappingItem mapping,
@@ -385,6 +471,23 @@ namespace PadForge.Services
                 return;
             }
 
+            // A Motion row records a controller's own motion (#475). A
+            // modifier recorded for one is still a button.
+            _motionKind = _paramTarget == ParamTarget.None ? MotionKindFor(mapping.TargetSettingName) : 0;
+            if (_motionKind != 0 && !AnyActiveDeviceHasMotionSensor())
+            {
+                _motionKind = 0;
+                _activeMapping = null;
+                _activeExtraSource = null;
+                _activeDevices.Clear();
+                _baselines.Clear();
+                _isMouseByDevice.Clear();
+                _axisCandidates.Clear();
+                _mainVm.SetStatus(string.Format(Strings.Instance.Status_NoMotionSensorToRecord_Format, mapping.TargetLabel), persist: true);
+                RecordingTimedOut?.Invoke(this, EventArgs.Empty);
+                return;
+            }
+
             _recordingStartTime = DateTime.UtcNow;
             SnapshotGestureBaseline();
 
@@ -417,7 +520,9 @@ namespace PadForge.Services
 
             // Prompt persists through the decay sweep: every session ends in
             // a recorded / canceled / timed-out write, so it cannot burn in.
-            _mainVm.SetStatus(string.Format(Strings.Instance.Status_RecordingPrompt_Format, mapping.TargetLabel), persist: true);
+            _mainVm.SetStatus(string.Format(_motionKind != 0
+                ? Strings.Instance.Status_RecordingMotionPrompt_Format
+                : Strings.Instance.Status_RecordingPrompt_Format, mapping.TargetLabel), persist: true);
         }
 
         /// <summary>
@@ -602,6 +707,22 @@ namespace PadForge.Services
                 if (!_baselines.TryGetValue(dg, out var baseline)) continue;
                 var current = ud.InputState.Clone();
                 if (current == null) continue;
+
+                // A Motion row (#475) records the controller that turns or
+                // shakes, and nothing else.
+                if (_motionKind != 0)
+                {
+                    string motion = DetectMotion(_motionKind, ud, current, baseline);
+                    if (motion != null)
+                    {
+                        _motionKind = 0;
+                        CompleteRecordingWithDescriptor(motion, dg);
+                        return;
+                    }
+                    if (_motionKind == 2 && AccelReferenceMissing(ud, current, baseline))
+                        _baselines[dg] = current;
+                    continue;
+                }
 
                 // ── Wait-for-release phase: skip detection until all buttons/POVs are neutral ──
                 if (_waitForRelease)
@@ -1385,6 +1506,8 @@ namespace PadForge.Services
             if (target.StartsWith("RawAxis", StringComparison.Ordinal)) return false;
             if (target.StartsWith("KbmMouse", StringComparison.Ordinal)
                 || target.StartsWith("KbmScroll", StringComparison.Ordinal)) return false;
+            // The Motion Pitch, Yaw and Roll rows (#475) read a stick whole.
+            if (PadForge.Engine.Data.MappingSetMigrator.IsMotionAxisTarget(target)) return false;
             return true;
         }
 
@@ -1397,6 +1520,11 @@ namespace PadForge.Services
             // Invert only if the user pushed in the wrong direction for the target.
             if (target is "LeftThumbAxisX" or "RightThumbAxisX"
                       or "LeftThumbAxisY" or "RightThumbAxisY")
+                return negRecording ? axisPositive : !axisPositive;
+
+            // The Motion Pitch, Yaw and Roll rows (#475) carry the stick
+            // frame the same way: pitch reads as a Y axis, yaw and roll as X.
+            if (PadForge.Engine.Data.MappingSetMigrator.IsMotionAxisTarget(target))
                 return negRecording ? axisPositive : !axisPositive;
 
             // Extended bidirectional stick axes (HasNegDirection): same logic as gamepad sticks.

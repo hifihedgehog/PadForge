@@ -47,6 +47,11 @@ namespace PadForge.Common.Input
                     // Use non-allocating overload with pre-allocated buffer.
                     int slotCount = settings.FindByPadIndex(padIndex, _padIndexBuffer);
 
+                    // The Motion Pitch, Yaw and Roll rows (#475): this pass's
+                    // values only, so a device that dropped stops turning.
+                    if (_motionRowsActive[padIndex]) CombineMotionRows(padIndex, slotCount);
+                    else CombinedMotionRows[padIndex] = default;
+
                     bool isExtended = SlotControllerTypes[padIndex] is VirtualControllerType.Extended
                                          or VirtualControllerType.Nintendo
                                      && SlotRawHidSurface[padIndex];

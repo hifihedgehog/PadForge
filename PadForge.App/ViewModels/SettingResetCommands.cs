@@ -736,12 +736,42 @@ namespace PadForge.ViewModels
             nameof(IsHalfAxis) or
             nameof(IsBidirectional) or
             nameof(InvertOutput) or
-            nameof(NoInherit);
+            nameof(NoInherit) or
+            nameof(MotionResponse) or
+            nameof(MotionSpeed) or
+            nameof(MotionMinSpeed) or
+            nameof(MotionAngle) or
+            nameof(MotionDeadzone);
 
         private void ResetSetting(string name)
         {
             switch (name)
             {
+                case nameof(MotionResponse):
+                {
+                    MotionResponse = "";
+                    break;
+                }
+                case nameof(MotionSpeed):
+                {
+                    MotionSpeed = Engine.Data.MappingRow.DefaultMotionSpeed;
+                    break;
+                }
+                case nameof(MotionMinSpeed):
+                {
+                    MotionMinSpeed = 0;
+                    break;
+                }
+                case nameof(MotionAngle):
+                {
+                    MotionAngle = Engine.Data.MappingRow.DefaultMotionAngle;
+                    break;
+                }
+                case nameof(MotionDeadzone):
+                {
+                    MotionDeadzone = Engine.Data.MappingRow.DefaultMotionDeadzone;
+                    break;
+                }
                 case nameof(CombineMode):
                 {
                     // Back to the row's default, the one a second source

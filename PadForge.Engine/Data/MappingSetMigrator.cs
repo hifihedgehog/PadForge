@@ -101,6 +101,34 @@ namespace PadForge.Engine.Data
             => !string.IsNullOrEmpty(descriptor)
             && string.Equals(descriptor.Trim(), MotionGyroAuxSourceDescriptor, StringComparison.OrdinalIgnoreCase);
 
+        /// <summary>True for the four bundled three-axis sources, the only
+        /// ones the Motion Gyro and Motion Accelerometer rows read as named.
+        /// Every other row reads them as nothing.</summary>
+        public static bool IsMotionVectorDescriptor(string descriptor)
+        {
+            if (string.IsNullOrEmpty(descriptor)) return false;
+            string d = descriptor.Trim();
+            return string.Equals(d, MotionGyroSourceDescriptor, StringComparison.OrdinalIgnoreCase)
+                || string.Equals(d, MotionAccelSourceDescriptor, StringComparison.OrdinalIgnoreCase)
+                || string.Equals(d, MotionGyroAuxSourceDescriptor, StringComparison.OrdinalIgnoreCase)
+                || string.Equals(d, MotionAccelAuxSourceDescriptor, StringComparison.OrdinalIgnoreCase);
+        }
+
+        // Simulated-motion targets (#475): axis rows whose value turns or
+        // leans the slot's simulated orientation, which the virtual
+        // controller's gyro and accelerometer are then read from. They ride
+        // the slots that carry the Motion rows. Not motion-passthrough rows:
+        // IsMotionTarget stays the two passthrough targets, so these follow
+        // ordinary-row rules everywhere else.
+        public const string MotionPitchTarget = "MotionPitch";
+        public const string MotionYawTarget   = "MotionYaw";
+        public const string MotionRollTarget  = "MotionRoll";
+
+        /// <summary>True for <see cref="MotionPitchTarget"/>,
+        /// <see cref="MotionYawTarget"/> and <see cref="MotionRollTarget"/>.</summary>
+        public static bool IsMotionAxisTarget(string target)
+            => target is MotionPitchTarget or MotionYawTarget or MotionRollTarget;
+
         // Touchpad output targets. Stored as plain string properties on
         // PadSetting (TouchpadX1, TouchpadY1, …, TouchpadClick), reached via
         // the same reflection path as ButtonTargets / AxisTargets. Emitted

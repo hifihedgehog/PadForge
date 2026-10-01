@@ -1085,6 +1085,15 @@ namespace PadForge.ViewModels
         /// Populated by <c>InputService.PopulateAvailableInputs</c>.</summary>
         public ObservableCollection<InputChoice> SlotAvailableInputs { get; } = new();
 
+        /// <summary>The Motion Gyro row's list (#475): only the bundled gyro
+        /// sources, the one kind that row reads. Every other row binds
+        /// <see cref="SlotAvailableInputs"/>, which leaves them out.</summary>
+        public ObservableCollection<InputChoice> SlotMotionGyroInputs { get; } = new();
+
+        /// <summary>The Motion Accelerometer row's list (#475), the bundled
+        /// accelerometer sources.</summary>
+        public ObservableCollection<InputChoice> SlotMotionAccelInputs { get; } = new();
+
         private ICollectionView _slotAvailableInputsView;
         /// <summary>Grouped CollectionView over <see cref="SlotAvailableInputs"/>
         /// keyed on <c>DeviceLabel</c> for the picker's GroupStyle header.</summary>
@@ -1223,11 +1232,14 @@ namespace PadForge.ViewModels
 
         internal void ApplyMappingPickerFilter()
         {
-            // The dropdown side: what every picker OFFERS.
-            var view = SlotAvailableInputsView;
+            // The dropdown side: what every picker OFFERS. The Motion rows'
+            // two lists (#475) take the same filter as the shared one.
             int shown = -1;
-            if (view != null)
+            foreach (var list in new[] { SlotAvailableInputs, SlotMotionGyroInputs, SlotMotionAccelInputs })
             {
+                var view = ReferenceEquals(list, SlotAvailableInputs)
+                    ? SlotAvailableInputsView : CollectionViewSource.GetDefaultView(list);
+                if (view == null) continue;
                 if (HiddenPickerDeviceKeys.Count == 0 && string.IsNullOrEmpty(_mappingInputSearch))
                     view.Filter = null;    // the zero-cost steady state
                 else
@@ -1271,23 +1283,27 @@ namespace PadForge.ViewModels
             OnPropertyChanged(nameof(MappingPickerFilterActive));
         }
 
-        /// <summary>Rebuilds the device-filter popup rows from the shared
-        /// list's current device groups. Called after every picker
+        /// <summary>Rebuilds the device-filter popup rows from the current
+        /// device groups of the slot's three picker lists (the Motion rows
+        /// keep their own two, #475). Called after every picker
         /// repopulation, preserving each group's shown/hidden state.</summary>
         public void RebuildPickerDeviceFilterEntries()
         {
             var seen = new System.Collections.Generic.HashSet<string>(System.StringComparer.OrdinalIgnoreCase);
             PickerDeviceFilterEntries.Clear();
-            foreach (var c in SlotAvailableInputs)
+            foreach (var list in new[] { SlotAvailableInputs, SlotMotionGyroInputs, SlotMotionAccelInputs })
             {
-                string key = PickerFilterKey(c);
-                if (!seen.Add(key)) continue;
-                PickerDeviceFilterEntries.Add(new PickerDeviceFilterEntry(this)
+                foreach (var c in list)
                 {
-                    Key = key,
-                    Label = c.DeviceLabel,
-                    IsShownInternal = !HiddenPickerDeviceKeys.Contains(key),
-                });
+                    string key = PickerFilterKey(c);
+                    if (!seen.Add(key)) continue;
+                    PickerDeviceFilterEntries.Add(new PickerDeviceFilterEntry(this)
+                    {
+                        Key = key,
+                        Label = c.DeviceLabel,
+                        IsShownInternal = !HiddenPickerDeviceKeys.Contains(key),
+                    });
+                }
             }
             ApplyMappingPickerFilter();
         }
@@ -2740,9 +2756,27 @@ namespace PadForge.ViewModels
                 // (delete a row → no contribution from that device on
                 // that sub-channel). Auto-created on assignment for
                 // gyro / accel-capable devices via EnsureMotionRows.
-                Mappings.Add(new MappingItem(Strings.Instance.Mapping_MotionGyro,  "MotionGyro",  MappingCategory.Motion));
-                Mappings.Add(new MappingItem(Strings.Instance.Mapping_MotionAccel, "MotionAccel", MappingCategory.Motion));
+                AddMotionRows();
             }
+        }
+
+        /// <summary>The Motion Gyro and Motion Accelerometer rows, then the
+        /// Motion Pitch, Yaw and Roll rows (#475), at the tail of every grid
+        /// that carries motion (PlayStation, Nintendo, Valve). All five stay
+        /// out of Map All: sensor-capable controllers fill the first two on
+        /// their own, and a press-and-move sweep has nothing to give the
+        /// other three. On a preset whose report carries no motion they all
+        /// carry a note that only the motion server receives it.</summary>
+        private void AddMotionRows()
+        {
+            bool noMotion = PadForge.Common.Input.HMaestroProfileCatalog.ReportCarriesNoMotion(ProfileId);
+            MappingItem Row(string label, string target, string neg = null)
+                => new(label, target, MappingCategory.Motion, neg, includeInMapAll: false) { PresetCarriesNoMotion = noMotion };
+            Mappings.Add(Row(Strings.Instance.Mapping_MotionGyro,  "MotionGyro"));
+            Mappings.Add(Row(Strings.Instance.Mapping_MotionAccel, "MotionAccel"));
+            Mappings.Add(Row(Strings.Instance.Mapping_MotionPitch, MappingSetMigrator.MotionPitchTarget, MappingSetMigrator.MotionPitchTarget + "Neg"));
+            Mappings.Add(Row(Strings.Instance.Mapping_MotionYaw,   MappingSetMigrator.MotionYawTarget,   MappingSetMigrator.MotionYawTarget + "Neg"));
+            Mappings.Add(Row(Strings.Instance.Mapping_MotionRoll,  MappingSetMigrator.MotionRollTarget,  MappingSetMigrator.MotionRollTarget + "Neg"));
         }
 
         /// <summary>
@@ -3025,8 +3059,7 @@ namespace PadForge.ViewModels
                 Mappings.Add(new MappingItem(Strings.Instance.Mapping_RightPadY,     "TouchpadY2",       MappingCategory.Touchpad));
                 Mappings.Add(new MappingItem(Strings.Instance.Mapping_RightPadTouch, "TouchpadContact2", MappingCategory.Touchpad));
 
-                Mappings.Add(new MappingItem(Strings.Instance.Mapping_MotionGyro,  "MotionGyro",  MappingCategory.Motion));
-                Mappings.Add(new MappingItem(Strings.Instance.Mapping_MotionAccel, "MotionAccel", MappingCategory.Motion));
+                AddMotionRows();
                 return;
             }
 
@@ -3093,8 +3126,7 @@ namespace PadForge.ViewModels
 
                 // Motion passthrough, same tail position as the
                 // PlayStation grid.
-                Mappings.Add(new MappingItem(Strings.Instance.Mapping_MotionGyro,  "MotionGyro",  MappingCategory.Motion));
-                Mappings.Add(new MappingItem(Strings.Instance.Mapping_MotionAccel, "MotionAccel", MappingCategory.Motion));
+                AddMotionRows();
                 return;
             }
 
@@ -7822,6 +7854,11 @@ namespace PadForge.ViewModels
                 m.TrimDeadzone = 25;
                 m.TrimRate = 100;
                 m.TrimResetOnRelease = true;
+                m.MotionResponse = "";
+                m.MotionSpeed = Engine.Data.MappingRow.DefaultMotionSpeed;
+                m.MotionMinSpeed = 0;
+                m.MotionAngle = Engine.Data.MappingRow.DefaultMotionAngle;
+                m.MotionDeadzone = Engine.Data.MappingRow.DefaultMotionDeadzone;
                 m.SyncSelectedInputFromDescriptor();
             }
         }

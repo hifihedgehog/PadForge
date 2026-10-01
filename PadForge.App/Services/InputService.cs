@@ -1491,6 +1491,11 @@ namespace PadForge.Services
             PadForge.Engine.Common.Mapping.SourceCoercion.GyroTiltGravityProvider =
                 _inputManager.ReadGyroTiltGravity;
 
+            // The Motion Pitch, Yaw and Roll rows (#475) read a trigger, a
+            // slider or an analog key one way, so a released one is no motion.
+            PadForge.Engine.Common.Mapping.SourceCoercion.SourceRestsAtZeroProvider =
+                Common.Input.InputManager.SourceRestsAtZero;
+
             // Simulated pitch and roll (#472), from the polling thread's
             // per-(device, slot) accelerometer estimator.
             PadForge.Engine.Common.Mapping.SourceCoercion.SimulatedGyroProvider =
@@ -2596,6 +2601,7 @@ namespace PadForge.Services
                 PadForge.Engine.Common.Mapping.SourceCoercion.SlotStickDeflectionProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.GravityProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.GyroTiltGravityProvider = null;
+                PadForge.Engine.Common.Mapping.SourceCoercion.SourceRestsAtZeroProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.SimulatedGyroProvider = null;
                 GyroCalibratorService.UnitIdentityProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.GravityProviderAux = null;
@@ -5724,6 +5730,19 @@ namespace PadForge.Services
                     continue;
                 }
 
+                // The Motion Pitch, Yaw and Roll rows (#475): the slot's
+                // combined row value, shown and lit like a stick axis.
+                if (MappingSetMigrator.IsMotionAxisTarget(target))
+                {
+                    var rowValues = haveEngine ? _inputManager.CombinedMotionRows[padIndex] : default;
+                    float rowValue = target == MappingSetMigrator.MotionPitchTarget ? rowValues.Pitch
+                        : target == MappingSetMigrator.MotionYawTarget ? rowValues.Yaw : rowValues.Roll;
+                    int axisValue = (int)Math.Round(Math.Clamp(rowValue, -1f, 1f) * 32767f);
+                    mapping.CurrentValueText = LiveValueString(axisValue);
+                    mapping.IsInputActive = Math.Abs(axisValue) > 1500;
+                    continue;
+                }
+
                 int? combined = null;
                 if (haveEngine)
                     combined = ReadCombinedOutputValue(padVm, padIndex, outputType, target);
@@ -7162,6 +7181,11 @@ namespace PadForge.Services
                 mapping.TrimDeadzone = 25;
                 mapping.TrimRate = 100;
                 mapping.TrimResetOnRelease = true;
+                mapping.MotionResponse = "";
+                mapping.MotionSpeed = PadForge.Engine.Data.MappingRow.DefaultMotionSpeed;
+                mapping.MotionMinSpeed = 0;
+                mapping.MotionAngle = PadForge.Engine.Data.MappingRow.DefaultMotionAngle;
+                mapping.MotionDeadzone = PadForge.Engine.Data.MappingRow.DefaultMotionDeadzone;
                 if (msRowsByTarget.TryGetValue(target, out var msRow2))
                 {
                     mapping.CombineMode = msRow2.CombineMode ?? "";
@@ -7170,6 +7194,11 @@ namespace PadForge.Services
                     mapping.TrimDeadzone = msRow2.TrimDeadzone;
                     mapping.TrimRate = msRow2.TrimRate;
                     mapping.TrimResetOnRelease = msRow2.TrimResetOnRelease;
+                    mapping.MotionResponse = msRow2.MotionResponse ?? "";
+                    mapping.MotionSpeed = msRow2.MotionSpeed;
+                    mapping.MotionMinSpeed = msRow2.MotionMinSpeed;
+                    mapping.MotionAngle = msRow2.MotionAngle;
+                    mapping.MotionDeadzone = msRow2.MotionDeadzone;
                     if (msRow2.Sources != null)
                     {
                         // Sources[0] is the primary (Direct descriptor or a kind loaded
@@ -7757,14 +7786,17 @@ namespace PadForge.Services
             {
                 mapping.InputSelectedFromDropdown -= OnInputSelectedFromDropdown;
                 mapping.InputSelectedFromDropdown += OnInputSelectedFromDropdown;
-                mapping.UseSharedAvailableInputs(padVm.SlotAvailableInputs);
+                mapping.UseSharedAvailableInputs(PickerListForRow(padVm, mapping.TargetSettingName));
+                mapping.UseSharedParamInputs(padVm.SlotAvailableInputs);
                 mapping.BeginSharedListRebuild();
             }
             try
             {
                 padVm.SlotAvailableInputs.Clear();
+                padVm.SlotMotionGyroInputs.Clear();
+                padVm.SlotMotionAccelInputs.Clear();
                 foreach (var c in flat)
-                    padVm.SlotAvailableInputs.Add(c);
+                    PickerListForChoice(padVm, c.Descriptor).Add(c);
             }
             finally
             {
@@ -7791,6 +7823,33 @@ namespace PadForge.Services
             foreach (var c in flat)
                 if (MacroItem.TryBuildTriggerEntry(c, out _))
                     padVm.SlotMacroTriggerChoices.Add(c);
+        }
+
+        /// <summary>The list a row's source pickers offer (#475). The Motion
+        /// Gyro and Motion Accelerometer rows read only the bundled motion
+        /// sources, so each takes its own list, and every other row takes
+        /// the slot's list, which leaves those sources out.</summary>
+        internal static System.Collections.ObjectModel.ObservableCollection<PadForge.ViewModels.InputChoice> PickerListForRow(
+            PadViewModel padVm, string target) => target switch
+        {
+            PadForge.Engine.Data.MappingSetMigrator.MotionGyroTarget => padVm.SlotMotionGyroInputs,
+            PadForge.Engine.Data.MappingSetMigrator.MotionAccelTarget => padVm.SlotMotionAccelInputs,
+            _ => padVm.SlotAvailableInputs,
+        };
+
+        /// <summary>The list a choice belongs in: a bundled gyro source in the
+        /// Motion Gyro row's, a bundled accelerometer source in the Motion
+        /// Accelerometer row's, everything else in the slot's.</summary>
+        internal static System.Collections.ObjectModel.ObservableCollection<PadForge.ViewModels.InputChoice> PickerListForChoice(
+            PadViewModel padVm, string descriptor)
+        {
+            if (string.Equals(descriptor, PadForge.Engine.Data.MappingSetMigrator.MotionGyroSourceDescriptor, StringComparison.OrdinalIgnoreCase)
+                || PadForge.Engine.Data.MappingSetMigrator.IsMotionGyroAuxDescriptor(descriptor))
+                return padVm.SlotMotionGyroInputs;
+            if (string.Equals(descriptor, PadForge.Engine.Data.MappingSetMigrator.MotionAccelSourceDescriptor, StringComparison.OrdinalIgnoreCase)
+                || PadForge.Engine.Data.MappingSetMigrator.IsMotionAccelAuxDescriptor(descriptor))
+                return padVm.SlotMotionAccelInputs;
+            return padVm.SlotAvailableInputs;
         }
 
         /// <summary>A hidden-device toggle is a persisted preference:
@@ -8179,26 +8238,16 @@ namespace PadForge.Services
                     {
                         Target = srcRow.Target,
                         LayerMask = layer,
-                        CombineMode = srcRow.CombineMode ?? "",
-                        CombineExpression = srcRow.CombineExpression ?? "",
-                        NoInherit = srcRow.NoInherit,
-                        TrimDeadzone = srcRow.TrimDeadzone,
-                        TrimRate = srcRow.TrimRate,
-                        TrimResetOnRelease = srcRow.TrimResetOnRelease,
                         Sources = new System.Collections.Generic.List<Engine.Data.MappingSource>(),
                     };
+                    srcRow.CopySettingsTo(targetRow);
                     ms.Rows.Add(targetRow);
                 }
                 else
                 {
-                    // Carry over the source row's combine choice so a
+                    // Carry over the source row's settings so a
                     // user-authored Sum / Average / Custom comes along.
-                    targetRow.CombineMode = srcRow.CombineMode ?? "";
-                    targetRow.CombineExpression = srcRow.CombineExpression ?? "";
-                    targetRow.NoInherit = srcRow.NoInherit;
-                    targetRow.TrimDeadzone = srcRow.TrimDeadzone;
-                    targetRow.TrimRate = srcRow.TrimRate;
-                    targetRow.TrimResetOnRelease = srcRow.TrimResetOnRelease;
+                    srcRow.CopySettingsTo(targetRow);
                 }
 
                 // Strip the target device's existing Sources — we're
@@ -8298,14 +8347,8 @@ namespace PadForge.Services
                     {
                         Target = r.Target,
                         LayerMask = r.LayerMask ?? "Base",
-                        CombineMode = r.CombineMode ?? "",
-                        CombineExpression = r.CombineExpression ?? "",
-                        NoInherit = r.NoInherit,
-                        TrimDeadzone = r.TrimDeadzone,
-                        TrimRate = r.TrimRate,
-                        TrimResetOnRelease = r.TrimResetOnRelease,
-                        Sources = new System.Collections.Generic.List<Engine.Data.MappingSource>(),
                     };
+                    r.CopySettingsTo(rc);
                     rc.Sources = CopyRowSources(r, s => s.DeviceGuid ?? "", out bool suppressPair);
                     rc.SuppressBipolarPair = suppressPair;
                     copy.Rows.Add(rc);
@@ -8591,19 +8634,15 @@ namespace PadForge.Services
             {
                 if (row == null) continue;
                 var clonedSources = CopyRowSources(row, s => s.DeviceGuid ?? "", out bool suppressPair);
-                result.Add(new Engine.Data.MappingRow
+                var copy = new Engine.Data.MappingRow
                 {
                     Target = row.Target,
                     LayerMask = row.LayerMask ?? "Base",
-                    CombineMode = row.CombineMode ?? "",
-                    CombineExpression = row.CombineExpression ?? "",
-                    NoInherit = row.NoInherit,
-                    TrimDeadzone = row.TrimDeadzone,
-                    TrimRate = row.TrimRate,
-                    TrimResetOnRelease = row.TrimResetOnRelease,
                     Sources = clonedSources,
                     SuppressBipolarPair = suppressPair,
-                });
+                };
+                row.CopySettingsTo(copy);
+                result.Add(copy);
             }
             return result;
         }
@@ -8665,14 +8704,8 @@ namespace PadForge.Services
                 {
                     Target = r.Target,
                     LayerMask = r.LayerMask ?? "Base",
-                    CombineMode = r.CombineMode ?? "",
-                    CombineExpression = r.CombineExpression ?? "",
-                    NoInherit = r.NoInherit,
-                    TrimDeadzone = r.TrimDeadzone,
-                    TrimRate = r.TrimRate,
-                    TrimResetOnRelease = r.TrimResetOnRelease,
-                    Sources = new System.Collections.Generic.List<Engine.Data.MappingSource>(),
                 };
+                r.CopySettingsTo(rc);
                 rc.Sources = CopyRowSources(r,
                     s => RetargetDeviceGuidForSlot(s.DeviceGuid, padIndex), out bool suppressPair);
                 rc.SuppressBipolarPair = suppressPair;
@@ -8839,24 +8872,20 @@ namespace PadForge.Services
                 }
                 if (deviceSources.Count == 0) continue;
 
-                result.Add(new Engine.Data.MappingRow
+                var slice = new Engine.Data.MappingRow
                 {
                     Target = row.Target,
                     LayerMask = row.LayerMask ?? "Base",
-                    CombineMode = row.CombineMode ?? "",
-                    CombineExpression = row.CombineExpression ?? "",
                     // A partial slice inherits layout only for the same first
                     // two stored entries. A new prefix uses the default rule.
                     SuppressBipolarPair = row.CombineMode == "Custom" && row.SuppressBipolarPair
                         && row.Sources.Count >= 2 && deviceSources.Count >= 2
                         && ReferenceEquals(row.Sources[0], deviceSources[0])
                         && ReferenceEquals(row.Sources[1], deviceSources[1]),
-                    NoInherit = row.NoInherit,
-                    TrimDeadzone = row.TrimDeadzone,
-                    TrimRate = row.TrimRate,
-                    TrimResetOnRelease = row.TrimResetOnRelease,
                     Sources = deviceSources,
-                });
+                };
+                row.CopySettingsTo(slice);
+                result.Add(slice);
             }
             return result;
         }
@@ -8936,14 +8965,8 @@ namespace PadForge.Services
                     {
                         Target = r.Target,
                         LayerMask = r.LayerMask ?? "Base",
-                        CombineMode = r.CombineMode ?? "",
-                        CombineExpression = r.CombineExpression ?? "",
-                        NoInherit = r.NoInherit,
-                        TrimDeadzone = r.TrimDeadzone,
-                        TrimRate = r.TrimRate,
-                        TrimResetOnRelease = r.TrimResetOnRelease,
-                        Sources = new System.Collections.Generic.List<Engine.Data.MappingSource>(),
                     };
+                    r.CopySettingsTo(rc);
                     rc.Sources = CopyRowSources(r,
                         s => RetargetDeviceGuidForSlot(s.DeviceGuid, targetSlot), out bool suppressPair);
                     rc.SuppressBipolarPair = suppressPair;
@@ -8961,6 +8984,9 @@ namespace PadForge.Services
             // overlay, so editing slot 1 closed a menu on slot 3. The whole
             // profile swap keeps the global reset, which is what it is for.
             _inputManagerStatic?.ClearMenuRuntimeForSlot(targetSlot);
+            // The copied Motion Pitch, Yaw and Roll rows start the slot's
+            // simulated pose over (#475).
+            Common.Input.InputManager.RequestMotionRowsReset(targetSlot);
         }
 
         /// <summary>Returns true if the given slot's MappingSet carries any
@@ -17170,6 +17196,10 @@ namespace PadForge.Services
                 // PadViewModel from the new layout. The recursion guard
                 // suppresses the ApplyProfile→CompactSlotsForGaps tail call.
                 ApplyProfile(snap);
+
+                // The simulated poses of the Motion Pitch, Yaw and Roll rows
+                // (#475) are keyed by slot index, which just moved.
+                Common.Input.InputManager.RequestMotionRowsReset(-1);
 
                 // Re-place the volumes through the same old→new map. Slots that
                 // no longer exist fall back to the 100% default rather than

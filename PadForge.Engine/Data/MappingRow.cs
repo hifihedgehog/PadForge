@@ -93,8 +93,74 @@ namespace PadForge.Engine.Data
         /// releases until trimmed again.</summary>
         [XmlAttribute] public bool TrimResetOnRelease { get; set; } = true;
 
+        /// <summary>Motion Pitch, Yaw and Roll rows (#475): how deflection
+        /// becomes motion. Empty (the default) is Speed, a turn at a speed
+        /// that stops where it is when released. <c>"Angle"</c> leans the
+        /// controller to an angle and levels it on release, pitch and roll
+        /// only: yaw has no Angle response and reads as Speed. A string so
+        /// the vocabulary can grow append-only.</summary>
+        [XmlAttribute] public string MotionResponse { get; set; } = "";
+
+        /// <summary>Speed response: degrees per second at full deflection.</summary>
+        [XmlAttribute] public int MotionSpeed { get; set; } = DefaultMotionSpeed;
+
+        /// <summary>Speed response: degrees per second just past the
+        /// deadzone, where the turn starts.</summary>
+        [XmlAttribute] public int MotionMinSpeed { get; set; } = 0;
+
+        /// <summary>Angle response: degrees of lean at full deflection.</summary>
+        [XmlAttribute] public int MotionAngle { get; set; } = DefaultMotionAngle;
+
+        /// <summary>Percent of full deflection read as rest.</summary>
+        [XmlAttribute] public int MotionDeadzone { get; set; } = DefaultMotionDeadzone;
+
+        /// <summary>The Angle response's stored value.</summary>
+        public const string MotionResponseAngle = "Angle";
+
+        /// <summary>eden's analog motion binding turns one revolution per
+        /// second at full deflection (input_poller.cpp, rev/s units).</summary>
+        public const int DefaultMotionSpeed = 360;
+
+        /// <summary>Dolphin's Tilt angle default (Tilt.cpp), its value for
+        /// the Wii Remote.</summary>
+        public const int DefaultMotionAngle = 85;
+
+        /// <summary>eden's analog motion binding and cemu-no-gyro both
+        /// read 0.2 of the stick as rest.</summary>
+        public const int DefaultMotionDeadzone = 20;
+
+        /// <summary>The Speed range's top, the model's rate cap.</summary>
+        public const int MaxMotionSpeed = 1600;
+
+        /// <summary>The Angle range's top.</summary>
+        public const int MaxMotionAngle = 90;
+
+        /// <summary>The Deadzone range's top, percent.</summary>
+        public const int MaxMotionDeadzone = 90;
+
         /// <summary>Sources combined to produce this row's output.</summary>
         [XmlElement("Source")]
         public List<MappingSource> Sources { get; set; } = new();
+
+        /// <summary>Copies this row's settings to <paramref name="target"/>:
+        /// everything but the target, the layer, the sources and the
+        /// bipolar-pair flag, which each copy lane sets for itself. Every lane
+        /// that copies a row to a row goes through here (the profile clone,
+        /// Copy, Paste, Copy From, a device's copy and paste, the layer
+        /// copies), so a setting added later reaches all of them.</summary>
+        public void CopySettingsTo(MappingRow target)
+        {
+            target.CombineMode = CombineMode ?? "";
+            target.CombineExpression = CombineExpression ?? "";
+            target.NoInherit = NoInherit;
+            target.TrimDeadzone = TrimDeadzone;
+            target.TrimRate = TrimRate;
+            target.TrimResetOnRelease = TrimResetOnRelease;
+            target.MotionResponse = MotionResponse ?? "";
+            target.MotionSpeed = MotionSpeed;
+            target.MotionMinSpeed = MotionMinSpeed;
+            target.MotionAngle = MotionAngle;
+            target.MotionDeadzone = MotionDeadzone;
+        }
     }
 }

@@ -158,7 +158,7 @@ namespace PadForge.ViewModels
             // another device's group looked like no change at all.
             string wantGuid = (_deviceGuid ?? "").ToLowerInvariant();
             InputChoice descriptorOnlyMatch = null;
-            foreach (var c in ParentMappingItem.AvailableInputs)
+            foreach (var c in ParentMappingItem.ParamInputs)
             {
                 if (c == null || !string.Equals(c.Descriptor, descriptor, StringComparison.Ordinal))
                     continue;

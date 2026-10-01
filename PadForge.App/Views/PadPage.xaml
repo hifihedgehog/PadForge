@@ -4571,6 +4571,82 @@
                                             </StackPanel>
                                         </StackPanel>
 
+                                        <!-- Note (#475): a Motion row holding a source it cannot read, any
+                                             other row holding a Motion source it cannot read, or a preset whose
+                                             report carries no motion. -->
+                                        <TextBlock Text="{Binding MotionRowNote}" TextWrapping="Wrap" MaxWidth="720" HorizontalAlignment="Left"
+                                                   Foreground="{DynamicResource SystemFillColorCautionBrush}" Margin="0,0,0,6"
+                                                   Visibility="{Binding ShowMotionRowNote, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+                                        <!-- Motion Pitch, Yaw and Roll settings (#475). Motion Mode on pitch and
+                                             roll only, then the Speed or Angle settings and the deadzone, laid
+                                             out like the Ramp panel. -->
+                                        <StackPanel Orientation="Vertical" Margin="0,0,0,6"
+                                                    Visibility="{Binding IsMotionAxisRow, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4"
+                                                        Visibility="{Binding CanUseMotionAngle, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <TextBlock Text="{Binding Pad_Mapping_MotionMode, Source={x:Static strings:Strings.Instance}, Converter={StaticResource UpperConverter}}"
+                                                           FontSize="10"
+                                                           FontFamily="{StaticResource TelemetryFontFamily}"
+                                                           VerticalAlignment="Center"
+                                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                                           Margin="0,0,8,0"/>
+                                                <ComboBox ItemsSource="{Binding MotionResponseOptions}"
+                                                          SelectedValue="{Binding MotionResponse, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                          SelectedValuePath="Value"
+                                                          MinWidth="200" Margin="0" Padding="4,2"
+                                                          VerticalAlignment="Center"
+                                                          ToolTip="{Binding Pad_Mapping_MotionMode_Tooltip, Source={x:Static strings:Strings.Instance}}"
+                                                          PreviewKeyDown="MappingComboBox_PreviewKeyDown">
+                                                    <ComboBox.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <StackPanel Orientation="Vertical" Margin="0,2,0,2">
+                                                                <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="12"/>
+                                                                <TextBlock Text="{Binding Description}"
+                                                                           FontSize="10"
+                                                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                                           TextWrapping="Wrap"
+                                                                           Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ComboBoxItem}}, Converter={StaticResource NullToCollapsedConverter}, FallbackValue=Collapsed}"/>
+                                                            </StackPanel>
+                                                        </DataTemplate>
+                                                    </ComboBox.ItemTemplate>
+                                                </ComboBox>
+                                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="MotionResponse" SettingLabel="{Binding Pad_Mapping_MotionMode, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingItem_MotionResponse_4614" Margin="4,0,8,0"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center"
+                                                            Visibility="{Binding ShowMotionSpeedSettings, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Mapping_MotionTopSpeed, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                                    <Slider Value="{Binding MotionSpeed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="10" Maximum="1600" SmallChange="10" LargeChange="100" Width="90" VerticalAlignment="Center"
+                                                            ToolTip="{Binding Pad_Mapping_MotionTopSpeed_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <TextBox Text="{Binding MotionSpeed, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="48" Margin="4,0,0,0" Padding="2,1" VerticalContentAlignment="Center"/>
+                                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="°/s" VerticalAlignment="Center" Margin="2,0,2,0"/>
+                                                    <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="MotionSpeed" SettingLabel="{Binding Pad_Mapping_MotionTopSpeed, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingItem_MotionSpeed_4624" Margin="4,0,8,0"/>
+                                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Mapping_MotionStartSpeed, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                                    <Slider Value="{Binding MotionMinSpeed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Maximum="200" SmallChange="1" LargeChange="10" Width="80" VerticalAlignment="Center"
+                                                            ToolTip="{Binding Pad_Mapping_MotionStartSpeed_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <TextBox Text="{Binding MotionMinSpeed, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="44" Margin="4,0,0,0" Padding="2,1" VerticalContentAlignment="Center"/>
+                                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="°/s" VerticalAlignment="Center" Margin="2,0,2,0"/>
+                                                    <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="MotionMinSpeed" SettingLabel="{Binding Pad_Mapping_MotionStartSpeed, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingItem_MotionMinSpeed_4630" Margin="4,0,8,0"/>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center"
+                                                            Visibility="{Binding ShowMotionAngleSettings, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Mapping_MotionLeanAngle, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                                    <Slider Value="{Binding MotionAngle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="1" Maximum="90" SmallChange="1" LargeChange="5" Width="90" VerticalAlignment="Center"
+                                                            ToolTip="{Binding Pad_Mapping_MotionLeanAngle_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                    <TextBox Text="{Binding MotionAngle, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="40" Margin="4,0,0,0" Padding="2,1" VerticalContentAlignment="Center"/>
+                                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="°" VerticalAlignment="Center" Margin="2,0,2,0"/>
+                                                    <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="MotionAngle" SettingLabel="{Binding Pad_Mapping_MotionLeanAngle, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingItem_MotionAngle_4639" Margin="4,0,8,0"/>
+                                                </StackPanel>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Pad_Mapping_MotionDeadzone, Source={x:Static strings:Strings.Instance}}" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                                <Slider Value="{Binding MotionDeadzone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Maximum="90" SmallChange="1" LargeChange="5" Width="80" VerticalAlignment="Center"
+                                                        ToolTip="{Binding Pad_Mapping_MotionDeadzone_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                                <TextBox Text="{Binding MotionDeadzone, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="36" Margin="4,0,0,0" Padding="2,1" VerticalContentAlignment="Center"/>
+                                                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="%" VerticalAlignment="Center" Margin="2,0,2,0"/>
+                                                <reset:SettingResetButton Command="{Binding ResetSettingCommand}" CommandParameter="MotionDeadzone" SettingLabel="{Binding Pad_Mapping_MotionDeadzone, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingItem_MotionDeadzone_4646" Margin="4,0,8,0"/>
+                                            </StackPanel>
+                                        </StackPanel>
+
                                         <!-- Combine row — visible only on multi-source rows.
                                              Bound to AvailableCombineModes which pairs the
                                              engine's name (MaxAbs / OR / XOR…) with a layman
@@ -5097,7 +5173,7 @@
                                                             <StackPanel Orientation="Vertical" Margin="0,0,4,0">
                                                                 <DockPanel LastChildFill="True">
                                                                     <reset:SettingResetButton DockPanel.Dock="Right" Command="{Binding ResetSettingCommand}" CommandParameter="ParamModifierInputChoice" SettingLabel="{Binding ResetLabel_ModifierInput, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingSourceItem_ParamModifierInputChoice_4848"/>
-                                                                    <ComboBox ItemsSource="{Binding DataContext.AvailableInputsView,
+                                                                    <ComboBox ItemsSource="{Binding DataContext.ParamInputsView,
                                                                                 RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
                                                                               SelectedItem="{Binding ParamModifierInputChoice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                               DisplayMemberPath="DisplayName"
@@ -5347,7 +5423,7 @@
                                                             <StackPanel Orientation="Vertical" Margin="0,0,2,0">
                                                                 <DockPanel LastChildFill="True">
                                                                     <reset:SettingResetButton DockPanel.Dock="Right" Command="{Binding ResetSettingCommand}" CommandParameter="ParamUpInputChoice" SettingLabel="{Binding ResetLabel_UpInput, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingSourceItem_ParamUpInputChoice_5090"/>
-                                                                    <ComboBox ItemsSource="{Binding DataContext.AvailableInputsView,
+                                                                    <ComboBox ItemsSource="{Binding DataContext.ParamInputsView,
                                                                                 RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
                                                                               SelectedItem="{Binding ParamUpInputChoice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                               DisplayMemberPath="DisplayName"
@@ -5409,7 +5485,7 @@
                                                             <StackPanel Orientation="Vertical" Margin="0,0,2,0">
                                                                 <DockPanel LastChildFill="True">
                                                                     <reset:SettingResetButton DockPanel.Dock="Right" Command="{Binding ResetSettingCommand}" CommandParameter="ParamDownInputChoice" SettingLabel="{Binding ResetLabel_DownInput, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingSourceItem_ParamDownInputChoice_5149"/>
-                                                                    <ComboBox ItemsSource="{Binding DataContext.AvailableInputsView,
+                                                                    <ComboBox ItemsSource="{Binding DataContext.ParamInputsView,
                                                                                 RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
                                                                               SelectedItem="{Binding ParamDownInputChoice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                               DisplayMemberPath="DisplayName"
@@ -5507,7 +5583,7 @@
                                                             <StackPanel Orientation="Vertical" Margin="0,0,2,0">
                                                                 <DockPanel LastChildFill="True">
                                                                     <reset:SettingResetButton DockPanel.Dock="Right" Command="{Binding ResetSettingCommand}" CommandParameter="ParamUpInputChoice" SettingLabel="{Binding ResetLabel_UpInput, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingSourceItem_ParamUpInputChoice_5240"/>
-                                                                    <ComboBox ItemsSource="{Binding DataContext.AvailableInputsView,
+                                                                    <ComboBox ItemsSource="{Binding DataContext.ParamInputsView,
                                                                                 RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
                                                                               SelectedItem="{Binding ParamUpInputChoice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                               DisplayMemberPath="DisplayName"
@@ -5569,7 +5645,7 @@
                                                             <StackPanel Orientation="Vertical" Margin="0,0,2,0">
                                                                 <DockPanel LastChildFill="True">
                                                                     <reset:SettingResetButton DockPanel.Dock="Right" Command="{Binding ResetSettingCommand}" CommandParameter="ParamDownInputChoice" SettingLabel="{Binding ResetLabel_DownInput, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingSourceItem_ParamDownInputChoice_5299"/>
-                                                                    <ComboBox ItemsSource="{Binding DataContext.AvailableInputsView,
+                                                                    <ComboBox ItemsSource="{Binding DataContext.ParamInputsView,
                                                                                 RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
                                                                               SelectedItem="{Binding ParamDownInputChoice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                               DisplayMemberPath="DisplayName"
@@ -5859,7 +5935,7 @@
                                                     <StackPanel Orientation="Vertical">
                                                         <DockPanel LastChildFill="True" VerticalAlignment="Center">
                                                             <reset:SettingResetButton DockPanel.Dock="Right" Command="{Binding ResetSettingCommand}" CommandParameter="ParamUpInputChoice" SettingLabel="{Binding ResetLabel_UpInput, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingSourceItem_ParamUpInputChoice_5577"/>
-                                                            <ComboBox ItemsSource="{Binding DataContext.AvailableInputsView, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
+                                                            <ComboBox ItemsSource="{Binding DataContext.ParamInputsView, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
                                                                       SelectedItem="{Binding ParamUpInputChoice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                       DisplayMemberPath="DisplayName" MinWidth="150" MinHeight="28" Padding="4,2"
                                                                       ToolTip="{Binding Pad_Mapping_Up_PickerTooltip, Source={x:Static strings:Strings.Instance}}"
@@ -5903,7 +5979,7 @@
                                                     <StackPanel Orientation="Vertical">
                                                         <DockPanel LastChildFill="True" VerticalAlignment="Center">
                                                             <reset:SettingResetButton DockPanel.Dock="Right" Command="{Binding ResetSettingCommand}" CommandParameter="ParamDownInputChoice" SettingLabel="{Binding ResetLabel_DownInput, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingSourceItem_ParamDownInputChoice_5618"/>
-                                                            <ComboBox ItemsSource="{Binding DataContext.AvailableInputsView, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
+                                                            <ComboBox ItemsSource="{Binding DataContext.ParamInputsView, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
                                                                       SelectedItem="{Binding ParamDownInputChoice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                       DisplayMemberPath="DisplayName" MinWidth="150" MinHeight="28" Padding="4,2"
                                                                       ToolTip="{Binding Pad_Mapping_Down_PickerTooltip, Source={x:Static strings:Strings.Instance}}"
@@ -5947,7 +6023,7 @@
                                                     <StackPanel Orientation="Vertical">
                                                         <DockPanel LastChildFill="True" VerticalAlignment="Center">
                                                             <reset:SettingResetButton DockPanel.Dock="Right" Command="{Binding ResetSettingCommand}" CommandParameter="ParamModifierInputChoice" SettingLabel="{Binding ResetLabel_ModifierInput, Source={x:Static strings:Strings.Instance}}" AutomationProperties.AutomationId="Reset_MappingSourceItem_ParamModifierInputChoice_5659"/>
-                                                            <ComboBox ItemsSource="{Binding DataContext.AvailableInputsView, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
+                                                            <ComboBox ItemsSource="{Binding DataContext.ParamInputsView, RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}}"
                                                                       SelectedItem="{Binding ParamModifierInputChoice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                       DisplayMemberPath="DisplayName" MinWidth="150" MinHeight="28" Padding="4,2"
                                                                       ToolTip="{Binding Pad_Mapping_Modifier_PickerTooltip, Source={x:Static strings:Strings.Instance}}"

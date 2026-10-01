@@ -1993,13 +1993,8 @@ namespace PadForge.Views
             {
                 Target = source.Target,
                 LayerMask = layer,
-                CombineMode = source.CombineMode,
-                CombineExpression = source.CombineExpression,
-                NoInherit = source.NoInherit,
-                TrimDeadzone = source.TrimDeadzone,
-                TrimRate = source.TrimRate,
-                TrimResetOnRelease = source.TrimResetOnRelease,
             };
+            source.CopySettingsTo(copy);
             copy.Sources = PadForge.Services.InputService.CopyRowSources(source,
                 s => s.DeviceGuid ?? "", out bool suppressPair);
             copy.SuppressBipolarPair = suppressPair;

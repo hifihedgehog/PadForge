@@ -189,6 +189,8 @@
   <data name="Status_NoSettingsFile" xml:space="preserve"><value>磁盘上未找到设置文件。</value></data>
   <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>没有已连接的设备可供录制。</value></data>
   <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>录制中：请按下按钮或移动轴以绑定"{0}"...</value></data>
+  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>录制中：请转动或摇动控制器以绑定"{0}"...</value></data>
+  <data name="Status_NoMotionSensorToRecord_Format" xml:space="preserve"><value>此槽位上没有控制器带有用于"{0}"的传感器。</value></data>
   <data name="Status_RecordingCanceled" xml:space="preserve"><value>录制已取消。</value></data>
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>"{0}"的录制已超时。</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>引擎已启动。</value></data>
@@ -1594,6 +1596,9 @@
   <data name="Mapping_TouchpadFingerTouch_Format" xml:space="preserve"><value>触控板 {0} 手指 {1} 触摸</value></data>
   <data name="Mapping_MotionGyro" xml:space="preserve"><value>运动 陀螺仪</value></data>
   <data name="Mapping_MotionAccel" xml:space="preserve"><value>运动 加速度计</value></data>
+  <data name="Mapping_MotionPitch" xml:space="preserve"><value>运动 俯仰</value></data>
+  <data name="Mapping_MotionYaw" xml:space="preserve"><value>运动 偏航</value></data>
+  <data name="Mapping_MotionRoll" xml:space="preserve"><value>运动 翻滚</value></data>
   <data name="Key_NumpadMultiply" xml:space="preserve"><value>数字键盘 *</value></data>
   <data name="Key_NumpadAdd" xml:space="preserve"><value>数字键盘 +</value></data>
   <data name="Key_NumpadSubtract" xml:space="preserve"><value>数字键盘 -</value></data>
@@ -3033,6 +3038,23 @@
   <data name="Pad_Mapping_TrimDeadzone_Tooltip" xml:space="preserve"><value>低于此百分比的摇杆偏移会被忽略，因此用同一摇杆转向时不会碰动保持的扳机值。只有摇杆更大幅度的纵向推动才会调整它。</value></data>
   <data name="Pad_Mapping_TrimRate" xml:space="preserve"><value>微调速度</value></data>
   <data name="Pad_Mapping_TrimRate_Tooltip" xml:space="preserve"><value>摇杆推到底时保持值滑动的速度，以每秒占扳机行程的百分比表示。100 表示一秒内从空到满。</value></data>
+  <data name="Pad_Mapping_MotionMode" xml:space="preserve"><value>运动模式</value></data>
+  <data name="Pad_Mapping_MotionMode_Tooltip" xml:space="preserve"><value>摇杆偏移如何移动虚拟控制器。速度使其旋转，角度使其倾斜。</value></data>
+  <data name="Pad_Mapping_MotionSpeed_Name" xml:space="preserve"><value>速度</value></data>
+  <data name="Pad_Mapping_MotionSpeed_Description" xml:space="preserve"><value>偏移量决定控制器旋转的快慢。松开后，它停在当前位置。</value></data>
+  <data name="Pad_Mapping_MotionAngle_Name" xml:space="preserve"><value>角度</value></data>
+  <data name="Pad_Mapping_MotionAngle_Description" xml:space="preserve"><value>偏移量决定控制器倾斜的程度。松开后，它回到水平。</value></data>
+  <data name="Pad_Mapping_MotionTopSpeed" xml:space="preserve"><value>最高速度</value></data>
+  <data name="Pad_Mapping_MotionTopSpeed_Tooltip" xml:space="preserve"><value>推到底时的旋转速度，单位为度/秒。</value></data>
+  <data name="Pad_Mapping_MotionStartSpeed" xml:space="preserve"><value>起始速度</value></data>
+  <data name="Pad_Mapping_MotionStartSpeed_Tooltip" xml:space="preserve"><value>刚越过死区时的旋转速度，单位为度/秒。Cemu 和 eden 会随时间把低于约 20 度/秒的持续旋转当作漂移减掉，因此在这些程序中请让持续旋转保持在此值以上。</value></data>
+  <data name="Pad_Mapping_MotionLeanAngle" xml:space="preserve"><value>倾斜角度</value></data>
+  <data name="Pad_Mapping_MotionLeanAngle_Tooltip" xml:space="preserve"><value>推到底时的倾斜角度，单位为度。</value></data>
+  <data name="Pad_Mapping_MotionDeadzone" xml:space="preserve"><value>运动死区</value></data>
+  <data name="Pad_Mapping_MotionDeadzone_Tooltip" xml:space="preserve"><value>低于此百分比的偏移视为静止，因此摇杆漂移不会使控制器旋转。</value></data>
+  <data name="Pad_Mapping_MotionRowUnreadNote" xml:space="preserve"><value>此行不读取摇杆和按钮。请将它们映射到运动 俯仰、运动 偏航或运动 翻滚，然后从这里移除。</value></data>
+  <data name="Pad_Mapping_MotionSourceElsewhereNote" xml:space="preserve"><value>运动 陀螺仪和运动 加速度计来源只在运动 陀螺仪和运动 加速度计行上起作用。</value></data>
+  <data name="Pad_Mapping_MotionPresetNote" xml:space="preserve"><value>此预设的报告不携带运动数据。槽位 1 至 4 的体感服务器 (DSU) 仍会收到。</value></data>
   <data name="Pad_Mapping_TrimReset" xml:space="preserve"><value>松开时重置</value></data>
   <data name="Pad_Mapping_TrimReset_Tooltip" xml:space="preserve"><value>勾选时，松开扳机会让保持值回到 100%，下次按下从满值开始。取消勾选时，微调后的值在松开后保留，直到再次调整。</value></data>
   <data name="Pad_ResetGuideLed" xml:space="preserve"><value>重置指南键 LED</value></data>
@@ -3377,7 +3399,7 @@
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>循环</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>切换按键 {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>陀螺仪重新居中</value></data>
-  <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>按下时将手柄累积的陀螺仪瞄准基准归零。平滑历史被清除，Motion Lean 中立点重新捕获，重力估计从控制器当前姿态重新初始化。</value></data>
+  <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>按下时将手柄累积的陀螺仪瞄准基准归零。平滑历史被清除，Motion Lean 中立点重新捕获，重力估计从控制器当前姿态重新初始化，运动 俯仰、偏航和翻滚行产生的旋转被撤销。</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>菜单</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>菜单可以把物理摇杆或触摸板变成屏幕上的环形或网格菜单。添加菜单,选择打开方式,然后为每个单元格设置标签和绑定。</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>菜单 {0}</value></data>

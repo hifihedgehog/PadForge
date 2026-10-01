@@ -65,6 +65,7 @@ namespace PadForge.ViewModels
 
         private void OnExtraSourcesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
+            RaiseMotionRowNote();
             OnPropertyChanged(nameof(IsMultiSource));
             OnPropertyChanged(nameof(HasExtraSources));
             OnPropertyChanged(nameof(HasAnySource));
@@ -177,6 +178,9 @@ namespace PadForge.ViewModels
             {
                 OnPropertyChanged(nameof(HasAnySource));
             }
+            if (e.PropertyName == nameof(MappingSourceItem.Descriptor)
+                || e.PropertyName == nameof(MappingSourceItem.Kind))
+                RaiseMotionRowNote();
         }
 
         /// <summary>Re-syncs a single extra source's
@@ -214,7 +218,8 @@ namespace PadForge.ViewModels
                     || t.StartsWith("KbmMouse", StringComparison.Ordinal)
                     || t.StartsWith("KbmScroll", StringComparison.Ordinal)
                     || t.StartsWith("MidiCC", StringComparison.Ordinal)
-                    || IsVrAxisTarget(t))
+                    || IsVrAxisTarget(t)
+                    || Engine.Data.MappingSetMigrator.IsMotionAxisTarget(t))
                     return false;
                 if (t == "LeftTrigger" || t == "RightTrigger") return false;
                 return true;
@@ -522,6 +527,7 @@ namespace PadForge.ViewModels
                     OnPropertyChanged(nameof(IsMouseMotionSource));
                     OnPropertyChanged(nameof(IsGenericSensitivitySource));
                     OnPropertyChanged(nameof(ShouldShowEmptyDirectionHint));
+                    RaiseMotionRowNote();
                     // Toggling the primary source flips the row's
                     // effective source count, which can change whether
                     // a custom formula's `a` reference is in range.
@@ -725,6 +731,49 @@ namespace PadForge.ViewModels
         /// row suppresses selection sync across the one mutation and
         /// re-resolves from its own stored descriptor afterward.</summary>
         internal void BeginSharedListRebuild() => _suppressSelectionSync = true;
+
+        private ObservableCollection<InputChoice> _paramInputs;
+        /// <summary>The slot's full list, for the modifier and Up and Down
+        /// pickers and their lookups. It differs from
+        /// <see cref="AvailableInputs"/> only on the Motion rows (#475),
+        /// whose source pickers offer the bundled motion sources alone while
+        /// an InvertOnHold modifier still needs a button.</summary>
+        public ObservableCollection<InputChoice> ParamInputs => _paramInputs ?? _availableInputs;
+
+        private ICollectionView _paramInputsView;
+        /// <summary>The grouped view of <see cref="ParamInputs"/>.</summary>
+        public ICollectionView ParamInputsView
+        {
+            get
+            {
+                if (_paramInputs == null) return AvailableInputsView;
+                if (_paramInputsView == null)
+                {
+                    _paramInputsView = CollectionViewSource.GetDefaultView(_paramInputs);
+                    if (_paramInputsView != null
+                        && _paramInputsView.GroupDescriptions != null
+                        && _paramInputsView.GroupDescriptions.Count == 0)
+                    {
+                        _paramInputsView.GroupDescriptions.Add(
+                            new PropertyGroupDescription(nameof(InputChoice.DeviceLabel)));
+                    }
+                }
+                return _paramInputsView;
+            }
+        }
+
+        /// <summary>Points the modifier and Up and Down pickers at the slot's
+        /// full list. Call after <see cref="UseSharedAvailableInputs"/>: the
+        /// same list as the row's own collapses back to it.</summary>
+        internal void UseSharedParamInputs(ObservableCollection<InputChoice> full)
+        {
+            if (ReferenceEquals(full, _availableInputs)) full = null;
+            if (ReferenceEquals(_paramInputs, full)) return;
+            _paramInputs = full;
+            _paramInputsView = null;
+            OnPropertyChanged(nameof(ParamInputs));
+            OnPropertyChanged(nameof(ParamInputsView));
+        }
 
         internal void EndSharedListRebuild()
         {
@@ -1465,7 +1514,8 @@ namespace PadForge.ViewModels
                 var t = TargetSettingName;
                 if (t.Contains("ThumbAxis") || t.StartsWith("RawAxis")
                     || t.StartsWith("KbmMouse") || t.StartsWith("KbmScroll")
-                    || t.StartsWith("MidiCC") || IsVrAxisTarget(t))
+                    || t.StartsWith("MidiCC") || IsVrAxisTarget(t)
+                    || Engine.Data.MappingSetMigrator.IsMotionAxisTarget(t))
                     return false;
                 if (t == "LeftTrigger" || t == "RightTrigger")
                     return false;
@@ -1672,14 +1722,16 @@ namespace PadForge.ViewModels
         // re-fire when the list mutates.
 
         /// <summary>True when this row's Target is a bipolar stick axis
-        /// (LeftThumbAxisX/Y, RightThumbAxisX/Y). Drives the per-source
+        /// (LeftThumbAxisX/Y, RightThumbAxisX/Y) or one of the Motion
+        /// Pitch, Yaw and Roll rows (#475). Drives the per-source
         /// direction-badge visibility — badges only make sense for the
         /// "+/−" interpretation of button sources on a bipolar axis.</summary>
         public bool IsBipolarAxisTarget =>
             string.Equals(TargetSettingName, "LeftThumbAxisX", StringComparison.Ordinal)
          || string.Equals(TargetSettingName, "LeftThumbAxisY", StringComparison.Ordinal)
          || string.Equals(TargetSettingName, "RightThumbAxisX", StringComparison.Ordinal)
-         || string.Equals(TargetSettingName, "RightThumbAxisY", StringComparison.Ordinal);
+         || string.Equals(TargetSettingName, "RightThumbAxisY", StringComparison.Ordinal)
+         || Engine.Data.MappingSetMigrator.IsMotionAxisTarget(TargetSettingName);
 
         /// <summary>True when this row's Target is one of the touchpad
         /// X/Y position axes (TouchpadX1/Y1/X2/Y2). The Custom formula
@@ -2302,7 +2354,8 @@ namespace PadForge.ViewModels
                 // rows are buttons to the engine (EvalTouchpadButton).
                 || IsTouchpadAxisTarget
                 || IsVrAxisTarget(t)
-                || Engine.Data.MappingSetMigrator.IsMotionTarget(t);
+                || Engine.Data.MappingSetMigrator.IsMotionTarget(t)
+                || Engine.Data.MappingSetMigrator.IsMotionAxisTarget(t);
             CombineMode = isAxis ? "MaxAbs" : "OR";
         }
 

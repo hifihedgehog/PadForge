@@ -36,6 +36,8 @@ namespace PadForge.Common.Input
             // a coast could survive a profile switch and resume under the
             // new profile. Same hygiene tier as the lean neutrals.
             SourceCoercion.ResetTouchMomentum();
+            // The Motion Pitch, Yaw and Roll rows' simulated pose (#475).
+            RequestMotionRowsReset(-1);
         }
 
         /// <summary>Drops one slot's steering and flick state. Called when a
@@ -49,6 +51,8 @@ namespace PadForge.Common.Input
         {
             if (slotIndex < 0 || slotIndex >= _slotSourceKindRuntime.Length) return;
             _slotSourceKindRuntime[slotIndex]?.ResetForSlot(slotIndex);
+            // Replaced rows start the simulated pose over too (#475).
+            RequestMotionRowsReset(slotIndex);
             // A wholesale row replacement drops the slot's coast state too
             // (#291), the same reasoning as the steering accumulators: a
             // re-authored mapping must not inherit a mid-flight ball.
@@ -2425,6 +2429,10 @@ namespace PadForge.Common.Input
                 var row = rowsSnapshot[rowIdx];
                 if (row == null) continue;
                 if (string.IsNullOrEmpty(row.Target)) continue;
+                // The Motion Pitch, Yaw and Roll rows (#475) drive the slot's
+                // simulated motion, not a gamepad field. The motion pass in
+                // UpdateOutputStates reads them.
+                if (MappingSetMigrator.IsMotionAxisTarget(row.Target)) continue;
 
                 // Layer-row picking. Default = replace: when active mask is
                 // non-Base, only that layer's rows fire (Base entirely
@@ -3521,7 +3529,8 @@ namespace PadForge.Common.Input
         internal static bool TargetIsBipolarAxis(string target)
             => target == "LeftThumbAxisX" || target == "LeftThumbAxisY"
             || target == "RightThumbAxisX" || target == "RightThumbAxisY"
-            || (target != null && target.StartsWith("RawAxis", System.StringComparison.Ordinal));
+            || (target != null && target.StartsWith("RawAxis", System.StringComparison.Ordinal))
+            || MappingSetMigrator.IsMotionAxisTarget(target);
 
         /// <summary>Snapshots row.Sources into the thread-local pooled
         /// buffer. The save path mutates row.Sources without locking;

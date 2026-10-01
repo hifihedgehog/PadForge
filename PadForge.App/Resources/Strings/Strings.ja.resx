@@ -189,6 +189,8 @@
   <data name="Status_NoSettingsFile" xml:space="preserve"><value>ディスクに設定ファイルが見つかりません。</value></data>
   <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>記録するデバイスが接続されていません。</value></data>
   <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>記録中: 「{0}」のボタンを押すか軸を動かしてください...</value></data>
+  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>記録中: 「{0}」のためにコントローラーを回すか振ってください...</value></data>
+  <data name="Status_NoMotionSensorToRecord_Format" xml:space="preserve"><value>このスロットのどのコントローラーにも「{0}」用のセンサーがありません。</value></data>
   <data name="Status_RecordingCanceled" xml:space="preserve"><value>記録がキャンセルされました。</value></data>
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>「{0}」の記録がタイムアウトしました。</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>エンジンが開始されました。</value></data>
@@ -1594,6 +1596,9 @@
   <data name="Mapping_TouchpadFingerTouch_Format" xml:space="preserve"><value>タッチパッド {0} 指 {1} タッチ</value></data>
   <data name="Mapping_MotionGyro" xml:space="preserve"><value>モーション ジャイロ</value></data>
   <data name="Mapping_MotionAccel" xml:space="preserve"><value>モーション 加速度センサー</value></data>
+  <data name="Mapping_MotionPitch" xml:space="preserve"><value>モーション ピッチ</value></data>
+  <data name="Mapping_MotionYaw" xml:space="preserve"><value>モーション ヨー</value></data>
+  <data name="Mapping_MotionRoll" xml:space="preserve"><value>モーション ロール</value></data>
   <data name="Mapping_MotionLean" xml:space="preserve"><value>モーションリーン</value></data>
   <data name="Key_NumpadMultiply" xml:space="preserve"><value>テンキー *</value></data>
   <data name="Key_NumpadAdd" xml:space="preserve"><value>テンキー +</value></data>
@@ -3033,6 +3038,23 @@
   <data name="Pad_Mapping_TrimDeadzone_Tooltip" xml:space="preserve"><value>この割合未満のスティックの倒し込みは無視されるため、同じスティックでの操舵が保持中のトリガーレベルを揺らすことはありません。スティックを縦方向へ強く倒したときだけ調整されます。</value></data>
   <data name="Pad_Mapping_TrimRate" xml:space="preserve"><value>トリム速度</value></data>
   <data name="Pad_Mapping_TrimRate_Tooltip" xml:space="preserve"><value>スティックを最大まで倒したときに保持レベルが動く速さを、トリガー範囲に対する毎秒のパーセントで指定します。100 なら 1 秒で空から最大まで動きます。</value></data>
+  <data name="Pad_Mapping_MotionMode" xml:space="preserve"><value>モーション モード</value></data>
+  <data name="Pad_Mapping_MotionMode_Tooltip" xml:space="preserve"><value>倒し込みで仮想コントローラーをどう動かすかを選びます。速度は回転させ、角度は傾けます。</value></data>
+  <data name="Pad_Mapping_MotionSpeed_Name" xml:space="preserve"><value>速度</value></data>
+  <data name="Pad_Mapping_MotionSpeed_Description" xml:space="preserve"><value>倒し込みの量でコントローラーが回転する速さが決まります。離すとその向きのまま止まります。</value></data>
+  <data name="Pad_Mapping_MotionAngle_Name" xml:space="preserve"><value>角度</value></data>
+  <data name="Pad_Mapping_MotionAngle_Description" xml:space="preserve"><value>倒し込みの量でコントローラーが傾く角度が決まります。離すと水平に戻ります。</value></data>
+  <data name="Pad_Mapping_MotionTopSpeed" xml:space="preserve"><value>最高速度</value></data>
+  <data name="Pad_Mapping_MotionTopSpeed_Tooltip" xml:space="preserve"><value>最大まで倒したときの回転速度 (度/秒)。</value></data>
+  <data name="Pad_Mapping_MotionStartSpeed" xml:space="preserve"><value>開始速度</value></data>
+  <data name="Pad_Mapping_MotionStartSpeed_Tooltip" xml:space="preserve"><value>デッドゾーンを越えた直後の回転速度 (度/秒)。Cemu と eden は約 20 度/秒未満の持続した回転を時間とともにドリフトとして差し引くため、そこでは持続する回転をそれより速くしてください。</value></data>
+  <data name="Pad_Mapping_MotionLeanAngle" xml:space="preserve"><value>傾き角度</value></data>
+  <data name="Pad_Mapping_MotionLeanAngle_Tooltip" xml:space="preserve"><value>最大まで倒したときの傾き (度)。</value></data>
+  <data name="Pad_Mapping_MotionDeadzone" xml:space="preserve"><value>モーション デッドゾーン</value></data>
+  <data name="Pad_Mapping_MotionDeadzone_Tooltip" xml:space="preserve"><value>この割合未満の倒し込みは静止として扱うため、スティックのドリフトでコントローラーが回転しません。</value></data>
+  <data name="Pad_Mapping_MotionRowUnreadNote" xml:space="preserve"><value>この行ではスティックとボタンは読み取られません。モーション ピッチ、モーション ヨー、モーション ロールに割り当ててから、ここから削除してください。</value></data>
+  <data name="Pad_Mapping_MotionSourceElsewhereNote" xml:space="preserve"><value>モーション ジャイロとモーション 加速度センサーのソースは、モーション ジャイロとモーション 加速度センサーの行でのみ機能します。</value></data>
+  <data name="Pad_Mapping_MotionPresetNote" xml:space="preserve"><value>このプリセットのレポートはモーションを運びません。スロット 1 から 4 では、モーションサーバー (DSU) が引き続き受け取ります。</value></data>
   <data name="Pad_Mapping_TrimReset" xml:space="preserve"><value>リリース時にリセット</value></data>
   <data name="Pad_Mapping_TrimReset_Tooltip" xml:space="preserve"><value>チェックすると、トリガーを離したときに保持レベルが 100% に戻り、次の押下は最大から始まります。チェックなしの場合、トリム済みレベルは再調整するまでリリース後も保持されます。</value></data>
   <data name="Pad_ResetGuideLed" xml:space="preserve"><value>ガイドボタン LED をリセット</value></data>
@@ -3377,7 +3399,7 @@
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>折り返し</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>キー {0} をトグル</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>ジャイロを再センタリング</value></data>
-  <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>押すと、パッドに蓄積されたジャイロ照準の基準をゼロにします。スムージング履歴がクリアされ、Motion Lean のニュートラルが再取得され、重力推定がコントローラーの現在の姿勢から再設定されます。</value></data>
+  <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>押すと、パッドに蓄積されたジャイロ照準の基準をゼロにします。スムージング履歴がクリアされ、Motion Lean のニュートラルが再取得され、重力推定がコントローラーの現在の姿勢から再設定され、モーション ピッチ、ヨー、ロールの行による回転が取り消されます。</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>メニュー</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>メニューは、物理的なスティックやタッチパッドを画面上のリングやグリッドに変えます。メニューを追加し、開く操作を選んでから、各セルにラベルと割り当てを設定してください。</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>メニュー {0}</value></data>

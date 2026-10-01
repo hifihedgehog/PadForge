@@ -1883,8 +1883,11 @@ namespace PadForge
                     _pendingNegMapping = result.Mapping;
 
                     // Neg X = left, Neg Y = up (Y inverted by NegateAxis in Step 3).
+                    // Motion Yaw and Motion Roll (#475) turn left and right.
                     bool isXAxis2 = result.Mapping.TargetSettingName.Contains("AxisX")
-                        || result.Mapping.TargetLabel.EndsWith(" X", StringComparison.Ordinal);
+                        || result.Mapping.TargetLabel.EndsWith(" X", StringComparison.Ordinal)
+                        || result.Mapping.TargetSettingName is Engine.Data.MappingSetMigrator.MotionYawTarget
+                            or Engine.Data.MappingSetMigrator.MotionRollTarget;
                     string dirHint = isXAxis2 ? Strings.Instance.Status_DirectionLeft : Strings.Instance.Status_DirectionUp;
                     _viewModel.SetStatus(string.Format(Strings.Instance.Status_NowMap_Format, result.Mapping.TargetLabel, dirHint), persist: true);
 
@@ -2089,7 +2092,8 @@ namespace PadForge
                     // For Extended custom sticks: label ends with " Y" (e.g. "Stick 1 Y").
                     bool isYAxis = mapping.HasNegDirection
                         && (mapping.TargetSettingName.Contains("AxisY")
-                            || mapping.TargetLabel.EndsWith(" Y", StringComparison.Ordinal));
+                            || mapping.TargetLabel.EndsWith(" Y", StringComparison.Ordinal)
+                            || mapping.TargetSettingName == Engine.Data.MappingSetMigrator.MotionPitchTarget);
                     bool isYFirstPhase = isYAxis && !capturedPad.MapAllRecordingNeg;
                     _negChainCompletedMapping = null;
                     if (isYFirstPhase)
@@ -7263,7 +7267,8 @@ namespace PadForge
                     // with opposite Invert flags.
                     bool isYAxis = mi.HasNegDirection
                         && (mi.TargetSettingName.Contains("AxisY")
-                            || mi.TargetLabel.EndsWith(" Y", StringComparison.Ordinal));
+                            || mi.TargetLabel.EndsWith(" Y", StringComparison.Ordinal)
+                            || mi.TargetSettingName == Engine.Data.MappingSetMigrator.MotionPitchTarget);
                     if (isYAxis)
                         _pendingNegMapping = mi;
 
@@ -7309,6 +7314,11 @@ namespace PadForge
                     or nameof(MappingItem.TrimDeadzone)
                     or nameof(MappingItem.TrimRate)
                     or nameof(MappingItem.TrimResetOnRelease)
+                    or nameof(MappingItem.MotionResponse)
+                    or nameof(MappingItem.MotionSpeed)
+                    or nameof(MappingItem.MotionMinSpeed)
+                    or nameof(MappingItem.MotionAngle)
+                    or nameof(MappingItem.MotionDeadzone)
                     or nameof(MappingItem.InvertOutput)
                     or nameof(MappingItem.ParamAccel))
                 {
@@ -7336,7 +7346,12 @@ namespace PadForge
                         or nameof(MappingItem.NoInherit)
                         or nameof(MappingItem.TrimDeadzone)
                         or nameof(MappingItem.TrimRate)
-                        or nameof(MappingItem.TrimResetOnRelease))
+                        or nameof(MappingItem.TrimResetOnRelease)
+                        or nameof(MappingItem.MotionResponse)
+                        or nameof(MappingItem.MotionSpeed)
+                        or nameof(MappingItem.MotionMinSpeed)
+                        or nameof(MappingItem.MotionAngle)
+                        or nameof(MappingItem.MotionDeadzone))
                         _settingsService.PushUiExtraSourcesIntoSlotMappingSets();
                 }
             };
@@ -7361,7 +7376,8 @@ namespace PadForge
                 {
                     bool isYAxisExtra = mapping.HasNegDirection
                         && (mapping.TargetSettingName.Contains("AxisY")
-                            || mapping.TargetLabel.EndsWith(" Y", StringComparison.Ordinal));
+                            || mapping.TargetLabel.EndsWith(" Y", StringComparison.Ordinal)
+                            || mapping.TargetSettingName == Engine.Data.MappingSetMigrator.MotionPitchTarget);
                     _recorderService.StartRecordingExtraSource(mapping, msi, capturedPad.PadIndex,
                         negRecording: isYAxisExtra);
                 };

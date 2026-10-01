@@ -80,6 +80,7 @@ namespace PadForge.Common.Input
                     {
                         us.OutputState = default;
                         us.RawMappedState = default; // preview must not freeze on a removed device
+                        us.MotionRowsOutputState = default;
                         continue;
                     }
                     // Device exists but input temporarily unavailable — keep
@@ -204,6 +205,11 @@ namespace PadForge.Common.Input
                         us.VrRawOutputState = MapInputToVrRaw(
                             ud.InputState, ps, ms, deviceGuidStr, slot);
                     }
+
+                    // The Motion Pitch, Yaw and Roll rows (#475), stamped with
+                    // this pass so Step 4 drops a device that stops answering.
+                    if (slot >= 0 && slot < MaxPads && _motionRowsActive[slot])
+                        us.MotionRowsOutputState = EvaluateMotionRows(ud.InputState, ms, deviceGuidStr, slot);
 
                     // Touchpad state for every slot whose wire carries a
                     // touch surface: PlayStation, and the Valve frames on

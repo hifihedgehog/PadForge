@@ -1210,5 +1210,35 @@
     "Id": "Reset_SettingsViewModel_DiagnosticsLoggingEnabled_674",
     "Owner": "PadForge.ViewModels.SettingsViewModel",
     "Property": "DiagnosticsLoggingEnabled"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingItem_MotionResponse_4614",
+    "Owner": "PadForge.ViewModels.MappingItem",
+    "Property": "MotionResponse"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingItem_MotionSpeed_4624",
+    "Owner": "PadForge.ViewModels.MappingItem",
+    "Property": "MotionSpeed"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingItem_MotionMinSpeed_4630",
+    "Owner": "PadForge.ViewModels.MappingItem",
+    "Property": "MotionMinSpeed"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingItem_MotionAngle_4639",
+    "Owner": "PadForge.ViewModels.MappingItem",
+    "Property": "MotionAngle"
+  },
+  {
+    "File": "PadForge.App/Views/PadPage.xaml",
+    "Id": "Reset_MappingItem_MotionDeadzone_4646",
+    "Owner": "PadForge.ViewModels.MappingItem",
+    "Property": "MotionDeadzone"
   }
 ]

@@ -189,6 +189,8 @@
   <data name="Status_NoSettingsFile" xml:space="preserve"><value>Geen instellingenbestand gevonden op schijf.</value></data>
   <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>Geen apparaat verbonden om op te nemen.</value></data>
   <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>Opname: druk op een knop of beweeg een as voor "{0}"...</value></data>
+  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>Opname: draai of schud een controller voor "{0}"...</value></data>
+  <data name="Status_NoMotionSensorToRecord_Format" xml:space="preserve"><value>Geen controller op dit slot heeft een sensor voor "{0}".</value></data>
   <data name="Status_RecordingCanceled" xml:space="preserve"><value>Opname geannuleerd.</value></data>
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Opname verlopen voor "{0}".</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Engine gestart.</value></data>
@@ -1614,6 +1616,9 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Mapping_TouchpadFingerTouch_Format" xml:space="preserve"><value>Touchpad {0} vinger {1} aanraking</value></data>
   <data name="Mapping_MotionGyro" xml:space="preserve"><value>Beweging Gyro</value></data>
   <data name="Mapping_MotionAccel" xml:space="preserve"><value>Beweging Versnellingsmeter</value></data>
+  <data name="Mapping_MotionPitch" xml:space="preserve"><value>Beweging Pitch</value></data>
+  <data name="Mapping_MotionYaw" xml:space="preserve"><value>Beweging Yaw</value></data>
+  <data name="Mapping_MotionRoll" xml:space="preserve"><value>Beweging Roll</value></data>
   <data name="Mapping_MotionLean" xml:space="preserve"><value>Bewegingshelling</value></data>
   <data name="Key_NumpadMultiply" xml:space="preserve"><value>Numeriek toetsenbord *</value></data>
   <data name="Key_NumpadAdd" xml:space="preserve"><value>Numeriek toetsenbord +</value></data>
@@ -3053,6 +3058,23 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Pad_Mapping_TrimDeadzone_Tooltip" xml:space="preserve"><value>Stickuitslag onder dit percentage wordt genegeerd, zodat sturen met dezelfde stick het vastgehouden triggerniveau nooit verschuift. Alleen de sterkere verticale uitslagen van de stick passen het aan.</value></data>
   <data name="Pad_Mapping_TrimRate" xml:space="preserve"><value>Trimsnelheid</value></data>
   <data name="Pad_Mapping_TrimRate_Tooltip" xml:space="preserve"><value>Hoe snel een volledig uitgeslagen stick het vastgehouden niveau verschuift, in procent van het triggerbereik per seconde. 100 gaat in één seconde van leeg naar vol.</value></data>
+  <data name="Pad_Mapping_MotionMode" xml:space="preserve"><value>Bewegingsmodus</value></data>
+  <data name="Pad_Mapping_MotionMode_Tooltip" xml:space="preserve"><value>Hoe de uitslag de virtuele controller beweegt. Snelheid draait hem, Hoek kantelt hem.</value></data>
+  <data name="Pad_Mapping_MotionSpeed_Name" xml:space="preserve"><value>Snelheid</value></data>
+  <data name="Pad_Mapping_MotionSpeed_Description" xml:space="preserve"><value>De uitslag bepaalt hoe snel de controller draait. Bij loslaten blijft hij staan waar hij is.</value></data>
+  <data name="Pad_Mapping_MotionAngle_Name" xml:space="preserve"><value>Hoek</value></data>
+  <data name="Pad_Mapping_MotionAngle_Description" xml:space="preserve"><value>De uitslag bepaalt hoe ver de controller kantelt. Bij loslaten komt hij weer vlak te liggen.</value></data>
+  <data name="Pad_Mapping_MotionTopSpeed" xml:space="preserve"><value>Topsnelheid</value></data>
+  <data name="Pad_Mapping_MotionTopSpeed_Tooltip" xml:space="preserve"><value>Draaisnelheid bij volledige uitslag, in graden per seconde.</value></data>
+  <data name="Pad_Mapping_MotionStartSpeed" xml:space="preserve"><value>Startsnelheid</value></data>
+  <data name="Pad_Mapping_MotionStartSpeed_Tooltip" xml:space="preserve"><value>Draaisnelheid net voorbij de deadzone, in graden per seconde. Cemu en eden trekken een vastgehouden draaiing onder ongeveer 20 graden per seconde na verloop van tijd af als drift, dus houd vastgehouden draaiingen daar boven die waarde.</value></data>
+  <data name="Pad_Mapping_MotionLeanAngle" xml:space="preserve"><value>Kantelhoek</value></data>
+  <data name="Pad_Mapping_MotionLeanAngle_Tooltip" xml:space="preserve"><value>Kanteling bij volledige uitslag, in graden.</value></data>
+  <data name="Pad_Mapping_MotionDeadzone" xml:space="preserve"><value>Bewegingsdeadzone</value></data>
+  <data name="Pad_Mapping_MotionDeadzone_Tooltip" xml:space="preserve"><value>Uitslag onder dit percentage telt als rust, zodat stickdrift de controller niet draait.</value></data>
+  <data name="Pad_Mapping_MotionRowUnreadNote" xml:space="preserve"><value>Sticks en knoppen worden op deze rij niet gelezen. Wijs ze toe aan Beweging Pitch, Beweging Yaw of Beweging Roll en verwijder ze hier.</value></data>
+  <data name="Pad_Mapping_MotionSourceElsewhereNote" xml:space="preserve"><value>Bronnen voor Beweging Gyro en Beweging Versnellingsmeter werken alleen op de rijen Beweging Gyro en Beweging Versnellingsmeter.</value></data>
+  <data name="Pad_Mapping_MotionPresetNote" xml:space="preserve"><value>Het rapport van deze preset bevat geen beweging. De bewegingsserver (DSU) ontvangt het voor slots 1 tot en met 4 toch.</value></data>
   <data name="Pad_Mapping_TrimReset" xml:space="preserve"><value>Resetten bij loslaten</value></data>
   <data name="Pad_Mapping_TrimReset_Tooltip" xml:space="preserve"><value>Als aangevinkt, springt het vastgehouden niveau bij het loslaten van de trigger terug naar 100%, zodat de volgende druk vol begint. Als uitgevinkt, blijft het getrimde niveau over loslatingen heen behouden totdat je het weer aanpast.</value></data>
   <data name="Pad_ResetGuideLed" xml:space="preserve"><value>Guide-knop-LED herstellen</value></data>
@@ -3397,7 +3419,7 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Herhalen</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Toetsen {0} schakelen</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Gyro hercentreren</value></data>
-  <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Zet de opgebouwde gyro-richtreferenties van de pad op nul bij indrukken. De smoothing-geschiedenis wordt gewist, het Motion Lean-neutraalpunt wordt opnieuw vastgelegd en de zwaartekrachtschatting wordt opnieuw geïnitialiseerd vanuit de huidige stand van de controller.</value></data>
+  <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Zet de opgebouwde gyro-richtreferenties van de pad op nul bij indrukken. De smoothing-geschiedenis wordt gewist, het Motion Lean-neutraalpunt wordt opnieuw vastgelegd, de zwaartekrachtschatting wordt opnieuw geïnitialiseerd vanuit de huidige stand van de controller, en de draaiing van de rijen Beweging Pitch, Yaw en Roll wordt ongedaan gemaakt.</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Menu's</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Menu's veranderen een fysieke stick of touchpad in een ring of raster op het scherm. Voeg een menu toe, kies waarmee het opent en geef elke cel daarna een label en een toewijzing.</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>Menu {0}</value></data>

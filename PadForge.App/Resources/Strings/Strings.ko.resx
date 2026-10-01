@@ -189,6 +189,8 @@
   <data name="Status_NoSettingsFile" xml:space="preserve"><value>디스크에서 설정 파일을 찾을 수 없습니다.</value></data>
   <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>기록할 장치가 연결되어 있지 않습니다.</value></data>
   <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>기록 중: "{0}"에 대해 버튼을 누르거나 축을 움직이십시오...</value></data>
+  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>기록 중: "{0}"에 대해 컨트롤러를 돌리거나 흔드십시오...</value></data>
+  <data name="Status_NoMotionSensorToRecord_Format" xml:space="preserve"><value>이 슬롯의 어떤 컨트롤러에도 "{0}"용 센서가 없습니다.</value></data>
   <data name="Status_RecordingCanceled" xml:space="preserve"><value>기록이 취소되었습니다.</value></data>
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>"{0}"에 대한 기록 시간이 초과되었습니다.</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>엔진이 시작되었습니다.</value></data>
@@ -1594,6 +1596,9 @@
   <data name="Mapping_TouchpadFingerTouch_Format" xml:space="preserve"><value>터치패드 {0} 손가락 {1} 터치</value></data>
   <data name="Mapping_MotionGyro" xml:space="preserve"><value>모션 자이로</value></data>
   <data name="Mapping_MotionAccel" xml:space="preserve"><value>모션 가속도 센서</value></data>
+  <data name="Mapping_MotionPitch" xml:space="preserve"><value>모션 피치</value></data>
+  <data name="Mapping_MotionYaw" xml:space="preserve"><value>모션 요</value></data>
+  <data name="Mapping_MotionRoll" xml:space="preserve"><value>모션 롤</value></data>
   <data name="Mapping_MotionLean" xml:space="preserve"><value>모션 기울임</value></data>
   <data name="Key_NumpadMultiply" xml:space="preserve"><value>숫자 키패드 *</value></data>
   <data name="Key_NumpadAdd" xml:space="preserve"><value>숫자 키패드 +</value></data>
@@ -3033,6 +3038,23 @@
   <data name="Pad_Mapping_TrimDeadzone_Tooltip" xml:space="preserve"><value>이 비율 미만의 스틱 기울임은 무시되므로, 같은 스틱으로 조향해도 유지 중인 트리거 레벨이 흔들리지 않습니다. 스틱을 세로 방향으로 더 강하게 밀 때만 조정됩니다.</value></data>
   <data name="Pad_Mapping_TrimRate" xml:space="preserve"><value>트림 속도</value></data>
   <data name="Pad_Mapping_TrimRate_Tooltip" xml:space="preserve"><value>스틱을 끝까지 기울였을 때 유지 레벨이 움직이는 속도로, 초당 트리거 범위의 퍼센트 단위입니다. 100이면 1초에 빈 상태에서 최대까지 이동합니다.</value></data>
+  <data name="Pad_Mapping_MotionMode" xml:space="preserve"><value>모션 모드</value></data>
+  <data name="Pad_Mapping_MotionMode_Tooltip" xml:space="preserve"><value>기울임으로 가상 컨트롤러를 움직이는 방식입니다. 속도는 회전시키고, 각도는 기울입니다.</value></data>
+  <data name="Pad_Mapping_MotionSpeed_Name" xml:space="preserve"><value>속도</value></data>
+  <data name="Pad_Mapping_MotionSpeed_Description" xml:space="preserve"><value>기울인 정도로 컨트롤러가 회전하는 속도가 정해집니다. 놓으면 그 자리에 멈춥니다.</value></data>
+  <data name="Pad_Mapping_MotionAngle_Name" xml:space="preserve"><value>각도</value></data>
+  <data name="Pad_Mapping_MotionAngle_Description" xml:space="preserve"><value>기울인 정도로 컨트롤러가 기울어지는 정도가 정해집니다. 놓으면 수평으로 돌아갑니다.</value></data>
+  <data name="Pad_Mapping_MotionTopSpeed" xml:space="preserve"><value>최고 속도</value></data>
+  <data name="Pad_Mapping_MotionTopSpeed_Tooltip" xml:space="preserve"><value>끝까지 기울였을 때의 회전 속도(초당 도)입니다.</value></data>
+  <data name="Pad_Mapping_MotionStartSpeed" xml:space="preserve"><value>시작 속도</value></data>
+  <data name="Pad_Mapping_MotionStartSpeed_Tooltip" xml:space="preserve"><value>데드존을 막 넘었을 때의 회전 속도(초당 도)입니다. Cemu와 eden은 초당 약 20도보다 느린 유지 회전을 시간이 지나면서 드리프트로 빼므로, 그곳에서는 유지 회전을 그보다 빠르게 하세요.</value></data>
+  <data name="Pad_Mapping_MotionLeanAngle" xml:space="preserve"><value>기울기 각도</value></data>
+  <data name="Pad_Mapping_MotionLeanAngle_Tooltip" xml:space="preserve"><value>끝까지 기울였을 때의 기울기(도)입니다.</value></data>
+  <data name="Pad_Mapping_MotionDeadzone" xml:space="preserve"><value>모션 데드존</value></data>
+  <data name="Pad_Mapping_MotionDeadzone_Tooltip" xml:space="preserve"><value>이 비율 미만의 기울임은 정지로 읽혀, 스틱 드리프트가 컨트롤러를 회전시키지 않습니다.</value></data>
+  <data name="Pad_Mapping_MotionRowUnreadNote" xml:space="preserve"><value>이 행에서는 스틱과 버튼을 읽지 않습니다. 모션 피치, 모션 요 또는 모션 롤에 매핑한 뒤 여기서 제거하세요.</value></data>
+  <data name="Pad_Mapping_MotionSourceElsewhereNote" xml:space="preserve"><value>모션 자이로와 모션 가속도 센서 소스는 모션 자이로와 모션 가속도 센서 행에서만 작동합니다.</value></data>
+  <data name="Pad_Mapping_MotionPresetNote" xml:space="preserve"><value>이 프리셋의 리포트에는 모션이 없습니다. 슬롯 1~4에서는 모션 서버(DSU)가 계속 받습니다.</value></data>
   <data name="Pad_Mapping_TrimReset" xml:space="preserve"><value>놓을 때 재설정</value></data>
   <data name="Pad_Mapping_TrimReset_Tooltip" xml:space="preserve"><value>체크하면 트리거를 놓을 때 유지 레벨이 100%로 돌아가 다음 누름이 최대에서 시작됩니다. 체크 해제하면 다시 조정할 때까지 트림된 레벨이 놓은 뒤에도 유지됩니다.</value></data>
   <data name="Pad_ResetGuideLed" xml:space="preserve"><value>가이드 버튼 LED 재설정</value></data>
@@ -3377,7 +3399,7 @@
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>순환</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>키 {0} 토글</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>자이로 재중심</value></data>
-  <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>누르면 패드에 누적된 자이로 조준 기준을 0으로 되돌립니다. 스무딩 기록이 지워지고, Motion Lean 중립점이 다시 캡처되며, 중력 추정치가 컨트롤러의 현재 자세에서 다시 초기화됩니다.</value></data>
+  <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>누르면 패드에 누적된 자이로 조준 기준을 0으로 되돌립니다. 스무딩 기록이 지워지고, Motion Lean 중립점이 다시 캡처되며, 중력 추정치가 컨트롤러의 현재 자세에서 다시 초기화되고, 모션 피치, 요, 롤 행이 만든 회전이 취소됩니다.</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>메뉴</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>메뉴는 실제 스틱이나 터치패드를 화면 위의 링이나 그리드로 바꿉니다. 메뉴를 추가하고 여는 입력을 고른 뒤, 각 셀에 라벨과 할당을 지정하세요.</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>메뉴 {0}</value></data>

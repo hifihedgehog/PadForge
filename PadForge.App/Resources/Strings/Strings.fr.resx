@@ -189,6 +189,8 @@
   <data name="Status_NoSettingsFile" xml:space="preserve"><value>Aucun fichier de paramètres trouvé sur le disque.</value></data>
   <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>Aucun périphérique connecté pour l'enregistrement.</value></data>
   <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>Enregistrement : appuyez sur un bouton ou déplacez un axe pour « {0} »...</value></data>
+  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>Enregistrement : tournez ou secouez une manette pour « {0} »...</value></data>
+  <data name="Status_NoMotionSensorToRecord_Format" xml:space="preserve"><value>Aucune manette de cet emplacement n'a de capteur pour « {0} ».</value></data>
   <data name="Status_RecordingCanceled" xml:space="preserve"><value>Enregistrement annulé.</value></data>
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Enregistrement expiré pour « {0} ».</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Moteur démarré.</value></data>
@@ -1594,6 +1596,9 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Mapping_TouchpadFingerTouch_Format" xml:space="preserve"><value>Pavé tactile {0} doigt {1} toucher</value></data>
   <data name="Mapping_MotionGyro" xml:space="preserve"><value>Mouvement gyroscope</value></data>
   <data name="Mapping_MotionAccel" xml:space="preserve"><value>Mouvement accéléromètre</value></data>
+  <data name="Mapping_MotionPitch" xml:space="preserve"><value>Mouvement tangage</value></data>
+  <data name="Mapping_MotionYaw" xml:space="preserve"><value>Mouvement lacet</value></data>
+  <data name="Mapping_MotionRoll" xml:space="preserve"><value>Mouvement roulis</value></data>
   <data name="Mapping_MotionLean" xml:space="preserve"><value>Inclinaison de mouvement</value></data>
   <data name="Key_NumpadMultiply" xml:space="preserve"><value>Pavé numérique *</value></data>
   <data name="Key_NumpadAdd" xml:space="preserve"><value>Pavé numérique +</value></data>
@@ -3033,6 +3038,23 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Pad_Mapping_TrimDeadzone_Tooltip" xml:space="preserve"><value>La déflexion du stick sous ce pourcentage est ignorée, pour que diriger avec le même stick ne décale jamais le niveau retenu de la gâchette. Seules les poussées verticales plus franches du stick l'ajustent.</value></data>
   <data name="Pad_Mapping_TrimRate" xml:space="preserve"><value>Vitesse du trim</value></data>
   <data name="Pad_Mapping_TrimRate_Tooltip" xml:space="preserve"><value>Vitesse à laquelle un stick à fond fait glisser le niveau retenu, en pourcentage de la course de la gâchette par seconde. 100 balaie de vide à plein en une seconde.</value></data>
+  <data name="Pad_Mapping_MotionMode" xml:space="preserve"><value>Mode de mouvement</value></data>
+  <data name="Pad_Mapping_MotionMode_Tooltip" xml:space="preserve"><value>Comment la déflexion déplace la manette virtuelle. Vitesse la fait tourner, Angle l'incline.</value></data>
+  <data name="Pad_Mapping_MotionSpeed_Name" xml:space="preserve"><value>Vitesse</value></data>
+  <data name="Pad_Mapping_MotionSpeed_Description" xml:space="preserve"><value>La déflexion fixe la vitesse de rotation de la manette. Au relâchement, elle reste où elle est.</value></data>
+  <data name="Pad_Mapping_MotionAngle_Name" xml:space="preserve"><value>Angle</value></data>
+  <data name="Pad_Mapping_MotionAngle_Description" xml:space="preserve"><value>La déflexion fixe l'inclinaison de la manette. Au relâchement, elle revient à plat.</value></data>
+  <data name="Pad_Mapping_MotionTopSpeed" xml:space="preserve"><value>Vitesse maximale</value></data>
+  <data name="Pad_Mapping_MotionTopSpeed_Tooltip" xml:space="preserve"><value>Vitesse de rotation à déflexion maximale, en degrés par seconde.</value></data>
+  <data name="Pad_Mapping_MotionStartSpeed" xml:space="preserve"><value>Vitesse de départ</value></data>
+  <data name="Pad_Mapping_MotionStartSpeed_Tooltip" xml:space="preserve"><value>Vitesse de rotation juste après la zone morte, en degrés par seconde. Cemu et eden retranchent peu à peu comme dérive une rotation maintenue sous environ 20 degrés par seconde, gardez donc là-bas les rotations maintenues au-dessus.</value></data>
+  <data name="Pad_Mapping_MotionLeanAngle" xml:space="preserve"><value>Angle d'inclinaison</value></data>
+  <data name="Pad_Mapping_MotionLeanAngle_Tooltip" xml:space="preserve"><value>Inclinaison à déflexion maximale, en degrés.</value></data>
+  <data name="Pad_Mapping_MotionDeadzone" xml:space="preserve"><value>Zone morte du mouvement</value></data>
+  <data name="Pad_Mapping_MotionDeadzone_Tooltip" xml:space="preserve"><value>Une déflexion sous ce pourcentage compte comme le repos, pour que la dérive du stick ne fasse pas tourner la manette.</value></data>
+  <data name="Pad_Mapping_MotionRowUnreadNote" xml:space="preserve"><value>Les sticks et les boutons ne sont pas lus sur cette ligne. Assignez-les à Mouvement tangage, Mouvement lacet ou Mouvement roulis, puis retirez-les ici.</value></data>
+  <data name="Pad_Mapping_MotionSourceElsewhereNote" xml:space="preserve"><value>Les sources Mouvement gyroscope et Mouvement accéléromètre ne fonctionnent que sur les lignes Mouvement gyroscope et Mouvement accéléromètre.</value></data>
+  <data name="Pad_Mapping_MotionPresetNote" xml:space="preserve"><value>Le rapport de ce préréglage ne transporte aucun mouvement. Le serveur de mouvement (DSU) le reçoit quand même pour les emplacements 1 à 4.</value></data>
   <data name="Pad_Mapping_TrimReset" xml:space="preserve"><value>Réinitialiser au relâchement</value></data>
   <data name="Pad_Mapping_TrimReset_Tooltip" xml:space="preserve"><value>Lorsque coché, relâcher la gâchette ramène le niveau retenu à 100%, la prochaine pression repart donc à plein. Décoché, le niveau ajusté est conservé d'un relâchement à l'autre jusqu'au prochain ajustement.</value></data>
   <data name="Pad_ResetGuideLed" xml:space="preserve"><value>Réinitialiser la LED du bouton Guide</value></data>
@@ -3377,7 +3399,7 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Bouclage</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Basculer les touches {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Recentrer le gyroscope</value></data>
-  <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Remet à zéro les références de visée gyroscopique accumulées du pad à l'appui. L'historique de lissage s'efface, le neutre du Motion Lean se recapture et l'estimation de gravité se réinitialise depuis la pose actuelle de la manette.</value></data>
+  <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Remet à zéro les références de visée gyroscopique accumulées du pad à l'appui. L'historique de lissage s'efface, le neutre du Motion Lean se recapture, l'estimation de gravité se réinitialise depuis la pose actuelle de la manette, et la rotation des lignes Mouvement tangage, lacet et roulis est annulée.</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Menus</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Les menus transforment un stick ou un pavé tactile physique en anneau ou grille à l'écran. Ajoutez un menu, choisissez ce qui l'ouvre, puis étiquetez chaque cellule et donnez-lui une affectation.</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>Menu {0}</value></data>

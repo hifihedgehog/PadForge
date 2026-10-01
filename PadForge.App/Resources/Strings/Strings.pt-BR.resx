@@ -189,6 +189,8 @@
   <data name="Status_NoSettingsFile" xml:space="preserve"><value>Nenhum arquivo de configurações encontrado no disco.</value></data>
   <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>Nenhum dispositivo conectado para gravar.</value></data>
   <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>Gravando: pressione um botão ou mova um eixo para "{0}"...</value></data>
+  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>Gravando: gire ou sacuda um controle para "{0}"...</value></data>
+  <data name="Status_NoMotionSensorToRecord_Format" xml:space="preserve"><value>Nenhum controle neste slot tem um sensor para "{0}".</value></data>
   <data name="Status_RecordingCanceled" xml:space="preserve"><value>Gravação cancelada.</value></data>
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Gravação expirou para "{0}".</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Motor iniciado.</value></data>
@@ -1594,6 +1596,9 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Mapping_TouchpadFingerTouch_Format" xml:space="preserve"><value>Touchpad {0} Dedo {1} Toque</value></data>
   <data name="Mapping_MotionGyro" xml:space="preserve"><value>Movimento Giroscópio</value></data>
   <data name="Mapping_MotionAccel" xml:space="preserve"><value>Movimento Acelerômetro</value></data>
+  <data name="Mapping_MotionPitch" xml:space="preserve"><value>Movimento Pitch</value></data>
+  <data name="Mapping_MotionYaw" xml:space="preserve"><value>Movimento Yaw</value></data>
+  <data name="Mapping_MotionRoll" xml:space="preserve"><value>Movimento Roll</value></data>
   <data name="Mapping_MotionLean" xml:space="preserve"><value>Inclinação de Movimento</value></data>
   <data name="Key_NumpadMultiply" xml:space="preserve"><value>Teclado Numérico *</value></data>
   <data name="Key_NumpadAdd" xml:space="preserve"><value>Teclado Numérico +</value></data>
@@ -3027,6 +3032,23 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Pad_Mapping_TrimDeadzone_Tooltip" xml:space="preserve"><value>A deflexão do analógico abaixo desta porcentagem é ignorada, então dirigir com o mesmo analógico nunca desloca o nível retido do gatilho. Só os empurrões verticais mais fortes do analógico o ajustam.</value></data>
   <data name="Pad_Mapping_TrimRate" xml:space="preserve"><value>Velocidade do Trim</value></data>
   <data name="Pad_Mapping_TrimRate_Tooltip" xml:space="preserve"><value>A rapidez com que um analógico totalmente deslocado desliza o nível retido, em porcentagem da faixa do gatilho por segundo. 100 varre de vazio a cheio em um segundo.</value></data>
+  <data name="Pad_Mapping_MotionMode" xml:space="preserve"><value>Modo de Movimento</value></data>
+  <data name="Pad_Mapping_MotionMode_Tooltip" xml:space="preserve"><value>Como a deflexão move o controle virtual. Velocidade o gira, Ângulo o inclina.</value></data>
+  <data name="Pad_Mapping_MotionSpeed_Name" xml:space="preserve"><value>Velocidade</value></data>
+  <data name="Pad_Mapping_MotionSpeed_Description" xml:space="preserve"><value>A deflexão define a rapidez com que o controle gira. Ao soltar, ele para onde está.</value></data>
+  <data name="Pad_Mapping_MotionAngle_Name" xml:space="preserve"><value>Ângulo</value></data>
+  <data name="Pad_Mapping_MotionAngle_Description" xml:space="preserve"><value>A deflexão define o quanto o controle se inclina. Ao soltar, ele volta a ficar nivelado.</value></data>
+  <data name="Pad_Mapping_MotionTopSpeed" xml:space="preserve"><value>Velocidade Máxima</value></data>
+  <data name="Pad_Mapping_MotionTopSpeed_Tooltip" xml:space="preserve"><value>Velocidade de giro com deflexão total, em graus por segundo.</value></data>
+  <data name="Pad_Mapping_MotionStartSpeed" xml:space="preserve"><value>Velocidade Inicial</value></data>
+  <data name="Pad_Mapping_MotionStartSpeed_Tooltip" xml:space="preserve"><value>Velocidade de giro logo após a deadzone, em graus por segundo. Cemu e eden descontam aos poucos como deriva um giro mantido abaixo de cerca de 20 graus por segundo, então mantenha os giros acima disso neles.</value></data>
+  <data name="Pad_Mapping_MotionLeanAngle" xml:space="preserve"><value>Ângulo de Inclinação</value></data>
+  <data name="Pad_Mapping_MotionLeanAngle_Tooltip" xml:space="preserve"><value>Inclinação com deflexão total, em graus.</value></data>
+  <data name="Pad_Mapping_MotionDeadzone" xml:space="preserve"><value>Deadzone do Movimento</value></data>
+  <data name="Pad_Mapping_MotionDeadzone_Tooltip" xml:space="preserve"><value>A deflexão abaixo desta porcentagem conta como repouso, para que a deriva do analógico não gire o controle.</value></data>
+  <data name="Pad_Mapping_MotionRowUnreadNote" xml:space="preserve"><value>Analógicos e botões não são lidos nesta linha. Atribua-os a Movimento Pitch, Movimento Yaw ou Movimento Roll e remova-os daqui.</value></data>
+  <data name="Pad_Mapping_MotionSourceElsewhereNote" xml:space="preserve"><value>As fontes Movimento Giroscópio e Movimento Acelerômetro só funcionam nas linhas Movimento Giroscópio e Movimento Acelerômetro.</value></data>
+  <data name="Pad_Mapping_MotionPresetNote" xml:space="preserve"><value>O relatório desta predefinição não carrega movimento. O Servidor de Movimento (DSU) ainda o recebe nos slots 1 a 4.</value></data>
   <data name="Pad_Mapping_TrimReset" xml:space="preserve"><value>Redefinir ao Soltar</value></data>
   <data name="Pad_Mapping_TrimReset_Tooltip" xml:space="preserve"><value>Quando marcado, soltar o gatilho faz o nível retido voltar a 100%, então a próxima pressão começa cheia. Desmarcado, o nível ajustado é mantido entre as soltadas até você ajustá-lo de novo.</value></data>
   <data name="Pad_ResetGuideLed" xml:space="preserve"><value>Redefinir LED do Botão Guia</value></data>
@@ -3371,7 +3393,7 @@ Há uma cópia da versão anterior nesta pasta: {1}</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Ciclo</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Alternar teclas {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Recentralizar Giroscópio</value></data>
-  <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Zera as referências de mira do giroscópio acumuladas do pad ao pressionar. O histórico de suavização é limpo, o neutro do Motion Lean é recapturado e a estimativa de gravidade é reiniciada a partir da pose atual do controle.</value></data>
+  <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Zera as referências de mira do giroscópio acumuladas do pad ao pressionar. O histórico de suavização é limpo, o neutro do Motion Lean é recapturado, a estimativa de gravidade é reiniciada a partir da pose atual do controle e o giro das linhas Movimento Pitch, Yaw e Roll é desfeito.</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Menus</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Os menus transformam um analógico ou touchpad físico em um anel ou grade na tela. Adicione um menu, escolha o que o abre e depois rotule cada célula e dê a ela uma atribuição.</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>Menu {0}</value></data>

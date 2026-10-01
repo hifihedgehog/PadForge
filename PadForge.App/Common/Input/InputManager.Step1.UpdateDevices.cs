@@ -1273,6 +1273,7 @@ namespace PadForge.Common.Input
                         if (us == null || us.InstanceGuid != ud.InstanceGuid) continue;
                         us.OutputState = default;
                         us.RawMappedState = default;
+                        us.MotionRowsOutputState = default;
                     }
                 }
             }

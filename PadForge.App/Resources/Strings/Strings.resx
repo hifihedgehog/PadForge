@@ -197,6 +197,8 @@
   <data name="Status_NoSettingsFile" xml:space="preserve"><value>No settings file found on disk.</value></data>
   <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>No device connected to record from.</value></data>
   <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>Recording: press a button or move an axis for "{0}"...</value></data>
+  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>Recording: turn or shake a controller for "{0}"...</value></data>
+  <data name="Status_NoMotionSensorToRecord_Format" xml:space="preserve"><value>No controller on this slot has a sensor for "{0}".</value></data>
   <data name="Status_RecordKindUp_Format" xml:space="preserve"><value>Recording "{0}": press the Up direction input...</value></data>
   <data name="Status_RecordKindDown_Format" xml:space="preserve"><value>Recording "{0}": now press the Down direction input...</value></data>
   <data name="Status_RecordingCanceled" xml:space="preserve"><value>Recording canceled.</value></data>
@@ -1786,6 +1788,9 @@ A copy of the previous version is in this folder: {1}</value></data>
 
   <data name="Mapping_MotionGyro" xml:space="preserve"><value>Motion Gyro</value></data>
   <data name="Mapping_MotionAccel" xml:space="preserve"><value>Motion Accelerometer</value></data>
+  <data name="Mapping_MotionPitch" xml:space="preserve"><value>Motion Pitch</value></data>
+  <data name="Mapping_MotionYaw" xml:space="preserve"><value>Motion Yaw</value></data>
+  <data name="Mapping_MotionRoll" xml:space="preserve"><value>Motion Roll</value></data>
   <data name="Mapping_MotionLean" xml:space="preserve"><value>Motion Lean</value></data>
   <data name="Mapping_NunchukLean" xml:space="preserve"><value>Nunchuk Lean</value></data>
   <data name="Mapping_LeftJoyConLean" xml:space="preserve"><value>Left Joy-Con Lean</value></data>
@@ -3218,6 +3223,23 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Pad_Mapping_TrimRate_Tooltip" xml:space="preserve">
     <value>How fast a fully deflected stick slides the held level, in percent of the trigger range per second. 100 sweeps from empty to full in one second.</value>
   </data>
+  <data name="Pad_Mapping_MotionMode" xml:space="preserve"><value>Motion Mode</value></data>
+  <data name="Pad_Mapping_MotionMode_Tooltip" xml:space="preserve"><value>How deflection moves the virtual controller. Speed turns it, Angle leans it.</value></data>
+  <data name="Pad_Mapping_MotionSpeed_Name" xml:space="preserve"><value>Speed</value></data>
+  <data name="Pad_Mapping_MotionSpeed_Description" xml:space="preserve"><value>Deflection sets how fast the controller turns. Letting go stops it where it is.</value></data>
+  <data name="Pad_Mapping_MotionAngle_Name" xml:space="preserve"><value>Angle</value></data>
+  <data name="Pad_Mapping_MotionAngle_Description" xml:space="preserve"><value>Deflection sets how far the controller leans. Letting go levels it.</value></data>
+  <data name="Pad_Mapping_MotionTopSpeed" xml:space="preserve"><value>Top Speed</value></data>
+  <data name="Pad_Mapping_MotionTopSpeed_Tooltip" xml:space="preserve"><value>Turn speed at full deflection, in degrees per second.</value></data>
+  <data name="Pad_Mapping_MotionStartSpeed" xml:space="preserve"><value>Start Speed</value></data>
+  <data name="Pad_Mapping_MotionStartSpeed_Tooltip" xml:space="preserve"><value>Turn speed just past the deadzone, in degrees per second. Cemu and eden slowly subtract a held turn slower than about 20 degrees per second as drift, so keep held turns above that there.</value></data>
+  <data name="Pad_Mapping_MotionLeanAngle" xml:space="preserve"><value>Lean Angle</value></data>
+  <data name="Pad_Mapping_MotionLeanAngle_Tooltip" xml:space="preserve"><value>Lean at full deflection, in degrees.</value></data>
+  <data name="Pad_Mapping_MotionDeadzone" xml:space="preserve"><value>Motion Deadzone</value></data>
+  <data name="Pad_Mapping_MotionDeadzone_Tooltip" xml:space="preserve"><value>Deflection below this percentage reads as rest, so stick drift does not turn the controller.</value></data>
+  <data name="Pad_Mapping_MotionRowUnreadNote" xml:space="preserve"><value>Sticks and buttons are not read on this row. Map them to Motion Pitch, Motion Yaw or Motion Roll, then remove them here.</value></data>
+  <data name="Pad_Mapping_MotionSourceElsewhereNote" xml:space="preserve"><value>Motion Gyro and Motion Accelerometer sources work only on the Motion Gyro and Motion Accelerometer rows.</value></data>
+  <data name="Pad_Mapping_MotionPresetNote" xml:space="preserve"><value>This preset's report carries no motion. The motion server (DSU) still receives it for slots 1 to 4.</value></data>
   <data name="Pad_Mapping_TrimReset" xml:space="preserve">
     <value>Reset on Release</value>
   </data>
@@ -3438,7 +3460,7 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Wrap</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Toggle keys {0}</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Gyro Recenter</value></data>
-  <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Zeroes the pad's accumulated gyro aim references on press. Smoothing history clears, the Motion Lean neutral re-captures, and the gravity estimate re-seeds from the controller's current pose.</value></data>
+  <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Zeroes the pad's accumulated gyro aim references on press. Smoothing history clears, the Motion Lean neutral re-captures, the gravity estimate re-seeds from the controller's current pose, and the turn the Motion Pitch, Yaw and Roll rows built is undone.</value></data>
   <data name="Mapping_AnyDevice" xml:space="preserve"><value>(Any Device)</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Menus</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Menus turn a physical stick or touchpad into an on-screen ring or grid. Add a menu, pick what opens it, then label each cell and give it a binding.</value></data>

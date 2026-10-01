@@ -2113,10 +2113,15 @@ namespace PadForge.Common.Input
                             UpdateTriggerRouteEngageStates();
                             UpdateHapticMirrorEngageStates();
                             UpdateMotionSnapshots();
-                            BroadcastDsuMotion();
                             UpdateOutputStates();
                             CombineOutputStates();
                             EvaluateMacros();
+                            // The Motion Pitch, Yaw and Roll rows (#475) are
+                            // evaluated in Step 3, so their motion composes
+                            // here, after the macro pass's Gyro Recenter, and
+                            // DSU sends the composed frame.
+                            ApplyMotionRows();
+                            BroadcastDsuMotion();
                             UpdateVirtualDevices();
                         }
                         RetrieveOutputStates();
@@ -3305,6 +3310,7 @@ namespace PadForge.Common.Input
         private readonly long[] _motionRowsCheckedTick = new long[MaxPads];
         private readonly bool[] _motionHasGyroRow = new bool[MaxPads];
         private readonly bool[] _motionHasAccelRow = new bool[MaxPads];
+        private readonly bool[] _motionHasAxisRows = new bool[MaxPads];
 
         private readonly List<UserDevice> _motionAssignedDevices = new(8);
         private readonly List<float> _motionRowX = new(8);
@@ -3376,6 +3382,7 @@ namespace PadForge.Common.Input
                     MotionSnapshots[padIndex] = default;
                     if (padIndex < DsuMotionSnapshots.Length)
                         DsuMotionSnapshots[padIndex] = default;
+                    _motionRowsActive[padIndex] = false;
                     continue;
                 }
 
@@ -3450,7 +3457,14 @@ namespace PadForge.Common.Input
                     _motionRowsCheckedTick[padIndex] = nowMotionTick;
                     _motionHasGyroRow[padIndex] = HasRowForTarget(ms, MappingSetMigrator.MotionGyroTarget);
                     _motionHasAccelRow[padIndex] = HasRowForTarget(ms, MappingSetMigrator.MotionAccelTarget);
+                    _motionHasAxisRows[padIndex] = HasSourcedMotionAxisRow(ms);
                 }
+
+                // The Motion Pitch, Yaw and Roll rows (#475) drive the slot
+                // when one carries a source on a slot family that has them.
+                bool rowsActive = _motionHasAxisRows[padIndex] && SlotCarriesMotion(padIndex);
+                _motionRowsActive[padIndex] = rowsActive;
+                _motionRowsHasDevice[padIndex] = _motionAssignedDevices.Count > 0;
 
                 try
                 {
@@ -3461,6 +3475,17 @@ namespace PadForge.Common.Input
                         ? ReconcileMappedMotion(ms, MappingSetMigrator.MotionAccelTarget,
                             requireGyro: false, padIndex, timestampUs) : default;
                     var mapped = JoinMotionChannels(gyro, accel, timestampUs);
+                    if (rowsActive)
+                    {
+                        // The motion stage composes on top of this and
+                        // publishes once, so the grid never reads a frame
+                        // without the rows. DSU composes against the same
+                        // real sensors: no fallback to every assigned one.
+                        _motionRowsBase[padIndex] = mapped;
+                        _motionGyroLive[padIndex] = gyro.HasMotion;
+                        _motionAccelLive[padIndex] = accel.HasMotion;
+                        continue;
+                    }
                     MotionSnapshots[padIndex] = mapped;
                     if (padIndex < DsuMotionSnapshots.Length)
                     {
@@ -3815,6 +3840,11 @@ namespace PadForge.Common.Input
                 MotionSnapshots[i] = default;
                 if (i < DsuMotionSnapshots.Length)
                     DsuMotionSnapshots[i] = default;
+                // The Motion Pitch, Yaw and Roll rows (#475): no deflection
+                // while neutral, and the next live poll starts the model's
+                // clock over instead of turning through the pause.
+                CombinedMotionRows[i] = default;
+                Interlocked.Or(ref s_motionRowsRequests[i], MotionRowsRestartClock);
                 // MidiRawState.Clear(), not Array.Clear. The neutral CC value
                 // is 64 (center), and Array.Clear writes 0, which is the
                 // MINIMUM. Alt-tabbing with background polling off therefore

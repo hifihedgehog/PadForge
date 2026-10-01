@@ -189,6 +189,8 @@
   <data name="Status_NoSettingsFile" xml:space="preserve"><value>Keine Einstellungsdatei auf dem Datenträger gefunden.</value></data>
   <data name="Status_NoDeviceToRecord" xml:space="preserve"><value>Kein Gerät zum Aufnehmen verbunden.</value></data>
   <data name="Status_RecordingPrompt_Format" xml:space="preserve"><value>Aufnahme: Drücken Sie eine Taste oder bewegen Sie eine Achse für „{0}"...</value></data>
+  <data name="Status_RecordingMotionPrompt_Format" xml:space="preserve"><value>Aufnahme: Drehen oder schütteln Sie einen Controller für „{0}"...</value></data>
+  <data name="Status_NoMotionSensorToRecord_Format" xml:space="preserve"><value>Kein Controller in diesem Slot hat einen Sensor für „{0}".</value></data>
   <data name="Status_RecordingCanceled" xml:space="preserve"><value>Aufnahme abgebrochen.</value></data>
   <data name="Status_RecordingTimedOut_Format" xml:space="preserve"><value>Aufnahme für „{0}" abgelaufen.</value></data>
   <data name="Status_EngineStarted" xml:space="preserve"><value>Engine gestartet.</value></data>
@@ -1594,6 +1596,9 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Mapping_TouchpadFingerTouch_Format" xml:space="preserve"><value>Touchpad {0} Finger {1} Berührung</value></data>
   <data name="Mapping_MotionGyro" xml:space="preserve"><value>Bewegung Gyro</value></data>
   <data name="Mapping_MotionAccel" xml:space="preserve"><value>Bewegung Beschleunigungssensor</value></data>
+  <data name="Mapping_MotionPitch" xml:space="preserve"><value>Bewegung Nicken</value></data>
+  <data name="Mapping_MotionYaw" xml:space="preserve"><value>Bewegung Gieren</value></data>
+  <data name="Mapping_MotionRoll" xml:space="preserve"><value>Bewegung Rollen</value></data>
   <data name="Mapping_MotionLean" xml:space="preserve"><value>Bewegungsneigung</value></data>
   <data name="Key_NumpadMultiply" xml:space="preserve"><value>Ziffernblock *</value></data>
   <data name="Key_NumpadAdd" xml:space="preserve"><value>Ziffernblock +</value></data>
@@ -3033,6 +3038,23 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Pad_Mapping_TrimDeadzone_Tooltip" xml:space="preserve"><value>Stick-Ausschläge unterhalb dieses Prozentsatzes werden ignoriert, damit Lenken mit demselben Stick den gehaltenen Triggerwert nie verschiebt. Nur die stärkeren vertikalen Ausschläge des Sticks verstellen ihn.</value></data>
   <data name="Pad_Mapping_TrimRate" xml:space="preserve"><value>Trimmgeschwindigkeit</value></data>
   <data name="Pad_Mapping_TrimRate_Tooltip" xml:space="preserve"><value>Wie schnell ein voll ausgelenkter Stick den gehaltenen Wert verschiebt, in Prozent des Triggerbereichs pro Sekunde. 100 fährt in einer Sekunde von leer bis voll.</value></data>
+  <data name="Pad_Mapping_MotionMode" xml:space="preserve"><value>Bewegungsmodus</value></data>
+  <data name="Pad_Mapping_MotionMode_Tooltip" xml:space="preserve"><value>Wie die Auslenkung den virtuellen Controller bewegt. Geschwindigkeit dreht ihn, Winkel neigt ihn.</value></data>
+  <data name="Pad_Mapping_MotionSpeed_Name" xml:space="preserve"><value>Geschwindigkeit</value></data>
+  <data name="Pad_Mapping_MotionSpeed_Description" xml:space="preserve"><value>Die Auslenkung bestimmt, wie schnell sich der Controller dreht. Beim Loslassen bleibt er, wo er ist.</value></data>
+  <data name="Pad_Mapping_MotionAngle_Name" xml:space="preserve"><value>Winkel</value></data>
+  <data name="Pad_Mapping_MotionAngle_Description" xml:space="preserve"><value>Die Auslenkung bestimmt, wie weit sich der Controller neigt. Beim Loslassen richtet er sich wieder waagerecht aus.</value></data>
+  <data name="Pad_Mapping_MotionTopSpeed" xml:space="preserve"><value>Höchstgeschwindigkeit</value></data>
+  <data name="Pad_Mapping_MotionTopSpeed_Tooltip" xml:space="preserve"><value>Drehgeschwindigkeit bei voller Auslenkung, in Grad pro Sekunde.</value></data>
+  <data name="Pad_Mapping_MotionStartSpeed" xml:space="preserve"><value>Startgeschwindigkeit</value></data>
+  <data name="Pad_Mapping_MotionStartSpeed_Tooltip" xml:space="preserve"><value>Drehgeschwindigkeit direkt hinter der Deadzone, in Grad pro Sekunde. Cemu und eden ziehen eine gehaltene Drehung unter etwa 20 Grad pro Sekunde mit der Zeit als Drift ab, halten Sie gehaltene Drehungen dort also darüber.</value></data>
+  <data name="Pad_Mapping_MotionLeanAngle" xml:space="preserve"><value>Neigungswinkel</value></data>
+  <data name="Pad_Mapping_MotionLeanAngle_Tooltip" xml:space="preserve"><value>Neigung bei voller Auslenkung, in Grad.</value></data>
+  <data name="Pad_Mapping_MotionDeadzone" xml:space="preserve"><value>Bewegungs-Deadzone</value></data>
+  <data name="Pad_Mapping_MotionDeadzone_Tooltip" xml:space="preserve"><value>Auslenkung unter diesem Prozentsatz gilt als Ruhe, damit Stick-Drift den Controller nicht dreht.</value></data>
+  <data name="Pad_Mapping_MotionRowUnreadNote" xml:space="preserve"><value>Sticks und Tasten werden in dieser Zeile nicht gelesen. Ordnen Sie sie Bewegung Nicken, Bewegung Gieren oder Bewegung Rollen zu und entfernen Sie sie hier.</value></data>
+  <data name="Pad_Mapping_MotionSourceElsewhereNote" xml:space="preserve"><value>Quellen für Bewegung Gyro und Bewegung Beschleunigungssensor funktionieren nur in den Zeilen Bewegung Gyro und Bewegung Beschleunigungssensor.</value></data>
+  <data name="Pad_Mapping_MotionPresetNote" xml:space="preserve"><value>Der Bericht dieses Presets enthält keine Bewegung. Der Bewegungsserver (DSU) erhält sie für die Slots 1 bis 4 trotzdem.</value></data>
   <data name="Pad_Mapping_TrimReset" xml:space="preserve"><value>Beim Loslassen zurücksetzen</value></data>
   <data name="Pad_Mapping_TrimReset_Tooltip" xml:space="preserve"><value>Wenn aktiviert, springt der gehaltene Wert beim Loslassen des Triggers auf 100% zurück, sodass der nächste Druck voll beginnt. Wenn deaktiviert, bleibt der getrimmte Wert über das Loslassen hinaus erhalten, bis du ihn wieder anpasst.</value></data>
   <data name="Pad_ResetGuideLed" xml:space="preserve"><value>Guide-Tasten-LED zurücksetzen</value></data>
@@ -3377,7 +3399,7 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Macro_CycleWrap_Label" xml:space="preserve"><value>Umlauf</value></data>
   <data name="MacroAction_ToggleKey_Format" xml:space="preserve"><value>Tasten {0} umschalten</value></data>
   <data name="MacroAction_Type_GyroRecenter" xml:space="preserve"><value>Gyro zentrieren</value></data>
-  <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Setzt die aufgelaufenen Gyro-Zielreferenzen des Pads beim Drücken auf null. Der Glättungsverlauf wird geleert, der Motion-Lean-Nullpunkt neu erfasst und die Schwerkraftschätzung aus der aktuellen Lage des Controllers neu initialisiert.</value></data>
+  <data name="MacroAction_GyroRecenter_Tooltip" xml:space="preserve"><value>Setzt die aufgelaufenen Gyro-Zielreferenzen des Pads beim Drücken auf null. Der Glättungsverlauf wird geleert, der Motion-Lean-Nullpunkt neu erfasst, die Schwerkraftschätzung aus der aktuellen Lage des Controllers neu initialisiert, und die Drehung aus den Zeilen Bewegung Nicken, Gieren und Rollen wird zurückgenommen.</value></data>
   <data name="Pad_Menus" xml:space="preserve"><value>Menüs</value></data>
   <data name="Menu_EmptyHint" xml:space="preserve"><value>Menüs machen aus einem physischen Stick oder Touchpad einen Ring oder ein Raster auf dem Bildschirm. Fügen Sie ein Menü hinzu, wählen Sie, womit es sich öffnet, und geben Sie dann jeder Zelle eine Beschriftung und eine Belegung.</value></data>
   <data name="Menu_NewNameFormat" xml:space="preserve"><value>Menü {0}</value></data>

@@ -995,6 +995,11 @@ namespace PadForge.Services
                     row.TrimDeadzone = mapping.TrimDeadzone;
                     row.TrimRate = mapping.TrimRate;
                     row.TrimResetOnRelease = mapping.TrimResetOnRelease;
+                    row.MotionResponse = mapping.MotionResponse ?? "";
+                    row.MotionSpeed = mapping.MotionSpeed;
+                    row.MotionMinSpeed = mapping.MotionMinSpeed;
+                    row.MotionAngle = mapping.MotionAngle;
+                    row.MotionDeadzone = mapping.MotionDeadzone;
 
                     // NoInherit is meaningful only on non-Base rows. Force
                     // false on Base regardless of the MappingItem state so

@@ -169,16 +169,25 @@ namespace PadForge.Engine.Common.Mapping
             if (src == null || IsUnmappedDirect(src)) return 0f;
             if (!GateHeld(state, src, slotIndex, evaluatedDeviceGuid)) return 0f;
 
+            // The Motion Pitch, Yaw and Roll rows (#475) read a source that
+            // rests at zero one way: read centered, a released trigger sits
+            // at full deflection and turns the controller with nothing
+            // touched, the shape #443 fixed for activators. A half the user
+            // picked keeps its own read.
+            bool oneWay = !src.HalfAxis && MappingSetMigrator.IsMotionAxisTarget(target)
+                && (SourceCoercion.SourceRestsAtZeroProvider?.Invoke(src.Descriptor,
+                    SourceCoercion.EffectiveDeviceGuid(src, evaluatedDeviceGuid)) ?? false);
+
             string kind = src.Kind ?? "Direct";
             if (kind != "Toggle")
                 return EvaluateBipolarKind(kind, state, src, slotIndex, target, sourceIndex,
-                    runtime, frameDeltaSeconds, evaluatedDeviceGuid);
+                    runtime, frameDeltaSeconds, evaluatedDeviceGuid, oneWay);
 
             // Toggle latches the Direct read of the same input at full
             // scale, in the direction the latching press pointed.
             if (runtime == null) return 0f;
             float direct = EvaluateBipolarKind("Direct", state, src, slotIndex, target, sourceIndex,
-                runtime, frameDeltaSeconds, evaluatedDeviceGuid);
+                runtime, frameDeltaSeconds, evaluatedDeviceGuid, oneWay);
             return (float)runtime.TickToggle(slotIndex, target, sourceIndex,
                 Math.Abs(direct) >= TogglePressLevel(src), direct < 0 ? -1.0 : 1.0);
         }
@@ -187,8 +196,17 @@ namespace PadForge.Engine.Common.Mapping
             CustomInputState state, MappingSource src,
             int slotIndex, string target, int sourceIndex,
             SourceKindRuntime runtime, double frameDeltaSeconds,
-            string evaluatedDeviceGuid)
+            string evaluatedDeviceGuid, bool oneWay = false)
         {
+            if (oneWay && kind == "Direct")
+            {
+                // The trigger lane's 0..1 pull, which spends Invert as 1 - v
+                // on these sources. Here Invert picks the direction instead.
+                float v = SourceCoercion.EvaluateForTriggerTarget(state, src, slotIndex, evaluatedDeviceGuid);
+                float pull = src.Invert ? 1f - v : v;
+                return src.Invert ? -pull : pull;
+            }
+
             // Touchpad source readings differ between relative-motion
             // targets (KBM mouse / scroll consume per-frame deltas) and
             // absolute-position targets (touchpad-output passthrough,

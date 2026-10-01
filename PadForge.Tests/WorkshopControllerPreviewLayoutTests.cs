@@ -222,6 +222,7 @@ namespace PadForge.Tests
         [InlineData("controller_triton", "STEAMCONTROLLER2")]
         [InlineData("controller_ps5_edge", "DualSense")]
         [InlineData("controller_ps4", "DS4")]
+        [InlineData("controller_ps3", "DS3")]
         [InlineData("controller_switch_pro", "SWITCHPRO")]
         [InlineData("controller_xbox360", "XBOX360")]
         [InlineData("controller_xboxelite", "XBOXSERIES")]

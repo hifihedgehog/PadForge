@@ -23,6 +23,7 @@ namespace PadForge.Tests
         [InlineData("controller_ps5_edge", "DualSense Edge")]
         [InlineData("controller_ps5", "DualSense")]
         [InlineData("controller_ps4", "DualShock 4")]
+        [InlineData("controller_ps3", "DualShock 3")]
         [InlineData("controller_xboxone", "Xbox One")]
         [InlineData("controller_xbox360", "Xbox 360")]
         [InlineData("controller_xboxelite", "Xbox Elite")]

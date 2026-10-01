@@ -2189,6 +2189,7 @@ namespace PadForge.Views
                 ["controller_xbox360"] = "Xbox 360",
                 ["controller_xboxone"] = "Xbox One",
                 ["controller_xboxelite"] = "Xbox Elite",
+                ["controller_ps3"] = "DualShock 3",
                 ["controller_ps4"] = "DualShock 4",
                 ["controller_ps5"] = "DualSense",
                 ["controller_ps5_edge"] = "DualSense Edge",

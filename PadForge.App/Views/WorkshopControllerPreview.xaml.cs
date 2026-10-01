@@ -249,6 +249,13 @@ namespace PadForge.Views
             if (Is("ps4"))
                 return (DS4Layout.BaseWidth, DS4Layout.BaseHeight,
                         DS4Layout.BasePath, DS4Layout.Overlays, "DS4");
+            // controller_ps3 is a live tag. Thousands of configs carry it
+            // (8,566 for GTA V alone, queried 2026-10-01), and the serial
+            // kv-tag on one of them, 1597302226, reads 54c-268: the
+            // DualShock 3's own VID and PID.
+            if (Is("ps3"))
+                return (DualShock3Layout.BaseWidth, DualShock3Layout.BaseHeight,
+                        DualShock3Layout.BasePath, DualShock3Layout.Overlays, "DS3");
             if (Is("switch"))
                 return (SwitchProLayout.BaseWidth, SwitchProLayout.BaseHeight,
                         SwitchProLayout.BasePath, SwitchProLayout.Overlays, "SWITCHPRO");

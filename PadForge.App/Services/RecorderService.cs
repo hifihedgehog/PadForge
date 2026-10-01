@@ -213,9 +213,8 @@ namespace PadForge.Services
         public void StartRecording(MappingItem mapping, int padIndex, Guid deviceGuid,
             bool neutralizeBaseline = false, bool negRecording = false)
         {
-            _paramTarget = ParamTarget.None;
             StartRecordingInternal(mapping, extraSource: null, padIndex,
-                neutralizeBaseline, negRecording);
+                neutralizeBaseline, negRecording, ParamTarget.None);
         }
 
         /// <summary>Starts cross-device recording for an ExtraSource row.
@@ -235,9 +234,8 @@ namespace PadForge.Services
             MappingSourceItem extraSource, int padIndex,
             bool neutralizeBaseline = false, bool negRecording = false)
         {
-            _paramTarget = ParamTarget.None;
             StartRecordingInternal(parent, extraSource, padIndex,
-                neutralizeBaseline, negRecording);
+                neutralizeBaseline, negRecording, ParamTarget.None);
         }
 
         /// <summary>Starts cross-device recording that captures a button
@@ -250,9 +248,8 @@ namespace PadForge.Services
         public void StartRecordingExtraSourceParam(MappingItem parent,
             MappingSourceItem extraSource, int padIndex, ParamTarget target)
         {
-            _paramTarget = target;
             StartRecordingInternal(parent, extraSource, padIndex,
-                neutralizeBaseline: false, negRecording: false);
+                neutralizeBaseline: false, negRecording: false, target);
         }
 
         /// <summary>Starts a freeform recording session that doesn't write
@@ -413,7 +410,7 @@ namespace PadForge.Services
 
         private void StartRecordingInternal(MappingItem mapping,
             MappingSourceItem extraSource, int padIndex,
-            bool neutralizeBaseline, bool negRecording)
+            bool neutralizeBaseline, bool negRecording, ParamTarget paramTarget)
         {
             if (mapping == null)
                 return;
@@ -424,6 +421,11 @@ namespace PadForge.Services
             if (_activeMapping != null || _freeformCallback != null)
                 CancelRecording();
 
+            // The new session's field is set after the cancel, which clears
+            // it. Set before, a Ramp, Incremental or Invert On Hold key
+            // recorded while another row was recording landed in the
+            // source's own descriptor instead.
+            _paramTarget = paramTarget;
             _activeMapping = mapping;
             _activeExtraSource = extraSource;
             _activePadIndex = padIndex;

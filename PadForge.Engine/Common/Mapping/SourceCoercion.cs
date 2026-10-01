@@ -765,12 +765,6 @@ namespace PadForge.Engine.Common.Mapping
             return (xSum / N + yaw * immediate, ySum / N + pitch * immediate);
         }
 
-        /// <summary>Player Space projection. Yaw projected onto
-        /// the controller's gravity-vertical axis; pitch stays local.
-        /// Mirrors GamepadMotion.hpp:CalculatePlayerSpaceGyro. The
-        /// gravX argument is unused (the player-space formula only
-        /// needs gravity's Y and Z components) but kept in the
-        /// signature for symmetry with WorldSpaceProject.</summary>
         /// <summary>Normalizes the gravity vector the space projections
         /// consume. GamepadMotion.hpp's CalculateWorldSpaceGyro /
         /// PlayerSpace math assumes UNIT gravity, and the no-data sentinel
@@ -789,11 +783,30 @@ namespace PadForge.Engine.Common.Mapping
             return (gx / len, gy / len, gz / len);
         }
 
+        /// <summary>GamepadMotionHelpers' projections take gravity pointing
+        /// down, Grav = accelNorm * -gravityLength (GamepadMotion.hpp:635),
+        /// and the provider holds the accelerometer's reading, which points
+        /// up. Fed the reading as it was, a flat pad turning left read the
+        /// opposite way in Player and World space to Local. Normalizing
+        /// first keeps the no-data fallback in the reading's convention, an
+        /// upright pad, as Motion Lean reads it (ReadMotionLeanValue).</summary>
+        private static (float x, float y, float z) GravityDown(float gx, float gy, float gz)
+        {
+            var up = NormalizeGravity(gx, gy, gz);
+            return (-up.x, -up.y, -up.z);
+        }
+
+        /// <summary>Player Space projection. Yaw is projected onto
+        /// the controller's gravity-vertical axis, and pitch stays local.
+        /// Mirrors GamepadMotion.hpp:CalculatePlayerSpaceGyro. The
+        /// gravX argument is unused (the player-space formula only
+        /// needs gravity's Y and Z components) but kept in the
+        /// signature for symmetry with WorldSpaceProject.</summary>
         private static (float yaw, float pitch) PlayerSpaceProject(
             float gPitch, float gYaw, float gRoll,
             float _gravX, float gravY, float gravZ, float yawRelax)
         {
-            var gn = NormalizeGravity(_gravX, gravY, gravZ);
+            var gn = GravityDown(_gravX, gravY, gravZ);
             gravY = gn.y; gravZ = gn.z;
             // worldYaw = -(gravY * gyroY + gravZ * gyroZ)
             float worldYaw = -(gravY * gYaw + gravZ * gRoll);
@@ -810,7 +823,7 @@ namespace PadForge.Engine.Common.Mapping
             float gPitch, float gYaw, float gRoll,
             float gravX, float gravY, float gravZ, float sideReduce)
         {
-            var gnw = NormalizeGravity(gravX, gravY, gravZ);
+            var gnw = GravityDown(gravX, gravY, gravZ);
             gravX = gnw.x; gravY = gnw.y; gravZ = gnw.z;
             float worldYaw = -gravX * gPitch - gravY * gYaw - gravZ * gRoll;
 

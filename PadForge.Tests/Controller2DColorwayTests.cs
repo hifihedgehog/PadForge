@@ -40,7 +40,7 @@ namespace PadForge.Tests
         [Fact]
         public void FoldersWithoutColorways_ReturnNull()
         {
-            foreach (var folder in new[] { "SWITCHPRO", "SWITCH2PRO", "STEAMDECK", "MOUSE", "nope" })
+            foreach (var folder in new[] { "DS3", "SWITCHPRO", "SWITCH2PRO", "STEAMDECK", "MOUSE", "nope" })
             {
                 var (famKey, set) = Controller2DColorways.For(folder);
                 Assert.Null(famKey);

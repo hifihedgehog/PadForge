@@ -46,7 +46,7 @@ namespace PadForge.Tests
                 data.Add("DS4", a);
             foreach (var family in new[]
                      {
-                         "DualSenseEdge", "Switch2Pro", "SteamDeck",
+                         "DS3", "DualSenseEdge", "Switch2Pro", "SteamDeck",
                          "SteamController", "SteamController2", "Xbox360",
                      })
                 data.Add(family, null);

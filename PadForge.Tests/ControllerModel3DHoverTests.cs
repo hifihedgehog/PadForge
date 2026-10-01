@@ -39,6 +39,7 @@ namespace PadForge.Tests
             new object[] { "XboxSeries", "Stormtrooper", true },
             new object[] { "XboxSeries", "DarthVader", true },
             new object[] { "XboxSeries", "Squadrons", true },
+            new object[] { "DS3", null, false },
             new object[] { "DS4", "JetBlack", false },
             new object[] { "DualSense", "White", false },
             new object[] { "DualSenseEdge", null, false },

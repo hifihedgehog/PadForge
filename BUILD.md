@@ -13,7 +13,7 @@ PadForge is a controller mapping utility (fork of [x360ce](https://github.com/x3
 
 2D controller schematics from **[Gamepad-Asset-Pack](https://github.com/AL2009man/Gamepad-Asset-Pack)** by AL2009man (MIT).
 3D controller models adapted from **[Handheld Companion](https://github.com/Valkirie/HandheldCompanion)** (CC BY-NC-SA 4.0).
-Steam Controller hardware art derives from **Valve's own published CAD** (CC BY-NC-SA 4.0): the 2015 controller from the STEP file in its March 2016 release, the 2026 controller from the solid model and reference drawing shipped with the hardware. The Steam Deck body is Handheld Companion's own mesh. `tools/steam_controller_2015_mesh.py` and `tools/steam_controller_2026_mesh.py` do the conversion, and `tools/overlay_positions.py` builds the 2026 two-dimensional art from the same drawing.
+Steam Controller hardware art derives from **Valve's own published CAD** (CC BY-NC-SA 4.0): the 2015 controller from the STEP file in its March 2016 release, the 2026 controller from the solid model and reference drawing shipped with the hardware. The Steam Deck body is Handheld Companion's own mesh. `tools/steam_controller_2015_mesh.py` and `tools/steam_controller_2026_mesh.py` do the conversion, and `tools/overlay_positions.py` builds the 2026 two-dimensional art from the same drawing. The DualShock 3 model is a mesh bought on CGTrader from 3doverstock, split by `tools/dualshock3_mesh.py`, and `tools/dualshock3_art.py` draws its two-dimensional art in the DualShock 4 set's style from a measured front photograph.
 
 ## Solution Structure
 
@@ -83,12 +83,12 @@ PadForge.sln
 │   │   ├── ControllerModelBase.cs       Abstract base: OBJ loading, button map, materials
 │   │   ├── ControllerModelXbox360.cs    Xbox 360 mesh loading (31 OBJ files)
 │   │   ├── ControllerModelDS4.cs        DualShock 4 mesh loading (37 OBJ files)
-│   │   └── (seven more families, from DualSense to Xbox Series)
+│   │   └── (eight more families, DualShock 3 to Xbox Series)
 │   │
 │   ├── 3DModels/
 │   │   ├── DS4/                         DualShock 4 OBJ meshes, one folder per colorway
 │   │   ├── XBOX360/                     Xbox 360 OBJ meshes
-│   │   └── (seven more families)
+│   │   └── (eight more families)
 │   │
 │   ├── Models2D/
 │   │   ├── ControllerOverlayLayout.cs   Layout data for 2D overlays
@@ -97,7 +97,7 @@ PadForge.sln
 │   ├── 2DModels/
 │   │   ├── DS4/                         DualShock 4 PNG overlays (29 images)
 │   │   ├── XBOX360/                     Xbox 360 PNG overlays (28 images)
-│   │   └── (eleven more families)
+│   │   └── (twelve more families)
 │   │
 │   ├── ViewModels/
 │   │   ├── ViewModelBase.cs            INotifyPropertyChanged base
@@ -308,7 +308,7 @@ String format: `"[I][H]{Type} {Index} [{Direction}]"`
 - The prefixes are the legacy form. A `MappingSource` stores `Invert` and `HalfAxis` as their own attributes, and `SourceCoercion.StripLegacyPrefix` still reads the prefixed strings older settings carry
 
 ### Controller Visualization
-- **3D View** (`ControllerModelView`): HelixToolkit.WPF viewport with per-part OBJ meshes for nine
+- **3D View** (`ControllerModelView`): HelixToolkit.WPF viewport with per-part OBJ meshes for ten
   controller families (the `Models3D/` classes). Mouse/touch rotation, zoom, pan.
 - **2D View** (`ControllerModel2DView`): Canvas with PNG overlays from Gamepad-Asset-Pack.
   Button/stick/trigger state shown via opacity toggling on overlay images.

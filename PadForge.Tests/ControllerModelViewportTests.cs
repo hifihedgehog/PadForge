@@ -28,6 +28,7 @@ namespace PadForge.Tests
         {
             new object[] { "xbox-360", VirtualControllerType.Xbox, "XBOX360" },
             new object[] { "xbox-series-composite", VirtualControllerType.Xbox, "XboxSeries" },
+            new object[] { "dualshock-3", VirtualControllerType.PlayStation, "DS3" },
             new object[] { "dualshock-4-v2-composite", VirtualControllerType.PlayStation, "DS4" },
             new object[] { "dualsense-composite", VirtualControllerType.PlayStation, "DualSense" },
             new object[] { "dualsense-edge-composite", VirtualControllerType.PlayStation, "DualSenseEdge" },

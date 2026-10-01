@@ -697,6 +697,7 @@ namespace PadForge.Models3D
         {
             ControllerModelBase model = family switch
             {
+                "DS3" => new ControllerModelDS3(),
                 "DS4" => new ControllerModelDS4(appearance ?? "JetBlack"),
                 "DualSense" => new ControllerModelDualSense(appearance ?? "White"),
                 "DualSenseEdge" => new ControllerModelDualSenseEdge(),

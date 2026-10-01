@@ -2724,6 +2724,24 @@ def process_steamcontroller2():
     return {"base_width": base_w, "base_height": base_h, "results": results}
 
 
+def process_dualshock3():
+    """Build the DualShock 3 layout from tools/dualshock3_art.py.
+
+    The pack has no DualShock 3, so that module draws one in the
+    DualShock 4 set's style from a measured front photograph and returns
+    every control's rect by construction, the way the 2026 Steam
+    Controller flow does from Valve's drawing.
+    """
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        "dualshock3_art", os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                       "dualshock3_art.py"))
+    art = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(art)
+    print("Drawing DualShock 3 art...")
+    return art.build(os.path.join(MODELS_DIR, "DS3"))
+
+
 def generate_csharp(layouts, output_path):
     """Generate C# source file with overlay position data."""
     lines = [
@@ -2772,6 +2790,10 @@ def main():
     xbox_data = process_xbox360()
     print(f"\n  Total Xbox 360 overlays: {len(xbox_data['results'])}")
 
+    print("\n=== DualShock 3 Controller ===")
+    ds3_data = process_dualshock3()
+    print(f"\n  Total DualShock 3 overlays: {len(ds3_data['results'])}")
+
     print("\n=== DualShock 4 Controller ===")
     ds4_data = process_ds4()
     print(f"\n  Total DS4 overlays: {len(ds4_data['results'])}")
@@ -2818,7 +2840,7 @@ def main():
     # shipped base renders already draw the triggers at rest (unlike the
     # Switch Pro base, which is the pack's trigger-LESS variant), and the
     # Steam packs ship no rest-state trigger PNG for the pass to point at.
-    for data in [xbox_data, ds4_data, dualsense_data, dsedge_data,
+    for data in [xbox_data, ds3_data, ds4_data, dualsense_data, dsedge_data,
                  xbone_data, xbseries_data, swpro_data, swpro2_data]:
         data["results"] = _add_trigger_base_entries(data["results"])
 
@@ -2831,7 +2853,7 @@ def main():
     # measured on all six layouts). Stable-move Trigger + TriggerBase
     # entries to the front so bumpers win the shared band; visual
     # stacking is unaffected (Z-indices are explicit in the view).
-    for data in [xbox_data, ds4_data, dualsense_data, dsedge_data,
+    for data in [xbox_data, ds3_data, ds4_data, dualsense_data, dsedge_data,
                  xbone_data, xbseries_data, swpro_data, swpro2_data,
                  deck_data, steamc_data, steamc2_data]:
         rs = data["results"]
@@ -2840,7 +2862,7 @@ def main():
         data["results"] = trig + rest
 
     # Sanity checks
-    for name, data in [("Xbox 360", xbox_data), ("DS4", ds4_data),
+    for name, data in [("Xbox 360", xbox_data), ("DualShock 3", ds3_data), ("DS4", ds4_data),
                        ("DualSense", dualsense_data),
                        ("DualSense Edge", dsedge_data),
                        ("Xbox One S", xbone_data),
@@ -2859,6 +2881,7 @@ def main():
     os.makedirs(output_dir, exist_ok=True)
     layouts = [
         ("Xbox360Layout",       xbox_data,      "2DModels/XBOX360/XB360_base.png",         30),
+        ("DualShock3Layout",    ds3_data,       "2DModels/DS3/DS3_base.png",               25),
         ("DS4Layout",           ds4_data,       "2DModels/DS4/DS4_V2_base.png",            25),
         ("DualSenseLayout",     dualsense_data, "2DModels/DualSense/DualSense_base.png",   25),
         ("DualSenseEdgeLayout", dsedge_data,    "2DModels/DUALSENSEEDGE/DualSense_base.png", 25),

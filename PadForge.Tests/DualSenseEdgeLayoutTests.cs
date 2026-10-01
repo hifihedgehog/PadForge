@@ -55,6 +55,7 @@ namespace PadForge.Tests
         [InlineData("dualsense", "DualSense", "DualSense")]
         [InlineData("dualsense-composite", "DualSense", "DualSense")]
         [InlineData("dualshock-4-v2", "DS4", "DS4")]
+        [InlineData("dualshock-3", "DS3", "DS3")]
         public void AssetFolders_RouteEdgeToItsOwnSet(string profileId, string want2D, string want3D)
         {
             var (name2D, name3D) = HMaestroProfileCatalog.ResolveAssetFolders(

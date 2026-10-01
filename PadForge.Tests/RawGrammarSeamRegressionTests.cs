@@ -119,6 +119,7 @@ namespace PadForge.Tests
         public static TheoryData<string, OverlayElement[]> AllLayouts => new()
         {
             { "Xbox360", Xbox360Layout.Overlays },
+            { "DualShock3", DualShock3Layout.Overlays },
             { "DS4", DS4Layout.Overlays },
             { "DualSense", DualSenseLayout.Overlays },
             { "XboxOneS", XboxOneSLayout.Overlays },

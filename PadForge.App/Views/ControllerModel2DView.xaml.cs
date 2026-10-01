@@ -249,6 +249,11 @@ namespace PadForge.Views
 
             switch (modelName)
             {
+                case "DS3":
+                    baseW = DualShock3Layout.BaseWidth; baseH = DualShock3Layout.BaseHeight;
+                    basePath = DualShock3Layout.BasePath; overlays = DualShock3Layout.Overlays;
+                    _stickMaxTravel = DualShock3Layout.StickMaxTravel;
+                    break;
                 case "DS4":
                     baseW = DS4Layout.BaseWidth; baseH = DS4Layout.BaseHeight;
                     basePath = DS4Layout.BasePath; overlays = DS4Layout.Overlays;

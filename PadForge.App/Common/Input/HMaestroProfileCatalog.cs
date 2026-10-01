@@ -512,6 +512,10 @@ namespace PadForge.Common.Input
                 return ("DUALSENSEEDGE", "DualSenseEdge");
             if (profileId.StartsWith("dualsense", StringComparison.OrdinalIgnoreCase))
                 return ("DualSense", "DualSense");
+            // The DualShock 3 before the generic DualShock line, which
+            // would otherwise give it the DualShock 4's body.
+            if (profileId.StartsWith("dualshock-3", StringComparison.OrdinalIgnoreCase))
+                return ("DS3", "DS3");
             if (profileId.StartsWith("dualshock", StringComparison.OrdinalIgnoreCase))
                 return ("DS4", "DS4");
 

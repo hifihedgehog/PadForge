@@ -9948,6 +9948,49 @@
                             </StackPanel>
                         </Border>
 
+                        <!-- ─── Pitch and Roll Simulation card (#472). A DualShock 3's
+                             gyro measures yaw only, so this fills pitch and roll
+                             from the accelerometer. Shown only for a device that
+                             lacks gyro axes its accelerometer can supply.
+                             Visibility set in SyncTabVisibility. ─── -->
+                        <Border x:Name="GyroSimulationCard" Style="{StaticResource CardBorder}" Visibility="Collapsed">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="&#xE7AD;" FontFamily="Segoe MDL2 Assets" FontSize="16" Foreground="{DynamicResource EmberBrush}"
+                                               VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding Pad_Gyro_Simulation_Header, Source={x:Static strings:Strings.Instance}}"
+                                               Style="{StaticResource CardTitle}"/>
+                                    <ui:Button Command="{Binding ResetGyroSimulationCardCommand}" Style="{StaticResource ResetAllButton}"
+                                            Content="{Binding Pad_ResetAll, Source={x:Static strings:Strings.Instance}}" Margin="12,0,0,0"
+                                            ToolTip="{Binding Pad_Gyro_ResetSimulation_All_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <TextBlock Text="{Binding Pad_Gyro_Simulation_Description, Source={x:Static strings:Strings.Instance}}"
+                                           Style="{StaticResource CardDescription}"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                    <CheckBox Foreground="{DynamicResource TextFillColorSecondaryBrush}" Content="{Binding Settings_GyroSimulation, Source={x:Static strings:Strings.Instance}}"
+                                              IsChecked="{Binding GyroSimulation, Mode=TwoWay}"
+                                              VerticalAlignment="Center" Margin="0,0,4,0"
+                                              ToolTip="{Binding Settings_GyroSimulation_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <ui:Button Command="{Binding ResetGyroSimulationCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetGyroSimulation, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Settings_GyroSimulationSmoothing, Source={x:Static strings:Strings.Instance}}"
+                                               Width="270" VerticalAlignment="Center"
+                                               ToolTip="{Binding Settings_GyroSimulationSmoothing_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <Slider Value="{Binding GyroSimulationSmoothingMs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Minimum="20" Maximum="250" SmallChange="5" LargeChange="20"
+                                            Width="200" VerticalAlignment="Center"
+                                            ToolTip="{Binding Settings_GyroSimulationSmoothing_Tooltip, Source={x:Static strings:Strings.Instance}}"/>
+                                    <TextBox Text="{Binding GyroSimulationSmoothingMs, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:0}}"
+                                             Width="56" Margin="6,0,0,0" Padding="2,1" VerticalContentAlignment="Center"/>
+                                    <TextBlock Text="ms" VerticalAlignment="Center" Margin="2,0,0,0" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                    <ui:Button Command="{Binding ResetGyroSimulationSmoothingCommand}" Style="{StaticResource ResetButton}"
+                                            ToolTip="{Binding Pad_ResetGyroSimulationSmoothing, Source={x:Static strings:Strings.Instance}}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
                         <!-- ─── Motion Passthrough card ─── -->
                         <!-- Tab-wide scope toggle: whether this tab's tuning
                              reaches the virtual controller's motion passthrough

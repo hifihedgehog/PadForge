@@ -2,6 +2,7 @@ using System;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
+using PadForge.Engine;
 using PadForge.Engine.Data;
 
 namespace PadForge.Services
@@ -33,6 +34,19 @@ namespace PadForge.Services
     /// are also guarded optimistically against a reset or concurrent
     /// calibration finishing mid-run (round eight, R1).</para>
     ///
+    /// <para>A DualShock 3 is the exception (#474). Its yaw is an analog
+    /// part read against the 512 center, and units rest up to 2.7 rad/s off
+    /// it. Only the Calibrate Gyro button passes <c>deliberate</c>, which
+    /// lets that one axis take up to
+    /// <see cref="DualShock3Motion.MaxRestingYawBias"/>. Every other axis,
+    /// every other device and the automatic pass keep
+    /// <see cref="MaxPlausibleBias"/>. A calibration records whom it belongs
+    /// to (<c>GyroCalibratedDevice</c>): the device row, or on a DualShock 3
+    /// whose address PadForge can read, the pad and what serves its yaw,
+    /// because every DualShock 3 on PadForge's own path shares one row.
+    /// <see cref="CalibrationApplies(UserDevice, PadSetting, float, float, float)"/>
+    /// decides whether a stored bias may be subtracted.</para>
+    ///
     /// <para>Thread model: sampling runs on a worker task, polling
     /// <c>ud.InputState.Gyro[]</c> at ~5 ms intervals. The state object
     /// is mutated by the InputManager polling thread on every SDL update;
@@ -58,7 +72,13 @@ namespace PadForge.Services
         /// at a STEADY rate, or a state stream frozen on a mid-motion
         /// sample, because constant values have zero range; the original
         /// 0.5 bound still let a slow ~23 deg/s pan calibrate itself into
-        /// the bias.</summary>
+        /// the bias. One exception (#472): a DualShock 3's yaw is an analog
+        /// part that PadForge's own path reads against the 512 center, and
+        /// units rest 2.7 rad/s off it. When the user presses Calibrate,
+        /// that axis takes <see cref="DualShock3Motion.MaxRestingYawBias"/>
+        /// instead. The automatic pass keeps this bound: the rule for that
+        /// part is never to learn its center unattended
+        /// (Ds3DirectService.ObserveGyroRest).</summary>
         internal const float MaxPlausibleBias = 0.15f;
 
         private readonly Action _persistCallback;
@@ -85,6 +105,8 @@ namespace PadForge.Services
             if (ud == null || ps == null) return false;
             if (!ud.HasGyro) return false;
             if (string.IsNullOrEmpty(ps.GyroCalibratedAtUtc)) return true;
+            // A stored bias this device may not use (#474) is measured again.
+            if (!CalibrationApplies(ud, ps)) return true;
             bool auxUnset = ps.GyroAuxBiasPitch == "0"
                 && ps.GyroAuxBiasYaw == "0"
                 && ps.GyroAuxBiasRoll == "0";
@@ -108,7 +130,7 @@ namespace PadForge.Services
         public Task<bool> EnsureAutoCalibratedAsync(UserDevice ud, PadSetting ps)
         {
             if (!WouldCalibrate(ud, ps)) return Task.FromResult(false);
-            bool auxOnly = !string.IsNullOrEmpty(ps.GyroCalibratedAtUtc);
+            bool auxOnly = !string.IsNullOrEmpty(ps.GyroCalibratedAtUtc) && CalibrationApplies(ud, ps);
             return RecalibrateAsync(ud, ps, 1500, auxOnly: auxOnly);
         }
 
@@ -128,8 +150,64 @@ namespace PadForge.Services
             ps.GyroAuxBiasYaw   = "0";
             ps.GyroAuxBiasRoll  = "0";
             ps.GyroCalibratedAtUtc = "";
+            ps.GyroCalibratedDevice = "";
             _persistCallback?.Invoke();
         }
+
+        /// <summary>The DualShock 3 on a device row as "address/source",
+        /// its Bluetooth address and what serves its yaw word, or null when
+        /// PadForge can't read the address for this connection (#474). Wired
+        /// by InputService to Ds3UnitIdentity.Identity.</summary>
+        internal static Func<UserDevice, string> UnitIdentityProvider { get; set; }
+
+        /// <summary>Whom a calibration on <paramref name="ud"/> belongs to:
+        /// the device row, or on a DualShock 3 whose address is known, the
+        /// pad itself as "address/source". The row drops out there, so the
+        /// owner survives a re-keyed row, and the source keeps a calibration
+        /// from crossing between paths that zero the yaw differently.</summary>
+        internal static string CalibrationOwner(UserDevice ud)
+        {
+            if (ud == null) return "";
+            string row = ud.InstanceGuidString;
+            if (!DualShock3Motion.Is(ud.VendorId, ud.ProdId)) return row;
+            string identity = UnitIdentityProvider?.Invoke(ud);
+            return string.IsNullOrEmpty(identity) ? row : identity;
+        }
+
+        /// <summary>Whether a stored primary bias belongs to
+        /// <paramref name="ud"/> and may be subtracted (#474). A stored value
+        /// that is not a number is no calibration. A DualShock 3 uses only a
+        /// bias measured on itself since its yaw sign changed: one from
+        /// before, or from another pad resting elsewhere, would add drift.
+        /// Every DualShock 3 on PadForge's own path shares one device row, so
+        /// the owner names the pad by its address, and without the address
+        /// only a bias inside <see cref="MaxPlausibleBias"/> applies. Any
+        /// other device uses a bias inside <see cref="MaxPlausibleBias"/>,
+        /// the bound every calibration has enforced since 4.1.0: a larger one
+        /// came from a DualShock 3 by a paste or a profile, or from an older
+        /// pass that averaged motion in.</summary>
+        internal static bool CalibrationApplies(UserDevice ud, PadSetting ps, float pitch, float yaw, float roll)
+        {
+            if (ud == null || ps == null) return false;
+            if (!float.IsFinite(pitch) || !float.IsFinite(yaw) || !float.IsFinite(roll)) return false;
+            bool small = Math.Abs(pitch) <= MaxPlausibleBias
+                && Math.Abs(yaw) <= MaxPlausibleBias
+                && Math.Abs(roll) <= MaxPlausibleBias;
+            if (!DualShock3Motion.Is(ud.VendorId, ud.ProdId)) return small;
+            string owner = CalibrationOwner(ud);
+            return string.Equals(ps.GyroCalibratedDevice, owner, StringComparison.OrdinalIgnoreCase)
+                && (small || owner.Contains('/'));
+        }
+
+        internal static bool CalibrationApplies(UserDevice ud, PadSetting ps)
+            => ps != null && CalibrationApplies(ud, ps,
+                ParseBias(ps.GyroBiasPitch), ParseBias(ps.GyroBiasYaw), ParseBias(ps.GyroBiasRoll));
+
+        /// <summary>The parse the funnel and the readout make
+        /// (InputService.TryParseFloatPs): an empty or unreadable value is 0,
+        /// and NaN or infinity comes through for the check above to refuse.</summary>
+        private static float ParseBias(string s)
+            => float.TryParse(s, NumberStyles.Float, CultureInfo.InvariantCulture, out float v) ? v : 0f;
 
         /// <summary>Samples <paramref name="ud"/>'s gyro readings for
         /// <paramref name="durationMs"/>, averages each axis, and writes
@@ -141,9 +219,12 @@ namespace PadForge.Services
         /// state changed underneath the run (reset / concurrent write).
         /// <paramref name="auxOnly"/> (the #252 upgrade) writes the aux
         /// triple alone and leaves the primary bias and the calibration
-        /// timestamp untouched.</summary>
+        /// timestamp untouched. <paramref name="deliberate"/> marks a press
+        /// of Calibrate Gyro, the only caller that sets it: on a DualShock 3
+        /// it lets the yaw average reach
+        /// <see cref="DualShock3Motion.MaxRestingYawBias"/> (#474).</summary>
         public Task<bool> RecalibrateAsync(UserDevice ud, PadSetting ps, int durationMs = 1500,
-            CancellationToken ct = default, bool auxOnly = false)
+            CancellationToken ct = default, bool auxOnly = false, bool deliberate = false)
         {
             if (ud == null || ps == null || !ud.HasGyro) return Task.FromResult(false);
             durationMs = Math.Clamp(durationMs, 250, 5000);
@@ -170,7 +251,7 @@ namespace PadForge.Services
             // always runs far enough to release the guard.
             return Task.Run(() =>
             {
-                try { return RunSampling(ud, ps, durationMs, ct, auxOnly); }
+                try { return RunSampling(ud, ps, durationMs, ct, auxOnly, deliberate); }
                 finally { lock (_inFlightLock) _inFlight.Remove(ps); }
             });
         }
@@ -195,7 +276,8 @@ namespace PadForge.Services
             lock (_inFlightLock) return _inFlight.Contains(ps);
         }
 
-        private bool RunSampling(UserDevice ud, PadSetting ps, int durationMs, CancellationToken ct, bool auxOnly)
+        private bool RunSampling(UserDevice ud, PadSetting ps, int durationMs, CancellationToken ct, bool auxOnly,
+            bool deliberate)
         {
             // Optimistic write-guard (round eight R1, widened round nine
             // R4): snapshot the WHOLE calibration state at entry and
@@ -213,6 +295,9 @@ namespace PadForge.Services
             // First intervening writer wins; this run reports false and
             // the caller may retry.
             var entry = Snapshot(ps);
+            // Whom the result will belong to, fixed before sampling: a run
+            // that ends on a different pad writes nothing.
+            string owner = CalibrationOwner(ud);
             double accPitch = 0, accYaw = 0, accRoll = 0;
             int samples = 0;
             // The aux gyro (#252) is sampled in the SAME at-rest pass: the
@@ -269,8 +354,13 @@ namespace PadForge.Services
                 try { Thread.Sleep(5); }
                 catch (ThreadInterruptedException) { return false; }
             }
+            // A DualShock 3's yaw may carry its large analog offset only on
+            // a press of Calibrate, never on the automatic pass (#472), and
+            // only when the pad's address can name whom it belongs to (#474).
+            float yawLimit = deliberate && DualShock3Motion.Is(ud.VendorId, ud.ProdId) && owner.Contains('/')
+                ? DualShock3Motion.MaxRestingYawBias : MaxPlausibleBias;
             bool primaryStill = samples > 0 && HeldStill(lo, hi, 0)
-                && PlausibleAverage(accPitch, accYaw, accRoll, samples);
+                && PlausibleAverage(accPitch, accYaw, accRoll, samples, yawLimit);
             bool auxStill = auxSamples > 0 && HeldStill(lo, hi, 3)
                 && PlausibleAverage(accAuxPitch, accAuxYaw, accAuxRoll, auxSamples);
 
@@ -279,6 +369,8 @@ namespace PadForge.Services
             // run. Its result is the newer truth and this run must not
             // clobber it.
             if (!SameSnapshot(entry, Snapshot(ps)))
+                return false;
+            if (!string.Equals(owner, CalibrationOwner(ud), StringComparison.OrdinalIgnoreCase))
                 return false;
 
             if (auxOnly)
@@ -306,6 +398,7 @@ namespace PadForge.Services
             ps.GyroBiasPitch = AvgStr(accPitch, samples);
             ps.GyroBiasYaw   = AvgStr(accYaw, samples);
             ps.GyroBiasRoll  = AvgStr(accRoll, samples);
+            ps.GyroCalibratedDevice = owner;
             if (auxStill)
                 WriteAuxTriple(ps, accAuxPitch, accAuxYaw, accAuxRoll, auxSamples);
             ps.GyroCalibratedAtUtc = DateTime.UtcNow.ToString("o", CultureInfo.InvariantCulture);
@@ -327,7 +420,7 @@ namespace PadForge.Services
         {
             ps.GyroBiasPitch, ps.GyroBiasYaw, ps.GyroBiasRoll,
             ps.GyroAuxBiasPitch, ps.GyroAuxBiasYaw, ps.GyroAuxBiasRoll,
-            ps.GyroCalibratedAtUtc,
+            ps.GyroCalibratedAtUtc, ps.GyroCalibratedDevice,
         };
 
         private static bool SameSnapshot(string[] a, string[] b)
@@ -337,9 +430,10 @@ namespace PadForge.Services
             return true;
         }
 
-        private static bool PlausibleAverage(double accA, double accB, double accC, int n)
+        private static bool PlausibleAverage(double accA, double accB, double accC, int n,
+            float yawLimit = MaxPlausibleBias)
             => Math.Abs(accA / n) <= MaxPlausibleBias
-            && Math.Abs(accB / n) <= MaxPlausibleBias
+            && Math.Abs(accB / n) <= yawLimit
             && Math.Abs(accC / n) <= MaxPlausibleBias;
 
         private static string AvgStr(double acc, int n)

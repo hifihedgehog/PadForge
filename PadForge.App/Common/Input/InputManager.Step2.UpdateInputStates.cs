@@ -63,6 +63,7 @@ namespace PadForge.Common.Input
             lock (SettingsManager.UserDevices.SyncRoot)
             {
                 PruneGyroTiltGravity(devices);
+                PruneGyroSimulation(devices);
                 if (_deviceSnapshotBuffer.Length < devices.Count)
                     _deviceSnapshotBuffer = new UserDevice[devices.Count];
 
@@ -121,6 +122,7 @@ namespace PadForge.Common.Input
                         // Device handle lost — mark offline.
                         ud.IsOnline = false;
                         InvalidateGyroTiltGravity(ud.InstanceGuid);
+                        InvalidateGyroSimulation(ud.InstanceGuid);
                         continue;
                     }
 
@@ -129,6 +131,7 @@ namespace PadForge.Common.Input
                         // Read failed — device may have been disconnected.
                         ud.IsOnline = false;
                         InvalidateGyroTiltGravity(ud.InstanceGuid);
+                        InvalidateGyroSimulation(ud.InstanceGuid);
                         continue;
                     }
 
@@ -145,6 +148,7 @@ namespace PadForge.Common.Input
                     if (Ds5WriteTrace.Enabled && ud.VendorId == 0x054C && newState.Accel != null)
                         Ds5WriteTrace.Sample(ud.InstanceGuid, ud.InstanceName, newState.Accel);
                     UpdateGyroTiltGravity(ud, inputDevice, newState, gyroTiltTimestamp);
+                    UpdateGyroSimulation(ud, inputDevice, newState, gyroTiltTimestamp);
 
                     // Idle disconnect countdown (#162). Tracks last activity at
                     // poll rate, checks the countdown ~1 Hz, and hands the
@@ -178,6 +182,7 @@ namespace PadForge.Common.Input
                 catch (Exception ex)
                 {
                     InvalidateGyroTiltGravity(ud.InstanceGuid);
+                    InvalidateGyroSimulation(ud.InstanceGuid);
                     RaiseError($"Error reading state for device {ud.ResolvedName}", ex);
                 }
             }

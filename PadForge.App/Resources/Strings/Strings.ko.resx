@@ -1466,6 +1466,15 @@
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>요를 나침반에 고정</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>수평 조준을 자기 방위로 끌어당기는 작은 보정률을 더해 드리프트가 누적되지 않게 합니다. 저장된 자력계 보정이 필요합니다. 주변 금속이나 자석으로 왜곡된 샘플은 자동으로 제외됩니다.</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>기본값으로 재설정 (끄기)</value></data>
+  <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>피치 및 롤 시뮬레이션</value></data>
+  <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>이 컨트롤러의 자이로는 좌우 회전만 감지합니다. 시뮬레이션을 켜면 PadForge가 가속도계에서 피치와 롤을 구해 자이로의 요와 함께 매핑과 가상 컨트롤러의 모션으로 보냅니다. 가속도계는 미는 동작과 기울임을 구분하지 못하므로, 회전하지 않고 컨트롤러를 옆이나 앞으로 움직이면 잠깐의 회전으로 읽힙니다.</value></data>
+  <data name="Settings_GyroSimulation" xml:space="preserve"><value>피치 및 롤 시뮬레이션 사용</value></data>
+  <data name="Settings_GyroSimulation_Tooltip" xml:space="preserve"><value>가속도계에서 구한 속도로 피치와 롤을 채웁니다. 요는 자이로 자체 값을 그대로 사용합니다. 기본값은 꺼짐입니다.</value></data>
+  <data name="Pad_ResetGyroSimulation" xml:space="preserve"><value>시뮬레이션 사용 재설정</value></data>
+  <data name="Settings_GyroSimulationSmoothing" xml:space="preserve"><value>시뮬레이션 스무딩</value></data>
+  <data name="Settings_GyroSimulationSmoothing_Tooltip" xml:space="preserve"><value>피치와 롤을 구하기 전에 가속도계를 평균하는 시간입니다. 길수록 안정적이지만 컨트롤러를 느리게 따라갑니다. 짧을수록 빠르게 따라가지만 가속도계의 거친 단계가 더 많이 보입니다. 기본값 100 ms.</value></data>
+  <data name="Pad_ResetGyroSimulationSmoothing" xml:space="preserve"><value>시뮬레이션 스무딩 재설정</value></data>
+  <data name="Pad_Gyro_ResetSimulation_All_Tooltip" xml:space="preserve"><value>피치 및 롤 시뮬레이션 재설정</value></data>
   <data name="Pad_Gyro_MagCalibrate" xml:space="preserve"><value>자력계 보정</value></data>
   <data name="Pad_Gyro_MagCalibrate_Stop" xml:space="preserve"><value>보정 완료</value></data>
   <data name="Settings_GyroRealWorldCalibration" xml:space="preserve"><value>실세계 보정</value></data>

@@ -1486,6 +1486,15 @@ Una copia della versione precedente si trova in questa cartella: {1}</value></da
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Ancora l'imbardata alla bussola</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Aggiunge una piccola correzione che riporta la mira orizzontale verso la direzione magnetica, così la deriva non può accumularsi. Richiede una calibrazione del magnetometro salvata. I campioni disturbati da metalli o magneti vicini vengono scartati automaticamente.</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Ripristina il valore predefinito (disattivato)</value></data>
+  <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Simulazione di pitch e roll</value></data>
+  <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Il giroscopio di questo controller rileva solo la rotazione a sinistra e a destra. Con la simulazione attiva, PadForge ricava pitch e roll dall’accelerometro e li invia insieme al valore di yaw del giroscopio alle mappature e al movimento del controller virtuale. Un accelerometro non distingue una spinta da un’inclinazione, quindi muovere il controller di lato o in avanti senza ruotarlo viene letto come una breve rotazione.</value></data>
+  <data name="Settings_GyroSimulation" xml:space="preserve"><value>Simula pitch e roll</value></data>
+  <data name="Settings_GyroSimulation_Tooltip" xml:space="preserve"><value>Riempie pitch e roll con velocità ricavate dall’accelerometro. Il valore di yaw resta la lettura propria del giroscopio. Disattivato per impostazione predefinita.</value></data>
+  <data name="Pad_ResetGyroSimulation" xml:space="preserve"><value>Ripristina attivazione simulazione</value></data>
+  <data name="Settings_GyroSimulationSmoothing" xml:space="preserve"><value>Smussatura simulazione</value></data>
+  <data name="Settings_GyroSimulationSmoothing_Tooltip" xml:space="preserve"><value>Per quanto tempo viene mediato l’accelerometro prima di ricavare pitch e roll. Più lungo è più stabile e segue il controller più lentamente. Più corto segue più rapidamente e mostra di più i gradini grossolani dell’accelerometro. Predefinito 100 ms.</value></data>
+  <data name="Pad_ResetGyroSimulationSmoothing" xml:space="preserve"><value>Ripristina smussatura simulazione</value></data>
+  <data name="Pad_Gyro_ResetSimulation_All_Tooltip" xml:space="preserve"><value>Ripristina simulazione di pitch e roll</value></data>
   <data name="Pad_Gyro_MagCalibrate" xml:space="preserve"><value>Calibra magnetometro</value></data>
   <data name="Pad_Gyro_MagCalibrate_Stop" xml:space="preserve"><value>Termina calibrazione</value></data>
   <data name="Settings_GyroRealWorldCalibration" xml:space="preserve"><value>Calibrazione reale</value></data>

@@ -983,24 +983,6 @@ namespace PadForge
                     if (ps == null) return;
                     var calibratedGuid = selected.InstanceGuid;
                     int generation = pvm.GyroCalibrationGeneration;
-                    // A pass already owns this profile (round eleven).
-                    // Auto-calibration fires on device connect and runs
-                    // 1.5 s, which is exactly when a user plugs in a gyro
-                    // pad and reaches for this button, and the calibrator
-                    // refuses a second concurrent pass. Reporting that
-                    // refusal as "Couldn't calibrate" blamed a healthy,
-                    // stationary pad for the most likely gesture on the
-                    // tab. Round nine introduced the refusal and round
-                    // ten taught the auto lane and the Reset handler what
-                    // it means; this caller was never taught. Show the
-                    // run that IS happening instead.
-                    if (GyroCalibratorService.IsSampling(ps))
-                    {
-                        pvm.GyroCalibrationLabel =
-                            PadForge.Resources.Strings.Strings.Instance.Settings_GyroCalibrating;
-                        pvm.GyroCalibrationLabelHoldUntilUtc = DateTime.UtcNow.AddSeconds(2);
-                        return;
-                    }
                     // Hold the label for the run (round seven, R1): the
                     // 30 Hz tick otherwise clobbers "Calibrating…" within
                     // one frame, and a motion-rejected run looked exactly
@@ -1008,8 +990,38 @@ namespace PadForge
                     // as dead.
                     pvm.GyroCalibrationLabelHoldUntilUtc = DateTime.MaxValue;
                     pvm.GyroCalibrationLabel = PadForge.Resources.Strings.Strings.Instance.Settings_GyroCalibrating;
+                    // A pass already owns this profile (round eleven).
+                    // Auto-calibration fires on device connect and runs
+                    // 1.5 s, which is exactly when a user plugs in a gyro
+                    // pad and reaches for this button, and the calibrator
+                    // refuses a second concurrent pass. Round eleven showed
+                    // that pass and dropped the press. The press now waits
+                    // it out and runs its own (#472): only a press may take
+                    // a DualShock 3's large yaw offset, so the automatic
+                    // pass can fail on a pad the press calibrates.
+                    long waitUntil = Environment.TickCount64 + 6000;
+                    while (GyroCalibratorService.IsSampling(ps) && Environment.TickCount64 < waitUntil)
+                        await System.Threading.Tasks.Task.Delay(50);
+                    // The selection, a Reset, or a profile switch that
+                    // replaced this PadSetting voids the press.
+                    if (pvm.SelectedMappedDevice?.InstanceGuid != calibratedGuid
+                        || pvm.GyroCalibrationGeneration != generation
+                        || !ReferenceEquals(PadForge.Common.Input.SettingsManager
+                            .FindSettingByInstanceGuidAndSlot(calibratedGuid, pvm.PadIndex)?.GetPadSetting(), ps))
+                    {
+                        pvm.GyroCalibrationLabelHoldUntilUtc = DateTime.MinValue;
+                        return;
+                    }
+                    // Still owned after the cap: show the run that IS
+                    // happening, as round eleven did, rather than blaming a
+                    // still pad for the refusal.
+                    if (GyroCalibratorService.IsSampling(ps))
+                    {
+                        pvm.GyroCalibrationLabelHoldUntilUtc = DateTime.UtcNow.AddSeconds(2);
+                        return;
+                    }
                     bool ok = false;
-                    try { ok = await _inputService.GyroCalibrator.RecalibrateAsync(ud, ps); }
+                    try { ok = await _inputService.GyroCalibrator.RecalibrateAsync(ud, ps, deliberate: true); }
                     catch { }
                     // Post-await re-validation (round eight, R6): if the
                     // pad's selection moved to a DIFFERENT device during
@@ -1461,6 +1473,7 @@ namespace PadForge
                         nameof(PadViewModel.GyroInvertPitch) or nameof(PadViewModel.GyroInvertYaw) or
                         nameof(PadViewModel.GyroInvertRoll) or
                         nameof(PadViewModel.GyroCompassYaw) or
+                        nameof(PadViewModel.GyroSimulation) or nameof(PadViewModel.GyroSimulationSmoothingMs) or
                         nameof(PadViewModel.GyroApplyTuningToPassthrough) or
                         // Steering at-lock feedback (#94) — per-slot toggles + tunables.
                         nameof(PadViewModel.SteeringAngleRumbleEnabled) or

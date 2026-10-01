@@ -1466,6 +1466,15 @@ Une copie de la version précédente se trouve dans ce dossier : {1}</value></da
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Ancrer le lacet à la boussole</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Ajoute un petit taux correctif qui ramène la visée horizontale vers le cap magnétique, de sorte que la dérive ne peut pas s'accumuler. Nécessite une calibration du magnétomètre enregistrée. Les échantillons perturbés par du métal ou des aimants proches sont rejetés automatiquement.</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Réinitialiser par défaut (désactivé)</value></data>
+  <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Simulation du tangage et du roulis</value></data>
+  <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Le gyroscope de cette manette ne détecte que la rotation vers la gauche et la droite. Avec la simulation activée, PadForge déduit le tangage et le roulis de l’accéléromètre et les envoie avec le lacet du gyroscope aux affectations et au mouvement de la manette virtuelle. Un accéléromètre ne distingue pas une poussée d’une inclinaison, donc déplacer la manette sur le côté ou vers l’avant sans la tourner se lit comme une brève rotation.</value></data>
+  <data name="Settings_GyroSimulation" xml:space="preserve"><value>Simuler le tangage et le roulis</value></data>
+  <data name="Settings_GyroSimulation_Tooltip" xml:space="preserve"><value>Remplit le tangage et le roulis avec des vitesses déduites de l’accéléromètre. Le lacet reste la mesure propre du gyroscope. Désactivé par défaut.</value></data>
+  <data name="Pad_ResetGyroSimulation" xml:space="preserve"><value>Réinitialiser l’activation de la simulation</value></data>
+  <data name="Settings_GyroSimulationSmoothing" xml:space="preserve"><value>Lissage de la simulation</value></data>
+  <data name="Settings_GyroSimulationSmoothing_Tooltip" xml:space="preserve"><value>Durée pendant laquelle l’accéléromètre est moyenné avant de déduire le tangage et le roulis. Plus long est plus stable et suit la manette plus lentement. Plus court suit plus vite et montre davantage les paliers grossiers de l’accéléromètre. 100 ms par défaut.</value></data>
+  <data name="Pad_ResetGyroSimulationSmoothing" xml:space="preserve"><value>Réinitialiser le lissage de la simulation</value></data>
+  <data name="Pad_Gyro_ResetSimulation_All_Tooltip" xml:space="preserve"><value>Réinitialiser la simulation du tangage et du roulis</value></data>
   <data name="Pad_Gyro_MagCalibrate" xml:space="preserve"><value>Calibrer le magnétomètre</value></data>
   <data name="Pad_Gyro_MagCalibrate_Stop" xml:space="preserve"><value>Terminer la calibration</value></data>
   <data name="Settings_GyroRealWorldCalibration" xml:space="preserve"><value>Étalonnage réel</value></data>

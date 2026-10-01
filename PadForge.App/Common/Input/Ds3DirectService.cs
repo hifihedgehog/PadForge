@@ -135,6 +135,17 @@ namespace PadForge.Common.Input
         // (the two transports' paths differ; identity stays on the stable SDL GUID).
         private volatile string _transportPath;
 
+        // The Bluetooth address of the pad on the current connection (#474),
+        // from its BthPS3 node over Bluetooth and its 0xF2 reply over USB.
+        // Every DualShock 3 reaches SDL as the same virtual joystick and so
+        // shares one device row, and a gyro calibration names the pad by this.
+        private volatile string _padAddress;
+
+        // A USB pad that refused 0xF2 while it settled is asked again once it
+        // streams, a few times at most (#474).
+        private int _padAddressRetries;
+        private long _padAddressNextTry;
+
         // Per-connection writer generation: Teardown flips it false so the writer
         // exits on THIS pad's disconnect even though the service keeps _running.
         // Without it, every disconnect leaked a live writer thread (the loop's only
@@ -304,6 +315,20 @@ namespace PadForge.Common.Input
                 ? svc._transportPath : null;
         }
 
+        /// <summary>The Bluetooth address of the pad on this service's live
+        /// connection for a given SDL instance id, or null (#474). Every
+        /// DualShock 3 on this path shares one device row, so a gyro
+        /// calibration names the pad by this.</summary>
+        public static string GetPadAddress(uint sdlInstanceId)
+        {
+            var svc = _current;
+            if (svc != null && svc.IsConnected && svc.InstanceId == sdlInstanceId)
+                return svc._padAddress;
+            svc = _currentNav;
+            return (svc != null && svc.IsConnected && svc.InstanceId == sdlInstanceId)
+                ? svc._padAddress : null;
+        }
+
         /// <summary>Set the player LED for a relayed player-index frame (#191 over Remote
         /// Link), but only when this instance id is the DS3 this service is driving.
         /// SetPlayerNumber is change-detected, so a repeated value is a no-op.</summary>
@@ -457,6 +482,14 @@ namespace PadForge.Common.Input
                     }
                     catch { }
                 }
+                // Which pad this connection carries (#474), read on every
+                // connect: the row's stored address can belong to another unit
+                // of the same model.
+                _padAddress = Ds3UnitIdentity.Normalize(_transport == Ds3Transport.Bluetooth
+                    ? PadForge.Services.Ds3PairingService.ReadDeviceNodeAddress(_transportPath)
+                    : ReadUsbPadAddress(3));
+                _padAddressRetries = 0;
+                _padAddressNextTry = 0;
                 if (!AttachVirtual()) { Teardown(); Thread.Sleep(1000); continue; }
 
                 _writerRun = true;
@@ -953,6 +986,13 @@ namespace PadForge.Common.Input
                             _everGotInput = true;
                             PushState(buf, rd);
                             UpdateBattery(buf[31]);
+                            if (_padAddress == null && _padAddressRetries < 3
+                                && Environment.TickCount64 >= _padAddressNextTry)
+                            {
+                                _padAddressRetries++;
+                                _padAddressNextTry = Environment.TickCount64 + 1000;
+                                _padAddress = Ds3UnitIdentity.Normalize(ReadUsbPadAddress());
+                            }
                         }
                     }
                 }
@@ -1078,13 +1118,7 @@ namespace PadForge.Common.Input
                     {
                         byte[] f2 = new byte[17];
                         if (UsbGetFeature(ifh, 0xF2, f2))
-                        {
-                            var m = new byte[6];
-                            Array.Copy(f2, 4, m, 0, 6);
-                            var sb = new System.Text.StringBuilder(12);
-                            foreach (byte b in m) sb.Append(b.ToString("x2"));
-                            mac = sb.ToString();
-                        }
+                            mac = AddressFromF2(f2);
                         byte[] f5 = new byte[8];
                         if (UsbGetFeature(ifh, 0xF5, f5))
                             storedHost = f5[2..8];
@@ -1103,6 +1137,41 @@ namespace PadForge.Common.Input
             if (mac != null)
                 PadForge.Services.Ds3PairingService.StampLinkAddress(0x054C, NAV_PID, mac);
             try { NavDockObserved?.Invoke(mac, storedHost); } catch { }
+        }
+
+        /// <summary>The pad's own address from its 0xF2 reply over the open
+        /// WinUSB handle, under the lock contract <see cref="RaiseNavDock"/>
+        /// keeps, or null when the pad won't say. Attempts 50 ms apart, as
+        /// DsHidMini makes three: some pads refuse the request while they
+        /// settle (driver/Ds3.c, DS3_DEVICE_ADDRESS_MAX_ATTEMPTS).</summary>
+        private string ReadUsbPadAddress(int attempts = 1)
+        {
+            for (int i = 0; i < attempts; i++)
+            {
+                if (i > 0) Thread.Sleep(50);
+                try
+                {
+                    lock (_ioLock)
+                    {
+                        IntPtr ifh;
+                        lock (_outLock) ifh = _usbIfh;
+                        if (ifh == IntPtr.Zero) return null;
+                        byte[] f2 = new byte[17];
+                        if (UsbGetFeature(ifh, 0xF2, f2)) return AddressFromF2(f2);
+                    }
+                }
+                catch { return null; }
+            }
+            return null;
+        }
+
+        /// <summary>Bytes 4-9 of a 0xF2 reply, the pad's own address, as
+        /// twelve lowercase hex digits.</summary>
+        internal static string AddressFromF2(byte[] f2)
+        {
+            var sb = new System.Text.StringBuilder(12);
+            for (int i = 4; i < 10; i++) sb.Append(f2[i].ToString("x2"));
+            return sb.ToString();
         }
 
         /// <summary>GET_REPORT(FEATURE) over WinUSB, the transport these
@@ -1161,6 +1230,7 @@ namespace PadForge.Common.Input
                     _usbInPipe = 0;
                 }
                 _transportPath = null;
+                _padAddress = null;
                 _transport = Ds3Transport.None;
                 // A re-plug is a new dock.
                 _lastNavDockedPath = null;
@@ -1279,7 +1349,14 @@ namespace PadForge.Common.Input
                 // sdl-patch-spec-ds3-sixaxis-motion, hardware-verified 2026-07-08),
                 // composed back through DsHidMini's transforms to raw byte order:
                 //   SDL accel = ( (ax-512), -(az-512), -(ay-512) ) / 113 * g
-                //   SDL gyro  = ( 0, -(gz-512) * (90/123) deg/s, 0 )   [genuine-anchored negation]
+                //   SDL gyro  = ( 0, (gz-512) * (90/123) deg/s, 0 )
+                // The yaw is not negated (#472). DsHidMini measured four genuine
+                // pads whose raw word falls for a clockwise turn seen from above
+                // (docs/MOTION.md, Units), and SDL counts counter-clockwise from
+                // above as positive. The negation this path first carried was
+                // measured on a pad that fails DsHidMini's genuineness check,
+                // and it made one genuine pad turn opposite ways here and on the
+                // SXS path under DsHidMini 3.15.0 and later.
                 if (!_nav && len >= DS3_BT_INPUT_REPORT_SIZE)
                 {
                     int ax = (b[42] << 8) | b[43];
@@ -1299,15 +1376,17 @@ namespace PadForge.Common.Input
                     // all on the grounds that "the sensor is inaccurate and the
                     // behavior is very different between hardware revisions."
                     // Resting values of 727 and ~724 have been measured here, but
-                    // with per-revision behavior there is no correct value to
-                    // learn toward, and a learned center silently bakes in
-                    // whatever a possibly-degraded part happened to read at
-                    // connect. 512 is the 10-bit midpoint (no reference documents a gyro center; hid-sony centers only the accel, at 511, and declines the gyro). Removing a per-unit
-                    // offset is the user's gyro calibration, which is a deliberate
-                    // act against a known-still pad rather than a guess.
+                    // a learned center silently bakes in whatever a possibly
+                    // degraded part happened to read at connect. The pad keeps a
+                    // factory zero in EEPROM page 0xA0, which sixaxis.sys and
+                    // DsHidMini apply (docs/MOTION.md), but Bluetooth cannot read
+                    // it and this path does not, so 512, the 10-bit midpoint,
+                    // stands in. Removing a per-unit offset is the user's press of
+                    // Calibrate Gyro, a deliberate act against a known-still pad
+                    // rather than a guess.
                     gyroRestLine = ObserveGyroRest(gz);
                     _gyroData[0] = 0.0f;
-                    _gyroData[1] = -(gz - 512) * GYRO_SCALE;
+                    _gyroData[1] = YawFromWord(gz);
                     _gyroData[2] = 0.0f;
                     SDL.SDL_SendJoystickVirtualSensorData(j, SDL_SENSOR_GYRO, ts, _gyroData, 3);
 
@@ -1326,7 +1405,11 @@ namespace PadForge.Common.Input
         private const int SDL_SENSOR_GYRO = 2;
         private const float SDL_STANDARD_GRAVITY = 9.80665f;
         private const float ACCEL_SCALE = SDL_STANDARD_GRAVITY / 113.0f;                  // 113 LSB/g
-        private const float GYRO_SCALE = (90.0f / 123.0f) * ((float)Math.PI / 180.0f);    // 123 LSB per 90 deg/s
+        private const float GYRO_SCALE = PadForge.Engine.DualShock3Motion.GyroRadPerCount;                // 123 LSB per 90 deg/s
+
+        /// <summary>The raw 10-bit yaw word as SDL's yaw rate, rad/s,
+        /// counter-clockwise from above positive (#472).</summary>
+        internal static float YawFromWord(int word) => (word - 512) * GYRO_SCALE;
 
         private readonly float[] _accelData = new float[3];
         private readonly float[] _gyroData = new float[3];
@@ -1356,24 +1439,29 @@ namespace PadForge.Common.Input
         // adopt whatever a dying part read at connect and call that zero. DS3
         // gyros do fail, and users report axes stuck or barely moving.
         //
-        // So the published value stays anchored to the documented 512 and the
-        // per-unit offset is the user's gyro calibration to remove, deliberately,
-        // against a pad they know is still. This line exists to tell them that
-        // is needed, and to leave evidence when the part is simply gone.
-        private const int GzOffsetAdviseCalibration = 40;   // counts, ~29 deg/s
-        private const int GzRailMargin = 24;                // counts from 0 or 1023
+        // So the published value stays anchored to the 512 midpoint and the
+        // per-unit offset is the user's Calibrate Gyro press to remove,
+        // deliberately, against a pad they know is still. The automatic pass at
+        // connect may not take it (GyroCalibratorService.MaxPlausibleBias). This
+        // line exists to tell them that is needed, and to leave evidence when
+        // the part is simply gone.
+        private const int GzRailMargin = PadForge.Engine.DualShock3Motion.GyroRailMargin;   // counts from 0 or 1023
 
         private string ObserveGyroRest(int gz)
         {
             if (_gzRest >= 0) return null;   // baseline is captured once per session
             int delta = gz - 512;
             string note;
-            if (gz <= GzRailMargin || gz >= 1023 - GzRailMargin)
+            // The classes follow the calibrator's own bounds (#474): the
+            // automatic pass takes a rest within MaxPlausibleBias, a press
+            // takes one within MaxRestingYawCounts, and nothing takes more.
+            if (gz <= GzRailMargin || gz >= 1023 - GzRailMargin
+                || Math.Abs(delta) > PadForge.Engine.DualShock3Motion.MaxRestingYawCounts)
                 note = " AT-RAIL: resting against the end of its range, so one "
                      + "direction cannot register. Calibration will not recover this.";
-            else if (delta > GzOffsetAdviseCalibration || delta < -GzOffsetAdviseCalibration)
-                note = $" OFFSET: reads ~{-delta * GYRO_SCALE:F2} rad/s while still. "
-                     + $"Gyro calibration removes it. Headroom is uneven: "
+            else if (Math.Abs(YawFromWord(gz)) > PadForge.Services.GyroCalibratorService.MaxPlausibleBias)
+                note = $" OFFSET: reads ~{YawFromWord(gz):F2} rad/s while still. "
+                     + $"Pressing Calibrate Gyro with the pad still removes it. Headroom is uneven: "
                      + $"up={1023 - gz} down={gz}.";
             else
                 note = " within normal range of the 10-bit midpoint.";
@@ -1418,7 +1506,7 @@ namespace PadForge.Common.Input
             string line = $"DS3MOTION gyro raw min={_gzMin} max={_gzMax} rest={_gzRest} "
                  + $"span={span} belowRest={below} aboveRest={above}"
                  + (_gzMin <= 0 ? " CLIPPED-LOW" : "") + (_gzMax >= 1023 ? " CLIPPED-HIGH" : "")
-                 + $" | yaw now={-(gz - 512) * GYRO_SCALE:F2} rad/s";
+                 + $" | yaw now={YawFromWord(gz):F2} rad/s";
             // Fresh 2 s window: the excursion envelope resets after each
             // report, or min/max would grow into a session-wide envelope.
             _gzMin = int.MaxValue; _gzMax = int.MinValue;

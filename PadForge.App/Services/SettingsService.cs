@@ -3499,6 +3499,8 @@ namespace PadForge.Services
                 padVm.GyroAimEngageMode = string.IsNullOrEmpty(ps.GyroAimEngageMode) ? "Hold" : ps.GyroAimEngageMode;
                 padVm.GyroInvertPitch = ps.GyroInvertPitch == "1";
                 padVm.GyroCompassYaw = ps.GyroCompassYaw == "1";
+                padVm.GyroSimulation = ps.GyroSimulation == "1";
+                padVm.GyroSimulationSmoothingMs = TryParseDouble(ps.GyroSimulationSmoothingMs, PadForge.Engine.SimulatedGyro.DefaultSmoothingMs);
                 padVm.GyroInvertYaw = ps.GyroInvertYaw == "1";
                 padVm.GyroInvertRoll = ps.GyroInvertRollEffective == "1";
                 padVm.GyroApplyTuningToPassthrough = ps.GyroApplyTuningToPassthrough == "1";
@@ -5374,6 +5376,8 @@ namespace PadForge.Services
                     ps.GyroAimEngageMode = string.IsNullOrEmpty(padVm.GyroAimEngageMode) ? "Hold" : padVm.GyroAimEngageMode;
                     ps.GyroInvertPitch = padVm.GyroInvertPitch ? "1" : "0";
                     ps.GyroCompassYaw = padVm.GyroCompassYaw ? "1" : "0";
+                    ps.GyroSimulation = padVm.GyroSimulation ? "1" : "0";
+                    ps.GyroSimulationSmoothingMs = padVm.GyroSimulationSmoothingMs.ToString(ic);
                     ps.GyroInvertYaw = padVm.GyroInvertYaw ? "1" : "0";
                     ps.GyroInvertRoll = padVm.GyroInvertRoll ? "1" : "0";
                     ps.GyroApplyTuningToPassthrough = padVm.GyroApplyTuningToPassthrough ? "1" : "0";

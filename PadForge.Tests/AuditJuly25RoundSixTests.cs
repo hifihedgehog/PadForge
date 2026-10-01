@@ -126,21 +126,24 @@ namespace PadForge.Tests
             // bound is 0.15 rad/s, so the old arbitrary 0.2..0.4 values
             // read as steady MOTION and were rightly rejected).
             state.GyroAux[0] = 0.02f; state.GyroAux[1] = 0.03f; state.GyroAux[2] = 0.04f;
+            // The stored primary sits inside the same bound (#474: on a pad
+            // other than a DS3, a larger one came from a DS3 and earns a
+            // full pass instead of this upgrade).
             var ps = new PadSetting
             {
                 GyroCalibratedAtUtc = "2026-01-01T00:00:00Z",
-                GyroBiasPitch = "0.5",
-                GyroBiasYaw = "0.6",
-                GyroBiasRoll = "0.7",
+                GyroBiasPitch = "0.05",
+                GyroBiasYaw = "0.06",
+                GyroBiasRoll = "0.07",
             };
             var svc = new GyroCalibratorService();
 
             bool ok = await svc.EnsureAutoCalibratedAsync(ud, ps);
 
             Assert.True(ok);
-            Assert.Equal("0.5", ps.GyroBiasPitch);
-            Assert.Equal("0.6", ps.GyroBiasYaw);
-            Assert.Equal("0.7", ps.GyroBiasRoll);
+            Assert.Equal("0.05", ps.GyroBiasPitch);
+            Assert.Equal("0.06", ps.GyroBiasYaw);
+            Assert.Equal("0.07", ps.GyroBiasRoll);
             Assert.Equal("2026-01-01T00:00:00Z", ps.GyroCalibratedAtUtc);
             Assert.Equal(0.02f, float.Parse(ps.GyroAuxBiasPitch,
                 System.Globalization.CultureInfo.InvariantCulture), 3);
@@ -207,7 +210,7 @@ namespace PadForge.Tests
             var ps = new PadSetting
             {
                 GyroCalibratedAtUtc = "2026-01-01T00:00:00Z",
-                GyroBiasPitch = "0.5",
+                GyroBiasPitch = "0.05",
             };
             var svc = new GyroCalibratorService();
 
@@ -216,7 +219,7 @@ namespace PadForge.Tests
 
             Assert.True(mut.FlipCount > 10, "harness: the left half never moved during the window");
             Assert.False(ok);
-            Assert.Equal("0.5", ps.GyroBiasPitch);
+            Assert.Equal("0.05", ps.GyroBiasPitch);
             Assert.Equal("0", ps.GyroAuxBiasPitch);
             Assert.Equal("2026-01-01T00:00:00Z", ps.GyroCalibratedAtUtc);
         }

@@ -412,6 +412,7 @@ namespace PadForge.Views
             bool hasIrPointer = false; // #146 Wii Remote IR camera -> Pointer tab
             bool hasImpulseTriggers = false;
             bool hasS2Mag = false;
+            bool simulatesGyro = false; // #472: a gyro lacking axes the accelerometer can supply
             bool hasRumble = false;
             bool hasTouchpad = false;
             bool hasWheel = false;
@@ -455,6 +456,8 @@ namespace PadForge.Views
                         // Mouse and magnetometer axes are enabled independently.
                         hasS2Mag = ud.Device is PadForge.Engine.SdlDeviceWrapper s2w
                                 && s2w.HasSwitch2Magnetometer;
+                        simulatesGyro = PadForge.Engine.SimulatedGyro.MissingAxes(
+                            ud.VendorId, ud.ProdId, ud.HasGyro, ud.HasAccel) != PadForge.Engine.SimulatedGyro.Axes.None;
                         hasTouchpad = ud.HasTouchpad;
                         hasGuideLed =
                             PadForge.Common.Input.XboxGipGuideLedWriter.IsXboxGipPathed(ud)
@@ -625,6 +628,11 @@ namespace PadForge.Views
             // mouse, so the mouse capability doubles as the gate.
             if (CompassYawCard != null)
                 CompassYawCard.Visibility = hasS2Mag ? Visibility.Visible : Visibility.Collapsed;
+            // Pitch and roll simulation (#472): the DualShock 3, whose gyro
+            // measures yaw only. The same predicate gates the engine and the
+            // slot summary token.
+            if (GyroSimulationCard != null)
+                GyroSimulationCard.Visibility = simulatesGyro ? Visibility.Visible : Visibility.Collapsed;
             // Gyro-rate cards (#392): hidden on an accelerometer-only device.
             var rateVis = hasGyroRate ? Visibility.Visible : Visibility.Collapsed;
             if (GyroPassthroughCard != null) GyroPassthroughCard.Visibility = rateVis;

@@ -1509,6 +1509,15 @@ Eine Kopie der vorherigen Version liegt in diesem Ordner: {1}</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Gieren am Kompass verankern</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Fügt eine kleine Korrekturrate hinzu, die das horizontale Zielen zum magnetischen Kurs zieht, sodass sich kein Driften ansammeln kann. Erfordert eine gespeicherte Magnetometer-Kalibrierung. Durch Metall oder Magnete gestörte Messwerte werden automatisch verworfen.</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Auf Standard zurücksetzen (aus)</value></data>
+  <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Pitch- und Roll-Simulation</value></data>
+  <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>Das Gyroskop dieses Controllers erfasst nur das Drehen nach links und rechts. Mit aktivierter Simulation leitet PadForge Pitch und Roll aus dem Beschleunigungssensor ab und sendet sie zusammen mit dem Yaw-Wert des Gyroskops an die Zuordnungen und die Bewegung des virtuellen Controllers. Ein Beschleunigungssensor kann einen Stoß nicht von einer Neigung unterscheiden, daher wird ein seitliches oder Vorwärtsbewegen des Controllers ohne Drehen kurz als Drehung gelesen.</value></data>
+  <data name="Settings_GyroSimulation" xml:space="preserve"><value>Pitch und Roll simulieren</value></data>
+  <data name="Settings_GyroSimulation_Tooltip" xml:space="preserve"><value>Füllt Pitch und Roll mit Raten, die aus dem Beschleunigungssensor abgeleitet werden. Der Yaw-Wert bleibt der eigene Messwert des Gyroskops. Standardmäßig aus.</value></data>
+  <data name="Pad_ResetGyroSimulation" xml:space="preserve"><value>Simulation von Pitch und Roll zurücksetzen</value></data>
+  <data name="Settings_GyroSimulationSmoothing" xml:space="preserve"><value>Simulationsglättung</value></data>
+  <data name="Settings_GyroSimulationSmoothing_Tooltip" xml:space="preserve"><value>Wie lange der Beschleunigungssensor gemittelt wird, bevor Pitch und Roll abgeleitet werden. Länger ist ruhiger und folgt dem Controller langsamer. Kürzer folgt schneller und zeigt mehr von den groben Stufen des Beschleunigungssensors. Standard 100 ms.</value></data>
+  <data name="Pad_ResetGyroSimulationSmoothing" xml:space="preserve"><value>Simulationsglättung zurücksetzen</value></data>
+  <data name="Pad_Gyro_ResetSimulation_All_Tooltip" xml:space="preserve"><value>Pitch- und Roll-Simulation zurücksetzen</value></data>
   <data name="Pad_Gyro_MagCalibrate" xml:space="preserve"><value>Magnetometer kalibrieren</value></data>
   <data name="Pad_Gyro_MagCalibrate_Stop" xml:space="preserve"><value>Kalibrierung abschließen</value></data>
   <data name="Settings_GyroRealWorldCalibration" xml:space="preserve"><value>Reale Kalibrierung</value></data>

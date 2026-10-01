@@ -1486,6 +1486,15 @@ Een kopie van de vorige versie staat in deze map: {1}</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Yaw verankeren aan kompas</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Voegt een kleine correctiesnelheid toe die het horizontale richten naar de magnetische koers trekt, zodat drift zich niet kan opstapelen. Vereist een opgeslagen magnetometerkalibratie. Metingen die door metaal of magneten zijn verstoord, worden automatisch verworpen.</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Standaard herstellen (uit)</value></data>
+  <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Pitch- en rollsimulatie</value></data>
+  <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>De gyroscoop van deze controller registreert alleen draaien naar links en rechts. Met simulatie aan leidt PadForge pitch en roll af uit de versnellingsmeter en stuurt ze samen met de yaw van de gyroscoop naar de toewijzingen en de beweging van de virtuele controller. Een versnellingsmeter kan een duw niet van een kanteling onderscheiden, dus de controller zijwaarts of naar voren bewegen zonder te draaien leest als een korte rotatie.</value></data>
+  <data name="Settings_GyroSimulation" xml:space="preserve"><value>Pitch en roll simuleren</value></data>
+  <data name="Settings_GyroSimulation_Tooltip" xml:space="preserve"><value>Vult pitch en roll met snelheden die uit de versnellingsmeter zijn afgeleid. Yaw blijft de eigen meting van de gyroscoop. Standaard uit.</value></data>
+  <data name="Pad_ResetGyroSimulation" xml:space="preserve"><value>Simulatieschakelaar resetten</value></data>
+  <data name="Settings_GyroSimulationSmoothing" xml:space="preserve"><value>Simulatie-smoothing</value></data>
+  <data name="Settings_GyroSimulationSmoothing_Tooltip" xml:space="preserve"><value>Hoe lang de versnellingsmeter wordt gemiddeld voordat pitch en roll worden afgeleid. Langer is rustiger en volgt de controller trager. Korter volgt sneller en laat meer van de grove stappen van de versnellingsmeter zien. Standaard 100 ms.</value></data>
+  <data name="Pad_ResetGyroSimulationSmoothing" xml:space="preserve"><value>Simulatie-smoothing resetten</value></data>
+  <data name="Pad_Gyro_ResetSimulation_All_Tooltip" xml:space="preserve"><value>Pitch- en rollsimulatie resetten</value></data>
   <data name="Pad_Gyro_MagCalibrate" xml:space="preserve"><value>Magnetometer kalibreren</value></data>
   <data name="Pad_Gyro_MagCalibrate_Stop" xml:space="preserve"><value>Kalibratie voltooien</value></data>
   <data name="Settings_GyroRealWorldCalibration" xml:space="preserve"><value>Realistische kalibratie</value></data>

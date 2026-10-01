@@ -300,6 +300,13 @@ namespace PadForge.Engine.Common.Mapping
             // "Sideways", or "Upright". Null or empty reads as Pointing.
             // Applied by RotateForGrip / GripAxis to the BODY sensor only.
             public string Grip;
+
+            // Simulated pitch and roll (#472): when true, a device whose
+            // gyro lacks axes its accelerometer can supply (the DualShock 3)
+            // reads those axes from the accelerometer. Default false. The
+            // smoothing time is the estimator's time constant, in seconds.
+            public bool SimulateGyro;
+            public float SimulationSmoothingSeconds;
         }
 
         /// <summary>Looks up the per-(device, slot) gyro tuning bundle
@@ -426,6 +433,30 @@ namespace PadForge.Engine.Common.Mapping
         /// existing accelerometer-only path. A zero sample means the gyro-capable
         /// device has not supplied a usable pose yet.</summary>
         public static Func<string, int, GyroTiltGravitySample?> GyroTiltGravityProvider { get; set; }
+
+        /// <summary>Simulated gyro rates per (deviceGuid, slotIndex) (#472),
+        /// from the polling thread's accelerometer estimator. Null when the
+        /// option is off for the pair or the device lacks no axis it can
+        /// fill. The sample names the axes it supplies, in the sensor's own
+        /// frame, before the grip.</summary>
+        public static Func<string, int, SimulatedGyroSample?> SimulatedGyroProvider { get; set; }
+
+        /// <summary>Puts the simulated rates (#472) on the axes they supply,
+        /// over a debiased body reading in the sensor's frame. The Gyro tab's
+        /// readout calls it before the grip so it shows what
+        /// <c>ReadCalibratedGyroRate</c> gives the mappings and the virtual
+        /// controller.</summary>
+        public static void ApplySimulatedGyro(string deviceGuid, int slotIndex,
+            ref float pitch, ref float yaw, ref float roll)
+        {
+            var provider = SimulatedGyroProvider;
+            if (provider == null || string.IsNullOrEmpty(deviceGuid)) return;
+            if (!GetGyroTuning(deviceGuid, slotIndex).SimulateGyro) return;
+            if (provider(deviceGuid, slotIndex) is not { } sim) return;
+            if (sim.Covers(0)) pitch = sim.Pitch;
+            if (sim.Covers(1)) yaw = sim.Yaw;
+            if (sim.Covers(2)) roll = sim.Roll;
+        }
 
         /// <summary>Twin of <see cref="GravityProvider"/> for the auxiliary
         /// (left-side) accelerometer (issue #199): the Nunchuk's own sensor on
@@ -3913,15 +3944,26 @@ namespace PadForge.Engine.Common.Mapping
             // Fused caller asks for it: a standalone aux read is a separate
             // body in the other hand.
             float gripSign = 1f;
+            bool simulate = false;
             if (!aux || gripAux)
             {
-                var (sourceAxis, sign) = GripAxis(GetGrip(deviceGuid, slotIndex), gyroAxis);
+                var tuning = GetGyroTuning(deviceGuid, slotIndex);
+                simulate = !aux && tuning.SimulateGyro;
+                var (sourceAxis, sign) = GripAxis(tuning.Grip, gyroAxis);
                 if (sourceAxis >= 0 && sourceAxis < srcArr.Length)
                 {
                     gyroAxis = sourceAxis;
                     gripSign = sign;
                 }
             }
+            // Simulated pitch and roll (#472): on a body axis the gyro lacks,
+            // the accelerometer's rate stands in. It reads the source axis
+            // the grip picked and skips the stored bias, which belongs to the
+            // real sensor. The aux sensor is a separate body and is never
+            // simulated.
+            if (simulate && SimulatedGyroProvider?.Invoke(deviceGuid, slotIndex) is { } sim
+                && sim.Covers(gyroAxis))
+                return gripSign * sim.Get(gyroAxis);
             float raw = srcArr[gyroAxis];
             // The aux sensor is a DIFFERENT physical gyro sharing the device
             // GUID (#252), so it carries its own at-rest bias. Subtracting

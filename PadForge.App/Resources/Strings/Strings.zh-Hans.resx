@@ -1466,6 +1466,15 @@
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>将偏航锚定到指南针</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>添加一个小的校正速率，将水平瞄准拉向磁航向，使漂移无法累积。需要已保存的磁力计校准。受附近金属或磁铁干扰的采样会被自动剔除。</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>重置为默认值（关闭）</value></data>
+  <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>俯仰与滚转模拟</value></data>
+  <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>此手柄的陀螺仪只能感知左右转动。开启模拟后，PadForge 会根据加速度计推算俯仰和滚转，并与陀螺仪的偏航一起发送到映射和虚拟手柄的体感。加速度计无法区分推动和倾斜，因此不转动而向侧面或前方移动手柄会被读成短暂的旋转。</value></data>
+  <data name="Settings_GyroSimulation" xml:space="preserve"><value>模拟俯仰与滚转</value></data>
+  <data name="Settings_GyroSimulation_Tooltip" xml:space="preserve"><value>用由加速度计推算的速率填充俯仰和滚转。偏航仍是陀螺仪自身的读数。默认关闭。</value></data>
+  <data name="Pad_ResetGyroSimulation" xml:space="preserve"><value>重置模拟开关</value></data>
+  <data name="Settings_GyroSimulationSmoothing" xml:space="preserve"><value>模拟平滑</value></data>
+  <data name="Settings_GyroSimulationSmoothing_Tooltip" xml:space="preserve"><value>推算俯仰和滚转前对加速度计求平均的时长。越长越平稳，跟随手柄越慢。越短跟随越快，但会显示更多加速度计的粗糙阶跃。默认 100 ms。</value></data>
+  <data name="Pad_ResetGyroSimulationSmoothing" xml:space="preserve"><value>重置模拟平滑</value></data>
+  <data name="Pad_Gyro_ResetSimulation_All_Tooltip" xml:space="preserve"><value>重置俯仰与滚转模拟</value></data>
   <data name="Pad_Gyro_MagCalibrate" xml:space="preserve"><value>校准磁力计</value></data>
   <data name="Pad_Gyro_MagCalibrate_Stop" xml:space="preserve"><value>完成校准</value></data>
   <data name="Settings_GyroRealWorldCalibration" xml:space="preserve"><value>真实世界校准</value></data>

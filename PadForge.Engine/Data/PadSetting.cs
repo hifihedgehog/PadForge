@@ -644,6 +644,24 @@ namespace PadForge.Engine.Data
         /// carries the drift-free compass correction.</summary>
         [XmlElement] public string GyroCompassYaw { get; set; } = "0";
 
+        /// <summary>Simulated pitch and roll (#472). "0" = off (default),
+        /// "1" = a device whose gyro lacks axes its accelerometer can supply
+        /// (the DualShock 3) reads them from the accelerometer.</summary>
+        [XmlElement] public string GyroSimulation { get; set; } = "0";
+
+        /// <summary>The simulation's smoothing time constant in ms, 20 to 250.
+        /// Longer is steadier and slower to follow the pad.</summary>
+        [XmlElement] public string GyroSimulationSmoothingMs { get; set; } = "100";
+
+        /// <summary>The InstanceGuid of the device the stored gyro bias was
+        /// measured on (#474), written with every calibration. A DualShock 3
+        /// subtracts a stored bias only when it is its own: its yaw sign
+        /// changed in #474, and units rest hundreds of counts apart, so a
+        /// calibration from before that change or from another unit would
+        /// add drift instead of removing it. Empty on calibrations taken
+        /// before the field existed.</summary>
+        [XmlElement] public string GyroCalibratedDevice { get; set; } = "";
+
         /// <summary>Magnetometer hard-iron bias, raw wire units, captured
         /// by the figure-8 calibration (per-axis min/max midpoints, the
         /// windows10-gyro reference's method). "0" = uncalibrated; the
@@ -1588,6 +1606,9 @@ namespace PadForge.Engine.Data
             sb.Append(GyroBiasRoll); sb.Append('|');
             sb.Append(GyroAuxBiasPitch); sb.Append('|');
             sb.Append(GyroCompassYaw); sb.Append('|');
+            sb.Append(GyroSimulation); sb.Append('|');
+            sb.Append(GyroSimulationSmoothingMs); sb.Append('|');
+            sb.Append(GyroCalibratedDevice); sb.Append('|');
             sb.Append(MagBiasX); sb.Append('|');
             sb.Append(MagBiasY); sb.Append('|');
             sb.Append(MagBiasZ); sb.Append('|');
@@ -2262,6 +2283,7 @@ namespace PadForge.Engine.Data
             nameof(GyroBiasPitch), nameof(GyroBiasYaw), nameof(GyroBiasRoll),
             nameof(GyroAuxBiasPitch), nameof(GyroAuxBiasYaw), nameof(GyroAuxBiasRoll),
             nameof(GyroCompassYaw),
+            nameof(GyroSimulation), nameof(GyroSimulationSmoothingMs), nameof(GyroCalibratedDevice),
             nameof(MagBiasX), nameof(MagBiasY), nameof(MagBiasZ), nameof(MagFieldNorm),
             nameof(GyroCalibratedAtUtc),
             nameof(GyroSpace), nameof(MotionGrip), nameof(GyroPlayerSpaceYawRelaxFactor),

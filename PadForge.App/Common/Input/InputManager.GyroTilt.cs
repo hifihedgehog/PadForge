@@ -76,9 +76,14 @@ namespace PadForge.Common.Input
         /// retain a wrapper or grow the registry beyond the saved device collection.</summary>
         private void PruneGyroTiltGravity(IEnumerable<UserDevice> devices)
         {
+            // Time gate first, and no IsEmpty: on an empty dictionary it
+            // takes every bucket lock, and this runs on every poll.
             long now = Environment.TickCount64;
-            if (_gyroTiltStates.IsEmpty || now < _gyroTiltPruneAt) return;
+            if (now < _gyroTiltPruneAt) return;
             _gyroTiltPruneAt = now + 250;
+            bool any = false;
+            foreach (var _ in _gyroTiltStates) { any = true; break; }
+            if (!any) return;
             _gyroTiltKnownDevices.Clear();
             foreach (var device in devices)
                 if (device != null) _gyroTiltKnownDevices.Add(device.InstanceGuid);

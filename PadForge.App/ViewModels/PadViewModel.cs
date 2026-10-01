@@ -3594,6 +3594,25 @@ namespace PadForge.ViewModels
             set => SetProperty(ref _gyroCompassYaw, value);
         }
 
+        private bool _gyroSimulation;
+        /// <summary>Simulated pitch and roll (#472): a DualShock 3 reads the
+        /// two gyro axes it lacks from its accelerometer.</summary>
+        public bool GyroSimulation
+        {
+            get => _gyroSimulation;
+            set => SetProperty(ref _gyroSimulation, value);
+        }
+
+        private double _gyroSimulationSmoothingMs = PadForge.Engine.SimulatedGyro.DefaultSmoothingMs;
+        /// <summary>The simulation's smoothing time constant, ms.</summary>
+        public double GyroSimulationSmoothingMs
+        {
+            get => _gyroSimulationSmoothingMs;
+            set => SetProperty(ref _gyroSimulationSmoothingMs, double.IsFinite(value)
+                ? Math.Clamp(value, PadForge.Engine.SimulatedGyro.MinSmoothingMs, PadForge.Engine.SimulatedGyro.MaxSmoothingMs)
+                : PadForge.Engine.SimulatedGyro.DefaultSmoothingMs);
+        }
+
         private bool _magCalibrating;
         /// <summary>True while the figure-8 magnetometer capture runs
         /// (drives the Calibrate button's label swap).</summary>
@@ -3741,6 +3760,19 @@ namespace PadForge.ViewModels
         private RelayCommand _resetGyroCompassYawCommand;
         public RelayCommand ResetGyroCompassYawCommand =>
             _resetGyroCompassYawCommand ??= new RelayCommand(() => GyroCompassYaw = false);
+
+        private RelayCommand _resetGyroSimulationCommand, _resetGyroSimulationSmoothingCommand, _resetGyroSimulationCardCommand;
+        public RelayCommand ResetGyroSimulationCommand =>
+            _resetGyroSimulationCommand ??= new RelayCommand(() => GyroSimulation = false);
+        public RelayCommand ResetGyroSimulationSmoothingCommand =>
+            _resetGyroSimulationSmoothingCommand ??= new RelayCommand(() =>
+                GyroSimulationSmoothingMs = PadForge.Engine.SimulatedGyro.DefaultSmoothingMs);
+        public RelayCommand ResetGyroSimulationCardCommand =>
+            _resetGyroSimulationCardCommand ??= new RelayCommand(() =>
+            {
+                GyroSimulation = false;
+                GyroSimulationSmoothingMs = PadForge.Engine.SimulatedGyro.DefaultSmoothingMs;
+            });
 
         private RelayCommand _resetGyroInvertYawCommand;
         public RelayCommand ResetGyroInvertYawCommand =>

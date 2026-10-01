@@ -4044,6 +4044,7 @@ namespace PadForge.Common.Input
             ShutdownAnalogKeyboardInputs();
             ShutdownSdl();
             _gyroTiltStates.Clear();
+            _gyroSimStates.Clear();
             _disposed = true;
 
             GC.SuppressFinalize(this);

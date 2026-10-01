@@ -211,6 +211,8 @@ namespace PadForge.Common.Input
                     // Populate from the SDL device.
                     ud.LoadFromSdlDevice(wrapper);
                     ud.IsOnline = true;
+                    // A DualShock 3's gyro calibration names the pad (#474).
+                    Ds3UnitIdentity.Prime(ud);
 
                     // Track the SDL instance ID with its wrapper.
                     _openedSdlInstanceIds[wrapper.SdlInstanceId] = wrapper;
@@ -1163,6 +1165,7 @@ namespace PadForge.Common.Input
         {
             if (ud == null) return;
             DisconnectGyroTiltGravity(ud.InstanceGuid);
+            DisconnectGyroSimulation(ud.InstanceGuid);
 
             Engine.SdlDiagLog.WriteLine($"DEV - {ud.InstanceName}");
 

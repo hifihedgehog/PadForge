@@ -1864,6 +1864,15 @@ A copy of the previous version is in this folder: {1}</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Anchor Yaw to Compass</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Adds a small corrective rate that pulls the horizontal aim toward the magnetic heading, so drift cannot accumulate. Requires a stored magnetometer calibration. Samples disturbed by nearby metal or magnets are rejected automatically.</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Reset to Default (Off)</value></data>
+  <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Pitch and Roll Simulation</value></data>
+  <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>This controller's gyro senses only turning left and right. With simulation on, PadForge derives pitch and roll from the accelerometer and sends them with the gyro's yaw to the mapping rows and the virtual controller's motion. An accelerometer can't tell a push from a tilt, so moving the controller sideways or forward without turning it reads as a brief rotation.</value></data>
+  <data name="Settings_GyroSimulation" xml:space="preserve"><value>Simulate Pitch and Roll</value></data>
+  <data name="Settings_GyroSimulation_Tooltip" xml:space="preserve"><value>Fills pitch and roll with rates derived from the accelerometer. Yaw stays the gyro's own reading. Off by default.</value></data>
+  <data name="Pad_ResetGyroSimulation" xml:space="preserve"><value>Reset Simulate Pitch and Roll</value></data>
+  <data name="Settings_GyroSimulationSmoothing" xml:space="preserve"><value>Simulation Smoothing</value></data>
+  <data name="Settings_GyroSimulationSmoothing_Tooltip" xml:space="preserve"><value>How long the accelerometer is averaged before pitch and roll are derived. Longer is steadier and slower to follow the controller. Shorter follows faster and shows more of the accelerometer's coarse steps. Default 100 ms.</value></data>
+  <data name="Pad_ResetGyroSimulationSmoothing" xml:space="preserve"><value>Reset Simulation Smoothing</value></data>
+  <data name="Pad_Gyro_ResetSimulation_All_Tooltip" xml:space="preserve"><value>Reset Pitch and Roll Simulation</value></data>
   <data name="Pad_Gyro_MagCalibrate" xml:space="preserve"><value>Calibrate Magnetometer</value></data>
   <data name="Pad_Gyro_MagCalibrate_Stop" xml:space="preserve"><value>Finish Calibration</value></data>
   <data name="Settings_GyroRealWorldCalibration" xml:space="preserve"><value>Real-World Calibration</value></data>

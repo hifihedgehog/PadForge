@@ -1466,6 +1466,15 @@
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>ヨーをコンパスに固定</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>水平照準を磁方位へ引き戻す小さな補正レートを加え、ドリフトが蓄積しないようにします。保存済みの磁力計キャリブレーションが必要です。近くの金属や磁石で乱れたサンプルは自動的に除外されます。</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>既定に戻す (オフ)</value></data>
+  <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>ピッチとロールのシミュレーション</value></data>
+  <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>このコントローラーのジャイロは左右の回転しか検出しません。シミュレーションをオンにすると、PadForge は加速度センサーからピッチとロールを求め、ジャイロのヨーと合わせて割り当てと仮想コントローラーのモーションに送ります。加速度センサーは押す動きと傾きを区別できないため、回転させずにコントローラーを横や前に動かすと短い回転として読み取られます。</value></data>
+  <data name="Settings_GyroSimulation" xml:space="preserve"><value>ピッチとロールをシミュレート</value></data>
+  <data name="Settings_GyroSimulation_Tooltip" xml:space="preserve"><value>ピッチとロールを加速度センサーから求めた速度で補います。ヨーはジャイロ自身の値のままです。既定はオフです。</value></data>
+  <data name="Pad_ResetGyroSimulation" xml:space="preserve"><value>シミュレートの切り替えをリセット</value></data>
+  <data name="Settings_GyroSimulationSmoothing" xml:space="preserve"><value>シミュレーションのスムージング</value></data>
+  <data name="Settings_GyroSimulationSmoothing_Tooltip" xml:space="preserve"><value>ピッチとロールを求める前に加速度センサーを平均する時間です。長いほど安定しますが、コントローラーへの追従は遅くなります。短いほど速く追従しますが、加速度センサーの粗い段差が多く現れます。既定は 100 ms です。</value></data>
+  <data name="Pad_ResetGyroSimulationSmoothing" xml:space="preserve"><value>シミュレーションのスムージングをリセット</value></data>
+  <data name="Pad_Gyro_ResetSimulation_All_Tooltip" xml:space="preserve"><value>ピッチとロールのシミュレーションをリセット</value></data>
   <data name="Pad_Gyro_MagCalibrate" xml:space="preserve"><value>磁力計をキャリブレーション</value></data>
   <data name="Pad_Gyro_MagCalibrate_Stop" xml:space="preserve"><value>キャリブレーションを完了</value></data>
   <data name="Settings_GyroRealWorldCalibration" xml:space="preserve"><value>実世界キャリブレーション</value></data>

@@ -1328,11 +1328,9 @@ namespace PadForge.Services
                     }
                 }
                 if (ps == null) return (0f, 0f, 0f);
-                return (
-                    TryParseFloatPs(ps.GyroBiasPitch, 0f),
-                    TryParseFloatPs(ps.GyroBiasYaw,   0f),
-                    TryParseFloatPs(ps.GyroBiasRoll,  0f)
-                );
+                // A bias measured on another unit, or a DualShock 3 bias from
+                // before its yaw sign changed, would add drift (#474).
+                return GyroBiasFromPadSetting(FindUserDevice(g), ps);
             });
             PadForge.Engine.Common.Mapping.SourceCoercion.GyroBiasProvider = (deviceGuid, slotIndex) =>
             {
@@ -1384,12 +1382,12 @@ namespace PadForge.Services
             // for the named device so each binding config has its own
             // gyro feel — matches SteamInput semantics. Deadzone is
             // converted from the PadSetting's deg/s string storage to
-            // rad/s for the SourceCoercion read site.
-            const float DegToRad = (float)(System.Math.PI / 180.0);
+            // rad/s for the SourceCoercion read site (GyroTuningFromPadSetting).
             var defaultTuning = new PadForge.Engine.Common.Mapping.SourceCoercion.GyroTuning
             {
                 SensH = 1f, SensV = 1f, OutputCurve = "Linear",
                 ApplyToPassthrough = false,
+                SimulationSmoothingSeconds = PadForge.Engine.SimulatedGyro.DefaultSmoothingMs / 1000f,
             };
             // 250 ms snapshot, same mechanism as the gyro-bias provider.
             var gyroTuningSnapshot = new ProviderSnapshot<(Guid, int), PadForge.Engine.Common.Mapping.SourceCoercion.GyroTuning>(key =>
@@ -1411,34 +1409,7 @@ namespace PadForge.Services
                     }
                 }
                 if (ps == null) return defaultTuning;
-                return new PadForge.Engine.Common.Mapping.SourceCoercion.GyroTuning
-                {
-                    SensH = TryParseFloatPs(ps.GyroSensitivityH, 1f),
-                    SensV = TryParseFloatPs(ps.GyroSensitivityV, 1f),
-                    DeadZoneRadPerSec = TryParseFloatPs(ps.GyroDeadZoneDegPerSec, 0f) * DegToRad,
-                    SmoothingAlpha = TryParseFloatPs(ps.GyroSmoothingAlpha, 0f),
-                    Acceleration = TryParseFloatPs(ps.GyroAcceleration, 0f),
-                    OutputCurve = ps.GyroOutputCurve ?? "Linear",
-                    EasyAimStickThreshold01 = TryParseFloatPs(ps.GyroEasyAimStickThreshold, 0f) / 100f,
-                    EasyAimStickSide = string.IsNullOrEmpty(ps.GyroEngageStickSide) ? "Right" : ps.GyroEngageStickSide,
-                    EasyAimStickDirection = string.IsNullOrEmpty(ps.GyroEngageStickDirection) ? "Full" : ps.GyroEngageStickDirection,
-                    // Jibb-canon extensions
-                    Space = string.IsNullOrEmpty(ps.GyroSpace) ? "Local" : ps.GyroSpace,
-                    PlayerYawRelax = TryParseFloatPs(ps.GyroPlayerSpaceYawRelaxFactor, 1.41f),
-                    WorldSideReduction = TryParseFloatPs(ps.GyroWorldSpaceSideReductionThreshold, 0.125f),
-                    TighteningRadPerSec = TryParseFloatPs(ps.GyroTighteningThresholdDegPerSec, 0f) * DegToRad,
-                    SmoothingThresholdRadPerSec = TryParseFloatPs(ps.GyroSmoothingThresholdDegPerSec, 0f) * DegToRad,
-                    SmoothingWindowSeconds = TryParseFloatPs(ps.GyroSmoothingWindowMs, 50f) / 1000f,
-                    RealWorldCalibration = TryParseFloatPs(ps.GyroRealWorldCalibration, 0f),
-                    AimEngageDevice = ps.GyroAimEngageDeviceGuid ?? "",
-                    AimEngageDescriptor = ps.GyroAimEngageButton ?? "",
-                    InvertPitch = TryParseBoolPs(ps.GyroInvertPitch, false),
-                    InvertYaw = TryParseBoolPs(ps.GyroInvertYaw, false),
-                    InvertRoll = TryParseBoolPs(ps.GyroInvertRollEffective, false),
-                    ApplyToPassthrough = TryParseBoolPs(ps.GyroApplyTuningToPassthrough, false),
-                    CompassYaw = TryParseBoolPs(ps.GyroCompassYaw, false),
-                    Grip = string.IsNullOrEmpty(ps.MotionGrip) ? "Pointing" : ps.MotionGrip,
-                };
+                return GyroTuningFromPadSetting(ps);
             });
             PadForge.Engine.Common.Mapping.SourceCoercion.GyroTuningProvider = (deviceGuid, slotIndex) =>
             {
@@ -1519,6 +1490,15 @@ namespace PadForge.Services
 
             PadForge.Engine.Common.Mapping.SourceCoercion.GyroTiltGravityProvider =
                 _inputManager.ReadGyroTiltGravity;
+
+            // Simulated pitch and roll (#472), from the polling thread's
+            // per-(device, slot) accelerometer estimator.
+            PadForge.Engine.Common.Mapping.SourceCoercion.SimulatedGyroProvider =
+                _inputManager.ReadGyroSimulation;
+
+            // A DualShock 3's calibration names the pad by its address (#474):
+            // every DualShock 3 on PadForge's own path shares one device row.
+            GyroCalibratorService.UnitIdentityProvider = PadForge.Common.Input.Ds3UnitIdentity.Identity;
 
             // Aux gravity twin (#199): same filter over AccelAux (the Nunchuk /
             // left Joy-Con), read by the "Motion Lean L" family.
@@ -2616,6 +2596,8 @@ namespace PadForge.Services
                 PadForge.Engine.Common.Mapping.SourceCoercion.SlotStickDeflectionProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.GravityProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.GyroTiltGravityProvider = null;
+                PadForge.Engine.Common.Mapping.SourceCoercion.SimulatedGyroProvider = null;
+                GyroCalibratorService.UnitIdentityProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.GravityProviderAux = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.ShakeEnvelopeProvider = null;
                 PadForge.Engine.Common.Mapping.SourceCoercion.ShakeEnvelopeProviderAux = null;
@@ -3023,12 +3005,19 @@ namespace PadForge.Services
                             float bp = biasMemo.Pitch;
                             float by = biasMemo.Yaw;
                             float br = biasMemo.Roll;
+                            // The readout subtracts what the funnel subtracts
+                            // (#474): a bias this device may not use reads as none.
+                            bool biasApplies = GyroCalibratorService.CalibrationApplies(ud, ps, bp, by, br);
+                            if (!biasApplies) { bp = 0f; by = 0f; br = 0f; }
                             var st = ud.InputState;
                             // Grip (#392): the readout shows the rotated frame,
                             // what the mappings and the virtual controller get.
                             if (st != null && ud.HasGyro && st.Gyro != null && st.Gyro.Length >= 3)
                             {
                                 float lp = st.Gyro[0] - bp, ly = st.Gyro[1] - by, lr = st.Gyro[2] - br;
+                                // Simulated pitch and roll (#472) stand in on the
+                                // axes they supply, before the grip, as in the funnel.
+                                PadForge.Engine.Common.Mapping.SourceCoercion.ApplySimulatedGyro(ud.InstanceGuidString, i, ref lp, ref ly, ref lr);
                                 PadForge.Engine.Common.Mapping.SourceCoercion.ApplyMotionGrip(ud.InstanceGuidString, i, ref lp, ref ly, ref lr);
                                 padVm.GyroLiveRatePitch = lp * RadToDeg;
                                 padVm.GyroLiveRateYaw   = ly * RadToDeg;
@@ -3045,7 +3034,7 @@ namespace PadForge.Services
                             // Label memo keyed on the timestamp string
                             // reference: the parse + Format re-ran per tick
                             // for a label that changes on recalibration only.
-                            string ts = ps?.GyroCalibratedAtUtc;
+                            string ts = biasApplies ? ps?.GyroCalibratedAtUtc : null;
                             // The format/never strings swap identity on a
                             // live language switch; keying on them keeps
                             // the label in the CURRENT language without a
@@ -3991,7 +3980,8 @@ namespace PadForge.Services
                 if (ps != null && ud != null && ud.HasGyro)
                 {
                     var parts = new List<string>();
-                    AppendGyroStageTokens(parts, ps);
+                    AppendGyroStageTokens(parts, ps, PadForge.Engine.SimulatedGyro.MissingAxes(
+                        ud.VendorId, ud.ProdId, ud.HasGyro, ud.HasAccel) != PadForge.Engine.SimulatedGyro.Axes.None);
                     AddLine(gyroLines, ref gyroHot, guid, parts);
                 }
 
@@ -4292,7 +4282,7 @@ namespace PadForge.Services
         /// counts as heat. Bias / calibration fields are excluded.
         /// InputService auto-calibrates those without user intent, so
         /// they never count as configuration heat.</summary>
-        private static void AppendGyroStageTokens(List<string> parts, PadSetting ps)
+        private static void AppendGyroStageTokens(List<string> parts, PadSetting ps, bool simulates = false)
         {
             float sensH = TryParseFloatPs(ps.GyroSensitivityH, 1f);
             float sensV = TryParseFloatPs(ps.GyroSensitivityV, 1f);
@@ -4328,6 +4318,16 @@ namespace PadForge.Services
             if (PsFlagSet(ps.GyroInvertYaw)) AddToken(parts, "INV Y");
             if (PsFlagSet(ps.GyroInvertRollEffective)) AddToken(parts, "INV R");
             if (PsFlagSet(ps.GyroApplyTuningToPassthrough)) AddToken(parts, "PASSTHRU");
+            // Simulated pitch and roll (#472), only where the card shows.
+            if (simulates && PsFlagSet(ps.GyroSimulation))
+            {
+                // The value the filter runs at: clamped, and the default for
+                // anything unreadable.
+                float simMs = PadForge.Engine.SimulatedGyro.SmoothingSeconds(
+                    TryParseFloatPs(ps.GyroSimulationSmoothingMs, PadForge.Engine.SimulatedGyro.DefaultSmoothingMs)) * 1000f;
+                AddToken(parts, Math.Abs(simMs - PadForge.Engine.SimulatedGyro.DefaultSmoothingMs) > 0.0001f
+                    ? "SIM " + simMs.ToString("0", ic) + "ms" : "SIM");
+            }
         }
 
         // Lightbar base-mode display names reuse MacroAction's existing
@@ -6531,6 +6531,8 @@ namespace PadForge.Services
 
             ps.GyroInvertPitch = padVm.GyroInvertPitch ? "1" : "0";
             ps.GyroCompassYaw = padVm.GyroCompassYaw ? "1" : "0";
+            ps.GyroSimulation = padVm.GyroSimulation ? "1" : "0";
+            ps.GyroSimulationSmoothingMs = padVm.GyroSimulationSmoothingMs.ToString(ic);
             ps.GyroInvertYaw = padVm.GyroInvertYaw ? "1" : "0";
             ps.GyroInvertRoll = padVm.GyroInvertRoll ? "1" : "0";
             ps.GyroApplyTuningToPassthrough = padVm.GyroApplyTuningToPassthrough ? "1" : "0";
@@ -6899,6 +6901,8 @@ namespace PadForge.Services
             padVm.RightTriggerRouteActivatorMode = string.IsNullOrEmpty(ps.RightTriggerRouteActivatorMode) ? "Hold" : ps.RightTriggerRouteActivatorMode;
             padVm.GyroInvertPitch = ps.GyroInvertPitch == "1";
             padVm.GyroCompassYaw = ps.GyroCompassYaw == "1";
+            padVm.GyroSimulation = ps.GyroSimulation == "1";
+            padVm.GyroSimulationSmoothingMs = TryParseDouble(ps.GyroSimulationSmoothingMs, PadForge.Engine.SimulatedGyro.DefaultSmoothingMs);
             padVm.GyroInvertYaw = ps.GyroInvertYaw == "1";
             padVm.GyroInvertRoll = ps.GyroInvertRollEffective == "1";
             padVm.GyroApplyTuningToPassthrough = ps.GyroApplyTuningToPassthrough == "1";
@@ -7331,6 +7335,58 @@ namespace PadForge.Services
                 ud = FindUserDevice(rowGuid);
             MappingDisplayResolver.ResolveDisplayText(mapping, ud);
             mapping.SyncSelectedInputFromDescriptor();
+        }
+
+        /// <summary>A slot's PadSetting as the gyro tuning bundle the engine
+        /// reads: the Gyro tab's fields with their units converted.</summary>
+        internal static PadForge.Engine.Common.Mapping.SourceCoercion.GyroTuning GyroTuningFromPadSetting(PadSetting ps)
+        {
+            const float DegToRad = (float)(System.Math.PI / 180.0);
+            return new PadForge.Engine.Common.Mapping.SourceCoercion.GyroTuning
+            {
+                SensH = TryParseFloatPs(ps.GyroSensitivityH, 1f),
+                SensV = TryParseFloatPs(ps.GyroSensitivityV, 1f),
+                DeadZoneRadPerSec = TryParseFloatPs(ps.GyroDeadZoneDegPerSec, 0f) * DegToRad,
+                SmoothingAlpha = TryParseFloatPs(ps.GyroSmoothingAlpha, 0f),
+                Acceleration = TryParseFloatPs(ps.GyroAcceleration, 0f),
+                OutputCurve = ps.GyroOutputCurve ?? "Linear",
+                EasyAimStickThreshold01 = TryParseFloatPs(ps.GyroEasyAimStickThreshold, 0f) / 100f,
+                EasyAimStickSide = string.IsNullOrEmpty(ps.GyroEngageStickSide) ? "Right" : ps.GyroEngageStickSide,
+                EasyAimStickDirection = string.IsNullOrEmpty(ps.GyroEngageStickDirection) ? "Full" : ps.GyroEngageStickDirection,
+                // Jibb-canon extensions
+                Space = string.IsNullOrEmpty(ps.GyroSpace) ? "Local" : ps.GyroSpace,
+                PlayerYawRelax = TryParseFloatPs(ps.GyroPlayerSpaceYawRelaxFactor, 1.41f),
+                WorldSideReduction = TryParseFloatPs(ps.GyroWorldSpaceSideReductionThreshold, 0.125f),
+                TighteningRadPerSec = TryParseFloatPs(ps.GyroTighteningThresholdDegPerSec, 0f) * DegToRad,
+                SmoothingThresholdRadPerSec = TryParseFloatPs(ps.GyroSmoothingThresholdDegPerSec, 0f) * DegToRad,
+                SmoothingWindowSeconds = TryParseFloatPs(ps.GyroSmoothingWindowMs, 50f) / 1000f,
+                RealWorldCalibration = TryParseFloatPs(ps.GyroRealWorldCalibration, 0f),
+                AimEngageDevice = ps.GyroAimEngageDeviceGuid ?? "",
+                AimEngageDescriptor = ps.GyroAimEngageButton ?? "",
+                InvertPitch = TryParseBoolPs(ps.GyroInvertPitch, false),
+                InvertYaw = TryParseBoolPs(ps.GyroInvertYaw, false),
+                InvertRoll = TryParseBoolPs(ps.GyroInvertRollEffective, false),
+                ApplyToPassthrough = TryParseBoolPs(ps.GyroApplyTuningToPassthrough, false),
+                CompassYaw = TryParseBoolPs(ps.GyroCompassYaw, false),
+                Grip = string.IsNullOrEmpty(ps.MotionGrip) ? "Pointing" : ps.MotionGrip,
+                SimulateGyro = TryParseBoolPs(ps.GyroSimulation, false),
+                SimulationSmoothingSeconds = PadForge.Engine.SimulatedGyro.SmoothingSeconds(
+                    TryParseFloatPs(ps.GyroSimulationSmoothingMs, PadForge.Engine.SimulatedGyro.DefaultSmoothingMs)),
+            };
+        }
+
+        /// <summary>The primary bias the gyro funnel subtracts for a slot's
+        /// PadSetting, or none when the calibration belongs to another unit
+        /// or predates a DualShock 3's yaw sign change (#474).</summary>
+        internal static (float pitch, float yaw, float roll) GyroBiasFromPadSetting(UserDevice ud, PadSetting ps)
+        {
+            if (ps == null) return (0f, 0f, 0f);
+            float p = TryParseFloatPs(ps.GyroBiasPitch, 0f);
+            float y = TryParseFloatPs(ps.GyroBiasYaw,   0f);
+            float r = TryParseFloatPs(ps.GyroBiasRoll,  0f);
+            if (!GyroCalibratorService.CalibrationApplies(ud, ps, p, y, r))
+                return (0f, 0f, 0f);
+            return (p, y, r);
         }
 
         /// <summary>
@@ -14718,6 +14774,9 @@ namespace PadForge.Services
                     var ps = us?.GetPadSetting();
                     if (ps == null) continue;
                     ps.GyroAimEngageDeviceGuid = Map(ps.GyroAimEngageDeviceGuid);
+                    // A calibration owned by the row alone (#474). One that
+                    // names a DualShock 3 by its address carries no row.
+                    ps.GyroCalibratedDevice = Map(ps.GyroCalibratedDevice);
                     ps.LeftTriggerRouteActivatorDeviceGuid =
                         Map(ps.LeftTriggerRouteActivatorDeviceGuid);
                     ps.RightTriggerRouteActivatorDeviceGuid =
@@ -18206,6 +18265,7 @@ namespace PadForge.Services
             _inputManager?.ResetTriggerRouteEngageStates();
             _inputManager?.ResetGestureContexts();
             _inputManager?.ResetGyroTiltGravity();
+            _inputManager?.ResetGyroSimulation();
         }
 
         /// <summary>

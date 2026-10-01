@@ -1001,8 +1001,25 @@ namespace PadForge.Services
         internal static void StampLinkAddressFromDeviceNode(
             ushort vid, ushort pid, string transportPath)
         {
+            string mac = ReadDeviceNodeAddress(transportPath);
+            if (mac != null)
+                // Authoritative: this address came off the very node this
+                // connection is riding, so it may correct a row that
+                // adopted a different unit of the same model. Identity here
+                // follows connection order by design (Step 1's drawer
+                // case), so the stored address can legitimately belong to
+                // the other unit and must be replaced rather than kept.
+                StampLinkAddress(vid, pid, mac, authoritative: true);
+        }
+
+        /// <summary>The address BthPS3 publishes on the node behind
+        /// <paramref name="transportPath"/>, lowercase, or null. A gyro
+        /// calibration also names a DualShock 3 by it, since every one on
+        /// this path shares one device row (#474).</summary>
+        internal static string ReadDeviceNodeAddress(string transportPath)
+        {
             string instanceId = InstanceIdFromInterfacePath(transportPath);
-            if (instanceId == null) return;
+            if (instanceId == null) return null;
             try
             {
                 var dev = Nefarius.Utilities.DeviceManagement.PnP.PnPDevice
@@ -1016,16 +1033,9 @@ namespace PadForge.Services
                     .CreateCustomDeviceProperty(
                         new Guid("2BD67D8B-8BEB-48D5-87E0-6CDA3428040A"), 1, typeof(string));
                 string mac = dev.GetProperty<string>(key);
-                if (!string.IsNullOrWhiteSpace(mac))
-                    // Authoritative: this address came off the very node this
-                    // connection is riding, so it may correct a row that
-                    // adopted a different unit of the same model. Identity here
-                    // follows connection order by design (Step 1's drawer
-                    // case), so the stored address can legitimately belong to
-                    // the other unit and must be replaced rather than kept.
-                    StampLinkAddress(vid, pid, mac.Trim().ToLowerInvariant(), authoritative: true);
+                return string.IsNullOrWhiteSpace(mac) ? null : mac.Trim().ToLowerInvariant();
             }
-            catch { /* a convenience; never break a connect */ }
+            catch { return null; /* a convenience; never break a connect */ }
         }
 
         /// <summary>The devnode instance id behind an interface path.

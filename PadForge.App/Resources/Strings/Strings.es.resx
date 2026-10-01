@@ -1466,6 +1466,15 @@ Hay una copia de la versión anterior en esta carpeta: {1}</value></data>
   <data name="Settings_GyroCompassYaw" xml:space="preserve"><value>Anclar la guiñada a la brújula</value></data>
   <data name="Settings_GyroCompassYaw_Tooltip" xml:space="preserve"><value>Añade una pequeña tasa correctiva que atrae el apuntado horizontal hacia el rumbo magnético, de modo que la deriva no puede acumularse. Requiere una calibración del magnetómetro guardada. Las muestras alteradas por metal o imanes cercanos se rechazan automáticamente.</value></data>
   <data name="Pad_ResetGyroCompassYaw" xml:space="preserve"><value>Restablecer al valor predeterminado (desactivado)</value></data>
+  <data name="Pad_Gyro_Simulation_Header" xml:space="preserve"><value>Simulación de pitch y roll</value></data>
+  <data name="Pad_Gyro_Simulation_Description" xml:space="preserve"><value>El giroscopio de este mando solo detecta el giro a izquierda y derecha. Con la simulación activada, PadForge deriva el pitch y el roll del acelerómetro y los envía junto con el yaw del giroscopio a las asignaciones y al movimiento del mando virtual. Un acelerómetro no distingue un empujón de una inclinación, así que mover el mando hacia un lado o hacia delante sin girarlo se lee como una rotación breve.</value></data>
+  <data name="Settings_GyroSimulation" xml:space="preserve"><value>Simular pitch y roll</value></data>
+  <data name="Settings_GyroSimulation_Tooltip" xml:space="preserve"><value>Rellena el pitch y el roll con velocidades derivadas del acelerómetro. El yaw sigue siendo la lectura propia del giroscopio. Desactivado por defecto.</value></data>
+  <data name="Pad_ResetGyroSimulation" xml:space="preserve"><value>Restablecer activación de la simulación</value></data>
+  <data name="Settings_GyroSimulationSmoothing" xml:space="preserve"><value>Suavizado de simulación</value></data>
+  <data name="Settings_GyroSimulationSmoothing_Tooltip" xml:space="preserve"><value>Cuánto tiempo se promedia el acelerómetro antes de derivar el pitch y el roll. Más largo es más estable y sigue al mando más despacio. Más corto sigue más rápido y muestra más de los escalones gruesos del acelerómetro. Predeterminado 100 ms.</value></data>
+  <data name="Pad_ResetGyroSimulationSmoothing" xml:space="preserve"><value>Restablecer suavizado de simulación</value></data>
+  <data name="Pad_Gyro_ResetSimulation_All_Tooltip" xml:space="preserve"><value>Restablecer simulación de pitch y roll</value></data>
   <data name="Pad_Gyro_MagCalibrate" xml:space="preserve"><value>Calibrar magnetómetro</value></data>
   <data name="Pad_Gyro_MagCalibrate_Stop" xml:space="preserve"><value>Finalizar calibración</value></data>
   <data name="Settings_GyroRealWorldCalibration" xml:space="preserve"><value>Calibración real</value></data>

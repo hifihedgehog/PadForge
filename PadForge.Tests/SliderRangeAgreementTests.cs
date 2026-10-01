@@ -33,7 +33,7 @@ namespace PadForge.Tests
                 "PadForge.App", "Views", "PadPage.xaml"));
             var m = Regex.Match(xaml,
                 @"<Slider\s+Value=""\{Binding " + Regex.Escape(boundProperty)
-                + @", Mode=TwoWay\}""[^>]*?Maximum=""(?<max>[0-9.]+)""",
+                + @", Mode=TwoWay(, UpdateSourceTrigger=PropertyChanged)?\}""[^>]*?Maximum=""(?<max>[0-9.]+)""",
                 RegexOptions.Singleline);
             Assert.True(m.Success, $"no slider found for {boundProperty}");
             return double.Parse(m.Groups["max"].Value,
@@ -77,6 +77,16 @@ namespace PadForge.Tests
             double ceiling = ModelCeiling((vm, v) => vm.FlickTime = v, vm => vm.FlickTime);
             Assert.Equal(2.0, ceiling);
             Assert.Equal(ceiling, SliderMaximum("FlickTime"));
+        }
+
+        /// <summary>The pitch and roll simulation's smoothing slider stops
+        /// where the model does (#474), so a stored 250 ms survives the card.</summary>
+        [Fact]
+        public void TheSimulationSmoothingSliderAndModelAgree()
+        {
+            double ceiling = ModelCeiling((vm, v) => vm.GyroSimulationSmoothingMs = v, vm => vm.GyroSimulationSmoothingMs);
+            Assert.Equal(250, ceiling);
+            Assert.Equal(ceiling, SliderMaximum("GyroSimulationSmoothingMs"));
         }
 
         /// <summary>The model really does clamp, so the comparisons above are

@@ -6513,6 +6513,9 @@ namespace PadForge.Services
             ps.SetRawMapping("MotionSteerInner", padVm.MotionSteerInnerDz.ToString(ic));
             ps.SetRawMapping("MotionSteerOuter", padVm.MotionSteerOuterDz.ToString(ic));
             ps.SetRawMapping("MotionSteerOrient", padVm.MotionSteerOrient);
+            // Gyro Tilt (#292), the same bag and the same clobber.
+            ps.SetRawMapping("GyroTiltRange", padVm.GyroTiltRangeDeg.ToString(ic));
+            ps.SetRawMapping("GyroTiltInner", padVm.GyroTiltInnerDz.ToString(ic));
 
             // Flick Stick card tuning (#225), same extended-mapping bag and
             // the same device-switch clobber rationale.
@@ -6782,6 +6785,9 @@ namespace PadForge.Services
             padVm.MotionSteerInnerDz = TryParseDouble(ps.GetRawMapping("MotionSteerInner"), 15);
             padVm.MotionSteerOuterDz = TryParseDouble(ps.GetRawMapping("MotionSteerOuter"), 135);
             padVm.SetMotionSteerOrient(ps.GetRawMapping("MotionSteerOrient"));
+            // Gyro Tilt (#292), the same bag.
+            padVm.GyroTiltRangeDeg = TryParseDouble(ps.GetRawMapping("GyroTiltRange"), 25);
+            padVm.GyroTiltInnerDz = TryParseDouble(ps.GetRawMapping("GyroTiltInner"), 0);
 
             // Flick Stick card tuning (#225), mirroring the startup load in
             // SettingsService.LoadPadSettings (import-seed included).

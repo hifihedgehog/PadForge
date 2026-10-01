@@ -956,17 +956,41 @@ namespace PadForge.Engine.Common.Mapping
         // matching SourceCoercion's axis normalization. Non-axis descriptors read 0.
         private static double ReadNormAxis(CustomInputState state, string descriptor)
         {
-            if (state == null || string.IsNullOrWhiteSpace(descriptor)) return 0;
-            // Fold "Gamepad LeftStickX"-style aliases to their canonical
-            // "Axis N" form so the Param pickers' abstract entries (#9)
-            // read the same axis the raw entry would.
-            string s = SourceCoercion.CanonicalDescriptor(descriptor);
-            if (!s.StartsWith("Axis", StringComparison.Ordinal)) return 0;
-            var parts = s.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            if (parts.Length < 2 || !int.TryParse(parts[1], out int idx)) return 0;
-            if (idx < 0 || idx >= CustomInputState.MaxAxis) return 0;
+            if (state == null) return 0;
+            int idx = SteeringAxisRead(descriptor);
+            if (idx < 0) return 0;
             double v = (state.Axis[idx] - 32768) / 32767.0;
             return v < -1 ? -1 : (v > 1 ? 1 : v);
+        }
+
+        /// <summary>The axis a steering read takes from
+        /// <paramref name="descriptor"/>: "Axis N" below the slider range, or
+        /// a Gamepad alias that folds to it, so the Param pickers' abstract
+        /// entries (#9) read the axis the raw entry would. -1 for anything
+        /// else, which the read takes as centered: a ring, a slider or a
+        /// flick stick.</summary>
+        public static int SteeringAxisRead(string descriptor)
+        {
+            if (string.IsNullOrWhiteSpace(descriptor)) return -1;
+            // Memoized, as SourceCoercion.NumberedAxesRead is: the alias fold
+            // and the parse ran on every steering read of every frame.
+            if (s_steeringAxisCache.TryGetValue(descriptor, out int hit)) return hit;
+            int idx = SteeringAxisReadUncached(descriptor);
+            if (s_steeringAxisCache.Count < SteeringAxisCacheCap) s_steeringAxisCache[descriptor] = idx;
+            return idx;
+        }
+
+        private const int SteeringAxisCacheCap = 1024;
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, int> s_steeringAxisCache =
+            new(StringComparer.Ordinal);
+
+        private static int SteeringAxisReadUncached(string descriptor)
+        {
+            string s = SourceCoercion.CanonicalDescriptor(descriptor);
+            if (!s.StartsWith("Axis", StringComparison.Ordinal)) return -1;
+            var parts = s.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length < 2 || !int.TryParse(parts[1], out int idx)) return -1;
+            return idx >= 0 && idx < CustomInputState.MaxAxis ? idx : -1;
         }
 
         // Reads a button-like descriptor (Button N or POV N Dir) from a

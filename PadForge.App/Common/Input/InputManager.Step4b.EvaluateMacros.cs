@@ -1919,8 +1919,16 @@ namespace PadForge.Common.Input
         private bool AnySlotDeviceAxisEntryActive(int slotIndex, MacroItem.TriggerInputEntry e)
         {
             int n = EnsureSlotTriggerDevices(slotIndex);
+            int axIdx = AxisTargetToDeviceIndex(e.AxisTarget);
             for (int i = 0; i < n; i++)
-                if (TriggerAxisEntryActive(_slotTriggerDeviceScratch[i], e)) return true;
+            {
+                var ud = _slotTriggerDeviceScratch[i];
+                // A device without the axis holds 0 there, which the inverted
+                // and half-axis tests read as deflected (#431 at input grain).
+                // An entry that names its device reads it as it is.
+                if (!DeviceHasAxis(ud, axIdx, ud.InputState)) continue;
+                if (TriggerAxisEntryActive(ud, e)) return true;
+            }
             return false;
         }
 
@@ -2061,6 +2069,9 @@ namespace PadForge.Common.Input
             for (int i = 0; i < n; i++)
             {
                 var ud = _slotTriggerDeviceScratch[i];
+                // A device without an axis the trigger reads holds 0 there:
+                // a stick ring on a touchpad read as pushed to the rim.
+                if (!HasAxesFor(ud, src, ud.InputState)) continue;
                 if (PadForge.Engine.Common.Mapping.SourceCoercion.EvaluateForButtonTarget(
                         ud.InputState, src, DescriptorTriggerThresholdPercent,
                         slotIndex, ud.InstanceGuidString))
@@ -2074,6 +2085,9 @@ namespace PadForge.Common.Input
                 for (int i = 0; i < _slotTriggerPhoneCount; i++)
                 {
                     var ud = _slotTriggerPhoneScratch[i];
+                    // The phone has no axes: a cell whose gate reads a stick
+                    // is one it cannot press.
+                    if (!HasAxesFor(ud, src, ud.InputState)) continue;
                     if (PadForge.Engine.Common.Mapping.SourceCoercion.EvaluateForButtonTarget(
                             ud.InputState, src, DescriptorTriggerThresholdPercent,
                             slotIndex, ud.InstanceGuidString))

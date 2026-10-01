@@ -166,6 +166,106 @@ namespace PadForge.Engine.Data
         }
         private int[] _capAxisIndices;
 
+        /// <summary>True when the device has numbered axis
+        /// <paramref name="index"/>, the axes the mapping picker offers for
+        /// it. Force Raw Joystick Mode on a gamepad-opened device reads the
+        /// joystick's own axes in their own order, the span
+        /// SdlDeviceWrapper.GetJoystickState reads: the gamepad's six, or
+        /// every raw axis when it carries extra generic ones. SDL reads an
+        /// axis past the joystick's own count as centered, never as the
+        /// zeroed filler past the span. Otherwise the device's object list
+        /// answers when it names anything: it carries a Bliss-Box port's
+        /// pressure axes, which no count covers. A row without objects
+        /// answers from <see cref="CapAxisIndices"/>, else
+        /// <see cref="CapAxeCount"/>. From <see cref="CustomInputState.MaxAxis"/>
+        /// up the index is Slider index - MaxAxis, the raw axis it stores. A
+        /// row with no wrapper whose capabilities were never loaded has every
+        /// axis, the capability-less fallback the default profile's auto-map
+        /// uses. A native Precision Touchpad row loads a count of 0 without a
+        /// wrapper, so it has none.</summary>
+        public bool HasAxis(int index)
+        {
+            if (index < 0) return false;
+            bool slider = index >= CustomInputState.MaxAxis;
+            int position = slider ? index - CustomInputState.MaxAxis : index;
+            if (position >= (slider ? CustomInputState.MaxSliders : CustomInputState.MaxAxis)) return false;
+            var device = Device;
+            if (ForceRawJoystickMode && device != null && device.GamepadHandle != IntPtr.Zero)
+                return index < RawModeAxisSpan(device);
+            var objects = ObjectAxes();
+            if (((slider ? objects.Sliders : objects.Axes) & (1u << position)) != 0) return true;
+            if (objects.Listed) return false;
+            bool unknown = device == null && !_capabilitiesLoaded;
+            if (slider) return index < RawAxisCount || unknown;
+            var sparse = _capAxisIndices;
+            if (sparse != null && sparse.Length > 0) return Array.IndexOf(sparse, index) >= 0;
+            return index < CapAxeCount || unknown;
+        }
+
+        /// <summary>The axes SdlDeviceWrapper.GetJoystickState reads for a
+        /// gamepad-opened device under Force Raw Joystick Mode, from 0: the
+        /// gamepad's six, or every raw axis when it carries extra generic
+        /// ones.</summary>
+        public static int RawModeAxisSpan(ISdlInputDevice device)
+            => device == null ? 0 : device.HasExtraGenericAxes ? device.RawAxisCount : device.NumAxes;
+
+        /// <summary>Set by <see cref="LoadCapabilities"/>: the counts are the
+        /// live device's, a zero included.</summary>
+        private bool _capabilitiesLoaded;
+
+        /// <summary>The positions an object list names, as masks: bit N of
+        /// <paramref name="axes"/> for "Axis N" and bit N of
+        /// <paramref name="sliders"/> for "Slider N", the descriptors the
+        /// picker offers for them. The <see cref="CustomInputState.GetAxisMask"/>
+        /// scan, with sliders kept apart, since a slider's InputIndex is its
+        /// Sliders[] position.</summary>
+        internal static void AxisObjectMasks(DeviceObjectItem[] objects, out uint axes, out uint sliders)
+        {
+            axes = 0;
+            sliders = 0;
+            if (objects == null) return;
+            foreach (var item in objects)
+            {
+                if (item == null || !item.IsAxis) continue;
+                int i = item.InputIndex;
+                if (item.IsSlider)
+                {
+                    if (i >= 0 && i < CustomInputState.MaxSliders) sliders |= 1u << i;
+                }
+                else if (i >= 0 && i < CustomInputState.MaxAxis) axes |= 1u << i;
+            }
+        }
+
+        private sealed class ObjectAxisSet
+        {
+            internal readonly DeviceObjectItem[] Source;
+            internal readonly uint Axes;
+            internal readonly uint Sliders;
+            internal readonly bool Listed;
+
+            internal ObjectAxisSet(DeviceObjectItem[] source)
+            {
+                Source = source;
+                Listed = source != null && source.Length > 0;
+                AxisObjectMasks(source, out Axes, out Sliders);
+            }
+        }
+
+        private ObjectAxisSet _objectAxes;
+
+        /// <summary>The masks of the current object list, rebuilt only when
+        /// the list is replaced: a Bliss-Box port identifying a controller,
+        /// an NFC tag registered. The poll reads it once per wildcard source
+        /// per device.</summary>
+        private ObjectAxisSet ObjectAxes()
+        {
+            var objects = DeviceObjects;
+            var set = _objectAxes;
+            if (set == null || !ReferenceEquals(set.Source, objects))
+                _objectAxes = set = new ObjectAxisSet(objects);
+            return set;
+        }
+
         /// <summary>The list with every position outside 0..capacity-1
         /// removed. The same array comes back when nothing had to go, so the
         /// ordinary path allocates nothing, and null stays null because null
@@ -675,6 +775,7 @@ namespace PadForge.Engine.Data
             CapButtonCount = buttonCount;
             CapPovCount = povCount;
             CapType = type;
+            _capabilitiesLoaded = true;
             DateUpdated = DateTime.Now;
         }
 

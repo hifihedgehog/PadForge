@@ -362,6 +362,16 @@ namespace PadForge.Common.Input
                     EnsureMenuSources(ctx, def);
                     ctx.LastTickMs = nowMs;
 
+                    // (#431 at input grain) A device-free menu reads a stick
+                    // axis this device does not have as rest. A touchpad's or
+                    // keyboard's zeroed axes read as a full deflection, and a
+                    // stick-hosted menu engaged on them. An authored click can
+                    // read a stick too, a ring among them.
+                    bool deviceFree = string.IsNullOrEmpty(def.DeviceGuid);
+                    bool xReads = !deviceFree || HasAxesFor(ud, ctx.SrcX, newState, stickRead: true);
+                    bool yReads = !deviceFree || HasAxesFor(ud, ctx.SrcY, newState, stickRead: true);
+                    bool clickReads = ctx.SrcClick != null && (!deviceFree || HasAxesFor(ud, ctx.SrcClick, newState));
+
                     // An authored change to the gate or the stay-open flag
                     // (#413) resets the state rather than playing through the
                     // evaluator as a release. First sight only initializes.
@@ -454,7 +464,7 @@ namespace PadForge.Common.Input
                         dy = (down ? 1 : 0) - (up ? 1 : 0);
                         physical = up || down || left || right;
                         clicked = ctx.SrcClick != null
-                            ? SourceCoercion.EvaluateForButtonTarget(
+                            ? clickReads && SourceCoercion.EvaluateForButtonTarget(
                                 newState, ctx.SrcClick, 50, slot, ud.InstanceGuidString)
                             : physical;
                     }
@@ -466,9 +476,9 @@ namespace PadForge.Common.Input
                         // A stay-open one (#413) can still open from its
                         // layer; it just cannot steer, and centerAtRest
                         // below refuses it a resting center.
-                        dx = ctx.SrcX != null ? SourceCoercion.EvaluateForBipolarAxisTarget(
+                        dx = ctx.SrcX != null && xReads ? SourceCoercion.EvaluateForBipolarAxisTarget(
                             newState, ctx.SrcX, slot, false, ud.InstanceGuidString) : 0;
-                        dy = ctx.SrcY != null ? SourceCoercion.EvaluateForBipolarAxisTarget(
+                        dy = ctx.SrcY != null && yReads ? SourceCoercion.EvaluateForBipolarAxisTarget(
                             newState, ctx.SrcY, slot, false, ud.InstanceGuidString) : 0;
                         // In-Menu Sensitivity (v26): scales the hover
                         // vector, so engage / ring reach costs less (or
@@ -501,7 +511,7 @@ namespace PadForge.Common.Input
                         double mag = Math.Sqrt(dx * dx + dy * dy);
                         double engageAt = centerNeedsHold && ctx.State.Engaged ? dz * 0.4 : dz;
                         physical = mag >= engageAt;
-                        clicked = ctx.SrcClick != null && SourceCoercion.EvaluateForButtonTarget(
+                        clicked = clickReads && SourceCoercion.EvaluateForButtonTarget(
                             newState, ctx.SrcClick, 50, slot, ud.InstanceGuidString);
                     }
                     else
@@ -522,10 +532,10 @@ namespace PadForge.Common.Input
                                 dx = Math.Clamp(dx * sens, -1.0, 1.0);
                                 dy = Math.Clamp(dy * sens, -1.0, 1.0);
                             }
-                            clicked = SourceCoercion.EvaluateForButtonTarget(
+                            clicked = clickReads && SourceCoercion.EvaluateForButtonTarget(
                                 newState, ctx.SrcClick, 50, slot, ud.InstanceGuidString);
                         }
-                        else if (layerHolds && ctx.SrcClick != null)
+                        else if (layerHolds && clickReads)
                         {
                             // Stay-open (#413): the menu is open with the
                             // finger up, so a separately assigned click that

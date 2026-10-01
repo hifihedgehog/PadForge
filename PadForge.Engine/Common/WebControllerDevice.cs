@@ -379,12 +379,35 @@ namespace PadForge.Engine
             // out-of-range number reach the mapping math.
             if (value < 0) value = 0;
             else if (value > 65535) value = 65535;
+            // A built pad's axes are read from its layout when it connects, and
+            // its page can send others later: a stick added and saved without
+            // reconnecting, or a page older than the saved layout. The axis
+            // joins the surface before its value lands, as touch and motion do
+            // on their first message, so an "(Any Device)" read that checks the
+            // device's axes takes the stick's 0 at full deflection as input.
+            if (_hasCustomSurface && Array.IndexOf(_customAxes, code) < 0)
+                AddCustomAxis(code);
             lock (_stateLock)
             {
                 var s = _currentState.Clone();
                 s.Axis[code] = value;
                 Volatile.Write(ref _currentState, s);
             }
+        }
+
+        private void AddCustomAxis(int code)
+        {
+            lock (_stateLock)
+            {
+                var axes = _customAxes;
+                if (Array.IndexOf(axes, code) >= 0) return;
+                var grown = new int[axes.Length + 1];
+                Array.Copy(axes, grown, axes.Length);
+                grown[axes.Length] = code;
+                Array.Sort(grown);
+                Volatile.Write(ref _customAxes, grown);
+            }
+            CapabilitiesChanged?.Invoke();
         }
 
         /// <summary>Updates a button state. Called from WebSocket receive thread.</summary>
@@ -675,10 +698,15 @@ namespace PadForge.Engine
             // A builder pad lists only what it actually carries.
             if (_hasCustomSurface)
             {
+                // One read of each list: the socket thread can add an axis
+                // while this builds.
+                var customAxes = _customAxes;
+                var customButtons = _customButtons;
+                bool customPov = _customHasPov;
                 var custom = new DeviceObjectItem[
-                    _customAxes.Length + _customButtons.Length + (_customHasPov ? 1 : 0)];
+                    customAxes.Length + customButtons.Length + (customPov ? 1 : 0)];
                 int ci = 0;
-                foreach (int a in _customAxes)
+                foreach (int a in customAxes)
                     custom[ci++] = new DeviceObjectItem
                     {
                         InputIndex = a,
@@ -687,7 +715,7 @@ namespace PadForge.Engine
                         ObjectType = DeviceObjectTypeFlags.AbsoluteAxis,
                         Offset = a * 4
                     };
-                foreach (int b in _customButtons)
+                foreach (int b in customButtons)
                     custom[ci++] = new DeviceObjectItem
                     {
                         InputIndex = b,
@@ -696,7 +724,7 @@ namespace PadForge.Engine
                         ObjectType = DeviceObjectTypeFlags.PushButton,
                         Offset = (NumGamepadAxes + b) * 4
                     };
-                if (_customHasPov)
+                if (customPov)
                     custom[ci] = new DeviceObjectItem
                     {
                         InputIndex = 0,

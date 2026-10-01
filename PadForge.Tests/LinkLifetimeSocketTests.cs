@@ -152,6 +152,84 @@ namespace PadForge.Tests
             Assert.Equal(24, Volatile.Read(ref device).SupportedButtonIndices.Length);
         }
 
+        private static DeviceObjectItem AxisItem(int index) => new()
+        {
+            InputIndex = index, ObjectTypeGuid = ObjectGuid.ZAxis, Name = "Axis " + index,
+            ObjectType = DeviceObjectTypeFlags.AbsoluteAxis, Offset = index * 4,
+        };
+
+        /// <summary>What a registration recorded, read inside the event:
+        /// the copy's info is refreshed in place afterward.</summary>
+        private sealed record AxisInventory(int Raw, bool Extras, int Count, int[] Set, int[] Objects, bool Has12, bool Has7);
+
+        [Fact]
+        public async Task ADeviceWhoseAxisSetChangesRegistersAgain()
+        {
+            // The consumer refreshed the owner's axis set in place, but its
+            // row kept the set it registered with, and an "(Any Device)"
+            // read skips a 0 on an axis the row lacks, so an axis the
+            // owner's device gained lost its full deflection.
+            using var consumer = new LinkServer(PeerIdentity.Generate(), new PeerTrustStore(), _ => true);
+            using var owner = new LinkServer(PeerIdentity.Generate(), new PeerTrustStore(), _ => true);
+            var registered = new ConcurrentQueue<AxisInventory>();
+            consumer.DeviceConnected += d =>
+            {
+                var row = new PadForge.Engine.Data.UserDevice();
+                row.LoadFromExternalDevice(d);
+                registered.Enqueue(new AxisInventory(d.Info.RawAxisCount, d.Info.HasExtraGenericAxes, d.Info.NumAxes,
+                    (int[])d.SupportedAxisIndices?.Clone(), d.Info.DeviceObjects?.Select(o => o.InputIndex).ToArray(),
+                    row.HasAxis(12), row.HasAxis(7)));
+            };
+            long revision = 1;
+            var last = LinkLifetimeFixtures.Info("a");
+            var current = new LinkDeviceInventory(revision++, new[] { last });
+            owner.ExposeProvider = () => Volatile.Read(ref current);
+            var status = TraceStatus(("consumer", consumer), ("owner", owner));
+            int port = StartOnFreePort(consumer);
+            StartOnFreePort(owner, port);
+            Assert.True(await owner.ConnectAsync("127.0.0.1", port, current), Why(owner, status));
+            Assert.True(await WaitUntil(() => registered.Count == 1, 5000));
+
+            // Each push re-sends the list as it stands, which registers
+            // nothing, then the new one, which registers once. A spurious
+            // registration lands first and shows the old inventory.
+            async Task<AxisInventory> Push(string name, Action<RemotePeerDeviceInfo> change)
+            {
+                int before = registered.Count;
+                current = new LinkDeviceInventory(revision++, new[] { last });
+                owner.PushDeviceList(current);
+                var info = LinkLifetimeFixtures.Info("a");
+                change?.Invoke(info);
+                current = new LinkDeviceInventory(revision++, new[] { info });
+                owner.PushDeviceList(current);
+                last = info;
+                Assert.True(await WaitUntil(() => registered.Count >= before + 1, 5000), name);
+                Assert.Equal(before + 1, registered.Count);
+                // The resend reconciled cleanly. A throw in the reconcile
+                // registers nothing and lands here, not in a count.
+                Assert.False((consumer.DiagLastError ?? "").StartsWith("devlist-recv", StringComparison.Ordinal),
+                    name + ": " + consumer.DiagLastError);
+                return registered.ToArray()[^1];
+            }
+
+            Assert.Equal(12, (await Push("raw axis count", i => i.RawAxisCount = 12)).Raw);
+            Assert.Equal(0, (await Push("raw axis count back", null)).Raw);
+            Assert.True((await Push("extras flag", i => i.HasExtraGenericAxes = true)).Extras);
+            Assert.False((await Push("extras flag back", null)).Extras);
+            Assert.Equal(8, (await Push("axis count", i => i.NumAxes = 8)).Count);
+            Assert.Equal(6, (await Push("axis count back", null)).Count);
+            Assert.Contains(9, (await Push("axis set", i => i.SupportedAxisIndices = new[] { 0, 1, 2, 3, 4, 5, 9 })).Set);
+            Assert.DoesNotContain(9, (await Push("axis set back", null)).Set);
+
+            // The object list counts only when one replaces it, so it goes
+            // last. The registration reads it: the axis it gained answers,
+            // and one it never had does not.
+            var objects = await Push("object list", i => i.DeviceObjects = new[] { AxisItem(0), AxisItem(9), AxisItem(12) });
+            Assert.Contains(12, objects.Objects);
+            Assert.True(objects.Has12);
+            Assert.False(objects.Has7);
+        }
+
         [Fact]
         public async Task ExhaustionRekeysAndReplaysCurrentInventoryWithAutoReconnectDisabled()
         {

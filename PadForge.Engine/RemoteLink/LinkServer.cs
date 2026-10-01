@@ -2139,15 +2139,24 @@ namespace PadForge.Engine.RemoteLink
             }
         }
 
-        /// <summary>Apply the owner's latest device list to a connection: add devices that
-        /// appeared, drop ones that vanished, and update active/inactive on the rest. Fires
-        /// DeviceConnected / DeviceDisconnected so InputService registers/unregisters them
-        /// exactly as it does for the handshake set. Runs on the UDP receive thread.</summary>
         /// <summary>Two analog key lists alike, nulls included: the same codes
         /// in the same order.</summary>
         private static bool SameKeys(int[] a, int[] b)
             => a == null ? b == null : b != null && a.AsSpan().SequenceEqual(b);
 
+        /// <summary>Two object lists naming the same axes and sliders, names
+        /// aside (<see cref="Data.UserDevice.AxisObjectMasks"/>).</summary>
+        private static bool SameAxisObjects(DeviceObjectItem[] a, DeviceObjectItem[] b)
+        {
+            Data.UserDevice.AxisObjectMasks(a, out uint axesA, out uint slidersA);
+            Data.UserDevice.AxisObjectMasks(b, out uint axesB, out uint slidersB);
+            return axesA == axesB && slidersA == slidersB;
+        }
+
+        /// <summary>Apply the owner's latest device list to a connection: add devices that
+        /// appeared, drop ones that vanished, and update active/inactive on the rest. Fires
+        /// DeviceConnected / DeviceDisconnected so InputService registers/unregisters them
+        /// exactly as it does for the handshake set. Runs on the UDP receive thread.</summary>
         private void ReconcileRemoteDevices(LinkPeerConnection c, List<RemotePeerDeviceInfo> infos, List<Action> notifications)
         {
             // Reconcile by the device's STABLE id (PeerLocalDeviceId), not its link slot. Keying
@@ -2177,6 +2186,17 @@ namespace PadForge.Engine.RemoteLink
                     bool touchCapabilitiesChanged = info.NumTouchpads > 0 &&
                         (existing.Info.TouchpadPressureSupported != info.TouchpadPressureSupported
                         || existing.Info.TouchpadClickSupported != info.TouchpadClickSupported);
+                    // The axis inventory is registration state too: the row
+                    // records it, and an "(Any Device)" read skips an axis
+                    // the row lacks, so an axis the owner's device gained
+                    // stayed at rest until the device registered again. The
+                    // object list counts only when it is replaced below.
+                    bool axesChanged = existing.Info.NumAxes != info.NumAxes
+                        || existing.Info.RawAxisCount != info.RawAxisCount
+                        || existing.Info.HasExtraGenericAxes != info.HasExtraGenericAxes
+                        || !SameKeys(existing.Info.SupportedAxisIndices, info.SupportedAxisIndices)
+                        || (info.DeviceObjects != null && info.DeviceObjects.Length > 0
+                            && !SameAxisObjects(existing.Info.DeviceObjects, info.DeviceObjects));
                     existing.LinkSlot = info.Slot;
                     existing.SetConnected(info.Online); // same device, just active/inactive (+ maybe a new slot)
                     // Refresh relayed metadata in place: the owner's named
@@ -2238,7 +2258,8 @@ namespace PadForge.Engine.RemoteLink
                     next[info.Slot] = existing;
                     // Re-register only when the slot moved, so the slot-stamped output route refreshes,
                     // or when what registration recorded changed.
-                    if (slotChanged || typeChanged || touchCapabilitiesChanged) notifications.Add(() => DeviceConnected?.Invoke(existing));
+                    if (slotChanged || typeChanged || touchCapabilitiesChanged || axesChanged)
+                        notifications.Add(() => DeviceConnected?.Invoke(existing));
                 }
                 else
                 {

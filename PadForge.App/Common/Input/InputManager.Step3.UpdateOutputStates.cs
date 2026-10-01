@@ -1021,10 +1021,16 @@ namespace PadForge.Common.Input
                 if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor))
                     continue;
                 // Same cross-device resolution the per-target evaluators use:
-                // the source's own DeviceGuid wins; empty = this pass's device.
+                // the source's own DeviceGuid wins. An empty one is this
+                // pass's device, when it answers "(Any Device)" and has the
+                // stick's axes (#431). A touchpad's or keyboard's zeroed axes
+                // read as a full flick, and a head tracker's pose as a stick.
                 CustomInputState devState;
                 if (string.IsNullOrEmpty(src.DeviceGuid))
+                {
+                    if (!AnswersAnyDeviceRead(thisDeviceGuid, src, state)) continue;
                     devState = state;
+                }
                 else
                 {
                     devState = LookupDeviceState(src.DeviceGuid);

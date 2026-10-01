@@ -2378,6 +2378,78 @@ namespace PadForge.Engine.Common.Mapping
             return xAxis != null && yAxis != null;
         }
 
+        /// <summary>The numbered axes a read of <paramref name="descriptor"/>
+        /// takes from a device's <see cref="CustomInputState.Axis"/> array,
+        /// for the "(Any Device)" gate. "Axis N" (a "Gamepad ..." stick or
+        /// trigger alias included) takes N, and "Slider N" takes the overflow
+        /// axis <see cref="CustomInputState.MaxAxis"/> + N, the joystick's raw
+        /// axis it stores. A stick ring, or a flick stick on a stick, takes
+        /// the stick's X and Y. Every other family takes none. Returns how
+        /// many, in <paramref name="first"/> then <paramref name="second"/>.</summary>
+        public static int NumberedAxesRead(string descriptor, out int first, out int second)
+        {
+            first = second = -1;
+            if (string.IsNullOrEmpty(descriptor)) return 0;
+            // Full-result memo, as for the flick touchpad parse: the alias
+            // fold and the ring and flick resolves build strings, and the
+            // gate asks once per wildcard source per device per poll.
+            if (!s_axesReadCache.TryGetValue(descriptor, out var hit))
+            {
+                hit = NumberedAxesReadUncached(descriptor);
+                if (s_axesReadCache.Count < TypeIndexCacheCap)
+                    s_axesReadCache[descriptor] = hit;
+            }
+            first = hit.First;
+            second = hit.Second;
+            return hit.Count;
+        }
+
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, (int Count, int First, int Second)>
+            s_axesReadCache = new(StringComparer.Ordinal);
+
+        private static (int Count, int First, int Second) NumberedAxesReadUncached(string descriptor)
+        {
+            string c = CanonicalDescriptor(descriptor);
+            if (TryGetStickRingAxes(c, out string x, out string y)
+                || TryGetFlickStickAxes(c, out x, out y))
+            {
+                int first = NumberedAxisOf(x), second = NumberedAxisOf(y);
+                if (first < 0) { first = second; second = -1; }
+                return ((first >= 0 ? 1 : 0) + (second >= 0 ? 1 : 0), first, second);
+            }
+            int only = NumberedAxisOf(c);
+            return (only >= 0 ? 1 : 0, only, -1);
+        }
+
+        /// <summary>The stick axis a read of numbered axis
+        /// <paramref name="axis"/> through <paramref name="src"/> also takes:
+        /// the pair partner (0 and 1, 3 and 4) that the Steam Circle
+        /// deadzone (shape 2) and its radial anti-deadzone read on a full-axis
+        /// read, when either is set. -1 otherwise, the conditions
+        /// <see cref="ApplyStickDeadZoneShape"/> and
+        /// <see cref="ApplyCurveRangeShaping"/> test.</summary>
+        public static int CompanionAxisRead(MappingSource src, int axis)
+        {
+            if (src == null || src.ParamStickDeadZoneShape != 2 || src.HalfAxis) return -1;
+            int companion = axis switch { 0 => 1, 1 => 0, 3 => 4, 4 => 3, _ => -1 };
+            if (companion < 0) return -1;
+            double inner = src.ParamStickDeadZoneInner, outer = src.ParamRangeOuter, anti = src.ParamAntiDeadzone;
+            bool shaped = (inner > 0.0 && inner < 1.0) || (outer > 0.0 && outer < 1.0);
+            bool radialFloor = anti > 0.0 && anti < 1.0
+                && PerSourceSensitivity(src) == 1f && src.ParamAccel <= 0.0;
+            return shaped || radialFloor ? companion : -1;
+        }
+
+        private static int NumberedAxisOf(string canonical)
+        {
+            if (canonical == null || !TryParseTypeIndex(canonical, out var t, out int idx, out _)) return -1;
+            if (t == SourceType.Axis)
+                return idx >= 0 && idx < CustomInputState.MaxAxis ? idx : -1;
+            if (t == SourceType.Slider)
+                return idx >= 0 && idx < CustomInputState.MaxSliders ? CustomInputState.MaxAxis + idx : -1;
+            return -1;
+        }
+
         /// <summary>Rest floor for the INNER ring read, percent of full
         /// deflection. Steam gates ring commands on the stick actually
         /// being deflected (a centered stick sits inside every radius, and

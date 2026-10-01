@@ -173,6 +173,7 @@ namespace PadForge.Common.Input
                     }
                     for (int d = 0; d < trimSlotStates.Count; d++)
                     {
+                        if (!HasAxesFor(trimSlotOwners[d], src, trimSlotStates[d])) continue;
                         float av = SourceEvaluator.EvaluateForTriggerTarget(
                             trimSlotStates[d], src, slotIndex, row.Target, i, slotRuntime, dt,
                             evaluatedDeviceGuid: trimSlotOwners[d]);
@@ -212,12 +213,13 @@ namespace PadForge.Common.Input
                             trimSlotStates = GetSlotDeviceStates(slotIndex, currentState, currentDeviceGuid, out trimSlotOwners);
                         for (int d = 0; d < trimSlotStates.Count; d++)
                         {
+                            if (!HasAxesFor(trimSlotOwners[d], trimSrc, trimSlotStates[d], stickRead: true)) continue;
                             float tv = SourceEvaluator.EvaluateForBipolarAxisTarget(
                                 trimSlotStates[d], trimSrc, slotIndex, row.Target, trimIdx, slotRuntime, dt,
                                 evaluatedDeviceGuid: trimSlotOwners[d]);
                             if (System.Math.Abs(tv) > System.Math.Abs(v)) v = tv;
                         }
-                        if (TryPhoneForEmptySpan(trimSlotStates, trimSrc, slotIndex, out var phoneState, out var phoneGuid))
+                        if (TryPhoneForEmptySpan(trimSlotStates, trimSrc, slotIndex, out var phoneState, out var phoneGuid, stickRead: true))
                             v = SourceEvaluator.EvaluateForBipolarAxisTarget(
                                 phoneState, trimSrc, slotIndex, row.Target, trimIdx, slotRuntime, dt,
                                 evaluatedDeviceGuid: phoneGuid);
@@ -1102,6 +1104,9 @@ namespace PadForge.Common.Input
                 {
                     var ud = _slotTriggerDeviceScratch[d];
                     if (ud?.InputState == null) continue;
+                    // The trigger check's own gate: a device without an axis
+                    // the trigger reads never fired it, so it consumes nothing.
+                    if (!HasAxesFor(ud, src, ud.InputState)) continue;
                     if (!SourceCoercion.EvaluateForButtonTarget(
                             ud.InputState, src, DescriptorTriggerThresholdPercent,
                             slot, ud.InstanceGuidString))
@@ -1117,6 +1122,7 @@ namespace PadForge.Common.Input
                     {
                         var ud = _slotTriggerPhoneScratch[d];
                         if (ud?.InputState == null) continue;
+                        if (!HasAxesFor(ud, src, ud.InputState)) continue;
                         if (!SourceCoercion.EvaluateForButtonTarget(
                                 ud.InputState, src, DescriptorTriggerThresholdPercent,
                                 slot, ud.InstanceGuidString))
@@ -1377,6 +1383,7 @@ namespace PadForge.Common.Input
             // Filled on the first wildcard activator and reused for the rest, so
             // the settings walk happens at most once per resolve.
             List<CustomInputState> wildcardStates = null;
+            List<string> wildcardOwners = null;
 
             for (int i = 0; i < activators.Count; i++)
             {
@@ -1405,12 +1412,24 @@ namespace PadForge.Common.Input
                 }
                 // (#431) An empty guid means whichever controller is on the
                 // slot. A pass for a row that never answers that wildcard
-                // leaves the activator state to the passes that do. A Web
-                // Menus phone alone on the slot reads a menu cell activator
-                // itself (#471).
-                if (string.IsNullOrEmpty(act.DeviceGuid) && !AnswersAnyDevice(thisDeviceGuid)
-                    && !PhoneStandsIn(act.Descriptor, thisDeviceGuid, slotIndex))
+                // leaves the activator state to the passes that do. With none
+                // of those left on the slot that can read it, it settles
+                // released, as a pinned one does once its device leaves: a
+                // Hold engaged by a controller that then left stayed engaged
+                // with a head tracker alone on the slot. A device that answers
+                // but lacks an axis the activator reads advances it below,
+                // where the pick passes it over and its own read is released.
+                // A Web Menus phone alone on the slot reads a menu cell
+                // activator itself (#471).
+                if (string.IsNullOrEmpty(act.DeviceGuid)
+                    && !AnswersAnyDevice(thisDeviceGuid) && !PhoneStandsIn(act.Descriptor, thisDeviceGuid, slotIndex))
+                {
+                    wildcardStates ??= GetSlotDeviceStates(slotIndex, thisDeviceState, thisDeviceGuid, out wildcardOwners);
+                    if (!SlotReadsWildcardActivator(act, wildcardStates, wildcardOwners, slotIndex))
+                        UpdateActivatorState(rt, i, act, activators, OfflinePinnedRestState, slotIndex,
+                            inputOverrideReleased: true);
                     continue;
+                }
 
                 if (string.IsNullOrEmpty(act.DeviceGuid))
                 {
@@ -1422,9 +1441,14 @@ namespace PadForge.Common.Input
                     // order. Advance it against whichever slot device is
                     // actually pressing, so every pass in the frame reads the
                     // same input and the later passes settle to no-ops.
-                    wildcardStates ??= GetSlotDeviceStates(slotIndex, thisDeviceState, thisDeviceGuid, out _);
-                    UpdateActivatorState(rt, i, act, activators,
-                        PickWildcardActivatorState(act, wildcardStates, thisDeviceState, slotIndex), slotIndex);
+                    wildcardStates ??= GetSlotDeviceStates(slotIndex, thisDeviceState, thisDeviceGuid, out wildcardOwners);
+                    var picked = PickWildcardActivatorState(act, wildcardStates, wildcardOwners,
+                        thisDeviceState, thisDeviceGuid, slotIndex, out string pickedOwner);
+                    bool? previous = CyclePrevOnOwnDevice(act)
+                        ? PickWildcardPrevious(act, wildcardStates, wildcardOwners, thisDeviceState, thisDeviceGuid, slotIndex)
+                        : null;
+                    UpdateActivatorState(rt, i, act, activators, picked, slotIndex,
+                        wildcardReader: LookupUserDevice(pickedOwner), wildcardPrevious: previous);
                     continue;
                 }
 
@@ -1498,28 +1522,83 @@ namespace PadForge.Common.Input
             return string.IsNullOrEmpty(winner?.LayerMask) ? "Base" : winner.LayerMask;
         }
 
-        /// <summary>Reads the input for a single activator, updates its
-        /// per-mode latch state on <paramref name="rt"/>, and maintains the
-        /// engagement stack. Supports Hold / Toggle / Custom / Cycle /
-        /// Sticky modes plus the v2 Delay debounce + Chord/Axis kinds.</summary>
         /// <summary>The slot device an "any device" activator advances against:
         /// the first assigned device reading it down, else the pass's own device
         /// so a released activator still settles. The choice is the same for
         /// every device pass in a frame, which is what keeps the shared latch
-        /// from flapping between them.</summary>
+        /// from flapping between them. A device without an axis the activator
+        /// reads holds 0 there, a full deflection, and is passed over.
+        /// <paramref name="owner"/> names the device picked.</summary>
         private static CustomInputState PickWildcardActivatorState(
-            ShiftActivator act, List<CustomInputState> slotStates,
-            CustomInputState fallback, int slotIndex)
+            ShiftActivator act, List<CustomInputState> slotStates, List<string> owners,
+            CustomInputState fallback, string fallbackOwner, int slotIndex, out string owner)
         {
+            owner = fallbackOwner;
             if (slotStates == null) return fallback;
             for (int d = 0; d < slotStates.Count; d++)
             {
                 var st = slotStates[d];
-                if (st != null && ReadActivatorInput(act, st, slotIndex)) return st;
+                string g = owners != null && d < owners.Count ? owners[d] : null;
+                if (g != null && !ActivatorHasAxes(LookupUserDevice(g), act, st)) continue;
+                if (st != null && ReadActivatorInput(act, st, slotIndex))
+                {
+                    owner = g;
+                    return st;
+                }
             }
             return fallback;
         }
 
+        /// <summary>An "(Any Device)" Cycle's Previous button, picked the way
+        /// <see cref="PickWildcardActivatorState"/> picks Next: down when a
+        /// slot device with its axes holds it, else up, the same answer on
+        /// every pass in a frame. Read from each pass's own device instead, a
+        /// held Previous read down on one pass and up on the next, and the
+        /// shared latch stepped the queue on every frame it was held. A Web
+        /// Menus phone alone on the slot reads its own cells (#471).</summary>
+        private static bool PickWildcardPrevious(ShiftActivator act, List<CustomInputState> slotStates,
+            List<string> owners, CustomInputState fallback, string fallbackOwner, int slotIndex)
+        {
+            string desc = act.CyclePrevDescriptor;
+            if (slotStates != null && slotStates.Count > 0)
+            {
+                for (int d = 0; d < slotStates.Count; d++)
+                {
+                    string g = owners != null && d < owners.Count ? owners[d] : null;
+                    if (g != null && !HasAxesFor(LookupUserDevice(g), desc, slotStates[d])) continue;
+                    if (slotStates[d] != null
+                        && SourceKindRuntimeReadButtonLikeBool(slotStates[d], desc, act.DeviceGuid, slotIndex)) return true;
+                }
+                return false;
+            }
+            return fallback != null && HasAxesFor(LookupUserDevice(fallbackOwner), desc, fallback)
+                   && SourceKindRuntimeReadButtonLikeBool(fallback, desc, act.DeviceGuid, slotIndex);
+        }
+
+        /// <summary>True when some device on the slot reads an "(Any Device)"
+        /// activator: one that answers the wildcard and has its axes, or a
+        /// Web Menus phone standing in for a menu cell (#471).</summary>
+        private static bool SlotReadsWildcardActivator(ShiftActivator act, List<CustomInputState> states,
+            List<string> owners, int slotIndex)
+        {
+            if (owners != null)
+                for (int d = 0; d < owners.Count; d++)
+                {
+                    var st = states != null && d < states.Count ? states[d] : null;
+                    if (ActivatorReadable(LookupUserDevice(owners[d]), act, st)) return true;
+                }
+            return TryPhoneForMenuCell(act.Descriptor, slotIndex, out var phoneState, out string phone)
+                   && ActivatorReadable(LookupUserDevice(phone), act, phoneState);
+        }
+
+        /// <summary>Reads the input for a single activator, updates its
+        /// per-mode latch state on <paramref name="rt"/>, and maintains the
+        /// engagement stack. Supports Hold / Toggle / Custom / Cycle /
+        /// Sticky modes plus the v2 Delay debounce + Chord/Axis kinds.
+        /// <paramref name="wildcardReader"/> is the device an "(Any Device)"
+        /// activator advances against, whose axes gate its input.
+        /// <paramref name="wildcardPrevious"/> is such a Cycle's Previous
+        /// button, picked across the slot (<see cref="PickWildcardPrevious"/>).</summary>
         private static void UpdateActivatorState(
             ShiftRuntime rt,
             int actIdx,
@@ -1527,13 +1606,20 @@ namespace PadForge.Common.Input
             System.Collections.Generic.List<ShiftActivator> activators,
             CustomInputState state,
             int slotIndex,
-            bool inputOverrideReleased = false)
+            bool inputOverrideReleased = false,
+            UserDevice wildcardReader = null,
+            bool? wildcardPrevious = null)
         {
             // ── Read the activator's current input ──
             // The override settles an activator whose pinned device is gone.
             // Forcing the read is the point: the all-rest state is safe for
             // bool-like reads only, so an Axis activator must not decode it.
-            bool inputDown = !inputOverrideReleased && ReadActivatorInput(act, state, slotIndex);
+            // An "(Any Device)" one reads released from a device without an
+            // axis it takes, one that advances it for a Cycle's Previous
+            // button alone.
+            bool inputDown = !inputOverrideReleased
+                && (wildcardReader == null || ActivatorHasAxes(wildcardReader, act, state))
+                && ReadActivatorInput(act, state, slotIndex);
 
             // ── v9 host-layer condition (#370 follow-up): when
             //    HostLayerMask is set, the press only counts if that layer
@@ -1708,23 +1794,32 @@ namespace PadForge.Common.Input
                     // on a different controller than Next (mirrors cross-device
                     // chord via LookupDeviceState).
                     bool prevDown = false;
-                    if (!string.IsNullOrEmpty(act.CyclePrevDescriptor))
+                    if (wildcardPrevious.HasValue)
+                        prevDown = wildcardPrevious.Value;
+                    else if (!string.IsNullOrEmpty(act.CyclePrevDescriptor))
                     {
                         CustomInputState prevState = state;
                         string prevGuid = act.DeviceGuid;
-                        if (!string.IsNullOrEmpty(act.CyclePrevDeviceGuid)
-                            && !string.Equals(act.CyclePrevDeviceGuid, act.DeviceGuid, System.StringComparison.OrdinalIgnoreCase))
+                        if (!CyclePrevOnOwnDevice(act))
                         {
                             // Offline prev device reads rest (false), never
-                            // the current pass's state (wrong device).
-                            prevState = LookupDeviceState(act.CyclePrevDeviceGuid) ?? OfflinePinnedRestState;
+                            // the current pass's state (wrong device). The
+                            // all-rest state is not read: its zeroed axes
+                            // read as deflected.
+                            prevState = LookupDeviceState(act.CyclePrevDeviceGuid);
                             prevGuid = act.CyclePrevDeviceGuid;
                         }
+                        // On the activator's own device, the override's state
+                        // is the all-rest one, which is not a read. Previous
+                        // on another device, still online, is.
+                        else if (inputOverrideReleased)
+                            prevState = null;
                         // Device guid + slot ride along like the chord second
                         // read at ReadActivatorInput, so the slot-keyed source
                         // families (menu items, touchpad gestures) evaluate
                         // against THIS slot instead of slot 0.
-                        prevDown = SourceKindRuntimeReadButtonLikeBool(prevState, act.CyclePrevDescriptor, prevGuid, slotIndex);
+                        prevDown = prevState != null
+                            && SourceKindRuntimeReadButtonLikeBool(prevState, act.CyclePrevDescriptor, prevGuid, slotIndex);
                     }
 
                     // v9 host-layer condition: the Previous button reads
@@ -1926,13 +2021,14 @@ namespace PadForge.Common.Input
                     bool a = SourceKindRuntimeReadButtonLikeBool(state, act.Descriptor, act.DeviceGuid, slotIndex);
                     CustomInputState secondState = state;
                     string secondGuid = act.DeviceGuid;
-                    if (!string.IsNullOrEmpty(act.ChordSecondDeviceGuid)
-                        && !string.Equals(act.ChordSecondDeviceGuid, act.DeviceGuid,
-                            System.StringComparison.OrdinalIgnoreCase))
+                    if (!ChordSecondOnOwnDevice(act))
                     {
                         // Offline second device reads rest (false), never
-                        // the current pass's state (wrong device).
-                        secondState = LookupDeviceState(act.ChordSecondDeviceGuid) ?? OfflinePinnedRestState;
+                        // the current pass's state (wrong device). The
+                        // all-rest state is not read: its zeroed axes read
+                        // as deflected.
+                        secondState = LookupDeviceState(act.ChordSecondDeviceGuid);
+                        if (secondState == null) return false;
                         secondGuid = act.ChordSecondDeviceGuid;
                     }
                     bool b = SourceKindRuntimeReadButtonLikeBool(secondState, act.ChordSecondDescriptor, secondGuid, slotIndex);
@@ -2444,7 +2540,7 @@ namespace PadForge.Common.Input
                     {
                         var src = rowSources[i];
                         if (IsRowModifierSource(src)) continue;
-                        if (!SourceMatchesDevice(src, thisDeviceGuid, slotIndex)) continue;
+                        if (!SourceMatchesDevice(src, thisDeviceGuid, slotIndex, state)) continue;
                         if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor)) continue;
                         boolContribs.Add(SourceEvaluator.EvaluateForButtonTarget(
                             state, src, globalAxisToButtonThreshold,
@@ -2475,7 +2571,7 @@ namespace PadForge.Common.Input
                     {
                         var src = rowSources[i];
                         if (IsRowModifierSource(src)) continue;
-                        if (!SourceMatchesDevice(src, thisDeviceGuid, slotIndex)) continue;
+                        if (!SourceMatchesDevice(src, thisDeviceGuid, slotIndex, state, stickRead: true)) continue;
                         if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor)) continue;
                         axisContribs.Add(SourceEvaluator.EvaluateForBipolarAxisTarget(
                             state, src, slotIndex, row.Target, i, runtime, dt,
@@ -2517,7 +2613,7 @@ namespace PadForge.Common.Input
                     {
                         var src = rowSources[i];
                         if (IsRowModifierSource(src)) continue;
-                        if (!SourceMatchesDevice(src, thisDeviceGuid, slotIndex)) continue;
+                        if (!SourceMatchesDevice(src, thisDeviceGuid, slotIndex, state)) continue;
                         if (IsSourceSuppressedPostpone(slotIndex, src.DeviceGuid, src.Descriptor)) continue;
                         axisContribs.Add(SourceEvaluator.EvaluateForTriggerTarget(
                             state, src, slotIndex, row.Target, i, runtime, dt,
@@ -2749,12 +2845,13 @@ namespace PadForge.Common.Input
         private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<MappingSet, BaseRowCache>
             s_baseRowCaches = new();
 
-        private static bool SourceMatchesDevice(MappingSource src, string thisDeviceGuid, int slotIndex)
+        private static bool SourceMatchesDevice(MappingSource src, string thisDeviceGuid, int slotIndex,
+            CustomInputState state, bool stickRead = false)
         {
             if (src == null) return false;
             // "any device" (#431), and a phone's own menu cells (#471).
             if (string.IsNullOrEmpty(src.DeviceGuid))
-                return AnswersAnyDevice(thisDeviceGuid) || PhoneStandsIn(src.Descriptor, thisDeviceGuid, slotIndex);
+                return AnswersAnyDeviceRead(thisDeviceGuid, src, state, stickRead) || PhoneStandsIn(src, thisDeviceGuid, slotIndex, state, stickRead);
             return string.Equals(src.DeviceGuid, thisDeviceGuid, System.StringComparison.OrdinalIgnoreCase);
         }
 
@@ -2840,7 +2937,7 @@ namespace PadForge.Common.Input
                     {
                         var src = rowSources[i];
                         if (IsRowModifierSource(src)) continue;
-                        if (!SourceMatchesDevice(src, deviceGuid, slotIndex)) continue;
+                        if (!SourceMatchesDevice(src, deviceGuid, slotIndex, state)) continue;
                         // Preview truthfulness (audit 2026-07-25, C12): the
                         // live dispatch suppresses consumed/postponed
                         // sources, so the preview must too or the Pad page
@@ -3088,6 +3185,191 @@ namespace PadForge.Common.Input
             return answers;
         }
 
+        /// <summary><see cref="AnswersAnyDevice"/> for one source: the row
+        /// answers the wildcard, and the device has every numbered axis the
+        /// source reads (<see cref="HasAxesFor(string, MappingSource, CustomInputState, bool)"/>).</summary>
+        private static bool AnswersAnyDeviceRead(string deviceGuid, MappingSource src, CustomInputState state,
+            bool stickRead = false)
+            => AnswersAnyDevice(deviceGuid) && HasAxesFor(deviceGuid, src, state, stickRead);
+
+        /// <summary>True when the device behind <paramref name="deviceGuid"/>
+        /// has every numbered axis <paramref name="src"/> reads, the #431 rule
+        /// at the grain of one input. A device holds 0 where it has no axis,
+        /// and 0 reads as full deflection on a stick read, so a touchpad, a
+        /// keyboard or a motion sensor on the slot pinned an "(Any Device)"
+        /// stick row, won Step 4's merge against a centered controller and
+        /// engaged a device-free stick menu. <paramref name="state"/> is the
+        /// device's state the read takes. An unknown guid has them all, as it
+        /// answers the wildcard. <paramref name="stickRead"/> marks the
+        /// bipolar lane, whose Steam Circle deadzone also reads the axis's
+        /// partner.</summary>
+        private static bool HasAxesFor(string deviceGuid, MappingSource src, CustomInputState state,
+            bool stickRead = false)
+            => !ReadsNumberedAxis(src, stickRead) || HasAxesFor(LookupUserDevice(deviceGuid), src, state, stickRead);
+
+        /// <summary>The same test against a device in hand. The two gate legs
+        /// read the same device (SourceEvaluator.GateHeld), so a button gated
+        /// on a stick ring fired on a touchpad's zeroed axes. A stick read
+        /// (<paramref name="stickRead"/>, the bipolar lane) with a Steam Circle
+        /// deadzone reads the axis's partner too (SourceCoercion.ReadAsBipolar).
+        /// The button and trigger reads never do, so they do not ask for it.
+        /// On the stick lane the steering kinds read Descriptor and
+        /// ParamYDescriptor as one stick (SourceKindRuntime.ReadStick2D), each
+        /// an "Axis N" or nothing, with no partner. On a button or trigger
+        /// target they fall to the Direct read of Descriptor. ParamUp,
+        /// ParamDown and ParamModifier read buttons, POV and hardware bools
+        /// only.</summary>
+        private static bool HasAxesFor(UserDevice dev, MappingSource src, CustomInputState state, bool stickRead = false)
+        {
+            if (dev == null || src == null) return true;
+            if (!HasAxesFor(dev, src.GateDescriptor, state) || !HasAxesFor(dev, src.Gate2Descriptor, state)) return false;
+            if (stickRead && ReadsStickPair(src.Kind))
+                return HasSteeringAxis(dev, src.Descriptor, state) && HasSteeringAxis(dev, src.ParamYDescriptor, state);
+            return !KindReadsDescriptor(src.Kind, stickRead) || HasAxesFor(dev, src.Descriptor, state, stickRead ? src : null);
+        }
+
+        /// <summary>The axis a steering read takes from one descriptor
+        /// (SourceKindRuntime.SteeringAxisRead), which reads a ring, a slider
+        /// or a flick stick as centered and so takes none.</summary>
+        private static bool HasSteeringAxis(UserDevice dev, string descriptor, CustomInputState state)
+        {
+            int axis = SourceKindRuntime.SteeringAxisRead(descriptor);
+            return axis < 0 || DeviceHasAxis(dev, axis, state);
+        }
+
+        /// <summary>The steering kinds that read Descriptor and
+        /// ParamYDescriptor as one stick on the stick lane: a winding wheel
+        /// and the two angle projections.</summary>
+        private static bool ReadsStickPair(string kind)
+            => kind == "WindingStick" || kind == "AngleToAxisX" || kind == "AngleToAxisY";
+
+        /// <summary>False where a kind's reader never takes Descriptor.
+        /// Incremental and Ramped read ParamUp and ParamDown on every lane
+        /// (SourceKindRuntime.TickIncremental and TickRamped). The motion
+        /// kinds read gravity or the shake envelope on the stick lane alone:
+        /// on a button or trigger target they fall to the Direct read, which
+        /// takes Descriptor. A kind change keeps the old Descriptor in the
+        /// row, and an unread axis there hid the whole source.</summary>
+        private static bool KindReadsDescriptor(string kind, bool stickRead)
+            => kind switch
+            {
+                "Incremental" or "Ramped" => false,
+                "MotionLeanX" or "MotionLeanAuxX" or "MotionShake" or "MotionShakeAux" => !stickRead,
+                _ => true,
+            };
+
+        /// <summary>True when some descriptor of <paramref name="src"/> reads
+        /// a numbered axis, so a row of buttons never looks its device up.</summary>
+        private static bool ReadsNumberedAxis(MappingSource src, bool stickRead)
+            => src != null
+               && ((stickRead && ReadsStickPair(src.Kind)
+                       ? SourceKindRuntime.SteeringAxisRead(src.Descriptor) >= 0
+                         || SourceKindRuntime.SteeringAxisRead(src.ParamYDescriptor) >= 0
+                       : KindReadsDescriptor(src.Kind, stickRead) && SourceCoercion.NumberedAxesRead(src.Descriptor, out _, out _) > 0)
+                   || SourceCoercion.NumberedAxesRead(src.GateDescriptor, out _, out _) > 0
+                   || SourceCoercion.NumberedAxesRead(src.Gate2Descriptor, out _, out _) > 0);
+
+        /// <summary>The test for one descriptor against a device in hand.
+        /// <paramref name="shaping"/> is the source whose deadzone geometry
+        /// may read the axis's partner too.</summary>
+        private static bool HasAxesFor(UserDevice dev, string descriptor, CustomInputState state,
+            MappingSource shaping = null)
+        {
+            if (dev == null) return true;
+            int n = SourceCoercion.NumberedAxesRead(descriptor, out int first, out int second);
+            if (n == 0) return true;
+            if (!DeviceHasAxis(dev, first, state) || (n > 1 && !DeviceHasAxis(dev, second, state))) return false;
+            int partner = n == 1 ? SourceCoercion.CompanionAxisRead(shaping, first) : -1;
+            return partner < 0 || DeviceHasAxis(dev, partner, state);
+        }
+
+        /// <summary>True when a read of <paramref name="axis"/> takes live
+        /// data or a rest from the device. Its recorded axes
+        /// (<see cref="UserDevice.HasAxis"/>), a Bliss-Box port's pressure
+        /// axes (<see cref="BlissBoxRuntime.PressureAxis"/>) and a Remote Link
+        /// gamepad copy's stick axes (<see cref="PeerStickAxis"/>) always do.
+        /// Another axis it does not list does unless it holds 0 in
+        /// <paramref name="state"/>, the filler of a device without the axis:
+        /// a gamepad read writes a stick it lacks at center
+        /// (SdlDeviceWrapper.GetGamepadState), a web pad starts every axis at
+        /// rest, and a Remote Link copy starts at the codec's neutral. A
+        /// wheel whose SDL mapping has leftx and no lefty steers through a
+        /// stick ring with its Axis 1 at center.</summary>
+        private static bool DeviceHasAxis(UserDevice dev, int axis, CustomInputState state)
+            => dev.HasAxis(axis) || BlissBoxRuntime.PressureAxis(dev, axis) || PeerStickAxis(dev, axis)
+               || HoldsValue(state, axis);
+
+        /// <summary>A stick axis (0, 1, 3 or 4) of a Remote Link copy of a
+        /// gamepad, below the owner's axis count. Every gamepad read fills
+        /// those with live input or a rest: SDL's gamepad read writes a missing
+        /// stick at center (SdlDeviceWrapper.GetGamepadState), a raw read
+        /// reads its whole span, and a web pad starts its sticks centered. So
+        /// a 0 there is input, while the copy's list can lag the owner's: a
+        /// built web pad that gains a stick is listed at the owner's next
+        /// device-list push, and an owner from 4.3.0 through 4.5.3 that reads
+        /// a pad raw lists the gamepad layout's axes.</summary>
+        private static bool PeerStickAxis(UserDevice dev, int axis)
+            => axis is 0 or 1 or 3 or 4
+               && dev.Device is PadForge.Engine.RemoteLink.RemotePeerDevice peer
+               && peer.GetInputDeviceType() == InputDeviceType.Gamepad
+               && axis < peer.NumAxes;
+
+        /// <summary>The device's state holds something other than 0 at
+        /// numbered axis <paramref name="axis"/>, a Slider from
+        /// <see cref="CustomInputState.MaxAxis"/> up.</summary>
+        private static bool HoldsValue(CustomInputState state, int axis)
+        {
+            if (state == null || axis < 0) return false;
+            if (axis < CustomInputState.MaxAxis) return state.Axis != null && state.Axis[axis] != 0;
+            int slider = axis - CustomInputState.MaxAxis;
+            return state.Sliders != null && slider < state.Sliders.Length && state.Sliders[slider] != 0;
+        }
+
+        /// <summary>True when the device has every numbered axis an
+        /// activator's AND legs read from <paramref name="state"/>: its input,
+        /// its gates, and a chord's second half on the same device, the legs
+        /// <see cref="ReadActivatorInput"/> reads from one state. A Cycle's
+        /// Previous button is read apart (<see cref="PickWildcardPrevious"/>).</summary>
+        private static bool ActivatorHasAxes(UserDevice dev, ShiftActivator act, CustomInputState state)
+        {
+            if (dev == null || act == null) return true;
+            if (!HasAxesFor(dev, act.Descriptor, state) || !HasAxesFor(dev, act.Gate2Descriptor, state)) return false;
+            string kind = act.Kind ?? "Button";
+            if (kind == "Axis") return HasAxesFor(dev, act.GateDescriptor, state);
+            if (kind == "Chord" && ChordSecondOnOwnDevice(act)) return HasAxesFor(dev, act.ChordSecondDescriptor, state);
+            return true;
+        }
+
+        /// <summary>A chord's second half reads the activator's own state
+        /// when it names no other device.</summary>
+        private static bool ChordSecondOnOwnDevice(ShiftActivator act)
+            => string.IsNullOrEmpty(act.ChordSecondDeviceGuid)
+               || string.Equals(act.ChordSecondDeviceGuid, act.DeviceGuid, System.StringComparison.OrdinalIgnoreCase);
+
+        /// <summary>A Cycle's Previous button, read from the activator's own
+        /// state because it names no other device.</summary>
+        private static bool CyclePrevOnOwnDevice(ShiftActivator act)
+            => string.Equals(act.Mode, "Cycle", System.StringComparison.Ordinal)
+               && !string.IsNullOrEmpty(act.CyclePrevDescriptor)
+               && (string.IsNullOrEmpty(act.CyclePrevDeviceGuid)
+                   || string.Equals(act.CyclePrevDeviceGuid, act.DeviceGuid, System.StringComparison.OrdinalIgnoreCase));
+
+        /// <summary>True when the device reads an "(Any Device)" activator at
+        /// all: its AND legs (<see cref="ActivatorHasAxes"/>), or a Cycle's
+        /// Previous button on the same device, read apart from Next. A
+        /// joystick without the stick a Cycle's Next reads still steps it
+        /// back with its own button.</summary>
+        private static bool ActivatorReadable(UserDevice dev, ShiftActivator act, CustomInputState state)
+            => ActivatorHasAxes(dev, act, state)
+               || (CyclePrevOnOwnDevice(act) && HasAxesFor(dev, act.CyclePrevDescriptor, state));
+
+        /// <summary><see cref="PhoneStandsIn(string, string, int)"/> for a
+        /// source: the phone has no axes, so a cell whose gate reads a stick
+        /// is one it cannot press.</summary>
+        private static bool PhoneStandsIn(MappingSource src, string deviceGuid, int slotIndex, CustomInputState state,
+            bool stickRead = false)
+            => PhoneStandsIn(src.Descriptor, deviceGuid, slotIndex) && HasAxesFor(deviceGuid, src, state, stickRead);
+
         // ── Web Menus phones (#471) ──────────────────────────────────────
         // A phone never answers "(Any Device)", because its input arrays
         // hold no gamepad layout (#431). A menu cell source is the exception:
@@ -3199,12 +3481,15 @@ namespace PadForge.Common.Input
         /// <summary>The same for a row read once per frame, whose span
         /// (<see cref="GetSlotDeviceStates"/>) came back empty.</summary>
         private static bool TryPhoneForEmptySpan(List<CustomInputState> span, MappingSource src, int slotIndex,
-            out CustomInputState phoneState, out string phoneGuid)
+            out CustomInputState phoneState, out string phoneGuid, bool stickRead = false)
         {
             phoneState = null;
             phoneGuid = null;
+            // The phone has no axes, so a cell whose gate reads a stick is
+            // one it cannot press (#431).
             return span.Count == 0 && src != null && string.IsNullOrEmpty(src.DeviceGuid)
-                   && TryPhoneForMenuCell(src.Descriptor, slotIndex, out phoneState, out phoneGuid);
+                   && TryPhoneForMenuCell(src.Descriptor, slotIndex, out phoneState, out phoneGuid)
+                   && HasAxesFor(phoneGuid, src, phoneState, stickRead);
         }
 
         /// <summary>Memoized lookup for concrete-source sites. The captured
@@ -3360,10 +3645,10 @@ namespace PadForge.Common.Input
                         // sides, whichever pass claimed the row. A pair's sides
                         // share one guid, and a side that is no menu cell has
                         // no device to read, so it stays at rest.
-                        bool posPhone = TryPhoneForEmptySpan(slotStates, src, slotIndex, out var posState, out var posGuid);
+                        bool posPhone = TryPhoneForEmptySpan(slotStates, src, slotIndex, out var posState, out var posGuid, stickRead: true);
                         CustomInputState negState = null;
                         string negGuid = null;
-                        bool negPhone = useNeg && TryPhoneForEmptySpan(slotStates, negSrc, slotIndex, out negState, out negGuid);
+                        bool negPhone = useNeg && TryPhoneForEmptySpan(slotStates, negSrc, slotIndex, out negState, out negGuid, stickRead: true);
                         if (posPhone || negPhone)
                         {
                             float pv = posPhone
@@ -3388,14 +3673,17 @@ namespace PadForge.Common.Input
                         if (pState == null) continue;
                         // Each device is read under ITS OWN identity. A pinned
                         // source ignores this argument, so it is correct for
-                        // both sides.
-                        float v = SourceEvaluator.EvaluateForBipolarAxisTarget(
-                            pState, src, slotIndex, row.Target, i, slotRuntime, dt,
-                            evaluatedDeviceGuid: slotOwners[d]);
+                        // both sides. An any-device side reads only a device
+                        // that has its axes.
+                        float v = !posAny || HasAxesFor(slotOwners[d], src, slotStates[d], stickRead: true)
+                            ? SourceEvaluator.EvaluateForBipolarAxisTarget(
+                                pState, src, slotIndex, row.Target, i, slotRuntime, dt,
+                                evaluatedDeviceGuid: slotOwners[d])
+                            : 0f;
                         if (useNeg)
                         {
                             var nState = negAny ? slotStates[d] : negFixed;
-                            if (nState != null)
+                            if (nState != null && (!negAny || HasAxesFor(slotOwners[d], negSrc, slotStates[d], stickRead: true)))
                                 v += SourceEvaluator.EvaluateForBipolarAxisTarget(
                                     nState, negSrc, slotIndex, row.Target, 1, slotRuntime, dt,
                                     evaluatedDeviceGuid: slotOwners[d]);
@@ -3462,7 +3750,9 @@ namespace PadForge.Common.Input
                     for (int d = 0; d < slotStates.Count; d++)
                     {
                         // Each device read under its own identity, so per-device
-                        // tuning and delta trackers stay on their own key.
+                        // tuning and delta trackers stay on their own key, and
+                        // only a device that has the source's axes.
+                        if (!HasAxesFor(slotOwners[d], src, slotStates[d])) continue;
                         float t = SourceEvaluator.EvaluateForTriggerTarget(
                             slotStates[d], src, slotIndex, row.Target, i, slotRuntime, dt,
                             evaluatedDeviceGuid: slotOwners[d]);
@@ -3522,7 +3812,9 @@ namespace PadForge.Common.Input
                     for (int d = 0; d < slotStates.Count; d++)
                     {
                         // Each device read under its own identity, so per-device
-                        // tuning and debounce state stay on their own key.
+                        // tuning and debounce state stay on their own key, and
+                        // only a device that has the source's axes.
+                        if (!HasAxesFor(slotOwners[d], src, slotStates[d])) continue;
                         if (SourceEvaluator.EvaluateForButtonTarget(
                             slotStates[d], src, globalAxisToButtonThreshold,
                             slotIndex, row.Target, i, slotRuntime, dt,
@@ -3767,11 +4059,12 @@ namespace PadForge.Common.Input
             CustomInputState devState;
             if (string.IsNullOrEmpty(src.DeviceGuid))
             {
-                // (#431) A pass device that never answers "(Any Device)"
-                // reads rest, the offline-pinned shape below. A Web Menus
-                // phone alone on the slot still reads its menu cells (#471).
-                if (!AnswersAnyDevice(thisDeviceGuid)
-                    && !PhoneStandsIn(src.Descriptor, thisDeviceGuid, slotIndex)) return true;
+                // (#431) A pass device that never answers "(Any Device)",
+                // or lacks an axis the source reads, reads rest, the
+                // offline-pinned shape below. A Web Menus phone alone on
+                // the slot still reads its menu cells (#471).
+                if (!AnswersAnyDeviceRead(thisDeviceGuid, src, state)
+                    && !PhoneStandsIn(src, thisDeviceGuid, slotIndex, state)) return true;
                 devState = state;
             }
             else
@@ -3845,11 +4138,12 @@ namespace PadForge.Common.Input
                     CustomInputState devState;
                     if (string.IsNullOrEmpty(src.DeviceGuid))
                     {
-                        // (#431) A pass device that never answers "(Any Device)"
-                        // reads rest, the offline-pinned shape below. A Web Menus
-                        // phone alone on the slot still reads its menu cells (#471).
-                        if (!AnswersAnyDevice(thisDeviceGuid)
-                            && !PhoneStandsIn(src.Descriptor, thisDeviceGuid, slotIndex)) return true;
+                        // (#431) A pass device that never answers "(Any Device)",
+                        // or lacks an axis the source reads, reads rest, the
+                        // offline-pinned shape below. A Web Menus phone alone on
+                        // the slot still reads its menu cells (#471).
+                        if (!AnswersAnyDeviceRead(thisDeviceGuid, src, state, stickRead: true)
+                            && !PhoneStandsIn(src, thisDeviceGuid, slotIndex, state, stickRead: true)) return true;
                         devState = state;
                     }
                     else
@@ -3941,11 +4235,12 @@ namespace PadForge.Common.Input
                 CustomInputState devState;
                 if (string.IsNullOrEmpty(src.DeviceGuid))
                 {
-                    // (#431) A pass device that never answers "(Any Device)"
-                    // reads rest, the offline-pinned shape below. A Web Menus
-                    // phone alone on the slot still reads its menu cells (#471).
-                    if (!AnswersAnyDevice(thisDeviceGuid)
-                        && !PhoneStandsIn(src.Descriptor, thisDeviceGuid, slotIndex))
+                    // (#431) A pass device that never answers "(Any Device)",
+                    // or lacks an axis the source reads, reads rest, the
+                    // offline-pinned shape below. A Web Menus phone alone on
+                    // the slot still reads its menu cells (#471).
+                    if (!AnswersAnyDeviceRead(thisDeviceGuid, src, state, stickRead: true)
+                        && !PhoneStandsIn(src, thisDeviceGuid, slotIndex, state, stickRead: true))
                     { values.Add(0f); flags.Add(0f); continue; }
                     devState = state;
                 }
@@ -4093,11 +4388,12 @@ namespace PadForge.Common.Input
                     CustomInputState devState;
                     if (string.IsNullOrEmpty(src.DeviceGuid))
                     {
-                        // (#431) A pass device that never answers "(Any Device)"
-                        // reads rest, the offline-pinned shape below. A Web Menus
-                        // phone alone on the slot still reads its menu cells (#471).
-                        if (!AnswersAnyDevice(thisDeviceGuid)
-                            && !PhoneStandsIn(src.Descriptor, thisDeviceGuid, slotIndex)) return true;
+                        // (#431) A pass device that never answers "(Any Device)",
+                        // or lacks an axis the source reads, reads rest, the
+                        // offline-pinned shape below. A Web Menus phone alone on
+                        // the slot still reads its menu cells (#471).
+                        if (!AnswersAnyDeviceRead(thisDeviceGuid, src, state)
+                            && !PhoneStandsIn(src, thisDeviceGuid, slotIndex, state)) return true;
                         devState = state;
                     }
                     else
@@ -4200,7 +4496,7 @@ namespace PadForge.Common.Input
             if (dpadSources == null) return;
             foreach (var src in dpadSources)
             {
-                if (!SourceMatchesDevice(src, thisDeviceGuid, slotIndex)) continue;
+                if (!SourceMatchesDevice(src, thisDeviceGuid, slotIndex, state)) continue;
                 if (string.IsNullOrEmpty(src.Descriptor)) continue;
                 // Suppression parity (audit 2026-07-25, C11): this was the
                 // one row-source evaluator in the dispatch loop without the

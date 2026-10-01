@@ -523,8 +523,7 @@ namespace PadForge.Common.Input
         public static bool RestsAtZero(UserDevice ud, int axis)
         {
             if (ud == null || !BlissBoxProtocol.IsPort(ud.VendorId, ud.ProdId) || !OpenedRaw(ud.Device)) return false;
-            int first = PressureAxisBase(ud.Device);
-            if (first >= 0 && axis >= first && axis < first + BlissBoxProtocol.PressureCount) return true;
+            if (PressureAxis(ud, axis)) return true;
             if (ud.Device is RemotePeerDevice peer)
                 return peer.Info.BlissBoxRestMask is byte mask
                        && axis >= 0 && axis < BlissBoxControllers.FirstPressureAxis
@@ -532,6 +531,21 @@ namespace PadForge.Common.Input
             var session = Find(ud)?.Session;
             return (session?.LiveInfo ?? session?.KnownInfo) is { } info
                    && BlissBoxControllers.IsTriggerAxis(info.Type, info.Major, axis);
+        }
+
+        /// <summary>True for a pressure axis of a port read raw, on this PC or
+        /// a Remote Link peer's copy: the twelve from
+        /// <see cref="PressureAxisBase(ISdlInputDevice)"/>. The merge leaves
+        /// them at 0 without a DualShock 2 in the port, where a DualShock 2
+        /// rests them too, so the "(Any Device)" gate admits the range
+        /// whatever the port holds. The port's object list names them only
+        /// once the UI thread refreshes it after an identification, and a
+        /// peer's copy has no list that names them at all.</summary>
+        public static bool PressureAxis(UserDevice ud, int axis)
+        {
+            if (ud == null || !BlissBoxProtocol.IsPort(ud.VendorId, ud.ProdId) || !OpenedRaw(ud.Device)) return false;
+            int first = PressureAxisBase(ud.Device);
+            return first >= 0 && axis >= first && axis < first + BlissBoxProtocol.PressureCount;
         }
 
         /// <summary>For the Remote Link device list (its v10 tail): the native

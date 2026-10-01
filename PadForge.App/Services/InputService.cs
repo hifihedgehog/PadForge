@@ -11383,6 +11383,21 @@ namespace PadForge.Services
             await server.ConnectAsync(host, port, expose);
         }
 
+        /// <summary>The axes a row that reads a gamepad-opened device raw
+        /// ships, or null for the device's own set. The stream is the row's
+        /// published state (<see cref="RemoteLinkStreamTick"/>), which under
+        /// Force Raw Joystick Mode carries the joystick's own axes in their
+        /// own order, and a peer's "(Any Device)" read admits only the axes
+        /// the list names.</summary>
+        private static int[] RawModeAxes(UserDevice ud, ISdlInputDevice dev)
+        {
+            if (!ud.ForceRawJoystickMode || dev.GamepadHandle == IntPtr.Zero) return null;
+            int span = Math.Min(UserDevice.RawModeAxisSpan(dev), CustomInputState.MaxAxis + CustomInputState.MaxSliders);
+            var axes = new int[span];
+            for (int i = 0; i < span; i++) axes[i] = i;
+            return axes;
+        }
+
         /// <summary>Build the shared source snapshot. Each connection translates these
         /// stable source IDs to its own reserved wire slots.</summary>
         private IReadOnlyList<RemotePeerDeviceInfo> BuildExposedDevices()
@@ -11470,7 +11485,7 @@ namespace PadForge.Services
                                 // gamepad, so without this the consumer listed
                                 // slots the pad does not physically have.
                                 SupportedButtonIndices = dev.SupportedButtonIndices,
-                                SupportedAxisIndices = dev.SupportedAxisIndices,
+                                SupportedAxisIndices = RawModeAxes(ud, dev) ?? dev.SupportedAxisIndices,
                                 SdlGuid = dev.SdlGuid,
                                 RawAxisCount = dev.RawAxisCount,
                                 HasExtraGenericAxes = dev.HasExtraGenericAxes,

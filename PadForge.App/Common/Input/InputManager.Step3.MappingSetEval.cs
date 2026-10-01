@@ -2154,13 +2154,16 @@ namespace PadForge.Common.Input
             return true;
         }
 
-        /// <summary>#206 auto-cancel activity stamp, called from the
-        /// gamepad row write sites when a non-Base row produces output
-        /// (button pressed, |axis| past 10%, trigger past 5%). Output
-        /// carries every source kind and flag already applied, so this
-        /// is the layer's "targets are pressed" signal with no
-        /// re-derivation. Same-thread with the reader (both on the
-        /// polling tick).</summary>
+        /// <summary>#206 auto-cancel activity stamp, called when a non-Base
+        /// row produces output (button pressed, |axis| past 10%, trigger
+        /// past 5%, a touchpad finger down at any position): from the
+        /// gamepad row write sites, and from the four
+        /// TryEvaluateMappingSet* evaluators that write every other row
+        /// (Extended, keyboard and mouse, MIDI, VR, touchpad, and the
+        /// Motion Pitch, Yaw and Roll rows). Output carries every source
+        /// kind and flag already applied, so this is the layer's "targets
+        /// are pressed" signal with no re-derivation. Same-thread with the
+        /// reader (both on the polling tick).</summary>
         private static void StampLayerActivity(int slotIndex, MappingRow row)
         {
             string layer = row?.LayerMask;
@@ -4050,6 +4053,7 @@ namespace PadForge.Common.Input
                     for (int bi = 0; bi < positional.Count; bi++) bools.Add(positional[bi] > 0.5f);
                     value = CombineHelper.CombineButton(row.CombineMode, bools);
                 }
+                if (value) StampLayerActivity(slotIndex, row);
                 return true;
             }
 
@@ -4092,6 +4096,7 @@ namespace PadForge.Common.Input
                 devState, src, globalAxisToButtonThreshold,
                 slotIndex, targetName, 0, slotRuntime, dt,
                 evaluatedDeviceGuid: thisDeviceGuid);
+            if (value) StampLayerActivity(slotIndex, row);
             return true;
         }
 
@@ -4170,6 +4175,7 @@ namespace PadForge.Common.Input
             }
 
             if (IsInvertOnHoldActive(row, state, thisDeviceGuid, slotIndex)) combined = -combined;
+            if (System.Math.Abs(combined) > 0.10f) StampLayerActivity(slotIndex, row);
 
             // Map [-1..+1] → signed short with the same convention legacy
             // MapToThumbAxisWithNeg uses: -1 → short.MinValue, +1 → short.MaxValue.
@@ -4225,6 +4231,9 @@ namespace PadForge.Common.Input
             var flags = _contribFlagsBuf ??= new List<float>(8);
             flags.Clear();
             int activeCount = 0;
+            // A finger down is output whatever its position, the center
+            // included (#206 auto-cancel).
+            bool fingerDown = false;
 
             for (int i = 0; i < sourcesCount; i++)
             {
@@ -4278,6 +4287,7 @@ namespace PadForge.Common.Input
                         && fingerIdx >= 0
                         && fingerIdx < pad.MaxFingers
                         && pad.FingerDown[fingerIdx];
+                    fingerDown |= isActive;
                 }
                 else
                 {
@@ -4328,6 +4338,7 @@ namespace PadForge.Common.Input
             }
 
             if (IsInvertOnHoldActive(row, state, thisDeviceGuid, slotIndex)) combined = -combined;
+            if (fingerDown || System.Math.Abs(combined) > 0.10f) StampLayerActivity(slotIndex, row);
 
             if (combined <= -1f) value = short.MinValue;
             else if (combined >= 1f) value = short.MaxValue;
@@ -4419,6 +4430,7 @@ namespace PadForge.Common.Input
             }
 
             if (IsInvertOnHoldActive(row, state, thisDeviceGuid, slotIndex)) combined = 1f - combined;
+            if (combined > 0.05f) StampLayerActivity(slotIndex, row);
 
             // [0..+1] → signed short with short.MinValue = 0% (matches the
             // legacy MapToRawTriggerAxis convention).

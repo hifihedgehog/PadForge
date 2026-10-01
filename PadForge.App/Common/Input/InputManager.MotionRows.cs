@@ -148,13 +148,7 @@ namespace PadForge.Common.Input
         {
             if (!TryEvaluateMappingSetBipolarAxis(state, ms, deviceGuid, slot, target, out short v))
                 return 0f;
-            float value = Math.Clamp(v / 32767f, -1f, 1f);
-            // A layer row producing output keeps a Toggle layer's auto-cancel
-            // (#206) from switching the layer off mid-turn. The gamepad row
-            // loop stamps its stick rows at the same mark.
-            if (MathF.Abs(value) > 0.10f)
-                StampLayerActivity(slot, FindActiveRowForTarget(ms, target, slot, out _));
-            return value;
+            return Math.Clamp(v / 32767f, -1f, 1f);
         }
 
         /// <summary>Step 4: the current pass's values across the slot's

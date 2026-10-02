@@ -332,6 +332,55 @@ namespace PadForge.Tests
         }
 
         [Fact]
+        public void StickRings_UnderAController_DropTheGamepadPrefix()
+        {
+            // Owner, 2026-10-02: the stick rings stay under each controller,
+            // where they read that controller's stick, named without the
+            // Gamepad prefix that marks the "(Any device)" family. A row and
+            // the macro editor name a ring the way its context's group does.
+            var (mainVm, svc) = ArrangeDefaultProfileWithXboxPad();
+            var pad0 = mainVm.Pads[0];
+            svc.RefreshAvailableInputsForSlot(pad0);
+            var si = PadForge.Resources.Strings.Strings.Instance;
+            string xbox = XboxGuid.ToString();
+            var choices = pad0.Mappings.First(m => m.TargetSettingName == "ButtonA").AvailableInputs;
+            var device = SettingsManager.UserDevices.Items.First(u => u.InstanceGuid == XboxGuid);
+
+            foreach (var (desc, bare) in new[]
+            {
+                (PadForge.Engine.Common.Mapping.SourceCoercion.LeftStickRingDescriptor, si.Mapping_LeftStickRing),
+                (PadForge.Engine.Common.Mapping.SourceCoercion.RightStickRingDescriptor, si.Mapping_RightStickRing),
+            })
+            {
+                string prefixed = string.Format(si.Mapping_Gamepad_Format, bare);
+                var onXbox = Assert.Single(choices, c => c.Descriptor == desc
+                    && string.Equals(c.DeviceGuid, xbox, StringComparison.OrdinalIgnoreCase));
+                var onAny = Assert.Single(choices, c => c.Descriptor == desc && string.IsNullOrEmpty(c.DeviceGuid));
+                Assert.Equal(bare, onXbox.DisplayName);
+                Assert.Equal(prefixed, onAny.DisplayName);
+
+                var bound = new MappingItem("A", "ButtonA", MappingCategory.Buttons);
+                bound.LoadDescriptor(desc);
+                PadForge.Common.MappingDisplayResolver.ResolveDisplayText(bound, device);
+                Assert.Equal(onXbox.DisplayName, bound.SourceDisplayText);
+
+                var free = new MappingItem("A", "ButtonA", MappingCategory.Buttons);
+                free.LoadDescriptor(desc);
+                PadForge.Common.MappingDisplayResolver.ResolveDisplayText(free, null);
+                Assert.Equal(onAny.DisplayName, free.SourceDisplayText);
+
+                Assert.Equal(prefixed, PadForge.Common.MappingDisplayResolver.ResolveDescriptorText(desc, null, padPrefixAlways: true));
+                Assert.Equal(bare, PadForge.Common.MappingDisplayResolver.ResolveDescriptorText(desc, null, padPrefixAlways: false));
+            }
+
+            // Every other Gamepad name reads the same in both contexts.
+            Assert.Equal(PadForge.Common.MappingDisplayResolver.ResolveGamepadText("Gamepad ButtonA"),
+                PadForge.Common.MappingDisplayResolver.ResolveGamepadText("Gamepad ButtonA", anyDevice: false));
+            Assert.Equal(PadForge.Common.MappingDisplayResolver.ResolveGamepadText("Gamepad LeftStickTouch"),
+                PadForge.Common.MappingDisplayResolver.ResolveGamepadText("Gamepad LeftStickTouch", anyDevice: false));
+        }
+
+        [Fact]
         public void HidingAnyDevice_HidesEveryAbstractGamepadName()
         {
             // The picker's device filter hides a group by its key, "any" for

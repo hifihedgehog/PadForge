@@ -57,9 +57,11 @@ namespace PadForge.Common
 
             // Abstract "Gamepad ..." family (issue #9): device-agnostic
             // semantic names that resolve without device-object metadata, so
-            // they sit above the raw-numbered / DeviceObjects paths.
+            // they sit above the raw-numbered / DeviceObjects paths. A row
+            // bound to a controller names a stick ring without the prefix,
+            // as that controller's picker group does.
             {
-                string gamepadText = ResolveGamepadText(mapping.SourceDescriptor);
+                string gamepadText = ResolveGamepadText(mapping.SourceDescriptor, anyDevice: ud == null);
                 if (gamepadText != null)
                 {
                     mapping.SetResolvedSourceText(gamepadText);
@@ -650,9 +652,11 @@ namespace PadForge.Common
 
             // Abstract "Gamepad ..." family (issue #9) → localized display.
             // Device-agnostic, so it resolves without device-object metadata.
+            // padPrefixAlways marks the any-device context here too, which
+            // keeps the Gamepad prefix on a stick ring.
             if (s.StartsWith("Gamepad ", System.StringComparison.Ordinal))
             {
-                string gp = ResolveGamepadText(s);
+                string gp = ResolveGamepadText(s, anyDevice: padPrefixAlways);
                 return gp == null ? null : prefix + gp;
             }
 
@@ -1027,17 +1031,23 @@ namespace PadForge.Common
         /// localized display (<c>"Gamepad Left Stick X"</c>). Returns null when
         /// the descriptor is not a recognized gamepad-family member. Shared by
         /// the row resolver, the neg/extra resolver, and the picker builder so
-        /// all three stay in lockstep with SourceCoercion.GamepadAliasTable.</summary>
-        internal static string ResolveGamepadText(string descriptor)
+        /// all three stay in lockstep with SourceCoercion.GamepadAliasTable.
+        /// <paramref name="anyDevice"/> false is a concrete controller's
+        /// context, where a stick ring is that controller's own input and is
+        /// named like its sticks, without the Gamepad prefix ("Left Stick
+        /// Ring"). The prefix marks the device-agnostic family of the
+        /// "(Any device)" group.</summary>
+        internal static string ResolveGamepadText(string descriptor, bool anyDevice = true)
         {
             if (string.IsNullOrEmpty(descriptor)
                 || !descriptor.StartsWith("Gamepad ", System.StringComparison.Ordinal))
                 return null;
             string member = descriptor.Substring("Gamepad ".Length).Trim();
             string memberDisplay = GamepadMemberDisplay(member);
-            return memberDisplay == null
-                ? null
-                : string.Format(Strings.Instance.Mapping_Gamepad_Format, memberDisplay);
+            if (memberDisplay == null) return null;
+            if (!anyDevice && PadForge.Engine.Common.Mapping.SourceCoercion.IsStickRingDescriptor(descriptor))
+                return memberDisplay;
+            return string.Format(Strings.Instance.Mapping_Gamepad_Format, memberDisplay);
         }
 
         /// <summary>
@@ -1794,11 +1804,13 @@ namespace PadForge.Common
 
                 // Stick deflection rings (translator v17): whole-stick
                 // magnitude reads, same gamepad gate and pair resolution
-                // as flick stick.
+                // as flick stick. Under the controller they are its own
+                // inputs, so they carry no Gamepad prefix (ResolveGamepadText
+                // names a bound row the same way).
                 if (leftStickOk)
-                    list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.LeftStickRingDescriptor,  DisplayName = string.Format(si.Mapping_Gamepad_Format, si.Mapping_LeftStickRing) });
+                    list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.LeftStickRingDescriptor,  DisplayName = ResolveGamepadText(PadForge.Engine.Common.Mapping.SourceCoercion.LeftStickRingDescriptor, anyDevice: false) });
                 if (rightStickOk)
-                    list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.RightStickRingDescriptor, DisplayName = string.Format(si.Mapping_Gamepad_Format, si.Mapping_RightStickRing) });
+                    list.Add(new InputChoice { Descriptor = PadForge.Engine.Common.Mapping.SourceCoercion.RightStickRingDescriptor, DisplayName = ResolveGamepadText(PadForge.Engine.Common.Mapping.SourceCoercion.RightStickRingDescriptor, anyDevice: false) });
             }
 
             // Touchpad raw sources (per-finger axes + click) for devices
